@@ -4,25 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform a list into a sequence : op makesuite</title>
+<title>GCD in ℤ/pℤ[x] : Gcd</title>
 </head>
 <body >
 <a href="cascmd_en306.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en308.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec369" class="subsection">2.37.11  Transform a list into a sequence : <span style="font-family:monospace">op makesuite</span></h3>
-<p><a id="hevea_default519"></a><a id="hevea_default520"></a>
-<span style="font-family:monospace">op</span> or <span style="font-family:monospace">makesuite</span> takes as argument a list.<br>
-<span style="font-family:monospace">op</span> or <span style="font-family:monospace">makesuite</span> transforms this list into a sequence.
-<a id="sec:makesuiteop"></a><br>
-See <a href="cascmd_en123.html#sec%3Aop">2.15.3</a> for other usages of <span style="font-family:monospace">op</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">op([0,1,2])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">makesuite([0,1,2])</span></div><p>
+<h3 id="sec376" class="subsection">4.32.3  GCD in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>] : <span style="font-family:monospace">Gcd</span></h3>
+<p><a id="hevea_default471"></a>
+<span style="font-family:monospace">Gcd</span> is the inert form of <span style="font-family:monospace">gcd</span>.<br>
+<span style="font-family:monospace">Gcd</span> returns the gcd (greatest common divisor) of two polynomials
+(or of a list of polynomials or of a sequence of polynomials) without
+evaluation.<br>
+It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to compute
+the gcd of two polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ with <span style="font-style:italic">p</span> prime
+(see also <a href="cascmd_en250.html#sec%3Agcd">4.25.7</a>).<br>
+Input in <span style="font-family:monospace">Xcas</span> mode :
+</p><div class="center"><span style="font-family:monospace">Gcd((2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+5,5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x-3)%13)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(0,1,2)</span></div>
+</p><div class="center"><span style="font-family:monospace">gcd((2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+5)%13,(5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x-3)%13)</span></div><p>
+you need to <span style="font-family:monospace">eval(ans())</span> to get :
+</p><div class="center"><span style="font-family:monospace">(1%13)*x+2%13</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Gcd(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+5,5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x-3) mod 13</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1*x+2</span></div><p>
+Input:
+</p><div class="center"><span style="font-family:monospace">Gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1*x</span></div>
 <hr>
 <a href="cascmd_en306.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

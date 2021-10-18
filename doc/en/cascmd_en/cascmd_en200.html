@@ -4,25 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Coefficients of a polynomial defined by its roots : pcoeff pcoef</title>
+<title>Simplify and express preferentially with tangents : trigtan</title>
 </head>
 <body >
 <a href="cascmd_en199.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en201.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec243" class="subsection">2.24.20  Coefficients of a polynomial defined by its roots : <span style="font-family:monospace">pcoeff pcoef</span></h3>
-<p><a id="hevea_default377"></a><a id="hevea_default378"></a>
-<span style="font-family:monospace">pcoeff</span> (or <span style="font-family:monospace">pcoef</span>) takes as argument a list of
-the roots of a polynomial <span style="font-style:italic">P</span>.<br>
-<span style="font-family:monospace">pcoeff</span> (or <span style="font-family:monospace">pcoef</span>) returns a univariate polynomial having
-these roots,
-represented as the list of its coefficients by decreasing order.<br>
+<h3 id="sec249" class="subsection">4.21.22  Simplify and express preferentially with tangents : <span style="font-family:monospace">trigtan</span></h3>
+<p><a id="hevea_default317"></a>
+<span style="font-family:monospace">trigtan</span> takes as argument an expression 
+containing trigonometric functions.<br>
+<span style="font-family:monospace">trigtan</span> simplifies this expression with the formula :<br>
+sin(<span style="font-style:italic">x</span>)<sup>2</sup>+cos(<span style="font-style:italic">x</span>)<sup>2</sup>=1,  tan(<span style="font-style:italic">x</span>)=sin(<span style="font-style:italic">x</span>)/cos(<span style="font-style:italic">x</span>) and 
+tries to rewrite the expression only with tangents.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">pcoef([1,2,0,0,3])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">trigtan(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+cos(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1,-6,11,-6,0,0]</span></div><p>
-i.e. (<span style="font-style:italic">x</span>−1)(<span style="font-style:italic">x</span>−2)(<span style="font-style:italic">x</span><sup>2</sup>)(<span style="font-style:italic">x</span>−3)=<span style="font-style:italic">x</span><sup>5</sup>−6<span style="font-style:italic">x</span><sup>4</sup>+11<span style="font-style:italic">x</span><sup>3</sup>−6<span style="font-style:italic">x</span><sup>2</sup>.</p>
+</p><div class="center"><span style="font-family:monospace">((tan(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/(1+(tan(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/(1+(tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+1</span></div><p>
+Output, after simplification with <span style="font-family:monospace">normal</span> :
+</p><div class="center"><span style="font-family:monospace">(2*tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+3*tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2)/(tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+2*tan(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div>
 <hr>
 <a href="cascmd_en199.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

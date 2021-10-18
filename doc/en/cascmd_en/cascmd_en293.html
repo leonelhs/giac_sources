@@ -4,40 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition : set[]</title>
+<title>Division in ℤ/pℤ or in ℤ/pℤ[x] : /</title>
 </head>
 <body >
 <a href="cascmd_en292.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en294.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec352" class="subsection">2.36.1  Definition : <span style="font-family:monospace">set[]</span></h3>
-<p><a id="hevea_default503"></a><a id="hevea_default504"></a>
-To define a set of elements, put the elements separated by a comma, with 
-<span style="font-family:monospace">%{ ... %}</span> or <span style="font-family:monospace">set[ ... ]</span> as delimiters.<br>
-Input :
-</p><div class="center">
-<span style="font-family:monospace">%{1,2,3,4%}</span><br>
-<span style="font-family:monospace">set[1,2,3,4]</span>
-</div><p>
-In the <span style="font-family:monospace">Xcas</span> answers, the set delimiters are displayed
-as  and  in order
-not to confuse sets with lists.
-For example, 1,2,3 is the set <span style="font-family:monospace">%{1,2,3%}</span>, 
-unlike [1,2,3] (normal brackets) which is the list <span style="font-family:monospace">[1,2,3]</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">A:=%{1,2,3,4%}</span> or <span style="font-family:monospace">A:=set[1,2,3,4]</span></div><p>
+<h3 id="sec361" class="subsection">4.31.8  Division in ℤ/<span style="font-style:italic">p</span>ℤ or in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>] : <span style="font-family:monospace">/</span></h3>
+<p><a id="hevea_default450"></a>
+<span style="font-family:monospace">/</span> divides two integers in ℤ/<span style="font-style:italic">p</span>ℤ or 
+two polynomials <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<br>
+For polynomials, the result is the irreducible representation
+of the fraction <span style="font-style:italic">A</span>/<span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<br>
+For integers in ℤ/<span style="font-style:italic">p</span>ℤ, input :
+</p><div class="center"><span style="font-family:monospace">5%13/2% 13</span></div><p>
+Since 2 is invertible in <span style="font-style:italic">Z</span>/13ℤ, we get the output :
+</p><div class="center"><span style="font-family:monospace">-4%13</span></div><p>
+For polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ, input :
+</p><div class="center"><span style="font-family:monospace">(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+5)%13/(5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x-3)%13</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">1,2,3,4 </span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">B:=%{5,5,6,3,4%}</span> or <span style="font-family:monospace">B:=set[5,5,6,3,4]</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">5,6,3,4 </span></div><p>
-<span style="font-weight:bold">Remark</span><br>
-The order in a set is not significant and 
-the elements in a set are all distinct. If you input
-<span style="font-family:monospace">B:=%{5,5,6,3,4%}</span> and <span style="font-family:monospace">C:=%{3,4,5,3,6%}</span>, then 
-<span style="font-family:monospace">B==C</span> will return <span style="font-family:monospace">1</span>.</p>
+</p><div class="center"><span style="font-family:monospace">((6%13)*x+1%13)/((2%13)*x+2%13)</span></div>
 <hr>
 <a href="cascmd_en292.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

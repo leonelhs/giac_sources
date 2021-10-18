@@ -4,117 +4,53 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Modify an element or a row of a matrix : subsop</title>
+<title>Apply a function of one variable to the elements of a list : map apply of</title>
 </head>
 <body >
 <a href="cascmd_en362.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en364.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec432" class="subsection">2.42.13  Modify an element or a row of a matrix : <span style="font-family:monospace">subsop</span></h3>
-<p><a id="hevea_default617"></a>
-<span style="font-family:monospace">subsop</span> modifies an element or a row of a matrix.
-It is used mainly for <span style="font-family:monospace">Maple</span> and <span style="font-family:monospace">MuPAD</span> compatibility.
-Unlike <span style="font-family:monospace">:=</span> or <span style="font-family:monospace">=&lt;</span>,
-it does not require the matrix to be stored in a variable.<br>
-<span style="font-family:monospace">subsop</span> takes two or three arguments,
-<span style="font-weight:bold">these arguments are permuted</span> in <span style="font-family:monospace">Maple</span> mode.
-</p><ol class="enumerate" type=1><li class="li-enumerate">
-Modify an element
-<ul class="itemize"><li class="li-itemize">
-In <span style="font-family:monospace">Xcas</span> mode, the first index is 0<br>
-<span style="font-family:monospace">subsop</span> has two (resp. three) arguments: a matrix <span style="font-family:monospace">A</span> and an 
-equality <span style="font-family:monospace">[r,c]=v</span> (resp. a matrix <span style="font-family:monospace">A</span>, a list of indexes <span style="font-family:monospace">[r,c]</span>,
-a value <span style="font-family:monospace">v</span>).<br>
-<span style="font-family:monospace">subsop</span> replaces the element <span style="font-family:monospace">A[r,c]</span> by <span style="font-family:monospace">v</span>.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode :
-<div class="center"><span style="font-family:monospace">subsop([[4,5],[2,6]],[1,0]=3)</span></div>
+<h3 id="sec441" class="subsection">4.37.32  Apply a function of one variable to the elements of a list : <span style="font-family:monospace">map apply of</span></h3>
+<p><a id="hevea_default547"></a><a id="hevea_default548"></a><a id="hevea_default549"></a>
+<span style="font-family:monospace">map</span> or <span style="font-family:monospace">apply</span> or <span style="font-family:monospace">of</span> applies a function to a list
+of elements.<br>
+<span style="font-family:monospace">of</span> is the prefixed function equivalent to the parenthesis : 
+<span style="font-family:monospace">Xcas</span> translates <span style="font-family:monospace">f(x)</span> internally to <span style="font-family:monospace">of(f,x)</span>. 
+It is more natural to call <span style="font-family:monospace">map</span> 
+or <span style="font-family:monospace">apply</span> than <span style="font-family:monospace">of</span>. Be careful with the order of arguments
+(that is required for compatibility reasons).<br>
+Note that <span style="font-family:monospace">apply</span> returns a list (<span style="font-family:monospace">[]</span>)
+even if the second argument is not a list.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">apply(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[3,5,1])</span></div><p>
 or :
-<div class="center"><span style="font-family:monospace">subsop([[4,5],[2,6]],[1,0],3)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">[[4,5],[3,6]]</span></div>
-<span style="font-weight:bold">Remark</span><br>
-If the matrix is stored in a variable, for example 
-<span style="font-family:monospace">A:=[[4,5],[2,6]]</span>, it is easier to input <span style="font-family:monospace">A[1,0]:=3</span>
-which modifies <span style="font-family:monospace">A</span> into the matrix<br>
-<span style="font-family:monospace">[[4,5],[3,6]]</span>.</li><li class="li-itemize">In <span style="font-family:monospace">Mupad, TI</span> mode, the first index is 1<br>
-<span style="font-family:monospace">subsop</span> has two (resp. three) arguments: a matrix <span style="font-family:monospace">A</span> and an 
-equality <span style="font-family:monospace">[r,c]=v</span> (resp. a matrix <span style="font-family:monospace">A</span>, a list of index <span style="font-family:monospace">[r,c]</span>,
-a value <span style="font-family:monospace">v</span>).<br>
-<span style="font-family:monospace">subsop</span> replaces the element <span style="font-family:monospace">A[r,c]</span> by <span style="font-family:monospace">v</span>.<br>
-Input in <span style="font-family:monospace">Mupad, TI</span> mode :
-<div class="center"><span style="font-family:monospace">subsop([[4,5],[2,6]],[2,1]=3)</span></div>
+</p><div class="center"><span style="font-family:monospace">of(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[3,5,1])</span></div><p>
 or :
-<div class="center"><span style="font-family:monospace">subsop([[4,5],[2,6]],[2,1],3)</span></div>
+</p><div class="center"><span style="font-family:monospace">map([3,5,1],x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+or first define the function <span style="font-style:italic">h</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>, input :
+</p><div class="center"><span style="font-family:monospace">h(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
+then :
+</p><div class="center"><span style="font-family:monospace">apply(h,[3,5,1])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">of(h,[3,5,1])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">map([3,5,1],h)</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">[[4,5],[3,6]]</span></div>
-<span style="font-weight:bold">Remark</span><br>
-If the matrix is stored in a variable, for example 
-<span style="font-family:monospace">A:=[[4,5],[2,6]]</span>, it is easier to input <span style="font-family:monospace">A[2,1]:=3</span> which
-modifies <span style="font-family:monospace">A</span> into the matrix <br>
-<span style="font-family:monospace">[[4,5],[3,6]]</span>.</li><li class="li-itemize">In <span style="font-family:monospace">Maple</span> mode, 
-the arguments are permuted and the first index is 1<br>
-<span style="font-family:monospace">subsop</span> has two arguments: an equality <span style="font-family:monospace">[r,c]=v</span> and a matrix 
-<span style="font-family:monospace">A</span>.<br>
-<span style="font-family:monospace">subsop</span> replaces the element <span style="font-family:monospace">A[r,c]</span> by <span style="font-family:monospace">v</span>.<br>
-Input in <span style="font-family:monospace">Maple</span> mode
-<div class="center"><span style="font-family:monospace">subsop([2,1]=3,[[4,5],[2,6]])</span></div>
+</p><div class="center"><span style="font-family:monospace">[9,25,1]</span></div><p>
+Next example, define the function <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)=[<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sup>2</sup>,<span style="font-style:italic">x</span><sup>3</sup>], input :
+</p><div class="center"><span style="font-family:monospace">g:=(x)-&gt;[x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3]</span></div><p>
+then :
+</p><div class="center"><span style="font-family:monospace">apply(g,[3,5,1])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">of(g,[3,5,1])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">map([3,5,1],g)</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">[[4,5],[3,6]]</span></div>
-<span style="font-weight:bold">Remark</span><br>
-If the matrix is stored in a variable, for example 
-<span style="font-family:monospace">A:=[[4,5],[2,6]]</span>, it is easier to input <span style="font-family:monospace">A[2,1]:=3</span> which
-modifies <span style="font-family:monospace">A</span> into the matrix<br>
-<span style="font-family:monospace">[[4,5],[3,6]]</span>.
-</li></ul></li><li class="li-enumerate">Modify a row
-<ul class="itemize"><li class="li-itemize">
-in <span style="font-family:monospace">Xcas</span> mode, the first index is 0<br>
-<span style="font-family:monospace">subsop</span> takes two arguments : a matrix and an 
-equality (the index of the row to be modified, the <span style="font-family:monospace">=</span> sign and the new 
-row value).<br>
-Input in <span style="font-family:monospace">Xcas</span> mode :
-<div class="center"><span style="font-family:monospace">subsop([[4,5],[2,6]],1=[3,3])</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">[[4,5],[3,3]]</span></div>
-<span style="font-weight:bold">Remark</span><br>
-If the matrix is stored in a variable, for example 
-<span style="font-family:monospace">A:=[[4,5],[2,6]]</span>, is is easier to input <span style="font-family:monospace">A[1]:=[3,3]</span>
-which modifies <span style="font-family:monospace">A</span> into the matrix<br>
-<span style="font-family:monospace">[[4,5],[3,3]]</span>.</li><li class="li-itemize">In <span style="font-family:monospace">Mupad, TI</span> mode, the first index is 1 <br>
-<span style="font-family:monospace">subsop</span> takes two arguments : a matrix and an 
-equality (the index of the row to be modified, the <span style="font-family:monospace">=</span> sign and the new 
-row value).<br>
-Input in <span style="font-family:monospace">Mupad, TI</span> mode :
-<div class="center"><span style="font-family:monospace">subsop([[4,5],[2,6]],2=[3,3])</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">[[4,5],[3,3]]</span></div>
-<span style="font-weight:bold">Remark</span><br>
-If the matrix is stored in a variable, for example 
-<span style="font-family:monospace">A:=[[4,5],[2,6]]</span>, it is easier to input <span style="font-family:monospace">A[2]:=[3,3]</span> which modifies
-<span style="font-family:monospace">A</span> into the matrix<br>
-<span style="font-family:monospace">[[4,5],[3,3]]</span>.</li><li class="li-itemize">in <span style="font-family:monospace">Maple</span> mode, the arguments are permuted and the first index
-is 1 :<br>
-<span style="font-family:monospace">subsop</span> takes two arguments : an 
-equality (the index of the row to be modified, the <span style="font-family:monospace">=</span> sign and the new 
-row value) and a matrix.<br>
-Input in <span style="font-family:monospace">Maple</span> mode :
-<div class="center"><span style="font-family:monospace">subsop(2=[3,3],[[4,5],[2,6]])</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">[[4,5],[3,3]]</span></div>
-<span style="font-weight:bold">Remark</span><br>
-If the matrix is stored in a variable, for example 
-<span style="font-family:monospace">A:=[[4,5],[2,6]]</span>, it is easier to input <span style="font-family:monospace">A[2]:=[3,3]</span> which modifies
-<span style="font-family:monospace">A</span> into the matrix<br>
-<span style="font-family:monospace">[[4,5],[3,3]]</span>.
-</li></ul>
-</li></ol><p>
-<span style="font-weight:bold">Remark</span><br>
-Note also that <span style="font-family:monospace">subsop</span> with a <span style="font-family:monospace">’n=NULL’</span> argument 
-deletes row number <span style="font-family:monospace">n</span>.
-In <span style="font-family:monospace">Xcas</span> mode input :
-</p><div class="center"><span style="font-family:monospace">subsop([[4,5],[2,6]],’1=NULL’)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[4,5]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[3,9,27],[5,25,125],[1,1,1]]</span></div><p>
+<span style="font-weight:bold">Warning!!!</span> first purge <span style="font-family:monospace">x</span> if <span style="font-family:monospace">x</span> is not symbolic.<br>
+Note that if <span style="font-family:monospace">l1,l2,l3</span> are lists
+<span style="font-family:monospace">sizes([l1,l2,l3])</span> is equivalent to <span style="font-family:monospace">map(size,[l1,l2,l3])</span>.</p>
 <hr>
 <a href="cascmd_en362.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

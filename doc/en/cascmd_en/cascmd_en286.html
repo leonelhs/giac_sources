@@ -4,34 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition : seq[] ()</title>
+<title>Expand and reduce : normal</title>
 </head>
 <body >
 <a href="cascmd_en285.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en287.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec344" class="subsection">2.35.1  Definition : <span style="font-family:monospace">seq[] ()</span></h3>
-<p><a id="hevea_default492"></a><a id="hevea_default493"></a>
-A sequence is represented by 
-a sequence of elements separated by commas, without
-delimiters or with either <span style="font-family:monospace">( )</span> or <span style="font-family:monospace">seq[...]</span>
-as delimiters, for example
-</p><div class="center">
-<span style="font-family:monospace">(1,2,3,4)</span><br>
-<span style="font-family:monospace">seq[1,2,3,4]</span>
-</div><p>
+<h3 id="sec354" class="subsection">4.31.1  Expand and reduce : <span style="font-family:monospace">normal</span></h3>
+<p><a id="hevea_default440"></a>
+<span style="font-family:monospace">normal</span> takes as argument a polynomial expression.<br>
+<span style="font-family:monospace">normal</span> expands and reduces this expression in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">A:=(1,2,3,4)</span> or <span style="font-family:monospace">A:=seq[1,2,3,4]</span></div><div class="center"><span style="font-family:monospace">B:=(5,6,3,4)</span> or <span style="font-family:monospace">B:=seq[5,6,3,4]</span></div><p>
-<span style="font-weight:bold">Remarks</span>
-</p><ul class="itemize"><li class="li-itemize">
-The order of the elements of the sequence is significant.
-For example, if <span style="font-family:monospace">B:=(5,6,3,4)</span> and <span style="font-family:monospace">C:=(3,4,5,6)</span>, then
-<span style="font-family:monospace">B==C</span> returns <span style="font-family:monospace">0</span>.
-</li><li class="li-itemize">(see also <a href="cascmd_en290.html#sec%3Aseq">2.35.5</a>)<br>
-<span style="font-family:monospace">seq([0,2])=(0,0)</span> and <span style="font-family:monospace">seq([0,1,1,5])=[0,0,0,0,0]</span> but<br>
-<span style="font-family:monospace">seq[0,2]=(0,2)</span> and <span style="font-family:monospace">seq[0,1,1,5]=(0,1,1,5)</span>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">normal(((2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+12)*( 5*x-4))%13)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(-3%13)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+(5%13)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(-5%13)*x+4%13</span></div>
 <hr>
 <a href="cascmd_en285.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

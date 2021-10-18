@@ -4,32 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Count the elements of a matrix verifying a property : count</title>
+<title>Scalar product : scalar_product * dotprod dot dotP
+scalar_Product</title>
 </head>
 <body >
 <a href="cascmd_en376.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en378.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec446" class="subsection">2.42.27  Count the elements of a matrix verifying a property : <span style="font-family:monospace">count</span></h3>
-<p><a id="hevea_default634"></a>
-<span style="font-family:monospace">count</span> takes as arguments : a real function <span style="font-family:monospace">f</span> and 
-a real matrix <span style="font-family:monospace">A</span> of dimension <span style="font-family:monospace">p*q</span> (resp. a list <span style="font-family:monospace">l</span> of size 
-<span style="font-family:monospace">n</span>).<br>
-<span style="font-family:monospace">count</span> returns <span style="font-family:monospace">f(A[0,0])+..f(A[p-1,q-1])</span> (resp. 
-<span style="font-family:monospace">f(l[0])+..f(l[n-1])</span>)<br>
-Hence, if <span style="font-family:monospace">f</span> is a boolean function, <span style="font-family:monospace">count</span> returns the number 
-of elements of the matrix <span style="font-family:monospace">A</span> (resp. the list <span style="font-family:monospace">l</span>) verifying 
-the property <span style="font-family:monospace">f</span>.<br>
+<h3 id="sec456" class="subsection">4.38.7  Scalar product : <span style="font-family:monospace">scalar_product * dotprod dot dotP
+scalar_Product</span></h3>
+<p><a id="hevea_default570"></a><a id="hevea_default571"></a><a id="hevea_default572"></a><a id="hevea_default573"></a><a id="hevea_default574"></a><a id="hevea_default575"></a> 
+<span style="font-family:monospace">dot</span> or <span style="font-family:monospace">dotP</span> or <span style="font-family:monospace">dotprod</span> or <span style="font-family:monospace">scalar_product</span> or 
+<span style="font-family:monospace">scalarProduct</span> or the infixed operator <span style="font-family:monospace">*</span> takes as argument 
+two vectors.<br>
+<span style="font-family:monospace">dot</span> or <span style="font-family:monospace">dotP</span> or <span style="font-family:monospace">dotprod</span> or <span style="font-family:monospace">scalar_product</span> or 
+<span style="font-family:monospace">scalarProduct</span> or <span style="font-family:monospace">*</span> returns the scalar product of these
+two 
+vectors.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">count(x-&gt;x,[[2,12],[45,3],[7,78]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">dot([1,2,3],[4,3,5])</span></div><p>
+or : 
+</p><div class="center"><span style="font-family:monospace">scalar_product([1,2,3],[4,3,5])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">[1,2,3]*[4,3,5]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">’*’([1,2,3],[4,3,5])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">147</span></div><p>
-indeed: 2+12+45+3+7+78=147.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">count(x-&gt;x&lt;10,[[2,12],[45,3],[7,78]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div>
+</p><div class="center"><span style="font-family:monospace">25</span></div><p>
+Indeed <span style="font-family:monospace">25=1*4+2*3+3*5</span>.</p><p>Note that <span style="font-family:monospace">*</span> may be used to find the product of two polynomials
+represented as list of their coefficients, but to avoid ambiguity,
+the polynomial lists must be <span style="font-family:monospace">poly1[...]</span>.</p>
 <hr>
 <a href="cascmd_en376.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

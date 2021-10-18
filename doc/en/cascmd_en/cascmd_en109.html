@@ -4,38 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Normal form : normal</title>
+<title>Transform a cycle into permutation : cycle2perm</title>
 </head>
 <body >
 <a href="cascmd_en108.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en110.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec125" class="subsection">2.12.13  Normal form : <span style="font-family:monospace">normal</span></h3>
-<p><a id="hevea_default174"></a>
-<span style="font-family:monospace">normal</span> takes as argument an expression. 
-The expression is considered as a rational fraction with respect 
-to generalized identifiers
-(either true identifiers or transcendental functions replaced by 
-a temporary identifiers) with coefficients in ℚ or ℚ[<span style="font-style:italic">i</span>]
-or in an algebraic extension (e.g. ℚ[√<span style="text-decoration:overline">2</span>]).
-<span style="font-family:monospace">normal</span> returns the expanded irreducible representation
-of this rational fraction. See also <span style="font-family:monospace">ratnormal</span> for pure rational
-fractions or <span style="font-family:monospace">simplify</span> if the transcendental functions are
-not algebraically independent.<br>
-Input : 
-</p><div class="center"><span style="font-family:monospace">normal((x-1)*(x+1))</span></div><p>
+<h3 id="sec137" class="subsection">4.10.4  Transform a cycle into permutation : <span style="font-family:monospace">cycle2perm</span></h3>
+<p><a id="hevea_default127"></a>
+<span style="font-family:monospace">cycle2perm</span> takes on cycle as argument.<br>
+<span style="font-family:monospace">cycle2perm</span> returns the permutation of size <span style="font-style:italic">n</span> corresponding 
+to the cycle given as argument, where <span style="font-style:italic">n</span> is chosen as small 
+as possible (see also <span style="font-family:monospace">permu2cycles</span> and <span style="font-family:monospace">cycles2permu</span>).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">cycle2perm([1,3,5])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span></div><p> 
-<span style="font-weight:bold">Remarks</span>
-</p><ul class="itemize"><li class="li-itemize">
-Unlike <span style="font-family:monospace">simplify</span>,
-<span style="font-family:monospace">normal</span> does not try to find algebraic relations between
-transcendental functions like cos(<span style="font-style:italic">x</span>)<sup>2</sup>+sin(<span style="font-style:italic">x</span>)<sup>2</sup>=1.
-</li><li class="li-itemize">It is sometimes necessary to run the <span style="font-family:monospace">normal</span> command twice to
-get a fully irreducible representation of an expression
-containing algebraic extensions.
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">[0,3,2,5,4,1]</span></div>
 <hr>
 <a href="cascmd_en108.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

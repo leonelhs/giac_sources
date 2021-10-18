@@ -4,44 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Modify an element in a list : subsop</title>
+<title>Euclidean remainder: Rem</title>
 </head>
 <body >
 <a href="cascmd_en305.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en307.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec368" class="subsection">2.37.10  Modify an element in a list : <span style="font-family:monospace">subsop</span></h3>
-<p><a id="hevea_default518"></a>
-<span style="font-family:monospace">subsop</span> modifies an element in a list.
-<span style="font-family:monospace">subsop</span> takes as argument a list and an equality (an index=a new
-value) in all syntax modes, but in <span style="font-family:monospace">Maple</span> syntax mode
-the order of the arguments is reversed. <br>
-<span style="font-weight:bold">Remark</span> If the second argument is <span style="font-family:monospace">’k=NULL’</span>, the element of index 
-<span style="font-family:monospace">k</span> is removed of the list.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0) :
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],1=5)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[1]:=5</span></div><p>
+<h3 id="sec375" class="subsection">4.32.2  Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
+<p><a id="hevea_default470"></a>
+<span style="font-family:monospace">Rem</span> is the inert form of <span style="font-family:monospace">rem</span>.<br>
+<span style="font-family:monospace">Rem</span> returns the euclidean remainder between two polynomials
+without evaluation. 
+It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to compute
+the euclidean remainder of the division of two
+polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
+Input in <span style="font-family:monospace">Xcas</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1) mod 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
-Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0) :
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],’1=NULL’)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
+you need to <span style="font-family:monospace">eval(ans())</span> to get :
+</p><div class="center"><span style="font-family:monospace">(-2%13)*x+-1%13</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,2]</span></div><p>Input in <span style="font-family:monospace">Mupad TI</span> mode (the index of the first element is 1) :
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],2=5)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(-2)*x-1</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
-In <span style="font-family:monospace">Maple</span> mode the arguments are permuted and the index of
-the first element is 1.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">subsop(2=5,[0,1,2])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div>
+</p><div class="center"><span style="font-family:monospace">1*x</span></div>
 <hr>
 <a href="cascmd_en305.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

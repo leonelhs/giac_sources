@@ -4,35 +4,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>List of factors : factors</title>
+<title>Rewrite trigonometric functions as function of tan(x/2) 
+and hyperbolic functions as function of exp(x): 
+halftan_hyp2exp</title>
 </head>
 <body >
 <a href="cascmd_en194.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en196.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec238" class="subsection">2.24.15  List of factors : <span style="font-family:monospace">factors</span></h3>
-<p><a id="hevea_default372"></a>
-<span style="font-family:monospace">factors</span> has either a polynomial or a list of polynomials as 
-argument.<br>
-<span style="font-family:monospace">factors</span> returns a list containing the factors of the polynomial
-and their exponents.<br>
+<h3 id="sec244" class="subsection">4.21.17  Rewrite trigonometric functions as function of tan(x/2) 
+and hyperbolic functions as function of exp(x): <br>
+<span style="font-family:monospace">halftan_hyp2exp</span></h3>
+<p><a id="hevea_default312"></a>
+<span style="font-family:monospace">halftan_hyp2exp</span> takes as argument a trigonometric and 
+hyperbolic expression.<br>
+<span style="font-family:monospace">halftan_hyp2exp</span> rewrites sin(<span style="font-style:italic">x</span>), cos(<span style="font-style:italic">x</span>), tan(<span style="font-style:italic">x</span>) 
+in terms of tan(<span style="font-style:italic">x</span>/2) 
+and sinh(<span style="font-style:italic">x</span>), cosh(<span style="font-style:italic">x</span>), tanh(<span style="font-style:italic">x</span>) in terms of exp(<span style="font-style:italic">x</span>).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">factors(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">halftan_hyp2exp(tan(x)+tanh(x))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[x+1,2]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(2*tan(x/2))/((1-(tan(x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))+(((exp(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1))/ (((exp(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">factors(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[x+1,2,x-1,2]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">factors([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[x-1,1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,1],[x,1,x-1,1]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">factors([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[x,2],[x+1,1,x-1,1]]</span></div>
+</p><div class="center"><span style="font-family:monospace">halftan_hyp2exp(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+cos(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-sinh(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+cosh(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
+Output, after simplification with <span style="font-family:monospace">normal(ans())</span> :
+</p><div class="center"><span style="font-family:monospace">2</span></div>
 <hr>
 <a href="cascmd_en194.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

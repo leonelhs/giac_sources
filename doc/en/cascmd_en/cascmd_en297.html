@@ -4,32 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition</title>
+<title>Rebuild a fraction from its value modulo p : fracmod</title>
 </head>
 <body >
 <a href="cascmd_en296.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en298.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec357" class="subsection">2.37.1  Definition</h3>
-<p>
-A list (or a vector) is delimited by <span style="font-family:monospace">[ ]</span>,
-its elements must be separated by commas. 
-For example, <span style="font-family:monospace">[1,2,5]</span> is a list of three integers.</p><p>Lists can contain lists (for example, a matrix is a list of lists 
-of the same size). Lists may be used to represent vectors
-(list of coordinates), matrices, univariate polynomials 
-(list of coefficients by decreasing order). </p><p>Lists are different from sequences, because sequences are flat : an element 
-of a sequence cannot be a sequence.
-Lists are different from sets, because for a list, the order is
-important and the same element can be repeated in a list (unlike in
-a set where each element is unique). </p><p>In <span style="font-family:monospace">Xcas</span> output :
-</p><ul class="itemize"><li class="li-itemize">
-vector (or list) delimiters are displayed as <span style="font-family:monospace">[]</span>, 
-</li><li class="li-itemize">matrix delimiters are displayed as <span style="font-weight:bold">[]</span>,
-</li><li class="li-itemize">polynomial delimiters are displayed as   ,
-</li><li class="li-itemize">set delimiters are displayed as   .
-</li></ul><p>The list elements are indexed starting from 0 in Xcas syntax mode
-and from 1 in all other syntax modes.</p>
+<h3 id="sec365" class="subsection">4.31.12  Rebuild a fraction from its value modulo <span style="font-style:italic">p</span> : <span style="font-family:monospace">fracmod</span></h3>
+<p><a id="hevea_default457"></a>
+<span style="font-family:monospace">fracmod</span> takes two arguments, an integer <span style="font-style:italic">n</span> 
+(representing a fraction) and an integer <span style="font-style:italic">p</span> (the modulus).<br>
+If possible, <span style="font-family:monospace">fracmod</span> returns a fraction <span style="font-style:italic">a</span>/<span style="font-style:italic">b</span> such that 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> &lt; <span style="font-style:italic">a</span> ≤ </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,   
+0 ≤ <span style="font-style:italic">b</span> &lt; </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">p</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,    
+<span style="font-style:italic">n</span> × <span style="font-style:italic">b</span> =<span style="font-style:italic">a</span> (mod <span style="font-style:italic">p</span> ) </td></tr>
+</table><p>
+In other words <span style="font-style:italic">n</span>=<span style="font-style:italic">a</span>/<span style="font-style:italic">b</span>(mod <span style="font-style:italic">p</span> ).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">fracmod(3,13) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-1/4</span></div><p>
+Indeed : 3*−4=−12=1 (mod 13), hence 3=−1/4%13.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">fracmod(13,121)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-4/9</span></div><p>
+Indeed : 13×−9=−117=4 (mod 121) hence 13=−4/9%13.</p>
 <hr>
 <a href="cascmd_en296.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

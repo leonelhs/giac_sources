@@ -4,126 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Error function : erf</title>
+<title>The integer Euclidean remainder : irem remain smod mods mod %</title>
 </head>
 <body >
 <a href="cascmd_en063.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en065.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec77" class="subsection">2.9.5  Error function : <span style="font-family:monospace">erf</span></h3>
-<p><a id="hevea_default116"></a>
-<span style="font-family:monospace">erf</span> takes as argument a number <span style="font-style:italic">a</span>.<br>
-<span style="font-family:monospace">erf</span> returns the floating point value of the error function at <span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>, 
-where the error function is defined by :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">erf(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >π</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span><sup>2</sup></sup><span style="font-style:italic">dt</span> </td></tr>
-</table><p>
-The normalization is chosen so that: 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">erf(+∞)=1,     erf(−∞)=−1 </td></tr>
-</table><p>
-since :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span><sup>2</sup></sup><span style="font-style:italic">dt</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >π</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table><p>
+<h3 id="sec88" class="subsection">4.6.11  The integer Euclidean remainder : <span style="font-family:monospace">irem remain smod mods mod %</span></h3>
+<p><a id="hevea_default59"></a><a id="hevea_default60"></a>
+<span style="font-family:monospace">irem</span> (or <span style="font-family:monospace">remain</span>) returns the integer remainder <span style="font-style:italic">r</span> from 
+the Euclidean division of two integers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> given as arguments 
+(<span style="font-style:italic">a</span>=<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>+<span style="font-style:italic">r</span> with 0≤ <span style="font-style:italic">r</span>&lt; <span style="font-style:italic">b</span>).<br>
+For Gaussian integers, we choose <span style="font-style:italic">q</span> so that <span style="font-style:italic">b</span>*<span style="font-style:italic">q</span> is as near to <span style="font-style:italic">a</span> as 
+possible and it can be proved that <span style="font-style:italic">r</span> may be chosen so that 
+|<span style="font-style:italic">r</span>|<sup>2</sup> ≤ |<span style="font-style:italic">b</span>|<sup>2</sup>/2.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">erf(1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">irem(148,5) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">0.84270079295</span></div><p>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+<span style="font-family:monospace">irem</span> works with long integers or with Gaussian integers.<br>
+Example :
+</p><div class="center"><span style="font-family:monospace">irem(factorial(148),factorial(45)+2 )</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">111615339728229933018338917803008301992120942047239639312</span></div><p>
+Another example
+</p><div class="center"><span style="font-family:monospace">irem(25+12*i,5+7*i) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-4+i</span></div><p>
+Here <span style="font-style:italic">a</span>−<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>=−4+<span style="font-style:italic">i</span> and |−4+<span style="font-style:italic">i</span>|<sup>2</sup>=17&lt;|5+7*<span style="font-style:italic">i</span>|<sup>2</sup>/2=74/2=37</p><p><span style="font-family:monospace">smod</span> or <span style="font-family:monospace">mods</span><a id="hevea_default61"></a><a id="hevea_default62"></a> is a prefixed
+function and has two integers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> as arguments.<br>
+<span style="font-family:monospace">smod</span> or <span style="font-family:monospace">mods</span> returns the 
+symmetric remainder <span style="font-style:italic">s</span> of the Euclidean division of the 
+arguments <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> (<span style="font-style:italic">a</span>=<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>+<span style="font-style:italic">s</span> with −<span style="font-style:italic">b</span>/2&lt;<span style="font-style:italic">s</span> ≤ <span style="font-style:italic">b</span>/2).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">erf(1/(sqrt(2)))*1/2+0.5</span></div><p>
+</p><div class="center"><span style="font-family:monospace">smod(148,5) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">0.841344746069</span></div><p>
-<span style="font-weight:bold">Remark</span><br>
-The relation between <span style="font-family:monospace">erf</span> and <span style="font-family:monospace">normal_cdf</span> is :<br>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">normal_cdf</span>(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"><span style="font-family:monospace">erf</span>(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">) </td></tr>
-</table><p>
-Indeed, making the change of variable <span style="font-style:italic">t</span>=<span style="font-style:italic">u</span>*√<span style="text-decoration:overline">2</span> in 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">normal_cdf(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2π</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span><sup>2</sup>/2</sup><span style="font-style:italic">dt</span></td></tr>
-</table><p>
-gives :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">normal_cdf(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >π</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">u</span><sup>2</sup></sup><span style="font-style:italic">du</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">erf(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">)</td></tr>
-</table><p>
-Check :<br>
-<span style="font-family:monospace">normal_cdf(1)=0.841344746069</span></p>
+</p><div class="center"><span style="font-family:monospace">-2</span></div><p><span style="font-family:monospace">mod</span> (or <span style="font-family:monospace">%</span>) is an infixed function 
+and has two integers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> 
+as arguments.<br>
+<span style="font-family:monospace">mod</span> (or <span style="font-family:monospace">%</span>) returns <span style="font-style:italic">r</span>% <span style="font-style:italic">b</span> of <span style="font-style:italic">Z</span>/<span style="font-style:italic">bZ</span> where <span style="font-style:italic">r</span> is the remainder of 
+the Euclidean division of the arguments <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.<br>
+Input :<a id="hevea_default63"></a><a id="hevea_default64"></a>
+</p><div class="center"><span style="font-family:monospace">148 mod 5 </span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">148 % 5 </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3 % 5</span></div><p>
+Note that the answer <span style="font-family:monospace">3 % 5</span> is not an integer (3) but
+an element of <span style="font-style:italic">Z</span>/5<span style="font-style:italic">Z</span> (see <a href="index.html#sec%3Amodulaire">4.31</a> to have
+the possible operations in <span style="font-style:italic">Z</span>/5<span style="font-style:italic">Z</span>).</p>
 <hr>
 <a href="cascmd_en063.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

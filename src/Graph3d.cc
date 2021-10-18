@@ -146,7 +146,7 @@ namespace xcas {
   }
 
   // t angle in radians -> r,g,b
-  void arc_en_ciel(double t,int & r,int & g,int &b){
+  void arc_en_ciel2(double t,int & r,int & g,int &b){
     int k=int(t/2/M_PI*126);
     arc_en_ciel(k,r,g,b);
   }
@@ -188,7 +188,7 @@ namespace xcas {
 	} // end realiscmplx>0
 	// set color corresponding to argument
 	int r,g,b;
-	arc_en_ciel(arg,r,g,b);
+	arc_en_ciel2(arg,r,g,b);
 	glColor3f(r/255.,g/255.,b/255.);
 	// glColor4i(r,g,b,int(std::log(d3+1)));
       } // end if (realiscmplx)

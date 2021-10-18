@@ -4,34 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean quotient : quo</title>
+<title>Linearize exponentials : lin</title>
 </head>
 <body >
 <a href="cascmd_en209.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en211.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec258" class="subsection">2.25.2  Euclidean quotient : <span style="font-family:monospace">quo</span></h3>
-<p><a id="hevea_default392"></a>
-<span style="font-family:monospace">quo</span> returns the euclidean quotient <span style="font-style:italic">q</span> of the
-Euclidean division between two polynomials (decreasing power order).
-If the polynomials are represented as 
-expressions, the variable may be specified as a third
-argument.<br>
+<h3 id="sec266" class="subsection">4.23.4  Linearize exponentials : <span style="font-family:monospace">lin</span></h3>
+<p><a id="hevea_default346"></a>
+<span style="font-family:monospace">lin</span> takes as argument an expression with
+exponentials.<br>
+<span style="font-family:monospace">lin</span> rewrites hyperbolic functions as exponentials if required,
+then linearizes this expression (i.e. replace product of
+exponentials by exponential of sums).<br>
+<span style="font-weight:bold">Examples</span>
+</p><ul class="itemize"><li class="li-itemize">
 Input :
-</p><div class="center"><span style="font-family:monospace">quo(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x +1,x)</span></div><p>
+<div class="center"><span style="font-family:monospace">lin(sinh(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">x+2</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">quo(y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*y +1,y,y)</span></div><p>
+<div class="center"><span style="font-family:monospace">1/4*exp(2*x)+1/-2+1/4*exp(-(2*x))</span></div></li><li class="li-itemize">Input :
+<div class="center"><span style="font-family:monospace">lin((exp(x)+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">y+2</span></div><p>
-In list representation, the quotient of <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">x</span>+4 by <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+2 
-one can also input :
-</p><div class="center"><span style="font-family:monospace">quo([1,2,4],[1,1,2])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1]</span></div><p>
-that is to say the polynomial <span style="font-family:monospace">1</span>.</p>
+<div class="center"><span style="font-family:monospace">exp(3*x)+3*exp(2*x)+3*exp(x)+1</span></div>
+</li></ul>
 <hr>
 <a href="cascmd_en209.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

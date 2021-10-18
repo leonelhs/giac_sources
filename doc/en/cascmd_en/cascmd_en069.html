@@ -4,34 +4,52 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The ζ function : Zeta</title>
+<title>Test of primality : is_prime isprime isPrime</title>
 </head>
 <body >
 <a href="cascmd_en068.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en070.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec82" class="subsection">2.9.10  The ζ function : <span style="font-family:monospace">Zeta</span></h3>
-<p><a id="hevea_default121"></a>
-<span style="font-family:monospace">Zeta</span> takes as argument a real <span style="font-style:italic">x</span>.<br>
-<span style="font-family:monospace">Zeta</span> returns for <span style="font-style:italic">x</span>&gt;1 : 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">ζ(<span style="font-style:italic">x</span>)= </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=1</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup><span style="font-style:italic">x</span></sup></td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table><p>
-and for <span style="font-style:italic">x</span>&lt;1 its meromorphic continuation.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">Zeta(2)</span></div><p>
+<h3 id="sec93" class="subsection">4.6.16  Test of primality : <span style="font-family:monospace">is_prime isprime isPrime</span></h3>
+<p><a id="hevea_default69"></a>
+<span style="font-family:monospace">is_prime(n)</span> returns <span style="font-family:monospace">1</span> (true) if <span style="font-family:monospace">n</span> is prime and 
+<span style="font-family:monospace">0</span> (false) if <span style="font-family:monospace">n</span> is not prime.<br>
+<span style="font-family:monospace">isprime</span> returns <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>.<br>
+Use the command <span style="font-family:monospace">pari("isprime",n,1)</span>
+to have a primality certificate (see the documentation
+PARI/GP with the menu <span style="font-family:monospace">Help-&gt;Manuals-&gt;PARI-GP</span>) and 
+<span style="font-family:monospace">pari("isprime",n,2)</span> to use the APRCL test.</p><p>Input :
+</p><div class="center"><span style="font-family:monospace">is_prime(100003)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/6</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">Zeta(4)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">isprime(100003)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4/90</span></div>
+</p><div class="center"><span style="font-family:monospace">true</span></div><p>
+Input : 
+</p><div class="center"><span style="font-family:monospace">is_prime(98569898989987)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">is_prime(14)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">isprime(14)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">false</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">pari("isprime",9856989898997789789,1)</span></div><p>
+This returns the coefficients giving the proof of primality by the 
+<span style="font-style:italic">p</span>−1 Selfridge-Pocklington-Lehmer test :
+</p><div class="center">
+<span style="font-family:monospace">[[2,2,1],[19,2,1],[941,2,1],[1873,2,1],[94907,2,1]]</span>
+</div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">isprime(9856989898997789789)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">true</span></div>
 <hr>
 <a href="cascmd_en068.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

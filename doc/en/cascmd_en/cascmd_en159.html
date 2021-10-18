@@ -4,31 +4,62 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rewrite sin, cos, tan in terms of tan(x/2) : halftan</title>
+<title>Context-dependent functions.</title>
 </head>
 <body >
 <a href="cascmd_en158.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en160.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec194" class="subsection">2.21.16  Rewrite sin, cos, tan in terms of tan(x/2) : <span style="font-family:monospace">halftan</span></h3>
-<p><a id="hevea_default311"></a>
-<span style="font-family:monospace">halftan</span> takes as argument an expression 
-containing trigonometric functions.<br>
-<span style="font-family:monospace">halftan</span> rewrites sin(<span style="font-style:italic">x</span>), cos(<span style="font-style:italic">x</span>) and  tan(<span style="font-style:italic">x</span>) 
-in terms of tan(<span style="font-style:italic">x</span>/2).<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">halftan(sin(2*x)/(1+cos(2*x)))</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">2*tan(2*x/2)/((tan(2*x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/</span></div><div class="center"><span style="font-family:monospace">(1+(1-(tan(2*x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)/((tan(2*x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))</span></div><p>
-Output, after simplification with <span style="font-family:monospace">normal(ans())</span> :
-</p><div class="center"><span style="font-family:monospace">tan(x)</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">halftan(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+cos(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(2*tan(x/2)/((tan(x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+</span></div><div class="center"><span style="font-family:monospace">((1-(tan(x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)/((tan(x/2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
-Output, after simplification with <span style="font-family:monospace">normal(ans())</span> :
-</p><div class="center"><span style="font-family:monospace">1</span></div>
+<h3 id="sec193" class="subsection">4.16.1  Context-dependent functions.</h3>
+<h4 id="sec194" class="subsubsection">Operators <span style="font-family:monospace">+</span> and <span style="font-family:monospace">-</span></h4>
+<p><a id="hevea_default202"></a><a id="hevea_default203"></a><a id="hevea_default204"></a><a id="hevea_default205"></a>
+<span style="font-family:monospace">+</span> (resp. <span style="font-family:monospace">-</span>) is an infixed function and <span style="font-family:monospace">’+’</span> (resp. 
+<span style="font-family:monospace">’-’</span>) is a prefixed function. The result depends on the nature of its 
+arguments.<br>
+Examples with <span style="font-family:monospace">+</span> (all examples except the last one work also 
+with <span style="font-family:monospace">-</span> instead of <span style="font-family:monospace">+</span>) :
+</p><ul class="itemize"><li class="li-itemize">
+input (1,2)+(3,4) or (1,2,3)+4 or 1+2+3+4 or ’+’(1,2,3,4), output 10,
+</li><li class="li-itemize">input 1+i+2+3*i or ’+’(1,i,2,3*i), output 3+4*i,
+</li><li class="li-itemize">input [1,2,3]+[4,1] or [1,2,3]+[4,1,0] or ’+’([1,2,3],[4,1]), output 
+[5,3,3],
+</li><li class="li-itemize">input [1,2]+[3,4] or ’+’([1,2],[3,4]), output [4,6], 
+</li><li class="li-itemize">input [[1,2],[3,4]]+ [[1,2],[3,4]], output [[2,4],[6,8]],
+</li><li class="li-itemize">input [1,2,3]+4 or ’+’([1,2,3],4), output poly1[1,2,7],
+</li><li class="li-itemize">input [1,2,3]+(4,1) or ’+’([1,2,3],4,1), output poly1[1,2,8],
+</li><li class="li-itemize">input "Hel"+"lo" or ’+’("Hel","lo"), output "Hello".
+</li></ul>
+<h4 id="sec195" class="subsubsection">Operator <span style="font-family:monospace">*</span></h4>
+<p><a id="hevea_default206"></a><a id="hevea_default207"></a>
+<span style="font-family:monospace">*</span> is an infixed function and <span style="font-family:monospace">’*’</span> 
+is a prefixed function. The result depends on the nature of its arguments.<br>
+Examples with <span style="font-family:monospace">*</span> :
+</p><ul class="itemize"><li class="li-itemize">
+input (1,2)*(3,4) or (1,2,3)*4 or 1*2*3*4 or ’*’(1,2,3,4), output 24,
+</li><li class="li-itemize">input 1*i*2*3*i or ’*’(1,i,2,3*i), output -6,
+</li><li class="li-itemize">input [10,2,3]*[4,1] or [10,2,3]*[4,1,0] or ’*’([10,2,3],[4,1]), 
+output 42 (scalar product),
+</li><li class="li-itemize">input [1,2]*[3,4] or ’*’([1,2],[3,4]), output 11 (scalar product),
+</li><li class="li-itemize">input [[1,2],[3,4]]* [[1,2],[3,4]], output [[7,10],[15,22]],
+</li><li class="li-itemize">input [1,2,3]*4 or ’*’([1,2,3],4), output [4,8,12],
+</li><li class="li-itemize">input [1,2,3]*(4,2) or ’*’([1,2,3],4,2) or [1,2,3]*8, output [8,16,24],
+</li><li class="li-itemize">input (1,2)+i*(2,3) or 1+2+i*2*3, output 3+6*i.
+</li></ul>
+<h4 id="sec196" class="subsubsection">Operator <span style="font-family:monospace">/</span></h4>
+<p><a id="hevea_default208"></a><a id="hevea_default209"></a>
+<span style="font-family:monospace">/</span> is an infixed function and <span style="font-family:monospace">’/’</span> 
+is a prefixed function. The result depends of the nature of its arguments.<br>
+Examples with <span style="font-family:monospace">/</span> :
+</p><ul class="itemize"><li class="li-itemize">
+input [10,2,3]/[4,1], output invalid dim
+</li><li class="li-itemize">input [1,2]/[3,4] or ’/’([1,2],[3,4]), output [1/3,1/2], 
+</li><li class="li-itemize">input 1/[[1,2],[3,4]] or ’/’(1,[[1,2],[3,4]], output 
+[[-2,1],[3/2,(-1)/2]],
+</li><li class="li-itemize">input [[1,2],[3,4]]*1/ [[1,2],[3,4]], output [[1,0],[0,1]],
+</li><li class="li-itemize">input [[1,2],[3,4]]/ [[1,2],[3,4]], output [[1,1],[1,1]] (division term 
+by term),
+</li></ul>
 <hr>
 <a href="cascmd_en158.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

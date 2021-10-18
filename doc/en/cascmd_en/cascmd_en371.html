@@ -4,48 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a matrix with a list of matrices : blockmatrix</title>
+<title>Norms of a vector : maxnorm l1norm l2norm
+norm</title>
 </head>
 <body >
 <a href="cascmd_en370.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en372.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec440" class="subsection">2.42.21  Make a matrix with a list of matrices : <span style="font-family:monospace">blockmatrix</span></h3>
-<p><a id="hevea_default627"></a>
-<span style="font-family:monospace">blockmatrix</span> takes as arguments two integers <span style="font-style:italic">n</span>,<span style="font-style:italic">m</span> and a 
-list of size <span style="font-style:italic">n</span>*<span style="font-style:italic">m</span> of matrices of the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span> 
-(or more generally such that the <span style="font-style:italic">m</span> first matrices 
-have the same number of rows and <span style="font-style:italic">c</span> columns, the 
-<span style="font-style:italic">m</span> next rows have the same number of rows and <span style="font-style:italic">c</span> columns, and so on ...).
-In both cases, we have <span style="font-style:italic">n</span> blocks of <span style="font-style:italic">c</span> columns.<br>
-<span style="font-family:monospace">blockmatrix</span> returns a matrix having <span style="font-style:italic">c</span> columns 
-by putting these <span style="font-style:italic">n</span> blocks one under another (vertical gluing). 
-If the matrix arguments
-have the same dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span>, the answer is a matrix of
-dimension <span style="font-style:italic">p</span>*<span style="font-style:italic">n</span> × <span style="font-style:italic">q</span>*<span style="font-style:italic">m</span>.<br>
+<h3 id="sec450" class="subsection">4.38.1  Norms of a vector : <span style="font-family:monospace">maxnorm l1norm l2norm
+norm</span></h3>
+<p><a id="hevea_default558"></a>
+The instructions to compute the different norm of a vector are :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">maxnorm</span> returns the <span style="font-style:italic">l</span><sup>∞</sup> norm of a
+vector, 
+defined as the maximum of the absolute values of its 
+coordinates<a id="hevea_default559"></a><a id="sec:maxnormv"></a>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[idn(2),idn(2),idn(2), idn(2),idn(2),idn(2)])</span></div><p>
+<div class="center"><span style="font-family:monospace">maxnorm([3,-4,2])</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,1,0,1,0],[0,1,0,1,0,1], [1,0,1,0,1,0],[0,1,0,1,0,1]]</span></div><p>
+<div class="center"><span style="font-family:monospace">4</span></div>
+Indeed : <span style="font-family:monospace">x=3, y=-4, z=2</span> and <span style="font-family:monospace">4=max(|x|,|y|,|z|)</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">l1norm</span> returns the <span style="font-family:monospace"><span style="font-style:italic">l</span></span><sup><span style="font-family:monospace">1</span></sup> norm of a 
+vector defined as the sum of the absolute values of its 
+coordinates<a id="hevea_default560"></a><a id="sec:l1normv"></a>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(2),idn(2), idn(2),idn(2),idn(2),idn(2)])</span></div><p>
+<div class="center"><span style="font-family:monospace">l1norm([3,-4,2])</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,1,0],[0,1,0,1], [1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]</span></div><p>
+<div class="center"><span style="font-family:monospace">9</span></div>
+Indeed : <span style="font-family:monospace">x=3, y=-4, z=2</span> and <span style="font-family:monospace">9=|x|+|y|+|z|</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">norm</span> or <span style="font-family:monospace">l2norm</span> returns the 
+<span style="font-style:italic">l</span><sup>2</sup> norm of a vector defined as the square root 
+of the sum of the squares of its 
+coordinates<a id="hevea_default561"></a><a id="sec:l2normv"></a>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,2,[idn(2),newMat(2,3), newMat(3,2),idn(3)])</span></div><p>
+<div class="center"><span style="font-family:monospace">norm([3,-4,2])</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0], [0,0,0,1,0],[0,0,0,0,1]] </span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(1),newMat(1,4), newMat(2,3),idn(2),newMat(1,2),[[1,1,1]]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,0,0,1,0],[0,0,0,0,1],[0,0,1,1,1]]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">A:=[[1,1],[1,1]];B:=[[1],[1]]</span></div><p>
-then :
-</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[2*A,3*A,4*A,5*B,newMat(2,4),6*B])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[2,2,3,3,4,4],[2,2,3,3,4,4], [5,0,0,0,0,6],[5,0,0,0,0,6]]</span></div>
+<div class="center"><span style="font-family:monospace">sqrt(29)</span></div>
+Indeed : <span style="font-family:monospace">x=3, y=-4, z=2</span> and  29=|<span style="font-style:italic">x</span>|<sup>2</sup>+|<span style="font-style:italic">y</span>|<sup>2</sup>+|<span style="font-style:italic">z</span>|<sup>2</sup>.
+</li></ul>
 <hr>
 <a href="cascmd_en370.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

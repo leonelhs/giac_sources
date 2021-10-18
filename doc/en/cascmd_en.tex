@@ -2,13 +2,14 @@
 %\textwidth 11,8 cm
 %\textheight 17 cm
 \textheight 23 cm
-%\usepackage{graphicx}
+\usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{stmaryrd}
 \usepackage{makeidx}
 \usepackage{times}
+\usepackage{hevea}
 %\usepackage{mathptmx}
 %Uncomment next line for pdflatex and use includegraphics with eps file
 % for latex2html don't use the option [width=\textwidth]
@@ -29,6 +30,16 @@
 \usepackage[T1]{fontenc}
 %\usepackage[francais]{babel}
 \usepackage{latexsym}
+
+% Inline commands; use \texttt
+% Displayed commands and output, use this
+\newenvironment{giaccmd}
+{\begin{quote}\ttfamily}
+{\end{quote}}
+
+% For graphics
+\newcommand{\includeimage}[1]
+{\includegraphics[width=0.75\textwidth]{#1}} 
 
 \newcommand{\R}{{\mathbb{R}}}
 \newcommand{\C}{{\mathbb{C}}}
@@ -72,6 +83,1459 @@ Optimization section written by Luka Marohnić}
 
 \chapter{Index}
 \printindex
+
+\chapter{Introduction}
+
+\section{Notations used in this manual}
+
+In this manual, the information that you enter will be typeset in
+typewriter font.  User input typically takes one of three forms:
+\begin{itemize}
+\item Commands that you enter on the command line.\\
+For example, to compute the sin of $\pi/4$, you can type
+\begin{giaccmd}
+  sin(pi/4)
+\end{giaccmd}
+
+\item Commands requiring a prefix key.\\
+These will be indicated by separating
+the prefix key and the standard key with a plus \texttt{+}.  For
+example, to exit an \texttt{Xcas} session, you can type
+\begin{giaccmd}
+  Ctrl+Q
+\end{giaccmd}
+
+\item Menu commands.\\
+When denoting menu items, submenus will be connected using
+$\blacktriangleright$.  For example, from within \texttt{Xcas}, you
+can choose the \texttt{File} menu, then choose the \texttt{Open}
+submenu, and then choose the \texttt{File} item.  This will be
+indicated by
+\begin{giaccmd}
+  File $\blacktriangleright$ Open $\blacktriangleright$ File
+\end{giaccmd}
+\end{itemize}
+
+\section{Interfaces for the \texttt{giac} library}
+
+The \texttt{giac} library is a C++ mathematics library.  
+It comes with two interfaces for users to use it directly; a graphical
+interface and a command-line interface.
+
+The graphical interface is called \texttt{Xcas}, and is the most
+full-featured interface.  As well being able to do symbolic and numeric
+calculations, it has its own programming language, it can draw graphs,
+it has a built-in spreadsheet, it can do dynamic geometry
+and turtle graphics.
+
+The command-line interface can be run inside a terminal.  It can also
+do symbolic and numeric calculations and works with the programming
+language.  In a graphical environment, the command-line interface can
+also be used to draw graphs.
+
+There is also a web version, which can be run through a browser,
+either over the internet or from local files.  Other programs (for
+example, \texttt{TeXmacs}) have interfaces for the command-line
+version.
+
+\subsection{The \texttt{Xcas} interface}
+
+To run \texttt{Xcas} in a graphical environment, it depends on which
+operating system you are using.
+\begin{itemize}
+  \item
+If you are using Unix, you can usually find
+an entry for the program in a menu provided by the environment.
+Otherwise, you can start it from a terminal by typing
+\begin{giaccmd}
+  xcas \&
+\end{giaccmd}
+If for some reason \texttt{Xcas} becomes unresponsive, you can open a
+terminal and type
+\begin{giaccmd}
+  killall xcas
+\end{giaccmd}
+That will kill any running \texttt{Xcas} processes.  When you restart
+\texttt{Xcas}, you will be asked if you want to resume where you left
+off using an automatic backup file.
+\item
+If you are running Windows, you can use the explorer to go to the
+directory where \texttt{Xcas} is installed.  In that directory will be
+a file called \texttt{xcas.bat}.  Clicking on that file will start
+\texttt{Xcas}.
+\item
+If you are running Mac OS, you can use the Finder to go to the
+\texttt{xcas\_image.dmg} file and double-click it.  Then double-click
+the \texttt{Xcas} disk icon.  Finally, to launch \texttt{Xcas},
+double-click the \texttt{Xcas} program.
+\end{itemize}
+When you start \texttt{Xcas}, a
+window will pop up with menu entries across the top, a bar
+indicating information about the current \texttt{Xcas} configuration,
+and an entry line you can use to enter commands.  This interface will
+be described in more detail later, and you can get help
+from within \texttt{Xcas} with the menu item
+\begin{center}
+\texttt{Help$\blacktriangleright$Interface}
+\end{center}
+
+\subsection{The command-line interface}
+
+In Unix and MacOS you can run \texttt{giac} from a terminal with
+the command \texttt{icas} (the command \texttt{giac} also works).
+There are two ways to use the command-line interface.
+
+If you just want to evaluate one expression, you can give
+\texttt{icas} the expression (in quotes) as a command line argument.
+For example, to factor the polynomial $x^2-1$, you can type
+\begin{giaccmd}
+  icas 'factor(x\^{}2-1)'
+\end{giaccmd}
+at a command prompt.  The result will be
+\begin{giaccmd}
+  (x-1)*(x+1)
+\end{giaccmd}
+and you will be returned to the operating system command line.
+
+If you want to evaluate several commands, you can enter an interactive
+\texttt{giac} session by entering the command
+\texttt{icas} (or \texttt{giac}) by itself at a command prompt.  You
+will then be given a prompt specifically for \texttt{giac} commands,
+which will look like
+\begin{giaccmd}
+  0>{}>
+\end{giaccmd}
+You can enter a giac command at this prompt and get the result.
+\begin{giaccmd}
+0>{}> factor(x\^{}2-1)\\
+(x-1)*(x+1)\\
+1>{}>
+\end{giaccmd}
+After the result, you will be given another prompt for \texttt{giac}
+commands.  You can exit this interactive session by typing
+\texttt{Ctrl+D}.
+
+You can also run \texttt{icas} in batch mode; that is, 
+you can have \texttt{icas} run \texttt{giac} commands stored in a
+file.  This can be done in Windows as well as Unix and Mac OS.
+To do this, simply enter 
+\begin{giaccmd}
+  icas \textit{filename}
+\end{giaccmd}
+at a command prompt, where \textit{filename} is the name of the file
+containing the \texttt{giac} commands.
+
+\subsection{The Firefox interface}
+
+You can run \texttt{giac} without installing it by using a
+javascript-enabled web browser.  Using Firefox for this is highly
+recommended; Firefox will run \texttt{giac} several times faster than
+Chrome, for example, and Firefox also supports MathML natively.
+
+%This version won't have as much functionality as \texttt{Xcas}, but it
+%doesn't require any software beyond a web browser to be installed.
+
+To run \texttt{giac} through Firefox, you can open the url
+\url{https://www-fourier.ujf-grenoble.fr/~parisse/giac/xcasen.html}.
+At the top of this page is a button which will open a quick tutorial;
+the tutorial will also tell you how to install the necessary files to
+run \texttt{giac} through Firefox without being connected to the
+internet.
+
+\subsection{The TeXmacs interface}
+
+TeXmacs (\url{http://www.texmacs.org}) is a sophisticated word
+processor with special mathematical features.  As well as being
+designed to nicely typeset mathematics, it can be used as a frontend
+for various mathematics programs, such as \texttt{giac}.
+
+Once you've started TeXmacs, you can interactively run \texttt{giac}
+within TeXmacs with the menu command
+\texttt{Insert$\blacktriangleright$Session$\blacktriangleright$Giac}.
+Once started, you can enter \texttt{giac} commands as you would in the
+command-line interface.  The TeXmacs interface will also have a menu
+specifically for \texttt{giac} commands.
+
+Within TeXmacs, you can combine \texttt{giac} commands and output with
+ordinary text.  To enter normal text within a \texttt{giac} session,
+use the menu item \texttt{Focus$\blacktriangleright$Insert Text Field
+Above}.  You can reenter a \texttt{giac} entry line by clicking on it
+with a mouse.
+
+% \subsection{The Emacs interface}
+
+% You can run a \texttt{giac} session using \texttt{mupacs}
+% (\url{http://mupacs.sourceforge.net}), an Emacs mode for MuPAD, a
+% computer algebra system no longer independently available.  Since this
+% mode was created for MuPAD, you 
+
+\chapter{The \texttt{Xcas} interface}
+
+\section{The entry levels}
+
+The \texttt{Xcas} interface can run several independent calculation
+sessions, each session will be contained in a separate tab.  Before
+you understand the \texttt{Xcas} interface, it would help to be
+familiar with the components of a session.
+
+Each session can have any number of input levels.  Each input level
+will have a number to the left of it; the number is used to identify
+the input level.  Each level can have one of the following:
+\begin{itemize}
+  \item A command line.\\
+  This is the default; you can open a new
+  command line with \texttt{Alt+N}.\\
+  You can enter a \texttt{giac} command (or a series of commands
+  separated by semicolons) on a command line and send it to be
+  evaluated by hitting enter.  You can also scroll through the command
+  history with \texttt{Shift+Up} and \texttt{Shift+Down}.
+  
+  If the output is a number or an expression, then it will appear in
+  blue text in a small area below the input region; this area is an
+  expression editor.  There will be a scrollbar and a small \texttt{M}
+  to the right of this area; the \texttt{M} is a menu which gives you
+  various options.
+
+  If the output is a graphic, then it will appear in a graphing area
+  below the input region.  To the right of the graphic will be a
+  control panel allowing you to manipulate the graphic.
+
+  \item  An expression editor.\\  
+  You can open an expression editor with
+  \texttt{Alt+E}.
+  
+  \item A two-dimensional geometry screen.\\
+  You can open up such a
+  screen with \texttt{Alt+G}.
+  This level will have a screen, as well as a control panel, menus and a
+  command line to control the screen.
+  
+  \item A three-dimensional geometry screen.\\
+  You can open up such a
+  screen with \texttt{Alt+H}.
+  This level will have a screen, as well as a control panel, menus and
+  a command line to control the screen.
+  
+  \item A turtle graphics screen.\\
+  You can open up such a screen with
+  \texttt{Alt+D}.
+  This level will have a screen, as well as a program editor and
+  command line.
+  
+  \item A spreadsheet.\\
+  You can open up a spreadsheet with \texttt{Alt+T}.
+  A spreadsheet will be able to open a graphic screen.
+  
+  \item A program editor.\\
+  You can open up a program editor with
+  \texttt{Alt+P}.
+  
+  \item A comment line.  You can open up a comment line with
+  \texttt{Alt+C}.
+\end{itemize}
+Using commands discussed later, different types of levels can be
+combined to form a single hybrid level.  Levels can also be moved up
+or down in a session, or even moved to a different session.
+
+The level containing the cursor is the \emph{current level}.  The
+current level can be evaluated or re-evaluated by typing enter.
+
+A level can be selected (for later operations) by clicking on the
+number in the white box to the left of the level.  Once selected, the
+box containing the number will turn black.  You can select a range of
+levels by clicking on the number for the beginning level, and then
+holding the shift key while you click on the number for the ending level.
+
+\section{The starting window}
+
+When you first start \texttt{Xcas}, you will be given a largely blank window.
+\begin{center}
+  \includeimage{xcas-open.png}
+\end{center}
+The first row will be the main menus; you can 
+save and load \texttt{Xcas} sessions, configure \texttt{Xcas} and its
+interface and run various commands with entries from these menus.
+
+The second row will be tabs; one tab for each session that you are
+running in \texttt{Xcas}.  The tabs will contain the name of the
+sessions, or \texttt{Unnamed} if a session has no name.  The first
+time you start \texttt{Xcas}, there will be only one unnamed session.
+
+The third row will contain various buttons.
+\begin{itemize}
+  \item The first button, \framebox{\tt ?}, will open the help index.
+  (The same as the \texttt{Help$\blacktriangleright$Index} menu entry.)
+  If there is a command on the command line, the help index 
+  (see \ahrefloc{helpindex}{help index}
+  \begin{latexonly},p.\pageref{sssec:helpind}\end{latexonly})
+  will open at this command.
+  
+  \item The second button \framebox{\tt Save}, will save the session
+  in a file.  The first time you click on it, you will be prompted for
+  a file name ending in \texttt{.xws} to save the session in.  The
+  button will be pink if the session is not saved or if it has changed
+  since the last change, it will be green once the session is saved.
+  The name in the title will be the name of the file used to save the
+  session.
+
+\item The third button, which in the picture above is\\
+  \framebox{\tt Config : exact real RAD 12 xcas 6.2148M}, is a status
+  line indicating the current \texttt{Xcas} configuration. 
+  (See section \ref{sec:config}.)
+  If the session is unsaved, it will begin with \texttt{Config :}; if the
+  session is saved in a file \textit{filename.xws}, this button will
+  begin with \texttt{\texttt{Config }\textit{filename.xws}\texttt{ :}}.
+  Other information on this status line:
+  \begin{itemize}
+    \item \texttt{exact} or \texttt{approx}.  
+    (See subsection \ref{ssec:approx}.)
+    This tells you whether
+    \texttt{Xcas} will give you exact values, such as
+    $\sqrt{2}$, when possible or to give you decimal approximations.
+
+    \item \texttt{real}, \texttt{cplx} or \texttt{CPLX}.  
+    (See subsections \ref{ssec:complex} and \ref{ssec:cvars}.)
+    When this shows \texttt{real}, then (for example) \texttt{Xcas} will by
+    default only find real solutions of equations.  When this shows
+    \texttt{cplx}, the \texttt{Xcas} will find complex solutions of
+    equations.  When this shows \texttt{CPLX}, then \texttt{Xcas} will
+    regard variables as complex; for example, it won't simplify
+    \texttt{re(z)} (the real part of the variable $z$) to \texttt{z}.
+
+    \item \texttt{RAD} or \texttt{DEG}.  
+    (See subsection \ref{ssec:angles}.)
+    This tells you whether
+    angles, as in trigonometric arguments, are measured in radians
+    or degrees.
+
+    \item An integer.  (See subsection \ref{ssec:sigdig}, indicating
+    how many significant digits will be used in floating point calculations.
+
+    \item \texttt{xcas}, \texttt{maple}, \texttt{mupad} or \texttt{ti89}.
+    (See subsection \ref{ssec:lang}.) This tells you what syntax
+    \texttt{Xcas} will use.  \texttt{Xcas} can be set to emulate the
+    languages of Maple, MuPAD or the TI89 series of calculators.
+
+    \item The last item indicates how much memory \texttt{Xcas} is using.
+  \end{itemize}
+  Clicking on this status line button will open a window where
+  you can configure the settings shown on this line as well as some
+  other settings; you can do the same with the menu item
+  \texttt{Cfg$\blacktriangleright$CAS Configuration}.
+  (See subsection \ref{ssec:confcomp}.)      
+
+  \item The fourth button, \framebox{\tt STOP} (in red), can be used
+  to halt a computation which is running on too long.
+
+  \item The fifth button, \framebox{\tt Kbd}, can be used to toggle an
+  on-screen scientific keyboard at the bottom of the window.
+  \begin{center}
+    \includeimage{xcas-scientific-keyboard.png}
+  \end{center}
+  Along the right hand side of the keyboard are some keys that can
+  be used to change the keyboard.  
+  \begin{itemize}
+    \item The \texttt{X} key will hide the
+    keyboard, just like pressing the \framebox{\tt Kbd} button again.
+
+    \item The \texttt{cmds} key will toggle a menu bar at the bottom of the
+    screen which can be used as an alternate menu or persistent
+    submenu.  This bar will contain buttons, \texttt{home},
+    \texttt{<{}<}, some menu titles, \texttt{>{}>}, \texttt{var},
+    \texttt{cust} and \texttt{X}.
+
+    The \texttt{<{}<} and \texttt{>{}>} buttons will scroll through menu
+    items.  Clicking on one of the menu buttons will perform the appropriate
+    action or replace the menu items by submenu items.  When submenu
+    items appear, there will also be a \texttt{BACK} button to return to
+    the previous menu.  Clicking on the \texttt{home} button returns the
+    menu buttons to the main menu.  
+  
+    After the menu buttons is a \texttt{var} button.  This will replace
+    the menu buttons by buttons representing the variables that you have
+    defined.  After that is a \texttt{cust} button, which will display
+    commands that you store in a list variable \texttt{CST}.
+  
+    The last button, \texttt{X}, will close the menu bar.
+
+    \item The \texttt{msg} key will bring up a message window at the bottom
+    of the window which will give you helpful messages; for example, if
+    you save a graphic, it will tell you the name of the file it is
+    saved in and how to include it in a \LaTeX{} file.  
+
+    \item The \texttt{abc} key will toggle the keyboard between the
+    scientific keyboard and an alphabetic keyboard.
+  \end{itemize}
+
+  \item The fifth button, \framebox{\tt X}, will close the current
+  session.
+\end{itemize}
+
+\section{Getting help}
+
+\texttt{Xcas} is an extensive program, but you can get help in several
+different ways.
+
+\subsubsection{Tooltips}
+
+If you hover the mouse cursor over certain parts of the \texttt{Xcas}
+window, a temporary window will appear with information about the
+part.  For example, if you move the mouse cursor over the status line,
+you will get a message saying \texttt{Current CAS status.  Click to
+modify.}
+
+If you type a function name into the \texttt{Xcas} command line, a
+similar temporary window will appear with information about the
+function. 
+
+\subsubsection{HTML help}
+
+If you hit the \texttt{F12} button, you will be given a window in
+which you can use to search the html version of the manual.  If you
+type a string in the search area, you will be given a list of help
+topics that contain the string.  If you choose a topic and click
+\texttt{View}, your web browser will show the appropriate page of 
+the manual.
+
+You can also get HTML help with the menu entry
+\texttt{Help$\blacktriangleright$Find word in HTML help}.
+
+\subsubsection{The help index}
+\label{sssec:helpind}\aname{helpindex}{}
+
+
+If you click on the \framebox{?} button on the status line you will
+get the help index.
+
+The help index is a list of the \texttt{giac} function and variable
+names.  Along with the list, the help index window has an area listing
+words related to any chosen word and words synonymous to the chosen word.
+
+You can scroll through the help index items and click on the word that
+you want.  There is also a line in the help index window that you can
+use to search the index; you can enter some text and be taken to the
+part of the index with words beginning with that text.  The \texttt{?}
+button next to this search line will open the HTML help window.
+
+Below the search line, there is an area which will have a description
+of the chosen command, and below that is an area which will have
+examples of the command being used.  If the command is a function,
+then between the description and examples will be some boxes in which
+you can enter arguments for the command.  Filling in these boxes and
+hitting enter will put the function on the command line.
+
+At the top of the help index window is a \texttt{Details} button.  If
+you click on that, a web page will open up in your browser with the
+relevant portion of the manual. If you click on the
+\framebox{\texttt{?}} next to the search line, you will be taken to
+the HTML help window.
+
+Besides clicking on the \framebox{\texttt{?}} on the status line,
+there are other ways to get to the help index.
+\begin{itemize}
+  \item
+  You can get to the help index by using the menu item 
+  \texttt{Help$\blacktriangleright$Index}.  
+  
+  \item 
+  You can press the tab button while at the \texttt{Xcas} 
+  command line to get to the help index.  If you have
+  entered part of a command name, you will be at the part of the index
+  with words beginning with the text that you entered.
+  
+  \item
+  If you select a command from the menu, then as well as putting the
+  command on the command line, you will be taken to the help index 
+  window with the command chosen.
+\end{itemize}
+
+\subsubsection{\texttt{findhelp}}
+
+You can get help from \texttt{Xcas} by using the 
+\texttt{findhelp} function.  If you enter
+\texttt{findhelp(}\textit{function}\texttt{)} (or equivalently
+\texttt{?}\textit{function}) at the command input, where
+\textit{function} is the name of a \texttt{giac} function, then some
+notes on \texttt{function} will appear in the answer portion and the
+appropriate page of the manual will appear in your web browser.
+
+\section{The menus}
+
+\subsection{The \texttt{File} menu}
+
+The \texttt{File} menu contains commands that are used to save
+sessions and parts of sessions and load previously saved sessions.
+This menu contains the following entries: 
+\begin{itemize}
+  \item
+  \texttt{New Session}\\
+  This will create and open a new session.
+  This session will be in a new tab labeled \texttt{Unnamed} until you save it
+  (using the menu item \texttt{File$\blacktriangleright$Save} or the
+  keystroke \texttt{Alt+S}).
+
+  \item
+  \texttt{Open}\\
+  This will open a previously saved session.
+  There will be a submenu with a list of saved session files in the
+  primary directory that you can open, as well as a \texttt{File} item
+  which will open a directory browser you can use to find a session
+  file.  This directory browser can also be opened with \texttt{Alt-O}.
+  
+  \item
+  \texttt{Import}\\
+  This will allow you to open a session that
+  was created with the Maple CAS, a TI89 calculator or a Voyage200
+  calculator.  These sessions can then be executed with the
+  \texttt{Edit$\blacktriangleright$Execute Session} menu entry, but it
+  may be better to execute the commands one at a time to see if any
+  modifications need to be done.
+
+  \item 
+  \texttt{Clone}\\
+  This will create a copy of the current session in a Firefox
+  interface; either using the server at
+  \url{http://www-fourier.ujf-grenoble.fr/~parisse/xcasen.html} 
+  (\texttt{Online}) or a local copy (\texttt{Offline}).
+
+  \item
+  \texttt{Insert}\\
+  This allows you to insert a previously saved session, a link to a
+  Firefox session, or a previously saved figure, spreadsheet or program.
+
+  \item
+  \texttt{Save} (\texttt{Alt+S})\\
+  This will save the current session.
+
+  \item
+  \texttt{Save as}\\
+  This will save the current session under a
+  different name.
+
+  \item
+  \texttt{Save all}\\
+  This will save all of the sessions.
+
+  \item
+  \texttt{Export as}\\
+  This will allow you to save the current session in different
+  formats; either standard \texttt{Xcas} format, Maple format, MuPAD
+  format or TI89 format.
+
+  \item
+  \texttt{Kill}\\
+  This will kill the current session.
+
+  \item
+  \texttt{Print}\\
+  This will allow you to save the session in various ways.
+  \texttt{preview} will save an image of the current session in a file
+  that you name.  \texttt{print} will send an image of the current
+  session to the printer.  \texttt{preview selected levels} will save the images of
+  the commands and outputs of the current session, each in a separate
+  file.
+
+  \item
+  \texttt{LaTeX}\\
+  This will render the session in \LaTeX{} and give you the
+  result in various ways.  \texttt{latex preview} will display a
+  compiled \LaTeX{} version of the current session.  \texttt{latex
+  print} will send a copy of the \LaTeX{}ed session to a printer.
+  \texttt{latex print selection} will save a copy.
+
+  \item  
+  \texttt{Screen capture}\\
+  This will create a screenshot that will be saved in various formats.
+  
+  \item \texttt{Quit and update Xcas}\\
+  This will quit \texttt{Xcas} after checking for a newer version.
+  
+  \item \texttt{Quit} (\texttt{Ctrl+Q})\\
+  This will quit \texttt{Xcas}.
+\end{itemize}  
+
+\subsection{The \texttt{Edit} menu}
+
+The \texttt{Edit} menu contains commands that are used to execute and
+undo parts of the current session.  This menu contains the following
+entries:
+\begin{itemize}
+  \item \texttt{Execute worksheet} (\texttt{Ctrl-F9})\\
+  This will recalculate each level in the session.
+
+  \item \texttt{Execute worksheet with pauses}\\
+  This will recalculate each level in the session, pausing between
+  calculations. 
+
+  \item \texttt{Execute below}\\
+  This will recalculate the current level and each level below it.
+
+  \item \texttt{Remove answers below}\\
+  This will remove the answers to the current level and the levels
+  below it.
+
+  \item \texttt{Undo} (\texttt{Ctrl+Z})\\
+  This will undo the latest edit done to the levels, including the
+  deletion of levels.  It can be repeated to undo more than one edit.
+
+  \item \texttt{Redo} (\texttt{Ctrl+Y})\\
+  This will redo the undone editing.
+
+  \item \texttt{Paste}\\
+  This will paste the contents of the system clipboard to the cursor
+  position.
+
+  \item \texttt{Del selected levels}\\
+  This will delete any entry levels that you have selected.
+
+  \item \texttt{selection -> LaTeX} (\texttt{Ctrl+T})\\
+  If you select a level, part of a level, or answer with the mouse
+  (click and drag), this menu item will put a \LaTeX{} version of the
+  selection on the system clipboard.
+
+  \item \texttt{New entry} (\texttt{Alt+N})\\
+  This will insert a new entry level above the current one.
+
+  \item \texttt{New parameter} (\texttt{Ctrl+P})\\
+  This will bring up a window in which you can enter a name and
+  conditions for a new parameter.
+
+  \item \texttt{Insert newline}.
+  This will insert a newline below the cursor.  Note that simply
+  typing return will cause the current entry to be evaluated rather
+  than inserting a newline.
+
+  \item \texttt{Merge selected levels}.
+  This will merge the selected levels into a single level.
+\end{itemize}
+
+\subsection{The \texttt{Cfg} menu}
+
+The \texttt{Cfg} menu contains commands that are used to set the
+behaviour of \texttt{Xcas}.  This menu contains the following entries:
+\begin{itemize}
+  \item \texttt{Cas configuration}\\
+  This will open a window that you can use to configure how
+  \texttt{Xcas} performs calculations.  This is the same window you
+  get when you click on the status line.
+  
+  \item \texttt{Graph configuration}\\
+  This will open a window that you can use to configure the default
+  settings for a graph.  This includes such things as the initial
+  ranges of the variables.  Each graph will also have a \texttt{cfg}
+  button  to configure the settings on a per graph basis.
+  
+  \item \texttt{General configuration}\\
+  This will open a window that you can use to configure various 
+  non-computational aspects of \texttt{Xcas}, such as the fonts, the
+  default paper size, and the like.
+  
+  \item \texttt{Mode (syntax)}\\
+  This will allow you to change the default syntax.  To begin with, it
+  is \texttt{Xcas} syntax, but you can change it to Maple syntax,
+  MuPAD syntax or TI89 syntax.
+  
+  \item \texttt{Show}\\
+  This will allow you to control parts of \texttt{Xcas} to show.
+  \begin{itemize}
+    \item   \texttt{DispG}\\
+    This will show the graphics display screen.
+    This screen will show all graphical commands from the session
+    together.  
+
+    \item \texttt{keyboard}\\
+    This will show the on-screen keyboard; the same as clicking on the
+    \texttt{Kbd} button on the status line.
+
+    \item \texttt{bandeau}\\
+    This will show the menu buttons at the bottom of the window;
+    the same as clicking on \texttt{cmds} on the on-screen keyboard.
+    
+    \item \texttt{msg}\\
+    This will show the messages window; the same as clicking on
+    \texttt{msg} on the on-screen keyboard.
+  \end{itemize}
+
+  \item \texttt{Hide}\\
+  This will hide the same items that you can show with \texttt{Show}.
+  
+  \item \texttt{Index language}\\
+  This will let you choose a language in which to display the help index.
+  
+  \item \texttt{Colors}\\
+  This will let you choose colors for various parts of the display.
+  
+  \item \texttt{Session font}\\
+  This will let you choose a font for the sessions.
+  
+  \item \texttt{All fonts}\\
+  This will let you choose a font for the session, the main menu and
+  the keyboard.
+  
+  \item \texttt{browser}\\
+  This will let you choose a browser that \texttt{Xcas} will use when
+  needed.  If this is blank, then \texttt{Xcas} will use its own
+  internal browser.
+  
+  \item \texttt{Save configuration}\\
+  This will save the configurations that you chose with the
+  \texttt{Cfg} menu or by clicking on the status line.
+\end{itemize}
+
+\subsection{The \texttt{Help} menu}
+
+The \texttt{Help} menu contains commands that let you get information
+about \texttt{Xcas} from various sources.
+This menu contains the following entries: 
+\begin{itemize}
+  \item \texttt{Index}\\
+  This will bring up the help index.
+  (See \ahrefloc{helpindex}{help index}
+  \begin{latexonly}, p.\pageref{sssec:helpind}\end{latexonly})
+
+  \item \texttt{Find word in HTML help} (\texttt{F12})\\
+  This will bring up a page which will help you search for keywords in
+  the html documentation that came with \texttt{Xcas}.  The help will
+  be displayed in your browser.
+  
+  \item \texttt{Interface}\\
+  This will bring up a tutorial for the \texttt{Xcas} interface.  The
+  tutorial will be displayed in your browser.
+  
+  \item \texttt{Reference card, fiches}\\
+  This will bring up (in your browser) a pdf reference card for
+  \texttt{Xcas}.
+  
+  \item \texttt{Manuals}\\
+  This will let you choose from a variety of manuals for \textsc{Xcas}.
+  They will appear in your browser unless otherwise noted.
+  \begin{itemize}
+  \item \texttt{CAS reference}\\
+  This will bring up a manual for \texttt{Xcas}.
+  
+  \item \texttt{Algorithmes (HTML)}\\
+  This will bring up a manual for the algorithms used by \texttt{Xcas}.
+  
+  \item \texttt{Algorithmes (PDF)}\\
+  This will bring up a pdf version of the manual for the algorithms
+  used by \texttt{Xcas}. 
+
+  \item \texttt{Geometry}\\
+  This will bring up a manual for two-dimensional geometry in
+  \texttt{Xcas}.
+
+  \item \texttt{Programmation}\\
+  This will bring up a manual for programming in \texttt{Xcas}.
+  
+  \item \texttt{Simulation}\\
+  This will bring up a manual for statistics and using the
+  \texttt{Xcas} spreadsheet.
+  
+  \item \texttt{Turtle}\\
+  This will bring up a manual for using the \texttt{Turtle} drawing
+  screen in \texttt{Xcas}.
+  
+  \item \texttt{Exercices}\\
+  This will bring up a page of exercises that you can do with
+  \texttt{Xcas}.
+  
+  \item \texttt{Amusement}\\
+  This will bring up a page of mathematical amusements that you can
+  work through with \texttt{Xcas}.
+  
+  \item \texttt{PARI-GP}\\
+  This will bring up documentation for the GP/PARI functions.
+  \end{itemize}
+
+  \item \texttt{Internet}\\
+  The \texttt{Internet} menu contains commands that take you to
+  various web pages related to \texttt{Xcas}.  Among them are the
+  following entries:
+  \begin{itemize}
+    \item \texttt{Forum}\\
+    This will take you to the \texttt{Xcas} forum.
+    
+    % \item \texttt{Aide-memoire lycee}.
+    % This will take you to a paper discussing \texttt{Xcas} and high
+    % school.
+    
+    % \item \texttt{Documents pedagogiques lycee}.
+    % This will take you to a page on the \texttt{Xcas} website with a
+    % list of useful links.
+    
+    % \item \texttt{Documents algorithmique}.
+    % This will take you to a page on the \texttt{Xcas} website with a
+    % list of links.
+    
+    % \item \texttt{Site Lycee de G. Connan}.
+    % This will take you to a page about a free book written by
+    % Guillaume Connan teaching algorithms to high school students.
+    
+    % \item \texttt{Site Lycee de L. Briel}.
+    % This will take you to a website about \texttt{Xcas} for high
+    % school students.
+    
+    % \item \texttt{Calcul formel au lycee, par D. Chevallair}.
+    % This will take you to a pdf file discussing the use of
+    % \texttt{Xcas} in high school.
+    
+    % \item \texttt{Site de F. Han}.
+    % This will take you to a website by Frederic Han about
+    % \texttt{Xcas} and a QT frontent for \texttt{giac}.
+    
+    % \item \texttt{Ressources Capes}
+    % This will take you to a website with various external sources.
+    
+    % \item \texttt{Ressources Agregation externe}.
+    % This will take you to a collection of external resources.
+    
+    % \item \texttt{Ressources Agregation interne}.    
+    % This will take you to a page on the \texttt{Xcas} website.
+    
+    \item \texttt{Update help}\\
+    This will install updated help files (retrieved from the
+    \texttt{Xcas} website).
+  \end{itemize}
+
+  \item \texttt{Start with CAS}\\
+  This menu has the following entries.
+
+  \begin{itemize}
+    \item \texttt{Tutorial}\\
+    This opens up the tutorial.
+    
+    \item \texttt{solutions}\\
+    This opens up the solutions to the exercises in the tutorial.
+  \end{itemize}
+  
+  \item \texttt{Tutoriel algo}\\
+  This opens up a tutorial on algorithms and programming with
+  \texttt{Xcas}.
+  
+  \item \texttt{Rebuild help cache}\\
+  This will rebuild the help index.
+  
+  \item \texttt{About}\\
+  This will display a message window with information about \texttt{Xcas}.
+  
+  \item \texttt{Examples}\\
+  This will allow you to choose from a variety of example worksheets,
+  which will then be copied to your current directory and opened.
+\end{itemize}
+
+\subsection{The \texttt{Toolbox} menu}
+
+The \texttt{Toolbox} menu contains commands that are used to insert
+operators into the session.  This menu includes the following entries: 
+\begin{itemize}
+  \item \texttt{New entry} (\texttt{Alt+N})\\
+  This will insert a new level after the current one.
+
+  \item \texttt{New comment} (\texttt{Alt+C})\\
+  This will insert a new comment level after the current level.
+\end{itemize}
+The other entries allow you to insert mathematical operations into
+the current level.  When you do that, you will also be taken to the
+help index 
+(See \ahrefloc{helpindex}{help index}
+\begin{latexonly}, p.\pageref{sssec:helpind}\end{latexonly})
+with help on the chosen command.
+
+\subsection{The \texttt{Expression} menu}
+
+The \texttt{Expression} menu contains commands that are used to 
+transform expressions.  The first entry is \texttt{New expression}
+(which is equivalent to \texttt{Alt+E}), 
+which will insert a new level above the current level and bring up the
+on-screen keyboard.  The rest of the entries can be used to insert a
+transformation.
+
+\subsection{The \texttt{Cmds} menu}
+
+The \texttt{Cmds} menu contains various \texttt{giac} functions and
+constants.
+
+\subsection{The \texttt{Prg} menu}
+
+The \texttt{Prg} menu contains commands that are used to write
+\texttt{giac} programs.  The first entry,
+\texttt{Prg$\blacktriangleright$New program} (equivalent to
+\texttt{Alt+P}) , will insert a program level and bring up the program
+editor.  The other entries are useful commands for writing
+\texttt{giac} programs. 
+
+\subsection{The \texttt{Graphic} menu}
+
+The \texttt{Graphic} menu contains commands that are used to create
+graphs.  The first entry,
+\texttt{Graphic$\blacktriangleright$Attributs} (equivalent
+to \texttt{Alt+K}) , will bring up a window
+contains different attributes of the graph (such as line width, color,
+etc.)  The other entries are commands for creating and manipulating
+graphs.
+
+\subsection{The \texttt{Geo} menu}
+
+The \texttt{Geo} menu contains commands that are used to work with
+two- and three-dimensional geometric figures.  The first two entries,
+\texttt{Geo$\blacktriangleright$New figure 2d} (equivalent to
+\texttt{Alt+G}) and \texttt{Geo$\blacktriangleright$New figure 3d} 
+(equivalent to \texttt{Alt+H}) 
+will create a level for
+creating two- and three-dimensional figures, respecitively.  The other
+menu items are for working with the figures.
+
+\subsection{The \texttt{Spreadsheet} menu}
+
+The \texttt{Spreadsheet} menu contains commands that are used to work with
+spreadsheets.  The first menu item, 
+\texttt{Spreadsheet$\blacktriangleright$New spreadsheet}
+(equivalent to \texttt{Alt+T}), will bring
+up a window where you can set the size and other attributes of a
+spreadsheet and then one will be created.  The submenus
+contain commands for working with spreadsheets.  Notice that the
+spreadsheet itself will have menus that are the same as these submenus.
+
+\subsection{The \texttt{Phys} menu}
+
+The \texttt{Phys} menu contains submenus with various categories of
+constants, as well as functions for converting units.
+
+\subsection{The \texttt{Highschool} menu}
+
+The \texttt{Highschool} menu contains computer algebra commands that
+are useful at different levels of highschool.  There is also a
+\texttt{Program} submenu with some program control functions.
+
+\subsection{The \texttt{Turtle} menu}
+
+The \texttt{Turtle} menu contains the commands that are used to in a
+Turtle screen.  The first menu item,
+\texttt{Turtle$\blacktriangleright$New turtle}, will create a Turtle
+drawing screen, the other menu items contain commands for working with
+the screen.
+
+\section{Configuring \texttt{Xcas}}
+\label{sec:config}
+
+\subsection{The number of significant digits}
+\label{ssec:sigdig}
+
+By default \texttt{Xcas} uses and displays \texttt{12} significant
+digits, but you can set the number of digits to other positive
+integers.  If you set the number of significant digits to a number
+less than \texttt{14}, then \texttt{Xcas} will use the computer's
+floating point hardware, and so calculations will be done to more
+significant digits than you asked for, but only the number of digits
+that you asked for will be displayed.  If you set the number of
+significant digits to \texttt{14} or higher, then both the
+computations and the display will use that number of digits.
+
+You can set the number of significant digits for \texttt{Xcas} by
+using the CAS configuration screen (see subsection \ref{ssec:confcomp}).  
+The number of significant 
+digits is stored in the variable \texttt{DIGITS} or \texttt{Digits},
+so you can also set it by giving the variable \texttt{DIGITS} a new
+value, as in \texttt{DIGITS:= 20}.  The value will be stored in the
+configuration file (see subsection \ref{ssec:conffile}), and so can also be set there.
+
+\subsection{The language mode}
+\label{ssec:lang}
+
+\texttt{Xcas} has its own language which it uses by default, but you
+can have it use the language used by \texttt{Maple}, \texttt{MuPAD} or
+the \texttt{TI89} calculator.
+
+You can set which language \texttt{Xcas} uses in the CAS configuration
+screen (see subsection \ref{ssec:confcomp}).  You can also use the
+function \texttt{maple\_mode}.  If 
+you give it an argument of \texttt{0}, \texttt{maple\_mode(0)}, then
+\texttt{Xcas} will use its own language.  If you give it an argument
+of \texttt{1}, \texttt{maple\_mode(1)}, then \texttt{Xcas} will use the
+\texttt{Maple} language.  If you give it an argument of \texttt{2},
+\texttt{maple\_mode(2)}, then \texttt{Xcas} will use the \texttt{MuPAD}
+language.  Finally, if you give it an argument of \texttt{3},
+\texttt{maple\_mode(3)}, then \texttt{Xcas} will use the \texttt{TI89}
+language.  
+			   
+The language you want to use will be stored in the configuration file
+(see subsection \ref{ssec:conffile}), and so can also be set there.
+
+\subsection{The units for angles}
+\label{ssec:angles}
+
+By default, \texttt{Xcas} will assume that any angles you give (for
+example, as the argument to a trigonometric function) is being
+measured in radians.  If you want, you can have \texttt{Xcas} use
+degrees.
+
+You can set which angle measure \texttt{Xcas} uses in the CAS
+configuration screen (see subsection \ref{ssec:confcomp}).  
+Your choice will be stored in the variable
+\texttt{angle\_radian}; this will be \texttt{1} if you measure your
+angles in radians and \texttt{0} if you measure your angles in
+degrees.  You can also change which angle measure you use by setting
+the variable \texttt{angle\_radian} to the appropriate value.  The
+angle measure you want to use will be stored in the configuration file
+(see subsection \ref{ssec:conffile}), and so can also be set there.
+
+\subsection{Exact or approximate values}
+\label{ssec:approx}
+
+Some number, such as $\pi$ and $\sqrt{2}$, can't be written down
+exactly as a decimal number.  When computing with such numbers,
+\texttt{Xcas} will leave them in exact, symbolic form.  If you want,
+you can have \texttt{Xcas} automatically give you decimal
+approximations for these numbers.
+
+You can set whether or not \texttt{Xcas} will give you exact or
+approximate values from the CAS configuration screen.  Your choice will
+be stored in the variable \texttt{approx\_mode}, where a value of 0
+means that \texttt{Xcas} should give you exact answers when possible
+and a value of 1 means that \texttt{Xcas} should give you decimal
+approximations.  Your choice will be stored in the configuration file
+(see subsection \ref{ssec:conffile}), and so can also be set there.
+
+\subsection{Complex numbers}
+\label{ssec:complex}
+
+When factoring polynomials, \texttt{Xcas} won't introduce complex
+numbers if they aren't already being used.  For example,
+\begin{giaccmd}
+  \texttt{factor(x\^{}2 + 2)}
+\end{giaccmd}
+will simply return
+\begin{giaccmd}
+  \texttt{x\^{}2 + 2}
+\end{giaccmd}
+but if an expression already involves complex numbers then
+\texttt{Xcas} will use them;
+\begin{giaccmd}
+  \texttt{factor(i*x\^{}2 + 2*i)}
+\end{giaccmd}
+will return
+\begin{giaccmd}
+  \texttt{(x - i*sqrt(2))*(i*x - sqrt(2))}
+\end{giaccmd}
+\texttt{Xcas} also has ways of finding complex roots even when complex
+numbers are not present; for example, the command \texttt{cfactor}
+will factor over the complex numbers
+\begin{giaccmd}
+  \texttt{cfactor(x\^{}2 + 2)}
+\end{giaccmd}
+will return
+\begin{giaccmd}
+  \texttt{(x - i*sqrt(2))*(x + i*sqrt(2))}
+\end{giaccmd}
+
+If you want \texttt{Xcas} to use complex numbers by default, you can
+turn on complex mode.  In complex mode,
+\begin{giaccmd}
+  \texttt{factor(x\^{}2 + 2)}
+\end{giaccmd}
+will return
+\begin{giaccmd}
+  \texttt{(x - i*sqrt(2))*(x + i*sqrt(2))}
+\end{giaccmd}
+
+You can turn on complex mode from the CAS configuration screen.  This
+mode is determined by the value of \texttt{complex\_mode}; if this is
+1 then complex mode is on, if this variable is 0 then complex mode is
+off. This option will be stored in the configuration file (see subsection \ref{ssec:conffile}), and
+so can also be set there.
+
+\subsection{Complex variables}
+\label{ssec:cvars}
+
+New variables will be assumed to be real; functions which work with
+the real and imaginary parts of variables will assume that a variable
+is real.  For example, \texttt{re} returns the real part of its
+argument and \texttt{im} returns the imaginary part, and so
+\begin{center}
+  \texttt{re(z)}
+\end{center}
+returns
+\begin{center}
+  \texttt{z}
+\end{center}
+and
+\begin{center}
+  \texttt{im(z)}
+\end{center}
+returns
+\begin{center}
+  \texttt{0}
+\end{center}
+
+If you want variables to be complex by default, you can have
+\texttt{Xcas} use complex variable mode.  
+You can set this from the CAS configuration screen.  Your choice will
+be stored in the variable \texttt{complex\_variables}, where a value of 0
+means that \texttt{Xcas} will assume that variables are real and 
+and a value of 1 means that \texttt{Xcas} will assume that values are
+complex.  Your choice will be stored in the configuration file
+(see subsection \ref{ssec:conffile}), and so can also be set there.
+
+\subsection{Configuring the computations}
+\label{ssec:confcomp}
+
+You can configure how \texttt{Xcas} computes by using the menu item 
+\texttt{Cfg$\blacktriangleright$Cas configuration} or by clicking on
+the status line.  You will then be given a window in which you can
+change the following options:
+\begin{itemize}
+  \item \texttt{Prog style} (default: \texttt{Xcas})\\
+  You will have a menu from which you can choose a different language
+  to program in; you can choose from \texttt{Xcas}, \texttt{Xcas
+  (Python)}, \texttt{Maple}, \texttt{Mupad} and \texttt{TI89/92}.
+  
+  \item \texttt{eval} (default: 25)\\
+  You can type in a positive integer indicating the maximum number of
+  recursions allowed when evaluating expressions.
+  
+  \item \texttt{prog} (default: 1)\\
+  You can type in a positive integer indicating the maximum number of
+  recursions allowed when executing programs.
+  
+  \item \texttt{recurs} (default: 100)\\
+  You can type in a positive integer indicating the maximum number of
+  recursive calls.
+  
+  \item \texttt{debug} (default: 0)\\
+  You can type in an integer, 0 or 1.  If this is 1, then
+  \texttt{Xcas} will display intermediate information on the
+  algorithms used by \texttt{giac}.  If this number is 0, then no such
+  information is displayed. 
+  
+  \item \texttt{maxiter}  (default: 20)\\
+  You can type in an integer indicating the maximum number of
+  iterations in Newton's method.
+  
+  \item \texttt{Float format}  (default: \texttt{standard})\\
+  You will have a menu from which you can choose how to display
+  decimal numbers.  Your choices will be:
+  \begin{itemize}
+  \item \texttt{standard}  In standard notation, a number will be
+  written out completely without using exponentials; for example,
+  \texttt{15000.12} will be displayed as \texttt{15000.12}.
+  \item \texttt{scientific}  In scientific notation, a number will be
+  written as a number between 1 and 10 times a power of ten; for example,
+  \texttt{15000.12} will be displayed as \texttt{1.500012000000e+04}
+  (where the number after \texttt{e} indicates the power of 10).
+  \item \texttt{engineer}  In engineer notation, a number will be
+  written as a number between 1 and 1000 times a power of ten, where
+  the power of 10 is a multiple of three.  For example,
+  \texttt{15000.12} will be displayed as \texttt{15.00012e3}.
+  \end{itemize}
+
+  \item \texttt{Digits}  (default: 12)\\
+  You can enter a positive integer which will indicate the number of
+  significant digits.
+  
+  \item \texttt{epsilon}  (default: 1e-12)\\
+  You can enter a floating point number which will be the value of
+  epsilon used by \texttt{epsilon2zero}, which is a function which
+  replaces numbers with absolute value less than epsilon by 0.
+  
+  \item \texttt{proba}  (default: 1e-15)\\
+  You can enter a floating point number.  If this number is greater
+  than zero, then in some cases \texttt{giac} can use
+  probabilistic algorithms and give a result with probability of being
+  false less than this value.  (One such example of a probabilistic
+  algorithm that \texttt{giac} can use is the algorithm to compute the
+  determinant of a large matrix with integer coefficients.)
+  
+  \item \texttt{approx}  (default: unchecked)\\
+  You will be given a checkbox.  If the box is checked, then exact
+  numbers such as $\sqrt{2}$ will be given a floating point approximation.  If
+  the box in unchecked, then exact values will be used when possible.
+  
+  \item \texttt{autosimplify}  (default: 1)\\
+  You can enter a simplification level of 0, 1 or 2.  A value of 0
+  means no automatic simplification will be done, a value of 1 means
+  grouped simplification will be automatic.  A value of 2 means that
+  all simplification will be automatic.
+  
+  \item \texttt{threads}  (default: 1)\\
+  You can enter a positive integer to indicate the number of threads
+  (for a possible future threaded version).
+  
+  \item \texttt{Integer basis}  (default: 10)\\
+  You will be given a menu from which you can choose an integer base
+  to work in; your choices will be 8, 10 and 16.
+  
+  \item \texttt{radian} (default: \texttt{checked})\\
+  You will be given a checkbox.  If the box is checked, then angles
+  will be measured in radians, otherwise they will be measured in
+  degrees.
+  
+  \item \texttt{Complex}  (default: \texttt{unchecked})\\
+  You will be given a checkbox.  If this box is checked, then
+  \texttt{giac} will work in complex mode, meaning, for example, that
+  polynomials will be factored with complex numbers if necessary.
+  
+  \item \texttt{Cmplx\_var}  (default: \texttt{unchecked})\\
+  You will be given a checkbox.  If this box is checked, then
+  variables will by default be assumed to be complex.  For example,
+  the expression \texttt{re(z)} won't be simplified to simply
+  \texttt{z}.  If this box is unchecked, then \texttt{re(z)} will be
+  simplified to \texttt{z}.
+  
+  \item \texttt{increasing power}  (default: \texttt{unchecked})\\
+  You will be given a checkbox.  If this box is checked, then
+  polynomials will be written out in increasing powers of the
+  variable; otherwise they will be written in decreasing powers.
+  
+  \item \texttt{All\_trig\_sol}  (default: \texttt{unchecked})\\
+  You will be given a checkbox.  If this box is unchecked, then only
+  the primary solutions of trigonometric equations will be given.  For
+  example, the solutions of \texttt{cos(x)=0} will be the pair
+  \texttt{[-pi/2,pi/2]}.  If this box is checked, then the solutions of 
+  \texttt{cos(x)=0} will be \texttt{[(2*n\_0*pi + pi)/2]}, where
+  \texttt{n\_0} can be any integer.
+  
+  \item \texttt{Sqrt}  (default: \texttt{checked})\\
+  You will be given a checkbox.  If this box is checked, then the
+  \texttt{factor} command will factor second degree polynomials, even
+  when the roots are not in the field determined by the coefficients.
+  For example, \texttt{factor(x\^{}2 - 3)} will return 
+  \texttt{(x - sqrt(3))*(x + sqrt(3))}.  If this box is unchecked, then 
+  \texttt{factor(x\^{}2 - 3)} will return \texttt{x\^{}2 - 3}.
+\end{itemize}
+This page will also have buttons for applying the settings, saving the
+settings for future sessions, canceling any new settings, or restoring
+the default settings.
+
+
+\subsection{Configuring the graphics}
+\label{ssec:confgraph}
+
+You can configure each graphics screen by clicking on the \texttt{cfg}
+button on the graphics screen's control panel to the right of the
+graph.   You can also change the default graphical configuration using
+the the menu item 
+\texttt{Cfg$\blacktriangleright$Graph configuration}.
+You will then be given a window in which you can
+change the following options:
+\begin{itemize}
+  \item \texttt{X-} and \texttt{X+}\\
+  These will determine the $x$ values for which calculations will be
+  done.
+ 
+ \item \texttt{Y-} and \texttt{Y+}\\
+ These will determine the $y$ values for which calculations will be done.
+ 
+ \item \texttt{Z-} and \texttt{Z+}\\
+ These will determine the $z$ values for which calculations will be done.
+ 
+ \item \texttt{t-} and \texttt{t+}\\
+ These will determine the $t$ values for which calculations will be
+ done, when plotting parametric curves, for example.
+
+  \item \texttt{WX-} and \texttt{WX+}\\
+  These will determine the range of $x$ values for the viewing window.
+  done.
+ 
+ \item \texttt{WY-} and \texttt{WY+}\\
+ These will determine the range of $y$ values for the viewing window.
+ 
+% \item \texttt{TX} and \texttt{TY}\\
+
+  \item \texttt{class\_min}\\
+  This will determine the minimum size of a statistics class.
+  
+  \item \texttt{class\_size}\\
+  This will determine the default size of a statistics class.
+  
+  \item \texttt{autoscale}\\
+  When checked, the the graphic will be autoscaled.
+  
+  \item \texttt{ortho}\\
+  When checked, all axes of the graphic will be scaled equally.
+  
+  \item \texttt{>W} and \texttt{W>}\\
+  These are convenient shortcuts to copy the \texttt{X-}, \texttt{X+},
+  \texttt{Y-} and \texttt{Y+} values to  \texttt{WX-}, \texttt{WX+},
+  \texttt{WY-} and \texttt{WY+}, or the other way around.
+\end{itemize}
+This page will also have buttons for applying the settings, saving the
+settings for future sessions, or canceling any new settings.
+
+\subsection{More configuration}
+\label{sec:mconf}
+
+You can configure other aspects of \texttt{Xcas} (besides the
+computatioonal aspects and graphics) using the the menu item 
+\texttt{Cfg$\blacktriangleright$General configuration}.
+You will then be given a window in which you can
+change the following options:
+\begin{itemize}
+  \item \texttt{Font}\\
+  This lets you choose a session font, the same as choosing the menu
+  item \texttt{Cfg$\blacktriangleright$Session font}.
+  
+  \item \texttt{Level}\\
+  This will determine what type of level should be open when you start
+  a new session.
+  
+  \item \texttt{browser}\\
+  This will determine what browser \texttt{Xcas} should use when it
+  requires one, for example when displaying help.  If this is empty,
+  \texttt{Xcas} will use its built-in browser.
+  
+  \item \texttt{Auto HTML help}\\
+  If this box is checked, then whenever you choose a function from a menu,
+  a help page for that function will appear in your browser.
+  Regardless of whether this box is checked or not, the help page will
+  also appear in your browser if you type \texttt{?}\textit{function}
+  in a command box.
+  
+  \item \texttt{Auto index help}
+  If this box is checked, then whenever you choose a function from a
+  menu, the help index page for that function will appear.  This is
+  the same page you would get from choosing the function from the help
+  index.    
+
+  \item \texttt{Print format}\\
+  This will determine the paper size for printing and saving files.
+  There is also a button you can use to have the printing done in
+  landscape mode; if this button is not checked, the printing will be
+  done in portrait.
+  
+  \item \texttt{Disable Tool tips}\\
+  If this is checked, \texttt{Xcas} will stop displaying tool tips.
+  
+  \item \texttt{rows} and \texttt{columns}\\
+  These will determind the default number of rows and columns for the
+  matrix editor and spreadsheet.
+  
+  \item \texttt{PS view}\\
+  This determines what program will be used to preview Postscript files.
+  
+%  \item \texttt{Step by step}\\
+  
+%  \item \texttt{Proxy}
+\end{itemize}
+
+\subsection{The configuration file}
+\label{ssec:conffile}
+
+When you save changes to your configuration, this is stored in a
+configuration file, which will be \texttt{.xcasrc} in your home
+directory in Unix and \texttt{xcas.rc} in Windows.  This file will
+have four functions -- \texttt{widget\_size}, \texttt{cas\_setup}, 
+\texttt{maple\_mode} and \texttt{xyztrange} -- which determine the
+configuration and which are evaluated when \texttt{Xcas} starts.
+
+\section{Printing and saving}
+
+\subsection{Saving a session}
+
+Each tab above the status line represents a session, the active tab
+will be yellow.  The label of each tab will be the name of the file
+that the session is saved in; if the session hasn't been saved the tab
+will read \texttt{Unnamed}.
+
+You can save your current session by clicking on the \texttt{Save}
+button on the status line.  If the session contains unsaved changes
+the \texttt{Save} button will be red; the button will be green when
+nothing needs to be saved.  The first time that you save a session you
+will be prompted for a file name; you should choose a name that ends
+in \texttt{.xws}.  Subsequent times that you save a session it will be
+saved in the same file; to save a session in a different file you can
+use the menu item \texttt{File$\blacktriangleright$Save as}.
+
+If you have a session saved in a file and you want to load it in a
+tab, you can use the menu item \texttt{File$\blacktriangleright$Open}.
+From there you can choose a specific file from a list or open a
+directory browser that you can use to choose a file.  The directory
+browser can also be opened with \texttt{Alt-O}.
+
+\subsection{Saving a spreadsheet}
+
+If you have a spreadsheet in one of the levels, you can save it
+separately from the rest of the session.
+
+Once a spreadsheet is inserted, it will have menus right next to the
+level number.  If you select the \texttt{Table$\blacktriangleright$Save
+sheet as text} menu, you will be prompted for a file name.  You should
+choose a file name that ends in \texttt{.tab}.  Once you save the
+spreadsheet, there will be a button to the right of the menus which
+you can use to save any changes you make.  If you want to save the
+spreadsheet under a different name, you can use the
+\texttt{Table$\blacktriangleright$Save as alternate filename} menu entry.
+You can also use the 
+\texttt{Table$\blacktriangleright$Save as CSV} and
+\texttt{Table$\blacktriangleright$Save as mathml} menu entries
+to save the spreadsheet in other formats.
+
+You can use the \texttt{Table} menu to insert previously saved
+spreadsheets; the menu item \texttt{Table$\blacktriangleright$Insert}
+will bring up a directory browser you can use to select a file to
+enter.
+
+\subsection{Saving a program}
+
+You can open up a level in which to write an \texttt{Xcas} program
+with the menu item \texttt{Prg$\blacktriangleright$New program} (which
+is equivalent to \texttt{Alt-P}).  If you select this item, you will
+be prompted for information to fill out a template for a program and
+then be left in the program editor.
+
+At the top of the program editor there will be menus and buttons, at
+the far right will be a \texttt{Save} button that you can press to
+save the program.  The first time you save a program, you will be
+prompted for a file name, you should choose a name ending in
+\texttt{.cxx}.  Once a program is saved, the file name will appear to
+the right of the \texttt{Save} button.  If you want to save the
+program under a different name, you can use the
+\texttt{Prog$\blacktriangleright$Save as} item from the program editor
+menu.
+
+To insert a previously saved program, you can use the
+\texttt{Prog$\blacktriangleright$Load} item from the program editor menu.
+
+\subsection{Printing a session}
+
+You can print a session with the
+\texttt{File$\blacktriangleright$Print$\blacktriangleright$to printer}
+menu item.  
+
+If you prefer to save the printed form as a file, you can use the 
+\texttt{File$\blacktriangleright$Print$\blacktriangleright$preview}
+menu item.  You will prompted for a file name to save the printed form
+in; the file will be a PostScript file, so the name should end in
+\texttt{.ps}.If you only want to save certain levels in printable
+form, you can use the 
+\texttt{File$\blacktriangleright$Print$\blacktriangleright$preview
+selected levels} menu item; this file will be encapsulated PostScript,
+so the name should end in \texttt{.eps}.
+
+\section{Translating to other computer languages}
+
+\texttt{Xcas} can translate a session, or parts of a session, to other
+computer languages; notably \LaTeX{} and MathML.
+
+\subsection{Translating an expression to \LaTeX{}}
+
+The command \texttt{latex} will translate an expression to a \LaTeX{}
+expression.  If you enter \texttt{latex(\textit{expression})}, then
+the expression will be evaluated and the result will be given to you
+in the \LaTeX{} typesetting language.  For example, if you enter
+\begin{giaccmd}
+  latex(1+1/2)
+\end{giaccmd}
+you will get
+\begin{giaccmd}
+  $\backslash $frac\{3\}\{2\}
+\end{giaccmd}
+
+\subsection{Translating the entire session to \LaTeX{}}
+
+If you want to save your entire document as a complete \LaTeX{} file,
+you can use the menu item \texttt{File$\blacktriangleright$laTeX
+preview selection}
+
 
 \chapter{The CAS functions}\label{sec:cas}
 

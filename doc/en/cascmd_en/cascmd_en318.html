@@ -4,43 +4,59 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Remove elements of a list : remove</title>
+<title>Boundaries of an interval : left right</title>
 </head>
 <body >
 <a href="cascmd_en317.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en319.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec380" class="subsection">2.37.22  Remove elements of a list : <span style="font-family:monospace">remove</span></h3>
-<p><a id="hevea_default535"></a>
-<span style="font-family:monospace">remove</span> takes as argument : a boolean function <span style="font-family:monospace">f</span> and 
-a list <span style="font-family:monospace">L</span>.<br>
-<span style="font-family:monospace">remove</span> removes in the list <span style="font-family:monospace">L</span>, the elements <span style="font-family:monospace">c</span> such that 
-<span style="font-family:monospace">f(c)==true</span>.<br>
+<h3 id="sec389" class="subsection">4.34.2  Boundaries of an interval : <span style="font-family:monospace">left right</span></h3>
+<p><a id="hevea_default484"></a><a id="hevea_default485"></a><a id="hevea_default486"></a><a id="hevea_default487"></a><a id="hevea_default488"></a><a id="hevea_default489"></a> 
+<span style="font-family:monospace">left</span> (resp. <span style="font-family:monospace">right</span>) takes as argument an interval.<br>
+<span style="font-family:monospace">left</span> (resp. <span style="font-family:monospace">right</span>) returns the left (resp. right) boundary
+of this interval. <br>
+Note that <span style="font-family:monospace">..</span> is an infixed operator, therefore:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">sommet(1..5)</span> is equal to <span style="font-family:monospace">’..’</span> and <span style="font-family:monospace">feuille(1..5)</span>
+is equal to <span style="font-family:monospace">(1,5)</span>.
+</li><li class="li-itemize">the name of the interval followed by 
+<span style="font-family:monospace">[0]</span> returns the operator <span style="font-family:monospace">..</span>
+</li><li class="li-itemize">the name of the interval followed by <span style="font-family:monospace">[1]</span> 
+(or the <span style="font-family:monospace">left</span> command) returns the left boundary.
+</li><li class="li-itemize">The name of the interval followed by <span style="font-family:monospace">[2]</span> 
+(or the <span style="font-family:monospace">right</span> command) 
+returns the right boundary.
+</li></ul><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">remove(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(3..5)[0]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">sommet(3..5)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0,1,1]</span></div><p>
-<span style="font-weight:bold">Remark</span> The same applies on strings, for example,
-to remove all the "a" of a string:<br>
+</p><div class="center"><span style="font-family:monospace">’..’</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
+</p><div class="center"><span style="font-family:monospace">left(3..5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">(3..5)[1]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">feuille(3..5)[0]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">op(3..5)[0]</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
 Input :
-</p><pre class="verbatim">f(chn):={
-  local l:=length(chn)-1;
-  return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));
-}
-</pre><p>
-Then, input :
-</p><div class="center"><span style="font-family:monospace">f("abracadabra")</span></div><p>
+</p><div class="center"><span style="font-family:monospace">right(3..5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">(2..5)[2]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">feuille(3..5)[1]</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">op(3..5)[1]</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">["b","r","c","d","b","r"]</span></div><p>
-To get a string, input :
-</p><div class="center"><span style="font-family:monospace">char(ord(["b","r","c","d","b","r"])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">"brcdbr"</span></div>
+</p><div class="center"><span style="font-family:monospace">5</span></div><p>
+<span style="font-weight:bold">Remark</span><br>
+<span style="font-family:monospace">left</span> (resp. <span style="font-family:monospace">right</span>) returns also the left (resp. right) member of an 
+equation (for example <span style="font-family:monospace">left(2*x+1=x+2)</span> returns <span style="font-family:monospace">2*x+1</span>).</p>
 <hr>
 <a href="cascmd_en317.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

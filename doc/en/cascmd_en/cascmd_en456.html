@@ -4,68 +4,52 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Gauss-Jordan reduction: rref gaussjord</title>
+<title>Hermite normal form : ihermite</title>
 </head>
 <body >
 <a href="cascmd_en455.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en457.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec542" class="subsection">2.53.3  Gauss-Jordan reduction: <span style="font-family:monospace">rref gaussjord</span></h3>
-<p><a id="hevea_default747"></a><a id="hevea_default748"></a><a id="sec:rref"></a>
-<span style="font-family:monospace">rref</span> solves a linear system of equations written in
-matrix form (see also <a href="cascmd_en267.html#sec%3Arrefm">2.31.17</a>) :
-</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
-<span style="font-family:monospace">rref</span> takes one or two arguments.
-</p><ul class="itemize"><li class="li-itemize">
-If <span style="font-family:monospace">rref</span> has only one argument, this argument is the augmented matrix 
-of the system (the matrix obtained by augmenting matrix <span style="font-family:monospace">A</span> to the 
-right with the column vector <span style="font-family:monospace">B</span>).<br>
-The result is a matrix <span style="font-family:monospace">[A1,B1]</span> : <span style="font-family:monospace">A1</span> has zeros both above and under 
-its principal diagonal and has 1 on its principal diagonal, and the solutions 
-of:
-<div class="center"><span style="font-family:monospace">A1*X=B1</span></div> 
-are the same as :
-<div class="center"><span style="font-family:monospace">A*X=B</span></div>
-For example, to solve the system:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
-</table></td></tr>
-</table> 
+<h3 id="sec550" class="subsection">4.47.12  Hermite normal form : <span style="font-family:monospace">ihermite</span></h3>
+<p><a id="hevea_default702"></a>
+<span style="font-family:monospace">ihermite</span> takes as argument a matrix <span style="font-family:monospace">A</span> with coefficients 
+in ℤ.<br>
+<span style="font-family:monospace">ihermite</span> returns two matrices <span style="font-family:monospace">U</span> and <span style="font-family:monospace">B</span> such that 
+<span style="font-family:monospace">B=U*A</span>, <span style="font-family:monospace">U</span> is invertible in ℤ (det(<span style="font-style:italic">U</span>) = ± 1)
+and <span style="font-family:monospace">B</span> is upper-triangular. Moreover,
+the absolute value of the coefficients above the diagonal of <span style="font-family:monospace">B</span> are 
+smaller than the pivot of the column divided by 2.</p><p>The answer is obtained by a Gauss-like reduction algorithm
+using only operations of rows with integer coefficients
+and invertible in ℤ.<br>
 Input :
-<div class="center"><span style="font-family:monospace">rref([[3,1,-2],[3,2,2]])</span></div>
+</p><div class="center"><span style="font-family:monospace">A:=[[9,-36,30],[-36,192,-180],[30,-180,180]]; U,B:=ihermite(A)</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">[[1,0,-2],[0,1,4]]</span></div>
-Hence <span style="font-style:italic">x</span>=−2 and <span style="font-style:italic">y</span>=4 is the solution of this system.<p><span style="font-family:monospace">rref</span> can also solve several linear systems
-of equations having the same first member.
-We write the second members as a column matrix.<br>
+</p><div class="center"><span style="font-family:monospace">[[9,-36,30],[-36,192,-180],[30,-180,180]], [[13,9,7],[6,4,3],[20,15,12]],[[3,0,30],[0,12,0],[0,0,60]]</span></div><p><span style="font-weight:bold">Application: Compute a </span>ℤ<span style="font-weight:bold">-basis of the kernel of a
+matrix having integer coefficients</span><br>
+Let <span style="font-family:monospace">M</span> be a matrix with integer coefficients.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,-2,0],[0,1,4,1]]</span></div><p>
-Which means that (<span style="font-style:italic">x</span>=−2 and <span style="font-style:italic">y</span>=4) is the solution of the system
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
-</table></td></tr>
-</table><p>
-and (<span style="font-style:italic">x</span>=0 and <span style="font-style:italic">y</span>=1) is the solution of the system
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >1 </td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
-</table></td></tr>
-</table></li><li class="li-itemize">If <span style="font-family:monospace">rref</span> has two parameters, the second parameter must be an integer 
-<span style="font-style:italic">k</span>, and the Gauss-Jordan reduction will be performed on (at most)
-the first <span style="font-style:italic">k</span> columns.<br>
-Input :
-<div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]],1)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">[[3,1,-2,1],[0,1,4,1]]</span></div>
-</li></ul>
+</p><div class="center">
+<span style="font-family:monospace">(U,A):=ihermite(transpose(M))</span>.
+</div><p>
+This returns <span style="font-style:italic">U</span> and <span style="font-style:italic">A</span> such that <span style="font-family:monospace">A=U*transpose(M)</span> hence <br>
+<span style="font-family:monospace">transpose(A)=M*transpose(U)</span>.<br>
+The columns of <span style="font-family:monospace">transpose(A)</span> which are identically 0 (at the right,
+coming from the rows of <span style="font-style:italic">A</span> which are identically 0 at the bottom)
+correspond to columns of <span style="font-family:monospace">transpose(U)</span> which form a basis 
+of <span style="font-family:monospace">Ker(M)</span>. In other words, the rows of <span style="font-family:monospace">A</span>
+which are identically 0 correspond to rows of <span style="font-family:monospace">U</span> 
+which form a basis of <span style="font-family:monospace">Ker(M)</span>.<br>
+<span style="font-weight:bold">Example</span><br>
+Let <span style="font-family:monospace">M:=[[1,4,7],[2,5,8],[3,6,9]]</span>. Input 
+</p><div class="center"><span style="font-family:monospace">U,A:=ihermite(tran(M))</span></div><p>
+Output
+</p><div class="center">
+<span style="font-family:monospace">U:=[[-3,1,0],[4,-1,0],[-1,2,-1]] and A:=[[1,-1,-3],[0,3,6],[0,0,0]]</span>
+</div><p>
+Since <span style="font-family:monospace">A[2]=[0,0,0]</span>, a ℤ-basis of <span style="font-family:monospace">Ker(M)</span> is
+<span style="font-family:monospace">U[2]=[-1,2,-1]</span>.<br>
+Verification <span style="font-family:monospace">M*U[2]=[0,0,0]</span>.</p>
 <hr>
 <a href="cascmd_en455.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

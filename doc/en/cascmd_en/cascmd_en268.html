@@ -4,84 +4,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Construction of a Galois field : GF</title>
+<title>Gröbner basis : gbasis</title>
 </head>
 <body >
 <a href="cascmd_en267.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en269.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec322" class="subsection">2.31.18  Construction of a Galois field : <span style="font-family:monospace">GF</span></h3>
-<p><a id="hevea_default465"></a>
-<span style="font-family:monospace">GF</span> takes as arguments a prime integer <span style="font-style:italic">p</span> 
-and an integer <span style="font-style:italic">n</span>&gt;1.<br>
-<span style="font-family:monospace">GF</span> returns a Galois field of characteristic <span style="font-style:italic">p</span> having <span style="font-style:italic">p</span><sup><span style="font-style:italic">n</span></sup>
-elements.<br>
-Elements of the field and the field itself
-are represented by <span style="font-family:monospace">GF(...)</span> where <span style="font-family:monospace">...</span> is the following 
-sequence:
+<h3 id="sec332" class="subsection">4.27.1  Gröbner basis : <span style="font-family:monospace">gbasis</span></h3>
+<p><a id="hevea_default420"></a>
+<a id="sec:gbasis"></a>
+<span style="font-family:monospace">gbasis</span> takes at least two arguments
 </p><ul class="itemize"><li class="li-itemize">
-the characteristic <span style="font-style:italic">p</span> (<span style="font-style:italic">px</span>=0),
-</li><li class="li-itemize">an irreducible primitive minimal polynomial generating an
-ideal <span style="font-style:italic">I</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>], the Galois field being the quotient
-of ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] by <span style="font-style:italic">I</span>,
-</li><li class="li-itemize">the name of the polynomial variable, by default <span style="font-family:monospace">x</span>,
-</li><li class="li-itemize">a polynomial (a remainder modulo the minimal polynomial) 
-for an element of the field
-(field elements are represented with the additive representation)
-or <span style="font-family:monospace">undef</span> for the field itself.
+a vector of multivariate polynomials 
+</li><li class="li-itemize">a vector of variables names,
 </li></ul><p>
-You should give a name to this field (for example <span style="font-family:monospace">G:=GF(p,n)</span>),
-in order to build elements of the field from a polynomial in
-ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>], for example <span style="font-family:monospace">G(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x)</span>. Note that <span style="font-family:monospace">G(x)</span>
-is a generator of the multiplicative group <span style="font-style:italic">G</span><sup>*</sup>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">G:=GF(2,8)</span></div><p>
+Optional arguments may be used to specify the ordering and
+algorithms. By default, the ordering is lexicographic (with respect to the
+list of variable names ordering)
+and the polynomials are written in decreasing power orders with
+respect to this order. 
+For example, the output will be like 
+...+<span style="font-style:italic">x</span><sup>2</sup> <span style="font-style:italic">y</span><sup>4</sup> <span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup> <span style="font-style:italic">y</span><sup>3</sup> <span style="font-style:italic">z</span><sup>4</sup>+... if the second argument is [<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>] because
+(2,4,3)&gt;(2,3,4) but the output would be like
+...+<span style="font-style:italic">x</span><sup>2</sup> <span style="font-style:italic">y</span><sup>3</sup><span style="font-style:italic">z</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>2</sup> <span style="font-style:italic">y</span><sup>4</sup> <span style="font-style:italic">z</span><sup>3</sup>+... if the second argument is [<span style="font-style:italic">x</span>,<span style="font-style:italic">z</span>,<span style="font-style:italic">y</span>].<br>
+<span style="font-family:monospace">gbasis</span> returns a Gröbner basis of the polynomial ideal spanned
+by these polynomials.</p><p><span style="font-weight:bold">Property</span><br>
+If <span style="font-style:italic">I</span> is an ideal and if (<span style="font-style:italic">G</span><sub><span style="font-style:italic">k</span></sub>)<sub><span style="font-style:italic">k</span> ∈ <span style="font-style:italic">K</span></sub> is a Gröbner basis of this 
+ideal <span style="font-style:italic">I</span> then, if <span style="font-style:italic">F</span> is a non-zero polynomial in <span style="font-style:italic">I</span>, the greatest monomial 
+of <span style="font-style:italic">F</span> is divisible by the greatest monomial of one of the <span style="font-style:italic">G</span><sub><span style="font-style:italic">k</span></sub>.
+In other words, if you do an euclidean division of <span style="font-style:italic">F</span>≠ 0 
+by the corresponding <span style="font-style:italic">G</span><sub><span style="font-style:italic">k</span></sub>, take the remainder of this division, do
+again the same and so on, at some point you get a null remainder.</p><p>Input :
+</p><div class="center"><span style="font-family:monospace">gbasis([2*x*y-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2*x*y],[x,y])</span>
+</div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,undef)</span></div><p>
-The field <span style="font-style:italic">G</span> has 2<sup>8</sup>=256 elements and 
-<span style="font-style:italic">x</span> generates the multiplicative group
-of this field ({ 1,<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sup>2</sup>,...<span style="font-style:italic">x</span><sup>254</sup> }).<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">G(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x)</span></div><p>
-indeed <span style="font-style:italic">x</span><sup>8</sup>=<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1, hence <span style="font-style:italic">x</span><sup>9</sup>=<span style="font-style:italic">x</span><sup>7</sup>+<span style="font-style:italic">x</span><sup>5</sup>+<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">G(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">255</span></div><p>
-Output should be the unit, indeed:
+</p><div class="center"><span style="font-family:monospace">[4*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,2*x*y-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(3*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)]</span>
+</div><p>As indicated above, <span style="font-family:monospace">gbasis</span> may have more than 2 arguments :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">plex</span> (lexicographic only), <span style="font-family:monospace">tdeg</span> (total degree then
+lexicographic order),
+<span style="font-family:monospace">revlex</span> (total degree then inverse lexicographic order), to
+specify an order on the monomials 
+(<span style="font-family:monospace">plex</span> is the order by default),
+</li><li class="li-itemize"><span style="font-family:monospace">with_cocoa=true</span> or <span style="font-family:monospace">with_cocoa=false</span>, if you want to use
+the <span style="font-family:monospace">CoCoA</span> library to compute the Gröbner basis (recommended,
+requires that <span style="font-family:monospace">CoCoA</span> support compiled in)</li><li class="li-itemize"><span style="font-family:monospace">with_f5=true</span> or <span style="font-family:monospace">with_f5=false</span> for using the F5 algorithm
+of the <span style="font-family:monospace">CoCoA</span> library .
+In this case the specified order is not used (the polynomials are 
+homogenized).
+</li></ul><p>
+Input :
 </p><div class="center">
-<span style="font-family:monospace">GF(2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1,x,1)</span></div><p>
-As one can see in these examples, the output contains many times the same
-information that you would prefer not to see
-if you work many times with the same field. For this reason,
-the definition of a Galois field may have an optional argument,
-a variable name which will be used thereafter to represent elements
-of the field. Since you will also most
-likely want to modify the name of the indeterminate, the field
-name is grouped with the variable name in a list
-passed as third argument to <span style="font-family:monospace">GF</span>.
-Note that these two variable names must be quoted.<br>
-Example,<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">G:=GF(2,2,[’w’,’G’]):; G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">Done, G(w+1)</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">G(1)</span></div><p>
-Hence, the elements of <span style="font-family:monospace">GF(2,2)</span> are
-<span style="font-family:monospace">G(0),G(1),G(w),G(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)=G(w+1)</span>.</p><p>We may also impose the irreducible primitive polynomial that we wish
-to use, by putting it as second argument (instead of <span style="font-style:italic">n</span>), 
-for example :
-</p><div class="center"><code>G:=GF(2,w^8+w^6+w^3+w^2+1,['w','G'])</code></div><p>
-If the polynomial is not primitive, <span style="font-family:monospace">Xcas</span> will replace it
-automatically by a primitive polynomial, for example :<br>
-Input :
-</p><div class="center"><code>G:=GF(2,w^8+w^7+w^5+w+1,['w','G'])</code></div><p>
-Output :
-</p><div class="center"><code>G:=GF(2,w^8-w^6-w^3-w^2-1,['w','G'],undef)</code></div>
+<span style="font-family:monospace">gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1], [x1,x2,x3],tdeg,with_cocoa=false)</span>
+</div><p>
+Output
+</p><div class="center">
+<code>[x3^3-1,-x2^2-x2*x3-x3^2,x1+x2+x3]</code>
+</div>
 <hr>
 <a href="cascmd_en267.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

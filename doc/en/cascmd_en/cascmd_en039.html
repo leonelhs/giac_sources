@@ -4,22 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Solving au+bv=c in ℤ: iabcuv</title>
+<title>Transform a boolean expression to a list : exp2list</title>
 </head>
 <body >
 <a href="cascmd_en038.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en040.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec49" class="subsection">2.6.21  Solving au+bv=c in ℤ: <span style="font-family:monospace">iabcuv</span></h3>
-<p><a id="hevea_default75"></a>
-<span style="font-family:monospace">iabcuv(a,b,c)</span> returns <span style="font-family:monospace">[u,v]</span> so that <span style="font-family:monospace">au+bv=c</span>.<br>
-<span style="font-family:monospace">c</span> must be a multiple of <span style="font-family:monospace">gcd(a,b)</span> for the existence of
-a solution.<br>
+<h3 id="sec59" class="subsection">4.2.4  Transform a boolean expression to a list : <span style="font-family:monospace">exp2list</span></h3>
+<p><a id="hevea_default23"></a>
+<span style="font-family:monospace">exp2list</span> returns the list <span style="font-family:monospace">[expr0,expr1]</span> when the argument 
+is <span style="font-family:monospace">(var=expr0) or (var=expr1)</span>.<br>
+<span style="font-family:monospace">exp2list</span> is used in TI mode for easier processing of the answer to a
+<span style="font-family:monospace">solve</span> command.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">iabcuv(48,30,18) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">exp2list((x=2) or (x=0))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[6,-9]</span></div>
+</p><div class="center"><span style="font-family:monospace">[2,0]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">exp2list((x&gt;0) or (x&lt;2))</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[0,2]</span></div><p>
+In TI mode input :
+</p><div class="center"><span style="font-family:monospace">exp2list(solve((x-1)*(x-2)))</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1,2]</span></div>
 <hr>
 <a href="cascmd_en038.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

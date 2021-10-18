@@ -4,28 +4,63 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>QR decomposition (for TI compatibility) : QR</title>
+<title>Equivalent matrix : changebase</title>
 </head>
 <body >
 <a href="cascmd_en426.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en428.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec509" class="subsection">2.49.3  QR decomposition (for TI compatibility) : <span style="font-family:monospace">QR</span></h3>
-<p><a id="hevea_default708"></a>
-<span style="font-family:monospace">QR</span> takes as argument a numeric square matrix <span style="font-style:italic">A</span> of size 
-<span style="font-style:italic">n</span> and two variable names, <span style="font-family:monospace">var1</span> and <span style="font-family:monospace">var2</span>.<br>
-<span style="font-family:monospace">QR</span> factorizes this matrix numerically as <span style="font-style:italic">Q</span>*<span style="font-style:italic">R</span> where
-<span style="font-style:italic">Q</span> is an orthogonal matrix (<sup><span style="font-style:italic">t</span></sup><span style="font-style:italic">Q</span>*<span style="font-style:italic">Q</span>=<span style="font-style:italic">I</span>) and <span style="font-style:italic">R</span> is an upper triangular 
-matrix. <span style="font-family:monospace">QR(A,var1,var2)</span> returns <span style="font-family:monospace">R</span>, stores <span style="font-family:monospace">Q=A*inv(R)</span> in <span style="font-family:monospace">var1</span> and <span style="font-family:monospace">R</span> in <span style="font-family:monospace">var2</span>.<br>
+<h3 id="sec511" class="subsection">4.43.8  Equivalent matrix : <span style="font-family:monospace">changebase</span></h3>
+<p><a id="hevea_default661"></a>
+<span style="font-family:monospace">changebase</span> takes as argument a matrix <span style="font-style:italic">A</span> and a
+change-of-basis matrix <span style="font-style:italic">P</span>.<br>
+<span style="font-family:monospace">changebase</span> returns the matrix <span style="font-style:italic">B</span> such that <span style="font-style:italic">B</span>=<span style="font-style:italic">P</span><sup>−1</sup><span style="font-style:italic">AP</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">QR([[3,5],[4,5]],Q,R)</span></div><p>
-Output the matrix <span style="font-family:monospace">R</span> :
-</p><div class="center"><span style="font-family:monospace">[[-5,-7],[0,-1]]</span></div><p>
-Then input :
-</p><div class="center"><span style="font-family:monospace">Q</span></div><p>
-Output the matrix <span style="font-family:monospace">Q</span> :
-</p><div class="center"><span style="font-family:monospace">[[-0.6,-0.8],[-0.8,0.6]]</span></div>
+</p><div class="center"><span style="font-family:monospace">changebase([[1,2],[3,4]],[[1,0],[0,1]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[1,2],[3,4]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">changebase([[1,1],[0,1]],[[1,2],[3,4]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[-5,-8],[9/2,7]]</span></div><p>
+Indeed :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >1</td><td style="text-align:right;white-space:nowrap" >2</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >3</td><td style="text-align:right;white-space:nowrap" >4</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table></td><td class="dcell"><sup>−1</sup>*</td><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >1</td><td style="text-align:right;white-space:nowrap" >1</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >0</td><td style="text-align:right;white-space:nowrap" >1</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td><td class="dcell">*</td><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >1</td><td style="text-align:right;white-space:nowrap" >2</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >3</td><td style="text-align:right;white-space:nowrap" >4</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td><td class="dcell">=</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >−5</td><td style="text-align:right;white-space:nowrap" >−8</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">9</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >7</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table><p>.</p>
 <hr>
 <a href="cascmd_en426.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,22 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Define an equation : equal</title>
+<title>Eigenvectors : egv eigenvectors eigenvects 
+eigVc</title>
 </head>
 <body >
 <a href="cascmd_en446.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en448.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec532" class="subsection">2.52.1  Define an equation : <span style="font-family:monospace">equal</span></h3>
-<p><a id="hevea_default734"></a>
-<span style="font-family:monospace">equal</span> takes as argument the two members of an equation.<br>
-<span style="font-family:monospace">equal</span> returns this equation. It is the prefixed version of <span style="font-family:monospace">=</span><br>
+<h3 id="sec541" class="subsection">4.47.3  Eigenvectors : <span style="font-family:monospace">egv eigenvectors eigenvects <br>
+eigVc</span></h3>
+<p><a id="hevea_default689"></a><a id="hevea_default690"></a><a id="hevea_default691"></a><a id="hevea_default692"></a>
+<span style="font-family:monospace">egv</span> (or <span style="font-family:monospace">eigenvectors eigenvects eigVc</span>) takes as argument 
+a square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
+If <span style="font-style:italic">A</span> is a diagonalizable matrix, <span style="font-family:monospace">egv</span> (or 
+<span style="font-family:monospace">eigenvectors eigenvects eigVc</span>) returns a matrix whose columns are the 
+eigenvectors of the matrix <span style="font-style:italic">A</span>. Otherwise, it will fail (see also
+<span style="font-family:monospace">jordan</span> for characteristic vectors).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">equal(2x-1,3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">egv([[1,1,3],[1,3,1],[3,1,1]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(2*x-1)=3</span></div><p>
-We can also directly write <span style="font-family:monospace">(2*x-1)=3</span>.</p>
+</p><div class="center"><span style="font-family:monospace">[[-1,1,1],[2,1,0],[-1,1,-1]] </span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">egv([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">"Not diagonalizable at eigenvalue 2"</span></div><p>
+In complex mode, input :
+</p><div class="center"><span style="font-family:monospace">egv([[2,0,0],[0,2,-1],[2,1,2]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[0,1,0],[-1,-2,-1],[i,0,-i]]</span></div>
 <hr>
 <a href="cascmd_en446.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

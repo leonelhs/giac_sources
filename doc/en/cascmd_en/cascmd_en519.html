@@ -4,64 +4,101 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Constants Library</title>
+<title>Implicit differentiation : implicitdiff</title>
 </head>
 <body >
 <a href="cascmd_en518.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en520.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec636" class="subsection">5.2.2  Constants Library</h3>
+<h3 id="sec632" class="subsection">5.10.3  Implicit differentiation : <span style="font-family:monospace">implicitdiff</span></h3>
 <p>
-The physical constants are in the <span style="font-family:monospace">Phys</span> menu, <span style="font-family:monospace">Constant</span>
-sub-menu.
-The following table gives the Constants Library :
+<span style="font-family:monospace">implicitdiff</span> is called with one of the following three sets of parameters :
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+<span style="font-family:monospace">expr</span>, <span style="font-family:monospace">constr</span>, <span style="font-family:monospace">depvars</span>, <span style="font-family:monospace">diffvars</span>
+</li><li class="li-enumerate"><span style="font-family:monospace">constr</span>, <span style="font-family:monospace">[depvars]</span>, <span style="font-family:monospace">y</span>, <span style="font-family:monospace">diffvars</span>
+</li><li class="li-enumerate"><span style="font-family:monospace">expr</span>, <span style="font-family:monospace">constr</span>, <span style="font-family:monospace">vars</span>, <span style="font-family:monospace">order_size=k</span>, <span style="font-family:monospace">[pt]</span>
+</li></ol><p>
+Details on parameters :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">expr</span> : differentiable expression  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>) 
+</li><li class="li-itemize"><span style="font-family:monospace">constr</span> : (list of) equality constraint(s)  <span style="font-style:italic">g</span><sub><span style="font-style:italic">i</span></sub>(<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">y</span><sub>1</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>)=0  or vanishing expression(s)  <span style="font-style:italic">g</span><sub><span style="font-style:italic">i</span></sub> , where  <span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">m</span> 
+</li><li class="li-itemize"><span style="font-family:monospace">depvars</span> : (list of) dependent variable(s)  <span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub> , each of which may be entered as a symbol, e.g. <span style="font-family:monospace">yi</span>, or a function of independent variable(s), e.g. <span style="font-family:monospace">yi(x1,x2,..,xn)</span>
+</li><li class="li-itemize"><span style="font-family:monospace">diffvars</span> : sequence of variables  <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span><sub>1</sub></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span><sub>2</sub></sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span><sub><span style="font-style:italic">k</span></sub></sub>  with respect to which is <span style="font-family:monospace">expr</span> differentiated
+</li><li class="li-itemize"><span style="font-family:monospace">vars</span> : independent and dependent variables entered as symbols in single list such that dependent variables come last, e.g. <span style="font-family:monospace">[x1,..,xn,y1,..,ym]</span>
+</li><li class="li-itemize"><span style="font-family:monospace">y</span> : (list of) dependent variable(s)  <span style="font-style:italic">y</span><sub><span style="font-style:italic">j</span><sub>1</sub></sub>,<span style="font-style:italic">y</span><sub><span style="font-style:italic">j</span><sub>2</sub></sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">j</span><sub><span style="font-style:italic">l</span></sub></sub>  that need to be differentiated
+</li></ul><p>
+Dependent variables  <span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>  are implicitly defined with  <span style="font-style:italic">m</span>  constraints in <span style="font-family:monospace">constr</span>. By implicit function theorem, the Jacobian matrix of  <span style="font-weight:bold"><span style="font-style:italic">g</span></span>=(<span style="font-style:italic">g</span><sub>1</sub>,<span style="font-style:italic">g</span><sub>2</sub>,…,<span style="font-style:italic">g</span><sub><span style="font-style:italic">m</span></sub>)  has to be full rank.</p><p>When calling <span style="font-family:monospace">implicitdiff</span>, first two sets of parameters are used when specific partial derivative is needed. In the first case, <span style="font-family:monospace">expr</span> is differentiated with respect to <span style="font-family:monospace">diffvars</span>.</p><p>Input :
 </p><div class="center">
-<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >Name</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Description</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_NA_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Avogadro’s number</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_k_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Boltzmann constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_Vm_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Molar volume</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_R_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Universal gas constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_StdT_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Standard temperature </td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_StdP_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Standard pressure</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_sigma_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Stefan-Boltzmann constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_c_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Speed of light in vacuum</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_epsilon0_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Permitivity of vacuum</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_mu0_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Permeability of vacuum</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_g_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Acceleration of gravity</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_G_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Gravitational constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_h_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Planck’s constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_hbar_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Dirac’s constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_q_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Electron charge</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_me_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Electron rest mass</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_qme_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >q/me (Electron charge/mass)</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_mp_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Proton rest mass</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_mpme_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >mp/me (proton mass/electron mass)</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_alpha_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Fine structure constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_phi_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Magnetic flux quantum</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_F_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Faraday constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_Rinfinity_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Rydberg constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_a0_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Bohr radius</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_muB_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Bohr magneton</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_muN_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Nuclear magneton</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_lambda0_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Photon wavelength (ch/e)</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_f0_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Photon frequency (e/h)</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_lambdac_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Compton wavelength</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_rad_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >1 radian</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_twopi_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >2*pi radians</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_angl_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >180 degrees angle</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_c3_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Wien displacement constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_kq_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >k/q (Boltzmann/electron charge)</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_epsilon0q_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >epsilon0/q (permitivity /electron charge)</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_qepsilon0_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >q*epsilon0 (electron charge *permitivity)</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_epsilonsi_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Silicium dielectric constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_epsilonox_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Bioxyd of silicium dielectric constant</td></tr>
-<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">_I0_</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" >Reference intensity</td></tr>
-</table>
+<span style="font-family:monospace">implicitdiff(x*y,-2x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+15x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y+11y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-24y=0,y(x),x)</span>
 </div><p>
-To have the value of a constant, input the constant name in the command line 
-of <span style="font-family:monospace">Xcas</span> and evaluate with <span style="font-family:monospace">enter</span> (don’t forget to put 
-<span style="font-family:monospace">_</span> at the beginning and at the end of the constant name).</p><hr>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y+11*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-8*y)/(5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+11*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-8)</span>
+</div><p>
+In the second case (elements of) <span style="font-family:monospace">y</span> is differentiated. If <span style="font-family:monospace">y</span> is a list of symbols, a list containing their derivatives will be returned. The following examples compute  <span style="font-style:italic">d</span> <span style="font-style:italic">y</span>/<span style="font-style:italic">d</span> <span style="font-style:italic">x</span> .<br>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">implicitdiff(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2=1,y,x)</span>
+</div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">-2*x*y/(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*y)</span>
+</div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">implicitdiff([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y=z,x+y*z=1],[y(x),z(x)],y,x)</span>
+</div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">(-2*x*y-1)/(y+z)</span>
+</div><p>
+In the next example,  <span style="font-style:italic">d</span> <span style="font-style:italic">y</span>/<span style="font-style:italic">d</span> <span style="font-style:italic">x</span>  and  <span style="font-style:italic">d</span> <span style="font-style:italic">z</span>/<span style="font-style:italic">d</span> <span style="font-style:italic">x</span>  are computed.<br>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">implicitdiff([-2x*z+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2=1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-exp(x*z)=y],</span><br>
+<span style="font-family:monospace">[y(x),z(x)],[y,z],x)</span>
+</div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">[2*x/(y*exp(x*z)+1),</span><br>
+<span style="font-family:monospace">(2*x*y-y*z*exp(x*z)-z)/(x*y*exp(x*z)+x)]</span>
+</div><p>For the third case of input syntax, all partial derivatives of order equal to <span style="font-family:monospace">order_size</span>, i.e.  <span style="font-style:italic">k</span> , are computed. If  <span style="font-style:italic">k</span>=1  they are returned in a single list, which represents the gradient of <span style="font-family:monospace">expr</span> with respect to independent variables. For  <span style="font-style:italic">k</span>=2  the corresponding hessian matrix is returned. When  <span style="font-style:italic">k</span>&gt;2 , a table with keys in form <span style="font-family:monospace">[k1,k2,..,kn]</span>, where  ∑<sub><span style="font-style:italic">i</span>=1</sub><sup><span style="font-style:italic">n</span></sup><span style="font-style:italic">k</span><sub><span style="font-style:italic">i</span></sub>=<span style="font-style:italic">k</span> , is returned. Such key corresponds to </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup><span style="font-style:italic">k</span></sup> <span style="font-style:italic">f</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span><sub>1</sub><sup><span style="font-style:italic">k</span><sub>1</sub></sup> ∂ <span style="font-style:italic">x</span><sub>2</sub><sup><span style="font-style:italic">k</span><sub>2</sub></sup> ⋯ ∂ <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub><sup><span style="font-style:italic">k</span><sub><span style="font-style:italic">n</span></sub></sup></td></tr>
+</table></td><td class="dcell">. </td></tr>
+</table><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">f:=x*y*z; g:=-2x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+15x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y+11y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-24y=0;</span><br>
+<span style="font-family:monospace">implicitdiff(f,g,[x,z,y],order_size=1)</span>
+</div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">[(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*z-5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y*z+11*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*z-8*y*z)/(5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+11*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-8),</span><br>
+<span style="font-family:monospace">x*y]</span>
+</div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">implicitdiff(f,g,order_size=2,[1,-1,0])</span>
+</div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">[[64/9,-2/3],[-2/3,0]]</span>
+</div><p>
+In the next example, the value of  ∂<sup>4</sup> <span style="font-style:italic">f</span>/∂ <span style="font-style:italic">x</span><sup>4</sup>  is computed at point  (<span style="font-style:italic">x</span>=0,<span style="font-style:italic">y</span>=0,<span style="font-style:italic">z</span>) .<br>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">pd:=implicitdiff(f,g,[x,z,y],order_size=4,[0,z,0]);</span><br>
+<span style="font-family:monospace">pd[4,0]</span>
+</div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">-2*z</span>
+</div>
+<hr>
 <a href="cascmd_en518.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_en520.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

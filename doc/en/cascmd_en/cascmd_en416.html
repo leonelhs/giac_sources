@@ -4,42 +4,70 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Characteristic polynomial using Hessenberg algorithm :
- pcar_hessenberg</title>
+<title>Statistics functions acting on column matrices : mean, stddev, variance, median, quantile, quartiles, boxwhisker</title>
 </head>
 <body >
 <a href="cascmd_en415.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en417.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec496" class="subsection">2.47.7  Characteristic polynomial using Hessenberg algorithm :<br>
- <span style="font-family:monospace">pcar_hessenberg</span></h3>
-<p><a id="hevea_default697"></a>
-<span style="font-family:monospace">pcar_hessenberg</span> takes as argument a square 
-matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> and optionally the name of a symbolic variable.<br>
-<span style="font-family:monospace">pcar_hessenberg</span> returns the characteristic polynomial <span style="font-style:italic">P</span> of <span style="font-style:italic">A</span> written
-as the list of its coefficients if no variable was provided
-or written in its symbolic form with respect to the variable name given 
-as second argument, where
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=det(<span style="font-style:italic">xI</span>−<span style="font-style:italic">A</span>) </td></tr>
-</table><p>
-The characteristic polynomial is computed using the Hessenberg algorithm
-(see e.g. Cohen) which is more efficient (<span style="font-style:italic">O</span>(<span style="font-style:italic">n</span><sup>3</sup>) deterministic) if 
-the coefficients of <span style="font-style:italic">A</span> are in a finite field or use a finite 
-representation like approximate numeric coefficients. Note however that
-this algorithm behaves badly if the coefficients are e.g. in ℚ.<br>
+<h3 id="sec499" class="subsection">4.42.31  Statistics functions acting on column matrices : <span style="font-family:monospace">mean</span>, <span style="font-family:monospace">stddev</span>, <span style="font-family:monospace">variance</span>, <span style="font-family:monospace">median</span>, <span style="font-family:monospace">quantile</span>, <span style="font-family:monospace">quartiles</span>, <span style="font-family:monospace">boxwhisker</span></h3>
+<p><a id="sec:statmat"></a>
+<a id="hevea_default638"></a> <a id="hevea_default639"></a><a id="hevea_default640"></a><a id="hevea_default641"></a><a id="hevea_default642"></a><a id="hevea_default643"></a><a id="hevea_default644"></a>
+The following functions work on matrices, acting column by column:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">mean</span> computes the arithmetic means of the statistical series
+stored in the columns of a matrix.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1 % 37 ,-6% 37,12 % 37,-8 % 37]</span></div><p>
+<div class="center"><span style="font-family:monospace">mean([[3,4,2],[1,2,6]])</span></div>
+Output is the vector of the means of each column :
+<div class="center"><span style="font-family:monospace">[2,3,4]</span></div>
 Input :
-</p><div class="center"><span style="font-family:monospace">pcar_hessenberg([[4,1,-2],[1,2,-1],[2,1,0]] % 37,x)</span></div><p>
+<div class="center"><span style="font-family:monospace">mean([[1,0,0],[0,1,0],[0,0,1]])</span></div>
+Output 
+<div class="center"><span style="font-family:monospace">[1/3,1/3,1/3]</span></div></li><li class="li-itemize"><span style="font-family:monospace">stddev</span> computes the standard deviations of the population
+statistical series stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">stddev([[3,4,2],[1,2,6]])</span></div>
+Output is the vector of the standard deviations of each column :
+<div class="center"><span style="font-family:monospace">[1,1,2]</span></div>
+</li><li class="li-itemize"><span style="font-family:monospace">variance</span> computes the variances of the statistical series
+stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">variance([[3,4,2],[1,2,6]])</span></div>
+Output is the vector of the variance of each column :
+<div class="center"><span style="font-family:monospace">[1,1,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">median</span> computes the medians of the statistical series
+stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">median([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
+Output is the vector of the median of each column :
+<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quantile</span> computes the deciles as specified by the second
+argument of the statistical series stored in the columns of a matrix.<br>
+Input :<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.25)</span></div>
+Output is the vector of the first quartile of each column :
+<div class="center"><span style="font-family:monospace">[1,1,2,2,1,1,1]</span></div>
+Input :
+<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.75)</span></div>
+Output is the vector of the third quartile of each column :
+<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quartiles</span> computes the minima, the first quartiles, the 
+medians, the third quartiles and the maxima of the statistical series
+stored in the columns of a matrix.<br>
+Input :
+<div class="center"><span style="font-family:monospace">quartiles([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3], [2,5,6,0,1,3,4]])</span></div>
+Output is a matrix, its first row is the minima of each column,
+its second row is the fist quartiles of each column, 
+its third row the medians 
+of each column, its fourth row the third
+quartiles of each column and its last row the maxima of each column:
+<div class="center"><span style="font-family:monospace">[[0,0,1,0,0,0,0],[1,1,2,2,1,1,1], [2,2,3,3,2,2,3],</span></div>
+<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4],[6,5,6,6,6,6,6]]</span></div></li><li class="li-itemize"><span style="font-family:monospace">boxwhisker</span> draws the whisker boxes of the statistical series
+stored in the columns of a matrix .<br>
+Input :
+<div class="center"><span style="font-family:monospace">boxwhisker([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6], [1,3,4,2,5,6,0],[3,4,2,5,6,0,1], [4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-6 %37 *x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+12 % 37 *x-8 % 37</span></div><p>
-Hence, the characteristic polynomial of [[4,1,-2],[1,2,-1],[2,1,0]] in
-ℤ/37 ℤ is
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>−6<span style="font-style:italic">x</span><sup>2</sup>+12<span style="font-style:italic">x</span>−8 </td></tr>
-</table>
+<div class="center"><span style="font-family:monospace">the drawing of the whisker boxes of the statistical 
+series of each column of the matrix argument</span></div> 
+</li></ul>
 <hr>
 <a href="cascmd_en415.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

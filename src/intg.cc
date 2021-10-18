@@ -3029,6 +3029,25 @@ namespace giac {
     }
     v=w;
   }
+
+  gen assumeeval(const gen & x,GIAC_CONTEXT){
+    if (x.type!=_IDNT)
+      return x.eval(1,contextptr);
+    gen evaled;
+    if (x._IDNTptr->in_eval(1,x,evaled,contextptr))
+      return evaled;
+    return x;
+  }
+
+  void restorepurge(const gen & xval,const gen & x,GIAC_CONTEXT){
+    if (xval==x 
+	// || (xval.type==_VECT && xval.subtype==_ASSUME__VECT && xval._VECTptr->size()==1 && xval._VECTptr->front().val==_SYMB)
+	)
+      purgenoassume(x,contextptr);
+    else
+      sto(xval,x,contextptr);
+  }
+
 #ifndef USE_GMP_REPLACEMENTS
   // small utility for ggb floats looking like fractions
   void ggb_num_coeff(gen & g){
@@ -3154,7 +3173,7 @@ namespace giac {
 	v.pop_back();
       }
       else {
-	gen xval=x.eval(1,contextptr);
+	gen xval=assumeeval(x,contextptr);
 	gen a(v[2]),b(v[3]);
 	if (evalf_double(a,1,contextptr).type==_DOUBLE_ && evalf_double(b,1,contextptr).type==_DOUBLE_){
 	  bool neg=false;
@@ -3186,14 +3205,14 @@ namespace giac {
 	  giac_assume(symb_and(symb_superieur_egal(x,a),symb_inferieur_egal(x,b)),contextptr);
 	  v.push_back(at_assume);
 	  gen res=_integrate(gen(v,_SEQ__VECT),contextptr);
-	  sto(xval,x,contextptr);
+	  restorepurge(xval,x,contextptr);
 	  return neg?-res:res;
 	}
 	if (is_greater(b,a,contextptr)){
 	  giac_assume(symb_and(symb_superieur_egal(x,a),symb_inferieur_egal(x,b)),contextptr);
 	  v.push_back(at_assume);
 	  gen res=_integrate(gen(v,_SEQ__VECT),contextptr);
-	  sto(xval,x,contextptr);
+	  restorepurge(xval,x,contextptr);
 	  return res;
 	}
 	else {
@@ -3201,7 +3220,7 @@ namespace giac {
 	    giac_assume(symb_and(symb_superieur_egal(x,b),symb_inferieur_egal(x,a)),contextptr);
 	    v.push_back(at_assume);
 	    gen res=_integrate(gen(v,_SEQ__VECT),contextptr);
-	    sto(xval,x,contextptr);
+	    restorepurge(xval,x,contextptr);
 	    return res;
 	  }
 	}
@@ -3457,17 +3476,17 @@ namespace giac {
     bool desordonne=false;
 #ifdef NO_STDEXCEPT
     if (ordonne){
-      gen xval=x.eval(1,contextptr);
+      gen xval=assumeeval(x,contextptr);
       giac_assume(symb_and(symb_superieur_egal(x,borne_inf),symb_inferieur_egal(x,borne_sup)),contextptr);
       primitive=eval(primitive,1,contextptr);
-      sto(xval,x,contextptr);
+      restorepurge(xval,x,contextptr);
       res=limit(primitive,*x._IDNTptr,borne_sup,-1,contextptr)-limit(primitive,*x._IDNTptr,borne_inf,1,contextptr);
     }
     else {
       if ( (desordonne=is_greater(borne_inf,borne_sup,contextptr) )){
-	gen xval=x.eval(1,contextptr);
+	gen xval=assumeeval(x,contextptr);
 	giac_assume(symb_and(symb_superieur_egal(x,borne_sup),symb_inferieur_egal(x,borne_inf)),contextptr);
-	sto(xval,x,contextptr);
+	restorepurge(xval,x,contextptr);
 	res=limit(primitive,*x._IDNTptr,borne_sup,1,contextptr)-limit(primitive,*x._IDNTptr,borne_inf,-1,contextptr) ;
       }
       else
@@ -3476,19 +3495,19 @@ namespace giac {
 #else
     try {
       if (ordonne){
-	gen xval=x.eval(1,contextptr);
+	gen xval=assumeeval(x,contextptr);
 	giac_assume(symb_and(symb_superieur_egal(x,borne_inf),symb_inferieur_egal(x,borne_sup)),contextptr);
 	primitive=eval(primitive,1,contextptr);
-	sto(xval,x,contextptr);
+	restorepurge(xval,x,contextptr);
 	gen rs=limit(primitive,*x._IDNTptr,borne_sup,-1,contextptr);
 	gen ri=limit(primitive,*x._IDNTptr,borne_inf,1,contextptr);
 	res=rs-ri;
       }
       else {
 	if ( (desordonne=is_greater(borne_inf,borne_sup,contextptr) )){
-	  gen xval=x.eval(1,contextptr);
+	  gen xval=assumeeval(x,contextptr);
 	  giac_assume(symb_and(symb_superieur_egal(x,borne_sup),symb_inferieur_egal(x,borne_inf)),contextptr);
-	  sto(xval,x,contextptr);
+	  restorepurge(xval,x,contextptr);
 	  res=limit(primitive,*x._IDNTptr,borne_sup,1,contextptr)-limit(primitive,*x._IDNTptr,borne_inf,-1,contextptr) ;
 	}
 	else
@@ -3513,13 +3532,13 @@ namespace giac {
     else {
       if ((is_inf(borne_inf) || evalf_double(borne_inf,1,contextptr).type==_DOUBLE_)
 	  && (is_inf(borne_sup) || evalf_double(borne_sup,1,contextptr).type==_DOUBLE_)){
-	gen xval=x.eval(1,contextptr);
+	gen xval=assumeeval(x,contextptr);
 	if (is_greater(borne_sup,borne_inf,contextptr))
 	  giac_assume(symb_and(symb_superieur_egal(x,borne_inf),symb_inferieur_egal(x,borne_sup)),contextptr);
 	else
 	  giac_assume(symb_and(symb_superieur_egal(x,borne_sup),symb_inferieur_egal(x,borne_inf)),contextptr);
 	sp=protect_find_singularities(primitive,*x._IDNTptr,2,contextptr);
-	sto(xval,x,contextptr);
+	restorepurge(xval,x,contextptr);
 	if (!lidnt(evalf_double(sp,1,contextptr)).empty())
 	  return gensizeerr("Unable to handle singularities of "+ primitive.print(contextptr)+" at "+gen(sp).print(contextptr));
       }

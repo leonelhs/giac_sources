@@ -4,27 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Bézout’s Identity : iegcd igcdex</title>
+<title>Boolean operators : or xor and not</title>
 </head>
 <body >
 <a href="cascmd_en037.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en039.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec48" class="subsection">2.6.20  Bézout’s Identity : <span style="font-family:monospace">iegcd igcdex</span></h3>
-<p><a id="hevea_default73"></a><a id="hevea_default74"></a>
-<span style="font-family:monospace">iegcd(a,b)</span> or <span style="font-family:monospace">igcdex(a,b)</span> 
-returns the coefficients of the Bézout’s Identity for two integers given
-as arguments.<br>
-<span style="font-family:monospace">iegcd(a,b)</span> or <span style="font-family:monospace">igcdex(a,b)</span> returns <span style="font-family:monospace">[u,v,d]</span> such that 
-<span style="font-family:monospace">au+bv=d</span> and <span style="font-family:monospace">d=gcd(a,b)</span>.<br>
+<h3 id="sec58" class="subsection">4.2.3  Boolean operators : <span style="font-family:monospace">or xor and not</span></h3>
+<p><a id="hevea_default16"></a><a id="hevea_default17"></a><a id="hevea_default18"></a><a id="hevea_default19"></a><a id="hevea_default20"></a><a id="hevea_default21"></a><a id="hevea_default22"></a>
+<span style="font-family:monospace">or</span> (or <span style="font-family:monospace">||</span>), <span style="font-family:monospace">xor</span>, <span style="font-family:monospace">and</span> (or <span style="font-family:monospace">&amp;&amp;</span>) are infixed 
+operators.<br>
+<span style="font-family:monospace">not</span> is a prefixed operators.<br>
+If <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are two booleans :<br>
+<span style="font-family:monospace">(a or b)</span> <span style="font-family:monospace">(a || b)</span> returns <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> and
+<span style="font-family:monospace">b</span> are equal to 0 and returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) otherwise.<br>
+<span style="font-family:monospace">(a xor b)</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is equal to 1 and <span style="font-family:monospace">b</span> is
+equal to 0 or if <span style="font-family:monospace">a</span> is equal to 0 and <span style="font-family:monospace">b</span> is equal to 1 and returns 0
+if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 0
+or if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 1 (it is the "exclusive or").<br>
+<span style="font-family:monospace">(a and b)</span> or <span style="font-family:monospace">(a &amp;&amp; b)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span>
+and <span style="font-family:monospace">b</span> are equal to 1 and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) otherwise.<br>
+<span style="font-family:monospace">not(a)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span> is equal to 0 (or 
+<span style="font-family:monospace">false</span>), and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> is equal to 1 (or 
+<span style="font-family:monospace">true</span>).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">iegcd(48,30) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 or 1&lt;0</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[2,-3,6]</span></div><p>
-In other words :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2 · 48+ (−3) · 30 =6</td></tr>
-</table>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 xor 1&gt;0</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 and 1&gt;0</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">not(0==0)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">0</span></div>
 <hr>
 <a href="cascmd_en037.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

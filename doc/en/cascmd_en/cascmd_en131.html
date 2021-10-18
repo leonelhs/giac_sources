@@ -4,48 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Length of an arc : arcLen</title>
+<title>Barycenter of complex numbers : barycentre</title>
 </head>
 <body >
 <a href="cascmd_en130.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en132.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec158" class="subsection">2.17.2  Length of an arc : <span style="font-family:monospace">arcLen</span></h3>
-<p><a id="hevea_default252"></a>
-<span style="font-family:monospace">arcLen</span> takes four arguments : an expression <span style="font-style:italic">ex</span> (resp. a list
-of two expressions [<span style="font-style:italic">ex</span>1,<span style="font-style:italic">ex</span>2]), the name of a parameter and two values <span style="font-style:italic">a</span>
-and <span style="font-style:italic">b</span> of this parameter.<br>
-<span style="font-family:monospace">arcLen</span> computes the length of the curve define by the equation 
-<span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">ex</span> (resp. by <span style="font-style:italic">x</span>=<span style="font-style:italic">ex</span>1,<span style="font-style:italic">y</span>=<span style="font-style:italic">ex</span>2) when the parameter values varies from <span style="font-style:italic">a</span> 
-to <span style="font-style:italic">b</span>, using the formula
-<span style="font-family:monospace">arcLen(f(x),x,a,b)=</span><br>
-<span style="font-family:monospace">integrate(sqrt(diff(f(x),x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1),x,a,b)</span><br>
-or <br>
-<span style="font-family:monospace">integrate(sqrt(diff(x(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+diff(y(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),t,a,b)</span>.<br>
-
-<span style="font-weight:bold">Examples</span>
+<h3 id="sec160" class="subsection">4.11.10  Barycenter of complex numbers : <span style="font-family:monospace">barycentre</span></h3>
+<p><a id="hevea_default156"></a><a id="sec:baryc"></a>
+<span style="font-weight:bold">See also :</span> <a >??</a> and <a >??</a>.<br>
+<span style="font-family:monospace">barycentre</span> takes as argument two lists of the same size
+(resp. a matrix with two columns): 
 </p><ul class="itemize"><li class="li-itemize">
-Compute the length of the parabola <span style="font-style:italic">y</span>=<span style="font-style:italic">x</span><sup>2</sup> from <span style="font-style:italic">x</span>=0 to <span style="font-style:italic">x</span>=1.<br>
+the elements of the first list (resp. column) 
+are points <span style="font-style:italic">A</span><sub><span style="font-style:italic">j</span></sub> or complex numbers <span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span></sub> (the affixes of the points),
+</li><li class="li-itemize">the elements of the second list (resp. column) are real coefficients 
+α<sub><span style="font-style:italic">j</span></sub> such that ∑α<sub><span style="font-style:italic">j</span></sub> ≠ 0.
+</li></ul><p>
+<span style="font-family:monospace">barycentre</span> returns the barycenter point of the points <span style="font-style:italic">A</span><sub><span style="font-style:italic">j</span></sub> 
+weighted by the real coefficients α<sub><span style="font-style:italic">j</span></sub>.
+If ∑α<sub><span style="font-style:italic">j</span></sub> = 0, <span style="font-family:monospace">barycentre</span> returns an
+error.<br>
+<span style="font-weight:bold">Warning</span> To have a complex number in the output, the input must be :<br>
+<span style="font-family:monospace">affix(barycentre(...,...))</span> 
+because <span style="font-family:monospace">barycentre(...,...)</span> returns a point, not a complex number.<br>
 Input :
-<div class="center"><span style="font-family:monospace">arcLen(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,0,1)</span></div>
-or
-<div class="center"><span style="font-family:monospace">arcLen([t,t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2],t,0,1)</span></div>
+</p><div class="center"><span style="font-family:monospace">affix(barycentre([1+i,1-i],[1,1]))</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">affix(barycentre([[1+i,1],[1-i,1]]))</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">-1/4*log(sqrt(5)-2)-(-(sqrt(5)))/2</span></div> 
-</li><li class="li-itemize">Compute the length of the curve <span style="font-style:italic">y</span>=cosh(<span style="font-style:italic">x</span>) from <span style="font-style:italic">x</span>=0 to 
-<span style="font-style:italic">x</span>=ln(2).<br>
-Input :
-<div class="center"><span style="font-family:monospace">arcLen(cosh(x),x,0,log(2))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">3/4</span></div>
-</li><li class="li-itemize">Compute the length of the circle <span style="font-style:italic">x</span>=cos(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=sin(<span style="font-style:italic">t</span>) from <span style="font-style:italic">t</span>=0 to 
-<span style="font-style:italic">t</span>=2*π.<br>
-Input :
-<div class="center"><span style="font-family:monospace">arcLen([cos(t),sin(t)],t,0,2*pi)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">2*pi</span></div>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">i</span></div>
 <hr>
 <a href="cascmd_en130.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

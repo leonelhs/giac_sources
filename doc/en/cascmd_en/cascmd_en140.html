@@ -4,105 +4,67 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Limits : limit</title>
+<title>Factorization : factor</title>
 </head>
 <body >
 <a href="cascmd_en139.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en141.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec173" class="subsection">2.19.1  Limits : <span style="font-family:monospace">limit</span></h3>
-<p><a id="hevea_default268"></a><a id="sec:limit"></a></p><p><span style="font-family:monospace">limit</span> computes the limit of an expression at a finite or infinite point.
-It is also possible with an optional argument to compute a one-sided
-limit (1 for the right limit and -1 for the left limit).<br>
-<span style="font-family:monospace">limit</span> takes three or four arguments :<br>
-an expression, the name of a variable (for example <span style="font-family:monospace">x</span>), the limit point 
-(for example <span style="font-family:monospace">a</span>) and an optional argument, by default <span style="font-family:monospace">0</span>, to 
-indicate if the limit is unidirectional. 
-This argument is equal to 
-<span style="font-family:monospace">-1</span> for a left limit (<span style="font-family:monospace">x&lt;a</span>) or is equal to <span style="font-family:monospace">1</span> 
-for a right limit (<span style="font-family:monospace">x&gt;a</span>) or is equal to <span style="font-family:monospace">0</span> for a limit.<br>
-<span style="font-family:monospace">limit</span> returns the limit of the expression when the variable (for example
-<span style="font-family:monospace">x</span>) approaches the limit point (for example <span style="font-family:monospace">a</span>).<br>
-<span style="font-weight:bold">Remark</span><br>
-It is also possible to put <span style="font-family:monospace">x=a</span> as argument instead of <span style="font-family:monospace">x,a</span>, hence :
-<span style="font-family:monospace">limit</span> takes also as arguments an expression depending of a variable, 
-an equality (variable =value of the limit point) and perhaps 1 or -1 to 
-indicate the direction.<br>
+<h3 id="sec170" class="subsection">4.12.9  Factorization : <span style="font-family:monospace">factor</span></h3>
+<p><a id="hevea_default168"></a><a id="sec:factore"></a>
+<span style="font-family:monospace">factor</span> takes as argument an expression.<br>
+<span style="font-family:monospace">factor</span> factorizes this expression on the field of its coefficients,
+with the addition of <span style="font-style:italic">i</span> in complex mode. If <span style="font-family:monospace">sqrt</span> is enabled
+in the Cas configuration, polynomials of order 2 are factorized in
+complex mode or in real mode if the discriminant is positive.<br>
+<span style="font-weight:bold">Examples</span>
+</p><ol class="enumerate" type=1><li class="li-enumerate">
+Factorize <span style="font-style:italic">x</span><sup>4</sup>−1 over ℚ.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,-1)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,-1)</span></div><p>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">-(infinity)</span></div><p> 
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)*(x+1)*(x-1)</span></div>
+The coefficients are rationals, hence the factors are polynomials with
+rationals coefficients.<br>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>−1 over ℚ[<span style="font-style:italic">i</span>] <br>
+To have a complex factorization, check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration (red button displaying the status line).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,1)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,1)</span></div><p>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div><p> 
+<div class="center"><span style="font-family:monospace">-i*(-x+-i)*(i*x+1)*(-x+1)*(x+1)</span></div>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over ℚ<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,0)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0)</span></div><p>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">infinity</span></div><p> 
-Hence, <span style="font-family:monospace">abs(1/x)</span> approaches +∞ when <span style="font-style:italic">x</span> approaches 0.</p><p><span style="font-weight:bold">Exercises</span> :
-</p><ul class="itemize"><li class="li-itemize">
-Find for <span style="font-style:italic">n</span>&gt;2, the limit when <span style="font-style:italic">x</span> approaches 0 of :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>tan(<span style="font-style:italic">x</span>)−tan(<span style="font-style:italic">nx</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">sin(<span style="font-style:italic">nx</span>)−<span style="font-style:italic">n</span>sin(<span style="font-style:italic">x</span>)</td></tr>
-</table></td></tr>
-</table>
+<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1</span></div>
+Indeed  <span style="font-style:italic">x</span><sup>4</sup>+1 has no factor with rational coefficients.<br>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over ℚ[<span style="font-style:italic">i</span>]<br>
+Check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration (red button rouge displaying the status line).<br>
 Input :
-<div class="center"><span style="font-family:monospace">limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</span></div>
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1)</span></div>
 Output :
-<div class="center"><span style="font-family:monospace">2 </span></div>
-</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches +∞ of :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:4em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:0em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
-</table></td></tr>
-</table> 
-Input :
-<div class="center"><span style="font-family:monospace">limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</span></div>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+i)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-i)</span></div>
+</li><li class="li-enumerate">Factorize <span style="font-style:italic">x</span><sup>4</sup>+1 over ℝ.<br>
+You have to provide the square root required for extending the
+rationals. In order to do that with the help of <span style="font-family:monospace">Xcas</span>, 
+first check <span style="font-family:monospace">complex</span> in the <span style="font-family:monospace">cas</span>
+configuration and input :<br>
+<div class="center"><span style="font-family:monospace">solve(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,x)</span></div><a id="hevea_default169"></a><a id="hevea_default170"></a>
 Output :
-<div class="center"><span style="font-family:monospace">1/2 </span></div>
-</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches 0 of :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>/2</td></tr>
-</table></td><td class="dcell">−exp(<span style="font-style:italic">x</span>/2)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">(1−cos(<span style="font-style:italic">x</span>))sin(<span style="font-style:italic">x</span>)</td></tr>
-</table></td></tr>
-</table> 
-Input :
-<div class="center"><span style="font-family:monospace">limit((sqrt(1+x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</span></div>
+<div class="center"><span style="font-family:monospace">[sqrt(2)/2+(i)*sqrt(2)/2,sqrt(2)/2+(i)*(-(sqrt(2)/2)),
+-sqrt(2)/2+(i)*sqrt(2)/2,-sqrt(2)/2+(i)*(-(sqrt(2)/2))]</span></div>
+The roots depends on √<span style="text-decoration:overline">2</span>. Uncheck complex mode in the Cas configuration
+and input :
+<div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,sqrt(2))</span></div>
 Output :
-<div class="center"><span style="font-family:monospace">-1/6 </span></div>
-</li></ul><p><span style="font-weight:bold">Remark</span><br>
-To compute limits, it is better sometimes to quote the first argument.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">limit(’(2*x-1)*exp(1/(x-1))’,x=+infinity)</span></div><p>
-Note that the first argument is quoted, because it is better that
-this argument is not simplified (i.e. not evaluated).<br>
-Output :
-</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div>
+<div class="center"><span style="font-family:monospace">(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+sqrt(2)*x+1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(-(sqrt(2)))*x+1)</span></div>
+To factorize over ℂ, check <span style="font-family:monospace">complex</span> in the 
+<span style="font-family:monospace">cas</span> configuration or input <span style="font-family:monospace">cFactor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+1,sqrt(2))</span> 
+(cf <span style="font-family:monospace">cFactor</span>).
+</li></ol>
 <hr>
 <a href="cascmd_en139.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

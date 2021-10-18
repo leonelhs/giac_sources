@@ -4,29 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean quotient : quo</title>
+<title>Solving au+bv=c over polynomials: abcuv</title>
 </head>
 <body >
 <a href="cascmd_en254.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en256.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec309" class="subsection">2.31.5  Euclidean quotient : <span style="font-family:monospace">quo</span></h3>
-<p><a id="hevea_default447"></a>
-<span style="font-family:monospace">quo</span> takes as arguments 
-two polynomials <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ, where
-<span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> are list polynomials or symbolic polynomials with
-respect to <span style="font-style:italic">x</span> or to an optional third argument.<br>
-<span style="font-family:monospace">quo</span> returns the quotient of the euclidean division 
-of <span style="font-style:italic">A</span> by <span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<br>
+<h3 id="sec317" class="subsection">4.25.12  Solving au+bv=c over polynomials: <span style="font-family:monospace">abcuv</span></h3>
+<p><a id="hevea_default407"></a>
+<span style="font-family:monospace">abcuv</span> solves the polynomial equation
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">U</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">V</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>) </td></tr>
+</table><p>
+where <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span> are given polynomials and <span style="font-style:italic">U</span> and <span style="font-style:italic">V</span> are unknown
+polynomials. <span style="font-style:italic">C</span> must be a multiple of the gcd of <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span>
+for a solution to exist. <span style="font-family:monospace">abcuv</span> takes 3 expressions as argument,
+and an optional variable specification (which defaults to <span style="font-style:italic">x</span>)
+and returns a list of 2 expressions (<span style="font-style:italic">U</span> and <span style="font-style:italic">V</span>). Alternatively, the
+polynomials <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span> may be entered as list-polynomials.</p><p>Input :
+</p><div class="center"><span style="font-family:monospace">abcuv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1 ,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x+1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1/2,1/-2]</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">quo((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">quo((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">(-6%13)*x+-6%13</span></div><p>
-Indeed  <span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+1=(2<span style="font-style:italic">x</span><sup>2</sup>+4)(<span style="font-style:italic">x</span>+1/2)+5<span style="font-style:italic">x</span>−4/4
-and −3*4=−6*2=1  mod13.</p>
+</p><div class="center"><span style="font-family:monospace">abcuv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1 ,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1/2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/-2*x+1/2,-1/2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1/-2*x-1/2]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">abcuv([1,2,1],[1,0,-1],[1,0,0,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[poly1[1/2,1/-2,1/2],poly1[1/-2,1/2,1/-2]]</span></div>
 <hr>
 <a href="cascmd_en254.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
