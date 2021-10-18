@@ -25,7 +25,10 @@ var UI = {
   histcount: 0,
   selection: '',
   langue: -1,
-  calc: 1, // 1 KhiCAS, 2 Numworks, 3 TI Nspire CX
+  calc: 2, // 1 KhiCAS, 2 Numworks, 3 TI Nspire CX
+  calculator:0, // !=0 if hardware Numworks connected
+  calculator_connected:false,
+  nws_records:0,
   xwaspy_shift: 33, // must be >32 for space encoding, and <=35 for a..z encoding
   canvas_w: 350,
   canvas_h: 200,
@@ -1348,6 +1351,33 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     var ev = Module.cwrap('mp_js_do_str', 'number', ['string']);
     return ev(s);
   },
+  set_xcas:function(){
+    UI.micropy=0; UI.python_mode=0; 
+    var form = $id('config');
+    form.python_xor.checked = false;
+    form.python_mode.checked = false;
+    form.js_mode.checked=false;
+    UI.set_settings();
+    return UI.caseval('python_compat(0)');
+  },
+  set_xcas_python:function(){
+    UI.micropy=0; UI.python_mode=1; 
+    var form = $id('config');
+    form.python_xor.checked = false;
+    form.python_mode.checked = true;
+    form.js_mode.checked=false;
+    UI.set_settings();
+    return UI.caseval('python_compat(1)');
+  },
+  set_micropython:function(){
+    UI.micropy=1; UI.python_mode=4; 
+    var form = $id('config');
+    form.python_xor.checked = false;
+    form.python_mode.checked = true;
+    form.js_mode.checked=false;
+    UI.set_settings();
+    return UI.caseval('python_compat(4)');
+  },
   quickjs:function(text){
     while (text.length>0){
       var ch=text.substr(text.length-1,1);
@@ -1356,13 +1386,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       text=text.substr(0,text.length-1);
     }
     if (text=='xcas' || text=='xcas '){
-      UI.micropy=0; UI.python_mode=0; 
-      var form = $id('config');
-      form.python_xor.checked = false;
-      form.python_mode.checked = false;
-      form.js_mode.checked=false;
-      UI.set_settings();
-      return UI.caseval('python_compat(0)');
+      UI.set_xcas();
     }
     if (text=='.'){ // show turtle
       let s=UI.caseval('avance(0)');
@@ -1388,6 +1412,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     return ev(text);
   },
   classlist2evaluator:function(l){
+    if (l===undefined) return '';
     let evals=['cas','micropy','js'];
     for (let i=0;i<evals.length;++i){
       if (l.contains(evals[i]))
@@ -1396,7 +1421,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     return '';
   },
   set_micropy:function(field,alert=0){
-    //console.log(field.classList);
+    //console.log('set_micropy',field.classList);
     if (field.classList.contains('cas')) {
       UI.micropy=0; UI.python_mode=0;
       if (alert)
@@ -2250,8 +2275,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   python_mode_str: function(i,j){
     if (j==-1) return 'JS';
     if (i==0) return 'xcas';
-    if (i==1) return 'pyth xor';
-    if (i==2) return 'pyth **';
+    if (i==1) return 'pyth **';
+    if (i==2) return 'pyth xor';
     if (i & 4) return 'Python';
     return '?';
   },
@@ -2463,7 +2488,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     var form = $id('config');
     let py=form.python_mode.checked,mp=form.python_xor.checked,js=form.js_mode.checked;
     if (mp) py=true;
-    // console.log(py,mp);
+    console.log('set_config',py,mp);
     UI.canvas_w = form.canvas_w.value;
     UI.canvas_h = form.canvas_h.value;
     var s = UI.config_string();
@@ -2493,7 +2518,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     UI.createCookie('xcas_angle_radian', form.angle_mode.checked ? 1 : -1, 10000);
     UI.warnpy = form.warnpy_mode.checked;
     UI.createCookie('xcas_warnpy', form.warnpy_mode.checked ? 1 : -1, 10000);
-    UI.python_mode = form.python_mode.checked?4:(form.python_xor.checked?1:0);
+    UI.python_mode = form.python_mode.checked?(form.python_xor.checked?4:1):0;
     UI.micropy=form.python_xor.checked?1:0;
     if (form.js_mode.checked)
       UI.micropy=-1;
@@ -2544,18 +2569,172 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     document.execCommand('copy');
     // Remove temporary element
     document.body.removeChild(el);
+  },
+  nws_connect:function(){
+    if (navigator.usb){
+      //console.log('nws_connect 0');
+      if (UI.calculator!=0)
+	return;
+      //console.log('nws_connect 1');
+      function autoConnectHandler(e) {
+	UI.calculator.stopAutoConnect();
+	console.log('connected');
+	UI.calculator_connected=true;
+      }
+      UI.calculator= new Numworks();
+      navigator.usb.addEventListener("disconnect", function(e) {
+	if (UI.calculator==0) return;
+	UI.calculator.onUnexpectedDisconnect(e, function() {
+	  UI.calculator_connected=false;
+          UI.calculator=0;
+	});
+      });
+      //console.log('nws_connect 2');
+      UI.calculator.autoConnect(autoConnectHandler);
+      //console.log('nws_connect 3');
+    }
+  },
+  numworks_load:function(){
+    UI.calc=2;
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_load_,100);
+  },
+  numworks_load_: async function(){
+    console.log(UI.calculator,UI.calculator_connected);
+    if (UI.calculator==0 || !UI.calculator_connected){
+      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      return;
+    }
+    $id('progbuttons').style.display='block'; 
+    let storage = await UI.calculator.backupStorage();
+    let rec=storage.records,j=0,s='Choisissez un numero parmi ';
+    for (;j<rec.length;++j){
+      s+=j;
+      s+=':'+rec[j].name+', ';
+    }
+    let p=prompt(s),n=0;
+    console.log(p);
+    if (!p) return;
+    let l=p.length;
+    for (j=0;j<l;++j){
+      if (p[j]<'0' || p[j]>'9'){ alert(UI.langue==-1?'Nombre invalide':'Invalid number'); return ;}
+      n*=10;
+      n+=p.charCodeAt(j)-48;
+    }
+    if (n>=rec.length){ alert(UI.langue==-1?'Choix invalide':'Invalide choice'); return; }
+    s=rec[n].code; p=rec[n].name;
+    if (p.length>3 && p.substr(p.length-2)=='xw'){
+      UI.set_xcas_python();
+      $id('outputfilename').value=p; // session
+    }
+    else {
+      UI.set_micropython();
+      $id('outputfilename').value=p+'.py';
+    }
+    // console.log(s);
+    UI.do_load(s);
+  },
+  numworks_save:function(filename,S,newbuf,pos){
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_save_,100,filename,S,newbuf,pos);
+  },
+  numworks_save_script:async function(filename,S){
+    if (UI.calculator==0 || !UI.calculator_connected){
+      alert(UI.langue==-1?'Verifiez la connection de la calculatrice':'Check calculator connection');
+      return;
+    }
+    let storage = await UI.calculator.backupStorage();
+    let rec=storage.records,j=0;
+    for (;j<rec.length;++j){
+      if (rec[j].name==filename){
+	if (!confirm((UI.langue==-1?'? Ecraser ':'? Overwrite ')+rec[j].name))
+	  return;
+	rec[j].code=S;
+	break;
+      }
+    }
+    if (j==rec.length)
+      rec.push({"name": filename, "type":"py", "autoImport": false, "code": S});
+    await UI.calculator.installStorage(storage, function() {
+      // Do stuff after writing to the storage is done
+      console.log(filename+'_xw.py saved to Numworks');
+    });
   },    
+  numworks_save_:function(filename,S,newbuf,pos){
+    console.log(UI.calculator,UI.calculator_connected);
+    if (UI.calculator==0 || !UI.calculator_connected){
+      buf=new Uint8Array(pos);
+      for (var i=0;i<pos;++i)
+	buf[i]=newbuf[i];
+      var blob = new Blob([buf]);
+      if (UI.calc==2)
+	filename += "_xw.py";
+      else
+        filename += ".xw";
+      if (UI.calc==3) filename += ".tns";
+      saveAs(blob, filename);
+      return;
+    }
+    UI.numworks_save_script(filename+"_xw",S);
+  },
   savesession: function (i) {
-    // console.log('save_session',i);
-    var s;
+    let s='';
     filename = $id("outputfilename").value;
+    let ext='';
+    if (filename.length>3 && filename.substr(filename.length-3,3)=='.py'){
+      filename=filename.substr(0,filename.length-3);
+      ext='.py';
+    }
+    if (filename.length>3 && filename.substr(filename.length-2,2)=='xw'){
+      filename=filename.substr(0,filename.length-2);
+      if (filename.length && filename[filename.length-1]=='_')
+      filename=filename.substr(0,filename.length-1);	
+      ext='.xw';
+    }
+    console.log('save_session',filename,ext);
+    // console.log('save_session',i,UI.makelink(0));
     document.title = "Xcas_" + filename;
-    if (i == 2) {
+    if (i==2) {
       UI.createCookie('xcas__' + filename, UI.makelink(0), 9999);
       console.log(UI.listCookies());
       return;
     }
-    if (i == 1) {
+    if (i==1) {
+      if (ext=='.py'){ // not a session, but a Python script
+	let cur = $id('mathoutput').firstChild;
+	for (; cur; cur=cur.nextSibling) {
+          let field = cur.firstChild;
+          field = field.firstChild;
+          field = UI.skip_buttons(field);
+	  if (field.firstChild.tagName=='svg')
+	    continue;
+	  if (field.firstChild.tagName=='DIV')
+	    continue;
+          var fs = field.innerHTML;
+          if (fs.length>6 && fs.substr(0,6)=="<span ") { // comment
+            fs = field.firstChild.firstChild.value;
+	    s += '"""' + fs + '"""\n';
+          }
+          if (fs.length>5 && fs.substr(0,5)=="<form") 
+            continue;
+          let pos = fs.search("<textarea");
+          if (pos>=0 && pos<fs.length) {
+            // var tmp=field.firstChild.value.replace(/\n/g,'%0a'); tmp=tmp.replace(';','%3b','g');
+            // s += '+' + tmp.replace('&&',' and ','g') + '&';
+            let tmp = field.firstChild.value;
+	    s += tmp+'\n';
+            continue;
+          }
+          pos = fs.search("UI.addhelp");
+          if (pos>=0 && pos<fs.length) 
+            continue;
+          s += '"""' + fs + '"""\n';
+	} // end for
+	UI.nws_connect();
+	window.setTimeout(UI.numworks_save_script,100,filename,s);
+	console.log(s);
+	return;
+      } // ext=='.py'
       s=UI.makelink(-1);
       if (s[1].length==0)
 	s[1]='\n';
@@ -2613,6 +2792,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	    if (c==41) // ) -> }
 	      c=125; 
 	    newbuf[pos]=c;
+	    S+=String.fromCharCode(c);
 	    ++i;
 	    ++pos;
 	  }
@@ -2624,11 +2804,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	  newbuf[pos]=D; ++pos;
 	  S += String.fromCharCode(A,B,C,D);
 	}
-	// newbuf[pos]=0; ++pos; newbuf[pos]=0; ++pos;
-	// UI.copystringtoclipboard(S); // does not work
-	buf=new Uint8Array(pos);
-	for (var i=0;i<pos;++i)
-	  buf[i]=newbuf[i];
+	//console.log(S,newbuf);
+	UI.numworks_save(filename,S,newbuf,pos);
+	return;
       }
       var blob = new Blob([buf]);
       if (UI.calc==2)
@@ -2693,6 +2871,157 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     var r1=(r+256)%256;
     return r1;
   },
+  decode_fakepy:function(s){
+    // decode sessions saved as fake py files (Numworks)
+    let pos=8;
+    let str="";
+    for (;;){
+      while (pos<s.length && (s[pos]=='\n' || s[pos]==' ' || (s[pos]>='a' && s[pos]<='~'))){
+	let c=s[pos];
+	if (c=='}')
+	  c=')';
+	if (c=='~')
+	  c=':';
+	if (c=='|')
+	  c=';';
+	str += c; ++pos;
+      }
+      if (pos>=s.length) break;
+      let a=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+      if (a<0) break;
+      let b=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+      if (b<0) break;
+      let c=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+      if (c<0) break;
+      let d=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+      if (d<0) break;
+      str += String.fromCharCode((a<<2)|(b>>4),((b&0xf)<<4)|(c>>2),((c&0x3)<<6)|d);
+    }
+    console.log(str);
+    return str;
+  },
+  do_load:function(s){
+    if (s.length>11 && (s.substr(3,7)=='<tbody>' || s.substr(3,8)=='#xwaspy\n') )
+      s=s.substr(3,s.length-3);
+    //console.log(s.substr(0,7));
+    if (s.length>8 && s.substr(0,8)=='#xwaspy\n'){
+      s=UI.decode_fakepy(s);
+    }
+    if (s.length > 7 && s.substr(0, 7) == '<tbody>') {
+      UI.show_history123();
+      $id("mathoutput").innerHTML += s;
+      if (confirm(UI.langue == -1 ? 'Ex&eacute;cuter les commandes de l\'historique?' : 'Execute history commands?'))
+        UI.exec($id('mathoutput'), 0);
+      // Module.print(s);
+    }
+    else {
+      // Casio change ?reader.readAsArrayBuffer or readAsBinaryString
+      if (s.charCodeAt(0)==0){
+	var editpos=0;
+	var editl=UI.unsignedchar(s,1);
+	editl=editl*256+UI.unsignedchar(s,2);
+	editl=editl*256+UI.unsignedchar(s,3);
+	var edits=s.substr(4,editl);
+	//console.log(edits);
+	var py=edits[editl-19];
+	var rad=edits[editl-3];
+	//console.log(edits,py,rad);
+	edits=edits.substr(0,edits.length-34);
+	UI.python_mode=0;
+	if (edits.length)
+	  UI.caseval(edits);
+	UI.python_mode=py;
+	UI.micropy=py==4;
+	form.python_xor.checked=UI.micropy>0;
+	UI.set_settings();
+	editpos=4+editl;
+	editl=UI.unsignedchar(s,editpos);
+	// console.log(0,editl);
+	for (var i=1;i<=3;i++){
+	  editl=editl*256+UI.unsignedchar(s,editpos+i);
+	  // console.log(i,editl);
+	}
+	edits=s.substr(editpos+4,editl);
+	// console.log('script ',editl,edits,edits.length);
+	if (edits=='\n')
+	  edits=UI.python_mode?'def\n':'function\nffunction';
+	if (edits.length)
+	  UI.eval_cmdline1(edits,true);
+	editpos += 4+editl;
+	while (editpos<s.length-4){
+	  editl=UI.unsignedchar(s,editpos);
+	  editl=editl*256+UI.unsignedchar(s,editpos+1);
+	  if (editl==0) break;
+	  var t=UI.unsignedchar(s,editpos+4);
+	  var ro=UI.unsignedchar(s,editpos+5);
+	  edits=s.substr(editpos+6,editl);
+	  //console.log(t,ro,edits);
+	  if (edits.length>=2){
+	    if (edits[0]=='#')
+	      edits='///'+edits.substr(1,edits.length-1);
+	    else {
+	      if (edits[0]=='/'){
+		if (edits[1]=='/')
+		  edits ='/'+edits;
+		else {
+		  if (edits[1]=='*' && edits.length>=4){
+		    edits='///'+edits.substr(2,edits.length-4);
+		  }
+		}
+	      }
+	    }
+	  }
+	  if (edits.length && t==0){
+	    var done=false;
+	    // detect assume(a=[cur,min,max,step])
+	    if (edits.length>=15 && edits.substr(0,7)=="assume("){
+	      var pos=edits.search("=");
+	      var name,value,mini,maxi,step;
+	      if (pos>=8 && pos<edits.length){
+		name=edits.substr(7,pos-7);
+		//console.log(name);
+		// skip =[
+		edits=edits.substr(pos+2,edits.length-pos-2);
+		pos=edits.search(',');
+		if (pos>=1 && pos<edits.length){
+		  value=edits.substr(0,pos);
+		  //console.log(value);
+		  edits=edits.substr(pos+1,edits.length-pos-1);
+		  pos=edits.search(',');
+		  if (pos>=1 && pos<edits.length){
+		    mini=edits.substr(0,pos);
+		    //console.log(mini);
+		    edits=edits.substr(pos+1,edits.length-pos-1);
+		    pos=edits.search(',');
+		    if (pos>=1 && pos<edits.length){
+		      maxi=edits.substr(0,pos);
+		      //console.log(maxi);
+		      edits=edits.substr(pos+1,edits.length-pos-1);
+		      pos=edits.search(']');
+		      if (pos>=1 && pos<edits.length){
+			step=edits.substr(0,pos);
+			//console.log(name,value,mini,maxi,step);
+			UI.addcurseur(name, value, mini, maxi, step);
+			done=true;
+		      }
+		    }
+		  }
+		}
+	      }
+	    }
+	    if (!done)
+	      UI.eval_cmdline1(edits,true);
+	  }
+	  editpos+= 6+editl;
+	}
+      }
+      else { // s.charCodeAt(0)==0 
+	// alert(UI.langue == -1 ? 'Format de document invalide' : 'Invalid document format');
+	if (cmentree.type != 'textarea') cmentree.setValue(s); else entree.value(s);
+      }
+    }
+    if (UI.focusaftereval) UI.focused.focus();
+  },    
   loadfile: function (oFiles) {
     var nFiles = oFiles.length;
     for (var nFileId = 0; nFileId < nFiles; nFileId++) {
@@ -2703,150 +3032,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       var s;
       reader.onloadend = function (e) {
         s = e.target.result;
-	if (s.length>11 && (s.substr(3,7)=='<tbody>' || s.substr(3,8)=='#xwaspy\n') )
-	  s=s.substr(3,s.length-3);
-	//console.log(s.substr(0,7));
-	if (s.length>8 && s.substr(0,8)=='#xwaspy\n'){
-	  // decode sessions saved as fake py files (Numworks)
-	  pos=8;
-	  var str="";
-	  for (;;){
-	    while (pos<s.length && (s[pos]=='\n' || s[pos]==' ' || (s[pos]>='a' && s[pos]<='~'))){
-	      var c=s[pos];
-	      if (c=='}')
-		c=')';
-	      if (c=='~')
-		c=':';
-	      if (c=='|')
-		c=';';
-	      str += c; ++pos;
-	    }
-	    if (pos>=s.length) break;
-	    var a=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
-	    if (a<0) break;
-	    var b=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
-	    if (b<0) break;
-	    var c=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
-	    if (c<0) break;
-	    var d=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
-	    if (d<0) break;
-	    str += String.fromCharCode((a<<2)|(b>>4),((b&0xf)<<4)|(c>>2),((c&0x3)<<6)|d);
-	  }
-	  console.log(str);
-	  s=str;
-	}
-        if (s.length > 7 && s.substr(0, 7) == '<tbody>') {
-          UI.show_history123();
-          $id("mathoutput").innerHTML += s;
-          if (confirm(UI.langue == -1 ? 'Ex&eacute;cuter les commandes de l\'historique?' : 'Execute history commands?'))
-            UI.exec($id('mathoutput'), 0);
-          // Module.print(s);
-        }
-        else {
-	  // Casio change ?reader.readAsArrayBuffer or readAsBinaryString
-	  if (s.charCodeAt(0)==0){
-	    var editpos=0;
-	    var editl=UI.unsignedchar(s,1);
-	    editl=editl*256+UI.unsignedchar(s,2);
-	    editl=editl*256+UI.unsignedchar(s,3);
-	    var edits=s.substr(4,editl);
-	    //console.log(edits);
-	    var py=edits[editl-19];
-	    var rad=edits[editl-3];
-	    //console.log(edits,py,rad);
-	    edits=edits.substr(0,edits.length-34);
-	    UI.python_mode=0;
-	    if (edits.length)
-	      UI.caseval(edits);
-	    UI.python_mode=py;
-	    UI.micropy=py==4;
-	    form.python_xor.checked=UI.micropy>0;
-	    UI.set_settings();
-	    editpos=4+editl;
-	    editl=UI.unsignedchar(s,editpos);
-	    // console.log(0,editl);
-	    for (var i=1;i<=3;i++){
-	      editl=editl*256+UI.unsignedchar(s,editpos+i);
-	      // console.log(i,editl);
-	    }
-	    edits=s.substr(editpos+4,editl);
-	    // console.log('script ',editl,edits,edits.length);
-	    if (edits=='\n')
-	      edits=UI.python_mode?'def\n':'function\nffunction';
-	    if (edits.length)
-	      UI.eval_cmdline1(edits,true);
-	    editpos += 4+editl;
-	    while (editpos<s.length-4){
-	      editl=UI.unsignedchar(s,editpos);
-	      editl=editl*256+UI.unsignedchar(s,editpos+1);
-	      if (editl==0) break;
-	      var t=UI.unsignedchar(s,editpos+4);
-	      var ro=UI.unsignedchar(s,editpos+5);
-	      edits=s.substr(editpos+6,editl);
-	      //console.log(t,ro,edits);
-	      if (edits.length>=2){
-		if (edits[0]=='#')
-		  edits='///'+edits.substr(1,edits.length-1);
-		else {
-		  if (edits[0]=='/'){
-		    if (edits[1]=='/')
-		      edits ='/'+edits;
-		    else {
-		      if (edits[1]=='*' && edits.length>=4){
-			edits='///'+edits.substr(2,edits.length-4);
-		      }
-		    }
-		  }
-		}
-	      }
-	      if (edits.length && t==0){
-		var done=false;
-		// detect assume(a=[cur,min,max,step])
-		if (edits.length>=15 && edits.substr(0,7)=="assume("){
-		  var pos=edits.search("=");
-		  var name,value,mini,maxi,step;
-		  if (pos>=8 && pos<edits.length){
-		    name=edits.substr(7,pos-7);
-		    //console.log(name);
-		    // skip =[
-		    edits=edits.substr(pos+2,edits.length-pos-2);
-		    pos=edits.search(',');
-		    if (pos>=1 && pos<edits.length){
-		      value=edits.substr(0,pos);
-		      //console.log(value);
-		      edits=edits.substr(pos+1,edits.length-pos-1);
-		      pos=edits.search(',');
-		      if (pos>=1 && pos<edits.length){
-			mini=edits.substr(0,pos);
-			//console.log(mini);
-			edits=edits.substr(pos+1,edits.length-pos-1);
-			pos=edits.search(',');
-			if (pos>=1 && pos<edits.length){
-			  maxi=edits.substr(0,pos);
-			  //console.log(maxi);
-			  edits=edits.substr(pos+1,edits.length-pos-1);
-			  pos=edits.search(']');
-			  if (pos>=1 && pos<edits.length){
-			    step=edits.substr(0,pos);
-			    //console.log(name,value,mini,maxi,step);
-			    UI.addcurseur(name, value, mini, maxi, step);
-			    done=true;
-			  }
-			}
-		      }
-		    }
-		  }
-		}
-		if (!done)
-		  UI.eval_cmdline1(edits,true);
-	      }
-	      editpos+= 6+editl;
-	    }
-	  }
-	  else
-	    alert(UI.langue == -1 ? 'Format de document invalide' : 'Invalid document format');
-	}
-        if (UI.focusaftereval) UI.focused.focus();
+	UI.do_load(s);
       }
     }
   },

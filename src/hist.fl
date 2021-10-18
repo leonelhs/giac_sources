@@ -1295,6 +1295,14 @@ Function {Xcas_run(int argc,char ** argv)} {open
           }
           xywh {30 30 100 20}
          }
+         MenuItem Xcas_nw_certify {
+          label {Certification du firmware Numworks}
+          callback {
+	    bool b=giac::nws_certify_firmware(Xcas_get_context());
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
+          }
+          xywh {30 30 100 20}
+         }
          MenuItem Xcas_nw_install {
           label {Install KhiCAS on Numworks calculator}
           callback {

@@ -1,7 +1,7 @@
 SUBDIRS = 	en es fr el local pt zh de
 DIST_SUBDIRS = 	en es fr el local pt zh de 
 XCASHTML = xcasfr.html xcasen.html *.css *.js giacwasm.wasm logo.png giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html algolycee.html graphtheory-user_manual.pdf *.sty simple.html *tableau* magnets html2canvas.js jspdf.umd.min.js khicasnw.html
-EXTRA_DIST = aide_cas README index.html $(XCASHTML) dxcas/* pari/* castex.tex tortue.tex epsilon.dfu apps.tar 50-numworks-calculator.rules 
+EXTRA_DIST = aide_cas README index.html $(XCASHTML) dxcas/* pari/* castex.tex tortue.tex epsilon.dfu apps.tar 50-numworks-calculator.rules shakeys # private nwscert.cc -> shakeys
 
 dist_pkgdata_DATA = aide_cas
 dist_doc_DATA = README index.html
@@ -20,6 +20,7 @@ install-exec-hook:
 	ln -sf ../aide_cas $(DESTDIR)$(prefix)/share/giac/doc/aide_cas
 	cp -f epsilon.dfu apps.tar $(DESTDIR)$(prefix)/share/giac/doc/
 	cp -f 50-numworks-calculator.rules $(DESTDIR)$(prefix)/share/giac/doc/
+	cp -f shakeys $(DESTDIR)$(prefix)/share/giac/doc/
 #	ln -sf $(DESTDIR)$(prefix)/share/giac/doc/en/cascmd_en $(DESTDIR)$(prefix)/share/giac/doc/local/cascmd_local
 #	ln -sf $(DESTDIR)$(prefix)/share/giac/doc/en/casinter $(DESTDIR)$(prefix)/share/giac/doc/local/casinter
 #	ln -sf $(DESTDIR)$(prefix)/share/giac/doc/en/keywords $(DESTDIR)$(prefix)/share/giac/doc/local/keywords

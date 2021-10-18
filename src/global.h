@@ -532,6 +532,9 @@ throw(std::runtime_error("Stopped by user interruption.")); \
   typedef std::map<std::string,nwsrec,ltstring> nws_map;
   bool scriptstore2map(const char * fname,nws_map & m);
   bool map2scriptstore(const nws_map & m,const char * fname);
+  // check that filename content matches a file content signed in sigfilename
+  bool sha256_check(const char * sigfilename,const char * filename);
+  bool nws_certify_firmware(GIAC_CONTEXT); // Numworks certification
 
   struct parser_lexer {
     int _index_status_; // 0 if [ -> T_VECT_DISPATCH, 1 if [ -> T_INDEX_BEGIN

@@ -2354,8 +2354,10 @@ namespace giac {
   }
   // double(int) does not seem to work under GNUWINCE
   double int2double(int i){
-    if (i<0)
+    if (i<0){
+      if (i<-RAND_MAX) return -1.0-RAND_MAX;
       return -_int2double(-i);
+    }
     else
       return _int2double(i);
   }
@@ -8876,11 +8878,11 @@ namespace giac {
       if (is_positive(a._FRACptr->den,contextptr) && is_positive(b._FRACptr->den,contextptr))
 	return superieur_strict(a._FRACptr->num*b._FRACptr->den,a._FRACptr->den*b._FRACptr->num,contextptr);
       break;
-    case _FRAC__INT_:
+    case _FRAC__INT_: case _FRAC_ZINT:
       if (is_positive(a._FRACptr->den,contextptr))
 	return superieur_strict(a._FRACptr->num,a._FRACptr->den*b,contextptr);
       break;
-    case _INT___FRAC:
+    case _INT___FRAC: case _ZINT__FRAC:
       if (is_positive(b._FRACptr->den,contextptr))
 	return superieur_strict(b._FRACptr->den*a,b._FRACptr->num,contextptr);
       break;

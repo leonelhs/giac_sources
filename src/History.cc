@@ -3178,7 +3178,7 @@ namespace xcas {
 	  *nwsptr=tot/256; ++nwsptr;
 	  strcpy((char *)nwsptr,name);
 	  nwsptr[l]=0;
-	  nwsptr[l+1]=1;
+	  nwsptr[l+1]=ed->editor->locked?0:1;
 	  nwsptr += l+2;
 	  strcpy((char *)nwsptr,src.c_str());
 	  nwsptr += L;

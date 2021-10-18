@@ -1131,6 +1131,11 @@ static void cb_Xcas_nw_restore(Fl_Menu_*, void*) {
              };
 }
 
+static void cb_Xcas_nw_certify(Fl_Menu_*, void*) {
+  bool b=giac::nws_certify_firmware(Xcas_get_context());
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
+}
+
 static void cb_Xcas_nw_install(Fl_Menu_*, void*) {
   char fname[]="backup.nws";
              if (!dfu_get_scriptstore(fname))
@@ -2108,6 +2113,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Overwrite calculator", 0,  (Fl_Callback*)cb_Xcas_Export_nws_calc, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Backup Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_backup, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Restore Numworks from backup", 0,  (Fl_Callback*)cb_Xcas_nw_restore, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Certification du firmware Numworks", 0,  (Fl_Callback*)cb_Xcas_nw_certify, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Install KhiCAS on Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_install, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Export as", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3418,7 +3424,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<361; i++)
+        for ( ; i<362; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

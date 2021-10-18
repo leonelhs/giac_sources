@@ -76,6 +76,9 @@
    don't. */
 #define HAVE_DECL__SNWPRINTF 0
 
+/* Define to 1 if you have the <dfu_lib.h> header file. */
+/* #undef HAVE_DFU_LIB_H */
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
 
@@ -157,6 +160,9 @@
 
 /* Define to 1 if you have the `curl' library (-lcurl). */
 /* #undef HAVE_LIBCURL */
+
+/* Define to 1 if you have the `dfu' library (-ldfu). */
+/* #undef HAVE_LIBDFU */
 
 /* Define to 1 if you have the `dl' library (-ldl). */
 #define HAVE_LIBDL 1
@@ -250,6 +256,9 @@
 
 /* Define to 1 if you have the `tommath' library (-ltommath). */
 /* #undef HAVE_LIBTOMMATH */
+
+/* Define to 1 if you have the `usb-1.0' library (-lusb-1.0). */
+/* #undef HAVE_LIBUSB_1_0 */
 
 /* Define to 1 if you have the `X11' library (-lX11). */
 #define HAVE_LIBX11 1

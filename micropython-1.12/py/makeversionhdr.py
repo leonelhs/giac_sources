@@ -10,6 +10,7 @@ import sys
 import os
 import datetime
 import subprocess
+import time
 
 def get_version_info_from_git():
     # Python 2.6 doesn't have check_output, so check for that
@@ -71,7 +72,9 @@ def make_version_header(filename):
 #define MICROPY_GIT_TAG "%s"
 #define MICROPY_GIT_HASH "%s"
 #define MICROPY_BUILD_DATE "%s"
-""" % (git_tag, git_hash, datetime.date.today().strftime("%Y-%m-%d"))
+""" % (git_tag, git_hash,
+datetime.datetime.utcfromtimestamp(int(os.environ.get('SOURCE_DATE_EPOCH',
+time.time()))).strftime("%Y-%m-%d"))
 
     # Check if the file contents changed from last time
     write_file = True

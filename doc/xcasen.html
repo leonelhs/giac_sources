@@ -513,6 +513,7 @@
                 title="Export session to KhiCas (Casio Prizm or Fx-9750GIII, Numworks, TI Nspire CX, to be configured in the Settings)"
                 onclick='UI.savesession(1);'>Export</button>
         </span>
+  <button id="numworks_load" class="bouton" title="Click here to load a script from a Numworks calculator" onclick="UI.numworks_load()">Numworks→</button>
 <button id="loadbutton_cookie" class="bouton"
         title="Load session"
         onclick="$id('loadfile_cookie').innerHTML=UI.listCookies();">Load
@@ -623,6 +624,42 @@
 		    <tt>security.fileuri.strict_origin_policy</tt>
 		    in <tt>about:config</tt>.
                 </div>
+            </li>
+            <li style="display:inline">
+                <button class="bouton"
+                        onclick="var tmp=$id('tutonws'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+                <strong>Numworks</strong></button>
+	    <div id="tutonws" style="display:none">
+	      On browsers that implement webusb, like Chromium of
+	      Chrome,
+	      you can easily exchange scripts with a Numworks
+	      calculator.<br>
+	      Click on the Numworks→ button to download a calculator
+	      script and send it back with the Export button.
+	      The script name may be modified at the left of the
+	      Export button. If the name ends with <tt>xw</tt>, it
+	      means you are working on a KhiCAS Numworks session,
+	      if it ends with <tt>.py</tt> you are working on a Python
+	      script. Then you can share your scripts by email or on
+	      public forums (mail button and F button).
+	      <br>
+	      <a
+	      href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html"
+	      target="_blank">KhiCAS</a> is a version of Xcas for the
+	      Numworks calculator Xcas, it can be
+	      <a href="https://parisseb.github.io/nw-external-apps/"
+                    target="_blank">installed </a> on
+	      Numworks N0110 with a version of the OS lower or equal to 15.
+	      <b>Beware, upgrades from the Numworks official website
+	      versions 16 (or more) are incompatible with Xcas and if
+	      you upgrade this is irreversible</b>. <a
+                    href="https://tiplanet.org/forum/viewtopic.php?f=97&t=24968&lang=en"
+	      target="_blank">More information here</a>
+	      <br>
+	      Thanks to &agrave; Maxime Friess for the script
+	      <a
+                    href="https://github.com/M4xi1m3/numworks.js/blob/master/README.md" target="_blank">Numworks.js</a>
+	    </div>
             </li>
             <li style="display:inline">
                 <button class="bouton"
@@ -3556,6 +3593,7 @@ If you want to see informations while a computation is running, run first
   }
 </style>
 <script src="xcas.js"></script>
+<script src="numworks.js"></script>
 <script type='text/javascript'>
     // remove existing codemirror field
     prog = $id('prog');
