@@ -3698,7 +3698,7 @@ namespace giac {
     if (is_zero(realpart,contextptr)){
       if (is_zero(imagpart,contextptr))
 	return undef;
-      return cst_pi_over_2*sign(imagpart,contextptr);
+      return (cst_pi_over_2-atan(realpart/imagpart,contextptr))*sign(imagpart,contextptr);
     }
     if (is_zero(imagpart,contextptr))
       return (1-sign(realpart,contextptr))*cst_pi_over_2;
@@ -7932,7 +7932,7 @@ namespace giac {
     case _ZINT: 
       return (!mpz_sgn(*a._ZINTptr));
     case _REAL:
-      return a._REALptr->is_zero();
+      return fabs(evalf_double(a,1,contextptr)._DOUBLE_val)<=epsilon(contextptr);// return a._REALptr->is_zero();
     case _CPLX:
       return (is_zero(*a._CPLXptr,contextptr) && is_zero(*(a._CPLXptr+1),contextptr));
     case _DOUBLE_:

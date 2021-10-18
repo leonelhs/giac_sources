@@ -13,7 +13,7 @@
 /* #undef C_ALLOCA */
 
 /* Set if debugging is enabled */
-#define DEBUG_SUPPORT 
+#define DEBUG_SUPPORT /**/
 
 /* Define to 1 if translation of program messages to the user's native
    language is requested. */
@@ -106,6 +106,9 @@
 /* Define to 1 if you have the <gmpxx.h> header file. */
 #define HAVE_GMPXX_H 1
 
+/* Define to 1 if you have the <gmp.h> header file. */
+#define HAVE_GMP_H 1
+
 /* Define to 1 if you have the <gsl/gsl_blas.h> header file. */
 #define HAVE_GSL_GSL_BLAS_H 1
 
@@ -166,6 +169,9 @@
 
 /* Define to 1 if you have the `GL' library (-lGL). */
 #define HAVE_LIBGL 1
+
+/* Define to 1 if you have the `gmp' library (-lgmp). */
+#define HAVE_LIBGMP 1
 
 /* Define to 1 if you have the `gmpxx' library (-lgmpxx). */
 #define HAVE_LIBGMPXX 1
@@ -453,6 +459,9 @@
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "giac"
+
+/* Define to the home page for this package. */
+#define PACKAGE_URL ""
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "1.2.0"

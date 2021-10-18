@@ -3392,10 +3392,10 @@ namespace giac {
       for (unsigned i=0;i<v.size();++i){
 	if (v[i].type!=_VECT || v[i]._VECTptr->size()<5)
 	  return false;
-	vecteur & w=*v[i]._VECTptr;
-	i30 += w[2];
-	I30ABS += w[3];
-	ERR += w[4];
+	vecteur w=*v[i]._VECTptr;
+	i30 = i30+w[2]; // += does not work in emscripten
+	I30ABS = I30ABS+w[3];
+	ERR = ERR+w[4];
 	if (is_strictly_greater(w[4],maxerr,contextptr)){
 	  maxerrpos=i;
 	  maxerr=w[4];
@@ -3469,7 +3469,7 @@ namespace giac {
       gen fy=subst(f,x,y,false,contextptr);
       // Workaround for undefined middle point
       if (is_undef(fy) || is_inf(fy)){
-	fy=limit(f,*x._IDNTptr,exact(y,contextptr),0,contextptr);
+	fy=limit(f,*x._IDNTptr,y,0,contextptr);
 	if (is_undef(fy) || is_inf(fy))
 	  return undef;
       }
@@ -3493,7 +3493,7 @@ namespace giac {
 	  gen fy=subst(f,x,y,false,contextptr);
 	  // Workaround if fy undefined
 	  if (is_undef(fy) || is_inf(fy)){
-	    fy=limit(f,*x._IDNTptr,exact(y,contextptr),0,contextptr);
+	    fy=limit(f,*x._IDNTptr,y,0,contextptr);
 	    if (is_undef(fy) || is_inf(fy))
 	      return undef;
 	  }
@@ -3535,7 +3535,7 @@ namespace giac {
 	gen fy=subst(f,x,y,false,contextptr);
 	// Workaround for romberg((1-cos(x))/x^2,x,-1,1)?
 	if (is_undef(fy) || is_inf(fy)){
-	  fy=limit(f,*x._IDNTptr,exact(y,contextptr),0,contextptr);
+	  fy=limit(f,*x._IDNTptr,y,0,contextptr);
 	  if (is_undef(fy) || is_inf(fy))
 	    return undef;
 	}

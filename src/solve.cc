@@ -1113,7 +1113,13 @@ namespace giac {
       else
 	test=eval(subst(e0,x,l,false,contextptr),eval_level(contextptr),contextptr);
       gen testeq=abs(evalf(subst(e,x,l,false,contextptr),eval_level(contextptr),contextptr),contextptr);
-      if ((is_greater(epsilon(contextptr),testeq,contextptr) || test!=1) &&
+      double eps=epsilon(contextptr); gen lf=evalf_double(l,1,contextptr);
+      if (lf.type==_DOUBLE_){
+	double lfd=fabs(lf._DOUBLE_val);
+	if (lfd>1)
+	  eps=lfd*eps;
+      }
+      if ((is_greater(eps,testeq,contextptr) || test!=1) &&
 	  (equalposcomp(excluded_not_singu,l) || equalposcomp(singu,l) ||
 	   ( !(direction %2) && equalposcomp(veq_not_singu,l))) 
 	  )
@@ -1136,7 +1142,14 @@ namespace giac {
       else
 	test=eval(subst(e0,x,m,false,contextptr),eval_level(contextptr),contextptr);
       testeq=abs(evalf(subst(e,x,m,false,contextptr),eval_level(contextptr),contextptr),contextptr);
-      if ( (is_greater(epsilon(contextptr),testeq,contextptr) || test!=1) &&
+      eps=epsilon(contextptr);
+      lf=evalf_double(m,1,contextptr);
+      if (lf.type==_DOUBLE_){
+	double lfd=fabs(lf._DOUBLE_val);
+	if (lfd>1)
+	  eps=lfd*eps;
+      }
+      if ( (is_greater(eps,testeq,contextptr) || test!=1) &&
 	  (equalposcomp(excluded_not_singu,m) || equalposcomp(singu,m) ||
 	   ( !(direction %2) && equalposcomp(veq_not_singu,m)) )
 	  )

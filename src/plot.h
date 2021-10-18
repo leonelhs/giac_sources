@@ -64,7 +64,9 @@ enum Fl_Color {	// standard colors
   FL_COLOR_CUBE		= 56
 };
 #else // GIAC_HAS_STO_38
-#include "../../src/Colors.h"
+typedef ptrdiff_t Int;
+#include "Colors.h"
+//#include "../../src/Colors.h"
 enum Fl_Color {
   FL_BLACK = ColorBlack,
   FL_WHITE = ColorWhite,

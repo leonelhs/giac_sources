@@ -2182,6 +2182,10 @@ namespace giac {
       return symbolic(at_program,gen(makevecteur(a,0,sinh(b,contextptr)),_SEQ__VECT));
     if (e.is_symb_of_sommet(at_neg))
       return -sinh(e._SYMBptr->feuille,contextptr);
+    if (e.type==_SYMB && has_i(e)){
+      gen ee=simplifier(-cst_i*e,contextptr);
+      return cst_i*sin(ee,contextptr);
+    }
     return symb_sinh(e);
   }
   static gen d_at_sinh(const gen & e,GIAC_CONTEXT){
@@ -2247,6 +2251,10 @@ namespace giac {
       return symbolic(at_program,gen(makevecteur(a,0,cosh(b,contextptr)),_SEQ__VECT));
     if (e.is_symb_of_sommet(at_neg))
       return cosh(e._SYMBptr->feuille,contextptr);
+    if (e.type==_SYMB && has_i(e)){
+      gen ee=simplifier(-cst_i*e,contextptr);
+      return cos(ee,contextptr);
+    }
     return symb_cosh(e);
   }
   define_partial_derivative_onearg_genop( D_at_cosh,"D_at_cosh",giac::sinh);
@@ -2308,6 +2316,10 @@ namespace giac {
       return symbolic(at_program,gen(makevecteur(a,0,tanh(b,contextptr)),_SEQ__VECT));
     if (e.is_symb_of_sommet(at_neg))
       return -tanh(e._SYMBptr->feuille,contextptr);
+    if (e.type==_SYMB && has_i(e)){
+      gen ee=simplifier(-cst_i*e,contextptr);
+      return cst_i*tan(ee,contextptr);
+    }
     return symbolic(at_tanh,e);
   }
   static gen d_tanh(const gen & e,GIAC_CONTEXT){

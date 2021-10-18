@@ -43,9 +43,6 @@ typedef long pid_t;
 #if defined VISUALC || defined BESTA_OS
 #include <math.h>
 #include <float.h>
-#ifndef RTOS_THREADX
-#include <io.h>
-#endif
 #endif
 #ifndef WIN32
 #include <math.h>

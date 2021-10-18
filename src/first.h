@@ -21,12 +21,6 @@
 #ifndef _GIAC_FIRST_H_
 #define _GIAC_FIRST_H_
 
-#if 0 // def WIN32
-typedef long ref_count_t;
-#else
-typedef int ref_count_t;
-#endif
-
 #ifdef PNACL
 #define EMCC
 #undef HAVE_LIBPTHREAD
@@ -71,11 +65,6 @@ typedef long double giac_double;
 typedef double giac_double;
 #endif
 
-#ifdef VISUALC
-inline void swap_giac_double(double & a,double & b){ double c=a; a=b; b=c; }
-#else
-#define swap_giac_double(a,b) std::swap<giac_double>(a,b)
-#endif
 // sprintf replacement
 int my_sprintf(char * s, const char * format, ...);
 #ifdef GIAC_HAS_STO_38
@@ -217,6 +206,18 @@ typedef unsigned long long ulonglong;
 #endif
 
 #endif // __VISUALC__
+
+#ifdef VISUALC
+inline void swap_giac_double(double & a,double & b){ double c=a; a=b; b=c; }
+#else
+#define swap_giac_double(a,b) std::swap<giac_double>(a,b)
+#endif
+
+#if defined WIN32 && defined __x86_64__
+typedef longlong ref_count_t;
+#else
+typedef int ref_count_t;
+#endif
 
 
 #ifndef __x86_64__

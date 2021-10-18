@@ -2477,7 +2477,7 @@ namespace giac {
   static define_unary_function_eval (__WAIT,&giac::_Pause,_WAIT_s);
   define_unary_function_ptr5( at_WAIT ,alias_at_WAIT,&__WAIT,0,T_UNARY_OP_38);
 
-#ifdef GIAC_HAS_STO_38
+#if 0 // def GIAC_HAS_STO_38
   gen aspen_input(const vecteur & v,GIAC_CONTEXT);
   gen aspen_msgbox(const vecteur & v,GIAC_CONTEXT);
 #endif
@@ -2512,7 +2512,7 @@ namespace giac {
       v.pop_back();
       s=4;
     }
-#ifdef GIAC_HAS_STO_38
+#if 0 // def GIAC_HAS_STO_38
     return aspen_input(v,contextptr);
 #else
     // now make a dialog
@@ -2527,7 +2527,7 @@ namespace giac {
   static define_unary_function_eval_quoted (__INPUT,giac::_INPUT,_INPUT_s);
   define_unary_function_ptr5( at_INPUT ,alias_at_INPUT,&__INPUT,_QUOTE_ARGUMENTS,T_UNARY_OP_38);
 
-#ifdef GIAC_HAS_STO_38
+#if 0 // def GIAC_HAS_STO_38
   // MSGBOX(txt) or MSGBOX(txt, true/false) to have OK/Cancel or just OK menus
   gen _MSGBOX(const gen & args,GIAC_CONTEXT){
     vecteur v=gen2vecteur(args);
@@ -2545,7 +2545,7 @@ namespace giac {
   define_unary_function_ptr5( at_MSGBOX ,alias_at_MSGBOX,&__MSGBOX,0,T_UNARY_OP_38);
 
   static const char _GETKEY_s[]="GETKEY";
-#ifdef GIAC_HAS_STO_38
+#if 0 // def GIAC_HAS_STO_38
   static define_unary_function_eval(__GETKEY,&at_GETKEYAspen,_GETKEY_s);
   // unary_function_eval __GETKEY(0,&at_GETKEYAspen,_GETKEY_s);
 #else
@@ -3748,7 +3748,7 @@ namespace giac {
 
 
 
-#ifdef GIAC_HAS_STO_38
+#if 0 // def GIAC_HAS_STO_38
   // encoding is up to 8 nibbles with various values...
   // 1 optional graphic name
   // 2 graphic name

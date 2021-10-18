@@ -31,9 +31,6 @@ using namespace std;
 
 #if defined VISUALC || defined BESTA_OS
 
-#ifndef RTOS_THREADX
-#include <io.h>
-#endif
 
 #define opendir FindFirstFile
 #define readdir FindNextFile

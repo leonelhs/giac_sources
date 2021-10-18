@@ -2781,7 +2781,7 @@ namespace giac {
     // sincosinf.clear();
     if (is_undef(lim_point))
       return lim_point;
-    gen l=in_limit(e,x,lim_point,direction,contextptr);
+    gen l=in_limit(exact(e,contextptr),x,exact(lim_point,contextptr),direction,contextptr);
     // inside_limit(save_inside_limit,contextptr);
     // vecteur sincosinfsub(sincosinf.size(),undef);
     // l=eval(subst(l,sincosinf,sincosinfsub));

@@ -427,7 +427,10 @@ namespace giac {
   typedef unsigned short int short_t;
 #endif
 
-#if defined(HASH_MAP_NAMESPACE) && defined(PRIMES32)
+#ifdef EMCC
+#include <map>
+#endif
+#if (defined EMCC || defined(HASH_MAP_NAMESPACE)) && defined(PRIMES32)
 #define ADDITIONAL_PRIMES_HASHMAP
 #endif
 #endif // RTOS_THREADX || BESTA_OS
@@ -463,7 +466,7 @@ namespace giac {
 #endif
 
 #ifdef ADDITIONAL_PRIMES_HASHMAP
-#if 0 // container does not seem to be important for <= 70 digits
+#ifdef EMCC // container does not seem to be important for <= 70 digits
   typedef map<unsigned,axbinv> additional_map_t;
 #else
   typedef HASH_MAP_NAMESPACE::hash_map<unsigned,axbinv,hash_function_unsigned_object > additional_map_t ;
@@ -2196,7 +2199,11 @@ namespace giac {
     vecteur sqrtavals,bvals;
 #ifdef GIAC_ADDITIONAL_PRIMES
 #ifdef ADDITIONAL_PRIMES_HASHMAP
+#ifdef EMCC
+    additional_map_t additional_primes_map;
+#else
     additional_map_t additional_primes_map(8*bs);
+#endif
     axbmodn.reserve(bs);
 #else 
 #if defined(RTOS_THREADX) || defined(BESTA_OS) || defined NSPIRE
