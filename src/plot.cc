@@ -41,7 +41,9 @@ using namespace std;
 #endif
 #include <iomanip>
 #endif
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
 #include <fstream>
+#endif
 #include "vector.h"
 #include <algorithm>
 #include <cmath>
@@ -1049,9 +1051,13 @@ namespace giac {
 
   string print_DOUBLE_(double d,unsigned ndigits){
     char s[256];
+#ifdef NUMWORKS
+    sprint_double(s,d);
+#else
     ndigits=ndigits<2?2:ndigits;
     ndigits=ndigits>15?15:ndigits;
     sprintfdouble(s,("%."+print_INT_(ndigits)+"g").c_str(),d);
+#endif
     return s;
   }
 
@@ -7161,6 +7167,10 @@ namespace giac {
     string s;
     if (is_graphe(args,s,contextptr))
       return _graph_vertices(args,contextptr);
+    if (args.type==_VECT && args.subtype==_SEQ__VECT && args._VECTptr->size()==2){
+      gen g=_sommets(args._VECTptr->front(),contextptr);
+      return g[args._VECTptr->back()];//+array_start(contextptr)];
+    }
     gen g=sommet(args,true);
     if (is_undef(g))
       return g;
@@ -11580,7 +11590,7 @@ namespace giac {
 
   // Archive cas, geo setup, history_in(contextptr), history_out(contextptr), all variable values
   gen archive_session(bool save_history,const string & s,GIAC_CONTEXT){
-#ifdef GIAC_BINARY_ARCHIVE
+#if defined GIAC_BINARY_ARCHIVE || defined GIAC_HAS_STO_38
     FILE * f =fopen(s.c_str(),"w");
     fprintf(f,"%s","giac binarch\n");
     gen g(giac_current_status(save_history,contextptr));
@@ -11645,7 +11655,10 @@ namespace giac {
     }
     fclose(f);
     delete [] buf;
-#ifdef NSPIRE
+#if defined GIAC_HAS_STO_38
+    return false;
+#else
+#if defined NSPIRE
     file is(s.c_str(),"r");
     if (!is)
       return false;
@@ -11654,6 +11667,7 @@ namespace giac {
     if (!is)
       return false;
     return unarchive_session(is,level,replace,contextptr);
+#endif
 #endif
   }
 
@@ -11692,7 +11706,7 @@ namespace giac {
       fclose(f);
       return b;
     }
-#ifdef NSPIRE
+#if defined NSPIRE || defined GIAC_HAS_STO_38
     return 0;
 #else
     ofstream os(a._STRNGptr->c_str());
@@ -11719,7 +11733,7 @@ namespace giac {
       return res;
     }
     fclose(f);
-#ifdef NSPIRE
+#if defined NSPIRE || defined GIAC_HAS_STO_38
     return 0;
 #else
     ifstream is(args._STRNGptr->c_str());
@@ -14327,6 +14341,7 @@ gen _vers(const gen & g,GIAC_CONTEXT){
   static define_unary_function_eval2 (__debut_enregistrement,&_debut_enregistrement,_debut_enregistrement_s,&printastifunction);
   define_unary_function_ptr5( at_debut_enregistrement ,alias_at_debut_enregistrement,&__debut_enregistrement,0,T_LOGO);
 
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
   gen _fin_enregistrement(const gen & g0,GIAC_CONTEXT){
     if ( g0.type==_STRNG && g0.subtype==-1) return  g0;
     gen g(g0);
@@ -14360,6 +14375,7 @@ gen _vers(const gen & g,GIAC_CONTEXT){
   static const char _fin_enregistrement_s []="fin_enregistrement";
   static define_unary_function_eval2 (__fin_enregistrement,&_fin_enregistrement,_fin_enregistrement_s,&printastifunction);
   define_unary_function_ptr5( at_fin_enregistrement ,alias_at_fin_enregistrement,&__fin_enregistrement,0,T_LOGO);
+#endif
 
   gen _repete(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;

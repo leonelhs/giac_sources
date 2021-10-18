@@ -26,6 +26,9 @@ using namespace std;
 #else
 #include <strstream>
 #endif
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
+#include <fstream>
+#endif
 #include "gen.h"
 #include "vecteur.h"
 #include "modpoly.h"
@@ -15027,7 +15030,7 @@ namespace giac {
       return 1;
     int s=(int) args._VECTptr->size();
     if (args.subtype==_SEQ__VECT){
-      if (s==2){
+      if (0 && s==2){
 	if (args._VECTptr->back()==-1)
 	  return tailles(args._VECTptr->front());
 	return int(taille(args._VECTptr->front(),0));
@@ -16653,7 +16656,7 @@ namespace giac {
 
   // Read a CSV file (comma separated) with separator, newline, end of file
   // decsep = decimal separator (, -> .)
-#if !defined NSPIRE && !defined FXCG
+#if !defined NSPIRE && !defined FXCG && !defined GIAC_HAS_STO_38
   matrice csv2gen(istream & i,char sep,char nl,char decsep,char eof,GIAC_CONTEXT){
     // return vecteur(1,gensizeerr(contextptr));
     vecteur res,line;

@@ -2219,6 +2219,8 @@ namespace giac {
 	    vecteur vr(r+1);
 	    vr[0]=1;
 	    vecteur vc(cyclotomic(2*d));
+	    if (vc.size()>MAX_ALG_EXT_ORDER_SIZE)
+	      return e;
 	    vr = vr % vc;
 	    if (!is_undef(vc)){
 	      l1.push_back(l[i]);
@@ -2463,7 +2465,7 @@ namespace giac {
     // check for the presence of trig/atrig functions
     vecteur v1(loptab(e,sincostan_tab));
     int s1=int(v1.size()),s2=int(loptab(e,asinacosatan_tab).size());
-    if (s1&&s2){
+    if ( s1 &&s2 ){
       // retry with e texpanded
       gen e2=_texpand(v1,contextptr);
       if (e2.type==_VECT){
@@ -2476,24 +2478,24 @@ namespace giac {
 	  }
 	}
       }
-      if (s1>1){
-	// retry with trigtan/trigcos/trigsin/halftan
-	e2=recursive_normal(_trigtan(e,contextptr),contextptr);
-	if (int(loptab(e2,sincostan_tab).size())<s1)
-	  return simplify(e2,contextptr);
-	e2=recursive_normal(_trigcos(e,contextptr),contextptr);
-	if (int(loptab(e2,sincostan_tab).size())<s1)
-	  return simplify(e2,contextptr);
-	e2=recursive_normal(_trigsin(e,contextptr),contextptr);
-	if (int(loptab(e2,sincostan_tab).size())<s1)
-	  return simplify(e2,contextptr);
-	e2=_halftan(v1,contextptr);
-	if (e2.type==_VECT){
-	  vecteur w1(loptab(e2,sincostan_tab));
-	  if (w1.size()<v1.size()){
-	    e=subst(e,v1,e2,false,contextptr);
-	    return simplify(e,contextptr);
-	  }
+    }
+    if (s1>1){
+      // retry with trigtan/trigcos/trigsin/halftan
+      gen e2=recursive_normal(_trigtan(e,contextptr),contextptr);
+      if (int(loptab(e2,sincostan_tab).size())<s1)
+	return simplify(e2,contextptr);
+      e2=recursive_normal(_trigcos(e,contextptr),contextptr);
+      if (int(loptab(e2,sincostan_tab).size())<s1)
+	return simplify(e2,contextptr);
+      e2=recursive_normal(_trigsin(e,contextptr),contextptr);
+      if (int(loptab(e2,sincostan_tab).size())<s1)
+	return simplify(e2,contextptr);
+      e2=_halftan(v1,contextptr);
+      if (e2.type==_VECT){
+	vecteur w1(loptab(e2,sincostan_tab));
+	if (w1.size()<v1.size()){
+	  e=subst(e,v1,e2,false,contextptr);
+	  return simplify(e,contextptr);
 	}
       }
     }

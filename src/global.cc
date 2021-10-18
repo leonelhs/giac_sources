@@ -25,6 +25,9 @@ using namespace std;
 #else
 #include <strstream>
 #endif
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
+#include <fstream>
+#endif
 #include "global.h"
 // #include <time.h>
 #if !defined BESTA_OS && !defined FXCG
@@ -102,7 +105,7 @@ bool back_key_pressed();
 #endif
 
 #ifdef NUMWORKS
-const char * giac_read_file(const char * filename);
+const char * read_file(const char * filename);
 #endif
 
 int my_sprintf(char * s, const char * format, ...){
@@ -2691,7 +2694,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
   
   void read_config(const string & name,GIAC_CONTEXT,bool verbose){
-#if !defined NSPIRE && !defined FXCG
+#if !defined NSPIRE && !defined FXCG && !defined GIAC_HAS_STO_38
 #if !defined __MINGW_H 
     if (access(name.c_str(),R_OK)) {
       if (verbose)
@@ -4468,9 +4471,29 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd) {
 
 /* --------------------------------------------------------------------- */
 
-unsigned int ConvertUTF8toUTF16 (
+unsigned int ConvertUTF8toUTF16 (const UTF8* sourceStart, const UTF8* sourceEnd, UTF16* targetStart, UTF16* targetEnd, ConversionFlags flags)
+#if 0 //def GIAC_HAS_STO_38
+{
+    wchar_t *d= targetStart;
+#define read(a) if (sourceStart>=sourceEnd) break; a= *sourceStart++
+    while (sourceStart<sourceEnd && d!=targetEnd)
+    {
+        read(uint8_t c);
+        if ((c&0x80)==0) { *d++= c; continue; }
+        if ((c&0xe0)==0xc0) { read(uint8_t c2); if ((c2&0xc0)!=0x80) continue; *d++= ((c&0x1f)<<6)+(c2&0x3f); continue; }
+        if ((c&0xf0)==0xe0) { read(uint8_t c2); if ((c2&0xc0)!=0x80) continue; read(uint8_t c3); if ((c3&0xc0)!=0x80) continue; *d++= ((((c&0xf)<<6)+(c2&0x3f))<<6)+(c3&0x3f); continue; }
+        if ((c&0xf8)==0xf0) { read(uint8_t c2); if ((c2&0xc0)!=0x80) continue; read(uint8_t c3); if ((c3&0xc0)!=0x80) continue; read(uint8_t c4); if ((c4&0xc0)!=0x80) continue; *d++= ((((((c&0xf)<<6)+(c2&0x3f))<<6)+(c3&0x3f))<<6)+(c4&0x3f); continue; }
+        while (sourceStart<sourceEnd) { c= *sourceEnd; if ((c&0x80)==0 || (c&0xc0)!=0x80) break; sourceEnd++; }
+    }
+#undef read
+    return d-targetStart;
+}
+
+unsigned int ConvertUTF8toUTF162 (
     const UTF8* sourceStart, const UTF8* sourceEnd, 
-    UTF16* targetStart, UTF16* targetEnd, ConversionFlags flags) {
+    UTF16* targetStart, UTF16* targetEnd, ConversionFlags flags) 
+#endif
+{
     ConversionResult result = conversionOK;
     const UTF8* source = sourceStart;
     UTF16* target = targetStart;
@@ -5411,8 +5434,10 @@ unsigned int ConvertUTF8toUTF16 (
   // moved from input_lexer.ll for easier debug
   const char invalid_name[]="Invalid name";
 
-#ifdef USTL    
-  // void update_lexer_localization(const std::vector<int> & v,ustl::map<std::string,std::string> &lexer_map,ustl::multimap<std::string,localized_string> &back_lexer_map){}
+#if defined USTL || defined GIAC_HAS_STO_38
+#if defined GIAC_HAS_STO_38
+void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,localized_string> &back_lexer_map,GIAC_CONTEXT){}
+#endif
 #else
   vecteur * keywords_vecteur_ptr(){
     static vecteur v;
@@ -6002,7 +6027,7 @@ unsigned int ConvertUTF8toUTF16 (
       // add python turtle shortcuts
       static bool alertturtle=true;
 #ifdef NUMWORKS
-      cur += "pu:=penup:;up:=penup:; pd:=pendown:;down:=pendown:; fd:=forward:;bk:=backward:; rt:=right:; lt:=left:; pos:=position:; seth:=heading:;setheading:=heading:; ";
+      cur += "fd:=forward:;bk:=backward:; rt:=right:; lt:=left:; pos:=position:; seth:=heading:;setheading:=heading:; ";
 #else
       cur += "pu:=penup:;up:=penup:; pd:=pendown:;down:=pendown:; fd:=forward:;bk:=backward:; rt:=right:; lt:=left:; pos:=position:; seth:=heading:;setheading:=heading:; reset:=efface:;";
 #endif
@@ -6027,9 +6052,9 @@ unsigned int ConvertUTF8toUTF16 (
       static bool alertmath=true;      
       if (alertmath){
 	alertmath=false;
-	alert(gettext("Assigning log2, gamma, fabs, modf, radians and degrees. Not supported: copysign."),contextptr);
+	alert(gettext("Assigning gamma, fabs. Not supported: copysign."),contextptr);
       }
-      cur += "log2(x):=logb(x,2):;gamma:=Gamma:;fabs:=abs:;function modf(x) local y; y:=floor(x); return x-y,y; ffunction:;radians(x):=x/180*pi:;degrees(x):=x/pi*180";
+      cur += "gamma:=Gamma:;fabs:=abs:;";
     }
   }
 
@@ -6190,7 +6215,9 @@ unsigned int ConvertUTF8toUTF16 (
 	break;
     }
     // probably Python-like
-    string res(s_orig);
+    string res;
+    res.reserve(6*s_orig.size()/5);
+    res=s_orig;
     if (res.size()>18 && res.substr(0,17)=="add_autosimplify(" 
 	&& res[res.size()-1]==')'
 	)
@@ -6202,6 +6229,7 @@ unsigned int ConvertUTF8toUTF16 (
     res=glue_lines_backslash(res);
     vector<int_string> stack;
     string s,cur; 
+    s.reserve(res.capacity());
     if (pythoncompat) pythonmode=true;
     for (;res.size();){
       int pos=-1;
@@ -6361,7 +6389,7 @@ unsigned int ConvertUTF8toUTF16 (
 		){
 	      string filename=cur.substr(pos+5,posi-pos-5)+".py";
 	      // CERR << "import " << filename << endl;
-	      const char * ptr=giac_read_file(filename.c_str());
+	      const char * ptr=read_file(filename.c_str());
 	      if (ptr)
 		s += python2xcas(ptr,contextptr); // recursive call
 	      cur ="";
@@ -6715,8 +6743,9 @@ unsigned int ConvertUTF8toUTF16 (
       if (debug_infolevel)
 	*logptr(contextptr) << "Translated to Xcas as:\n" << s << '\n';
     }
+    res.clear(); cur.clear();
     // CERR << s << endl;
-    return s;
+    return string(s.begin(),s.end());
   }
   
     std::string translate_at(const char * ch){
