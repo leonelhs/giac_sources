@@ -103,6 +103,7 @@ namespace giac {
   // new_coord += a*b in place
   void add_mulmodpoly(const modpoly::const_iterator & ita0,const modpoly::const_iterator & ita_end,const modpoly::const_iterator & itb0,const modpoly::const_iterator & itb_end,environment * env,modpoly & new_coord);
   // modpoly operator * (const modpoly & th, const gen & fact);
+  void make_positive(std::vector<int> & f,int p);
   modpoly operator_times (const modpoly & th, const gen & fact,environment * env);
   // commented otherwise int * gen might be interpreted as
   // make a modpoly of size the int and multiply
@@ -111,6 +112,10 @@ namespace giac {
   void mulmodpoly(const modpoly & a, const modpoly & b, environment * env,modpoly & new_coord,int maxdeg=RAND_MAX);
   modpoly operator * (const modpoly & th, const modpoly & other) ;
   modpoly operator_times (const modpoly & th, const modpoly & other,environment * env) ;
+  bool operator_times(const std::vector<int> & a,const std::vector<int> & b,int m,std::vector<int> & ab);
+  // ichinrem reconstruct in resp1 from resp1/resp2/resp3
+  void ichinremp1p2p3(const std::vector<int> & resp1,const std::vector<int> & resp2,const std::vector<int> & resp3,int n,std::vector<int> & res,int modulo);
+
   void operator_times (const modpoly & a, const modpoly & b,environment * env,modpoly & new_coord,int maxdeg=RAND_MAX);
   // res=(*it) * ... (*(it_end-1))
   void mulmodpoly(std::vector<modpoly>::const_iterator it,std::vector<modpoly>::const_iterator it_end,environment * env,modpoly & new_coord);
@@ -180,7 +185,8 @@ namespace giac {
   bool gcd_modular_algo(const modpoly &p,const modpoly &q,modpoly &d,modpoly * p_simp,modpoly * q_simp); // p and q must have coeffs in Z or Z[i]
 
   // half-gcd: a0.size() must be > a1.size(), returns [[A,B],[C,D]]
-  bool hgcd(const modpoly & a0,const modpoly & a1,const gen & modulo,modpoly &A,modpoly &B,modpoly &C,modpoly &D); // a0 is A in Yap, a1 is B
+  bool hgcd(const modpoly & a0,const modpoly & a1,const gen & modulo,modpoly &A,modpoly &B,modpoly &C,modpoly &D,modpoly & a,modpoly & b,modpoly & tmp1,modpoly & tmp2); // a0 is A in Yap, a1 is B
+
   // fast modular inverse: f*g=1 mod x^l, f must be invertible (f.back()!=0)
   bool invmod(const modpoly & f,int l,environment * env,modpoly & g);
   // for p prime such that p-1 is divisible by 2^N, compute a 2^N-th root of 1

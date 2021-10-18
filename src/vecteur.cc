@@ -54,6 +54,13 @@ using namespace std;
 #include <gsl/gsl_poly.h>
 #endif
 
+// vector class version 1 by Agner Fog https://github.com/vectorclass
+// this might be faster for CPU with AVX512DQ instruction set
+// (fast multiplication of Vec4q)
+#ifdef HAVE_VCL1_VECTORCLASS_H 
+#include <vcl1/vectorclass.h>
+#endif
+
 // Apple has the Accelerate framework for lapack if you did not install Atlas/lapack
 // (link with -framewrok Accelerate)
 // it is not used by default because the Accelerate version is slower 
@@ -5119,6 +5126,15 @@ namespace giac {
     a=pseudo_mod(a+((longlong)b)*c,p,invp,nbits);
   }
 
+#ifdef HAVE_VCL1_VECTORCLASS_H 
+  inline Vec4q pseudo_mod4(const Vec4q & x,int p,unsigned invp,int nbits){
+    return x - (((x>>nbits)*invp)>>(nbits))*p;
+  }
+  inline void pseudo_mod4(Vec4q & a,int b,const Vec4q & c,int p,unsigned invp,unsigned nbits){
+    a=pseudo_mod4(a+b*c,p,invp,nbits);    
+  }
+#endif
+  
   // n==nbits, for |x|<=p^2, 2^n>=p>2^(n-1), returns |remainder|<=p
   // assumes invp=floor(2^(2n)/p)+1, 2^(2n)/p < invp <= 2^(2n)/p+1
   // for x>0, x/2^n-1 < floor(x/2^n) <= x/2^n hence we have 
@@ -5150,7 +5166,7 @@ namespace giac {
     int * it1=&*(v1.begin()+cstart),*it1end=&*(v1.end()),*it2=&*(v2.begin()+cstart),*it3=&*(v3.begin()+cstart),*it4=&*(v4.begin()+cstart),*it1_;
     if (cend && cend>=cstart && cend<it1end-&v1.front())
       it1end=&*(v1.begin()+cend);
-    it1_=it1-4;
+    it1_=it1end-4;
     const int * jt=&*(w.begin()+cstart);
 #ifdef PSEUDO_MOD
     if (p<(1<<29) 
@@ -5159,6 +5175,19 @@ namespace giac {
       int nbits=sizeinbase2(p); 
       unsigned invp=((1ULL<<(2*nbits)))/p+1;
       for (;it1<=it1_;){
+#if 0 // def HAVE_VCL1_VECTORCLASS_H
+	Vec4i I1,I2,I3,I4,T;
+	I1.load(it1); I2.load(it2); I3.load(it3); I4.load(it4); T.load(jt);
+	Vec4q I1_,I2_,I3_,I4_,T_;
+	I1_=extend(I1); I2_=extend(I2); I3_=extend(I3); I4_=extend(I4); T_=extend(T);
+	pseudo_mod4(I1_,c1,T_,p,invp,nbits);
+	pseudo_mod4(I2_,c2,T_,p,invp,nbits);
+	pseudo_mod4(I3_,c3,T_,p,invp,nbits);
+	pseudo_mod4(I4_,c4,T_,p,invp,nbits);
+	I1=compress(I1_); I2=compress(I2_); I3=compress(I3_); I4=compress(I4_);
+	I1.store(it1); I2.store(it2); I3.store(it3); I4.store(it4);
+	jt+=4;it4+=4;it3+=4;it2+=4;it1+=4;
+#else
 	int tmp=*jt;
 	pseudo_mod(*it1,c1,tmp,p,invp,nbits);
 	pseudo_mod(*it2,c2,tmp,p,invp,nbits);
@@ -5180,6 +5209,7 @@ namespace giac {
 	pseudo_mod(it3[3],c3,tmp,p,invp,nbits);
 	pseudo_mod(it4[3],c4,tmp,p,invp,nbits);
 	jt+=4;it4+=4;it3+=4;it2+=4;it1+=4;
+#endif
       }
       for (;it1!=it1end;++jt,++it4,++it3,++it2,++it1){
 	int tmp=*jt;
@@ -8173,17 +8203,47 @@ namespace giac {
 	    }
 #else
 	    int C=col+1;
+	    longlong * ptr= &buffer[C],*ptrend=&buffer[cmax]-4;
+	    const int *ptrN=&Nline[C];
+	    for (;ptr<ptrend;ptrN+=4,ptr+=4){
+	      longlong x = *ptr;
+	      x -= coeff*(*ptrN);   
+	      x += (x>>63)&modulo2;
+	      *ptr = x;
+	      x = ptr[1];
+	      x -= coeff*(ptrN[1]);   
+	      x += (x>>63)&modulo2;
+	      ptr[1] = x;
+	      x = ptr[2];
+	      x -= coeff*(ptrN[2]);   
+	      x += (x>>63)&modulo2;
+	      ptr[2] = x;
+	      x = ptr[3];
+	      x -= coeff*(ptrN[3]);   
+	      x += (x>>63)&modulo2;
+	      ptr[3] = x;
+	    }
+	    C += ptr-&buffer[C];
 	    for (;C<cmax;++C){
 	      longlong & b=buffer[C] ;
 	      longlong x = b;
 	      x -= coeff*Nline[C];   
-	      x -= (x>>63)*modulo2;
+	      x += (x>>63)&modulo2;
 	      b=x;
 	    }
 #endif
 	  }
 	  else {
 	    int C=col+1;
+	    longlong * ptr= &buffer[C],*ptrend=&buffer[cmax]-4;
+	    const int *ptrN=&Nline[C];
+	    for (;ptr<ptrend;ptrN+=4,ptr+=4){
+	      *ptr -= coeff*(*ptrN);
+	      ptr[1] -= coeff*(ptrN[1]);
+	      ptr[2] -= coeff*(ptrN[2]);
+	      ptr[3] -= coeff*(ptrN[3]);
+	    }
+	    C += ptr-&buffer[C];
 	    for (;C<cmax;++C){
 	      buffer[C] -= coeff*Nline[C];   
 	    }
@@ -8648,7 +8708,7 @@ namespace giac {
 	  target[c_+j]=smod(source[j],modulo);
       }
     }
-    return rref_or_det_or_lu!=0 || l_==0;//true; // we can not return true for fullreduction, because the upper lines are not reduced
+    return rref_or_det_or_lu!=0 || l_==0 || fullreduction==0;//true; // we can not return true for fullreduction, because the upper lines are not reduced
   }
     
   // if dont_swap_below !=0, for line numers < dont_swap_below
@@ -8968,12 +9028,12 @@ namespace giac {
       } // end tryblock
 #endif // GIAC_DETBLOCK
       // normal Gauss reduction
-      if (
+      if (//0 &&
 	  // FIXME: if fullreduction, upper reduction should be done!
-	  (carac>0 || (lmax-l>=32 && cmax-c>=32) ) && (lmax-l)*double(modulo)*double(modulo)<(1ULL<<63) &&
+	  (carac>0 || (lmax-l>=32 && cmax-c>=32) ) && (lmax-l)*double(modulo)*double(modulo)<(1ULL<<63) ){
 	  //double(lmax-l)*(cmax-c)*sizeof(longlong)<128e3 &&
-	  LLsmallmodrref(N,l,lmax,c,cmax,pivots,permutation,maxrankcols,idet,fullreduction,dont_swap_below,modulo,carac,rref_or_det_or_lu)){
-	break;
+	if (LLsmallmodrref(N,l,lmax,c,cmax,pivots,permutation,maxrankcols,idet,fullreduction,dont_swap_below,modulo,carac,rref_or_det_or_lu))
+	  break;
       }
       pivot = N[l].empty()?0:(N[l][c] %= modulo);
       if (rref_or_det_or_lu==3 && !pivot){
@@ -14954,6 +15014,58 @@ namespace giac {
     identificateur x(" x");
     gen ux=(*u)(x,contextptr);
     return analytic_apply(ux,x,m,contextptr);
+  }
+
+  bool mker(vector< vector<int> > & res,vector< vector<int> > & v,int modulo){
+    v.clear();
+    longlong det;
+    vector<int> permutation(res.size()),maxrankcols; vecteur pivots;
+    for (int i=0;i<res.size();++i)
+      permutation[i]=i;
+#if 1
+    if (debug_infolevel) CERR << CLOCK()*1e-6 << " rref lower\n"; 
+    smallmodrref(1,res,pivots,permutation,maxrankcols,det,0,int(res.size()),0,int(res.front().size()),/* fullreduction */0,0,modulo,0,false,NULL,true,modulo);
+    int usedcount=0;
+    if (debug_infolevel) CERR << CLOCK()*1e-6 << " rref upper\n"; 
+    smallmodrref_upper(res,0,int(res.size()),0,int(res.front().size()),modulo);
+    if (debug_infolevel) CERR << CLOCK()*1e-6 << " rref end\n"; 
+#else
+    smallmodrref(1,res,pivots,permutation,maxrankcols,det,0,int(res.size()),0,int(res.front().size()),/* fullreduction */1,0,modulo,0,false,NULL,true,modulo);
+#endif
+    // mdividebypivot(res,-1,contextptr);
+    // put zero lines in res at their proper place, so that
+    // non zero pivot are on the diagonal
+    int s=int(res.size()),c=int(res.front().size());
+    vector< vector<int> > newres(c);
+    vector< vector<int> >::iterator it=res.begin(),itend=res.end();
+    int i;
+    for (i=0;(i<c) && (it!=itend);++i){
+      if (it->empty() || (*it)[i]==0){
+	newres[i]=vector<int>(c);
+      }
+      else {
+	newres[i].swap(*it);
+	++it;
+      }
+    }
+    for (;i<c;++i)
+      newres[i]=vector<int>(c);
+    // on newres tranposed, keep the ith line if it's ith coeff is 0
+    // replace 0 by -1 to get an element of the basis
+    //tran_vect_vector_int(newres,res); 
+    it=newres.begin();
+    itend=newres.end();
+    for (int i=0;it!=itend;++it,++i){
+      if ((*it)[i]==0){
+	(*it)[i]=-1;
+	// column i is in ker
+	vector<int> w(c);
+	for (int j=0;j<c;++j)
+	  w[j]=newres[j][i];
+	v.push_back(w);
+      }
+    }
+    return true;
   }
 
   // return a vector which elements are the basis of the ker of a

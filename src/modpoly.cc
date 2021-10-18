@@ -2438,7 +2438,20 @@ namespace giac {
     int n=1<<l;
     int w=nthroot(m,l); 
     if (w==0){
+      vector<int> resp1;
+#if 1
+      vector<int> resp2,resp3,Wp1,Wp2,Wp3,tmp_p,tmp_q;
+      fft2mult(m,a,b,resp1,p1,Wp1,tmp_p,tmp_q,false,false,true);
+      fft2mult(m,a,b,resp2,p2,Wp2,tmp_p,tmp_q,false,false,true);
+      fft2mult(m,a,b,resp3,p3,Wp3,tmp_p,tmp_q,false,false,true);
+      ichinremp1p2p3(resp1,resp2,resp3,n,resp1,m);
+      reverse(resp1.begin(),resp1.end());
+      ab.swap(resp1);
+      return true;
+#endif
       smallmult(a.begin(),a.end(),b.begin(),b.end(),ab,m);
+      if (!resp1.empty() && resp1!=ab)
+	CERR << "bug\n";
       return false;
     }
     //smallmult(qi.begin(),qi.end(),bi.begin(),bi.end(),tmp1,m); // debug
@@ -8899,7 +8912,7 @@ namespace giac {
     modpoly r1(n);
     modpoly r2(x);
     modpoly v1,v2(one()),q,r(x),v(1,1);
-    gen g(1),h(1),r20,r2pow,hpow;
+    gen g(1),h(1),r20,r2pow(1),hpow;
     for (;;){
       // During the loop, v1*x+not_computed*n=r1 and v2*x+not_computed*n=r2
       int deg2=int(r2.size())-1;
@@ -8945,6 +8958,71 @@ namespace giac {
       return false;
     return true;
   }
+
+  // assumes degree(f)=degree(g)==n
+  matrice bezoutian(const modpoly & f,const modpoly &g,environment * env){
+    vecteur u(f),v(g);
+    reverse(u.begin(),u.end());
+    reverse(v.begin(),v.end());
+    while (u.size()<v.size())
+      u.push_back(0);
+    while (v.size()<u.size())
+      v.push_back(0);
+    int S=u.size()-1;
+    matrice bez(S);
+    for (int i=0;i<S;++i)
+      bez[i]=vecteur(S); 
+    // initialization
+    for (int i=0;i<S;++i){
+      vecteur & b=*bez[i]._VECTptr;
+      for (int j=i;j<S;++j){
+	gen r = u[i]*v[j+1]-v[i]*u[j+1];
+	b[j]=r;
+      }
+    }
+    // recursion
+    for (int i=1;i<=S-2;++i){
+      vecteur & b=*bez[i]._VECTptr;
+      for (int j=i;j<=S-2;++j){
+	gen r = b[j];
+	r += bez[i-1][j+1];
+	b[j] = r;
+      }
+    }
+    // modulo
+    if (env && env->moduloon){
+      for (int i=0;i<S;++i){
+	vecteur & b=*bez[i]._VECTptr;
+	for (int j=i;j<S;++j){
+	  b[j]=smod(b[j],env->modulo);
+	}
+      }
+    }
+    // symmetry
+    for (int i=1;i<S;++i){
+      vecteur & b=*bez[i]._VECTptr;
+      for (int j=0;j<i;++j)
+	b[j]=bez[j][i];
+    }
+    return bez;
+  }
+
+  gen _bezoutian(const gen & args,GIAC_CONTEXT){
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type!=_VECT || args._VECTptr->size()!=2)
+      return gensizeerr(contextptr);
+    gen f=args._VECTptr->front(),g=args._VECTptr->back();
+    if (f.type!=_VECT)
+      f=_e2r(makesequence(f,vx_var),contextptr);
+    if (g.type!=_VECT)
+      g=_e2r(makesequence(g,vx_var),contextptr);
+    if (f.type!=_VECT || g.type!=_VECT )
+      return gendimerr(contextptr);
+    return bezoutian(*f._VECTptr,*g._VECTptr,0);
+  }
+  static const char _bezoutian_s []="bezoutian";
+  static define_unary_function_eval (__bezoutian,&_bezoutian,_bezoutian_s);
+  define_unary_function_ptr5( at_bezoutian ,alias_at_bezoutian,&__bezoutian,0,true);
 
   // Given [v_0 ... v_(2n-1)] (begin of the recurrence sequence) 
   // return [b_n...b_0] such that b_n*v_{n+k}+...+b_0*v_k=0
@@ -14769,7 +14847,7 @@ namespace giac {
 	  vector_int2vecteur(resp1,pq);
 	return true;
       }
-      if (//0 && // uncomment to test code below 
+      if (0 && // uncomment to test code below after debugging, fails sometimes
 	  modulo && logrs<=25 && test<p1*double(p2)*p4/2){
 	vecteur2vectorint(p,modulo,a);
 	vecteur2vectorint(q,modulo,b);

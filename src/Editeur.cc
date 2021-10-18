@@ -2070,8 +2070,7 @@ namespace xcas {
 	else {
 	  if (syntaxefr)
 	    s+="fonction ";
-	  else
-	    s+="function ";
+	  //else s+="function ";
 	}
 	s+=name->value();
 	s+='(';

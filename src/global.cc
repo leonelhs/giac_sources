@@ -134,7 +134,7 @@ int js_token(const char * list,const char * buf){
 
 #ifdef HAVE_LIBMICROPYTHON
 std::string & python_console(){
-  std::string * ptr=0;
+  static std::string * ptr=0;
   if (!ptr)
     ptr=new string;
   return *ptr;
@@ -161,7 +161,7 @@ extern "C" int KeyPressed( void );
 #ifdef NUMWORKS
 size_t pythonjs_stack_size=30*1024,pythonjs_heap_size=40*1024,
 #else
-  size_t pythonjs_stack_size=128*1024,pythonjs_heap_size=2*1024*1024;
+  size_t pythonjs_stack_size=128*1024,pythonjs_heap_size=(2*1024-256)*1024;
 #endif
 void * bf_ctx_ptr=0;
 size_t bf_global_prec=128; // global precision for BF
@@ -1963,6 +1963,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   int gbasis_logz_age_sort=0,gbasis_stop=0;
   unsigned short int GIAC_PADIC=50;
   const char cas_suffixe[]=".cas";
+  int MAX_PROD_EXPAND_SIZE=4096;
 #if defined RTOS_THREADX || defined BESTA_OS || defined(KHICAS)
 #ifdef BESTA_OS
   int LIST_SIZE_LIMIT = 100000 ;
