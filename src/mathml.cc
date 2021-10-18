@@ -671,9 +671,15 @@ namespace giac {
       return "white";
     }
     int r,g,b;
-    if (color>=0x100 && color<0x17e)
+    if (color>=0x100 && color<0x17e){
       color -= 0x100;
-    arc_en_ciel(color,r,g,b);
+      arc_en_ciel(color,r,g,b);
+    } else {
+      r=8*((color>>11)&0x1f);
+      g=4*((color>>5) &0x3f);
+      b=8*(color & 0x1f);
+      //CERR << color << " " << r << " " << g << " " << b << endl;
+    }
     return "rgb("+print_INT_(r)+","+print_INT_(g)+","+print_INT_(b)+")";
   }
 
@@ -1050,6 +1056,14 @@ namespace giac {
       s = s+"\" stroke=\""+color_string(attr)+"\" fill=\"none\" d=\"M";
     g=evalf(g,1,contextptr);
     vecteur v=*(g._VECTptr);
+    for (i=0;i<int(v.size());++i){
+      gen R,I;
+      reim(v[i],R,I,contextptr);
+      if (is_inf(R)||is_inf(I)){
+	v.erase(v.begin()+i);
+	--i;
+      }
+    }
     for (i=0 ; i<signed(v.size()) ; i++){
       s=s+re(v[i],contextptr).print(contextptr)+" "+im(v[i],contextptr).print(contextptr)+" ";
       if (i%2==0)

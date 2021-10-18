@@ -1215,7 +1215,8 @@ namespace giac {
     }
     gen newa,newc;
     replace_keywords(a,((embedd&&c.type==_VECT)?makevecteur(c):c),newa,newc,contextptr);
-    if (python_compat(contextptr)){
+    //cout << c._SYMBptr->sommet << endl;
+    if (python_compat(contextptr) && !c.is_symb_of_sommet(at_local)){
       vecteur res1,non_decl,res3,res4,Newa=gen2vecteur(newa);
       for (int i=0;i<int(Newa.size());++i){
 	if (Newa[i].is_symb_of_sommet(at_equal))
@@ -3506,6 +3507,13 @@ namespace giac {
     if ( (args.type!=_VECT) || (args._VECTptr->size()!=2))
       return gensizeerr(contextptr);
     gen a=args._VECTptr->front(),b=args._VECTptr->back();
+    if (a.type==_STRNG && b.type==_STRNG){
+      int pos=a._STRNGptr->find(*b._STRNGptr);
+      if (pos<0 || pos>=a._STRNGptr->size())
+	return 0;
+      else
+	return pos+1;
+    }
     if (a.type!=_VECT){
       if (a.type==_REAL)
 	return contains(a,b);
@@ -3889,7 +3897,7 @@ namespace giac {
       int r=-1;
       for (;;){
 	r=int(giac_rand(contextptr)/double(rand_max2)*n);
-	if (tab[r]) break;
+	if (tab[r]){ tab[r]=false;  break; }
       }
       v[j]=r;
     }
@@ -7170,6 +7178,30 @@ namespace giac {
     }
     return g;
   }
+
+  gen re2zconj(const gen &g,GIAC_CONTEXT){
+    return (g+symb_conj(g))/2;
+  }
+  
+  gen im2zconj(const gen &g,GIAC_CONTEXT){
+    return (g-symb_conj(g))/(2*cst_i);
+  }
+  
+  gen abs2zconj(const gen &g,GIAC_CONTEXT){
+    return symbolic(at_sqrt,g*symb_conj(g));
+  }
+
+  gen re2abs(const gen & g,GIAC_CONTEXT){
+    return (g+pow(symb_abs(g),2,contextptr)/g)/2;    
+  }
+  
+  gen im2abs(const gen & g,GIAC_CONTEXT){
+    return (g-pow(symb_abs(g),2,contextptr)/g)/(2*cst_i);    
+  }
+
+  gen conj2abs(const gen &g,GIAC_CONTEXT){
+    return pow(symb_abs(g),2,contextptr)/g;
+  }
   
   gen _convert(const gen & args,const context * contextptr){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
@@ -7265,6 +7297,29 @@ namespace giac {
 	return gensizeerr(gettext("Some units could not be converted to MKSA"));
       return g*f;
     }
+    if (s==2 && f==at_conj){
+      // convert re/im to conj
+      vector<const unary_function_ptr *> vu;
+      vu.push_back(at_re); 
+      vu.push_back(at_im); 
+      vu.push_back(at_abs); 
+      vector <gen_op_context> vv;
+      vv.push_back(re2zconj);
+      vv.push_back(im2zconj);
+      vv.push_back(abs2zconj);
+      return subst(g,vu,vv,false,contextptr);
+    }
+    if (s==2 && f==at_abs){
+      vector<const unary_function_ptr *> vu;
+      vu.push_back(at_re); 
+      vu.push_back(at_im); 
+      vu.push_back(at_conj); 
+      vector <gen_op_context> vv;
+      vv.push_back(re2abs);
+      vv.push_back(im2abs);
+      vv.push_back(conj2abs);
+      return subst(g,vu,vv,false,contextptr);
+    }
     if (s==2 && f==at_interval)
       return convert_interval(g,int(decimal_digits(contextptr)*3.2),contextptr);
     if (s==2 && f==at_real && f.type==_FUNC)
@@ -7354,8 +7409,10 @@ namespace giac {
 	return halftan(g,contextptr);
       if (f==at_plus)
 	return partfrac(tcollect(g,contextptr),true,contextptr);
-      if (f==at_prod)
+      if (f==at_prod){
+	if (is_integer(g)) return _ifactor(g,contextptr);
 	return _factor(_texpand(g,contextptr),contextptr);
+      }
       if (f==at_division)
 	return _simplify(g,contextptr);
       if (f==at_exp || f==at_ln || f==at_EXP)
@@ -8456,6 +8513,8 @@ namespace giac {
     if (args.type!=_VECT || args._VECTptr->size()!=2)
       return symbolic(at_tilocal,args);
     vecteur & v=*args._VECTptr;
+    if (v[1].type==_INT_)
+      return _bitor(args,contextptr);
     if (is_equal(v.front()))
       return symb_equal(_tilocal(makesequence((v.front()._SYMBptr->feuille)[0],v.back()),contextptr),_tilocal(makesequence((v.front()._SYMBptr->feuille)[1],v.back()),contextptr));
     // find local variables
@@ -9389,7 +9448,7 @@ namespace giac {
   const mksa_unit __ozUK_unit={2.84130625e-5,3,0,0,0,0,0,0,0};
   const mksa_unit __ozfl_unit={2.95735295625e-5,3,0,0,0,0,0,0,0};
   const mksa_unit __ozt_unit={0.0311034768,0,1,0,0,0,0,0,0};
-  const mksa_unit __pc_unit={3.08567758149e16,1,0,0,0,0,0,0,0};
+  const mksa_unit __pc_unit={3.08567758149137e16,1,0,0,0,0,0,0,0};
   const mksa_unit __pdl_unit={0.138254954376,1,1,-2,0,0,0,0,0};
   const mksa_unit __pk_unit={0.0088097675,3,0,0,0,0,0,0,0};
   const mksa_unit __psi_unit={6894.75729317,-1,1,-2,0,0,0,0,0};
@@ -10362,6 +10421,8 @@ namespace giac {
   define_unary_function_ptr5( at_usimplify ,alias_at_usimplify,&__usimplify,0,true);
   
   gen symb_unit(const gen & a,const gen & b,GIAC_CONTEXT){
+    if (b==at_min)
+      return symb_unit(a,gen("mn",contextptr),contextptr);
     // Add a _ to all identifiers in b
     if (!lop(b,at_of).empty())
       return gensizeerr(contextptr);

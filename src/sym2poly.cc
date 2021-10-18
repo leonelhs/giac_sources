@@ -1930,7 +1930,7 @@ namespace giac {
     }
     for (;it!=itend;++it,++l_it){
       if ((*it))
-	res->v.push_back(pow(*l_it,*it));
+	res->v.push_back(pow(*l_it,*it,contextptr)); // change for normal(abs(z)^2), was pow(*l_it,*it)
     }
     if (res->v.empty()){
       delete_ref_vecteur(res);
@@ -3363,6 +3363,10 @@ namespace giac {
       dden=dden*tmp;
       f_num=f_num*tmp;
       f_den=f_den*tmp;
+    }
+    if (dnum==-1){
+      f_num=-f_num;
+      dnum=1;
     }
     gen N=var_factor(f_num,l,false,with_sqrt,dnum,contextptr);
     gen D=var_factor(f_den,l,false,with_sqrt,dden,contextptr);

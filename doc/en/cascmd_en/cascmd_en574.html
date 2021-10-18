@@ -4,46 +4,74 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Representation by hardware floats</title>
+<title>Variance and standard deviation: variance stdev</title>
 </head>
 <body >
 <a href="cascmd_en573.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en575.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec712" class="subsection">7.1.2  Representation by hardware floats</h3>
-<p>
-A real is represented by a floating number <span style="font-style:italic">d</span>, that is
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">d</span>=2(1+<span style="font-style:italic">m</span>),     0&lt;<span style="font-style:italic">m</span>&lt;1, −2<sup>10</sup> &lt; α &lt; 2<sup>10</sup> </td></tr>
+<h3 id="sec712" class="subsection">7.1.2  Variance and standard deviation: <span style="font-family:monospace">variance</span><a id="hevea_default909"></a> <span style="font-family:monospace">stdev</span><a id="hevea_default910"></a></h3>
+<p>The variance of a list of numbers measures how close the numbers are
+to their mean by finding the average of the squares of the
+differences between the numbers and the mean; specifically,
+given a list of numbers [<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>] with mean µ = (<span style="font-style:italic">x</span><sub>1</sub> +
+⋯ + <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)/<span style="font-style:italic">n</span>, the variance is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub>1</sub> − µ)<sup>2</sup> + … + (<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> − µ)<sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">.
+</td></tr>
 </table><p>
-If α&gt;1−2<sup>10</sup>, then <span style="font-style:italic">m</span> ≥ 1/2, and <span style="font-style:italic">d</span> is
-a normalized floating point number, otherwise
-<span style="font-style:italic">d</span> is denormalized (α=1−2<sup>10</sup>). The special exponent 2<sup>10</sup>
-is used to represent plus or minus infinity and NaN (Not a Number).
-A hardware float is made of 64 bits:
-</p><ul class="itemize"><li class="li-itemize">
-the first bit is for the sign of <span style="font-style:italic">d</span> (0 for ’+’ and 1 for ’-’)
-</li><li class="li-itemize">the 11 following bits represents the exponent, more precisely 
-if α denotes the integer from the 11 bits,
-the exponent is α+2<sup>10</sup>−1, 
-</li><li class="li-itemize">the 52 last bits codes the mantissa <span style="font-style:italic">m</span>, more precisely if
-<span style="font-style:italic">M</span> denotes the integer from the 52 bits, then
-<span style="font-style:italic">m</span>=1/2+<span style="font-style:italic">M</span>/2<sup>53</sup> for normalized floats and <span style="font-style:italic">m</span>=<span style="font-style:italic">M</span>/2<sup>53</sup> for
-denormalized floats.
-</li></ul><p>
-Examples of representations of the exponent:
-</p><ul class="itemize"><li class="li-itemize">
-α=0 is coded by 011 1111 1111
-</li><li class="li-itemize">α=1 is coded by 100 0000 0000
-</li><li class="li-itemize">α=4 is coded by 100 0000 0011
-</li><li class="li-itemize">α=5 is coded by 100 0000 0100
-</li><li class="li-itemize">α=−1 is coded by 011 1111 1110
-</li><li class="li-itemize">α=−4 is coded by 011 1111 1011
-</li><li class="li-itemize">α=−5 is coded by 011 1111 1010
-</li><li class="li-itemize">α=2<sup>10</sup> is coded by 111 1111 1111
-</li><li class="li-itemize">α=2<sup>−10</sup>−1 is coded by 000 0000 000
-</li></ul><p>
-<span style="font-weight:bold">Remark</span>: 2<sup>−52</sup>=0.2220446049250313<span style="font-style:italic">e</span>−15</p>
+The squares help ensure that the numbers above the mean and those
+below the mean don’t cancel out. The variance can be computed with
+the command <span style="font-family:monospace">variance</span>,</p><p>A potentially better way to measure how close numbers are to their
+mean is the standard deviation, which is the square root of the
+variance;. Note that if the list of numbers have units, then the
+standard deviation will have the same unit.
+The <span style="font-family:monospace">stddev</span> function will compute the standard
+deviation of a list of numbers. For example, 
+the list [1,2,3,4] has mean 5/2, and so 
+<span style="font-family:monospace">stddev([1,2,3,4])</span>
+will return
+</p><div class="center">
+<span style="font-family:monospace">2*sqrt(5)/4
+</span></div><p>
+since
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">(1−5/2)<sup>2</sup> + (2−5/2)<sup>2</sup> + (3−5/2)<sup>2</sup> + (4−5/2)<sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table></td><td class="dcell"> =
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table><p>
+Like the mean, given a matrix, <span style="font-family:monospace">stddev</span> will compute the
+standard deviation of each column separately;
+</p><div class="center">
+<span style="font-family:monospace">stddev([[1,2],[3,6]])
+</span></div><p>
+will compute
+</p><div class="center">
+<span style="font-family:monospace">[1,2]
+</span></div><p>
+Also, a second list (or matrix) as an argument will provide weights
+when finding the standard deviation;
+</p><div class="center">
+<span style="font-family:monospace">stddev([1,2,3],[2,1,1])
+</span></div><p>
+will return
+</p><div class="center">
+<span style="font-family:monospace">4*sqrt(11)/16
+</span></div>
 <hr>
 <a href="cascmd_en573.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

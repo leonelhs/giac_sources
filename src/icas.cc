@@ -1502,6 +1502,9 @@ int main(int ARGC, char *ARGV[]){
   }
 #ifdef HAVE_LIBREADLINE
   if (ARGC==1){
+    int taillemax=1000;
+    if (getenv("GIAC_TAILLEMAX"))
+      taillemax=atoi(getenv("GIAC_TAILLEMAX"));
     struct tms start, end;  
     using_history();
     cout << "Welcome to giac readline interface" << endl;
@@ -1581,10 +1584,7 @@ int main(int ARGC, char *ARGV[]){
 	  cout << "Plot cancelled or unable to plot";
       }
       else {
-	int taillemax=1000;
-	if (getenv("GIAC_TAILLEMAX"))
-	  taillemax=atoi(getenv("GIAC_TAILLEMAX"));
-	string s=taille(ge,taillemax)>taillemax?"Done":ge.print(contextptr);
+	string s=(!insage && taille(ge,taillemax)>taillemax)?"Done":ge.print(contextptr);
 	cout << s;
       }
       cout << endl;

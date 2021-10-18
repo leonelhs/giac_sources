@@ -1209,6 +1209,15 @@ static void cb_Xcas_general_config_(Fl_Menu_*, void*) {
 static void cb_Xcas_Set_Xcas0(Fl_Menu_*, void*) {
   const giac::context * contextptr=Xcas_get_context();
 giac::xcas_mode(contextptr)=0;
+giac::python_compat(contextptr)=0;
+xcas_user_level=0;
+Xcas_update_mode();
+}
+
+static void cb_Xcas_Set_Python0(Fl_Menu_*, void*) {
+  const giac::context * contextptr=Xcas_get_context();
+giac::xcas_mode(contextptr)=0;
+giac::python_compat(contextptr)=1;
 xcas_user_level=0;
 Xcas_update_mode();
 }
@@ -1946,10 +1955,11 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Graph configuration", 0,  (Fl_Callback*)cb_Xcas_graph_config_, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"General configuration", 0,  (Fl_Callback*)cb_Xcas_general_config_, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Mode (syntax)", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"xcas", 0,  (Fl_Callback*)cb_Xcas_Set_Xcas0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"maple", 0,  (Fl_Callback*)cb_Xcas_Set_Maple0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"mupad", 0,  (Fl_Callback*)cb_Xcas_Set_Mupad0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"ti89/92", 0,  (Fl_Callback*)cb_Xcas_Set_TI0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Xcas", 0,  (Fl_Callback*)cb_Xcas_Set_Xcas0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Python", 0,  (Fl_Callback*)cb_Xcas_Set_Python0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maple", 0,  (Fl_Callback*)cb_Xcas_Set_Maple0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Mupad", 0,  (Fl_Callback*)cb_Xcas_Set_Mupad0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"TI89/92", 0,  (Fl_Callback*)cb_Xcas_Set_TI0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Show", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"DispG", 0x80064,  (Fl_Callback*)cb_Xcas_show_DispG, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3196,7 +3206,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<336; i++)
+        for ( ; i<337; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

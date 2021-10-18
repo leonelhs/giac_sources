@@ -25,7 +25,10 @@
 #include <math.h>
 #include <ctime>
 #include <bitset>
-
+#include <stdio.h>
+#ifdef HAVE_LIBNAUTY
+#include "nautywrapper.h"
+#endif
 using namespace std;
 
 #ifndef NO_NAMESPACE_GIAC
@@ -42,12 +45,11 @@ int graphe::default_highlighted_edge_color=_RED;
 int graphe::default_highlighted_vertex_color=_GREEN;
 int graphe::default_vertex_color=_YELLOW;
 int graphe::default_vertex_label_color=_BLACK;
-// initialize special graphs
 /*
- * Graphs are initialized with adjacency lists of integers or strings. Each
- * list starts with the corresponding vertex, followed by its neighbors, and
- * ends with -1 or an empty string.
- * The graph specification terminates with -2 (for integers) or NULL (for strings).
+ * Special graphs are initialized with adjacency lists of integers or strings.
+ * Each list starts with the corresponding vertex, followed by its neighbors,
+ * and ends with -1 or an empty string. The graph specification terminates with
+ * -2 (for integers) or NULL (for strings).
  */
 const int graphe::clebsch_graph[] = {
     0,      1,2,4,8,15,-1,
@@ -434,6 +436,24 @@ const int graphe::harries_wong_graph_lcf[] = {
     -9,-33,-17,19,-31,27,11,-25,29,-33,13,-13,21,-29,-21,25,9,-11,-19,29,9,-27,-19,-13,-35,-9,
     9,17,25,-9,9,27,-27,-21,15,-9,29,-29,33,-9,-25,0
 };
+const int graphe::blanusa_graph[] = {
+    1,      2,6,8,-1,
+    2,      3,12,-1,
+    3,      4,13,-1,
+    4,      5,14,-1,
+    5,      6,18,-1,
+    6,      7,-1,
+    7,      9,17,-1,
+    8,      17,18,-1,
+    9,      10,18,-1,
+    10,     11,16,-1,
+    11,     13,14,-1,
+    12,     14,15,-1,
+    13,     15,-1,
+    15,     16,-1,
+    16,     17,-1,
+    -2
+};
 
 /* messages */
 
@@ -480,59 +500,80 @@ void graphe::ivectors2vecteur(const ivectors &v,vecteur &res,bool sort_all) cons
 }
 
 /* vertex class implementation */
-graphe::vertex::vertex() {
-    m_sorted=false;
+void graphe::vertex::assign_defaults() {
+    m_sorted=true;
     m_subgraph=-1;
     m_visited=false;
-    m_on_stack=false;
     m_ancestor=-1;
     m_low=-1;
     m_disc=-1;
     m_color=0; // white
-    m_prelim=0;
-    m_modifier=0;
-    m_children=0;
-    m_position=0;
-    m_gaps=0;
-    m_left=-1;
-    m_right=-1;
-    m_x_offset=0;
-    m_y=0;
     m_embedded=false;
     m_number=-1;
 }
 
+graphe::vertex::vertex() {
+    assign_defaults();
+}
+
+graphe::vertex::vertex(const gen &lab) {
+    assign_defaults();
+    set_label(lab);
+}
+
 void graphe::vertex::assign(const vertex &other) {
-    m_sorted=other.sorted();
+    m_sorted=other.is_sorted();
     m_subgraph=other.subgraph();
     m_visited=other.is_visited();
-    m_on_stack=other.is_on_stack();
     m_ancestor=other.ancestor();
     m_low=other.low();
     m_disc=other.disc();
     m_color=other.color();
-    m_prelim=other.prelim();
-    m_modifier=other.modifier();
-    m_children=other.children();
-    m_position=other.position();
-    m_gaps=other.gaps();
-    m_left=other.left();
-    m_right=other.right();
-    m_x_offset=other.x_offset();
-    m_y=other.y();
     m_embedded=other.is_embedded();
     m_number=other.number();
-    set_attributes(other.attributes());
+    m_edge_faces=other.edge_faces();
     m_neighbors.resize(other.neighbors().size());
     m_neighbor_attributes.clear();
+    m_multiedges.clear();
+    int k;
+    set_attributes(other.attributes());
     for (ivector_iter it=other.neighbors().begin();it!=other.neighbors().end();++it) {
         m_neighbors[it-other.neighbors().begin()]=*it;
         copy_attributes(other.neighbor_attributes(*it),m_neighbor_attributes[*it]);
+        if ((k=other.multiedges(*it))>0)
+            m_multiedges.insert(make_pair(*it,k));
+    }
+}
+
+int graphe::vertex::multiedges(int v) const {
+    map<int,int>::const_iterator it=m_multiedges.find(v);
+    if (it!=m_multiedges.end())
+        return it->second;
+    return 0;
+}
+
+int graphe::vertex::multiedge_count() const {
+    int count=0;
+    for (map<int,int>::const_iterator it=m_multiedges.begin();it!=m_multiedges.end();++it) {
+        count+=it->second;
+    }
+    return count;
+}
+
+void graphe::vertex::set_multiedge(int v,int k) {
+    map<int,int>::iterator it=m_multiedges.find(v);
+    if (k>0)
+        if (it!=m_multiedges.end())
+            it->second=k;
+        else m_multiedges.insert(make_pair(v,k));
+    else {
+        if (it!=m_multiedges.end())
+            m_multiedges.erase(it);
     }
 }
 
 gen graphe::vertex::label() const {
-    map<int,gen>::const_iterator it=m_attributes.find(_GT_ATTRIB_LABEL);
+    attrib_iter it=m_attributes.find(_GT_ATTRIB_LABEL);
     if (it==m_attributes.end())
         return undef;
     return it->second;
@@ -548,32 +589,35 @@ graphe::vertex& graphe::vertex::operator =(const vertex &other) {
 }
 
 void graphe::vertex::add_neighbor(int i,const attrib &attr) {
-    m_neighbors.push_back(i);
+    ivector::iterator it=m_neighbors.begin();
+    while (it!=m_neighbors.end() && *it<i) ++it;
+    assert(it==m_neighbors.end() || *it!=i);
+    m_neighbors.insert(it,i);
     copy_attributes(attr,m_neighbor_attributes[i]);
-    m_sorted=false;
+}
+
+bool graphe::vertex::is_temporary(int i) const {
+    const attrib &attr=neighbor_attributes(i);
+    attrib_iter it=attr.find(_GT_ATTRIB_TEMPORARY);
+    return it!=attr.end() && is_one(it->second);
 }
 
 graphe::attrib &graphe::vertex::neighbor_attributes(int i) {
     map<int,attrib>::iterator it=m_neighbor_attributes.find(i);
-    if (it==m_neighbor_attributes.end())
-        it=m_neighbor_attributes.find(-i-1);
     assert(it!=m_neighbor_attributes.end());
     return it->second;
 }
 
 const graphe::attrib &graphe::vertex::neighbor_attributes(int i) const {
     neighbor_iter it=m_neighbor_attributes.find(i);
-    if (it==m_neighbor_attributes.end())
-        it=m_neighbor_attributes.find(-i-1);
     assert(it!=m_neighbor_attributes.end());
     return it->second;
 }
 
-bool graphe::vertex::has_neighbor(int i,bool include_temp_edges) const {
-    if (m_sorted)
+bool graphe::vertex::has_neighbor(int i) const {
+    if (is_sorted())
         return binary_search(m_neighbors.begin(),m_neighbors.end(),i);
-    return find(m_neighbors.begin(),m_neighbors.end(),i)!=m_neighbors.end() ||
-            (include_temp_edges && find(m_neighbors.begin(),m_neighbors.end(),-i-1)!=m_neighbors.end());
+    return find(m_neighbors.begin(),m_neighbors.end(),i)!=m_neighbors.end();
 }
 
 void graphe::vertex::remove_neighbor(int i) {
@@ -581,10 +625,14 @@ void graphe::vertex::remove_neighbor(int i) {
     if (it!=m_neighbors.end()) {
         m_neighbors.erase(it);
         map<int,attrib>::iterator jt=m_neighbor_attributes.find(i);
-        assert (jt!=m_neighbor_attributes.end());
+        assert(jt!=m_neighbor_attributes.end());
         m_neighbor_attributes.erase(jt);
+        map<int,int>::iterator kt=m_multiedges.find(i);
+        if (kt!=m_multiedges.end())
+            m_multiedges.erase(kt);
     }
-    m_sorted=false;
+    if (m_neighbors.empty())
+        m_sorted=true;
 }
 
 void graphe::vertex::move_neighbor(int i,int j,bool after) {
@@ -648,6 +696,15 @@ void graphe::clear_node_stack() {
 void graphe::clear_node_queue() {
     while (!node_queue.empty())
         node_queue.pop();
+}
+
+/* return true iff this graph has no edges */
+bool graphe::is_empty() const {
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if (!it->neighbors().empty())
+            return false;
+    }
+    return true;
 }
 
 /* dotgraph class implementation */
@@ -822,6 +879,16 @@ string graphe::gen2str(const gen &g) {
     return ss.str();
 }
 
+/* return random permutation of {0,1,..,n-1} */
+graphe::ivector graphe::rand_permu(int n) const {
+    ivector res=vecteur_2_vector_int(*_randperm(n,ctx)._VECTptr);
+    int ofs=array_start(ctx);
+    for (ivector::iterator it=res.begin();it!=res.end();++it) {
+        *it-=ofs;
+    }
+    return res;
+}
+
 /* compute the union of A and B and store it in U */
 int graphe::sets_union(const ivector &A,const ivector &B,ivector &U) {
     U.resize(A.size()+B.size());
@@ -851,6 +918,7 @@ graphe::graphe(GIAC_CONTEXT) {
     ctx=contextptr;
     set_graph_attribute(_GT_ATTRIB_DIRECTED,FAUX);
     set_graph_attribute(_GT_ATTRIB_WEIGHTED,FAUX);
+    //nodes.reserve(1024);
 }
 
 /* graphe constructor, create a copy of G */
@@ -869,6 +937,7 @@ graphe::graphe(const string &name,GIAC_CONTEXT) {
     ivector hull;
     layout x;
     if (name=="clebsch") {
+        reserve_nodes(16);
         for (int i=0;i<16;++i) {
             add_node(i);
         }
@@ -889,6 +958,18 @@ graphe::graphe(const string &name,GIAC_CONTEXT) {
         make_circular_layout(x,hull,3.5);
     } else if (name=="desargues") {
         make_petersen_graph(10,3,&x);
+    } else if (name=="blanusa") {
+        vecteur l1=makevecteur(1,2,3,4,5,6,7,8,9);
+        vecteur l2=makevecteur(10,11,12,13,14,15,16,17,18);
+        add_nodes(mergevecteur(l1,l2));
+        read_special(blanusa_graph);
+        for (int i=0;i<6;++i) hull.push_back(i);
+        add_temporary_edge(0,9);
+        add_temporary_edge(1,9);
+        add_temporary_edge(3,15);
+        add_temporary_edge(4,15);
+        make_circular_layout(x,hull,2.5,0.005,0.618);
+        remove_temporary_edges();
     } else if (name=="dodecahedron") {
         read_special(dodecahedron_graph);
         for (int i=1;i<=5;++i) hull.push_back(node_index(i));
@@ -984,29 +1065,67 @@ graphe::graphe(const string &name,GIAC_CONTEXT) {
 }
 
 /* export this graph as a Giac gen object */
-gen graphe::to_gen() const {
-    vecteur gv;
+gen graphe::to_gen() {
+    int n=node_count();
+    vecteur res(3+n+edge_count()*(is_directed()?1:2));
+    int cnt=0;
     gen_map attr;
     attrib2genmap(attributes,attr);
-    gv.push_back(attr);
-    vecteur uattr_ids;
+    res[cnt++]=n;
+    res[cnt++]=attr;
+    vecteur uattr_ids(user_tags.size());
     for (vector<string>::const_iterator it=user_tags.begin();it!=user_tags.end();++it) {
-        uattr_ids.push_back(str2gen(*it,true));
+        uattr_ids[it-user_tags.begin()]=str2gen(*it,true);
     }
-    gv.push_back(uattr_ids);
-    int n,j;
+    res[cnt++]=uattr_ids;
+    for (int i=0;i<n;++i) {
+        gen_map vattr;
+        const vertex &v=node(i);
+        attrib2genmap(v.attributes(),vattr);
+        vattr[-1]=v.neighbors().size();
+        res[cnt++]=vattr;
+    }
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
-        n=it->neighbors().size();
-        attrib2genmap(it->attributes(),attr);
-        vecteur v=makevecteur(it->label(),attr,vecteur(n));
-        j=0;
-        for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
-            attrib2genmap(it->neighbor_attributes(*jt),attr);
-            v.back()._VECTptr->at(j++)=makevecteur(*jt,attr);
+        const vertex &v=*it;
+        for (ivector_iter jt=v.neighbors().begin();jt!=v.neighbors().end();++jt) {
+            gen_map nattr;
+            attrib2genmap(v.neighbor_attributes(*jt),nattr);
+            nattr[-1]=*jt;
+            res[cnt++]=nattr;
         }
-        gv.push_back(v);
     }
-    return change_subtype(gv,_GRAPH__VECT);
+    return change_subtype(res,_GRAPH__VECT);
+}
+
+/* allocate, initialize and return an integer array of adjacency lists of this graph,
+ * in form [c1,a11,a12,...,-1,c2,a21,a22,...,-1,...], where c1,c2,... are vertex colors */
+int *graphe::to_array(int &sz,bool reduce) const {
+    assert(!reduce || !is_directed());
+    sz=0;
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        sz+=it->neighbors().size();
+    }
+    if (reduce) {
+        assert((sz%2)==0);
+        sz/=2;
+    }
+    sz+=2*node_count();
+    int *res=new int[sz];
+    int i=0,c;
+    attrib_iter ait;
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        c=default_vertex_color;
+        if ((ait=it->attributes().find(_GT_ATTRIB_COLOR))!=it->attributes().end()) {
+            c=ait->second.val;
+        }
+        res[i++]=c;
+        for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
+            if (!reduce || *jt>int(it-nodes.begin()))
+                res[i++]=*jt;
+        }
+        res[i++]=-1;
+    }
+    return res;
 }
 
 /* return index associated with the specified attribute tag */
@@ -1029,6 +1148,8 @@ int graphe::tag2index(const string &tag) {
         return _GT_ATTRIB_POSITION;
     if (tag=="name")
         return _GT_ATTRIB_NAME;
+    if (tag=="temp")
+        return _GT_ATTRIB_TEMPORARY;
     return register_user_tag(tag);
 }
 
@@ -1054,6 +1175,8 @@ string graphe::index2tag(int index) const {
         return "pos";
     case _GT_ATTRIB_NAME:
         return "name";
+    case _GT_ATTRIB_TEMPORARY:
+        return "temp";
     case _GT_ATTRIB_USER:
     default:
         len=index-_GT_ATTRIB_USER;
@@ -1183,6 +1306,15 @@ bool graphe::edges2ipairs(const vecteur &E,ipairs &ev,bool &notfound) const {
     return true;
 }
 
+/* convert ipairs to edges */
+vecteur graphe::ipairs2edges(const ipairs &E) const {
+    vecteur res(E.size());
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        res[it-E.begin()]=makevecteur(node_label(it->first),node_label(it->second));
+    }
+    return res;
+}
+
 /* convert ipairs to ipairs */
 void graphe::ipairs2edgeset(const ipairs &E,edgeset &Eset) {
     Eset.clear();
@@ -1193,46 +1325,50 @@ void graphe::ipairs2edgeset(const ipairs &E,edgeset &Eset) {
 
 /* return total number of edges/arcs */
 int graphe::edge_count() const {
-    int count=0;
+    int count=0,dup=0;
+    bool isdir=is_directed();
     for(node_iter it=nodes.begin();it!=nodes.end();++it) {
         count+=it->neighbors().size();
+        if (!isdir)
+            dup+=it->multiedge_count();
     }
-    if (!is_directed())
+    if (!isdir) {
         count/=2;
+        count+=dup;
+    }
     return count;
 }
 
 /* return number of arcs going in the vertex with the specified index (when directed) */
-int graphe::in_degree(int index,bool count_temp_edges) const {
+int graphe::in_degree(int index,int sg) const {
     assert(index>=0 && index<node_count());
     int count=0;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
-        if (it->has_neighbor(index,count_temp_edges))
+        if ((sg<0 || it->subgraph()==sg) && it->has_neighbor(index))
             count++;
     }
     return count;
 }
 
 /* return number of arcs going out of vertex with the specified index (when directed) */
-int graphe::out_degree(int index,bool count_temp_edges) const {
+int graphe::out_degree(int index,int sg) const {
     assert(index>=0 && index<node_count());
-    const vertex &vert=nodes[index];
-    if (count_temp_edges)
-        return vert.neighbors().size();
-    int count=0;
-    for (ivector_iter it=vert.neighbors().begin();it!=vert.neighbors().end();++it) {
-        if (count_temp_edges || *it>=0)
-            count++;
+    const vertex &v=node(index);
+    if (sg<0)
+        return v.neighbors().size();
+    int cnt=0;
+    for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+        if (node(*it).subgraph()==sg)
+            ++cnt;
     }
-    return count;
+    return cnt;
 }
 
 /* return degree of vertex with the specified index */
-int graphe::degree(int index,bool count_temp_edges) const {
+int graphe::degree(int index,int sg) const {
     if (is_directed())
-        return in_degree(index,count_temp_edges)+
-                out_degree(index,count_temp_edges);
-    return nodes[index].neighbors().size();
+        return in_degree(index,sg)+out_degree(index,sg);
+    return out_degree(index,sg);
 }
 
 /* return the degree sequence of this graph */
@@ -1246,6 +1382,22 @@ vecteur graphe::degree_sequence(int sg) const {
     return res;
 }
 
+/* sort the vertices by order of their degrees, starting from the highest */
+void graphe::sort_by_degrees() {
+    int n=node_count();
+    ipairs lst(n);
+    for (int i=0;i<n;++i) {
+        lst[i]=make_pair(degree(i),i);
+    }
+    sort(lst.rbegin(),lst.rend());
+    ivector sigma(n);
+    for (ipairs_iter it=lst.begin();it!=lst.end();++it) {
+        sigma[it-lst.begin()]=it->second;
+    }
+    graphe G(*this);
+    G.isomorphic_copy(*this,sigma);
+}
+
 /* create the adjacency matrix of this graph */
 void graphe::adjacency_matrix(matrice &m) const {
     int n=node_count(),i,j;
@@ -1254,7 +1406,6 @@ void graphe::adjacency_matrix(matrice &m) const {
         i=it-nodes.begin();
         for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
             j=*jt;
-            if (j<0) j=-j-1;
             m[i]._VECTptr->at(j)=gen(1);
         }
     }
@@ -1268,24 +1419,50 @@ void graphe::adjacency_sparse_matrix(sparsemat &sm) const {
         i=it-nodes.begin();
         for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
             j=*jt;
-            if (j<0) j=-j-1;
             sm[i][j]=1;
         }
     }
 }
 
+/* create the Laplacian matrix of this graph */
+void graphe::laplacian_matrix(matrice &m,bool normalize) const {
+    int n=node_count(),i,j;
+    bool isdir=is_directed();
+    vecteur ds=degree_sequence();
+    ipairs E;
+    get_edges_as_pairs(E);
+    m=*_matrix(makesequence(n,n,0),ctx)._VECTptr;
+    for (i=0;i<n;++i) {
+        m[i]._VECTptr->at(i)=normalize?(is_zero(ds[i])?0:1):ds[i];
+    }
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        i=it->first; j=it->second;
+        m[i]._VECTptr->at(j)=normalize?-fraction(1,sqrt(ds[i]*ds[j],ctx)):gen(-1);
+        if (!isdir)
+            m[j]._VECTptr->at(i)=normalize?-fraction(1,sqrt(ds[i]*ds[j],ctx)):gen(-1);
+    }
+}
+
 /* return incidence matrix of this graph */
-matrice graphe::incidence_matrix() const {
-    int nr=node_count(),nc=edge_count(),k=0;
-    matrice m=*_matrix(makesequence(nr,nc,0),context0)._VECTptr;
-    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
-        for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
-            m[it-nodes.begin()]._VECTptr->at(k)=gen(is_directed()?-1:1);
-            m[*jt]._VECTptr->at(k)=gen(1);
-            ++k;
+void graphe::incidence_matrix(matrice &m) const {
+    ipairs E;
+    get_edges_as_pairs(E);
+    int nr=node_count(),nc=E.size();
+    m=*_matrix(makesequence(nr,nc,0),context0)._VECTptr;
+    bool isdir=is_directed();
+    for (int i=0;i<nr;++i) {
+        for (int j=0;j<nc;++j) {
+            gen &mij=m[i]._VECTptr->at(j);
+            const ipair &e=E[j];
+            if (isdir) {
+                if (i==e.first)
+                    mij=-1;
+                else if (i==e.second)
+                    mij=1;
+            } else if (i==e.first || i==e.second)
+                mij=1;
         }
     }
-    return m;
 }
 
 /* return weight associated with edge {i,j} or arc [i,j] */
@@ -1350,7 +1527,7 @@ void graphe::uncolor_all_nodes(int base_color,int sg) {
 /* fill the list E with edges (in the given subgraph) represented as pairs of vertex indices */
 void graphe::get_edges_as_pairs(ipairs &E,bool include_temp_edges,int sg) const {
     int i,j;
-    bool dir=is_directed();
+    bool isdir=is_directed();
     E.clear();
     E.reserve(edge_count());
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
@@ -1358,14 +1535,9 @@ void graphe::get_edges_as_pairs(ipairs &E,bool include_temp_edges,int sg) const 
             continue;
         i=it-nodes.begin();
         for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
-            if ((j=*jt)<0) {
-                if (!include_temp_edges)
-                    continue;
-                j=-j-1;
-            }
-            if ((!dir && j<i) || (sg>=0 && node(j).subgraph()!=sg))
-                continue;
-            E.push_back(make_pair(i,j));
+            j=*jt;
+            if ((include_temp_edges || !is_temporary_edge(i,j)) && (isdir || j>i) && (sg<0 || node(j).subgraph()==sg))
+                E.push_back(make_pair(i,j));
         }
     }
 }
@@ -1378,13 +1550,35 @@ vecteur graphe::edges(bool include_weights,int sg) const {
     int i=0;
     bool isdir=is_directed();
     for (ipairs_iter it=E.begin();it!=E.end();++it) {
-        edge[0]=nodes[it->first].label();
-        edge[1]=nodes[it->second].label();
+        edge[0]=node(it->first).label();
+        edge[1]=node(it->second).label();
         if (!isdir)
             edge=*_sort(edge,ctx)._VECTptr;
         ret[i++]=include_weights?makevecteur(edge,weight(*it)):edge;
     }
     return ret;
+}
+
+/* return the sequence of edge multiplicities */
+graphe::ivector graphe::edge_multiplicities() const {
+    ipairs E;
+    get_edges_as_pairs(E);
+    int m=E.size();
+    ivector res(m);
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        res[it-E.begin()]=multiedges(*it)+1;
+    }
+    return res;
+}
+
+/* return the total number of edges, counting multiple edges too */
+int graphe::sum_of_edge_multiplicities() const {
+    ivector mult=edge_multiplicities();
+    int res=0;
+    for (ivector_iter it=mult.begin();it!=mult.end();++it) {
+        res+=*it;
+    }
+    return res;
 }
 
 /* write attributes to dot file */
@@ -1451,12 +1645,12 @@ bool graphe::write_dot(const string &filename) const {
         if (!u.empty()) {
             dotfile << indent << it->label() << edgeop << "{ ";
             for (ivector_iter kt=u.begin();kt!=u.end();++kt) {
-                dotfile << nodes[*kt].label() << " ";
+                dotfile << node(*kt).label() << " ";
             }
             dotfile << "};" << endl;
         }
         for (ivector_iter kt=v.begin();kt!=v.end();++kt) {
-            dotfile << indent << it->label() << edgeop << nodes[*kt].label() << " ";
+            dotfile << indent << it->label() << edgeop << node(*kt).label() << " ";
             write_attrib(dotfile,it->neighbor_attributes(*kt));
             dotfile << ";" << endl;
         }
@@ -1708,7 +1902,7 @@ bool graphe::read_dot(const string &filename) {
         case _GT_DOT_TOKEN_TYPE_STRING:
             index=add_node(str2gen(token,dot_token_type!=_GT_DOT_TOKEN_TYPE_NUMBER));
             if (subgraphs.empty()) { error_raised=true; break; }
-            nodes[index].set_subgraph(subgraphs.back().index());
+            node(index).set_subgraph(subgraphs.back().index());
             subgraphs.back().set_index(index+1);
             break;
         case _GT_DOT_TOKEN_TYPE_DELIMITER:
@@ -1783,11 +1977,13 @@ bool graphe::read_dot(const string &filename) {
     dotfile.close();
     if (dot_subgraph_level!=0 || strict || dot_reading_value || dot_reading_attributes)
         error_raised=true;
-    // set delayed attributes to nodes
-    for (map<int,attrib>::const_iterator it=delayed_attributes.begin();it!=delayed_attributes.end();++it) {
-        vertex &v=nodes[it->first];
-        for (attrib_iter ait=it->second.begin();ait!=it->second.end();++ait) {
-            v.set_attribute(ait->first,ait->second);
+    else {
+        /* set delayed attributes to nodes */
+        for (map<int,attrib>::const_iterator it=delayed_attributes.begin();it!=delayed_attributes.end();++it) {
+            vertex &v=node(it->first);
+            for (attrib_iter ait=it->second.begin();ait!=it->second.end();++ait) {
+                v.set_attribute(ait->first,ait->second);
+            }
         }
     }
     return !error_raised;
@@ -1843,11 +2039,15 @@ void graphe::randomize_edge_weights(double a,double b,bool integral_weights) {
 /* store the underlying graph to G (convert arcs to edges and strip all attributes) */
 void graphe::underlying(graphe &G) const {
     G.clear();
+    G.reserve_nodes(node_count());
     G.add_nodes(vertices());
     G.set_directed(false);
+    int i;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        i=it-nodes.begin();
+        G.node(i).set_subgraph(it->subgraph());
         for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
-            G.add_edge(it-nodes.begin(),*jt);
+            G.add_edge(i,*jt);
         }
     }
 }
@@ -1855,6 +2055,7 @@ void graphe::underlying(graphe &G) const {
 /* store the complement of this graph in G */
 void graphe::complement(graphe &G) const {
     int n=node_count();
+    G.reserve_nodes(n);
     G.add_nodes(vertices());
     bool isdir=is_directed();
     G.set_directed(isdir);
@@ -1885,36 +2086,61 @@ void graphe::attrib2genmap(const attrib &attr, gen_map &m) {
     }
 }
 
+bool gmap_find(const gen_map &gmap,const gen &key,gen &val) {
+    gen_map::const_iterator it=gmap.find(key);
+    if (it==gmap.end())
+        return false;
+    val=it->second;
+    return true;
+}
+
 /* initialize graph from Giac gen object */
 bool graphe::read_gen(const gen &g) {
     if (g.type!=_VECT || g.subtype!=_GRAPH__VECT)
         return false;
     this->clear();
-    vecteur &gv=*g._VECTptr;
-    if (gv.empty() || gv.front().type!=_MAP || !genmap2attrib(*gv.front()._MAPptr,attributes))
+    int n;
+    const vecteur &gv=*g._VECTptr;
+    if (gv.empty() || !gv.front().is_integer() ||
+            (n=gv.front().val)<0 || int(gv.size())<3+n || gv[1].type!=_MAP || gv[2].type!=_VECT)
         return false;
-    if (int(gv.size())<2 || gv[1].type!=_VECT)
+    if (!genmap2attrib(*gv[1]._MAPptr,this->attributes))
         return false;
-    for (const_iterateur it=gv[1]._VECTptr->begin();it!=gv[1]._VECTptr->end();++it) {
+    const vecteur &tags=*gv[2]._VECTptr;
+    user_tags.resize(tags.size());
+    for (const_iterateur it=tags.begin();it!=tags.end();++it) {
         if (it->type!=_STRNG)
             return false;
         register_user_tag(genstring2str(*it));
     }
-    for (const_iterateur it=gv.begin()+2;it!=gv.end();++it) {
-        if (it->type!=_VECT || int(it->_VECTptr->size())<3)
+    gen val;
+    attrib attr;
+    int deg,start=n+3,k;
+    for (int i=0;i<n;++i) {
+        const gen &elm=gv[i+3];
+        if (elm.type!=_MAP)
             return false;
-        vertex &vt=nodes[add_node(it->_VECTptr->front())];
-        if (it->_VECTptr->at(1).type!=_MAP || it->_VECTptr->at(2).type!=_VECT)
+        gen_map &mp=*elm._MAPptr;
+        if (!gmap_find(mp,-1,val) || !val.is_integer() || (deg=val.val)<0 || !genmap2attrib(mp,attr))
             return false;
-        genmap2attrib(*it->_VECTptr->at(1)._MAPptr,vt.attributes());
-        const_iterateur jt=it->_VECTptr->at(2)._VECTptr->begin();
-        for (;jt!=it->_VECTptr->at(2)._VECTptr->end();++jt) {
-            if (jt->type!=_VECT || !jt->_VECTptr->front().is_integer() || jt->_VECTptr->at(1).type!=_MAP)
+        attr.erase(attr.find(-1));
+        vertex vert;
+        vert.set_attributes(attr);
+        if (int(gv.size())<start+deg)
+            return false;
+        for (int j=0;j<deg;++j) {
+            const gen &ngh=gv[start+j];
+            if (ngh.type!=_MAP)
                 return false;
-            attrib attr;
-            genmap2attrib(*jt->_VECTptr->at(1)._MAPptr,attr);
-            vt.add_neighbor(jt->_VECTptr->front().val,attr);
+            gen_map &nmap=*ngh._MAPptr;
+            attrib nattr;
+            if (!gmap_find(nmap,-1,val) || !val.is_integer() || (k=val.val)<0 || k>=n || !genmap2attrib(nmap,nattr))
+                return false;
+            nattr.erase(nattr.find(-1));
+            vert.add_neighbor(k,nattr);
         }
+        start+=deg;
+        nodes.push_back(vert);
     }
     return true;
 }
@@ -1959,6 +2185,7 @@ void graphe::read_special(const char **special_graph) {
 
 /* make a copy of this graph and store it in G */
 void graphe::copy(graphe &G) const {
+    G.clear();
     G.set_name(name());
     G.register_user_tags(user_tags);
     G.set_graph_attributes(attributes);
@@ -1967,29 +2194,31 @@ void graphe::copy(graphe &G) const {
 }
 
 /* returns true iff graph has edge {i,j} */
-bool graphe::has_edge(int i,int j) const {
+bool graphe::has_edge(int i,int j,int sg) const {
     if (i<0 || i>=node_count() || j<0 || j>=node_count())
         return false;
-    return nodes[i].has_neighbor(j);
+    if (sg>=0 && (node(i).subgraph()!=sg || node(j).subgraph()!=sg))
+        return false;
+    return node(i).has_neighbor(j);
 }
 
 /* returns true iff i-th and j-th vertices are adjacent */
 bool graphe::nodes_are_adjacent(int i,int j) const {
-    return nodes[i].has_neighbor(j) || nodes[j].has_neighbor(i);
+    return node(i).has_neighbor(j) || node(j).has_neighbor(i);
 }
 
 /* return const reference to the attributes assigned to edge [i,j] */
-const graphe::attrib &graphe::edge_attributes(int i, int j) const {
+const graphe::attrib &graphe::edge_attributes(int i,int j) const {
     if (is_directed())
-        return nodes[i].neighbor_attributes(j);
-    return nodes[i<j?i:j].neighbor_attributes(i<j?j:i);
+        return node(i).neighbor_attributes(j);
+    return node(i<j?i:j).neighbor_attributes(i<j?j:i);
 }
 
 /* return the modifiable reference to the attributes assigned to edge [i,j] */
-graphe::attrib &graphe::edge_attributes(int i, int j) {
+graphe::attrib &graphe::edge_attributes(int i,int j) {
     if (is_directed())
-        return nodes[i].neighbor_attributes(j);
-    return nodes[i<j?i:j].neighbor_attributes(i<j?j:i);
+        return node(i).neighbor_attributes(j);
+    return node(i<j?i:j).neighbor_attributes(i<j?j:i);
 }
 
 /* convert attrib to pair of vecteurs */
@@ -2005,9 +2234,9 @@ void graphe::add_edge(int i,int j,const gen &w) {
     assert(i>=0 && i<node_count() && j>=0 && j<node_count());
     if (has_edge(i,j))
         return;
-    nodes[i].add_neighbor(j);
+    node(i).add_neighbor(j);
     if (!is_directed())
-        nodes[j].add_neighbor(i);
+        node(j).add_neighbor(i);
     if (is_weighted())
         set_edge_attribute(i,j,_GT_ATTRIB_WEIGHT,w);
 }
@@ -2018,11 +2247,11 @@ void graphe::add_edge(int i,int j,const attrib &attr) {
     if (has_edge(i,j))
         return;
     if (is_directed())
-        nodes[i].add_neighbor(j,attr);
+        node(i).add_neighbor(j,attr);
     else {
         int v=i<j?i:j,w=i<j?j:i;
-        nodes[v].add_neighbor(w,attr);
-        nodes[w].add_neighbor(v);
+        node(v).add_neighbor(w,attr);
+        node(w).add_neighbor(v);
     }
 }
 
@@ -2047,23 +2276,32 @@ graphe::ipair graphe::add_edge(const gen &v,const gen &w,const attrib &attr) {
 /* add temporary edge from i-th to j-th vertex */
 void graphe::add_temporary_edge(int i,int j) {
     assert(!has_edge(i,j));
-    nodes[i].add_neighbor(-j-1);
-    if (!is_directed())
-        nodes[j].add_neighbor(-i-1);
+    add_edge(i,j);
+    set_edge_attribute(i,j,_GT_ATTRIB_TEMPORARY,boole(true));
+}
+
+/* return true iff the edge {i,j} is temporary */
+bool graphe::is_temporary_edge(int i,int j) const {
+    assert(has_edge(i,j));
+    gen val;
+    get_edge_attribute(i,j,_GT_ATTRIB_TEMPORARY,val);
+    return is_one(val);
 }
 
 /* remove all temporary edges */
 void graphe::remove_temporary_edges() {
-    assert(node_stack.empty());
+    stack<ipair> edges;
+    int i;
     for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
         for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
-            if (*jt<0)
-                node_stack.push(*jt);
+            i=it-nodes.begin();
+            if (is_temporary_edge(i,*jt))
+                edges.push(make_pair(i,*jt));
         }
-        while (!node_stack.empty()) {
-            it->remove_neighbor(node_stack.top());
-            node_stack.pop();
-        }
+    }
+    while (!edges.empty()) {
+        remove_edge(edges.top());
+        edges.pop();
     }
 }
 
@@ -2071,9 +2309,9 @@ void graphe::remove_temporary_edges() {
 bool graphe::remove_edge(int i,int j) {
     if (!has_edge(i,j))
         return false;
-    nodes[i].remove_neighbor(j);
+    node(i).remove_neighbor(j);
     if (!is_directed())
-        nodes[j].remove_neighbor(i);
+        node(j).remove_neighbor(i);
     return true;
 }
 
@@ -2083,9 +2321,7 @@ int graphe::add_node(const gen &v) {
         if (it->label()==v)
             return it-nodes.begin();
     }
-    vertex vert;
-    vert.set_label(v);
-    nodes.push_back(vert);
+    nodes.push_back(vertex(v));
     return node_count()-1;
 }
 
@@ -2169,6 +2405,30 @@ int graphe::node_index(const gen &v) const {
     return -1;
 }
 
+/* return index of edge (i,j) as returned by get_edges_as_pairs */
+int graphe::edge_index(const ipair &e) const {
+    int i,j,cnt=0;
+    bool isdir=is_directed();
+    ipair edge=e;
+    if (!isdir && e.first>e.second) {
+        int tmp=edge.first;
+        edge.first=edge.second;
+        edge.second=tmp;
+    }
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        i=it-nodes.begin();
+        for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
+            j=*jt;
+            if (isdir || j>i) {
+                if (i==edge.first && j==edge.second)
+                    return cnt;
+                ++cnt;
+            }
+        }
+    }
+    return -1;
+}
+
 /* set 'subgraph' field of all nodes in v to s */
 void graphe::set_subgraph(const ivector &v,int s) {
     for (ivector_iter it=v.begin();it!=v.end();++it) {
@@ -2176,11 +2436,51 @@ void graphe::set_subgraph(const ivector &v,int s) {
     }
 }
 
+/* collect all vertices within the given subgraph in list v */
+void graphe::get_subgraph(int sg,ivector &v) const {
+    v.clear();
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if (it->subgraph()==sg)
+            v.push_back(it-nodes.begin());
+    }
+}
+
+/* return the index of the first vertex with subgraph field equal to sg,
+ * or -1 if no such vertices exist */
+int graphe::first_vertex_from_subgraph(int sg) const {
+    if (sg<0)
+        return 0;
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if (it->subgraph()==sg)
+            return it-nodes.begin();
+    }
+    return -1;
+}
+
+/* return the size of subgraph sg */
+int graphe::subgraph_size(int sg) const {
+    if (sg<0)
+        return node_count();
+    int cnt=0;
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if (it->subgraph()==sg)
+            ++cnt;
+    }
+    return cnt;
+}
+
 /* merge subgraphs s and t, such that the resulting subgraph has index s */
 void graphe::merge_subgraphs(int s,int t) {
     for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
         if (it->subgraph()==t)
             it->set_subgraph(s);
+    }
+}
+
+/* set subgraph field to default_sg (by default -1) for every vertex in the graph */
+void graphe::unset_subgraphs(int default_sg) {
+    for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
+        it->set_subgraph(default_sg);
     }
 }
 
@@ -2205,7 +2505,7 @@ void graphe::make_cycle_graph() {
 /* set vertex attribute key=val */
 void graphe::set_node_attribute(int index,int key,const gen &val) {
     assert (index>=0 && index<node_count());
-    nodes[index].set_attribute(key,val);
+    node(index).set_attribute(key,val);
 }
 
 /* set edge {i,j} attribute key=val */
@@ -2275,53 +2575,80 @@ void graphe::discard_edge_attribute(int i,int j,int key) {
 
 /* return true iff the graph is directed */
 bool graphe::is_directed() const {
-    gen g;
-    assert(get_graph_attribute(_GT_ATTRIB_DIRECTED,g) && g.is_integer());
-    return (bool)g.val;
+    attrib_iter it=attributes.find(_GT_ATTRIB_DIRECTED);
+    assert(it!=attributes.end() && it->second.is_integer());
+    return (bool)it->second.val;
 }
 
 /* return true iff the graph is weighted */
 bool graphe::is_weighted() const {
-    gen g;
-    assert(get_graph_attribute(_GT_ATTRIB_WEIGHTED,g) && g.is_integer());
-    return (bool)g.val;
+    attrib_iter it=attributes.find(_GT_ATTRIB_WEIGHTED);
+    assert(it!=attributes.end() && it->second.is_integer());
+    return (bool)it->second.val;
 }
 
 /* create the subgraph defined by vertices from 'vi' and store it in G */
 void graphe::induce_subgraph(const ivector &vi,graphe &G,bool copy_attrib) const {
     G.clear();
+    G.reserve_nodes(vi.size());
+    ivector sg_pos(node_count(),-1);
+    bool isdir=is_directed();
+    if (copy_attrib) {
+        G.set_directed(isdir);
+        G.set_weighted(is_weighted());
+    }
     for (ivector_iter it=vi.begin();it!=vi.end();++it) {
+        sg_pos[*it]=it-vi.begin();
         gen v_label=node_label(*it);
-        const attrib &attri=nodes[*it].attributes();
+        const attrib &attri=node(*it).attributes();
         if (copy_attrib)
             G.add_node(v_label,attri);
         else
             G.add_node(v_label);
     }
-    ivector_iter kt;
+    int i,j,k;
     for (ivector_iter it=vi.begin();it!=vi.end();++it) {
         const vertex &v=node(*it);
+        i=it-vi.begin();
         for (ivector_iter jt=v.neighbors().begin();jt!=v.neighbors().end();++jt) {
-            if ((kt=find(vi.begin(),vi.end(),*jt))==vi.end())
-                continue;
-            G.add_edge(it-vi.begin(),kt-vi.begin());
+            if ((j=sg_pos[*jt])>=0 && (isdir || i<j)) {
+                ipair e=make_pair(i,j);
+                G.add_edge(e);
+                if (!isdir && (k=multiedges(make_pair(*it,*jt)))>0) {
+                    G.set_multiedge(e,k);
+                }
+            }
         }
     }
 }
 
 /* create the subgraph G defined by a list of edges E */
-void graphe::subgraph(const ipairs &E,graphe &G,bool copy_attrib) const {
+void graphe::extract_subgraph(const ipairs &E,graphe &G,bool copy_attrib) const {
     G.clear();
-    G.set_directed(is_directed());
-    int i,j;
+    bool isdir=is_directed();
+    if (copy_attrib) {
+        G.set_directed(isdir);
+        G.set_weighted(is_weighted());
+    }
+    set<int> vset;
     for (ipairs_iter it=E.begin();it!=E.end();++it) {
-        const vertex &v=node(it->first),&w=node(it->second);
-        if (copy_attrib) {
-            i=G.add_node(v.label(),v.attributes());
-            j=G.add_node(w.label(),w.attributes());
-            G.add_edge(i,j,edge_attributes(it->first,it->second));
-        } else
-            G.add_edge(v.label(),w.label());
+        vset.insert(it->first);
+        vset.insert(it->second);
+    }
+    G.reserve_nodes(vset.size());
+    map<int,int> index_map;
+    for (set<int>::const_iterator it=vset.begin();it!=vset.end();++it) {
+        const vertex &v=node(*it);
+        index_map[*it]=copy_attrib?G.add_node(v.label(),v.attributes()):G.add_node(v.label());
+    }
+    ipair e;
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        e=make_pair(index_map[it->first],index_map[it->second]);
+        if (copy_attrib)
+            G.add_edge(e,edge_attributes(*it));
+        else G.add_edge(e);
+        if (!isdir)
+            G.set_multiedge(e,multiedges(*it));
     }
 }
 
@@ -2349,13 +2676,15 @@ bool graphe::is_subgraph(const graphe &G) const {
 void graphe::adjacent_nodes(int i,ivector &adj,bool include_temp_edges) const {
     assert(i>=0 && i<node_count());
     const vertex &v=node(i);
+    bool isdir=is_directed();
     adj.clear();
-    adj.reserve(node_count());
+    if (!isdir)
+        adj.reserve(v.neighbors().size());
     int j;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         j=*it;
-        if (include_temp_edges || j>=0)
-            adj.push_back(j<0?-j-1:j);
+        if (include_temp_edges || !is_temporary_edge(i,j))
+            adj.push_back(j);
     }
     if (is_directed()) {
         for (node_iter it=nodes.begin();it!=nodes.end();++it) {
@@ -2363,11 +2692,9 @@ void graphe::adjacent_nodes(int i,ivector &adj,bool include_temp_edges) const {
             if (i==j)
                 continue;
             const ivector &ngh=it->neighbors();
-            if (find(ngh.begin(),ngh.end(),i)!=ngh.end() ||
-                    (include_temp_edges && find(ngh.begin(),ngh.end(),-i-1)!=ngh.end())) {
-                if (find(adj.begin(),adj.end(),j)==adj.end())
-                    adj.push_back(j);
-            }
+            if (find(ngh.begin(),ngh.end(),i)!=ngh.end() &&
+                    (include_temp_edges || !is_temporary_edge(i,j)))
+                adj.push_back(j);
         }
     }
 }
@@ -2410,273 +2737,250 @@ void graphe::maximal_independent_set(ivector &ind) const {
     sort(ind.begin(),ind.end());
 }
 
-/*
- * matching_maximizer class implementation ****************************
- */
-
-graphe::matching_maximizer::matching_maximizer(graphe *gr) {
-    G=gr;
-}
-
-/* return the vertex which matches v in matching, return -1 if v is not matched */
-int graphe::matching_maximizer::mate(const ipairs &matching, int v) {
-    for (ipairs_iter it=matching.begin();it!=matching.end();++it) {
-        if (it->first==v)
-            return it->second;
-        if (it->second==v)
-            return it->first;
-    }
-    return -1;
-}
-
-int graphe::matching_maximizer::find_root(int k) {
-    map<int,int>::const_iterator it=forest.find(k);
-    if (it==forest.end())
-        return -1;
-    while (it->second!=-1) {
-        it=forest.find(it->second);
-    }
-    return it->first;
-}
-
-int graphe::matching_maximizer::root_distance(map<int,int>::const_iterator it) {
-    int d=0;
-    while (it->second!=-1) {
-        it=forest.find(it->second);
-        ++d;
-    }
-    return d;
-}
-
-int graphe::matching_maximizer::root_distance(int v) {
-    map<int,int>::const_iterator it=forest.find(v);
-    if (it==forest.end())
-        return -1;
-    return root_distance(it);
-}
-
-int graphe::matching_maximizer::find_base(int v, int w) {
-    map<int,int>::const_iterator it=forest.find(v);
-    if (it==forest.end())
-        return -1;
-    ivector path;
-    while (it->second!=-1) {
-        path.push_back(it->first);
-        it=forest.find(it->second);
-    }
-    it=forest.find(w);
-    if (it==forest.end())
-        return -1;
-    while (find(path.begin(),path.end(),it->first)==path.end()) {
-        if (it->second==-1)
-            return -1;
-        it=forest.find(it->second);
-    }
-    return it->first;
-}
-
-bool graphe::matching_maximizer::tree_path(int v, int w, ivector &path) {
-    path.clear();
-    map<int,int>::const_iterator it=forest.find(w);
-    if (it==forest.end())
-        return false;
-    while (true) {
-        path.push_back(it->first);
-        if (it->second==-1)
-            break;
-        it=forest.find(it->second);
-    }
-    std::reverse(path.begin(),path.end());
-    if ((it=forest.find(v))==forest.end())
-        return false;
-    while (true) {
-        path.push_back(it->first);
-        if (it->second==-1)
-            break;
-        it=forest.find(it->second);
-    }
-    return true;
-}
-
-map<int,graphe::ivector>::iterator graphe::matching_maximizer::in_blossom(int v) {
-    map<int,ivector>::iterator it=blossoms.begin();
-    for (;it!=blossoms.end();++it) {
-        if (find(it->second.begin(),it->second.end(),v)!=it->second.end())
-            break;
-    }
-    return it;
-}
-
-map<int,graphe::ivector>::iterator graphe::matching_maximizer::is_blossom_base(int v) {
-    map<int,ivector>::iterator it=blossoms.begin();
-    for (;it!=blossoms.end();++it) {
-        if (v==it->first)
-            break;
-    }
-    return it;
-}
-
-void graphe::matching_maximizer::append_non_blossom_adjacents(int v,map<int,ivector>::const_iterator bit,ivector &lst) {
-    ivector adj;
-    G->adjacent_nodes(v,adj);
-    int a;
-    for (unsigned i=adj.size();i-->0;) {
-        a=adj[i];
-        if (a==bit->first || find(bit->second.begin(),bit->second.end(),a)!=bit->second.end())
-            adj.erase(adj.begin()+i);
-    }
-    lst.insert(lst.begin(),adj.begin(),adj.end());
-}
-
-graphe::ivector graphe::matching_maximizer::adjacent(int v) {
-    map<int,ivector>::const_iterator bit=is_blossom_base(v);
-    ivector res;
-    if (bit!=blossoms.end()) {
-        // v is the base of a blossom
-        append_non_blossom_adjacents(v,bit,res);
-        for (ivector_iter it=bit->second.begin();it!=bit->second.end();++it) {
-            append_non_blossom_adjacents(*it,bit,res);
+/* return pair <root,distance-from-root> of the tree in forest containing v */
+graphe::ipair graphe::forest_root_info(const ivector &forest,int v) {
+    assert(v>=0 && v<int(forest.size()));
+    int p=v,q,d=0;
+    do {
+        q=forest[p];
+        assert(q>-2);
+        if (q>=0) {
+            ++d;
+            p=q;
         }
-    } else {
-        // v does not belong to any of blossoms
-        G->adjacent_nodes(v,res);
-        for (ivector::iterator it=res.begin();it!=res.end();++it) {
-            map<int,ivector>::iterator bit=in_blossom(*it);
-            if (bit!=blossoms.end())
-                *it=bit->first;
+    } while (q>=0);
+    return make_pair(p,d);
+}
+
+/* find augmenting path, a part of Edmonds' blossom algorithm */
+bool graphe::find_augmenting_path(ivector &ap,map<int,int> &matching) {
+    ap.clear();
+    int n=node_count();
+    ivector forest(n,-2),blossom,part;
+    vector<bool> in_blossom(n,false);
+    ivectors blossom_adjacents;
+    ipairs blossom_matched_edges,blossom_inner_edges;
+    unvisit_all_edges();
+    unvisit_all_nodes();
+    /* make all matched edges visited */
+    map<int,int>::const_iterator mit;
+    for (mit=matching.begin();mit!=matching.end();++mit) {
+        set_edge_visited(mit->first,mit->second);
+    }
+    for (int i=0;i<n;++i) {
+        if ((mit=matching.find(i))==matching.end() && !node(i).neighbors().empty()) {
+            /* i-th vertex is exposed and can start a path, add it to the forest */
+            forest[i]=-1;
         }
     }
-    return res;
-}
-
-bool graphe::matching_maximizer::find_augmenting_path(const ipairs &matching, ivector &path) {
-    map<int,bool> node_marked;
-    map<int,map<int,bool> > edge_marked;
-    // collect exposed (free) vertices and create a forest of singleton trees
-    forest.clear();
-    path.clear();
-    for (int i=0;i<G->node_count();++i) {
-        if (mate(matching,i)==-1)
-            forest.insert(make_pair(i,-1));
-    }
-    // iterate over unmarked vertices v in F with even root distance
+    int v,w,x,r;
+    ipair root_info;
     while (true) {
-        map<int,int>::const_iterator fit=forest.begin();
-        for (;fit!=forest.end();++fit) {
-            if (!node_marked[fit->first] && in_blossom(fit->first)==blossoms.end() && root_distance(fit)%2==0)
+        /* find an unmarked vertex v in the forest with distance(v,root(v)) even */
+        v=-1;
+        for (int i=0;i<n;++i) {
+            if (node(i).is_visited() || forest[i]==-2)
+                continue;
+            root_info=forest_root_info(forest,i);
+            if (root_info.second%2==0) {
+                v=i;
                 break;
-        }
-        if (fit==forest.end())
-            break;
-        int v=fit->first,rv=find_root(v);
-        // iterate over unmarked edges {v,w} (edges in the matching are marked by default)
-        while (true) {
-            ivector adj=adjacent(v);
-            ivector_iter wit=adj.begin();
-            for (;wit!=adj.end();++wit) {
-                int i=v<*wit?v:*wit,j=v<*wit?*wit:v;
-                if (mate(matching,*wit)==-1 && !edge_marked[i][j])
-                    break;
             }
-            if (wit==adj.end())
-                break;
-            int w=*wit;
-            if (forest.find(w)==forest.end()) {
-                // update forest
-                int x=mate(matching,w);
-                assert(x>=0);
+        }
+        if (v<0) break;
+        vertex &vert=node(v);
+        r=root_info.first;
+        while (true) {
+            /* find an unmarked edge (v,w) */
+            w=-1;
+            for (ivector_iter it=vert.neighbors().begin();it!=vert.neighbors().end();++it) {
+                if (!is_edge_visited(v,*it)) {
+                    w=*it;
+                    break;
+                }
+            }
+            if (w<0) break;
+            if (forest[w]==-2) {
+                /* w is not in forest, w is matched, add edges (v,w) and (w,x) to forest */
+                assert(matching.find(w)!=matching.end());
                 forest[w]=v;
+                x=matching[w];
+                assert(forest[x]==-2);
                 forest[x]=w;
-                edge_marked[w<x?w:x][w<x?x:w]=true; // mark edge {w,x}
-            } else if (root_distance(w)%2!=0) {
-                // do nothing
-                ;
-            } else if (rv!=find_root(w)) {
-                // augmenting path found
-                assert(tree_path(v,w,path));
-                return true;
             } else {
-                // a blossom is found
-                int b=find_base(v,w);
-                assert(b>=0);
-                // store blossom vertices
-                map<int,ivector>::iterator bit=blossoms.insert(make_pair(b,ivector())).first;
-                int k=w;
-                while (k!=b) {
-                    bit->second.push_back(k);
-                    assert((k=forest[k])>=0);
-                }
-                std::reverse(bit->second.begin(),bit->second.end());
-                // find augmenting path with blossom contracted
-                ivector short_path;
-                if (!find_augmenting_path(matching,short_path))
-                    return false;
-                ivector_iter sit=short_path.begin();
-                int prev=-1;
-                for (;sit!=short_path.end();++sit) {
-                    if (*sit==b)
-                        break;
-                    prev=*sit;
-                }
-                if (sit==short_path.end())
-                    path=short_path;
-                else {
-                    // unfold the blossom
-                    if (sit!=short_path.begin() && prev!=forest[*sit])
-                        std::reverse(short_path.begin(),short_path.end());
-                    for (sit=short_path.begin();sit!=short_path.end();++sit) {
-                        path.push_back(*sit);
-                        if (*sit==b) {
-                            bit=blossoms.find(b);
-                            if (!G->has_edge(bit->first,*(sit+1))) {
-                                for (ivector_iter it=bit->second.begin();it!=bit->second.end();++it) {
-                                    path.push_back(*it);
-                                    if (G->has_edge(*it,*(sit+1)))
-                                        break;
-                                }
+                root_info=forest_root_info(forest,w);
+                if (root_info.second%2!=0) {
+                    /* do nothing */
+                    ;
+                } else {
+                    if (root_info.first!=r) {
+                        /* found an augmenting path, report it */
+                        int p=v;
+                        do { ap.push_back(p); } while ((p=forest[p])>=0);
+                        std::reverse(ap.begin(),ap.end());
+                        p=w;
+                        do { ap.push_back(p); } while ((p=forest[p])>=0);
+                        return true;
+                    } else {
+                        /* blossom found, construct it and record all relevant edges */
+                        unvisit_all_nodes();
+                        int p=v;
+                        do {
+                            node(p).set_visited(true);
+                            blossom.push_back(p);
+                        } while ((p=forest[p])>=0);
+                        p=w;
+                        while (!node(p).is_visited()) {
+                            part.push_back(p);
+                            p=forest[p];
+                            assert(p>=0);
+                        }
+                        blossom.erase(find(blossom.begin(),blossom.end(),p)+1,blossom.end());
+                        blossom.insert(blossom.begin(),part.rbegin(),part.rend());
+                        std::reverse(blossom.begin(),blossom.end());
+                        for (ivector_iter it=blossom.begin();it!=blossom.end();++it) {
+                            in_blossom[*it]=true;
+                        }
+                        int bs=blossom.size(),u;
+                        for (int i=1;i<bs;i+=2) {
+                            assert(i+1<bs);
+                            blossom_matched_edges.push_back(make_pair(blossom[i],blossom[i+1]));
+                        }
+                        set<int> adj;
+                        for (ivector_iter it=blossom.begin();it!=blossom.end();++it) {
+                            const vertex &V=node(*it);
+                            for (ivector_iter nt=V.neighbors().begin();nt!=V.neighbors().end();++nt) {
+                                if (!in_blossom[*nt])
+                                    adj.insert(*nt);
+                            }
+                            for (ivector_iter jt=it+1;jt!=blossom.end();++jt) {
+                                if (has_edge(*it,*jt))
+                                    blossom_inner_edges.push_back(make_pair(*it,*jt));
                             }
                         }
+                        for (set<int>::const_iterator it=adj.begin();it!=adj.end();++it) {
+                            ivector adjacents;
+                            adjacents.push_back(*it);
+                            const vertex &V=node(*it);
+                            for (ivector_iter nt=V.neighbors().begin();nt!=V.neighbors().end();++nt) {
+                                if (in_blossom[*nt])
+                                    adjacents.push_back(*nt);
+                            }
+                            blossom_adjacents.push_back(adjacents);
+                        }
+                        /* contract the blossom */
+                        for (int i=0;i<bs;++i) {
+                            remove_edge(blossom[i],blossom[(i+1)%bs]);
+                        }
+                        for (ipairs_iter it=blossom_inner_edges.begin();it!=blossom_inner_edges.end();++it) {
+                            remove_edge(*it);
+                        }
+                        r=blossom.front(); // the root of the blossom
+                        for (ivectors_iter it=blossom_adjacents.begin();it!=blossom_adjacents.end();++it) {
+                            u=it->front();
+                            for (ivector_iter ait=it->begin()+1;ait!=it->end();++ait) {
+                                remove_edge(u,*ait);
+                            }
+                            add_edge(u,r);
+                        }
+                        /* remove the contracted matched edges from matching and recurse */
+                        for (ipairs_iter it=blossom_matched_edges.begin();it!=blossom_matched_edges.end();++it) {
+                            assert((mit=matching.find(it->first))!=matching.end());
+                            assert(mit->second==it->second);
+                            matching.erase(it->first);
+                            assert((mit=matching.find(it->second))!=matching.end());
+                            assert(mit->second==it->first);
+                            matching.erase(it->second);
+                        }
+                        bool res=find_augmenting_path(ap,matching);
+                        /* restore the blossom and all edges incident to it */
+                        for (int i=0;i<bs;++i) {
+                            add_edge(blossom[i],blossom[(i+1)%bs]);
+                        }
+                        for (ivectors_iter it=blossom_adjacents.begin();it!=blossom_adjacents.end();++it) {
+                            u=it->front();
+                            remove_edge(u,r);
+                            for (ivector_iter jt=it->begin()+1;jt!=it->end();++jt) {
+                                add_edge(u,*jt);
+                            }
+                        }
+                        for (ipairs_iter it=blossom_inner_edges.begin();it!=blossom_inner_edges.end();++it) {
+                            add_edge(*it);
+                        }
+                        for (ipairs_iter it=blossom_matched_edges.begin();it!=blossom_matched_edges.end();++it) {
+                            matching[it->first]=it->second;
+                            matching[it->second]=it->first;
+                        }
+                        if (!res)
+                            return false; // if contracted graph has no augmenting path then there is none in this graph
+                        int root=-1;
+                        for (ivector_iter it=ap.begin();it!=ap.end();++it) {
+                            if (*it==r) {
+                                root=it-ap.begin();
+                                break;
+                            }
+                        }
+                        if (root<0)
+                            return true; // the augmenting path does not contain the blossom root
+                        if (root==0 || matching.find(r)->second==ap[root-1]) {
+                            std::reverse(ap.begin(),ap.end());
+                            root=ap.size()-1-root;
+                        }
+                        int pos,dir,i=0;
+                        for (;i+1!=root;++i);
+                        /* reached the blossom */
+                        const vertex &V=node(ap[i]);
+                        u=-1;
+                        for (ivector_iter it=V.neighbors().begin();it!=V.neighbors().end();++it) {
+                            if (in_blossom[*it]) {
+                                u=*it;
+                                break;
+                            }
+                        }
+                        assert(u>=0);
+                        if (u==r)
+                            return true; // the blossom is avoided
+                        /* lift the augmenting path */
+                        part.clear();
+                        pos=find(blossom.begin(),blossom.end(),u)-blossom.begin();
+                        assert(pos>0 && pos<bs);
+                        dir=matching[u]==blossom[pos-1]?-1:1;
+                        for (;pos>0 && pos<bs;pos+=dir) {
+                            part.push_back(blossom[pos]);
+                        }
+                        ap.insert(ap.begin()+root,part.begin(),part.end());
+                        return true;
                     }
-                    blossoms.erase(blossoms.find(b));
                 }
-                return true;
             }
-            edge_marked[v<w?v:w][v<w?w:v]=true; // mark edge {v,w}
+            set_edge_visited(v,w);
         }
-        node_marked[v]=true; // mark node v
+        vert.set_visited(true);
     }
     return false;
 }
 
-void graphe::matching_maximizer::find_maximum_matching(ipairs &matching) {
-    ivector path;
-    while (find_augmenting_path(matching,path)) {
-        // augmenting path was found, extend the matching
-        int len=path.size();
-        assert(len>=2);
-        if (len==2) {
-            matching.push_back(make_edge(path.front(),path.back()));
-        } else {
-            for (int i=0;i<len-2;i+=2) {
-                ipair edge=make_edge(path[i+1],path[i+2]);
-                ipairs::iterator it=find(matching.begin(),matching.end(),edge);
-                assert(it!=matching.end());
-                *it=make_edge(path[i],path[i+1]);
-            }
-            matching.push_back(make_edge(path[len-2],path[len-1]));
+/* find maximum matching by using Edmonds' blossom algorithm, time complexity O(n^2*m) */
+void graphe::find_maximum_matching(ipairs &M) {
+    ivector ap;
+    int n,i,j;
+    map<int,int> matching;
+    while (find_augmenting_path(ap,matching)) {
+        n=ap.size();
+        for (int k=0;k<n;k+=2) {
+            i=ap[k];
+            j=ap[k+1];
+            matching[i]=j;
+            matching[j]=i;
         }
     }
-}
-
-/*
- * end of matching_maximizer class implementation ************************************
- */
-
-/* extend given matching to a maximum matching using Edmonds'
- * blossom algorithm with time complexity O(m*n^2) */
-void graphe::maximize_matching(ipairs &matching) {
-    matching_maximizer maximizer(this);
-    maximizer.find_maximum_matching(matching);
+    M.clear();
+    for (map<int,int>::const_iterator it=matching.begin();it!=matching.end();++it) {
+        i=it->first;
+        j=it->second;
+        if (i<j)
+            M.push_back(make_pair(i,j));
+    }
 }
 
 /* find a maximal matching in an undirected graph (fast algorithm) */
@@ -2919,9 +3223,9 @@ void graphe::clear_point_coords(point &p) {
 /* convert point to Giac representation (cplx or point(x,y,[z])) */
 gen graphe::point2gen(const point &p,bool vect) {
     /*
-    if (p.size()==2)
-        return makecomplex(p[0],p[1]);
-    */
+if (p.size()==2)
+    return makecomplex(p[0],p[1]);
+*/
     vecteur coords;
     for (point::const_iterator it=p.begin();it!=p.end();++it) {
         coords.push_back(*it);
@@ -3134,7 +3438,7 @@ void graphe::force_directed_placement(layout &x,double K,double R,double tol,boo
     assert (n==node_count() && n>0);
     int d=x.front().size();
     point force(d),p(d),f(d);
-    // keep updating the positions until the system freezes
+    /* keep updating the positions until the system freezes */
     do {
         energy0=energy;
         energy=0;
@@ -3143,14 +3447,13 @@ void graphe::force_directed_placement(layout &x,double K,double R,double tol,boo
             i=nt-nodes.begin();
             point &xi=x[i];
             clear_point_coords(force);
-            // compute the attractive forces between vertices adjacent to the i-th vertex
+            /* compute the attractive forces between vertices adjacent to the i-th vertex */
             for (ivector_iter it=nt->neighbors().begin();it!=nt->neighbors().end();++it) {
                 j=*it;
-                if (j<0) j=-j-1;
                 scale_point(p,point_distance(xi,x[j],p)/K);
                 add_point(force,p);
             }
-            // compute the repulsive forces for all vertices j!=i which are not too far from the i-th vertex
+            /* compute the repulsive forces for all vertices j!=i which are not too far from the i-th vertex */
             for (layout_iter it=x.begin();it!=x.end();++it) {
                 j=it-x.begin();
                 if (i!=j) {
@@ -3163,7 +3466,7 @@ void graphe::force_directed_placement(layout &x,double K,double R,double tol,boo
                     add_point(force,f);
                 }
             }
-            // move the location of the i-th vertex in the direction of the force f
+            /* move the location of the i-th vertex in the direction of the force f */
             norm=point_displacement(force);
             if (norm==0)
                 continue;
@@ -3172,14 +3475,14 @@ void graphe::force_directed_placement(layout &x,double K,double R,double tol,boo
                 norm=step_length;
             }
             add_point(xi,force);
-            // update the maximal displacement for this iteration
+            /* update the maximal displacement for this iteration */
             if (norm>max_displacement)
                 max_displacement=norm;
             energy+=norm*norm;
         }
-        // update step length
+        /* update step length */
         if (ac) {
-            // adaptive cooling scheme
+            /* adaptive cooling scheme */
             if (energy<energy0) {
                 ++progress;
                 if (progress>=5) {
@@ -3190,7 +3493,7 @@ void graphe::force_directed_placement(layout &x,double K,double R,double tol,boo
                 progress=0;
                 step_length*=shrinking_factor;
             }
-        } else step_length*=shrinking_factor; // simple cooling scheme
+        } else step_length*=shrinking_factor; /* simple cooling scheme */
     } while (max_displacement>eps);
 }
 
@@ -3200,7 +3503,7 @@ void graphe::edge_labels_placement(const layout &x) {
         return;
     int dim=x.front().size();
     ipairs E;
-    get_edges_as_pairs(E,false);
+    get_edges_as_pairs(E);
     int n=E.size();
     vector<double> D(n);
     bool initialize=n>300;
@@ -3251,7 +3554,7 @@ void graphe::edge_labels_placement(const layout &x) {
                 }
             }
             assert(k0>=0);
-            set_edge_attribute(it->first,it->second,_GT_ATTRIB_POSITION,1.0-(dist[k0]+maxs*isdir?0.4:0.5));
+            set_edge_attribute(it->first,it->second,_GT_ATTRIB_POSITION,1.0-(dist[k0]+maxs*(isdir?0.4:0.5)));
         }
     }
 }
@@ -3267,7 +3570,7 @@ bool graphe::sparse_matrix_element(const sparsemat &A,int i,int j,double &val) {
 }
 
 /* compute the product A*B and store it in P (ncols is equal to the number of columns of A),
- * if A*B=B*A and A and B are symmetric then enabling 'symmetric=true' speeds up the computation */
+* if A*B=B*A and A and B are symmetric then enabling 'symmetric=true' speeds up the computation */
 void graphe::multiply_sparse_matrices(const sparsemat &A,const sparsemat &B,sparsemat &P,int ncols,bool symmetric) {
     int i,isempty;
     double val,p;
@@ -3319,7 +3622,7 @@ void graphe::coarsening(graphe &G,const sparsemat &P,const ivector &V) const {
     sparsemat Q,I,R,IG;
     int n=node_count();
     transpose_sparsemat(P,Q);
-    // create sparse symmetric incidence matrix I of this graph
+    /* create sparse symmetric incidence matrix I of this graph */
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         const ivector &ngh=it->neighbors();
         if (ngh.empty())
@@ -3329,7 +3632,7 @@ void graphe::coarsening(graphe &G,const sparsemat &P,const ivector &V) const {
             row[*jt]=1;
         }
     }
-    // use Galerkin product Q*I*P as the incidence matrix IG for graph G
+    /* use Galerkin product Q*I*P as the incidence matrix IG for graph G */
     multiply_sparse_matrices(Q,I,R,n);
     multiply_sparse_matrices(R,P,IG,n);
     for (ivector_iter it=V.begin();it!=V.end();++it) {
@@ -3398,18 +3701,18 @@ void graphe::multilevel_recursion(layout &x,int d,double R,double K,double tol,i
     int n=node_count(),m=multilevel_mis?mis.size():n-int(M.size());
     x.resize(n);
     if (m>0.75*n) {
-        // coarsening is slow, switch from EC to MIS method since it's faster
+        /* coarsening is slow, switch from EC to MIS method since it's faster */
         multilevel_mis=true;
         multilevel_recursion(x,d,R,K,tol,depth);
         return;
     }
     if (m<2) {
-        // the coarsest level, apply force directed algorithm on a random initial layout
+        /* the coarsest level, apply force directed algorithm on a random initial layout */
         multilevel_depth=depth;
         create_random_layout(x,d);
         force_directed_placement(x,K,R*(depth+1)*K,tol,false);
     } else {
-        // create coarser graph H and lay it out
+        /* create coarser graph H and lay it out */
         graphe G(ctx);
         sparsemat P; // prolongation matrix
         if (multilevel_mis)
@@ -3418,7 +3721,7 @@ void graphe::multilevel_recursion(layout &x,int d,double R,double K,double tol,i
             coarsening_ec(M,G,P);
         layout y;
         G.multilevel_recursion(y,d,R,K,tol,depth+1);
-        // compute x=P*y (layout lifting)
+        /* compute x=P*y (layout lifting) */
         double pij;
         point yj(d);
         for (int i=0;i<n;++i) {
@@ -3431,8 +3734,8 @@ void graphe::multilevel_recursion(layout &x,int d,double R,double K,double tol,i
                 }
             }
         }
-        // make the natural spring length K shorter with respect to
-        // the current depth level and subsequently refine x
+        /* make the natural spring length K shorter with respect to
+     * the current depth level and subsequently refine x */
         double L=K*std::pow(PLASTIC_NUMBER,depth-multilevel_depth);
         force_directed_placement(x,L,R*(depth+1)*L,K*tol/L,false);
     }
@@ -3455,7 +3758,7 @@ void graphe::make_spring_layout(layout &x,int d,double tol) {
         multilevel_recursion(x,d,DBL_MAX,10.0,tol);
     }
     if (d==3) {
-        // z-center the layout
+        /* z-center the layout */
         double minz=DBL_MAX,maxz=-DBL_MAX;
         for (layout_iter it=x.begin();it!=x.end();++it) {
             if (it->back()>maxz)
@@ -3471,7 +3774,7 @@ void graphe::make_spring_layout(layout &x,int d,double tol) {
 }
 
 /* layout face as a regular polygon inscribed in circle of radius R */
-void graphe::make_regular_polygon_layout(layout &x,const ivector &v,double R) {
+void graphe::make_regular_polygon_layout(layout &x,const ivector &v,double R,double elongate) {
     int n=v.size(),i;
     double step=2.0*M_PI/(double)n,phi=(n%2)==0?M_PI_2*(1+2.0/n):M_PI_2;
     for (int k=0;k<n;++k) {
@@ -3480,24 +3783,28 @@ void graphe::make_regular_polygon_layout(layout &x,const ivector &v,double R) {
         p.resize(2);
         p[0]=R*std::cos(phi);
         p[1]=R*std::sin(phi);
+        if (elongate>0) {
+            if (p[0]>.001) p[0]+=elongate;
+            else if (p[0]<-.001) p[0]-=elongate;
+        }
         phi-=step;
     }
 }
 
 /* apply force directed algorithm to this graph (must be triconnected), with the specified outer hull,
- * using the algorithm by Bor Plestenjak in "An Algorithm for Drawing Planar Graphs" */
-void graphe::make_circular_layout(layout &x,const ivector &hull,double A,double tol) {
+* using the algorithm by Bor Plestenjak in "An Algorithm for Drawing Planar Graphs" */
+void graphe::make_circular_layout(layout &x,const ivector &hull,double A,double tol,double elongate) {
     int n=node_count(),iter_count=0,maxper=0,j;
-    // place facial vertices on the unit circle and all other vertices in the origin
+    /* place facial vertices on the unit circle and all other vertices in the origin */
     x.resize(n);
-    make_regular_polygon_layout(x,hull);
-    if (n==int(hull.size()))
-        return; // there are no vertices to place inside the circle
+    make_regular_polygon_layout(x,hull,1.0,elongate);
+    if (n==int(hull.size())) // there are no vertices to place inside the circle
+        return;
     vector<bool> is_hull_vertex(n,false);
     for (ivector_iter it=hull.begin();it!=hull.end();++it) {
         is_hull_vertex[*it]=true;
     }
-    // compute vertex periphericity
+    /* compute vertex periphericity */
     ivector per(n);
     periphericity(hull,per);
     for (ivector_iter pt=per.begin();pt!=per.end();++pt) {
@@ -3512,11 +3819,11 @@ void graphe::make_circular_layout(layout &x,const ivector &hull,double A,double 
         point &p=x[i];
         p.resize(2,0.0);
     }
-    // cool down the system iteratively
+    /* cool down the system iteratively */
     double d,cool,C=std::sqrt((double)n/M_PI),eps=tol/std::sqrt((double)n);
     do {
         ++iter_count;
-        // compute the resultant force for each non-outer vertex
+        /* compute the resultant force for each non-outer vertex */
         for (int i=0;i<n;++i) {
             if (is_hull_vertex[i])
                 continue;
@@ -3525,7 +3832,6 @@ void graphe::make_circular_layout(layout &x,const ivector &hull,double A,double 
             clear_point_coords(f);
             for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
                 j=*it;
-                if (j<0) j=-j-1;
                 point &q=x[j];
                 point r(2);
                 copy_point(q,r);
@@ -3535,7 +3841,7 @@ void graphe::make_circular_layout(layout &x,const ivector &hull,double A,double 
                 add_point(f,r);
             }
         }
-        // move each vertex in the direction of the force
+        /* move each vertex in the direction of the force */
         cool=1.0/(C+std::pow(iter_count,1.5)/C);
         for (int i=0;i<n;++i) {
             if (is_hull_vertex[i])
@@ -3552,12 +3858,12 @@ void graphe::make_circular_layout(layout &x,const ivector &hull,double A,double 
 
 /* apply Tutte's barycentric method for vertex placement */
 void graphe::make_tutte_layout(layout &x,const ivector &outer_face) {
-    // place facial vertices on the unit circle and all other vertices in the origin
+    /* place facial vertices on the unit circle and all other vertices in the origin */
     int n=node_count();
     x.resize(n);
     make_regular_polygon_layout(x,outer_face);
     if (n==int(outer_face.size()))
-        return; // there are no vertices to place inside the circle
+        return; /* there are no vertices to place inside the circle */
     vector<bool> is_outer(n,false);
     for (ivector_iter it=outer_face.begin();it!=outer_face.end();++it) {
         is_outer[*it]=true;
@@ -3584,7 +3890,6 @@ void graphe::make_tutte_layout(layout &x,const ivector &outer_face) {
             clear_point_coords(p);
             for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
                 j=*it;
-                if (j<0) j=-j-1;
                 add_point(p,x[j]);
             }
             scale_point(p,1.0/(double)v.neighbors().size());
@@ -3595,14 +3900,16 @@ void graphe::make_tutte_layout(layout &x,const ivector &outer_face) {
 }
 
 /* Tomita recursive algorithm (a variant of Bron-Kerbosch) for maximal cliques */
-void graphe::tomita(ivector &R,ivector &P,ivector &X,map<int,int> &m,bool store_matching) const {
+void graphe::tomita(ivector &R,ivector &P,ivector &X,map<int,int> &m,int mode) {
     if (P.empty() && X.empty()) {
-        if (store_matching) {
+        if (mode==1) { // store matching
             if (R.size()==2)
                 m[R.front()]=R.back();
+        } else if (mode==2) { // store the clique
+            maxcliques.push_back(R);
         } else ++m[R.size()];
     } else {
-        // choose as the pivot element the node with the highest number of neighbors in P, say i-th
+        /* choose as the pivot element the node with the highest number of neighbors in P, say i-th */
         ivector PUX,PP,XX;
         ivector::iterator it,jt;
         sets_union(P,X,PUX);
@@ -3628,7 +3935,7 @@ void graphe::tomita(ivector &R,ivector &P,ivector &X,map<int,int> &m,bool store_
             R.insert(jt,v);
             sets_intersection(P,w.neighbors(),PP);
             sets_intersection(X,w.neighbors(),XX);
-            tomita(R,PP,XX,m,store_matching);
+            tomita(R,PP,XX,m,mode);
             R.erase(find(R.begin(),R.end(),v));
             P.erase(find(P.begin(),P.end(),v));
             for (jt=X.begin();jt!=X.end();++jt) {
@@ -3640,15 +3947,23 @@ void graphe::tomita(ivector &R,ivector &P,ivector &X,map<int,int> &m,bool store_
 }
 
 /* a modified version of the Bron-Kerbosch algorithm for listing all maximal cliques,
- * developed by Tomita et al. Number of k-cliques will be stored to m[k] for each k.
- * If store_matching is true, store 2-cliques (v,w) as m[v]=w. */
+* developed by Tomita et al. Number of k-cliques will be stored to m[k] for each k.
+* If store_matching is true, store 2-cliques (v,w) as m[v]=w. */
 void graphe::clique_stats(map<int,int> &m,bool store_matching) {
     ivector R,X,P(node_count());
-    for (int i=0;i<node_count();++i) {
+    for (int i=0;i<node_count();++i)
         P[i]=i;
-        node(i).sort_neighbors();
-    }
-    tomita(R,P,X,m,store_matching);
+    tomita(R,P,X,m,store_matching?1:0);
+}
+
+/* generate a clique vertex cover of this graph */
+void graphe::find_maximal_cliques() {
+    map<int,int> m;
+    ivector R,X,P(node_count());
+    for (int i=0;i<node_count();++i)
+        P[i]=i;
+    clear_maximal_cliques();
+    tomita(R,P,X,m,2);
 }
 
 /* CP recursive subroutine */
@@ -3682,28 +3997,25 @@ void graphe::cp_recurse(ivector &C,ivector &P,ivector &incumbent) {
 int graphe::cp_maxclique(ivector &clique) {
     int n=node_count();
     ivector P(n),C;
-    // initialize P and sort all adjacency lists
-    for (int i=0;i<n;++i) {
+    /* initialize P and sort all adjacency lists */
+    for (int i=0;i<n;++i)
         P[i]=i;
-        node(i).sort_neighbors();
-    }
-    // sort vertices by degree in descending order
+    /* sort vertices by degree in descending order */
     degree_comparator comp(this);
     sort(P.begin(),P.end(),comp);
     std::reverse(P.begin(),P.end());
-    // recurse
     cp_recurse(C,P,clique);
     return clique.size();
 }
 
 /*
- * Östergård class for finding maximum clique
- *
- * implemented as described in "A fast algorithm for the maximum clique problem",
- * Discrete Applied Mathematics 120 (2002) 197–207
- */
+* Östergård class for finding maximum clique
+*
+* implemented as described in "A fast algorithm for the maximum clique problem",
+* Discrete Applied Mathematics 120 (2002) 197–207
+*/
 
-void graphe::ostergard::recurse(ivector &U, int size) {
+void graphe::ostergard::recurse(ivector &U,int size,ivector &position) {
     if (U.empty()) {
         if (size>maxsize) {
             maxsize=size;
@@ -3727,7 +4039,7 @@ void graphe::ostergard::recurse(ivector &U, int size) {
         minpos=-1;
         for (ivector::iterator jt=U.begin();jt!=U.end();++jt) {
             j=*jt;
-            p=G->node(j).position();
+            p=position[j];
             if (minpos<0 || p<minpos) {
                 minpos=p;
                 i=j;
@@ -3749,7 +4061,7 @@ void graphe::ostergard::recurse(ivector &U, int size) {
         }
         V.resize(j);
         clique_nodes.push_back(i);
-        recurse(V,size+1);
+        recurse(V,size+1,position);
         clique_nodes.pop_back();
         if (found || timed_out)
             break;
@@ -3759,18 +4071,17 @@ void graphe::ostergard::recurse(ivector &U, int size) {
 /* return the size of maximum clique */
 int graphe::ostergard::maxclique(ivector &clique) {
     int n=G->node_count();
-    ivector S(n),U;
+    ivector S(n),U,position(n,0);
     for (int i=0;i<n;++i) {
         S[i]=i;
         vertex &v=G->node(i);
-        v.sort_neighbors();
         v.set_low(0);
     }
     G->greedy_vertex_coloring_biggs(S);
     std::reverse(S.begin(),S.end());
     G->node(S.back()).set_low(1);
     for (ivector_iter it=S.begin();it!=S.end();++it) {
-        G->node(*it).set_position(it-S.begin());
+        position[*it]=it-S.begin();
     }
     maxsize=0;
     clique_nodes.clear();
@@ -3787,7 +4098,7 @@ int graphe::ostergard::maxclique(ivector &clique) {
                 U.push_back(*it);
         }
         clique_nodes.push_back(k);
-        recurse(U,1);
+        recurse(U,1,position);
         if (timed_out)
             break;
         clique_nodes.pop_back();
@@ -3798,12 +4109,13 @@ int graphe::ostergard::maxclique(ivector &clique) {
 }
 
 /*
- * End of ostergard class
- */
+* End of ostergard class
+*/
 
 /* find maximum clique in this graph and return its size */
 int graphe::maximum_clique(ivector &clique) {
     assert(!is_directed());
+    clique.clear();
     int n=node_count(),m=edge_count();
     if (20*m<=n*(n-1)) // edge density smaller than or equal to 0.1
         return cp_maxclique(clique);
@@ -3812,7 +4124,7 @@ int graphe::maximum_clique(ivector &clique) {
 }
 
 /* remove a maximal clique from vertex set V using a fast greedy algorithm
- * (Johnson, J. Comp. Syst. Sci. 1974) */
+* (Johnson, J. Comp. Syst. Sci. 1974) */
 void graphe::remove_maximal_clique(ivector &V) const {
     ivector U=V,W,tmp;
     int s,smax,i;
@@ -3834,9 +4146,6 @@ void graphe::remove_maximal_clique(ivector &V) const {
 void graphe::greedy_neighborhood_clique_cover_numbers(ivector &cover_numbers) {
     int n=node_count();
     cover_numbers.resize(n,0);
-    for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
-        it->sort_neighbors();
-    }
     ivector V;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         V=it->neighbors();
@@ -3850,7 +4159,7 @@ void graphe::greedy_neighborhood_clique_cover_numbers(ivector &cover_numbers) {
 
 /* return the number of differently colored and uncolored vertices adjacent to the i-th vertex */
 graphe::ipair graphe::adjacent_color_count(int i) const {
-    set<int> colors;
+    std::set<int> colors;
     int c,unc=0;
     const vertex &v=node(i);
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
@@ -3862,23 +4171,38 @@ graphe::ipair graphe::adjacent_color_count(int i) const {
     return make_pair(colors.size(),unc);
 }
 
+/* insert colors adjacent to the i-th vertex to the given set */
+bool graphe::adjacent_colors(int i,std::set<int> &colors) const {
+    const vertex &v=node(i);
+    if (v.color()>0)
+        return false;
+    int c;
+    for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+        if ((c=node(*it).color())>0)
+            colors.insert(c);
+    }
+    return true;
+}
+
 /*
- * painter class implementation
- */
+* painter class implementation
+*/
 
 #ifdef HAVE_LIBGLPK
-void graphe::painter::compute_bounds(int max_colors) {
+void graphe::painter::compute_bounds(const ivector &icol,int max_colors) {
     G->greedy_neighborhood_clique_cover_numbers(cover_number);
     G->uncolor_all_nodes();
-    ostergard ost(G,timeout);
-    lb=ost.maxclique(clique); // lower bound for number of colors
-    if (max_colors==0) {
-        for (ivector_iter it=clique.begin();it!=clique.end();++it) {
-           G->set_node_color(*it,it-clique.begin()+1);
+    lb=(initially_colored=icol).size();
+    ub=max_colors;
+    if (ub==0) {
+        for (ivector_iter it=initially_colored.begin();it!=initially_colored.end();++it) {
+            G->set_node_color(*it,it-initially_colored.begin()+1);
         }
         G->dsatur();
+        ub=G->color_count();
     }
-    ub=max_colors==0?G->color_count():max_colors; // upper bound for number of colors
+    if ((generate_clique_cuts=G->node_count()<=100))
+        G->find_maximal_cliques();
 }
 
 void graphe::painter::make_values() {
@@ -3888,11 +4212,11 @@ void graphe::painter::make_values() {
     for (int i=0;i<n;++i) {
         ivector &x=values[i];
         x.resize(ub);
-        pos=find(clique.begin(),clique.end(),i);
-        k=pos==clique.end()?-1:int(pos-clique.begin());
+        pos=find(initially_colored.begin(),initially_colored.end(),i);
+        k=pos==initially_colored.end()?-1:int(pos-initially_colored.begin());
         for (int j=0;j<ub;++j) {
             if (k<0) {
-                if (j<lb && G->node(clique[j]).has_neighbor(i))
+                if (j<lb && G->node(initially_colored[j]).has_neighbor(i))
                     x[j]=-2;
                 else {
                     x[j]=++col;
@@ -3909,11 +4233,11 @@ void graphe::painter::formulate_mip() {
     mip=glp_create_prob();
     glp_set_obj_dir(mip,GLP_MIN);
     int n=G->node_count(),i,j,k;
-    vector<bool> iscliq(n,false);
-    for (ivector_iter it=clique.begin();it!=clique.end();++it) {
+    iscliq.resize(n,false);
+    for (ivector_iter it=initially_colored.begin();it!=initially_colored.end();++it) {
         iscliq[*it]=true;
     }
-    // create row variables and count nonzero entries in the constraint matrix
+    /* create row variables and count nonzero entries in the constraint matrix */
     int nonzeros=0,cnt=0,rs,cn,val;
     int nrows=n*(ub+2)-3*lb;
     glp_add_rows(mip,nrows);
@@ -3931,7 +4255,7 @@ void graphe::painter::formulate_mip() {
         cn=cover_number[k];
         const vertex &v=G->node(k);
         for (j=0;j<ub;++j) {
-            if (j<lb && k==clique[j])
+            if (j<lb && k==initially_colored[j])
                 continue;
             nonzeros+=2;
             rs=j<lb?cn:0;
@@ -3956,7 +4280,7 @@ void graphe::painter::formulate_mip() {
         }
     }
     assert(cnt==nrows);
-    // create column variables
+    /* create column variables */
     int ncols=nxcols+ub-lb;
     glp_add_cols(mip,ncols);
     for (i=0;i<ncols;++i) {
@@ -3964,7 +4288,7 @@ void graphe::painter::formulate_mip() {
         if (i>=nxcols)
             glp_set_obj_coef(mip,i+1,1.0);
     }
-    // create the constraint matrix
+    /* create the constraint matrix */
     int *ia=new int[nonzeros+1];
     int *ja=new int[nonzeros+1];
     double *ar=new double[nonzeros+1];
@@ -3990,7 +4314,7 @@ void graphe::painter::formulate_mip() {
         cn=cover_number[k];
         const vertex &v=G->node(k);
         for (j=0;j<ub;++j) {
-            if (j<lb && k==clique[j])
+            if (j<lb && k==initially_colored[j])
                 continue;
             ++row;
             for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
@@ -4029,23 +4353,31 @@ void graphe::painter::formulate_mip() {
         }
     }
     assert(cnt<=nonzeros && row==nrows);
-    // assign the constraint matrix to the MIP
+    /* assign the constraint matrix to the MIP */
     glp_load_matrix(mip,cnt,ia,ja,ar);
     delete[] ia; delete[] ja;
     delete[] ar;
+    for (i=0;i<nrows;++i) {
+        glp_set_row_stat(mip,i+1,GLP_BS);
+    }
 }
 
-void graphe::painter::mip_callback(glp_tree *tree,void *info) {
-    painter *pt=(painter*)info;
+void graphe::painter::callback(glp_tree *tree,void *info) {
+    painter *pt=static_cast<painter*>(info);
     int j;
     switch (glp_ios_reason(tree)) {
     case GLP_IBRANCH:
-        // select the branching variable
+        /* select the branching variable */
         if ((j=pt->select_branching_variable(tree))>0)
             glp_ios_branch_upon(tree,j,GLP_DN_BRNCH);
         break;
     case GLP_IHEUR:
-        // TODO
+        /* obtain a heuristic solution */
+        pt->heur_solution(tree);
+        break;
+    case GLP_IROWGEN:
+        /* generate clique and block color inequalities */
+        pt->generate_rows(tree);
         break;
     default:
         /* ignore call for other reasons */
@@ -4053,80 +4385,243 @@ void graphe::painter::mip_callback(glp_tree *tree,void *info) {
     }
 }
 
-/* the custom branching rule for MVCP (Brelaz): a fractionable vertex with
- * the largest number of different adjacent colors is chosen, ties are broken by
- * choosing the vertex with the maximal degree in the uncolored subgraph */
-int graphe::painter::select_branching_variable(glp_tree *tree) {
-    glp_prob *sp=glp_ios_get_prob(tree); // current subproblem LP
-    int c=glp_ios_curr_node(tree); // current node
-    int p=glp_ios_up_node(tree,c); // parent node
-    int *current_node_data=(int*)glp_ios_node_data(tree,c);
-    std::fill(branch_candidates.begin(),branch_candidates.end(),-1);
+/* generate constraints violated by the current subproblem relaxation solution */
+void graphe::painter::generate_rows(glp_tree *tree) {
+    glp_prob *prob=glp_ios_get_prob(tree);
+    int n=G->node_count(),col,w,len,r=glp_ios_curr_node(tree),best_len=-1;
+    int *data=(int*)glp_ios_node_data(tree,r);
+    if (*data>maxiter)
+        return;
+    (*data)+=1;
+    double rh,lh,h,maxh=0;
+    /* block color cuts */
+    for (int c=ub;c-->lb;) {
+        w=nxcols+c-lb+1;
+        for (int i=0;i<n;++i) {
+            if (iscliq[i])
+                continue;
+            rh=0.0;
+            len=0;
+            for (int j=c;j<ub;++j) {
+                col=values[i][j];
+                if (col<0)
+                    rh-=col+2;
+                else {
+                    row_indices[++len]=col;
+                    row_coeffs[len]=1.0;
+                }
+            }
+            if (len==0)
+                continue;
+            row_indices[++len]=w;
+            row_coeffs[len]=-1.0;
+            lh=0;
+            for (int k=0;k<len;++k) {
+                lh+=row_coeffs[k+1]*glp_get_col_prim(prob,row_indices[k+1]);
+            }
+            h=lh-rh;
+            //h/=len;
+            if (h>maxh) {
+                maxh=h;
+                memcpy(best_indices+1,row_indices+1,len*sizeof(int));
+                memcpy(best_coeffs+1,row_coeffs+1,len*sizeof(double));
+                best_len=len;
+            }
+        }
+    }
+    if (best_len>0)
+        add_row(prob,best_len,best_indices,best_coeffs,rh);
+    /* clique cuts */
+    if (generate_clique_cuts) {
+        const ivectors &cover=G->maximal_cliques();
+        double lim=30.0/double(cover.size());
+        int nc=0;
+        for (int c=ub;c-->lb;) {
+            w=nxcols+c-lb+1;
+            for (ivectors_iter it=cover.begin();it!=cover.end();++it) {
+                if (G->rand_uniform()>=lim)
+                    continue;
+                const ivector &cliq=*it;
+                rh=0.0;
+                len=0;
+                for (ivector_iter jt=cliq.begin();jt!=cliq.end();++jt) {
+                    col=values[*jt][c];
+                    if (col<0)
+                        rh-=col+2;
+                    else {
+                        row_indices[++len]=col;
+                        row_coeffs[len]=1.0;
+                    }
+                }
+                if (len==0)
+                    continue;
+                row_indices[++len]=w;
+                row_coeffs[len]=-1.0;
+                lh=0;
+                for (int k=0;k<len;++k) {
+                    lh+=row_coeffs[k+1]*glp_get_col_prim(prob,row_indices[k+1]);
+                }
+                h=lh-rh;
+                //h/=len;
+                if (h>0) {
+                    add_row(prob,len,row_indices,row_coeffs,rh);
+                    ++nc;
+                }
+            }
+        }
+    }
+}
+
+void graphe::painter::add_row(glp_prob *prob,int len,int *indices,double *coeffs,double rh) {
+    int r=glp_add_rows(prob,1);
+    glp_set_row_bnds(prob,r,GLP_UP,-DBL_MAX,rh);
+    glp_set_mat_row(prob,r,len,indices,coeffs);
+}
+
+/* color the nodes for which the colors are known */
+void graphe::painter::fixed_coloring(glp_tree *tree) {
+    glp_prob *prob=glp_ios_get_prob(tree); // current subproblem
     G->uncolor_all_nodes();
-    for (ivector_iter it=clique.begin();it!=clique.end();++it) {
-        G->set_node_color(*it,int(it-clique.begin())+1);
+    for (ivector_iter it=initially_colored.begin();it!=initially_colored.end();++it) {
+        G->set_node_color(*it,int(it-initially_colored.begin())+1);
     }
     for (int j=nxcols;j-->0;) {
         ipair &ij=col2ij[j];
-        if (glp_ios_can_branch(tree,j+1)) {
-            branch_candidates[ij.first]=ij.second;
-        } else if (glp_get_col_prim(sp,j+1)==1)
+        if (!glp_ios_can_branch(tree,j+1) && glp_get_col_prim(prob,j+1)==1)
             G->set_node_color(ij.first,lb+ij.second+1);
     }
-    int prev=0,i,j=0;
+}
+
+/* fast construction of a heuristic solution using greedy coloring */
+void graphe::painter::heur_solution(glp_tree *tree) {
+    if (maxiter==0) {
+        fixed_coloring(tree);
+        /* dsatur coloring, quadratic time */
+        G->dsatur();
+        assign_heur(tree);
+    }
+    int iter_count=0;
+    while (++iter_count<=maxiter) {
+        /* greedy coloring, linear time */
+        fixed_coloring(tree);
+        int n=G->node_count(),i,j;
+        ordering=G->rand_permu(n);
+        for (ivector_iter ot=ordering.begin();ot!=ordering.end();++ot) {
+            i=*ot;
+            used_colors.clear();
+            if (!G->adjacent_colors(i,used_colors))
+                continue;
+            j=0;
+            std::set<int>::const_iterator it=used_colors.begin();
+            for (;it!=used_colors.end();++it) {
+                if (*it!=++j) {
+                    G->set_node_color(i,j);
+                    break;
+                }
+            }
+            if (it==used_colors.end())
+                G->set_node_color(i,j+1);
+        }
+        if (assign_heur(tree)==0)
+            break;
+    }
+}
+
+/* offer heuristic solution to MIP solver */
+int graphe::painter::assign_heur(glp_tree *tree) {
+    G->get_node_colors(temp_colors);
+    int nc=G->color_count(),i,j;
+    if (nc>ub)
+        return 1;
+    nc-=lb;
+    for (int col=1;col<=nxcols;++col) {
+        const ipair &p=col2ij[col-1];
+        i=p.first;
+        j=p.second;
+        *(heur+col)=temp_colors[i]==j+1?1.0:0.0;
+    }
+    for (i=0;i<ub-lb;++i) {
+        *(heur+nxcols+1+i)=i<nc?1.0:0.0;
+    }
+    return glp_ios_heur_sol(tree,heur);
+}
+
+/* the custom branching rule for MVCP (Brelaz): a fractionable vertex with
+* the largest number of different adjacent colors is chosen, ties are broken by
+* choosing the vertex with the maximal degree in the uncolored subgraph */
+int graphe::painter::select_branching_variable(glp_tree *tree) {
+    glp_prob *prob=glp_ios_get_prob(tree); // current subproblem
+    std::fill(branch_candidates.begin(),branch_candidates.end(),-1);
+    fixed_coloring(tree);
+    double fr;
+    for (int j=nxcols;j-->0;) {
+        ipair &ij=col2ij[j];
+        if (glp_ios_can_branch(tree,j+1)) {
+            int &bc=branch_candidates[ij.first];
+            fr=std::abs(glp_get_col_prim(prob,j+1)-0.5);
+            if (bc<0 || fr<fracts[ij.first]) {
+                bc=ij.second;
+                fracts[ij.first]=fr;
+            }
+        }
+    }
+    int i,j=0;
     ipair nc,nc_max=make_pair(-1,-1);
-    if (p>0)
-        prev=*(int*)glp_ios_node_data(tree,p);
     for (ivector_iter it=branch_candidates.begin();it!=branch_candidates.end();++it) {
         if (*it<0)
             continue;
         i=it-branch_candidates.begin();
-        if (i+1==prev) {
-            *current_node_data=i+1;
-            return values[i][*it];
-        }
         nc=G->adjacent_color_count(i);
         if (nc>nc_max) {
             nc_max=nc;
             j=values[i][*it];
-            *current_node_data=i+1;
         }
     }
     return j;
 }
 
-int graphe::painter::color_vertices(ivector &colors,int max_colors) {
-    compute_bounds(max_colors);
+int graphe::painter::color_vertices(ivector &colors,const ivector &icol,int max_colors) {
+    compute_bounds(icol,max_colors);
     if (ub<lb)
         return 0;
+    int n=G->node_count();
     make_values();
     formulate_mip();
+    glp_smcp lparm;
+    glp_init_smcp(&lparm);
+    lparm.msg_lev=GLP_MSG_OFF;
+    glp_simplex(mip,&lparm);
     glp_iocp parm;
     glp_init_iocp(&parm);
-    parm.msg_lev=GLP_MSG_ERR;
-    //parm.br_tech=GLP_BR_FFV;
-    /* it seems that BFS backtrack works best with the custom branching rule,
-     * the rule from the original paper could not be implemented as it includes
-     * branching to more than 2 subproblems. */
-    parm.bt_tech=GLP_BT_BFS;
-    //parm.gmi_cuts=GLP_ON;
-    parm.mir_cuts=GLP_ON;
+    parm.msg_lev=GLP_MSG_OFF;
+    parm.gmi_cuts=GLP_OFF;
+    parm.mir_cuts=GLP_OFF;
     parm.clq_cuts=GLP_ON;
     parm.cov_cuts=GLP_ON;
-    parm.presolve=GLP_ON;
+    parm.presolve=GLP_OFF;
+    parm.bt_tech=GLP_BT_DFS;
     parm.cb_size=sizeof(int);
-    parm.cb_func=&mip_callback;
-    parm.cb_info=(void*)this;
-    branch_candidates.resize(G->node_count());
-    int ncolors,res=glp_intopt(mip,&parm);
+    parm.cb_func=&callback;
+    parm.cb_info=static_cast<void*>(this);
+    branch_candidates.resize(n);
+    fracts.resize(n);
+    maxiter=std::ceil(15.0*std::exp(-std::pow(n,2)*0.000321887582487));
+    heur=new double[nxcols+ub-lb+1];
+    row_indices=new int[nxcols+ub-lb+1];
+    row_coeffs=new double[nxcols+ub-lb+1];
+    best_indices=new int[nxcols+ub-lb+1];
+    best_coeffs=new double[nxcols+ub-lb+1];
+    int ncolors=0,res=glp_intopt(mip,&parm);
     if (res==0) {
-        switch (glp_get_status(mip)) {
-        case GLP_FEAS:
-            G->message("Warning: optimality of the coloring not guaranteed");
-        case GLP_UNDEF: // why does GLPK label optimal solution as undefined?
-        case GLP_OPT:
+        switch (glp_get_status(mip)) { // solution status:
+        case GLP_UNDEF:
+            G->message("Error: MIP solution undefined");
+            break;
+        case GLP_FEAS: // feasible but not necessarily optimal
+            G->message("Warning: optimality of the solution is not guaranteed");
+        case GLP_OPT: // optimal
             ncolors=lb+glp_mip_obj_val(mip);
-            // color the vertices
+            /* color the vertices */
             for (int k=0;k<nxcols;++k) {
                 ipair &p=col2ij[k];
                 if (glp_mip_col_val(mip,k+1)>0)
@@ -4134,19 +4629,24 @@ int graphe::painter::color_vertices(ivector &colors,int max_colors) {
             }
             G->get_node_colors(colors);
             break;
-        case GLP_NOFEAS:
-            ncolors=0;
+        case GLP_NOFEAS: // not feasible
+            G->message("Error: MIP has no feasible solutions");
             break;
         }
-    } else G->message("Error: MIP solver failure");
+    } // else G->message("Error: MIP solver failure");
     glp_delete_prob(mip);
+    delete[] heur;
+    delete[] row_indices;
+    delete[] row_coeffs;
+    delete[] best_indices;
+    delete[] best_coeffs;
     return ncolors;
 }
 #endif
 
 /*
- * end of painter class
- */
+* end of painter class
+*/
 
 /* find optimal vertex coloring using an exact algorithm, requires GLPK */
 int graphe::exact_vertex_coloring(int max_colors) {
@@ -4155,19 +4655,66 @@ int graphe::exact_vertex_coloring(int max_colors) {
     message("Error: GLPK library is required for exact minimal graph coloring");
 #else
     painter pt(this);
-    ivector colors;
-    ncolors=pt.color_vertices(colors,max_colors);
+    ivector colors,clique;
+    ostergard ost(this,5.0);
+    ost.maxclique(clique);
+    ncolors=pt.color_vertices(colors,clique,max_colors);
+    if (ncolors>0 && find(colors.begin(),colors.end(),0)!=colors.end()) {
+        uncolor_all_nodes();
+        ncolors=0;
+    }
 #endif
     return ncolors;
+}
+
+/* color the edges of this graph using D or D+1 colors,
+* return 1 in the former case, 2 in the latter, 0 on error */
+int graphe::exact_edge_coloring(ivector &colors,int *numcol) {
+    graphe L(ctx);
+    ipairs E;
+    line_graph(L,E);
+    /* find the vertex with maximum degree in G (this graph) */
+    int m=E.size(),maxdeg=0,deg,i,j,k;
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if ((deg=it->neighbors().size())>maxdeg) {
+            maxdeg=deg;
+            i=it-nodes.begin();
+        }
+    }
+    ivector icol(maxdeg);
+    k=0;
+    for (j=0;j<m;++j) {
+        const ipair &e=E[j];
+        if (e.first==i || e.second==i)
+            icol[k++]=j;
+    }
+    assert(k==maxdeg);
+#ifdef HAVE_LIBGLPK
+    painter pt(&L);
+    int ncolors=pt.color_vertices(colors,icol,maxdeg+1);
+#else
+    int ncolors=0;
+#endif
+    for (k=0;k<maxdeg;++k) {
+        colors[icol[k]]=k+1;
+    }
+    if (ncolors==0 || find(colors.begin(),colors.end(),0)!=colors.end())
+        return 0;
+    for (j=0;j<m;++j) {
+        const ipair &e=E[j];
+        set_edge_attribute(e.first,e.second,_GT_ATTRIB_COLOR,colors[j]);
+    }
+    if (numcol!=NULL)
+        *numcol=ncolors;
+    return ncolors-maxdeg+1;
 }
 
 /* returns true iff there is a clique cover of order not larger than k and finds that cover */
 bool graphe::clique_cover(ivectors &cover,int k) {
     if (is_triangle_free()) {
-        // clique cover consists of matched edges and singleton vertex sets
+        /* clique cover consists of matched edges and singleton vertex sets */
         ipairs matching;
-        matching_maximizer maximizer(this);
-        maximizer.find_maximum_matching(matching);
+        find_maximum_matching(matching);
         int m=matching.size(),n=node_count(),i=0;
         if (k>0 && n-m>k)
             return false;
@@ -4203,13 +4750,15 @@ bool graphe::clique_cover(ivectors &cover,int k) {
 }
 
 /* return true iff the graph is complete (i.e., a clique) */
-bool graphe::is_clique() const {
+bool graphe::is_clique(int sg) const {
     assert(!is_directed());
-    int i,j;
-    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
-        i=it-nodes.begin();
-        for (node_iter jt=it+1;jt!=nodes.end();++jt) {
-            j=jt-nodes.begin();
+    int i,j,n=node_count();
+    for (i=0;i<n;++i) {
+        if (sg>=0 && node(i).subgraph()!=sg)
+            continue;
+        for (j=i+1;j<n;++j) {
+            if (sg>=0 && node(j).subgraph()!=sg)
+                continue;
             if (!has_edge(i,j))
                 return false;
         }
@@ -4226,7 +4775,11 @@ int graphe::maximum_independent_set(ivector &v) const {
 
 /* return true iff the graph is triangle-free */
 bool graphe::is_triangle_free() const {
-    assert(!is_directed());
+    if (is_directed()) {
+        graphe G(ctx);
+        underlying(G);
+        return G.is_triangle_free();
+    }
     sparsemat M,M2;
     adjacency_sparse_matrix(M);
     multiply_sparse_matrices(M,M,M2,node_count(),true);
@@ -4249,46 +4802,130 @@ void graphe::remove_isolated_node(int i) {
     nodes.erase(nodes.begin()+i);
     int j;
     stack<attrib> attr;
+    stack<int> m;
     for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
-        for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
+        vertex &v=*it;
+        for (ivector_iter jt=v.neighbors().begin();jt!=v.neighbors().end();++jt) {
             j=*jt;
-            if (j<0)
-                node_stack.push(-j-1>i?j+1:j);
-            else
-                node_stack.push(j>i?j-1:j);
+            node_stack.push(j>i?j-1:j);
             attr.push(it->neighbor_attributes(j));
+            m.push(v.multiedges(j));
         }
-        it->clear_neighbors();
+        v.clear_neighbors();
         while (!node_stack.empty()) {
-            it->add_neighbor(node_stack.top(),attr.top());
+            v.add_neighbor(node_stack.top(),attr.top());
+            if (m.top()>0)
+                v.set_multiedge(node_stack.top(),m.top());
             node_stack.pop();
             attr.pop();
+            m.pop();
         }
     }
 }
 
+/* remove isolated nodes */
+void graphe::remove_isolated_nodes(const set<int> &isolated_nodes) {
+    for (set<int>::const_reverse_iterator it=isolated_nodes.rbegin();it!=isolated_nodes.rend();++it) {
+        assert(degree(*it)==0);
+        remove_isolated_node(*it);
+    }
+}
+
+/* return true iff this is a multigraph */
+bool graphe::is_multigraph() const {
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if (it->has_multiedges())
+            return true;
+    }
+    return false;
+}
+
+/* return the number of copies of edge e */
+int graphe::multiedges(const ipair &e) const {
+    int i=e.first,j=e.second;
+    return node(i<j?i:j).multiedges(i<j?j:i);
+}
+
+/* add k duplicates of e to the graph */
+void graphe::set_multiedge(const ipair &e,int k) {
+    int i=e.first,j=e.second;
+    node(i<j?i:j).set_multiedge(i<j?j:i,k);
+}
+
+/* convert integral edge weights to multiedges, returns false if an edge
+ * has a weight which is not a positive integer */
+bool graphe::weights2multiedges() {
+    assert(!is_directed() && is_weighted());
+    ipairs E;
+    get_edges_as_pairs(E);
+    gen w;
+    int k;
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        const ipair &e=*it;
+        w=weight(e);
+        if (w.is_integer() && (k=w.val-1)>=0) {
+            set_multiedge(e,k);
+        } else return false;
+    }
+    return true;
+}
+
 /* contract the edge {i,j}, leaving j-th node isolated (not connected to any other node) */
-void graphe::contract_edge(int i,int j) {
+void graphe::contract_edge(int i,int j,bool adjust_positions) {
+    /* assuming that the graph is undirected */
+    assert(has_edge(i,j) && multiedges(make_pair(i,j))==0);
     ivector adj;
+    ipair e,e_old;
     adjacent_nodes(j,adj);
+    int m=sum_of_edge_multiplicities();
     for (ivector_iter it=adj.begin();it!=adj.end();++it) {
-        remove_edge(*it,j);
-        if (*it!=i)
-            add_edge(*it,i);
-        if (is_directed()) {
-            remove_edge(j,*it);
-            if (*it!=i)
-                add_edge(i,*it);
+        e_old=make_pair(j,*it);
+        if (*it!=i) {
+            e=make_pair(i,*it);
+            if (has_edge(e)) {
+                set_multiedge(e,multiedges(e_old)+multiedges(e)+1);
+            } else {
+                add_edge(e);
+                set_multiedge(e,multiedges(e_old));
+            }
+        }
+        remove_edge(e_old);
+    }
+    assert(m==1+sum_of_edge_multiplicities());
+    if (adjust_positions) {
+        vertex &v=node(i),&w=node(j);
+        point p,q,r;
+        if (get_node_position(v.attributes(),p) && get_node_position(w.attributes(),q) && p.size()==q.size()) {
+            r.resize(p.size());
+            copy_point(p,r);
+            add_point(r,q);
+            scale_point(r,0.5);
+            v.set_attribute(_GT_ATTRIB_POSITION,point2gen(r));
         }
     }
-    vertex &v=node(i),&w=node(j);
+}
+
+/* subdivide the edge e with r new vertices */
+void graphe::subdivide_edge(const ipair &e,int n,int &label) {
+    remove_edge(e);
+    int i=e.first,j,nv=node_count();
+    for (int k=0;k<n;++k) {
+        j=add_node(++label);
+        add_edge(i,j);
+        i=j;
+    }
+    add_edge(i,e.second);
+    vertex &v=node(e.first),&w=node(e.second);
     point p,q,r;
     if (get_node_position(v.attributes(),p) && get_node_position(w.attributes(),q) && p.size()==q.size()) {
         r.resize(p.size());
-        copy_point(p,r);
-        add_point(r,q);
-        scale_point(r,0.5);
-        v.set_attribute(_GT_ATTRIB_POSITION,point2gen(r));
+        copy_point(q,r);
+        subtract_point(r,p);
+        scale_point(r,1.0/double(n+1));
+        for (i=nv;i<node_count();++i) {
+            add_point(p,r);
+            node(i).set_attribute(_GT_ATTRIB_POSITION,point2gen(p));
+        }
     }
 }
 
@@ -4306,10 +4943,13 @@ void graphe::incident_edges(const ivector &V,edgeset &E) {
             }
         }
     } else {
+        int i,j;
         for (ivector_iter it=V.begin();it!=V.end();++it) {
-            vertex &v=node(*it);
+            i=*it;
+            vertex &v=node(i);
             for (ivector_iter jt=v.neighbors().begin();jt!=v.neighbors().end();++jt) {
-                E.insert(make_pair(*it,*jt));
+                j=*jt;
+                E.insert(make_pair(i<j?i:j,i<j?j:i));
             }
         }
     }
@@ -4344,7 +4984,7 @@ bool is_sierpinski_match(const graphe::ivector &u,const graphe::ivector &v,int n
 }
 
 /* create a graph from decreasing degree sequence L by using Havel-Hakimi algorithm,
- * return false iff L is not a graphic sequence */
+* return false iff L is not a graphic sequence */
 bool graphe::hakimi(const ivector &L) {
     this->clear();
     int n=L.size(),d,i,z;
@@ -4352,14 +4992,14 @@ bool graphe::hakimi(const ivector &L) {
         return true;
     vecteur V;
     make_default_labels(V,n);
+    reserve_nodes(n);
     add_nodes(V);
     ipairs D(n);
     for (int i=0;i<n;++i) {
         D[i]=make_pair(i,L[i]);
     }
-    ipairs_comparator comp;
     do {
-        sort(D.begin(),D.end(),comp);
+        sort(D.begin(),D.end());
         i=D.back().first;
         d=D.back().second;
         D.pop_back();
@@ -4379,7 +5019,7 @@ bool graphe::hakimi(const ivector &L) {
 }
 
 /* return the (odd) girth of this graph (the length of the shortest (odd) cycle),
- * return -1 if there are no cycles */
+* return -1 if there are no cycles */
 int graphe::girth(bool odd,int sg) {
     assert(node_queue.empty());
     int g=RAND_MAX,h,i,j;
@@ -4421,9 +5061,11 @@ int graphe::girth(bool odd,int sg) {
 
 /* create a graph from LCF notation [jumps]^e */
 void graphe::make_lcf_graph(const ivector &jumps,int e) {
+    this->clear();
     int m=jumps.size(),n=m*e;
     vecteur V;
     make_default_labels(V,n);
+    reserve_nodes(n);
     add_nodes(V);
     make_cycle_graph();
     int j=0,k;
@@ -4448,13 +5090,15 @@ void graphe::make_lcf_graph(const int *j,int e) {
 }
 
 /* create Sierpinski (triangle) graph */
-void graphe::make_sierpinski_graph(int n, int k, bool triangle) {
+void graphe::make_sierpinski_graph(int n,int k,bool triangle) {
+    this->clear();
     ivectors tuples;
     ivector elem(n,0);
     ntupk(tuples,n,k,elem,0);
     int N=std::pow(k,n);
     vecteur V;
     make_default_labels(V,N,0);
+    reserve_nodes(N);
     add_nodes(V);
     for (int i=0;i<N;++i) {
         ivector &u=tuples[i];
@@ -4470,19 +5114,22 @@ void graphe::make_sierpinski_graph(int n, int k, bool triangle) {
         }
     }
     if (triangle) {
-        // remove all non-clique edges to obtain Sierpinski triangle graph
+        /* remove all non-clique edges to obtain Sierpinski triangle graph */
         map<int,int> m;
         clique_stats(m,true);
         ivector isolated_nodes;
         for (map<int,int>::const_iterator it=m.begin();it!=m.end();++it) {
-                int v=it->first,w=it->second;
-                contract_edge(v,w);
-                isolated_nodes.push_back(w);
+            int v=it->first,w=it->second;
+            contract_edge(v,w,false);
+            isolated_nodes.push_back(w);
         }
         sort(isolated_nodes.begin(),isolated_nodes.end());
         for (unsigned i=isolated_nodes.size();i-->0;) {
             remove_isolated_node(isolated_nodes[i]);
         }
+        vecteur labels;
+        make_default_labels(labels,node_count());
+        relabel_nodes(labels);
     }
 }
 
@@ -4491,6 +5138,7 @@ void graphe::make_shrikhande_graph() {
     this->clear();
     vecteur V;
     make_default_labels(V,16);
+    reserve_nodes(16);
     add_nodes(V);
     ipairs v(16);
     int k=0,m,n;
@@ -4525,17 +5173,18 @@ void graphe::make_complete_graph() {
 void graphe::make_complete_multipartite_graph(const ivector &partition_sizes,layout *x) {
     int k=partition_sizes.size();
     ivectors partitions;
-    int n0=0;
+    int ntotal=0,n;
     vecteur v;
     for (ivector_iter it=partition_sizes.begin();it!=partition_sizes.end();++it) {
-        int n=*it;
-        make_default_labels(v,n,n0);
+        n=*it;
+        make_default_labels(v,n,ntotal);
         add_nodes(v);
         ivector iv(n);
-        for (int i=0;i<n;++i) iv[i]=n0+i;
+        for (int i=0;i<n;++i) iv[i]=ntotal+i;
         partitions.push_back(iv);
-        n0+=n;
+        ntotal+=n;
     }
+    assert(node_count()==ntotal);
     for (int ip=0;ip<k;++ip) {
         ivector &pi=partitions[ip];
         for (int jp=ip+1;jp<k;++jp) {
@@ -4548,8 +5197,8 @@ void graphe::make_complete_multipartite_graph(const ivector &partition_sizes,lay
         }
     }
     if (x!=NULL && partition_sizes.size()==2 && partition_sizes.front()==1 && partition_sizes.back()>2) {
-        // create the star layout
-        int n=partition_sizes.back();
+        /* create the star layout */
+        n=partition_sizes.back();
         ivector hull(n);
         for (int i=0;i<n;++i) hull[i]=i+1;
         make_circular_layout(*x,hull);
@@ -4558,20 +5207,22 @@ void graphe::make_complete_multipartite_graph(const ivector &partition_sizes,lay
 
 /* create generalized Petersen graph G(n,k) using Watkins' notation */
 void graphe::make_petersen_graph(int n,int k,layout *x) {
+    this->clear();
     vecteur V;
     make_default_labels(V,2*n);
+    reserve_nodes(2*n);
     add_nodes(V);
-    // add the outer cycle first
+    /* add the outer cycle first */
     for (int i=0;i<n;++i) {
         add_edge(i,(i+1)%n);
     }
-    // add the inner edges
+    /* add the inner edges */
     for (int i=0;i<n;++i) {
         add_edge(i,i+n);
         add_edge(i+n,(i+k)%n+n);
     }
     if (x!=NULL) {
-        // layout the graph
+        /* layout the graph */
         ivector hull(n);
         for (int i=0;i<n;++i) hull[i]=i;
         make_circular_layout(*x,hull,2.5);
@@ -4591,10 +5242,12 @@ void graphe::generate_nk_sets(int n,int k,vector<ulong> &v) {
 
 /* create Kneser graph with parameters n (<=20) and k */
 bool graphe::make_kneser_graph(int n,int k) {
+    this->clear();
     assert(n>1 && n<21 && k>0 && k<n);
     int nchoosek=comb(n,k).val; // number of vertices
     vecteur V;
     make_default_labels(V,nchoosek);
+    reserve_nodes(nchoosek);
     add_nodes(V);
     vector<ulong> vert(nchoosek);
     generate_nk_sets(n,k,vert);
@@ -4620,15 +5273,18 @@ void graphe::make_path_graph() {
 
 /* create n times m (torus) grid graph */
 void graphe::make_grid_graph(int m,int n,bool torus) {
+    this->clear();
     vecteur V;
     graphe X(ctx);
     X.make_default_labels(V,m);
+    X.reserve_nodes(m);
     X.add_nodes(V);
     if (torus)
         X.make_cycle_graph();
     else X.make_path_graph();
     graphe Y(ctx);
     Y.make_default_labels(V,n);
+    Y.reserve_nodes(n);
     Y.add_nodes(V);
     if (torus)
         Y.make_cycle_graph();
@@ -4638,18 +5294,21 @@ void graphe::make_grid_graph(int m,int n,bool torus) {
 
 /* create n times m web graph as the cartesian product of n-cycle and m-path graphs */
 void graphe::make_web_graph(int n,int m,layout *x) {
+    this->clear();
     vecteur V;
     graphe C(ctx);
     C.make_default_labels(V,n);
+    C.reserve_nodes(n);
     C.add_nodes(V);
     C.make_cycle_graph();
     graphe P(ctx);
     P.make_default_labels(V,m);
+    P.reserve_nodes(m);
     P.add_nodes(V);
     P.make_path_graph();
     C.cartesian_product(P,*this);
     if (x!=NULL) {
-        // layout the graph
+        /* layout the graph */
         ivector hull(n);
         for (int i=0;i<n;++i) hull[i]=m*i;
         make_circular_layout(*x,hull);
@@ -4658,8 +5317,10 @@ void graphe::make_web_graph(int n,int m,layout *x) {
 
 /* create wheel graph with n+1 vertices */
 void graphe::make_wheel_graph(int n,layout *x) {
+    this->clear();
     vecteur V;
     make_default_labels(V,n,0,1);
+    reserve_nodes(n);
     add_nodes(V);
     make_cycle_graph();
     int i=add_node(0);
@@ -4667,7 +5328,7 @@ void graphe::make_wheel_graph(int n,layout *x) {
         add_edge(i,j);
     }
     if (x!=NULL) {
-        // layout the graph
+        /* layout the graph */
         ivector hull(n);
         for (int i=0;i<n;++i) hull[i]=i;
         make_circular_layout(*x,hull);
@@ -4676,8 +5337,10 @@ void graphe::make_wheel_graph(int n,layout *x) {
 
 /* create antiprism graph of order n (with 2n vertices and 4n edges) */
 void graphe::make_antiprism_graph(int n,layout *x) {
+    this->clear();
     vecteur V;
     make_default_labels(V,2*n,0);
+    reserve_nodes(2*n);
     add_nodes(V);
     int j;
     for (int i=0;i<n;++i) {
@@ -4688,7 +5351,7 @@ void graphe::make_antiprism_graph(int n,layout *x) {
         add_edge(2*j,2*j+1);
     }
     if (x!=NULL) {
-        // layout the graph
+        /* layout the graph */
         ivector hull(n);
         for (int i=0;i<n;++i) hull[i]=2*i;
         make_circular_layout(*x,hull,-1.0);
@@ -4698,9 +5361,11 @@ void graphe::make_antiprism_graph(int n,layout *x) {
 /* create the complete k-ary tree with depth d */
 void graphe::make_complete_kary_tree(int k,int d) {
     assert(k>=2);
+    this->clear();
     int n=((int)std::pow(k,d+1)-1)/(k-1),v=0,w=1,len=1;
     vecteur V;
     make_default_labels(V,n);
+    reserve_nodes(n);
     add_nodes(V);
     for (int i=0;i<d;++i) {
         for (int j=0;j<len;++j) {
@@ -4731,8 +5396,42 @@ void graphe::connected_components(ivectors &components,int sg,bool skip_embedded
         *count=c;
 }
 
+/* find all biconnected components as vertex lists */
+void graphe::biconnected_components(ivectors &components,int sg) {
+    ivectors comp;
+    connected_components(comp,sg);
+    int s=max_subgraph_index()+1,cnt;
+    vector<ipairs> blocks;
+    set<int> vset;
+    components.clear();
+    for (ivectors_iter it=comp.begin();it!=comp.end();++it) {
+        if (it->size()<3) {
+            components.push_back(*it);
+            continue;
+        }
+        set_subgraph(*it,s);
+        blocks.clear();
+        find_blocks(blocks,s);
+        set_subgraph(*it,sg);
+        for (vector<ipairs>::const_iterator it=blocks.begin();it!=blocks.end();++it) {
+            const ipairs &b=*it;
+            for (ipairs_iter jt=b.begin();jt!=b.end();++jt) {
+                vset.insert(jt->first);
+                vset.insert(jt->second);
+            }
+            components.resize(components.size()+1);
+            ivector &c=components.back();
+            c.resize(vset.size());
+            cnt=0;
+            for (set<int>::const_iterator jt=vset.begin();jt!=vset.end();++jt) {
+                c[cnt++]=*jt;
+            }
+        }
+    }
+}
+
 /* return the number of connected components in this graph */
-int graphe::connected_components_count(int sg) {
+int graphe::connected_component_count(int sg) {
     unvisit_all_nodes(sg);
     unset_all_ancestors(sg);
     disc_time=0;
@@ -4746,44 +5445,46 @@ int graphe::connected_components_count(int sg) {
     return count;
 }
 
-void graphe::strongconnect_dfs(ivectors &components,int i,int sg) {
-    assert(node_stack.empty());
+void graphe::strongconnect_dfs(ivectors &components,vector<bool> &onstack,int i,int sg) {
     vertex &v=node(i);
     v.set_visited(true);
     v.set_disc(disc_time++);
     v.set_low(v.disc());
     node_stack.push(i);
-    v.set_on_stack(true);
+    onstack[i]=true;
+    int j;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
-        vertex &w=node(*it);
+        vertex &w=node(j=*it);
         if (sg>=0 && w.subgraph()!=sg)
             continue;
         if (!w.is_visited()) {
-            strongconnect_dfs(components,*it,sg);
+            strongconnect_dfs(components,onstack,j,sg);
             v.set_low(std::min(v.low(),w.low()));
-        } else if (w.is_on_stack())
+        } else if (onstack[j])
             v.set_low(std::min(v.low(),w.disc()));
     }
     if (v.low()==v.disc()) {
-        // output a strongly connected component
+        /* output a strongly connected component */
         components.resize(components.size()+1);
         ivector &component=components.back();
         do {
-            component.push_back(node_stack.top());
+            j=node_stack.top();
             node_stack.pop();
-            v.set_on_stack(false);
-        } while (component.back()!=i);
+            component.push_back(j);
+            onstack[j]=false;
+        } while (j!=i);
     }
-    clear_node_stack();
 }
 
 /* find all strongly connected components in directed graph using Tarjan's algorithm */
 void graphe::strongly_connected_components(ivectors &components,int sg) {
+    assert(node_stack.empty());
     unvisit_all_nodes(sg);
+    vector<bool> onstack(node_count(),false);
     disc_time=0;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         if ((sg<0 || it->subgraph()==sg) && !it->is_visited())
-            strongconnect_dfs(components,it-nodes.begin(),sg);
+            strongconnect_dfs(components,onstack,it-nodes.begin(),sg);
     }
 }
 
@@ -4804,7 +5505,6 @@ bool graphe::has_cut_vertex(int sg,int i) {
     int children=0;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         int j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if (sg>=0 && w.subgraph()!=sg)
             continue;
@@ -4827,7 +5527,7 @@ bool graphe::has_cut_vertex(int sg,int i) {
     return false;
 }
 
-void graphe::find_cut_vertices_dfs(int i,set<int> &ap,int sg) {
+void graphe::find_cut_vertices_dfs(int i,std::set<int> &ap,int sg) {
     vertex &v=node(i);
     v.set_visited(true);
     ++disc_time;
@@ -4836,7 +5536,6 @@ void graphe::find_cut_vertices_dfs(int i,set<int> &ap,int sg) {
     int children=0;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         int j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if (sg>=0 && w.subgraph()!=sg)
             continue;
@@ -4862,12 +5561,12 @@ void graphe::find_cut_vertices(ivector &articulation_points,int sg) {
     unvisit_all_nodes();
     unset_all_ancestors();
     disc_time=0;
-    set<int> ap;
+    std::set<int> ap;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         if ((sg<0 || it->subgraph()==sg) && !it->is_visited())
             find_cut_vertices_dfs(it-nodes.begin(),ap,sg);
     }
-    for (set<int>::const_iterator it=ap.begin();it!=ap.end();++it) {
+    for (std::set<int>::const_iterator it=ap.begin();it!=ap.end();++it) {
         articulation_points.push_back(*it);
     }
 }
@@ -4882,7 +5581,6 @@ void graphe::find_blocks_dfs(int i,vector<ipairs> &blocks,int sg) {
     ipair edge;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if (sg>=0 && w.subgraph()!=sg)
             continue;
@@ -4893,7 +5591,7 @@ void graphe::find_blocks_dfs(int i,vector<ipairs> &blocks,int sg) {
             find_blocks_dfs(j,blocks,sg);
             v.set_low(std::min(v.low(),w.low()));
             if (w.low()>=v.disc()) {
-                // output biconnected component to 'blocks'
+                /* output biconnected component to 'blocks' */
                 blocks.resize(blocks.size()+1);
                 ipairs &block=blocks.back();
                 do {
@@ -4910,15 +5608,73 @@ void graphe::find_blocks_dfs(int i,vector<ipairs> &blocks,int sg) {
 
 /* create list of all biconnected components (as lists of edges) of the graph */
 void graphe::find_blocks(vector<ipairs> &blocks,int sg) {
+    assert(edge_stack.empty());
     unvisit_all_nodes(sg);
     unset_all_ancestors(sg);
     disc_time=0;
-    assert(edge_stack.empty());
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         if ((sg<0 || it->subgraph()==sg) && !it->is_visited())
             find_blocks_dfs(it-nodes.begin(),blocks,sg);
     }
     while (!edge_stack.empty()) edge_stack.pop();
+}
+
+/* create list of simple ears in the graph, which must be biconnected and not a cycle */
+void graphe::find_ears(ivectors &ears,int sg) {
+    assert(!is_directed() && node_stack.empty());
+    ears.clear();
+    int n=node_count(),root,d,ad,maxd=-1,i,k,p;
+    for (i=0;i<n;++i) {
+        const vertex &v=node(i);
+        if ((sg<0 || v.subgraph()==sg) &&
+                (d=v.neighbors().size())>maxd) {
+            maxd=d;
+            root=i;
+        }
+    }
+    if (maxd<3)
+        return;
+    dfs(root,true,true,NULL,sg);
+    bool rec=false;
+    for (ivector_iter it=disc_nodes.begin();it!=disc_nodes.end();++it) {
+        const vertex &v=node(i=*it);
+        if (degree(i,sg)==2) {
+            assert((p=v.ancestor())>=0); // v is not the root
+            ad=degree(p,sg);
+            if (multiedges(make_pair(v.ancestor(),i))>0)
+                continue;
+            if (ad>2) {
+                /* start an ear */
+                assert(!rec && node_stack.empty());
+                node_stack.push(v.ancestor());
+                rec=true;
+            }
+            if (!rec)
+                continue;
+            node_stack.push(i);
+            k=-1;
+            for (ivector_iter nt=v.neighbors().begin();nt!=v.neighbors().end();++nt) {
+                if ((sg<0 || node(*nt).subgraph()==sg) && *nt!=v.ancestor())
+                    k=*nt;
+            }
+            if (k<0 || multiedges(make_pair(i,k))>0) { // dead end
+                clear_node_stack();
+                rec=false;
+            } else if (degree(k,sg)>2) {
+                /* stop the ear */
+                node_stack.push(k);
+                ivector ear;
+                ear.reserve(node_stack.size());
+                while (!node_stack.empty()) {
+                    ear.push_back(node_stack.top());
+                    node_stack.pop();
+                }
+                if (ear.front()!=ear.back() && !has_edge(ear.front(),ear.back()))
+                    ears.push_back(ear);
+                rec=false;
+            }
+        }
+    }
 }
 
 void graphe::find_bridges_dfs(int i,ipairs &B,int sg) {
@@ -4929,7 +5685,6 @@ void graphe::find_bridges_dfs(int i,ipairs &B,int sg) {
     v.set_low(disc_time);
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         int j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if (sg>=0 && w.subgraph()!=sg)
             continue;
@@ -4944,7 +5699,6 @@ void graphe::find_bridges_dfs(int i,ipairs &B,int sg) {
     }
 }
 
-
 /* create list B of all bridges in an undirected graph */
 void graphe::find_bridges(ipairs &B,int sg) {
     assert(!is_directed());
@@ -4958,12 +5712,9 @@ void graphe::find_bridges(ipairs &B,int sg) {
     }
 }
 
-/* return true iff the graph is (semi-)eulerian */
-
-
 /* Fleury's algorithm for eulerian trail, time complexity O(m^2) */
 bool graphe::fleury(int start,ivector &path) {
-    // assuming that the graph is undirected and (semi-)eulerian
+    /* assuming that the graph is undirected and (semi-)eulerian */
     int m=edge_count(),i=start,j;
     path.resize(m+1);
     path.back()=i;
@@ -4987,12 +5738,12 @@ bool graphe::fleury(int start,ivector &path) {
 
 /* Hierholzer algorithm for eulerian cycle, time complexity O(m) */
 void graphe::hierholzer(ivector &path) {
-    // assuming that the graph is eulerian
+    /* assuming that the graph is eulerian */
     int i,j,pos=path.size();
     ivector_iter it;
     while (pos>0) {
         --pos;
-        // find a closed trail starting in path[pos]
+        /* find a closed trail starting in path[pos] */
         j=i=path[pos];
         do {
             vertex &v=node(j);
@@ -5011,7 +5762,7 @@ void graphe::hierholzer(ivector &path) {
 
 /* return the node in which an eulerian trail may begin, or -1 if the graph has no such trail */
 int graphe::eulerian_path_start(bool &iscycle) const {
-    // assuming that the graph is connected
+    /* assuming that the graph is connected */
     int n=node_count(),count=0,start_node=0;
     for (int i=0;i<n;++i) {
         if (degree(i)%2!=0) {
@@ -5031,12 +5782,12 @@ bool graphe::find_eulerian_path(ivector &path) {
     bool iscycle;
     if (!is_connected() || (start=eulerian_path_start(iscycle))<0)
         return false;
-    // use Hierholzer's algorithm
+    /* use Hierholzer's algorithm */
     assert(visited_edges.empty());
     path.clear();
     path.reserve(edge_count()+1);
     if (!iscycle) {
-        // find a path between two odd-degree nodes and delete it
+        /* find a path between two odd-degree nodes and delete it */
         dfs(start,false);
         int j,k=-1;
         for (int i=node_count();i-->0;) {
@@ -5067,7 +5818,6 @@ int graphe::find_cycle_dfs(int i,int sg) {
     int j,k;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if (sg>=0 && w.subgraph()!=sg)
             continue;
@@ -5086,10 +5836,10 @@ int graphe::find_cycle_dfs(int i,int sg) {
 }
 
 /* return a cycle in this graph using DFS (graph is assumed to be connected),
- * or an empty list if there is no cycle (i.e. if the graph is a tree) */
+* or an empty list if there is no cycle (i.e. if the graph is a tree) */
 bool graphe::find_cycle(ivector &cycle,int sg) {
     assert(node_stack.empty());
-    if (is_empty())
+    if (is_null())
         return false;
     int n=node_count(),initv,i;
     unvisit_all_nodes(sg);
@@ -5121,7 +5871,6 @@ bool graphe::find_path_dfs(int dest,int i,int sg,bool skip_embedded) {
     int j;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if ((skip_embedded && w.is_embedded()) || w.subgraph()!=sg || w.is_visited())
             continue;
@@ -5219,7 +5968,7 @@ void graphe::unembed_all_nodes() {
 }
 
 /* finds planar embedding of a biconnected graph as a list of faces,
- * returns true iff the graph is planar */
+* returns true iff the graph is planar */
 bool graphe::demoucron(ivectors &faces) {
     ivector cycle,path,face1,face2;
     ivectors bridges,components(node_count());
@@ -5227,9 +5976,9 @@ bool graphe::demoucron(ivectors &faces) {
     int i,j,k,n,f,s=-1,vc=node_count(),ec=edge_count(),fc=ec-vc+2,bc=0,cnt;
     ivectors_iter ft;
     ivector_iter ct;
-    set<int> contact_nodes;
+    std::set<int> contact_nodes;
     unembed_all_nodes();
-    // adding two initial faces, obtained by finding a cycle in graph
+    /* adding two initial faces, obtained by finding a cycle in graph */
     assert(find_cycle(cycle));
     set_nodes_embedded(cycle);
     faces.clear();
@@ -5251,7 +6000,7 @@ bool graphe::demoucron(ivectors &faces) {
                         break;
                 }
                 if (ft==faces.end()) {
-                    // create a bridge consisting only of edge (i,j)
+                    /* create a bridge consisting only of edge (i,j) */
                     ivector bridge(4);
                     bridge.front()=++bc; // subgraph index
                     bridge[1]=0; // bridge size
@@ -5281,14 +6030,14 @@ bool graphe::demoucron(ivectors &faces) {
             }
             bridge.resize(2+contact_nodes.size());
             i=2;
-            for (set<int>::const_iterator it=contact_nodes.begin();it!=contact_nodes.end();++it) {
+            for (std::set<int>::const_iterator it=contact_nodes.begin();it!=contact_nodes.end();++it) {
                 bridge[i++]=*it;
             }
         }
         if (bridges.empty())
             break;
-        // for each bridge, find all faces in which it can
-        // be drawn (these faces are called 'admissible')
+        /* for each bridge, find all faces in which it can
+     * be drawn (these faces are called 'admissible') */
         admissible_faces.resize(bridges.size());
         for (ivectors_iter it=bridges.begin();it!=bridges.end();++it) {
             ipair &admissible=admissible_faces[it-bridges.begin()];
@@ -5306,7 +6055,7 @@ bool graphe::demoucron(ivectors &faces) {
             if (admissible.first==0) // the graph is not planar
                 return false;
         }
-        // select the first bridge with the smallest number of admissible faces
+        /* select the first bridge with the smallest number of admissible faces */
         n=RAND_MAX;
         for (ipairs_iter it=admissible_faces.begin();it!=admissible_faces.end();++it) {
             if (it->first<n) {
@@ -5316,8 +6065,8 @@ bool graphe::demoucron(ivectors &faces) {
             }
         }
         ivector &bridge=bridges[k];
-        // draw a path between the first two connecting vertices
-        // to the admissible face, splitting it
+        /* draw a path between the first two connecting vertices
+     * to the admissible face, splitting it */
         s=bridge.front(); // subgraph index
         if ((n=bridge[1])>0) {
             i=first_neighbor_from_subgraph(node(bridge[2]),s);
@@ -5340,7 +6089,7 @@ bool graphe::demoucron(ivectors &faces) {
         faces.push_back(face2);
         bridges.erase(bridges.begin()+k); // we're done with this bridge
     }
-    // we shuld have had found exactly ec-nc+2 faces (by Euler's theorem)
+    /* we shuld have had found exactly ec-nc+2 faces (by Euler's theorem) */
     assert(int(faces.size())==fc);
     return true;
 }
@@ -5362,15 +6111,15 @@ int graphe::common_element(const ivector &v1,const ivector &v2,int offset) {
 /* recursively build up a tree of blocks */
 void graphe::build_block_tree(int i,ivectors &blocks) {
     int n=blocks.size(),c;
-    // block structure: [is_visited (0 or 1), parent_index, connecting_vertex, ap_1, ap_2, ..., ap_n]
+    /* block structure: [is_visited (0 or 1), parent_index, connecting_vertex, ap_1, ap_2, ..., ap_n] */
     ivector &parent=blocks[i];
     parent.front()=1; // mark block as visited
     for (int j=0;j<n;++j) {
-        // find children
+        /* find children */
         ivector &block=blocks[j];
         if (i==j || block.front()==1 || (c=common_element(parent,block,3))==-1)
             continue;
-        // block is a child connected in the vertex c
+        /* block is a child connected in the vertex c */
         block.erase(find(block.begin()+3,block.end(),c));
         block[1]=i;
         block[2]=c;
@@ -5378,7 +6127,7 @@ void graphe::build_block_tree(int i,ivectors &blocks) {
     }
 }
 
-/* choose a face to embed between those containing the vertex v */
+/* choose a face to embed among those containing the vertex v */
 int graphe::choose_embedding_face(const ivectors &faces,int v) {
     ivector candidates;
     for (ivectors_iter ft=faces.begin();ft!=faces.end();++ft) {
@@ -5390,15 +6139,15 @@ int graphe::choose_embedding_face(const ivectors &faces,int v) {
 
 /* embed children blocks to its parent, for each embedding add one temporary edge */
 void graphe::embed_children_blocks(int i,ivectors &block_tree,vector<ivectors> &blocks_faces) {
-    // find all children of the i-th block
+    /* find all children of the i-th block */
     ivector children;
     for (ivectors_iter it=block_tree.begin();it!=block_tree.end();++it) {
         if (it->at(1)==i)
             children.push_back(it-block_tree.begin());
     }
-    if (children.empty())
-        return; // this is a leaf node in the tree
-    // embed each child to the largest available face of the parent
+    if (children.empty()) // this is a leaf node in the tree
+        return;
+    /* embed each child to the largest available face of the parent */
     ivectors &parent_faces=blocks_faces[i];
     int c,pf,cf,k,n;
     ivector::iterator vt;
@@ -5407,15 +6156,15 @@ void graphe::embed_children_blocks(int i,ivectors &block_tree,vector<ivectors> &
         embed_children_blocks(*it,block_tree,blocks_faces);
         ivectors &child_faces=blocks_faces[*it];
         c=block_tree[*it][2]; // articulation vertex connecting the child with its parent
-        // find the suitable parent and child faces that contain c
+        /* find the suitable parent and child faces that contain c */
         pf=choose_embedding_face(parent_faces,c);
         cf=choose_embedding_face(child_faces,c);
         assert(pf>=0 && cf>=0);
         n=parent_faces.size();
         parent_faces.resize(n+child_faces.size());
-        // Add all child faces different than child_face to parent_faces,
-        // add a new triangular face obtained by connecting neighbors of c in child and parent,
-        // and modify the parent_face by adding child_face edges and removing two edges.
+        /* Add all child faces different than child_face to parent_faces,
+     * add a new triangular face obtained by connecting neighbors of c in child and parent,
+     * and modify the parent_face by adding child_face edges and removing two edges. */
         k=n;
         for (ivectors::iterator ft=child_faces.begin();ft!=child_faces.end();++ft) {
             if (int(ft-child_faces.begin())==cf)
@@ -5423,7 +6172,7 @@ void graphe::embed_children_blocks(int i,ivectors &block_tree,vector<ivectors> &
             parent_faces[k++].swap(*ft);
         }
         ivector &parent_face=parent_faces[pf],&child_face=child_faces[cf],&new_face=parent_faces.back();
-        // get v, w as neighbors of c in parent resp. child face
+        /* get v, w as neighbors of c in parent resp. child face */
         vt=find(parent_face.begin(),parent_face.end(),c)+1;
         if (vt==parent_face.end())
             vt=parent_face.begin();
@@ -5432,12 +6181,12 @@ void graphe::embed_children_blocks(int i,ivectors &block_tree,vector<ivectors> &
             wt=child_face.rbegin();
         assert(*vt!=*wt);
         add_temporary_edge(*vt,*wt);
-        // construct the new face
+        /* construct the new face */
         new_face.resize(3);
         new_face[0]=*wt;
         new_face[1]=c;
         new_face[2]=*vt;
-        // modify parent_face
+        /* modify the parent_face */
         ivector path(child_face.size()-1);
         k=0;
         while (*wt!=c) {
@@ -5463,36 +6212,36 @@ int graphe::choose_outer_face(const ivectors &faces) {
 }
 
 /* finds planar embedding of a connected graph as a list of faces,
- * returns the index of the outer face or -1 if the graph is not planar */
+* returns the index of the outer face or -1 if the graph is not planar */
 int graphe::planar_embedding(ivectors &faces) {
-    // split graph to blocks
+    /* split graph to blocks */
     vector<ipairs> blocks;
     find_blocks(blocks);
     if (blocks.size()==1) {
         if (!demoucron(faces))
             return -1;
     } else {
-        // there exist at least one articulation point
+        /* there exist at least one articulation point */
         vector<ivectors> blocks_faces(blocks.size());
         ivector cv;
         find_cut_vertices(cv);
         int i=0,nf;
         for (vector<ipairs>::const_iterator it=blocks.begin();it!=blocks.end();++it) {
-            // test each block separately
+            /* test each block separately */
             graphe G(ctx);
-            subgraph(*it,G,false);
+            extract_subgraph(*it,G,false);
             ivectors &block_faces=blocks_faces[i++];
             if (G.node_count()>2) {
-                // block has three or more vertices
+                /* block has three or more vertices */
                 if (int(it->size())+6>3*G.node_count() || !G.demoucron(block_faces))
                     return -1;
             } else {
-                // block contains only a single edge
+                /* block contains only one edge  */
                 ivector bin_face(2,0);
                 bin_face[1]=1;
                 block_faces.push_back(bin_face);
             }
-            // push back a vector of articulation points which belong to this component
+            /* push back a vector of articulation points which belong to this component */
             ivector tmp_face;
             for (ivectors::iterator ft=block_faces.begin();ft!=block_faces.end();++ft) {
                 translate_indices_from(G,*ft,tmp_face);
@@ -5512,9 +6261,9 @@ int graphe::planar_embedding(ivectors &faces) {
             sort(articulation_points.begin(),articulation_points.end());
         }
         /* Graph is planar and we have a list of faces for each block.
-           Now blocks are embedded into each other, starting from peripheral blocks,
-           by adding temporary edges. */
-        // make a tree of blocks
+     * Now blocks are embedded into each other, starting from peripheral blocks,
+     * by adding temporary edges. */
+        /* make a tree of blocks */
         ivectors block_tree(blocks.size());
         for (ivectors::iterator it=block_tree.begin();it!=block_tree.end();++it) {
             it->push_back(0);
@@ -5527,7 +6276,7 @@ int graphe::planar_embedding(ivectors &faces) {
         for (vector<ivectors>::iterator it=blocks_faces.begin();it!=blocks_faces.end();++it) {
             it->pop_back();
         }
-        // embed all blocks to the root block by climbing up the tree recursively
+        /* embed all blocks to the root block by climbing up the tree recursively */
         for (ivectors_iter bt=block_tree.begin();bt!=block_tree.end();++bt) {
             if (bt->at(1)<0) {
                 // root found
@@ -5546,7 +6295,7 @@ int graphe::planar_embedding(ivectors &faces) {
 }
 
 /* compute the periphericity of the vertices with respect to
- * the outer face by applying BFS (starting in each of the outer vertices) */
+* the outer face by applying BFS (starting in each of the outer vertices) */
 void graphe::periphericity(const ivector &outer_face,ivector &p) {
     assert(node_queue.empty());
     int level,i,j;
@@ -5563,7 +6312,6 @@ void graphe::periphericity(const ivector &outer_face,ivector &p) {
             vertex &v=node(i);
             for (ivector_iter jt=v.neighbors().begin();jt!=v.neighbors().end();++jt) {
                 j=*jt;
-                if (j<0) j=-j-1;
                 vertex &w=node(j);
                 if (w.is_visited() || p[j]==0) // skip the outer vertices
                     continue;
@@ -5579,33 +6327,29 @@ void graphe::periphericity(const ivector &outer_face,ivector &p) {
 }
 
 /*
- * TREE NODE POSITIONING ALGORITHM
- */
+* TREE NODE POSITIONING ALGORITHM
+*/
 
 /* traverse the tree from top to bottom using DFS */
-void graphe::tree_node_positioner::walk(int i,int pass,int level,double modsum) {
+void graphe::walker::walk(int i,int pass,int level,double modsum) {
     vertex &v=G->node(i);
     v.set_visited(true);
-    if (pass==1)
-        v.clear_children();
     double m=0;
     if (pass==3) {
         point &p=x->at(i);
         p.resize(2);
-        p[0]=v.prelim()+modsum;
+        p[0]=prelim[i]+modsum;
         p[1]=-level*vsep;
-        m=v.modifier();
+        m=modifier[i];
     }
     int j;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
-        j=*it;
-        if (j<0) j=-j-1;
-        vertex &w=G->node(j);
+        vertex &w=G->node(j=*it);
         if (w.is_visited())
             continue;
         if (pass==1) {
             w.set_ancestor(i);
-            v.inc_children();
+            ++children[i];
         }
         walk(j,pass,level+1,modsum+m);
     }
@@ -5615,70 +6359,71 @@ void graphe::tree_node_positioner::walk(int i,int pass,int level,double modsum) 
     } else if (pass==2) {
         if (node_counters[level]>0 && G->node(levels[level][node_counters[level]-1]).ancestor()!=v.ancestor())
             ++gap_counters[level];
-        v.set_position(node_counters[level]++);
-        levels[level][v.position()]=i;
-        if (!v.is_leaf()) {
-            v.set_gaps(gap_counters[level]);
+        levels[level][position[i]=node_counters[level]]=i;
+        ++node_counters[level];
+        if (children[i]>0) {
+            gaps[i]=gap_counters[level];
             gap_counters[level]=0;
         }
     }
 }
 
 /* set prelim and modifier for each node in V (they are on the same level) */
-void graphe::tree_node_positioner::process_level(int i) {
+void graphe::walker::process_level(int i) {
     ivector &L=levels[i];
-    int lastp=G->node(L.front()).ancestor(),p,n=0,m=placed.size();
+    int lastp=G->node(L.front()).ancestor(),p,n=0,m=placed.size(),j;
     double ppos=0,xpos=0,dist,shift=0,ssep=0,step=1,min_dist;
     if (m>0) {
-        vertex &w=G->node(placed.front());
-        xpos=w.prelim()-w.position()*hsep;
+        j=placed.front();
+        xpos=prelim[j]-position[j]*hsep;
     }
     for (ivector_iter it=L.begin();it!=L.end();++it) {
-        vertex &v=G->node(*it);
+        const vertex &v=G->node(*it);
         p=v.ancestor();
         if (p!=lastp) {
-            G->node(lastp).set_prelim(ppos/n);
+            prelim[lastp]=ppos/n;
             placed.push(lastp);
             lastp=p;
             ppos=0;
             n=0;
             xpos+=ssep;
         }
-        if (v.is_leaf()) {
-            v.set_prelim(xpos);
+        if (children[*it]==0) {
+            prelim[*it]=xpos;
         } else {
-            v.set_prelim(v.prelim()+shift);
-            v.set_modifier(shift);
-            xpos=v.prelim();
+            prelim[*it]+=(modifier[*it]=shift);
+            xpos=prelim[*it];
             step=1;
             ssep=0;
             placed.pop();
             --m;
             if (m>0) {
-                vertex &w=G->node(placed.front());
-                dist=w.prelim()+shift-xpos;
-                min_dist=(w.position()-v.position())*hsep;
+                vertex &w=G->node(j=placed.front());
+                dist=prelim[j]+shift-xpos;
+                min_dist=(position[j]-position[*it])*hsep;
                 if (dist<min_dist)
                     shift+=min_dist-dist;
                 else if (v.ancestor()==w.ancestor())
                     step=dist/min_dist;
                 else
-                    ssep=(dist-min_dist)/w.gaps();
+                    ssep=(dist-min_dist)/gaps[j];
             }
         }
-        ppos+=v.prelim();
+        ppos+=prelim[*it];
         ++n;
         xpos+=hsep*step;
     }
     assert(m==0);
-    G->node(lastp).set_prelim(ppos/n);
+    prelim[lastp]=ppos/n;
     placed.push(lastp);
 }
 
 /* node positioning procedure */
-void graphe::tree_node_positioner::positioning(int apex) {
+void graphe::walker::positioning(int apex) {
+    G->unset_all_ancestors();
+    G->unvisit_all_nodes();
     walk(apex,1); // first walk: determine tree depth and set node ancestors
-    // allocate memory for level lists
+    /* allocate memory for level lists */
     levels.resize(depth);
     gap_counters.resize(depth,0);
     for (int i=0;i<depth;++i) {
@@ -5687,7 +6432,7 @@ void graphe::tree_node_positioner::positioning(int apex) {
     }
     G->unvisit_all_nodes();
     walk(apex,2); // second walk: create levels
-    // do node positioning for each level (except the top one) in a single sweep
+    /* do node positioning for each level (except the top one) in a single sweep */
     for (int level=depth;level-->1;) {
         process_level(level);
     }
@@ -5695,7 +6440,7 @@ void graphe::tree_node_positioner::positioning(int apex) {
     walk(apex,3); // third walk: sum up the modifiers (i.e. move subtrees)
 }
 
-graphe::tree_node_positioner::tree_node_positioner(graphe *gr,layout *ly,double hs,double vs) {
+graphe::walker::walker(graphe *gr,layout *ly,double hs,double vs) {
     G=gr;
     x=ly;
     hsep=hs;
@@ -5703,26 +6448,25 @@ graphe::tree_node_positioner::tree_node_positioner(graphe *gr,layout *ly,double 
     depth=0;
     int n=G->node_count();
     node_counters.resize(n,0);
+    position.resize(n,0);
+    prelim.resize(n,0);
+    modifier.resize(n,0);
+    gaps.resize(n,0);
+    children.resize(n,0);
 }
 
 /*
- * END OF TREE NODE POSITIONING ALGORITHM
- */
+* END OF TREE NODE POSITIONING ALGORITHM
+*/
 
 /* calculate node positions and store them to the specified layout */
 void graphe::make_tree_layout(layout &x,double sep,int apex) {
     int n=node_count();
     x.resize(n);
     if (n==0) return;
-    unset_all_ancestors();
-    unvisit_all_nodes();
-    for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
-        it->set_prelim(-1);
-        it->set_modifier(0);
-    }
-    // layout the tree
-    double hsep=sep,vsep=sep*std::pow(PLASTIC_NUMBER,2);
-    tree_node_positioner P(this,&x,hsep,vsep);
+    /* layout the tree */
+    double hsep=sep,vsep=sep*1.5;
+    walker P(this,&x,hsep,vsep);
     P.positioning(apex);
 }
 
@@ -5730,14 +6474,17 @@ void graphe::make_tree_layout(layout &x,double sep,int apex) {
 void graphe::make_random_tree(const vecteur &V,int maxd,bool addnodes) {
     if (addnodes) {
         this->clear();
+        reserve_nodes(V.size());
         add_nodes(V);
     }
     vecteur src,labels=*_randperm(V,ctx)._VECTptr;
-    src.push_back(labels.pop_back());
+    src.push_back(labels.back());
+    labels.pop_back();
     gen v,w;
     while (!labels.empty()) {
         v=_rand(src,ctx);
-        w=labels.pop_back();
+        w=labels.back();
+        labels.pop_back();
         add_edge(v,w);
         src.push_back(w);
         if (degree(node_index(v))==maxd) {
@@ -5756,7 +6503,6 @@ void graphe::tree_height_dfs(int i,int level,int &depth) {
     int j;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if (!w.is_visited())
             tree_height_dfs(j,level+1,depth);
@@ -5765,7 +6511,7 @@ void graphe::tree_height_dfs(int i,int level,int &depth) {
 
 /* return the height of this tree (no check is made) */
 int graphe::tree_height(int root) {
-    // assuming that this is a tree
+    /* assuming that this is a tree */
     if (node_count()==1)
         return 0;
     unvisit_all_nodes();
@@ -5777,10 +6523,10 @@ int graphe::tree_height(int root) {
 
 /* create a random biconnected planar graph with n vertices */
 void graphe::make_random_planar(double p,int connectivity) {
-    // connectivity is 0 (any), 1 (connected), 2 (biconnected) or 3 (triconnected)
+    /* connectivity is 0 (any), 1 (connected), 2 (biconnected) or 3 (triconnected) */
     assert(p>=0 && p<1 && connectivity>=0 && connectivity<4);
     set_directed(false);
-    // start with a random maximal planar graph with n vertices
+    /* start with a random maximal planar graph with n vertices */
     int n=node_count();
     if (n==1)
         return;
@@ -5799,7 +6545,7 @@ void graphe::make_random_planar(double p,int connectivity) {
     std::reverse(outer_face.begin(),outer_face.end());
     faces.push_back(outer_face);
     int k;
-    // make random triangulated graph with n vertices
+    /* make random triangulated graph with n vertices */
     for (int i=3;i<n;++i) {
         k=rand_integer(faces.size());
         ivector &face_k=faces[k];
@@ -5817,12 +6563,12 @@ void graphe::make_random_planar(double p,int connectivity) {
         return;
     int mindeg=std::max(2,connectivity+1);
     ipairs E;
-    get_edges_as_pairs(E,false);
-    ivector indices=vecteur_2_vector_int(*_randperm(E.size(),ctx)._VECTptr);
-    // try to remove each edge with probability 0<p<1
+    get_edges_as_pairs(E);
+    ivector indices=rand_permu(E.size());
+    /* try to remove each edge with probability 0<p<1 */
     for (ivector_iter it=indices.begin();it!=indices.end();++it) {
         ipair &e=E[*it];
-        if (degree(e.first,false)<mindeg || degree(e.second,false)<mindeg)
+        if (degree(e.first)<mindeg || degree(e.second)<mindeg)
             continue;
         if (rand_uniform()<p)
             remove_edge(e);
@@ -5851,6 +6597,7 @@ void graphe::make_random_planar(double p,int connectivity) {
 void graphe::make_random(bool dir,const vecteur &V,double p) {
     this->clear();
     set_directed(dir);
+    reserve_nodes(V.size());
     add_nodes(V);
     int n=node_count(),m=std::floor(p),i,j,k;
     ipairs E;
@@ -5873,13 +6620,67 @@ void graphe::make_random(bool dir,const vecteur &V,double p) {
     }
 }
 
+/* create a random graph with the given degree sequence d which must be graphical */
+void graphe::make_random_sequential(const ivector &d,const vecteur &labels) {
+    assert(d.size()==labels.size() && d.size()>0);
+    int s=0;
+    for (ivector_iter it=d.begin();it!=d.end();++it) {
+        s+=*it;
+    }
+    assert((s%2)==0);
+    int m=s/2,n=d.size(),sz,cnt;
+    double p,r;
+    map<ipair,bool> used;
+    map<int,pair<ipair,double> > emap;
+    ivector D;
+    ipair e;
+    do {
+        D=d;
+        used.clear();
+        cnt=0;
+        while(true) {
+            p=0;
+            sz=0;
+            int &i=e.first,&j=e.second;
+            for (i=0;i<n;++i) {
+                for (j=i+1;j<n;++j) {
+                    if (used[e])
+                        continue;
+                    p+=D[i]*D[j]*(1-d[i]*d[j]/(4*m));
+                    emap[sz++]=make_pair(e,p);
+                }
+            }
+            if (p==0)
+                break;
+            r=rand_uniform()*p;
+            for (int k=0;k<sz;++k) {
+                pair<ipair,double> &elm=emap[k];
+                if (r<=elm.second) {
+                    const ipair &edge=elm.first;
+                    used[edge]=true;
+                    ++cnt;
+                    --D[edge.first];
+                    --D[edge.second];
+                    break;
+                }
+            }
+        }
+    } while (cnt<m);
+    reserve_nodes(labels.size());
+    add_nodes(labels);
+    for (map<ipair,bool>::const_iterator it=used.begin();it!=used.end();++it) {
+        if (it->second)
+            add_edge(it->first);
+    }
+}
+
 /* create a random bipartite graph with two groups of vertices V and W */
 void graphe::make_random_bipartite(const vecteur &V,const vecteur &W,double p) {
     this->clear();
     set_directed(false);
     int a=V.size(),b=W.size(),m=std::floor(p),k;
-    add_nodes(V);
-    add_nodes(W);
+    reserve_nodes(a+b);
+    add_nodes(mergevecteur(V,W));
     ipairs E;
     E.reserve(a*b);
     for (int i=0;i<a;++i) {
@@ -5911,6 +6712,7 @@ void graphe::make_random_regular(const vecteur &V,int d,bool connected) {
     int prob_total,k,dd;
     double r;
     ipair edge;
+    reserve_nodes(V.size());
     add_nodes(V);
     do {
         if (connected)
@@ -5965,17 +6767,47 @@ void graphe::make_random_regular(const vecteur &V,int d,bool connected) {
 /* return true iff the graph is d-regular */
 bool graphe::is_regular(int d) const {
     int n=node_count();
+    int deg=d;
     for (int i=0;i<n;++i) {
-        if (degree(i)!=d)
+        if (deg<0)
+            deg=degree(i);
+        else if (degree(i)!=deg)
             return false;
     }
     return true;
 }
 
-/* create a random flow network */
-void graphe::make_random_flow_network(const vecteur &V,int capacity) {
-    assert(!V.empty());
-    add_nodes(V);
+/* return true iff the graph is strongly regular with sig = (lambda,mu) */
+bool graphe::is_strongly_regular(ipair &sig) {
+    assert(!is_null());
+    if (!is_regular(-1))
+        return false;
+    int k=degree(0),n=node_count();
+    ivector common(k);
+    int lambda=-1,mu=-1,m;
+    for (int i=0;i<n;++i) {
+        const ivector &Nv=node(i).neighbors();
+        for (int j=0;j<n;++j) {
+            if (i==j)
+                continue;
+            const ivector &Nw=node(j).neighbors();
+            m=set_intersection(Nv.begin(),Nv.end(),Nw.begin(),Nw.end(),common.begin())-common.begin();
+            if (has_edge(i,j)) {
+                if (lambda<0)
+                    lambda=m;
+                else if (lambda!=m)
+                    return false;
+            } else {
+                if (mu<0)
+                    mu=m;
+                else if (mu!=m)
+                    return false;
+            }
+        }
+    }
+    sig.first=lambda;
+    sig.second=mu;
+    return true;
 }
 
 /* return true iff this graph is equal to G */
@@ -5987,8 +6819,8 @@ bool graphe::is_equal(const graphe &G) const {
         return false;
     ipairs E1,E2;
     edgeset edg,edG;
-    get_edges_as_pairs(E1,false);
-    G.get_edges_as_pairs(E2,false);
+    get_edges_as_pairs(E1);
+    G.get_edges_as_pairs(E2);
     ipairs2edgeset(E1,edg);
     ipairs2edgeset(E2,edG);
     if (edg!=edG)
@@ -6009,7 +6841,7 @@ void graphe::sort_rectangles(vector<rectangle> &rectangles) {
 }
 
 /* packing rectangles (sorted by height) into an enclosing rectangle with specified dimensions,
- * returns true if embedding has changed */
+* returns true if embedding has changed */
 bool graphe::embed_rectangles(vector<rectangle> &rectangles,double maxheight) {
     bool embedding_changed=false;
     double old_x,old_y;
@@ -6069,12 +6901,12 @@ bool graphe::embed_rectangles(vector<rectangle> &rectangles,double maxheight) {
 
 /* pack rectangles (sorted by height) to an enclosing rectangle with minimal perimeter and wasted space */
 void graphe::pack_rectangles(vector<rectangle> &rectangles) {
-    // compute total area occupied by the rectangles
+    /* compute total area occupied by the rectangles */
     double total_area=0;
     for (vector<rectangle>::const_iterator it=rectangles.begin();it!=rectangles.end();++it) {
         total_area+=it->width()*it->height();
     }
-    // step = the length of a negligible part of the shorter side of the smallest rectangle
+    /* step = the length of a negligible part of the shorter side of the smallest rectangle */
     double maxwidth=0,minwidth=DBL_MAX,minheight=rectangles.back().height();
     for (vector<rectangle>::const_iterator it=rectangles.begin();it!=rectangles.end();++it) {
         if (it->width()>maxwidth)
@@ -6102,14 +6934,14 @@ void graphe::pack_rectangles(vector<rectangle> &rectangles) {
         }
         if (firstpass || embed_rectangles(rectangles,bh)) {
             bw=bh=0;
-            // find the smallest enclosing rectangle containing the embedding
+            /* find the smallest enclosing rectangle containing the embedding */
             for (vector<rectangle>::const_iterator it=rectangles.begin();it!=rectangles.end();++it) {
                 if ((d=it->x()+it->width())>bw)
                     bw=d;
                 if ((d=it->y()+it->height())>bh)
                     bh=d;
             }
-            // find the embedding with the smallest perimeter (when scaled by the wasted ratio)
+            /* find the embedding with the smallest perimeter (when scaled by the wasted ratio) */
             if ((perim=(bw+PLASTIC_NUMBER_SQUARED*bh)*std::sqrt(bw*bh/total_area))<best_perim) {
                 best_perim=perim;
                 for (vector<rectangle>::const_iterator it=rectangles.begin();it!=rectangles.end();++it) {
@@ -6119,7 +6951,7 @@ void graphe::pack_rectangles(vector<rectangle> &rectangles) {
                 }
             }
         }
-        // increase enclosing rectangle height (rectangles will end up stacked eventually)
+        /* increase enclosing rectangle height (rectangles will end up stacked eventually) */
         bh+=step;
         firstpass=false;
         if (double(clock()-start)/CLOCKS_PER_SEC>1.5)
@@ -6133,28 +6965,32 @@ void graphe::pack_rectangles(vector<rectangle> &rectangles) {
 
 /* return true iff an isomorphic copy with vertices permuted according to sigma is constructed */
 bool graphe::isomorphic_copy(graphe &G,const ivector &sigma) {
-    if (int(sigma.size())!=node_count())
-        return false;
+    int n=node_count();
+    assert(int(sigma.size())==n);
+    G.clear();
     G.set_name(name());
     G.register_user_tags(user_tags);
     G.set_graph_attributes(attributes);
-    // add vertices
+    /* add vertices */
+    G.reserve_nodes(n);
+    gen_map gm;
+    gen lab;
     for (ivector_iter it=sigma.begin();it!=sigma.end();++it) {
-        if (*it<0 || *it>=node_count())
-            return false;
-        G.add_node(node_label(*it),nodes[*it].attributes());
+        lab=node_label(*it);
+        gm[lab]=gen(it-sigma.begin());
+        G.add_node(lab,node(*it).attributes());
     }
-    if (G.node_count()!=node_count())
+    if (G.node_count()!=n)
         return false;
-    // add edges
-    int i;
-    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
-        i=sigma[it-nodes.begin()];
-        for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
-            if (is_directed() || int(it-nodes.begin())<*jt) {
-                G.add_edge(i,sigma[*jt],it->neighbor_attributes(*jt));
-            }
-        }
+    /* add edges */
+    ipairs E;
+    get_edges_as_pairs(E);
+    ipair f;
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        const ipair &e=*it;
+        f=make_pair(gm[node_label(e.first)].val,gm[node_label(e.second)].val);
+        G.add_edge(f,edge_attributes(e));
+        G.set_multiedge(f,multiedges(e));
     }
     return true;
 }
@@ -6186,7 +7022,7 @@ bool graphe::segments_crossing(const point &p,const point &r,const point &q,cons
     if (vp2!=0) {
         double t=point_vecprod2d(qq,s)/vp2,u=vp1/vp2;
         if (t>=0 && u>=0 && t<=1 && u<=1) {
-            // edges intersect each other, obtain the intersection point
+            /* edges intersect each other, obtain the intersection point */
             scale_point(rr,t);
             add_point(pp,rr);
             crossing.resize(2);
@@ -6195,7 +7031,7 @@ bool graphe::segments_crossing(const point &p,const point &r,const point &q,cons
             return true;
         }
     }
-    // edges are non-intersecting
+    /* edges are non-intersecting */
     return false;
 }
 
@@ -6268,10 +7104,10 @@ bool graphe::points_coincide(const point &p,const point &q,double tol) {
 }
 
 /*
- * IMPLEMENTATION OF THE DISJOINT SET DATA STRUCTURE
- */
+* IMPLEMENTATION OF THE DISJOINT SET DATA STRUCTURE
+*/
 
-bool graphe::union_find::is_stored(int id) {
+bool graphe::unionfind::is_stored(int id) {
     assert(id>=0 && id<int(elements.size()));
     for (vector<element>::const_iterator it=elements.begin();it!=elements.end();++it) {
         if (it->id==id)
@@ -6280,7 +7116,7 @@ bool graphe::union_find::is_stored(int id) {
     return false;
 }
 
-void graphe::union_find::make_set(int id) {
+void graphe::unionfind::make_set(int id) {
     if (is_stored(id))
         return;
     element &e=elements[id];
@@ -6289,7 +7125,7 @@ void graphe::union_find::make_set(int id) {
     e.rank=1;
 }
 
-int graphe::union_find::find(int id) {
+int graphe::unionfind::find(int id) {
     assert(id>=0 && id<int(elements.size()));
     element &e=elements[id];
     assert(e.id>=0);
@@ -6298,7 +7134,7 @@ int graphe::union_find::find(int id) {
     return e.parent;
 }
 
-void graphe::union_find::unite(int id1,int id2) {
+void graphe::unionfind::unite(int id1,int id2) {
     int p1=find(id1),p2=find(id2);
     element &x=elements[p1],&y=elements[p2];
     if (x.rank>y.rank)
@@ -6312,32 +7148,31 @@ void graphe::union_find::unite(int id1,int id2) {
 }
 
 /*
- * END OF DISJOINT_SET CLASS
- */
+* END OF DISJOINT_SET CLASS
+*/
 
 /* make planar layout */
 bool graphe::make_planar_layout(layout &x) {
-    int n=node_count(),maxf,m;
+    int n=node_count(),of,m;
     ivectors faces;
     faces.clear();
-    // create the faces (adding temporary edges if necessary),
-    // return the index of the outer face
-    maxf=planar_embedding(faces);
-    if (maxf<0)
+    /* create the faces (adding temporary edges if necessary),
+ * return the index of the outer face */
+    of=planar_embedding(faces);
+    if (of<0)
         return false; // the graph is not planar
-    // subdivide concave faces
-    augment(faces,maxf,false);
-    ivector &outer_face=faces[maxf];
+    /* subdivide the concave faces */
+    augment(faces,of,false);
+    ivector &outer_face=faces[of];
     m=outer_face.size();
-    // create the fake outer face
+    /* create a fake outer face */
     ivector fake_outer_face(m);
     int label=largest_integer_label();
     for (ivector_iter it=outer_face.begin();it!=outer_face.end();++it) {
         add_edge(*it,fake_outer_face[it-outer_face.begin()]=add_node(++label));
     }
-    // create the layout
-    make_tutte_layout(x,fake_outer_face);
-    // remove temporary vertices
+    make_tutte_layout(x,fake_outer_face); // create the layout
+    /* remove temporary vertices */
     while (node_count()>n) {
         remove_node(node_count()-1);
     }
@@ -6365,14 +7200,14 @@ void graphe::convex_hull(const layout &x,layout &hull) {
 
 /* rotate layout x such that left to right symmetry is exposed */
 void graphe::layout_best_rotation(layout &x) {
-    // center layout in the origin
+    /* center layout in the origin */
     point center=layout_center(x);
     scale_point(center,-1);
     translate_layout(x,center);
     layout hull;
     convex_hull(x,hull);
     int n=hull.size();
-    // compute the hull perimeter
+    /* compute the hull perimeter */
     double perim=0,score,maxscore=-1;
     point tmp(2),mp(2),rp(2),rq(2),origin(2,0.0),proj(2);
     for (int i=0;i<n;++i) {
@@ -6387,7 +7222,7 @@ void graphe::layout_best_rotation(layout &x) {
             const point &q=hull[j];
             if (!point2segment_projection(origin,p,q,proj))
                 continue;
-            // obtain the perpendicular bisector ax+by+c=0 of the segment pq
+            /* obtain the perpendicular bisector ax+by+c=0 of the segment pq */
             copy_point(p,mp);
             add_point(mp,q);
             scale_point(mp,0.5);
@@ -6400,7 +7235,7 @@ void graphe::layout_best_rotation(layout &x) {
                 b=-1;
                 c=mp.back()-a*mp.front();
             }
-            // try to match hull edges that are reflections of each other
+            /* try to match hull edges that are reflections of each other */
             score=0;
             std::fill(matched.begin(),matched.end(),false);
             for (layout_iter it=hull.begin();it!=hull.end();++it) {
@@ -6470,16 +7305,8 @@ void graphe::append_segment(vecteur &drawing,const point &p,const point &q,int c
 /* append the vertex (as a circle) to vecteur v */
 void graphe::append_node(vecteur &drawing,const point &p,int color,int width,int shape) const {
     gen P=point2gen(p,true),args;
-    int i=0,w=_POINT_WIDTH_1,sh=_POINT_POINT;
-    while (true) {
-        args=makesequence(P,customize_display(color | w | sh));
-        drawing.push_back(_point(args,ctx));
-        if (w==width)
-            break;
-        ++i;
-        w=i << 19;
-        sh=shape;
-    }
+    args=makesequence(P,customize_display(color | width | shape));
+    drawing.push_back(_point(args,ctx));
 }
 
 /* append label to vecteur v at the specified quadrant */
@@ -6498,7 +7325,7 @@ bool graphe::gen2point(const gen &g,point &p) {
                 return false;
             p[it-v.begin()]=it->DOUBLE_val();
         }
-    } else { // assuming that pos is a complex number
+    } else { /* assuming that pos is a complex number */
         p.resize(2);
         if (g.type==_CPLX) {
             gen &real=*g._CPLXptr,&imag=*(g._CPLXptr+1);
@@ -6538,7 +7365,6 @@ void graphe::draw_edges(vecteur &drawing,const layout &x) {
         const point &p=x[i];
         for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
             j=*jt;
-            if (j<0) j=-j-1;
             if (!isdir && j<i)
                 continue;
             const point &q=x[j];
@@ -6547,8 +7373,9 @@ void graphe::draw_edges(vecteur &drawing,const layout &x) {
             if ((ait=attr.find(_GT_ATTRIB_COLOR))!=attr.end() && ait->second.is_integer()) {
                 color=ait->second.val;
                 if (color==7)
-                    color=0; // draw white (invisible) edges as black
-            }
+                    color=0; /* draw white (invisible) edges as black */
+            } else if ((ait=attr.find(_GT_ATTRIB_TEMPORARY))!=attr.end() && is_one(ait->second))
+                color=29; // gray
             style=0;
             width=default_edge_width;
             if ((ait=attr.find(_GT_ATTRIB_STYLE))!=attr.end()) {
@@ -6617,7 +7444,7 @@ void graphe::draw_nodes(vecteur &drawing,const layout &x) const {
 }
 
 /* return the best quadrant for the placement of the i-th vertex label
- * (minimize the collision with the adjacent edges) */
+* (minimize the collision with the adjacent edges) */
 int graphe::best_quadrant(const point &p,const layout &adj) const {
     int bestq,n=adj.size();
     if (n==0 || p.size()!=2)
@@ -6655,13 +7482,13 @@ int graphe::best_quadrant(const point &p,const layout &adj) const {
     case 3: return _QUADRANT4;
     default: break;
     }
-    // unreachable
+    /* unreachable */
     return -1;
 }
 
 /* append labels of the nodes of this graph to vecteur v */
 void graphe::draw_labels(vecteur &drawing,const layout &x) const {
-    if (is_empty())
+    if (is_null())
         return;
     assert(!x.empty());
     ivector adjv;
@@ -6670,14 +7497,14 @@ void graphe::draw_labels(vecteur &drawing,const layout &x) const {
     double d;
     int color,n=node_count();
     point r(x.front().size());
-    bool isdir=is_directed(),isweighted=is_weighted();
+    bool isdirected=is_directed(),isweighted=is_weighted();
     if (isweighted && x.front().size()==2) {
-        // draw weight labels
+        /* draw weight labels */
         for (int i=0;i<n;++i) {
             const point &p=x[i];
             const vertex &v=node(i);
             for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
-                if (!isdir && *it<i)
+                if (!isdirected && *it<i)
                     continue;
                 const point &q=x[*it];
                 const attrib &attr=v.neighbor_attributes(*it);
@@ -6694,15 +7521,15 @@ void graphe::draw_labels(vecteur &drawing,const layout &x) const {
             }
         }
     }
-    // draw vertex labels
+    /* draw vertex labels */
     for (int i=0;i<n;++i) {
         const point &p=x[i];
-        adjacent_nodes(i,adjv,false);
+        adjacent_nodes(i,adjv);
         adj.resize(adjv.size());
         for (ivector_iter it=adjv.begin();it!=adjv.end();++it) {
             adj[it-adjv.begin()]=x[*it];
         }
-        append_label(drawing,p,nodes[i].label(),best_quadrant(p,adj));
+        append_label(drawing,p,node(i).label(),best_quadrant(p,adj));
     }
 }
 
@@ -6711,19 +7538,16 @@ void graphe::rdfs(int i,ivector &d,bool rec,int sg,bool skip_embedded) {
     v.set_visited(true);
     v.set_disc(++disc_time);
     v.set_low(v.disc());
-    v.clear_children();
     if (rec)
         d.push_back(i);
     int j;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         j=*it;
-        if (j<0) j=-j-1;
         vertex &w=node(j);
         if ((sg>=0 && w.subgraph()!=sg) || (skip_embedded && w.is_embedded()))
             continue;
         if (!w.is_visited()) {
             w.set_ancestor(i);
-            v.inc_children();
             rdfs(j,d,rec,sg,skip_embedded);
             v.set_low(std::min(v.low(),w.low()));
         } else if (j!=v.ancestor())
@@ -6738,7 +7562,7 @@ void graphe::dfs(int root,bool rec,bool clr,ivector *D,int sg,bool skip_embedded
         unset_all_ancestors(sg);
         disc_time=0;
     }
-    ivector &d=D!=NULL?*D:discovered_nodes;
+    ivector &d=D!=NULL?*D:disc_nodes;
     if (rec) {
         d.clear();
         d.reserve(node_count());
@@ -6754,7 +7578,7 @@ void graphe::bfs(int root,bool rec,bool clr,ivector *D,int sg,bool skip_embedded
         unset_all_ancestors(sg);
         disc_time=0;
     }
-    ivector &d=D!=NULL?*D:discovered_nodes;
+    ivector &d=D!=NULL?*D:disc_nodes;
     if (rec) {
         d.clear();
         d.reserve(node_count());
@@ -6772,9 +7596,7 @@ void graphe::bfs(int root,bool rec,bool clr,ivector *D,int sg,bool skip_embedded
                 d.push_back(i);
             v.set_visited(true);
             for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
-                j=*it;
-                if (j<0) j=-j-1;
-                vertex &w=node(j);
+                vertex &w=node(j=*it);
                 if ((sg>=0 && w.subgraph()!=sg) || (skip_embedded && w.is_embedded()))
                     continue;
                 if (!w.is_visited()) {
@@ -6789,13 +7611,16 @@ void graphe::bfs(int root,bool rec,bool clr,ivector *D,int sg,bool skip_embedded
 
 /* return true iff the graph is connected */
 bool graphe::is_connected(int sg) {
-    assert(!is_empty() && !is_directed());
-    node_iter it=nodes.begin();
-    if (sg>=0)
-        for (;it->subgraph()!=sg && it!=nodes.end();++it);
-    assert(it!=nodes.end());
-    dfs(it-nodes.begin(),false,true,NULL,sg);
-    for (;it!=nodes.end();++it) {
+    assert(!is_null());
+    if (is_directed()) {
+        graphe G(ctx);
+        underlying(G);
+        return G.is_connected(sg);
+    }
+    int i=sg<0?0:first_vertex_from_subgraph(sg);
+    assert(i>=0);
+    dfs(i,false,true,NULL,sg);
+    for (node_iter it=nodes.begin()+i;it!=nodes.end();++it) {
         if ((sg<0 || it->subgraph()==sg) && !it->is_visited())
             return false;
     }
@@ -6804,13 +7629,23 @@ bool graphe::is_connected(int sg) {
 
 /* return true iff the graph is biconnected */
 bool graphe::is_biconnected(int sg) {
-    assert(!is_empty() && !is_directed());
+    assert(!is_null());
+    if (is_directed()) {
+        graphe G(ctx);
+        underlying(G);
+        return G.is_biconnected(sg);
+    }
     return is_connected(sg) && !has_cut_vertex(sg);
 }
 
 /* return true iff the graph is triconnected, using a simple O(n*(n+m)) algorithm */
 bool graphe::is_triconnected(int sg) {
-    assert(!is_empty() && !is_directed());
+    assert(!is_null());
+    if (is_directed()) {
+        graphe G(ctx);
+        underlying(G);
+        return G.is_triconnected(sg);
+    }
     int color=max_subgraph_index()+1;
     for (int i=node_count();i-->0;) {
         vertex &v=node(i);
@@ -6831,13 +7666,43 @@ bool graphe::is_triconnected(int sg) {
     return true;
 }
 
+/* return true iff the (sub)graph is a cycle, linear time */
+bool graphe::is_cycle(ipairs &E,int sg) {
+    int root=-1;
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if (sg>=0 && it->subgraph()!=sg)
+            continue;
+        if (degree(it-nodes.begin(),sg)>0) {
+            root=it-nodes.begin();
+            break;
+        }
+    }
+    if (root<0)
+        return false;
+    dfs(root,true,true,NULL,sg);
+    int n=disc_nodes.size();
+    ipairs ev;
+    get_edges_as_pairs(ev,true,sg);
+    if (n!=int(ev.size()))
+        return false;
+    ipair e;
+    E.resize(n);
+    for (int i=0;i<n;++i) {
+        e=make_pair(disc_nodes[i],disc_nodes[(i+1)%n]);
+        if (!has_edge(e))
+            return false;
+        E[i]=e;
+    }
+    return true;
+}
+
 /* return true iff the graph is a forest (check that the connected components are all trees) */
 bool graphe::is_forest() {
-    assert(!is_empty() && !is_directed());
-    ivectors components;
-    connected_components(components);
+    assert(!is_null() && !is_directed());
+    ivectors comp;
+    connected_components(comp);
     graphe G(ctx);
-    for (ivectors_iter it=components.begin();it!=components.end();++it) {
+    for (ivectors_iter it=comp.begin();it!=comp.end();++it) {
         induce_subgraph(*it,G,false);
         if (G.edge_count()+1!=int(it->size()))
             return false;
@@ -6863,10 +7728,10 @@ bool graphe::is_tournament() const {
 
 /* return true iff the graph is planar */
 bool graphe::is_planar() {
-    ivectors components,faces;
+    ivectors comp,faces;
     int m;
-    connected_components(components);
-    for (ivectors_iter it=components.begin();it!=components.end();++it) {
+    connected_components(comp);
+    for (ivectors_iter it=comp.begin();it!=comp.end();++it) {
         if (it->size()<5)
             continue;
         graphe G(ctx);
@@ -6882,7 +7747,7 @@ bool graphe::is_planar() {
             if (jt->size()<9)
                 continue;
             graphe H(ctx);
-            G.subgraph(*jt,H);
+            G.extract_subgraph(*jt,H);
             if (H.node_count()<5)
                 continue;
             if (!H.demoucron(faces))
@@ -6896,6 +7761,7 @@ bool graphe::is_planar() {
 void graphe::make_product_nodes(const graphe &G,graphe &P) const {
     int n=node_count(),m=G.node_count();
     stringstream ss;
+    P.reserve_nodes(n*m);
     for (int i=0;i<n;++i) {
         for (int j=0;j<m;++j) {
             const gen &v=node_label(i),&w=G.node_label(j);
@@ -6956,26 +7822,8 @@ void graphe::tensor_product(const graphe &G,graphe &P) const {
     }
 }
 
-/* highlight all edges from E using the specified color */
-void graphe::highlight_edges(const ipairs &E,int color) {
-    gen val;
-    for (ipairs_iter it=E.begin();it!=E.end();++it) {
-        val=change_subtype(color,_INT_COLOR);
-        set_edge_attribute(it->first,it->second,_GT_ATTRIB_COLOR,val);
-    }
-}
-
-/* highlight all nodes with indices in V using the specified color */
-void graphe::highlight_nodes(const ivector &V,int color) {
-    gen val;
-    for (ivector_iter it=V.begin();it!=V.end();++it) {
-        val=change_subtype(color,_INT_COLOR);
-        set_node_attribute(*it,_GT_ATTRIB_COLOR,val);
-    }
-}
-
 /* compute the distance between i-th and J nodes using BFS and store them to dist
- * (also output paths if shortest_paths!=NULL) */
+* (also output paths if shortest_paths!=NULL) */
 void graphe::distance(int i,const ivector &J,ivector &dist,ivectors *shortest_paths) {
     bfs(i,false);
     int k,p,len;
@@ -7039,7 +7887,7 @@ void graphe::allpairs_distance(matrice &m) const {
 }
 
 /* return the length of the shortest path from src to dest in weighted
- * graph (Dijkstra's algorithm), also fill shortest_path with the respective vertices */
+* graph (Dijkstra's algorithm), also fill shortest_path with the respective vertices */
 void graphe::dijkstra(int src,const ivector &dest,vecteur &path_weights,ivectors *cheapest_paths) {
     int n=node_count();
     ivector Q(n),prev(n);
@@ -7094,7 +7942,7 @@ void graphe::dijkstra(int src,const ivector &dest,vecteur &path_weights,ivectors
 }
 
 /* return true iff the graph has a topological ordering and output the indices
- * of thus sorted vertices in list v, use Kahn's algorithm with time complexity O(n+m) */
+* of thus sorted vertices in list v, use Kahn's algorithm with time complexity O(n+m) */
 bool graphe::topologic_sort(ivector &ordering) {
     assert(is_directed() && node_stack.empty());
     int n=node_count(),v;
@@ -7134,7 +7982,7 @@ bool graphe::is_arborescence() const {
             if (has_root)
                 return false;
             has_root=true;
-         } else if (*it>1)
+        } else if (*it>1)
             return false;
     }
     return has_root;
@@ -7145,17 +7993,13 @@ void graphe::reverse(graphe &G) const {
     assert(is_directed());
     G.set_directed(true);
     G.set_graph_attributes(attributes);
+    G.reserve_nodes(node_count());
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         G.add_node(it->label(),it->attributes());
     }
-    int i,j;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
-        i=it-nodes.begin();
-        const vertex &v=node(i);
-        for (ivector_iter jt=v.neighbors().begin();jt!=v.neighbors().end();++jt) {
-            j=*jt;
-            if (j<0) j=-j-1;
-            G.add_edge(j,i,v.neighbor_attributes(j));
+        for (ivector_iter jt=it->neighbors().begin();jt!=it->neighbors().end();++jt) {
+            G.add_edge(*jt,it-nodes.begin(),it->neighbor_attributes(*jt));
         }
     }
 }
@@ -7164,6 +8008,7 @@ void graphe::reverse(graphe &G) const {
 void graphe::spanning_tree(int i,graphe &T,int sg) {
     T.clear();
     vecteur V=vertices(sg);
+    T.reserve_nodes(V.size());
     T.add_nodes(V);
     ivector indices(V.size());
     int v,p;
@@ -7186,8 +8031,21 @@ void graphe::spanning_tree(int i,graphe &T,int sg) {
     }
 }
 
+/* return the number of spanning trees in this graph */
+int graphe::spanning_tree_count() const {
+    /* assuming that the graph is connected */
+    matrice L;
+    laplacian_matrix(L);
+    L.pop_back();
+    L=mtran(L);
+    L.pop_back();
+    gen d=_det(L,ctx);
+    assert(d.is_integer());
+    return d.val;
+}
+
 /* write the minimal spanning tree of this graph to T,
- * use Kruskal's algorithm with time complexity O(m*log(n)) */
+* use Kruskal's algorithm with time complexity O(m*log(n)) */
 void graphe::minimal_spanning_tree(graphe &T,int sg) {
     assert(!is_directed() && is_weighted());
     ipairs E,res;
@@ -7195,7 +8053,7 @@ void graphe::minimal_spanning_tree(graphe &T,int sg) {
     edges_comparator comp(this);
     sort(E.begin(),E.end(),comp);
     int v,u;
-    union_find ds(node_count());
+    unionfind ds(node_count());
     for (ipairs_iter it=E.begin();it!=E.end();++it) {
         ds.make_set(it->first);
         ds.make_set(it->second);
@@ -7208,11 +8066,11 @@ void graphe::minimal_spanning_tree(graphe &T,int sg) {
             ds.unite(u,v);
         }
     }
-    subgraph(res,T,false);
+    extract_subgraph(res,T,true);
 }
 
 /* Tarjan's offline algorithm for the lowest common ancestor, time complexity O(n) */
-void graphe::lca_recursion(int u,const ipairs &p,ivector &lca,union_find &ds) {
+void graphe::lca_recursion(int u,const ipairs &p,ivector &lca,unionfind &ds) {
     ds.make_set(u);
     vertex &U=node(u);
     U.set_ancestor(u);
@@ -7248,7 +8106,7 @@ void graphe::lowest_common_ancestors(int root,const ipairs &p,ivector &lca) {
     unset_all_ancestors();
     uncolor_all_nodes();
     lca.resize(p.size(),-1);
-    union_find ds(node_count());
+    unionfind ds(node_count());
     lca_recursion(root,p,lca,ds);
     assert(find(lca.begin(),lca.end(),-1)==lca.end());
 }
@@ -7272,98 +8130,84 @@ bool graphe::is_descendant(int v,int anc) const {
     return false;
 }
 
-/* find a path from v to other visited vertex w along unvisited edges */
-void graphe::pathfinder(int i,ivector &path) {
-    const vertex &v=node(i);
-    path.clear();
-    // find an unvisited edge from v
-    int j=-1,k;
+void graphe::st_numbering_dfs(int i,ivector &preorder) {
+    vertex &v=node(i);
+    v.set_disc(++disc_time);
+    v.set_low(i);
+    int j;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
-        if (!is_edge_visited(i,*it)) {
-            j=*it;
-            break;
-        }
-    }
-    if (j<0)
-        return;
-    vertex &w=node(j);
-    int mode=0;
-    if (v.ancestor()!=j && w.ancestor()!=i) {
-        if (is_descendant(i,j))
-            mode=1;
-        else if (is_descendant(j,i))
-            mode=2;
-    } else if (w.ancestor()==i)
-        mode=3;
-    if (mode>0) {
-        set_edge_visited(i,j);
-        path.push_back(i);
-        path.push_back(j);
-    }
-    if (mode>1) {
-        while (true) {
-            vertex &u=node(j);
-            if (u.is_visited())
-                break;
-            k=-1;
-            for (ivector_iter it=u.neighbors().begin();it!=u.neighbors().end();++it) {
-                vertex &t=node(*it);
-                if (!is_edge_visited(j,*it) && ((mode==2 && u.ancestor()==*it) ||
-                                                (mode==3 && (t.disc()==u.low() || t.low()==u.low())))) {
-                    k=*it;
-                    break;
-                }
-            }
-            assert(k>=0);
-            u.set_visited(true);
-            set_edge_visited(j,k);
-            path.push_back(k);
-            j=k;
-        }
+        vertex &w=node(j=*it);
+        if (w.disc()==0) {
+            st_numbering_dfs(j,preorder);
+            w.set_ancestor(i);
+            preorder.push_back(j);
+            if (node(w.low()).disc()<node(v.low()).disc())
+                v.set_low(w.low());
+        } else if (w.disc()!=0 && w.disc()<node(v.low()).disc())
+            v.set_low(*it);
     }
 }
 
-/* compute the ST numbering for this graph using Even-Tarjan algorithm, time complexity O(n+m) */
+/* find st-numbering using Tarjan's algorithm (1986), time complexity O(n+m) */
 void graphe::compute_st_numbering(int s,int t) {
-    // assuming that the graph is biconnected
+    /* assuming that the graph is biconnected */
     assert(has_edge(s,t) && node_stack.empty());
-    vertex &v=node(s),&w=node(t);
-    v.move_neighbor(t,-1);
-    dfs(s,false);
-    unvisit_all_nodes();
-    unvisit_all_edges();
-    v.set_visited(true);
-    w.set_visited(true);
-    set_edge_visited(make_pair(s,t));
-    node_stack.push(t);
-    node_stack.push(s);
-    int n=0,i;
-    ivector path;
-    while (!node_stack.empty()) {
-        i=node_stack.top();
-        vertex &u=node(i);
-        node_stack.pop();
-        pathfinder(i,path);
-        if (path.empty()) {
-            u.set_number(++n);
-        } else {
-            path.pop_back();
-            while (!path.empty()) {
-                node_stack.push(path.back());
-                path.pop_back();
-            }
+    int n=node_count(),i;
+    for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
+        it->set_disc(0);
+    }
+    disc_time=1;
+    node(s).set_disc(1);
+    ivector preorder,L;
+    st_numbering_dfs(t,preorder);
+    L.push_back(s);
+    L.push_back(t);
+    vector<bool> sign(n);
+    ivector::iterator lit;
+    bool sign_plus=true,sign_minus=false;
+    sign[s]=sign_minus;
+    for (ivector::const_reverse_iterator it=preorder.rbegin();it!=preorder.rend();++it) {
+        vertex &v=node(*it);
+        lit=find(L.begin(),L.end(),v.ancestor());
+        assert(lit!=L.end());
+        if (sign[v.low()]==sign_minus) {
+            L.insert(lit,*it);
+            sign[v.ancestor()]=sign_plus;
+        } else if (sign[v.low()]==sign_plus) {
+            L.insert(lit+1,*it);
+            sign[v.ancestor()]=sign_minus;
         }
+    }
+    i=0;
+    for (ivector_iter it=L.begin();it!=L.end();++it) {
+        node(*it).set_number(++i);
     }
 }
 
-/* return st numbering in form of vecteur */
+/* return st-numbering in form of vecteur */
 vecteur graphe::get_st_numbering() const {
-    // assuming that st numbering has been computed
+    /* assuming that st numbering has been computed */
     vecteur st(node_count());
+    int ofs=1-array_start(ctx);
     for (iterateur it=st.begin();it!=st.end();++it) {
-        *it=node(it-st.begin()).number();
+        *it=node(it-st.begin()).number()-ofs;
     }
     return st;
+}
+
+/* assign directions to edges according to the st-numbering */
+void graphe::assign_edge_directions_from_st() {
+    set_directed(true);
+    int j;
+    for (vector<vertex>::iterator it=nodes.begin();it!=nodes.end();++it) {
+        vertex &v=*it;
+        for (int i=v.neighbors().size();i-->0;) {
+            j=v.neighbors().at(i);
+            const vertex &w=node(j);
+            if (v.number()>w.number())
+                v.remove_neighbor(j);
+        }
+    }
 }
 
 /* greedy vertex coloring algorithm due to Biggs, also records vertex inclusion time */
@@ -7399,10 +8243,14 @@ void graphe::greedy_vertex_coloring_biggs(ivector &ordering) {
 
 /* classical greedy vertex coloring algorithm, time complexity O(n+m) */
 int graphe::greedy_vertex_coloring(const ivector &p) {
-    assert(!is_directed());
+    if (is_directed()) {
+        graphe G(ctx);
+        underlying(G);
+        return G.greedy_vertex_coloring(p);
+    }
     uncolor_all_nodes();
     int c=0,k;
-    set<int> used;
+    std::set<int> used;
     for (ivector_iter it=p.begin();it!=p.end();++it) {
         vertex &v=node(*it);
         if (c==0) {
@@ -7416,7 +8264,7 @@ int graphe::greedy_vertex_coloring(const ivector &p) {
                 used.insert(v.color());
         }
         k=1;
-        for (set<int>::const_iterator jt=used.begin();jt!=used.end();++jt) {
+        for (std::set<int>::const_iterator jt=used.begin();jt!=used.end();++jt) {
             if (*jt>k)
                 break;
             ++k;
@@ -7438,7 +8286,12 @@ void graphe::get_node_colors(ivector &colors) {
 
 /* return true iff the graph is bipartite, time complexity O(n+m) */
 bool graphe::is_bipartite(ivector &V1,ivector &V2,int sg) {
-    assert(!is_directed() && node_queue.empty());
+    assert(node_queue.empty());
+    if (is_directed()) {
+        graphe G(ctx);
+        underlying(G);
+        return G.is_bipartite(V1,V2,sg);
+    }
     uncolor_all_nodes(-1,sg);
     node(0).set_color(1);
     node_iter nt=nodes.begin();
@@ -7511,12 +8364,13 @@ void graphe::make_bipartite_layout(layout &x,const ivector &p1,const ivector &p2
 }
 
 /* construct the plane dual of a planar graph with the given faces with time complexity O(n),
- * each face must be a list of vertex indices */
+* each face must be a list of vertex indices */
 void graphe::make_plane_dual(const ivectors &faces) {
     this->clear();
     set_directed(false);
     vecteur labels;
     make_default_labels(labels,faces.size());
+    reserve_nodes(labels.size());
     add_nodes(labels);
     int nc=0;
     for (ivectors_iter it=faces.begin();it!=faces.end();++it) {
@@ -7546,12 +8400,11 @@ void graphe::make_plane_dual(const ivectors &faces) {
 }
 
 /* return the number of different colors adjacent to the i-th vertex in a partially colored graph */
-int graphe::saturation_degree(const vertex &v,set<int> &colors) const {
+int graphe::saturation_degree(const vertex &v,std::set<int> &colors) const {
     int i,c;
     colors.clear();
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         i=*it;
-        if (i<0) i=-i-1;
         const vertex &w=node(i);
         if ((c=w.color())>0)
             colors.insert(c);
@@ -7579,10 +8432,10 @@ bool graphe::is_partially_colored() const {
 }
 
 /* a heuristic algorithm by D.Bre1az for nearly optimal vertex coloring (time complexity O(n*m)),
- * operates on a partially colored graph, returns the number of colors */
+* operates on a partially colored graph, returns the number of colors */
 void graphe::dsatur() {
     int col,i,sat,maxsat,deg,maxdeg=0;
-    set<int> colors,maxcolors;
+    std::set<int> colors,maxcolors;
     ivector indices;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         if (it->color()==0)
@@ -7592,7 +8445,7 @@ void graphe::dsatur() {
         return;
     ivector::iterator pos;
     do {
-        maxsat=0;
+        maxsat=-1;
         i=-1;
         for (ivector::iterator it=indices.begin();it!=indices.end();++it) {
             const vertex &v=node(*it);
@@ -7608,7 +8461,7 @@ void graphe::dsatur() {
         }
         if (i>=0) {
             col=1;
-            for (set<int>::const_iterator it=maxcolors.begin();it!=maxcolors.end();++it) {
+            for (std::set<int>::const_iterator it=maxcolors.begin();it!=maxcolors.end();++it) {
                 if (*it==col)
                     ++col;
                 else break;
@@ -7621,7 +8474,7 @@ void graphe::dsatur() {
 
 /* return the total number of different nonzero vertex colors in this graph */
 int graphe::color_count() const {
-    set<int> colors;
+    std::set<int> colors;
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         colors.insert(it->color());
     }
@@ -7629,7 +8482,7 @@ int graphe::color_count() const {
 }
 
 /* return true iff the vertices can be colored using at most k different colors,
- * the vertices will be colored after the function returns */
+* the vertices will be colored after the function returns */
 bool graphe::is_vertex_colorable(int k) {
     assert(k>=0);
     if (k==0) {
@@ -7640,26 +8493,26 @@ bool graphe::is_vertex_colorable(int k) {
         message("Warning: there are more colors than vertices");
         return false;
     }
-    // try greedy coloring first (linear time), use random order of vertices
-    ivector sigma=vecteur_2_vector_int(*_randperm(node_count(),ctx)._VECTptr);
+    /* try greedy coloring first (linear time), use random order of vertices */
+    ivector sigma=rand_permu(node_count());
     if (greedy_vertex_coloring(sigma)<=k)
         return true;
-    // next try dsatur algorithm (quadratic time)
+    /* next try dsatur algorithm (quadratic time) */
     uncolor_all_nodes();
     dsatur();
     if (color_count()<=k)
         return true;
-    // finally resort to solving MIP problem
+    /* finally resort to solving MIP problem */
     return exact_vertex_coloring(k)!=0;
 }
 
 /* return the lower and the upper bound for chromatic number (inclusive) */
 graphe::ipair graphe::chromatic_number_bounds() {
-    // the lower bound is the size of maximum clique
+    /* the lower bound is the size of maximum clique */
     ivector clique;
     ostergard ost(this,3.0); // with timeout
     int lb=ost.maxclique(clique);
-    // the upper bound is given by heuristic dsatur algorithm
+    /* the upper bound is given by heuristic dsatur algorithm */
     uncolor_all_nodes();
     for (ivector_iter it=clique.begin();it!=clique.end();++it) {
         node(*it).set_color(it-clique.begin()+1);
@@ -7769,7 +8622,7 @@ int graphe::bipartite_matching(const ivector &p1,const ivector &p2,ipairs &match
                 ++count;
         }
     }
-    // extract matching
+    /* extract matching */
     matching.clear();
     for (node_iter it=nodes.begin();it!=nodes.end();++it) {
         if (it->color()!=1)
@@ -7783,9 +8636,9 @@ int graphe::bipartite_matching(const ivector &p1,const ivector &p2,ipairs &match
 }
 
 /* construct the line graph of this graph */
-void graphe::line_graph(graphe &G) const {
-    ipairs E;
-    get_edges_as_pairs(E);
+void graphe::line_graph(graphe &G,ipairs &E) const {
+    if (E.empty())
+        get_edges_as_pairs(E);
     G.clear();
     vecteur labels;
     gen label;
@@ -7793,6 +8646,7 @@ void graphe::line_graph(graphe &G) const {
         label=_cat(makesequence(node_label(it->first),str2gen("-",true),node_label(it->second)),ctx);
         labels.push_back(label);
     }
+    G.reserve_nodes(labels.size());
     G.add_nodes(labels);
     int i,j;
     for (ipairs_iter it=E.begin();it!=E.end();++it) {
@@ -7812,6 +8666,7 @@ void graphe::transitive_closure(graphe &G,bool weighted) {
     G.clear();
     G.set_directed(isdir);
     G.set_weighted(weighted);
+    G.reserve_nodes(n);
     G.add_nodes(vertices());
     if (weighted) {
         matrice m;
@@ -7847,6 +8702,2305 @@ void graphe::transitive_closure(graphe &G,bool weighted) {
                     G.add_edge(i,j);
             }
         }
+    }
+}
+
+/* return true iff this graph is isomorphic to other, also obtain an isomorphism */
+int graphe::is_isomorphic(const graphe &other,map<int,int> &isom) const {
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+    assert(is_directed()==other.is_directed());
+    int n=node_count(),sz;
+    if (other.node_count()!=n)
+        return 0;
+    int *adj1=to_array(sz);
+    int *adj2=other.to_array(sz);
+    int *sigma=new int[n];
+    bool res=nautywrapper_is_isomorphic(is_directed()?1:0,n,adj1,adj2,sigma)!=0;
+    if (res) {
+        /* obtain the isomorphism */
+        isom.clear();
+        for (int i=0;i<n;++i) {
+            isom[i]=sigma[i];
+        }
+    }
+    delete[] adj1;
+    delete[] adj2;
+    delete[] sigma;
+    return res;
+#else
+    message("Error: nauty library is required for finding graph isomorphism");
+    return -1;
+#endif
+}
+
+/* convert a sequence of nd digits to nonnegative integer */
+int digits2int(char *digits,int nd) {
+    int n=1,res=0;
+    for (int i=nd;i-->0;) {
+        res+=*(digits+i)*n;
+        n*=10;
+    }
+    return res;
+}
+
+/* return the set of generators of the automorphism group of this graph */
+gen graphe::aut_generators() const {
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+    int n=node_count(),ofs=array_start(ctx),sz;
+    vecteur out(0);
+    if (n>0) {
+        int *adj=to_array(sz);
+        FILE *f=tmpfile();
+        if (f==NULL) {
+            message ("Error: failed to create temporary file");
+            return undef;
+        }
+        nautywrapper_aut_generators(is_directed()?1:0,n,adj,f);
+        /* parse the generators and output them as a sequence of
+     * permutations, each in form of a list of disjoint cycles */
+        int sz=ftell(f);
+        rewind(f);
+        int i=0,nd=0;
+        char c;
+        vecteur perm,cycle;
+        char digits[32];
+        for (int cnt=0;cnt<sz;++cnt) {
+            c=fgetc(f);
+            if (c=='(')
+                cycle.clear();
+            else if (c==')') {
+                cycle.push_back(ofs+digits2int(digits,nd));
+                perm.push_back(cycle);
+                nd=0;
+            } else if (c=='\n') {
+                out.push_back(gen(perm,_LIST__VECT));
+                perm.clear();
+            } else if (c>47 && c<58)
+                digits[nd++]=c-48;
+            else if (c==32) {
+                cycle.push_back(ofs+digits2int(digits,nd));
+                nd=0;
+            }
+            ++i;
+        }
+        fclose(f);
+        delete[] adj;
+    }
+    return gen(out,_LIST__VECT);
+#else
+    message("Error: nauty library is required for finding graph automorphisms");
+    return undef;
+#endif
+}
+
+/* return the canonical labeling of this graph as a permutation */
+bool graphe::canonical_labeling(ivector &lab) const {
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+    int n=node_count(),sz;
+    if (n==0)
+        return false;
+    int *adj=to_array(sz);
+    int *clab=new int[n];
+    nautywrapper_canonical(is_directed()?1:0,n,adj,clab,NULL,NULL);
+    lab.resize(n);
+    for (int i=0;i<n;++i) {
+        lab[i]=clab[i];
+    }
+    delete[] adj;
+    delete[] clab;
+    return true;
+#else
+    message("Error: nauty library is required for canonical labeling");
+    return false;
+#endif
+}
+
+/* construct the closure of this graph and store it to G, complexity O(n^3) */
+bool graphe::bondy_chvatal_closure(graphe &G,ivector &d) {
+    underlying(G);
+    int n=node_count(),di;
+    bool yes=false,have_pair;
+    do {
+        have_pair=false;
+        for (int i=0;i<n && !have_pair;++i) {
+            di=d[i];
+            for (int j=i+1;j<n;++j) {
+                if (!has_edge(i,j) && di+d[j]>=n) {
+                    G.add_edge(i,j);
+                    ++d[i]; ++d[j];
+                    yes=have_pair=true;
+                    break;
+                }
+            }
+        }
+    } while (have_pair);
+    return yes;
+}
+
+/* return 1 if the graph is Hamiltonian, i.e. if it has a Hamiltonian circuit,
+* else return 0 or -1 of not conclusive */
+int graphe::is_hamiltonian(bool conclusive,ivector &hc,bool make_closure) {
+    assert(!is_directed());
+    hc.clear();
+    /* test biconnectivity, complexity O(n) */
+    if (!is_biconnected())
+        return 0;
+    int mindeg=RAND_MAX,deg,n=node_count(),m=edge_count();
+    ivector d(n);
+    /* Dirac criterion, complexity O(n) */
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        if ((deg=d[it-nodes.begin()]=it->neighbors().size())<mindeg)
+            mindeg=deg;
+    }
+    if (2*mindeg>=n)
+        return 1;
+    ivector V1,V2,v;
+    /* unbalanced bipartite graph is not Hamiltonian, complexity O(n+m) */
+    if (is_bipartite(V1,V2) && V1.size()!=V2.size())
+        return 0;
+    /* Ore criterion, complexity O(n^2) */
+    bool yes=true;
+    for (int i=0;i<n && yes;++i) {
+        deg=d[i];
+        for (int j=i+1;j<n;++j) {
+            if (!has_edge(i,j) && deg+d[j]<n) {
+                yes=false;
+                break;
+            }
+        }
+    }
+    if (yes)
+        return 1;
+    if (make_closure) {
+        /* apply the Bondy-Chvátal theorem: the graph is Hamiltonian if
+           and only if its closure is Hamiltonian, complexity O(n^2) */
+        graphe G(ctx);
+        if (bondy_chvatal_closure(G,d))
+            return G.is_hamiltonian(conclusive,hc,false);
+    }
+    if (double(m)/(double(n*n)>1.0-2.0/(1.0+std::exp(.0015*double(n))))) {
+        /* Nash-Williams criterion */
+        int inum=maximum_independent_set(v);
+        if (3*mindeg>=std::max(n+2,3*inum))
+            return 1;
+    }
+    /* brute force, NP hard */
+    double cost;
+    return conclusive?find_hamiltonian_cycle(hc,cost):-1;
+}
+
+/*
+* TSP CLASS IMPLEMENTATION
+*/
+
+#ifdef HAVE_LIBGLPK
+
+/* MINIMAL CUT implementation, adapted from glpk/examples/tsp (maxflow.c, mincut.c and main.c)
+ * Originally written by Andrew Makhorin <mao@gnu.org>
+ */
+
+/* compute maximal flow */
+int graphe::tsp::max_flow(int nn,int nedg,const ivector &beg,
+        const ivector &end,const ivector &cap,int s,int t,
+        ivector &x) {
+    int k;
+    assert(nn>=2);
+    assert(nedg>=0);
+    assert(1<=s && s<=nn);
+    assert(1<=t && t<=nn);
+    assert(s!=t);
+    for (k=0; k<nedg; k++) {
+        assert(1<=beg[k] && beg[k]<end[k] && end[k]<=nn && cap[k]>0);
+    }
+    glp_prob *lp;
+    glp_smcp smcp;
+    int i,nz,flow,*rn,*cn;
+    double temp,*aa;
+    lp=glp_create_prob();
+    glp_add_rows(lp,nn);
+    for (i=1;i<=nn;++i) {
+        glp_set_row_bnds(lp,i,GLP_FX,0.0,0.0);
+    }
+    glp_add_cols(lp,nedg+1);
+    for (k=0; k<nedg; k++) {
+        glp_set_col_bnds(lp,k+1,GLP_DB,-cap[k],+cap[k]);
+    }
+    glp_set_col_bnds(lp,nedg+1,GLP_FR,0.0,0.0);
+    rn=new int[1+2*(nedg+1)];
+    cn=new int[1+2*(nedg+1)];
+    aa=new double[1+2*(nedg+1)];
+    nz=0;
+    for (k=0;k<nedg;k++) {
+        rn[++nz]=beg[k]; cn[nz]=k+1; aa[nz]=-1.0;
+        rn[++nz]=end[k]; cn[nz]=k+1; aa[nz]=+1.0;
+    }
+    rn[++nz]=t; cn[nz]=nedg+1; aa[nz]=-1.0;
+    rn[++nz]=s; cn[nz]=nedg+1; aa[nz]=+1.0;
+    assert(nz==2*(nedg+1));
+    glp_load_matrix(lp,nz,rn,cn,aa);
+    delete[] rn;
+    delete[] cn;
+    delete[] aa;
+    glp_set_obj_dir(lp,GLP_MAX);
+    glp_set_obj_coef(lp,nedg+1,1.0);
+    glp_term_out(0);
+    glp_adv_basis(lp,0);
+    glp_term_out(1);
+    glp_init_smcp(&smcp);
+    smcp.msg_lev=GLP_MSG_OFF;
+    assert(glp_simplex(lp,&smcp)==0);
+    assert(glp_get_status(lp)==GLP_OPT);
+    for (k=0;k<nedg;k++) {
+        temp=glp_get_col_prim(lp,k+1);
+        x[k]=(int)floor(temp+.5);
+        assert(std::abs(x[k]-temp)<=1e-6);
+    }
+    temp=glp_get_col_prim(lp,nedg+1);
+    flow=(int)floor(temp+.5);
+    assert(std::abs(flow-temp)<=1e-6);
+    glp_delete_prob(lp);
+    return flow;
+}
+
+/* find min (s,t)-cut for known max flow */
+int graphe::tsp::min_st_cut(int nn,int nedg,const ivector &beg,
+        const ivector &end,const ivector &cap,int s,int t,
+        const ivector &x,ivector &cut) {
+    int i,j,k,p,q,temp;
+    ivector &head1=mincut_data[18]; if (int(head1.size())<nn) head1.resize(nn);
+    ivector &head2=mincut_data[19]; if (int(head2.size())<nn) head2.resize(nn);
+    ivector &next1=mincut_data[20]; if (int(next1.size())<nn) next1.resize(nn);
+    ivector &next2=mincut_data[21]; if (int(next2.size())<nn) next2.resize(nn);
+    for (i=0;i<nn;i++) head1[i]=head2[i]=0;
+    for (k=0;k<nedg;k++) {
+        i=beg[k]-1; next1[k]=head1[i]; head1[i]=k+1;
+        j=end[k]-1; next2[k]=head2[j]; head2[j]=k+1;
+    }
+    ivector &list=mincut_data[4]; list.resize(nn);
+    for (i=0;i<nn;i++) cut[i]=0;
+    p=q=0; list[0]=s; cut[s-1]=1;
+    while (p<=q) {
+        i=list[p++];
+        for (k=head1[i-1];k!=0;k=next1[k-1]) {
+            j=end[k-1];
+            assert(beg[k-1]==i);
+            if (cut[j-1]==0 && x[k-1]<+cap[k-1]) {
+                list[++q]=j; cut[j-1]=1;
+            }
+        }
+        for (k=head2[i-1];k!=0;k=next2[k-1]) {
+            j=beg[k-1];
+            assert(end[k-1]==i);
+            if (cut[j-1]==0 && x[k-1]>-cap[k-1]) {
+                list[++q]=j; cut[j-1]=1;
+            }
+        }
+    }
+    assert(!cut[t-1]);
+    temp=0;
+    for (k=0;k<nedg;k++) {
+        i=beg[k],j=end[k];
+        if ((cut[i-1] && !cut[j-1]) || (!cut[i-1] && cut[j-1]))
+            temp+=cap[k];
+    }
+    return temp;
+}
+
+/* find min cut with Stoer and Wagner algorithm */
+int graphe::tsp::minimal_cut(int nn,int nedg,const ivector &beg,
+                             const ivector &end,const ivector &cap,ivector &cut) {
+    int k;
+    assert(nn>=2);
+    assert(nedg>=0);
+    for (k=0;k<nedg;k++) {
+        assert(1<=beg[k] && beg[k]<end[k] && end[k]<=nn);
+        assert(cap[k]>0);
+    }
+    int i,j,min_cut,flow,temp,I,J,K,S,T,DEG,NV,NE;
+    ivector &head1=mincut_data[0]; if (int(head1.size())<nn) head1.resize(nn);
+    ivector &head2=mincut_data[1]; if (int(head2.size())<nn) head2.resize(nn);
+    ivector &next1=mincut_data[2]; if (int(next1.size())<nedg) next1.resize(nedg);
+    ivector &next2=mincut_data[3]; if (int(next2.size())<nedg) next2.resize(nedg);
+    for (i=0;i<nn;i++) head1[i]=head2[i]=0;
+    for (k=0;k<nedg;k++) {
+        i=beg[k]; next1[k]=head1[i-1]; head1[i-1]=k+1;
+        j=end[k]; next2[k]=head2[j-1]; head2[j-1]=k+1;
+    }
+    NV=nn;
+    ivector &HEAD=mincut_data[4]; if (int(HEAD.size())<nn) HEAD.resize(nn);
+    ivector &NEXT=mincut_data[5]; if (int(NEXT.size())<nn) NEXT.resize(nn);
+    ivector &NUMB=mincut_data[6]; if (int(NUMB.size())<nn) NUMB.resize(nn);
+    for (i=0;i<nn;i++) {
+        HEAD[i]=i+1; NEXT[i]=0; NUMB[i]=i+1;
+    }
+    ivector &BEG=mincut_data[7]; if (int(BEG.size())<nedg) BEG.resize(nedg);
+    ivector &END=mincut_data[8]; if (int(END.size())<nedg) END.resize(nedg);
+    ivector &CAP=mincut_data[9]; if (int(CAP.size())<nedg) CAP.resize(nedg);
+    ivector &X=mincut_data[10]; if (int(X.size())<nedg) X.resize(nedg);
+    ivector &ADJ=mincut_data[11]; if (int(ADJ.size())<nn) ADJ.resize(nn);
+    ivector &SUM=mincut_data[12]; if (int(SUM.size())<nn) SUM.resize(nn);
+    ivector &CUT=mincut_data[13]; if (int(CUT.size())<nn) CUT.resize(nn);
+    min_cut=RAND_MAX;
+    while (NV>1) {
+        for (I=0;I<NV;I++) SUM[I]=0.0;
+        for (I=1;I<=NV;I++) {
+            DEG=0;
+            for (i=HEAD[I-1];i!=0;i=NEXT[i-1]) {
+                for (k=head1[i-1];k!=0;k=next1[k-1]) {
+                    j=end[k-1];
+                    J=NUMB[j-1];
+                    if (I>=J)
+                        continue;
+                    if (SUM[J-1]==0.0)
+                        ADJ[DEG++]=J;
+                    assert(cap[k-1]>0.0);
+                    SUM[J-1]+=cap[k-1];
+                }
+                for (k=head2[i-1];k!=0;k=next2[k-1]) {
+                    j=beg[k-1];
+                    J=NUMB[j-1];
+                    if (I>=J)
+                        continue;
+                    if (SUM[J-1]==0.0)
+                        ADJ[DEG++]=J;
+                    assert(cap[k-1]>0.0);
+                    SUM[J-1]+=cap[k-1];
+                }
+            }
+            NE=0;
+            for (K=0;K<DEG;K++) {
+                assert(NE<nedg);
+                J=ADJ[K];
+                BEG[NE]=I; END[NE]=J; CAP[NE]=SUM[J-1];
+                SUM[J-1]=0.0;
+                ++NE;
+            }
+        }
+        S=1; T=NV;
+        flow=max_flow(NV,NE,BEG,END,CAP,S,T,X);
+        if (min_cut>flow)
+        {  min_cut=flow;
+            temp=min_st_cut(NV,NE,BEG,END,CAP,S,T,X,CUT);
+            assert(flow==temp);
+            for (i=0;i<nn;i++) cut[i]=CUT[NUMB[i]-1];
+            if (min_cut==0)
+                break;
+        }
+        assert(T==NV);
+        for (i=HEAD[T-1];i!=0;i=NEXT[i-1]) NUMB[i-1]=S;
+        i=HEAD[S-1];
+        assert(i!=0);
+        while (NEXT[i-1]!=0)
+            i=NEXT[i-1];
+        NEXT[i-1]=HEAD[T-1];
+        NV--;
+    }
+    return min_cut;
+}
+
+/* TSP constructor */
+graphe::tsp::tsp(graphe *gr) {
+    G=gr;
+    sg=-1;
+    isdirected=G->is_directed();
+    isweighted=G->is_weighted();
+    ipairs E;
+    G->get_edges_as_pairs(E);
+    edges_comparator comp(G);
+    sort(E.begin(),E.end(),comp); // sort edges by weight (ascending)
+    nv=G->node_count();
+    ne=E.size();
+    tour.reserve(nv);
+    obj.resize(ne);
+    xev.resize(ne);
+    can_branch.resize(ne);
+    coeff=new double[ne+1];
+    indices=new int[ne+1];
+    visited=new bool[nv];
+    arcs=new arc[ne];
+    sg_vertices=new int[nv];
+    sg_edges=new int[ne];
+    int i;
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        i=it-E.begin();
+        arc &a=arcs[i];
+        a.head=it->second;
+        a.tail=it->first;
+        loc_map[a.tail][a.head]=i;
+        a.sg_index=-1;
+        weight_map[a.tail][a.head]=_evalf(G->weight(*it),G->giac_context()).DOUBLE_val();
+    }
+    is_undir_weighted=!isdirected && isweighted;
+}
+
+/* TSP destructor */
+graphe::tsp::~tsp() {
+    delete[] coeff;
+    delete[] indices;
+    delete[] visited;
+    delete[] arcs;
+    delete[] sg_vertices;
+    delete[] sg_edges;
+}
+
+/* create an edge or arc */
+graphe::ipair graphe::tsp::make_edge(int i,int j) const {
+    if (isdirected)
+        return make_pair(i,j);
+    return make_pair(i<j?i:j,i<j?j:i);
+}
+
+/* return the subgraph index of edge e */
+int graphe::tsp::edge_index(const ipair &e) {
+    int i=loc_map[e.first][e.second];
+    return sg<0?i:arcs[i].sg_index;
+}
+
+/* return the subgraph index of vertex i */
+int graphe::tsp::vertex_index(int i) {
+    if (sg<0)
+        return i;
+    for (int j=0;j<sg_nv;++j) {
+        if (sg_vertices[j]==i)
+            return j;
+    }
+    return -1;
+}
+
+/* collect indices of all edges in the subgraph of G with index sg */
+void graphe::tsp::make_sg_edges() {
+    int j=0;
+    for (int i=0;i<ne;++i) {
+        arc &a=arcs[i];
+        if (sg<0 || (G->node(a.head).subgraph()==sg && G->node(a.tail).subgraph()==sg)) {
+            a.sg_index=j;
+            sg_edges[j++]=i;
+        } else a.sg_index=-1;
+    }
+    sg_ne=j;
+}
+
+/* formulate TSP as MIP, initially without any subtour elimination constraints */
+void graphe::tsp::formulate_mip() {
+    ivectors rows;
+    int n=sg<0?nv:sg_nv,m=sg<0?ne:sg_ne;
+    int nonzeros=0,i,j,k,l,cnt=0,nrows,ncols,nrows0;
+    for (j=0;j<m;++j) {
+        const arc &a=arcs[sg<0?j:sg_edges[j]];
+        obj[j]=isweighted?weight(a.tail,a.head):1.0;
+    }
+    for (j=0;j<n;++j) {
+        rows.resize(rows.size()+1);
+        ivector &row=rows.back();
+        l=sg<0?j:sg_vertices[j];
+        row.push_back(l);
+        for (i=0;i<n;++i) {
+            k=sg<0?i:sg_vertices[i];
+            if (i!=j && G->has_edge(k,l)) {
+                row.push_back(k);
+                ++nonzeros;
+            }
+        }
+    }
+    if (isdirected) {
+        nrows0=rows.size();
+        for (i=0;i<n;++i) {
+            rows.resize(rows.size()+1);
+            ivector &row=rows.back();
+            k=sg<0?i:sg_vertices[i];
+            row.push_back(k);
+            for (j=0;j<n;++j) {
+                l=sg<0?j:sg_vertices[j];
+                if (i!=j && G->has_edge(k,l)) {
+                    row.push_back(l);
+                    ++nonzeros;
+                }
+            }
+        }
+    }
+    ncols=m;
+    nrows=rows.size();
+    if (is_undir_weighted)
+        nonzeros+=m;
+    int *ia=new int[nonzeros+1];
+    int *ja=new int[nonzeros+1];
+    double *ar=new double[nonzeros+1];
+    for (ivectors_iter it=rows.begin();it!=rows.end();++it) {
+        const ivector &row=*it;
+        k=it-rows.begin();
+        i=row.front();
+        for (ivector_iter rt=row.begin()+1;rt!=row.end();++rt) {
+            j=*rt;
+            l=edge_index(isdirected?(k<nrows0?make_pair(j,i):make_pair(i,j)):make_edge(i,j));
+            assert(l<m);
+            ia[++cnt]=k+1; ja[cnt]=l+1;
+            ar[cnt]=1.0;
+        }
+    }
+    /* build MIP */
+    glp_add_rows(mip,nrows);
+    double rh=isdirected?1.0:2.0;
+    for (i=0;i<nrows;++i) glp_set_row_bnds(mip,i+1,GLP_FX,rh,rh);
+    if (is_undir_weighted) {
+        int r=glp_add_rows(mip,1);
+        double lb=lower_bound();
+        glp_set_row_bnds(mip,r,GLP_LO,lb,DBL_MAX);
+        for (i=0;i<m;++i) {
+            ia[++cnt]=r; ja[cnt]=i+1;
+            ar[cnt]=obj[i];
+        }
+    }
+    glp_add_cols(mip,ncols);
+    for (j=0;j<m;++j) {
+        glp_set_col_kind(mip,j+1,GLP_BV);
+        glp_set_obj_coef(mip,j+1,obj[j]);
+    }
+    assert(cnt<=nonzeros);
+    glp_load_matrix(mip,cnt,ia,ja,ar);
+    delete[] ia; delete[] ja;
+    delete[] ar;
+}
+
+/* compute lower bound for the objective function using minimal spanning tree */
+double graphe::tsp::lower_bound() {
+    double cost,maxcost=0;
+    int i;
+    for (int k=0;k<(sg<0?nv:sg_nv);++k) {
+        i=sg<0?k:sg_vertices[k];
+        vertex &v=G->node(i);
+        if (sg<0) {
+            G->unset_subgraphs(0);
+            v.set_subgraph(1);
+        } else v.set_subgraph(-1);
+        graphe T(G->giac_context());
+        G->minimal_spanning_tree(T,sg);
+        ipairs E;
+        cost=0;
+        T.get_edges_as_pairs(E);
+        for (ipairs_iter it=E.begin();it!=E.end();++it) {
+            cost+=_evalf(T.weight(*it),G->giac_context()).DOUBLE_val();
+        }
+        if (sg<0)
+            G->unset_subgraphs();
+        else v.set_subgraph(sg);
+        dvector c;
+        for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+            if (sg>=0 && G->node(*it).subgraph()!=sg)
+                continue;
+            c.push_back(weight(i,*it));
+        }
+        assert(c.size()>1);
+        sort(c.begin(),c.end());
+        cost+=c[0];
+        cost+=c[1];
+        if (cost>maxcost)
+            maxcost=cost;
+    }
+    return maxcost;
+}
+
+/* find the subtours (sv) in the subgraph induced by vertices in v */
+bool graphe::tsp::find_subgraph_subtours(ivectors &sv,solution_status &status) {
+    glp_erase_prob(mip);
+    glp_set_obj_dir(mip,GLP_MIN);
+    formulate_mip();
+    glp_smcp lparm;             // LP solver settings
+    glp_init_smcp(&lparm);
+    lparm.msg_lev=GLP_MSG_OFF;  // do not output any messages
+    glp_iocp parm;              // MIP solver settings
+    glp_init_iocp(&parm);
+    parm.msg_lev=GLP_MSG_OFF;   // do not output any messages
+    parm.gmi_cuts=GLP_ON;       // generate Gomory cuts
+    parm.br_tech=GLP_BR_MFV;    // choose the most fractional variable (the fallback branching rule)
+    parm.fp_heur=GLP_ON;        // enable feasibility pump heuristic
+    parm.sr_heur=GLP_OFF;       // disable simple rounding heuristic (according to A. Makhorin)
+    parm.cb_func=&callback;     // MIP callback
+    parm.cb_info=static_cast<void*>(this);
+    parm.tm_lim=sg>=0?5000:RAND_MAX;            // time limit
+    parm.bt_tech=sg<0?GLP_BT_BPH:GLP_BT_BLB;    // backtracking technique
+    parm.mip_gap=sg<0?0.0:1e-4;  // MIP gap relative tolerance
+    bool retval=true;
+    int iter_count=0,res,lres,stat;
+    is_symmetric_tsp=is_undir_weighted && G->is_clique(sg);
+    heur_type=is_symmetric_tsp?_GT_TSP_CHRISTOFIDES_SA:
+                               (is_undir_weighted?_GT_TSP_FARTHEST_INSERTION_HEUR:
+                                                  _GT_TSP_NO_HEUR);
+    do {
+        ++iter_count;
+        /* append subtour elimination constraints */
+        for (set<ivector>::const_iterator it=subtours.begin();it!=subtours.end();++it) {
+            append_sce(*it);
+        }
+        subtours.clear();
+        if ((lres=glp_simplex(mip,&lparm))==0 && glp_get_status(mip)==GLP_OPT)
+            res=glp_intopt(mip,&parm);
+        else res=-1;
+        stat=glp_get_status(mip);
+        if (res==0 && stat==GLP_OPT)
+            status=_GT_TSP_OPTIMAL;
+        else if (lres==0 && stat==GLP_NOFEAS) {
+            status=_GT_TSP_NOT_HAMILTONIAN;
+            break;
+        } else {
+            status=_GT_TSP_ERROR;
+            retval=false;
+            break;
+        }
+        get_subtours();
+        if (sg>=0) {
+            lift_subtours(sv);
+            if (iter_count>25)
+                break;
+        }
+    } while (subtours.size()>1);
+    ++num_nodes;
+    if (sg<0 && (status==_GT_TSP_OPTIMAL))
+        lift_subtours(sv);
+    return retval;
+}
+
+/* lift subtours to cycles in G */
+void graphe::tsp::lift_subtours(ivectors &sv) const {
+    for (set<ivector>::const_iterator it=subtours.begin();it!=subtours.end();++it) {
+        const ivector &subtour=*it;
+        if (sg<0)
+            sv.push_back(subtour);
+        else {
+            sv.resize(sv.size()+1);
+            ivector &lifted_subtour=sv.back();
+            lifted_subtour.resize(subtour.size());
+            for (ivector_iter jt=subtour.begin();jt!=subtour.end();++jt) {
+                lifted_subtour[jt-subtour.begin()]=sg_edges[*jt];
+            }
+        }
+    }
+}
+
+/* append subtour elimination constraint to MIP */
+void graphe::tsp::append_sce(const ivector &subtour) {
+    int i,j,r=glp_add_rows(mip,1),cnt=0,sz=subtour.size();
+    int m=sg<0?ne:sg_ne;
+    if (!isdirected && 3*sz>2*(sg<0?nv:sg_nv)+1) {
+        for (int k=0;k<m;++k) {
+            if (find(subtour.begin(),subtour.end(),k)!=subtour.end())
+                continue;
+            i=sg<0?k:sg_edges[k];
+            const arc &a1=arcs[i];
+            for (ivector_iter jt=subtour.begin();jt!=subtour.end();++jt) {
+                j=sg<0?*jt:sg_edges[*jt];
+                assert(i!=j);
+                const arc &a2=arcs[j];
+                if (a1.head==a2.head || a1.tail==a2.tail ||
+                        a1.head==a2.tail || a1.tail==a2.head) {
+                    indices[++cnt]=k+1;
+                    coeff[cnt]=1.0;
+                    break;
+                }
+            }
+        }
+        glp_set_row_bnds(mip,r,GLP_LO,2,DBL_MAX);
+    } else {
+        for (ivector_iter it=subtour.begin();it!=subtour.end();++it) {
+            indices[++cnt]=*it+1;
+            coeff[cnt]=1.0;
+        }
+        glp_set_row_bnds(mip,r,GLP_UP,0.0,sz-1);
+    }
+    glp_set_mat_row(mip,r,cnt,indices,coeff);
+}
+
+/* append subtours from sv, converting them to conform sg_edges */
+void graphe::tsp::add_subtours(const ivectors &sv) {
+    ivector subtour;
+    for (ivectors_iter it=sv.begin();it!=sv.end();++it) {
+        if (sg<0)
+            subtours.insert(canonical_subtour(*it));
+        else {
+            subtour.resize(it->size());
+            for (ivector_iter jt=it->begin();jt!=it->end();++jt) {
+                subtour[jt-it->begin()]=arcs[*jt].sg_index;
+            }
+            subtours.insert(canonical_subtour(subtour));
+        }
+    }
+}
+
+/* collect subtours from the current best MIP integer solution */
+void graphe::tsp::get_subtours() {
+    ivector sel;
+    int m=glp_get_num_cols(mip),i,j;
+    for (i=0;i<m;++i) {
+        if (glp_mip_col_val(mip,i+1)!=0)
+            sel.push_back(i);
+    }
+    vector<bool> vst(sel.size(),false);
+    ivector subtour;
+    arc a;
+    for (ivector_iter st=sel.begin();st!=sel.end();++st) {
+        const arc &fa=arcs[sg<0?*st:sg_edges[*st]];
+        i=st-sel.begin();
+        if (vst[i])
+            continue;
+        subtour.clear();
+        subtour.push_back(*st);
+        vst[i]=true;
+        a=fa;
+        ivector_iter it;
+        do {
+            for (it=sel.begin();it!=sel.end();++it) {
+                j=it-sel.begin();
+                const arc &aa=arcs[sg<0?*it:sg_edges[*it]];
+                if (i==j || vst[j])
+                    continue;
+                if (aa.tail==a.head || (!isdirected && (aa.tail==a.tail || aa.head==a.head || aa.head==a.tail))) {
+                    vst[j]=true;
+                    subtour.push_back(*it);
+                    a.head=aa.head;
+                    a.tail=aa.tail;
+                    i=j;
+                    break;
+                }
+            }
+        } while (it!=sel.end());
+        subtours.insert(canonical_subtour(subtour));
+    }
+}
+
+/* construct hierarhical clustering forest */
+void graphe::tsp::make_hierarhical_clustering_forest() {
+    int k;
+    int u=std::floor(nv*4.0*M_LN2/std::log(nv)); // upper bound on the cluster cardinality
+    hierarhical_clustering_forest.clear();
+    /* create leaf nodes */
+    for (int i=0;i<nv;++i) {
+        ivector node(4,-1);
+        node.back()=i;
+        hierarhical_clustering_forest.push_back(node);
+    }
+    ipair child;
+    /* add edges one by one, creating tree nodes from bottom up */
+    for (int i=0;i<ne;++i) {
+        arc &a=arcs[i];
+        k=hierarhical_clustering_forest.size();
+        for (ivectors_iter it=hierarhical_clustering_forest.begin();it!=hierarhical_clustering_forest.end();++it) {
+            if (it->front()<0 && find(it->begin()+3,it->end(),a.tail)!=it->end())
+                child.first=it-hierarhical_clustering_forest.begin();
+            if (it->front()<0 && find(it->begin()+3,it->end(),a.head)!=it->end())
+                child.second=it-hierarhical_clustering_forest.begin();
+        }
+        if (child.first==child.second) // e does not connect two separated components
+            continue;
+        ivector &c1=hierarhical_clustering_forest[child.first],&c2=hierarhical_clustering_forest[child.second];
+        if (int(c1.size()+c2.size())>u+6) // forbid creating components with more than u vertices
+            continue;
+        /* merge components to parent node */
+        c1.front()=c2.front()=k; // set parent to children
+        ivector p(3,-1);
+        p[1]=child.first;
+        p[2]=child.second;
+        /* merge the children vertex sets and sort the resulting list */
+        p.insert(p.end(),c1.begin()+3,c1.end());
+        p.insert(p.end(),c2.begin()+3,c2.end());
+        sort(p.begin()+3,p.end());
+        hierarhical_clustering_forest.push_back(p);
+    }
+}
+
+/* return canonical representation of the subtour (starting with the lowest edge index) */
+graphe::ivector graphe::tsp::canonical_subtour(const ivector &subtour) {
+    int minv=-1,pos;
+    for (ivector_iter it=subtour.begin();it!=subtour.end();++it) {
+        if (minv<0 || *it<minv) {
+            minv=*it;
+            pos=it-subtour.begin();
+        }
+    }
+    ivector res(subtour.begin()+pos,subtour.end());
+    res.insert(res.end(),subtour.begin(),subtour.begin()+pos);
+    if (!isdirected && res.size()>2 && res[1]>res.back())
+        std::reverse(res.begin()+1,res.end()); // canonical orientation
+    return res;
+}
+
+/* traverse the hierarhical clustering forest and collect all relevant SEC */
+void graphe::tsp::hierarhical_clustering_dfs(int i,ivectors &considered_sec,ivectors &relevant_sec) {
+    if (i<0)
+        return;
+    const ivector &node=hierarhical_clustering_forest[i];
+    assert(node.size()>3);
+    int sz=node.size()-3,left_child=node[1],right_child=node[2];
+    if (sz<3) // do not search for subtours in nodes with less than 3 vertices
+        return;
+    /* process the children nodes to obtain considered and relevant SEC */
+    ivectors left_cons,right_cons,left_sec,right_sec,sv,cons;
+    hierarhical_clustering_dfs(left_child,left_cons,left_sec);
+    hierarhical_clustering_dfs(right_child,right_cons,right_sec);
+    relevant_sec.insert(relevant_sec.end(),left_sec.begin(),left_sec.end());
+    relevant_sec.insert(relevant_sec.end(),right_sec.begin(),right_sec.end());
+    cons.insert(cons.end(),left_cons.begin(),left_cons.end());
+    cons.insert(cons.end(),right_cons.begin(),right_cons.end());
+    /* process this node */
+    solution_status status;
+    sg=G->max_subgraph_index()+1;
+    G->set_subgraph(ivector(node.begin()+3,node.end()),sg);
+    if (!G->is_biconnected(sg)) {
+        considered_sec=cons;
+        return;
+    }
+    make_sg_edges();
+    ivector V;
+    G->get_subgraph(sg,V);
+    sg_nv=V.size();
+    for (ivector_iter it=V.begin();it!=V.end();++it) {
+        sg_vertices[it-V.begin()]=*it;
+    }
+    subtours.clear();
+    add_subtours(left_sec);
+    add_subtours(right_sec);
+    find_subgraph_subtours(sv,status);
+    for (ivectors::iterator it=cons.begin();it!=cons.end();++it) {
+        *it=canonical_subtour(*it);
+    }
+    ivector canon_s;
+    ivectors_iter jt;
+    for (ivectors_iter it=sv.begin();it!=sv.end();++it) {
+        canon_s=canonical_subtour(*it);
+        for (jt=cons.begin();jt!=cons.end();++jt) {
+            if (canon_s==*jt) {
+                relevant_sec.push_back(*it);
+                break;
+            }
+        }
+        if (jt==cons.end())
+            considered_sec.push_back(*it);
+    }
+}
+
+/* solve the original problem */
+int graphe::tsp::solve(ivector &hc,double &cost) {
+    make_hierarhical_clustering_forest();
+    G->unset_subgraphs();
+    ivectors cons,relevant,sec,sv;
+    mip=glp_create_prob();
+    num_nodes=0;
+    for (ivectors_iter it=hierarhical_clustering_forest.begin();it!=hierarhical_clustering_forest.end();++it) {
+        if (it->front()<0) { // root node of a tree in the forest
+            hierarhical_clustering_dfs(it-hierarhical_clustering_forest.begin(),cons,relevant);
+            sec.insert(sec.end(),cons.begin(),cons.end());
+            sec.insert(sec.end(),relevant.begin(),relevant.end());
+        }
+    }
+    sg=-1;
+    G->unset_subgraphs();
+    add_subtours(sec);
+    solution_status status;
+    if (!find_subgraph_subtours(sv,status))
+        return -1;
+    int retval;
+    switch (status) {
+    case _GT_TSP_OPTIMAL:
+        if (sv.size()==1) {
+            const ivector &t=sv.front();
+            int n=G->node_count();
+            assert(int(t.size())==n);
+            hc.clear();
+            const arc &first=arcs[t.front()],&last=arcs[t.back()];
+            int i=first.tail,j=first.head,k;
+            if (i==last.tail || i==last.head) {
+                hc.push_back(i);
+                hc.push_back(k=j);
+            } else {
+                hc.push_back(j);
+                hc.push_back(k=i);
+            }
+            for (ivector_iter it=t.begin()+1;it!=t.end();++it) {
+                const arc &a=arcs[*it];
+                if (a.tail==k) hc.push_back(k=a.head);
+                else {
+                    assert(a.head==k);
+                    hc.push_back(k=a.tail);
+                }
+            }
+            straighten(hc);
+            cost=tour_cost(hc);
+            retval=1; // success
+        } else retval=0;
+        break;
+    case _GT_TSP_NOT_HAMILTONIAN:
+        retval=0; // fail
+        break;
+    case _GT_TSP_ERROR:
+        retval=-1; // error
+        break;
+    }
+    glp_delete_prob(mip);
+    return retval;
+}
+
+/* return weight of edge (i,j) */
+double graphe::tsp::weight(int i,int j) {
+    ipair e=make_edge(i,j);
+    return weight_map[e.first][e.second];
+}
+
+/* return the cost of the tour */
+double graphe::tsp::tour_cost(const ivector &hc) {
+    int n=hc.size()-1,v,w;
+    if (!isweighted)
+        return n;
+    double cost=0;
+    for (int i=0;i<n;++i) {
+        v=hc[i];
+        w=hc[i+1];
+        assert(G->has_edge(v,w));
+        cost+=weight(v,w);
+    }
+    return cost;
+}
+
+/* apply heuristics */
+void graphe::tsp::heur(glp_tree *tree) {
+    if (heur_type==_GT_TSP_NO_HEUR)
+        return;
+    int n=sg<0?nv:sg_nv,m=sg<0?ne:sg_ne,i,j,k;
+    if (heur_type==_GT_TSP_CHRISTOFIDES_SA) { // symmetric TSP
+        christofides(tour);
+        heur_type=_GT_TSP_FARTHEST_INSERTION_RANDOM;
+    } else { // weighted undirected TSP
+        /* choose the initial arc a by random such that weight(e) >= median weight,
+         * in the first pass try to construct a tour starting from heaviest edge */
+        int index=heur_type==_GT_TSP_FARTHEST_INSERTION_RANDOM?(m+1)/2+G->rand_integer(m/2):m-1;
+        farthest_insertion(index,tour);
+        heur_type=_GT_TSP_FARTHEST_INSERTION_RANDOM;
+        if (int(tour.size())<=n)
+            return;
+    }
+    assert(int(tour.size())==n+1);
+    /* optimize the tour */
+    //double old=tour_cost(tour);
+    //cout << "Improving the tour... ";
+    lin_kernighan(tour);
+    //cout << "Done. Ratio: " << (old-tour_cost(tour))/old*100.0 << "%" << endl;
+    /* construct the heuristic solution and pass it to the MIP solver */
+    for (i=0;i<m;++i) coeff[i+1]=0.0;
+    for (i=0;i<n;++i) {
+        j=i+1;
+        k=edge_index(make_edge(tour[i],tour[j]));
+        coeff[k+1]=1.0;
+    }
+    glp_ios_heur_sol(tree,coeff);
+}
+
+/* farthest insertion heuristic for obtaining a Hamiltonian tour */
+void graphe::tsp::farthest_insertion(int index,ivector &hc) {
+    int n=sg<0?nv:sg_nv,i,j,k,f;
+    const arc &a=arcs[index];
+    i=a.tail;
+    j=a.head;
+    hc.clear();
+    hc.push_back(i);
+    hc.push_back(j);
+    hc.push_back(i);
+    ivector_iter jt;
+    for (int vis=0;vis<nv;++vis) visited[vis]=false;
+    visited[i]=visited[j]=true;
+    dvector W;
+    double w,maxw,minw;
+    /* proceed with farthest insertion heuristic */
+    do {
+        maxw=0;
+        f=-1;
+        for (int l=0;l<n;++l) {
+            k=sg<0?l:sg_vertices[l];
+            if (visited[k])
+                continue;
+            W.clear();
+            for (ivector_iter it=hc.begin();it!=hc.end();++it) {
+                if (G->has_edge(k,*it))
+                    W.push_back(weight(k,*it));
+            }
+            minw=DBL_MAX;
+            if (W.size()<2)
+                continue;
+            else for (dvector_iter wt=W.begin();wt!=W.end();++wt) {
+                if (*wt<minw)
+                    minw=*wt;
+            }
+            if (minw>maxw) {
+                maxw=minw;
+                f=k;
+            }
+        }
+        if ((k=f)<0)
+            break;
+        i=-1;
+        minw=DBL_MAX;
+        for (ivector_iter it=hc.begin();it!=hc.end();++it) {
+            jt=it+1;
+            if (jt!=hc.end() && G->has_edge(*it,k) && G->has_edge(k,*jt) &&
+                    minw>(w=weight(*it,k)+weight(k,*jt)-weight(*it,*jt))) {
+                minw=w;
+                i=it-hc.begin();
+            }
+        }
+        if (i<0)
+            break;
+        hc.insert(hc.begin()+i+1,k);
+        visited[k]=true;
+    } while (int(hc.size())<=n);
+}
+
+/* try to lower the cost of the tour hc */
+void graphe::tsp::perform_3opt_moves(ivector &hc) {
+    int n=hc.size()-1,b1,e1,b2,e2,b3,e3,i1,j1,i2,j2,i3,j3,i,j,k,var,iter_count=0,moves_count=0;
+    double opt_timeout=5.0+25.0*std::exp(-std::pow(std::max(0,1000-n),2)/2e5);
+    vector<bool> visited(nv);
+    ivectors opt_moves;
+    double sw,save,maxsave,wb1e1,wb2e2,wb3e3,wb1b2,wb1e2,we1e2;
+    bool hb1e2,hb1b2,he1e2;
+    /* improve the tour by making a limited number of 3-opt moves */
+    clock_t start_time=clock();
+    ivector ijk(3);
+    bool triplet_found=false;
+    bool timed_out=false;
+    do {
+        ++iter_count;
+        opt_moves.clear();
+        std::fill(visited.begin(),visited.end(),false);
+        for (i=0;i<n;++i) {
+            triplet_found=false;
+            b1=hc[i]; e1=hc[i+1];
+            if (visited[b1] || visited[e1])
+                continue;
+            wb1e1=weight(b1,e1);
+            for (j=i+2;j<n;++j) {
+                if (double(clock()-start_time)/CLOCKS_PER_SEC>opt_timeout) {
+                    timed_out=true;
+                    break;
+                }
+                b2=hc[j]; e2=hc[j+1];
+                if (visited[b2] || visited[e2])
+                    continue;
+                wb2e2=weight(b2,e2);
+                hb1e2=G->has_edge(b1,e2);
+                hb1b2=G->has_edge(b1,b2);
+                he1e2=G->has_edge(e1,e2);
+                if (hb1b2) wb1b2=weight(b1,b2);
+                if (hb1e2) wb1e2=weight(b1,e2);
+                if (he1e2) we1e2=weight(e1,e2);
+                for (k=j+2;k<n;++k) {
+                    b3=hc[k]; e3=hc[k+1];
+                    if (visited[b3] || visited[e3])
+                        continue;
+                    wb3e3=weight(b3,e3);
+                    sw=wb1e1+wb2e2+wb3e3;
+                    if ((hb1e2 && G->has_edge(b3,e1) && G->has_edge(b2,e3) && sw>wb1e2+weight(b3,e1)+weight(b2,e3)) ||
+                            (hb1e2 && G->has_edge(b3,b2) && G->has_edge(e1,e3) && sw>wb1e2+weight(b3,b2)+weight(e1,e3)) ||
+                            (hb1b2 && G->has_edge(b3,e1) && G->has_edge(e2,e3) && sw>wb1b2+weight(b3,e1)+weight(e2,e3)) ||
+                            (G->has_edge(b1,b3) && he1e2 && G->has_edge(b2,e3) && sw>weight(b1,b3)+we1e2+weight(b2,e3)))
+                    {
+                        ivector opt_move(6);
+                        opt_move[0]=b1; opt_move[1]=b2; opt_move[2]=b3;
+                        opt_move[3]=e1; opt_move[4]=e2; opt_move[5]=e3;
+                        opt_moves.push_back(opt_move);
+                        visited[b1]=visited[b2]=visited[b3]=true;
+                        visited[e1]=visited[e2]=visited[e3]=true;
+                        triplet_found=true;
+                        break;
+                    }
+                }
+                if (triplet_found)
+                    break;
+            }
+            if (timed_out)
+                break;
+        }
+        if (opt_moves.empty()) break;
+        for (ivectors_iter it=opt_moves.begin(); it!=opt_moves.end();++it) {
+            const ivector &opt_move=*it;
+            i1=find(hc.begin(),hc.end(),opt_move[0])-hc.begin();
+            i2=find(hc.begin(),hc.end(),opt_move[1])-hc.begin();
+            i3=find(hc.begin(),hc.end(),opt_move[2])-hc.begin();
+            j1=find(hc.begin(),hc.end(),opt_move[3])-hc.begin();
+            j2=find(hc.begin(),hc.end(),opt_move[4])-hc.begin();
+            j3=find(hc.begin(),hc.end(),opt_move[5])-hc.begin();
+            if (std::abs(i1-j1)!=1) {
+                if (i1==0) i1=n;
+                else if (j1==0) j1=n;
+                else assert(false);
+            }
+            if (std::abs(i2-j2)!=1) {
+                if (i2==0) i2=n;
+                else if (j2==0) j2=n;
+                else assert(false);
+            }
+            if (std::abs(i3-j3)!=1) {
+                if (i3==0) i3=n;
+                else if (j3==0) j3=n;
+                else assert(false);
+            }
+            assert(std::abs(i1-j1)==1 && std::abs(i2-j2)==1 && std::abs(i3-j3)==1);
+            ijk[0]=std::min(i1,j1);
+            ijk[1]=std::min(i2,j2);
+            ijk[2]=std::min(i3,j3);
+            sort(ijk.begin(),ijk.end());
+            i=ijk[0]; j=ijk[1]; k=ijk[2];
+            b1=hc[i]; b2=hc[j]; b3=hc[k];
+            e1=hc[i+1]; e2=hc[j+1]; e3=hc[k+1];
+            sw=weight(b1,e1)+weight(b2,e2)+weight(b3,e3);
+            maxsave=0.0;
+            if (G->has_edge(b1,e2) && G->has_edge(b3,e1) && G->has_edge(b2,e3) &&
+                    (save=sw-weight(b1,e2)-weight(b3,e1)-weight(b2,e3))>maxsave) {
+                var=0; maxsave=save;
+            }
+            if (G->has_edge(b1,e2) && G->has_edge(b3,b2) && G->has_edge(e1,e3) &&
+                  (save=sw-weight(b1,e2)-weight(b3,b2)-weight(e1,e3))>maxsave) {
+                var=1; maxsave=save;
+            }
+            if (G->has_edge(b1,b2) && G->has_edge(b3,e1) && G->has_edge(e2,e3) &&
+                  (save=sw-weight(b1,b2)-weight(b3,e1)-weight(e2,e3))>maxsave) {
+                var=2; maxsave=save;
+            }
+            if (G->has_edge(b1,b3) && G->has_edge(e1,e2) && G->has_edge(b2,e3) &&
+                  (save=sw-weight(b1,b3)-weight(e1,e2)-weight(b2,e3))>maxsave) {
+                var=3; maxsave=save;
+            }
+            if (maxsave>.001) {
+                ivector part(hc.begin()+j+1,hc.begin()+k+1);
+                switch (var) {
+                case 1:
+                    std::reverse(hc.begin()+i+1,hc.begin()+j+1);
+                case 3:
+                    if (var==3) std::reverse(part.begin(),part.end());
+                case 0:
+                    hc.erase(hc.begin()+j+1,hc.begin()+k+1);
+                    hc.insert(hc.begin()+i+1,part.begin(),part.end());
+                    break;
+                case 2:
+                    std::reverse(hc.begin()+i+1,hc.begin()+j+1);
+                    std::reverse(hc.begin()+j+1,hc.begin()+k+1);
+                    break;
+                default:
+                    assert(false);
+                }
+                ++moves_count;
+            }
+        }
+    } while (!timed_out);
+}
+
+void graphe::tsp::straighten(ivector &hc) {
+    ivectors opt_moves;
+    int i,j,k,l,b1,b2,e1,e2,n=hc.size()-1,iter_count=0,moves_count=0;
+    double w0;
+    vector<bool> visited(n+1);
+    ivector opt_move(4);
+    while (true) {
+        ++iter_count;
+        opt_moves.clear();
+        std::fill(visited.begin(),visited.end(),false);
+        for (i=0;i<n;++i) {
+            if (visited[i] && visited[i+1]) continue;
+            b1=hc[i]; e1=hc[i+1];
+            w0=weight(b1,e1);
+            for (j=i+2;j<n;++j) {
+                if ((i==0 && j==n-1) || (visited[j] && visited[j+1])) continue;
+                b2=hc[j]; e2=hc[j+1];
+                if (G->has_edge(b1,b2) && G->has_edge(e1,e2) &&
+                        w0+weight(b2,e2)-weight(b1,b2)-weight(e1,e2)>.001) {
+                    opt_move[0]=b1; opt_move[1]=b2; opt_move[2]=e1; opt_move[3]=e2;
+                    opt_moves.push_back(opt_move);
+                    visited[i]=visited[i+1]=visited[j]=visited[j+1]=true;
+                    break;
+                }
+            }
+        }
+        if (opt_moves.empty()) break;
+        for (ivectors_iter it=opt_moves.begin();it!=opt_moves.end();++it) {
+            const ivector &opt_move=*it;
+            b1=opt_move[0]; b2=opt_move[1]; e1=opt_move[2]; e2=opt_move[3];
+            i=find(hc.begin(),hc.end(),b1)-hc.begin(); j=find(hc.begin(),hc.end(),e1)-hc.begin();
+            k=find(hc.begin(),hc.end(),b2)-hc.begin(); l=find(hc.begin(),hc.end(),e2)-hc.begin();
+            if (std::abs(i-j)!=1) {
+                if (i==0) i=n;
+                else if (j==0) j=n;
+                else assert(false);
+            }
+            if (std::abs(k-l)!=1) {
+                if (k==0) k=n;
+                else if (l==0) l=n;
+                else assert(false);
+            }
+            assert(std::abs(i-j)==1 && std::abs(k-l)==1);
+            i=std::min(i,j);
+            j=std::min(k,l);
+            std::reverse(hc.begin()+(i<j?i:j)+1,hc.begin()+(i<j?j:i)+1);
+            ++moves_count;
+        }
+    }
+}
+
+/* Helsgaun criterion for k-opt move feasibility */
+bool graphe::tsp::is_move_feasible(int k,const ivector &t,const ipairs &x) {
+    ivector incl(2*k+1,0);
+    int i,j,pi,count;
+    for (int c=0;c<k;++c) {
+        i=2*c+1;
+        j=(i+1)%(2*k);
+        incl[i+1]=j+1;
+        incl[j+1]=i+1;
+    }
+    ivector p,q;
+    ipairs xs(x.begin()+1,x.begin()+k+1);
+    sort(xs.begin(),xs.end());
+    for (ipairs_iter it=xs.begin();it!=xs.end();++it) {
+        p.push_back(find(t.begin()+1,t.begin()+2*k+1,it->first)-t.begin());
+    }
+    for (i=k;i-->0;) {
+        p.insert(p.begin()+i+1,((pi=p[i])%2)==0?pi-1:pi+1);
+    }
+    q.resize(p.size()+1);
+    for (i=p.size();i-->0;) {
+        assert((pi=p[i])<=2*k);
+        q[pi]=i+1;
+    }
+    for (i=2*k,count=1;(i=q[incl[p[i-1]]]^1)!=0;count++);
+    return count==k;
+}
+
+/* Lin-Kernighan backtracking k-opt heuristic for tour improvement */
+void graphe::tsp::lin_kernighan(ivector &hc) {
+    int n=hc.size()-1;
+    int i,choice,j,j0,j_next,pos,ypos,t1,t2,t3,t4,t5,t2i,t2ip,dir;
+    static ipairs x,y,y_tmp;
+    static dvector wx,wy;
+    static ivector t,t1_alt,y1_alt,y2_alt,cheaper_hc;
+    x.resize(n+1); y.resize(n+1);
+    wx.resize(n+1); wy.resize(n+1);
+    t.resize(2*n+1);
+    cheaper_hc.resize(n+1);
+    t1_alt.clear();
+    double w,wi;
+    for (int k=0;k<n;++k) t1_alt.push_back(k); // initialize alternatives for t1
+lk2:
+    /* Let i:=1. Choose t[1] and let x1:=(t[1],t[2]=succ(t[1])) in hc.
+     * Initialize alternatives for y1. */
+    i=1;
+    if (t1_alt.empty()) return; // no more alternatives for t[1]
+    choice=t1_alt.size()==1?0:G->rand_integer(t1_alt.size());
+    t1=t[1]=t1_alt[choice]; t1_alt.erase(t1_alt.begin()+choice);
+    x[1]=make_pair(t1,t2=t[2]=(t1+1)%n);
+    w=wx[1]=weight(hc[t1],hc[t2]);
+    y1_alt.clear();
+    for (int k=0;k<n;++k) {
+        if (k!=t1 && k!=t2 && k!=(t1-1+n)%n && k!=(t2+1)%n &&
+                G->has_edge(hc[t2],hc[k]) && w>weight(hc[t2],hc[k]))
+            y1_alt.push_back(k);
+    }
+lk4:
+    /* Choose y1:=(t[2],t[3]) not in hc such that G1>0. Else, go to lk2. */
+    if (y1_alt.empty()) goto lk2;
+    choice=y1_alt.size()==1?0:G->rand_integer(y1_alt.size());
+    t3=t[3]=y1_alt[choice]; y1_alt.erase(y1_alt.begin()+choice);
+    y[1]=make_pair(t2=t[2],t3);
+    wy[1]=weight(hc[t2],hc[t3]);
+lk5:
+    /* Let i:=i+1 and let xi=(t[2i-1],t[2i]) in hc.
+     * Update the tour if possible. If i=1 initialize alternatives for y2. */
+    ++i;
+    t2ip=t[2*i-1];
+    x[i]=make_pair(t2ip,t2i=t[2*i]=(t2ip+1)%n);
+    wx[i]=weight(hc[t2ip],hc[t2i]);
+    w=0.0;
+    for (int k=1;k<=i;++k) w+=wx[k]-(k==i?0.0:wy[k]);
+    if (t2i!=(t1-1+n)%n && G->has_edge(hc[t2i],hc[t1]) &&
+            w-weight(hc[t2i],hc[t1])>.001 && is_move_feasible(i,t,x)) {
+        /* update hc with the new cheaper tour starting from t[2] */
+        y[i]=make_pair(t2i,t1); // temporary yi
+        y_tmp=ipairs(y.begin()+1,y.begin()+i+1);
+        j=j0=t[2]; j_next=t[3];
+        pos=ypos=dir=0;
+        while (true) {
+            if (ypos>=0)
+                y_tmp.erase(y_tmp.begin()+ypos);
+            cheaper_hc[pos++]=hc[j];
+            j=j_next;
+            if (j==j0) break;
+            ypos=-1;
+            for (int k=y_tmp.size();k-->0;) {
+                const ipair &yk=y_tmp[k];
+                if (yk.first==j || yk.second==j) {
+                    j_next=yk.first==j?yk.second:yk.first;
+                    ypos=k;
+                    dir=0;
+                    break;
+                }
+            }
+            if (ypos<0) {
+                if (dir==0)
+                    dir=find(x.begin()+1,x.begin()+i+1,make_pair(j,(j+1)%n))==x.begin()+i+1?1:-1;
+                j_next=(j+dir+n)%n;
+            }
+        }
+        assert(pos==n);
+        cheaper_hc.back()=hc[j0];
+        hc=cheaper_hc;
+        t1_alt.clear();
+        for (int k=0;k<n;++k) t1_alt.push_back(k); // initialize alternatives for t1
+        goto lk2;
+    } else if (i==2) { // initialize alternatives for y2
+        y2_alt.clear();
+        t1=t[1]; t4=t[4];
+        for (int k=0;k<n;++k) {
+            if (find(t.begin()+1,t.begin()+5,k)==t.begin()+5 &&
+                    find(t.begin()+1,t.begin()+5,(k+1)%n)==t.begin()+5 &&
+                    G->has_edge(hc[t4],hc[k]) && w-weight(hc[t4],hc[k])>.001)
+                y2_alt.push_back(k);
+        }
+    }
+lk7:
+    /* Choose yi:=(t[2i],t[2i+1]) not in hc such that Gi>0. If successful, go to lk5. */
+    if (i==2) {
+        if (y2_alt.empty()) { i=1; goto lk4; }
+        choice=y2_alt.size()==1?0:G->rand_integer(y2_alt.size());
+        y[2]=make_pair(t4=t[4],t5=t[5]=y2_alt[choice]); y2_alt.erase(y2_alt.begin()+choice);
+        wy[2]=weight(hc[t4],hc[t5]);
+        goto lk5;
+    } else {
+        int k;
+        t2i=t[2*i]; t1=t[1];
+        for (k=0;k<n;++k) {
+            if (find(t.begin()+1,t.begin()+2*i+1,k)==t.begin()+2*i+1 &&
+                    find(t.begin()+1,t.begin()+2*i+1,(k+1)%n)==t.begin()+2*i+1 &&
+                    G->has_edge(hc[t2i],hc[k]) && w-(wi=weight(hc[t2i],hc[k]))>.001) {
+                y[i]=make_pair(t2i,t[2*i+1]=k);
+                wy[i]=wi;
+                break;
+            }
+        }
+        if (k<n) goto lk5;
+    }
+    i=2;
+    goto lk7;
+}
+
+/* find minimum weight perfect matching in an undirected bipartite graph with
+ * even number of vertices, edge set E and edge weights W */
+void graphe::tsp::min_weight_matching_bipartite(const ivector &eind,const dvector &weights,ivector &matched_arcs) {
+    set<int> Vset; // set of vertices
+    for (ivector_iter it=eind.begin();it!=eind.end();++it) {
+        const arc &a=arcs[*it];
+        Vset.insert(a.head);
+        Vset.insert(a.tail);
+    }
+    ivector V;
+    for (set<int>::const_iterator it=Vset.begin();it!=Vset.end();++it) {
+        V.push_back(*it);
+    }
+    int m=eind.size(),n=V.size(),nz=2*m,cnt=0,v;
+    assert((n%2)==0);
+    glp_prob *wp=glp_create_prob();
+    glp_add_rows(wp,n);
+    glp_add_cols(wp,m);
+    glp_set_obj_dir(wp,GLP_MIN);
+    int *ia=new int[nz+1];
+    int *ja=new int[nz+1];
+    double *ar=new double[nz+1];
+    for (int i=0;i<n;++i) {
+        v=V[i];
+        for (int j=0;j<m;++j) {
+            const arc &a=arcs[eind[j]];
+            if (a.head==v || a.tail==v) {
+                ia[++cnt]=i+1; ja[cnt]=j+1;
+                ar[cnt]=1.0;
+            }
+        }
+    }
+    assert(cnt==nz);
+    for (int i=0;i<n;++i) glp_set_row_bnds(wp,i+1,GLP_FX,1.0,1.0);
+    for (int j=0;j<m;++j) {
+        glp_set_col_kind(wp,j+1,GLP_BV);
+        glp_set_obj_coef(wp,j+1,weights[j]);
+    }
+    glp_load_matrix(wp,nz,ia,ja,ar);
+    delete[] ia; delete[] ja;
+    delete[] ar;
+    glp_smcp lparm;
+    glp_iocp parm;
+    glp_init_smcp(&lparm);
+    lparm.msg_lev=GLP_MSG_OFF;
+    glp_init_iocp(&parm);
+    parm.br_tech=GLP_BR_MFV;
+    parm.bt_tech=GLP_BT_BLB;
+    parm.gmi_cuts=GLP_ON;
+    parm.mir_cuts=GLP_ON;
+    parm.msg_lev=GLP_MSG_OFF;
+    parm.fp_heur=GLP_ON;
+    parm.sr_heur=GLP_OFF;
+    parm.cb_func=&min_wpm_callback;
+    pair<const ivector*,tsp*> info;
+    info.first=&eind;
+    info.second=this;
+    parm.cb_info=static_cast<void*>(&info);
+    assert(glp_simplex(wp,&lparm)==0 && glp_get_status(wp)==GLP_OPT);
+    assert(glp_intopt(wp,&parm)==0 && glp_get_status(wp)==GLP_OPT);
+    for (int j=0;j<m;++j) {
+        if (glp_mip_col_val(wp,j+1)!=0)
+            matched_arcs.push_back(j);
+    }
+    glp_delete_prob(wp);
+}
+
+void graphe::tsp::min_wpm_heur(glp_tree *tree,const ivector &eind) {
+    vector<bool> vertex_matched(nv,false);
+    vector<bool> arc_matched(eind.size(),false);
+    set<int> V;
+    int i,j,k,n=eind.size();
+    glp_prob *lp=glp_ios_get_prob(tree);
+    for (i=0;i<n;++i) {
+        if (glp_ios_can_branch(tree,i+1)==0 && glp_get_col_prim(lp,i+1)>0.9) {
+            const arc &a=arcs[eind[i]];
+            if (vertex_matched[a.head] || vertex_matched[a.tail])
+                continue;
+            arc_matched[i]=true;
+            vertex_matched[a.head]=vertex_matched[a.tail]=true;
+        }
+    }
+    for (ivector_iter it=eind.begin();it!=eind.end();++it) {
+        k=it-eind.begin();
+        if (arc_matched[k])
+            continue;
+        const arc &a=arcs[*it];
+        i=a.tail; j=a.head;
+        V.insert(i); V.insert(j);
+        if (vertex_matched[i] || vertex_matched[j])
+            continue;
+        arc_matched[k]=true;
+        vertex_matched[i]=vertex_matched[j]=true;
+    }
+    int cnt=0;
+    for (vector<bool>::const_iterator it=arc_matched.begin();it!=arc_matched.end();++it) {
+        if (*it) ++cnt;
+        coeff[it-arc_matched.begin()+1]=*it?1.0:0.0;
+    }
+    if (int(V.size())==2*cnt)
+        glp_ios_heur_sol(tree,coeff);
+}
+
+/* construct a tour using the method of Christofides for symmetric TSP */
+void graphe::tsp::christofides(ivector &hc) {
+    hc.clear();
+    int n=sg<0?nv:sg_nv,m=sg<0?ne:sg_ne,ei;
+    /* create spanning tree T of the subgraph with index sg */
+    graphe T(G->giac_context());
+    G->minimal_spanning_tree(T,sg);
+    ivector V;
+    for (int i=0;i<n;++i) {
+        if ((T.degree(i)%2)!=0)
+            V.push_back(G->node_index(T.node_label(i)));
+    }
+    /* the number of odd degree vertices in T must be even */
+    assert(V.size()>0 && (V.size()%2)==0);
+    /* get edges in SG\T connecting the vertices from V,
+     * these form a bipartite graph B(V,E) */
+    ivector eind,matched_arcs;
+    dvector weights;
+    for (int k=0;k<m;++k) {
+        ei=sg<0?k:sg_edges[k];
+        const arc &a=arcs[ei];
+        if (find(V.begin(),V.end(),a.head)!=V.end() &&
+                find(V.begin(),V.end(),a.tail)!=V.end() &&
+                !T.has_edge(T.node_index(G->node_label(a.tail)),
+                            T.node_index(G->node_label(a.head)))) {
+            eind.push_back(ei);
+            weights.push_back(weight(a.tail,a.head));
+        }
+    }
+    if (eind.size()==1)
+        matched_arcs.resize(1,0);
+    else min_weight_matching_bipartite(eind,weights,matched_arcs);
+    assert(2*matched_arcs.size()==V.size());
+    /* add matched edges to T and find Eulerian circuit,
+     * such exists because T now has all vertex degrees even */
+    for (ivector_iter it=matched_arcs.begin();it!=matched_arcs.end();++it) {
+        const arc &a=arcs[eind[*it]];
+        const attrib &attr=G->edge_attributes(a.tail,a.head);
+        T.add_edge(G->node_label(a.tail),G->node_label(a.head),attr);
+    }
+    ivector etrail; // eulerian trail
+    assert(T.find_eulerian_path(etrail) && etrail.front()==etrail.back());
+    vector<bool> visited(n,false);
+    for (ivector_iter it=etrail.begin();it!=etrail.end();++it) {
+        if (visited[*it])
+            continue;
+        hc.push_back(G->node_index(T.node_label(*it)));
+        visited[*it]=true;
+    }
+    hc.push_back(hc.front());
+}
+
+/* improve the tour hc by making k-opt moves */
+void graphe::tsp::improve_tour(ivector &hc) {
+    lin_kernighan(hc);
+    perform_3opt_moves(hc);
+    straighten(hc);
+}
+
+/* construct an approximate tour, G must be a complete graph */
+double graphe::tsp::approx(ivector &hc) {
+    assert(is_undir_weighted);
+    sg=-1;
+    christofides(hc);
+    double old_cost=tour_cost(hc),imp_cost;
+    improve_tour(hc);
+    imp_cost=tour_cost(hc);
+    return (1.5*imp_cost/old_cost);
+}
+
+/* compute the mean and the standard deviation of the given sample */
+void graphe::tsp::sample_mean_stddev(const dvector &sample,double &mean,double &stddev) {
+    assert(!sample.empty());
+    /* compute the mean */
+    double sum=0;
+    for (dvector_iter it=sample.begin();it!=sample.end();++it) {
+        sum+=*it;
+    }
+    mean=sum/double(sample.size());
+    if (sample.size()==1)
+        stddev=0;
+    else {
+        double d;
+        sum=0;
+        for (dvector_iter it=sample.begin();it!=sample.end();++it) {
+            d=*it-mean;
+            sum+=d*d;
+        }
+        stddev=std::sqrt(sum/double(sample.size()-1));
+    }
+}
+
+/* branching variable selection technique proposed by Padberg & Rinaldi */
+void graphe::tsp::select_branching_variable(glp_tree *tree) {
+    glp_prob *lp=glp_ios_get_prob(tree);
+    int n=glp_get_num_cols(lp),b=-1;
+    double x0=0.0,x1=1.0,xe;
+    double par=0.5,rho=3.5,bctol=0.05; // constants
+    for (int i=0;i<n;++i) {
+        can_branch[i]=glp_ios_can_branch(tree,i+1)!=0;
+        xe=xev[i]=glp_get_col_prim(lp,i+1);
+        if (xe-0.5>=0 && xe<x1) x1=xe;
+        if (xe-0.5<=0 && xe>x0) x0=xe;
+        obj[i]=glp_get_obj_coef(lp,i+1);
+    }
+    ivector I;
+    for (int i=0;i<n;++i) {
+        xe=xev[i];
+        if (can_branch[i] && (1-par)*x0<=xe && xe<=x1+par*(1-x1))
+            I.push_back(i);
+    }
+    assert(!I.empty());
+    if (I.size()==1)
+        b=I.front();
+    else {
+        int N=I.size();
+        vector<pair<double,int> > sorted_by_obj_coeff;
+        ivector ind(N);
+        for (ivector_iter it=I.begin();it!=I.end();++it) {
+            sorted_by_obj_coeff.push_back(make_pair(obj[*it],*it));
+        }
+        sort(sorted_by_obj_coeff.begin(),sorted_by_obj_coeff.end());
+        dvector data2(N),data1(0);
+        for (int i=0;i<N;++i) {
+            ind[i]=sorted_by_obj_coeff[i].second;
+            data2[i]=sorted_by_obj_coeff[i].first;
+        }
+        std::reverse(data2.begin(),data2.end());
+        double mu1,mu2,sigma1,sigma2;
+        int i=1;
+        for (;i<N;++i) {
+            data1.push_back(data2.back());
+            data2.pop_back();
+            sample_mean_stddev(data1,mu1,sigma1);
+            sample_mean_stddev(data2,mu2,sigma2);
+            if (mu1+rho*sigma1<mu2-rho*sigma2)
+                break;
+        }
+        if (i==N) i=0;
+        /* the set I2 starts from i in ind */
+        ivector I2(ind.begin()+i,ind.end());
+        assert(!I2.empty());
+        N=I2.size();
+        double dist,mindist=DBL_MAX;
+        int j0;
+        for (int j=0;j<N;++j) {
+            if ((dist=std::abs(0.5-xev[I2[j]]))<mindist) {
+                mindist=dist;
+                j0=j;
+            }
+        }
+        x0=xev[I2[j0]];
+        double c,maxc=0.0;
+        for (ivector_iter it=I2.begin();it!=I2.end();++it) {
+            xe=xev[*it];
+            if (xe>=x0-bctol && xe<=x0+bctol && (c=obj[*it])>maxc) {
+                maxc=c;
+                b=*it;
+            }
+        }
+    }
+    assert(b>=0);
+    /* Padberg & Rinaldi suggest exploring the upper branch first */
+    glp_ios_branch_upon(tree,b+1,GLP_UP_BRNCH);
+}
+
+/* row generation (originally written by Andrew Makhorin) */
+void graphe::tsp::rowgen(glp_tree *tree) {
+    if (mincut_data.empty())
+        mincut_data.resize(22);
+    glp_prob *prob=glp_ios_get_prob(tree);
+    int i,j,k,m=sg<0?ne:sg_ne,n=sg<0?nv:sg_nv,nedg=0,nz;
+    double sum,xk;
+    for (k=0;k<m;k++) {
+        if (glp_get_col_prim(prob,k+1)>=.001)
+            nedg++;
+    }
+    /* build the capacitated network */
+    assert(nedg<=m);
+    ivector &beg=mincut_data[14]; if (int(beg.size())<nedg) beg.resize(nedg);
+    ivector &end=mincut_data[15]; if (int(end.size())<nedg) end.resize(nedg);
+    ivector &cap=mincut_data[16]; if (int(cap.size())<nedg) cap.resize(nedg);
+    nz=0;
+    for (k=0;k<m;k++) {
+        if ((xk=glp_get_col_prim(prob,k+1))>=.001) {
+            const arc &a=arcs[sg<0?k:sg_edges[k]];
+            beg[nz]=vertex_index(a.tail)+1; end[nz]=vertex_index(a.head)+1;
+            rlx_sol_map[a.tail][a.head]=xk;
+            cap[nz++]=std::ceil(1000*xk); // scale edge capacities to make them integral
+        }
+    }
+    assert(nz==nedg);
+    ivector &cut=mincut_data[17]; if (int(cut.size())<n) cut.resize(n);
+    minimal_cut(n,nedg,beg,end,cap,cut); // find minimal cut in the capacitated network
+    nedg=0; sum=0;
+    for (i=0;i<n;i++) {
+        for (j=i+1;j<n;j++) {
+            if ((cut[i] && !cut[j]) || (!cut[i] && cut[j])) {
+                nedg++;
+                sum+=rlx_sol_map[sg<0?i:sg_vertices[i]][sg<0?j:sg_vertices[j]];
+            }
+        }
+    }
+    /* if the (unscaled) capacity of min cut is less than 2, the
+     * corresponding subtour elimination constraint is violated */
+    if (sum<=1.999) {
+        nz=0;
+        for (i=0;i<n;i++) {
+            for (j=i+1;j<n;j++) {
+                if ((cut[i] && !cut[j]) || (!cut[i] && cut[j])) {
+                    nz++;
+                    assert(nz<=nedg);
+                    indices[nz]=edge_index(make_pair(sg<0?i:sg_vertices[i],sg<0?j:sg_vertices[j]))+1;
+                    coeff[nz]=1.0;
+                }
+            }
+        }
+        assert(nz==nedg);
+        i=glp_add_rows(prob,1);
+        glp_set_row_bnds(prob,i,GLP_LO,2.0,0.0);
+        glp_set_mat_row(prob,i,nz,indices,coeff);
+    }
+}
+
+/* MIP callback routine */
+void graphe::tsp::callback(glp_tree *tree,void *info) {
+    tsp *tsprob=static_cast<tsp*>(info);
+    switch (glp_ios_reason(tree)) {
+    case GLP_IHEUR:
+        tsprob->heur(tree);
+        break;
+    case GLP_IBRANCH:
+        if (tsprob->is_undir_weighted)
+            tsprob->select_branching_variable(tree);
+        break;
+    case GLP_IROWGEN:
+        if (tsprob->is_symmetric_tsp)
+            tsprob->rowgen(tree);
+        break;
+    case GLP_IBINGO:
+        if (tsprob->is_symmetric_tsp && tsprob->sg>=0)
+            tsprob->get_subtours();
+        break;
+    default:
+        break;
+    }
+}
+
+/* min weight perfect matching solver callback routine */
+void graphe::tsp::min_wpm_callback(glp_tree *tree,void *info) {
+    pair<const ivector*,tsp*> *origin=static_cast<pair<const ivector*,tsp*>*>(info);
+    const ivector *eind=origin->first;
+    tsp *tsprob=origin->second;
+    //glp_prob *lp=glp_ios_get_prob(tree);
+    //int n=glp_get_num_cols(lp);
+    switch (glp_ios_reason(tree)) {
+    case GLP_IHEUR:
+        tsprob->min_wpm_heur(tree,*eind);
+        break;
+    default:
+        break;
+    }
+}
+
+#endif
+/*
+* END OF TSP CLASS IMPLEMENTATION
+*/
+
+/* try to find Hamiltonian circuit, return 0 if the graph is not Hamiltonian,
+* else store the circuit in h and return 1, if unable to solve return -1 */
+int graphe::find_hamiltonian_cycle(ivector &h,double &cost,bool approximate) {
+#ifdef HAVE_LIBGLPK
+    tsp t(this);
+    if (approximate) {
+        double ratio=t.approx(h);
+        message("The tour cost is within %d%% of the optimal value",
+                std::floor((ratio-1.0)*100.0+.5));
+        cost=t.tour_cost(h);
+        return 1;
+    }
+    return t.solve(h,cost);
+#else
+    message("Error: GLPK library is required for solving traveling salesman problem");
+    return -1;
+#endif
+}
+
+/* for each edge of the graph, assign the distance between endpoints as a weight */
+bool graphe::make_euclidean_distances() {
+    assert(!is_weighted() && !is_directed());
+    layout x;
+    if (!has_stored_layout(x))
+        return false;
+    if (!x.empty()) {
+        int n=node_count();
+        set_weighted(true);
+        point pq(x.front().size());
+        for (int i=0;i<n;++i) {
+            const point &p=x[i];
+            for (int j=i+1;j<n;++j) {
+                const point &q=x[j];
+                set_edge_attribute(i,j,_GT_ATTRIB_WEIGHT,gen(point_distance(p,q,pq)));
+            }
+        }
+    }
+    return true;
+}
+
+/* find the maximum flow using Edmonds-Karp algorithm (exact computation) */
+gen graphe::max_flow(int s,int t,vector<map<int,gen> > &flow) {
+    assert(is_directed() && node_queue.empty());
+    gen mf(0),df; // the value of maximum flow
+    int n=node_count(),i,j;
+    vector<map<int,gen> > cap(n);
+    /* initialize arc capacities and flows */
+    flow.resize(n);
+    bool isweighted=is_weighted();
+    for (node_iter it=nodes.begin();it!=nodes.end();++it) {
+        i=it-nodes.begin();
+        map<int,gen> &c=cap[i],&f=flow[i];
+        for (ivector_iter nt=it->neighbors().begin();nt!=it->neighbors().end();++nt) {
+            j=*nt;
+            c[j]=isweighted?weight(i,j):gen(1); // all capacities are set to 1 in unweighted graphs
+            f[j]=0;
+        }
+    }
+    ipairs pred(n);
+    ipair nullpair=make_pair(-1,-1);
+    while (true) {
+        /* run BFS */
+        node_queue.push(s);
+        std::fill(pred.begin(),pred.end(),nullpair);
+        while (!node_queue.empty()) {
+            i=node_queue.front();
+            node_queue.pop();
+            const vertex &v=node(i);
+            for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+                j=*it;
+                if (j!=s && pred[j]==nullpair && is_strictly_greater(cap[i][j],flow[i][j],ctx)) {
+                    pred[j]=make_pair(i,j);
+                    node_queue.push(j);
+                }
+            }
+        }
+        if (pred[t]!=nullpair) {
+            /* found an augmenting path */
+            df=plusinf();
+            /* compute df = how much flow can we send ... */
+            for (ipair e=pred[t];e.first>=0;e=pred[e.first]) {
+                df=min(df,cap[e.first][e.second]-flow[e.first][e.second],ctx);
+            }
+            /* ... and increase edge flows by df */
+            for (ipair e=pred[t];e.first>=0;e=pred[e.first]) {
+                flow[e.first][e.second]+=df;
+                flow[e.second][e.first]-=df;
+            }
+            mf+=df;
+        } else break;
+    }
+    return mf; // return the maximum flow
+}
+
+gen graphe::make_colon_label(const ivector &v) {
+    stringstream ss;
+    for (ivector_iter it=v.begin();it!=v.end();++it) {
+        ss << *it;
+        if (it+1!=v.end())
+            ss << ":";
+    }
+    return graphe::str2gen(ss.str(),true);
+}
+
+gen graphe::colon_label(int i, int j) {
+    ivector v(2);
+    v[0]=i; v[1]=j;
+    return make_colon_label(v);
+}
+
+gen graphe::colon_label(int i, int j,int k) {
+    ivector v(3);
+    v[0]=i; v[1]=j; v[2]=k;
+    return make_colon_label(v);
+}
+
+/* convert this multigraph to simple graph by adding new colored vertices */
+void graphe::simplify(graphe &G,bool color_temp_vertices) const {
+    assert(!is_directed());
+    ipairs E;
+    get_edges_as_pairs(E);
+    G.clear();
+    G.add_nodes(vertices());
+    int lab=G.largest_integer_label(),k,i;
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        const ipair &e=*it;
+        k=multiedges(e);
+        if (k>0) {
+            for (int c=0;c<=k;++c) {
+                i=G.add_node(++lab);
+                if (color_temp_vertices)
+                    G.set_node_attribute(i,_GT_ATTRIB_COLOR,0);
+                G.add_edge(e.first,i);
+                G.add_edge(e.second,i);
+            }
+        } else G.add_edge(e);
+    }
+}
+
+/* permute vertices according to SHARC ordering by Michael Monagan */
+void graphe::sharc_order() {
+    /* assuming that the graph is connected */
+    assert(!is_null() && node_queue.empty());
+    int n=node_count(),i,j;
+    unset_subgraphs(0);
+    node(0).set_subgraph(1); // the set S has subgraph=1
+    node(0).set_visited(true);
+    ivector order(1,0); // vertices in S
+    order.reserve(n);
+    set<int> adj;
+    bool has_path;
+    while (subgraph_size(1)<n) {
+        /* collect vertices adjacent to S */
+        adj.clear();
+        for (ivector_iter it=order.begin();it!=order.end();++it) {
+            const vertex &v=node(*it);
+            for (ivector_iter jt=v.neighbors().begin();jt!=v.neighbors().end();++jt) {
+                if (node(*jt).subgraph()==0)
+                    adj.insert(*jt);
+            }
+        }
+        /* add vertices from S to queue */
+        for (set<int>::const_iterator it=adj.begin();it!=adj.end();++it) {
+            node_queue.push(*it);
+        }
+        unvisit_all_nodes(0);
+        unset_all_ancestors(0);
+        has_path=false;
+        while (!node_queue.empty()) {
+            i=node_queue.front();
+            node_queue.pop();
+            vertex &v=node(i);
+            if (!v.is_visited()) {
+                v.set_visited(true);
+                for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+                    vertex &w=node(j=*it);
+                    if (w.is_visited())
+                        continue;
+                    if (adj.find(j)!=adj.end()) {
+                        /* path found */
+                        w.set_ancestor(i);
+                        do {
+                            order.push_back(j);
+                            node(j).set_subgraph(1);
+                        } while ((j=node(j).ancestor())>=0);
+                        clear_node_queue();
+                        has_path=true;
+                        break;
+                    }
+                    if (w.subgraph()==0) {
+                        w.set_ancestor(i);
+                        node_queue.push(j);
+                    }
+                }
+            }
+        }
+        if (!has_path) {
+            i=*adj.begin();
+            node(i).set_subgraph(1);
+            order.push_back(i);
+        }
+    }
+    graphe G(*this);
+    G.isomorphic_copy(*this,order);
+}
+
+map<graphe::ivector,vector<graphe::cpol> > graphe::cache;
+
+/* implementation of cpol class */
+
+void graphe::cpol::assign(const cpol &other) {
+    nv=other.nv;
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+    cg=other.cg;
+    col=other.col;
+#else
+    adj=other.adj;
+#endif
+    sz=other.sz;
+    frq=other.frq;
+    poly=other.poly;
+}
+
+graphe::cpol::cpol(const cpol &other) {
+    assign(other);
+}
+
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+graphe::cpol::cpol(int n,ulong *g,int *c,size_t s,const intpoly &p) {
+    nv=n;
+    cg=g;
+    col=c;
+    sz=s;
+    frq=0;
+    poly=p;
+}
+#else
+graphe::cpol::cpol(int n,int *a,size_t s,const intpoly &p) {
+    nv=n;
+    adj=a;
+    sz=s;
+    frq=0;
+    poly=p;
+}
+#endif
+
+graphe::cpol &graphe::cpol::operator =(const cpol &other) {
+    assign(other);
+    return *this;
+}
+
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+bool graphe::cpol::match(int n,ulong *g,int *c) const {
+    if (nv!=n)
+        return false;
+    for (int i=0;i<n;++i) {
+        if (c[i]!=col[i])
+            return false;
+    }
+    size_t cnt=0;
+    for (;cnt<sz;++cnt) {
+        if (g[cnt]!=cg[cnt])
+            return false;
+    }
+    return true;
+}
+#else
+bool graphe::cpol::match(int n,int *a,int adj_sz) const {
+    if (nv!=n || sz!=adj_sz)
+        return false;
+    for (int i=0;i<sz;++i) {
+        if (adj[i]!=a[i])
+            return false;
+    }
+    return true;
+}
+#endif
+
+/* end of cpol class implementation */
+
+/* add the polynomial b to a (a is changed in place) */
+void graphe::poly_add(intpoly &a,const intpoly &b) {
+    for (intpoly_iter it=b.begin();it!=b.end();++it) {
+        a[it->first]+=it->second;
+    }
+}
+
+/* multiply the polynomial a with b (a is changed in place) */
+void graphe::poly_mult(intpoly &a,const intpoly &b) {
+    intpoly c(a);
+    a.clear();
+    for (intpoly_iter it=b.begin();it!=b.end();++it) {
+        const ipair &p=it->first;
+        for (intpoly_iter jt=c.begin();jt!=c.end();++jt) {
+            const ipair &q=jt->first;
+            a[make_pair(p.first+q.first,p.second+q.second)]+=it->second*jt->second;
+        }
+    }
+}
+
+/* return the geometric sequence in variable var (1 or 2) of length k */
+graphe::intpoly graphe::poly_geom(int var,int k,bool leading_one,bool add_other_var) {
+    assert((var==1 || var==2) && k>0);
+    intpoly res;
+    for (int i=leading_one?0:1;i<k;++i) {
+        res[make_pair(var==1?i:0,var==2?i:0)]=1;
+    }
+    if (add_other_var)
+        res[make_pair(var==2?1:0,var==1?1:0)]=1;
+    return res;
+}
+
+/* return 1 as polynom */
+graphe::intpoly graphe::poly_one() {
+    intpoly res;
+    res[make_pair(0,0)]=1;
+    return res;
+}
+
+/* convert list of integers to a 2-variable polynomial with integral coefficients */
+gen graphe::intpoly2gen(const intpoly &v,const gen &x,const gen &y) {
+    int pwx,pwy,cf;
+    gen p(0);
+    for (intpoly_iter it=v.begin();it!=v.end();++it) {
+        pwx=it->first.first;
+        pwy=it->first.second;
+        cf=it->second;
+        p+=gen(cf)*(pwx==0?gen(1):pow(x,pwx))*(pwy==0?gen(1):pow(y,pwy));
+    }
+    return p;
+}
+
+static int tutte_iter_count;
+static int tutte_hits;
+static clock_t tutte_time_start;
+static double tutte_matching_time;
+
+/* compute the Tutte polynomial for this graph, using vorder-push heuristic */
+graphe::intpoly graphe::tutte_poly_recurse(int vc) {
+    ++tutte_iter_count;
+    intpoly p=poly_one(),fac;
+    int n=node_count(),adj_sz,snv;
+    bool isom;
+    ipair e;
+    vector<ipairs> blocks;
+    ipairs E;
+    graphe G(ctx),Gd(ctx),Gc(ctx);
+    matrice L;
+    ivector L_cp;
+    map<ivector,vector<cpol> >::iterator ct;
+    set<int> isolated_nodes;
+    int *adj,*col;
+    ulong *cg;
+    size_t cg_sz;
+    switch (vc) {
+    case 2:
+        assert(n>2);
+        /* process cycles with multiedges */
+        if (is_cycle(E)) {
+            p=poly_geom(2,multiedges(E[n-1])+multiedges(E[n-2])+2,false,true);
+            for (int i=1;i<=n-2;++i) {
+                poly_mult(p,poly_geom(2,1+multiedges(E[i-1]),true));
+            }
+            for (int i=1;i<=n-2;++i) {
+                intpoly q=poly_one();
+                q[make_pair(0,0)]=1;
+                for (int j=i+1;j<=n;++j) {
+                    poly_mult(q,poly_geom(2,1+multiedges(E[j-1]),false,true));
+                }
+                for (int j=1;j<=i-1;++j) {
+                    poly_mult(q,poly_geom(2,1+multiedges(E[j-1]),true));
+                }
+                poly_add(p,q);
+            }
+            break;
+        }
+        /* check for cached isomorphic graph, record the time */
+        isom=false;
+        tutte_time_start=clock();
+        simplify(G,true);
+        G.laplacian_matrix(L);
+        L_cp=vecteur_2_vector_int(*_eval(symbolic(at_charpoly,L),ctx)._VECTptr); // charpoly of the Laplacian
+        adj=G.to_array(adj_sz,true);
+        snv=G.node_count();
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+        cg_sz=nautywrapper_words_needed(snv)*(size_t)snv;
+        cg=new ulong[cg_sz];
+        col=new int[snv];
+        nautywrapper_canonical(0,snv,adj,NULL,cg,col);
+        delete[] adj;
+#endif
+        if ((ct=cache.find(L_cp))!=cache.end()) {
+            for (vector<cpol>::iterator it=ct->second.begin();it!=ct->second.end();++it) {
+                cpol &cp=*it;
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+                if (cp.match(snv,cg,col)) {
+                    ++cp.frq;
+                    ++tutte_hits;
+                    delete[] cg;
+                    delete[] col;
+                    p=cp.poly;
+                    isom=true;
+                    break;
+                }
+#else
+                if (cp.match(snv,adj,adj_sz)) {
+                    ++cp.frq;
+                    ++tutte_hits;
+                    delete[] adj;
+                    p=cp.poly;
+                    isom=true;
+                    break;
+                }
+#endif
+            }
+        }
+        tutte_matching_time+=double(clock()-tutte_time_start)/CLOCKS_PER_SEC;
+        if (isom) break;
+        /* no luck, perform the delete-contract step */
+        isolated_nodes.clear();
+        get_edges_as_pairs(E);
+        e=E.front();
+        for (ipairs_iter it=E.begin()+1;it!=E.end();++it) {
+            if (*it<e) e=*it;
+        }
+        fac=poly_geom(2,1+multiedges(e),true);
+        set_multiedge(e,0);
+        copy(Gd); copy(Gc); // copies to perform deletion-contraction on
+        Gd.remove_edge(e);
+        Gd.remove_isolated_nodes(isolated_nodes);
+        Gc.contract_edge(e.second,e.first,false);
+        isolated_nodes.insert(e.first);
+        Gc.remove_isolated_nodes(isolated_nodes);
+        p=Gd.tutte_poly_recurse(1);
+        poly_mult(fac,Gc.tutte_poly_recurse(1));
+        poly_add(p,fac);
+        /* cache the graph and its polynomial for future use */
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+        cache[L_cp].push_back(cpol(snv,cg,col,cg_sz,p));
+#else
+        cache[L_cp].push_back(cpol(snv,adj,adj_sz,p));
+#endif
+        break;
+    case 1:
+        find_blocks(blocks);
+        for (vector<ipairs>::iterator it=blocks.begin();it!=blocks.end();++it) {
+            ipairs &block=*it;
+            if (block.size()<2) { // bridge
+                poly_mult(p,poly_geom(2,1+multiedges(block.front()),false,true));
+            } else { // non-trivial biconnected subgraph
+                sort(block.begin(),block.end());
+                extract_subgraph(block,G,false);
+                poly_mult(p,G.tutte_poly_recurse(2));
+            }
+        }
+        break;
+    default:
+        assert(false);
+    }
+    return p;
+}
+
+/* return the Tutte polynomial */
+gen graphe::tutte_polynomial(const gen &x,const gen &y) {
+    assert(cache.empty() && !is_directed());
+    tutte_iter_count=tutte_hits=0;
+    tutte_matching_time=0;
+    intpoly p;
+    graphe G(ctx);
+    if (is_connected()) {
+        sort_by_degrees();
+        sharc_order();
+        p=tutte_poly_recurse(1);
+    } else {
+        p=poly_one();
+        ivectors comp;
+        connected_components(comp);
+        for (ivectors::iterator it=comp.begin();it!=comp.end();++it) {
+            if (it->size()<2)
+                continue;
+            sort(it->begin(),it->end());
+            induce_subgraph(*it,G,false);
+            G.sort_by_degrees();
+            G.sharc_order();
+            poly_mult(p,G.tutte_poly_recurse(1));
+        }
+    }
+    /*
+    cout << "Iterations: " << tutte_iter_count
+         << ", Hits: " << tutte_hits
+         << ", Cache size: " << cache.size()
+         << ", Matching time: " << tutte_matching_time << endl;
+         */
+    /* clear the cache and return the Tutte polynomial p */
+    for (map<ivector,vector<cpol> >::iterator it=cache.begin();it!=cache.end();++it) {
+        for (vector<cpol>::const_iterator jt=it->second.begin();jt!=it->second.end();++jt) {
+#if defined HAVE_LIBNAUTY && defined HAVE_NAUTY_NAUTUTIL_H
+            delete[] jt->cg;
+            delete[] jt->col;
+#else
+            delete[] jt->adj;
+#endif
+        }
+        it->second.clear();
+    }
+    cache.clear();
+    return intpoly2gen(p,x,y);
+}
+
+/* find all fundamental cycles in this graph */
+void graphe::fundamental_cycles(ivectors &cycles,int sg,bool check) {
+    assert(!is_directed());
+    ivectors comp;
+    if (check) {
+        connected_components(comp,sg);
+        if (comp.size()>1) {
+            int nsg=max_subgraph_index();
+            for (ivectors_iter it=comp.begin();it!=comp.end();++it) {
+                set_subgraph(*it,++nsg);
+                fundamental_cycles(cycles,nsg,false);
+            }
+            return;
+        }
+    }
+    ipairs E,nte;
+    get_edges_as_pairs(E,true,sg);
+    int root=sg<0?0:first_vertex_from_subgraph(sg),i,j;
+    dfs(root,true,true,NULL,sg);
+    for (ipairs_iter it=E.begin();it!=E.end();++it) {
+        i=it->first; j=it->second;
+        if (node(i).ancestor()!=j && node(j).ancestor()!=i)
+            nte.push_back(*it);
+    }
+    for (ipairs_iter it=nte.begin();it!=nte.end();++it) {
+        const vertex &v=node(it->first),&w=node(it->second);
+        i=v.disc()>w.disc()?it->first:it->second;
+        j=v.disc()<w.disc()?it->first:it->second;
+        ivector c;
+        while (i!=j) {
+            c.push_back(i);
+            i=node(i).ancestor();
+            assert(i>=0);
+        }
+        c.push_back(j);
+        cycles.push_back(c);
     }
 }
 

@@ -36,7 +36,7 @@ using namespace std;
 #include "rpn.h"
 #include "plot.h"
 #include "giacintl.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined FXCG || defined GIAC_GGB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 #else
 #include "graphtheory.h"
@@ -1145,6 +1145,12 @@ namespace giac {
 
   void autoscaleminmax(vector<double> & v,double & m,double & M,bool fullview){
     int s=int(v.size());
+    for (int i=0;i<s;++i){
+      if (my_isinf(v[i])){
+	v.erase(v.begin()+i);
+	--s; --i;
+      }
+    }
     if (s==0){
       v.push_back(0);
       ++s;

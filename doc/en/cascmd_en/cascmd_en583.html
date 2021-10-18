@@ -4,23 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>fsolve or nSolve with the option brent_solver</title>
+<title>Frequencies: frequencies frequences</title>
 </head>
 <body >
 <a href="cascmd_en582.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en584.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec724" class="subsection">7.4.2  <span style="font-family:monospace">fsolve</span> or <span style="font-family:monospace">nSolve</span> with the option <span style="font-family:monospace">brent_solver</span></h3>
-<p><a id="hevea_default921"></a><a id="hevea_default922"></a>
-The Brent method interpolates of <span style="font-style:italic">f</span> at three points, finds
-the intersection of the interpolation with the <span style="font-style:italic">x</span> axis, computes
-the sign of <span style="font-style:italic">f</span> at this point and chooses the interval where the sign changes.
-It is generically faster than bisection.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">fsolve((cos(x))=x,x,-1..1,brent_solver)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[0.73908513321 5,0.739085133215]</span></div>
+<h3 id="sec721" class="subsection">7.1.11  Frequencies: <span style="font-family:monospace">frequencies</span><a id="hevea_default924"></a> <span style="font-family:monospace">frequences</span><a id="hevea_default925"></a></h3>
+<p>Given a list of numbers, the <span style="font-family:monospace">frequencies</span> (or
+<span style="font-family:monospace">frequences</span>) command will return
+the numbers in the list with their frequencies; i.e., the fraction of
+list items equal to the number. For example,
+</p><div class="center">
+<span style="font-family:monospace">frequencies([1,2,1,1,2,1,2,4,3,3])
+</span></div><p>
+will return
+</p><div class="center">
+<span style="font-family:monospace">[[1,0.4],[2,0.3],[3,0.2],[4,0.1]]
+</span></div><p>You can use this, for example, to simulate flipping a fair coin and
+seeing how many times each side appears; to flip a coin 1000 times,
+for example, you can enter
+</p><div class="center">
+<span style="font-family:monospace">frequencies([rand(2) $ (k=1..1000)])
+</span></div><p>
+and you might get
+</p><div class="center">
+<span style="font-family:monospace">[[0,0.513],[1,0.487]]
+</span></div>
 <hr>
 <a href="cascmd_en582.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

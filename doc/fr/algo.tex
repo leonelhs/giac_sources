@@ -4,7 +4,8 @@
 %\textwidth 11,8 cm
 %\textheight 17 cm
 \textheight 23 cm
-\usepackage{graphicx}
+\usepackage[dvipdfmx]{graphicx} \usepackage{bmpsize}
+%\usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -57,7 +58,7 @@
 
 \makeindex
 
-\input{giacfr.tex}
+\input{giac.tex}
 
 \giacmathjax
 %HEVEA\renewcommand{\footertext}{}
@@ -68,6 +69,7 @@
 
 \maketitle
 
+\newcommand{\product}{\prod}
 \ifhevea
 %\( %uncomment for mathjax rendering without itex2MML
 \newcommand{\R}{{\mathbb{R}}}
@@ -12143,22 +12145,14 @@ $$ P_{n+1}(t)=f[x_0]+f[x_0,x_1](t-x_0)+...+f[x_0,...,x_n,x](t-x_0)...(t-x_{n-1})
 qui coincide avec $f$ en $t=x$ donc
 $$
 f(x)=f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n,x](x-x_0)...(x-x_{n-1})(x-x_n)$$
-Le m\^eme calcul fait avec un point $x_{n+1}$ en plus donne
-$$
-f(x)=f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n,x_{n+1}](x-x_0)...(x-x_{n-1})(x-x_n)
-+ f[x_0,...,x_n,x_{n+1},x](x-x_0)...(x-x_{n-1})(x-x_n)(x-x_{n+1})$$
-On a donc montr\'e la formule~:
-\begin{equation} \label{eq:diffdivtranslate}
-f[x_0,...,x_n,x]=f[x_0,...,x_n,x_{n+1}]+f[x_0,...,x_n,x_{n+1},x](x-x_{n+1})
-\end{equation}
-mais en fait on va ajouter plus qu'un point, on va en ajouter $n+1$
+Le m\^eme calcul fait en ajoutant $n+1$ points $x_{n+1},...,x_{2n+1}$ donne
 \begin{eqnarray*}
 & &f(x)-(f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n](x-x_0)...(x-x_{n-1})
 )\\
 &=&f[x_0,...,x_n,x_{n+1}](x-x_0)...(x-x_{n-1})(x-x_n) +...+f[x_0,...,x_{2n+1}](x-x_0)...(x-x_{2n})
 + f[x_0,...,x_{2n+1},x](x-x_0)...(x-x_{2n+1})
 \end{eqnarray*}
-puis on int\`egre sur $[-1,1]$, on obtient \`a gauche l'erreur et \`a
+On int\`egre sur $[-1,1]$, on obtient \`a gauche l'erreur et \`a
 droite, seul le dernier terme est non nul, car le polyn\^ome de Legendre
 proportionnel \`a $(x-x_0)...(x-x_{n-1})(x-x_n) $, de degr\'e $n+1$,
 est orthogonal \`a tous les polyn\^ome de degr\'e $\leq n$
@@ -12220,7 +12214,7 @@ Par exemple\\
 \giacinputbigmath{(b-a)*sum(apply(f,l))/n; int(f(t),t,a,b);}\\
 La convergence en fonction de $n$ est assez lente, on peut l'observer
 en faisant plusieurs estimations~:\\
-\giacinputbigmath{m:=ranm(500,n,uniformd,a,b):;I:=seq(2*sum(apply(f,m[k]))/n,k,0,size(m)-1);}\\
+\giacinputbigmath{I:=seq(2*sum(apply(f,ranv(n,uniformd,a,b)))/n,500);}\\
 \giacinput{histogram(I,0,0.01)}
 
 En effet, les tirages sont \'equidistribu\'es selon la m\^eme loi,
@@ -12230,8 +12224,8 @@ $n$ tirages, si $n$ est grand, on converge vers une loi normale
 dont l'\'ecart-type est en $(b-a)\sigma/\sqrt{n}$.
 La valeur de la constante $\sigma$
 peut se calculer \`a partir de $f$
-$$ \sigma^2 = \frac{1}{b-a}\int_a^b f^2(t) \ dt -
-\left( \frac{1}{b-a}\int_a^b f(t) \ dt  \right)^2 $$
+$$ \sigma^2 = \int_a^b f^2(t) \ \frac{dt}{b-a} -
+\left( \int_a^b f(t) \ \frac{dt}{b-a}  \right)^2 $$
 par exemple ici\\
 \giacinputbigmath{2*sqrt(int(f(t)^2,t,0,2.)/2-(1/2*int(f(t),t,0,2.))^2)/sqrt(n); stddevp(I);}\\
 mais on ne fait pas ce calcul en pratique
@@ -15745,7 +15739,64 @@ comme produit des carrés de différences des racines, et en majorant toutes
 les différences de racine sauf une à l'aide de la norme infinie
 de $P$, qu'il faut au pire $b=O(n)$ bits pour séparer les racines).
 
-
+\section{Factorisations de matrices}
+Un petit r\'esum\'e des diverses factorisations
+\begin{itemize}
+\item factorisation LU~: $PA=LU$, $P$ matrice de permutation, $L$ et $U$
+triangulaires inf\'erieures (avec des 1 sur la diagonale)
+et sup\'erieures, algorithme direct 
+(pivot de Gauss), $O(n^3)$ op\'erations (pour une matrice carr\'ee), 
+acc\'el\'erable par blocs pour $n$ grand.\\
+Sert \`a r\'esoudre des syst\`emes lin\'eaires en se
+ramenant \`a des syst\`emes triangulaires, en $O(n^2)$ op\'erations.
+\item Cholesky pour $A$ matrice dont on sait qu'elle est 
+sym\'etrique d\'efinie positive~: $A=LL^*$ avec $L$ triangulaire
+inf\'erieure \`a coefficients positifs, algorithme direct, $O(n^3)$
+op\'erations, deux fois plus rapide que LU, conserve les formes
+de matrices creuses de type tridiagonales\\
+Sert \`a r\'esoudre des syst\`emes lin\'eaires en se
+ramenant \`a des syst\`emes triangulaires, en $O(n^2)$ op\'erations.
+\item factorisation QR~: $A=QR$, $Q$ orthogonale ou unitaire ($Q^* Q=I$),
+$R$ triangulaire sup\'erieure avec des coefficients positifs sur la 
+diagonale, algorithmes directs (Householder ou Givens), $O(n^3)$
+op\'erations (avec une constante plus grande que LU)\\
+Sert \`a r\'esoudre des syst\`emes surd\'etermin\'es
+au sens des moindres carr\'es.\\
+Peut servir \`a r\'esoudre des syst\`emes lin\'eaires si LU est
+mal conditionn\'e, en $O(n^2)$ op\'erations.\\
+QR peut s'obtenir par Cholesky de $A^* A$ mais on perd en pr\'ecision
+si $A$ est mal conditonn\'ee.
+\item Schur $A=PSP^*$ pour $A$ matrice carr\'ee,
+avec $P$ orthogonale ou unitaire et $S$ quasi-triangulaire
+sup\'erieure (il peut y avoir des blocs diagonaux 2,2 dans le cas r\'eel
+correspondant \`a des couples de valeurs propres complexes conjugu\'ees).
+Algorithme it\'eratif (calcul approch\'e) en $O(n^3)$
+op\'erations pour une pr\'ecision donn\'ee (algorithme
+de Francis~: on commence par se
+ramener \`a une forme
+presque diagonale sup\'erieure par Householder
+puis on effectue la m\'ethode $QR$ implicite avec shifts). 
+Sert \`a diagonaliser num\'eriquement une matrice.
+\item SVD (singular value decomposition) $A=UDV^*$ avec
+$U$ et $V$ orthogonale ou unitaire et $D$ diagonale \`a coefficients
+positifs ou nuls. Algorithme it\'eratif (calcul approch\'e) en $O(n^3)$
+op\'erations pour une pr\'ecision donn\'ee.\\
+Se calcule en se ramenant d'abord \`a une forme tridiagonale (Householder).\\
+Peut se calculer en diagonalisant $A^* A$, mais avec risque
+de perte de pr\'ecision.
+\item D\'ecomposition polaire $A=QS$ avec $Q$ unitaire et $S$ sym\'etrique
+positive. \\
+Peut se d\'eduire de la SVD, $Q=UV^*$ et $S=VDV^*$.
+Peut aussi se calculer pour $A$ inversible avec la m\'ethode de Newton
+soit on calcule $S=\sqrt{A^* A}$ (algorithme de H\'eron) en it\'erant
+$$ U_{n+1}=\frac{1}{2}(U_n+(A^*A)U_n^{-1}), \quad U_0=I$$
+soit on calcule $Q$ en it\'erant
+$$ U_{n+1}=\frac{1}{2}(U_n+(U_n^*)^{-1}), \quad U_0=A$$
+En effet si $A=QS$ alors $U_1=Q*(1/2*(S+S^{-1}))$, etc., on 
+est en train d'appliquer
+l'algorithme de H\'eron pour calculer $\sqrt{1}$ sur les
+valeurs singuli\`eres.
+\end{itemize}
 
 \section{Quelques r\'ef\'erences} \label{sec:ref}
 
@@ -16078,7 +16129,8 @@ de Xcas, on lui passe les deux listes
 qui repr\'esentent le polyn\^ome~:\\
 \giacinput{horner(A,X,1.5)}
 
-Remarque~: on peut exprimer l'erreur d'interpolation
+\subsection{Erreur d'interpolation et diff\'erences divis\'ees}
+On peut exprimer l'erreur d'interpolation
 avec les diff\'erences divis\'ees. Si $P_n$ est le polyn\^ome
 d'interpolation de $f$ en $x_0,...,x_n$ alors
 $$ P_n(t)=f[x_0]+ (t-x_0)f[x_0,x_1]+...+(t-x_0)..(t-x_{n-1})f[x_0,..,x_n]$$
@@ -16092,6 +16144,15 @@ et en faisant la diff\'erence
 P_n(x)-f(x)=(x-x_0)..(x-x_{n})f[x_0,..,x_n,x]
 \end{equation}
 On en d\'eduit aussi que $f[x_0,...,x_n,x]=f^{[n+1]}(\xi_x)/(n+1)!$.
+
+Le m\^eme calcul fait avec un point de plus ($x_{n+1}$) donne
+$$
+f(x)=f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n,x_{n+1}](x-x_0)...(x-x_{n-1})(x-x_n)
++ f[x_0,...,x_n,x_{n+1},x](x-x_0)...(x-x_{n-1})(x-x_n)(x-x_{n+1})$$
+On a donc montr\'e la formule~:
+\begin{equation} \label{eq:diffdivtranslate}
+f[x_0,...,x_n,x]=f[x_0,...,x_n,x_{n+1}]+f[x_0,...,x_n,x_{n+1},x](x-x_{n+1})
+\end{equation}
 
 \subsection{Sensibilit\'e aux erreurs sur les donn\'ees.}
 Si les $y_j$ sont connus avec une certaine erreur, alors le polyn\^ome 

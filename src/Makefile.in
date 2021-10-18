@@ -128,7 +128,7 @@ am_libgiac_la_OBJECTS = input_lexer.lo sym2poly.lo gausspol.lo \
 	pari.lo cocoa.lo unary.lo usual.lo identificateur.lo gen.lo \
 	tinymt32.lo first.lo TmpLESystemSolver.lo TmpFGLM.lo help.lo \
 	lpsolve.lo optimization.lo signalprocessing.lo graphe.lo \
-	graphtheory.lo
+	graphtheory.lo nautywrapper.lo
 libgiac_la_OBJECTS = $(am_libgiac_la_OBJECTS)
 libxcas_la_DEPENDENCIES = libgiac.la $(am__DEPENDENCIES_1)
 am_libxcas_la_OBJECTS = History.lo Input.lo Xcas1.lo Equation.lo \
@@ -384,7 +384,7 @@ libgiac_la_SOURCES = input_lexer.ll sym2poly.cc gausspol.cc threaded.cc \
   path.h lexer.h \
   input_lexer.h input_parser.h threaded.h vector.h \
   help.cc  lpsolve.cc optimization.cc signalprocessing.cc \
-  graphe.cc graphtheory.cc # Ugh..
+  graphe.cc graphtheory.cc nautywrapper.c # Ugh..
 
 libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS)
 giacincludedir = $(includedir)/giac
@@ -398,7 +398,7 @@ pari.h cocoa.h giac.h first.h maple.h help.h tinymt32.h tinymt32_license.h \
 static.h static_extern.h static_lexer.h static_lexer_.h\
 lexer_tab_int.h \
 static_help.h giacPCH.h giacintl.h gmp_replacements.h myostream.h \
-lpsolve.h optimization.h signalprocessing.h graphe.h graphtheory.h
+lpsolve.h optimization.h signalprocessing.h graphe.h graphtheory.h nautywrapper.h
 
 noinst_LTLIBRARIES = libxcas.la
 libxcas_la_LIBADD = libgiac.la $(GUI_LIBS)
@@ -681,6 +681,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modfactor.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modpoly.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/moyal.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/nautywrapper.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/optimization.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pari.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/permu.Plo@am__quote@

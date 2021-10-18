@@ -1942,21 +1942,21 @@ namespace giac {
       if (e._CPLXptr->type==_REAL || e._CPLXptr->type==_FLOAT_){
 	gen e1=e;
 	if (!angle_radian(contextptr)) 
-  {
-    //grad
-    if(angle_degree(contextptr))
-	  e1=e*deg2rad_g;
-    else
-      e1 = e*grad2rad_g;
-  }
-
+	  {
+	    //grad
+	    if(angle_degree(contextptr))
+	      e1=e*deg2rad_g;
+	    else
+	      e1 = e*grad2rad_g;
+	  }
+	
 	gen e2=im(e1,contextptr);
 	e1=re(e1,contextptr);
-  //grad
+	//grad
 	int mode=get_mode_set_radian(contextptr);
 	e1=tan(e1,contextptr);
 	angle_mode(mode,contextptr);
-
+	
 	e2=cst_i*tanh(e2,contextptr);
 	return (e1+e2)/(1-e1*e2);
       }
@@ -1977,6 +1977,17 @@ namespace giac {
     if (is_algebraic_program(e,a,b))
       return symbolic(at_program,gen(makevecteur(a,0,tan(b,contextptr)),_SEQ__VECT));
     int k;
+    if (angle_radian(contextptr)){
+      if (contains(e,cst_pi) && is_linear_wrt(e,cst_pi,a,b,contextptr)){
+	if (is_integer(a)){
+	  if (is_zero(b)) 
+	    return 0;
+	  else 
+	    if (a!=0) // avoid recursion
+	      return tan(b,contextptr);
+	}
+      }
+    }
     if (!approx_mode(contextptr)){ 
       if (is_multiple_of_pi_over_12(e,k,contextptr)) //grad
 	return *table_tan[(k%12)];
@@ -2908,7 +2919,9 @@ namespace giac {
   static define_unary_function_eval4 (__im,(const gen_op_context)im,_im_s,0,&texprintasim);
   define_unary_function_ptr5( at_im ,alias_at_im,&__im,0,true);
 
-  // symbolic symb_conj(const gen & e){  return symbolic(at_conj,e);  }
+  symbolic symb_conj(const gen & e){  
+    return symbolic(at_conj,e);  
+  }
   gen conj(const gen & a,GIAC_CONTEXT){
     if (is_equal(a))
       return apply_to_equal(a,conj,contextptr);
@@ -3048,7 +3061,7 @@ namespace giac {
       else 
 	return v.front().print(contextptr)+" => "+v.back().print(contextptr);
     }
-    string stos=python_compat(contextptr)?"=":":=";
+    string stos=(python_compat(contextptr) && v.back().type!=_FUNC)?"=":":=";
 #ifndef GIAC_HAS_STO_38
     if (v.back().is_symb_of_sommet(at_of) && feuille.subtype!=_SORTED__VECT){
       gen f=v.back()._SYMBptr->feuille;

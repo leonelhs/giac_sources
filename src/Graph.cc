@@ -106,10 +106,23 @@ namespace xcas {
 	fl_color(r,g,b);
     }
     else {
-      if (dim3)
-	gl_color(color);
-      else
-	fl_color(color);
+      if (color>=512){
+	int r=8*((color>>11)&0x1f);
+	int g=4*((color>>5) &0x3f);
+	int b=8*(color & 0x1f);
+#ifdef HAVE_LIBFLTK_GL
+	if (dim3)
+	  glColor3f(r/255.,g/255.,b/255.);
+	else
+#endif
+	  fl_color(r,g,b);
+      }
+      else  {
+	if (dim3)
+	  gl_color(color);
+	else
+	  fl_color(color);
+      }
     }
   }
 
@@ -4737,14 +4750,17 @@ namespace xcas {
 	      a1d=a2d;
 	      a2d=tmp;
 	    }
+	    double anglei=(angled+a1d),anglef=(angled+a2d),anglem=(anglei+anglef)/2;
+	    double diff=anglef-anglei;
+	    anglei -= floor(anglei/2/M_PI)*2*M_PI;
+	    anglef = anglei + diff;
 	    if (fill_polygon){
 	      if (v[1]==0 && v[2]==cst_two_pi)
 		fl_pie(deltax+round(i0-i1),deltay+round(j0-j1),round(2*i1),round(2*j1),0,360);
 	      else
-		fl_pie(deltax+round(i0-i1),deltay+round(j0-j1),round(2*i1),round(2*j1),(angled+a1d)*180/M_PI,(angled+a2d)*180/M_PI);
+		fl_pie(deltax+round(i0-i1),deltay+round(j0-j1),round(2*i1),round(2*j1),anglei*180/M_PI,anglef*180/M_PI);
 	    }
 	    else {
-	      double anglei=(angled+a1d),anglef=(angled+a2d),anglem=(anglei+anglef)/2;
 	      fl_arc(deltax+round(i0-i1),deltay+round(j0-j1),round(2*i1),round(2*j1),anglei*180/M_PI,anglef*180/M_PI);
 	      if (v.size()>=4){ // if cercle has the optionnal 5th arg
 		if (v[3]==2)
@@ -5021,18 +5037,19 @@ namespace xcas {
 	      // Find the intersections with the 4 rectangle segments
 	      // Horizontal x=0 or w =i1+t*deltai: y=j1+t*deltaj
 	      vector< complex<double> > pts;
-	      double y0=j1-i1/deltai*deltaj;
-	      if (y0>=0 && y0<=clip_h)
+	      double y0=j1-i1/deltai*deltaj,tol=clip_h*1e-6;
+	      if (y0>=-tol && y0<=clip_h+tol)
 		pts.push_back(complex<double>(0.0,y0));
 	      double yw=j1+(clip_w-i1)/deltai*deltaj;
-	      if (yw>=0 && yw<=clip_h)
+	      if (yw>=-tol && yw<=clip_h+tol)
 		pts.push_back(complex<double>(clip_w,yw));
 	      // Vertical y=0 or h=j1+t*deltaj, x=i1+t*deltai
 	      double x0=i1-j1/deltaj*deltai;
-	      if (x0>0 && x0<=clip_w)
+	      tol=clip_w*1e-6;
+	      if (x0>=-tol && x0<=clip_w+tol)
 		pts.push_back(complex<double>(x0,0.0));
 	      double xh=i1+(clip_h-j1)/deltaj*deltai;
-	      if (xh>=0 && xh<=clip_w)
+	      if (xh>=-tol && xh<=clip_w+tol)
 		pts.push_back(complex<double>(xh,clip_h));
 	      if (pts.size()>=2)
 		checklog_fl_line(pts[0].real(),pts[0].imag(),pts[1].real(),pts[1].imag(),deltax,deltay,Mon_image.display_mode & 0x400,Mon_image.display_mode & 0x800,Mon_image.window_xmin,x_scale,Mon_image.window_ymax,y_scale);

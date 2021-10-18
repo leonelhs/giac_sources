@@ -1775,6 +1775,8 @@ namespace giac {
     vector< pf<gen> >::const_iterator itend=pfdecomp.end();
     vector< pf<gen> > intdecomp,finaldecomp;
     for (;it!=itend;++it){
+      if (it->den.lexsorted_degree()==0) 
+	continue;
       const pf<gen> & single =intreduce_pf(*it,intdecomp);
       if ( (it->mult>1) && (intmode & 2)==0){
 	gen fact1=pow(r2e(it->fact,l,contextptr),it->mult,contextptr);
@@ -2311,6 +2313,36 @@ namespace giac {
     return true;
   }
 
+  bool when2sign(gen &e,const gen &gen_x,GIAC_CONTEXT){
+    vecteur lwhen(lop(e,at_when));
+    if (!lwhen.empty()) lwhen=lvarx(lwhen,gen_x);
+    if (!lwhen.empty()){
+      vecteur l2;
+      const_iterateur it=lwhen.begin(),itend=lwhen.end();
+      int i=0;
+      for (;it!=itend;++it,++i){
+	gen tmp=it->_SYMBptr->feuille,repl;
+	if (tmp.type!=_VECT || tmp._VECTptr->size()!=3)
+	  return false;
+	vecteur & whenargs = *tmp._VECTptr;
+	tmp = whenargs[0];
+	if ( (tmp.is_symb_of_sommet(at_superieur_strict) || 
+	     tmp.is_symb_of_sommet(at_superieur_egal) ) &&
+	     (repl=tmp._SYMBptr->feuille).type==_VECT && repl._VECTptr->size()==2){
+	  repl=repl._VECTptr->back()-repl._VECTptr->front();
+	  repl=(symbolic(at_sign,repl)+1)/2;
+	}
+	else {
+	  repl=symbolic(at_same,gen(makevecteur(tmp,0),_SEQ__VECT));
+	  repl=symbolic(at_sign,repl);
+	}
+	l2.push_back(whenargs[1]+repl*(whenargs[2]-whenargs[1]));
+      }
+      e=complex_subst(e,lwhen,l2,contextptr);      
+    }
+    return true;
+  }
+
   // intmode bit 0 is used for sqrt int control, bit 1 control step/step info
   gen integrate_id_rem(const gen & e_orig,const gen & gen_x,gen & remains_to_integrate,GIAC_CONTEXT,int intmode){
 #ifdef LOGINT
@@ -2349,32 +2381,8 @@ namespace giac {
 #endif
     // Step -1: replace ifte(a,b,c) by b+sign(a==0)*(c-b)
     // if a is A1>A2 or A1>=A2 condition, the sign(a==0) is replaced by (sign(A2-A1)+1)/2
-    vecteur lwhen(lop(e,at_when));
-    if (!lwhen.empty()) lwhen=lvarx(lwhen,gen_x);
-    if (!lwhen.empty()){
-      vecteur l2;
-      const_iterateur it=lwhen.begin(),itend=lwhen.end();
-      int i=0;
-      for (;it!=itend;++it,++i){
-	gen tmp=it->_SYMBptr->feuille,repl;
-	if (tmp.type!=_VECT || tmp._VECTptr->size()!=3)
-	  return gensizeerr(gettext("Bad when ")+it->print(contextptr));
-	vecteur & whenargs = *tmp._VECTptr;
-	tmp = whenargs[0];
-	if ( (tmp.is_symb_of_sommet(at_superieur_strict) || 
-	     tmp.is_symb_of_sommet(at_superieur_egal) ) &&
-	     (repl=tmp._SYMBptr->feuille).type==_VECT && repl._VECTptr->size()==2){
-	  repl=repl._VECTptr->back()-repl._VECTptr->front();
-	  repl=(symbolic(at_sign,repl)+1)/2;
-	}
-	else {
-	  repl=symbolic(at_same,gen(makevecteur(tmp,0),_SEQ__VECT));
-	  repl=symbolic(at_sign,repl);
-	}
-	l2.push_back(whenargs[1]+repl*(whenargs[2]-whenargs[1]));
-      }
-      e=complex_subst(e,lwhen,l2,contextptr);      
-    }
+    if (!when2sign(e,gen_x,contextptr))
+      return gensizeerr(gettext("Bad when ")+e.print(contextptr));
 #ifdef LOGINT
     *logptr(contextptr) << gettext("integrate step 0 ") << e << endl;
 #endif
@@ -2653,7 +2661,9 @@ namespace giac {
 	fu=symbolic(at_prod,gen(vv,_SEQ__VECT));
       }
       gen cst=extract_cst(u,gen_x,contextptr);
-      if (is_rewritable_as_f_of(fu,u,fx,gen_x,contextptr)){
+      bool recur=rvarsize>2 && gen_x.type==_IDNT && strcmp(gen_x._IDNTptr->id_name,"t_nostep")==0 && u.is_symb_of_sommet(at_pow); // workaround for some stupid integrals like integrate(sin((d*x + c)^(2/3)*b + a)/(f*x + E),x);
+      if (!recur && 
+	  is_rewritable_as_f_of(fu,u,fx,gen_x,contextptr)){
 	fx=cst*fx;
 	if ( (intmode & 2)==0)
 	  gprintf(step_fuuprime,gettext("Integration of %gen: f(u)*u' where f=%gen->%gen and u=%gen"),makevecteur(e,gen_x,fx,u),contextptr);

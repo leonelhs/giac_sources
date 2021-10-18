@@ -4,31 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Notation of unit objects</title>
+<title>Polynomial regression: polynomial_regression polynomial_regression_plot</title>
 </head>
 <body >
 <a href="cascmd_en593.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en595.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec740" class="subsection">8.1.1  Notation of unit objects</h3>
-<p><a id="hevea_default935"></a>
-A unit object has two parts : a real number and a unit expression (a single 
-unit or a multiplicative combination of units). The two parts are linked by the 
-character <span style="font-family:monospace">_</span> ("underscore"). For example <span style="font-family:monospace">2_m</span> for 2 meters.
-For composite units, parenthesis must be used, e.g. <span style="font-family:monospace">1_(m*s)</span>.<br>
-If a prefix is put before the unit then the unit is multiplied by a power of
-10. For example <span style="font-family:monospace">k</span> or <span style="font-family:monospace">K</span> for kilo (indicate a multiplication by 
-10<sup>3</sup>), <span style="font-family:monospace">D</span> for deca (indicate a multiplication by 10), <span style="font-family:monospace">d</span> for
-deci (indicate a multiplication by 10<sup>−1</sup>) etc...<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">10.5_m</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">a unit object of value 10.5 meters</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">10.5_km</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">a unit object of value 10.5 kilometers</span></div>
+<h3 id="sec733" class="subsection">7.2.8  Polynomial regression: <span style="font-family:monospace">polynomial_regression</span><a id="hevea_default949"></a> <span style="font-family:monospace">polynomial_regression_plot</span><a id="hevea_default950"></a></h3>
+<p>If you want to find a more general polynomial <span style="font-style:italic">y</span>=<span style="font-style:italic">a</span><sub>0</sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup> + … + <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>
+which best fits a set of data points, you can use the
+<span style="font-family:monospace">polynomial_regression</span> command. 
+Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
+followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
+as well as a power <span style="font-style:italic">n</span>, the <span style="font-family:monospace">polynomial_regression</span> command
+will return the list [<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>,…,<span style="font-style:italic">a</span><sub>0</sub>] of coefficients of the
+polynomial. For example, if you enter
+</p><div class="center">
+<span style="font-family:monospace">polynomial_regression([[1,1],[2,2],[3,10],[4,20]],3)
+</span></div><p>
+or
+</p><div class="center">
+<span style="font-family:monospace">polynomial_regression([1,2,3,4],[1,2,10,20],3)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">[-5/6,17/2,-56/3,12]
+</span></div><p>
+so the best fit polynomial will be <span style="font-style:italic">y</span> = (−5/6)<span style="font-style:italic">x</span><sup>3</sup> + (17/2)<span style="font-style:italic">x</span><sup>2</sup> −
+(56/3)<span style="font-style:italic">x</span> + 12.</p><p>To plot the curve, you can use the command
+<span style="font-family:monospace">polynomial_regression_plot</span>; if you enter
+</p><div class="center">
+<span style="font-family:monospace">polynomial_regression_plot([1,2,3,4],[1,2,10,20],3)
+</span></div><p>
+you will get
+</p><div class="center">
+<img src="cascmd_en026.png">
+</div>
 <hr>
 <a href="cascmd_en593.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

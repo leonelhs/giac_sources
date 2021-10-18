@@ -961,7 +961,7 @@ odd(1251)
  L:=[1,2,2,3];S:=set[op(L)]
  set[1,2]*set[2,3]
 
-# i[]
+# i[] []
 1 i[] est utilisé pour définir un intervalle réel.
 2 i[] is used to define a real interval.
 3 i[] definido uno intervalo real.
@@ -1458,7 +1458,7 @@ ithprime(1229)
 ithprime(1000)
 
 # nprimes
-1 Nombre de nombres premiers inférieurs ou égals à n.
+1 Nombre de nombres premiers inférieurs ou égaux à n.
 2 Count the number of primes less than n.
 3 Devuelve el número de número primo menor que n.
 4 Επιστρέφει τον αριθμό των πρώτο αριθμό <=n.
@@ -2721,7 +2721,7 @@ coordinates(vecteur([1,2,3],[4,5,6]))
  1==2 and 2>1
  1!=2 and 2>0
 
-# end end_for fpour end_while ftantque end_if fi fsi od ffaire ffonction
+# end end_for fpour end_while ftantque end_if fi fsi od ffaire ffonction ffunction
 1 Fin de bloc.
 2 Bloc end.
 3 Final de bloque.
@@ -5313,10 +5313,10 @@ maple_ifactors(120)
  [1,2] ./ [5,6]
 
 # .*
-1 Exécute le produit terme à terme de 2 listes ou de 2 matrices (opérateur infixé, compatibilité TI).
-2 Performs an element by element multiplication of 2 lists or 2 matrix (infixed operator, TI compatibility).
-3 Ejecuta el producto componente por componente de 2 listas o 2 matrices (operador infijo, compatibilidad TI).
-4 Εκτελεί πολλαπλασιασμό στοιχείο-στοιχείο 2 λιστών ή 2 πινάκων (εντεθειμένος τελεστής, συμβατότητα με TI).
+1 Exécute le produit terme à terme de 2 listes ou de 2 matrices de même dimension (opérateur infixé, compatibilité TI).
+2 Performs an element by element multiplication of 2 lists or 2 matrix with the same size dimension (infixed operator, TI compatibility).
+3 Ejecuta el producto componente por componente de 2 listas o 2 matrices con el mismo dimensión(operador infijo, compatibilidad TI).
+4 Εκτελεί πολλαπλασιασμό στοιχείο-στοιχείο 2 λιστών ή 2 πινάκων με τον ίδιο διάσταση (εντεθειμένος τελεστής, συμβατότητα με TI).
 0 Lst||Mtrx,Lst||Mtrx
 -1 hadamard
 -2 ./
@@ -6450,17 +6450,19 @@ trunc([4.3333,sqrt(2)],2)
 trunc(sqrt(2)+i*sqrt(5),4)
 
 # fPart frac
-1 Renvoie la partie fractionnaire.
-2 Returns the fractional part.
-3 Devuelve la parte fraccional.
-4 Επιστρέφει το κλασματικό μέρος.
+1 Renvoie la partie fractionnaire (si x<0 alors frac(x)+floor(x)+1=x sinon frac(x)+floor(x)=x).
+2 Returns the fractional part (if x<0 then frac(x)+floor(x)+1=x else frac(x)+floor(x)=x).
+3 Devuelve la parte fraccional (if x<0 then frac(x)+floor(x)+1=x else frac(x)+floor(x)=x).
+4 Επιστρέφει το κλασματικό μέρος (if x<0 then frac(x)+floor(x)+1=x else frac(x)+floor(x)=x).
 8 返回值的小数部分。
 0 Real||LstReal
 -1 floor
 -2 iPart
 -3 trunc
 fPart(1/2)
+fPart(-1/2)
 fPart(1.2)
+fPart(-1.2)
 fPart([3.4,sqrt(2)])
 
 # output Output
@@ -7343,6 +7345,7 @@ convert(sqrt(2),confrac,'dev');dev
 convert(123,base,8)
 convert([3,7,1],base,8)
 convert([1,2,3],set[])
+convert(pi,interval,20)
  A[2,1]:=1;convert(A,array)
  B[0..1,1..2]:=1;B[2,2]:=2;convert(B,array)
 
@@ -9014,12 +9017,12 @@ quadric((u+v)*(v-w)+3*u-5*v,[u,v,w],affichage=cyan)
 quadric(7*x^2+4*y^2+4*z^2+4*x*y-4*x*z-2*y*z-4*x+5*y+4*z-18,[x,y,z])
 
 # circle
-1 Définit en 2-d un cercle par un diamètre (arg2=Point) ou par centre et rayon (arg2=Complex, abs(arg2)=rayon) [ou l'arc AB, A d'angle a, B d'angle b, (arg1+arg2=angle 0)] ou par son équation et en 3-d par son diamètre et un 3ème point.
-2 Define for 2-d a circle with a diameter (arg2=Point) or with center and radius (arg2=Complex, abs(arg2)=radius) [or the arc AB, A angle a, B angle b (arg1+arg2=angle 0)] or by its equation and for 3-d with a diameter and a third point
-3 Define una circunferencia por un diámetro (arg2=Point) o por sus centro y radio (arg2=Complex, abs(arg2)=radio) [o arco AB A ángulo a, B ángulo b (arg1+arg2=ángulo 0)] o por su ecuación.
-4 Ορίζει έναν κύκλο με διάμετρο (arg2=σημείο) ή με κέντρο και ακτίνα (arg2=μιγαδικού, abs(arg2)=ακτίνα) [ή με τόξο AB, A γωνία a, B γωνία b (arg1+arg2=angle 0)] ή με βάση την εξίσωσή του.
+1 Définit en 2-d un cercle par un diamètre MN (arg1=M ou zM,arg2=N) ou par centre et rayon (arg1=M ou zM,arg2=zN) et (centre=M et rayon=abs(zN)) [ou l'arc AB, A d'angle a, B d'angle b, (MN=angle 0) ou M(M+zN)=angle 0] ou par son équation et en 3-d par son diamètre et un 3ème point.
+2 Define for 2-d a circle with a diameter MN (arg1=M ou zM,arg2=N) or  with center and radius (arg1=M ou zM,arg2=zN) et (center=M et radius=abs(zN)) [or the arc AB, A angle a, B angle b, (MN=angle 0) or M(M+zN)=angle 0] or by its equation and for 3-d with a diameter and a third point.
+3 Define una circunferencia por un diámetro MN (arg1=M o zM,arg2=N) o por sus centro y radio (centr0=M et radi0=abs(zN)) [o arc0 AB, A ángulo a, B ángulo b, (MN=ángulo 0) or M(M+zN)=ángulo 0)] o por su ecuación.
+4 Ορίζει έναν κύκλο με διάμετρο (arg1=M o zM,arg2=N=σημείο) ή με κέντρο και ακτίνα (arg2=μιγαδικού, abs(arg2)=ακτίνα) [ή με τόξο AB, A γωνία a, B γωνία b (MN=angle 0) or M(M+zN)=angle 0] ή με βάση την εξίσωσή του.
 8 圆
-0 (Pnt or Cplx),(Pnt(arg2) or Cplx(arg2)),[Real(a)],[Real(b)],[Var(A)],[Var(B)]
+0 (Pnt(M) or Cplx(M),(Pnt(N) or Cplx(zN)),[Real(a)],[Real(b)],[Var(A)],[Var(B)]
 -1 circumcircle
 -2 incircle
 -3 excircle
@@ -9147,8 +9150,8 @@ member(1,[4,3,1,2])
 member(1,%{4,3,1,2%})
 
 # contains
-1 Test d'appartenance (renvoie l'indice+1 ou 0).
-2 Tests if a set contains an expression (returns the index+1 or 0).
+1 Test d'appartenance (renvoie l'indice+1 ou 1 pour un intervalle ou 0)
+2 Tests if a set contains an expression (returns the index+1 or 1 for intervals or 0).
 3 Comprueba si uno conjunto contiene una expresión (devuelve el índice+1 o 0).
 4 Ελέγχει εάν ένα σύνολο περιέχει μια έκφραση (επιστρέφει το δείκτη+1 ή 0).
 8 列表位置。  返回列表中元素的位置和 1。  如果列表元素多次出现，则返回第一次出现的位置和 1。 如果未出现指定的元素，返回 0 值。
@@ -9158,6 +9161,7 @@ member(1,%{4,3,1,2%})
 -3 est_element
 contains(%{0,1,2,3%},2)
 contains([0,1,2,3],4)
+contains([1..2],1.5)
 
 # cos COS
 1 Cosinus ou Option de la commande convert ou convertir (id trigcos).
@@ -10451,10 +10455,10 @@ ichinrem([2%7,3%5,1%9])
 ichinrem([(x+1)%2,(x+2)%3,(3*x-1)%5])
 
 # if
-1 Test: if (condition) true_action; else false_action;
-2 Test: if (condition) true_action; else false_action;
-3 Test: if (condition) true_action; else false_action;
-4 Τεστ: if (condition) true_action; else false_action;
+1 Test: if (condition){ true_action; } else { false_action; }
+2 Test: if (condition){ true_action; } else { false_action; }
+3 Test: if (condition){ true_action; } else { false_action; }
+4 Τεστ: if (condition){ true_action; } else { false_action; }
 8 开始执行 "if...then...end" 或 "if...then...else...end" 分支结构。
 0 
 -1 switch
@@ -11941,6 +11945,21 @@ pmin(sqrt(2)+sqrt(3),x)
 plotpolar(sin(2*x),x,0,pi)
 plotpolar(sin(2*x),x,0,pi,tstep=0.1)
 
+# rgb
+1 Option de la commande affichage (ou display) pour définir les couleurs RGB.
+2 Option of the display (or affichage) command to defined colors RGB.
+3 Opción de la instrucción display (o affichage) para que definir colores RGB.
+4 Επιλογή της εντολής display (ή affichage) για τον ορισμό των χρώματα RGB.
+0 Opt
+-1 display
+-2 filled
+ redcolor:=rgb(0.99,0,0);display(square(0,2+i),filled+redcolor)
+ greencolor:=rgb(0,0.99,0);display(square(0,2+i),filled+greencolor)
+ bluecolor:=rgb(0,0,0.99);display(square(0,2+i),filled+bluecolor)
+ greycolor:=rgb(0.5,0.5,0.5);display(square(0,2+i),filled+greycolor)
+ F:=display(square(0,2+i),filled+rgb(rand(),rand(),rand()))
+ L:=rand(),rand(),rand();affichage(square(0,2+i),rgb(L)+rempli);legend(0.2,[L])
+
 # set_pixel
 1 Colorie un pixel et ajoute a la liste des pixels
 2 Pixel on and adds to the list of pixel
@@ -12473,6 +12492,42 @@ randnorm(2,1)
 -4 randvector
 randexp(1)
 randexp(2)
+
+# randgammad
+1 Renvoie un réel aléatoirement distribué selon la loi Gamma de paramètre a>0 et b>0
+2 Returns a random real according to the Gamma distribution of parameter a>0 and b>0
+3 Devuelve un número aleatorio distribuido según la ley Gamma (parámetro a>0, b>0).
+0 Real(a),Real(b)
+-1 rand
+-2 randpoly
+-3 randnorm
+-4 randvector
+randgammad(1,2)
+randgammad(1.5,4)
+
+# randweibulld
+1 Renvoie un réel aléatoirement distribué selon la loi de Weibull de paramètre a>0 et b>0
+2 Returns a random real according to the Weibull distribution of parameter a>0 and b>0
+3 Devuelve un número aleatorio distribuido según la ley Weibull (parámetro a>0, b>0).
+0 Real(a),Real(b)
+-1 rand
+-2 randpoly
+-3 randnorm
+-4 randvector
+randweibulld(1,2)
+randweibulld(1.5,4)
+
+# randbetad
+1 Renvoie un réel aléatoirement distribué selon la loi Beta de paramètre a>0 et b>0
+2 Returns a random real according to the Beta distribution of parameter a>0 and b>0
+3 Devuelve un número aleatorio distribuido según la ley Beta (parámetro a>0, b>0).
+0 Real(a),Real(b)
+-1 rand
+-2 randpoly
+-3 randnorm
+-4 randvector
+randbetad(1,2)
+randbetad(1.5,4)
 
 # randpoly randPoly
 1 Renvoie un polynôme de variable var (ou x), de degré n et dont les coefficients sont des entiers aléatoires équirépartis sur -99,+99 ou selon une loi.
@@ -13537,6 +13592,7 @@ syst2mat([x-y=1,x+2*y],[x,y])
 0 Expr,Var
 -1 tablefunc
 tabvar(sin(x),x)
+tabvar(1/ln(x^2-1),x,diff=1)
 tabvar(x^2+x+1,x)
 tabvar(x^2,x,-3,5)
 tabvar([sin(2t),cos(3t)])
@@ -13913,12 +13969,10 @@ watch(a)
 0 
 -1 for
 -2 tantque
- repeter jusqu_a ;
- repeat x:=x-5 until x<5 ;
- quoreste(a,b):={local q:=0;repeat a:=a-b;q:=q+1 until a<0;return q-1,a+b;};
  x:=32;repeat x:=x-5 until x<5;
- quoreste(a,b):={local q:=0;repeter a:=a-b;q:=q+1; jusqua a<0;return q-1,a+b;};
  x:=32;repeter x:=x-5; jusqua x<5;
+  quoreste(a,b):={local q:=0;repeat a:=a-b;q:=q+1 until a<0;return q-1,a+b;};
+  quoreste(a,b):={local q:=0;repeter a:=a-b;q:=q+1; jusqua a<0;return q-1,a+b;};
  n:=1;repeter triangle_plein(10*n);saute(10*n);n:=n+1; jusqua n==5;
  n:=4;repeter triangle_plein(10*n);saute(10*n);n:=n-1; jusqua n==0;
 
@@ -14268,6 +14322,7 @@ when(n,1,0)
 -2 minus
  [1,2,3] intersect [2,5,6]
  %{1,2,3%} intersect %{2,5,6%}
+[1..3] intersect [2..4]
 
 # lncollect
 1 Rassemble les logarithmes. Applique ln(a)+n*ln(b)->ln(a*b^n) pour n entier.
@@ -14327,7 +14382,7 @@ display(red+filled);square(0,1);
 # point_width_1 point_width_2 point_width_3 point_width_4 point_width_5 point_width_6 point_width_7 epaisseur_point_1 epaisseur_point_2 epaisseur_point_3 epaisseur_point_4 epaisseur_point_5 epaisseur_point_6 epaisseur_point_7
 1 Option de la commande affichage (ou display) pour un point.
 2 Option of the display command for a point.
-3 Opción de la instrucción Display para un punto.
+3 Opción de la instrucción display para un punto.
 4 Επιλογή της εντολής display (ή affichage) για ένα σημείο.
 0 Opt
 -1 display
@@ -14339,7 +14394,7 @@ display(red+filled);square(0,1);
 # line_width_1 line_width_2 line_width_3 line_width_4 line_width_5 line_width_6 line_width_7 epaisseur_ligne_1 epaisseur_ligne_2 epaisseur_ligne_3 epaisseur_ligne_4 epaisseur_ligne_5 epaisseur_ligne_6 epaisseur_ligne_7
 1 Option de la commande affichage (ou display) pour une ligne.
 2 Option of the display command for a line.
-3 Opción de la instrucción Display para una línea.
+3 Opción de la instrucción display para una línea.
 4 Επιλογή της εντολής display (ή affichage) για μια γραμμή.
 0 Opt
 -1 display
@@ -14351,7 +14406,7 @@ display(red+filled);square(0,1);
 # dash_line ligne_tiret solid_line ligne_trait_plein dashdot_line ligne_tiret_point dashdotdot_line ligne_tiret_pointpoint cap_flat_line ligne_chapeau_plat cap_square_line ligne_chapeau_carre cap_round_line ligne_chapeau_rond
 1 Option de la commande affichage (ou display) pour une ligne.
 2 Option of the display command for a line.
-3 Opción de la instrucción Display para una línea.
+3 Opción de la instrucción display para una línea.
 4 Επιλογή της εντολής display (ή affichage) για μια γραμμή.
 0 Opt
 -1 display
@@ -14361,7 +14416,7 @@ display(red+filled);square(0,1);
 # rhombus_point point_losange plus_point point_plus square_point point_carre cross_point point_croix triangle_point point_triangle star_point point_etoile point_point invisible_point point_invisible
 1 Option de la commande affichage (ou display) pour un point.
 2 Option of the display command for a point.
-3 Opción de la instrucción Display para un punto.
+3 Opción de la instrucción display para un punto.
 4 Επιλογή της εντολής display (ή affichage) για ένα σημείο.
 0 Opt
 -1 display
@@ -14371,7 +14426,7 @@ display(red+filled);square(0,1);
 # hidden_name nom_cache
 1 Option de la commande affichage (ou display) pour ne pas afficher le nom.
 2 Option of the display command to hide the name.
-3 Opción de la instrucción Display para esconder el nombre.
+3 Opción de la instrucción display para esconder el nombre.
 4 Επιλογή της εντολής display (ή affichage) για την απόκρυψη ονόματος.
 0 Opt
 -1 display
@@ -14381,7 +14436,7 @@ display(red+filled);square(0,1);
 # filled
 1 Option de la commande affichage (ou display) pour faire des figures pleines.
 2 Option of the display command to fill figures.
-3 Opción de la instrucción Display para rellenar figuras.
+3 Opción de la instrucción display para rellenar figuras.
 4 Επιλογή της εντολής display (ή affichage) για το γέμισμα με χρώμα επίπεδων αναπαραστάσεων.
 0 Opt
 -1 display
@@ -14391,7 +14446,7 @@ display(red+filled);square(0,1);
 # white black red green blue yellow magenta cyan
 1 Option de la commande affichage (ou display) pour afficher en couleur.
 2 Option of the display command to display with color.
-3 Opción de la instrucción Display para colores.
+3 Opción de la instrucción display para colores.
 4 Επιλογή της εντολής display (ή affichage) για εμφάνιση χρωμάτων.
 0 Opt
 -1 display
@@ -14401,7 +14456,7 @@ display(red+filled);square(0,1);
 # quadrant1 quadrant2 quadrant3 quadrant4
 1 Option de la commande affichage pour afficher une légende.
 2 Option of the display command to write a legend.
-3 Opción de la instrucción Display para escribir una leyenda.
+3 Opción de la instrucción display para escribir una leyenda.
 4 Επιλογή της εντολής display (ή affichage) για τη δημιουργία επεξηγηματικής λεζάντας.
 0 Opt
 -1 display
@@ -17078,3 +17133,160 @@ line_graph(hypercube_graph(3))
 -3 shortest_path
 -4 vertex_distance
 transitive_closure(digraph([1,2,3,4,5,6],%{[1,2],[2,3],[2,4],[4,5],[3,5]%}),weighted)
+
+# is_isomorphic
+0 G1,G2,[I]
+2 Returns true if the input graphs G1 and G2 are isomorphic, else returns false. If an unassigned identifier 'I' is given, the isomorphism is stored to it in form of a list.
+-1 isomorphic_copy
+-2 permute_vertices
+G1:=graph("petersen"); G2:=kneser_graph(5,2); is_isomorphic(G1,G2,I)
+
+# graph_automorphisms
+0 G
+2 Returns the sequence of generators of Aut(G), the automorphism group of the input graph G. Each element is a permutation in form of list of disjoint cycles.
+-1 cycles2permu
+-2 isomorphic_copy
+-3 permute_vertices
+graph_automorphisms(graph("petersen"))
+
+# canonical_labeling
+0 G
+2 Returns the permutation representing the canonical labeling of the input graph G.
+-1 isomorphic_copy
+-2 relabel_vertices
+canonical_labeling(graph("petersen"))
+
+# minimal_edge_coloring
+0 G,[sto]
+2 Finds the minimal edge coloring of the input graph G and returns the sequence n,L where n is the class of G (1 for D colors and 2 for D+1 colors) and L is the list of colors of edges of G as returned by the edges command, or a copy of G with colored edges if the option 'sto' is specified.
+-1 chromatic_index
+-2 minimal_vertex_coloring
+-3 edges
+minimal_edge_coloring(graph("petersen"))
+G:=minimal_edge_coloring(graph("dodecahedron"),sto); draw_graph(G)
+
+# chromatic_index
+0 G,[cols]
+2 Returns the number of colors in the minimal edge coloring of the input graph G. If an unassigned identifier cols is given, the coloring is stored to it.
+-1 minimal_edge_coloring
+-2 chromatic_number
+chromatic_index(graph("petersen"))
+chromatic_index(graph("dodecahedron"),colors)
+
+# trail2edges
+0 T
+2 Converts a trail T to the list of its edges.
+-1 subgraph
+-2 trail
+trail2edges(trail(1,2,3,4,1,3))
+trail2edges([1,2,3,4,1,3])
+
+# traveling_salesman
+0 G,[M],[opts]
+2 Returns a Hamiltonian cycle in undirected unweighted graph G or solves traveling salesman problem if G is weighted (matrix M can be used for edge weights), returning a sequence containing the minimal cost and the corresponding Hamiltonian cycle.
+-1 is_hamiltonian
+traveling_salesman(hypercube_graph(5))
+M:=randmatrix(4,4,99); traveling_salesman(graph("tetrahedron"),M)
+G:=set_vertex_positions(complete_graph(42),[randvector(2,1000)$(k=1..42)]); traveling_salesman(G,vertex_distance)
+G:=set_vertex_positions(complete_graph(120),[randvector(2,1000)$(k=1..120)]); c,T:=traveling_salesman(G,vertex_distance,approx)
+
+# is_hamiltonian
+0 G,[hc]
+2 Returns true if G is a Hamiltonian graph (and stores the Hamiltonian circuit in hc if unassigned identifier is given), else returns false.
+-1 traveling_salesman
+is_hamiltonian(graph("petersen"))
+is_hamiltonian(hypercube_graph(5),C)
+
+# is_network
+0 G,[s,t]
+2 Returns true if the graph G is a network with the source s and sink t, else returns false. If s,t are not given, the output is a sequence of two sets of vertices: sources and sinks.
+-1 random_network
+-2 maxflow
+is_network(digraph(trail(1,2,3,4,5,6,4,7)))
+is_network(digraph(trail(1,2,3,4,5,6,4,7)),1,7)
+is_network(digraph(trail(1,2,3,4,5,6,4,1)))
+
+# random_network
+0 a,b,[p],[opts]
+2 Returns a random network with b grid frames of size a*a in which every edge appears with the probability p (by default 0.5).
+-1 is_network
+-2 maxflow
+random_network(3,3)
+random_network(3,3,acyclic)
+random_network(3,4,0.75)
+
+# maxflow
+0 G,s,t
+2 Returns the optimal value for the max flow problem for network G with the source s and sink t along with an optimal flow (as a matrix).
+-1 is_network
+-2 random_network
+maxflow(digraph(%{[[1,2],2],[[2,3],4],[[3,4],3],[[1,5],3],[[5,2],1],[[5,4],2]%}),1,4)
+
+# is_cut_set
+0 G,E
+2 Returns true if removing the edges in E from the graph G increases the number of connected components of G, else returns false.
+-1 connected_components
+-2 delete_edge
+is_cut_set(graph(trail(1,2,3,4,5,6,4,1,3)),[[1,4],[3,4]])
+
+# acyclic
+0 Opt
+2 Option for the random_network command.
+-1 random_network
+
+# is_strongly_regular
+0 G,[srg]
+2 Returns true iff the graph G is strongly regular and optionally outputs srg=[k,l,m] where k is the vertex degree and l resp. m is the number of common neighbors for adjacent resp. non-adjacent vertices.
+-1 is_regular
+-2 adjacency_matrix
+-3 seidel_spectrum
+is_strongly_regular(graph("clebsch"))
+is_strongly_regular(graph("shrikhande"),s); s
+
+# laplacian_matrix
+0 G,[normal]
+2 Returns the Laplacian matrix L=D-A of an undirected graph G where D resp. A is the degree matrix resp. the adjacency matrix of G.
+-1 adjacency_matrix
+-2 degree_sequence
+-3 number_of_spanning_trees
+laplacian_matrix(graph(trail(1,2,3,4,5,2)))
+laplacian_matrix(graph(trail(1,2,3,4,5,2)),normal)
+
+# tutte_polynomial
+0 G,[x,y]
+2 Returns the Tutte polynomial [or its value at point (x,y)] of an undirected graph G. If G is weighted, all weights must be positive integers and are interpreted as edge multiplicities.
+-1 chromatic_polynomial
+-2 flow_polynomial
+-3 reliability_polynomial
+-4 delete_edge
+-5 contract_edge
+tutte_polynomial(graph("tetrahedron"))
+tutte_polynomial(graph("tetrahedron"),1,1)
+
+# flow_polynomial
+0 G,[x]
+2 Returns the flow polynomial [or its value at point x] of an undirected unweighted graph G.
+-1 chromatic_polynomial
+-2 reliability_polynomial
+-3 tutte_polynomial
+flow_polynomial(graph("tetrahedron"))
+flow_polynomial(graph("tetrahedron"),5)
+
+# chromatic_polynomial
+0 G,[t]
+2 Returns the chromatic polynomial [or its value at point t] of an undirected unweighted graph G.
+-1 flow_polynomial
+-2 reliability_polynomial
+-3 tutte_polynomial
+flow_polynomial(graph("tetrahedron"))
+flow_polynomial(graph("tetrahedron"),5)
+
+# reliability_polynomial
+0 G,[p]
+2 Returns the reliability polynomial [or its value at point p] of an undirected graph G. If G is weighted, all weights must be positive integers and are interpreted as edge multiplicities.
+-1 chromatic_polynomial
+-2 flow_polynomial
+-3 tutte_polynomial
+reliability_polynomial(graph("petersen"))
+reliability_polynomial(graph("petersen"),0.5)
+

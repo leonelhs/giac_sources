@@ -1421,15 +1421,25 @@ xcas::Xcas_load_graph_setup(contextptr);}
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_Set_Xcas0 {
-            label xcas
+            label Xcas
             callback {const giac::context * contextptr=Xcas_get_context();
 giac::xcas_mode(contextptr)=0;
+giac::python_compat(contextptr)=0;
+xcas_user_level=0;
+Xcas_update_mode();}
+            xywh {40 40 100 20}
+          }
+          MenuItem Xcas_Set_Python0 {
+            label Python
+            callback {const giac::context * contextptr=Xcas_get_context();
+giac::xcas_mode(contextptr)=0;
+giac::python_compat(contextptr)=1;
 xcas_user_level=0;
 Xcas_update_mode();}
             xywh {40 40 100 20}
           }
           MenuItem Xcas_Set_Maple0 {
-            label maple
+            label Maple
             callback {const giac::context * contextptr=Xcas_get_context();
 giac::xcas_mode(contextptr)=1;
 xcas_user_level=0;
@@ -1437,7 +1447,7 @@ Xcas_update_mode();}
             xywh {40 40 100 20}
           }
           MenuItem Xcas_Set_Mupad0 {
-            label mupad
+            label Mupad
             callback {const giac::context * contextptr=Xcas_get_context();
 giac::xcas_mode(contextptr)=2;
 xcas_user_level=0;
@@ -1445,7 +1455,7 @@ Xcas_update_mode();}
             xywh {40 40 100 20}
           }
           MenuItem Xcas_Set_TI0 {
-            label {ti89/92}
+            label {TI89/92}
             callback {const giac::context * contextptr=Xcas_get_context();
 giac::xcas_mode(contextptr)=3;xcas_user_level=0;
 Xcas_update_mode();}

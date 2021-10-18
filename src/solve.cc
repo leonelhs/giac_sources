@@ -736,6 +736,9 @@ namespace giac {
 	  if (is_undef(v)) return;
 	  continue;
 	}
+	if ( (isolate_mode & 1)==0 && (pos==3 || pos==4) && is_strictly_greater(*it**it,1,contextptr)){
+	  continue;
+	}
 	gen res=isolate_fcns[pos-1](*it,isolate_mode,contextptr);
 	if (res.type!=_VECT)
 	  set_merge(v,solve(xvar._SYMBptr->feuille-res,x,isolate_mode,contextptr));
@@ -4002,6 +4005,12 @@ namespace giac {
     if (is_undef(v))
       return v;
     int s=int(v.size());
+    bool eq=false;
+    if (s==3 && v[2]==at_equal){
+      eq=true;
+      --s;
+      v.pop_back();
+    }
     if (s==4){
       // P,L,U,B, solve A*X=B where P*A=L*U
       gen P=v[0],L=eval(v[1],1,contextptr),U=v[2],B=v[3];
@@ -4106,7 +4115,10 @@ namespace giac {
     if (v[1].type==_IDNT)
       v[1]=eval(v[1],eval_level(contextptr),contextptr);
     gen syst=apply(v[0],equal2diff),vars=v[1];
-    return linsolve(syst,v[1],contextptr);
+    gen res= linsolve(syst,v[1],contextptr);
+    if (eq)
+      res=_list2exp(makesequence(res,v[1]),contextptr);
+    return res;
   }
   static const char _linsolve_s []="linsolve";
   static define_unary_function_eval_quoted (__linsolve,&_linsolve,_linsolve_s);

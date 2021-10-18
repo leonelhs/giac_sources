@@ -51,7 +51,7 @@ using namespace std;
 #include "solve.h"
 #include "csturm.h"
 #include "sparse.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined FXCG || defined GIAC_GGB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 #else
 #include "graphtheory.h"
@@ -7943,6 +7943,15 @@ namespace giac {
 	return -1;
       return 0;
     }
+    if (a.type==_IDNT){
+      vecteur v;
+      if (find_range(a,v,contextptr) && v.size()==1 && v.front().type==_VECT && v.front()._VECTptr->size()==2){
+	if (is_positive(v.front()._VECTptr->front(),contextptr))
+	  return 1;
+	if (is_positive(-v.front()._VECTptr->back(),contextptr))
+	  return -1;
+      }
+    }
     gen approx;
     if (has_evalf(a,approx,1,contextptr) && (a.type!=approx.type ||a!=approx))
       return fastsign(approx,contextptr);
@@ -8321,8 +8330,10 @@ namespace giac {
       return (a._STRNGptr==b._STRNGptr) || (*a._STRNGptr==*b._STRNGptr);
     case _FUNC__FUNC:
       return (a._FUNCptr==b._FUNCptr) || (*a._FUNCptr==*b._FUNCptr);
-    case _MOD__MOD: case _EXT__EXT:
-      return ( (*a._EXTptr==*b._EXTptr) && (*(a._EXTptr+1)==*(b._EXTptr+1)) );
+    case _MOD__MOD: 
+      return ( (*a._MODptr==*b._MODptr) && (*(a._MODptr+1)==*(b._MODptr+1)) );
+    case _EXT__EXT:
+      return ( change_subtype(*a._EXTptr,_POLY1__VECT)==change_subtype(*b._EXTptr,_POLY1__VECT) && (*(a._EXTptr+1)==*(b._EXTptr+1)) );
     case _SPOL1__SPOL1:
       return *a._SPOL1ptr==*b._SPOL1ptr;
     default: // Check pointers, type subtype

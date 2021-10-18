@@ -26955,21 +26955,10 @@ On tape :
 \begin{center}{\tt kolmogorovd(1.36)}\end{center}
 On obtient :
 \begin{center}{\tt 0.950514123245}\end{center}
+
 \subsection{Test de Kolmogorov-Smirnov : {\tt kolmogorovt}}\index{kolmogorovt}
-\noindent{\tt kolmogorovt(l1,l2)} renvoie le test de Kolmogorov-Smirnov 
-d'ad\'equation \`a une loi de distribution continue, entre 2 \'echantillons 
-{\tt l1} et {\tt l2} lorsque la loi est inconnue, ou\\
-{\tt  kolmogorovt(l1,s)} renvoie le test de Kolmogorov-Smirnov d'ad\'equation 
-\`a une loi de distribution continue, entre un \'echantillon {\tt l1} et une 
-loi {\tt s}.\\
-On tape :
-\begin{center}{\tt kolmogorovt(randvector(100,normald,0,1), randvector(100,normald,0,1))}\end{center}
-On obtient :
-\begin{center}{\tt [0.21,1.48492424049]}\end{center}
-On tape :
-\begin{center}{\tt kolmogorovt(randvector(100,normald,0,1),normald(0,1))}\end{center}
-On obtient :
-\begin{center}{\tt [0.0797807811891,0.797807811891]}\end{center}
+Cf. la section \ref{sec:kolmogorovt}
+
 \subsection{Polynome donnant la distribution du test de Wilcoxon ou de Mann-Whitney {\tt wilcoxonp}}
 \index{wilcoxonp}
 \noindent{\tt wilcoxonp} a comme argument 1 ou 2 entiers.\\
@@ -27364,7 +27353,8 @@ On calcule la valeur $d^2$ de la statistique $D^2$, on tape :
 \begin{center}{\tt sum((C[k,1]-P[k]*1000)\verb|^|2/(P[k]*1000),k=0..5)}\end{center}
 On obtient bien :
 \begin{center}{\tt 3.79611127141}\end{center}
-\subsection{{\tt kolmogorovt}}\index{kolmogorovt}
+
+\subsection{{\tt kolmogorovt}}\index{kolmogorovt} \label{sec:kolmogorovt}
 {\tt kolmogorovt} a pour arguments :
 \begin{itemize}
 \item la liste des donn\'ees d'un \'echantillon,

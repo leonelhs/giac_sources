@@ -42,10 +42,10 @@ proc(A,i,j)
   n:=(dim(A))[1];  
   U:=identity(n);  
   V:=identity(n);  
-  for l from 1 to n do V[l,i]:=-iquo(A[l,j],A[i,j]); 
+  for l from 1 to n do V[l,i]:=-(iquo(A[l,j],A[i,j])); 
    od;;  
   V[i,i]:=1;  
-  for l from 1 to n do U[j,l]:=-iquo(A[i,l],A[i,j]); 
+  for l from 1 to n do U[j,l]:=-(iquo(A[i,l],A[i,j])); 
    od;;  
   U[j,j]:=1;  
   V*A*U;  
@@ -90,7 +90,7 @@ proc(A,i,j)
   local n,U,l; 
   n:=(dim(A))[1];  
   U:=identity(n);  
-  for l from 1 to n do U[j,l]:=-iquo(A[i,l],A[i,j]); 
+  for l from 1 to n do U[j,l]:=-(iquo(A[i,l],A[i,j])); 
    od;;  
   U[j,j]:=1;  
   A*U;  

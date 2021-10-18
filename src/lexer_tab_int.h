@@ -69,6 +69,7 @@
       {"Try",0,0,0,TI_TRY},
       {"UNTIL",0,0,0,T_UNTIL},
       {"VRAI",1,1,_INT_BOOLEAN,T_NUMBER},
+      {"acyclic", 0, _GT_ACYCLIC, _INT_MAPLECONVERSION, T_TYPE_ID},
       {"adaptive"         ,1,_ADAPTIVE , _INT_PLOT ,T_NUMBER},
       {"algebraic"              ,0, _SYMB, _INT_TYPE, T_TYPE_ID},
       {"args",1,0,0,T_ARGS},

@@ -1411,6 +1411,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       window.setTimeout(UI.restoresession, 100, chaine, hist, asked, doexec);
       return;
     }
+    UI.caseval_noautosimp("srand("+(new Date()).getTime()+")");
     //console.log(chaine,doexec);
     var clearcmd = true;
     var hashParams = chaine.split('&');
@@ -2448,6 +2449,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       //console.log(cas);
       if (cas.charAt(0) == '"' && cas.length > 2)
         cas = cas.substr(1, cas.length - 2);
+      if (UI.usemathjax)
+	cas='$$'+cas+'$$';
       res += cas;
     }
     return res;

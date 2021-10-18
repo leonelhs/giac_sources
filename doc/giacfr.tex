@@ -279,6 +279,32 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
       tmp=tmp.substr(1,s-2);
     return tmp;
   },
+  renderhelp: function (s) {
+    var pos0 = s.search("</b>");
+    //console.log(s);
+    var found = (s.substr(pos0 + 7, 20) != "Best match has score");
+    var lh = s.substr(3, pos0 - 3);
+    var unlocalized_cmd = lh;
+    var sorig = s;
+    pos1 = s.search("<br>");
+    if (pos1 < 0) return sorig;
+    var explication = s.substr(0, pos1);
+    s = s.substr(pos1 + 4, s.length - pos1 - 4);
+    pos1 = s.search("<br>");
+    if (pos1 < 0) return sorig;
+    var syntaxe = s.substr(0, pos1);
+    s = s.substr(pos1 + 4, s.length - pos1 - 4);
+    pos1 = s.search("<br>");
+    if (pos1 < 0) return sorig;
+    var voiraussi = s.substr(0, pos1);
+    var examples = s.substr(pos1 + 4, s.length - pos1 - 4);
+    s = '';//'<b>'+unlocalized_cmd+':</b> ';
+    if (found)
+      s += explication + '<br>Voir aussi: ' +voiraussi+'<br><b>Exemples : </b>'+examples;
+    else
+      s += explication.substr(0, pos0);
+    return s;
+  },   
   quick:function(field){
     var tmp1=field.previousSibling.value;
     var tmp=UI.caseval(tmp1);
@@ -288,7 +314,9 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
     Module.print("<tt>");
     Module.print(tmp1);
     Module.print("</tt><br>&nbsp;&nbsp;");
-    Module.print(tmp);
+    if (tmp.length>3 && tmp.substr(0,3)=='<b>'){ 
+       Module.print(UI.renderhelp(tmp)); tmp='';
+    } else Module.print(tmp);
     Module.print("<br>");
     Module.print(String.fromCharCode(3));
     field.nextSibling.innerHTML='&nbsp;'+tmp;
@@ -339,6 +367,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
     if (tmp.length>10 && tmp.substr(0,10)=='GIAC_ERROR') return '"'+tmp.substr(11,tmp.length-11)+'"';
     if (tmp.length>5 && tmp.substr(1,4)=='<svg') return tmp.substr(1,tmp.length-2);
     if (tmp.length>5 && tmp.substr(0,4)=='<svg') return tmp;
+    if (tmp.length>3 && tmp.substr(0,3)=='<b>') return tmp;
      if (UI.usemathjax){
        tmp=UI.giaceval('latex(quote('+tmp+'))');
        var dollar=String.fromCharCode(36);

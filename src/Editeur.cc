@@ -2487,8 +2487,8 @@ namespace xcas {
     {gettext("Test"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("new test"), 0,  (Fl_Callback *) cb_prg_si, 0, 0, 0, 0, 14, 56},
     {gettext("si alors sinon"), 0,  (Fl_Callback *) cb_prg_sialorssinon, 0, 0, 0, 0, 14, 56},
-    {gettext("if [then]"), 0,  (Fl_Callback *) cb_prg_ifthen, 0, 0, 0, 0, 14, 56},
-    {gettext("if [then] else"), 0,  (Fl_Callback *) cb_prg_ifthenelse, 0, 0, 0, 0, 14, 56},
+    {gettext("if"), 0,  (Fl_Callback *) cb_prg_ifthen, 0, 0, 0, 0, 14, 56},
+    {gettext("if else"), 0,  (Fl_Callback *) cb_prg_ifthenelse, 0, 0, 0, 0, 14, 56},
     {gettext("switch"), 0,  (Fl_Callback *) cb_prg_switch, 0, 0, 0, 0, 14, 56},
     {gettext("try catch"), 0,  (Fl_Callback *) cb_prg_trycatch, 0, 0, 0, 0, 14, 56},
     {0}, // end Test
