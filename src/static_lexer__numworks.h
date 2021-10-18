@@ -1221,6 +1221,7 @@
  & at_read,
  & at_read16,
  & at_read32,
+ & at_read_nand,
  & at_readrgb,
  & at_readwav,
  & at_real,

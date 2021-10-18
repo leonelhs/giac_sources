@@ -5336,7 +5336,13 @@ unsigned int ConvertUTF8toUTF162 (
 #ifdef GIAC_HAS_STO_38
       const char * c=g._SYMBptr->sommet.ptr()->s;
 #else
-      string ss=unlocalize(g._SYMBptr->sommet.ptr()->s);
+      string ss=g._SYMBptr->sommet.ptr()->s;
+      if (g._SYMBptr->sommet==at_sto && g._SYMBptr->feuille.type==_VECT){
+	vecteur & v=*g._SYMBptr->feuille._VECTptr;
+	if (v.size()==2 && v.front().type==_SYMB)
+	  ss=v.front()._SYMBptr->sommet.ptr()->s;
+      }
+      ss=unlocalize(ss);
       const char * c=ss.c_str();
 #endif
 #if 1
@@ -6565,7 +6571,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 	    progpos=cur.find("if");
 	    q=2;
 	  }
-	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,q)){
+	  if (p>progpos && progpos>=0 && progpos<cs && instruction_at(cur,progpos,q)){
 	    pythonmode=true;
 #if 1
 	    res = cur.substr(0,p)+":\n"+string(progpos+4,' ')+cur.substr(p+1,pos-p)+'\n'+res;
@@ -6587,7 +6593,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 #endif
 	  }
 	  progpos=cur.find("else");
-	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
+	  if (p>progpos && progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
 	    pythonmode=true;
 #if 1
 	    res = cur.substr(0,p)+":\n"+string(progpos+4,' ')+cur.substr(p+1,pos-p)+'\n'+res;
@@ -6599,7 +6605,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 #endif
 	  }
 	  progpos=cur.find("for");
-	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
+	  if (p>progpos && progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
 	    pythonmode=true;
 	    cur=cur.substr(0,p)+" do "+cur.substr(p+1,pos-p);
 	    convert_python(cur,contextptr);
@@ -6607,7 +6613,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 	    p=0;
 	  }
 	  progpos=cur.find("while");
-	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,5)){
+	  if (p>progpos && progpos>=0 && progpos<cs && instruction_at(cur,progpos,5)){
 	    pythonmode=true;
 	    cur=cur.substr(0,p)+" do "+cur.substr(p+1,pos-p);
 	    convert_python(cur,contextptr);

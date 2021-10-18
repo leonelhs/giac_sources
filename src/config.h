@@ -147,7 +147,7 @@
 #define HAVE_LIBBLAS 1
 
 /* Define to 1 if you have the `cliquer' library (-lcliquer). */
-/* #undef HAVE_LIBCLIQUER */
+#define HAVE_LIBCLIQUER 1
 
 /* Define to 1 if you have the `cocoa' library (-lcocoa). */
 /* #undef HAVE_LIBCOCOA */
@@ -159,7 +159,7 @@
 #define HAVE_LIBDL 1
 
 /* Define to 1 if you have the `ecm' library (-lecm). */
-/* #undef HAVE_LIBECM */
+#define HAVE_LIBECM 1
 
 /* Define to 1 if you have the `fltk' library (-lfltk). */
 #define HAVE_LIBFLTK 1
@@ -222,13 +222,13 @@
 #define HAVE_LIBMPFR 1
 
 /* Define to 1 if you have the `nauty' library (-lnauty). */
-/* #undef HAVE_LIBNAUTY */
+#define HAVE_LIBNAUTY 1
 
 /* Define to 1 if you have the `ntl' library (-lntl). */
 #define HAVE_LIBNTL 1
 
 /* Define to 1 if you have the `pari' library (-lpari). */
-/* #undef HAVE_LIBPARI */
+#define HAVE_LIBPARI 1
 
 /* Define to 1 if you have the `png' library (-lpng). */
 #define HAVE_LIBPNG 1
@@ -258,7 +258,7 @@
 #define HAVE_LIBXFT 1
 
 /* Define to 1 if you have the `Xinerama' library (-lXinerama). */
-/* #undef HAVE_LIBXINERAMA */
+#define HAVE_LIBXINERAMA 1
 
 /* Define to 1 if you have the `z' library (-lz). */
 #define HAVE_LIBZ 1
@@ -300,7 +300,7 @@
 #define HAVE_MUNMAP 1
 
 /* Define to 1 if you have the <nauty/naututil.h> header file. */
-/* #undef HAVE_NAUTY_NAUTUTIL_H */
+#define HAVE_NAUTY_NAUTUTIL_H 1
 
 /* Define to 1 if you have the <nl_types.h> header file. */
 #define HAVE_NL_TYPES_H 1
@@ -327,7 +327,7 @@
 /* #undef HAVE_NO_SYS_TIMES_H */
 
 /* Define to 1 if you have the <pari/pari.h> header file. */
-/* #undef HAVE_PARI_PARI_H */
+#define HAVE_PARI_PARI_H 1
 
 /* Define to 1 if you have the <png.h> header file. */
 #define HAVE_PNG_H 1

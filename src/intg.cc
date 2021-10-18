@@ -2844,9 +2844,14 @@ namespace giac {
 	fx=cst*fx;
 	if ( (intmode & 2)==0)
 	  gprintf(step_fuuprime,gettext("Integration of %gen: f(u)*u' where f=%gen->%gen and u=%gen"),makevecteur(e,gen_x,fx,u),contextptr);
-	e=linear_integrate_nostep(fx,gen_x,tmprem,intmode,contextptr);
+	gen e1=linear_integrate_nostep(fx,gen_x,tmprem,intmode,contextptr);
+#if 1 // changed 2020 dec 13 for integrate(exp(t)*(t+1)^-2,t);
+	if (is_zero(tmprem))
+	  return complex_subst(e1,gen_x,u,contextptr);
+#else
 	remains_to_integrate=remains_to_integrate+complex_subst(tmprem,gen_x,u,contextptr)*derive(u,gen_x,contextptr);
-	return complex_subst(e,gen_x,u,contextptr);
+	return complex_subst(e1,gen_x,u,contextptr);
+#endif
       }
       if (vt->is_symb_of_sommet(at_pow)){
 	gen vtbase=vt->_SYMBptr->feuille[0],vtexpo=vt->_SYMBptr->feuille[1];
@@ -3082,8 +3087,14 @@ namespace giac {
 	}
       } // end if (trig_fraction)
     }
-    if (trig_fraction)
-      return integrate_trig_fraction(e,gen_x,var,coeff_trig,trig_fraction,remains_to_integrate,intmode,contextptr);
+    if (trig_fraction){
+      bool b=do_lnabs(contextptr);
+      if (has_i(e))
+	do_lnabs(false,contextptr);
+      res=integrate_trig_fraction(e,gen_x,var,coeff_trig,trig_fraction,remains_to_integrate,intmode,contextptr);
+      do_lnabs(b,contextptr);
+      return res;
+    }
     if (!do_risch){
       remains_to_integrate=e;
       return 0;
@@ -5889,7 +5900,7 @@ namespace giac {
 					     &t, t1, &h,
 					     y);
 	if (status != GSL_SUCCESS)
-	  return gensizeerr(gettext("RK8 evolve not successfull"));
+	  return gensizeerr(gettext("RK8 evolve not successful"));
 	if (debug_infolevel>5)
 	  CERR << nstep << ":" << t << ",y5=" << double2vecteur(y,dim) << '\n';
 	if (return_curve)  {
