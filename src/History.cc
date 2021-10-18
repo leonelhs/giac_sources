@@ -3172,11 +3172,18 @@ namespace xcas {
     if (Fl_Group * g = dynamic_cast<Fl_Group *>(wid)){
       if (!g || !g->children())
 	return;
+      bool folded=false;
+      if (History_Fold * hf = dynamic_cast<History_Fold *>(wid))
+	folded=hf->folded();
+      if (folded)
+	texof << "%% begin hidden group" << endl;
       int jmax=g->children();
       for (int j=0;j<jmax;j++){
 	Fl_Widget * wid = g->child(j);
 	historypack2tex(wid,level,texof,pack,name,number);
       }
+      if (folded)
+	texof << "%% end hidden group" << endl;
     }
     if (Multiline_Input_tab * i =dynamic_cast<Multiline_Input_tab *>(wid)){
       texof << "{\\tt " << translate_underscore(i->value()) << " } \\\\" << endl;

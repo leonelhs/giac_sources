@@ -10105,14 +10105,28 @@ head([1,2,3])
 head("bonjour")
 
 # hermite
-1 Renvoie le polynôme de Hermite de degré n
-2 Returns the Hermite polynomial of degree n
+1 Renvoie le polynôme de Hermite de degré n ou la forme normale de Hermite d'une matrice a coefficients polynomiaux (I,U tels que I*A=U)
+2 Returns the Hermite polynomial of degree n or the Hermite normal form for a polynomial coefficients matrix (I,U such that I*A=U)
 3 Devuelve el polinómio de Hermite de grado n
 4 Επιστρέφει το πολυώνυμο Hermite βαθμού n
-0 Intg(n)
+0 Intg(n)||Matr(A)
 -1 legendre
 -2 laguerre
+-3 smith
+-4 ihermite
+-5 ismith
 hermite(3)
+ n:=5; a:=ranm(n,n) % 17; l,u:=hermite(x-a);normal(l*(x-a)-u);
+
+# smith
+1 Renvoie la forme normale de Smith d'une matrice a coefficients polynomiaux (U,D,V tels que U*A*V=D)
+2 Returns the Smith normal form of a polynomial coefficients matrix (U,D,V tels que U*A*V=D)
+0 Matr(A)
+-1 hermite
+-2 ismith
+-3 ihermite
+ n:=10; a:=ranm(n,n) % 17; u,b,v:=smith(x-a);normal(u*(x-a)*v-b); diag(b);
+ GF(3,5,g); n:=3; a:=ranm(n,n,g); u,b,v:=smith(x-a);normal(u*(x-a)*v-b); diag(b);
 
 # grad
 1 Renvoie le gradient de l'expression Xpr
@@ -10658,8 +10672,8 @@ Resultant(x^3+x+1,x^2-x-2,x)
 kill()
 
 # lagrange interp
-1 Renvoie le polynôme de degré n-1 tel que P(xk)=yk=f(x_k) k=0..n-1
-2 Returns the polynomial of degree n-1 such that P(xk)=yk=f(x_k) k=0..n-1
+1 Renvoie le polynôme de degré n-1 tel que P(xk)=yk=f(x_k) k=0..n-1 ou la liste des differences divisees si le dernier argument est lagrange
+2 Returns the polynomial of degree n-1 such that P(xk)=yk=f(x_k) k=0..n-1 or the list of divided differences if the last argument is lagrange
 3 Devuelve el polinomio de grado n-1 tal que P(xk)=yk=f(x_k) k=0..n-1
 4 Επιστρέφει το πολυώνυμο παρεμβολής βαθμού n-1 έτσι ώστε P(xk)=yk=f(x_k) k=0..n-1
 0 (Lst_xk,Lst_yk)||Mtrx_2*n||(Lst_xk,Fnc(f)),[Var||[]||lagrange]
@@ -11486,6 +11500,7 @@ cpartfrac(a/(z*(z-b)),z)
 -4 companion
 -5 rat_jordan
 -6 pmin
+-7 adjoint_matrix
 pcar([[1,2],[3,4]])
 pcar([[1,2],[3,4]],x)
 pcar([[1,2,3],[1,3,6],[2,5,7]])
@@ -11648,7 +11663,7 @@ plotimplicit((x+5)^2+(y+4)^2-1,[x=-6..-4,y=-5..-3])
 -2 odeplot
 -3 odesolve
 -4 desolve
-fieldplot(sin(t*y),[t,y],xstep=0.5,ystep=0.5)
+fieldplot(sin(t*y),[t=-5..5,y=-3..3],xstep=0.5,ystep=0.5)
 fieldplot(-t*y,[t,y])
 fieldplot(-t*y,[t,y],normalize)
 fieldplot(-t*y,[t,y],normalize,xstep=0.5,ystep=0.5)
@@ -13858,8 +13873,8 @@ halftan(cos(x))
 halftan(tan(x))
 
 # horner
-1 Renvoie la valeur P(a) calculée selon la méthode de Hörner.
-2 Returns the value of P(a) calculated with Horner's method.
+1 Renvoie la valeur P(a) calculée selon la méthode de Hörner. La syntaxe horner(liste_alpha_i,liste_x_i,x) permet d'utiliser les differences divisees pour evaluer un polynome d'interpolation en x.
+2 Returns the value of P(a) calculated with Horner's method. With horner(liste_alpha_i,liste_x_i,x), evals an interpolation polynomial from the divided differences at x.
 3 Devuelve el valor de P(a) calculado según el método de Horner.
 4 Επιστρέφει την τιμή P(a) υπολογισμένη με τη μέθοδο Horner.
 0 Poly(P),Real(a)
@@ -13869,6 +13884,7 @@ halftan(tan(x))
 horner(x^2+1,2)
 horner([1,0,1],2)
 horner(x^2+y*x+y^3-1,2,y)
+ X:=[0.0,1.0,2.0]; A:=lagrange(X,exp,lagrange); horner(A,X,1.5);
 
 # ifte IFTE
 1 Si condition renvoie Expr1 sinon renvoie Expr2.

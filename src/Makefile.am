@@ -86,7 +86,7 @@ bin_SCRIPTS = pgiac
 
 install-exec-hook:
 	rm -f $(DESTDIR)$(bindir)/cas_help
-	mv $(DESTDIR)/$(bindir)/aide$(EXEEXT) $(DESTDIR)$(bindir)/cas_help
+	mv $(DESTDIR)$(bindir)/aide$(EXEEXT) $(DESTDIR)$(bindir)/cas_help
 	ln -sf cas_help $(DESTDIR)$(bindir)/en_cas_help
 	ln -sf cas_help $(DESTDIR)$(bindir)/es_cas_help
 	ln -sf cas_help $(DESTDIR)$(bindir)/fr_cas_help

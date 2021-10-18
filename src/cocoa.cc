@@ -1,4 +1,6 @@
 /* -*- mode:C++ ; compile-command: "g++ -I.. -I../include -I.. -g -c -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DHAVE_CONFIG_H -DIN_GIAC -Wall cocoa.cc" -*- */
+// Thanks to Zoltan Kovacs for motivating this work, in order to improve geogebra theorem proving
+// Special thanks to Anna M. Bigatti from CoCoA team for insightfull discussions on how to choose an order for elimination
 #include "giacPCH.h"
 
 #ifndef WIN32
@@ -434,8 +436,12 @@ namespace giac {
 #define GBASIS_SWAP 
 #endif
   // minimal numbers of pair to reduce simultaneously with f4buchberger
-  #define GBASISF4_BUCHBERGER 4
-  // #define GBASISF4_BUCHBERGER 0
+#ifdef __APPLE__
+  #define GBASISF4_BUCHBERGER 0 // temp. disabled on mac
+#else
+  #define GBASISF4_BUCHBERGER 4 
+#endif
+
 #define GBASIS_POSTF4BUCHBERGER 0 // 0 means final simplification at the end, 1 at each loop
 
   // #define GIAC_GBASIS_REDUCTOR_MAXSIZE 10 // max size for keeping a reductor even if it should be removed from gbasis
@@ -792,7 +798,7 @@ namespace giac {
       ptr[3]=0;
 #endif
     }
-    void get_tab(short * ptr) const {
+    void get_tab(short * ptr,order_t order) const {
 #ifdef GIAC_64VARS
       if (tab[0]%2){ // copy only 16 first
 	degtype * ptr_=(degtype *)(ui+1);
@@ -1342,9 +1348,11 @@ namespace giac {
 #if GROEBNER_VARS==15
 
   int tdeg_t64_3var_greater (const tdeg_t64 & x,const tdeg_t64 & y){
+    if (x.tab[0]!=y.tab[0])
+      return x.tab[0]>=y.tab[0]?1:0;
+    if (x.tab[4]!=y.tab[4])
+      return x.tab[4]>=y.tab[4]?1:0;
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
-      if (x.tab[0]!=y.tab[0])
-	return x.tab[0]>=y.tab[0]?1:0;
       if (x.tab[1]!=y.tab[1])
 	return x.tab[1]<=y.tab[1]?1:0;
       if (x.tab[2]!=y.tab[2])
@@ -1352,8 +1360,6 @@ namespace giac {
       return x.tab[3]<=y.tab[3]?1:0;
     }
     if (((longlong *) x.tab)[1] != ((longlong *) y.tab)[1]){
-      if (x.tab[4]!=y.tab[4])
-	return x.tab[4]>=y.tab[4]?1:0;
       if (x.tab[5]!=y.tab[5])
 	return x.tab[5]<=y.tab[5]?1:0;
       if (x.tab[6]!=y.tab[6])
@@ -1382,9 +1388,11 @@ namespace giac {
   }
 
   int tdeg_t64_7var_greater (const tdeg_t64 & x,const tdeg_t64 & y){
+    if (x.tab[0]!=y.tab[0])
+      return x.tab[0]>=y.tab[0]?1:0;
+    if (x.tab[8]!=y.tab[8])
+      return x.tab[8]>=y.tab[8]?1:0;
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
-      if (x.tab[0]!=y.tab[0])
-	return x.tab[0]>=y.tab[0]?1:0;
       if (x.tab[1]!=y.tab[1])
 	return x.tab[1]<=y.tab[1]?1:0;
       if (x.tab[2]!=y.tab[2])
@@ -1401,8 +1409,6 @@ namespace giac {
       return x.tab[7]<=y.tab[7]?1:0;
     }
     if (((longlong *) x.tab)[2] != ((longlong *) y.tab)[2]){
-      if (x.tab[8]!=y.tab[8])
-	return x.tab[8]>=y.tab[8]?1:0;
       if (x.tab[9]!=y.tab[9])
 	return x.tab[9]<=y.tab[9]?1:0;
       if (x.tab[10]!=y.tab[10])
@@ -1422,9 +1428,11 @@ namespace giac {
   }
 
   int tdeg_t64_11var_greater (const tdeg_t64 & x,const tdeg_t64 & y){
+    if (x.tab[0]!=y.tab[0])
+      return x.tab[0]>=y.tab[0]?1:0;
+    if (x.tab[12]!=y.tab[12])
+      return x.tab[12]>=y.tab[12]?1:0;
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
-      if (x.tab[0]!=y.tab[0])
-	return x.tab[0]>=y.tab[0]?1:0;
       if (x.tab[1]!=y.tab[1])
 	return x.tab[1]<=y.tab[1]?1:0;
       if (x.tab[2]!=y.tab[2])
@@ -1450,8 +1458,6 @@ namespace giac {
       return x.tab[11]<=y.tab[11]?1:0;
     }
     if (((longlong *) x.tab)[3] != ((longlong *) y.tab)[3]){
-      if (x.tab[12]!=y.tab[12])
-	return x.tab[12]>=y.tab[12]?1:0;
       if (x.tab[13]!=y.tab[13])
 	return x.tab[13]<=y.tab[13]?1:0;
       if (x.tab[14]!=y.tab[14])
@@ -1624,6 +1630,7 @@ namespace giac {
     if (X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
 #ifdef GIAC_64VARS
     if (X%2){
+      if (x.tdeg2!=y.tdeg2) return x.tdeg2>y.tdeg2?1:0;
 #ifdef GIAC_ELIM
       if ( x.elim!=y.elim) return x.elim<y.elim?1:0;
 #endif
@@ -1658,8 +1665,7 @@ namespace giac {
 	    return a<=0?1:0;
 	}
 #endif
-	if (x.tdeg2!=y.tdeg2)
-	  return x.tdeg2>=y.tdeg2;
+	// if (x.tdeg2!=y.tdeg2) return x.tdeg2>=y.tdeg2;
 	it1beg=x.ui+n;
 	n=(x.order_.dim+degratiom1)/degratio;
 	it1=x.ui+n;
@@ -2319,7 +2325,7 @@ namespace giac {
       }
 #endif
       short tab[GROEBNER_VARS+1];
-      it->u.get_tab(tab);
+      it->u.get_tab(tab,p.order);
       switch (p.order.o){
       case _PLEX_ORDER:
 	for (int i=0;i<=GROEBNER_VARS;++i){
@@ -3595,7 +3601,7 @@ namespace giac {
       }
 #endif
       short tab[GROEBNER_VARS+1];
-      it->u.get_tab(tab);
+      it->u.get_tab(tab,p.order);
       switch (p.order.o){
       case _PLEX_ORDER:
 	for (int i=0;i<=GROEBNER_VARS;++i){
@@ -10421,7 +10427,7 @@ namespace giac {
       }
 #endif
       short tab[GROEBNER_VARS+1];
-      (*p.expo)[it->u].get_tab(tab);
+      (*p.expo)[it->u].get_tab(tab,p.order);
       switch (p.order.o){
       case _PLEX_ORDER:
 	for (int i=0;i<=GROEBNER_VARS;++i){
@@ -10850,7 +10856,7 @@ namespace giac {
     if (jtend-jt<=6){ ++jt; return false; }// == test faster
 #ifdef GIAC_ELIM
     if (u.tab[0]%2){
-      int utdeg=u.tab[0];
+      int utdeg=u.tab[0],utdeg2=u.tdeg2;
       ulonglong uelim=u.elim;
       for (;;){
 	int step=(jtend-jt)/2;
@@ -10864,6 +10870,13 @@ namespace giac {
 	    jtend=j;
 	  continue;
 	}
+	if (j->tdeg2!=utdeg2){
+	  if (j->tdeg2>utdeg2)
+	    jt=j;
+	  else
+	    jtend=j;
+	  continue;
+	}
 	if (j->elim!=uelim){
 	  if (j->elim<uelim)
 	    jt=j;
@@ -10871,7 +10884,7 @@ namespace giac {
 	    jtend=j;
 	  continue;
 	}
-	if (int res=tdeg_t_greater_dyn(*j,u,order)){
+	if (int res=tdeg_t_greater(*j,u,order)){
 	  jt=j;
 	  if (res==2)
 	    return true;
@@ -12533,8 +12546,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	polymod<tdeg_t> TMP1(order,dim),TMP2(order,dim);
 	zpolymod<tdeg_t> TMP;
-	paire bk=B[smallposv.front()];
-	B.erase(B.begin()+smallposv.front());
+	paire bk=B[smallposv.back()];
+	B.erase(B.begin()+smallposv.back());
 	if (!learning && pairs_reducing_to_zero && learned_position<pairs_reducing_to_zero->size() && bk==(*pairs_reducing_to_zero)[learned_position]){
 	  if (debug_infolevel>2)
 	    CERR << bk << " learned " << learned_position << endl;
@@ -14069,7 +14082,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       longlong * ptr = (longlong *) tab;
       ptr[1]=ptr[0]=0;
     }
-    void get_tab(short * ptr) const {
+    void get_tab(short * ptr,order_t order) const {
 #ifdef GBASIS_SWAP
       tdeg_t14 t(*this);
       swap_indices14(t.tab);
@@ -14456,7 +14469,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       longlong * ptr = (longlong *) tab;
       ptr[2]=ptr[1]=ptr[0]=0;
     }
-    void get_tab(short * ptr) const {
+    void get_tab(short * ptr,order_t order) const {
       for (unsigned i=0;i<=11;++i)
 	ptr[i]=tab[i];
 #ifdef GBASIS_SWAP
@@ -14833,11 +14846,11 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       ptr[3]=0;
 #endif
     }
-    void get_tab(short * ptr) const {
+    void get_tab(short * ptr,order_t order) const {
       for (unsigned i=0;i<=GROEBNER_VARS;++i)
 	ptr[i]=tab[i];
 #ifdef GBASIS_SWAP
-      swap_indices15_revlex(ptr);
+      swap_indices15(ptr,order.o);
 #endif
     }
     tdeg_t15(const index_m & lm,order_t order){ 
@@ -15096,12 +15109,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #if GROEBNER_VARS==15
 
   int tdeg_t15_3var_greater (const tdeg_t15 & x,const tdeg_t15 & y){
+    if (x.tab[0]!=y.tab[0])
+      return x.tab[0]>=y.tab[0]?1:0;
+    if (x.tab[4]!=y.tab[4])
+      return x.tab[4]>=y.tab[4]?1:0;
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
 #ifdef GBASIS_SWAP
       return ((longlong *) x.tab)[0] <= ((longlong *) y.tab)[0];
 #else
-      if (x.tab[0]!=y.tab[0])
-	return x.tab[0]>=y.tab[0]?1:0;
       if (x.tab[1]!=y.tab[1])
 	return x.tab[1]<=y.tab[1]?1:0;
       if (x.tab[2]!=y.tab[2])
@@ -15110,8 +15125,6 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #endif
     }
     if (((longlong *) x.tab)[1] != ((longlong *) y.tab)[1]){
-      if (x.tab[4]!=y.tab[4])
-	return x.tab[4]>=y.tab[4]?1:0;
 #ifdef GBASIS_SWAP
       return ((longlong *) x.tab)[1] <= ((longlong *) y.tab)[1];
 #else
@@ -15152,12 +15165,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   }
 
   int tdeg_t15_7var_greater (const tdeg_t15 & x,const tdeg_t15 & y){
+    if (x.tab[0]!=y.tab[0])
+      return x.tab[0]>=y.tab[0]?1:0;
+    if (x.tab[8]!=y.tab[8])
+      return x.tab[8]>=y.tab[8]?1:0;
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
 #ifdef GBASIS_SWAP
       return ((longlong *) x.tab)[0] <= ((longlong *) y.tab)[0];
 #else
-      if (x.tab[0]!=y.tab[0])
-	return x.tab[0]>=y.tab[0]?1:0;
       if (x.tab[1]!=y.tab[1])
 	return x.tab[1]<=y.tab[1]?1:0;
       if (x.tab[2]!=y.tab[2])
@@ -15179,8 +15194,6 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #endif
     }
     if (((longlong *) x.tab)[2] != ((longlong *) y.tab)[2]){
-      if (x.tab[8]!=y.tab[8])
-	return x.tab[8]>=y.tab[8]?1:0;
 #ifdef GBASIS_SWAP
       return ((longlong *) x.tab)[2] <= ((longlong *) y.tab)[2];
 #else
@@ -15208,12 +15221,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   }
 
   int tdeg_t15_11var_greater (const tdeg_t15 & x,const tdeg_t15 & y){
+    if (x.tab[0]!=y.tab[0])
+      return x.tab[0]>=y.tab[0]?1:0;
+    if (x.tab[12]!=y.tab[12])
+      return x.tab[12]>=y.tab[12]?1:0;
     if (((longlong *) x.tab)[0] != ((longlong *) y.tab)[0]){
 #ifdef GBASIS_SWAP
       return ((longlong *) x.tab)[0] <= ((longlong *) y.tab)[0];
 #else
-      if (x.tab[0]!=y.tab[0])
-	return x.tab[0]>=y.tab[0]?1:0;
       if (x.tab[1]!=y.tab[1])
 	return x.tab[1]<=y.tab[1]?1:0;
       if (x.tab[2]!=y.tab[2])
@@ -15248,8 +15263,6 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #endif
     }
     if (((longlong *) x.tab)[3] != ((longlong *) y.tab)[3]){
-      if (x.tab[12]!=y.tab[12])
-	return x.tab[12]>=y.tab[12]?1:0;
 #ifdef GBASIS_SWAP
       return ((longlong *) x.tab)[3] <= ((longlong *) y.tab)[3];
 #else
@@ -15265,7 +15278,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #endif // GROEBNER_VARS==15
 
   int tdeg_t15_lex_greater (const tdeg_t15 & x,const tdeg_t15 & y){
-#ifdef GBASIS_SWAP
+#if 0 // def GBASIS_SWAP
     ulonglong *xtab=(ulonglong *)&x,*ytab=(ulonglong *)&y;
     ulonglong X=*xtab, Y=*ytab;
     if (X!=Y){

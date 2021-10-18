@@ -98,11 +98,20 @@ namespace giac {
 
    string string2mathml(const string & m){
      string s=m;
+#if 0
+     size_t ms=m.size();
+     for (size_t i=0;i<ms;++i){
+       if (m[i]=='\\')
+	 s+="\\\\";
+       else
+	 s+=m[i];
+     }
+#endif
      string t="";
-     string mat[4]={"&","<",">","\n"};
-     string rep[4]={"&amp;","&lt;","&gt;","</mi></mtd></mtr><mtr><mtd><mi>"};
+     string mat[]={"&","<",">","\n"};
+     string rep[]={"&amp;","&lt;","&gt;","</mi></mtd></mtr><mtr><mtd><mi>"};
      //start with & before adding new ones
-     for(int siz=0;siz<4;siz++){
+     for(int siz=0;siz<sizeof(mat)/sizeof(string);siz++){
        int c=0,k=-1,le=s.length();
        while (c<le){
          k=s.find(mat[siz],c);
@@ -482,8 +491,12 @@ namespace giac {
   // --------------------------- provenant de derive ----------------------------
 
   static string mathml_printasderive(const gen & feuille,GIAC_CONTEXT){
-    if (feuille.type!=_VECT || feuille._VECTptr->size()<2)
-      return "<msup><mrow><mo>(</mo>"+gen2mathml(feuille,contextptr)+"<mo>)</mo></mrow><mi>'</mi></msup>";
+    if (feuille.type!=_VECT || feuille._VECTptr->size()<2){
+      if (feuille.type==_IDNT || feuille.type<=_CPLX || feuille.is_symb_of_sommet(at_derive))
+	return gen2mathml(feuille,contextptr)+"'";
+      else
+	return "<msup><mrow><mo>(</mo>"+gen2mathml(feuille,contextptr)+"<mo>)</mo></mrow><mi>'</mi></msup>";
+    }
     vecteur & v = *feuille._VECTptr;
     bool needpar=v[0].type==_SYMB;
     if (v.size()>2)
@@ -1413,12 +1426,24 @@ namespace giac {
 	return gen2mathml(tmp,svg,contextptr);
       return symbolic2mathml(*tmp._SYMBptr, svg,contextptr);
     }
-    case _VECT:                        
+    case _VECT: {
+      vector<int> V; int p=0;
+      if (is_mod_vecteur(*e._VECTptr,V,p) && p!=0){
+	gen gm=makemodquoted(unmod(e),p);
+	return gen2mathml(gm,svg,contextptr);
+      }
       if (e.subtype==_SPREAD__VECT)
 	return spread2mathml(*e._VECTptr,1,contextptr); //----------------v??rifier le 2??me param??tre
-      if (e.subtype!=_SEQ__VECT && ckmatrix(*e._VECTptr))
+      if (e.subtype!=_SEQ__VECT && ckmatrix(*e._VECTptr)){
+	vector< vector<int> > M; p=0;
+	if (is_mod_matrice(*e._VECTptr,M,p) && p!=0){
+	  gen gm=makemodquoted(unmod(e),p);
+	  return gen2mathml(gm,svg,contextptr);
+	}
 	return matrix2mathml(*e._VECTptr,contextptr);
+      }
       return _VECT2mathml(*e._VECTptr,e.subtype, svg,contextptr);
+    }
     case _SPOL1:
       return _SPOL12mathml(*e._SPOL1ptr,svg,contextptr);
     case _POLY:

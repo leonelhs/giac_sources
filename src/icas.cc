@@ -407,7 +407,7 @@ void verb(std::string & warn,int line,ostream & out,std::string cmd,const std::s
   }  
 }
 
-void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::ostream * checkptrin){
+void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::ostream * checkptrin,bool dohevea){
   COUT << "Giac pdflatex and HTML5 output" << endl;
   COUT << "Partly inspired from pgiac by Jean-Michel Sarlat" << endl;
   if (!giac::is_file_available("giac.tex")){
@@ -494,10 +494,15 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 	if (pos>=0 && pos<ss){
 	  out << s << endl;
 	  out.close();
-	  COUT << "File " << outfile << " created, now running hevea in background and pgiac " << outfile << endl << "Then I will run pdflatex " << giac::remove_extension(outfile) << endl << "For HTML5 output, you can run\nhevea -fix " << infile_ << endl;
-	  std::string cmd="hevea -fix "+infile_+" &";
-	  system(cmd.c_str());
-	  cmd="makeindex "+giac::remove_extension(outfile);
+	  COUT << "File " << outfile << " created" << outfile << endl << "Then I will run pdflatex " << giac::remove_extension(outfile) << endl ;
+	  if (dohevea){
+	    std::string cmd="hevea -fix "+infile_+" &";
+	    COUT << "Running " << cmd << endl;
+	    system(cmd.c_str());
+	  }
+	  else
+	    COUT << "For HTML5 output, you can run\nhevea -fix " << infile_ << endl;
+	  std::string cmd="makeindex "+giac::remove_extension(outfile);
 	  system(cmd.c_str());
 	  cmd=("pdflatex "+giac::remove_extension(outfile)+" && mv "+giac::remove_extension(outfile)+".pdf "+infile_+".pdf");
 	  COUT << cmd << endl;
@@ -648,7 +653,7 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 }
 
 #else
-void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::ostream * checkptrin){
+void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::ostream * checkptrin,bool dohevea){
   ifstream in(infile.c_str());
   ofstream out(outfile.c_str());
   const int BUFFER_SIZE=32768-1;
@@ -841,6 +846,9 @@ int main(int ARGC, char *ARGV[]){
   giac::context * contextptr = 
     //  (giac::context *) giac::context0 ; 
     &giac_context;
+  bool dohevea=true;
+  if (ARGC>1 && strcmp(ARGV[ARGC-1],"--pdf")==0)
+    dohevea=false;
 #if !defined EMCC && !defined NSPIRE_NEWLIB
   giac::xcasroot()=giac::xcasroot_dir(ARGV[0]);
 #endif
@@ -972,7 +980,7 @@ int main(int ARGC, char *ARGV[]){
 	COUT << "Unable to read " << infile << endl;
 	return 1;
       }
-      pgiac(infile,outfile,checkptr,checkptrin);
+      pgiac(infile,outfile,checkptr,checkptrin,dohevea);
       if (checkptr) delete checkptr;
       if (checkptrin) delete checkptrin;
       return 0;
@@ -1008,7 +1016,7 @@ int main(int ARGC, char *ARGV[]){
       COUT << "Unable to read " << infile << endl;
       return 1;
     }
-    pgiac(infile,outfile,checkptr,checkptrin);
+    pgiac(infile,outfile,checkptr,checkptrin,dohevea);
     if (checkptr) delete checkptr;
     if (checkptrin) delete checkptrin;
     return 0;

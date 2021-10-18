@@ -1879,19 +1879,20 @@ namespace xcas {
     }
     autosave_disabled=false;
     w->hide();
+    bool syntaxefr=false; // lang==1; // activer apres les concours 2017
     if (r==0){
       int i=0,addi=0; // i=ed->insert_position(),addi=0;
       string s;
       giac::context * contextptr = get_context(ed);
       switch (xcas_mode(contextptr)){
       case 0:
+	if (syntaxefr)
+	  s+="fonction ";
 	s+=name->value();
 	s+='(';
 	s+=args->value();
 	s+=")";
-	if (0 && lang==1)
-	  s+=" fonction";
-	else 
+	if (!syntaxefr)
 	  s+=":={";
 	s+="\n";
 	if (strlen(locs->value())){
@@ -1910,7 +1911,7 @@ namespace xcas {
 	  s+=";";
 	}	  
 	s += "\n";
-	if (0 && lang==1)
+	if (syntaxefr)
 	  s+="ffonction";
 	else
 	  s+="}";

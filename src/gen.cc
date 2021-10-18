@@ -3955,7 +3955,7 @@ namespace giac {
     case _USER:
       return a._USERptr->arg(contextptr);
     case _FRAC:
-      return arg(a._FRACptr->num,contextptr)-arg(a._FRACptr->den,contextptr);
+      return arg(a._FRACptr->num*conj(a._FRACptr->den,contextptr),contextptr);
     default:
       return gentypeerr(gettext("Arg"));
     }
@@ -7574,7 +7574,7 @@ namespace giac {
 	return rdiv(_FRAC2_SYMB(a),b,contextptr);
       }
       if (b.type==_FRAC){
-	if ( (a.type!=_SYMB) && (a.type!=_IDNT) )
+	if ( a.type!=_SYMB && a.type!=_IDNT && !(a.type==_VECT && a.subtype==_POLY1__VECT) ) // POLY1__VECT check added feb 2017 for poly hermite normal form
 	  return a/(*b._FRACptr);
 	//return rdiv(a,_FRAC2_SYMB(b),contextptr);
 	// return symbolic(at_prod,makesequence(a,b._FRACptr->den,symbolic(at_inv,b._FRACptr->num)));
@@ -8841,9 +8841,14 @@ namespace giac {
 	  return gensizeerr(contextptr);
 	if (!n)
 	  return i;
+	int ratnormal_test=MAX_RECURSION_LEVEL/2;
+	// otherwise f(x):=-3x+2; g:=(f@@300)(x):; simplifier(g); might segfault
 	tmp=tmp._VECTptr->front();
-	for (int j=0;j<n;++j)
+	for (int j=0;j<n;++j){
 	  res=tmp(res,contextptr);
+	  if (j%ratnormal_test==ratnormal_test-1)
+	    res=ratnormal(res);
+	}
 	return res;
       }
       if (_SYMBptr->sommet==at_function_diff || _SYMBptr->sommet==at_of || _SYMBptr->sommet==at_at)
@@ -15123,7 +15128,7 @@ namespace giac {
 	S="gl3d "+print_INT_(n);
 	return S.c_str();
       }
-#endif
+#endif // GIAC_GGB
       bool fullview=true;
       vector<double> vx,vy,vz;
       double window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax;
@@ -15141,7 +15146,7 @@ namespace giac {
 	  else
 	    return hw/60.0;
 	});
-#endif
+#endif // GIAC_GGB
       //CERR << gwidth << endl;
       if (ratio<gratio/3 || ratio>3*gratio) ortho=false; else ortho=true;
       if (ortho){
@@ -15165,7 +15170,7 @@ namespace giac {
       S= S+(gen2svg(g,window_xmin,window_xmax,window_ymin,window_ymax,&C)+svg_grid(window_xmin,window_xmax,window_ymin,window_ymax)+"</svg>\"");
       return S.c_str();
     }
-#endif
+#endif // EMCC
     if (calc_mode(&C)==1 && !lop(g,at_rootof).empty())
       g=evalf(g,1,&C);
     if (has_undef_stringerr(g,S))

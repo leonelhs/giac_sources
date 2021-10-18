@@ -32,6 +32,14 @@ the_LANG = fr
 thelangdocdir = $(docdir)/$(the_LANG)
 dist_thelangdoc_DATA = html_mall html_mtt html_vall xcasmenu xcasex keywords
 
+giacfr.tex: ../giacfr.tex
+	cp "$<" "$@"
+
+# install xvfb-run and set this to "xvfb-run" to run "headless" (without a real display)
+#XVFB_RUN =
+#algo.pdf: algo.tex giacfr.tex ../../src/icas
+#   $(XVFB_RUN) ../../src/icas "$<" --pdf
+
 html-local: $(HTML_STAMPS)
 pdf-local: $(PDF_LOCAL)
 dvi-local: $(DVI_LOCAL)
@@ -47,7 +55,9 @@ $(srcdir)/casinter: casinter.stamp
 $(srcdir)/casexo: casexo.stamp
 $(srcdir)/cascas: cascas.stamp
 
-install-data-local: $(HTML_STAMPS) $(PDF_LOCAL) 
+all-data-local: $(HTML_STAMPS) $(PDF_LOCAL) 
+
+install-data-local: 
 	$(install_sh) -d $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
 	$(INSTALL_DATA) $(PDF_LOCAL) $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)
 #	$(INSTALL_DATA) $(PS_LOCAL) $(DESTDIR)$(prefix)/share/giac/doc/$(the_LANG)

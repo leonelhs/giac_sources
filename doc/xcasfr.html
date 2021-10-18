@@ -175,27 +175,33 @@ document.onkeydown = applyKey;
   permet de rendre la page accessible 
   et met le focus sur la ligne de commande.
 </div>  
+<div id="startup1">
+  Vous pouvez faire apparaitre le tutoriel en cliquant sur le bouton
+  <button  
+  onclick="if(document.getElementById('help').style.display=='none') document.getElementById('help').style.display='block';  else document.getElementById('help').style.display='none';" title="Montrer ou cacher le tutoriel">Tuto</button>.
+</div>
+<div id="startup">
+  Vous pouvez installer Xcas en local pour pouvoir l'utiliser
+  sans Internet,
+  d&eacute;compressez
+  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
+  xcashtml.zip</a> ou
+  <a
+  href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.tgz">
+  xcashtml.tgz</a>,
+  puis 
+  recherchez <tt>xcasfr</tt>, par exemple sur un appareil Android
+  cherchez dans
+  <a href="file:///sdcard/"><tt>/sdcard/</tt></a>
+  <br>
+  Si Xcas ne fonctionne pas normalement, effacez le cache de votre
+  navigateur et rechargez la page, avec Firefox si possible.
+</div>
 <div id="startup_restore" style="display:none">
   Vous pouvez restaurer votre pr&eacute;c&eacute;dente session
   <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),true,false);">sans &eacute;valuation</button>
   ou
   <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">avec &eacute;valuation</button>
-</div>
-<div id="startup1" style="display:none">
-  Vous pouvez faire apparaitre le tutoriel en cliquant sur le bouton
-  Tutoriel ci-dessous.
-  <br> Vous pouvez installer Xcas en local pour pouvoir l'utiliser
-  sans Internet,
-  d&eacute;compressez
-  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
-  xcashtml.zip</a> puis 
-  recherchez <tt>xcasfr</tt>, par exemple sur un appareil Android
-  cherchez dans
-  <a href="file:///sdcard/"><tt>/sdcard/</tt></a>
-</div>
-<div id="startup">
-  Si Xcas ne fonctionne pas normalement, effacez le cache de votre
-  navigateur et rechargez la page, avec Firefox si possible.
   <hr>
 </div>
 <span id="apropos" style="display:none">
@@ -262,7 +268,7 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
   title="Cocher pour avoir commandes et reponses sur le meme niveau">,
       <input style="height:25px" type="button" title="Coloration syntaxique si on edite un niveau existant" value="Coloration syntaxique" onclick="usecm.checked=!usecm.checked"> <input style="height:25px" type="checkbox" name="usecm"
       title="Coloration syntaxique si on edite un niveau existant">
-      (ne fonctionne pas bien sur mobile)
+      
     </td>
   </tr>
   <tr>
@@ -299,7 +305,7 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
       document.getElementById('apropos').style.display='block';
       else document.getElementById('apropos').style.display='none';"
       title="Montre ou cache des informations sur la conception de Xcas dans votre navigateur">
-      <img WIDTH="64" HEIGHT="64" SRC="logo.png" alt="Xcas">
+      <img WIDTH="48" HEIGHT="48" SRC="logo.png" alt="Xcas">
       </button>
     </th>
     <td>
@@ -311,22 +317,24 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
   </tr>
   <tr>
     <td>
-      <button style="height:25px" title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charge</button>
+      <button id="loadbutton_cookie" style="height:25px" title="Cliquer ici pour charger une session sauvegard&eacute;e" onclick="document.getElementById('loadfile_cookie').innerHTML=UI.listCookies();">Charge</button>
+      <span id="loadfile_cookie"></span>
+      <button id="loadbutton_file" style="height:25px;display:none" title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charge</button>
       <form id="loadfile" style="display:none">
       <input id="loadfileinput" accept=".xw" type="file"  title="Parcourir" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
       <input type="text" value="annuler" title="Annuler" onclick="form.style.display='none'">
       <input type="submit" value="ok" style="display:none">
       </form>
       <span id="history1" style="visibility:hidden">
-      <button style="height:25px" title="Cliquer ici pour publier la session en HTML avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(1);'>Export</button>
-      <button style="height:25px" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(0);'>Sauve</button>
+      <button id="exportbutton" style="height:25px" title="Cliquer ici pour publier la session en HTML avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(1);'>Export</button>
+      <button style="height:25px" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick="if (document.getElementById('loadbutton_file').style.display=='none') UI.savesession(2); else UI.savesession(0);">Sauve</button>
       <textarea id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
       </span>
     </td>
   </tr>
 </table>
 
-<span id="help">
+<span id="help" style="display:none">
 <button style="height:25px"
 onclick="document.getElementById('help').style.display='none';">Masquer
 le tutoriel</button>
@@ -337,10 +345,10 @@ Cette feuille de calcul est compos&eacute;e de :
   variables. Lorsque l'historique est vide, le panel est
   r&eacute;duit &agrave; insertion d'une session, consultation des
   manuels et configuration. S'il n'est pas vide, notez le lien Clone
-  qui permet de cloner une session existante, ce qui peut servir si
+  qui permet de <strong>cloner</strong> une session existante, ce qui peut servir si
   le noyau de calcul formel a crash&eacute; ou pour copier-coller
-  vers un email ou une page web. Le lien E-mail permet d'envoyer
-  votre session par e-mail.
+  vers un email ou une page web. Le lien E-mail permet de <strong>partager
+  votre session</strong> par e-mail.
   </li>
   <li>La zone d'<strong>aide</strong>, qui contient des courtes description des
   commandes dont vous avez demand&eacute; la syntaxe.
@@ -357,8 +365,11 @@ Cette feuille de calcul est compos&eacute;e de :
   d&eacute;finitivement cliquer sur le bouton Vider de la Corbeille,
   pour le restaurer cliquer sur le bouton Restaurer de la Corbeille). 
   </li>
-  <li> une <strong>ligne de commande</strong>, on y tape des commandes Xcas, et on
-  valide en cliquant sur le bouton ok ou en tapant Entree.
+  <li> une <strong>ligne de commande</strong>, on y tape des commandes
+  ou des programmes Xcas, et on
+  valide en cliquant sur le bouton ok ou en tapant Entree. Pour passer
+  &agrave; la ligne dans un programme, tapez Shift-Entree au clavier
+  ou utilisez le bouton <tt>\n</tt> du clavier scientifique.
   <br>
     Vous pouvez entrer un <strong>commentaire</strong> en tapant une ligne de commande
   commencant par <tt>//</tt> (vous pouvez utiliser des commandes de
@@ -366,7 +377,7 @@ Cette feuille de calcul est compos&eacute;e de :
   <br>
   Pour vous aider &agrave; remplir la ligne de commande,
   vous pouvez cliquer sur le bouton 123 qui fait apparaitre
-  le <strong>clavier scientifique</strong> et sur le bouton util ci-dessous
+  le <strong>clavier scientifique</strong> et sur le bouton menu ci-dessous
   (d&eacute;placez la souris pr&egrave;s des boutons pour
   une description de leur action). Avec Firefox, on acc&egrave;de
   au menu des commandes de Xcas
@@ -400,10 +411,17 @@ Cette feuille de calcul est compos&eacute;e de :
 </ul>
 Lorsque vous chargez la page de Xcas, vous pouvez restaurer la
 session pr&eacute;c&eacute;dente.
-Vous pouvez <strong>sauvegarder</strong> l'historique
-ou <strong>exporter</strong> la feuille de calcul. La sauvegarde
-  occupe peu de place et s'ouvre depuis cette page avec le bouton
-  Charger, l'export occupe plus de place mais
+A tout moment, vous pouvez <strong>sauvegarder</strong> l'historique,
+avec le nom de session affich&eacute; &agrave; droite du bouton
+<tt>Sauve</tt>
+(par d&eacute;faut <tt>session</tt>).
+Une session sauvegard&eacute;e
+s'ouvre ensuite avec le bouton Charger.
+Les sauvegardes sont faite dans les cookies du
+navigateur avec un nom de cookie commencant par <tt>xcas__</tt>, vous
+pouvez les effacer depuis la gestion de la Vie priv&eacute;e de votre navigateur.
+Vous pouvez aussi <strong>exporter</strong> la feuille de calcul (sauf
+sur smartphone), l'export occupe plus de place mais
   permet de publier le fichier HTML comme une page autonome.
   Vous pouvez sauvegarder les graphes 2d au format SVG avec le bouton
   save &agrave; droite du graphe. Le fichier SVG cr&eacute;&eacute;
@@ -420,7 +438,7 @@ ou <strong>exporter</strong> la feuille de calcul. La sauvegarde
   Vous pouvez ouvrir (partiellement) une session existante Xcas en la clonant
   (menu Fich, Clone du programme Xcas, ou en ligne de commande
 <tt>xcas --online nom_fichier.xws</tt>)
-
+<br>
 <a name="exemples"><strong>Quelques exemples :</strong></a>
 <ul>
   <li> <strong>Alg&egrave;bre :</strong>
@@ -479,24 +497,25 @@ ou <strong>exporter</strong> la feuille de calcul. La sauvegarde
   </li>
   <li>
   <strong>Programmes :</strong> vous pouvez utiliser les assistants du menu
-  util pour cr&eacute;er les structures de programmation
-  (fonction, test, boucle). Plusieurs syntaxes sont accept&eacute;es, pour
-  le moment la coloration syntaxique fonctionne avec la syntaxe Xcas
-  qui est tr&egrave;s proche de Javascript. Par exemple
+   pour cr&eacute;er les structures de programmation
+  (fonction, test, boucle). Plusieurs syntaxes sont accept&eacute;es,
+  dont une syntaxe en francais tr&egrave;s proche du langage
+  algorithmique, par exemple voici un programme affichant les
+  carr&eacute;s de 1 &agrave; x dans la console :
   <br>
-  <tt>function f(x){
+  <tt>fonction f(x)
   <br>
-  &nbsp;&nbsp;var y;
+  &nbsp;&nbsp;local y;
   <br>
-  &nbsp;&nbsp;if (x &gt; 100) return "Nombre trop grand";
+  &nbsp;&nbsp;si x &gt; 100 alors retourne "Nombre trop grand"; fsi;
   <br>
-  &nbsp;&nbsp;for (y:=0;y &lt; x;y++){
+  &nbsp;&nbsp;pour y de 1 jusque x faire 
   <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;print(y+"^2="+y^2);
+  &nbsp;&nbsp;&nbsp;&nbsp;afficher(y+"^2="+y^2);
   <br>
-  &nbsp;&nbsp;}
+  &nbsp;&nbsp;fpour
   <br>
-  }
+  ffonction:;
   </tt>
   <br>
   La commande <button  onmousedown="event.preventDefault()"
@@ -506,19 +525,15 @@ ou <strong>exporter</strong> la feuille de calcul. La sauvegarde
   </li>
 </ul>
 <br>
-Sur les appareils mobiles, certaines fonctionnalit&eacute;s sont desactiv&eacute;es,
-parce qu'elles ne fonctionnent pas correctement avec Firefox, par
-exemple la coloration syntaxique lors de l'&eacute;dition d'un niveau
-existant.
-Notez aussi que Chrome mobile (et plus g&eacute;n&eacute;ralement
+Notez que Chrome mobile (et plus g&eacute;n&eacute;ralement
 le navigateur install&eacute; par d&eacute;faut sur votre appareil)
 est beaucoup plus lent que Firefox pour
 faire les calculs (5 fois plus lent environ), en particulier le
 premier calcul dure plusieurs dizaines de secondes. De plus, Chrome
 n'a pas de support natif pour afficher les formules en 2d en mathml,
-on est donc oblig&eacute; de charger MathJax ce qui n&eacute;cessite
-un acc&egrave;s r&eacute;seau
-et peut donc &eacute;chouer.
+l'affichage 2d est d&eacute;sactive par d&eacute;faut
+(on peut l'activer, mais il faut alors charger MathJax ce qui n&eacute;cessite
+un acc&egrave;s r&eacute;seau et peut donc &eacute;chouer).
 <br>
 <strong>Il est donc fortement recommend&eacute; de t&eacute;l&eacute;charger
 Firefox et d'ex&eacute;cuter Xcas depuis Firefox</strong>
@@ -574,22 +589,20 @@ Firefox et d'ex&eacute;cuter Xcas depuis Firefox</strong>
   </span>
   
 <div>
-  <h1>Aide</h1>
 <button style="height:25px" 
   onclick="if(document.getElementById('help').style.display=='none')
   document.getElementById('help').style.display='block';
   else document.getElementById('help').style.display='none';"
-title="Montrer ou cacher le tutoriel">Tutoriel</button>
+title="Montrer ou cacher le tutoriel">Tuto</button>
 <button style="height:25px" 
   onclick="document.getElementById('manuels').style.display='block';"
-  title="Montrer ou cacher la liste des manuels">Manuels</button>
-  <br>
+  title="Montrer ou cacher la liste des manuels">Docs</button>
   <button style="width:40px;height:25px;vertical-align:top"
   title="Lance la recherche de l'aide courte" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
-  <textarea style="height:25px;font-size:large" id="helptxt"
-  title="Aide courte sur un nom de commande" rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
+  <textarea cols="12" style="height:25px;font-size:large" id="helptxt"
+  title="Aide courte sur un nom de commande" rows=1 onclick="UI.focused=this;" onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
   <button style="height:25px;vertical-align:top"
-  title="Efface l'aide" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Efface</button>
+  title="Efface l'aide" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Del</button>
 </div>
 
 <div id="divhelpoutput" style="max-height: 200px; overflow:auto">
@@ -661,7 +674,7 @@ id="add_y"
       <input type="button" style="width:29px;height:35px;"
   name="add_left_[" id="add_left_[" value="[]" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'[]');UI.moveCaret(UI.focused,-1);"
   title="[ sert de delimiteur ouvrant pour les vecteurs, listes et matrices, par exemple [1,2,3] ou [[1,2],[3,4]]">  
-      <input type="button" style="width:29px;height:35px;" name="add_%" id="add_%" value="%" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'%')" title="Sert a calculer dans Z/nZ, par exemple (3 % 7)^6">  
+      <input type="button" style="width:29px;height:35px;" id="add_abs" value="|.|" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'abs(')" title="Valeur absolue">  
       <input type="button" style="width:29px;height:35px;" name="add_pi" id="add_pi" value="π" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'pi')">
       <input type="button" style="width:29px;height:35px;" name="add_4" id="add_4" value="4" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'4')">  
       <input type="button" style="width:29px;height:35px;" name="add_5" id="add_5" value="5" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'5')">  
@@ -672,11 +685,13 @@ id="add_y"
   <tr>
     <td>
       <input type="button" style="width:29px;height:35px;"
-  name="add_z" id="add_z"
-  value="z" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'z')" title="z">  
+  id="add_beg"
+  value="beg" onmousedown="event.preventDefault()"
+  onClick="UI.setselbeg(UI.focused);" title="Debut selection">  
       <input type="button" style="width:29px;height:35px;"
-  name="add_t" id="add_t"
-  value="t" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'t')" title="t">  
+  id="add_end"
+  value="end" onmousedown="event.preventDefault()"
+  onClick="UI.setselend(UI.focused)" title="Fin selection">  
       <input type="button" style="width:29px;height:35px;" name="add_:"
 id="add_:"
   value=":" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,':')" title=":= effectue une affectation, par exemple a:=pi/2; sin(a)">
@@ -721,11 +736,11 @@ id="add_e"
     <td>
       <input type="button" style="width:29px;height:35px;"
   onmousedown="event.preventDefault()"
-  onClick="UI.moveCaret(UI.focused,-1)" name="curseur_gauche" id="curseur_gauche" value=" ← "  title="Deplace le curseur vers la gauche (utile pour les tablettes)">
+  onClick="UI.insert(UI.focused,'<');" id="add_inferieur" value="<"  title="Inf&eacute;rieur">
       <input type="button" style="width:29px;height:35px;" name="curseur_down" id="curseur_down"  value="↓" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="deplace le curseur vers le bas">
       <input type="button" style="width:29px;height:35px;"
   onmousedown="event.preventDefault()"
-  onClick="UI.moveCaret(UI.focused,1)" name="curseur_droit" id="curseur_droit" value=" → "  title="Deplace le curseur vers la droite (utile pour les tablettes)">
+  onClick="UI.insert(UI.focused,'>');" id="add_superieur" value=">"  title="Sup&eacute;rieur">
       <input type="button" style="width:29px;height:35px;" name="add_a" id="add_a" value="a" onmousedown="event.preventDefault()" onClick ="UI.insert(UI.focused,'a')">  
       <input type="button" style="width:29px;height:35px;" name="add_sin" id="add_sin"  value="sin" onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,'sin(')" title="fonction sinus, taper asin pour arcinus">        
       <input type="button" style="width:29px;height:35px;" name="add_cos"
@@ -817,17 +832,18 @@ id="add_limit"
       <input type="button" style="width:50px;height:35px"
   name="add_series" id="add_series" value="series"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(') ;UI.kbdonfuncoff();" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom"> 
-      <input type="button" style="width:29px;height:35px" name="add_space"
-id="add_space"
-  value=" " onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,' ')" title="Ajoute un espace">        
+      <input type="button" style="width:50px;height:35px"
+  name="add_seq" id="add_seq" value="seq"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'seq(') ;UI.kbdonfuncoff();"
+  title="seq permet de creer une sequence, par exemple seq(j^2,j,1,n) cree la sequence des carres des entiers de 1 a n"> 
     </td>
   </tr>
   <tr>
     <td>
       <input type="button" style="width:60px;height:35px" name="add_tabvar"
 id="add_tabvar"
-  value="tabvar" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tabvar(') ;UI.kbdonfuncoff();"
+  value="tabvar" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tabvar(,plot)');UI.moveCaret(UI.focused,-6);UI.kbdonfuncoff();"
   title="Etude de graphe de fonction ou de courbe parametrique, par exemple tabvar(sin(x)) ou tabvar([cos(2t),sin(3t)])">  
       <input type="button" style="width:60px;height:35px" name="add_plot"
 id="add_plot"
@@ -837,8 +853,10 @@ id="add_plot"
   name="add_plotparam" id="add_plotparam" value="param"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotparam(') ;UI.kbdonfuncoff();" title="Graphe d'une courbe en parametriques, par exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
       <input type="button" style="width:60px;height:35px"
-  name="add_plotpolar" id="add_plotpolar" value="polar"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(');UI.kbdonfuncoff();" title="Graphe d'une courbe en polaires, par exemple plotpolar(exp(r),r=-3..3)">  
+  name="add_plotfield" id="add_plotfield" value="field"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'plotfield(');UI.kbdonfuncoff();"
+  title="Champ des tangentes, par exemple plotfield(sin(t*y),[t=-5..5,y=-3..3],xstep=0.5,ystep=0.5))">  
       <input type="button" style="width:60px;height:35px"
   name="add_plotimplicit" id="add_plotimplicit" value="implicit"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotimplicit(');UI.kbdonfuncoff();" title="Graphe d'une courbe implicite, par exemple plotimplicit(x^2+x*y+y^2=3)">  
@@ -848,26 +866,38 @@ id="add_plot"
   <tr>
     <td>
       <input type="button" style="width:29px;height:35px" name="add_//"
-id="add_//"
-  value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'//')" title="commentaire">        
+      id="add_//"
+      value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'//');UI.kbdonfuncoff();" title="commentaire">        
+      <input type="button" style="width:29px;height:35px" name="add_space"
+      id="add_space"
+      value=" " onmousedown="event.preventDefault()"
+      onClick="UI.insert(UI.focused,' ')" title="Ajoute un espace">        
+      <input type="button" style="width:29px;height:35px" name="add_nlprog"
+      id="add_nlprog"
+      value="\n" onmousedown="event.preventDefault()"
+      onClick="UI.insert(UI.focused,'\n')" title="Ajoute un saut de ligne">        
+      <input type="button" style="width:29px;height:35px" 
+      id="add_indent"
+      value="->/" onmousedown="event.preventDefault()"
+      onClick="UI.indentline(UI.focused);" title="Indente la ligne courante">        
       <input type="button" style="width:29px;height:35px" name="add_test"
 id="add_test"
-  value="si" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20)" title="inverse">        
+      value="si" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20);UI.kbdonfuncoff();" title="inverse">        
       <input type="button" style="width:40px;height:35px" name="add_pour"
 id="add_pour"
-  value="pour" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\npour  de  jusque  faire\n    \n  fpour;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,3);" title="logarithme a base 10">        
+      value="pour" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\npour  de  jusque  faire\n\nfpour;');UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.moveCaret(UI.focused,3);UI.indentline(UI.focused);UI.kbdonfuncoff();" title="logarithme a base 10">        
       <input type="button" style="width:55px;height:35px" name="add_tantque"
-id="add_tantque"
-  value="tantque" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\ntantque  faire\n    \n  ftantque;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,6);" title="logarithme a base 10">        
+      id="add_tantque"
+      value="tantque" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\ntantque  faire\n\nftantque;');UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.moveCaret(UI.focused,6);UI.indentline(UI.focused);UI.kbdonfuncoff();" title="logarithme a base 10">        
       <input type="button" value="fonction" style="width:55px;height:35px" id="add_function" onclick="if(document.getElementById('assistant_prog').style.display=='none'){
       document.getElementById('assistant_prog').style.display='block';
      }      
      else {
       document.getElementById('assistant_prog').style.display='none';
-     } UI.focused.focus();">
+     } UI.focused.focus();UI.kbdonfuncoff();">
       <input type="button" style="width:46px;height:35px" name="add_debug"
 id="add_debug"
-  value="debug" onmousedown="event.preventDefault()"
+  value="dbg" onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'debug(')" title="Mettre au point">        
     </td>
   </tr>
@@ -878,35 +908,35 @@ id="add_debug"
 	  liste des arguments <textarea id="argsname" title="Arguments de la fonction s&eacute;par&eacute;s par des virgules" rows=1>x,y</textarea><br>
 	  variables locales <textarea id="localvars" title="Variables locales, s&eacute;par&eacute;s par des virgule" rows=1>z</textarea><br>
 	  valeur renvoy&eacute;e <textarea id="returnedvar" title="Valeur de retour" rows=1>z</textarea><br>
-	  <button style="height:25px" onclick="UI.insert(UI.focused,'fonction '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+')\n  var '+document.getElementById('localvars').value+';\n  \n  retourne '+document.getElementById('returnedvar').value+';\nffonction:;\n');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);document.getElementById('assistant_prog').style.display='none';">Cr&eacute;er</button> <button style="height:25px" onclick="document.getElementById('assistant_prog').style.display='none'">Annuler</button><br>
+	  <button style="height:25px" onclick="UI.insert(UI.focused,'fonction '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+')\n  local '+document.getElementById('localvars').value+';\n  \n  retourne '+document.getElementById('returnedvar').value+';\nffonction:;\n');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);document.getElementById('assistant_prog').style.display='none';">Cr&eacute;er</button> <button style="height:25px" onclick="document.getElementById('assistant_prog').style.display='none'">Annuler</button><br>
       </div>
 
 <br>
 
 <span contextmenu="cmdmenu" title="F1: aide sur le mot-clef avant le curseur. Clic droit (Firefox): menu des commandes">
-  <button style="width:35px;height:35px;color:green" id="button_ok" onclick="if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'');}" title="Evaluer la ligne de commande">
-<strong>ok</strong></button>
- <button style="width:35px;height:35px" id="button_help" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">?</button>
-  <button style="width:35px;height:35px" id="button_123" onmousedown="event.preventDefault()" 
+      <button style="width:35px;height:35px;color:green" id="button_ok" onclick="if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'');}" title="Evaluer la ligne de commande">
+      <strong>ok</strong></button>
+      <button style="width:33px;height:35px;" id="button_gauche" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"   title="Deplace vers la gauche le curseurC"> ← </button>
+      <button type="button" style="width:29px;height:35px;" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur"> → </button>
+      <button style="width:37px;height:35px" id="button_cmd" onmousedown="event.preventDefault()"
+      onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0)MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
+      title="Focus sur la ligne de commande"><strong>cmd</strong></button>
+      <button style="width:33px;height:35px;" name="select_button"
+      id="select_button" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">sel</button>
+      <button style="width:33px;height:35px" id="button_del" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Efface 1 caract&egrave;re">del</button>
+      <button style="width:35px;height:35px" id="button_help" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">?</button>
+<button style="width:35px;height:35px" id="button_123" onmousedown="event.preventDefault()" 
   onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
   title="Montrer ou cacher le clavier scientifique">123</button>
   <button style="width:35px;height:35px" id="button_util" onmousedown="event.preventDefault()"
   onclick="UI.show_menu();"
   title="Montrer ou cacher des commandes frequentes">menu</button>
-<button style="width:33px;height:35px;" name="select_button"
-  id="select_button" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">sel</button>
-<button style="width:33px;height:35px" id="button_del" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Efface 1 caract&egrave;re">del</button>
-      <button style="width:33px;height:35px;" id="button_gauche" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"   title="Deplace vers la gauche le curseur sur mobiles ou le focus sur PC"> ← </button>
-      <button type="button" style="width:29px;height:35px;" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur sur mobiles ou le focus sur PC"> → </button>
-   <button style="width:37px;height:35px" id="button_cmd" onmousedown="event.preventDefault()"
-  onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0)MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
-  title="Focus sur la ligne de commande"><h1>cmd</h1></button>
 &nbsp;
 <button id="stop_button" style="height:25px;visibility:hidden" onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){ UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. Toutes les variables ont ete effacees.');}" title="Termine la session en cours">STOP</button>
 
 <br>
 <textarea name="entree" id="entree" title="Taper une commande ici puis Entree pour valider" style="font-size:18px;width:98%"
-  rows=1 onkeypress="UI.focused=this; if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
+  rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
 </span>
 </br>
 <h1>Console</h1>
@@ -1506,6 +1536,28 @@ id="add_debug"
     document.getElementById('keyboard').style.display='inline';
     document.getElementById('keyboardfunc').style.display='none';
   },
+  restorefrom:function(c){
+    var s=UI.readCookie(c);
+    //console.log(s);
+    UI.restoresession(s,document.getElementById('mathoutput'),true,false);
+    document.getElementById('loadfile_cookie').innerHTML='';
+  },
+  listCookies:function() { // list cookies with name begin == ' xcas__'
+    var theCookies = document.cookie.split(';');
+    var aString = '';
+    for (var i = 0 ; i < theCookies.length; i++) {
+        // console.log(i,theCookies[i].substr(0,7));
+        var tmp=theCookies[i];
+        var pos=tmp.search('=');
+        if (pos>7 && tmp.substr(0,7)==' xcas__' ){
+          var tmpname=tmp.substr(7,pos-7);
+          aString += "<button onclick=\"UI.restorefrom('"+tmp.substr(1,pos-1)+"')\">"+tmpname+"</button>\n";
+        }
+    }
+    aString += "<button onclick=document.getElementById('loadfile_cookie').innerHTML=''>annuler</button>\n"
+    //console.log(aString);
+    return aString;
+  },
   createCookie:function(name,value,days) {
 	if (days) {
 	  var date = new Date();
@@ -1567,7 +1619,7 @@ id="add_debug"
    if (n<0 || n>=value.length)
      value='add_autosimplify('+value+')';
    var s,err;
-   try {s=docaseval(value); } catch(err){ }
+   try {s=docaseval(value); } catch(err){ console.log(err); }
    // Module.print(text+ ' '+s);
    return s;
   },
@@ -1676,7 +1728,7 @@ var hashParams=chaine.split('&');
  },
   link: function(start){
    var s=UI.makelink(start);
-   console.log(s);
+   //console.log(s);
    UI.createCookie('xcas_session',s,365);
    if (s.length>0){
      s = UI.base_url+"xcasfr.html#"+s;
@@ -1806,7 +1858,7 @@ show_menu:function(){
    var form=document.getElementById('config');
    var hw=window.innerWidth,hh=window.innerHeight;
    if (hw>=1000){ hw=hw-50; UI.focusaftereval=true;}
-   if (hw<=500){ UI.focusaftereval=false;}
+   if (hw<=500){ UI.focusaftereval=false; document.getElementById('exportbutton').style.display='none';}
    form.history_width.value=hw;
    form.outdiv_width.value=Math.floor(hw/2);
    document.getElementById('mathoutput').style.maxWidth=hw;
@@ -1822,28 +1874,29 @@ show_menu:function(){
    st.innerHTML=s;
 var kbd_l=["add_newline","add_'","add_,","add_left_paren",
 "add_right_paren" ,"add_i","add_7" ,"add_8" ,"add_9" ,"add_/",
-"add_x" ,"add_y","add_semi" ,"add_left_[" ,"add_%" ,"add_pi" ,
-"add_4" ,"add_5" ,"add_6" ,"add_*" ,"add_z","add_t","add_:",
+"add_x" ,"add_y","add_semi" ,"add_left_[" ,"add_abs" ,"add_pi" ,
+"add_4" ,"add_5" ,"add_6" ,"add_*" ,"add_beg","add_end","add_:",
 "add_left_{" ,"add_!" ,"add_∞","add_1" ,"add_2" ,
 "add_3" ,"add_-" ,"copy_button" ,"curseur_up","add-=" ,"add__" ,
 "add_exp","add_ln","add_e","add_0" ,"add_." ,
-"add_+" ,"curseur_gauche","curseur_down" ,"curseur_droit","add_a" ,"add_sin" ,"add_cos",
+"add_+" ,"add_inferieur","curseur_down" ,"add_superieur","add_a" ,"add_sin" ,"add_cos",
 "add_tan","add_sq","add_sqrt","add_^"];
 var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
-"button_gauche","button_droit","select_button","button_del"];
+"button_gauche","button_droit","select_button","button_del",
+"add_//","add_space","add_nlprog","add_indent","add_test",
+"add_pour","add_tantque","add_function","add_debug",];
 var kbd_util=["add_simplify" ,"add_normal",
 "add_factor" ,"add_partfrac","add_tcollect","add_texpand","add_solve","add_csolve",
 "add_linsolve","add_fsolve" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
-"add_integrate" ,"add_limit","add_series" ,"add_tabvar","add_plot",
-"add_plotparam" ,"add_plotpolar","add_plotimplicit" ,"add_//","add_space","add_test",
-"add_pour","add_tantque","add_function","add_debug","add_curseur"];
+"add_integrate" ,"add_limit","add_series","add_seq","add_tabvar","add_plot",
+"add_plotparam" ,"add_plotfield","add_plotimplicit","add_curseur"];
    w=Math.floor(hw/12); w=w+"px"; 
    h=Math.floor(hh/20); if (h<30) h=30; h=h+"px"; // console.log(hw,w,hh,h);
    for (var i=0;i<kbd_l.length;i++){
      document.getElementById(kbd_l[i]).style.width=w;
      document.getElementById(kbd_l[i]).style.height=h;
    }
-   w=Math.floor(hw/11); if (w<34) w=34; w=w+"px"; 
+   w=Math.floor(hw/11)-1; if (w<33) w=33; w=w+"px"; 
    h=Math.floor(hh/20); if (h<35) h=35; h=h+"px"; // console.log(hw,w,hh,h);
    for (var i=0;i<kbd_cmd.length;i++){
      document.getElementById(kbd_cmd[i]).style.width=w;
@@ -1894,7 +1947,7 @@ var kbd_util=["add_simplify" ,"add_normal",
   set_config:function(){
    var form=document.getElementById('config');
    var s=UI.config_string();
-   console.log(s);
+   //console.log(s);
    UI.addhelp(' ',s);
    document.getElementById('config').style.display='none';
    if (UI.focusaftereval) UI.focused.focus();
@@ -1915,7 +1968,14 @@ var kbd_util=["add_simplify" ,"add_normal",
    UI.createCookie('xcas_outdiv_height',form.outdiv_height.value,10000);
   },
   savesession:function(i){
+    // console.log('save_session',i);
     var s;
+    filename=document.getElementById("outputfilename").value;
+    if (i==2) {
+      UI.createCookie('xcas__'+filename,UI.makelink(0),9999);
+      console.log(UI.listCookies());
+      return;
+    }
     if (i==1){
       s=document.getElementById("fulldocument").innerHTML;
       s='<html id="fulldocument" manifest="xcas.appcache">'+s+'</html>';
@@ -1924,7 +1984,6 @@ var kbd_util=["add_simplify" ,"add_normal",
       s=document.getElementById("mathoutput").innerHTML;
     }
     var blob = new Blob([s], {type: "text/plain;charset=utf-8"});
-    filename=document.getElementById("outputfilename").value;
     if (i==1) filename += ".html"; else filename += ".xw";
     saveAs(blob,filename);
   },
@@ -2080,6 +2139,7 @@ var kbd_util=["add_simplify" ,"add_normal",
   },
   eval_cmdline: function(){
    var value;
+   document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none';
    if (cmentree.type!='textarea') value=cmentree.getValue(); else value=entree.value;
    UI.eval_cmdline1(value,true);
   },
@@ -2142,6 +2202,7 @@ var kbd_util=["add_simplify" ,"add_normal",
            s='latex(quote('+out+'))';
          else
            s='mathml(quote('+out+'),1)'; //Module.print(s);
+         //console.log(s);
          s=UI.caseval(s);
         } else s=out;
    }
@@ -2240,7 +2301,7 @@ var kbd_util=["add_simplify" ,"add_normal",
   // field=field.previousSibling;
   if (field.type!='textarea'){ var t=field.getTextArea(); t.value=field.getValue();field=t;}
   var s=field.value;
-  console.log(s);
+  //console.log(s);
   var par=field.parentNode;
   par=par.parentNode;
   s=UI.eval(s+postcmd,s);
@@ -2349,7 +2410,7 @@ addcomment: function(text){
   addinput: function(textin,textout,mathmlout){
   document.getElementById('startup_restore').style.display='none'
   //console.log(textout,mathmlout); 
-  if (textout.length>=12 && textout.substr(0,12)=='Done_graphic'){ document.getElementById('boutons_3d').style.display='inherit';document.getElementById('boutons_3d0').style.display='inherit';}
+  if (mathmlout.length>=5 && mathmlout.substr(0,5)=='gl3d '){ document.getElementById('boutons_3d').style.display='inherit';document.getElementById('boutons_3d0').style.display='inherit';}
   if (textin.length > 2 && textin.substr(0,2)=='//') return UI.addcomment(textin);
          UI.show_history123();
 // document.getElementById('mathoutput').style.listStyleType = 'none';
@@ -2407,7 +2468,7 @@ addcomment: function(text){
     }
   }
   if (delbut) s += '</tr>'; else s += UI.erase_button();
-      console.log(s);
+  // console.log(s);
   return s;
 },
 giac_renderer: function(text){
@@ -2532,6 +2593,7 @@ var endPos = field.selectionEnd;
   return selectedText;
   },
 move_caret_or_focus:function(field,n){
+ UI.moveCaret(field,n); return;
  if (UI.detectmob()){ UI.moveCaret(field,n); return; }
  while(n>=1){ UI.move_focus(field,1); n--; }
  while(n<=-1){ UI.move_focus(field,-1); n++; }
@@ -2625,6 +2687,35 @@ move_focus:function(field,n){
   var par=field.parentNode.previousSibling.firstChild;
   par.focus();
   UI.switch_buttons(par.parentNode.parentNode,true) 
+},
+selline:0,
+selch:0,
+setselbeg:function(field){
+  if (field.type!="textarea"){
+    var pos=field.getCursor(); // save position
+    UI.selline=pos.line; UI.selch=pos.ch;
+    //console.log(UI.selline,UI.selch);
+    return;
+  }
+  UI.selch=field.selectionStart;
+},
+setselend:function(field){
+  if (field.type!="textarea"){
+    var startpos=field.getCursor(); // current position
+    field.setSelection({line: UI.selline,ch:UI.selch },startpos);
+    field.refresh();
+    UI.selection=field.getSelection();
+    return;
+  }
+  var pos1=field.selectionStart;
+  var pos2=UI.selch;
+  if (pos2>field.value.length) pos2=field.value.length;
+  if (pos1>pos2){ var tmp=pos1; pos1=pos2; pos2=tmp; }
+  field.setSelectionRange(pos1,pos2);
+  UI.selection=field.value.substr(pos1,pos2-pos1);
+},
+indentline:function(field){
+ if (field.type!='textarea') field.execCommand('indentAuto');
 },
 moveCaret: function(field, charCount) {
   if (field.type!="textarea"){
@@ -2810,10 +2901,11 @@ updatelevel: function(field){
     }
   },
 insert: function(myField, myValue) {
- console.log(myValue);
+ //console.log(myValue);
  if (UI.focusaftereval) myField.focus();
  if (myField.type!="textarea"){
   myField.replaceSelection(myValue);
+  myField.execCommand("indentAuto");
   var t=myField.getTextArea(); t.value=myField.getValue();
  }
  else {
@@ -2955,7 +3047,7 @@ insert: function(myField, myValue) {
   //UI.caseval('abc(x=0); [x, y]; z+1;');
   var form=document.getElementById('config');
   var hw=window.innerWidth-50;  
-  if (hw>=1000){ UI.qa=true; UI.usecm=true; form.qa.checked=true; form.usecm.checked=true;} else {UI.qa=false;UI.usecm=false; form.qa.checked=false; form.usecm.checked=false;}
+  if (hw>=1000){ UI.qa=true; UI.usecm=true; form.qa.checked=true; form.usecm.checked=true;} else {UI.qa=false;UI.usecm=true; form.qa.checked=false; form.usecm.checked=true;}
   // config in cookies
   var ck;
   ck=UI.readCookie('xcas_digits');

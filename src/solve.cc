@@ -645,7 +645,12 @@ namespace giac {
 	}
       }
 #if 1
-      *logptr(contextptr) << gettext("Unable to isolate ")+string(x.print(contextptr))+" in "+e.print(contextptr) << gettext(", switching to approx. solutions") << endl;
+      string msg=gettext("Unable to isolate ")+string(x.print(contextptr))+" in "+e.print(contextptr);
+      if (calc_mode(contextptr)==1){
+	v.push_back(undef); // (string2gen(msg,false));
+	return;
+      }
+      *logptr(contextptr) << msg+gettext(", switching to approx. solutions") << endl;
       gen a=_fsolve(makesequence(e,x),contextptr);
       if (a.type==_VECT)
 	v=mergevecteur(v,*a._VECTptr);
@@ -1406,8 +1411,12 @@ namespace giac {
     }
     switch (e.type){
     case _IDNT:
-      if (*e._IDNTptr==x && !equalposcomp(find_excluded(x,contextptr),zero))
-	addtolvar(zero,v);
+      if (*e._IDNTptr==x){ 
+	vecteur newv(1,0);
+	solve_ckrange(x,newv,isolate_mode,contextptr);
+	if (!newv.empty())
+	  addtolvar(zero,v);
+      }
       return;
     case _SYMB:
       if ( e._SYMBptr->sommet==at_pow && ck_is_strictly_positive(e._SYMBptr->feuille._VECTptr->back(),contextptr) ){
@@ -1863,6 +1872,7 @@ namespace giac {
       }
       if (listvars.size()!=1)
 	return vecteur(1,gensizeerr(gettext("Unable to isolate ")+gen(listvars).print(contextptr)+gettext(" solving equation ")+expr.print(contextptr)));
+      vecteur assumedvars;
       for (int i=0;i<s;++i){
 	gen lsvar=ls[3*i+2];
 	gen ls3i=subst(ls[3*i],substin,substout,false,contextptr);
@@ -1870,8 +1880,10 @@ namespace giac {
 	  continue;
 	substin.push_back(lsvar);
 	gen tmp("c__"+print_intvar_counter(contextptr),contextptr);
-	if (!(ls[3*i+1].val %2))
+	if (!(ls[3*i+1].val %2)){
 	  assumesymbolic(symb_superieur_egal(tmp,0),0,contextptr); 
+	  assumedvars.push_back(tmp);
+	}
 	listvars.push_back(tmp);
 	substout.push_back(tmp);
 	equations.push_back(pow(tmp,ls[3*i+1],contextptr)-ls3i);
@@ -1920,6 +1932,7 @@ namespace giac {
 	  *logptr(contextptr) << gettext("Warning, solutions were not checked!") << endl;
 	res=fullres;
       }
+      purgenoassume(assumedvars,contextptr);
       return res;
     }
     lv=lvarx(expr,x);
@@ -3371,7 +3384,7 @@ namespace giac {
       if (i!=w.size())
 	return gensizeerr(gettext("fsolve([equations],[variables],[guesses])"));
       if (s==2 && _sort(lvar(v0),contextptr)==_sort(v[1],contextptr))
-	return gsolve(*v0._VECTptr,*v[1]._VECTptr,complex_mode(contextptr),evalf_after,contextptr);
+	return evalf(gsolve(*v0._VECTptr,*v[1]._VECTptr,complex_mode(contextptr),evalf_after,contextptr),1,contextptr);
     }
     if (s==2 && v[1].type==_IDNT){ 
       // no initial guess, check for poly-like equation

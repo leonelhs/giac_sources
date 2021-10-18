@@ -1176,17 +1176,125 @@ namespace giac {
     return v;
   }
 
+  bool poly2symbmat(matrice & A,const gen & var,GIAC_CONTEXT){
+    iterateur it=A.begin(),itend=A.end();
+    for (;it!=itend;++it){
+      if (it->type!=_VECT) return false;
+      iterateur jt=it->_VECTptr->begin(),jtend=it->_VECTptr->end();
+      for (;jt!=jtend;++jt){
+	*jt=_poly2symb(makesequence(*jt,var),contextptr);
+      }
+    }
+  }
+
+  bool unmod(std_matrix<gen> & a,const gen & p){
+    for (size_t i=0;i<a.size();++i){
+      dbgprint_vector<gen> & v=a[i];
+      for (size_t j=0;j<v.size();++j){
+	gen & g=v[j];
+	if (g.type==_MOD){
+	  if (*(g._MODptr+1)!=p)
+	    return false;
+	  g=unmod(g);
+	}
+	if (g.type==_VECT){
+	  iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
+	  for (;it!=itend;++it){
+	    gen & h =*it;
+	    if (h.type==_MOD){
+	      if (*(h._MODptr+1)!=p)
+		return false;
+	      h=unmod(h);
+	    }
+	  }
+	}
+      }
+    }
+    return true;
+  }
+
+  bool hnf(const matrice & Aorig,const gen & var,matrice & U,matrice & A,matrice & V,bool do_smith,GIAC_CONTEXT){
+    std_matrix<gen> aorig,u,a,v;
+    if (var.type==_VECT){ 
+      if (var._VECTptr->empty())
+	matrice2std_matrix_gen(Aorig,aorig);
+      else
+	return false; // multivariate polynomial are not yet allowed
+    }
+    else {
+      gen tmp=_symb2poly(makesequence(Aorig,var),contextptr);
+      if (!ckmatrix(tmp))
+	return false;
+      matrice2std_matrix_gen(*tmp._VECTptr,aorig);
+    }
+    // fixme, detect modular computation
+    environment env;
+    gen g=aorig[0][0];
+    if (g.type==_VECT && g._VECTptr->back().type==_MOD){
+      env.modulo=*(g._VECTptr->back()._MODptr+1);
+      env.moduloon=true;
+      if (!unmod(aorig,env.modulo))
+	return false;
+    }
+    else 
+      env.moduloon=false;
+    if (do_smith){
+      if (!smith(aorig,u,a,v,&env,contextptr))
+	return false;
+    }
+    else {
+      if (!hermite(aorig,u,a,&env,contextptr))
+	return false;
+    }
+    std_matrix_gen2matrice_destroy(u,U);
+    std_matrix_gen2matrice_destroy(a,A);
+    if (do_smith)
+      std_matrix_gen2matrice_destroy(v,V);
+    if (var.type!=_VECT || !var._VECTptr->empty()) {
+      poly2symbmat(U,var,contextptr);
+      poly2symbmat(A,var,contextptr);
+      if (do_smith)
+	poly2symbmat(V,var,contextptr);
+    }
+    if (env.moduloon){
+      U=*makemod(U,env.modulo)._VECTptr;
+      A=*makemod(A,env.modulo)._VECTptr;
+      if (do_smith)
+	V=*makemod(V,env.modulo)._VECTptr;
+    }
+    return true;
+  }
+
   gen _hermite(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     int n;
     gen a,x;
-    if (!find_n_x(args,n,x,a))
+    if (!find_n_x(args,n,x,a)){
+      matrice U,A,V; // U invertible and A such that U*args==A
+      if (ckmatrix(args) && hnf(*args._VECTptr,ggb_var(args),U,A,V,false,contextptr))
+	return makesequence(U,A);	
+      if (args.type==_VECT && args._VECTptr->size()==2 && ckmatrix(args._VECTptr->front()) && hnf(*args._VECTptr->front()._VECTptr,args._VECTptr->back(),U,A,V,false,contextptr))
+	return makesequence(U,A);
       return gensizeerr(contextptr);
+    }
     return r2e(hermite(n),x,contextptr);
   }
   static const char _hermite_s[]="hermite";
   static define_unary_function_eval (__hermite,&_hermite,_hermite_s);
   define_unary_function_ptr5( at_hermite ,alias_at_hermite,&__hermite,0,true);
+
+  gen _smith(const gen & args,GIAC_CONTEXT){
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    matrice U,A,V; // U invertible and A such that U*args==A
+    if (ckmatrix(args) && hnf(*args._VECTptr,ggb_var(args),U,A,V,true,contextptr))
+      return makesequence(U,A,V);	
+    if (args.type==_VECT && args._VECTptr->size()==2 && ckmatrix(args._VECTptr->front()) && hnf(*args._VECTptr->front()._VECTptr,args._VECTptr->back(),U,A,V,true,contextptr))
+      return makesequence(U,A,V);
+    return gensizeerr(contextptr);
+  }
+  static const char _smith_s[]="smith";
+  static define_unary_function_eval (__smith,&_smith,_smith_s);
+  define_unary_function_ptr5( at_smith ,alias_at_smith,&__smith,0,true);
 
   vecteur laguerre(int n){
     // L_k(x)=v_k(x)/k!

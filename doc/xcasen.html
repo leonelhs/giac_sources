@@ -16,7 +16,7 @@ div.emscripten { text-align: center; }
 </style>
 
 <style id="document_style" type="text/css">
-h1,h2,h3 { display:inline; }
+h1,h2,h3 { display:inline; font-size:1em;}
 input[type="number"] {
    width:40px;
 }
@@ -174,19 +174,35 @@ document.onkeydown = applyKey;
 </script>
 
 <div id="startup1" style="display:none">
-  You can display the tutorial by clicking on the Tutorial button below.
-  <br>You can install Xcas on Android devices
-  by unzipping 
-  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
-  xcashtml.zip</a> in the <tt>/sdcard</tt> directory, then search
-  <tt>xcasfr</tt>, it might be
-  <a href="file:///sdcard/xcasoffline/xcasfr.html"><tt>/sdcard/xcasoffline/xcasfr.html</tt></a>
-  or <a
-  href="file:///sdcard/xcasoffline/AndroZip/xcasfr.html"><tt>/sdcard/xcasoffline/AndroZip/xcasfr.html</tt></a>
+  You can display the tutorial by clicking on the <button style="height:25px"  
+  onclick="if(document.getElementById('help').style.display=='none')
+  document.getElementById('help').style.display='block';
+  else document.getElementById('help').style.display='none';"
+title="Show or hide tutorial">Tuto</button>
+ button.
   </div>
 <div id="startup">
+  You can install Xcas on your device locally
+  by unzipping 
+  <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
+  xcashtml.zip</a> or
+  <a
+  href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.tgz">
+  xcashtml.tgz</a>
+  in the <tt>/sdcard</tt> directory, then search
+  <tt>xcasen</tt>, it might be
+  <a href="file:///sdcard/xcasoffline/xcasfr.html"><tt>/sdcard/xcasoffline/xcasen.html</tt></a>
+  or <a
+  href="file:///sdcard/xcasoffline/AndroZip/xcasfr.html"><tt>/sdcard/xcasoffline/AndroZip/xcasen.html</tt></a>
+  <br>
   If Xcas does not work correctly, clear your browser cache and reload
   the page, with Firefox if possible.
+</div>
+<div id="startup_restore" style="display:none">
+  You can load your previous session inputs 
+  <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),true,false);">without evaluation</button>
+  or <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">with evaluation</button>
+<hr>
 </div>
 
 <span id="apropos" style="display:none">
@@ -245,7 +261,7 @@ Initial Mathml and SVG code by J.P. Branchard.
       <input style="height:25px" type="button" value="Q/A on same line" onclick="qa.checked=!qa.checked">  <input style="height:25px" type="checkbox" name="qa"
   title="Check to display commands and results on the same level">,
       <input style="height:25px" type="button" value="Syntax highlight" onclick="usecm.checked=!usecm.checked"> <input style="height:25px" type="checkbox" name="usecm"
-  title="Syntax highlight during edit of history levels"> (does not work on mobiles),
+  title="Syntax highlight during edit of history levels">,
     </td>
   </tr>
   <tr>
@@ -291,46 +307,41 @@ Initial Mathml and SVG code by J.P. Branchard.
 <table>
   <tr>
     <th rowspan=2>
-<button onclick="if(document.getElementById('apropos').style.display=='none')
-  document.getElementById('apropos').style.display='block';
-  else document.getElementById('apropos').style.display='none';"
-title="Show/hide informations about Xcas in your browser">
-<img WIDTH="64" HEIGHT="64" SRC="logo.png" alt="Xcas">
-</button>
-      </th>
-      <td>
-	
-<button style="height:25px" title="Click here to append a saved session to the current history" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Insert</button>
-<form id="loadfile" style="display:none">
-<input id="loadfileinput" accept=".xw" type="file" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
-<input type="text" value="cancel" onclick="form.style.display='none'">
-<input type="submit" value="ok" style="display:none">
-</form>
-    <span id="history1" style="visibility:hidden">
-<button style="height:25px" title="Click here to export the session as a HTML file (filename in the next text field)" onclick='UI.savesession(1);'>Export</button>
-<button style="height:25px" title="Click here to save the session (filename in the next text field)" onclick='UI.savesession(0);'>Save</button>
-<textarea id="outputfilename" class="filenamecss"
-	style="font-size:large" title="Filename. If you want to overwrite files with Firefox, check Ask always... in Settings, General, Download">session</textarea>
-<span id='thelink'></span>
-<span id='themailto'></span>
-	</span>
+      <button onclick="if(document.getElementById('apropos').style.display=='none')
+      document.getElementById('apropos').style.display='block';
+      else document.getElementById('apropos').style.display='none';"
+      title="Show/hide informations about Xcas in your browser">
+      <img WIDTH="48" HEIGHT="48" SRC="logo.png" alt="Xcas">
+      </button>
+    </th>
+    <td>
+      <h3>Session</h3>
+      <span id='thelink'></span>
+      <span id='themailto'></span>
+      <button style="height:25px" onclick="UI.show_config()"
+      title="Change configuration">Config</button>
     </td>
   </tr>
-<tr>
-  <td>
-<button style="height:25px"  
-  onclick="if(document.getElementById('help').style.display=='none')
-  document.getElementById('help').style.display='block';
-  else document.getElementById('help').style.display='none';"
-title="Show or hide tutorial">Tutorial</button>
-<button style="height:25px" 
-  onclick="document.getElementById('manuels').style.display='block';"
-title="Show or hide the list of manuals">Manuals</button>
-    <button style="height:25px" onclick="UI.show_config()" title="Change configuration">Configure</button>
-</td>
-</tr>
+  <tr>
+    <td>
+      <button id="loadbutton_cookie" style="height:25px" title=""Click here to append a saved session to the current history" onclick="document.getElementById('loadfile_cookie').innerHTML=UI.listCookies();">Load</button>
+      <span id="loadfile_cookie"></span>	
+      <button id="loadbutton_file" style="height:25px;display:none" title="Click here to append a saved session to the current history" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Insert</button>
+      <form id="loadfile" style="display:none">
+      <input id="loadfileinput" accept=".xw" type="file" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
+      <input type="text" value="cancel" onclick="form.style.display='none'">
+      <input type="submit" value="ok" style="display:none">
+      </form>
+      <span id="history1" style="visibility:hidden">
+      <button id="exportbutton" style="height:25px" title="Click here to export the session as a HTML file (filename in the next text field)" onclick='UI.savesession(1);'>Export</button>
+      <button style="height:25px" title="Click here to save the session (filename in the next text field)" onclick="if (document.getElementById('loadbutton_file').style.display=='none') UI.savesession(2); else UI.savesession(0);">Save</button>
+      <textarea id="outputfilename" class="filenamecss"
+      style="font-size:large" title="Filename. If you want to overwrite files with Firefox, check Ask always... in Settings, General, Download">session</textarea>
+      </span>
+    </td>
+  </tr>
 </table>
-<span id="help">
+<span id="help" style="display:none">
 <button style="height:25px" 
 onclick="document.getElementById('help').style.display='none';">Hide tutorial</button>
 <br>
@@ -427,6 +438,24 @@ with the commandline, please use the del key above.</b><br>
 onclick="document.getElementById('help').style.display='none';">Hide tutorial</button>
 </span>
 
+<div>
+<button style="height:25px"  
+  onclick="if(document.getElementById('help').style.display=='none')
+  document.getElementById('help').style.display='block';
+  else document.getElementById('help').style.display='none';"
+title="Show or hide tutorial">Tuto</button>
+<button style="height:25px" 
+  onclick="document.getElementById('manuels').style.display='block';"
+title="Show or hide the list of manuals">Docs</button>
+  <button style="width:45px;height:25px;vertical-align:top" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
+  <textarea cols="12" style="height:25px;font-size:large" id="helptxt" rows=1 onclick="UI.focused=this;" onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
+  <button style="width:45px;height:25px;vertical-align:top" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Del</button>
+</div>
+  
+<div id="divhelpoutput" style="max-height: 200px; overflow:auto">
+<table id="helpoutput" title="Aide"
+  style="max-width:1000px "></table>
+</div>
 <div id="history4" style="display:none">
   <h3>Variables</h3>
   <button style="height:25px"  name="add_purge" 
@@ -434,17 +463,6 @@ onclick="document.getElementById('help').style.display='none';">Hide tutorial</b
   onClick="UI.insert(UI.focused,'purge(')" title="Clear content of one or more variables, for example purge(a) or purge(a,b,c)">purge</button>
   <button style="height:25px" onclick="UI.addhelp(' ','VARS(1)')" title="Show list of variables/values">List</button>
   <button style="height:25px" onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Erase content for all variables">Erase</button>
-</div>
-<div>
-  <h3>Help</h3>
-  <button style="width:45px;height:25px;vertical-align:top" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
-  <textarea style="height:25px;font-size:large" id="helptxt" columns=15 rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
-  <button style="width:45px;height:25px;vertical-align:top" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Clear</button>
-</div>
-  
-<div id="divhelpoutput" style="max-height: 200px; overflow:auto">
-<table id="helpoutput" title="Aide"
-  style="max-width:1000px "></table>
 </div>
 <hr>
 
@@ -504,7 +522,9 @@ id="add_y"
       <input type="button" style="width:30px;height:35px"
   name="add_left_[" id="add_left_[" value="[]" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'[]');UI.moveCaret(UI.focused,-1);"
   title="[ is an open delimiter for vectors, lists and matrices, for example [1,2,3] or [[1,2],[3,4]]">  
-      <input type="button" style="width:30px;height:35px" name="add_%" id="add_%" value="%" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'%')" title="Sert a calculer dans Z/nZ, for example (3 % 7)^6">  
+      <input type="button" style="width:29px;height:35px;"
+  id="add_abs" value="|.|" onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'abs(')" title="Absolute value">  
       <input type="button" style="width:30px;height:35px" name="add_pi" id="add_pi" value="π" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'pi')">
       <input type="button" style="width:30px;height:35px" name="add_4" id="add_4" value="4" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'4')">  
       <input type="button" style="width:30px;height:35px" name="add_5" id="add_5" value="5" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'5')">  
@@ -514,12 +534,14 @@ id="add_y"
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:30px;height:35px" name="add_z"
-id="add_z"
-  value="z" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'z')" title="z">  
-      <input type="button" style="width:30px;height:35px" name="add_t"
-id="add_t"
-  value="t" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'t')" title="t">  
+      <input type="button" style="width:29px;height:35px;"
+  id="add_beg"
+  value="beg" onmousedown="event.preventDefault()"
+  onClick="UI.setselbeg(UI.focused);" title="Selection begin">  
+      <input type="button" style="width:29px;height:35px;"
+  id="add_end"
+  value="end" onmousedown="event.preventDefault()"
+  onClick="UI.setselend(UI.focused)" title="Selection end">  
       <input type="button" style="width:30px;height:35px" name="add_:"
 id="add_:"
   value=":" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' :=')" title=":= is the affectation operator, for example a:=pi/2; sin(a)">
@@ -560,16 +582,18 @@ id="add_e"
   </tr>
   <tr>
     <td>
-      <input type="button" id="curseur_gauche" style="width:30px;height:35px"
-  onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); UI.moveCaret(UI.focused,-1)" value=" ← "
-  title="Move caret or focus to the left (useful for tablets)">
+      <input type="button" style="width:29px;height:35px;"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'<');" id="add_inferieur" value="<"
+  title="Insert <">
       <input type="button" style="width:30px;height:35px;" name="curseur_down"
 id="curseur_down"
       value="↓" onmousedown="event.preventDefault()"
   onClick="UI.moveCaretUpDown(UI.focused,1)" title="caret down">
-      <input type="button" id="curseur_droit" style="width:30px;height:35px"
-  onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); UI.moveCaret(UI.focused,1)" value=" → "
-  title="Move caret to the right (useful for tablets)">
+      <input type="button" style="width:29px;height:35px;"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'>');" id="add_superieur" value=">"
+  title="Insert >">
       <input type="button" style="width:30px;height:35px;" name="add_a" id="add_a" value="a" onmousedown="event.preventDefault()" onClick ="UI.insert(UI.focused,'a')">  
       <input type="button" style="width:30px;height:35px" name="add_sin"
 id="add_sin"
@@ -664,17 +688,17 @@ id="add_limit"
       <input type="button" style="width:60px;height:35px"
   name="add_series" id="add_series" value="series"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(') ;UI.kbdonfuncoff();" title="series computes the Taylor expansion of an expression as a variable tends to a limit-point, for example series(sin(x),x=0,5,polynom). Without polynom, a remainder term is returned. For unidirectional expansion, add 1 or -1 before polynom">        
-         <input type="button" style="width:30px;height:35px" name="add_space"
-id="add_space"
-  value=" " onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,' ')" title="add space">        
+         <input type="button" style="width:30px;height:35px" name="add_seq"
+id="add_seq"
+  value="seq" onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'seq(')" title="Create sequence, for example seq(j^2,j,1,n) create the sequence of square from 1 to n">        
     </td>
   </tr>
   <tr>
     <td>
       <input type="button" style="width:60px;height:35px" name="add_tabvar"
 id="add_tabvar"
-  value="tabvar" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tabvar(') ;UI.kbdonfuncoff();"
+  value="tabvar" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tabvar(,plot)');UI.moveCaret(UI.focused,-6);UI.kbdonfuncoff();"
   title="Function or parametric plot study, for example tabvar(sin(x)) ou tabvar([cos(2t),sin(3t)])">  
       <input type="button" style="width:60px;height:35px" name="add_plot"
 id="add_plot"
@@ -697,17 +721,28 @@ id="add_plot"
         <input type="button" style="width:30px;height:35px" name="add_//"
 id="add_//"
   value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'//')" title="comment">        
+      <input type="button" style="width:29px;height:35px" name="add_space"
+id="add_space"
+  value=" " onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,' ')" title="Add space">        
+      <input type="button" style="width:29px;height:35px" id="add_nlprog"
+      value="\n" onmousedown="event.preventDefault()"
+      onClick="UI.insert(UI.focused,'\n')" title="Add newline">        
+      <input type="button" style="width:29px;height:35px" 
+      id="add_indent"
+      value="->/" onmousedown="event.preventDefault()"
+      onClick="UI.indentline(UI.focused);" title="Indent current line">        
       <input type="button" style="width:45px;height:35px" name="add_test"
 id="add_test"
   value="if" onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,'\nif  then  else  end;\n   ');UI.moveCaretUpDown(UI.focused,-1); " title="Test">        
+  onClick="UI.insert(UI.focused,'\nif  then  else  end;');UI.moveCaret(UI.focused,-17); " title="Test">        
       <input type="button" style="width:45px;height:35px" name="add_pour"
 id="add_pour"
   value="for" onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,'\nfor  from  to  do \n    \n  od;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);" title="Loop">         <input type="button" style="width:45px;height:35px" name="add_tantque"
+  onClick="UI.insert(UI.focused,'\nfor  from  to  do\n\nod;');UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.moveCaret(UI.focused,2);UI.indentline(UI.focused);UI.kbdonfuncoff();" title="Loop">         <input type="button" style="width:45px;height:35px" name="add_tantque"
 id="add_tantque"
   value="while" onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,'\nwhile  do\n    \n end;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,4)" title="Loop">        
+  onClick="UI.insert(UI.focused,'\nwhile  do\n\nend;');UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);UI.moveCaretUpDown(UI.focused,-1);UI.indentline(UI.focused);UI.moveCaret(UI.focused,4)" title="Loop">        
       <input type="button" id="add_function" style="height:35px" value="function" onclick="if(document.getElementById('assistant_prog').style.display=='none'){
       document.getElementById('assistant_prog').style.display='block';
      }      
@@ -734,7 +769,14 @@ id="add_debug"
 <br>
   <span contextmenu="cmdmenu" title="F1: help on keyword before caret. Right-click (Firefox): commands menu" >
 <button id="button_ok" onclick="if (UI.focused==cmentree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'');}" style="color:green;width:35px;height:35px" title="Eval commandline">
-ok</button>
+<strong>ok</strong></button>
+      <button id="button_gauche" style="width:32px;height:35px"
+  onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"  title="Move caret to the left"> ← </button>
+      <button id="button_droit" style="width:32px;height:35px" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Move caret to the right"> → </button>
+   <button id="button_cmd" style="width:37px;height:35px" onmousedown="event.preventDefault()" onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0) MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
+  title="Focus on commandline">cmd</button>
+<button id="select_button" style="width:32px;height:35px" name="select_button" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Select commandline"> sel</button>
+<button id="button_del" style="width:30px;height:35px" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Erase 1 char">del</button>
  <button id="button_help" style="width:35px;height:35px" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Short online help and examples for a command, or completion suggestions">?</button>
   <button id="button_123" style="width:37px;height:35px" onmousedown="event.preventDefault()"
   onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else { document.getElementById('keyboard').style.display='inline'; document.getElementById('keyboardfunc').style.display='none';} if (UI.focusaftereval){ UI.focused.focus(); UI.focused.blur();}"
@@ -742,21 +784,9 @@ ok</button>
   <button id="button_util" style="width:37px;height:35px" onmousedown="event.preventDefault()"
   onclick="UI.show_menu();"
   title="Show or hide frequently used commands">menu</button>
-   <button id="button_cmd" style="width:37px;height:35px" onmousedown="event.preventDefault()" onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0) MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
-  title="Focus on commandline">cmd</button>
-      <button id="button_gauche" style="width:32px;height:35px"
-  onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"  title="Move caret (tablets) or focus (PC) to the left"> ← </button>
-      <button id="button_droit" style="width:32px;height:35px" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Move caret (tablets) or focus (PC) to the right"> → </button>
-<button id="select_button" style="width:32px;height:35px" name="select_button" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Select commandline"> sel</button>
-<button id="button_del" style="width:30px;height:35px" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Erase 1 char">del</button>
 &nbsp;
 <button style="height:35px" id="stop_button" style="height:35px;visibility:hidden" onclick="if (UI.webworker && confirm('Really kill current session ?')){ UI.webworker.terminate(); UI.busy=0; UI.webworker=0;alert('Session restarted. Everything has been cleared.');}" title="End current session">STOP</button>
 <br>
-<div id="startup_restore" style="display:none">
-  You can load your previous session inputs 
-  <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),true,false);">without evaluation</button>
-  or <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">with evaluation</button>
-</div>
 
 <textarea name="entree" id="entree"  style="font-size:18px;width:98%" rows=1
   onkeypress="UI.focused=this;if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;" ></textarea>
@@ -1359,6 +1389,28 @@ ok</button>
     document.getElementById('keyboard').style.display='inline';
     document.getElementById('keyboardfunc').style.display='none';
   },
+  restorefrom:function(c){
+    var s=UI.readCookie(c);
+    //console.log(s);
+    UI.restoresession(s,document.getElementById('mathoutput'),true,false);
+    document.getElementById('loadfile_cookie').innerHTML='';
+  },
+  listCookies:function() { // list cookies with name begin == ' xcas__'
+    var theCookies = document.cookie.split(';');
+    var aString = '';
+    for (var i = 0 ; i < theCookies.length; i++) {
+        // console.log(i,theCookies[i].substr(0,7));
+        var tmp=theCookies[i];
+        var pos=tmp.search('=');
+        if (pos>7 && tmp.substr(0,7)==' xcas__' ){
+          var tmpname=tmp.substr(7,pos-7);
+          aString += "<button onclick=\"UI.restorefrom('"+tmp.substr(1,pos-1)+"')\">"+tmpname+"</button>\n";
+        }
+    }
+    aString += "<button onclick=document.getElementById('loadfile_cookie').innerHTML=''>cancel</button>\n"
+    //console.log(aString);
+    return aString;
+  },
   createCookie:function(name,value,days) {
 	if (days) {
 	  var date = new Date();
@@ -1641,7 +1693,7 @@ show_menu:function(){
    var form=document.getElementById('config');
    var hw=window.innerWidth,hh=window.innerHeight;
    if (hw>=1000){ hw=hw-50; UI.focusaftereval=true;}
-   if (hw<=500){ UI.focusaftereval=false;}
+   if (hw<=500){ UI.focusaftereval=false; document.getElementById('exportbutton').style.display='none';}
    form.history_width.value=hw;
    form.outdiv_width.value=Math.floor(hw/2);
    document.getElementById('mathoutput').style.maxWidth=hw;
@@ -1655,21 +1707,22 @@ show_menu:function(){
    st.innerHTML=s;
 var kbd_l=["add_newline","add_'","add_,","add_left_paren",
 "add_right_paren" ,"add_i","add_7" ,"add_8" ,"add_9" ,"add_/",
-"add_x" ,"add_y","add_semi" ,"add_left_[" ,"add_%" ,"add_pi" ,
-"add_4" ,"add_5" ,"add_6" ,"add_*" ,"add_z","add_t","add_:",
+"add_x" ,"add_y","add_semi" ,"add_left_[" ,"add_abs" ,"add_pi" ,
+"add_4" ,"add_5" ,"add_6" ,"add_*" ,"add_beg","add_end","add_:",
 "add_left_{" ,"add_!" ,"add_∞","add_1" ,"add_2" ,
 "add_3" ,"add_-" ,"copy_button" ,"curseur_up","add-=" ,"add__" ,
 "add_exp","add_ln","add_e","add_0" ,"add_." ,
-"add_+" ,"curseur_gauche","curseur_down" ,"curseur_droit","add_a" ,"add_sin" ,"add_cos",
+"add_+" , "add_inferieur","curseur_down" ,"add_superieur","add_a" ,"add_sin" ,"add_cos",
 "add_tan","add_sq","add_sqrt","add_^"];
 var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
-"button_gauche","button_droit","select_button","button_del"];
+"button_gauche","button_droit","select_button","button_del",
+"add_//","add_space","add_nlprog","add_indent","add_test",
+"add_pour","add_tantque","add_function","add_debug"];
 var kbd_util=["add_simplify" ,"add_normal",
 "add_factor" ,"add_partfrac","add_texpand","add_tcollect","add_solve","add_csolve",
 "add_linsolve","add_fsolve" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
-"add_integrate" ,"add_limit","add_series" ,"add_tabvar","add_plot",
-"add_plotparam" ,"add_plotpolar","add_plotimplicit","add_//","add_space","add_test",
-"add_pour","add_tantque","add_function","add_debug","add_curseur"];
+"add_integrate" ,"add_limit","add_series" ,"add_seq","add_tabvar","add_plot",
+"add_plotparam" ,"add_plotpolar","add_plotimplicit","add_curseur"];
   w=Math.floor(hw/12)+"px"; 
    h=Math.floor(hh/20)+"px"; console.log(hw,w,hh,h);
    w=Math.floor(hw/12); w=w+"px"; 
@@ -1750,6 +1803,12 @@ var kbd_util=["add_simplify" ,"add_normal",
   },
   savesession:function(i){
     var s;
+    filename=document.getElementById("outputfilename").value;
+    if (i==2) {
+      UI.createCookie('xcas__'+filename,UI.makelink(0),9999);
+      console.log(UI.listCookies());
+      return;
+    }
     if (i==1){
       s=document.getElementById("fulldocument").innerHTML;
       s='<html id="fulldocument" manifest="xcas.appcache">'+s+'</html>';
@@ -1758,7 +1817,6 @@ var kbd_util=["add_simplify" ,"add_normal",
       s=document.getElementById("mathoutput").innerHTML;
     }
     var blob = new Blob([s], {type: "text/plain;charset=utf-8"});
-    filename=document.getElementById("outputfilename").value;
     if (i==1) filename += ".html"; else filename += ".xw";
     saveAs(blob,filename);
   },
@@ -2176,7 +2234,7 @@ addcomment: function(text){
   },
   addinput: function(textin,textout,mathmlout){
  document.getElementById('startup_restore').style.display='none'  
-  if (textout.length>=12 && textout.substr(0,12)=='Done_graphic'){ document.getElementById('boutons_3d').style.display='inherit';document.getElementById('boutons_3d0').style.display='inherit';}
+  if (mathmlout.length>=5 && mathmlout.substr(0,5)=='gl3d '){ document.getElementById('boutons_3d').style.display='inherit';document.getElementById('boutons_3d0').style.display='inherit';}
   if (textin.length > 2 && textin.substr(0,2)=='//') return UI.addcomment(textin);
          UI.show_history123();
 // document.getElementById('mathoutput').style.listStyleType = 'none';
@@ -2358,6 +2416,7 @@ var endPos = field.selectionEnd;
   return selectedText;
   },
 move_caret_or_focus:function(field,n){
+ UI.moveCaret(field,n); return;
  if (UI.detectmob()){ UI.moveCaret(field,n); return; }
   move_focus(field,n);
 },
@@ -2450,6 +2509,35 @@ move_focus:function(field,n){
   var par=field.parentNode.previousSibling.firstChild;
   par.focus();
   UI.switch_buttons(par.parentNode.parentNode,true) 
+},
+selline:0,
+selch:0,
+setselbeg:function(field){
+  if (field.type!="textarea"){
+    var pos=field.getCursor(); // save position
+    UI.selline=pos.line; UI.selch=pos.ch;
+    //console.log(UI.selline,UI.selch);
+    return;
+  }
+  UI.selch=field.selectionStart;
+},
+setselend:function(field){
+  if (field.type!="textarea"){
+    var startpos=field.getCursor(); // current position
+    field.setSelection({line: UI.selline,ch:UI.selch },startpos);
+    field.refresh();
+    UI.selection=field.getSelection();
+    return;
+  }
+  var pos1=field.selectionStart;
+  var pos2=UI.selch;
+  if (pos2>field.value.length) pos2=field.value.length;
+  if (pos1>pos2){ var tmp=pos1; pos1=pos2; pos2=tmp; }
+  field.setSelectionRange(pos1,pos2);
+  UI.selection=field.value.substr(pos1,pos2-pos1);
+},
+indentline:function(field){
+ if (field.type!='textarea') field.execCommand('indentAuto');
 },
 moveCaret: function(field, charCount) {
   if (field.type!="textarea"){
@@ -2628,6 +2716,7 @@ insert: function(myField, myValue) {
  if (UI.focusaftereval) myField.focus();
  if (myField.type!="textarea"){
   myField.replaceSelection(myValue);
+  myField.execCommand("indentAuto");
   var t=myField.getTextArea(); t.value=myField.getValue();
  }
  else {
@@ -2755,7 +2844,7 @@ insert: function(myField, myValue) {
   var form=document.getElementById('config');
   var hw=window.innerWidth-50;
   if (hw>=1000){ UI.qa=true; form.qa.checked=true; UI.usecm=true; form.usecm.checked=true;}
-  else {UI.qa=false; form.qa.checked=false; UI.usecm=false; form.usecm.checked=false;}
+  else {UI.qa=false; form.qa.checked=false; UI.usecm=true; form.usecm.checked=true;}
   // config in cookies
   var ck;
   ck=UI.readCookie('xcas_digits');

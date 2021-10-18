@@ -98,6 +98,7 @@ Pour plus d'informations sur Giac/Xcas, cf.~:\\
 
 \tableofcontents 
 
+\pagebreak 
 
 \section{Index, plan} \label{sec:index}
 L'index commence page suivante dans la version PDF.
@@ -6659,7 +6660,7 @@ la commande \verb|cercle(0,1); G:=point(4/(3*pi),4/(3*pi))|
 
 
 
-\section{\'Equations et syst\`emes diff\'erentiels.}
+\section{\'Equations et syst\`emes diff\'erentiels.} \label{sec:ode}
 
 \subsection{Introduction et repr\'esentation graphique.}
 On s'int\'eresse \`a l'\'equation diff\'erentielle
@@ -8418,6 +8419,7 @@ et vous effectuerez la vérification de deux manières, en comptant
 le nombre de 1 ou avec l'instruction \verb|rem|.
 
 \subsubsection{Codes lin\'eaires}
+\index{lin\'eaire, code}\index{code lin\'eaire}
 {\bf D\'efinition}~:
 On multiplie le vecteur des $k$ symboles par
 une matrice $M$ à coefficients dans $K$ de taille $n \times k$
@@ -8454,6 +8456,7 @@ les lignes de 2 matrices $A$ et $B$ par \verb|[op(A),op(B)]| ou avec
 \verb|blockmatrix|.
 
 \subsubsection{Codes polynomiaux}
+\index{polynomial, code}\index{code polynomial}
 {\bf Définition}~:
 Il s'agit d'un cas particulier de codes lin\'eaires.
 On se donne un polyn\^ome $g(x)$ de degr\'e $n-k$,
@@ -8469,7 +8472,8 @@ une proc\'edure Xcas de codage utilisant $g=X^7+X^3+1$
 N.B. on obtient le polynôme $X^{n-k}$ sous forme
 de polynome-liste dans Xcas par {\tt poly1[1,0\$(n-k)]}.
 
-\subsubsection{D\'etection et correction d'erreur}\index{correction d'erreur}
+\subsubsection{D\'etection et correction d'erreur}
+\index{correction d'erreur} \index{erreur, correction}
 Si le mot recu n'est pas dans l'image de l'application
 lin\'eaire il y a eu erreur de transmission. Sinon, il n'y
 a pas eu d'erreur {\em d\'etectable\/} (il pourrait y avoir eu plusieurs
@@ -8497,8 +8501,9 @@ ou directement \verb|1-binomial_cdf(1000,1e-3,3)|.
 
 {\bf Exemple}~: On ne peut pas corriger d'erreur avec le bit de parité.
 
-\subsubsection{Distances}\index{Hamming} \index{distance de Hamming}
-La distance de Hamming de 2 mots est le nombre de symboles qui diffèrent.
+\subsubsection{Distances} \index{distance de Hamming}
+La {\bf distance de Hamming}\index{Hamming, distance} 
+de 2 mots est le nombre de symboles qui diffèrent.
 (il s'agit bien d'une distance au sens mathématique, 
 elle v\'erifie l'in\'egalit\'e triangulaire). 
 
@@ -8549,7 +8554,8 @@ le plus proche.
 Exercice~: écrivez un programme permettant de corriger une erreur
 dans un mot dans votre code linéaire.
 
-On dit qu'un code $t$-correcteur est parfait si la réunion des boules
+On dit qu'un code $t$-correcteur est 
+{\bf parfait}\index{parfait, code correcteur} si la réunion des boules
 de centre un mot de code et de rayon $t$ (pour la distance de Hamming)
 est disjointe et recouvre l'ensemble des mots ($K^n$).
 
@@ -8559,7 +8565,8 @@ est-il un code 1-correcteur parfait~?
 \subsubsection{Codes de Hamming}
 Soit un code de longueur $n$, de dimension $k$, le nombre
 d'informations suppl\'ementaires est not\'e $m=n-k$. Un code
-de Hamming permet une correction, donc la distance du code
+de Hamming\index{Hamming, code}\index{code de Hamming} 
+permet une correction, donc la distance du code
 $\delta$ est (au moins) 3. Si le code est parfait sur $K=F_d$, on a 
 $$ (1+n(d-1))d^k=d^{n} \Rightarrow n=\frac{d^m-1}{d-1}$$
 
@@ -8622,9 +8629,8 @@ Typiquement $q=2^m$ avec $m=8$,
 $a$ est une racine d'un polyn\^ome irr\'eductible
 de degr\'e $m$ à coefficients dans $\Z/2$ 
 qui ne divise pas $x^l-1$ pour $l$ diviseur
-strict de $2^m-1$, en pratique, on factorise le quotient de $x^{2^m-1}-1$
-par le ppcm des $x^{(2^m-1)/p}-1$ o\`u $p$ parcourt les
-diviseurs premiers de $2^m-1$ et on en extrait un facteur de degr\'e $m$.
+strict de $2^m-1$ (pour en construire,
+cf. le chapitre corps finis \ref{sec:gf}).
 
 {\bf Distance du code}\\
 Si la longueur $n$ d'un mot v\'erifie
@@ -8637,6 +8643,7 @@ en \'ecrivant $P(a)=...=P(a^{2t})=0$, on obtient
 un d\'eterminant de Van der Monde, on prouve qu'il est non nul en
 utilisant la condition $i_k<n$ et le fait que la premi\`ere puissance
 de $a$ telle que $a^x=1$ est $x=2^m-1$.
+
 
 {\bf Correction des erreurs}\\ 
 Soit $c(x)$ le polynome envoy\'e, $d(x)$
@@ -11354,6 +11361,38 @@ on observe que $N(x)\leq 0$ sur $[\alpha,\beta]$ \\
 \giacinput{plot(1000*N(x),x=0..1)}
 et son int\'egrale vaut $-1/2880(\beta-\alpha)^4$~:\\
 \giacinputbigmath{int(N(x),x=0..1/2)+int(N(x),x=1/2..1)}
+
+{\bf Remarque}~: Une autre preuve de cette majoration utilise les
+diff\'erences divis\'ees (\ref{eq:errinterpdd}).
+La m\'ethode de Simpson sur $[\alpha,\beta$ 
+utilise le polyn\^ome d'interpolation en 
+$\alpha, (\alpha+\beta)/2, \beta$, on a donc
+$$ P_2(x)-f(x)=(x-\alpha)(x-\beta) (x-\frac{\alpha+\beta}{2})
+f[\alpha,\frac{\alpha+\beta}{2},\beta,x]$$
+on doit donc majorer l'erreur
+$$ E=\int_\alpha^\beta (x-\alpha)(x-\beta) (x-\frac{\alpha+\beta}{2})
+f[\alpha,\frac{\alpha+\beta}{2},\beta,x] \ dx $$
+D'autre part, en appliquant \ref{eq:fdd} avec $n+1$ et $n+2$ points, on a
+pour tout $x_{n+1}$
+$$ f[x_0,..,x_n,x]=f[x_0,..,x_n,x_{n+1}]+(x-x_{n+1})f[x_0,..,x_n,x_{n+1},x]$$
+donc ici~:
+$$ f[\alpha,\frac{\alpha+\beta}{2},\beta,x]=f[\alpha,\frac{\alpha+\beta}{2},\beta,t]+(x-t)f[\alpha,\frac{\alpha+\beta}{2},\beta,t,x]$$
+que l'on remplace dans $E$~:
+$$ E=\int_\alpha^\beta (x-\alpha)(x-\beta) (x-\frac{\alpha+\beta}{2})
+(f[\alpha,\frac{\alpha+\beta}{2},\beta,t]
++(x-t)
+f[\alpha,\frac{\alpha+\beta}{2},\beta,t,x]) \ dx$$
+on distribue, le premier terme est d'int\'egrale nulle,
+et lorsque $t$ tend vers $(\alpha+\beta)/2$ le second
+tend vers~:
+$$ E=\int_\alpha^\beta (x-\alpha)(x-\beta) (x-\frac{\alpha+\beta}{2})^2 
+\frac{f^{[4]}(\xi_x)}{4!} \ dx$$
+On applique alors la formule de la moyenne 
+(car $(x-\alpha)(x-\beta) (x-\frac{\alpha+\beta}{2})^2$ est de signe constant)
+et
+$$ E=\frac{f^{[4]}(\xi)}{4!} 
+\int_\alpha^\beta (x-\alpha)(x-\beta) (x-\frac{\alpha+\beta}{2})^2 \ dx
+= \frac{f^{[4]}(\xi)}{4!} \frac{(b-a)^5}{120}$$
 
 La m\'ethode de Simpson n\'ecessite $2n+1$ \'evaluations de $f$ (le calcul
 de $f$ est un point \'etant presque toujours 
@@ -15338,10 +15377,12 @@ est de degr\'e $n+1$ au moins. R\'eciproquement, si on ajoute
 \`a $P$ un multiple du polynome $A=\prod_{j=0}^n (X-x_j)$, on obtient
 une autre solution. Toutes les solutions se d\'eduisent donc
 d'une solution particuli\`ere en y ajoutant un polynome de degr\'e
-au moins $n+1$ multiple de $A$. 
+au moins $n+1$ multiple de $A$, et on prenant le
+reste euclidien de la division par $A$ on en d\'eduira une solution de
+degr\'e au plus $n$.
 
 Nous allons maintenant construire
-une solution particuli\`ere de degr\'e au plus $n$.
+cette solution particuli\`ere de degr\'e au plus $n$.
 Si $n=0$, on prend $P=x_0$ constant. On proc\`ede ensuite par
 r\'ecurrence. Pour construire le polyn\^ome correspondant
 \`a $x_0,...,x_{n+1}$ on part du polyno\^ome $P_n$ correspondant \`a
@@ -15418,6 +15459,7 @@ l'intervalle contenant les $x_j$ et $x$ tel que
 Attention, l'erreur d'interpolation peut devenir tr\`es grande
 lorsqu'on utilise beaucoup de points d'interpolation.
 
+
 \subsubsection{Calcul efficace du polyn\^ome de
   Lagrange.}\index{divis\'ees, diff\'erences}\index{diff\'erences divis\'ees}
 Avec la m\'ethode de calcul pr\'ec\'edent, on remarque que le
@@ -15478,7 +15520,10 @@ proportionnel \`a $n^2$.
 
 La commande Xcas \verb|interp| ou son synonyme \verb|lagrange|
 effectue ce calcul. Pour avoir les diff\'erences divis\'ees, 
-on peut cr\'eer le programme suivant~:
+on peut appeler \verb|interp| en ajoutant en dernier
+param\`etre \verb|lagrange| \\
+\giacinput{X:=[0,1,2]; A:=lagrange(X,[1,2,1],lagrange);}\\
+ou cr\'eer le programme suivant~:
 \begin{giacprog}
 dd(X,Y):={ // Algorithme des différences divisées
   local k,l,n,A,old,cur;
@@ -15498,9 +15543,35 @@ dd(X,Y):={ // Algorithme des différences divisées
   retourne A;
 }:;
 \end{giacprog}
-\giacinput{dd([0,1,2],[1,2,1])}
+\giacinput{X:=[0,1,2];A:=dd(X,[1,2,1])}
 (N.B. pour rendre ce programme optimal, il faudrait utiliser
-l'affectation en place \verb|=<| au lieu de \verb|:=|)
+l'affectation en place \verb|=<| au lieu de \verb|:=|).
+
+L'\'evaluation d'un polyn\^ome d'interpolation \`a partir des diff\'erences
+divis\'ees se fait en $O(n)$ op\'erations
+par un algorithme \`a la Horner qui consiste \`a \'evaluer
+de l'int\'erieur vers l'ext\'erieur la forme semi-factoris\'ee
+du polyn\^ome en fonction des diff\'erences divis\'ees et
+des points d'interpolation. Cet algorithme est impl\'ement\'e
+par la commande \verb|horner|\index{H\"orner, diff\'erences divis\'ees} 
+de Xcas, on lui passe les deux listes 
+qui repr\'esentent le polyn\^ome~:\\
+\giacinput{horner(A,X,1.5)}
+
+Remarque~: on peut exprimer l'erreur d'interpolation
+avec les diff\'erences divis\'ees. Si $P_n$ est le polyn\^ome
+d'interpolation de $f$ en $x_0,...,x_n$ alors
+$$ P_n(t)=f[x_0]+ (t-x_0)f[x_0,x_1]+...+(t-x_0)..(t-x_{n-1})f[x_0,..,x_n]$$
+en ajoutant $x$ comme point d'interpolation on obtient un polyn\^ome
+$P_{n+1}(t)$ qui coincide avec $f$ en $t=x$ donc
+\begin{equation} \label{eq:fdd}
+ f(x)=f[x_0]+ (x-x_0)f[x_0,x_1]+...+(x-x_0)..(x-x_{n})f[x_0,..,x_n,x]
+\end{equation}
+et en faisant la diff\'erence
+\begin{equation} \label{eq:errinterpdd}
+P_n(x)-f(x)=(x-x_0)..(x-x_{n})f[x_0,..,x_n,x]
+\end{equation}
+On en d\'eduit aussi que $f[x_0,...,x_n,x]=f^{[n+1]}(\xi_x)/(n+1)!$.
 
 \subsubsection{Sensibilit\'e aux erreurs sur les donn\'ees.}
 Si les $y_j$ sont connus avec une certaine erreur, alors le polyn\^ome 
@@ -15692,7 +15763,8 @@ On peut aussi construire ces polyn\^omes en cherchant les valeurs
 propres de
 $$ T(f)=\frac{1}{w} (awf')'$$
 o\`u $a>0$ est un polyn\^ome de degr\'e au plus 2
-sur $]\alpha,\beta[$, tel que $aw$ s'annule (ou tend vers 0) 
+sur $]\alpha,\beta[$, tel que $aw$ s'annule (ou dont le produit
+par un polyn\^ome tend vers 0) 
 aux bornes de l'intervalle d'int\'egration~: si $\alpha$ et $\beta$ sont finis
 $a(x)=(x-\alpha)(\beta-x)$.
 On a alors
@@ -15729,8 +15801,10 @@ $$ ((1-x^2)P_n')'=\lambda_n P_n$$
 Le terme de degr\'e $n$ de cette \'equation donne $\lambda_n=-n(n+1)$,
 le terme sous-dominant est nul. Plus g\'en\'erallement, 
 le terme de degr\'e $k$ v\'erifie
-$$ (k+2)(k+1)p_{k+2}-k(k+1)p_k=-n(n+1)p_k \Rightarrow
-p_{k+2}=\frac{k(k+1)-n(n+1)}{(k+2)(k+1)} p_k$$
+\begin{equation} \label{eq:legendre_rec}
+ (k+2)(k+1)p_{k+2}-k(k+1)p_k=-n(n+1)p_k \Rightarrow
+p_{k+2}=\frac{k(k+1)-n(n+1)}{(k+2)(k+1)} p_k
+\end{equation}
 Ceci permet de calculer le polyn\^ome $P_n$, on normalise
 $P_n$ par $P_n(1)=1$.\\
 \giacinputbig{n:=10; p:=makelist(n+1); p[0]:=1;}\\
@@ -15762,8 +15836,8 @@ sont pairs si $n$ est pair et impairs sinon, la relation de
 r\'ecurrence a donc un coefficient $b_n$ nul. La convention
 de normalisation usuelle est $P_n(1)=1$, on peut montrer qu'on a
 $a_n=(2n+1)/(n+1)$ et $<P_n|P_n>=2/(2n+1)$ 
-donc $c_n=n/(n+1)$.
-$$ (n+1)P_{n+1}=(2n+1)xP_n-nP_{n-1}$$
+donc $c_n=n/(n+1)$ et
+$$ (n+1)P_{n+1}=(2n+1)xP_n-nP_{n-1} $$
 En effet la normalisation en 1 donne $1=a_n-c_n$ donc $c_n=a_n-1$,
 les termes de degr\'e $n+1$ et $n-1$ de $P_{n+1}=a_nxP_n-c_nP_{n-1}$ donnent
 $$ p_{n+1,n+1}=a_np_{n,n}, \quad p_{n+1,n-1}=a_n

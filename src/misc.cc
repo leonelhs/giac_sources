@@ -6515,6 +6515,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     step_infolevel(st,contextptr);
     if (cx.type!=_VECT || cy.type!=_VECT){
       *logptr(contextptr) << "Unable to find critical points" << endl;
+      purgenoassume(t,contextptr);
       return 0;
     }
     vecteur c=mergevecteur(*cx._VECTptr,*cy._VECTptr),infl;
@@ -6531,6 +6532,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     comprim(c);
     if (!lidnt(evalf(c,1,contextptr)).empty()){
       *logptr(contextptr) << "Infinite number of critical points. Try with optional argument " << t << "=tmin..tmax" << endl;
+      purgenoassume(t,contextptr);
       return 0;
     }
     it=c.begin();itend=c.end();
@@ -6719,8 +6721,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       tvx.push_back(tmax0);
     comprim(tvx);
     gen tmp=_sort(tvx,contextptr);
-    if (tmp.type!=_VECT)
+    if (tmp.type!=_VECT){
+      purgenoassume(t,contextptr);
       return 0;
+    }
     tvx=*tmp._VECTptr;
     int pos=equalposcomp(tvx,minus_inf);
     if (pos){
@@ -6744,12 +6748,12 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       ymin=y;
     if (!is_inf(y) && is_greater(y,ymax,contextptr))
       ymax=y;
-    vecteur tvif=makevecteur(symb_equal(string2gen("x",false),f),x);
-    vecteur tvig=makevecteur(symb_equal(string2gen("y",false),g),y);
+    vecteur tvif=makevecteur(symb_equal(x__IDNT_e,f),x);
+    vecteur tvig=makevecteur(symb_equal(y__IDNT_e,g),y);
     gen nothing=string2gen(" ",false);
-    vecteur tvidf=makevecteur(symb_equal(string2gen("dx/dt",false),f1),limit(f1,xid,nextt,1,contextptr));
-    vecteur tvidg=makevecteur(symb_equal(string2gen("dy/dt",false),g1),limit(g1,xid,nextt,1,contextptr));
-    vecteur tviconv=makevecteur(string2gen("x'*y''-x''*y'",false),limit(conv,xid,nextt,1,contextptr));
+    vecteur tvidf=makevecteur(symb_equal(symbolic(at_derive,x__IDNT_e),f1),limit(f1,xid,nextt,1,contextptr));
+    vecteur tvidg=makevecteur(symb_equal(symbolic(at_derive,y__IDNT_e),g1),limit(g1,xid,nextt,1,contextptr));
+    vecteur tviconv=makevecteur(symbolic(at_derive,x__IDNT_e)*symbolic(at_derive,symbolic(at_derive,y__IDNT_e))-symbolic(at_derive,y__IDNT_e)*symbolic(at_derive,symbolic(at_derive,x__IDNT_e)),limit(conv,xid,nextt,1,contextptr));
     int tvs=int(tvx.size());
     for (int i=1;i<tvs;++i){
       gen curt=nextt,dfx,dgx,convt;
@@ -6779,8 +6783,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  }
 	}
       }
-      if (is_zero(dfx) || is_zero(dgx))
+      if (is_zero(dfx) || is_zero(dgx)){
+	purgenoassume(t,contextptr);
 	return 0;
+      }
       if (is_strictly_positive(dfx,contextptr)){
 #if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvif.push_back(string2gen("↑",false));
@@ -6932,6 +6938,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       *logptr(contextptr) << tvi << endl;
 #endif
     // finished!
+    purgenoassume(t,contextptr);
     return 1 + (periode!=1);
   }
 
@@ -7025,11 +7032,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     step_infolevel(st,contextptr);
     if (c.type!=_VECT){
       *logptr(contextptr) << "Unable to find critical points" << endl;
+      purgenoassume(x,contextptr);
       return 0;
     }
 #endif
     if (!lidnt(evalf(c,1,contextptr)).empty()){
       *logptr(contextptr) << "Infinite number of critical points. Try with optional argument " << x << "=xmin..xmax" << endl;
+      purgenoassume(x,contextptr);
       return 0;
     }
     it=c._VECTptr->begin();itend=c._VECTptr->end();
@@ -7172,8 +7181,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       tvx.push_back(xmax0);
     comprim(tvx);
     gen tmp=_sort(tvx,contextptr);
-    if (tmp.type!=_VECT)
+    if (tmp.type!=_VECT){
+      purgenoassume(x,contextptr);
       return 0;
+    }
     tvx=*tmp._VECTptr;
     int pos=equalposcomp(tvx,minus_inf);
     if (pos){
@@ -7192,10 +7203,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       ymin=y;
     if (!is_inf(y) && is_greater(y,ymax,contextptr))
       ymax=y;
-    vecteur tvif=makevecteur(symb_equal(string2gen("f",false),f),y);
+    vecteur tvif=makevecteur(symb_equal(y__IDNT_e,f),y);
     gen nothing=string2gen(" ",false);
-    vecteur tvidf=makevecteur(symb_equal(string2gen("f'",false),f1),limit(f1,xid,nextx,1,contextptr));
-    vecteur tvidf2=makevecteur(string2gen("f''",false),limit(f2,xid,nextx,1,contextptr));
+    vecteur tvidf=makevecteur(symb_equal(symbolic(at_derive,y__IDNT_e),f1),limit(f1,xid,nextx,1,contextptr));
+    vecteur tvidf2=makevecteur(symbolic(at_derive,symbolic(at_derive,y__IDNT_e)),limit(f2,xid,nextx,1,contextptr));
     int tvs=int(tvx.size());
     for (int i=1;i<tvs;++i){
       gen curx=nextx,dfx,df2;
@@ -7221,8 +7232,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  }
 	}
       }
-      if (is_zero(dfx))
+      if (is_zero(dfx)){
+	purgenoassume(x,contextptr);
 	return 0;
+      }
       if (is_strictly_positive(dfx,contextptr)){
 #if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvif.push_back(string2gen("↑",false));
@@ -7314,6 +7327,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       *logptr(contextptr) << tvi << endl;
 #endif
     // finished!
+    purgenoassume(x,contextptr);
     return 1 + (periode!=0);
   }
 
@@ -7337,13 +7351,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     vecteur v(g.type==_VECT && g.subtype==_SEQ__VECT?*g._VECTptr:vecteur(1,g));
     int s=int(v.size());
 #ifdef EMCC
-    bool plot=true;
+    int plot=1;
 #else
-    bool plot=false;
+    int plot=0;
 #endif
     bool return_tabvar=false,return_equation=false,return_coordonnees=false;
     if (s && v[s-1]==at_plot){
-      plot=true;
+      plot=2;
       v.pop_back();
       --s;
     }
@@ -7368,6 +7382,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       v.pop_back();
       --s;
     }
+    if (s==2 && v[1].type==_SYMB)
+      v=makevecteur(v,ggb_var(v));
     if (s==1){
       v.push_back(ggb_var(g));
       ++s;
@@ -7444,12 +7460,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       p=funcplotfunc(gen(w,_SEQ__VECT),false,contextptr);
     if (plot){
       poi=mergevecteur(poi,gen2vecteur(p));
-      return gen(poi,_SEQ__VECT);
+      if (plot==2)
+	return gen(poi,_SEQ__VECT);
+      if (plot==1)
+	return tvi; // gprintf("%gen",makevecteur(gen(poi,_SEQ__VECT)),1,contextptr);
     }
-    else {
-      *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')' <<"\nInside Xcas you can see the function with Cfg>Show>DispG." <<  endl;
-      return tvi;
-    }
+    *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')' <<"\nInside Xcas you can see the function with Cfg>Show>DispG." <<  endl;
+    return tvi;
   }
   static const char _tabvar_s []="tabvar";
   static define_unary_function_eval (__tabvar,&_tabvar,_tabvar_s);

@@ -1221,7 +1221,18 @@ namespace xcas {
       /***************
        *   MATRICE   *
        ***************/
-      if (ckmatrix(g) && g.subtype!=_SEQ__VECT && g.subtype!=_SET__VECT && g.subtype!=_POLY1__VECT && g._VECTptr->front().subtype!=_SEQ__VECT){
+      bool gmat=ckmatrix(g);
+      vector<int> V; int p=0;
+      if (!gmat && is_mod_vecteur(*g._VECTptr,V,p) && p!=0){
+	gen gm=makemodquoted(unmod(g),p);
+	return Equation_compute_size(gm,a,windowhsize,contextptr);
+      }
+      vector< vector<int> > M; 
+      if (gmat && is_mod_matrice(*g._VECTptr,M,p) && p!=0){
+	gen gm=makemodquoted(unmod(g),p);
+	return Equation_compute_size(gm,a,windowhsize,contextptr);
+      }
+      if (gmat && g.subtype!=_SEQ__VECT && g.subtype!=_SET__VECT && g.subtype!=_POLY1__VECT && g._VECTptr->front().subtype!=_SEQ__VECT){
 	gen mkvect(at_makevector);
 	mkvect.subtype=_SEQ__VECT;
 	gen mkmat(at_makevector);
@@ -1307,6 +1318,23 @@ namespace xcas {
       v.push_back(eqwdata(x,h,0,y,a,mkvect,0));
       return gen(v,_EQW__VECT);
     } // end sequences
+    if (g.type==_MOD){ 
+      int x=0;
+      int h=a.fontsize;
+      int y=0;
+      int modsize=int(fl_width("%"))+2;
+      gen varg1=Equation_compute_size(*g._MODptr,a,windowhsize,contextptr);
+      eqwdata vv=Equation_total_size(varg1);
+      Equation_vertical_adjust(vv.dy,vv.y,h,y);
+      gen arg2=*(g._MODptr+1);
+      gen varg2=Equation_compute_size(arg2,a,windowhsize,contextptr);
+      Equation_translate(varg2,vv.dx+modsize,0);
+      vv=Equation_total_size(varg2);
+      Equation_vertical_adjust(vv.dy,vv.y,h,y);
+      vecteur res(makevecteur(varg1,varg2));
+      res.push_back(eqwdata(vv.dx+vv.x,h,0,y,a,at_normalmod,0));
+      return gen(res,_SEQ__VECT);
+    }
     if (g.type==_USER){
       if (dynamic_cast<giac::galois_field *>(g._USERptr)){ 
 	gen g1(g.print(contextptr),contextptr); 
