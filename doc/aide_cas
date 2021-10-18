@@ -1,3 +1,43 @@
+# besselY
+1 besselY(x,p) renvoie la fonction de Bessel de deuxième espèce Yp(x).
+2 besselY(x,p) returns the Bessel function of second kind Yp(x).
+0 Real(x),Int(p)
+-1 BesselY
+-2 BesselJ
+-3 besselJ
+besselY(sqrt(2),2)
+besselY(sqrt(2),-2)
+
+# BesselY
+1 BesselY(p,x) renvoie la fonction de Bessel de deuxième espèce Yp(x).
+2 BesselY(p,x) returns the Bessel function of second kind Yp(x).
+0 Int(p),Real(x)
+-1 besselY
+-2 BesselJ
+-3 besselJ
+BesselJ(2,sqrt(2))
+BesselJ(-2,sqrt(2))
+
+# besselJ
+1 besselJ(x,p) renvoie la fonction de Bessel de première espèce Jp(x).
+2 besselJ(x,p) returns the Bessel function of first kind Jp(x).
+0 Real(x),Int(p)
+-1 BesselJ
+-2 BesselY
+-3 besselY
+besselJ(sqrt(2),2)
+besselJ(sqrt(2),-2)
+
+# BesselJ
+1 BesselJ(p,x) renvoie la fonction de Bessel de première espèce Jp(x).
+2 BesselJ(p,x) returns the Bessel function of first kind Jp(x).
+0 Int(p),Real(x)
+-1 besselJ
+-2 BesselY
+-3 besselY
+BesselJ(2,sqrt(2))
+BesselJ(-2,sqrt(2))
+
 # batons
 1 Dessine pour k=0..nrows, les segments (xk,0)-(xk,yk) où xk=élément ligne k colonne 0 et yk=élément ligne k colonne j (j=1..ncols).
 2 Draws for k=0..nrows, the segments (xk,0)-(xk,yk) where xk=element row k column 0 and yk=element row k column j (j=1..ncols).
@@ -1319,11 +1359,11 @@ quest(-2)
 ClrIO()
 
 # ithprime
-1 Renvoie le n-ième nombre premier inférieur à 10000 (pour l'instant).
-2 Returns the n-th prime number less than 10000 (for the moment).
-3 Devuelve el n-ésimo número primo menor que 10000 (por ahora).
-4 Επιστρέφει τον i-στό πρώτο αριθμό <10000 (προς το παρών).
-8 第 i 个素数。第 n 个素数。  对于整数 n，返回小于 10,000 的第 n 个素数。
+1 Renvoie le n-ième nombre premier (inférieur à 2.10^8).
+2 Returns the n-th prime number less than 2.10^8.
+3 Devuelve el n-ésimo número primo menor que 2.10^810000 (por ahora).
+4 Επιστρέφει τον i-στό πρώτο αριθμό <2.10^8.
+8 第 i 个素数。第 n 个素数。  对于整数 n，返回小于 2.10^8 。
 0 Intg(n)
 -1 nextprime
 -2 prevprime
@@ -1551,7 +1591,7 @@ hessenberg([[1,2,3],[4,5,6],[7,8,1]],-1)
 hessenberg([[1,2,3],[4,5,6],[7,8,1]],-2)
 hessenberg([[1,2,3],[4,5,6],[7,8,1]],3)
 
-# SCHUR
+# SCHUR schur
 1 Réduction matricielle sous forme de Hessenberg. Renvoie les matrices numériques [P,B] tel que B=inv(P)*A*P avec B triangulaire : SCHUR(A)=hessenberg(A,-1) 
 2 Matrix reduction to Hessenberg form. Returns [P,B] such that B=inv(P)*A*P:SCHUR(A)=hessenberg(A,-1).
 3 Reducción matricial bajo forma de Hessenberg : SCHUR(A)=hessenberg(A,-1).
@@ -1712,6 +1752,7 @@ dodecahedron(evalf([0,0,0],[3,2,4],[1,1,0]))
 -1 cube
 -2 polyhedron
 parallelepiped([0,0,0],[2,0,0],[0,1,0],[0,0,3])
+ p:=parallelepiped([0,0,0],[5,0,0],[0,3,0],[0,0,2]);c1,c2,c3,c4,c5,c6,c7,c8:=sommets(p);
 
 # polyhedron
 1 Dessine un polyèdre convexe dont les sommets sont parmi les arguments.
@@ -1750,8 +1791,11 @@ pyramid([0,0,0],[3,0,0],[0,3,0],[0,0,4])
 -5 octahedron
 -6 tetrahedron
 -7 centered_cube
-cube([0,0,0],[3,0,0],[0,0,1])
- A:=point(1,0,0);B:=point(1,1,0);C:=point(0,1,0);c:=cube(A,B,C); A,B,C,D,E,F,G,H:=sommets(c); 
+cube([0,0,0],[3,0,0],[0,0,1]) 
+ A,B,C:=point(1,0,0),point(1,1,0),point(0,1,0);c:=cube(A,B,C);A,B,C,D,E,F,G,H:=sommets(c); 
+ A,B,K:=point(1,0,0),point(1,1,0),point(0,2,0);c:=cube(A,B,C);A,B,C,D,E,F,G,H:=sommets(c); 
+ c:=cube([0,0,0],[1,0,0],[0,1,0]);c1,c2,c4,c3,c5,c6,c7,c8:=sommets(c); 
+ c:=cube([0,0,0],[0,2,0],[0,0,1]);c1,c2,c4,c3,c5,c6,c7,c8:=sommets(c); 
 
 # centered_tetrahedron
 1 Dessine le tétraèdre régulier direct de centre A de sommet B dont un sommet est dans le plan (A,B,C).
@@ -5400,13 +5444,17 @@ plot3d([f,g,h],-1..1,-2..2)
 subMat([[1,2],[3,4],[5,6]],1,0,2,1)
 
 # table
-1 Définit un tableau indicé par des chaînes ou des nombres réels.
-2 Defines an array where the index are strings or real numbers.
-3 Define una matriz cuyos índices son cadenas o números reales.
+1 Définit un tableau indicé par des chaînes ou des nombres réels ou définit une table à partir d'une matrice.
+2 Defines an array where the index are strings or real numbers or defines a table with a matrix.
+3 Define una matriz cuyos índices son cadenas o números reales o define una table a partir de matriz .
 4 Ορίζει έναν πίνακα όπου οι δείκτες είναι συμβολοσειρές ή πραγματικοί αριθμοί.
 0 SeqEqual(index=value)
--1 
+-1 matrix
+-2 convert
+-3 array
 table(3=-10,"a"=10,"b"=20,"c"=30,"d"=40)
+ A:=[[0,1],[2,3]];table(A)  
+ B:=table([1,2]=12,[2,5]=25);matrix(B)
 
 # read ramene
 1 Pour lire dans le fichier fich_name les variables et leurs valeurs.
@@ -5728,7 +5776,7 @@ latex((x^4-1)/(x^2+3))
 1 Dessine soit 11 lignes de niveaux équiréparties entre z=z_min,,...z=z_max de la surface z=Xpr, soit les lignes de niveaux définies par le 3ème argument.
 2 Draws whether 11 equirepartited contour-lines z=z_min,,...z=z_max of the surface z=Xpr, whether the contour-lines defined by the 3-rd argument.
 3 Traza 11 líneas de nivel equidistantes entre z=z_mina,..,z=z_max de la superficie z=Xpr, con las líneas de contorno definidas por el 3er argumento.
-4 Σχεδιάζει είτε 10 ισοϋψείς καμπύλες z=z_mina,..,z=z_max της επιφάνειας z=Xpr, είτε τις ισοϋψείς καμπύλες που ορίζονται από το 3ο όρισμα.
+4 Σχεδιάζει είτε 11 ισοϋψείς καμπύλες z=z_mina,..,z=z_max της επιφάνειας z=Xpr, είτε τις ισοϋψείς καμπύλες που ορίζονται από το 3ο όρισμα.
 0 Expr(Xpr),[LstVar],[LstVal]
 -1 plotdensity
 -2 plotimplicit
@@ -5791,6 +5839,8 @@ seq(2^k,k,0,8,2)
  [(2^k)$(k=0..3)]
  (0.3..2)$0.2
  (k^2)$(k=(1..10)$2)
+ (k+1)$(k=(0..1)$(1/2))
+ (k+1)$(k=(0..1)$0.5)
  [k^2,k^3]$(k=1..10)
 
 # roots
@@ -7122,6 +7172,7 @@ power_regression_plot([1.0,2.0,3.0,4.0],[2.0,4.0,9.0,16.0])
 -1 mksa
 -2 list
 -3 polynom
+-4 table
 convert(cos(x)^2,sin)
 convert(exp(i*x),sincos)
 convert(1/(x^4-1),parfrac)
@@ -7135,6 +7186,8 @@ convert(9976/6961,confrac,'l');l
 convert(sqrt(2),confrac,'dev');dev
 convert(123,base,8)
 convert([3,7,1],base,8)
+ A[2,1]:=1;convert(A,array)
+ B[0..1,1..2]:=1;B[2,2]:=2;convert(B,array)
 
 # base
 1 Option de convert : convert(p,base,b)= [a0,a1,..an] ou convert([a0,a1,..an],base,b)=p avec p=a0+a1*b+....an*b^(n-1) et p écrit en base 10.
@@ -7148,6 +7201,17 @@ convert([3,7,1],base,8)
  convert(123,base,8)
  convert([3,7,1],base,8)
  horner(revlist([3,7,1]),8)
+
+# array
+1 Option de convert pour définir des matrices creuses.
+2 Option for convert for definitions of sparse matrix definitions.
+3 Opción para convert.
+4 Όρισμα της convert.
+0 Opt
+-1 convert
+-2 table
+ A[0..2,0..2]:=1;A[0..1,1..2]:=2;convert(A,array)
+ B[0..1,1..2]:=1;B[2,2]:=2;convert(B,array)
 
 # lcoeff
 1 Renvoie le coefficient du terme de plus haut degré d'un polynôme (l=leading=dominant).
@@ -7954,8 +8018,23 @@ identity(5)
 4 Αν η εισαγωγή είναι η λίστα l επιστρέφει τετραγωνικό πίνακα με διαγώνιο την l, αν η εισαγωγή είναι ο πίνακας Α επιστρέφει την διαγώνιό του.
 0 Lst(l)||Mtrx(A)
 -1 identity
-diag([1,2],[3,4])
+BlockDiagonal([[1,2],[3,4]])
+BlockDiagonal([1,2,3])
+
+# diag 
+1 Avec 1 argument renvoie soit la matrice diagonale de diagonale l soit la diagonale de A, avec 2 arguments renvoie la partie gauche large de A ou la partie gdroite large de A ou découpe A en 3 parties : gauche stricte, diagonale, droite stricte, et avec 3 arguments renvoie la matrice tridiagonale de diagonales l,d,u.
+2 With 1 argument returns either the diagonal matrix with diagonal l or the diagonal of A, with 2 arguments returns the large left part of A or the large right part of A or cuts A into 3 parts : strict left,diagonal,strict right  and with 3 arguments returns the tridiagonale matrix with diagonals l,d,u.
+3 Con 1 argumento devuelve o bien la matrix diagonal con diagonal l, o bien la diagonal de A, con 2 argumentos devuelve la parte izquierda de A o la parte derecha de A ou cortar A en 3 partes : estricto izquierda,diagonal,estricto derecha y con 3 argumentos devuelve la matrix tridiagonal con diagonal l,d,u.
+4 με 1 όρισμα η εισαγωγή είναι η λίστα l επιστρέφει τετραγωνικό πίνακα με διαγώνιο την l, αν η εισαγωγή είναι ο πίνακας Α επιστρέφει την διαγώνιό του,  και με 2 ορίσματα, επιστρέφει το αριστερό μέρος του A,διαγώνιό του Α, το δεξιό μέρος του A, και με 3 ορίσματα, η εισαγωγή είναι τις λίστες l,d,u επιστρέφει.
+0 Lst(l)||(Mtrx(A),[left||right||lu])||Lst(l),Lst(d),Lst(u)
+-1 identity
+-2 lu
+diag([[1,2],[3,4]])
 diag([1,2,3])
+diag([[1,2],[3,4]],left)
+diag([[1,2],[3,4]],right)
+diag([[1,2],[3,4]],lu)
+diag([1,2],[3,4,5],[6,7])
 
 # coeff coeffs
 1 Renvoie la liste des coefficients d'un polynôme par rapport au 2ème argument ou le coefficient du 3ème argument.
@@ -8558,13 +8637,14 @@ exbisector(0,1,i)
  if (2>1) begin print("ifactor(154)=",ifactor(154));ifactor(154);end
 
 # bernoulli
-1 bernoulli(n) designe le n-ieme nombre de Bernoulli, bernoulli(n,x) le n-ieme polynome.
-2 bernoulli(n) is the n-th number of Bernoulli, bernoulli(n,x) the n-th polynomial.
-3 bernoulli(n) es el n-ésimo número de Bernoulli.
-4 bernoulli(n) είναι ο n-στός αριθμός Bernoulli.
-0 Intg
+1 bernoulli(n) désigne le n-ième nombre de Bernoulli et bernoulli(n,x) désigne le n-ième polynôme de Bernoulli de variable le deuxième argument.
+2 bernoulli(n) is the n-th number of Bernoulli and bernoulli(n,x) is the n-th polynomial of Bernoulli and the second argument is the variable.
+3 bernoulli(n) es el n-ésimo número de Bernoulli y bernoulli(n,x) es el n-ésimo polinomio de Bernoulli de variable el segundo argumento.
+4 bernoulli(n) είναι ο n-στός αριθμός Bernoulli και bernoulli(n,x) είναι ο n-στός  πολυώνυμο Bernoulli με μεταβλητή το 2ο όρισμα.
+0 Intg||(Intg,Var)
 -1 
 bernoulli(6)
+bernoulli(6,x)
 
 # break
 1 Pour interrompre une boucle: while (cond) {inst1; if (cond) {inst2;break;}}.
@@ -10489,16 +10569,23 @@ Resultant(x^3+x+1,x^2-x-2,x)
 kill()
 
 # lagrange interp
-1 Renvoie le polynôme de degré n-1 tel que P(xk)=yk k=0..n-1
-2 Returns the polynomial of degree n-1 such that P(xk)=yk k=0..n-1
-3 Devuelve el polinomio de grado n-1 tal que P(xk)=yk k=0..n-1
-4 Επιστρέφει το πολυώνυμο παρεμβολής βαθμού n-1 έτσι ώστε P(xk)=yk k=0..n-1
-0 (Lst_xk,Lst_yk) or Mtrx_2*n
+1 Renvoie le polynôme de degré n-1 tel que P(xk)=yk=f(x_k) k=0..n-1
+2 Returns the polynomial of degree n-1 such that P(xk)=yk=f(x_k) k=0..n-1
+3 Devuelve el polinomio de grado n-1 tal que P(xk)=yk=f(x_k) k=0..n-1
+4 Επιστρέφει το πολυώνυμο παρεμβολής βαθμού n-1 έτσι ώστε P(xk)=yk=f(x_k) k=0..n-1
+0 (Lst_xk,Lst_yk)||Mtrx_2*n||(Lst_xk,Fnc(f)),[Var||[]||lagrange]
 -1 spline
 lagrange([1,3,4],[0,1,2])
 lagrange([1,3,4],[0,1,2],t)
  f(x):=exp(-x); lagrange([1,3,4],f)
 lagrange([[1,3,4],[0,1,2]])
+lagrange([1,3,4],[0,1,2],[])
+ X:=[1,3,4]; divdiff:=lagrange(X,[0,1,2],lagrange); horner(divdiff,X,5);
+lagrange([[1,3,4],[0,1,2]],y)
+lagrange([-1,0,1],[1/e-1,0,e-1])
+ f(x):=exp(x)-1;lagrange([-1,0,1],f)
+lagrange([0,1,2],[1,exp(1),exp(2)],lagrange)
+lagrange([0,1,2],exp,lagrange)
 
 # laguerre
 1 Renvoie le n-ième polynôme de Laguerre
@@ -11586,8 +11673,11 @@ pow(x+1,452)
 8 返回 F(b)-F(a)
 0 Expr(F(var)),Real(a),Real(b),[Var]
 -1 subst
+-2 int
 preval(x^2-2,2,3)
 preval(y^2-2,2,3,y)
+preval(int(x),0,1)
+preval(int(y,y),0,1,y)
 
 # prevprime
 1 Nombre premier ou pseudo-premier précédent un entier a donné.
@@ -12789,6 +12879,7 @@ subst(1/(x^2+y^2),x=2,y=3)
 subst(1/(x^2+y^2+z^2),[x=2,y=3,z=1])
 subst(x-2/(4+x^2),x=1)
 subst('integrate(sin(x^2)*x,x)',x=sqrt(t))
+subst('sum(x^(n+1)/((n+p+1)*(n+1)),n,0,inf)',n=k-1)
  f:=1/(x^2+y^2;f(x=2,y=3)
 
 # sum somme add
@@ -13725,8 +13816,8 @@ makemat((j,k)->1/(j+k+1),2,3)
 makemat(sqrt(2),2,3)
 
 # matrix
-1 Crée une matrice m(j,k) de p lignes et q colonnes, m(j,k)=f(j,k) ou m(j,k)=a avec des indices qui commencent à 0 ou 1 selon le mode xcas ou maple (ou option de apply)
-2 Make a matrix m(j,k) with p rows and q cols, m(j,k)=f(j,k) or m(j,k)=a : the index start at 0 or 1 according to the mode (xcas or maple) (or option of apply)
+1 Crée une matrice m(j,k) de p lignes et q colonnes, m(j,k)=f(j,k) ou m(j,k)=a avec des indices qui commencent à 0 ou 1 selon le mode xcas ou maple (ou option de apply) ou crée une matrice à partir d'une table.
+2 Make a matrix m(j,k) with p rows and q cols, m(j,k)=f(j,k) or m(j,k)=a : the index start at 0 or 1 according to the mode (xcas or maple) (or option of apply) or make a maytice with a table.
 3 Crea una matriz m(j,k) de p filas y q columnas, m(j,k)=f(j,k) o f(j,k)=a (o opción de apply)
 4 Δημιουργία ενός πίνακα m(j,k) με p γραμμές και q στήλες, m(j,k)=f(j,k) ή m(j,k)=a
 0 Intg(p),Intg(q),(Fnc(f) or Val(a))
@@ -13736,6 +13827,7 @@ makemat(sqrt(2),2,3)
 matrix(2,3,(j,k)->1/(j+k+1))
 matrix(3,2,(j,k)->j+k)
 matrix(2,3,4)
+  A[0..2,0..2]:=1;A[0..1,1..2]:=2;a:=matrix(A) 
 
 # display color
 1 Trace un objet géométrique en couleur (noir=0 rouge=1 vert=2 jaune=3 bleu=4), en trait +/- épais (line_width_n 0<n<8) et peut l'afficher selon une ligne pointillée (dash_line), rempli permet de remplir un polygone ou une courbe fermée.
@@ -14363,6 +14455,17 @@ writergb("image.png",[[255,0],[0,255]])
 writergb("image.png",[[255,0],[0,0]],[[0,255],[0,0]],[[0,0],[255,0]])
  a:=readrgb("rgb_image.png");writergb("brg_image.png",[a[0],a[4],a[1],a[3],a[2]])
 
+# Li
+1 Logarithme intégral Li(x)=Ei(ln(x)) primitive de 1/ln(x) 
+2 Logarithm integral Li(x)=Ei(ln(x)) primitive de 1/ln(x) 
+3 Integral logarithmica Li(x)=Ei(ln(x)) primitiva de 1/ln(x) 
+4 Εκθετικό  λογάριθμος Li(x)=Ei(ln(x)) (Αόριστο ολοκλήρωμα 1/ln(x))
+0 Expr
+-1 Si
+-2 Ci
+-3 Ei
+Li(2.0)
+
 # Ei
 1 Exponentielle intégrale int(exp(t)/t,t=-inf..x)
 2 Exponential integral int(exp(t)/t,t=-inf..x)
@@ -14371,6 +14474,7 @@ writergb("image.png",[[255,0],[0,0]],[[0,255],[0,0]],[[0,0],[255,0]])
 0 Expr
 -1 Si
 -2 Ci
+-3 Li
 Ei(1.0)
 
 # Ci
@@ -14381,6 +14485,7 @@ Ei(1.0)
 0 Expr
 -1 Ei
 -2 Si
+-3 Li
 Ci(1.0)
 
 # Si
@@ -14391,6 +14496,7 @@ Ci(1.0)
 0 Expr
 -1 Ei
 -2 Ci
+-3 Li
 Si(1.0)
 
 # invztrans

@@ -1459,7 +1459,7 @@ namespace giac {
   gen _bounded_function(const gen & args,giac::context * );
   gen bounded_function(giac::context * );
   gen _euler_mac_laurin(const gen & args,giac::context * );
-  bool convert_to_euler_mac_laurin(const gen & g,gen & res,giac::context * );
+  bool convert_to_euler_mac_laurin(const gen & g,const giac::identificateur &n,gen & res,giac::context * );
   giac::vecteur find_singularities(const gen & e,const giac::identificateur & x,int cplxmode,giac::context * );
   giac::vecteur solve(const gen & e,const giac::identificateur & x,int isolate_mode,giac::context * );
   giac::vecteur solve(const gen & e,const gen & x,int isolate_mode,giac::context * );
@@ -1601,7 +1601,7 @@ namespace giac {
   gen cklvar(const gen & e,giac::context * );
   gen ckalgvar(const gen & e,giac::context * );
 
-  bool sym2r (const gen &e,const giac::vecteur &l,const giac::vecteur & lv, const giac::vecteur & lvnum,const giac::vecteur & lvden, int l_size, gen & num,gen & den,giac::context * );
+  bool sym2r (const gen &e,const gen & iext,const giac::vecteur &l,const giac::vecteur & lv, const giac::vecteur & lvnum,const giac::vecteur & lvden, int l_size, gen & num,gen & den,giac::context * );
   bool sym2r (const gen &e,const giac::vecteur &l, int l_size, gen & num,gen & den,giac::context * );
   gen e2r(const gen & e,const giac::vecteur & l,giac::context * ); 
   gen e2r(const gen & e,const gen & x,giac::context * );

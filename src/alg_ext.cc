@@ -97,8 +97,8 @@ namespace giac {
     if (rit!=ritend && rit->second.type==_VECT){
       res=*rit->second._VECTptr;
       if (res.size()==2 && res.front().type==_VECT && res.back().type==_DOUBLE_){
-	res=*res.front()._VECTptr;
 	oldeps=res.back()._DOUBLE_val;
+	res=*res.front()._VECTptr;
       }
       else
 	res.clear();
@@ -123,8 +123,7 @@ namespace giac {
 
   gen algebraic_EXTension(const gen & a_,const gen & v){
     gen a(a_);
-    if (a.type==_VECT)
-      a=trim(*a._VECTptr,0);
+    if (a.type==_VECT) a=trim(*a._VECTptr,0);
     if (is_zero(a) )
       return 0;
     if (a.type==_VECT){
@@ -221,8 +220,11 @@ namespace giac {
 
   gen ext_reduce(const gen & e){
 #ifdef DEBUG_SUPPORT
-    if (e.type!=_EXT)  
-      return gensizeerr(gettext("alg_ext.cc/ext_reduce"));
+    if (e.type!=_EXT){
+      gensizeerr(gettext("alg_ext.cc/ext_reduce"));
+      CERR << gettext("alg_ext.cc/ext_reduce");
+      return e; 
+    }
 #endif    
     if ( (e._EXTptr->type==_VECT) && ((e._EXTptr+1)->type==_VECT) && 
 	 (e._EXTptr->_VECTptr->size()<(e._EXTptr+1)->_VECTptr->size()) )
@@ -688,6 +690,10 @@ namespace giac {
 	      gen p=paramv[j];
 	      if (p.type!=_IDNT)
 		continue;
+	      if (p==cst_pi){
+		vb[j]=p;
+		continue;
+	      }
 	      gen g,g2=p._IDNTptr->eval(1,g,contextptr);
 	      if ((g2.type==_VECT) && (g2.subtype==_ASSUME__VECT)){
 		vecteur V=*g2._VECTptr;
@@ -777,7 +783,7 @@ namespace giac {
     } // end choose by degree
     clean(p);
     b__VECT=polynome2poly1(p/p.coord.front().value); // p must be monic (?)
-    // _VECTute new minimal polynomial
+    // compute new minimal polynomial
     int k;    
     gen res1=common_minimal_POLY(a__VECT,b__VECT,a,b,k,contextptr);
     if ((a_orig.type==_EXT) && (b_orig.type==_EXT) && !is_undef(res1))
@@ -829,6 +835,8 @@ namespace giac {
   }
 
   gen inv_EXT(const gen & aa){
+    if (aa.type!=_EXT) 
+      return inv(aa,context0);
     gen a(ext_reduce(aa));
     if (a.type==_FRAC){
       return a._FRACptr->den*inv_EXT(a._FRACptr->num);
@@ -965,6 +973,16 @@ namespace giac {
   static const char _rootof_s []="rootof";
   static define_unary_function_eval2 (__rootof,&giac::rootof,_rootof_s,&printasrootof);
   define_unary_function_ptr5( at_rootof ,alias_at_rootof,&__rootof,0,true);
+
+  gen max_algext(const gen & args,GIAC_CONTEXT){
+    gen g=args;
+    if (!is_integral(g) || g.type!=_INT_ || g.val<3)
+      return gensizeerr(contextptr);
+    return MAX_ALG_EXT_ORDER_SIZE=MAX_COMMON_ALG_EXT_ORDER_SIZE=g.val;
+  }
+  static const char _max_algext_s []="max_algext";
+  static define_unary_function_eval (__max_algext,&giac::max_algext,_max_algext_s);
+  define_unary_function_ptr5( at_max_algext ,alias_at_max_algext,&__max_algext,0,true);
 
   static vecteur sturm(const gen & g){
     if (g.type!=_POLY)

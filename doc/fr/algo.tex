@@ -6685,7 +6685,55 @@ on peut montrer que
 le syst\`eme revient \`a l'\'equilibre exponentiellement vite, si
 l'une des parties r\'eelles est strictement positive,
 pour une condition initiale g\'en\'erique, le syst\`eme s'en
-\'eloigne, et s'il y a des parties r\'eelles nulles, on ne peut pas conclure/
+\'eloigne, et s'il y a des parties r\'eelles nulles, on ne peut pas
+conclure.
+
+\subsubsection{Le mod\`ele proie-pr\'edateur}
+\index{proie-pr\'edateur, mod\`ele}
+\index{mod\`ele proie-pr\'edateur}
+C'est un syst\`eme autonome en dimension 2 pour lequel on sait
+calculer une int\'egrale premi\`ere. Il se pr\'esente sous la forme
+\begin{eqnarray*}
+\dot{x}&=&x(a-by)\\
+\dot{y}&=&-y(c-dx)
+\end{eqnarray*}
+avec $a,b,c,d$ des constantes positives, $x$ l'effectif des proies,
+$y$ celui des pr\'edateurs,
+$a$ correspond \`a la reproduction naturelle des proies, 
+$b$ \`a la mortalit\'e par
+rencontre d'un pr\'edateur, $c$ \`a la mortalit\'e naturelle
+des pr\'edateurs et $d$ \`a la natalit\'e d\'ependant du nombre de
+proies.
+On peut d\'eterminer les points d'\'equilibre et leur stabilit\'e
+comme pour n'importe quel syst\`eme autonome (exercice),
+on trouve $(0,0)$  qui est instable et $(c/d,a/b)$, les valeurs propres
+du lin\'earis\'e 
+sont 2 imaginaires purs conjugu\'es, donc on ne peut pas conclure sur
+la stabilit\'e \`a ce stade.
+
+On peut d\'eterminer une int\'egrale premi\`ere en faisant apparaitre
+des d\'eriv\'ees logarthmiques
+$$ \frac{d}{dt}(\ln(x))=a-by, \quad \frac{d}{dt}(\ln(y))=-c+dx $$
+donc en posant $X=\ln(x), Y=\ln(y)$ on a
+$$ \dot{X}=a-be^Y, \quad \dot{Y}=-c+de^X$$
+d'o\`u~:
+$$ \dot{X} (de^X-c) + \dot{Y}(be^Y-a)=0$$
+donc~:
+$$ f(X,Y)=de^X-cX+be^Y-aY$$
+est une int\'egrale premi\`ere du mouvement, qui se passe donc sur
+les courbes de niveau de $f$ en $(X,Y)$ ou de $dx-c\ln(x)+by-a\ln(y)$
+en $(x,y)$. On observe que ces courbes de niveau sont ferm\'ees, 
+impliquant un mouvement p\'eriodique, si on exprime $y$ en fonction
+de $x$ par le th\'eor\`eme des fonctions implicites donc sur toute la
+courbe \`a l'exception des deux points $x_\pm$ o\`u la tangente est verticale
+$$dx-c\ln(x)+by-a\ln(y)=K \Rightarrow y=y_{\pm}(x)$$
+alors on peut calculer la p\'eriode du mouvement en appliquant~:
+$$ \frac{dx}{x(a-by(x))}=dt$$
+donc
+$$ T=\int dt = \int_{x_-}^{x_+}  \frac{dx}{x(a-by_+(x))}
++ \int_{x_+}^{x_-}  \frac{dx}{x(a-by_-(x))}
+$$
+
 
 \subsubsection{For\c{c}age pr\`es d'un point d'\'equilibre de syst\`eme.}
 Si on ajoute un terme d\'ependant du temps $y'=f(y)+g(t)$,
@@ -7764,24 +7812,29 @@ l'\'etape difficile, la recherche des $a_p$ n'est pas un blocage en pratique.
 \subsection{La m\'ethode $\rho$ de Pollard} \index{Pollard}
 {\bf Théorème des anniversaires~}: la probabilit\'e que $n$ éléments pris au
 hasard parmi $N$ soient distincts 2 à 2 pour 
-$n<<N$ et $N\rightarrow \infty$ est au premier ordre 
-$1-n^2/2/N$. Donc si $n=O(sqrt(N))$ cette proba peut être rendue petite.
+$n=a \sqrt(N))$ et $N\rightarrow \infty$ 
+est \'equivalente \`a $e^{-a^2/2}$, 
+et peut donc être rendue arbitrairement petite.
 
 En effet, cette probabilit\'e vaut
 $$ P=1(1-\frac1N)(1-\frac2N)...(1-\frac{n-1}{N})$$
 donc
 $$ -\ln(P)=\sum_{k=0}^{n-1} -\ln(1-\frac{k}{N})  $$
 on reconnait une m\'ethode de rectangles pour approcher $\int
--ln(1-t)$, fonction croissante positive sur $[0,1[$ d'o\`u l'encadrement
-$$ N\int_{0}^{\frac{n-1}{N}} -\ln(1-t) \, dt \leq -\ln(P) \leq
-N\int_{\frac1N}^{\frac{n}{N}} -\ln(1-t) \, dt $$
-On peut faire un d\'eveloppement des $\ln$ si $n/N$
-tend vers 0, on obtient si $n=O(\sqrt{N})$ par les commandes
-\verb|series(N*int(ln(1-t),t,0,(n-1)/N),N,inf)|
-et \verb|series(N*int(ln(1-t),t,1/N,n/N),N,inf)|
-$$ -\frac{\frac{n^{2}}{2}-n+\frac{1}{2}}{N}+ O(\sqrt{N}^{-1})
+-\ln(1-t)$, fonction croissante positive sur $\R^+$ d'o\`u l'encadrement
+$$ \int_{0}^{n-1} -\ln(1-\frac{t}{N}) \, dt \leq -\ln(P) \leq
+\int_{1}^{n} -\ln(1-\frac{t}{N})  \, dt $$
+On int\`egre par parties, en posant $-1=(N-t)'$ 
+$$ \int -\ln(1-\frac{t}{N}) \, dt 
+= (N-t) \ln(1-\frac{t}{N}) + \int \ dt 
+= (N-t) \ln(1-\frac{t}{N}) + t $$
+Si $t/N=o(1)$ la primitive vaut~:
+$$ (N-t)(-\frac{t}{N}-\frac{t^2}{2N^2}+O(\frac{t^3}{N^3})+t
+=-\frac{t^2}{2N} + O(\frac{t^3}{N^2}) $$
+Donc pour $n=a\sqrt{N}$, on a~:
+$$ \frac{a^2}{2}+ O(\sqrt{N}^{-1})
 \leq -\ln(P) 
-\leq -\frac{\frac{n^{2}}{2}-\frac{1}{2}}{N}+ O(\sqrt{N}^{-1})$$
+\leq \frac{a^2}{2}+ O(\sqrt{N}^{-1})$$
 d'o\`u le r\'esultat annonc\'e.
 
 {\bf Application~}: si $N$ est composé, on prend des entiers modulo $N$
@@ -7863,9 +7916,9 @@ très rapide.
 \end{itemize}
 
 \section{Factorisation des polynômes.} \label{sec:factor}
-
 On présente ici quelques algorithmes utilisés pour factoriser un polynôme 
-à coefficients entiers. 
+à coefficients entiers, pour la recherche de racines approch\'ees
+d'un polyn\^ome, cf. la section \ref{sec:proot}.
 Pour un polynôme en une variable,
 cele se fait en plusieurs étapes~: on commence
 par se ramener à un polynôme $P$ dont tous les facteurs sont de multiplicité
@@ -10694,6 +10747,11 @@ et il faut que
 n \geq \frac{\ln(\frac{\epsilon}{|u_0-l|})}{\ln( \frac{L}{2}) }
  \]
 
+On peut acc\'elerer la convergence par la m\'ethode dite de
+relaxation\index{relaxation}, au lieu de r\'esoudre $f(x)=x$, on r\'esoud
+$f(x)+\alpha x=(1+\alpha)x$ soit $x=(f(x)+\alpha x)/(1+\alpha)$,
+on choisira alors $\alpha$ proche de $-f'(l)$.
+
 Si $f$ est suffisamment r\'eguli\`ere,
 il existe une méthode plus rapide lorsqu'on est proche de la racine ou lorsque
 la fonction a des propriétés de convexité, c'est la méthode de Newton
@@ -10716,12 +10774,14 @@ $$ \exists k<1, \forall x,y \in I, \quad |f(x)-f(y)| \leq k |x-y|$$
 Alors pour tout $u_0 \in I$, la suite $(u_n)$ d\'efinie par
 $u_{n+1}=f(u_n)$ converge vers l'unique solution dans $I$ de $f(l)=l$.
 \end{thm}
-La d\'emonstration de la convergence est un peu diff\'erente de celle donn\'ee en
+La d\'emonstration de la convergence est un peu diff\'erente de celle 
+donn\'ee en
 dimension 1, on montre que $(u_n)$ est une suite de Cauchy, car pour $n>m$
 $$ |u_n-u_m| \leq \sum_{j=m}^{n-1}|u_{j+1}-u_j | 
-\ leq k^m \frac{1}{1-k} |u_1-u_0| $$
+\leq k^m \frac{1}{1-k} |u_1-u_0| $$
 donc $(u_n)$ est convergente puisque nous sommes dans un ferm\'e 
-d'un espace complet.
+d'un espace complet. (Cela permet d'ailleurs de g\'en\'eraliser 
+l'\'enonc\'e donn\'e en dimension 1 au cas o\`u $a$ ou $b$ est infini).
 
 La vitesse de convergence est lin\'eaire, la d\'emonstration est
 identique \`a celle de la dimension 1.
@@ -10735,7 +10795,10 @@ de Brouwer ou de Schauder).
 \item Pour v\'erifier les hypoth\`eses du th\'eor\`eme dans
 $\R^n$, il suffit de montrer que dans $I$ la norme triple de $f'$
 subordonn\'ee \`a la norme choisie dans $\R^n$ est inf\'erieure
-\`a $k<1$.
+\`a $k<1$. Pour $f$ lin\'eaire,
+cela revient \`a calculer une norme subordonn\'ee de matrice
+et donne lieu \`a des m\'ethodes it\'eratives alternatives \`a
+l'inversion de matrice, cf. la section \ref{sec:jacobi}.
 \item l'algorithme de recherche
 PageRank de google utilise le point fixe, en tr\`es grande dimension~:
 $n$ est le nombre de pages Web, $I$ est l'ensemble des vecteurs
@@ -10937,11 +11000,12 @@ $u_n^2-2 \leq 2 \varepsilon$.
 \subsection{La m\'ethode de Newton dans $\R^n$.}
 Le premier \'enonc\'e du cas de la dimension 1 se g\'en\'eralise en~:
 \begin{thm} \index{Newton}
-Soit $f$ une fonction de classe $C^2$ (2 fois continument dérivable)
+Soit $f$ une fonction de classe $C^2$ (2 fois continument d\'erivable)
 sur un ferm\'e $I$ de $\R^n$. Soit $r$ une racine simple de $f$
 situ\'ee \`a l'int\'erieur de $I$
-(telle que $f(r)=0$ et $f'(r)$ inversible). Alors il existe $\varepsilon>0$
-tel que la suite définie par
+(telle que $f(r)=0$ et $f'(r)=(\partial_j f_i)(r)$ inversible). 
+Alors il existe $\varepsilon>0$
+tel que la suite d\'efinie par
 \[ u_{n+1} = u_n -(f'(u_n) )^{-1}f(u_n), \quad |u_0-r| \leq \varepsilon \]
 converge vers $r$.
 
@@ -10953,13 +11017,12 @@ La d\'emonstration est calqu\'ee sur la dimension 1, mais il faut
 prendre le reste int\'egral dans la formule de Taylor
 \[ u_{n+1}-r = u_n - r - f'(u_n)^{-1} f(u_n) = 
 f'(u_n)^{-1} (f'(u_n)(u_n-r)-f(u_n) ) \]
-puis on applique Taylor le long du segment $[r,u_n]$
-il existe un réel $\theta \in [0,1]$ tel que~:
-\[ 0 = f(r)=f(u_n)+ f'(u_n) (r-u_n)+ \frac{1}{2} \int_0^1 (r-u_n)
+puis on applique Taylor le long du segment $[r,u_n]$~:
+\[ 0 = f(r)=f(u_n)+ f'(u_n) (r-u_n)+  \int_0^1 (1-\theta)(r-u_n)
 f'{'}(r+\theta (u_n-r)) (r-u_n) \, d\theta \]
 donc~:
-$$u_{n+1}-r =-f'(u_n)^{-1} \frac{1}{2} (r-u_n) \int_0^1 f'{'}(r+\theta
-(u_n-r)) \, d\theta (r-u_n)  $$
+$$u_{n+1}-r =-f'(u_n)^{-1}  (r-u_n) 
+\left(\int_0^1 (1-\theta)f'{'}(r+\theta (u_n-r)) \, d\theta \right) (r-u_n)  $$
 et on en d\'eduit (\ref{eq:newton}) et on conclut de m\^eme en
 rempla\c{c}ant intervalle centr\'e en $r$ de rayon $\varepsilon$
 par boule de rayon $\varepsilon$.
@@ -10981,7 +11044,7 @@ par l'application $x\rightarrow x-f'(x)^{-1} f(x)$.
 %% et ne marche pas, utilisation du préfacteur.
 
 \subsection{Calcul approch\'e des racines complexes simples} 
-\index{factorisation} \index{racine}
+\index{factorisation} \index{racine} \label{sec:proot}
 La section pr\'ec\'edente nous a montr\'e qu'on pouvait
 se ramener \`a la recherche de racines simples, ce qui 
 donne envie d'essayer la m\'ethode de Newton. On a malheureusement
@@ -11030,10 +11093,53 @@ est garantie, cet algorithme est impl\'ement\'e dans PARI (voir
 la th\`ese de Xavier Gourdon et l'article Splitting circle method de Wikipedia)
 et est appel\'e par Xcas pour des polyn\^omes mals conditionn\'es.
 
+Enfin, on peut appliquer directement la m\'ethode de Newton pour
+trouver dans $\C^n$ toutes les racines simultan\'ement, c'est la
+m\'ethode de {\bf Durand-Kerner, Weierstrass}\index{Durand-Kerner, Weierstrass}.
+On pose $g_x(z)=\prod_{i=1}^n (x-z_i)$, il s'agit de r\'esoudre en $z$
+$g_x(z)=P(x)$. On a a l'ordre 1 en $z$
+$$ g_x(z+w)=g_x(z) - \sum_{i=1}^n w_i \prod_{j \neq i} (x-z_j) +O(w^2)
+=P(x)$$
+pour trouver $w_i$, on pose $x=z_i$, on obtient
+$$ -\prod_{j \neq i}(z_i-z_j) w_i = P(z_i)$$
+donc
+$$ w_i=-\frac{P(z_i)}{\prod_{j \neq i}(z_i-z_j)}$$
+On peut aussi calculer le produit du d\'enominateur en effectuant
+$g_x'(z_i)$ (la d\'eriv\'ee porte sur $x$). 
+On retrouve la m\'ethode de Newton \`a une variable
+o\`u la d\'eriv\'ee du polyn\^ome au d\'enominateur est remplac\'ee 
+par la valeur approch\'ee du polyn\^ome.
+D'o\`u le programme
+\begin{verbatim}
+dw(P,N,eps):={ // Weierstrass, Durand-Kerner polynomial rooter
+  local l,v,w,n,j,k,q,q1;
+  P:=P/lcoeff(P);
+  n:=degree(P);
+  assume(l,symbol);
+  v:=seq(exp(i*l/n*2.0*pi),l,0,n-1); w:=v;
+  for k from 1 to N do
+    q:=pcoeff(v);
+    q1:=q';
+    for j from 0 to n-1 do
+      w[j]:=v[j]-horner(P,v[j])/horner(q1,v[j]);
+    od;
+    if (l2norm(w-v)<eps*l2norm(v))
+      return w;
+    v:=w;
+  od;
+  retourne "max iter reached";
+}:;
+\end{verbatim}
+Par exemple \verb|dw(x^3+x+1,100,1e-10)| renvoie des valeurs
+approch\'ees des racines de $x^3+x+1$.
+
 Si on s'int\'eresse seulement \`a la racine de module maximal d'un
 polyn\^ome, on peut
 en trouver une estimation assez simplement en appliquant la m\'ethode
 de la puissance \`a la matrice companion du polyn\^ome.
+On peut am\'eliorer la pr\'ecision d'une racine
+par des it\'erations inverses ou par la m\'ethode de Newton en une
+variable.
 
 \section{Alg\`ebre lin\'eaire} \label{sec:linalg}
 On présente ici des algorithmes autour de la résolution exacte
@@ -11489,11 +11595,19 @@ sur les vecteurs colonnes de $L^t$ avec des coefficients entiers
 que ses composantes sur les colonnes non nulles de $U^t$ sont nulles.
 
 Plus g\'en\'eralement, chercher une solution particuli\`ere
-du syst\`eme $MX=B$ revient
-\`a chercher un \'el\'ement du noyau de la matrice obtenue en
-ajoutant $B$ en derni\`ere colonne de $M$,
-\'el\'ement tel que le dernier coefficient
-soit -1.
+du syst\`eme $MX=B$ revient \`a r\'esoudre
+$U^t Y=B$ avec $Y=(L^t)^{-1} X$, la recherche de $Y$ est
+alors tr\`es simple puisque $U$ est \'echelonn\'ee. 
+Par exemple, \verb|M:=[[2,3,5],[7,5,3]]|
+puis \verb|B:=[3,-2]|, puis
+\verb|L,U:=ihermite(tran(M))|, donne pour \verb|tran(U)|
+$$ \left(\begin{array}{ccc}
+1 & 0 & 0 \\
+0 & 1 & 0
+\end{array}\right) $$
+on a donc $y_1=3, y_2=-2, y_3$ quelconque puis on calcule 
+\verb|X:=tran(L)*[3,-2,y3]|, on peut v\'erifier 
+avec \verb|normal(M*X)|.
 
 On peut aussi se servir de la forme normale de Hermite pour
 compl\'eter un vecteur $v=(a_1,...,a_n)$ de contenu 1 en une base
@@ -12126,12 +12240,12 @@ on a alors $Ha=b$ puisque $H(a-b)=b-a$ car $v=a-b$ et $H(a+b)=a+b$
 car $v$ est orthogonal \`a $a+b$ (puisque $\|a\|=\|b\|$).
 
 \subsubsection{La m\'ethode de
-  Leverrier-Faddeev-Souriau}\index{Leverrier} \index{Fadeev}\index{Souriau}
+  Leverrier-Faddeev-Souriau}\index{Leverrier} \index{Faddeev}\index{Souriau}
 Cette m\'ethode permet le calcul simultan\'e des coefficients 
 $p_i \ (i=0..n)$ du polyn\^ome caract\'eristique 
 $P(\lambda)=\det(\lambda I-A)$  et des coefficients matriciels
 $B_i \ (i=0..n-1)$ du polyn\^ome en $\lambda$ donnant la matrice adjointe
-(ou comatrice) $B(\lambda)$ de $\lambda I -A$~:
+(ou transpos\'ee de la comatrice) $B(\lambda)$ de $\lambda I -A$~:
 \begin{equation} \label{eq:Bp}
  (\lambda I -A)B(\lambda)=(\lambda I -A) \sum_{k\leq n-1} B_k \lambda^k
 = (\sum_{k\leq n} p_k \lambda^k)I =P(\lambda)I
@@ -12193,28 +12307,24 @@ A_k=AB_{k-1}, & p_k=-\frac{1}{k}\mbox{tr}(A_k), & B_k=A_k+p_kI
 \end{array}
 \right.\]
 On peut alors vérifier que $B_n=A_n+p_nI=0$.
-D'où ce petit programme à utiliser avec xcas en mode mupad 
-(\verb|maple_mode(2);|), ou avec MuPAD, ou à adapter
-avec un autre système~:
+D'où ce petit programme~:
 \begin{verbatim}
-iequalj:=(j,k)->if j=k then return(1); else return(0); end_if;
-faddeev:=proc(A) // renvoie la liste des matrices B et le polynome P
-local Aj,AAj,Id,coef,n,pcara,lmat;
-begin
- n:=ncols(A);
- Id:=matrix(n,n,iequalj);     // matrice identite
- Aj:=Id;
- lmat:=[];                    // B initialise a liste vide
- pcara:=[1];                  // coefficient de plus grand degre de P
- for j from 1 to n do
-  lmat:=append(lmat,Aj);      // rajoute Aj a la liste de matrices
-  AAj:=Aj*A;
-  coef:=-trace(AAj)/j;        // mupad linalg::tr
-  pcara:=append(pcara,coef);  // rajoute coef au polynome caracteristique
-  Aj:=AAj+coef*Id;
- end_for;
- lmat,pcara;                  // resultat
-end_proc;
+Faddeev(A):={ // renvoie la liste des matrices B et le polynome P
+  local Aj,AAj,Id,coef,n,pcara,lmat,j;
+  n:=ncols(A);
+  Id:=idn(n);     // matrice identite
+  Aj:=Id;
+  lmat:=[];      // B initialise a liste vide
+  pcara:=[1];    // coefficient de plus grand degre de P
+  for j from 1 to n do
+    lmat:=append(lmat,Aj);  // rajoute Aj a la liste de matrices
+    AAj:=Aj*A;
+    coef:=-trace(AAj)/j;    
+    pcara:=append(pcara,coef);  // rajoute coef au pol. caract.
+    Aj:=AAj+coef*Id;
+   end_for;
+  return lmat,pcara;        // resultat
+}:;
 \end{verbatim}
 
 \subsubsection{Les vecteurs propres simples.}
@@ -12704,17 +12814,49 @@ de taille plus petites que plusieurs centaines de lignes et colonnes.
 De m\^eme on peut gagner sur le calcul du polyn\^ome minimal en
 faisant des op\'erations de multiplication par bloc.
 
-\subsection{Quelques m\'ethodes it\'eratives alternatives au pivot}
-\subsubsection{Factorisation $QR$}
+\subsection{Quelques m\'ethodes alternatives au pivot}
+\subsubsection{Factorisation $QR$}\index{QR}
 La factorisation $QR$ 
 consiste à écrire une matrice $A$ comme produit d'une matrice
 orthogonale (ou unitaire dans $\C$) et d'une matrice triangulaire
 supérieure. Les matrices orthogonales ayant un conditionnement
 de 1 (en norme $L^2$) cette factorisation est numériquement stable.
 
+Il existe plusieurs algorithmes pour effectuer cette factorisation.
+La m\'ethode de Householder utilise des matrices de sym\'etrie
+par rapport \`a un hyperplan.
+Pour annuler les coefficients de la premi\`ere colonne $c_1$ de $A$,
+on construit le vecteur $u=c_1 \pm \|c_1\| e_1$ o\`u $e_1$
+est le premier vecteur de base et le signe $\pm$ est
+le signe de la premi\`ere composante de $c_1$ (pour assurer
+la stabilit\'e num\'erique). On fait alors la sym\'etrie $Q_1$ par rapport
+\`a l'hyperplan $H$ orthogonal \`a $u$, qui laisse $H$ invariant
+et transforme $u$ en $-u$. Comme $u$ est vecteur directeur
+de la bissectrice int\'erieure ou ext\'erieure de $c_1$ et $e_1$, la sym\'etrie
+\'echange ces deux vecteurs, \'eventuellement au signe pr\`es.
+La matrice $A_1=Q_1A$ a donc comme premi\`ere colonne un multiple de
+$e_1$, on continue ensuite en faisant le m\^eme raisonnement
+sur la matrice $A_1$ en se limitant et lignes et colonnes d'indice
+$\geq 2$. Apr\`es $n-1$ it\'erations, on a $A_{n-1}=Q_{n-1}...Q_1A$
+qui est triangulaire sup\'erieure d'o\`u la factorisation annonc\'ee.
+
+Matriciellement, $Q_1=I-2vv^*$ o\`u $v=u/\|u\|$, pour calculer $Q_1A$
+il faut effectuer $A-2vv^*A$, on calcule donc $w=v^*A$ en $n^2$
+op\'erations (ou une op\'eration est une addition et une
+multiplication) puis on soustrait $(2v)_i w_j$ de $a_{ij}$ en $n^2$
+op\'erations. En faisant de m\^eme aux \'etapes qui suivent, sans
+tenir compte de la simplification progressive du vecteur $v$, on 
+effectue $2n^3$ op\'erations. La constante 2 peut \^etre 
+un peu am\'elior\'ee en tenant compte des 0 initiaux de $v$ aux
+\'etapes 2 et ult\'erieures, elle est toutefois sup\'erieure \`a LU
+(et Cholesky), mais en contrepartie
+la m\'ethode est tr\`es stable num\'eriquement.
+
+{\bf Application~:}\\
 On peut alors écrire $Ax=b$ sous la forme $QRx=b$
 donc $Rx=Q^*b$ qui est un système triangulaire supérieur,
-donc résoudre $Ax=b$ en $O(n^2)$ opérations.
+donc résoudre $Ax=b$ en $O(n^2)$ opérations une fois 
+la factorisation $QR$ effectu\'ee.
 Mais c'est surtout pour résoudre au sens des moindres carrés
 un système sur-déterminé que la factorisation $QR$ trouve tout
 son intérêt. En effet, minimiser $\| Ax-b \|_2^2$,
@@ -12730,7 +12872,9 @@ de $A$ (le nombre d'opérations est multiplié par une constante
 car $QR$ a une constante plus grande que Cholesky, mais le résultat
 est plus précis).
 
-\subsubsection{Jacobi, Gauss-Seidel, relaxation}\index{Jacobi} \index{Gauss-Seidel}
+\subsubsection{M\'ethodes it\'eratives de
+Jacobi, Gauss-Seidel, relaxation}\index{Jacobi} \index{Gauss-Seidel}
+\label{sec:jacobi}
 Lorsqu'on a une matrice creuse (peu d'\'el\'ements non nuls),
 l'algorithme du pivot de Gauss a tendance \`a densifier rapidement
 la matrice r\'eduite (surtout avec le pivot partiel o\`u on ne
@@ -12776,7 +12920,7 @@ En Xcas, on peut programmer la m\'ethode par
 jacobi(A,b,N,eps):={
   local D,x0,x1,n,j;
   n:=size(A);
-  D:=diag(A)^-1;
+  D:=diag(A).^-1;
   x0:=[0.0$n];
   pour j de 1 jusque N faire
     x1:=b-A*x0;
@@ -12784,8 +12928,28 @@ jacobi(A,b,N,eps):={
     x0:=x0+D .*x1;
   fpour;
   return "non convergent";
-}
+}:;
 \end{verbatim}
+Un cas simple o\`u on a convergence~:
+\begin{prop} 
+Lorsque la matrice $A$ est
+\`a diagonale strictement dominante, c'est-\`a-dire que
+l'\'el\'ement diagonal est en valeur absolue strictement sup\'erieur
+\`a la somme des \'el\'ements non diagonaux de la m\^eme ligne~:
+$$ |a_{ii}| > \sum_{j\neq i} |a_{ij}| $$
+la m\'ethode de Jacobi converge.
+\end{prop}
+En effet, $\|M^{-1}Nx\|_\infty < \| x\|_\infty$ car~:
+$$ |(Nx)_i| \leq \sum_{j \neq i} |a_{ij}| |x_j| \leq \sum_{j \neq i}
+|a_{ij}| \|x\|_\infty < |a_{ii}| \| x\|_\infty  
+\quad  \Rightarrow \quad |M^{-1}(Nx)_i| <  \| x\|_\infty $$
+On retrouve ce cas pour une petite perturbation d'une matrice
+diagonale, par exemple~\\
+\verb|A:=2*idn(1000)+1e-4*ranm(1000,1000,uniform,-1,1)|\\
+\verb|b:=[1$1000];|\\
+\verb|linsolve(A,b);|\\
+\verb|jacobi(A,b,50,1e-12)|
+ 
 Pour Gauss-Seidel,
 le calcul de $M^{-1}$ n'est pas effectu\'e, on r\'esoud
 directement le syst\`eme triangulaire $Mx_{n+1}=b+Nx_n$ soit
@@ -12837,32 +13001,72 @@ Cons\'equence~: si $A$ sym\'etrique d\'efinie positive, alors
 Gauss-Seidel converge, car $M^*+N=D$. Pour la relaxation,
 on a $M^*+N=(2/\omega -1)D$ qui est d\'efinie positive si $\omega<2$.
 
- \subsubsection{Gradient conjugu\'e}\index{gradient conjugu\'e}
+ \subsubsection{M\'ethode it\'erative du gradient conjugu\'e}\index{gradient conjugu\'e}
 Il s'agit de résoudre $Ax=b$, où $A$ est définie positive. 
 Si on a une base orthogonale pour le produit scalaire induit par $A$, 
 on peut calculer la $j$-ième coordonn\'ee de $x$ 
 dans cette base en faisant le produit scalaire de 
 $Ax=b$ par le $j$-ième vecteur de la base. 
 On construit donc petit à petit une base orthogonale 
-pour $A$ par un procédé à la Gram-Schmidt, 
+$\{ p_1,...,p_n \}$ pour $A$ par un procédé à la Gram-Schmidt, 
 mais on ne part pas de la base canonique~: 
 on construit cette famille orthogonale pour $A$ 
 en meme temps qu'on calcule les composantes de $x$.
-On pose $x_0=0$, à la i-ième itération si $Ax_i-b=0$ 
-on a terminé, sinon $r_i=Ax_i-b$ 
-est linéairement indépendant des éléments 
-de la famille orthogonale dejà construite, 
-on complète la famille orthogonale avec un nouveau vecteur, 
-on calcule la $i+1$-ième composante de $x$ 
-sur la famille orthogonale, et on ajoute le tout à $x_i$ 
-pour obtenir $x_{i+1}$. 
+Si $x=\sum_{j\geq 1} \alpha_j p_j$, alors 
+$$<b|p_j>=<Ax|p_j>=\alpha_j <Ap_j|p_j>$$
+Posons $x_i=\sum_{j\leq i} \alpha_j p_j$, on a donc
+$$<b-Ax_i|p_j>=0 \mbox{ si } j\leq i, \quad 
+<b-Ax_i|p_j>=\alpha_j <Ap_j|p_j> \mbox{ sinon.}$$
+On peut donc construire $x_i$ comme une suite r\'ecurrente de 
+la mani\`ere suivante~: 
+\begin{enumerate}
+\item on initialise par $x_0=0$, 
+\item à la $i$-ième itération, on pose $r_{i+1}=b-Ax_i$, on a donc
+$$<r_{i+1}|p_j>=0 \mbox{ si } j\leq i $$
+\item
+On en d\'eduit que si $r_{i+1}$ est combinaison lin\'eaire des $p_j, j
+\leq i$, alors $r_{i+1}=0$ donc on a terminé~: $x=x_i$.
+\item
+Sinon, on complète la famille $A$-orthogonale par un nouveau vecteur
+$p_{i+1}$ tel que $r_{i+1}-p_{i+1}$ soit dans Vect($\{
+p_1,...,p_{i}\}$) et $A$-orthogonal. On observe que $r_{i+1}$ est combinaison
+lin\'eaire des $p_j$ pour $j \leq i+1$, donc $<r_i|r_k>=0$ si $i<k$
+puisque $r_k$ est orthogonal aux $p_j$ pour $j \leq i <k$.
+\item
+On calcule la $i+1$-ième composante de $x$ 
+sur la famille orthogonale augment\'ee~:
+$$\alpha_{i+1}=\frac{<b|p_{i+1}>}{<Ap_{i+1}|p_{i+1}>}$$
+On peut maintenant ajouter la $i+1$-i\`eme composante de $x$ à $x_i$ 
+pour obtenir $x_{i+1}=x_i+\alpha_{i+1}p_{i+1}$. 
+\item Pour calculer efficacement $p_{i+1}$, on observe que
+$$ r_{k+1}-r_k=A(x_{k-1}-x_{k})=-\alpha_k A p_k$$
+Donc $r_{i+1}-p_{i+1}$ est orthogonal \`a $p_k$ pour $k<i$~:
+$$<r_{i+1}-p_{i+1}|Ap_k>=-\frac1\alpha_k<r_{i+1}|Ap_k>=-\frac1\alpha_k<r_{i+1}|r_{k+1}-r_k>=0$$
+Ainsi $r_{i+1}-p_{i+1}=\beta_{i} p_i $ et~:
+$$<r_{i+1}-p_{i+1}|Ap_i>=-\frac1\alpha_i<r_{i+1}|r_{i+1}>=
+\beta_i<p_i|Ap_i>$$
+\item De plus~:
+$$\alpha_{i+1}=\frac{<r_{i+1}|r_{i+1}>}{<Ap_{i+1}|p_{i+1}>}$$
+En effet, comme
+$b=Ax_i+r_{i+1}$ et comme $r_{i+1}$ est orthogonal aux $p_j, j \leq i$~:
+$$ <b|p_{i+1}>=<Ax_i+r_{i+1}|p_{i+1}>=<r_{i+1}|p_{i+1}>=<r_{i+1}|r_{i+1}>$$
+\item Donc 
+$$ \beta_i=-\frac{<r_{i+1}|r_{i+1}>}{<r_{i}|r_{i}>},
+\quad p_{i+1}=r_{i+1}-\beta_i p_i$$
+\end{enumerate}
 On s'arr\^ete en au plus la dimension itérations 
-lorsque la famille orthogonale est devenue une base. 
+lorsque la famille orthogonale est devenue une base. En grande
+dimension, on peut d\'ecider de s'arr\^eter pr\'ematur\'ement
+sur une solution approch\'ee en testant
+si la norme de la valeur du r\'esidu v\'erifie
+$\|r_{i+1}\|=\|b-Ax_i\|<\varepsilon$.
 
 La commande \verb|conjugate_gradient(A,b)| de Xcas permet de faire ce
 calcul, on peut préciser une valeur initiale de recherche \verb|x0|
-et une précision \verb|eps| en tapant \verb|conjugate_gradient(A,b,x0,eps)|.
-Voir aussi le menu {\tt Exemple, analyse, gradconj}
+et une précision \verb|eps| en tapant 
+\verb|conjugate_gradient(A,b,x0,eps)|.
+Voir aussi le programme en langage Xcas depuis le 
+menu {\tt Exemple, analyse, gradconj}
  
 \subsection{Réduction approchée des endomorphismes}
 On pourrait trouver des valeurs propres approchées d'une matrice
@@ -12900,6 +13104,46 @@ sont presques colinéaires. De plus le facteur de colinéarité
 entre $v_{k+1}$ et $v_k$ est presque $x_n$, la valeur propre
 de module maximal.
 
+En pratique, pour \'eviter des d\'ebordements d'exposant des
+coordonn\'ees des $v_k$ on normalise $v_k$ \`a chaque
+\'etape, on pose donc $w_{k+1}=Av_k, v_{k+1}=w_{k+1}/\|w_{k+1}\|$ 
+et on estime $x_n$ en calculant $\lambda_k=(w_k|v_k)$.
+
+Lorsque la matrice $A$ est sym\'etrique r\'eelle ou hermitienne
+complexe, on peut utiliser comme
+test d'arr\^et $\| w_k-\lambda_k v_k\| \leq \varepsilon $. En effet,
+$A$ est alors diagonalisable dans une base orthonormale,
+on \'ecrit la relation $\| (A-\lambda_k)v_k \| \leq \varepsilon$
+dans cette base et on obtient qu'il existe une valeur propre de $A$
+\`a distance inf\'erieure ou \'egale \`a $\varepsilon$ de
+la valeur propre estim\'ee $\lambda_k$. Ce r\'esultat n'est
+malheureusement plus vrai si $A$ est quelconque, car deux
+vecteurs propres peuvent faire un angle tr\`es petit. Par
+exemple la matrice 
+$$ A=\left(\begin{array}{cc} 
+-1 & 0\\
+-\frac1\epsilon& 1
+\end{array}\right)$$
+a pour valeurs propres $-1$ et $1$ mais
+$A\left(^\epsilon_1\right)=\left(^{-\epsilon}_0\right)$ donc 0 semble
+\^etre une valeur propre approch\'ee. Il vaut alors mieux tester
+l'\'ecart entre deux estimations cons\'ecutives de la valeur
+propre, en effet au premier ordre
+$$ \lambda_k-x_n \approx \sum_j \beta_j \left( \frac{x_j}{x_n}\right)^k$$
+o\`u la somme porte sur les indices $j$ des valeurs propres
+de module sous-dominant. En g\'en\'eral cette somme se
+r\'eduit au seul indice $j=n-1$, et $\lambda_{k+1}-\lambda_k$ se
+comporte comme une suite g\'eom\'etrique (de raison $x_j/x_n$),
+on peut alors estimer l'erreur par 
+$$ |\lambda_k-x_n| \leq \epsilon, \quad
+\epsilon \approx_{k \rightarrow +\infty} \frac{|\lambda_{k+1}-\lambda_k|}
+{1-|\frac{\lambda_{k+2}-\lambda_{k+1}}{\lambda_{k+1}-\lambda_k}|}
+$$
+Mais cette estimation n'est plus correcte s'il y a plusieurs indices
+$j$ sous-dominants (cas par exemple d'une paire 
+de valeurs propres conjugu\'ees
+pour une matrice r\'eelle).
+
 Exercice~: tester la convergence de $v_k=A^kv$ vers l'espace propre
 associé à $\lambda=3$ pour la matrice \verb|[[1,-1],[2,4]]|
 et le vecteur $v=(1,0)$. Attention à ne pas calculer $A^k$ pour
@@ -12925,7 +13169,7 @@ permet alors de calculer les valeurs propres qui sont les deux racines
 de $ax^2+bx+1=0$.
 
 La convergence est de type série géométrique, on gagne le même nombre
-de décimales à chaque itération.
+de décimales à chaque itération. 
 
 Applications~: 
 \begin{itemize}
@@ -12951,7 +13195,7 @@ f(P,eps,N):={
   n:=degree(P);
   l:=revlist(l[1..n]/l[0]);
   v:=randvector(n,uniform,-1,1);
-  oldratio:=-1;
+  oldratio:=inf;
   for k from 1 to N do
     old:=maxnorm(v);
     tmp := -l[0]*v[n-1];
@@ -14988,7 +15232,7 @@ et d'autre part~:
 donc~:
 \[ MF_1 - MF_2 = \frac{-2cx}{a} \]
 en additionnant avec $MF_1+MF_2=2a$ et en appliquant $c=ea$, on en d\'eduit~:
-\begin{equation} \label{eq:MF1}
+\begin{equation} \label{eq:MF1bis}
  MF_1 = a - \frac{cx}{a} = a-ex 
 \end{equation}
 En prenant le carr\'e, on a~:

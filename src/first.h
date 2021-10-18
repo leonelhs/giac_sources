@@ -88,7 +88,7 @@ int my_sprintf(char * s, const char * format, ...);
 #define alias_type size_t
 #endif
 
-#if defined(RTOS_THREADX) || defined(BESTA_OS) || defined(EMCC) || defined NSPIRE
+#if defined(RTOS_THREADX) || defined(BESTA_OS) || defined NSPIRE
 #define NO_TEMPLATE_MULTGCD
 #endif
 
@@ -402,7 +402,7 @@ inline float ffloor(float f1){
 #endif
 }
 inline float finv(float f1){ return 1/f1; }
-#ifdef __APPLE__
+#if defined __APPLE__ || defined EMCC
 inline float fgamma(float f1){ return tgammaf(f1); }
 #else
 #if defined(__MINGW_H) || defined(VISUALC) // FIXME gamma, not used

@@ -47,6 +47,9 @@ using namespace std;
 #include "input_parser.h"
 #include "input_lexer.h"
 #include "giacintl.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
@@ -2434,7 +2437,7 @@ namespace giac {
 
   gen _RandSeed(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
-#if defined(VISUALC) || defined(__MINGW_H) || defined BESTA_OS || defined EMCC || defined NSPIRE
+#if defined(NSPIRE_NEWLIB) || defined(VISUALC) || defined(__MINGW_H) || defined BESTA_OS || defined EMCC || defined NSPIRE
     srand(g.val);
 #else
 #ifndef GNUWINCE

@@ -35,7 +35,7 @@
 #endif
 ///////////////////////////////////////////
 
-#ifdef C11_UNORDERED_MAP
+#if defined C11_UNORDERED_MAP && (defined __clang__ || !defined __APPLE__)
 #undef HASH_MAP
 #undef EXT_HASH_MAP
 #undef UNORDERED_MAP

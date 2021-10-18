@@ -22,6 +22,10 @@
 #include "config.h"
 #endif
 #include "first.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 /*
 #ifndef WIN32
 #if defined(__APPLE__) || defined(__FreeBSD__) || defined(VISUALC) | defined(__NetBSD__) 
@@ -40,7 +44,7 @@
 #endif
 #include <map>
 #include "monomial.h"
-#ifdef HAVE_PTHREAD_H
+#if defined HAVE_PTHREAD_H && defined HAVE_LIBPTHREAD
 #include <pthread.h>
 #endif
 
@@ -1457,7 +1461,7 @@ namespace giac {
     U_unsigned<U> * heapptr;
   };
 
-#ifdef HAVE_PTHREAD_H
+#if defined HAVE_PTHREAD_H && defined HAVE_LIBPTHREAD
 
   template<class T,class U> void * do_threadmult(void * ptr){
     threadmult_t<T,U> * argptr = (threadmult_t<T,U> *) ptr;

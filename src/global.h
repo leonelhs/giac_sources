@@ -31,7 +31,7 @@
 #if defined VISUALC || defined BESTA_OS 
 typedef long pid_t;
 #else // VISUALC
-#if !defined(__MINGW_H) && !defined(BESTA_OS) && !defined(NSPIRE) && !defined(__ANDROID__)
+#if !defined(__MINGW_H) && !defined(BESTA_OS) && !defined(NSPIRE) && !defined(__ANDROID__) && !defined(NSPIRE_NEWLIB)
 #include "wince_replacements.h"
 #endif
 #ifdef __MINGW_H
@@ -178,6 +178,9 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   int access(const char * ch,int mode);
   void usleep(int );
 #endif
+#ifdef NSPIRE_NEWLIB
+  void usleep(int );
+#endif
 
   double delta_tms(struct tms tmp1,struct tms tmp2);
 
@@ -219,6 +222,7 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   extern unsigned short int GIAC_PADIC;
 
   extern bool CAN_USE_LAPACK;
+  extern bool simplify_sincosexp_pi;
 #ifndef RTOS_THREADX
 #ifndef BESTA_OS
   extern int CALL_LAPACK; // lapack is used if dim of matrix is >= CALL_LAPACK

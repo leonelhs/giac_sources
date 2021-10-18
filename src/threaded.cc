@@ -2367,7 +2367,7 @@ mpz_class smod(const mpz_class & a,int reduce){
       for (;;){
 	for (int i=0;i<dim-1;++i)
 	  bnext[i]=std_rand() % modulo;
-	if (bnext!=b){ b=bnext; break; }
+	if (!(bnext==b)){ b=bnext; break; }
       }
       if (int(pb.size())!=pxndeg+1 || int(qb.size())!=qxndeg+1)
 	continue;
@@ -4907,7 +4907,7 @@ mpz_class smod(const mpz_class & a,int reduce){
       for (;;){
 	for (int i=0;i<dim-1;++i)
 	  bnext[i]=std_rand() % modulo;
-	if (bnext!=b){ b=bnext; break; }
+	if (!(bnext==b)){ b=bnext; break; }
       }
       if (int(pb.size())!=pxndeg+1 || int(qb.size())!=qxndeg+1)
 	continue;

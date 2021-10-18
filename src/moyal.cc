@@ -99,7 +99,7 @@ namespace giac {
       Pm=Pm1+am*Pm2;
       Qm=Qm1+am*Qm2;
       // cerr << Pm/Qm << " " << Pm2/Qm2 << endl;
-      if (std::abs(Pm/Qm-Pm2/Qm2)<1e-16){
+      if (std::abs(Pm/Qm-Pm2/Qm2)<1e-16*std::abs(Pm/Qm)){
 	double res=Pm/Qm;
 #if 0 // def VISUALC // no lgamma available
 	gen r=res/a*std::pow(p,a)*std::pow(1-p,b-1);
@@ -3633,6 +3633,13 @@ namespace giac {
     }
     return gensizeerr(gettext("Bessel"));
   }
+  gen bessel(const gen & g,int kind,GIAC_CONTEXT){
+    if (g.type==_VECT && g._VECTptr->size()>=2)
+      return Bessel(makesequence(g[1],g[0]),kind,contextptr);
+    return gensizeerr(contextptr);
+  }
+
+  // numerical eval BesselJ(n,x) and BesselY(n,x) are implemented for x.type==_DOUBLE_
   gen _BesselI(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     return Bessel(g,0,contextptr);
@@ -3664,6 +3671,38 @@ namespace giac {
   static const char _BesselY_s []="BesselY";
   static define_unary_function_eval (__BesselY,&_BesselY,_BesselY_s);
   define_unary_function_ptr5( at_BesselY ,alias_at_BesselY,&__BesselY,0,true);
+
+  gen _besselI(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    return bessel(g,0,contextptr);
+  }
+  static const char _besselI_s []="besselI";
+  static define_unary_function_eval (__besselI,&_besselI,_besselI_s);
+  define_unary_function_ptr5( at_besselI ,alias_at_besselI,&__besselI,0,true);
+
+  gen _besselJ(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    return bessel(g,1,contextptr);
+  }
+  static const char _besselJ_s []="besselJ";
+  static define_unary_function_eval (__besselJ,&_besselJ,_besselJ_s);
+  define_unary_function_ptr5( at_besselJ ,alias_at_besselJ,&__besselJ,0,true);
+
+  gen _besselK(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    return bessel(g,2,contextptr);
+  }
+  static const char _besselK_s []="besselK";
+  static define_unary_function_eval (__besselK,&_besselK,_besselK_s);
+  define_unary_function_ptr5( at_besselK ,alias_at_besselK,&__besselK,0,true);
+
+  gen _besselY(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    return bessel(g,3,contextptr);
+  }
+  static const char _besselY_s []="besselY";
+  static define_unary_function_eval (__besselY,&_besselY,_besselY_s);
+  define_unary_function_ptr5( at_besselY ,alias_at_besselY,&__besselY,0,true);
 
   // sum_{k=1}^n 1/k^e
   gen _harmonic(const gen & g,GIAC_CONTEXT){

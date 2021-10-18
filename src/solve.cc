@@ -1,5 +1,5 @@
 // -*- mode:C++ ; compile-command: "g++ -I.. -g -c -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DHAVE_CONFIG_H -DIN_GIAC solve.cc" -*-
-#include "giacPCH.h"
+#include "giacPCH.h" 
 
 /*
  *  Copyright (C) 2001,14 B. Parisse, R. De Graeve
@@ -43,6 +43,7 @@ using namespace std;
 #include "ti89.h"
 #include "maple.h"
 #include "csturm.h"
+#include "sparse.h"
 #include "giacintl.h"
 #ifdef HAVE_LIBGSL
 #include <gsl/gsl_roots.h>
@@ -223,6 +224,8 @@ namespace giac {
   }
 
   static bool check(const gen & id,const gen & value,GIAC_CONTEXT){
+    if (is_inequation(value))
+      return true; // FIXME!!
     if (id.type==_VECT && value.type==_VECT && id._VECTptr->size()==value._VECTptr->size()){
       for (unsigned i=0;i<id._VECTptr->size();++i){
 	if (!check((*id._VECTptr)[i],(*value._VECTptr)[i],contextptr))
@@ -892,7 +895,8 @@ namespace giac {
 	  v=mergevecteur(v,newv);
 	  return ;
 	}
-	*logptr(contextptr) << gettext("Warning! Algebraic extension not implemented yet for poly ") << r2sym(w,lv,contextptr) << endl;
+	if (debug_infolevel) // abs_calc_mode(contextptr)!=38)
+	  *logptr(contextptr) << gettext("Warning! Algebraic extension not implemented yet for poly ") << r2sym(w,lv,contextptr) << endl;
 	w=*evalf(r2sym(w,lv,contextptr),1,contextptr)._VECTptr;
 	if (has_num_coeff(w)){ // FIXME: test is always true...
 #ifndef NO_STDEXCEPT
@@ -2212,6 +2216,14 @@ namespace giac {
 
   gen _solve(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type==_VECT && !args._VECTptr->empty() && args._VECTptr->back()==at_equal){
+      int x=calc_mode(contextptr);
+      calc_mode(1,contextptr);
+      gen g=gen(vecteur(args._VECTptr->begin(),args._VECTptr->end()-1),args.subtype);
+      g=_solve(g,contextptr);
+      calc_mode(x,contextptr);
+      return g;
+    }
     int isolate_mode=int(complex_mode(contextptr)) | int(int(all_trig_sol(contextptr)) << 1);
     if (calc_mode(contextptr)==1){
       if (args.type==_VECT && args.subtype!=_SEQ__VECT){
@@ -2278,10 +2290,14 @@ namespace giac {
 	    for (unsigned i=0;i<res._VECTptr->size();++i){
 	      gen v2=(*res._VECTptr)[i];
 	      gen v2val=v2.is_symb_of_sommet(at_equal)?v2._SYMBptr->feuille._VECTptr->back():v2;
-	      gen res2=_simplify(subst(eq1,var2,v2val,false,contextptr),contextptr);
+	      gen res2=derive(eq1,var1,contextptr);
+	      if (!is_zero(res2))
+		res2=_simplify(subst(eq1,var2,v2val,false,contextptr),contextptr);
 	      if (!is_zero(res2))
 		res2=_simplify(_solve(makesequence(symb_equal(res2,0),var1),contextptr),contextptr);
-	      gen res3=_simplify(subst(eq2,var2,v2val,false,contextptr),contextptr);
+	      gen res3=derive(eq2,var1,contextptr);
+	      if (!is_zero(res3))
+		res3=_simplify(subst(eq2,var2,v2val,false,contextptr),contextptr);
 	      if (!is_zero(res3)){
 		res3=_simplify(_solve(makesequence(symb_equal(res3,0),var1),contextptr),contextptr);
 		if (is_zero(res2))
@@ -2304,10 +2320,14 @@ namespace giac {
 	    for (unsigned i=0;i<res._VECTptr->size();++i){
 	      gen v1=(*res._VECTptr)[i];
 	      gen v1val=v1.is_symb_of_sommet(at_equal)?v1._SYMBptr->feuille._VECTptr->back():v1;
-	      gen res2=_simplify(subst(eq1,var1,v1val,false,contextptr),contextptr);
+	      gen res2=derive(eq1,var2,contextptr);
+	      if (!is_zero(res2))
+		res2=_simplify(subst(eq1,var1,v1val,false,contextptr),contextptr);
 	      if (!is_zero(res2))
 		res2=_simplify(_solve(makesequence(symb_equal(res2,0),var2),contextptr),contextptr);
-	      gen res3=_simplify(subst(eq2,var1,v1val,false,contextptr),contextptr);
+	      gen res3=derive(eq2,var2,contextptr);
+	      if (!is_zero(res3))
+		res3=_simplify(subst(eq2,var1,v1val,false,contextptr),contextptr);
 	      if (!is_zero(res3)){
 		res3=_simplify(_solve(makesequence(symb_equal(res3,0),var2),contextptr),contextptr);
 		if (is_zero(res2))
@@ -2341,7 +2361,7 @@ namespace giac {
 	  a2=a2._SYMBptr->feuille;
 	}
 	vecteur lv=lvarx(makevecteur(a1,a2),v.back());
-	vecteur w=lop(lv,at_pow);
+	vecteur w=mergevecteur(lop(lv,at_pow),lop(lv,at_exp));
 	if (a2.type!=_VECT && a2!=0 && w.size()>1){
 	  arg1=ln(simplify(a1,contextptr),contextptr)-ln(simplify(a2,contextptr),contextptr);
 	  if (lvarx(arg1,v.back()).size()>1)
@@ -3696,7 +3716,7 @@ namespace giac {
     if (s==4){
       // P,L,U,B, solve A*X=B where P*A=L*U
       gen P=v[0],L=eval(v[1],1,contextptr),U=v[2],B=v[3];
-      if (P.type!=_VECT || !ckmatrix(L) || !ckmatrix(U) || B.type!=_VECT)
+      if (P.type!=_VECT || B.type!=_VECT)
 	return gensizeerr(contextptr);
       vector<int> p;
       if (!is_permu(*P._VECTptr,p,contextptr))
@@ -3710,7 +3730,10 @@ namespace giac {
       }
       else 
 	b=mtran(*B._VECTptr);
-      if (n!=int(p.size()) || n!=int(L._VECTptr->size()) || n!=int(U._VECTptr->size()))
+      bool map=L.type==_MAP && U.type==_MAP;
+      if (!map && (!ckmatrix(L) || !ckmatrix(U)))
+	return gensizeerr(contextptr);
+      if (n!=int(p.size()) || (!map && (n!=int(L._VECTptr->size()) || n!=int(U._VECTptr->size()))))
 	return gendimerr(contextptr);
       vecteur res; res.reserve(b.size());
       for (unsigned i=0;i<b.size();++i){
@@ -3719,8 +3742,16 @@ namespace giac {
 	for (int i=0;i<n;++i)
 	  c[i]=Bv[p[i]];
 	// now solve L*(U*X)=c
-	linsolve_l(*L._VECTptr,c,y);
-	linsolve_u(*U._VECTptr,y,x);
+	if (map){
+	  if (!sparse_linsolve_l(*L._MAPptr,c,y))
+	    return gendimerr(contextptr);
+	  if (!sparse_linsolve_u(*U._MAPptr,y,x))
+	    return gendimerr(contextptr);
+	}
+	else {
+	  linsolve_l(*L._VECTptr,c,y);
+	  linsolve_u(*U._VECTptr,y,x);
+	}
 	if (!mat)
 	  return x;
 	res.push_back(x);
@@ -3891,6 +3922,17 @@ namespace giac {
     return a;
   }
 
+  static gen newton_rand(int j,bool real,double xmin,double xmax,const gen & f,GIAC_CONTEXT){
+    if (f.type==_VECT){
+      int s=f._VECTptr->size();
+      vecteur v(s);
+      for (int i=0;i<s;++i)
+	v[i]=(newton_rand(j,real,xmin,xmax,contextptr));
+      return v;
+    }
+    return newton_rand(j,real,xmin,xmax,contextptr);
+  }
+  
   gen newton(const gen & f0, const gen & x,const gen & guess_,int niter,double eps1, double eps2,bool real,double xmin,double xmax,double rand_xmin,double rand_xmax,double init_prefactor,GIAC_CONTEXT){
     if (real && (!is_zero(im(f0,contextptr),contextptr) || !is_zero(im(guess_,contextptr),contextptr)) )
       real=false;
@@ -3915,15 +3957,7 @@ namespace giac {
     int j=1;
     for (;j<=5 ;j++,niter += 5){ 
       if (guess_first){
-	if (f.type==_VECT){
-	  int s=f._VECTptr->size();
-	  vecteur v(s);
-	  for (int i=0;i<s;++i)
-	    v[i]=(newton_rand(j,real,rand_xmin,rand_xmax,contextptr));
-	  a=v;
-	}
-	else
-	  a=newton_rand(j,real,rand_xmin,rand_xmax,contextptr);
+	a=newton_rand(j,real,rand_xmin,rand_xmax,f,contextptr);
       }
       else {
 	a=guess;
@@ -3952,15 +3986,15 @@ namespace giac {
 	    d=linsolve(evalf(d,1,contextptr),-fa,contextptr);
 	  else
 	    d=-evalf(d*fa,1,contextptr);
-	  if (d.type==_VECT &&d._VECTptr->empty()){
-	    a=newton_rand(j,real,rand_xmin,rand_xmax,contextptr);
+	  if (is_undef(d) || (d.type==_VECT &&d._VECTptr->empty())){
+	    a=newton_rand(j,real,rand_xmin,rand_xmax,f,contextptr);
 	    fa=evalf(eval(subst(f,x,a,false,contextptr),eval_level(contextptr),contextptr),1,contextptr); 
 	    continue;
 	  }	    
 	  if (d.type!=_FLOAT_ && d.type!=_DOUBLE_ && d.type!=_CPLX && d.type!=_REAL && d.type!=_VECT && !is_undef(d) && !is_inf(d))
 	    return gensizeerr(contextptr);
 	  if (k==0 && is_zero(d,contextptr) && is_greater(abs(fa,contextptr),eps2,contextptr)){
-	    a=newton_rand(j,real,rand_xmin,rand_xmax,contextptr);
+	    a=newton_rand(j,real,rand_xmin,rand_xmax,f,contextptr);
 	    fa=evalf(eval(subst(f,x,a,false,contextptr),eval_level(contextptr),contextptr),1,contextptr); 
 	    continue;
 	  }
@@ -5665,7 +5699,7 @@ namespace giac {
 	  for (unsigned j=0;j<var.size();++j){
 	    gen a,b;
 	    if (is_linear_wrt(eq[i],var[j],a,b,contextptr) 
-		&& is_zero(derive(eq[i]-a*var[j],var,contextptr),contextptr) 
+		&& is_exactly_zero(derive(eq[i]-a*var[j],var,contextptr)) 
 		&& !is_zero(simplify(a,contextptr),contextptr)){
 	      // eq[i]=a*var[j]+b
 	      // replace var[j] by -b/a

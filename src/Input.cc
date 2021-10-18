@@ -51,6 +51,9 @@
 #endif
 #include <iostream>
 #include <fstream>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 using namespace std;
 
 #ifndef NO_NAMESPACE_XCAS
@@ -462,6 +465,8 @@ namespace xcas {
 	return 0;
       else
 	i=i_;
+      if (!i)
+	i=1;
     }
     handle_tab_w->set_modal();
     if (vs){

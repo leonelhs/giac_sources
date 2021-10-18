@@ -32,6 +32,12 @@ using namespace std;
 #include <cmath>
 #include <stdexcept>
 #include <string.h>
+#ifdef HAVE_SYS_TIME_H
+#include <time.h>
+#else
+#define clock_t int
+#define clock() 0
+#endif
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
@@ -3861,8 +3867,22 @@ namespace giac {
       return gensizeerr(contextptr);
     p=v.front();
     q=v[1];
-    if (p.type==_VECT)
+    if (p.type==_VECT){
+      if (q.type==_VECT && p._VECTptr->size()==q._VECTptr->size() && s==3){
+	// Horner-like evaluation for divided difference
+	// p=divided differences, q=list of abscissas, r=eval point
+	x=v[2];
+	gen r=0;
+	const vecteur & P=*p._VECTptr;
+	s=P.size()-1;
+	const vecteur & Q=*q._VECTptr;
+	for (int i=s;i>=0;--i){
+	  r=r*(x-Q[i])+P[i];
+	}
+	return r;
+      }
       return horner(*p._VECTptr,q);
+    }
     if (s==2)
       x=vx_var;
     else 

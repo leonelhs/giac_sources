@@ -525,6 +525,7 @@ namespace giac {
     if (!vars_.empty())
       s="["+(vars_.size()==1?vars_.front().print():print_VECT(vars_,_SEQ__VECT,contextptr))+","+s+"]";
     GEN res= flisexpr((char *) s.c_str());
+    // flisexpr seems to have problems with large strings (s.size()>2^16?)
     return vars_.empty()?res:gel(res,1+vars_.size());
   }
   GEN gen2GEN(const gen & e,const vecteur & vars,GIAC_CONTEXT){
@@ -1013,7 +1014,10 @@ namespace giac {
     long av=avma;
     void * save_pari_stack_limit = PARI_stack_limit;
     PARI_stack_limit=0; 
-    tmp=GEN2gen(polresultant0(gen2GEN(p,lv,contextptr),gen2GEN(q,lv,contextptr),-1,2),lv);
+    GEN P=gen2GEN(p,lv,contextptr);
+    GEN Q=gen2GEN(q,lv,contextptr);
+    GEN PQ=polresultant0(P,Q,-1,2);
+    tmp=GEN2gen(PQ,lv);
     avma=av;
     PARI_stack_limit=save_pari_stack_limit;
     if (pari_mutex_ptr) pthread_mutex_unlock(pari_mutex_ptr);    

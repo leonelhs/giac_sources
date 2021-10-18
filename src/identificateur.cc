@@ -29,6 +29,9 @@ using namespace std;
 #include "prog.h"
 #include "usual.h"
 #include "giacintl.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #ifdef BESTA_OS
 // Local replacement for strdup on BESTA OS.

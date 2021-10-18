@@ -835,7 +835,7 @@ namespace giac {
     if (args.type!=_IDNT)
       return gensizeerr("Invalid purgenoassume "+args.print(contextptr));
     if (!contextptr)
-      return _purge(args,contextptr);
+      return _purge(args,0);
     // purge a global variable
     sym_tab::iterator it=contextptr->tabptr->find(args._IDNTptr->id_name),itend=contextptr->tabptr->end();
     if (it==itend)
@@ -2331,12 +2331,7 @@ namespace giac {
   static define_unary_function_eval (__XPON,&giac::_XPON,_XPON_s); // FIXME
   define_unary_function_ptr5( at_XPON ,alias_at_XPON,&__XPON,0,T_UNARY_OP_38);
 
-  gen _MANT(const gen & g0,GIAC_CONTEXT){
-    if (g0.type==_STRNG && g0.subtype==-1) return g0;
-    if (is_equal(g0))
-      return apply_to_equal(g0,_MANT,contextptr);
-    if (g0.type==_VECT)
-      return apply(g0,_MANT,contextptr);
+  gen mantissa(const gen & g0,bool includesign,GIAC_CONTEXT){
 #if 0 // def BCD
     gen g=evalf2bcd(g0,1,contextptr);
 #else
@@ -2349,11 +2344,31 @@ namespace giac {
     if (abs_calc_mode(contextptr)!=38 && gf.type!=_INT_)
       return gensizeerr(contextptr);
     // FIXME number of digits
-    return evalf(gabs*alog10(-gf,contextptr),1,contextptr);
+    return (includesign?sign(g,contextptr):1)*evalf(gabs*alog10(-gf,contextptr),1,contextptr);
+  }
+  gen _MANT(const gen & g0,GIAC_CONTEXT){
+    if (g0.type==_STRNG && g0.subtype==-1) return g0;
+    if (is_equal(g0))
+      return apply_to_equal(g0,_MANT,contextptr);
+    if (g0.type==_VECT)
+      return apply(g0,_MANT,contextptr);
+    return mantissa(g0,true,contextptr);
   }
   static const char _MANT_s[]="MANT";
   static define_unary_function_eval (__MANT,&giac::_MANT,_MANT_s); 
   define_unary_function_ptr5( at_MANT ,alias_at_MANT,&__MANT,0,T_UNARY_OP_38);
+
+  gen _mantissa(const gen & g0,GIAC_CONTEXT){
+    if (g0.type==_STRNG && g0.subtype==-1) return g0;
+    if (is_equal(g0))
+      return apply_to_equal(g0,_mantissa,contextptr);
+    if (g0.type==_VECT)
+      return apply(g0,_mantissa,contextptr);
+    return mantissa(g0,false,contextptr);
+  }
+  static const char _mantissa_s[]="mantissa";
+  static define_unary_function_eval (__mantissa,&giac::_mantissa,_mantissa_s); 
+  define_unary_function_ptr5( at_mantissa ,alias_at_mantissa,&__mantissa,0,T_UNARY_OP);
 
   gen _HMSX(const gen & g0,GIAC_CONTEXT){
     if ( g0.type==_STRNG && g0.subtype==-1) return  g0;
@@ -3806,9 +3821,9 @@ namespace giac {
   gen _TEXTOUT(const gen &args, GIAC_CONTEXT)
   {
     if (args.type!=_VECT) return gensizeerr(contextptr);
-    int s= args.__VECTptr->v.size(); 
+    int s= args._VECTptr->size(); 
     if (s<3) return gensizeerr(contextptr);
-    gen t= *args.__VECTptr->v.begin();
+    gen t= *args._VECTptr->begin();
     gen v(*args._VECTptr); v._VECTptr->erase(v._VECTptr->begin());
     void *g=0; int xy[2]={0, 0}, c[4]= {0, 0, 1023, -1};
     //TEXTOUT("text", [G?], x, y, [font, [color, [width, [color]]]])
@@ -3909,9 +3924,9 @@ namespace giac {
   gen _TEXTOUT_P(const gen &args, GIAC_CONTEXT)
   {
     if (args.type!=_VECT) return gensizeerr(contextptr);
-    int s= args.__VECTptr->v.size(); 
+    int s= args._VECTptr->size(); 
     if (s<3) return gensizeerr(contextptr);
-    gen t= *args.__VECTptr->v.begin();
+    gen t= *args._VECTptr->begin();
     gen v(*args._VECTptr); v._VECTptr->erase(v._VECTptr->begin());
     void *g=0; int xy[2]={0, 0}, c[4]= {0, 0, 1023, -1};
     //TEXTOUT("text", [G?], x, y, [font, [color, [width, [color]]]])
@@ -3939,7 +3954,7 @@ namespace giac {
   {
     void *g=0; int xy[2], c= 3;
     if (!GraphicVerifInputs2(args, &g, xy, 0x6c9, &c, false, contextptr)) return gensizeerr(contextptr);
-    dodimgrob((void**)g, xy[0], xy[1], c, args.__VECTptr->v.end()[-1]);
+    dodimgrob((void**)g, xy[0], xy[1], c, args._VECTptr->end()[-1]);
     return 1;
   }
   CyrilleFnc(DIMGROB_P);

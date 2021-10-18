@@ -61,6 +61,9 @@
 #include <sys/cygwin.h>
 #endif
 #endif
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 using namespace std;
 using namespace giac;

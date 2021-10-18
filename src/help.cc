@@ -25,6 +25,9 @@ using namespace std;
 #include "help.h"
 #include <iostream>
 #include "global.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #if defined VISUALC || defined BESTA_OS
 
@@ -361,7 +364,7 @@ namespace giac {
       s2[i]=tolower(s2[i]);
     if (s1!=s2)
       return s1<s2;
-    return a1.cmd_name<= a2.cmd_name;
+    return a1.cmd_name< a2.cmd_name;
   }
 
   static void find_synonymes(const std::string & cmd_name,vector<localized_string> & current_synonymes){
@@ -628,7 +631,7 @@ namespace giac {
     return result;
   }
 
-#if !defined(RTOS_THREADX) && !defined(EMCC) &&!defined(NSPIRE)
+#if !defined(NSPIRE_NEWLIB) || !defined(RTOS_THREADX) && !defined(EMCC) &&!defined(NSPIRE)
   multimap<string,string> html_mtt,html_mall;
   std::vector<std::string> html_vtt,html_vall;
 
@@ -857,7 +860,7 @@ namespace giac {
     return 0;
   }
 
-#if ! (defined VISUALC || defined BESTA_OS || defined NSPIRE)
+#if ! (defined VISUALC || defined BESTA_OS || defined NSPIRE || defined NSPIRE_NEWLIB)
 #ifdef WIN32
   static int dir_select (const struct dirent *d){
     string s(d->d_name);
@@ -903,7 +906,7 @@ namespace giac {
 #endif // visualc
 
   void find_all_index(const std::string & subdir,multimap<std::string,std::string> & mtt,multimap<std::string,std::string> & mall){
-#if defined GNUWINCE || defined __MINGW_H || defined __ANDROID__ || defined EMCC
+#if defined GNUWINCE || defined __MINGW_H || defined __ANDROID__ || defined EMCC || defined NSPIRE_NEWLIB
     return;
 #else
     // cerr << "HTML help Scanning " << subdir << endl;

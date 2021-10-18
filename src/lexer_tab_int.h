@@ -122,6 +122,7 @@
       {"epaisseur_point_8"         ,1, _POINT_WIDTH_8 , _INT_COLOR ,T_NUMBER},
       {"esac",0,0,0,T_ENDCASE},
       {"expln"         ,1,_EXPLN , _INT_MAPLECONVERSION ,T_NUMBER},
+      {"faddeev"         ,1, _FADEEV, _INT_SOLVER,T_NUMBER},
       {"fadeev"         ,1, _FADEEV, _INT_SOLVER,T_NUMBER},
       {"false",1,0,_INT_BOOLEAN,T_NUMBER},
       {"falsepos_solver"         ,1, _FALSEPOS_SOLVER, _INT_SOLVER,T_NUMBER},

@@ -775,6 +775,11 @@ Function {cb_Insert_ItemName(Fl_Widget * w , void*)} {} {
        return;
     }
     Fl::focus(f);
+      if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(f)){
+	    in->buffer()->insert(in->insert_position(),ans.c_str());
+	    in->insert_position(in->insert_position()+ans.size());
+	  return;
+	}
     if (Fl_Input * in = dynamic_cast<Fl_Input *>(f))
       in->insert(ans.c_str());
     else {
@@ -810,15 +815,19 @@ Function {cb_Assistant_ItemName(Fl_Widget * wid , void* ptr)} {} {
     if (ii){ 
       if (ii==1)
 	ans = ans +"()";
+      if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(w)){
+	  if (ii==1){
+	    in->buffer()->insert(in->insert_position(),ans.c_str());
+	    in->insert_position(in->insert_position()+ans.size()-1);
+	  }
+	  return;
+	}
       Fl::e_text = (char * ) ans.c_str();
       Fl::e_length = ans.size();
       if (w){
 	xcas::fl_handle(w);
 	if (Fl_Input * in =dynamic_cast<Fl_Input *>(w)){
 	  if (ii==1) in->position(in->position()-1);
-	}
-	if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(w)){
-	  if (ii==1) in->insert_position(in->insert_position()-1);
 	}
       }
     }
@@ -4310,7 +4319,7 @@ if (getenv("XCAS_AUTOSAVE_FOLDER")){
 static std::string arg0;
 if (!getenv("XCAS_ROOT")){
 \#ifdef __APPLE__
-  setenv("XCAS_ROOT","/Applications/usr/bin",1);
+  setenv("XCAS_ROOT","/Applications/usr/bin/",1);
 \#else
   arg0=xcas::unix_path(argv[0]);
   int s=arg0.size(),i;

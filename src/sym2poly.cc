@@ -41,6 +41,9 @@ using namespace std;
 #include "plot.h"
 #include "misc.h"
 #include "giacintl.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
@@ -240,6 +243,15 @@ namespace giac {
   static matrice ext_glue_matrices(const matrice & a,const matrice & b){
     if (a.size()>b.size())
       return ext_glue_matrices(b,a);
+    // Algorithm should be fixed in all generality
+    // the loop below fixes assume(a>0); normal(-sqrt(a)*sqrt(a*pi)*sqrt(pi))
+    // a.size()<=b.size()
+    if (a.size()==b.size()){
+      for (int i=0;i<a.size();++i){
+	if (a[i].type==_VECT && b[i].type==_VECT && a[i]._VECTptr->size()>b[i]._VECTptr->size())
+	  return ext_glue_matrices(b,a);
+      }
+    }
     if (b.empty() || a.empty() || (a==b))
       return b;
     int i,j;
@@ -663,6 +675,16 @@ namespace giac {
       else
 	coeffnum=0;
     }
+    if (iext!=0){
+      gen numr,numi;
+      reim(coeffnum,numr,numi,contextptr);
+      if (!is_zero(numi)){
+	coeffnum=numr+iext*numi;
+	fxnd(coeffnum,numr,numi);
+	coeffnum=numr;
+	coeffden=coeffden*numi;
+      }
+    }
     if (fin-debut<4){
       num=coeffnum;
       den=coeffden;
@@ -680,7 +702,8 @@ namespace giac {
       totally_converted=totally_converted && sym2rmul(debut,milieu,iext,l,lv,lvnum,lvden,l_size,n1,d1,contextptr);
       totally_converted=totally_converted && sym2rmul(milieu,fin,iext,l,lv,lvnum,lvden,l_size,n2,d2,contextptr);
       _FRACmul(n1,d1,n2,d2,n3,d3);
-      _FRACmul(coeffnum,coeffden,n3,d3,num,den);}
+      _FRACmul(coeffnum,coeffden,n3,d3,num,den);
+    }
     return totally_converted;
   }
 
@@ -2064,7 +2087,37 @@ namespace giac {
     }
     return undef;
   }
-  
+
+  gen accurate_evalf_until(const gen & g_,GIAC_CONTEXT){
+#ifdef HAVE_LIBMPFR
+    gen g(g_);
+    int n=32;
+    gen cur=evalf_double(g,1,contextptr);
+    if (g.type==_EXT){
+      gen p=*g._EXTptr;
+      gen x=symb_rootof(makevecteur(1,0),*(g._EXTptr+1),contextptr);
+      for (;n<=1024;n*=2){
+	gen tmp=_evalf(makesequence(x,n),contextptr);
+	tmp=_horner(makesequence(p,tmp),contextptr);
+	gen test=(1-cur/tmp);
+	if (is_greater(1e-12,test,contextptr))
+	  return cur;
+	cur=tmp;
+      }
+    }
+    for (;n<=1024;n*=2){
+      gen tmp=_evalf(makesequence(g,n),contextptr);
+      gen test=(1-cur/tmp);
+      if (is_greater(1e-12,test,contextptr))
+	return cur;
+      cur=tmp;
+    }
+    return cur;
+#else
+    return evalf_double(g_,1,contextptr);
+#endif
+  }
+
   static gen r2sym(const gen & p, const const_iterateur & lt, const const_iterateur & ltend,GIAC_CONTEXT){
     // Note that if p.type==_FRAC && p._FRACptr->num.type==_EXT
     // it might require another simplification with the denom
@@ -2154,17 +2207,17 @@ namespace giac {
 	      tmp00=cst_i; // retry
 	    else {
 	      tmp00=algebraic_EXTension(tmp00,tmp10);
-	      tmp00=tmp00.evalf_double(1,contextptr);
+	      tmp00=accurate_evalf_until(tmp00,contextptr); // tmp00.evalf_double(1,contextptr); 
 	    }
 	    if (tmp00.type<=_CPLX){
 	      gen tmp3=eval(subst(w.front(),vinit,vzero,false,contextptr),1,contextptr);
-	      tmp3=tmp3.evalf_double(1,contextptr);
+	      tmp3=accurate_evalf_until(tmp3,contextptr); // tmp3.evalf_double(1,contextptr); 
 	      gen tmp2=eval(subst(w.back(),vinit,vzero,false,contextptr),1,contextptr);
-	      tmp2=tmp2.evalf_double(1,contextptr);
+	      tmp2=accurate_evalf_until(tmp2,contextptr);// tmp2.evalf_double(1,contextptr); 
 	      if (tmp3.type<=_CPLX && tmp2.type<=_CPLX && tmp2!=tmp3){
 		if (!vzero.empty() && !tst)
 		  *logptr(contextptr) << gettext("Warning, choosing root of ") << f << " at parameters values " << vzero << endl;
-		if (abs(tmp2-tmp00,contextptr)._DOUBLE_val<abs(tmp3-tmp00,contextptr)._DOUBLE_val)
+		if (is_greater(abs(tmp3-tmp00,contextptr),abs(tmp2-tmp00,contextptr),contextptr))
 		  return w.back();
 		else
 		  return w.front();
@@ -2581,6 +2634,8 @@ namespace giac {
       sort0(l);
       if (!L.empty() && debug_infolevel)
 	*logptr(contextptr) << gettext("Making implicit assumption for sqrt argument ") << L << endl;
+      if (contextptr && contextptr->previous)
+	L.clear(); // otherwise ggbsort(x):=sort(x); r:=[sqrt(a)/a,1]; ggbsort(r); VARS(); keeps implicit assumption a>=0 globally
       for (unsigned k=0;k<L.size();++k)
 	giac_assume(L[k],contextptr);
       tmp=e2r(ee,l,contextptr);
@@ -3326,6 +3381,8 @@ namespace giac {
     gen e=normalize_sqrt(e_,contextptr);
     vecteur l;
     alg_lvar(e,l);
+    if (!l.empty() && l.front().type==_VECT && l.front()._VECTptr->empty())
+      return e_;
     return partfrac(e,l,with_sqrt,contextptr);
   }
 

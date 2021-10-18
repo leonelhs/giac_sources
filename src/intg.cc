@@ -1684,7 +1684,7 @@ namespace giac {
     gen ratpart=r2sym(intdecomp,l,contextptr);
     // should remove constants in ratpart
     gen tmp1=_fxnd(ratpart,contextptr);
-    if (tmp1.type==_VECT && tmp1._VECTptr->size()==2){
+    if (xvar.type==_IDNT && tmp1.type==_VECT && tmp1._VECTptr->size()==2){
       gen tmp2=_quorem(makesequence(tmp1._VECTptr->front(),tmp1._VECTptr->back(),xvar),contextptr);
       if (tmp2.type==_VECT && tmp2._VECTptr->size()==2){
 	gen q=tmp2._VECTptr->front(),r=tmp2._VECTptr->back();
@@ -2156,7 +2156,7 @@ namespace giac {
     // Step -3: replace when by piecewise
     e=when2piecewise(e,contextptr);
     e=Heavisidetosign(e,contextptr);
-    if (is_constant_wrt(e,gen_x,contextptr))
+    if (is_constant_wrt(e,gen_x,contextptr) && lop(e,at_sign).empty())
       return e*gen_x;
     if (e.type!=_SYMB) {
       remains_to_integrate=zero;

@@ -39,7 +39,7 @@ using namespace std;
 #ifdef GIAC_HAS_STO_38
 #undef clock
 #undef clock_t
-#include "../../../native/AspenPCH.h"
+#include "PrimePCH.h"
 #else
 #include <fstream>
 //#include <unistd.h> // For reading arguments from file
@@ -1163,7 +1163,7 @@ namespace giac {
   }
 #endif
 
-#if (defined __i386__ || defined __x86_64__) && !defined PIC && !defined _I386_ && !defined __APPLE__ 
+#if (defined __i386__ || defined __x86_64__) && !defined PIC && !defined _I386_ && !defined __APPLE__ && !defined VISUALC
   #define _I386_
 #endif
 

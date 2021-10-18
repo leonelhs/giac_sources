@@ -37,6 +37,9 @@
 #include "History.h"
 #include "Print.h"
 #include "Equation.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 using namespace std;
 using namespace giac;

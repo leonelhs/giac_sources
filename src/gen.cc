@@ -4,7 +4,7 @@
 #undef clock
 #undef clock_t
 #ifndef ConnectivityKit
-#include "../../windows/stdafx.h"
+#include "../../../_windows/src/stdafx.h"
 #endif
 #endif
 
@@ -57,6 +57,7 @@ using namespace std;
 #include "maple.h"
 #include "solve.h"
 #include "csturm.h"
+#include "sparse.h"
 #include "giacintl.h"
 #ifdef RTOS_THREADX
 extern "C" uint32_t mainThreadStack[];
@@ -2828,6 +2829,8 @@ namespace giac {
       return adjust_complex_display(gen(*_CPLXptr,-(*(_CPLXptr+1))),*this);
     case _VECT:
       return gen(_VECTconj(*_VECTptr,contextptr),subtype);
+    case _MAP:
+      return apply(*this,giac::conj,contextptr);
     case _USER:
       return _USERptr->conj(contextptr);
     case _IDNT: 
@@ -3366,6 +3369,8 @@ namespace giac {
       return *_CPLXptr;
     case _VECT:
       return gen(subtype==_POLY1__VECT?trim(_VECTre(*_VECTptr,contextptr),0):_VECTre(*_VECTptr,contextptr),subtype);
+    case _MAP:
+      return apply(*this,giac::re,contextptr);
     case _IDNT: 
       if (is_assumed_real(*this,contextptr))
 	return *this;
@@ -3477,6 +3482,8 @@ namespace giac {
       return *(_CPLXptr+1);
     case _VECT:
       return gen(subtype==_POLY1__VECT?trim(_VECTim(*_VECTptr,contextptr),0):_VECTim(*_VECTptr,contextptr),subtype);
+    case _MAP:
+      return apply(*this,giac::im,contextptr);
     case _IDNT: 
       if (is_inf(*this) || is_undef(*this))
 	return undef;
@@ -4068,6 +4075,16 @@ namespace giac {
       if (a.subtype==_POINT__VECT && b.subtype==_POINT__VECT)
 	return gen(addvecteur(*a._VECTptr,*b._VECTptr),0);
       return gen(addvecteur(*a._VECTptr,*b._VECTptr),a.subtype?a.subtype:b.subtype);
+    case _MAP__MAP:
+      {
+	int arows,acols,an,brows,bcols,bn;
+	if ( (is_sparse_matrix(a,arows,acols,an) && is_sparse_matrix(b,brows,bcols,bn)) || (is_sparse_vector(a,arows,an) && is_sparse_vector(b,brows,bn)) ){
+	  gen_map res;
+	  gen g(res);
+	  sparse_add(*a._MAPptr,*b._MAPptr,*g._MAPptr);
+	  return g;
+	}
+      }
     case _INT___ZINT: 
       e = new ref_mpz_t;
       if (a.val<0)
@@ -4150,6 +4167,26 @@ namespace giac {
       if (b==unsigned_inf)
 	return b;
       return new_ref_symbolic(symbolic(at_plus,makesequence(a,b)));
+    case _VECT__MAP:
+      {
+	int brows,bcols,an;
+	if (is_sparse_matrix(b,brows,bcols,an)){
+	  matrice B;
+	  if (!convert(*b._MAPptr,B))
+	    return gendimerr(contextptr);
+	  return a+B;
+	}
+      }
+    case _MAP__VECT:
+      {
+	int arows,acols,an;
+	if (is_sparse_matrix(a,arows,acols,an)){
+	  matrice A;
+	  if (!convert(*a._MAPptr,A))
+	    return gendimerr(contextptr);
+	  return A+b;
+	}
+      }
     default:
       if (is_undef(a))
 	return a;
@@ -4761,6 +4798,16 @@ namespace giac {
       if (a.subtype==_POINT__VECT && b.subtype==_POINT__VECT)
 	return gen(subvecteur(*a._VECTptr,*b._VECTptr),0);
       return gen(subvecteur(*a._VECTptr,*b._VECTptr),a.subtype);
+    case _MAP__MAP:
+      {
+	int arows,acols,an,brows,bcols,bn;
+	if ( (is_sparse_matrix(a,arows,acols,an) && is_sparse_matrix(b,brows,bcols,bn)) || (is_sparse_vector(a,arows,an) && is_sparse_vector(b,brows,bn)) ){
+	  gen_map res;
+	  gen g(res);
+	  sparse_sub(*a._MAPptr,*b._MAPptr,*g._MAPptr);
+	  return g;
+	}
+      }
     case _INT___ZINT: 
       e =  new ref_mpz_t; 
       if (a.val<0)
@@ -5105,6 +5152,13 @@ namespace giac {
       if (a.subtype==_PNT__VECT)
 	return gen(negfirst(*a._VECTptr),a.subtype);
       return gen(negvecteur(*a._VECTptr),a.subtype);
+    case _MAP:{
+      gen_map res;
+      gen g(res);
+      *g._MAPptr=*a._MAPptr;
+      sparse_neg(*g._MAPptr);
+      return g;
+    } 
     case _POLY:
       return -(*a._POLYptr);
     case _EXT:
@@ -5513,6 +5567,78 @@ namespace giac {
       return spmul(*a._SPOL1ptr,*b._SPOL1ptr,contextptr);
     case _EXT__EXT:
       return ext_mul(a,b,contextptr);
+    case _MAP__MAP:
+      {
+	int arows,acols,an,brows,bcols,bn;
+	if (is_sparse_matrix(a,arows,acols,an) && is_sparse_matrix(b,brows,bcols,bn)){
+	  gen_map res;
+	  gen g(res);
+	  sparse_mult(*a._MAPptr,*b._MAPptr,*g._MAPptr);
+	  return g;
+	}
+      }
+    case _MAP__VECT:
+      {
+	int arows,acols,an;
+	if (is_sparse_matrix(a,arows,acols,an)){
+	  if (acols>b._VECTptr->size())
+	    return gendimerr(contextptr);
+	  if (ckmatrix(b)){
+	    vecteur A;
+	    convert(*a._MAPptr,A);
+	    return A*b;
+	  }
+	  smatrix as;
+	  if (convert(*a._MAPptr,as)){
+	    vecteur res;
+	    sparse_mult(as,*b._VECTptr,res);
+	    return res;
+	  }
+	  gen_map res;
+	  gen g(res);
+	  if (!sparse_mult(*a._MAPptr,*b._VECTptr,*g._MAPptr))
+	    return gendimerr(contextptr);
+	  // Should probably check if g is dense or not
+	  return g;
+	}
+      }
+    case _VECT__MAP:
+      {
+	int brows,bcols,an;
+	if (is_sparse_matrix(b,brows,bcols,an)){
+	  if (brows>a._VECTptr->size())
+	    return gendimerr(contextptr);
+	  if (ckmatrix(a)){
+	    vecteur B;
+	    convert(*b._MAPptr,B);
+	    return a*B;
+	  }
+	  smatrix bs;
+	  if (convert(*b._MAPptr,bs)){
+	    vecteur res;
+	    sparse_mult(*a._VECTptr,bs,res);
+	    return res;
+	  }
+	  gen_map res;
+	  gen g(res);
+	  if (!sparse_mult(*a._VECTptr,*b._MAPptr,*g._MAPptr))
+	    return gendimerr(contextptr);
+	  // Should probably check if g is dense or not
+	  return g;
+	}
+      }
+    case _INT___MAP: case _ZINT__MAP: case _DOUBLE___MAP: case _FLOAT___MAP: case _CPLX__MAP: case _SYMB__MAP: case _IDNT__MAP: case _POLY__MAP: case _EXT__MAP: case _MOD__MAP: case _FRAC__MAP: case _REAL__MAP: {
+	int brows,bcols,bn;
+	if (is_sparse_matrix(b,brows,bcols,bn)){
+	  gen_map res;
+	  gen g(res);
+	  if (is_zero(a))
+	    return g;
+	  *g._MAPptr=*b._MAPptr;
+	  sparse_mult(a,*g._MAPptr);
+	  return g;
+	}
+    }
     case _POLY__INT_: case _POLY__ZINT: case _POLY__DOUBLE_: case _POLY__FLOAT_: case _POLY__CPLX: case _POLY__USER: case _POLY__REAL:
       if (is_one(b))
 	return a;
@@ -5906,6 +6032,9 @@ namespace giac {
 	return fraction(1,pow(*base._POLYptr,-exponent.val));
       else
 	return pow(*base._POLYptr,exponent.val);
+    case _MAP__INT_:
+      if (exponent.val>=0)
+	return pow(base,exponent.val);
     case _FRAC__INT_:
       return pow(*base._FRACptr,exponent.val);
     case _EXT__INT_: case _MOD__INT_: case _VECT__INT_: case _USER__INT_:
@@ -6553,6 +6682,11 @@ namespace giac {
       return pow(*base._POLYptr,(int) exponent);
     case _FRAC:
       return pow(*base._FRACptr,(int) exponent);
+    case _MAP:{
+      gen res;
+      inpow(base,exponent,res);
+      return res;
+    }
     default: 
       if (is_undef(base))
 	return base;
@@ -6824,6 +6958,14 @@ namespace giac {
       if (a.subtype==_VECTOR__VECT)
 	return a*inv(b,contextptr);
       return gen(divvecteur(*a._VECTptr,b),a.subtype);
+    case _MAP__INT_: case _MAP__ZINT: case _MAP__DOUBLE_: case _MAP__FLOAT_: case _MAP__CPLX: 
+    case _MAP__SYMB: case _MAP__IDNT: case _MAP__POLY: case _MAP__EXT: {
+      gen_map m;
+      gen g(m);
+      *g._MAPptr=*a._MAPptr;
+      sparse_div(*g._MAPptr,b);
+      return g;
+    }
     case _VECT__VECT:
       if (a.subtype==_POLY1__VECT || b.subtype==_POLY1__VECT)
 	return fraction(a,b).normal();
@@ -7765,6 +7907,8 @@ namespace giac {
       return fis_nan(e._FLOAT_val);
     case _DOUBLE_:
       return my_isnan(e._DOUBLE_val);
+    case _CPLX:
+      return is_undef(*e._CPLXptr) || is_undef(*(e._CPLXptr+1));
     case _FRAC:
       return is_undef(e._FRACptr->num);
     default:
@@ -8290,8 +8434,9 @@ namespace giac {
       return s1<s2;
     const_iterateur it=v.begin(),itend=v.end(),jt=w.begin();
     for (;it!=itend;++it,++jt){
-      if (*it!=*jt)
+      if (*it!=*jt){
 	return it->islesscomplexthan(*jt);
+      }
     }
     // setsizeerr(); should not happen... commented because it happens!
     return false;
@@ -8300,8 +8445,10 @@ namespace giac {
   // return true if *this is "strictly less complex" than other
   bool gen::islesscomplexthan (const gen & other ) const {
     // FIXME it is not the natural order, but used for pivot selection
-    if (type<_IDNT && is_zero(*this,context0))
+    if (type<_IDNT && is_zero(*this,context0)){
+      // if (type==_INT_ && other.type==_INT_) return val<other.val;
       return false;
+    }
     if (other.type<_IDNT && is_zero(other,context0))
       return true;
     if (type != other.type)
@@ -9288,9 +9435,13 @@ namespace giac {
       if (d._EXTptr->type==_VECT){
 	vecteur u,v,dd;
 	if ( (d._EXTptr+1)->type!=_VECT)
-	  return gensizeerr(gettext("simplify"));
+	  return gensizeerr(gettext("gen.cc:simplify"));
 	egcd(*(d._EXTptr->_VECTptr),*((d._EXTptr+1)->_VECTptr),0,u,v,dd);
         gen tmp=algebraic_EXTension(u,*((d._EXTptr+1)->_VECTptr));
+	if (tmp.type!=_EXT){ 
+	  return gensizeerr(gettext("gen.cc:simplify/tmp.type!=_EXT")); 
+	  return 1;
+	}
 	n=n*tmp;
 	d=d*tmp;
 	return simplify(n,d)*inv_EXT(tmp);
@@ -10858,7 +11009,12 @@ namespace giac {
 	else
 	  bb=bb+plus_one;
       }
-      s += bb.print(contextptr)+ " = " + it->second.print(contextptr);
+      if (bb.type==_VECT && bb.subtype==_SEQ__VECT)
+	s+='(';
+      s += bb.print(contextptr);
+      if (bb.type==_VECT && bb.subtype==_SEQ__VECT)
+	s+=')';
+      s += " = " + it->second.print(contextptr);
       ++it;
       if (it!=itend)
 	s += ',';

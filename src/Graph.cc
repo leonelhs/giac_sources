@@ -57,6 +57,9 @@
 #include "Graph3d.h"
 #include <FL/gl.h>
 #include "Tableur.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 using namespace std;
 using namespace giac;
@@ -269,8 +272,8 @@ namespace xcas {
 #ifdef HAVE_LC_MESSAGES
       xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):giac_locale_location;	
       cerr << "// Using locale " << xcas_locale() << endl;
-#if defined(HAVE_GETTEXT) && defined(_LIBINTL_H)
       cerr << "// " << setlocale (LC_MESSAGES, "") << endl;
+#if defined(HAVE_GETTEXT) 
       cerr << "// " << bindtextdomain (PACKAGE, xcas_locale().c_str()) << endl;
       cerr << "// " << textdomain (PACKAGE) << endl;
       cerr << "// " << bind_textdomain_codeset (PACKAGE, "UTF-8") << endl;

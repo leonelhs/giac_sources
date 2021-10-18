@@ -1,25 +1,26 @@
 giac for Debian
 ---------------
 
-I think I should split this package in at least one library (libgiac), 
-two binaries (cas, xcas) and a development (libgiac-dev).
+Note that there is a "debianold" directory in upstream tree, different
+from this one [1].  "Giac" is separately packaged for Quantian, a
+mathematical oriented Knoppix-derivated distribution [2], under
+different conditions (e.g. Pari support requires a patch to Pari
+sources if NTL not installed, in that case copy rules.no.pari to rules
+to build, in case NTL is installed you can safely copy rules.pari to
+rules); Quantian's Giac is built by configuring
+a series of advanced options in libraries it depends on (this package
+will use these options when they are set by default in the
+corresponding Debian packages).
 
-The Spanish documentation in TeXinfo is poorly compiled; the DVI does
-not show accented characters. I guess that the sources must be modified
-to use the @' commands of TeXinfo, except when the words are menu entries
-(?).
+The command line interface can be started by typing "giac" or
+"icas".  Help is available thru the commands "aide", "cas_help",
+"en_cas_help", "fr_cas_help" and "es_cas_help" (choose language).
+"Giac" can be used as a C++ library.  Just install "libgiac0-dev".
 
+The GUI command are "xcas" and "xcasnew".
 
--- Carleos Artime <carleos@pinon.ccu.uniovi.es>, Fri, 26 Jul 2002 20:01:40 +0200
-If you are using recent version of autoconf and automake, run
-  cp -f configure.in.debian configure.in
-  autoconf
-To build debian package go one directory up, remove config.status and issue
-       dpkg-buildpackage -rfakeroot
-To build with mpfr on debian with GMP older than 4, install gmp-4.1.2 and 
-remove libgmp.so* from /usr/local/lib, then use e.g.
-       export CXXFLAGS='-L/usr/local/lib -g'
-To build with pari, you must first copy pariinl.h from the giac directory
-to /usr/include/pari. If you have pari installed and don't want to modify
-your installation, then add --disable-pari to the configure command in the
-rules file.
+[1] The corresponding package can be found at 
+    ftp://ftp-fourier.ujf-grenoble.fr/xcas/
+
+[2] Visit http://dirk.eddelbuettel.com/quantian.html
+

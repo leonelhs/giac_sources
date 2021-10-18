@@ -64,6 +64,9 @@ using namespace std;
 #include "help.h"
 #include "plot.h"
 #include "input_lexer.h"
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 
 // using namespace giac;
@@ -181,12 +184,20 @@ void format_plugin () {
 }
 
 void flush_stdout(){
+#ifdef NSPIRE_NEWLIB
+  giac::usleep(2000);
+#else
   usleep(2000);
+#endif
   fflush (stdout);
 }
 
 void flush_stderr(){
+#ifdef NSPIRE_NEWLIB
+  giac::usleep(2000);
+#else
   usleep(2000);
+#endif
   fflush (stderr);
 }
 
@@ -300,7 +311,7 @@ void check_browser_help(const giac::gen & g){
       f=f._SYMBptr->sommet;
     if (f.type==giac::_FUNC)
       s=f._FUNCptr->ptr()->s;
-#ifndef EMCC
+#if !defined EMCC && !defined NSPIRE_NEWLIB
     giac::html_vtt=giac::html_help(giac::html_mtt,s);
 #ifndef HAVE_NO_SYSTEM
     if (!giac::html_vtt.empty())
@@ -318,7 +329,7 @@ int main(int ARGC, char *ARGV[]){
   giac::context * contextptr = 
     //  (giac::context *) giac::context0 ; 
     &giac_context;
-#ifndef EMCC
+#if !defined EMCC && !defined NSPIRE_NEWLIB
   giac::xcasroot()=giac::xcasroot_dir(ARGV[0]);
 #endif
 #ifndef VISUALC
@@ -335,7 +346,7 @@ int main(int ARGC, char *ARGV[]){
     Fl::gl_visual(FL_RGB | FL_DEPTH | FL_ACCUM | FL_ALPHA);
 #endif
   giac::secure_run=false;
-#ifndef EMCC
+#if !defined EMCC && !defined NSPIRE_NEWLIB
   if (ARGC==2 && !strcmp(ARGV[1],"--rebuild-help-cache")){
     for (int i=0;i<=4;++i)
       giac::html_help_init("aide_cas",i,true,true);
@@ -428,7 +439,7 @@ int main(int ARGC, char *ARGV[]){
    * EMACS *
    *********/
   // #define EMACS_DEBUG 1
-#ifndef EMCC
+#if !defined EMCC && !defined NSPIRE_NEWLIB
   if (inemacs){
     giac::html_help_init(ARGV[0],false);
     int out_handle;
@@ -441,7 +452,7 @@ int main(int ARGC, char *ARGV[]){
     printf("Giac CAS for mupacs, released under the GPL license 3.0\n");
     printf("See http://www.gnu.org for license details\n");
     printf("May contain BSD licensed software parts (lapack, atlas, tinymt)\n");
-    printf("| (c) 2006, 2014 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
+    printf("| (c) 2006, 2015 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
     putchar(EMACS_DATA_END);
     bool prompt=true;
     for (int k=0;;++k) {
@@ -633,7 +644,7 @@ int main(int ARGC, char *ARGV[]){
     printf("|     Giac CAS for TeXmacs, released under the GPL license (3.0)    |\n");
     printf("|     See http://www.gnu.org for license details                    |\n");
     printf("|  May contain BSD licensed software parts (lapack, atlas, tinymt)  |\n");
-    printf("| (c) 2003,2014 B. Parisse & al (giac), J. van der Hoeven (TeXmacs) |\n");
+    printf("| (c) 2003,2015 B. Parisse & al (giac), J. van der Hoeven (TeXmacs) |\n");
     printf("--------------------------------------------------------------------\n");
     switch (giac::xcas_mode(contextptr)){
     case 0:
@@ -844,7 +855,7 @@ int main(int ARGC, char *ARGV[]){
     struct tms start, end;  
     using_history();
     cout << "Welcome to giac readline interface" << endl;
-    cout << "(c) 2001,2014 B. Parisse & others" << endl;
+    cout << "(c) 2001,2015 B. Parisse & others" << endl;
     cout << "Homepage http://www-fourier.ujf-grenoble.fr/~parisse/giac.html" << endl;
     cout << "Released under the GPL license 3.0 or above" << endl;
     cout << "See http://www.gnu.org for license details" << endl;

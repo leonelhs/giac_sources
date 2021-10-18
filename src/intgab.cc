@@ -895,7 +895,7 @@ namespace giac {
 	gen expo=g0_._VECTptr->back();
 	gen base=g0_._VECTptr->front();
 	vecteur lv=lvarxwithinv(base,x,contextptr);//rlvarx(base,x);
-	if (lv.size()==1){
+	if (lv.size()==1 && lv.front()==x){
 	  int na=0,nb=0;
 	  for (;;){
 	    gen tmp=_quorem(makesequence(base,x-a,x),contextptr);
@@ -913,7 +913,7 @@ namespace giac {
 	  if (derive(base,x,contextptr)==0){
 	    g0mult=pow(base,expo,contextptr);
 	    g0_=symbolic(at_pow,makesequence(x-a,na*expo))*symbolic(at_pow,makesequence(b-x,nb*expo));
-	    nb=0;
+	    nb=0; // insure next test is not true
 	  }
 	  if (nb==1 && !na){
 	    base=g0_._VECTptr->front();

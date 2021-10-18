@@ -60,6 +60,13 @@ extern Fl_Gl_Choice * gl_choice;
 // be sure to remove static declaration in gl_start.cxx in fltk src directory
 #endif
 
+#ifndef HAVE_PNG_H
+#undef HAVE_LIBPNG
+#endif
+#ifdef HAVE_LIBPNG
+#include <png.h>
+#endif
+
 using namespace std;
 using namespace giac;
 

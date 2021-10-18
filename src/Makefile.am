@@ -4,7 +4,7 @@ libgiac_la_SOURCES = input_lexer.ll sym2poly.cc gausspol.cc threaded.cc \
   misc.cc permu.cc quater.cc desolve.cc input_parser.yy \
   symbolic.cc index.cc modpoly.cc modfactor.cc \
   ezgcd.cc derive.cc solve.cc intg.cc intgab.cc risch.cc lin.cc series.cc \
-  subst.cc vecteur.cc csturm.cc tex.cc global.cc \
+  subst.cc vecteur.cc sparse.cc csturm.cc tex.cc global.cc \
   ifactor.cc alg_ext.cc gauss.cc isom.cc plot.cc plot3d.cc rpn.cc prog.cc \
   pari.cc cocoa.cc unary.cc usual.cc identificateur.cc gen.cc tinymt32.cc first.cc \
   TmpLESystemSolver.C TmpFGLM.C \
@@ -20,7 +20,7 @@ giacinclude_HEADERS = dispatch.h fraction.h gen.h desolve.h misc.h ti89.h \
 mathml.h identificateur.h unary.h symbolic.h index.h modpoly.h modfactor.h permu.h \
 monomial.h poly.h threaded.h gausspol.h sym2poly.h ezgcd.h derive.h \
 solve.h quater.h subst.h usual.h intg.h intgab.h risch.h lin.h series.h \
-vecteur.h vector.h csturm.h moyal.h tex.h global.h \
+vecteur.h sparse.h vector.h csturm.h moyal.h tex.h global.h \
 ifactor.h alg_ext.h gauss.h isom.h plot.h plot3d.h rpn.h prog.h \
 pari.h cocoa.h giac.h first.h maple.h help.h tinymt32.h tinymt32_license.h \
 static.h static_extern.h static_lexer.h static_lexer_.h\
@@ -64,11 +64,14 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	mkxcas mkwcas mkgcas mkaout Makefile.wince Makefile.osx\
 	Makefile.rpm Makefile.ipaq Makefilenew.ipaq ipaq_usr.tgz \
 	Makefile.fast Makefile.win Makefile.win64 Makefile.O3 Makefile.64 \
+	Makefile.nspire khicas.lua luagiac.c luabridge.cc luabridge.h \
+	giacnspire.cc config.h.nspire missing.c ndlessconfigure\
 	normalize.cc integrate.cc partfrac.cc factor.cc xcas.cc \
 	hist.fl hist.h hist.cxx hist.menus\
 	renee.cc renee.h cas2.cc README.ipaq README.WIN   \
 	readme.doc latex.bat xdvi.bat dvips.bat xcasfr.bat xcases.bat \
-	xcasfr.sh xcases.sh xcasen.sh mkstat mkhist mkdyn update.sh update.bat \
+	xcasfr.sh xcases.sh xcasen.sh mkstat mkhist mkdyn mkdyn10 mkxdyn10 \
+        update.sh update.bat \
 	giac.pl cas2html.cc all_global_var find_global_var.cc static_init \
 	Fl_GDI_Printer.cxx  Fl_PS_Printer.cxx Fl_Gl_Choice.H \
 	casce.cc xcasce.cc xcasctrl.cc casctrl.cc \
@@ -77,7 +80,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	config.h.iphone Makefile.iphone \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java archive_java javascript.cxx giacjs.i giacjs.js README.javascript \
-	Makefile.jni README.jni README.nacl mkdylib mkgiacpy giac_wrap.cxx
+	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy giac_wrap.cxx
 
 bin_SCRIPTS = pgiac
 

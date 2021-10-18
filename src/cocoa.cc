@@ -57,6 +57,10 @@ using namespace std;
 #undef HAVE_LIBCOCOA
 #endif
 
+#if defined VISUALC && defined __x86_64__ 
+#undef __x86_64__
+#endif
+
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC

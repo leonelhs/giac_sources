@@ -162,6 +162,10 @@ namespace giac {
   }
 #endif // TIMEOUT
 
+#ifdef NSPIRE_NEWLIB
+  void usleep(int t){
+  }
+#endif
 
 #if defined VISUALC || defined BESTA_OS
   int R_OK=4;
@@ -366,7 +370,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
 #if 1
-  static double _epsilon_=0;
+  static double _epsilon_=1e-12;
 #else
 #ifdef __SGI_CPP_LIMITS
   static double _epsilon_=100*numeric_limits<double>::epsilon();
@@ -1445,6 +1449,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   bool in_texmacs=false;
   bool block_signal=false;
   bool CAN_USE_LAPACK = true;
+  bool simplify_sincosexp_pi=true;
   int history_begin_level=0; 
   // variable used to avoid copying the whole history between processes 
 #ifdef WIN32 // Temporary
@@ -1452,7 +1457,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #else
   int debug_infolevel=0;
 #endif
-#if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE
+#if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE || defined NSPIRE_NEWLIB
   int threads=1;
 #else
   int threads=sysconf (_SC_NPROCESSORS_ONLN);
@@ -1557,7 +1562,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 
   void ctrl_c_signal_handler(int signum){
     ctrl_c=true;
-#if !defined WIN32 && !defined BESTA_OS && !defined NSPIRE
+#if !defined NSPIRE_NEWLIB && !defined WIN32 && !defined BESTA_OS && !defined NSPIRE
     if (child_id)
       kill(child_id,SIGINT);
 #endif
@@ -2392,6 +2397,12 @@ extern "C" void Sleep(unsigned int miliSecond);
       }
     }
 #ifdef __APPLE__
+    if (!access("/Applications/usr/share/giac/",R_OK))
+      return "/Applications/usr/share/giac/";
+    if (getenv("XCAS_ROOT")){
+      string s=getenv("XCAS_ROOT");
+      return s;
+    }
     return "/Applications/usr/share/giac/";
 #endif
 #ifdef WIN32
@@ -3243,7 +3254,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
 #ifndef CLK_TCK
-#define CLK_TCK
+#define CLK_TCK 1
 #endif
 
 #ifndef HAVE_NO_SYS_TIMES_H
@@ -4892,7 +4903,7 @@ unsigned int ConvertUTF8toUTF16 (
 	  res=gen(int((*builtin_lexer_functions_())[p.first-builtin_lexer_functions_begin()]+p.first->second.val));
 	  res=gen(*res._FUNCptr);	  
 #else
-#ifdef SMARTPTR64
+#if 1 // def SMARTPTR64
 	  res=0;
 	  int pos=p.first-builtin_lexer_functions_begin();
 	  size_t val=builtin_lexer_functions_[pos];
