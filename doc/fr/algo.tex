@@ -61,9 +61,20 @@
 
 \makeindex
 
+\input{giacfr.tex}
+
 \begin{document}
 
 \maketitle
+
+La version HTML de ce document comporte des champs de saisie
+interactifs, ceux-ci apparaissent comme des commandes ``mortes'' dans
+la version PDF. La version HTML est
+optimis\'ee pour le navigateur Firefox. Vous pouvez
+ex\'ecuter toutes les commandes interactives en cliquant sur le bouton
+Ex\'ecuter, le champ suivant est la console de l'interpr\'eteur du
+logiciel de calcul formel.
+\loadgiacjs
 
 \begin{abstract}
 Giac/Xcas est un logiciel libre de calcul formel dont
@@ -133,7 +144,8 @@ deux entiers, $a \geq 0, b>0$, il existe un unique couple $(q,r)$ tel que
 \index{division euclidienne}
 \[ a = bq +r , \quad r \in [0, b[ \]
 \end{prop}
-Preuve~: On prend pour $q$ le plus grand entier tel que $a-bq \geq 0$.
+Preuve~: On prend pour $q$ le plus grand entier tel que $a-bq \geq 0$.\\
+Exemple~: \giacinput{iquorem(23,7)}
 
 La division euclidienne permet d'écrire un nombre entier, en utilisant
 une base $b$ et des caractères pour représenter les entiers
@@ -157,8 +169,10 @@ successives en
 &=& d_n b^n + d_{n-1} b^{n-1} + ... + d_0
 \end{eqnarray*}
 Par exemple, vingt-cinq s'\'ecrit en base 16 \verb|0x19| car 25 divis\'e
-par 16 donne quotient 1, reste 9.
-En base 2, on trouverait \verb|0b11001| car $25=2^4+2^3+1$.
+par 16 donne quotient 1, reste 9\\
+\giacinput{convert(25,base,16)}\\
+En base 2, on trouverait \verb|0b11001| car $25=2^4+2^3+1$.\\
+\giacinput{convert(25,base,2)}\\
 On peut effectuer les op\'erations arithm\'etiques de base 
 (+,-,*, division) directement en base 2 (ou 16). Par exemple
 la table de l'addition est 0+0=0, 0+1=1+0=1 et 1+1=0 je retiens 1,
@@ -488,6 +502,8 @@ l'erreur relative sur $f(x)$ est donc au premier ordre multipli\'ee par
 $$ |\frac{xf'(x)}{f(x)}|$$
 Par exemple, l'erreur relative sur $e^x$ est au premier ordre l'erreur relative sur $x$
 multipli\'ee par $|x|$.
+\giacinputbigmath{a:=convert(100,interval); (right(a)-left(a))/evalf(a,12)}\\
+\giacinputbigmath{b:=exp(a); (right(b)-left(b))/evalf(b,12)}
 
 \subsubsection{Erreur absolue, relative, arrondi propagation des erreurs.}
 On a vu pr\'ec\'edemment que pour repr\'esenter un r\'eel, on devait
@@ -570,7 +586,9 @@ n'est pas une opération associative,
 par exemple
 \[ (2.0^{-53}+2.0^{-53})+1.0 \rightarrow 1+2^{-52} \]
 alors que
-\[ (2.0^{-53}+1.0)+2.0^{-53} \rightarrow 1 \]
+\[ 2.0^{-53}+(2.0^{-53}+1.0) \rightarrow 1 \]
+Dans Xcas, il n'y a que 48 bits de mantisse~:
+\giacinputbigmath{(2.^(-48)+(2.^(-48)+1.))-1.;  ((2.^(-48)+2.^(-48))+1.)-1.}
 Si on a plusieurs termes
 à additionner, il faut commencer par additionner entre eux
 les termes les plus petits, pour que les petits termes ne soient
@@ -587,11 +605,13 @@ $f(x+h)-f(x-h)$ est (au moins) d'ordre $\varepsilon |f(x)|$, donc l'erreur
 relative est d'ordre $\varepsilon/h |f(x)|$. 
 Par exemple pour {\tt h=1e-8} le reste est en $O(h^2)$ donc
 de l'ordre des erreurs d'arrondi mais l'erreur relative sur
-$f(x+h)-f(x)$ est d'ordre $\epsilon/h$ largement sup\'erieure
+$f(x+h)-f(x-h)$ est d'ordre $\epsilon/h$ largement sup\'erieure
 (en flottants double-pr\'ecision). On choisira plut\^ot $h$ tel que
 $\epsilon/h$ soit proche de $h^2$, donc de l'ordre de {\tt 1e-5}, qui
 fournira une valeur approch\'ee avec une erreur relative de l'ordre
 de {\tt 1e-10}.
+Exemple~: calcul de la d\'eriv\'ee num\'erique de $\exp(\sin(x))$ en $x=1$
+\giacinputbigmath[style="width:800px;height:40px;font-style:large"]{f(x):=exp(sin(x)); seq(taux_accroissement(f(x),1.0-10^(-k),1.0+10^(-k))-f'(1.0),k,1,11)}
 
 Remarquons néanmoins que les erreurs calculées ici sont des majorations
 des erreurs réelles (ou si on préfère l'erreur obtenue dans le pire
@@ -607,6 +627,13 @@ l'erreur et $n\sigma^2$ la variance de la somme $n$ erreurs
 suppos\'ees ind\'ependantes, cette probabilit\'e tend vers 0 pour $n$
 grand si $\alpha$ est d'ordre $n$, et ne tend
 pas vers 0 si $\alpha$ est de l'ordre de $\sqrt{n}$.
+Exemple~: somme de $n=400$ nombres r\'epartis sur $[-1,1]$ selon la loi
+uniforme (repr\'esentant des erreurs), on divise par $\sqrt{n}=$20, 
+on effectue plusieurs tirages (par exemple 500) on trace l'histogramme et 
+on compare avec la loi normale de moyenne
+nulle (l'esp\'erance de la somme) et d'\'ecart-type celui de la loi
+uniforme.
+\giacinput[style="width:800px;height:40px;font-style:large"]{m:=ranm(400,500,-1..1):;gl_x=-2..2;histogram(sum(m)/20,-1,0.1); plot(normald(0,0.57),-2..2)}
 
 Il est d'ailleurs souvent trop difficile de calculer une majoration
 rigoureuse de l'erreur pour des calculs sauf les plus simples.
@@ -740,7 +767,7 @@ s'il existe des relations algébriques entre constantes,
 \[ \frac{(\sqrt{2}+1)x+1}{x+\sqrt{2}+1}=\frac{x+\sqrt{2}-1}{(\sqrt{2}-1)x+1} \]
 Ce cas se présente fréquemment avec les extensions algébriques.
 \item en pratique il peut être trop coûteux d'utiliser une forme
-normale, par exemple le polynôme $\frac{x^{1000}-1}{x-1}$ possède 1000 monômes
+normale, par exemple le polynôme $(x^{1000}-1)/(x-1)$ possède 1000 monômes
 \end{itemize}
 En résumé, au mieux on a une forme normale, au pire on risque de ne pas 
 reconnaître un zéro, entre les deux on peut ne
@@ -782,9 +809,9 @@ sa d\'eriv\'ee (les deux polyn\^omes sont premiers entre eux)~:
 \frac{5497465490623352995840}{209648836272383412129}
 \end{eqnarray*}
 Le lecteur voulant tester d'autres exemples pourra utiliser le programme 
-\verb|Xcas| (cf. l'appendice) suivant~:
-\begin{verbatim}
-pgcd(a):={
+\verb|Xcas| suivant~:
+\begin{giacprog}
+pgcdderiv(a):={
   local b,r,res;
   b:=diff(a,x);
   res:=NULL;
@@ -796,7 +823,8 @@ pgcd(a):={
   }
   return(res);
 }
-\end{verbatim}
+\end{giacprog}
+\giacinput{P:=(x+1)^7-(x-1)^6;pgcdderiv(P)}
 
 \subsection{Valeur générique des variables et
   hypothèses}\index{hypoth\`ese} \index{assume}
@@ -1127,9 +1155,7 @@ ayant une portée locale.
 On va présenter dans la suite quelques algorithmes que l'on peut
 considérer comme classiques dans le domaine du calcul formel. Avant 
 d'implémenter ce type d'algorithmes, on a besoin des algorithmes de base
-en arithmétique. Le lecteur trouvera en appendice une brève présentation
-de certains de ces algorithmes, mes références en la matière sont le livre
-de Henri Cohen, et les livres de Donald Knuth (cf. appendice).
+en arithmétique. 
 
 La plupart des problèmes posés en calcul formel nécessitent des
 calculs dont la taille croit de manière exponentielle voire
@@ -1560,7 +1586,7 @@ vaudra donc successivement $a \pmod n, a^2 \pmod n, a^{4} \pmod n,
 division par 2 de \verb|k| (dans ce cas on multuplie \verb|B| par
 \verb|A| modulo $n$), on divise ensuite \verb|k| par 2  au sens du quotient
 euclidien.
-\begin{verbatim}
+\begin{giacprog}
 rapide(a,k,n):={
   local A,B;
   A:=a; B:=1;
@@ -1571,7 +1597,8 @@ rapide(a,k,n):={
   ftantque;
   return B;
 }
-\end{verbatim}
+\end{giacprog}
+\giacinput{rapide(123,4567890,123456)}
 
 
 \subsection{Pour en savoir plus.}
@@ -1590,24 +1617,6 @@ la plupart sont accessibles  gratuitement~:
 \begin{itemize}
 \item le code source de Giac disponible à l'URL~:\\
 \verb|http://www-fourier.ujf-grenoble.fr/~parisse/giac.html|
-\item le code source de GiNaC, cf.~:
-\verb|http://www.ginac.de|
-\item le site \verb|http://www.hpcalc.org| pour les calculatrices HP,
-on y trouve tout, de la documentation, des \'emulateurs de
-calculatrices HP, des outils de d\'eveloppement pour Windows
-et Unix/Linux, ... Pour ce qui concerne cet article, je conseille de lire\\
-\verb|http://www.hpcalc.org/hp48/docs/programming/rplman.zip|
-\item le site \verb|http://www.ticalc.org|, on y trouve le portage
-tigcc du compilateur C de GNU, des \'emulateurs, etc. Des informations de 
-cet article ont leur source dans le guide du
-d\'eveloppeur TI89/92\\
-\verb|http://education.ti.com/|
-\item la librairie du système \verb|MuPAD| (archivée dans le fichier
-\verb|lib.tar| des distributions Unix, pour une installation
-par d\'efaut, ce fichier
-se trouve dans le r\'erpertoire \verb|/usr/local/MuPAD/share/lib|),  
-cf. \verb|www.sciface.com| pour obtenir une licence
-d'utilisation.
 \item en Maple, il est possible de
 décompiler une instruction \verb|Maple| avec la commande\\
 \verb|eval(instruction);|\\
@@ -1617,14 +1626,18 @@ après avoir tapé\\
 (devenu logiciel libre) pour les personnes famili\`eres du langage Lisp\\
 \verb|http://sourceforge.net/projects/maxima|\\
 de m\^eme pour le syst\`eme Axiom
-\item le source de librairies plus spécialisées (GMP, GP-PARI, Singular,
-NTL, Zen, ALP, GAP, CoCoA, ...), rechercher ces moms sur google.
+\item le source de librairies plus spécialisées (GMP, MPFR, MPFI, GP-PARI, Singular,
+NTL, GAP, CoCoA, ...), rechercher ces mots-clefs sur un moteur de recherche.
 \end{itemize}
 
 \pagebreak
 
 \subsection{Exercices  sur types, calcul exact et approch\'e, 
 algorithmes  de  bases}
+Vous pouvez 
+\begin{rawhtml}
+<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html" target="_blank">tester directement dans votre navigateur</a>
+\end{rawhtml}
 Pour t\'el\'echarger et installer Xcas sur votre ordinateur, suivre
 les instructions donn\'ees sur\\
 \verb|http://www-fourier.ujf-grenoble.fr/~parisse/giac_fr.html|\\
@@ -1635,7 +1648,9 @@ taper la commande\\
 Lors de la premi\`ere ex\'ecution, vous devrez choisir entre
 diff\'erents types de syntaxe (compatible C, maple ou TI89). Vous
 pouvez changer ce choix \`a tout moment en utilisant le menu
-Configuration->mode (syntaxe).
+Configuration->mode (syntaxe). On vous propose aussi d'ouvrir le
+tutoriel, qui est \'egalement accessible depuis le menu Aide,
+D\'ebuter en calcul formel.
 
 %Pour lancer maple, taper {\tt xmaple} \`a la place de {\tt xcas}.
 
@@ -1663,11 +1678,13 @@ On pourra tester le temps de calcul du produit
 de $a(a+1)$ o\`u $a=10 000!$, $a=15000!$, etc. .
 M\^eme question pour des polyn\^omes en une variable (\`a g\'en\'erer
 par exemple avec \verb|symb2poly(randpoly(n))| ou avec \verb|poly1[op(ranm(.))]|).
-
+\giacinput{n:=100; p:=symb2poly(randpoly(n)):; time(p*p);}
 \item Comparer le temps de calcul de $a^n \pmod m$ par la fonction
 \verb|powmod| et la m\'ethode prendre le reste modulo $m$ apr\`es avoir 
 calcul\'e $a^n$.\\
-Programmez la m\'ethode rapide et la m\'ethode lente. Refaites la
+\giacinput[style="width:800px;height:20px;font-style:large"]{a:=123; n:=456; m:=789; time(powmod(a,n,m)); time(irem(a^n,m));}
+Programmez la m\'ethode rapide et la m\'ethode lente.
+Refaites la
 comparaison. Pour la m\'ethode rapide, programmer aussi la version
 it\'erative utilisant la d\'ecomposition en base 2 de l'exposant~:
 on stocke dans une variable locale $b$ les puissances successives
@@ -1679,10 +1696,10 @@ calcul de $b$ et du bit correspondant se font dans une m\^eme boucle).
 
 \item D\'eterminer un entier $c$ tel que $c=1 \pmod 3$, 
 $c=3 \pmod 5$, $c=5 \pmod 7$ et $c=2 \pmod{11}$.
-
+\giacinput{ichinrem()}
 \item Calculez dans $\Z/11\Z$
 \[  \prod_{a=0}^{10} (x-a)\]
-
+\giacinput{product()}
 \item Algorithmes fondementaux~: \'ecrire des programmes impl\'ementant
 \begin{enumerate}
 \item le pgcd de 2 entiers
@@ -1696,7 +1713,7 @@ dans l'algorithme de B\'ezout
 le polyn\^ome $x^2-y$ o\`u $y$ est un \'el\'ement quelconque du corps
 fini.
 Comparer avec la valeur de $\sqrt{y}$.
-
+\giacinput{GF(2,7);}
 \item Utiliser la commande {\tt type} ou {\tt whattype} ou \'equivalent
 pour d\'eterminer la repr\'esentation
 utilis\'ee par le logiciel pour repr\'esenter
@@ -1705,37 +1722,37 @@ un flottant avec 100 d\'ecimales, la variable $x$, l'expression $\sin(x)+2$,
 la fonction {\tt x->sin(x)}, une liste, une s\'equence, un vecteur,
 une matrice. Essayez d'acc\'eder aux parties de
 l'objet pour les objets composites (en utilisant {\tt op} par exemple).
-
+\giacinput{a:=sin(x)+2; type(a); a[0]; a[1]}
 \item Comparer le type de l'objet \verb|t| si on effectue
 la commande \verb|t[2]:=0;| apr\`es avoir purg\'e \verb|t|
 ou apr\`es avoir affect\'e \verb|t:=[1,2,3]|~?
-
+\giacinput{t[2]:=0; type(t); t:=[1,2,3]; type(t)}
 \item Comparer l'effet de l'affectation dans une liste et dans un
   vecteur ou une matrice sur votre logiciel (en Xcas, on peut utiliser
 \verb|=<| au lieu de \verb|:=| pour stocker par r\'ef\'erence).
-
+\giacinput{l:=[1,2,3]; l1:=l; l[1]:=5; l1}
 \item Voici un programme qui calcule la base utilis\'ee
 pour repr\'esenter les flottants. 
-\begin{verbatim}
+\begin{giacprog}
 Base():={
   local A,B;
   A:=1.0; B:=1.0;
-  while (evalf(evalf(A+1.0)-A)-1.0=0.0) { A:=2*A;};
-  while (evalf(evalf(A+B)-A)-B<>0) { B:=B+1;}
+  while evalf(evalf(A+1.0)-A)-1.0=0.0 do  A:=2*A; od;
+  while evalf(evalf(A+B)-A)-B<>0 do B:=B+1; od;
   return B;
 } :;
-\end{verbatim}
-Testez-le et expliquez.
+\end{giacprog}
+Testez-le \giacinput{Base()} et expliquez.
 
 \item D\'eterminer le plus grand r\'eel positif $x$ de la forme 
 $2^{-n}$ ($n$ entier)
 tel que $(1.0+x)-1.0$ renvoie 0 sur PC avec la pr\'ecision par
 d\'efaut puis avec \verb|Digits:=30|.
-
+\giacinput{n:=30; x:=2^(-n):; (1.0+x)-1.0}
 \item Calculer la valeur de $a:=\exp(\pi \sqrt{163})$ avec 30 chiffres
 significatifs, puis sa partie fractionnaire. Proposez une commande
 permettant de d\'ecider si $a$ est un entier.
-
+\giacinput{a:=exp(pi*sqrt(163));}
 \item 
 D\'eterminer la valeur et le signe de la fraction rationnelle 
 \[ F(x,y)= \frac{1335}{4} y^6 + x^2 (11x^2 y^2-y^6 -121y^4-2) + 
@@ -1744,13 +1761,14 @@ en $x=77617$ et $y=33096$ en faisant deux calculs, l'un en mode approch\'e et
 l'autre en mode exact. Que pensez-vous de ces r\'esultats?
 Combien de chiffres significatifs faut-il pour obtenir un r\'esultat
 raisonnable en mode approch\'e?
-
+\giacinput[style="width:800px;height:40px;font-style:large"]{F(x,y):=1335/4*y^6+x^2*(11x^2*y^2-y^6-121*y^4-2)+11/2*y^8+x/2/y;}
+\giacinput{F();}
 \item Que se passe-t-il si on essaie d'appliquer l'algorithme de la
 puissance rapide pour calculer $(x+y+z+1)^{k}$ par exemple pour
 $k=64$~? 
 Calculer le nombre
 de termes dans le d\'eveloppement de $(x+y+z+1)^n$ et expliquez.
-
+\giacinput[style="width:800px;height:40px;font-style:large"]{time(normal((x+y+z+1)^30)); a:=normal((x+y+z+1)^15):; time(normal(a*a));}
 \item Programmation de la {\bf m\'ethode de Horner}\index{H\"orner}\\
 Il s'agit d'\'evaluer efficacement un polyn\^ome 
 \[ P(X) = a_n X^n + ... + a_0 \]
@@ -1817,18 +1835,19 @@ pgcd des coefficients de $P$. On définit alors la
 {\bf partie primitive}\index{primitive, partie} de $P$:
 pp$( P ) = P / c ( P )$. Si $c(P)=1$, on dit que $P$ est primitif.
 
+{\bf Proposition~}: Si $A$ et $B$ sont primitifs alors $AB$ est
+primitif.\\
+Sinon, on prend un facteur premier $p$ du contenu de $AB$, 
+$AB=0 \pmod p$ donc $A=0$ ou $B=0$ modulo $p$, absurde.
+
 {\bf Proposition~}: Si $A$ et $B$ sont primitifs et si $B$ divise $A$
 dans $\Q[X]$ alors $A/B \in \Z[X]$.
 
 {\bf Preuve~}: Soit $Q=A/B \in \Q[X]$. Soit $q \in \N $ le PPCM des
-d\'enominateurs des coefficients de $Q$ et notons $P=qQ \in \Z[X]$. On a
-$$ P B = qQB=q A $$
-Si $q=1$ la proposition est d\'emontr\'ee. 
-Sinon, consid\'erons un facteur premier $p$ de $q$, dans $\Z/p\Z[X]$ on a
-$$ PB = 0 \pmod p$$
-Comme $B$ est primitif, $B\neq 0 \pmod p$ donc
-$P=0 \pmod p$, donc $P/p=q/p Q \in \Z[X]$ ce qui est absurde car $q$
-est le PPCM des d\'enominateurs de $Q$.
+d\'enominateurs des coefficients de $Q$ et notons $P=qQ \in \Z[X]$.
+Alors $P$ est primitif, sinon en divisant $q$ par le contenu de $P$ on
+aurait un multiple commun des d\'enominateurs de $Q$. Donc $PB$ est
+primitif, or $ P B = qQB=q A $ avec $A$ primitif donc $q=1$.
 
 Donc le PGCD de $A$ et $B$, polyn\^omes primitifs de $\Z[X]$ est
 obtenu en prenant un PGCD de $A$ et $B$ dans $\Q[X]$, en multipliant
@@ -1857,16 +1876,16 @@ lorsqu'on utilise la pseudo-division par exemple pour les polynômes $P ( x ) =
 ( x + 1 )^7 - ( x - 1 )^6$ et sa dérivée.
 
 {\bf{Une solution avec giac/xcas}}:
-\begin{verbatim}
-// -*- mode:C++ -*- a,b 2 polynomes -> pgcd de a et b
-pgcd(a,b):={ 
- local P,p,Q,q,R,g,h,d;
+\begin{giacprog}
+pgcd(a,b,prs):={ 
+ local P,p,Q,q,R,g,h,d,res;
+ res:=NULL;
  // convertit a et b en polynomes listes 
  // et extrait la partie primitive   
- P:=symb2poly1(a);
+ P:=symb2poly(a);
  p:=lgcd(P); // pgcd des elements de la liste
  P:=P/p; 
- Q:=symb2poly1(b);
+ Q:=symb2poly(b);
  q:=lgcd(Q);
  Q:=Q/q; 
  if (size(P)<size(Q)){ // echange P et Q
@@ -1883,16 +1902,17 @@ pgcd(a,b):={
   if (size(R)==0) return(p*poly12symb(Q/lgcd(Q),x));
   P:=Q;
   Q:=R;
-  // ligne suivante a decommenter pour prs 
-  // Q:=R/(g*h^d);
-  print(Q);
-  // ligne suivante a decommenter pour prs 
-  // g:=q; h:=q^d/h^(d-1);
+  if (prs==1) Q:=Q/content(Q);
+  if (prs==2) Q:=R/(g*h^d);
+  res:=res,Q;
+  if (prs==2) g:=q; h:=q^d/h^(d-1);
  } 
- return(p);
-}
-\end{verbatim}
-On s'aperçoit que les coefficients croissent de manière exponentielle. La
+ return(p,res);
+}:;
+\end{giacprog}
+\giacinput{P:=(x+1)^7-(x-1)^6; pgcd(P,P',0)}
+On s'aperçoit que les coefficients croissent de manière exponentielle
+(comparer avec ce qui se passe en mettant 1 comme dernier argument). La
 deuxième idée qui vient naturellement est alors à chaque étape de rendre le
 reste primitif, donc de diviser $R$ par le pgcd de ces coefficients. Cela
 donne un algorithme plus efficace, mais encore assez peu efficace car à chaque
@@ -1901,9 +1921,11 @@ temps que cela prendra en dimension 1 et à fortiori en dimension supérieure.
 L'idéal serait de connaitre à l'avance une quantité suffisamment grande qui
 divise tous les coefficients du reste.
 
-C'est ici qu'intervient l'algorithme du sous-résultant: après chaque
+C'est ici qu'intervient l'algorithme du sous-résultant~: après chaque
 pseudo-division euclidienne, on exhibe un coefficient "magique" qui divise les
-coefficients du reste. Ce coefficient n'est pas le pgcd mais il est
+coefficients du reste (pour tester mettre le dernier argument de pgcd
+\`a 2). 
+Ce coefficient n'est pas le pgcd mais il est
 suffisamment grand pour qu'on évite la croissance exponentielle des
 coefficients.
 
@@ -3298,8 +3320,8 @@ C'est cet algorithme qui est utilis\'e par Xcas.
 Il peut aussi se d\'ecliner en m\'ethode modulaire ou avec interpolation.
 \end{itemize}
 Exemple de comparaison~:\\
-\verb|n:=100; A:=randpoly(n):; B:=randpoly(n):;|\\
-\verb|time(resultant(A,B)); time(det(sylvester(A,B)))|
+\giacinputbigmath{n:=100; A:=randpoly(n):; B:=randpoly(n):;}\\
+\giacinputbigmath{time(resultant(A,B)); time(det(sylvester(A,B)))}
 
 \section{Localisation des racines} \label{sec:racines}
 \subsection{Majoration}
@@ -3354,6 +3376,8 @@ variations de $A_0$ au voisinage d'une racine de $A_0$ est d\'etermin\'e
 par le signe de $A_1$, donc les possibilit\'es sont -,+ vers +,+
 ou +,- vers -,-, ce qui diminue $s$ d'une unit\'e.
 
+\giacinputbig{purge(x);sturmab(x^3+7x-5,0,1)}
+
 \subsection{Autres algorithmes} \label{sec:autres_algorithmes}
 \begin{itemize}
 \item On peut localiser les racines r\'eelles par dichotomie~: on
@@ -3366,14 +3390,44 @@ intervalle contient une seule racine, on passe \`a la dichotomie
 classique (changement de signe), ou \`a la m\'ethode de Newton
 (avec \'evaluation exacte du polym\^ome et arrondi du d\'enominateur
 \`a une puissance de 2). C'est ce qui est utilis\'e par
-l'instruction \verb|realroot| de Giac.
+l'instruction \verb|realroot| de Giac si on donne en argument
+optionnel \verb|sturm|.
+\\\giacinput{realroot(sturm,x^3+7x-5)}\\
 \item Il existe un autre algorithme de localisation de racines
 r\'eelles d\^u \`a {\bf Vincent, Akritas et 
 Strzebonski}\index{Vincent}\index{Akritas}\index{Strzebonski}, cf. la
-commande \verb|VAS| de Xcas. Cet algorithme est tr\`es
-efficace pour donner des intervalles d'{\bf isolation}\index{isolation de racines} des racines
-(sur lesquels on peut faire de la dichotomie).
-\item Ces suites se g\'en\'erallisent dans le plan complexe, on
+commande \verb|realroot| de Xcas qui renvoie des flottants de type intervalle.
+\\\giacinput{realroot(x^3+7x-5)}\\
+Cet algorithme est tr\`es
+efficace pour donner des intervalles 
+d'{\bf isolation}\index{isolation de racines} des racines
+(sur lesquels on peut ensuite faire de la dichotomie). 
+La base de cet algorithme utilise la r\`egle des signes de
+Descartes\index{Descartes} \index{regle des signes}
+\begin{prop}
+Soit $P=a_nx^n+...+a_1x+a_0 \in \R[x]$, $r(P)$ le nombre de racines de
+$P$ sur $\R^{*+}$, et $\sigma(P)$ le nombre de changements de signe
+de la suite des coefficients $a_n,...,a_0$ de $P$. Alors $r(P) \leq \sigma(P)$.
+\end{prop}
+La preuve se fait par r\'ecurrence. Pour $n=0$ on a bien $0 \leq 0$.
+Pour $n>0$ on applique l'hypoth\`ese de r\'ecurrence \`a $P'$ et on
+utilise le fait que 1+le nombre de racines de $P'$ sur un intervalle
+$]a,b[$ est sup\'erieur ou \'egal au nombre de racines de $P$ sur
+$[a,b]$. Il y a deux cas possibles $\sigma(P')=\sigma(P)$ et
+$\sigma(P')=\sigma(P)-1$. Dans le deuxi\`eme cas, comme $r(P')+1\geq
+r(P)$, alors $r(P) \leq r(P')+1 \leq \sigma(P')+1=\sigma(P)$. Dans le
+premier cas, il faut trouver une racine suppl\'ementaire pour
+$P'$. Pour cela, on regarde ce qui se passe en $0^+$. Supposons que
+$a_0>0$ pour fixer les id\'ees, comme $a_0$ est du m\^eme signe
+que $a_1$ (ou que $a_2$ si $a_1=0$ etc.), $P'$ est positif en $0^+$
+donc $P$ croit en $0^+$, donc doit atteindre un maximum local avant
+la premi\`ere racine de $P$, ce maximum local est une racine de $P'$.
+
+On peut m\^eme montrer que $r(P)$ et $\sigma(P)$ sont de m\^eme
+parit\'e.
+L'algorithme VAS utilise ce r\'esultat et des changements de variable
+homographique $x \rightarrow \frac{ax+b}{cx+d}$ pour isoler les racines.
+\item Les suites de Sturm se g\'en\'erallisent dans le plan complexe, on
 peut d\'eterminer le nombre de racines contenues dans un
 rectangle du plan complexe (cf. par exemple l'article
 de Mickael Eiserman sur \verb|www-fourier.ujf-grenoble.fr/~eiserm|). 
@@ -3383,24 +3437,42 @@ m\^eme suite de Sturm). Ce qui est donc beaucoup plus couteux,
 en pratique on ne peut gu\`ere aller au-del\`a du degr\'e 10 avec
 l'instruction \verb|complexroot| de Giac, analogue de \verb|realroot|.
 \item Une autre m\'ethode dans le cas complexe, 
-peut-\^etre plus prometteuse, consisterait \`a utiliser
+consiste \`a utiliser
 un hybride num\'erique-exact. Les racines d'un polyn\^ome $Q$
 sont aussi les valeurs
-propres complexes de sa matrice companion $M$. On peut alors 
-par une m\'ethode it\'erative (on pose $A_0=M$, puis on 
-factorise $A_n=QR$ par la m\'ethode de Hessenberg et on d\'efinit
-$A_{n+1}=RQ$), factoriser cette matrice 
-sous forme de Schur: $M=P^{-1} S P$ o\`u $P$ est unitaire
-et S diagonale sup\'erieure aux erreurs d'arrondis pr\`es. 
-On peut calculer un minorant de $m \leq |Q'(z)/Q(z)|$ 
-pour $z$ racine complexe approch\'ee (coefficient
-diagonal de $Q$). On a alors au moins
-une racine de $Q$ dans le disque de centre $z$ 
-et de rayon degre$(Q)/m$, car
+propres complexes de sa matrice companion $M$. On factorise cette matrice
+sous forme de Schur $M=P^{-1} S P$ o\`u $P$ est unitaire
+et S  aux erreurs d'arrondis pr\`es diagonale sup\'erieure 
+avec \'eventuellement des blocs de taille
+2 dans le cas r\'eel correspondant \`a des couples de racines
+complexes conjugu\'ees\footnote{cela se fait
+par une m\'ethode it\'erative appel\'ee algorithme
+de Francis. On pose $A_0$, la forme
+de Hessenberg de $M$, puis on 
+factorise $A_n=QR$ par des sym\'etries de Householder ou
+des rotations de Givens et on d\'efinit
+$A_{n+1}=RQ$, le calcul de $A_{n+1}$ en fonction de $A_n$
+se fait sans expliciter la factorisation $QR$}. On lit alors des valeurs approch\'ees des valeurs
+propres de $M$ sur la diagonale de $S$. Puis on applique la
+\begin{prop}
+Le disque de centre $z$ et de rayon degre$(Q) |Q(z)/Q'(z)|$
+contient au moins une racine de $Q$.
+\end{prop}
+En effet
 \[ \frac{Q'}{Q}(z)= \sum_{k} \frac{1}{z-z_k}\]
-donc si $|z-z_k| > $degre$(Q)/m$ pour toutes les racines $z_k$ alors
-$|\frac{Q'}{Q}(z)| > m$ contradiction. Si les disques obtenus sont
-disjoints, on a ainsi une localisation des racines complexes.
+donc si $|z-z_k| > $degre$(Q) |Q(z)/Q'(z)|$ pour toutes les racines $z_k$ alors
+$|\frac{Q'}{Q}(z)| > |Q'(z)/Q(z)|$ contradiction.
+
+On prend pour $z$ un rationnel complexe proche d'un coefficient
+diagonal de $M$, on calcule un minorant $m$ de $|Q'(z)/Q(z)|$ 
+pour $z$ racine complexe approch\'ee. On a alors au moins
+une racine de $Q$ dans le disque de centre $z$ 
+et de rayon degre$(Q)/m$, Si les disques obtenus sont
+disjoints, on a ainsi une localisation certifi\'ee des racines
+complexes.\\
+\giacinputbigmath{Q:=randpoly(5); M:=companion(Q); P,S:=schur(M):; S}\\
+\giacinputbigmath{P*S*trn(P); P*trn(P);}
+\giacinputbigmath{l:=proot(Q); z:=exact(l[0]); evalf(degree(Q)*Q(x=z)/Q'(x=z),20)}
 On peut aussi utiliser l'arithmétique d'intervalles pour
 essayer de trouver un petit rectangle autour d'une racine approchée
 qui est conservé par la méthode de Newton $g(x)=x-f(x)/f'(x)$,
@@ -4437,13 +4509,6 @@ $\pm \sqrt{5}=$\verb|rootof(G[6],G[2])/rootof(G[3],G[2])|\\
 (on peut utiliser \verb|normal| ou \verb|evalf| pour d\'ecider du signe).
 
 \section{Courbes param\'etriques et polaires} \label{sec:courbes}
-Remarque~: dans ce cours sur les courbes, le lecteur
-pourra s'\'etonner de ne voir aucune figure.
-Ceci est volontaire. \`A la place des figures qu'on trouverait
-pour illustrer un cours classique, de nombreuses
-commandes Xcas sont indiqu\'ees, le lecteur est invit\'e
-\`a les ex\'ecuter telles quelles, puis \`a les modifier
-afin d'illustrer lui-m\^eme de mani\`ere active le cours.
 
 \subsection{Introduction}
 Le graphe d'une fonction $f: I \mapsto \R$ ($I$ un intervalle)
@@ -4478,8 +4543,9 @@ d'\'equation $(x(t),y(t))=(t,f(t))$ ($x$ est le temps).
 On aurait aussi pu choisir
 $(x(t),y(t))=(t-1,f(t-1))$ (ce qui revient \`a changer l'origine des
 temps) ou d'autres param\'etrages.
-Exemple~: \verb|plotfunc(sin(x)),x| 
-\verb|plotparam([t-1,sin(t-1)],t)|
+Exemple~: \\
+\giacinput{plotfunc(sin(x))}
+\giacinput{plotparam([t-1,sin(t-1)],t)}
 \item une droite d'\'equation $y=ax+b$ est le graphe d'une fonction,
 donc param\'etrable comme ci-dessus. Une droite verticale $x=a$ peut
 se param\'etrer par $(x(t),y(t))=(a,t)$
@@ -4492,10 +4558,11 @@ $(x(t),y(t))=(\frac{1-t^2}{1+t^2},\frac{2t}{1+t^2}), t \in \R$. Ce
 param\'etrage permet de calculer plus facilement des points
 du cercle, mais contrairement au param\'etrage trigonom\'etrique,
 il n'est pas ``uniforme''.\\
-Exemple \verb|plotparam([cos(t),sin(t)],t=0..2*pi)|\\
-\verb|plotparam([(1-t^2)/(1+t^2),2t/(1+t^2)],t=-10..10)|\\
+Exemple 
+\giacinput{plotparam([cos(t),sin(t)],t=0..2*pi)}\\
+\giacinput [style="width:400px;height:40px;font-size:large"]{plotparam([(1-t^2)/(1+t^2),2t/(1+t^2)],t=-10..10)}\\
 ou avec les nombres complexes\\
-\verb|plotparam((1+i*t)/(1-i*t),t=-10..10)|
+\giacinput{plotparam((1+i*t)/(1-i*t),t=-10..10)}
 \end{itemize}
 
 \subsection{Repr\'esentation graphique} 
@@ -4510,7 +4577,8 @@ t$, ... puis relie les points de la courbe obtenue par des segments
 cela donne une bonne id\'ee de la courbe, mais parfois on peut
 manquer un d\'etail int\'eressant (valeur de $\Delta t$ trop
 grande), ou un morceau de courbe (mauvaises
-valeurs de $t_-$ et $t_+$).
+valeurs de $t_-$ et $t_+$). Par exemple 
+\giacinput{plotfunc(x+0.01/(x-sqrt(2)),x=-2..2,xstep=0.1)}
 
 Il peut \^etre n\'ecessaire d'ajuster le cadrage graphique
 \`a l'affichage (\verb|xmin|, \verb|xmax|, \verb|ymin|, \verb|ymax|) ou
@@ -4526,15 +4594,21 @@ dans le menu \verb|Graphe, Courbes|. Le cadrage
 graphique est calcul\'e automatiquement et peut \^etre
 modifi\'e par les touches menus \`a droite du graphe.
 On peut sp\'ecifier le pas avec l'argument optionnel \verb|tstep=|.
-\item sur les calculatrices~: il faut s\'electionner le mode
-de trac\'e param\'etrique (par exemple avec une touche MODE,
-ou en s\'electionnant une application par une touche 
-APPS ou MENU), puis l'\'ecran de d\'efinition
-de $x(t),y(t)$ apparait, \'eventuellement apr\`es appui
-sur une touche \verb|Y=|. Si les r\'eglages graphiques
-ne sont pas directement fournis, la touche \verb|WINDOW|
+\item HP Prime~: touche Apps puis Param\'etrique, entrer les
+formules donnant $X1$ et $Y1$ en fonction de $T$, puis touche
+Plot. Pour r\'egler la discr\'etisation, faire shift-Plot (Plot
+setup).\\
+Ou touche Apps puis G\'eom\'etrie et utiliser les m\^emes commandes 
+qu'avec Xcas.
+\item sur les calculatrices TI89/92/voyage 200~: il faut s\'electionner le mode
+de trac\'e param\'etrique avec la touche MODE,
+puis sur \verb|Y=|, l'\'ecran de d\'efinition
+de $x(t),y(t)$ apparait. Si les r\'eglages graphiques
+ne sont pas satisfaisants, la touche \verb|WINDOW|
 permet d'y acc\'eder, puis la touche \verb|GRAPH| lance
 le trac\'e.
+\item TI Nspire : lancer Graphes depuis Home puis touche Menu,
+3. Graph puis 3. Parametric. On peut aussi r\'egler le zoom depuis Menu.
 \end{itemize}
 
 Exemples~: essayez de tracer quelques courbes en param\'etriques
@@ -4574,6 +4648,50 @@ par son \'equation cart\'esienne.
 
 \subsection{\'Etude analytique d'une courbe en param\'etrique}
 \index{param\'etrique, courbe}
+
+\subsubsection{Rappel sur les graphes de fonction}
+Pour tracer le graphe d'une fonction $f$, on commence par
+d\'eterminer le domaine de
+d\'efinition, on restreint \'eventuellement l'intervalle d'\'etude
+(parit\'e, p\'eriodicit\'e). Puis on calcule les limites aux bornes
+du domaine de d\'efinition~:
+\begin{itemize}
+\item une limite infinie en $x=a$ fini correspond \`a une asymptote
+verticale d'\'equation $x=a$.\\
+Exemple \giacinput [style="width:400px;height:40px;font-size:large"]{purge(x);plot((x+1)/(x-2),x=0..4); line(x=2,color=red)}
+\item une limite finie $l$ lorsque $x\rightarrow \pm \infty$ correspond
+\`a une asymptote horizontale d'\'equation $y=l$.\\
+Exemple \giacinput [style="width:400px;height:40px;font-size:large"]{purge(y);plot((x^2-1)/(x^2+1),x=0..10); line(y=1,color=red)}
+\item si $y$ tend vers $\pm \infty$ lorsque $x\rightarrow \pm \infty$,
+on a une branche infinie. S'il s'agit d'une asymptote $y=ax+b+o(1)$, alors
+$y/x=a+b/x+o(1/x)$ tend vers $a$ lorsque $x$ tend vers $+\infty$ ce qui
+permet de trouver $a$ en calculant $\lim_{x\rightarrow +\infty} y/x$,
+puis $b=\lim_{x\rightarrow +\infty}y-ax$. Si $b$ est fini, on a une
+asymptote, sinon une branche parabolique de direction $y=ax$. 
+On remarque que si $a=0$,
+comme $y$ tend vers l'infini, on ne peut pas avoir d'asymptote, on
+parle de branche parabolique de direction $Ox$. Si $y/x$ tend vers
+l'infini, on a une branche parabolique de direction $Oy$.\\
+Exemple \giacinput [style="width:400px;height:40px;font-size:large"]{plot(x^2/(x+1),x=0..10);line(y=x-1,color=red)}
+\item Lorsqu'il y a une asymptote d'\'equation $y=ax+b$, 
+on peut raffiner en cherchant la
+position de la courbe par rapport \`a l'asymptote en \'etudiant le
+signe de $y-(ax+b)$
+\end{itemize}
+On calcule la d\'eriv\'ee premi\`ere de $f$ pour d\'eterminer le sens
+de variations, les points d'annulation correspondent \`a des tangentes
+horizontales. On peut \'etudier la convexit\'e de $f$ (signe de
+$f'{'}$), les points d'inflexion de la courbe se produisent lorsque
+$f'{'}$ s'annule.
+On trace alors la courbe en faisant apparaitre les points particuliers
+et les asymptotes.
+
+Pour une courbe en param\'etrique, le plan g\'en\'eral est analogue,
+mais l'\'etude est un peu plus compliqu\'ee puisqu'on a 
+deux fonctions $t \rightarrow x(t)$ et $t \rightarrow y(t)$
+au lieu d'une seule $x \rightarrow y(x)$.
+
+\subsubsection{Domaine et p\'eriodicit\'e}
 On supposera dans toute la suite que les fonctions $x(t)$ et $y(t)$
 sont continument d\'erivables au moins 2 fois, sauf peut-\^etre
 en un nombre fini de r\'eels d'un intervalle $I$ de $\R$.
@@ -4606,12 +4724,12 @@ cherchant le signe de $y-l$ ou $x-l$ lorsque $t$ tend
 vers la valeur particuli\`ere (limite \`a droite et limite
 \`a gauche). Enfin si $x$ et $y$ tendent vers l'infini
 tous les deux, on cherche la limite de $y/x$,
-Si $\frac{y}{x} \rightarrow a \neq 0$, on a une {\bf branche
-parabolique}\index{branche, parabolique} 
-de {\bf direction asymptotique}\index{asymptotique, direction} $y=ax$,
+Si $\frac{y}{x} \rightarrow a \neq 0$, on a une 
+{\bf branche parabolique}\index{branche, parabolique} 
+de direction asymptotique\index{asymptotique, direction} $y=ax$,
 on cherche alors la limite
 $y-ax$, si cette limite est finie et vaut $b$ 
-on a une asymptote\index{asymptote} oblique $y=ax+b$ (on peut d\'eterminer
+on a une {\bf asymptote}\index{asymptote} oblique $y=ax+b$ (on peut d\'eterminer
 la position en cherchant le signe de $y-(ax+b)$.
 
 Exemples~: 
@@ -4621,9 +4739,21 @@ $$ (\frac{t^2}{t+1},t+\frac1{t^2+1}), \
 (\frac{1}{t^2-1},\frac{t}{t+1}), $$
 On peut utiliser la commande \verb|limit| dans Xcas pour \'etudier
 une asymptote, par exemple dans le premier cas, pour \'etudier la
-branche infinie pour $t \rightarrow +\infty$, \\
-\verb|x(t):=t^2/(t+1); y(t):=t+1/(t^2+1);|\\
-\verb|a:=limit(y(t)/x(t),t=inf); limit(y(t)-a*x(t),t=inf)|
+branche infinie pour $t \rightarrow +\infty$\footnote{on notant $X(t)$ et
+$Y(t)$ les deux fonctions pour pouvoir utiliser $x$ et $y$ dans {\tt
+  droite}}\\
+On d\'efinit les fonctions
+\giacinputmath{X(t):=t^2/(t+1);Y(t):=t+1/(t^2+1);}
+puis on calcule les limites lorsque $t \rightarrow +\infty$
+\giacinputmath[style="width:400px;height:40px;font-size:large"]{a:=limit(Y(t)/X(t),t=inf);
+b:=limit(Y(t)-a*X(t),t=inf)}\\
+Si $a$ est fini non nul et $b$ fini, on en d\'eduit que $y=ax+b$ est asymptote \`a la courbe. Il y a une
+autre asymptote pour $t=-1$ ($Y$ fini, $X$ tend vers l'infini)\\
+\giacinput[style="width:400px;height:100px;font-size:large"]{gl_x=-7..7;gl_y=-7..7;
+plotparam([X(t),Y(t)],t=-7..7);
+line(y=a*x+b,color=red);line(y=Y(-1),color=green)}
+Autre exemple~:
+\giacinput{X(t):=t^3/(t^2+1);Y(t):=t+1/(t^2+2);}
 
 \subsubsection{\'Etude locale}
 On se place en une valeur de $t_0$ o\`u $x$ et $y$ sont continument
@@ -4639,9 +4769,11 @@ du vecteur
 o\`u $t_x$ et $t_y$ sont compris entre $t_0$ et $t_0+h$.
 Si le vecteur vitesse $v=(x'(t_0),y'(t_0))$ est non nul, on en d\'eduit
 un \'equivalent
-$$\overrightarrow{M(t_0)M(t_0+h)} \equiv h (x'(t_0),y'(t_0))$$
+$$\overrightarrow{M(t_0)M(t_0+h)} \approx h (x'(t_0),y'(t_0))$$
 Lorsque $h$ est proche de 0, le vecteur $\overrightarrow{M(t_0)M(t_0+h)}$
-est \'equivalent \`a un vecteur colin\'eaire \`a $\overrightarrow{v}=(x'(t_0),y'(t_0))$,
+est \'equivalent \`a un vecteur colin\'eaire \`a
+$\overrightarrow{v}=(x'(t_0),y'(t_0))$
+(suppos\'e non nul),
 qui est donc vecteur tangent \`a la courbe en $(x(t_0),y(t_0))$.
 
 \begin{defn}
@@ -4668,13 +4800,22 @@ param\`etre pour lesquelles la courbe admet un point singulier.
 Dans l'exemple, $x_m'=2t-m, y_m'=-2mt/(1+t^2)^2+1$, les deux 
 d\'eriv\'ees s'annulent si $m=-2$ 
 (en $t=-1$, $x=-1, y=-2$) ou $m=2$ (en $t=1$).
-Commandes Xcas~:
+Commandes Xcas~:\\
 \verb|x:=t^2-m*t; y:=m/(1+t^2)+t;|\\
-\verb|solve([diff(x,t),diff(y,t)],[m,t])|\\
-\verb|supposons(m=[-2.0,-5,5,0.1])| \\
-\verb|plotparam([x,y],t=((-3) .. 3))|
+\verb|solve([diff(x,t),diff(y,t)],[m,t]);|\\
+\verb|supposons(m=[-2.0,-5,5,0.1]);| \\
+\verb|plotparam([x,y],t=((-3) .. 3));|\\
+\giacinputbigmath{x:=t^2-m*t; y:=m/(1+t^2)+t;solve([diff(x,t),diff(y,t)],[m,t]);}
+\giacslider{m}{-5}{5}{0.1}{-2}{
+gl_x=-3..3;gl_y=-4..4;
+x:=t^2-m*t;y:=m/(1+t^2)+t;
+plotparam([x,y],t=-3..3)}
+%\begin{rawhtml}
+%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+//Point singulier d'une courbe dependant d'un parametre, ici m pour m=2 et m=-2&+m:='m';x:=t^2-m*t;y:=m/(1+t^2)+t&+solve([diff(x,t),diff(y,t)],[m,t]);&*m,-2,-5,5,0.1&+gl_x=-3..3;gl_y=-4..4;plotparam([x,y],t=-3..3)" target="_blank">tester en ligne</a>
+%\end{rawhtml}
 
-Remarque~: en cin\'ematique, si la vitesse est nulle en un point
+{\bf Remarque~}: en cin\'ematique, si la vitesse et l'acc\'el\'eration
+sont nulles en un point
 et que les \'equations ne d\'ependent pas explicitement du temps,
 on reste ind\'efiniment en ce point qui est un point d'\'equilibre,
 la notion de tangente \`a la courbe n'a alors pas de sens.
@@ -4682,14 +4823,12 @@ On peut aussi suivre une trajectoire qui se rapproche
 de plus en plus d'un point d'\'equilibre (la limite de $(x(t),y(t))$
 est alors ce point, pour $t \rightarrow +\infty$ si l'\'equilibre
 est stable ou $t \rightarrow - \infty$ si l'\'equilibre est instable).
-L'\'etude des points singuliers est donc plus du domaine de la
-g\'eom\'etrie que de la cin\'ematique.
 
 Pour faire une \'etude locale plus pr\'ecise dans le cas d'un point
 r\'egulier, ou pour d\'eterminer la tangente en un point singulier,
 il faut poursuivre le d\'eveloppement de Taylor \`a un ordre plus
 grand. \'A l'ordre 2, si $x$ et $y$ sont 3 fois continument
-d\'erivables, on a~:
+d\'erivables, il existe $t_x,t_y\in [t_0,t_0+h]$ tels que~:
 $$\overrightarrow{M(t_0)M(t_0+h)}= 
 h (x'(t_0),y'(t_0))+\frac{h^2}{2}(x'{'}(t_0),y'{'}(t_0))
 +\frac{h^3}{6}(x'{'}'(t_x),y'{'}'(t_y))
@@ -4699,34 +4838,41 @@ et acc\'el\'eration $\overrightarrow{a}=(x'{'}(t_0),y'{'}(t_0))$
 ne sont pas colin\'eaires, 
 alors $\{\overrightarrow{v},\overrightarrow{a}\}$ forme 
 une base, et dans cette base $\overrightarrow{M(t_0)M(t_0+h)}$
-a pour coordonn\'ees $(h,h^2/2)+O(h^3)$, l'arc
-de courbe est identique \`a un arc de parabole \`a l'ordre 2. 
+a pour coordonn\'ees $(h,h^2/2)+$un terme d'ordre 3 en puissances de $h$, l'arc
+de courbe est \`a l'ordre 2 identique \`a un arc de parabole. 
 On parle de {\bf point bir\'egulier}\index{bir\'egulier}.
 Si $\{\overrightarrow{v},\overrightarrow{a}\}$ est une base directe,
-l'arc est convexe (la vitesse
+l'arc est {\bf convexe}\index{convexe} (la vitesse
 ``tourne'' dans le sens trigonom\'etrique),
 sinon il est concave. On peut tester cela en calculant
 le d\'eterminant des coordonn\'ees de $\{\overrightarrow{v},\overrightarrow{a}\}$ ou le sens
-de variations de la pente de la tangente 
-\[ m=y'/x', \quad m'=\frac{x'y'{'}-x'{'}y'}{x'^2} \]
+de variations de $m$, la pente de la tangente 
+\[ m=\frac{y'}{x'}, \quad m'=\frac{x'y'{'}-x'{'}y'}{x'^2} \]
 
 \begin{thm}
 Si $x'y'{'}-x'{'}y'>0$ [resp $<0$] sur un intervalle du domaine de d\'efinition,
 la courbe n'a que des points r\'eguliers, la direction de la tangente en un point
-est donn\'ee par le vecteur vitesse, et la courbe est {\bf convexe}\index{convexe}
+est donn\'ee par le vecteur vitesse, et la courbe est convexe\index{convexe}
 [resp. concave].
-Si $x'y'{'}-x'{'}y'=0$, on parle de point d'{\bf inflexion}\index{inflexion} analytique.
+Si $x'y'{'}-x'{'}y'=0$, on parle de {\bf point d'inflexion}\index{inflexion} analytique.
 \end{thm}
+{\bf Remarque~}: pour un graphe de fonction, $x=t$, on retrouve le
+crit\`ere usuel $y'{'}>0$.
 
-Exemple~: point d'inflexion en $t=0$ de
+{\bf Exemple~}: point d'inflexion en $t=0$ de
 $$ (\frac{t^3}{t^2+1},t+\frac{1}{t^2+2}) $$
 La courbe admet deux autres points d'inflexion ($t=-3.16...$ et
 $t=1.31...$) qu'on peut d\'eterminer avec les commandes Xcas suivantes~:\\
-\verb|X:=x^3/(x^2+1); Y:=x+1/(x^2+2); fsolve(X'*Y''-X''*Y',x)|\\
-Note~: on note \verb|x| comme param\`etre pour pouvoir 
-utiliser la notation \verb|'| pour d\'eriver, si on utilise \verb|t|
+\giacinputbigmath{purge(x);X:=x^3/(x^2+1); Y:=x+1/(x^2+2);}\\
+\giacinputmath{fsolve(X'*Y''-X''*Y',x)}\\
+\giacinput[style="width:400px;height:40px;font-size:large"]{plotparam([X,Y],x=-5..3);line(y=x,color=red)}\\
+Note~: on utilise comme param\`etre \verb|x| au lieu de \verb|t| pour pouvoir 
+utiliser la notation \verb|'| pour d\'eriver (si on utilise \verb|t|
 comme param\`etre, il faut utiliser \verb|diff(.,t)| pour calculer
-la d\'eriv\'ee par rapport \`a $t$.
+la d\'eriv\'ee par rapport \`a $t$). L'instruction \verb|fsolve|
+effectue une r\'esolution num\'erique, pour tenter une r\'esolution
+exacte, utiliser \verb|solve|, mais on risque alors de manquer
+certaines solutions.
 
 On observe que la convexit\'e est presque une propri\'et\'e g\'eom\'etrique,
 en effet si on change de param\'etrage
@@ -4751,14 +4897,14 @@ quantitativement la g\'eom\'etrie de la courbe \`a l'ordre
 \`a l'ordre 1).
 
 Dans le cas d'un point singulier ($\overrightarrow{v}=0$), si 
-$\overrightarrow{a}\neq 0$, alors la
+l'acc\'el\'eration $\overrightarrow{a}\neq 0$, alors la
 tangente est port\'ee par $\overrightarrow{a}$. L'\'etude compl\`ete
 de la nature
 d'un point singulier ou de la convexit\'e d'un point r\'egulier
 tel que $\overrightarrow{a}$ est colin\'eaire \`a $\overrightarrow{v}$ 
 n\'ecessite de faire un
 d\'eveloppement de Taylor en $t=t_0$
-jusqu'au premier ordre $q$ o\`u l'on a~: 
+jusqu'au premier ordre $q$, s'il existe, tel que~: 
 \begin{itemize}
 \item les d\'eriv\'ees d'ordre 1, .., $p-1$ de $(x,y)$ s'annulent
 \item la d\'eriv\'ee d'ordre $p>0$ est non nulle, on la note $\overrightarrow{T}$
@@ -4775,7 +4921,7 @@ o\`u $h=t-t_0$.
 On en d\'eduit que la tangente \`a la courbe est port\'ee par
 $\overrightarrow{T}$.
 \begin{itemize}
-\item si $p$ est pair, on a un {\bf rebroussement}\index{rebroussement} 
+\item si $p$ est pair, on a un rebroussement\index{rebroussement} 
 de premi\`ere esp\`ece 
 si $q$ est impair (cas g\'en\'erique d'un point singulier, $p=2, q=3$)
 ou de deuxi\`eme esp\`ece si $q$ est pair. On ne peut pas
@@ -4787,13 +4933,28 @@ mais au risque de perdre de la r\'egularit\'e,
 g\'eom\'etrique (changement de sens de convexit\'e).
 \end{itemize}
 
-Exemples de points singuliers en $t=0$~: 
-$$ (t^2,t^3), \ (t^2+t^4,t^4+t^5), \ (t^3,t^4), \ (t^3,t^5) $$
+Exemples de points singuliers en $t=0$ avec dans l'ordre rebroussement
+de 1\`ere puis 2i\`eme esp\`ece, m\'eplat et inflexion~: 
+$$ (t^2,t^3), \ (t^2+t^4,t^4+t^5), \ (t^3,t^4), \ (t^3,t^5) $$\\
+\giacinput{plotparam([t^2,t^3],t=-1..1)}\\
+\giacinput{plotparam([t^2+t^4,t^4+t^5],t=-1..1)}\\
+\giacinput{plotparam([t^3,t^4],t=-1..1)}\\
+\giacinput{plotparam([t^3,t^5],t=-1..1)}\\
 Les deux derniers cas peuvent \^etre reparam\'etr\'es (au prix
 de la perte de d\'erivabilit\'e seconde) en posant $t'=t^{1/3}$.
+
 Pour faire l'\'etude d'un point singulier avec Xcas, on peut utiliser
 la fonction \verb|series| sur $x(t)$ et $y(t)$ (ici c'est inutile,
 le d\'eveloppement de Taylor est d\'ej\`a fait).
+
+Remarque~: il peut arriver dans des cas pathologiques
+que toutes les d\'eriv\'ees de $(x,y)$ s'annulent en
+un point sans que la fonction $(x,y)$ soit nulle (par exemple si $x$
+et $y$ contiennent un facteur $\exp(-1/t^2)$ en $t=0$, on parle
+de fonction plate). Il peut aussi
+arriver que toutes les d\'eriv\'ees soit colin\'eaires \`a la
+premi\`ere d\'eriv\'ee non nulle, si on se d\'eplace sur une droite
+ou si la tangeance est plate.
 
 \subsection{Plan d'\'etude d'une courbe}
 \begin{enumerate}
@@ -4826,12 +4987,15 @@ si c'est le cas, on prend alors le sym\'etrique par rapport
 
 Repr\'esentation graphique~: avec Xcas, on utilise
 la commande \verb|plotpolar|, sur calculatrices
-graphiques, s\'electionner le mode de trac\'e en polaire.
-Par exemple \verb|plotpolar(cos(2x),x=0..2*pi)|.
-
-Exemples de courbes en polaire~:
-$$ r=1, \ r=\theta, \ r=\cos(2\theta), \ r=\frac{1}{2+\cos(\theta)},
-\ r = \frac1{1+2\cos(\theta)}$$
+graphiques, s\'electionner le mode de trac\'e en polaire (touche Mode
+sur TI89/92/V200) ou
+l'application Polaire ou G\'eom\'etrie sur les HP Prime.
+Par exemple 
+\giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1,x=0..2*pi)}\\
+\giacinput{plotpolar(cos(2x),x=0..2*pi,tstep=0.01)}\\
+\giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1/(2+cos(x)),x=0..2*pi);}\\
+\giacinput[style="width:400px;height:60px;font-size:large"]{purge(x,y);plotpolar(1/(1+2*cos(x)),x=0..2*pi); rotation(0,2*pi/3,line(y=-sqrt(3)/3),color=red)}\\
+\giacinput{plotpolar(x,x=-10..10)}
 
 C'est un cas particulier de courbe en param\'etriques puisque
 $$ (x,y)=(r(\theta) \cos(\theta), r(\theta) \sin(\theta))$$
@@ -4853,7 +5017,13 @@ l'axe des $x$. On calcule alors la limite si elle existe de
 $r \sin(\theta-\theta_0))$, c'est l'ordonnée dans
 le repère obtenu par rotation d'angle $\theta_0$, si la limite
 est finie et vaut $l$
-on a une asymptote (d'équation $Y=l$ dans le repère tourné).
+on a une asymptote (d'équation $Y=l$ dans le repère tourné).\\
+Exemple $r=1/(1+2\cos(\theta))$. $r$ n'est pas d\'efini pour
+$\cos(\theta)=-1/2$, donc $\theta=\pm 2\pi/3$. Pour $\theta_0=2\pi/3$,
+on calcule $\lim_{\theta \rightarrow -2\pi/3}r\sin(\theta-2\pi/3)$\\
+\giacinputmath[style="width:400px;height:40px;font-size:large"]{limit(1/(1+2cos(x))*sin(x-2pi/3),x=2pi/3)}\\
+La tangente est donc l'image par la rotation de centre $O$ et d'angle
+$2\pi/3$ de la droite $Y=-\sqrt{3}/3$
 \item si la fonction n'est pas périodique, il y a lieu
 d'étudier l'existence de limites de $r$ en $\pm \infty$, si la limite
 est nulle on s'approche en spiralant de l'origine, si
@@ -4879,7 +5049,8 @@ pas leur \'etude comme en param\'etriques, en effet la tangente est
 toujours port\'ee par $e_r$, si $r$ change de signe la courbe
 a la m\^eme allure que pour un point r\'egulier, si $r$ ne change pas
 de signe on a un rebroussement de premi\`ere esp\`ece (puisqu'on
-traverse la tangente lorsque $\theta$ augmente)
+traverse la tangente lorsque $\theta$ augmente)\\
+Exemple~: \giacinput[style="width:400px;height:80px;font-size:large"]{plotpolar(sin(x)^2*cos(x),x=-pi/4..pi/4,tstep=pi/100);plotpolar(sin(x)^2*cos(x),x=pi/4..3*pi/4,tstep=pi/100,color=red)}
 \item Convexité~:  pour avoir un point d'inflexion, il faut que 
 $$\frac1r + \left(\frac1r\right)'{'}=0
 \Leftrightarrow
@@ -4893,13 +5064,16 @@ ou avec Xcas de la manière suivante\\
 où on a noté $x$ l'angle $\theta$ pour pouvoir dériver avec \verb|'|
 et $X$ et $Y$ les deux coordonnées.
 \item de même on calcule la courbure d\'efinie en section \ref{sec:courbure}
-$$ \kappa = \frac{r^2+2r'^2-rr'{'}}{\sqrt{r^2+r^2}^3}$$
+$$ \kappa = \frac{r^2+2r'^2-rr'{'}}{\sqrt{r^2+r'^2}^3}$$
 \end{itemize}
 
 \subsection{Coniques}\index{conique}
 Les coniques sont des courbes implicites dont l'\'equation
 cart\'esienne est du second degr\'e~
 $$ax^2+cy^2+bxy+dx+ey+f=0$$
+Exemples:\\
+\giacinput{purge(x,y);plotimplicit(x^2+y^2+x*y=4)}\\
+\giacinput{plotimplicit(x^2+y^2+3*x*y=4)}\\
 On va voir qu'elles sont de trois types~: ellipses, hyperbole,
 parabole\footnote{En toute rigueur il faut ajouter deux autres cas~;
 l'ensemble vide et les paires \'eventuellement confondues de droites} 
@@ -4914,65 +5088,6 @@ ce qui a un int\'er\^et en optique
 l'orbite d\'ecrite par une plan\`ete est une ellipse dont
 le Soleil occupe un foyer).
 
-\subsubsection{Param\'etrisation rationnelle}
-Si on connait un point d'une conique, on peut effectuer
-un changement d'origine en ce point, l'\'equation cart\'esienne
-devient
-$$P(x,y)=ax^2+bxy+cy^2+dx+ey=0$$
-On suppose que $(d,e)\neq(0,0)$\footnote{Si $d=e=0$, le
-polyn\^ome est homog\`ene et se factorise,
-on obtient l'origine ou la r\'eunion de deux droites}.
-On cherche alors l'intersection de la conique avec la droite $y=tx$
-(de pente $t$), on va voir que la droite coupe en g\'en\'eral la
-conique en deux points, l'origine et un autre point dont on
-calcule les coordonn\'ees en fonction de $t$\footnote{Cette m\'ethode
-fonctionne pour les coniques, mais ne fonctionne malheureusement
-pas pour n'importe quelle \'equation cart\'esienne}.
-Graphiquement, par exemple\\
-\verb|t:=2; implicitplot(x^2+3y^2-x*y+3x+y); droite(y=t*x)|\\
-puis faire varier la valeur de $t$ ou d'un des coefficients de l'\'equation.
-En effet on obtient une \'equation du second degr\'e en $x$,
-qui se factorise par $x$, l'autre solution donne alors $x$ comme
-fraction rationnelle en $t$, puis $y=tx$.
-$$ (ax+btx+ct^2x+d+et)x=0 \Rightarrow x=0, x=\frac{-d-et}{ct^2+bt+a}$$
-Comme dans le premier exemple sur le cercle trigonom\'etrique,
-on n'obtient pas toujours toute la conique (s'il existe un autre
-point d'abscisse $x=0$).
-
-Si on cherche les points o\`u le d\'enominateur en $t$ s'annule, on doit
-calculer  (pour $c\neq 0$ et en supposant que la fraction
-$\frac{-d-et}{ct^2+bt+a}$ est irr\'eductible\footnote{sinon, on 
-aura deux droites parce que le
-polyn\^ome $P(x,y)$ se factorise en produit de deux facteurs
-de degr\'e 1 dont $dx+ey$. Plus pr\'ecis\'ement, ce cas
-correspond \`a $t=-d/e$ racine de $ct^2+bt+a=0$})
-le discriminant\footnote{On peut aussi voir ce discriminant comme le
-d\'eterminant de la matrice de la forme quadratique associ\'ee} 
-de l'\'equation du second degr\'e
-$$ \Delta= b^2-4ac$$
-Il y a trois cas possibles: 
-\begin{itemize}
-\item si $b^2<4ac$, il n'y a pas de racine, le
-param\'etrage est d\'efini pour tout $t$ et les limites en $\pm
-\infty$ de $x$ sont nulles (car $c \neq 0$ puisque $4ac>b^2$),
-la conique est born\'ee, c'est une ellipse.
-\item si $b^2=4ac$, il y a une racine double, qui engendre
-une \'etude de branche infinie en $t=-b/(2c)$, on
-obtient une parabole (deux branches selon que $t$ tend
-vers $-b/(2c)$ par la droite ou la gauche).
-\item si $b^2>4ac$, il y a deux racines distinctes $t_\pm$ , 
-donc deux valeurs de $t$ o\`u il faut faire une \'etude
-de branche infinie, on a alors une
-{\bf hyperbole}\index{hyperbole}
-avec 4 branches infinies et deux asymptotes parall\`eles \`a
-$y=t_\pm x$ (en effet le rapport $y/x=t$ tend bien
-vers $t_\pm$ et $y-t_\pm x$ a une limite car la racine au
-d\'enominateur de $x$ et $y$ est simple 
-donc elle se simplifie avec le num\'erateur)
-\end{itemize}
- 
-{\bf Exercice}~: param\'etrer et faire l'\'etude des coniques~:\\
-$x^2+4y^2+2xy=4, x^2-3y^2+2xy=4$
 
 \subsubsection{Ellipse}\index{ellipse}
 \begin{defn}
@@ -5068,6 +5183,10 @@ que $d(M,F)=ed(M,D)$. Dans le rep\`ere d'origine $O$, $D$
 a pour \'equation $x=a/e$ (dans le rep\`ere d'origine $F$, c'est
 $x=a/e-e=a(1-e^2)/e$). En effet $MF=a-ex=e(a/e-x)$.
 \end{itemize}
+Exemple~: faites varier la valeur de l'excentricit\'e ci-dessous, que
+voit-on pour E=0.0, E un peu inf\'erieur \`a 1 (par exemple 0.8) et un peu sup\'erieur
+\`a 1 (par exemple 1.3)\\
+\giacinput[style="width:400px;height:60px;font-size:large"]{E:=0.5; gl_x=-5..5;gl_y=-3..3;plotpolar(1/(1+E*cos(t)),t=0..2*pi,tstep=pi/100)}
 
 \subsubsection{Parabole}\index{parabole}
 Si $F$ est un point et $D$ une droite ne passant pas par $F$, la
@@ -5101,14 +5220,21 @@ avec Xcas dans un niveau de g\'eom\'etrie taper les commandes
 \begin{verbatim}
 P:=plotfunc(x^2/2+1/2,x=-5..5);
 supposons(a=[-1.4,-5,5,0.1]);
-D:=droite(x=a);
+D:=line(x=a,color=red);
 M:=inter_unique(P,D);
 T:=tangent(P,M);
-R:=symetrie(T,D);
+R:=symetrie(T,D,color=red);
 trace(R);
 \end{verbatim}
-puis faire varier $a$ en cliquant sur les fl\`eches. Noter
-la valeur\\ \verb|inter_unique(R,droite(x=0))|\\
+puis faire varier $a$ en cliquant sur les fl\`eches. Pour tester en
+ligne, commencez par initialiser la trace en ex\'ecutant
+\giacinput{purge(x,y);L:=[]}
+puis faites varier $a$ en cliquant sur le bouton \verb|+| ou \verb|-|~: 
+\giacslider{a}{-5}{5}{0.1}{0.6}{gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=evalf(a),color=red);M:=inter_unique(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)}
+%\begin{rawhtml}
+%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+L:=[]&*a,0.6,-5,5,0.1&+gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=a,color=red);M:=inter_unique(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)&" target="_blank">Tester en ligne.</a>
+%\end{rawhtml}
+Noter la valeur\\ \verb|inter_unique(R,line(x=0))|\\
 elle est ind\'ependante de $a$ et est le foyer. On peut
 montrer qu'une courbe ayant cette propri\'et\'e est
 une parabole.
@@ -5142,6 +5268,88 @@ l'hyperbole admet deux asymptotes d'\'equation $y = \pm \frac{b}{a} x$.
 
 %\subsection{Autres exemples de courbes}
 
+\subsubsection{Param\'etrisation rationnelle}
+Si on connait un point d'une conique, on peut effectuer
+un changement d'origine en ce point, l'\'equation cart\'esienne
+devient
+$$P(x,y)=ax^2+bxy+cy^2+dx+ey=0$$
+On suppose que $(d,e)\neq(0,0)$\footnote{Si $d=e=0$, le
+polyn\^ome est homog\`ene et se factorise,
+on obtient l'origine ou la r\'eunion de deux droites}.
+On cherche alors l'intersection de la conique avec la droite $y=tx$
+(de pente $t$), on va voir que la droite coupe en g\'en\'eral la
+conique en deux points, l'origine et un autre point dont on
+calcule les coordonn\'ees en fonction de $t$\footnote{Cette m\'ethode
+fonctionne pour les coniques, mais ne fonctionne malheureusement
+pas pour n'importe quelle \'equation cart\'esienne}.
+Graphiquement, par exemple\\
+\giacinput{L:=NULL:;}\\
+\giacslider{T}{-10}{10}{0.1}{1}{purge(x,y);
+eq:=x^2+y^2+x*y-4:; gl_x=-3..3;gl_y=-3..3;G:=implicitplot(eq);D:=line(y=evalf(T)*x); L:=L,inter(G,D,color=red)}
+%\giacinput[style="width:400px;height:40px;font-size:large"]{t:=2; implicitplot(x^2+3y^2-x*y+3x+y); line(y=t*x,color=red)}\\
+puis faire varier la valeur de $t$ ou d'un des coefficients de
+l'\'equation.
+%\begin{rawhtml}
+%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+eq:=x^2+3y^2-x*y+3x+y:;&+G:=implicitplot(eq):;&+L:=NULL;&+//Parametrisation rationnelle d'une conique, L:=NULL ci-dessus efface la trace&*T,2.1,-5,5,0.1&+S:=solve(eq(y=t*x))&+gl_x=-4..1;gl_y=-2..2;G;D:=line(y=T*x); L:=L,point(S[0](t=T),T*S[0](t=T),color=red),point(S[1](t=T),T*S[1](t=T),color=red)" target="_blank">Tester en ligne</a>
+%\end{rawhtml}
+En effet on obtient une \'equation du second degr\'e en $x$,
+qui se factorise par $x$, l'autre solution donne alors $x$ comme
+fraction rationnelle en $t$, puis $y=tx$.
+$$ (ax+btx+ct^2x+d+et)x=0 \Rightarrow x=0, x=\frac{-d-et}{ct^2+bt+a}$$
+Comme dans le premier exemple sur le cercle trigonom\'etrique,
+on n'obtient pas toujours toute la conique (s'il existe un autre
+point d'abscisse $x=0$).
+
+Si on cherche les points o\`u le d\'enominateur en $t$ s'annule, on doit
+calculer  (pour $c\neq 0$ et en supposant que la fraction
+$\frac{-d-et}{ct^2+bt+a}$ est irr\'eductible\footnote{sinon, on 
+aura deux droites parce que le
+polyn\^ome $P(x,y)$ se factorise en produit de deux facteurs
+de degr\'e 1 dont $dx+ey$. Plus pr\'ecis\'ement, ce cas
+correspond \`a $t=-d/e$ racine de $ct^2+bt+a=0$})
+le discriminant\footnote{On peut aussi voir ce discriminant comme le
+d\'eterminant de la matrice de la forme quadratique associ\'ee} 
+de l'\'equation du second degr\'e
+$$ \Delta= b^2-4ac$$
+Il y a trois cas possibles: 
+\begin{itemize}
+\item si $b^2<4ac$, il n'y a pas de racine, le
+param\'etrage est d\'efini pour tout $t$ et les limites en $\pm
+\infty$ de $x$ sont nulles (car $c \neq 0$ puisque $4ac>b^2$),
+la conique est born\'ee, c'est une ellipse.
+\item si $b^2=4ac$, il y a une racine double, qui engendre
+une \'etude de branche infinie en $t=-b/(2c)$, on
+obtient une parabole (deux branches selon que $t$ tend
+vers $-b/(2c)$ par la droite ou la gauche). Il n'y a pas
+d'asymptote, on a bien $y/x=t$ qui tend vers $t_0=-b/(2c)$,
+mais $y-t_0x$ ne converge pas (le num\'erateur a une racine simple
+qui ne compense pas la racine double au d\'enominateur)
+\item si $b^2>4ac$, il y a deux racines distinctes $t_\pm$ , 
+donc deux valeurs de $t$ o\`u il faut faire une \'etude
+de branche infinie, on a alors une
+hyperbole\index{hyperbole}
+avec 4 branches infinies et deux asymptotes parall\`eles \`a
+$y=t_\pm x$ (en effet le rapport $y/x=t$ tend bien
+vers $t_\pm$ et $y-t_\pm x$ a une limite car la racine au
+d\'enominateur de $x$ et $y$ est simple 
+donc il y a simplification avec le num\'erateur)
+\end{itemize}
+{\bf Exercice}~: param\'etrer et faire l'\'etude des coniques~:\\
+$x^2+4y^2+2xy=4, x^2-3y^2+2xy=4$
+
+{\bf Remarque}~: 
+on a vu que les ellipses, paraboles, hyperboles admettent une
+\'equation r\'eduite du second degr\'e. On en d\'eduit facilement que
+leur \'equation dans un rep\`ere quelconque est toujours
+du second degr\'e. R\'eciproquement, pour une \'equation cart\'esienne
+on a calcul\'e une param\'etrisation rationnelle, mais pas
+d\'emontr\'e que c'\'etait forc\'ement une conique. Pour faire
+cela, l'outil adapt\'e est l'\'etude des formes quadratiques. On peut
+toutefois le faire \`a la main en dimension 2, en faisant une rotation
+pour annuler le coefficient de $xy$. Par exemple\\
+\giacinputbigmath[style="width:800px;height:40px;font-size:large"]{restart; X:=cos(d)*x+sin(d)*y; Y:=-sin(d)*x+cos(d)*y; E:=a*X^2+b*X*Y+c*Y^2; C:=coeff(coeff(E,x,1),y,1); tlin(C) }\\
+on voit que l'angle de la rotation \`a effectuer v\'erifie
+$$(a-c)\sin(2d)+b\cos(2d)=0 \quad \Rightarrow \quad \tan(2d)=\frac{b}{c-a}$$
 
 \section{Propri\'et\'es m\'etriques des courbes.} \label{sec:courbes_m}
 \subsection{Longueur d'arc}
@@ -5178,42 +5386,47 @@ Ce calcul se fait avec Xcas (ou une calculatrice formelle) en donnant
 une valeur approchée à l'une des bornes.
 Il y a quelques exceptions~ par exemple la longueur d'un arc de 
 parabole se calcule avec une formule explicite (essayez la
-commande \verb|int(sqrt(1+4t^2),t,t0,t1)| ou
-\verb|arcLen([t,t^2],t,t0,t1)|). La 
-{\bf cyclo\"ide}\index{cyclo\"ide}\footnote{qui tire
+commande \verb|int(sqrt(1+4t^2),t,t0,t1)| ou\\
+\giacinputmath{t:='t';arclen([t,t^2],t,t0,t1)}\\
+La cyclo\"ide\index{cyclo\"ide}\footnote{qui tire
 son nom de la trajectoire d'un point fix\'e \`a un cercle roulant
 sans glisser sur une droite, par exemple l'extr\'emit\'e d'un rayon 
 sur une roue de v\'elo.} 
 $$ x(t)=R(t-\sin(t)), y(t)=R(1-\cos(t))$$
-admet aussi une formule simple pour sa longueur (exercice, pour
-v\'erifier le r\'esultat avec Xcas, on peut utiliser 
-la commande \verb|halftan|).
+\giacinput{plotparam([t-sin(t),1-cos(t)],t,0,2*pi)} 
+admet aussi une formule simple pour sa longueur 
+\giacinput{arclen([t-sin(t),1-cos(t)],t,0,2*pi)}\\
 Par contre, la
 longueur d'un arc d'ellipse ne se calcule pas avec les fonctions
-usuelles (on pourrait le faire mais en introduisant des fonctions spéciales
+usuelles (pour pouvoir le faire, il faut introduire des fonctions spéciales
 adaptées, appel\'ees int\'egrales elliptiques)~:\\
-\verb|a:=int(sqrt(sin(t)^2+4*cos(t)^2),t,0,2*pi); evalf(a)|
+\giacinputbigmath{a:=int(sqrt(sin(t)^2+4*cos(t)^2),t,0,2*pi); evalf(a)}
 
 
 \subsection{Courbure, rep\`ere de Frenet, accélération normale et
   tangentielle.} \label{sec:courbure}
-Si on choisit la longueur d'arc comme nouveau paramètre de temps, 
+Si on choisit $s$, la longueur d'arc, comme nouveau paramètre de temps, 
 la longueur parcourue est égale au temps, donc la vitesse instantannée
-est de norme 1. On peut aussi le voir en notant $M(t)=(x,y)$~:
+par rapport \`a $s$ est de norme 1. On peut aussi le voir en notant $M(t)=(x,y)$~:
 $$ \frac{dM}{dt} =\frac{dM}{ds} \frac{ds}{dt} 
-\Rightarrow \| \frac{dM}{dt} \| = \| \frac{dM}{ds} \| |\frac{ds}{dt}|$$
-donc $\| \frac{dM}{ds} \|=1$ les deux autres termes étant égaux.
+\ \Rightarrow \ \| \frac{dM}{dt} \| = \| \frac{dM}{ds} \| |\frac{ds}{dt}|
+\ \Rightarrow \ v = \| \frac{dM}{ds} \| v$$
+o\`u $v$ est la norme de la vitesse avec $t$ comme param\`etre,
+donc $\| \frac{dM}{ds} \|$ est bien \'egal \`a 1.
 
-Calculons maintenant l'accélération avec ce nouveau paramètre. Comme
+Calculons maintenant l'accélération avec ce nouveau paramètre $s$. Comme
 la vitesse est de norme constante égale à 1, donc de carré 1, 
 en dérivant $(dM/ds)^2$ par rapport \`a $s$,
 on v\'erifie que l'accélération est perpendiculaire à la vitesse
 pour ce paramétrage par la longueur d'arc $s$. 
-L'acc\'el\'eration est donc portée par la normale à la trajectoire,
+L'acc\'el\'eration par rapport \`a $s$ est donc portée par la normale à la trajectoire,
 et sa mesure alg\'ebrique est appelé courbure (sign\'ee), not\'ee $\kappa$,
 la valeur absolue de l'inverse de $\kappa$ est appel\'e le rayon de courbure
 (la direction de l'accélération pointe vers le centre
-de courbure). Si on se déplace sur un cercle de centre $O$
+de courbure). 
+$$ \frac{d^2M}{ds^2} \perp \vec{v}, \quad \| \frac{d^2M}{ds^2}\| =
+|\kappa| = \frac{1}{R} $$
+Si on se déplace sur un cercle de centre $O$
 et de rayon $R$ à vitesse 1, alors $x(t)+iy(t)=Re^{it/R}$, la vitesse
 est donnée par $x'+iy'=ie^{it/R}$ donc de norme 1, et l'accélération
 par $x''+iy''=-\frac1R e^{it/R}$, sa norme vaut $1/R$ et sa direction
@@ -5221,76 +5434,75 @@ pointe vers le centre du cercle. Donc la courbe est,
 à l'ordre 2 au point considéré, identique à un cercle de rayon $R$.
 
 Revenons au paramètrage initial $t$. Dérivons par rapport à $t$ la vitesse
-$ \frac{dM}{dt} = \|\overrightarrow{v}\| \frac{dM}{ds}$, on obtient~:
-$$ \overrightarrow{a}=\frac{d^2M}{dt^2}= \frac{d\|\overrightarrow{v}\|}{dt} \frac{dM}{ds} 
-+ \|\overrightarrow{v}\| \frac{ds}{dt} \frac{d^2M}{ds^2}
-= \frac{d\|\overrightarrow{v}\|}{dt} \frac{dM}{ds} + v^2 \frac{d^2M}{ds^2}$$
+$\frac{dM}{dt} = v \frac{dM}{ds}$, on obtient~:
+\begin{eqnarray*}
+ \vec{a} =\frac{d^2M}{dt^2} 
+&=&\frac{dv}{dt} \frac{dM}{ds} + v \frac{d}{dt} \left( \frac{dM}{ds} \right)\\
+&=&\frac{dv}{dt} \frac{dM}{ds} + v \frac{ds}{dt} \frac{d^2M}{ds^2}\\
+&=& \frac{dv}{dt} \frac{dM}{ds} + v^2 \frac{d^2M}{ds^2}
+\end{eqnarray*}
 L'accélération se décompose donc en deux parties~
 \begin{itemize}
 \item  le premier
-terme colinéaire au vecteur tangent est {\bf l'accélération 
-tangentielle}\index{acc\'el\'eration tangentielle}, 
-de norme $\|\overrightarrow{v}\|'$, 
+terme colinéaire au vecteur tangent est l'accélération 
+tangentielle\index{acc\'el\'eration tangentielle}, 
+de norme $v'$, 
 \item le second terme perpendiculaire au vecteur tangent
-est {\bf l'accélération normale}\index{acc\'el\'eration normale}, 
+est l'accélération normale\index{acc\'el\'eration normale}, 
 dont la norme est $v^2/R$,
-où $R$ est le {\bf rayon de courbure}\index{courbure, rayon}
+où $R$ est le rayon de courbure\index{courbure, rayon}
 \end{itemize}
 
-Autre formule de calcul~: l'accélération normale $a_n$ vaut $v^2/R$ donc
-$$ |\overrightarrow{a} \wedge \overrightarrow{v}|=
-a_n \|\overrightarrow{v}\|=\frac{\|\overrightarrow{v}\|^3}{R} 
-\Rightarrow R=\frac{\|\overrightarrow{v}\|^3}{|a \wedge \overrightarrow{v}|}
+Autre formule de calcul du rayon de courbure~: l'accélération normale $a_n$ vaut $v^2/R$ donc
+$$ \| \vec{a} \wedge \vec{v} \|=
+a_n \|\vec{v}\|=\frac{v^3}{R} 
+\ \Rightarrow \ R =v^3/\|\vec{a} \wedge \vec{v}\|
 =\frac{\sqrt{x'^2+y'^2}^3}{|x'y'{'}-y'x'{'}|}
 $$
 
 \begin{prop}
-On appelle repère de {\bf Frenet}\index{Frenet} 
+On appelle repère de Frenet\index{Frenet} 
 en un point $M$ r\'egulier d'une courbe, 
 le repère orthonorm\'e direct form\'e par
-le point de la courbe, le vecteur tangent $\overrightarrow{T}$ 
-et le vecteur normal $\overrightarrow{N}$. On a alors
-$$ \overrightarrow{v}=v \overrightarrow{T}=\frac{ds}{dt}\overrightarrow{T}, \quad \frac{d
-  \overrightarrow{T}}{ds}=\kappa \overrightarrow{N}, 
-\frac{d\overrightarrow{N}}{ds}=-\kappa \overrightarrow{T},
+le point de la courbe, le vecteur tangent $\vec{T}$ 
+et le vecteur normal $\vec{N}$. On a alors
+$$ \vec{v}=v \vec{T}=\frac{ds}{dt}\vec{T}, \quad \frac{d}{ds}\vec{T}=\kappa \vec{N}, 
+\frac{d}{ds}\vec{N}=-\kappa \vec{T},
 \quad R=\pm\frac1\kappa, 
 $$
-(l'avant-derni\`ere formule vient du fait que $\{ \overrightarrow{T}
-,\overrightarrow{N} \}$ est une base orthonorm\'ee directe, le signe
+(l'avant-derni\`ere formule vient du fait que $\{ \vec{T}
+,\vec{N} \}$ est une base orthonorm\'ee directe, le signe
 $\pm$ est d\'etermin\'e par la convexit\'e de la courbe), et~:
 $$
-\overrightarrow{a}=\frac{d\overrightarrow{v}}{dt}=\frac{dv}{dt} \overrightarrow{T} \pm
-\frac{v^2}{R} \overrightarrow{N}, \quad
+\vec{a}=\frac{d}{dt}\vec{v}=\frac{dv}{dt} \vec{T} \pm
+\frac{v^2}{R} \vec{N}, \quad
 R=\frac{\sqrt{x'^2+y'^2}^3}{|x'y'{'}-y'x'{'}|}$$
 On appelle centre de courbure le point $\Omega=M+\frac1\kappa
-\overrightarrow{N}$. Le cercle de centre $\Omega$ passant par $M$
+\vec{N}$. Le cercle de centre $\Omega$ passant par $M$
 (de rayon $R$)
-est appel\'e {\bf cercle osculateur}\index{osculateur, cercle} en $M$ \`a la courbe.
+est appel\'e cercle osculateur\index{osculateur, cercle} en $M$ \`a la courbe.
 \end{prop}
 {\bf Exemple}~: calcul du cercle osculateur en un point d'une parabole
 $(t,t^2)$.
 $$ x'=1, y'=2t, \ 
-\overrightarrow{T}=(\frac1{\sqrt{1+4t^2}},\frac{2t}{\sqrt{1+4t^2}}), \quad
+\vec{T}=(\frac1{\sqrt{1+4t^2}},\frac{2t}{\sqrt{1+4t^2}}), \quad
 y'{'}=2\quad R=\frac{\sqrt{1+4t^2}^3}{2}$$
-Trac\'e par exemple pour $t=1$:\\
-\verb|G:=plotparam([t,t^2],t=-2..2,color=red); |\\
-\verb|t0:=1;|\\
-\verb|M:=point(t0,t0^2,affichage=point_croix+epaisseur_point_3);|\\
-\verb|T:=tangent(G,M):;|\\
-\verb|N:=normalize([-pente(T),1]); R:=(1+4t0^2)^(3/2)/2; |\\
-\verb|C:=cercle(M+R*N,R);|\\
-ou avec Xcas version 1.1.1-18 ou sup\'erieure\\
+%Trac\'e par exemple pour $t=0.5$:\\
+%\giacinput[style="width:400px;height:160px;font-size:large"]{G:=plotparam([t,t^2],t=-2..2,color=red);t0:=0.5;M:=point(t0,t0^2,affichage=point_croix+epaisseur_point_3);T:=tangent(G,M):;N:=normalize([-pente(T),1]); R:=(1+4t0^2)^(3/2)/2;C:=circle(M+R*N,R);}
+\giacslider{t0}{-5}{5}{0.1}{0}{gl_x=-5..5; gl_y=0..6;G:=plotparam([t,t^2],t=-2.3..2.3,color=red);M:=point(evalf(t0),t0^2,affichage=point_croix+epaisseur_point_3);T:=tangent(G,evalf(t0));N:=normalize([-slope(T),1]); R:=(1+4t0^2)^(3/2)/2;C:=circle(M+R*N,R);}
+%\begin{rawhtml}<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#*t0,0,-5,5,0.1&+gl_x=-5..5; gl_y=0..6;G:=plotparam([t,t^2],t=-2.3..2.3,color=red);M:=point(t0,t0^2,affichage=point_croix+epaisseur_point_3);T:=tangent(G,M):;N:=normalize([-pente(T),1]); R:=(1+4t0^2)^(3/2)/2;C:=circle(M+R*N,R);" target="_blank">Tester en ligne</a>\end{rawhtml}
+Avec Xcas version 1.1.1-18 ou sup\'erieure, on peut taper directement~:\\
 \verb|C:=cercle_osculateur(G,M)|
 
 {\bf Remarques~}: 
 \begin{itemize}
-\item La {\bf courbure}\index{courbure} est aussi la d\'eriv\'ee par
+\item La courbure\index{courbure} est aussi la d\'eriv\'ee par
 rapport \`a l'abscisse curviligne de 
 l'angle $\theta$ fait par la
   tangente avec une direction fixe, par exemple l'axe $Ox$.
-En effet $\overrightarrow{T}=(\cos(\theta),\sin(\theta))$,
+En effet $\vec{T}=(\cos(\theta),\sin(\theta))$,
 dont la d\'eriv\'ee est le produit de $\theta'$ par le vecteur
-normal $\overrightarrow{N}$.
+normal $\vec{N}$.
 \item G\'en\'eriquement, une courbe reste du m\^eme cot\'e de
 sa tangente (car le terme suivant dans le d\'eveloppement est d'ordre
 2, de signe constant en 0), les exceptions sont les points
@@ -5303,30 +5515,36 @@ est d'ordre 3 et change donc de signe en 0. Les exceptions
 sont appel\'es sommets d'une courbe, par exemple le sommet d'une
 parabole.
 \item on peut calculer les coordonn\'ees du centre du cercle
-osculateur de mani\`ere alg\'ebrique \`a partir des
+osculateur de mani\`ere alg\'ebrique (i.e. sans introduire de racines
+carr\'ees) \`a partir des
 coordonn\'ees param\'etriques de $M$ et de ses d\'eriv\'ees
-(sans introduire de racines carr\'ees)
 \item la courbe $D$ d\'ecrite par les $\Omega$ lorsque $M$ parcourt
 la courbe \'etudi\'ee $C$ est appel\'ee
 {\bf d\'evelopp\'ee}\index{d\'evelopp\'ee} 
 de la courbe $C$. 
 La vitesse de $\Omega$ vaut
-$$ \frac{d}{dt}(M+\frac1\kappa \overrightarrow{N})=v\overrightarrow{T} +
-\frac{d\frac1\kappa}{dt} \overrightarrow{N} + \frac1\kappa v(-\kappa
-\overrightarrow{T})
-= \frac{d\frac1\kappa}{dt} \overrightarrow{N} $$
+$$ \frac{d}{dt}(M+\frac1\kappa \vec{N})=v\vec{T} +
+\frac{d\frac1\kappa}{dt} \vec{N} + \frac1\kappa v(-\kappa
+\vec{T})
+= \frac{d\frac1\kappa}{dt} \vec{N} $$
 on en d\'eduit que la tangente \`a la d\'evelopp\'ee en $\Omega$ a
-pour direction la normale $\overrightarrow{N}$. 
+pour direction la normale $\vec{N}$. 
 {\em L'enveloppe\index{enveloppe}\footnote{L'enveloppe d'une famille
 de droites est une courbe dont l'ensemble des tangentes est la famille de droite} 
 des normales \`a une courbe est donc sa d\'evelopp\'ee.}\\
 Exemple~: d\'evelopp\'ee de l'ellipse $(2\cos(t),\sin(t))$\\
+Initialiser la trace avec \giacinput{L:=[]}\\
+puis faire varier $t0$~:
+\giacslider{t0}{-5}{5}{0.1}{0.7}{gl_x=-6..6;gl_y=-4..4;G:=plotparam([2*cos(t),sin(t)],t=0..2*pi);M:=element(G,evalf(t0));T:=tangent(M);N:=perpendiculaire(M,T);L:=append(L,N);evolute(G,color=red)}
+%\begin{rawhtml}
+%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+L:=[]&*t0,0.7,-5,5,0.1&+gl_x=-6..6;gl_y=-4..4;G:=plotparam([2*cos(t),sin(t)],t=0..2*pi);M:=element(G,t0);T:=tangent(M);N:=perpendiculaire(M,T);L:=append(L,N);developpee(G,color=red)&" target="_blank">Tester en ligne</a>
+%\end{rawhtml}
 Ouvrir un niveau de g\'eom\'etrie 2d dans Xcas, taper une commande
 par ligne\\
-\verb|G:=plotparam([2*cos(t),sin(t)],t=0..2*pi)|\\
-\verb|M:=element(G)|\\
-\verb|T:=tangent(M)|\\
-\verb|N:=perpendiculaire(M,T)|\\
+\verb|G:=plotparam([2*cos(t),sin(t)],t=0..2*pi);|\\
+\verb|M:=element(G);|\\
+\verb|T:=tangent(M);|\\
+\verb|N:=perpendiculaire(M,T);|\\
 \verb|trace(N)|\\
 passer en mode pointeur (menu mode du niveau
 de g\'eom\'etrie) et faire bouger le point $M$ le long
@@ -5344,13 +5562,13 @@ Cf. aussi les animations de l'article D\'evelopp\'ee de wikipedia.\\
 par exemple $x(t)=4\cos(t), y(t)=3\sin(t)$
 puis le rayon de courbure, puis la d\'evelopp\'ee $A$
 (on obtient une courbe image par affinit\'e
-d'une {\bf astro\"ide}\index{astro\"ide}). Donner une \'equation
+d'une astro\"ide\index{astro\"ide}). Donner une \'equation
 param\'etrique simple de $A$.\\
 V\'erification avec Xcas (version \`a jour)~:\\
-\verb|E:=plotparam([4cos(t),3sin(t)],t,0,2pi); A:=developpee(E);|\\
-\verb|eq:=simplify(parameq(A)); trigcos(re(eq)); im(eq)|
+\giacinput[style="width:400px;height:120px;font-size:large"]{E:=plotparam([4cos(t),3sin(t)],t,0,2pi); A:=evolute(E);}
+\giacinputbigmath{eq:=simplify(parameq(A)); trigcos(re(eq)); im(eq)}
 \item
-De plus, comme $\overrightarrow{N}$ est norm\'e,
+De plus, comme $\vec{N}$ est norm\'e,
 la longueur d'arc de courbe de la d\'evelopp\'ee est donn\'ee par~:
 $$ \int_{t_0}^{t_1} \left|\frac{d\frac{1}{\kappa}}{dt}\right| \ dt = 
 \left| \left[\frac{1}{\kappa}\right]_{t_0}^{t_1} \right|
@@ -5362,6 +5580,15 @@ que ce fil est tendu et que son extr\'emit\'e co\"incide, avant de
 commencer \`a le d\'erouler, avec un point de la courbe $C$ 
 alors dans la suite du d\'eroul\'e, l’extr\'emit\'e parcoura la courbe
 $C$ (on dit que $C$ est une d\'eveloppante de $D$).
+\item si la courbure est de signe constant, les cercles osculateurs
+sont inclus les uns dans les autres, c'est une cons\'equence
+de la remarque pr\'ec\'edente, de l'in\'egalit\'e triangulaire
+et du fait que la distance entre deux centres de cercles
+osculateurs est plus petite que la longueur d'arc sur la
+d\'evelopp\'ee. Comme les points de la courbe sont
+sur des cercles osculateurs, il en r\'esulte que la courbe
+entre ou sort d\'efinitivement du cercle osculateur au point
+de contact.
 \item La d\'evelopp\'ee peut servir \`a calculer une caustique en
 optique. On envoie des rayons lumineux parall\`ele \`a une
 direction fix\'ee vers un miroir ayant la forme de la courbe $C$
@@ -5382,11 +5609,11 @@ Les d\'evelopp\'ees peuvent aussi servir dans le calcul de caustiques
 par r\'efraction~:
 \verb|http://www.mathcurve.com/courbes2d/caustic/caustic.htm|
 \item On peut faire une \'etude analogue pour une courbe dans
-  l'espace, dans ce cas la d\'eriv\'ee de $\overrightarrow{N}$
+  l'espace, dans ce cas la d\'eriv\'ee de $\vec{N}$
 par rapport \`a l'abscisse curviligne $s$ fait intervenir une
 composante sur le troisi\`eme vecteur du rep\`ere direct
-$\overrightarrow{T} \wedge\overrightarrow{N}=\overrightarrow{B}$ 
-($\overrightarrow{B}$ comme binormal), appel\'e
+$\vec{T} \wedge\vec{N}=\vec{B}$ 
+($\vec{B}$ comme binormal), appel\'e
 torsion.
 \item {\bf \'Equation intrins\`eque d'une courbe~:}\\
 Il s'agit de trouver une courbe v\'erifiant une relation entre la
@@ -5423,7 +5650,11 @@ en posant $u=\sqrt{2}b v$ on a aussi
 $$ M(s)=\sqrt{2}b \left(\int_0^{\frac{s}{\sqrt{2}b}} \cos(v^2) \ dv ,
 \int_0^{\frac{s}{\sqrt{2}b}} \sin(v^2) \ dv
 \right)$$
+Pour $b=1/\sqrt{2}$, le trac\'e est obtenu par la commande\\
+\giacinput{plotparam(int(exp(i*t^2),t,0,s),s=-3..3,tstep=0.03)}
 \end{itemize}
+
+
 
 
 \section{Repr\'esentation des courbes implicites.} \label{sec:implicite}
@@ -8910,12 +9141,12 @@ Voir aussi la session \verb|afactor.xws| du menu Exemple, poly de Xcas.
 Pour factoriser sur des corps finis, on peut consulter la thèse
 de Bernardin disponible sur le web (\verb|http://www.bernardin.lu|).
 
-On peut aussi consulter le code source de Mupad, les routines
-de factorisation se trouvent dans le répertoire \verb|lib/POLYLIB/FACLIB|
-après avoir désarchivé la \verb|lib.tar|. Le point d'entrée pour factoriser
-des polynômes à plusieurs variables sur $\Z$ est le fichier 
-\verb|mfactor.mu|, on observera que l'algorithme utilisé par Mupad est
-assez différent de celui qu'on a détaillé dans la section précédente.
+% On peut aussi consulter le code source de Mupad, les routines
+% de factorisation se trouvent dans le répertoire \verb|lib/POLYLIB/FACLIB|
+% après avoir désarchivé la \verb|lib.tar|. Le point d'entrée pour factoriser
+% des polynômes à plusieurs variables sur $\Z$ est le fichier 
+% \verb|mfactor.mu|, on observera que l'algorithme utilisé par Mupad est
+% assez différent de celui qu'on a détaillé dans la section précédente.
 
 \pagebreak
 
@@ -8936,6 +9167,18 @@ on peut certifier qu'il existe une racine.
 complexes de $P(x)=x^5+x+1$. Trouver les combinaisons de racines
 dont la somme est entière (aux arrondis près). En déduire la factorisation
 en facteurs irréductibles sur $\Z$ de $P$.
+\item Soit $P(x)=x^5+3x+1$. D\'eterminer des valeurs approch\'ees
+des racines complexes de $P$. En d\'eduire des boules dans le
+plan complexe contenant exactement une racine de $P$ et
+de rayon plus petit que \verb|1e-12|. En utilisant la m\'ethode
+de Newton avec du calcul exact, d\'eterminer des valeurs approch\'ees
+certifi\'ees \`a \verb|1e-40| pr\`es des racines complexes de $P$.
+\item Localiser les parties r\'eelles et imaginaires des racines
+  complexes de $P(z)=z^5+3z+1$ en utilisant les suites de Sturm
+et le r\'esultant de la partie r\'eelle et imaginaire de
+$P(x+iy)$. Comparer cette m\'ethode avec celle de l'exercice
+pr\'ec\'edent (en particulier que se passe-t-il pour un polyn\^ome
+de degr\'e $n$).
 \item Factorisation numérique sur $\C$. \'Ecrire un programme
 qui calcule une racine d'un polynôme à coefficients complexes
 en utilisant une méthode itérative de type méthode de Newton 
@@ -8969,7 +9212,7 @@ pour quelques valeurs de $x$ ou de $y$)
 
 \item Que se passe-t-il lorsqu'on ex\'ecute l'algorithme de Yun
 dans $\Z/n\Z$?
-\pagebreak
+
 \item Recherche des facteurs de degré 2 d'un polynôme à coefficients
 réels sans racines réelles en utilisant la méthode de Bairstow décrite
 ci-dessous.\\
@@ -12847,7 +13090,8 @@ La factorisation $QR$
 consiste à écrire une matrice $A$ comme produit d'une matrice
 orthogonale (ou unitaire dans $\C$) et d'une matrice triangulaire
 supérieure. Les matrices orthogonales ayant un conditionnement
-de 1 (en norme $L^2$) cette factorisation est numériquement stable.
+de 1 (en norme $L^2$) cette factorisation peut s'obtenir de mani\`ere 
+numériquement stable.
 
 Il existe plusieurs algorithmes pour effectuer cette factorisation.
 On peut voir cette factorisation comme l'orthonormalisation de
@@ -12886,32 +13130,124 @@ un peu am\'elior\'ee en tenant compte des 0 initiaux de $v$ aux
 (et Cholesky), mais en contrepartie
 la m\'ethode est tr\`es stable num\'eriquement.
 
-{\bf Application~:}\\
+On peut aussi utiliser des rotations (m\'ethode de Givens) pour
+annuler les coefficients de $A$ sous la diagonale. C'est par exemple
+tr\`es efficace pour des matrices tridiagonales.
+
+Lorsque la matrice $A$ n'est pas carr\'ee, mais poss\`ede $n$ lignes
+et $c$ colonnes, la factorisation $QR$ est encore possible, la matrice
+$Q$ est alors une matrice carr\'ee d'ordre $n$, et $R$ a les m\^emes
+dimensions que $A$. En particulier si $A$ a plus de lignes que de
+colonnes (matrice verticale), $R$ aussi. Par exemple si $A$ est de 
+rang maximal $c$, alors $R$ se d\'ecompose en un premier bloc
+$c,c$ inversible $R_1$ et un deuxi\`eme bloc $n-c,c$ enti\`erement nul.
+
+{\bf Applications~:}\\
 On peut alors écrire $Ax=b$ sous la forme $QRx=b$
 donc $Rx=Q^*b$ qui est un système triangulaire supérieur,
 donc résoudre $Ax=b$ en $O(n^2)$ opérations une fois 
-la factorisation $QR$ effectu\'ee.
-Mais c'est surtout pour résoudre au sens des moindres carrés
+la factorisation $QR$ effectu\'ee.\\
+\giacinputbigmath{a:=[[1.,2.,3.],[4.,5.,6.],[7.,8.,0.]]; q,r:=qr(a);}
+
+Mais c'est surtout pour résoudre {\bf au sens des moindres carrés}
 un système sur-déterminé que la factorisation $QR$ trouve tout
-son intérêt. En effet, minimiser $\| Ax-b \|_2^2$,
-revient à résoudre $A^* Ax=A^* b$, donc $R^*Q^*QRx=R^*Q^*b$
-soit $R^*Rx=R^*Q^*b$. Si $A$ est une matrice ayant $L$ lignes et $C$
-colonnes avec $L \geq C$ et de rang $L$, alors
-les $L$ premières lignes de $R$ forment une matrice $R_1$ inversible
-et les $C-L$ lignes restantes sont nulles. L'équation précédente
-devient $R_1^* R_1 x=R_1^* Q^* b$ et se simplifie en $R_1x=Q^*b$,
-il vaut mieux résoudre cette équation que $A^* Ax=A^*b$ car
-le conditionnement de cette dernière est le carré du conditionnement
-de $A$ (le nombre d'opérations est multiplié par une constante
-car $QR$ a une constante plus grande que Cholesky, mais le résultat
-est plus précis). 
-La factorisation $QR$ peut d'ailleurs s'obtenir
+son intérêt. Soit $A$ la matrice d'un syst\`eme sur-d\'etermin\'e
+avec $n$ lignes et $c$ colonnes, $n>c$ (matrice ``verticale'' ou mince).
+Le syst\`eme n'a en g\'en\'eral pas de solution, on cherche alors
+\`a minimiser $\| Ax-b \|_2^2$. Ceci revient \`a
+chercher la projection orthogonale de $b$ sur Im$(A)$.
+Soit $Ax$ cette projection, on a $b=Ax+p$ avec $p$ orthogonal
+\`a Im$(A)$ donc dans Ker$(A^*)$, donc $A^*b=A^*(Ax+p)=A^*Ax$.
+\begin{prop}
+La solution $x$ du probl\`eme de minimisation de $\| Ax-b \|_2$
+est donn\'ee par $A^*Ax=A^*b$
+\end{prop}
+Si $A=QR$ on a alors $R^* R x=R^* Q^*b$. Si $A$ est de rang maximal
+$c$, on d\'ecompose $R$ en $(^{R_1}_{R_2})$ avec $R_1$ inversible de
+taille $c$ et
+$R_2=0$, donc $R^*=(R_1^*, 0)$ et le syst\`eme devient $R_1^*R_1x =(R_1^*,0) Q^*b $
+et comme $R_1$ est inversible, on a $R_1x=$ les $c$ premi\`eres lignes
+de $Q^*b$.
+Il vaut mieux résoudre ce syst\`eme que $A^* Ax=A^*b$ car
+le conditionnement de $A^* A$ est le carré du conditionnement
+de $A$ (le nombre d'opérations est un peu sup\'erieur~:
+$QR$ a une constante nettement plus grande que Cholesky mais
+il n'y a pas de multiplication de matrice \`a faire, et le résultat
+est plus précis).
+
+Notons qu'on peut r\'esoudre de mani\`ere assez analogue
+un syst\`eme sous-d\'etermin\'e au sens des moindres carr\'es.
+On consid\`ere toujours le syst\`eme $Ax=b$ mais cette fois-ci
+$A$ est une matrice ``horizontale'' (nombre de lignes $n<c$ le nombre
+de colonnes). Si $b \in $Im$(A)$ (on peut g\'en\'eriquement supposer
+que $A$ est de rang $n$), 
+il y a une infinit\'e de solutions, on
+cherche alors la solution de norme minimale. On cherche donc le
+projet\'e orthogonal de l'espace affine des solutions (dirig\'e selon Ker$(A)$)
+sur l'orthogonal de Ker$(A)$ qui est Im$A^*$. Ainsi $x=A^*y$
+v\'erifie $Ax=b$, donc $AA^*y=b$. Si $A$ est de rang $n$ alors
+$AA^* $ est inversible et $y=(AA^*)^{-1}b$ donc $x=A (AA^*)^{-1}b$.
+En utilisant la factorisation $QR$ de $A^*$ (attention pas celle de
+$A$), on a $AA^*=R^*R$, donc $x=QR(R^*R)^{-1}b$. Si $A$ est de rang $n$,
+on a alors en posant $R=(^{R_1}_{0})$ avec $R_1$ matrice $n,n$ inversible~:
+$$x=Q\left(\begin{array}{c}R_1\\0\end{array}\right)R_1^{-1} R_1^{*^{-1}}b=Q\left(\begin{array}{c}
+{R_1}^{*^{-1}} \\ 0\end{array}\right)b=Q_1 {R_1}^{*^{-1}} b$$
+o\`u $Q_1$ d\'esigne les $n$ premi\`eres colonnes de $Q$.
+\begin{prop}
+Soit $A$ une matrice ayant $n$ lignes et $c>n$ colonnes.
+Si $A$ est de rang maximal $n$, posons $A^*=QR$, $R_1$ les $n$
+premi\`eres lignes de $R_1$, $Q_1$ les $n$ premi\`eres colonnes
+de $Q$. La solution de $Ax=b$ de norme
+minimale est donn\'ee par $Q_1c$ o\`u $c$ est la solution de $R_1^*c=b$
+(syst\`eme triangulaire).
+\end{prop}
+
+{\bf Exemple 1 : la r\'egression lin\'eaire}~:\\
+On se donne $n$ points de coordonn\'ees $(x_i,y_i)$ o\`u les $x_i$
+sont distincts 2 \`a 2 et on cherche
+la droite qui approche le mieux ces points au sens de l'\'ecart en $y$
+au carr\'e. Il s'agit donc de trouver $\alpha$ et $\beta$ qui minimisent~:
+$$  \sum_{j=1}^n (\alpha+\beta x_i-y_i)^2 $$
+Ici on a~:
+$$ A=\left( \begin{array}{cc}
+1 & x_1 \\
+... & ... \\
+1 & x_n  \\
+\end{array} \right), \quad 
+x=\left( \begin{array}{c} \alpha \\ \beta \end{array}\right),
+\quad
+b=\left( \begin{array}{c}
+y_1  \\
+...  \\
+y_n  \\
+\end{array} 
+\right)$$
+Pour trouver $\alpha, \beta$ de mani\`ere pr\'ecise, on pr\'eferera
+donc calculer la factorisation $QR$ de $A$ plut\^ot que calculer $A^*A$, $R_1$ est
+une matrice carr\'ee d'ordre 2, $Q$ une matrice carr\'ee d'ordre $n$, 
+la premi\`ere colonne de $Q$ est le vecteur de coordonn\'ees
+$\pm (1,...,1)/\sqrt{n}$.
+
+{\bf Exemple 2: r\'egression polynomiale}~:\\
+C'est une g\'en\'eralisation de l'exemple pr\'ec\'edent, on cherche un polyn\^ome $P(x)$
+de degr\'e fix\'e tel que $\sum_i (y_i-P(x_i))^2$ soit minimal. Si on
+choisit la base canonique des polyn\^omes, la
+matrice $A$ est alors une matrice de Vandermonde 
+et son conditionnement est en g\'en\'eral tr\`es mauvais.
+On pr\'ef\`erera utiliser une base de polyn\^omes orthogonaux pour
+le produit scalaire $\sum_i P(x_i)Q(x_i)$
+ou minimiser une autre fonctionnelle quadratique, par
+exemple une int\'egrale du carr\'e de la diff\'erence entre une
+fonction \`a approcher et un polyn\^ome ou un
+polyn\^ome trigonom\'etrique.
+
+{\bf Remarque}~: La factorisation $QR$ peut s'obtenir
 en calculant la factorisation de Cholesky de $A^* A$ qui donne $R$,
 mais on lui pr\'ef\`ere une m\'ethode de calcul direct pour des
 raisons de stabilit\'e, en tout cas pour des matrices denses (pour des
 matrices creuses des consid\'erations d'efficacit\'e peuvent faire
 pr\'ef\'erer la factorisation de Cholesky).
-
+ 
 \subsubsection{M\'ethodes it\'eratives de
 Jacobi, Gauss-Seidel, relaxation}\index{Jacobi} \index{Gauss-Seidel}
 \label{sec:jacobi}
@@ -12955,13 +13291,14 @@ que la m\'ethode de Gauss-Seidel prend pour $M$ la partie triangulaire
 inf\'erieure $D+L$ de $A$ (diagonale comprise). 
 Pour Jacobi, on a donc
 $$ x_{n+1}=D^{-1}(b+(D-A)x_n)=x_n+D^{-1}(b-Ax_n)$$
-En Xcas, on peut programmer la m\'ethode par
-\begin{verbatim}
-jacobi(A,b,N,eps):={
+En Xcas, l'instruction pr\'eprogramm\'ee est \verb|jacobi_linsolve|, 
+on peut aussi programmer la m\'ethode par
+\begin{giacprog}
+jacobi(A,b,eps,N):={
   local D,x0,x1,n,j;
   n:=size(A);
   D:=diag(A).^-1;
-  x0:=[0.0$n];
+  x0:=seq(0,n);
   pour j de 1 jusque N faire
     x1:=b-A*x0;
     si l2norm(x1)<eps alors return x0; fsi;
@@ -12969,7 +13306,7 @@ jacobi(A,b,N,eps):={
   fpour;
   return "non convergent";
 }:;
-\end{verbatim}
+\end{giacprog}
 Un cas simple o\`u on a convergence~:
 \begin{prop} 
 Lorsque la matrice $A$ est
@@ -12979,17 +13316,20 @@ l'\'el\'ement diagonal est en valeur absolue strictement sup\'erieur
 $$ |a_{ii}| > \sum_{j\neq i} |a_{ij}| $$
 la m\'ethode de Jacobi converge.
 \end{prop}
-En effet, $\|M^{-1}Nx\|_\infty < \| x\|_\infty$ car~:
+En effet,
+$\|M^{-1}Nx\|_\infty < \| x\|_\infty$ car~:
 $$ |(Nx)_i| \leq \sum_{j \neq i} |a_{ij}| |x_j| \leq \sum_{j \neq i}
 |a_{ij}| \|x\|_\infty < |a_{ii}| \| x\|_\infty  
 \quad  \Rightarrow \quad |M^{-1}(Nx)_i| <  \| x\|_\infty $$
 On retrouve ce cas pour une petite perturbation d'une matrice
 diagonale, par exemple~\\
-\verb|A:=2*idn(1000)+1e-4*ranm(1000,1000,uniform,-1,1)|\\
-\verb|b:=[1$1000];|\\
-\verb|linsolve(A,b);|\\
-\verb|jacobi(A,b,50,1e-12)|
- 
+\giacinputbigmath{n:=500;A:=2*idn(n)+1e-4*ranm(n,n,uniform,-1,1):;b:=seq(1,n):;}\\
+\giacinput{time(c:=linsolve(A,b));}\\
+\giacinput{time(d:=jacobi(A,b,1e-12,50));}\\
+\giacinput{maxnorm(d-c)}\\
+Pour $n$ assez grand, la m\'ethode de Jacobi devient plus rapide. Cela
+se v\'erifie encore plus vite si $A$ est une matrice creuse.
+
 Pour Gauss-Seidel,
 le calcul de $M^{-1}$ n'est pas effectu\'e, on r\'esoud
 directement le syst\`eme triangulaire $Mx_{n+1}=b+Nx_n$ soit
@@ -12997,13 +13337,13 @@ $$ (D+L)x_{n+1}=b-Ux_n$$
 Gauss-Seidel
 est moins adapt\'e \`a la parall\'elisation que Jacobi.
 On adapte le programme pr\'ec\'edent
-\begin{verbatim}
+\begin{giacprog}
 seidel(A,b,N,eps):={
   local L,U,x0,x1,n,j;
   n:=size(A);
   L:=diag(A,left);
   U:=A-L;
-  x0:=[0.0$n];
+  x0:=seq(0.0,n);
   pour j de 1 jusque N faire
     x1:=b-U*x0;
     x1:=linsolve(L,x1);
@@ -13012,7 +13352,7 @@ seidel(A,b,N,eps):={
   fpour;
   return "non convergent";
 }:;
-\end{verbatim}
+\end{giacprog}
 
 Dans la m\'ethode de relaxation, on pose pour $M$ la matrice triangulaire
 inf\'erieure $M=\frac1\omega D+L$ o\`u $\omega >0$, donc
@@ -13022,6 +13362,9 @@ $Mx_{n+1}=b+(M-A)x_n$ puis
 $M(x_{n+1}-x_n)=b-Ax_n$ puis
 $$ (D+\omega L) (x_{n+1}-x_n) = \omega(b-Ax_n)$$
 On remarque que Gauss-Seidel correspond \`a $\omega=1$.
+L'instruction correspondante de Xcas est \verb|gauss_seidel_linsolve| et
+peut prendre en param\`etre le coefficient de relaxation, 
+dont la valeur par d\'efaut est 1.
 
 \begin{prop} (Convergence~): 
 si $A=M-N$ est une matrice sym\'etrique d\'efinie positive
@@ -13041,6 +13384,10 @@ Cons\'equence~: si $A$ sym\'etrique d\'efinie positive, alors
 Gauss-Seidel converge, car $M^*+N=D$. Pour la relaxation,
 on a $M^*+N=(2/\omega -1)D$ qui est d\'efinie positive si $\omega<2$.
 
+{\bf Remarque~}: Jacobi et Gauss-Seidel sont impl\'ement\'ees dans les commandes
+Xcas {\tt jacobi\_linsolve} et {\tt gauss\_seidel\_linsolve}.
+
+ 
 \subsubsection{M\'ethode it\'erative du gradient conjugu\'e}\index{gradient conjugu\'e}
 Il s'agit de résoudre $Ax=b$, où $A$ est définie positive. 
 Si on a une base orthogonale pour le produit scalaire induit par $A$, 
@@ -13704,7 +14051,8 @@ Puis on pose $P_1=P_0+ \alpha_{1}X=1+ \alpha_{1}X$.
 Comme $P(1)=2=1+ \alpha_{1}$ on en tire $ \alpha_{1}=1$
 donc $P_1=1+X$. Puis on pose $P_2=P_1+ \alpha_{2}X(X-1)$, on a 
 $P_2(2)=3+2 \alpha_{2}=1$
-donc $ \alpha_{2}=-1$, finalement $P_2=1+X-X(X-1)$.
+donc $ \alpha_{2}=-1$, finalement $P_2=1+X-X(X-1)$.\\
+\giacinputbigmath{P:=interp([0,1,2],[1,2,1]);}
 
 \subsubsection{Majoration de l'erreur d'interpolation.}
 Reste \`a estimer l'\'ecart entre une fonction et son polynome
@@ -13743,6 +14091,12 @@ et $ \prod_{j=0}^n(x-x_j) - x^{n+1}$ est de degré
 inférieur ou égal à $n$. Donc il existe bien un réel $\xi_x$ dans
 l'intervalle contenant les $x_j$ et $x$ tel que
 \[ C=\frac{f^{[n+1]}(\xi_x)}{(n+1)!} \]
+\giacinputbigmath{f(x):=ln(x^2+1); n:=10; X:=evalf(seq(j/n,j,0,n)); Y:=map(X,f);}\\
+\giacinputbigmath{P:=interp(X,Y);}\\
+\giacinput{plot([f(x),P],x=-1..2,color=[red,blue])}\\
+\giacinput{plot(1e7*abs(f(x)-P),x=0..1)}\\
+Attention, l'erreur d'interpolation peut devenir tr\`es grande
+lorsqu'on utilise beaucoup de points d'interpolation.
 
 \subsubsection{Calcul efficace du polyn\^ome de
   Lagrange.}\index{divis\'ees, diff\'erences}\index{diff\'erences divis\'ees}
@@ -13799,11 +14153,13 @@ l'ordre des $x_i$, on peut donc \`a partir du tableau ci-dessus
 \'ecrire $P$ par exemple avec l'ordre 2,1,0, sous la forme
 \[ P(x)=1+(x-2)(-1+(x-1)(-1))=1+(x-2)(-x)\]
 
-La commande Xcas \verb|interp| ou son synonyme \verb|lagrange|
-effectue ce calcul.
+Le nombre d'op\'erations n\'ecessaires pour faire ce calcul est
+proportionnel \`a $n^2$.
 
-Pour avoir les diff\'erences divis\'ees, on peut cr\'eer le programme suivant
-\begin{verbatim}
+La commande Xcas \verb|interp| ou son synonyme \verb|lagrange|
+effectue ce calcul. Pour avoir les diff\'erences divis\'ees, 
+on peut cr\'eer le programme suivant~:
+\begin{giacprog}
 dd(X,Y):={ // Algorithme des différences divisées
   local k,l,n,A,old,cur;
   si size(X)!=size(Y) alors return "erreur" fsi;
@@ -13821,8 +14177,10 @@ dd(X,Y):={ // Algorithme des différences divisées
   fpour;
   retourne A;
 }:;
-\end{verbatim}
-(N.B. pour rendre ce programme optimal, il faudrait utiliser l'affectation en place)
+\end{giacprog}
+\giacinput{dd([0,1,2],[1,2,1])}
+(N.B. pour rendre ce programme optimal, il faudrait utiliser
+l'affectation en place \verb|=<| au lieu de \verb|:=|)
 
 \subsubsection{Sensibilit\'e aux erreurs sur les donn\'ees.}
 Si les $y_j$ sont connus avec une certaine erreur, alors le polyn\^ome 
@@ -13844,15 +14202,15 @@ num\'eriquement pour une subdivision \'equidistribu\'ee,
 et montrer qu'il croit comme $\frac{2^{n+1}}{e n \ln(n)}$,
 par exemple pour $n=40$, il vaut environ {\tt 5e9}.
 Illustration avec Xcas~:\\
-{\tt
-  l(k,n):=product((x-j)/(k-j),j,0,k-1)*product((x-j)/(k-j),j,k+1,n)}\\
-{\tt n:=10; f:=add(abs(l(k,n)),k,0,n); plot(f,x=0..n)}\\
+\giacinputbigmath{l(k,n):=product((x-j)/(k-j),j,0,k-1)*product((x-j)/(k-j),j,k+1,n);}\\
+\giacinput[style="width:800px;height:40px;font-style:large"]{n:=10; f:=add(abs(l(k,n)),k,0,n); plot(f,x=0..n)}\\
 puis essayer avec $n=20$. Pour $n=40$, en observant que le max
 est atteint dans $[0,1]$, on peut remplacer les valeurs absolues
 par la bonne puissance de -1\\
-\verb|g:=l(0,n)+add((-1)^(k+n-1)*l(k,n),k,1,n)|\\
-on a alors un polyn\^ome, dont on calcule l'abscisse du maximum par
-{\tt l:=proot(g')} puis {\tt subst(g,x=l[0])} qui donne environ {\tt 4.7e9}.
+\giacinputbigmath{n:=40; g:=l(0,n)+add((-1)^(k+n-1)*l(k,n),k,1,n)}\\
+on a alors un polyn\^ome, dont on calcule l'abscisse du maximum par\\
+\giacinputbigmath{g1:=normal(g'); l:=realroot(g1,1e-12,evalf)}\\
+puis \giacinput{subst(g,x=l[0])} qui donne environ {\tt 4.7e9}.
 
 
 \subsection{Interpolation aux points de Tchebyshev}\index{Tchebyshev}
@@ -13867,21 +14225,30 @@ en puissances de $\cos(x)$~:
 $$ T_n(\cos(x))=\cos(nx) $$
 Sur $[-1,1]$, le polyn\^ome $T_n$ vaut en valeur absolue au plus 1, et
 atteint cette valeur exactement $n+1$ fois lorsque $x=k\pi/n$ donc 
-$X=\cos(x)=\cos(k\pi/n)$. De plus cette majoration est optimale,
-si un autre polyn\^ome $U$ de degr\'e au plus $n$ 
-v\'erifie $|U|_\infty<1$ et a le m\^eme coefficient dominant que
-$T_n$, alors la diff\'erence $T_n-U$ est du signe de $T_n$ en
+$X=\cos(x)=\cos(k\pi/n)$.\\
+\giacinput{n:=7; plot(tchebyshev1(n),x=-1..1)}\\
+De plus cette majoration est optimale. En effet
+soit $U$ un polyn\^ome de degr\'e au plus $n$ 
+qui v\'erifie $|U|_\infty<1$ sur $[-1,1]$
+et tel que $U$ ait le m\^eme coefficient dominant que
+$T_n$. Alors la diff\'erence $T_n-U$ est du signe de $T_n$ en
 $X=\cos(k\pi/n), k \in [0,n]$ puisqu'en ces points $T_n$ est
-extr\^emal, et donc $T_n-U$ s'annule $n$ fois sur $[-1,1]$, mais son degr\'e
-est au plus $n-1$.
+extr\^emal de valeur absolue 1. Donc $T_n-U$ s'annule $n$ fois sur
+$[-1,1]$, mais son degr\'e est au plus $n-1$ donc $T_n=U$ absurde.
 
 On a donc int\'er\^et \`a prendre les abscisses des points
 d'interpolation en les racines $t_n$ de $T_n$
 $$ \frac{a+b}{2} + \frac{a-b}{2} t_n, \quad t_n=\cos((k+\frac12)\frac\pi n), 
 \quad k=0..n-1$$
-On pourra observer que le ph\'enom\`ene de Runge qui apparait par
-exemple pour $f(x)=1/(25x^2+1)$ avec des points d'interpolation
-\'equidistants n'apparait plus si on prend des points de Tchebyshev.
+On pourra observer que le ph\'enom\`ene de 
+Runge\index{Runge, ph\'enom\`ene de} qui apparait par
+exemple pour $f(x)=1/(25x^2+1)$ sur $[-1,1]$ avec des points d'interpolation
+\'equidistants n'apparait plus si on prend des points de Tchebyshev.\\
+\giacinputbigmath{f(x):=1/(1+25x^2); n:=20; X:=seq(2*j/n-1.0,j,0,n); }\\
+\giacinput{l:=lagrange(X,map(X,f)):; plot(l-f(x),x=-1..1)}\\
+\giacinputbigmath{T:=seq(cos((j+0.5)*pi/n),j,0,n);}\\
+\giacinput[style="width:800px;height:20px;font-style:large"]{l:=lagrange(T,map(T,f)):; plot(100*(l-f(x)),x=-1..1)}\\
+
 Ceci est reli\'e \`a la constante de Lebesgue 
 qui pour des points de Tchebyshev vaut un peu moins de 4 pour $n<100$
 (se comporte comme $\frac2\pi \ln(n)$ pour $n$ grand), on peut montrer
@@ -13894,20 +14261,18 @@ de $f$ (celui qui minimise la norme $L^\infty$ de la diff\'erence)
 car la d\'eriv\'ee $n+1$-i\`eme varie en g\'en\'eral sur $[a,b]$. Mais
 il est trop difficile de le calculer en g\'en\'eral.
 
-Exemple de calcul explicite de constante de Lebesgue pour $n=40$ avec Xcas
-\begin{verbatim}
-l(k,n):=product((x-j)/(k-j),j,0,k-1)*product((x-j)/(k-j),j,k+1,n);
-n:=40; f:=add(abs(l(k,n)),k,0,n); plot(f,x=0..n);
-g:=l(0,n)+add((-1)^(k+n-1)*l(k,n),k,1,n);
-r:=proot(g'); subst(g,x=r[0]); 2.^41/e/41/ln(41);
+Exemple de calcul explicite de constante de Lebesgue pour $n=40$ avec
+Xcas
+\begin{giacprog}
+purge(x);
 t(k,n):={ 
  local T; 
  T:=seq(cos(pi*(k+.5)/(n+1)),k,0,n);
  return product((x-T[j])/(T[k]-T[j]),j,0,k-1)*
   product((x-T[j])/(T[k]-T[j]),j,k+1,n);
 }:;
-n:=40; f:=add(abs(t(k,n)),k,0,n):;plot(f,x=-1..1)
-\end{verbatim}
+\end{giacprog}
+\giacinput[style="width:800px;height:20px;font-style:large"]{n:=40; f:=add(abs(t(k,n)),k,0,n):;plot(f,x=-1..1)}
 
 \subsection{Interpolation de Hermite}\index{Hermite, interpolation de}
 Si on fait tendre un des points d'interpolation vers un autre, la
@@ -13980,11 +14345,11 @@ norme).
 
 Par exemple, pour l'int\'egrale sur $[-1,1]$ sans poids, 
 les polyn\^omes de Legendre forment une base orthonorm\'ee~:\\
-\verb|S(f,g):=int(f*g,x,-1,1);|\\
-\verb|gramschmidt([1,x,x^2,x^3,x^4],S);|\\
-\verb|f:=ln(x+2);C:=seq(S(f,legendre(k))/S(legendre(k),legendre(k)),k,0,4);|\\
-\verb|g:=sum(C[j]*legendre(j),j,0,4);|\\
-\verb|plot([f,g],x,-1.2,1.2,color=[red,blue]);|
+\giacinputbig{S(f,g):=int(f*g,x,-1,1);}\\
+\giacinputbigmath{gramschmidt([1,x,x^2,x^3,x^4],S);}\\
+\giacinputbigmath{f:=ln(x+2);C:=seq(S(f,legendre(k))/S(legendre(k),legendre(k)),k,0,4);}\\
+\giacinputbigmath{g:=sum(C[j]*legendre(j),j,0,4);}\\
+\giacinputbig{plot([f,g],x,-1.4,1.4,color=[red,blue]);}
 
 \subsection{Les splines}\index{splines}
 Il s'agit de fonctions définies par des polynomes de degré borné
@@ -14415,7 +14780,9 @@ $$ \frac{P_2+P_1}{P_2-P_1}, \ P_2=30240+3360x^2+30x^4,\ P_1=x(15120+420x^2+x^4)$
 fraction que l'on peut évaluer en 12 op\'erations (5 additions, 1
 soustraction, 5 multiplications et 1 division)
 et qui donne une approximation de meilleure qualité que le
-développement de Taylor à l'ordre 10.
+développement de Taylor à l'ordre 10.\\
+\giacinputbigmath[style="width:800px;height:40px;font-style:large"]{x:=0.5; X:=x*x; a:=(30X+3360)*X+30240;
+  b:=x*((X+420)*X+15120); (a+b)/(a-b); exp(0.5);}\\
 Pour d\'emontrer des estimations sur l'erreur $f(x)-P/Q$, il n'existe
 pas \`a ma connaissance de r\'esultat explicite g\'en\'eral. 
 Pour la fonction exponentielle, on peut calculer l'erreur relative

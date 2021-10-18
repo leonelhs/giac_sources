@@ -342,6 +342,15 @@ computer algebra system commands.
 \lstinline@#2@
 \fi
 }
+\newcommand{\giacinputbig}[2][style="width:800px;height:20px;font-size:large"]{
+\ifhevea
+\@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
+\@getprint{#1>#2}
+\@print{</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
+\else
+\lstinline@#2@
+\fi
+}
 \newcommand{\giaccmdmath}[3][style="width:400px;height:20px;font-size:large"]{\ifhevea
 \begin{rawhtml}<br><textarea \end{rawhtml}
 \@getprint{#1>#3}

@@ -361,7 +361,7 @@ namespace giac {
     v[2]=c;
     v[3]=d;
     v[4]=e;
-    return v;
+    return gen(v,_SEQ__VECT);
   }
 
   gen makesequence(const gen & a,const gen & b,const gen & c,const gen & d,const gen & e,const gen & f){
@@ -7497,9 +7497,9 @@ namespace giac {
     bool inverting=fullreduction==2;
     int linit=l;//,previous_l=l;
     // Reduction
-    int pivot,temp;
+    int pivot,temp=0;
     // vecteur vtemp;
-    int pivotline,pivotcol;
+    int pivotline,pivotcol=0;
     if (reset){
       idet=1;
       pivots.clear();
@@ -9558,6 +9558,16 @@ namespace giac {
       return;
     }
     if (f.is_symb_of_sommet(at_interval) && f._SYMBptr->feuille.type==_VECT){
+      gen x=evalf(f._SYMBptr->feuille._VECTptr->front(),1,contextptr),y=evalf(f._SYMBptr->feuille._VECTptr->back(),1,contextptr);
+      if (x.type==_DOUBLE_ && y.type==_DOUBLE_){
+	double xd=x._DOUBLE_val,yd=y._DOUBLE_val;
+	double scale=(yd-xd)/(rand_max2+1.0);
+	for (int i=0;i<n;++i){
+	  double xr= giac_rand(contextptr)*scale+xd;
+	  res.push_back(xr);
+	}
+	return;
+      }
       for (int i=0;i<n;++i)
 	res.push_back(rand_interval(*f._SYMBptr->feuille._VECTptr,false,contextptr));
       return;
@@ -10817,7 +10827,7 @@ namespace giac {
 #endif // PTHREAD
       if (!done){
 	// slicing is slower
-	int nslice=1; cP/128+1;
+	int nslice=1; // nslice=cP/128+1;
 	int slicesize=cP/nslice+1;
 	int Pstart=0,Pend=0;
 	for (;Pstart<cP;Pstart=Pend){
@@ -15351,7 +15361,7 @@ namespace giac {
     } 
   }
 
-  void qr_householder(matrix_double & H,int rstart,matrix_double & P,bool computeP,bool Pidn,bool transpose,int cstart=0,int cend=0,bool recurse=true){
+  void qr_householder(matrix_double & H,int rstart,matrix_double & P,bool computeP,bool Pidn,bool transpose,int cstart=0,int cend=0,bool recurse=true,bool thin=true){
     // Let R be a Householder reflection with respect to w (normalized)
     // R=I-2 w w*
     // Then R H = H - 2 w (w*H) and R P = P - 2 w (w*P)
@@ -15377,6 +15387,8 @@ namespace giac {
     if (debug_infolevel)
       CERR << CLOCK() << " Householder, computing H" << endl;
     if (recurse && n>=c && cend-cstart>200){
+      if (n<2*(cend-cstart)) 
+	thin=false;
       // if cstart, cend !=0, block-recursive version 
       // H n rows, c1+c2 cols, n>=c1+c2, H=[A1|A2]=Q*[[R11,R12],[0,R22]]
       // A1 and A2 have n rows and c1, c2 columns
@@ -15389,7 +15401,7 @@ namespace giac {
       // If tran(Q1)=[[Q11],[Q12]] then tran(Q)=[[Q11],[tran(Q2)*Q12]]
       // Q12 has n-c1 rows, Q2 has n-c2 rows
       int c1=(cend-cstart)/2,c2=cend-cstart-c1;
-      qr_householder(H,rstart,P,true,true,true,cstart,cstart+c1,/* recurse*/ false); // P is Q1
+      qr_householder(H,rstart,P,true,true,true,cstart,cstart+c1,/* recurse*/ false,/* thin */false); // P is Q1
       //transpose_double(P); // P is tran(Q1)
       // R11 is in place in H, R21=0 also
       // temporary storage to compute tran(Q1)*A2
@@ -15401,19 +15413,26 @@ namespace giac {
       // QR on A22 stored in rows c1..n-1 of R
       // matrix_double Q2(n-c1,vector<giac_double>(n-c1)); 
       matrix_double & Q2 =tranA2; Q2.resize(n-c1);
-      double_idn(Q2);
-      qr_householder(R,c1,Q2,computeP,true,true,0,0,/* recurse */true);
-      // transpose_double(Q2);
+      if (thin){
+	qr_householder(R,c1,Q2,false,true,true,0,0,/* recurse */true,thin);
+      }
+      else {
+	double_idn(Q2);
+	qr_householder(R,c1,Q2,computeP,true,true,0,0,/* recurse */true,/* thin */false);
+	// transpose_double(Q2);
+      }
       for (int i=0;i<n;++i){
 	std::copy(R[i].begin(),R[i].end(),H[rstart+i].begin()+c1);
       }
-      // P is tran(Q1), Q12
-      matrix_double tmp;
-      transpose_double(P,c1,n,0,0,R); // R as tranQ12: n rows, n-c1 cols
-      // tran(Q2)*Q12
-      mmult_double(Q2,R,tmp); // tmp n-c1 rows, n cols
-      for (int i=0;i<n-c1;++i){
-	swap(tmp[i],P[i+c1]);
+      if (!thin){
+	// P is tran(Q1), Q12
+	matrix_double tmp;
+	transpose_double(P,c1,n,0,0,R); // R as tranQ12: n rows, n-c1 cols
+	// tran(Q2)*Q12
+	mmult_double(Q2,R,tmp); // tmp n-c1 rows, n cols
+	for (int i=0;i<n-c1;++i){
+	  swap(tmp[i],P[i+c1]);
+	}
       }
       if (!transpose)
 	transpose_double(P);
@@ -15520,8 +15539,18 @@ namespace giac {
     if (epsilon(contextptr)>=1e-15 && std_matrix_gen2std_matrix_giac_double(H,H1,true)){
       matrix_double P1;
       std_matrix_gen2std_matrix_giac_double(P,P1,true);
-      if (1 || H.size()==H.front().size())
-	qr_householder(H1,0,P1,computeP,true,true,0,0,threads>1); 
+      // count 0 in H under the diagonal
+      // if less than 20% Householder else Givens
+      int count1=0,count2=0,L=int(H.size()),C=H.front().size();
+      for (int i=1;i<L;++i){
+	const vector<giac_double> & Hi=H1[i];
+	for (int j=0;j<i && j<C;++count2,++j){
+	  if (Hi[j]==0.0)
+	    ++count1;
+	}
+      }
+      if (count1<=0.2*count2)
+	qr_householder(H1,0,P1,computeP,true,true,0,0,/* recurse */ true,/* thin */false); 
       else 
 	qr_givens(H1,0,P1,computeP,true,true,0,0,threads>1);
       std_matrix_giac_double2std_matrix_gen(P1,P);
@@ -16318,9 +16347,12 @@ namespace giac {
   template<class T>
   nio::ios_base<T> & operator << (nio::ios_base<T> & os,const vector<giac_double> & m){
     int s=int(m.size());
-    for (int i=0;i<s;++i)
-      os << m[i] << " ";
-    return os;
+    os << "[";
+    for (int i=0;i<s;++i){
+      os << m[i] ;
+      if (i==s
+    }
+    return "]" << os;
   }
 
   template<class T>
@@ -16353,16 +16385,25 @@ namespace giac {
 
   ostream & operator << (ostream & os,const vector<giac_double> & m){
     int s=int(m.size());
-    for (int i=0;i<s;++i)
-      os << m[i] << " ";
-    return os;
+    os << "[";
+    for (int i=0;i<s;++i){
+      os << m[i]; 
+      if (i+1!=s)
+	os << ",";
+    }
+    return os << "]";
   }
 
   ostream & operator << (ostream & os,const matrix_double & m){
     int s=int(m.size());
-    for (int i=0;i<s;++i)
-      os << m[i] << endl;
-    return os;
+    os << "[";
+    for (int i=0;i<s;++i){
+      os << m[i] ;
+      if (i+1!=s)
+	os << ",";
+      os << endl;
+    }
+    return os << "]";
   }
 
   void matrix_double::dbgprint() const { COUT << *this << std::endl; }

@@ -12538,7 +12538,7 @@ namespace giac {
 	return printmap(*_MAPptr,contextptr);
     case _EQW:
       return print_EQW(*_EQWptr);
-    case _POINTER_:
+    case _POINTER_: // FIXME: handle 64 bits pointers
       return "pointer("+hexa_print_INT_(int((alias_type)_POINTER_val))+","+print_INT_(subtype)+")";
     default:
 #ifndef NO_STDEXCEPT

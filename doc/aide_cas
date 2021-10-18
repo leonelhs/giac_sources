@@ -8,7 +8,7 @@
  a:=[[100,2],[2,100]];jacobi_linsolve(table(a),[0,1],1e-12); 
 
 # gauss_seidel_linsolve
-1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode iterative de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
+1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
 2 Resolution of a linear system A*X=b  by the iterative Gauss-Seidel method (by defaut omega=1) or by relaxation method, with eps as error margin and a number of iterations inferior to maxiter.
 0 [Real(omega)],Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
 -1 jacobi_linsolve
@@ -358,7 +358,7 @@ geometric_cdf(0.3,4,5)
 geometric_icdf(0.3,0.95)
 
 # weibull weibulld
-1 Renvoie la densité de probabilité en x de la loi de Weibull de paramètres k, lambda, theta (par d\'efaut theta=0).
+1 Renvoie la densité de probabilité en x de la loi de Weibull de paramètres k, lambda, theta (par défaut theta=0).
 2 Returns the density of probability at x of the Weibull law of parameters k, lambda, theta (by default theta=0).
 3 Devuelve la densidad de probabilidad de la ley de Weibull.
 4 Επιστρέφει την πυκνότητα της πιθανότητας της κατανομής Weibull.
@@ -513,9 +513,9 @@ kolmogorovt(randvector(100,normald,0,1),student(2))
 2 Returns the density of probability of the Gamma law (=x^(a-1)*exp(-b*x)*b^a/Gamma(a)).
 3 Devuelve la densidad de probabilidad de la ley Gamma (=x^(a-1)*exp(-b*x)*b^a/Gamma(a)).
 4 Επιστρέφει την πυκνότητα πιθανότητας της Gamma κατανομής (=x^(a-1)*exp(-b*x)*b^a/Gamma(a)).
-8 =x^(a-1)*\exp(-bx)*b^a/\Gamma(a) 
+8 =x^(a-1)*exp(-b*x)*b^a/Gamma(a) 
 0 Real(a>0),Real(b>0),Real(x>=0)
--1 gammad_cdf
+-1 gammad_cdf;
 -2 gammad_icdf
 gammad(2.2,1.5,0.8)
 
@@ -675,8 +675,8 @@ polar_point(1,pi/4)
 polar_point(2,-pi/3)
 
 # vector
-1 Définit et trace un vecteur (origine 0 si 1 arg) par deux points ou par un couple de coordonnées ou par un couple d'affixe (en 2D) ou par un point et un vecteur ou par un point (son extrémité et son origine étant [0,0,0]).
-2 Defines a vector (origin is 0 if 1 arg) with two points or two components or two affix (for 2D) or with a point and a vector or with a point (its extremity and its origin is [0,0,0]).
+1 Définit et trace un vecteur (origine 0 si 1 arg) par deux points ou par un couple de coordonnées ou par un couple d'affixe (en 2D) ou par un point et un vecteur ou par un point (son extrémité et son origine étant [0,0,0]). Utiliser une liste pour les composantes d'un vecteur de R^n.
+2 Defines a vector (origin is 0 if 1 arg) with two points or two components or two affix (for 2D) or with a point and a vector or with a point (its extremity and its origin is [0,0,0]). 
 3 Define un vector por dos puntos o por un par de coordenadas o por un par de afijos (en 2D) o con un punto y un vector o con un punto A (con origen [0,0,0]).
 4 Ορισμός διανύσματος με δύο σημεία ή με ένα ζευγάρι συντεταγμένων ή δύο προσθήκες (για 2D) ή με ένα σημείο και ένα διάνυσμα ή με ένα σημείο (το άκρο του και την αρχική του θέση να είναι [0,0,0]).
 8 向量。
@@ -5839,7 +5839,7 @@ Circle(0,1,1,1)
 version()
 
 # seq
-1 Renvoie la séquence (2 ou 3 arg) ou la liste (4 ou 5 arg) obtenue lorsque var varie entre a et b (pas=p) dans Xpr (ou on répète n fois l'expression Xpr ou on obtient la sequence des r\'eels entre a et b par pas de p).
+1 Renvoie la séquence (2 ou 3 arg) ou la liste (4 ou 5 arg) obtenue lorsque var varie entre a et b (pas=p) dans Xpr (ou on répète n fois l'expression Xpr ou on obtient la sequence des réels entre a et b par pas de p).
 2 Returns the sequence (2 or 3 arg) or the list (4 or 5 arg) obtained when var go from a to b (step p) in Xpr (or the Xpr is repeated n times or returns the sequence of reals from a to b (step p)).
 3 Devuelve la secuencia (2 o 3 arg) o la lista (4 o 5 arg) obtenida cuando var va desde a hasta b (paso=p) en Xpr (o la expresión Xpr es repetida n veces).
 4 Επιστρέφει την ακολουθία (2 ή 3 ορίσματα) ή τη λίστα (4 ή 5 ορίσματα) που αποκτιέται όταν το var μεταβάλλεται από a έως b (με βήμα p) στην παράσταση (ή η παράσταση επαναλαμβάνεται n φορές).
@@ -5851,11 +5851,11 @@ seq(t,4)
 seq(0,0)
 seq(2^k,k=0..8)
 seq(2^k,k=0..8,2)
-seq(2^k,k,0..8)
 seq(0.3..2,0.2)
 seq(2^k,k,0,8)
 seq(2^k,k,0,8,2)
  [seq(0.3..2,0.2)] 
+ a:=(1,2,3);eval(seq(a,4))
 
 # $
 1 Version infixée de seq.
@@ -5868,6 +5868,7 @@ seq(2^k,k,0,8,2)
  0.3$4
  t$4
  0$0
+ a:=(1,2,3);eval(a$4)
  (2^k)$(k=0..3)
  [(2^k)$(k=0..3)]
  (0.3..2)$0.2
@@ -10082,6 +10083,8 @@ head("bonjour")
 0 Intg(n)
 -1 legendre
 -2 laguerre
+-3 tchebyshev1
+-4 tchebyshev2
 hermite(3)
 
 # grad
@@ -10654,6 +10657,8 @@ lagrange([0,1,2],exp,lagrange)
 0 Intg(n)
 -1 legendre
 -2 hermite
+-3 tchebyshev1
+-4 tchebyshev2
 laguerre(4)
 
 # laplace
@@ -10671,7 +10676,7 @@ laplace(sin(x)^2,x,s)
 laplace(Heaviside(x-1),x,s)
 
 # laplacian
-1 Calcule le laplacien de l'expression Xpr par rapport à la liste de variables
+1 Calcule le laplacien de l'expression Xpr par rapport à la liste de variables ou la matrice du Laplacien discret 1-d
 2 Returns the Laplacian of the expression Xpr with respect to the list of variables
 3 Calcula el laplaciano de Xpr con respecto a la lista de variables
 4 Επιστρέφει την Λαπλασιανή της Xpr αναφορικά με μια λίστα μεταβλητών
@@ -10679,6 +10684,7 @@ laplace(Heaviside(x-1),x,s)
 -1 
 -2
 laplacian(exp(z)*cos(x*y),[x,y,z])
+laplacian(100)
 
 # lcm
 1 PPCM de 2 polynômes de plusieurs variables ou de 2 entiers ou de 2 rationnels.
@@ -10700,7 +10706,10 @@ lcm((x^2-1)*(y^2-1)*z^2,x^3*y^3*z+(-(y^3))*z+x^3*z-z)
 3 Devuelve el n-ésimo polinomio de Legendre
 4 Επιστρέφει το n-στο πολυώνυμο Legendre
 0 Intg(n)
--1 
+-1 hermite
+-2 laguerre
+-3 tchebyshev1
+-4 tchebyshev2
 legendre(4)
 
 # locus

@@ -920,16 +920,20 @@ namespace giac {
 	}
 	if (debug_infolevel) // abs_calc_mode(contextptr)!=38)
 	  *logptr(contextptr) << gettext("Warning! Algebraic extension not implemented yet for poly ") << r2sym(w,lv,contextptr) << endl;
-	vecteur w_orig=w;
-	w=*evalf(r2sym(w,lv,contextptr),1,contextptr)._VECTptr;
+	gen w_orig;
+	w=*evalf((w_orig=r2sym(w,lv,contextptr)),1,contextptr)._VECTptr;
 	if (has_num_coeff(w)){ // FIXME: test is always true...
 #ifndef NO_STDEXCEPT
 	  try {
 #endif
 	    if (complexmode)
 	      newv=proot(w,epsilon(contextptr));
-	    else 
-	      newv=gen2vecteur(_realroot(gen(makevecteur(w_orig,epsilon(contextptr),at_evalf),_SEQ__VECT),contextptr)); // newv=real_proot(w,epsilon(contextptr),contextptr);
+	    else {
+	      if (lidnt(w_orig).empty())
+		newv=gen2vecteur(_realroot(gen(makevecteur(w_orig,epsilon(contextptr),at_evalf),_SEQ__VECT),contextptr));
+	      else 
+		newv=real_proot(w,epsilon(contextptr),contextptr);
+	    }
 	    solve_ckrange(x,newv,isolate_mode,contextptr);
 	    v=mergevecteur(v,newv);
 #ifndef NO_STDEXCEPT
@@ -5603,7 +5607,8 @@ namespace giac {
 	 res.front().dim<=GROEBNER_VARS+1-(order!=_PLEX_ORDER)){
       vectpoly tmp;
       order_t order_={order,lexvars};
-      gbasis8(res,order_,tmp,env,modularcheck!=0,modularcheck>=2,rur,contextptr,eliminate_flag); 
+      if (!gbasis8(res,order_,tmp,env,modularcheck!=0,modularcheck>=2,rur,contextptr,eliminate_flag))
+	return false;
       int i;
       for (i=0;i<tmp.size();++i){
 	if (tmp[i].coord.empty())
@@ -6876,7 +6881,10 @@ namespace giac {
 	  vecteur neweq;
 	  for (int i=0;i<neq;++i){
 	    if (i==bestpos) continue;
-	    gen r=_resultant(makesequence(eqs[i],besteq,bestvar),contextptr);
+	    gen a=_simp2(makesequence(eqs[i],besteq),contextptr);
+	    if (a.type!=_VECT || a._VECTptr->size()!=2)
+	      return gensizeerr(contextptr);
+	    gen r=_resultant(makesequence(a._VECTptr->front(),a._VECTptr->back(),bestvar),contextptr);
 	    neweq.push_back(r);
 	  }
 	  vecteur newelim;
