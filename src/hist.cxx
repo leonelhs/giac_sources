@@ -957,6 +957,10 @@ static void cb_Xcas_Insert_Session(Fl_Menu_*, void*) {
   xcas::History_cb_Insert(Xcas_current_session(),0);
 }
 
+static void cb_Xcas_Firefox_Insert_Session(Fl_Menu_*, void*) {
+  fl_alert("Click on a history level then paste (Ctrl-V)");
+}
+
 static void cb_Xcas_Insert_Figure(Fl_Menu_*, void*) {
   xcas::History_cb_Insert_Figure(Xcas_current_session(),0);
 }
@@ -1827,6 +1831,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Insert", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"xcas session", 0,  (Fl_Callback*)cb_Xcas_Insert_Session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"xcas Firefox link", 0,  (Fl_Callback*)cb_Xcas_Firefox_Insert_Session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"figure", 0,  (Fl_Callback*)cb_Xcas_Insert_Figure, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"spreadsheet", 0,  (Fl_Callback*)cb_Xcas_Insert_Tableur, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"program", 0,  (Fl_Callback*)cb_Xcas_Insert_Program, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3124,7 +3129,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<327; i++)
+        for ( ; i<328; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

@@ -1879,7 +1879,7 @@ namespace xcas {
     }
     autosave_disabled=false;
     w->hide();
-    bool syntaxefr=false; // lang==1; // activer apres les concours 2017
+    bool syntaxefr=lang==1; // activer apres les concours 2017
     if (r==0){
       int i=0,addi=0; // i=ed->insert_position(),addi=0;
       string s;

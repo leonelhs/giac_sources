@@ -2508,6 +2508,7 @@ namespace xcas {
 	  if (nextpos<pos+2)
 	    break;
 	  string txt=s.substr(pos+2,nextpos-pos-2);
+	  txt=html_filter(txt);
 	  if (s[pos+1]=='*'){
 	    gen g(txt,contextptr);
 	    if (g.type==_VECT && g._VECTptr->size()>=5){
