@@ -1,30 +1,68 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html> <head>
-<title></title>
+  <meta charset="utf-8">
+  <meta name=viewport content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="keywords" content="xcas Numworks">
+<title>Outils Numworks</title>
 </head>
 <script src="numworks.js"></script>
 <script src="nws_sig.js"></script>
 <script src="nws.js"></script>
+<script src="FileSaver.js"></script>
 
 <body>
-<h1>Outils Numworks</h1>
+<h1>Kit de connection Numworks</h1>
+<b>Attention, Numworks va verrouiller ses calculatrices</b> &agrave;
+partir de la version 16 de son logiciel (pr&eacute;vue pour la
+rentr&eacute;e 2021) ce qui les rendra incompatibles avec Xcas et tous
+les logiciels d&eacute;velopp&eacute;s par la communaut&eacute;.
+<b>Ne faites pas de mise &agrave; jour, car c'est
+irr&eacute;versible</b>. Cette page contient un kit de connexion
+avec votre calculatrice qui vous &eacute;vitera d'aller sur
+le workshop de Numworks et de faire une mise &agrave; jour par inadvertance.
 <ul>
+  <li> 
+<button id="numworks_load" class="bouton" onclick="UI.numworks_load(false)">Numworks→</button>
+: importe un script Python de la calculatrice vers l'ordinateur. Vous
+  pouvez aussi faire un <button id="numworks_load" class="bouton"
+  onclick="UI.numworks_load(true)">Backup</button>, c'est-&agrave;-dire une
+  sauvegarde compl&egrave;te
+  de tous les scripts de la calculatrice.
+  <li>
+  <button onclick="UI.loadFile(($id('loadfileinput').files)[0]);">→Numworks</button>
+  <input id="loadfileinput" accept=".py,.nws" type="file"
+  title="Cliquer ici pour charger un fichier Python"
+  onchange="UI.loadFile((this.files)[0]);">
+  : si le fichier a pour extension <tt>.py</tt> on
+  envoie un script Python de l'ordinateur vers la calculatrice. Si le
+  fichier a pour extension <tt>.nws</tt>, on remplace le contenu de la
+  calculatrice par la sauvegarde.
+  <li>
+  Vous pouvez aussi &eacute;changer des scripts avec la calculatrice depuis
+  <a
+  href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html">
+  Xcas pour Firefox </a>, les modifier, les tester, et les partager
+  sous forme de liens par email ou
+  sur des forums.
   <li>
   <button
   onclick="UI.numworks_install_delta();">Installation
-  KhiCAS+Delta</button><br>
-  Si votre calculatrice est bloqu&eacute;e,
-  vous pouvez installer <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr#xcaswin">Xcas</a> puis dans le menu
-  <tt>Fich</tt>, sous-menu <tt>Numworks</tt>, choisissez
-  <tt>Assistance calculatrice bloquee</tt> pour installer le mode
-  de r&eacute;cup&eacute;ration sur la Numworks.
-  <!--- <li>
-  Assistance calculatrice bloqu&eacute;e
-  <button
-  onclick="UI.numworks_rescue();">r&eacute;cup&eacute;ration</button>
-  !--->
+  KhiCAS+Delta</button> : installe Xcas sur votre calculatrice Numworks.
   <li>
-  Pour certifier que le firmware d'une calculatrice Numworks N0110 est
+  <button
+  onclick="UI.numworks_rescue();">R&eacute;cup&eacute;ration</button> :
+  Assistance si votre calculatrice est bloqu&eacute;e.<br>
+  Connectez la calculatrice, appuyez sur la touche 6 de la
+  calculatrice, enfoncez un stylo dans le bouton RESET au dos
+  en laissant la touche 6 appuy&eacute;e,
+  relachez la touche 6, l'&eacute;cran doit etre &eacute;teint et la
+  diode rouge allum&eacute;e.
+  <br>
+  Si le message <tt>http://... tente de se connecter</tt> apparait, cliquez
+  sur <tt>STM32 BOOTLOADER associ&eacute;</tt> puis sur le bouton <tt>Connexion</tt>.
+  <li>
+  <em>Lutte contre la fraude :</em> pour certifier que le firmware d'une calculatrice Numworks N0110 est
   une version non modifi&eacute;e de Delta+KhiCAS, cliquez sur l'un des
   deux boutons
   <br>
@@ -34,12 +72,28 @@
   onclick="UI.numworks_certify(nws_sig,true);">Certification + R/W test</button>
   <br>
   Le premier test prend 15 secondes environ, le deuxi&egrave;me est plus
-s&eacute;curis&eacute; mais dure 1 minute environ.
+s&eacute;curis&eacute; mais dure 1 minute environ. Ce test peut etre fait
+par un surveillant pendant un examen depuis son smartphone depuis
+<a
+href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/nws.html">ce
+lien</a>
+avec un
+<a href="https://tiplanet.org/forum/viewtopic.php?f=99&t=25091">cable smartphone-Numworks</a>.
 </ul>
 Cette page fonctionne uniquement avec un navigateur compatible webusb,
-par exemple Chromium ou Chrome et avec un serveur.
-Pour une utilisation en local, il faut activer un serveur, par exemple
-avec la commande <tt>python3 -m http.server</tt>, puis cliquer
+par exemple Chromium ou Chrome et depuis un serveur web. Firefox n'a pas de
+support pour webusb pour des raisons de s&eacute;curit&eacute;, si
+vous avez des craintes &agrave; ce sujet, vous pouvez connecter votre
+calculatrice Numworks avec 
+<a
+href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr">Xcas</a>
+(version Windows, Linux et Mac).
+<br>
+Pour les experts souhaitant utiliser cette page en local,
+activez un serveur web local, par exemple en tapant
+dans un Terminal la commande <tt>python3 -m http.server</tt>
+depuis le r&eacute;pertoire o&ugrave; vous avez d&eacute;compress&eacute;
+<a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/xcashtml.zip">xcashtml.zip</a>, puis cliquez
 <a href="localhost:8000/nws.html">sur ce lien</a>.
 
 
@@ -47,7 +101,7 @@ avec la commande <tt>python3 -m http.server</tt>, puis cliquer
 <div id="output" style="max-height: 200px; overflow:auto"></div>
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Fri Jul 30 09:34:22 CEST 2021 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Sun Aug  1 17:55:07 CEST 2021 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
 window.onload = function (e) {

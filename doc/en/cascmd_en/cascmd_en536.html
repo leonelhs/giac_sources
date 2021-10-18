@@ -30,7 +30,7 @@ is the minimum number of units required by the <span style="font-style:italic">k
 unit of product from the <span style="font-style:italic">i</span>th source to the <span style="font-style:italic">j</span>th destination, for 
 <span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">m</span> and <span style="font-style:italic">j</span>=1,2,…,<span style="font-style:italic">n</span>. 
 </li></ul><p>
-The optimal solution is represented as matrix 
+An optimal solution is represented by the matrix 
 <span style="font-weight:bold"><span style="font-style:italic">X</span></span><sup>*</sup>=(<span style="font-style:italic">x</span><sub><span style="font-style:italic">ij</span></sub><sup>*</sup>), where <span style="font-style:italic">x</span><sub><span style="font-style:italic">ij</span></sub><sup>*</sup> is number of
 units that must be transported from the <span style="font-style:italic">i</span>th source to the <span style="font-style:italic">j</span>th
 destination for <span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">m</span> and <span style="font-style:italic">j</span>=1,2,…,<span style="font-style:italic">n</span>. </p><p>The <span style="font-family:monospace">tpsolve</span> command solves the transportation problem.
@@ -70,7 +70,7 @@ cost of transportation.
 </p><p>If the total supply and total demand are equal, i.e. if 
 ∑<sub><span style="font-style:italic">i</span>=1</sub><sup><span style="font-style:italic">m</span></sup> <span style="font-style:italic">s</span><sub><span style="font-style:italic">i</span></sub>=∑<sub><span style="font-style:italic">j</span>=1</sub><sup><span style="font-style:italic">n</span></sup> <span style="font-style:italic">d</span><sub><span style="font-style:italic">j</span></sub> holds, the transportation problem
 is said to be <em>closed</em> or <em>balanced</em>, otherwise it is 
-said to be<em>unbalanced</em>. The excess
+said to be <em>unbalanced</em>. The excess
 supply/demand is covered by adding a dummy demand/supply point with
 zero cost of “transportation” from/to that point. The 
 <span style="font-family:monospace">tpsolve</span> command handles such cases automatically.</p><p><br>
@@ -108,11 +108,12 @@ zero cost of “transportation” from/to that point. The
 ⎦</td></tr>
 </table><p><br>
 </p><p>Sometimes it is desirable to forbid transportation on certain routes.
-That is usually achieved by setting very high cost to these routes,
-represented by the symbol <span style="font-style:italic">M</span>. If <span style="font-family:monospace">tpsolve</span> detects this symbol in
-the cost matrix and assigns it 100 times the largest numeric element
-of  <span style="font-weight:bold"><span style="font-style:italic">C</span></span>  to the corresponding routes, which forces the
-algorithm to avoid them. </p><p><br>
+That is usually achieved by setting a very high cost,
+represented by a symbol (usually <span style="font-style:italic">M</span>), to these routes.
+Hence all instances of a symbol in the cost matrix are automatically replaced
+by a practically infinite number (precisely
+(<span style="font-style:italic">m</span> <span style="font-style:italic">n</span> + 1)/ε, where ε is returned
+by <span style="font-family:monospace">epsilon</span>), which forces the algorithm to avoid the associated routes. </p><p><br>
 </p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">

@@ -19,6 +19,8 @@
 
 #ifndef __GRAPHE_H
 #define __GRAPHE_H
+#include <time.h>
+#include <stdarg.h>
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -26,12 +28,14 @@
 #include "gen.h"
 #include "unary.h"
 #include "moyal.h"
+#include "optimization.h"
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <queue>
 #include <stack>
 #include <set>
+#include <bitset>
 #ifdef HAVE_LIBGLPK
 #include <glpk.h>
 #endif
@@ -43,6 +47,7 @@
 #define PLASTIC_NUMBER_2 1.75487766625
 #define PLASTIC_NUMBER_3 2.32471795724
 #define MARGIN_FACTOR 0.139680581996 // pow(PLASTIC_NUMBER,-7)
+#define SIP_NBITS 64
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
@@ -64,6 +69,7 @@ enum gt_attribute {
     _GT_ATTRIB_COLOR,
     _GT_ATTRIB_SHAPE,
     _GT_ATTRIB_STYLE,
+    _GT_ATTRIB_WIDTH,
     _GT_ATTRIB_DIRECTED,
     _GT_ATTRIB_WEIGHTED,
     _GT_ATTRIB_POSITION,
@@ -90,6 +96,35 @@ enum gt_vertex_cover_algorithm {
     _GT_VC_EXACT
 };
 
+enum gt_named_graph_sequence {
+    _GT_SEQ_CYCLE,
+    _GT_SEQ_PATH,
+    _GT_SEQ_COMPLETE,
+    _GT_SEQ_COMPLETE_TREE,
+    _GT_SEQ_KNESER,
+    _GT_SEQ_ODD,
+    _GT_SEQ_JOHNSON,
+    _GT_SEQ_HYPERCUBE,
+    _GT_SEQ_STAR,
+    _GT_SEQ_WHEEL,
+    _GT_SEQ_WEB,
+    _GT_SEQ_PRISM,
+    _GT_SEQ_ANTIPRISM,
+    _GT_SEQ_GRID,
+    _GT_SEQ_SIERPINSKI,
+    _GT_SEQ_PETERSEN,
+    _GT_SEQ_FLOWER,
+    _GT_SEQ_GOLDBERG,
+    _GT_SEQ_PALEY,
+    _GT_SEQ_HAAR
+};
+
+enum gt_conn_check {
+    _GT_CC_CONNECTED, // current subgraph is connected
+    _GT_CC_COMPONENTS_ARE_SUBGRAPHS, // components are subgraphs with indices 1,2,...
+    _GT_CC_FIND_COMPONENTS // split graph to connected components and iterate
+};
+
 class graphe {
 public:
     typedef std::vector<int> ivector;
@@ -101,7 +136,8 @@ public:
     typedef std::vector<dpair> dpairs;
     typedef std::vector<double> point;
     typedef std::vector<point> layout;
-    typedef std::map<int,std::map<int,ipair> > sparsemat;
+    typedef std::map<int,ipair> sparsematrow;
+    typedef std::map<int,sparsematrow> sparsemat;
     typedef std::set<ipair> edgeset;
     typedef std::vector<std::map<int,int> > edgemap;
     typedef std::vector<std::map<int,double> > edgemapd;
@@ -109,6 +145,9 @@ public:
     typedef std::vector<double> dvector;
     typedef std::set<int> iset;
     typedef std::vector<bool> bvector;
+    typedef std::vector<bvector> bvectors;
+    typedef std::vector<std::bitset<SIP_NBITS> > bitrow;
+    typedef std::vector<bitrow> bitmatrix;
 
     class vertex { // vertex class
         int m_subgraph;
@@ -406,6 +445,11 @@ public:
         ~mvc_solver();
         int solve(ivector &cover,int k=-1);
     };
+
+    typedef struct { double rhs, pi; } mcf_v_data;
+    typedef struct { double low, cap, cost, x; } mcf_a_data;
+    typedef struct { int set; } wbm_v_data;
+    typedef struct { double cost; int x; } wbm_a_data;
 #endif
 
     class rectangle { // simple rectangle class
@@ -517,11 +561,10 @@ public:
     class ostergard { // clique maximizer
         graphe *G;
         int maxsize;
-        bool found;
+        bool found,timed_out;
         double timeout; // seconds
         ivector c,incumbent,clique_nodes;
         clock_t start;
-        bool timed_out;
         void recurse(ivector &U,int size,ivector &position);
     public:
         ostergard(graphe *gr,double max_time=0) { G=gr; timeout=max_time; }
@@ -560,13 +603,8 @@ public:
     class mm { // An efficient implementation of Edmonds' blossom algorithm
         enum label_t { EVEN=0, ODD=1 };
         graphe *G;
-        int *mate;
-        int *label;
-        int *pred;
-        int *bridge;
+        int *mate,*label,*pred,*bridge,V,s;
         std::queue<int> Q;
-        int V;
-        int s;
         unionfind *ds;
         ivector ap;
         bool alternating_forest();
@@ -583,6 +621,33 @@ public:
         mm(graphe *g);
         ~mm();
         void find_maximum_matching(ipairs &matching,int sg=-1);
+    };
+
+    class sip { // subgraph isomorphism via Ullmann's algorithm
+        int N,n,max_sg,nb;
+        bitmatrix A,AT,M;
+        bvectors B;
+        bvector used_cols;
+        ivectors found;
+        bool induced,dir,isom;
+        ipairs changes;
+        std::stack<ipairs> snapshots;
+        static void clear_bitrow(bitrow &row);
+        static bool get_j(const bitrow &row,int j) { return row[j/SIP_NBITS].test(j%SIP_NBITS); }
+        static bool get_ij(const bitmatrix &mat,int i,int j) { return get_j(mat[i],j); }
+        static void set_ij(bitmatrix &mat,int i,int j,bool val) { mat[i][j/SIP_NBITS].set(j%SIP_NBITS,val); }
+        bool mult_bitrows(const bitrow &r,const bitrow &c);
+        bool M_has_empty_row();
+        bool recurse(int i=0);
+        void prune();
+        void edit(int i,int j) { set_ij(M,i,j,false); changes.push_back(make_pair(i,j)); }
+        void push_changes() { snapshots.push(changes); changes.clear(); }
+        void revert_changes();
+        bool is_isomorphism();
+    public:
+        sip(const graphe &G,const graphe &P,int max_sg_in=1);
+        int find_subgraphs(bool only_induced=true);
+        const ivector &get_subgraph(int i) const { return found[i]; }
     };
     
     struct edges_comparator { // for sorting edges by their weight
@@ -624,6 +689,7 @@ public:
         ivectors_degree_comparator(graphe *gr) { G=gr; }
     };
 
+    /* iterators */
     typedef std::vector<vertex>::const_iterator node_iter;
     typedef std::map<int,attrib>::const_iterator neighbor_iter;
     typedef attrib::const_iterator attrib_iter;
@@ -636,6 +702,7 @@ public:
     typedef dvector::const_iterator dvector_iter;
     typedef iset::const_iterator iset_iter;
 
+    /* static variables and constants */
     static const gen FAUX;
     static const gen VRAI;
     static bool verbose;
@@ -649,7 +716,8 @@ public:
     static std::map<ivector,std::vector<cpol> > cache;
     // special graphs
     static const int clebsch_graph[];
-    static const char* coxeter_graph[];
+    static const int coxeter_graph[];
+    static const char* coxeter_graph_vnames[];
     static const int dyck_graph[];
     static const int grinberg_graph[];
     static const int grotzsch_graph[];
@@ -689,7 +757,7 @@ public:
     static const int tutte_12cage_lcf[];
     static const int tutte_8cage_lcf[];
     static const int f26a_graph_lcf[];
-    static const int tutte_fragment_graph[];
+    static const int tutte_graph[];
     static const int brinkmann_graph[];
     static const int barnette_bosak_lederberg_graph[];
     static const int double_star_snark[];
@@ -699,7 +767,7 @@ public:
     static const int wong_graph[];
     static const char* const gewirtz_words[];
     static const int harborth_graph[];
-    static const int kittel_graph[];
+    static const int kittell_graph[];
     static const int krackhardt_kite_graph[];
     static const int meredith_graph[];
     static const int perkel_graph[];
@@ -708,6 +776,14 @@ public:
     static const int watkins_snark[];
     static const int wells_graph[];
     static const int wiener_araya_graph[];
+    static const int markstroem_graph[];
+
+    struct spcgraph { const char* name; int nv; int ne; };
+    static const spcgraph special_graph[];
+
+    static const std::ios::iostate cout_rdstate;
+    static const std::ios::iostate cerr_rdstate;
+
 
 private:
     const context *ctx;
@@ -723,6 +799,7 @@ private:
     std::map<int,iset> visited_edges;
     ivectors maxcliques;
     std::stack<ivector> saved_subgraphs;
+    std::ios::iostate logger_rdstate;
     bool m_supports_attributes;
     void clear_node_stack();
     void clear_node_queue();
@@ -730,6 +807,8 @@ private:
     void message(const char *format,int a) const;
     void message(const char *format,int a,int b) const;
     void message(const char *format,int a,int b,int c) const;
+    void suspend_logging();
+    void restore_logging();
     std::string giac_version() const;
     vertex &node(int i) { return nodes[i]; }
     bool dot_parse_attributes(std::ifstream &dotfile,attrib &attr);
@@ -738,7 +817,7 @@ private:
     static bool genmap2attrib(const gen_map &m,attrib &attr);
     static void attrib2genmap(const attrib &attr,gen_map &m);
     static void copy_attributes(const attrib &src,attrib &dest);
-    void write_attrib(std::ofstream &dotfile,const attrib &attr) const;
+    void write_attrib(std::ofstream &dotfile,const attrib &attr,bool style=true) const;
     static ivector_iter binsearch(ivector_iter first,ivector_iter last,int a);
     static size_t sets_union(const iset &A,const iset &B,iset &U);
     static size_t sets_intersection(const iset &A,const iset &B,iset &I);
@@ -767,8 +846,10 @@ private:
     static double layout_min(const layout &x,int d);
     static double layout_diameter(const layout &x);
     static void point2polar(point &p,double &r,double &phi);
+    vecteur draw_edge(int i,int j,const layout &x) const;
     static bool sparse_matrix_element(const sparsemat &A,int i,int j,ipair &val);
     static void multiply_sparse_matrices(const sparsemat &A,const sparsemat &B,sparsemat &P,int ncols,bool symmetric=false);
+    static gen sparse_product_element(const sparsemat &A, const sparsemat &B,int i,int j);
     static void transpose_sparsemat(const sparsemat &A,sparsemat &T);
     void multilevel_recursion(layout &x,int d,double R,double K,double tol,int depth=0);
     int mdeg(const ivector &V,int i) const;
@@ -788,13 +869,9 @@ private:
     static bool segments_crossing(const point &p,const point &r,const point &q,const point &s,point &crossing);
     static bool point2segment_projection(const point &p,const point &q,const point &r,point &proj);
     void force_directed_placement(layout &x,double K,double R=DBL_MAX,double tol=0.01,bool ac=true);
-    static bool get_node_position(const attrib &attr,point &p);
+    static bool get_node_position(const attrib &attr,point &p,GIAC_CONTEXT);
     void coarsening_mis(const ivector &V,graphe &G,sparsemat &P) const;
     void coarsening_ec(const ipairs &M,graphe &G,sparsemat &P) const;
-    int best_quadrant(const point &p,const layout &x) const;
-    void append_segment(vecteur &drawing, const point &p,const point &q,int color,int width,int style,bool arrow=false) const;
-    void append_node(vecteur &drawing,const point &p,int color,int width,int shape) const;
-    void append_label(vecteur &drawing,const point &p,const gen &label,int quadrant,int color=_BLACK) const;
     static int face_has_edge(const ivector &face,int i,int j);
     int first_neighbor_from_subgraph(const vertex &v,int sg) const;
     void set_nodes_embedded(const ivector &v,bool yes=true);
@@ -813,7 +890,7 @@ private:
     void tree_height_dfs(int i,int level,int &depth);
     void make_product_nodes(const graphe &G,graphe &P) const;
     static void extract_path_from_cycle(const ivector &cycle,int i,int j,ivector &path);
-    static void generate_nk_sets(int n,int k,std::vector<ulong> &v);
+    static void generate_nk_sets(int n,int k,std::vector<std::bitset<32> > &v);
     void strongconnect_dfs(ivectors &components,bvector &onstack,int i,int sg);
     bool degrees_equal(const ivector &v,int deg=0) const;
     void lca_recursion(int u,const ipairs &p,ivector &lca,unionfind &ds);
@@ -830,8 +907,8 @@ private:
     int uncolored_degree(const vertex &v) const;
     bool is_partially_colored() const;
     void remove_maximal_clique(iset &V) const;
-    bool bipartite_matching_bfs(ivector &dist);
-    bool bipartite_matching_dfs(int u,ivector &dist);
+    bool bipartite_matching_bfs(ivector &dist,int sg=-1);
+    bool bipartite_matching_dfs(int u,ivector &dist,int sg=-1);
     static gen make_colon_label(const ivector &v);
     void simplify(graphe &G,bool color_temp_vertices=false) const;
     intpoly tutte_poly_recurse(int vc);
@@ -856,28 +933,31 @@ private:
     bool hamcycle_recurse(ivector &path,int pos);
     void grasp_construct(double aplha, ivector &Q,bool cmpl,int sg);
     void grasp_local(ivector &Q,bool cmpl,int sg);
-    bool mvc_special(ivector &cover,const ivector &component,int sg);
+    bool mvc_special(ivector &cover,int sg);
     bool mvc_is_unconfined(int i,int sg=0) const;
     bool mvc_is_dominant(int v,int sg) const;
-    void mvc_reduce_basic(int &sg,bool assert_conn=false);
+    bool mvc_reduce_basic(int sg,int c);
     void mvc_half_integral(int sg, ivector &in_cover, ivector &out_cover);
     void mvc_alom(ivector &cover,int sg=-1);
     void mvc_dfs(ivector &cover,int sg=-1);
-    void mvc_bipartite(const ivector &U,const ivector &V,ivector &cover,int sg=-1);
-    ivector alom_candidates(const ivector &V,const vecteur &ds);
+    void mvc_bipartite(const ivector &U,const ivector &V,ivector &cover,int sg=-1,bool conn=false);
+    void alom_candidates(const ivector &V,ivector &cand,int sg);
     int count_edges_in_Nv(int v,int sg=-1) const;
     int count_edges(const ivector &V) const;
+    bool is_simplicial(int i,const sparsemat &A,double D=0.0);
     void make_hoffman_singleton_graph();
+    void make_sylvester_graph();
     void make_higman_sims_graph();
     void make_brouwer_haemers_graph();
     void make_gewirtz_graph();
     void make_schlaefli_graph();
     void make_gosset_graph();
+    void make_szerekes_snark();
 
 public:
     graphe(const context *contextptr=context0,bool support_attributes=true);
     graphe(const graphe &G);
-    graphe(const std::string &name,const context *contextptr=context0);
+    graphe(const std::string &name,const context *contextptr=context0,bool support_attributes=true);
     graphe &operator =(const graphe &other);
     bool is_simple() const;
     
@@ -886,7 +966,7 @@ public:
     double rand_uniform() const;
     double rand_normal() const { return giac::randNorm(ctx); }
     ivector rand_permu(int n) const;
-    static bool is_real_number(const gen &g);
+    static bool is_real_number(const gen &g,GIAC_CONTEXT);
     static gen to_binary(int number,int chars);
     const context *giac_context() const { return ctx; }
     static gen make_idnt(const char* name,int index=-1,bool intern=true);
@@ -898,12 +978,16 @@ public:
     static std::string genstring2str(const gen &g);
     static gen plusinf();
     void ivectors2vecteur(const ivectors &v,vecteur &res,bool sort_all=false) const;
+    void append_segment(vecteur &drawing, const point &p,const point &q,int color,int width,int style,bool arrow=false) const;
+    void append_node(vecteur &drawing,const point &p,int color,int width,int shape) const;
+    void append_label(vecteur &drawing,const point &p,const gen &label,int quadrant,int color=_BLACK) const;
     void reserve_nodes(int n) { assert(nodes.empty()); nodes.reserve(n); }
     bool read_gen(const gen &g);
     void read_special(const int *special_graph);
     void read_special(const char **special_graph);
     void copy(graphe &G) const;
     void copy_nodes(const std::vector<vertex> &V);
+    void copy_nodes(graphe &G,map<int,int> &vmap,int sg=-1) const;
     bool supports_attributes() const { return m_supports_attributes; }
     void clear();
     void clear_maximal_cliques() { maxcliques.clear(); }
@@ -929,12 +1013,14 @@ public:
     bool is_edge_visited(const ipair &e) const { return is_edge_visited(e.first,e.second); }
     void unvisit_all_edges() { visited_edges.clear(); }
     gen to_gen();
-    int *to_array(int &sz,bool reduce=false) const;
+    int *to_array(int &sz,bool colored,bool reduce=false) const;
     bool write_latex(const std::string &filename,const gen &drawing) const;
-    bool write_dot(const std::string &filename) const;
+    bool write_dot(const std::string &filename,bool style=true) const;
+    bool write_lst(const std::string &filename) const;
     bool read_dot(const std::string &filename);
+    bool read_lst(const std::string &filename);
     bool is_null() const { return nodes.empty(); }
-    bool is_empty() const;
+    bool is_empty(int sg=-1) const;
     void weight_matrix(matrice &W) const;
     gen weight(int i,int j) const;
     gen weight(const ipair &edge) const { return weight(edge.first,edge.second); }
@@ -981,6 +1067,7 @@ public:
     const attrib &graph_attributes() const { return attributes; }
     const attrib &node_attributes(int i) const;
     const attrib &edge_attributes(int i,int j) const;
+    attrib &node_attributes(int i);
     attrib &edge_attributes(int i,int j);
     const attrib &edge_attributes(const ipair &e) const { return edge_attributes(e.first,e.second); }
     attrib &edge_attributes(const ipair &e) { return edge_attributes(e.first,e.second); }
@@ -996,8 +1083,8 @@ public:
     void remove_temporary_edges();
     bool remove_edge(int i,int j);
     bool remove_edge(const ipair &p) { return remove_edge(p.first,p.second); }
-    bool has_edge(int i,int j,int sg=-1) const;
-    bool has_edge(const ipair &p,int sg=-1) const { return has_edge(p.first,p.second,sg); }
+    bool has_edge(int i,int j) const;
+    bool has_edge(const ipair &p) const { return has_edge(p.first,p.second); }
     ipair make_edge(const vecteur &v) const;
     bool edges2ipairs(const vecteur &E,ipairs &ev,bool &notfound) const;
     vecteur ipairs2edges(const ipairs &E) const;
@@ -1006,13 +1093,12 @@ public:
     int in_degree(int index,int sg=-1) const;
     int out_degree(int index,int sg=-1) const;
     int degree(int index,int sg=-1) const;
-    int maximum_degree() const;
-    int minimum_degree() const;
-    int average_degree() const;
-    vecteur degree_sequence(int sg=-1) const;
-    void sort_by_degrees();
+    int maximum_degree(int sg=-1) const;
+    int minimum_degree(int sg=-1) const;
+    ivector degree_sequence(int sg=-1) const;
+    void sort_by_degrees(ivector &sigma);
     void adjacency_matrix(matrice &m) const;
-    void adjacency_sparse_matrix(sparsemat &sm,bool diag_ones=false) const;
+    void adjacency_sparse_matrix(sparsemat &sm,bool diag_ones=false,int sg=-1) const;
     void laplacian_matrix(matrice &m,bool normalize=false) const;
     void incidence_matrix(matrice &m) const;
     void set_graph_attribute(int key,const gen &val) { attributes[key]=val; }
@@ -1039,40 +1125,35 @@ public:
     int is_regular(int d) const;
     bool is_strongly_regular(ipair &sig);
     bool is_equal(const graphe &G) const;
-    void underlying(graphe &G) const;
-    void complement(graphe &G) const;
+    void underlying(graphe &G,int sg=-1) const;
+    void complement(graphe &G,int sg=-1) const;
     bool isomorphic_copy(graphe &G,const ivector &sigma,bool strip_attributes=false);
     bool relabel_nodes(const vecteur &labels);
     void induce_subgraph(const ivector &vi,graphe &G) const;
     void extract_subgraph(const ipairs &E,graphe &G) const;
     void subgraph_indices(const graphe &S,const ivector &v,ivector &sv) const;
     bool is_subgraph(const graphe &G) const;
+    void renumber_subgraph(int sg,int sg_new);
     void maximal_independent_set(ivector &ind) const;
-    void find_maximum_matching(ipairs &M);
-    void find_maximal_matching(ipairs &matching,int sg=-1) const;
-    bool trail(const vecteur &v);
+    void maximum_matching(ipairs &matching,int sg=-1,gt_conn_check cc=_GT_CC_FIND_COMPONENTS);
+    void maximal_matching(ipairs &matching,int sg=-1) const;
     bool demoucron(ivectors &faces,int sg=-1);
     void create_random_layout(layout &x,int dim);
     void make_spring_layout(layout &x,int d,double tol=0.001);
     void make_circular_layout(layout &x,const ivector &hull,double A=0,double tol=0.005,double elongate=0.0);
     void make_tutte_layout(layout &x,const ivector &outer_face);
-    bool make_planar_layout(layout &x);
+    bool make_planar_layout(layout &x,double *score=NULL);
+    bool make_best_planar_layout(layout &x,int iter);
     void make_tree_layout(layout &x,double sep,int apex=0);
     void make_bipartite_layout(layout &x,const ivector &p1,const ivector &p2);
     void layout_best_rotation(layout &x);
-    static rectangle layout_bounding_rect(layout &ly,double padding=0);
-    static void pack_rectangles(std::vector<rectangle> &rectangles);
-    static gen point2gen(const point &p,bool vect=false);
-    static bool gen2point(const gen &g,point &p);
-    static point layout_center(const layout &x);
-    static void scale_layout(layout &x,double diam);
-    bool is_tree() { return !is_directed() && edge_count()+1==node_count() && is_connected(); }
-    bool is_forest();
-    bool is_tournament() const;
-    bool is_planar();
+    bool is_tree(int sg=-1) { return !is_directed() && edge_count(sg)+1==subgraph_size(sg) && is_connected(sg); }
+    bool is_forest(int sg=-1,gt_conn_check cc=_GT_CC_FIND_COMPONENTS);
+    bool is_tournament(int sg=-1) const;
+    bool is_planar(int sg=-1);
     bool is_clique(int sg=-1) const;
     gen triangle_count(ivectors *dest=NULL,bool ccoeff=false,bool exact=true);
-    int tree_height(int root);
+    int tree_height(int root=-1);
     void clique_stats(std::map<int,int> &m,int mode=0);
     int maximum_clique(ivector &clique);
     void greedy_neighborhood_clique_cover_numbers(ivector &cover_numbers);
@@ -1087,19 +1168,22 @@ public:
     void make_lcf_graph(const int *j);
     void make_sierpinski_graph(int n,int k,bool triangle);
     void make_shrikhande_graph();
-    void make_tutte_graph();
     void make_complete_graph();
     void make_complete_multipartite_graph(const ivector &partition_sizes,layout *x=NULL);
     void make_petersen_graph(int n,int k,layout *x=NULL);
-    bool make_kneser_graph(int n,int k);
+    bool make_intersection_graph(int n,int k,int sz,bool lab_sets=false);
     void make_path_graph();
     void make_cycle_graph();
-    void make_grid_graph(int m,int n,bool torus=false);
+    void make_grid_graph(int m,int n,int mode=0);
     void make_web_graph(int n,int m,layout *x=NULL);
     void make_wheel_graph(int n,layout *x=NULL);
     void make_antiprism_graph(int n,layout *x=NULL);
     void make_complete_kary_tree(int k,int d);
     bool make_flower_snark(int n,layout *x=NULL);
+    bool make_goldberg_snark(int n);
+    bool make_haar_graph(ulong n);
+    void make_paley_graph(int p,int k);
+    void make_hypercube_graph(int n);
     void make_random_tree(int maxd=0);
     void make_random_rooted_tree();
     void make_random_free_tree();
@@ -1112,6 +1196,7 @@ public:
     void tensor_product(const graphe &G,graphe &P) const;
     void connected_components(ivectors &components,int sg=-1,bool skip_embedded=false,int *count=NULL);
     int connected_component_count(int sg=-1);
+    int connected_components_to_subgraphs(int sg=-1);
     void biconnected_components(ivectors &components,int sg=-1);
     void strongly_connected_components(ivectors &components,int sg=-1);
     bool has_cut_vertex(int sg=-1,int i=0);
@@ -1140,7 +1225,7 @@ public:
     void draw_nodes(vecteur &drawing,const layout &x) const;
     void draw_labels(vecteur &drawing,const layout &x) const;
     void distance(int i,const ivector &J,ivector &dist,ivectors *shortest_paths=NULL);
-    void allpairs_distance(matrice &m) const;
+    void allpairs_distance(matrice &m);
     void dijkstra(int src,const ivector &dest,vecteur &path_weights,ivectors *cheapest_paths=NULL,int sg=-1);
     bool bellman_ford(int src,const ivector &dest,vecteur &path_weights,ivectors *cheapest_paths=NULL);
     bool topologic_sort(ivector &ordering);
@@ -1158,8 +1243,9 @@ public:
     int greedy_vertex_coloring(const ivector &p);
     int exact_vertex_coloring(int max_colors=0);
     int exact_edge_coloring(ivector &colors,int *numcol=NULL);
-    void get_node_colors(ivector &colors);
-    bool is_bipartite(ivector &V1,ivector &V2,int sg=-1);
+    int get_node_color(int i) const;
+    void get_node_colors(ivector &colors) const;
+    bool is_bipartite(ivector &V1,ivector &V2,int sg=-1,gt_conn_check cc=_GT_CC_FIND_COMPONENTS);
     bool is_vertex_colorable(int k);
     void dsatur();
     int color_count() const;
@@ -1168,10 +1254,12 @@ public:
     ipair chromatic_number_bounds();
     void store_layout(const layout &x);
     bool has_stored_layout(layout &x) const;
-    int bipartite_matching(const ivector &p1,const ivector &p2,ipairs &matching);
+    void bipartite_matching(const ivector &p1,const ivector &p2,ipairs &matching,int sg=-1,gt_conn_check cc=_GT_CC_FIND_COMPONENTS);
+    bool weighted_bipartite_matching(const ivector &p1,const ivector &p2,ipairs &matching,
+        bool minimize=true,double eps=1e-5,int sg=-1,gt_conn_check cc=_GT_CC_FIND_COMPONENTS);
     void line_graph(graphe &G,ipairs &E) const;
     void transitive_closure(graphe &G,bool weighted=false);
-    int is_isomorphic(const graphe &other,std::map<int,int> &isom) const;
+    bool is_isomorphic(graphe &other,std::map<int,int> &isom,bool use_colors=true);
     gen aut_generators() const;
     bool canonical_labeling(ivector &lab) const;
     bool bondy_chvatal_closure(graphe &G,ivector &d);
@@ -1184,7 +1272,7 @@ public:
     gen maxflow_edmonds_karp(int s,int t,std::vector<std::map<int,gen> > &flow,const gen &limit=plusinf());
     void minimum_cut(int s,const std::vector<std::map<int,gen> > &flow,ipairs &cut);
     gen tutte_polynomial(const gen &x,const gen &y);
-    void fundamental_cycles(ivectors &cycles,int sg=-1,bool check=true);
+    void fundamental_cycles(ivectors &cycles,int sg=-1,gt_conn_check=_GT_CC_FIND_COMPONENTS);
     void mycielskian(graphe &G) const;
     gen local_clustering_coeff(int i) const;
     gen clustering_coeff(bool approx,bool exact);
@@ -1199,7 +1287,7 @@ public:
     vecteur distances_from(int k);
     gen betweenness_centrality(int k) const;
     gen communicability_betweenness_centrality(int k) const;
-    gen closeness_centrality(int k,bool harmonic=false) const;
+    gen closeness_centrality(int k,bool harmonic=false);
     gen degree_centrality(int k) const;
     vecteur katz_centrality(const gen &att) const;
     gen information_centrality(int k,bool approx=false) const;
@@ -1207,20 +1295,38 @@ public:
     bool is_split_graph(ivector &clq,ivector &indp) const;
     void contract_subgraph(graphe &G,const ivector &sg,const gen &lb) const;
     void grasp_clique(int maxitr,ivector &clq,bool cmpl=false,int sg=-1);
-    void mvc(ivector &cover,int vc_alg,int sg=0);
+    bool mvc(ivector &cover,int vc_alg,int sg=-1);
     int k_vertex_cover(ivector &cover,int k);
-    int vertex_cover_number();
+    int vertex_cover_number(int sg=-1);
     bool is_reachable(int u,int v);
     void reachable(int u,ivector &r);
-    void find_simplicial_vertices(ivector &res) const;
+    void find_simplicial_vertices(ivector &res);
+    void subgraph_isomorphism(graphe &P,int max_sg,bool induced,ivectors &res) const;
+    bool pruefer_encode(ivector &code,bool check_tree=false);
+    bool pruefer_decode(const ivector &code);
+    const char* identify();
+    void identify_from_sequences(ivectors &spec,int haar_limit=25);
 
     // static methods
+    static double to_double(const gen &g,GIAC_CONTEXT);
+    static gen customize_display(int options);
+    static gen customize_layout(int options);
+    static rectangle layout_bounding_rect(layout &ly,double padding=0,int coord_offset=0);
+    static void pack_rectangles(std::vector<rectangle> &rectangles);
+    static gen point2gen(const point &p,bool vect=false);
+    static bool gen2point(const gen &g,point &p,GIAC_CONTEXT);
+    static point layout_center(const layout &x);
+    static void scale_layout(layout &x,double diam);
+    static void scale_layout_2d(layout &x,double sx,double sy);
+    static int best_quadrant(const point &p,const layout &x);
     static gen colon_label(int i,int j);
     static gen colon_label(int i,int j,int k);
     static size_t intersect_linear(ivector_iter min1,ivector_iter max1,ivector_iter min2,ivector_iter max2);
     static bool is_graphic_sequence(const ivector &s_orig);
     static ivector_iter insert_sorted(ivector &V,int val);
     static bool erase_sorted(ivector &V,int val);
+    static ivector make_ivector(int n,...);
+    static double poly_area(const layout &x);
 };
 
 #ifndef NO_NAMESPACE_GIAC

@@ -9,8 +9,8 @@ var UI = {
   nws_connect:function(){
     if (navigator.usb){
       //console.log('nws_connect 0');
-      if (UI.calculator!=0)
-	return;
+      UI.calculator=0;
+      UI.calculator_connected=false;
       //console.log('nws_connect 1');
       function autoConnectHandler(e) {
 	UI.calculator.stopAutoConnect();
@@ -18,6 +18,7 @@ var UI = {
 	UI.calculator_connected=true;
       }
       UI.calculator= new Numworks();
+      console.log('nws_connect',UI.calculator);
       navigator.usb.addEventListener("disconnect", function(e) {
 	if (UI.calculator==0) return;
 	UI.calculator.onUnexpectedDisconnect(e, function() {
@@ -27,7 +28,35 @@ var UI = {
       });
       //console.log('nws_connect 2');
       UI.calculator.autoConnect(autoConnectHandler);
+      return UI.calculator;
       //console.log('nws_connect 3');
+    }
+  },
+  nws_rescue_connect:async function(){
+    if (navigator.usb){
+      //console.log('nws_rescue_connect 0');
+      UI.calculator=0;
+      UI.calculator_connected=false;      //console.log('nws_rescue_connect 1');
+      function autoConnectHandler(e) {
+	UI.calculator.stopAutoConnect();
+	console.log('rescue connected');
+	UI.calculator_connected=true;
+      }
+      UI.calculator= new Numworks.Recovery();
+      console.log('nws_rescue_connect',UI.calculator);
+      navigator.usb.addEventListener("rescue disconnect", function(e) {
+	if (UI.calculator==0) return;
+	UI.calculator.onUnexpectedDisconnect(e, function() {
+	  UI.calculator_connected=false;
+          UI.calculator=0;
+	});
+      });
+      //console.log('nws_rescue_connect 2');
+      if (await UI.calculator.autoConnect(autoConnectHandler)==-1){
+	return -1;
+      }
+      //console.log('nws_rescue_connect 3');
+      return 0;
     }
   },
   sig_check:async function(sig,data){
@@ -55,28 +84,120 @@ var UI = {
     }
     return false;
   },
+  numworks_load:function(backup=false){
+    UI.calc=2;
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_load_,100,backup);
+  },
+  numworks_load_: async function(backup){
+    console.log(UI.calculator,UI.calculator_connected);
+    if (UI.calculator==0 || !UI.calculator_connected){
+      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      return;
+    }
+    if (backup){
+      let pinfo = await UI.calculator.getPlatformInfo();
+        
+      let storage_blob = await UI.calculator.__retreiveStorage(pinfo["storage"]["address"], pinfo["storage"]["size"]);
+      filename = "backup.nws";
+      saveAs(storage_blob.slice(0,32768), filename);
+      return;
+    }
+    let storage = await UI.calculator.backupStorage();
+    let rec=storage.records,j=0,s='Choisissez un numero parmi ';
+    for (;j<rec.length;++j){
+      s+=j;
+      s+=':'+rec[j].name+', ';
+    }
+    let p=prompt(s),n=0;
+    if (!p) return;
+    let l=p.length;
+    for (j=0;j<l;++j){
+      if (p[j]<'0' || p[j]>'9'){ alert(UI.langue==-1?'Nombre invalide':'Invalid number'); return ;}
+      n*=10;
+      n+=p.charCodeAt(j)-48;
+    }
+    if (n>=rec.length){ alert(UI.langue==-1?'Choix invalide':'Invalide choice'); return; }
+    s=rec[n].code; p=rec[n].name;
+    let blob = new Blob([s], {type: "text/plain;charset=utf-8"});
+    filename = p + ".py";
+    saveAs(blob, filename);
+  },
+  loadFile:function(file){
+    let reader = new FileReader();
+    reader.onerror = function (evt) { }
+    if (file.name.length>4 && file.name.substr(file.name.length-4,4)==".nws"){
+      if (!confirm(UI.langue==-1?'Remplacer tous les scripts de la calculatrice?':'Overwrite all calculator scripts?'))
+	return;
+      reader.readAsArrayBuffer(file);
+    }
+    else
+      reader.readAsText(file, "UTF-8");
+    reader.onload = function (evt) { UI.numworks_save(file.name,evt.target.result);}
+  },
+  numworks_save:function(filename,S){
+    //console.log(filename,S); return;
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_save_,100,filename,S);
+  },
+  numworks_save_:async function(filename,S){
+    if (UI.calculator==0 || !UI.calculator_connected){
+      alert(UI.langue==-1?'Verifiez la connection de la calculatrice':'Check calculator connection');
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      return -1;
+    }
+    if (filename.length>4 && filename.substr(filename.length-4,4)==".nws"){
+      let pinfo = await UI.calculator.getPlatformInfo();
+      UI.calculator.device.startAddress = pinfo["storage"]["address"];
+      console.log(UI.calculator.device.startAddress,S); // return;
+      let res=await UI.calculator.device.do_download(UI.calculator.transferSize, S, false);
+      return res;
+    }
+    if (filename.length>3 && filename.substr(filename.length-3,3)==".py")
+      filename=filename.substr(0,filename.length-3);
+    let storage = await UI.calculator.backupStorage();
+    let rec=storage.records,j=0;
+    for (;j<rec.length;++j){
+      if (rec[j].name==filename){
+	if (!confirm((UI.langue==-1?'? Ecraser ':'? Overwrite ')+rec[j].name))
+	  return;
+	rec[j].code=S;
+	break;
+      }
+    }
+    if (j==rec.length)
+      rec.push({"name": filename, "type":"py", "autoImport": false, "code": S});
+    await UI.calculator.installStorage(storage, function() {
+      // Do stuff after writing to the storage is done
+      console.log(filename+'.py saved to Numworks');
+    });
+    return 0;
+  },    
   numworks_install_delta:function(){
     UI.calc=2;
     UI.nws_connect();
     window.setTimeout(UI.numworks_install_delta_,100);
   },
-  numworks_install_delta_:async function(sigfile,rwcheck){
+  numworks_install_delta_:async function(do_backup){
     if (UI.calculator==0 || !UI.calculator_connected){
       alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     } 
     UI.calculator.device.startAddress = 0x08000000;
     let data=await UI.loadfile('delta.internal.bin');
     let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print('internal OK, erase external');
+    UI.print('=========== installing Delta+KhiCAS');
+    UI.print('internal OK, erase/write external, wait about 1/2 minute');
     UI.calculator.device.startAddress = 0x90000000;
     data=await UI.loadfile('delta.external.bin');
     res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print('external OK, erase apps');
+    UI.print('external OK, erase/write apps, wait about 2 minutes');
     UI.calculator.device.startAddress = 0x90200000;
     data=await UI.loadfile('apps.tar');
     res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print('apps OK');
+    UI.print('apps OK, press RESET on calculator back');
     alert(UI.langue==-1?'Installation terminee. Appuyer sur RESET a l\'arriere de la calculatrice':'Install success. Press RESET on the calculator back.');
     return 0;
   },
@@ -88,26 +209,31 @@ var UI = {
       return response.arrayBuffer();
     })
   },
-  numworks_rescue:function(){
+  numworks_rescue:async function(){
     alert(UI.langue==-1?'Connectez la calculatrice, appuyez sur la touche 6 de la calculatrice, enfoncez un stylo dans le bouton RESET au dos en laissant la touche 6 appuyee, relachez la touche 6, l\'ecran doit etre eteint et la diode rouge allumee':'Connect the calculator, press the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key, the screen should be down and the led should be red');
     UI.calc=2;
-    UI.nws_connect();
-    window.setTimeout(UI.numworks_rescue_,100);
+    let res=await UI.nws_rescue_connect();
+    if (res==-1){
+      return;
+    }
+    window.setTimeout(UI.numworks_rescue_,1000);
   },
   numworks_rescue_:async function(sigfile,rwcheck){
     if (UI.calculator==0 || !UI.calculator_connected){
       alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      //console.log('numworks_rescue_',UI.calculator);
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      UI.calculator=0;
       return -1;
-    } 
+    }
+    UI.print(UI.langue==-1?'Envoi du mode de recuperation, patientez environ 15 secondes':'Sending rescue mode, wait about 15 secondes');
     UI.calculator.device.startAddress = 0x20030000;
     let data=await UI.loadfile('recovery');
     await UI.calculator.device.clearStatus();
-    let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, true);
-    if (!res){
-      alert(UI.langue==-1?'Echec de la mise en mode recuperation. Recommencez':'Rescue mode failure. Try again.');
-      return res;
-    }
-    return numworks_install_delta();
+    await UI.calculator.device.do_download(UI.calculator.transferSize, data, true);
+    let tmp=confirm(UI.langue==-1?'La calculatrice devrait etre en mode recuperation. Installer KhiCAS+Delta?':'Calculator should be in rescue mode. Send KhiCAS+Delta.');
+    if (tmp)
+      UI.numworks_install_delta();
  },
   numworks_certify:function(sigfile,rwcheck=false){
     UI.calc=2;
@@ -117,6 +243,7 @@ var UI = {
   numworks_certify_:async function(sigfile,rwcheck){
     if (UI.calculator==0 || !UI.calculator_connected){
       alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     }
     if (rwcheck)

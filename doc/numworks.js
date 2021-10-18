@@ -1383,8 +1383,9 @@ class Numworks {
     autoConnect(callback, serial) {
         var _this = this;
         var vid = 0x0483, pid = 0xa291;
-        
+      console.log('autoconnect',DFU);
         DFU.findAllDfuInterfaces().then(async dfu_devices => {
+          console.log('autoconnect',dfu_devices);
             let matching_devices = _this.__findMatchingDevices(vid, pid, serial, dfu_devices);
             
             if (matching_devices.length !== 0) {
@@ -2038,13 +2039,19 @@ class Recovery {
      *
      * @param   serial      Serial number. If ommited, any will work.
      */
-    autoConnect(callback, serial) {
+    async autoConnect(callback, serial) {
         var _this = this;
         var vid = 0x0483, pid = 0xdf11;
-        
-        DFU.findAllDfuInterfaces().then(async dfu_devices => {
+      console.log('rescue autoconnect',DFU);
+      var chk=await navigator.usb.getDevices();
+      if (chk.length==0)
+      {
+	await navigator.usb.requestDevice({ filters: [{ vendorId: 0x0483 }] });	
+	//return -1;
+      }
+      DFU.findAllDfuInterfaces().then(async dfu_devices => {
+          console.log('rescue autoconnect',dfu_devices);
             let matching_devices = _this.__findMatchingDevices(vid, pid, serial, dfu_devices);
-            
             if (matching_devices.length !== 0) {
                 this.stopAutoConnect();
                 
@@ -2054,13 +2061,15 @@ class Recovery {
             }
         });
         
-        this.autoconnectId = setTimeout(this.autoConnect.bind(this, callback, serial), AUTOCONNECT_DELAY);
+      this.autoconnectId = setTimeout(this.autoConnect.bind(this, callback, serial), AUTOCONNECT_DELAY);
+      return 0;
     }
     
     /**
      * Stop autoconnection.
      */
-    stopAutoConnect() {
+  stopAutoConnect() {
+    console.log('rescue stop auto',this.autoconnectId);
         if (this.autoconnectId === null) return;
         
         clearTimeout(this.autoconnectId);
