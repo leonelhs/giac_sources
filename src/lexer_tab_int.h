@@ -116,7 +116,7 @@
       {"end_for",0,2,0,T_BLOC_END},
       {"end_if",0,4,0,T_BLOC_END},
       {"end_proc",0,3,0,T_BLOC_END},
-      {"end_while",0,2,0,T_BLOC_END},
+      {"end_while",0,8,0,T_BLOC_END},
       {"endfunc",0,3,0,T_BLOC_END},
       {"epaisseur"         ,1, _THICKNESS, _INT_PLOT ,T_NUMBER},
       {"epaisseur_ligne_1"         ,1, 0 , _INT_COLOR ,T_NUMBER},

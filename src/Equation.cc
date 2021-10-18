@@ -1370,7 +1370,7 @@ namespace xcas {
      *  SYMBOLIC HANDLING *
      **********************/
     vecteur li(lidnt(g));
-    if (g.type==_SYMB && lvar(g)==li && lop(g,at_inv).empty()){
+    if (g.type==_SYMB && g._SYMBptr->sommet!=at_prod && g._SYMBptr->sommet!=at_pow && lvar(g)==li && lop(g,at_inv).empty()){
       // polynomial check if it has modular coefficients
       gen p,modulo;
       try {

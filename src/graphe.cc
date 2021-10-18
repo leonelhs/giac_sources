@@ -1776,6 +1776,20 @@ int graphe::degree(int index,int sg) const {
     return out_degree(index,sg);
 }
 
+/* compute in and out degrees and store them */
+void graphe::compute_in_out_degrees(ivector &ind,ivector &outd) const {
+    int n=node_count();
+    ind.resize(n,0);
+    outd.resize(n);
+    for (int i=0;i<n;++i) {
+        const vertex &v=node(i);
+        outd[i]=v.neighbors().size();
+        for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+            ++ind[*it];
+        }
+    }
+}
+
 /* return the maximum vertex degree */
 int graphe::maximum_degree() const {
     int maxdeg=0,d;
@@ -6314,14 +6328,16 @@ void graphe::hierholzer(ivector &path) {
 }
 
 /* return the node in which an eulerian trail may begin, or -1 if the graph has no such trail */
-int graphe::eulerian_path_start(bool &iscycle) const {
+int graphe::eulerian_trail_start(bool &iscycle) const {
     /* assuming that the graph is connected */
-    int n=node_count(),count=0,start_node=0;
+    int n=node_count(),count=0,start_node=-1,d;
     for (int i=0;i<n;++i) {
-        if (degree(i)%2!=0) {
+        d=degree(i);
+        if (d%2!=0) {
             ++count;
             start_node=i;
-        }
+        } else if (start_node<0 && d%2==0 && d>0)
+            start_node=i;
     }
     if (count!=0 && count!=2)
         return -1;
@@ -6330,10 +6346,16 @@ int graphe::eulerian_path_start(bool &iscycle) const {
 }
 
 /* attempt to find an eulerian trail in this graph, return true iff one exists */
-bool graphe::find_eulerian_path(ivector &path) {
+bool graphe::find_eulerian_trail(ivector &path) {
     int start;
     bool iscycle;
-    if (!is_connected() || (start=eulerian_path_start(iscycle))<0)
+    ivectors components;
+    connected_components(components);
+    int ic=0;
+    for (ivectors_iter it=components.begin();it!=components.end();++it) {
+        if (it->size()>1) ++ic;
+    }
+    if (ic!=1 || (start=eulerian_trail_start(iscycle))<0)
         return false;
     /* use Hierholzer's algorithm */
     assert(visited_edges.empty());
@@ -9963,11 +9985,8 @@ bool graphe::bondy_chvatal_closure(graphe &G,ivector &d) {
     return yes;
 }
 
-/* return 1 if the graph is Hamiltonian, i.e. if it has a Hamiltonian circuit,
-* else return 0 or -1 of not conclusive */
-int graphe::is_hamiltonian(bool conclusive,ivector &hc,bool make_closure) {
-    assert(!is_directed());
-    hc.clear();
+/* return 1 if the graph is Hamiltonian, 0 if it is not and -1 if inconclusive */
+int graphe::hamcond(bool make_closure) {
     /* test biconnectivity, complexity O(n) */
     if (!is_biconnected())
         return 0;
@@ -9995,14 +10014,13 @@ int graphe::is_hamiltonian(bool conclusive,ivector &hc,bool make_closure) {
             }
         }
     }
-    if (yes)
-        return 1;
+    if (yes) return 1;
     if (make_closure) {
         /* apply the Bondy-Chvátal theorem: the graph is Hamiltonian if
            and only if its closure is Hamiltonian, complexity O(n^2) */
         graphe G(ctx);
         if (bondy_chvatal_closure(G,d))
-            return G.is_hamiltonian(conclusive,hc,false);
+            return G.hamcond(false);
     }
     if (double(m)/(double(n*n)>1.0-2.0/(1.0+std::exp(.0015*double(n))))) {
         /* Nash-Williams criterion */
@@ -10010,13 +10028,58 @@ int graphe::is_hamiltonian(bool conclusive,ivector &hc,bool make_closure) {
         if (3*mindeg>=std::max(n+2,3*inum))
             return 1;
     }
-    /* brute force, NP hard */
-    if (conclusive) {
-        cout << "Calling traveling_salesman..." << endl;
-        double cost;
-        return find_hamiltonian_cycle(hc,cost);
-    }
     return -1;
+}
+
+/* return true iff the graph is Hamiltonian */
+bool graphe::is_hamiltonian(ivector &hc) {
+    hc.clear();
+    if (!is_directed()) {
+      switch (hamcond()) {
+      case 0: return false;
+      case 1: return true;
+      default: break;
+      }
+    } else {   
+        int n=node_count();
+        vector<bool> has_in(n,false),has_out(n,false);
+        for (int i=0;i<n;++i) {
+            const vertex &v=node(i);
+            if (v.neighbors().size()>0) has_out[i]=true;
+            for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+                has_in[*it]=true;
+            }
+        }
+        for (int i=0;i<n;++i) {
+            if (!has_in[i] || !has_out[i]) return false;
+        }
+    }
+    return hamcycle(hc);
+}
+
+bool graphe::hamcycle_recurse(ivector &path,int pos) {
+    if (pos==node_count()) return has_edge(path[pos-1],path[0]);
+    const vertex &v=node(path[pos-1]);
+    for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
+        vertex &w=node(*it);
+        if (w.is_visited()) continue;
+        path[pos]=*it;
+        w.set_visited(true);
+        if (hamcycle_recurse(path,pos+1)) return true;
+        w.set_visited(false);
+    }
+    return false;
+}
+
+bool graphe::hamcycle(ivector &path) {
+    int n=node_count();
+    path.resize(n+1);
+    unvisit_all_nodes();
+    path[0]=0;
+    nodes[0].set_visited(true);
+    if (!hamcycle_recurse(path,1)) return false;
+    path[n]=path[0];
+    return true;
 }
 
 /*
@@ -11366,7 +11429,7 @@ void graphe::tsp::christofides(ivector &hc) {
         T.add_edge(G->node_label(a.tail),G->node_label(a.head),attr);
     }
     ivector etrail; // eulerian trail
-    assert(T.find_eulerian_path(etrail) && etrail.front()==etrail.back());
+    assert(T.find_eulerian_trail(etrail) && etrail.front()==etrail.back());
     vector<bool> visited(n,false);
     for (ivector_iter it=etrail.begin();it!=etrail.end();++it) {
         if (visited[*it])
@@ -11594,9 +11657,10 @@ void graphe::tsp::min_wpm_callback(glp_tree *tree,void *info) {
 * END OF TSP CLASS IMPLEMENTATION
 */
 
-/* try to find Hamiltonian circuit, return 0 if the graph is not Hamiltonian,
-* else store the circuit in h and return 1, if unable to solve return -1 */
-int graphe::find_hamiltonian_cycle(ivector &h,double &cost,bool approximate) {
+/* Try to find an optimal Hamiltonian circuit.
+ * Return 0 if the graph is not Hamiltonian, else store the circuit in h
+ * and return 1, if unable to solve return -1 */
+int graphe::traveling_salesman(ivector &h,double &cost,bool approximate) {
 #ifdef HAVE_LIBGLPK
     tsp t(this);
     if (approximate) {

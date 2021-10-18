@@ -3370,7 +3370,8 @@ namespace xcas {
 	  xcas::Xcas_debugguer(status,contextptr);
 #else
 	// FIXME Debugguer without FLTK
-	giac::thread_eval_status(1,contextptr);
+	if (status!=1)
+	  giac::thread_eval_status(1,contextptr);
 #endif
 	if (ctrl_c){
 	  if (giac::is_context_busy(contextptr))

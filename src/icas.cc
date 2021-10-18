@@ -487,6 +487,11 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
       int ss=s.size();
       int pos=0;
       if (inhevea==1){
+	pos=s.find("\\fi");
+	if (pos>=0 && pos<ss){
+	  inhevea=0;
+	  break;
+	}
 	pos=s.find("\\else");
 	if (pos>=0 && pos<ss){
 	  inhevea=-1;
