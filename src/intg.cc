@@ -3397,7 +3397,9 @@ namespace giac {
 	giac_assume(symb_and(symb_superieur_egal(x,borne_inf),symb_inferieur_egal(x,borne_sup)),contextptr);
 	primitive=eval(primitive,1,contextptr);
 	sto(xval,x,contextptr);
-	res=limit(primitive,*x._IDNTptr,borne_sup,-1,contextptr)-limit(primitive,*x._IDNTptr,borne_inf,1,contextptr);
+	gen rs=limit(primitive,*x._IDNTptr,borne_sup,-1,contextptr);
+	gen ri=limit(primitive,*x._IDNTptr,borne_inf,1,contextptr);
+	res=rs-ri;
       }
       else {
 	if ( (desordonne=is_greater(borne_inf,borne_sup,contextptr) )){

@@ -641,11 +641,21 @@ namespace giac {
 	  }
 	}
       }
+#if 1
+      *logptr(contextptr) << gettext("Unable to isolate ")+string(x.print(contextptr))+" in "+e.print(contextptr) << gettext(", switching to approx. solutions") << endl;
+      gen a=_fsolve(makesequence(e,x),contextptr);
+      if (a.type==_VECT)
+	v=mergevecteur(v,*a._VECTptr);
+      else 
+	if (!is_undef(a)) v.push_back(a);
+      return;
+#else
 #ifndef NO_STDEXCEPT
       throw(std::runtime_error("Unable to isolate "+string(x.print(contextptr))+" in "+e.print(contextptr)));
 #endif
       v=vecteur(1,undeferr(gettext("Unable to isolate ")+string(x.print(contextptr))+" in "+e.print(contextptr)));
       return;
+#endif
     }
     gen xvar(lv.front());
     if (xvar!=x){ // xvar must be a unary function of x, except for a few special cases
@@ -877,8 +887,12 @@ namespace giac {
 	      gen q0=q._VECTptr->front();
 	      gen e1=subst(e,x,x/q0,false,contextptr);
 	      vecteur newv;
+	      int is=isolate_mode;
+	      isolate_mode |= 16;
 	      in_solve(e1,x,newv,isolate_mode,contextptr);
+	      isolate_mode = is;
 	      multvecteur(inv(q0,contextptr),newv,newv);
+	      solve_ckrange(x,newv,isolate_mode,contextptr);
 	      v=mergevecteur(v,newv);
 	      return;
 	    }
@@ -914,7 +928,8 @@ namespace giac {
 #endif
 	  withsqrt(b,contextptr);
 	  complex_mode(bc,contextptr);
-	  solve_ckrange(x,newv,isolate_mode,contextptr);
+	  if (isolate_mode & 16==0)
+	    solve_ckrange(x,newv,isolate_mode,contextptr);
 	  v=mergevecteur(v,newv);
 	  return ;
 	}
@@ -2495,6 +2510,10 @@ namespace giac {
     const_iterateur it=_res.begin(),itend=_res.end();
     vecteur res;
     for (;it!=itend;++it){
+      if (is_inequation(*it) || it->is_symb_of_sommet(at_ou) || it->is_symb_of_sommet(at_and)){
+	res.push_back(*it);
+	continue;
+      }
       if (!check(v.back(),*it,contextptr))
 	continue;
       gen tmp=subst(arg1,v.back(),*it,false,contextptr);

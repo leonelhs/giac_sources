@@ -1698,15 +1698,15 @@ ok</button>
     x=cx-w/2; y=cy-h/2;
     cx=x+w; cy=y+h;
     // reeval commandline with gl_x=x..cx and gl_y=y..cy
-    prefix='gl_x='+x+'..'+cx+';gl_y='+y+'..'+cy+';';
+    var postcmd=';gl_x='+x+'..'+cx+';gl_y='+y+'..'+cy+';';
    //Module.print(prev.parentNode.parentNode.previousSibling.innerHTML);
-   //Module.print(prefix);
+   //Module.print(postcmd);
    if (prev.parentNode.previousSibling){
      //Module.print(prev.parentNode.parentNode.firstChild.innerHTML);
-     UI.reeval(prev.parentNode.parentNode.firstChild,prefix);
+     UI.reeval(prev.parentNode.parentNode.firstChild,postcmd);
    }
    else
-    UI.reeval(prev.parentNode.parentNode.previousSibling.firstChild,prefix);
+    UI.reeval(prev.parentNode.parentNode.previousSibling.firstChild,postcmd);
   },
   eval_cmdline: function(){
    var value=cmentree.getValue();
@@ -1864,12 +1864,12 @@ ok</button>
      UI.render_canvas(f);
    }
   },
-  reeval: function(field,prefix){
+  reeval: function(field,postcmd){
   // field=field.previousSibling;
   var s=field.value;
   var par=field.parentNode;
   par=par.parentNode;
-  s=UI.eval(prefix+s,s);
+  s=UI.eval(s+postcmd,s);
   par.innerHTML=s;
   UI.render_canvas(par);
   UI.link(0);

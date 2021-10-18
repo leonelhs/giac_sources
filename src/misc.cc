@@ -6416,7 +6416,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     // Singularities
     vecteur sing,crit;
     identificateur xid=*t._IDNTptr;
-    const_iterateur it=df1._VECTptr->begin(),itend=df1._VECTptr->end();
+    iterateur it=df1._VECTptr->begin(),itend=df1._VECTptr->end();
     for (;it!=itend;++it){
       if (is_greater(*it,tmin,contextptr) && is_greater(tmax,*it,contextptr)){
 	sing.push_back(*it);
@@ -6441,6 +6441,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     comprim(c);
     it=c.begin();itend=c.end();
     for (;it!=itend;++it){
+      if (!lop(*it,at_rootof).empty())
+	*it=re(evalf(*it,1,contextptr),contextptr);
       if (in_domain(df1,t,*it,contextptr) && is_greater(*it,tmin,contextptr) && is_greater(tmax,*it,contextptr)){
 	crit.push_back(*it);
 	gen fx=limit(f,xid,*it,0,contextptr);
@@ -6492,6 +6494,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	    ordre *= 2;
 	  }
 	  gprintf("Singular point %gen, point %gen direction %gen kind (%gen,%gen)\nTaylor expansions %gen",makevecteur(symb_equal(t__IDNT_e,*it),makevecteur(fx,gx),makevecteur(ax,ay),o1,o2,makevecteur(vx,vy)),contextptr);
+	  gprintf(" \n",vecteur(0),contextptr);
 	}
 	else {
 	  ax=limit(f1,xid,*it,0,contextptr);
@@ -6543,8 +6546,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
       gen fx=limit(f,xid,*it,0,contextptr);
       fx=recursive_normal(fx,contextptr);
+      if (!is_inf(fx) && !lidnt(evalf(fx,1,contextptr)).empty()) continue;
       gen fy=limit(g,xid,*it,0,contextptr);
       fy=recursive_normal(fy,contextptr);
+      if (!is_inf(fy) && !lidnt(evalf(fy,1,contextptr)).empty()) continue;
       if (is_inf(fx)){
 	if (!is_inf(fy)){
 	  gen equ=symb_equal(y__IDNT_e,fy);
@@ -6565,6 +6570,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  gprintf("Vertical parabolic branch at %gen",vecteur(1,*it),contextptr);
 	  continue;
 	}
+	else
+	  if (!lidnt(evalf(a,1,contextptr)).empty()) continue;
 	if (is_zero(a)){
 	  gprintf("Horizontal parabolic branch at %gen",vecteur(1,*it),contextptr);
 	  continue;
@@ -6576,6 +6583,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  gprintf("Parabolic branch direction at %gen: %gen",makevecteur(*it,symb_equal(y__IDNT_e,a*x__IDNT_e)),contextptr);
 	  continue;
 	}
+	else
+	  if (!lidnt(evalf(b,1,contextptr)).empty()) continue;
 	gen equ=symb_equal(y__IDNT_e,a*x__IDNT_e+b);
 	gprintf("Asymptote at %gen: %gen",makevecteur(*it,equ),contextptr);
 	gen dr=_droite(makesequence(equ,symb_equal(at_legende,equ),symb_equal(at_couleur,_RED)),contextptr);
@@ -6628,11 +6637,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       ymin=y;
     if (!is_inf(y) && is_greater(y,ymax,contextptr))
       ymax=y;
-    vecteur tvif=makevecteur(f,x);
-    vecteur tvig=makevecteur(g,y);
+    vecteur tvif=makevecteur(symb_equal(x__IDNT_e,f),x);
+    vecteur tvig=makevecteur(symb_equal(y__IDNT_e,g),y);
     gen nothing=string2gen(" ",false);
-    vecteur tvidf=makevecteur(symb_equal(symb_derive(f,t),f1),limit(f1,xid,nextt,1,contextptr));
-    vecteur tvidg=makevecteur(symb_equal(symb_derive(g,t),g1),limit(g1,xid,nextt,1,contextptr));
+    vecteur tvidf=makevecteur(symb_equal(symb_derive(x__IDNT_e,t),f1),limit(f1,xid,nextt,1,contextptr));
+    vecteur tvidg=makevecteur(symb_equal(symb_derive(y__IDNT_e,t),g1),limit(g1,xid,nextt,1,contextptr));
     int tvs=int(tvx.size());
     for (int i=1;i<tvs;++i){
       gen curt=nextt,dfx,dgx;
@@ -6771,14 +6780,16 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   }
 
   int step_param(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
+    int c=complex_mode(contextptr),s=0;
 #ifdef NO_STDEXCEPT
-    return step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,contextptr);
+    s=step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,contextptr);
 #else
     try {
-      return step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,contextptr);
-    } catch(std::runtime_error & e){}
-    return 0;
+      s=step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,contextptr);
+    } catch(std::runtime_error & e){ s=0;}
 #endif
+    complex_mode(c,contextptr);
+    return s;
   }
 
   // x->f in xmin..xmax
@@ -6818,7 +6829,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     // Asymptotes
     vecteur sing,crit;
     identificateur xid=*x._IDNTptr;
-    const_iterateur it=df1._VECTptr->begin(),itend=df1._VECTptr->end();
+    iterateur it=df1._VECTptr->begin(),itend=df1._VECTptr->end();
     for (;it!=itend;++it){
       if (is_greater(*it,xmin,contextptr) && is_greater(xmax,*it,contextptr)){
 	sing.push_back(*it);
@@ -6845,6 +6856,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     it=c._VECTptr->begin();itend=c._VECTptr->end();
     for (;it!=itend;++it){
+      if (!lop(*it,at_rootof).empty())
+	*it=re(evalf(*it,1,contextptr),contextptr);
       if (in_domain(df,x,*it,contextptr) && is_greater(*it,xmin,contextptr) && is_greater(xmax,*it,contextptr)){
 	crit.push_back(*it);
 	gen fx=limit(f,xid,*it,0,contextptr);
@@ -6889,6 +6902,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       l=recursive_normal(l,contextptr);
       if (is_undef(l)) continue;
       if (!is_inf(l)){
+	if (!lidnt(evalf(l,1,contextptr)).empty()) continue;
 	equ=symb_equal(y__IDNT_e,l);
 	gprintf("Horizontal asymptote %gen",vecteur(1,equ),contextptr);
 	gen dr=_droite(makesequence(l*cst_i,l*cst_i+1,symb_equal(at_legende,equ),symb_equal(at_couleur,_RED)),contextptr);
@@ -6903,6 +6917,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	gprintf("Vertical parabolic branch at %gen",vecteur(1,a),contextptr);
 	continue;
       }
+      else
+	if (!lidnt(evalf(a,1,contextptr)).empty()) continue;
       if (is_zero(a)){
 	gprintf("Horizontal parabolic branch at %gen",vecteur(1,a),contextptr);
 	continue;
@@ -6910,10 +6926,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       gen b=limit(f-a*x,xid,*it,0,contextptr);
       b=recursive_normal(b,contextptr);
       if (is_undef(b)) continue;
+      // avoid bounded_function
       if (is_inf(b)){
 	gprintf("Parabolic branch direction %gen at infinity",vecteur(1,symb_equal(y__IDNT_e,a*x__IDNT_e)),contextptr);
 	continue;
       }
+      else
+	if (!lidnt(evalf(b,1,contextptr)).empty()) continue;
       equ=symb_equal(y__IDNT_e,a*x__IDNT_e+b);
       gprintf("Asymptote %gen",vecteur(1,equ),contextptr);
       gen dr=_droite(makesequence(equ,symb_equal(at_legende,equ),symb_equal(at_couleur,_RED)),contextptr);
@@ -6948,9 +6967,9 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       ymin=y;
     if (!is_inf(y) && is_greater(y,ymax,contextptr))
       ymax=y;
-    vecteur tvif=makevecteur(f,y);
+    vecteur tvif=makevecteur(symb_equal(f__IDNT_e,f),y);
     gen nothing=string2gen(" ",false);
-    vecteur tvidf=makevecteur(symb_equal(symb_derive(f,x),f1),limit(f1,xid,nextx,1,contextptr));
+    vecteur tvidf=makevecteur(symb_equal(symb_derive(f__IDNT_e,x),f1),limit(f1,xid,nextx,1,contextptr));
     int tvs=int(tvx.size());
     for (int i=1;i<tvs;++i){
       gen curx=nextx,dfx;
@@ -7037,14 +7056,16 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   }
 
   int step_func(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,bool printtvi,GIAC_CONTEXT){
+    int c=complex_mode(contextptr),s=0;
 #ifdef NO_STDEXCEPT
-    return step_func_(f,x,xmin,xmax,poi,tvi,printtvi,contextptr);
+    s=step_func_(f,x,xmin,xmax,poi,tvi,printtvi,contextptr);
 #else
     try {
-     return step_func_(f,x,xmin,xmax,poi,tvi,printtvi,contextptr);
-    } catch (std::runtime_error & e){}
-    return 0;
+     s=step_func_(f,x,xmin,xmax,poi,tvi,printtvi,contextptr);
+    } catch (std::runtime_error & e){s=0;}
 #endif
+    complex_mode(c,contextptr);
+    return s;
   }
 
   gen _tabvar(const gen & g,GIAC_CONTEXT){
@@ -7061,6 +7082,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     gen x=v[1];
     int s0=2;
     gen xmin(minus_inf),xmax(plus_inf);
+    bool default_interval=true;
     if (x.is_symb_of_sommet(at_equal)){
       gen g=x._SYMBptr->feuille;
       if (g.type!=_VECT || g._VECTptr->size()!=2)
@@ -7070,12 +7092,14 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (g.is_symb_of_sommet(at_interval)){
 	xmin=g._SYMBptr->feuille[0];
 	xmax=g._SYMBptr->feuille[1];
+	default_interval=false;
       }
     }
     else {
       if (s>=4){
 	xmin=v[2];
 	xmax=v[3];
+	default_interval=false;
 	s0=4;
       }
       if (s==2 && x.type!=_IDNT)
@@ -7113,7 +7137,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       M=gnuplot_xmax;
     if (m!=M)
       scale=(M-m)/3.0;
-    if (xmin!=xmax && periodic==2){
+    if (xmin!=xmax && (periodic==2 || !default_interval) ){
       m=m-0.009*scale; M=M+0.01*scale;
     }
     else {
