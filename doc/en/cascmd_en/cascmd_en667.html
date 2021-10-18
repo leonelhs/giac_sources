@@ -4,70 +4,97 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>3-d graph</title>
+<title>Difference between the representation of (3.1-3) and of 0.1</title>
 </head>
 <body >
 <a href="cascmd_en666.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en668.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec805" class="subsection">7.4.2  3-d graph</h3>
-<p><a id="sec:plotfunc3"></a>
-<span style="font-family:monospace">plotfunc</span> takes two main arguments: an expression of two 
-variables or a list of several expressions of two variables and the list of 
-these two variables, where each variable may be replaced by
-an equality variable=interval to specify the range for this variable
-(if not specified, default values are taken from the graph configuration).
-<span style="font-family:monospace">plotfunc</span> accepts two optional arguments to specify 
-the discretization step in <span style="font-style:italic">x</span> and in <span style="font-style:italic">y</span> by
-<span style="font-family:monospace">xstep=...</span> and <span style="font-family:monospace">ystep=...</span>.
-Alternatively one can specify the number of points used for the 
-representation of the function with <code>nstep=</code> (instead of <code>xstep</code> and 
-<span style="font-family:monospace">ystep</span>).<br>
-<span style="font-family:monospace">plotfunc</span> draws the surface(s) defined by <span style="font-style:italic">z</span>= the first argument.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">plotfunc( x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x,y])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">A 3D graph of z=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">plotfunc(x*y,[x,y]) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">The surface z=x*y, default ranges</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">plotfunc([x*y-10,x*y,x*y+10],[x,y]) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">The surfaces z=x*y-10, z=x*y and z=x*y+10</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">plotfunc(x*sin(y),[x=0..2,y=-pi..pi]) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">The surface </span><span style="font-style:italic">z</span>=<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span><span style="font-family:monospace"> for the specified ranges</span></div><p>
-Now an example where we specify the <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> discretization step 
-with <code>xstep</code> and <code>ystep</code>.<br>
-Input:
+<h3 id="sec910" class="subsection">10.1.4  Difference between the representation of (3.1-3) and of 0.1</h3>
+<p>For the representation of 0.1:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >0.1</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">=2<sup>−4</sup>·(1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>4</sup></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>5</sup></td></tr>
+</table></td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>8</sup></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>9</sup></td></tr>
+</table></td><td class="dcell">+…)</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> = 2<sup>−4</sup>·</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=0</td></tr>
+</table></td><td class="dcell">(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span></sup></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span>+1</sup></td></tr>
+</table></td><td class="dcell">) 
+</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+hence α=1 and 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">m</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">+ </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell">(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span></sup></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span>+1</sup></td></tr>
+</table></td><td class="dcell">),
+</td></tr>
+</table><p>
+therefore the representation of 0.1 is
 </p><div class="center">
-<span style="font-family:monospace">plotfunc(x*sin(y),[x=0..2,y=-pi..pi],xstep=1,ystep=0.5) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">A portion of surface </span><span style="font-style:italic">z</span>=<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span></div><p>
-Alternatively we may specify 
-the number of points used for the representation of the
-function with <code>nstep</code> instead of <code>xstep</code> and <code>ystep</code>.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">plotfunc(x*sin(y),[x=0..2,y=-pi..pi],nstep=300)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">A portion of surface </span><span style="font-style:italic">z</span>=<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span></div><p>
-<span style="font-weight:bold">Remarks</span>
-</p><ul class="itemize"><li class="li-itemize">
-Like any 3-d scene, the viewpoint may be modified by rotation 
-around the <span style="font-family:monospace">x</span> axis, the <span style="font-family:monospace">y</span> axis or the
-<span style="font-family:monospace">z</span> axis, either by dragging the mouse inside the graphic 
-window (push the mouse outside the parallelepiped used for 
-the representation), or with the shortcuts
-<span style="font-family:monospace">x</span>, <span style="font-family:monospace">X</span>, <span style="font-family:monospace">y</span>, <span style="font-family:monospace">Y</span>, <span style="font-family:monospace">z</span> and <span style="font-family:monospace">Z</span>.
-</li><li class="li-itemize">If you want to print a graph or get a L<sup>A</sup>T<sub>E</sub>X translation, use the graph
-menu<br>
-<span style="font-family:monospace">Menu</span>▸<span style="font-family:monospace">print</span>▸<span style="font-family:monospace">Print(with
-Latex)</span>
-</li></ul>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>99 (10011001), 99 (10011001), 99 (10011001), 9a (10011010),</code>
+</td></tr>
+</table>
+</div><p>
+the last octet is 1010, indeed the 2 last bits
+01 became 10 because the following digit is 1 (upper rounding).</p><p>For the representation of <span style="font-style:italic">a</span>:=3.1−3:<br>
+Computing <span style="font-style:italic">a</span> is done by adjusting exponents (here nothing
+to do), then subtracting the mantissa and adjusting the
+exponent of the result to have a normalized float.
+The exponent is α=−4 (that corresponds at 2·2<sup>−5</sup>)
+and the bits corresponding to the mantissa begin at 1/2=2·2<sup>−6</sup>:
+the bits of the mantissa are shifted to the left 5 positions
+and you get:
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>99 (10011001), 99 (10011001), 99 (10011001), a0 (10100000),</code>
+</td></tr>
+</table>
+</div><p>
+Therefore, <span style="font-style:italic">a</span>&gt;0.1 and <span style="font-style:italic">a</span>−0.1=1/2<sup>50</sup>+1/2<sup>51</sup>
+(since 100000-11010=110).</p><p><br>
+</p><p><span style="font-weight:bold">Remark:</span><br>
+This is the reason why:<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">floor(1/(3.1-3))</span>
+</div><p>
+returns <span style="font-family:monospace">9</span> and not <span style="font-family:monospace">10</span> when <span style="font-family:monospace">Digits:=14</span>.</p>
 <hr>
 <a href="cascmd_en666.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

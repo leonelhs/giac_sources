@@ -4,69 +4,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Statistics functions acting on column matrices: mean, stddev, variance, median, quantile, quartiles, boxwhisker</title>
+<title>Solving a linear system using the Jacobi iteration method: jacobi_linsolve
+</title>
 </head>
 <body >
 <a href="cascmd_en558.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en560.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec659" class="subsection">5.49.32  Statistics functions acting on column matrices: <span style="font-family:monospace">mean</span>, <span style="font-family:monospace">stddev</span>, <span style="font-family:monospace">variance</span>, <span style="font-family:monospace">median</span>, <span style="font-family:monospace">quantile</span>, <span style="font-family:monospace">quartiles</span>, <span style="font-family:monospace">boxwhisker</span></h3>
-<p><a id="sec:statmat"></a>
-<a id="hevea_default874"></a> <a id="hevea_default875"></a><a id="hevea_default876"></a><a id="hevea_default877"></a><a id="hevea_default878"></a><a id="hevea_default879"></a><a id="hevea_default880"></a>
-The following functions work on matrices, acting column by column:
+<h3 id="sec714" class="subsection">6.56.7  Solving a linear system using the Jacobi iteration method: <span style="font-family:monospace">jacobi_linsolve</span>
+<a id="hevea_default961"></a></h3>
+<p>The <span style="font-family:monospace">jacobi_linsolve</span> command finds the solution of a linear
+system of equations using the Jacobi iteration method.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">mean</span> computes the arithmetic means of the statistical series
-stored in the columns of a matrix.<br>
-Input:
-<div class="center"><span style="font-family:monospace">mean([[3,4,2],[1,2,6]])</span></div>
-Output is the vector of the means of each column:
-<div class="center"><span style="font-family:monospace">[2,3,4]</span></div>
-Input:
-<div class="center"><span style="font-family:monospace">mean([[1,0,0],[0,1,0],[0,0,1]])</span></div>
-Output 
-<div class="center"><span style="font-family:monospace">[1/3,1/3,1/3]</span></div></li><li class="li-itemize"><span style="font-family:monospace">stddev</span> computes the standard deviations of the population
-statistical series stored in the columns of a matrix.<br>
-Input:
-<div class="center"><span style="font-family:monospace">stddev([[3,4,2],[1,2,6]])</span></div>
-Output is the vector of the standard deviations of each column:
-<div class="center"><span style="font-family:monospace">[1,1,2]</span></div>
-</li><li class="li-itemize"><span style="font-family:monospace">variance</span> computes the variances of the statistical series
-stored in the columns of a matrix.<br>
-Input:
-<div class="center"><span style="font-family:monospace">variance([[3,4,2],[1,2,6]])</span></div>
-Output is the vector of the variance of each column:
-<div class="center"><span style="font-family:monospace">[1,1,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">median</span> computes the medians of the statistical series
-stored in the columns of a matrix.<br>
-Input:
-<div class="center"><span style="font-family:monospace">median([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
-Output is the vector of the median of each column :
-<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quantile</span> computes the deciles as specified by the second
-argument of the statistical series stored in the columns of a matrix.<br>
-Input:<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.25)</span></div>
-Output is the vector of the first quartile of each column :
-<div class="center"><span style="font-family:monospace">[1,1,2,2,1,1,1]</span></div>
-Input:
-<div class="center"><span style="font-family:monospace">quantile([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1],[4,2,5,6,0,1,3],[2,5,6,0,1,3,4]],0.75)</span></div>
-Output is the vector of the third quartile of each column :
-<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4]</span></div></li><li class="li-itemize"><span style="font-family:monospace">quartiles</span> computes the minima, the first quartiles, the 
-medians, the third quartiles and the maxima of the statistical series
-stored in the columns of a matrix.<br>
-Input:
-<div class="center"><span style="font-family:monospace">quartiles([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6],[1,3,4,2,5,6,0], [3,4,2,5,6,0,1], [4,2,5,6,0,1,3], [2,5,6,0,1,3,4]])</span></div>
-Output is a matrix, its first row is the minima of each column,
-its second row is the fist quartiles of each column, 
-its third row the medians 
-of each column, its fourth row the third
-quartiles of each column and its last row the maxima of each column:
-<div class="center"><span style="font-family:monospace">[[0,0,1,0,0,0,0],[1,1,2,2,1,1,1], [2,2,3,3,2,2,3],</span></div>
-<div class="center"><span style="font-family:monospace">[3,3,4,4,4,3,4],[6,5,6,6,6,6,6]]</span></div></li><li class="li-itemize"><span style="font-family:monospace">boxwhisker</span> draws the whisker boxes of the statistical series
-stored in the columns of a matrix .<br>
-Input:
-<div class="center"><span style="font-family:monospace">boxwhisker([[6,0,1,3,4,2,5],[0,1,3,4,2,5,6], [1,3,4,2,5,6,0],[3,4,2,5,6,0,1], [4,2,5,6,0,1,3],[2,5,6,0,1,3,4]])</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">the drawing of the whisker boxes of the statistical 
-series of each column of the matrix argument</span></div> 
+<span style="font-family:monospace">jacobi_linsolve</span> command takes two mandatory arguments
+and two optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">A</span>, the matrix of coefficients of a system.
+</li><li class="li-itemize"><span style="font-style:italic">b</span>, the right hand side of the system as a list.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">m</span>, an integer indicating the maximum
+number of iterations (by default <span style="font-style:italic">m</span>=<span style="font-family:monospace">maxiter</span>, 
+see Section <a href="cascmd_en027.html#ssec%3Aconfcomp">3.5.7</a>, item <a href="cascmd_en027.html#enum%3Amaxiter">6</a>).
+</li><li class="li-itemize">Optionally, є, a positive number indicating the error tolerance 
+(by default є=<span style="font-family:monospace">epsilon</span>, see Section <a href="cascmd_en027.html#ssec%3Aconfcomp">3.5.7</a>, item
+<a href="cascmd_en027.html#enum%3Aeps">9</a>).
+</li></ul> 
+<span style="font-family:monospace">jacobi_linsolve(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">b</span> ⟨ <span style="font-style:italic">m</span>,є⟩<span style="font-family:monospace">)</span> returns
+the solution of the system.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input: </span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">A:=[[100,2],[2,100]];</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">jacobi_linsolve(A,[0,1],1e-12);</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−0.000200080032,0.0100040016006</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">evalf(linsolve(A,[0,1]))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−0.000200080032013,0.0100040016006</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
 </li></ul>
 <hr>
 <a href="cascmd_en558.html"><img src="previous_motif.gif" alt="Previous"></a>

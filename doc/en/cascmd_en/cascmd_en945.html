@@ -4,57 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Vectors in space: vector</title>
+<title>Writing a wav file: writewav
+</title>
 </head>
 <body >
 <a href="cascmd_en944.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en946.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1218" class="subsection">13.5.4  Vectors in space: <span style="font-family:monospace">vector</span><a id="hevea_default1628"></a></h3>
-<p>
-<a id="sec:3dvectors"></a></p><p>See section <a href="cascmd_en846.html#sec%3A2dvectors">12.7.4</a> for vectors in the plane.</p><p>The <span style="font-family:monospace">vector</span> command returns and draws vectors, given
-one of the following types of arguments:
+<h3 id="sec1251" class="subsection">15.1.12  Writing a <span style="font-family:monospace">wav</span> file: <span style="font-family:monospace">writewav</span>
+<a id="hevea_default1682"></a></h3>
+<p>The <span style="font-family:monospace">writewav</span> command writes sound data to a <span style="font-family:monospace">wav</span>
+file.
 </p><ul class="itemize"><li class="li-itemize">
-A list of the coordinates of a vector. The vector is drawn
-beginning at the origin.<br>
- Input:
-<div class="center">
-<span style="font-family:monospace">vector([1,2,3])
-</span></div>
-Output:
-<div class="center">
-<img src="cascmd_en204.png">
-</div>
-</li><li class="li-itemize">Two points or two lists of coordinates for points.<br>
- The vector is drawn from the first point to the second.<br>
- Input:
-<div class="center">
-<span style="font-family:monospace">vector(point(-1,0,0),point(0,1,2))
-</span></div>
-or:
-<div class="center">
-<span style="font-family:monospace">vector([-1,0,0],[0,1,2])
-</span></div>
-Output:
-<div class="center">
-<img src="cascmd_en205.png">
-</div>
-</li><li class="li-itemize">A point and a vector.<br>
- The vector is drawn beginning at the point.<br>
- Input:
-<div class="center">
-<span style="font-family:monospace">V := vector([-1,0,0],[0,1,2])
-</span></div>
-then:
-<div class="center">
-<span style="font-family:monospace">vector(point(-1,2,0),V)
-</span></div>
-Output:
-<div class="center">
-<img src="cascmd_en206.png">
-</div>
+<span style="font-family:monospace">writewav</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">filename</span>, the name of a file.
+</li><li class="li-itemize"><span style="font-style:italic">s</span>, the sound data. This can either be in the same format
+as that returned by the <span style="font-family:monospace">readwav</span> command or (for a mono
+sound) a list of the digital data of the sound which will use
+the default parameters (16 bits, 44100 Hz).
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">writewav(</span><span style="font-style:italic">filename,</span><span style="font-style:italic">s</span><span style="font-family:monospace">)</span> writes the
+sound to the file <span style="font-style:italic">filename</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">writewav("la.wav",2^14*sin(2*pi*440*soundsec(1)))</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+There will be a file <span style="font-family:monospace">la.wav</span> containing a sound of frequency
+440 Hz sampled 44100 times per second.</p>
 <hr>
 <a href="cascmd_en944.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

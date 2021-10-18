@@ -4,62 +4,62 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The uniform distribution</title>
+<title>Working with the graphics screen: DispG DispHome ClrGraph ClrDraw
+
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en727.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en729.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec928" class="subsection">8.4.13  The uniform distribution</h3>
-<h4 id="sec929" class="subsubsection">The probability density function for the uniform
-distribution: <span style="font-family:monospace">uniform</span><a id="hevea_default1273"></a> <span style="font-family:monospace">uniformd</span><a id="hevea_default1274"></a></h4>
-<p>Given two values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> with <span style="font-style:italic">a</span> &lt; <span style="font-style:italic">b</span>, the uniform distribution on
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] has density function 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>) for <span style="font-style:italic">x</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]. The 
-<span style="font-family:monospace">uniform</span> (or <span style="font-family:monospace">uniformd</span>) command will compute this;
-<span style="font-family:monospace">uniform</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>). If you enter
+<h3 id="sec988" class="subsection">12.4.9  Working with the graphics screen: <span style="font-family:monospace">DispG</span> <span style="font-family:monospace">DispHome</span> <span style="font-family:monospace">ClrGraph</span> <span style="font-family:monospace">ClrDraw</span>
+<a id="hevea_default1406"></a>
+<a id="hevea_default1407"></a>
+<a id="hevea_default1408"></a>
+<a id="hevea_default1409"></a></h3>
+<p>Recall that the <span style="font-family:monospace">DispG</span> screen contains the graphical output of
+<span style="font-family:monospace">Xcas</span>. The <span style="font-family:monospace">DispG</span> command opens the <span style="font-family:monospace">DispG</span>
+screen.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">Disp</span> takes no arguments and no parentheses.
+</li><li class="li-itemize"><span style="font-family:monospace">Disp</span> brings up the <span style="font-family:monospace">Disp</span> screen.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">uniform(2.2,3.5,2.8)
-</span></div><p>
-you will get
+<span style="font-family:monospace">DispG;</span>
+</div><p>
+opens the graphics screen.</p><p><br>
+</p><p>The <span style="font-family:monospace">ClrGraph</span> command clears the screen.<br>
+<span style="font-family:monospace">ClrDraw</span> is a synonym for <span style="font-family:monospace">ClrGraph</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ClrGraph</span> takes no arguments.
+</li><li class="li-itemize"><span style="font-family:monospace">ClrGraph</span> clears the <span style="font-family:monospace">Disp</span> screen.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">0.769230769231
-</span></div>
-<h4 id="sec930" class="subsubsection">The cumulative distribution function for the uniform
-distribution: <span style="font-family:monospace">uniform_cdf</span><a id="hevea_default1275"></a> <span style="font-family:monospace">uniformd_cdf</span><a id="hevea_default1276"></a></h4>
-<p>Given two values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> with <span style="font-style:italic">a</span> &lt;<span style="font-style:italic">b</span>, the cumulative distribution
-function for the uniform distribution on [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] is (for <span style="font-style:italic">x</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>])
-<span style="font-family:monospace">uniform_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = (<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
-If you enter
+<span style="font-family:monospace">ClrGraph</span>
+</div><p>
+<span style="font-style:italic">or:</span>
 </p><div class="center">
-<span style="font-family:monospace">uniform_cdf(2,4,3.2)
-</span></div><p>
-you will get
+<span style="font-family:monospace">ClrGraph()</span>
+</div><p>
+erases the <span style="font-family:monospace">DispG</span> screen.</p><p><br>
+</p><p>The <span style="font-family:monospace">DispHome</span> command closes the <span style="font-family:monospace">DispG</span> screen.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">DispHome</span> takes no arguments and no parentheses.
+</li><li class="li-itemize"><span style="font-family:monospace">DispHome</span> closes the <span style="font-family:monospace">DispG</span> screen.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">0.6
-</span></div><p>With an extra argument <span style="font-style:italic">y</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>], <span style="font-family:monospace">uniform_cdf</span> will
-compute <span style="font-family:monospace">uniform_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>)
-= (<span style="font-style:italic">y</span>−<span style="font-style:italic">x</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>). If you enter
-</p><div class="center">
-<span style="font-family:monospace">uniform_cdf(2,4,3,3.2)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.1
-</span></div>
-<h4 id="sec931" class="subsubsection">The inverse distribution function for the
-uniform distribution: <span style="font-family:monospace">uniform_icdf</span><a id="hevea_default1277"></a> <span style="font-family:monospace">uniformd_icdf</span><a id="hevea_default1278"></a></h4>
-<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function for a uniform
-distribution is the value of <span style="font-style:italic">x</span> with <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) =
-<span style="font-family:monospace">uniform_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. This value is computed with the 
-<span style="font-family:monospace">uniform_icdf</span> command. If you enter
-</p><div class="center">
-<span style="font-family:monospace">uniform_icdf(2,3,.6)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">2.6
-</span></div>
+<span style="font-family:monospace">DispHome;</span>
+</div><p>
+makes the graphics screen go away.</p>
 <hr>
 <a href="cascmd_en727.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

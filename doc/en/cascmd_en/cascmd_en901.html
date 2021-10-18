@@ -4,42 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Translations in the plane: translation</title>
+<title>Checking if an object in space is an equilateral triangle: is_equilateral
+</title>
 </head>
 <body >
 <a href="cascmd_en900.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en902.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1163" class="subsection">12.15.2  Translations in the plane: <span style="font-family:monospace">translation</span><a id="hevea_default1579"></a></h3>
-<p>
-<a id="sec:2dtranslations"></a></p><p>See section <a href="cascmd_en993.html#sec%3A3dtranslations">13.14.2</a> for translations in space.</p><p>The <span style="font-family:monospace">translation</span> command can take one or two arguments.</p><p>If <span style="font-family:monospace">translation</span> has a single argument, that argument is the
-translation vector. The translation vector can be given as a vector,
-list of coordinates, a difference of points or a complex number.
-<span style="font-family:monospace">translation</span>
-returns a new command which performs the translation.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">t := translation(1+i)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">t(-2)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en156.png">
-</div><p>If <span style="font-family:monospace">translation</span> has two arguments, the first argument is a
-translation vector as above, and the second argument is a geometric
-object. <span style="font-family:monospace">translation</span> returns and draws the translated object.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">translation([1,1],line(-2,-i))
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en157.png">
+<h3 id="ssec:3dcheckequilateral" class="subsection">14.13.9  Checking if an object in space is an equilateral triangle: <span style="font-family:monospace">is_equilateral</span>
+<a id="hevea_default1634"></a></h3>
+<p>See Section <a href="cascmd_en827.html#ssec%3A2dcheckequilateral">13.16.5</a> for checking for equilateral
+triangles in two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_equilateral</span> command determines whether or not a
+geometric object is an equilateral triangle.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">is_equilateral</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of three points assumed to be
+the vertices of a triangle.
+</li><li class="li-itemize"><span style="font-family:monospace">is_equilateral(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if the object
+is an equilateral triangle and returns <span style="font-family:monospace">0</span> otherwise.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</span>
 </div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">T:= triangle_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">is_equilateral(T)</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_equilateral([2,0,0],[0,2,0],[1,1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en900.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

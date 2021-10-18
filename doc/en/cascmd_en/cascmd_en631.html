@@ -4,27 +4,82 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Divergence: divergence</title>
+<title>Make a random vector or list: randvector
+</title>
 </head>
 <body >
 <a href="cascmd_en630.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en632.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec754" class="subsection">5.59.4  Divergence: <span style="font-family:monospace">divergence</span></h3>
-<p><a id="hevea_default984"></a>
-<span style="font-family:monospace">divergence</span> takes two arguments: a vector 
-field of dimension <span style="font-style:italic">n</span> depending on <span style="font-style:italic">n</span> real variables.<br>
-<span style="font-family:monospace">divergence</span> returns the divergence of <span style="font-style:italic">F</span> that is the sum 
-of the derivative of the <span style="font-style:italic">k</span>-th component with respect
-to the <span style="font-style:italic">k</span>-th variable. For example in dimension <span style="font-style:italic">n</span>=3:
-</p><div class="center">
-<span style="font-family:monospace">divergence([A,B,C],[x,y,z])</span>=∂ <span style="font-style:italic">A</span>/∂ <span style="font-style:italic">x</span>+∂ <span style="font-style:italic">B</span>/∂ <span style="font-style:italic">y</span>+∂ <span style="font-style:italic">C</span>/∂ <span style="font-style:italic">z</span>
-</div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">divergence([x*z,-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">y],[x,y,z])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">z+-2*y</span></div>
+<h3 id="ssec:randvector" class="subsection">9.3.15  Make a random vector or list: <span style="font-family:monospace">randvector</span>
+<a id="hevea_default1182"></a></h3>
+<p>The <span style="font-family:monospace">randvector</span> command creates random vectors (see also
+Section <a href="cascmd_en310.html#ssec%3Aranm1">6.27.28</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randvector</span> takes one mandatory argument and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">X</span>, which can be an integer or a random
+variable. In place of a random variable, the specifications for a
+distribution can be used. (See Section <a href="cascmd_en630.html#ssec%3Arandvar">9.3.14</a> for random
+variables and their specifications.)
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">randvector(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">X</span><span style="font-family:monospace">)</span> returns a vector of size <span style="font-style:italic">n</span>
+containing random integers:
+<ul class="itemize"><li class="li-itemize">
+with no second argument, distributed uniformly between -99
+and +99.
+</li><li class="li-itemize">with a second argument of <span style="font-style:italic">X</span>, distributed uniformly 
+between 0 and <span style="font-style:italic">k</span>−1.
+</li><li class="li-itemize">with a second argument the specification of a distribution,
+distributed according to this distribution.
+</li></ul>
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">randvector(3)</span>
+</div>
+<span style="font-style:italic">Output (for example):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−64,−30,70</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">randvector(3,5)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">randvector(3,’rand(5)’)</span>
+</div>
+<span style="font-style:italic">Output (for example):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">2,4,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">randvector(3,’randnorm(0,1)’)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−0.361127118455,−0.018325111754,1.11875485898</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">randvector(3,2..4)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">3.18034843914,2.48592940345,2.57507958449</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en630.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

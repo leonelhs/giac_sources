@@ -4,51 +4,79 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Laguerre polynomials: laguerre</title>
+<title>Euclidean quotient: Quo
+</title>
 </head>
 <body >
 <a href="cascmd_en376.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en378.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec455" class="subsection">5.31.3  Laguerre polynomials: <span style="font-family:monospace">laguerre</span></h3>
-<p><a id="hevea_default611"></a>
-<span style="font-family:monospace">laguerre</span> takes as argument an integer <span style="font-style:italic">n</span> and optionally 
-a variable name (by default <span style="font-style:italic">x</span>) and a parameter name (by default <span style="font-style:italic">a</span>).<br>
-<span style="font-family:monospace">laguerre</span> returns the Laguerre polynomial of degree <span style="font-style:italic">n</span> and of 
-parameter <span style="font-style:italic">a</span>.<br>
-If <span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>) denotes the Laguerre polynomial of degree <span style="font-style:italic">n</span> and 
-parameter <span style="font-style:italic">a</span>, the following recurrence relation holds:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">L</span>(0,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=1,   
-<span style="font-style:italic">L</span>(1,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=1+<span style="font-style:italic">a</span>−<span style="font-style:italic">x</span>,   
-<span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2<span style="font-style:italic">n</span>+<span style="font-style:italic">a</span>−1−<span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>−1,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>)−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>+<span style="font-style:italic">a</span>−1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">n</span>−2,<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span>) </td></tr>
-</table><p>
-These polynomials are orthogonal for the scalar product
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
+<h3 id="sec457" class="subsection">6.35.1  Euclidean quotient: <span style="font-family:monospace">Quo</span>
+<a id="hevea_default644"></a></h3>
+<p>In <span style="font-family:monospace">Xcas</span> mode, <span style="font-family:monospace">Quo</span> is simply the inert form of
+<span style="font-family:monospace">quo</span>; namely, it returns the Euclidean quotient of two
+polynomials without evaluation. (See section Section <a href="cascmd_en317.html#ssec%3Aquo">6.28.2</a>.)
+In <span style="font-family:monospace">Maple</span> mode, the <span style="font-family:monospace">Quo</span> command
+can additionally be used in conjunction with <span style="font-family:monospace">mod</span> to
+compute the Euclidean quotient of two polynomials with
+coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.
+</p><ul class="itemize"><li class="li-itemize">
+(In <span style="font-family:monospace">Maple</span> mode.)<br>
+ <span style="font-family:monospace">Quo</span> takes two arguments:<br>
+ <span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span>, two polynomials with coefficients
+in ℤ/<span style="font-style:italic">p</span>ℤ.
+</li><li class="li-itemize"><span style="font-family:monospace">Quo(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> returns the
+Euclidean quotient of <span style="font-style:italic">P</span> divided by <span style="font-style:italic">Q</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Xcas</span></span><span style="font-style:italic"> mode):</span>
+<div class="center">
+<span style="font-family:monospace">Quo((x^3+x^2+1) mod 13,(2*x^2+4) mod 13)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">quo</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">1%13</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>+</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">1%13</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>+1%13,</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2%13</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>+4%13</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+To get the result of the division:<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">eval(ans())</span>
+</div>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎝</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−6</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">%13</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−6</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">%13
 </td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span></sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup><span style="font-style:italic">dx</span> </td></tr>
-</table><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">laguerre(2)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*a*x+3*a+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*x+2)/2</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">laguerre(2,y)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*a*y+3*a+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*y+2)/2</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">laguerre(2,y,b)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">(b</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-2*b*y+3*b+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-4*y+2)/2</span></div>
+</table>
+<span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Maple</span></span><span style="font-style:italic"> mode):</span>
+<div class="center">
+<span style="font-family:monospace">Quo(x^3+x^2+1,2*x^2+4) mod 13</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−6<span style="font-style:italic">x</span>−6
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Maple</span></span><span style="font-style:italic"> mode):</span>
+<div class="center">
+<span style="font-family:monospace">Quo(x^2+2*x,x^2+6*x+5) mod 5</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en376.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

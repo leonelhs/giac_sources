@@ -4,67 +4,150 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Length of an arc: arcLen</title>
+<title>Discrete summation: sum
+
+</title>
 </head>
 <body >
 <a href="cascmd_en222.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en224.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec275" class="subsection">5.19.2  Length of an arc: <span style="font-family:monospace">arcLen</span></h3>
-<p><a id="hevea_default387"></a>
-<a id="sec:arclen"></a>
-<span style="font-family:monospace">arcLen</span> takes four arguments: an expression <span style="font-style:italic">ex</span> (resp. a list
-of two expressions [<span style="font-style:italic">ex</span>1,<span style="font-style:italic">ex</span>2]), the name of a parameter and two values <span style="font-style:italic">a</span>
-and <span style="font-style:italic">b</span> of this parameter.<br>
-<span style="font-family:monospace">arcLen</span> computes the length of the curve define by the equation 
-<span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">ex</span> (resp. by <span style="font-style:italic">x</span>=<span style="font-style:italic">ex</span>1,<span style="font-style:italic">y</span>=<span style="font-style:italic">ex</span>2) when the parameter values varies from <span style="font-style:italic">a</span> 
-to <span style="font-style:italic">b</span>, using the formula
-<span style="font-family:monospace">arcLen(f(x),x,a,b)=</span><br>
-<span style="font-family:monospace">integrate(sqrt(diff(f(x),x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1),x,a,b)</span><br>
-or <br>
-<span style="font-family:monospace">integrate(sqrt(diff(x(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+diff(y(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),t,a,b)</span>.<br>
-
-<span style="font-weight:bold">Examples</span>
+<h3 id="ssec:sum" class="subsection">6.20.3  Discrete summation: <span style="font-family:monospace">sum</span>
+<a id="hevea_default422"></a>
+</h3>
+<p>The <span style="font-family:monospace">sum</span> command can evaluate sums, series, and find discrete
+antiderivatives. A discrete antiderivative of a sum ∑<sub><span style="font-style:italic">n</span></sub><span style="font-style:italic">f</span>(<span style="font-style:italic">n</span>) is
+an expression <span style="font-style:italic">G</span> such that <span style="font-style:italic">G</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">n</span>+1</sub>−<span style="font-style:italic">G</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">n</span></sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">n</span>), which means
+that ∑<sub><span style="font-style:italic">n</span>=<span style="font-style:italic">M</span></sub><sup><span style="font-style:italic">N</span></sup><span style="font-style:italic">f</span>(<span style="font-style:italic">n</span>) = <span style="font-style:italic">G</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">N</span>+1</sub>−<span style="font-style:italic">G</span><sub>|<span style="font-style:italic">M</span></sub>.</p><p><br>
+</p><p>To evaluate a sum or series:
 </p><ul class="itemize"><li class="li-itemize">
-Compute the length of the parabola <span style="font-style:italic">y</span>=<span style="font-style:italic">x</span><sup>2</sup> from <span style="font-style:italic">x</span>=0 to <span style="font-style:italic">x</span>=1.<br>
-Input:
-<div class="center"><span style="font-family:monospace">arcLen(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,0,1)</span></div>
-or
-<div class="center"><span style="font-family:monospace">arcLen([t,t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2],t,0,1)</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">-1/4*log(sqrt(5)-2)-(-(sqrt(5)))/2</span></div> 
-</li><li class="li-itemize">Compute the length of the curve <span style="font-style:italic">y</span>=cosh(<span style="font-style:italic">x</span>) from <span style="font-style:italic">x</span>=0 to 
-<span style="font-style:italic">x</span>=ln(2).<br>
-Input:
-<div class="center"><span style="font-family:monospace">arcLen(cosh(x),x,0,log(2))</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">3/4</span></div>
-</li><li class="li-itemize">Compute the length of the circle <span style="font-style:italic">x</span>=cos(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=sin(<span style="font-style:italic">t</span>) from <span style="font-style:italic">t</span>=0 to 
-<span style="font-style:italic">t</span>=2*π.<br>
-Input:
-<div class="center"><span style="font-family:monospace">arcLen([cos(t),sin(t)],t,0,2*pi)</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">2*pi</span></div>
-</li></ul><p>Alternatively, the <span style="font-family:monospace">arcLen</span> command can take a single argument of
-a geometric curve defined in one of the graphics chapters (chapters
-<a href="index.html#chap%3A2dgraphics">12</a> and <a href="index.html#chap%3A3dgraphics">13</a>).<br>
-Input:
+<span style="font-family:monospace">sum</span> takes four arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">k</span>, the name of the variable.
+</li><li class="li-itemize"><span style="font-style:italic">n</span><sub>0</sub> and <span style="font-style:italic">n</span><sub>1</sub>, integers (the bounds of the sum).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">sum(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">,</span><span style="font-style:italic">k</span>,<span style="font-style:italic">n</span><sub>0</sub>,<span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">)</span> returns the sum
+∑<sub><span style="font-style:italic">k</span>=<span style="font-style:italic">n</span><sub>0</sub></sub><sup><span style="font-style:italic">n</span><sub>1</sub></sup><span style="font-style:italic">expr</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">sum(1,k,-2,n)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">n</span>+1+2
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">normal(sum(2*k-1,k,1,n))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">n</span><sup>2</sup>
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">sum(1/(n^2),n,1,10)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1968329</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1270080</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">sum(1/(n^2),n,1,+(infinity))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell"> π <sup>2</sup>
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">sum(1/(n^3-n),n,2,10)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">27</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">110</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">sum(1/(n^3-n),n,2,+(infinity))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table>
+This result comes from the decomposition of <span style="font-family:monospace">1/(n^3-n)</span> (see
+Section <a href="cascmd_en355.html#ssec%3Aconvertparf">6.32.9</a>).<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">partfrac(1/(n^3-n))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2 </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">n</span>−1</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2 </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">n</span>+1</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table>
+Hence:<br>
+ ∑<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span></sup> −1/<span style="font-style:italic">n</span>=−∑<sub><span style="font-style:italic">n</span>=1</sub><sup><span style="font-style:italic">N</span>−1</sup> 1/<span style="font-style:italic">n</span>+1=−1/2−∑<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>−2</sup> 1/<span style="font-style:italic">n</span>+1−1/<span style="font-style:italic">N</span><br>
+ 1/2∑<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span></sup> 1/<span style="font-style:italic">n</span>−1=1/2(∑<sub><span style="font-style:italic">n</span>=0</sub><sup><span style="font-style:italic">N</span>−2</sup> 1/<span style="font-style:italic">n</span>+1)=1/2(1+1/2+∑<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>−2</sup>1/<span style="font-style:italic">n</span>+1)<br>
+ 1/2∑<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span></sup> 1/<span style="font-style:italic">n</span>+1=1/2(∑<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>−2</sup> 1/<span style="font-style:italic">n</span>+1+1/<span style="font-style:italic">N</span>+1/<span style="font-style:italic">N</span>+1)<br>
+After simplification by ∑<sub><span style="font-style:italic">n</span>=2</sub><sup><span style="font-style:italic">N</span>−2</sup>, it remains:<br>
+  −1/2+1/2(1+1/2)−1/<span style="font-style:italic">N</span>+1/2(1/<span style="font-style:italic">N</span>+1/<span style="font-style:italic">N</span>+1)=1/4−1/2<span style="font-style:italic">N</span>(<span style="font-style:italic">N</span>+1)<br>
+Therefore:
+<ul class="itemize"><li class="li-itemize">
+for <span style="font-style:italic">N</span>=10 the sum is equal to: 1/4−1/220=27/110
+</li><li class="li-itemize">for <span style="font-style:italic">N</span>=+∞ the sum is equal to: 1/4 because 1/2<span style="font-style:italic">N</span>(<span style="font-style:italic">N</span>+1)
+approaches zero when <span style="font-style:italic">N</span> approaches infinity.
+</li></ul>
+</li></ul><p><br>
+</p><p>To find a discrete antiderivative:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">sum</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">k</span>, the name of the variable.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">sum(</span><span style="font-style:italic">expr,</span><span style="font-style:italic">x</span><span style="font-style:italic">)</span> returns a discrete
+antiderivative.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">arcLen(circle(0,1,0,pi/2)) 
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1/2*pi 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">arcLen(arc(0,1,pi/2))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">sqrt(2)/4*pi 
-</span></div>
+<span style="font-family:monospace">sum(1/(x*(x+1)),x)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en222.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

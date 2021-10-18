@@ -4,41 +4,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Planes orthogonal to lines and lines orthogonal to planes in space: orthogonal</title>
+<title>Boxcar function: boxcar
+</title>
 </head>
 <body >
 <a href="cascmd_en947.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en949.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1221" class="subsection">13.5.7  Planes orthogonal to lines and lines orthogonal to planes in space: <span style="font-family:monospace">orthogonal</span><a id="hevea_default1631"></a></h3>
-<p>
-<a id="sec:3dorthogonal"></a></p><p>The <span style="font-family:monospace">orthogonal</span> command returns and draws a line or plane,
-depending on the arguments. The possible arguments are:
+<h3 id="sec:boxcar" class="subsection">15.2.1  Boxcar function: <span style="font-family:monospace">boxcar</span>
+<a id="hevea_default1685"></a></h3>
+<p>The <span style="font-family:monospace">boxcar</span> command creates a function which is 0 everywhere
+except in a given interval, where it is 1.
 </p><ul class="itemize"><li class="li-itemize">
-A point <span style="font-family:monospace">A</span> and a line <span style="font-family:monospace">L</span>.<br>
- <span style="font-family:monospace">orthogonal(A,L)</span> returns and draws the plane through
-<span style="font-family:monospace">A</span> orthogonal to <span style="font-family:monospace">L</span>.<br>
- Input:
+<span style="font-family:monospace">boxcar</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two real numbers.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, an identifier or expression.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">boxcar(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+θ(<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)−θ(<span style="font-style:italic">x</span>−<span style="font-style:italic">b</span>), where
+θ is the Heaviside function (see
+Section <a href="cascmd_en139.html#ssec%3Aheaviside">6.8.9</a>). The resulting expression defines a
+function which is zero everywhere except within the segment [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>],
+where its value is equal to 1.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">orthogonal(point(0,0,0),line(point(1,0,0),point(0,1,0)))
-</span></div>
-Output:
-<div class="center">
-<img src="cascmd_en213.png">
+<span style="font-family:monospace">boxcar(1,2,x)</span>
 </div>
-</li><li class="li-itemize">A line <span style="font-family:monospace">L</span> and a plane <span style="font-family:monospace">P</span>.<br>
- <span style="font-family:monospace">perpendicular(L,P)</span> returns and draws the plane containing
-<span style="font-family:monospace">L</span> that is perpendicular to <span style="font-family:monospace">P</span>.<br>
- Input:
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">θ</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span>−1</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">−θ</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span>−2</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">perpendicular(line(point(0,0,0),point(1,1,0)),<br>
- plane(point(1,0,0),point(0,1,0),point(0,0,1)))
-</span></div>
-Output:
-<div class="center">
-<img src="cascmd_en214.png">
+<span style="font-family:monospace">boxcar(1,2,3/2)</span>
 </div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">boxcar(1,2,0)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
 </li></ul>
 <hr>
 <a href="cascmd_en947.html"><img src="previous_motif.gif" alt="Previous"></a>

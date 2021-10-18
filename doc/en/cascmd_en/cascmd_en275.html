@@ -4,24 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inverse Fast Fourier Transform: ifft</title>
+<title>Rewriting exp(n*ln(x)) as a power: exp2pow
+</title>
 </head>
 <body >
 <a href="cascmd_en274.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en276.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec343" class="subsection">5.25.5  Inverse Fast Fourier Transform: <span style="font-family:monospace">ifft</span></h3>
-<p><a id="hevea_default492"></a>
-<span style="font-family:monospace">ifft</span> takes as argument a list <span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">]</span> where
-<span style="font-family:monospace">N</span> is a power of two.<br>
-<span style="font-family:monospace">ifft</span> returns the list <span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">]</span> such that
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace"><span style="font-style:italic">fft</span></span><span style="font-family:monospace">([</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">])=[</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">]</span> </td></tr>
-</table><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">ifft([2,-1-i,0,-1+i])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[0.0, 1.0, 1.0, 0.0]</span></div>
+<h3 id="sec336" class="subsection">6.24.8  Rewriting exp(n*ln(x)) as a power: <span style="font-family:monospace">exp2pow</span>
+<a id="hevea_default495"></a></h3>
+<p>The <span style="font-family:monospace">exp2pow</span> command is the inverse of <span style="font-family:monospace">pow2exp</span> (see
+Section <a href="cascmd_en274.html#ssec%3Apow2exp">6.24.7</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">exp2pow</span> takes one argument:<br>
+ <span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-family:monospace">exp2pow(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> rewrites any
+subexpressions of <span style="font-family:monospace">expr</span> of the form exp(<span style="font-style:italic">n</span>*ln(<span style="font-style:italic">x</span>)) as <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>.
+</li></ul><p><br>
+</p><p><span style="font-family:monospace">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">exp2pow(exp(n*ln(x)))</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>
+</td></tr>
+</table><p><br>
+</p><p>Note the difference with <span style="font-family:monospace">lncollect</span>:
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lncollect(exp(n*ln(x))) = exp(n*log(x))</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lncollect(exp(2*ln(x))) = exp(2*log(x))</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">exp2pow(exp(2*ln(x))) = x^2</span>
+</td></tr>
+</table>
+</div><p>
+but
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lncollect(exp(ln(x)+ln(x))) = x^2</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">exp2pow(exp(ln(x)+ln(x))) = x^(1+1)</span>
+</td></tr>
+</table>
+</div>
 <hr>
 <a href="cascmd_en274.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

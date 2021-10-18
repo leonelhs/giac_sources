@@ -4,98 +4,101 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The Z-transform of a sequence: ztrans</title>
+<title>Distribution fitting by maximum likelihood: fitdistr
+</title>
 </head>
 <body >
 <a href="cascmd_en654.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en656.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec783" class="subsection">5.63.1  The Z-transform of a sequence: <span style="font-family:monospace">ztrans</span></h3>
-<p><a id="hevea_default1017"></a></p><p>The Z-transform of a sequence <span style="font-style:italic">a</span><sub>0</sub>, <span style="font-style:italic">a</span><sub>1</sub>, …, <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>, … is the
-function 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>) = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup></td></tr>
-</table></td><td class="dcell">.</td></tr>
-</table><p>The <span style="font-family:monospace">ztrans</span> command takes one or three arguments.
+<h3 id="sec896" class="subsection">9.4.23  Distribution fitting by maximum likelihood: <span style="font-family:monospace">fitdistr</span>
+<a id="hevea_default1263"></a></h3>
+<p>The <span style="font-family:monospace">fitdistr</span> command finds the parameters for a distribution
+of a specified type that best fit a set of samples.
 </p><ul class="itemize"><li class="li-itemize">
-A formula in the variable <span style="font-family:monospace">x</span> for the general term
-<span style="font-style:italic">a</span><sub><span style="font-style:italic">x</span></sub> of a sequence, or
-</li><li class="li-itemize">A formula for the general term of a sequence, the variable
-used in the formula, and a variable to be used by the resulting
-function.
-</li></ul><p>
-<span style="font-family:monospace">ztrans</span> returns the Z-transform of the sequence.</p><p>For example, the Z-transform of the sequence
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0, 1, 2, 3, …</td></tr>
-</table><p>
-is
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>) = 0 + 1/<span style="font-style:italic">z</span> + 2/<span style="font-style:italic">z</span><sup>2</sup> + 3/<span style="font-style:italic">z</span><sup>3</sup> + …</td></tr>
-</table><p>
-which has closed form 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>) = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span>−1)<sup>2</sup>.</td></tr>
-</table><p>
-Input:
+<span style="font-family:monospace">fitdistr</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list of presumably independent and identically
+distributed samples.
+</li><li class="li-itemize"><span style="font-style:italic">distr</span>, a distribution type, which can be one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">normal</span> or <span style="font-family:monospace">normald</span>, for a normal distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">exp</span>, <span style="font-family:monospace">exponential</span> of
+<span style="font-family:monospace">exponentiald</span>, for an exponential distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">poisson</span>, for a Poisson distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">geometric</span>, for a geometric distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">gammad</span>, for a gamma distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">betad</span>, for a beta distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">cauchy</span> or <span style="font-family:monospace">cauchyd</span>, for a Cauchy
+distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">weibull</span> or <span style="font-family:monospace">weibulld</span> for a Weibull
+distribution.
+</li></ul>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">fitdistr(</span><span style="font-style:italic">L</span><span style="font-style:italic">,distr</span><span style="font-family:monospace">)</span> 
+returns the name of the specified type of distribution with
+parameters that fit <span style="font-style:italic">L</span> most closely according to the method of maximum
+likelihood.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">fitdistr(randvector(1000,weibulld,1/2,1),weibull)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">weibulld</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.517079036032,1.05683817484</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">X:=randvar(normal,stddev=9.5):; Y:=randvar(normal,stddev=1.5):; S:=sample(eval(X/Y,0),1000):; Z:=fitdistr(S,cauchy)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">cauchyd</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.347058460176,6.55905486387</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">histogram(select(x-&gt;(x&gt;-100 and x&lt;100),S)); plot(Z(x),x=-100..100,display=red+line_width_2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en128.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">kolmogorovt(S,Z)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">"D=",0.0161467485236,"K=",0.510605021406,"1-kolmogorovd(K)=",0.956753826255</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+The Kolmogorov-Smirnov test indicates that the samples from <span style="font-style:italic">S</span> are drawn from <span style="font-style:italic">Z</span> with high probability.
+</li></ul><p>You can fit a lognormal distribution to samples <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> by
+fitting a normal distribution to the sample logarithms log
+<span style="font-style:italic">x</span><sub>1</sub>,log<span style="font-style:italic">x</span><sub>2</sub>,…,log<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> because log-likelihood functions are the
+same. For example, generate some samples according to the lognormal
+rule with parameters µ=5 and σ<sup>2</sup>=2:<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">ztrans(x) 
-</span></div><p>
-Output:
+<span style="font-family:monospace">X:=randvar(normal,mean=5,variance=2):; S:=sample(eval(exp(X),0),1000):;</span>
+</div><p>
+Then fit the normal distribution to log<span style="font-style:italic">S</span>:<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">x/(x^2-2*x+1) 
-</span></div><p>
-Input:
+<span style="font-family:monospace">Y:=fitdistr(log(S),normal)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
 </p><div class="center">
-<span style="font-family:monospace">ztrans(n,n,z)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">z/(z^2-2*z+1) 
-</span></div><p>Note that<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">ztrans(1)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">x/(x-1) 
-</span></div><p>
-since
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
-</table></td><td class="dcell"> 1/<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup> = 1/(1−1/<span style="font-style:italic">x</span>) = <span style="font-style:italic">x</span>/(<span style="font-style:italic">x</span>−1).</td></tr>
-</table><p>
-We also have<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">ztrans(1,n,z)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">z/(z-1) 
-</span></div><p>
-Note that differentiating both sides of
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
-</table></td><td class="dcell"> 1/<span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup> = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span>−1)</td></tr>
-</table><p>
-gives us
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">n</span>/<span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span>−1</sup> = 1/(<span style="font-style:italic">z</span>−1)<sup>2</sup></td></tr>
-</table><p>
-and so, multiplying both sides by <span style="font-style:italic">z</span>,
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">n</span>/<span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup> = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span>−1)<sup>2</sup> = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span><sup>2</sup> − 2<span style="font-style:italic">z</span> + 1)</td></tr>
-</table><p>
-as indicated above.</p>
+<span style="font-family:monospace">normald(5.04754808715,1.42751619912)</span>
+</div><p>
+The mean of <span style="font-style:italic">Y</span> is about 5.05 and the variance is about 2.04. Now
+the variable <span style="font-style:italic">Z</span>=exp(<span style="font-style:italic">Y</span>) has the sought lognormal distribution. </p>
 <hr>
 <a href="cascmd_en654.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,70 +4,112 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Gauss-Jordan reduction: rref gaussjord</title>
+<title>The beta distribution
+</title>
 </head>
 <body >
 <a href="cascmd_en643.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en645.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec769" class="subsection">5.61.3  Gauss-Jordan reduction: <span style="font-family:monospace">rref gaussjord</span></h3>
-<p>
-<a id="hevea_default1001"></a>
-<a id="hevea_default1002"></a>
-<a id="sec:rref"></a></p><p><span style="font-family:monospace">rref</span> solves a linear system of equations written in
-matrix form (see also <a href="cascmd_en420.html#sec%3Arrefm">5.36.17</a>):
-</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
-<span style="font-family:monospace">rref</span> takes one or two arguments.
-</p><ul class="itemize"><li class="li-itemize">
-If <span style="font-family:monospace">rref</span> has only one argument, this argument is the augmented matrix 
-of the system (the matrix obtained by augmenting matrix <span style="font-family:monospace">A</span> to the 
-right with the column vector <span style="font-family:monospace">B</span>).<br>
-The result is a matrix <span style="font-family:monospace">[A1,B1]</span>: <span style="font-family:monospace">A1</span> has zeros both above and under 
-its principal diagonal and has 1 on its principal diagonal, and the solutions 
-of:
-<div class="center"><span style="font-family:monospace">A1*X=B1</span></div> 
-are the same as:
-<div class="center"><span style="font-family:monospace">A*X=B</span></div>
-For example, to solve the system:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
-</table></td></tr>
-</table> 
-Input:
-<div class="center"><span style="font-family:monospace">rref([[3,1,-2],[3,2,2]])</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">[[1,0,-2],[0,1,4]]</span></div>
-Hence <span style="font-style:italic">x</span>=−2 and <span style="font-style:italic">y</span>=4 is the solution of this system.<p><span style="font-family:monospace">rref</span> can also solve several linear systems
-of equations having the same first member.
-We write the second members as a column matrix.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[1,0,-2,0],[0,1,4,1]]</span></div><p>
-Which means that (<span style="font-style:italic">x</span>=−2 and <span style="font-style:italic">y</span>=4) is the solution of the system
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
-</table></td></tr>
+<h3 id="ssec:betad" class="subsection">9.4.12  The beta distribution
+</h3>
+<h4 id="sec868" class="subsubsection">The probability density function for the beta distribution: <span style="font-family:monospace">betad</span>
+<a id="hevea_default1230"></a></h4>
+<p>The beta distribution depends on two parameters, <span style="font-style:italic">a</span>&gt;0 and <span style="font-style:italic">b</span>&gt;0; the
+value of the density function at <span style="font-style:italic">x</span> in [0,1] is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:betad"></a>
+<span style="font-family:monospace">betad</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = Γ(<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)<span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span>−1</sup>(1−<span style="font-style:italic">x</span>)<sup><span style="font-style:italic">b</span>−1</sup>/(Γ(<span style="font-style:italic">a</span>)Γ(<span style="font-style:italic">b</span>))
+    (9)</td></tr>
 </table><p>
-and (<span style="font-style:italic">x</span>=0 and <span style="font-style:italic">y</span>=1) is the solution of the system
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >1 </td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
-</table></td></tr>
-</table></li><li class="li-itemize">If <span style="font-family:monospace">rref</span> has two parameters, the second parameter must be an integer 
-<span style="font-style:italic">k</span>, and the Gauss-Jordan reduction will be performed on (at most)
-the first <span style="font-style:italic">k</span> columns.<br>
-Input :
-<div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]],1)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">[[3,1,-2,1],[0,1,4,1]]</span></div>
+(see Section <a href="cascmd_en143.html#ssec%3Agamma">6.8.13</a>).<br>
+The <span style="font-family:monospace">betad</span> command computes the density function for the beta
+distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">betad</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, positive numbers, the parameters.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">betad(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the density
+function for the beta distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>,
+given in (<a href="#eq%3Abetad">9</a>).
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">betad(2,1,0.3)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.6
+</td></tr>
+</table>
+<h4 id="sec869" class="subsubsection">The cumulative distribution function for the beta distribution: <span style="font-family:monospace">betad_cdf</span>
+<a id="hevea_default1231"></a></h4>
+<p>The <span style="font-family:monospace">betad_cdf</span> command computes 
+the cumulative distribution function for the beta distribution. 
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">beta_cdf</span> takes three mandatory arguments and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers (the parameters).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number. 
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">betad_cdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns 
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the beta distribution with parameters
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">beta_cdf(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns 
+Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>).
+</li></ul><p>
+It turns out that 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">betad_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = β(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)Γ(<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)/(Γ(<span style="font-style:italic">a</span>)Γ(<span style="font-style:italic">b</span>))
+</td></tr>
+</table><p>
+where β(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = ∫<sub>0</sub><sup><span style="font-style:italic">x</span></sup> <span style="font-style:italic">t</span><sup><span style="font-style:italic">a</span>−1</sup>(1−<span style="font-style:italic">t</span>)<sup><span style="font-style:italic">b</span>−1</sup> <span style="font-style:italic">dt</span> (see
+Section <a href="cascmd_en146.html#ssec%3Abeta">6.8.16</a>).</p><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">betad_cdf(2,3,0.2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.1808
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">betad_cdf(2,3,0.25,0.5)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.42578125
+</td></tr>
+</table>
+</li></ul>
+<h4 id="sec870" class="subsubsection">The inverse distribution function for the beta distribution: <span style="font-family:monospace">betad_icdf</span>
+<a id="hevea_default1232"></a></h4>
+<p>The <span style="font-family:monospace">betad_icdf</span> command
+computes the inverse distribution for the beta distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">beta_icdf</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers (the parameters).
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">beta_icdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
+distribution for the beta distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>;
+namely, the value of <span style="font-style:italic">x</span> for which Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">betad_icdf(2,3,0.2)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.212317128278
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en643.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

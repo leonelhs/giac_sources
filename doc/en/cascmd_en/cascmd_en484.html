@@ -4,44 +4,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Sort: sort</title>
+<title>Transpose of a matrix: tran transpose
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en483.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en485.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec576" class="subsection">5.43.22  Sort: <span style="font-family:monospace">sort</span></h3>
-<p><a id="hevea_default750"></a>
-<span style="font-family:monospace">sort</span> takes as argument a list or an expression.
+<h3 id="ssec:transpose" class="subsection">6.47.1  Transpose of a matrix: <span style="font-family:monospace">tran</span> <span style="font-family:monospace">transpose</span>
+<a id="hevea_default853"></a>
+<a id="hevea_default854"></a>
+</h3>
+<p>The <span style="font-family:monospace">tran</span> command finds the transpose of a matrix.<br>
+<span style="font-family:monospace">transpose</span> is a synonym for <span style="font-family:monospace">tran</span>.
 </p><ul class="itemize"><li class="li-itemize">
-For a list,<br>
-<span style="font-family:monospace">sort</span> returns the list sorted in increasing order.<br>
-Input:
-<div class="center"><span style="font-family:monospace">sort([3,4,2])</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">[2,3,4]</span></div></li><li class="li-itemize">For an expression,<br>
- <span style="font-family:monospace">sort</span> sorts and collects terms in sums and products.<br>
-Input: 
-<div class="center"><span style="font-family:monospace">sort(exp(2*ln(x))+x*y-x+y*x+2*x)</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">2*x*y+exp(2*ln(x))+x</span></div> 
-Input: 
-<div class="center"><span style="font-family:monospace">simplify(exp(2*ln(x))+x*y-x+y*x+2*x)</span></div>
-Output:
-<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+x</span></div> 
-</li></ul><p>
-<span style="font-family:monospace">sort</span> accepts an optional second argument, which is a bivariate
-function returning 0 or 1. If provided, this function
-will be used to sort the list, for example
-<span style="font-family:monospace">(x,y)-&gt;x&gt;=y</span> may be used as second argument
-to sort the list in decreasing order.
-This may also be used to sort list of lists 
-(that <span style="font-family:monospace">sort</span> with one argument does not know how to sort).<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">sort([3,4,2],(x,y)-&gt;x&gt;=y)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[4,3,2]</span></div>
+<span style="font-family:monospace">tran</span> takes one argument:<br>
+ <span style="font-style:italic">A</span>, a matrix.
+</li><li class="li-itemize"><span style="font-family:monospace">tran(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the transpose matrix of <span style="font-style:italic">A</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">tran([[1,2],[3,4]])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >4</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en483.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

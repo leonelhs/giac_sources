@@ -4,33 +4,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform complex exponentials into sin and cos: sincos exp2trig</title>
+<title>Transforming cos(x) into sin(x)/tan(x): cos2sintan
+</title>
 </head>
 <body >
 <a href="cascmd_en256.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en258.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec319" class="subsection">5.24.14  Transform complex exponentials into sin and cos: <span style="font-family:monospace">sincos exp2trig</span></h3>
-<p><a id="hevea_default450"></a><a id="hevea_default451"></a>
-<span style="font-family:monospace">sincos</span> or <span style="font-family:monospace">exp2trig</span> takes as argument an expression 
-containing complex exponentials.<br>
-<span style="font-family:monospace">sincos</span> or <span style="font-family:monospace">exp2trig</span> rewrites this expression in terms of 
-sin and cos.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">sincos(exp(i*x))</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">cos(x)+(i)*sin(x)</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">exp2trig(exp(-i*x))</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">cos(x)+(i)*(-(sin(x)))</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">simplify(sincos(((i)*(exp((i)*x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-i)/(2*exp((i)*x))))</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">simplify(exp2trig(((i)*(exp((i)*x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-i)/(2*exp((i)*x))))</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">-sin(x)</span></div>
+<h3 id="sec317" class="subsection">6.23.16  Transforming cos(x) into sin(x)/tan(x): <span style="font-family:monospace">cos2sintan</span>
+<a id="hevea_default459"></a></h3>
+<p>The <span style="font-family:monospace">cos2sintan</span> command replaces cos(<span style="font-style:italic">x</span>) by 
+sin(<span style="font-style:italic">x</span>)/tan(<span style="font-style:italic">x</span>) in an expression.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">cos2sintan</span> takes one argument:<br>
+ <span style="font-style:italic">expr</span>, an expression containing trigonometric functions.
+</li><li class="li-itemize"><span style="font-family:monospace">cos2sintan(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns
+<span style="font-style:italic">expr</span> with anything of the form cos(<span style="font-style:italic">x</span>) replaced by 
+sin(<span style="font-style:italic">x</span>)/tan(<span style="font-style:italic">x</span>).
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">cos2sintan(cos(2*x))</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">sin</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">tan</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en256.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

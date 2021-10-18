@@ -4,32 +4,52 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Evaluation of a polynomial: peval polyEval</title>
+<title>An upper bound for the positive real roots of a polynomial: posubLMQ
+</title>
 </head>
 <body >
 <a href="cascmd_en333.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en335.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec406" class="subsection">5.29.11  Evaluation of a polynomial: <span style="font-family:monospace">peval polyEval</span></h3>
-<p><a id="hevea_default557"></a>
-<a id="hevea_default558"></a>
-<span style="font-family:monospace">peval</span> or <span style="font-family:monospace">polyEval</span> takes as argument a polynomial 
-<span style="font-family:monospace">p</span> given by the list of its coefficients and a real <span style="font-family:monospace">a</span> .<br>
-<span style="font-family:monospace">peval</span> or <span style="font-family:monospace">polyEval</span> returns the exact or numeric value of 
-<span style="font-family:monospace">p(a)</span> using Horner’s method.<br>
- Input:
-</p><div class="center"><span style="font-family:monospace">peval([1,0,-1],sqrt(2))</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">sqrt(2)*sqrt(2)-1</span></div><p> 
-Then:
-</p><div class="center"><span style="font-family:monospace">normal(sqrt(2)*sqrt(2)-1)</span></div><p> 
-Output:
-</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
-Input:
-</p><div class="center"><span style="font-family:monospace">peval([1,0,-1],1.4)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">0.96</span></div>
+<h3 id="sec408" class="subsection">6.29.5  An upper bound for the positive real roots of a polynomial: <span style="font-family:monospace">posubLMQ</span>
+<a id="hevea_default587"></a></h3>
+<p>The <span style="font-family:monospace">posubLMQ</span> command uses the Local Max Quadratic (LMQ)
+Akritas-Strzebonski-Vigklas algorithm to find upper bounds for the
+positive real roots of polynomials.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">posubLMQ</span> takes one argument:<br>
+ <span style="font-style:italic">P</span>, a polynomial.
+</li><li class="li-itemize"><span style="font-family:monospace">posubLMQ(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns a
+(non-optimal) upper bound for the positive real roots of <span style="font-style:italic">P</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">posubLMQ(x^3 - 7*x + 7)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">posubLMQ(x^5 + 2*x^4 - 6*x^3 - 7*x^2 + 7*x + 7)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">posubLMQ(x^3 - x^2 -2*x + 2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en333.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,43 +4,62 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Tests: == != &gt; &gt;= &lt; =&lt;</title>
+<title>Reading files: read load
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en063.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en065.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec93" class="subsection">5.2.2  Tests: <span style="font-family:monospace">== != &gt; &gt;= &lt; =&lt;</span></h3>
-<p><a id="hevea_default110"></a><a id="hevea_default111"></a><a id="hevea_default112"></a><a id="hevea_default113"></a><a id="hevea_default114"></a><a id="hevea_default115"></a>
-<span style="font-family:monospace">==, !=, &gt;, &gt;=, &lt;, =&lt;</span> are infixed operators.<br>
-<span style="font-family:monospace">a==b</span> tests the equality between <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> and returns <span style="font-family:monospace">1</span> 
-if <span style="font-family:monospace">a</span> is equal to <span style="font-family:monospace">b</span> and <span style="font-family:monospace">0</span> otherwise.<br>
-<span style="font-family:monospace">a!=b</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are different and <span style="font-family:monospace">0</span> 
-otherwise.<br>
- <span style="font-family:monospace">a&gt;=b</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is greater than or equal to <span style="font-family:monospace">b</span> 
-and <span style="font-family:monospace">0</span> otherwise.<br>
-<span style="font-family:monospace">a&gt;b</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is strictly greater than <span style="font-family:monospace">b</span>
-and <span style="font-family:monospace">0</span> otherwise.<br>
-<span style="font-family:monospace">a&lt;=b</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is less than or equal to <span style="font-family:monospace">b</span> and 
-<span style="font-family:monospace">0</span> otherwise.<br>
-<span style="font-family:monospace">a&lt;b</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is strictly less than <span style="font-family:monospace">b</span> 
-and <span style="font-family:monospace">0</span> otherwise.<br>
-To write an algebraic function having the same result as an 
-<span style="font-family:monospace">if...then...else</span>, we use the boolean function <span style="font-family:monospace">ifte</span>.<br>
-For example: 
-</p><div class="center"><span style="font-family:monospace">f(x):=ifte(x&gt;0,true,false)</span></div><p>
-defines the boolean function <span style="font-style:italic">f</span> such that <span style="font-family:monospace">f(x)= true</span> if 
-<span style="font-style:italic">x</span> ∈ (0;+∞[ and <span style="font-family:monospace">f(x)=false</span> if <span style="font-style:italic">x</span> ∈ (−∞;0].<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">f(0)==0</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-<span style="font-weight:bold">Look out !</span><br>
-<span style="font-family:monospace">a=b</span> is not a boolean !!!!<br>
-<span style="font-family:monospace">a==b</span> is a boolean.<br>
-
-</p>
+<h3 id="ssec:read" class="subsection">5.6.2  Reading files: <span style="font-family:monospace">read</span> <span style="font-family:monospace">load</span>
+<a id="hevea_default104"></a>
+<a id="hevea_default105"></a>
+</h3>
+<p>Information for <span style="font-family:monospace">Xcas</span> can be stored in a file; this
+information can be read with the <span style="font-family:monospace">read</span> or <span style="font-family:monospace">load</span>
+command, depending on the type of information.</p><p><br>
+</p><p>The <span style="font-family:monospace">read</span> command reads a file containing <span style="font-family:monospace">Xcas</span>
+information, such as a program that you saved (see
+Section <a href="cascmd_en033.html#ssec%3Aprogsave">3.6.3</a>) or simply commands that you typed into a file
+with a text editor. The file should have the suffix <span style="font-family:monospace">.cxx</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">read</span> takes one argument:<br>
+<span style="font-style:italic">filename</span>, the name of a file (a string) containing a saved program (see
+Section <a href="cascmd_en033.html#ssec%3Aprogsave">3.6.3</a>) or other commands.
+</li><li class="li-itemize"><span style="font-family:monospace">read(</span><span style="font-style:italic">filename</span><span style="font-family:monospace">)</span> reads the content of
+the file.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+If you have a file named <span style="font-family:monospace">myfunction.cxx</span>,<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">read("myfunction.cxx")</span>
+</div><p>
+will read in the file, as long as the directory is in the current working
+directory. If the file is in a different directory, you can still
+read it by giving the path to the file,<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">read("/path/to/file/myfunction.cxx")</span>
+</div><p><br>
+</p><p>The <span style="font-family:monospace">load</span> command reads in a saved session (see
+Section <a href="cascmd_en031.html#ssec%3Asesssave">3.6.1</a>), which will end in <span style="font-family:monospace">.xws</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">load</span> takes one argument:<br>
+<span style="font-style:italic">filename</span>, the name of a file (a string) containing a saved session.
+</li><li class="li-itemize"><span style="font-family:monospace">load(</span><span style="font-style:italic">filename</span><span style="font-family:monospace">)</span> loads the session stored in
+<span style="font-style:italic">filename</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+If you have a session saved in the file <span style="font-family:monospace">mysession.xws</span>,<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">load("mysession.xws")</span>
+</div><p>
+loads <span style="font-family:monospace">mysession.xws</span>.</p>
 <hr>
 <a href="cascmd_en063.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

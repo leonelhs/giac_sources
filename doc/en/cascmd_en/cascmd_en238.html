@@ -4,94 +4,247 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Finding conjugate points: conjugate_equation</title>
+<title>Solution of the Brachistochrone Problem</title>
 </head>
 <body >
 <a href="cascmd_en237.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en239.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec297" class="subsection">5.21.4  Finding conjugate points: <span style="font-family:monospace">conjugate_equation</span><a id="hevea_default409"></a></h3>
-<p>
-<span style="font-family:monospace">conjugate_equation</span> takes four arguments:
-</p><ul class="itemize"><li class="li-itemize">
-expression <span style="font-style:italic">y</span><sub>0</sub> which depends on the independent variable and two parameters,
-</li><li class="li-itemize">list [α,β] of parameters which <span style="font-style:italic">y</span><sub>0</sub> depends on,
-</li><li class="li-itemize">list [<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>] of the values of parameters α and β, respectively,
-</li><li class="li-itemize">independent variable <span style="font-style:italic">x</span>,
-</li><li class="li-itemize">real number <span style="font-style:italic">a</span> equal to the lower or to the upper bound for <span style="font-style:italic">x</span>.
-</li></ul><p>
-The function <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">x</span>) is assumed to be stationary for the problem of minimizing some functional <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>. The return value is the expression
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:conjugate-equation"></a>
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">t</span>)</td></tr>
+<h3 id="sec297" class="subsection">6.22.3  Solution of the Brachistochrone Problem</h3>
+<p>To solve the brachistochrone problem (see Section <a href="cascmd_en236.html#ssec%3Abrachistochrone">6.22.1</a>),
+you can first find the Euler-Lagrange equations for the Lagrangian 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>))=</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>)<sup>2</sup></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂α</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">a</span>)</td></tr>
+<tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">g</span> <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)</td></tr>
+</table></td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p> 
+You can simplify this somewhat by assuming that you are using units
+where 2<span style="font-style:italic">g</span>=1.<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">assume(y&gt;=0):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">euler_lagrange(sqrt((1+y’^2)/y),x,y)</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂β</td></tr>
-</table></td><td class="dcell">−
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">a</span>)</td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:8em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎜<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂α</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">t</span>)</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">y</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">+1</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎟<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">
+<span style="font-style:italic">y</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">=<span style="font-style:italic">K</span><sub>2</sub>,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><sup>2</sup></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂β</td></tr>
-</table></td><td class="dcell">,
-    (4)</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">x</span><sup>2</sup></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">y</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">y</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">−1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2
+<span style="font-style:italic">y</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
 </table><p>
-at α=<span style="font-style:italic">A</span> and β=<span style="font-style:italic">B</span>, which is zero if and only if <span style="font-style:italic">t</span> is conjugate to <span style="font-style:italic">a</span>. To find any conjugate points, set the returned expression to zero and solve.</p><p>For example, we find a minimum for the functional
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><table class="display"><tr><td class="dcell" style="text-align:center">π</td></tr>
+It is easier to solve the first equation for <span style="font-style:italic">y</span>, since it is first-order and separable.</p><p>The first equation can be rewritten as 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">dy</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">dx</span></td></tr>
+</table></td><td class="dcell"> = −</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">C</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell"> − 1</td></tr>
+</table></td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p> 
+for appropriate <span style="font-style:italic">C</span>, which can be solved by separation of variables,
+getting you the parametric equations 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">x</span></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">= </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">C</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2θ −sin(2θ)</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">y</span></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">= </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">C</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">1 −cos(2θ)</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
+</table><p>
+which parameterize a cycloid. This implicitly defines a function
+<span style="font-style:italic">y</span>=<span style="text-decoration:overline"><span style="font-style:italic">y</span></span>(<span style="font-style:italic">x</span>) as the only stationary function for <span style="font-style:italic">L</span>. The
+problem is to prove that it minimizes <span style="font-style:italic">T</span>, which would be easy if the
+integrand <span style="font-style:italic">L</span> was convex. However, it’s not the case here:<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">assume(y&gt;=0):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">convex(sqrt((1+y’^2)/y),y(x))</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">−</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">y</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">+3≥ 0</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table><p>
+This is equivalent to |<span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>)|≤√<span style="text-decoration:overline">3</span>, which is certainly not
+satisfied by the cycloid <span style="text-decoration:overline"><span style="font-style:italic">y</span></span> near the point <span style="font-style:italic">x</span>=0.</p><p>Using the substitution <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">z</span>(<span style="font-style:italic">x</span>)<sup>2</sup>/2, you get <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>)=<span style="font-style:italic">z</span>′(<span style="font-style:italic">x</span>) <span style="font-style:italic">z</span>(<span style="font-style:italic">x</span>)
+and
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">L</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>))=<span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">z</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">z</span>′(<span style="font-style:italic">x</span>))=</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2(<span style="font-style:italic">z</span>(<span style="font-style:italic">x</span>)<sup>−2</sup>+<span style="font-style:italic">z</span>′(<span style="font-style:italic">x</span>)<sup>2</sup>)</td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+The function <span style="font-style:italic">P</span> is convex:<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">assume(z&gt;=0):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">convex(sqrt(2(z^(-2)+z’^2)),z(x))</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">true</span>
+</td></tr>
+</table><p>
+Hence the function <span style="text-decoration:overline"><span style="font-style:italic">z</span></span>(<span style="font-style:italic">t</span>)=√<span style="text-decoration:overline">2 </span><span style="text-decoration:overline"><span style="font-style:italic">y</span></span><span style="text-decoration:overline">(</span><span style="text-decoration:overline"><span style="font-style:italic">t</span></span><span style="text-decoration:overline">)</span>,
+stationary for <span style="font-style:italic">P</span> (which is verified directly), minimizes the
+objective functional
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> <span style="font-style:italic">U</span>(<span style="font-style:italic">z</span>)=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span><sub>1</sub></td></tr>
 <tr><td class="dcell" style="text-align:left"><br>
 <br>
 </td></tr>
 <tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>)<sup>2</sup>−<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)<sup>2</sup></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"> <span style="font-style:italic">d</span><span style="font-style:italic">x</span> </td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">z</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">z</span>′(<span style="font-style:italic">x</span>)) <span style="font-style:italic">dx</span>.
+</td></tr>
 </table><p>
-on <span style="font-style:italic">D</span>={<span style="font-style:italic">y</span>∈ <span style="font-style:italic">C</span><sup>1</sup>[0,π/2]:<span style="font-style:italic">y</span>(0)=<span style="font-style:italic">y</span>(π/2)=0}. The corresponding Euler-Lagrange equation is:
-</p><div class="center">
-<span style="font-family:monospace">eq:=euler_lagrange(y’(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*y(x)-y(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,y(x))
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">diff(y(x),x,2)=((-2*y(x)-x)/2)
-</span></div><p>
-The general solution is:
-</p><div class="center">
-<span style="font-family:monospace">y0:=dsolve(eq,x,y)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">c_0*cos(x)+c_1*sin(x)-x/2
-</span></div><p>
-The stationary function depends on two parameters <span style="font-style:italic">c</span><sub>0</sub> and <span style="font-style:italic">c</span><sub>1</sub> which are fixed by the boundary conditions:
-</p><div class="center">
-<span style="font-family:monospace">c:=solve([subs(y0,x,0)=0,subs(y0,x,pi/2)=0],[c_0,c_1])
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[[0,pi/4]]
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">conjugate_equation(y0,[c_0,c_1],c[0],x,0)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">sin(x)
-</span></div><p>
-The above expression obviously has no zeros in (0,π/2], hence there are no points conjugate to 0. Since <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>=2&gt;0, where <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>) is the integrand in <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>) (the strong Legendre condition), <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> on <span style="font-style:italic">D</span>. To obtain <span style="font-style:italic">y</span><sub>0</sub> explicitly, input:
-</p><div class="center">
-<span style="font-family:monospace">subs(y0,[c_0,c_1],c[0])
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">pi*sin(x)/4-x/2
-</span></div>
+From here and <span style="font-style:italic">U</span>(<span style="font-style:italic">z</span>)=<span style="font-style:italic">T</span>(<span style="font-style:italic">y</span>) it easily follows that <span style="text-decoration:overline"><span style="font-style:italic">y</span></span>
+minimizes <span style="font-style:italic">T</span> and is therefore the brachistochrone.
+(For details see John L. Troutman,
+<em>Variational Calculus and Optimal Control</em> (second edition), page
+257.)</p>
 <hr>
 <a href="cascmd_en237.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

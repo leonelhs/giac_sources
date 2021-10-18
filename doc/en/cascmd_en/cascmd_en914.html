@@ -4,56 +4,77 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Check if an object in the plane is a right triangle or a rectangle: is_rectangle</title>
+<title>Orthogonal projection in space: projection
+</title>
 </head>
 <body >
 <a href="cascmd_en913.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en915.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1177" class="subsection">12.16.7  Check if an object in the plane is a right triangle or a rectangle: <span style="font-family:monospace">is_rectangle</span><a id="hevea_default1592"></a></h3>
-<p>
-<a id="sec:2dcheckrect"></a></p><p>See section <a href="cascmd_en988.html#sec%3A3dcheckrect">13.13.11</a> for checking for right triangles and rectangles
-in three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_rectangle</span> command takes as argument a geometric object or a
-sequence of three or four points. </p><p>When the argument is a triangle or three points, <span style="font-family:monospace">is_rectangle</span> returns 
-<span style="font-family:monospace">1</span>, <span style="font-family:monospace">2</span> or <span style="font-family:monospace">3</span> if the triangle is a right
-triangle; the number indicates which vertex has the right angle.
-When the argument is a quadrilateral or four points, <span style="font-family:monospace">is_rectangle</span> returns 
-<span style="font-family:monospace">1</span> or <span style="font-family:monospace">2</span> if the quadrilateral is a rectangle;
-<span style="font-family:monospace">1</span> if it is a rectangle but not a square and <span style="font-family:monospace">2</span> if it
-is a square. The command returns <span style="font-family:monospace">0</span> if the object is not a
-right triangle or rectangle.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">is_rectangle(1,1+i,i)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">2 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">is_rectangle(1+i, -2+i, -2-i, 1-i)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">R := rectangle(-2-i,1-i, 3, C, D)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">is_rectangle(R[0])
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1
-</span></div><p>
-Note that <span style="font-family:monospace">R[0]</span> is a rectangle since <span style="font-family:monospace">R</span> is a list made
-of a rectangle and vertices <span style="font-family:monospace">C</span> and <span style="font-family:monospace">D</span>. Entering
-<span style="font-family:monospace">affix(C,D)</span> returns <span style="font-family:monospace">-2+8*i, 1+8*i</span>.</p>
+<h3 id="ssec:3dprojection" class="subsection">14.14.8  Orthogonal projection in space: <span style="font-family:monospace">projection</span>
+<a id="hevea_default1647"></a></h3>
+<p>See Section <a href="cascmd_en822.html#ssec%3A2dprojection">13.15.8</a> for projections in the plane.</p><p>The <span style="font-family:monospace">projection</span> command creates a projection.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">projection</span> takes one mandatory argument and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">O</span>, a geometrix object.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">P</span>, a point.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">projection(</span><span style="font-style:italic">O</span><span style="font-family:monospace">)</span> returns a new command which projects
+points onto <span style="font-style:italic">O</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">projection(</span><span style="font-style:italic">O</span>,<span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns and draws the projection of
+<span style="font-style:italic">P</span> onto <span style="font-style:italic">O</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">P:=point(0,0,1);</span>
+<span style="font-family:monospace">p1:= projection(line(point(0,0,0), point(1,1,1)))</span>
+<span style="font-family:monospace">coordinates(p1(P))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+which is the projection of (0,0,1) onto the line.
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">coordinates(projection(plane(point(1,0,0),point(0,0,0),point(1,1,1)),point(0,0,1)))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">0,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+which is the projection of the point (0,0,1) onto the plane.
+</li></ul>
 <hr>
 <a href="cascmd_en913.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

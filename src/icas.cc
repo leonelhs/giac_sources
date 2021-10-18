@@ -76,6 +76,9 @@ using namespace std;
 #include <signal.h>
 #endif
 #include "Python.h"
+#ifdef __MINGW_H
+#include <direct.h>
+#endif
 
 // using namespace giac;
 #ifdef HAVE_LIBREADLINE
@@ -260,7 +263,8 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
   bool has_temp_file=(tmpnam(buf)!=NULL);
   string tmpname(has_temp_file?buf:"casgraph");
 #ifdef _WIN32
-  tmpname=string("C:\\Users\\Public")+tmpname; // this path is writable in every Windows version
+  string tmpdir=getenv("TEMP")?getenv("TEMP"):"c:\\Users\\Public";
+  tmpname=tmpdir+tmpname;
 #endif
   string ext=".eps",extc="cl.eps";
   if (!xcas::fltk_view(g,gg,tmpname+ext,figfilename,file_type,contextptr)){
@@ -375,7 +379,7 @@ void texmacs_output(const giac::gen & g,giac::gen & gg,bool reading_file,int no,
   if (gg.type==giac::_STRNG)
     printf("verbatim:%s\n",gg._STRNGptr->c_str());
   else 
-    printf("scheme:(document (equation* %s))",giac::gen2scm(gg,giac::context0).c_str());
+    printf("scheme:(document (equation* (math %s)))",giac::gen2scm(gg,giac::context0).c_str());
 #else
   if (reading_file){
     putchar(TEXMACS_DATA_BEGIN);
@@ -1500,10 +1504,17 @@ int main(int ARGC, char *ARGV[]){
     putchar(TEXMACS_DATA_BEGIN);
     printf("verbatim:");
     format_plugin();
-    printf("Giac %s for TeXmacs, released under the GPL license (3.0)\n",PACKAGE_VERSION);
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("scheme:(hrule)");
+    putchar(TEXMACS_DATA_END);
+    printf("\nGiac %s for TeXmacs, released under the GPL license (3.0)\n",PACKAGE_VERSION);
     printf("See www.gnu.org for license details\n");
     printf("May contain BSD licensed software parts (lapack, atlas, tinymt)\n");
-    printf("© 2003--2020 B. Parisse & al (giac), J. van der Hoeven (TeXmacs)\n");
+    printf("© 2003–2020 B. Parisse & al (giac), J. van der Hoeven (TeXmacs), L. Marohnić (interface)\n");
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("scheme:(hrule)");
+    putchar(TEXMACS_DATA_END);
+    printf("\n");
     switch (giac::xcas_mode(contextptr)){
     case 0:
       printf("Xcas (C-like) syntax mode\n");

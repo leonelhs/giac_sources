@@ -4,51 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Homothety in the plane: homothety</title>
+<title>Checking if an object in space is a square: is_square
+</title>
 </head>
 <body >
 <a href="cascmd_en903.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en905.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1166" class="subsection">12.15.5  Homothety in the plane: <span style="font-family:monospace">homothety</span><a id="hevea_default1582"></a></h3>
-<p>
-<a id="sec:2dhomothety"></a></p><p>See section <a href="cascmd_en996.html#sec%3A3dhomothety">13.14.5</a> for homotheties in space.</p><p>A homothety is a dilation about a given point.
-The <span style="font-family:monospace">homothety</span> command can take two or three arguments.</p><p>If <span style="font-family:monospace">homothety</span> has two arguments, they are a point (the center
-of the homothety) and a real number (the scaling ratio).
-<span style="font-family:monospace">homothery</span> returns a new command which performs the dilation.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">h := homothety(i, 2)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">h(1+i)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en164.png">
-</div><p>If <span style="font-family:monospace">homothety</span> has three arguments, the first two arguments are a
-point and real number as above, and the third argument is a geometric
-object. <span style="font-family:monospace">homothety</span> returns and draws the dilated object.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">homothety(i, 2, 1+i)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en165.png">
-</div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">homothety(i, 2, circle(1+i,1))
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en166.png">
-</div><p>The <span style="font-family:monospace">homothety</span> command can also take a complex number as the
-second argument. In that case, the result will be a rotation as well
-as a dilation.</p>
+<h3 id="ssec:3dchecksquare" class="subsection">14.13.12  Checking if an object in space is a square: <span style="font-family:monospace">is_square</span>
+<a id="hevea_default1637"></a></h3>
+<p>See Section <a href="cascmd_en830.html#ssec%3A2dchecksquare">13.16.8</a> for checking for squares in
+two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_square</span> command determines whether or not a
+geometric object is a square.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">is_square</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of four points assumed to be
+the vertices of a quadrilateral.
+</li><li class="li-itemize"><span style="font-family:monospace">is_square(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1 if the object
+is a square and returns 0 otherwise.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_square([2,2,0],[-2,2,0],[-2,-2,0],[2,-2,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">S:= square([0,0,0],[2,0,0],[0,0,1])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_square(S)</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_square([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en903.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

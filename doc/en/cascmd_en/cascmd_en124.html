@@ -4,28 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Simplification of a pair of integers: simp2</title>
+<title>Denominator of a fraction after simplification: denom getDenom
+
+</title>
 </head>
 <body >
 <a href="cascmd_en123.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en125.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec159" class="subsection">5.8.6  Simplification of a pair of integers: <span style="font-family:monospace">simp2</span></h3>
-<p><a id="hevea_default215"></a><a id="sec:isimp2"></a>
-<span style="font-family:monospace">simp2</span> takes as argument two integers or a list of two integers 
-which represent a fraction (for two polynomials see <a href="cascmd_en389.html#sec%3Asimp2">5.33.6</a>).<br>
-<span style="font-family:monospace">simp2</span> returns the list of the numerator and the denominator of 
-an irreducible representation of this fraction 
-(i.e. after simplification).<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">simp2(18,15) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[6,5]</span></div><p> 
-Input:
-</p><div class="center"><span style="font-family:monospace">simp2([42,12])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[7,2]</span></div>
+<h3 id="sec:idenom" class="subsection">6.7.4  Denominator of a fraction after simplification: <span style="font-family:monospace">denom</span> <span style="font-family:monospace">getDenom</span>
+<a id="hevea_default226"></a>
+<a id="hevea_default227"></a></h3>
+<p>The <span style="font-family:monospace">denom</span> command finds the denominator
+of a fraction.<br>
+<span style="font-family:monospace">getDenom</span> is a synonym for <span style="font-family:monospace">denom</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">denom</span> takes one argument:<br>
+ <span style="font-style:italic">r</span> a fraction.
+</li><li class="li-itemize"><span style="font-family:monospace">denom(</span><span style="font-style:italic">r</span><span style="font-family:monospace">)</span> returns the denominator
+of <span style="font-style:italic">r</span> after it has been reduced to lowest terms. (For rational
+expressions see Section <a href="cascmd_en350.html#ssec%3Adenom">6.32.4</a>).
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">denom(42/12)</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">getDenom(42/12)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
+</td></tr>
+</table><p>
+To avoid simplification, the argument must
+be quoted (see Section <a href="cascmd_en177.html#ssec%3Aqt">6.12.4</a>).<br>
+(For rational expressions see Section <a href="cascmd_en349.html#ssec%3Agetdenom">6.32.3</a>).<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">denom(’42/12’)</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">getDenom(’42/12’)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">12
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en123.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

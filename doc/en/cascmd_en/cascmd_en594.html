@@ -4,31 +4,91 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Eigenvalues: egvl eigenvalues eigVl</title>
+<title>Variance: variance
+</title>
 </head>
 <body >
 <a href="cascmd_en593.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en595.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec713" class="subsection">5.55.2  Eigenvalues: <span style="font-family:monospace">egvl eigenvalues eigVl</span></h3>
-<p><a id="hevea_default934"></a><a id="hevea_default935"></a><a id="hevea_default936"></a>
-<span style="font-family:monospace">egvl</span> (or <span style="font-family:monospace">eigenvalues eigVl</span>) takes as argument a 
-square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
-<span style="font-family:monospace">egvl</span> (or <span style="font-family:monospace">eigenvalues eigVl</span>) returns the Jordan normal
-form of <span style="font-style:italic">A</span>.<br>
-<span style="font-weight:bold">Remark</span>: If <span style="font-style:italic">A</span> is exact, <span style="font-family:monospace">Xcas</span> may not be able
-to find the exact roots of the characteristic polynomial, 
-<span style="font-family:monospace">eigenvalues</span> will return an approximate diagonalization of <span style="font-style:italic">A</span> if the
-coefficients are numeric.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">egvl([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[2,1,0],[0,2,1],[0,0,2]] </span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">egvl([[4,1,0],[1,2,-1],[2,1,0]])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[0.324869129433,0,0],[0,4.21431974338,0],[0,0,1.46081112719]]</span></div>
+<h3 id="sec783" class="subsection">9.1.2  Variance: <span style="font-family:monospace">variance</span>
+<a id="hevea_default1116"></a></h3>
+<p>The variance of a list of numbers measures how close the numbers are
+to their mean by finding the average of the squares of the differences
+between the numbers and the mean; specifically, given a list of
+numbers [<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>] with mean µ = (<span style="font-style:italic">x</span><sub>1</sub> + ⋯ + <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)/<span style="font-style:italic">n</span>,
+the variance is 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub>1</sub> − µ)<sup>2</sup> + … + (<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> − µ)<sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">. 
+</td></tr>
+</table><p>
+The squares help ensure that the numbers above the mean and those
+below the mean don’t cancel out. The <span style="font-family:monospace">variance</span> command
+computes the variance.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">variance</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list or matrix of numbers.
+</li><li class="li-itemize"><span style="font-style:italic">W</span>, a list or matrix of weights, the same size as <span style="font-style:italic">L</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">variance(</span><span style="font-style:italic">L</span> ⟩ <span style="font-style:italic">W</span>⟨<span style="font-family:monospace">)</span> returns the variance
+of the list or a list with the variances of the columns of the matrix.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">variance([1,2,3,4])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">variance([[1,2,3],[5,6,7]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">4,4,4</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">variance([2,4,6,8],[2,2,3,3])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">121</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">25</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">variance([[1,2],[3,4]],[[1,2],[2,1]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">8</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">9</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">8</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">9</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en593.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

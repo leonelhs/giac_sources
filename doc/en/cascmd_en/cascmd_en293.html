@@ -4,24 +4,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Auto-correlation of a signal: auto_correlation</title>
+<title>Trailing coefficient degree of a polynomial: tcoeff
+</title>
 </head>
 <body >
 <a href="cascmd_en292.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en294.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec363" class="subsection">5.27.7  Auto-correlation of a signal: <span style="font-family:monospace">auto_correlation</span><a id="hevea_default512"></a></h3>
-<p>
-<span style="font-family:monospace">auto_correlation</span> takes as argument a complex vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  of length  <span style="font-style:italic">n</span>  and returns its cross-correlation with itself as the vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>⋆<span style="font-weight:bold"><span style="font-style:italic">v</span></span>  of length  2 <span style="font-style:italic">n</span>−1  (see the <span style="font-family:monospace">cross_correlation</span> command, section <a href="cascmd_en292.html#sec%3Acrosscorr">5.27.6</a>). For example, input:
-</p><div class="center">
-	<span style="font-family:monospace">auto_correlation([2,3,4,3,1,4,5,1,3,1])</span>
-</div><p>
-Output:
-</p><div class="center">
-	<span style="font-family:monospace">[2.0,9.0,15.0,28.0,37.0,44.0,58.0,58.0,68.0,<br>
-		91.0,68.0,58.0,58.0,44.0,37.0,28.0,15.0,9.0,2.0]</span>
+<h3 id="sec362" class="subsection">6.27.11  Trailing coefficient degree of a polynomial: <span style="font-family:monospace">tcoeff</span>
+<a id="hevea_default531"></a></h3>
+<p>The <span style="font-family:monospace">tcoeff</span> command finds the trailing coefficient of a
+polynomial; that is, the coefficient of the monomial of lowest degree.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">tcoeff</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a polynomial given by a symbolic expression or by its
+list of coefficients.
+</li><li class="li-itemize">Optionally <span style="font-style:italic">x</span>, a variable name (by default <span style="font-family:monospace">x</span>).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">tcoeff(</span><span style="font-style:italic">P</span> ⟨,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns the trailing coefficient of <span style="font-style:italic">P</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">tcoeff([2,1,-1,0])</span>
 </div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  −1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">tcoeff(3*x^2+5*x,x)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  5
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">tcoeff(3*x^2+5*x*y^2,y)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  3 <span style="font-style:italic">x</span><sup>2</sup>
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en292.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

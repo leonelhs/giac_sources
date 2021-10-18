@@ -4,44 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Apply a moving average filter to a signal: moving_average</title>
+<title>Primitive part of a polynomial: primpart
+</title>
 </head>
 <body >
 <a href="cascmd_en296.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en298.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec367" class="subsection">5.27.11  Apply a moving average filter to a signal: <span style="font-family:monospace">moving_average</span><a id="hevea_default516"></a></h3>
-<p>
-<span style="font-family:monospace">moving_average</span> takes two arguments: an array <span style="font-style:italic">A</span> of numeric values representing the sampled signal and a positive integer <span style="font-style:italic">n</span>. It returns an array <span style="font-style:italic">B</span> obtained by applying a moving average filter of length <span style="font-style:italic">n</span> to <span style="font-style:italic">A</span>. The elements of <span style="font-style:italic">B</span> are defined by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">B</span>[<span style="font-style:italic">i</span>]=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">A</span>[<span style="font-style:italic">i</span>+<span style="font-style:italic">j</span>] </td></tr>
-</table><p>
-for <span style="font-style:italic">i</span>=0,1,…,<span style="font-style:italic">L</span>−<span style="font-style:italic">n</span>, where <span style="font-style:italic">L</span> is the length of <span style="font-style:italic">A</span>.</p><p>Moving average filters are fast and useful for smoothing time-encoded signals. For example, input:
+<h3 id="sec366" class="subsection">6.27.15  Primitive part of a polynomial: <span style="font-family:monospace">primpart</span>
+<a id="hevea_default536"></a></h3>
+<p>The primitive part of a polynomial is the polynomial divided by its
+content (the greatest common divisor of its coefficients). The
+<span style="font-family:monospace">primpart</span> command computes the primitive part of a polynomial.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">primpart</span> takes one argument:<br>
+ <span style="font-style:italic">P</span>, a polynomial given by a symbolic expression or by the
+list of its coefficients.
+</li><li class="li-itemize"><span style="font-family:monospace">primpart(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns the
+primitive part of <span style="font-style:italic">P</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">snd:=soundsec(2):;<br>
- noise:=randvector(length(snd),normald,0,0.05):;<br>
- data:=0.5*threshold(3*sin(2*pi*220*snd),[-1.0,1.0])+noise:;<br>
- plotwav(createwav(data),range=[1000,1500])</span>
+<span style="font-family:monospace">primpart(6x^2-3x+9)</span>
 </div><p>
-Output:
+<span style="font-style:italic">or:</span>
 </p><div class="center">
-<img src="cascmd_en020.png">
+<span style="font-family:monospace">primpart([6,-3,9],x))</span>
 </div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">fdata:=moving_average(data,25):;<br>
- plotwav(createwav(fdata),range=[1000,1500])</span>
-</div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en021.png">
-</div>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2 <span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+3
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en296.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

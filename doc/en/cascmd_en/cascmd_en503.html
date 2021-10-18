@@ -4,34 +4,130 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a list with a function: makelist</title>
+<title>Jordan normal form: jordan
+
+</title>
 </head>
 <body >
 <a href="cascmd_en502.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en504.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec597" class="subsection">5.43.41  Make a list with a function: <span style="font-family:monospace">makelist</span></h3>
-<p><a id="hevea_default774"></a>
-<a id="ssec:makelist"></a></p><p><span style="font-family:monospace">makelist</span> takes as argument a function <span style="font-family:monospace">f</span>, 
-the bounds <span style="font-family:monospace">a,b</span> of an index variable and a step <span style="font-family:monospace">p</span> 
-(by default 1 or -1 depending on the bounds order).<br>
-<span style="font-family:monospace">makelist</span> makes the list <span style="font-family:monospace">[f(a),f(a+p)...f(a+k*p)]</span> with <span style="font-style:italic">k</span> such
-that: <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≤ <span style="font-style:italic">b</span> &lt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span> or <span style="font-style:italic">a</span>&gt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≥ <span style="font-style:italic">b</span> &gt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span>.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5)</span></div><p>
-or
-</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5,1)</span></div><p>
-or first define the function <span style="font-style:italic">h</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup> by <span style="font-family:monospace">h(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span>
-then input
-</p><div class="center"><span style="font-family:monospace">makelist(h,3,5,1)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[9,16,25]</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,6,2)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[9,25]</span></div><p>
-<span style="font-weight:bold">Warning!!!</span> purge <span style="font-family:monospace">x</span> if <span style="font-family:monospace">x</span> is not symbolic.</p>
+<h3 id="ssec:jordan" class="subsection">6.48.5  Jordan normal form: <span style="font-family:monospace">jordan</span>
+<a id="hevea_default886"></a>
+</h3>
+<p>The <span style="font-family:monospace">jordan</span> command finds the Jordan form of a
+matrix.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">jordan</span> takes one mandatory and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">A</span>, a square matrix.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span>, a variable name.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> (in all modes but <span style="font-family:monospace">Maple</span>) returns
+a sequence [<span style="font-style:italic">P</span>,<span style="font-style:italic">J</span>] of two matrices, where the columns of <span style="font-style:italic">P</span> are the
+eigenvectors of <span style="font-style:italic">A</span>, <span style="font-style:italic">J</span> is the Jordan form of <span style="font-style:italic">A</span>, and
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">J</span>=<span style="font-style:italic">P</span><sup>−1</sup><span style="font-style:italic">AP</span> 
+</td></tr>
+</table><p><br>
+</p><p><span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span>, in <span style="font-family:monospace">Maple</span> mode, only returns the
+matrix <span style="font-style:italic">J</span>.
+</p></li><li class="li-itemize"><span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span> ⟨<span style="font-style:italic">var</span>⟩<span style="font-family:monospace">)</span>
+returns the matrix <span style="font-style:italic">J</span>, as above, and assigns the matrix <span style="font-style:italic">P</span> to the
+variable <span style="font-style:italic">var</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input (not in </span><span style="font-style:italic"><span style="font-family:monospace">Maple</span></span><span style="font-style:italic"> mode):</span>
+<div class="center"> 
+<span style="font-family:monospace">jordan([[4,1,1],[1,4,1],[1,1,4]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >−1</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >−2</td><td style="text-align:center;white-space:nowrap" >−1</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >6</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center"> 
+<span style="font-family:monospace">jordan([[4,1,1],[1,4,1],[1,1,4]],P)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >6</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+<span style="font-style:italic">then input:</span>
+<div class="center">
+<span style="font-family:monospace">P</span> 
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >−1</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >−2</td><td style="text-align:center;white-space:nowrap" >−1</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li></ul><p><br>
+</p><p>If <span style="font-style:italic">A</span> is symmetric and has eigenvalues with multiple orders,
+the matrix <span style="font-style:italic">P</span> returned by <span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> will contain
+orthogonal eigenvectors (not always of norm equal to 1); i.e.,
+<span style="font-family:monospace">tran(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)*</span><span style="font-style:italic">P</span> will be a diagonal matrix where the diagonal is
+the square norm of the eigenvectors. </p><p><br>
+</p><p><span style="font-weight:bold">Example:</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center"> 
+<span style="font-family:monospace">jordan([[4,1,1],[1,4,1],[1,1,4]])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >−1</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >−2</td><td style="text-align:center;white-space:nowrap" >−1</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >6</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
 <hr>
 <a href="cascmd_en502.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

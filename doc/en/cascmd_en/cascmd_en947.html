@@ -4,41 +4,54 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Perpendicular lines and planes in space: perpendicular</title>
+<title>Preparing digital sound data: soundsec
+
+</title>
 </head>
 <body >
 <a href="cascmd_en946.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en948.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1220" class="subsection">13.5.6  Perpendicular lines and planes in space: <span style="font-family:monospace">perpendicular</span><a id="hevea_default1630"></a></h3>
-<p>
-<a id="sec:3dperp"></a></p><p>See section <a href="cascmd_en848.html#sec%3A2dperp">12.7.6</a> for perpendicular lines in the plane.</p><p>The <span style="font-family:monospace">perpendicular</span> command returns and draws a line or plane,
-depending on the arguments. The possible arguments are:
+<h3 id="ssec:soundsec" class="subsection">15.1.14  Preparing digital sound data: <span style="font-family:monospace">soundsec</span>
+<a id="hevea_default1684"></a>
+</h3>
+<p>The <span style="font-family:monospace">soundsec</span> command prepares sound data in the form of a vector.
 </p><ul class="itemize"><li class="li-itemize">
-A point <span style="font-family:monospace">A</span> and a line <span style="font-family:monospace">L</span>.<br>
- <span style="font-family:monospace">perpendicular(A,L)</span> returns and draws the line through
-<span style="font-family:monospace">A</span> that is perpendicular to <span style="font-family:monospace">L</span>.<br>
- Input:
+<span style="font-family:monospace">soundsec</span> takes one mandatory argument and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">d</span>, a real number (the duration).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">f</span>, a real number (the sampling frequency, by
+default 44100).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">soundsec(</span><span style="font-style:italic">d</span> ⟨ <span style="font-style:italic">f</span>⟩<span style="font-family:monospace">)</span> returns sound data
+with duration <span style="font-style:italic">d</span> seconds, and with sampling frequency <span style="font-style:italic">f</span>. The
+sound data is returned as a vector, whose <span style="font-style:italic">i</span>th element is the
+time corresponding to index <span style="font-style:italic">i</span>. 
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">perpendicular(point(0,0,0),line(point(1,0,0),point(0,1,0)))
-</span></div>
-Output:
-<div class="center">
-<img src="cascmd_en211.png">
+<span style="font-family:monospace">soundsec(2.5)</span>
 </div>
-</li><li class="li-itemize">A line <span style="font-family:monospace">L</span> and a plane <span style="font-family:monospace">P</span>.<br>
- <span style="font-family:monospace">perpendicular(L,P)</span> returns and draws the plane containing
-<span style="font-family:monospace">L</span> that is perpendicular to <span style="font-family:monospace">P</span>.<br>
- Input:
+<span style="font-style:italic">Output:</span><br>
+Sound data 2.5 seconds long sampled at the default frequency of
+44100 Hz.
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">perpendicular(line(point(0,0,0),point(1,1,0)),<br>
- plane(point(1,0,0),point(0,1,0),point(0,0,1)))
-</span></div>
-Output:
-<div class="center">
-<img src="cascmd_en212.png">
+<span style="font-family:monospace">soundsec(1,22050)</span>
 </div>
+<span style="font-style:italic">Output:</span>
+Sound data 1 second long sampled at the frequency of 22050 Hz.
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">sin(2*pi*440*soundsec(1.3))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+A sinusoid with frequency 440 Hz sampled 44100 times per
+second for 1.3 seconds.
 </li></ul>
 <hr>
 <a href="cascmd_en946.html"><img src="previous_motif.gif" alt="Previous"></a>

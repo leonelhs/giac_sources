@@ -4,46 +4,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Boolean operators : or xor and not</title>
+<title>Internal directories: NewFold SetFold GetFold DelFold VARS
+
+
+
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en064.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en066.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec94" class="subsection">5.2.3  Boolean operators : <span style="font-family:monospace">or xor and not</span></h3>
-<p><a id="hevea_default116"></a><a id="hevea_default117"></a><a id="hevea_default118"></a><a id="hevea_default119"></a><a id="hevea_default120"></a><a id="hevea_default121"></a><a id="hevea_default122"></a>
-<span style="font-family:monospace">or</span> (or <span style="font-family:monospace">||</span>), <span style="font-family:monospace">xor</span>, <span style="font-family:monospace">and</span> (or <span style="font-family:monospace">&amp;&amp;</span>) are infixed 
-operators.<br>
-<span style="font-family:monospace">not</span> is a prefixed operators.<br>
-If <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are two booleans:<br>
-<span style="font-family:monospace">(a or b)</span> <span style="font-family:monospace">(a || b)</span> returns <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> and
-<span style="font-family:monospace">b</span> are equal to 0 and returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) otherwise.<br>
-<span style="font-family:monospace">(a xor b)</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is equal to 1 and <span style="font-family:monospace">b</span> is
-equal to 0 or if <span style="font-family:monospace">a</span> is equal to 0 and <span style="font-family:monospace">b</span> is equal to 1 and returns 0
-if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 0
-or if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 1 (it is the "exclusive or").<br>
-<span style="font-family:monospace">(a and b)</span> or <span style="font-family:monospace">(a &amp;&amp; b)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span>
-and <span style="font-family:monospace">b</span> are equal to 1 and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) otherwise.<br>
-<span style="font-family:monospace">not(a)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span> is equal to 0 (or 
-<span style="font-family:monospace">false</span>), and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> is equal to 1 (or 
-<span style="font-family:monospace">true</span>).<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">1&gt;=0 or 1&lt;0</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">1&gt;=0 xor 1&gt;0</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">0</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">1&gt;=0 and 1&gt;0</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">not(0==0)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">0</span></div>
+<h3 id="sec95" class="subsection">5.6.3  Internal directories: <span style="font-family:monospace">NewFold</span> <span style="font-family:monospace">SetFold</span> <span style="font-family:monospace">GetFold</span> <span style="font-family:monospace">DelFold</span> <span style="font-family:monospace">VARS</span>
+<a id="hevea_default106"></a>
+<a id="hevea_default107"></a>
+<a id="hevea_default108"></a>
+<a id="hevea_default109"></a>
+<a id="hevea_default110"></a>
+<a id="hevea_default111"></a></h3>
+<p>You can create a directory that isn’t actually on your hard drive but
+is treated like one by <span style="font-family:monospace">Xcas</span> with the command
+<span style="font-family:monospace">NewFold</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">NewFold</span> takes one argument:
+<span style="font-style:italic">MyIntDir</span>, a variable name (see Section <a href="cascmd_en052.html#ssec%3Avarname">5.4.1</a>).
+</li><li class="li-itemize"><span style="font-family:monospace">NewFold(</span><span style="font-style:italic">MyIntDir</span><span style="font-style:italic">)</span>
+creates a new internal directory named <span style="font-style:italic">MyIntDir</span>.
+(Note that quotation marks are not used.)
+</li></ul><p>Internal directories will be listed with the <span style="font-family:monospace">VARS()</span> command
+(see Section <a href="cascmd_en060.html#ssec%3AVARS">5.4.9</a>).</p><p>To actually use this directory, you’ll have to use the
+<span style="font-family:monospace">SetFold</span> command.
+</p><ul class="itemize"><li class="li-itemize">
+The <span style="font-family:monospace">SetFold</span> command takes one argument:<br>
+<span style="font-style:italic">MyIntDir</span>, the variable name of an internal directory created with
+<span style="font-family:monospace">NewFold</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">SetFold(</span><span style="font-style:italic">MyIntDir</span><span style="font-family:monospace">)</span>
+makes <span style="font-style:italic">MyIntDir</span> the working directory (see Section <a href="cascmd_en063.html#ssec%3Awdir">5.6.1</a>).
+</li></ul><p>Finally, you can print out the internal directory that you are in with
+the <span style="font-family:monospace">GetFold</span> command.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">GetFold</span> takes no arguments.
+</li><li class="li-itemize"><span style="font-family:monospace">GetFold()</span> returns the name of the current internal
+directory.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">GetFold()</span>
+</div><p>
+will display the current internal directory.</p><p><br>
+</p><p>The <span style="font-family:monospace">DelFold</span> command will delete an internal directory.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">DelFold</span> takes one argument:<br>
+<span style="font-style:italic">MyIntDir</span>, the variable name of an internal directory.
+</li><li class="li-itemize"><span style="font-family:monospace">DelFold(</span><span style="font-style:italic">MyIntDir</span><span style="font-family:monospace">)</span> will delete the directory
+if it is empty.
+</li></ul>
 <hr>
 <a href="cascmd_en064.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

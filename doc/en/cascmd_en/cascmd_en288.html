@@ -4,31 +4,130 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rectangle function: rect</title>
+<title>Transforming a polynomial in internal format into a list, and conversely: convert
+
+</title>
 </head>
 <body >
 <a href="cascmd_en287.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en289.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec358" class="subsection">5.27.2  Rectangle function: <span style="font-family:monospace">rect</span><a id="hevea_default507"></a></h3>
-<p><a id="sec:rect"></a>
-The <span style="font-family:monospace">rect</span> command takes an identifier or an expression  <span style="font-style:italic">x</span>  and returns the value of the rectangle function at  <span style="font-style:italic">x</span> , which is defined by  Π(<span style="font-style:italic">x</span>)=<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>+1/2)−<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>−1/2)  where  <span style="font-style:italic">u</span>  is the Heaviside function. The rectangle function is a special case of boxcar function (see Section <a href="cascmd_en287.html#sec%3Aboxcar">5.27.1</a>) for  <span style="font-style:italic">a</span>=−1/2  and  <span style="font-style:italic">b</span>=1/2 .</p><p>For example, input:
+<h3 id="ssec:polytrans" class="subsection">6.27.6  Transforming a polynomial in internal format into a list, and conversely: <span style="font-family:monospace">convert</span>
+<a id="hevea_default524"></a>
+</h3>
+<p>The <span style="font-family:monospace">convert</span> command does many conversions (see
+Section <a href="cascmd_en267.html#ssec%3Aconvert">6.23.26</a>). Among other things, it can convert between a
+polynomial in internal sparse multivariate format and a list
+representing the polynomial.</p><p>To convert from a polynomial in internal sparse multivariate format to
+a list:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">convert</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a polynomial written in internal sparse
+multivariate format (see Section <a href="cascmd_en284.html#ssec%3Amultipoly">6.27.2</a>).
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">list</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">convert(</span><span style="font-style:italic">P</span> ⟨,<span style="font-family:monospace"> list</span>⟩<span style="font-family:monospace">)</span> returns a list
+representing the polynomial.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">rect(x/2)
-</span></div><p>
-Output:
+<span style="font-family:monospace">p:= symb2poly(x^2 - x*y + 2y, [x,y])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
 </p><div class="center">
-<span style="font-family:monospace">Heaviside(x/2+1/2)-Heaviside(x/2-1/2)
-</span></div><p>To compute the convolution of the rectangle function with itself, use the convolution theorem. Input:
+<span style="font-family:monospace">%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%}</span>
+</div><p>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">R:=fourier(rect(x),x,s):; ifourier(R^2,s,x)
-</span></div><p>
-Output:
+<span style="font-family:monospace">l:= convert(p,list)</span>
+</div><p>
+<span style="font-style:italic">or:</span>
 </p><div class="center">
-<span style="font-family:monospace">Heaviside(x+1)-Heaviside(x-1)-2*x*Heaviside(x)+ x*Heaviside(x+1)+x*Heaviside(x-1)
-</span></div><p>
-The above result is the triangle function  <span style="font-style:italic">tri</span>(<span style="font-style:italic">x</span>)  (see Section <a href="cascmd_en289.html#sec%3Atri">5.27.3</a>).</p>
+<span style="font-family:monospace">l:= convert(p)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">2,0</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >−1</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,1</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">0,1</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table><p>
+which is a list of the coefficients followed by a list of the variable
+powers.</p><p>To convert from a list representing a polynomial to the polynomial in
+internal sparse multivariate format:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">convert</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list representing a polynomial.
+</li><li class="li-itemize"><span style="font-family:monospace">polynom</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">convert(</span><span style="font-style:italic">L</span><span style="font-family:monospace">,polynom)</span> returns the polynomial in
+internal sparse multivariate format (see Section <a href="cascmd_en284.html#ssec%3Amultipoly">6.27.2</a>).
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input (</span><span style="font-family:monospace">l</span><span style="font-style:italic"> from above):</span>
+</p><div class="center">
+<span style="font-family:monospace">l:=[[1,[2,0]],[-1,[1,1]],[2,[0,1]]]</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">2,0</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >−1</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,1</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">0,1</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table><p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">convert(l,polynom)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><div class="center">
+<span style="font-family:monospace">%%%{1,[2,0]%%%}+%%%{-1,[1,1]%%%}+%%%{2,[0,1]%%%}</span>
+</div>
 <hr>
 <a href="cascmd_en287.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

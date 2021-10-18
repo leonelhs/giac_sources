@@ -4,43 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Remove elements of a list: remove</title>
+<title>Determinant of a sparse matrix: det_minor
+</title>
 </head>
 <body >
 <a href="cascmd_en487.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en489.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec580" class="subsection">5.43.26  Remove elements of a list: <span style="font-family:monospace">remove</span></h3>
-<p><a id="hevea_default754"></a>
-<span style="font-family:monospace">remove</span> takes as argument: a boolean function <span style="font-family:monospace">f</span> and 
-a list <span style="font-family:monospace">L</span>.<br>
-<span style="font-family:monospace">remove</span> removes in the list <span style="font-family:monospace">L</span>, the elements <span style="font-family:monospace">c</span> such that 
-<span style="font-family:monospace">f(c)==true</span>.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">remove(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[0,1,1]</span></div><p>
-<span style="font-weight:bold">Remark</span> The same applies on strings, for example,
-to remove all the "a" of a string:<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">97</span></div><p>
-Input:
-</p><pre class="verbatim">f(chn):={
-  local l:=length(chn)-1;
-  return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));
-}
-</pre><p>
-Then, input:
-</p><div class="center"><span style="font-family:monospace">f("abracadabra")</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">["b","r","c","d","b","r"]</span></div><p>
-To get a string, input:
-</p><div class="center"><span style="font-family:monospace">char(ord(["b","r","c","d","b","r"])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">"brcdbr"</span></div>
+<h3 id="sec613" class="subsection">6.47.5  Determinant of a sparse matrix: <span style="font-family:monospace">det_minor</span>
+<a id="hevea_default864"></a></h3>
+<p>The <span style="font-family:monospace">det_minor</span> command finds the determinant of a matrix by
+expanding the determinant using Laplace’s algorithm.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">det_minor</span> takes one argument:<br>
+ <span style="font-style:italic">A</span>, a matrix.
+</li><li class="li-itemize"><span style="font-family:monospace">det_minor(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the determinant of the matrix
+<span style="font-style:italic">A</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">det_minor([[1,2],[3,4]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−2
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">det_minor(idn(3))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en487.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

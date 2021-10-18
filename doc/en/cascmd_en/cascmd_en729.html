@@ -4,61 +4,41 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The exponential distribution</title>
+<title>Pausing a program: Pause WAIT
+
+</title>
 </head>
 <body >
 <a href="cascmd_en728.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en730.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec932" class="subsection">8.4.14  The exponential distribution</h3>
-<h4 id="sec933" class="subsubsection">The probability density function for the exponential distribution: <span style="font-family:monospace">exponential</span><a id="hevea_default1279"></a> <span style="font-family:monospace">exponentiald</span><a id="hevea_default1280"></a></h4>
-<p>The exponential distribution depends on one parameters, λ&gt;0; the
-value of the density function at <span style="font-style:italic">x</span> ≥ 0 is
-<span style="font-family:monospace">exponential</span>(λ,<span style="font-style:italic">x</span>) =
-λ <span style="font-style:italic">e</span><sup>−λ <span style="font-style:italic">x</span></sup>. If you enter
+<h3 id="sec989" class="subsection">12.4.10  Pausing a program: <span style="font-family:monospace">Pause</span> <span style="font-family:monospace">WAIT</span>
+<a id="hevea_default1410"></a>
+<a id="hevea_default1411"></a></h3>
+<p>The <span style="font-family:monospace">Pause</span> command pauses <span style="font-family:monospace">Xcas</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">Pause</span> takes one optional argument (with no
+parentheses).<br>
+ Optionally, <span style="font-style:italic">r</span>, a positive number.
+</li><li class="li-itemize"><span style="font-family:monospace">Pause </span><span style="font-style:italic">r</span> pauses <span style="font-family:monospace">Xcas</span> for <span style="font-style:italic">r</span> seconds.
+</li><li class="li-itemize"><span style="font-family:monospace">Pause</span> brings up a Pause informational window and
+pauses <span style="font-family:monospace">Xcas</span> until you click <span style="font-family:monospace">Close</span> in the Pause window.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">exponential(2.1,3.5)
-</span></div><p>
-for example, you will get
+<span style="font-family:monospace">Pause 10</span>
+</div><p>
+pauses <span style="font-family:monospace">Xcas</span> for 10 seconds.</p><p><br>
+</p><p>The <span style="font-family:monospace">WAIT</span> command also pauses <span style="font-family:monospace">Xcas</span>. It acts just
+like <span style="font-family:monospace">Pause</span>, but uses parentheses for its argument.</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">0.00134944395675
-</span></div>
-<h4 id="sec934" class="subsubsection">The cumulative distribution function for the exponential distribution: <span style="font-family:monospace">exponential_cdf</span><a id="hevea_default1281"></a> <span style="font-family:monospace">exponentiald_cdf</span><a id="hevea_default1282"></a></h4>
-<p>The cumulative distribution function for the exponential distribution with
-parameter λ &gt; 0 at a value <span style="font-style:italic">x</span> ≥ 0 is
-<span style="font-family:monospace">exponential_cdf</span>(λ,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>).
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">exponential_cdf(2.3,3.2)
-</span></div><p>
-for example, you will get
-</p><div class="center">
-<span style="font-family:monospace">0.99936380154
-</span></div><p>If you give <span style="font-family:monospace">exponential_cdf</span> an extra argument <span style="font-style:italic">y</span> &gt; <span style="font-style:italic">x</span>,
-you will get the probability that
-the random variable lies between the two values;
-<span style="font-family:monospace">exponential_cdf(</span>λ<span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). 
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">exponential_cdf(2.3,0.9,3.2)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.125549583246
-</span></div>
-<h4 id="sec935" class="subsubsection">The inverse distribution function for the exponential distribution: <span style="font-family:monospace">exponential_icdf</span><a id="hevea_default1283"></a> <span style="font-family:monospace">exponentiald_icdf</span><a id="hevea_default1284"></a></h4>
-<p>The inverse distribution function for the exponential
-distribution with parameter λ &gt; 0 is computed with
-<span style="font-family:monospace">exponential_icdf(</span>λ<span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
-value <span style="font-style:italic">x</span> with <span style="font-family:monospace">exponential_cdf</span>(λ,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
-</p><div class="center">
-<span style="font-family:monospace">exponential_icdf(2.3,0.87)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.887052534142
-</span></div>
+<span style="font-family:monospace">WAIT(10)</span>
+</div><p>
+pauses <span style="font-family:monospace">Xcas</span> for 10 seconds.</p>
 <hr>
 <a href="cascmd_en728.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

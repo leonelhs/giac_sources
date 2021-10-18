@@ -4,99 +4,112 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rational Jordan matrix: rat_jordan</title>
+<title>The population standard deviation: stddevp stdDev
+
+</title>
 </head>
 <body >
 <a href="cascmd_en595.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en597.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec715" class="subsection">5.55.4  Rational Jordan matrix: <span style="font-family:monospace">rat_jordan</span></h3>
-<p><a id="hevea_default941"></a>
-<span style="font-family:monospace">rat_jordan</span> takes as argument a square
-matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span> with exact coefficients.<br>
-<span style="font-family:monospace">rat_jordan</span> returns:
+<h3 id="sec785" class="subsection">9.1.4  The population standard deviation: <span style="font-family:monospace">stddevp</span> <span style="font-family:monospace">stdDev</span>
+<a id="hevea_default1118"></a>
+<a id="hevea_default1119"></a></h3>
+<p>Given a large population, rather than collecting all of the numbers it
+might be more feasible to get a smaller collection of numbers and try
+to extrapolate from that. For example, to get information about the
+ages of a large population, you might get the ages of a sample of 100
+of the people and work with that.</p><p>If a list of numbers is a sample of data from a larger population,
+then the mean of the sample
+can be used to estimate the mean of the population. The
+standard deviation uses the mean to find the standard deviation of the
+sample, but since the mean of the sample is only an approximation to
+the mean of the entire population, the standard deviation of the
+sample doesn’t provide an optimal estimate of the standard deviation
+of the population. An unbiased estimate of the standard deviation of
+the entire population is given by the population standard deviation;
+given a list <span style="font-style:italic">L</span> = [<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>] with
+mean µ, the population standard deviation is 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">s</span> =
+</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub>1</sub> − µ)<sup>2</sup> + … + (<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> − µ)<sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">. 
+</td></tr>
+</table><p> 
+Note that
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">s</span><sup>2</sup>= </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td><td class="dcell"> σ<sup>2</sup>.
+</td></tr>
+</table><p>
+where σ is the standard deviation of the sample.</p><p>The <span style="font-family:monospace">stddevp</span> command finds the standard deviation.<br>
+<span style="font-family:monospace">stdDev</span> is a synonym for <span style="font-family:monospace">stddevp</span>, for TI
+compatibility. There is no population variance function; if needed,
+it can be computed by squaring the <span style="font-family:monospace">stddevp</span> function.
 </p><ul class="itemize"><li class="li-itemize">
-in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode<br>
-a sequence of two matrices: a matrix <span style="font-style:italic">P</span> (the columns of <span style="font-style:italic">P</span> are
-the eigenvectors if <span style="font-style:italic">A</span> is diagonalizable in the field of its coefficients)
-and the rational Jordan matrix <span style="font-style:italic">J</span> of <span style="font-style:italic">A</span>, that is the most reduced
-matrix in the field of the coefficients of <span style="font-style:italic">A</span> (or the complexified
-field in complex mode), where 
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">J</span>=<span style="font-style:italic">P</span><sup>−1</sup><span style="font-style:italic">AP</span> </td></tr>
+<span style="font-family:monospace">stddevp</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list or matrix of numbers.
+</li><li class="li-itemize"><span style="font-style:italic">W</span>, a list or matrix of weights, the same size as <span style="font-style:italic">L</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">stddevp(</span><span style="font-style:italic">L</span> ⟩ <span style="font-style:italic">W</span>⟨<span style="font-family:monospace">)</span> returns the population
+standard deviation of the list or a list with the population
+standard deviations of the columns of the matrix.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">stddev([1,2,3,4])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize">in <span style="font-family:monospace">Maple</span> mode<br>
-the Jordan matrix <span style="font-style:italic">J</span> of <span style="font-style:italic">A</span>. We can also have the matrix <span style="font-style:italic">P</span> verifying
-<span style="font-style:italic">J</span>=<span style="font-style:italic">P</span><sup>−1</sup><span style="font-style:italic">AP</span> in a variable 
-by passing this variable as second argument, for example 
-<div class="center"> <span style="font-family:monospace">rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</span>
+while:<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">stddevp([1,2,3,4])</span>
 </div>
-</li></ul><p>
-<span style="font-weight:bold">Remarks</span>
-</p><ul class="itemize"><li class="li-itemize">
-the syntax <span style="font-family:monospace">Maple</span> is also valid in the other modes, for example, in
-<span style="font-family:monospace">Xcas</span> mode input 
-<div class="center"> <span style="font-family:monospace">rat_jordan([[4,1,1],[1,4,1],[1,1,4]],’P’)</span>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >15</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">A:= [0,1,2,3,4,5,6,7,8,9,10,11]</span>
+<span style="font-family:monospace">stddevp(A,A)</span>
+</td></tr>
+</table>
 </div>
-Output:
-<div class="center"> <span style="font-family:monospace">[[1,-1,1/2],[1,0,-1],[1,1,1/2]]</span>
-</div>
-then <span style="font-family:monospace">P</span> returns
-<div class="center"> <span style="font-family:monospace">[[6,0,0],[0,3,0],[0,0,3]]</span>
-</div>
-</li><li class="li-itemize">the coefficients of <span style="font-style:italic">P</span> and <span style="font-style:italic">J</span> belongs to the same field as the 
-coefficients of <span style="font-style:italic">A</span>.<br>
-For example, in <span style="font-family:monospace">Xcas</span> mode, input:
-<div class="center"> <span style="font-family:monospace">rat_jordan([[1,0,1],[0,2,-1],[1,-1,1]])</span>
-</div>
-Output:
-<div class="center"> <span style="font-family:monospace">[[1,1,2],[0,0,-1],[0,1,2]],[[0,0,-1],[1,0,-3],[0,1,4]]</span></div>
-Input (put <span style="font-family:monospace">-pcar(...)</span> because the argument of <span style="font-family:monospace">companion</span> is a unit 
-polynomial (see <a href="cascmd_en603.html#sec%3Acompagne">5.55.11</a>)
-<div class="center"> <span style="font-family:monospace">companion(-pcar([[1,0,1],[0,2,-1],[1,-1,1]],x),x)</span></div>
-Output:
-<div class="center"> <span style="font-family:monospace">[[0,0,-1],[1,0,-3],[0,1,4]]</span></div>
-Input:
-<div class="center"> <span style="font-family:monospace">rat_jordan([[1,0,0],[0,1,1],[1,1,-1]])</span></div>
-Output:
-<div class="center"> <span style="font-family:monospace">[[-1,0,0],[1,1,1],[0,0,1]],[[1,0,0],[0,0,2],[0,1,0]]</span></div>
-Input:
-<div class="center"> <span style="font-family:monospace">factor(pcar([[1,0,0],[0,1,1],[1,1,-1]],x))</span></div>
-Output:
-<div class="center"> <span style="font-family:monospace">-(x-1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2)</span></div>
-Input:
-<div class="center"> <span style="font-family:monospace">companion((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2),x)</span></div>
-Output:
-<div class="center"> <span style="font-family:monospace">[[0,2],[1,0]]</span></div></li><li class="li-itemize">When <span style="font-style:italic">A</span> is symmetric and has eigenvalues with an multiple order,
-<span style="font-family:monospace">Xcas</span> returns orthogonal eigenvectors (not always of norm equal to 1)
-i.e. <span style="font-family:monospace">tran(P)*P</span> is a diagonal matrix where the diagonal is the square norm
-of the eigenvectors, for example:
-<div class="center"> <span style="font-family:monospace">rat_jordan([[4,1,1],[1,4,1],[1,1,4]])</span>
-</div>
-returns:
-<div class="center"> <span style="font-family:monospace">[[1,-1,1/2],[1,0,-1],[1,1,1/2]],[[6,0,0],[0,3,0],[0,0,3]]</span>
-</div>
-</li></ul><p> 
-Input in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode:
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[1,0,0],[1,2,-1],[0,0,1]])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[0,1,0],[1,0,1],[0,1,1]],[[2,0,0],[0,1,0],[0,0,1]]</span></div><p>
-Input in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode:
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[[1,2,1],[0,1,0],[1,2,0]],[[2,1,0],[0,2,1],[0,0,2]]]</span></div><p>
-In complex mode and in <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> or <span style="font-family:monospace">TI</span> mode , input:
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[2,0,0],[0,2,-1],[2,1,2]])</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[1,0,0],[-2,-1,-1],[0,-i,i]],[[2,0,0],[0,2-i,0],[0,0,2+i]]</span></div><p>
-Input in <span style="font-family:monospace">Maple</span> mode:
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[2,0,0],[0,1,0],[0,0,1]]</span></div><p>
-then input: 
-</p><div class="center"><span style="font-family:monospace">P</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[0,1,0],[1,0,1],[0,1,1]]]</span></div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >66</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en595.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -6,6 +6,7 @@ var UI = {
   from: '',
   ready: false,
   focusaftereval: true,
+  frac_add:1.0, // set to 0 to avoid adding an approx value of a fraction
   docprefix: "https://www-fourier.univ-grenoble-alpes.fr/%7eparisse/giac/doc/fr/cascmd_fr/",
   base_url: "https://www-fourier.univ-grenoble-alpes.fr/%7eparisse/",
   //forum_url: "http://xcas.e.univ-grenoble-alpes.fr/XCAS/viewforum.php?f=25",
@@ -1823,6 +1824,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     console.log('makelink',start);
     var s = 'python=';
     if (UI.python_mode) s += (UI.python_mode+'&'); else s += '0&';
+    let radian_mode=($id('config').angle_mode.checked?1:0);
+    s += 'radian='+(radian_mode?1:0)+'&';
     var cur = $id('mathoutput').firstChild;
     var i = 0;
     var savepy=UI.python_mode;
@@ -1831,7 +1834,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     var casiovars=UI.caseval_noautosimp('VARS(-1)');
     if (savepy)
       UI.caseval_noautosimp('python_compat('+savepy+')');
-    casiovars += ';python_compat('+UI.python_mode+');angle_radian('+ ($id('config').angle_mode.checked?1:0)+');';
+    casiovars += ';python_compat('+UI.python_mode+');angle_radian('+ radian_mode+');';
     // console.log('UI.savesheet=',UI.savesheet);
     if (UI.savesheet){
       var tabl=UI.current_sheet(1);

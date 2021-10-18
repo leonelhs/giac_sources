@@ -4,92 +4,198 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Values of a recurrence relation or a system: rsolve</title>
+<title>Top and leaves of an expression: sommet
+feuille op left right
+
+
+
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en205.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en207.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec247" class="subsection">5.14.3  Values of a recurrence relation or a system: <span style="font-family:monospace">rsolve</span></h3>
-<p>
-<a id="hevea_default313"></a>
-<a id="ssec:rsolve"></a></p><p>See also section <a href="cascmd_en205.html#ssec%3Aseqsolve">5.14.2</a></p><p>The <span style="font-family:monospace">rsolve</span> command takes three arguments; an equation or
-list of equations that define a recurrence relation, the functions
-(with their variables) used, and equations for the starting values. 
-For example, if a recurrence relation is defined by <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> =
-<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">n</span>) with <span style="font-style:italic">u</span><sub>0</sub> = <span style="font-style:italic">a</span>, the arguments to <span style="font-family:monospace">rsolve</span> will be 
-<span style="font-family:monospace">u(n+1) = f(u(n),n)</span>, <span style="font-family:monospace">u(n)</span> and
-<span style="font-family:monospace">u(0)=a</span>. The recurrence relation must either be a homogeneous
-linear part with a nonhomogeneous part being a linear combination of
-polynomials in <span style="font-family:monospace">n</span> times geometric terms in <span style="font-family:monospace">n</span> (such as
-<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2 <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> 3<sup><span style="font-style:italic">n</span></sup>), or a
-linear fractional transformation (such as <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> =
-(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>−1)/(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>−2)).<br>
-<span style="font-family:monospace">rsolve</span> returns a matrix whose rows are the values of the
-sequence as functions of <span style="font-family:monospace">n</span>.</p><p>Note that <span style="font-family:monospace">rsolve</span> is more flexible than <span style="font-family:monospace">seqsolve</span> since:
+<h3 id="ssec:op" class="subsection">6.15.3  Top and leaves of an expression: <span style="font-family:monospace">sommet</span>
+<span style="font-family:monospace">feuille</span> <span style="font-family:monospace">op</span> <span style="font-family:monospace">left</span> <span style="font-family:monospace">right</span>
+
+<a id="hevea_default346"></a>
+<a id="hevea_default347"></a>
+<a id="hevea_default348"></a>
+<a id="hevea_default349"></a>
+<a id="hevea_default350"></a></h3>
+<p>An expression can be represented by a tree. The top of the tree is
+either an operator or a function and the leaves of the tree are the
+arguments of the operator or function (see also
+<a href="cascmd_en409.html#sec%3Amakesuiteop">6.39.10</a>).</p><p>The <span style="font-family:monospace">sommet</span> command finds the top of an expression.
 </p><ul class="itemize"><li class="li-itemize">
-the sequence doesn’t have to start with <span style="font-style:italic">u</span><sub>0</sub>.
-</li><li class="li-itemize">the sequence can have several starting values, such as initial
-condition <span style="font-style:italic">u</span><sub>0</sub><sup>2</sup> = 1, which is why <span style="font-family:monospace">rsolve</span> returns a list.
-</li><li class="li-itemize">the notation for the recurrence relation is similar to how it
-is written in mathematics.
-</li></ul><p><span style="font-weight:bold">Examples:</span><br>
+<span style="font-family:monospace">sommet</span> takes one argument:<br>
+ <span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-family:monospace">sommet(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the top of 
+<span style="font-style:italic">expr</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
-To find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> and <span style="font-style:italic">u</span><sub>0</sub>=3:
-Input:
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">rsolve(u(n+1) = 2*u(n) + n, u(n), u(0)=3)
-</span></div>
-Output:
+<span style="font-family:monospace">sommet(sin(x+2))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  sin
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">[-n+4*2^n-1]
-</span></div></li><li class="li-itemize">To find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> and <span style="font-style:italic">u</span><sub>1</sub><sup>2</sup> = 1:
-Input:
+<span style="font-family:monospace">sommet(x+2*y)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  +
+</td></tr>
+</table>
+</li></ul><p><br>
+</p><p>The <span style="font-family:monospace">op</span> command finds the list of the leaves
+of an expression.<br>
+<span style="font-style:italic">feuille</span> is a synonym for <span style="font-family:monospace">op</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">op</span> takes one argument:<br>
+ <span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-family:monospace">op(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the leaves of
+<span style="font-style:italic">expr</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">rsolve(u(n+1) = 2*u(n) + n, u(n), u(1)^2 = 1)
-</span></div>
-Output:
+<span style="font-family:monospace">op(sin(x+2))</span>
+</div>
+<span style="font-style:italic">or:</span>
 <div class="center">
-<span style="font-family:monospace">[-n+3/2*2^n-1,-n+1/2*2^n-1]
-</span></div></li><li class="li-itemize">To find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> 3<sup><span style="font-style:italic">n</span></sup> and <span style="font-style:italic">u</span><sub>0</sub>=3:
-Input:
+<span style="font-family:monospace">feuille(sin(x+2))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>+2
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">rsolve(u(n+1) = 2*u(n) + n*3^n,u(n), u(0)=3)
-</span></div>
-Output:
+<span style="font-family:monospace">op(x+2*y)</span>
+</div>
+<span style="font-style:italic">or:</span>
 <div class="center">
-<span style="font-family:monospace">[n*3^n+6*2^n-3*3^n]
-</span></div></li><li class="li-itemize">To find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = (<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> − 1)/(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> −2) and <span style="font-style:italic">u</span><sub>0</sub> =
-4:<br>
-Input:
+<span style="font-family:monospace">feuille(x+2*y)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>,2 <span style="font-style:italic">y</span>
+</td></tr>
+</table>
+</li></ul><p><br>
+</p><p>If the top of an expression <span style="font-style:italic">expr</span> is an infixed operator, the
+left hand side will be <span style="font-style:italic">expr</span><span style="font-family:monospace">[1]</span> and the right hand side
+will be <span style="font-style:italic">expr</span><span style="font-family:monospace">[2]</span>. The <span style="font-family:monospace">left</span> and
+<span style="font-family:monospace">right</span> commands are alternative commands to find the sides
+(see Section <a href="cascmd_en078.html#ssec%3Alrstring">6.3.4</a>, Section <a href="cascmd_en389.html#ssec%3Arange">6.37.1</a>, Section <a href="cascmd_en393.html#ssec%3Alrinterval">6.38.2</a>,
+Section <a href="cascmd_en415.html#ssec%3Alrlist">6.40.6</a>, Section <a href="cascmd_en550.html#ssec%3Alhs">6.55.4</a> and Section <a href="cascmd_en551.html#ssec%3Arhs">6.55.5</a> for
+specific uses of <span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span>.)
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span> take one argument:<br>
+ <span style="font-style:italic">expr</span>, an expression whose top is an infixed operator.
+</li><li class="li-itemize"><span style="font-family:monospace">left(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the left side of
+the operator.
+</li><li class="li-itemize"><span style="font-family:monospace">right(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the right side of
+the operator.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">rsolve(u(n+1) = (u(n)-1)/(u(n)-2),u(n), u(0)=4)
-</span></div>
-Output:
+<span style="font-family:monospace">sommet(y=x^2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">=
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">[((10*sqrt(5)+30)*((sqrt(5)-3)/2)^n+30*sqrt(5)-70)/(20*((sqrt(5)-3)/2)^n+10*sqrt(5)-30)]
-</span></div></li><li class="li-itemize">To find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>−1</sub> with <span style="font-style:italic">u</span><sub>0</sub> = 0,
-<span style="font-style:italic">u</span><sub>1</sub>=1:<br>
-Input:
+<span style="font-family:monospace">left(y=x^2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span>
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">rsolve(u(n+1) = u(n) + u(n-1), u(n), u(0) = 0, u(1) = 1)
-</span></div>
-Output:
-<div class="center">
-<span style="font-family:monospace">[(-sqrt(5)/5)*((-sqrt(5)+1)/2)^n+sqrt(5)/5*((sqrt(5)+1)/2)^n] 
-</span></div></li><li class="li-itemize">To find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> and <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>=<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span>+1</sub> =
-<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> − <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub> with <span style="font-style:italic">u</span><sub>0</sub> = 0, <span style="font-style:italic">v</span><sub>0</sub> = 1:<br>
-Input:
-<div class="center">
-<span style="font-family:monospace">rsolve([u(n+1) = u(n) + v(n), v(n+1) = u(n) - v(n)], [u(n),v(n)], [u(0)=1, v(0)=1])
-</span></div>
-Output:
-<div class="center">
-<span style="font-family:monospace">[[(-sqrt(2)+1)/2*(-sqrt(2))^(n+1-1)+(sqrt(2)+1)/2*2^(1/2*(n+1-1)),<br>
- 1/2*(-sqrt(2))^(n+1-1)+1/2*2^(1/2*(n+1-1))]]
-</span></div>
-</li></ul>
+<span style="font-family:monospace">right(y=x^2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>
+</td></tr>
+</table>
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Remark.</span><br>
+If a function is defined by a program (see Section <a href="cascmd_en696.html#ssec%3Afuncs">12.1.2</a>) then
+the top will be the function <span style="font-family:monospace">’program’</span> and the leaves will be
+a sequence consisting of the arguments of the defined function,
+followed by a sequence of <span style="font-family:monospace">0</span>s (one for each argument) followed
+by the body of the function. For example, define the <span style="font-family:monospace">pgcd</span>
+function:
+</p><div class="center">
+<span style="font-family:monospace">pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</span>
+</div><p>
+Then:<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">sommet(pgcd)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">program</span>
+</td></tr>
+</table><p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">feuille(pgcd)[0]</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">op(pgcd)[0]</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>
+</td></tr>
+</table><p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">feuille(pgcd)[1]</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">op(pgcd)[1]</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0,0
+</td></tr>
+</table><p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">feuille(pgcd)[2]</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">op(pgcd)[2]</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">{ local r;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">  while(b&lt;&gt;0){</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">      r:=irem(a,b);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">      a:=b;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">      b:=r;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">    };; ;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">  return(a);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   <span style="font-family:monospace">}</span>
+</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en205.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

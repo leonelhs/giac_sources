@@ -4,30 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Matrix of factors: maple_ifactors</title>
+<title>GCD of a list of integers: lgcd
+</title>
 </head>
 <body >
 <a href="cascmd_en091.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en093.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec125" class="subsection">5.6.8  Matrix of factors: <span style="font-family:monospace">maple_ifactors</span></h3>
-<p><a id="hevea_default160"></a>
-<span style="font-family:monospace">maple_ifactors</span> has an integer <span style="font-style:italic">n</span> (or a list of integers)
-as parameter.<br>
-<span style="font-family:monospace">maple_ifactors</span> decomposes the integer (or the integers of the list) into
-prime factors, but the output follows the Maple syntax:<br>
-it is a list with +1 or -1 (for the sign) and a matrix with 2 columns and
-where the lines are the prime factors and their multiplicity (or a list of 
-lists...).<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">maple_ifactors(90) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[1,[[2,1],[3,2],[5,1]]]</span></div><p>
-Input:
-</p><div class="center"><span style="font-family:monospace">maple_ifactor([36,52]) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[1,[[2,2],[3,2]]],[1,[[2,2],[13,1]]]]</span></div>
+<h3 id="sec128" class="subsection">6.5.2  GCD of a list of integers: <span style="font-family:monospace">lgcd</span>
+<a id="hevea_default172"></a></h3>
+<p>The <span style="font-family:monospace">lgcd</span> command also finds the GCD of a list of integers or
+polynomials.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">lgcd</span> takes one argument:<br>
+ <span style="font-style:italic">L</span>, a list of integers (or polynomials).
+</li><li class="li-itemize"><span style="font-family:monospace">lgcd(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the GCD of all the integers (or
+polynomials) in the list <span style="font-style:italic">L</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">lgcd([18,15,21,36])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
+</td></tr>
+</table><p><br>
+</p><p><span style="font-weight:bold">Remark.</span><br>
+<span style="font-family:monospace">lgcd</span> does not accept two lists as arguments (even if they have the same size).</p>
 <hr>
 <a href="cascmd_en091.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

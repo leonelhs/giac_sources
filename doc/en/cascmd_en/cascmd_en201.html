@@ -4,78 +4,93 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Eliminate one or more variables from a list of equations: eliminate</title>
+<title>Table of values and graph of a recurrent sequence: tableseq</title>
 </head>
 <body >
 <a href="cascmd_en200.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en202.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec241" class="subsection">5.13.24  Eliminate one or more variables from a list of equations: <span style="font-family:monospace">eliminate</span></h3>
-<p><a id="hevea_default308"></a></p><p>The <span style="font-family:monospace">eliminate</span> commands takes two arguments; a list of
-equations and the variable (or list of variables) to eliminate.<br>
-<span style="font-family:monospace">eliminate</span> returns the equations with the requested variables
-eliminated. (The equations will be given as expressions, assumed to
-be equal to 0.)</p><p>Assuming the variables used haven’t been set to any values:<br>
-Input:
+<h3 id="sec245" class="subsection">6.13.4  Table of values and graph of a recurrent sequence: <span style="font-family:monospace">tableseq</span><a id="hevea_default332"></a></h3>
+<p>The <span style="font-family:monospace">tableseq</span> command fills a column of a spreadsheet with a
+recurrence relation. The spreadsheet can be opened with
+<span style="font-family:monospace">Alt+t</span> (see Section <a href="index.html#sec%3Aspreadsheet">4.5</a>).</p><p><span style="font-family:monospace">tableseq</span> takes three arguments, which can be different
+depending on how many terms are involved in the recurrence relation.</p><p>For a one term recurrence relation:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">tableseq</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>), a formula which defines the recurrence, through <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, the variable.
+</li><li class="li-itemize"><span style="font-style:italic">u</span><sub>0</sub>, the initial term of the sequence.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">tableseq(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">u</span><sub>0</sub><span style="font-family:monospace">)</span> fills the current column of the
+spreadsheet, starting with the selected cell (or cell 0 if the entire
+column is selected), with the formula <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>), the next cell with the
+variable <span style="font-style:italic">x</span>, followed by the terms <span style="font-style:italic">u</span><sub>0</sub>, <span style="font-style:italic">u</span><sub>1</sub>, … of the
+sequence. (If the current cell is column <span style="font-style:italic">C</span>, row <span style="font-style:italic">n</span>, these latter
+cells will actually contain (if in row <span style="font-style:italic">k</span>)
+<span style="font-family:monospace">=evalf(subst(</span><span style="font-style:italic">C</span><span style="font-family:monospace">$</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">C</span><span style="font-family:monospace">$</span>(<span style="font-style:italic">n</span>+1)<span style="font-family:monospace">,</span><span style="font-style:italic">C</span>(<span style="font-style:italic">k</span>−1)<span style="font-family:monospace">))</span>, which means if
+you change the value in one cell, the values in the later cells will
+change accordingly.) See also <span style="font-family:monospace">plotseq</span>,
+Section <a href="index.html#sec%3Aplotseq">8.17</a>, for a graphic representation of a one-term
+recurrence sequence.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span>
+Display the values of the sequence <span style="font-style:italic">u</span><sub>0</sub>=3.5, <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>=sin(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>)<br>
+Select a cell of the spreadsheet (for example <span style="font-family:monospace">B0</span>) and
+input in the command line:
 </p><div class="center">
-<span style="font-family:monospace">eliminate ([x = v0*t, y = y0-g*t^2], t)
-</span></div><p>
-Output:
+<span style="font-family:monospace">tableseq(sin(x),x,3.5)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
 </p><div class="center">
-<span style="font-family:monospace">[v0^2*y0-x^2*g-v0^2*y] 
-</span></div><p>
-Input:
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >row</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >B</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >0</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >sin(x)</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >1</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >x</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >2</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >3.5</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >3</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >-0.35078322769</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >4</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >-0.343633444925</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >5</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >-0.336910330426</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" >…</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >…</td></tr>
+</table>
+</div><p><br>
+</p><p>More generally, for a recurrence relation where each term depends on
+the previous <span style="font-style:italic">k</span> terms:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">tableseq</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>), a formula which defines the
+recurrence, through <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>,…,<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>−<span style="font-style:italic">k</span></sub>).
+</li><li class="li-itemize">[<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>], a list of variables.
+</li><li class="li-itemize">[<span style="font-style:italic">u</span><sub>0</sub>,…,<span style="font-style:italic">u</span><sub><span style="font-style:italic">k</span>−1</sub>], a list of the beginning <span style="font-style:italic">k</span> terms.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">tableseq(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)<span style="font-family:monospace">,</span>[<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>]<span style="font-family:monospace">,</span>[<span style="font-style:italic">u</span><sub>0</sub>,…,<span style="font-style:italic">u</span><sub><span style="font-style:italic">k</span>−1</sub>]<span style="font-family:monospace">)</span>
+fills the current column of the
+spreadsheet, starting with the selected cell (or cell 0 if the entire
+column is selected), with the formula <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>),
+followed by the variables <span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>, followed by the
+terms <span style="font-style:italic">u</span><sub>0</sub>, <span style="font-style:italic">u</span><sub>1</sub>, … of the sequence.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+Display the values of the Fibonacci sequence
+<span style="font-style:italic">u</span><sub>0</sub>=1, <span style="font-style:italic">u</span><sub>1</sub>=1,…, <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+2</sub>=<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>+<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub><br>
+Select a cell, say <span style="font-family:monospace">B0</span>, and:<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">eliminate ([x = 2*t, y = 1 - 10*t^2, z = x + y - t], t)
-</span></div><p>
-Output:
+<span style="font-family:monospace">tableseq(x+y,[x,y],[1,1])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
 </p><div class="center">
-<span style="font-family:monospace">[10*y^2-20*y*z+10*z^2+y-1,x+2*y-2*z] 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">eliminate([x+y+z+t-2,x*y*t=1,x^2+t^2=z^2],[x,z])
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[2*t^2*y^2+t*y^3-4*t^2*y-4*t*y^2+4*t*y+2*t+2*y-4] 
-</span></div><p>If the variable(s) can’t be eliminated, then <span style="font-family:monospace">eliminate</span>
-returns <span style="font-family:monospace">[1]</span> or <span style="font-family:monospace">[-1]</span>. If <span style="font-family:monospace">eliminate</span> returns
-<span style="font-family:monospace">[]</span>, that means the equations determine the values of the
-variables to be eliminated.</p><p>Input:
-</p><div class="center">
-<span style="font-family:monospace">x:=2;y:=-5<br>
- eliminate([x=2*t,y=1-10*t^2],t)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[1] 
-</span></div><p>
-since <span style="font-family:monospace">t</span> cannot be eliminated from both equations.
-Input:
-</p><div class="center">
-<span style="font-family:monospace">x:=2;y:=-9
-eliminate([x=2*t,y=1-10*t^2],t)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[]
-</span></div><p>
-since the first equation gives <span style="font-family:monospace">t</span>=1, which satisfies the
-second equation.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">x := 2; y := -9<br>
- eliminate ([x = 2*t, y = 1-10*t^2, z = x + y - t], t) 
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[z+8] 
-</span></div><p>
-since the first equation gives <span style="font-family:monospace">t</span>=1, which satisfies the
-second equation, and so that leaves <span style="font-family:monospace">z = 2 - 9 - 1 = -8</span>, or
-<span style="font-family:monospace">z + 8 = 0</span>.</p>
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > row</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >B</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > 0</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >x+y </td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > 1</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >x</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > 2</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >y</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > 3</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >1</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > 4</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >1</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > 5</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >2</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" > …</td><td style="text-align:left;border:solid 1px;white-space:nowrap" >…</td></tr>
+</table>
+</div>
 <hr>
 <a href="cascmd_en200.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,46 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>2D parametric curve </title>
+<title>fsolve with the option secant_solver
+</title>
 </head>
 <body >
 <a href="cascmd_en678.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en680.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec827" class="subsection">7.14.1  2D parametric curve </h3>
-<p>
-<span style="font-family:monospace">plotparam([f(t),g(t)],t)</span>
-or <span style="font-family:monospace">plotparam(f(t)+i*g(t),t)</span> (resp. 
-<span style="font-family:monospace">plotparam(f(t)+i*g(t),t=t1..t2)</span>)
-draws the parametric representation of the curve 
-defined by <span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) 
-with the default range of values of <span style="font-style:italic">t</span> (resp. for <span style="font-style:italic">t</span>1 ≤ <span style="font-style:italic">t</span>≤ <span style="font-style:italic">t</span>2).<br>
-The default range of values is taken as specified 
-in the graphic configuration (<span style="font-family:monospace">t-</span> and <span style="font-family:monospace">t+</span>, 
-cf. <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>).
-<span style="font-family:monospace">plotparam</span> accepts an optional argument to specify the discretization
-step for <span style="font-style:italic">t</span> with <span style="font-family:monospace">tstep=</span>.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">plotparam(cos(x)+i*sin(x),x) </span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">plotparam([cos(x),sin(x)],x) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">The unit circle</span></div><p>
-If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input:
-</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t))</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1) </span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">plotparam(sin(x)+i*cos(x),x=-4..1) </span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div><p>
-If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input:
-</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t,tstep=0.5)</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">A polygon approaching the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div>
+<h3 id="sec925" class="subsection">10.4.5  <span style="font-family:monospace">fsolve</span> with the option <span style="font-family:monospace">secant_solver</span>
+<a id="hevea_default1291"></a></h3>
+<p>The secant method is a simplified version of Newton’s method. The
+computation of <span style="font-style:italic">x</span><sub>1</sub> is done using Newton’s method, but then the
+computation of <span style="font-style:italic">f</span>′(<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>), <span style="font-style:italic">n</span>&gt;1 is done approximately. This method is
+used when the computation of the derivative is expensive: 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub>=<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>′<sub><span style="font-style:italic">est</span></sub></td></tr>
+</table></td><td class="dcell">,   <span style="font-style:italic">f</span>′<sub><span style="font-style:italic">est</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)−<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>−1</sub>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>−<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>−1</sub></td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p> 
+The convergence for roots of multiplicity 1 is of order
+(1 + √<span style="text-decoration:overline">5</span>)/2 ≈ 1.62… .</p><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">fsolve((cos(x))=x,x,-1..1,secant_solver)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">0.739085133215</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">fsolve((cos(x))=x,x,0,secant_solver)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.739085133215
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en678.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

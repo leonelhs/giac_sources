@@ -4,31 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean quotient and euclidean remainder: quorem</title>
+<title>Sizes of a list of lists: sizes
+</title>
 </head>
 <body >
 <a href="cascmd_en409.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en411.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec493" class="subsection">5.36.7  Euclidean quotient and euclidean remainder: <span style="font-family:monospace">quorem</span></h3>
-<p><a id="hevea_default648"></a>
-<span style="font-family:monospace">quorem</span> takes as arguments 
-two polynomials <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ, where
-<span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> are list polynomials or symbolic polynomials with
-respect to <span style="font-style:italic">x</span> or to an optional third argument.<br>
-<span style="font-family:monospace">quorem</span> returns the list of the quotient and remainder of the 
-euclidean division of <span style="font-style:italic">A</span> by <span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>]
-(see also <a href="cascmd_en096.html#sec%3Aiquorem">5.6.12</a> and <a href="cascmd_en361.html#sec%3Aquorem">5.30.6</a>).<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">quorem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">quorem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[(-6%13)*x+-6%13,(-2%13)*x+-1%13]</span></div><p>
-Indeed
- <span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+1=(2<span style="font-style:italic">x</span><sup>2</sup>+4)(<span style="font-style:italic">x</span>+1/2)+5<span style="font-style:italic">x</span>−4/4<br>
-and −3*4=−6*2=1  mod13.</p>
+<h3 id="sec495" class="subsection">6.40.1  Sizes of a list of lists: <span style="font-family:monospace">sizes</span>
+<a id="hevea_default696"></a></h3>
+<p>Recall that one thing that distinguishes lists from sequences is that
+a list can be an element of another list. The <span style="font-family:monospace">sizes</span> command
+finds the length of elements of a list, as long as each element is a
+list.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">sizes</span> takes one argument:<br>
+ <span style="font-style:italic">L</span>, a list each of whose elements is a list.
+</li><li class="li-itemize"><span style="font-family:monospace">sizes(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the list of the lengths of the
+elements of <span style="font-style:italic">L</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">sizes([[3,4],[2]])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">2,1</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
 <hr>
 <a href="cascmd_en409.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

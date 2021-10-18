@@ -4,44 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Power regression: power_regression power_regression_plot</title>
+<title>Reading a single keystroke: getKey
+</title>
 </head>
 <body >
 <a href="cascmd_en703.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en705.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec862" class="subsection">8.2.7  Power regression: <span style="font-family:monospace">power_regression</span><a id="hevea_default1199"></a> <span style="font-family:monospace">power_regression_plot</span><a id="hevea_default1200"></a></h3>
-<p>To find the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">bx</span><sup><span style="font-style:italic">m</span></sup> which best fits a set of data points, you
-can use the <span style="font-family:monospace">power_regression</span> command.
-Given a set of points, either as a list of <span style="font-style:italic">x</span>-coordinates
-followed by a list of <span style="font-style:italic">y</span>-coordinates, or simply by a list of points,
-the <span style="font-family:monospace">power_regression</span> command will find the values of
-<span style="font-style:italic">m</span> and <span style="font-style:italic">b</span> which give the best fit curve. For example, if you
-enter
+<h3 id="sec959" class="subsection">12.2.3  Reading a single keystroke: <span style="font-family:monospace">getKey</span>
+<a id="hevea_default1331"></a></h3>
+<p>The <span style="font-family:monospace">getKey</span> command gets the next keystroke.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">getKey</span> takes no arguments.
+</li><li class="li-itemize"><span style="font-family:monospace">getKey()</span> returns the ASCII code of the next keystroke.
+</li></ul><p>For example, if you enter
 </p><div class="center">
-<span style="font-family:monospace">power_regression([[1,1],[2,4],[3,9],[4,16]])
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">power_regression([1,2,3,4],[1,4,9,16])
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">2.0, 1.0
-</span></div><p>
-so the best fit (in this case, exact fit) power curve will be <span style="font-style:italic">y</span> = 1.0 <span style="font-style:italic">x</span><sup>2</sup>.</p><p>To plot the curve, you can use the command
-<span style="font-family:monospace">power_regression_plot</span>; if you enter
-</p><div class="center">
-<span style="font-family:monospace">power_regression_plot([1,2,3,4],[1,4,9,16])
-</span></div><p>
-you will get
-</p><div class="center">
-<img src="cascmd_en049.png">
+<span style="font-family:monospace">asciicode:= getKey()</span>
 </div><p>
-which plots the graph, and has the equation and <span style="font-style:italic">R</span><sup>2</sup> value above the
-graph. Note that in this case the <span style="font-style:italic">R</span><sup>2</sup> value is 1, indicating that
-the data points fall directly on the curve.</p>
+and hit the <span style="font-family:monospace">A</span> key, then the variable <span style="font-family:monospace">asciicode</span>
+will have the value 65, which is the ASCII code of capital A.</p>
 <hr>
 <a href="cascmd_en703.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

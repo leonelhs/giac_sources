@@ -4,56 +4,126 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Exact bounds for complex roots of a polynomial:
-complexroot</title>
+<title>Interval arithmetic: + - * /
+
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en393.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en395.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec475" class="subsection">5.34.1  Exact bounds for complex roots of a polynomial:
-<span style="font-family:monospace">complexroot</span></h3>
-<p><a id="hevea_default628"></a>
-<span style="font-family:monospace">complexroot</span> takes 2 or 4 arguments: a polynomial and a real 
-number є and optionally two complex numbers α,β.<br>
-<span style="font-family:monospace">complexroot</span> returns a list of vectors. 
+<h3 id="sec477" class="subsection">6.38.3  Interval arithmetic: <span style="font-family:monospace">+ - * /</span>
+<a id="hevea_default664"></a>
+<a id="hevea_default665"></a>
+<a id="hevea_default666"></a>
+<a id="hevea_default667"></a></h3>
+<p>You can apply the usual arithmetic operators, such as <span style="font-family:monospace">+</span>,
+<span style="font-family:monospace">-</span>, <span style="font-family:monospace">*</span> and <span style="font-family:monospace">/</span>, to intervals.</p><p>The result of adding two intervals is the interval whose endpoints are
+the sums of the left end points and the right end points.</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">i[1,4] + i[2,3]</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[3.00000000000000..7.00000000000000]
+</td></tr>
+</table><p><br>
+</p><p>The negative of an interval is the result of taking the negative of the
+end points of the interval. The new end points will have to be
+switched.</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">-i[2,3]</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−3.00000000000000..−2.00000000000000]
+</td></tr>
+</table><p><br>
+</p><p>The product of two intervals is the interval whose endpoints are the
+product the left endpoints of the two intervals and the product of the
+right endpoints of the two intervals. The smallest
+product will be the left end point of the product interval, and the
+largest product will be the right end point of the product interval.</p><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
-If <span style="font-family:monospace">complexroot</span> has 2 arguments, 
-the elements of each vector are
-<ul class="itemize"><li class="li-itemize">
-either an interval (the 
-boundaries of this interval are the opposite vertices of a rectangle with sides
-parallel to the axis and containing a complex root of the polynomial) and the 
-multiplicity of this root.<br>
-Let the interval be [<span style="font-style:italic">a</span><sub>1</sub>+<span style="font-style:italic">ib</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>+<span style="font-style:italic">ib</span><sub>2</sub>] then |<span style="font-style:italic">a</span><sub>1</sub>−<span style="font-style:italic">a</span><sub>2</sub>|&lt;є, 
-|<span style="font-style:italic">b</span><sub>1</sub>−<span style="font-style:italic">b</span><sub>2</sub>|&lt;є and the root <span style="font-style:italic">a</span>+<span style="font-style:italic">ib</span> verifies 
-<span style="font-style:italic">a</span><sub>1</sub>≤ <span style="font-style:italic">a</span> ≤ <span style="font-style:italic">a</span><sub>2</sub> and <span style="font-style:italic">b</span><sub>1</sub>≤ <span style="font-style:italic">b</span> ≤ <span style="font-style:italic">b</span><sub>2</sub>.
-</li><li class="li-itemize">or the value of an exact complex root of 
-the polynomial and the multiplicity of this root 
-</li></ul>
-</li><li class="li-itemize">If <span style="font-family:monospace">complexroot</span> has 4 arguments, <span style="font-family:monospace">complexroot</span> returns a list of
-vectors as above, but only for the roots lying in 
-the rectangle with sides parallel to the axis having α,β as
-opposite vertices.<br>
-</li></ul><p>
-To find the roots of <span style="font-style:italic">x</span><sup>3</sup>+1, input:
-</p><div class="center"><span style="font-family:monospace">complexroot(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1,0.1)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[-1,1],[[(4-7*i)/8,(8-13*i)/16],1],[[(8+13*i)/16,(4+7*i)/8],1]]</span></div><p>
-Hence, for <span style="font-style:italic">x</span><sup>3</sup>+1:
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">i[1,4]*i[2,3]</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[2.00000000000000..0.120000000000000<span style="font-style:italic">e</span>2]
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">i[-2,4]*i[3,5]</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−0.100000000000000<span style="font-style:italic">e</span>2..0.200000000000000<span style="font-style:italic">e</span>2]
+</td></tr>
+</table>
+</li></ul><p>The reciprocal of an interval is the interval determined by the
+reciprocals of the end points.</p><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
--1 is a root of multiplicity 1, 
-</li><li class="li-itemize">1/2+i*<span style="font-style:italic">b</span> is a root of multiplicity 1 with −7/8≤ <span style="font-style:italic">b</span> ≤
-−13/16, 
-</li><li class="li-itemize">1/2+i*<span style="font-style:italic">c</span> is a root of multiplicity 1 with 13/16≤ <span style="font-style:italic">c</span> ≤
-7/8.
-</li></ul><p>
-To find the roots of <span style="font-style:italic">x</span><sup>3</sup>+1 lying inside the rectangle 
-of opposite vertices −1,1+2*<span style="font-style:italic">i</span>, input:
-</p><div class="center"><span style="font-family:monospace">complexroot(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1,0.1,-1,1+2*i)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[[-1,1],[[(8+13*i)/16,(4+7*i)/8],1]]</span></div>
+textitInput:
+<div class="center">
+<span style="font-family:monospace">1/i[2,3]</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[0.333333333333333..0.500000000000000]
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">1/i[-6,-3]</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−0.333333333333333..−0.166666666666667]
+</td></tr>
+</table>
+</li></ul><p><br>
+</p><p>If the original interval has zero as an end point, then the reciprocal
+interval will have plus or minus infinity as one of the end
+points. If one end point is positive and the other is negative, then the
+reciprocal will simply be the interval from -infinity to infinity.</p><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">1/i[0,2]</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">0.500000000000000..+∞</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">1/i[-1,0]</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−∞..−1.00000000000000</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">1/i[-2,3]</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−∞..+∞</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li></ul><p><br>
+</p><p>You can also, if you want, do the usual operations such as subtraction,
+division, powers and roots.</p>
 <hr>
 <a href="cascmd_en393.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

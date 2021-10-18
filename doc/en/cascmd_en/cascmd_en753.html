@@ -4,31 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximate computation of integrals: romberg nInt</title>
+<title>The isobarycenter of n points in the plane: isobarycenter
+</title>
 </head>
 <body >
 <a href="cascmd_en752.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en754.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec969" class="subsection">9.3.3  Approximate computation of integrals: <span style="font-family:monospace">romberg nInt</span></h3>
-<p><a id="hevea_default1313"></a><a id="hevea_default1314"></a>
-<span style="font-family:monospace">romberg</span> or <span style="font-family:monospace">nInt</span> takes as arguments: an expression 
-<span style="font-family:monospace">ex</span>, the variable name of this expression (by default <span style="font-family:monospace">x</span>), and 
-two real values <span style="font-family:monospace">a,b</span>.<br>
-<span style="font-family:monospace">romberg(ex,x,a,b)</span> or <span style="font-family:monospace">nInt(ex,x,a,b)</span> computes an approximated 
-value of the integral ∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup> <span style="font-style:italic">ex</span> <span style="font-style:italic">dx</span> using the Romberg method. The
-integrand must be sufficiently regular for the approximation to
-be accurate. Otherwise, <span style="font-family:monospace">romberg</span> returns a list of real values,
-that comes from the application of the
-Romberg algorithm (the first list element is
-the trapezoid rule approximation, the next ones come from the application
-of the Euler-MacLaurin formula to remove successive even powers of
-the step of the trapezoid rule).<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">romberg(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),x,0,1)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">1.46265174591</span></div>
+<h3 id="ssec:2disobarycenter" class="subsection">13.6.11  The isobarycenter of <span style="font-style:italic">n</span> points in the plane: <span style="font-family:monospace">isobarycenter</span>
+<a id="hevea_default1467"></a></h3>
+<p>See Section <a href="cascmd_en856.html#ssec%3A3disobarycenter">14.4.7</a> for isobarycenters of objects in
+space.</p><p>The <span style="font-family:monospace">isobarycenter</span> command finds the isobarycenter of a list
+of points; the isobarycenter is the barycenter when all points are
+equally weighted.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">isobarycenter</span> takes one argument:<br>
+ <span style="font-style:italic">L</span>, a list of points. (The points can also be given by a sequence).
+</li><li class="li-itemize"><span style="font-family:monospace">isobarycenter(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> draws and returns the
+isobarycenter of the points.
+</li></ul>
 <hr>
 <a href="cascmd_en752.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

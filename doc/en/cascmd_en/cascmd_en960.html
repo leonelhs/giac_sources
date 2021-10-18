@@ -4,44 +4,78 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Parallelograms in space: parallelogram</title>
+<title>Bartlett-Hann window function: bartlett_hann_window
+</title>
 </head>
 <body >
 <a href="cascmd_en959.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en961.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1236" class="subsection">13.8.4  Parallelograms in space: <span style="font-family:monospace">parallelogram</span><a id="hevea_default1643"></a></h3>
-<p>
-<a id="sec:3dparallelograms"></a></p><p>See section <a href="cascmd_en862.html#sec%3A2dparallelograms">12.9.4</a> for parallelograms in the plane.</p><p>The <span style="font-family:monospace">parallelogram</span> command takes three points as arguments.</p><p>The <span style="font-family:monospace">parallelogram</span> command returns and draws a parallelogram.
-If the arguments are <span style="font-family:monospace">A</span>, <span style="font-family:monospace">B</span> and <span style="font-family:monospace">C</span>, then the
-parallelogram has the form <span style="font-family:monospace">ABCD</span>.<br>
-Input:
+<h3 id="sec1267" class="subsection">15.2.13  Bartlett-Hann window function: <span style="font-family:monospace">bartlett_hann_window</span>
+<a id="hevea_default1697"></a></h3>
+<p>The <span style="font-family:monospace">bartlett_hann_window</span> command finds a Bartlett-Hahn window of
+a sequence, which can be used to examine a short segment when
+analyzing a long.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">bartlett_hann_window</span> takes one mandatory argument
+and one optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">v</span>, a real vector with length <span style="font-style:italic">n</span>.
+</li><li class="li-itemize">Optionally, an interval <span style="font-style:italic">n</span><sub>0</sub>..<span style="font-style:italic">n</span><sub>1</sub> (by default 0..(<span style="font-style:italic">n</span>−1)).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">bartlett_hann_window(</span><span style="font-style:italic">v</span> ⟨,<span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>⟩<span style="font-family:monospace">)</span>
+returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>1</sub></sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>2</sub></sub>]
+and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span><sub>2</sub>−<span style="font-style:italic">n</span><sub>1</sub>+1 defined by 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub> </td><td class="dcell">⎪<br>
+⎪<br>
+⎪<br>
+⎪</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎪<br>
+⎪<br>
+⎪<br>
+⎪</td><td class="dcell">−<span style="font-style:italic">a</span><sub>2</sub> cos</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">k</span> π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td></tr>
+</table> 
+for  <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1 , where  <span style="font-style:italic">a</span><sub>0</sub>=0.62 ,  <span style="font-style:italic">a</span><sub>1</sub>=0.48  and 
+<span style="font-style:italic">a</span><sub>2</sub>=0.38 .
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">A := point(0,0,0); B := point(3,3,3);<br>
- C := point(0,0,3)
-</span></div><p>
-then:
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L0:=randvector(1000,0..1):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L0);</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Output:</span>
 </p><div class="center">
-<span style="font-family:monospace">parallelogram(A,B,C)
-</span></div><p>
-Output:
+<img src="cascmd_en383.png">
+</div><p>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<img src="cascmd_en232.png">
-</div><p>The <span style="font-family:monospace">parallelogram</span> command takes an optional fourth argument,
-which is a variable the fourth vertex is assigned to.<br>
-Input:
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L:=bartlett_hann_window(L0):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L);</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Output:</span>
 </p><div class="center">
-<span style="font-family:monospace">parallelogram(A,B,C,D)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(D)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[-3,-3,0]
-</span></div>
+<img src="cascmd_en384.png">
+</div>
 <hr>
 <a href="cascmd_en959.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

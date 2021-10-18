@@ -7161,6 +7161,20 @@ namespace giac {
     }
     if (b.is_symb_of_sommet(at_neg))
       return -operator_times(a,b._SYMBptr->feuille,contextptr);
+    if (a.type==_POLY && b.is_symb_of_sommet(at_inv) && b._SYMBptr->feuille.type==_POLY){
+      polynome & A=*a._POLYptr;
+      polynome & B=*b._SYMBptr->feuille._POLYptr;
+      polynome Q ,R;
+      if (A.TDivRem(B,Q,R) && R.coord.empty())
+	return Q;
+    }
+    if (b.type==_POLY && a.is_symb_of_sommet(at_inv) && a._SYMBptr->feuille.type==_POLY){
+      polynome & A=*b._POLYptr;
+      polynome & B=*a._SYMBptr->feuille._POLYptr;
+      polynome Q ,R;
+      if (A.TDivRem(B,Q,R) && R.coord.empty())
+	return Q;
+    }
     if (a.type==_FRAC){
       if (b.is_symb_of_sommet(at_inv) && is_cinteger(b._SYMBptr->feuille))
 	return (*a._FRACptr)*fraction(1,b._SYMBptr->feuille);
@@ -11755,7 +11769,7 @@ namespace giac {
       }
       if (l>digits+delta)
 	digits=l-delta;
-#ifdef HAVE_LIBMPFR // #ifndef GIAC_HAS_STO_38
+#if !defined __MINGW_H && defined HAVE_LIBMPFR // #ifndef GIAC_HAS_STO_38
       if (digits>14){
 #if 1 // def HAVE_LIBMPFR
 	int nbits=digits2bits(digits);
@@ -11784,14 +11798,14 @@ namespace giac {
       } // end if (digits>14)
 #endif // LIBMPFR was GIAC_HAS_STO_38
       double d;
-#if defined NSPIRE || defined FXCG
+#if defined __MINGW_H || defined NSPIRE || defined FXCG
 #ifdef NSPIRE
       d=Strtod(s,&endchar);
 #else
       d=strtod(s,&endchar);
 #endif // NSPIRE
 #else // NSPIRE || FXCG
-#ifdef HAVE_LIBPTHREAD
+#if !defined __MINGW_H && defined HAVE_LIBPTHREAD
       int locked=pthread_mutex_trylock(&locale_mutex);
       if (!locked){
 	char * lc=setlocale(LC_NUMERIC,(char *)NULL);
@@ -16482,11 +16496,29 @@ void sprint_double(char * s,double d){
 #else
       S=g.print(&C);
 #if !defined GIAC_GGB 
+#if defined EMCC || defined EMCC2
+	double add_evalf=EM_ASM_DOUBLE_V({
+	    if (typeof(UI.add_evalf)!="undefined")
+	      return UI.add_evalf*1.0;
+	    return 1.0;
+	  }),
+	  js_bigint=EM_ASM_DOUBLE_V({
+	      if (typeof(UI.js_bigint)!="undefined")
+	      return UI.js_bigint*1.0;
+	    return 1.0;
+	  });
+#else
+	double add_evalf=true,js_bigint=false;
+#endif
       if (g.type==_FRAC || g.type==_ZINT){
-	S += "=";	  
-	S += evalf_double(g,1,&C).print(&C);
+	if (add_evalf){
+	  S += "=";	  
+	  S += evalf_double(g,1,&C).print(&C);
+	}
       }
-      if (g.type==_SYMB){
+      if (js_bigint && is_integer(g))
+	S += "n";
+      if (add_evalf && g.type==_SYMB){
 	g=evalf_double(g,1,&C);
 	if (g.type<=_CPLX){
 	  S += "=";

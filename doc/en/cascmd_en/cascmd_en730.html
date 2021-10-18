@@ -4,90 +4,168 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The Weibull distribution</title>
+<title>Dealing with errors: try catch throw error ERROR
+
+
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en729.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en731.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec936" class="subsection">8.4.15  The Weibull distribution</h3>
-<h4 id="sec937" class="subsubsection">The probability density function for the Weibull
-distribution: <span style="font-family:monospace">weibull</span><a id="hevea_default1285"></a>
-<span style="font-family:monospace">weibulld</span><a id="hevea_default1286"></a></h4>
-<p>The Weibull distribution depends on three parameters; <span style="font-style:italic">k</span>&gt;0, λ
-&gt; 0 and a real number θ. The probability density at <span style="font-style:italic">x</span> is
-given by <span style="font-style:italic">k</span>/λ(<span style="font-style:italic">x</span> − θ/λ)<sup>2</sup>
-<span style="font-style:italic">e</span><sup>−((<span style="font-style:italic">x</span>−θ)λ)<sup>2</sup></sup>. The <span style="font-family:monospace">weibull</span> (or
-<span style="font-family:monospace">weibulld</span>) command computes this, where it can take arguments
-<span style="font-style:italic">k</span>,λ,θ and <span style="font-style:italic">x</span>, where the θ can be left out and
-will default to 0. If you enter
+<h3 id="sec990" class="subsection">12.4.11  Dealing with errors: <span style="font-family:monospace">try</span> <span style="font-family:monospace">catch</span> <span style="font-family:monospace">throw</span> <span style="font-family:monospace">error</span> <span style="font-family:monospace">ERROR</span>
+<a id="hevea_default1412"></a>
+<a id="hevea_default1413"></a>
+<a id="hevea_default1414"></a>
+<a id="hevea_default1415"></a>
+<a id="hevea_default1416"></a></h3>
+<p>Some commands produce errors, and if your program tries to run such a
+command it will halt with an error. 
+The <span style="font-family:monospace">try</span> and <span style="font-family:monospace">catch</span> commands help you avoid this. They
+to use them, put potentially problematic statements in a block
+following <span style="font-family:monospace">try</span>, and immediately after the block put
+<span style="font-family:monospace">catch</span> with an argument of an unused symbol, and follow that
+with a block of statements that can deal with the error.
 </p><div class="center">
-<span style="font-family:monospace">weibull(2,1,3)
-</span></div><p>
-or
+<span style="font-family:monospace">try </span><span style="font-style:italic">tryblock</span><span style="font-family:monospace"> catch </span><span style="font-style:italic">symbol</span><span style="font-style:italic"> catchblock</span>
+</div><p>
+If <span style="font-style:italic">tryblock</span> doesn’t produce an error,
+then
 </p><div class="center">
-<span style="font-family:monospace">weibull(2,1,0,3)
-</span></div><p>
-you will get
+<span style="font-family:monospace"> catch </span><span style="font-style:italic">symbol</span><span style="font-style:italic"> catchblock</span>
+</div><p>
+If <span style="font-style:italic">tryblock</span> does produce an error, then a
+string describing the error is assigned to <span style="font-style:italic">symbol</span>,
+and <span style="font-style:italic">catchblock</span> is evaluated.</p><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
+The command
+<div class="center">
+<span style="font-family:monospace">[[1,1]]*[[2,2]]</span>
+</div>
+produces an error saying <span style="font-style:italic">Error: Invalid dimension</span>.
+However,
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">try {[[1,1]]*[[2,2]]}</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">catch (err) {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  print("The error is " + err)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  }</span>
+</td></tr>
+</table>
+</div>
+will not produce an error:<br>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<span style="font-family:monospace">The error is Error: Invalid dimension</span>
+</div>
+</li><li class="li-itemize">With the following program:
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">test(x):= {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >   local y, str, err;
+<span style="font-family:monospace">  try { y:= [[1,1]]*x; str:= "This produced a product.";}</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  catch (err)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  {y:= x;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">    str:= "This produced an error " + err + " The input is returned.";}</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">    print(str);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">    return y;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  }</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">test([[2],[2]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">This produced a product.</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > [4]
+</td></tr>
+</table>
+</div>
+with the text in the pane above the output line.<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">test([[2,2]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">This produced an error Error: Invalid dimension The input is returned.</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > [[2,2]]
+</td></tr>
+</table>
+</div>
+with the text in the pane above the output line.<p><br>
+</p><p>You can produce your own string to describe an error message with the
+<span style="font-family:monospace">throw</span> command.<br>
+<span style="font-family:monospace">error</span> and <span style="font-family:monospace">ERROR</span> are synonyms for <span style="font-family:monospace">throw</span>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">throw</span> takes one argument:<br>
+ <span style="font-style:italic">str</span>, a string describing an error.
+</li><li class="li-itemize"><span style="font-family:monospace">throw(</span><span style="font-style:italic">str</span><span style="font-family:monospace">)</span> generates an error with
+error string <span style="font-style:italic">str</span>, possibly to be caught by <span style="font-family:monospace">catch</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+With the program:
 </p><div class="center">
-<span style="font-family:monospace">6/exp(9)
-</span></div>
-<h4 id="sec938" class="subsubsection">The cumulative distribution function for the Weibull distribution: <span style="font-family:monospace">weibull_cdf</span><a id="hevea_default1287"></a> <span style="font-family:monospace">weibulld_cdf</span><a id="hevea_default1288"></a></h4>
-<p>The command <span style="font-family:monospace">weibull_cdf</span> computes
-the cumulative distribution function for the Weibull distribution.
-Like <span style="font-family:monospace">weibull</span>, it takes parameters <span style="font-style:italic">k</span>, λ and
-θ, where θ will default to 1 if it is omitted.
-The Weibull cumulative distribution
-function is given by the formula
-<span style="font-family:monospace">weibull_cdf</span>(<span style="font-style:italic">k</span>,λ,θ,<span style="font-style:italic">x</span>) = 1 −
-<span style="font-style:italic">e</span><sup>−((<span style="font-style:italic">x</span>−θ)/λ)<sup>2</sup></sup>.
-If you enter
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">f(x):= {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">if (type(x) != DOM_INT)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  throw("Not an integer");</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">else</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  return x;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2,3,5)
-</span></div><p>
-or
+<span style="font-family:monospace">f(12)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">12
+</td></tr>
+</table><p>
+since 12 is an integer.<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2,3,0,5)
-</span></div><p>
-you will get
+<span style="font-family:monospace">f(1.2)</span>
+</div><p>
+will signal an error
 </p><div class="center">
-<span style="font-family:monospace">1-exp(-25/9)
-</span></div><p>
-and if you enter
+<span style="font-family:monospace">Not an integer Error: Bad Argument Value</span>
+</div><p>
+since 1.2 in not an integer.</p><p>You can catch this error in other programs. Consider the program:
 </p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2.2,1.5,0.4,1.9)
-</span></div><p>
-you will get
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">g(x):= {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">try(f(x)) catch(err) {x:= 0;}</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">return x;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
+</td></tr>
+</table>
+</div><p>
+then:<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">0.632120558829
-</span></div><p>If you give <span style="font-family:monospace">weibull_cdf</span> an extra argument (which will
-require that θ be explicitly included), you will get the probability that
-the random variable lies between two values;
-<span style="font-family:monospace">weibull_cdf(</span><span style="font-style:italic">k</span><span style="font-family:monospace">,</span>λ<span style="font-family:monospace">,</span>θ<span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
-enter
+<span style="font-family:monospace">g(12)</span>
+</div><p>
+<span style="font-family:monospace">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">12
+</td></tr>
+</table><p>
+since 12 is an integer.<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">weibull_cdf(2.2,1.5,0.4,1.2,1.9)
-</span></div><p>
-for example you will get
-</p><div class="center">
-<span style="font-family:monospace">0.410267239944
-</span></div>
-<h4 id="sec939" class="subsubsection">The inverse distribution function for the Weibull distribution: <span style="font-family:monospace">weibull_icdf</span><a id="hevea_default1289"></a> <span style="font-family:monospace">weibulld_icdf</span><a id="hevea_default1290"></a></h4>
-<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function gives
-the value of <span style="font-style:italic">x</span> with <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>.
-The <span style="font-family:monospace">weibull_icdf</span> command will compute the
-inverse distribution for the Weibull distribution. This uses the
-arguments <span style="font-style:italic">k</span>, λ and θ as well as <span style="font-style:italic">h</span>, although
-θ can be omitted and will default to 0.
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">weibull_icdf(2.2,1.5,0.4,0.632)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">1.89977657604
-</span></div>
+<span style="font-family:monospace">g(1.2)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table><p>
+since 1.2 is not an integer, <span style="font-family:monospace">f(x)</span> will give an error and so
+<span style="font-family:monospace">g(x)</span> will return 0.</p>
 <hr>
 <a href="cascmd_en729.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

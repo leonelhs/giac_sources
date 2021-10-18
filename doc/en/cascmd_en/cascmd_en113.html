@@ -4,31 +4,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Listing all compositions of an integer into k parts: icomp</title>
+<title>The Euler indicatrix: euler phi
+
+</title>
 </head>
 <body >
 <a href="cascmd_en112.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en114.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec146" class="subsection">5.6.29  Listing all compositions of an integer into <span style="font-style:italic">k</span> parts: <span style="font-family:monospace">icomp</span><a id="hevea_default193"></a></h3>
-<p>
-<span style="font-family:monospace">icomp</span> accepts two or three arguments: a positive integer <span style="font-style:italic">n</span>, a positive integer <span style="font-style:italic">k</span> not larger than <span style="font-style:italic">n</span> and optionally <span style="font-family:monospace">zeros=true</span> or <span style="font-family:monospace">zeros=false</span>. The return value is the list of all compostions of <span style="font-style:italic">n</span> into <span style="font-style:italic">k</span> parts. Each composition is a list of nonnegative integers which sum up to <span style="font-style:italic">n</span>. If the option <span style="font-family:monospace">zeros</span> is set to <span style="font-family:monospace">true</span> (which is the default), a part can have zero value. Else, each part has nonzero (positive) value.</p><p>For example, input:
+<h3 id="sec149" class="subsection">6.5.23  The Euler indicatrix: <span style="font-family:monospace">euler</span> <span style="font-family:monospace">phi</span>
+<a id="hevea_default205"></a>
+<a id="hevea_default206"></a></h3>
+<p>The Euler phi function (also called the Euler totient function)
+finds the number of positive integers less than a given integer and
+relatively prime. The <span style="font-family:monospace">euler</span> command computes the Euler phi
+function.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">euler</span> takes one argument:<br>
+ <span style="font-style:italic">n</span>, a non-negative integer.
+</li><li class="li-itemize"><span style="font-family:monospace">euler(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the number of integers larger than
+1, less than <span style="font-style:italic">n</span> and relatively prime to <span style="font-style:italic">n</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">icomp(4,2)
-</span></div><p>
-Output:
+<span style="font-family:monospace">euler(21)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">12
+</td></tr>
+</table><p>
+In other words the set of integers less than 21
+and coprime with 21, {2,4,5,7,8,10,11,13,15,16,17,19}, has 12 elements.</p><p>The little Fermat theorem states:
 </p><div class="center">
-<span style="font-family:monospace">[[4,0],[3,1],[2,2],[1,3],[0,4]]
-</span></div><p>
-Input:
+If <span style="font-style:italic">p</span> is a prime number, then for any integer <span style="font-style:italic">a</span>, <span style="font-style:italic">a</span><sup><span style="font-style:italic">p</span>−1</sup>=1 mod<span style="font-style:italic">p</span>.
+</div><p>
+Euler introduced his phi function to generalize the little Fermat
+theorem:
 </p><div class="center">
-<span style="font-family:monospace">icomp(6,3,zeros=false)
-</span></div><p>
-Output:
+If <span style="font-style:italic">a</span> and <span style="font-style:italic">n</span> are relatively prime, then <span style="font-style:italic">a</span><sup><span style="font-style:italic">euler</span>(<span style="font-style:italic">n</span>)</sup>=1 mod <span style="font-style:italic">n</span>.
+</div><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">[[4,1,1],[3,2,1],[2,3,1],[1,4,1],[3,1,2], [2,2,2],[1,3,2],[2,1,3],[1,2,3],[1,1,4]]
-</span></div>
+<span style="font-family:monospace">powmod(5,12,21)</span>
+</div><p>
+(see section Section <a href="cascmd_en367.html#ssec%3Apowmod">6.34.10</a>)<br>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en112.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

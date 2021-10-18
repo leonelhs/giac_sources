@@ -4,38 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The while loop: while</title>
+<title>The Cartesian equation of a geometric object in the plane: equation
+
+</title>
 </head>
 <body >
 <a href="cascmd_en800.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en802.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1033" class="subsection">11.3.5  The while loop: <span style="font-family:monospace">while</span></h3>
-<p>
-<a id="hevea_default1427"></a></p><p>The <span style="font-family:monospace">while</span> loop is used to repeat a code block as long as a
-given condition holds. To use it, enter <span style="font-family:monospace">while</span>, the
-condition, and then a code block. For example, to add the terms of
-the harmonic series 1 + 1/2 + 1/3 + 1/4 + … until a term is less
-than 0.05, you could initialize the sum <span style="font-family:monospace">S</span> to 0 and let
-<span style="font-family:monospace">j</span> be the first term 1. Then
+<h3 id="ssec:2dcarteq" class="subsection">13.13.7  The Cartesian equation of a geometric object in the plane: <span style="font-family:monospace">equation</span>
+
+<a id="hevea_default1518"></a></h3>
+<p>See Section <a href="cascmd_en888.html#ssec%3A3dcarteq">14.12.5</a> for Cartesian equations of
+three-dimensional objects.</p><p>The <span style="font-family:monospace">equation</span> command finds the Cartesian equation for a
+geometric object.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">equation</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object.
+</li><li class="li-itemize"><span style="font-family:monospace">equation(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns the Cartesian equation in the
+variables <span style="font-family:monospace">x</span> and <span style="font-family:monospace">y</span> for <span style="font-style:italic">G</span>.
+</li></ul><p> 
+Note that <span style="font-family:monospace">x</span> and <span style="font-family:monospace">y</span> must be formal variables, you
+might need to purge them with with <span style="font-family:monospace">purge(x)</span> and
+<span style="font-family:monospace">purge(y)</span>, see Section <a href="cascmd_en059.html#ssec%3Aabout">5.4.8</a>.</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">while (1/j &gt;= 0.05) {S := S + 1/j; j := j+1;}</span>
+<span style="font-family:monospace">equation(line(-1,i))</span>
 </div><p>
-will find the sum. This line is the same as
-</p><div class="center">
-<span style="font-family:monospace">tantque (1/j &gt;= 0.05) faire S := S + 1/j; j := j+1; ftantque</span>
-</div><p>Note that a <span style="font-family:monospace">while</span> loop can also be written as a <span style="font-family:monospace">for</span>
-loop. For example, as long as <span style="font-family:monospace">S</span> is set to 0 and <span style="font-family:monospace">j</span>
-is set to 1 , the above loop
-can be written as 
-</p><div class="center">
-<span style="font-family:monospace">for (;1/j &gt;= 0.05;) {S := S + 1/j; j := j+1;}</span>
-</div><p>
-or, with only <span style="font-family:monospace">S</span> set to 0,
-</p><div class="center">
-<span style="font-family:monospace">for (j := 1; 1/j &gt;= 0.05; j++) {S := S + 1/j;}</span>
-</div>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span>=<span style="font-style:italic">x</span>+1
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en800.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

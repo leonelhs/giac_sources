@@ -4,44 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Modify an element in a list: subsop</title>
+<title>Counting the elements smaller than a given value: count_inf
+</title>
 </head>
 <body >
 <a href="cascmd_en475.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en477.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec568" class="subsection">5.43.14  Modify an element in a list: <span style="font-family:monospace">subsop</span></h3>
-<p><a id="hevea_default737"></a>
-<a id="ssec:subsop"></a></p><p><span style="font-family:monospace">subsop</span> modifies an element in a list.
-<span style="font-family:monospace">subsop</span> takes as argument a list and an equality (an index=a new
-value) in all syntax modes, but in <span style="font-family:monospace">Maple</span> syntax mode
-the order of the arguments is reversed. <br>
-<span style="font-weight:bold">Remark</span> If the second argument is <span style="font-family:monospace">’k=NULL’</span>, the element of index 
-<span style="font-family:monospace">k</span> is removed of the list.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0):
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],1=5)</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[1]:=5</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
-Input in <span style="font-family:monospace">Xcas</span> mode (the index of the first element is 0):
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],’1=NULL’)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[0,2]</span></div><p>Input in <span style="font-family:monospace">Mupad TI</span> mode (the index of the first element is 1):
-</p><div class="center"><span style="font-family:monospace">subsop([0,1,2],2=5)</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div><p>
-In <span style="font-family:monospace">Maple</span> mode the arguments are permuted and the index of
-the first element is 1.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">subsop(2=5,[0,1,2])</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[0,5,2]</span></div>
+<h3 id="sec599" class="subsection">6.45.14  Counting the elements smaller than a given value: <span style="font-family:monospace">count_inf</span>
+<a id="hevea_default837"></a></h3>
+<p>The <span style="font-family:monospace">count_inf</span> command counts the number of elements in a
+matrix less than a given value.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">count_inf</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span>, a real number.
+</li><li class="li-itemize"><span style="font-style:italic">A</span>, a matrix or a list of real numbers.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">count_inf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the number of elements of
+<span style="font-style:italic">A</span> that are strictly less than <span style="font-style:italic">a</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">count_inf(12,[2,12,45,3,7,78])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en475.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

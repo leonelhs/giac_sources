@@ -4,48 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Get an element or a sub-list of a list: at []</title>
+<title>Addition of elements of a column of a matrix: sum
+</title>
 </head>
 <body >
 <a href="cascmd_en465.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en467.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec556" class="subsection">5.43.4  Get an element or a sub-list of a list: <span style="font-family:monospace">at []</span></h3>
-<p><a id="hevea_default725"></a><a id="sec:at"></a>
-</p>
-<h4 id="sec557" class="subsubsection">Get an element</h4>
-<p>
-The <span style="font-style:italic">n</span>-th element of a list <span style="font-family:monospace">l</span> of size <span style="font-style:italic">s</span>
-is addressed by <span style="font-family:monospace">l[n]</span> where <span style="font-style:italic">n</span> is in [0..<span style="font-style:italic">s</span>−1] or [1..<span style="font-style:italic">s</span>].
-The equivalent prefixed function is
-<span style="font-family:monospace">at</span>, which takes as argument a list and an integer <span style="font-family:monospace">n</span>.<br>
-<span style="font-family:monospace">at</span> returns the element of the list at index <span style="font-family:monospace">n</span>.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">[0,1,2][1]</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">at([0,1,2],1)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">1</span></div>
-<h4 id="sec558" class="subsubsection">Extract a sub-list</h4>
-<p>
-If <span style="font-style:italic">l</span> is a list of size <span style="font-style:italic">s</span>, <span style="font-family:monospace">l[n1..n2]</span> returns the list
-extracted from <span style="font-family:monospace">l</span> containing the elements of indexes <span style="font-style:italic">n</span><sub>1</sub> to <span style="font-style:italic">n</span><sub>2</sub>
-where 0 ≤ <span style="font-style:italic">n</span><sub>1</sub>≤ <span style="font-style:italic">n</span><sub>2</sub> &lt; <span style="font-style:italic">s</span> (in Xcas syntax mode) or
-0 &lt; <span style="font-style:italic">n</span><sub>1</sub>≤ <span style="font-style:italic">n</span><sub>2</sub> ≤ <span style="font-style:italic">s</span> in other syntax modes.
-The equivalent prefixed function is
-<span style="font-family:monospace">at</span> with a list and an interval of integers (<span style="font-family:monospace">n1..n2</span>) 
-as arguments.<br>
-<span style="font-weight:bold">See also</span>: <span style="font-family:monospace">mid</span>, section <a href="cascmd_en467.html#sec%3Amid">5.43.5</a>.<br>
-Input:
-</p><div class="center"><span style="font-family:monospace">[0,1,2,3,4][1..3]</span></div><p>
-or:
-</p><div class="center"><span style="font-family:monospace">at([0,1,2,3,4],1..3)</span></div><p>
-Output:
-</p><div class="center"><span style="font-family:monospace">[1,2,3]</span></div><p>
-<span style="font-weight:bold">Warning</span><br>
-<span style="font-family:monospace">at</span> can not be used for sequences, index notation
-must be used, as in <span style="font-family:monospace">(0,1,2,3,4,5)[2..3]</span>. </p>
+<h3 id="sec584" class="subsection">6.45.4  Addition of elements of a column of a matrix: <span style="font-family:monospace">sum</span>
+<a id="hevea_default812"></a></h3>
+<p>The <span style="font-family:monospace">sum</span> command (see also Section <a href="cascmd_en223.html#ssec%3Asum">6.20.3</a>) can add the
+elements of the columns of a matrix.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">sum</span> takes one argument:<br>
+ <span style="font-style:italic">A</span>, a matrix.
+</li><li class="li-itemize"><span style="font-family:monospace">sum(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the list whose elements are the sum
+of the elements of each column of the matrix <span style="font-style:italic">A</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">sum([[1,2],[3,4]])</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">4,6</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
 <hr>
 <a href="cascmd_en465.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

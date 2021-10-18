@@ -4,23 +4,71 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The ordinate of a three-dimensional point: ordinate</title>
+<title>Poisson window function: poisson_window
+</title>
 </head>
 <body >
 <a href="cascmd_en969.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en971.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1250" class="subsection">13.12.2  The ordinate of a three-dimensional point: <span style="font-family:monospace">ordinate</span><a id="hevea_default1654"></a></h3>
-<p>
-<a id="sec:3dordinate"></a></p><p>See section <a href="cascmd_en882.html#sec%3A2dordinate">12.13.3</a> for ordinates in two-dimensional geometry.</p><p>The <span style="font-family:monospace">ordinate</span> command takes as argument a point.</p><p><span style="font-family:monospace">ordinate</span> returns the ordinate (<span style="font-style:italic">y</span>-coordinate) of the point.</p><p>Input:
+<h3 id="sec1277" class="subsection">15.2.23  Poisson window function: <span style="font-family:monospace">poisson_window</span>
+<a id="hevea_default1707"></a></h3>
+<p>The <span style="font-family:monospace">poisson_window</span> command finds a Poisson window of
+a sequence.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">poisson_window</span> takes one mandatory argument
+and two optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">v</span>, a real vector with length <span style="font-style:italic">n</span>.
+</li><li class="li-itemize">Optionally, α, a real number (by default 1).
+</li><li class="li-itemize">Optionally, an interval <span style="font-style:italic">n</span><sub>0</sub>..<span style="font-style:italic">n</span><sub>1</sub> (by default 0..(<span style="font-style:italic">n</span>−1)).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">poisson_window(</span><span style="font-style:italic">v</span> ⟨,α,<span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>⟩<span style="font-family:monospace">)</span>
+returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>1</sub></sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>2</sub></sub>]
+and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span><sub>2</sub>−<span style="font-style:italic">n</span><sub>1</sub>+1 defined by 
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=exp</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell">−α </td><td class="dcell">⎪<br>
+⎪<br>
+⎪<br>
+⎪</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">k</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
+</table></td><td class="dcell">−1</td><td class="dcell">⎪<br>
+⎪<br>
+⎪<br>
+⎪</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td></tr>
+</table>
+for <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">ordinate(point(1,2,3))
-</span></div><p>
-Output:
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L0:=randvector(1000,0..1):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L0);</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Output:</span>
 </p><div class="center">
-<span style="font-family:monospace">2
-</span></div>
+<img src="cascmd_en403.png">
+</div><p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L:=poisson_window(L0,2):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L);</span>
+</td></tr>
+</table>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><div class="center">
+<img src="cascmd_en404.png">
+</div>
 <hr>
 <a href="cascmd_en969.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

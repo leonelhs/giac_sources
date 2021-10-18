@@ -954,7 +954,12 @@ namespace giac {
       }
       int n=is_cyclotomic(w,epsilon(contextptr));
       if (!n){
-	if (calc_mode(contextptr)!=1 && abs_calc_mode(contextptr)!=38 && d==3 && lv_.size()==1){
+	if (
+#ifdef GIAC_GGB
+	    0 &&
+#endif
+	    calc_mode(contextptr)!=1 && abs_calc_mode(contextptr)!=38 && d==3 && lv_.size()==1
+	    ){
 	  gen W=r2sym(num,lv_,contextptr);
 #if 1
 	  // ALT: alpha*x^3+beta*x^2+gamma*x+delta
@@ -2625,6 +2630,24 @@ namespace giac {
     return g;
   }
 
+  bool is_log10(const gen & g,gen & arg){
+    if (g.type!=_SYMB || g._SYMBptr->sommet!=at_prod) return false;
+    const gen & f = g._SYMBptr->feuille;
+    if (f.type!=_VECT) return false;
+    const vecteur & v = *f._VECTptr;
+    if (!v.back().is_symb_of_sommet(at_inv))
+      return false;
+    const gen & va = v.back()._SYMBptr->feuille;
+    if (va.is_symb_of_sommet(at_ln) && va._SYMBptr->feuille==10){
+      if (v.size()==2)
+	arg=v.front();
+      else
+	arg=symbolic(at_prod,gen(vecteur(v.begin(),v.end()-1),_SEQ__VECT));
+      return true;
+    }
+    return false;
+  }
+
   gen _solve_uncompressed(const gen & args,GIAC_CONTEXT){
     if (args.type==_VECT && args.subtype==0 && ckmatrix(args))
       return _solve_uncompressed(change_subtype(args,_SEQ__VECT),contextptr);
@@ -2818,9 +2841,28 @@ namespace giac {
 	      gen res2=_solve(makesequence(symb_equal(ratnormal(a1/a12,contextptr),ratnormal(a2/a12,contextptr)),v.back()),contextptr);
 	      return gen(mergevecteur(gen2vecteur(res1),gen2vecteur(res2)),res1.subtype);
 	    }
+	    gen a1arg,a2arg; 
+	    bool a1log=is_log10(a1,a1arg),a2log=is_log10(a2,a2arg);
+	    if (a1log && a2log){
+	      a1=a1arg; a2=a2arg;
+	    }
+	    else {
+	      if (a1log){
+		a1=a1arg; a2=a2*symbolic(at_ln,10);
+	      }
+	      if (a2log) {
+		a2=a2arg; a1=a1*symbolic(at_ln,10);
+	      }
+	    }
 	    bool doit=false;
-	    if (a1.is_symb_of_sommet(at_ln) || a2.is_symb_of_sommet(at_ln))
-	      ;
+	    bool a1ln=a1.is_symb_of_sommet(at_ln),a2ln=a2.is_symb_of_sommet(at_ln);
+	    if (a1ln && a2ln){
+	      a1=a1._SYMBptr->feuille;
+	      a2=a2._SYMBptr->feuille;
+	      a1ln=a1.is_symb_of_sommet(at_ln);a2ln=a2.is_symb_of_sommet(at_ln);
+	    }
+	    if (a1ln || a2ln){
+	    }
 	    else {
 	      if (is_positive(-a1,contextptr) && is_positive(-a2,contextptr)){
 		doit=true;
