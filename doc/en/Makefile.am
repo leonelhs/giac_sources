@@ -15,7 +15,7 @@ AM_MAKEINFOHTMLFLAGS = --no-split
 
 EXTRA_DIST = $(TEX_LOCAL) $(PDF_LOCAL) $(DVI_LOCAL) $(PS_LOCAL) \
 	     $(HTML_DIRS_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
-	     pgcd.cc pgcd.cpp .gdbinit cutting.*
+	     pgcd.cc pgcd.cpp giac_bassin.cpp .gdbinit cutting.*
 
 GIAC_HOMEPAGE = "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html"
 GIAC_ADDRESS = <A HREF=$(LATEX2HTML_HOMEPAGE)>giac</A> documentation written

@@ -5422,6 +5422,12 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     if (!s || s>2 || (s==2 && v[1].type!=_VECT) )
       return gendimerr(contextptr);
     v.front()=eval(v.front(),1,contextptr);
+    if (s==2 && v.front().type==_VECT && is_squarematrix(v.front()) && !v[1]._VECTptr->empty() && v[1]._VECTptr->front().type==_STRNG){
+      vecteur mb=*v.front()._VECTptr;
+      mb.push_back(v.back());
+      v.front()=mb;
+      s=1;
+    }
     if (s==1)
       return plotproba(v.front(),vecteur(0),attributs,contextptr);
     return plotproba(v[0],*v[1]._VECTptr,attributs,contextptr);
@@ -6433,8 +6439,12 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       return false;
     gen a,b,v0,alpha,beta,alphacur,betacur,gof,periodecur;
     for (i=1;i<s;++i){
-      if (!v[i].is_symb_of_sommet(at_exp))
-	return false;
+      if (!v[i].is_symb_of_sommet(at_exp)){
+	if (!is_periodic(v[i]._SYMBptr->feuille,x,periodecur,contextptr))
+	  return false;
+	periode=gcd(periode,periodecur,contextptr);
+	continue;
+      }
       v0=v[i];
       gen v0arg=v0._SYMBptr->feuille;
       if (is_linear_wrt(v0arg,x,alphacur,betacur,contextptr)){ 
@@ -6528,6 +6538,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     if (is_inequation(g) || g._SYMBptr->sommet==at_different || g._SYMBptr->sommet==at_equal)
       return vecteur(1,g._SYMBptr->feuille[1]);
     return res;
+  }
+
+  static gen crunch_rootof(const gen & g,GIAC_CONTEXT){
+    return has_op(g,*at_rootof)?evalf(g,1,contextptr):g;
   }
 
   int step_param_(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,bool exactlegende,GIAC_CONTEXT){
@@ -6869,8 +6883,17 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	    convt=limit(conv,xid,curt+1,0,contextptr);
 	  }
 	  else {
-	    dfx=limit(f1,xid,(curt+nextt)/2,0,contextptr);
-	    dgx=limit(g1,xid,(curt+nextt)/2,0,contextptr);
+	    gen milieut=(curt+nextt)/2;
+	    gen curxd=evalf_double(curt,1,contextptr);
+	    gen nextxd=evalf_double(nextt,1,contextptr);
+	    if (curxd.type==_DOUBLE_ && nextxd.type==_DOUBLE_){
+	      double cd=curxd._DOUBLE_val,nd=nextxd._DOUBLE_val;
+	      if (nd-cd>1e-6*(std::abs(cd)+std::abs(nd))){
+		milieut=exact((cd+nd)/2,contextptr);
+	      }
+	    }
+	    dfx=limit(f1,xid,milieut,0,contextptr);
+	    dgx=limit(g1,xid,milieut,0,contextptr);
 	    convt=limit(conv,xid,(curt+nextt)/2,0,contextptr);
 	  }
 	}
@@ -6930,7 +6953,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  ymax=y;
 	tvit.push_back(nextt);
 	tvif.push_back(x);
-	tvig.push_back(y);
+	tvig.push_back(crunch_rootof(y,contextptr));
 	tvidf.push_back(nothing);
 	tvidg.push_back(nothing);
 	tviconv.push_back(nothing);
@@ -6948,7 +6971,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  ymax=y;
 	tvit.push_back(nextt);
 	tvif.push_back(x);
-	tvig.push_back(y);
+	tvig.push_back(crunch_rootof(y,contextptr));
 	tvidf.push_back(nothing);
 	tvidg.push_back(nothing);
 	tviconv.push_back(nothing);
@@ -6971,16 +6994,16 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvig.push_back(y);
 	y=limit(f1,xid,nextt,-1,contextptr);
 	y=recursive_normal(y,contextptr);
-	tvidf.push_back(y);
+	tvidf.push_back(crunch_rootof(y,contextptr));
 	y=limit(g1,xid,nextt,-1,contextptr);
 	y=recursive_normal(y,contextptr);
-	tvidg.push_back(y);
+	tvidg.push_back(crunch_rootof(y,contextptr));
 	if (equalposcomp(infl,nextt)) y=0;
 	else {
 	  y=limit(conv,xid,nextt,-1,contextptr);
 	  y=recursive_normal(y,contextptr);
 	}
-	tviconv.push_back(y);
+	tviconv.push_back(crunch_rootof(y,contextptr));
       }
     }
     tvi=makevecteur(tvit,tvif,tvidf,tvig,tvidg,tviconv);
@@ -7080,6 +7103,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       return 1;
     if (lv.size()!=1 || lv.front()!=x)
       return 0;
+    gen xval=eval(x,1,contextptr);
+    giac_assume(symb_and(symb_superieur_egal(x,xmin),symb_inferieur_egal(x,xmax)),contextptr);
     gen df=domain(f,x,0,contextptr);
     gprintf("Domain %gen",vecteur(1,df),1,contextptr);
     gen df1=domain(f,x,1,contextptr); // singular values only
@@ -7102,8 +7127,6 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     gen f1=_factor(derive(f,x,contextptr),contextptr);
     gen f2=derive(f1,x,contextptr);
 #if 1
-    gen xval=eval(x,1,contextptr);
-    giac_assume(symb_and(symb_superieur_egal(x,xmin),symb_inferieur_egal(x,xmax)),contextptr);
     int cm=calc_mode(contextptr);
     calc_mode(-38,contextptr); // avoid rootof
     gen c1=solve(f1,x,periode==0?2:0,contextptr);
@@ -7330,6 +7353,14 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  }
 	  else {
 	    gen m=(curx+nextx)/2;
+	    gen curxd=evalf_double(curx,1,contextptr);
+	    gen nextxd=evalf_double(nextx,1,contextptr);
+	    if (curxd.type==_DOUBLE_ && nextxd.type==_DOUBLE_){
+	      double cd=curxd._DOUBLE_val,nd=nextxd._DOUBLE_val;
+	      if (nd-cd>1e-6*(std::abs(cd)+std::abs(nd))){
+		m=exact((cd+nd)/2,contextptr);
+	      }
+	    }
 	    if (in_domain(df,x,m,contextptr)){
 	      dfx=limit(f1,xid,m,0,contextptr);
 	      df2=limit(f2,xid,m,0,contextptr);
@@ -7384,7 +7415,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	if (!is_inf(y) && is_greater(y,ymax,contextptr))
 	  ymax=y;
 	tvix.push_back(nextx);
-	tvif.push_back(y);
+	tvif.push_back(crunch_rootof(y,contextptr));
 	tvidf.push_back(string2gen("||",false));
 	if (do_inflex) tvidf2.push_back(string2gen("||",false));
 	y=limit(f,xid,nextx,1,contextptr);
@@ -7394,7 +7425,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	if (!is_inf(y) && is_greater(y,ymax,contextptr))
 	  ymax=y;
 	tvix.push_back(nextx);
-	tvif.push_back(y);
+	tvif.push_back(crunch_rootof(y,contextptr));
 	tvidf.push_back(string2gen("||",false));
 	if (do_inflex) tvidf2.push_back(string2gen("||",false));
       }
@@ -7406,13 +7437,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	if (!is_inf(y) && is_greater(y,ymax,contextptr))
 	  ymax=y;
 	tvix.push_back(nextx);
-	tvif.push_back(y);
+	tvif.push_back(crunch_rootof(y,contextptr));
 	y=limit(f1,xid,nextx,-1,contextptr);
 	y=recursive_normal(y,contextptr);
-	tvidf.push_back(y);
+	tvidf.push_back(crunch_rootof(y,contextptr));
 	y=limit(f2,xid,nextx,-1,contextptr);
 	y=recursive_normal(y,contextptr);
-	if (do_inflex) tvidf2.push_back(y);
+	if (do_inflex) tvidf2.push_back(crunch_rootof(y,contextptr));
       }
     }
     tvi=makevecteur(tvix,tvif,tvidf);

@@ -722,12 +722,15 @@ namespace giac {
       --step_infolevel(contextptr);
     return res;
   }
+  gen _diff(const gen & g,GIAC_CONTEXT){
+    return _derive(g,contextptr);
+  }
   static const char _derive_s []="diff";
   static string printasderive(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     if (feuille.type!=_VECT){
-      // if (need_parenthesis(feuille))
+      if (feuille.type>=_POLY && feuille.type!=_IDNT)
 	return "("+feuille.print()+")'";
-	//return feuille.print()+"'";
+      return feuille.print()+"'";
     }
     return sommetstr+("("+feuille.print(contextptr)+")");
   }

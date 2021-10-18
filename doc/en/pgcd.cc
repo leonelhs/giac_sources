@@ -1,4 +1,5 @@
 // -*- compile-command: "g++ -g pgcd.cc -lgiac -lgmp" -*-
+#include <giac/config.h>
 #include <giac/giac.h>
 
 using namespace std;

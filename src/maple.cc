@@ -3112,6 +3112,17 @@ namespace giac {
     return h._DOUBLE_val;
   }
 
+  complex<double> cpp_convert_4(const gen & g,GIAC_CONTEXT){
+    gen h=evalf_double(g,1,context0);
+    if (h.type==_DOUBLE_)
+      return h._DOUBLE_val;
+    if (h.type!=_CPLX || h.subtype!=3){
+      gensizeerr(contextptr);
+      return 0;
+    }
+    return complex<double>(h._CPLXptr->_DOUBLE_val,(h._CPLXptr+1)->_DOUBLE_val);
+  }
+
   vecteur cpp_convert_7(const gen & g,GIAC_CONTEXT){
     if (g.type!=_VECT){
       gensizeerr(contextptr);
@@ -3168,6 +3179,8 @@ namespace giac {
       return 2;
     case _DOUBLE_:
       return _DOUBLE_;
+    case _CPLX:
+      return _CPLX;
     case _VECT:
       return _VECT;
     case _STRNG:
@@ -3204,6 +3217,8 @@ namespace giac {
 	return 2;
       case 'd':
 	return _DOUBLE_;
+      case 'c':
+	return _CPLX;
       case 'v':
 	return _VECT;
       case 's':
@@ -3239,6 +3254,10 @@ namespace giac {
 	case 'd':
 	  vtype="double ";
 	  if (typeptr) *typeptr=_DOUBLE_;
+	  break;
+	case 'c':
+	  vtype="complex<double> ";
+	  if (typeptr) *typeptr=_CPLX;
 	  break;
 	case 'v':
 	  vtype="giac::vecteur ";
@@ -3302,7 +3321,7 @@ namespace giac {
 	s="giac::makesequence(";
       vecteur::const_iterator it=args._VECTptr->begin(), itend=args._VECTptr->end();
       if (it==itend)
-	return "";
+	return "gen(vecteur(0),"+print_INT_(args.subtype)+");";
       for(int i=0;;++i){
 	s += cprint(*it,(name.type==_VECT && i<name._VECTptr->size())?name[i]:zero,contextptr);
 	++it;
@@ -3316,11 +3335,27 @@ namespace giac {
       if (name==1) s += ";";
       return s;
     }
+    if (args.type==_CPLX)
+      return "gen("+args._CPLXptr->print(contextptr)+","+(args._CPLXptr+1)->print(contextptr)+")";
+    if (args.type==_FUNC){
+      if (args==at_break)
+	return "break";
+      if (args==at_continue)
+	return "continue";
+      string name=args.print(contextptr);
+      if (name.size()>2 && name[0]=='\'' && name[name.size()-1]=='\'')
+	name=name.substr(1,name.size()-2);
+      return "at_"+name;
+    }
     if (args.type!=_SYMB)
       return args.print(contextptr);
     unary_function_ptr & u=args._SYMBptr->sommet;
+    if (u==at_break)
+      return "break";
+    if (u==at_continue)
+      return "continue";
     gen f=args._SYMBptr->feuille;
-    if (u==at_sto && f.type==_VECT && f._VECTptr->size()==2){
+    if ( (u==at_sto || u==at_array_sto) && f.type==_VECT && f._VECTptr->size()==2){
 #if 1
       int i=cpp_vartype(f[1]);
       if (!i || i==cpp_vartype(f[0]))
@@ -3356,7 +3391,7 @@ namespace giac {
       int i=cpp_vartype(f);
       if (i==_VECT)
 	return cprint(f,0,contextptr)+".size()";
-      return "cpp_convert_7("+cprint(f,0,contextptr)+").size()";
+      return "cpp_convert_7("+cprint(f,0,contextptr)+",contextptr).size()";
     }
     if (u==at_at && f.type==_VECT && f._VECTptr->size()==2){
       int i=cpp_vartype(f._VECTptr->front());
@@ -3476,7 +3511,7 @@ namespace giac {
     }
     if (u==at_local)
       return cprintvars(f[0][0],false,";\n",0,contextptr)+";\n"+cprint(f[1],1,contextptr);
-    if (u==at_for && f.type==_VECT && f._VECTptr->size()==4){
+    if ( (u==at_for || u==at_pour) && f.type==_VECT && f._VECTptr->size()==4){
       string res="for(";
       res = res +cprint(f[0],0,contextptr);
       res = res +';';
@@ -3490,7 +3525,7 @@ namespace giac {
     }
     if (u==at_bloc)
       return cprint(f,1,contextptr);
-    if (u==at_ifte && f.type==_VECT && f._VECTptr->size()==3){
+    if ( (u==at_ifte || u==at_si) && f.type==_VECT && f._VECTptr->size()==3){
       string res="if(";
       res = res +cprint(f[0],0,contextptr);
       res = res +"){\n";
@@ -3530,7 +3565,7 @@ namespace giac {
     }
     else
       res = '_'+res;
-    if (u.ptr()->printsommet==printsommetasoperator || (idf && (u==at_inferieur_strict || u==at_inferieur_egal || u==at_superieur_strict || u==at_superieur_egal))){
+    if (u.ptr()->printsommet==printsommetasoperator || u==at_division || (idf && (u==at_inferieur_strict || u==at_inferieur_egal || u==at_superieur_strict || u==at_superieur_egal))){
       int rs=int(res.size());
       if (idf || (rs==2 && (res[1]=='+' || res[1]=='*'))){
 	res=u.ptr()->print(contextptr);
@@ -3555,6 +3590,9 @@ namespace giac {
 	  break;
 	case '*':
 	  res="_prod";
+	  break;
+	case '/':
+	  res="_division";
 	  break;
 	case '<':
 	  res="_inferieur_strict";
@@ -3620,6 +3658,8 @@ namespace giac {
       string funcname=args.print(contextptr);
       string filename="giac_"+funcname+".cpp";
       ofstream of(filename.c_str());
+      of << "// -*- mode:c++; compile-command:\" c++ -I.. -I. -fPIC -DPIC -g -c giac_" << funcname << ".cpp -o giac_" << funcname << ".lo && cc -shared giac_"<<funcname<<".lo -lgiac -lc -Wl,-soname -Wl,libgiac_"<<funcname<<"so.0 -o libgiac_"<<funcname<<".so.0.0.0 && ln -sf libgiac_"<<funcname<<".so.0.0.0 libgiac_"<<funcname<<".so\" -*-" << endl;
+      of << "#include <giac/config.h>" << endl;
       of << "#include <giac/giac.h>" << endl;
       of << "using namespace std;" << endl;
       of << "namespace giac {" << endl;
@@ -3630,13 +3670,13 @@ namespace giac {
       of << "}" << endl;
       of.close();
       *logptr(contextptr) << "File " << filename << " created." << endl;
-      string cmd="indent -br -brf giac_"+funcname+".cpp";
+      string cmd="indent -br -brf -l256 giac_"+funcname+".cpp";
       *logptr(contextptr) << "Running " << cmd << endl;
       int not_ok=system_no_deprecation(cmd.c_str());
       if (not_ok)
 	*logptr(contextptr) << "Warning, indent not found, please install for nice output" << endl;
       cmd="c++ -I.. -I. -fPIC -DPIC -g -c giac_"+funcname+".cpp -o giac_"+funcname+".lo";
-      *logptr(contextptr) << "Running " << cmd << endl;
+      *logptr(contextptr) << "Running\n" << cmd << endl;
       not_ok=system_no_deprecation(cmd.c_str());
       if (not_ok){
 	*logptr(contextptr) << "Unable to compile, please fix cpp file" << endl;
@@ -3646,7 +3686,7 @@ namespace giac {
       //*logptr(contextptr) << "Running " << cmd << endl;
       //not_ok=system_no_deprecation(cmd.c_str());
       cmd="cc -shared giac_"+funcname+".lo -lgiac -lc -Wl,-soname -Wl,libgiac_"+funcname+"so.0 -o libgiac_"+funcname+".so.0.0.0";
-      *logptr(contextptr) << "Running " << cmd << endl;
+      *logptr(contextptr) << cmd << endl;
       not_ok=system_no_deprecation(cmd.c_str());
       if (not_ok){
 	*logptr(contextptr) << "Unable to create shared library, perhaps missing libraries?" << endl;
@@ -3655,7 +3695,7 @@ namespace giac {
       //cmd="ln -sf libgiac_"+funcname+".so.0.0.0 libgiac_"+funcname+".so.0";
       //system_no_deprecation(cmd.c_str());
       cmd="ln -sf libgiac_"+funcname+".so.0.0.0 libgiac_"+funcname+".so";
-      *logptr(contextptr) << "Running " << cmd << endl;
+      *logptr(contextptr) << cmd << endl;
       not_ok=system_no_deprecation(cmd.c_str());
       *logptr(contextptr) << "You can now run insmod(\"" << funcname << "\")" << endl;
       return 1;

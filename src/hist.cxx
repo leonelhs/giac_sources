@@ -2075,6 +2075,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Proba", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"binomial: Binomial distribution", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"comb: comb(n.k) k parmi n", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"normald: Normal density", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"seq: list", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"rand: random number", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -2163,6 +2164,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"polygonplot: 2-d stats", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"polygonscatterplot: 2-d stats", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"linear_regressionplot: 2-d stats", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"plotproba: probabilistic graph", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {0,0,0,0,0,0,0,0,0},
  {"Geo", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3165,7 +3167,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<332; i++)
+        for ( ; i<334; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;
@@ -5176,6 +5178,8 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   Xcas_help_cdf->callback(cb_Assistant_ItemName);
   Xcas_help_icdf->callback(cb_Assistant_ItemName);
   Xcas_help_binomial->callback(cb_Assistant_ItemName);
+  Xcas_help_comb->callback(cb_Assistant_ItemName);
+  Xcas_help_plotproba->callback(cb_Assistant_ItemName);
   Xcas_help_binomial2->callback(cb_Assistant_ItemName);
   Xcas_help_negbinomial->callback(cb_Assistant_ItemName);
   Xcas_help_normald->callback(cb_Assistant_ItemName);

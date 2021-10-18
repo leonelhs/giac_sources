@@ -4986,6 +4986,30 @@ namespace giac {
     }
 #endif
     modpoly::const_iterator it=p.begin(),itend=p.end();
+    if (x.type==_CPLX && x.subtype==3){
+      complex<double> res(0),X(x._CPLXptr->_DOUBLE_val,(x._CPLXptr+1)->_DOUBLE_val);
+      bool ok=true;
+      for (;ok && it!=itend;++it){
+	res *=X;
+	switch (it->type){
+	case _INT_:
+	  res += it->val;
+	  break;
+	case _DOUBLE_:
+	  res += it->_DOUBLE_val;
+	  break;
+	case _CPLX:
+	  if (it->subtype==3){
+	    res += complex<double>(it->_CPLXptr->_DOUBLE_val,(it->_CPLXptr+1)->_DOUBLE_val);
+	    break;
+	  }
+	default:
+	  ok=false;
+	}
+      }
+      if (ok) return res;
+    }
+    it=p.begin();
     gen res(*it);
     ++it;
     if (env && env->moduloon){
@@ -5007,6 +5031,35 @@ namespace giac {
     if (g.type!=_VECT)
       return g;
     return horner(*g._VECTptr,x);
+  }
+  complex<double> horner_newton(const vecteur & p,const std::complex<double> &x,GIAC_CONTEXT){
+    complex<double> num,den;
+    const_iterateur it=p.begin(),itend=p.end();
+    double n=itend-it-1; gen tmp;
+    for (;it!=itend;--n,++it){
+      num *= x;
+      if (n) den *= x;
+      switch (it->type){
+      case _INT_:
+	num += it->val;
+	den += n*it->val;
+	break;
+      case _DOUBLE_:
+	num += it->_DOUBLE_val;
+	den += n*it->_DOUBLE_val;
+	break;
+      case _CPLX:
+	tmp=it->subtype==3?*it:evalf_double(*it,1,contextptr);
+	if (tmp.type==_CPLX && tmp.subtype==3){
+	  num += complex<double>(tmp._CPLXptr->_DOUBLE_val,(tmp._CPLXptr+1)->_DOUBLE_val);
+	  den += n*complex<double>(tmp._CPLXptr->_DOUBLE_val,(tmp._CPLXptr+1)->_DOUBLE_val);
+	  break;
+	}
+      default:
+	return (num=0)/(den=0);
+      }
+    } // end for
+    return x-num/den;
   }
   gen _horner(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
@@ -5033,6 +5086,19 @@ namespace giac {
 	}
 	return r;
       }
+      if (s==3 && v[2]==at_newton){
+	// Newton iteration for a polynomial
+	q=evalf_double(q,1,contextptr);
+	complex<double> x;
+	if (q.type==_DOUBLE_)
+	  x=q._DOUBLE_val;
+	else {
+	  if (q.type!=_CPLX || q.subtype!=3)
+	    return gensizeerr(contextptr);
+	  x=complex<double>(q._CPLXptr->_DOUBLE_val,(q._CPLXptr+1)->_DOUBLE_val);
+	}
+	return horner_newton(*p._VECTptr,x,contextptr);
+      } // end newton iteration
       return horner(*p._VECTptr,q);
     }
     if (s==2)

@@ -3,6 +3,7 @@ using namespace std;
 #include <stdexcept>
 #include <cmath>
 #include <cstdlib>
+#include <giac/config.h>
 #include <giac/giac.h>
 //#include "pgcd.h"
 
