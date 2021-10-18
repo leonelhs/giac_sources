@@ -2317,10 +2317,13 @@ namespace giac {
 	}
 	// -> l(n)=l(0)*P(n)/P(0) -> product(l(n))
 	gen pn=r2e(P,v,contextptr)/r2e(Q,v,contextptr);
-	gen res=pow(subst(normal(l/pn,contextptr),n,0,false,contextptr),n,contextptr)*simplify(product(P,v,n,0,n-1,contextptr)/product(Q,v,n,0,n-1,contextptr),contextptr);
+	gen q0r0=r2e(q0,v,contextptr)/r2e(r0,v,contextptr);
+	gen res=pow(subst(normal(l/pn,contextptr),n,0,false,contextptr),n,contextptr)*simplify(product(P,v,n,0,n-1,contextptr)/product(Q,v,n,0,n-1,contextptr),contextptr)*pow(q0r0,n*(n-1)/2,contextptr);
 	// then we might search for a polynomial particular solution to e
 	if (is_zero(c))
 	  return u0/subst(res,n,0,false,contextptr)*res;
+	if (!is_one(q0r0))
+	  return gensizeerr("Unable to find particular solution, general solution is "+res.print(contextptr));
 	// u_{n+1}=l*u_{n}+c
 	gen tmp=l*x[0]+c,tmpnum,tmpden;
 	vecteur tmpv(1,n);

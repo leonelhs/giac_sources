@@ -2175,7 +2175,7 @@ namespace giac {
     vabs2=lvar(e);
     vabs.clear();
     for (unsigned int i=0;i<vabs2.size();++i){
-      if (vabs2[i].is_symb_of_sommet(at_abs) || vabs2[i].is_symb_of_sommet(at_pow))
+      if (vabs2[i].is_symb_of_sommet(at_abs) || vabs2[i].is_symb_of_sommet(at_pow) || vabs2[i].is_symb_of_sommet(at_integrate))
 	vabs.push_back(vabs2[i]);
     }
     if (!vabs.empty() && debug_infolevel)

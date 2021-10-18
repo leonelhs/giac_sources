@@ -58,6 +58,12 @@ namespace giac {
 
   // symbolic_rootof_list() protected with a mutex in multi-thread environment
   bool comparegen::operator ()(const gen & a,const gen & b) const { 
+    if (a.type==_INT_ && b.type==_INT_)
+      return a.val<b.val;
+    gen A1,A2,B1,B2;
+    if (a.type==_VECT && a._VECTptr->size()==2 && (A1=a._VECTptr->front()).type==_INT_ && (A2=a._VECTptr->back()).type==_INT_ && b.type==_VECT && b._VECTptr->size()==2 && (B1=b._VECTptr->front()).type==_INT_ && (B2=b._VECTptr->back()).type==_INT_){
+      return (A1.val!=B1.val)?A1.val<B1.val:A2.val<B2.val;
+    }
     return a.islesscomplexthan(b);
   }
   typedef map<gen,gen,comparegen > rootmap;
@@ -140,7 +146,7 @@ namespace giac {
     return res;
   }
 
-  static gen in_select_root(const vecteur & a,bool reel,GIAC_CONTEXT){
+  gen in_select_root(const vecteur & a,bool reel,GIAC_CONTEXT){
     if (a.empty() || is_undef(a))
       return undef;
     gen current(a.front());

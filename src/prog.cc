@@ -52,6 +52,7 @@ using namespace std;
 #include "lin.h"
 #include "pari.h"
 #include "intg.h"
+#include "csturm.h"
 #include "giacintl.h"
 // #include "input_parser.h"
 #ifdef HAVE_LIBDL
@@ -5407,6 +5408,33 @@ namespace giac {
       for (unsigned i=0;i<res.size();++i)
 	res[i]=convert_interval(res[i],nbits,contextptr);
       return gen(res,g.subtype);
+    }
+    if (g.is_symb_of_sommet(at_rootof) && g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2){
+      gen p=g._SYMBptr->feuille._VECTptr->front();
+      gen x=g._SYMBptr->feuille._VECTptr->back();
+      if (p.type==_VECT && x.type==_VECT){
+	// adjust (guess?) nbits
+	gen g_=evalf_double(g,1,contextptr); // rough evalf
+	vecteur P=*p._VECTptr;
+	gen val;
+	double err=0;
+	double absg=abs(g,contextptr)._DOUBLE_val;
+	for (int i=0;i<P.size();++i){
+	  err += abs(val,contextptr)._DOUBLE_val+absg;
+	  val = val*g+P[i];
+	}
+	err=err/abs(val,contextptr)._DOUBLE_val;
+	int nbitsmore=std::ceil(std::log(err)/std::log(2));
+	gen r=complexroot(makesequence(symb_horner(*x._VECTptr,vx_var),pow(plus_two,-nbits-nbitsmore-2,contextptr)),true,contextptr);
+	if (r.type==_VECT){
+	  vecteur R=*r._VECTptr;
+	  for (unsigned i=0;i<R.size();++i){
+	    R[i]=R[i][0];
+	  }
+	  x=in_select_root(R,is_real(*x._VECTptr,contextptr),contextptr);
+	  return horner(*p._VECTptr,x,contextptr);
+	}
+      }
     }
     if (g.type==_SYMB)
       return g._SYMBptr->sommet(convert_interval(g._SYMBptr->feuille,nbits,contextptr),contextptr);

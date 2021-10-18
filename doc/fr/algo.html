@@ -46,7 +46,7 @@ TD P{margin:0px;}
 </STYLE>
 </HEAD>
 <BODY >
-<!--HEVEA command line is: /usr/bin/hevea algo -->
+<!--HEVEA command line is: /usr/bin/hevea algo.tex -->
 <!--HTMLHEAD-->
 Retour à la page principale de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse/giac_fr.html">Giac/Xcas</A>.<!--ENDHTML-->
 <!--CUT DEF section 1 --><TABLE CLASS="title"><TR><TD><H1 CLASS="titlemain">Algorithmes de calcul formel et numérique</H1><H3 CLASS="titlerest">B. Parisse<BR>
@@ -385,11 +385,12 @@ Leverrier-Faddeev-Souriau</A>
 <UL CLASS="toc"><LI CLASS="li-toc">
 <A HREF="#htoc218">20.8.1  Complexité asymptotique</A>
 </LI></UL>
-</LI><LI CLASS="li-toc"><A HREF="#htoc219">20.9  Quelques méthodes itératives alternatives au pivot</A>
+</LI><LI CLASS="li-toc"><A HREF="#htoc219">20.9  Quelques méthodes alternatives au pivot</A>
 <UL CLASS="toc"><LI CLASS="li-toc">
 <A HREF="#htoc220">20.9.1  Factorisation <I>QR</I></A>
-</LI><LI CLASS="li-toc"><A HREF="#htoc221">20.9.2  Jacobi, Gauss-Seidel, relaxation</A>
-</LI><LI CLASS="li-toc"><A HREF="#htoc222">20.9.3  Gradient conjugué</A>
+</LI><LI CLASS="li-toc"><A HREF="#htoc221">20.9.2  Méthodes itératives de
+Jacobi, Gauss-Seidel, relaxation</A>
+</LI><LI CLASS="li-toc"><A HREF="#htoc222">20.9.3  Méthode itérative du gradient conjugué</A>
 </LI></UL>
 </LI><LI CLASS="li-toc"><A HREF="#htoc223">20.10  Réduction approchée des endomorphismes</A>
 <UL CLASS="toc"><LI CLASS="li-toc">
@@ -639,7 +640,7 @@ algébrique, <A HREF="#@default189">16.7</A>
 </LI><LI CLASS="li-indexenv">extension algébrique, <A HREF="#@default20">2.7.2</A>, <A HREF="#@default75">7.8</A>, <A HREF="#@default186">16.6</A>
 <BR>
 <BR>
-</LI><LI CLASS="li-indexenv">Fadeev, <A HREF="#@default257">20.7.4</A>
+</LI><LI CLASS="li-indexenv">Faddeev, <A HREF="#@default257">20.7.4</A>
 </LI><LI CLASS="li-indexenv">FFT, <A HREF="#@default311">23.2</A>
 </LI><LI CLASS="li-indexenv">Fourier, transformée
 discrète, <A HREF="#@default309">23</A>
@@ -14182,19 +14183,21 @@ envoie </EM><EM><I>I</I></EM><EM> dans </EM><EM><I>I</I></EM><EM> et tel que </E
 Alors pour tout </EM><EM><I>u</I></EM><SUB><EM>0</EM></SUB><EM> ∈ <I>I</I></EM><EM>, la suite </EM><EM>(<I>u</I></EM><SUB><EM><I>n</I></EM></SUB><EM>)</EM><EM> définie par
 </EM><EM><I>u</I></EM><SUB><EM><I>n</I>+1</EM></SUB><EM>=<I>f</I>(<I>u</I></EM><SUB><EM><I>n</I></EM></SUB><EM>)</EM><EM> converge vers l’unique solution dans </EM><EM><I>I</I></EM><EM> de </EM><EM><I>f</I>(<I>l</I>)=<I>l</I></EM><EM>.
 </EM></DIV><P>
-La démonstration de la convergence est un peu différente de celle donnée en
+La démonstration de la convergence est un peu différente de celle 
+donnée en
 dimension 1, on montre que (<I>u</I><SUB><I>n</I></SUB>) est une suite de Cauchy, car pour <I>n</I>&gt;<I>m</I>
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">|<I>u</I><SUB><I>n</I></SUB>−<I>u</I><SUB><I>m</I></SUB>| ≤ </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>−1</TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>j</I>=<I>m</I></TD></TR>
 </TABLE></TD><TD CLASS="dcell">|<I>u</I><SUB><I>j</I>+1</SUB>−<I>u</I><SUB><I>j</I></SUB> | 
- <I>leq</I> <I>k</I><SUP><I>m</I></SUP> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+≤ <I>k</I><SUP><I>m</I></SUP> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center">1−<I>k</I></TD></TR>
 </TABLE></TD><TD CLASS="dcell"> |<I>u</I><SUB>1</SUB>−<I>u</I><SUB>0</SUB>| </TD></TR>
 </TABLE><P>
 donc (<I>u</I><SUB><I>n</I></SUB>) est convergente puisque nous sommes dans un fermé 
-d’un espace complet.</P><P>La vitesse de convergence est linéaire, la démonstration est
+d’un espace complet. (Cela permet d’ailleurs de généraliser 
+l’énoncé donné en dimension 1 au cas où <I>a</I> ou <I>b</I> est infini).</P><P>La vitesse de convergence est linéaire, la démonstration est
 identique à celle de la dimension 1.</P><P>Remarque : 
 </P><UL CLASS="itemize"><LI CLASS="li-itemize">
 L’existence d’un point fixe sans hypothèse de contractance
@@ -14204,7 +14207,10 @@ de Brouwer ou de Schauder).
 </LI><LI CLASS="li-itemize">Pour vérifier les hypothèses du théorème dans
 ℝ<SUP><I>n</I></SUP>, il suffit de montrer que dans <I>I</I> la norme triple de <I>f</I>′
 subordonnée à la norme choisie dans ℝ<SUP><I>n</I></SUP> est inférieure
-à <I>k</I>&lt;1.
+à <I>k</I>&lt;1. Pour <I>f</I> linéaire,
+cela revient à calculer une norme subordonnée de matrice
+et donne lieu à des méthodes itératives alternatives à
+l’inversion de matrice, cf. la section <A HREF="#sec:jacobi">20.9.2</A>.
 </LI><LI CLASS="li-itemize">l’algorithme de recherche
 PageRank de google utilise le point fixe, en très grande dimension :
 <I>n</I> est le nombre de pages Web, <I>I</I> est l’ensemble des vecteurs
@@ -14511,7 +14517,8 @@ Le premier énoncé du cas de la dimension 1 se généralise en :
 Soit </EM><EM><I>f</I></EM><EM> une fonction de classe </EM><EM><I>C</I></EM><SUP><EM>2</EM></SUP><EM> (2 fois continument dérivable)
 sur un fermé </EM><EM><I>I</I></EM><EM> de </EM><EM>ℝ</EM><SUP><EM><I>n</I></EM></SUP><EM>. Soit </EM><EM><I>r</I></EM><EM> une racine simple de </EM><EM><I>f</I></EM><EM>
 située à l’intérieur de </EM><EM><I>I</I></EM><EM>
-(telle que </EM><EM><I>f</I>(<I>r</I>)=0</EM><EM> et </EM><EM><I>f</I>′(<I>r</I>)</EM><EM> inversible). Alors il existe </EM><EM>ε&gt;0</EM><EM>
+(telle que </EM><EM><I>f</I>(<I>r</I>)=0</EM><EM> et </EM><EM><I>f</I>′(<I>r</I>)=(∂</EM><SUB><EM><I>j</I></EM></SUB><EM> <I>f</I></EM><SUB><EM><I>i</I></EM></SUB><EM>)(<I>r</I>)</EM><EM> inversible). 
+Alors il existe </EM><EM>ε&gt;0</EM><EM>
 tel que la suite définie par
 </EM><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><EM><I>u</I></EM><SUB><EM><I>n</I>+1</EM></SUB><EM> = <I>u</I></EM><SUB><EM><I>n</I></EM></SUB><EM> −(<I>f</I>′(<I>u</I></EM><SUB><EM><I>n</I></EM></SUB><EM>) )</EM><SUP><EM>−1</EM></SUP><EM><I>f</I>(<I>u</I></EM><SUB><EM><I>n</I></EM></SUB><EM>),    |<I>u</I></EM><SUB><EM>0</EM></SUB><EM>−<I>r</I>| ≤ ε </EM></TD></TR>
 </TABLE><EM>
@@ -14524,30 +14531,33 @@ prendre le reste intégral dans la formule de Taylor
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>u</I><SUB><I>n</I>+1</SUB>−<I>r</I> = <I>u</I><SUB><I>n</I></SUB> − <I>r</I> − <I>f</I>′(<I>u</I><SUB><I>n</I></SUB>)<SUP>−1</SUP> <I>f</I>(<I>u</I><SUB><I>n</I></SUB>) = 
 <I>f</I>′(<I>u</I><SUB><I>n</I></SUB>)<SUP>−1</SUP> (<I>f</I>′(<I>u</I><SUB><I>n</I></SUB>)(<I>u</I><SUB><I>n</I></SUB>−<I>r</I>)−<I>f</I>(<I>u</I><SUB><I>n</I></SUB>) ) </TD></TR>
 </TABLE><P>
-puis on applique Taylor le long du segment [<I>r</I>,<I>u</I><SUB><I>n</I></SUB>]
-il existe un réel θ ∈ [0,1] tel que :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">0 = <I>f</I>(<I>r</I>)=<I>f</I>(<I>u</I><SUB><I>n</I></SUB>)+ <I>f</I>′(<I>u</I><SUB><I>n</I></SUB>) (<I>r</I>−<I>u</I><SUB><I>n</I></SUB>)+ </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
+puis on applique Taylor le long du segment [<I>r</I>,<I>u</I><SUB><I>n</I></SUB>] :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">0 = <I>f</I>(<I>r</I>)=<I>f</I>(<I>u</I><SUB><I>n</I></SUB>)+ <I>f</I>′(<I>u</I><SUB><I>n</I></SUB>) (<I>r</I>−<I>u</I><SUB><I>n</I></SUB>)+  </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> (<I>r</I>−<I>u</I><SUB><I>n</I></SUB>)
+</TABLE></TD><TD CLASS="dcell"> (1−θ)(<I>r</I>−<I>u</I><SUB><I>n</I></SUB>)
 <I>f</I>′′(<I>r</I>+θ (<I>u</I><SUB><I>n</I></SUB>−<I>r</I>)) (<I>r</I>−<I>u</I><SUB><I>n</I></SUB>)   <I>d</I>θ </TD></TR>
 </TABLE><P>
 donc :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>u</I><SUB><I>n</I>+1</SUB>−<I>r</I> =−<I>f</I>′(<I>u</I><SUB><I>n</I></SUB>)<SUP>−1</SUP> </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> (<I>r</I>−<I>u</I><SUB><I>n</I></SUB>) </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>u</I><SUB><I>n</I>+1</SUB>−<I>r</I> =−<I>f</I>′(<I>u</I><SUB><I>n</I></SUB>)<SUP>−1</SUP>  (<I>r</I>−<I>u</I><SUB><I>n</I></SUB>) 
+</TD><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> <I>f</I>′′(<I>r</I>+θ
-(<I>u</I><SUB><I>n</I></SUB>−<I>r</I>))   <I>d</I>θ (<I>r</I>−<I>u</I><SUB><I>n</I></SUB>)  </TD></TR>
+</TABLE></TD><TD CLASS="dcell"> (1−θ)<I>f</I>′′(<I>r</I>+θ (<I>u</I><SUB><I>n</I></SUB>−<I>r</I>))   <I>d</I>θ </TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎟<BR>
+⎠</TD><TD CLASS="dcell">(<I>r</I>−<I>u</I><SUB><I>n</I></SUB>)  </TD></TR>
 </TABLE><P>
 et on en déduit (<A HREF="#eq:newton">42</A>) et on conclut de même en
 remplaçant intervalle centré en <I>r</I> de rayon ε
@@ -15072,11 +15082,23 @@ correspondantes de <I>L</I><SUP><I>t</I></SUP>, ainsi les lignes de <I>L</I> cor
 sur les vecteurs colonnes de <I>L</I><SUP><I>t</I></SUP> avec des coefficients entiers
 (puisque <I>L</I>∈GL<SUB><I>n</I></SUB>(ℤ)), on applique <I>M</I> et on conclut
 que ses composantes sur les colonnes non nulles de <I>U</I><SUP><I>t</I></SUP> sont nulles.</P><P>Plus généralement, chercher une solution particulière
-du système <I>MX</I>=<I>B</I> revient
-à chercher un élément du noyau de la matrice obtenue en
-ajoutant <I>B</I> en dernière colonne de <I>M</I>,
-élément tel que le dernier coefficient
-soit -1.</P><P>On peut aussi se servir de la forme normale de Hermite pour
+du système <I>MX</I>=<I>B</I> revient à résoudre
+<I>U</I><SUP><I>t</I></SUP> <I>Y</I>=<I>B</I> avec <I>Y</I>=(<I>L</I><SUP><I>t</I></SUP>)<SUP>−1</SUP> <I>X</I>, la recherche de <I>Y</I> est
+alors très simple puisque <I>U</I> est échelonnée. 
+Par exemple, <CODE>M:=[[2,3,5],[7,5,3]]</CODE>
+puis <CODE>B:=[3,-2]</CODE>, puis
+<CODE>L,U:=ihermite(tran(M))</CODE>, donne pour <CODE>tran(U)</CODE>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">⎛<BR>
+⎜<BR>
+⎝</TD><TD CLASS="dcell"><TABLE CELLSPACING=6 CELLPADDING=0><TR><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>0 </TD></TR>
+<TR><TD ALIGN=center NOWRAP>0</TD><TD ALIGN=center NOWRAP>1</TD><TD ALIGN=center NOWRAP>0</TD></TR>
+</TABLE></TD><TD CLASS="dcell">⎞<BR>
+⎟<BR>
+⎠</TD></TR>
+</TABLE><P>
+on a donc <I>y</I><SUB>1</SUB>=3, <I>y</I><SUB>2</SUB>=−2, <I>y</I><SUB>3</SUB> quelconque puis on calcule 
+<CODE>X:=tran(L)*[3,-2,y3]</CODE>, on peut vérifier 
+avec <CODE>normal(M*X)</CODE>.</P><P>On peut aussi se servir de la forme normale de Hermite pour
 compléter un vecteur <I>v</I>=(<I>a</I><SUB>1</SUB>,...,<I>a</I><SUB><I>n</I></SUB>) de contenu 1 en une base
 de ℤ<SUP><I>n</I></SUP> (si le contenu n’est pas 1, c’est bien sur impossible
 puisque le déterminant est un multiple du contenu), il suffit
@@ -15876,7 +15898,7 @@ Cette méthode permet le calcul simultané des coefficients
 <I>p</I><SUB><I>i</I></SUB>  (<I>i</I>=0..<I>n</I>) du polynôme caractéristique 
 <I>P</I>(λ)=det(λ <I>I</I>−<I>A</I>) et des coefficients matriciels
 <I>B</I><SUB><I>i</I></SUB>  (<I>i</I>=0..<I>n</I>−1) du polynôme en λ donnant la matrice adjointe
-(ou comatrice) <I>B</I>(λ) de λ <I>I</I> −<I>A</I> :
+(ou transposée de la comatrice) <I>B</I>(λ) de λ <I>I</I> −<I>A</I> :
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> <A NAME="eq:Bp"></A>
 (λ <I>I</I> −<I>A</I>)<I>B</I>(λ)=(λ <I>I</I> −<I>A</I>) </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
@@ -15970,27 +15992,23 @@ on a montré que :
 </TD></TR>
 </TABLE><P>
 On peut alors vérifier que <I>B</I><SUB><I>n</I></SUB>=<I>A</I><SUB><I>n</I></SUB>+<I>p</I><SUB><I>n</I></SUB><I>I</I>=0.
-D’où ce petit programme à utiliser avec xcas en mode mupad 
-(<CODE>maple_mode(2);</CODE>), ou avec MuPAD, ou à adapter
-avec un autre système :
-</P><PRE CLASS="verbatim">iequalj:=(j,k)-&gt;if j=k then return(1); else return(0); end_if;
-faddeev:=proc(A) // renvoie la liste des matrices B et le polynome P
-local Aj,AAj,Id,coef,n,pcara,lmat;
-begin
- n:=ncols(A);
- Id:=matrix(n,n,iequalj);     // matrice identite
- Aj:=Id;
- lmat:=[];                    // B initialise a liste vide
- pcara:=[1];                  // coefficient de plus grand degre de P
- for j from 1 to n do
-  lmat:=append(lmat,Aj);      // rajoute Aj a la liste de matrices
-  AAj:=Aj*A;
-  coef:=-trace(AAj)/j;        // mupad linalg::tr
-  pcara:=append(pcara,coef);  // rajoute coef au polynome caracteristique
-  Aj:=AAj+coef*Id;
- end_for;
- lmat,pcara;                  // resultat
-end_proc;
+D’où ce petit programme :
+</P><PRE CLASS="verbatim">Faddeev(A):={ // renvoie la liste des matrices B et le polynome P
+  local Aj,AAj,Id,coef,n,pcara,lmat,j;
+  n:=ncols(A);
+  Id:=idn(n);     // matrice identite
+  Aj:=Id;
+  lmat:=[];      // B initialise a liste vide
+  pcara:=[1];    // coefficient de plus grand degre de P
+  for j from 1 to n do
+    lmat:=append(lmat,Aj);  // rajoute Aj a la liste de matrices
+    AAj:=Aj*A;
+    coef:=-trace(AAj)/j;    
+    pcara:=append(pcara,coef);  // rajoute coef au pol. caract.
+    Aj:=AAj+coef*Id;
+   end_for;
+  return lmat,pcara;        // resultat
+}:;
 </PRE><!--TOC subsubsection Les vecteurs propres simples.-->
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc210">20.7.5</A>  Les vecteurs propres simples.</H4><!--SEC END --><P>
 On suppose ici qu’on peut factoriser le polynôme caractéristique
@@ -16800,8 +16818,8 @@ calcul de l’inverse. On peut d’ailleurs améliorer l’exposant,
 mais la constante non explicitée dans le <I>O</I> augmente aussi.
 En pratique, Strassen n’est pas utilisée pour des matrices
 de taille plus petites que plusieurs centaines de lignes et colonnes.</P><P>De même on peut gagner sur le calcul du polynôme minimal en
-faisant des opérations de multiplication par bloc.</P><!--TOC subsection Quelques méthodes itératives alternatives au pivot-->
-<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc219">20.9</A>  Quelques méthodes itératives alternatives au pivot</H3><!--SEC END --><!--TOC subsubsection Factorisation <I>QR</I>-->
+faisant des opérations de multiplication par bloc.</P><!--TOC subsection Quelques méthodes alternatives au pivot-->
+<H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc219">20.9</A>  Quelques méthodes alternatives au pivot</H3><!--SEC END --><!--TOC subsubsection Factorisation <I>QR</I>-->
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc220">20.9.1</A>  Factorisation <I>QR</I></H4><!--SEC END --><P>
 La factorisation <I>QR</I> 
 consiste à écrire une matrice <I>A</I> comme produit d’une matrice
@@ -16823,8 +16841,11 @@ il vaut mieux résoudre cette équation que <I>A</I><SUP>*</SUP> <I>Ax</I>=<I>A<
 le conditionnement de cette dernière est le carré du conditionnement
 de <I>A</I> (le nombre d’opérations est multiplié par une constante
 car <I>QR</I> a une constante plus grande que Cholesky, mais le résultat
-est plus précis).</P><!--TOC subsubsection Jacobi, Gauss-Seidel, relaxation-->
-<H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc221">20.9.2</A>  Jacobi, Gauss-Seidel, relaxation</H4><!--SEC END --><P><A NAME="@default263"></A> <A NAME="@default264"></A>
+est plus précis).</P><!--TOC subsubsection Méthodes itératives de
+Jacobi, Gauss-Seidel, relaxation-->
+<H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc221">20.9.2</A>  Méthodes itératives de
+Jacobi, Gauss-Seidel, relaxation</H4><!--SEC END --><P><A NAME="@default263"></A> <A NAME="@default264"></A>
+<A NAME="sec:jacobi"></A>
 Lorsqu’on a une matrice creuse (peu d’éléments non nuls),
 l’algorithme du pivot de Gauss a tendance à densifier rapidement
 la matrice réduite (surtout avec le pivot partiel où on ne
@@ -16866,7 +16887,7 @@ En Xcas, on peut programmer la méthode par
 </P><PRE CLASS="verbatim">jacobi(A,b,N,eps):={
   local D,x0,x1,n,j;
   n:=size(A);
-  D:=diag(A)^-1;
+  D:=diag(A).^-1;
   x0:=[0.0$n];
   pour j de 1 jusque N faire
     x1:=b-A*x0;
@@ -16874,8 +16895,36 @@ En Xcas, on peut programmer la méthode par
     x0:=x0+D .*x1;
   fpour;
   return "non convergent";
-}
-</PRE><P>Pour Gauss-Seidel,
+}:;
+</PRE><P>Un cas simple où on a convergence :
+</P><DIV CLASS="theorem"><B>Proposition 46</B>  <EM> 
+Lorsque la matrice </EM><EM><I>A</I></EM><EM> est
+à diagonale strictement dominante, c’est-à-dire que
+l’élément diagonal est en valeur absolue strictement supérieur
+à la somme des éléments non diagonaux de la même ligne :
+</EM><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><EM>|<I>a</I></EM><SUB><EM><I>ii</I></EM></SUB><EM>| &gt; </EM></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><EM>&nbsp;</EM></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><EM><FONT SIZE=6>∑</FONT></EM></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><EM><EM><I>j</I>≠ <I>i</I></EM></EM></TD></TR>
+</TABLE></TD><TD CLASS="dcell"><EM> |<I>a</I></EM><SUB><EM><I>ij</I></EM></SUB><EM>| </EM></TD></TR>
+</TABLE><EM>
+la méthode de Jacobi converge.
+</EM></DIV><P>
+En effet, ||<I>M</I><SUP>−1</SUP><I>Nx</I>||<SUB>∞</SUB>&lt; || <I>x</I>||<SUB>∞</SUB> car :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">|(<I>Nx</I>)<SUB><I>i</I></SUB>| ≤ </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I> ≠ <I>i</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> |<I>a</I><SUB><I>ij</I></SUB>| |<I>x</I><SUB><I>j</I></SUB>| ≤ </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">&nbsp;</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><FONT SIZE=6>∑</FONT></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>j</I> ≠ <I>i</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">
+|<I>a</I><SUB><I>ij</I></SUB>| ||<I>x</I>||<SUB>∞</SUB>&lt; |<I>a</I><SUB><I>ii</I></SUB>| || <I>x</I>||<SUB>∞</SUB>    ⇒    |<I>M</I><SUP>−1</SUP>(<I>Nx</I>)<SUB><I>i</I></SUB>| &lt;  || <I>x</I>||<SUB>∞</SUB></TD></TR>
+</TABLE><P>
+On retrouve ce cas pour une petite perturbation d’une matrice
+diagonale, par exemple <BR>
+<CODE>A:=2*idn(1000)+1e-4*ranm(1000,1000,uniform,-1,1)</CODE><BR>
+<CODE>b:=[1$1000];</CODE><BR>
+<CODE>linsolve(A,b);</CODE><BR>
+<CODE>jacobi(A,b,50,1e-12)</CODE></P><P>Pour Gauss-Seidel,
 le calcul de <I>M</I><SUP>−1</SUP> n’est pas effectué, on résoud
 directement le système triangulaire <I>Mx</I><SUB><I>n</I>+1</SUB>=<I>b</I>+<I>Nx</I><SUB><I>n</I></SUB> soit
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>D</I>+<I>L</I>)<I>x</I><SUB><I>n</I>+1</SUB>=<I>b</I>−<I>Ux</I><SUB><I>n</I></SUB></TD></TR>
@@ -16905,7 +16954,7 @@ et on utilise la récurrence <I>Mx</I><SUB><I>n</I>+1</SUB>=<I>b</I>+<I>Nx</I><S
 <I>M</I>(<I>x</I><SUB><I>n</I>+1</SUB>−<I>x</I><SUB><I>n</I></SUB>)=<I>b</I>−<I>Ax</I><SUB><I>n</I></SUB> puis
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>D</I>+ω <I>L</I>) (<I>x</I><SUB><I>n</I>+1</SUB>−<I>x</I><SUB><I>n</I></SUB>) = ω(<I>b</I>−<I>Ax</I><SUB><I>n</I></SUB>)</TD></TR>
 </TABLE><P>
-On remarque que Gauss-Seidel correspond à ω=1.</P><DIV CLASS="theorem"><B>Proposition 46</B>  <EM> (Convergence ): 
+On remarque que Gauss-Seidel correspond à ω=1.</P><DIV CLASS="theorem"><B>Proposition 47</B>  <EM> (Convergence ): 
 si </EM><EM><I>A</I>=<I>M</I>−<I>N</I></EM><EM> est une matrice symétrique définie positive
 et si </EM><EM><I>M</I></EM><SUP><EM>*</EM></SUP><EM>+<I>N</I></EM><EM> est définie positive, alors la méthode converge. 
 </EM></DIV><P>
@@ -16921,8 +16970,8 @@ de <I>M</I><SUP>−1</SUP><I>N</I>, on a  <I>M</I><SUP>−1</SUP><I>Nx</I>=<I>x<
 </TABLE><P>
 Conséquence : si <I>A</I> symétrique définie positive, alors 
 Gauss-Seidel converge, car <I>M</I><SUP>*</SUP>+<I>N</I>=<I>D</I>. Pour la relaxation,
-on a <I>M</I><SUP>*</SUP>+<I>N</I>=(2/ω −1)<I>D</I> qui est définie positive si ω&lt;2.</P><!--TOC subsubsection Gradient conjugué-->
-<H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc222">20.9.3</A>  Gradient conjugué</H4><!--SEC END --><P><A NAME="@default265"></A>
+on a <I>M</I><SUP>*</SUP>+<I>N</I>=(2/ω −1)<I>D</I> qui est définie positive si ω&lt;2.</P><!--TOC subsubsection Méthode itérative du gradient conjugué-->
+<H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc222">20.9.3</A>  Méthode itérative du gradient conjugué</H4><!--SEC END --><P><A NAME="@default265"></A>
 Il s’agit de résoudre <I>Ax</I>=<I>b</I>, où <I>A</I> est définie positive. 
 Si on a une base orthogonale pour le produit scalaire induit par <I>A</I>, 
 on peut calculer la <I>j</I>-ième coordonnée de <I>x</I> 
@@ -17557,7 +17606,7 @@ Comme tous les <I>x</I><SUB><I>j</I></SUB> sont distincts, il existe une solutio
 </TABLE></TD></TR>
 </TABLE></TD></TR>
 </TABLE><P>On a donc prouvé le :
-</P><DIV CLASS="theorem"><B>Théorème 47</B>  <EM> </EM><A NAME="@default273"></A><EM> </EM><A NAME="@default274"></A><EM>
+</P><DIV CLASS="theorem"><B>Théorème 48</B>  <EM> </EM><A NAME="@default273"></A><EM> </EM><A NAME="@default274"></A><EM>
 Soit </EM><EM><I>n</I>+1</EM><EM> réels distincts </EM><EM><I>x</I></EM><SUB><EM>0</EM></SUB><EM>,...,<I>x</I></EM><SUB><EM><I>n</I></EM></SUB><EM> et </EM><EM><I>n</I>+1</EM><EM>
 réels quelconques </EM><EM><I>y</I></EM><SUB><EM>0</EM></SUB><EM>,...,<I>y</I></EM><SUB><EM><I>n</I></EM></SUB><EM>.
 Il existe un unique polynôme </EM><EM><I>P</I></EM><EM> de degré inférieur ou égal à
@@ -17574,7 +17623,7 @@ donc  α<SUB>2</SUB>=−1, finalement <I>P</I><SUB>2</SUB>=1+<I>X</I>−<I>X</I>
 <H4 CLASS="subsubsection"><!--SEC ANCHOR --><A NAME="htoc235">21.1.2</A>  Majoration de l’erreur d’interpolation.</H4><!--SEC END --><P>
 Reste à estimer l’écart entre une fonction et son polynome
 interpolateur, on a le :
-</P><DIV CLASS="theorem"><B>Théorème 48</B>  <EM> </EM><A NAME="@default275"></A><EM>
+</P><DIV CLASS="theorem"><B>Théorème 49</B>  <EM> </EM><A NAME="@default275"></A><EM>
 Soit </EM><EM><I>f</I></EM><EM> une fonction </EM><EM><I>n</I>+1</EM><EM> fois dérivable sur un intervalle </EM><EM><I>I</I>=[<I>a</I>,<I>b</I>]</EM><EM>
 de </EM><EM>ℝ</EM><EM>, </EM><EM><I>x</I></EM><SUB><EM>0</EM></SUB><EM>,...,<I>x</I></EM><SUB><EM><I>n</I></EM></SUB><EM> des réels distincts de </EM><EM><I>I</I></EM><EM>. 
 Soit </EM><EM><I>P</I></EM><EM> le polynome de Lagrange donné par les </EM><EM><I>x</I></EM><SUB><EM><I>j</I></EM></SUB><EM> et </EM><EM><I>y</I></EM><SUB><EM><I>j</I></EM></SUB><EM>=<I>f</I>(<I>x</I></EM><SUB><EM><I>j</I></EM></SUB><EM>)</EM><EM>.
@@ -18197,7 +18246,7 @@ la vitesse de convergence est donc du même type que pour le
 théorème du point fixe (le nombre de termes à calculer
 pour trouver une valeur approchée avec <I>k</I> décimales 
 dépend linéairement <I>k</I>, les constantes sont d’autant
-plus grandes que |<I>x</I>| est grand).</P><DIV CLASS="theorem"><B>Théorème 49</B>  <EM>
+plus grandes que |<I>x</I>| est grand).</P><DIV CLASS="theorem"><B>Théorème 50</B>  <EM>
 S’il existe un rang </EM><EM><I>n</I></EM><SUB><EM>0</EM></SUB><EM>, un réel </EM><EM><I>M</I>&gt;0</EM><EM> et un complexe </EM><EM><I>x</I></EM><SUB><EM>0</EM></SUB><EM> tels que 
 pour </EM><EM><I>n</I>&gt;<I>n</I></EM><SUB><EM>0</EM></SUB><EM>, on ait :
 </EM><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><EM>|<I>a</I></EM><SUB><EM><I>n</I></EM></SUB><EM> <I>x</I></EM><SUB><EM>0</EM></SUB><EM>|</EM><SUP><EM><I>n</I></EM></SUP><EM> ≤ <I>M</I></EM></TD></TR>
@@ -18310,7 +18359,7 @@ On va donner un autre critère qui ne nécessite pas
 de calculer cette dérivée mais utilise l’alternance des signes
 dans la somme.</P><!--TOC subsection Série alternée-->
 <H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc246">22.3</A>  Série alternée</H3><!--SEC END --><P><A NAME="@default295"></A>
-</P><DIV CLASS="theorem"><B>Théorème 50</B>  <EM>
+</P><DIV CLASS="theorem"><B>Théorème 51</B>  <EM>
 Soit </EM><EM><I>S</I></EM><SUB><EM><I>n</I></EM></SUB><EM>= ∑</EM><SUB><EM><I>k</I>=0</EM></SUB><SUP><EM><I>n</I></EM></SUP><EM> (−1)</EM><SUP><EM><I>k</I></EM></SUP><EM> <I>u</I></EM><SUB><EM><I>k</I></EM></SUB><EM> la somme jusqu’au rang </EM><EM><I>n</I></EM><EM> d’une
 série de réels tels que la suite des </EM><EM><I>u</I></EM><SUB><EM><I>k</I></EM></SUB><EM> décroit à partir
 d’un rang </EM><EM><I>n</I></EM><SUB><EM>0</EM></SUB><EM> et tend vers 0
@@ -19755,7 +19804,7 @@ qui donne α<SUB>0</SUB> modulo π et compléter en regardant
 le quadrant où se trouve (<I>A</I>,<I>B</I>), ici α<SUB>0</SUB> et θ−θ<SUB>0</SUB> 
 sont tous deux dans [0,π] ou tous deux dans [−π,0].
 Finalement, on obtient le
-</P><DIV CLASS="theorem"><B>Théorème 51</B>  <EM> </EM><A NAME="thm:soleil"></A><EM>
+</P><DIV CLASS="theorem"><B>Théorème 52</B>  <EM> </EM><A NAME="thm:soleil"></A><EM>
 L’énergie solaire recue au sol est proportionnelle à
 </EM><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><EM>(1+<I>e</I></EM><EM>cos</EM><EM>(θ))</EM><SUP><EM>2</EM></SUP><EM> <I>s</I>.<I>v</I> </EM></TD></TR>
 </TABLE><EM>
@@ -20260,7 +20309,7 @@ donc :
 </TABLE></TD><TD CLASS="dcell"> </TD></TR>
 </TABLE><P>
 en additionnant avec <I>MF</I><SUB>1</SUB>+<I>MF</I><SUB>2</SUB>=2<I>a</I> et en appliquant <I>c</I>=<I>ea</I>, on en déduit :
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> <A NAME="eq:MF1"></A>
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"> <A NAME="eq:MF1bis"></A>
 <I>MF</I><SUB>1</SUB> = <I>a</I> − </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>cx</I></TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>a</I></TD></TR>
@@ -20397,7 +20446,7 @@ Il faut calculer <I>V</I> par des méthodes numériques (point fixe ou
 méthode de Newton) en appliquant (<A HREF="#eq:tempsV">62</A>), on en déduit
 θ avec (<A HREF="#eq:tV">64</A>).
 En résumé, on a le :
-</P><DIV CLASS="theorem"><B>Théorème 52</B>  <EM>
+</P><DIV CLASS="theorem"><B>Théorème 53</B>  <EM>
 Soit </EM><EM>θ</EM><EM> l’angle entre le demi grand axe de l’ellipse et 
 la direction Soleil-Terre, </EM><EM><I>t</I>∈ [−<I>T</I>/2,<I>T</I>/2]</EM><EM> le temps écoulé depuis le passage
 au périhélie (</EM><EM><I>t</I>=0</EM><EM> lorsque </EM><EM>θ=0</EM><EM>, </EM><EM><I>T</I>=1</EM><EM> an). Soit </EM><EM><I>V</I>∈ [−π,π]</EM><EM> 
@@ -22612,7 +22661,7 @@ Ainsi pour <I>k</I>=4 et <I>m</I>=2<SUP>4</SUP>+1=17, <I>m</I> est premier.
 On peut construire une suite de période 16 en choisissant <I>a</I> générateur
 de (ℤ/17ℤ)<SUP>*</SUP>, par exemple <I>a</I>=3 et <I>c</I>=2 donne la suite
 0,2,8,9,12,4,14,10,15,13,7,6,3,11,1,5.</P><P>On a le :
-</P><DIV CLASS="theorem"><B>Théorème 53</B>  <EM>
+</P><DIV CLASS="theorem"><B>Théorème 54</B>  <EM>
 La suite </EM><EM>(<I>u</I></EM><SUB><EM><I>n</I></EM></SUB><EM>)</EM><EM> définie ci-dessus est de périodicité maximale </EM><EM><I>m</I></EM><EM> si
 et seulement si :
 </EM><OL CLASS="enumerate" type=1><LI CLASS="li-enumerate"><EM>
