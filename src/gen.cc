@@ -1,14 +1,5 @@
 // -*- mode:C++ ; compile-command: "g++ -I.. -I../include -DHAVE_CONFIG_H -DIN_GIAC -DGIAC_GENERIC_CONSTANTS -fno-strict-aliasing -g -c gen.cc -Wall" -*-
 #include "giacPCH.h"
-#if defined VISUALC || defined VISUALC13
-#undef clock
-#undef clock_t
-#ifndef ConnectivityKit
-#ifndef MS_SMART
-#include "../../../_windows/src/stdafx.h"
-#endif
-#endif
-#endif
 
 /*
  *  Copyright (C) 2001,14 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
@@ -438,7 +429,11 @@ namespace giac {
 #ifdef NSPIRE
     sleep(1);
 #else
+#ifdef GIAC_HAS_STO_38
+    usleep(10);
+#else
     usleep(1000);
+#endif
 #endif
 #ifndef NO_STDEXCEPT
     if (debug_infolevel!=-5)
@@ -4520,8 +4515,9 @@ namespace giac {
       interrupted = true; ctrl_c=false;
       return gensizeerr(gettext("Stopped by user interruption.")); 
     }
-    if (a.is_symb_of_sommet(at_interval) && a._SYMBptr->feuille.type==_VECT && a._SYMBptr->feuille._VECTptr->size()==2)
-      return symb_interval(a._SYMBptr->feuille._VECTptr->front()+b,a._SYMBptr->feuille._VECTptr->back()+b);
+    bool adeuxpoints=a.is_symb_of_sommet(at_deuxpoints);
+    if ( (a.is_symb_of_sommet(at_interval) || adeuxpoints)&& a._SYMBptr->feuille.type==_VECT && a._SYMBptr->feuille._VECTptr->size()==2)
+      return symbolic(a._SYMBptr->sommet,makesequence(a._SYMBptr->feuille._VECTptr->front()+b,a._SYMBptr->feuille._VECTptr->back()+b+(adeuxpoints?minus_one:zero)));
     if (a.is_symb_of_sommet(at_unit)){
       if (is_zero(b))
 	return a;
@@ -6018,16 +6014,19 @@ namespace giac {
 	}
       }
     case _INT___MAP: case _ZINT__MAP: case _DOUBLE___MAP: case _FLOAT___MAP: case _CPLX__MAP: case _SYMB__MAP: case _IDNT__MAP: case _POLY__MAP: case _EXT__MAP: case _MOD__MAP: case _FRAC__MAP: case _REAL__MAP: {
-	int brows,bcols,bn;
-	if (is_sparse_matrix(b,brows,bcols,bn)){
-	  gen_map res;
-	  gen g(res);
-	  if (is_zero(a))
-	    return g;
-	  *g._MAPptr=*b._MAPptr;
-	  sparse_mult(a,*g._MAPptr);
+      if (is_one(a))
+	return b;
+      int brows,bcols,bn;
+      if (is_sparse_matrix(b,brows,bcols,bn)){
+	gen_map res;
+	gen g(res);
+	if (is_zero(a))
 	  return g;
-	}
+	*g._MAPptr=*b._MAPptr;
+	sparse_mult(a,*g._MAPptr);
+	return g;
+      }
+      break;
     }
     case _POLY__INT_: case _POLY__ZINT: case _POLY__DOUBLE_: case _POLY__FLOAT_: case _POLY__CPLX: case _POLY__USER: case _POLY__REAL:
       if (is_one(b))
@@ -6086,6 +6085,7 @@ namespace giac {
 	return gensizeerr(contextptr);
       return sym_mult(a,b,contextptr);
     }
+    return undef;
   }
 
   gen operator_times (const gen & a,const gen & b,GIAC_CONTEXT){
@@ -8762,9 +8762,10 @@ namespace giac {
     if (i.type==_FLOAT_)
       return (*this)[ get_int(i._FLOAT_val) ];
     if (i.type==_SYMB){
-      if (i._SYMBptr->sommet==at_interval || i._SYMBptr->sommet==at_deuxpoints) {
+      bool ideuxpoints=i._SYMBptr->sommet==at_deuxpoints;
+      if (i._SYMBptr->sommet==at_interval || ideuxpoints) {
 	gen i1=_ceil(i._SYMBptr->feuille._VECTptr->front(),contextptr);
-	gen i2=_floor(i._SYMBptr->feuille._VECTptr->back(),contextptr);
+	gen i2=_floor(i._SYMBptr->feuille._VECTptr->back(),contextptr)+(ideuxpoints?minus_one:zero);
 	if (is_integral(i1) && is_integral(i2)){
 	  int debut=i1.val,fin=i2.val;
 	  if (debut<0){ 
@@ -8802,10 +8803,11 @@ namespace giac {
 	  }
 	  return gen(tmp,it->subtype);
 	}
-	if ( (it->type==_SYMB) && (it->_SYMBptr->sommet==at_interval || it->_SYMBptr->sommet==at_deuxpoints) && (it+1!=itend) ){
+	bool itdeuxpoints=it->type==_SYMB && it->_SYMBptr->sommet==at_deuxpoints;
+	if ( (it->type==_SYMB) && (it->_SYMBptr->sommet==at_interval || itdeuxpoints) && (it+1!=itend) ){
 	  // submatrix extraction
 	  if ((it->_SYMBptr->feuille._VECTptr->front().type==_INT_) && (it->_SYMBptr->feuille._VECTptr->back().type==_INT_) ){
-	    int debut=it->_SYMBptr->feuille._VECTptr->front().val,fin=it->_SYMBptr->feuille._VECTptr->back().val;
+	    int debut=it->_SYMBptr->feuille._VECTptr->front().val,fin=it->_SYMBptr->feuille._VECTptr->back().val+itdeuxpoints?-1:0;
 	    if (res.type==_VECT){
 	      if (debut<0) debut +=res._VECTptr->size();
 	      if (fin<0) fin +=res._VECTptr->size();
@@ -11105,7 +11107,11 @@ namespace giac {
     if (l>0 && s[l-1]=='.'){
       // make a copy of s, call chartab2gen recursivly, 
       // because some implementations of strtod do not like a . at the end
+#ifdef FREERTOS
+      ALLOCA(char, scopy, l+2); 
+#else
       char * scopy=(char *)alloca(l+2);
+#endif
       strcpy(scopy,s);
       scopy[l]='0';
       scopy[l+1]=0;
@@ -11162,7 +11168,7 @@ namespace giac {
 #ifdef HAVE_LIBPTHREAD
       int locked=pthread_mutex_trylock(&locale_mutex);
       if (!locked){
-	char * lc=setlocale(LC_NUMERIC,0);
+	char * lc=setlocale(LC_NUMERIC,(char *)NULL);
 	setlocale(LC_NUMERIC,"POSIX");
 	d=strtod(s,&endchar);
 	setlocale(LC_NUMERIC,lc);
@@ -11171,7 +11177,7 @@ namespace giac {
       else
 	d=strtod(s,&endchar);	
 #else
-      char * lc=setlocale(LC_NUMERIC,0);
+      char * lc=setlocale(LC_NUMERIC,(char const *)NULL);
       setlocale(LC_NUMERIC,"POSIX");
       d=strtod(s,&endchar);
       setlocale(LC_NUMERIC,lc);
@@ -11247,7 +11253,40 @@ namespace giac {
   int giac_yyparse(void * scanner);
 
   static int try_parse(const string & s_orig,GIAC_CONTEXT){
-    string s=abs_calc_mode(contextptr)==38?s_orig:python2xcas(s_orig,contextptr);
+    string s=s_orig;
+    if (1 || abs_calc_mode(contextptr)!=38){
+      // remove leading spaces
+      for (int i=0;i<s.size();++i){
+	if (s[i]!=' '){
+	  if (i)
+	    s=s.substr(i,s.size()-i);
+	  break;
+	}
+      }
+      if (s.size()>10 && (s.substr(0,5)=="\"def " || s.substr(0,10)=="\"function ")){
+	string news="";
+	int ss=s.size()-1;
+	for (;ss>5;--ss){
+	  if (s[ss]=='"')
+	    break;
+	}
+	for (int i=1;i<ss;++i){
+	  char ch=s[i];
+	  if (ch==char(0xa)){
+	    news+='\n';
+	    continue;
+	  }
+	  if (ch=='"' && s[i+1]=='"')
+	    ++i;
+	  if (ch=='`')
+	    news+='"';
+	  else
+	    news+=ch;
+	}
+	s=news;
+      }
+      s=python2xcas(s,contextptr);
+    }
 #if !defined(WIN32) && defined(HAVE_PTHREAD_H)
     if (contextptr && thread_param_ptr(contextptr)->stackaddr){
       gen er;
@@ -11779,7 +11818,7 @@ namespace giac {
     if (l>unsigned(MAX_PRINTABLE_ZINT))
       return "Integer_too_large_for_display";
 #if defined( VISUALC ) || defined( BESTA_OS )
-    char * s = ( char * )alloca( l );
+    ALLOCA(char, s, l); //s = ( char * )alloca( l );
 #else
     char s[l];
 #endif
@@ -11794,7 +11833,7 @@ namespace giac {
     if (l>unsigned(MAX_PRINTABLE_ZINT))
       return "Integer_too_large";
 #if defined( VISUALC ) || defined( BESTA_OS )
-    char * s = ( char * )alloca( l );
+    ALLOCA(char, s, l);//char * s = ( char * )alloca( l );
 #else
     char s[l];
 #endif
@@ -11826,7 +11865,7 @@ namespace giac {
     if (l>unsigned(MAX_PRINTABLE_ZINT))
       return "Integer_too_large";
 #if defined( VISUALC ) || defined( BESTA_OS )
-    char * s = ( char * )alloca( l );
+    ALLOCA(char, s, l);//char * s = ( char * )alloca( l );
 #else
     char s[l];
 #endif
@@ -11857,7 +11896,7 @@ namespace giac {
     if (l>unsigned(MAX_PRINTABLE_ZINT))
       return "Integer_too_large";
 #if defined( VISUALC ) || defined( BESTA_OS )
-    char * s = ( char * )alloca( l );
+    ALLOCA(char, s, l);//char * s = ( char * )alloca( l );
 #else
     char s[l];
 #endif

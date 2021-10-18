@@ -1,24 +1,41 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Convert units into MKSA units : mksa</title>
+<title>Computing with units</title>
 </head>
 <body >
 <a href="cascmd_en511.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en513.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec627" class="subsection">5.1.3  Convert units into MKSA units : <span style="font-family:monospace">mksa</span></h3>
-<p><a id="hevea_default864"></a>
-<span style="font-family:monospace">mksa</span> converts a unit object into a unit object
-written with the compatible <span style="font-family:monospace">MKSA</span> base unit.<br>
+<h3 id="sec628" class="subsection">5.1.2Â Â Computing with units</h3>
+<p>
+<span style="font-family:monospace">Xcas</span> performs usual arithmetic operations (+, -, *, /, <code>^</code>) on
+unit objects. Different units may be used, but they must be 
+compatible for + and -. The result is an unit object
+</p><ul class="itemize"><li class="li-itemize">
+for the 
+multiplication and the division of two unit objects 
+<span style="font-family:monospace">_u1</span> and <span style="font-family:monospace">_u2</span> the unit of the result is written 
+<span style="font-family:monospace">_(u1*u2)</span> or <span style="font-family:monospace">_(u1/u2)</span>. 
+</li><li class="li-itemize">for an addition or a subtraction of compatible unit objects, 
+the result is expressed with the same unit as the first term of the operation.
+</li></ul><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">mksa(15_C)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1_m+100_cm</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">15_(s*A)</span></div>
+</p><div class="center"><span style="font-family:monospace">2_m</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">100_cm+1_m</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">200_cm</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">1_m*100_cm</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1_m</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
 <hr>
 <a href="cascmd_en511.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

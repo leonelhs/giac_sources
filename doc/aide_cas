@@ -247,10 +247,27 @@ back([1,2,3])
 back("bonjour")
 
 # find
-1 Liste des positions d'un objet dans une liste
-2 List of positions of an object in a list
+1 Liste des positions d'un objet dans une liste, une chaîne ou un ensemble.
+2 List of positions of an object in a list, a string or a set.
 0 Expr,Vect
+-1 index
+-2 member
 find(1,[3,x,1,2,1,3])
+find(2,[0,1,3,2,4,2,5])[0]
+find("a","abracadabrant")
+find("ab","abracadabrant")
+find(1,%{4,3,1,2%})
+
+# index
+1 Indice de la première position d'un objet dans une liste une chaîne ou un ensemble ou renvoie un message d'erreur.
+2 Index of the first position of an object in a list, a string or a set or return an error message.
+0 Vect,Expr
+-1 find
+-2 member
+index([3,x,1,2,1,3],1)
+index([0,1,3,2,4,2,5],2)
+index(%{4,3,1,2%},1)
+index("abracadabrant","c")
 
 # count
 1 Renvoie f(l[0])+f(l[1])+...+f(l[size(l)-1]) ou compte le nombre d'occurrences si l'argument est une liste d'entiers en renvoyant une matrice de 1ère col les éléments de la liste triée et 2ème col l'effectif de cet élément dans la liste.
@@ -1542,13 +1559,16 @@ droite_tangente(x^2-x,1)
 reverse_rsolve([1,-1,3,3])
 
 # revlist reverse
-1 Renvoie la liste l inversée.
-2 Returns the list l in reverse order.
-3 Devuelve la lista l al revés.
-4 Επιστρέφει την λίστα l με αντίστροφη διάταξη.
+1 Renvoie la liste L inversée; L:=revlist(L) ou L.revlist().
+2 Returns the list L in reverse order; L:=revlist(L) or L.revlist().
+3 Devuelve la lista L al revés; L:=revlist(L) o L.revlist().
+4 Επιστρέφει την λίστα L με αντίστροφη διάταξη; L:=revlist(L) ή L.revlist().
 8 反转数据列。  反转数据列中元素的顺序，并返回为一个新数据列。
-0 Lst(l)
-revlist([1,2,3])
+0 Lst(L)
+revlist([1,2,3,4])
+ L:=[1,2,3,4];L:=revlist(L)
+ L:=[1,2,3,4];L.revlist()
+ L:=[1,2,3,4];L.reverse()
 
 # ratnormal
 1 Réécriture sous forme de fraction irréductible.
@@ -2651,7 +2671,7 @@ coordinates(-1-i)
 coordinates(point(1,2,3))
 coordinates(vecteur([1,2,3],[4,5,6]))
 
-# false FALSE
+# false FALSE False
 1 booléen valant faux ou 0.
 2 boolean equal to false or 0.
 3 Tipo de dato lógico (booleano) que vale falso o 0.
@@ -2660,7 +2680,7 @@ coordinates(vecteur([1,2,3],[4,5,6]))
 -1 true
  a:=false
 
-# true TRUE
+# true TRUE True
 1 booléen valant vrai ou 1.
 2 boolean equal to true or 1.
 3 Tipo de dato lógico (booleano) que vale verdadero o 1.
@@ -2703,10 +2723,11 @@ coordinates(vecteur([1,2,3],[4,5,6]))
 -1 begin
 -2 bloc
 -3 {}
- if (2>1) begin print("ifactor(154)=",ifactor(154));ifactor(154);end
- f:=function(a,b) local c;c=a+b;c+gcd(a,b);end;
- f:=fonction(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
- fonction f(a,b) local c;c=a+b;c+gcd(a,b);ffonction;
+ if (2>1) begin print("ifactor(154)=",ifactor(154));ifactor(154);end;
+ if (2>1) begin print("ifactor(154)=",ifactor(154));ifactor(154);fi;
+ f:=function(a,b) local c;c:=a+b;c+gcd(a,b);end;f(28,21);
+ f:=fonction(a,b) local c;c:=a+b;c+gcd(a,b);ffonction;
+ fonction f(a,b) local c;c:=a+b;c+gcd(a,b);ffonction;
 
 # bisection_solver brent_solver falsepos_solver newton_solver secant_solver steffenson_solver
 1 Argument de fsolve indiquant la méthode pour résoudre numériquement une équation.
@@ -5882,16 +5903,33 @@ Circle(0,1,1,1)
 -1 
 version()
 
+# range
+1 Renvoie la liste [0,1..n-1] ou la liste [a,a+1..b[ ou la liste [a,a+p,a+2p..b[
+2 Returns the list [0,1..n-1] or the list [a,a+1..b[ or the list [a,a+p,a+2p..b[
+3 Devuelve la lista [0,1..n-1] o la lista [a,a+1..b[ o la lista [a,a+p,a+2p..b[.
+4 Επιστρέφει τη λίστα [0,1..n-1] ή τη λίστα [a,a+1..b[ ή τη λίστα [a,a+p,a+2p..b[
+0 Intg(n)||Intg(a),Intg(b),[Intg(p)]
+-1 $
+-2 makelist
+-3 seq
+range(10)
+range(1,11)
+range(1,11,2)
+range(1,11,3)
+range(11,1,-1)
+ L:=[j^2 for j in range(20) if isprime(j)]
+
 # seq
 1 Renvoie la séquence (2 ou 3 arg) ou la liste (4 ou 5 arg) obtenue lorsque var varie entre a et b (pas=p) dans Xpr (ou on répète n fois l'expression Xpr ou on obtient la sequence des réels entre a et b par pas de p). On a aussi seq(expression,variable,liste) équivaut à map(liste,unapply(expression,variable)) 
 2 Returns the sequence (2 or 3 arg) or the list (4 or 5 arg) obtained when var go from a to b (step p) in Xpr (or the Xpr is repeated n times or returns the sequence of reals from a to b (step p)).And also seq(expression,variable,liste) is equivanent to map(liste,unapply(expression,variable)) 
 3 Devuelve la secuencia (2 o 3 arg) o la lista (4 o 5 arg) obtenida cuando var va desde a hasta b (paso=p) en Xpr (o la expresión Xpr es repetida n veces).
 4 Επιστρέφει την ακολουθία (2 ή 3 ορίσματα) ή τη λίστα (4 ή 5 ορίσματα) που αποκτιέται όταν το var μεταβάλλεται από a έως b (με βήμα p) στην παράσταση (ή η παράσταση επαναλαμβάνεται n φορές).
-0 Expr(Xpr)||Int(a..b),Intg(n)||Var(var)||Real(p),[Intg(a)],[Intg(b)],[Real(p)]
+0 Expr(Xpr),Var(var)=Int(a..b),[Real(p)]||Expr(Xpr),Var(var),Real(a),Real(b),[Real(p)]
 -1 $
 -2 makelist
--3 map
--4 unapply
+-3 range
+-4 map
+-5 unapply
 seq(0.3,4)
 seq(t,4)
 seq(0,0)
@@ -5912,6 +5950,7 @@ seq(x^3,x,[1,2,3])
 0 (Expr(var)||Int(a..b)),(Var(var)=Int(a..b))||Intg(n)||Real(p)
 -1 seq
 -2 makelist
+-3 range
  0.3$4
  t$4
  0$0
@@ -6447,7 +6486,7 @@ InputStr("nom?",N)
 3 Devuelve el tipo del argumento (STR,EXPR,FUNC,NUM,LIST,MAT,VAR,NONE,PIC...).
 4 Επιστρέφει τον τύπο του ορίσματος (STR,EXPR,FUNC,NUM,LIST,MAT,VAR,NONE,PIC...).
 0 Expr
--1 
+-1 getKey
 getType("aze")
 getType(2+i)
 getType(x->cos(2*x))
@@ -6459,8 +6498,17 @@ getType(1.414)
 3 Instrucción en un programa, devuelve 0 si no pulsa ninguna tecla, y si no, devuelve el código ascii de la tecla pulsada.
 4 Εντολή σε ένα πρόγραμμα, που επιστρέφει 0 αν δεν πατηθεί κανένα πλήκτρο και αλλιώς επιστρέφει τον ascii κωδικό του πλήκτρου που θα πατηθεί.
 0 NULL
--1 
+-1 getType
 getKey()
+
+# assert
+1 Instruction dans un programme, renvoie une erreur si b==faux.
+2 Instruction in a program, returns an error if b==false.
+3 Instrucción en un programa, devuelve un error si b==false.
+4 Εντολή σε ένα πρόγραμμα, που επιστρέφει λάθος αν b==false.
+0 Boolean(b)
+-1 break
+assert(a>0);
 
 # string
 1 Retourne l'expression évaluée sous la forme d'une chaîne de caractères ou Option de la commande convert ou convertir (id string).
@@ -7013,6 +7061,9 @@ colspace([[1,2,3],[1,3,6],[2,5,9]],d)
 -3 @
 function_diff(sin+id)
 function_diff(sq@sin+id)
+function_diff(ln)(x,y)
+function_diff(ln)([x,y])
+ (function_diff @@3)(ln)('x') 
 
 # id
 1 Désigne la fonction identité (ℝ^n -> ℝ^n).
@@ -7837,11 +7888,11 @@ ord("ABC")
 ord(["a","b","c"])
 
 # rotate
-1 Renvoie la liste obtenue en mettant le dernier élément [ou la fin de la liste à partir du n-ième élément] en premier (par défaut n=-1).
-2 Returns the list where the last element [or the tail beginning with the n-th element] is the first element (by default n=-1).
-3 Devuelve la lista obtenida al cambiar el último elemento (o la cola a partir del n-ésimo elemento) por el primer elemento (por defecto n=-1).
-4 Επιστρέφει τη λίστα που δημιουργείται θέτοντας το τελευταίο στοιχείο [ή την ουρά της λίστας που αρχίζει με το n-στο στοιχείο] ως πρώτο στοιχείο (προεπιλογή n =- 1).
-0 Lst,[Intg(n)]
+1 Renvoie la liste obtenue en mettant le dernier élément [ou la fin de la liste à partir du n-ième élément] en premier (par défaut n=-1);L:=rotate(L,n) ou L.rotate(n)
+2 Returns the list where the last element [or the tail beginning with the n-th element] is the first element (by default n=-1);L:=rotate(L,n) or L.rotate(n).
+3 Devuelve la lista obtenida al cambiar el último elemento (o la cola a partir del n-ésimo elemento) por el primer elemento (por defecto n=-1);L:=rotate(L,n) o L.rotate(n).
+4 Επιστρέφει τη λίστα που δημιουργείται θέτοντας το τελευταίο στοιχείο [ή την ουρά της λίστας που αρχίζει με το n-στο στοιχείο] ως πρώτο στοιχείο (προεπιλογή n =- 1);L:=rotate(L,n) ή L.rotate(n).
+0 Lst||Str(L),[Intg(n)]
 -1 tail
 -2 mid
 -3 shift
@@ -7849,18 +7900,24 @@ rotate([0,1,2,3],2)
 rotate([[1,2,3],[4,5,6],[7,8,9]])
 rotate([0,1,2,3,4])
 rotate([0,1,2,3,4],-1)
+ L:=[0,1,2,3,4];L:=rotate([0,1,2,3,4])
+ L:=[0,1,2,3,4];L.rotate()
+ L:=[0,1,2,3];L:=rotate([0,1,2,3],2)
+ L:=[0,1,2,3];L.rotate(2)
 
 # shift
-1 Renvoie la liste obtenue en mettant le dernier élément [ou la fin de la liste à partir du n-ième élément] en premier en la complétant par undef (par défaut n=-1).
-2 Returns the list where the last element [or the tail beginning with the n-th element] is the first element and then complete with undef (by default n=-1).
-3 Devuelve la lista obtenida al cambiar el último elemento (o la cola empezando al n-ésimo elemento) por el primer elemento y completada con undef (por defecto n=-1).
-4 Επιστρέφει τη λίστα που δημιουργείται θέτοντας το τελευταίο στοιχείο [ή την ουρά της λίστας που αρχίζει με το n-στο στοιχείο] ως πρώτο στοιχείο και αντικαθιστώντας το με undef (προεπιλογή n =- 1).
+1 Renvoie la liste obtenue en mettant le dernier élément [ou la fin de la liste à partir du n-ième élément] en premier en la complétant par 0 (par défaut n=-1);L:=shift(L,2) ou L.shift(2).
+2 Returns the list where the last element [or the tail beginning with the n-th element] is the first element and then complete with 0 (by default n=-1);L:=shift(L,2) o L.shift(2).
+3 Devuelve la lista obtenida al cambiar el último elemento (o la cola empezando al n-ésimo elemento) por el primer elemento y completada con 0 (por defecto n=-1);L:=shift(L,2) o L.shift(2).
+4 Επιστρέφει τη λίστα που δημιουργείται θέτοντας το τελευταίο στοιχείο [ή την ουρά της λίστας που αρχίζει με το n-στο στοιχείο] ως πρώτο στοιχείο και αντικαθιστώντας το με 0 (προεπιλογή n =- 1);L:=shift(L,2) ή L.shift(2).
 0 Lst,[Intg(n)]
 -1 rotate
 -2 tail
 shift([0,1,2,3],2)
 shift([0,1,2,3])
 shift([0,1,2,3,4])
+ L:=[0,1,2,3];L:=shift(L,2)
+ L:=[0,1,2,3];L.shift(2)
 
 # correlation
 1 Renvoie la corrélation des éléments de l'argument.
@@ -8506,15 +8563,19 @@ extract_measure(angleatraw(0,1,1+i,1))
  A:=point(0);B:=point(1+i);a:=distanceatraw(A,B,(1+i)/2);extract_measure(a)
 
 # append
-1 Rajoute un élément à la fin d'une liste.
-2 Append an element to a list.
-3 Añade un elemento a una lista.
-4 Προσθήκη ενός στοιχείου στο τέλος μιας λίστας.
-0 (Lst||Seq|| Set,Elem
+1 Rajoute un élément à un ensemble ou à la fin d'une liste ou d'une chaîne (L:=append(L,a) ou L.append(a)).
+2 Append an element to a set or at the end of a list or of a string (L:=append(L,a) o L.append(a)).
+3 Añade un elemento a una lista (conjunto o cadena)(L:=append(L,a) ou L.append(a)).
+4 Προσθήκη ενός στοιχείου στο τέλος μιας λίστας (σύνολο ή συμβολοσειράς)(L:=append(L,a) ή L.append(a)).
+0 (Lst||Set||Str(L),Elem)
 -1 concat
 -2 prepend
-append([1,2,3],4)
-append(%{1,2,3%},4)
+append([1,2,4],6)
+append(%{1,2,4%},6)
+ L:=[1,2,4];L:=append(L,6)
+ L:=[1,2,4];L.append(6)
+ S:=set[1,2,4];S:=append(S,6)
+ S:=set[1,2,4];S.append(6)
 
 # arg
 1 Argument d'un nombre complexe.
@@ -8996,11 +9057,11 @@ comb(4,2)
 -1 
 comment("my_comment")
 
-# concat augment
-1 Concatène deux listes ou deux chaînes ou deux séquences ou 2 matrices (les 2 matrices doivent avoir le même nombre de lignes et seront concaténées ligne par ligne).
-2 Concatenates two lists or two strings or two sequences or 2 matrix.
-3 Concatena 2 listas o 2 cadenas o 2 secuencias o dos matrices.
-4 Συνένωση 2 λιστών ή 2 συμβολοσειρών ή 2 ακολουθιών ή 2 πινάκων.
+# concat augment extend
+1 Concatène deux listes ou deux chaînes ou deux séquences ou 2 matrices (les 2 matrices doivent avoir le même nombre de lignes et seront concaténées ligne par ligne); L:=concat(L,L1) ou L.concat(L1).
+2 Concatenates two lists or two strings or two sequences or 2 matrix; L:=concat(L,L1) or L.concat(L1).
+3 Concatena 2 listas o 2 cadenas o 2 secuencias o dos matrices; L:=concat(L,L1) o L.concat(L1).
+4 Συνένωση 2 λιστών ή 2 συμβολοσειρών ή 2 ακολουθιών ή 2 πινάκων; L:=concat(L,L1)  ή L.concat(L1).
 8 连结  将两个列表连接成一个新列表。
 0 Lst,Lst||Seq,Seq||Str,Str||Mtrx,Mtrx
 -1 append
@@ -9011,6 +9072,8 @@ comment("my_comment")
 concat([1,2],[3,4,5])
 concat("bon","jour")
 concat([[1,2],[3,4]],[[4,5,6],[6,7,8]])
+ L:=[1,2];L.concat([3,4,5])
+ S:="abcd";S.concat("efghi")
 
 # conj
 1 Conjugué d'un nombre complexe.
@@ -9045,6 +9108,8 @@ inString("abcd","e")
 0 Elem(e),(Lst(l) or Set(l))
 -1 contains
 -2 est_element
+-3 find
+-4 index
 member(1,[4,3,1,2])
 member(1,%{4,3,1,2%})
 
@@ -9328,7 +9393,9 @@ dot([[1,2],[3,4]],[[3,2],[4,5]])
 -3 integrate
 -4 taux_accroissement
 diff(x^3-x)
-diff(x^3-x,x$3)
+diff(x^3-x,'x'$3)
+diff(x^3-x,quote(x)$3)
+(diff@@3)('x^3-x')
 diff(x*y+z*y,y)
 diff(x*y+z*y,y,z)
 diff(x*y+z*y,[y,z])
@@ -9617,7 +9684,7 @@ is_parallel(line(0,i),line(1,1+i))
 is_parallel(line([2,3,-2],[-1,-1,-1]),plane([-1,-1,-1],[1,2,-3],[0,0,0]))
 is_parallel(line([0,0,0],[-1,-1,-1]),line([2,3,-2],[-1,-1,-1]))
 
-# is_permu
+# is_permu est_permu
 1 Renvoie 1 si l'argument est une permutation de [0,1..s-1] et 0 sinon
 2 Returns 1 if the argument is a permutation and 0 otherwise
 3 Devuelve 1 si el argumento es una permutación y 0 si no
@@ -10513,6 +10580,33 @@ iquo(125,41)
 iquo(-7,3)
 iquo(25+12*i,5+7*i)
 
+# /%
+1 Quotient euclidien de 2 entiers ou de 2 entiers de Gauss : c'est la version infixée de iquo.
+2 Euclidean quotient of 2 integers : it is the infixed version of iquo.
+3 Cociente euclídeo de 2 enteros : es la versión infija de iquo.
+4 Ευκλείδιο πηλίκο 2 ακεραίων : εντεθειμένη μορφή του iquo.
+8  整数的欧几里德商。  整数 a 除以整数 b 时，返回整数商。 a/%b
+-4 mod
+irem(125,15)
+irem(125,41)
+irem(-7,3)
+irem(25+12*i,5+7*i)
+
+# %/
+1 Reste euclidien de 2 entiers ou de 2 entiers de Gauss : c'est la version infixée de irem).
+2 Euclidean remainder of 2 integer : it is the infixed version of irem.
+3 Resto euclídeo de 2 enteros : es la versión infija de irem.
+4 Ευκλείδιο υπόλοιπο 2 ακεραίων : εντεθειμένη μορφή του irem.
+8 整数的欧几里德余数。  整数 a 除以整数 b 时，返回整数余数 : 
+0 Intg(a),Intg(b)
+-1 irem
+-2 smod
+-3 quo
+iquo(125,15)
+iquo(125,41)
+iquo(-7,3)
+iquo(25+12*i,5+7*i)
+
 # div
 1 Quotient euclidien de 2 entiers ou de 2 entiers de Gauss (opérateur infixé)
 2 Euclidean quotient of 2 integers (infixed operator).
@@ -10555,6 +10649,23 @@ irem(125,15)
 irem(125,41)
 irem(-7,3)
 irem(25+12*i,5+7*i)
+
+# %/
+1 Reste euclidien de 2 entiers ou de 2 entiers de Gauss : c'est la version infixée de irem).
+2 Euclidean remainder of 2 integer : it is the infixed version of irem.
+3 Resto euclídeo de 2 enteros : es la versión infija de irem.
+4 Ευκλείδιο υπόλοιπο 2 ακεραίων : εντεθειμένη μορφή του irem.
+8 整数的欧几里德余数。  整数 a 除以整数 b 时，返回整数余数 : a%/b
+0 Intg(a),Intg(b)
+-1 iquo
+-2 smod
+-3 rem
+-4 mod
+ 125 %/ 15
+ 125 %/ 41
+ -7 %/ 3
+ 25+12*i %/ 5+7*i
+
 
 # is_pseudoprime
 1 Test de pseudo-primalité (0 non premier, 1 probablement premier, 2 premier)
@@ -11209,8 +11320,9 @@ max(25,35)
 8 创建列表。  计算新列表的元素顺序。 对函数求值，并利用步长从初值开始增加变量值，一直增加到终值。
 0 Fnc,InitVal,FinalVal,StepVal
 -1 seq
--2 makemat
--3 $
+-2 range
+-3 makemat
+-4 $
 makelist(x->x^2,1,10,2)
 makelist(4,1,10)
 makelist(4,5,10)
@@ -11846,14 +11958,19 @@ prevprime(9856989898999)
 prevprime(97160249868928888261606009)
 
 # prepend
-1 Met l'élément au début de la liste.
-2 Puts the element at the beginning of the list.
-3 Pone el elemento al principio de la lista.
-4 Ένθεση στοιχείου στην αρχή μιας λίστας.
-0 Lst,Elem
+1 Rajoute un élément à un ensemble ou le met au début d'une liste ou d'une chaîne (L:=prepend(L,a) ou L.prepend(a)).
+2 Puts an element to a set or at the beginning of a list or of a string (L:=prepend(L,a) or L.prepend(a)).
+3 Pone el elemento al principio de la lista (conjunto o cadena) (L:=prepend(L,a) o L.prepend(a)).
+4 Ένθεση στοιχείου στην αρχή μιας λίστας (σύνολο ή συμβολοσειράς) (L:=prepend(L,a)  ή L.prepend(a)).
+0 Lst||Set||Str(L),Elem(n)
 -1 append
 -2 concat
 prepend([1,2],3)
+prepend(set[1,2],3)
+ L:=[1,2];L:=prepend(L,3)
+ L:=[1,2];L.prepend(L,3) 
+ S:=set[1,2];S:=prepend(L,3)
+ S:=set[1,2];S.prepend(L,3)
 
 # print Disp
 1 Permet d'afficher un résultat intermédiaire dans un programme.
@@ -11861,7 +11978,7 @@ prepend([1,2],3)
 3 Permite mostrar un resultado intermedio en un programa.
 4 Εκτύπωση ενδιαμέσου αποτελέσματος σε ένα πρόγραμμα.
 8 将 expr 或 string 结果打印到终端。
-0 Expr or Str
+0 Expr|| Str
 -1 
 print("salut")
 print(a)
@@ -12031,11 +12148,11 @@ quorem(t^4-1,(t+1)^2,t)
 -1 a2q
 q2a(x^2+2*x*y+2*y^2,[x,y])
 
-# rand
-1 rand(n)=un entier (resp rand(p,n)=un réel ou rand(p..n)=une fonction réelle) aléatoire uniformément distribué dans 0.. n-1 (resp dans [p; n]) (rand()=rand(0,1)=un réel de [0,1[) ou rand(n,b1,b2)=n entiers de [b1;b2] ou rand(n,L)=n éléments de L.
-2 rand(n)=a random integer (resp rand(p,n)=a real or rand(p..n)=a real function) with uniform distribution in 0..n-1 (resp in [p;n])(rand()=rand(0,1)=a real in [0,1[) or rand(n,b1,b2)=n integers between b1 and b2 or rand(n,L)=n elements of L.
-3 rand(n)=un número (resp rand(p,n)=un número real o rand(p..n)=una función real) aleatorio distribuido en 0..n-1 (resp en [p;n]) (rand()=rand(0,1)) o rand(n,b1,b2)= enteros entre b1 y b2 o rand(n,L)=n elementos de L.
-4 rand(n)=έναν τυχαίο ακέραιο (αντίστοιχα rand(p,n)=ένα πραγματικό ή rand(p..n)=μια πραγματική συνάρτηση) ομοιόμορφα κατανεμημένο στο 0..n-1 (αντίστοιχα στο [p;n])(rand()=rand(0,1)) ή rand(n,b1,b2)=n ακέραιους μεταξύ b1 και b2 ή rand(n,L)=n στοιχεία του L.
+# rand random
+1 rand(n)=un entier (resp rand(p,n)=un réel ou rand(p..n)=une fonction réelle) aléatoire uniformément distribué dans 0.. n-1 (resp dans [p; n]) (rand()=rand(0,1)=un réel de [0,1[) ou rand(n,b1,b2)=n entiers de [b1;b2] ou rand(n,L)=liste de n éléments de L.
+2 rand(n)=a random integer (resp rand(p,n)=a real or rand(p..n)=a real function) with uniform distribution in 0..n-1 (resp in [p;n])(rand()=rand(0,1)=a real in [0,1[) or rand(n,b1,b2)=n integers between b1 and b2 or rand(n,L)=list of n elements of L.
+3 rand(n)=un número (resp rand(p,n)=un número real o rand(p..n)=una función real) aleatorio distribuido en 0..n-1 (resp en [p;n]) (rand()=rand(0,1)) o rand(n,b1,b2)= enteros entre b1 y b2 o rand(n,L)=lista de n elementos de L.
+4 rand(n)=έναν τυχαίο ακέραιο (αντίστοιχα rand(p,n)=ένα πραγματικό ή rand(p..n)=μια πραγματική συνάρτηση) ομοιόμορφα κατανεμημένο στο 0..n-1 (αντίστοιχα στο [p;n])(rand()=rand(0,1)) ή rand(n,b1,b2)=n ακέραιους μεταξύ b1 και b2 ή rand(n,L)=λίστας n στοιχεία του L.
 0 Intg(n) or Interval(p..n) or NULL,[Intg(b1) or Lst(L)],[Intg(b2)]
 -1 srand
 -2 randpoly
@@ -12049,6 +12166,44 @@ rand(0..2)()
  f:=rand(0..2)
 rand(3,1,10)
 rand(3,["r","r","r","b","n"])
+ L:=["r","r","r","b","n"];L:=rand(L,3)
+ L:=["r","r","r","b","n"];L.rand(3)
+
+# choice
+1 choice(L)=rand(L)=un élément de L tiré au hasard.
+2 choice(L)=rand(L)=one extracted element of L.
+3 choice(L)=rand(L)=  un elemento de L.
+4 choice(L)=rand(L)
+0 Lst(L)
+-1 rand 
+-2 sample
+choice([1,2,3,4,5,6])
+choice(["r","r","r","b","n"])
+ L:=[1,2,3,4,5,6];L:=choice(L)
+ L:=[1,2,3,4,5,6];L.choice()
+
+# sample
+1 sample(L,n)= rand(n,L)=liste de n éléments de L tirés sans remise.
+2 sample(L,n)= rand(n,L)=list of de n extracted elements of L without throw-in.
+3 sample(L,n)= rand(n,L)=lista de n elementos de L.
+4 sample(L,n)= rand(n,L)=λίστας n στοιχεία του L.
+0 Lst(L),Intg(n)
+-1 rand 
+sample([1,2,3,4,5,6],6)
+sample([1,2,3,4,5,6],3)
+sample(["r","r","r","b","n"],3)
+ L:=[1,2,3,4,5,6];L:=sample(L,3)
+ L:=[1,2,3,4,5,6];L.sample(3)
+ 
+# randint
+1 randint(n1,n2)=un entier entre n1 et n2 (bornes incluses). 
+2 randint(n1,n2)=an integer in [n1, n2] or [n2,n1].
+3 randint(n1,n2)=un número un entero en [n1, n2] o [n2,n1].
+4 randint(n1,n2)= ενός ακεραίο στο [n1, n2]  ή [n2,n1]
+0 Intg(n1),Intg(n2)
+-1 rand 
+randint(1,10)
+randint(-1,-10)
 
 # hasard
 1 (hasard n)=un entier (resp (hasard p,n)=un réel ou hasard(p..n)=une fonction réelle) aléatoire uniformément distribué dans 0.. n-1 (resp dans [p; n]) (hasard ou (hasard 0,1)=un réel aléatoire de [0,1[) ou hasard(n,b1,b2)=n entiers de [b1;b2] ou hasard(n,L)=n éléments de L. Si hasard a un seul argument il peut se passer de () (compatibilité langage tortue).
@@ -12281,16 +12436,20 @@ randvector(3,'rand(3)')
 randvector(3,1..2)
  GF(2,8,g);randvector(3,g)
 
-# randperm
-1 Renvoie une permutation aléatoire de [0,1,2,..,n-1].
-2 Returns a random permutation of [0,1,2,..,n-1].
-3 Devuelve una permutación aleatoria de [0,1,2,..,n-1].
-4 Επιστρέφει μια τυχαία μετάθεση στο [0,1,2,..,n-1].
-0 Intg(n)
+# randperm shuffle
+1 Renvoie une permutation aléatoire de [0,1,2,..,n-1] ou de la liste L.
+2 Returns a random permutation of [0,1,2,..,n-1] or of the list L.
+3 Devuelve una permutación aleatoria de [0,1,2,..,n-1] o de L.
+4 Επιστρέφει μια τυχαία μετάθεση στο [0,1,2,..,n-1] ή στο L.
+0 Intg(n)||Lst(L)
 -1 permu2cycles
 -2 is_permu
+-3 permu2mat
 randperm(4)
 randperm(7)
+randperm([1,3,5,7,9])
+ L:=[1,3,5,7,9];L:=randperm(L)
+ L:=[1,3,5,7,9];L.randperm()
 
 # nextperm
 1 Renvoie la permutation suivante dans l'ordre lexicographique.
@@ -12373,11 +12532,11 @@ Rem(x^3+2*x^2+3*x+4,-x+2)
 Rem(t^3+2*t^2+3*t+4,-t+2,t)
 
 # remove
-1 Enlève les occurrences e de l ou les éléments e qui vérifient f(e)=vrai.
-2 Remove the occurrences e of l or the elements e such that f(e)=true.
-3 Borra los elementos e de l tales que f(e)=verdadero.
-4 Απομάκρυνση των στοιχείων e της l για τα οποία f(e)=true.
-0 FncBool(f)||e,Lst(l)
+1 Enlève les occurrences a de l ou les éléments a qui vérifient f(a)=vrai.
+2 Remove the occurrences a of l or the elements a such that f(a)=true.
+3 Borra los elementos a de l tales que f(a)=verdadero.
+4 Απομάκρυνση των στοιχείων a της l για τα οποία f(a)=true.
+0 FncBool(f)||a,Lst(l)
 -1 select
 -2 suppress
 remove(x->x>=5,[1,2,6,7])
@@ -12584,7 +12743,9 @@ series(subst(sin(x+y)+cos(y*x),[x,y],h*[x,y]),h=0,6,polynom)(h=1)
 4 Επιλέγει τα στοιχεία e της l που ικανοποιούν f(e)=true.
 0 FncBool(f),Lst(l)
 -1 remove
+-2 range
 select(x->x>=5,[1,2,6,7])
+select(x->isprime(x),range(20)).^2
 
 # sign
 1 Retourne le signe (-1,0,+1) de l'argument.
@@ -13065,17 +13226,19 @@ sum(1/(x*(x+1)),x)
 sum(cos(n*x),n)
 
 # suppress
-1 Renvoie l sans son élément d'indice n.
-2 Returns l without the element of index n.
-3 Devuelve l sin el elemento de índice n.
-4 Επιστρέφει την l χωρίς το στοιχείο με δείκτη n.
-0 Vect(l)||Str(l),Intg(n)
+1 Renvoie L sans son élément d'indice n; L:=suppress(L,n) ou L.suppress(n).
+2 Returns L without the element of index n; L:=suppress(L,n) or L.suppress(n).
+3 Devuelve L sin el elemento de índice n; L:=suppress(L,n) o L.suppress(n).
+4 Επιστρέφει την L χωρίς το στοιχείο με δείκτη n; L:=suppress(L,n) ou L.suppress(n).
+0 Vect(L)||Str(l),Intg(n)
 -1 tail
 -2 mid
 -3 remove
 -4 insert
 suppress([0,1,2,3],2)
 suppress("0123",2)
+ L:=[0,1,2,3];L:=suppress(L,2)
+ L:=[0,1,2,3];L.suppress(2)
 
 # insert
 1 Renvoie l dans laquelle l'élément b a été insérer à l'indice n.
@@ -14930,15 +15093,6 @@ wilcoxons([1, 3, 4, 5, 7, 8, 8, 12, 15, 17] , 10)
 dayofweek(21,4,2014)
 dayofweek(15,10,1582)
 
-# range
-1 range(n) ou range(debut,fin) ou range(debut,fin,pas) genere une liste d'entiers k<n ou debut<=k<fin (pas par defaut 1)
-2 range(n) or range(start,stop) or range(start,stop,step) generates a list of integers k<n or start<=k<stop (default step 1)
-0 Intg,[Intg],[Intg]
-range(10)
-range(1,11)
-range(1,11,2)
-range(11,1,-1)
-
 # minimize maximize
 1 Recherche du minimum ou maximum d'une fonction
 2 Minimize a function
@@ -14953,7 +15107,7 @@ minimize((1+x^2+3y+5x-4*x*y)/(1+x^2+y^2),x^2/4+y^2/3=9,[x,y])
 minimize(cos(x)^2+cos(y)^2,x+y=pi/4,[x,y],locus)
 
 # minimax
-1 Approximation polynomiale de degre n d'une fonction continue bornee sur [a,b] par la methode de Remez
+1 Approximation polynomiale de degré n d'une fonction continue bornée sur [a,b] par la méthode de Remez
 2 Implementation of Remez method for minimax polynomial approximation of degree n of a continuous bounded function on a..b
 0 Expr,Var=a..b,n,[Options]
 minimax(x*exp(-x),x=0..10,24)
@@ -15000,3 +15154,99 @@ lpsolve(x+3y+3z,[x+3y+2z<=7,2x+2y+z<=11],assume=lp_nonnegative,lp_integervariabl
 lpsolve(2x+5y,[3x-y=1,x-y<=5],assume=nonnegint)
 lpsolve(x1+x2,[2x1+5x2<=16,6x1+5x2<=30],assume=nonnegint,lp_maximize)
 lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4<=14],assume=lp_binary,lp_maximize)
+
+# implicitdiff
+1 Derivee implicite
+2 Implicit differentiation
+0 constr,[depvars],y,diffvars
+implicitdiff(x^2*y+y^2=1,y,x)
+implicitdiff(R=P*V/T,P,T)
+implicitdiff([x^2+y=z,x+y*z=1],[y(x),z(x)],y,x)
+implicitdiff([x^2+y=z,x+y*z=1],[y(x),z(x)],[y,z],x)
+implicitdiff(y=x^2/z,y,x)
+implicitdiff(y=x^2/z,y,z)
+implicitdiff(y^3+x^2=1,y,x)
+implicitdiff(y^3+x^2=1,y,x,x)
+implicitdiff(a*x^3*y-2y/z=z^2,y(x,z),x)
+implicitdiff(a*x^3*y-2y/z=z^2,y(x,z),x,z)
+implicitdiff([-2x*z+y^2=1,x^2-exp(x*z)=y],[y(x),z(x)],y,x)
+implicitdiff([-2x*z+y^2=1,x^2-exp(x*z)=y],[y(x),z(x)],[y,z],x)
+implicitdiff([a*sin(u*v)+b*cos(w*x)=c,u+v+w+x=z,u*v+w*x=z],[u(x,z),v(x,z),w(x,z)],u,z)
+implicitdiff(x*y,-2x^3+15x^2*y+11y^3-24y=0,y(x),x$2)
+implicitdiff((x-u)^2+(y-v)^2,[x^2/4+y^2/9=1,(u-3)^2+(v+5)^2=1],[v(u,x),y(u,x)],u,x)
+implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=1)
+implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=2,[1,-1,0])
+ pd:=implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=4,[0,z,0]);pd[4,0]
+
+# lp_assume lp_binary lp_binaryvariables lp_depthlimit lp_integer lp_integervariables lp_maximize lp_nonnegative lp_nonnegint lp_variables lp_nodelimit lp_integertolerance lp_method lp_simplex lp_interiorpoint lp_initialpoint
+1 Options de la commande lpsolve
+2 Options for lpsolve command
+0 Opt
+-1 lpsolve
+
+# periodic
+1 Cree une expression periodique egale a Expr sur [a,b], periode b-a
+2 Make a periodic expression equal to Expr on a..b, period b-a
+0 Expr,Var,a,b
+periodic(x^2,x,0,1)
+
+# extrema
+1 Recherche des extremas d'une expression
+2 Search extrema of an expression
+extrema(-2*cos(x)-cos(x)^2,x)
+extrema((x^3-1)^4/(2x^3+1)^4,x=0..inf)
+extrema(x/2-2*sin(x/2),x=-12..12)
+extrema(x-ln(abs(x)),x)
+ assume(a>=0);extrema(x^2+a*x,x)
+extrema(x^7+3x^6+3x^5+x^4+2x^2-x,x)
+extrema((x^2+x+1)/(x^4+1),x)
+extrema(x^2+exp(-x),x)
+extrema(exp(-x)*ln(x),x)
+extrema(tan(x)*(x^3-5x^2+1),x=-0.5)
+extrema(tan(x)*(x^3-5x^2+1),x=0.5)
+extrema(exp(x^2-2x)*ln(x)*ln(1-x),x=0.5)
+extrema(ln(2+x-sin(x)^2),x=0..2*pi)
+extrema(x^3-2x*y+3y^4,[x,y])
+extrema((2x^2-y)*(y-x^2),[x,y])  //Peano surface
+extrema(5x^2+3y^2+x*z^2-z*y^2,[x,y,z])
+extrema(3*atan(x)-2*ln(x^2+y^2+1),[x,y])
+extrema(x*y,x+y=1,[x,y])
+extrema(sqrt(x*y),x+y=2,[x,y])
+extrema(x*y,x^3+y^3=16,[x,y])
+extrema(x^2+y^2,x*y=1,[x=0..inf,y=0..inf])
+extrema(ln(x*y^2),2x^2+3y^2=8,[x,y])
+extrema(y^2+4y+2x-x^2,x+2y=2,[x,y])
+ assume(a>0);extrema(x/a^2+a*y^2,x+y=a,[x,y])
+extrema(6x+3y+2z,4x^2+2y^2+z^2=70,[x,y,z])
+extrema(x*y*z,x+y+z=1,[x,y,z])
+extrema(x*y^2*z^2,x+y+z=5,[x,y,z])
+extrema(4y-2z,[2x-y-z=2,x^2+y^2=1],[x,y,z])
+extrema((x-3)^2+(y-1)^2+(z-1)^2,x^2+y^2+z^2=4,[x,y,z])
+extrema(x+3y-z,2x^2+y^2=z,[x,y,z])
+extrema(2x*y+2y*z+x*z,x*y*z=4,[x,y,z])
+extrema(x+y+z,[x^2+y^2=1,2x+z=1],[x,y,z])
+ assume(a>0);extrema(x+y+z,[y^2-x^2=a,x+2z=1],[x,y,z])
+extrema((x-u)^2+(y-v)^2,[x^2/4+y^2/9=1,(u-3)^2+(v+5)^2=1],[u,v,x,y])
+extrema(x2^6+x1^3+4x1+4x2,x1^5+x2^4+x1+x2=0,[x1,x2])
+extrema(x*y,-2x^3+15x^2*y+11y^3-24y=0,[x,y])
+extrema(x2^4-x1^4-x2^8+x1^10,[x1,x2],order_size=1)
+extrema(x2^4-x1^4-x2^8+x1^10,[x1,x2])
+extrema(x2^6+x1^3+4x1+4x2,x1^5+x2^4+x1+x2=0,[x1,x2])
+extrema(x2^6+x1^3+2x1^2-x2^2+4x1+4x2,x1^5+x2^4+x1+x2=0,[x1,x2])
+extrema(3x^2-2x*y+y^2-8y,[x,y])
+extrema(x^3+3x*y^2-15x-12y,[x,y])
+extrema(4x*y-x^4-y^4,[x,y])
+extrema(x*sin(y),[x,y])
+extrema(x^4+y^4,[x,y])
+extrema(x^3*y-x*y^3,[x,y])  
+extrema(x^2+y^2+z^2,x^4+y^4+z^4=1,[x,y,z])
+extrema(3x+3y+8z,[x^2+z^2=1,y^2+z^2=1],[x,y,z])
+extrema(2x^2+y^2,x^4-x^2+y^2=5,[x,y])
+extrema((3x^4-4x^3-12x^2+18)/(12*(1+4y^2)),[x,y])
+extrema(x-y+z,[x^2+y^2+z^2=1,x+y+2z=1],[x,y,z])
+extrema(ln(x)+2*ln(y)+3*ln(z)+4*ln(u)+5*ln(v),x+y+z+u+v=1,[x,y,z,u,v])
+extrema(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,y,z])
+extrema(x+y-exp(x)-exp(y)-exp(x+y),[x,y])
+extrema(x^2*sin(y)-4*x,[x,y])    
+extrema((1+y*sinh(x))/(1+y^2+tanh(x)^2),[x,y])
+extrema((1+y*sinh(x))/(1+y^2+tanh(x)^2),y=x^2,[x,y])

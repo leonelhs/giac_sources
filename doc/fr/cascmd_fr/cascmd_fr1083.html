@@ -4,30 +4,49 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Le parallélépipède : parallelepiped parallelepipede</title>
+<title>La projection orthogonale : projection</title>
 </head>
 <body >
 <a href="cascmd_fr1082.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1084.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1308" class="subsection">11.16.3  Le parallélépipède : <span style="font-family:monospace">parallelepiped parallelepipede</span></h3>
-<p><a id="hevea_default2097"></a><a id="hevea_default2098"></a>
-<span style="font-family:monospace">parallelepipede</span> a comme argument quatre points <span style="font-family:monospace">A,B,C,D</span>.<br>
-<span style="font-family:monospace">parallelepipede(A,B,C,D)</span> dessine un parallélépipède de côtés 
-<span style="font-family:monospace">AB,AC,AD</span> (les faces sont des parallélogrammes).<br>
+<h3 id="sec1312" class="subsection">11.14.8  La projection orthogonale : <span style="font-family:monospace">projection</span></h3>
+<p><a id="hevea_default2102"></a><a id="sec:projection3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr987.html#sec%3Aprojection2">10.17.8</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">projection</span>, en géométrie 3-d, a un ou deux arguments : un 
+objet géométrique et éventuellement un point.<br>
+Lorsque <span style="font-family:monospace">projection</span> a un argument, c’est une fonction qui agit sur un 
+point et qui projette ce point sur l’objet géométrique.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">parallelepipede([0,0,0],[5,0,0],[0,5,0],[0,0,5])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">p1:=projection(droite(point(0,0,0),point(1,1,1)))</span></div><p>
+Puis :
+</p><div class="center"><span style="font-family:monospace">p1(point(1,0,0))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">un cube de sommet l’origine et dont 3 faces sont contenues dans les plans du repère</span></div><p>
+</p><div class="center"><span style="font-family:monospace">Le point (1/3,1/3,1/3) est tracé</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">p:=parallelepipede([0,0,0],[5,0,0],[0,3,0],[0,0,2]);</span></div><div class="center"><span style="font-family:monospace">c1,c2,c3,c4,c5,c6,c7,c8:=sommets(p); </span></div><p>
+</p><div class="center"><span style="font-family:monospace">p2:=projection(plan(point(1,0,0),point(0,0,0), point(1,1,1)))</span></div><div class="center"><span style="font-family:monospace">p2(point(0,0,1))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">un parallélépipède de sommets c1 le point(0,0,0), c2 le point(5,0,0),c3 le point(5,3,0), c4 le point(0,3,0), c5 le point(0,0,2), c6 le point(5,0,2), c7 le point(5,3,2), c8 le point(0,3,2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">Le point (0,1/2,1/2) est tracé</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">parallelepipede([0,0,0],[3,2,0],[0,3,2],[2,0,3])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">p3:=projection(sqhere(point(1,0,0),1))</span></div><div class="center"><span style="font-family:monospace">p3(point(0,0,1))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Un parallélépipède</span></div>
+</p><div class="center"><span style="font-family:monospace">Le point (1-sqrt(2)/2,0,sqrt(2)/2) est tracé</span></div><p>
+Lorsque <span style="font-family:monospace">projection</span> a deux arguments, <span style="font-family:monospace">projection</span> dessine et renvoie
+le transformé du point par la projection orthogonale sur le premier 
+argument.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">projection(droite(point(0,0,0),point(1,1,1)),point(1,0,0))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le point (1/3,1/3,1/3)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">projection(plan(point(1,0,0),point(0,0,0), point(1,1,1)),point(0,0,1))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le point (0,1/2,1/2) est tracé</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">projection(sqhere(point(1,0,0),1),point(0,O,1))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le point (1-sqrt(2)/2,0,sqrt(2)/2) est tracé</span></div>
 <hr>
 <a href="cascmd_fr1082.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

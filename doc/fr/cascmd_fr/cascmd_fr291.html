@@ -4,35 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Différence entre fonction et expression</title>
+<title>Définition d’un opérateur: user_operator</title>
 </head>
 <body >
 <a href="cascmd_fr290.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr292.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec373" class="subsection">6.17.1  Différence entre fonction et expression</h3>
-<p><a id="hevea_default498"></a><a id="hevea_default499"></a>
-Une fonction <span style="font-family:monospace">f</span> est définie par exemple par :<br>
-<span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> ou encore par <span style="font-family:monospace">f:=x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> <br>
-cela signifie que pour tous les <span style="font-style:italic">x</span>, <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) est égale à l’expression 
-<span style="font-style:italic">x</span><sup>2</sup>−1.<br>
-On pourra ainsi taper <span style="font-family:monospace">f(2)</span> pour avoir la valeur de <span style="font-style:italic">f</span> en <span style="font-style:italic">x</span>=2.<br>
-Par contre si on définit :<br>
-<span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> cela signifie que <span style="font-family:monospace">g</span> est une variable qui contient 
-l’expression <span style="font-style:italic">x</span><sup>2</sup>−1. Pour avoir la valeur de <span style="font-style:italic">g</span> en <span style="font-style:italic">x</span>=2 il faut alors 
-écrire :<br>
-<span style="font-family:monospace">subst(g,x=2)</span> car <span style="font-style:italic">g</span> est une expression qui dépend de <span style="font-style:italic">x</span>.<br>
-Aussi, lorsque l’argument d’une commande est une fonction il faut mettre 
-comme argument, soit par exemple <span style="font-family:monospace">x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>, soit <span style="font-family:monospace">f</span> (si 
-<span style="font-family:monospace">f</span> est une fonction qui a été définie auparavant par exemple par 
-<span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>) et <br>
-lorsque l’argument d’une commande est une expression on met comme argument, 
-soit par exemple <span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>, soit <span style="font-family:monospace">g</span> (si <span style="font-family:monospace">g</span> est une variable 
-que l’on a définie auparavant par exemple <span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>), soit 
-<span style="font-family:monospace">f(x)</span> (si <span style="font-family:monospace">f</span> est une fonction qui a été définie auparavant par 
-exemple <span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>).
-</p>
+<h3 id="sec372" class="subsection">6.16.3  Définition d’un opérateur: <span style="font-family:monospace">user_operator</span></h3>
+<p><a id="hevea_default496"></a><a id="hevea_default497"></a><a id="hevea_default498"></a>
+<span style="font-family:monospace">user_operator</span> a comme argument :
+</p><ul class="itemize"><li class="li-itemize">
+une chaîne de caractères qui est le nom de l’opérateur,
+</li><li class="li-itemize">une fonction de deux variablesà valeur dans ℝ ou dans
+<span style="font-family:monospace">true, false</span>,
+</li><li class="li-itemize">une option <span style="font-family:monospace">Binary</span> pour la définition ou <span style="font-family:monospace">Delete</span> pour 
+annuler cette définition.
+</li></ul><p>
+<span style="font-family:monospace">user_operator</span> renvoie 1 si la définition a eu lieu et 0 sinon.</p><p><span style="font-weight:bold">Exemple 1</span><br>
+Soit la loi <span style="font-style:italic">R</span> définit sur ℝ par <span style="font-style:italic">x</span> <span style="font-style:italic">R</span>  <span style="font-style:italic">y</span>= <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>.<br>
+On tape pour définir la loi <span style="font-style:italic">R</span> :
+</p><div class="center"><span style="font-family:monospace">user_operator("R",(x,y)-&gt;x*y+x+y,Binary)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
+On tape :
+</p><div class="center"><span style="font-family:monospace">5 R 7</span></div><p>
+Bien mettre les espace autour de <span style="font-family:monospace">R</span>.<br>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">47</span></div><p><span style="font-weight:bold">Exemple 2</span><br>
+Soit la relation <span style="font-style:italic">S</span> définit sur ℕ par :<br>
+pour <span style="font-style:italic">x</span> et <span style="font-style:italic">y</span> entiers, <span style="font-style:italic">x</span> <span style="font-style:italic">S</span>  <span style="font-style:italic">y</span> &lt;=&gt; <span style="font-style:italic">x</span> et <span style="font-style:italic">y</span> ne sont pas premiers entre 
+eux.<br>
+On tape pour définir la relation <span style="font-style:italic">S</span> :
+</p><div class="center"><span style="font-family:monospace">user_operator("S",(x,y)-&gt;(gcd(x,y))!=1,Binary)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
+On tape :
+</p><div class="center"><span style="font-family:monospace">5 S 7</span></div><p>
+Bien mettre les espace autour de <span style="font-family:monospace">S</span>.<br>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p> 
+On tape :
+</p><div class="center"><span style="font-family:monospace">8 S 12</span></div><p>
+Bien mettre les espace autour de <span style="font-family:monospace">S</span>.<br>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">1</span></div>
 <hr>
 <a href="cascmd_fr290.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

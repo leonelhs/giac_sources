@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
 <title>Euclidean remainder: Rem</title>
@@ -11,14 +11,14 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en214.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec261" class="subsection">2.25.5��Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
+<h3 id="sec261" class="subsection">2.25.5  Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
 <p><a id="hevea_default395"></a>
 <span style="font-family:monospace">Rem</span> is the inert form of <span style="font-family:monospace">rem</span>.<br>
 <span style="font-family:monospace">Rem</span> returns the euclidean remainder between two polynomials
 (decreasing power division) without evaluation. 
 It is used when <span style="font-family:monospace">Xcas</span> is in Maple mode to compute
 the euclidean remainder of the division of two
-polynomials with coefficients in &#X2124;/<span style="font-style:italic">p</span>&#X2124; using Maple-like syntax.<br>
+polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ using Maple-like syntax.<br>
 In <span style="font-family:monospace">Xcas</span> mode, input :
 </p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)</span></div><p>
 Output :
@@ -29,10 +29,10 @@ Output :
 </p><div class="center"><span style="font-family:monospace">2*x</span></div><p>
 The division was done using modular arithmetic, unlike with
 </p><div class="center"><span style="font-family:monospace">rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+3*x,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
-where the division is done in &#X2124;[<span style="font-style:italic">X</span>] and reduced after to:
+where the division is done in ℤ[<span style="font-style:italic">X</span>] and reduced after to:
 </p><div class="center"><span style="font-family:monospace">12*x</span></div><p>
 If <span style="font-family:monospace">Xcas</span> is not in Maple mode, polynomial division 
-in &#X2124;/<span style="font-style:italic">p</span>&#X2124;[<span style="font-style:italic">X</span>] is done e.g. by�:
+in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] is done e.g. by :
 </p><div class="center"><code>rem((x^3+3*x)% 5,(2x^2+6x+5)%5)</code>
 </div>
 <hr>

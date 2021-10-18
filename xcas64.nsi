@@ -12,7 +12,7 @@
 ;Definition of constants
 
   !define APPNAME       "Xcas"
-  !define VERSION       "1.2.0"
+  !define VERSION       "1.4.9"
   !define URL           "http://www-fourier.ujf-grenoble.fr/~parisse/"
   !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 
@@ -177,8 +177,8 @@ SectionEnd
   LangString WELCOME_TEXT ${LANG_GREEK} "The installer will install ${APPNAME}, a free computer algebra system with 2-d/3-d geometry and spreadsheet. ${APPNAME} is available under the GNU GPL version 3 or later license."
   LangString WELCOME_TEXT ${LANG_SIMPCHINESE} "The installer will install ${APPNAME}, a free computer algebra system with 2-d/3-d geometry and spreadsheet. ${APPNAME} is available under the GNU GPL version 3 or later license."
   
-  LangString FINISHPAGE_TEXT ${LANG_ENGLISH} "If you want to compile a C++ program using giac, please read the README file from the installation directory."
-  LangString FINISHPAGE_TEXT ${LANG_FRENCH} "Si Xcas a été installé sur une clé USB, utiliser le fichier xcaskey.bat (modifiez le fichier runxcasp.fr prévu pour lecteur réseau et répertoire personnel P:).$\r$\nSi vous êtes administrateur, regardez xcasfrjp.bat et runxcasj.fr (changez la lettre du lecteur réseau personnel p dans export XCAS_HOME=/cygdrive/p et export XCAS_AUTOSAVE_FOLDER=/cygdrive/p)$\r$\nPour créer une application Python/C++/Java utilisant giac, lisez le fichier README présent dans le dossier d'installation."
+  LangString FINISHPAGE_TEXT ${LANG_ENGLISH} "If this version of Xcas does not work, try the 32 bits version.$\r$\nIf you want to compile a C++ program using giac, please read the README file from the installation directory."
+  LangString FINISHPAGE_TEXT ${LANG_FRENCH} "Si cette version de Xcas ne fonctionne pas, essayez la version 32 bits.$\r$\nSi Xcas a été installé sur une clé USB, utiliser le fichier xcaskey.bat (modifiez le fichier runxcasp.fr prévu pour lecteur réseau et répertoire personnel P:).$\r$\nSi vous êtes administrateur, regardez xcasfrjp.bat et runxcasj.fr (changez la lettre du lecteur réseau personnel p dans export XCAS_HOME=/cygdrive/p et export XCAS_AUTOSAVE_FOLDER=/cygdrive/p)$\r$\nPour créer une application Python/C++/Java utilisant giac, lisez le fichier README présent dans le dossier d'installation."
   LangString FINISHPAGE_TEXT ${LANG_GERMAN} "If you want to create a Python/C++/Java program using giac, please read the README file from the installation directory."
   LangString FINISHPAGE_TEXT ${LANG_SPANISH} "If you want to compile a C++ program using giac, please read the README file from the installation directory."
   LangString FINISHPAGE_TEXT ${LANG_ITALIAN} "If you want to compile a C++ program using giac, please read the README file from the installation directory."

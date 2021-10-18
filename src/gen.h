@@ -463,9 +463,9 @@ namespace giac {
     inline unary_function_eval * ptr() const {
       return (unary_function_eval *) (((size_t) _ptr) & ~(uintptr_t)3);
 #ifdef x86_64
-      return (unary_function_eval *) (((ulonglong ) _ptr) & 0xfffffffffffffffc);
+      //return (unary_function_eval *) (((ulonglong ) _ptr) & 0xfffffffffffffffc);
 #else
-      return (unary_function_eval *) (((size_t) _ptr) & 0xfffffffc);
+      //return (unary_function_eval *) (((size_t) _ptr) & 0xfffffffc);
 #endif
     }
 #else // NO_UNARY_FUNCTION_COMPOSE
@@ -484,9 +484,9 @@ namespace giac {
       // if (&u==this) return true; 
       return ((ulonglong)(_ptr) & ~(uintptr_t)3 )  == ((ulonglong)( u._ptr) & ~(uintptr_t)3 );
 #ifdef x86_64
-      return ((ulonglong)(_ptr) & 0xfffffffffffffffc)  == ((ulonglong)( u._ptr) & 0xfffffffffffffffc ); 
+      //return ((ulonglong)(_ptr) & 0xfffffffffffffffc)  == ((ulonglong)( u._ptr) & 0xfffffffffffffffc ); 
 #else
-      return ((size_t)(_ptr) & 0xfffffffc) == ((size_t)(u._ptr) & 0xfffffffc); 
+      //return ((size_t)(_ptr) & 0xfffffffc) == ((size_t)(u._ptr) & 0xfffffffc); 
 #endif
     }
     inline bool operator !=(const unary_function_ptr & u) const { return !(*this==u); }
@@ -494,9 +494,9 @@ namespace giac {
       // if (&u==this) return true; 
       return u && ( ((ulonglong)(_ptr) &  ~(uintptr_t)3 ) == ((ulonglong)(u->_ptr) &  ~(uintptr_t)3) ); 
 #ifdef x86_64
-      return u && ( ((ulonglong)(_ptr) & 0xfffffffffffffffc) == ((ulonglong)(u->_ptr) & 0xfffffffffffffffc) ); 
+      //return u && ( ((ulonglong)(_ptr) & 0xfffffffffffffffc) == ((ulonglong)(u->_ptr) & 0xfffffffffffffffc) ); 
 #else
-      return u && ( ((size_t)(_ptr) & 0xfffffffc) == ((size_t)(u->_ptr) & 0xfffffffc ) ); 
+      //return u && ( ((size_t)(_ptr) & 0xfffffffc) == ((size_t)(u->_ptr) & 0xfffffffc ) ); 
 #endif
     }
     inline bool operator !=(const unary_function_ptr * u) const { return !(*this==u); }
@@ -1651,6 +1651,26 @@ namespace giac {
   void sprintfdouble(char *,const char *,double d);
 
   extern "C" const char * caseval(const char *);
+
+// Alloca proposal by Cyrille to make it work on every compiler.
+#ifndef ALLOCA
+  // alloca versions...
+  #if defined(FREERTOS)
+    // for systems that do not support alloca or s[size] syntaxes
+    class Calloca { public:
+      void *ram;
+      Calloca(size_t s): ram(malloc(s)) { }
+      ~Calloca() { free(ram); }
+    };
+    #define ALLOCA(type, var, size) Calloca alloca##var(size); type *var= (type*)(alloca##var.ram)
+  #else
+    #if defined( VISUALC ) || defined( BESTA_OS )
+      #define ALLOCA(type, var, size) type *var= (type*)alloca(size)
+    #else
+      #define ALLOCA(type, var, size) type var[size]
+    #endif
+  #endif
+#endif
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

@@ -4,34 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Savoir si on a un triangle isocéle : is_isosceles est_isocele</title>
+<title>Savoir si 1 objet géométrique est sur un objet graphique : is_element est_element</title>
 </head>
 <body >
 <a href="cascmd_fr1061.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1063.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1284" class="subsection">11.13.10  Savoir si on a un triangle isocéle : <span style="font-family:monospace">is_isosceles est_isocele</span></h3>
-<p><a id="hevea_default2063"></a><a id="hevea_default2064"></a><a id="sec:estisocele3"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr984.html#sec%3Aestisocele2">10.18.6</a> pour la géométrie plane.<br>
-<span style="font-family:monospace">est_isocele</span> est une fonction booléenne ayant comme 
-argument trois points ou un objet géométrique.<br>
-<span style="font-family:monospace">est_isocele</span> vaut 1 (resp 2, 3) si les trois points forment un 
-triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
-le sommet de l’angle portant les deux cotés égaux est désigné par le 
-premier (resp second, troisième) argument, ou vaut 4 si les trois points 
-forment un triangle équilatéral, ou si l’objet géométrique est un 
-triangle équilatéral, et vaut 0 sinon.<br>
+<h3 id="sec1290" class="subsection">11.13.1  Savoir si 1 objet géométrique est sur un objet graphique : <span style="font-family:monospace">is_element est_element</span></h3>
+<p><a id="hevea_default2066"></a><a id="hevea_default2067"></a><a id="sec:estelement3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr988.html#sec%3Aestelement2">10.18.1</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">est_element(a,A)</span> teste si l’objet géométrique <span style="font-family:monospace">a</span> est
+contenu dans l’objet géométrique <span style="font-family:monospace">A</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">est_isocele([2,0,0],[0,0,0],[0,2,0])</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">2</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">T:=triangle_isocele([0,0,0],[2,2,0],[2,2,2]); est_isocele(T)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">P:=plan([0,0,0],[1,2,-3],[1,1,-2])</span></div><div class="center"><span style="font-family:monospace">est_element(point(2,3,-5),P)</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">est_isocele([1,1,0],[-1,1,0],[-1,0,0])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">dd:=droite([2,3,-2],[-1,-1,-1])</span></div><div class="center"><span style="font-family:monospace">R:=plan([-1,-1,-1],[1,2,-3],[1,1,-2])</span></div><div class="center"><span style="font-family:monospace">est_element(dd,R)</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">0</span></div>
 <hr>

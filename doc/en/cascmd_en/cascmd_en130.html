@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
 <title>Functional derivative : function_diff</title>
@@ -11,14 +11,14 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en131.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec157" class="subsection">2.17.1��Functional derivative : <span style="font-family:monospace">function_diff</span></h3>
+<h3 id="sec157" class="subsection">2.17.1  Functional derivative : <span style="font-family:monospace">function_diff</span></h3>
 <p><a id="hevea_default251"></a>
 <span style="font-family:monospace">function_diff</span> takes a function as argument.<br>
 <span style="font-family:monospace">function_diff</span> returns the derivative function of this function.<br>
 Input :
 </p><div class="center"><span style="font-family:monospace">function_diff(sin)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(&#X2018; x&#X2018;)-&gt;cos(&#X2018; x&#X2018;)</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">(‘ x‘)-&gt;cos(‘ x‘)</span></div><p> 
 Input :
 </p><div class="center"><span style="font-family:monospace">function_diff(sin)(x)</span></div><p>
 Output :
@@ -26,12 +26,12 @@ Output :
 Input :
 </p><div class="center"><span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*cos(x)</span></div><div class="center"><span style="font-family:monospace">function_diff(f)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(&#X2018; x&#X2018;)-&gt;2*&#X2018; x&#X2018;+cos(&#X2018; x&#X2018;)+&#X2018; x&#X2018;*(-(sin(&#X2018; x&#X2018;)))</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">(‘ x‘)-&gt;2*‘ x‘+cos(‘ x‘)+‘ x‘*(-(sin(‘ x‘)))</span></div><p> 
 Input :
 </p><div class="center"><span style="font-family:monospace">function_diff(f)(x)</span></div><p>
 Output :
 </p><div class="center"><span style="font-family:monospace">cos(x)+x*(-(sin(x)))+2*x</span></div><p> 
-To define the function <span style="font-style:italic">g</span> as <span style="font-style:italic">f</span>&#X2032;, input :<br>
+To define the function <span style="font-style:italic">g</span> as <span style="font-style:italic">f</span>′, input :<br>
 </p><div class="center"><span style="font-family:monospace">g:=function_diff(f)</span></div><p>
 The <span style="font-family:monospace">function_diff</span> instruction has the same effect as
 using the expression derivative in conjunction with <span style="font-family:monospace">unapply</span> :

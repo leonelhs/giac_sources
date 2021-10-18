@@ -4,29 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Probabilité que X égale k lorsque X ∈ B(n,p) : binomial</title>
+<title>Pour initialiser les nombres aléatoires : srand randseed RandSeed</title>
 </head>
 <body >
 <a href="cascmd_fr755.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr757.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec928" class="subsection">8.4.1  Probabilité que <span style="font-style:italic">X</span> égale <span style="font-style:italic">k</span> lorsque <span style="font-style:italic">X</span> ∈ <span style="color:red"><span style="font-style:italic">B</span></span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>) : <span style="font-family:monospace">binomial</span></h3>
-<p><a id="hevea_default1363"></a>
-La probabilité pour que <span style="font-style:italic">X</span> égale <span style="font-style:italic">k</span> lorsque <span style="font-style:italic">X</span> ∈ <span style="color:red"><span style="font-style:italic">B</span></span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>) (<span style="font-style:italic">k</span> (0≤ <span style="font-style:italic">k</span> ≤ <span style="font-style:italic">n</span>) est nombre de succés lors de <span style="font-style:italic">n</span> tirages 
-indépendants (i.e.avec remise) de probabilité <span style="font-style:italic">p</span>) est égale à :<br>
-<span style="font-family:monospace">binomial(n,k,p)=comb(n,k)*p</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k*(1-p)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">(n-k)</span>.<br>
-Le troisième paramètre est égal par défaut à 1, on a donc 
-dans ce cas :<br>
-<span style="font-family:monospace">binomial(n,k)=comb(n,k)</span>.<br>
+<h3 id="sec928" class="subsection">8.3.1  Pour initialiser les nombres aléatoires : <span style="font-family:monospace">srand randseed RandSeed</span></h3>
+<p><a id="hevea_default1350"></a><a id="hevea_default1351"></a><a id="hevea_default1352"></a>
+<span style="font-family:monospace">srand</span> (ou <span style="font-family:monospace">randseed</span> ou <span style="font-family:monospace">RandSeed</span>) sert à 
+initialiser la suite des nommbres aléatoires que l’on obtient avec 
+<span style="font-family:monospace">rand()</span> ou avec <span style="font-family:monospace">randnorm()</span>.<br>
+<span style="font-family:monospace">RandSeed</span> a toujours un argument entier, alors que <span style="font-family:monospace">randseed</span> ou 
+<span style="font-family:monospace">srand</span> peut ne pas avoir d’arguments (dans ce cas le générateur 
+aléatoire est intialisé avec l’horloge du système).<br>
+Ainsi, <span style="font-family:monospace">srand(n)</span> (ou <span style="font-family:monospace">randseed(n)</span> ou <span style="font-family:monospace">RandSeed(n)</span>) avec <span style="font-family:monospace">n</span> 
+entier sert à initialiser la suite des nommbres aléatoires pour que l’on 
+puisse obtenir la même suite aléatoire avec <span style="font-family:monospace">rand()</span> ou avec 
+<span style="font-family:monospace">randnorm()</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">binomial(10,2,0.4)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">0.120932352</span></div><p>
+</p><div class="center"><span style="font-family:monospace">srand</span></div><p>
+On obtient par exemple :
+</p><div class="center"><span style="font-family:monospace">1054990506</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">binomial(4,2,0.5)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">srand(121054990506)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">0.375</span></div>
+</p><div class="center"><span style="font-family:monospace">121054990506</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">RandSeed(10549905061234)</span></div><p>
+On obtient par exemple :
+</p><div class="center"><span style="font-family:monospace">10549905061234</span></div>
 <hr>
 <a href="cascmd_fr755.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

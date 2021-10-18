@@ -4,28 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Savoir si 3 points sont alignés : is_collinear est_aligne</title>
+<title>Généralités</title>
 </head>
 <body >
 <a href="cascmd_fr979.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr981.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1186" class="subsection">10.18.2  Savoir si 3 points sont alignés : <span style="font-family:monospace">is_collinear est_aligne</span></h3>
-<p><a id="hevea_default1907"></a><a id="hevea_default1908"></a><a id="sec:estaligne2"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1058.html#sec%3Aestaligne3">11.13.6</a> pour la géométrie 3-d.<br>
-<span style="font-family:monospace">est_aligne</span> est une fonction booléenne ayant comme 
-argument une liste ou une séquence de points.<br>
- <span style="font-family:monospace">est_aligne</span> vaut 1 si les points sont 
-alignés, et vaut 0 sinon.<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">est_aligne(0,1+i,-1-i) </span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">est_aligne(i/100,1+i,-1-i) </span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">0</span></div>
+<h3 id="sec1191" class="subsection">10.17.1  Généralités</h3>
+<p>
+Les transformations ci-dessous :<br>
+<span style="font-family:monospace">translation, rotation, homothetie, similitude, symetrie</span>, 
+<span style="font-family:monospace">projection, inversion</span><br>
+peuvent toujours être considérées, soit 
+comme des fonctions (les arguments sont les paramètres servant à définir 
+la transformation), soit comme agissant sur le dernier argument (les premiers
+arguments sont les paramètres servant à définir la transformation et 
+l’objet géométrique à transformer est mis comme dernier paramètre).<br>
+L’objet géométrique à transformer peut être de tout type comme point, 
+droite, cercle, polygone, courbe paramètrèe, graphe de fonctions etc...
+Par exemple si <span style="font-family:monospace">P</span> est l’objet géométrique à transformer on peut 
+avoir :<br>
+<span style="font-family:monospace">P:=point(1+i)</span> ou <span style="font-family:monospace">P:=droite(x=1)</span> ou <span style="font-family:monospace">P:=plan(z=0)</span> ou<br>
+<span style="font-family:monospace">P:=cercle(point(1,1),1)</span> ou <span style="font-family:monospace">P:=plotfunc(x2-2)</span> etc...</p>
 <hr>
 <a href="cascmd_fr979.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

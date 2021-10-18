@@ -65,7 +65,7 @@ using namespace std;
 #endif
 
 
-#ifdef GIAC_HAS_STO_38
+#if 0 // def GIAC_HAS_STO_38
   TMillisecs PrimeGetNow();
 #endif
 
@@ -82,11 +82,16 @@ namespace giac {
 
   gen _zip(const gen & g,const context * contextptr){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
-    if (g.type!=_VECT || g._VECTptr->size()<3)
+    int s=-1;
+    if (g.type!=_VECT || (s=g._VECTptr->size())<2)
       return symbolic(at_zip,g);
     vecteur & v=*g._VECTptr;
-    int s=int(v.size());
     gen & f=v[0];
+    if (s==2){
+      if (f.type!=_VECT || v[1].type!=_VECT || f._VECTptr->size()!=v[1]._VECTptr->size())
+	return gendimerr(contextptr);
+      return _tran(g,contextptr);
+    }
     if (v[1].type!=_VECT || v[2].type!=_VECT)
       return f(gen(makevecteur(v[1],v[2]),_SEQ__VECT),contextptr);
     vecteur & w1=*v[1]._VECTptr;
@@ -689,9 +694,23 @@ namespace giac {
     }
     gen v((*args._VECTptr)[1]);
     gen f(args._VECTptr->front());
+    if (f.type==_STRNG && v.type==_STRNG){
+      // (Python-like) count occurences of v in f
+      int count=0,pos=-1,s=f._STRNGptr->size();
+      for (;pos<s;++count){
+	pos=f._STRNGptr->find(*v._STRNGptr,pos+1);
+	if (pos<0 || pos>=s)
+	  break;
+      }
+      return count;
+    }
     gen param;
     if (args._VECTptr->size()>2)
       param=(*args._VECTptr)[2];
+    else {
+      if (v.type!=_VECT) 
+	return _count_eq(makesequence(v,f),contextptr);
+    }
     return count(f,v,contextptr,param);
   }
   static const char _count_s []="count";

@@ -4,34 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Distributivité : expand fdistrib developper</title>
+<title>Pour forcer à évaluer une expression : unquote</title>
 </head>
 <body >
 <a href="cascmd_fr262.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr264.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec342" class="subsection">6.14.7  Distributivité : <span style="font-family:monospace">expand fdistrib developper</span></h3>
-<p><a id="hevea_default437"></a><a id="hevea_default438"></a><a id="hevea_default439"></a>
-Si on veut effectuer, sur une expression, la distributivité de la 
-multiplication par rapport à l’addition on utilise la fonction <span style="font-family:monospace">expand</span> 
-ou <span style="font-family:monospace">developper</span> ou <span style="font-family:monospace">fdistib</span>.<br>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">developper((x+1)*(x-2))</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">expand((x+1)*(x-2))</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">fdistrib((x+1)*(x-2))</span></div><p>
+<h3 id="sec342" class="subsection">6.14.6  Pour forcer à évaluer une expression : <span style="font-family:monospace">unquote</span></h3>
+<p><a id="hevea_default437"></a>
+Si on veut qu’une expression quotée soit évaluée dans un calcul, il faut
+utiliser la fonction <span style="font-family:monospace">unquote</span>.<br>
+Par exemple dans une affectation, la variable est quotée c’est à dire non
+évaluée.<br>
+ On peut forcer son évaluation pour cela on tape :
+</p><div class="center"><span style="font-family:monospace">purge(b);a:=b;unquote(a):=3</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-2</span></div><p> 
-<span style="font-weight:bold">Remarque</span> On peut aussi utiliser <span style="font-family:monospace">convert</span> avec l’option <span style="font-family:monospace">’+’</span>
-ou sa version infixée<span style="font-family:monospace">=&gt;</span> avec l’option <span style="font-family:monospace">+</span> :
-On tape :
-</p><div class="center"><span style="font-family:monospace">(x+1)*(x-2)=&gt;+</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">convert((x+1)*(x-2),’+’)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-2</span></div>
+</p><div class="center"><span style="font-family:monospace">a et b contiennent 3</span></div>
 <hr>
 <a href="cascmd_fr262.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

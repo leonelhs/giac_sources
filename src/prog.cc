@@ -2026,6 +2026,7 @@ namespace giac {
     int save_current_instruction=debug_ptr(newcontextptr)->current_instruction;
     int eval_lev=eval_level(newcontextptr);
     debug_struct * dbgptr=debug_ptr(newcontextptr);
+    int & dbgptr_current_instruction = dbgptr->current_instruction;
     gen testf;
 #ifndef NO_STDEXCEPT
     try {
@@ -2062,84 +2063,199 @@ namespace giac {
 	}
 	index_name=test._SYMBptr->feuille._VECTptr->front();
       }
-      for (equaltosto(initialisation,contextptr).eval(eval_lev,newcontextptr);
-	   for_in?set_for_in(counter,for_in,for_in_v,for_in_s,index_name,newcontextptr):for_test(test,testf,eval_lev,newcontextptr);
-	   ++counter,((test.val && increment.type)?increment.eval(eval_lev,newcontextptr).val:0)){
-	if (interrupted || (testf.type!=_INT_ && is_undef(testf)))
-	  break;
-	dbgptr->current_instruction=save_current_instruction;
-	findlabel=false;
-	// add a test for boucle of type program/composite
-	// if that's the case call eval with test for break and continue
-	for (it=itbeg;!interrupted && it!=itend;++it){
+      // check if we have a standard for loop
+      bool stdloop=(itend-it)<5 && contextptr && !for_in && is_inequation(test) && test._SYMBptr->feuille.type==_VECT && test._SYMBptr->feuille._VECTptr->size()==2 && !dbgptr->debug_mode;
+      stdloop = stdloop && increment.type==_SYMB && (increment._SYMBptr->sommet==at_increment || increment._SYMBptr->sommet==at_decrement);
+      gen index,stopg;
+      int *idx=0,step,stop;
+      if (stdloop){
+	index=increment._SYMBptr->feuille;
+	if (index.type==_VECT) index=index._VECTptr->front();
+	stdloop=index==test._SYMBptr->feuille._VECTptr->front();
+      }
+      // loop initialisation
+      equaltosto(initialisation,contextptr).eval(eval_lev,newcontextptr);
+      if (stdloop){
+	stopg=test._SYMBptr->feuille._VECTptr->back();
+	gen stopindex=eval(stopg,1,contextptr);
+	is_integral(stopindex);
+	stop=stopindex.val;
+	gen incrementstep=increment._SYMBptr->feuille;
+	incrementstep=incrementstep.type==_VECT?incrementstep._VECTptr->back():1;
+	is_integral(incrementstep);
+	step=incrementstep.val;
+	if (increment._SYMBptr->sommet==at_decrement) 
+	  step=-step;
+	stdloop=index.type==_IDNT && incrementstep.type==_INT_ && stopindex.type==_INT_;
+      }
+      if (stdloop){
+	sym_tab::iterator it=contextptr->tabptr->find(index._IDNTptr->id_name),itend=contextptr->tabptr->end();
+	// compute idx
+	if (it!=itend && it->second.type==_INT_ 
+     	    && (stop-it->second.val)/step>50){
+	  idx=&it->second.val;
+	  // adjust stop for a loop with condition *idx!=stop
+	  int niter=-1;
+	  unary_function_ptr & u=test._SYMBptr->sommet;
+	  if (u==at_inferieur_strict) {
+	    if (*idx>=stop)
+	      niter=0;
+	    else
+	      niter=step<0?-1:(stop+step-1-*idx)/step;
+	  }
+	  if (u==at_superieur_strict){
+	    if (*idx<=stop)
+	      niter=0;
+	    else
+	      niter=step>0?-1:(*idx-stop-step-1)/(-step);
+	  }
+	  if (u==at_inferieur_egal){
+	    if (*idx>stop)
+	      niter=0;
+	    else
+	      niter=step<0?-1:(stop+step-*idx)/step;
+	  }
+	  if (u==at_superieur_egal){
+	    if (*idx<stop)
+	      niter=0;
+	    else
+	      niter=step>0?-1:(*idx-stop-step)/(-step);
+	  }
+	  if (niter<0){
+	    if (bound)
+	      leave(protect,loop_var,newcontextptr);
+	    return gensizeerr("Infinite number of iterations");
+	  }
+	  stop=*idx+niter*step;
+	  // check that index and stopg are not modified inside the loop
+	  vecteur v=mergevecteur(lop(forprog,at_sto),lop(forprog,at_array_sto));
+	  for (int i=0;i<int(v.size());++i){
+	    gen to=v[i]._SYMBptr->feuille[1];
+	    if (to==index || to==stopg){
+	      idx=0;
+	      break;
+	    }
+	  }
+	  v=mergevecteur(lop(forprog,at_increment),lop(forprog,at_decrement));
+	  for (int i=0;i<int(v.size());++i){
+	    gen to=v[i]._SYMBptr->feuille;
+	    if (to.type==_VECT) to=to._VECTptr->front();
+	    if (to==index || to==stopg){
+	      idx=0;
+	      break;
+	    }
+	  }
+	}
+      }
+      bool oneiter=idx && (itend-itbeg==1) && !dbgptr->debug_mode;
+      if (oneiter){
+	for (;!interrupted && *idx!=stop;*idx+=step){
 #ifdef SMARTPTR64
 	  swapgen(oldres,res);
 #else
 	  oldres=res;
 #endif
-	  ++dbgptr->current_instruction;
-	  if (dbgptr->debug_mode){
-	    debug_loop(res,newcontextptr);
-	    if (is_undef(res)){
+	  if (!itbeg->in_eval(eval_lev,res,newcontextptr))
+	    res=*itbeg;
+	  if (res.type!=_SYMB) 
+	    continue;
+	  if (is_return(res,newres)) {
+	    if (bound)
+	      leave(protect,loop_var,newcontextptr);
+	    return res;
+	  }
+	  unary_function_ptr & u=res._SYMBptr->sommet;
+	  if (u==at_break){
+	    test=zero;
+	    res=u; // res=oldres;
+	    break;
+	  }
+	  if (u==at_continue){
+	    res=oldres;
+	    break;
+	  }
+	}
+      }
+      else {
+	for (;
+	     idx?*idx!=stop:(for_in?set_for_in(counter,for_in,for_in_v,for_in_s,index_name,newcontextptr):for_test(test,testf,eval_lev,newcontextptr));
+	     ++counter,idx?*idx+=step:((test.val && increment.type)?increment.eval(eval_lev,newcontextptr).val:0)){
+	  if (interrupted || (testf.type!=_INT_ && is_undef(testf)))
+	    break;
+	  dbgptr_current_instruction=save_current_instruction;
+	  findlabel=false;
+	  // add a test for boucle of type program/composite
+	  // if that's the case call eval with test for break and continue
+	  for (it=itbeg;!interrupted && it!=itend;++it){
+#ifdef SMARTPTR64
+	    swapgen(oldres,res);
+#else
+	    oldres=res;
+#endif
+	    ++dbgptr_current_instruction;
+	    if (dbgptr->debug_mode){
+	      debug_loop(res,newcontextptr);
+	      if (is_undef(res)){
+		increment_instruction(it+1,itend,newcontextptr);
+		if (bound)
+		  leave(protect,loop_var,newcontextptr);
+		return res;
+	      }
+	    }
+	    if (!findlabel){
+	      // res=it->eval(eval_lev,newcontextptr);
+	      if (!it->in_eval(eval_lev,res,newcontextptr))
+		res=*it;
+	      if (res.type<=_POLY) 
+		continue;
+	    }
+	    else {
+#ifdef TIMEOUT
+	      control_c();
+#endif
+	      if (ctrl_c || interrupted || (res.type==_STRNG && res.subtype==-1)){
+		interrupted = true; ctrl_c=false;
+		*logptr(contextptr) << "Stopped in loop" << endl;
+		gensizeerr(gettext("Stopped by user interruption."),res);
+		break;
+	      }
+	      res=*it;
+	    }
+	    if (is_return(res,newres)) {
 	      increment_instruction(it+1,itend,newcontextptr);
 	      if (bound)
 		leave(protect,loop_var,newcontextptr);
 	      return res;
 	    }
-	  }
-	  if (!findlabel){
-	    // res=it->eval(eval_lev,newcontextptr);
-	    if (!it->in_eval(eval_lev,res,newcontextptr))
-	      res=*it;
-	    if (res.type<=_POLY) 
-	      continue;
-	  }
-	  else {
-#ifdef TIMEOUT
-	    control_c();
-#endif
-	    if (ctrl_c || interrupted || (res.type==_STRNG && res.subtype==-1)){
-	      interrupted = true; ctrl_c=false;
-	      *logptr(contextptr) << "Stopped in loop" << endl;
-	      gensizeerr(gettext("Stopped by user interruption."),res);
-	      break;
-	    }
-	    res=*it;
-	  }
-	  if (is_return(res,newres)) {
-	    increment_instruction(it+1,itend,newcontextptr);
-	    if (bound)
-	      leave(protect,loop_var,newcontextptr);
-	    return res;
-	  }
-	  if (res.type==_SYMB){
-	    unary_function_ptr & u=res._SYMBptr->sommet;
-	    if (!findlabel){ 
-	      if (u==at_break){
-		increment_instruction(it+1,itend,newcontextptr);
-		test=zero;
-		res=u; // res=oldres;
-		break;
+	    if (res.type==_SYMB){
+	      unary_function_ptr & u=res._SYMBptr->sommet;
+	      if (!findlabel){ 
+		if (u==at_break){
+		  increment_instruction(it+1,itend,newcontextptr);
+		  test=zero;
+		  res=u; // res=oldres;
+		  break;
+		}
+		if (u==at_continue){
+		  increment_instruction(it+1,itend,newcontextptr);
+		  res=oldres;
+		  break;
+		}
 	      }
-	      if (u==at_continue){
-		increment_instruction(it+1,itend,newcontextptr);
-		res=oldres;
-		break;
+	      else {
+		if (u==at_label && label==res._SYMBptr->feuille)
+		  findlabel=false;
 	      }
-	    }
-	    else {
-	      if (u==at_label && label==res._SYMBptr->feuille)
-		findlabel=false;
-	    }
-	    if (!findlabel && u==at_goto){
-	      findlabel=true;
-	      label=res._SYMBptr->feuille;
-	    }
-	  } // end res.type==_SYMB
-	  if (findlabel && it+1==itend)
-	    it=itbeg-1;
-	} // end of loop of FOR bloc instructions
-      } // end of user FOR loop
+	      if (!findlabel && u==at_goto){
+		findlabel=true;
+		label=res._SYMBptr->feuille;
+	      }
+	    } // end res.type==_SYMB
+	    if (findlabel && it+1==itend)
+	      it=itbeg-1;
+	  } // end of loop of FOR bloc instructions
+	} // end of user FOR loop
+      } // end else one iteration
       dbgptr->current_instruction=save_current_instruction;
       increment_instruction(itbeg,itend,newcontextptr);
 #ifndef NO_STDEXCEPT
@@ -3081,6 +3197,10 @@ namespace giac {
   static define_unary_function_eval (__concat,&_concat,_concat_s);
   define_unary_function_ptr5( at_concat ,alias_at_concat,&__concat,0,true);
 
+  static const char _extend_s []="extend";
+  static define_unary_function_eval (__extend,&_concat,_extend_s);
+  define_unary_function_ptr5( at_extend ,alias_at_extend,&__extend,0,true);
+
   static gen symb_option(const gen & args){
     return symbolic(at_option,args);
   }
@@ -3448,7 +3568,7 @@ namespace giac {
   define_unary_function_ptr5( at_randint ,alias_at_randint,&__randint,0,true);
 
   gen _choice(const gen & args,GIAC_CONTEXT){
-    if (args.type!=_VECT || args._VECTptr->empty())
+    if (args.type!=_VECT || args.subtype==_SEQ__VECT || args._VECTptr->empty())
       return gensizeerr(contextptr);
     int n=int(args._VECTptr->size());
     gen g=_rand(n,contextptr);
@@ -3460,7 +3580,10 @@ namespace giac {
   static define_unary_function_eval (__choice,&_choice,_choice_s);
   define_unary_function_ptr5( at_choice ,alias_at_choice,&__choice,0,true);
 
-  gen _shuffle(const gen & args,GIAC_CONTEXT){
+  gen _shuffle(const gen & a,GIAC_CONTEXT){
+    gen args(a);
+    if (is_integral(args))
+      return _randperm(args,contextptr);
     if (args.type!=_VECT || args._VECTptr->empty())
       return gensizeerr(contextptr);
     vecteur v(*args._VECTptr);
@@ -3727,6 +3850,9 @@ namespace giac {
     }
     if (to_apply.type!=_FUNC)
       n=n2-1;
+    int nargs=1;
+    if (to_apply.is_symb_of_sommet(at_program) && to_apply._SYMBptr->feuille[0].type==_VECT)
+      nargs=to_apply._SYMBptr->feuille[0]._VECTptr->size();
     if (n && (n2==n+1) ){
       vecteur res;
       for (int i=0;;++i){
@@ -3747,8 +3873,12 @@ namespace giac {
 	}
 	if (finished)
 	  break;
-	if (n==1)
-	  res.push_back(to_apply(tmp.front(),contextptr));
+	if (n==1){
+	  gen tmp1=tmp.front();
+	  if (nargs>1 && tmp1.type==_VECT) // for apply((j,k)->j*k,matrix 2 cols)
+	    tmp1.subtype=_SEQ__VECT;
+	  res.push_back(to_apply(tmp1,contextptr));
+	}
 	else
 	  res.push_back(to_apply(tmp,contextptr));
       }
@@ -4992,6 +5122,20 @@ namespace giac {
     gen a,b,c;
     if (!check_binary(args,a,b))
       return a;
+    if (b==at_revlist || b==at_reverse || b==at_sort || b==at_append || b==at_prepend || b==at_concat || b==at_extend || b==at_rotate || b==at_shift || b==at_suppress)
+      return symbolic(at_struct_dot,args);
+    if (b.type==_SYMB){
+      unary_function_ptr c=b._SYMBptr->sommet;
+      if (c==at_revlist || c==at_reverse || c==at_sort || c==at_append || c==at_prepend || c==at_concat || c==at_extend || c==at_rotate || c==at_shift || c==at_suppress){
+	gen d=eval(a,eval_level(contextptr),contextptr);
+	if (b._SYMBptr->feuille.type==_VECT && b._SYMBptr->feuille.subtype==_SEQ__VECT && b._SYMBptr->feuille._VECTptr->empty())
+	  ;
+	else
+	  d=makesuite(d,b._SYMBptr->feuille);
+	d=c(d,contextptr);
+	return sto(d,a,contextptr);
+      }
+    }
     if (storcl_38 && abs_calc_mode(contextptr)==38 && a.type==_IDNT){
       gen value;
       if (storcl_38(value,a._IDNTptr->id_name,b.type==_IDNT?b._IDNTptr->id_name:b.print().c_str(),undef,false,contextptr,NULL,false)){
@@ -5547,7 +5691,7 @@ namespace giac {
 
   void set_decimal_digits(int n,GIAC_CONTEXT){
 #ifdef GNUWINCE
-    return undef;
+    return ;
 #else
 #ifdef HAVE_LIBMPFR
     decimal_digits(contextptr)=giacmax(absint(n),1);
@@ -6771,7 +6915,7 @@ namespace giac {
     if (!inf)
       return undef;
 #if defined( VISUALC ) || defined( BESTA_OS )
-    char * thebuf = ( char * )alloca( BUFFER_SIZE );
+    ALLOCA(char, thebuf, BUFFER_SIZE );// char * thebuf = ( char * )alloca( BUFFER_SIZE );
 #else
     char thebuf[BUFFER_SIZE];
 #endif
@@ -6972,7 +7116,13 @@ namespace giac {
 	    g=g._SYMBptr->feuille[1];
 	  while (g.type==_VECT && !g._VECTptr->empty())
 	    g=g._VECTptr->front();
-	  argss += ")\nBegins by: "+g.print(contextptr);
+	  argss += ")\n";
+	  if (g.type==_STRNG)
+	    argss += *g._STRNGptr;
+	  else {
+	    argss += "Begins by: ";
+	    argss +=g.print(contextptr);
+	  }
 	  return string2gen(argss,false);
 	}
       }
@@ -9315,6 +9465,10 @@ namespace giac {
     if (is_undef(v)) return v;
     gen res1=v[0];
     int s=int(v.size());
+    for (;s>0;--s){
+      if (!is_zero(v[s-1]))
+	break;
+    }
     if (s>5)
       return g;
     for (int i=s;i<5;++i)
@@ -9930,7 +10084,7 @@ namespace giac {
       f=symbolic(u,f);
     }
     f=eval(f,eval_level(contextptr),contextptr);
-    if (u==at_revlist || u==at_reverse || u==at_sort || u==at_append || u==at_prepend || u==at_concat || u==at_rotate || u==at_shift || u==at_suppress)
+    if (u==at_revlist || u==at_reverse || u==at_sort || u==at_append || u==at_prepend || u==at_concat || u==at_extend || u==at_rotate || u==at_shift || u==at_suppress)
       return sto(f,a,contextptr);
     return f;
   }
@@ -9951,6 +10105,18 @@ namespace giac {
   static const char _giac_assert_s []="assert";
   static define_unary_function_eval (__giac_assert,&_giac_assert,_giac_assert_s);
   define_unary_function_ptr5( at_giac_assert ,alias_at_giac_assert,&__giac_assert,_QUOTE_ARGUMENTS,true);
+
+  gen _index(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_VECT || args._VECTptr->size()!=2)
+      return gensizeerr(contextptr);
+    gen l=_find(makesequence(args._VECTptr->back(),args._VECTptr->front()),contextptr);
+    if (l.type!=_VECT || l._VECTptr->empty())
+      return gensizeerr(contextptr);
+    return l._VECTptr->front();
+  }
+  static const char _index_s []="index";
+  static define_unary_function_eval (__index,&_index,_index_s);
+  define_unary_function_ptr5( at_index ,alias_at_index,&__index,0,true);
 
 
 #ifndef NO_NAMESPACE_GIAC

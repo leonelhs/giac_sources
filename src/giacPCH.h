@@ -30,7 +30,6 @@ using namespace std;
 #include <map>
 #include <errno.h>
 #include "gen.h"
-#include "static_extern.h"
 #include "identificateur.h"
 #include "symbolic.h"
 #include "poly.h"
@@ -81,3 +80,4 @@ using namespace std;
 #include "symbolic.h"
 //#include "threaded.h"
 #include "vecteur.h"
+#include "static_extern.h"

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
 <title>Factorization : collect</title>
@@ -11,18 +11,18 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en193.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec235" class="subsection">2.24.12��Factorization : <span style="font-family:monospace">collect</span></h3>
+<h3 id="sec235" class="subsection">2.24.12  Factorization : <span style="font-family:monospace">collect</span></h3>
 <p><a id="hevea_default368"></a>
 <span style="font-family:monospace">collect</span> takes as argument a polynomial or a list of 
 polynomials and optionally an algebraic extension like <span style="font-family:monospace">sqrt(n)</span>
-(for &#X221A;<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>).<br>
+(for √<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>).<br>
 <span style="font-family:monospace">collect</span> factorizes the polynomial (or the polynomials in the
-list) on the field of its coefficient (for example &#X211A;)
+list) on the field of its coefficient (for example ℚ)
 or on the smallest extension containing the optional second argument (e.g.
-&#X211A;[&#X221A;<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>]). In complex mode, the field is complexified.<br>
+ℚ[√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>]). In complex mode, the field is complexified.<br>
 <span style="font-weight:bold">Examples</span> :
 </p><ul class="itemize"><li class="li-itemize">
-Factorize <span style="font-style:italic">x</span><sup>2</sup>&#X2212;4 over the integers,
+Factorize <span style="font-style:italic">x</span><sup>2</sup>−4 over the integers,
 input :
 <div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-4)</span></div>
 Output in real mode :
@@ -33,7 +33,7 @@ Output in real mode :
 <div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4</span></div>
 Output in complex mode :
 <div class="center"><span style="font-family:monospace">(x+2*i)*(x-2*i)</span></div>
-</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>&#X2212;2 over the integers, input :
+</li><li class="li-itemize">Factorize <span style="font-style:italic">x</span><sup>2</sup>−2 over the integers, input :
 <div class="center"><span style="font-family:monospace">collect(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2)</span></div>
 Output in real mode :
 <div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div>
@@ -42,7 +42,7 @@ But if you input :
 Output :
 <div class="center"><span style="font-family:monospace">sqrt(2)*(x-sqrt(2))*(x+sqrt(2))</span></div>
 </li><li class="li-itemize">Factorize over the integers : 
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>&#X2212;2<span style="font-style:italic">x</span><sup>2</sup>+1� and �<span style="font-style:italic">x</span><sup>2</sup>&#X2212;<span style="font-style:italic">x</span></td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>−2<span style="font-style:italic">x</span><sup>2</sup>+1  and  <span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span></td></tr>
 </table>
 Input :
 <div class="center"><span style="font-family:monospace">collect([x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x])</span></div>

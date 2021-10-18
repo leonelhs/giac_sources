@@ -4,30 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Dessiner un diagramme en camembert : camembert</title>
+<title>Les déciles : quantile</title>
 </head>
 <body >
 <a href="cascmd_fr725.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr727.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec891" class="subsection">8.1.17  Dessiner un diagramme en camembert : <span style="font-family:monospace">camembert</span></h3>
-<p><a id="hevea_default1306"></a>
-<span style="font-family:monospace">camembert</span> permet de dessiner un diagramme en camembert d’une série 
-statistique à 1 variable.<br>
-<span style="font-family:monospace">camembert</span> a comme argument une matrice à 2 colonnes
-contenant en 1ère colonne les noms et en 2ème colonne les valeurs.<br>
+<h3 id="sec896" class="subsection">8.1.9  Les déciles : <span style="font-family:monospace">quantile</span></h3>
+<p><a id="hevea_default1302"></a>
+<span style="font-family:monospace">quantile(L,p)</span> où <span style="font-family:monospace">L</span> est la série statistique et <span style="font-family:monospace">p</span> un 
+réel de [0,1[, indique la valeur du caractère à partir de laquelle 
+la fréquence cumulée de <span style="font-family:monospace">L</span> atteint ou dépasse <span style="font-family:monospace">p</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">camembert([["France",6],["Allemagne",12],["Suisse",5]])</span></div><p>
-La fenêtre graphique s’ouvre automatiquement et on obtient le dessin d’un 
-camembert coupé selon 3 parts colorées avec comme légende :<br>
-</p><div class="center"><span style="font-family:monospace">France 26,09% , Allemagne 52.17% , Suisse 21.74% </span>
-</div><p>
-On peut faire plusieurs camemberts sur le même graphique.<br>
-On tape : 
-</p><div class="center"><span style="font-family:monospace">camembert([[2,"xyz","abc"],["A",2,5],["B",5,6],["C",7,7]])</span></div><p>
-On obtient :
-</p><div class="center"><img src="cascmd_fr010.png"></div>
+</p><div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4,5,6,7,8,9,10,11]</span></div><div class="center"><span style="font-family:monospace">quantile(A,0.1)</span></div><p>
+On obtient le premier décile :
+</p><div class="center"><span style="font-family:monospace">1.0</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quantile(A,0.25)</span></div><p>
+On obtient le premier quartile :
+</p><div class="center"><span style="font-family:monospace">2.0</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quantile(A,0.5)</span></div><p>
+On obtient la médiane :
+</p><div class="center"><span style="font-family:monospace">5.0</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quantile(A,0.75)</span></div><p>
+On obtient le troisième quartile :
+</p><div class="center"><span style="font-family:monospace">8.0</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quantile(A,0.9)</span></div><p>
+On obtient le neuvième décile :
+</p><div class="center"><span style="font-family:monospace">10.0</span></div><p>
+<span style="font-family:monospace">quantile(l1,l2,p)</span> calcule le quantile spécifié par le dernier 
+argument des éléments de la liste <span style="font-family:monospace">l1</span> pondérée par la liste 
+<span style="font-family:monospace">l2</span>.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quantile(A,A,0.25)</span></div><p>
+On obtient le premier quartile de la liste <span style="font-family:monospace">A</span> pondérée par <span style="font-family:monospace">A</span> :
+</p><div class="center"><span style="font-family:monospace">6</span></div>
 <hr>
 <a href="cascmd_fr725.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

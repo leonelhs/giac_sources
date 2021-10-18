@@ -4,42 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Résoudre un système linéaire par la méthode itérative de
-Gauss-Seidel : gauss_seidel_linsolve</title>
+<title>Résoudre des équations dans ℂ : resoudre_dans_C csolve cSolve </title>
 </head>
 <body >
 <a href="cascmd_fr688.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr690.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec838" class="subsection">6.62.8  Résoudre un système linéaire par la méthode itérative de
-Gauss-Seidel : <span style="font-family:monospace">gauss_seidel_linsolve</span></h3>
-<p>
-<a id="hevea_default1249"></a>
-<span style="font-family:monospace">gauss_seidel_linsolve</span> a comme paramètres :<br>
-la valeur de omega (par défaut omega=1),<br>
-la matrice du système <span style="font-style:italic">A</span>,<br>
-le second membre <span style="font-style:italic">b</span> sous la forme d’une liste,<br>
-la tolérance <span style="font-style:italic">eps</span> et<br>
-le nombre maximum d’itération <span style="font-style:italic">maxiter</span>.<br>
-<span style="font-family:monospace">gauss_seidel_linsolve</span> permet de résoudre un système d’équations 
-linéaires de matrice <span style="font-style:italic">A</span> et de second membre <span style="font-style:italic">b</span>, par la méthode itérative
-de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de 
-<span style="font-style:italic">eps</span> et un nombre maximal d’itérations de <span style="font-style:italic">maxiter</span>. <br>
-<span style="font-family:monospace">gauss_seidel_linsolve</span> renvoie une liste qui est solution du système 
-d’équations.<br>
+<h3 id="sec843" class="subsection">6.62.7  Résoudre des équations dans ℂ : <span style="font-family:monospace">resoudre_dans_C csolve cSolve </span></h3>
+<p><a id="hevea_default1245"></a><a id="hevea_default1246"></a><a id="hevea_default1247"></a>
+<span style="font-family:monospace">csolve</span> ou <span style="font-family:monospace">cSolve</span> ou <span style="font-family:monospace">resoudre_dans_C</span> résout une 
+équation ou un système d’équations 
+polynômiales dans ℂ sans avoir besoin d’être en mode complexe.
+</p><ul class="itemize"><li class="li-itemize">
+Résolution d’une équation<br>
+<span style="font-family:monospace">cSolve</span> a comme arguments une équation entre deux 
+expressions ou une expression (<span style="font-family:monospace">=0</span> est alors sous-entendu), 
+et le nom d’une variable (par défaut <span style="font-family:monospace">x</span>).<br>
+<span style="font-family:monospace">cSolve</span> résout cette équation dans ℂ sans avoir besoin 
+d’être en mode complexe.
+</li><li class="li-itemize">Résolution d’un système d’équations polynômiales<br>
+<span style="font-family:monospace">cSolve</span> a comme arguments deux vecteurs : le vecteur des équations du
+système et le vecteur du nom des variables. <br>
+<span style="font-family:monospace">cSolve</span> résout ce système d’équations polynômiales dans 
+<span style="color:red"><span style="font-style:italic">C</span></span> sans avoir besoin d’être en mode complexe.
+</li></ul><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=[[100,2],[2,100]];</span></div><div class="center"><span style="font-family:monospace">gauss_seidel_linsolve(A,[0,1],1e-12);</span></div><p>
+</p><div class="center"><span style="font-family:monospace">cSolve(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-1=3)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[-0.0002000800320128,0.01000400160064]</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">[sqrt(2),-(sqrt(2)),(i)*sqrt(2),-((i)*sqrt(2))]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=[[100,2],[2,100]];</span></div><div class="center"><span style="font-family:monospace">gauss_seidel_linsolve(1.5,A,[0,1],1e-12);</span></div><p>
+</p><div class="center"><span style="font-family:monospace">cSolve([-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y=2,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y],[x,y])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[-0.00020008003221835,0.010004001600635]</span></div><p> 
-Si on tape :
-</p><div class="center"><span style="font-family:monospace">evalf(linsolve(A,[0.1]))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[i,1],[-i,1]]</span></div><p>
+On tape en mode complexe ou réel:
+</p><div class="center"><span style="font-family:monospace">csolve(re(r*exp(-(i)*t))-1,r) </span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[-0.000200080032013,0.0100040016006]</span></div>
+</p><div class="center"><span style="font-family:monospace">[‘ x‘+(i)*1/(sin(t))*(-‘ x‘*cos(t)+1)]</span></div><p>
+car avec <span style="font-family:monospace">csolve</span>, l’inconnue <span style="font-family:monospace">r</span> est toujours considérée comme un 
+nombre complexe.)</p>
 <hr>
 <a href="cascmd_fr688.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

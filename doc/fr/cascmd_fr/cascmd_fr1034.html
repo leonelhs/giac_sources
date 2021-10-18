@@ -4,56 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Le rectangle dans l’espace : rectangle</title>
+<title>Le plan tangent : tangent</title>
 </head>
 <body >
 <a href="cascmd_fr1033.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1035.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1251" class="subsection">11.8.3  Le rectangle dans l’espace : <span style="font-family:monospace">rectangle</span></h3>
-<p><a id="hevea_default2011"></a><a id="sec:rectangle3"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr926.html#sec%3Arectangle2">10.11.4</a> pour la géométrie plane.<br>
-<span style="font-family:monospace">rectangle</span>, en géométrie 3-d, peut avoir de trois à cinq 
-arguments.<br>
-Les arguments sont :<br>
-- si il a trois arguments ce sont : 2 points (les 2 sommets du rectangle) et 
-le troisième argument est soit un point <span style="font-style:italic">P</span> soit la
-liste formée par un point <span style="font-style:italic">P</span> et un nombre réel <span style="font-style:italic">k</span> non nul.<br>
-Le point <span style="font-style:italic">P</span> définit le plan du rectangle et l’orientation de ce plan.<br>
-<span style="font-family:monospace">rectangle(A,B,P)</span> renvoie et trace dans le plan <span style="font-style:italic">ABP</span>, le rectangle 
-<span style="font-style:italic">ABCD</span> tel que :<br>
-<span style="font-style:italic">AD</span>=<span style="font-style:italic">AP</span> et (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AD</span>)=π/2, 
-mais sans définir les points <span style="font-style:italic">C</span> et <span style="font-style:italic">D</span>.<br>
+<h3 id="sec1255" class="subsection">11.6.3  Le plan tangent : <span style="font-family:monospace">tangent</span></h3>
+<p><a id="hevea_default2018"></a><a id="sec:tangent3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr921.html#sec%3Atangent">10.9.9</a> pour la géométrie plane et <a href="cascmd_fr094.html#sec%3Atangente">3.10.5</a> pour les tangentes à un graphe.<br>
+<span style="font-family:monospace">tangent</span> a comme argument un objet géométrique <span style="font-family:monospace">G</span> et 
+un point <span style="font-family:monospace">A</span> de <span style="font-family:monospace">G</span>.<br>
+<span style="font-family:monospace">tangent</span> dessine le plan tangent à <span style="font-family:monospace">G</span> passant par <span style="font-family:monospace">A</span>.<br>
+Lorsque <span style="font-family:monospace">G</span> est un graphe, <span style="font-family:monospace">A</span> peut être soit un point de <span style="font-family:monospace">G</span>,
+soit la liste des coordonnées du projeté sur x0y du point de 
+contact.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div><div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div><div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">S:=sphere([0,0,0],3)</span></div><p>
 Puis on tape :
-</p><div class="center"><span style="font-family:monospace">rectangle(A,B,P)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">tangent(S,[2,2,1])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le rectangle de sommets </span></div><p><span style="font-family:monospace">rectangle(A,B,[P,k])</span> renvoie et trace dans le plan <span style="font-style:italic">ABP</span>, le rectangle 
-<span style="font-style:italic">ABCD</span> tel que :<br>
-<span style="font-style:italic">AD</span>=|<span style="font-style:italic">k</span>|*<span style="font-style:italic">AB</span> et (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AD</span>)=(<span style="font-style:italic">k</span>/|<span style="font-style:italic">k</span>|)*π/2, 
-mais sans définir les points <span style="font-style:italic">C</span> et <span style="font-style:italic">D</span>.<br>
+</p><div class="center"><span style="font-family:monospace">Le plan tangent à la surface sphère S au point [2,2,1]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(0,0,0)</span></div><div class="center"><span style="font-family:monospace">B:=point(3,3,3)</span></div><div class="center"><span style="font-family:monospace">P:=point(0,0,3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">G:=plotfunc(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x,y])</span></div><p>
 Puis on tape :
-</p><div class="center"><span style="font-family:monospace">rectangle(A,B,[P,1/2])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">tangent(G,[2,2])</span></div><p>
+Ou on tape car [2,2] est le projeté du point [2,2,8] qui se trouve sur le 
+graphe <span style="font-style:italic">z</span>=<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">y</span><sup>2</sup> (8=2<sup>2</sup>+2<sup>2</sup>) :
+</p><div class="center"><span style="font-family:monospace">tangent(G,point([2,2,8]))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le rectangle de sommets </span></div><p>
-- si il a cinq arguments, les 2 derniers paramètres sont les noms de deux 
-variables qui serviront à définir les 2 derniers sommets.<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">rectangle(A,B,P,C,D)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">Le rectangle de sommets </span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(C))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[(-sqrt(6)+6)/2,(-sqrt(6)+6)/2,sqrt(6)+3]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">simplify(coordonnees(D))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[(-(sqrt(6)))/2,(-(sqrt(6)))/2,sqrt(6)]</span></div>
+</p><div class="center"><span style="font-family:monospace">Le plan tangent à la surface </span><span style="font-style:italic">z</span>=<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">y</span><sup>2</sup><span style="font-family:monospace"> au point [2,2,8]</span></div>
 <hr>
 <a href="cascmd_fr1033.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

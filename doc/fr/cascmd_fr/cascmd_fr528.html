@@ -4,40 +4,75 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Supprimer des éléments d’une liste : remove</title>
+<title>Trier une liste selon l’ordre décroissant : SortD sortd</title>
 </head>
 <body >
 <a href="cascmd_fr527.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr529.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec655" class="subsection">6.42.26  Supprimer des éléments d’une liste : <span style="font-family:monospace">remove</span></h3>
-<p><a id="hevea_default935"></a>
-<span style="font-family:monospace">remove</span> a deux paramètres : une fonction booléenne <span style="font-family:monospace">f</span> et
-une liste <span style="font-family:monospace">L</span>.<br>
-<span style="font-family:monospace">remove</span> enlève les éléments <span style="font-family:monospace">c</span> de la liste <span style="font-family:monospace">L</span>, qui
-vérifie <span style="font-family:monospace">f(c)=true</span>.<br>
+<h3 id="sec655" class="subsection">6.42.25  Trier une liste selon l’ordre décroissant : <span style="font-family:monospace">SortD sortd</span></h3>
+<p><a id="hevea_default935"></a><a id="hevea_default936"></a>
+<span style="font-weight:bold">Attention</span> et <span style="font-family:monospace">sortd</span> ne sont pas des synonymes :
+<span style="font-family:monospace">SortD</span> s’utilise avec la syntaxe TI i.e. sans avoir besoin de mettre des 
+parenthèses et modifie la valeur de l’argument alors que <span style="font-family:monospace">sortd</span> 
+s’utilise comme des fonctions normales de <span style="font-family:monospace">Xcas</span> (parenthèses 
+obligatoires et sans changer l’argument !).<br>
+<span style="font-weight:bold">Mais</span> <span style="font-family:monospace">L.sortd()</span> modifie la valeur de <span style="font-family:monospace">L</span> en la triant selon 
+l’ordre décroissant.<br>
+<span style="font-family:monospace">SortD</span> ou <span style="font-family:monospace">sortd</span> a comme argument une liste, 
+une séquence ou une matrice.<br>
+<span style="font-family:monospace">SortA</span> ou <span style="font-family:monospace">sorta</span> renvoie la liste ou la séquence triée selon 
+l’ordre décroissant.<br>
+Si l’argument est une matrice, <span style="font-family:monospace">SortD</span> ou <span style="font-family:monospace">sortd</span> trie la 1-ière 
+ligne de la matrice selon l’ordre décroissant, et reporte les manœuvres 
+de tri de la 1-ière ligne sur les autres lignes c’est à dire le tri 
+conserve les colonnes de la matrice.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">remove(x-&gt;(x&gt;=2),[0,1,2,3,4,5])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sortd([3,4,2])</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">SortD([3,4,2])</span></div><p>
+ou 
+</p><div class="center"><span style="font-family:monospace">SortD [3,4,2]</span></div><p>
+ou 
+</p><div class="center"><span style="font-family:monospace">SortD 3,4,2</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[0,1]</span></div><p>
-<span style="font-weight:bold">Remarque</span> Pour faire la même chose avec une chaine de catactère, 
-par exemple, enlever tous les "a" d’une chaine :<br>
+</p><div class="center"><span style="font-family:monospace">[4,3,2]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sortd([[3,4,2],[6,4,5]])</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">SortD([[3,4,2],[6,4,5]])</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">SortD [[3,4,2],[6,4,5]]</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">SortD [3,4,2],[6,4,5]</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">97</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[4,3,2],[4,6,5]]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">f(chn):={local l:=length(chn)-1;
-return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));}</span></div><p>
-Puis on tape :
-</p><div class="center"><span style="font-family:monospace">f("abracadabra")</span></div><p>
+</p><div class="center"><span style="font-family:monospace">A:=[[3,4,2],[6,4,5]]</span></div><div class="center"><span style="font-family:monospace">SortD(A)</span></div><p>
+On obtient la nouvelle valeur de <span style="font-family:monospace">A</span> :
+</p><div class="center"><span style="font-family:monospace">[[4,3,2],[4,6,5]]</span></div><p>
+et maintenant <span style="font-family:monospace">A</span> vaut <span style="font-family:monospace">[[4,3,2],[4,6,5]]</span><br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">A:=[[3,4,2],[6,4,5]]</span></div><div class="center"><span style="font-family:monospace">A:=sortd(A)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">A:=[[3,4,2],[6,4,5]]</span></div><div class="center"><span style="font-family:monospace">A.sortd()</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">["b","r","c","d","b","r"]</span></div><p>
-Puis on tape :
-</p><div class="center"><span style="font-family:monospace">char(ord(["b","r","c","d","b","r"]))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">"brcdbr"</span></div>
+</p><div class="center"><span style="font-family:monospace">[[4,3,2],[4,6,5]]</span></div><p>
+et maintenant <span style="font-family:monospace">A</span> vaut <span style="font-family:monospace">[[4,3,2],[4,6,5]]</span><br>
+<span style="font-weight:bold">Mais</span>, si on tape :
+</p><div class="center"><span style="font-family:monospace">A:=[[3,4,2],[6,4,5]]</span></div><div class="center"><span style="font-family:monospace">sortd(A)</span></div><p>
+On obtient la nouvelle valeur de <span style="font-family:monospace">A</span> :
+</p><div class="center"><span style="font-family:monospace">[[4,3,2],[4,6,5]]</span></div><p>
+et maintenant <span style="font-family:monospace">A</span> vaut toujours <span style="font-family:monospace">[[3,4,2],[6,4,5]]</span></p><p><span style="font-weight:bold">Attention</span>
+La syntaxe sans parenthèse peut vous jouer des tours !<br>
+Par exemple, on tape :<br>
+<span style="font-family:monospace">L1:=[1,3,2];L2:=[2,3,1];</span><br>
+<span style="font-family:monospace">SortD L1,SortD L2</span><br>
+On obtient la matrice !:
+<span style="font-family:monospace">[[3,2,1],[2,1,3]]</span><br>
+qui est le résultat de :<br>
+<span style="font-family:monospace">SortD(L1,SortD(L2))</span></p>
 <hr>
 <a href="cascmd_fr527.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

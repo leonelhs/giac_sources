@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
 <title>Continued fraction representation of a real : dfc</title>
@@ -11,7 +11,7 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en057.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec68" class="subsection">2.8.7��Continued fraction representation of a real : <span style="font-family:monospace">dfc</span></h3>
+<h3 id="sec68" class="subsection">2.8.7  Continued fraction representation of a real : <span style="font-family:monospace">dfc</span></h3>
 <p><a id="hevea_default105"></a><a id="sec:convertdfc"></a><a id="hevea_default106"></a>
 <span style="font-family:monospace">dfc</span> takes as argument a real or a rational or a
 floating point number <span style="font-family:monospace">a</span> and an integer <span style="font-family:monospace">n</span> 
@@ -22,12 +22,12 @@ the continued fraction representation which
 approximates <span style="font-family:monospace">a</span> or <span style="font-family:monospace">evalf(a)</span> with precision 
 <span style="font-family:monospace">epsilon</span>, by default <span style="font-family:monospace">epsilon</span> is the value of the <span style="font-family:monospace">epsilon</span> 
 defined in the <span style="font-family:monospace">cas</span> configuration with the menu 
-<span style="font-family:monospace">Cfg</span>&#X25B8;<span style="font-family:monospace">Cas Configuration</span>).<br>
+<span style="font-family:monospace">Cfg</span>▸<span style="font-family:monospace">Cas Configuration</span>).<br>
 <span style="font-family:monospace">convert</span> with the option <span style="font-family:monospace">confrac</span> has a similar
 functionality: in that case
 the value of <span style="font-family:monospace">epsilon</span> is the value of the <span style="font-family:monospace">epsilon</span> 
 defined in the <span style="font-family:monospace">cas</span> configuration with the menu 
-<span style="font-family:monospace">Cfg</span>&#X25B8;<span style="font-family:monospace">Cas Configuration</span> (see
+<span style="font-family:monospace">Cfg</span>▸<span style="font-family:monospace">Cas Configuration</span> (see
 <a href="cascmd_en166.html#sec%3Aconvert">2.21.23</a>)
 and the answer may be stored in an optional third argument.</p><p><span style="font-weight:bold">Remarks</span> 
 </p><ul class="itemize"><li class="li-itemize">
@@ -59,7 +59,7 @@ If <span style="font-family:monospace">dfc(a)=[a0,a1,a2,[b0,b1]]</span> that mea
 </table></td></tr>
 </table></td></tr>
 </table></td></tr>
-</table></td><td class="dcell">�
+</table></td><td class="dcell"> 
 </td></tr>
 </table><p>
 If <span style="font-family:monospace">dfc(a)=[a0,a1,a2,r]</span> that means :
@@ -74,7 +74,7 @@ If <span style="font-family:monospace">dfc(a)=[a0,a1,a2,r]</span> that means :
 </table></td></tr>
 </table></td></tr>
 </table></td></tr>
-</table></td><td class="dcell">�</td></tr>
+</table></td><td class="dcell"> </td></tr>
 </table><p>
 Input :
 </p><div class="center"><span style="font-family:monospace">dfc(sqrt(2),5)</span></div><p>
@@ -87,7 +87,7 @@ or :
 Output :
 </p><div class="center"><span style="font-family:monospace">[1,2,2,2,2,2,2,2,2,2,2,2,2]</span></div><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">convert(sqrt(2),confrac,&#X2019;dev&#X2019;)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">convert(sqrt(2),confrac,’dev’)</span></div><p>
 Output (if in the <span style="font-family:monospace">cas</span> configuration <span style="font-family:monospace">epsilon=1e-9</span>) :
 </p><div class="center"><span style="font-family:monospace">[1,2,2,2,2,2,2,2,2,2,2,2,2]</span></div><p> 
 and <span style="font-family:monospace">[1,2,2,2,2,2,2,2,2,2,2,2,2]</span> is stored in <span style="font-family:monospace">dev</span>.<br>
@@ -100,7 +100,7 @@ Input to verify:
 Output :
 </p><div class="center"><span style="font-family:monospace">9976/6961</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">convert(9976/6961,confrac,&#X2019;l&#X2019;)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">convert(9976/6961,confrac,’l’)</span></div><p>
 Output (if in the <span style="font-family:monospace">cas</span> configuration <span style="font-family:monospace">epsilon=1e-9</span>) :
 </p><div class="center"><span style="font-family:monospace">[1,2,3,4,5,6,7]</span></div><p> 
 and <span style="font-family:monospace">[1,2,3,4,5,6,7]</span> is stored in <span style="font-family:monospace">l</span><br>
@@ -117,7 +117,7 @@ Input :
 or :
 </p><div class="center"><span style="font-family:monospace">dfc(pi,1e-9)</span></div><p>
 or (if in the <span style="font-family:monospace">cas</span> configuration <span style="font-family:monospace">epsilon=1e-9</span>) :
-</p><div class="center"><span style="font-family:monospace">convert(pi,confrac,&#X2019;ll&#X2019;)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">convert(pi,confrac,’ll’)</span></div><p>
 Output :
 </p><div class="center"><span style="font-family:monospace">[3,7,15,1,292]</span></div>
 <hr>

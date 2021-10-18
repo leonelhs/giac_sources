@@ -63,9 +63,9 @@ using namespace std;
 #include <gsl/gsl_sf_erf.h>
 #include <gsl/gsl_sf_expint.h>
 #endif
-#ifdef TARGET_OS_IPHONE
-#include "psi.h"
-#endif
+//#ifdef TARGET_OS_IPHONE
+//#include "psi.h"
+//#endif
 #ifdef USE_GMP_REPLACEMENTS
 #undef HAVE_GMPXX_H
 #undef HAVE_LIBMPFR
@@ -209,15 +209,13 @@ namespace giac {
   
   gen _rm_a_z(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-#ifndef RTOS_THREADX
-#ifndef BESTA_OS
+#if !defined RTOS_THREADX && !defined BESTA_OS && !defined FREERTOS
     if (variables_are_files(contextptr)){
       char a_effacer[]="a.cas";
       for (;a_effacer[0]<='z';++a_effacer[0]){
 	unlink(a_effacer);
       }
     }
-#endif
 #endif
     for (char c='a';c<='z';c++){
       purgenoassume(gen(string(1,c),contextptr),contextptr);
@@ -329,11 +327,14 @@ namespace giac {
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if ((args.type!=_VECT) || ckmatrix(args))
       return inv(args,contextptr);
-    iterateur it=args._VECTptr->begin(), itend=args._VECTptr->end();
-    gen prod(1);
-    for (;it!=itend;++it)
-      prod = prod * (*it);
-    return inv(prod,contextptr);
+    if (args.subtype==_SEQ__VECT){
+      iterateur it=args._VECTptr->begin(), itend=args._VECTptr->end();
+      gen prod(1);
+      for (;it!=itend;++it)
+	prod = prod * (*it);
+      return inv(prod,contextptr);
+    }
+    return apply(args,_inv,contextptr);
   }
   static const char _inv_s []="inv";
   static define_unary_function_eval_index (12,__inv,&_inv,_inv_s);
@@ -3745,9 +3746,10 @@ namespace giac {
 	v=*valeur._VECTptr;
 	vptr=&v;
       }
-      if ( (indice.is_symb_of_sommet(*at_interval) || indice.is_symb_of_sommet(*at_deuxpoints))&& indice._SYMBptr->feuille.type==_VECT && indice._SYMBptr->feuille._VECTptr->size()==2){
+      bool indicedeuxpoints=indice.is_symb_of_sommet(*at_deuxpoints);
+      if ( (indice.is_symb_of_sommet(*at_interval) || indicedeuxpoints)&& indice._SYMBptr->feuille.type==_VECT && indice._SYMBptr->feuille._VECTptr->size()==2){
 	gen deb=indice._SYMBptr->feuille._VECTptr->front();
-	gen fin=indice._SYMBptr->feuille._VECTptr->back();
+	gen fin=indice._SYMBptr->feuille._VECTptr->back()+(indicedeuxpoints?minus_one:zero);
 	if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ )
 	  return gendimerr();
 	if (deb.val<0) deb.val+=int(vptr->size());
@@ -3793,9 +3795,10 @@ namespace giac {
       iterateur it=indice._VECTptr->begin(),itend=indice._VECTptr->end();
       if (itend-it==2){
 	gen i2=*(it+1);
-	if ( (it->is_symb_of_sommet(*at_interval) ||it->is_symb_of_sommet(*at_deuxpoints) ) && it->_SYMBptr->feuille.type==_VECT && it->_SYMBptr->feuille._VECTptr->size()==2){
+	bool itdeuxpoints=it->is_symb_of_sommet(*at_deuxpoints);
+	if ( (it->is_symb_of_sommet(*at_interval) || itdeuxpoints ) && it->_SYMBptr->feuille.type==_VECT && it->_SYMBptr->feuille._VECTptr->size()==2){
 	  gen deb=it->_SYMBptr->feuille._VECTptr->front();
-	  gen fin=it->_SYMBptr->feuille._VECTptr->back();
+	  gen fin=it->_SYMBptr->feuille._VECTptr->back()+(itdeuxpoints?minus_one:zero);
 	  if (!is_integral(deb) || !is_integral(fin) || deb.type!=_INT_ || fin.type!=_INT_ )
 	    return gendimerr(contextptr);
 	  if (deb.val<0) deb.val+=int(vptr->size());
@@ -3816,9 +3819,10 @@ namespace giac {
 	    for (int i=deb.val;i<=fin.val;++i)
 	      (*vptr)[i]=*(*vptr)[i]._VECTptr;
 	  }
-	  if ( (i2.is_symb_of_sommet(*at_interval) || i2.is_symb_of_sommet(*at_deuxpoints)) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
+	  bool i2deuxpoints=i2.is_symb_of_sommet(*at_deuxpoints);
+	  if ( (i2.is_symb_of_sommet(*at_interval) || i2deuxpoints) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
 	    gen deb2=i2._SYMBptr->feuille._VECTptr->front();
-	    gen fin2=i2._SYMBptr->feuille._VECTptr->back();
+	    gen fin2=i2._SYMBptr->feuille._VECTptr->back()+(i2deuxpoints?minus_one:zero);
 	    if (!is_integral(deb2) || !is_integral(fin2) || deb2.type!=_INT_ || fin2.type!=_INT_) 
 	      return gendimerr(contextptr);
 	    if (deb2.val<0) deb2.val+=cols;
@@ -3874,13 +3878,14 @@ namespace giac {
 	if (it->type!=_INT_ || it->val<0)
 	  return gentypeerr(gettext("Bad index ")+indice.print(contextptr));
 	int i1=it->val;
-	if ( (i2.is_symb_of_sommet(*at_interval) || i2.is_symb_of_sommet(*at_deuxpoints)) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
+	bool i2deuxpoints=i2.is_symb_of_sommet(*at_deuxpoints);
+	if ( (i2.is_symb_of_sommet(*at_interval) || i2deuxpoints) && i2._SYMBptr->feuille.type==_VECT && i2._SYMBptr->feuille._VECTptr->size()==2){
 	  if (!ckmatrix(*vptr))
 	    return gendimerr(contextptr);
 	  if (!in_place)
 	    (*vptr)[i1]=*(*vptr)[i1]._VECTptr;
 	  gen deb2=i2._SYMBptr->feuille._VECTptr->front();
-	  gen fin2=i2._SYMBptr->feuille._VECTptr->back();
+	  gen fin2=i2._SYMBptr->feuille._VECTptr->back()+(i2deuxpoints?minus_one:zero);
 	  if (!is_integral(deb2) || !is_integral(fin2) || deb2.type!=_INT_ || fin2.type!=_INT_ )
 	    return gendimerr(contextptr);
 	  if (deb2.val<0) deb2.val += int(vptr->front()._VECTptr->size());
@@ -5154,6 +5159,16 @@ namespace giac {
       }
     }
     f=qf.eval(eval_level(contextptr),contextptr);
+    if (f.is_symb_of_sommet(at_struct_dot) && f._SYMBptr->feuille.type==_VECT && f._SYMBptr->feuille._VECTptr->size()==2){
+      gen v=f._SYMBptr->feuille._VECTptr->front(),op=f._SYMBptr->feuille._VECTptr->back();
+      gen ve=eval(v,eval_level(contextptr),contextptr);
+      if (b.type==_VECT && b.subtype==_SEQ__VECT && b._VECTptr->empty())
+	;
+      else
+	ve=makesuite(ve,b._SYMBptr->feuille);
+      ve=op(ve,contextptr);
+      return sto(ve,v,contextptr);
+    }
     if (f.type<=_POLY || f.type==_FRAC || f.type==_FLOAT_)
       *logptr(contextptr) << "Warning, constant function " << f << " applied to " << b << endl;
     if ( f.is_symb_of_sommet(at_program) && qf.type==_IDNT ){
@@ -7010,7 +7025,7 @@ namespace giac {
 
 
   string version(){
-    return string("giac ")+VERSION+string(", (c) B. Parisse and R. De Graeve, Institut Fourier, Universite de Grenoble I");
+    return string("giac ")+GIAC_VERSION+string(", (c) B. Parisse and R. De Graeve, Institut Fourier, Universite de Grenoble I");
   }
   gen _version(const gen & a,GIAC_CONTEXT){
     if ( a.type==_STRNG && a.subtype==-1) return  a;
@@ -7215,13 +7230,17 @@ namespace giac {
   
   static complex_long_double lngamma(complex_long_double x){
     complex_long_double res;
-    if (x.real()<0.5)
+    if (x.real()<0.5){
 #if !defined(HAVE_LONG_DOUBLE) || defined(PNACL)
+#ifdef FREERTOS
+      res=std::log(M_PI) -std::log(complex_long_double(std::sin(M_PI*x.real())*std::cosh(M_PI*x.imag()),std::cos(M_PI*x.real())*std::sinh(M_PI*x.imag())) - lngamma(1.-x);
+#else
       res=std::log(M_PI) -std::log(std::sin(M_PI*x)) - lngamma(1.-x);
+#endif
 #else
       res=std::log(M_PIL) -std::log(std::sin(M_PIL*x)) - lngamma(1.L-x);
 #endif
-	else {
+    }  else {
 #if !defined(HAVE_LONG_DOUBLE) || defined(PNACL)
       x=x-1.;
 #else
@@ -7840,10 +7859,10 @@ namespace giac {
     if (x.type==_DOUBLE_)
       return gsl_sf_psi(x._DOUBLE_val);
 #endif
-#ifdef TARGET_OS_IPHONE
-    if (x.type == _DOUBLE_)
-      return psi(x._DOUBLE_val);
-#endif
+//#ifdef TARGET_OS_IPHONE
+//    if (x.type == _DOUBLE_)
+//      return psi(x._DOUBLE_val);
+//#endif
     if (x.type==_DOUBLE_){
       double z=x._DOUBLE_val;
       // z<=0 , psi(z)=pi*cotan(pi*z)-psi(1-z)
@@ -7893,7 +7912,15 @@ namespace giac {
       complex<double> res0=0,res1=0,res2=0;
       bool sub=false;
       if (c._CPLXptr->_DOUBLE_val<0){
+#ifdef GIAC_HAS_STO_38
+	// The weired 2 lines bellow are a replacement of a single res0=M_PI/std::tan(M_PI*z).
+	// They are unfortunately nessecary because the keil compiler seems to loose its footing on typing with the "simple" version
+	// The code that I am using here forces the compiler to assign types to objects at every steps and to "not mess up".
+	complex<double> t(M_PI*z.real(), M_PI*z.imag()); // t= M_PI*z; did not work as it seems that the comiler was generating a gen
+	res0=M_PI; res0/=std::tan(t);                    // res0=M_PI/std::tan(t) did not work as the comiler was generating a gen that it could not store in a complex
+#else
 	res0=M_PI/std::tan(M_PI*z);
+#endif
 	z=1.0-z;
 	sub=true;
       }

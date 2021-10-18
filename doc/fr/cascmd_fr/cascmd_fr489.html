@@ -4,29 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Définition : seq[] ()</title>
+<title>Convertir un nombre en un intervalle : convert</title>
 </head>
 <body >
 <a href="cascmd_fr488.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr490.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec612" class="subsection">6.40.1  Définition : <span style="font-family:monospace">seq[] ()</span></h3>
-<p><a id="hevea_default875"></a><a id="hevea_default876"></a>
-Une séquence est une suite d’éléments séparés par une
-virgule et parenthésées par <span style="font-family:monospace">( )</span> ou on utilise le mot reservé 
-<span style="font-family:monospace">seq[...]</span> donc on écrit :<br>
-<span style="font-family:monospace">(1,2,3,4)</span> ou<br>
-<span style="font-family:monospace">seq[1,2,3,4]</span><br>
+<h3 id="sec611" class="subsection">6.39.11  Convertir un nombre en un intervalle : <span style="font-family:monospace">convert</span></h3>
+<p><a id="hevea_default875"></a>
+<span style="font-family:monospace">convert</span> a deux ou trois paramètres : une expression symbolique,
+le mot reservé <span style="font-family:monospace">interval</span> et eventuellement un entier <span style="font-style:italic">n</span>&gt;15 pour donner 
+le nombre de chiffres significatifs désirés.<br>
+<span style="font-family:monospace">convert</span> renvoie le plus petit intervalle dans lequel se trouve la valeur 
+de l’expression ou la valeur 
+de l’expression ????????.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=(1,2,3,4)</span> ou <span style="font-family:monospace">A:=seq[1,2,3,4]</span></div><div class="center"><span style="font-family:monospace">B:=(5,6,3,4)</span> ou <span style="font-family:monospace">B:=seq[5,6,3,4]</span></div><p>
-<span style="font-weight:bold">Attention!</span><br>
- l’ordre est important :
-si <span style="font-family:monospace">B:=(5,6,3,4)</span> et <span style="font-family:monospace">C:=(3,4,5,6)</span> la réponse de <span style="font-family:monospace">B==C</span> est 
-<span style="font-family:monospace">0</span>.<br>
-<span style="font-weight:bold">Attention!</span> (voir <a href="cascmd_fr493.html#sec%3Aseq">6.40.5</a>)<br>
-<span style="font-family:monospace">seq([0,2])=(0,0)</span> et <span style="font-family:monospace">seq([0,k,1,5])=[0,0,0,0,0]</span> alors que <br>
-<span style="font-family:monospace">seq[0,2]=(0,2)</span> et <span style="font-family:monospace">seq[0,k,1,5]=(0,k,1,5)</span></p>
+</p><div class="center"><span style="font-family:monospace">convert(sin(3)+1,interval)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">i[1.1411200080599,1.1411200080599]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">convert(sin(3)+1,interval,20)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">i[1.1411200080598672221,1.1411200080598672221]</span></div>
 <hr>
 <a href="cascmd_fr488.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

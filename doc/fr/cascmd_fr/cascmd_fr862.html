@@ -4,55 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Ouvrir le débuggeur : debug</title>
+<title>Pour utiliser une chaîne comme un nombre : expr</title>
 </head>
 <body >
 <a href="cascmd_fr861.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr863.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1043" class="subsection">9.7.1  Ouvrir le débuggeur : <span style="font-family:monospace">debug</span></h3>
-<p><a id="hevea_default1566"></a>
-<span style="font-family:monospace">debug</span> a comme argument une fonction et ses arguments.<br>
-<span style="font-family:monospace">debug</span> ouvre l’écran de la fenêtre de mise au point (ou débugger)
-avec sa barre de boutons.
-On a la possibilité :
-</p><ul class="itemize"><li class="li-itemize">
-d’exécuter le programme au pas
-à pas avec le bouton <span style="font-family:monospace">sst</span><a id="hevea_default1567"></a> qui inscrit la commande 
-<span style="font-family:monospace">sst()</span> dans la ligne de commande,
-</li><li class="li-itemize">de mettre des points d’arrêts (breakpoint) avec 
-<span style="font-family:monospace">break</span> (ou la commande <span style="font-family:monospace">breakpoint</span>), 
-</li><li class="li-itemize">d’aller directement avec<span style="font-family:monospace">cont</span> à une ligne 
-précise marquée par un point d’arrêt (ou la commande <span style="font-family:monospace">cont</span>),
-</li><li class="li-itemize">de voir avec <span style="font-family:monospace">watch</span> les 
-variables que l’on désire surveiller (ou la commande <span style="font-family:monospace">watch</span>),
-</li><li class="li-itemize">d’exécuter au pas à pas 
-les instructions d’une fonction utilisateur avec <span style="font-family:monospace">dans</span><a id="hevea_default1568"></a> qui 
-inscrit la commande <span style="font-family:monospace">sst_in()</span> dans la ligne de commande, ou encore 
-</li><li class="li-itemize">de sortir brutalement du débuggeur avec <span style="font-family:monospace">tuer</span> (ou la commande <span style="font-family:monospace">kill</span>).
-</li></ul><p>
-On tape par exemple :<br>
- <span style="font-family:monospace">debug(pgcd(15,25))</span>. <br>
-Il faut bien sûr que le programme <span style="font-family:monospace">pgcd</span> existe.<br>
-Par exemple on a tapé :
-</p><pre class="verbatim">pgcd(a,b):={
-local r;
-while(b!=0) {
-r:=irem(a,b);
-a:=b;
-b:=r;
-}
-return a;
-}
-</pre><p>
-Puis si on veut observer les variables <span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span>, on clique sur 
-<span style="font-family:monospace">watch</span> : <span style="font-family:monospace">watch</span> s’inscrit dans la ligne <span style="font-family:monospace">eval</span> et on compléte
-cette ligne en <span style="font-family:monospace">watch(a)</span> puis <span style="font-family:monospace">enter</span>, puis on clique sur 
-<span style="font-family:monospace">watch</span> et on compléte <span style="font-family:monospace">watch</span> en <span style="font-family:monospace">watch(b)</span> puis <span style="font-family:monospace">enter</span>.<br>
-Ensuite on clique sur <span style="font-family:monospace">sst</span>, et on voit à chaque ètape (la ligne qui 
-est exécutée est en surbrillance) les valeurs de 
-<span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span> dans la zone située en dessous de la barre des boutons.
+<h3 id="sec1047" class="subsection">9.5.5  Pour utiliser une chaîne comme un nombre : <span style="font-family:monospace">expr</span></h3>
+<p><a id="hevea_default1578"></a><a id="sec:expr2"></a>
+<span style="font-family:monospace">expr</span> permet d’utiliser une chaîne de chiffres ne 
+commençant pas par un zéro comme un nombre entier écrit en base 10
+ou une chaîne de chiffres comportant un point comme un nombre 
+décimal écrit en base 10.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">expr("123")+1</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">124</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">expr("45.67")+2.12</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">47.79</span></div><p>
+<span style="font-family:monospace">expr</span> permet d’utiliser une chaîne de chiffres ne comportant 
+pas de <span style="font-family:monospace">8</span>, ni de <span style="font-family:monospace">9</span>, et commençant
+par un zéro comme un nombre entier écrit en base <span style="font-family:monospace">8</span>.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">expr("0123")</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">83</span></div><p>
+En effet 1*8<sup>2</sup>+2*8+3=83<br>
+<span style="font-weight:bold">Remarque</span>:<br>
+ Si on tape <span style="font-family:monospace">expr("018")</span> on obtient le nombre décimale <span style="font-family:monospace">18.0</span>.<br>
+<span style="font-family:monospace">expr</span> permet d’utiliser une chaîne contenant des chiffres et 
+les lettres <span style="font-family:monospace">a,b,c,d,e,f</span>, et commençant par <span style="font-family:monospace">0x</span> comme un nombre entier écrit en base 16.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">expr("0x12f")</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">303</span></div><p>
+En effet 1*16<sup>2</sup>+2*16+15=303
+Voir aussi <a href="cascmd_fr158.html#sec%3Aexpr1">6.5.16</a>
 </p>
 <hr>
 <a href="cascmd_fr861.html"><img src="previous_motif.gif" alt="Previous"></a>

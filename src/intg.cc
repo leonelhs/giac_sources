@@ -5126,11 +5126,13 @@ namespace giac {
       int n=absint(a.val);
       if (n==0)
 	return plus_one;
+      if (n==1)
+	return y+minus_one_half;
       gen bi=bernoulli(-n);
       if (bi.type!=_VECT)
 	return gensizeerr(gettext("bernoulli"));
       vecteur biv=*bi._VECTptr;
-      if (biv.size()<n)
+      if (biv.size()<=n)
 	biv.push_back(0);
       // bernoulli polynomials B_n=n*int(B_n-1)+bi[n]
       vecteur allv;
@@ -5386,7 +5388,7 @@ namespace giac {
     if (tstep>abs(t1_e-t0_e,contextptr)._DOUBLE_val)
       tstep=abs(t1_e-t0_e,contextptr)._DOUBLE_val;
 #if 1
-    double * y =(double *)alloca(dim*sizeof(double));
+    ALLOCA(double, y, dim*sizeof(double));// double * y =(double *)alloca(dim*sizeof(double));
 #else
     double * y=new double[dim];
 #endif

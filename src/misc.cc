@@ -1117,6 +1117,10 @@ namespace giac {
     // Compute a vector of size n+1 with last element=remainder
     vecteur res,remain;
     gen tmp(g),f;
+#ifndef HAVE_LIBMPFR
+    if (!alg_lvar(tmp).empty())
+      tmp=evalf_double(tmp,1,contextptr);
+#endif
     int i=0,j;
     for (;i<n;++i){
       if ( (j=equalposcomp(remain,tmp)) ){
@@ -6887,9 +6891,9 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidf.push_back(string2gen("-",false));
       }
       if (is_strictly_positive(convt,contextptr))
-	tviconv.push_back(string2gen("convex",false));
+	tviconv.push_back(string2gen(abs_calc_mode(contextptr)==38?"∪":"convex",false));
       else
-	tviconv.push_back(string2gen("concav",false));
+	tviconv.push_back(string2gen(abs_calc_mode(contextptr)==38?"∩":"concav",false));
       if (is_strictly_positive(dgx,contextptr)){
 #if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T
 	tvig.push_back(string2gen("↑",false));
@@ -7027,6 +7031,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 
   int step_param(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,bool exactlegende,GIAC_CONTEXT){
     bool c=complex_mode(contextptr); int st=step_infolevel(contextptr),s=0;
+    if (t==x__IDNT_e || t==y__IDNT_e)
+      *logptr(contextptr) << "Warning, using x or y as variable in parametric plot may lead to confusion!" << endl;
     step_infolevel(0,contextptr);
 #ifdef NO_STDEXCEPT
     s=step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,exactlegende,contextptr);
@@ -7332,8 +7338,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	return 0;
       }
       if (is_undef(dfx)){
-	tvif.push_back(string2gen("x",false));
-	tvidf.push_back(string2gen("x",false));
+	tvif.push_back(string2gen("X",false));
+	tvidf.push_back(string2gen("X",false));
       }
       else {
 	if (is_strictly_positive(dfx,contextptr)){
@@ -7355,13 +7361,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
       if (do_inflex){
 	if (is_undef(df2))
-	  tvidf2.push_back(string2gen("x",false));
+	  tvidf2.push_back(string2gen("X",false));
 	else {
 	  if (is_strictly_positive(df2,contextptr)){
-	    tvidf2.push_back(string2gen("convex",false));
+	    tvidf2.push_back(string2gen(abs_calc_mode(contextptr)==38?"∪":"convex",false));
 	  }
 	  else {
-	    tvidf2.push_back(string2gen("concav",false));
+	    tvidf2.push_back(string2gen(abs_calc_mode(contextptr)==38?"∩":"concav",false)); 
 	  }
 	}
       }
@@ -7505,7 +7511,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     if (s<2)
       return gensizeerr(contextptr);
-    gen f=v[0];
+    gen f=exact(v[0],contextptr);
     gen x=v[1];
     int s0=2;
     gen xmin(minus_inf),xmax(plus_inf);
@@ -7592,7 +7598,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (plot==1)
 	return tvi; // gprintf("%gen",makevecteur(gen(poi,_SEQ__VECT)),1,contextptr);
     }
-    *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')' <<"\nInside Xcas you can see the function with Cfg>Show>DispG." <<  endl;
+    if (abs_calc_mode(contextptr)!=38)
+      *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')' <<"\nInside Xcas you can see the function with Cfg>Show>DispG." <<  endl;
     return tvi;
   }
   static const char _tabvar_s []="tabvar";
@@ -7758,6 +7765,58 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static const char _range_s []="range";
   static define_unary_function_eval (__range,&_range,_range_s);
   define_unary_function_ptr5( at_range ,alias_at_range,&__range,0,true);
+
+  string strip(const string & s,const string &chars){
+    int ss=int(s.size()),cs=int(chars.size()),i,j;
+    for (i=0;i<ss;++i){
+      int pos=chars.find(s[i]);
+      if (pos<0 || pos>=cs)
+	break;
+    }
+    for (j=ss-1;j>=i;--j){
+      int pos=chars.find(s[j]);
+      if (pos<0 || pos>=cs)
+	break;
+    }
+    return s.substr(i,j-i+1);
+  }
+  
+  gen _strip(const gen & args,GIAC_CONTEXT){
+    if (args.type==_STRNG)
+      return string2gen(strip(*args._STRNGptr," "),false);
+    if (args.type==_VECT && args._VECTptr->size()==2 && args._VECTptr->front().type==_STRNG && args._VECTptr->back().type==_STRNG)
+      return string2gen(strip(*args._VECTptr->front()._STRNGptr,*args._VECTptr->back()._STRNGptr),false);
+    return gensizeerr(contextptr);
+  }
+  static const char _strip_s []="strip";
+  static define_unary_function_eval (__strip,&_strip,_strip_s);
+  define_unary_function_ptr5( at_strip ,alias_at_strip,&__strip,0,true);
+
+  gen _lower(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_STRNG)
+      return gensizeerr(contextptr);
+    string s(*args._STRNGptr);
+    int ss=s.size();
+    for (int i=0;i<ss;++i)
+      s[i]=tolower(s[i]);
+    return string2gen(s,false);
+  }
+  static const char _lower_s []="lower";
+  static define_unary_function_eval (__lower,&_lower,_lower_s);
+  define_unary_function_ptr5( at_lower ,alias_at_lower,&__lower,0,true);
+
+  gen _upper(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_STRNG)
+      return gensizeerr(contextptr);
+    string s(*args._STRNGptr);
+    int ss=s.size();
+    for (int i=0;i<ss;++i)
+      s[i]=toupper(s[i]);
+    return string2gen(s,false);
+  }
+  static const char _upper_s []="upper";
+  static define_unary_function_eval (__upper,&_upper,_upper_s);
+  define_unary_function_ptr5( at_upper ,alias_at_upper,&__upper,0,true);
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

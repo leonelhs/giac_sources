@@ -4,32 +4,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Fonction testant le type de son argument: getType</title>
+<title>Valeurs par défaut des paramètres d’une fonction</title>
 </head>
 <body >
 <a href="cascmd_fr828.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr830.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1007" class="subsection">9.4.6  Fonction testant le type de son argument: <span style="font-family:monospace">getType</span></h3>
-<p><a id="hevea_default1489"></a><a id="hevea_default1490"></a><a id="hevea_default1491"></a><a id="hevea_default1492"></a><a id="hevea_default1493"></a><a id="hevea_default1494"></a><a id="hevea_default1495"></a>
-<span style="font-family:monospace">getType</span> est une fonction qui a un argument et qui renvoie le
-type de cet argument par exemple :<br>
- <span style="font-family:monospace">STR,EXPR,VAR,NONE,PIC,LIST,MAT,FUNC,NUM...</span>.<br>
-<span style="font-family:monospace">getType</span> ne renvoie pas la même chose que <span style="font-family:monospace">type</span>, c’est pour des 
-raisons de compatibilité.<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">getType(3.14)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">NUM</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">getType(x)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">VAR</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">getType(x+2)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">EXPR</span></div>
+<h3 id="sec1010" class="subsection">9.1.3  Valeurs par défaut des paramètres d’une fonction</h3>
+<p>
+Prenons l’exemple d’une fonction <span style="font-family:monospace">f</span> ayant quatre paramètres 
+<span style="font-family:monospace">x,y,z,t</span>.<br>
+On peut donner a certains paramètres des valeurs par défaut, on écrit 
+par exemple dans la défintion de <span style="font-family:monospace">f</span> :<br>
+<span style="font-family:monospace">f(x,y=2,z,t=pi/2):={ <br>
+</span><span style="font-family:monospace">retourne simplify(x*cos(t)+y*sin(t)+z)</span><span style="font-family:monospace">x*cos(t)+y*sin(t)+z}:;</span><br>
+On tape :<br>
+<span style="font-family:monospace">f(10,3)</span><br>
+ou<br>
+<span style="font-family:monospace">f(10,2,3,pi/2)</span><br>
+On obtient :<br>
+<span style="font-family:monospace">5</span>
+</p>
 <hr>
 <a href="cascmd_fr828.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

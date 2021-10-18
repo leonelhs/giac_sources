@@ -4,39 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Compter les éléments plus petits qu’une valeur donnée :
-count_inf</title>
+<title>Rajouter une colonne à une matrice : border</title>
 </head>
 <body >
 <a href="cascmd_fr598.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr600.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec737" class="subsection">6.51.3  Compter les éléments plus petits qu’une valeur donnée :<br>
-<span style="font-family:monospace">count_inf</span></h3>
-<p><a id="hevea_default1095"></a><a id="hevea_default1096"></a><a id="hevea_default1097"></a>
-<span style="font-family:monospace">count_inf</span> a deux ou trois paramètres : une nombre et une 
-matrice (ou liste) réelle et éventuellement un paramètre 
-optionnel <span style="font-family:monospace">row</span> ou <span style="font-family:monospace">col</span>.<br>
-<span style="font-family:monospace">count_inf</span> renvoie le nombre d’éléments de la 
-matrice (ou liste) qui sont strictement inférieurs au premier argument.<br>
-Si il y a <span style="font-family:monospace">row</span> (resp <span style="font-family:monospace">col</span>) comme troisième paramètre 
-<span style="font-family:monospace">count_inf</span> agit sur chaque ligne (resp colonne) de la matrice et renvoie 
-une liste.<br>
+<h3 id="sec736" class="subsection">6.50.15  Rajouter une colonne à une matrice : <span style="font-family:monospace">border</span></h3>
+<p><a id="hevea_default1092"></a>
+<span style="font-family:monospace">border</span> a comme argument une matrice <span style="font-family:monospace">A</span> de dimension <span style="font-style:italic">p</span>*<span style="font-style:italic">q</span> 
+et une liste <span style="font-family:monospace">b</span> de dimension <span style="font-style:italic">p</span> (c’est à dire 
+<span style="font-family:monospace">nrows(A)=size(b)</span>).<br>
+<span style="font-family:monospace">border</span> renvoie la matrice obtenue à partir de <span style="font-family:monospace">A</span> en lui rajoutant 
+comme dernière colonne <span style="font-family:monospace">tran(b)</span>.<br>
+On a : <br>
+<span style="font-family:monospace">border(A,b)=tran([op(tran(A)),b])=tran(append(tran(A),b))</span><br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">count_inf(12,[2,12,45,3,7,78])</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">count_inf(12,[[2,12],[45,3],[7,78]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">border([[1,2,4],[3,4,5]],[6,7])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,2,4,6],[3,4,5,7]]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">count_inf(12,[[2,12],[45,3],[7,78]],row)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">border([[1,2,3,4],[4,5,6,8],[7,8,9,10]],[1,3,5])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[1,1,1]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">count_inf(12,[[2,12],[45,3],[7,78]],col)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[2,1]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[1,2,3,4,1],[4,5,6,8,3],[7,8,9,10,5]]</span></div>
 <hr>
 <a href="cascmd_fr598.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,133 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Tirage équiréparti rand alea hasard</title>
+<title>Graphe de la régression logarithmique : 
+logarithmic_regression_plot</title>
 </head>
 <body >
 <a href="cascmd_fr748.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr750.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec916" class="subsection">8.3.2  Tirage équiréparti <span style="font-family:monospace">rand alea hasard</span></h3>
-<p><a id="hevea_default1345"></a><a id="hevea_default1346"></a><a id="hevea_default1347"></a>
-</p>
-<h4 id="sec917" class="subsubsection">Tirage équiréparti sur [0,1[ : <span style="font-family:monospace">rand() alea() hasard</span></h4>
-<p>
-<span style="font-family:monospace">rand()</span> renvoie au hasard, de façon équiprobable, un nombre 
-réel de [0,1[.<br>
+<h3 id="sec920" class="subsection">8.2.15  Graphe de la régression logarithmique : 
+<span style="font-family:monospace">logarithmic_regression_plot</span></h3>
+<p><a id="hevea_default1337"></a><a id="hevea_default1338"></a><a id="hevea_default1339"></a>
+Pour dessiner le graphe de la fonction logarithmique d’équation 
+<span style="font-style:italic">y</span>=<span style="font-style:italic">m</span> ln<span style="font-style:italic">x</span>+<span style="font-style:italic">b</span> qui approche au mieux les données, on utilise 
+<span style="font-family:monospace">logarithmic_regression_plot</span>.<br>
+<span style="font-family:monospace">logarithmic_regression_plot</span> a les mêmes arguments que <span style="font-family:monospace">covariance</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">rand()</span></div><p>
-ou on tape
-</p><div class="center"><span style="font-family:monospace">alea()</span></div><p>
-ou on tape (attention <span style="font-family:monospace">hasard</span> n’utilise pas de <span style="font-family:monospace">()</span> et est utilisé 
-pour le langage de la tortue)
-</p><div class="center"><span style="font-family:monospace">hasard</span></div><p>
-On obtient par exemple:
-</p><div class="center"><span style="font-family:monospace">0.912569261115</span></div><p>
-Pour avoir, au hasard, de façon équiprobable, un nombre de [0;1[, on peut 
-aussi utiliser (voir le paragraphe suivant):
-</p><div class="center"><span style="font-family:monospace">rand(0,1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">logarithmic_regression_plot([[1.0,1],[2,4],[3,9],[4,16]])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">0.391549611697</span></div>
-<h4 id="sec918" class="subsubsection">Tirage aléatoire équiréparti sur l’intervalle [a;b[ : <span style="font-family:monospace">rand(a,b) hasard(a,b) rand(a..b)() hasard(a..b)()</span></h4>
-<p>
-Si <span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span> sont des réels <span style="font-family:monospace">rand(a,b)</span> désigne un nombre 
-décimal aléatoire compris dans l’intervalle [<span style="font-style:italic">a</span>;<span style="font-style:italic">b</span>[.<br>
-Donc, <span style="font-family:monospace">rand(a,b)</span> ou (<span style="font-family:monospace">hasard(a,b)</span>) renvoie au hasard, et de façon 
-équiprobable, un nombre décimal de [<span style="font-style:italic">a</span>;<span style="font-style:italic">b</span>[.<br>
-Pour avoir, au hasard et de façon équiprobable, un nombre décimal de [0;1[, 
-on tape :
-</p><div class="center"><span style="font-family:monospace">rand(0,1)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">0.391549611697</span></div><p>
-ou on tape (attention <span style="font-family:monospace">hasard</span> utilise des <span style="font-family:monospace">()</span> qui englobent hasard et sesparamètres et <span style="font-family:monospace">hasard</span> est 
-utilisé pour le langage de la tortue)
-</p><div class="center"><span style="font-family:monospace">(hasard 0,1)</span></div><p>
-On obtient par exemple:
-</p><div class="center"><span style="font-family:monospace">0.912569261115</span></div><p>
-Pour avoir, au hasard et de façon équiprobable, un nombre décimal de 
-[0;0.5[, on tape :
-</p><div class="center"><span style="font-family:monospace">rand(0,0.5)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">0.303484437987</span></div><p>
-Pour avoir, au hasard et de façon équiprobable, un nombre décimal de ]−0.5;0], 
-on tape :
-</p><div class="center"><span style="font-family:monospace">rand(0,-0.5)</span></div><p>
-ou on tape :
-</p><div class="center"><span style="font-family:monospace">rand(-0.5,0)</span></div><p>
-On obtient par exemple :
-</p><div class="center"><span style="font-family:monospace">-0.20047219703</span></div><p>Si <span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span> sont des réels <span style="font-family:monospace">rand(a..b)</span> ou <span style="font-family:monospace">alea(a..b)</span> ou 
-<span style="font-family:monospace">hasard(a..b)</span> désigne une fonction qui est un générateur de nombres
-aléatoires compris dans l’intervalle [<span style="font-style:italic">a</span>;<span style="font-style:italic">b</span>[.<br>
-Donc, <span style="font-family:monospace">rand(a..b)()</span> renvoie au hasard, et de façon équiprobable, un
-nombre décimal de [<span style="font-style:italic">a</span>;<span style="font-style:italic">b</span>[.<br>
-Pour avoir, au hasard et de façon équiprobable, un nombre décimal de [0;1[, 
-on tape :
-</p><div class="center"><span style="font-family:monospace">rand(0..1)()</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">0.391549611697</span></div><p>
-Pour avoir, au hasard et de façon équiprobable, plusieurs nombres 
-aléatoires décimaux compris dans l’intervalle [1;2[, 
-on tape :
-</p><div class="center"><span style="font-family:monospace">r:=rand(1..2)</span></div><p>
-puis il suffit de taper <span style="font-family:monospace">r()</span>.<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">r()</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1.14160255529</span></div>
-<h4 id="sec919" class="subsubsection">Tirage aléatoire d’entiers équirépartis sur [0,..,<span style="font-style:italic">n</span>[ : <span style="font-family:monospace">rand(n) alea(n) hasard(n)</span></h4>
-<p><a id="hevea_default1348"></a><a id="hevea_default1349"></a><a id="hevea_default1350"></a>
-Si <span style="font-family:monospace">n</span> est un entier relatif <span style="font-family:monospace">rand(n)</span> ou <span style="font-family:monospace">hasard(n)</span> renvoie au 
-hasard, et de façon équiprobable, un entier de [0,1,..,<span style="font-style:italic">n</span>[ 
-(ou de ]<span style="font-style:italic">n</span>,..1,0] si <span style="font-style:italic">n</span> est negatif).<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">rand(2)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">alea(2)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">hasard(2)</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">hasard 2</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-ou on obtient :
-</p><div class="center"><span style="font-family:monospace">0</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">rand(-2)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">hasard(-2)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">-1</span></div><p>
-ou on obtient :
-</p><div class="center"><span style="font-family:monospace">0</span></div><p>
-On tape pour avoir un entier aléatoire entre 6 et 10, bornes comprises :
-</p><div class="center"><span style="font-family:monospace">6+rand(11-6)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">6+hasard(11-6)</span></div><p>
-On obtient par exemple :
-</p><div class="center"><span style="font-family:monospace">8</span></div>
-<h4 id="sec920" class="subsubsection">Tirage aléatoire sans remise de p objets parmi n : <span style="font-family:monospace">rand alea hasard</span></h4>
-<p><a id="hevea_default1351"></a><a id="hevea_default1352"></a><a id="hevea_default1353"></a>
-<span style="font-family:monospace">rand</span> a dans ce cas, soit 2, soit 3 arguments.<br>
- Si <span style="font-family:monospace">rand</span> a 2 arguments : les arguments sont un entier <span style="font-style:italic">p</span> et une liste 
-<span style="font-style:italic">L</span> alors <span style="font-family:monospace">rand(p,L)</span> renvoie, au hasard, <span style="font-family:monospace">p</span> éléments de la liste 
-<span style="font-family:monospace">L</span>.<br>
- Si <span style="font-family:monospace">rand</span> a 3 arguments : les arguments sont trois entiers 
-<span style="font-family:monospace">p,min,max</span> alors
-<span style="font-family:monospace">rand(p,min,max)</span> renvoie, au hasard, <span style="font-family:monospace">p</span> entiers de 
-<span style="font-family:monospace">[min,..,max]</span> 
-On tape :
-</p><div class="center"><span style="font-family:monospace">rand(3,["r","r","r","r","v","v","v"])</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">["r","r","v"]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">rand(2,1,10)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[3,7]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">rand(2,4,10)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[5,7]</span></div>
+</p><div class="center"><span style="font-family:monospace">Le graphe de la fonction logarithme d’équation </span><span style="font-style:italic">y</span>=10.1506450002ln(<span style="font-style:italic">x</span>)−0.564824055818</div><p>
+car c’est la fonction logarithme d’équation :<br>
+<span style="font-style:italic">y</span>=10.1506450002ln(<span style="font-style:italic">x</span>)−0.564824055818 <br>
+qui approche au mieux les données.<br>
+<span style="font-weight:bold">Remarque</span>
+On remarquera que l’équation de la courbe representée ainsi que la valeur 
+du coefficient de corrélation de ln(<span style="font-style:italic">X</span>),ln(<span style="font-style:italic">Y</span>) (si les données sont 
+<span style="font-style:italic">X</span>,<span style="font-style:italic">Y</span>)) sont écrits en bleu.<br>
+Si on veut avoir l’équation et/ou le coefficient de corrélation sur le 
+dessin il faut rajouter comme dernier argument, l’option <span style="font-family:monospace">equation</span> et/ou 
+<span style="font-family:monospace">correlation</span>.</p>
 <hr>
 <a href="cascmd_fr748.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

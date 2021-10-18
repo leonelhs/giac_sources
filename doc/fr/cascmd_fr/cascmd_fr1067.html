@@ -4,32 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Généralités</title>
+<title>Savoir si 3 points sont alignés : is_collinear est_aligne</title>
 </head>
 <body >
 <a href="cascmd_fr1066.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1068.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1290" class="subsection">11.14.1  Généralités</h3>
-<p>
-Les transformations ci-dessous :<br>
-<span style="font-family:monospace">translation, rotation, homothetie, similitude, symetrie, inversion</span>,
-<span style="font-family:monospace">projection</span> <br>
-peuvent toujours être considérées, soit 
-comme des fonctions (les arguments sont les paramètres servant à définir 
-la transformation), soit comme agissant sur le dernier argument (les premiers
-arguments sont les paramètres servant à définir la transformation et 
-l’objet géométrique à transformer est mis comme dernier paramètre).<br>
-L’objet géométrique à transformer peut être de tout type comme point, 
-droite, plan, polygone, polyèdre, cercle (en 3-d un cercle est considéré 
-comme une courbe paramétrée), courbe paramétrée, sphère, 
-surface etc...<br>
-Par exemple si <span style="font-family:monospace">P</span> est l’objet géométrique à transformer on peut 
-avoir :<br>
-<span style="font-family:monospace">P:=point(1,1,1)</span> ou <span style="font-family:monospace">P:=droite(z=0,x=1)</span> ou <span style="font-family:monospace">P:=plan(z=0)</span> ou<br>
-<span style="font-family:monospace">P:=sphere(point(1,1,1),1)</span> ou <span style="font-family:monospace">P:=plotfunc(x2-y2,[x,y])</span> ou<br>
-<span style="font-family:monospace">P:=demi_cone([0,0,0],[0,0,1],pi/6)</span> etc...</p>
+<h3 id="sec1295" class="subsection">11.13.6  Savoir si 3 points sont alignés : <span style="font-family:monospace">is_collinear est_aligne</span></h3>
+<p><a id="hevea_default2076"></a><a id="hevea_default2077"></a><a id="sec:estaligne3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr989.html#sec%3Aestaligne2">10.18.2</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">est_aligne</span> est une fonction booléenne ayant comme 
+argument une liste ou une séquence de points.<br>
+<span style="font-family:monospace">est_aligne</span> vaut 1 si les points sont alignés, et vaut 0 sinon.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">est_aligne([2,0,0],[0,2,0],[1,1,0])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">est_aligne([2,0,0],[0,2,0],[0,1,1])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div>
 <hr>
 <a href="cascmd_fr1066.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

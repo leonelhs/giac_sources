@@ -4,41 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Valeurs singulières (compatible HP) : SVL svl</title>
+<title>Reconnaitre une isométrie : isom</title>
 </head>
 <body >
 <a href="cascmd_fr654.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr656.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec800" class="subsection">6.58.7  Valeurs singulières (compatible HP) : <span style="font-family:monospace">SVL svl</span></h3>
-<p><a id="hevea_default1195"></a><a id="hevea_default1196"></a>
-<span style="font-family:monospace">SVL</span> ou <span style="font-family:monospace">svl</span> a comme argument une matrice carrée numérique d’ordre 
-<span style="font-style:italic">n</span>.<br>
-<span style="font-family:monospace">SVL(A)</span> renvoie les valeurs singulières de <span style="font-style:italic">A</span>.<br>
-Les valeurs singulières de <span style="font-style:italic">A</span> sont les racines carrées positives des 
-valeurs propres de <span style="font-style:italic">A</span>*<span style="font-style:italic">trn</span>(<span style="font-style:italic">A</span>). Ainsi lorsque <span style="font-style:italic">A</span> est symétrique, les valeurs 
-singulières de <span style="font-style:italic">A</span> sont les valeurs absolues de ses valeurs propres.<br>
+<h3 id="sec805" class="subsection">6.58.1  Reconnaitre une isométrie : <span style="font-family:monospace">isom</span></h3>
+<p><a id="hevea_default1196"></a>
+<span style="font-family:monospace">isom</span> a comme argument la matrice d’une application linéaire 
+en dimension 2 ou 3.<br>
+<span style="font-family:monospace">isom</span> renvoie :
+</p><ul class="itemize"><li class="li-itemize">
+si l’application linéaire est une isométrie directe,<br>
+la liste des éléments caractéristiques et <span style="font-family:monospace">+1</span>
+</li><li class="li-itemize">si l’application linéaire est une isométrie indirecte,<br>
+la liste des éléments caractéristiques et <span style="font-family:monospace">-1</span> 
+</li><li class="li-itemize">si l’application linéaire n’est pas une isométrie,<br>
+<span style="font-family:monospace">[0]</span>.
+</li></ul><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">SVL([[1,2],[3,4]])</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">svl([[1,2],[3,4]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">isom([[0,0,1],[0,1,0],[1,0,0]])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[0.365966190626,5.46498570422]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,0,-1],-1]</span></div><p>
+ce qui veut dire que cette isométrie est une symétrie par rapport au plan 
+<span style="font-style:italic">x</span> − <span style="font-style:italic">z</span> = 0.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">evalf(sqrt(eigenvals([[1,2],[3,4]]*[[1,3],[2,4]])))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">isom(sqrt(2)/2*[[1,-1],[1,1]])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[5.46498570422,0.365966190626]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[pi/4,1]</span></div><p>
+cette isométrie est donc une rotation plane d’angle  π/4.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">SVL([[1,4],[4,1]])</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">svl([[1,4],[4,1]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">isom([[0,0,1],[0,1,0],[0,0,1]])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[5.0,3.0]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">abs(eigenvals([[1,4],[4,1]]))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[5,3]</span></div>
+</p><div class="center"><span style="font-family:monospace">[0]</span></div><p>
+ce qui veut dire que ce n’est pas une isométrie.
+</p>
 <hr>
 <a href="cascmd_fr654.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

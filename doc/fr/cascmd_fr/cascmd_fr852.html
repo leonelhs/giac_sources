@@ -4,40 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : #</title>
+<title>L’instruction conditionnelle : switch</title>
 </head>
 <body >
 <a href="cascmd_fr851.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr853.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1031" class="subsection">9.5.4  Pour utiliser une chaîne comme nom de variable ou comme nom de fonction : <span style="font-family:monospace">#</span></h3>
-<p><a id="hevea_default1556"></a><a id="sec:diese"></a>
-<span style="font-family:monospace">#</span> permet d’utiliser une chaîne de caractères comme nom de 
-variable ou comme nom de fonction ou comme nom d’instruction ou comme nom de 
-répertoire.<br>
-<span style="font-family:monospace">#</span> est surtout utile dans un programme.<br>
-<span style="font-family:monospace">#</span> a comme argument une chaîne ou le nom d’une variable qui contient 
-une chaîne ou une expression renvoyant une chaîne.<br>
-<span style="font-family:monospace">#</span> transforme la chaîne en une expression mais n’évalue pas cette
-expression. Donc,
-pour faire une affectation, on ne doit pas écrire <span style="font-family:monospace">#"a:=2"</span>, mais on
-peut écrire <span style="font-family:monospace">#"a":=2</span> (voir aussi <span style="font-family:monospace">expr</span> <a href="cascmd_fr854.html#sec%3Aexpr">9.5.6</a>).<br>
+<h3 id="sec1036" class="subsection">9.4.21  L’instruction conditionnelle : <span style="font-family:monospace">switch</span></h3>
+<p><a id="hevea_default1551"></a><a id="hevea_default1552"></a><a id="hevea_default1553"></a>
+<span style="font-family:monospace">switch</span> a comme paramètre une expression.<br>
+Selon la valeur de cette expression, marquée par <span style="font-family:monospace">case</span> (ou par 
+<span style="font-family:monospace">default</span>), <span style="font-family:monospace">switch</span> 
+permet de faire le bloc d’instructions correspondant à la valeur d’une 
+expression qui doit être une valeur entière.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">a:="abc";#a:=3</span></div><p>
-ou :
-</p><div class="center"><span style="font-family:monospace">#"abc":=3</span></div><p>
+</p><pre class="verbatim">opere(a,b,c):={
+switch(c) {
+  case 1 : {a:=a+b;break;} 
+  case 2 : {a:=a-b;break;} 
+  case 3 : {a:=a*b;break;} 
+  default : {a:=a^b;}
+}
+return a;
+}
+</pre><p>
+puis :
+</p><div class="center"><span style="font-family:monospace">opere(2,3,1)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">La variable abc contient 3</span></div><p>
+</p><div class="center"><span style="font-family:monospace">5</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">b:="ifactor";(#b)(54)</span></div><p>
-ou :
-</p><div class="center"><span style="font-family:monospace">(#"ifactor")(54)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">opere(2,3,2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">2*3</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">#"ifactor(54)"</span></div><p>On obtient :
-</p><div class="center"><span style="font-family:monospace">ifactor(54)</span></div>
+</p><div class="center"><span style="font-family:monospace">-1</span></div>
 <hr>
 <a href="cascmd_fr851.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

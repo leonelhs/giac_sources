@@ -48,11 +48,9 @@ using namespace std;
 
 // C headers
 #include <stdio.h>
-#ifndef __VISUALC__
-#ifndef RTOS_THREADX
-#ifndef BESTA_OS
+#ifndef __VISUALC__ 
+#if !defined RTOS_THREADX && !defined BESTA_OS && !defined FREERTOS
 #include <fcntl.h>
-#endif
 #endif
 #endif // __VISUALC__
 
@@ -1255,7 +1253,7 @@ namespace giac {
     if (vars.type==_IDNT){ // function plot
       gen a,b;
       if (taille(f,100)<=100 && is_linear_wrt(f,vars,a,b,contextptr))	
-	return put_attributs(_segment(makesequence(function_xmin+cst_i*(a*function_xmin+b),function_xmax+cst_i*(a*function_xmax+b)),contextptr),attributs,contextptr);
+	return put_attributs(_segment(makesequence(function_xmin+cst_i*(a*gen(function_xmin)+b),function_xmax+cst_i*(a*gen(function_xmax)+b)),contextptr),attributs,contextptr);
       vecteur lpiece(lop(f,at_piecewise));
       if (!lpiece.empty()) lpiece=lvarx(lpiece,vars);
       if (!lpiece.empty()){
@@ -7938,7 +7936,7 @@ namespace giac {
 	if (s>=4){
 	  tmin=vargs[2].evalf_double(eval_level(contextptr),contextptr)._DOUBLE_val;
 	  tmax=vargs[3].evalf_double(eval_level(contextptr),contextptr)._DOUBLE_val;
-	  if (s>4)
+	  if (s>4 && !vargs[4].is_symb_of_sommet(at_equal))
 	    tstep=vargs[4].evalf_double(eval_level(contextptr),contextptr)._DOUBLE_val;
 	}
       }
@@ -8517,7 +8515,7 @@ namespace giac {
       gen c=a*re(A,contextptr)+b*im(A,contextptr);
       if (!is_zero(b,contextptr))
 	return symbolic(at_equal,makesequence(y,normal(-a/b,contextptr)*x+normal(c/b,contextptr)));
-      return symbolic(at_equal,makesequence(a*x+b*y,c));
+      return symbolic(at_equal,makesequence(x,normal(c/a,contextptr)));//symbolic(at_equal,makesequence(a*x+b*y,c));
     }
     if ( (e.type==_SYMB) && (e._SYMBptr->sommet==at_curve)){
       vecteur v=*e._SYMBptr->feuille._VECTptr->front()._VECTptr; 
@@ -10936,7 +10934,7 @@ namespace giac {
   // Return 0 if not successfull, or a vector of remaining gen in the archive
   gen unarchive_session(istream & is,int level, const gen & replace,GIAC_CONTEXT){
 #if defined BESTA_OS || defined VISUALC
-    char * buf = ( char * )alloca( BUFFER_SIZE );
+    ALLOCA(char, buf, BUFFER_SIZE ); //char * buf = ( char * )alloca( BUFFER_SIZE );
 #else
     char buf[BUFFER_SIZE];
 #endif
@@ -11612,7 +11610,7 @@ namespace giac {
 	chemin.push_back(lastsing);
 	xcurrent=evalf_double(re(tmp[3],contextptr),1,contextptr)._DOUBLE_val;
 	ycurrent=evalf_double(im(tmp[3],contextptr),1,contextptr)._DOUBLE_val;
-	lastsingdir=xcurrent+cst_i*ycurrent;
+	lastsingdir=xcurrent+cst_i*gen(ycurrent);
 	// set iorig,jorig
 	iorig=int((xcurrent-xmin)/xstep); // FIXME? +.5
 	jorig=int((ycurrent-ymin)/ystep); // 
@@ -11749,7 +11747,7 @@ namespace giac {
 	gen newxy=undef;
 	if (was_not_singular){
 	  double pascoeff=std::min(xstep,ystep)/std::sqrt(dfycurrent*dfycurrent+dfxcurrent*dfxcurrent);
-	  gen pas=pascoeff*makevecteur(dfycurrent,-dfxcurrent);
+	  gen pas=gen(pascoeff)*makevecteur(dfycurrent,-dfxcurrent);
 	  newxy=xycurrent+pas;
 	  gtmp=subst(dfx,xy,newxy,false,contextptr).evalf2double(eval_level(contextptr),contextptr);
 	  if (gtmp.type==_DOUBLE_){

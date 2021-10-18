@@ -4,45 +4,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>La translation : translation</title>
+<title>Périmètre d’un polygone et son affichage :perimeterat perimetreen et perimeteratraw perimetreenbrut</title>
 </head>
 <body >
 <a href="cascmd_fr971.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr973.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1177" class="subsection">10.17.2  La translation : <span style="font-family:monospace">translation</span></h3>
-<p><a id="hevea_default1895"></a><a id="sec:translation2"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1068.html#sec%3Atranslation3">11.14.2</a> pour la géométrie 3-d.<br>
-<span style="font-family:monospace">translation</span>, en géométrie plane, a un ou deux arguments : 
-le vecteur de translation donné par un vecteur géométrique ou par la 
-liste de ses coordonnées ou par son affixe (la
-différence de deux points ou un nombre complexe)
-et éventuellement l’objet géométrique à transformer.<br>
-Lorsque <span style="font-family:monospace">translation</span> a un argument, c’est une fonction qui agit sur un 
-objet géométrique.<br>
+<h3 id="sec1182" class="subsection">10.16.11  Périmètre d’un polygone et son affichage :<span style="font-family:monospace">perimeterat perimetreen</span> et <span style="font-family:monospace">perimeteratraw perimetreenbrut</span></h3>
+<p><a id="hevea_default1897"></a><a id="hevea_default1898"></a><a id="hevea_default1899"></a><a id="hevea_default1900"></a>
+<span style="font-family:monospace">perimeterat</span> ou <span style="font-family:monospace">perimetreen</span> et <span style="font-family:monospace">perimeteratraw</span> ou 
+<span style="font-family:monospace">perimetreenbrut</span> sont des commandes 
+obtenues lorsqu’on utilse, dans un niveau de géométrie 2<span style="font-style:italic">d</span> ou 3<span style="font-style:italic">d</span>, le 
+bouton <span style="font-family:monospace">Mode-&gt;Mesures-&gt;perimetreen</span> ou <span style="font-family:monospace">Mode-&gt;Mesures-&gt;perimetreenbrut</span>.
+Dans ce cas il faut que tous les objets désignés par la souris soient 
+déjà nommés.<br>
+On peut néammoins taper ces commandes dans une ligne de commande.<br>
+
+<span style="font-family:monospace">perimeterat</span> ou <span style="font-family:monospace">perimetreen</span> et <span style="font-family:monospace">perimeteratraw</span> ou 
+<span style="font-family:monospace">perimetreenbrut</span> ont comme argument un cercle ou un polygone et 1
+point (ou 1 nombre complexe qui est l’affixe d’un point).<br>
+<span style="font-family:monospace">perimeterat</span> ou <span style="font-family:monospace">perimetreen</span> renvoie le point, calcule le 
+périmètre du cercle ou du polygone et affiche ce périmètre à 
+l’endroit du point avec une légende. <span style="font-weight:bold">Attention</span> Il faut que le 
+polygone ait un nom.<br>
+<span style="font-family:monospace">perimeteratraw</span> ou <span style="font-family:monospace">perimetreenbrut</span> renvoie le point, calcule le 
+périmètre du cercle ou du polygone et affiche ce périmètre à 
+l’endroit du point.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">t:=translation(1+i)</span></div><p>
-Puis :
-</p><div class="center"><span style="font-family:monospace">t(-2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">t:=triangle(0,1,i)</span></div><div class="center"><span style="font-family:monospace">perimetreen(t,(1+i)/2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le point -1+i tracé avec une croix (x) noire</span></div><p>
-Lorsque <span style="font-family:monospace">translation</span> a deux arguments, <span style="font-family:monospace">translation</span> dessine et 
-renvoie le transformé du deuxième argument dans la translation de vecteur le premier argument.<br>
+</p><div class="center"><span style="font-family:monospace">2+sqrt(2) s’écrit au point((1+i)/2) avec une légende</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">translation([1,1],-2)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(1);B:=point(2+i);translation(vecteur(A,B),-2)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">translation(1+i,-2)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(1);B:=point(2+i);translation(B-A,-2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">perimetreenbrut(triangle(0,1,i),(1+i)/2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le point -1+i tracé avec une croix (x) noire</span></div><p>
+</p><div class="center"><span style="font-family:monospace">2+sqrt(2) s’écrit au point((1+i)/2)</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">translation(1+i,droite(-2,-i))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">c:=carre(0,2)</span></div><div class="center"><span style="font-family:monospace">perimetreen(c,2.2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">La droite passant par -1+i et 1</span></div>
+</p><div class="center"><span style="font-family:monospace">8 s’écrit au point(2.2) avec une légende</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">perimetreenbrut(carre(0,2),2.2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">8 s’écrit au point(2.2)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">cc:=cercle(0,2)</span></div><div class="center"><span style="font-family:monospace">perimetreen(cc,2.2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">4*pi s’écrit au point(2.2) avec une légende</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">perimetreenbrut(cercle(0,2),2.2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">4*pi s’écrit au point(2.2)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">h:=hexagone(0,1)</span></div><div class="center"><span style="font-family:monospace">perimetreen(h,1.2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">6 s’écrit au point(1.2) avec une légende</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">perimetreenbrut(hexagone(0,1),1.2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">6 s’écrit au point(1.2)</span></div>
 <hr>
 <a href="cascmd_fr971.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

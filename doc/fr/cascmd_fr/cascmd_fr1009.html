@@ -4,47 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Un des points d’intersection de deux objets géométriques : single_inter line_inter inter_unique inter_droite</title>
+<title>Pôle et polaire : pole et polar polaire</title>
 </head>
 <body >
 <a href="cascmd_fr1008.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1010.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1222" class="subsection">11.4.3  Un des points d’intersection de deux objets géométriques : <span style="font-family:monospace">single_inter line_inter inter_unique inter_droite</span></h3>
-<p><a id="hevea_default1967"></a><a id="hevea_default1968"></a><a id="hevea_default1969"></a><a id="hevea_default1970"></a><a id="sec:interdroite3"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr894.html#sec%3Ainterdroite2">10.8.5</a> pour la géométrie plane.<br>
-<span style="font-family:monospace">inter_unique</span> ou <span style="font-family:monospace">inter_droite</span> a 2 ou 3 arguments qui 
-sont deux objets géométriques et éventuellement un 3ième argument qui 
-est soit un point soit une liste de points.<br>
-<span style="font-family:monospace">inter_unique</span> renvoie l’un des points d’intersection de ces deux objets
-géométriques. Si on a mis un point <span style="font-family:monospace">A</span> comme troisième argument 
-<span style="font-family:monospace">inter_unique</span> renvoie le point d’intersection le plus proche de <span style="font-family:monospace">A</span>
-et si on a mis une liste de points <span style="font-family:monospace">L</span> comme troisième argument 
-<span style="font-family:monospace">inter_unique</span> renvoie le point d’intersection qui ne se trouve pas dans 
-la liste <span style="font-family:monospace">L</span>.<br>
+<h3 id="sec1222" class="subsection">10.19.5  Pôle et polaire : <span style="font-family:monospace">pole</span> et <span style="font-family:monospace">polar polaire</span></h3>
+<p><a id="hevea_default1968"></a><a id="hevea_default1969"></a><a id="hevea_default1970"></a>
+<span style="font-family:monospace">polaire</span> a comme argument un cercle <span style="font-style:italic">C</span> et un point <span style="font-style:italic">A</span> (ou un
+nombre complexe).<br>
+<span style="font-family:monospace">polaire</span> renvoie et dessine la polaire du point <span style="font-style:italic">A</span> par rapport au cercle <span style="font-style:italic">C</span> : c’est
+la droite qui est le lieu des conjugués de <span style="font-style:italic">A</span> par rapport au cercle <span style="font-style:italic">C</span>.<br>
+<span style="font-family:monospace">pole</span> a comme argument un cercle <span style="font-style:italic">C</span> et une droite <span style="font-style:italic">d</span>.<br>
+<span style="font-family:monospace">pole</span> renvoie et dessine le pôle de <span style="font-style:italic">d</span> par rapport au cercle <span style="font-style:italic">C</span> : c’est le point 
+<span style="font-style:italic">A</span> admettant <span style="font-style:italic">d</span> comme polaire par rapport à <span style="font-style:italic">C</span>.
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=inter_unique(plan(point(0,1,1),point(1,0,1),point(1,1,0)),droite(point(0,0,0),point(1,1,1)))</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">coordonnees(A)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">polaire(cercle(0,1),(point(1+i))/2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[2/3,2/3,2/3]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">pnt([[2,2*i],0]) et dessine cette droite</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">B:=inter_unique(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)))</span></div><div class="center"><span style="font-family:monospace">coordonnees(B)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">pole(cercle(0,1),droite(i,1))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">B1:=inter_unique(sphere(point(0,0,0),1),droite(point(0,0,0),point(1,1,1)),point(-1,0,0))</span></div><div class="center"><span style="font-family:monospace">coordonnees(B1)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[1/(sqrt(3)),1/(sqrt(3)),1/(sqrt(3))]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">B1:=inter_unique(sphere(point(0,0,0),1),droite(point(1,0,0),point(1,1,1)))</span></div><div class="center"><span style="font-family:monospace">coordonnees(B1)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[1,0,0]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">B1:=inter_unique(sphere(point(0,0,0),1),droite(point(1,0,0),point(1,1,1)),[point(1,0,0)])</span></div><div class="center"><span style="font-family:monospace">coordonnees(B1)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[1/3,2/3,2/3]</span></div>
+</p><div class="center"><span style="font-family:monospace">pnt(1+i,0) et dessine ce point</span></div>
 <hr>
 <a href="cascmd_fr1008.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

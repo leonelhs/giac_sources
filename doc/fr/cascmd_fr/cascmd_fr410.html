@@ -4,58 +4,67 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Matrice de Sylvester de deux polynômes : sylvester</title>
+<title>Suites de Sturm : sturmseq</title>
 </head>
 <body >
 <a href="cascmd_fr409.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr411.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec522" class="subsection">6.29.18  Matrice de Sylvester de deux polynômes : <span style="font-family:monospace">sylvester</span></h3>
+<h3 id="sec522" class="subsection">6.29.17  Suites de Sturm : <span style="font-family:monospace">sturmseq</span></h3>
 <p><a id="hevea_default764"></a>
-<span style="font-family:monospace">sylvester</span> a comme arguments deux polynômes.<br>
-<span style="font-family:monospace">sylvester</span> renvoie la matrice <span style="font-style:italic">S</span> de Sylvester des deux polynômes.<br>
-Pour deux polynômes <span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">i</span>=0</sub><sup><span style="font-style:italic">i</span>=<span style="font-style:italic">n</span></sup> <span style="font-style:italic">a</span><sub><span style="font-style:italic">i</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">i</span></sup> et 
-<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">i</span>=0</sub><sup><span style="font-style:italic">i</span>=<span style="font-style:italic">m</span></sup><span style="font-style:italic">b</span><sub><span style="font-style:italic">i</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">i</span></sup>, la matrice <span style="font-family:monospace">S</span> de Sylvester est une matrice
-carrée de dimensiom <span style="font-family:monospace">m+n</span> dont les <span style="font-family:monospace">m=degree(B(x))</span> premières 
-lignes sont composées à partir des coefficients de <span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>) :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>11</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>12</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−1</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>1(<span style="font-style:italic">n</span>+1)</sub>=<span style="font-style:italic">a</span><sub>0</sub></td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>21</sub>=0</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>22</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>2(<span style="font-style:italic">n</span>+1)</sub>=<span style="font-style:italic">a</span><sub>1</sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>2(<span style="font-style:italic">n</span>+2)</sub>=<span style="font-style:italic">a</span><sub>0</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>1</sub>=0</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>2</sub>=0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>(<span style="font-style:italic">n</span>+1)</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">m</span>−1</sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>(<span style="font-style:italic">n</span>+2)</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">m</span>−2</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">a</span><sub>0</sub> 
-</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p>
-et les <span style="font-family:monospace">n=degree(A(x))</span> lignes suivantes sont composées de la même 
-façon à partir des coefficients de <span style="font-family:monospace">B(x)</span> :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+1)1</sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">m</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+1)2</sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">m</span>−1</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+1)(<span style="font-style:italic">m</span>+1)</sub>=<span style="font-style:italic">b</span><sub>0</sub></td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+<span style="font-style:italic">n</span>)1</sub>=0</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+<span style="font-style:italic">n</span>)2</sub>=0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+<span style="font-style:italic">n</span>)(<span style="font-style:italic">m</span>+1)</sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span>−1</sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span>−2</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">b</span><sub>0</sub> 
-</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p>
+<span style="font-family:monospace">sturmseq</span> a comme paramètre une expression polynômiale <span style="font-style:italic">P</span> 
+ou une fraction rationnelle <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span>.<br>
+<span style="font-family:monospace">sturmseq</span> renvoie la liste des suites de Sturm et de leur multiplicité 
+pour <span style="font-style:italic">P</span> ou pour <span style="font-style:italic">P</span> et pour <span style="font-style:italic">Q</span>.<br>
+La suite de sturm <span style="font-style:italic">R</span><sub>1</sub>,<span style="font-style:italic">R</span><sub>2</sub>,... est obtenue à partir du facteur <span style="font-style:italic">F</span>
+sans carré de <span style="font-style:italic">P</span>. Pour obtenir <span style="font-style:italic">F</span> à partir de la décomposition de <span style="font-style:italic">P</span>
+en facteurs premiers, on élimine les termes carrés et on 
+transforme les puissances impaires en puissances 1.<br>
+<span style="font-style:italic">R</span><sub>1</sub> est l’opposé du reste de la division euclidienne de <span style="font-style:italic">F</span> par <span style="font-style:italic">F</span>′ puis, <span style="font-style:italic">R</span><sub>2</sub> est l’opposé du reste de la division euclidienne de <span style="font-style:italic">F</span>′ par <span style="font-style:italic">R</span><sub>1</sub><br>
+....<br>
+et ainsi de suite jusqu’à ce que <span style="font-style:italic">R</span><sub><span style="font-style:italic">k</span></sub>=0.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">sylvester(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-p*x+q,3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-p,x)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sturmseq(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2)</span></div><p>
+ou 
+</p><div class="center"><span style="font-family:monospace">sturmseq(2*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2,y)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[2,[[1,0,0,1],[3,0,0],-9],1]</span></div><p>
+Le premier terme donne le PGCD des coefficients du numérateur (ici 2), 
+le dernier terme donne le dénominateur (ici 1). Entre les deux on a la 
+suite des polynômes [<span style="font-style:italic">x</span><sup>3</sup>+1,3<span style="font-style:italic">x</span><sup>2</sup>,−9].<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">det([[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sturmseq((12*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+4)/(6*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+3),x)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">-4*p</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3--27*q</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+</p><div class="center"><span style="font-family:monospace">[4,[[3,0,0,1],[9,0,0],-81],3,[[2,0,1],[4,0],-16]]</span></div><p>
+Le premier terme donne le PGCD des coefficients du numérateur (ici 4),
+puis la suite de Sturm du numérateur ([[3,0,0,1],[9,0,0],-81]), puis le 
+le PGCD des coefficient du dénominateur (ici 3), et la suite de Sturm du 
+dénominateur ([[2,0,1],[4,0],-16]). 
+On a la suite des polynômes [3<span style="font-style:italic">x</span><sup>3</sup>+1,9<span style="font-style:italic">x</span><sup>2</sup>, −81] pour le numérateur et,
+[2<span style="font-style:italic">x</span><sup>2</sup>+1,4<span style="font-style:italic">x</span>,−16] pour le dénominateur.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">sturmseq((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[1,1]</span></div><p>
+En effet les termes carrés sont éliminés et <span style="font-style:italic">F</span>=1.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">sturmseq(3*(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1)/(2*x+2),x)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[3,[[3,0,0,1],[9,0,0],-81],2,[[1,1],1]]</span></div><p>
+Le premier terme donne le PGCD des coefficients du numérateur 
+(ici <span style="font-family:monospace">3</span>),<br>
+le deuxième terme donne la suite de polynômes (ici 
+<span style="font-family:monospace">3x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1, 9x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2, -81</span>),<br>
+le troisième terme donne le PGCD des coefficients du dénominateur (ici 
+<span style="font-family:monospace">2</span>),<br>
+le quatrième terme indique la suite de polynômes du dénominateur 
+(<span style="font-family:monospace">x+1,1</span>).<br>
+<span style="font-weight:bold">Attention!!!!</span><br>
+ <span style="font-style:italic">P</span> doit être donné par son expression symbolique et,si on tape :<br>
+<span style="font-family:monospace">sturmseq([1,0,0,1],x)</span>,<br>
+on obtient :<br>
+<span style="font-family:monospace">Bad argument type</span>.</p>
 <hr>
 <a href="cascmd_fr409.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

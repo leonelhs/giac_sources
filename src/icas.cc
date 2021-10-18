@@ -948,7 +948,7 @@ int main(int ARGC, char *ARGV[]){
   }
 #endif
   if (ARGC==2 && (string(ARGV[1])=="-v" || string(ARGV[1])=="--version" ) ){
-    cout << VERSION << endl;
+    cout << GIAC_VERSION << endl;
 #ifndef GNUWINCE
     return 0;
 #endif

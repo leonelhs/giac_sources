@@ -3041,6 +3041,7 @@ namespace xcas {
       }
     }
     w->hide();
+    bool request=false;
     gen gtmp("ok",contextptr);
     res.push_back(symb_sto(r,gtmp));
     // store results
@@ -3071,16 +3072,20 @@ namespace xcas {
       if ( (u==at_click) || (u==at_Request) ){
 	vecteur vg(gen2vecteur(g));
 	try {
-	  if (vg.size()>3|| u==at_Request)
+	  if (vg.size()>3|| u==at_Request){
+	    request=true;
 	    resadd=string2gen((*vinput_it)->value(),false);
+	  }
 	  else
 	    resadd=gen((*vinput_it)->value(),contextptr);
 	}
 	catch (std::runtime_error & e){
 	  resadd=string2gen(e.what(),false);
 	}
-	if (u==at_Request && vg.size()>1)
+	if (u==at_Request && vg.size()>1){
 	  res.push_back(symb_sto(resadd,vg[1]));
+	  request=true;
+	}
 	else {
 	  if (vg.size()>2)
 	    res.push_back(symb_sto(resadd,vg[2]));
@@ -3154,6 +3159,8 @@ namespace xcas {
     // delete w;
     if (r==2)
       return 0;
+    if (request)
+      return res;
     if (r==0)
       return undef;
     else

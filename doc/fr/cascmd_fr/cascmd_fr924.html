@@ -4,45 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Le carré : square carre</title>
+<title>La médiatrice d’un segment : perpen_bisector mediatrice</title>
 </head>
 <body >
 <a href="cascmd_fr923.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr925.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1123" class="subsection">10.11.2  Le carré : <span style="font-family:monospace">square carre</span></h3>
-<p><a id="hevea_default1793"></a><a id="hevea_default1794"></a><a id="sec:carre2"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1032.html#sec%3Acarre3">11.8.1</a> pour la géométrie 3-d.<br>
-<span style="font-family:monospace">carre</span>, en géométrie plane, peut avoir de deux à quatre 
-arguments.<br>
-Description des arguments :
-</p><ul class="itemize"><li class="li-itemize">
-si il a deux arguments ce sont : 2 points ou 2 
-nombres complexes représentant l’affixe de ces points (ou encore une liste 
-de 2 points ou de 2 complexes).<br>
-<span style="font-family:monospace">carre(A,B)</span> renvoie et trace le carrè <span style="font-style:italic">ABCD</span> de sens direct, mais sans
-définir les points D et C.<br>
+<h3 id="sec1127" class="subsection">10.9.12  La médiatrice d’un segment : <span style="font-family:monospace">perpen_bisector mediatrice</span></h3>
+<p><a id="hevea_default1801"></a><a id="hevea_default1802"></a><a id="sec:mediatrice2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1033.html#sec%3Amediatrice3">11.6.2</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">mediatrice</span>, en géométrie plane, a comme argument un segment 
+ou 2 points 
+(ou 2 nombres complexes représentant l’affixe de ces points ou encore une 
+liste de 2 points ou de 2 complexes).<br>
+<span style="font-family:monospace">mediatrice</span> renvoie et dessine une droite qui est la médiatrice du segment 
+défini par les deux arguments.<br>
+<span style="font-weight:bold">Remarques</span><br>
+<span style="font-family:monospace">mediatrice(A,B)</span> est pour <span style="font-family:monospace">Xcas</span> une droite définie par les points :
+<span style="font-family:monospace">M:=milieu(A,B)</span> et <span style="font-family:monospace">N:=rotation(M,pi/2,M+(A-B))</span>.<br>
+Si vous donner comme argument à <span style="font-family:monospace">mediatrice</span> 2 droites au lieu de 
+2 points, <span style="font-family:monospace">Xcas</span> tracera la médiatrice du premier point définissant la 
+première droite et du deuxième point définissant la deuxième droite, 
+(i.e <span style="font-family:monospace">mediatrice(droite(A,B), droite(C,D))</span> sera identique à 
+<span style="font-family:monospace">mediatrice(A,D)</span> et si <span style="font-family:monospace">D1:=droite(A,B);<br>
+D2:=mediatrice(droite(A,B))</span> alors <span style="font-family:monospace">mediatrice(D1,D2)</span><br>
+ sera identique à <span style="font-family:monospace">mediatrice(A,D2)</span> qui sera identique à <span style="font-family:monospace">mediatrice(A,N)</span> avec <span style="font-family:monospace">M:=milieu(A,B)</span> et <span style="font-family:monospace">N:=rotation(M,pi/2,M+(A-B))</span>).<br>
 On tape :
-<div class="center"><span style="font-family:monospace">carre(0,1+i)</span></div>
+</p><div class="center"><span style="font-family:monospace">mediatrice(1,i)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">mediatrice(segment(1,i))</span></div><p>
 On obtient :
-<div class="center"><span style="font-family:monospace">Le carré de sommets 0, 1+i, 2*i, -1+i</span></div>
-</li><li class="li-itemize">si il a trois (resp quatre) arguments, les 2 derniers paramètres sont 
-le nom d’une (resp deux) variables qui serviront à définir l’avant-dernier 
-sommet (resp les deux autres sommets).
-On tape :
-<div class="center"><span style="font-family:monospace">carre(0,1+i,C,D)</span></div>
-On obtient :
-<div class="center"><span style="font-family:monospace">Le carré de sommets 0, 1+i, 2*i, -1+i</span></div>
-On tape :
-<div class="center"><span style="font-family:monospace">affixe(C)</span></div>
-On obtient :
-<div class="center"><span style="font-family:monospace">2*i</span></div>
-On tape :
-<div class="center"><span style="font-family:monospace">affixe(D)</span></div>
-On obtient :
-<div class="center"><span style="font-family:monospace">-1+i</span></div>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">La droite d’équation y=x</span></div>
 <hr>
 <a href="cascmd_fr923.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

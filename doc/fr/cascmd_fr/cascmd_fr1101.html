@@ -4,35 +4,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Qu’est-ce qu’une image ?</title>
+<title>Le dodecaèdre : dodecahedron dodecaedre</title>
 </head>
 <body >
 <a href="cascmd_fr1100.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1102.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1331" class="subsection">12.2.1  Qu’est-ce qu’une image ?</h3>
-<p>
-Pour <span style="font-family:monospace">Xcas</span> une image est une liste <span style="font-family:monospace">a</span> de 5 éléments :
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">a[0]</span> est une liste de 3 éléments : le nombre de canaux (3 ou 4)
-et le nombre de lignes <span style="font-style:italic">n</span> et de colonnes <span style="font-style:italic">p</span> utilisés pour la dimension de
-l’image,
-</li><li class="li-itemize"><span style="font-family:monospace">a[1]</span> correspond au canal rouge : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
-entiers entre 0 et 255,
-</li><li class="li-itemize"><span style="font-family:monospace">a[2]</span> correspond au canal vert : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
-entiers entre 0 et 255,
-</li><li class="li-itemize"><span style="font-family:monospace">a[3]</span> correspond au canal pour la transparence : c’est une matrice
-<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres entiers entre 0 et 255,
-</li><li class="li-itemize"><span style="font-family:monospace">a[4]</span> correspond au canal bleu : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
-entiers entre 0 et 255.
-</li></ul><p>
-Pour creer d’autres couleurs que rouge, vert, bleu au pixel ligne i colonne j, 
-il faut donner des valeurs non nulles en ligne i colonne j des 1ere, 2eme et 
-4eme matrices, plus la valeur est grande plus la composante rouge, vert, bleu 
-sera importante.<br>
-Par exemple :<br>
-
+<h3 id="sec1333" class="subsection">11.17.4  Le dodecaèdre : <span style="font-family:monospace">dodecahedron dodecaedre</span></h3>
+<p><a id="hevea_default2134"></a><a id="hevea_default2135"></a>
+ a comme argument trois points <span style="font-family:monospace">A,B,C</span>.<br>
+<span style="font-family:monospace">dodecaedre(A,B,C)</span> dessine un dodecaèdre de centre <span style="font-family:monospace">A</span>, de sommet 
+<span style="font-family:monospace">B</span> tel que le plan <span style="font-family:monospace">ABC</span> contient un axe de symetrie du dodecaedre.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">dodecaedre([0,0,0],[0,0,5],[0,1,0])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Un dodecaèdre de centre l’origine, de sommet [0,0,5] et dont un axe de symétrie est dans le plan 0yz</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">dodecaedre([0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]) </span></div><p>On obtient :
+</p><div class="center"><span style="font-family:monospace">Un dodecaèdre de centre l’origine, de sommet [0,2,sqrt(5)/2+3/2] et dont un axe de symétrie est 0z</span></div><p>
+<span style="font-weight:bold">Attention</span> Les faces (c’est à dire les pentagones) sont dessinées à
+l’aide d’un triangle et d’un trapèze (on a le dessin du pentagone et d’une
+de ses diagonales).
 </p>
 <hr>
 <a href="cascmd_fr1100.html"><img src="previous_motif.gif" alt="Previous"></a>

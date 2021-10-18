@@ -4,28 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Création et modification par affectation</title>
+<title>Bloc de Jordan : JordanBlock</title>
 </head>
 <body >
 <a href="cascmd_fr562.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr564.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec697" class="subsection">6.47.1  Création et modification par affectation</h3>
-<p>
-On peut donner un nom à une matrice par une affectation, par exemple :<br>
-<span style="font-family:monospace">A:=[[1,2,6],[3,4,8],[1,0,1]]</span><br>
-On a alors accés :
-à ses éléments, par exemple <span style="font-family:monospace">A[0,1]</span> renvoie <span style="font-family:monospace">2</span><br>
-à ses lignes, par exemple <span style="font-family:monospace">A[0]</span> renvoie <span style="font-family:monospace">[1,2,6]</span><br>
-à ses colonnes, par exemple <span style="font-family:monospace">A[0..2,1]</span> renvoie <span style="font-family:monospace">[2,4,0]</span><br>
-On peut aussi changer la valeurs d’un de ses éléments, par exemple :<br>
-<span style="font-family:monospace">A[0,1]:=5</span> 
-Ainsi <span style="font-family:monospace">A</span> est la matrice <span style="font-family:monospace">[[1,5,6],[3,4,8],[1,0,1]]</span><br>
-On a alors accés à des sous-matrices, par exemple :<br>
-<span style="font-family:monospace">A[1..2]</span> renvoie <span style="font-family:monospace">[[3,4,8],[1,0,1]]</span>
-<span style="font-family:monospace">A[0..2,1..2]</span> renvoie <span style="font-family:monospace">[[2,6],[4,8],[0,1]]</span>
-<span style="font-family:monospace">A[0..1,1..2]</span> renvoie <span style="font-family:monospace">[[2,6],[4,8]]</span></p>
+<h3 id="sec696" class="subsection">6.46.6  Bloc de Jordan : <span style="font-family:monospace">JordanBlock</span></h3>
+<p><a id="hevea_default1040"></a>
+<span style="font-family:monospace">JordanBlock</span> a comme argument une expression <span style="font-style:italic">a</span> et un entier 
+<span style="font-style:italic">n</span>.<br>
+<span style="font-family:monospace">JordanBlock</span> renvoie une matrice carrée d’ordre <span style="font-style:italic">n</span> avec <span style="font-style:italic">a</span>
+sur la diagonale principale, 1 au-dessus de la diagonale et 0 ailleurs.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">JordanBlock(7,3)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[[7,1,0],[0,7,1],[0,0,7]]</span></div>
 <hr>
 <a href="cascmd_fr562.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

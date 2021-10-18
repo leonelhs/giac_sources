@@ -195,7 +195,7 @@ Function {latex_save_DispG(const char * filename)} {return_type void
 
 Function {a_propos()} {return_type void
 } {
-  code {std::string s("xcas "); s+=VERSION; s+=" (c) 2000-17, Bernard Parisse, Renee De Graeve\\n";
+  code {std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-17, Bernard Parisse, Renee De Graeve\\n";
   s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\\n";
   s += "If you like Xcas, please link your webpage to the above link to help other find it\\n";
   s += "Software licensed under the GPL, General Public License version 3.0 or later\\nSee the file COPYING in this package for more details\\nOr browse http://www.gnu.org\\n";
@@ -211,6 +211,7 @@ Function {a_propos()} {return_type void
   s += "Tutorial (dxcas) with B. Ycart\\n";
   s += "Greek localization, Alkiviadis Akritas, Eugenia Kelepesi-Akritas, George Nasopoulos, Nikos Larisis\\n";
   s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez\\n";
+  s += "German short help localization, Philipp Rösch\\n";
   s += "English user guide contributions by Luka Marohnić and Jay Belanger\\n";
   s += "Debian package: Carlos Enrique Carleos Artime\\n";
   s += "Mac OS X port thanks to Jean-Yves Avenard and IREM Grenoble\\n";
@@ -1502,6 +1503,7 @@ Xcas_DispG_Cancel_->hide();}
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(1,giac::context0);
 doc_prefix=giac::set_language(1,contextptr);
+giac::language(1,giac::context0);
 giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
@@ -1510,6 +1512,7 @@ giac::html_help_init("aide_cas",1);}
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(2,giac::context0);
 doc_prefix=giac::set_language(2,contextptr);
+giac::language(2,giac::context0);
 giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
@@ -1518,6 +1521,7 @@ giac::html_help_init("aide_cas",1);}
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(3,giac::context0);
 doc_prefix=giac::set_language(3,contextptr);
+giac::language(3,giac::context0);
 giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
@@ -1526,6 +1530,7 @@ giac::html_help_init("aide_cas",1);}
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(4,giac::context0);
 doc_prefix=giac::set_language(4,contextptr);
+giac::language(4,giac::context0);
 giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
@@ -1534,6 +1539,16 @@ giac::html_help_init("aide_cas",1);}
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(4,giac::context0);
 doc_prefix=giac::set_language(8,contextptr);
+giac::language(8,giac::context0);
+giac::html_help_init("aide_cas",1);}
+            xywh {0 0 100 20}
+          }
+          MenuItem Xcas_index_German {
+            label deutsch
+            callback {const giac::context * contextptr=Xcas_get_context();
+// doc_prefix=giac::set_language(3,giac::context0);
+doc_prefix=giac::set_language(9,contextptr);
+giac::language(9,giac::context0);
 giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
@@ -4353,12 +4368,12 @@ if (argc>argstart){
 else make_history();
   bool running=true;
 \#ifdef WIN32
-  static std::string windowname=std::string("Xcas ")+VERSION+" (win"+giac::print_INT_(8*sizeof(long))+")";
+  static std::string windowname=std::string("Xcas ")+GIAC_VERSION+" (win"+giac::print_INT_(8*sizeof(long))+")";
 \#else
 \#ifdef __APPLE__ 
-  static std::string windowname=std::string("Xcas ")+VERSION+" (osx"+giac::print_INT_(8*sizeof(long))+")";
+  static std::string windowname=std::string("Xcas ")+GIAC_VERSION+" (osx"+giac::print_INT_(8*sizeof(long))+")";
 \#else
-  static std::string windowname=std::string("Xcas ")+VERSION+" (linux"+giac::print_INT_(8*sizeof(long))+")";
+  static std::string windowname=std::string("Xcas ")+GIAC_VERSION+" (linux"+giac::print_INT_(8*sizeof(long))+")";
 \#endif
 \#endif
   Xcas_Main_Window_->label(windowname.c_str());

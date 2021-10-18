@@ -4,29 +4,29 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Génération d’une marche aléatoire sur un graphe d’état : randmarkov</title>
+<title>Test de Kolmogorov-Smirnov : kolmogorovt</title>
 </head>
 <body >
 <a href="cascmd_fr811.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr813.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec984" class="subsection">8.4.57  Génération d’une marche aléatoire sur un graphe d’état : <span style="font-family:monospace">randmarkov</span></h3>
-<p><a id="hevea_default1441"></a>
-<span style="font-family:monospace">randmarkov(M,i0,n)</span> génère une suite de <span style="font-family:monospace">n</span> états (chaine de 
-Markov) partant de <span style="font-family:monospace">i0</span> dont les probabilites de transitions sont données 
-par <span style="font-family:monospace">M</span> (matrice stochastique) ou <br>
-<span style="font-family:monospace">randmarkov(v,i0)</span> génère une matrice stochastique ayant <span style="font-style:italic">p</span> boucles 
-récurrentes <span style="font-family:monospace">v=[n1,...,np]</span> et <span style="font-family:monospace">i0</span> états transients</p><p><span style="font-family:monospace">randmarkov(M,i0,n)</span> renvoie la liste des états qui a <span style="font-family:monospace">n+1</span> éléments.<br>
+<h3 id="sec990" class="subsection">8.4.49  Test de Kolmogorov-Smirnov : <span style="font-family:monospace">kolmogorovt</span></h3>
+<p><a id="hevea_default1450"></a>
+<span style="font-family:monospace">kolmogorovt(l1,l2)</span> renvoie le test de Kolmogorov-Smirnov 
+d’adéquation à une loi de distribution continue, entre 2 échantillons 
+<span style="font-family:monospace">l1</span> et <span style="font-family:monospace">l2</span> lorsque la loi est inconnue, ou<br>
+<span style="font-family:monospace">kolmogorovt(l1,s)</span> renvoie le test de Kolmogorov-Smirnov d’adéquation 
+à une loi de distribution continue, entre un échantillon <span style="font-family:monospace">l1</span> et une 
+loi <span style="font-family:monospace">s</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">randmarkov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4], [0,0,1/2,0,1/2],[0,0,0,0,1]],2,20)</span></div><p>
-On obtient par exemple :
-</p><div class="center"><span style="font-family:monospace">[2,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">randmarkov([1,2,1,3],4)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">kolmogorovt(randvector(100,normald,0,1), randvector(100,normald,0,1))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">une matrice carrée de dimension [11,11]</span></div><p>
-en effet 1+2+1+3+4=11</p>
+</p><div class="center"><span style="font-family:monospace">[0.21,1.48492424049]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">kolmogorovt(randvector(100,normald,0,1),normald(0,1))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[0.0797807811891,0.797807811891]</span></div>
 <hr>
 <a href="cascmd_fr811.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

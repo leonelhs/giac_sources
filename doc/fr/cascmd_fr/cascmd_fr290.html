@@ -4,51 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Définition d’un opérateur: user_operator</title>
+<title>Les autres opérateurs de Xcas</title>
 </head>
 <body >
 <a href="cascmd_fr289.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr291.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec371" class="subsection">6.16.3  Définition d’un opérateur: <span style="font-family:monospace">user_operator</span></h3>
-<p><a id="hevea_default495"></a><a id="hevea_default496"></a><a id="hevea_default497"></a>
-<span style="font-family:monospace">user_operator</span> a comme argument :
+<h3 id="sec371" class="subsection">6.16.2  Les autres opérateurs de <span style="font-family:monospace">Xcas</span></h3>
+<p><a id="hevea_default484"></a><a id="hevea_default485"></a><a id="hevea_default486"></a><a id="hevea_default487"></a><a id="hevea_default488"></a><a id="hevea_default489"></a><a id="hevea_default490"></a><a id="hevea_default491"></a> <a id="hevea_default492"></a>
+<a id="hevea_default493"></a><a id="hevea_default494"></a><a id="hevea_default495"></a>
 </p><ul class="itemize"><li class="li-itemize">
-une chaîne de caractères qui est le nom de l’opérateur,
-</li><li class="li-itemize">une fonction de deux variablesà valeur dans ℝ ou dans
-<span style="font-family:monospace">true, false</span>,
-</li><li class="li-itemize">une option <span style="font-family:monospace">Binary</span> pour la définition ou <span style="font-family:monospace">Delete</span> pour 
-annuler cette définition.
-</li></ul><p>
-<span style="font-family:monospace">user_operator</span> renvoie 1 si la définition a eu lieu et 0 sinon.</p><p><span style="font-weight:bold">Exemple 1</span><br>
-Soit la loi <span style="font-style:italic">R</span> définit sur ℝ par <span style="font-style:italic">x</span> <span style="font-style:italic">R</span>  <span style="font-style:italic">y</span>= <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>.<br>
-On tape pour définir la loi <span style="font-style:italic">R</span> :
-</p><div class="center"><span style="font-family:monospace">user_operator("R",(x,y)-&gt;x*y+x+y,Binary)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
-On tape :
-</p><div class="center"><span style="font-family:monospace">5 R 7</span></div><p>
-Bien mettre les espace autour de <span style="font-family:monospace">R</span>.<br>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">47</span></div><p><span style="font-weight:bold">Exemple 2</span><br>
-Soit la relation <span style="font-style:italic">S</span> définit sur ℕ par :<br>
-pour <span style="font-style:italic">x</span> et <span style="font-style:italic">y</span> entiers, <span style="font-style:italic">x</span> <span style="font-style:italic">S</span>  <span style="font-style:italic">y</span> &lt;=&gt; <span style="font-style:italic">x</span> et <span style="font-style:italic">y</span> ne sont pas premiers entre 
-eux.<br>
-On tape pour définir la relation <span style="font-style:italic">S</span> :
-</p><div class="center"><span style="font-family:monospace">user_operator("S",(x,y)-&gt;(gcd(x,y))!=1,Binary)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
-On tape :
-</p><div class="center"><span style="font-family:monospace">5 S 7</span></div><p>
-Bien mettre les espace autour de <span style="font-family:monospace">S</span>.<br>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">0</span></div><p> 
-On tape :
-</p><div class="center"><span style="font-family:monospace">8 S 12</span></div><p>
-Bien mettre les espace autour de <span style="font-family:monospace">S</span>.<br>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div>
+<span style="font-family:monospace">$ </span> est la version infixée de <span style="font-family:monospace">seq</span> par exemple :<br>
+<span style="font-family:monospace">(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k)$(k=0..3)= seq(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k,k=0..3)=(1,2,4,8)</span> (ne pas oublier 
+de parenthéser les arguments),
+</li><li class="li-itemize"><span style="font-family:monospace">mod</span> ou <span style="font-family:monospace">% </span> pour définir un nombre modulaire,
+</li><li class="li-itemize"><span style="font-family:monospace">@</span> pour composer des fonctions par exemple :
+<span style="font-family:monospace">(f@g)(x)=f(g(x))</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">@@ </span> pour composer une fonction avec elle-même par exemple :<br>
+<span style="font-family:monospace">(f@@3)(x)=f(f(f(x)))</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">minus union intersect</span> pour traduire la différence, l’union et 
+l’intersection de deux ensembles,
+</li><li class="li-itemize"><span style="font-family:monospace">-&gt;</span> pour définir une fonction,
+</li><li class="li-itemize"><span style="font-family:monospace">:= ou =&gt;</span> pour affecter une variable (c’est la version infixée de 
+<span style="font-family:monospace">sto</span> avec l’ordre permuté des arguments pour <span style="font-family:monospace">:=</span>), 
+par exemple : <span style="font-family:monospace">a:=2</span> or <span style="font-family:monospace">2=&gt;a</span> or <span style="font-family:monospace">sto(2,a)</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">=&gt;</span> permet aussi de faire des conversions d’unité et des 
+réécritures d’expressions, par exemples : <span style="font-family:monospace">3_m=&gt;_cm</span>, 
+<span style="font-family:monospace">sin(x)=&gt;diff</span>, <span style="font-family:monospace">sin(x)=&gt;exp</span>, <span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1=&gt;*</span> etc... 
+<span style="font-family:monospace">=&lt;</span> pour stocker une expression dans une variable, avec une affectation 
+par référence (l’ordre des arguments est le même que pour <span style="font-family:monospace">:=</span>)
+si la cible est un élément d’une matrice ou d’une liste.
+Ceci est plus rapide si on modifie les élèments d’une matrice ou d’une 
+liste existante de grande dimension, car on ne fait pas de copie.
+À utiliser avec précautions car tous les objets pointant sur cette matrice 
+seront modifiés. Dans un programme il faudra utiliser <span style="font-family:monospace">copy</span> lors de 
+l’initialisation pour que les modifications se fassent sur la copie 
+(cf <a href="cascmd_fr847.html#sec%3Acopie">9.4.16</a>)
+</li></ul>
 <hr>
 <a href="cascmd_fr289.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,36 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Première formule de Frenet</title>
+<title>Négliger les petites valeurs : epsilon2zero</title>
 </head>
 <body >
 <a href="cascmd_fr703.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr705.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec863" class="subsection">7.5.1  Première formule de Frenet</h3>
+<h3 id="sec862" class="subsection">6.66.1  Négliger les petites valeurs : <span style="font-family:monospace">epsilon2zero</span></h3>
 <p>
-On étudie le vecteur  <span style="font-style:italic">d</span><sup>2</sup><span style="font-style:italic">M</span>/<span style="font-style:italic">ds</span><sup>2</sup>=<span style="font-style:italic">d</span>τ/<span style="font-style:italic">ds</span>.<br>
- <span style="font-style:italic">d</span><sup>2</sup><span style="font-style:italic">M</span>/<span style="font-style:italic">ds</span><sup>2</sup> est situé dans le plan osculateur et est 
-situé par rapport à un plan non osculateur selon la concavité de Γ.
- <span style="font-style:italic">d</span><sup>2</sup><span style="font-style:italic">M</span>/<span style="font-style:italic">ds</span><sup>2</sup> est perpendiculaire à τ puisque
-τ est unitaire.<br>
-Soit <span style="font-style:italic">n</span> le vecteur unitaire de la normale principale orientée dans le sens 
-de la concavité i.e. selon <span style="font-style:italic">d</span>τ/<span style="font-style:italic">ds</span>, il exite un scalaire positif 
-<span style="font-style:italic">R</span> tel que :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span>τ</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">ds</span></td></tr>
-</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">R</span></td></tr>
-</table></td></tr>
-</table><p>
-On dit que <span style="font-style:italic">R</span> est le <span style="font-weight:bold">rayon de courbure</span> de Γ en <span style="font-style:italic">M</span> et on appelle 
-<span style="font-weight:bold">centre de courbure</span> de Γ en <span style="font-style:italic">M</span>, le point <span style="font-style:italic">C</span> défini par :<br>
-<span style="font-style:italic">MC</span>=<span style="font-style:italic">Rn</span><br>
-La courbure de Γ au point <span style="font-style:italic">M</span> est égale à 1/<span style="font-style:italic">R</span>.
-</p>
+<a id="hevea_default1271"></a> <a id="sec:epsilon2zero"></a>
+<span style="font-family:monospace">epsilon2zero</span> a comme paramètre une expression de <span style="font-family:monospace">x</span>.<br>
+<span style="font-family:monospace">epsilon2zero</span> renvoie l’expression où les valeurs plus petites que 
+<span style="font-family:monospace">epsilon</span> ont été remplacées par zéro dans l’expression non 
+évaluée.<br>
+La valeur de <span style="font-family:monospace">epsilon</span><a id="hevea_default1272"></a> peut être changé dans la 
+configuration du <span style="font-family:monospace">cas</span> (par défaut <span style="font-family:monospace">epsilon=1e-10</span>).<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">epsilon2zero(1e-13+x) </span></div><p>
+On obtient (avec <span style="font-family:monospace">epsilon=1e-10</span>) :
+</p><div class="center"><span style="font-family:monospace">0+x</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">epsilon2zero((1e-13+x)*100000) </span></div><p>
+On obtient (avec <span style="font-family:monospace">epsilon=1e-10</span>) :
+</p><div class="center"><span style="font-family:monospace">(0+x)*100000</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">epsilon2zero(0.001+x) </span></div><p>
+On obtient (avec <span style="font-family:monospace">epsilon=0.0001</span>) :
+</p><div class="center"><span style="font-family:monospace">0.001+x</span></div>
 <hr>
 <a href="cascmd_fr703.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

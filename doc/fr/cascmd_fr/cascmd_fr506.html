@@ -4,72 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Accès à un élément ou à une sous-liste d’une liste : at []</title>
+<title>Aplatir une liste : flatten</title>
 </head>
 <body >
 <a href="cascmd_fr505.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr507.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec631" class="subsection">6.42.4  Accès à un élément ou à une sous-liste d’une liste : <span style="font-family:monospace">at []</span></h3>
-<p><a id="hevea_default899"></a><a id="sec:at"></a><a id="hevea_default900"></a><a id="hevea_default901"></a>
-</p>
-<h4 id="sec632" class="subsubsection">Accès à un élément</h4>
-<p>
-On utilise la fonction <span style="font-family:monospace">at</span> pour accéder à un élément d’une liste, 
-ou on tape son indice entre des crochets pour des indices qui commencent à 0 <br>
-ou bien <br>
-on tape son indice entre des doubles crochets ou entre des 
-parenthèses pour des indices qui commencent à 1.<br>
-Pour toutes les autres fonctions de <span style="font-family:monospace">Xcas</span> (autres que l’accés à un 
-élément), l’indice du premier élément est 0.<br>
-
-<span style="font-weight:bold">Exemples</span><br>
-Soit la liste : <span style="font-family:monospace">[0,1,2]</span> et on veut désigner l’élément <span style="font-family:monospace">1</span>.<br>
-On tape son indice <span style="font-family:monospace">1</span> entre des crochets :<br>
-</p><div class="center"><span style="font-family:monospace">[0,1,2][1]</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">at([0,1,2],1)</span></div><p>
-On obtient puisque les indices commencent à 0 :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-ou bien 
-0n tape son indice <span style="font-family:monospace">2</span> entre des doubles crochets ou entre des 
-parenthèses :
-</p><div class="center"><span style="font-family:monospace">[0,1,2][[2]]</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">[0,1,2](2)</span></div><p>
-On obtient puisque avec cette notation, les indices commencent à 1 :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-Soit la matrice : <span style="font-family:monospace">A:=[[4,5],[2,6]]</span> et on veut désigner la ligne 
-<span style="font-family:monospace">[4,5]</span>.<br>
-On tape son indice <span style="font-family:monospace">0</span> entre des crochets, si on veut que les indices commencent à 0 :
-</p><div class="center"><span style="font-family:monospace">A[0]</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">at(A,0)</span></div><p>
-On obtient puisque les indices commencent à 0 :
-</p><div class="center"><span style="font-family:monospace">[4,5]</span></div><p>
-Ou bien si on veut que les indices commencent à 1, on tape son indice <span style="font-family:monospace">1</span> entre des doubles crochets ou entre des parenthèses :
-</p><div class="center"><span style="font-family:monospace">A[[1]]</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">A(1)</span></div><p>
-On obtient puisque avec cette notation, les indices commencent à 1 :
-</p><div class="center"><span style="font-family:monospace">[4,5]</span></div>
-<h4 id="sec633" class="subsubsection">Extraire une sous-liste</h4>
-<p>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr507.html#sec%3Amid">6.42.5</a> la fonction <span style="font-family:monospace">mid</span>.<br>
-On utilise aussi la fonction <span style="font-family:monospace">at</span> pour extraire une sous-liste d’une liste. On tape alors, entre des crochets, l’indice
-de début, puis <span style="font-family:monospace">..</span> et l’indice de fin de la sous-liste ou on utilise 
-la fonction <span style="font-family:monospace">at</span>.<br>
-<span style="font-weight:bold">Attention !</span> l’indice du premier élément est 0.<br>
-
+<h3 id="sec631" class="subsection">6.42.3  Aplatir une liste : <span style="font-family:monospace">flatten</span></h3>
+<p><a id="hevea_default899"></a>
+<span style="font-family:monospace">flatten</span> a comme argument une liste contenant des listes.<br>
+<span style="font-family:monospace">flatten</span> aplatit récursivement une liste contenant des listes et
+transforme cette liste contenant des listes en une liste.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">[0,1,2,3,4][1..3]</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">at([0,1,2,3,4],1..3)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[1,2,3]</span></div><p>
-<span style="font-weight:bold">Attention</span>, la commande <span style="font-family:monospace">at</span> ne peut pas être utilisée pour les
-séquences : il faut utiliser la syntaxe <span style="font-family:monospace">(0,1,2,3,4,5)[2..3]</span>.</p>
+<span style="font-family:monospace">flatten([[1,[2,3],4],[5,6]])</span><br>
+On obtient :<br>
+<span style="font-family:monospace">[1,2,3,4,5,6]</span><br>
+<span style="font-weight:bold">Remarque 1</span><br>
+ si la liste de listes est une matrice on peut aussi utiliser la 
+commande <span style="font-family:monospace">mat2list</span>.
+</p>
 <hr>
 <a href="cascmd_fr505.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

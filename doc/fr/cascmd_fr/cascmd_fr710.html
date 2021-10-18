@@ -4,42 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>La moyenne : mean moyenne</title>
+<title>Évaluation numérique : evalf</title>
 </head>
 <body >
 <a href="cascmd_fr709.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr711.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec875" class="subsection">8.1.1  La moyenne : <span style="font-family:monospace">mean moyenne</span></h3>
-<p><a id="hevea_default1282"></a> <a id="hevea_default1283"></a>
-<span style="font-family:monospace">mean</span> calcule la moyenne numérique des éléments d’une 
-liste (ou de chaque colonne d’une matrice).<br>
+<h3 id="sec868" class="subsection">6.66.7  Évaluation numérique : <span style="font-family:monospace">evalf</span></h3>
+<p><a id="hevea_default1279"></a>
+<span style="font-family:monospace">evalf</span> a comme paramètre une expression ou une matrice.<br>
+<span style="font-family:monospace">evalf</span> renvoie la valeur numérique de
+l’expression ou de la matrice.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4,5,6,7,8,9,10,11]</span></div><div class="center"><span style="font-family:monospace">mean(A)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">evalf(sqrt(2))</span></div><p> 
 On obtient :
-</p><div class="center"><span style="font-family:monospace">11/2</span></div><p>
-En effet (0+1+...+11)=66 et 66/12=11/2<br>
+</p><div class="center"><span style="font-family:monospace">1.41421356237</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">mean([[1,2],[3,4]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">evalf([[1,sqrt(2)],[0,1]])</span></div><p> 
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[2,3]</span></div><p>
-En effet (1+3)/2=2 et (2+4)/2=3.<br>
-<span style="font-family:monospace">mean</span> calcule la moyenne numérique des éléments d’une 
-liste (respectivement de chaque colonne d’une matrice) pondérée par une liste (respectivement
-matrice) de même taille donnée comme deuxième argument.<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">A:=[0,1,2,3,4,5,6,7,8,9,10,11]</span></div><div class="center"><span style="font-family:monospace">mean(A,A)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">23/3</span></div><p>
-En effet : 1*1+2*2+..11*11=23*12*11/6=23*2*11 et 1+2+..11=66 donc:<br>
-<span style="font-family:monospace">mean(A,A)</span>=23*2*11/66=23/3<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">mean([[1,2],[3,4]],[[1,2],[3,4]])</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[5/2,10/3]</span></div><p>
-En effet : (1*1+3*3)/(1+3)=5/2 et (2*2+4*4)/(2+4)=10/3
-</p>
+</p><div class="center"><span style="font-family:monospace">[[1.0,1.41421356237],[0.0,1.0]]</span></div>
 <hr>
 <a href="cascmd_fr709.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

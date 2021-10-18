@@ -4,25 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Convertir une liste en polynôme de n variables : convert convertir</title>
+<title>Convertir un polynôme de n variables en une liste : convert convertir</title>
 </head>
 <body >
 <a href="cascmd_fr386.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr388.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec498" class="subsection">6.28.29  Convertir une liste en polynôme de <span style="font-style:italic">n</span> variables : <span style="font-family:monospace">convert convertir</span></h3>
-<p><a id="hevea_default730"></a><a id="hevea_default731"></a><a id="hevea_default732"></a><a id="sec:convertpolyp"></a>
-<span style="font-family:monospace">convert</span>, avec l’option <span style="font-family:monospace">polynom</span>, permet de convertir une
-liste en un polynôme de <span style="font-style:italic">n</span> variables.<br>
+<h3 id="sec498" class="subsection">6.28.28  Convertir un polynôme de <span style="font-style:italic">n</span> variables en une liste : <span style="font-family:monospace">convert convertir</span></h3>
+<p><a id="hevea_default728"></a><a id="hevea_default729"></a><a id="hevea_default730"></a><a id="sec:convertpolyl"></a>
+<span style="font-family:monospace">convert</span>, avec l’option <span style="font-family:monospace">list</span>, permet de convertir un
+polynôme de <span style="font-style:italic">n</span> variables en une liste.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">l:=[[1,[2,0]],[2,[1,1]],[1,[0,2]]]</span></div><div class="center"><span style="font-family:monospace">p:=convert(l,polynom)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">p:=symb2poly((x+y)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x,y])</span></div><div class="center"><span style="font-family:monospace">l:=convert(p,list)</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">l:=convert(p)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">%%%</span><span style="font-family:monospace">1,[2,0]%%%</span><span style="font-family:monospace">+%%%</span><span style="font-family:monospace">2,[1,1]%%%</span><span style="font-family:monospace">+%%%</span><span style="font-family:monospace">1,[0,2]%%%</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,[2,0]],[2,[1,1]],[1,[0,2]]]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">poly2symb(p,[x,y])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">p:=symb2poly(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,[x,y])</span></div><div class="center"><span style="font-family:monospace">l:=convert(p,list)</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">l:=convert(p)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+</p><div class="center"><span style="font-family:monospace">[[3,[3,4]],[1,[2,0]],[2,[1,1]]]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">q:=symb2poly(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,[x,y])</span></div><div class="center"><span style="font-family:monospace">l:=convert(q,list)</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">l:=convert(q)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[[3,[4,3]],[2,[1,1]],[1,[0,2]]]]</span></div>
 <hr>
 <a href="cascmd_fr386.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

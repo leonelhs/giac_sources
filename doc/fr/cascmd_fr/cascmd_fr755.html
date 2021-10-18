@@ -4,74 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Matrice aléatoire : ranm randmatrix randMat</title>
+<title>Graphe de la régression logistique :
+logistic_regression_plot</title>
 </head>
 <body >
 <a href="cascmd_fr754.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr756.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec926" class="subsection">8.3.8  Matrice aléatoire : <span style="font-family:monospace">ranm randmatrix randMat</span></h3>
-<p><a id="hevea_default1360"></a><a id="sec:ranm3"></a><a id="hevea_default1361"></a><a id="hevea_default1362"></a>
-<span style="font-family:monospace">ranm</span> (ou <span style="font-family:monospace">randmatrix</span> ou <span style="font-family:monospace">randMat</span>) (voir aussi <a href="cascmd_fr390.html#sec%3Aranm1">6.28.32</a> et <a href="cascmd_fr557.html#sec%3Aranm2">6.46.3</a>) peut avoir comme argument :<br>
-</p><ul class="itemize"><li class="li-itemize">
-un entier <span style="font-family:monospace">s</span>, dans ce cas <span style="font-family:monospace">ranm</span> renvoie une liste 
-de longueur <span style="font-family:monospace">s</span> dont les éléments sont des entiers pris au hasard 
-de façon équiprobable dans :<br>
- <span style="font-family:monospace">[-99,-98,...,98,99]</span>.<br>
+<h3 id="sec926" class="subsection">8.2.21  Graphe de la régression logistique :
+<span style="font-family:monospace">logistic_regression_plot</span></h3>
+<p><a id="hevea_default1347"></a><a id="hevea_default1348"></a><a id="hevea_default1349"></a>
+Lorsque on connait les valeurs de <span style="font-style:italic">f</span>′(<span style="font-style:italic">x</span>) en <span style="font-style:italic">x</span>=<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">x</span><sub>0</sub>+1....<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>, pour 
+tracer le graphe de la derivée <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>) d’une fonction logistique <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>), 
+solution de l’équation 
+<span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span>=<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">b</span> (<span style="font-style:italic">a</span>&lt;0 et <span style="font-style:italic">b</span>&gt;0) vérifiant <span style="font-style:italic">y</span><sub>0</sub>=<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>) et tel que <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>) 
+approche au mieux les différentes valeurs de <span style="font-style:italic">f</span>′(<span style="font-style:italic">x</span>), on utilise 
+<span style="font-family:monospace">logistic_regression_plot</span>.<br>
+<span style="font-family:monospace">logistic_regression_plot</span> a les mêmes arguments que 
+<span style="font-family:monospace">logistic_regression</span>.<br>
 On tape :
-<div class="center"><span style="font-family:monospace">ranm(5)</span></div>
-On obtient par exemple :
-<div class="center"><span style="font-family:monospace">[-40,27,4,-1,94]</span></div>
-</li><li class="li-itemize">deux entiers <span style="font-family:monospace">n,p</span>, dans ce cas <span style="font-family:monospace">ranm</span> renvoie une 
-matrice de <span style="font-family:monospace">n</span> lignes et <span style="font-family:monospace">p</span> colonnes dont les éléments sont
-des entiers pris au hasard de façon équiprobable dans <span style="font-family:monospace">[-99,-98,...,98,99]</span>.<br>
-On tape :
-<div class="center"><span style="font-family:monospace">ranm(2,3)</span></div>
-On obtient par exemple :
-<div class="center"><span style="font-family:monospace">[[-32,53,-44],[10,-4,25]]</span></div>
-</li><li class="li-itemize">deux entiers <span style="font-family:monospace">n,p</span> et un entier relatif <span style="font-family:monospace">a</span>, dans ce 
-cas <span style="font-family:monospace">ranm</span> renvoie une matrice de <span style="font-family:monospace">n</span> lignes et <span style="font-family:monospace">p</span> colonnes dont 
-les éléments sont des entiers pris au hasard de façon équiprobable 
-dans <span style="font-family:monospace">[0;a[</span> (ou <span style="font-family:monospace">]a;0]</span> si <span style="font-family:monospace">a</span> est négatif)<br>
-On tape :
-<div class="center"><span style="font-family:monospace">ranm(2,3,10)</span></div>
-On obtient par exemple :
-<div class="center"><span style="font-family:monospace">[[8,3,7],[7,9,1]]</span></div>
-</li><li class="li-itemize">deux entiers <span style="font-family:monospace">n,p</span> et un intervalle <span style="font-family:monospace">a..b</span>, dans ce cas 
-<span style="font-family:monospace">ranm</span> renvoie une matrice de <span style="font-family:monospace">n</span> lignes et <span style="font-family:monospace">p</span> colonnes dont les 
-éléments sont des réels pris au hasard de façon équiprobable dans 
-<span style="font-family:monospace">[a;b[</span>.<br>
-On tape :
-<div class="center"><span style="font-family:monospace">ranm(2,3,0..1)</span></div>
-On obtient par exemple :
-<div class="center"><span style="font-family:monospace">[[0.840187716763,0.394382926635,0.783099223394],</span></div>
-<div class="center"><span style="font-family:monospace">[0.798440033104,0.911647357512,0.197551369201]] </span></div>
-</li><li class="li-itemize">deux entiers <span style="font-family:monospace">n,p</span> et une fonction aléatoire de <span style="font-family:monospace">Xcas</span> qu’il 
-faut quoter, dans ce cas 
-<span style="font-family:monospace">ranm</span> renvoie une matrice de <span style="font-family:monospace">n</span> lignes et <span style="font-family:monospace">p</span> colonnes dont 
-les éléments sont pris au hasard selon la fonction donnée en 
-troisième argument.<br>
-Les fonctions données en troisième argument qui doivent être 
-quoter, peuvent être :<br>
-<span style="font-family:monospace">’rand(n)’</span> <br>
-<span style="font-family:monospace">’binomial(n,p)’</span> ou <span style="font-family:monospace">binomial,n,p</span> ou<span style="font-family:monospace">’randbinomial(n,p)’</span><br>
-<span style="font-family:monospace">’multinomial(P,K)’</span> ou <span style="font-family:monospace">multinomial,P,K</span> ou <span style="font-family:monospace">’randmultinomial(P,K)’</span><br>
-<span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span> ou <span style="font-family:monospace">poisson, </span>λ ou <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span><br>
-<span style="font-family:monospace">’normald(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span> ou <span style="font-family:monospace">normald,</span>µ<span style="font-family:monospace">,</span>σ ou <span style="font-family:monospace">’randnorm(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span><br>
-<span style="font-family:monospace">’exp(a)’</span> ou <span style="font-family:monospace">exp,a</span> ou <span style="font-family:monospace">’randexp(a)’</span><br>
-<span style="font-family:monospace">’fisher(n,m)’</span> ou <span style="font-family:monospace">fisher,n,m</span> ou <span style="font-family:monospace">’randfisher(n,m)’</span><br>
-On tape :
-<div class="center"><span style="font-family:monospace">ranm(3,2,’rand(3)’)</span></div>
-ou
-<div class="center"><span style="font-family:monospace">ranm(3,2,3)</span></div>
-On obtient par exemple :
-<div class="center"><span style="font-family:monospace">[[2,1],[0,0],[1,0]]</span></div>
-On tape :
-<div class="center"><span style="font-family:monospace">ranm(1,2,’randnorm(0,1)’)</span></div>
-On obtient par exemple :
-<div class="center"><span style="font-family:monospace">[[1.37439065645,-1.33195982697]]</span></div>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">logistic_regression_plot([1,2,4,6,8,7,5],0,2.0)</span></div><p>
+On obtient avec écrit en bleu les valeurs renvoyées par:
+</p><div class="center"><span style="font-family:monospace">Le graphe de la fonction solution de </span><span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span>=<span style="font-style:italic">a</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">b</span><span style="font-family:monospace"> avec </span><span style="font-style:italic">y</span>′(0)=1,<span style="font-style:italic">y</span>′(1)=2,<span style="font-style:italic">y</span>′(3)=4...<span style="font-style:italic">y</span>′(6)=5<span style="font-family:monospace">, </span><span style="font-style:italic">y</span>(0)=2</div><p>
+car c’est la fonction logistique qui approche au mieux les données.
+<span style="font-weight:bold">Remarque</span>
+On remarquera que l’équation de la courbe representée ainsi que la valeur 
+du coefficient de corrélation des données sont écrits en bleu.<br>
+Si on veut avoir l’équation et/ou le carré du coefficient de corrélation 
+sur le dessin il faut rajouter comme dernier argument, l’option <span style="font-family:monospace">equation</span> 
+et/ou <span style="font-family:monospace">correlation</span>. Par exemple,
+<span style="font-family:monospace">logistic_regression_plot([1,2,4,6,8,7,5],0,2.0,correlation)</span>
+et <span style="font-family:monospace">R2=0.658961299812</span> s’inscrit sur le graphe.</p>
 <hr>
 <a href="cascmd_fr754.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

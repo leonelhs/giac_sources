@@ -4,89 +4,154 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Passage de la forme standard à la forme canonique</title>
+<title>Écriture matricielle et algorithme du simplexe</title>
 </head>
 <body >
 <a href="cascmd_fr625.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr627.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec767" class="subsection">6.54.5  Passage de la forme standard à la forme canonique</h3>
+<h3 id="sec767" class="subsection">6.54.2  Écriture matricielle et algorithme du simplexe</h3>
 <p>
-La forme standard d’un problème d’optimisation linéaire est
-analogue à la forme canonique, mais en remplacant <span style="font-style:italic">Ax</span>≤ <span style="font-style:italic">b</span>
-par <span style="font-style:italic">Ax</span>=<span style="font-style:italic">b</span> avec <span style="font-style:italic">b</span>≥ 0 et où on cherche
-<span style="font-style:italic">x</span>≥ 0 (on peut s’y ramener si nécessaire
-en changeant le signe d’une ligne).</p><p>Le problème pour appliquer l’algorithme précédent est qu’on ne
-peut pas ajouter de variables d’écarts et donc qu’on n’a pas de
-valeur <span style="font-style:italic">x</span> évidente dans le domaine de maximisation (dit autrement
-on n’a pas de sous-matrice identité dans la formulation matricielle
-du problème et il n’y a pas d’opération de lignes évidente
-qui permette de le faire).</p><p>On va se ramener à des problèmes sous forme “canonique” par
-la méthode dite en 2 phases. Soit <span style="font-style:italic">m</span> le nombre de lignes de <span style="font-style:italic">A</span>
-(nombre de conditions dans <span style="font-style:italic">Ax</span>=<span style="font-style:italic">b</span>). On ajoute des variables
-artificielles <span style="font-style:italic">y</span><sub>1</sub>,...,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub> et on maximise
-−∑<span style="font-style:italic">y</span><sub><span style="font-style:italic">i</span></sub> sous condition <span style="font-style:italic">Ax</span>=<span style="font-style:italic">b</span>, <span style="font-style:italic">x</span> ≥ 0, <span style="font-style:italic">y</span> ≥ 0 
-en partant de la valeur initiale 0 pour les variables
-non artificielles et <span style="font-style:italic">b</span> pour <span style="font-style:italic">y</span>
-(on appelle donc <code>simplex_reduce</code> avec
-un argument matrice obtenue en augmentant <span style="font-style:italic">A</span> par l’identité, <span style="font-style:italic">b</span> inchangé
-et un <span style="font-style:italic">c</span> artificiel formé de 0 au début et de 1 en dessous de 
-l’identité (que <span style="font-family:monospace">simplex_reduce</span> va commencer par annuler)).
-Si le maximum existe et est 0, on obtiendra une sous-matrice
-identité dans les colonnes correspondants à <span style="font-style:italic">x</span>, et on pourra
-éliminer les variables artificielles (dont la valeur sera 0
-pour atteindre l’optimum).
-Il restera à appliquer à nouveau l’algorithme du simplexe 
-mais avec le <span style="font-style:italic">c</span> original (comme les coefficients de <span style="font-style:italic">c</span> correspondant
-à l’identité n’ont pas de raison d’être nuls, 
-on doit commencer par les rendre
-nuls, ce que <code>simplex_reduce</code> fait si on permute les
-colonnes pour placer la sous-matrice identité à droite).</p><p>Exemple : on cherche le minimum de 2<span style="font-style:italic">x</span>+3<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>+<span style="font-style:italic">t</span> avec les
-<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>,<span style="font-style:italic">t</span>≥ 0 et :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+Un simplexe est une portion de ℝ<sup><span style="font-style:italic">n</span></sup> délimitée par des 
+hyperplans.<br>
+L’algorithme du simplexe sert à maximiser une fonction linéaire
+sous des contraintes d’égalité ou d’inégalité linéaire.
+Le principe de l’algorithme consiste à trouver un sommet du simplexe
+défini par les contraintes, puis à sélectionner une arête
+et la suivre jusqu’au sommet suivant, la sélection se faisant
+de sorte à ne jamais diminuer la valeur de la fonction linéaire.
+On effectue donc les étapes suivantes
+</p><ul class="itemize"><li class="li-itemize">
+réécrire les contraintes impliquant une seule variable
+sous la forme <span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub> ≥ 0, éliminer si possible par pivot de Gauss
+les variables sans contraintes (ou ajouter des variables). À la fin de cette
+étape, on doit avoir pour contraintes que toutes les composantes des
+éléments du simplexe sont positives.
+</li><li class="li-itemize">transformer si nécessaire les contraintes d’inégalité
+restante en égalité (par ajout de variables d’écart) avec un
+second membre positif,
+</li><li class="li-itemize">construire un sommet s’il en existe (ce qui dans les cas
+non évidents se fait en optimisant une fonction artificielle),
+</li><li class="li-itemize">passer de sommet à sommet.
+</li></ul><p>
+Un sommet va être caractérisé dans la suite par ses composantes
+nulles et ses composantes non nulles. La représentation matricielle
+associée à un sommet des contraintes d’égalité
+fait apparaitre une sous-matrice identité dans les
+colonnes correspondant aux composantes non nulles du sommet. 
+Par exemple, si on part du problème, chercher :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">max(2<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>+4)  lorsque 
+</td><td class="dcell">⎧<br>
+⎪<br>
 ⎨<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >−<span style="font-style:italic">x</span>−<span style="font-style:italic">y</span>+<span style="font-style:italic">t</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>+<span style="font-style:italic">t</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >3
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">x</span></td><td style="text-align:center;white-space:nowrap" >≤</td><td style="text-align:left;white-space:nowrap" >1 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >≥</td><td style="text-align:left;white-space:nowrap" >2 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">x</span>+3<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >2 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >2<span style="font-style:italic">x</span>−<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span></td><td style="text-align:center;white-space:nowrap" >≤</td><td style="text-align:left;white-space:nowrap" >8
 </td></tr>
-</table></td><td class="dcell">
+</table></td><td class="dcell"> 
 </td></tr>
 </table><p>
-Ceci revient à calculer l’opposé du maximum de −(2<span style="font-style:italic">x</span>+3<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>+<span style="font-style:italic">t</span>).
-On ajoute donc deux variables artificielles <span style="font-style:italic">y</span><sub>1</sub> et <span style="font-style:italic">y</span><sub>2</sub>, on tape
-directement la matrice de l’algorithme
-</p><pre class="verbatim">simplex_reduce([[-1,-1,0,1,1,0,1],
-[0,1,-1,1,0,1,3],
-[0,0,0,0,1,1,0]])
-</pre><p>
-On obtient comme optimum 0, avec 0 comme valeurs pour les variables
-artificielles, et la matrice
+on pose <span style="font-style:italic">x</span>=1−<span style="font-style:italic">X</span>, <span style="font-style:italic">y</span>=<span style="font-style:italic">Y</span>+2, donc on cherche :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">max(−2<span style="font-style:italic">X</span>+<span style="font-style:italic">Y</span>−<span style="font-style:italic">z</span>+8)  lorsque 
+</td><td class="dcell">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">X</span></td><td style="text-align:center;white-space:nowrap" >≥</td><td style="text-align:left;white-space:nowrap" >0 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">Y</span></td><td style="text-align:center;white-space:nowrap" >≥</td><td style="text-align:left;white-space:nowrap" >0 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >1−<span style="font-style:italic">X</span>+3(<span style="font-style:italic">Y</span>+2)−<span style="font-style:italic">z</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >2 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >2(1−<span style="font-style:italic">X</span>)−(<span style="font-style:italic">Y</span>+2)+<span style="font-style:italic">z</span></td><td style="text-align:center;white-space:nowrap" >≤</td><td style="text-align:left;white-space:nowrap" >8
+</td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p>
+puis on élimine <span style="font-style:italic">z</span> par la contrainte d’égalité <span style="font-style:italic">z</span>=5−<span style="font-style:italic">X</span>+3<span style="font-style:italic">Y</span> et on cherche :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">max(−2<span style="font-style:italic">X</span>+<span style="font-style:italic">Y</span>−(5−<span style="font-style:italic">X</span>+3<span style="font-style:italic">Y</span>)+8)   lorsque 
+</td><td class="dcell">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">X</span></td><td style="text-align:center;white-space:nowrap" >≥</td><td style="text-align:left;white-space:nowrap" >0 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">Y</span></td><td style="text-align:center;white-space:nowrap" >≥</td><td style="text-align:left;white-space:nowrap" >0 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >−2<span style="font-style:italic">X</span>−<span style="font-style:italic">Y</span>+ 5−<span style="font-style:italic">X</span>+3<span style="font-style:italic">Y</span></td><td style="text-align:center;white-space:nowrap" >≤</td><td style="text-align:left;white-space:nowrap" >8
+</td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p>
+cela revient donc à chercher :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">max(−<span style="font-style:italic">X</span>−2<span style="font-style:italic">Y</span>+3)   lorsque 
+</td><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >(<span style="font-style:italic">X</span>,<span style="font-style:italic">Y</span>)</td><td style="text-align:center;white-space:nowrap" >≥</td><td style="text-align:left;white-space:nowrap" >0 </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >−3<span style="font-style:italic">X</span> +2<span style="font-style:italic">Y</span></td><td style="text-align:center;white-space:nowrap" >≤</td><td style="text-align:left;white-space:nowrap" >3
+</td></tr>
+</table></td><td class="dcell"> 
+</td></tr>
+</table><p>
+Il faut ici ajouter une variable d’écart <span style="font-style:italic">t</span> ≥ 0 pour
+transformer la dernière inégalité en égalité :<br>
+on pose <span style="font-style:italic">t</span>=3−(−3<span style="font-style:italic">X</span> +2<span style="font-style:italic">Y</span>) et on a alors <br>
+<span style="font-style:italic">t</span> ≥ 0 et −3<span style="font-style:italic">X</span> +2<span style="font-style:italic">Y</span>+<span style="font-style:italic">t</span>=3 est équivalent à −3<span style="font-style:italic">X</span> +2<span style="font-style:italic">Y</span> ≤ 3, et 
+cela donne un sommet de départ évident.
+La matrice correspondant à ces conditions est alors la ligne
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">(−3, 2, 1, 3 ) </td></tr>
+</table><p>
+le sommet de départ associé est (<span style="font-style:italic">X</span>,<span style="font-style:italic">Y</span>,<span style="font-style:italic">t</span>)=(0,0,3) 
+la sous-matrice identité utilise la 3ème colonne (<span style="font-style:italic">t</span> est le coefficient
+non nul).
+On pourrait passer le coefficient non nul en 2ème colonne
+(sommet (<span style="font-style:italic">X</span>,<span style="font-style:italic">Y</span>,<span style="font-style:italic">t</span>)=(0,3/2,0)) en réécrivant l’égalité sous la forme
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">(−3/2, 1, 1/2, 3/2 ) </td></tr>
+</table><p>
+mais on ne pourrait passer le coefficient non nul en 1ère colonne
+(il n’y a en effet que 2 sommets à ce simplexe).<br>
+Avec <span style="font-family:monospace">Xcas</span>, on tape : 
+</p><div class="center"><span style="font-family:monospace">simplex_reduce([[-3,2]],[3],[-1,-2])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">(0,[0,0,3],[[-3,2,1,3],[1,2,0,0]])</span></div><p>En général, 
+le passage d’un sommet à un autre sommet consiste alors à effectuer
+une opération de réduction de Gauss qui fait sortir une colonne
+et entrer une autre colonne dans les composantes non nulles du sommet,
+ce qui revient à déplacer la sous-matrice identité. On doit
+prendre garde à effectuer l’opération de réduction de Gauss
+en conservant la positivité du membre de droite des contraintes
+de l’égalité, et ce sans diminuer la valeur de la fonction
+à optimiser. Pour pouvoir réaliser cette dernière condition,
+on augmente la matrice des contraintes
+d’égalité par une ligne formée des opposés des coefficients 
+de la fonction à maximiser, sauf en dernière colonne (on y met
+le coefficient constant de la fonction à maximiser). Dans l’exemple
+ce serait
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
 ⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−1/2</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >−1/2</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1/2</td><td style="text-align:center;white-space:nowrap" >1/2</td><td style="text-align:center;white-space:nowrap" >2 </td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1/2</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >−1/2</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >−1/2</td><td style="text-align:center;white-space:nowrap" >1/2</td><td style="text-align:center;white-space:nowrap" >1 </td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0
+⎝</td><td class="dcell">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−3</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >3 </td></tr>
+<tr><td style="text-align:center;white-space:nowrap" > 1</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3
 </td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
+</table></td><td class="dcell">
+</td><td class="dcell">⎞<br>
 ⎟<br>
 ⎠</td></tr>
 </table><p>
-Ceci signifie aussi qu’une valeur initiale dans le domaine est
-(0,1,0,2). Il nous reste à optimiser le problème de départ
-en remplacant les lignes de <span style="font-style:italic">Ax</span>=<span style="font-style:italic">b</span> par les 2 premières lignes
-de la matrice réponse ci-dessus dont on enlève les variables 
-artificielles et en ajoutant la ligne de la fonction à optimiser.
-On prend donc la matrice
-</p><pre class="verbatim">simplex_reduce([[-1/2,0,-1/2,1,2],
-[1/2,1,-1/2,0,1],[2,3,-1,1,0]])
-</pre><p>
-On obtient comme maximum -5, donc le minimum de l’opposé est 5,
-obtenu pour (0,1,0,2) soit après replacement des colonnes 
-<span style="font-style:italic">t</span>=2 et <span style="font-style:italic">y</span>=1, les autres nuls.</p><p>Pour plus de détails, chercher sur google <code>simplex algorithm</code> 
-ou dans une bibliothèque Ciarlet “Introduction à l’analyse
-matricielle et à l’optimisation”.</p>
+On crée (si nécessaire) des zéros dans cette dernière
+ligne dans les colonnes correspondant à la sous-matrice identité
+(donc aux composantes non nulles du sommet), de sorte que le
+coefficient constant de la ligne (après cette réduction)
+représente la valeur de la fonction à optimiser en ce sommet.
+Plus générallement pour un point du simplexe, 
+au cours de la réduction la somme de la fonction à maximiser et
+du produit scalaire des coordonnés du point avec cette dernière
+ligne (privé du dernier coefficient) vaut le dernier coefficient.
+On aura donc un sommet réalisant le maximum si tous les coefficients
+de la ligne sont positifs (sauf le dernier). C’est le cas ici, le
+maximum est 3, atteint pour <span style="font-style:italic">X</span>=<span style="font-style:italic">Y</span>=0 (donc <span style="font-style:italic">x</span>=1, <span style="font-style:italic">y</span>=2 et <span style="font-style:italic">z</span>=5).</p><p>L’instruction <span style="font-family:monospace">simplex_reduce</span> de <span style="font-family:monospace">Xcas</span> applique l’algorithme
+du simplexe dans deux situations distinctes : soit le problème
+est posé sous forme “canonique” et on lui donne 3 arguments
+(cf. infra), soit on lui donne un seul argument qui doit être
+une matrice “associée à un sommet” au sens de ce paragraphe.</p>
 <hr>
 <a href="cascmd_fr625.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

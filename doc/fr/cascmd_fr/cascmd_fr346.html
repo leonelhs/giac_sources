@@ -4,229 +4,221 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Transformée de Fourier discrète</title>
+<title>Les coefficients de Fourier : fourier_an et fourier_bn ou fourier_cn</title>
 </head>
 <body >
 <a href="cascmd_fr345.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr347.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec453" class="subsection">6.26.2  Transformée de Fourier discrète</h3>
-<p>
-Soit <span style="font-style:italic">N</span> un entier.<br>
-On considère une suite <span style="font-style:italic">x</span> périodique de période <span style="font-style:italic">N</span> : elle est
-entièrement déterminée par la liste <span style="font-style:italic">x</span>=[<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">x</span><sub>1</sub>,...<span style="font-style:italic">x</span><sub><span style="font-style:italic">N</span>−1</sub>].<br>
-La transformée de Fourier discréte est une transformation <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub> qui a une 
-suite <span style="font-style:italic">x</span> périodique de période <span style="font-style:italic">N</span> fait correspondre une suite <span style="font-style:italic">y</span>,
-périodique de période <span style="font-style:italic">N</span>, définie pour <span style="font-style:italic">k</span>=0..<span style="font-style:italic">N</span>−1 par :<br>
- (<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span>))<sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>=∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">k</span>· <span style="font-style:italic">j</span></sup>
-avec ω<sub><span style="font-style:italic">N</span></sub> racine <span style="font-style:italic">N</span>-ième de l’unité.<br>
-Le but est de calculer pour <span style="font-style:italic">k</span>=0..<span style="font-style:italic">N</span>−1:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
+<h3 id="sec450" class="subsection">6.26.1  Les coefficients de Fourier : <span style="font-family:monospace">fourier_an</span> et <span style="font-family:monospace">fourier_bn</span> ou <span style="font-family:monospace">fourier_cn</span></h3>
+<p> <a id="hevea_default669"></a>
+Si la fonction <span style="font-style:italic">f</span> est continue par morceaux sur ℝ, et est 
+périodique de période <span style="font-style:italic">T</span>, alors aux points de continuité de <span style="font-style:italic">f</span> on a :<br>
+ </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">a</span><sub>0</sub>+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+∞</td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">k</span>· <span style="font-style:italic">j</span></sup></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=1</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> cos(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2π <span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell">)+<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> sin(</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2π <span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td><td class="dcell">)</td></tr>
 </table><p>
-avec ω<sub><span style="font-style:italic">N</span></sub>=exp(2<span style="font-style:italic">i</span>π/<span style="font-style:italic">N</span>)<br>
-La méthode de la transformée de Fourier rapide permet de calculer 
-rapidement ces sommes si <span style="font-style:italic">N</span> est une puissance de 2.</p>
-<h4 id="sec454" class="subsubsection">Les propriétes</h4>
-<p>
-La transformée de Fourier discréte <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub> est une transformation bijective.<br>
-On a :<br>
-<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>=1/<span style="font-style:italic">N</span> <span style="text-decoration:overline"><span style="font-style:italic">F</span></span><sub><span style="text-decoration:overline"><span style="font-style:italic">N</span></span></sub><br>
-c’est à dire :<br>
- (<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">x</span>))<sub><span style="font-style:italic">k</span></sub>=1/<span style="font-style:italic">N</span>∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span>· <span style="font-style:italic">j</span></sup><br>
-<span style="font-weight:bold">Notation</span><br>
-Avec <span style="font-family:monospace">Xcas</span> on a les fonctions <span style="font-family:monospace">fft</span> et <span style="font-family:monospace">ifft</span> qui sont :<br>
-<span style="font-family:monospace">fft(x)</span>=<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span>) et<br>
-<span style="font-family:monospace">ifft(x)</span>=<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">x</span>)<br>
-<span style="font-weight:bold">Définiton</span><br>
-Soient deux suites <span style="font-style:italic">x</span> et <span style="font-style:italic">y</span> périodiques de période <span style="font-style:italic">N</span>.<br>
-On définit :<br>
-- le produit de Hadamard, noté ·, par :<br>
-(<span style="font-style:italic">x</span> · <span style="font-style:italic">y</span>)<sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub><span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub><br>
-- le produit de convolution, noté *, par :<br>
-(<span style="font-style:italic">x</span> * <span style="font-style:italic">y</span>)<sub><span style="font-style:italic">k</span></sub>=∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub><span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span>−<span style="font-style:italic">j</span></sub><br>
-On a alors :<br>
-<span style="font-style:italic">N</span>*<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span> · <span style="font-style:italic">y</span>)=<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span>) * <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">y</span>)<br>
-<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span> * <span style="font-style:italic">y</span>)=<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">x</span>) · <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">y</span>)</p>
-<h4 id="sec455" class="subsubsection">Où interviennent ces sommes ?</h4>
-<ol class="enumerate" type=1><li class="li-enumerate">
-Valeur d’un polynôme<br>
-Soit un polynôme <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">j</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">j</span></sup> donné par la liste de 
-ces coefficients [<span style="font-style:italic">c</span><sub>0</sub>,<span style="font-style:italic">c</span><sub>1</sub>,..<span style="font-style:italic">c</span><sub><span style="font-style:italic">N</span>−1</sub>] complété par des zéros pour que 
-<span style="font-style:italic">N</span> soit une puissance de 2.
-<ul class="itemize"><li class="li-itemize">
-On veut calculer les valeurs prises par <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>) aux points 
-<span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>=ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">k</span></sup>=exp(−2<span style="font-style:italic">ik</span>π/<span style="font-style:italic">N</span>) pour <span style="font-style:italic">k</span>=0..<span style="font-style:italic">N</span>−1, c’est à dire 
-les valeurs ∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">j</span></sub>(ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">k</span></sup>)<sup><span style="font-style:italic">j</span></sup> pour <span style="font-style:italic">k</span>=0..<span style="font-style:italic">N</span>−1.<br>
-On a :<br>
-[<span style="font-style:italic">P</span>(<span style="font-style:italic">a</span><sub>0</sub>), <span style="font-style:italic">P</span>(<span style="font-style:italic">a</span><sub>1</sub>),..<span style="font-style:italic">P</span>(<span style="font-style:italic">a</span><sub><span style="font-style:italic">N</span>−1</sub>)]=<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>([<span style="font-style:italic">c</span><sub>0</sub>,<span style="font-style:italic">c</span><sub>1</sub>,..<span style="font-style:italic">c</span><sub><span style="font-style:italic">N</span>−1</sub>])<br>
-Par exemple on tape :<br>
-<span style="font-family:monospace">P(x):=x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span> et 
-<span style="font-family:monospace">w:=i</span><br>
-Les coefficients de <span style="font-style:italic">P</span> sont [0,1,1,0], 
-ω=<span style="font-style:italic">w</span>=<span style="font-style:italic">i</span>, <span style="font-style:italic">N</span>=4 et exp(2<span style="font-style:italic">i</span>π/4)=<span style="font-style:italic">i</span>.<br>
-On a :<br>
-<span style="font-family:monospace">fft([0,1,1,0])=[2,-1-i,0,-1+i]</span>
-et donc <br>
-<span style="font-family:monospace">P(0)=2</span>,<br>
-<span style="font-family:monospace">P(-i)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">-1)=-1-i</span>,<br>
-<span style="font-family:monospace">P(-1)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">-2)=0</span>,<br>
-<span style="font-family:monospace">P(i)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">-3)=-1+i</span>.
-</li><li class="li-itemize">On veut calculer les valeurs prises par <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>) aux points :<br>
- <span style="font-style:italic">b</span><sub><span style="font-style:italic">k</span></sub>=ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span></sup>=exp(2<span style="font-style:italic">ik</span>π/<span style="font-style:italic">N</span>) pour <span style="font-style:italic">k</span>=0..(<span style="font-style:italic">N</span>−1), 
-c’est à dire calculer;les valeurs :<br>
-∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">j</span></sub>(ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span></sup>)<sup><span style="font-style:italic">j</span></sup> pour <span style="font-style:italic">k</span>=0..(<span style="font-style:italic">N</span>−1).<br>
-On a :<br>
-[<span style="font-style:italic">P</span>(<span style="font-style:italic">a</span><sub>0</sub>), <span style="font-style:italic">P</span>(<span style="font-style:italic">a</span><sub>1</sub>),..<span style="font-style:italic">P</span>(<span style="font-style:italic">a</span><sub>(<span style="font-style:italic">N</span>−1)</sub>)]=<span style="font-style:italic">N</span>*<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>([<span style="font-style:italic">c</span><sub>0</sub>,<span style="font-style:italic">c</span><sub>1</sub>,..<span style="font-style:italic">c</span><sub>(<span style="font-style:italic">N</span>−1)</sub>])<br>
-Par exemple on tape :<br>
-<span style="font-family:monospace">P(x):=x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span> et
-<span style="font-family:monospace">w:=i</span><br>
-Les coefficients de <span style="font-style:italic">P</span> sont [0,1,1,0], 
-ω=<span style="font-style:italic">w</span>=<span style="font-style:italic">i</span>, <span style="font-style:italic">N</span>=4 et exp(2<span style="font-style:italic">i</span>π/4)=<span style="font-style:italic">i</span>.<br>
-On a :<br>
-<span style="font-family:monospace">4*ifft([0,1,1,0])=[2,-1+i,0,-1-i]</span>
-et donc <br>
-<span style="font-family:monospace">P(0)=2</span>,<br>
-<span style="font-family:monospace">P(i)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">1)=-1+i</span>,<br>
-<span style="font-family:monospace">P(-1)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)=0</span>,<br>
-<span style="font-family:monospace">P(-i)=P(w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)=-1-i</span>.
+ou 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=−∞</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> <span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2<span style="font-style:italic">i</span>π <span style="font-style:italic">nx</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">T</span></td></tr>
+</table></td></tr>
+<tr><td class="dcell">&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+où les coefficients <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">n</span>∈ <span style="font-style:italic">N</span>, (ou <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">n</span> ∈ <span style="font-style:italic">Z</span>) sont les 
+coefficients de Fourier de <span style="font-style:italic">f</span> et se calculent avec les fonctions :<br>
+<span style="font-family:monospace">fourier_an</span> et <span style="font-family:monospace">fourier_bn</span> ou <span style="font-family:monospace">fourier_cn</span>. 
+</p>
+<h4 id="sec451" class="subsubsection"><span style="font-family:monospace">fourier_an</span></h4>
+<p><a id="hevea_default670"></a><a id="sec:fourier_an"></a>
+<span style="font-family:monospace">fourier_an</span> a quatre ou cinq paramètres : une expression 
+<span style="font-style:italic">Xpr</span> dependant d’une variable, le nom de la variable (par exemple <span style="font-style:italic">x</span>), 
+la période <span style="font-style:italic">T</span>, un entier <span style="font-style:italic">n</span> et <span style="font-style:italic">a</span> (<span style="font-style:italic">a</span> vaut 0 par défaut).<br>
+<span style="font-family:monospace">fourier_an(Xpr,x,T,n,a)</span> renvoie le coefficient de Fourier <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> 
+d’une fonction de variable <span style="font-style:italic">x</span> définie sur [<span style="font-style:italic">a</span>,<span style="font-style:italic">a</span>+<span style="font-style:italic">T</span>[ par <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">Xpr</span> et 
+périodique de période <span style="font-style:italic">T</span>.<br>
+Si <span style="font-style:italic">f</span> est continue par morceaux 
+<span style="font-family:monospace">fourier_an(Xpr,x,T,n,a)</span> renvoie  <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>=2/<span style="font-style:italic">T</span>∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">a</span>+<span style="font-style:italic">T</span></sup><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)cos(2π <span style="font-style:italic">nx</span> /<span style="font-style:italic">T</span>)<span style="font-style:italic">dx</span><br>
+Si l’on veut que les calculs soient simplifiés il faut dire que <span style="font-style:italic">n</span> est un 
+entier en tapant <span style="font-family:monospace">assume(n,integer)</span>.<br>
+<span style="font-weight:bold">Exemples</span> 
+</p><ul class="itemize"><li class="li-itemize">
+</li><li class="li-itemize">Soit la fonction <span style="font-style:italic">f</span>, de période <span style="font-style:italic">T</span>=2π, définie sur 
+[−π;π[ par <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=1+cos(<span style="font-style:italic">x</span>)+sin(<span style="font-style:italic">x</span>).<br>
+On tape, pour avoir son coefficient <span style="font-style:italic">a</span><sub>0</sub> :
+<div class="center"><span style="font-family:monospace">fourier_an(1+cos(x)+sin(x),x,2*pi,0,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">1</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">a</span><sub>1</sub> :
+<div class="center"><span style="font-family:monospace">fourier_an(1+cos(x)+sin(x),x,2*pi,1,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">1</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> (<span style="font-style:italic">n</span>≠ 0 et <span style="font-style:italic">n</span>≠ 1) :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div> 
+<div class="center"><span style="font-family:monospace">fourier_bn(1+cos(x)+sin(x),x,2*pi,n,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">0</span></div>
+</li><li class="li-itemize">Soit la fonction <span style="font-style:italic">f</span>, de période <span style="font-style:italic">T</span>=2, définie sur [−1;1[ par 
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+ On tape, pour avoir son coefficient <span style="font-style:italic">a</span><sub>0</sub> :
+<div class="center"><span style="font-family:monospace">fourier_an(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,0,-1)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">1/3</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub> (<span style="font-style:italic">n</span>≠ 0) :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div> 
+<div class="center"><span style="font-family:monospace">fourier_an(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n,-1)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">4*(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n/(pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
 </li></ul>
-</li><li class="li-enumerate">Interpolation trigonométrique<br>
-Soit <span style="font-style:italic">f</span> une fonction 2π-périodique dont on connait les valeurs en
-<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>=2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>, <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">f</span>(2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>)=<span style="font-style:italic">f</span><sub><span style="font-style:italic">k</span></sub> pour <span style="font-style:italic">k</span>=0..(<span style="font-style:italic">N</span>−1) avec <span style="font-style:italic">N</span>=2*<span style="font-style:italic">m</span>.<br>
-On veut déterminer le polynôme <span style="font-style:italic">p</span> trigonométrique interpolateur de <span style="font-style:italic">f</span> 
-aux points 2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span> pour <span style="font-style:italic">k</span>=0..(<span style="font-style:italic">N</span>−1), sous la forme :<br>
-<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">a</span><sub>0</sub>/2+∑<sub><span style="font-style:italic">n</span>=0</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>cos(<span style="font-style:italic">nx</span>)+<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub>sin(<span style="font-style:italic">nx</span>)+1/2 <span style="font-style:italic">a</span><sub><span style="font-style:italic">N</span>/2</sub><span style="font-style:italic">cos</span>(<span style="font-style:italic">Nx</span>/2)<br>
-on suppose donc <span style="font-style:italic">b</span><sub>0</sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">N</span>/2</sub>=0 et on choisit cette notation pour
-simplifier les calculs ultérieurs.<br>
- On a aussi :<br>
-<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>)=1/2 <span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>exp(−<span style="font-style:italic">iNx</span>/2)+∑<sub><span style="font-style:italic">n</span>=−<span style="font-style:italic">N</span>/2+1</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub>exp(<span style="font-style:italic">inx</span>)+1/2 <span style="font-style:italic">p</span><sub><span style="font-style:italic">N</span>/2</sub>exp(<span style="font-style:italic">iNx</span>/2).<br>
-avec pour <span style="font-style:italic">k</span>=0..<span style="font-style:italic">N</span>/2<br>
-<span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub>=1/2(<span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>−<span style="font-style:italic">ib</span><sub><span style="font-style:italic">k</span></sub>)<br>
-<span style="font-style:italic">p</span><sub>−<span style="font-style:italic">k</span></sub>=1/2(<span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>+<span style="font-style:italic">ib</span><sub><span style="font-style:italic">k</span></sub>)<br>
-comme <span style="font-style:italic">b</span><sub><span style="font-style:italic">N</span>/2</sub>=0 on a <span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>=<span style="font-style:italic">p</span><sub><span style="font-style:italic">N</span>/2</sub><br>
-On veut déterminer les <span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub> pour avoir :<br>
-<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">f</span><sub><span style="font-style:italic">k</span></sub>=<br>
-1/2 <span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>exp(−<span style="font-style:italic">ik</span>π)+∑<sub><span style="font-style:italic">n</span>=−<span style="font-style:italic">N</span>/2+1</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub>exp(<span style="font-style:italic">in</span>2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>)+1/2 <span style="font-style:italic">p</span><sub><span style="font-style:italic">N</span>/2</sub>exp(<span style="font-style:italic">ik</span>π)<br>
-puisque exp(−<span style="font-style:italic">ik</span>π)=exp(<span style="font-style:italic">ik</span>π)=−1 et <span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>=<span style="font-style:italic">p</span><sub><span style="font-style:italic">N</span>/2</sub> on a <br>
-<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">f</span><sub><span style="font-style:italic">k</span></sub>=−<span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>+∑<sub><span style="font-style:italic">n</span>=−<span style="font-style:italic">N</span>/2+1</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub>exp(<span style="font-style:italic">in</span>2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>)<br>
-On transforme ∑<sub><span style="font-style:italic">n</span>=−<span style="font-style:italic">N</span>/2+1</sub><sup>−1</sup> en posant <span style="font-style:italic">j</span>=<span style="font-style:italic">n</span>+<span style="font-style:italic">N</span> on obtient :<br>
-∑<sub><span style="font-style:italic">n</span>=−<span style="font-style:italic">N</span>/2</sub><sup>−1</sup> <span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub> exp(<span style="font-style:italic">inx</span>)=∑<sub><span style="font-style:italic">j</span>=<span style="font-style:italic">N</span>/2</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span>−<span style="font-style:italic">N</span></sub>exp(<span style="font-style:italic">i</span>(<span style="font-style:italic">j</span>−<span style="font-style:italic">N</span>)<span style="font-style:italic">x</span>)<br>
-puisque pour <span style="font-style:italic">k</span>=0..(<span style="font-style:italic">N</span>−1), exp(<span style="font-style:italic">i</span>(<span style="font-style:italic">j</span>−<span style="font-style:italic">N</span>)<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=exp(<span style="font-style:italic">ijx</span><sub><span style="font-style:italic">k</span></sub>),<br>
-on a :<br>
-<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=∑<sub><span style="font-style:italic">j</span>=<span style="font-style:italic">N</span>/2</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span>−<span style="font-style:italic">N</span></sub>exp(<span style="font-style:italic">ijx</span><sub><span style="font-style:italic">k</span></sub>)+∑<sub><span style="font-style:italic">n</span>=0</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub>exp(<span style="font-style:italic">inx</span><sub><span style="font-style:italic">k</span></sub>).<br>
-ou encore : <br>
-<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=∑<sub><span style="font-style:italic">n</span>=0</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub>exp(<span style="font-style:italic">inx</span><sub><span style="font-style:italic">k</span></sub>)+∑<sub><span style="font-style:italic">n</span>=<span style="font-style:italic">N</span>/2</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span>−<span style="font-style:italic">N</span></sub>exp(<span style="font-style:italic">inx</span><sub><span style="font-style:italic">k</span></sub>).<br>
-On pose :<br>
-pour <span style="font-style:italic">n</span>=0..(<span style="font-style:italic">N</span>/2−1), <span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub> et <br>
-pour <span style="font-style:italic">n</span>=<span style="font-style:italic">N</span>/2..(<span style="font-style:italic">N</span>−1), <span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span>−<span style="font-style:italic">N</span></sub>.<br>
-Donc pour <span style="font-style:italic">k</span>=0..(<span style="font-style:italic">N</span>−1), <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=∑<sub><span style="font-style:italic">n</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span></sub>exp(<span style="font-style:italic">inx</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">f</span><sub><span style="font-style:italic">k</span></sub>.<br>
-Il suffit donc de résoudre ce système d’inconnues <span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span></sub>.<br>
-On a :<br>
-<span style="font-style:italic">f</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">f</span>(2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>)=<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">N</span>*<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">q</span>)=<span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">*</span><span style="font-family:monospace"><span style="font-style:italic">ifft</span></span><span style="font-family:monospace">(</span><span style="font-family:monospace"><span style="font-style:italic">q</span></span><span style="font-family:monospace">)</span><br>
-soit :<br>
-<span style="font-style:italic">q</span>=[<span style="font-style:italic">p</span><sub>0</sub>,..<span style="font-style:italic">p</span><sub><span style="font-style:italic">N</span>/2−1</sub>,<span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>,..,<span style="font-style:italic">p</span><sub>−1</sub>]=1/<span style="font-style:italic">N</span><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>([<span style="font-style:italic">f</span><sub>0</sub>,..<span style="font-style:italic">f</span><sub>(<span style="font-style:italic">N</span>−1)</sub>])=<br>
-<span style="font-family:monospace">1/</span><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace"><span style="font-style:italic">fft</span></span><span style="font-family:monospace">([</span><span style="font-family:monospace"><span style="font-style:italic">f</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,...</span><span style="font-family:monospace"><span style="font-style:italic">f</span></span><sub><span style="font-family:monospace">(</span><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1)</span></sub><span style="font-family:monospace">])</span><br>
-<span style="font-weight:bold">Remarque </span><br>
-Si la fonction <span style="font-style:italic">f</span> est réelle on a :<br>
-<span style="font-style:italic">p</span><sub>−<span style="font-style:italic">k</span></sub>=<span style="text-decoration:overline"><span style="font-style:italic">p</span></span><sub><span style="font-style:italic">k</span></sub> pour <span style="font-style:italic">k</span>=1..(<span style="font-style:italic">N</span>/2−1) et <span style="font-style:italic">p</span><sub>0</sub> et <span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub> sont réels.<br>
-Donc si la fonction <span style="font-style:italic">f</span> est réelle on a :<br>
-<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">p</span><sub>0</sub>+2*<span style="font-style:italic">re</span>(∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub>exp(<span style="font-style:italic">ikx</span>)+1/2<span style="font-style:italic">p</span><sub>−<span style="font-style:italic">N</span>/2</sub>*exp(−<span style="font-style:italic">i</span><span style="font-style:italic">Nx</span>/2))<br>
-En résumé :<br>
-pour 0 ≤ <span style="font-style:italic">n</span>&lt;<span style="font-style:italic">N</span>/2, <span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub> est le <span style="font-style:italic">n</span>-ième élément de 
-1/<span style="font-style:italic">N</span><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>([<span style="font-style:italic">f</span><sub>0</sub>,..<span style="font-style:italic">f</span><sub>(<span style="font-style:italic">N</span>−1)</sub>]) et,<br>
-pour −<span style="font-style:italic">N</span>/2 ≤ <span style="font-style:italic">n</span>&lt;0, <span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub> est le (<span style="font-style:italic">n</span>+<span style="font-style:italic">N</span>)-ième élément de 
-1/<span style="font-style:italic">N</span><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>([<span style="font-style:italic">f</span><sub>0</sub>,..<span style="font-style:italic">f</span><sub>(<span style="font-style:italic">N</span>−1)</sub>]).</li><li class="li-enumerate">Série de Fourier<br>
-Soit <span style="font-style:italic">f</span> une fonction 2π-périodique dont on connait les valeurs en
-<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>=2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>, <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">f</span>(2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub> pour <span style="font-style:italic">k</span>=0..(<span style="font-style:italic">N</span>−1).<br>
-On suppose que sa série de Fourier converge simplement vers <span style="font-style:italic">f</span>, et on veut 
-connaître les coefficients <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> pour −<span style="font-style:italic">N</span>/2 ≤ <span style="font-style:italic">n</span>&lt;<span style="font-style:italic">N</span>/2.<br>
-Il fait donc calculer de façon approchée :<br>
-<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>=1/2π ∫<sub>0</sub><sup>2π</sup><span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>)exp(−<span style="font-style:italic">int</span>)<span style="font-style:italic">dt</span><br>
-<span style="font-weight:bold">Remarque</span><br>
-Lorsque la fonction périodique <span style="font-style:italic">f</span> est égale à sa série de Fourier,
-on a :<br>
-<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">a</span><sub>0</sub>/2+∑<sub><span style="font-style:italic">k</span>=1</sub><sup>∞</sup><span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>cos(<span style="font-style:italic">kx</span>)+<span style="font-style:italic">b</span><sub><span style="font-style:italic">k</span></sub>sin(<span style="font-style:italic">kx</span>) avec
- <span style="font-style:italic">c</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>−<span style="font-style:italic">ib</span><sub><span style="font-style:italic">k</span></sub>/2.<p>On calcule l’intégrale donnant <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> de manière approchée par la 
-méthode des trapèzes. Ici Romberg 
-ne sert a rien, car le développement d’Euler Mac Laurin a ses coefficients 
-déjà nuls puisque la fonction que l’on intègre est périodique et 
-donc toutes ses dérivées sont égales en 0 et en 2π.<br>
- Si <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup> est la valeur approchée de <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> obtenue par la 
-méthode des trapèzes, on a pour
-−<span style="font-style:italic">N</span>/2 ≤ <span style="font-style:italic">n</span>&lt;<span style="font-style:italic">N</span>/2:<br>
-<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=1/2π2π/<span style="font-style:italic">N</span>∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>exp(−2<span style="font-style:italic">ink</span>π/<span style="font-style:italic">N</span>)<br>
-puisque <span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>=2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span> et <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub> on a<br>
-<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)exp(−<span style="font-style:italic">inx</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>exp(−2<span style="font-style:italic">ink</span>π/<span style="font-style:italic">N</span>) et <br>
-<span style="font-style:italic">f</span>(0)exp(0)=<span style="font-style:italic">f</span>(2π)exp(−2<span style="font-style:italic">inN</span>π/<span style="font-style:italic">N</span>)=<span style="font-style:italic">y</span><sub>0</sub>=<span style="font-style:italic">y</span><sub><span style="font-style:italic">N</span></sub><br>
-On a donc :<br>
-[<span style="font-style:italic">c</span><sub>0</sub><sup>≃</sup>,..<span style="font-style:italic">c</span><sub><span style="font-style:italic">N</span>/2−1</sub><sup>≃</sup>,<span style="font-style:italic">c</span><sub>−<span style="font-style:italic">N</span>/2</sub><sup>≃</sup>,..<span style="font-style:italic">c</span><sub>−1</sub><sup>≃</sup>]=1/<span style="font-style:italic">N</span><span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>([<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>1</sub>...<span style="font-style:italic">y</span><sub>(<span style="font-style:italic">N</span>−1)</sub>])
-car <br>
-si <span style="font-style:italic">n</span>≥0, on a <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=<span style="font-style:italic">y</span><sub><span style="font-style:italic">n</span></sub> et <br>
-si <span style="font-style:italic">n</span>&lt;0, on a <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=<span style="font-style:italic">y</span><sub><span style="font-style:italic">n</span>+<span style="font-style:italic">N</span></sub>
-si  ω<sub><span style="font-style:italic">N</span></sub>=exp(2<span style="font-style:italic">i</span>π/<span style="font-style:italic">N</span>), ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">n</span></sup>=ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">n</span>+<span style="font-style:italic">N</span></sup> puisque 
-ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">N</span></sup>=1</p><p><span style="font-weight:bold">Propriétés</span><br>
-On retrouve les coefficients du polynôme interpolateur de <span style="font-style:italic">f</span> :<br>
-<span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup> pour −<span style="font-style:italic">N</span>/2 ≤ <span style="font-style:italic">n</span>&lt;<span style="font-style:italic">N</span>/2.<br>
-Ce qui veut dire que le polynôme trigonométrique 
-∑<sub><span style="font-style:italic">n</span>=−<span style="font-style:italic">N</span>/2</sub><sup><span style="font-style:italic">N</span>/2−1</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>exp(<span style="font-style:italic">inx</span>)
-interpole <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) aux points <span style="font-style:italic">x</span>=2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>.<br>
-Donc si <span style="font-style:italic">f</span> est un polynôme trigonométrique <span style="font-style:italic">P</span> de degré <span style="font-style:italic">m</span>≤ <span style="font-style:italic">N</span>/2 :<br>
-<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>)=<span style="font-style:italic">P</span>(<span style="font-style:italic">t</span>)=∑<sub><span style="font-style:italic">k</span>=−<span style="font-style:italic">m</span></sub><sup><span style="font-style:italic">m</span>−1</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">k</span></sub>exp(2<span style="font-style:italic">ik</span>π <span style="font-style:italic">t</span>), 
-le polynôme trigonométrique qui interpole <span style="font-style:italic">f</span>=<span style="font-style:italic">P</span> est <span style="font-style:italic">P</span> lui-même, les 
-coefficients approchés sont exacts (<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>).<br>
-On peut, plus généralement calculer l’erreur <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>−<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>.<br>
-On suppose que <span style="font-style:italic">f</span> est égale à sa série de Fourier, c’est à dire que 
-l’on a :<br>
-<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>)=∫<sub><span style="font-style:italic">m</span>=−∞</sub><sup>+∞</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">m</span></sub>exp(2<span style="font-style:italic">i</span>π <span style="font-style:italic">mt</span>) avec 
-∑<sub><span style="font-style:italic">m</span>=−∞</sub><sup>+∞</sup>|<span style="font-style:italic">c</span><sub><span style="font-style:italic">m</span></sub>|&lt;∞<br>
-On a donc :<br>
-<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">f</span>(2<span style="font-style:italic">k</span>π/<span style="font-style:italic">N</span>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>=∑<sub><span style="font-style:italic">m</span>=−∞</sub><sup>+∞</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">m</span></sub>ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">km</span></sup> et<br>
-<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=1/<span style="font-style:italic">N</span>∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup><span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">kn</span></sup><br>
-En remplaçant <span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub> on obtient :<br>
-<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=1/<span style="font-style:italic">N</span>∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup>∑<sub><span style="font-style:italic">m</span>=−∞</sub><sup>+∞</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">m</span></sub>ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">km</span></sup>ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">kn</span></sup><br>
-Or :<br>
-ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">km</span></sup>ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">kn</span></sup>=ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span>(<span style="font-style:italic">m</span>−<span style="font-style:italic">n</span>)</sup> et<br>
-puisque ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">m</span>−<span style="font-style:italic">n</span></sup> est une racine <span style="font-style:italic">N</span>-ième de l’unité, on a :<br>
-ω<sub><span style="font-style:italic">N</span></sub><sup>(<span style="font-style:italic">m</span>−<span style="font-style:italic">n</span>)<span style="font-style:italic">N</span></sup>=1 et ∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup>ω<sub><span style="font-style:italic">N</span></sub><sup>(<span style="font-style:italic">m</span>−<span style="font-style:italic">n</span>)<span style="font-style:italic">k</span></sup>=0.<br>
-Donc :<br>
-si <span style="font-style:italic">m</span>−<span style="font-style:italic">n</span> est un multiple de <span style="font-style:italic">N</span> (<span style="font-style:italic">m</span>=<span style="font-style:italic">n</span>+<span style="font-style:italic">l</span>· <span style="font-style:italic">N</span>) on a ∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup>ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span>(<span style="font-style:italic">m</span>−<span style="font-style:italic">n</span>)</sup>=<span style="font-style:italic">N</span> et<br>
-sinon ∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup>ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span>(<span style="font-style:italic">m</span>−<span style="font-style:italic">n</span>)</sup>=0<br>
-En intervertisant les deux sommes on a :<br>
-<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=1/<span style="font-style:italic">N</span>∑<sub><span style="font-style:italic">m</span>=−∞</sub><sup>+∞</sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">m</span></sub>∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">N</span>−1</sup>ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span>(<span style="font-style:italic">m</span>−<span style="font-style:italic">n</span>)</sup><br>
-<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=∑<sub><span style="font-style:italic">l</span>=−∞</sub><sup>+∞</sup><span style="font-style:italic">c</span><sub>(<span style="font-style:italic">n</span>+<span style="font-style:italic">l</span>· <span style="font-style:italic">N</span>)</sub><br>
-c’est à dire :<br>
-<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><sup>≃</sup>=...<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span>−2· <span style="font-style:italic">N</span></sub>+<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span>−<span style="font-style:italic">N</span></sub>+<span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub><span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span>+<span style="font-style:italic">N</span></sub><span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span>+2· <span style="font-style:italic">N</span></sub>+.....</p><p>Exemple :<br>
-<span style="font-family:monospace">f(t):=cos(t)+cos(2*t)</span><br>
-<span style="font-family:monospace">x:=f(2*k*pi/8)$(k=0..7)</span><br>
-On obtient :<br>
-<span style="font-family:monospace"><span style="font-style:italic">x</span></span><span style="font-family:monospace">={2,(√</span><span style="font-family:monospace"><span style="text-decoration:overline">2</span></span><span style="font-family:monospace">)/2,-1,-((√</span><span style="font-family:monospace"><span style="text-decoration:overline">2</span></span><span style="font-family:monospace">)/2),0,-((√</span><span style="font-family:monospace"><span style="text-decoration:overline">2</span></span><span style="font-family:monospace">)/2),-1,(√</span><span style="font-family:monospace"><span style="text-decoration:overline">2</span></span><span style="font-family:monospace">)/2}</span><br>
-<span style="font-family:monospace">fft(x)=[0.0,4.0,4.0,0.0,0.0,0.0,4.0,4.0]</span><br>
-donc en divisant par <span style="font-style:italic">N</span>=8 :<br>
-<span style="font-style:italic">c</span><sub>0</sub>=0,<span style="font-style:italic">c</span><sub>1</sub>=4.0/8,<span style="font-style:italic">c</span><sub>2</sub>=4.0/2,<span style="font-style:italic">c</span><sub>3</sub>=0.0,<br>
-<span style="font-style:italic">c</span><sub>−4</sub>=0,<span style="font-style:italic">c</span><sub>−3</sub>=0,<span style="font-style:italic">c</span><sub>−2</sub>=4.0/8,=<span style="font-style:italic">c</span><sub>−1</sub>=4.0/8<br>
-donc retrouve bien :<br>
-<span style="font-style:italic">b</span><sub><span style="font-style:italic">k</span></sub>=0 et <span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">c</span><sub>−<span style="font-style:italic">k</span></sub>+<span style="font-style:italic">c</span><sub><span style="font-style:italic">k</span></sub> vaut 1 si <span style="font-style:italic">k</span>=1,2 et 0 sinon. </p></li><li class="li-enumerate">Produit de convolution<br>
-Soient deux polynômes <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">n</span>−1</sup><span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">j</span></sup> 
-et <span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">m</span>−1</sup><span style="font-style:italic">b</span><sub><span style="font-style:italic">j</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">j</span></sup> donné par la liste de 
-leurs coefficients <span style="font-style:italic">a</span>=[<span style="font-style:italic">a</span><sub>0</sub>,<span style="font-style:italic">a</span><sub>1</sub>,..<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−1</sub>] et <span style="font-style:italic">b</span>=[<span style="font-style:italic">b</span><sub>0</sub>,<span style="font-style:italic">b</span><sub>1</sub>,..<span style="font-style:italic">b</span><sub><span style="font-style:italic">m</span>−1</sub>].<br>
-On veut calculer le produit de ces deux polynômes c’est à dire le produit 
-de convolution de leurs coefficients si on se place dans l’ensemble des suites 
-périodiques de période supérieure ou égale à (<span style="font-style:italic">n</span>+<span style="font-style:italic">m</span>) 
-en complétant <span style="font-style:italic">a</span> (resp <span style="font-style:italic">b</span>) par <span style="font-style:italic">m</span>+? (resp <span style="font-style:italic">n</span>+?) zéros (en pratique
-on choisit ? pour que <span style="font-style:italic">n</span>+<span style="font-style:italic">m</span>+? soit une puissance de 2).<br>
-On alors pour <span style="font-style:italic">a</span>=[<span style="font-style:italic">a</span><sub>0</sub>,<span style="font-style:italic">a</span><sub>1</sub>,..<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−1</sub>,0..0] et <span style="font-style:italic">b</span>=[<span style="font-style:italic">b</span><sub>0</sub>,<span style="font-style:italic">b</span><sub>1</sub>,..<span style="font-style:italic">b</span><sub><span style="font-style:italic">m</span>−1</sub>,0..0]:<br>
-<span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">j</span>=0</sub><sup><span style="font-style:italic">n</span>+<span style="font-style:italic">m</span>−1</sup>(<span style="font-style:italic">a</span>*<span style="font-style:italic">b</span>)<sub><span style="font-style:italic">j</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">j</span></sup><br>
-On calcule donc :<br>
-<span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">a</span>), <span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">b</span>), <span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub><sup>−1</sup>(<span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">a</span>)· <span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">b</span>)) et puisque <br>
-<span style="font-style:italic">nF</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">x</span> · <span style="font-style:italic">y</span>)=<span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">x</span>) * <span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">y</span>)<br>
-<span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">x</span> * <span style="font-style:italic">y</span>)=<span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">x</span>) · <span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">y</span>)<br>
-on a :<br>
-<span style="font-style:italic">a</span>*<span style="font-style:italic">b</span>=<span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub><sup>−1</sup>(<span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">a</span>)· <span style="font-style:italic">F</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">b</span>))
-</li></ol>
+<h4 id="sec452" class="subsubsection"><span style="font-family:monospace">fourier_bn</span></h4>
+<p><a id="hevea_default671"></a><a id="sec:fourier_bn"></a>
+<span style="font-family:monospace">fourier_bn</span> a quatre ou cinq paramètres : une expression 
+<span style="font-style:italic">Xpr</span> dependant d’une variable, le nom de la variable (par exemple <span style="font-style:italic">x</span>), la 
+période <span style="font-style:italic">T</span>, un entier <span style="font-style:italic">n</span> et <span style="font-style:italic">a</span> (<span style="font-style:italic">a</span> vaut 0 par défaut).<br>
+<span style="font-family:monospace">fourier_bn(Xpr,x,T,n,a)</span> renvoie le coefficient de Fourier <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> d’une 
+fonction de variable <span style="font-style:italic">x</span> définie sur [<span style="font-style:italic">a</span>,<span style="font-style:italic">a</span>+<span style="font-style:italic">T</span>[ par <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">Xpr</span> et périodique 
+de période <span style="font-style:italic">T</span>.<br>
+Si <span style="font-style:italic">f</span> est continue par morceaux <span style="font-family:monospace">fourier_bn(Xpr,x,T,n,a)</span> renvoie :<br>
+ <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub>=2/<span style="font-style:italic">T</span>∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">a</span>+<span style="font-style:italic">T</span></sup><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)sin(2π <span style="font-style:italic">nx</span>/<span style="font-style:italic">T</span>)<span style="font-style:italic">dx</span><br>
+Si l’on veut que les calculs soient simplifiés il faut dire que <span style="font-style:italic">n</span> est un entier en tapant <span style="font-family:monospace">assume(n,integer)</span>.<br>
+<span style="font-weight:bold">Exemples</span> 
+</p><ul class="itemize"><li class="li-itemize">
+Soit la fonction <span style="font-style:italic">f</span>, de période <span style="font-style:italic">T</span>=2π, définie sur [−π;π[ 
+par 
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=1+cos(<span style="font-style:italic">x</span>)+sin(<span style="font-style:italic">x</span>).<br>
+On tape, pour avoir son coefficient <span style="font-style:italic">b</span><sub>1</sub> :
+<div class="center"><span style="font-family:monospace">fourier_bn(1+cos(x)+sin(x),x,2*pi,1,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">1</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> (<span style="font-style:italic">n</span>≠ 1) :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_bn(1+cos(x)+sin(x),x,2*pi,n,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">0</span></div>
+</li><li class="li-itemize">Soit la fonction <span style="font-style:italic">f</span>, de période <span style="font-style:italic">T</span>=2, définie sur [−1;1[ par 
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+On tape, pour avoir son coefficient <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> (<span style="font-style:italic">n</span>≠ 0) :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_bn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n,-1)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">0</span></div>
+</li><li class="li-itemize">Soit la fonction <span style="font-style:italic">f</span>, de période <span style="font-style:italic">T</span>=2, définie sur [−1;1[ par 
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>3</sup>.<br>
+On tape, pour avoir son coefficient <span style="font-style:italic">b</span><sub>1</sub> :
+<div class="center"><span style="font-family:monospace">fourier_bn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,x,2,1,-1)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">(2*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-12)/pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub> :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_bn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,x,2,n,-1)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">(-2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n+12*(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n)/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div>
+</li></ul>
+<h4 id="sec453" class="subsubsection"><span style="font-family:monospace">fourier_cn</span></h4>
+<p><a id="hevea_default672"></a><a id="sec:fourier_cn"></a>
+<span style="font-family:monospace">fourier_cn</span> a quatre ou cinq paramètres : une expression 
+<span style="font-style:italic">Xpr</span>, le nom de la variable (par exemple <span style="font-style:italic">x</span>), la période <span style="font-style:italic">T</span>, un entier 
+<span style="font-style:italic">n</span> et <span style="font-style:italic">a</span> (<span style="font-style:italic">a</span> vaut 0 par défaut).<br>
+<span style="font-family:monospace">fourier_cn(Xpr,x,T,n,a)</span> renvoie le coefficient de Fourier <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> d’une 
+fonction de variable <span style="font-style:italic">x</span> définie sur [<span style="font-style:italic">a</span>,<span style="font-style:italic">a</span>+<span style="font-style:italic">T</span>[ par <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">Xpr</span> et périodique 
+de période <span style="font-style:italic">T</span>.<br>
+Si <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">Xpr</span> est continue par morceaux sur ℝ,
+<span style="font-family:monospace">fourier_cn(Xpr,x,T,n,a)</span> renvoie 
+ <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>=1/<span style="font-style:italic">T</span>∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">a</span>+<span style="font-style:italic">T</span></sup><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−2<span style="font-style:italic">i</span>π <span style="font-style:italic">nx</span>/<span style="font-style:italic">T</span></sup><span style="font-style:italic">dx</span><br>
+<span style="font-weight:bold">Exemples</span>
+</p><ul class="itemize"><li class="li-itemize">
+Soit la fonction <span style="font-style:italic">f</span>, de période <span style="font-style:italic">T</span>=2π, définie sur [−π;π[ 
+par <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=1+cos(<span style="font-style:italic">x</span>)+sin(<span style="font-style:italic">x</span>).<br>
+On tape, pour avoir son coefficient <span style="font-style:italic">c</span><sub>0</sub> :
+<div class="center"><span style="font-family:monospace">fourier_cn(1+cos(x)+sin(x),x,2*pi,0,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">1</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">c</span><sub>1</sub> :
+<div class="center"><span style="font-family:monospace">fourier_cn(1+cos(x)+sin(x),x,2*pi,1,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">(1-i)/2</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">c</span><sub>−1</sub> :
+<div class="center"><span style="font-family:monospace">fourier_cn(1+cos(x)+sin(x),x,2*pi,-1,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">(1+i)/2</span></div>
+On tape, pour avoir son coefficient <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> (<span style="font-style:italic">n</span>≠ 0 et <span style="font-style:italic">n</span>≠ ± 1) :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_cn(1+cos(x)+sin(x),x,2*pi,n,-pi)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">0</span></div>
+</li><li class="li-itemize">Déterminer les coefficients <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> de Fourier de la fonction <span style="font-style:italic">f</span> 
+périodique de période 2 et définie sur [−1;1[ par  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+On tape, pour avoir <span style="font-style:italic">c</span><sub>0</sub> :
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,0,-1)</span></div>
+On obtient:
+<div class="center"><span style="font-family:monospace">1/3</span></div>
+On tape, pour avoir <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n,-1)</span></div>
+On obtient:
+<div class="center"><span style="font-family:monospace">2*(-1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n/(pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div></li><li class="li-itemize">Déterminer les coefficients <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> de Fourier de la fonction <span style="font-style:italic">f</span> 
+périodique de période 2 et définie sur [0;2[ par  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+On tape, pour avoir <span style="font-style:italic">c</span><sub>0</sub> :
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,0)</span></div>
+On obtient:
+<div class="center"><span style="font-family:monospace">4/3</span></div>
+On tape, pour avoir <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2,n)</span></div>
+On obtient:
+<div class="center"><span style="font-family:monospace">((2*i)*pi*n+2)/(pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)</span></div>
+</li><li class="li-itemize">Déterminer les coefficients <span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub> de Fourier de la fonction <span style="font-style:italic">f</span> 
+périodique de période 2π, et définie sur [0;2π[ par <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup>.<br>
+On tape <a id="hevea_default673"></a> :
+<div class="center"><span style="font-family:monospace">assume(n,integer)</span></div>
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2*pi,n)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">((2*i)*pi*n+2)/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+Si on ne met pas <span style="font-family:monospace">assume(n,integer)</span> on obtient une expression non 
+simplifiée :
+<div class="center"><span style="font-family:monospace">((2*i)*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*exp((-i)*n*2*pi)+2*pi*n*exp((-i)*n*2*pi)+</span></div>
+<div class="center"><span style="font-family:monospace">(-i)*exp((-i)*n*2*pi)+i)/(pi*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)</span></div>
+que l’on peut simplifier en remplacant <span style="font-family:monospace">exp((-i)*n*2*pi)</span> par <span style="font-family:monospace">1</span> :
+<div class="center"><span style="font-family:monospace">subst(ans(),exp((-i)*n*2*pi)=1)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">((2*i)*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*pi*n+-i+i)/pi/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></div>
+expression que l’on peut simplifier avec <span style="font-family:monospace">normal</span> et on trouve finalement :
+<div class="center"><span style="font-family:monospace">((2*i)*pi*n+2)/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+Il est donc préférable d’écrire <span style="font-family:monospace">assume(n,integer)</span>.<br>
+Donc si <span style="font-style:italic">n</span> ≠ 0 on a :<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">c</span><sub><span style="font-style:italic">n</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2*<span style="font-style:italic">i</span>*<span style="font-style:italic">n</span>*π+2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table> 
+Puis on tape :
+<div class="center"><span style="font-family:monospace">fourier_cn(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,2*pi,0)</span></div>
+On obtient :
+<div class="center"><span style="font-family:monospace">4*pi</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/3</span></div>
+Donc si <span style="font-style:italic">n</span>= 0 on a :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">c</span><sub>0</sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4.π<sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td></tr>
+</table> 
+</li></ul><p>
+Remarque :<br>
+Lorsque l’on ne veut plus considérer <span style="font-style:italic">n</span> comme un entier on doit taper :<br>
+<span style="font-family:monospace">purge(n)</span><a id="hevea_default674"></a>.<br>
+ Pour connaître les hypothéses faites sur une variable, par exemple <span style="font-style:italic">n</span>,
+on tape :<br>
+<span style="font-family:monospace">about(n)</span><a id="hevea_default675"></a></p>
 <hr>
 <a href="cascmd_fr345.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

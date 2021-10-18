@@ -4,38 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>L’homothétie : homothety homothetie</title>
+<title>Savoir si on a un triangle isocéle : is_isosceles est_isocele</title>
 </head>
 <body >
 <a href="cascmd_fr1070.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1072.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1294" class="subsection">11.14.5  L’homothétie : <span style="font-family:monospace">homothety homothetie</span></h3>
-<p><a id="hevea_default2076"></a><a id="hevea_default2077"></a><a id="sec:homothetie3"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr975.html#sec%3Ahomothetie2">10.17.5</a> pour la géométrie plane.<br>
-<span style="font-family:monospace">homothetie</span>, en géométrie 3-d, a deux ou trois arguments  :
-un point (le centre de l’homothétie), un réel (la valeur du rapport de 
-l’homothétie) et éventuellement l’objet géométrique à transformer.<br>
-Lorsque <span style="font-family:monospace">homothetie</span> a deux arguments, c’est une fonction qui agit sur 
-un objet géométrique.<br>
+<h3 id="sec1299" class="subsection">11.13.10  Savoir si on a un triangle isocéle : <span style="font-family:monospace">is_isosceles est_isocele</span></h3>
+<p><a id="hevea_default2084"></a><a id="hevea_default2085"></a><a id="sec:estisocele3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr993.html#sec%3Aestisocele2">10.18.6</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">est_isocele</span> est une fonction booléenne ayant comme 
+argument trois points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_isocele</span> vaut 1 (resp 2, 3) si les trois points forment un 
+triangle isocéle ou si l’objet géométrique est un triangle isocéle dont
+le sommet de l’angle portant les deux cotés égaux est désigné par le 
+premier (resp second, troisième) argument, ou vaut 4 si les trois points 
+forment un triangle équilatéral, ou si l’objet géométrique est un 
+triangle équilatéral, et vaut 0 sinon.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">h:=homothetie(point(0,0,0),2)</span></div><p>
-Puis :
-</p><div class="center"><span style="font-family:monospace">h(point(0,0,1))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">est_isocele([2,0,0],[0,0,0],[0,2,0])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le point (0,0,2) est tracé</span></div><p>
-Lorsque <span style="font-family:monospace">homothetie</span> a trois arguments, <span style="font-family:monospace">homothetie</span> dessine et 
-renvoie le transformé du troisième argument dans l’homothétie de centre
-le premier argument et de rapport le deuxième argument.<br>
+</p><div class="center"><span style="font-family:monospace">2</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">homothetie(point(0,0,0),2,point(0,0,1))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">T:=triangle_isocele([0,0,0],[2,2,0],[2,2,2]); est_isocele(T)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le point (0,0,2) est tracé</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">homothetie(point(0,0,0),2,sqhere(point(0,0,0),1))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">est_isocele([1,1,0],[-1,1,0],[-1,0,0])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">La sphère de centre (0,0,0) et de rayon 2</span></div>
+</p><div class="center"><span style="font-family:monospace">0</span></div>
 <hr>
 <a href="cascmd_fr1070.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

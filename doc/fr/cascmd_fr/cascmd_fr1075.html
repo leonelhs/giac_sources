@@ -4,22 +4,41 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Le cône : cone</title>
+<title>Savoir si on a un parallélogramme : is_parallelogram est_parallelogramme</title>
 </head>
 <body >
 <a href="cascmd_fr1074.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1076.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1299" class="subsection">11.15.1  Le cône : <span style="font-family:monospace">cone</span></h3>
-<p><a id="hevea_default2082"></a>
-<span style="font-family:monospace">cone</span> a comme argument un point <span style="font-family:monospace">A</span>, une direction <span style="font-family:monospace">v</span> et un réel <span style="font-family:monospace">t</span>.<br>
-<span style="font-family:monospace">cone(A,v,t)</span> dessine un demi-cône de sommet <span style="font-family:monospace">A</span>, direction <span style="font-family:monospace">v</span> 
-et de demi-angle au sommet <span style="font-family:monospace">t</span>.<br>
+<h3 id="sec1303" class="subsection">11.13.14  Savoir si on a un parallélogramme : <span style="font-family:monospace">is_parallelogram est_parallelogramme</span></h3>
+<p><a id="hevea_default2091"></a><a id="hevea_default2092"></a><a id="sec:estparalelo3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr997.html#sec%3Aestparalelo2">10.18.10</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">est_parallelogramme</span> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_parallelogramme</span> vaut 1 (resp 2, 3, 4) si les quatre points sont 
+coplanaires et forment un parallélogramme (resp un losange, un rectangle, un 
+carré) ou si l’objet géométrique est un parallélogramme (resp un losange,
+un rectangle, un carré), et vaut 0 sinon.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">cone([0,1,0],[0,0,1],pi/3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">est_parallelogramme([0,0,0],[2,0,0],[3,1,0],[1,1,0])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le cône d’axe paralléle à 0z passant par [0,1,0] et de demi-angle au sommet égal à </span>π/3</div>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">K:=parallelogramme([0,0,0],[2,0,0],[1,1,0]);est_parallelogramme(K)</span></div><p>
+<span style="font-family:monospace">K</span> est le parallélogramme <span style="font-family:monospace">ABCD</span> de sommets [0,0,0],[2,0,0],[3,1,0],
+[1,1,0].
+On tape :
+</p><div class="center"><span style="font-family:monospace">est_parallelogramme([-1,0,0],[0,1,0],[2,0,0],[0,-1,0])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+<span style="font-weight:bold">Attention</span><br>
+On doit taper :
+</p><div class="center"><span style="font-family:monospace">K:=parallelogramme([0,0,0],[2,0,0],[1,1,0],D); est_parallelogramme(K[0])</span></div><p>
+Pour obtenir :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+car K est une liste composée d’un parallélogramme et du point D.
+</p>
 <hr>
 <a href="cascmd_fr1074.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

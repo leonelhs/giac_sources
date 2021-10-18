@@ -4,55 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Les opérateurs bitor, bitxor, bitand</title>
+<title>Transformer une liste en expression : list2exp</title>
 </head>
 <body >
 <a href="cascmd_fr139.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr141.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec209" class="subsection">6.4.1  Les opérateurs <span style="font-family:monospace">bitor, bitxor, bitand</span></h3>
-<p><a id="hevea_default257"></a><a id="hevea_default258"></a><a id="hevea_default259"></a>
-Les entiers peuvent etre entrés avec la notation 0x... en hexadécimal
-par exemple 0x1f représente 16+15=31 en décimal. On peut faire afficher
-les entiers en hexadécimal (bouton de la ligne d’état du cas avec le
-bouton <span style="font-family:monospace">Base (Entiers)</span>).<br>
-<span style="font-family:monospace">bitor</span> est le <span style="font-family:monospace">ou</span> logique inclusif bit à bit.<br>
+<h3 id="sec207" class="subsection">6.2.5  Transformer une liste en expression : <span style="font-family:monospace">list2exp</span></h3>
+<p><a id="hevea_default256"></a>
+<span style="font-family:monospace">list2exp</span> renvoie <span style="font-family:monospace">(var=Xpr0) or (var=Xpr1)</span>
+lorsque l’argument est la liste <span style="font-family:monospace">[Xpr0,Xpr1],var</span>.<br>
+<span style="font-family:monospace">list2exp</span> est l’inverse de <span style="font-family:monospace">exp2list</span>
 On tape :
-</p><div class="center"><span style="font-family:monospace">bitor(0x12,0x38)</span></div><p>
-ou on tape :
-</p><div class="center"><span style="font-family:monospace">bitor(18,56)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">list2exp([0,1],a)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">58</span></div><p>
-en effet :<br>
-<span style="font-family:monospace">18</span> s’écrit <span style="font-family:monospace">0x12</span> en base 16 et <span style="font-family:monospace">0b010010</span> en base 2,<br>
-<span style="font-family:monospace">56</span> s’écrit <span style="font-family:monospace">0x38</span> en base 16 et <span style="font-family:monospace">0b111000</span> en base 2,<br>
-<span style="font-family:monospace">bitor(18,56)</span> s’écrit <span style="font-family:monospace">0b111010</span> en base 2 et donc vaut <span style="font-family:monospace">58</span>.<br>
-
-<span style="font-family:monospace">bitxor</span> est le <span style="font-family:monospace">ou</span> logique exclusif bit à bit.<br>
+</p><div class="center"><span style="font-family:monospace">((a=0) or (a=1))</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">bitxor(0x12,0x38)</span></div><p>
-ou on tape :
-</p><div class="center"><span style="font-family:monospace">bitxor(18,56)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">list2exp([[3,9], [-1,1]],[x, y])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">42</span></div><p>
-en effet :<br>
-<span style="font-family:monospace">18</span> s’écrit <span style="font-family:monospace">0x12</span> en base 16 et <span style="font-family:monospace">0b010010</span> en base 2,<br>
-<span style="font-family:monospace">56</span> s’écrit <span style="font-family:monospace">0x38</span> en base 16 et <span style="font-family:monospace">0b111000</span> en base 2,<br>
-<span style="font-family:monospace">bitxor(18,56)</span> s’écrit <span style="font-family:monospace">0b101010</span> en base 2 et donc vaut <span style="font-family:monospace">42</span>.<br>
-
-<span style="font-family:monospace">bitand</span> est le <span style="font-family:monospace">et</span> logique bit à bit.<br>
-On tape :
-</p><div class="center"><span style="font-family:monospace">bitand(0x12,0x38)</span></div><p>
-ou on tape :
-</p><div class="center"><span style="font-family:monospace">bitand(18,56)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">16</span></div><p>
-en effet :<br>
-<span style="font-family:monospace">18</span> s’écrit <span style="font-family:monospace">0x12</span> en base 16 et <span style="font-family:monospace">0b010010</span> en base 2,<br>
-<span style="font-family:monospace">56</span> s’écrit <span style="font-family:monospace">0x38</span> en base 16 et <span style="font-family:monospace">0b111000</span> en base 2,<br>
-<span style="font-family:monospace">bitand(18,56)</span> s’écrit <span style="font-family:monospace">0b010000</span> en base 2 et donc vaut
-<span style="font-family:monospace">16</span>.</p>
+</p><div class="center"><span style="font-family:monospace">((x=3) and (y=9)) or ((x=-1) and (y=1))</span></div>
 <hr>
 <a href="cascmd_fr139.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

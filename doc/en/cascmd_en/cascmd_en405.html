@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
 <title>Minimax polynomial approximation: minimax</title>
@@ -11,12 +11,12 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en406.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec482" class="subsection">2.45.3��Minimax polynomial approximation: <span style="font-family:monospace">minimax</span></h3>
+<h3 id="sec483" class="subsection">2.45.3  Minimax polynomial approximation: <span style="font-family:monospace">minimax</span></h3>
 <p><a id="hevea_default677"></a></p><p>The function <span style="font-family:monospace">minimax</span> is called by entering :
 </p><div class="center">
 <span style="font-family:monospace">minimax(expr,var=a..b,n,[limit=m])</span>
 </div><p>
-where <span style="font-family:monospace">expr</span> is an univariate expression (e.g.� <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) ) to approximate, <span style="font-family:monospace">var</span> is a variable (e.g.� <span style="font-style:italic">x</span> ),  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]&#X2282;&#X211D;  and  <span style="font-style:italic">n</span>&#X2208;&#X2115; . Expression <span style="font-family:monospace">expr</span> must be continuous on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The function returns minimax polynomial (e.g.� <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) ) of degree  <span style="font-style:italic">n</span>  or lower that approximates <span style="font-family:monospace">expr</span> on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The approximation is found by applying Remez algorithm.</p><p>If the fourth argument is specified,  <span style="font-style:italic">m</span>  is used to limit the number of iterations of the algorithm. It is unlimited by default.</p><p>The maximum error of the approximation  <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) , i.e.� max<sub><span style="font-style:italic">a</span>&#X2264; <span style="font-style:italic">x</span>&#X2264; <span style="font-style:italic">b</span></sub>|<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)&#X2212;<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>)| , is printed in the message area.</p><p>Input :
+where <span style="font-family:monospace">expr</span> is an univariate expression (e.g.  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) ) to approximate, <span style="font-family:monospace">var</span> is a variable (e.g.  <span style="font-style:italic">x</span> ),  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]⊂ℝ  and  <span style="font-style:italic">n</span>∈ℕ . Expression <span style="font-family:monospace">expr</span> must be continuous on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The function returns minimax polynomial (e.g.  <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) ) of degree  <span style="font-style:italic">n</span>  or lower that approximates <span style="font-family:monospace">expr</span> on  [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] . The approximation is found by applying Remez algorithm.</p><p>If the fourth argument is specified,  <span style="font-style:italic">m</span>  is used to limit the number of iterations of the algorithm. It is unlimited by default.</p><p>The largest absolute error of the approximation  <span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>) , i.e.  max<sub><span style="font-style:italic">a</span>≤ <span style="font-style:italic">x</span>≤ <span style="font-style:italic">b</span></sub>|<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">p</span>(<span style="font-style:italic">x</span>)| , is printed in the message area.</p><p>Since the coefficients of  <span style="font-style:italic">p</span>  are computed numerically, one should avoid setting  <span style="font-style:italic">n</span>  unnecessary high as it may result in a poor approximation due to the roundoff errors.</p><p>Input :
 </p><div class="center">
 <span style="font-family:monospace">minimax(sin(x),x=0..2*pi,10)</span>
 </div><p>
@@ -28,7 +28,7 @@ Output :
 <span style="font-family:monospace">-0.000570502074548*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7+6.07297119422e-05*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8</span><br>
 <span style="font-family:monospace">-2.14787414001e-06*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">9-2.97767481643e-15*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">10</span>
 </div><p>
-The maximum error of this approximation is  5.85234008632� 10<sup>&#X2212;6</sup> .</p>
+The largest absolute error of this approximation is  5.85234008632× 10<sup>−6</sup> .</p>
 <hr>
 <a href="cascmd_en404.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

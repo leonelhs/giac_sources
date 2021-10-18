@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
 <title>Local extrema: extrema</title>
@@ -11,16 +11,16 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en405.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec480" class="subsection">2.45.2��Local extrema: <span style="font-family:monospace">extrema</span></h3>
+<h3 id="sec481" class="subsection">2.45.2  Local extrema: <span style="font-family:monospace">extrema</span></h3>
 <p><a id="hevea_default676"></a></p><p>Local extrema of a univariate or multivariate differentiable function under equality constraints can be obtained by using function <span style="font-family:monospace">extrema</span> which takes four arguments :
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-family:monospace">expr</span> : differentiable expression
 </li><li class="li-itemize"><span style="font-family:monospace">constr</span> (optional) : list of equality constraints
 </li><li class="li-itemize"><span style="font-family:monospace">vars</span> : list of variables
-</li><li class="li-itemize"><span style="font-family:monospace">order_size=&lt;positive integer&gt;</span> (optional) : upper bound for the order of derivatives examined in the process (defaults to 12)
+</li><li class="li-itemize"><span style="font-family:monospace">order_size=&lt;positive integer&gt;</span> (optional) : upper bound for the order of derivatives examined in the process (defaults to 5)
 </li></ul><p>
-Function returns sequence of two lists of points: local minima and maxima, respectively. Saddle and unclassified points are reported in the message area. Also, information about possible (non)strict extrema is printed out.</p><p>Number of constraints must be strictly less than number of variables. A single constraint/variable can be specified without list delimiters. A constraint may be specified as an equality or expression which is assumed to be equal to zero.</p><p>Variables may be specified with bounds, e.g.�<span style="font-family:monospace">x=a..b</span>. That is interpreted as  <span style="font-style:italic">x</span>&#X2208;(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) . For semi-bounded variables use <span style="font-family:monospace">-infinity</span> for  <span style="font-style:italic">a</span>  or <span style="font-family:monospace">+infinity</span> for  <span style="font-style:italic">b</span> . Also, to use numeric method to find critical point one may specify <span style="font-family:monospace">vars</span> as <span style="font-family:monospace">[x1=a1,x2=a2,...,xn=an]</span>, where  (<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>,&#X2026;,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>)  is an initial point for the algorithm.</p><p>If <span style="font-family:monospace">order_size=&lt;n&gt;</span> is specified as the fourth argument, derivatives up to order  <span style="font-style:italic">n</span>  are inspected to find critical points and classify them. For <span style="font-family:monospace">order_size=1</span> the function returns a single list containing all critical points found. The default is  <span style="font-style:italic">n</span>=12 .</p>
-<h4 id="sec481" class="subsubsection">Examples</h4>
+Function returns sequence of two lists of points: local minima and maxima, respectively. Saddle and unclassified points are reported in the message area. Also, information about possible (non)strict extrema is printed out.</p><p>A single constraint/variable can be specified without list delimiters. A constraint may be specified as an equality or expression which is assumed to be equal to zero.</p><p>Number of constraints must be strictly less than number of variables. Additionally, denoting  <span style="font-style:italic">k</span> -th constraint by  <span style="font-style:italic">g</span><sub><span style="font-style:italic">k</span></sub>(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)=0  for  <span style="font-style:italic">k</span>=1,2,…,<span style="font-style:italic">m</span>  and letting  <span style="font-weight:bold"><span style="font-style:italic">g</span></span>=(<span style="font-style:italic">g</span><sub>1</sub>,<span style="font-style:italic">g</span><sub>2</sub>,…,<span style="font-style:italic">g</span><sub><span style="font-style:italic">m</span></sub>) , Jacobian matrix of  <span style="font-weight:bold"><span style="font-style:italic">g</span></span>  has to be full rank (i.e. equal to  <span style="font-style:italic">m</span> ), since implicit differentiation is performed.</p><p>Variables may be specified with bounds, e.g. <span style="font-family:monospace">x=a..b</span>, which is interpreted as  <span style="font-style:italic">x</span>∈(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) . For semi-bounded variables one can use <span style="font-family:monospace">-infinity</span> for  <span style="font-style:italic">a</span>  or <span style="font-family:monospace">+infinity</span> for  <span style="font-style:italic">b</span> . Also, parameter <span style="font-family:monospace">vars</span> may be entered as e.g. <span style="font-family:monospace">[x1=a1,x2=a2,...,xn=an]</span>, in which case the critical point close to  <span style="font-weight:bold"><span style="font-style:italic">a</span></span>=(<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>,…,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>)  is computed numerically, applying an iterative method with initial point  <span style="font-weight:bold"><span style="font-style:italic">a</span></span> .</p><p>If <span style="font-family:monospace">order_size=&lt;n&gt;</span> is specified as the fourth argument, derivatives up to order  <span style="font-style:italic">n</span>  are inspected to find critical points and classify them. For <span style="font-family:monospace">order_size=1</span> the function returns a single list containing all critical points found. The default is  <span style="font-style:italic">n</span>=5 . If some critical points are left unclassified one might consider repeating the process with larger value of  <span style="font-style:italic">n</span> , although the success is not guaranteed.</p>
+<h4 id="sec482" class="subsubsection">Examples</h4>
 <p>
 Input :
 </p><div class="center">
@@ -53,7 +53,9 @@ Input :
 Output :
 </p><div class="center">
 <span style="font-family:monospace">[],[0.277769149124]</span>
-</div><div class="center">
+</div><p>
+Input :
+</p><div class="center">
 <span style="font-family:monospace">extrema(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2x*y+3y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,[x,y])</span>
 </div><p>
 Output :

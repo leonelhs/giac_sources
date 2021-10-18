@@ -4,26 +4,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Le plan : plane plan</title>
+<title>Définir une droite 3-d : line droite</title>
 </head>
 <body >
 <a href="cascmd_fr1022.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1024.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1238" class="subsection">11.6.1  Le plan : <span style="font-family:monospace">plane plan</span></h3>
-<p><a id="hevea_default1993"></a><a id="hevea_default1994"></a>
-<span style="font-family:monospace">plan</span> a comme argument soit trois points, soit un point et une 
-droite, soit son équation cartésienne.<br>
-<span style="font-family:monospace">plan(A,B,C)</span> ou <span style="font-family:monospace">plan(A,droite(B,C))</span> (resp <span style="font-family:monospace">plan(a*x+b*y+c*z+d=0)</span>) trace le plan <span style="font-family:monospace">ABC</span> (resp le plan d’équation <span style="font-family:monospace">a*x+b*y+c*z+d=0</span>) dans l’espace 3-d.<br>
+<h3 id="sec1243" class="subsection">11.5.1  Définir une droite 3-d : <span style="font-family:monospace">line droite</span></h3>
+<p><a id="hevea_default1999"></a><a id="hevea_default2000"></a><a id="sec:droite3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr090.html#sec%3Adroite">3.10.1</a> et<a href="cascmd_fr913.html#sec%3Adroite2">10.9.1</a> pour la géométrie 
+plane.<br>
+<span style="font-family:monospace">droite</span>, en géométrie 3-d, a comme argument deux points ou 
+un point et son vecteur directeur ou deux équations de plans.<br>
+<span style="font-family:monospace">droite</span> renvoie et trace la droite définit par ses arguments.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">plan([0,0,5],[0,5,0],[5,0,0])</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">plan(x+y+z=5)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">plan([0,0,5],droite([0,5,0],[5,0,0]))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">droite([0,3,0],point([3,0,3]))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">Le plan d’équation x+y+z=5</span></div>
+</p><div class="center"><span style="font-family:monospace">Le tracé de la droite passant par les points de coordonnèes [0,3,0] et [3,0,3] </span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">droite([0,3,0],[3,0,3])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le tracé de la droite passant par le point de coordonnèes [0,3,0] et de vecteur directeur [3,0,3] donc passant par le point de coordonnées [3,3,3]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">droite(x=y,y=z)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le tracé de la droite intersection des plans x=y et y=z</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">point3d(A,B)</span></div><p>
+Puis on tape :
+</p><div class="center"><span style="font-family:monospace">droite(A,B)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Le tracé de la droite AB</span></div><p>
+<span style="font-weight:bold">Remarque</span><br>
+<span style="font-family:monospace">droite</span> définit une droite orientée :<br>
+Lorsque la droite est donnée par deux points, son orientation
+est définie par l’ordre des points donnés en argument.
+Par exemple <span style="font-family:monospace">droite(A,B)</span> définit une droite orientée par le vecteur 
+<span style="font-style:italic">AB</span>.<br>
+Lorsque la droite est donnée par 1 point et son vecteur directeur, son 
+orientation est définie par le vecteur directeur donné en argument.
+Par exemple <span style="font-family:monospace">droite(A,[u1,u2,u3])</span> définit une droite orientée par le 
+vecteur [<span style="font-style:italic">u</span>1,<span style="font-style:italic">u</span>2,<span style="font-style:italic">u</span>3].<br>
+Lorsque la droite est donnée par deux équations de plans, son orientation
+est définie par le produit vectoriel des normales aux plans (en mettant les 
+équations des plans sous la forme " membredegauche-membrededroite=0" on
+détermine les normales orientées de ces plans).
+Par exemple <span style="font-family:monospace">droite(x=y,y=z)</span> est orientée par 
+<span style="font-family:monospace">cross([1,-1,0],[0,1,-1])</span>=<span style="font-family:monospace">[1,1,1]</span>.
+</p>
 <hr>
 <a href="cascmd_fr1022.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,42 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Les points d’intersection de deux objets géométriques : inter</title>
+<title>Les commandes d’attributs</title>
 </head>
 <body >
 <a href="cascmd_fr894.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr896.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1091" class="subsection">10.8.6  Les points d’intersection de deux objets géométriques : <span style="font-family:monospace">inter</span></h3>
-<p><a id="hevea_default1742"></a><a id="sec:inter2"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1010.html#sec%3Ainter3">11.4.4</a> pour la géométrie 3-d.<br>
-<span style="font-family:monospace">inter</span> a soit 2 arguments soit 3 arguments.
+<h3 id="sec1086" class="subsection">10.3.2  Les commandes d’attributs</h3>
+<p>
+Les attributs des objets graphiques peuvent être définis par des commandes 
+qui sont :
 </p><ul class="itemize"><li class="li-itemize">
-si <span style="font-family:monospace">inter</span> a 2 arguments qui sont deux objets géométriques.<br>
-<span style="font-family:monospace">inter</span> renvoie la liste des points d’intersection de ces deux objets 
-géométriques.<br>
-</li><li class="li-itemize">si <span style="font-family:monospace">inter</span> a 2 arguments qui sont deux objets géométriques et 
-un point.<br>
-<span style="font-family:monospace">inter</span> renvoie le point d’intersection de ces deux objets géométriques
-le plus proche du point donné comme troisième argument.
+<span style="font-family:monospace">legend</span> ou <span style="font-family:monospace">legende</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">display</span> ou <span style="font-family:monospace">affichage</span> ou <span style="font-family:monospace">color</span> ou <span style="font-family:monospace">couleur</span> 
 </li></ul><p>
-On tape en géométrie plane :
-</p><div class="center"><span style="font-family:monospace">A:=inter(droite(0,1+i),droite(1,i))[0]</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">Le point d’affixe 1/2+i/2 est tracé avec une croix et est noté A</span></div><p>
-On tape en géométrie plane :
-</p><div class="center"><span style="font-family:monospace">B:=inter(cercle(0,1),droite(1,i))[0]</span></div><div class="center"><span style="font-family:monospace">C:=inter(cercle(0,1),droite(1,i))[1]</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">Le point d’affixe i est tracé avec une croix et est noté B</span></div><div class="center"><span style="font-family:monospace">Le point d’affixe 1 est tracé avec une croix et est noté C</span></div><p>
-On tape en géométrie plane :
-</p><div class="center"><span style="font-family:monospace">L:=inter(cercle(0,1),droite(1,i))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">Les points d’affixe i et 1 sont tracés avec une croix et sont notés L</span></div><p>
-On tape en géométrie plane :
-</p><div class="center"><span style="font-family:monospace">D:=inter(cercle(0,1),droite(1,i),point(1/2))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">Le point d’affixe 1 est tracé avec une croix et est noté D</span></div>
+Les paramètres de ces commandes sont :<br>
+<span style="font-family:monospace">objet_graphique,nom_de_l’attribut=valeur1+valeur2+...</span><br>
+ et les valeurs 
+de cet attribut sont valables uniquement pour l’objet graphique spécifié.<br>
+Par exemple :<br>
+<span style="font-family:monospace">legende(point(1+i),"A",rouge,quadrant3,epaisseur_point_2)</span> <br>
+<span style="font-family:monospace">affichage(point(1+i),rouge+epaisseur_point_6+point_carre)</span><br>
+<span style="font-family:monospace">affichage(point(1+i,legend="A"),epaisseur_point_2+point_carre)</span></p><p><span style="font-weight:bold">Remarque</span><br>
+Si la commande <span style="font-family:monospace">display(..)</span> ou <span style="font-family:monospace">affichage(...)</span> est tapée dans une 
+ligne de commandes, on peut utiliser ces commandes avec comme paramètre <br>
+<span style="font-family:monospace">valeur1+valeur2+...</span> et<br>
+alors la commande est globale pour tous les objets définis ensuite dans cette
+ligne de commandes. Il faut éviter d’utiliser ces commandes de cette 
+façon dans un écran de géométrie, car les attributs sont déjà 
+définis globalement dans <span style="font-family:monospace">cfg</span> et le bouton des attributs.</p>
 <hr>
 <a href="cascmd_fr894.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

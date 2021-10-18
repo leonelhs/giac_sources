@@ -4,45 +4,84 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Définir une fonction ayant un nombre variable d’arguments : args</title>
+<title>La boucle : while et tantque</title>
 </head>
 <body >
 <a href="cascmd_fr855.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr857.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1036" class="subsection">9.6.1  Définir une fonction ayant un nombre variable d’arguments : <span style="font-family:monospace">args</span></h3>
-<p><a id="hevea_default1560"></a>
-<span style="font-family:monospace">args</span> ou <span style="font-family:monospace">args(NULL)</span> renvoie la liste des arguments d’une 
-fonction sous forme d’une liste :
-l’élément d’indice <span style="font-family:monospace">0</span> est la fonction, les suivants sont les
-arguments passés à la fonction.
-Cela permet de travailler avec des fonctions ayant un nombre d’arguments
-non fixé a l’avance.<br>
-<span style="font-weight:bold">Remarque</span> on ne peut pas mettre <span style="font-family:monospace">args()</span> mais <span style="font-family:monospace">args</span> ou 
-<span style="font-family:monospace">args(NULL)</span> (<span style="font-family:monospace">NULL</span> est obligatoire) 
-on peut aussi utiliser <span style="font-family:monospace">(args)[0]</span> pour désigner la fonction, 
-<span style="font-family:monospace">(args)[1]</span> pour désigner le nom du premier argument... mais il ne 
-faut pas oublier les parenthèses autour de <span style="font-family:monospace">args</span>!<br>
+<h3 id="sec1040" class="subsection">9.4.25  La boucle : <span style="font-family:monospace">while</span> et <span style="font-family:monospace">tantque</span></h3>
+<p><a id="hevea_default1566"></a><a id="hevea_default1567"></a><a id="hevea_default1568"></a><a id="hevea_default1569"></a>
+<span style="font-family:monospace">while</span> et <span style="font-family:monospace">tantque</span> permettent de faire plusieurs fois des
+instructions.<br>
+<span style="font-family:monospace">while</span> est suivi d’un booléen mis entre des parenthèses et d’un bloc 
+d’instructions. <span style="font-family:monospace">while</span> permet de faire plusieurs fois ce bloc 
+d’instructions tant que la valeur de ce booléen est vrai.<br>
+<span style="font-family:monospace">tantque</span> est suivi d’un booléen, de <span style="font-family:monospace">faire</span> d’instructions puis de
+<span style="font-family:monospace">ftantque</span>. <span style="font-family:monospace">tantque</span> permet de faire plusieurs fois les instructions 
+situèes entre <span style="font-family:monospace">faire</span> et <span style="font-family:monospace">ftantque</span> tant que la valeur de ce 
+booléen est vrai.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">testargs():={ local y; y:=args; return y[1];}</span></div><div class="center"><span style="font-family:monospace">testargs(12,5)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">12</span></div><p>
-On tape :
-</p><pre class="verbatim">somme():={
- local s,a;
- a:=args;
- s:=0;
- for (k:=1;k&lt;size(a);k++){
- s:=s+a[k];
- }
- return s;
- }
+</p><pre class="verbatim">somwhile(eps):={
+local s,j;
+s:=0;
+j:=1;
+while (1/j&gt;=eps){
+ s:=s+1/j;
+ j:=j+1;
+}
+return s;
+}
+</pre><p>
+Ou on tape :
+</p><pre class="verbatim">somtantque(eps):={
+local s,j;
+s:=0;
+j:=1;
+tantque 1/j&gt;=eps faire
+ s:=s+1/j;
+ j:=j+1;
+ftantque
+retourne s;
+}
 </pre><p>
 puis :
-</p><div class="center"><span style="font-family:monospace">somme(1,2,3,4)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">somwhile(0.2)</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">somantque(0.2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">10</span></div>
+</p><div class="center"><span style="font-family:monospace">137/60</span></div><p>
+<span style="font-weight:bold">Remarque</span><br>
+ On peut aussi écrire un <span style="font-family:monospace">while</span> avec un <span style="font-family:monospace">for</span> :<br>
+<span style="font-family:monospace">while (&lt;condition&gt;)</span><span style="font-family:monospace">&lt;instructions&gt;</span> est équivalent à :<br>
+<span style="font-family:monospace">for (;&lt;condition&gt;;)</span><span style="font-family:monospace">&lt;instructions&gt;</span> <br>
+On aurait donc pu écrire :
+</p><pre class="verbatim">somwhilefor(eps):={
+local s,j;
+s:=0;
+j:=1;
+for (;1/j&gt;=eps;){
+ s:=s+1/j;
+ j:=j+1;
+}
+return s;
+}
+</pre><p>
+ou encore
+</p><pre class="verbatim">somforwhile(eps):={
+local s,j;
+s:=0;
+for (j:=1;1/j&gt;=eps;j++){
+ s:=s+1/j;
+}
+return s;
+}
+</pre><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">somwhile(0.1);somforwhile(0.1);somwhilefor(0.1)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">7129/2520,7129/2520,7129/2520</span></div>
 <hr>
 <a href="cascmd_fr855.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

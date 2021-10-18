@@ -25,7 +25,7 @@
 %\def\@evenhead{\thepage\hfill{\footnotesize\textit{\leftmark}}}
 %\def\@oddhead{\footnotesize{\textit{\rightmark}}\hfill\thepage}
 %\usepackage{hp}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 %\usepackage[francais]{babel}
 \usepackage{latexsym}
@@ -38,7 +38,9 @@
 %\usepackage[pdftex]{hyperref}
 \title {Symbolic algebra and Mathematics with {\tt Xcas}}
 \author{Ren\'ee De Graeve, Bernard Parisse\\ 
-University of Grenoble I}
+University of Grenoble I\\
+Corrected by Jay Belanger\\
+Optimization section written by Luka Marohnić}
 \date{}
 \makeindex
 \usepackage{cutting}
@@ -10178,20 +10180,18 @@ For more details, search google for \verb|simplex algorithm|.
 \subsection{Solving general linear programming problems: {\tt lpsolve}}\index{lpsolve|textbf}
 Linear programming problems where a multivariate linear function should be maximized or minimized subject to linear equality or inequality constraints, as well as mixed integer problems, can be solved with the function {\tt lpsolve}. It takes (at most) four arguments, in the following order :
 \begin{itemize}
-\item {\tt obj} : symbolic expression representing the objective function,
-\item {\tt constr} (optional) : list of linear constraints which may be equalities or inequalities or bounded expressions entered as {\tt expr=a..b},
-\item {\tt bd} (optional) : sequence of expressions of type {\tt var=a..b} specifying that the variable {\tt var} is bounded with {\tt a} below and with {\tt b} above,
-\item {\tt opts} (optional) : sequence of {\tt option=value} parameters for the solver, where {\tt option} may be one of {\tt assume}, {\tt lp\_maximize}, {\tt lp\_variables}, {\tt lp\_integervariables}, {\tt lp\_binaryvariables} or {\tt lp\_depthlimit}.
+\item {\tt obj} : symbolic expression representing the objective function
+\item {\tt constr} (optional) : list of linear constraints which may be equalities or inequalities or bounded expressions entered as {\tt expr=a..b}
+\item {\tt bd} (optional) : sequence of expressions of type {\tt var=a..b} specifying that the variable {\tt var} is bounded with {\tt a} below and with {\tt b} above
+\item {\tt opts} (optional) : sequence of {\tt option=value} parameters, where {\tt option} may be one of {\tt assume}, {\tt lp\_maximize}, {\tt lp\_variables}, {\tt lp\_integervariables}, {\tt lp\_binaryvariables}, {\tt lp\_nodelimit}, {\tt lp\_depthlimit}, {\tt lp\_method}, {\tt lp\_initialpoint} or {\tt lp\_integertolerance}
 \end{itemize}
-The return value is in the form {\tt [optimum,soln]} where {\tt optimum} is the minimum/maximum value of the objective function and {\tt soln} is a list of coordinates corresponding to the point at which the optimal value is attained. If there is no feasible solution, an empty list is returned. When the objective function is unbounded, {\tt optimum} is returned as {\tt +infinity} (for maximization problems) or {\tt -infinity} (for minimization problems), while {\tt soln} is generally meaningless.
+The return value is in the form {\tt [optimum,soln]} where {\tt optimum} is the minimum/maximum value of the objective function and {\tt soln} is a list of coordinates corresponding to the point at which the optimal value is attained. If there is no feasible solution, an empty list is returned. When the objective function is unbounded, {\tt optimum} is returned as $ +\infty $ (for maximization problems) or $ -\infty $ (for minimization problems). In these cases {\tt soln} is generally meaningless.
 
 If {\tt obj} is given as constant (for example, zero) then only a feasible point is returned as a list, if one exists. If the problem is infeasible, an empty list is returned. This may be used as a test to check whether a set of linear constraints is feasible or not.
 
-The given objective function is minimized by default. To maximize it, include the option {\tt lp\_maximize=true} or simply {\tt lp\_maximize}.
+The given objective function is minimized by default. To maximize it, include the option {\tt lp\_maximize[=true]}.
 
 By default, all variables are considered continuous and unrestricted in sign.
-
-The solver combines the two-phase simplex method and the dual simplex method to find the optimal solution.
 
 \subsubsection{Problems with continuous variables}
 For example, to solve the problem specified in~\eqref{eq:lpexample}, input :
@@ -10240,10 +10240,50 @@ Output :
 {\tt [-133/2,[x=18,y=7,z=27/2]]}
 \end{center}
 
+\paragraph{Choosing a suitable solving method.}
+The method used by solver can be specified using the option :
+\begin{center}
+{\tt lp\_method=lp\_simplex} or {\tt lp\_interiorpoint}
+\end{center}
+Simplex method, specified by {\tt lp\_simplex}, is exact. {\tt lp\_interiorpoint} specifies interior point method, which is inexact. More precisely, the method used in this case is primal-dual affine scaling method. By default, simplex method is used. 
+
+The initial point for affine scaling algorithm is computed automatically by default. If a specific point is required, use the option :
+\begin{center}
+{\tt lp\_initialpoint=<list of coordinates>}
+\end{center}
+Be aware that affine scaling method may fail due to rounding errors or an ill-chosen initial point. Simplex method is much more reliable, especially for (mixed) integer problems which are discussed in the next section. However, interior point method is useful for larger problems and problems with inexact coefficients, because simplex method may fail to find initial feasible solution due to rounding errors. For example, consider the following problem :
+\begin{align*}
+\text{minimize}\quad & 1.06\,x_1+0.56\,x_2+3.0\,x_3+2703.5\,x_4+4368.23\,x_5\\
+\text{subject to}\quad & 1.06\,x_1+0.015\,x_3 \geq 729824.87\\
+& 0.56\,x_2+0.649\,x_3\geq 1522188.03\\
+& x_3\geq 1680.05\\
+& x_4\geq 60.0\\
+& x_5\geq 4.0
+\end{align*}
+Trying to solve using simplex method fails, but switching to affine scaling leads to the correct solution.
+
+\noindent Input :
+\begin{center}
+{\tt lpsolve(1.06x1+0.56x2+3x3+2703.50x4+4368.23x5,}
+{\tt [1.06x1+0.015x3>=729824.87,0.56x2+0.649x3>=1522188.03,}
+{\tt x3>=1680.05,x4>=60,x5>=4],assume=lp\_nonnegative,}
+{\tt method=lp\_interiorpoint)}
+\end{center}
+Output :
+\begin{center}
+{\tt [2435620.4168,[x1=688490.25401,x2=2716245.85277,}
+{\tt x3=1680.05000032,x4=60.0000000003,x5=4.00000000017]]}
+\end{center}
+
 \subsubsection{Integer programming}
-Use the {\tt assume=integer} or {\tt assume=lp\_integer} option to solve integer programming problems. The function {\tt lpsolve} uses branch and bound method in such cases. The total number of investigated nodes is printed out before the function returns. To limit branch and bound tree depth, use the option : \begin{center}
+Use the {\tt assume=integer} or {\tt assume=lp\_integer} option to solve integer programming problems. The function {\tt lpsolve} uses branch and bound method and applies suitable Gomory mixed integer (GMI) cuts in such cases. The numbers of investigated subproblems and added GMI cuts is printed out before the function returns. To limit branch and bound tree depth, use the option : \begin{center}
 {\tt lp\_depthlimit=<positive integer>}
-\end{center} In that case optimality of the solution can't be guaranteed.
+\end{center}
+To limit number of subproblems to be investigated, use the option :
+\begin{center}
+{\tt lp\_nodelimit=<positive integer>}
+\end{center}
+If one of these options is enabled, the solution is not guaranteed to be optimal.
 
 \noindent Input :
 \begin{center}
@@ -10296,10 +10336,15 @@ Output :
 {\tt [12,[x=1,y=2]]}
 \end{center}
 
+The option {\tt lp\_integertolerance=<positive number>} can be used to specify the precision of integer variables. Letting $ \varepsilon $ denote the integer tolerance, every value $ x $ such that $ |x-k|<\varepsilon $ for some $ k\in\mathbb{Z} $ is treated as an integer.
+
+Note that (currently) only simplex method is used in combination with branch and bound method.
+
 \subsubsection{Entering linear programs in matrix form}
 The function {\tt lpsolve} supports entering linear programming problems in matrix form, which is convenient for problems with relatively large number of variables and/or constraints.
 
-To enter a problem in matrix form, the parameter {\tt obj} must be a vector of coefficients $ \mathbf{c} $ and {\tt constr}, which is mandatory this case, must be a list $ [\mathbf{A},\mathbf{b},\mathbf{A}_{\mathrm eq},\mathbf{b}_{\mathrm eq}] $, where $ \mathbf{A},\mathbf{A}_{\mathrm eq} $ are matrices and $ \mathbf{b},\mathbf{b}_{\mathrm eq} $ are vectors of real numbers. Without any other parameters, this minimizes $ \mathbf{c}^T\,\mathbf{x} $ under conditions $ \mathbf{A}\,\mathbf{x}\leq\mathbf{b} $ and $ \mathbf{A}_{\mathrm eq}\,\mathbf{x}=\mathbf{b}_{\mathrm eq} $. If a problem does not contain equality constraints, parameters $ \mathbf{A}_{\mathrm eq} $ and $ \mathbf{b}_{\mathrm eq} $ may be omitted. For a problem that does not contain inequality constraints, empty lists must be passed as $ \mathbf{A} $ and $ \mathbf{b} $. Also, {\tt constr} may be an empty list.
+To enter a problem in matrix form, {\tt obj} must be a vector of coefficients $ \mathbf{c} $ 
+and {\tt constr}, which is mandatory this case, must be a list $ [\mathbf{A},\mathbf{b},\mathbf{A}_{eq},\mathbf{b}_{eq}] $, where $ \mathbf{A},\mathbf{A}_{eq} $ are matrices and $ \mathbf{b},\mathbf{b}_{eq} $ are vectors of reals. By default, the function minimizes $ \mathbf{c}^T\,\mathbf{x} $ subject to $ \mathbf{A}\,\mathbf{x}\leq\mathbf{b} $ and $ \mathbf{A}_{eq}\,\mathbf{x}=\mathbf{b}_{eq} $. If a problem does not contain equality constraints, parameters $ \mathbf{A}_{eq} $ and $ \mathbf{b}_{eq} $ may be omitted. For a problem that does not contain inequality constraints, empty lists must be passed as $ \mathbf{A} $ and $ \mathbf{b} $.
 
 The parameter {\tt bd} is entered as a list of two vectors $ \mathbf{b}_l $ and $ \mathbf{b}_u $ of the same length as the vector $ \mathbf{c} $ such that $ \mathbf{b}_l\leq\mathbf{x}\leq\mathbf{b}_u $. For unbounded variables use {\tt +infinity} or {\tt -infinity}.
 
@@ -10351,7 +10396,7 @@ The objective of a transportation problem is to minimize the cost of distributin
 \end{itemize}
 The optimal solution is represented as matrix $ \mathbf{X}^*=[x^*_{ij}]_{m\times n} $, where $ x^*_{ij} $ is number of units that must be transported from $ i $-th source to $ j $-th destination for $ i=1,2,\dots,m $ and $ j=1,2,\dots,n $.
 
-Function {\tt tpsolve} accepts three arguments: supply vector, demand vector and cost matrix, in that order. It returns a sequence of two elements: total (minimal) cost of transportation $ c=\sum_{i=1}^m\sum_{j=1}^nc_{ij}\,x^*_{ij} $ and the optimal solution $ \mathbf{X}^* $.
+Function {\tt tpsolve} accepts three arguments: supply vector, demand vector and cost matrix, respectively. It returns a sequence of two elements: the total (minimal) cost $ c=\sum_{i=1}^m\sum_{j=1}^nc_{ij}\,x^*_{ij} $ of transportation and the optimal solution $ \mathbf{X}^* $.
 
 \noindent Input :
 \begin{center}
@@ -10364,7 +10409,7 @@ Output :
 {\tt 2020,[[0,0,2,10],[0,9,8,0],[10,1,0,0]]}
 \end{center}
 
-If total supply and total demand are equal, i.e.~if $ \sum_{i=1}^ms_i=\sum_{j=1}^nd_j $ holds, transportation problem is said to be \emph{closed} or \emph{balanced}. If total supply exceeds total demand or vice versa, the problem is \emph{unbalanced}. Such cases are handled by adding a dummy demand resp.~supply point to cover the excess and setting cost of ``transportation'' from resp.~to dummy point to zero. In case of unbalanced problem, function {\tt tpsolve} adds dummy supply/demand point automatically.
+If total supply and total demand are equal, i.e.~if $ \sum_{i=1}^ms_i=\sum_{j=1}^nd_j $ holds, transportation problem is \emph{closed} or \emph{balanced}. If total supply exceeds total demand or vice versa, the problem is \emph{unbalanced}. The excess supply/demand is covered by adding a dummy demand/supply point with zero cost of ``transportation'' from/to that point. Function {\tt tpsolve} handles such cases automatically.
 
 \noindent Input :
 \begin{center}
@@ -10379,7 +10424,7 @@ Output :
 {\tt [0,0,0,8,0],[9,0,0,0,0],[0,6,0,0,0]]}
 \end{center}
 
-Sometimes it is desirable to forbid transportation on certain routes. That is usually achieved by setting very high cost to these routes, represented by symbol $ M $. If {\tt tpsolve} detects a symbol in cost matrix, it interprets it as $ M $ and assigns 100 times larger cost than the largest numeric element of $ \mathbf{C} $ to the corresponding routes, which forces the algorithm to avoid them.
+Sometimes it is desirable to forbid transportation on certain routes. That is usually achieved by setting very high cost to these routes, represented by symbol $ M $. If {\tt tpsolve} detects a symbol in the cost matrix, it interprets it as $ M $ and assigns 100 times larger cost than the largest numeric element of $ \mathbf{C} $ to the corresponding routes, which forces the algorithm to avoid them.
 
 \noindent Input :
 \begin{center}
@@ -10546,15 +10591,17 @@ Local extrema of a univariate or multivariate differentiable function under equa
 \item {\tt expr} : differentiable expression
 \item {\tt constr} (optional) : list of equality constraints
 \item {\tt vars} : list of variables
-\item {\tt order\_size=<positive integer>} (optional) : upper bound for the order of derivatives examined in the process (defaults to 12)
+\item {\tt order\_size=<positive integer>} (optional) : upper bound for the order of derivatives examined in the process (defaults to 5)
 \end{itemize}
 Function returns sequence of two lists of points: local minima and maxima, respectively. Saddle and unclassified points are reported in the message area. Also, information about possible (non)strict extrema is printed out.
 
-Number of constraints must be strictly less than number of variables. A single constraint/variable can be specified without list delimiters. A constraint may be specified as an equality or expression which is assumed to be equal to zero.
+A single constraint/variable can be specified without list delimiters. A constraint may be specified as an equality or expression which is assumed to be equal to zero.
 
-Variables may be specified with bounds, e.g.~{\tt x=a..b}. That is interpreted as $ x\in(a,b) $. For semi-bounded variables use {\tt -infinity} for $ a $ or {\tt +infinity} for $ b $. Also, to use numeric method to find critical point one may specify {\tt vars} as {\tt [x1=a1,x2=a2,...,xn=an]}, where $ (a_1,a_2,\dots,a_n) $ is an initial point for the algorithm.
+Number of constraints must be strictly less than number of variables. Additionally, denoting $ k $-th constraint by $ g_k(x_1,x_2,\dots,x_n)=0 $ for $ k=1,2,\dots,m $ and letting $ \mathbf{g}=(g_1,g_2,\dots,g_m) $, Jacobian matrix of $ \mathbf{g} $ has to be full rank (i.e.~equal to $ m $), since implicit differentiation is performed.
 
-If {\tt order\_size=<n>} is specified as the fourth argument, derivatives up to order $ n $ are inspected to find critical points and classify them. For {\tt order\_size=1} the function returns a single list containing all critical points found. The default is $ n=12 $.
+Variables may be specified with bounds, e.g.~{\tt x=a..b}, which is interpreted as $ x\in(a,b) $. For semi-bounded variables one can use {\tt -infinity} for $ a $ or {\tt +infinity} for $ b $. Also, parameter {\tt vars} may be entered as e.g.~{\tt [x1=a1,x2=a2,...,xn=an]}, in which case the critical point close to $ \mathbf{a}=(a_1,a_2,\dots,a_n) $ is computed numerically, applying an iterative method with initial point $ \mathbf{a} $.
+
+If {\tt order\_size=<n>} is specified as the fourth argument, derivatives up to order $ n $ are inspected to find critical points and classify them. For {\tt order\_size=1} the function returns a single list containing all critical points found. The default is $ n=5 $. If some critical points are left unclassified one might consider repeating the process with larger value of $ n $, although the success is not guaranteed.
 
 \subsubsection{Examples}
 Input :
@@ -10589,6 +10636,7 @@ Output :
 \begin{center}
 {\tt [],[0.277769149124]}
 \end{center}
+Input :
 \begin{center}
 {\tt extrema(x\verb|^|3-2x*y+3y\verb|^|4,[x,y])}
 \end{center}
@@ -10639,7 +10687,9 @@ where {\tt expr} is an univariate expression (e.g.~$ f(x) $) to approximate, {\t
 
 If the fourth argument is specified, $ m $ is used to limit the number of iterations of the algorithm. It is unlimited by default.
 
-The maximum error of the approximation $ p(x) $, i.e.~$ \max_{a\leq x\leq b}|f(x)-p(x)| $, is printed in the message area.
+The largest absolute error of the approximation $ p(x) $, i.e.~$ \max_{a\leq x\leq b}|f(x)-p(x)| $, is printed in the message area.
+
+Since the coefficients of $ p $ are computed numerically, one should avoid setting $ n $ unnecessary high as it may result in a poor approximation due to the roundoff errors.
 
 \noindent Input :
 \begin{center}
@@ -10653,7 +10703,8 @@ Output :
 {\tt -0.000570502074548*x\verb|^|7+6.07297119422e-05*x\verb|^|8}\\
 {\tt -2.14787414001e-06*x\verb|^|9-2.97767481643e-15*x\verb|^|10}
 \end{center}
-The maximum error of this approximation is $ 5.85234008632\times 10^{-6} $.
+The largest absolute error of this approximation is $ 5.85234008632\times 10^{-6} $.
+
 
 \section{Different matrix norm}
 \subsection{$l^2$ matrix norm : {\tt norm l2norm}}\index{norm}\index{l2norm|textbf}\label{sec:l2normm}
@@ -13262,6 +13313,94 @@ Input :
 \begin{center}{\tt plotimplicit(x\verb|^|2+y\verb|^|2+z\verb|^|2-1,x=-1..1,y=-1..1,z=-1..1)}\end{center}
 Output :
 \begin{center}{\tt The unit sphere}\end{center}
+
+\subsection{Implicit differentiation : {\tt implicitdiff}}
+{\tt implicitdiff} is called with one of the following three sets of parameters :
+\begin{enumerate}
+\item {\tt expr}, {\tt constr}, {\tt depvars}, {\tt diffvars}
+\item {\tt constr}, {\tt [depvars]}, {\tt y}, {\tt diffvars}
+\item {\tt expr}, {\tt constr}, {\tt vars}, {\tt order\_size=k}, {\tt [pt]}
+\end{enumerate}
+Details on parameters :
+\begin{itemize}
+\item {\tt expr} : differentiable expression $ f(x_1,x_2,\dots,x_n,y_1,y_2,\dots,y_m) $
+\item {\tt constr} : (list of) equality constraint(s) $ g_i(x_1,\dots,x_n,y_1,\dots,y_m)=0 $ or vanishing expression(s) $ g_i $, where $ i=1,2,\dots,m $
+\item {\tt depvars} : (list of) dependent variable(s) $ y_1,y_2,\dots,y_m $, each of which may be entered as a symbol, e.g.~{\tt yi}, or a function of independent variable(s), e.g.~{\tt yi(x1,x2,..,xn)}
+\item {\tt diffvars} : sequence of variables $ x_{i_1},x_{i_2},\dots,x_{i_k} $ with respect to which is {\tt expr} differentiated
+\item {\tt vars} : independent and dependent variables entered as symbols in single list such that dependent variables come last, e.g.~{\tt [x1,..,xn,y1,..,ym]}
+\item {\tt y} : (list of) dependent variable(s) $ y_{j_1},y_{j_2},\dots,y_{j_l} $ that need to be differentiated
+\end{itemize}
+Dependent variables $ y_1,y_2,\dots,y_m $ are implicitly defined with $ m $ constraints in {\tt constr}. By implicit function theorem, the Jacobian matrix of $ \mathbf{g}=(g_1,g_2,\dots,g_m) $ has to be full rank.
+
+When calling {\tt implicitdiff}, first two sets of parameters are used when specific partial derivative is needed. In the first case, {\tt expr} is differentiated with respect to {\tt diffvars}.
+
+\noindent Input :
+\begin{center}
+{\tt implicitdiff(x*y,-2x\verb|^|3+15x\verb|^|2*y+11y\verb|^|3-24y=0,y(x),x)}
+\end{center}
+Output :
+\begin{center}
+{\tt (2*x\verb|^|3-5*x\verb|^|2*y+11*y\verb|^|3-8*y)/(5*x\verb|^|2+11*y\verb|^|2-8)}
+\end{center}
+In the second case (elements of) {\tt y} is differentiated. If {\tt y} is a list of symbols, a list containing their derivatives will be returned. The following examples compute $ \frac{\mathrm{d}\,y}{\mathrm{d}\,x} $.\\
+Input :
+\begin{center}
+{\tt implicitdiff(x\verb|^|2*y+y\verb|^|2=1,y,x)}
+\end{center}
+Output :
+\begin{center}
+{\tt -2*x*y/(x\verb|^|2+2*y)}
+\end{center}
+Input :
+\begin{center}
+{\tt implicitdiff([x\verb|^|2+y=z,x+y*z=1],[y(x),z(x)],y,x)}
+\end{center}
+Output :
+\begin{center}
+{\tt (-2*x*y-1)/(y+z)}
+\end{center}
+In the next example, $ \frac{\mathrm{d}\,y}{\mathrm{d}\,x} $ and $ \frac{\mathrm{d}\,z}{\mathrm{d}\,x} $ are computed.\\
+Input :
+\begin{center}
+{\tt implicitdiff([-2x*z+y\verb|^|2=1,x\verb|^|2-exp(x*z)=y],}\\
+{\tt [y(x),z(x)],[y,z],x)}
+\end{center}
+Output :
+\begin{center}
+{\tt [2*x/(y*exp(x*z)+1),}\\
+{\tt (2*x*y-y*z*exp(x*z)-z)/(x*y*exp(x*z)+x)]}
+\end{center}
+
+For the third case of input syntax, all partial derivatives of order equal to {\tt order\_size}, i.e.~$ k $, are computed. If $ k=1 $ they are returned in a single list, which represents the gradient of {\tt expr} with respect to independent variables. For $ k=2 $ the corresponding hessian matrix is returned. When $ k>2 $, a table with keys in form {\tt [k1,k2,..,kn]}, where $ \sum_{i=1}^nk_i=k $, is returned. Such key corresponds to \[ \frac{\partial^k f}{\partial x_1^{k_1}\,\partial x_2^{k_2}\,\cdots\,\partial x_n^{k_n}}. \]
+Input :
+\begin{center}
+{\tt f:=x*y*z; g:=-2x\verb|^|3+15x\verb|^|2*y+11y\verb|^|3-24y=0;}\\
+{\tt implicitdiff(f,g,[x,z,y],order\_size=1)}
+\end{center}
+Output :
+\begin{center}
+{\tt [(2*x\verb|^|3*z-5*x\verb|^|2*y*z+11*y\verb|^|3*z-8*y*z)/(5*x\verb|^|2+11*y\verb|^|2-8),}\\
+{\tt x*y]}
+\end{center}
+Input :
+\begin{center}
+{\tt implicitdiff(f,g,order\_size=2,[1,-1,0])}
+\end{center}
+Output :
+\begin{center}
+{\tt [[64/9,-2/3],[-2/3,0]]}
+\end{center}
+In the next example, the value of $ \frac{\partial^4 f}{\partial x^4} $ is computed at point $ (x=0,y=0,z) $.\\
+Input :
+\begin{center}
+{\tt pd:=implicitdiff(f,g,[x,z,y],order\_size=4,[0,z,0]);}\\
+{\tt pd[4,0]}
+\end{center}
+Output :
+\begin{center}
+{\tt -2*z}
+\end{center}
+
 
 \section{Parametric curves and surfaces : {\tt plotparam paramplot DrawParm}}\index{plotparam|textbf}\index{paramplot|textbf}\index{DrawParm|textbf}
 \subsection{2D parametric curve }

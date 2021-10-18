@@ -131,6 +131,13 @@ typedef unsigned char UTF8; /* typically 8 bits */
 typedef unsigned char Boolean; /* 0 or 1 */
 #endif
 
+#ifdef __APPLE__
+#include "TargetConditionals.h"
+#if defined(TARGET_IPHONE_SIMULATOR) || defined(TARGET_OS_IPHONE)
+#define system(params) 0
+#endif /* defined(TARGET_IPHONE_SIMULATOR) || defined(TARGET_OS_IPHONE) */
+#endif /* __APPLE__ */
+
 /* Some fundamental constants */
 #define UNI_REPLACEMENT_CHAR (UTF32)0x0000FFFD
 #define UNI_MAX_BMP (UTF32)0x0000FFFF
@@ -177,8 +184,10 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   unsigned int utf8length(const wchar_t * wline);
 
 
-#if defined VISUALC || defined BESTA_OS
+#if defined VISUALC || defined BESTA_OS || defined FREERTOS
+#ifndef R_OK
   extern int R_OK;
+#endif
   int access(const char * ch,int mode);
   void usleep(int );
 #endif

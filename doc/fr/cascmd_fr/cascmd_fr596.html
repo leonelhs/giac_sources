@@ -4,30 +4,47 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Rajouter une colonne à une matrice : border</title>
+<title>Faire une matrice avec une liste de matrices : blockmatrix</title>
 </head>
 <body >
 <a href="cascmd_fr595.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr597.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec733" class="subsection">6.50.15  Rajouter une colonne à une matrice : <span style="font-family:monospace">border</span></h3>
+<h3 id="sec733" class="subsection">6.50.12  Faire une matrice avec une liste de matrices : <span style="font-family:monospace">blockmatrix</span></h3>
 <p><a id="hevea_default1088"></a>
-<span style="font-family:monospace">border</span> a comme argument une matrice <span style="font-family:monospace">A</span> de dimension <span style="font-style:italic">p</span>*<span style="font-style:italic">q</span> 
-et une liste <span style="font-family:monospace">b</span> de dimension <span style="font-style:italic">p</span> (c’est à dire 
-<span style="font-family:monospace">nrows(A)=size(b)</span>).<br>
-<span style="font-family:monospace">border</span> renvoie la matrice obtenue à partir de <span style="font-family:monospace">A</span> en lui rajoutant 
-comme dernière colonne <span style="font-family:monospace">tran(b)</span>.<br>
-On a : <br>
-<span style="font-family:monospace">border(A,b)=tran([op(tran(A)),b])=tran(append(tran(A),b))</span><br>
+<span style="font-family:monospace">blockmatrix</span> a comme arguments deux entiers <span style="font-style:italic">n</span>,<span style="font-style:italic">m</span> et une 
+liste de longueur <span style="font-style:italic">n</span>*<span style="font-style:italic">m</span> formée de matrices (de même dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span> 
+ou de taille différentes : les <span style="font-style:italic">m</span> premières matrices ont le même nombre
+de lignes et forment un bloc de <span style="font-style:italic">c</span> colonnes, les <span style="font-style:italic">m</span> suivantes ont le même 
+nombre de lignes et forment un bloc de <span style="font-style:italic">c</span> colonnes, etc... ). On forme ainsi 
+<span style="font-style:italic">n</span> blocs de <span style="font-style:italic">c</span> colonnes.<br>
+<span style="font-family:monospace">blockmatrix</span> renvoie la matrice de <span style="font-style:italic">c</span> colonnes obtenue en mettant ces 
+<span style="font-style:italic">n</span> blocs les uns sous les autres. Si les matrices de 
+l’argument ont même dimension <span style="font-style:italic">p</span> × <span style="font-style:italic">q</span>, la matrice résultat a pour 
+dimension <span style="font-style:italic">p</span>*<span style="font-style:italic">n</span> × <span style="font-style:italic">q</span>*<span style="font-style:italic">m</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">border([[1,2,4],[3,4,5]],[6,7])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[idn(2),idn(2),idn(2), idn(2),idn(2),idn(2)])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[[1,2,4,6],[3,4,5,7]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,0,1,0,1,0],[0,1,0,1,0,1], [1,0,1,0,1,0],[0,1,0,1,0,1]]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">border([[1,2,3,4],[4,5,6,8],[7,8,9,10]],[1,3,5])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(2),idn(2), idn(2),idn(2),idn(2),idn(2)])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[[1,2,3,4,1],[4,5,6,8,3],[7,8,9,10,5]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[1,0,1,0],[0,1,0,1], [1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">blockmatrix(2,2,[idn(2),newMat(2,3), newMat(3,2),idn(3)])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,1,0,0,0],[0,0,1,0,0], [0,0,0,1,0],[0,0,0,0,1]] </span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">blockmatrix(3,2,[idn(1),newMat(1,4), newMat(2,3),idn(2),newMat(1,2),[[1,1,1]]])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[[1,0,0,0,0],[0,0,0,1,0],[0,0,0,0,1],[0,0,1,1,1]]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">A:=[[1,1],[1,1]];B:=[[1],[1]]</span></div><p>
+puis :
+</p><div class="center"><span style="font-family:monospace">blockmatrix(2,3,[2*A,3*A,4*A,5*B,newMat(2,4),6*B])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[[2,2,3,3,4,4],[2,2,3,3,4,4], [5,0,0,0,0,6],[5,0,0,0,0,6]]</span></div>
 <hr>
 <a href="cascmd_fr595.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

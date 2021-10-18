@@ -538,15 +538,11 @@ texte \LaTeX ~en mettant~:
 \begin{itemize}
 \item dans l'en-t\^ete :\\
 \verb|\usepackage{graphicx} |
-\item
-et dans le texte \`a l'endroit d\'esir\'e :\\
+\item et dans le texte \`a l'endroit d\'esir\'e :\\
 \verb|\includegraphics{window}|
 \end{itemize}
-\item
-{\tt Quitter} ou  {\tt Alt+q} permet de quitter {\tt Xcas} quand on a termin\'e.
+\item {\tt Quitter} ou  {\tt Alt+q} permet de quitter {\tt Xcas} quand on a termin\'e.
 \end{itemize}
-
-
 
 \subsection{Le menu {\tt Edit}}\index{Edit}
 \begin{itemize}
@@ -906,7 +902,7 @@ un tableur,
 \item {\tt Geo$\blacktriangleright$Nouvelle figure$\blacktriangleright$graph,geo2d} ou {\tt Alt+g}  ouvrira un 
 niveau de g\'eom\'etrie o\`u les points ont des
 coordonn\`ees d\'ecimales,
-\item {\tt Geo$\blacktriangleright$Nouvelle figure$\blacktriangleright$geo2d exact} ouvrira  un niveau de g\'eom\'etrie o\`u les points ont des coordonn\`ees exactes,
+\item {\tt Geo$\blacktriangleright$Nouvelle figure$\blacktriangleright$geo2d exact} ouvrira  un niveau de g\'eom\'etrie o\`u les points ont des coordonn\`ees exactes.
 \end{itemize}
 Certains menus sont des menus dit "Assistant" car les commandes sont class\'ees par th\`eme et sont explicit\'ees. 
 Ces commandes sont facilement utilisables soit parce que
@@ -2193,7 +2189,112 @@ r\'ef\'erence c'est \`a dire sans faire de recopie, on tape :
 Dans un programme, il est pr\'ef\'erable d'utiliser l'op\'erateur infix\'e 
 {\tt =<} pour changer un \'el\'ement d'une liste ou 
 d'une matrice contenue dans une variable .
- {\bf Exemple}\\
+Pour initialiser la liste :\\
+si on connait la dimension $N$ de la liste, on peut initialiser la liste par :\\
+{\tt L:=makelist(0,1,N);}.\\
+On peut aussi vouloir initialiser la liste {\tt L} par la liste vide et dans 
+ce cas il faut mettre  {\tt L:=[0\$0]} et ne pas mettre {\tt L:=[]}. La 
+diff\'erence est subtile : {\tt [0\$0]} est une liste qui est cr\'ee lors de 
+chaque ex\'ecution du programme alors que apr\`es la compilation du programme,
+{\tt L:=[]} fait pointer {\tt L} sur la liste  {\tt []} et cette liste sera 
+modifi\'ee par les diff\'erents {\tt L[k]=< }\\
+{\bf Exemple : 3 programmes simples qui renvoient la liste [0,1,2..n] et 1 programme qui n'est pas correct}
+On tape :
+\begin{verbatim}
+fonction refere0(n)
+  local k,L;
+  L:=[];
+  pour k de 0 jusque n faire
+    L:=append(L,k);
+  fpour;
+  retourne L;
+ffonction:;
+fonction refere1(n)
+  local k,L;
+  L:=[];
+  pour k de 0 jusque n faire
+  L[k]=<k;
+  fpour;
+retourne L;
+ffonction:;
+fonction refere2(n)
+  local k,L;
+  L:=[0$0];
+  pour k de 0 jusque n faire
+    L[k]=<k;
+  fpour;
+retourne L;
+ffonction:;
+fonction refere3(n)
+  local k,L;
+  L:=makelist(0,0,n);
+  pour k de 0 jusque n faire
+    L[k]=<k;
+  fpour;
+retourne L;
+ffonction:;
+\end{verbatim}
+
+Comparons les temps d'ex\'ecution des programmes {\tt refere0} et 
+{\tt refere3}.\\
+On tape :\\
+{\tt time(refere0(1000))}\\
+On obtient :\\
+{\tt [0.065,0.059091699]}\\
+On tape :\\
+{\tt time(refere3(1000))}\\
+On obtient :\\
+{\tt [0.0065,0.0057686072]]}\\
+Le programme {\tt refere3} est correct et rapide : lorsque {\tt n} est tr\`es 
+grand {\tt refere0(n)} est tr\`es lent car pour chaque affectation 
+{\tt L:=append(L,k);} il y a une recopie de {\tt append(L,k)} dans {\tt L}.\\
+Testons ces programme :\\
+On tape :\\
+{\tt refere2(10)}\\
+ou\\
+{\tt refere3(10)}\\
+On obtient :\\
+{\tt [0,1,2,3,4,5,6,7,8,9,10]}
+On tape :\\
+{\tt refere2(3)}\\
+ou\\
+{\tt refere3(3)}\\
+On obtient :\\
+{\tt [0,1,2,3]}
+{\bf Mais} le programme {\tt refere1} n'est pas correct:\\
+On tape :\\
+{\tt refere1(10)}\\
+On obtient :\\
+{\tt [0,1,2,3,4,5,6,7,8,9,10]}
+{\bf Mais} si on tape :\\
+{\tt refere1(3)}\\
+On obtient :\\
+{\tt [0,1,2,3,4,5,6,7,8,9,10]}
+En effet si on tape :\\
+{\tt refere1}\\
+On obtient le texte source :
+\begin{verbatim}
+(n)-> 
+{ local k,L; 
+  L:=[0,1,2,3,4,5,6,7,8,9,10];  
+  pour k de 0 jusque n faire array_sto(k,L[k]) 
+   fpour;;  
+  return(L);  
+}
+\end{verbatim}
+On voit que le texte source a \'et\'e modifi\'e puisque apr\`es l'ex\'ecution 
+de {\tt refere1(10)} {\tt L} a \'et\'e modifi\'e en :\\
+ {\tt L:=[0,1,2,3,4,5,6,7,8,9,10];}.\\
+Dans {\tt refere2}, on a mis {\tt L:=[0\$0]}, cela signifie qu'une copie de la 
+a liste vide est cr\'e\'ee dans {\tt L} \`a chaque ex\'ecution.\\
+Dans {\tt refere1}, on a mis {\tt L:=[]}, cela signifie que la liste vide est 
+cr\`e\`ee lorsque {\tt refere1} a \'et\'e interpr\'et\'e et {\tt L} pointe vers 
+cette liste vide (i.e. {\tt L} a la m\^eme adresse que la liste vide). Donc 
+{\tt L[k]=< k} va modifier {\tt L} donc aussi cette liste vide (qui ne sera donc plus vide !).\\
+Le programme {\tt refere1} est donc modifi\'e.\\
+Dans {\tt refere3}, on a mis {\tt L:=makelist(0,0,n);} dans ce cas la liste
+compos\'ee de {\tt n} z\'eros est cr\'e\'ee dans {\tt L} \`a chaque ex\'ecution.
+{\bf Autre exemple}\\ 
 On cherche pour tout $n\in \N$, la liste des nombres entiers $k$ v\'erifiant 
 $0<k<2^n$ et dont la somme des chiffres, dans l'\'ecriture en base 2, est 
 \'egale \`a  $p$ ou qui s'\'ecrivent en base 2 avec des 0 et $p$ 1.\\
@@ -2214,21 +2315,21 @@ modifi\'ee par les diff\'erents {\tt L[k]=<j} en {\tt LR} et restera modifi\'ee
 en fin d'ex\'ecution ce qui fait que si on effectue une autre ex\'ecution du 
 programme{\tt L} est initialis\'ee par {\tt LR} car elle pointe sur la liste  
 {\tt LR}.\\
+
 On tape :
 \begin{verbatim}
 truc(p,n):={
-local j,k,L;
-L:=makelist(0,1,comb(n,p));
-k:=0;
-for (j:=2^p-1;j<=2^n-2^(n-1-p);j++){
-if (sum(convert(j,base,2))==p){
-L[k]=<j;
-k:=k+1;
-};
-}
-return L;
-}
-:;
+ local j,k,L;
+ L:=makelist(0,1,comb(n,p));
+ k:=0;
+ for (j:=2^p-1;j<=2^n-2^(n-1-p);j++){
+  if (sum(convert(j,base,2))==p){
+    L[k]=<j;
+    k:=k+1;
+  };
+ }
+ return L;
+}:;
 \end{verbatim}
  Puis : {\tt J:=truc(10,17):;J[0];J[10]}
 renvoie : {\tt Done,1023,2046}\\
@@ -2238,6 +2339,7 @@ Comme la liste {\tt J} a pour longueur {\tt comb(17,10)=19448}
 si on met dans le programme {\tt L[k]:=j;} au lieu de {\tt L[k]=<j;},
 {\tt Xcas} effectue 19448 recopie de cette liste ce qui allonge l'execution du 
 programme....
+
 \subsection{L'incr\'ementation d'une variable : {\tt += -= *= /=}}\index{:+=}\index{-=}\index{*=}\index{/=}
 {\tt +=} est un raccourci pour ajouter une expression \`a la valeur contenue
 dans une variable.\\
@@ -4985,13 +5087,35 @@ On tape :
 On obtient :
 \begin{center}{\tt [2,0]}\end{center}
 On tape :
-\begin{center}{\tt exp2list((x>0) or (x<2))}\end{center}
+\begin{center}{\tt exp2list((b=[3,9]) or (b=[-1,1]))}\end{center}
 On obtient :
-\begin{center}{\tt [0,2]}\end{center}
+\begin{center}{\tt (b=[3,9]) or (b=[-1,1])}\end{center}
 En mode TI on tape :
-\begin{center}{\tt exp2list(solve((x-1)*(x-2)))}\end{center}
+\begin{center}{\tt solve((x-1)*(x-2)=0)}\end{center}
+On obtient :
+\begin{center}{\tt (x=1) or (x=2)}\end{center}
+En mode TI on tape :
+\begin{center}{\tt exp2list(solve((x-1)*(x-2)=0))}\end{center}
 On obtient :
 \begin{center}{\tt [1,2]}\end{center}
+En mode TI ou {\tt Xcas}, on tape :
+\begin{center}{\tt solve([x+1>0,x-1<0],x)}\end{center}
+On obtient  :
+\begin{center}{\tt [(x>-1) and (x<1)]}\end{center}
+
+\subsection{Transformer une liste en expression : {\tt list2exp}}\index{list2exp}
+\noindent{\tt list2exp} renvoie  {\tt (var=Xpr0) or (var=Xpr1)}
+lorsque l'argument est la liste {\tt [Xpr0,Xpr1],var}.\\
+{\tt list2exp} est l'inverse de {\tt exp2list}
+On tape :
+\begin{center}{\tt list2exp([0,1],a)}\end{center}
+On obtient :
+\begin{center}{\tt ((a=0) or (a=1))}\end{center}
+On tape :
+\begin{center}{\tt list2exp([[3,9], [-1,1]],[x, y])}\end{center}
+On obtient :
+\begin{center}{\tt ((x=3) and (y=9)) or ((x=-1) and (y=1))}\end{center}
+
 \section{\'Evaluation des bool\'eens : {\tt evalb}}\index{evalb}
 \noindent On peut \'evaluer une expression bool\'eenne gr\^ace \`a la 
 commande {\tt evalb} cette commande sert surtout pour la compatibilit\'e Maple
@@ -5123,14 +5247,28 @@ Ou on tape :
 On obtient :
 \begin{center}{\tt 7}\end{center}
 
-\subsection{D\'ebut, milieu et fin d'une cha\^ine : {\tt head mid tail}}\index{head|textbf} \index{tail|textbf}\index{mid}
+\subsection{D\'ebut, fin, milieu et fin d'une cha\^ine : {\tt head mid tail}}\index{head|textbf} \index{tail|textbf}\index{mid}
 \begin{itemize}
 \item {\tt head(s)} renvoie le premier caract\`ere de la cha\^ine 
 {\tt s}.\\ 
- On tape :
+On tape :
 \begin{center}{\tt head("bonjour")}\end{center}
+Ou on tape :
+\begin{center}{\tt "bonjour"[0]}\end{center}
 On obtient :
 \begin{center}{\tt "b"}\end{center}
+\item il n'y a pas de commande sp\'ecifique pour avoir le dernier le caract\`ere
+ de la cha\^ine {\tt s}. Mais on convient que l'indice du dernier (resp 
+avant-dernier) caract\`ere est aussi \'egal \`a {\tt -1} (resp {\tt -2}).\\ 
+On tape :
+\begin{center}{\tt s:="bonjour";s[size(s)-1]}\end{center}
+Ou on tape :
+\begin{center}{\tt s:="bonjour";s[-1]}\end{center}
+Ou on tape :
+\begin{center}{\tt "bonjour"[-1]}\end{center}
+On obtient :
+\begin{center}{\tt "r"}\end{center}
+
 \item {\tt mid(s,p,q)} renvoie un morceau de longueur {\tt q} de la cha\^ine 
 {\tt s} commen\c{c}ant au caract\`ere d'indice {\tt p} (attention! les indices 
 commencent \`a 0).\\
@@ -5944,6 +6082,10 @@ On tape :
 \begin{center}{\tt ithprime(75)}\end{center}
 On obtient :
 \begin{center}{\tt 379}\end{center}
+On tape :
+\begin{center}{\tt ithprime(k)\$(k=1..20)}\end{center}
+On obtient les 20 premiers nombres premiers :
+\begin{center}{\tt 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71}\end{center}
 
 \subsection{Nombre pseudo-premier apr\`es {\tt n} : {\tt nextprime}}\index{nextprime}
 \noindent{\tt nextprime(n)} d\'esigne le plus petit nombre pseudo-premier (ou 
@@ -7263,12 +7405,18 @@ permutation $c$ d\'efinie par  $c(3)=2,\ c(2)=1,\ c(1)=3,\ c(0)=0$ (qui est
  repr\'esent\'e en tant que permutation par la liste $[0,3,1,2]$).
  
 \subsection{Permutation al\'eatoire : {\tt randperm}}\index{randperm}
-\noindent{\tt randperm} a comme argument un entier $n$.\\
-{\tt randperm} renvoie une permutation al\'eatoire de $[0..n-1]$.\\
+\noindent{\tt randperm} a comme argument un entier {\tt n} ou une liste 
+{\tt L}.\\
+{\tt randperm} renvoie une permutation al\'eatoire de {\tt [0..n-1]} ou 
+une permutation al\'eatoire de {\tt L}.\\
 On tape :
 \begin{center}{\tt randperm(3)}\end{center}
-On obtient :
+On obtient par exemple :
 \begin{center}{\tt [2,0,1]}\end{center}
+On tape :
+\begin{center}{\tt randperm([3,7,1,4])}\end{center}
+On obtient par exemple :
+\begin{center}{\tt [7,3,4,1]}\end{center}
 
 \subsection{Permutation pr\'ec\'edente : {\tt prevperm}}\index{prevperm}
 \noindent{\tt prevperm} a comme argument une permutation.\\
@@ -12820,10 +12968,14 @@ les points $x_0=0,y_0=1$, $x_1=1,y_1=3$ et $x_2=2, y_2=0$, on tape~:
 {\tt spline([0,1,2],[1,3,0],x,3)}
 \end{center}
 On obtient une liste de deux polyn\^omes fonction de $x$~:
-\[[ -5*x^3/4+13*x/4+1, \quad 5*(x-1)^3/4-15*(x-1)^2/4+(x-1)/-2+3 ]\]
+\[[ -5*x\verb|^|3/4+13*x/4+1, \quad 5*(x-1)\verb|^|3/4-15*(x-1)\verb|^|2/4+(x-1)/-2+3 ]\]
 valables respectivement sur les intervalles $[0,1]$ et $[1,2]$.
-
-Par exemple, on veut une spline naturelle de degr\'e 4, passant par
+On tape :\\
+\begin{center}
+{\tt plotfunc([1+13*x/4-5*x\verb|^|3/4,3-(-1+x)/2-15*(-1+x)\verb|^|2/4+5*(-1+x)\verb|^|3/4],x=-1..3,color=[1,4])}
+\end{center}
+On obtient le graphe des 2 polyn\^omes.\\
+Si par exemple, on veut une spline naturelle de degr\'e 4, passant par
 les points $x_0=0,y_0=1$, $x_1=1,y_1=3$, $x_2=2, y_2=0$ et $x_3=3, y_3=-1$, 
 on tape~:
 \begin{center}
@@ -12834,7 +12986,11 @@ On obtient une liste de trois polyn\^omes fonction de $x$~:
 \[(201*(x-1)^4-248*(x-1)^3-372*(x-1)^2+56*(x-1))/121+3,\] 
 \[(-139*(x-2)^4+556*(x-2)^3+90*(x-2)^2+-628*(x-2))/121]\]
 valables respectivement sur les intervalles $[0,1]$, $[1,2]$ et $[2,3]$.
-
+On tape :\\
+\begin{center}
+{\tt plotfunc(spline([0,1,2,3],[1,3,0,-1],x,4),x=-1..4,color=[1,2,4])}
+\end{center}
+On obtient le graphe des 3 polyn\^omes.\\
 Par exemple, pour avoir l'interpolation naturelle de $\cos$ sur 
 $[0,\pi/2,3\pi/2]$, on tape~:
 \begin{center}
@@ -14075,7 +14231,7 @@ On obtient en mode r\'eel ou en mode complexe :
 \begin{center}{\tt (-1-2*i)/((2-2*i)*(x+i))}\end{center}
 
 \section{Racines exactes d'un polyn\^ome}
-\subsection{Encadrement exact des racines complexes d'un polyn\^ome : \\{\tt complexroot}}\index{complexroot}
+\subsection{Encadrement exact des racines complexes d'un polyn\^ome : {\tt complexroot}}\index{complexroot}
 \noindent {\tt complexroot} a 2 ou 4 arguments : un polyn\^ome et un nombre 
 r\`eel $\epsilon$ et \'eventuellement deux complexes $\alpha,\beta$.
 \begin{itemize}
@@ -15516,6 +15672,7 @@ On tape :
 \begin{center}{\tt convert(sin(3)+1,interval,20)}\end{center}
 On obtient :
 \begin{center}{\tt  i[1.1411200080598672221,1.1411200080598672221]}\end{center}
+
 \section{Les s\'equences}
 \subsection{D\'efinition : {\tt seq[]  ()}}\index{seq[]}\index{()}
 Une s\'equence est une suite d'\'el\'ements s\'epar\'es par une
@@ -15546,27 +15703,50 @@ On obtient :
 
 \subsection{Pour acc\'eder \`a un \'el\'ement d'une s\'equence : {\tt []}}\index{[]}\index{[[]]}
 Pour acc\'eder \`a un \'el\'ement d'une s\'equence, on tape l'indice de cet 
-\'el\'ement entre des crochets pour des indices qui commencent \`a 0 \\
+\'el\'ement entre des crochets pour des indices qui commencent \`a {\tt 0}.
+Pour acc\'eder au dernier (resp avant-dernier) \'el\'ement d'une s\'equence, on 
+peut aussi taper {\tt -1} (resp {\tt -2}) entre des crochets.\\
 ou bien \\
-on tape son indice entre des doubles crochets pour des indices qui commencent 
-\`a 1.\\
+Pour acc\'eder \`a un \'el\'ement d'une s\'equence, on tape son indice entre 
+des doubles crochets pour des indices qui commencent 
+\`a {\tt 1}. Pour acc\'eder au dernier \'el\'ement {\tt -1}  (resp {\tt -2}) 
+entre des doubles crochets n'est pas valide.\\
+Avec des crochets\\
 On tape :
-\begin{center}{\tt (0,1,2)[1]}\end{center}
+\begin{center}{\tt (0,1,2,3,4)[1]}\end{center}
 On obtient car l'indice du premier \'el\'ement est 0 :
 \begin{center}{\tt 1}\end{center}
-{\bf Ou bien}\\
 On tape :
-\begin{center}{\tt (0,1,2)[[1]]}\end{center}
+\begin{center}{\tt (0,1,2,3,4)[4]}\end{center}
+ou bien \\
+\begin{center}{\tt (0,1,2,3,4)[-1]}\end{center}
+On obtient car l'indice du dernier \'el\'ement :
+\begin{center}{\tt 4}\end{center}
+{\bf Ou bien} avec des doubles crochets\\
+On tape :
+\begin{center}{\tt (0,1,2,3,4)[[1]]}\end{center}
 On obtient  car l'indice du premier \'el\'ement est 1 :
 \begin{center}{\tt 0}\end{center}
+On tape :
+\begin{center}{\tt (0,1,2,3,4)[[5]]}\end{center}
+ou bien \\
+\begin{center}{\tt (0,1,2,3,4)[[-1]]}\end{center}
+On obtient car l'indice du dernier \'el\'ement :
+\begin{center}{\tt regroup((0,1,2,3,4)(-1)) Erreur: Dimension invalide}\end{center}
 
 \subsection{Pour extraire une sous-s\'equence d'une s\'equence : {\tt []}}\index{[]}\index{..}
 Pour extraire une sous-s\'equence d'une s\'equence, on tape entre des crochets
 l'indice de d\'ebut, puis {\tt ..}  et l'indice de fin de la sous-s\'equence.\\
+{\bf Remarque}\\
+On peut acc\'eder au dernier (resp avant-dernier) \'el\'ement d'une s\'equence 
+en mettant {\tt -1} (resp {\tt -2}) entre des crochets.
 On tape :
-\begin{center}{\tt (0,1,2,3,4)[1..3]}\end{center}
+\begin{center}{\tt (0,1,2,3,4)[2..4]}\end{center}
+ou on tape
+\begin{center}{\tt (0,1,2,3,4)[-3..-1]}\end{center}
 On obtient :
-\begin{center}{\tt (1,2,3)}\end{center}
+\begin{center}{\tt (2,3,4)}\end{center}
+
 \subsection{Pour fabriquer une s\'equence ou une liste : {\tt seq \$}}\index{seq|textbf}\index{\$|textbf}\label{sec:seq}
 \noindent{\tt seq} peut renvoyer une s\'equence (avec la m\^eme syntaxe que
 {\tt Maple}) ou une liste (avec la m\^eme syntaxe que {\tt TI}) selon la forme 
@@ -15841,7 +16021,6 @@ On tape :
 On obtient :
 \begin{center}{\tt [1,4,9,16]}\end{center}
 
-
 \subsection{L'effet de l'op\'erateur {\tt +} sur deux s\'equences}\index{+}
 L'op\'erateur infix\'e {\tt +} ayant comme argument deux s\'equences,
 renvoie la somme des \'el\'ements des deux s\'equences.\\
@@ -15861,6 +16040,7 @@ On obtient :
 {\tt bf Attention}\\
 Quand l'op\'erateur {\tt +} est pr\'efix\'e il doit \^etre quot\'e c'est
 \`a dire \'ecrit {\tt '+'}.
+
 
 \section{Les ensembles}
 \subsection{D\'efinition : {\tt set[]}}\index{\% \{\% \}}\index{set[]}
@@ -15911,6 +16091,7 @@ On tape :
 \begin{center}{\tt est\_inclus([1,2,3,4,2],[1,2,5,6,3,4])}\end{center}
 On obtient :
 \begin{center}{\tt 1}\end{center}
+
 \subsection{Union de deux ensembles ou de deux listes : {\tt union}}\index{union}
 \noindent{\tt union}  renvoie l'ensemble qui est l'union de deux ensembles ou 
 de deux listes.\\
@@ -15925,6 +16106,7 @@ On tape :
 \begin{center}{\tt [1,2,3] union [2,5,6]}\end{center}
 On obtient :
 \begin{center}{\tt {\bf[}1,2,3,5,6{\bf]}}\end{center}
+
 
 \subsection{Intersection de deux ensembles, de deux listes : {\tt intersect}}\index{intersect}
 \noindent{\tt intersect} renvoie l'ensemble qui est l'intersection de deux 
@@ -16002,18 +16184,27 @@ Pour voir les  d\'elimiteurs dans les r\'eponses taper :\\
 {\tt [1,2,3], [[1,2,3]], matrix[1,2,3], poly1[1,2,3], set[1,2,3]}
 {\bf Attention !}\\
 Pour acc\'eder \`a un \'el\'ement d'une liste, on tape son indice entre des 
-crochets pour des indices qui commencent \`a 0 \\
+crochets pour des indices qui commencent \`a 0.\\
+Pour acc\'eder  au dernier \'el\'ement d'une liste, on peut aussi taper -1 
+entre des crochets.\\
 ou bien \\
 on tape son indice entre des doubles crochets pour des indices qui commencent 
 \`a 1.\\
 Pour toutes les autres fonctions de {\tt Xcas} (autres que l'acc\'es \`a un 
 \'el\'ement), l'indice du premier \'el\'ement est 0.\\
+
 {\bf Exemple}\\
 On tape :
-{\tt L:=[2,5,1,3]}\\
+{\tt L:=[2,5,1,4]}\\
 {\tt L[1]}\\
 On obtient :\\
 {\tt 5}\\
+On tape :
+{\tt L[3]}\\
+ou\\
+{\tt L[-1]}\\
+On obtient :\\
+{\tt 4}\\
 On tape :
 {\tt L[[1]]}\\
 On obtient :\\
@@ -16069,14 +16260,16 @@ commande {\tt mat2list}.
 %{\bf Remarque 2}\\Si la liste est 
 
 \subsection{Acc\`es \`a un \'el\'ement ou \`a une sous-liste d'une liste : {\tt at []}}\index{at|textbf}\label{sec:at}\index{[]}\index{[[]]}
-\subsubsection{Acc\`es \`a un \'el\'ement}
+\subsubsection{Acc\`es \`a un \'el\'ement d'une liste}
 On utilise la fonction {\tt at} pour acc\'eder \`a un \'el\'ement d'une liste, 
-ou on tape son indice entre des crochets pour des indices qui commencent \`a 0 \\
+ou on tape son indice entre des crochets pour des indices qui commencent \`a 0. \\
 ou bien \\
 on tape son indice entre des doubles crochets ou entre des 
 parenth\`eses pour des indices qui commencent \`a 1.\\
-Pour toutes les autres fonctions de {\tt Xcas} (autres que l'acc\'es \`a un 
-\'el\'ement), l'indice du premier \'el\'ement est 0.\\
+{\bf Remarque}\\
+Pour la fonction {\tt at} et pour toutes les autres fonctions de {\tt Xcas} 
+(autres que l'acc\'es \`a un \'el\'ement), l'indice du premier \'el\'ement est 
+0.
 
 {\bf Exemples}\\
 Soit la liste : {\tt [0,1,2]} et on veut d\'esigner l'\'el\'ement {\tt 1}.\\
@@ -16086,7 +16279,19 @@ ou
 \begin{center}{\tt at([0,1,2],1)}\end{center}
 On obtient puisque les indices commencent \`a 0 :
 \begin{center}{\tt  1}\end{center}
-ou bien 
+{\bf Remarque} Lorsque on veut d\'esigner le dernier (resp avant-dernier) 
+\'el\'ement, on tape son indice entre des crochets ou on tape {\tt -1} (resp {\tt -2}) entre des crochets.\\
+On tape  pour d\'esigner le dernier \'el\'ement l'indice {\tt -1} entre des 
+crochets :\\
+\begin{center}{\tt [0,1,2,3,4][-1]}\end{center}
+ou
+\begin{center}{\tt at([0,1,2,3,4],-1)}\end{center}
+On obtient puisque les indices commencent \`a 0 :
+\begin{center}{\tt  4}\end{center}
+
+Si on veut que les indices qui commencent \`a 1, on tape son indice entre des 
+doubles crochets ou entre des 
+parenth\`eses pour des indices qui commencent \`a 1.\\
 0n tape son indice {\tt 2} entre des doubles crochets ou entre des 
 parenth\`eses :
 \begin{center}{\tt [0,1,2][[2]]}\end{center}
@@ -16094,37 +16299,101 @@ ou
 \begin{center}{\tt [0,1,2](2)}\end{center}
 On obtient puisque avec cette notation, les indices commencent \`a 1 :
 \begin{center}{\tt  1}\end{center}
-Soit la matrice : {\tt A:=[[4,5],[2,6]]} et on veut d\'esigner la ligne 
-{\tt [4,5]}.\\
-On tape son indice {\tt 0} entre des crochets, si on veut que les indices commencent \`a 0 :
+
+\subsubsection{Acc\`es \`a un \'el\'ement d'une sous-liste d'une liste}
+Soit la liste : {\tt A:=[[4,5,8],[2,6],[3,7],[1,0,9]]}.\\
+Si on veut d\'esigner la sous-liste {\tt [4,5,8]}, on tape son indice {\tt 0} 
+entre des crochets, si on veut que les indices commencent \`a 0 :
 \begin{center}{\tt A[0]}\end{center}
 ou
 \begin{center}{\tt at(A,0)}\end{center}
 On obtient puisque les indices commencent \`a 0 :
-\begin{center}{\tt  [4,5]}\end{center}
-Ou bien si on veut que les indices commencent \`a 1, on tape son indice {\tt 1} entre des doubles crochets ou entre des parenth\`eses :
+\begin{center}{\tt  [4,5,8]}\end{center}
+Si on veut d\'esigner l'\'el\'ement {\tt 5} de la ligne {\tt [4,5,8]}, on tape
+l'indice {\tt 0,1} entre des crochets, si on veut que les indices commencent 
+\`a 0 car : {\tt 0} est l'indice de la ligne {\tt [4,5,8]} et {\tt 1} est 
+l'indice de {\tt 5} dans cette ligne : 
+\begin{center}{\tt A[0,1]}\end{center}
+ou
+\begin{center}{\tt at(A,[0,1])}\end{center}
+On obtient puisque les indices commencent \`a 0 :
+\begin{center}{\tt 5}\end{center}
+
+Ou bien, on veut que les indices commencent \`a 1.\\
+Si on veut d\'esigner la sous-liste {\tt [4,5,8]}, on tape son indice {\tt 1} 
+entre des doubles crochets ou entre des parenth\`eses:
 \begin{center}{\tt A[[1]]}\end{center}
 ou
 \begin{center}{\tt A(1)}\end{center}
+On obtient puisque les indices commencent \`a 1 :
+\begin{center}{\tt  [4,5,8]}\end{center}
+Si on veut d\'esigner l'\'el\'ement {\tt 5} de la ligne {\tt [4,5,8]}, on tape 
+l'indice {\tt 1,2} entre des doubles crochets ou entre des parenth\`eses :
+\begin{center}{\tt A[[1,2]]}\end{center}
+ou
+\begin{center}{\tt A(1,2)}\end{center}
 On obtient puisque avec cette notation, les indices commencent \`a 1 :
-\begin{center}{\tt  [4,5]}\end{center}
+\begin{center}{\tt  5}\end{center}
+{\bf Attention \`a l'utilisation de {\tt at} avec des doubles crochets}\\
+{\tt at} permet d'extraire de faire une liste avec plusieurs sous-listes d'une 
+liste.\\
+On tape alors les indices de ces sous-listes entre des doubles crochets :\\
+\begin{center}{\tt at([[1,2,3],[3,4,10,11],[5,6,7],[8,9]],[[1,3]])}\end{center}
+On obtient puisque les indices commencent \`a 0 :
+\begin{center}{\tt [[3,4,10,11],[8,9]]}\end{center}
+\begin{center}{\tt at([[1,2,3],[3,4,10,11],[5,6,7],[8,9]],[[0,2,3]])}\end{center}
+On obtient puisque les indices commencent \`a 0 :
+\begin{center}{\tt [[1,2,3],[5,6,7],[8,9]]}\end{center}
 
-\subsubsection{Extraire une sous-liste}
+\subsection{Extraire une sous-liste, d'une liste : {\tt at}}\index{at}
 {\bf Voir aussi :} \ref{sec:mid} la fonction {\tt mid}.\\
-On utilise aussi la fonction {\tt at} pour extraire une sous-liste d'une liste. On tape alors, entre des crochets, l'indice
- de d\'ebut, puis {\tt ..} et l'indice de fin de la sous-liste ou on utilise 
-la fonction {\tt at}.\\
+On utilise aussi la fonction {\tt at} pour extraire une sous-liste d'une liste.
+ \begin{enumerate}
+\item Si on extrait des \'el\'ements dont les indices se suivent, on tape entre 
+des crochets, l'indice de d\'ebut, puis {\tt ..} et l'indice de fin de la 
+sous-liste ou on utilise la fonction {\tt at}.\\
 {\bf Attention !} l'indice du premier \'el\'ement est 0.\\
-
+{\bf Remarque}
+On peut acc\'eder au dernier (resp avant-dernier) \'el\'ement d'une liste 
+en mettant {\tt -1} (resp {\tt -2}) entre des crochets.\\
+On tape :
+\begin{center}{\tt [0,1,2,3,4][2..4]}\end{center}
+ou on tape
+\begin{center}{\tt [0,1,2,3,4][-3..-1]}\end{center}
+On obtient :
+\begin{center}{\tt [2,3,4]}\end{center}
 On tape :
 \begin{center}{\tt [0,1,2,3,4][1..3]}\end{center}
 ou
 \begin{center}{\tt at([0,1,2,3,4],1..3)}\end{center}
 On obtient :
 \begin{center}{\tt  [1,2,3]}\end{center}
-{\bf Attention}, la commande {\tt at} ne peut pas \^etre utilis\'ee pour les
+On tape :
+\begin{center}{\tt [[1,2,3],[3,4,10,11],[5,6,7],[8,9]][1..3]}\end{center}
+ou
+\begin{center}{\tt at([[1,2,3],[3,4,10,11],[5,6,7],[8,9]],1..3)}\end{center}
+On obtient :
+\begin{center}{\tt  [[3,4,10,11],[5,6,7],[8,9]]}\end{center}
+{\bf Attention !} la commande {\tt at} ne peut pas \^etre utilis\'ee pour les
 s\'equences : il faut utiliser la syntaxe {\tt (0,1,2,3,4,5)[2..3]}.
+\item Si on extrait des \'el\'ements dont les indices ne se suivent pas, on 
+utilise la fonction {\tt at} et on tape les indices des \'el\'ements d\'esir\'es
+ entre des doubles crochets.\\
+ On tape :
+\begin{center}{\tt at([[1,2,3],[3,4,10,11],[5,6,7],[8,9]],[[1,3]])}\end{center}
+On obtient puisque les indices commencent \`a 0 :
+\begin{center}{\tt [[3,4,10,11],[8,9]]}\end{center}
+ On tape :
+\begin{center}{\tt at([[1,2,3],[3,4,10,11],[5,6,7],[8,9]],[[-4,-1]])}\end{center}
+On obtient puisque lorsque les indices commencent \`a 0,  -1 est l'indice du 
+dernier \'el\'ement :
+\begin{center}{\tt [[1,2,3],[8,9]]}\end{center}
 
+{\bf Mais, si on tape }\\
+\begin{center}{\tt [[1,2,3],[3,4,10,11],[5,6,7],[8,9]][[1,3]]}\end{center}
+On obtient puisque les indices commencent \`a 1 l'\'el\'ement d'indice (1,3) :
+\begin{center}{\tt 3}\end{center}
+\end{enumerate}
 \subsection{Extraire une sous-liste d'une liste : {\tt mid}}\index{mid}\label{sec:mid}
 {\bf Voir aussi :} \ref{sec:at} la fonction {\tt at}.\\
 \noindent{\tt mid} pour extraire une sous-liste d'une liste\index{mid}.\\
@@ -16154,9 +16423,26 @@ On tape :
 On obtient :
 \begin{center}{\tt  [3,2]}\end{center}
 On tape :
+\begin{center}{\tt L:=[3,4,2]}\end{center}
+\begin{center}{\tt L:=suppress(L,1)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[3,4,2]}\end{center}
+\begin{center}{\tt L.suppress(1)}\end{center}
+On obtient la nouvelle valeur de {\tt L} :
+\begin{center}{\tt  [3,2]}\end{center}
+On tape :
 \begin{center}{\tt suppress("342",1)}\end{center}
 On obtient :
 \begin{center}{\tt  "32"}\end{center}
+On tape :
+\begin{center}{\tt s:="342"}\end{center}
+\begin{center}{\tt s:=suppress(s,1)}\end{center}
+Ou on tape :
+\begin{center}{\tt s:="342"}\end{center}
+\begin{center}{\tt s.suppress(1)}\end{center}
+On obtient la nouvelle valeur de {\tt s}:
+\begin{center}{\tt  "32"}\end{center}
+
 \subsection{Ins\'erer un \'el\'ement dans une liste ou une cha{\i}\^ne de caract\`eres : {\tt insert}}\index{insert}
 \noindent{\tt insert} ins\`ere dans une liste, ou  dans une cha{\i}\^ne de 
 caract\`eres\`a l'indice donn\'e en 2nd argument, l'\'el\'ement donn\'e en 3i\`eme argument.\\
@@ -16241,32 +16527,82 @@ On tape :
 \begin{center}{\tt rotate([0,1,2,3,4],-2)}\end{center}
 On obtient :
 \begin{center}{\tt  [3,4,0,1,2]}\end{center}
+On tape :
+\begin{center}{\tt L:=[0,1,2,3,4]}\end{center}
+\begin{center}{\tt L:=rotate(L)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[0,1,2,3,4]}\end{center}
+\begin{center}{\tt L.rotate()}\end{center}
+On obtient le nouvelle valeur de {\tt L} :
+\begin{center}{\tt  [4,0,1,2,3]}\end{center}
+On tape :
+\begin{center}{\tt L:=[0,1,2,3,4]}\end{center}
+\begin{center}{\tt L:=rotate(L,2)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[0,1,2,3,4]}\end{center}
+\begin{center}{\tt L.rotate(2)}\end{center}
+On obtient le nouvelle valeur de {\tt L} :
+\begin{center}{\tt  [2,3,4,0,1]}\end{center}
+On tape :
+\begin{center}{\tt L:=[0,1,2,3,4]}\end{center}
+\begin{center}{\tt L:=rotate(L,-2)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[0,1,2,3,4]}\end{center}
+\begin{center}{\tt L.rotate(-2)}\end{center}
+On obtient le nouvelle valeur de {\tt L} :
+\begin{center}{\tt  [3,4,0,1,2]}\end{center}
+
 \subsection{Avoir la liste permut\'ee \`a partir de son n-i\`eme \'el\'ement : {\tt shift}}\index{shift}
 \noindent{\tt shift} a comme argument une liste et un nombre entier relatif 
 (par d\'efaut {\tt n=-1}).\\
 {\tt shift} renvoie :
 \begin{itemize}
 \item si {\tt n>0} la liste obtenue en rempla\c{c}ant les {\tt n} premiers 
-\'el\'ements de la liste par {\tt undef}, puis en en permuttant ces {\tt n}
+\'el\'ements de la liste par {\tt 0}, puis en en permuttant ces {\tt n}
 premiers \'el\'ements avec la fin de la liste,
 \item  si {\tt n<0}  en rempla\c{c}ant les 
-{\tt -n} derniers \'el\'ements de la liste par {\tt undef}, puis en permuttant les 
-{\tt -n} derniers \'el\'ements avec le d\'ebut de la liste. Par d\'efaut 
-({\tt n=-1}) le premier \'el\'ement vaut {\tt undef} et il est suivi par la liste 
-priv\'ee de son dernier \'el\'ement.
+{\tt -n} derniers \'el\'ements de la liste par {\tt 0}, puis en permuttant 
+les {\tt -n} derniers \'el\'ements avec le d\'ebut de la liste. Par d\'efaut 
+({\tt n=-1}) le premier \'el\'ement vaut {\tt 0} et il est suivi par la 
+liste priv\'ee de son dernier \'el\'ement.
 \end{itemize}
 On tape :
-\begin{center}{\tt shift([0,1,2,3,4])}\end{center}
+\begin{center}{\tt shift([0,1,2,3,4,5])}\end{center}
 On obtient :
-\begin{center}{\tt  [undef,0,1,2,3]}\end{center}
+\begin{center}{\tt  [0,0,1,2,3,4]}\end{center}
 On tape :
-\begin{center}{\tt shift([0,1,2,3,4],2)}\end{center}
+\begin{center}{\tt shift([0,1,2,3,4,5],2)}\end{center}
 On obtient :
-\begin{center}{\tt  [2,3,4,undef,undef]}\end{center}
+\begin{center}{\tt  [2,3,4,5,0,0]}\end{center}
 On tape :
-\begin{center}{\tt shift([0,1,2,3,4],-2)}\end{center}
+\begin{center}{\tt shift([0,1,2,3,4,5],-2)}\end{center}
 On obtient :
-\begin{center}{\tt  [undef,undef,0,1,2]}\end{center}
+\begin{center}{\tt  [0,0,0,1,2,3]}\end{center}
+On tape :
+\begin{center}{\tt L:=[0,1,2,3,4,5]}\end{center}
+\begin{center}{\tt L:=shift(L)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[0,1,2,3,4,5]}\end{center}
+\begin{center}{\tt L.shift()}\end{center}
+On obtient la nouvelle valeur de {\tt L} :\\
+\begin{center}{\tt  [0,0,1,2,3,4]}\end{center}
+On tape :
+\begin{center}{\tt L:=[0,1,2,3,4,5]}\end{center}
+\begin{center}{\tt L:=shift(L,2)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[0,1,2,3,4,5]}\end{center}
+\begin{center}{\tt L.shift(2)}\end{center}
+On obtient la nouvelle valeur de {\tt L} :\\
+\begin{center}{\tt L:=[2,3,4,5,0,0]}\end{center}
+On tape :
+\begin{center}{\tt L:=[0,1,2,3,4,5]}\end{center}
+\begin{center}{\tt L:=shift(L,-2)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[0,1,2,3,4,5]}\end{center}
+\begin{center}{\tt L.shift(-2)}\end{center}
+On obtient la nouvelle valeur de {\tt L} :\\
+\begin{center}{\tt  [0,0,0,1,2,3]}\end{center}
+
 \subsection{Modifier un \'el\'ement d'une liste : {\tt subsop}}\index{subsop}
 \label{sec:subsop}
 \noindent {\tt subsop} permet de  modifier un \'el\'ement dans une liste sans 
@@ -16332,7 +16668,7 @@ Ou on tape :
 On obtient :
 \begin{center}{\tt [0,1,2]}\end{center}
 
-\subsection{Longueur d'une liste : {\tt size nops length}}\index{size}\index{nops}\index{length}
+\subsection{Longueur d'une liste : {\tt size nops length len}}\index{size}\index{nops}\index{length|textbf}\index{len|textbf}
 \noindent{\tt size} ou {\tt nops} ou {\tt length} renvoie la longueur d'une 
 liste (ou d'une cha\^{i}ne).\\
 On tape :
@@ -16341,6 +16677,8 @@ ou
 \begin{center}{\tt size([3,4,2])}\end{center}
 ou
 \begin{center}{\tt length([3,4,2])}\end{center}
+ou
+\begin{center}{\tt len([3,4,2])}\end{center}
 On obtient :
 \begin{center}{\tt  3}\end{center}
 \subsection{Longueur d'une liste de listes : {\tt sizes}}\index{sizes}
@@ -16349,7 +16687,7 @@ On tape :
 \begin{center}{\tt sizes([[3,4],[2]])}\end{center}
 On obtient :
 \begin{center}{\tt [2,1]}\end{center}
-\subsection{Concat\'ener deux listes ou une liste et un \'el\'ement: {\tt concat\\ augment}}\index{concat|textbf}\index{augment|textbf}
+\subsection{Concat\'ener deux listes ou une liste et un \'el\'ement: {\tt concat augment}}\index{concat|textbf}\index{augment|textbf}
 \noindent{\tt concat} (ou {\tt augment})
 concat\'ene deux listes, ou concat\'ene une liste et un \'el\'ement.\\
 On tape :
@@ -16368,8 +16706,17 @@ On obtient :
 \begin{center}{\tt concat([[3,4,2]],[[1,2,4]])}\end{center}
 On obtient :
 \begin{center}{\tt [[3,4,2,1,2,4]]}\end{center}
+{\bf Remarque}
+Si on veut concat\'ener la liste {\tt L:=[3,4,2]} avec la liste {\tt [1,7,6,5]}
+et mettre le r\'esultat dans {\tt L}, on a 2 fa\c{c}on de la faire.
+On d\'efinit {\tt L}, on tape :
+\begin{center}{\tt L:=[3,4,2])}\end{center}
+Puis, on tape :
+\begin{center}{\tt L:=concat(L,[1,7,6,5][3,4,2,5])}\end{center}
+Ou on tape :
+\begin{center}{\tt L.concat([1,7,6,5][3,4,2,5])}\end{center}
 
-\subsection{Rajouter un \'el\'ement \`a la fin d'une liste : {\tt append}}\index{append}
+\subsection{Rajouter un \'el\'ement \`a la fin d'une liste : {\tt append}}\index{append|textbf}
 \noindent{\tt append} rajoute un \'el\'ement \`a la fin d'une liste.\\
 On tape :
 \begin{center}{\tt append([3,4,2],1)}\end{center}
@@ -16379,7 +16726,20 @@ On tape :
 \begin{center}{\tt append([1,2],[3,4])}\end{center}
 On obtient :
 \begin{center}{\tt [1,2,[3,4]]}\end{center}
-\subsection{Rajouter un \'el\'ement au d\'ebut d'une liste : {\tt prepend}}\index{prepend}
+{\bf Remarque}
+Si on veut rajouter l'\'el\'ement {\tt 1} \`a la fin de la liste 
+{\tt L:=[3,4,2]} et mettre le r\'esultat dans {\tt L}, on a 2 fa\c{c}on de le 
+faire.\\
+On tape :
+\begin{center}{\tt L:=[3,4,2])}\end{center}
+\begin{center}{\tt L:=append(L,1)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[3,4,2])}\end{center}
+\begin{center}{\tt L.append(1)}\end{center}
+On obtient comme nouvelle valeur de {\tt L} :
+\begin{center}{\tt L:=[3,4,2,1]}\end{center}
+
+\subsection{Rajouter un \'el\'ement au d\'ebut d'une liste : {\tt prepend}}\index{prepend|textbf}
 \noindent{\tt prepend} rajoute un \'el\'ement au d\'ebut d'une liste.\\
 On tape :
 \begin{center}{\tt prepend([3,4,2],1)}\end{center}
@@ -16389,8 +16749,20 @@ On tape :
 \begin{center}{\tt prepend([1,2],[3,4])}\end{center}
 On obtient :
 \begin{center}{\tt [[3,4],1,2]}\end{center}
+{\bf Remarque}
+Si on veut rajouter l'\'el\'ement {\tt 5} au d\'ebut de la liste 
+{\tt L:=[3,4,2]} avec la liste {\tt [1,7,6,5]} et mettre le r\'esultat dans 
+{\tt L}, on a 2 fa\c{c}on de le faire.
+On tape :
+\begin{center}{\tt L:=[3,4,2]}\end{center}
+\begin{center}{\tt L:=prepend(L,[1,7,6,5]5)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[3,4,2]}\end{center}
+\begin{center}{\tt L.prepend(5)}\end{center}
+On obtient comme nouvelle valeur de {\tt L} :
+\begin{center}{\tt L:=[5,3,4,2]}\end{center}
 
-\subsection{Trier : {\tt sort}}\index{sort}
+\subsection{Trier : {\tt sort}}\index{sort|textbf}
 \noindent{\tt sort} a comme argument une liste de nombres ou une matrice
 ou une liste de chaines de caract\`eres ou une expression.\\
 lorsque le 1ier argument est une liste, {\tt sort} accepte comme 2-i\`eme 
@@ -16545,6 +16917,29 @@ ou on tape
 On obtient :
 \begin{center}{\tt [[2,3,4],[2,4,3],[3,4,2],[4,2,3]][[2,3,4],[2,4,3],[3,4,2],[4,2,3]]}\end{center}
 \end{enumerate}
+{\bf Remarque}
+Si on veut trier la liste {\tt L:=[1,3,4,3,2]} et mettre le r\'esultat dans 
+{\tt L}, on a 2 fa\c{c}on de le faire.
+On tape :
+\begin{center}{\tt L:=[1,3,4,3,2]}\end{center}
+\begin{center}{\tt L:=sort(L)}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[1,3,4,3,2]}\end{center}
+\begin{center}{\tt L.sort()}\end{center}
+On obtient comme nouvelle valeur de {\tt L} :
+\begin{center}{\tt L:=[1,2,3,3,4]}\end{center}
+Ou encore \\
+Si on veut trier la liste {\tt L:=[[1,3],[2,4],[2,3],[1,4]]} avec 
+{\tt (x,y)->when(x[0]==y[0],x[1]>y[1],x[0]>y[0])} et mettre le r\'esultat dans 
+{\tt L}, on a 2 fa\c{c}on de le faire.
+On d\'efinit {\tt L}, on tape :
+\begin{center}{\tt L:=[[1,3],[2,4],[2,3],[1,4]]}\end{center}
+\begin{center}{\tt L:=sort(L,(x,y)->when(x[0]==y[0],x[1]>y[1],x[0]>y[0]))}\end{center}
+Ou on tape :
+\begin{center}{\tt L:=[[1,3],[2,4],[2,3],[1,4]]}\end{center}
+\begin{center}{\tt L.sort((x,y)->when(x[0]==y[0],x[1]>y[1],x[0]>y[0]))}\end{center}
+On obtient comme nouvelle valeur de {\tt L} :
+\begin{center}{\tt [[2,4],[2,3],[1,4],[1,3]]}\end{center}
 
 
 \subsection{Trier une liste selon l'ordre croissant : {\tt SortA et sorta}}\index{SortA}\index{sorta}
@@ -16553,6 +16948,8 @@ On obtient :
 de mettre des parenth\`eses et modifie la valeur de l'argument alors que 
 {\tt sorta} s'utilise comme des fonctions normales de {\tt Xcas} (parenth\`eses
 obligatoires et sans changer l'argument !).\\
+{\bf Mais} {\tt L.sorta()} modifie la valeur de {\tt L} en la triant selon 
+l'ordre croissant.\\
 {\tt SortA} ou {\tt sorta} a comme argument une liste, une s\'equence ou une 
 matrice.\\
 {\tt SortA} ou {\tt sorta} renvoie la liste ou la s\'equence tri\'ee selon 
@@ -16586,8 +16983,17 @@ On tape :
 \begin{center}{\tt SortA(A)}\end{center}
 On obtient :
 \begin{center}{\tt [[2,3,4],[5,6,4]]}\end{center}
-et maintenant {\tt A} vaut {\tt [[2,3,4],[5,6,4]]}
-Mais, on tape :
+et maintenant {\tt A} vaut {\tt [[2,3,4],[5,6,4]]}\\
+On tape :
+\begin{center}{\tt A:=[[3,4,2],[6,4,5]]}\end{center}
+\begin{center}{\tt A:=sorta(A)}\end{center}
+ou 
+\begin{center}{\tt A:=[[3,4,2],[6,4,5]]}\end{center}
+\begin{center}{\tt A.sorta()}\end{center}
+On obtient la nouvelle valeur de {\tt A} :
+\begin{center}{\tt [[2,3,4],[5,6,4]]}\end{center}
+et maintenant {\tt A} vaut {\tt [[2,3,4],[5,6,4]]}\\
+{\bf Mais}, si on tape :
 \begin{center}{\tt A:=[[3,4,2],[6,4,5]]}\end{center}
 \begin{center}{\tt sorta(A)}\end{center}
 On obtient :
@@ -16603,12 +17009,15 @@ On obtient la matrice !:
 {\tt [[1,2,3],[3,2,1]]}\\
 qui est le r\'esultat de :\\
 {\tt SortA(L1,SortA(L2))}
+
 \subsection{Trier une liste selon l'ordre d\'ecroissant : {\tt SortD sortd}}\index{SortD}\index{sortd}
 \noindent{\bf Attention}  et {\tt sortd} ne sont pas des synonymes :
 {\tt SortD} s'utilise avec la syntaxe TI i.e. sans avoir besoin de mettre des 
 parenth\`eses  et modifie la valeur de l'argument alors que {\tt sortd} 
 s'utilise comme des fonctions normales de {\tt Xcas} (parenth\`eses 
 obligatoires et sans changer l'argument !).\\
+{\bf Mais} {\tt L.sortd()} modifie la valeur de {\tt L} en la triant selon 
+l'ordre d\'ecroissant.\\
 {\tt SortD} ou {\tt sortd} a comme argument une liste, 
 une s\'equence ou une matrice.\\
 {\tt SortA} ou {\tt sorta} renvoie la liste ou la s\'equence tri\'ee selon 
@@ -16640,13 +17049,22 @@ On obtient :
 On tape :
 \begin{center}{\tt A:=[[3,4,2],[6,4,5]]}\end{center}
 \begin{center}{\tt SortD(A)}\end{center}
+On obtient la nouvelle valeur de {\tt A} :
+\begin{center}{\tt [[4,3,2],[4,6,5]]}\end{center}
+et maintenant {\tt A} vaut {\tt [[4,3,2],[4,6,5]]}\\
+On tape :
+\begin{center}{\tt A:=[[3,4,2],[6,4,5]]}\end{center}
+\begin{center}{\tt A:=sortd(A)}\end{center}
+Ou on tape :
+\begin{center}{\tt A:=[[3,4,2],[6,4,5]]}\end{center}
+\begin{center}{\tt A.sortd()}\end{center}
 On obtient :
 \begin{center}{\tt [[4,3,2],[4,6,5]]}\end{center}
-et maintenant {\tt A} vaut {\tt [[4,3,2],[4,6,5]]}
-Mais, on tape :
+et maintenant {\tt A} vaut {\tt [[4,3,2],[4,6,5]]}\\
+{\bf Mais}, si on tape :
 \begin{center}{\tt A:=[[3,4,2],[6,4,5]]}\end{center}
 \begin{center}{\tt sortd(A)}\end{center}
-On obtient :
+On obtient la nouvelle valeur de {\tt A} :
 \begin{center}{\tt [[4,3,2],[4,6,5]]}\end{center}
 et maintenant {\tt A} vaut toujours {\tt [[3,4,2],[6,4,5]]}
 
@@ -16660,7 +17078,7 @@ On obtient la matrice !:
 qui est le r\'esultat de :\\
 {\tt SortD(L1,SortD(L2))}
 
-\subsection{S\'electionner des \'el\'ements d'une liste : {\tt select}}\index{select}
+\subsection{S\'electionner des \'el\'ements d'une liste : {\tt select}}\index{select|textbf}
 \noindent{\tt select} a deux param\`etres : une fonction bool\'eenne {\tt f}
  et une liste  {\tt L}.\\
 {\tt select} s\'electionne les \'el\'ements {\tt c} de la liste {\tt L}, qui
@@ -16669,6 +17087,12 @@ On tape :
 \begin{center}{\tt select(x->(x>=2),[0,1,2,3,4,5])}\end{center}
 On obtient :
 \begin{center}{\tt  [2,3,4,5]}\end{center}
+On tape :
+\begin{center}{\tt L:=[0,1,2,3,4,5]}\end{center}
+\begin{center}{\tt L:=select(x->(x>=2),[0,1,2,3,4,5])}\end{center}
+On obtient comme nouvelle valeur de {\tt L} :
+\begin{center}{\tt  [2,3,4,5]}\end{center}
+
 \subsection{Supprimer des \'el\'ements d'une liste : {\tt remove}}\index{remove}
 \noindent{\tt remove} a deux param\`etres : une fonction bool\'eenne {\tt f} et
  une liste {\tt L}.\\
@@ -16678,21 +17102,51 @@ On tape :
 \begin{center}{\tt remove(x->(x>=2),[0,1,2,3,4,5])}\end{center}
 On obtient :
 \begin{center}{\tt  [0,1]}\end{center}
-{\bf Remarque} Pour faire la m\^eme chose avec une chaine de catact\`ere, 
-par exemple, enlever tous les "a" d'une chaine :\\
 On tape :
-\begin{center}{\tt ord("a")}\end{center}
+\begin{center}{\tt L:=[0,1,2,3,4,5])}\end{center}
+\begin{center}{\tt L:=remove(x->(x>=2),L)}\end{center}
+On obtient comme nouvelle valeur de {\tt L} :
+\begin{center}{\tt  [0,1]}\end{center}
+{\bf Remarque} Pour faire la m\^eme chose avec une cha\^{\i}ne de catact\`eres, 
+par exemple : enlever tous les caract\`eres d'une cha\^{\i}ne qui se trouvent 
+apr\`es le caract\`ere {\tt ch} (par ex {\tt "m"} selon l'alphabet.\\
+On va \'ecrire les fonction {\tt Enleve1} et {\tt Enleve2} : pour cela on a 
+besoin des fonctions :
+{\tt ord}, {\tt asc} et {\tt char} :
+\begin{center}{\tt ord("a"),char(97)}\end{center}
 On obtient :
-\begin{center}{\tt  97}\end{center}
+\begin{center}{\tt  97,"a"}\end{center}
 On tape :
-\begin{center}{\tt f(chn):=\{local l:=length(chn)-1;
-return remove(x->(ord(x)==97),seq(chn[k],k,0,l));\}}\end{center}
-Puis on tape :
-\begin{center}{\tt f("abracadabra")}\end{center}
+\begin{center}{\tt asc("abc"),char([97,98,99])}\end{center}
 On obtient :
-\begin{center}{\tt  ["b","r","c","d","b","r"]}\end{center}
+\begin{center}{\tt  [97,98,99],"abc"}\end{center}
+On utilise {\tt seq}, on tape la fonction {\tt Enleve1} :
+\begin{verbatim}
+Enleve1(chaine,ch):={
+local L,l:=length(chaine)-1;
+L:=remove(x->(ord(x)>ord(ch)),seq(chaine[k],k,0,l));
+return char(ord(L));
+}:;
+\end{verbatim}
+ou bien on utilise {\tt asc} et on tape la fonction {\tt Enleve2}:
+\begin{verbatim}
+Enleve2(chaine,ch):={
+local L,l:=length(chaine)-1;
+L:=remove(x->(x>ord(ch)),asc(chaine));
+return char(L);
+}:;
+\end{verbatim}
 Puis on tape :
-\begin{center}{\tt  char(ord(["b","r","c","d","b","r"]))}\end{center}
+\begin{center}{\tt Enleve1("manitou","m")}\end{center}
+On obtient :
+\begin{center}{\tt  "mai"}\end{center}
+Ou on tape :
+\begin{center}{\tt Enleve2("manitou","m") )}\end{center}
+On obtient :
+\begin{center}{\tt "mai"}\end{center}
+{\bf Autre exemple} : enlever tous les "a" d'une cha\^{\i}ne.
+On tape :\\
+\begin{center}{\tt char(remove(ord("a"),asc("abracadabra"))}\end{center}
 On obtient :
 \begin{center}{\tt "brcdbr"}\end{center}
 
@@ -17214,6 +17668,34 @@ On tape :
 \begin{center}{\tt newList(3)}\end{center}
 On obtient :
 \begin{center}{\tt   [0,0,0]}\end{center}
+
+\subsection{Faire une liste d'entiers : {\tt range}}\index{range}
+\noindent{\tt range} a 1, 2 ou 3 arguments :\\
+\begin{enumerate}
+\item un entier {\tt n}\\
+{\tt range(n)} renvoie la liste {\tt [0,..,n-1]}\\
+\item 2 entiers {\tt a} et {\tt b}\\
+{\tt range(a,b)} renvoie la liste {\tt [a,a+1,..,b[}\\  
+\item 3 entiers {\tt a} {\tt b} et {\tt p}\\
+{\tt range(a,b,p)} renvoie la liste {\tt [a,a+p,a+2p,..,b[}\\  
+{\tt p} est le pas qui vaut par d\'efaut 1.
+\end{enumerate}
+On tape :
+\begin{center}{\tt range(5)}\end{center}
+On obtient :
+\begin{center}{\tt [0,1,2,3,4]}\end{center}
+On tape :
+\begin{center}{\tt range(4,10)}\end{center}
+On obtient :
+\begin{center}{\tt [4,5,6,7,8,9]}\end{center}
+On tape :
+\begin{center}{\tt range(10,4,-1)}\end{center}
+On obtient :
+\begin{center}{\tt [10,9,8,7,8,5]}\end{center}
+On tape :
+\begin{center}{\tt range(4,13,2)}\end{center}
+On obtient :
+\begin{center}{\tt [4,6,8,10,12]}\end{center}
 
 \subsection{Faire une liste avec une fonction : {\tt makelist}}\index{makelist}
 \noindent{\tt makelist} fabrique une liste \`a l'aide d'une fonction, 
@@ -18077,13 +18559,27 @@ On a alors acc\'es :
 \`a ses lignes, par exemple {\tt A[0]} renvoie {\tt [1,2,6]}\\
 \`a ses colonnes, par exemple {\tt A[0..2,1]} renvoie {\tt [2,4,0]}\\
 On peut aussi changer la valeurs d'un de ses \'el\'ements, par exemple :\\
-{\tt A[0,1]:=5} 
+{\tt A[0,1]:=5}\\ 
 Ainsi {\tt A} est la matrice {\tt [[1,5,6],[3,4,8],[1,0,1]]}\\ 
 On a alors acc\'es \`a des sous-matrices, par exemple :\\ 
-{\tt A[1..2]}  renvoie {\tt [[3,4,8],[1,0,1]]}
-{\tt A[0..2,1..2]}  renvoie {\tt [[2,6],[4,8],[0,1]]}
-{\tt A[0..1,1..2]}  renvoie {\tt [[2,6],[4,8]]}
-
+{\tt A[1..2]}  renvoie {\tt [[3,4,8],[1,0,1]]}\\
+{\tt A[0..2,1..2]}  renvoie {\tt [[2,6],[4,8],[0,1]]}\\
+{\tt A[0..1,1..2]}  renvoie {\tt [[2,6],[4,8]]}\\
+{\bf Remarque} On peut utiliser -1 (resp -2) comme indice du dernier (resp avant-dernier) \'el\'ement.\\
+On tape :\\
+{\tt A:=[[1,2,6],[3,4,8],[1,0,1]]}\\
+{\tt A[-1]}\\
+On obtient :\\
+{\tt [1,0,1]}\\
+On tape :\\
+{\tt A[1,-1]}\\
+On obtient :\\
+{\tt 8}\\
+On tape :\\
+{\tt A[1,-1]:=5}\\
+{\tt A[-1]:=[7,5,9]}\\
+On obtient :\\
+{\tt A:=[[1,2,6],[3,4,8],[7,5,9]]}
 \subsection{Cr\'eation par multi-affectation}
 La multi-affectation permet faire comme son nom l'indique plusieurs 
 affectation on une seule fois.\\
@@ -18750,7 +19246,7 @@ On obtient :
 
 
 
-\subsection{Supprimer des lignes ou des colonnes d'une matrice : \\{\tt delrows delcols}}\index{delrows}\index{delcols}
+\subsection{Supprimer des lignes ou des colonnes d'une matrice : {\tt delrows delcols}}\index{delrows}\index{delcols}
 \noindent{\tt delrows} (resp {\tt delcols}) permet de supprimer une ou 
 plusieurs lignes (resp colonnes) d'une matrice.\\
 {\tt delrows} (resp {\tt delcols}) a 2 arguments : une matrice $A$, et 
@@ -19043,7 +19539,7 @@ On tape :
 On obtient :
 \begin{center}{\tt  [0,1,0]}\end{center}
 
-\subsection{Compter les \'el\'ements plus petits qu'une valeur donn\'ee :\\ {\tt count\_inf}}\index{count\_inf}\index{row@{\sl row}}\index{col@{\sl col}}
+\subsection{Compter les \'el\'ements plus petits qu'une valeur donn\'ee : {\tt count\_inf}}\index{count\_inf}\index{row@{\sl row}}\index{col@{\sl col}}
 \noindent{\tt count\_inf} a deux ou trois param\`etres : une nombre et une 
 matrice (ou liste) r\'eelle et \'eventuellement un param\`etre 
 optionnel {\tt row} ou {\tt col}.\\
@@ -19089,7 +19585,7 @@ On tape :
 On obtient :
 \begin{center}{\tt 0,0,2]}\end{center}
 
-\subsection{Fonctions utiles pour les colonnes d'une matrice : {\tt mean} ou {\tt  moyenne}, {\tt stddev} ou {\tt ecart\_type}, {\tt variance}, {\tt median}, {\tt quantile}, {\tt quartiles}, {\tt boxwhisker} ou \\{\tt moustache}}\label{sec:statmat}
+\subsection{Fonctions utiles pour les colonnes d'une matrice : {\tt mean} ou {\tt  moyenne}, {\tt stddev} ou {\tt ecart\_type}, {\tt variance}, {\tt median}, {\tt quantile}, {\tt quartiles}, {\tt boxwhisker} ou {\tt moustache}}\label{sec:statmat}
 \index{mean} \index{moyenne}\index{stddev}\index{ecart\_type}\index{variance}\index{median}\index{quartiles}\index{quantile}\index{moustache}\index{boxwhisker}
 Voir aussi \ref{sec:statlist} and \ref{sec:stat}.\\
 Fonctions utiles pour les statistiques dont les donn'ees sont les 
@@ -19532,7 +20028,8 @@ seule variable pour qu'elles soient  sous la forme $x_k \geq 0$, puis \`a
 d'avoir comme contraintes : toutes les composantes des
 \'el\'ements du simplexe sont positives.
 Par exemple, si on part du probl\`eme :
-\[ \mbox{min}(2x+y-z+4)  \mbox{ lorsque }
+\begin{equation}\label{eq:lpexample}
+\mbox{min}(2x+y-z+4)  \quad   \mbox{ lorsque }
 \left\{
 \begin{array}{rcl}
 x & \leq & 1 \\
@@ -19542,7 +20039,7 @@ x+3y-z & = & 2 \\
 -x+y & \leq & 5
 \end{array} 
 \right.
-\]
+\end{equation}
 on pose $x=1-X$, $y=Y+2$, $z=5-X+3Y$
 le  probl\`eme devient
 chercher le minimum de $(-2X+Y-(5-X+3Y)+8)$ lorsque
@@ -19856,7 +20353,7 @@ on n'a pas de sous-matrice identit\'e dans la formulation matricielle
 du probl\`eme et il n'y a pas d'op\'eration de lignes \'evidente
 qui permette de le faire).
 
-On va se ramener \`a des probl\`emes sous forme ``canonique'' par
+On va se ramener \`a des probl\`emes sous forme "canonique" par
 la m\'ethode dite en 2 phases. Soit $m$ le nombre de lignes de $A$
 (nombre de conditions dans $Ax=b$). On ajoute des variables
 artificielles $y_1,...,y_m$ et on maximise
@@ -19920,7 +20417,586 @@ $t=2$ et $y=1$, les autres nuls.
 Pour plus de d\'etails, chercher sur google \verb|simplex algorithm| 
 ou dans une biblioth\`eque Ciarlet ``Introduction \`a l'analyse
 matricielle et \`a l'optimisation''.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ù
+{\bf Back to the general case.}\\
+The standard form of a linear programming problem is similar
+to the simplest case above, but with $Ax=b$ (instead of $Ax\leq b$)
+under the conditions $x\geq 0$. We may further assume that $b\geq 0$
+(if not, one can change the sign of the corresponding line).
+\begin{itemize}
+\item The first problem is to find an $x$ in the $Ax=b, x\geq 0$ domain.
+Let $m$ be the number of lines of $A$. Add artificial variables
+$y_1,...,y_m$ and maximize
+$-\sum y_i$ under the conditions $Ax=b, x \geq 0, y \geq 0$
+starting with initial value $0$ for $x$ variables
+and $y=b$
+(to solve this with {\tt Xcas}, call \verb|simplex_reduce| with
+a single matrix argument obtained by augmenting $A$ by the
+identity, $b$ unchanged and an artificial
+$c$ with 0 under $A$ and 1 under the identity).
+If the maximum exists and is 0, the identity submatrix above the last
+column corresponds to an $x$ solution, we may forget the artificial
+variables (they are 0 if the maximum is 0).
+\item Now we make a second call to \verb|simplex_reduce|
+with the original $c$ and the value of $x$ we found in the domain.
+\item
+Example~: find the minimum of $2x+3y-z+t$ with
+$x,y,z,t\geq 0$ and~:
+\[ \left\{ \begin{array}{rcl}
+-x-y+t&=&1\\
+y-z+t&=&3
+\end{array}
+\right. \]
+This is equivalent to find the opposite of the maximum of $-(2x+3y-z+t)$.
+Let us add two artificial variables $y_1$ and $y_2$,
+\begin{verbatim}
+simplex_reduce([[-1,-1,0,1,1,0,1],
+[0,1,-1,1,0,1,3],
+[0,0,0,0,1,1,0]])
+\end{verbatim}
+Output: optimum=0, artificial variables=0, and the matrix
+\[
+\left(\begin{array}{ccccccc}
+-1/2 & 0 & -1/2 & 1 & 1/2 & 1/2 & 2 \\
+1/2 & 1 & -1/2 & 0 & -1/2 & 1/2 & 1 \\
+0 & 0 & 0 & 0 & 1 & 1 & 0
+\end{array}\right)
+\]
+Columns 2 and 4 are the columns of the identity (in lines 1 and 2).
+Hence $x=(0,1,0,2)$ is an initial point in the domain.
+We are reduced to solve the initial problem, after replacing the
+lines of $Ax=b$ by the two first lines of the answer above,
+removing the last columns corresponding to the artificial variables.
+We add $c.x$ as last line
+\begin{verbatim}
+simplex_reduce([[-1/2,0,-1/2,1,2],
+[1/2,1,-1/2,0,1],[2,3,-1,1,0]])
+\end{verbatim}
+Output: maximum=-5, hence the minimum of the opposite is 5,
+obtained for $(0,1,0,2)$, after replacement
+$x=0$, $y=1$, $z=0$ and $t=2$.
+\end{itemize}
+
+Pour plus de details, chercher sur google : \verb|algorithme du simplex|.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{R\'esolution d'un probl\`eme d'optimisation lin\'eaire : {\tt lpsolve}}\index{lpsolve|textbf}
+{\tt lpsolve} a au plus 4 arguments qui sont dans l'ordre :
+\begin{itemize}
+\item {\tt obj} : expression symbolique representant la fonction objectif,
+\item {\tt constr} (optionnel) : liste des contraintes lin\'eaires qui sont soit des  \'equalit\'es, soit des in\'eequalit\'es, soit des expressions born\'ees
+d\'efinies par {\tt expr=a..b},
+\item {\tt bd} (optionnel) : s\'equence d'expressions du  type {\tt var=a..b} 
+specifiant que la variable {\tt var} est comprise entre {\tt a} et  {\tt b},
+\item {\tt opts} (optionnel) : s\'equence de  param\`etres {\tt option=value} 
+pour le solver, o\`u {\tt option} est choisi parmi {\tt assume}, {\tt lp\_maximize}, {\tt lp\_variables}, {\tt lp\_integervariables}, 
+{\tt lp\_binaryvariables} or {\tt lp\_depthlimit}.
+\end{itemize}
+{\tt lpsolve} r\'esout un probl\`eme d'optimisation lin\'eaire de fonction 
+objectif {\tt obj} sous contraintes optionnelles {\tt constr}.\\
+{\tt lpsolve} trouve le maximum ou le minimum d'une fonction lin\'eaire de 
+plusieurs variables  assuj\'etit \`a v\'erifier des contraintes qui sont 
+\'egalit\'es ou des in\'egalit\'es lin\'eaires mixed integer problems
+
+ La valeur renvoy\'ee est de la forme {\tt [optimum,soln]} o\`u {\tt optimum} is
+ est la valeu du  minimum/maximum de la fonction objectif et {\tt soln} est la 
+liste des coordonn\'ees correspondant au point pour lequel la valeur optimale
+est atteinte. Si il n'y a pas de solution, If there is no feasible solution,une
+liste vide est is retourn\'ee. Lorsque la the fonction objectif n'est pas 
+born\'ee, {\tt optimum} est {\tt +infinity} (pour les probl\`emes de 
+maximisation) ou {\tt -infinity} (pour les probl\`emes de minimisation), {\tt soln} est g\'en\'eralement sans signification.
+
+If {\tt obj} is given as constant (for example, zero) then only a feasible point is returned as a list, if one exists. If the problem is infeasible, an empty list is returned. This may be used as a test to check whether a set of linear constraints is feasible or not.
+
+The given objective function is minimized by default. To maximize it, include the option {\tt lp\_maximize=true} or simply {\tt lp\_maximize}.
+
+By default, all variables are considered continuous and unrestricted in sign.
+
+The solver combines the two-phase simplex method and the dual simplex method to find the optimal solution.
+
+\subsubsection{Probl\`emes \`a variables continues}
+Par exemple, pour r\'esoudre le problem d\'efinit  en~\eqref{eq:lpexample}, 
+On tape :
+\begin{center}
+{\tt constr:=[x<=1,y>=2,x+3y-z=2,3x-y+z<=8,-x+y<=5];}\\
+{\tt lpsolve(2x+y-z+4,constr)}
+\end{center}
+On obtient :
+\begin{center}
+\tt [-4,[x=0,y=5,z=13]]
+\end{center}
+Donc, le minimum de $f(x,y,z)=2\,x+y-z+4 $ est egal \`a $-4$ lorsqu'on impose 
+comme contraintes $x leq 1,y geq 2,x+3y-z=2,3x-y+z leq 8,-x+y leq 5 $.\\
+La valeur minimum est atteinte au point $(x,y,z)=(0,5,13)$.
+
+Les Contraintes peuvent aussi s'\'ecrire {\tt expr=a..b} pour des expressions
+lin\'eaires et born\'ees.\\
+On tape :
+\begin{center}
+{\tt lpsolve(x+2y+3z,[x+y=1..5,y+z+1=2..4,x>=0,y>=0])}
+\end{center}
+On obtient :
+\begin{center}
+{\tt [-2,[x=0,y=5,z=-4]]}
+\end{center}
+
+On utilise l'option {\tt assume=lp\_nonnegative}comme 3i\`eme argument pour 
+sp\'ecifier que toutes les variables sont nonnegatives : ce qui est plus 
+simple que d'entrer explicitement des contraintes nonnegatives.\\
+On tape :
+\begin{center}
+{\tt lpsolve(-x-y,[y<=3x+1/2,y<=-5x+2],assume=lp\_nonnegative)}
+\end{center}
+On obtient :
+\begin{center}
+{\tt [-5/4,[x=3/16,y=17/16]]}
+\end{center}
+
+Les bornes peuvent \^etre ajout\'ees s\'epar\'ement pour certaines variables.\\ 
+On les met alors en 3i\`eme argument.
+On tape :
+\begin{center}
+{\tt constr:=[5x-10y<=20,2z-3y=6,-x+3y<=3];}\\
+{\tt lpsolve(-6x+4y+z,constr,x=1..20,y=0..inf)}
+\end{center}
+On obtient :
+\begin{center}
+{\tt [-133/2,[x=18,y=7,z=27/2]]}
+\end{center}
+
+\subsubsection{Integer programming}
+Use the {\tt assume=integer} or {\tt assume=lp\_integer} option to solve integer
+ programming problems. The function {\tt lpsolve} uses branch and bound method 
+in such cases. The total number of investigated nodes is printed out before the function returns. To limit branch and bound tree depth, use the option : 
+\begin{center}
+{\tt lp\_depthlimit=<positive integer>}
+\end{center} 
+In that case optimality of the solution can't be guaranteed.
+Dans ce cas optimisation de la solution n'est pas garantie.\\
+On tape :
+\begin{center}
+{\tt lpsolve(-5x-7y,[7x+y<=35,-x+3y<=6],assume=integer)}
+\end{center}
+On obtient :
+\begin{center}
+{\tt [-41,[x=4,y=3]]}
+\end{center}
+
+On utilise l'option {\tt assume=lp\_binary} pour sp\'ecifier que toutes les 
+variables are binaires, i.e.~les seules valeurs autoris\'ees sont 0 et 1.\\
+G\'en\'eralement, les variables binaires representent {\tt vrai} et {\tt faux},
+ce qui est compr\'ehensible en logique.
+On tape :
+\begin{center}
+{\tt lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4<=14],assume=lp\_binary,lp\_maximize)}
+\end{center}
+On obtient :
+\begin{center}
+{\tt [21,[x1=0,x2=1,x3=1,x4=1]]}
+\end{center}
+
+Options 
+\begin{center}
+{\tt lp\_integervariables=<list of integer variables>}
+\end{center} 
+and 
+\begin{center}
+{\tt lp\_binaryvariables=<list of binary variables>}
+\end{center} 
+are used for specifying mixed integer/binary programming problems. Also, the 
+\begin{center}
+{\tt lp\_variables=<list of continuous variables>}
+\end{center} 
+option may be used, which overrides integer and binary settings. For example, a linear programming problem with mostly integer variables may be specified using the option {\tt assume=integer} and specifying continuous variables with {\tt lp\_variables}, which overrides the global integer setting.
+
+On tape :
+\begin{center}
+{\tt lpsolve(x+3y+3z,[x+3y+2z<=7,2x+2y+z<=11],}\\
+{\tt assume=lp\_nonnegative,lp\_maximize,}
+{\tt lp\_integervariables=[x,z])}
+\end{center}
+On obtient :
+\begin{center}
+{\tt [10,[x=0,y=1/3,z=3]]}
+\end{center}
+
+Use the {\tt assume=lp\_nonnegint} or {\tt assume=nonnegint} option to get nonnegative integer values.
+
+On tape :
+\begin{center}
+{\tt lpsolve(2x+5y,[3x-y=1,x-y<=5],assume=nonnegint)}
+\end{center}
+On obtient :
+\begin{center}
+{\tt [12,[x=1,y=2]]}
+\end{center}
+
+\subsubsection{Entering linear programs in matrix form}
+The function {\tt lpsolve} supports entering linear programming problems in matrix form, which is convenient for problems with relatively large number of variables and/or constraints.
+
+To enter a problem in matrix form, the parameter {\tt obj} must be a vector of coefficients $ \mathbf{c} $ and {\tt constr}, which is mandatory this case, must be a list $ [\mathbf{A},\mathbf{b},\mathbf{A}_{\mathrm eq},\mathbf{b}_{\mathrm eq}] $, where $ \mathbf{A},\mathbf{A}_{\mathrm eq} $ are matrices and $ \mathbf{b},\mathbf{b}_{\mathrm eq} $ are vectors of real numbers. Without any other parameters, this minimizes $ \mathbf{c}^T\,\mathbf{x} $ under conditions $ \mathbf{A}\,\mathbf{x}\leq\mathbf{b} $ and $ \mathbf{A}_{\mathrm eq}\,\mathbf{x}=\mathbf{b}_{\mathrm eq} $. If a problem does not contain equality constraints, parameters $ \mathbf{A}_{\mathrm eq} $ and $ \mathbf{b}_{\mathrm eq} $ may be omitted. For a problem that does not contain inequality constraints, empty lists must be passed as $ \mathbf{A} $ and $ \mathbf{b} $. Also, {\tt constr} may be an empty list.
+
+The parameter {\tt bd} is entered as a list of two vectors $ \mathbf{b}_l $ and $ \mathbf{b}_u $ of the same length as the vector $ \mathbf{c} $ such that $ \mathbf{b}_l\leq\mathbf{x}\leq\mathbf{b}_u $. For unbounded variables use {\tt +infinity} or {\tt -infinity}.
+
+When specifying mixed problems in matrix form, variables are entered as the corresponding indexes, which are 1-based, i.e.~the first variable has index 1, the second variable has index 2 and so on. Other options for {\tt lpsolve} are passed to a problem in matrix form in the same way as if it was in symbolic form.
+
+\noindent Input :
+\begin{center}
+{\tt c:=[-2,1];A:=[[-1,1],[1,1],[-1,0],[0,-1]];}\\
+{\tt b:=[3,5,0,0];lpsolve(c,[A,b])}
+\end{center}
+Output :
+\begin{center}
+{\tt [-10,[5,0]]}
+\end{center}
+Input :
+\begin{center}
+{\tt c:=[-2,5,-3];bl:=[2,3,1];bu:=[6,10,3.5];}\\
+{\tt lpsolve(c,[],[bl,bu])}
+\end{center}
+Output :
+\begin{center}
+{\tt [-7.5,[6.0,3.0,3.5]]}
+\end{center}
+Input :
+\begin{center}
+{\tt c:=[4,5];Aeq:=[[-1,1.5],[-3,2]];beq:=[2,3];}\\
+{\tt lpsolve(c,[[],[],Aeq,beq])}
+\end{center}
+Output :
+\begin{center}
+{\tt [5.2,[-0.2,1.2]]}
+\end{center}
+Input :
+\begin{center}
+{\tt c:=[2,-3,-5];A:=[[-5,4,-5],[2,5,7],[2,-3,4]];}\\
+{\tt b:=[3,1,-2];lpsolve(c,[A,b],lp\_integervariables=[1,3])}
+\end{center}
+Output :
+\begin{center}
+{\tt [19,[1,3/4,-1]]}
+\end{center}
+
+\subsection{Solving transportation problems: {\tt tpsolve}}\index{tpsolve|textbf}
+The objective of a transportation problem is to minimize the cost of distributing a product from $ m $ sources to $ n $ destinations. It is determined by three parameters :
+\begin{itemize}
+\item supply vector $ \mathbf{s}=(s_1,s_2,\dots,s_m) $, where $ s_k\in\mathbb{Z} $, $ s_k>0 $ is the maximum number of units that can be delivered from $ k $-th source for $ k=1,2,\dots,m $,
+\item demand vector $ \mathbf{d}=(d_1,d_2,\dots,d_n) $, where $ d_k\in\mathbb{Z} $, $ d_k>0 $ is the minimum number of units required by $ k $-th destination for $ k=1,2,\dots,n $,
+\item cost matrix $ \mathbf{C}=[c_{ij}]_{m\times n} $, where $ c_{ij}\in\mathbb{R} $, $ c_{ij}\geq 0 $ is the cost of transporting one unit of product from $ i $-th source to $ j $-th destination for $ i=1,2,\dots,m $ and $ j=1,2,\dots,n $.
+\end{itemize}
+The optimal solution is represented as matrix $ \mathbf{X}^*=[x^*_{ij}]_{m\times n} $, where $ x^*_{ij} $ is number of units that must be transported from $ i $-th source to $ j $-th destination for $ i=1,2,\dots,m $ and $ j=1,2,\dots,n $.
+
+Function {\tt tpsolve} accepts three arguments: supply vector, demand vector and cost matrix, in that order. It returns a sequence of two elements: total (minimal) cost of transportation $ c=\sum_{i=1}^m\sum_{j=1}^nc_{ij}\,x^*_{ij} $ and the optimal solution $ \mathbf{X}^* $.
+
+\noindent Input :
+\begin{center}
+{\tt s:=[12,17,11];d:=[10,10,10,10];}\\
+{\tt C:=[[50,75,30,45],[65,80,40,60],[40,70,50,55]];}\\
+{\tt tpsolve(s,d,C)}
+\end{center}
+Output :
+\begin{center}
+{\tt 2020,[[0,0,2,10],[0,9,8,0],[10,1,0,0]]}
+\end{center}
+
+If total supply and total demand are equal, i.e.~if $ \sum_{i=1}^ms_i=\sum_{j=1}^nd_j $ holds, transportation problem is said to be \emph{closed} or \emph{balanced}. If total supply exceeds total demand or vice versa, the problem is \emph{unbalanced}. Such cases are handled by adding a dummy demand resp.~supply point to cover the excess and setting cost of ``transportation'' from resp.~to dummy point to zero. In case of unbalanced problem, function {\tt tpsolve} adds dummy supply/demand point automatically.
+
+\noindent Input :
+\begin{center}
+{\tt s:=[7,10,8,8,9,6];d:=[9,6,12,8,10];}\\
+{\tt C:=[[36,40,32,43,29],[28,27,29,40,38],[34,35,41,29,31],}\\
+{\tt [41,42,35,27,36],[25,28,40,34,38],[31,30,43,38,40]];}\\
+{\tt tpsolve(s,d,C)}
+\end{center}
+Output :
+\begin{center}
+{\tt 1275,[[0,0,2,0,5],[0,0,10,0,0],[0,0,0,0,5],}\\
+{\tt [0,0,0,8,0],[9,0,0,0,0],[0,6,0,0,0]]}
+\end{center}
+
+Sometimes it is desirable to forbid transportation on certain routes. That is usually achieved by setting very high cost to these routes, represented by symbol $ M $. If {\tt tpsolve} detects a symbol in cost matrix, it interprets it as $ M $ and assigns 100 times larger cost than the largest numeric element of $ \mathbf{C} $ to the corresponding routes, which forces the algorithm to avoid them.
+
+\noindent Input :
+\begin{center}
+{\tt s:=[95,70,165,165];d:=[195,150,30,45,75];}\\
+{\tt C:=[[15,M,45,M,0],[12,40,M,M,0],}\\
+{\tt [0,15,25,25,0],[M,0,M,12,0]]}\\
+{\tt tpsolve(s,d,C)}
+\end{center}
+Output :
+\begin{center}
+{\tt 2820,[[20,0,0,0,75],[70,0,0,0,0],}\\
+{\tt [105,0,30,30,0],[0,150,0,15,0]]}
+\end{center}
+
+\section{Nonlinear optimization}
+
+\subsection{Global extrema: {\tt minimize maximize}}\index{minimize|textbf}\index{maximize|textbf}
+
+The function {\tt minimize} takes four arguments :
+\begin{itemize}
+\item {\tt obj} : univariate or multivariate expression
+\item {\tt constr} (optional) : list of equality and inequality constraints
+\item {\tt vars} : list of variables
+\item {\tt location} (optional) : option keyword which may be {\tt coordinates}, {\tt locus} or {\tt point}
+\end{itemize}
+The expression {\tt obj} is minimized on the domain specified by constraints and/or bounding variables, which can be done as specifying e.g.~{\tt x=a..b} in {\tt vars}. The domain must be closed and bounded and {\tt obj} must be continuous in every point of it. Else, the final result may be incorrect or meaningless.
+
+Constraints may be given as equalities or inequalities, but also as expressions which are assumed to be equal to zero. If there is only one constraint, the list delimiters may be dropped. The same applies to the specification of variables.
+
+{\tt minimize} returns minimal value. If it could not be obtained, it returns {\tt undef}. If {\tt location} is specified, the list of points where the minimum is achieved is also returned as the second member in a sequence. Keywords {\tt locus}, {\tt coordinates} and {\tt point} all have the same effect.
+
+The function {\tt maximize} takes the same parameters as {\tt minimize}. The difference is that it computes global maximum of {\tt obj} on the specified domain.
+
+\subsubsection{Examples}
+Input :
+\begin{center}
+{\tt minimize(sin(x),[x=0..4])}
+\end{center}
+Output :
+\begin{center}
+{\tt sin(4)}
+\end{center}
+Input :
+\begin{center}
+{\tt minimize(asin(x),x=-1..1)}
+\end{center}
+Output :
+\begin{center}
+{\tt -pi/2}
+\end{center}
+Input :
+\begin{center}
+{\tt minimize(x\verb|^|4-x\verb|^|2,x=-3..3,locus)}
+\end{center}
+Output :
+\begin{center}
+{\tt -1/4,[-sqrt(2)/2]}
+\end{center}
+Input :
+\begin{center}
+{\tt minimize(x-abs(x),x=-1..1)}
+\end{center}
+Output :
+\begin{center}
+{\tt -2}
+\end{center}
+Input :
+\begin{center}
+{\tt minimize(when(x==0,0,exp(-1/x\verb|^|2)),x=-1..1)}
+\end{center}
+Output :
+\begin{center}
+{\tt 0}
+\end{center}
+Input :
+\begin{center}
+{\tt minimize(sin(x)+cos(x),x=0..20,coordinates)}
+\end{center}
+Output :
+\begin{center}
+{\tt -sqrt(2),[5*pi/4,13*pi/4,21*pi/4]}
+\end{center}
+Input :
+\begin{center}
+{\tt minimize(x\verb|^|2-3x+y\verb|^|2+3y+3,[x=2..4,y=-4..-2],point)}
+\end{center}
+Output :
+\begin{center}
+{\tt -1,[[2,-2]]}
+\end{center}
+Input :
+\begin{center}
+{\tt obj:=sqrt(x\verb|^|2+y\verb|^|2)-z;}\\
+{\tt constr:=[x\verb|^|2+y\verb|^|2<=16,x+y+z=10];}\\
+{\tt minimize(obj,constr,[x,y,z])}
+\end{center}
+Output :
+\begin{center}
+{\tt -4*sqrt(2)-6}
+\end{center}
+Input :
+\begin{center}
+{\tt minimize(x\verb|^|2*(y+1)-2y,[y<=2,sqrt(1+x\verb|^|2)<=y],[x,y])}
+\end{center}
+Output :
+\begin{center}
+{\tt -4}
+\end{center}
+Input :
+\begin{center}
+{\tt maximize(cos(x),x=1..3)}
+\end{center}
+Output :
+\begin{center}
+{\tt cos(1)}
+\end{center}
+Input :
+\begin{center}
+{\tt obj:=piecewise(x<=-2,x+6,x<=1,x\verb|^|2,3/2-x/2);}
+{\tt maximize(obj,x=-3..2)}
+\end{center}
+Output :
+\begin{center}
+{\tt 4}
+\end{center}
+Input :
+\begin{center}
+{\tt maximize(x*y*z,x\verb|^|2+2*y\verb|^|2+3*z\verb|^|2<=1,[x,y,z])}
+\end{center}
+Output :
+\begin{center}
+{\tt sqrt(2)/18}
+\end{center}
+Input :
+\begin{center}
+{\tt maximize(x*y,[x+y\verb|^|2<=2,x>=0,y>=0],[x,y],locus)}
+\end{center}
+Output :
+\begin{center}
+{\tt 4*sqrt(6)/9,[[4/3,sqrt(6)/3]]}
+\end{center}
+Input :
+\begin{center}
+{\tt maximize(y\verb|^|2-x\verb|^|2*y,y<=x,[x=0..2,y=0..2])}
+\end{center}
+Output :
+\begin{center}
+{\tt 4/27}
+\end{center}
+Input :
+\begin{center}
+{\tt assume(a>0);}\\
+{\tt maximize(x\verb|^|2*y\verb|^|2*z\verb|^|2,x\verb|^|2+y\verb|^|2+z\verb|^|2=a\verb|^|2,[x,y,z])}
+\end{center}
+Output :
+\begin{center}
+{\tt a\verb|^|6/27}
+\end{center}
+
+\subsection{Local extrema: {\tt extrema}}\index{extrema|textbf}
+
+Local extrema of a univariate or multivariate differentiable function under equality constraints can be obtained by using function {\tt extrema} which takes four arguments :
+\begin{itemize}
+\item {\tt expr} : differentiable expression
+\item {\tt constr} (optional) : list of equality constraints
+\item {\tt vars} : list of variables
+\item {\tt order\_size=<positive integer>} (optional) : upper bound for the order of derivatives examined in the process (defaults to 12)
+\end{itemize}
+Function returns sequence of two lists of points: local minima and maxima, respectively. Saddle and unclassified points are reported in the message area. Also, information about possible (non)strict extrema is printed out.
+
+Number of constraints must be strictly less than number of variables. A single constraint/variable can be specified without list delimiters. A constraint may be specified as an equality or expression which is assumed to be equal to zero.
+
+Variables may be specified with bounds, e.g.~{\tt x=a..b}. That is interpreted as $ x\in(a,b) $. For semi-bounded variables use {\tt -infinity} for $ a $ or {\tt +infinity} for $ b $. Also, to use numeric method to find critical point one may specify {\tt vars} as {\tt [x1=a1,x2=a2,...,xn=an]}, where $ (a_1,a_2,\dots,a_n) $ is an initial point for the algorithm.
+
+If {\tt order\_size=<n>} is specified as the fourth argument, derivatives up to order $ n $ are inspected to find critical points and classify them. For {\tt order\_size=1} the function returns a single list containing all critical points found. The default is $ n=12 $.
+
+\subsubsection{Examples}
+Input :
+\begin{center}
+{\tt extrema(-2*cos(x)-cos(x)\verb|^|2,x)}
+\end{center}
+Output :
+\begin{center}
+{\tt [0],[pi]}
+\end{center}
+Input :
+\begin{center}
+{\tt extrema(x/2-2*sin(x/2),x=-12..12)}
+\end{center}
+Output :
+\begin{center}
+{\tt [2*pi/3,-10*pi/3],[10*pi/3,-2*pi/3]}
+\end{center}
+Input :
+\begin{center}
+{\tt assume(a>=0);extrema(x\verb|^|2+a*x,x)}
+\end{center}
+Output :
+\begin{center}
+{\tt [-a/2],[]}
+\end{center}
+Input :
+\begin{center}
+{\tt extrema(exp(x\verb|^|2-2x)*ln(x)*ln(1-x),x=0.5)}
+\end{center}
+Output :
+\begin{center}
+{\tt [],[0.277769149124]}
+\end{center}
+\begin{center}
+{\tt extrema(x\verb|^|3-2x*y+3y\verb|^|4,[x,y])}
+\end{center}
+Output :
+\begin{center}
+{\tt [[12\verb|^|(1/5)/3,(12\verb|^|(1/5))\verb|^|2/6]],[]}
+\end{center}
+Input :
+\begin{center}
+{\tt assume(a>0);extrema(x/a\verb|^|2+a*y\verb|^|2,x+y=a,[x,y])}
+\end{center}
+Output :
+\begin{center}
+{\tt [[(2*a\verb|^|4-1)/(2*a\verb|^|3),1/(2*a\verb|^|3)]],[]}
+\end{center}
+Input :
+\begin{center}
+{\tt extrema(x\verb|^|2+y\verb|^|2,x*y=1,[x=0..inf,y=0..inf])}
+\end{center}
+Output :
+\begin{center}
+{\tt [[1,1]],[]}
+\end{center}
+Input :
+\begin{center}
+{\tt extrema(x2\verb|^|4-x1\verb|^|4-x2\verb|^|8+x1\verb|^|10,[x1,x2])}
+\end{center}
+Output :
+\begin{center}
+{\tt [[6250\verb|^|(1/6)/5,0],[-6250\verb|^|(1/6)/5,0]],[]}
+\end{center}
+Input :
+\begin{center}
+{\tt extrema(x*y*z,x+y+z=1,[x,y,z],order\_size=1)}
+\end{center}
+Output :
+\begin{center}
+{\tt [[1,0,0],[0,1,0],[0,0,1],[1/3,1/3,1/3]]}
+\end{center}
+
+\subsection{Minimax polynomial approximation: {\tt minimax}}\index{minimax|textbf}
+
+The function {\tt minimax} is called by entering :
+\begin{center}
+{\tt minimax(expr,var=a..b,n,[limit=m])}
+\end{center}
+where {\tt expr} is an univariate expression (e.g.~$ f(x) $) to approximate, {\tt var} is a variable (e.g.~$ x $), $ [a,b]\subset\mathbb{R} $ and $ n\in\mathbb{N} $. Expression {\tt expr} must be continuous on $ [a,b] $. The function returns minimax polynomial (e.g.~$ p(x) $) of degree $ n $ or lower that approximates {\tt expr} on $ [a,b] $. The approximation is found by applying Remez algorithm.
+
+If the fourth argument is specified, $ m $ is used to limit the number of iterations of the algorithm. It is unlimited by default.
+
+The maximum error of the approximation $ p(x) $, i.e.~$ \max_{a\leq x\leq b}|f(x)-p(x)| $, is printed in the message area.
+
+\noindent Input :
+\begin{center}
+{\tt minimax(sin(x),x=0..2*pi,10)}
+\end{center}
+Output :
+\begin{center}
+{\tt 5.8514210172e-06+0.999777263385*x+0.00140015265723*x\verb|^|2}\\
+{\tt -0.170089663733*x\verb|^|3+0.0042684304696*x\verb|^|4+}\\
+{\tt 0.00525794766407*x\verb|^|5+0.00135760214958*x\verb|^|6}\\
+{\tt -0.000570502074548*x\verb|^|7+6.07297119422e-05*x\verb|^|8}\\
+{\tt -2.14787414001e-06*x\verb|^|9-2.97767481643e-15*x\verb|^|10}
+\end{center}
+The maximum error of this approximation is $ 5.85234008632\times 10^{-6} $.
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%ùù
 \section{Les diff\'erentes norme d'une matrice}\label{sec:normat}
 Voir aussi \ref{sec:normvect} pour les diff\'erentes norme d'un vecteur.\\
 \subsection{Norme de Frobenius d'une matrice : {\tt frobenius\_norm}}\index{frobenius\_norm|textbf}\label{sec:fnormm}
@@ -19936,7 +21012,7 @@ On obtient :
 \begin{center}{\tt sqrt(217)}\end{center}
 En effet : $\sqrt{1+4+9+9+81+36+16+25+36}=\sqrt{217}\simeq 14.7309198627$
 
-\subsection{Norme d'une matrice avec la norme des lignes : {\tt rownorm}\\ {\tt rowNorm}}\index{rowNorm}\index{rownorm}
+\subsection{Norme d'une matrice avec la norme des lignes : {\tt rownorm} {\tt rowNorm}}\index{rowNorm}\index{rownorm}
 \noindent{\tt rownorm} (ou {\tt rowNorm}) a comme argument une matrice $A$.\\
 {\tt rownorm} (ou {\tt rowNorm}) renvoie $\max_k(\sum_j |a_{j,k}|)$ si 
 l'argument est $A=a_{j,k}$.\\
@@ -21337,7 +22413,7 @@ On obtient :
 Utiliser {\tt conique\_reduite} pour avoir l'\'equation param\'etrique de la 
 conique.
 
-\subsection{R\'eduction d'une conique : {\tt conique\_reduite\\ reduced\_conic}}\index{conique\_reduite}\index{reduced\_conic} 
+\subsection{R\'eduction d'une conique : {\tt conique\_reduite reduced\_conic}}\index{conique\_reduite}\index{reduced\_conic} 
 \noindent{\tt conique\_reduite} a un ou deux arguments : l'expression d'une 
 conique et le vecteur de composantes les variables utilis\'ees si il est 
 diff\'erent de {\tt [x,y]}.\\ 
@@ -21405,7 +22481,7 @@ On obtient :
 {\bf Remarque} : \\
 Utiliser {\tt quadrique\_reduite} pour avoir l'\'equation param\'etrique de la quadrique.\\
 
-\subsection{R\'eduction d'une quadrique : {\tt quadrique\_reduite\\ reduced\_quadric}}\index{quadrique\_reduite}\index{reduced\_quadric} 
+\subsection{R\'eduction d'une quadrique : {\tt quadrique\_reduite reduced\_quadric}}\index{quadrique\_reduite}\index{reduced\_quadric} 
 \noindent{\tt quadrique\_reduite} a  un ou deux arguments : l'expression d'une 
 quadrique et le vecteur de composantes les variables utilis\'ees si il est 
 diff\'erent de {\tt [x,y,z]}.\\ 
@@ -22094,7 +23170,7 @@ On tape  :
 On obtient :
 \begin{center}{\tt [[1,2],[2,0],[4,0]]}\end{center}
 
-\subsection{R\'esoudre un syst\`eme lin\'eaire : {\tt linsolve\\ resoudre\_systeme\_lineaire}}\index{linsolve}\index{resoudre\_systeme\_lineaire}
+\subsection{R\'esoudre un syst\`eme lin\'eaire : {\tt linsolve resoudre\_systeme\_lineaire}}\index{linsolve}\index{resoudre\_systeme\_lineaire}
 \noindent{\tt linsolve} permet de r\'esoudre un syst\`eme d'\'equations 
 lin\'eaires o\`u chaque \'equation est de la forme $Xpr = 0$ o\`u $Xpr$ est 
 une expression. Si vous avez coch\'e {\tt Pas \`a pas} dans la configuration 
@@ -23238,8 +24314,8 @@ On appelle {\bf normale principale} l'intersection du plan normal (plan
 perpendiculaire \`a la tangente $\tau$) et du plan osculateur.\\
 Soit $n$ le vecteur unitaire de la normale principale orient\'ee dans le sens 
 de la concavit\'e i.e. selon $\frac{d\tau}{ds}$
-\section{Courbure et Cercle osculateur: {\tt curvature, courbure}}\index{curvature}\index{courbure}
-\subsection{Premi\`ere formule de Frenet}
+\section{Courbure et Cercle osculateur}
+\subsection{Courbure : {\tt curvature, courbure}}\index{curvature}\index{courbure}
 On \'etudie le vecteur $\displaystyle \frac{d^2M}{ds^2}=\frac{d\tau}{ds}$.\\
 $\displaystyle \frac{d^2M}{ds^2}$ est situ\'e dans le plan osculateur et est 
 situ\'e par rapport \`a un plan non osculateur selon la concavit\'e de $\Gamma$.
@@ -23253,7 +24329,7 @@ On dit que $R$ est le {\bf rayon de courbure} de $\Gamma$ en $M$ et on appelle
 {\bf centre de courbure} de $\Gamma$ en $M$, le point $C$ d\'efini par :\\
 $MC=Rn$\\
 La courbure de $\Gamma$ au point $M$ est \'egale \`a $\frac{1}{R}$.
-\subsection{Courbure : {\tt curvature, courbure}}\index{curvature}\index{courbure}
+\subsection{Premi\`ere formule de Frenet}
 \subsection{Cercle osculateur : {\tt osculating\_circle}}
 \index{cercle\_osculateur}\index{osculating\_circle}
 On appelle cercle osculateur en $M$ \`a $\Gamma$, la limite du cercle passant 
@@ -23347,7 +24423,7 @@ On tape :\\
 {\tt developpee([3*exp(t/2)*cos(t),3*exp(t/2)*sin(t)],t,affichage=2))}\\
 On obtient :\\
 \includegraphics[width=\textwidth]{courbure1}
-\section{D\'eveloppante d'une courbe plane}
+{\bf D\'efinition} : D\'eveloppante d'une courbe plane
 On appelle d\'eveloppante d'une courbe plane  $\Gamma$ les courbes admettant 
  $\Gamma$ comme d\'evelopp\'ee.
 
@@ -23688,8 +24764,7 @@ On tape :
 On obtient par exemple :
 \begin{center}{\tt [[1,0.1648],[2,0.1703],[3,0.1667],[4,0.1671],[5,0.1727],[6,0.1584]]]}\end{center}
 
-\subsection{Les fr\'equences cumul\'ees : {\tt cumulated\_frequencies \\
-frequences\_cumulees}}\index{cumulated\_frequencies|textbf}\index{frequences\_cumulees|textbf}
+\subsection{Les fr\'equences cumul\'ees : {\tt cumulated\_frequencies frequences\_cumulees}}\index{cumulated\_frequencies|textbf}\index{frequences\_cumulees|textbf}
 \noindent{\tt cumulated\_frequencies} ou {\tt frequences\_cumulees} a comme 
 argument une liste ou une matrice ayant 2 colonnes ou plus de 2 colonnes.\\
 Si {\tt cumulated\_frequencies} a comme argument une liste, 
@@ -24132,7 +25207,7 @@ On obtient :
 c'est donc la fonction lin\'eaire d'\'equation $z=\ln(y)=0.267x+1.99$ 
 qui approche au mieux les donn\'ees.
 
-\subsection{Graphe de la r\'egression lin\'eaire :\\ 
+\subsection{Graphe de la r\'egression lin\'eaire :
 {\tt linear\_regression\_plot}}\index{linear\_regression\_plot}\index{equation@{\sl equation}|textbf}\index{correlation@{\sl correlation}|textbf}
 Pour dessiner la droite des moindres carr\'es $y=mx+b$, droite qui approche au 
 mieux les donn\'ees, on utilise  {\tt linear\_regression\_plot}.\\
@@ -24177,7 +25252,7 @@ On v\'erifie en tapant :\\
 On obtient :
 \begin{center}{\tt 1.30568684451,7.30853268031}\end{center}
 
-\subsection{Graphe de la r\'egression exponentielle : \\
+\subsection{Graphe de la r\'egression exponentielle : 
 {\tt exponential\_regression\_plot}}\index{exponential\_regression\_plot}\index{equation@{\sl equation}}\index{correlation@{\sl correlation}}
 Pour dessiner la fonction exponnentielle d'\'equation $y=b\exp(mx)=ba^x$ qui 
 approche au mieux les donn\'ees, on utilise  {\tt exponential\_regression\_plot}.\\
@@ -24241,7 +25316,7 @@ et le coefficient de corr\'elation est :
 On obtient :
 \begin{center}{\tt  0.999969474543}\end{center}
 
-\subsection{Graphe de la r\'egression logarithmique : \\
+\subsection{Graphe de la r\'egression logarithmique : 
 {\tt logarithmic\_regression\_plot}}\index{logarithmic\_regression\_plot}\index{equation@{\sl equation}}\index{correlation@{\sl correlation}}
 Pour dessiner le graphe de la fonction logarithmique d'\'equation 
 $y=m \ln x+b$ qui approche au mieux  les donn\'ees, on utilise  
@@ -24285,7 +25360,7 @@ Si on veut avoir l'\'equation et/ou le coefficient de corr\'elation  sur le
 dessin il faut rajouter comme dernier argument, l'option {\tt equation} et/ou 
 {\tt correlation}.
 
-\subsection{Graphe de la r\'egression polynomiale :\\
+\subsection{Graphe de la r\'egression polynomiale :
  {\tt polynomial\_regression\_plot}}\index{polynomial\_regression\_plot}
 Pour approcher les donn\'ees par le grahe d'une fonction polyn\^omiale de 
 degr\'e $\leq n$ d'\'equation $y=a_0x^n+..+a_n$, on utilise  
@@ -24334,7 +25409,7 @@ et le coefficient de corr\'elation est :
 On obtient :
 \begin{center}{\tt  0.999969474543}\end{center}
 
-\subsection{Graphe de la r\'egression puissance :\\
+\subsection{Graphe de la r\'egression puissance :
  {\tt power\_regression\_plot}}\index{power\_regression\_plot}\index{equation@{\sl equation}}\index{correlation@{\sl correlation}}
 Pour approcher les donn\'ees par le graphe d'une fonction puissance 
 d'\'equation $y=bx^m$, on utilise  {\tt power\_regression\_plot}.\\
@@ -24422,7 +25497,7 @@ On obtient :
 puis \\
 {\tt correlation(L/Ly,Ly)} qui renvoie\\
 {\tt -0.81176431297}
-\subsection{Graphe de la r\'egression logistique :\\
+\subsection{Graphe de la r\'egression logistique :
  {\tt logistic\_regression\_plot}}\index{logistic\_regression\_plot}\index{equation@{\sl equation}}\index{correlation@{\sl correlation}}
 Lorsque on connait les valeurs de $f'(x)$ en $x=x_0,x_0+1....x_0+n$, pour 
 tracer le graphe de la deriv\'ee $y'(x)$ d'une fonction logistique $y(x)$, 
@@ -24471,12 +25546,14 @@ Ou on tape :
 On obtient par exemple :
 \begin{center}{\tt 10549905061234}\end{center}
 
-\subsection{Tirage \'equir\'eparti {\tt rand alea hasard}}\index{rand|textbf}\index{hasard|textbf}\index{alea|textbf}
-\subsubsection{Tirage \'equir\'eparti sur $[0,1[$ : {\tt rand() alea() hasard}}
+\subsection{Tirage \'equir\'eparti {\tt rand alea hasard}}\index{rand|textbf}\index{hasard|textbf}\index{alea|textbf}\index{random|textbf}
+\subsubsection{Tirage \'equir\'eparti sur $[0,1[$ : {\tt rand() randnorm() alea() hasard}}
 \noindent{\tt rand()} renvoie au hasard, de façon \'equiprobable, un nombre 
 r\'eel de $[0,1[$.\\
 On tape :
 \begin{center}{\tt rand()}\end{center}
+ou on tape
+\begin{center}{\tt random()}\end{center}
 ou on tape
 \begin{center}{\tt alea()}\end{center}
 ou on tape (attention {\tt hasard} n'utilise pas de {\tt ()} et est utilis\'e 
@@ -24490,31 +25567,44 @@ aussi utiliser (voir le paragraphe suivant):
 On obtient :
 \begin{center}{\tt 0.391549611697}\end{center}
 
-\subsubsection{Tirage al\'eatoire \'equir\'eparti sur l'intervalle [a;b[ : {\tt rand(a,b) hasard(a,b) rand(a..b)() hasard(a..b)()}}
+\subsubsection{Tirage al\'eatoire \'equir\'eparti sur l'intervalle [a;b[ : {\tt rand(a,b) random(a,b) hasard(a,b) rand(a..b)() hasard(a..b)()}}\index{rand}\index{random}\index{hasard}\index{alea}
 Si {\tt a} et {\tt b} sont des r\'eels {\tt rand(a,b)} d\'esigne un nombre 
 d\'ecimal al\'eatoire compris dans l'intervalle $[a;b[$.\\
 Donc, {\tt rand(a,b)} ou ({\tt hasard(a,b)}) renvoie au hasard, et de façon 
 \'equiprobable, un nombre d\'ecimal de $[a;b[$.\\
-Pour avoir, au hasard et de façon \'equiprobable, un nombre d\'ecimal de $[0;1[$, 
-on tape :
+Pour avoir, au hasard et de façon \'equiprobable, un nombre d\'ecimal de 
+$[0;1[$, on tape :
 \begin{center}{\tt rand(0,1)}\end{center}
+Ou on tape :
+\begin{center}{\tt random(0,1)}\end{center}
+Ou on tape :
+\begin{center}{\tt alea(0,1)}\end{center}
 On obtient :
 \begin{center}{\tt 0.391549611697}\end{center}
-ou on tape (attention {\tt hasard} utilise des {\tt ()} qui englobent hasard et sesparam\`etres et {\tt hasard} est 
-utilis\'e pour le langage de la tortue)
+Ou on tape (attention {\tt hasard} utilise des {\tt ()} qui englobent hasard et 
+ses param\`etres et {\tt hasard} est utilis\'e pour le langage de la tortue)
 \begin{center}{\tt (hasard 0,1)}\end{center}
 On obtient par exemple:
 \begin{center}{\tt 0.912569261115}\end{center}
 Pour avoir, au hasard et de façon \'equiprobable, un nombre d\'ecimal de 
 $[0;0.5[$, on tape :
 \begin{center}{\tt rand(0,0.5)}\end{center}
+Ou on tape :
+\begin{center}{\tt random(0,0.5)}\end{center}
+Ou on tape :
+\begin{center}{\tt alea(0,0.5)}\end{center}
 On obtient :
 \begin{center}{\tt 0.303484437987}\end{center}
-Pour avoir, au hasard et de façon \'equiprobable, un nombre d\'ecimal de $]-0.5;0]$, 
-on tape :
+Pour avoir, au hasard et de façon \'equiprobable, un nombre d\'ecimal de 
+$]-0.5;0]$, 
+pn tape :
 \begin{center}{\tt rand(0,-0.5)}\end{center}
 ou on tape :
 \begin{center}{\tt rand(-0.5,0)}\end{center}
+ou on tape :
+\begin{center}{\tt random(0,-0.5)}\end{center}
+ou on tape :
+\begin{center}{\tt alea(0,-0.5)}\end{center}
 On obtient par exemple :
 \begin{center}{\tt -0.20047219703}\end{center}
 
@@ -24526,24 +25616,34 @@ Donc, {\tt rand(a..b)()} renvoie au hasard, et de façon \'equiprobable, un
 Pour avoir, au hasard et de façon \'equiprobable, un nombre d\'ecimal de $[0;1[$, 
 on tape :
 \begin{center}{\tt rand(0..1)()}\end{center}
+Ou on tape :
+\begin{center}{\tt random(0..1)()}\end{center}
+Ou on tape :
+\begin{center}{\tt alea(0..1)()}\end{center}
 On obtient :
 \begin{center}{\tt  0.391549611697}\end{center}
 Pour avoir, au hasard et de façon \'equiprobable, plusieurs nombres 
 al\'eatoires d\'ecimaux compris dans l'intervalle $[1;2[$, 
 on tape :
 \begin{center}{\tt r:=rand(1..2)}\end{center}
+Ou on tape :
+\begin{center}{\tt r:=random(1..2)}\end{center}
+Ou on tape :
+\begin{center}{\tt r:=alea(1..2)}\end{center}
 puis il suffit de taper {\tt r()}.\\
 On tape :
 \begin{center}{\tt r()}\end{center}
 On obtient :
 \begin{center}{\tt 1.14160255529}\end{center}
 
-\subsubsection{Tirage al\'eatoire d'entiers \'equir\'epartis sur $[0,..,n[$ : {\tt rand(n) alea(n) hasard(n)}}\index{rand}\index{hasard}\index{alea}
+\subsubsection{Tirage al\'eatoire d'entiers \'equir\'epartis sur $[0,..,n[$ : {\tt rand(n) alea(n) hasard(n)}}\index{rand}\index{random}\index{hasard}\index{alea}
 Si {\tt n} est un entier relatif {\tt rand(n)} ou {\tt hasard(n)} renvoie au 
 hasard, et de façon \'equiprobable, un entier de $[0,1,..,n[$ 
 (ou de $]n,..1,0]$ si $n$ est negatif).\\
 On tape :
 \begin{center}{\tt rand(2)}\end{center}
+Ou on tape :
+\begin{center}{\tt random(2)}\end{center}
 Ou on tape :
 \begin{center}{\tt alea(2)}\end{center}
 Ou on tape :
@@ -24557,40 +25657,70 @@ ou on obtient :
 On tape :
 \begin{center}{\tt rand(-2)}\end{center}
 Ou on tape :
+\begin{center}{\tt random(-2)}\end{center}
+Ou on tape :
 \begin{center}{\tt hasard(-2)}\end{center}
 On obtient :
 \begin{center}{\tt  -1}\end{center}
 ou on obtient :
 \begin{center}{\tt  0}\end{center}
-On tape pour avoir un entier al\'eatoire entre 6 et 10, bornes comprises :
+On tape pour avoir un {\bf entier} al\'eatoire entre 6 et 10, bornes comprises :
 \begin{center}{\tt 6+rand(11-6)}\end{center}
 Ou on tape :
 \begin{center}{\tt 6+hasard(11-6)}\end{center}
 On obtient par exemple :
 \begin{center}{\tt  8}\end{center}
+{\bf Ou bien} on utilise {\tt randint} :\\
+{\tt randint(6,10)} ou {\tt randint(10,6)} renvoie  un entier al\'eatoire 
+entre 6 et 10, bornes comprises (cf ci-dessous).
 
-\subsubsection{Tirage al\'eatoire sans remise de p objets parmi n : {\tt rand alea hasard}}\index{rand}\index{hasard}\index{alea}
+\subsubsection{Tirage al\'eatoire d'entiers \'equir\'epartis sur $[n_1,..,n_2]$ : {\tt randint(n1,n2)}}\index{randint|textbf}
+Si {\tt n1} et {\tt n2} sont deux entiers relatifs {\tt randint(n1,n2)} renvoie
+au hasard, et de façon \'equiprobable, un entier relatif de $[n_1,n_2]$ (ou
+de $[n_2,n_1]$ si $n_2<n_1$).\\
+On tape :
+\begin{center}{\tt randint(2,8)}\end{center}
+Ou on tape :
+\begin{center}{\tt randint(8,2)}\end{center}
+On obtient par exemple :
+\begin{center}{\tt  4}\end{center}
+On tape :
+\begin{center}{\tt randint(-8,2)}\end{center}
+Ou on tape :
+\begin{center}{\tt  randint(-8,2)}\end{center}
+On obtient  par exemple :
+\begin{center}{\tt  -1}\end{center}
+
+\subsubsection{Tirage al\'eatoire sans remise de p objets parmi n : {\tt rand alea hasard}}\index{rand}\index{random}\index{hasard}\index{alea}\index{sample|textbf}
 {\tt rand} a dans ce cas, soit 2, soit  3 arguments.\\
  Si {\tt rand} a  2 arguments : les arguments sont un entier $p$ et une liste 
-$L$ alors {\tt rand(p,L)} renvoie, au hasard, {\tt p} \'el\'ements de la liste 
+$L$ alors {\tt rand(p,L)} renvoie au hasard, {\tt p} \'el\'ements de la liste 
 {\tt L}.\\
  Si  {\tt rand} a  3 arguments : les arguments sont trois entiers 
 {\tt p,min,max} alors
 {\tt rand(p,min,max)} renvoie, au hasard, {\tt p} entiers de  
-{\tt [min,..,max]} 
+{\tt [min,..,max]} \\
+{\bf Alors que} {\tt sample} n'a que 2 arguments : une liste 
+$L$ et un entier $p$ ({\bf Attention} \`a l'ordre des arguments !) alors 
+{\tt sample(L,p)} renvoie au hasard, {\tt p} \'el\'ements de la liste {\tt L}.\\
 On tape :
 \begin{center}{\tt rand(3,["r","r","r","r","v","v","v"])}\end{center}
+Ou on tape :
+\begin{center}{\tt sample(["r","r","r","r","v","v","v"],3)}\end{center}
 On obtient :
 \begin{center}{\tt  ["r","r","v"]}\end{center}
 On tape :
 \begin{center}{\tt rand(2,1,10)}\end{center}
+Ou on tape :
+\begin{center}{\tt random(2,1,10)}\end{center}
 On obtient :
 \begin{center}{\tt  [3,7]}\end{center}
 On tape :
 \begin{center}{\tt rand(2,4,10)}\end{center}
+Ou on tape :
+\begin{center}{\tt random(2,4,10)}\end{center}
 On obtient :
 \begin{center}{\tt [5,7]}\end{center}
-
 \subsection{Tirage selon une loi binomiale : {\tt randbinomial}}\index{randbinomial}
 \noindent{\tt randbinomial(n,p)} renvoie au hasard des nombres entiers 
 r\'epartis selon la loi binomiale $B(n,p)$ de moyenne {\tt n*p} et d'\'ecart 
@@ -24622,7 +25752,6 @@ On tape :
 \begin{center}{\tt randmultinomial([1/2,1/3,1/6],["R","V","B"])}\end{center}
 On obtient par exemple :
 \begin{center}{\tt "R"}\end{center}
-
 \subsection{Tirage selon une loi de Poisson : {\tt randpoisson}}\index{randpoisson}
 \noindent{\tt randpoisson($\lambda$)} renvoie au hasard des nombres entiers 
 r\'epartisselon la loi de Poisson  $P(\lambda)$ de moyenne {\tt $\lambda$} et 
@@ -24931,7 +26060,7 @@ On tape :
 On obtient :
 \begin{center}{\tt 0.125110035721}\end{center}
 
-\subsection{Densit\'e de probabilit\'e de la loi normale : {\tt loi\_normale\\ normald}}\index{normald}\index{loi\_normale}
+\subsection{Densit\'e de probabilit\'e de la loi normale : {\tt loi\_normale normald}}\index{normald}\index{loi\_normale}
 \noindent \begin{itemize}
 \item {\tt normald(x)} ou {\tt loi\_ normale(x)} est la densit\'e de 
 probabilit\'e de la loi normale centr\'ee r\'eduite (de moyenne 0 et 
@@ -25919,12 +27048,19 @@ On rejette l'ad\'equation si sup\'erieur \`a {\tt chisquare\_icdf(1,0.95)} qui
 vaut {\tt 3.84145882069} or {\tt chisquare\_icdf(1,1-alpha)} si alpha!=5\%.\\
 On tape :
 \begin{center}{\tt chisquaret(ranv(1000,binomial,10,.5),binomial)}\end{center}
-On obtient :
-\begin{center}{\tt ?}\end{center}
+On obtient :\\
+en commentaire (en vert) le r\'esum\'e du test  :\\
+Loi binomiale: estimation de n et p par les donnees 10 0.4988
+Adéquation d'un echantillon a binomial(10,0.4988,.), resultat du test du Chi2 4.26407473988,
+On rejette l'adequation si superieur a chisquare\_icdf(7,0.95)=14.0671404493 or  chisquare\_icdf(7,1-alpha) if alpha!=5\%\\
+\begin{center}{\tt 4.26407473988}\end{center}
 On tape :
 \begin{center}{\tt chisquaret(ranv(1000,binomial,10,.5),binomial,11,.5)}\end{center}
-On obtient :
-\begin{center}{\tt ?}\end{center}
+On obtient :\\
+en commentaire (en vert) le r\'esum\'e du test  :\\
+Adéquation d'un echantillon a binomial(11,0.5,.), resultat du test du Chi2 109.868860498,
+On rejette l'adequation si superieur a chisquare\_icdf(9,0.95)=16.9189776046 or  chisquare\_icdf(9,1-alpha) if alpha!=5\%
+\begin{center}{\tt 109.868860498}\end{center}
 On r\'egle dans la configuration graphique les valeurs de {\tt class\_min} et 
 de {\tt class\_dim} \`a -2 et 0.25 et on tape :
 \begin{center}{\tt L:=ranv(1000,normald,0,.2)}\end{center}
@@ -26107,28 +27243,52 @@ On obtient :\\
 donc $h \simeq 3.84$\\
 Puisque ${\tt d2\simeq 1.645<3.84}$ on en d\'eduit que les deux \'echantillons
  ne sont pas significativement diff\'erents au seuil de 5\% : on peut donc 
-mettre en doute  l'efficacit\'e du vaccin.\\
-On tape :\\
-{\tt ?}\\
-On obtient :\\
-{\tt ?}
+mettre en doute  l'efficacit\'e du vaccin.
 \item {\bf Exercice}\\
 Sur un registre d'\'etat civil, on a relev\'e 552 naissances dont 289 
 gar\c{c}ons. \\
 a/ Estimer la fr\'equence {\tt p} de naissance d'un gar\c{c}on.\\
 b/ Donner un intervalle de confiance pour cette estimation.\\
 On tape :\\
-{\tt ?}\\
-On obtient :\\
-{\tt ?}
+{\tt evalf(289/552)}\\
+On obtient $f$ sui est une estimation de {\tt p} :\\
+{\tt 0.523}
+Soit $X$ la variable al\'eatoire \'egale \`a 1 pour la naissance d'un gar\c{c}on et \'egale \`a 0 pour la naissance d'une fille. Soient $X_1...X_{552}$ les variables $X$  
+correspondant aux 552 naissances et soit $Y$ la variable al\'eatoire \'egale \`a $\frac{\sum X_i}{n}$ = moyenne du nombre de gar\c{c}ons obtenus pour 
+un \'echantillon d'effectif 552.\\
+La distribution $Y$ est voisine d'une distribution normale de moyenne $p_{est}$
+ et d'\'ecart type $\sigma=\sqrt{\frac{p_{est}(1-p_{est})}{552}}$.\\
+On a donc $Proba(|Y-p_{est}|<1.96\sigma)=0.95$.\\
+On peut estimer $\sigma$ par :
+$\sqrt{\frac{f*(1-f)}{551}}=\sqrt{289*(552-289)/552^2/551}\simeq 0.0213$.\\
+ Donc $k=1.96*0.0213 <0.042$ ce qui donne un intervalle de
+confiance de $p$ au seuil de 5\% \'egal \`a :\\
+ $[0.523-0.042=0.481\ ;\  0.523+0.042=0.565]$
 \item {\bf Exercice}\\
 Dans un h\^opital sur un \'echantillon de 458 malades admis pendant un 
 trimestre il y a eu 141 d\'ec\`es. Estimer le pourcentage de d\'ec\`es par un 
 intervalle de confiance au seuil de 0.01.\\
+On a :\\
+$n=458$,\\
+ $f=141/458 \simeq 0.307860262009$,\\
+ $\sigma \simeq \sqrt{f(1-f)/457}=0.0215931304967$\\
+{\tt normal\_icdf(0,1,0.995)=2.57582930355 $\simeq$ 2,58}\\
+On obtient, si $Y$ est la variable al\'eatoire moyenne du nombre de d\'ec\`es 
+pour des \'echantillons de taille 458 :\\
+$P(|Y-p|\geq k)=0.01$ pour $k=0.258*\sigma \simeq 0.056$
+donc un intervalle de confiance du pourcentage de d\'ec\`es, au seuil de 0.01 
+\'egal \`a :
+$[0.252; \ 0.364]$\\
 On tape :\\
-{\tt ?}\\
+{\tt normal\_icdf(141/458,0.0215931304967,0.005)}\\
 On obtient :\\
-{\tt ?}
+{\tt 0.25224004372}
+On tape :\\
+{\tt normal\_icdf(141/458,0.0215931304967,0.995)}\\
+On obtient :\\
+{\tt 0.363480480297}
+ce qui donne $[0.252\ ;\  0.364]$, comme intervalle de
+confiance de $p$ au seuil de 5\%.
 \item {\bf Exercice : comparaison de deux moyennes}\\
 Pour une m\^eme \'epreuve,
 voici les notes obtenues dans une classe de terminale du lyc\'ee A.\\
@@ -26137,6 +27297,99 @@ et les notes obtenues dans une classe de terminale du lyc\'ee B.\\
 2,10,14,13,9,6,1,12,9,10,10,10,12,15,19,9,11,8,9,10\\
 1/ Analyser les r\'esultats de chaque groupe.\\
 2/ Peut-on consid\'erer que les 2 groupes sont issus d'une m\^eme population ?
+{\bf R\'eponse} :\\
+On tape :\\
+{\tt mean([6,10,14,17,9,6,4,12,9,10,10,11,12,18,10, 9,11,8,7,10])}\\
+On obtient :\\
+{\tt [10.15]}\\
+On tape :\\
+{\tt stddev([6,10,14,17,9,6,4,12,9,10,10,11,12,18,10, 9,11,8,7,10])}\\
+On obtient :\\
+{\tt sqrt(4451/400) $\simeq$ [3.33579076082]}\\
+Le lyc\'ee A a une moyenne de 10.15 et un \'ecart type d'environ 3.34.\\
+On tape :\\
+{\tt  mean([2,10,14,13,9,6,1,12,9,10,10,10,12,15,19, 9,11,8,9,10])}\\
+On obtient :\\
+{\tt 9.95}\\
+On tape :\\
+{\tt stddev([2,10,14,13,9,6,1,12,9,10,10,10,12,15,19, 9,11,8,9,10])}\\
+On obtient :\\
+{\tt sqrt(6179/400) $\simeq$ 3.93033077488}\\
+Le lyc\'ee B a une moyenne de 9.95 et un \'ecart type d'environ 3.93.\\
+On a pour le lyc\'ee A :
+On tape :\\
+{\tt quartiles([6,10,14,17,9,6,4,12,9,10,10,11,12,18,10, 9,11,8,7,10])}\\
+On obtient :\\
+{\tt  [[4.0],[8.0],[10.0],[11.0],[18.0]]}\\
+On a pour le lyc\'ee B :
+On tape :\\
+{\tt quartiles([2,10,14,13,9,6,1,12,9,10,10,10,12,15,19, 9,11,8,9,10]) }\\
+On obtient :\\
+{\tt [[1.0],[9.0],[10.0],[12.0],[19.0]]}\\
+On voit que dans le lyc\'ee B la moitie des \'el\`eves ont entre 9 et 12 
+alors que dans le lyc\'ee A la moitie des \'el\`eves ont  entre 8 et 11. Donc
+ bien que la moyenne du lyc\'ee B soit inf\'erieure \`a la moyenne du lyc\'ee A
+il semble que la classe du lyc\'ee B soit meilleure que celle du lyc\'ee A.
+2/ 
+Si on consid\`ere que les deux classes constituent deux \'echantillons pris au 
+hasard dans une population o\`u la note de l'\'epreuve est une variable 
+al\'eatoire $X$ de moyenne $\mu$ et d'\'ecart-type $\sigma$.\\
+La reunion des 2 \'echantillons donne un \'echantillon de taille $n=40$.\\
+de moyenne $\mu \simeq (9.95+10.15)/2=10.05$ et d'\'ecart-type $s$.\\
+On tape :\\
+{\tt stddev([6,10,14,17,9,6,4,12,9,10,10,11,12,18,10,9,\\
+11,8,7,10, 2,10,14,13,9,6,1,12,9,10,10,10,12,15,19,}\\
+{\tt 9,11,8,9,10])}\\
+On obtient :\\
+{\tt s=sqrt(5319/400) $\simeq$ 3.64657373434}.\\
+La variable al\'eatoire $\bar X_{40}$, \'egale \`a la moyenne des \'echantillons de taille 40 a donc pour moyenne :\\
+$\mu=10.05$ 
+et pour \'ecart-type :\\
+$\sigma/\sqrt{40}\simeq s/\sqrt{39}=0.583919119794$.\\
+Donc $\sigma \simeq 3.69302877574$\\
+{\bf Remarque} : On sait que la statistique 
+$displaystyle \frac{n_1S_1^2+n_2S_2^2}{n_1+n_2-2}$
+ est un estimateur sans biais de $\sigma^2$ si $\sigma$ est l'\'ecart-type de 
+$X$ (cf \ref{sec:compm}). La valeur
+de cette statistique est obtenue \`a partir de 
+deux \'echantillons de taille 
+respective $n_1$ et $n_2$ et d'\'ecart-type respectif $s_1$ et $s_2$ qui sont les valeurs de $S_1$ et de $S_2$ (avec comme notation 
+$S^2=\frac{1}{n}\sum_j (X_j-\bar X)^2$ pour un \'echantillon de taille $n$ de la variable $X$). \\
+On tape (ici $n_1=n_2=20$, $n_1+n_2-2=38$, $s_1^2=\frac{4451}{400}$, $s_2^2=\frac{6179}{400}$) :\\
+{\tt sqrt(20/38*(6179/400+4451/400))}\\
+On obtient alors comme approximation de $\sigma$ : {\tt  3.7398986758}\\
+On pose comme hypoth\`ese $H_0 : \mu_1=\mu_2=\mu$ et pour hypoth\`ese
+ alternative $H_1 : \mu_1 \neq \mu_2$ et on teste ces hypoth\`eses
+ au seuil de 0.05.\\
+$\bar A-\bar B$ suit une loi normale de
+moyenne 0 et d'\'ecart type $\sigma\sqrt{1/20+1/20}$.\\
+On a :\\
+$\sigma=s\sqrt{40/39}$\\
+$s=\sqrt{5319/400}$\\
+$\sigma\sqrt{1/20+1/20} \simeq s\sqrt{40/39/10}\simeq \sqrt{5319/100/39}\simeq 1.16783823959$\\
+Avec {\tt Xcas}, on tape :\\
+{\tt normal\_icdf(0,1.16783823959,0.975)}\\
+On obtient :\\
+{\tt 2.28892088937}\\
+{\tt normal\_icdf(0,1.16783823959,0.025)}\\
+On obtient :\\
+{\tt -2.28892088937}\\
+On a $m_1-m_2=10.15-9.95=0.2$ et comme \\
+$ -2.28892088937<0.2< 2.28892088937$,\\
+ on accepte l'hypoth\`ese $\mu_1=\mu_2$ au seuil de 5\%.\\
+{\bf Autre m\'ethode}\\
+On peut aussi utiliser la loi de Student :\\
+On consid\'ere que $\mu_1=\mu_2=\mu$.\\
+% et que $\sigma_1=\sigma_2=\sigma$,
+Alors $\displaystyle T=\frac{(\bar A- \bar B)\sqrt{38}}{\sqrt{(20s_1^2+20s_2^2)(1/20+1/20)}}$ suit une loi 
+de Student \`a 38 degr\'es de libert\'e.\\
+On calcule la valeur $t$ de $T$ pour l'\'echantillon on tape  :\\
+{\tt t:=(10.15-9.95)*sqrt(38)/sqrt(2*3.34\verb|^|2+3.93\verb|^|2)}\\
+On obtient : {\tt 0.200644948434}
+On tape :\\
+{\tt student\_icdf(38,0.975)}\\
+On obtient : {\tt 2.02439416391}\\
+Puisque $-2.02439416391<0.2<2.02439416391$, on accepte l'hypoth\`ese $\mu_1=\mu_2=\mu$ au seuil de 5\%.
 \item {\bf Exercice : comparaison de deux moyennes}\\
 Deux entreprises A et B livrent des pi\`eces dans des paquets de 100 pi\`eces.
 On note $X_1$ (resp $X_2$) la variable al\'eatoire \'egale au nombre de 
@@ -26153,22 +27406,164 @@ de 49 paquets (resp 64 paquets) provenant de A (resp B).\\
 2/ Donner une estimation de la moyenne $\mu_1$ et de l'\'ecart-type $\sigma_1$
 de $X_1$.\\
 3/ Donner une estimation de la moyenne et de l'\'ecart-type de $\overline X_1$.\\
-On tape :\\
-{\tt ?}\\
+{\bf R\'eponse} :\\
+1/ On met les donn\'ees dans la colonne A du tableur ou on donne un nom \`a la 
+liste du nombre de pi\`eces d\'efectueuses dans chaque paquet.\\
+
+- Dans le tableur on tape les donn\'ees dans les cellules {\tt A0..A48}, puis 
+en {\tt A49}, on tape :\\
+{\tt mean((A0):(A48))}\\
 On obtient :\\
-{\tt ?}\\
-On tape :\\
-{\tt ?}\\
+{\tt 237/49 $\simeq$ 4.83673469388}\\
+en {\tt A50} on tape  :\\
+{\tt stddev((A0):(A48))}\\
 On obtient :\\
-{\tt }\\
-On tape :\\
-{\tt ?}\\
-On obtient :\\
-{\tt ?}
+{\tt sqrt(21006/2401 $\simeq$ 2.9578462847}.\\
+- Dans une ligne d'entr\'ee, on tape :\\
+{\tt L:=[7,5,5,4,4,4,9,7,9,2,7,8,7,8,4,4,9,10,\\
+5,10,6,4,5,6,1,2,5,7,8,0,6,0,1,5,2,0,\\
+5,2,3,3,4,1,3,10,1,0,10,2,7]}\\
+puis  on tape :
+{\tt mean(L)}\\
+On obtient $m_1$ :\\
+{\tt 237/49 $\simeq$ 4.83673469388 $\simeq$ 4.84}.\\
+puis  on tape : {\tt stddev(A)}\\
+On obtient $s_1$:\\
+{\tt sqrt(21006/2401) $\simeq$ 2.9578462847}.\\
+2/ On a un \'echantillon de grande taille ($n_1=49$) donc d'apr\`es la loi des 
+grands nombres, on  estime $\mu_1$ par $m_1= 237/49 \simeq 4.84$ et $\sigma_1$ 
+par :\\
+$s_1\sqrt{\frac{n_1}{n_1-1}}=\sqrt{21006/2401}\sqrt{49/48}\simeq 2.98849836021\simeq 2.99$. \\
+Donc $X_1$ suit \`a peu pr\`es une loi 
+normale  de moyenne $m_1=4.84$ et d'\'ecart-type 
+$\sigma_1=2.99$. \\
+3/ La variable al\'eatoire $\overline X_1$ \'egale \`a la
+ moyenne des \'echantillons de taille $49$ suit \`a peu pr\`es une loi 
+normale de moyenne $\mu_1=4.84$ et d'\'ecart-type 
+$\sigma_1/\sqrt{49} \simeq s_1/\sqrt{48}\simeq 0.426928337173\simeq 0.427$.\\
+{\bf II)} Sur un \'echantillon de 64 paquets provenant de l'entreprise B on 
+trouve une moyenne $m_2=3.88$ et un \'ecart-type $s_2=1.45$:\\
+1/ Donner une estimation de la moyenne $\mu_2$ et de l'\'ecart-type $\sigma_2$
+de $X_2$.\\
+2/ Donner une estimation de la moyenne et de l'\'ecart-type de $\overline X_2$.\\
+{\bf R\'eponse} :\\
+1/ On a un \'echantillon de grande taille ($n_2=64$) donc d'apr\`es la loi des 
+grands nombres, on  estime $\mu_2$ par $m_2=3.88$ et $\sigma_2$ par :\\ 
+$s_2\sqrt {\frac{n_2}{n_2-1}}=1.45\sqrt{64/63}\simeq 1.46146262897\simeq 1.46$\\ 
+On a donc 
+$X_2$ suit une loi de moyenne $m_2=3.88$ et d'\'ecart-type 
+$\sigma_1=1.46$. \\
+2/ La variable al\'eatoire $\overline X_2$ \'egale \`a la moyenne des 
+\'echantillons de taille $n_2=64$ suit \`a peu pr\`es une loi normale de 
+moyenne $\mu_2=3.88$ et d'\'ecart-type 
+$\sigma_2/\sqrt{64} \simeq s_2/\sqrt{63}\simeq 0.182682828621\simeq 0.183$\\
+ {\bf III)} On note $D$ la variable al\'eatoire $\overline X_1-\overline X_2$.\\
+1/ Quelle est la loi de probabilit\'e de $D$ ? D\'eterminer la moyenne et 
+l'\'ecart-type de $D$.\\
+2/ On pose pour hypoth\`ese nulle $H_0$ : $\mu_1=\mu_2$ et pour hypoth\`ese 
+alternative $H_1$ : $\mu_1 \neq \mu_2$. Calculer sous $H_0$, les nombres 
+$h$ et $k$ tels que :\\
+$Proba(-h<D<h)=0.99$ et 
+$Proba(-k<D<k)=0.95$.\\
+3/ Peut-on conclure apr\`es examen des \'echantillons donn\'es en I et II 
+que la diff\'erence des moyennes observ\'ees est significative au seuil de 
+risque de 1\% ? au seuil de risque de 5\% ?\\
+{\bf R\'eponse} :\\
+1/ $D$ suit \`a peu pr\`es une loi 
+normale de moyenne :\\
+ $\mu_1-\mu_2 \simeq 4.84-3.88=0.96$ \\
+et d'\'ecart-type :\\
+$\sqrt{\sigma_1^2/49+\sigma_2^2/64} \simeq \sqrt{s_1^2/48+s_2^2/63}=$\\
+$\sqrt{21006/(2401*48)+1.45^2/63} \simeq 0.453082418658\simeq 0.46$ \\
+car la variance de $D$ est la somme des variances de  $\overline X_1$ et 
+de $\overline X_2$.\\
+2/ Sous l'hypoth\`ese $H_0$, $D$ suit \`a peu pr\`es une loi normale 
+de moyenne  $0$ et d'\'ecart-type $\sigma(D)=0.46$.\\
+$h$ et $k$ sont tels que :\\
+$Proba(-h<D<h)=0.99$ et 
+$Proba(-k<D<k)=0.95$.\\
+Donc d'apr\`es les tables de la loi normale on a :\\
+$h=2.58* \sigma_D=2.58*0.46=1.1868\simeq 1.19$ et\\
+$k=1.96* \sigma_D=1.96*0.46=0.9016\simeq 0.9$.\\
+Ou bien avec {\tt Xcas} on a :\\
+{\tt h:=normal\_icdf(0,0.46,0.995)=1.18488147963}\\
+{\tt k:=normal\_icdf(0,0.46,0.975)=0.901583432888}\\
+3/ Puisque la valeur de $D$ pour l'\'echantillon est \'egale \`a 0.96, on 
+conclut qu'au seuil de 5\% on rejette l'hypoth\`ese $H_0$ (car 0.96>k) mais 
+par contre, au seuil de 1\% on accepte l'hypoth\`ese $H_0$ (car 0.96<h).\\
+{\bf Bien comprendre :}\\
+Au seuil de 5\%, on rejette $H_0$ et on se trompe dans moins de 5\% des cas, 
+c'est \`a dire que l'on rejette $H_0$ \`a tort dans  moins de 5\% des cas, mais
+ si on ne veut se tromper que dans 1\% des cas, on ne peut pas rejeter  $H_0$ 
+et donc on l'accepte...\\
+En fait, on peut dire que l'on rejette $H_0$ au seuil de 4\% (i.e. on risque de
+ se tromper en rejettant $H_0$ dans  4\% des cas), car :\\ 
+{\tt 0.96>normal\_icdf(0,0.46,0.98)=0.944724498891} ou encore \\
+{\tt normal\_cdf(0,0.46,0.96)=0.981553967548>0.98}
+
 \item {\bf Exercice }\\
 On a administr\'e un somnif\`ere A \`a 50 personnes choisies au hasard et on a observ\'e une moyenne de sommeil de 8h22 avec un \'ecart-type de 0h24.\\ 
 On a administr\'e un somnif\`ere B \`a 100 personnes choisies au hasard et on a observ\'e une moyenne de sommeil de 7h15 avec un \'ecart-type de 0h30.\\ 
 Ces deux somnif\`eres ont-ils une efficacit\'e signicativement diff\'erente ? de combien ?\\
+{\bf R\'eponse}\\
+Soit $X_1$ la variable al\'eatoire \'egale au nombre de minutes de sommeil 
+lorsque l'on a pris le somnif\`ere A et soit $X_2$ la variable al\'eatoire \'egale au nombre de minutes de sommeil lorsque l'on a pris le somnif\`ere B.\\
+On note  $\overline X_1$ (resp $\overline X_2$) la variable al\'eatoire \'egale
+\`a la  moyenne du nombre de minutes de sommeil pour des \'echantillons de 
+taille 50 (resp 100) lorsque l'on a pris le somnif\`ere A
+(resp le somnif\`ere B).\\
+Au vu de l'\'echantillon d'effectif $n_1=50$, $\overline X_1$ a comme 
+moyenne $m_1$ de 8h22 soit de 502 minutes et comme \'ecart-type $\sigma_1$.\\
+On a donc :\\
+$m_1=8*60+22=502$ et,\\ 
+$\sigma_1 \simeq 24/\sqrt{49}$.\\
+Au vu de l'\'echantillon d'effectif $n_2=100$, $\overline X_2$ a comme moyenne 
+$m_2$ de 7h15 soit de 435 minutes et comme \'ecart-type $\sigma_2$.\\
+On a donc :\\
+$m_2=7*60+15=435$ et,\\ 
+$\sigma_2\simeq 30/\sqrt{99}$.\\
+On en d\'eduit que $\overline X_1-\overline X_2$ suit approximativement une 
+loi normale $\mathcal N(\mu , \sigma)$ avec  comme \'ecart-type :\\
+$\sigma=\sqrt{\sigma_1^2+\sigma_2^2}=\sqrt{24^2/49+30^2/99}=4.56574321789\simeq 4.566$.\\
+On cherche un intervalle de confiance pour $\mu$ au seuil de 5\% et au seuil 
+de 1\%. On sait que l'on a :\\
+$Proba(|\overline X_1-\overline X_2| \leq \mu+1.96\sigma)=0.95$\\
+$Proba(|\overline X_1-\overline X_2| \leq \mu+2.58\sigma)=0.99$\\
+$\overline X_1-\overline X_2$ a comme valeur $m_1-m_2=67$ donc,\\
+$Proba(67-1.96*4.566 \leq \mu \leq 67+1.96*4.566)=0.95$ et,\\
+$Proba(67-2.58*4.566 \leq \mu \leq 67+2.58*4.566)=0.99$\\
+On a donc :\\
+- Un intervalle de confiance pour $\mu$ au seuil de 5\% est :\\
+l'intervalle $[58;76]$ (car $58 \simeq  67-1.96*4.566$ et $76 \simeq  67+1.96*4.566$),\\
+-  Un intervalle de confiance pour $\mu$ au seuil de 1\% est :\\
+l'intervalle $[55;79]$ (car $55 \simeq  67-2.58*4.566$ et
+$79 \simeq 67+2.58*4.566$).\\
+Avec {\tt Xcas} on tape :\\
+{\tt normal\_icdf(67,sqrt(24\verb|^|2/49+30\verb|^|2/99),0.975)}\\
+On obtient :\\
+ {\tt 75.9486922697 $\simeq$ 76 }\\
+On tape :\\
+{\tt normal\_icdf(67,sqrt(24\verb|^|2/49+30\verb|^|2/99),0.025)}\\
+On obtient : \\
+{\tt 58.0513077303 $\simeq$  58}\\
+On tape :\\
+{\tt normal\_icdf(67,sqrt(24\verb|^|2/49+30\verb|^|2/99),0.995)}\\
+On obtient : \\
+{\tt 78.7605751731 $\simeq$  79}\\
+On tape :\\
+{\tt normal\_icdf(67,sqrt(24\verb|^|2/49+30\verb|^|2/99),0.005)}\\
+On obtient : \\
+{\tt 55.239424827 $\simeq$  55}\\
+Donc :\\
+- $\mu$ est dans l'intervalle $[58;76]$ avec un risque d'erreur de 5\%  et ,\\
+-  $\mu$ est dans l'intervalle $[55;79]$ avec un risque d'erreur de 1\%.\\ 
+ Le somnif\`ere A allonge la dur\'ee du sommeil d'environ 67mn=1h07 par rapport
+ au somnif\`ere B, avec une incertidude de (76-58)/2=9mn (resp (79-55)/2=12mn) 
+pour un seuil de 5\% (resp 1\%).\\
+Remarque : dans l'exercice pr\'ec\'edent on a consid\'er\'e deux groupes de 
+patients ind\'ependants. On aurait pu faire l'experience sur un m\^eme groupe
+(apr\`es un certain temps). On aurait eu affaire alors a des \'echantillons non
+ ind\'ependants mais appari\'es (pour un exemple voir l'exercice suivant).
 \item{\bf Exercice : \'Echantillons appari\'es}\\
 On a fait faire une double correction de 30 copies par deux examinateurs A et B
 afin de comparer leur notation. Les copies sont numerot\'ees de 0 \`a 29. \\
@@ -26179,9 +27574,60 @@ On a obtenu pour B:\\
 {\tt 12,13,12,15,7,5,12,10,8,13,4,17,16,4,9,11,10,}\\
 {\tt 13,13,9,10,7,14,8,7,15,13,10,13,10}\\ 
 On tape :\\
-{\tt ?}\\
+{\tt  A:=[13,15,12,15,8,7,11,10,9,13,3,18,17,5,9,}\\
+{\tt 10,11,14,12,10,9,8,13,6,8,16,14,11,12,10]} \\
+On tape :\\
+{\tt mean(A)}\\
 On obtient :\\
-{\tt ?}
+{\tt  329/30$\simeq$ 10.9666666667}
+On tape :\\
+{\tt stddev(A)}\\
+On obtient :\\
+{\tt sqrt(10769/900) $\simeq$ 3.45912641509}
+On tape :\\
+{\tt B:=[12,17,11,16,7,7,10,10,8,13,1,18,16,4,8,}\\
+{\tt 10,10,14,11,10,8,8,12,6,7,16,13,11,12,9]}\\
+On tape :\\
+{\tt mean(B)}\\
+On obtient :\\
+{\tt 21/2=10.5}\\
+Les deux examinateurs n'ont pas obtenus la m\^eme moyenne et la diff\'erence 
+des moyennes entre l'examinateur {\tt A} et l'examinateur {\tt B} est $m=0.3$.\\
+On tape : {\tt A-B}\\
+On obtient :\\
+{\tt [1,-2,1,-1,1,0,1,0,1,0,2,0,1,1,1,0,1,0,1,0,1,0,1,\\0,1,0,1,0,0,1]}
+ou encore on d\'efinit le caract\`ere diff\'erence {\tt D} avec effectifs :\\
+{\tt D:=([-2,-1,0,1,2],[1,1,12,15,1])}\\
+On tape :\\
+{\tt D:=([-2,-1,0,1,2],[1,1,12,15,1])}\\
+{\tt mean(D)}\\
+On obtient :\\
+{\tt m=7/15=0.466666666667}\\
+On tape : \\
+{\tt stddev(A-B)}\\
+ou {\tt stddev(D)}\\
+On obtient :\\
+{\tt s=sqrt(131/225) $\simeq$ 0.763034876151}\\
+On suppose que le caract\`ere diff\'erence {\tt D} est distribu\'e
+ selon une loi normale $\mathcal N(\mu,\sigma(D))$ (il faudrait le 
+v\'erifi\'e avec le test du $\chi^2$).\\
+On pose comme hypoth\`ese $H_0 :\mu=0$ et comme hypoth\`ese alternative 
+$H_1: \mu \neq 0$.\\
+On consid\`ere la variable ${\tt T=\sqrt{n-1}(\frac{\bar D-0}{S})}$, ${\tt T}$ 
+a pour valeur  :\\
+$t=\sqrt{n-1}*\frac{m-0}{s}$\\
+On tape :\\
+{\tt t:=sqrt(29)*7/15/sqrt(131/225)}
+donc $t\simeq=3.29352823645$\\
+Au seuil de 5\% et avec 29 degr\'ees de libert\'e on lit dans la table de
+ Student, la valeur critique $h$ que {\tt t} ne doit pas d\'epasser. \\
+On trouve $h= 2.05$.\\
+Ou bien on tape avec {\tt Xcas} :\\
+{\tt h:=student\_icdf(29,0.975)}\\
+On obtient :\\
+{\tt h=2.04522964213 $\simeq$ 2.05}\\
+Puisque $t=3.29352823645>h$ on conclut qu'au seuil de 5\%, les 2 moyennes sont 
+ significativement diff\'erentes.
 \item{\bf Exercice : Jet d'un d\'e et test du $\chi^2$}\\
 On jette un d\'e 90 fois et on a obtenu :\\
 1 a \'et\'e obtenu 11 fois,\\
@@ -26191,10 +27637,26 @@ On jette un d\'e 90 fois et on a obtenu :\\
 5 a \'et\'e obtenu 14 fois,\\
 6 a \'et\'e obtenu 10 fois.\\
 Peut-on admettre au vu de cette exp\'erience que le d\'e est r\'egulier ?\\
-On tape :\\
-{\tt ?}\\
+
+Il y a 6 classes et le degr\'e de libert\'e est \'egal \`a 5 puisque 
+l'effectif de la derni\`ere classe est impos\'e lorsque l'on a l'effectif 
+des 5 premi\`eres.
+Pour chaque classe l'effectif th\'eorique de l'\'echantillon est 90*1/6=15 
+(chaque face ayant une probabilit\'e th\'eorique \'egale \`a 1/6 de sortir si le d\'e est \'equilibr\'e).\\
+On calcule l'\'ecart quadradique r\'eduit, c'est la valeur de :\\
+$\chi^2=\sum_{j=1}^6 \frac{(X_j-90/6)^2}{90/6}$ pour l'\'echantillon 
+consid\'er\'e.\\
+On obtient ici :\\
+$\frac{1}{15}((11-15)^2+(16-15)^2+(17-15)^2+(22-15)^2+(14-15)^2+(10-15)^2)=6.4$\\
+Dans une table du $\chi^2$ on lit qu'au seuil 0.05 et pour un degr\'e de 
+libert\'e 5 la valeur limite de $\chi^2$ est \'egale \`a 11.1.\\
+Avec {\tt Xcas}, on tape :\\
+{\tt chisquare\_icdf(5,0.95)}\\
 On obtient :\\
-{\tt ?}
+{\tt 11.0704976935 $\simeq$ 11.1}\\
+ Or on a $6.4<11,1$, donc au seuil 0.05, on
+ ne rejette pas l'hypoth\`ese : "le d\'e est r\'egulier" car si on dit que le 
+d\'e n'est pas r\'egulier on se trompe dans plus de 5\% des cas.
 \item{\bf Exercice : Jet d'un d\'e et test du $\chi^2$}\\
 On jette un d\'e 180 fois et on a obtenu :\\
 1 a \'et\'e obtenu 22 fois,\\
@@ -26204,10 +27666,21 @@ On jette un d\'e 180 fois et on a obtenu :\\
 5 a \'et\'e obtenu 28 fois,\\
 6 a \'et\'e obtenu 20 fois.\\
 Peut-on admettre au vu de cette exp\'erience que le d\'e est r\'egulier ?\\   
-On tape :\\
-{\tt ?}\\
+Par rapport \`a l'exercice pr\'ec\'edent on a doubl\'e le nombre de lancers et
+on a  aussi doubl\'e les effectifs de chaque classe.\\
+On calcule l'\'ecart quadradique r\'eduit, c'est la valeur de :\\
+$\chi^2=\sum_{j=1}^6 \frac{(X_j-180/6)^2}{180/6}$ pour l'\'echantillon consid\'er\'e.\\
+On obtient ici :\\
+$\frac{2}{15}((11-15)^2+(16-15)^2+(17-15)^2+(22-15)^2+(14-15)^2+(10-15)^2)=2*6.4=12.8$\\
+Dans une table du $\chi^2$ on lit qu'au seuil 0.05 et pour un degr\'e de 
+libert\'e 5 la valeur limite de $\chi^2$ est 11.1. \\
+Avec {\tt Xcas}, on tape :\\
+{\tt chisquare\_icdf(5,0.95)}\\
 On obtient :\\
-{\tt ?}
+{\tt 11.0704976935}.\\
+Or on a 12.8>11,1, donc 
+on rejette l'hypoth\`ese : "le d\'e est r\'egulier" au seuil de 5\% ce qui 
+veut dire  "le d\'e n'est pas r\'egulier" dans plus de 95\% des cas.
 \end{enumerate}
 
 \chapter{Les fonctions de programmation}
@@ -26224,47 +27697,56 @@ fichier, par exemple {\tt toto.cas}, puis dans la ligne de commande de
 avec le menu {\tt Fich} sous-menu {\tt Charger} on s\'electionne
 {\tt toto.cas}. 
 
-\subsection{La forme d'une fonction}\index{return}\index{retourne}
+\subsection{La forme d'une fonction}\index{return}\index{retourne}\index{fonction}\index{ffonction}\index{local}\index{var}\index{begin}\index{end}\index{def}
 Une fonction renvoie une valeur : l'instruction {\tt return valeur;} ou 
- {\tt retourne valeur;} fait 
-sortir du programme et  renvoie {\tt valeur}.\\
+ {\tt retourne valeur;} fait sortir du programme et  renvoie {\tt valeur}.\\
 Une fonction a un nom (par exemple {\tt toto}), puis on met entre des
  parenth\`eses les arguments de la fonction (par exemple si 
 {\tt toto} a besion de deux param\`etres {\tt a} et {\tt b} on met
-{\tt toto(a,b)}). On met ensuite {\tt :=} puis on met entre des accolades 
-(ou entre {\tt begin} et {\tt end}) \index{begin}\index{end} le 
-bloc qui d\'efinit la fonction c'est \`a dire
-la suite des instructions (chaque instuction se termine par {\tt ;}) et 
-si l'algorithme d\'efinissant la fonction a besoin de 
+{\tt toto(a,b)}). \\
+On peut d\'efinir une fonction :
+\begin{enumerate}
+\item soit avec les mots cl\'es {\tt fonction....ffonction} \\
+{\tt fonction toto(a,b) ....ffonction}  entourent  le 
+bloc qui d\'efinit la fonction {\tt toto} c'est \`a dire les instructions qui 
+d\'efinissent la fonction. 
+\item soit avec  {\tt :=}\\ 
+on met {\tt toto(a,b):=}  puis les accolades {\tt \{} et {\tt \}} (ou 
+{\tt begin} et {\tt end}) entourent  le 
+bloc qui d\'efinit la fonction {\tt toto} c'est \`a dire les instructions qui 
+d\'efinissent la fonction.
+\item soit si on utilise le langage {\tt Python}, on utilise le mot-cl\'e 
+{\tt def} (voir la compatibilit\'e de Python dans {\tt Xas}). 
+\end{enumerate}
+Dans le bloc qui d\'efinit la fonction chaque instuction se termine par {\tt ;}\\ 
+Si l'algorithme qui d\'efinit la fonction a besoin de 
 variables locales, ces variables devront \^etre d\'eclar\'ees en mettant 
-au d\'ebut du bloc {\tt local} \index{local} (ou {\tt var} \index{var}) puis, 
+au d\'ebut du bloc {\tt local} (ou {\tt var}) puis, 
 les noms des variables locales s\'epar\'es par des virgules puis, {\tt ;} pour 
 terminer cette d\'eclaration. Ces variables locales peuvent \^etre 
-initialis\'ees lors de leur d\'eclaration.\\
+initialis\'ees lors de leur d\'eclaration.
 On \'ecrit par exemple :
 \begin{verbatim}
-toto(a,b):={
-local q,r,s;
-<instrucion-1>;
-........... ;
-<instrucion-n>;
-return r;
-}
+fonction toto(a,b)
+local s,p;
+s:=a+b;
+p:=a*b;
+return [s,p];
+ffonction:;
 \end{verbatim}
 ou
 \begin{verbatim}
 toto(a,b):={
-var q,r,s;
-<instrucion-1>;
-........... ;
-<instrucion-n>;
-return r;
-}
+local s,p;
+s:=a+b;
+p:=a*b;
+return [s,p];
+}:;
 \end{verbatim}
 {\bf Attention} Les variables locales ne sont pas des variables formelles et 
 doivent toujours \^etre affect\`ees dans le corps du programme : on ne 
-d\'efinira donc pas, les variables formelles, avec {\tt local} (ou {\tt var}).\\
-Si on veut qu'une variable d\'eclar\`ee avec {\tt local} (ou {\tt var})soit 
+d\'efinira donc pas les variables formelles,avec {\tt local} (ou {\tt var}).\\
+Si on veut qu'une variable d\'eclar\`ee avec {\tt local} (ou {\tt var}) soit 
 formelle (par ex {\tt a}), il faudra mettre dans le corps du programme soit 
 {\tt purge(a)} soit {\tt assume(a,symbol)}.\\
 {\bf Exemple}
@@ -26291,7 +27773,7 @@ On tape :\\
 On obtient :\\
 {\tt list[],list[3,5],list[3,5]}
 Il ne faut pas tenir compte du message renvoy\'e pas {\tt Xcas} lors de la compilation :\\
-"Attention: x, declar\'ee(s) comme variable(s) globale(s) en compilant g"
+"{\bf Attention} : x, declar\'ee(s) comme variable(s) globale(s) en compilant g"
 car dans {\tt solve} la variable {\tt x} est toujours symbolique.
 
 {\bf Remarque} on peut initialiser les variables locales en m\^eme temps que
@@ -26492,6 +27974,17 @@ puis:
 \begin{center}{\tt A}\end{center}
 On obtient :
 \begin{center}{\tt 65}\end{center}
+
+\subsection{Fonction testant si une condition est v\'erifi\'ee : {\tt assert}}\index{assert}
+{\tt assert} a comme argument un bool\'een.\\
+{\tt assert} interrompt le programme et renvoie une erreur si ce bool\'een est 
+\'egal \`a {\tt faux}.\\
+Par exemple, on veut que les param\`etres {\tt a,b} de la fonction 
+{\tt toto(a,b)} soient positifs.\\
+On\'ecrira alors, au d\'ebut du programme, l'instruction :\\
+{\tt assert(a>0 and b>0)}\\
+Le programme se d\'eroulera si {\tt a} et {\tt b} sont positifs et sinon 
+{\tt assert} renverra une erreur.
 
 \subsection{Fonction testant le type de son argument: {\tt type}}\index{type}
 \index{DOM\_FLOAT}\index{DOM\_INT}\index{DOM\_COMPLEX}\index{DOM\_LIST}\index{DOM\_STRING}\index{DOM\_SYMBOLIC}\index{DOM\_IDENT}\index{DOM\_FUNC}\index{DOM\_RAT}\index{double}\index{integer}\index{complex}\index{string}\index{vector}\index{expression}\index{identifier}\index{func}\index{rational}
@@ -26919,11 +28412,14 @@ pour que ce soit la copie de {\tt [0,1,2,3,4]} qui soit modifi\'ee et non
 la liste {\tt [0,1,2,3,4]} elle-m\^eme.
 
 {\bf Remarque}\\
-On peut aussi utiliser les commandes {\tt makelist}, {\tt seq} ou {\tt \$},
+On peut aussi utiliser les commandes {\tt makelist}, {\tt seq}, {\tt range}  ou
+ {\tt \$},
 par exemple :\\
 {\tt a:=makelist(n,n,0,4);}
 ou\\
-{\tt a:=[n\$(n=0..4)]};
+{\tt a:=[n\$(n=0..4)];}
+ou\\
+{\tt a:=range(5);}
 puis\\
 {\tt a[3] =< 33;}
 car {\tt makelist(n,n,0,4)} ou {\tt [n\$(n=0..4)]} est une liste qui va
@@ -28102,7 +29598,7 @@ On tape  :
 \begin{center}{\tt papier\_pointe(1,pi/3,sqrt(3)/2,x=-2..3,y=-1..2)}\end{center}
 On obtient :
 \begin{center}{\tt Le pointage de tous les sommets du reseau form\'e par des triangles \'equilat\'eraux dans le rectangle $[-2,3]\times[-1,2]$}\end{center}
-\subsection{Avoir du papier avec des lignes : {\tt papier\_ligne\\ line\_paper}}\index{papier\_ligne}\index{line\_paper}
+\subsection{Avoir du papier avec des lignes : {\tt papier\_ligne line\_paper}}\index{papier\_ligne}\index{line\_paper}
 \noindent {\tt papier\_ligne} permet d'avoir du papier avec des lignes 
 espac\'ees de  $ux$ sur l'axe des $x$ et faisant un angle $t$ avec 
 l'horizontale.\\
@@ -28122,7 +29618,7 @@ On tape
 On obtient :
 \begin{center}{\tt des lignes espac\'ees de 0.6 sur l'axe des $x$ et faisant un angle de $\pi/3$ avec $Ox$ dans le rectangle $[-2,3]\times[-1,2]$}
 \end{center}
-\subsection{Avoir du papier quadrill\'e : {\tt papier\_quadrille\\ grid\_paper}}\index{papier\_quadrille}\index{grid\_paper}
+\subsection{Avoir du papier quadrill\'e : {\tt papier\_quadrille grid\_paper}}\index{papier\_quadrille}\index{grid\_paper}
 \noindent {\tt papier\_quadrille} permet d'avoir du papier quadrill\'e c'est 
 \`a dire de tracer un reseau form\'e de droites horizontales et de droites
 de pente $\tan(t)$.\\
@@ -28142,7 +29638,7 @@ On tape  pour avoir un quadrillage dans un rectangle :
 On obtient :
 \begin{center}{\tt Le reseau form\'e par des losanges d'angle $\pi/3$ dans le rectangle $[-2,3]\times[-1,2]$}
 \end{center}
-\subsection{Avoir du papier triangul\'e : {\tt papier\_triangule\\ triangle\_paper}}\index{papier\_triangule}\index{triangle\_paper}
+\subsection{Avoir du papier triangul\'e : {\tt papier\_triangule triangle\_paper}}\index{papier\_triangule}\index{triangle\_paper}
 \noindent {\tt papier\_triangule} permet d'avoir du papier triangul\'e c'est 
 \`a dire de tracer un reseau triangulaire d'angle $t$.\\
 {\tt papier\_triangule} a 3,4 ou 5 arguments : l'unit\'e {\tt ux} sur l'axe des 
@@ -28909,7 +30405,7 @@ Ou on tape :
 On obtient :
 \begin{center}{\tt Le trac\'e du point d'affixe 2*exp(i*pi/4)}\end{center}
 
-\subsection{Un des points d'intersection de deux objets g\'eom\'etriques : {\tt single\_inter inter\_unique inter\_droite\\ line\_inter}}\index{inter\_unique|textbf}\index{inter\_droite|textbf}\index{single\_inter|textbf}\index{line\_inter|textbf}\label{sec:interdroite2}
+\subsection{Un des points d'intersection de deux objets g\'eom\'etriques : {\tt single\_inter inter\_unique inter\_droite line\_inter}}\index{inter\_unique|textbf}\index{inter\_droite|textbf}\index{single\_inter|textbf}\index{line\_inter|textbf}\label{sec:interdroite2}
 {\bf Voir aussi :} \ref{sec:interdroite3} pour la g\'eom\'etrie 3-d.\\
 \noindent{\tt inter\_unique} ou {\tt inter\_droite} a 2 ou 3 arguments qui 
 sont deux objets g\'eom\'etriques et \'eventuellement un 3i\`eme argument qui 
@@ -29004,7 +30500,7 @@ On tape :
 \begin{center}{\tt milieu(-1,1+i)}\end{center}
 On obtient :
 \begin{center}{\tt Le point d'affixe i/2 est trac\'e avec une croix}\end{center}
-\subsection{L'isobarycentre de $n$ points : {\tt isobarycenter\\ isobarycentre}}\index{isobarycentre|textbf}\index{isobarycenter|textbf}\label{sec:isobarycentre2}
+\subsection{L'isobarycentre de $n$ points : {\tt isobarycenter isobarycentre}}\index{isobarycentre|textbf}\index{isobarycenter|textbf}\label{sec:isobarycentre2}
 {\bf Voir aussi :} \ref{sec:isobarycentre3} pour la g\'eom\'etrie 3-d.\\
 \noindent{\tt isobarycentre} ou {\tt isobarycenter} a comme argument la liste 
 (ou la s\'equence) de $n$ points ou de $n$ nombres complexes repr\'esentant 
@@ -29077,7 +30573,7 @@ On tape :
 On obtient :
 \begin{center}{\tt Le point d'affixe 1+i est trac\'e avec une croix et est not\'e M}\end{center}
 
-\subsection{Les sommets d'un polygone : {\tt vertices vertices\_abc\\ sommets sommets\_abc}}\index{sommets|textbf}\index{sommets\_abc|textbf}\index{vertices|textbf}\index{vertices\_abc|textbf}
+\subsection{Les sommets d'un polygone : {\tt vertices vertices\_abc sommets sommets\_abc}}\index{sommets|textbf}\index{sommets\_abc|textbf}\index{vertices|textbf}\index{vertices\_abc|textbf}
 \noindent{\tt sommets} ou {\tt sommets\_abc} ou {\tt vertices} ou 
 {\tt vertices\_abc} a comme argument
 un polygone.\\ 
@@ -34132,11 +35628,12 @@ On peut voir une image dans un rectangle d'un graphe 2d, ou coll\'e
 Par exemple la commande :\\
 \verb|rectangle(200,0,1/2,gl_texture="terre.jpg")|
 affiche dans le plan un rectangle (d\'efini par les points 200 et 0 de rapport 
-1/2) contenant l'image num\'eris\'ee dans le fichier \verb|terre.jpg|:
-%\\ \ \\ \includegraphics[width=\textwidth]{terreex}\\
+1/2) contenant l'image num\'eris\'ee dans le fichier \verb|terre.jpg|
+%\ \\
+%\includegraphics[width=\textwidth]{terreex}\\
 Dans l'espace, on peut par exemple coller l'image sur une sph\`ere
 de centre l'origine et de rayon 1 par la commande :\\
-\verb|sphere([0,0,0],1, gl_material=[gl_texture,"terre.jpg"])|: \\
+\verb|sphere([0,0,0],1, gl_material=[gl_texture,"terre.jpg"])|
 %\includegraphics[width=\textwidth]{terrex}
 \subsection{Pour  recr\'eer ou cr\'eer une image : {\tt writergb}}\index{writergb}
 \noindent{\tt writergb} permet de stocker une image lue avec {\tt readrgb} dans

@@ -78,13 +78,9 @@ using namespace std;
 #endif // win32
 #endif // ndef bestaos
 
-#if defined VISUALC || defined BESTA_OS
-#ifndef RTOS_THREADX
-#ifndef BESTA_OS
+#if defined VISUALC && !defined BESTA_OS && !defined RTOS_THREADX && !defined FREERTOS
 #include <Windows.h>
-#endif // besta_os
-#endif // rtos_threadx
-#endif // visualc || besta_os
+#endif 
 
 #ifdef BESTA_OS
 #include <stdlib.h>
@@ -170,7 +166,9 @@ namespace giac {
 #endif
 
 #if defined VISUALC || defined BESTA_OS
+#ifndef FREERTOS
   int R_OK=4;
+#endif
   int access(const char *path, int mode ){
     // return _access(path, mode );
     return 0;
@@ -3033,6 +3031,8 @@ extern "C" void Sleep(unsigned int miliSecond);
       vector_completions_ptr()->clear();
       int n=int(vector_aide_ptr()->size());
       for (int k=0;k<n;++k){
+	if (debug_infolevel>10)
+	  CERR << "+ " << (*vector_aide_ptr())[k].cmd_name  << endl;
 	vector_completions_ptr()->push_back((*vector_aide_ptr())[k].cmd_name);
       }
     }
@@ -3903,7 +3903,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #else // __APPLE__
   bool my_isnan(double d){
 #if defined VISUALC || defined BESTA_OS
-#ifndef RTOS_THREADX
+#if !defined RTOS_THREADX && !defined FREERTOS
     return _isnan(d)!=0;
 #else
     return isnan(d);
@@ -4573,6 +4573,10 @@ unsigned int ConvertUTF8toUTF16 (
       return true;
     }
 #endif
+    if (strlen(s)==1 && s[0]==':'){
+      g=at_deuxpoints;
+      return true;
+    }
     return false;
   }
 
@@ -5558,6 +5562,41 @@ unsigned int ConvertUTF8toUTF16 (
     return true;
   }
 
+  void convert_python(string & cur,GIAC_CONTEXT){
+    bool indexshift=xcas_mode(contextptr)!=0 || abs_calc_mode(contextptr)==38;
+    for (int pos=1;pos<int(cur.size());++pos){
+      char prevch=cur[pos-1],curch=cur[pos];
+      if (curch==':' && (prevch=='[' || prevch==',')){
+	cur.insert(cur.begin()+pos,indexshift?'1':'0');
+	continue;
+      }
+      if (curch==']' && (prevch==':' || prevch==',')){
+	cur[pos-1]='.';
+	cur.insert(cur.begin()+pos,'.');
+	++pos;
+	if (indexshift)
+	  cur.insert(cur.begin()+pos,'0');
+	else {
+	  cur.insert(cur.begin()+pos,'1');
+	  cur.insert(cur.begin()+pos,'-');
+	}
+	continue;
+      }
+      if (curch=='%'){
+	cur.insert(cur.begin()+pos+1,'/');
+	++pos;
+	continue;
+      }
+      if (curch=='=' && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!='=' && prevch!='+' && prevch!='-' && prevch!='*' && prevch!='/' && (pos==int(cur.size())-1 || (cur[pos+1]!='=' && cur[pos+1]!='<'))){
+	cur.insert(cur.begin()+pos,':');
+	++pos;
+	continue;
+      }
+      if (prevch=='/' && curch=='/')
+	cur[pos]='%';
+    }
+  }
+
   // detect Python like syntax: 
   // remove """ """ docstrings and ''' ''' comments
   // cut string in lines, remove comments at the end (search for #)
@@ -5582,11 +5621,32 @@ unsigned int ConvertUTF8toUTF16 (
     first=s_orig.find("xcas_mode");
     if (first>=0 && first<sss)
       return s_orig;
+    bool pythonmode=false;
     for (first=0;first<sss;){
+      int pos=s_orig.find(":]");
+      if (pos>=0 && pos<sss){
+	pythonmode=true;
+	break;
+      }
+      pos=s_orig.find("[:");
+      if (pos>=0 && pos<sss){
+	pythonmode=true;
+	break;
+      }
+      pos=s_orig.find(",:");
+      if (pos>=0 && pos<sss){
+	pythonmode=true;
+	break;
+      }
+      pos=s_orig.find(":,");
+      if (pos>=0 && pos<sss){
+	pythonmode=true;
+	break;
+      }
       first=s_orig.find(':',first);
       if (first<0 || first>=sss)
 	return s_orig; // not Python like
-      int pos=s_orig.find("lambda");
+      pos=s_orig.find("lambda");
       if (pos>=0 && pos<sss)
 	break;
       int endl=s_orig.find('\n',first);
@@ -5608,7 +5668,6 @@ unsigned int ConvertUTF8toUTF16 (
 	break;
     }
     // probably Python-like
-    bool pythonmode=false;
     string res(s_orig);
     if (res.size()>18 && res.substr(0,17)=="add_autosimplify(" 
 	&& res[res.size()-1]==')'
@@ -5628,20 +5687,38 @@ unsigned int ConvertUTF8toUTF16 (
 	res=res.substr(pos+1,res.size()-pos-1);
       }
       // detect comment (outside of a string) and lambda expr:expr
-      bool instring=false;
+      bool instring=false,chkfrom=true;
       for (pos=0;pos<int(cur.size());++pos){
 	char ch=cur[pos];
-	if (ch=='"')
+	if (ch==' ' || ch==char(9))
+	  continue;
+	if (ch=='"'){
+	  chkfrom=false;
 	  instring=!instring;
+	}
 	if (instring) continue;
 	if (ch=='#'){
 	  cur=cur.substr(0,pos);
+	  pythonmode=true;
 	  break;
 	}
+	// skip from * import *
+	if (chkfrom && ch=='f' && pos+15<int(cur.size()) && cur.substr(pos,5)=="from "){
+	  chkfrom=false;
+	  int posi=cur.find(" import ");
+	  if (posi>pos+5 && posi<int(cur.size())){
+	    cur=cur.substr(0,pos);
+	    pythonmode=true;
+	    break;
+	  }
+	}
+	chkfrom=false;
 	if (ch=='l' && pos+6<int(cur.size()) && cur.substr(pos,6)=="lambda" && instruction_at(cur,pos,6)){
 	  int posdot=cur.find(':',pos);
-	  if (posdot>pos+7 && posdot<int(cur.size())-1 && cur[posdot+1]!='=')
+	  if (posdot>pos+7 && posdot<int(cur.size())-1 && cur[posdot+1]!='='){
+	    pythonmode=true;
 	    cur=cur.substr(0,pos)+cur.substr(pos+6,posdot-pos-6)+"->"+cur.substr(posdot+1,cur.size()-posdot-1);
+	  }
 	}
       }
       // detect : at end of line
@@ -5649,7 +5726,10 @@ unsigned int ConvertUTF8toUTF16 (
 	if (cur[pos]!=' ' && cur[pos]!=char(9))
 	  break;
       }
-      if (pos<=0) continue;
+      if (pos<0){ 
+	s+='\n';  
+	continue;
+      }
       // count whitespaces, compare to stack
       int ws=0;
       int cs=cur.size();
@@ -5668,7 +5748,9 @@ unsigned int ConvertUTF8toUTF16 (
 	progpos=cur.find("elif");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
 	  pythonmode=true;
-	  s += cur.substr(0,pos)+" then\n";
+	  cur=cur.substr(0,pos);
+	  convert_python(cur,contextptr);
+	  s += cur+" then\n";
 	  continue;
 	}
       }
@@ -5693,21 +5775,27 @@ unsigned int ConvertUTF8toUTF16 (
 	int progpos=cur.find("if");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,2)){
 	  pythonmode=true;
-	  s += cur.substr(0,pos)+" then\n";
+	  cur=cur.substr(0,pos);
+	  convert_python(cur,contextptr);
+	  s += cur +" then\n";
 	  stack.push_back(int_string(ws,"fi"));
 	  continue;
 	}
 	progpos=cur.find("for");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
 	  pythonmode=true;
-	  s += cur.substr(0,pos)+" do\n";
+	  cur=cur.substr(0,pos);
+	  convert_python(cur,contextptr);
+	  s += cur+" do\n";
 	  stack.push_back(int_string(ws,"od"));
 	  continue;
 	}
 	progpos=cur.find("while");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,5)){
 	  pythonmode=true;
-	  s += cur.substr(0,pos)+" do\n";
+	  cur=cur.substr(0,pos);
+	  convert_python(cur,contextptr);
+	  s += cur +" do\n";
 	  stack.push_back(int_string(ws,"od"));
 	  continue;
 	}
@@ -5723,23 +5811,8 @@ unsigned int ConvertUTF8toUTF16 (
 	// normal line add ; at end
 	if (pythonmode && pos>=0 && cur[pos]!=';')
 	  cur = cur +';';
-	if (pythonmode){
-	  for (pos=1;pos<int(cur.size());++pos){
-	    char prevch=cur[pos-1],curch=cur[pos];
-	    if (curch=='%'){
-	      cur.insert(cur.begin()+pos+1,'/');
-	      ++pos;
-	      continue;
-	    }
-	    if (curch=='=' && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!='=' && (pos==int(cur.size())-1 || cur[pos+1]!='=')){
-	      cur.insert(cur.begin()+pos,':');
-	      ++pos;
-	      continue;
-	    }
-	    if (prevch=='/' && curch=='/')
-	      cur[pos]='%';
-	  }
-	}
+	if (pythonmode)
+	  convert_python(cur,contextptr);
 	cur = cur +'\n';
 	s = s+cur;
       }
@@ -5748,8 +5821,16 @@ unsigned int ConvertUTF8toUTF16 (
       s += ' '+stack.back().endbloc+';';
       stack.pop_back();
     }
-    if (pythonmode)
+    if (pythonmode){
+      char ch;
+      while ((ch=s[s.size()-1])==';' || (ch=='\n'))
+	s=s.substr(0,s.size()-1);
+      if (s.size()>10 && s.substr(s.size()-9,9)=="ffunction")
+	s += ":;";
+      else
+	s += ";";
       *logptr(contextptr) << "// Python-like syntax, check string delimiters \"\" and declare local variables.\nTranslated to Xcas as:\n" << s << endl;
+    }
     return s;
   }
   

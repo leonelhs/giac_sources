@@ -4,97 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Matrice de Jordan rationnelle : rat_jordan</title>
+<title>Norme de Frobenius d’une matrice : frobenius_norm</title>
 </head>
 <body >
 <a href="cascmd_fr634.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr636.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec778" class="subsection">6.56.4  Matrice de Jordan rationnelle : <span style="font-family:monospace">rat_jordan</span></h3>
-<p><a id="hevea_default1168"></a>
-<span style="font-family:monospace">rat_jordan</span> a comme argument une matrice <span style="font-style:italic">A</span> d’ordre <span style="font-style:italic">n</span> à 
-coefficients rationnels.<br>
-<span style="font-family:monospace">rat_jordan</span> renvoie :
-</p><ul class="itemize"><li class="li-itemize">
-en mode <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> ou <span style="font-family:monospace">TI</span><br>
-une séquencee composée de deux matrices : une matrice 
-de changement de base <span style="font-style:italic">P</span>, suivie de la matrice de Jordan <span style="font-style:italic">J</span> associée à 
-<span style="font-style:italic">A</span> si celle-ci est rationnelle ou de la matrice dont les blocs de Jordan sont 
-remplacés par les matrices compagnons associées au facteur non 
-rationnellement reductible du polynôme caractéristique de <span style="font-style:italic">A</span> (c’est la 
-matrice la plus reduite à coefficient dans le corps de <span style="font-style:italic">A</span>, ou le corps 
-complexifié de <span style="font-style:italic">A</span> si on est en mode complexe).<br>
-</li><li class="li-itemize">en mode <span style="font-family:monospace">Maple</span><br>
- la matrice de Jordan <span style="font-style:italic">J</span> associée à <span style="font-style:italic">A</span> si celle-ci est rationnelle ou de
-la matrice dont les blocs de Jordan sont remplacés par les matrices compagnons
-associées au facteur non rationnellement reductible du polynôme 
-caractéristique de <span style="font-style:italic">A</span>. On peut cependant obtenir la matrice de changement de
-base <span style="font-style:italic">P</span>, dans une variable passée en second argument, par exemple 
-<div class="center"> <span style="font-family:monospace">rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</span>
-</div>
-</li></ul><p>
-On a :<br>
-<span style="font-style:italic">J</span>=<span style="font-style:italic">P</span><sup>−1</sup><span style="font-style:italic">AP</span> avec <span style="font-style:italic">J</span> est à coefficients rationnels.<br>
-<span style="font-weight:bold">Remarques</span>
-</p><ul class="itemize"><li class="li-itemize">
-La syntaxe <span style="font-family:monospace">Maple</span> est aussi valable dans les autres modes, par 
-exemple, en mode <span style="font-family:monospace">Xcas</span>, on tape :
-<div class="center"> <span style="font-family:monospace">rat_jordan([[4,1,1],[1,4,1],[1,1,4]],’P’)</span></div>
-On obtient :
-<div class="center"> <span style="font-family:monospace">[[1,-1,1/2],[1,0,-1],[1,1,1/2]]</span></div>
-puis <span style="font-family:monospace">P</span> renvoie :
-<div class="center"> <span style="font-family:monospace">[[6,0,0],[0,3,0],[0,0,3]]</span></div>,
-</li><li class="li-itemize">Les coefficients de <span style="font-style:italic">P</span> et de <span style="font-style:italic">J</span> appartiennent au corps des 
-coefficients de <span style="font-style:italic">A</span>.<br>
-Par exemple, en mode <span style="font-family:monospace">Xcas</span>, on tape :
-<div class="center"> <span style="font-family:monospace">rat_jordan([[1,0,1],[0,2,-1],[1,-1,1]])</span></div>
-On obtient :
-<div class="center"> <span style="font-family:monospace">[[1,1,2],[0,0,-1],[0,1,2]],[[0,0,-1],[1,0,-3],[0,1,4]]</span></div>
-On tape (on met <span style="font-family:monospace">-pcar(...)</span> car l’argument de <span style="font-family:monospace">companion</span> doit être un polynôme unitaire (cf <a href="cascmd_fr642.html#sec%3Acompagne">6.56.11</a>)
-<div class="center"><span style="font-family:monospace">companion(-pcar([[1,0,1],[0,2,-1],[1,-1,1]],x),x)</span></div>
-On obtient :
-<div class="center"> <span style="font-family:monospace">[[0,0,-1],[1,0,-3],[0,1,4]]</span></div>
+<h3 id="sec783" class="subsection">6.56.1  Norme de Frobenius d’une matrice : <span style="font-family:monospace">frobenius_norm</span></h3>
+<p><a id="hevea_default1157"></a><a id="sec:fnormm"></a>
+<span style="font-family:monospace">frobenius_norm</span> a comme argument une matrice <span style="font-style:italic">A</span> 
+(voir aussi <a href="cascmd_fr550.html#sec%3Al2normv">6.43.1</a>).<br>
+<span style="font-family:monospace">frobenius_norm</span> renvoie la norme de Frobenius de <span style="font-style:italic">A</span> i.e.<br>
+ √<span style="text-decoration:overline">∑</span><sub><span style="text-decoration:overline"><span style="font-style:italic">j</span></span><span style="text-decoration:overline">,</span><span style="text-decoration:overline"><span style="font-style:italic">k</span></span></sub><span style="text-decoration:overline"> </span><span style="text-decoration:overline"><span style="font-style:italic">a</span></span><sub><span style="text-decoration:overline"><span style="font-style:italic">j</span></span><span style="text-decoration:overline">,</span><span style="text-decoration:overline"><span style="font-style:italic">k</span></span></sub><sup><span style="text-decoration:overline">2</span></sup> si l’argument est <span style="font-style:italic">A</span>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>.<br>
 On tape :
-<div class="center"> <span style="font-family:monospace">rat_jordan([[1,0,0],[0,1,1],[1,1,-1]])</span></div>
+</p><div class="center"><span style="font-family:monospace">B:=[[1,2,3],[3,-9,6],[4,5,6]]</span></div><p>
+puis,
+</p><div class="center"><span style="font-family:monospace">frobenius_norm(B)</span></div><p>
 On obtient :
-<div class="center"> <span style="font-family:monospace">[[-1,0,0],[1,1,1],[0,0,1]],[[1,0,0],[0,0,2],[0,1,0]]</span></div>
-On tape :
-<div class="center"> <span style="font-family:monospace">factor(pcar([[1,0,0],[0,1,1],[1,1,-1]],x))</span></div>
-On obtient :
-<div class="center"> <span style="font-family:monospace">-(x-1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2)</span></div>
-On tape :
-<div class="center"> <span style="font-family:monospace">companion((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2),x)</span></div>
-On obtient :
-<div class="center"> <span style="font-family:monospace">[[0,2],[1,0]]</span></div></li><li class="li-itemize">Lorsque <span style="font-style:italic">A</span> est symétrique et a des valeurs propres d’ordre multiple,
-<span style="font-family:monospace">Xcas</span> renvoie des vecteurs propres orthogonaux mais pas forcément 
-normés i.e. <span style="font-family:monospace">tran(P)*P</span> est une matrice diagonale de diagonale le carré
-de la norme des vecteurs propres.<br>
-On tape :
-<div class="center"><span style="font-family:monospace">rat_jordan([[4,1,1],[1,4,1],[1,1,4]])</span></div>
-On obtient :
-<div class="center"><span style="font-family:monospace">[[1,-1,1/2],[1,0,-1],[1,1,1/2]],[[6,0,0],[0,3,0],[0,0,3]]</span></div>
-</li></ul><p>
-On tape en mode <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> et <span style="font-family:monospace">TI</span>:
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[1,0,0],[1,2,-1],[0,0,1]])</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[[0,1,0],[1,0,1],[0,1,1]],[[2,0,0],[0,1,0],[0,0,1]] </span></div><p>
-On tape en mode <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> et <span style="font-family:monospace">TI</span>:
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[[[1,2,1],[0,1,0],[1,2,0]],[[2,1,0],[0,2,1],[0,0,2]]]</span></div><p>
-En mode complexe et en mode <span style="font-family:monospace">Xcas</span>, <span style="font-family:monospace">Mupad</span> et <span style="font-family:monospace">TI</span>, on tape :
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[2,0,0],[0,2,-1],[2,1,2]])</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[[1,0,0],[-2,-1,-1],[0,-i,i]],[[2,0,0],[0,2-i,0],[0,0,2+i]]</span></div><p>
-On tape en mode <span style="font-family:monospace">Maple</span> :
-</p><div class="center"><span style="font-family:monospace">rat_jordan([[1,0,0],[1,2,-1],[0,0,1]],’P’)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[[2,0,0],[0,1,0],[0,0,1]]</span></div><p>
-puis on tape :
-</p><div class="center"><span style="font-family:monospace">P)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[[0,1,0],[1,0,1],[0,1,1]]</span></div>
+</p><div class="center"><span style="font-family:monospace">sqrt(217)</span></div><p>
+En effet : √<span style="text-decoration:overline">1+4+9+9+81+36+16+25+36</span>=√<span style="text-decoration:overline">217</span>≃ 14.7309198627</p>
 <hr>
 <a href="cascmd_fr634.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

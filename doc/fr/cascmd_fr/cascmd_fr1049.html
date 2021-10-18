@@ -4,37 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>L’équation paramétrique d’un objet géométrique : parameq</title>
+<title>Ligne polygonale dans l’espace : open_polygon polygone_ouvert</title>
 </head>
 <body >
 <a href="cascmd_fr1048.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1050.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1270" class="subsection">11.12.6  L’équation paramétrique d’un objet géométrique : <span style="font-family:monospace">parameq</span></h3>
-<p><a id="hevea_default2039"></a><a id="sec:parameq3"></a>
-<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr952.html#sec%3Aparameq2">10.15.8</a> pour la géométrie plane.<br>
-<span style="font-family:monospace">parameq</span>, en géométrie 3-d, permet d’avoir l’équation
-paramétrique fonction du paramètre <span style="font-family:monospace">t</span> ou des paramètres <span style="font-family:monospace">u</span> et 
-<span style="font-family:monospace">v</span>, d’un objet géométrique.<br>
-<span style="font-weight:bold">Attention</span> !!! il faut auparavant purger ces variables en tapant par 
-exemple : <span style="font-family:monospace">purge(t,u,v)</span>.<br>
+<h3 id="sec1273" class="subsection">11.9.4  Ligne polygonale dans l’espace : <span style="font-family:monospace">open_polygon polygone_ouvert</span></h3>
+<p><a id="hevea_default2043"></a><a id="hevea_default2044"></a><a id="sec:polygonou3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr941.html#sec%3Apolygonou2">10.12.4</a> pour la géométrie plane.<br>
+<span style="font-family:monospace">polygone_ouvert</span>, en géométrie 3-d, a comme argument une
+séquence) de <span style="font-style:italic">n</span> points 3-d.<br>
+<span style="font-family:monospace">polygone_ouvert</span> renvoie et trace la ligne polygonale ayant pour 
+sommets ces <span style="font-style:italic">n</span> points.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">parameq(droite(point(0,1,0),point(1,2,3)))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">polygone_ouvert(point(0,0,0),point(0,1,0),point(0,2,2),point(1,0,2))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[-t+1,-t+2,-3*t+3]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">parameq(sphere(point(0,1,0),2))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">point[2*cos(u)*cos(v),1+2*cos(u)*sin(v),2*sin(u)]</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">normal(parameq(ellipse(point(-1,1,1),point(1,1,1), point(0,1,2))))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">[sqrt(2)*cos(t),1,sin(t)+1]</span></div><p>
-On peut vérifier, on tape :
-</p><div class="center"><span style="font-family:monospace">plotparam([sqrt(2)*cos(t),1,sin(t)+1],t=0..2*pi);</span></div><div class="center"><span style="font-family:monospace">F1:=point(-1,1,1);F2:=point(1,1,1);M:=point(0,1,2)</span></div><p>
-On obtient l’ellipse, ces 2 foyers <span style="font-style:italic">F</span><sub>1</sub> et <span style="font-style:italic">f</span>−2 et le point <span style="font-style:italic">M</span> sur l’ellipse.
-</p>
+</p><div class="center"><span style="font-family:monospace">Une ligne polygonale de sommets les points donnés</span></div>
 <hr>
 <a href="cascmd_fr1048.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

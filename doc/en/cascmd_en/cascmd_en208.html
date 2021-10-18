@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html >
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
 <title>Rational interpolation : thiele</title>
@@ -11,9 +11,9 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en209.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec254" class="subsection">2.24.28  Rational interpolation : <span style="font-family:monospace">thiele</span></h3>
+<h3 id="sec254" class="subsection">2.24.28Â Â Rational interpolation : <span style="font-family:monospace">thiele</span></h3>
 <p><a id="hevea_default390"></a>
-<span style="font-family:monospace">thiele</span> takes as the first argument a matrix <span style="font-family:monospace">data</span> of type  <span style="font-style:italic">n</span>× 2  where that  <span style="font-style:italic">i</span> -th row holds coordinates  <span style="font-style:italic">x</span>  and  <span style="font-style:italic">y</span>  of  <span style="font-style:italic">i</span> -th point, respectively. The second argument is <span style="font-family:monospace">v</span>, which may be an identifier, number or any symbolic expression. Function returns  <span style="font-style:italic">R</span>(<span style="font-style:italic">v</span>)  where  <span style="font-style:italic">R</span>  is the rational interpolant. Instead of a single matrix <span style="font-family:monospace">data</span>, two vectors  <span style="font-weight:bold"><span style="font-style:italic">x</span></span>=(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,&#X2026;,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)  and  <span style="font-weight:bold"><span style="font-style:italic">y</span></span>=(<span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,&#X2026;,<span style="font-style:italic">y</span><sub><span style="font-style:italic">n</span></sub>)  may be given (in this case, <span style="font-family:monospace">v</span> is given as the third argument).</p><p>This method computes Thiele interpolated continued fraction based on the concept of reciprocal differences.</p><p>It is not guaranteed that  <span style="font-style:italic">R</span>  is continuous, i.e. it may have singularities in the shortest segment which contains all components of  <span style="font-weight:bold"><span style="font-style:italic">x</span></span> .</p>
+<span style="font-family:monospace">thiele</span> takes as the first argument a matrix <span style="font-family:monospace">data</span> of type  <span style="font-style:italic">n</span>Ã— 2  where that  <span style="font-style:italic">i</span> -th row holds coordinates  <span style="font-style:italic">x</span>  and  <span style="font-style:italic">y</span>  of  <span style="font-style:italic">i</span> -th point, respectively. The second argument is <span style="font-family:monospace">v</span>, which may be an identifier, number or any symbolic expression. Function returns  <span style="font-style:italic">R</span>(<span style="font-style:italic">v</span>)  where  <span style="font-style:italic">R</span>  is the rational interpolant. Instead of a single matrix <span style="font-family:monospace">data</span>, two vectors  <span style="font-weight:bold"><span style="font-style:italic">x</span></span>=(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,â€¦,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)  and  <span style="font-weight:bold"><span style="font-style:italic">y</span></span>=(<span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,â€¦,<span style="font-style:italic">y</span><sub><span style="font-style:italic">n</span></sub>)  may be given (in this case, <span style="font-family:monospace">v</span> is given as the third argument).</p><p>This method computes Thiele interpolated continued fraction based on the concept of reciprocal differences.</p><p>It is not guaranteed that  <span style="font-style:italic">R</span>  is continuous, i.e.Â it may have singularities in the shortest segment which contains all components of  <span style="font-weight:bold"><span style="font-style:italic">x</span></span> .</p>
 <h4 id="sec255" class="subsubsection">Examples</h4>
 <p>
 Input :
@@ -23,7 +23,7 @@ Output :
 Input :
 </p><div class="center"><span style="font-family:monospace">thiele([1,2,a],[3,4,5],3)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(13*a-29)/(3*a-7)</span></div><p>In the following example, data is obtained by sampling the function  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=(1&#X2212;<span style="font-style:italic">x</span><sup>4</sup>) <span style="font-style:italic">e</span><sup>1&#X2212;<span style="font-style:italic">x</span><sup>3</sup></sup> .</p><p>Input :
+</p><div class="center"><span style="font-family:monospace">(13*a-29)/(3*a-7)</span></div><p>In the following example, data is obtained by sampling the function  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=(1âˆ’<span style="font-style:italic">x</span><sup>4</sup>)Â <span style="font-style:italic">e</span><sup>1âˆ’<span style="font-style:italic">x</span><sup>3</sup></sup> .</p><p>Input :
 </p><div class="center">
 <span style="font-family:monospace">data_x:=[-1,-0.75,-0.5,-0.25,0,</span><br>
 <span style="font-family:monospace">0.25,0.5,0.75,1,1.25,1.5,1.75,2];</span>

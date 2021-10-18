@@ -4,27 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title></title>
+<title>Lecture d’un fichier wav : readwav</title>
 </head>
 <body >
 <a href="cascmd_fr1105.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1107.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h4 id="sec1340" class="subsubsection">Le type <span style="font-family:monospace">gen</span></h4>
-<p>
-<span style="font-family:monospace">gen</span> est le type qui sert à représenter toutes les
-données de calcul formel : les fonctions de calcul formel travaillent sur des
-<span style="font-family:monospace">gen</span>.<br>
-Si g est de type <span style="font-family:monospace">gen</span> ( <span style="font-family:monospace">gen g;</span>), selon le type de <span style="font-family:monospace">g</span>,
-<span style="font-family:monospace">g.type</span> aura différentes valeurs qui sont :<br>
-<span style="font-family:monospace">_INT_</span> si <span style="font-family:monospace">g.val</span> est un entier de type <span style="font-family:monospace">int</span>,<br>
-<span style="font-family:monospace">_DOUBLE_</span> si <span style="font-family:monospace">g._DOUBLE_val</span> est un réel de type <span style="font-family:monospace">double</span><br>
-<span style="font-family:monospace">_SYMB</span> si <span style="font-family:monospace">g._SYMBptr</span> pointe sur un objet de type <span style="font-family:monospace">symbolique</span><br>
-<span style="font-family:monospace">_VECT</span> si <span style="font-family:monospace">g._VECTptr</span> pointe sur un vecteur de type <span style="font-family:monospace">vecteur</span><br>
-<span style="font-family:monospace">_ZINT</span> si <span style="font-family:monospace">g._ZINTptr</span> pointe sur un entier de type <span style="font-family:monospace">zint</span><br>
-<span style="font-family:monospace">_IDNT</span> si <span style="font-family:monospace">g._IDNTptr</span> pointe sur un identificateur de type <span style="font-family:monospace">idnt</span><br>
-<span style="font-family:monospace">_CPLX</span> si <span style="font-family:monospace">g._CPLXptr</span> pointe sur un complexe de type <span style="font-family:monospace">complexe</span></p><hr>
+<h3 id="sec1341" class="subsection">12.1.1  Lecture d’un fichier wav : <span style="font-family:monospace">readwav</span></h3>
+<p><a id="hevea_default2138"></a>
+La commande <span style="font-family:monospace">readwav</span> permet de lire un fichier son stocké
+au format WAV (extension de fichier <span style="font-family:monospace">.wav</span>), on stocke en général
+le résultat dans une variable, par exemple :<br>
+<span style="font-family:monospace">s:=readwav("sound.wav")</span> <br>
+lit le fichier <code>sound.wav</code> et place le vecteur résultat dans la variable
+<code>s</code>.<br>
+Le vecteur renvoyé est composé de :
+</p><ul class="itemize"><li class="li-itemize">
+une liste donnant le format déchantillonage du son :
+le nombre de canaux (en général 1 pour mono ou 2 pour stéréo),
+le nombre de bits (en général 16), la fréquence
+d’échantillonage (44100 pour un son de qualité CD),
+et le nombre d’octets des données (hors en-tête), soit
+le nombre de secondes multiplié par la fréquence
+d’échantillonage multiplié par le nombre de bits/8 multiplié par
+le nombre de canaux.
+</li><li class="li-itemize">pour chaque canal, la liste des données numériques du son
+</li></ul><p>
+Ainsi si <code>s[0]</code> vaut <code>[1,16,44100,88200]</code> on a un
+enregistrement d’une seconde sur un canal en 16 bits, un son de
+qualité CD.<br>
+On a alors <code>size(s)==2</code> (1+nombre de canaux), et <code>size(s[1])==44100</code>.</p>
+<hr>
 <a href="cascmd_fr1105.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1107.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

@@ -1,31 +1,33 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
-            "http://www.w3.org/TR/REC-html40/loose.dtd">
-<HTML>
-<HEAD>
-
-<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<META name="GENERATOR" content="hevea 1.10">
-<LINK rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<TITLE></TITLE>
-</HEAD>
-<BODY >
-<A HREF="cascmd_fr1106.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-<HR>
-<H4 CLASS="subsubsection"><A NAME="toc35"></A>Le type <TT>gen</TT></H4><P>
-<TT>gen</TT> est le type qui sert à représenter toutes les
-données de calcul formel : les fonctions de calcul formel travaillent sur des
-<TT>gen</TT>.<BR>
-Si g est de type <TT>gen</TT> ( <TT>gen g;</TT>), selon le type de <TT>g</TT>,
-<TT>g.type</TT> aura différentes valeurs qui sont :<BR>
-<TT>_INT_</TT> si <TT>g.val</TT> est un entier de type <TT>int</TT>,<BR>
-<TT>_DOUBLE_</TT> si <TT>g._DOUBLE_val</TT> est un réel de type <TT>double</TT><BR>
-<TT>_SYMB</TT> si <TT>g._SYMBptr</TT> pointe sur un objet de type <TT>symbolique</TT><BR>
-<TT>_VECT</TT> si <TT>g._VECTptr</TT> pointe sur un vecteur de type <TT>vecteur</TT><BR>
-<TT>_ZINT</TT> si <TT>g._ZINTptr</TT> pointe sur un entier de type <TT>zint</TT><BR>
-<TT>_IDNT</TT> si <TT>g._IDNTptr</TT> pointe sur un identificateur de type <TT>idnt</TT><BR>
-<TT>_CPLX</TT> si <TT>g._CPLXptr</TT> pointe sur un complexe de type <TT>complexe</TT></P><HR>
-<A HREF="cascmd_fr1106.html"><IMG SRC="previous_motif.gif" ALT="Previous"></A>
-<A HREF="index.html"><IMG SRC="contents_motif.gif" ALT="Up"></A>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<link rel="stylesheet" type="text/css" href="cascmd_fr.css">
+<title>Écriture d’un fichier wav : writewav</title>
+</head>
+<body >
+<a href="cascmd_fr1106.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1108.html"><img src="next_motif.gif" alt="Next"></a>
+<hr>
+<h3 id="sec1342" class="subsection">12.1.2  Écriture d’un fichier wav : <span style="font-family:monospace">writewav</span></h3>
+<p><a id="hevea_default2139"></a>
+La commande <span style="font-family:monospace">writewav</span> effectue l’écriture d’une donnée de
+type son dans un fichier au format WAV sur le disque dur. Elle est
+donc inverse de la commande <span style="font-family:monospace">readwav</span>.<br>
+On passe en argument le nom du fichier et les données son.<br>
+On peut soit utiliser le même format que celui renvoyé par la commande 
+<span style="font-family:monospace">readwav</span>, soit pour un son mono utilisant les valeurs des paramètres par
+défaut (16 bits, 44100 Hz) donner uniquement la liste des données 
+numériques du son sur le canal.<br>
+Par exemple la commande :<br>
+<code>writewav("la.wav",2^14*(sin(2*pi*440*soundsec(1))))</code><br>
+sauvegarde dans le fichier de nom <code>la.wav</code>, un son pur
+de fréquence 440 Hz (un la), échantilloné 44100 fois par seconde.</p>
+<hr>
+<a href="cascmd_fr1106.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
+<a href="cascmd_fr1108.html"><img src="next_motif.gif" alt="Next"></a>
+</body>
+</html>

@@ -4,66 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Substituer une valeur à une variable (compatibilité Maple et Mupad) : subs</title>
+<title>Pour substituer plus simplement une valeur à une variable dans une expression : ()</title>
 </head>
 <body >
 <a href="cascmd_fr278.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr280.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec358" class="subsection">6.14.23  Substituer une valeur à une variable (compatibilité Maple et Mupad) : <span style="font-family:monospace">subs</span></h3>
-<p><a id="hevea_default465"></a><a id="sec:subs"></a>
-En <span style="font-family:monospace">Maple</span> et en <span style="font-family:monospace">Mupad</span> la commande synonyme de <span style="font-family:monospace">subst</span> 
-est <span style="font-family:monospace">subs</span>, mais l’ordre des paramètres de <span style="font-family:monospace">subs</span> n’est pas le même
-en <span style="font-family:monospace">Maple</span> et en <span style="font-family:monospace">Mupad</span>.<br>
-Ainsi les arguments de <span style="font-family:monospace">subs</span> sont :
+<h3 id="sec358" class="subsection">6.14.22  Pour substituer plus simplement une valeur à une variable dans une expression : <span style="font-family:monospace">()</span></h3>
+<p><a id="hevea_default465"></a>
+Lorsque l’on veut donner dans une expression de plusieurs variables (par 
+exemple <span style="font-family:monospace">Expr:=x+2y+3z</span>) une valeur à certaines variables (par exemple 
+<span style="font-family:monospace">x,y</span>) on peut le faire de différentes façons.
+On tape par exemple <span style="font-family:monospace">xpr:=x+2y+3z</span>, puis :
+On utilise <span style="font-family:monospace">subst</span>, on tape :
 </p><ul class="itemize"><li class="li-itemize">
-En mode <span style="font-family:monospace">Maple</span>, la fonction <span style="font-family:monospace">subs</span> a deux arguments : une 
-égalité (paramètre=valeur de substitution) et une expression 
-dépendant du paramètre.<br>
-Pour faire plusieurs substitutions, <span style="font-family:monospace">subs</span> a deux arguments : une liste 
-dégalité (paramètre=valeur de substitution) et une expression 
-dépendant de ces paramètres.<br>
-</li><li class="li-itemize">En mode <span style="font-family:monospace">Mupad</span> ou <span style="font-family:monospace">Xcas</span> ou <span style="font-family:monospace">TI</span>, la fonction <span style="font-family:monospace">subs</span> a deux ou trois 
-arguments : une expression dépendant d’un paramètre et une égalité 
-(paramètre=valeur de substitution) ou une expression dépendant d’un 
-paramètre, le paramètre et la valeur de substitution.<br>
-Pour faire plusieurs substitutions, la fonction <span style="font-family:monospace">subs</span> a deux ou trois 
-arguments : une expression dépendant de paramètres et une liste 
-d’égalité (paramètre=valeur de substitution) ou une expression 
-dépendant de paramètres, la liste des paramètres et la liste des valeurs
-de substitution.<br>
+<span style="font-family:monospace">subst(subst(Expr,x=1),y=2)</span> 
+</li><li class="li-itemize"><span style="font-family:monospace">subst(Expr,[x=1,y=2])</span> 
+</li><li class="li-itemize"><span style="font-family:monospace">subst(Expr,[x,y],[1,2])</span> 
 </li></ul><p>
-<span style="font-family:monospace">subs</span> effectue la substitution demandée dans l’expression à condition
-que le paramètre ne soit pas affecté car <span style="font-family:monospace">subs</span> évalue tout d’abord 
-l’expression et remplace donc le paramètre par sa valeur sans tenir compte 
-de la valeur de substitution donnée par le deuxième paramètre.<br>
-On tape en mode Maple :
-</p><div class="center"><span style="font-family:monospace">subs(a=2,a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
-On obtient (si la variable <span style="font-family:monospace">a</span> n’est pas affectée, sinon il faut taper 
-auparavant <span style="font-family:monospace">purge(a)</span>):
-</p><div class="center"><span style="font-family:monospace">5</span></div><p> 
-Lorsque l’on veut substituer plusieurs variables :<br>
-On tape, en mode <span style="font-family:monospace">Maple</span> :
-</p><div class="center"><span style="font-family:monospace">subs([a=2,b=1],a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+b)</span></div><p> 
-On obtient (si les variables <span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span> ne sont pas affectées, sinon 
-il faut taper auparavant <span style="font-family:monospace">purge(a,b)</span>):
-</p><div class="center"><span style="font-family:monospace">2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div><p>
-On tape, en mode <span style="font-family:monospace">Mupad</span> ou <span style="font-family:monospace">Xcas</span> ou <span style="font-family:monospace">TI</span> :
-</p><div class="center"><span style="font-family:monospace">subs(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,a=2)</span></div><p> 
-ou :
-</p><div class="center"><span style="font-family:monospace">subs(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,a,2)</span></div><p> 
-On obtient (si la variable <span style="font-family:monospace">a</span> n’est pas affectée, sinon il faut taper 
-auparavant <span style="font-family:monospace">purge(a)</span>) :
-</p><div class="center"><span style="font-family:monospace">5</span></div><p> 
-Lorsque l’on veut substituer plusieurs variables :<br>
-On tape, dans les modes <span style="font-family:monospace">Mupad Xcas TI</span> :
-</p><div class="center"><span style="font-family:monospace">subs(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+b,[a=2,b=1])</span></div><p> 
-ou on tape
-</p><div class="center"><span style="font-family:monospace">subs(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+b,[a,b],[2,1])</span></div><p> 
-On obtient (si les variables <span style="font-family:monospace">a</span> et <span style="font-family:monospace">b</span> ne sont pas affectées, sinon 
-il faut taper auparavant <span style="font-family:monospace">purge(a,b)</span>):
-</p><div class="center"><span style="font-family:monospace">2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div>
+On n’utilise pas <span style="font-family:monospace">subst</span> mais une écriture simplifiée proche d’une
+écriture fonctionnelle :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">Expr(x=1,y=2)</span> 
+</li><li class="li-itemize"><span style="font-family:monospace">Expr([x,y],[1,2])</span> 
+</li></ul><p>
+On obtient dans tous les cas :<br>
+<span style="font-family:monospace">5+3*z</span>
+<span style="font-weight:bold">Autre exemple</span><br>
+On tape :<br>
+<span style="font-family:monospace">(h*k*t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+h</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3*t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3)(t=2)</span><br>
+On obtient :<br>
+<span style="font-family:monospace">4*h*k+8*h</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3</span></p>
 <hr>
 <a href="cascmd_fr278.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

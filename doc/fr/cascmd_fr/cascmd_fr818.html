@@ -4,186 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Des exemples</title>
+<title>Distribution cumulée inverse pour une loi de probabilité : icdf</title>
 </head>
 <body >
 <a href="cascmd_fr817.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr819.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec991" class="subsection">8.5.6  Des exemples</h3>
-<p>
-Voici quelques exercices :
-</p><ol class="enumerate" type=1><li class="li-enumerate">
-<span style="font-weight:bold">Exercice</span> <br>
-Pour tester l’efficacité d’un vaccin antigrippal on soumet 300 personnes 
-à une expérience : <br>
-- sur 100 personnes non vaccinées, 32 sont atteintes par la grippe,<br>
-- sur 200 personnes vaccinées, 50 sont atteintes par la grippe,<br>
-Ce résultat permet-il d’apprécier l’efficacité du vaccin ?<br>
-On calcule les valeurs <span style="font-style:italic">f</span>1 et <span style="font-style:italic">f</span>2 qui sont les proportions des grippés 
-des deux échantillons on tape :<br>
-<span style="font-family:monospace">f1:=32/100</span><br>
-<span style="font-family:monospace">f2:=50/200</span><br>
-On tape :<br>
- <span style="font-family:monospace">f1-f2</span><br>
-On obtient :<br>
-<span style="font-family:monospace">7/100</span><br>
-Donc |<span style="font-style:italic">f</span><sub>1</sub>−<span style="font-style:italic">f</span><sub>2</sub>|=0.07<br>
-On calcule la valeur <span style="font-style:italic">p</span> proportion des grippés lorsqu’on reunit les deux 
-échantillons on tape :<br>
-<span style="font-family:monospace">p:=82/300</span><br>
-On obtient :<br>
-<span style="font-family:monospace">41/150</span><br>
-Donc <span style="font-style:italic">p</span>≃ 0.273333333333<br>
-On calcule <span style="font-style:italic">s</span><sub>12</sub>, on tape :<br>
-<span style="font-family:monospace">s12:=sqrt(p*(1-p)*(1/100+1/200))</span><br>
-On obtient :<br>
-<span style="font-family:monospace">sqrt(4469/1500000)</span><br>
-Donc <span style="font-style:italic">s</span><sub>12</sub> ≃ 0.0545832697201<br>
-On tape :<br>
-<span style="font-family:monospace">normalt([32,100],[50,200],0.0545832697201,’!=’,0.05)</span><br>
-On obtient :<br>
-<span style="font-family:monospace">0</span><br>
-et en vert le resumé du test :<br>
-Moyenne estimee en utilisant le(s) echantillon(s) 125<br>
-*** TEST RESULT 0 ***<br>
-Summary Z-Test null hypothesis mu1=mu2, alt. hyp. mu1!=mu2.
-Test returns 0 if probability to observe data is less than 0.05
-(null hyp. mu1=mu2 rejected with less than alpha probability error)
-Test returns 1 otherwise (can not reject null hypothesis)
-Data mean mu1=32, population mean mu2=125
-alpha level 0.05, multiplier*stddev/sqrt(sample size)= 1.95996*0.0545833/10
-<span style="font-family:monospace">1.95996*0.0545833/10</span> renvoie <span style="font-family:monospace">0.0106981084668</span><br>
-On tape :<br>
-<span style="font-family:monospace">a:=normal_icdf(0,sqrt(4469/1500000),0.975)</span> <br>
-On obtient :<br>
-<span style="font-family:monospace">0.10698124281</span><br>
-Puisque <span style="font-family:monospace">|f1-f2|=0.07&lt;a=0.10698124281</span>, on en déduit que les deux 
-échantillons ne sont pas significativement différents au seuil de 5% : 
-on peut donc 
-dire que le vaccin n’est pas efficace mais ce n’est pas une certitude...<br>
-
-La statistique  <span style="font-style:italic">D</span><sup>2</sup>=∑<sub><span style="font-style:italic">j</span>=1</sub><sup><span style="font-style:italic">k</span></sup>(<span style="font-style:italic">n</span><sub><span style="font-style:italic">j</span></sub>−<span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub>)<sup>2</sup>/<span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub> est une 
-bonne mesure de l’écart entre les effectifs observés et les effectifs 
-théoriques : plus <span style="font-style:italic">D</span><sup>2</sup> est proche de zéro, plus la distribution de 
-l’échantillon est conforme à la distribution théorique.<br>
-On calcule la valeur <span style="font-style:italic">d</span>2 de <span style="font-style:italic">D</span><sup>2</sup> on tape :<br>
-<span style="font-family:monospace">d2:=300*(150*32-68*50)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/(100*200*82*218)</span><br>
-On obtient :<br>
-<span style="font-family:monospace">7350/4469</span><br>
-donc <span style="font-style:italic">d</span><sup>2</sup> ≃ 1.645<br>
-On cherche la valeur <span style="font-style:italic">h</span> qui vérifie :<br>
-<span style="font-style:italic">Proba</span>(χ<sub>1</sub><sup>2</sup>&gt;<span style="font-style:italic">h</span>)=0.05  ou encore  <span style="font-style:italic">Proba</span>(χ<sub>1</sub><sup>2</sup> ≤ <span style="font-style:italic">h</span>)=0.95<br>
- pour cela on tape :<br>
-<span style="font-family:monospace">chisquare_icdf(1,0.95)</span><br>
-On obtient :<br>
-<span style="font-family:monospace">3.84145882069</span><br>
-donc <span style="font-style:italic">h</span> ≃ 3.84<br>
-Puisque <span style="font-family:monospace"><span style="font-style:italic">d</span></span><span style="font-family:monospace">2≃ 1.645&lt;3.84</span> on en déduit que les deux échantillons
-ne sont pas significativement différents au seuil de 5% : on peut donc 
-mettre en doute l’efficacité du vaccin.<br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span>
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice</span><br>
-Sur un registre d’état civil, on a relevé 552 naissances dont 289 
-garçons. <br>
-a/ Estimer la fréquence <span style="font-family:monospace">p</span> de naissance d’un garçon.<br>
-b/ Donner un intervalle de confiance pour cette estimation.<br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span>
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice</span><br>
-Dans un hôpital sur un échantillon de 458 malades admis pendant un 
-trimestre il y a eu 141 décès. Estimer le pourcentage de décès par un 
-intervalle de confiance au seuil de 0.01.<br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span>
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice : comparaison de deux moyennes</span><br>
-Pour une même épreuve,
-voici les notes obtenues dans une classe de terminale du lycée A.<br>
-6,10,14,17,9,6,4,12,9,10,10,11,12,18,10,9,11,8,7,10.<br>
-et les notes obtenues dans une classe de terminale du lycée B.<br>
-2,10,14,13,9,6,1,12,9,10,10,10,12,15,19,9,11,8,9,10<br>
-1/ Analyser les résultats de chaque groupe.<br>
-2/ Peut-on considérer que les 2 groupes sont issus d’une même population ?
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice : comparaison de deux moyennes</span><br>
-Deux entreprises A et B livrent des pièces dans des paquets de 100 pièces.
-On note <span style="font-style:italic">X</span><sub>1</sub> (resp <span style="font-style:italic">X</span><sub>2</sub>) la variable aléatoire égale au nombre de 
-pièces défectueuses par paquet provenant de A (resp B).<br>
-On note <span style="text-decoration:overline"><span style="font-style:italic">X</span></span><sub>1</sub> (resp <span style="text-decoration:overline"><span style="font-style:italic">X</span></span><sub>2</sub>) la variable aléatoire égale au nombre moyen de 
-pièces défectueuses par paquet pour des échantillons aléatoires 
-de 49 paquets (resp 64 paquets) provenant de A (resp B).<br>
- <span style="font-weight:bold">I)</span> Sur un échantillon de 49 paquets provenant de A on compte le
-nombre de pièces défectueuses dans chaque paquet et on trouve : <br>
-7, 5, 5, 4, 4, 4, 9, 7, 9, 2, 7, 8, 7, 8, 4, 4, 9, 10,<br>
-5, 10, 6, 4, 5, 6, 1, 2, 5, 7, 8, 0, 6, 0, 1, 5, 2, 0,<br>
-5, 2, 3, 3, 4, 1, 3, 10, 1, 0, 10, 2, 7<br>
-1/ Calculer la moyenne <span style="font-style:italic">m</span><sub>1</sub> et l’écart-type <span style="font-style:italic">s</span><sub>1</sub> de cet échantillon.<br>
-2/ Donner une estimation de la moyenne µ<sub>1</sub> et de l’écart-type σ<sub>1</sub>
-de <span style="font-style:italic">X</span><sub>1</sub>.<br>
-3/ Donner une estimation de la moyenne et de l’écart-type de <span style="text-decoration:overline"><span style="font-style:italic">X</span></span><sub>1</sub>.<br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span><br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span>
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice </span><br>
-On a administré un somnifère A à 50 personnes choisies au hasard et on a observé une moyenne de sommeil de 8h22 avec un écart-type de 0h24.<br>
-On a administré un somnifère B à 100 personnes choisies au hasard et on a observé une moyenne de sommeil de 7h15 avec un écart-type de 0h30.<br>
-Ces deux somnifères ont-ils une efficacité signicativement différente ? de combien ?<br>
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice : Échantillons appariés</span><br>
-On a fait faire une double correction de 30 copies par deux examinateurs A et B
-afin de comparer leur notation. Les copies sont numerotées de 0 à 29. <br>
-On a obtenu pour A :<br>
-<span style="font-family:monospace">13,15,12,15,8,7,11,10,9,13,3,18,17,5,9,10,</span><br>
-<span style="font-family:monospace">11,14,12,10,9,8,13,6,8,16,14,11,12,10</span><br>
-On a obtenu pour B:<br>
-<span style="font-family:monospace">12,13,12,15,7,5,12,10,8,13,4,17,16,4,9,11,10,</span><br>
-<span style="font-family:monospace">13,13,9,10,7,14,8,7,15,13,10,13,10</span><br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span>
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice : Jet d’un dé et test du </span>χ<sup>2</sup><br>
-On jette un dé 90 fois et on a obtenu :<br>
-1 a été obtenu 11 fois,<br>
-2 a été obtenu 16 fois,<br>
-3 a été obtenu 17 fois,<br>
-4 a été obtenu 22 fois,<br>
-5 a été obtenu 14 fois,<br>
-6 a été obtenu 10 fois.<br>
-Peut-on admettre au vu de cette expérience que le dé est régulier ?<br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span>
-</li><li class="li-enumerate"><span style="font-weight:bold">Exercice : Jet d’un dé et test du </span>χ<sup>2</sup><br>
-On jette un dé 180 fois et on a obtenu :<br>
-1 a été obtenu 22 fois,<br>
-2 a été obtenu 32 fois,<br>
-3 a été obtenu 34 fois,<br>
-4 a été obtenu 44 fois,<br>
-5 a été obtenu 28 fois,<br>
-6 a été obtenu 20 fois.<br>
-Peut-on admettre au vu de cette expérience que le dé est régulier ?<br>
-On tape :<br>
-<span style="font-family:monospace">?</span><br>
-On obtient :<br>
-<span style="font-family:monospace">?</span>
-</li></ol>
+<h3 id="sec996" class="subsection">8.4.55  Distribution cumulée inverse pour une loi de probabilité : <span style="font-family:monospace">icdf</span></h3>
+<p><a id="hevea_default1456"></a>
+<span style="font-family:monospace">cdf</span> a comme paramètre le nom d’une loi de probabilité suivi
+des paramètres de cette loi.<br>
+<span style="font-family:monospace">icdf</span> renvoie la distribution cumulée inverse pour cette loi de 
+probabilité.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">icdf(binomial,10,0.5,0.6)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">5</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">icdf(normald,0.0,0.5,0.975)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.97998199227</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">icdf(betad,2,3,0.9963)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.9</span></div>
 <hr>
 <a href="cascmd_fr817.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
