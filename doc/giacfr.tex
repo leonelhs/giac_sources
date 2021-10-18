@@ -116,7 +116,7 @@ if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
   }
   var script = document.createElement("script");
   script.type = "text/javascript";
-  var webAssemblyAvailable = false;
+  var webAssemblyAvailable = true;//false;
   if (Boolean(window.chrome)){
     if (!UI.detectmob()) webAssemblyAvailable =  window.location.href.substr(0,4)!='file';
   }
@@ -191,7 +191,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 </div>
 <div id="controldiv" style="max-height: 400px; overflow:auto">
 <span id="controlindex"></span>
-<button title="Clone la derni&egrave;re commande ex&eacute;cut&eacute;ee vers Xcas en ligne" onclick="UI.clone()">Clone</button>
+<button title="Clone la derni&egrave;re commande ex&eacute;cut&eacute;ee vers Xcas pour Firefox" onclick="UI.clone()">Clone</button>
 <button title="Efface la console" onclick="document.getElementById('output').innerHTML='';">Efface</button>
 <button title="Increase console size" onclick="var field=document.getElementById('output'); var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)+20 ;if(s<innerHeight/2){s=s+'px';field.style.maxHeight=s; field=document.getElementById('maindiv'); s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)-20; s=s+'px';field.style.maxHeight=s;}">+</button>
 <button title="Decrease console size" onclick="var field=document.getElementById('output'); var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)-20 ; if(s>80){s=s+'px';field.style.maxHeight =s;field=document.getElementById('maindiv'); s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)+20; s=s+'px';field.style.maxHeight=s;}">-</button>
@@ -209,6 +209,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \@print{
 <script language="javascript">
  var UI = {
+  Datestart:Date.now(),
   n2d:0,
   python:0,
   histcount:0,

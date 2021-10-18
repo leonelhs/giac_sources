@@ -754,7 +754,7 @@ void load_autorecover_data() {
       if (f){
         fclose(f);
        // Xcas_Main_Window_->hide();
-  #if 1
+  #if 0
        int n=fl_choice(gettext("Choose syntax compatibility"),gettext("Python"),gettext("Xcas"),gettext("Other")),mm=-1; // n==2 other
       if (n<2) n=1-n;
   #else

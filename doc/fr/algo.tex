@@ -834,7 +834,7 @@ on effectue plusieurs tirages (par exemple 500) on trace l'histogramme et
 on compare avec la loi normale de moyenne
 nulle (l'esp\'erance de la somme) et d'\'ecart-type celui de la loi
 uniforme.
-\giacinput[style="width:800px;height:40px;font-style:large"]{m:=ranm(400,500,-1..1):;gl_x=-2..2;histogram(sum(m)/20,-1,0.1); plot(normald(0,0.57),-2..2)}
+\giacinput[style="width:800px;height:40px;font-style:large"]{m:=ranm(400,500,-1..1):;gl_x=-2..2;histogram(sum(m)/20/stddev(uniform,-1,1),-1,0.1); plot(normald(0,1),-2..2)}
 
 Attention, si on effectue la somme de $n$ r\'eels $\sum_j x_j$, 
 les erreurs d'arrondis
@@ -851,7 +851,7 @@ il est possible de corriger les erreurs d'arrondi dans une somme
 avec le programme suivant pour une liste (on peut bien sur
 adapter \`a la somme d'une expression d\'ependant d'une variable
 enti\`ere sans stocker de liste)~:
-\begin{giacprog}
+\begin{giaconload}
 Somme(l):={
   local x,s,c;
   s:=0.0;
@@ -863,7 +863,7 @@ Somme(l):={
   print(c);
   return s+c;
 }:;
-\end{giacprog}
+\end{giaconload}
 En effet, $c$ devrait valoir 0 sans erreurs d'arrondis,
 avec les erreurs d'arrondis, on a le premier calcul $s+x$ qui donnera
 une erreur oppos\'ee \`a celui du calcul de $s$ \`a la ligne
@@ -879,7 +879,7 @@ calcul\'ee pr\'ec\'edemment.
 
 
 Par exemple
-\giacinput{n:=25000; l:=seq(1/j,j,1,n):; Somme(l);}
+\giacinput{Digits:=14; n:=25000; l:=seq(1/j,j,1,n):; Somme(l);}
 \`a comparer avec
 \giacinput{S:=sum(1/j,j,1,n):; evalf(S); sum(1. /j,j,1,n);}
 (le calcul de $S$ est fait en exact, celui de {\tt sum(1. /j,j,1,n)}
@@ -1610,6 +1610,775 @@ preuve ne peut se faire qu'avec un logiciel open-source, puisqu'il
 faut aussi pouvoir montrer que l'algorithme utilis\'e
 est correctement impl\'ement\'e.
 
+\section{Entiers et polyn\^omes.}
+L'ensemble des entiers relatifs $\mathbb{Z}$ est muni des op\'erations
+\verb|+| et \verb|*| qui en font un anneau commutatif int\`egre. 
+
+Si $a$ et $b$ sont deux entiers naturels, $b \neq 0$, on d\'efinit le
+quotient euclidien de $a$ par $b$ comme le plus grand entier naturel
+$q$  tel que $a-bq \geq 0$ (l'ensemble des entiers naturels tels que
+$a-bq \geq 0$ est born\'e par $a$ donc admet un \'el\'ement maximal),
+On d\'efinit $r$ le reste euclidien de $a$ par $b$ est alors $a-bq$. On v\'erifie
+que $r \in [0,b-1]$ (sinon $a-b(q+1)$ serait positif ou nul).
+
+\subsection{Petits et grands entiers}
+Les microprocesseurs sont capables d'effectuer des
+op\'erations arithm\'etiques de base (toujours \verb|+,-|, pratiquement
+toujours \verb|*| et la division euclidienne) sur des petits entiers compris dans l'intervalle
+$[-2^{t-1},2^{t-1}-1]$ (entier sign\'e) ou $[0,2^{t}-1]$ (entier non
+sign\'e), pour $t=8$, $t=16$, $t=32$ et $t=64$ (parfois aussi pour
+$t=128$). En cas de d\'epassement, les calculs sont faits modulo
+$2^t$.
+Les logiciels de calcul doivent pouvoir travailler avec des entiers de
+taille plus grande, il faut les stocker en m\'emoire et impl\'ementer
+les op\'erations arithm\'etiques de base en se ramenant \`a des petits
+entiers.
+Pour faire cela, on va \'ecrire des entiers dans des bases ad\'equates.
+
+\subsubsection{Ecriture en base $b$}
+On se fixe une fois pour toutes un entier $b>1$. 
+Soit $N \in \mathbb{N}$,  on peut alors \'ecrire $N$ de
+mani\`ere unique  sous la forme
+\begin{equation} \label{eq:base}
+N=\sum_{i=0}^n N_i b^i , \quad b_i \in [0,b-1], b_n \neq 0 
+\end{equation}
+Les $N_i$ sont appel\'es bits si $b=2$ ou digits si $b=10$ (parfois
+aussi pour $b>2$, par exemple $b=16$).
+Pour montrer l'unicit\'e de l'\'ecriture, on suppose qu'il y a deux \'ecritures
+distinctes de ce
+type, et on regarde le coefficient d'indice maximal qui est
+diff\'erent (appelons le $j$), on a alors
+$$ (N_j-\tilde{N}_j)b^j = \sum_{i=0}^{j-1} (N_i-\tilde{N}_i)b^i $$
+quitte \`a changer de signe, on peut supposer que le membre de gauche
+est strictement positif, on a alors
+$$  (N_j-\tilde{N}_j)b^j \geq b^j $$
+Mais le membre de droite se majore par
+$$ \sum_{i=0}^{j-1} (b-1) b^j=b^j-1$$
+absurde.
+
+L'existence se prouve par l'algorithme suivant qui utilise la division euclidienne.
+\begin{giaconload}
+#
+def ecriture_base(N,b):
+    L=[]
+    while N>0:
+        L.append(N % b)
+        N=N//b
+    return L
+\end{giaconload}
+\giacinput{
+ecriture_base(1234,16);
+convert(1234,base,16);
+}
+i.e. tant que $N>0$, on calcule le reste de $N$ par $b$, qui donne
+le coefficient de poids le plus faible de l'\'ecriture de $N$ en base
+$b$, on ajoute l\'ecriture en base $b$ du quotient de $N$ par $b$.
+L'algorithme s'arr\^ete au bout de partie enti\`ere de $\log_b(N)+1$
+it\'erations.
+R\'eciproquement, on v\'erifie que l'\'ecriture obtenue
+convient en d\'eveloppant
+\begin{equation} \label{eq:horner}
+ b_0+b(b_{1}+b(...+b(b_{n-1}+b(b_n))...))
+\end{equation}
+On observe au passage que l'\'ecriture de $N$ sous la forme ci-dessus
+n\'ecessite $n$ additions et $n$ multiplications, et est donc plus
+efficace que le calcul sous la forme d\'evelopp\'ee \(\ref{eq:base}\).
+C'est la m\'ethode dite de H\"orner.
+
+Exemple~: en base $b=2$. Pour \'ecrire $N=12$ en base 2, on calcule le
+reste de 12 par 2 donc $N_0=0$, le quotient de 12 par 2 vaut 6, on
+divise par 2, reste 0 donc $N_1=0$, quotient 3, on divise par 2, reste
+$N_2=1$, quotient 1, on divise par 2, reste $N_3=1$ quotient 0 on
+s'arr\^ete, donc \verb|12=0b1100|.
+R\'eciproquement on a bien
+$$ 0 +2\times(0+2\times(1+2\times(1)))=12 $$
+
+Exercice~: la commande \verb|b:=convert(N,base,b)| de Xcas effectue la conversion
+d'un entier $N$ en la liste des coefficients de son \'ecriture en base
+$b$, la r\'eciproque \'etant \verb|convert(L,base,b)| ou
+\verb|horner(L,b)|. Impl\'ementer des fonctions \'equivalentes
+dans  votre langage de programmation pr\'ef\'er\'e.
+ 
+{\bf Exercice~}: 
+comment passe-t-on simplement de la représentation d'un nombre en
+base 2 à un nombre en base 16 et réciproquement~?
+
+\subsubsection{Lien avec les polyn\^omes de $A[X]$ avec
+  $A=\mathbb{Z}$.}
+A tout entier naturel $N$, on peut associer un polyn\^ome \`a coefficients entiers
+qui est son \'ecriture en base $b$, les coefficients du polyn\^ome
+sont dans l'intervalle $[0,b-1]$. R\'eciproquement, si les
+coefficients d'un polyn\^ome sont des entiers compris entre $[0,b-1]$
+alors ils correspondent \`a l'\'ecriture d'un entier en base $b$.
+
+On va voir que les op\'erations arithm\'etiques de base sur les grands
+entiers reviennent \`a effectuer des op\'erations de base sur les
+polyn\^omes, avec une petite difficult\'e suppl\'ementaire, il
+faut tenir compte de retenues. Les algorithmes naifs pour additionner
+et multiplier deux polyn\^omes correspondent pr\'ecis\'ement aux
+algorithmes enseign\'es \`a l'\'ecole primaire pour effectuer
+l'addition ou la multiplication de deux entiers.
+
+\subsection{Op\'erations arithm\'etiques de base}
+\subsubsection{Addition, soustraction}
+Si $N=\sum_{i=0}^n N_i b^i$ et $M=\sum_{i=0}^m M_i b^i$, alors
+$$N+M=\sum_{i=0}^{\mbox{max}(n,m)} (N_i+M_i) b^i,$$ 
+il faut donc additionner les
+digits de l'\'ecriture en base $b$ comme pour additionner deux polyn\^omes. 
+On a $N_i+M_i  \in [0,2b-1] $,
+si $N_i+M_i<b$, il n'y a rien \`a faire, sinon on remplace par
+$N_i+M_i-b$ et on ajoute 1 (retenue) \`a $N_{i+1}+M_{i+1}$
+qui appartient \`a $[0,2b-2+1]$, etc.
+Le nombre d'op\'erations \`a effectuer est de l'ordre du maximum du
+nombre de bits/chiffres/digits de $N$ et $M$.
+
+\subsubsection{Multiplication}
+Si $N=\sum_{i=0}^n N_i b^i$ et $M=\sum_{j=0}^m M_j b^i$, alors on
+se ram\`ene \`a la multiplication de deux polyn\^omes~:
+$$ N+M=\sum_{i=0}^n \sum_{j=0}^m  N_i M_j b^{i+j}$$
+Si $b>2$, par exemple $b=10$ ou $b=16$,
+$N_i M_j$ sera tr\`es souvent sup\'erieur \`a $b$, il y aura souvent
+des retenues!
+On peut regrouper les termes $b^{i+j}$ ayant le m\^eme exposant,
+en utilisant des d\'ecalages pour tenir compte de $b^i$ (c'est
+l'algorithme de multiplication pos\'ee en base 10) ou additionner
+au fur et \`a mesure $N_i M_j$ au coefficient actuel de $b^{i+j}$ 
+(exercice de la feuille de TD). En base 2, si on pose
+la multiplication comme en base 10, il est conseill\'e d'effectuer
+les additions une par une, sinon la prise en compte des retenues est
+d\'elicate. 
+
+Le nombre de multiplications et d'additions est de l'ordre de $nm$
+(on peut montrer que c'est aussi le cas en tenant compte des retenues,
+car si une retenue se propage de $r$ positions dans la boucle
+int\'erieure en $j$, elle ne pourra pas se propager de plus de 2
+positions pour les $r-2$ it\'erations suivantes de la boucle
+int\'erieure).
+
+Comme le r\'esultat a pour taille $n+m+1$ ou $n+m+2$
+bits/chiffres/digits,
+on peut esp\'erer l'existence d'algorithmes plus efficaces.
+Nous allons en pr\'esenter un dans le cadre plus simple
+de la multiplication des polyn\^omes (o\`u on n'a pas \`a
+g\'erer les retenues).
+
+\subsubsection{Diviser pour r\'egner: multiplication de Karatsuba.}
+Soient $P, Q$ deux polyn\^omes de degr\'es strictement inf\'erieur \`a
+$2n$. On suppose que le cout d'une op\'eration arithm\'etique dans 
+l'ensemble des coefficients vaut 1 et on n\'eglige les autres
+op\'erations (on suppose par exemple que l'ensemble des coefficients
+est fini). On \'ecrit
+\[ P=A+x^n B, \quad Q=C+x^n D\]
+avec $A,B,C,D$ de degr\'es strictement inf\'erieur \`a $n$, on a
+alors~:
+$$ P Q = AC + x^n(AD+BC)+x^{2n} BD$$
+Il y a 4 produits de polyn\^omes de degr\'es $<n$, mais au prix
+d'additions interm\'ediaires, on peut se ramener \`a 3 produits, en
+effet
+$$ (A+B)(C+D)-AC-BD = AD+BC$$
+donc pour calculer le facteur de $x^n$ il suffit de soustraire
+\`a $(A+B)(C+D)$ les produits $AC$ et $BD$ que l'on doit calculer par
+ailleurs. Au premier ordre, le temps n\'ecessaire pour multiplier
+les 2 polyn\^omes de degr\'e $<2n$ est multipli\'e par 3, au lieu de
+4.
+
+Plus pr\'ecis\'ement, soit $M(n)$ le temps n\'ecessaire pour calculer le produit de 2
+polyn\^omes par cette m\'ethode, on a alors
+$$ M(2n) = 3M(n)+ 8n$$
+o\`u $8n$ repr\'esente le nombre d'additions ou de soustractions
+pour former $A+B$, $C+D$, soustraire $AC$ et $BD$, et tenir compte
+du fait que les termes de degr\'e $\geq n$ de $AC$ se combinent
+avec ceux de degr\'e $<2n$ de $AD+BC$ et les termes de degr\'e $< 3n$
+de $x^{2n}BD$ avec ceux de degr\'e $\geq 2n$ de $AD+BC$.
+On en d\'eduit
+$$ u_n=M(2^n), \quad u_{n+1}=3u_n+8 \times 2^n $$ 
+cette r\'ecurrence se r\'esoud facilement par la commande\\
+\giacinput{
+purge(n):;
+rsolve(u(n+1)=3*u(n)+8*2^n,u(n),u(0)=1)
+}
+ce qui donne $M(2^n)=u_n=-8\cdot 2^{n}+9\cdot 3^{n}$.
+
+Asymptotiquement, $M(2^n) \approx 9\cdot 3^{n}$ ce qui est bien
+meilleur que la multiplication naive en $2 \cdot 4^n$, mais pour de
+petites valeurs de $n$, la multiplication naive est plus rapide
+comme l'illustre le graphe ci-dessous (en rouge la multiplication
+naive, en bleu Karatsuba complet)~:
+\begin{giaconload}
+plot([log(2*4^n),log(-8*2^n+9*3^n)],
+n=1..10,display=[red,blue])
+\end{giaconload}
+On utilise Karatsuba (r\'ecursivement) uniquement pour des valeurs de $n$
+suffisamment grandes (th\'eoriquement lorsque $8n$, le surcout d\^u
+aux additions est plus petit que la multiplication \'economis\'ee,
+soit $8n<2n^2$ soit $n>4$, en pratique plut\^ot pour $n$ de l'ordre de quelques
+dizaines selon les impl\'ementations, car nous n'avons tenu compte
+que des op\'erations arithm\'etiques).
+
+Exercice~: v\'erifier que \ahref{https://github.com/python/cpython/blob/master/Objects/longobject.c}{la multiplication des entiers longs en langage
+Python} se comporte pour $n$ grand comme la multiplication
+de Karatsuba.
+
+Les logiciels de calcul intensif utilisent la plupart du temps des
+algorithmes plus efficaces lorsque $n$ est encore plus grand, qui se
+rapprochent de $n \ln(n)$. C'est en particulier le cas de tous les
+logiciels de calcul formel qui
+utilisent la libraire GMP \'ecrite en langage C (Xcas, 
+Sagemath, Maple, Mathematica, ...). Ces algorithmes utilisent
+la transformation de Fourier rapide (FFT).
+
+
+\subsection{Op\'erations de base sur les petits entiers.}
+Les petits entiers sont repr\'esent\'es en base $b=2$, les
+op\'erations de base sont directement faites par le microprocesseur
+en se ramenant aux calculs en base 2: 
+\begin{itemize}
+\item addition~: 0+0=0=1+1 (avec retenue), 
+0+1=1=1+0 qui se traduisent enou exclusif
+logique hors retenues. Les op\'erations bit \`a bit
+se parall\'elisent facilement, conduisant \`a des temps
+d'\'execution de 1 cycle.
+\begin{verbatim}
+  01001111
++ 01101011
+----------
+  10111010
+\end{verbatim}
+\item multiplication~: 0*0=0*1=1*0=0, 1*1=1
+qui se traduit en et logique.
+Les op\'erations de multiplication se parall\'elisent aussi,
+conduisant \`a des temps d'ex\'ecution de 1 cycle sur la
+plupart des processeurs actuels (mais ce n'\'etait pas vrai il
+y a une vingtaine d'ann\'ees).
+\item l'algorithme de division euclidienne en base 2
+peut se faire avec l'algorithme de la potence. La situation
+est simplifi\'ee parce que le bit du quotient \`a d\'eterminer
+ne peut \^etre que 0 ou 1, il suffit de comparer avec le reste 
+en cours. Le temps d'ex\'ecution est significativement plus
+\'elev\'e que celui d'une multiplication (plusieurs dizaines de cycle
+si $t=32$ ou $t=64$), car $q$ n'est pas connu quand on calcule
+$bq$, alors que $a$ et $b$ sont connus quand on calcule $ab$.
+\begin{verbatim}
+ 110000    | 101
+-101       |---------
+----       | 1001
+  010      |
+   100     |
+   1000    |
+  - 101    |
+  -----    |
+    011    |
+\end{verbatim}
+\end{itemize}
+
+\subsection{Op\'erations de base sur les grands entiers}
+Les grands entiers naturels sont repr\'esent\'es dans une base qui est une
+puissance de 2, $b=2^{t'}$, les coefficients de l'\'ecriture \'etant
+de petits entiers, ils sont stock\'es en m\'emoire \`a des
+adresses cons\'ecutives. On utilise le plus souvent $t'=t$ la taille des r\'egistres du
+microprocesseur, parfois une valeur l\'eg\`erement
+inf\'erieure pour simplifier la gestion des retenues.
+
+Les impl\'ementations de la multiplication font intervenir des
+algorithmes plus efficaces (comme Karatsuba), ainsi que
+des d\'ecoupages par blocs visant \`a minimiser les op\'erations
+de lecture/\'ecriture en m\'emoire au profit de l'utilisation de
+r\'egistres et des caches de bas niveaux. 
+En effet, avec les processeurs modernes, le cout 
+du calcul d'un produit de 2 grands entiers par la m\'ethode naive
+est domin\'e par les acc\`es m\'emoire et non par les op\'erations
+arithm\'etiques elles-m\^eme.
+
+
+
+\section{Euclide}
+Dans cette section, on se concentre sur tout ce qui tourne
+autour de la division euclidienne.
+
+\subsection{Division euclidienne.}
+On a vu la d\'efinition de la division euclidienne pour les entiers
+naturels $a=bq+r, r\in[0,b-1]$. Pour les entiers relatifs, plusieurs
+conventions de signe sont possible pour $q$ et $r$, par
+exemple on peut conserver la convention de signe de reste positif.
+On peut aussi adopter la convention du reste sym\'etrique,
+c'est-\'a-dire que $r \in ]-\frac{|b|}{2},\frac{|b|}{2}]$.
+En g\'en\'eral, on peut supposer que $b>0$, ce qui donne le programme suivant~:
+\begin{giaconload}
+def rsym(a,b):
+    r = a % b
+    if r<0:
+        r += b
+    if r<=b//2: 
+        return r
+    return r-b
+\end{giaconload}
+\giacinput{rsym(5,7); rsym(3,7)}
+Optimisation~: sur les microprocesseurs modernes, on \'evite si possible
+l'utilisation de tests pour optimiser le temps de calcul. En C, si
+$m>0$, et $r$ de signe quelconque sont des entiers 31 bits,
+\verb|unsigned(r)>>31| vaut 0 (si $r\geq 0$) ou -1 (sinon) et on peut \'ecrire~:
+\begin{verbatim}
+int rsym(int r,int m){
+  r = r % m;
+  r += (unsigned(r)>>31)*m; // make positive
+  return r-(unsigned((m>>1)-r)>>31)*m;
+}
+\end{verbatim}
+
+Pour les polyn\^omes en une variable,
+si $A$ et $B$ sont deux polyn\^omes \`a coefficients
+dans un corps $K$, il existe un unique polyn\^ome $Q$ et 
+un unique polyn\^ome $R$ tels que~:
+$$A=BQ+R, \quad \mbox{deg}(R)<\ \mbox{deg}(B) $$
+L'unicit\'e vient du fait que $R-R'=B(Q-Q')$ est incompatible
+avec les degr\'es si $Q \neq Q'$. L'existence se prouve par
+r\'ecurrence sur la diff\'erence de degr\'e entre $A$ et $B$, si
+elle est n\'egative $Q=0, R=A$, si elle est nulle $Q$ est le quotient
+des coefficients dominants $A_a$ de $A$ de degr\'e $a$
+et $B_b$ de $B$ de degr\'e $b$, sinon, on pose
+$Q=x^{a-b} A_a/B_b+...$, ce qui annule le coefficient dominant de $A$
+et on est ramen\'e \`a une diff\'erence de degr\'e diminu\'ee de 1 (au moins).
+
+Remarque 1~: si $A$ et $B$ sont \`a coefficients entiers et si $B$
+est unitaire, alors $Q$ et $R$ sont \`a coefficients entiers. Sinon,
+on peut d\'efinir la pseudo-division de $A$ par $B$ en multipliant $A$ par le
+coefficient dominant de $B$ \`a la puissance la diff\'erence des
+degr\'es + 1.
+
+Remarque 2~: pour les polyn\^omes \`a plusieurs variables,
+il n'existe malheureusement pas de division euclidienne.
+
+On dit que $b$ divise $a$ si le reste de la division de $a$ par $b$
+est nul. 
+Si $a$ et $b$ sont des entiers naturels non nuls et si $a=bq$  alors
+$a \geq b$. Si $A$ et $B$ sont des polyn\^omes alors le degr\'e de $B$
+est inf\'erieur ou \'egal au degr\'e de $A$.
+
+\subsection{Anneau euclidien}
+L'ensemble des entiers relatifs est un anneau commutatif, mais il a
+des propri\'et\'es suppl\'ementaires~:
+\begin{itemize}
+\item il n'y a pas de diviseurs de 0: si le produit de 2 entiers
+est nul, alors l'un deux l'est (on parle d'anneau int\`egre)
+\item il poss\`ede une op\'eration de division euclidienne
+\end{itemize}
+Cette propri\'et\'e est \'egalement vraie pour
+les polyn\^omes \`a coefficients dans un corps.
+ 
+Observation~: les seuls entiers ayant un inverse pour la
+multiplication sont 1 et -1. Pour les polyn\^omes \`a coefficients
+dans un corps $K$, il s'agit des polyn\^omes constants non nuls
+(ceci est une cons\'equence du degr\'e d'un produit qui est \'egal
+\`a la somme des degr\'es des facteurs).
+Ces \'el\'ements, appel\'es inversibles de l'anneau, jouent un role
+important, en effet si $b$ divise $a$, i.e. $a=bq$ 
+alors pour tout \'el\'ement inversible $i$, 
+$bi$ divise $a$ puisque $a=(bi) i^{-1}q$.
+Dans le cas des entiers, cela signifie qu'on peut n\'egliger le signe
+pour \'etudier la divisibilit\'e, autrement dit on peut se limiter aux
+entiers naturels. Dans le cas des polyn\^omes, on peut multiplier par
+n'importe quel coefficient non nul, autrement dit on peut se limiter
+aux polyn\^omes unitaires dont le coefficient dominant est 1.
+
+
+\subsection{Le PGCD}
+Soient $a$ et $b$ deux entiers. On se restreint au cas des entiers naturels en
+enlevant les signes.
+\begin{defn}
+On d\'efinit le PGCD (plus grand commun diviseur)
+de deux entiers naturels $a$ et $b$ 
+non simultan\'ement nuls
+comme le plus grand entier naturel
+$d$ qui divise simultan\'ement $a$ et $b$.
+\end{defn}
+Si l'un des deux \'el\'ements est nul, disons $b$, alors la r\'eponse
+est $a$.
+Sinon, comme 1 divise $a$ et de $b$, l'ensemble
+des diviseurs communs \`a $a$ et $b$ est non vide, et son plus grand
+\'el\'ement est inf\'erieur ou \'egal au minimum de $a$ et de $b$, le PGCD existe
+donc bien.
+
+Pour le calculer, on observe que le PGCD de $a$ et de $b$ est le
+m\^eme que celui de $b$ et de $r$, le reste de la division euclidienne de
+$a$ par $b$. En effet si $d$ est un diviseur commun \`a $a$ et $b$,
+alors $a=da'$ et $b=db'$ donc $r=a-bq=d(a'-qb')$. R\'eciproquement
+si $d$ est un diviseur commun \`a $b$ et $r$, alors
+$b=db'$ et $r=dr'$ donc $a=bq+r=d(b'q+r')$. Cet algorithme
+se traduit en un programme r\'ecursif~:
+\begin{giaconload}
+def pgcdr(a,b):
+     if b=0: return a
+     return pgcdr(b,a % b)
+\end{giaconload}
+\giacinput{pgcdr(25,35); pgcd(24,35);}
+A chaque appel r\'ecursif, la valeur du reste diminue au moins de 1 puisque $r<b$.
+Au bout d'un nombre fini d'appels, $b=0$ et on a le PGCD.
+Si on utilise le reste sym\'etrique au lieu du reste euclidien
+positif, le reste perd un bit dans son \'ecriture en base 2 \`a chaque
+it\'eration, le nombre d'it\'erations est donc au plus \'egal au minimum
+du nombre de bits de $a$ et $b$.
+
+Exercice~: traduire l'algorithme en un programme non r\'ecursif.
+
+Le m\^eme algorithme fonctionne pour les polyn\^omes, cette fois on
+cherche un polyn\^ome de degr\'e le plus grand possible qui divise
+$A$ et $B$. L'algorithme ci-dessus s'adapte en rempla\c{c}ant
+la division euclidienne des entiers par celle des polyn\^omes, et
+le nombre d'appels r\'ecursifs est fini car
+le degr\'e du reste qui diminue de 1 au moins \`a chaque it\'eration.
+On obtient alors un PGCD, les autres PGCD sont des multiples non nuls
+de ce PGCD.
+
+Il existe une version adapt\'ee \`a l'\'ecriture en base 2 des entiers
+sur machine, appel\'ee PGCD binaire, qui \'evite de devoir faire
+des divisions euclidiennes (les divisions par 2 sont des d\'ecalages)
+\begin{itemize}
+\item si $a$ ou $b$ est nul on renvoie l'autre, 
+\item si $a$ et $b$ sont pairs
+pgcd($a$,$b$)=2 pgcd($a/2$,$b/2$), (ne peut se produire qu'au d\'ebut)
+\item si $a$ est pair, $b$ impair,
+pgcd($a$,$b$)=pgcd($a/2$,$b$), 
+\item le cas sym\'etrique (ne peut se produire qu'au d\'ebut)
+\item si les 2 sont impairs
+pgcd($a$,$b$)=pgcd($|a-b|/2$,min($a$,$b$))
+\end{itemize}
+Chaque it\'eration n\'ecessite au plus le nombre $n$ de bits de
+l'\'ecriture en base 2 de $a$ et $b$, et il y a au plus $2n$
+it\'erations (car on diminue de 1 le nombre de bits d'au moins un des 2
+op\'erandes).
+Cet algorithme a donc un co\^ut d'au plus $O(n^2)$.
+
+\subsection{L'identit\'e de B\'ezout}
+On va construire deux entiers relatifs $u$ et $v$ tels que
+$$ au+bv=d = \mbox{pgcd}(a,b)$$
+On consid\`ere la matrice
+$$ \left(\begin{array}{rccc}
+L_1 & 1 & 0 & a \\
+L_2 & 0 & 1 & b 
+\end{array}\right)
+$$
+qu'il faut interpr\'eter ligne par ligne comme $a\times$1er
+coefficient$+b\times$ 2\`eme coefficient=3i\`eme coefficient.
+L'algorithme de construction de $u$ et $v$ est une version arithm\'etique
+de l'algorithme du pivot de Gauss, o\`u on souhaite cr\'eer un z\'ero dans la 
+derni\`ere colonne de la matrice.
+Mais seules les manipulations de lignes du type
+$L_{n+2}=L_n-qL_{n+1}$ avec $q$ {\bf entier} sont admises.
+Le mieux que l'on puisse faire est donc de cr\'eer $L_3=L_1-qL_2$
+avec $q$ quotient euclidien de $a$ par $b$. Il faudra donc
+plusieurs manipulations de lignes avant d'avoir un 0,
+et la derni\`ere colonne sera la liste des restes successsifs
+de l'algorithme d'Euclide pour calculer le PGCD de $a$ et $b$.
+La ligne pr\'ec\'edent la ligne avec un 0 en derni\`ere colonne se
+termine par le PGCD (dernier reste non nul) et les deux premi\`eres
+colonnes donnent les coefficients de B\'ezout.
+Exemple avec $a=125$ et $b=45$
+$$
+\left(\begin{array}{rccc}
+L_1 & 1 & 0 & 125 \\
+L_2 & 0 & 1 & 45 \\
+L_3=L_1-2L_2 & 1 & -2 & 35\\
+L_4=L_2-L_3 & -1 & 3 & 10 \\
+L_5=L_3-4L_4 & 4 & -11 & 5 \\
+L_6=L_4-2L_5 & -9 & 25 & 0 \\
+\end{array}\right)
+$$
+
+Algorithme~:
+\begin{itemize}
+\item Initialiser deux listes $l_1$ et $l_2$ \`a $[1,0,a]$ et $[0,1,b]$.
+\item Tant que $l_2[2] \neq 0$ (comme les indices
+commencent \`a 0, $l_2[2]$ est le dernier nombre de la liste $l_2$),
+faire 
+\begin{itemize}
+\item $q=$ quotient euclidien de $l_1[2]$ par $l_2[2]$, 
+\item $l_1, l_2$ prend la valeur $l_2,l_1-ql_2$, 
+\end{itemize}
+\item Renvoyer $l_1$
+\end{itemize}
+Exemple~: ex\'ecutez la commande ci-dessous qui calcule
+l'identit\'e de B\'ezout pour 125 et 45 en affichant les \'etapes de
+l'algorithme dans la partie basse de la page HTML\\
+\giacinput{step_infolevel:=1:;
+iegcd(125,45);
+step_infolevel:=0:;
+}
+
+Explication~: A chaque it\'eration, l'\'el\'ement \verb|l[2]|
+d'indice 2 de la liste $l_1$ (ou $l_2$) prend comme valeur l'un des restes 
+successifs de l'algorithme d'Euclide,
+et on a un invariant de boucle \verb|a*l[0]+b*l[1]=l[2]|
+qui donne l'identit\'e de B\'ezout lorsque \verb|l[2]| est le
+dernier reste non nul.
+Cet invariant se prouve facilement par r\'ecurrence.
+
+Regardons maintenant la taille de $u$ et de $v$.
+On peut supposer que $a \geq b$
+quitte \`a \'echanger $a$ et $b$ et on ignore
+les cas triviaux o\`u $a$
+et/ou $b$ valent 1.
+\begin{prop} 
+Si $a \geq b \geq 2$, alors $|u| \leq b$ 
+et $|v| \leq a$. 
+\end{prop}
+Preuve (abr\'eg\'ee)~: On consid\'ere les trois suites
+$u_n$ (coefficients de la colonne d'indice 0), $v_n$ (colonne d'indice
+1) et $r_n$ (colonne d'indice 2), ces suites v\'erifient la m\^eme
+relation de r\'ecurrence~: 
+$$ u_{n+2}=u_n-q_nu_{n+1}, \quad v_{n+2}=v_n-q_nv_{n+1}, \quad
+r_{n+2}=r_n-q_nr_{n+1}$$
+o\`u $q_n$ est le quotient de la division de $r_n$ par $r_{n+1}$.
+On montre par récurrence 
+$$ v_n r_{n+1}-v_{n+1} r_n=(-1)^{n+1} a, \quad (-1)^{n+1}v_n \ 
+\mbox{croissante (stricte pour}\ n\geq 2 )$$
+au cran apr\`es B\'ezout, on a 
+$$|v_{N+1}| \mbox{pgcd}(a,b)=a $$
+donc la suite $|v_n|$ est major\'ee par $a$ et $|v| \leq a$
+On en d\'eduit $|u| \leq b$ puisque $u=(1-bv)/a$.
+
+Cet algorithme fonctionne \`a l'identique avec les polyn\^omes 
+\`a coefficients dans un corps, en
+utilisant la division euclidienne des polyn\^omes.
+
+L'identit\'e de B\'ezout a de nombreuses cons\'equences en arithm\'etique.
+
+\subsection{Nombres premiers entre eux}
+Deux entiers sont dits premiers entre eux si leur PGCD vaut 1.
+Par exemple 22 et 15 sont premiers entre eux.
+
+\begin{thm} (Lemme de Gauss)~: \\
+Si $a$ et $b$ sont premiers entre eux et si $a$
+divise $bc$ alors $a$ divise $c$.
+\end{thm}
+
+Preuve~: par hypoth\`ese, il existe un entier $q$ tel que $bc=qa$
+et par B\'ezout, deux entiers $u,v$ tels que $au+bv=1$, on \'elimine
+$b$ entre ces deux \'equations ce qui donne
+$qav=bcv=bvc=(1-au)c$ er $c=a(qv+uc)$ est bien multiple de $a$.
+
+\begin{prop}
+Si $a$ et $b$ sont premiers entre eux et divisent tous deux $c$
+alors $ab$ divise $c$.
+\end{prop}
+En effet, il existe des entiers $q,q',u,v$ tels que 
+$$ c=qa, \quad c=q'b, \quad au+bv=1$$
+Donc
+$$ c=c(au+bv)=acu+bvc=aq'bu+bvqa=ab(q'u+qv)$$
+
+Ces r\'esultats restent vrais avec des polyn\^omes \`a coefficients
+dans un corps (o\`u premiers entre eux signifie que le PGCD est
+constant).
+
+{\bf Application}~: d\'ecomposition d'une fraction $\frac{n}{ab}$
+avec $a$ et $b$ premiers entre eux (entiers ou polyn\^omes).\\
+Il existe alors $u$ et $v$ tels que $au+bv=1$, donc $U$ et $V$ tels
+que $n=aU+bV$ et
+$$ \frac{n}{ab} =
+\frac{aU+bV}{ab}=\frac{aU}{ab}+\frac{bV}{ab}=\frac{U}{b}+\frac{V}{a} $$
+Exemple 1~: $\frac{2}{3\times 5}$, on a $1=2\times 3-1 \times 5$
+donc $2=4\times 3-2 \times 5$ et
+$$ \frac{2}{15} = \frac{4\times 3-2 \times 5}{3 \times
+  5}=\frac{4}{5}-\frac{2}{3} $$
+
+Exemple 2~: $\frac{2}{x^2-1}=\frac{2}{(x-1)(x+1)}$
+Les polyn\^omes $x-1$ et $x+1$ sont premiers entre eux, on a
+l'identit\'e de B\'ezout
+$$x-1 - (x+1) = -2$$
+donc 
+$$ \frac{2}{(x-1)(x+1)} = \frac{(x+1)-(x-1)}{(x-1)(x+1)}
+= \frac{1}{x-1} - \frac{1}{x+1}$$
+Ce qui permet de calculer une primitive de $\frac{2}{x^2-1}$.
+$$ \int \frac{2}{x^2-1}= \ln(|x-1|)-\ln(|x+1|) $$
+
+\subsection{Les restes chinois}
+L'identit\'e de B\'ezout a une application tr\`es importante en calcul
+formel, elle permet de reconstruire un entier dont on connait le reste de la
+division par des entiers premiers entre eux~:
+\begin{thm} (restes chinois)\\
+Soit $m$ et $n$ deux entiers naturels premiers entre eux, alors pour tout
+$a$ et $b$ entiers relatifs, il existe un entier $c$ tel que $c-a$ est
+divisible par $m$ et $c-b$ est divisible par $n$. 
+L'entier $c$ n'est pas unique, deux solutions $c$ et $c'$ distinctes
+diff\`erent par un multiple de $nm$. 
+\end{thm}
+Remarque~: lorsqu'on reconstruit un entier naturel plus petit que $nm$, on choisit
+l'unique valeur de $c$ telle que $c \in [0,nm[$ (c'est le reste de la
+division par $nm$ de n'importe quelle solution), lorsqu'on reconstruit un
+entier relatif de valeur absolue plus petite que $nm/2$, 
+on choisit $c$ tel que $|c|\leq nm/2$ (on prend le
+reste sym\'etrique).
+  
+Preuve~: Si on a deux solutions $c$ et $c'$ alors $c-c'$ est divisible
+par $n$ et $m$ qui sont premiers entre eux, donc $c-c'$ est divisible
+par $nm$.
+Cherchons une solution, cela revient \`a chercher $U$ et $V$ tels que
+$$c-a=mU, \quad c-b= nV$$
+On a donc
+$$ a+mU=b+nV \quad \Leftrightarrow \quad -mU+nV=b-a$$
+Or $m$ et $n$ sont premiers entre eux, donc par B\'ezout, il
+existe $u$ et $v$ tels que
+$$mu+nv=1$$
+il suffit de multiplier par $b-a$ pour trouver un couple de valeurs
+$U,V$ qui convient.
+
+On sait que le couple $U,V$ n'est pas unique, si $U',V'$ est
+une autre solution, alors $b-a=-mU+nV=-mU'+nV'$ donc
+$$n(V-V')=m(U-U')$$
+donc $n$ divise $U-U'$ et $m$ divise $V-V'$ avec le m\^eme quotient.
+Pour d\'eterminer efficacement une valeur de $c$ qui convient,
+on calculera $v$ tel que $|v|\leq m$ par l'algorithme de B\'ezout, 
+on multipliera par $b-a$ et on prendra pour $V$ le reste
+de $V(b-a)$ par $m$.
+
+Exemple~: trouver $c$ tel que le reste de $c$ par 13 est 11 et le reste
+de $c$ par 7 est 3. On veut 
+$$ c=11+13U=3+7V $$
+donc
+$$ 13U-7V=-8$$
+On a l'identit\'e de B\'ezout~:
+$$ (-1)\times 13 + 7\times2 = 1$$
+on multiplie par -8 donc on peut prendre $V=16$ ($U=8$), on 
+pr\'ef\`ere prendre
+le reste par 13 donc $V=3$, $c=24$ (et $U=1$).
+
+Remarque~: en calcul formel, on prendra $m=p_1...p_{k-1}$ un produit de
+nombres premiers distincts, et $n=p_{k}$ un nombre premier distinct
+des pr\'ec\'edents, on calcule la valeur de $c$ modulo chaque nombre
+premier $p_j$ et d\`es qu'on a assez de nombres premiers $p_k$
+(i.e. si $|c|<p_1...p_k/2$) on en d\'eduit $c$.
+On parle d'algorithme modulaire.
+Par exemple, on peut calculer le d\'eterminant d'une matrice \`a
+coefficients entiers de cette mani\`ere.
+
+Cette m\'ethode s'applique aussi aux polyn\^omes, mais elle
+est moins utile, car
+l'interpolation polynomiale de Lagrange est plus efficace
+lorsque les nombres premiers $p_i$ sont remplac\'es par des $x-\alpha_i$
+
+\subsection{Nombres premiers, factorisation}
+\begin{defn}
+Un entier naturel est premier s'il est divisible seulement par deux
+entiers distincts: 1 et lui-m\^eme.
+\end{defn}
+Exemple~: 17 est premier, mais pas 18. 1 n'est pas premier.
+
+Un nombre non premier admet un diviseur diff\'erent de 1 et lui-m\^eme
+donc une factorisation $n=pq$ avec $p \neq 1$ et $q \neq 1$. On peut
+supposer que $p \leq q$, pour savoir si un nombre est premier
+on peut donc tester que tous les entiers plus petits ou \'egaux \`a $\sqrt{n}$
+ne divisent pas $n$.
+
+\begin{prop}
+Si $p$ et $q$ sont deux nombres premiers distincts, alors ils sont
+premiers entre eux. 
+\end{prop}
+En effet un diviseur commun $d \neq 1$ de $p$ et
+$q$ est \'egal \`a $p$ et \`a $q$ par d\'efinition de $p$ et $q$
+premiers, absurde.
+
+On en d\'eduit par r\'ecurrence~:
+\begin{prop}
+Si $q_1,..,q_k$ sont des nombres premiers tous distincts de $p$
+premier, alors $p$ et $q_1...q_k$ sont premiers entre eux.
+\end{prop}
+On a vu que c'\'etait le cas pour $k=1$, pour $k>1$, soit $d \neq 1$ un
+diviseur commun de $p$ et $q_1...q_k$, $d$ est donc \'egal \`a $p$,
+donc $p$ divise $q_1...q_k$. Comme $q_k \neq p$, $p$ divise
+$q_1..q_{k-1}$ ce qui contredit l'hypoth\`ese de r\'ecurrence.
+
+\begin{thm}
+Un entier naturel $n>1$ s'\'ecrit de mani\`ere unique (\`a permutation pr\`es)
+comme produit de nombres premiers. 
+\end{thm}
+Preuve de l'existence par r\'ecurrence.
+Pour $n=2$, on a $2=2$.
+Pour $n>2$, si $n$ est premier, alors $n=n$, sinon il admet un
+plus petit diviseur strictement sup\'erieur \`a 1, on a $n=pq$ avec $p<n$
+premier et $q<n$ \`a qui on applique
+l'hypoth\`ese de r\'ecurrence.
+
+Exercice~: traduire cette preuve en un algorithme.
+
+Unicit\'e: supposons $p_1...p_k=p'_1...p'_l$. Donc $p_j$ divise
+$p'_1...p'_l$. Comme $p_j$ est premier, il doit \^etre \'egal \`a un
+des $p'_l$. On divise par ce facteur commun et on recommence.
+
+Des r\'esultats analogues s'appliquent pour les polyn\^omes \`a
+coefficients dans un corps: 
+on parle de facteur irr\'eductible (analogue de nombre premier),
+divisible seulement par des polynomes constants et des polynomes multiples non
+nuls d'eux-m\^emes. Par exemple tous les polyn\^omes de degr\'e
+1 sont irr\'eductibles. Un polyn\^ome s'\'ecrit de mani\`ere unique \`a
+permutation pr\`es et \`a inversibles pr\`es comme produit de facteurs
+irr\'eductibles.
+
+\subsection{Remarque~: la divisibilit\'e est une relation d'ordre partiel}
+On observe que~:
+\begin{itemize}
+\item Si $a$ divise $b$ et $b$ divise $a$, alors $a=aqq'$ donc les deux
+quotients $q$ et $q'$ sont inverses l'un de l'autre, donc inversibles.
+Si on travaille sur les entiers naturels, $a=b$, si on travaille sur
+les polyn\^omes unitaires alors $a=b$.
+Une relation v\'erifiant la propri\'et\'e $a\ R\ b$ et $b\ R\ a$ entraine
+$a=b$ est appel\'ee relation antisym\'etrique
+\item $a$ divise $a$ (quotient 1), on parle de relation r\'eflexive 
+\item
+Si $a$ divise $b$ et $b$ divise $c$, alors $a$ divise $c$.
+En effet $b=qa$ et $c=q'b$ donc $c=(qq')a$. On parle
+ici de relation transitive
+\end{itemize}
+Une relation r\'eflexive, antisym\'etrique et transitive est appel\'ee
+relation d'ordre. Ici l'ordre est partiel, on peut avoir des
+\'el\'ements
+qui ne sont pas comparables, par exemple 2 ne divise pas 3 et 3 ne
+divise pas 2. Lorsque deux \'el\'ements sont comparables, on parle
+de relation d'ordre total (par exemple $\leq$ sur les entiers ou les
+r\'eels ou l'ordre lexicographique sur les chaines de caract\`eres ou
+les listes).
+
+On verra plus loin un autre type de relation, les relations
+d'\'equivalence, o\`u on remplace l'antisym\'etrie par la sym\'etrie
+($a\ R\ b$ entraine $b\ R\ a$)
+
+% En informatique, on utilise aussi la notion de relation d'ordre strict
+% faible~: il s'agit d'un relation antireflexive ($a$ n'est pas en
+% relation avec $a$), antisym\'etrique, transitive et telle que la
+% non comparabalit\'e entre deux \'el\'ements soit une relation
+% d'\'equivalence. Ces relations permettent de faire des tris.
+
+\subsection{Prolongement~: id\'eaux}
+Un id\'eal est un sous-ensemble d'un anneau qui est stable pour
+l'addition (la somme de deux \'el\'ements de l'id\'eal est encore
+dans l'id\'eal), et stable par multiplication par tout \'el\'ement
+de l'anneau. Par exemple si on veut r\'esoudre un
+syst\`eme de plusieurs \'equations en une inconnue,
+l'ensemble des polyn\^omes
+en une variable qui s'annulent en un point est un id\'eal.
+
+Dans les anneaux euclidiens, tous les id\'eaux
+sont principaux, i.e. engendr\'es par un \'el\'ement, on prend
+un plus petit entier en valeur absolue pour les entiers ou un plus
+petit polyn\^ome en degr\'e pour les polyn\^omes, la division
+euclidienne par cet \'el\'ement doit renvoyer 0 comme reste sinon on aurait
+un \'el\'ement dans l'id\'eal plus petit. Dans l'exemple ci-dessus,
+on peut se ramener \`a une \'equation polynomiale en une variable
+(c'est un PGCD des polyn\^omes des \'equations).
+
+Dans les anneaux non euclidiens, comme par exemple
+les polyn\^omes \`a plusieurs
+variables, les id\'eaux ne sont pas forc\'ement engendr\'es
+par un seul \'el\'ement, ce qui rend la r\'esolution
+de syst\`emes polynomiaux \`a plusieurs inconnues
+beaucoup plus d\'elicate qu'en une inconnue. 
+Il est en g\'en\'eral difficile de v\'erifier
+qu'un \'el\'ement de l'anneau appartient ou non \`a l'id\'eal
+(alors que c'est juste une division dans le cas \`a une variable).
+Heureusement, il existe des familles particuli\`eres qui engendrent
+l'id\'eal pour lesquelles la v\'erification se fait par une
+g\'en\'eralisation de la division euclidienne.
+La recherche efficace de telles familles, appel\'ees bases de Groebner,
+est un domaine de recherche actif!
+
 \section{Quelques algorithmes d'arithmétique de base.}
 \begin{itemize}
 \item Les algorithmes de multiplication et division dit rapides
@@ -1630,8 +2399,7 @@ d'Euclide).
 de PGCD. Il n'est en général pas utilisé tel quel. Pour les entiers 
 on utilise une variation adaptée à la
 représentation binaire des entiers (cf. Cohen ou le manuel de GMP version 4 
-pour plus de détails). Nous décrirons des
-algorithmes de PGCD plus efficaces pour les polynômes dans le prochain article.
+pour plus de détails). 
 \item l'{\bf identité de Bézout}\index{B\'ezout, identit\'e de}, aussi appelée PGCD étendu. \'Etant donné
 deux entiers ou deux polyn\^omes $a$ et $b$ on calcule $u$, $v$ et
 $d$ tels que $au+bv=d$. On écrit la matrice~:
@@ -1701,46 +2469,6 @@ des méthodes modulaires et $p$-adiques. On utilise souvent le
 programmation de Xcas.
 \end{itemize}
 
-\subsection{Exemple de multiplication rapide~: l'algorithme de Karatsuba}\index{Karatsuba}
-Soient $P, Q$ deux polyn\^omes de degr\'es strictement inf\'erieur \`a
-$2n$. On suppose que le cout d'une op\'eration arithm\'etique dans le
-corps des coefficients vaut 1 et on n\'eglige les autres
-op\'erations (on suppose par exemple que le corps des coefficients
-est un corps fini). On \'ecrit
-\[ P=A+x^n B, \quad Q=C+x^n D\]
-avec $A,B,C,D$ de degr\'es strictement inf\'erieur \`a $n$, on a
-alors~:
-$$ P Q = AC + x^n(AD+BC)+x^{2n} BD$$
-Il y a 4 produits de polyn\^omes de degr\'es $<n$, mais au prix
-d'additions interm\'ediaires, on peut se ramener \`a 3 produits, en
-effet
-$$ (A+B)(C+D)-AC-BD = AD+BC$$
-donc pour calculer le cofacteur de $x^n$ il suffit de soustraire
-\`a $(A+B)(C+D)$ les produits $AC$ et $BD$ que l'on calcule par
-ailleurs.
-Soit $M(n)$ le temps n\'ecessaire pour calculer le produit de 2
-polyn\^omes par cette m\'ethode, on a alors
-$$ M(2n) = 3M(n)+ 8n$$
-o\`u $8n$ repr\'esente le nombre d'additions ou de soustractions
-pour former $A+B$, $C+D$, soustraire $AC$ et $BD$, et tenir compte
-des "retenues" (les termes de degr\'e $\geq n$ de $AC$ se combinent
-avec ceux de degr\'e $<2n$ de $AD+BC$ et les termes de degr\'e $< 3n$
-de $x^{2n}BD$ avec ceux de degr\'e $\geq 2n$ de $AD+BC$).
-On en d\'eduit
-$$ u_n=M(2^n), \quad u_{n+1}=3u_n+8 \times 2^n $$ 
-cette r\'ecurrence se r\'esoud facilement par la commande\\
-\verb|rsolve(u(n+1)=3*u(n)+8*2^n,u(n),u(0)=1)|\\
-qui donne $M(2^n)=u_n=-8\cdot 2^{n}+9\cdot 3^{n}$.
-
-Asymptotiquement, $M(2^n) \approx 9\cdot 3^{n}$ ce qui est bien
-meilleur que la multiplication naive en $2 \cdot 4^n$, mais pour de
-petites valeurs de $n$, la multiplication naive est plus rapide, on
-utilise Karatsuba (r\'ecursivement) uniquement pour des valeurs de $n$
-suffisamment grandes (th\'eoriquement lorsque $8n$, le surcout d\^u
-aux additions est plus petit que la multiplication \'economis\'ee,
-soit $8n<2n^2$ soit $n>4$, en pratique plut\^ot pour $n$ de l'ordre de quelques
-dizaines selon les impl\'ementations, car nous n'avons tenu compte
-que des op\'erations arithm\'etiques).
 
 \subsection{Calcul de la racine carr\'ee enti\`ere}
 \'Etant donn\'e un entier $N$, il s'agit de d\'eterminer le plus grand
@@ -8678,18 +9406,23 @@ en une dizaine de cycles du microprocesseur.
 \pagebreak
 
 \section{Exercices}
-Dans Xcas, pour travailler dans $\mathbb{Z}/p\mathbb{Z}$, on utilise l'op\'erateur \verb|%|.
+Dans Xcas, pour travailler dans $\mathbb{Z}/p\mathbb{Z}$, on utilise l'op\'erateur infix\'e \verb|mod| (ou \verb|%| en syntaxe Xcas).
 Attention \`a bien laisser un espace avant ou/et apr\`es \verb|%| si vous 
-utilisez des noms de variables. Par exemple \verb|p:=7; 3 % p| repr\'esente
+utilisez des noms de variables. Par exemple \verb|p:=7; t:=3 % p| repr\'esente
 la classe de 3 dans $\mathbb{Z}/7\mathbb{Z}$.
+Pour revenir \`a un entier depuis un \'el\'ement $t$ 
+de $\mathbb{Z}/p\mathbb{Z}$, utiliser \verb|t mod 0| (ou \verb|t % 0|).
+
 Pour travailler dans un corps fini non premier de caract\'eristique $p$
 et de cardinal $p^n$,
-on cr\'ee le corps avec la commande \verb|GF(p,n)| ou une variante.
+on cr\'ee le corps avec la commande \verb|GF(p,n)| ou une variante,
+et on exprime les \'el\'ements du corps comme polyn\^omes en une racine
+d'un polyn\^ome irr\'eductible de degr\'e $n$ (par d\'efaut $g$).
 Les variantes permettent de pr\'eciser le nom de variable pour 
 g\'en\'erer les \'el\'ements du corps comme polyn\^omes en cette variable, 
 ou pour pr\'eciser le polyn\^ome minimal ou pour indiquer si on ne souhaite
 pas que le polyn\^ome minimal soit primitif (i.e. que les puissances
-de la variable engendre le corps moins 0). Par exemple
+de la variable engendrent le corps moins 0). Par exemple
 \begin{itemize}
 \item \verb|GF(2,8,r)| utilisera \verb|r| comme variable
 \item \verb|GF(2,128,0)| utilisera un polyn\^ome minimal pas forc\'ement 
@@ -8920,7 +9653,7 @@ de 2 mots est le nombre de symboles qui diffèrent.
 (il s'agit bien d'une distance au sens mathématique, 
 elle v\'erifie l'in\'egalit\'e triangulaire). 
 
-Exercice~: écrire une procédure de calcul de la distance de Hamming
+{\bf Exercice}~: écrire une procédure de calcul de la distance de Hamming
 de 2 mots. En Xcas, la fonction s'appelle {\tt hamdist}.
 
 La distance d'un code est la distance de Hamming minimale
@@ -8931,7 +9664,7 @@ Pour un code polynomial, la distance du code
 est le nombre minimal de coefficients non nuls d'un multiple
 de $g$ de degr\'e inf\'erieur \`a $n$.
 
-Exercice~: quelle est la distance du code linéaire que
+{\bf Exercice}~: quelle est la distance du code linéaire que
 vous avez créé plus haut~?
 
 {\bf Majoration de la distance du code:}\\\index{distance d'un code}
@@ -8945,7 +9678,7 @@ zéros dans chaque ligne, donc le nombre de coefficients non nuls
 de ces $k$ lignes (qui sont toujours des mots de code) est 
 au plus de $n-k+1$.
 
-Exercice~: si votre code linéaire n'est pas de distance 3, modifiez
+{\bf Exercice}~: si votre code linéaire n'est pas de distance 3, modifiez
 les 3 dernières lignes pour réaliser un code de distance 3. On
 ne peut pas obtenir une distance $n-k+1=4$ avec $n=7$ et $k=4$ 
 dans $\mathbb{Z}/2\mathbb{Z}$, essayez! Essayez sur $\mathbb{Z}/3\mathbb{Z}$ et $\mathbb{Z}/5\mathbb{Z}$.
@@ -8964,7 +9697,7 @@ Si la distance d'un code est sup\'erieure ou \'egale
 On corrige alors le mot transmis en le remplaçant par le mot de code
 le plus proche.
 
-Exercice~: écrivez un programme permettant de corriger une erreur
+{\bf Exercice~}: écrivez un programme permettant de corriger une erreur
 dans un mot dans votre code linéaire.
 
 On dit qu'un code $t$-correcteur est 
@@ -8972,7 +9705,8 @@ On dit qu'un code $t$-correcteur est
 de centre un mot de code et de rayon $t$ (pour la distance de Hamming)
 est disjointe et recouvre l'ensemble des mots ($K^n$).
 
-Exercice~: votre code linéaire sur $\mathbb{Z}/2\mathbb{Z}$ (celui de distance 3) 
+{\bf Exercice}~: 
+votre code linéaire sur $\mathbb{Z}/2\mathbb{Z}$ (celui de distance 3) 
 est-il un code 1-correcteur parfait~?
 
 \subsection{Codes de Hamming}
@@ -8995,14 +9729,13 @@ $$ H=\left( \begin{array}{ccccccccccccccc}
  \end{array} \right)$$
 on d\'eplace les colonnes de la matrice identit\'e 
 (colonnes 1, 2, 4, 8)
-en fin pour \'ecrire $H=(-C,I_4)$, le code correspondant est
+en fin pour \'ecrire $K=(-C,I_4)$, le code correspondant est
 $\left( ^{I_{11}} _C \right)$, il permet de corriger une erreur,
 on calcule $Hx$ et si le r\'esultat est non nul, on change le
-bit d'indice $Hx$ en tenant compte du d\'eplacement des colonnes
-1, 2, 4 et 8. En fait, il est plus simple de ne pas faire ce
-d\'eplacement de colonnes.
+bit d'indice $Hx$ en tenant compte de la permutation d'indices
+sur les colonnes de $H$.
 
-Code syst\'ematique~: 
+On peut aussi g\'en\'erer le code syst\'ematique comme suit~: 
 \begin{enumerate}
 \item On rep\`ere les indices de bit en commen\c{c}ant
 \`a 1
@@ -9028,6 +9761,33 @@ p8      &    &    &    &    &    &   &  & x   & x & x  & x   & x & x & x & x \\
 \end{tabular}
 
 Autre exemple~: le minitel utilisait $d=2, m=7, n=2^m-1$.
+
+{\bf Remarque}\\
+On peut aussi g\'en\'erer des codes de Hamming binaire
+comme codes polynomiaux associ\'es \`a un polyn\^ome irr\'eductible $P$
+de $\Z/2\Z[X]$ de degr\'e $m$. En effet, on obtient ainsi un code
+de distance 3 au moins, puisque si un polynome $Q$ est multiple de $P$
+et n'a que 2 monomes non nuls d'indice plus petits que $n=2^m-1$, 
+en appliquant $Q(\alpha)=0$ pour $\alpha$
+un g\'en\'erateur de $K=F_{2^m}$ (puisque $P(\alpha)=0$), on
+en d\'eduirait un ordre trop petit pour $\alpha$.
+Et on a un code parfait 1-correcteur: si on a un mot de code, il n'y a
+rien \`a faire, si on est \`a distance 1, on prend le reste de la division
+du polyn\^ome $Q$ par $P$, on l'applique \`a $\alpha$, on obtient un
+\'el\'ement de $K^*$ qui peut s'\'ecrire comme une puissance
+de $\alpha$. Il suffit donc de corriger le bit correspondant
+pour obtenir un mot de code.
+En pratique, on calcule $Q(\alpha)$ en repr\'sentation additive,
+si on n'obtient pas 0,
+on passe en repr\'esentation multiplicative et on corrige.
+
+{\bf Exercice}\\
+\'Ecrire un programme codant et d\'ecodant avec correction d'au plus une
+erreur avec le code de Hamming binaire (11,4).
+
+\vfill
+
+\pagebreak
 
 \section{Les codes de Reed-Solomon}\index{Reed-Solomon (codes)}
 Il s'agit de codes polynomiaux qui r\'ealisent la distance maximale
@@ -9737,7 +10497,7 @@ Valeur renvoyée: la liste des facteurs irréductibles de $P$.\\
 \item Si $k=d$ renvoyer une liste contenant $P$.
 \item Déterminer un polynôme $T$ aléatoire de degré inférieur ou égal
 à $2d-1$ et de coefficient dominant 1. Calculer le pgcd $D$ de $P$
-et de $T^{(p^d-1)/2}-1$. Si le degré de $T$ est égal à 0 ou à $k$ 
+et de $T^{(p^d-1)/2}-1$. Si le degré de $D$ est égal à 0 ou à $k$ 
 recommencer cette étape.
 \item Appeler récursivement cet algorithme avec $T$ et $P/T$ et
 renvoyer la liste réunion des deux listes renvoyées.
@@ -10443,24 +11203,19 @@ positives de $P$.
 \begin{enumerate} 
 \item Impl\'ementer la r\`egle de Descartes sur $]0,+\infty[$
 (nombre de racines $\leq$ au nombre de changements de signe des
-coefficients).
+coefficients). On peut utiliser \verb|coeffs| pour avoir la
+liste des coefficients de $P$.
 \item Pour faire de m\^eme sur $]0,1[$, on fait d'abord
 le changement de variables $x\rightarrow 1/x$ 
 ($\tilde{P}(x)=x^5P(1/x)$) qui permet
 de se ramener \`a des racines dans $]1,+\infty[$ puis  
 $x \rightarrow x+1$ ($\tilde{P}(x)=P(x+1)$) sur $]0,+\infty[$.
+On peut utiliser \verb|revlist| pour calculer $\tilde{P}$
+et \verb|ptayl| pour faire le changement d'origine.
+\item Pour faire de m\^eme sur $]a,b[$, on pose $P(x)=Q(at+b-a)$.
 \item D\'eterminer une majoration $M$ des racines de $P$ en module.
-\item D\'eterminer le polyn\^ome $Q$ tel que $Q(x)=P(Mx)$. 
-Les racines positives de $P$ correspondent
-\`a des racines de $Q$ dans $]0,1[$ pour lesquelles on peut
-appliquer la r\`egle de Descartes adapt\'ee.
-\item S'il y a 2 changements de signe ou plus de $Q$ sur $]0,1[$,
-rechercher les racines de $Q$ dans $]0,1/2[$ en se ramenant
-aux racines de $R$ dans $]0,1[$ avec $R(x)=Q(x/2)$
-puis les racines de $Q$ dans $]1/2,1[$ en posant $S(x)=Q((x+1)/2)$.
-\item Discuter la complexit\'e des changements de variables
-qui apparaissent dans cette m\'ethode, en particulier en utilisant
-une repr\'esentation des polyn\^omes par une liste de coefficients.
+Puis par dichotomie, trouver des intervalles d'isolation
+des racines de $P$.
 \end{enumerate}
 \item Déterminer le nombre de racines de $-x^7+x^4+12x-5$ comprises
 entre 0 et 6 (en utilisant les suites de Sturm, on donnera les
@@ -14236,7 +14991,7 @@ On a alors (en consid\'erant $t^nP(1/t)$)
 \end{equation}
 On peut passer facilement des $e_j$ aux $ p_j=\sum_{k=1}^n r_k^j$ par
 les identt\'es de Newton. On calcule la d\'eriv\'ee par rapport \`a $t$
-de (\ref{eq:idnewt1}) et on multiplie par $t$
+de (\(\ref{eq:idnewt1}\)) et on multiplie par $t$
 $$ \sum_{j=1}^n \frac{-r_jt}{1-r_jt} \prod_{k=1}^n(1-r_kt) 
 =\sum_{k=0}^n kt^k (-1)^k e_k  $$
 on d\'eveloppe en s\'erie enti\`ere 
@@ -16070,14 +16825,14 @@ Exemple~: on reprend $P(0)=1, P(1)=2, P(2)=1$. On a
 \[
 \begin{array}{cccc}
 x_i & f[x_i] & f[x_i,x_{i+1}] & f[x_0,x_1,x_2] \\
-0 & \framebox{1} & & \\
-  &   & (2-1)/(1-0)=\framebox{1} & \\
-1 & 2 & &  (-1-1)/(2-0)=\framebox{-1}   \\
+0 & {\bf 1} & & \\
+  &   & (2-1)/(1-0)={\bf 1} & \\
+1 & 2 & &  (-1-1)/(2-0)={\bf -1}   \\
   &   & (1-2)/(2-1)=-1 & \\
 2 & 1 & & \\
 \end{array}
 \]
-donc $P(x)=\framebox{1}+(x-0)(\framebox{1}+(x-1)(\framebox{-1}))=1+x(2-x)$.
+donc $P(x)={\bf 1}+(x-0)({\bf 1}+(x-1)({\bf -1}))=1+x(2-x)$.
 
 On peut naturellement utiliser l'ordre que l'on souhaite pour les
 $x_i$, en observant que le coefficient dominant de $P$ ne d\'epend pas de
