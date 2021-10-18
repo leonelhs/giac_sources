@@ -747,8 +747,19 @@ Function {cb_Insert_ItemName(Fl_Widget * w , void*)} {} {
     menu_buffer = m->text();
     int pos=menu_buffer.find(':');
     if (pos>0 && pos<menu_buffer.size()) menu_buffer=menu_buffer.substr(0,pos);
+    int pos2=menu_buffer.find(' ');
     Fl_Widget * f = xcas::Xcas_input_focus;
     if (!f) return;
+    static std::string ans;
+    if (pos2>=0 && pos2<menu_buffer.size()){
+      ans=menu_buffer;
+      Fl::focus(f);
+      if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(f)){
+	    in->buffer()->insert(in->insert_position(),ans.c_str());
+	    in->insert_position(in->insert_position()+ans.size());
+	  return;
+	}
+    }
     const giac::context * contextptr = xcas::get_context(f);
     giac::gen tmp(menu_buffer,contextptr);
     if (Xcas_automatic_help_browser->value())
@@ -767,7 +778,6 @@ Function {cb_Insert_ItemName(Fl_Widget * w , void*)} {} {
       if (!Xcas_automatic_completion_browser->value())
         menu_buffer += '(';
     }
-    static std::string ans;
     ans=menu_buffer;
     int remove;
     Fl_Widget * wid=f->window();

@@ -188,7 +188,11 @@ namespace giac {
   }
 
   gen check_secure(){
-    if (secure_run)
+    if (secure_run
+#ifdef KHICAS
+	|| exam_mode
+#endif
+	)
       return gensizeerr(gettext("Running in secure mode"));
     return 0;
   }
@@ -6261,7 +6265,17 @@ namespace giac {
 
   int (*micropy_ptr) (cstcharptr)=0;
   gen _python(const gen & args,GIAC_CONTEXT){
-#if defined MICROPY_LIB || defined HAVE_LIBMICROPYTHON
+#if defined MICROPY_LIB
+    if (micropy_ptr && args.type==_VECT && args._VECTptr->size()==2){
+      gen a=args._VECTptr->front(),b=args._VECTptr->back();
+      if (a.type==_STRNG && b==at_python){
+	const char * ptr=a._STRNGptr->c_str();
+	(*micropy_ptr)(ptr);
+	return string2gen("Done",false);
+      }
+    }
+#endif
+#if defined HAVE_LIBMICROPYTHON
     if (micropy_ptr && args.type==_VECT && args._VECTptr->size()==2){
       gen a=args._VECTptr->front(),b=args._VECTptr->back();
       if (a.type==_STRNG && b==at_python){
@@ -7240,6 +7254,7 @@ namespace giac {
   }
   gen _simplifier(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    if (g.type<_IDNT) return g;
     if (is_equal(g))
       return apply_to_equal(g,_simplifier,contextptr);
     if (g.type!=_VECT)
@@ -8242,16 +8257,21 @@ namespace giac {
   }
   bool is_address(const gen & g,size_t & addr){
     if (g.type==_INT_){
-      addr=g.val;
+      addr=(g.val/4)*4; // align
       return true;
     }
     if (g.type!=_ZINT)
       return false;
     addr = modulo(*g._ZINTptr,(unsigned)0x80000000);
+    addr = (addr/4)*4;
     addr += 0x80000000;
     return true;
   }
   gen _read(const gen & args,GIAC_CONTEXT){
+#ifdef KHICAS
+    if (exam_mode)
+      return gensizeerr("Exam mode");
+#endif
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
     size_t addr;
     if (is_address(args,addr))
@@ -8293,6 +8313,17 @@ namespace giac {
   gen _read32(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
     size_t addr;
+    if (args.type==_VECT && args._VECTptr->size()==2 && args._VECTptr->back().type==_INT_){
+      int n=args._VECTptr->back().val;
+      if (n<=0 || !is_address(args._VECTptr->front(),addr)) 
+	return undef;
+      vecteur res;
+      for (int i=0;i<n;++i){
+	res.push_back(makevecteur((longlong) addr,(longlong) *(unsigned *) addr));
+	addr += 4;
+      }
+      return res;
+    }
     if (is_address(args,addr))
       return (longlong) *(unsigned *) addr;
     return gensizeerr(contextptr);
@@ -8379,6 +8410,8 @@ namespace giac {
     if (exam_mode)
       return gensizeerr("Exam mode");
 #endif
+    if (args.type!=_VECT)
+      return _read32(args,contextptr);
     if (args.type==_VECT){
       vecteur v=*args._VECTptr;
       size_t addr;
@@ -12991,7 +13024,8 @@ namespace giac {
   // Create an operator with a given syntax
   vector<unary_function_ptr> user_operator_list;   // GLOBAL VAR
   gen user_operator(const gen & g,GIAC_CONTEXT){
-    if (g.type!=_VECT || g._VECTptr->size()<3)
+    int nargs=0;
+    if (g.type!=_VECT || (nargs=g._VECTptr->size())<2)
       return gensizeerr(contextptr);
     vecteur & v=*g._VECTptr;
     // int s=signed(v.size());
@@ -13009,12 +13043,22 @@ namespace giac {
       const unary_function_user * ptr=dynamic_cast<const unary_function_user *>(ptr0);
       if (!ptr)
 	return zero;
-      if (ptr->f==v[1]){
-	// if (v[2].type==_INT_ && v[2].subtype==_INT_MUPADOPERATOR && v[2].val==_DELETE_OPERATOR) user_operator_list.erase(it); // does not work...
-	return plus_one;
+      if ( (nargs==3 && ptr->f==v[1] && v[2].type==_INT_ && v[2].subtype==_INT_MUPADOPERATOR && v[2].val==_DELETE_OPERATOR) ||
+	   (nargs==2 && v[1].type==_INT_ && v[1].subtype==_INT_MUPADOPERATOR && v[1].val==_DELETE_OPERATOR) ){
+	map_charptr_gen::const_iterator i,iend;
+	bool ok=true;
+	i = lexer_functions().find(v[0]._STRNGptr->c_str());
+	iend=lexer_functions().end();
+	if (i==iend)
+	  ok=false;
+	else
+	  lexer_functions().erase(v[0]._STRNGptr->c_str());
+	user_operator_list.erase(it); 
       }
-      return zero;
+      return plus_one;
     }
+    if (nargs<3)
+      return 1;
     if (v[2].type==_INT_){ 
       int token_value=v[2].val;
       unary_function_user * uf;

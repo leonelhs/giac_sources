@@ -916,6 +916,7 @@
 {"lname",13,9,0,0},
 {"lncollect",13,9,0,0},
 {"lnexpand",13,9,0,0},
+{"locate",13,9,0,0},
 {"locus",13,9,0,0| 1},
 {"log10",13,9,0,0},
 {"logarithmic_regression",13,9,0,0},

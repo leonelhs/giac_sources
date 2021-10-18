@@ -85,7 +85,7 @@ extern "C" {
   int python_init(int stack_size,int heap_size);
 }
 extern int lang;
-extern bool warn_nr;
+extern bool warn_nr,nspirelua;
 int select_interpreter(); // 0 Xcas, 1|2 Xcas python_compat(1|2), 3 MicroPython 
 const char * gettext(const char * s) ;
 
@@ -343,7 +343,7 @@ namespace xcas {
   // void draw_menu(int editor); // 0 console, 1 editor
   int get_set_session_setting(int value);
   void menu_setup(const giac::context *);
-  int console_main(const giac::context *);
+  int console_main(const giac::context *,const char * sessionname="session");
 #endif
   int periodic_table(const char * & name,const char * & symbol,char * protons,char * nucleons,char * mass,char * electroneg);
 
@@ -467,8 +467,10 @@ namespace giac {
   extern const char apropos_en_string[];
   void init_locale();
 
+  gen _efface_logo(const gen & g,GIAC_CONTEXT);
   gen turtle_state(const giac::context * contextptr);
   int inputline(const char * msg1,const char * msg2,std::string & s,bool numeric,int ypos=65,const giac::context *contextptr=0);
+  extern logo_turtle * turtleptr;
   bool inputdouble(const char * msg1,double & d,const giac::context *contextptr);
   bool do_confirm(const char * s);
   int confirm(const char * msg1,const char * msg2,bool acexit=false,int y=40);

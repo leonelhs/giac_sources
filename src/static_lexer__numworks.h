@@ -916,6 +916,7 @@
  & at_lname,
  & at_lncollect,
  & at_lnexpand,
+ & at_locate,
  & at_locus,
  & at_log10,
  & at_logarithmic_regression,

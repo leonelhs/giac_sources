@@ -183,6 +183,7 @@ static mp_obj_t graphic_set_pixel(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_set_pixel_obj, 0, 3, graphic_set_pixel);
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_draw_pixel_obj, 2, 3, graphic_set_pixel);
 
+
 static mp_obj_t graphic_draw_line(size_t n_args, const mp_obj_t *args) {
   int x1 = mp_obj_get_int(args[0]), y1 = mp_obj_get_int(args[1]),
     x2 = mp_obj_get_int(args[2]), y2 = mp_obj_get_int(args[3]),
@@ -810,17 +811,41 @@ mp_obj_t c_complextab2mp_array(c_complex *x,size_t n,size_t m){
 
 const char * caseval(const char *);
 
+// mp_obj_t mp_obj_str_make_new(const mp_obj_type_t *type_in, size_t n_args, size_t n_kw, const mp_obj_t *args);
+// type= &mp_type_str, n_args==1, n_kw=0
+// mp_obj_is_str
+// const char *mp_obj_str_get_str(mp_obj_t self_in); 
+
 static mp_obj_t cas_caseval(size_t n_args, const mp_obj_t *args) {
   const char * text = mp_obj_str_get_str(args[0]);
+  if (n_args>1){
+    size_t len=strlen(text);
+    const char * argtext[8];
+    for (int i=1;i<n_args;++i){
+      argtext[i]=mp_obj_str_get_str(mp_obj_str_make_new(&mp_type_str,1,0,&args[i]));
+      len += strlen(argtext[i]);
+    }
+    char * buf=malloc(len+64);
+    strcpy(buf,text);
+    strcat(buf,"(");
+    for (int i=1;i<n_args;++i){
+      strcat(buf,argtext[i]);
+      strcat(buf,",");
+    }
+    buf[strlen(buf)-1]=')';
+    const char * val=caseval(buf);
+    return mp_obj_new_str(val,strlen(val));
+  }
   const char * val=caseval(text);
   return mp_obj_new_str(val,strlen(val));
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 2, cas_caseval);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 8, cas_caseval);
 
 //
 static const mp_map_elem_t cas_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
 	{ MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
+	{ MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };
 
 
@@ -836,6 +861,8 @@ const mp_obj_type_t cas_type = {
 STATIC const mp_map_elem_t mp_module_cas_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR__cas) },
     { MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+    { MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
+    { MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };
 
 STATIC const mp_obj_dict_t mp_module_cas_globals = {
@@ -2277,7 +2304,17 @@ static mp_obj_t turtle_pencolor(size_t n_args, const mp_obj_t *args) {
       size_t n=0; mp_obj_t * tab=0;
       mp_obj_get_array(args[0],&n,&tab);
       if (n==3 &&  mp_obj_is_float(tab[0]) && mp_obj_is_float(tab[1]) && mp_obj_is_float(tab[2])){
+#ifdef NUMWORKS
+	strcpy(buf,"crayon(");
+	for (int i=0;i<3;++i){
+	  strcat_double(buf,mp_obj_get_float(tab[i]));
+	  if (i<2)
+	    strcat(buf,",");
+	}
+	strcat(buf,"):;");
+#else
 	sprintf(buf,"crayon(%.3g,%.3g,%.3g):;",mp_obj_get_float(tab[0]),mp_obj_get_float(tab[1]),mp_obj_get_float(tab[2]));
+#endif
       }
       if (n==3 &&  MP_OBJ_IS_SMALL_INT(tab[0]) && MP_OBJ_IS_SMALL_INT(tab[1]) && MP_OBJ_IS_SMALL_INT(tab[2])){
 	sprintf(buf,"crayon(%i,%i,%i):;",(int)MP_OBJ_SMALL_INT_VALUE(tab[0]),(int)MP_OBJ_SMALL_INT_VALUE(tab[1]),(int)MP_OBJ_SMALL_INT_VALUE(tab[2]));
@@ -2285,7 +2322,17 @@ static mp_obj_t turtle_pencolor(size_t n_args, const mp_obj_t *args) {
     }
   }
   if (n_args==3 && mp_obj_is_float(args[0]) && mp_obj_is_float(args[1]) && mp_obj_is_float(args[2]) ){
+#ifdef NUMWORKS
+	strcpy(buf,"crayon(");
+	for (int i=0;i<3;++i){
+	  strcat_double(buf,mp_obj_get_float(args[i]));
+	  if (i<2)
+	    strcat(buf,",");
+	}
+	strcat(buf,"):;");
+#else
     sprintf(buf,"crayon(%.3g,%.3g,%.3g):;",mp_obj_get_float(args[0]),mp_obj_get_float(args[1]),mp_obj_get_float(args[2]));
+#endif
   }
   const char * val=caseval(buf);
   return turtle_ret(val);
@@ -2629,13 +2676,25 @@ static mp_obj_t matplotl_bar_hist(size_t n_args, const mp_obj_t *args,bool bar) 
 	ptr=printtab(x,n,m);
 	free(x);
 	char buf2[strlen(buf)+strlen(ptr)+256];
+#ifdef NUMWORKS
+	sprintf(buf2,"%s,%s,",buf,ptr);
+	strcat_double(buf2,largeur);
+	strcat(buf2,"):;");
+#else
 	sprintf(buf2,"%s,%s,%.3g):;",buf,ptr,largeur);
+#endif
 	free(ptr);
 	const char * val=caseval(buf2);
 	return turtle_ret(val);
       }
       char buf2[strlen(buf)+256];
+#ifdef NUMWORKS
+      sprintf(buf2,"%s,",buf);
+      strcat_double(buf2,largeur);
+      strcat(buf2,"):;");
+#else
       sprintf(buf2,"%s,%.3g):;",buf,largeur);
+#endif
       const char * val=caseval(buf2);
       return turtle_ret(val);
     }

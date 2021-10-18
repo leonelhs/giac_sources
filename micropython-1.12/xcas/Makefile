@@ -36,7 +36,7 @@ endif
 
 # compiler settings
 CWARN = -Wall #-Werror -Wno-error=cpp -Wno-error=format
-CFLAGS =  -DMICROPY_LIB $(INC) $(CWARN) -ansi -std=gnu99 $(CFLAGS_MOD) $(COPT) $(CFLAGS_EXTRA)
+CFLAGS = -fPIC -DMICROPY_LIB $(INC) $(CWARN) -ansi -std=gnu99 $(CFLAGS_MOD) $(COPT) $(CFLAGS_EXTRA)
 
 
 

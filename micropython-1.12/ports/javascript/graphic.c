@@ -172,13 +172,15 @@ mp_obj_t mp_color_tuple(int c){
 }  
 
 static mp_obj_t graphic_set_pixel(size_t n_args, const mp_obj_t *args) {
+  if (n_args<2)
+    return mp_const_none;
   uint16_t x = mp_obj_get_int(args[0]), y = mp_obj_get_int(args[1]),color=0;
   if (n_args==3)    
     color = mp_get_color(args[2]);
   c_set_pixel(x,y,color);
   return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_set_pixel_obj, 2, 3, graphic_set_pixel);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_set_pixel_obj, 0, 3, graphic_set_pixel);
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_draw_pixel_obj, 2, 3, graphic_set_pixel);
 
 static mp_obj_t graphic_draw_line(size_t n_args, const mp_obj_t *args) {
@@ -808,17 +810,41 @@ mp_obj_t c_complextab2mp_array(c_complex *x,size_t n,size_t m){
 
 const char * caseval(const char *);
 
+// mp_obj_t mp_obj_str_make_new(const mp_obj_type_t *type_in, size_t n_args, size_t n_kw, const mp_obj_t *args);
+// type= &mp_type_str, n_args==1, n_kw=0
+// mp_obj_is_str
+// const char *mp_obj_str_get_str(mp_obj_t self_in); 
+
 static mp_obj_t cas_caseval(size_t n_args, const mp_obj_t *args) {
   const char * text = mp_obj_str_get_str(args[0]);
+  if (n_args>1){
+    size_t len=strlen(text);
+    const char * argtext[8];
+    for (int i=1;i<n_args;++i){
+      argtext[i]=mp_obj_str_get_str(mp_obj_str_make_new(&mp_type_str,1,0,&args[i]));
+      len += strlen(argtext[i]);
+    }
+    char * buf=malloc(len+64);
+    strcpy(buf,text);
+    strcat(buf,"(");
+    for (int i=1;i<n_args;++i){
+      strcat(buf,argtext[i]);
+      strcat(buf,",");
+    }
+    buf[strlen(buf)-1]=')';
+    const char * val=caseval(buf);
+    return mp_obj_new_str(val,strlen(val));
+  }
   const char * val=caseval(text);
   return mp_obj_new_str(val,strlen(val));
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 2, cas_caseval);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 8, cas_caseval);
 
 //
 static const mp_map_elem_t cas_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
 	{ MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
+	{ MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };
 
 
@@ -834,8 +860,9 @@ const mp_obj_type_t cas_type = {
 STATIC const mp_map_elem_t mp_module_cas_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR__cas) },
     { MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+    { MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
+    { MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };
-
 STATIC const mp_obj_dict_t mp_module_cas_globals = {
     .base = {&mp_type_dict},
     .map = {
@@ -2013,7 +2040,7 @@ static mp_obj_t turtle_backward(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_backward_obj, 0, 1, turtle_backward);
 
 static mp_obj_t turtle_left(size_t n_args, const mp_obj_t *args) {
-  turtle_freeze();
+  turtle_freeze(); 
   int i=90;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);

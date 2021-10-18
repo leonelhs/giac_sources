@@ -68,6 +68,7 @@
       {"True",1,1,_INT_BOOLEAN,T_NUMBER},
       {"Try",0,0,0,TI_TRY},
       {"UNTIL",0,0,0,T_UNTIL},
+      {"Unary"         ,1,_PREFIX_OPERATOR , _INT_MUPADOPERATOR ,T_NUMBER},
       {"VRAI",1,1,_INT_BOOLEAN,T_NUMBER},
       {"acyclic", 0, _GT_ACYCLIC, _INT_MAPLECONVERSION, T_TYPE_ID},
       {"adaptive"         ,1,_ADAPTIVE , _INT_PLOT ,T_NUMBER},

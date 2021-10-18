@@ -853,6 +853,10 @@ CONFIG_GSL_FALSE
 CONFIG_GSL_TRUE
 GSL_LIBS
 CONFIG_GSL
+CONFIG_BERNMM_FALSE
+CONFIG_BERNMM_TRUE
+BERNMM_LIBS
+CONFIG_BERNMM
 CONFIG_ECM_FALSE
 CONFIG_ECM_TRUE
 ECM_LIBS
@@ -986,6 +990,7 @@ with_gnu_ld
 enable_libtool_lock
 enable_tommath
 enable_ecm
+enable_bernmm
 enable_debug
 enable_gc
 enable_sscl
@@ -1656,6 +1661,7 @@ Optional Features:
   --disable-libtool-lock  avoid locking (might break parallel builds)
   --enable-tommath        Use libtommath instead of GMP [[default=no]]
   --enable-ecm            Use ECM [[default=yes]]
+  --enable-bernmm         Use BERNMM [[default=yes]]
   --enable-debug          enables debug support [[default=no]]
   --enable-gc             Use Boehm garbage collector [[default=no]]
 
@@ -5702,13 +5708,13 @@ if ${lt_cv_nm_interface+:} false; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:5705: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:5711: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5708: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:5714: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5711: output\"" >&5)
+  (eval echo "\"\$as_me:5717: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -6796,7 +6802,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6799 "configure"' > conftest.$ac_ext
+  echo '#line 6805 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8853,11 +8859,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8856: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8862: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8860: \$? = $ac_status" >&5
+   echo "$as_me:8866: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9177,11 +9183,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9180: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9186: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:9184: \$? = $ac_status" >&5
+   echo "$as_me:9190: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -9282,11 +9288,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9285: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9291: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9289: \$? = $ac_status" >&5
+   echo "$as_me:9295: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -9337,11 +9343,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:9340: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:9346: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:9344: \$? = $ac_status" >&5
+   echo "$as_me:9350: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -11709,7 +11715,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11712 "configure"
+#line 11718 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11809,7 +11815,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11812 "configure"
+#line 11818 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -13756,11 +13762,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13759: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13765: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:13763: \$? = $ac_status" >&5
+   echo "$as_me:13769: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -13855,11 +13861,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13858: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13864: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13862: \$? = $ac_status" >&5
+   echo "$as_me:13868: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -13907,11 +13913,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:13910: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:13916: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:13914: \$? = $ac_status" >&5
+   echo "$as_me:13920: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -15666,6 +15672,77 @@ fi
 else
   CONFIG_ECM_TRUE='#'
   CONFIG_ECM_FALSE=
+fi
+
+
+CONFIG_BERNMM="yes"
+# Check whether --enable-bernmm was given.
+if test "${enable_bernmm+set}" = set; then :
+  enableval=$enable_bernmm; if test "$enableval" = "no"; then CONFIG_BERNMM="no"; fi
+fi
+
+
+if test "$CONFIG_BERNMM" = "yes"; then
+	ac_fn_cxx_check_header_mongrel "$LINENO" "bern_rat.h" "ac_cv_header_bern_rat_h" "$ac_includes_default"
+if test "x$ac_cv_header_bern_rat_h" = xyes; then :
+
+else
+  CONFIG_BERNMM="no"
+fi
+
+
+  fi
+if test "$CONFIG_BERNMM" = "yes"; then
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lbernmm" >&5
+$as_echo_n "checking for main in -lbernmm... " >&6; }
+if ${ac_cv_lib_bernmm_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lbernmm  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_bernmm_main=yes
+else
+  ac_cv_lib_bernmm_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_bernmm_main" >&5
+$as_echo "$ac_cv_lib_bernmm_main" >&6; }
+if test "x$ac_cv_lib_bernmm_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBBERNMM 1
+_ACEOF
+
+  LIBS="-lbernmm $LIBS"
+
+else
+  CONFIG_BERNMM="no"
+fi
+
+  fi
+
+
+ if test "$CONFIG_BERNMM" = "yes"; then
+  CONFIG_BERNMM_TRUE=
+  CONFIG_BERNMM_FALSE='#'
+else
+  CONFIG_BERNMM_TRUE='#'
+  CONFIG_BERNMM_FALSE=
 fi
 
 
@@ -23203,6 +23280,10 @@ fi
 
 if test -z "${CONFIG_ECM_TRUE}" && test -z "${CONFIG_ECM_FALSE}"; then
   as_fn_error $? "conditional \"CONFIG_ECM\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${CONFIG_BERNMM_TRUE}" && test -z "${CONFIG_BERNMM_FALSE}"; then
+  as_fn_error $? "conditional \"CONFIG_BERNMM\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${CONFIG_GSL_TRUE}" && test -z "${CONFIG_GSL_FALSE}"; then

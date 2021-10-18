@@ -1084,6 +1084,7 @@
 {"lname",13,9,0,*((ulonglong *) at_lname)},
 {"lncollect",13,9,0,*((ulonglong *) at_lncollect)},
 {"lnexpand",13,9,0,*((ulonglong *) at_lnexpand)},
+{"locate",13,9,0,*((ulonglong *) at_locate)},
 {"locus",13,9,0,*((ulonglong *) at_locus)| 1},
 {"log10",13,9,0,*((ulonglong *) at_log10)},
 {"log1p",13,9,0,*((ulonglong *) at_log1p)},

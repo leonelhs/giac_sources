@@ -755,6 +755,7 @@
 *((size_t *) at_lname),
 *((size_t *) at_lncollect),
 *((size_t *) at_lnexpand),
+*((size_t *) at_locate),
 *((size_t *) at_locus),
 *((size_t *) at_log10),
 *((size_t *) at_logarithmic_regression),

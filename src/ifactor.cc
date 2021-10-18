@@ -1,11 +1,16 @@
 // -*- mode:C++ ; compile-command: "g++-3.4 -I.. -g -c ifactor.cc -DHAVE_CONFIG_H -DIN_GIAC" -*-
 #include "giacPCH.h"
-#if !defined __MINGW_H && !defined KHICAS
+#if defined NSPIRE_NEWLIB || (!defined __MINGW_H && !defined KHICAS)
 #define GIAC_MPQS // define if you want to use giac for sieving 
 #endif
 
 #ifdef HAVE_LIBECM
 #include <ecm.h>
+#endif
+
+#ifdef HAVE_LIBBERNMM
+#include <bern_modp.h>
+#include <bern_rat.h>
 #endif
 
 #include "path.h"
@@ -4687,6 +4692,286 @@ namespace giac {
   static const char _fxnd_s []="fxnd";
   static define_unary_function_eval (__fxnd,&_fxnd,_fxnd_s);
   define_unary_function_ptr5( at_fxnd ,alias_at_fxnd,&__fxnd,0,true); 
+
+  int generator(int p,const vecteur & v){
+    vector<int> w;
+    for (int i=0;i<v.size();i+=2){
+      if (v[i].type!=_INT_)
+	return 0;
+      w.push_back((p-1)/v[i].val);
+    }
+    for (int a=2;a<p;++a){
+      int r=0;
+      for (int i=0;i<w.size();i++){
+	r=powmod(a,w[i],p);
+	if (r==1)
+	  break;
+      }
+      if (r!=1)
+	return a;
+    }
+    return 0; // p is not prime!
+  }
+
+  // p assumed to be prime, find a generator of (Z/pZ^*,*)
+  int generator(int p){
+    vecteur v=ifactors(p-1,context0);
+    return generator(p,v);
+  }
+
+  gen _znprimroot(const gen & p,GIAC_CONTEXT){
+#ifdef HAVE_LIBPARI
+    if (!is_integer(p))
+      return gentypeerr(contextptr);
+    return _pari(makesequence(string2gen("znprimroot",false),p),contextptr);
+#endif
+    if (p.type!=_INT_ || !is_probab_prime_p(p))
+      return gentypeerr("PARI not compiled in => currently, znprimroot(k) expects a prime<2^31");
+    return makemod(generator(p.val),p);
+  }
+  static const char _znprimroot_s []="znprimroot";
+  static define_unary_function_eval (__znprimroot,&_znprimroot,_znprimroot_s);
+  define_unary_function_ptr5( at_znprimroot ,alias_at_znprimroot,&__znprimroot,0,true); 
+
+  int znorder(int k,int p,int phi,const vecteur & v){
+    int o=1;
+    for (int i=0;i<v.size();i+=2){
+      int pi=v[i].val;
+      int mi=v[i+1].val;
+      int pimi=pow((unsigned) pi,(unsigned) mi).val;
+      int a=powmod(k,phi/pimi,p);
+      while (a!=1){
+	o *= pi;
+	a=powmod(a,pi,p);
+      }
+    }
+    return o;
+  }
+
+  int znorder(int k,int p){
+    k %= p;
+    if (gcd(k,p)!=1)
+      return 0;
+    if (k==1)
+      return 1;
+    int phi=euler(p,context0).val;
+    vecteur v=ifactors(phi,context0);
+    return znorder(k,p,phi,v);
+  }
+
+  gen _znorder(const gen & args,GIAC_CONTEXT){
+    if (args.type==_MOD)
+      return _znorder(makevecteur(*args._MODptr,*(args._MODptr+1)),contextptr);
+    if (args.type!=_VECT || args._VECTptr->size()!=2)
+      return gensizeerr(contextptr);
+    gen k=args._VECTptr->front(),p=args._VECTptr->back();
+#ifdef HAVE_LIBPARI
+    if (gcd(p,k)!=1)
+      return 0;
+    return _pari(makesequence(string2gen("znorder",false),makemod(k,p)),contextptr);
+#endif
+    if (k.type!=_INT_ || p.type!=_INT_  || p.val<2)
+      return gentypeerr("PARI not compiled in => currently, znorder(k,p) expects integers<2^31");
+    return znorder(k.val,p.val);
+  }
+  static const char _znorder_s []="znorder";
+  static define_unary_function_eval (__znorder,&_znorder,_znorder_s);
+  define_unary_function_ptr5( at_znorder ,alias_at_znorder,&__znorder,0,true); 
+
+  // b1 *= m mod p
+  //  m += (m>>31) &p;
+  //  int msurp=((1LL<<31)*m)/p+1;
+  inline int precond_mulmod31(int b1,int m,int p,int msurp){
+    // b1 += (b1>>31) &p;
+    int t=longlong(b1)*m-((longlong(b1)*msurp)>>31)*p;
+    // t += (t>>31)&p; // t positive (or at least t-p is valid)
+    return t;
+  }
+
+  // Harvey algorithm for Bernoulli numbers
+  // https://arxiv.org/pdf/0807.1347.pdf
+  // k must be even and p prime
+  // https://web.maths.unsw.edu.au/~davidharvey/code/bernmm/index.html
+  // bernmm lib
+  int bernoulli_mod(int k,int p){
+#ifdef HAVE_LIBBERNMM
+    return bernmm::bern_modp(p,k);
+#endif
+    if (k>p-3){
+      int m=k % (p-1); // now m<p-1 is even therefore <=p-3
+      int bm=bernoulli_mod(m,p);
+      // bk/k=bm/m mod p
+      return ( ( (longlong(bm)*k) %p)*invmod(m,p) )%p;
+    }
+    vecteur v=ifactors(p-1,context0);
+    int g=generator(p,v),r=powmod(g,k-1,p),u;
+    int N=p>11?znorder(2,p,p-1,v):0;
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " end generator/znorder \n";
+    if (N>4 && k%N){
+      // faster summation is possible
+      int n=(N%2)?N:N/2;
+      int m=(p-1)/2/n;
+      // twokm1=2^(k-1), gi=g^i, gkm1i=(g^(k-1))^i
+      longlong S=0,twokm1=powmod(2,(k-1)%N,p),gi=1,gkm1i=1;
+      int msurp=((1LL<<31)*twokm1)/p+1;
+      for (int i=0;i<m;++i){
+	longlong s=0,pow2=1;
+	int gi2j=gi; // g^i*2^j
+	for (int j=0;j<n;++j){
+#if 1
+	  gi2j = (gi2j<<1) -p;
+	  s -= (1+ ((gi2j>>31)<<1))*pow2;// (2*(1+(gi2j>>31))-1)*pow2;
+	  gi2j -= (gi2j>>31)*p;
+	  pow2=precond_mulmod31(pow2,twokm1,p,msurp);// (pow2*twokm1)%p;
+#else	  
+	  gi2j <<= 1;
+	  if (gi2j>=p){
+	    gi2j -= p;
+	    // f=-1
+	    s -= pow2;
+	    if (s<0)
+	      s += p;
+	  }
+	  else {
+	    // f=1
+	    s += pow2;
+	    if (s>=p)
+	      s -= p;
+	  }
+	  pow2=(pow2*twokm1)%p;
+#endif
+	}
+	// update g^i for next i iteration
+	gi=(gi*g)%p;
+	// s*(g^(k-1))^i
+	s=((s%p)*gkm1i)%p;
+	S += s;
+	if (S>=p)
+	  S -=p;
+	// update (g^(k-1))^i for next i iteration
+	gkm1i=(gkm1i*r)%p;
+      }
+      // final answer k/(2^(-(k-1))-2)*S
+      S=(S*k)%p;
+      S=(S*invmod(invmod(twokm1,p)-2,p))%p;
+      return S;
+    }
+    if (g%2)
+      u=(g-1)/2;
+    else
+      u=(longlong(g-1)*invmod(2,p))%p;
+    int S=0,X=1,Y=r;
+    for (int i=1;i<=p/2;i++){
+      int q=(longlong(g)*X)/p;
+      S=(S+(longlong(u)-q)*Y) % p;
+      X=(longlong(g)*X) % p;
+      Y=(longlong(r)*Y) % p;
+    }
+    int res=(2*longlong(k)*S)%p;
+    res=(longlong(res)*invmod(1-powmod(g,k,p),p))%p;
+    return res;
+  }
+
+#ifndef USE_GMP_REPLACEMENTS
+  void ichinrem_inplace(int r,int m,gen & res,const gen & pim,int & proba,mpz_t & tmpz){
+    if (pim.type==_ZINT && res.type==_ZINT){
+      longlong amodm=mpz_fdiv_ui(*res._ZINTptr,m);
+      if (amodm!=r){
+	gen u,v,d; longlong U;
+	egcd(pim,m,u,v,d);
+	if (u.type==_ZINT)
+	  U=mpz_fdiv_ui(*u._ZINTptr,m);
+	else
+	  U=u.val;
+	if (d==-1){ U=-U; v=-v; d=1; }
+	mpz_mul_si(tmpz,*pim._ZINTptr,(U*(r-amodm))%m);
+	mpz_add(*res._ZINTptr,*res._ZINTptr,tmpz);
+	proba=0;
+      }
+      else ++proba;
+    }
+  }
+#endif
+
+
+  // Inspired by David Harvey code (bernmm)
+  gen bernoulli_rat(int k){
+    long bound1 = (long) std::ceil((k + 0.5) * std::log(double(k)) /M_LN2);
+    if (bound1<37)
+      bound1=37;
+    // Computes the denominator of B_k using Clausen/von Staudt.
+    // loop through factors of k
+    gen D=1;
+    for (int f=1; f*f<=k; f++){
+      // if f divides k....
+      if (k % f == 0){
+	// ... then both f + 1 and k/f + 1 are candidates for primes
+	// dividing the denominator of B_k
+	if (is_probab_prime_p(f+1))
+	  D = (f+1)*D; 
+	if (f*f != k){
+	  int tmp=k/f+1;
+	  if (is_probab_prime_p(tmp))
+	    D = tmp*D;
+	}
+      }
+    }
+    double bits= (k+0.5)*std::log(double(k))/M_LN2 - 4.094*k + 2.470 +
+      std::log(evalf_double(D,1,context0)._DOUBLE_val)/M_LN2 ;
+    gen res(0.0),pip=1;
+    mpz_t tmpz; mpz_init(tmpz);
+    for (int p = 5; ; p = nextprime(p+1).val){
+      if (k % (p-1) == 0)
+	continue;
+      if (debug_infolevel)
+	COUT << CLOCK()*1e-6 << " start bernoulli_mod " << p << '\n';
+      int cur=bernoulli_mod(k,p);
+      if (debug_infolevel)
+	COUT << CLOCK()*1e-6 << " end bernoulli_mod " << p << '\n';
+      if (res.type==_DOUBLE_)
+	res=cur;
+      else {
+#ifndef USE_GMP_REPLACEMENTS
+	if (res.type==_ZINT && pip.type==_ZINT){
+	  int proba=0; // not used
+	  ichinrem_inplace(cur,p,res,pip,proba,tmpz);
+	} else
+#endif
+	  res=ichinrem(gen(cur),res,gen(p),pip);
+      }
+      pip = p*pip;
+      bits -= std::log(p)/M_LN2;
+      if (bits<-1)
+	break;
+    }
+    mpz_clear(tmpz);
+    res=smod(res*D,pip);
+    int s=fastsign(res,context0);
+    if (k%4==2){
+      if (s==-1)
+	res += pip;
+    }
+    else {
+      if (s==1)
+	res -= pip;
+    }
+    //COUT << _evalf(makesequence(res/pip,30),context0) << '\n';
+    return res/D;
+  }
+  
+  gen _bernoulli_mod(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_VECT || args._VECTptr->size()!=2)
+      return gensizeerr(contextptr);
+    gen k=args._VECTptr->front(),p=args._VECTptr->back();
+    if (k.type!=_INT_ || k.val<2 || k.val%2 || p.type!=_INT_  || !is_probab_prime_p(p) )
+      return gentypeerr(contextptr);
+    return bernoulli_mod(k.val,p.val);
+  }
+  static const char _bernoulli_mod_s []="bernoulli_mod";
+  static define_unary_function_eval (__bernoulli_mod,&_bernoulli_mod,_bernoulli_mod_s);
+  define_unary_function_ptr5( at_bernoulli_mod ,alias_at_bernoulli_mod,&__bernoulli_mod,0,true); 
+
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

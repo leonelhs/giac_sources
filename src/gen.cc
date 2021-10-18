@@ -9,6 +9,10 @@ size_t stackptr=0xffffffffffffffff;
 #endif
 #endif
 
+#ifdef NSPIRE_NEWLIB
+#include <os.h>
+#endif
+
 /*
  *  Copyright (C) 2001,14 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -11442,17 +11446,17 @@ namespace giac {
 #ifndef NO_STDEXCEPT
       settypeerr(gettext("is_probab_prime_p"));
 #endif
-      return false;
+      return 0;
     }
     if (a.type==_INT_ && a.val<2)
-      return false;
+      return 0;
     if (a.type==_INT_ && a.val<(1<<20)){
       for (int i=0;;++i){
 	int p=giac_primes[i];
 	if (p*p>a.val)
-	  return true;
+	  return 2;
 	if (a.val%p==0)
-	  return false;
+	  return 0;
       }
     }
     ref_mpz_t *aptr;
@@ -16174,13 +16178,23 @@ void sprint_double(char * s,double d){
       turtle();
       _efface_logo(vecteur(0),contextptr);
     }
-#ifndef NSPIRE_NEWLIB
     if (!strcmp(s,"*")){
+#ifdef NSPIRE_NEWLIB
+      if (0 && nspirelua){
+	xcas::Console_Disp(1,contextptr);
+	while (1){
+	  int key; GetKey(&key);
+	  if (1 || key==KEY_CTRL_EXE)
+	    break;
+	}
+      }
+      return "Done";
+#else
       int res=xcas::console_main(contextptr);
       S=printint(res);
       return S.c_str();
-    }
 #endif
+    }
     if (!strcmp(s,"+")){
       char buf[4096]="def f(x):\n  return x*x\n";
       if (file_exists("temp.py")){

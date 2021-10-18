@@ -152,6 +152,8 @@ clean: clean-prog
 clean-prog:
 	$(RM) -f $(PROG)
 	$(RM) -f $(PROG).map
+	$(RM) -f libmicropython.a # giac
+	$(RM) -f ../../libmicropython.a # giac
 
 .PHONY: clean-prog
 endif

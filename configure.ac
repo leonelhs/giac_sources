@@ -83,6 +83,22 @@ AC_SUBST(CONFIG_ECM)
 AC_SUBST(ECM_LIBS)
 AM_CONDITIONAL(CONFIG_ECM, [test "$CONFIG_ECM" = "yes"])
 
+dnl AC_CHECK_LIB(bernmm, main)
+CONFIG_BERNMM="yes"
+AC_ARG_ENABLE([bernmm],
+	[AS_HELP_STRING([--enable-bernmm], [Use BERNMM [[default=yes]]])],
+	[if test "$enableval" = "no"; then CONFIG_BERNMM="no"; fi], [])
+
+if test "$CONFIG_BERNMM" = "yes"; then
+	AC_CHECK_HEADER(bern_rat.h, [], [CONFIG_BERNMM="no"])
+  fi
+if test "$CONFIG_BERNMM" = "yes"; then
+	AC_CHECK_LIB(bernmm, main, [], [CONFIG_BERNMM="no"])
+  fi
+AC_SUBST(CONFIG_BERNMM)
+AC_SUBST(BERNMM_LIBS)
+AM_CONDITIONAL(CONFIG_BERNMM, [test "$CONFIG_BERNMM" = "yes"])
+
   
 dnl Optimization or debug
 CONFIG_DEBUG_P="yes"

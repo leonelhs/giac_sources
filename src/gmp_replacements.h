@@ -6,6 +6,8 @@ extern "C" {
 }
 #endif
 
+extern "C" int ctrl_c_interrupted(int exception);
+
 typedef mp_int mpz_t;
 
 inline int mpz_init(mpz_t &  a){ return mp_init(&a);}
@@ -172,6 +174,7 @@ inline void mpz_set_d(mpz_t & z,double d){
 inline void mpz_fac_ui(mpz_t & z,unsigned int i){
   mpz_set_ui(z,1);
   for (unsigned long int j=2;j<=i;j++){
+    ctrl_c_interrupted(1);
     mpz_mul_ui(z,z,j);
   }
 }

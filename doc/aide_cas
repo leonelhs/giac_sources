@@ -1,3 +1,21 @@
+# znorder
+1 Renvoie 0 ou l'ordre de k dans (Z/nZ^*,*)
+2 Returns 0 or the order of k in (Z/nZ^*,*)
+0 Intg
+-1 znprimroot
+-2 pari
+znorder(17,23)
+znorder(5,1234)
+znorder(17 mod 23)
+
+# znprimroot
+1 Renvoie un generateur de (Z/pZ^*,*)
+2 Returns a generator of (Z/pZ^*,*)
+0 Intg
+-1 znorder
+-2 pari
+znprimroot(23)
+
 # domain
 1 Renvoie le domaine de définition d'une expression.
 2 Returns the definition domain of an expression.
@@ -8894,6 +8912,12 @@ exbisector(0,1,i)
 -1 
 bernoulli(6)
 bernoulli(6,x)
+
+# bernoulli_mod
+1 bernoulli_mod(k,p) renvoie pour k entier pair et p premier la valeur du k-ieme nombre de Bernoulli mod p
+2 bernoulli_mod(k,p) returns for k even integer and p prime the k-th Bernoulli number mod p
+0 Intg,Intg
+bernoulli_mod(1234,10^6+3)
 
 # break
 1 Pour interrompre une boucle: while (cond) {inst1; if (cond) {inst2;break;}}.
