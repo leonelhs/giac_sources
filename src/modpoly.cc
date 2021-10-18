@@ -4207,7 +4207,11 @@ namespace giac {
       vector<int> W=vecteur_2_vector_int(w);
       vector<int> RES(F.size());
       int m=env->modulo.val;
+      if (debug_infolevel)
+	CERR << CLOCK()*1e-6 << " begin fft int " << W.size() << endl;
       fft(F,W,RES,m);
+      if (debug_infolevel)
+	CERR << CLOCK()*1e-6 << " end fft int " << W.size() << endl;
       unsigned n=RES.size();
       res.clear();
       res.reserve(n);
@@ -4425,6 +4429,16 @@ namespace giac {
   void fft(const vector<int> & f,const vector<int> & w ,vector<int> & res,int modulo){
     // longlong M=longlong(modulo)*modulo;
     unsigned long n=long(f.size()); // unsigned long does not parse with gcc
+    if (n==4){
+      int w1=w[w.size()/4];
+      longlong f0=f[0],f1=f[1],f2=f[2],f3=f[3],f01=(f1-f3)*w1;
+      res.resize(4);
+      res[0]=(f0+f1+f2+f3)%modulo;
+      res[1]=(f0-f2+f01)%modulo;
+      res[2]=(f0-f1+f2-f3)%modulo;
+      res[3]=(f0-f2-f01)%modulo;
+      return;
+    }
     if (n==1){
       res = f;
       return ;
@@ -4495,8 +4509,9 @@ namespace giac {
     r0.reserve(n2); r1.reserve(n2);
     vector<int>::const_iterator it=f.begin(),itn=it+n2,itend=itn,itk=w.begin();
     for (;it!=itend;++itn,itk+=step,++it){
-      r0.push_back((longlong(*it)+*itn)%modulo);
-      r1.push_back(((longlong(*it)-*itn)*(*itk))%modulo);
+      longlong a(*it),b(*itn);
+      r0.push_back((a+b)%modulo);
+      r1.push_back(((a-b)*(*itk))%modulo);
     }
     // Recursive call
     vector<int> r0f(n2),r1f(n2);

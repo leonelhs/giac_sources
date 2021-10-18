@@ -2394,6 +2394,8 @@ insert: function(myField, myValue) {
  for(var i = 0; i < hashParams.length; i++){
     var s = hashParams[i];
     s=s.replace('%3e','>','g');
+    s=s.replace('%5e','^','g');
+    s=s.replace('%20',' ','g');
     if (s.length && s.charAt(0)=='+'){
        if (!asked) doexec=true;
        UI.eval_cmdline1(s.substr(1),false);

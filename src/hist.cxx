@@ -445,9 +445,9 @@ giac::gen Xcas_widget_size(const giac::gen & g,const giac::context * cptr) {
         }
         if (s>11){ 
           if (v[11].type==giac::_INT_)
-            giac::step_infolevel=v[11].val;
+            giac::step_infolevel(v[11].val,contextptr);
           if (v[11].type==giac::_DOUBLE_)
-            giac::step_infolevel=v[12]._DOUBLE_val;
+            giac::step_infolevel(v[12]._DOUBLE_val,contextptr);
         }     
         if (s>12 && v[12].type==giac::_STRNG){
   	std::string browser=*v[12]._STRNGptr;
@@ -725,7 +725,7 @@ void cb_Assistant_ItemName(Fl_Widget * wid , void* ptr) {
         if (ii==1)
   	ans = ans +"()";
         if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(w)){
-  	  if (ii==1 || ii==2){
+  	  if (ii==1){
   	    in->buffer()->insert(in->insert_position(),ans.c_str());
   	    in->insert_position(in->insert_position()+ans.size()-1);
   	  }
@@ -865,7 +865,7 @@ std::string Xcas_browser_name() {
 
 void Xcas_load_general_setup() {
   // xcas::file_save_context has been removed for xcas 1.1.3
-  Xcas_stepbystep->value(giac::step_infolevel);
+  Xcas_stepbystep->value(giac::step_infolevel(Xcas_get_context()));
   Xcas_html_browser->value(Xcas_browser_name().c_str());
   static std::string proxy;
   if (getenv("http_proxy")){
@@ -3058,7 +3058,7 @@ static void cb_Xcas_automatic_completion_browser(Fl_Check_Button*, void*) {
 Fl_Check_Button *Xcas_stepbystep=(Fl_Check_Button *)0;
 
 static void cb_Xcas_stepbystep(Fl_Check_Button*, void*) {
-  giac::step_infolevel=Xcas_stepbystep->value();
+  giac::step_infolevel(Xcas_get_context())=Xcas_stepbystep->value();
 }
 
 Fl_Check_Button *Xcas_tooltip_disabled=(Fl_Check_Button *)0;
