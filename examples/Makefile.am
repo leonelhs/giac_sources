@@ -92,10 +92,7 @@ recur/autres.cxx \
 recur/permutation.cxx \
 recur/dragon.cxx \
 recur/peano.cxx \
-groebner/cyclic3 \
-groebner/cyclic4 \
-groebner/cyclic5 \
-groebner/cyclic6 \
+groebner/*  \
 polyfact/zimmer1 \
 polyfact/zimmer2 \
 polyfact/zimmer3 \

@@ -150,7 +150,7 @@
 #define HAVE_LIBDL 1
 
 /* Define to 1 if you have the `ecm' library (-lecm). */
-/* #undef HAVE_LIBECM */
+#define HAVE_LIBECM 1
 
 /* Define to 1 if you have the `fltk' library (-lfltk). */
 #define HAVE_LIBFLTK 1

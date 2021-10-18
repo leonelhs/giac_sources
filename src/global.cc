@@ -1767,6 +1767,11 @@ extern "C" void Sleep(unsigned int miliSecond);
 #else
   int threads=sysconf (_SC_NPROCESSORS_ONLN);
 #endif
+  unsigned max_pairs_by_iteration=32768; 
+  unsigned simult_primes=16; 
+  // gbasis max number of pairs by F4 iteration
+  // setting to 2000 accelerates cyclic9mod but cyclic9 would be slower
+  // 32768 is enough for cyclic10mod without truncation and not too large for yang1
   unsigned short int GIAC_PADIC=50;
   const char cas_suffixe[]=".cas";
 #if defined RTOS_THREADX || defined BESTA_OS
@@ -1828,7 +1833,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #else
   int MAX_ALG_EXT_ORDER_SIZE = 6;
 #endif
-#if defined EMCC || defined NO_TEMPLATE_MULTGCD
+#if defined EMCC || defined NO_TEMPLATE_MULTGCD || defined GIAC_HAS_STO_38
   int MAX_COMMON_ALG_EXT_ORDER_SIZE = 16;
 #else
   int MAX_COMMON_ALG_EXT_ORDER_SIZE = 64;
@@ -2617,7 +2622,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       return "";
     uid_t u=getuid();
     passwd * p=getpwuid(u);
-    s=p->pw_dir;
+    if (p) s=p->pw_dir;
     return s+"/";
 #endif
 #endif

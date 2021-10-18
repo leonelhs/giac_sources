@@ -160,6 +160,7 @@ static int texmacs_counter= 0;
 using namespace giac;
 #define STDIN_FILENO 0
 namespace xcas {
+  /*
   void icas_eval(giac::gen & g,giac::gen & gg,int & reading_file,std::string &filename,giac::context * contextptr){
     gg=protecteval(g,10,contextptr);
   }
@@ -167,6 +168,7 @@ namespace xcas {
   bool fltk_view(const giac::gen & g,giac::gen & ge,const std::string & filename,std::string & figure_filename,int file_type,const giac::context *contextptr){
     return false;
   }
+  */
 }
 
 #else

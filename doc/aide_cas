@@ -17672,9 +17672,9 @@ kovacicsols([48t*(t+1)*(5t-4),8*(25t+16)*(t-2),-(5t+68)],t)
 0 Expr(f),[(Var(x),[Var||Lst(y)]) || y(x) || Lst(y(x))]
 1 Renvoie les equations d'Euler-Lagrange pour la fonctionnelle F=int(f,x=a..b)
 2 Returns the (system of) Euler-Lagrange equation(s) for the functional F=int(f,x=a..b).
--2 dsolve
--3 bvpsolve
--1 convex
+-1 dsolve
+-2 bvpsolve
+-3 convex
 euler_lagrange(x^2*y'^2+y^2)
 euler_lagrange(sqrt(x'^2+y'^2),[x(t),y(t)])
  assume(y>=0):; euler_lagrange(sqrt((1+y'^2)/y),t,y)
@@ -17699,3 +17699,11 @@ jacobi_equation(-1/2*y'(t)^2+y(t)^2/2,t,y,sin(t),h,0)
 -1 jacobi_equation
 -2 euler_lagrange
 conjugate_equation(A*sin(t)+B*cos(t),[A,B],[1,0],t,0)
+
+# tonnetz
+0 Intg(a),Intg(b),Intg(c),[Intg(d)]
+2 Returns the graph corresponding to the [a,b,c] resp. [a,b,c,d] tone network (tonnetz) used in neo-Riemannian music theory.
+-1 is_regular
+-2 clique_stats
+tonnetz(3,4,5)
+tonnetz(2,3,3,4)
