@@ -200,8 +200,9 @@ function applyKey (_event_){
    done=true;
  }
  // raccourcis avec Alt
- // F1 aide, c cmdline, m menu,
- if (intAltKey) {
+// F1 aide, c cmdline, m menu,
+  //console.log(intAltKey,intKeyCode);
+ if (!done && (intAltKey || intCtrlKey)) {
    if (intKeyCode == KEY_D || intKeyCode == KEY_B || intKeyCode == KEY_RIGHT){
     UI.move_focus(UI.focused,1);
     done=true;
@@ -210,11 +211,11 @@ function applyKey (_event_){
     UI.move_focus(UI.focused,-1);
     done=true;
    }
-   if (intKeyCode == KEY_N || intKeyCode == KEY_DOWN){
+   if (intKeyCode == KEY_DOWN){
     UI.move_focus(UI.focused,1); UI.move_focus(UI.focused,1);
     done=true;
    }
-   if (intKeyCode == KEY_P || intKeyCode == KEY_UP){
+   if (intKeyCode == KEY_UP){
     UI.move_focus(UI.focused,-1); UI.move_focus(UI.focused,-1);
     done=true;
    }
@@ -223,16 +224,33 @@ function applyKey (_event_){
     done=true;
    }
    if (intKeyCode == KEY_C){
-    cmentree.focus();
-    done=true;
+     cmentree.focus();
+     done=true;
    }
    if (intKeyCode == KEY_M){
     UI.show_menu();
     done=true;
    }
-   if (intKeyCode == KEY_T || intKeyCode==KEY_TAB || intKeyCode==KEY_PF1){
+   if (intKeyCode == KEY_T){
+    document.getElementById('progbuttons').style.display='block';
+    document.getElementById('boutons_tortue').style.display='block';
+    done=true;
+   }
+   if (intKeyCode == KEY_P){
+    document.getElementById('prog_key').click();
+    done=true;
+   }
+   if (intKeyCode == KEY_TAB || intKeyCode==KEY_PF1){
     UI.completion(cmentree);
     done=true;
+   }
+   if (intKeyCode == KEY_E || intKeyCode == KEY_F){
+     UI.exec(document.getElementById('mathoutput'),0); 
+     done=true;
+   }
+   if (intKeyCode==KEY_N ){
+     var field=document.getElementById('output');field.innerHTML='';
+     document.getElementById('consolediv').style.display='none';
    }
  }
  if (done){
@@ -304,7 +322,7 @@ document.onkeydown = applyKey;
       <input class="bouton" type="button" title="Bascule unit&eacute; d'angles radians/degr&eacute;s" value="Radians" onclick="angle_mode.checked=!angle_mode.checked;"> <input class="bouton" type="checkbox" name="angle_mode" title="Cocher pour utiliser les radians, d&eacute;cocher pour utiliser les degr&eacute;s" checked>,
       <input class="bouton" type="button" title="Bascule mode complexe/r&eacute;el" value="Complexe" onclick="complex_mode.checked=!complex_mode.checked"> <input class="bouton" type="checkbox" name="complex_mode" title="Cocher pour travailler par d&eacute;faut sur les complexes">,
       <input class="bouton" type="button" title="Bascule pour toujours factoriser les polynomes de degr&eacute; 2" value=" √ " onclick="sqrt_mode.checked=!sqrt_mode.checked"> <input class="bouton" type="checkbox" name="sqrt_mode" title="Cocher pour toujours factoriser les polynomes de degr&eacute; 2">,
-      <input class="bouton" type="button" title="Bascule pour montrer les &eacute;tapes de certains calculs" value="step" onclick="step_mode.checked=!step_mode.checked"> <input class="bouton" type="checkbox" name="step_mode" title="Cocher pour montrer les &eacute;tapes de certains calculs" checked>,
+      <input class="bouton" type="button" title="Bascule pour montrer les &eacute;tapes de certains calculs" value="step" onclick="step_mode.checked=!step_mode.checked"> <input class="bouton" type="checkbox" name="step_mode" title="Cocher pour montrer les &eacute;tapes de certains calculs">,
       <input class="bouton" type="button" title="Bascule pour executer les calculs par un webworker" value="worker" onclick="worker_mode.checked=!worker_mode.checked"> <input class="bouton" type="checkbox" name="worker_mode" title="Cocher pour executer les calculs par un webworker">
       <input class="bouton" type="button" title="Utiliser web-assembly si possible" value="wasm" onclick="wasm_mode.checked=!wasm_mode.checked"> <input class="bouton" type="checkbox" name="wasm_mode" title="Cocher pour executer les calculs en web-assembly">
     </td>
@@ -461,7 +479,19 @@ onclick="var tmp=document.getElementById('tutoinst'); if (tmp.style.display=='no
     Xcas sur votre appareil, ce qui permet de l'utiliser
     en mode avion.
     <br>
-  Pour installer Xcas, t&eacute;l&eacute;chargez
+    Si vous avez install&eacute; Xcas natif pour PC ou Mac en version 1.4.9-57 ou
+    sup&eacute;rieure, Xcas pour Firefox est d&eacute;j&agrave;
+    install&eacute;:
+    <ul>
+      <li> Windows: cherchez le fichier <tt>xcasfr.html</tt>
+    dans le sous-r&eacute;pertoire <tt>doc</tt> du
+    r&eacute;pertoire d'installation de Xcas, en principe <tt>c:\xcas</tt>.
+    <li> Mac:<a href="file:///Applications/usr/share/giac/doc/xcasfr.html"
+  target="_blank"><tt>/Applications/usr/share/giac/doc/xcasfr.html</tt></a>,
+    <li> Linux: <a href="file:///usr/share/giac/doc/xcasfr.html"
+  target="_blank"><tt>/usr/share/giac/doc/xcasfr.html</tt></a>,
+    </ul>
+  Pour installer Xcas pour Firefox, t&eacute;l&eacute;chargez
   <a
     href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip"
     target="_blank">
@@ -485,7 +515,7 @@ Les <em>programmes</em> des sessions
 fonctionnent avec un interpr&eacute;teur Python (apr&egrave;s avoir fait
 <tt>from math import *</tt> dans certains cas), ceux &eacute;crits
   en italiques (<em>Python</em>) fonctionnent partiellement
-  (<button onclick="document.getElementById('tutoprog').style.display='block';document.getElementById('progpython').style.display='block';">plus de d&eacute;tails sur la compatibilit&eacute;</button>).
+  (<button onclick="document.getElementById('tutoprog').style.display='block';var tmp=document.getElementById('progpython');tmp.style.display='block';tmp.scrollIntoView()">plus de d&eacute;tails sur la compatibilit&eacute;</button>).
  <ul>
   <li>Variables,
   types, affectation, test, boucle, fonction, syntaxe
@@ -519,11 +549,11 @@ target="_blank"><strong>Python</strong></a>
   </li>
   <li> Seconde: trac&eacute; de courbe, syntaxe
   <a
-  href="#python=0&exec&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+f(x)%3A%3Dsi%20x%3C0%20alors%20-x%5E2-3%20%0A%20%20sinon%20x%5E2%2B1%20fsi%3B&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3A%3DNULL%3B%20%0Apour%20x%20de%20-3%20jusque%203%20pas%200.5%20faire%0A%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0Afpour%3B&+polygone_ouvert(L)&+//Observer%20le%20saut%20%C3%A0%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20%C3%A0%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+fonction%20tabval(f%2Cxmin%2Cxmax%2Cdx)%0A%20%20var%20x%2CL%3B%0A%20%20L%3A%3DNULL%3B%0A%20%20pour%20x%20de%20xmin%20jusque%20xmax%20pas%20dx%20faire%0A%20%20%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0A%20%20fpour%3B%0A%20%20retourne%20L%3B%0Affonction%3A%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
+  href="#python=0&exec&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+f(x)%3A%3Dsi%20x%3C0%20alors%20-x%5E2-3%20%0A%20%20sinon%20x%5E2%2B1%20fsi%3B&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+L%3A%3DNULL%3B%20%0Apour%20x%20de%20-3%20jusque%203%20pas%200.5%20faire%0A%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0Afpour%3B&+polygone_ouvert(L)&+//Observer%20le%20saut%20%C3%A0%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20int%C3%A9ret%20%C3%A0%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+fonction%20tabval(f%2Cxmin%2Cxmax%2Cdx)%0A%20%20var%20x%2CL%3B%0A%20%20L%3A%3DNULL%3B%0A%20%20pour%20x%20de%20xmin%20jusque%20xmax%20pas%20dx%20faire%0A%20%20%20%20L%3A%3DL%2C%5Bx%2Cf(x)%5D%3B%0A%20%20fpour%3B%0A%20%20retourne%20L%3B%0Affonction%3A%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
   target="_blank">
   Xcas</a> ou
   <a
-  href="#exec&python=1&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+def%20f(x)%3A%0A%20%20%20%20if%20x%3C0%3A%0A%20%20%20%20%20%20%20%20return%20-x%5E2-3%20%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20return%20x%5E2%2B1&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+%23%0AL%3D%5B%5D%0Afor%20j%20in%20range(13)%3A%0A%20%20%20%20x%3D-3%2B0.5*j%0A%20%20%20%20L.append(%5Bx%2Cf(x)%5D)&+polygone_ouvert(L)&+//Observer%20le%20saut%20%C3%A0%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20interet%20%C3%A0%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+def%20tabval(f%2Ca%2Cb%2Cdx)%3A%0A%20%20%20%20%23%20local%20x%2Cj%2CL%3B%0A%20%20%20%20L%3D%5B%5D%3B%0A%20%20%20%20for%20j%20in%20range((b-a)%2Fdx%2B1)%3A%0A%20%20%20%20%20%20%20%20x%3Da%2Bj*dx%0A%20%20%20%20%20%20%20%20L.append(%5Bx%2Cf(x)%5D)%0A%20%20%20%20return%20L%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
+  href="#exec&python=1&+//Soit%20$f$%20la%20fonction%20d%C3%A9finie%20par%20$f(x)=-x^2-3$%20lorsque%20$x%3C0$%20et%20$f(x)=x^2+1$%20sinon&+def%20f(x)%3A%0A%20%20%20%20if%20x%3C0%3A%0A%20%20%20%20%20%20%20%20return%20-x%5E2-3%20%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20return%20x%5E2%2B1&+//%20On%20commence%20par%20faire%20un%20tableau%20de%20valeurs&+%23%0AL%3D%5B%5D%0Afor%20j%20in%20range(13)%3A%0A%20%20%20%20x%3D-3%2B0.5*j%0A%20%20%20%20L.append(%5Bx%2Cf(x)%5D)&+polygone_ouvert(L)&+//Observer%20le%20saut%20%C3%A0%20la%20discontinuit%C3%A9.%20Il%20faudrait%20faire%202%20trac%C3%A9s,%20on%20a%20donc%20int%C3%A9ret%20%C3%A0%20faire%20une%20fonction%20et%20l'appeler%20deux%20fois.&+def%20tabval(f%2Ca%2Cb%2Cdx)%3A%0A%20%20%20%20%23%20local%20x%2Cj%2CL%3B%0A%20%20%20%20L%3D%5B%5D%3B%0A%20%20%20%20for%20j%20in%20range((b-a)%2Fdx%2B1)%3A%0A%20%20%20%20%20%20%20%20x%3Da%2Bj*dx%0A%20%20%20%20%20%20%20%20L.append(%5Bx%2Cf(x)%5D)%0A%20%20%20%20return%20L%3B&+polygone_ouvert(tabval(f%2C-3%2C-0.1%2C0.1))%3B%0Apolygone_ouvert(tabval(f%2C0.1%2C3%2C0.1))%3B&"
   target="_blank">Python</a>
 </li>
   <li> Seconde: &Eacute;quation  d'une droite
@@ -558,7 +588,7 @@ target="_blank"><strong>Python</strong></a>
   target="_blank">
   Xcas</a>,
   <a
-  href="#python=1&exec&+def%20resolution2(a%2Cb%2Cc)%3A%0A%20%20%20%20%23%20local%20delta%2Cs%0A%20%20%20%20delta%3Db%5E2-4*a*c%0A%20%20%20%20if%20delta%3C0%3A%0A%20%20%20%20%20%20%20%20return%20%22pas%20de%20racines%22%0A%20%20%20%20if%20delta%3D%3D0%3A%0A%20%20%20%20%20%20%20%20return%20-b%2F(2.0*a)%0A%20%20%20%20s%3Dsqrt(delta)%0A%20%20%20%20return%20%5B(-b-s)%2F(2.0*a)%2C(-b%2Bs)%2F(2.0*a)%5D&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
+  href="#python=1&exec&+def%20resolution2(a%2Cb%2Cc)%3A%0A%20%20%20%20%23%20local%20delta%2Cs%0A%20%20%20%20delta%3Db**2-4*a*c%0A%20%20%20%20if%20delta%3C0%3A%0A%20%20%20%20%20%20%20%20return%20%22pas%20de%20racines%22%0A%20%20%20%20if%20delta%3D%3D0%3A%0A%20%20%20%20%20%20%20%20return%20-b%2F(2.0*a)%0A%20%20%20%20s%3Dsqrt(delta)%0A%20%20%20%20return%20%5B(-b-s)%2F(2.0*a)%2C(-b%2Bs)%2F(2.0*a)%5D&+resolution2(1%2C2%2C3)&+resolution2(1%2C2%2C1)&+resolution2(1%2C1%2C-1)&"
   target="_blank"><strong>Python</strong></a>
   </li>
   <li> Premi&egrave;re, suites
@@ -606,7 +636,7 @@ href="#exec&python=0&+//Calcul%20approche%20d'int%C3%A9grale%20par%20la%20m%C3%A
   target="_blank">Xcas
 </a>,
 <a
-href="#exec&python=1&+//Calcul%20approch%C3%A9%20d'int%C3%A9grale%20par%20la%20m%C3%A9thode%20des%20rectangles%20(%C3%A0%20droite),%20puis%20par%20le%20point%20milieu.&+f(x)%3A%3Dsin(x)&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+def%20Rect(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2F(N*1.0)%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2Bj*h)%0A%20%20%20%20return%20S*h&+Rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//Pour%20le%20point%20milieu,%20on%20remplace%20%3Ctt%3ef(a+j*h)%3C/tt%3e%20par%20%3Ctt%3ef(a-h/2+j*h)%3C/tt%3e&+def%20Pointmilieu(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2F(N*1.0)%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2F2%2Bj*h)%0A%20%20%20%20return%20S*h&+Pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&+def%20Montecarlo(f%2Ca%2Cb%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Cr%2Cx%0A%20%20%20%20%23%20faire%20import%20random%20as%20random%20en%20Python%0A%20%20%20%20r%3D0%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20r%3Dr%2Bf(random.uniform(a%2Cb))%0A%20%20%20%20return(r*(b-a)%2Fn)&+//M%C3%A9thode%20probabiliste%20de%20Mont%C3%A9-Carlo.%20On%20l'ex%C3%A9cute%20ensuite%20un%20grand%20nombre%20de%20fois%20($n$)%20et%20on%20trace%20l'histogramme%20des%20valeurs%20approch%C3%A9es%20obtenues%20pour%20mettre%20en%20%C3%A9vidence%20la%20pr%C3%A9cision%20en%20$1/sqrt(n)$%0aCliquez%20sur%20le%20bouton%20Exec%20pour%20refaire%20une%20simulation.&+%23%0An%3D100%0AMontecarlo(f%2C0%2C1%2Cn)&+%23%0AN%3D800%3B%0Al%3D%5BMontecarlo(f%2C0%2C1%2Cn)%20for%20j%20in%20range(N)%5D%0Ahistogram(l%2C0%2C0.01)%0Am%3D1-cos(1)%0Adroite(x%3D%3D%3Dm%2Ccolor%3D%3D%3Dred)%3B%0Aplot(normald(m%2Cstddev(l)%2Cx)%2Cx%3D%3D%3D0.35..0.55)&"
+href="#exec&python=1&+//Calcul%20approch%C3%A9%20d'int%C3%A9grale%20par%20la%20m%C3%A9thode%20des%20rectangles%20(%C3%A0%20droite),%20puis%20par%20le%20point%20milieu.&+f%3Dsin&+plot(f(x)%2Cx%2C0%2C1)%3B%20droite(y%3D0)%3B&+def%20Rect(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2F(N*1.0)%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2Bj*h)%0A%20%20%20%20return%20S*h&+Rect(f%2C0%2C1%2C100)&+integrate(f(x)%2Cx%2C0%2C1.0)&+//Pour%20le%20point%20milieu,%20on%20remplace%20%3Ctt%3ef(a+j*h)%3C/tt%3e%20par%20%3Ctt%3ef(a-h/2+j*h)%3C/tt%3e&+def%20Pointmilieu(f%2Ca%2Cb%2CN)%3A%0A%20%20%20%20%23%20local%20S%2Ch%2Cj%0A%20%20%20%20S%3D0.0%0A%20%20%20%20h%3D(b-a)%2F(N*1.0)%0A%20%20%20%20for%20j%20in%20range(N)%3A%0A%20%20%20%20%20%20%20%20S%3DS%2Bf(a%2Bh%2F2%2Bj*h)%0A%20%20%20%20return%20S*h&+Pointmilieu(f%2C0%2C1%2C100)&+//%20Observer%20la%20pr%C3%A9cision%20bien%20meilleure,%20pour%20un%20cout%20de%20calcul%20quasi-identique.%20Intuitivement%20le%20rectangle%20correspondant%20approche%20mieux%20la%20fonction.&+plot(f(x)%2Cx%2C0%2C1)%3B%0Arectangle(0%2C1%2Cf(1)%2Ccolor%3Dred)%3B%20%0Arectangle(0%2C1%2Cf(1%2F2)%2Ccolor%3Dgreen)&+def%20Montecarlo(f%2Ca%2Cb%2Cn)%3A%0A%20%20%20%20%23%20local%20k%2Cr%2Cx%0A%20%20%20%20%23%20faire%20import%20random%20as%20random%20en%20Python%0A%20%20%20%20r%3D0%0A%20%20%20%20for%20k%20in%20range(n)%3A%0A%20%20%20%20%20%20%20%20r%3Dr%2Bf(random.uniform(a%2Cb))%0A%20%20%20%20return(r*(b-a)%2Fn)&+//M%C3%A9thode%20probabiliste%20de%20Mont%C3%A9-Carlo.%20On%20l'ex%C3%A9cute%20ensuite%20un%20grand%20nombre%20de%20fois%20($n$)%20et%20on%20trace%20l'histogramme%20des%20valeurs%20approch%C3%A9es%20obtenues%20pour%20mettre%20en%20%C3%A9vidence%20la%20pr%C3%A9cision%20en%20$1/sqrt(n)$%0aCliquez%20sur%20le%20bouton%20Exec%20pour%20refaire%20une%20simulation.&+%23%0An%3D100%0AMontecarlo(f%2C0%2C1%2Cn)&+%23%0AN%3D800%3B%0Al%3D%5BMontecarlo(f%2C0%2C1%2Cn)%20for%20j%20in%20range(N)%5D%0Ahistogram(l%2C0%2C0.01)%0Am%3D1-cos(1)%0Adroite(x%3D%3D%3Dm%2Ccolor%3D%3D%3Dred)%3B%0Aplot(normald(m%2Cstddev(l)%2Cx)%2Cx%3D%3D%3D0.35..0.55)&"
   target="_blank"><strong>Python</strong></a>
 </li>
 <li>
@@ -964,6 +994,35 @@ l'aide sur l'interface</button>
 </li>
   <li style="display:inline">
 <button class="bouton"
+onclick="var tmp=document.getElementById('tutokbd'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+<strong>Clavier</strong></button>
+<div id="tutokbd" style="display:none">
+  Raccourcis clavier avec Alt (ou Ctrl si Alt ne marche pas car
+  d&eacute;j&agrave; utilis&eacute; par le navigateur ou le
+  syst&egrave;me d'exploitation).
+  <ul>
+    <li> D, curseur droit, B: d&eacute;place le focus d'un champ
+    vers la droite ou le bas
+    <li> G, curseur gauche, V: d&eacute;place le focus d'un champ
+    vers la gauche ou le haut
+    <li> curseur bas : d&eacute;place le focus de 2 champs
+    vers la droite ou le bas
+    <li> curseur bas : d&eacute;place le focus de 2 champs
+    vers la gauche ou le haut
+    <li> C: d&eacute;place le focus vers la ligne de commande
+    <li> A: d&eacute;place le focus vers l'aide
+    <li> TAB: affiche l'aide sur la commande &agrave; gauche du
+    curseur de la ligne de commande.
+    <li> M: affiche ou cache le menu Maths
+    <li> P: affiche ou cache le menu Programmation
+    <li> T: affiche ou cache le menu Tortue
+    <li> E ou F: ex&eacute;cute la session
+    <li> N: efface la console
+  </ul>
+</div>
+</li>
+  <li style="display:inline">
+<button class="bouton"
 onclick="var tmp=document.getElementById('tutocfg'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
 <strong>Configuration</strong></button>
 <div id="tutocfg" style="display:none">
@@ -977,7 +1036,8 @@ onclick="var tmp=document.getElementById('tutocfg'); if (tmp.style.display=='non
   commandes de PARI-GP (apr&egrave;s avoir &eacute;valu&eacute; la
   commande <tt>pari()</tt>)
   </div>
-</li>
+  </li>
+
 <li style="display:inline">
 <button class="bouton" onclick="var tmp=document.getElementById('manuels'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
 <strong>Manuels</strong>
@@ -1685,20 +1745,22 @@ onclick="var tmp=document.getElementById('tutotortue'); if (tmp.style.display=='
   qui se d&eacute;place selon des commandes avec un crayon
   qui marque son passage, avec une couleur donn&eacute;e.
   <br>
-  Cliquez sur le bouton Prog puis Tortue &agrave; droite,
-  puis sur le bouton <tt>nouveau</tt> de la ligne du dessous
-  pour cr&eacute;er un dessin tortue.
+  Tapez Ctrl-T ou cliquez sur le bouton Prog puis Tortue &agrave;
+  droite pour faire apparaitre les commandes de la tortue.
+  Cliquez sur le bouton <tt>nouveau</tt> de la premi&egrave;re ligne des
+  commandes de la tortue pour cr&eacute;er un nouveau dessin tortue.
   <br>
   Deux champs d'entr&eacute;e
-  sont cr&eacute;&eacute;s,
-  le second sert &agrave;
-  saisir les commandes de d&eacute;placement de la tortue, en-dessous
-  de la commande <tt>efface</tt>. 
+  sont cr&eacute;&eacute;s, le premier pour d&eacute;finir des fonctions,
+  le second pour saisir en-dessous
+  de la commande <tt>efface</tt>
+  des commandes de d&eacute;placement de la tortue ou des
+  appels &agrave; des fonctions (d&eacute;finies auparavant au-dessus), 
   La barre de bouton &agrave; droite du bouton <tt>nouveau</tt>
   <tt>av rec td ...</tt>
   permet de saisir facilement les commandes de d&eacute;placement, comme
   <tt>avance</tt> (la tortue avance de 10 pas ou de la longueur
-  indiqu&eacute;e en param&egrave;tre), <tt>recule</tt> <tt>tourne_droite</tt>
+  indiqu&eacute;e en param&egrave;tre), <tt>recule</tt>, <tt>tourne_droite</tt>
   (la tortue tourne &agrave; droite, par d&eacute;faut de 90
   degr&eacute;s), etc.
   <br>
@@ -1738,7 +1800,7 @@ Joyeux Xcas</a>,
   </li>  
   <li  style="display:inline">
     <button class="bouton"
-onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
+onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutokbd','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
   <em>Replier tout</em>
   </button>
 </ul>
@@ -1754,7 +1816,7 @@ onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','t
   title="Montrer ou cacher les assistants math&eacute;matiques">
   Math
   <img WIDTH="32" HEIGHT="32" SRC="logo.png" alt="Maths" align="center">
-  </button><button class="bouton" title="Programmation" onclick="var tmp=document.getElementById('progbuttons'); if (tmp.style.display=='none'){ tmp.style.display='block';} else { tmp.style.display='none';}">Prog  </button><button class="bouton" id="button_123" onmousedown="event.preventDefault()" 
+  </button><button id="prog_key" class="bouton" title="Programmation" onclick="var tmp=document.getElementById('progbuttons'); if (tmp.style.display=='none'){ tmp.style.display='block';} else { tmp.style.display='none';}">Prog  </button><button class="bouton" id="button_123" onmousedown="event.preventDefault()" 
   onclick="if (document.getElementById('keyboard').style.display=='inline'){ document.getElementById('keyboard').style.display='none'; document.getElementById('alpha_keyboard').style.display='none';} else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
   title="Montrer ou cacher le clavier scientifique">123</button>
 <button class="bouton" style="vertical-align:bottom" 
@@ -3518,7 +3580,7 @@ window.onbeforeunload = function(e) {
   var form=document.getElementById('config');
   var hw=window.innerWidth-50;
   var access=true;
-  if (hw>=1000){ UI.qa=true; UI.usecm=true; form.qa.checked=true; form.usecm.checked=true; } else {UI.qa=false;UI.usecm=true; form.qa.checked=false; form.usecm.checked=true; access=false; document.getElementById('button_show_answers').style.display='none'; document.getElementById('button_hide_answers').style.display='none';}
+  if (hw>=900){ UI.qa=true; UI.usecm=true; form.qa.checked=true; form.usecm.checked=true; } else {UI.qa=false;UI.usecm=true; form.qa.checked=false; form.usecm.checked=true; access=false; document.getElementById('button_show_answers').style.display='none'; document.getElementById('button_hide_answers').style.display='none';}
   var ua = window.navigator.userAgent;
   var old_ie = ua.indexOf('MSIE ');
   var new_ie = ua.indexOf('Trident/');

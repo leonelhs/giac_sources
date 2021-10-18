@@ -6639,6 +6639,7 @@ expr(sin,x)
 0 List
 -1 exp2list
 list2exp([[3,9],[- 1,1]],[x, y])
+list2exp(solve(x^2-1=0),x)
 
 # exp2list
 1 Renvoie la liste formée par les membres de droite de (var=expr0 or var=expr1), utile après solve en mode TI.
@@ -6648,7 +6649,7 @@ list2exp([[3,9],[- 1,1]],[x, y])
 0 Expr
 -1 list2exp
 exp2list((x=2) or (x=0))
-exp2list(solve(x^2-1))
+exp2list((x=3 and y=9) or (x=-1 and y=1) )
 
 # ClrGraph ClrDraw
 1 Efface les graphes et les objets géométriques de l'écran graphique DispG.

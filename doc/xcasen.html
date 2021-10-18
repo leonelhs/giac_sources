@@ -201,7 +201,7 @@ function applyKey (_event_){
  }
  // raccourcis avec Alt
  // F1 aide, c cmdline, m menu,
- if (intAltKey) {
+ if (!done && (intAltKey || intCtrlKey)) {
    if (intKeyCode == KEY_D || intKeyCode == KEY_B || intKeyCode == KEY_RIGHT){
     UI.move_focus(UI.focused,1);
     done=true;
@@ -210,11 +210,11 @@ function applyKey (_event_){
     UI.move_focus(UI.focused,-1);
     done=true;
    }
-   if (intKeyCode == KEY_N || intKeyCode == KEY_DOWN){
+   if (intKeyCode == KEY_DOWN){
     UI.move_focus(UI.focused,1); UI.move_focus(UI.focused,1);
     done=true;
    }
-   if (intKeyCode == KEY_P || intKeyCode == KEY_UP){
+   if (intKeyCode == KEY_UP){
     UI.move_focus(UI.focused,-1); UI.move_focus(UI.focused,-1);
     done=true;
    }
@@ -223,16 +223,33 @@ function applyKey (_event_){
     done=true;
    }
    if (intKeyCode == KEY_C){
-    cmentree.focus();
-    done=true;
+     cmentree.focus();
+     done=true;
    }
    if (intKeyCode == KEY_M){
     UI.show_menu();
     done=true;
    }
-   if (intKeyCode == KEY_T || intKeyCode==KEY_TAB || intKeyCode==KEY_PF1){
+   if (intKeyCode == KEY_T){
+    document.getElementById('progbuttons').style.display='block';
+    document.getElementById('boutons_tortue').style.display='block';
+    done=true;
+   }
+   if (intKeyCode == KEY_P){
+    document.getElementById('prog_key').click();
+    done=true;
+   }
+   if (intKeyCode == KEY_TAB || intKeyCode==KEY_PF1){
     UI.completion(cmentree);
     done=true;
+   }
+   if (intKeyCode == KEY_E || intKeyCode == KEY_F){
+     UI.exec(document.getElementById('mathoutput'),0); 
+     done=true;
+   }
+   if (intKeyCode==KEY_N ){
+     var field=document.getElementById('output');field.innerHTML='';
+     document.getElementById('consolediv').style.display='none';
    }
  }
  if (done){
@@ -318,7 +335,7 @@ document.onkeydown = applyKey;
   class="bouton" type="checkbox" name="complex_mode" title="If checked, some commands like factor will work on C by default">,
       <input class="bouton" type="button" title="Factor degree 2 polynomials even if they are irreducible over Q" value=" √ " onclick="sqrt_mode.checked=!sqrt_mode.checked"> <input class="bouton" type="checkbox" name="sqrt_mode" title="Check if you want to factor degree 2 polynomials even if they are irreducible over Q">,
       <input class="bouton" type="button" title="Show intermediate steps" value="step" onclick="step_mode.checked=!step_mode.checked">
-  <input class="bouton" type="checkbox" name="step_mode" title="Check if you want to display intermediate steps" checked>,
+  <input class="bouton" type="checkbox" name="step_mode" title="Check if you want to display intermediate steps" >,
       <input class="bouton" type="button" title="Run computations with a webworker" value="worker"
   onclick="worker_mode.checked=!worker_mode.checked"> <input
   class="bouton" type="checkbox" name="worker_mode" title="Check to run computations with a webworker">
@@ -871,6 +888,30 @@ onclick="document.getElementById('tutointerface').style.display='none';">Hide
   interface help</button>
 </div>
   </li>
+  <li style="display:inline">
+<button class="bouton"
+onclick="var tmp=document.getElementById('tutokbd'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+<strong>Keyboard</strong></button>
+<div id="tutokbd" style="display:none">
+  Keyboard shortcuts with Alt (or Ctrl if Alt-key is already
+  interpreted by the browser or the OS)
+  <ul>
+    <li> D, cursor right, B: move focus to the right (or down)
+    <li> G, cursor left, V: move focus to the left (or up)
+    <li> cursor down : move focus to the right/down twice
+    <li> curseur up : move focus to the left/up twice
+    <li> C: move focus to commandline
+    <li> A: move focus to help field
+    <li> TAB: display help on the command at the left of the cursor
+    in the commandline.
+    <li> M: display or hide Math menu
+    <li> P: display or hide Program menu
+    <li> T: show turtle menu
+    <li> E or F: exec history
+    <li> N: clears console
+  </ul>
+</div>
+</li>
   <li style="display:inline">
 <button class="bouton"
 onclick="var tmp=document.getElementById('tutocfg'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
@@ -1555,7 +1596,7 @@ of scenarios to teach programming to young childrens.
   </li>  
   <li  style="display:inline">
     <button class="bouton"
-onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
+onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutokbd','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
   <em>Fold all</em>
   </button>
 </ul>
@@ -1572,7 +1613,7 @@ onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','t
   >
   Math
   <img WIDTH="32" HEIGHT="32" SRC="logo.png" alt="Maths" align="center">
-  </button><button class="bouton" title="Programmation" onclick="var tmp=document.getElementById('progbuttons'); if (tmp.style.display=='none'){ tmp.style.display='block';} else { tmp.style.display='none';}">Prog  </button><button class="bouton" id="button_123" onmousedown="event.preventDefault()" 
+  </button><button id="prog_key" class="bouton" title="Programmation" onclick="var tmp=document.getElementById('progbuttons'); if (tmp.style.display=='none'){ tmp.style.display='block';} else { tmp.style.display='none';}">Prog  </button><button class="bouton" id="button_123" onmousedown="event.preventDefault()" 
   onclick="if (document.getElementById('keyboard').style.display=='inline'){ document.getElementById('keyboard').style.display='none'; document.getElementById('alpha_keyboard').style.display='none';} else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
   title="Show or hide scientific keyboard"
   >123</button>
@@ -3426,7 +3467,7 @@ window.onbeforeunload = function(e) {
   var form=document.getElementById('config');
   var hw=window.innerWidth-50;
   var access=true;
-  if (hw>=1000){ UI.qa=true; UI.usecm=true; form.qa.checked=true; form.usecm.checked=true; } else {UI.qa=false;UI.usecm=true; form.qa.checked=false; form.usecm.checked=true; access=false; document.getElementById('button_show_answers').style.display='none'; document.getElementById('button_hide_answers').style.display='none';}
+  if (hw>=900){ UI.qa=true; UI.usecm=true; form.qa.checked=true; form.usecm.checked=true; } else {UI.qa=false;UI.usecm=true; form.qa.checked=false; form.usecm.checked=true; access=false; document.getElementById('button_show_answers').style.display='none'; document.getElementById('button_hide_answers').style.display='none';}
   var ua = window.navigator.userAgent;
   var old_ie = ua.indexOf('MSIE ');
   var new_ie = ua.indexOf('Trident/');

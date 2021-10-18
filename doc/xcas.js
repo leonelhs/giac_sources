@@ -1161,7 +1161,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
       document.getElementById(p[0]).value = decodeURIComponent(p[1]);
     } // end for (i=...)
     if (doexec){ UI.exec(hist,0); }
-    if (clearcmd && cmentree) cmentree.setValue('');
+    if (clearcmd && cmentree && cmentree.setValue) cmentree.setValue('');
     if (hist.firstChild!=null) hist.firstChild.scrollIntoView();
   },
   link: function(start){
@@ -1315,6 +1315,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     }
     else {
       document.getElementById('keyboardfunc').style.display='inline';
+      document.getElementById('keyboardfunc').scrollIntoView();
       document.getElementById('keyboard').style.display='none';
       document.getElementById('alpha_keyboard').style.display='none';
       document.getElementById('progbuttons').style.display='none';
@@ -2628,18 +2629,18 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     field.focus();
   },
   move_focus_end:function(par){
-    if (par.firstChild==null) return;
+    if (par==null || par.firstChild==null) return;
     UI.switch_buttons(par.firstChild,true) 
     par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
-    if (par.nextSibling.title=="Editer ce commentaire"){
-      par.nextSibling.click();
-      return;
-    }
     if (par.nextSibling==null){
       par=par.parentNode.previousSibling.firstChild;
       UI.adjust_focus(par);
       return;
     } 
+    if (par.nextSibling.title=="Editer ce commentaire"){
+      par.nextSibling.click();
+      return;
+    }
     //console.log(par.innerHTML);
     par.style.display='none';
     par=par.nextSibling;
@@ -2674,7 +2675,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	UI.switch_buttons(par.parentNode,true)
 	par=par.nextSibling;
 	par=par.firstChild;
-	if (par.nextSibling==null){
+	if (par.nextSibling==null || !par.style || !par.nextSibling.style){
 	  UI.move_focus_end2(par);
 	  return;
 	}
@@ -3045,7 +3046,7 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     if (field.type!='textarea') return;
     var s=field.value;
     var C=field.cols;
-    console.log(C);
+    //console.log(C);
     var N=0,i,j=0,n=s.length,c;
     for (i=0;i<n;i++,j++){
       c=s.charCodeAt(i);

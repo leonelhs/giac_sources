@@ -2684,6 +2684,8 @@ namespace xcas {
 	return 1;
       }
       if (u==at_ClrIO){
+	if (Xcas_PrintG) 
+	  Xcas_PrintG->set_data(string2gen("",false));
 	* logptr(contextptr) << "";
 	return 1;
       }
