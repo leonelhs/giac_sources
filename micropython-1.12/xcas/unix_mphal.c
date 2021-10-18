@@ -98,3 +98,8 @@ mp_uint_t mp_hal_ticks_us(void) {
     gettimeofday(&tv, NULL);
     return tv.tv_sec * 1000000 + tv.tv_usec;
 }
+
+mp_uint_t mp_hal_ticks_cpu(void) {
+  // FIXME!!!
+  return mp_hal_ticks_ms();
+}

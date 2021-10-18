@@ -818,6 +818,7 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 2, cas_caseval);
 //
 static const mp_map_elem_t cas_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+	{ MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
 };
 
 

@@ -125,7 +125,6 @@ ulonglong int2gen(int d){
   return *(ulonglong *) &g;
 }
 
-bool freezeturtle=false;
 void turtle_freeze(){
   freezeturtle=true;
 }

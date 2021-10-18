@@ -57,6 +57,21 @@
 void console_output(const char *,int);
 const char * read_file(const char * filename);
 bool file_exists(const char * filename);
+int ctrl_c_interrupted();
+
+int micropython_port_vm_hook_loop() {
+  static int c = 0;
+
+  c++;
+  if (c & 0x1f) {
+    return 0;
+  }
+  if (ctrl_c_interrupted()){
+    nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "Keyboard interrupt"));
+    return 1;
+  }
+  return 0;
+}
 
 #if 0
 const char numpy_script[]=R"(import linalg
@@ -311,26 +326,6 @@ bool back_key_pressed();
 int getkey(int allow_suspend);
 
 
-int micropython_port_vm_hook_loop() {
-  /* This function is called very frequently by the MicroPython engine. We grab
-   * this opportunity to interrupt execution and/or refresh the display on
-   * platforms that need it. */
-
-  /* Doing too many things here slows down Python execution quite a lot. So we
-   * only do things once in a while and return as soon as possible otherwise. */
-  static int c = 0;
-
-  ++c; 
-  if (c & 0x7ff ) {
-    return 0;
-  }
-
-  // Check if the user asked for an interruption from the keyboard
-  int g=getkey(mp_interrupt_char | 0x80000000);
-  if (!g) return 0;
-  mp_keyboard_interrupt();
-  return 1;
-}
 
 
 #endif
@@ -567,18 +562,17 @@ char * micropy_init(int stack_size,int heap_size){
   mp_stack_ctrl_init();
   mp_stack_set_limit(stack_size);// (32768);
 
+  if (heap_size){
 #if MICROPY_ENABLE_GC
     char *heap = malloc(heap_size);
-    if(!heap)
-    {
-	return 0;
-    }
+    if (!heap)
+      return 0;
     gc_init(heap, heap + heap_size - 1);
 #endif
-
     mp_init();
-
     return heap;
+  }
+  return 0;
 }
 
 MP_NOINLINE int main_(int argc, char **argv) {

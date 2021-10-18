@@ -480,7 +480,7 @@ namespace xcas {
 #ifdef HAVE_LIBMICROPYTHON
       bool py=python_compat(contextptr) & 4;
       if (py){
-	python_contextptr=contextptr;
+	giac::python_contextptr=contextptr;
 	int i=micropy_ck_eval(m->value());
 	g=string2gen("Done",false);
 	return 1;
@@ -510,51 +510,18 @@ namespace xcas {
     if (Xcas_Text_Editor * ed=dynamic_cast<Xcas_Text_Editor *>(w)){
       if (ed->buffer()->length()==0)
 	return 0;
+      freeze=false;
 #ifdef HAVE_LIBMICROPYTHON
       bool py=python_compat(contextptr) & 4;
       if (py){
-	freeze=false;
-	python_contextptr=contextptr;
-	python_console="";
 	char * s=ed->buffer()->text();
-	bool xc=strlen(s)>=4 && strncmp(s,"xcas",4)==0;
-	if (xc)
+	if (strcmp(s,"xcas")==0){
 	  python_compat(python_compat(contextptr) & 3,contextptr);
-	char * ptr=s;
-	while (*ptr==' ')
-	  ++ptr;
-	bool gr= strcmp(ptr,"show()")==0 || strcmp(ptr,",")==0;
-	bool pix =strcmp(ptr,";")==0;
-	bool turt=strcmp(ptr,".")==0;
-	if (!gr && !xc && !turt && !pix ){
-	  int i=micropy_ck_eval(s);
+	  g=string2gen("Done",false);
 	}
+	else 
+	  g=symbolic(at_python,makesequence(string2gen(s,false),at_python));
 	free(s);
-	context * cascontextptr=(context *)caseval("caseval contextptr");
-	if (freezeturtle || turt){
-	  // copy caseval turtle to this context
-	  turtle(contextptr)=turtle(cascontextptr);
-	  turtle_stack(contextptr)=turtle_stack(cascontextptr);
-	  g=symbolic(at_avance,0);
-	}
-	else {
-	  if (freeze || pix)
-	    g=symbolic(at_show_pixels,vecteur(0));
-	  else {
-	    if (gr)
-	      g=history_plot(cascontextptr);
-	    else {
-	      if (python_console.empty())
-		g=string2gen("Done",false);
-	      else {
-		if (python_console[python_console.size()-1]=='\n')
-		  python_console=python_console.substr(0,python_console.size()-1);
-		g=string2gen(python_console.empty()?"Done":python_console,false);
-	      }
-	      //return -1; // run worksheet does not work
-	    }
-	  }
-	}
 	return 1;
       }
       else {

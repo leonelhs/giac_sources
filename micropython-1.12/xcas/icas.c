@@ -120,6 +120,10 @@ int c_pcoeff(c_complex * x,int n){
 int c_fft(c_complex * x,int n,int inverse){
   return 0;
 }
+int ctrl_c_interrupted(){
+  return 0;
+}
+
 
 #include "py/mpstate.h"
 #include "py/nlr.h"

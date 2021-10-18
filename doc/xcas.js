@@ -1213,7 +1213,10 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (!UI.usecm) return;
     if (UI.python_mode) {
       //console.log('Python mode');
-      cmentree.setOption("mode", "python");
+      if (UI.micropy)
+	cmentree.setOption("mode", "micropy");
+      else
+	cmentree.setOption("mode", "python");
     }
     else {
       //console.log('Xcas mode');
@@ -1346,7 +1349,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   micropy:0,
   micropy_initialized:0,
-  micropy_heap:128000,
+  micropy_heap:4194304,
   python_output:"",
   add_python_output:function(s){
     UI.python_output += s;

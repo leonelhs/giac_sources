@@ -169,13 +169,16 @@ mp_obj_t mp_color_tuple(int c){
 }  
 
 static mp_obj_t graphic_set_pixel(size_t n_args, const mp_obj_t *args) {
+  if (n_args<2){
+    return mp_const_none;
+  }
   uint16_t x = mp_obj_get_int(args[0]), y = mp_obj_get_int(args[1]),color=0;
   if (n_args==3)    
     color = mp_get_color(args[2]);
   c_set_pixel(x,y,color);
   return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_set_pixel_obj, 2, 3, graphic_set_pixel);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_set_pixel_obj, 0, 3, graphic_set_pixel);
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_draw_pixel_obj, 2, 3, graphic_set_pixel);
 
 static mp_obj_t graphic_draw_line(size_t n_args, const mp_obj_t *args) {
@@ -815,6 +818,7 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 2, cas_caseval);
 //
 static const mp_map_elem_t cas_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+	{ MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
 };
 
 

@@ -75,6 +75,7 @@ using namespace std;
 #ifdef HAVE_SIGNAL_H
 #include <signal.h>
 #endif
+#include "Python.h"
 
 // using namespace giac;
 #ifdef HAVE_LIBREADLINE
@@ -1038,6 +1039,39 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 }
 #endif
 
+int micropy_evaled(string & s,const giac::context * contextptr){
+#ifdef HAVE_LIBMICROPYTHON
+  if (python_compat(contextptr) & 4){
+    const char * ptr=s.c_str();
+    while (*ptr==' ')
+      ++ptr;
+    bool gr= strcmp(ptr,"show()")==0 || strcmp(ptr,",")==0;
+    bool pix =strcmp(ptr,";")==0;
+    bool turt=strcmp(ptr,".")==0;
+    if (!gr && !pix && !turt){
+      giac::python_contextptr=contextptr;
+      python_console="";
+      int i=micropy_ck_eval(s.c_str());
+      cout << python_console ;
+      return true;
+    }
+    giac::context * cascontextptr=(giac::context *)giac::caseval("caseval contextptr");
+    if (gr){
+      history_plot(contextptr)=history_plot(cascontextptr);
+      s="show()";
+    }
+    if (pix)
+      s="show_pixels()";
+    if (freezeturtle || turt){
+      turtle(contextptr)=turtle(cascontextptr);
+      turtle_stack(contextptr)=turtle_stack(cascontextptr);
+      s="avance(0)";
+    }
+  }
+#endif
+  return false;
+}
+
 int main(int ARGC, char *ARGV[]){    
   //giac::step_infolevel=1;
   cerr << "// Maximum number of parallel threads " << giac::threads << '\n';
@@ -1669,7 +1703,7 @@ int main(int ARGC, char *ARGV[]){
     struct tms start, end;  
     using_history();
     cout << "Welcome to giac readline interface" << '\n';
-    cout << "(c) 2001,2018 B. Parisse & others" << '\n';
+    cout << "(c) 2001,2020 B. Parisse & others" << '\n';
     cout << "Homepage http://www-fourier.ujf-grenoble.fr/~parisse/giac.html" << '\n';
     cout << "Released under the GPL license 3.0 or above" << '\n';
     cout << "See http://www.gnu.org for license details" << '\n';
@@ -1683,6 +1717,18 @@ int main(int ARGC, char *ARGV[]){
 	break;
       string s(res);
       int bs=s.size();
+      if (s=="python"){
+	python_compat(4 | python_compat(contextptr),contextptr);
+	printf("%s\n","MicroPython 1.12");
+	continue;
+      }
+      if (s=="xcas"){
+	python_compat(python_compat(contextptr)&3,contextptr);
+	printf("%s\n","Giac 1.6.0");
+	continue;
+      }
+      if (micropy_evaled(s,contextptr))
+	continue;
       if (insage && bs && s[bs-1]==63){
 	string complete_string(s.substr(0,bs-1));
 	// search non ascii char starting from the end

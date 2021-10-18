@@ -15,15 +15,11 @@ extern "C" {
   // micropython interface to xcas
   extern int python_stack_size,python_heap_size;
   extern char * python_heap;
-  extern bool freezeturtle;
   int python_init(int stack_size,int heap_size);
   int micropy_ck_eval(const char *line);
   void python_free();
   int do_file(const char *file);
 
-  // giac interface to micropython modules
-  extern const giac::context * python_contextptr;
-  extern string python_console;
   void console_output(const char * s,int l);
   const char * console_input();
   const char * read_file(const char * filename);
@@ -72,5 +68,8 @@ extern "C" {
   int os_get_pixel(int x,int y);
   void sync_screen();
 }
+struct micropy_bidon_t {
+  micropy_bidon_t(){ giac::micropy_ptr=micropy_ck_eval; }
+};
 #endif // HAVE_LIBMICROPYTHON
 #endif // PYTHON_H

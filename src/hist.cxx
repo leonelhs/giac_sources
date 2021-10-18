@@ -1675,7 +1675,7 @@ static void cb_Xcas_help_connan(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_help_alb(Fl_Menu_*, void*) {
-  giac::system_browser_command("https://lycee-rodezlaroque.mon-ent-occitanie.fr/le-lycee/xcas/");
+  giac::system_browser_command("https://drive.google.com/drive/folders/0B-C6S6qF14V6X0VoUHhLZEY0VFU");
 }
 
 static void cb_Xcas_help_cheval(Fl_Menu_*, void*) {
@@ -1696,6 +1696,22 @@ static void cb_Xcas_help_agreg(Fl_Menu_*, void*) {
 
 static void cb_Xcas_help_agregint(Fl_Menu_*, void*) {
   giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/agregint.html");
+}
+
+static void cb_Xcas_help_pavages(Fl_Menu_*, void*) {
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/octogone.html");
+}
+
+static void cb_Xcas_help_tripletpytha(Fl_Menu_*, void*) {
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/tripletpytha.html");
+}
+
+static void cb_Xcas_help_spiralepremier(Fl_Menu_*, void*) {
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/spiralepremier.html");
+}
+
+static void cb_Xcas_help_pandigit(Fl_Menu_*, void*) {
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/pandigit.html");
 }
 
 static void cb_Xcas_help_load(Fl_Menu_*, void*) {
@@ -2089,6 +2105,10 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Ressources Capes", 0,  (Fl_Callback*)cb_Xcas_help_capes, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Ressources Agregation externe", 0,  (Fl_Callback*)cb_Xcas_help_agreg, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Ressources Agregation interne", 0,  (Fl_Callback*)cb_Xcas_help_agregint, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Octogones, pavages, rosaces", 0,  (Fl_Callback*)cb_Xcas_help_pavages, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Triplets pythagoriciens", 0,  (Fl_Callback*)cb_Xcas_help_tripletpytha, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Spirale des nombres premiers", 0,  (Fl_Callback*)cb_Xcas_help_spiralepremier, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Nombres pandigitaux", 0,  (Fl_Callback*)cb_Xcas_help_pandigit, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Update help", 0,  (Fl_Callback*)cb_Xcas_help_load, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Start with CAS", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3265,7 +3285,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<344; i++)
+        for ( ; i<348; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

@@ -2,6 +2,10 @@
 #include "Editeur.h"
 #include "Input.h"
 #include "Tableur.h"
+#ifdef HAVE_LIBMICROPYTHON
+extern "C" int mp_token(const char * line);
+#endif
+
 /*
  *  Copyright (C) 2000,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -67,7 +71,7 @@ namespace xcas {
     { FL_BLUE,       FL_COURIER_BOLD,   14 }  // G - Keywords
   };
   int styletable_n=sizeof(styletable_init) / sizeof(styletable_init[0]);
-  const char         *code_keywords[] = {   // List of known giac keywords...
+  const char *code_keywords[] = {   // List of known giac keywords...
     "BEGIN",
     "BREAK",
     "CATCH",
@@ -182,6 +186,7 @@ namespace xcas {
     "xor"
   };
   
+  
 //
 // 'compare_keywords()' - Compare two keywords...
 //
@@ -208,15 +213,11 @@ namespace xcas {
 // 'style_parse()' - Parse text and produce style data.
 //
 
-  void
-  style_parse(const char *text,
-	      char       *style,
-	      int        length) {
-    char	     current;
-    int	     col;
-    int	     last;
-    char	     buf[255],
-      *bufptr;
+  void style_parse(const char *text,char *style,int length,int mode) {
+    char current;
+    int	col;
+    int	last;
+    char buf[255], *bufptr;
     const char *temp;
     
     for (current = *style, col = 0, last = 0; length > 0; length --, text ++) {
@@ -253,10 +254,14 @@ namespace xcas {
 	    *bufptr = '\0';
 	    
 	    bufptr = buf;
-	    
-	    if (bsearch(&bufptr, code_keywords,
-			       sizeof(code_keywords) / sizeof(code_keywords[0]),
-			       sizeof(code_keywords[0]), compare_keywords)) {
+	    bool test;
+	    if (mode==4)
+	      test=is_python_keyword(bufptr);
+	    else
+	      test=bsearch(&bufptr, code_keywords,
+			   sizeof(code_keywords) / sizeof(code_keywords[0]),
+			   sizeof(code_keywords[0]), compare_keywords);
+	    if (test) {
 	      current='A';
 	      while (text < temp) {
 		*style++ = 'G';
@@ -269,19 +274,27 @@ namespace xcas {
 	      length ++;
 	      last = 1;
 	      continue;
-	    } else if (giac::vector_completions_ptr() && binary_search(giac::vector_completions_ptr()->begin(),giac::vector_completions_ptr()->end(),bufptr,alpha_order)) {
-	      current='A';
-	      while (text < temp) {
-		*style++ = 'F';
-		text ++;
-		length --;
-		col ++;
+	    } else {
+	      bool test;
+	      if (mode==4){
+		int tok=mp_token(bufptr);
+		test=is_python_builtin(bufptr) || tok;
 	      }
-	      
-	      text --;
-	      length ++;
-	      last = 1;
-	      continue;
+	      else
+		test=giac::vector_completions_ptr() && binary_search(giac::vector_completions_ptr()->begin(),giac::vector_completions_ptr()->end(),bufptr,alpha_order);
+	      if (test) {
+		current='A';
+		while (text < temp) {
+		  *style++ = 'F';
+		  text ++;
+		  length --;
+		  col ++;
+		}
+		text --;
+		length ++;
+		last = 1;
+		continue;
+	      }
 	    }
 	  }
 	}
@@ -388,7 +401,9 @@ namespace xcas {
     //  printf("start = %d, end = %d, text = \"%s\", style = \"%s\"...\n",
     //         start, end, text, style);
     
-    style_parse(text, style, end - start);
+    context * contextptr=get_context((Xcas_Text_Editor *) cbArg);
+    int mode=python_compat(contextptr) & 4;
+    style_parse(text, style, end - start,mode);
     
     //  printf("new style = \"%s\"...\n", style);
     
@@ -405,7 +420,7 @@ namespace xcas {
       text  = textbuf->text_range(start, end);
       style = stylebuf->text_range(start, end);
       
-      style_parse(text, style, end - start);
+      style_parse(text, style, end - start,mode);
       
       stylebuf->replace(start, end, style);
       ((Fl_Text_Editor *)cbArg)->redisplay_range(start, end);
@@ -2538,7 +2553,9 @@ namespace xcas {
     
     stylebuf = new Fl_Text_Buffer(buffer()->length());
     
-    style_parse(text, style, buffer()->length());
+    context * contextptr=get_context(this);
+    int mode=python_compat(contextptr) & 4;
+    style_parse(text, style, buffer()->length(),mode);
     
     stylebuf->text(style);
     delete[] style;
@@ -3002,9 +3019,20 @@ namespace xcas {
     show_insert_position();
   }
 
+  vector<aide> micropython_filter_help(const vector<aide> & v_orig){
+    vector<aide> v;
+    for (int i=0;i<v_orig.size();++i){
+      const char * ptr=v_orig[i].cmd_name.c_str();
+      if (giac::is_python_builtin(ptr) || giac::is_python_keyword(ptr) || mp_token(ptr))
+	v.push_back(v_orig[i]);
+    }
+    return v;
+  }
+
   void Xcas_Text_Editor::set_tooltip(){
     static string toolt;
     History_Pack * hp=get_history_pack(this);
+    giac::context * contextptr=get_context(this);
     int pos=insert_position();
     int wbeg=buffer()->line_start(pos);
     string s(buffer()->text_range(wbeg,pos));
@@ -3015,7 +3043,8 @@ namespace xcas {
 	break;
     }
     if (s.size()>1 && k<s.size()){
-      const aide & help=helpon(s,*giac::vector_aide_ptr(),giac::language(hp?hp->contextptr:0),giac::vector_aide_ptr()->size());
+      vector<aide> vs=(contextptr && (python_compat(contextptr) & 4))?micropython_filter_help(*giac::vector_aide_ptr()):*giac::vector_aide_ptr();
+      const aide & help=helpon(s,vs,giac::language(hp?hp->contextptr:0),vs.size());
       toolt=writehelp(help,giac::language(hp?hp->contextptr:0));
       toolt += '\n';
       const char * ch=gettext("No help");

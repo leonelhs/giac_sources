@@ -6,7 +6,7 @@
 #include "runtime.h"
 #include "objtuple.h"
 
-double millis();
+unsigned long long millis();
 int getkey(int);
 
 static mp_obj_t nsp_readRTC()
@@ -26,7 +26,9 @@ STATIC const mp_map_elem_t mp_module_nsp_globals_table[] = {
         { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_nsp) },
 	//{ MP_OBJ_NEW_QSTR(MP_QSTR_Texture), (mp_obj_t) &nsp_texture_type },
 	{ MP_OBJ_NEW_QSTR(MP_QSTR_waitKeypress), (mp_obj_t) &nsp_waitKeypress_obj },
-	{ MP_OBJ_NEW_QSTR(MP_QSTR_readRTC), (mp_obj_t) &nsp_readRTC_obj }
+	{ MP_OBJ_NEW_QSTR(MP_QSTR_readRTC), (mp_obj_t) &nsp_readRTC_obj },
+	{ MP_OBJ_NEW_QSTR(MP_QSTR_monotonic), (mp_obj_t) &nsp_readRTC_obj },
+	{ MP_OBJ_NEW_QSTR(MP_QSTR_time), (mp_obj_t) &nsp_readRTC_obj },
 };
 
 STATIC const mp_obj_dict_t mp_module_nsp_globals = {

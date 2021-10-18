@@ -49,6 +49,7 @@
 #include "help.h"
 #include "global.h"
 #endif
+#include "Python.h"
 #include <iostream>
 #include <fstream>
 #ifdef HAVE_UNISTD_H
@@ -336,10 +337,20 @@ namespace xcas {
     }
   }
 
+  vector<string> micropython_filter_help(const vector<string> & v_orig){
+    vector<string> v;
+    for (int i=0;i<v_orig.size();++i){
+      const char * ptr=v_orig[i].c_str();
+      if (giac::is_python_builtin(ptr) || giac::is_python_keyword(ptr) || mp_token(ptr))
+	v.push_back(v_orig[i]);
+    }
+    return v;
+  }
+
   Fl_Window * handle_tab_w = 0;
   // Find a completion of s in v -> ans, return true if user OK
   // dx,dy=size of browser window
-  int handle_tab(const string & s,const vector<string> & v,int dx,int dy,int & remove,string & ans,bool allow_immediate_out){
+  int handle_tab(const string & s,const vector<string> & v_orig,int dx,int dy,int & remove,string & ans,bool allow_immediate_out){
     static Fl_Hold_Browser * browser = 0;
     static Fl_Hold_Browser * related = 0;
     static Fl_Hold_Browser * syns = 0;
@@ -363,6 +374,8 @@ namespace xcas {
       if (dx>500)
 	dx=500;
     }
+    // filter help if MicroPython is active
+    vector<string> v( (contextptr && (python_compat(contextptr) & 4))?micropython_filter_help(v_orig):v_orig);
     if (dy<300)
       dy=300;
     if (dx<240)

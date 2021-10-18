@@ -6259,7 +6259,44 @@ namespace giac {
     return g;
   }
 
+  int (*micropy_ptr) (cstcharptr)=0;
   gen _python(const gen & args,GIAC_CONTEXT){
+#if defined MICROPY_LIB || defined HAVE_LIBMICROPYTHON
+    if (micropy_ptr && args.type==_VECT && args._VECTptr->size()==2){
+      gen a=args._VECTptr->front(),b=args._VECTptr->back();
+      if (a.type==_STRNG && b==at_python){
+	const char * ptr=a._STRNGptr->c_str();
+	while (*ptr==' ')
+	  ++ptr;
+	bool gr= strcmp(ptr,"show()")==0 || strcmp(ptr,",")==0;
+	bool pix =strcmp(ptr,";")==0;
+	bool turt=strcmp(ptr,".")==0;
+	bool xc=strcmp(ptr,"xcas")==0;
+	python_contextptr=contextptr;
+	python_console="";
+	gen g;
+	if (!gr && !xc && !turt && !pix ){
+	  (*micropy_ptr)(ptr);
+	}
+	context * cascontextptr=(context *)caseval("caseval contextptr");
+	if (freezeturtle || turt){
+	  // copy caseval turtle to this context
+	  turtle(contextptr)=turtle(cascontextptr);
+	  turtle_stack(contextptr)=turtle_stack(cascontextptr);
+	  return _avance(0,contextptr);
+	}
+	if (freeze || pix)
+	  return _show_pixels(0,contextptr);
+	if (gr)
+	  return history_plot(cascontextptr);
+	if (python_console.empty())
+	  return string2gen("Done",false);
+	if (python_console[python_console.size()-1]=='\n')
+	  python_console=python_console.substr(0,python_console.size()-1);
+	return string2gen(python_console.empty()?"Done":python_console,false);
+      }
+    }
+#endif
     return python_xcas(args,1,contextptr);
   }
   static const char _python_s []="python";

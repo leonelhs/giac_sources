@@ -24,7 +24,9 @@
  * THE SOFTWARE.
  */
 
+int micropython_port_vm_hook_loop() ;
 // options to control how Micro Python is built
+#define MICROPY_VM_HOOK_LOOP micropython_port_vm_hook_loop();
 
 #define MICROPY_ALLOC_PATH_MAX      (128)
 #define MICROPY_EMIT_ARM            (1)
@@ -113,6 +115,7 @@ extern const struct _mp_obj_module_t mp_module_linalg;
 #define MICROPY_PORT_BUILTIN_MODULES \
 	{ MP_ROM_QSTR(MP_QSTR__os), (mp_obj_t) &mp_module_os }, \
 	{ MP_ROM_QSTR(MP_QSTR_nsp), (mp_obj_t) &mp_module_nsp }, \
+	{ MP_ROM_QSTR(MP_QSTR_time), (mp_obj_t) &mp_module_nsp }, \
 	{ MP_ROM_QSTR(MP_QSTR_cas), (mp_obj_t) &mp_module_cas }, \
 	{ MP_ROM_QSTR(MP_QSTR_arit), (mp_obj_t) &mp_module_arit }, \
 	{ MP_ROM_QSTR(MP_QSTR_linalg), (mp_obj_t) &mp_module_linalg }, \

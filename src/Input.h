@@ -33,6 +33,7 @@
 namespace xcas {
 #endif // ndef NO_NAMESPACE_XCAS
 
+  std::vector<std::string> micropython_filter_help(const std::vector<std::string> & v_orig);
   // If use_external_browser is true you can change the browser used
   // by setting the BROWSER env variable, e.g. export BROWSER=...
   extern bool use_external_browser; 

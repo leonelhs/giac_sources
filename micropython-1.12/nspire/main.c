@@ -60,6 +60,20 @@
 long heap_size = 1024*1024 * (sizeof(mp_uint_t) / 4);
 #endif
 
+int micropython_port_vm_hook_loop() {
+  static int c = 0;
+
+  c++;
+  if (c & 0x1f) {
+    return 0;
+  }
+  if (on_key_pressed()){
+    nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "Keyboard interrupt"));
+    return 1;
+  }
+  return 0;
+}
+
 void console_output(const char *,int);
 STATIC void stderr_print_strn(void *env, const char *str, size_t len) {
   console_output(str,len); return;

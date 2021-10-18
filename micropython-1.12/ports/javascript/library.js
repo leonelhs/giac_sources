@@ -42,7 +42,7 @@ mergeInto(LibraryManager.library, {
     },
 
     mp_js_ticks_ms: function() {
-        return (new Date()).getTime() - MP_JS_EPOCH;
+        return (new Date()).getTime();
     },
 
     mp_js_hook: function() {

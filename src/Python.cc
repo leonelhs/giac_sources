@@ -9,7 +9,8 @@
 
 int python_stack_size=1024*1024,python_heap_size=65536*1024;
 char * python_heap=0;
-const giac::context * python_contextptr=0;
+
+micropy_bidon_t micropy_bidon;
 
 void python_free(){
   if (!python_heap) return;
@@ -28,9 +29,10 @@ int micropy_ck_eval(const char *line){
   freezeturtle=false;
   if (python_heap && line[0]==0)
     return 1;
-  if (!python_heap){
+  if (python_heap)
+    micropy_init(python_stack_size,0);
+  else
     python_init(python_stack_size,python_heap_size);
-  }
   if (!python_heap){
     console_output("Memory full",11);
     return RAND_MAX;
@@ -83,7 +85,6 @@ const char * console_input(){
 }
 
 #if 1 // maybe add a timer and a timeout, and print to logptr after timeout
-string python_console;
 void console_output(const char * s,int l){
   python_console += string(s).substr(0,l);
 }
@@ -210,7 +211,6 @@ ulonglong int2gen(int d){
   return *(ulonglong *) &g;
 }
 
-bool freezeturtle=false;
 void turtle_freeze(){
   freezeturtle=true;
 }
