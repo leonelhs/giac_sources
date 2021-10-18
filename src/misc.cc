@@ -6149,15 +6149,20 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 
   gen _is_polynomial(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-    vecteur v = gen2vecteur(args);
+    vecteur v;
+    if (args.type==_VECT && args.subtype!=_SEQ__VECT)
+      v=vecteur(1,args);
+    else
+      v=gen2vecteur(args);
     if (v.empty())
       return gensizeerr(contextptr);
     if (v.size()==1)
       v.push_back(ggb_var(args));
-    if (v.size()>2)
-      return gendimerr(contextptr);
-    vecteur lv=lvarxwithinv(v,v[1],contextptr);
-    return lv.size()<2;
+    gen tmp=apply(v,equal2diff);
+    vecteur lv=lvarxwithinv(tmp,v[1],contextptr);
+    gen res=lv.size()<2?1:0;
+    res.subtype=_INT_BOOLEAN;
+    return res;
   }
   static const char _is_polynomial_s []="is_polynomial";
   static define_unary_function_eval (__is_polynomial,&_is_polynomial,_is_polynomial_s);
@@ -7466,6 +7471,51 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static const char _printf_s []="printf";
   static define_unary_function_eval (__printf,&_printf,_printf_s);
   define_unary_function_ptr5( at_printf ,alias_at_printf,&__printf,0,true);
+
+  gen _sech(const gen & args,GIAC_CONTEXT){
+    return inv(cosh(args,contextptr),contextptr);
+  }
+  static const char _sech_s []="sech";
+  static define_unary_function_eval (__sech,&_sech,_sech_s);
+  define_unary_function_ptr5( at_sech ,alias_at_sech,&__sech,0,true);
+
+  gen _csch(const gen & args,GIAC_CONTEXT){
+    return inv(sinh(args,contextptr),contextptr);
+  }
+  static const char _csch_s []="csch";
+  static define_unary_function_eval (__csch,&_csch,_csch_s);
+  define_unary_function_ptr5( at_csch ,alias_at_csch,&__csch,0,true);
+
+  // ggb function for latitude of a 3-d point
+  // was ggbalt(x):=when(type(x)==DOM_IDENT,altsymb(x),when(x[0]=='pnt',when(is3dpoint(x),atan2(x[1][2],sqrt(x[1][0]^2+x[1][1]^2)),0),?))
+  gen _ggbalt(const gen & args,GIAC_CONTEXT){
+    if (args.type==_IDNT)
+      return symbolic(at_ggbalt,args);
+    if (args.is_symb_of_sommet(at_pnt)){
+      gen x=remove_at_pnt(args);
+      if (x.type==_VECT && x.subtype==_POINT__VECT && x._VECTptr->size()==3 ){
+	vecteur v=*x._VECTptr;
+	return arg(sqrt(pow(v[0],2,contextptr)+pow(v[1],2,contextptr),contextptr)+cst_i*v[2],contextptr);
+      }
+      if (args.type==_SYMB && equalposcomp(not_point_sommets,args._SYMBptr->sommet))
+	return undef;
+      return 0;
+    }
+    return undef;
+  }
+  static const char _ggbalt_s []="ggbalt";
+  static define_unary_function_eval (__ggbalt,&_ggbalt,_ggbalt_s);
+  define_unary_function_ptr5( at_ggbalt ,alias_at_ggbalt,&__ggbalt,0,true);
+
+  // ggbsort(x):=when(length(x)==0,{},when(type(x[0])==DOM_LIST,x,sort(x)))
+  gen _ggbsort(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_VECT || args._VECTptr->empty() || args._VECTptr->front().type==_VECT) return args;
+    return _sort(args,contextptr);
+  }
+  static const char _ggbsort_s []="ggbsort";
+  static define_unary_function_eval (__ggbsort,&_ggbsort,_ggbsort_s);
+  define_unary_function_ptr5( at_ggbsort ,alias_at_ggbsort,&__ggbsort,0,true);
+
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

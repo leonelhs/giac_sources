@@ -2367,7 +2367,7 @@ namespace xcas {
 	  double w=this->w();
 	  double window_w=window_xmax-window_xmin,window_h=window_ymax-window_ymin;
 	  double tst=h/w*window_w/window_h;
-	  if (tst>0.7 || tst<1.4)
+	  if (tst>0.7 && tst<1.4)
 	    do_ortho=true;
 	}
       }

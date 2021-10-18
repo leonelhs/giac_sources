@@ -1415,7 +1415,7 @@ ok</button>
   caseval: function(text){
    var docaseval = Module.cwrap('caseval',  'string', ['string']);
    var value=text;
-   value=value.replace('%22','\"','g'); 
+   value=value.replace(/%22/g,'\"'); 
    var n=value.search(';');
    if (n<0 || n>=value.length)
      value='add_autosimplify('+value+')';
@@ -1468,12 +1468,8 @@ restoresession: function(chaine,hist,asked,doexec){
  for(var i = 0; i < hashParams.length; i++){
     var s = hashParams[i];
     if (s.length)  document.getElementById('startup_restore').style.display='none';
-    s=s.replace('%0a','\n','g');
-    s=s.replace('%3b',';','g');
-    s=s.replace('%3e','>','g');
-    s=s.replace('%5e','^','g');
-    s=s.replace('%20',' ','g');
-    s=s.replace('%22','\"','g');
+    s=decodeURIComponent(s); //console.log(s);
+    s=s.replace(/%3b/g,';'); 
     if (s.length && s.charAt(0)=='+'){
        if (!asked) doexec=true;
        s=s.substr(1);
@@ -1593,9 +1589,10 @@ restoresession: function(chaine,hist,asked,doexec){
        }
        var pos=fs.search("<textarea");
        if (pos>=0 && pos<fs.length){
-         var tmp=field.firstChild.value.replace('\n','%0a','g');
-         tmp=tmp.replace(';','%3b','g');
-         s += '+' + tmp.replace('&&',' and ','g') + '&';
+         // var tmp=field.firstChild.value.replace(/\n/g,'%0a'); tmp=tmp.replace(';','%3b','g');
+         // s += '+' + tmp.replace('&&',' and ','g') + '&';
+         var tmp=encodeURIComponent(field.firstChild.value);
+         s += '+' + tmp + '&';
          cur=cur.nextSibling;
          continue;
        }
@@ -2294,7 +2291,7 @@ gr(text);
   },
   clean:function(text,quote){
     var cmd=text;
-    if (quote) cmd=cmd.replace('\'','\\\'','g');
+    if (quote) cmd=cmd.replace(/\'/g,'\\\'');
     cmd=cmd.replace(/>/g,'&gt;');
     cmd=cmd.replace(/</g,'&lt;');
     return cmd;
@@ -2704,7 +2701,7 @@ insert: function(myField, myValue) {
              text = text.replace(/&/g, "&amp;");
              text = text.replace(/</g, "&lt;");
              text = text.replace(/>/g, "&gt;");
-             text = text.replace('\n', '<br>', 'g');
+             text = text.replace(/\n/g, '<br>');
              text += '<br>'
              element.style.display='inherit';
              element.innerHTML += text; // element.value += text + "\n";

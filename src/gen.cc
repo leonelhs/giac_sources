@@ -3818,12 +3818,17 @@ namespace giac {
     case _FLOAT_:
       return fabs(a._FLOAT_val);
     case _VECT:
+      if (a.subtype==_POINT__VECT || a.subtype==_GGBVECT)
+	return _l2norm(a,contextptr);
       return _VECTabs(*a._VECTptr,contextptr);
     case _IDNT:
       return idnt_abs(a,contextptr);
     case _SYMB:
-      if (a.is_symb_of_sommet(at_pnt))
+      if (a.is_symb_of_sommet(at_pnt)){
+	if (is3d(a))
+	  return _l2norm(_coordonnees(a,contextptr),contextptr);
 	return abs(_affixe(a,contextptr),contextptr);
+      }
       return symb_abs(*a._SYMBptr,contextptr);
     case _USER:
       return a._USERptr->abs(contextptr);
@@ -10916,6 +10921,9 @@ namespace giac {
     ref_mpz_t * e = new ref_mpz_t;
     if (i<j)
       return e;
+#ifdef mpz_bin_uiui
+    mpz_bin_uiui(e->z,i,j);
+#else
     mpz_set_ui(e->z,1);
     for (unsigned long int k=i;k>i-j;--k)
       mpz_mul_ui(e->z,e->z,k);
@@ -10924,6 +10932,7 @@ namespace giac {
     mpz_fac_ui(tmp,j);
     mpz_fdiv_q(e->z,e->z,tmp);
     mpz_clear(tmp);
+#endif
     return e;
   }
 
