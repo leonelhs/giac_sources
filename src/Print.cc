@@ -834,7 +834,7 @@ namespace xcas {
       pngpdf=0;
 #ifdef Fl_Printer_H
     // Fl_PrintDevice * p = fl_printer_chooser();
-    int x=widget->x(),y=widget->y(),w=widget->w(),h=widget->h(),neww(giacmin(w,570)),newh(h);
+    int x=widget->x(),y=widget->y(),w=widget->w(),h=widget->h(),neww(giacmin(w,570)),newh(h*double(neww)/w);
     if (!askusersize && neww==570)
       newh=300;
     if (eps){

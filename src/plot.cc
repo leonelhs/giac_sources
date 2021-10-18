@@ -1085,25 +1085,58 @@ namespace giac {
     int c=int(m.front()._VECTptr->size()); // jmax
     if (regular){
       vector< vector< double > > fij;
+      double Fmax=-1e307,Fmin=1e307;
       fij.reserve(r);
+      double nan=0.0;
+      nan=nan/nan;
       for (int i=0;i<r;++i){
 	vector<double> tmp;
 	tmp.reserve(c);
 	for (int j=0;j<c;++j){
-	  tmp.push_back(evalf_double(m[i][j][2],eval_level(contextptr),contextptr)._DOUBLE_val);
+	  gen val=m[i][j];
+	  if (val.type==_VECT)
+	    val=val[2];
+	  val=evalf_double(val,eval_level(contextptr),contextptr);
+	  if (val.type!=_DOUBLE_)
+	    tmp.push_back(nan);
+	  else {
+	    double vald=val._DOUBLE_val;
+	    tmp.push_back(vald);
+	    if (vald>Fmax)
+	      Fmax=vald;
+	    if (vald<Fmin)
+	      Fmin=vald;
+	  }
 	}
 	fij.push_back(tmp);
       }
+      if (fmax<=fmin){
+	fmax=Fmax;
+	fmin=Fmin;
+      }
       double xmin,xmax,dx,ymin,ymax,dy;
       gen xymin=m[0][0];
-      xmin=xymin[0]._DOUBLE_val;
-      ymin=xymin[1]._DOUBLE_val;
+      if (xymin.type==_VECT && xymin._VECTptr->size()>=2){
+	xmin=xymin[0]._DOUBLE_val;
+	ymin=xymin[1]._DOUBLE_val;
+      }
+      else {
+	xmin=0;
+	ymin=-c;
+      }
       gen xymax=m[r-1][c-1];
-      xmax=xymax[0]._DOUBLE_val;
-      ymax=xymax[1]._DOUBLE_val;
+      if (xymax.type==_VECT && xymax._VECTptr->size()>=2){
+	xmax=xymax[0]._DOUBLE_val;
+	ymax=xymax[1]._DOUBLE_val;
+      }
+      else {
+	xmax=r;
+	ymax=0;
+      }
       dx=(xmax-xmin)/(r-1);
       dy=(ymax-ymin)/(c-1);
-      vecteur lz(arc_en_ciel_colors);
+      vecteur lz;
+      lz.resize(arc_en_ciel_colors);
       double df=(fmax-fmin)/arc_en_ciel_colors;
       for (int i=0;i<arc_en_ciel_colors;++i)
 	lz[i]=fmin+i*df;
@@ -1712,6 +1745,11 @@ namespace giac {
     if (is_undef(vargs))
       return vargs;
     int s=int(vargs.size());
+    if (ckmatrix(vargs[0])){
+      matrice m=*vargs[0]._VECTptr;
+      reverse(m.begin(),m.end());
+      return density(mtran(m),0,0,true,contextptr);
+    }
     for (int i=0;i<s;++i){
       if (vargs[i]==at_equation){
 	showeq=true;
@@ -1827,6 +1865,16 @@ namespace giac {
   static const char _plotdensity_s []="plotdensity"; 
   static define_unary_function_eval_quoted (__plotdensity,&giac::_plotdensity,_plotdensity_s);
   define_unary_function_ptr5( at_plotdensity ,alias_at_plotdensity,&__plotdensity,_QUOTE_ARGUMENTS,true);
+
+  gen _plotmatrix(const gen & args,const context * contextptr){
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (!ckmatrix(args))
+      return gensizeerr(contextptr);
+    return funcplotfunc(args,true,contextptr);
+  }
+  static const char _plotmatrix_s []="plotmatrix"; 
+  static define_unary_function_eval_quoted (__plotmatrix,&giac::_plotmatrix,_plotmatrix_s);
+  define_unary_function_ptr5( at_plotmatrix ,alias_at_plotmatrix,&__plotmatrix,_QUOTE_ARGUMENTS,true);
 
   static const char _densityplot_s []="densityplot"; 
   static define_unary_function_eval_quoted (__densityplot,&giac::_plotdensity,_densityplot_s);

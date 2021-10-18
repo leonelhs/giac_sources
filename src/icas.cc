@@ -905,6 +905,8 @@ int main(int ARGC, char *ARGV[]){
     giac::debug_infolevel=savedbg;
   if (ARGC>=2){
     std::string infile(ARGV[1]),outfile=giac::remove_extension(infile);
+    if (infile==outfile && !giac::is_file_available(ARGV[1]) && giac::is_file_available((infile+".tex").c_str()))
+      infile=outfile+".tex";
     if (infile==outfile+".tex"){
       outfile=outfile+"_.tex";
       // outfile=outfile+"_.w";

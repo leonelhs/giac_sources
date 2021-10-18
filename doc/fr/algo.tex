@@ -63,8 +63,8 @@
 \input{giacfr.tex}
 
 \begin{document}
-%\begin{giacjs}
-\begin{giacjsonline}
+\begin{giacjs} % ne pas oublier de changer \end{giacjs...} a la fin
+%\begin{giacjsonline}
 
 \maketitle
 
@@ -133,6 +133,177 @@ r\'epartition du rayonnement solaire sur Terre \ref{sec:soleil}
 
 
 \pagebreak
+
+\section{Trousse de survie Xcas} \label{sec:survie}
+Cette section peut \^etre vue comme un tutoriel tr\`es abr\'eg\'e 
+pour rapidement
+prendre en main Xcas par des exemples au niveau fin de licence
+master de math\'ematique et pr\'eparation aux concours de recrutement
+d'enseignants. Le lecteur pourra consulter le tutoriel calcul
+formel (menu Xcas, Aide, D\'ebuter en calcul formel, tutoriel) pour
+plus de d\'etails ou/et \`a un niveau math\'ematique moins \'elev\'e.
+
+\subsection{Utilisation comme super-calculatrice}
+\begin{itemize}
+\item 
+On saisit une ligne de commande, on tape sur la touche Entree pour
+l'\'evaluer. On peut saisir plusieurs commandes sur une m\^eme ligne
+en les s\'eparant par \verb|;| (affiche le r\'esultat) ou
+\verb|:;| (n'affiche pas le r\'esultat).
+La syntaxe respecte les priorit\'es usuelles des 
+op\'erateurs, attention il faut toujours saisir le signe \verb|*|
+pour effectuer une multiplication (sauf raccourcis dans l\'ecriture
+de mon\^omes comme \verb|2x|). Mettez des parenth\`eses en cas de doute.
+\giacinput{2x^3; x/2/y; x/(2*y);}
+\item 
+Si on entre des donn\'ees exactes, les calculs sont exacts
+\giacinput{1/2-1/3}
+on peut alors convertir en approch\'e avec \verb|evalf|
+\giacinput{evalf(sin(1))}
+Si on entre au moins une donn\'ee approch\'ee (nombre avec point
+d\'ecimal), les calculs sont approch\'es
+\giacinput{1/2.0-1/3}
+Les nombres flottants peuvent \^etre saisis avec l\'ecriture standard
+mantisse/exposant s\'epar\'es par \verb|e|
+\giacinput{Avogadro:=6.02e23; eps:=1e-10;}
+\item On peut stocker des r\'esultats dans des variables
+pour les r\'eutiliser ensuite
+\giacinput{a:=pi^2/6; evalf(a);}
+On peut effacer le contenu d'une variable avec \verb|purge|, elle
+redevient alors libre (elle s'\'evalue en elle-m\^eme)
+\giacinput{purge(a); a;}
+Les noms de variable peuvent contenir plusieurs lettres
+\giacinput{xy/y; x*y/y;}
+\item Les noms de commande et mots-clefs du logiciel sont en g\'en\'eral
+affich\'es avec une couleur sp\'ecifique. Les menus permettent
+de trouver les commandes par th\`eme (menus Outils dans Xcas pour
+les plus courantes, menu Graphe avec des assistants pour les 
+repr\'esentations graphiques les plus courantes, 
+menu Cmd pour un ensemble plus
+complet). La ligne de commande permet
+en g\'en\'eral de compl\'eter un d\'ebut de nom de commande (touche
+tabulation). L'appui sur la touche tabulation apr\`es
+un nom de commande ou la s\'election du menu Aide, Index dans
+Xcas ouvre l'aide en ligne
+courte, avec une description rapide de la commande et
+quelques exemples types que l'on peut copier-coller et adapter.
+On peut aussi obtenir une aide plus d\'etaill\'ee (boutons Details
+dans Xcas).
+\item Les listes sont d\'elimit\'ees par des crochets et servent
+\`a repr\'esenter des vecteurs. Les listes de listes de m\^eme taille
+servent \`a repr\'esenter des matrices. On acc\`ede \`a un \'el\'ement
+d'une liste en donnant le nom de variable de la liste puis l'indice
+de l'\'el\'ement entre crochet, en commen\c{c}ant \`a 0 (mettre deux crochets
+pour commencer \`a 1).
+\giacinputbigmath{v:=[1,2]; M:=[[1,2],[3,4]]; w:=M*v; w[0]; w[[1]]; M[0,0]:=-1; M*v;}
+\end{itemize}
+
+\subsection{Calcul exact}
+\subsubsection{Arithm\'etique}
+\begin{itemize}
+\item division euclidienne des entiers
+\giacinput{a:=25; b:=7; q:=iquo(25,7); r:=irem(25,7); b*q+r;}
+\item PGCD, identit\'e de B\'ezout sur les entiers
+\giacinputbig{a:=25; b:=7; gcd(a,b); u,v,d:=iegcd(a,b); a*u+b*v; u,v:=iabcuv(a,b,37); a*u+b*v}
+\item restes chinois entiers
+\giacinput{ichinrem([2,13],[3,17])}
+\item primalit\'e, d\'ecomposition en facteurs premiers
+\giacinput{a:=2^64+1;isprime(a); ifactor(a);}
+\item puissance modulaire rapide
+\giacinput{a:=256789; b:=1234567; m:=345678; powmod(a,b,m);}
+\item division euclidienne des polyn\^omes, la variable par d\'efaut est $x$,
+sinon il faut la sp\'ecifier en dernier argument
+\giacinputbigmath{a:=x^4+5x^2+7x+1; b:=x^3+4x^2+x+1; q:=quo(a,b); r:=rem(a,b); quo(a,b,y)}
+\item PGCD, identit\'e de B\'ezout sur les polyn\^omes
+\giacinputbigmath{a:=x^4+5x^2+7x+1; b:=x^3+4x^2+x+1; gcd(a,b); u,v,d:=egcd(a,b); normal(a*u+b*v); u,v:=abcuv(a,b,x^2,x); normal(a*u+b*v)}
+\item factorisation sur le corps des coefficients par d\'efaut, sinon 
+ajouter l'extension alg\'ebrique souhait\'ee (\'eventuellement obtenue
+avec \verb|solve|)
+\giacinputbigmath{factor(x^4-4); solve(x^4-4=0); cfactor(x^4-4,sqrt(2));}
+\verb|sqrfree| permet d'effectuer une factorisation partielle
+en produit de facteurs premiers entre eux et sans racines multiples.
+\item \'evaluation d'un polyn\^ome
+\giacinput{p:=x^5+4x+7; horner(p,2); p(x=2); subst(p,x=2);}
+\item R\'esultant de 2 polyn\^omes
+\giacinputbigmath{p:=randpoly(7); q:=randpoly(7); resultant(p,q,x);}
+\giacinputbigmath{m:=sylvester(p,q); det(m);}
+\item d\'ecomposition en \'el\'ements simples
+\giacinputbigmath{partfrac(1/(x^4-1))}
+\item polyn\^omes \`a coefficients dans $\Z/p\Z$
+\giacinput{p:=(x^5+4x+7) \% 11;}
+\item Corps fini non premier de caract\'eristique $p$~:\\
+\verb|GF(p,n)| cr\'ee un corps fini $K$ de cardinal $p^n$, 
+et affecte une variable
+pour le g\'en\'erateur du groupe multiplicatif $K^*$, par
+d\'efaut $g$. Les \'el\'ements du corps sont alors repr\'esent\'es
+par des polyn\^omes en le g\'en\'erateur
+\giacinput{GF(3,5); g^10; g^(3^5);}
+on peut travailler avec des polyn\^omes ou des matrices
+\`a coefficients dans $K$
+\giacinputbigmath{p:=(g+x)^7; normal(p); quo(p,x^6+g*x^3+x+g^2-2)}
+\end{itemize}
+
+\subsubsection{Alg\`ebre lin\'eaire exacte}
+\begin{itemize}
+\item Pivot de Gauss~: \verb|rref| cr\'ee des 0 de part et d'autre
+de la diaginale, \verb|ref| en-dessous de la diagonale,
+\verb|ker| renvoie une liste de vecteurs formant une 
+base du noyau d'une application lin\'eaire
+\giacinputbigmath{m:=[[1,2],[3,4]]; rref(m); ref(m);} 
+\giacinputbigmath{m:=[[1,2,3],[4,5,6],[7,8,9]]; ker(m);}
+\item Factorisation LU
+\giacinputbigmath{m:=ranm(3,3); p,l,u:=lu(m); linsolve(p,l,u,[1,2,3]);}
+\item D\'eterminant
+\giacinput{m:=ranm(100,100):; det(m);}
+On peut forcer l'utilisation d'un algorithme 
+(voir l'aide d\'etaill\'ee de \verb|det|).
+\item R\'eduction des endomorphismes
+\giacinputbigmath{m:=[[1,2],[3,4]]; p,d:=jordan(m); normal(inv(p)*m*p); pmin(m);}
+\item Polynome d'endomorphisme
+\giacinputbigmath{m:=[[1,2],[3,4]]; p:=charpoly(m); horner(p,m);}
+\item Forme de Hermite et Smith d'une matrice \`a coefficients entiers
+\giacinputbigmath{m:=ranm(3,3); ihermite(m); ismith(m);}
+\end{itemize}
+
+\subsection{Calcul scientifique}
+\subsubsection{Analyse num\'erique}
+\begin{itemize}
+\item R\'esolution approch\'e d\'equation par m\'ethode it\'erative
+ou par bisection
+\giacinput{fsolve(x=cos(x),x=0.3); fsolve(x=cos(x),x=-4..4)}
+\item Approximation polyn\^omiale~: 
+\giacinput{lagrange([1,2,3,4],[-3,5,2,7])}
+\item Int\'egration num\'erique
+\giacinput{int(exp(-x^2),x,-3.0,2.1);}
+on peut forcer une m\'ethode avec \verb|gaussquad| ou \verb|romberg|
+ou de petit ordre avec \verb|plotarea|
+\giacinput{plotarea(exp(-x^2),x=0..1.0,5,trapezes)}
+\item \'Equations diff\'erentielles ordinaires
+$y'=f(t,y)=\sin(ty)$ 
+avec condition initiale $(t_0,y_0)=(0,1)$, valeur en $t=2$
+\giacinput{odesolve(sin(t*y),[t,y],[0,1],2)}
+Trac\'e sur l'intervalle $t \in [-10,10]$
+\giacinput{odeplot(sin(t*y),[t=-10..10,y],[0,1])}
+\end{itemize}
+
+
+\subsubsection{Alg\`ebre lin\'eaire num\'erique}
+\begin{itemize}
+\item factorisation LU et r\'esolution de syst\`eme,
+\giacinputbigmath{m:=ranm(3,3,uniform,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,[1,2,3]);}
+\item factorisation QR
+\giacinputbigmath{q,r:=qr(m); q*r-m;}
+\item factorisation de Cholesky
+\giacinputbigmath{n:=trn(m)*m; cholesky(n);}
+\item Conditionnement d'une matrice pour la norme 1, euclidienne ou infinie
+\giacinput{cond(m,1); cond(m,2); cond(m,inf);}
+\item R\'eduction des endomorphismes
+\giacinputbigmath{p,d:=jordan(evalf(m)); eigenvalues(m); eigenvects(m);}
+\item Valeurs singuli\`eres
+\giacinputbigmath{svl(m); u,s,q:=svd(m); u*diag(s)*trn(q);}
+\item Factorisation de Schur
+\giacinputbigmath{restart;p,u:=schur(m); trn(p)*m*p-u;}
+\end{itemize}
 
 \section{Calculer sur ordinateur} \label{sec:calculer}
 
@@ -17813,8 +17984,8 @@ de clavier ont un potentiel int\'eressant pour un usage
 en mobilit\'e avec un peu plus de donn\'ees \`a saisir.
 \end{itemize}
 
-\end{giacjsonline}
-%\end{giacjs}
+%\end{giacjsonline}
+\end{giacjs}
 
 \end{document}
 
