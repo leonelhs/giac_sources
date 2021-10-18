@@ -220,6 +220,7 @@ namespace xcas {
   void History_cb_Save(Fl_Widget* m , void*) ;
   void History_cb_Save_as(Fl_Widget* m , void*) ;
   void History_cb_Save_as_xcas_text(Fl_Widget* m , void*) ;
+  void History_cb_Save_as_xcaspy_text(Fl_Widget* m , void*) ;
   void History_cb_Save_as_maple_text(Fl_Widget* m , void*) ;
   void History_cb_Save_as_mupad_text(Fl_Widget* m , void*) ;
   void History_cb_Save_as_ti_text(Fl_Widget* m , void*) ;

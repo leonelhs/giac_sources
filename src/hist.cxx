@@ -996,6 +996,10 @@ static void cb_Xcas_Export_Xcas(Fl_Menu_*, void*) {
   xcas::History_cb_Save_as_xcas_text(Xcas_current_session(),0);
 }
 
+static void cb_Xcas_Export_XcasPy(Fl_Menu_*, void*) {
+  xcas::History_cb_Save_as_xcaspy_text(Xcas_current_session(),0);
+}
+
 static void cb_Xcas_Export_Maple(Fl_Menu_*, void*) {
   xcas::History_cb_Save_as_maple_text(Xcas_current_session(),0);
 }
@@ -1664,7 +1668,7 @@ if (i>0 && i<26){
 
 static void cb_Xcas_help_start_algoseconde(Fl_Menu_*, void*) {
   if (xcas::use_external_browser)
-           giac::system_browser_command(doc_prefix+"../algoseconde.html");
+           giac::system_browser_command(doc_prefix+"../algolycee.html");
 }
 
 static void cb_Xcas_help_make_index(Fl_Menu_*, void*) {
@@ -1876,6 +1880,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Save all", 0,  (Fl_Callback*)cb_Xcas_save_all_sessions, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Export as", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"xcas text", 0,  (Fl_Callback*)cb_Xcas_Export_Xcas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"xcas-python text", 0,  (Fl_Callback*)cb_Xcas_Export_XcasPy, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"maple text", 0,  (Fl_Callback*)cb_Xcas_Export_Maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"mupad text", 0,  (Fl_Callback*)cb_Xcas_Export_Mupad, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"ti text", 0,  (Fl_Callback*)cb_Xcas_Export_TI, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3170,7 +3175,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<334; i++)
+        for ( ; i<335; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

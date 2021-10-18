@@ -2551,14 +2551,20 @@ namespace xcas {
       return "mu";
     case 3:
       return "ti";
+    case 256:
+      return "py";
     default:
       return "cas";
     }
   }
 
   void save_as_text(ostream & of,int mode,History_Pack * pack){
+    bool python=mode>=256;
+    mode = mode & 0xff;
     const giac::context * contextptr=pack?pack->contextptr:context0;
     int save_maple_mode=xcas_mode(contextptr);
+    int save_python=python_compat(contextptr);
+    python_compat(python,contextptr);
     int n=pack->children();
     for (int i=0;i<n;i++){
       if (!of)
@@ -2583,7 +2589,12 @@ namespace xcas {
       }
       if (Editeur * ed=dynamic_cast<Editeur *>(wid)){
 	xcas_mode(contextptr)=mode;
-	of << unlocalize(ed->value()) << endl;
+	gen g(ed->value(),contextptr);
+	if (g.is_symb_of_sommet(at_nodisp))
+	  g=g._SYMBptr->feuille;
+	if (g.is_symb_of_sommet(at_sto) && python_compat(contextptr))
+	  g=g._SYMBptr->feuille[0];
+	of << unlocalize(g.print(contextptr)) << endl;
 	xcas_mode(contextptr)=save_maple_mode;
       }
       if (Xcas_Text_Editor * xed=dynamic_cast<Xcas_Text_Editor *>(wid)){
@@ -2611,6 +2622,7 @@ namespace xcas {
 	xcas_mode(contextptr)=save_maple_mode;
       }
     }
+    python_compat(save_python,contextptr);
   }
 
   void History_cb_save_as_text(Fl_Widget * m,int mode){
@@ -2631,6 +2643,10 @@ namespace xcas {
 
   void History_cb_Save_as_xcas_text(Fl_Widget* m , void*) {
     History_cb_save_as_text(m,0);
+  }
+
+  void History_cb_Save_as_xcaspy_text(Fl_Widget* m , void*) {
+    History_cb_save_as_text(m,256);
   }
 
   void History_cb_Save_as_maple_text(Fl_Widget* m , void*) {

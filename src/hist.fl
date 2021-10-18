@@ -1143,6 +1143,11 @@ Function {Xcas_run(int argc,char ** argv)} {open
             callback {xcas::History_cb_Save_as_xcas_text(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
+          MenuItem Xcas_Export_XcasPy {
+            label {xcas-python text}
+            callback {xcas::History_cb_Save_as_xcaspy_text(Xcas_current_session(),0);}
+            xywh {65 65 100 20}
+          }
           MenuItem Xcas_Export_Maple {
             label {maple text}
             callback {xcas::History_cb_Save_as_maple_text(Xcas_current_session(),0);}
@@ -1982,7 +1987,7 @@ if (i>0 && i<26){
         MenuItem Xcas_help_start_algoseconde {
           label {Tutoriel algo}
           callback {if (xcas::use_external_browser)
-           giac::system_browser_command(doc_prefix+"../algoseconde.html");
+           giac::system_browser_command(doc_prefix+"../algolycee.html");
           }
           xywh {10 10 100 20}
         }

@@ -1413,6 +1413,26 @@ namespace xcas {
     }
     return w;
   }
+
+  std::string replace_html5(const string & s){
+    string res;
+    size_t ss=s.size(),i;
+    for (i=0;i<ss;++i){
+      char ch=s[i];
+      if ( (ch>='0' && ch<='9') || (ch>='a' && ch<='z') || (ch>='A' && ch<='Z'))
+	res += ch;
+      else {
+	res +='%';
+	int t=(ch&0xf0)>>4;
+	if (t<10) res += ('0'+t); else res += 'a'+(t-10);
+	t=ch&0x0f;
+	if (t<10) res += ('0'+t); else res += 'a'+(t-10);
+      }
+    }
+    //std::cerr << s << endl << res << endl;
+    return res;
+  }
+
   std::string widget_html5(const Fl_Widget * o){
     string res;
     const giac::context * contextptr = get_context(o);
@@ -1420,7 +1440,7 @@ namespace xcas {
     if (const Tableur_Group * t = dynamic_cast<const Tableur_Group *>(o)){
       Flv_Table_Gen * g=t->table;
       matrice m=g->m;
-      res = replace(gen(m,_SPREAD__VECT).print(contextptr),'\n',' ');
+      res = replace_html5(gen(m,_SPREAD__VECT).print(contextptr));
       return '+'+res+'&';
     }
     if (const Figure * f = dynamic_cast<const Figure *>(o)){
@@ -1433,12 +1453,12 @@ namespace xcas {
     }
     if (const Editeur * ed=dynamic_cast<const Editeur *>(o)){
       string s=unlocalize(ed->value());
-      res = replace(s,'\n',' ');
+      res = replace_html5(s);
       return '+'+res+'&';
     }
     if (const Xcas_Text_Editor * ed=dynamic_cast<const Xcas_Text_Editor *>(o)){
       string s=unlocalize(ed->value());
-      res = replace(s,'\n',' ');
+      res = replace_html5(s);
       return '+'+res+'&';
     }
     if (dynamic_cast<const Fl_Output *>(o))
@@ -1451,8 +1471,7 @@ namespace xcas {
 	s=unlocalize(s);
       if (s.empty())
 	return s;
-      res = replace(s,'\n',' ');
-      res = replace(res,'\'',"%27");
+      res = replace_html5(s);
       return '+'+res+'&' ;
     }
     if (const Fl_Group * g=dynamic_cast<const Fl_Group *>(o)){
@@ -2513,6 +2532,12 @@ namespace xcas {
 	    gen g(txt,contextptr);
 	    if (g.type==_VECT && g._VECTptr->size()>=5){
 	      txt="assume("+g[0].print(contextptr)+"=["+g[1].print(contextptr)+","+g[2].print(contextptr)+","+g[3].print(contextptr)+","+g[4].print(contextptr)+"])";
+	    }
+	  }
+	  else {
+	    int pos=txt.find('\n');
+	    if (pos>0 && pos<txt.size()){
+	      txt="// fltk 7Fl_Tile 14 68 845 254 18 0\n[\n// fltk N4xcas16Xcas_Text_EditorE 14 68 845 253 18 0\n"+print_INT_(txt.size())+" ,\n"+txt+",\n// fltk N4xcas10Log_OutputE 14 321 845 1 18 0\n\n]";
 	    }
 	  }
 	  Xcas_pack_insert(pack,txt.c_str(),txt.size(),y);
