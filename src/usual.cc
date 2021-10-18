@@ -3025,15 +3025,16 @@ namespace giac {
       else 
 	return v.front().print(contextptr)+" => "+v.back().print(contextptr);
     }
+    string stos=python_compat(contextptr)?"=":":=";
 #ifndef GIAC_HAS_STO_38
     if (v.back().is_symb_of_sommet(at_of) && feuille.subtype!=_SORTED__VECT){
       gen f=v.back()._SYMBptr->feuille;
       if (f.type==_VECT && f._VECTptr->size()==2){
-	return f._VECTptr->front().print(contextptr)+"[["+f._VECTptr->back().print(contextptr)+"]] := " + v.front().print(contextptr);
+	return f._VECTptr->front().print(contextptr)+"[["+f._VECTptr->back().print(contextptr)+"]] "+stos+" "+ v.front().print(contextptr);
       }
     }
 #endif
-    string s(v.back().print(contextptr)+":=");
+    string s(v.back().print(contextptr)+stos);
     if (v.front().type==_SEQ__VECT)
       return s+"("+v.front().print(contextptr)+")";
     else
@@ -5342,17 +5343,17 @@ namespace giac {
   static define_unary_function_eval (__table,&giac::_table,_table_s);
   define_unary_function_ptr5( at_table ,alias_at_table,&__table,0,true);
 
-  static string printasand(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
+  string printasand(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     if (abs_calc_mode(contextptr)==38)
       return printsommetasoperator(feuille," AND ",contextptr);
     if (calc_mode(contextptr)==1)
       return printsommetasoperator(feuille," && ",contextptr);
-    if (xcas_mode(contextptr) > 0)
+    if (xcas_mode(contextptr) > 0 || python_compat(contextptr))
       return printsommetasoperator(feuille," and ",contextptr);
     else
       return "("+printsommetasoperator(feuille,sommetstr,contextptr)+")";
   }
-  static string texprintasand(const gen & g,const char * s,GIAC_CONTEXT){
+  string texprintasand(const gen & g,const char * s,GIAC_CONTEXT){
     return texprintsommetasoperator(g,"\\mbox{ and }",contextptr);
   }
   symbolic symb_and(const gen & a,const gen & b){
@@ -5382,15 +5383,15 @@ namespace giac {
   static define_unary_function_eval4_index (67,__and,&giac::_and,_and_s,&printasand,&texprintasand);
   define_unary_function_ptr5( at_and ,alias_at_and,&__and,_QUOTE_ARGUMENTS,T_AND_OP);
 
-  static string texprintasor(const gen & g,const char * s,GIAC_CONTEXT){
+  string texprintasor(const gen & g,const char * s,GIAC_CONTEXT){
     return texprintsommetasoperator(g,"\\mbox{ or }",contextptr);
   }
-  static string printasor(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
+  string printasor(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     if (abs_calc_mode(contextptr)==38)
       return printsommetasoperator(feuille," OR ",contextptr);
     if (calc_mode(contextptr)==1)
       return printsommetasoperator(feuille," || ",contextptr);
-    if (xcas_mode(contextptr) > 0)
+    if (xcas_mode(contextptr) > 0 || python_compat(contextptr))
       return printsommetasoperator(feuille," or ",contextptr);
     else
       return "("+printsommetasoperator(feuille,sommetstr,contextptr)+")";
@@ -5668,6 +5669,8 @@ namespace giac {
     return symbolic(at_equal,gen(makevecteur(a,b),_SEQ__VECT));
   }
   static string printasequal(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
+    if (python_compat(contextptr))
+      return "equal("+feuille.print(contextptr)+")";
 #ifdef GIAC_HAS_STO_38
     return printsommetasoperator(feuille," = ",contextptr);
 #else

@@ -2925,8 +2925,18 @@ namespace xcas {
 #ifdef WIN32
     newsize += 2;
 #endif
-    increase_size(this,newsize-h());
-    check_scrollbarsize();
+    if (nl==1){
+      fl_font(FL_HELVETICA,labelsize());
+      double taille=1.4*fl_width(s.c_str());
+      // cerr << ch << " " << taille << " " << labelsize() << endl;
+      if (taille>w()) // make enough room for scrollbar
+	increase_size(this,25+labelsize()-h());
+      else 
+	increase_size(this,newsize-h());
+    }
+    else 
+      increase_size(this,newsize-h());
+    // check_scrollbarsize();
     show_insert_position();
   }
 

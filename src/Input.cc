@@ -785,8 +785,10 @@ namespace xcas {
 
   void increase_size(Fl_Widget * wid, int L){
     if (!wid) return;
+    // CERR << "increase size " << L << endl;
     if (L+wid->h()<=wid->labelsize()+4)
       L=wid->labelsize()+5-wid->h();
+    if (!L) return;
     int pos;
     History_Pack * g = get_history_pack(wid,pos);
     if (g){

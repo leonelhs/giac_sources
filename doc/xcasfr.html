@@ -542,11 +542,10 @@ avec le nom de session affich&eacute; &agrave; droite du bouton
 (par d&eacute;faut <tt>session</tt>).
 Une session sauvegard&eacute;e
 s'ouvre ensuite avec le bouton Charger.
-Les sauvegardes sont faite dans les cookies du
+Les sauvegardes sont faite dans localStorage ou dans les cookies du
 navigateur avec un nom de cookie commencant par <tt>xcas__</tt>, vous
 pouvez les effacer depuis la gestion de la Vie priv&eacute;e de votre
-navigateur (attention, la sauvegarde ne fonctionne pas en utilisation locale avec
-Chrome sauf si Chrome est lanc&eacute; avec l'option <tt>--enable-file-cookies</tt>).
+navigateur.
 Vous pouvez aussi <strong>exporter</strong> la feuille de calcul (sauf
 sur smartphone), l'export occupe plus de place mais
   permet de publier le fichier HTML comme une page autonome.
@@ -3307,9 +3306,19 @@ UI.insert(UI.focused,tmp);
     document.getElementById('loadfile_cookie').innerHTML='';
   },
   listCookies:function() { // list cookies with name begin == ' xcas__'
-    var theCookies = document.cookie.split(';');
     var aString = '';
-    for (var i = 0 ; i < theCookies.length; i++) {
+    if (window.localStorage){
+      for(var i=0, len=localStorage.length; i<len; i++) {
+        var tmp = localStorage.key(i);
+        //console.log(tmp);
+        if (tmp.substr(0,6)=='xcas__' ){
+          var tmpname=tmp.substr(6,tmp.length-6);
+          aString += "<button onclick=\"UI.restorefrom('"+tmp.substr(0,pos)+"')\">"+tmpname+"</button>\n";
+        }
+      }
+    }
+      var theCookies = document.cookie.split(';');
+      for (var i = 0 ; i < theCookies.length; i++) {
         // console.log(i,theCookies[i].substr(0,7));
         var tmp=theCookies[i];
         var pos=tmp.search('=');
@@ -3317,12 +3326,13 @@ UI.insert(UI.focused,tmp);
           var tmpname=tmp.substr(7,pos-7);
           aString += "<button onclick=\"UI.restorefrom('"+tmp.substr(1,pos-1)+"')\">"+tmpname+"</button>\n";
         }
-    }
-    aString += "<button onclick=document.getElementById('loadfile_cookie').innerHTML=''>annuler</button>\n"
+      }
+   aString += "<button onclick=document.getElementById('loadfile_cookie').innerHTML=''>annuler</button>\n"
     //console.log(aString);
     return aString;
   },
   createCookie:function(name,value,days) {
+     if (window.localStorage) return localStorage.setItem(name,value);
 	if (days) {
 	  var date = new Date();
 	  date.setTime(date.getTime()+(days*24*60*60*1000));
@@ -3332,6 +3342,10 @@ UI.insert(UI.focused,tmp);
 	document.cookie = name+"="+value+expires+"; path=/";
   },
   readCookie:function(name) {
+     if (window.localStorage){
+       var tmp=localStorage.getItem(name);
+       if (tmp!=null) return tmp;
+     }
 	var nameEQ = name + "=";
 	var ca = document.cookie.split(';');
 	for(var i=0;i < ca.length;i++) {
@@ -3342,6 +3356,7 @@ UI.insert(UI.focused,tmp);
 	return null;
   },
   eraseCookie:function(name) {
+     if (window.localStorage) return localStorage.removeItem(name);
 	createCookie(name,"",-1);
   },
   detectmob:function() { 
@@ -3748,6 +3763,8 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
    if (form.sqrt_mode.checked) s += 1; else s += 0;
    s += '); step_infolevel(';
    if (form.step_mode.checked) s += 1; else s += 0;
+   s += ');python_compat(';
+   if (form.python_mode.checked) s += 1; else s += 0;
    s += ');';
    // Module.print(s);
    return s;
@@ -4009,10 +4026,13 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
   },
   eval_cmdline1cb: function(out,value){
    var s;
-   if (out.substr(1,4)=='<svg' || out.substr(0,5)=='gl3d ') {
+   //console.log(out);
+   if (out.length>5 && out.substr(1,4)=='<svg' || out.substr(0,5)=='gl3d ') {
      s=out; out='Done_graphic';
    }
    else {
+       if (out.length>1 && out[out.length-1]==';')
+         out=out.substr(0,out.length-1);
        if (UI.prettyprint){
          if (UI.usemathjax)
            s='latex(quote('+out+'))';
@@ -4957,7 +4977,7 @@ insert: function(myField, myValue) {
   if (UI.isie || (bt!=1 && bt!=2)){
     UI.usemathjax=true;
     var alertmsg="Les calculs seraient plus rapides avec Firefox.";
-    if (Boolean(window.chrome)){
+    if (0 && Boolean(window.chrome)){
       if (window.location.href.substr(0,4)=='file')
         alertmsg="Les cookies ne fonctionnent pas en local avec Chrome, la sauvegarde/restauration de sessions est impossible. "+alertmsg;
       else

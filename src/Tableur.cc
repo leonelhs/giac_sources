@@ -1726,7 +1726,7 @@ namespace xcas {
   void cb_Xcas_Methodes_builtin(Fl_Menu_* m , void*) {
     xcas_integration_method=0;
     if (Xcas_Methodes_Output)
-      Xcas_Methodes_Output->value(gettext("builtin integration"));
+      Xcas_Methodes_Output->value(gettext("builtin"));
   }
 
   void cb_Xcas_Methodes_right_rectangle(Fl_Menu_* m , void*) {
@@ -1754,7 +1754,7 @@ namespace xcas {
   }
 
   Fl_Menu_Item Xcas_Menu_Methodes[] = {
-    {gettext("builtin integration"), 0,  (Fl_Callback*)cb_Xcas_Methodes_builtin, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {gettext("builtin"), 0,  (Fl_Callback*)cb_Xcas_Methodes_builtin, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {gettext("right_rectangle"), 0,  (Fl_Callback*)cb_Xcas_Methodes_right_rectangle, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {gettext("left_rectangle"), 0,  (Fl_Callback*)cb_Xcas_Methodes_left_rectangle, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {gettext("middle_point"), 0,  (Fl_Callback*)cb_Xcas_Methodes_middle_point, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -1803,7 +1803,7 @@ namespace xcas {
       xmin->step(0.5);
       xmin->tooltip(gettext("Minimal value for 1st independant variable"));
       xstep = new Fl_Value_Input(3*dx/6,2+2*dy/lignes,dx/6-2,dy/lignes-4,gettext("xstep"));
-      xstep->value(0.1);
+      xstep->value(0.5);
       xstep->step(0.01);
       xstep->tooltip(gettext("Discretization step for 1st independant variable"));
       xmax = new Fl_Value_Input(5*dx/6,2+2*dy/lignes,dx/6-2,dy/lignes-4,gettext("xmax"));
@@ -1817,7 +1817,7 @@ namespace xcas {
       ymin->step(0.5);
       ymin->tooltip(gettext("Minimal value for 2nd independant variable"));
       ystep = new Fl_Value_Input(3*dx/6,2+3*dy/lignes,dx/6-2,dy/lignes-4,gettext("ystep"));
-      ystep->value(0.1);
+      ystep->value(0.5);
       ystep->step(0.01);
       ystep->tooltip(gettext("Discretization step for 2nd independant variable"));
       ymax = new Fl_Value_Input(5*dx/6,2+3*dy/lignes,dx/6-2,dy/lignes-4,gettext("ymax"));
@@ -1827,7 +1827,7 @@ namespace xcas {
       methode = new Fl_Menu_Button(0,2+3*dy/lignes,dx/3-2,dy/lignes-4,gettext("Choose"));
       methode->menu(Xcas_Menu_Methodes);
       Xcas_Methodes_Output = new Fl_Output(4*dx/6,2+3*dy/lignes,dx/3-2,dy/lignes-4,gettext("int. method"));
-      Xcas_Methodes_Output->value(gettext("builtin integration"));
+      Xcas_Methodes_Output->value(gettext("builtin"));
       button0 = new Fl_Return_Button(2,2+4*dy/lignes,dx/2-4,dy/lignes-4);
       button0->shortcut(0xff0d);
       button0->label(gettext("OK"));

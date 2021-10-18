@@ -99,6 +99,9 @@ namespace giac {
   gen equaltosto(const gen & g,GIAC_CONTEXT){
     if (!eval_equaltosto(contextptr))
       return g;
+    if (g.is_symb_of_sommet(at_add_autosimplify)){
+      return symbolic(g._SYMBptr->sommet,equaltosto(g._SYMBptr->feuille,contextptr));
+    }
     if (is_equal(g)){
       vecteur v=*g._SYMBptr->feuille._VECTptr;
       gen a;
@@ -274,6 +277,14 @@ namespace giac {
     }
   }
 
+  static string printaslocalvars(const gen &loc,GIAC_CONTEXT){
+    gen locals(loc);
+    if (locals._VECTptr->size()==1)
+      return locals._VECTptr->front().print(contextptr);
+    locals.subtype=_SEQ__VECT;
+    return locals.print(contextptr);
+  }
+
   void debug_print(const gen & e,vector<string>  & v,GIAC_CONTEXT){
     if (e.type!=_SYMB){
       v.push_back(indent2(contextptr)+e.print(contextptr));
@@ -300,7 +311,18 @@ namespace giac {
     if (u==at_local){
       string s(indent2(contextptr));
       s += is38?"LOCAL ":"local ";
-      s += f._VECTptr->front().print(contextptr);
+      gen local_global=f._VECTptr->front(),locals(gen2vecteur(local_global)),globals(vecteur(0));
+      if (local_global.type==_VECT && local_global._VECTptr->size()==2){ 
+	gen f=local_global._VECTptr->front(),b=local_global._VECTptr->back();
+	if (f.type!=_IDNT){
+	  locals=gen2vecteur(f);
+	  globals=gen2vecteur(b);
+	}
+      }
+      if (globals._VECTptr->empty())
+	s += printaslocalvars(locals,contextptr);
+      else
+	s += local_global.print(contextptr);
       v.push_back(s);
       debug_ptr(contextptr)->indent_spaces += 2;
       f=f._VECTptr->back();
@@ -686,6 +708,36 @@ namespace giac {
     return gensizeerr(gettext("Proc Parameters"));
   }
 
+  static string remove_empty_lines(const string & s){
+    // return s;
+    string res;
+    int ss=int(s.size()),ns=0;
+    bool blank=true;
+    for (int i=0;i<ss;++i){
+      char ch=s[i];
+      if (!blank){
+	res += ch;
+	if (ch=='\n'){
+	  ns=0;
+	  blank=true;
+	}
+	continue;
+      }
+      if (ch=='\n'){
+	ns=0;
+	continue;
+      }
+      if (ch!=' '){
+	blank=false;
+	res += string(ns,' ')+ch;
+	ns=0;
+	continue;
+      }
+      ++ns;
+    }
+    return res;
+  }
+
   static string printasprogram(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     if ( (feuille.type!=_VECT) || (feuille._VECTptr->size()!=3) )
       return string(sommetstr)+('('+feuille.print(contextptr)+')');
@@ -696,9 +748,9 @@ namespace giac {
       vecteur & v =*feuille._VECTptr;
       res = string(ind,' ')+"def "+lastprog_name(contextptr)+"(";
       if (v[0].type==_VECT && v[0].subtype==_SEQ__VECT && v[0]._VECTptr->size()==1)
-	res += v[0]._VECTptr->front().print(contextptr);
+	res += equaltosto(v[0]._VECTptr->front(),contextptr).print(contextptr);
       else
-	res += v[0].print(contextptr);
+	res += equaltosto(v[0],contextptr).print(contextptr);
       res += "):\n";
       ind += 4;
       if (v[2].is_symb_of_sommet(at_bloc) || v[2].is_symb_of_sommet(at_local))
@@ -706,7 +758,8 @@ namespace giac {
       else
 	res += string(ind,' ')+v[2].print(contextptr)+'\n';
       ind -= 4;
-      return res;
+      // remove empty lines in res
+      return remove_empty_lines(res);
     }
     bool calc38=abs_calc_mode(contextptr)==38;
     if (!calc38){
@@ -989,6 +1042,7 @@ namespace giac {
 #endif
     if (warn){
       *logptr(contextptr) << gettext("// Parsing ") << d << endl;
+      lastprog_name(d.print(contextptr),contextptr);
       if (c.is_symb_of_sommet(at_derive))
 	*logptr(contextptr) << gettext("Warning, defining a derivative function should be done with function_diff or unapply: ") << c << endl;
        if (c.type==_SYMB && c._SYMBptr->sommet!=at_local && c._SYMBptr->sommet!=at_bloc && c._SYMBptr->sommet!=at_when && c._SYMBptr->sommet!=at_for && c._SYMBptr->sommet!=at_ifte){
@@ -1013,8 +1067,12 @@ namespace giac {
     gen newa,newc;
     replace_keywords(a,((embedd&&c.type==_VECT)?makevecteur(c):c),newa,newc,contextptr);
     if (python_compat(contextptr)){
-      vecteur res1,non_decl,res3,res4;
-      check_local_assign(newc,gen2vecteur(newa),res1,non_decl,res3,res4,false,contextptr);
+      vecteur res1,non_decl,res3,res4,Newa=gen2vecteur(newa);
+      for (int i=0;i<int(Newa.size());++i){
+	if (Newa[i].is_symb_of_sommet(at_equal))
+	  Newa[i]=Newa[i]._SYMBptr->feuille[0];
+      }
+      check_local_assign(newc,Newa,res1,non_decl,res3,res4,false,contextptr);
       int rs=int(non_decl.size());
       for (int i=0;i<rs;i++){
 	if (is_constant_idnt(non_decl[i])){
@@ -1042,6 +1100,17 @@ namespace giac {
 	  *logptr(contextptr) << gettext("Warning: Local variables shadow function arguments ") << inters << endl;
 	}
       }
+    }
+    if (printprog){
+      int p=python_compat(contextptr);
+      python_compat(printprog/256,contextptr);
+      if (g.sommet==at_sto){
+	lastprog_name(g.feuille[1].print(contextptr),contextptr);
+	COUT << g.feuille[0].print(contextptr) <<endl;	
+      }
+      else
+	COUT << g <<endl;
+      python_compat(p,contextptr);
     }
     return g;
   }
@@ -1720,10 +1789,10 @@ namespace giac {
 
   static string printaswhen(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     bool b=calc_mode(contextptr)==38;
-    if (b || xcas_mode(contextptr)||feuille.type!=_VECT || feuille._VECTptr->size()!=3)
+    if (b || xcas_mode(contextptr)|| feuille.type!=_VECT || feuille._VECTptr->size()!=3)
       return (b?"IFTE":sommetstr)+("("+feuille.print(contextptr)+")");
     vecteur & v=*feuille._VECTptr;
-    if (calc_mode(contextptr)==1){
+    if (calc_mode(contextptr)==1 || python_compat(contextptr)){
 #if 0
       string s="If["+v[0].print(contextptr)+","+v[1].print(contextptr);
       if (!is_undef(v[2]))
@@ -1796,12 +1865,12 @@ namespace giac {
     if (python){
       int & ind=debug_ptr(contextptr)->indent_spaces;
       if (it->type!=_INT_) res += '\n'+string(ind,' ')+it->print(contextptr)+'\n';
-      res += string(ind,' ')+"while " + (it+1)->print(contextptr)+" :";
+      res += '\n'+string(ind,' ')+"while " + (it+1)->print(contextptr)+" :";
       if (!(it+3)->is_symb_of_sommet(at_bloc))
 	res += '\n';
       ind += 4;
-      res += (it+3)->print(contextptr);
-      if ((it+2)->type!=_INT_) res += string(ind,' ')+(it+2)->print(contextptr);      
+      res += string(ind,' ')+(it+3)->print(contextptr);
+      if ((it+2)->type!=_INT_) res += '\n'+string(ind,' ')+(it+2)->print(contextptr);      
       ind -=4;
       return res;
     }
@@ -2584,14 +2653,6 @@ namespace giac {
     return true;
   }
   
-  static string printaslocalvars(const gen &loc,GIAC_CONTEXT){
-    gen locals(loc);
-    if (locals._VECTptr->size()==1)
-      return locals._VECTptr->front().print(contextptr);
-    locals.subtype=_SEQ__VECT;
-    return locals.print(contextptr);
-  }
-
   static string printaslocal(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     if ( (feuille.type!=_VECT) || (feuille._VECTptr->size()!=2) )
       return string(sommetstr)+('('+feuille.print(contextptr)+')');
@@ -5638,6 +5699,20 @@ namespace giac {
   static const char _maple_mode_s []="maple_mode";
   static define_unary_function_eval (__maple_mode,&_xcas_mode,_maple_mode_s);
   define_unary_function_ptr5( at_maple_mode ,alias_at_maple_mode,&__maple_mode,0,true);
+  gen _python_compat(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    gen args(g);
+    if (g.type==_DOUBLE_)
+      args=int(g._DOUBLE_val);    
+    if (args.type!=_INT_)
+      return python_compat(contextptr);
+    int p=python_compat(contextptr);
+    python_compat(contextptr)=args.val ;
+    return p;
+  }
+  static const char _python_compat_s []="python_compat";
+  static define_unary_function_eval (__python_compat,&_python_compat,_python_compat_s);
+  define_unary_function_ptr5( at_python_compat ,alias_at_python_compat,&__python_compat,0,true);
 
   gen giac_eval_level(const gen & g,GIAC_CONTEXT){
     gen args(g);
@@ -8040,6 +8115,9 @@ namespace giac {
     if (it==itend)
       return __click.op(args,contextptr);
     gen res;
+    if (args.type==_STRNG){
+      return __click.op(args,contextptr);
+    }
     for (;it!=itend;++it){
       if (it->type==_IDNT || it->is_symb_of_sommet(at_at) || it->is_symb_of_sommet(at_of)){
 	if (textinput)
@@ -10255,6 +10333,8 @@ namespace giac {
     if (ws!=2)
       return gensizeerr(contextptr);
     gen a=w[0],b=w[1];
+    if (a.type==_IDNT)
+      a=eval(a,1,contextptr);
     if (b.type!=_SYMB)
       return _prod(eval(g,eval_level(contextptr),contextptr),contextptr);
     gen f=b;

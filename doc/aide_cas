@@ -8443,9 +8443,9 @@ slopeatraw(tangent(plotfunc(sin(x)),pi/4),0)
 slopeatraw((LineTan sin(x),pi/4),i)
 
 # area
-1 Aire algébrique d'un cercle ou d'un polygone étoilé (par exemple triangle, carré, ...) ou de l'aire sous une courbe en option la méthode de quadrature (trapeze,rectangle_gauche,rectangle_droit,point_milieu,simpson,rombergt,rombergm).
-2 Algebraic area of a circle or of a (star) polygon (e.g. triangle, square, ...)or of the area below a curve, optionally with a quadrature method (trapezoid,left_rectangle,right_rectangle,middle_point,simpson,rombergt,rombergm).
-3 Área algebraica de una circunferencia o de un polígono estrella (por ejemplo triángulo, cuadrado,...) o el area bajo una curva, en opción el método de cuadratura.
+1 Aire algébrique d'un cercle d'un arc de cercle ou d'un polygone étoilé (par exemple triangle, carré, ...) ou de l'aire sous une courbe en option la méthode de quadrature (trapeze,rectangle_gauche,rectangle_droit,point_milieu,simpson,rombergt,rombergm).
+2 Algebraic area of a circle, a circle arc or of a (star) polygon (e.g. triangle, square, ...)or of the area below a curve, optionally with a quadrature method (trapezoid,left_rectangle,right_rectangle,middle_point,simpson,rombergt,rombergm).
+3 Área algebraica de una circunferencia, un arco de circunferencia o de un polígono estrella (por ejemplo triángulo, cuadrado,...) o el area bajo una curva, en opción el método de cuadratura.
 4 αλγεβρική περιοχή ενός (αστεροειδούς) πολυγώνου (π.χ. τρίγωνο, τετράγωνο, ...) ή την περιοχή κάτω από μια καμπύλη, δυνητικά μέσω μιας μεθόδου αριθμητικής ολοκληρώσεως
 8 有向面
 0 Polygone || Expr,x=a..b,[n],[Method]
@@ -10954,6 +10954,8 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 4 Kαθολική επιλογή (συμβατή με το Maple) μιας εντολής γραφικών για την εμφάνιση ή όχι των αξόνων.
 0 Opt
 -1 line_width
+-2 gl_showaxes
+-3 switch_axes
  axes=0;segment(0,point(1,1))
  axes=1;segment(0,point(1,1),epaisseur=5)
 
@@ -10998,9 +11000,14 @@ linsolve([[2,1,1],[1,1,2],[1,2,1]],[1,1,4])
 # gl_showaxes
 1 Option permettant de montrer ou de cacher les axes.
 2 Option that shows or hides axes.
+3 Opción que permite mostrar o esconder los ejes.
+4 Επιλογή που επιτρέπει την εμφάνιση ή απόκρυψη τους άξονες.
 0 Opt=Boolean
+-1 switch_axes
+-2 axes
  gl_showaxes=true;plot(sin(x))
- gl_showaxes=false;plot(sin(x))
+ gl_showaxes=false;plot(sin(x)) 
+
 
 # gl_quaternion
 1 Option permettant de définir le quaternion pour la visualisation des scènes 3-d (pas compatible avec l'interactivité).
@@ -11361,14 +11368,23 @@ map(%%%{1,[2,0]%%%}+%%%{2,[1,1]%%%},(a,b,c)->a*(b+2*c))
 apply(x->x^3,[1,2,3])
 apply(x->x+1,[[1,2,3],[1,2,3]],matrix)
 
-# maple_mode
+# xcas_mode maple_mode
 1 Passe en mode Xcas (0), Maple (1), Mupad (2), TI89 (3).
 2 Switches to mode Xcas (0), Maple (1), Mupad (2), TI89 (3).
 3 Cambia a modo Xcas (0), Maple (1), Mupad (2), TI89 (3).
 4 Εναλλαγή στον τρόπο λειτουργίας: Xcas (0), Maple (1), Mupad (2), TI89 (3).
 0 Intg(0) or 1 or 2 or 3
-maple_mode(1)
-maple_mode(0)
+-1 python_compat
+xcas_mode(1)
+xcas_mode(0)
+
+# python_compat
+1 Passe en compatibilité de syntaxe Python (1) ou non (0)
+2 Set Python-syntax compatibility (1) or not (0)
+0 Intg(0) or 1
+-1 xcas_mode
+python_compat()
+python_compat(1)
 
 # maple2mupad
 1 maple2mupad("fichier1","fichier2") traduit fichier1(Maple) en fichier2(MuPAD).
@@ -13300,6 +13316,8 @@ piecewise(x<-2,-2,x<-1,3x+4,x<0,1,x+1)
 3 switch_axes() pone o quita los ejes en la pantalla de geometría.
 4 switch_axes() σχεδιάζει ή διαγράφει τους άξονες από την οθόνη γραφικών.
 0 [Intg(0 or 1)]
+-1 gl_showaxes
+-2 axes
 switch_axes()
 switch_axes(0)
 switch_axes(1)
@@ -15184,7 +15202,7 @@ implicitdiff(x*y,-2x^3+15x^2*y+11y^3-24y=0,y(x),x$2)
 implicitdiff((x-u)^2+(y-v)^2,[x^2/4+y^2/9=1,(u-3)^2+(v+5)^2=1],[v(u,x),y(u,x)],u,x)
 implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=1)
 implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=2,[1,-1,0])
- pd:=implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=4,[0,z,0]);pd[4,0]
+ pd:=implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=4,[0,z,0]);pd[4,0,0]
 
 # lp_assume lp_binary lp_binaryvariables lp_depthlimit lp_integer lp_integervariables lp_maximize lp_nonnegative lp_nonnegint lp_variables lp_nodelimit lp_integertolerance lp_method lp_simplex lp_interiorpoint lp_initialpoint
 1 Options de la commande lpsolve

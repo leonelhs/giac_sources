@@ -540,15 +540,15 @@ extern "C" void Sleep(unsigned int miliSecond);
       _integer_mode_=b;
   }
 
-  static bool _python_compat_=false;
-  bool & python_compat(GIAC_CONTEXT){
+  static int _python_compat_=false;
+  int & python_compat(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
       return contextptr->globalptr->_python_compat_;
     else
       return _python_compat_;
   }
 
-  void python_compat(bool b,GIAC_CONTEXT){
+  void python_compat(int b,GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
       contextptr->globalptr->_python_compat_=b;
     else
@@ -1670,6 +1670,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #else
   int debug_infolevel=0;
 #endif
+  int printprog=0;
 #if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE || defined NSPIRE_NEWLIB
   int threads=1;
 #else
@@ -3241,6 +3242,11 @@ extern "C" void Sleep(unsigned int miliSecond);
     if (getenv("GIAC_DEBUG")){
       giac::debug_infolevel=atoi(getenv("GIAC_DEBUG"));
       CERR << "// Setting debug_infolevel to " << giac::debug_infolevel << endl;
+    }
+    if (getenv("GIAC_PRINTPROG")){ 
+      // force print of prog at parse, 256 for python compat mode print
+      giac::printprog=atoi(getenv("GIAC_PRINTPROG"));
+      CERR << "// Setting printprog to " << giac::printprog << endl;
     }
     string s;
     if (getenv("LANG"))
@@ -5775,6 +5781,15 @@ unsigned int ConvertUTF8toUTF16 (
 	  }
 	}
 	chkfrom=false;
+	// import * as ** -> **:=*
+	if (ch=='i' && pos+6<int(cur.size()) && cur.substr(pos,6)=="import"){
+	  int posi=cur.find(" as ");
+	  if (posi>pos+5 && posi<int(cur.size())){
+	    cur=cur.substr(posi+4,cur.size()-posi-4)+":="+cur.substr(7,posi-7);
+	    pythonmode=true;
+	    break;	    
+	  }
+	}
 	if (ch=='l' && pos+6<int(cur.size()) && cur.substr(pos,6)=="lambda" && instruction_at(cur,pos,6)){
 	  int posdot=cur.find(':',pos);
 	  if (posdot>pos+7 && posdot<int(cur.size())-1 && cur[posdot+1]!='=' && cur[posdot+1]!=';'){
@@ -5808,12 +5823,44 @@ unsigned int ConvertUTF8toUTF16 (
 	int progpos=cur.find("else");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
 	  pythonmode=true;
+	  if (stack.size()>1){ 
+	    int indent=stack[stack.size()-1].decal;
+	    if (ws<indent){
+	      // remove last \n and add explicit endbloc delimiters from stack
+	      int ss=s.size();
+	      bool nl= ss && s[ss-1]=='\n';
+	      if (nl)
+		s=s.substr(0,ss-1);
+	      while (stack.size()>1 && stack[stack.size()-1].decal>ws){
+		s += ' '+stack.back().endbloc+';';
+		stack.pop_back();
+	      }
+	      if (nl)
+		s += '\n';
+	    }
+	  }
 	  s += cur.substr(0,pos)+"\n";
 	  continue;
 	}
 	progpos=cur.find("elif");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
 	  pythonmode=true;
+	  if (stack.size()>1){ 
+	    int indent=stack[stack.size()-1].decal;
+	    if (ws<indent){
+	      // remove last \n and add explicit endbloc delimiters from stack
+	      int ss=s.size();
+	      bool nl= ss && s[ss-1]=='\n';
+	      if (nl)
+		s=s.substr(0,ss-1);
+	      while (stack.size()>1 && stack[stack.size()-1].decal>ws){
+		s += ' '+stack.back().endbloc+';';
+		stack.pop_back();
+	      }
+	      if (nl)
+		s += '\n';
+	    }
+	  }
 	  cur=cur.substr(0,pos);
 	  convert_python(cur,contextptr);
 	  s += cur+" then\n";
@@ -5891,6 +5938,13 @@ unsigned int ConvertUTF8toUTF16 (
       char ch;
       while ((ch=s[s.size()-1])==';' || (ch=='\n'))
 	s=s.substr(0,s.size()-1);
+      // replace ;) by )
+      for (int i=s.size()-1;i>=2;--i){
+	if (s[i]==')' && s[i-1]=='\n' && s[i-2]==';'){
+	  s.erase(s.begin()+i-2);
+	  break;
+	}
+      }
       if (s.size()>10 && s.substr(s.size()-9,9)=="ffunction")
 	s += ":;";
       else

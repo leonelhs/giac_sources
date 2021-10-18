@@ -2789,6 +2789,10 @@ namespace xcas {
       fl_message("%s",eval(v.front()._SYMBptr->feuille,contextptr).print(contextptr).c_str());
       return plus_one;
     }
+    if (v.size()==1 && v.front().type==_STRNG){
+      v.push_back(identificateur("_input_"));
+      // CERR << v << endl;
+    }
     if (!v.empty() && v.front()==at_getKey){
       Fl_Widget * foc=Fl::focus();
       static Fl_Window * getkeywin=0;

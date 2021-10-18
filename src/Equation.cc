@@ -1935,7 +1935,7 @@ namespace xcas {
 
   void Equation::draw(){
     fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
-    // cout << clip_x << " " << clip_y << " " << clip_w << " " << clip_h << endl;
+    //cout << clip_x << " " << clip_y << " " << clip_w << " " << clip_h << endl;
     fl_push_clip(clip_x,clip_y,clip_w,clip_h);
     fl_color(attr.background);
     fl_rectf(clip_x, clip_y, clip_w, clip_h);
