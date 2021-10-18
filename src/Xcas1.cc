@@ -2530,9 +2530,15 @@ namespace xcas {
 	      pos=nextpos;
 	      continue;
 	    }
-	    int pos=txt.find('\n');
-	    if (pos>0 && pos<txt.size()){
-	      txt="// fltk 7Fl_Tile 14 68 845 254 18 0\n[\n// fltk N4xcas16Xcas_Text_EditorE 14 68 845 253 18 0\n"+print_INT_(txt.size())+" ,\n"+txt+",\n// fltk N4xcas10Log_OutputE 14 321 845 1 18 0\n\n]";
+	    if (s.size()>pos+3 && s[pos+2]=='/' && s[pos+3]=='/'){
+	      txt=replace(txt,'\n',char(163)); // should count \n and ajust size
+	      txt="// fltk 7Fl_Tile 14 68 845 25 18 0\n[\n// fltk N4xcas23Comment_Multiline_InputE 14 68 845 24 18 0\n"+txt.substr(2,txt.size()-2)+"\n,\n// fltk N4xcas10Log_OutputE 14 93 845 1 18 0\n\n]";
+	    }
+	    else {
+	      int pos=txt.find('\n');
+	      if (pos>0 && pos<txt.size()){
+		txt="// fltk 7Fl_Tile 14 68 845 254 18 0\n[\n// fltk N4xcas16Xcas_Text_EditorE 14 68 845 253 18 0\n"+print_INT_(txt.size())+" ,\n"+txt+",\n// fltk N4xcas10Log_OutputE 14 321 845 1 18 0\n\n]";
+	      }
 	    }
 	  }
 	  Xcas_pack_insert(pack,txt.c_str(),txt.size(),y);

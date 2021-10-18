@@ -403,9 +403,10 @@ document.onkeydown = applyKey;
     Validez par la touche Entr&eacute;e ou le bouton &#x2705; en vert.
 <br>
 Pour obtenir de l'aide sur une commande, tapez le d&eacute;but de son nom
-puis cliquez sur le bouton <tt>?</tt>.
-Pour trouver les noms des commandes, cliquez sur un des th&egrave;mes
-ci-dessous, ou consultez le
+puis tapez <tt>F1</tt> ou cliquez sur le bouton <tt>?</tt>.
+Pour trouver des noms de commandes, utilisez les assistants Maths et
+Prog ou cliquez sur un des th&egrave;mes
+ci-dessous ou consultez le
 <a
 href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr"
     target="_blank">guide de Xcas</a>
@@ -414,7 +415,7 @@ href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr"
   <li style="display:inline">
   <button class="bouton"
   onclick="var tmp=document.getElementById('tutonet'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
-  <strong>&Agrave; plusieurs</strong></button>
+  <strong>Travail &agrave; plusieurs</strong></button>
   <div id="tutonet" style="display:none">
     Vous pouvez &eacute;changer des sessions de calculs Xcas entre
     plusieurs personnes par email. Renseignez une fois pour toutes
@@ -666,6 +667,13 @@ rectangles, trap&egrave;zes, Simpson, ordre</a>
 <a href="#exec&python=0&+//Le%20PGCD%20de%20polyn%C3%B4mes%20en%20une%20variable%20%C3%A0%20coefficients%20entiers&+a%3A%3D(x-1)%5E8*(x%5E2%2B2)%3B%0Ab%3A%3D(x-1)*(x%5E2%2B2)%5E4&+fonction%20Euclide(a%2Cb)%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(a%2Cb)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide(a%2Cb)&+//Les%20coefficients%20sont%20rationnels%20donc%20les%20calculs%20plus%20couteux%20d'autant%20plus%20que%20la%20taille%20des%20num%C3%A9rateurs%20et%20d%C3%A9nominateurs%20augmente%20rapidement%20dans%20l'algorithme%20d'Euclide.%0aOn%20peut%20travailler%20dans%20Z%20au%20lieu%20de%20Q%20avec%20la%20pseudo-division&+fonction%20Euclide1(a%2Cb)%0A%20%20si%20degree(a)%3Cdegree(b)%20alors%20return%20Euclide1(b%2Ca)%3B%20fsi%3B%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(lcoeff(b)%5E(degree(a)-degree(b)%2B1)*a%2Cb)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide1(a%2Cb)&+//Mais%20le%20probl%C3%A8me%20de%20la%20taille%20des%20coefficients%20reste.%20%0aOn%20peut%20remplacer%20$b$%20par%20sa%20partie%20primitive.&+fonction%20Euclide2(a%2Cb)%0A%20%20si%20degree(a)%3Cdegree(b)%20alors%20return%20Euclide2(b%2Ca)%3B%20fsi%3B%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20b%3A%3Dprimpart(b)%3B%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(lcoeff(b)%5E(degree(a)-degree(b)%2B1)*a%2Cb)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide2(a%2Cb)&+//C'est%20mieux,%20mais%20calculer%20le%20PGCD%20des%20coefficients%20de%20$b$%20%C3%A0%20chaque%20%C3%A9tape%20est%20co%C3%BBteux.%0aL'algorithme%20du%20sous-r%C3%A9sultant%20calcule%20%C3%A0%20la%20place%20un%20diviseur%20%C3%A0%20priori.%20Ce%20coefficient%20n'est%20pas%20optimal,%20mais%20presque,%20et%20il%20se%20calcule%20facilement.&+fonction%20Euclide3(a%2Cb)%0A%20%20local%20g%2Ch%2Cq%3B%0A%20%20si%20degree(a)%3Cdegree(b)%20alors%20return%20Euclide3(b%2Ca)%3B%20fsi%3B%0A%20%20g%3A%3D1%3B%20h%3A%3D1%3B%20%0A%20%20tantque%20b!%3D0%20faire%0A%20%20%20%20d%3A%3Ddegree(a)-degree(b)%3B%0A%20%20%20%20q%3A%3Dlcoeff(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(q%5E(d%2B1)*a%2Cb)%3B%0A%20%20%20%20b%3A%3Dratnormal(b%2F(g*h%5Ed))%3B%0A%20%20%20%20g%3A%3Dq%3B%20h%3A%3Dq%5Ed%2Fh%5E(d-1)%3B%0A%20%20ftantque%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide3(a%2Cb)&+//Les%20m%C3%A9thodes%20modulaires%20sont%20plus%20efficaces.%20Si%20les%20polyn%C3%B4mes%20sont%20premiers%20entre%20eux,%20ils%20le%20sont%20toujours%20modulo%20n'importe%20quel%20nombre%20premier%20ne%20divisant%20pas%20leur%20r%C3%A9sultant,%20on%20s'en%20rend%20vite%20compte.%0aSinon%20on%20reconstruit%20le%20PGCD%20modulo%20un%20ou%20plusieurs%20nombres%20premiers%20qui%20donnent%20le%20degr%C3%A9%20minimal%20et%20on%20teste%20la%20divisibilit%C3%A9%20par%20les%20polyn%C3%B4mes%20$a$%20et%20$b$.&+Euclide(a%20mod%2011%2Cb%2B1%20mod%2011)&+g%3A%3DEuclide(a%20mod%2011%2Cb%20mod%2011)&+normal(g%2Flcoeff(g))%20mod%200&"
 target="_blank">d'Euclide ou sous-r&eacute;sultant</a>
 </li>
+<li>
+<a
+href="#exec&python=0&+//%3Ch1%3eAlg%C3%A8bre%20lin%C3%A9aire%20exacte%20sur%20un%20corps%20fini.%3C/h1%3e%0aD%C3%A9composition%20LU,%20application%20au%20calcul%20d'un%20inverse%20de%20matrice.&+n%3A%3D5%3B%20p%3A%3D17%3B%20a%3A%3Drandmatrix(n%2Cn%2C1%20mod%20p)&+p%2Cl%2Cu%3A%3Dlu(a)&+fonction%20moninv(a)%0A%20%20local%20b%2Cc%2Cj%2Cp%2Cl%2Cu%3B%0A%20%20n%3A%3Dsize(a)%3B%0A%20%20b%3A%3Da%3B%20%0A%20%20c%3A%3Didentity(n)%3B%0A%20%20p%2Cl%2Cu%3A%3Dlu(a)%3B%0A%20%20pour%20j%20de%200%20jusque%20n-1%20faire%20%0A%20%20%20%20b%5Bj%5D%3A%3Dlinsolve(p%2Cl%2Cu%2Cc%5Bj%5D)%3B%0A%20%20fpour%3B%0A%20%20return%20b%3B%0Affonction%3A%3B&+moninv(a)%3B%20inv(a)&+//Calcul%20du%20polynome%20caract%C3%A9ristique%20en%20$O(n^4)$%20par%20interpolation.&+fonction%20polcar(a)%0A%20%20local%20j%2Cp%2Cn%2CI%2CN%2Cg%2Cgj%2CX%2CY%3B%0A%20%20si%20type(a%5B0%2C0%5D)!%3D15%20alors%20%0A%20%20%20%20return%20%22il%20faut%20une%20matrice%20%C3%A0%20coefficients%20dans%20Z%2FpZ%22%3B%20%0A%20%20fsi%3B%0A%20%20p%3A%3Da%5B0%2C0%2C2%5D%3B%20%2F%2F%20caracteristique%20du%20corps%0A%20%20si%20!isprime(p)%20alors%20%0A%20%20%20%20return%20p%2B%22%20n'est%20pas%20premier%22%3B%20%0A%20%20fsi%3B%0A%20%20n%3A%3Dsize(a)%3B%0A%20%20I%3A%3Didentity(n)%3B%0A%20%20X%3A%3D%5B%5D%3B%20Y%3A%3D%5B%5D%3B%0A%20%20si%20n%3Cp%20alors%0A%20%20%20%20pour%20j%20de%200%20jusque%20n%20faire%0A%20%20%20%20%20%20X%5Bj%5D%3A%3Dj%3B%0A%20%20%20%20%20%20Y%5Bj%5D%3A%3Ddet(j*I-a)%3B%0A%20%20%20%20fpour%3B%0A%20%20%20%20return%20normal(interp(X%2CY))%3B%0A%20%20fsi%3B%0A%20%20%2F%2F%20construction%20d'une%20extension%20de%20Z%2FpZ%0A%20%20N%3A%3Dceil(log(n%2B1)%2Flog(p))%3B%0A%20%20purge(g)%3B%0A%20%20GF(p%2CN%2Cg)%3B%0A%20%20%2F%2F%20interpolation%20en%20les%20g%5Ej%0A%20%20gj%3A%3D1%3B%0A%20%20pour%20j%20de%200%20jusque%20n%20faire%0A%20%20%20%20X%5Bj%5D%3A%3Dgj%3B%0A%20%20%20%20Y%5Bj%5D%3A%3Ddet(gj*I-a)%3B%0A%20%20%20%20gj%3A%3Dg*gj%3B%0A%20%20fpour%3B%0A%20%20return%20normal(interp(X%2CY))%3B%0Affonction%3A%3B&+polcar(a)%3B%20charpoly(a%2Cx)&+a%3A%3Drandmatrix(8%2C8%2C1%20mod%205)&+polcar(a);%20charpoly(a,x)&"
+target="_blank"
+>Alg&egrave;bre lin&eacute;aire sur un corps fini
+</a>
+</li>
 <li> Bases de Groebner 
 <a
     href="#exec&python=0&+cyclic6%3A%3D%20%5B2*(x*y*z%2By*z*t%2Bz*t*u%2Bt*u*v%2Bu*v*x%2Bv*x*y)%2C%20%0Ax*y*z*t%2By*z*t*u%2Bz*t*u*v%2Bt*u*v*x%2Bu*v*x*y%2Bv*x*y*z%2C%20%0Ax*y*z*t*u*v-1%2C%20%0Ax%2By%2Bz%2Bt%2Bu%2Bv%2C%20%0Ax*y%2By*z%2Bz*t%2Bt*u%2Bu*v%2Bx*v%2C%20%0Ax*y*z*t*u%2By*z*t*u*v%2Bz*t*u*v*x%2Bt*u*v*x*y%2Bu*v*x*y*z%2Bv*x*y*z*t%5D%3B&+p%3A%3Dprevprime(2%5E24)%3B&+time(G%3A%3D%0A%20%20gbasis(cyclic6%20mod%20p%2C%0A%20%20%20%20indets(cyclic6)))&+size(G)&+G%5B20%5D&+time(H%3A%3D%0A%20%20gbasis(cyclic6%2C%0A%20%20%20%20indets(cyclic6)))&+H%5B20%5D&+normal(1%2F(lcoeff(H%5B20%5D%2Cv)%20mod%20p)%0A%20%20*H%5B20%5D)&+normal(1%2F(lcoeff(G%5B20%5D%2Cv)%20mod%20p)%0A%20%20*G%5B20%5D-1%2F(lcoeff(H%5B20%5D%2Cv)%20mod%20p)%0A%20%20*H%5B20%5D)&"
@@ -735,7 +743,7 @@ Cette feuille de calcul est compos&eacute;e du haut vers le bas de:
   pr&eacute;c&eacute;dente.
   D&egrave;s que vous avez valid&eacute; une commande, il apparait
   <ul>
-    <li> un lien Clone (respectivement local)
+    <li> un lien x2 (respectivement local)
     qui permet de <strong>cloner</strong> une session existante
     (respectivement localement).
     A utiliser si le noyau de calcul formel a crash&eacute; ou
@@ -823,7 +831,13 @@ MathML pour affichage 2d, par exemple <tt>$x[n+1]^2$</tt> affichera x indice
 n+1 exposant 2, <tt>$A=[[1,2],[3,4]]$</tt> affichera une matrice (sans donner
 de valeur &agrave; A), <tt>$integrate(sin(x),x,0,pi)$</tt> affichera
 l'int&eacute;grale de sinus x entre 0 et pi sans la calculer. Les
-symboles des ensembles tels que ℤ,ℕ s'obtiennent par $ZZ$, $NN$.
+symboles des ensembles tels que ℤ,ℕ s'obtiennent par <tt>$ZZ$, $NN$</tt>,
+ainsi pour saisir x∈ℚ on tape <tt>$x in QQ$</tt>. On peut aussi utiliser du
+code HTML comme <tt>&amp;in;</tt> pour &in;, <tt>&amp;forall;</tt> pour
+&forall;, <tt>&amp;exist;</tt>, <tt>&amp;oplus;</tt>, <tt>&amp;otimes;</tt>,
+<tt>&amp;notin;</tt>, <tt>&amp;empty;</tt>, <tt>&amp;part;</tt>
+etc. ou recopier directement un symbole par exemple depuis
+<a href="https://www.w3schools.com/charsets/ref_utf_math.asp">ici</a>.
   </li>
   <li>
   une <strong>console</strong> qui affiche des messages du CAS :
@@ -883,7 +897,23 @@ Firefox et d'ex&eacute;cuter Xcas depuis Firefox</strong>
 onclick="document.getElementById('tutointerface').style.display='none';">Masquer
 l'aide sur l'interface</button>
 </div>
-  </li>
+</li>
+  <li style="display:inline">
+<button class="bouton"
+onclick="var tmp=document.getElementById('tutocfg'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+<strong>Configuration</strong></button>
+<div id="tutocfg" style="display:none">
+  Le bouton en haut &agrave; gauche de la feuille permet de changer
+  la configuration de Xcas pour Firefox. Vous pouvez par exemple
+  modifier le nombre de chiffres significatifs utilis&eacute;s par
+  d&eacute;faut,  l'unit&eacute; d'angle, le mode pas &agrave; pas,
+  etc. Si vous avez un navigateur compatible, par exemple Firefox&geq;58,
+  vous pouvez activer l'option <tt>wasm</tt> qui permet d'effectuer
+  la plupart des calculs plus rapidement et donne acc&egrave;s aux
+  commandes de PARI-GP (apr&egrave;s avoir &eacute;valu&eacute; la
+  commande <tt>pari()</tt>)
+  </div>
+</li>
 <li style="display:inline">
 <button class="bouton" onclick="var tmp=document.getElementById('manuels'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
 <strong>Manuels</strong>
@@ -961,11 +991,10 @@ Il n'a pas besoin de serveur, il s'exécute localement
 (avec le moteur javascript de votre navigateur qui doit être récent,
 mettez-le &agrave; jour pour avoir de bonnes performances, il faut
 aussi avoir au moins 300M de RAM disponible)
-à partir du code du CAS (13M) qui est téléchargé
+à partir du code du CAS qui est téléchargé
 une fois. Le prix à payer pour cette simplicité
-est la vitesse, le code est au moins 2 fois plus lent, parfois
-beaucoup plus (par exemple 8 fois plus lent pour un calcul intensif
-de bases de Groebner).
+est la vitesse, le code est plus lent pour tous les
+calculs exacts.
 La plupart du temps, cela n'est pas vraiment
 genant, mais
 si vous devez exécuter un gros calcul, il
@@ -1584,7 +1613,7 @@ Joyeux Xcas</a>,
   </li>  
   <li  style="display:inline">
     <button class="bouton"
-onclick="var l=['tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
+onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
   <em>Replier tout</em>
   </button>
 </ul>
@@ -3125,7 +3154,6 @@ title="Placer tout les niveaux de l'historique dans la
   <button class="bouton" onclick="UI.restoretrash()" class="bouton" title="Restaurer les niveaux plac&eacute;s dans la corbeille">Restaure</button>
   <button class="bouton" onclick="UI.emptytrash()" class="bouton"
   title="Vider la corbeille">Vide</button>
-  <a href="xcasfr.html" target="_blank">&nbsp;+&nbsp;</a>
   </span>
 </div>
 
@@ -3138,7 +3166,7 @@ rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode
   <strong>&nbsp;&nbsp;&#x2705;&nbsp;&nbsp;</strong></button>
   <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">&nbsp;?&nbsp;</button>
   <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"   title="Deplace vers la gauche le curseur">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">&nbsp;↑&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indente">→|</button>
-<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface">&nbsp;&#x232b;&nbsp;</button><br>
+<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface">&nbsp;&#x232b;&nbsp;</button>
 <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\n')" title="Saut de ligne">\n</button>
 <button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="Annuler"><img width="16" height="16" src="undo.png" alt="Annuler" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="Refaire"><img width="16" height="16" src="redo.png" alt="Refaire" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="Rechercher">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="Rechercher suivant">&#x21D2;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="Rechercher pr&eacute;c&eacute;dent">&#x21D0;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,3)" title="Remplacer">rep</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,5)" title="Aller ligne">go</button>
 <button class="bouton" name="select_button"
@@ -3305,8 +3333,16 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); UI.ready=
   var script = document.createElement("script");
   script.type = "text/javascript";
   var webAssemblyAvailable = false;
-  if (!UI.detectmob())
-    webAssemblyAvailable =!!window.WebAssembly;
+  if (Boolean(window.chrome)){
+    if (!UI.detectmob()) webAssemblyAvailable =  window.location.href.substr(0,4)!='file';
+  }
+  else {
+    var ua = window.navigator.userAgent;
+    var old_ie = ua.indexOf('MSIE ');
+    var new_ie = ua.indexOf('Trident/');
+    if (!UI.detectmob() && old_ie<=-1 && new_ie<=-1)
+      webAssemblyAvailable =!!window.WebAssembly;
+  }
   if (webAssemblyAvailable){
     var ck=UI.readCookie('xcas_wasm');
     if (ck){
@@ -3315,7 +3351,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); UI.ready=
       webAssemblyAvailable=form.wasm_mode.checked;
     }
   }
-  if (webAssemblyAvailable && !Boolean(window.chrome)) // fixme: enable
+  if (webAssemblyAvailable) // fixme: enable
     script.src = "giacwasm.js";
   else
     script.src  = "giac.js";

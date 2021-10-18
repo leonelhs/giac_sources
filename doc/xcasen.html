@@ -461,7 +461,7 @@ the <tt>?</tt> button or F1 key.
   <li style="display:inline">
   <button class="bouton"
   onclick="var tmp=document.getElementById('tutonet'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
-  <strong>Together</strong></button>
+  <strong>Work together</strong></button>
   <div id="tutonet" style="display:none">
     You can exchange Xcas sessions by email. Fill in once the email
     fields in the Settings (topleft button).
@@ -679,6 +679,13 @@ target="_blank"> Runge's phenomenom, Tchebyshev points</a>
 <a href="#exec&python=0&+//GCD%20of%20univariate%20polynomials%20with%20integer%20coefficients.&+a%3A%3D(x-1)%5E8*(x%5E2%2B2)%3B%0Ab%3A%3D(x-1)*(x%5E2%2B2)%5E4&+function%20Euclide(a%2Cb)%0A%20%20while%20b!%3D0%20do%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(a%2Cb)%3B%0A%20%20od%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide(a%2Cb)&+//Coefficients%20are%20rationals,%20hence%20computations%20are%20more%20expensive%20(numerator%20and%20denominator%20size%20grows%20in%20the%20Euclide%20algorithm).%20To%20avoid%20rationals,%20we%20replace%20division%20by%20pseudo-division%20(this%20does%20not%20change%20the%20gcd).&+function%20Euclide1(a%2Cb)%0A%20%20if%20degree(a)%3Cdegree(b)%20then%20return%20Euclide1(b%2Ca)%3B%20fi%3B%0A%20%20while%20b!%3D0%20do%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(lcoeff(b)%5E(degree(a)-degree(b)%2B1)*a%2Cb)%3B%0A%20%20od%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide1(a%2Cb)&+//We%20observe%20that%20the%20coefficient%20sizes%20grows%20rapidly.%20To%20avoid%20that%20we%20can%20replace%20$b$%20by%20it's%20primitive%20part%20(divide%20by%20the%20gcd%20of%20the%20coefficients).&+function%20Euclide2(a%2Cb)%0A%20%20if%20degree(a)%3Cdegree(b)%20then%20return%20Euclide2(b%2Ca)%3B%20fi%3B%0A%20%20while%20b!%3D0%20do%0A%20%20%20%20b%3A%3Dprimpart(b)%3B%0A%20%20%20%20print(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(lcoeff(b)%5E(degree(a)-degree(b)%2B1)*a%2Cb)%3B%0A%20%20od%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide2(a%2Cb)&+//It's%20better,%20but%20computing%20the%20content%20(gcd%20of%20coefficients)%20of%20$b$%20at%20each%20step%20is%20still%20expensive.%0aThe%20subresultant%20algorithm%20computes%20a%20divisor%20of%20the%20content.%20This%20coefficient%20is%20not%20optimal,%20but%20almost%20and%20it%20is%20easy%20to%20%0acompute.&+function%20Euclide3(a%2Cb)%0A%20%20local%20g%2Ch%2Cq%3B%0A%20%20if%20degree(a)%3Cdegree(b)%20then%20return%20Euclide3(b%2Ca)%3B%20fi%3B%0A%20%20g%3A%3D1%3B%20h%3A%3D1%3B%20%0A%20%20while%20b!%3D0%20do%0A%20%20%20%20d%3A%3Ddegree(a)-degree(b)%3B%0A%20%20%20%20q%3A%3Dlcoeff(b)%3B%0A%20%20%20%20a%2Cb%3A%3Db%2Crem(q%5E(d%2B1)*a%2Cb)%3B%0A%20%20%20%20b%3A%3Dratnormal(b%2F(g*h%5Ed))%3B%0A%20%20%20%20g%3A%3Dq%3B%20h%3A%3Dq%5Ed%2Fh%5E(d-1)%3B%0A%20%20od%3B%0A%20%20return%20a%3B%0Affunction%3A%3B&+Euclide3(a%2Cb)&+//Modular%20methods%20are%20more%20efficient.%20If%20the%20polynomials%20are%20prime%20together,%20they%20will%20be%20modulo%20any%20prime%20not%20dividing%20the%20resultant%20of%20the%20polynomials,%20it%20will%20easily%20be%20detected.%0aOtherwise,%20we%20rebuild%20the%20GCD%20modulo%20one%20or%20more%20prime%20numbers%20(by%20Chinese%20remaidering)%20that%20return%20the%20minimal%20degree%20and%20we%20test%20divisibility%20of%20$a$%20and%20$b$.%20%0a&+Euclide(a%20mod%2011%2Cb%2B1%20mod%2011)&+g%3A%3DEuclide(a%20mod%2011%2Cb%20mod%2011)&+normal(g%2Flcoeff(g))%20mod%200&"
 target="_blank">from Euclide to sub-resultant</a>
 </li>
+<li>
+<a
+href="#exec&python=0&+//%3Ch1%3eLinear%20algebra%20on%20a%20finite%20field.%3C/h1%3e%0aLU%20decomposition%20and%20application%20to%20linear%20system%20solving.&+n%3A%3D5%3B%20p%3A%3D17%3B%20a%3A%3Drandmatrix(n%2Cn%2C1%20mod%20p)&+p%2Cl%2Cu%3A%3Dlu(a)&+function%20myinv(a)%0A%20%20local%20b%2Cc%2Cj%2Cp%2Cl%2Cu%3B%0A%20%20n%3A%3Dsize(a)%3B%0A%20%20b%3A%3Da%3B%20%0A%20%20c%3A%3Didentity(n)%3B%0A%20%20p%2Cl%2Cu%3A%3Dlu(a)%3B%0A%20%20for%20j%20from%200%20to%20n-1%20do%20%0A%20%20%20%20b%5Bj%5D%3A%3Dlinsolve(p%2Cl%2Cu%2Cc%5Bj%5D)%3B%0A%20%20od%3B%0A%20%20return%20b%3B%0Affunction%3A%3B&+myinv(a)%3B%20inv(a)&+//Algorithm%20to%20compute%20the%20characteristic%20polynomial%20by%20interpolation%20in%20$O(n^4)$%20operations.&+function%20polchar(a)%0A%20%20local%20j%2Cp%2Cn%2CI%2CN%2Cg%2Cgj%2CX%2CY%3B%0A%20%20if%20type(a%5B0%2C0%5D)!%3D15%20then%20%0A%20%20%20%20return%20%22expecting%20matrix%20with%20coefficients%20in%20Z%2FpZ%22%3B%20%0A%20%20fi%3B%0A%20%20p%3A%3Da%5B0%2C0%2C2%5D%3B%20%2F%2F%20field%20char.%0A%20%20if%20!isprime(p)%20then%20%0A%20%20%20%20return%20p%2B%22%20is%20not%20prime%22%3B%20%0A%20%20fi%3B%0A%20%20n%3A%3Dsize(a)%3B%0A%20%20I%3A%3Didentity(n)%3B%0A%20%20X%3A%3D%5B%5D%3B%20Y%3A%3D%5B%5D%3B%0A%20%20if%20n%3Cp%20then%0A%20%20%20%20for%20j%20from%200%20to%20n%20do%0A%20%20%20%20%20%20X%5Bj%5D%3A%3Dj%3B%0A%20%20%20%20%20%20Y%5Bj%5D%3A%3Ddet(j*I-a)%3B%0A%20%20%20%20od%3B%0A%20%20%20%20return%20normal(interp(X%2CY))%3B%0A%20%20fi%3B%0A%20%20%2F%2F%20construct%20an%20extension%20of%20Z%2FpZ%0A%20%20N%3A%3Dceil(log(n%2B1)%2Flog(p))%3B%0A%20%20purge(g)%3B%0A%20%20GF(p%2CN%2Cg)%3B%0A%20%20%2F%2F%20interpolation%20at%20g%5Ej%0A%20%20gj%3A%3D1%3B%0A%20%20for%20j%20from%200%20to%20n%20do%0A%20%20%20%20X%5Bj%5D%3A%3Dgj%3B%0A%20%20%20%20Y%5Bj%5D%3A%3Ddet(gj*I-a)%3B%0A%20%20%20%20gj%3A%3Dg*gj%3B%0A%20%20od%3B%0A%20%20return%20normal(interp(X%2CY))%3B%0Affunction%3A%3B&+polchar(a)%3B%20charpoly(a%2Cx)&+a%3A%3Drandmatrix(8%2C8%2C1%20mod%205)&+polchar(a)%3B%20charpoly(a%2Cx)&"
+target="_blank">
+Linear algebra on a finite field
+</a>
+</li>
 <li> Groebner  basis
 <a
     href="#exec&python=0&+cyclic6%3A%3D%20%5B2*(x*y*z%2By*z*t%2Bz*t*u%2Bt*u*v%2Bu*v*x%2Bv*x*y)%2C%20%0Ax*y*z*t%2By*z*t*u%2Bz*t*u*v%2Bt*u*v*x%2Bu*v*x*y%2Bv*x*y*z%2C%20%0Ax*y*z*t*u*v-1%2C%20%0Ax%2By%2Bz%2Bt%2Bu%2Bv%2C%20%0Ax*y%2By*z%2Bz*t%2Bt*u%2Bu*v%2Bx*v%2C%20%0Ax*y*z*t*u%2By*z*t*u*v%2Bz*t*u*v*x%2Bt*u*v*x*y%2Bu*v*x*y*z%2Bv*x*y*z*t%5D%3B&+p%3A%3Dprevprime(2%5E24)%3B&+time(G%3A%3D%0A%20%20gbasis(cyclic6%20mod%20p%2C%0A%20%20%20%20indets(cyclic6)))&+size(G)&+G%5B20%5D&+time(H%3A%3D%0A%20%20gbasis(cyclic6%2C%0A%20%20%20%20indets(cyclic6)))&+H%5B20%5D&+normal(1%2F(lcoeff(H%5B20%5D%2Cv)%20mod%20p)%0A%20%20*H%5B20%5D)&+normal(1%2F(lcoeff(G%5B20%5D%2Cv)%20mod%20p)%0A%20%20*G%5B20%5D-1%2F(lcoeff(H%5B20%5D%2Cv)%20mod%20p)%0A%20%20*H%5B20%5D)&"
@@ -741,10 +748,10 @@ From the top you will see:
 <ul>
   <li> a panel of buttons: settings, save/restore session,
     helpers (Xcas logo maths, programming, scientific keyboard, documentation).
-    Some buttons or links are not visible at startup like the Clone or
+    Some buttons or links are not visible at startup like the x2 or
     Mail links:  
   <ul>
-    <li> the <strong>Clone</strong> (resp. local) link may be used to replicate a
+    <li> the <strong>x2</strong> (resp. local) link may be used to replicate a
       session, right-click to copy/paste the link in Xcas native or
       on a static web
       page. It is also useful if you stop a computation that would
@@ -806,7 +813,13 @@ From the top you will see:
   exponent n+1, <tt>$A=[[1,2],[3,4]]$</tt> will display a matrix
   (it will not modify A), <tt>$integrate(sin(x),x,0,pi)$</tt>
   will display the integral of sin(x) between 0 and pi (the integral will not be
-  computed). Symbols of sets like ℤ,ℕ may be obtained by entering $ZZ$, $NN$.
+  computed). Symbols of sets like ℤ,ℕ may be obtained by entering
+  <tt>$ZZ$, $NN$</tt>, for example type <tt>$x in QQ$</tt> to get x∈ℚ. HTML code may
+  also help like <tt>&amp;forall;</tt> for &forall;,
+  <tt>&amp;exist;</tt>, <tt>&amp;oplus;</tt>, <tt>&amp;otimes;</tt>,
+<tt>&amp;notin;</tt>, <tt>&amp;empty;</tt>, <tt>&amp;part;</tt>, etc.
+or copy/paste a symbol from
+<a href="https://www.w3schools.com/charsets/ref_utf_math.asp">here</a>.
   </li>
   <li>
     a <strong>console</strong> that will display CAS messages,
@@ -849,6 +862,21 @@ onclick="document.getElementById('tutointerface').style.display='none';">Hide
   interface help</button>
 </div>
   </li>
+  <li style="display:inline">
+<button class="bouton"
+onclick="var tmp=document.getElementById('tutocfg'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
+<strong>Configuration</strong></button>
+<div id="tutocfg" style="display:none">
+  Click on the button at the topleft to modify settings. You can
+  change
+  the default digits number, the angle unit, the step by step mode,
+  etc.
+  If you have a compatible browser, like Firefox&geq;58, you can
+  enable the <tt>wasm</tt> option (Web-Assembly), this makes most
+  computations faster and give access to PARI-GP commands after
+  running <tt>pari()</tt>.
+  </div>
+</li>
 <li style="display:inline">
 <button class="bouton" onclick="var tmp=document.getElementById('manuels'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
 <strong>Manuals</strong>
@@ -1518,7 +1546,7 @@ of scenarios to teach programming to young childrens.
   </li>  
   <li  style="display:inline">
     <button class="bouton"
-onclick="var l=['tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
+onclick="var l=['tutocfg','tutonet','tutoinst','tutoex','tutoex2','tutointro','tutointerface','tutosimplifier','tutoarit','tutosolve','tutoanalyse','tutoproba','tutoprog','tutograph','tutolinalg','tutotortue','manuels','apropos']; var s=l.length; for (var i=0;i<s;++i) document.getElementById(l[i]).style.display='none';">
   <em>Fold all</em>
   </button>
 </ul>
@@ -3150,7 +3178,6 @@ title="Move all levels to the trash">→Trash</button>
   title="Restore levels from the trash">Restore</button>
   <button class="bouton" onclick="UI.emptytrash()" class="bouton"
   title="Empty trash">Empty</button>
-  <a href="xcasen.html" target="_blank">&nbsp;+&nbsp;</a>
   </span>
 </div>
 
@@ -3164,7 +3191,7 @@ rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode
   <button class="bouton" onmousedown="event.preventDefault()"
   onClick="UI.completion(cmentree)" title="Short help on a command">&nbsp;?&nbsp;</button>
   <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"   title="Cursor left">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Cursor right"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Cursor up">&nbsp;↑&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Cursor down">&nbsp;&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indent">→|</button>
-<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Erase">&nbsp;&#x232b;&nbsp;</button><br>
+<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Erase">&nbsp;&#x232b;&nbsp;</button>
 <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\n')" title="Newline">\n</button>
 <button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="Undo"><img width="16" height="16" src="undo.png" alt="Undo" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="Redo"><img width="16" height="16" src="redo.png" alt="Redo" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="Find">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="find next">&#x21D2;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="Find previous">&#x21D0;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,3)" title="Replace">rep</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,5)" title="Go line">go</button>
 <button class="bouton" name="select_button"
@@ -3330,8 +3357,16 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); UI.ready=
   var script = document.createElement("script");
   script.type = "text/javascript";
   var webAssemblyAvailable = false;
-  if (!UI.detectmob())
-    webAssemblyAvailable =!!window.WebAssembly;
+  if (Boolean(window.chrome)){
+    if (!UI.detectmob()) webAssemblyAvailable =  window.location.href.substr(0,4)!='file';
+  }
+  else {
+    var ua = window.navigator.userAgent;
+    var old_ie = ua.indexOf('MSIE ');
+    var new_ie = ua.indexOf('Trident/');
+    if (!UI.detectmob() && old_ie<=-1 && new_ie<=-1)
+      webAssemblyAvailable =!!window.WebAssembly;
+  }
   if (webAssemblyAvailable){
     var ck=UI.readCookie('xcas_wasm');
     if (ck){
@@ -3340,7 +3375,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); UI.ready=
       webAssemblyAvailable=form.wasm_mode.checked;
     }
   }
-  if (webAssemblyAvailable && !Boolean(window.chrome)) // fixme: enable
+  if (webAssemblyAvailable) // fixme: enable
     script.src = "giacwasm.js";
   else
     script.src  = "giac.js";

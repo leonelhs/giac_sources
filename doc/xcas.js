@@ -1192,11 +1192,11 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	s = UI.base_url+"xcasen.html#"+s;
       //Module.print(s);
       if (window.location.href.substr(0,4)=='file' && !UI.detectmob()){
-	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Clone</a> <a href="'+s2+'" target="_blank">local</a>';
+	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">x2</a>, <a href="'+s2+'" target="_blank">local</a>,';
       }
       else
-	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Clone</a>';
-      document.getElementById('themailto').innerHTML='<a href="mailto:'+UI.mailto+'?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : <'+UI.rewritestring(smail)+'>">Mail</a>';
+	document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">x2</a>,';
+      document.getElementById('themailto').innerHTML='<a href="mailto:'+UI.mailto+'?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : <'+UI.rewritestring(smail)+'>">Mail</a>,<a href="#" target="_blank">&nbsp;+&nbsp;</a>';
     }
   },
   rewritestring: function(s){
@@ -1640,10 +1640,10 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     s += '<input class="curseur" type="text" name="name" size="1" value=\''+name+'\'>';
     s += '='+'<input class="curseur" type="number" name="valname" onchange="valname.innerHTML=valname.value" value=\''+value+'\' step=\''+step+'\'>';
     s += '<input class="curseur" type="submit" value="ok">'
-    s += '&nbsp;<input class="curseur" type="button" value="--&nbsp;" onclick="valname.value -= 10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
-    s += '<input class="curseur" type="button" value="&nbsp;-&nbsp;&nbsp;" onclick="valname.value -= stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
-    s += '&nbsp;<input class="curseur" type="button" value="&nbsp;&nbsp;+&nbsp;" onclick="valname.value -= -stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
-    s += '<input class="curseur" type="button" value="&nbsp;++" onclick="valname.value -= -10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '&nbsp;<input class="curseur" type="button" value="--&nbsp;" onclick="rangename.value=valname.value -= 10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '<input class="curseur" type="button" value="&nbsp;-&nbsp;&nbsp;" onclick="rangename.value=valname.value -= stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '&nbsp;<input class="curseur" type="button" value="&nbsp;&nbsp;+&nbsp;" onclick="rangename.value=valname.value -= -stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
+    s += '<input class="curseur" type="button" value="&nbsp;++" onclick="rangename.value=valname.value -= -10*stepname.value;UI.eval_below(form,form.name.value,valname.value);">';
     s += '&nbsp;<input class="curseur" type="button" value="&#x270e;" onclick="var tmp=nextSibling; if (tmp.style.display==\'none\') tmp.style.display=\'inline\'; else tmp.style.display=\'none\';">';
     s += '<span style="display:none">&nbsp;<input class="curseur" type="number" name="minname" value=\''+mini+'\' step=\''+step+'\'>';
     if (window.innerWidth<600)
@@ -1836,12 +1836,13 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
     if (UI.focusaftereval) UI.focused.focus();
   },
   eval_below: function(field,name,value){
-    //Module.print(name+':='+value);
+    //console.log(name+':='+value);
     UI.caseval('assume('+name+'='+value+')');
     var cur=field.parentNode.parentNode.parentNode;
     cur=cur.nextSibling;
     //Module.print(cur.innerHTML);
     for (;cur;){
+      //console.log(cur);
       UI.eval_level(cur);
       cur=cur.nextSibling;
     }
@@ -2140,9 +2141,9 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	var level=field.firstChild;
 	var cur=level.firstChild;
 	cur=UI.skip_buttons(cur);
-	//Module.print(cur.innerHTML);
+	//console.log(cur);
 	cur=cur.firstChild;
-	// Module.print(cur.name.value+':='+cur.rangename.value);
+	//Module.print(cur.name.value+':='+cur.rangename.value);
 	UI.caseval(cur.name.value+':='+cur.rangename.value);
 	var s=UI.curseurhtml(cur.name.value,cur.minname.value,cur.maxname.value,cur.stepname.value,cur.valname.value);
 	level.innerHTML=s;
@@ -2333,11 +2334,11 @@ id="matr_case'+i+'_'+j+'">'+oldval+'</textarea><div class="matrixcell" style="di
 	}
 	s+='<td>';
 	if (!is_gr2d) {
-	  s += '<button class="bouton" onclick="UI.zoom(this,1.414)">out</button><br>';
-	  s += '<button class="bouton" onclick="UI.zoom(this.previousSibling,0.707)">in</button><br>';
+	  s += '<button  style="width:32px;height:30px;" onclick="UI.zoom(this,1.414)">out</button><br>';
+	  s += '<button  style="width:32px;height:30px;" onclick="UI.zoom(this.previousSibling,0.707)">in</button><br>';
 	}
-	if (is_svg) s += '<button class="bouton" onclick="UI.savesvg(parentNode.previousSibling)">sav</button><br>';
-	s += '<br><button style="height:25px;" onclick=\'UI.erase(this)\' title="';
+	if (is_svg) s += '<button style="width:32px;height:30px;" onclick="UI.savesvg(parentNode.previousSibling)">sav</button><br>';
+	s += '<br><button style="width:32px;height:30px;" onclick=\'UI.erase(this)\' title="';
 	s += UI.langue==-1?'placer ce niveau dans la corbeille':'throw this level in the trash';
 	s += '">&#x232b;</button>'; delbut=true;
 	s += '</td>';

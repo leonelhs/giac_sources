@@ -3408,13 +3408,24 @@ namespace giac {
     }
     else
       subtype=v.subtype;
+    gen f(args._VECTptr->front());
     if ( (v.type!=_VECT) && (v.type!=_SYMB)){
       if (selecting)
 	return symb_select(args);
-      else
+      else {
+	if (f.type==_VECT){ // remove 1st occurence of v
+	  vecteur w=*f._VECTptr;
+	  for (unsigned i=0;i<w.size();++i){
+	    if (w[i]==v){
+	      w.erase(w.begin()+i);
+	      return gen(w,f.subtype);
+	    }
+	  }
+	  return gensizeerr(contextptr);
+	}
 	return symb_remove(args);
+      }
     }
-    gen f(args._VECTptr->front());
     bool prog=f.is_symb_of_sommet(at_program);
     vecteur otherargs(args._VECTptr->begin()+1,args._VECTptr->end());
     const_iterateur it=v._VECTptr->begin(),itend=v._VECTptr->end();
@@ -5460,11 +5471,11 @@ namespace giac {
     gen a,b,c;
     if (!check_binary(args,a,b))
       return a;
-    if (b==at_revlist || b==at_reverse || b==at_sort || b==at_append || b==at_prepend || b==at_concat || b==at_extend || b==at_rotate || b==at_shift || b==at_suppress)
+    if (b==at_revlist || b==at_reverse || b==at_sort || b==at_append || b==at_prepend || b==at_concat || b==at_extend || b==at_rotate || b==at_shift || b==at_suppress || b==at_index)
       return symbolic(at_struct_dot,args);
     if (b.type==_SYMB){
       unary_function_ptr c=b._SYMBptr->sommet;
-      if (c==at_revlist || c==at_reverse || c==at_sort || c==at_append || c==at_prepend || c==at_concat || c==at_extend || c==at_rotate || c==at_shift || c==at_suppress){
+      if (c==at_revlist || c==at_reverse || c==at_sort || c==at_append || c==at_prepend || c==at_concat || c==at_extend || c==at_rotate || c==at_shift || c==at_suppress || c==at_index){
 	gen d=eval(a,eval_level(contextptr),contextptr);
 	if (b._SYMBptr->feuille.type==_VECT && b._SYMBptr->feuille.subtype==_SEQ__VECT && b._SYMBptr->feuille._VECTptr->empty())
 	  ;
@@ -9107,6 +9118,7 @@ namespace giac {
     &__StdT_unit,
     &__Sv_unit,
     &__T_unit,
+    &__Torr_unit,
     &__V_unit,
     &__Vm_unit,
     &__W_unit,
@@ -9253,13 +9265,14 @@ namespace giac {
     &__toe_unit,
     &__tonUK_unit,
     &__ton_unit,
-    &__Torr_unit,
     &__tr_unit,
     &__tsp_unit,
     &__u_unit,
     &__yd_unit,
     &__yr_unit,
+#ifndef VISUALC
     &__micron_unit
+#endif
   };
   const unsigned unitptr_tab_length=sizeof(unitptr_tab)/sizeof(mksa_unit *);
   const char * const unitname_tab[]={
@@ -9454,8 +9467,10 @@ namespace giac {
     "_u",
     "_yd",
     "_yr",
+#ifndef VISUALC
     "_\u03BC"
     // "_µ"
+#endif
   };
 
   const char * const * const unitname_tab_end=unitname_tab+unitptr_tab_length;
@@ -10523,7 +10538,7 @@ namespace giac {
       f=symbolic(u,f);
     }
     f=eval(f,eval_level(contextptr),contextptr);
-    if (u==at_revlist || u==at_reverse || u==at_sort || u==at_append || u==at_prepend || u==at_concat || u==at_extend || u==at_rotate || u==at_shift || u==at_suppress || u==at_insert)
+    if (u==at_revlist || u==at_reverse || u==at_sort || u==at_append || u==at_prepend || u==at_concat || u==at_extend || u==at_rotate || u==at_shift || u==at_suppress || u==at_insert )
       return sto(f,a,contextptr);
     return f;
   }

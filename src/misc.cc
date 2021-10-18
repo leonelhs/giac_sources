@@ -567,6 +567,17 @@ namespace giac {
   static define_unary_function_eval (__insert,&_insert,_insert_s);
   define_unary_function_ptr5( at_insert ,alias_at_insert,&__insert,0,true);
 
+  gen _pop(const gen & args,GIAC_CONTEXT){
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type!=_VECT || args._VECTptr->empty()) return gensizeerr(contextptr);
+    gen res=args._VECTptr->back();
+    args._VECTptr->pop_back();
+    return res;
+  }
+  static const char _pop_s []="pop";
+  static define_unary_function_eval (__pop,&_pop,_pop_s);
+  define_unary_function_ptr5( at_pop ,alias_at_pop,&__pop,0,true);
+
   static int valuation(const polynome & p){
     if (p.coord.empty())
       return -1;
@@ -7849,7 +7860,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (c==';') 
 	semi=true;
       else {
-	if (c!=' ')
+	if (c!=' ' && c!='\n')
 	  semi=false;
       }
       res += c;
