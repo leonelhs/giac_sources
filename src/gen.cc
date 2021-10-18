@@ -1909,17 +1909,18 @@ namespace giac {
   }
 
   static bool in_eval_idnt(const gen & g,gen & evaled,int level,GIAC_CONTEXT){
-    if (strcmp(g._IDNTptr->id_name,string_pi)==0 || strcmp(g._IDNTptr->id_name,string_euler_gamma)==0 )
+    identificateur * gptr=g._IDNTptr;
+    if (strcmp(gptr->id_name,string_pi)==0 || strcmp(gptr->id_name,string_euler_gamma)==0 )
       return false;
     if (!contextptr && g.subtype==_GLOBAL__EVAL)
-      evaled=global_eval(*g._IDNTptr,level);
+      evaled=global_eval(*gptr,level);
     else {
-      if (!g._IDNTptr->in_eval(level-1,g,evaled,contextptr))
+      if (!gptr->in_eval(level-1,g,evaled,contextptr))
 	return false;
     }
     if ( evaled.type!=_VECT || evaled.subtype!=_ASSUME__VECT ){
       if (evaled.is_symb_of_sommet(at_program))
-	lastprog_name(g._IDNTptr->id_name,contextptr);
+	lastprog_name(gptr->id_name,contextptr);
       return true;
     }
     return check_not_assume(g,evaled,false,contextptr);
@@ -2041,7 +2042,9 @@ namespace giac {
       if (subtype==_SPREAD__SYMB)
 	return false;
       { 
-	unary_function_ptr & Sommet=_SYMBptr->sommet;
+	symbolic * sptr=_SYMBptr;
+	unary_function_ptr & Sommet=sptr->sommet;
+	const gen & feuille=sptr->feuille;
 	bool is_ifte=false,is_of_local_ifte_bloc=false,is_plus=Sommet==at_plus,is_prod=false,is_pow=false;
 	if (is_plus || (is_prod=(Sommet==at_prod)) || (is_pow=(Sommet==at_pow)) || (is_of_local_ifte_bloc=(Sommet==at_of || Sommet==at_local || (is_ifte=Sommet==at_ifte) || Sommet==at_bloc)) ){
 	  int & elevel=eval_level(contextptr);
@@ -2058,10 +2061,11 @@ namespace giac {
 	  }
 #else // rtos
 #if !defined(WIN32) && defined(HAVE_PTHREAD_H)
-	  if (contextptr && thread_param_ptr(contextptr)->stackaddr){
+	  void * stackaddr;
+	  if (contextptr && (stackaddr=thread_param_ptr(contextptr)->stackaddr)){
 	    // CERR << &slevel << " " << thread_param_ptr(contextptr)->stackaddr << endl;
-	    if ( ((size_t) &slevel) < ((size_t) thread_param_ptr(contextptr)->stackaddr)+65536){
-	      if ( ((size_t) &slevel) < ((size_t) thread_param_ptr(contextptr)->stackaddr)+8192){
+	    if ( ((size_t) &slevel) < ((size_t) stackaddr)+65536){
+	      if ( ((size_t) &slevel) < ((size_t) stackaddr)+8192){
 		gensizeerr(gettext("Too many recursion levels"),evaled); // two many recursion levels
 		return true;
 	      }
@@ -2084,14 +2088,16 @@ namespace giac {
 	      }
 	    }
 #endif // rtos
-	  if ( (is_plus ||is_prod || is_pow) && _SYMBptr->feuille.type==_VECT && _SYMBptr->feuille._VECTptr->size()==2){
-	    vecteur * vptr=_SYMBptr->feuille._VECTptr;
+	  const vecteur * vptr;
+	  if ( (is_plus ||is_prod || is_pow) && feuille.type==_VECT && (vptr=feuille._VECTptr)->size()==2){
+	    const gen & vptrfront=vptr->front();
+	    const gen & vptrback=vptr->back();
 	    gen a;
-	    if (!vptr->front().in_eval(level,a,contextptr))
-	      a=vptr->front();
+	    if (!vptrfront.in_eval(level,a,contextptr))
+	      a=vptrfront;
 	    if (a.type!=_VECT || a.subtype!=_SEQ__VECT){
-	      if (!vptr->back().in_eval(level,evaled,contextptr))
-		evaled=vptr->back();
+	      if (!vptrback.in_eval(level,evaled,contextptr))
+		evaled=vptrback;
 	      if (evaled.type!=_VECT || evaled.subtype!=_SEQ__VECT){		
 		if (is_plus) evaled=operator_plus(a,evaled,contextptr);
 		else {
@@ -2105,11 +2111,11 @@ namespace giac {
 	  }
 	  if (is_of_local_ifte_bloc){
 	    elevel=level;
-	    evaled=_SYMBptr->feuille; // FIXME must also set eval_level to level
+	    evaled=feuille; // FIXME must also set eval_level to level
 	  }
 	  else {
-	    if (!_SYMBptr->feuille.in_eval(level,evaled,contextptr))
-	      evaled=_SYMBptr->feuille;
+	    if (!feuille.in_eval(level,evaled,contextptr))
+	      evaled=feuille;
 	  }
 	  if (is_ifte)
 	    evaled=ifte(evaled,true,contextptr);
@@ -2118,7 +2124,7 @@ namespace giac {
 	  elevel=slevel;
 	}
 	else
-	  evaled=_SYMBptr->eval(level,contextptr);
+	  evaled=sptr->eval(level,contextptr);
 	return true;
       }
     case _USER:
@@ -3822,7 +3828,8 @@ namespace giac {
       }
 #else
       if (a.subtype==3){
-	double ar=a._CPLXptr->_DOUBLE_val,ai=(a._CPLXptr+1)->_DOUBLE_val;
+	gen * aptr=a._CPLXptr;
+	double ar=aptr->_DOUBLE_val,ai=(aptr+1)->_DOUBLE_val;
 	return gen(std::sqrt(ar*ar+ai*ai));
       }
       return sqrt(sq(*a._CPLXptr)+sq(*(a._CPLXptr+1)),contextptr) ;
@@ -4358,10 +4365,12 @@ namespace giac {
       if (a.val==0) return b;
     case _ZINT__CPLX: case _FLOAT___CPLX: case _DOUBLE___CPLX: case _REAL__CPLX:
       return gen(a+*b._CPLXptr,*(b._CPLXptr+1));
-    case _CPLX__CPLX:
-      if (a._CPLXptr->type==_DOUBLE_ && (a._CPLXptr+1)->type==_DOUBLE_ && b._CPLXptr->type ==_DOUBLE_ && (b._CPLXptr+1)->type ==_DOUBLE_)
-	return adjust_complex_display(gen(a._CPLXptr->_DOUBLE_val + b._CPLXptr->_DOUBLE_val, (a._CPLXptr+1)->_DOUBLE_val + (b._CPLXptr+1)->_DOUBLE_val),a,b);
-      return adjust_complex_display(gen(*a._CPLXptr + *b._CPLXptr, *(a._CPLXptr+1) + *(b._CPLXptr+1)),a,b);
+    case _CPLX__CPLX: {
+      gen * aptr=a._CPLXptr, *bptr=b._CPLXptr;
+      if (aptr->type==_DOUBLE_ && (aptr+1)->type==_DOUBLE_ && bptr->type ==_DOUBLE_ && (bptr+1)->type ==_DOUBLE_)
+	return adjust_complex_display(gen(aptr->_DOUBLE_val + bptr->_DOUBLE_val, (aptr+1)->_DOUBLE_val + (bptr+1)->_DOUBLE_val),a,b);
+      return adjust_complex_display(gen(*aptr + *bptr, *(aptr+1) + *(bptr+1)),a,b);
+    }
     case _POLY__POLY:
       return addpoly(a,b);
     case _FRAC__FRAC:
@@ -5395,8 +5404,12 @@ namespace giac {
       return -(a._DOUBLE_val);
     case _FLOAT_:
       return -(a._FLOAT_val);
-    case _CPLX:
-      return adjust_complex_display(gen(-*a._CPLXptr,-*(a._CPLXptr+1)),a);
+    case _CPLX: {
+      const gen * aptr=a._CPLXptr;
+      if (a.subtype==3)
+	return adjust_complex_display(gen(-aptr->_DOUBLE_val,-(aptr+1)->_DOUBLE_val),a);
+      return adjust_complex_display(gen(-*aptr,-*(aptr+1)),a);
+    }
     case _IDNT:
       if ((a==undef) || (a==unsigned_inf))
 	return a;
@@ -5706,17 +5719,18 @@ namespace giac {
   }
 
   static gen mult_cplx(const gen & a,const gen & b,GIAC_CONTEXT){
-    unsigned t= (a._CPLXptr->type | ((a._CPLXptr+1)->type << 8) | (b._CPLXptr->type << 16) | ((b._CPLXptr+1)->type << 24));
+    gen * aptr=a._CPLXptr,*bptr=b._CPLXptr;
+    unsigned t= (aptr->type | ((aptr+1)->type << 8) | (bptr->type << 16) | ((bptr+1)->type << 24));
     if (t==(_DOUBLE_ | (_DOUBLE_<<8) | (_DOUBLE_ <<16) | (_DOUBLE_ <<24))){
-      double ar=a._CPLXptr->_DOUBLE_val,ai=(a._CPLXptr+1)->_DOUBLE_val,
-	br=b._CPLXptr->_DOUBLE_val,bi=(b._CPLXptr+1)->_DOUBLE_val;
+      double ar=aptr->_DOUBLE_val,ai=(aptr+1)->_DOUBLE_val,
+	br=bptr->_DOUBLE_val,bi=(bptr+1)->_DOUBLE_val;
       return gen(ar*br-ai* bi, br*ai+ar*bi);
     }
     if (t==(_ZINT | (_ZINT<<8) | (_ZINT <<16) | (_ZINT <<24))){
-      mpz_t & ax=*a._CPLXptr->_ZINTptr;
-      mpz_t & ay=*((a._CPLXptr+1)->_ZINTptr);
-      mpz_t & bx=*b._CPLXptr->_ZINTptr;
-      mpz_t & by=*((b._CPLXptr+1)->_ZINTptr);
+      mpz_t & ax=*aptr->_ZINTptr;
+      mpz_t & ay=*((aptr+1)->_ZINTptr);
+      mpz_t & bx=*bptr->_ZINTptr;
+      mpz_t & by=*((bptr+1)->_ZINTptr);
       // (ax+i*ay)*(bx+i*by)=ax*bx-ay*by+i*(ax*by+ay*bx)
       // imaginary part is also (ax+ay)*(bx+by)-ax*bx-ay*by, Karatsuba trick
       mpz_t axbx,ayby,r;
@@ -5742,10 +5756,10 @@ namespace giac {
     }
 #if defined HAVE_LIBMPFR && !defined NO_RTTI
     if (t==(_REAL | (_REAL<<8) | (_REAL <<16) | (_REAL <<24))){
-      real_object & ax=*a._CPLXptr->_REALptr;
-      real_object & ay=*((a._CPLXptr+1)->_REALptr);
-      real_object & bx=*b._CPLXptr->_REALptr;
-      real_object & by=*((b._CPLXptr+1)->_REALptr);
+      real_object & ax=*aptr->_REALptr;
+      real_object & ay=*((aptr+1)->_REALptr);
+      real_object & bx=*bptr->_REALptr;
+      real_object & by=*((bptr+1)->_REALptr);
       if (!dynamic_cast<real_interval *>(&ax) || 
 	  !dynamic_cast<real_interval *>(&ay) ||
 	  !dynamic_cast<real_interval *>(&bx) ||
@@ -5770,8 +5784,8 @@ namespace giac {
       }
     }
 #endif
-    return gen(*a._CPLXptr * (*b._CPLXptr) - *(a._CPLXptr+1)* (*(b._CPLXptr+1)), 
-	       (*b._CPLXptr) * (*(a._CPLXptr+1)) + *(b._CPLXptr+1) * (*a._CPLXptr));
+    return gen(*aptr * (*bptr) - *(aptr+1)* (*(bptr+1)), 
+	       (*bptr) * (*(aptr+1)) + *(bptr+1) * (*aptr));
   }
 
   static gen operator_times(const gen & a,const gen & b,unsigned t,GIAC_CONTEXT){

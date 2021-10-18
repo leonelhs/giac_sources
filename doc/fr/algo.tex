@@ -318,11 +318,11 @@ Trac\'e sur l'intervalle $t \in [-10,10]$
 \subsection{Alg\`ebre lin\'eaire num\'erique}
 \begin{itemize}
 \item factorisation LU et r\'esolution de syst\`eme,
-\giacinputbigmath{m:=ranm(3,3,uniform,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,v);}
+\giacinputbigmath{m:=ranm(3,3,uniformd,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,v);}
 \item factorisation QR
 \giacinputbigmath{q,r:=qr(m); q*r-m;}
 \item factorisation de Cholesky
-\giacinputbigmath{n:=trn(m)*m; cholesky(n);}
+\giacinputbigmath{m:=ranm(3,3);n:=trn(m)*m; cholesky(n);}
 \item Conditionnement d'une matrice pour la norme 1, euclidienne ou infinie
 \giacinput{cond(m,1); cond(m,2); cond(m,inf);}
 \item R\'eduction des endomorphismes
@@ -879,7 +879,7 @@ calcul\'ee pr\'ec\'edemment.
 Par exemple
 \giacinput{n:=25000; l:=seq(1/j,j,1,n):; Somme(l);}
 \`a comparer avec
-\giacinput{S:=sum(1/j,j,1,n); evalf(S); sum(1. /j,j,1,n);}
+\giacinput{S:=sum(1/j,j,1,n):; evalf(S); sum(1. /j,j,1,n);}
 (le calcul de $S$ est fait en exact, celui de {\tt sum(1. /j,j,1,n)}
 est approch\'e sans correction).
 
@@ -1932,8 +1932,9 @@ rapide(a,k,n):={
 }
 \end{giacprog}
 \giacinput{rapide(123,4567890,123456)}\\
-Pour tester en mode pas \`a pas, enlevez le commentaire \verb|//| et validez~:\\
-\giacinput{//debug(rapide(123,4567890,123456))}\\
+Pour tester en mode pas \`a pas, ajoutez \verb|debug(| au
+d\'ebut de la commande qui pr\'ec\`ede\\
+\verb|debug(rapide(123,4567890,123456))|
 
 \section{Pour en savoir plus.}
 Sur des aspects plus th\'eoriques~:
@@ -2065,17 +2066,16 @@ ou apr\`es avoir affect\'e \verb|t:=[1,2,3]|~?
   vecteur ou une matrice sur votre logiciel (en Xcas, on peut utiliser
 \verb|=<| au lieu de \verb|:=| pour stocker par r\'ef\'erence).
 \giacinput{l:=[1,2,3]; l1:=l; l[1]:=5; l1}
-\item Voici un programme qui calcule la base utilis\'ee
+\item Le programme ci-dessous calcule la base utilis\'ee
 pour repr\'esenter les flottants. 
-\begin{giacprog}
-Base():={
+\giacinput{
+function Base()
   local A,B;
   A:=1.0; B:=1.0;
   while evalf(evalf(A+1.0)-A)-1.0=0.0 do  A:=2*A; od;
-  while evalf(evalf(A+B)-A)-B<>0 do B:=B+1; od;
+  while evalf(evalf(A+B)-A)-B!=0 do B:=B+1; od;
   return B;
-} :;
-\end{giacprog}
+ffunction:;}
 Testez-le \giacinput{Base()} et expliquez.
 
 \item D\'eterminer le plus grand r\'eel positif $x$ de la forme 
@@ -2126,9 +2126,8 @@ valeur de $\alpha $ et le programme renverra $P(\alpha )$.
 En utilisant cette fonction, \'ecrire une fonction qui calcule
 le d\'eveloppement de Taylor complet d'un polyn\^ome en un point.
 \end{enumerate}
-
-
 \end{enumerate}
+
 \pagebreak
 
 \chapter{Les générateurs de nombres pseudo-aléatoires.}
@@ -2321,8 +2320,17 @@ $k_2$
 \end{itemize}
 
 \chapter{Le PGCD de polynômes.} \label{sec:pgcd} \index{PGCD (polyn\^omes)}
-Comme on l'a remarqué dans le premier article, l'algorithme d'Euclide est
-inefficace pour calculer le pgcd de deux polynômes à coefficients entiers. On
+Lorsqu'on travaille avec polyn\^omes en une variable
+\`a coefficients sur un corps fini, 
+l'algorithme d'Euclide est un algorithme efficace, pourvu que les
+degr\'es ne soient pas trop grands (dans ce cas il faut utiliser
+des algorithmes de type diviser pour r\'egner, ici par exemple
+l'algorithme halfgcd\index{halfgcd} qui consiste en gros \`a calculer
+d'abord l'identit\'e de B\'ezout sous forme matricielle pour
+les polyn\^omes tronqu\'es en enlevant les degr\'es les plus bas).
+Mais l'algorithme d'Euclide est
+inefficace pour calculer le pgcd de deux polynômes à coefficients entiers
+ou \`a plusieurs variables. On
 va présenter ici les algorithmes utilisés habituellement par les systèmes de
 calcul formel: sous-résultant (PRS), modulaire (GCDMOD), $p$-adique (EEZGD) et
 heuristique (GCDHEU). Le premier est une adaptation de l'algorithme d'Euclide
@@ -4223,45 +4231,12 @@ d\'eterminer la multiplicit\'e maximale d'un facteur irr\'eductible
 de 
 $x^{14}-x^{13}-14x^{12}+12x^{11}+78x^{10}-54x^9-224x^8+116x^7+361x^6-129x^5-330x^4+72x^3+160x^2-16x-32$
 
-\end{enumerate}
-
-
-\section{Exercices (r\'esultant)}
-
-\begin{enumerate}
-\item Pour quelles valeurs de $p$ le polyn\^ome $X^5+X^3-pX+1$ admet-il
-une racine multiple?
-\item R\'esoudre le syst\`eme en \'eliminant successivement les
-variables gr\^ace au r\'esultant~:
-\[
-\left\{\begin{array}{rcl}
-a^{3}+b^{3}+c^{3} & = & 8 \\
-a^{2}+b^{2}+c^{2} & = & 6 \\
-a+b+2c & = & 4
-\end{array}\right.
-\]
-\item D\'eterminer l'intersection de $xy=4$ et $ y^2=(x-3)(x^2-16)$,
-rep\'esenter graphiquement les courbes. Discuter la multiplicit\'e
-et le nombre d'intersections.\\
-M\^eme question pour $(x-2)^2+y^2=4$ et $y^2=(x-3)(x^2-16)$.
 \item Donner le d\'etail des calculs avec B\'ezout de la d\'ecomposition
 en \'el\'ements simples de~:
 \[ \frac{1}{(x^2-1)^2(x+2)}\]
 puis calculer le coefficient de $x^n$ du d\'eveloppement en s\'eries
 enti\`eres de cette fraction en 0.
-\item Calculer 
-\[ \int \frac{1-x^2}{1+x^4} \ dx \]
-en utilisant le r\'esultant pour calculer les logarithmes.
-\item Courbe param\'etrique d\'ependant d'un param\`etre~:
-on consid\`ere la courbe $C_m$ d\'ependant du r\'eel $m$~:
-$$ x(t)=\frac{t+m}{t^2+1+m^2}, \quad y(t)=\frac{t^2}{t-m}$$
-Repr\'esenter la courbe pour quelques valeurs de $m$ (on pourra
-utiliser dans un niveau de g\'eom\'etrie, le menu Edit, Ajouter un
-param\`etre pour cr\'eer un curseur repr\'esentant $m$, puis 
-\verb|plotparam|). Donner l'\'equation cart\'esienne de $C_m$.
-D\'eterminer les valeurs de $m$ pour lesquelles
-la courbe admet un point singulier, repr\'esenter le graphe dans ce(s)
-cas et faire l'\'etude de la courbe.
+
 \end{enumerate}
 
 \section{Exercice (Bézout modulaire)}
@@ -4300,8 +4275,40 @@ de reste chinois de votre logiciel).
 l'algorithme d'Euclide étendu dans $\mathbb{Z}[X]$?
 \end{enumerate}
 
+\pagebreak
 
-\section{Exercice (G\'eom\'etrie et r\'esultants).}
+\section{Exercices (r\'esultant)}
+
+\begin{enumerate}
+\item Pour quelles valeurs de $p$ le polyn\^ome $X^5+X^3-pX+1$ admet-il
+une racine multiple? Factoriser le polyn\^ome pour cette valeur de $p$.
+\item R\'esoudre le syst\`eme en \'eliminant successivement les
+variables gr\^ace au r\'esultant~:
+\[
+\left\{\begin{array}{rcl}
+a^{3}+b^{3}+c^{3} & = & 8 \\
+a^{2}+b^{2}+c^{2} & = & 6 \\
+a+b+2c & = & 4
+\end{array}\right.
+\]
+\item D\'eterminer l'intersection de $xy=4$ et $ y^2=(x-3)(x^2-16)$,
+rep\'esenter graphiquement les courbes. Discuter la multiplicit\'e
+et le nombre d'intersections.\\
+M\^eme question pour $(x-2)^2+y^2=4$ et $y^2=(x-3)(x^2-16)$.
+\item Courbe param\'etrique d\'ependant d'un param\`etre~:
+on consid\`ere la courbe $C_m$ d\'ependant du r\'eel $m$~:
+$$ x(t)=\frac{t+m}{t^2+1+m^2}, \quad y(t)=\frac{t^2}{t-m}$$
+Repr\'esenter la courbe pour quelques valeurs de $m$ (on pourra
+utiliser dans un niveau de g\'eom\'etrie, le menu Edit, Ajouter un
+param\`etre pour cr\'eer un curseur repr\'esentant $m$, puis 
+\verb|plotparam|). Donner l'\'equation cart\'esienne de $C_m$.
+D\'eterminer les valeurs de $m$ pour lesquelles
+la courbe admet un point singulier, repr\'esenter le graphe dans ce(s)
+cas et faire l'\'etude de la courbe.
+\item Calculer 
+\[ \int \frac{1-x^2}{1+x^4} \ dx \]
+en utilisant le r\'esultant pour calculer les logarithmes.
+\item
 On cherche une relation alg\'ebrique entre les coordonn\'ees de 4 points
 $A,B,C,D$ qui traduise le fait que ces 4 points sont cocycliques. Cette
 condition \'etant invariante par translation, on cherche une
@@ -4340,7 +4347,7 @@ de la partie imaginaire du birapport des affixes $\alpha, \beta, \gamma,
 \[ \Im \left( \frac{\alpha-\beta}{\alpha-\gamma}
 \frac{\delta-\gamma}{\delta-\beta} \right) = 0\]
 \end{enumerate}
-
+\end{enumerate}
 
 \section{Décalage entier entre racines.}
 Soit $P$ un polynôme à coefficients entiers sans racines multiples. 
@@ -6738,7 +6745,7 @@ la commande \verb|cercle(0,1); G:=point(4/(3*pi),4/(3*pi))|
 
 
 
-\chapter{\'Equations et syst\`emes diff\'erentiels.} \label{sec:ode}
+\chapter{\'Equations et syst\`emes diff\'erentiels.}
 
 \section{Introduction et repr\'esentation graphique.}
 On s'int\'eresse \`a l'\'equation diff\'erentielle
@@ -6772,7 +6779,6 @@ pour quelques exemples de fonction $f(y,t)$, avec Xcas cr\'eer
 une figure 2d, puis choisir le mode Champ des tangentes
 du menu Geo, Graphe, entrer la fonction, puis cliquer en quelques
 points pour faire tracer la solution passant par ces points.\\
-\giacinput{restart;}
 Par exemple pour $y'=-y+\cos(t)$\\
 \giacslider{y0}{-5}{5}{0.1}{1.0}{
 gl_x=-5..5; gl_y=-5..5;
@@ -6828,7 +6834,7 @@ $$ x'{'}=-5v'=-25x$$
 donc $x(t)=A\cos(5t)+B\sin(5t)$, $A, B$ \'etant d\'etermin\'es
 par les conditions initiales sur $(x,v)$.
 
-Une \'equation donn\'ee sous la forme (\(\ref{eq:diff}\)) 
+Une \'equation donn\'ee sous la forme (\(\ref{eq:diff}\))
 est appel\'ee une \'equation r\'esolue en $y$,
 car on a exprim\'e la d\'eriv\'ee en fonction de $y$ et de $t$. Il
 existe (plus fr\'equemment en math\'ematiques) d'autres formes d'\'equations
@@ -7007,7 +7013,9 @@ $$ y(t)=Ce^{-\int \frac{a_0}{a_1} \ dt}$$
 {\bf Exemple}~: $y'-ty=0$, on a $y(t)=Ce^{\int t \ dt}=Ce^{t^2/2}$
 
 Si l'ordre est plus grand que 1, on n'a en g\'en\'eral pas de solution
-explicitable avec les fonctions usuelles et des primitives, 
+explicitable avec les fonctions usuelles et des primitives\footnote{On peut
+d'ailleurs d\'emontrer que certaines \'equations ne sont pas r\'esolubles de
+cette mani\`ere, cf. la th\'eorie de Galois diff\'erentielle}, 
 pour certaines \'equations importantes en physique, 
 des fonctions sp\'eciales
 ont \'et\'e cr\'e\'ees pour exprimer les solutions, par
@@ -7047,14 +7055,29 @@ de degr\'e le degr\'e de l'\'equation diff\'erentielle.
 Plus pr\'ecis\'ement, si on remplace $e^{rt}$ dans
 $$ a_n y^{[n]}+...+a_1 y'+a_0y=0$$ alors
 $$ a_n r^n +...+a_1r +a_0=P(r)=0$$
+\begin{thm}
 Si  $P$ n'a que des racines simples $r_1,...,r_n \in \mathbb{C}$, 
 l'ensemble des solutions
 est alors l'espace vectoriel engendr\'e par 
-$\{ e^{r_1t}, ... , e^{r_nt} \}$.
+$\{ e^{r_1t}, ... , e^{r_nt} \}$
+\end{thm}
 En effet, on a le bon nombre
 d'\'el\'ements ($n$), il suffit donc de montrer 
-qu'il s'agit d'une famille libre. Cela se fait
-par r\'ecurrence. Au rang $n=1$ c'est \'evident.
+qu'il s'agit d'une famille libre. 
+
+Pour cela, il suffit de faire tendre $t$ vers l'infini
+si toutes les parties r\'eelles des $r_j$ sont distinctes. Si
+certaines sont \'egales, on peut faire tendre $t$ vers l'infini
+sur une demi-droite du plan complexe, 
+on pose $t=Te^{i\alpha}, T \in \mathbb{R}^+$ 
+o\`u $\alpha$ est un petit angle
+choisi pour que les parties r\'eelles de $r_je^{i\alpha}$ 
+soient toutes distinctes (ceci revient \`a choisir $\alpha$
+tel que les projections des racines $r_j$ 
+sur l'axe $Ox$ tourn\'e de $-\alpha$ soient toutes distinctes,
+on brise ainsi une sym\'etrie sur les racines de $P$).
+
+On peut aussi faire une r\'ecurrence. Au rang $n=1$ c'est \'evident.
 Si $n>1$ et si $(\lambda_1,...,\lambda_n)$ v\'erifient~:
 $$ \sum_{j=1}^n \lambda_j e^{r_jt} = 0$$
 on factorise $e^{r_n t}$ et on d\'erive, on a
@@ -7063,28 +7086,51 @@ on est ramen\'e \`a l'identit\'e pr\'ec\'edente au rang $n-1$
 donc par r\'ecurrence, $\lambda_j (r_j-r_n)=0$ et $\lambda_j=0$
 si $j \neq n$, puis $\lambda_n=0$ avec la relation du d\'epart.
 
-Si $P$ a des racines multiples, on peut montrer que pour chaque
-racine $r_k$ de multiplicit\'e $m>1$, il faut rajouter
-$\{ te^{r_kt}, ..., t^{m-1} e^{r_kt} \}$ pour former une base
-de solutions. En effet
+Dans le cas g\'en\'eral, on a~:
+\begin{thm}
+Si $P$ a des racines multiples, il faut modifier la base
+de l'\'enonc\'e pr\'ec\'edent~: pour chaque
+racine $r_k$ de multiplicit\'e $m>1$, on remplace $e^{r_kt}$
+r\'ep\'et\'e $m$ fois par
+$\{ e^{r_kt}, te^{r_kt}, ..., t^{m-1} e^{r_kt} \}$
+\end{thm}
+En effet, on a~:
 $$ (ty)^{[j]} = t y^{[j]} + j y^{[j-1]}$$
-donc si $y$ est solution de l'\'equation alors $ty$ est encore solution
-si~:
-$$na_n y^{[n-1]} + (n-1)a_{n-1} y^{[n-2]}+...+a_1=0$$
-on reconnait l'\'equation diff\'erentielle lin\'eaire \`a coefficients
-constants dont l'\'equation caract\'eristique est $P'$.
-La preuve de l'ind\'ependance lin\'eaire de ces fonctions
-est plus technique, elle peut se faire 
-par r\'ecurrence sur le nombre de racines. S'il y
+Supposons que $y$ est solution de l'\'equation, 
+alors $ty$ est encore solution si~:
+$$na_n y^{[n-1]} + (n-1)a_{n-1} y^{[n-2]}+...+a_1y=0$$
+et on reconnait une \'equation diff\'erentielle lin\'eaire \`a coefficients
+constants dont l'\'equation caract\'eristique est $P'=0$, on a donc
+montr\'e la~:
+\begin{prop}
+Si $y$ est solution des deux \'equations diff\'erentielles \`a coefficients
+constants de polynomes caract\'eristiques respectifs $P$ et $P'$ alors
+$ty$ est solution de l'\'equation diff\'erentielle \`a coefficients
+constants de polynome caract\'eristique $P$.
+\end{prop}
+Pour prouver le th\'eor\`eme, il faut encore se convaincre que la
+famille est une base, ce qui revient
+\`a prouver l'ind\'ependance lin\'eaire de ces fonctions.
+Cela se fait comme pr\'ec\'edemment. Si toutes les parties r\'eelles
+des racines sont distinctes, en faisant tendre $t$ vers
+l'infini on se ram\`ene \`a un \'equivalent polyn\^omial nul.
+Si certaines parties r\'eelles sont \'egales, on peut \`a nouveau
+faire tendre $t$ vers l'infini dans le plan complexe en
+tournant d'un petit angle. On peut aussi adapter la r\'ecurrence,
+sur le nombre de racines. S'il y
 en a une, on a un polyn\^ome. Sinon, on factorise $e^{r_nt}$,
 et on d\'erive la multiplicit\'e de $r_n$ pour appliquer
 le r\'esultat au cran $n-1$, on a alors un syst\`eme triangulaire
-sur le groupe d'inconnues de la m\^eme exponentielle.
+sur le groupe d'inconnues de la m\^eme exponentielle. On peut aussi
+se ramener \`a des polyn\^omes en posant comme ci-dessus
+$t=Te^{i\alpha}$ et en faisant tendre $T$ vers l'infini.
 
 Si $P$ est \`a coefficients r\'eels et admet une racine non r\'eelle
 $z$ alors $\overline{z}$ est encore racine, on peut r\'e\'ecrire 
-avec des fonctions trigonom\'etriques
-les combinaisons lin\'eaires de $e^{zt}$ et $e^{\overline{z}t}$~:
+la base d'exponentielles complexes en une base
+de fonctions r\'eelles en utilisant des fonctions trigonom\'etriques.
+En effet les combinaisons lin\'eaires r\'eelles
+de $e^{zt}$ et $e^{\overline{z}t}$ ont des coefficients conjugu\'es~:
 $$ (\alpha + i \beta) e^{(a+ib)t} + (\alpha - i \beta)  e^{(a-ib)t}
 =  e^{at} ( 2 \alpha \cos(bt) - 2 \beta \sin(bt) )$$
 
@@ -7101,21 +7147,53 @@ $y(t)=e^{-t}(\alpha \cos(t)+\beta \sin(t))$
 \giacinputbigmath{desolve(y''+2y'+2y=0)}
 
 On peut trouver une solution particuli\`ere de l'\'equation avec
-second membre comme dans le cas g\'en\'eral (m\'ethode de variation
-des constantes). Si la solution g\'en\'erale est engendr\'ee par
+second membre $s(t)$ par la m\'ethode de variation
+des constantes, qui s'applique d'ailleurs
+\'egalement lorsque l'\'equation est lin\'eaire \`a coefficients
+variables. Si la solution g\'en\'erale est engendr\'ee par
 $y_1,...,y_n$, on pose~:
 $$ y=\sum_{i=1}^n \lambda_i y_i$$
 On pose
 $$ \sum_{i=1}^n \lambda_i' y_i=0 \ \Rightarrow \ 
 y'=\sum_{i=1}^n \lambda_i y_i'$$
 et ainsi de suite jusqu'\`a la d\'eriv\'ee d'ordre $n$ de $y$, ces
-$n-1$ \'equations et l\'equation diff\'erentielle donnent 
+$n-1$ \'equations et l'\'equation diff\'erentielle donnent 
 alors un syst\`eme lin\'eaire $n,n$ en
-les $\lambda_i'$.
+les $\lambda_i'$. 
+$$ \left\{ \begin{array}{ccc}
+\sum_{i=1}^n \lambda_i' y_i &=&0\\
+\sum_{i=1}^n \lambda_i' y_i' &=&0\\
+...\\
+\sum_{i=1}^n \lambda_i' y_i^{[n-2]} &=&0\\
+\sum_{i=1}^n \lambda_i' y_i^{[n-1]} &=& \frac{s(t)}{a_n}\\
+\end{array} \right. $$
+Ce syst\`eme a pour d\'eterminant $d$ la matrice
+de $i$-i\`eme ligne la d\'eriv\'ee d'ordre $i-1$ de $y_1,...,y_n$.
+Si on calcule la d\'eriv\'ee de $d$, il faut faire
+porter la d\'eriv\'ee sur la derni\`ere ligne pour avoir une
+contribution non nulle, on peut alors utiliser l'\'equation
+diff\'erentielle pour montrer que $d$ v\'erifie une
+\'equation lin\'eaire d'ordre 1 $a_nd'=(-1)^na_{n-1}d$ donc il est soit 
+identiquement nul soit jamais nul. 
+On montre alors par r\'ecurrence que l'ind\'ependance lin\'eaire
+de $y_1,...,y_n$ entraine alors
+que le d\'eterminant est non nul.
+En effet s'il est nul au rang $n$, alors l'une
+des colonnes est combinaison lin\'eaire des autres, par exemple
+la derni\`ere, on a donc~:
+$$y_n= \sum_{j=1}^{n-1} c_j y_j, \quad y_n'=\sum_{j=1}^{n-1} c_j y_j', ...
+\quad y_n^{[k]}=\sum_{j=1}^{n-1} c_j y_j^{[k]}, ...$$
+en d\'erivant on en d\'eduit que
+$$ \sum_{j=1}^{n-1} c_j' y_j=0, ..., \sum_{j=1}^{n-1} c_j' y_j^{[k-1]}=0,... $$
+on est ramen\'e \`a un syst\`eme lin\'eaire homog\`ene en $n-1$ inconnues
+(les $c_j'$) \`a qui on applique l'hypoth\`ese de r\'ecurrence, 
+on en d\'eduit que
+les $c_j'$ sont nuls donc les $c_j$ sont des constantes ce qui contredit
+l'ind\'ependance lin\'eaire des $y_j$.
 
 Pour des second membre combinaison lin\'eaire
 de termes $b(t)e^{rt}$ avec $b$ polyn\^ome,
-on peut chercher une solution particuli\`ere
+il est plus simple de chercher directement une solution particuli\`ere
 combinaison lin\'eaire de $a(t)e^{rt}$ o\`u $a$ est de m\^eme
 degr\'e que $b$ si $r$ n'est pas racine de $P$, ou de degr\'e le
 degr\'e de $b$ plus la multiplicit\'e de $r$ comme racine de $P$.
@@ -7230,11 +7308,11 @@ Le champ \'electrique joue ici le r\^ole de second membre, comme 0
 est solution de l'\'equation caract\'eristique, la forme de la 
 solution particuli\`ere est $z=At$, en rempla\c{c}ant on obtient 
 $ A=iE/B$ donc
-$$z=\alpha + \beta e^{-i\frac{qB}{m}t}+i\frac{E}{B} $$
+$$z=\alpha + \beta e^{-i\frac{qB}{m}t}+i\frac{E}{B}t $$
 La forme g\'en\'erale des solutions est un cercle si $E=0$
 parcouru une infinit\'e de fois, qui se d\'eforme sous l'effet
 du champ \'electrique en une sorte de spirale de ressort, pour
-une valeur seuil de $E$ on obtient une cyclo\"ide.
+une vitesse initialle nulle, on obtient une cyclo\"ide.
 
 \subsection{Allure des courbes en dimension 2.}
 Si on se place dans le rep\`ere propre (en prenant les vecteurs
@@ -7261,7 +7339,9 @@ Quelques exemples~:
 \giacinputbigmath{A:=[[1,-1],[2,4]];p,d:=jordan(A)}
 \giacinputbigmath{A:=[[0,1],[-1,0]];p,d:=jordan(A)}
 \giacinputmath{A:=[[1,1],[-1,1]];p,d:=jordan(A)}
-\giacinputbig{seq(seq(plotparam(exp(A*t)*[a/5,b/5],t=-1..1),a,-3,3),b,-3,3)}
+\giacinputbig{seq(seq(
+plotparam(exp(A*t)*[a/5,b/5],t=-1..1,affichage=arrow_line),
+a,-3,3),b,-3,3)}
 %\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+A:=[[-1,1],[1,2]]&+A:=[[1,-1],[2,4]]&+A:=[[0,1],[-1,0]]&+A:=[[1,1],[-1,1]]&+p,d:=jordan(A)&+seq(seq(plotparam(exp(A*t)*[a/5,b/5],t=-1..1),a,-3,3),b,-3,3)&}
 
 {\bf Remarque~:}pour un syst\`eme diff\'erentiel \`a coefficients
@@ -7396,7 +7476,7 @@ $$\frac{d^2 {\mathbf r}}{dt^2}=-\mu \frac{{\mathbf r}}{r^3}$$
 on montre
 \begin{itemize}
 \item  la conservation du moment cin\'etique 
-$${\mathbf L}=
+$${\bf L}=
 {\mathbf r} \wedge \frac{d {\mathbf r}}{dt}$$
 (v\'erification imm\'ediate en d\'erivant).
 Ceci entraine que
@@ -7762,15 +7842,31 @@ on peut alors lin\'eariser et esp\'erer que
 la solution se comporte comme la solution de
 $$y'=f'(r_k)(y-r_k) + g(t)$$
 au moins pendant un certain intervalle de temps.
+Si $g(t)=g$ est petit et constant, le point d'\'equilibre est d\'eplac\'e
+au premier ordre de
+$$ y-r_k=-f'(r_k)^{-1}g$$
 
-{\bf Exemple}~: mod\`ele coupl\'e d'\'evolution temp\'erature-CO2.\\
-On mod\'elise l'\'evolution de la temp\'erature
+{\bf Exemple}~: mod\`ele d'\'evolution temp\'erature puis temp\'erature-CO2.
+
+Le mod\`ele le plus simple ne tient compte que des radiations venues du Soleil
+et r\'e\'emises par la Terre, consid\'er\'ee comme un corps noir
+\[ \frac{dT}{dt} = k \left( S - \sigma T^4 \right)\]
+o\`u $k$ mod\'elise l'inertie thermique, $S$ est la constante solaire 
+(environ 1364/4$W/m^2$) et
+$\sigma$ est reli\'e \`a la constante de Stefan-Boltzmann (5.67e-8 S.I.).
+On a alors un \'equilibre pour $T_e=S^{1/4}$, et cet \'equilibre est stable.
+
+Si on perturbe par un effet de serre additionnel du CO2,
+on mod\'elise l'\'evolution de la temp\'erature
 $T$ de la Terre par
 \[ \frac{dT}{dt} = k \left( 6 \ln (\frac{CO2}{280}) - \sigma (T^4-T_e^4) \right)\]
 o\`u $T_e=288K$ est la temp\'erature d'\'equiibre de la Terre et 
 $CO2(t)$ la concentration en ppm de gaz carbonique, $k$ mod\'elise
 la capacit\'e calorifique de la Terre (on peut estimer $k=0.0025K/yr$),
 $\sigma$ la constante de Stefan-Boltzmann (5.67e-8 S.I.).
+Par exemple avec un taux de CO2 stabilis\'e \`a 450ppm, le nouvel
+\'equilibre est donn\'e \`a l'ordre 1 par
+$$ T-T_e=(4\sigma T_e^3)^{-1}(6 \ln (\frac{450}{280})) $$
 
 Le taux de CO2 de l'atmosph\`ere peut \^etre consid\'er\'e comme
 un for\c{c}age ext\'erieur (d\'ependant de sc\'enarios d'\'emissions
@@ -7778,7 +7874,56 @@ de CO2) mais il d\'epend aussi de la temp\'erature de l'oc\'ean,
 on peut donc mod\'eliser l'\'evolution conjointe des deux
 variables par un syst\`eme diff\'erentiel autonome auquel on
 ajoute une composante d\'ependant du temps (\'emissions
-anthropiques).
+anthropiques). Par exemple un syst\`eme 2 par 2 avec un second
+membre constant dans un sc\'enario avec \'emissions de CO2 constantes.
+\[ \frac{d}{dt} \left(\begin{array}{c}
+T \\
+C
+\end{array}\right) =
+F(T,C) = \left(\begin{array}{c}
+k (\sigma(T_0^4-T^4)+6 \ln(\frac{C}{280})  ) \\
+g(T,C) + a
+\end{array}\right)
+\]
+o\`u  $\partial_C g$ est n\'egatif (l'oc\'ean
+absorbe l'exc\'edent de CO2 \'emis par rapport \`a la valeur 
+avec laquelle il est en \'equilibre, on peut 
+estimer $\partial_C g=-2.5/120$ par les observations~: \'emissions 
+4.5 ppm par an, hausse de CO2 2ppm/an, donc $g(400)=-2.5=\partial_Cg(400-280)$),
+et $a$ repr\'esente la perturbation anthropique (par exemple $a=5ppm/an$
+si stabilisation des \'emissions de CO2 \`a ce niveau).
+Dans un mod\`ele simplifi\'e $g$ ne d\'epend que de $C$,
+la d\'eriv\'ee $F'$ a des coefficients n\'egatifs sur la diagonale et
+un coefficient nul sous la diagonale, donc les valeurs propres de $F'$
+sont n\'egatives, le climat est stable. On atteint alors un nouvel 
+\'equilibre avec une temp\'erature $T$ et un taux de CO2 $C$ donn\'es
+par
+$$\left(\begin{array}{c} \Delta T_e\\ \Delta C_e \end{array}\right)= -F'(T_e,C_e)^{-1}\left(\begin{array}{c}0\\ a \end{array}\right), \quad
+F'=\left(\begin{array}{cc}-4k\sigma T_e^3 & 6k/C_e\\ 0 & \partial_C g
+\end{array}\right)$$
+La valeur de la constante de couplage entre CO2 et T affecte \'evidemment
+le calcul de $F'^{-1}$ donc des valeurs \`a l'\'equilibre.
+Ici avec nos estimations~:
+\giacinputbigmath{k:=0.0025; s:=5.67e-8;Fp:=[[-4*k*s*288^3,6*k/280],[0,-2.5/120]]; -Fp^-1*[0,5]}
+on obtient une hausse de temp\'erature de 1 degr\'e et de CO2 de 240ppm.
+Cela semble inf\'erieur \`a la hausse de temp\'erature observ\'ee,
+car on n'a pas tenu compte d'autres r\'etroactions, en particulier
+la glace et l'eau.
+De plus dans un mod\`ele plus r\'ealiste, $g$ d\'epend aussi de $T$, 
+en effet si l'oc\'ean
+se r\'echauffe il d\'egaze du CO2. La matrice $F'$ n'est plus triangulaire
+sup\'erieure, mais a 2 coefficients n\'egatifs sur la diagonale et
+2 positifs en-dehors. Si les valeurs propres restent n\'egatives,
+le climat est stable, mais si le couplage \'etait suffisamment
+fort pour que l'une des valeurs propres d\'epasse 0, 
+le climat pourrait devenir instable! Ici on peut estimer grossi\`erement
+$\partial_T g=0.42$ en tenant compte des cycles climatiques du pass\'e,
+pour une hausse de 5 degr\'es on observe
+une hausse de 100ppm \`a l'\'equilibre (on doit avoir $F'*[5,100]=[x,0]$,
+$x$ correspondant au for\c{c}age astronomique sur la temp\'erature).
+Cette estimation laisse les valeurs propres n\'egatives,
+augmente de 10\% environ la hausse de temp\'erature et de CO2 \`a
+l'\'equilibre.
 
 On peut raffiner ce mod\`ele en ajoutant par exemple la glace
 et ses interactions avec la temp\'erature (si la temp\'erature
@@ -7793,7 +7938,7 @@ C
 F(T,G,C) = \left(\begin{array}{c}
 k (\sigma(T_0^4-T^4)+6 \ln(\frac{C}{280}) - \beta G^{2/3} ) \\
 f(T) \\
-g(C,T) + a(t)
+g(T,C) + a(t)
 \end{array}\right)
 \]
 o\`u $f$ est une fonction d\'ecroissante, $\partial_T g$ est positif,
@@ -8460,13 +8605,16 @@ de la variable engendre le corps moins 0). Par exemple
 \item \verb|GF(2,128,0)| utilisera un polyn\^ome minimal pas forc\'ement 
 primitif
 \item \verb|GF(2,128,r,0)| combine les deux
-\item \verb|GF(2,w^8+w^7+w^5+w+1,w,0)| utilise \verb|w| comme variable,
-le polyn\^ome minimal \verb|w^8+w^7+w^5+w+1| qui n'est pas forc\'ement
+\item \verb|GF(2,w^8+w^7+w^5+w+1)| utilise \verb|w| comme variable
+et le polyn\^ome minimal \verb|w^8+w^7+w^5+w+1| qui n'est pas forc\'ement
 primitif.
 \end{itemize}
 
 Exercices~:
 \begin{enumerate}
+\item Construire un corps $K$ \`a 81 \'el\'ements avec la commande \verb|GF|.
+Chercher un polyn\^ome irr\'eductible de degr\'e 4 sur $\Z/3\Z$,
+puis le factoriser sur le corps $K$.
 \item Trouver un polyn\^ome irr\'eductible $P$ de degr\'e 5 sur $\mathbb{Z}/7\mathbb{Z}$.
 En d\'eduire une repr\'esentation de \verb|GF(7,5)|. Factoriser 
 le polyn\^ome $P$ sur votre repr\'esentation de \verb|GF(7,5)| (on pourra utiliser
@@ -8478,12 +8626,13 @@ M\^eme question mais en degr\'e 4 avec la repr\'esentation de Xcas.
 \verb|factors()|, \verb|% 2| et \verb|% 0|). 
 En d\'eduire les polyn\^omes irr\'eductibles de degr\'e 4 sur
   $\mathbb{Z}/2\mathbb{Z}$, d\'eterminez les polyn\^omes irr\'eductibles
-primitif de degr\'e 4, pour l'un d'entre eux construire une table entre repr\'esentation
+primitif de degr\'e 4, pour l'un d'entre eux construire une table 
+entre repr\'esentation
 multiplicative et additive de \verb|GF(2,4)|.
 \item \'Ecrire une fonction permettant de d\'eterminer si un
   polyn\^ome $A$ est irr\'eductible modulo $p$, en utilisant le
-PGCD avec les $x^{p^k}-x$ modulo $p$. Quelle est sa complexit\'e
-si $A$ est irr\'eductible de degr\'e $d$~?
+PGCD avec les $x^{p^k}-x$ modulo $p$. 
+Quelle est sa complexit\'e si $A$ est irr\'eductible de degr\'e $d$~?
 \item Cr\'eer une matrice carr\'ee $M$ d'ordre 3 \`a coefficients
 dans un corps de cardinal 25, d\'eterminer son polynome
 minimal et son ordre. Quels sont les ordres possibles~?
@@ -11954,11 +12103,11 @@ $$ \frac{b-a}{n} \sum_{k=1}^n f(x_k) $$
 o\`u $x_k$ est obtenu par un g\'en\'erateur pseudo-al\'eatoire
 (selon la loi uniforme).
 Par exemple\\
-\giacinputbigmath{f(t):=exp(-t^2); n:=1000; a:=0; b:=2.0;l:=ranv(n,uniform,a,b):;}\\
+\giacinputbigmath{f(t):=exp(-t^2); n:=1000; a:=0; b:=2.0;l:=ranv(n,uniformd,a,b):;}\\
 \giacinputbigmath{(b-a)*sum(apply(f,l))/n; int(f(t),t,a,b);}\\
 La convergence en fonction de $n$ est assez lente, on peut l'observer
 en faisant plusieurs estimations~:\\
-\giacinputbigmath{m:=ranm(500,n,uniform,a,b):;I:=seq(2*sum(apply(f,m[k]))/n,k,0,size(m)-1);}\\
+\giacinputbigmath{m:=ranm(500,n,uniformd,a,b):;I:=seq(2*sum(apply(f,m[k]))/n,k,0,size(m)-1);}\\
 \giacinput{histogram(I,0,0.01)}
 
 En effet, les tirages sont \'equidistribu\'es selon la m\^eme loi,
@@ -11980,7 +12129,7 @@ l'\'ecart-type de l'\'echantillon des estimations \verb|stddevp(I)|.\\
 
 On peut donc obtenir rapidement une estimation de $\sigma$ en prenant
 l'\'ecart-type d'une s\'equence de valeurs de $f$\\
-\giacinputbigmath{f(t):=exp(-t^2); n:=1000; a:=0;  b:=2.0;l:=ranv(n,uniform,a,b):;}\\
+\giacinputbigmath{f(t):=exp(-t^2); n:=1000; a:=0;  b:=2.0;l:=ranv(n,uniformd,a,b):;}\\
 \giacinputbigmath{fl:=apply(f,l):;m:=(b-a)*mean(fl);s:=(b-a)*stddevp(fl)/sqrt(n);[m-2s,m+2s]}
 
 Cette m\'ethode converge donc beaucoup moins vite que les quadratures,
@@ -14808,7 +14957,7 @@ $$ |(Nx)_i| \leq \sum_{j \neq i} |a_{ij}| |x_j| \leq \sum_{j \neq i}
 \quad  \Rightarrow \quad |M^{-1}(Nx)_i| <  \| x\|_\infty $$
 On retrouve ce cas pour une petite perturbation d'une matrice
 diagonale, par exemple~\\
-\giacinputbigmath{n:=500;A:=2*idn(n)+1e-4*ranm(n,n,uniform,-1,1):;b:=seq(1,n):;}\\
+\giacinputbigmath{n:=500;A:=2*idn(n)+1e-4*ranm(n,n,uniformd,-1,1):;b:=seq(1,n):;}\\
 \giacinput{time(c:=linsolve(A,b));}\\
 \giacinput{time(d:=jacobi(A,b,1e-12,50));}\\
 \giacinput{maxnorm(d-c)}\\
@@ -15109,7 +15258,7 @@ f(P,eps,N):={
   l:=coeffs(P);
   n:=degree(P);
   l:=revlist(l[1..n]/l[0]);
-  v:=randvector(n,uniform,-1,1);
+  v:=randvector(n,uniformd,-1,1);
   oldratio:=inf;
   for k from 1 to N do
     old:=maxnorm(v);
@@ -15860,7 +16009,7 @@ est remplac\'ee par la valeur de la d\'eriv\'ee. Dans le calcul
 des diff\'erences divis\'ees ci-dessus on fera comme si les
 2 points \'etaient distincts et successifs, disons $x_i$ et $x_{i+1}$,
 on remplace le rapport ind\'etermin\'e 
-\[ \frac{f(x_{i+1})-f(x_i)}{x_{i+1}-x_i} = \frac00\]
+\[ \frac{f(x_{i+1})-f(x_i)}{x_{i+1}-x_i} = \frac{0}{0} \]
 par $f'(x_i)$.
 On montre qu'une fois ce changement r\'ealis\'e
 tout le reste est identique (y compris la majoration d'erreur).

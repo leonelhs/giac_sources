@@ -2933,9 +2933,11 @@ namespace giac {
 
   gen _abs(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type!=_VECT)
+      return giac::abs(args,contextptr);
     if (ckmatrix(args))
       return _l2norm(args,contextptr);
-    if (args.type==_VECT && (args.subtype==_POINT__VECT || args.subtype==_GGBVECT))
+    if (args.subtype==_POINT__VECT || args.subtype==_GGBVECT)
       return _l2norm(args,contextptr);
     return apply(args,contextptr,giac::abs);
   }
@@ -5387,15 +5389,15 @@ namespace giac {
     if (arg.type==_VECT && arg.subtype==_SEQ__VECT && arg._VECTptr->size()==2 && arg._VECTptr->front().type==_VECT)
       return apply(equaltosame(arg._VECTptr->front()).eval(eval_level(contextptr),contextptr),equaltosame(arg._VECTptr->back()).eval(eval_level(contextptr),contextptr),and2);
     gen args=apply(arg,equaltosame);
-    if (args.type!=_VECT || args._VECTptr->empty())
-      return args.eval(eval_level(contextptr),contextptr);
-    vecteur::const_iterator it=args._VECTptr->begin(),itend=args._VECTptr->end();
-    gen res=eval(*it,eval_level(contextptr),contextptr);
+    if (arg.type!=_VECT || arg._VECTptr->empty())
+      return equaltosame(arg).eval(eval_level(contextptr),contextptr);
+    vecteur::const_iterator it=arg._VECTptr->begin(),itend=arg._VECTptr->end();
+    gen res(eval(equaltosame(*it),eval_level(contextptr),contextptr));
     ++it;
     for (;it!=itend;++it){
       if (res.type==_INT_ && res.val==0)
 	return res;
-      res = res && eval(*it,eval_level(contextptr),contextptr);
+      res = res && eval(equaltosame(*it),eval_level(contextptr),contextptr);
     }
     return res;
   }
@@ -5424,18 +5426,18 @@ namespace giac {
   }
   gen _ou(const gen & arg,GIAC_CONTEXT){
     if ( arg.type==_STRNG && arg.subtype==-1) return  arg;
+    int el=eval_level(contextptr);
     if (arg.type==_VECT && arg.subtype==_SEQ__VECT && arg._VECTptr->size()==2 && arg._VECTptr->front().type==_VECT)
-      return apply(equaltosame(arg._VECTptr->front()).eval(eval_level(contextptr),contextptr),equaltosame(arg._VECTptr->back()).eval(eval_level(contextptr),contextptr),ou2);
-    gen args=apply(arg,equaltosame);
-    if (args.type!=_VECT || args._VECTptr->empty())
-      return eval(args,eval_level(contextptr),contextptr);
-    vecteur::const_iterator it=args._VECTptr->begin(),itend=args._VECTptr->end();
-    gen res=eval(*it,eval_level(contextptr),contextptr);
+      return apply(equaltosame(arg._VECTptr->front()).eval(el,contextptr),equaltosame(arg._VECTptr->back()).eval(el,contextptr),ou2);
+    if (arg.type!=_VECT || arg._VECTptr->empty())
+      return eval(equaltosame(arg),el,contextptr);
+    vecteur::const_iterator it=arg._VECTptr->begin(),itend=arg._VECTptr->end(); 
+    gen res(eval(equaltosame(*it),el,contextptr));
     ++it;
     for (;it!=itend;++it){
       if (res.type==_INT_ && res.val)
 	return res;
-      res = res || eval(*it,eval_level(contextptr),contextptr);
+      res = res || eval(equaltosame(*it),el,contextptr);
     }
     return res;
   }

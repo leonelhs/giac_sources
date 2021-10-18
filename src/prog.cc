@@ -2169,7 +2169,7 @@ namespace giac {
   bool chk_forprog(const gen & forprog,const gen & index,const gen & stopg){
     if (forprog.type==_VECT)
       return chk_forprog(*forprog._VECTptr,index,stopg);
-    if (forprog.type!=_SYMB)
+    if (forprog.type!=_SYMB || forprog.subtype==_FORCHK__SYMB)
       return true;
     unary_function_ptr & u=forprog._SYMBptr->sommet;
     if (u==at_sto || u==at_array_sto){
@@ -2183,7 +2183,10 @@ namespace giac {
       if (*to==index || *to==stopg) 
 	return false;
     }
-    return chk_forprog(forprog._SYMBptr->feuille,index,stopg);
+    if (!chk_forprog(forprog._SYMBptr->feuille,index,stopg))
+      return false;
+    ((gen *) &forprog)->subtype=_FORCHK__SYMB;
+    return true;
   }
   gen _for(const gen & args,const context * contextptr){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
@@ -4159,8 +4162,15 @@ namespace giac {
   // static gen symb_makelist(const gen & args){  return symbolic(at_makelist,args);  }
   gen _makelist(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
-    if (args.type==_INT_ && args.val>=0 && args.val<LIST_SIZE_LIMIT)
-      return vecteur(args.val);
+    if (args.type==_INT_){
+      if (args.val>=0 && args.val<LIST_SIZE_LIMIT)
+	return vecteur(args.val);
+      if (args.val<0 && args.val>-LIST_SIZE_LIMIT){
+	gen res=new_ref_vecteur(vecteur(0));
+	res._VECTptr->reserve(-args.val);
+	return res;
+      }
+    }
     if (args.type!=_VECT)
       return gensizeerr();
     vecteur v(*args._VECTptr);
@@ -10400,6 +10410,16 @@ namespace giac {
     gen a=w[0],b=w[1];
     if (a.type==_IDNT){
       gen tmp=eval(a,1,contextptr);
+      if (tmp.type==_VECT && b.type==_SYMB){
+	if (b._SYMBptr->sommet==at_append){
+	  tmp._VECTptr->push_back(eval(b._SYMBptr->feuille,eval_level(contextptr),contextptr));
+	  return tmp;
+	}
+	if (b._SYMBptr->sommet==at_suppress && b._SYMBptr->feuille.type==_VECT && b._SYMBptr->feuille._VECTptr->empty()){
+	  tmp._VECTptr->clear();
+	  return tmp;
+	}
+      }
       if (tmp.type==_FUNC)
 	a=tmp;
     }

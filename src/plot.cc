@@ -2178,11 +2178,11 @@ namespace giac {
 	  if (lastymax==lastymin)
 	    w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor)),0)));
 	  else
-	    w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastymax-lastymin)),0)));
+	    w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastymax+1-lastymin)),0)));
 	}
 	else {
 	  if (lastymax==lastymin)
-	    w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastxmin-lastxmax)),0)));
+	    w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastxmin-lastxmax-1)),0)));
 	}
       }
       lastxmax=lastxmin=x.val;
@@ -2194,11 +2194,11 @@ namespace giac {
 	if (lastymax==lastymin)
 	  w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor)),0)));
 	else
-	  w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastymax-lastymin)),0)));
+	  w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastymax+1-lastymin)),0)));
       }
       else {
 	if (lastymax==lastymin)
-	  w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastxmin-lastxmax)),0)));
+	  w.push_back(symbolic(at_pnt,makesequence(symbolic(at_pixon,makesequence(lastxmin,lastymin,lastcolor,lastxmin-lastxmax-1)),0)));
       }
     }
     return w;
@@ -5358,6 +5358,15 @@ namespace giac {
 
   gen _longueur(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    vecteur * argptr;
+    if ( args.type!=_VECT || args.subtype!=_SEQ__VECT || (argptr=args._VECTptr)->size()!=2)
+      return gensizeerr(contextptr);
+    const gen & e1=argptr->front();
+    const gen & e2=argptr->back();
+    if (e1.type==_CPLX && e1.subtype==3 && e2.type==_CPLX && e2.subtype==3){
+      double x=e1._CPLXptr->_DOUBLE_val-e2._CPLXptr->_DOUBLE_val,y=(e1._CPLXptr+1)->_DOUBLE_val-(e2._CPLXptr+1)->_DOUBLE_val;
+      return std::sqrt(x*x+y*y);
+    }
     return sqrt(_longueur2(args,contextptr),contextptr);
   }
   static const char _longueur_s []="distance";
