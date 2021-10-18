@@ -4,40 +4,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Représentation graphique de l’aire d’un polygone : tracer_aire graphe_aire aire_graphe plotarea areaplot</title>
+<title>La longueur d’un segment et son affichage : distanceat distanceen et distanceatraw distanceenbrut</title>
 </head>
 <body >
 <a href="cascmd_fr967.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr969.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1178" class="subsection">10.16.7  Représentation graphique de l’aire d’un polygone : <span style="font-family:monospace">tracer_aire graphe_aire aire_graphe plotarea areaplot</span></h3>
-<p><a id="hevea_default1884"></a><a id="hevea_default1885"></a><a id="hevea_default1886"></a> <a id="hevea_default1887"></a><a id="hevea_default1888"></a>
-Avec un polygone comme argument, <span style="font-family:monospace">aire_graphe</span> ou <span style="font-family:monospace">graphe_aire</span> ou
-<span style="font-family:monospace">tracer_aire</span><span style="font-family:monospace">plotarea</span> permet 
-de représenter et d’afficher l’aire d’un polygone. L’aire est positive si le 
-le polygone est direct et est négative sinon
+<h3 id="sec1178" class="subsection">10.16.3  La longueur d’un segment et son affichage : <span style="font-family:monospace">distanceat distanceen</span> et <span style="font-family:monospace">distanceatraw distanceenbrut</span></h3>
+<p><a id="hevea_default1890"></a><a id="hevea_default1891"></a><a id="hevea_default1892"></a><a id="hevea_default1893"></a>
+<span style="font-family:monospace">distanceat</span> ou <span style="font-family:monospace">distanceen</span> et <span style="font-family:monospace">distanceatraw</span> ou 
+<span style="font-family:monospace">distanceenbrut</span> sont des commandes obtenues 
+lorsqu’on utilse, dans un niveau de géométrie 2<span style="font-style:italic">d</span> ou 3<span style="font-style:italic">d</span>, le bouton 
+<span style="font-family:monospace">Mode-&gt;Mesures-&gt;ditanceen</span> ou <span style="font-family:monospace">Mode-&gt;Mesures-&gt;distanceenbrut</span>. Dans ce 
+cas il faut que tous les objets, sauf les points, désignés par la souris 
+soient déjà nommés.<br>
+On peut néammoins taper ces commandes dans une ligne de commande.<br>
+<span style="font-family:monospace">distanceat</span> ou <span style="font-family:monospace">distanceen</span> a 3 arguments : le nom de 2 points et 1 point (ou l’affixe de ce point) ou encore le nom de 2 objets 
+géométriques et un point (ou l’affixe de ce point).<br>
+<span style="font-weight:bold">Attention</span> Il faut que les 2 premiers arguments soient des noms. <br>
+<span style="font-family:monospace">distanceat</span> ou <span style="font-family:monospace">distanceen</span> renvoie le point donné en 3-ième 
+argument, calcule la longueur du segment défini par les deux premiers points 
+ou la distance entre les 2 objets géométriques et affiche à l’endroit du 
+3-ième point, cette longueur précédée d’une légende.<br>
+On tape (on doit donnerle nom des objets) :
+</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);segment(A,B);</span></div><div class="center"><span style="font-family:monospace">distanceat(A,B,0.4i)</span></div><p>
+ou
+</p><div class="center"><span style="font-family:monospace">distanceen(A,B,0.4i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">AB=sqrt(5) s’écrit au point(0.4i)</span></div><p>
+On tape (on doit donnerle nom des objets) :
+</p><div class="center"><span style="font-family:monospace">C:=point(0);d:=droite(-1,1+i)</span></div><div class="center"><span style="font-family:monospace">distanceen(C,d,i/2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Cd=sqrt(5)/5 s’écrit au point(i/2)</span></div><p>
+On tape (on doit donner le nom des objets) :
+</p><div class="center"><span style="font-family:monospace">c:=cercle(0,1); d:=droite(-2,1+3i)</span></div><div class="center"><span style="font-family:monospace">distanceen(c,d,0)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">cd=sqrt(2)-1 s’écrit au point(0)</span></div><p><span style="font-family:monospace">distanceatraw</span> ou <span style="font-family:monospace">distanceenbrut</span> a comme argument trois 
+points (ou 2 points et 1 nombre complexe qui est l’affixe d’un point) ou encore
+2 objets géométriques et un point (ou l’affixe de ce point). <br>
+<span style="font-family:monospace">distanceatraw</span> ou <span style="font-family:monospace">distanceenbrut</span> renvoie le point donné en 
+3-ième argument, calcule la longueur du segment défini par les deux 
+premiers points ou la distance entre les 2 ojets géométriques et affiche 
+cette longueur à l’endroit du 3-ième point.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(1),point((1+i)*1/2),point(1+i)))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);segment(A,B);</span></div><div class="center"><span style="font-family:monospace">distanceenbrut(A,B,0.4i)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">le polygone rempli avec -1/4 affiché au point(1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sqrt(5) s’écrit au point(0.4i)</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(1),point(1+i),point((1+i)*1/2)))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">C:=point(0);d:=droite(-1,1+i)</span></div><div class="center"><span style="font-family:monospace">distanceenbrut(C,d,i/2)</span></div><p>
+ou on tape (on n’est pas obligé de donner un nom aux objets) :
+</p><div class="center"><span style="font-family:monospace">distanceenbrut(0,droite(-1,1+i),i/2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">le polygone rempli avec 1/4 affiché au point(1)</span></div><p>
-<span style="font-weight:bold">Remarque</span>
-Si on ne voit pas l’affichage, on tape par exemple : 
-</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">le polygone rempli, mais ne l’affichage au point(0) est caché</span></div><p>
-On tape alors :
-</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)),affichage=quadrant2)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">le polygone rempli, avec 3/4 affiché au au point(0)</span></div><p>
-On peut aussi taper, pour n’avoir que la valeur :
-</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)))[3]</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">3/4</span></div>
+</p><div class="center"><span style="font-family:monospace">sqrt(5)/5 s’écrit au point(i/2)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">c:=cercle(0,1); d:=droite(-2,1+3i)</span></div><div class="center"><span style="font-family:monospace">distanceenbrut(c,d(-2,1+3i),0)</span></div><p>
+ou on tape (on n’est pas obligé de donner un nom aux objets) :
+</p><div class="center"><span style="font-family:monospace">distanceenbrut(cercle(0,1),droite(-2,1+3i),0)</span></div><p>On obtient :
+</p><div class="center"><span style="font-family:monospace">sqrt(2)-1 s’écrit au point(0)</span></div>
 <hr>
 <a href="cascmd_fr967.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,35 +4,52 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>La perpendiculaire commune à deux droites 3-d : common_perpendicular perpendicu- laire_commune</title>
+<title>Le vecteur en 3-d : vecteur</title>
 </head>
 <body >
 <a href="cascmd_fr1030.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1032.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1251" class="subsection">11.5.9  La perpendiculaire commune à deux droites 3-d : <span style="font-family:monospace">common_perpendicular perpendicu- laire_commune</span></h3>
-<p><a id="hevea_default2012"></a><a id="hevea_default2013"></a>
-<span style="font-family:monospace">perpendiculaire_commune</span> a comme argument deux droites 
-<span style="font-family:monospace">D1</span> et <span style="font-family:monospace">D2</span>.<br>
-<span style="font-family:monospace">perpendiculaire_commune(D1,D2)</span> dessine la perpendiculaire commune des 
-droites <span style="font-family:monospace">D1</span> et <span style="font-family:monospace">D2</span>.<br>
+<h3 id="sec1251" class="subsection">11.5.5  Le vecteur en 3-d : <span style="font-family:monospace">vecteur</span></h3>
+<p><a id="hevea_default2023"></a>
+<a id="sec:vecteur3"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr921.html#sec%3Avecteur2">10.9.6</a> pour la géométrie plane.<br>
+Pour travailler avec les composantes d’un vecteur de ℝ<sup><span style="font-style:italic">n</span></sup>, il faut 
+utiliser des listes.<br>
+<span style="font-family:monospace">vecteur</span>, en géométrie 3-d, a comme arguments soit :
+</p><ul class="itemize"><li class="li-itemize">
+une liste représentant les coordonnées d’un point <span style="font-style:italic">A</span>.<br>
+<span style="font-family:monospace">vecteur</span> définit et dessine le vecteur <span style="font-style:italic">OA</span> où <span style="font-style:italic">O</span> est l’origine du repère.
+</li><li class="li-itemize">deux points <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span> ou deux listes représentant les coordonnées de ces 
+points.<br>
+<span style="font-family:monospace">vecteur</span> définit et dessine le vecteur <span style="font-style:italic">AB</span>
+</li><li class="li-itemize">un point <span style="font-style:italic">A</span> (ou une liste représentant les coordonnées de ce point) 
+et un vecteur <span style="font-style:italic">V</span> (définition récursive).<br>
+<span style="font-family:monospace">vecteur</span> définit et dessine le vecteur <span style="font-style:italic">AB</span> tel que
+<span style="font-style:italic">AB</span>=<span style="font-style:italic">V</span>.
+</li></ul><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">D1:=droite([1,1,0],[0,1,1]); D2:=droite([0,-1,0],[1,-1,1]);</span></div><p>
-Puis on tape :
-</p><div class="center"><span style="font-family:monospace">perpendiculaire_commune(D1,D2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">vecteur([1,2,3])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">La perpendiculaire commune aux deux droites D1 et D2</span></div><p>
-Si on tape :
-</p><div class="center"><span style="font-family:monospace">d:=perpendiculaire_commune(D1,D2);0</span></div><p>
+</p><div class="center"><span style="font-family:monospace">Le tracé du vecteur d’origine [0,0,0] et d’extrémité [1,2,3]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">vecteur(point([-1,0,0]),point([0,1,2]))</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">vecteur([-1,0,0],[0,1,2])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">expr("pnt(pnt[line[point[1,0,-1],point[-1/3,-2/3,-1/3]],56,"d"])",0),0</span></div><p>
-Ce qui veut dire que la perpendiculaire commune à D1 et D2 passe par les 
-points [1,0,-1] et [-1/3,-2/3,-1/3].<br>
-Puis on tape :<br>
-</p><div class="center"><span style="font-family:monospace">equation(d)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">Le tracé du vecteur d’origine [-1,0,0] et d’extrémité [0,1,2]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">V:=vecteur([-1,0,0],[0,1,2])</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">vecteur(point([-1,2,0]),V)</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">vecteur([-1,2,0],V)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">2/3-2*x/3+4*y/3=0,-4/3-8*x/9-4*y/9-20*z/9=0</span></div>
+</p><div class="center"><span style="font-family:monospace">Le tracé du vecteur d’origine [-1,2,0] et d’extrémité [0,3,2]</span></div><p>
+<span style="font-weight:bold">Remarque</span><br>
+En calcul formel, on travaille sur la liste des coordonnées des vecteurs que 
+l’on obtient avec la commande <span style="font-family:monospace">coordonnees</span> (cf <a href="cascmd_fr1060.html#sec%3Acoordonnees3">11.12.4</a>).</p>
 <hr>
 <a href="cascmd_fr1030.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

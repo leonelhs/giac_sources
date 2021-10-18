@@ -4,37 +4,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Barycenter of complex numbers : barycentre</title>
+<title>Write a complex as re(z)+i*im(z) : evalc</title>
 </head>
 <body >
 <a href="cascmd_en147.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en149.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec185" class="subsection">5.11.10  Barycenter of complex numbers : <span style="font-family:monospace">barycentre</span></h3>
-<p><a id="hevea_default215"></a><a id="sec:baryc"></a>
-<span style="font-weight:bold">See also :</span> <a >??</a> and <a >??</a>.<br>
-<span style="font-family:monospace">barycentre</span> takes as argument two lists of the same size
-(resp. a matrix with two columns): 
-</p><ul class="itemize"><li class="li-itemize">
-the elements of the first list (resp. column) 
-are points <span style="font-style:italic">A</span><sub><span style="font-style:italic">j</span></sub> or complex numbers <span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span></sub> (the affixes of the points),
-</li><li class="li-itemize">the elements of the second list (resp. column) are real coefficients 
-α<sub><span style="font-style:italic">j</span></sub> such that ∑α<sub><span style="font-style:italic">j</span></sub> ≠ 0.
-</li></ul><p>
-<span style="font-family:monospace">barycentre</span> returns the barycenter point of the points <span style="font-style:italic">A</span><sub><span style="font-style:italic">j</span></sub> 
-weighted by the real coefficients α<sub><span style="font-style:italic">j</span></sub>.
-If ∑α<sub><span style="font-style:italic">j</span></sub> = 0, <span style="font-family:monospace">barycentre</span> returns an
-error.<br>
-<span style="font-weight:bold">Warning</span> To have a complex number in the output, the input must be :<br>
-<span style="font-family:monospace">affix(barycentre(...,...))</span> 
-because <span style="font-family:monospace">barycentre(...,...)</span> returns a point, not a complex number.<br>
+<h3 id="sec186" class="subsection">5.11.4  Write a complex as <span style="font-family:monospace">re(z)+i*im(z)</span> : <span style="font-family:monospace">evalc</span></h3>
+<p><a id="hevea_default217"></a>
+<span style="font-family:monospace">evalc</span> takes as argument a complex number <span style="font-family:monospace">z</span>.<br>
+<span style="font-family:monospace">evalc</span> returns this complex number, written as
+<span style="font-family:monospace">re(z)+i*im(z)</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">affix(barycentre([1+i,1-i],[1,1]))</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">affix(barycentre([[1+i,1],[1-i,1]]))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">evalc(sqrt(2)*exp(i*pi/4))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">i</span></div>
+</p><div class="center"><span style="font-family:monospace">1+i</span></div>
 <hr>
 <a href="cascmd_en147.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,30 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Evaluate booleans : evalb</title>
+<title>Reading files</title>
 </head>
 <body >
 <a href="cascmd_en056.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en058.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec85" class="subsection">5.2.5  Evaluate booleans : <span style="font-family:monospace">evalb</span></h3>
-<p><a id="hevea_default83"></a>
-Inside Maple, <span style="font-family:monospace">evalb</span> evaluates an boolean expression.
-Since <span style="font-family:monospace">Xcas</span> evaluates booleans automatically, <span style="font-family:monospace">evalb</span> is only
-here for compatibility and is equivalent to <span style="font-family:monospace">eval</span><br>
-Input :
-</p><div class="center"><span style="font-family:monospace">evalb(sqrt(2)&gt;1.41)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">sqrt(2)&gt;1.41</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">evalb(sqrt(2)&gt;1.42)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">sqrt(2)&gt;1.42</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">0</span></div>
+<h3 id="sec83" class="subsection">4.8.2  Reading files</h3>
+<p>If you have a function or other <span style="font-family:monospace">Xcas</span> information in a file,
+you can load it with the <span style="font-family:monospace">read</span><a id="hevea_default60"></a> function. If the
+file is named <span style="font-family:monospace">myfunction.cxx</span>, then
+</p><div class="center">
+<span style="font-family:monospace">read("myfunction.cxx")</span>
+</div><p>
+will load the file, as long as the directory is in the current working
+directory. If the file is in a different directory, you can still
+load it by giving the path to the file,
+</p><div class="center">
+<span style="font-family:monospace">read("/path/to/file/myfunction.cxx")</span>
+</div><p>While <span style="font-family:monospace">read</span> can be used to load files containing <span style="font-family:monospace">Xcas</span>
+functions, which typically end in <span style="font-family:monospace">.cxx</span>, if you want to load a
+saved session you should use the <span style="font-family:monospace">load</span><a id="hevea_default61"></a> function;
+</p><div class="center">
+<span style="font-family:monospace">load("mysession.cas")</span>
+</div>
 <hr>
 <a href="cascmd_en056.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

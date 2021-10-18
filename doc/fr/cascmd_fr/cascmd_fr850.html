@@ -4,69 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>L’instruction conditionnelle : if then else end, si alors sinon fsi</title>
+<title>L’affectation prefixée : sto Store</title>
 </head>
 <body >
 <a href="cascmd_fr849.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr851.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1034" class="subsection">9.4.19  L’instruction conditionnelle : <span style="font-family:monospace">if then else end, si alors sinon fsi</span></h3>
-<p><a id="hevea_default1539"></a><a id="hevea_default1540"></a><a id="hevea_default1541"></a><a id="hevea_default1542"></a><a id="hevea_default1543"></a><a id="hevea_default1544"></a><a id="hevea_default1545"></a><a id="hevea_default1546"></a>
-<span style="font-family:monospace">if</span> est suivi d’un booléen entre des parenthèses.<br>
-<span style="font-family:monospace">if</span> permet de faire, ou de ne pas faire, un bloc d’instructions, selon la 
-valeur de ce booléen.<br>
-<span style="font-family:monospace">if</span> utilisé avec <span style="font-family:monospace">else</span> permet de choisir de faire, soit un bloc 
-d’instructions, soit un autre bloc d’instructions , selon la valeur du 
-booléen.<br>
-<span style="font-family:monospace">fi</span> est suivi d’un booléen et de <span style="font-family:monospace">then</span>.<br>
-Selon la valeur de ce booléen <span style="font-family:monospace">if</span> permet de faire, ou de ne pas faire, 
-les instructions situées entre <span style="font-family:monospace">else</span> et <span style="font-family:monospace">end</span>.<br>
-Selon la valeur de ce booléen <span style="font-family:monospace">if</span> utilisé avec <span style="font-family:monospace">else</span> permet de 
-choisir de faire, soit 
-les instructions situées entre <span style="font-family:monospace">then</span> et <span style="font-family:monospace">else</span>, soit les 
-instructions situées entre <span style="font-family:monospace">else</span> et <span style="font-family:monospace">end</span>.<br>
-<span style="font-family:monospace">si</span> est suivi d’un booléen et de <span style="font-family:monospace">alors</span>.<br>
-Selon la valeur de ce booléen <span style="font-family:monospace">si</span> permet de faire, ou de ne pas faire, 
-les instructions situées entre <span style="font-family:monospace">alors</span> et <span style="font-family:monospace">fsi</span>.<br>
-Selon la valeur de ce booléen <span style="font-family:monospace">si</span> utilisé avec <span style="font-family:monospace">sinon</span> permet de 
-choisir de faire, soit 
-les instructions situées entre <span style="font-family:monospace">alors</span> et <span style="font-family:monospace">sinon</span>, soit les 
-instructions situées entre <span style="font-family:monospace">sinon</span> et <span style="font-family:monospace">fsi</span>.<br>
+<h3 id="sec1034" class="subsection">9.4.17  L’affectation prefixée : <span style="font-family:monospace">sto Store</span></h3>
+<p><a id="hevea_default1547"></a><a id="hevea_default1548"></a>
+<span style="font-family:monospace">sto</span> (ou <span style="font-family:monospace">Store</span>) permet de stocker une valeur dans une 
+variable.<br>
+<span style="font-family:monospace">sto</span> (ou <span style="font-family:monospace">Store</span>) a deux arguments, la valeur à stocker et un nom de variable.<br>
+<span style="font-weight:bold">Attention</span><br>
+La variable doit être purgée avant l’utilisation de <span style="font-family:monospace">sto</span> 
+(ou <span style="font-family:monospace">Store</span>).<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">a:=3;b:=2;</span></div><p>
-puis :
-</p><div class="center"><span style="font-family:monospace">if (a&gt;b) {a:=a+5;b:=a-b;}</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sto(3,a)</span></div><p>
+ou :
+</p><div class="center"><span style="font-family:monospace">Store(3,a)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">6</span></div><p>
+</p><div class="center"><span style="font-family:monospace">3 et la variable a contient 3</span></div><p>
+<span style="font-weight:bold">Remarque</span><br>
+On peut faire plusieurs affectations à la fois en utilisant les séquences 
+ou les listes.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">a:=3;b:=2;</span></div><p>
-puis :</p><div class="center"><span style="font-family:monospace">if a&gt;b then a:=a+5;b:=a-b;end</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sto([1,2,3],[a1,a2,a3])</span></div><p>
+ou :
+</p><div class="center"><span style="font-family:monospace">Store([1,2,3],[a1,a2,a3])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">6</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">a:=3;b:=2;</span></div><p>
-puis :</p><div class="center"><span style="font-family:monospace">si a&gt;b alors a:=a+5;b:=a-b;fsi</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">6</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">maxi(a,b):={if (a&gt;b) {return a;} else {return b;}}</span></div><p>
-puis :
-</p><div class="center"><span style="font-family:monospace">maxi(2,3)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">maxi(a,b):={if a&gt;b then return a; else return b;end}</span></div><p>
-puis :
-</p><div class="center"><span style="font-family:monospace">maxi(2,3)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">maxi(a,b):={si a&gt;b alors retourne a; sinon retourne b;fsi}</span></div><p>
-puis :
-</p><div class="center"><span style="font-family:monospace">maxi(2,3)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">3</span></div>
+</p><div class="center"><span style="font-family:monospace">[1,2,3] et a1 contient 1, a2 contient 2, a3 contient 3</span></div>
 <hr>
 <a href="cascmd_fr849.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -132,6 +132,7 @@ namespace xcas {
     "end_proc",
     "end_while",
     "et",
+    "except",
     "faire",
     "false",
     "ffaire",

@@ -4,44 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Savoir si des éléments sont conjugués : is_conjugate est_conjugue</title>
+<title>Savoir si on a un parallélogramme : is_parallelogram est_parallelogramme</title>
 </head>
 <body >
 <a href="cascmd_fr1000.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1002.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1213" class="subsection">10.18.14  Savoir si des éléments sont conjugués : <span style="font-family:monospace">is_conjugate est_conjugue</span></h3>
-<p><a id="hevea_default1952"></a><a id="hevea_default1953"></a>
-<span style="font-family:monospace">est_conjugue</span> permet de savoir si 4 points sont conjugués ou 
-si 2 points ou 2 droites ou 1 droite et 1 point sont conjugués par rapport 
-à un cercle ou deux droites.<br>
-<span style="font-family:monospace">est_conjugue</span> est une fonction booléenne ayant comme 
-arguments deux points (resp deux droites ou un cercle) suivi de deux points ou 
-de deux droites ou d’une droite et d’un point.<br>
- <span style="font-family:monospace">est_conjugue</span> vaut 1 si les arguments sont conjugués, et vaut 0 sinon.<br>
+<h3 id="sec1213" class="subsection">10.18.10  Savoir si on a un parallélogramme : <span style="font-family:monospace">is_parallelogram est_parallelogramme</span></h3>
+<p><a id="hevea_default1961"></a><a id="hevea_default1962"></a><a id="sec:estparalelo2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1079.html#sec%3Aestparalelo3">11.13.14</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">est_parallelogramme</span> est une fonction booléenne ayant comme 
+argument quatre points ou un objet géométrique.<br>
+<span style="font-family:monospace">est_parallelogramme</span> vaut 1 (resp 2, 3, 4) si les quatre points forment
+un parallélogramme (resp un losange, un rectangle, un carré) ou si l’objet 
+géométrique est un parallélogramme (resp un losange, un rectangle, 
+un carré), et vaut 0 sinon.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">est_conjugue(cercle(0,1+i),point(1-i),point(3+i))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">est_parallelogramme(i,-1+i,-1-i,1-i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">est_parallelogramme(1+i,-1+i,-1-i,1-i)</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">est_conjugue(cercle(0,1),point((1+i)/2),droite(1+i,2))</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">est_conjugue(cercle(0,1),droite(1+i,2),point((1+i)/2))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">Q:=quadrilatere(1+i,-1+i,-1-i,1-i);est_parallelogramme(Q)</span></div><p>
 On obtient :
+</p><div class="center"><span style="font-family:monospace">4</span></div><p>
+<span style="font-weight:bold">Attention</span><br>
+On doit taper :
+</p><div class="center"><span style="font-family:monospace">P:=parallelogramme(-1-i,1-i,i,D);est_parallelogramme(P[0])</span></div><p>
+Pour obtienir :
 </p><div class="center"><span style="font-family:monospace">1</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">est_conjugue(cercle(0,1),droite(1+i,2), droite((1+i)/2,0))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">est_conjugue(point(1+i),point(3+i),point(i),point(i+3/2))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">est_conjugue(droite(0,1+i),droite(2,3+i), droite(3,4+i),droite(3/2,5/2+i))</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div>
+En effet c’est <span style="font-family:monospace">P[0]</span> qui désigne un parallélogramme car <span style="font-family:monospace">P</span> est 
+une liste composée d’un parallélogramme et de son dernier sommet <span style="font-family:monospace">D</span>.<br>
+Si on tape <span style="font-family:monospace">affixe(D))</span>, on obtient <span style="font-family:monospace">-2+i</span>.<br>
+
+</p>
 <hr>
 <a href="cascmd_fr1000.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,31 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Fast Fourier Transform : fft</title>
+<title>Simplify and express preferentially with sine : trigsin</title>
 </head>
 <body >
 <a href="cascmd_en221.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en223.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec285" class="subsection">5.22.3  Fast Fourier Transform : <span style="font-family:monospace">fft</span></h3>
-<p><a id="hevea_default401"></a>
-<span style="font-family:monospace">fft</span> takes as argument a list (or a sequence)
-<span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">]</span> where <span style="font-family:monospace">N</span> is a power of two.<br>
-<span style="font-family:monospace">fft</span> returns the list <span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">]</span> such that, 
-for <span style="font-family:monospace">k=0..N-1</span> 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace"><span style="font-style:italic">fft</span></span><span style="font-family:monospace">([</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace">0</span></sub><span style="font-family:monospace">,..</span><span style="font-family:monospace"><span style="font-style:italic">a</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></sub><span style="font-family:monospace">])</span><span style="font-family:monospace">[</span><span style="font-family:monospace"><span style="font-style:italic">k</span></span><span style="font-family:monospace">]=</span><span style="font-family:monospace"><span style="font-style:italic">b</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">k</span></span></sub><span style="font-family:monospace">=</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-family:monospace"><span style="font-family:monospace"><span style="font-style:italic">N</span></span><span style="font-family:monospace">-1</span></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-family:monospace"><span style="font-size:xx-large">∑</span></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-family:monospace"><span style="font-family:monospace"><span style="font-style:italic">j</span></span><span style="font-family:monospace">=0</span></span></td></tr>
-</table></td><td class="dcell"><span style="font-family:monospace"><span style="font-style:italic">x</span></span><sub><span style="font-family:monospace"><span style="font-style:italic">j</span></span></sub><span style="font-family:monospace">ω</span><sub><span style="font-family:monospace"><span style="font-style:italic">N</span></span></sub><sup><span style="font-family:monospace">-</span><span style="font-family:monospace"><span style="font-style:italic">k</span></span><span style="font-family:monospace">·
-</span><span style="font-family:monospace"><span style="font-style:italic">j</span></span></sup></td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table><p>
-where ω<sub><span style="font-style:italic">N</span></sub> is a primitive <span style="font-style:italic">N</span>-th root of the unity.<br>
+<h3 id="sec280" class="subsection">5.21.21  Simplify and express preferentially with sine : <span style="font-family:monospace">trigsin</span></h3>
+<p><a id="hevea_default384"></a>
+<span style="font-family:monospace">trigsin</span> takes as argument an expression
+containing trigonometric functions.<br>
+<span style="font-family:monospace">trigsin</span> simplify this expression with the formula :<br>
+sin(<span style="font-style:italic">x</span>)<sup>2</sup>+cos(<span style="font-style:italic">x</span>)<sup>2</sup>=1,  tan(<span style="font-style:italic">x</span>)=sin(<span style="font-style:italic">x</span>)/cos(<span style="font-style:italic">x</span>) and 
+tries to rewrite the expression only with sine.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">fft(0,1,1,0)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">trigsin(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+cos(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[2.0, -1-i, 0.0, -1+i]</span></div>
+</p><div class="center"><span style="font-family:monospace">sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2</span></div>
 <hr>
 <a href="cascmd_en221.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

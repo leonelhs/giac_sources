@@ -4,37 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximate solution of an equation : newton</title>
+<title>Animation of a 3D graph : animate3d</title>
 </head>
 <body >
 <a href="cascmd_en570.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en572.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec710" class="subsection">7.3.1  Approximate solution of an equation : <span style="font-family:monospace">newton</span></h3>
-<p><a id="hevea_default901"></a>
-<span style="font-family:monospace">newton</span> takes as arguments : an expression <span style="font-family:monospace">ex</span>, 
-the variable
-name of this expression (by default <span style="font-family:monospace">x</span>), and three values <span style="font-family:monospace">a</span> (by 
-default <span style="font-family:monospace">a=0</span>), <span style="font-family:monospace">eps</span> (by default <span style="font-family:monospace">eps=1e-8</span>) and <span style="font-family:monospace">nbiter</span> 
-(by default <span style="font-family:monospace">nbiter=12</span>).<br>
-<span style="font-family:monospace">newton(ex,x,a,eps,nbiter)</span> computes an approximate 
-solution <span style="font-family:monospace">x</span> of the equation <span style="font-family:monospace">ex=0</span>
-using the Newton algorithm with starting point 
-<span style="font-family:monospace">x=a</span>. The maximum number of iterations is <span style="font-family:monospace">nbiter</span>
-and the precision is <span style="font-family:monospace">eps</span>.<br>
+<h3 id="sec707" class="subsection">6.17.2  Animation of a 3D graph : <span style="font-family:monospace">animate3d</span></h3>
+<p><a id="hevea_default905"></a>
+<span style="font-family:monospace">animate3d</span> can create a 3-d animation with 
+function graphs depending on a parameter. The parameter is specified as
+the third argument of <span style="font-family:monospace">animate3d</span>, the number of pictures
+as fourth argument with 
+<span style="font-family:monospace">frames=</span><a id="hevea_default906"></a>number, the remaining arguments
+are the same as those of the <span style="font-family:monospace">plotfunc</span> command, see
+section <a href="cascmd_en556.html#sec%3Aplotfunc3">6.2.2</a>, p. <a href="cascmd_en556.html#sec%3Aplotfunc3">??</a>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">newton(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x,1) </span></div><p>
+</p><div class="center">
+<span style="font-family:monospace">animate3d(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+a*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x=-2..2,y=-2..2],a=-2..2, frames=10,display=red+filled)</span>
+</div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">1.41421356237</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">newton(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x,-1) </span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">-1.41421356237</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">newton(cos(x)-x,x,0)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">0.739085133215 </span></div>
+</p><div class="center"><span style="font-family:monospace">a sequence of graphic representations
+of z=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+</span><span style="font-style:italic">a</span><span style="font-family:monospace">*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2 for 11 values of </span><span style="font-style:italic">a</span><span style="font-family:monospace"> between -2 and 2</span>
+</div>
 <hr>
 <a href="cascmd_en570.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

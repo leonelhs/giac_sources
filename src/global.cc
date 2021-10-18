@@ -27,7 +27,7 @@ using namespace std;
 #endif
 #include "global.h"
 // #include <time.h>
-#ifndef BESTA_OS
+#if !defined BESTA_OS && !defined FXCG
 #include <signal.h>
 #endif
 #include <math.h>
@@ -46,7 +46,7 @@ using namespace std;
 #include <string.h>
 #include <stdexcept>
 #include <algorithm>
-#ifndef BESTA_OS
+#if !defined BESTA_OS && !defined FXCG
 #include <cerrno>
 #endif
 #include "gen.h"
@@ -93,6 +93,10 @@ using namespace std;
 extern "C" int firvsprintf(char*,const char*, va_list);
 #endif
 
+#ifdef FXCG
+extern "C" int KeyPressed( void );
+#endif
+
 int my_sprintf(char * s, const char * format, ...){
     int z;
     va_list ap;
@@ -121,7 +125,7 @@ namespace giac {
 
   // FIXME: make the replacement call for APPLE
   int system_no_deprecation(const char *command) {
-#ifdef _IOS_FIX_
+#if defined _IOS_FIX_ || defined FXCG
     return 0;
 #else
     return system(command);
@@ -129,6 +133,13 @@ namespace giac {
   }
 
   double min_proba_time=10; // in seconds
+
+#ifdef FXCG
+  void control_c(){
+    int i=0 ; // KeyPressed(); // check for EXIT key pressed?
+    if (i==1){ ctrl_c=true; interrupted=true; }
+  }
+#endif
 
 #ifdef TIMEOUT
 #ifndef EMCC
@@ -209,11 +220,13 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
 
   std::vector<aide> * & vector_aide_ptr (){
-    static std::vector<aide> * ans = new std::vector<aide>;
+    static std::vector<aide> * ans = 0;
+    if (!ans) ans=new std::vector<aide>;
     return ans;
   }
   std::vector<std::string> * & vector_completions_ptr (){
-    static std::vector<std::string> * ans = new  std::vector<std::string>;
+    static std::vector<std::string> * ans = 0;
+    if (!ans) ans=new  std::vector<std::string>;
     return ans;
   }
 #ifdef NSPIRE_NEWLIB
@@ -236,6 +249,19 @@ extern "C" void Sleep(unsigned int miliSecond);
       return contextptr->globalptr->_last_evaled_function_name_;
     else
       return _last_evaled_function_name_;
+  }
+
+  string & _currently_scanned(){
+    static string * ans=0;
+    if (!ans) ans=new string;
+    return *ans;
+  }
+
+  string & currently_scanned(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      return contextptr->globalptr->_currently_scanned_;
+    else
+      return _currently_scanned();
   }
 
   const gen * _last_evaled_argptr_=0;
@@ -453,6 +479,21 @@ extern "C" void Sleep(unsigned int miliSecond);
       contextptr->globalptr->_decimal_digits_=b;
     else
       _decimal_digits_=b;
+  }
+
+  static int _minchar_for_quote_as_string_=1; 
+
+  int & minchar_for_quote_as_string(GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      return contextptr->globalptr->_minchar_for_quote_as_string_;
+    else
+      return _minchar_for_quote_as_string_;
+  }
+  void minchar_for_quote_as_string(int b,GIAC_CONTEXT){
+    if (contextptr && contextptr->globalptr )
+      contextptr->globalptr->_minchar_for_quote_as_string_=b;
+    else
+      _minchar_for_quote_as_string_=b;
   }
 
   static int _xcas_mode_=0; 
@@ -798,7 +839,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static vecteur & _history_in_(){
-    static vecteur * ans = new vecteur;
+    static vecteur * ans = 0;
+    if (ans)
+      ans=new vecteur;
     return *ans;
   }
   vecteur & history_in(GIAC_CONTEXT){
@@ -809,7 +852,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static vecteur & _history_out_(){
-    static vecteur * ans = new vecteur;
+    static vecteur * ans = 0;
+    if (!ans)
+      ans=new vecteur;
     return *ans;
   }
   vecteur & history_out(GIAC_CONTEXT){
@@ -817,6 +862,19 @@ extern "C" void Sleep(unsigned int miliSecond);
       return *contextptr->history_out_ptr;
     else
       return _history_out_();
+  }
+
+  static vecteur & _history_plot_(){
+    static vecteur * ans = 0;
+    if (!ans)
+      ans=new vecteur;
+    return *ans;
+  }
+  vecteur & history_plot(GIAC_CONTEXT){
+    if (contextptr)
+      return *contextptr->history_plot_ptr;
+    else
+      return _history_plot_();
   }
 
   static bool _approx_mode_=false;
@@ -1075,7 +1133,11 @@ extern "C" void Sleep(unsigned int miliSecond);
     return &CERR;
   }
 #else
+#ifdef FXCG
+  static ostream * _logptr_=0;
+#else
   static ostream * _logptr_=&CERR;
+#endif
   ostream * logptr(GIAC_CONTEXT){
     ostream * res;
     if (contextptr && contextptr->globalptr )
@@ -1085,7 +1147,11 @@ extern "C" void Sleep(unsigned int miliSecond);
 #ifdef EMCC
     return res?res:&COUT;
 #else
+#ifdef FXCG
+    return 0;
+#else
     return res?res:&CERR;
+#endif
 #endif
   }
 #endif
@@ -1113,7 +1179,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   thread_param * & context0_thread_param_ptr(){
-    static thread_param * ans=new thread_param();
+    static thread_param * ans=0;
+    if (!ans)
+      ans=new thread_param();
     return ans;
   }
 
@@ -1213,13 +1281,13 @@ extern "C" void Sleep(unsigned int miliSecond);
       _eval_level=b;
   }
 
-#if 0 // defined(GIAC_HAS_STO_38) || defined(ConnectivityKit)
+#ifdef FXCG // defined(GIAC_HAS_STO_38) || defined(ConnectivityKit)
   static unsigned int _rand_seed=123457;
 #else
   static tinymt32_t _rand_seed;
 #endif
 
-#if 0 // defined(GIAC_HAS_STO_38) || defined(ConnectivityKit)
+#ifdef FXCG // defined(GIAC_HAS_STO_38) || defined(ConnectivityKit)
   unsigned int & rand_seed(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr )
       return contextptr->globalptr->_rand_seed;
@@ -1253,7 +1321,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   int giac_rand(GIAC_CONTEXT){
-#if 0 // defined(GIAC_HAS_STO_38) || defined(ConnectivityKit)
+#ifdef FXCG // defined(GIAC_HAS_STO_38) || defined(ConnectivityKit)
     unsigned int & r = rand_seed(contextptr);
     // r = (2147483629*ulonglong(r)+ 2147483587)% 2147483647;
     r = unsigned ((1664525*ulonglong(r)+1013904223)%(ulonglong(1)<<31));
@@ -1294,7 +1362,9 @@ extern "C" void Sleep(unsigned int miliSecond);
 
 
   static parser_lexer & _pl(){
-    static parser_lexer * ans = new parser_lexer();
+    static parser_lexer * ans = 0;
+    if (!ans)
+      ans=new parser_lexer();
     ans->_i_sqrt_minus1_=1;
     return * ans;
   }
@@ -1415,11 +1485,14 @@ extern "C" void Sleep(unsigned int miliSecond);
       return absint(_calc_mode_);
   }
   static std::string & _autoname_(){
+    static string * ans = 0;
+    if (!ans){
 #ifdef GIAC_HAS_STO_38
-    static string * ans = new string("GA");
+      ans= new string("GA");
 #else
-    static string * ans = new string("A");
+      ans = new string("A");
 #endif
+    }
     return *ans;
   }
   void calc_mode(int b,GIAC_CONTEXT){
@@ -1433,7 +1506,8 @@ extern "C" void Sleep(unsigned int miliSecond);
 
   int array_start(GIAC_CONTEXT){
     if (contextptr && contextptr->globalptr){
-      return (!contextptr->globalptr->_python_compat_ && (contextptr->globalptr->_xcas_mode_ || absint(contextptr->globalptr->_calc_mode_)==38))?1:0;
+      bool hp38=absint(contextptr->globalptr->_calc_mode_)==38;
+      return (!contextptr->globalptr->_python_compat_ && (contextptr->globalptr->_xcas_mode_ || hp38))?1:0;
     }
     return (!_python_compat_ && (_xcas_mode_ || absint(_calc_mode_)==38))?1:0;
   }
@@ -1464,7 +1538,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static std::string & _autosimplify_(){
-    static string * ans = new string("regroup");
+    static string * ans = 0;
+    if (!ans)
+      ans=new string("regroup");
     return *ans;
   }
   std::string autosimplify(GIAC_CONTEXT){
@@ -1484,7 +1560,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static std::string & _lastprog_name_(){
-    static string * ans = new string("lastprog");
+    static string * ans = 0;
+    if (!ans)
+      ans=new string("lastprog");
     return *ans;
   }
   std::string lastprog_name(GIAC_CONTEXT){
@@ -1504,7 +1582,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static std::string & _format_double_(){
-    static string * ans = new string("");
+    static string * ans = 0;
+    if (!ans)
+      ans=new string("");
     return * ans;
   }
   std::string & format_double(GIAC_CONTEXT){
@@ -1562,7 +1642,10 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
   void parser_error(const std::string & b,GIAC_CONTEXT){
 #ifndef GIAC_HAS_STO_38
-    *logptr(contextptr) << b << endl;
+    if (!first_error_line(contextptr))
+      alert(b,contextptr);
+    else
+      *logptr(contextptr) << b << endl;
 #endif
     if (contextptr && contextptr->globalptr )
       contextptr->globalptr->_pl._parser_error_=b;
@@ -1600,7 +1683,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static gen & _parsed_gen_(){
-    static gen * ans = new gen;
+    static gen * ans = 0;
+    if (!ans)
+      ans=new gen;
     return * ans;
   }
   gen parsed_gen(GIAC_CONTEXT){
@@ -1617,7 +1702,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static logo_turtle & _turtle_(){
-    static logo_turtle * ans = new logo_turtle;
+    static logo_turtle * ans = 0;
+    if (!ans)
+      ans=new logo_turtle;
     return *ans;
   }
   logo_turtle & turtle(GIAC_CONTEXT){
@@ -1633,7 +1720,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   pthread_mutex_t turtle_mutex = PTHREAD_MUTEX_INITIALIZER;
 #endif
   std::vector<logo_turtle> & _turtle_stack_(){
-    static std::vector<logo_turtle> * ans = new std::vector<logo_turtle>(1,_turtle_());
+    static std::vector<logo_turtle> * ans = 0;
+    if (!ans)
+      ans=new std::vector<logo_turtle>(1,_turtle_());
 #ifdef HAVE_LIBPTHREAD
     ans->reserve(20000);
 #endif
@@ -1673,7 +1762,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   int debug_infolevel=0;
 #endif
   int printprog=0;
-#if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE || defined FXCG || defined NSPIRE_NEWLIB
   int threads=1;
 #else
   int threads=sysconf (_SC_NPROCESSORS_ONLN);
@@ -1771,14 +1860,18 @@ extern "C" void Sleep(unsigned int miliSecond);
 
   // used by WIN32 for the path to the xcas directory
   string & xcasroot(){
-    static string * ans=new string;
+    static string * ans=0;
+    if (!ans)
+      ans=new string;
     return * ans;
   }
   string & xcasrc(){
 #ifdef WIN32
-    static string * ans=new string("xcas.rc");
+    static string * ans=0;
+    if (!ans) ans=new string("xcas.rc");
 #else
-    static string * ans=new string(".xcasrc");
+    static string * ans=0;
+    if (!ans) ans=new string(".xcasrc");
 #endif
     return *ans;
   }
@@ -1792,7 +1885,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 
   void ctrl_c_signal_handler(int signum){
     ctrl_c=true;
-#if !defined NSPIRE_NEWLIB && !defined WIN32 && !defined BESTA_OS && !defined NSPIRE
+#if !defined NSPIRE_NEWLIB && !defined WIN32 && !defined BESTA_OS && !defined NSPIRE && !defined FXCG
     if (child_id)
       kill(child_id,SIGINT);
 #endif
@@ -1800,7 +1893,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     cerr << "Ctrl-C pressed (pid " << getpid() << ")" << endl;
 #endif
   }
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
   gen catch_err(const std::runtime_error & error){
     cerr << error.what() << endl;
     debug_ptr(0)->sst_at_stack.clear();
@@ -1824,7 +1917,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 #endif
 
-#ifdef HAVE_SIGNAL_H_OLD
+#if defined HAVE_SIGNAL_H_OLD 
   static bool running_file=false;
   static int run_modif_pos;
   bool synchronize_history=true;
@@ -2504,6 +2597,9 @@ extern "C" void Sleep(unsigned int miliSecond);
 
   string home_directory(){
     string s("/");
+#ifdef FXCG
+    return s;
+#else
     if (getenv("GIAC_HOME"))
       s=getenv("GIAC_HOME");
     else {
@@ -2524,8 +2620,10 @@ extern "C" void Sleep(unsigned int miliSecond);
     s=p->pw_dir;
     return s+"/";
 #endif
+#endif
   }
 
+#ifndef FXCG
   string cas_entree_name(){
     if (getenv("XCAS_TMP"))
       return getenv("XCAS_TMP")+("/#cas_entree#"+print_INT_(parent_id));
@@ -2545,9 +2643,10 @@ extern "C" void Sleep(unsigned int miliSecond);
     return home_directory()+"#cas_sortie#"+print_INT_(parent_id);
 #endif
   }
-
+#endif
+  
   void read_config(const string & name,GIAC_CONTEXT,bool verbose){
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
 #if !defined __MINGW_H 
     if (access(name.c_str(),R_OK)) {
       if (verbose)
@@ -2591,7 +2690,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
       string s;
 #ifdef WIN32
-      s=giac::home_directory();
+      s=home_directory();
 #ifdef GNUWINCE
 	  s = xcasroot();
 #else
@@ -2606,11 +2705,11 @@ extern "C" void Sleep(unsigned int miliSecond);
       s=s.substr(0,s.size()-8);
 #endif
       if (s.size())
-	giac::read_config(s+"/xcas.rc",contextptr,verbose);
-      s=giac::home_directory();
+	read_config(s+"/xcas.rc",contextptr,verbose);
+      s=home_directory();
       if (s.size()<2)
 	s="";
-      giac::read_config(s+xcasrc(),contextptr,verbose);
+      read_config(s+xcasrc(),contextptr,verbose);
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error & e){
@@ -2621,7 +2720,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   string giac_aide_dir(){
-#if defined __MINGW_H || defined NSPIRE
+#if defined __MINGW_H || defined NSPIRE || defined FXCG
     return xcasroot();
 #else
     if (!access((xcasroot()+"aide_cas").c_str(),R_OK)){
@@ -2735,7 +2834,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   bool is_file_available(const char * ch){
     if (!ch)
       return false;
-#if !defined __MINGW_H && !defined NSPIRE
+#if !defined __MINGW_H && !defined NSPIRE && !defined FXCG
     if (access(ch,R_OK))
       return false;
 #endif
@@ -2750,6 +2849,11 @@ extern "C" void Sleep(unsigned int miliSecond);
     if (!path.empty() && path[path.size()-1]!='/')
       path += '/';
   }
+#ifdef FXCG
+  const char * getenv(const char *){
+    return "";
+  }
+#endif
 
   bool check_file_path(const string & s){
     int ss=int(s.size()),i;
@@ -2758,7 +2862,11 @@ extern "C" void Sleep(unsigned int miliSecond);
 	break;
     }
     string name=s.substr(0,i);
+#ifdef FXCG
+    const char ch[]="/";
+#else
     const char * ch=getenv("PATH");
+#endif
     if (!ch || name[0]=='/')
       return is_file_available(name.c_str());
     string path;
@@ -2780,7 +2888,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   string browser_command(const string & orig_file){
-#if defined __MINGW_H || defined NSPIRE
+#if defined __MINGW_H || defined NSPIRE || defined FXCG
     return "";
 #else
     string file=orig_file;
@@ -2934,7 +3042,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       if (ss && res[ss]!='.')
 	res=res.substr(0,ss);
       CERR << res << endl;
-#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE
+#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE && !defined FXCG
       /* If we have a POSIX path list, convert to win32 path list */
       const char *_epath;
       _epath = res.c_str()  ;
@@ -2954,7 +3062,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
     }
     CERR << res << endl;
-#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE
+#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE && !defined FXCG
     // FIXME: works under visualc but not using /UNICODE flag
     // find correct flag
     ShellExecute(NULL,NULL,res.c_str(),NULL,NULL,1);
@@ -3020,7 +3128,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       return "es/";
     case 4:
       return "el/";
-    case 5:
+    case 9:
       return "pt/";
     case 6:
       return "it/";
@@ -3031,7 +3139,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       */
     case 8:
       return "zh/";
-    case 9:
+    case 5:
       return "de/";
       break;
     default:
@@ -3053,7 +3161,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     case 4:
       return "doc/el/";
       break;
-    case 5:
+    case 9:
       return "doc/pt/";
       break;
     case 6:
@@ -3067,7 +3175,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     case 8:
       return "doc/zh/";
       break;
-    case 9:
+    case 5:
       return "doc/de/";
       break;
     default:
@@ -3088,6 +3196,9 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   void add_language(int i,GIAC_CONTEXT){
+#ifdef FXCG
+    return;
+#else
     if (!equalposcomp(lexer_localization_vector(),i)){
       lexer_localization_vector().push_back(i);
       update_lexer_localization(lexer_localization_vector(),lexer_localization_map(),back_lexer_localization_map(),contextptr);
@@ -3131,9 +3242,13 @@ extern "C" void Sleep(unsigned int miliSecond);
       }
 #endif
     }
+#endif // FXCG
   }
 
   void remove_language(int i,GIAC_CONTEXT){
+#ifdef FXCG
+    return;
+#else
     if (int pos=equalposcomp(lexer_localization_vector(),i)){
       if (vector_aide_ptr()){
 	vector<aide> nv;
@@ -3159,6 +3274,7 @@ extern "C" void Sleep(unsigned int miliSecond);
       lexer_localization_vector().erase(lexer_localization_vector().begin()+pos);
       update_lexer_localization(lexer_localization_vector(), lexer_localization_map(), back_lexer_localization_map(), contextptr);
 	}
+#endif
   }
 
   int string2lang(const string & s){
@@ -3171,7 +3287,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     if (s=="el")
       return 4;
     if (s=="pt")
-      return 5;
+      return 9;
     if (s=="it")
       return 6;
     if (s=="tr")
@@ -3179,7 +3295,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     if (s=="zh")
       return 8;
     if (s=="de")
-      return 9;
+      return 5;
     return 0;
   }
 
@@ -3200,71 +3316,71 @@ extern "C" void Sleep(unsigned int miliSecond);
 #ifndef RTOS_THREADX
 #ifndef BESTA_OS
     if (getenv("GIAC_LAPACK")){
-      giac::CALL_LAPACK=atoi(getenv("GIAC_LAPACK"));
+      CALL_LAPACK=atoi(getenv("GIAC_LAPACK"));
       if (verbose)
 	CERR << "// Will call lapack if dimension is >=" << CALL_LAPACK << endl;
     }
     if (getenv("GIAC_PADIC")){
-      giac::GIAC_PADIC=atoi(getenv("GIAC_PADIC"));
+      GIAC_PADIC=atoi(getenv("GIAC_PADIC"));
       if (verbose)
-	CERR << "// Will use p-adic algorithm if dimension is >=" << giac::GIAC_PADIC << endl;
+	CERR << "// Will use p-adic algorithm if dimension is >=" << GIAC_PADIC << endl;
     }
 #endif
 #endif
     if (getenv("XCAS_RPN")){
       if (verbose)
 	CERR << "// Setting RPN mode" << endl;
-      giac::rpn_mode(contextptr)=true;
+      rpn_mode(contextptr)=true;
     }
     if (getenv("GIAC_XCAS_MODE")){
-      giac::xcas_mode(contextptr)=atoi(getenv("GIAC_XCAS_MODE"));
+      xcas_mode(contextptr)=atoi(getenv("GIAC_XCAS_MODE"));
       if (verbose)
-	CERR << "// Setting maple mode " << giac::xcas_mode(contextptr) << endl;
+	CERR << "// Setting maple mode " << xcas_mode(contextptr) << endl;
     }
     if (getenv("GIAC_C")){
-      giac::xcas_mode(contextptr)=0;
+      xcas_mode(contextptr)=0;
       if (verbose)
 	CERR << "// Setting giac C mode" << endl;
     }
     if (getenv("GIAC_MAPLE")){
-      giac::xcas_mode(contextptr)=1;
+      xcas_mode(contextptr)=1;
       if (verbose)
 	CERR << "// Setting giac maple mode" << endl;
     }
     if (getenv("GIAC_MUPAD")){
-      giac::xcas_mode(contextptr)=2;
+      xcas_mode(contextptr)=2;
       if (verbose)
 	CERR << "// Setting giac mupad mode" << endl;
     }
     if (getenv("GIAC_TI")){
-      giac::xcas_mode(contextptr)=3;
+      xcas_mode(contextptr)=3;
       if (verbose)
 	CERR << "// Setting giac TI mode" << endl;
     }
     if (getenv("GIAC_MONO")){
       if (verbose)
 	CERR << "// Threads polynomial * disabled" << endl;
-      giac::threads_allowed=false;
+      threads_allowed=false;
     }
     if (getenv("GIAC_MPZCLASS")){
       if (verbose)
 	CERR << "// mpz_class enabled" << endl;
-      giac::mpzclass_allowed=true;
+      mpzclass_allowed=true;
     }
     if (getenv("GIAC_DEBUG")){
-      giac::debug_infolevel=atoi(getenv("GIAC_DEBUG"));
-      CERR << "// Setting debug_infolevel to " << giac::debug_infolevel << endl;
+      debug_infolevel=atoi(getenv("GIAC_DEBUG"));
+      CERR << "// Setting debug_infolevel to " << debug_infolevel << endl;
     }
     if (getenv("GIAC_PRINTPROG")){ 
       // force print of prog at parse, 256 for python compat mode print
-      giac::printprog=atoi(getenv("GIAC_PRINTPROG"));
-      CERR << "// Setting printprog to " << giac::printprog << endl;
+      printprog=atoi(getenv("GIAC_PRINTPROG"));
+      CERR << "// Setting printprog to " << printprog << endl;
     }
     string s;
     if (getenv("LANG"))
       s=getenv("LANG");
     else { // __APPLE__ workaround
-#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE
+#if !defined VISUALC && !defined __MINGW_H && !defined NSPIRE && !defined FXCG
       if (!strcmp(gettext("File"),"Fich")){
 	setenv("LANG","fr_FR.UTF8",1);
 	s="fr_FR.UTF8";
@@ -3325,7 +3441,8 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
 
   vector<context *> & context_list(){
-    static vector<context *> * ans=new vector<context *>(1,(context *) 0);
+    static vector<context *> * ans=0;
+    if (!ans) ans=new vector<context *>(1,(context *) 0);
     return *ans;
   }
   context::context() { 
@@ -3337,6 +3454,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     rootofs=new vecteur;
     history_in_ptr=new vecteur;
     history_out_ptr=new vecteur;
+    history_plot_ptr=new vecteur;
 #ifdef HAVE_LIBPTHREAD
     pthread_mutex_lock(&context_list_mutex);
 #endif
@@ -3347,7 +3465,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
 #ifndef RTOS_THREADX
-#if !defined BESTA_OS && !defined NSPIRE
+#if !defined BESTA_OS && !defined NSPIRE && !defined FXCG
   std::map<std::string,context *> * context_names = new std::map<std::string,context *> ;
 
   context::context(const string & name) { 
@@ -3359,6 +3477,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     rootofs=new vecteur;
     history_in_ptr=new vecteur;
     history_out_ptr=new vecteur;
+    history_plot_ptr=new vecteur;
 #ifdef HAVE_LIBPTHREAD
     pthread_mutex_lock(&context_list_mutex);
 #endif
@@ -3394,6 +3513,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      ptr->globalptr->_calc_mode_=_calc_mode_;
 #endif
      ptr->globalptr->_decimal_digits_=_decimal_digits_;
+     ptr->globalptr->_minchar_for_quote_as_string_=_minchar_for_quote_as_string_;
      ptr->globalptr->_scientific_format_=_scientific_format_;
      ptr->globalptr->_integer_format_=_integer_format_;
      ptr->globalptr->_integer_mode_=_integer_mode_;
@@ -3450,6 +3570,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      ptr->globalptr->_language_=_language_;
      ptr->globalptr->_last_evaled_argptr_=_last_evaled_argptr_;
      ptr->globalptr->_last_evaled_function_name_=_last_evaled_function_name_;
+     ptr->globalptr->_currently_scanned_="";
      ptr->globalptr->_max_sum_sqrt_=_max_sum_sqrt_;      
      ptr->globalptr->_max_sum_add_=_max_sum_add_;   
      
@@ -3474,6 +3595,8 @@ extern "C" void Sleep(unsigned int miliSecond);
 	delete history_in_ptr;
       if (history_out_ptr)
 	delete history_out_ptr;
+      if (history_plot_ptr)
+	delete history_plot_ptr;
       if (quoted_global_vars)
 	delete quoted_global_vars;
       if (rootofs)
@@ -3493,7 +3616,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 	}
       }
 #ifndef RTOS_THREADX
-#if !defined BESTA_OS && !defined NSPIRE
+#if !defined BESTA_OS && !defined NSPIRE && !defined FXCG
       if (context_names){
 	map<string,context *>::iterator it=context_names->begin(),itend=context_names->end();
 	for (;it!=itend;++it){
@@ -3550,7 +3673,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     int beg=CLOCK();
 #endif
     gen g = (*v)[0];
-    g = giac::protecteval(g,(*v)[1].val,contextptr);
+    g = protecteval(g,(*v)[1].val,contextptr);
 #ifndef NO_STDEXCEPT
     try {
 #endif
@@ -3576,7 +3699,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   // create a new thread for evaluation of g at level level in context
-  bool make_thread(const giac::gen & g,int level,const giac_callback & f,void * f_param,const context * contextptr){
+  bool make_thread(const gen & g,int level,const giac_callback & f,void * f_param,const context * contextptr){
     if (is_context_busy(contextptr))
       return false;
     thread_param * ptr =thread_param_ptr(contextptr);
@@ -3689,7 +3812,7 @@ extern "C" void Sleep(unsigned int miliSecond);
     return ans;
   }
 
-  giac::gen thread_eval(const giac::gen & g_,int level,context * contextptr,void (* wait_0001)(context *) ){
+  gen thread_eval(const gen & g_,int level,context * contextptr,void (* wait_0001)(context *) ){
     gen g=equaltosto(g_,contextptr);
     /* launch a new thread for evaluation only,
        no more readqueue, readqueue is done by the "parent" thread
@@ -3699,7 +3822,7 @@ extern "C" void Sleep(unsigned int miliSecond);
        then call the wait function of the GUI and readd callbacks
     */
     pthread_t eval_thread;
-    giac::vecteur v(6);
+    vecteur v(6);
     v[0]=g;
     v[1]=level;
     v[2]=gen(contextptr,_CONTEXT_POINTER);
@@ -3743,11 +3866,11 @@ extern "C" void Sleep(unsigned int miliSecond);
       return v[5];
     }
     pthread_mutex_unlock(mutexptr(contextptr));
-    return giac::protecteval(g,level,contextptr);
+    return protecteval(g,level,contextptr);
   }
 #else
 
-  bool make_thread(const giac::gen & g,int level,const giac_callback & f,void * f_param,context * contextptr){
+  bool make_thread(const gen & g,int level,const giac_callback & f,void * f_param,context * contextptr){
     return false;
   }
 
@@ -3759,8 +3882,8 @@ extern "C" void Sleep(unsigned int miliSecond);
     return -1;
   }
 
-  giac::gen thread_eval(const giac::gen & g,int level,context * contextptr,void (* wait_001)(context * )){
-    return giac::protecteval(g,level,contextptr);
+  gen thread_eval(const gen & g,int level,context * contextptr,void (* wait_001)(context * )){
+    return protecteval(g,level,contextptr);
   }
 #endif // HAVE_LIBPTHREAD
 
@@ -3810,7 +3933,8 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   static debug_struct & _debug_data(){
-    static debug_struct * ans = new debug_struct;
+    static debug_struct * ans = 0;
+    if (!ans) ans=new debug_struct;
     return *ans;
   }
 
@@ -3833,7 +3957,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 
 
   global::global() : _xcas_mode_(0), 
-		     _calc_mode_(0),_decimal_digits_(12),
+		     _calc_mode_(0),_decimal_digits_(12),_minchar_for_quote_as_string_(1),
 		     _scientific_format_(0), _integer_format_(0), _latex_format_(0), 
 #ifdef BCD
 		     _bcd_decpoint_('.'|('E'<<16)|(' '<<24)),_bcd_mantissa_(12+(15<<8)), _bcd_flags_(0),_bcd_printdouble_(false),
@@ -3844,16 +3968,32 @@ extern "C" void Sleep(unsigned int miliSecond);
 		     _all_trig_sol_(false),
 #ifdef WITH_MYOSTREAM
 		     _ntl_on_(true),
-		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_python_compat_(false),_angle_mode_(0), _bounded_function_no_(0), _series_flags_(0x3),_step_infolevel_(0),_default_color_(FL_BLACK), _epsilon_(1e-12), _proba_epsilon_(1e-15),  _show_axes_(1),_spread_Row_ (-1), _spread_Col_ (-1),_logptr_(&my_CERR),_prog_eval_level_val(1), _eval_level(DEFAULT_EVAL_LEVEL), _rand_seed(123457),_last_evaled_function_name_(0),_last_evaled_argptr_(0),_max_sum_sqrt_(3),_max_sum_add_(100000),_total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5),
+		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_python_compat_(false),_angle_mode_(0), _bounded_function_no_(0), _series_flags_(0x3),_step_infolevel_(0),_default_color_(FL_BLACK), _epsilon_(1e-12), _proba_epsilon_(1e-15),  _show_axes_(1),_spread_Row_ (-1), _spread_Col_ (-1),_logptr_(&my_CERR),_prog_eval_level_val(1), _eval_level(DEFAULT_EVAL_LEVEL), _rand_seed(123457),_last_evaled_function_name_(0),_currently_scanned_(""),_last_evaled_argptr_(0),_max_sum_sqrt_(3),
+#ifdef GIAC_HAS_STO_38 // Prime sum(x^2,x,0,100000) crash on hardware	
+		     _max_sum_add_(10000),
+#else
+		     _max_sum_add_(100000),
+#endif
+		     _total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5),
 #else
 		     _ntl_on_(true),
 		     _lexer_close_parenthesis_(true),_rpn_mode_(false),_try_parse_i_(true),_specialtexprint_double_(false),_atan_tan_no_floor_(false),_keep_acosh_asinh_(false),_keep_algext_(false),_python_compat_(false),_angle_mode_(0), _bounded_function_no_(0), _series_flags_(0x3),_step_infolevel_(0),_default_color_(FL_BLACK), _epsilon_(1e-12), _proba_epsilon_(1e-15),  _show_axes_(1),_spread_Row_ (-1), _spread_Col_ (-1), 
 #ifdef EMCC
 		     _logptr_(&COUT), 
 #else
-		     _logptr_(&CERR), 
+#ifdef FXCG
+		     _logptr_(0),
+#else
+		     _logptr_(&CERR),
 #endif
-		     _prog_eval_level_val(1), _eval_level(DEFAULT_EVAL_LEVEL), _rand_seed(123457),_last_evaled_function_name_(0),_last_evaled_argptr_(0),_max_sum_sqrt_(3),_max_sum_add_(100000),_total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5)
+#endif
+		     _prog_eval_level_val(1), _eval_level(DEFAULT_EVAL_LEVEL), _rand_seed(123457),_last_evaled_function_name_(0),_currently_scanned_(""),_last_evaled_argptr_(0),_max_sum_sqrt_(3),
+#ifdef GIAC_HAS_STO_38 // Prime sum(x^2,x,0,100000) crash on hardware	
+		     _max_sum_add_(10000),
+#else
+		     _max_sum_add_(100000),
+#endif
+		     _total_time_(0),_evaled_table_(0),_extra_ptr_(0),_series_variable_name_('h'),_series_default_order_(5)
 #endif
   { 
     _pl._i_sqrt_minus1_=1;
@@ -3881,6 +4021,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      _xcas_mode_=g._xcas_mode_;
      _calc_mode_=g._calc_mode_;
      _decimal_digits_=g._decimal_digits_;
+     _minchar_for_quote_as_string_=g._minchar_for_quote_as_string_;
      _scientific_format_=g._scientific_format_;
      _integer_format_=g._integer_format_;
      _integer_mode_=g._integer_mode_;
@@ -3931,6 +4072,7 @@ extern "C" void Sleep(unsigned int miliSecond);
      _language_=g._language_;
      _last_evaled_argptr_=g._last_evaled_argptr_;
      _last_evaled_function_name_=g._last_evaled_function_name_;
+     _currently_scanned_=g._currently_scanned_;
      _max_sum_sqrt_=g._max_sum_sqrt_;
      _max_sum_add_=g._max_sum_add_;
      _turtle_=g._turtle_;
@@ -3953,6 +4095,14 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
   }
 
+#ifdef FXCG
+  bool my_isinf(double d){
+    return 1/d==0.0;
+  }
+  bool my_isnan(double d){
+    return d==d+1 && !my_isinf(d);
+  }
+#else // FXCG
 #ifdef __APPLE__
   bool my_isnan(double d){
 #if 1 // TARGET_OS_IPHONE
@@ -4001,7 +4151,8 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
 #endif // __APPLE__
-
+#endif // FXCG
+  
   double giac_floor(double d){
     double maxdouble=longlong(1)<<30;
     if (d>=maxdouble || d<=-maxdouble)
@@ -4414,7 +4565,7 @@ unsigned int ConvertUTF8toUTF16 (
     return wname;
   }
 
-#ifdef NSPIRE
+#if defined NSPIRE || defined FXCG
   unsigned wcslen(const wchar_t * c){
     unsigned i=0;
     for (;*c;++i)
@@ -4753,7 +4904,7 @@ unsigned int ConvertUTF8toUTF16 (
 	    delete [] ch;
 	    return undef;
 	  }
-#ifdef NSPIRE
+#if defined NSPIRE
 	  if (builtin_lexer_functions_()){
 	    std::pair<charptr_gen *,charptr_gen *> p=equal_range(builtin_lexer_functions_begin(),builtin_lexer_functions_end(),std::pair<const char *,gen>(ch,0),tri);
 	    if (p.first!=p.second && p.first!=builtin_lexer_functions_end()){
@@ -4853,7 +5004,9 @@ unsigned int ConvertUTF8toUTF16 (
   }
 
   void init_geogebra(bool on,GIAC_CONTEXT){
+#ifndef FXCG
     setlocale(LC_NUMERIC,"POSIX");
+#endif
     _decimal_digits_=on?13:12;
     _all_trig_sol_=on;
     _withsqrt_=!on;
@@ -5191,14 +5344,14 @@ unsigned int ConvertUTF8toUTF16 (
   const char invalid_name[]="Invalid name";
 
 #ifdef USTL    
-  // void update_lexer_localization(const std::vector<int> & v,ustl::map<std::string,std::string> &lexer_map,ustl::multimap<std::string,giac::localized_string> &back_lexer_map){}
+  // void update_lexer_localization(const std::vector<int> & v,ustl::map<std::string,std::string> &lexer_map,ustl::multimap<std::string,localized_string> &back_lexer_map){}
 #else
   vecteur * keywords_vecteur_ptr(){
     static vecteur v;
     return &v;
   }
 
-  static void in_update_lexer_localization(istream & f,int lang,const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map,GIAC_CONTEXT){
+  static void in_update_lexer_localization(istream & f,int lang,const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,localized_string> &back_lexer_map,GIAC_CONTEXT){
     char * line = (char *)malloc(1024);
     std::string giac_kw,local_kw;
     size_t l;
@@ -5254,7 +5407,7 @@ unsigned int ConvertUTF8toUTF16 (
     free(line);
   }
 	    
-  void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,giac::localized_string> &back_lexer_map,GIAC_CONTEXT){
+  void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,localized_string> &back_lexer_map,GIAC_CONTEXT){
     lexer_map.clear();
     back_lexer_map.clear();
     int s=int(v.size());
@@ -5262,7 +5415,7 @@ unsigned int ConvertUTF8toUTF16 (
       int lang=v[i];
       if (lang>=1 && lang<=4){
 	std::string doc=find_doc_prefix(lang);
-	std::string file=giac::giac_aide_dir()+doc+"keywords";
+	std::string file=giac_aide_dir()+doc+"keywords";
 	//COUT << "keywords " << file << endl;
 	ifstream f(file.c_str());
 	if (f.good()){
@@ -5287,7 +5440,7 @@ unsigned int ConvertUTF8toUTF16 (
   }
 #endif
 
-#ifndef NSPIRE
+#if !defined NSPIRE 
 
 #include "input_parser.h" 
 
@@ -5551,7 +5704,7 @@ unsigned int ConvertUTF8toUTF16 (
 	      if (coeff.empty())
 		res=1;
 	      else
-		res=atof(coeff.c_str());
+		res=strtod(coeff.c_str(),0);
 	      if (ch=='i')
 		res=res*cst_i;
 	      else {
@@ -5664,13 +5817,31 @@ unsigned int ConvertUTF8toUTF16 (
 	instring=!instring;
       if (instring)
 	continue;
+      if (curch==',' && pos<int(cur.size()-1)){
+	char nextch=cur[pos+1];
+	if (nextch=='}' || nextch==']' || nextch==')'){
+	  cur.erase(cur.begin()+pos);
+	  continue;
+	}
+      }
+      if (curch=='}' && prevch=='{'){
+	cur=cur.substr(0,pos-1)+"table()"+cur.substr(pos+1,cur.size()-pos-1);
+	continue;
+      }
       if (curch==':' && (prevch=='[' || prevch==',')){
 	cur.insert(cur.begin()+pos,indexshift?'1':'0');
 	continue;
       }
       if (curch==':' && pos<int(cur.size())-1 && cur[pos+1]!='=' && cur[pos+1]!=';'){
-	int posif=cur.find("if ");
-	if (posif>=0 && posif<pos){
+	int posif=cur.find("if "),curpos,cursize=int(cur.size()),count=0;
+	// check is : for slicing?
+	for (curpos=pos+1;curpos<cursize;++curpos){
+	  if (cur[curpos]=='[')
+	    ++count;
+	  if (cur[curpos]==']')
+	    --count;
+	}
+	if (count==0 && posif>=0 && posif<pos){
 	  cur[pos]=')';
 	  cur.insert(cur.begin()+posif+3,'(');
 	  continue;
@@ -5688,6 +5859,15 @@ unsigned int ConvertUTF8toUTF16 (
 	  cur.insert(cur.begin()+pos,'-');
 	}
 	continue;
+      }
+      if (curch==':' && prevch==':'){
+	if (pos+1<int(cur.size()) && cur[pos+1]=='-'){
+	  cur.insert(cur.begin()+pos,'-');
+	  cur.insert(cur.begin()+pos+1,'1');
+	}
+	else
+	  cur.insert(cur.begin()+pos,'0');
+	continue;	
       }
       if (curch=='%'){
 	cur.insert(cur.begin()+pos+1,'/');
@@ -5730,6 +5910,94 @@ unsigned int ConvertUTF8toUTF16 (
     return res+line;
   }
 
+  static void python_import(string & cur,int cs,int posturtle,int poscmath,int posmath,int posnumpy,int posmatplotlib,GIAC_CONTEXT){
+    if (posmatplotlib>=0 && posmatplotlib<cs){
+      cur += "np:=numpy:;xlim(a,b):=gl_x=a..b:;ylim(a,b):=gl_y=a..b:;scatter:=scatterplot:;bar:=bar_plot:;";
+      posnumpy=posmatplotlib;
+    }
+    if (posnumpy>=0 && posnumpy<cs){
+      static bool alertnum=true;
+      // add python numpy shortcuts
+      cur += "mat:=matrix:;arange:=range:;resize:=redim:;shape:=dim:;conjugate:=conj:;full:=matrix:;eye:=identity:;ones(n,c):=matrix(n,c,1):; astype:=convert:;float64:=float:;asarray:=array:;astype:=convert:;reshape(m,n,c):=matrix(n,c,flatten(m));";
+      if (alertnum){
+	alertnum=false;
+	alert("mat:=matrix;arange:=range;resize:=redim;shape:=dim;conjugate:=conj;full:=matrix;eye:=idn;ones(n,c):=matrix(n,c,1);reshape(m,n,c):=matrix(n,c,flatten(m));",contextptr);
+      }
+      return;
+    }
+    if (posturtle>=0 && posturtle<cs){
+      // add python turtle shortcuts
+      static bool alertturtle=true;      
+      cur += "pu:=penup:;up:=penup:; pd:=pendown:;down:=pendown:; fd:=forward:;bk:=backward:; rt:=right:; lt:=left:; pos:=position:; seth:=heading:;setheading:=heading:; reset:=efface:;";
+      if (alertturtle){
+	alertturtle=false;
+	alert("pu:=penup;up:=penup; pd:=pendown;down:=pendown; fd:=forward;bk:=backward; rt:=right; lt:=left; pos:=position; seth:=heading;setheading:=heading; reset:=efface",contextptr);
+      }
+      return;
+    }
+    if (poscmath>=0 && poscmath<cs){
+      // add python cmath shortcuts
+      static bool alertcmath=true;      
+      if (alertcmath){
+	alertcmath=false;
+	alert(gettext("Assigning phase, j, J and rect."),contextptr);
+      }
+      cur += "phase:=arg:;j:=i:;J:=i:;rect(r,theta):=r*exp(i*theta):;";
+      posmath=poscmath;
+    }
+    if (posmath>=0 && posmath<cs){
+      // add python math shortcuts
+      static bool alertmath=true;      
+      if (alertmath){
+	alertmath=false;
+	alert(gettext("Assigning log2, expm1 (imprecise), fabs, fmod, modf, radians and degrees. Not supported: copysign."),contextptr);
+      }
+      cur += "log2(x):=logb(x,2):;expm1(x):=exp(x)-1:;fabs:=abs:;fmod(a,b):=a-floor(a/b)*b:;function modf(x) local y; y:=floor(x); return x-y,y; ffunction:;radians(x):=x/180*pi:;degrees(x):=x/pi*180";
+      // todo copysign, isinf, isnan, isfinite, frexp, ldexp
+    }
+  }
+
+  string replace_deuxpoints_egal(const string & s){
+    string res;
+    bool instring=false;
+    for (size_t i=0;i<s.size();++i){
+      char ch=s[i];
+      if (i==0 || s[i-1]!='\\'){
+	if (ch=='\''){
+	  res +='"';
+	  instring=!instring;
+	  continue;
+	}
+	if (instring){
+	  if (ch=='"')
+	    res +="\"\"";
+	  else
+	    res += ch;
+	  continue;
+	}
+	if (ch=='"'){
+	  res +='"';
+	  instring=!instring;
+	  continue;
+	}
+      }
+      switch (ch){
+      case ':':
+	res +="-/-";
+	break;
+      case '{':
+	res += "{/";
+	break;
+      case '}':
+	res += "/}";
+	break;
+      default:
+	res += ch;
+      }
+    }
+    return res;
+  }
+
   // detect Python like syntax: 
   // remove """ """ docstrings and ''' ''' comments
   // cut string in lines, remove comments at the end (search for #)
@@ -5744,9 +6012,9 @@ unsigned int ConvertUTF8toUTF16 (
   // if ...: -> if ... then [fi]
   // else: -> else [nothing in stack]
   // elif ...: -> elif ... then [nothing in stack]
-  // ? support for try except
+  // try: ... except: ...
   std::string python2xcas(const std::string & s_orig,GIAC_CONTEXT){
-    if (xcas_mode(contextptr)>0)
+    if (xcas_mode(contextptr)>0 && abs_calc_mode(contextptr)!=38)
       return s_orig;
     // quick check for python-like syntax: search line ending with :
     int first=0,sss=s_orig.size();
@@ -5756,14 +6024,22 @@ unsigned int ConvertUTF8toUTF16 (
     first=s_orig.find("xcas_mode");
     if (first>=0 && first<sss)
       return s_orig;
+    bool pythoncompat=python_compat(contextptr);
     bool pythonmode=false;
     first=0;
-    if (sss>24 && s_orig.substr(0,17)=="add_autosimplify(")
-      first=17;
-    if (s_orig[first]=='/')
+    if (sss>19 && s_orig.substr(first,17)=="add_autosimplify(")
+      first+=17;
+    if (s_orig[first]=='/' )
       return s_orig;
-    if (s_orig[first]=='#' || (s_orig[first]=='_' && !isalpha(s_orig[first+1])) || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import ")
+    //if (sss>first+2 && s_orig[first]=='@' && s_orig[first+1]!='@') return s_orig.substr(first+1,sss-first-1);
+    if (sss>first+2 && s_orig.substr(first,2)=="@@"){
       pythonmode=true;
+      pythoncompat=true;
+    }
+    if (s_orig[first]=='#' || (s_orig[first]=='_' && !isalpha(s_orig[first+1])) || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import "){
+      pythonmode=true;
+      pythoncompat=true;
+    }
     for (first=0;!pythonmode && first<sss;){
       int pos=s_orig.find(":]");
       if (pos>=0 && pos<sss){
@@ -5815,15 +6091,48 @@ unsigned int ConvertUTF8toUTF16 (
 	&& res[res.size()-1]==')'
 	)
       res=res.substr(17,res.size()-18);
-    res=remove_comment(res,"\"\"\"",false);
+    if (res.size()>2 && res.substr(0,2)=="@@")
+      res=res.substr(2,res.size()-2);
+    res=remove_comment(res,"\"\"\"",true);
     res=remove_comment(res,"'''",true);
     res=glue_lines_backslash(res);
     vector<int_string> stack;
     string s,cur; 
-    bool pythoncompat=python_compat(contextptr);
     if (pythoncompat) pythonmode=true;
     for (;res.size();){
-      int pos=res.find('\n');
+      int pos=-1;
+      bool cherche=true;
+      for (;cherche;){
+	pos=res.find('\n',pos+1);
+	if (pos<0 || pos>=int(res.size()))
+	  break;
+	cherche=false;
+	char ch=0;
+	// check if we should skip to next newline, look at previous non space
+	for (int pos2=0;pos2<pos;++pos2){
+	  ch=res[pos2];
+	  if (ch=='#')
+	    break;
+	}
+	if (ch=='#')
+	  break;
+	for (int pos2=pos-1;pos2>=0;--pos2){
+	  ch=res[pos2];
+	  if (ch!=' ' && ch!=9){
+	    if (ch=='{' || ch=='[' || ch==',' || ch=='-' || ch=='+' ||  ch=='/')
+	      cherche=true;
+	    break;
+	  }
+	}
+	for (size_t pos2=pos+1;pos2<res.size();++pos2){
+	  ch=res[pos2];
+	  if (ch!=' ' && ch!=9){
+	    if (ch==']' || ch=='}' || ch==')')
+	      cherche=true;
+	    break;
+	  }
+	}
+      }
       if (pos<0 || pos>=int(res.size())){
 	cur=res; res="";
       }
@@ -5837,15 +6146,40 @@ unsigned int ConvertUTF8toUTF16 (
 	char ch=cur[pos];
 	if (ch==' ' || ch==char(9))
 	  continue;
+	if (!instring && pythoncompat && ch=='{' && (pos==0 || cur[pos-1]!='\\')){
+	  // find matching }, counting : and , and ;
+	  int c1=0,c2=0,c3=0,cs=int(cur.size()),p;
+	  for (p=pos;p<cs;++p){
+	    char ch=cur[p];
+	    if (ch=='}' && cur[p-1]!='\\')
+	      break;
+	    if (ch==':')
+	      ++c1;
+	    if (ch==',')
+	      ++c2;
+	    if (ch==';')
+	      ++c3;
+	  }
+	  if (p<cs && c1 && c3==0){
+	    // table initialization, replace {} by table( ) , 
+	    // cur=cur.substr(0,pos)+"table("+cur.substr(pos+1,p-pos-1)+")"+cur.substr(p+1,cs-pos-1);
+	    cur=cur.substr(0,pos)+"{/"+replace_deuxpoints_egal(cur.substr(pos+1,p-1-pos))+"/}"+cur.substr(p+1,cs-pos-1);
+	  }
+	}
 	if (!instring && pythoncompat &&
 	    ch=='\'' && pos<cur.size()-2 && cur[pos+1]!='\\' && (pos==0 || (cur[pos-1]!='\\' && cur[pos-1]!='\''))){ // workaround for '' string delimiters
-	  int p=pos,q,beg; // skip spaces
+	  static bool alertstring=true;
+	  if (alertstring){
+	    alert("// Python compatibility, please use \"...\" for strings",contextptr);
+	    alertstring=false;
+	  }
+	  int p=pos,q=pos+1,beg; // skip spaces
 	  for (p++;p<int(cur.size());++p)
 	    if (cur[p]!=' ') 
 	      break;
 	  if (p!=cur.size()){
 	    // find matching ' 
-	    beg=q=p;
+	    beg=q;
 	    for (;p<int(cur.size());++p)
 	      if (cur[p]=='\'') 
 		break;
@@ -5854,6 +6188,8 @@ unsigned int ConvertUTF8toUTF16 (
 	      // does cur[pos+1..p-1] look like a string?
 	      bool str=!isalpha(cur[q]) || !isalphan(cur[p]);
 	      if (p && cur[p]=='.' && cur[p-1]>'9')
+		str=true;
+	      if (p-q>=minchar_for_quote_as_string(contextptr))
 		str=true;
 	      for (;!str && q<p;++q){
 		char ch=cur[q];
@@ -5883,8 +6219,11 @@ unsigned int ConvertUTF8toUTF16 (
 	  continue;
 	if (ch=='#'){
 	  // workaround to declare local variables
-	  if (cur.size()>pos+8 && (cur.substr(pos,8)=="# local " || cur.substr(pos,7)=="#local "))
+	  if (cur.size()>pos+8 && (cur.substr(pos,8)=="# local " || cur.substr(pos,7)=="#local ")){
 	    cur.erase(cur.begin()+pos);
+	    if (cur[pos]==' ')
+	      cur.erase(cur.begin()+pos);	      
+	  }
 	  else
 	    cur=cur.substr(0,pos);
 	  pythonmode=true;
@@ -5897,13 +6236,16 @@ unsigned int ConvertUTF8toUTF16 (
 	  if (posi<0 || posi>=int(cur.size()))
 	    posi = cur.find(" import*");
 	  if (posi>pos+5 && posi<int(cur.size())){
-	    posi=cur.find("turtle");
+	    int posturtle=cur.find("turtle");
+	    int poscmath=cur.find("cmath");
+	    int posmath=cur.find("math");
+	    int posnumpy=cur.find("numpy");
+	    int posmatplotlib=cur.find("matplotlib");
+	    if (posmatplotlib<0 || posmatplotlib>=cur.size())
+	      posmatplotlib=cur.find("pylab");
 	    int cs=int(cur.size());
 	    cur=cur.substr(0,pos);
-	    if (posi>=0 && posi<cs){
-	      // add python turtle shortcuts
-	      cur += "\npu:=penup;up:=penup; pd:=pendown;down:=pendown; fd:=forward;bk:=backward; rt:=right; lt:=left; pos:=position; seth:=heading;setheading:=heading; reset:=efface\n";
-	    }
+	    python_import(cur,cs,posturtle,poscmath,posmath,posnumpy,posmatplotlib,contextptr);
 	    pythonmode=true;
 	    break;
 	  }
@@ -5911,11 +6253,24 @@ unsigned int ConvertUTF8toUTF16 (
 	chkfrom=false;
 	// import * as ** -> **:=*
 	if (ch=='i' && pos+7<int(cur.size()) && cur.substr(pos,7)=="import "){
+	  int posturtle=cur.find("turtle");
+	  int poscmath=cur.find("cmath");
+	  int posmath=cur.find("math");
+	  int posnumpy=cur.find("numpy");
+	  int posmatplotlib=cur.find("matplotlib");
+	  if (posmatplotlib<0 || posmatplotlib>=cur.size())
+	    posmatplotlib=cur.find("pylab");
+	  int cs=int(cur.size());
 	  int posi=cur.find(" as ");
-	  if (posi>pos+5 && posi<int(cur.size()))
-	    cur=cur.substr(posi+4,cur.size()-posi-4)+":="+cur.substr(7,posi-7);
+	  int posp=cur.find('.');
+	  if (posp>=posi || posp<0)
+	    posp=posi;
+	  if (posi>pos+5 && posi<int(cur.size())){
+	    cur=cur.substr(posi+4,cur.size()-posi-4)+":="+cur.substr(7,posp-7)+';';
+	  }
 	  else
 	    cur=cur.substr(pos+7,cur.size()-pos-7);
+	  python_import(cur,cs,posturtle,poscmath,posmath,posnumpy,posmatplotlib,contextptr);
 	  pythonmode=true;
 	  break;	    
 	}
@@ -5924,6 +6279,16 @@ unsigned int ConvertUTF8toUTF16 (
 	  if (posdot>pos+7 && posdot<int(cur.size())-1 && cur[posdot+1]!='=' && cur[posdot+1]!=';'){
 	    pythonmode=true;
 	    cur=cur.substr(0,pos)+"("+cur.substr(pos+6,posdot-pos-6)+")->"+cur.substr(posdot+1,cur.size()-posdot-1);
+	  }
+	}
+	if (ch=='e' && pos+4<int(cur.size()) && cur.substr(pos,3)=="end" && instruction_at(cur,pos,3)){
+	  // if next char after end is =, replace by endl
+	  for (size_t tmp=pos+3;tmp<cur.size();++tmp){
+	    if (cur[tmp]!=' '){
+	      if (cur[tmp]=='=')
+		cur.insert(cur.begin()+pos+3,'l');
+	      break;
+	    }
 	  }
 	}
       }
@@ -5940,6 +6305,75 @@ unsigned int ConvertUTF8toUTF16 (
 	s+='\n';  
 	continue;
       }
+      if (cur[pos]!=':'){ // detect oneliner and function/fonction
+	int p;
+	for (p=0;p<pos;++p){
+	  if (cur[p]!=' ')
+	    break;
+	}
+	if (p<pos-8 && (cur.substr(p,8)=="function" || cur.substr(p,8)=="fonction")){
+	  s = s+cur+'\n';
+	  continue;
+	}
+	bool instr=false;
+	for (p=pos;p>0;--p){
+	  if (instr){
+	    if (cur[p]=='"' && cur[p-1]!='\\')
+	      instr=false;
+	    continue;
+	  }
+	  if (cur[p]==':' && cur[p+1]!=';')
+	    break;
+	  if (cur[p]=='"' && cur[p-1]!='\\')
+	    instr=true;	  
+	}
+	if (p>0){
+	  int cs=int(cur.size()),q=4;
+	  int progpos=cur.find("elif");;
+	  if (progpos<0 || progpos>=cs){
+	    progpos=cur.find("if");
+	    q=2;
+	  }
+	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,q)){
+	    pythonmode=true;
+	    cur=cur.substr(0,p)+" then "+cur.substr(p+1,pos-p);
+	    convert_python(cur,contextptr);
+	    // no fi if there is an else or elif
+	    for (p=0;p<int(res.size());++p){
+	      if (res[p]!=' ' && res[p]!=char(9))
+		break;
+	    }
+	    if (p<res.size()+5 && (res.substr(p,4)=="else" || res.substr(p,4)=="elif"))
+	      cur += " ";
+	    else
+	      cur += " fi";
+	    p=0;
+	  }
+	  progpos=cur.find("else");
+	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
+	    pythonmode=true;
+	    cur=cur.substr(0,p)+' '+cur.substr(p+1,pos-p)+" fi";
+	    convert_python(cur,contextptr);
+	    p=0;
+	  }
+	  progpos=cur.find("for");
+	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
+	    pythonmode=true;
+	    cur=cur.substr(0,p)+" do "+cur.substr(p+1,pos-p);
+	    convert_python(cur,contextptr);
+	    cur += " od";
+	    p=0;
+	  }
+	  progpos=cur.find("while");
+	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,5)){
+	    pythonmode=true;
+	    cur=cur.substr(0,p)+" do "+cur.substr(p+1,pos-p);
+	    convert_python(cur,contextptr);
+	    cur += " od";
+	    p=0;
+	  }
+	}
+      }
       // count whitespaces, compare to stack
       int ws=0;
       int cs=cur.size();
@@ -5948,7 +6382,7 @@ unsigned int ConvertUTF8toUTF16 (
 	  break;
       }
       if (cur[pos]==':'){
-	// detect else or elif
+	// detect else or elif or except
 	int progpos=cur.find("else");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
 	  pythonmode=true;
@@ -5969,6 +6403,28 @@ unsigned int ConvertUTF8toUTF16 (
 	    }
 	  }
 	  s += cur.substr(0,pos)+"\n";
+	  continue;
+	}
+	progpos=cur.find("except");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,6)){
+	  pythonmode=true;
+	  if (stack.size()>1){ 
+	    int indent=stack[stack.size()-1].decal;
+	    if (ws<indent){
+	      // remove last \n and add explicit endbloc delimiters from stack
+	      int ss=s.size();
+	      bool nl= ss && s[ss-1]=='\n';
+	      if (nl)
+		s=s.substr(0,ss-1);
+	      while (stack.size()>1 && stack[stack.size()-1].decal>ws){
+		s += ' '+stack.back().endbloc+';';
+		stack.pop_back();
+	      }
+	      if (nl)
+		s += '\n';
+	    }
+	  }
+	  s += cur.substr(0,progpos)+"then\n";
 	  continue;
 	}
 	progpos=cur.find("elif");
@@ -6028,6 +6484,15 @@ unsigned int ConvertUTF8toUTF16 (
 	  stack.push_back(int_string(ws,"fi"));
 	  continue;
 	}
+	progpos=cur.find("try");
+	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
+	  pythonmode=true;
+	  cur=cur.substr(0,progpos);
+	  convert_python(cur,contextptr);
+	  s += cur +"IFERR\n";
+	  stack.push_back(int_string(ws,"end"));
+	  continue;
+	}
 	progpos=cur.find("for");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
 	  pythonmode=true;
@@ -6053,19 +6518,24 @@ unsigned int ConvertUTF8toUTF16 (
 	progpos=cur.find("def");
 	if (progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
 	  pythonmode=true;
+	  if (abs_calc_mode(contextptr)==38) python_compat(1,contextptr); 
+	  pythoncompat=true;
 	  // should remove possible returned type, between -> ... and :
 	  string entete=cur.substr(progpos+3,pos-progpos-3);
 	  int posfleche=entete.find("->");
 	  if (posfleche>0 || posfleche<entete.size())
 	    entete=entete.substr(0,posfleche);
 	  s += cur.substr(0,progpos)+"function"+entete+"\n";
-	  stack.push_back(int_string(ws,"ffunction"));
+	  stack.push_back(int_string(ws,"ffunction:")); // ; added later
 	  continue;
 	}
+	// no match found, return s
+	s = s+cur;
       }
       else {
 	// normal line add ; at end
-	if (pythonmode && pos>=0 && cur[pos]!=';')
+	char curpos=cur[pos];
+	if (pythonmode && !res.empty() && pos>=0 && curpos!=';' && curpos!=',' && curpos!='{' && curpos!='(' && curpos!='[' && curpos!=':' && curpos!='+' && curpos!='-' && curpos!='*' && curpos!='/' && curpos!='%')
 	  cur = cur +';';
 	if (pythonmode)
 	  convert_python(cur,contextptr);
@@ -6090,9 +6560,11 @@ unsigned int ConvertUTF8toUTF16 (
       }
       if (s.size()>10 && s.substr(s.size()-9,9)=="ffunction")
 	s += ":;";
-      else
-	s += ";";
-      *logptr(contextptr) << "// Python compatibility, check string delimiters \"\" and declare local variables!\n";
+      else {
+	int pos=s.find('\n');
+	if (pos>=0 && pos<s.size())
+	  s += ";";
+      }
       if (debug_infolevel)
 	*logptr(contextptr) << "Translated to Xcas as:\n" << s << endl;
     }
@@ -6207,7 +6679,7 @@ unsigned int ConvertUTF8toUTF16 (
     charptr_gen * builtin_lexer_functions(){
       static charptr_gen * ans=0;
       if (!ans){
-	ans = new charptr_gen[1600];
+	ans = new charptr_gen[1800];
 	builtin_lexer_functions_number=0;
       }
       return ans;

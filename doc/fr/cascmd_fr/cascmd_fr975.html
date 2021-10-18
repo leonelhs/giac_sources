@@ -4,31 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Avoir comme réponse la valeur d’une mesure affichée : extract_measure, extraire_mesure</title>
+<title>Périmètre d’un polygone : perimeter perimetre</title>
 </head>
 <body >
 <a href="cascmd_fr974.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr976.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1185" class="subsection">10.16.14  Avoir comme réponse la valeur d’une mesure affichée : <span style="font-family:monospace">extract_measure, extraire_mesure</span></h3>
-<p><a id="hevea_default1909"></a><a id="hevea_default1910"></a>
-<span style="font-family:monospace">extract_measure</span> ou <span style="font-family:monospace">extraire_mesure</span> permet d’obtenir la valeur 
-d’une mesure qui a été affichée.<br>
-<span style="font-family:monospace">extract_measure</span> ou <span style="font-family:monospace">extraire_mesure</span> a pour argument la commande 
-qui a affiché cette mesure.<br>
+<h3 id="sec1185" class="subsection">10.16.10  Périmètre d’un polygone : <span style="font-family:monospace">perimeter perimetre</span></h3>
+<p><a id="hevea_default1912"></a><a id="hevea_default1913"></a>
+Voir aussi <span style="font-family:monospace">arcLen</span> <a href="cascmd_fr314.html#sec%3Alongarc">6.21.7</a>.<br>
+<span style="font-family:monospace">perimetre</span> calcule le périmètre d’un cercle, d’un arc de 
+cercle ou d’un polygone.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);C:=point(i);</span></div><div class="center"><span style="font-family:monospace">extraire_mesure(angleen(A,B,C,0.2i))</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">extract_measure(angleat(A,B,C,0.2i))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">perimetre(cercle(0,1))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">atan(1/3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">2*pi</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">extraire_mesure(distanceenbrut(A,B,C,0.2i))</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">extract_measure(distanceatraw(A,B,0.4i))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">perimetre(cercle(0,1,pi/4,pi))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">sqrt(5)</span></div>
+</p><div class="center"><span style="font-family:monospace">3*pi/4</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">perimetre(arc(0,pi/4,pi))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">sqrt(2)*pi/4</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">perimetre(triangle(0,1,i))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">2+sqrt(2)</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">perimetre(carre(0,2))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">8</span></div>
 <hr>
 <a href="cascmd_fr974.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

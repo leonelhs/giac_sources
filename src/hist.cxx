@@ -112,15 +112,15 @@ void latex_save_DispG(const char * filename) {
 }
 
 void a_propos() {
-  std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-17, Bernard Parisse, Renee De Graeve\n";
+  std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-18, Bernard Parisse, Renee De Graeve\n";
     s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\n";
     s += "If you like Xcas, please link your webpage to the above link to help other find it\n";
     s += "Software licensed under the GPL, General Public License version 3.0 or later\nSee the file COPYING in this package for more details\nOr browse http://www.gnu.org\n";
     s += "French documentation (c) Renee de Graeve\n";
     s += "This documentation is freely redistribuable for non commercial purpose\n";
-    s += "Giacpy module: Frederic Han\n";
-    s += "Math ML support, Xcas online: Jean-Pierre Branchard\n";
-    s += "Optimization code: Luka Marohnić\n";
+    s += "Python giacpy module: Frederic Han\n";
+    s += "Optimization, signalprocessing, graph theory code: Luka Marohnić\n";
+    s += "Math ML and SVG support initially written by Jean-Pierre Branchard\n";
     s += "OpenOffice interface: Christophe Devalland, Serge Moutou\n";
     s += "Qcas interface: Loic Le Coq, Frederic Han\n";
     s += "Androcas interface: Thomas Luka\n";
@@ -1479,6 +1479,18 @@ if (xcas::use_external_browser)
          };
 }
 
+static void cb_Xcas_help_graphtheory(Fl_Menu_*, void*) {
+  if (xcas::use_external_browser)
+           giac::system_browser_command("doc/graphtheory-user_manual.pdf");
+        else {
+         if (xcas::Xcas_help_window){ //disabled because it crashes with builin browser
+           fl_message("%s",("Open with your browser "+giac::giac_aide_dir()+"doc/graphtheory-user_manual.pdf").c_str());
+           // xcas::Xcas_help_window->load((giac::giac_aide_dir()+"algo.html").c_str());
+           // xcas::Xcas_help_window->show();
+          }
+         };
+}
+
 static void cb_Xcas_help_algo(Fl_Menu_*, void*) {
   if (xcas::use_external_browser)
            giac::system_browser_command(doc_prefix+"algo.html");
@@ -1985,6 +1997,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Reference card, fiches", 0,  (Fl_Callback*)cb_Xcas_help_fiches, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Manuals", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"CAS reference", 0,  (Fl_Callback*)cb_Xcas_help_CAS, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Graph theory", 0,  (Fl_Callback*)cb_Xcas_help_graphtheory, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Algorithmes (HTML)", 0,  (Fl_Callback*)cb_Xcas_help_algo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Algorithmes (PDF)", 0,  (Fl_Callback*)cb_Xcas_help_algo_pdf, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Geometry", 0,  (Fl_Callback*)cb_Xcas_help_Geo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3183,7 +3196,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<335; i++)
+        for ( ; i<336; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

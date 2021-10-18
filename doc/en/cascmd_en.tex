@@ -33,9 +33,6 @@
 
 % Inline commands; use \texttt
 % Displayed commands and output, use this
-\newenvironment{giaccmd}
-{\begin{quote}\ttfamily}
-{\end{quote}}
 
 % For graphics
 \newcommand{\includeimage}[1]
@@ -93,27 +90,47 @@ typewriter font.  User input typically takes one of three forms:
 \begin{itemize}
 \item Commands that you enter on the command line.\\
 For example, to compute the sin of $\pi/4$, you can type
-\begin{giaccmd}
-  sin(pi/4)
-\end{giaccmd}
+\begin{center}
+{\tt sin(pi/4)}
+\end{center}
 
 \item Commands requiring a prefix key.\\
 These will be indicated by separating
 the prefix key and the standard key with a plus \texttt{+}.  For
-example, to exit an \texttt{Xcas} session, you can type
-\begin{giaccmd}
-  Ctrl+Q
-\end{giaccmd}
+example, to exit an \texttt{Xcas} session, you can type the control
+key along with the \texttt{q} key, which will be denoted
+\begin{center}
+{\tt  Ctrl+Q}
+\end{center}
 
 \item Menu commands.\\
 When denoting menu items, submenus will be connected using
-$\blacktriangleright$.  For example, from within \texttt{Xcas}, you
+$\blacktriangleright$.  For example, from within \texttt{Xcas} you
 can choose the \texttt{File} menu, then choose the \texttt{Open}
 submenu, and then choose the \texttt{File} item.  This will be
 indicated by
-\begin{giaccmd}
-  File $\blacktriangleright$ Open $\blacktriangleright$ File
-\end{giaccmd}
+\begin{center}
+  {\tt File $\blacktriangleright$ Open $\blacktriangleright$ File}
+\end{center}
+\end{itemize}
+
+The index will use different typefaces for different parts of
+the language.  The commands themselves will be written with normal
+characters, command options will be written in italics and values of
+commands or options will be written in typewriter font.   For example
+(as you will see later), you can draw a blue parabola with the command
+\begin{center}
+  {\tt plotfunc(x\^{}2,color = blue)}
+\end{center}
+In the index, you will see
+\begin{itemize}
+\item
+  plotfunc, the command, written in normal text.
+\item
+  \textit{color}, the command option, written in italics.
+\item
+  \texttt{blue}, the value given to the option, written in typewriter
+  font.
 \end{itemize}
 
 \section{Interfaces for the \texttt{giac} library}
@@ -140,21 +157,21 @@ version.
 
 \subsection{The \texttt{Xcas} interface}
 
-To run \texttt{Xcas} in a graphical environment, it depends on which
+How you run \texttt{Xcas} in a graphical environment depends on which
 operating system you are using.
 \begin{itemize}
   \item
 If you are using Unix, you can usually find
 an entry for the program in a menu provided by the environment.
 Otherwise, you can start it from a terminal by typing
-\begin{giaccmd}
-  xcas \&
-\end{giaccmd}
+\begin{center}
+  {\tt xcas \&}
+\end{center}
 If for some reason \texttt{Xcas} becomes unresponsive, you can open a
 terminal and type
-\begin{giaccmd}
-  killall xcas
-\end{giaccmd}
+\begin{center}
+  {\tt killall xcas}
+\end{center}
 That will kill any running \texttt{Xcas} processes.  When you restart
 \texttt{Xcas}, you will be asked if you want to resume where you left
 off using an automatic backup file.
@@ -188,13 +205,13 @@ There are two ways to use the command-line interface.
 If you just want to evaluate one expression, you can give
 \texttt{icas} the expression (in quotes) as a command line argument.
 For example, to factor the polynomial $x^2-1$, you can type
-\begin{giaccmd}
-  icas 'factor(x\^{}2-1)'
-\end{giaccmd}
+\begin{center}
+  {\tt icas 'factor(x\^{}2-1)'}
+\end{center}
 at a command prompt.  The result will be
-\begin{giaccmd}
-  (x-1)*(x+1)
-\end{giaccmd}
+\begin{center}
+  {\tt (x-1)*(x+1)}
+\end{center}
 and you will be returned to the operating system command line.
 
 If you want to evaluate several commands, you can enter an interactive
@@ -202,15 +219,15 @@ If you want to evaluate several commands, you can enter an interactive
 \texttt{icas} (or \texttt{giac}) by itself at a command prompt.  You
 will then be given a prompt specifically for \texttt{giac} commands,
 which will look like
-\begin{giaccmd}
-  0>{}>
-\end{giaccmd}
+\begin{verbatim}
+  0>>
+\end{verbatim}
 You can enter a giac command at this prompt and get the result.
-\begin{giaccmd}
-0>{}> factor(x\^{}2-1)\\
-(x-1)*(x+1)\\
-1>{}>
-\end{giaccmd}
+\begin{verbatim}
+ 0>> factor(x^2-1)
+ (x-1)*(x+1)
+ 1>>
+\end{verbatim}
 After the result, you will be given another prompt for \texttt{giac}
 commands.  You can exit this interactive session by typing
 \texttt{Ctrl+D}.
@@ -219,9 +236,9 @@ You can also run \texttt{icas} in batch mode; that is,
 you can have \texttt{icas} run \texttt{giac} commands stored in a
 file.  This can be done in Windows as well as Unix and Mac OS.
 To do this, simply enter 
-\begin{giaccmd}
-  icas \textit{filename}
-\end{giaccmd}
+\begin{verbatim}
+  icas filename
+\end{verbatim}
 at a command prompt, where \textit{filename} is the name of the file
 containing the \texttt{giac} commands.
 
@@ -1101,42 +1118,42 @@ approximations.  Your choice will be stored in the configuration file
 
 When factoring polynomials, \texttt{Xcas} won't introduce complex
 numbers if they aren't already being used.  For example,
-\begin{giaccmd}
+\begin{center}
   \texttt{factor(x\^{}2 + 2)}
-\end{giaccmd}
+\end{center}
 will simply return
-\begin{giaccmd}
+\begin{center}
   \texttt{x\^{}2 + 2}
-\end{giaccmd}
+\end{center}
 but if an expression already involves complex numbers then
 \texttt{Xcas} will use them;
-\begin{giaccmd}
+\begin{center}
   \texttt{factor(i*x\^{}2 + 2*i)}
-\end{giaccmd}
+\end{center}
 will return
-\begin{giaccmd}
+\begin{center}
   \texttt{(x - i*sqrt(2))*(i*x - sqrt(2))}
-\end{giaccmd}
+\end{center}
 \texttt{Xcas} also has ways of finding complex roots even when complex
 numbers are not present; for example, the command \texttt{cfactor}
 will factor over the complex numbers
-\begin{giaccmd}
+\begin{center}
   \texttt{cfactor(x\^{}2 + 2)}
-\end{giaccmd}
+\end{center}
 will return
-\begin{giaccmd}
+\begin{center}
   \texttt{(x - i*sqrt(2))*(x + i*sqrt(2))}
-\end{giaccmd}
+\end{center}
 
 If you want \texttt{Xcas} to use complex numbers by default, you can
 turn on complex mode.  In complex mode,
-\begin{giaccmd}
+\begin{center}
   \texttt{factor(x\^{}2 + 2)}
-\end{giaccmd}
+\end{center}
 will return
-\begin{giaccmd}
+\begin{center}
   \texttt{(x - i*sqrt(2))*(x + i*sqrt(2))}
-\end{giaccmd}
+\end{center}
 
 You can turn on complex mode from the CAS configuration screen.  This
 mode is determined by the value of \texttt{complex\_mode}; if this is
@@ -1516,19 +1533,19 @@ so the name should end in \texttt{.eps}.
 \texttt{Xcas} can translate a session, or parts of a session, to other
 computer languages; notably \LaTeX{} and MathML.
 
-\subsection{Translating an expression to \LaTeX{}}
+\subsection{Translating an expression to \LaTeX{}\index{LaTeX}}
 
 The command \texttt{latex} will translate an expression to a \LaTeX{}
 expression.  If you enter \texttt{latex(\textit{expression})}, then
 the expression will be evaluated and the result will be given to you
 in the \LaTeX{} typesetting language.  For example, if you enter
-\begin{giaccmd}
-  latex(1+1/2)
-\end{giaccmd}
+\begin{center}
+  {\tt latex(1+1/2)}
+\end{center}
 you will get
-\begin{giaccmd}
-  $\backslash $frac\{3\}\{2\}
-\end{giaccmd}
+\begin{center}
+  {\tt $\backslash $frac\{3\}\{2\}}
+\end{center}
 
 \subsection{Translating the entire session to \LaTeX{}}
 
@@ -1536,6 +1553,80 @@ If you want to save your entire document as a complete \LaTeX{} file,
 you can use the menu item \texttt{File$\blacktriangleright$laTeX
 preview selection}
 
+\subsection{Translating graphical output to \LaTeX{}}
+
+You can see all of your graphic output at once on the
+\texttt{DispG\index{DispG}} screen, which you can bring up with the
+command \texttt{DispG()}.  (This screen can be cleared with the
+command line command \texttt{erase()}.) On the \texttt{DispG} screen
+there will be a \texttt{Print} menu; the
+\texttt{Print$\blacktriangleright$latex print} will give you several
+in files \texttt{DispG.tex}, \texttt{DispG.ps}, \texttt{DispG.ps} and
+\texttt{DispG.png} with the graphics in different formats. To save it
+without using the \texttt{DispG()} command you can use the
+\texttt{graph2tex} command, which will save all graphic output to a
+\LaTeX{} file of your choosing.  For example, to save your graphs to
+\texttt{myfile.tex}, you can enter the command
+\begin{center}
+  {\tt graph2tex("myfile.tex")}
+\end{center}
+to get a \LaTeX{} file \texttt{myfile.tex} with the graphs.  To save a
+three-dimensional graph, you can use the command \texttt{graph3d2tex}.
+
+To save a single graph as a \LaTeX{} file, you can use the \texttt{M}
+menu to the right of the graph.  Selecting
+\texttt{M$\blacktriangleright$Export Print$\blacktriangleright$Print
+(LaTeX)} will save the current graph.  You can also save a single
+graph by selecting that level, then use the menu item
+\texttt{File$\blacktriangleright$LaTeX$\blacktriangleright$LaTeX print
+selection}.  This method will save the graph in several formats;
+\texttt{session0.tex}, \texttt{session0.dvi}, \texttt{session0.ps}
+and \texttt{session0.png}, or with \texttt{session0} replaced by the
+session name.
+
+\subsection{Translating an expression to MathML\index{MathML}}
+
+The \texttt{mathmml\index{mathmml}} command will take an expression
+and return the result in MathML.  For example, if you enter
+\begin{center}
+  {\tt mathml(1/4 + 1/4)}
+\end{center}
+you will get
+\begin{verbatim}
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+"http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd" [
+<!ENTITY mathml "http://www.w3.org/1998/Math/MathML">
+]>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+
+<math mode="display" xmlns="http://www.w3.org/1998/Math/MathML">
+
+<mfrac><mrow><mn>1</mn></mrow><mrow><mn>2</mn></mrow></mfrac>
+
+</math><br/>
+
+</body>
+</html>
+\end{verbatim}
+which is the number $1/2$ in MathML form, along with enough
+information to make it a complete HTML document.
+
+\subsection{Translating a spreadsheet to MathMML}
+
+You can translate an entire spreadsheet to MathML with the spreadsheet
+menu command \texttt{Table$\blacktriangleright$Save as mathml}.
+
+\subsection{Translating a Maple\index{Maple} file to Xcas}
+
+You can translate a file of Maple commands to the Xcas language with
+the \texttt{maple2xcas} command, as in
+\begin{center}
+  {\tt maple2xcas("MapleFile","XcasFile")}
+\end{center}
+This command takes two arguments, the name of the Maple input file and
+the name of the file where you want to save the Xcas commands.
 
 \chapter{Entry in \texttt{Xcas}}
 
@@ -1543,31 +1634,31 @@ preview selection}
 
 If you enter a command into \texttt{Xcas}, the result will appear in
 the output box below the input.  If you enter
-\begin{giaccmd}
-  a := 2+2
-\end{giaccmd}
+\begin{center}
+  {\tt a := 2+2}
+\end{center}
 then 
-\begin{giaccmd}
-  4
-\end{giaccmd}
+\begin{center}
+  {\tt 4}
+\end{center}
 will appear in the output box.  You can evaluate the input and
 suppress the output with the \texttt{nodisp}\index{nodisp} command.
 If you enter 
-\begin{giaccmd}
-  nodisp(a := 2+2)
-\end{giaccmd}
+\begin{center}
+  {\tt nodisp(a := 2+2)}
+\end{center}
 then \texttt{a} will still be set to \texttt{4}, but the result will
 not appear in the output box.  Instead, 
-\begin{giaccmd}
-  Done
-\end{giaccmd}
+\begin{center}
+  {\tt Done}
+\end{center}
 will appear.
 
 An alternate way of suppressing the output is to end the input with
 \texttt{:;}\index{:;}, if you enter
-\begin{giaccmd}
-  b := 3+3:;
-\end{giaccmd}
+\begin{center}
+  {\tt b := 3+3:;}
+\end{center}
 then \texttt{b} will be set to \texttt{6} but it won't be displayed.
 
 \section{Entering comments\index{comments}}
@@ -1582,24 +1673,24 @@ when you complete the comment.
 
 You can open the browser in a comment line by entering the web address
 beginning with the \texttt{@} sign.  If you enter the comment line
-\begin{giaccmd}
-The Xcas homepage is at\\
-@www-fourier.ujf-grenoble.fr/\~{}parisse/giac.html
-\end{giaccmd}
+\begin{center}
+{\tt The Xcas homepage is at\\
+@www-fourier.ujf-grenoble.fr/\~{}parisse/giac.html}
+\end{center}
 then the browser will open to the \texttt{Xcas} home page.
 
 To add a comment to a program, rather than a session, you can use the
 \texttt{comment\index{comment}} command, which takes a string as an argument.
 Alternatively, any part of a program between \texttt{//}\index{//} and the end
 of the line is a comment.  So both
-\begin{giaccmd}
-bs() := \{comment("Hello"); return "Hi there!";\}
-\end{giaccmd}
+\begin{center}
+{\tt bs() := \{comment("Hello"); return "Hi there!";\}}
+\end{center}
 and
-\begin{giaccmd}
-bs() := \{ // Hello\\
-       return "Hi there!";\}
-\end{giaccmd}
+\begin{center}
+{\tt bs() := \{ // Hello\\
+       return "Hi there!";\}}
+\end{center}
 are programs with the comment "Hello".
 
 \section{Editing expressions}
@@ -1615,9 +1706,9 @@ subexpressions apart from the entire expression.
 The expression
 \[\frac{x+2}{x^2-4}\]
 can be entered on the command line with
-\begin{giaccmd}
-(x+2)/(x\^{}2-4)
-\end{giaccmd}
+\begin{center}
+{\tt (x+2)/(x\^{}2-4)}
+\end{center}
 You also can use the expression editor\index{expression editor} to
 enter it visually, as $x+2$ on top of $x^2 - 4$.  To do this, you can
 start the expression editor with the \texttt{Alt+E} keystroke (or the
@@ -1653,7 +1744,7 @@ the same parent nodes are called siblings.  Finally, if a node doesn't
 have any children, it is called a leaf.  This terminology comes from a
 visual representation of a tree,
 \begin{center}
-  \includegraphics[width=0.4\textwidth]{tree.png}
+  \includegraphics[width=0.4\textwidth]{xcas-tree.png}
 \end{center}
 which looks like an upside-down tree; the root is at the
 top and the leaves are at the bottom. 
@@ -1665,7 +1756,7 @@ children of an operator node are its operands, and the constants and
 variables will be the leaves.  For example, the tree for $\sin(2*x +
 y)$ will look like
 \begin{center}
-  \includegraphics[width=0.4\textwidth]{expr-tree.png}
+  \includegraphics[width=0.4\textwidth]{xcas-expr-tree.png}
 \end{center}
 A subexpression\index{subexpression} of an expression will be a
 selected node together with the nodes below it.  For example, both
@@ -1698,14 +1789,14 @@ itself.  For example, suppose you enter \texttt{x*y*z} in the editor.
 The two multiplications will be a different levels; the tree will look
 like
 \begin{center}
-  \includegraphics[width=0.4\textwidth]{xyz-tree.png}
+  \includegraphics[width=0.4\textwidth]{xcas-xyz-tree.png}
 \end{center}
 If you select the entire expression with the up arrow and then go to
 the \texttt{M} menu to the right of the line and choose eval, then the
 expression will look the same but, as you can check by navigating it
 with the arrow keys, the tree will look like
 \begin{center}
-  \includegraphics[width=0.4\textwidth]{xyz-tree2.png}
+  \includegraphics[width=0.4\textwidth]{xcas-xyz-tree2.png}
 \end{center}
 
 \subsection{Manipulating subexpressions\index{subexpressions}}
@@ -1714,9 +1805,9 @@ If a subexpression is selected in the expression editor, then any menu
 command will be applied to that subexpression.  
 
 For example, suppose that you enter the expression
-\begin{giaccmd}
-  (x+1)*(x+2)*(x-1)
-\end{giaccmd}
+\begin{center}
+  {\tt (x+1)*(x+2)*(x-1)}
+\end{center}
 in the expression editor.  Note that you can use the abilities of the
 editor to make this easier.  First, enter \texttt{x+1}.  Select this
 with the up arrow, then type \texttt{*} followed by \texttt{x+2}.  Select
@@ -1769,6 +1860,39 @@ the others are given in the following table.
 \hline
 \end{tabular}
 \end{center}
+
+\section{Previous results}
+
+The \texttt{ans\index{ans}} command will return the results of previous commands.
+The input to \texttt{ans} is the number of the command, beginning with
+0.  If the first command that you enter is 
+\begin{center}
+  {\tt 2+5}
+\end{center}
+resulting in
+\begin{center}
+  {\tt 7}
+\end{center}
+then later references to \texttt{ans(0)} will evaluate to \texttt{7}.
+
+Note that the argument to \texttt{ans} doesn't correspond to the line
+number in \texttt{Xcas}.  For one thing, the line numbers begin at 1.
+What's more, if you go back and re-evaluate a previous line, then that
+will become part of the commands that \texttt{ans} keeps track of.
+
+If you give \texttt{ans} a negative number, then it counts backwards
+from the current input.  To get the latest output, for
+example, you can use \texttt{ans(-1)}.    With no argument,
+\texttt{ans()} wil also return the latest output.
+
+Similarly, \texttt{quest\index{quest}} will return the previous inputs.  Since
+these will often be simplified to be the same as the output,
+\texttt{quest($n$)} sometimes has the same value as \texttt{ans($n$)}.
+
+You can also use \texttt{Ctrl} plus the arrow keys to scroll through
+previous inputs.  With the cursor on the command line,
+\texttt{Ctrl+uparrow} will go backwards in the list of previous
+commands and \texttt{Ctrl+downarrow} will go forwards.
 
 \section{Spreadsheet}
 \index{spreadsheet}
@@ -1857,50 +1981,171 @@ variables or functions, or other keywords reserved by \texttt{Xcas}.
 You can assign a value to a variable with the \texttt{:=}\index{:=}
 operator. For example, to give the variable \texttt{a} the value of
 \texttt{4}, you can enter
-\begin{giaccmd}
-  a := 4
-\end{giaccmd}
+\begin{center}
+  {\tt a := 4}
+\end{center}
 Alternatively, you can use the \texttt{=>}\index{=>} operator; when
 you use this operator, the value comes before the variable;
-\begin{giaccmd}
-  4 => a
-\end{giaccmd}
+\begin{center}
+  {\tt 4 => a}
+\end{center}
 The function \texttt{sto\index{sto}} or \texttt{Store\index{Store}}
 can also be used; again, the value comes before the variable
-\begin{giaccmd}
-  sto(4,a)
-\end{giaccmd}
+\begin{center}
+  {\tt sto(4,a)}
+\end{center}
 After any one of these commands, any time you use the variable
 \texttt{a} in an expression, it will be replaced by \texttt{4}.
+
+You can use sequences or lists to make multiple assignments at the
+same time. For example,
+\begin{center}
+{\tt (a,b,c) := (1,2,3)}
+\end{center}
+will assign \texttt{a} the value \texttt{1}, \texttt{b} the value
+\texttt{2} and \texttt{c} the value \texttt{3}.   Note that this can
+be used to switch the values of two variables; with \texttt{a} and
+\texttt{b} as above, the command
+\begin{center}
+{\tt (a,b) := (b,a)}
+\end{center}
+will set \texttt{a} equal to \texttt{b}'s original value, namely
+\texttt{2}, and will set \texttt{b} equal to \texttt{a}'s original
+value, namely \texttt{1}.
+
+Another way to assign values to variables, useful in Maple mode, is
+with the \texttt{assign\index{assign}}. If you enter
+\begin{center}
+  {\tt assign(a,3)}
+\end{center}
+or
+\begin{center}
+  {\tt assign(a = 3)}
+\end{center}
+then \texttt{a} will have the value \texttt{3}.  You can assign
+multiple values at once; if you enter
+\begin{center}
+  {\tt assign([a = 1, b = 2])}
+\end{center}
+then \texttt{a} will have the value \texttt{1} and \texttt{b} will
+have the value \texttt{2}.  This command can be useful in Maple mode,
+where solutions of equations are returned as equations.  For example,
+if you enter (in Maple mode)
+\begin{center}
+  {\tt sol := solve([x + y = 1, y = 2])}
+\end{center}
+you will get
+\begin{center}
+  {\tt [x = -1, y = 2]}
+\end{center}
+If you then enter
+\begin{center}
+  {\tt assign(sol)}
+\end{center}
+the variable \texttt{x} will have value \texttt{-1} and \texttt{y}
+will have the value \texttt{2}.  This same effect can be achieved in
+standard \texttt{Xcas} mode, where
+\begin{center}
+  {\tt sol := solve([x + y = 1, y = 2])}
+\end{center}
+will return
+\begin{center}
+  {\tt [[x = -1, y = 2]]}
+\end{center}
+In this case, the command
+\begin{center}
+  {\tt [x,y] := sol[0]}
+\end{center}
+will assign \texttt{x} the value \texttt{-1} and \texttt{y} the value
+\texttt{2}.
+
+\subsection{Assignment by reference}
+\label{subsec:refassign}
+A list is simply a sequence of values separated by commas and
+delimited by \texttt{[} and \texttt{]} (see section \ref{sec:seq}).
+Suppose you give the variable \texttt{a} the value \texttt{[1,1,3,4,5]},
+\begin{center}
+ {\tt  a := [1,2,3,4,5]}
+\end{center}
+If you later assign to \texttt{a} the value \texttt{[1,2,3,4,5]}, then
+a new list is created.  It may be better to just change the second
+value in the original list by reference.  This can be done with the
+\texttt{=<} command.  Recalling that lists are indexed beginning at 0,
+the command
+\begin{center}
+  {\tt a[1] =< 2}
+\end{center}
+will simply change the value of the second element of the list instead
+of creating a new list, and is a more efficient way to change the
+value of \texttt{a} to \texttt{[1,2,3,4,5]}. 
+
+\subsection{Copying values of list}
+
+If you enter
+\begin{center}
+  {\tt list1 := [1,2,3]}
+\end{center}
+and then 
+\begin{center}
+  {\tt list2 := list1}
+\end{center}
+then \texttt{list1} and \texttt{list2} will be equal to the same list,
+not simply two lists with the same elements.  In particular, if you
+change (by reference) the value of an element of \texttt{list1}, then
+the change will also be reflected in \texttt{list2}.  For example, if
+you enter
+\begin{center}
+  {\tt list1[1] =< 5}
+\end{center}
+then both \texttt{list1} and \texttt{list2} will be equal to
+\texttt{[1,5,3]}.
+
+The \texttt{copy\index{copy}} command will create a copy of a list (or
+vector or matrix) which is equal to the original list, but distinct
+from it.  For example, if you enter
+\begin{center}
+  {\tt list1 := [1,2,3]}
+\end{center}
+and then 
+\begin{center}
+  {\tt list2 := copy(list1)}
+\end{center}
+then \texttt{list1} and \texttt{list2} will both be \texttt{[1,2,3]},
+but now if you enter
+\begin{center}
+  {\tt list1[1] =< 5}
+\end{center}
+then both \texttt{list1} will be equal to \texttt{[1,5,3]} but
+\texttt{list2} will still be \texttt{[1,2,3]}.
 
 \subsection{Incrementing variables}
 
 You can increase the value of a variable \texttt{a} by \texttt{4}, for
 example, with
-\begin{giaccmd}
-  a := a + 4
-\end{giaccmd}
+\begin{center}
+  {\tt a := a + 4}
+\end{center}
 If beforehand \texttt{a} were equal to \texttt{4}, it would now be
 equal to \texttt{8}.  A shorthand way of doing this is with the
 \texttt{+=}\index{+=} operator;
-\begin{giaccmd}
-  a += 4
-\end{giaccmd}
+\begin{center}
+  {\tt a += 4}
+\end{center}
 will also increase the value of \texttt{a} by \texttt{4}.
 
 Similar shorthands exist for subtraction, multiplication and division.
 If \texttt{a} is equal to \texttt{8} and you enter
-\begin{giaccmd}
-  a -= 2\index{-=}
-\end{giaccmd}
+\begin{center}
+  {\tt a -= 2\index{-=}}
+\end{center}
 then \texttt{a} will be equal to \texttt{6}.  If you follow this with
-\begin{giaccmd}
-  a *= 3\index{*=}
-\end{giaccmd}
+\begin{center}
+  {\tt a *= 3\index{*=}}
+\end{center}
 then \texttt{a} will be equal to \texttt{18}, and finally
-\begin{giaccmd}
-  a /= 9\index{/=}
-\end{giaccmd}
+\begin{center}
+  {\tt a /= 9\index{/=}}
+\end{center}
 will end with \texttt{a} equal to \texttt{2}.
 
 
@@ -1914,9 +2159,9 @@ a variable or list of variables.
 If you have given the variable \texttt{a} the value \texttt{2} and the
 variable \texttt{bee} the value \texttt{"letter"} (a string), then
 entering
-\begin{giaccmd}
-  archive("foo",[a,bee])
-\end{giaccmd}
+\begin{center}
+  {\tt archive("foo",[a,bee])}
+\end{center}
 will create a file named ``\texttt{foo}'' which contains the values
 \texttt{2} and \texttt{"letter"} in a format meant to be efficiently
 read by \texttt{Xcas}.
@@ -1924,35 +2169,36 @@ read by \texttt{Xcas}.
 You can recall the values stored by \texttt{archive} with the
 \texttt{unarchive\index{unarchive}} command, which takes a file name
 as argument.  If the file ``\texttt{foo}'' is as above, then 
-\begin{giaccmd}
-  unarchive("foo")
-\end{giaccmd}
+\begin{center}
+  {\tt unarchive("foo")}
+\end{center}
 will result in
-\begin{giaccmd}
-  [2, letter]
-\end{giaccmd}
+\begin{center}
+  {\tt [2, letter]}
+\end{center}
 If you want to reassign these values to \texttt{a} and \texttt{bee},
 you can enter
-\begin{giaccmd}
-  [a,bee] := unarchive("foo")\index{unarchive}
-\end{giaccmd}
+\begin{center}
+  {\tt [a,bee] := unarchive("foo")\index{unarchive}}
+\end{center}
 
 \subsection{Copying variables}
+\label{subsec:copyvar}
 
 If a variable has a value, such as
-\begin{giaccmd}
-  a := 1
-\end{giaccmd}
+\begin{center}
+  {\tt a := 1}
+\end{center}
 and you set a second variable to the first variable
-\begin{giaccmd}
-  b := a
-\end{giaccmd}
+\begin{center}
+  {\tt b := a}
+\end{center}
 the new variable will have the same value as the first; in this case
 \texttt{b} will be equal to \texttt{1}.  If you later give the first
 variable a new value;
-\begin{giaccmd}
-  a := 5
-\end{giaccmd}
+\begin{center}
+  {\tt a := 5}
+\end{center}
 the new value will still have the old value, in this case, \texttt{b}
 will still be equal to \texttt{1}.
 
@@ -1960,24 +2206,24 @@ The \texttt{CopyVar\index{CopyVar}} command will copy one variable to
 another without evaluating the first variable; the new variable will
 simply be a copy of the first.  With \texttt{a} having the value of
 \texttt{5}, as above, the command
-\begin{giaccmd}
-  CopyVar(a,c)
-\end{giaccmd}
+\begin{center}
+  {\tt CopyVar(a,c)}
+\end{center}
 will make \texttt{c} a copy of the variable \texttt{a}, so it will
 have the value \texttt{5} also.  If you now change the value of
 \texttt{a}
-\begin{giaccmd}
-  a := 10
-\end{giaccmd}
+\begin{center}
+  {\tt a := 10}
+\end{center}
 then the value of \texttt{c} will also change; here, \texttt{c} will
 now have the value \texttt{10}.
 
 \subsection{Assumptions on variables}
 
 If you enter
-\begin{giaccmd}
-  abs(var)
-\end{giaccmd}
+\begin{center}
+  {\tt abs(var)}
+\end{center}
 the \texttt{Xcas} will return it unevaluated, since \texttt{Xcas}
 doesn't know what type of value the variable is supposed to represent.
 
@@ -1985,26 +2231,26 @@ The \texttt{assume\index{assume}} (or
 \texttt{supposons\index{supposons}}) command will let you tell
 \texttt{Xcas} some properties of a variable without giving the
 variable a specific value.  For example, if you enter
-\begin{giaccmd}
-  assume(var > 0)
-\end{giaccmd}
+\begin{center}
+  {\tt assume(var > 0)}
+\end{center}
 then \texttt{Xcas} will assume that \texttt{var} is a positive real
 number, and so for example
-\begin{giaccmd}
-  abs(var)
-\end{giaccmd}
+\begin{center}
+  {\tt abs(var)}
+\end{center}
 will be evaluated to
-\begin{giaccmd}
-   var
-\end{giaccmd}
+\begin{center}
+   {\tt var}
+\end{center}
 
 You can put one or more conditions in the \texttt{assume} command by
 combining them with \texttt{and\index{and}} and \texttt{or\index{or}}.
 For example, if you want the variable \texttt{a} to be in $[2,4) \cup
 (6,\infty)$, you can enter
-\begin{giaccmd}
-  assume((a >= 2 and a < 4) or a > 6)
-\end{giaccmd}
+\begin{center}
+  {\tt assume((a >= 2 and a < 4) or a > 6)}
+\end{center}
 
 If a variable has attached assumptions, then making another assumption
 with \texttt{assume} will remove the original assumptions.  To add
@@ -2013,74 +2259,74 @@ extra assumptions, you can either use the
 \texttt{assume} a second argument of
 \texttt{additionally\index{additionally@\textit{additionally}}}.  If
 you assume that $b > 0$ with
-\begin{giaccmd}
-  assume(b > 0)
-\end{giaccmd}
+\begin{center}
+  {\tt assume(b > 0)}
+\end{center}
 and you want to add the condition that $b < 1$, you can either enter
-\begin{giaccmd}
-  assume(b < 1, additionally)
-\end{giaccmd}
+\begin{center}
+  {\tt assume(b < 1, additionally)}
+\end{center}
 or
-\begin{giaccmd}
-  additionally(b < 1)
-\end{giaccmd}
+\begin{center}
+  {\tt additionally(b < 1)}
+\end{center}
 
 As well as equalities and inequalities, you can make assumptions about
 the domain of a variable.  If you want \texttt{n} to represent a
 positive integer\index{integer@\textit{integer}}, for example, you can enter
-\begin{giaccmd}
-  assume(n, integer)
-\end{giaccmd}
+\begin{center}
+  {\tt assume(n, integer)}
+\end{center}
 If you want \texttt{n} to be a positive integer, you can add the
 condition
-\begin{giaccmd}
-  additionally(n > 0)
-\end{giaccmd}
+\begin{center}
+  {\tt additionally(n > 0)}
+\end{center}
 
 You can use the \texttt{about\index{about}} command to check the assumptions on a
 variable; for the above positive integer \texttt{n}, if you enter
-\begin{giaccmd}
-  about(n)
-\end{giaccmd}
+\begin{center}
+  {\tt about(n)}
+\end{center}
 you will get
-\begin{giaccmd}
-  assume[integer,[line[0,+infinity]],[0]]
-\end{giaccmd}
+\begin{center}
+  {\tt assume[integer,[line[0,+infinity]],[0]]}
+\end{center}
 The first element tells you that \texttt{n} is an integer, the second
 element tells you that \texttt{n} is between \texttt{0} and
 \texttt{+infinity}, and the third element tells you that the value
 \texttt{0} is excluded.
 
 If you assume that a variable is equal to a specific value, such as
-\begin{giaccmd}
-  assume(c = 2)
-\end{giaccmd}
+\begin{center}
+  {\tt assume(c = 2)}
+\end{center}
 then by default the variable \texttt{c} will remain unevaluated in
 later levels.  If you want an expression involving \texttt{c} to be
 evaluated, you would need to put the expression inside the
 \texttt{evalf\index{evalf}} command; if you enter
-\begin{giaccmd}
-  evalf(c\^{}2 + 3)
-\end{giaccmd}
+\begin{center}
+  {\tt evalf(c\^{}2 + 3)}
+\end{center}
 then you will get 
-\begin{giaccmd}
-  7.0
-\end{giaccmd}
+\begin{center}
+  {\tt 7.0}
+\end{center}
 Right below the \texttt{assume(c = 2)} command line
 there will be a slider, namely arrows pointing left and right with the
 value \texttt{2} between them.  These
 can be used to change the values of \texttt{c}.  If you click on the
 right arrow, the \texttt{assume(c = 2)} command will transform to
-\begin{giaccmd}
-  assume(c=[2.2,-10.0,10.0,0.0])
-\end{giaccmd}
+\begin{center}
+  {\tt assume(c=[2.2,-10.0,10.0,0.0])}
+\end{center}
 and the value between the arrows will be \texttt{2.2}.  Also, any
 later levels where the variable \texttt{c} is evaluated will be
 re-evaluated with the value of \texttt{c} now \texttt{2.2}.  The
 output to \texttt{evalf(c\^{}2 + 3} will become
-\begin{giaccmd}
-  7.84
-\end{giaccmd}
+\begin{center}
+  {\tt 7.84}
+\end{center}
 The \texttt{-10.0} and \texttt{10.0} in the \texttt{assume} line
 represent the smallest and largest values that \texttt{c} can become
 using the sliders.  You can set them yourself in the \texttt{assume}
@@ -2088,52 +2334,52 @@ command, as well as the increment that the value will change; if you
 want \texttt{c} to start with the value \texttt{5} and vary between
 \texttt{2} and \texttt{8} in increments of \texttt{0.05}, then you can
 enter
-\begin{giaccmd}
-  assume(c = [5,2,8,0.05])
-\end{giaccmd}
+\begin{center}
+  {\tt assume(c = [5,2,8,0.05])}
+\end{center}
 
 You can remove any assumptions you have made about a variable with the
 \texttt{purge\index{purge}} command; if you enter
-\begin{giaccmd}
-  purge(a)
-\end{giaccmd}
+\begin{center}
+  {\tt purge(a)}
+\end{center}
 then \texttt{a} will no longer have any assumptions made about it.
 You can remove assumptions from more than one variable at a time;
-\begin{giaccmd}
-  purge(a,b)
-\end{giaccmd}
+\begin{center}
+  {\tt purge(a,b)}
+\end{center}
 will remove any assumptions about \texttt{a} and \texttt{b}.
 
 \subsection{Unassigning variables}
 
 The \texttt{VARS()}\index{VARS} command will list the variables to which you have
 assigned values or assumptions.  If you begin by entering
-\begin{giaccmd}
-  a := 1
-\end{giaccmd}
+\begin{center}
+  {\tt a := 1}
+\end{center}
 and
-\begin{giaccmd}
-  anothervar := 2
-\end{giaccmd}
+\begin{center}
+  {\tt anothervar := 2}
+\end{center}
 then 
-\begin{giaccmd}
-  VARS()
-\end{giaccmd}
+\begin{center}
+  {\tt VARS()}
+\end{center}
 will return
-\begin{giaccmd}
-  [a, anothervar]
-\end{giaccmd}
+\begin{center}
+  {\tt [a, anothervar]}
+\end{center}
 
 The \texttt{purge\index{purge}} command will clear the values and
 assumptions you make on variables.  You can clear the values and
 assumptions you have made on all variables with
-\begin{giaccmd}
-  restart\index{restart}
-\end{giaccmd}
+\begin{center}
+  {\tt restart\index{restart}}
+\end{center}
 or
-\begin{giaccmd}
-  rm\_all\_vars()\index{rm\_all\_vars}
-\end{giaccmd}
+\begin{center}
+  {\tt rm\_all\_vars()\index{rm\_all\_vars}}
+\end{center}
 command.
 
 \section{Functions}
@@ -2142,52 +2388,53 @@ command.
 
 You can use the \texttt{:=}\index{:=} and \texttt{=>}\index{=>}
 operators to define functions; both
-\begin{giaccmd}
-  f(x) := x\^{}2
-\end{giaccmd}
+\begin{center}
+  {\tt f(x) := x\^{}2}
+\end{center}
 and
-\begin{giaccmd}
-  x\^{}2 => f(x)
-\end{giaccmd}
+\begin{center}
+  {\tt x\^{}2 => f(x)}
+\end{center}
 give the name \texttt{f} to the function which takes a value and 
 returns the square of the value.  If you then enter
-\begin{giaccmd}
-  f(3)
-\end{giaccmd}
+\begin{center}
+  {\tt f(3)}
+\end{center}
 you will get
-\begin{giaccmd}
-  9
-\end{giaccmd}
+\begin{center}
+  {\tt 9}
+\end{center}
 
 You can give \texttt{Xcas} a function without a name with the
 \texttt{->}\index{->} operator; the squaring function can be written
 without a name as
-\begin{giaccmd}
-  x -> x\^{}2
-\end{giaccmd}
+\begin{center}
+  {\tt x -> x\^{}2}
+\end{center}
 You can use this form of the function to assign it to a name; both
-\begin{giaccmd}
-  f := x -> x\^{}2
-\end{giaccmd}
+\begin{center}
+  {\tt f := x -> x\^{}2}
+\end{center}
 and
-\begin{giaccmd}
-  x -> x\^{}2 => f
-\end{giaccmd}
+\begin{center}
+  {\tt x -> x\^{}2 => f}
+\end{center}
 are alternate ways to define \texttt{f} as the squaring function.
 
 You can similarly define functions of more than one variable.  For
 example, to define a function which takes the lengths of the two legs
 of a right triangle and returns the hypotenuse, you could enter
-\begin{giaccmd}
-  hypot(a,b) := sqrt(a\^{}2 + b\^{}2)
-\end{giaccmd}
+\begin{center}
+  {\tt hypot(a,b) := sqrt(a\^{}2 + b\^{}2)}
+\end{center}
 or
-\begin{giaccmd}
-  hypot := (a,b) -> sqrt(a\^{}2 + b\^{}2)
-\end{giaccmd}
+\begin{center}
+  {\tt hypot := (a,b) -> sqrt(a\^{}2 + b\^{}2)}
+\end{center}
 
 \subsection{Defining piecewise defined functions}
 \index{piecewise defined functions}
+\label{subsec:piecewise}
 
 You can use \texttt{Xcas}'s control structures to define functions not
 given by a single simple formula.  Notably, you can use the
@@ -2199,64 +2446,64 @@ a condition, the second argument tells the command what to return when
 the condition is true, and the third argument tells the command what
 to return when the condition is false.  For example, you could define
 your own absolute value function with
-\begin{giaccmd}
-  myabs(x) := ifte(x >= 0, x -1*x)
-\end{giaccmd}
+\begin{center}
+  {\tt myabs(x) := ifte(x >= 0, x -1*x)}
+\end{center}
 Afterwards, for example, entering
-\begin{giaccmd}
-  myabs(-4)
-\end{giaccmd}
+\begin{center}
+  {\tt myabs(-4)}
+\end{center}
 will return
-\begin{giaccmd}
-  4
-\end{giaccmd}
+\begin{center}
+  {\tt 4}
+\end{center}
 However, this will return an error if it can't evaluate the
 conditional.  For example, if you enter
-\begin{giaccmd}
-  myabs(x)
-\end{giaccmd}
+\begin{center}
+  {\tt myabs(x)}
+\end{center}
 you will get the error
-\begin{giaccmd}
-  Ifte: Unable to check test Error: Bad Argument Value
-\end{giaccmd}
+\begin{center}
+  {\tt Ifte: Unable to check test Error: Bad Argument Value}
+\end{center}
 
 The \texttt{?:}\index{? :} construct behaves similarly to \texttt{ifte} but is
 structured differently.  Here, the condition comes first, followed by
 \texttt{?}, then what to return if the condition is true, followed by
 the \texttt{:}, and then what to return if the condition is false.
 You could define your absolute value function with
-\begin{giaccmd}
-  myabs(x) := (x >= 0)? x: -1*x
-\end{giaccmd}
+\begin{center}
+  {\tt myabs(x) := (x >= 0)? x: -1*x}
+\end{center}
 If you enter
-\begin{giaccmd}
-  myabs(-4)
-\end{giaccmd}
+\begin{center}
+  {\tt myabs(-4)}
+\end{center}
 you will again get
-\begin{giaccmd}
-  4
-\end{giaccmd}
+\begin{center}
+  {\tt 4}
+\end{center}
 but now if the conditional can't be evaluated, you won't get an error.
-\begin{giaccmd}
-  myabs(x)
-\end{giaccmd}
+\begin{center}
+  {\tt myabs(x)}
+\end{center}
 will return
-\begin{giaccmd}
-  ((x >= 0)? x: -x)
-\end{giaccmd}
+\begin{center}
+  {\tt ((x >= 0)? x: -x)}
+\end{center}
 
 The \texttt{when\index{when}} and \texttt{IFTE\index{IFTE}} commands
 are synonyms for the \texttt{? :} construct; 
-\begin{giaccmd}
-  (\textit{condition})? \textit{true-result}: \textit{false-result}
-\end{giaccmd}
-\begin{giaccmd}
-  when(\textit{condition}, \textit{true-result}, \textit{false-result})
-\end{giaccmd}
+\begin{center}
+  {\tt (\textit{condition})? \textit{true-result}: \textit{false-result}}
+\end{center}
+\begin{center}
+  {\tt when(\textit{condition}, \textit{true-result}, \textit{false-result})}
+\end{center}
 and
-\begin{giaccmd}
-  IFTE(\textit{condition}, \textit{true-result}, \textit{false-result})
-\end{giaccmd}
+\begin{center}
+  {\tt IFTE(\textit{condition}, \textit{true-result}, \textit{false-result})}
+\end{center}
 all represent the same expression.
 
 If you want to define a function with several pieces, it may be
@@ -2275,9 +2522,9 @@ x + 1 & \text{if } x \ge 0
 \end{cases}
 \]
 you can enter
-\begin{giaccmd}
-  f(x) := piecewise(x < -2, -2, x < -1, 3*x+4, x < 0, 1, x + 1)
-\end{giaccmd}
+\begin{center}
+  {\tt f(x) := piecewise(x < -2, -2, x < -1, 3*x+4, x < 0, 1, x + 1)}
+\end{center}
 
 \section{Directories}
 \index{directories}
@@ -2288,23 +2535,23 @@ you can enter
 it creates; typically the user's home directory.  You can print the
 name of the current working directory with the
 \texttt{pwd()}\index{pwd} command; if you enter
-\begin{giaccmd}
-  pwd()
-\end{giaccmd}
+\begin{center}
+  {\tt pwd()}
+\end{center}
 you might get something like
-\begin{giaccmd}
-  /home/username
-\end{giaccmd}
+\begin{center}
+  {\tt /home/username}
+\end{center}
 
 You can change the working directory with the \texttt{cd\index{cd}}
 command; if you enter
-\begin{giaccmd}
-  cd("foo")
-\end{giaccmd}
+\begin{center}
+  {\tt cd("foo")}
+\end{center}
 or (on a Unix system)
-\begin{giaccmd}
-  cd("/home/username/foo")
-\end{giaccmd}
+\begin{center}
+  {\tt cd("/home/username/foo")}
+\end{center}
 will change to the directory \texttt{foo}, if it exists.
 Afterwards, any files that you save from \texttt{Xcas} will be in that
 directory.  
@@ -2319,22 +2566,22 @@ name will depend on which directory you are in.
 If you have a function or other \texttt{Xcas} information in a file,
 you can load it with the \texttt{read\index{read}} function.  If the
 file is named \texttt{myfunction.cxx}, then
-\begin{giaccmd}
-  read("myfunction.cxx")
-\end{giaccmd}
+\begin{center}
+  {\tt read("myfunction.cxx")}
+\end{center}
 will load the file, as long as the directory is in the current working
 directory.  If the file is in a different directory, you can still
 load it by giving the path to the file,
-\begin{giaccmd}
-  read("/path/to/file/myfunction.cxx")
-\end{giaccmd}
+\begin{center}
+  {\tt read("/path/to/file/myfunction.cxx")}
+\end{center}
 
 While \texttt{read} can be used to load files containing \texttt{Xcas}
 functions, which typically end in \texttt{.cxx}, if you want to load a
 saved session you should use the \texttt{load\index{load}} function;
-\begin{giaccmd}
-  load("mysession.cas")
-\end{giaccmd}
+\begin{center}
+  {\tt load("mysession.cas")}
+\end{center}
 
 \subsection{Internal directories}
 \index{internal directories}
@@ -2343,31 +2590,31 @@ You can create a directory that isn't actually on your hard drive but
 is treated like one from \texttt{Xcas}.  You can create such an
 internal directory with the \texttt{NewFold\index{NewFold}} command,
 which takes a variable name as an argument. If you enter
-\begin{giaccmd}
-  NewFold(MyIntDir)
-\end{giaccmd}
+\begin{center}
+  {\tt NewFold(MyIntDir)}
+\end{center}
 then there will be a new internal directory named \texttt{MyIntDir}.
 Internal directories will also be listed with the
 \texttt{VARS()}\index{VARS}
 command. To actually use this directory, you'll have to use the
 \texttt{SetFold\index{SetFold}} command;
-\begin{giaccmd}
-  SetFold(MyIntDir)
-\end{giaccmd}
+\begin{center}
+  {\tt SetFold(MyIntDir)}
+\end{center}
 Finally, we can print out the internal directory that we are in with
 the \texttt{GetFold\index{GetFold}} command; entering
-\begin{giaccmd}
-  GetFold()
-\end{giaccmd}
+\begin{center}
+  {\tt GetFold()}
+\end{center}
 will result in
-\begin{giaccmd}
-  MyIntDir
-\end{giaccmd}
+\begin{center}
+  {\tt MyIntDir}
+\end{center}
 Afterwards, if this directory is empty, you can delete it with the
 \texttt{DelFold\index{DelFold}} command;
-\begin{giaccmd}
-  DelFold(MyIntDir)
-\end{giaccmd}
+\begin{center}
+  {\tt DelFold(MyIntDir)}
+\end{center}
 
 
 \chapter{The CAS functions}\label{sec:cas}
@@ -2382,6 +2629,7 @@ Afterwards, if this directory is empty, you can delete it with the
 {\tt i} is the complex number $i$.
 
 \section{Booleans}
+\label{sec:boolean}
 \subsection{The values of a boolean : {\tt true false}}\index{true}\index{false}\index{TRUE}\index{FALSE}
 The value of a boolean is {\tt true} or {\tt false}.\\
 The synonyms are :\\
@@ -2876,7 +3124,7 @@ and $n=5+k*7$ (for $k \in \mathbb Z$), then the greatest common divisor of  $4n+
 and $5n+3$ is 7.
 \subsection{GCD : {\tt Gcd}}\index{Gcd|textbf}
 \noindent{\tt Gcd} is the inert form of {\tt gcd}. See the section
-\ref{sec:Gcd} for polynomials with coefficients in $\Z/p\Z$ 
+\ref{sec:gcd} for polynomials with coefficients in $\Z/p\Z$ 
  for  using this instruction.\\
 Input :
 \begin{center}{\tt Gcd(18,15)}\end{center}
@@ -3443,7 +3691,7 @@ Output for example :
 \end{itemize}
 
 \section{Rationals}
-\subsection{Transform a floating point number into a rational : {\tt exact \\
+\subsection{Transform a floating point number into a rational : {\tt exact 
 float2rational}}\index{float2rational|textbf}\index{exact|textbf}\index{evalf}
 \noindent {\tt float2rational}  or {\tt exact} takes as argument a  
 floating point number {\tt d} and returns 
@@ -3492,7 +3740,7 @@ Input :
 Output :
 \begin{center}{\tt  3+7/12}\end{center}
 
-\subsection{Numerator of a fraction after simplification : {\tt numer}\\
+\subsection{Numerator of a fraction after simplification : {\tt numer}
 {\tt getNum}}\index{numer|textbf}\index{getNum|textbf}\label{sec:inumer}
 \noindent{\tt numer} or {\tt getNum} takes as argument a fraction and returns 
 the numerator of this fraction  after simplification (for rational fractions,
@@ -4075,7 +4323,7 @@ Input :
 Output :
 \begin{center}{\tt [2,0,1]}\end{center}
 
-\subsection{Decomposition as a product of disjoint cycles : \\
+\subsection{Decomposition as a product of disjoint cycles :
 {\tt permu2cycles}}\index{permu2cycles}
 \noindent {\tt permu2cycles} takes as argument a permutation.\\
 {\tt permu2cycles} returns its decomposition as a product of
@@ -4341,7 +4589,7 @@ Input :
 Output :
 \begin{center}{\tt 3-4*i}\end{center}
 
-\subsection{Multiplication by the complex conjugate  :\\
+\subsection{Multiplication by the complex conjugate  :
  {\tt mult\_c\_conjugate}}\index{mult\_c\_conjugate}
 \noindent {\tt mult\_c\_conjugate} takes as argument an complex expression.\\ 
 If this expression has a complex denominator,
@@ -4360,7 +4608,7 @@ Output :
 \begin{center}{\tt (2+i)*(2+-i)/(2*(2+-i))}\end{center}
 
 \subsection{Barycenter of complex numbers : {\tt barycentre}}\index{barycentre}\label{sec:baryc}
-{\bf See also :} \ref{sec:barycentre2} and \ref{sec:barycentre3}.\\
+%{\bf See also :} \ref{sec:barycentre2} and \ref{sec:barycentre3}.\\
 \noindent{\tt barycentre} takes as argument two lists of the same size
 (resp. a matrix with two columns): 
 \begin{itemize}
@@ -4455,7 +4703,7 @@ Input :
 Output :
 \begin{center}{\tt (x-3)\verb|^|2-8}\end{center}
 
-\subsection{Multiplication by the conjugate quantity : \\
+\subsection{Multiplication by the conjugate quantity : 
 {\tt mult\_conjugate}}\index{mult\_conjugate} 
 \noindent {\tt mult\_conjugate} takes as argument an expression  with a 
 denominator or a numerator supposed to contain a square root :
@@ -6429,7 +6677,7 @@ Output, after simplification with {\tt normal(ans())} :
 \begin{center}{\tt 1}\end{center}
 
 \subsection{Rewrite trigonometric functions as function of tan(x/2) 
-and hyperbolic functions as function of exp(x): \\
+and hyperbolic functions as function of exp(x):
 {\tt halftan\_hyp2exp}}\index{halftan\_hyp2exp}
 \noindent{\tt halftan\_hyp2exp} takes as argument a trigonometric and  
 hyperbolic expression.\\
@@ -7409,6 +7657,7 @@ Output :
 \begin{center}{\tt ((exp((i)*x))\verb|^|4+1)/(exp((i)*x))\verb|^|2 }\end{center}
 
 \section{Polynomials}
+\label{sec:polynomials}
 A polynomial of one variable is represented either 
 by a symbolic expression or by the list of its 
 coefficients in decreasing powers order (dense representation).
@@ -7932,7 +8181,7 @@ The variables must be symbolic (if not, purge them before calling
 {\tt ranm} returns a list of {\tt n} random integers (between -99 and  +99).
 This list can be seen as the coefficients of an univariate 
 polynomial of degree {\tt n-1}
-(see also \ref{sec:ranm2} and  \ref{sec:ranm3}).\\
+(see also \ref{sec:ranm2}).\\ % and  \ref{sec:ranm3}).\\
 Input :
 \begin{center}{\tt ranm(3)}\end{center}
 Output :
@@ -9233,7 +9482,7 @@ Output in complex mode:
 \begin{center}{\tt (-1-2*i)/((2-2*i)*(x+i))}\end{center}
 
 \section{Exact roots of a polynomial}
-\subsection{Exact bounds for complex roots of a polynomial :\\ 
+\subsection{Exact bounds for complex roots of a polynomial :
 {\tt complexroot}}\index{complexroot}
 \noindent {\tt complexroot} takes 2 or 4 arguments : a polynomial and a real 
 number $\epsilon$ and optionally two complex numbers $\alpha,\beta$.\\
@@ -9307,7 +9556,7 @@ To find the real roots of $x^3-x^2-2x+2$ in the interval $[0;2]$, input:
 Output :
 \begin{center}{\tt [[1,1],[[11/8,23/16],1]]}\end{center} 
 
-\subsection{Exact values of rational roots of a polynomial : \\
+\subsection{Exact values of rational roots of a polynomial :
 {\tt rationalroot}}\index{rationalroot}
 \noindent {\tt rationalroot} takes 1 or 3 arguments : a polynomial and  
 optionally two real numbers $\alpha,\beta$.
@@ -10254,6 +10503,7 @@ Output :
 \begin{center}{\tt [2.5..3.5,3.5..6.5,6.5..9.5]}\end{center}
 
 \section{Sequences}
+\label{sec:seq}
 \subsection{Definition : {\tt seq[]  ()}}\index{seq[]}\index{()}
 A sequence is represented by 
 a sequence of elements separated by commas, without
@@ -10305,7 +10555,7 @@ Input :
 Output :
 \begin{center}{\tt (1,2,3)}\end{center}
 
-\subsection{Make a sequence or a list : {\tt seq \$}}\index{seq|textbf}\index{\$|textbf}\label{sec:seq}
+\subsection{Make a sequence or a list : {\tt seq \$}}\index{seq|textbf}\index{\$|textbf}
 \noindent{\tt seq} takes two, three, four or five arguments : the first 
 argument is an expression depending of a parameter (for example $j$) and  
 the remaining argument(s) describe which values of $j$ will be used to
@@ -10559,7 +10809,7 @@ Input :
 Output :
 \begin{center}{\tt $\llbracket$1,2$\rrbracket$}\end{center}
 
-\section{Lists and vectors}\index{[]|textbf}
+\section{Lists\index{lists} and vectors\index{vectors}}\index{[]|textbf}
 \subsection{Definition}
 A list (or a vector) is delimited by {\tt [ ]},
 its elements must be separated by commas. 
@@ -11257,7 +11507,7 @@ Output :
 \noindent{\tt randvector} takes as argument an integer $n$ and optionally a 
 second argument, either an integer $k$ or the quoted name of
 a random distribution law
-(see also \ref{sec:ranm1}, \ref{sec:ranm4} and \ref{sec:ranm3}).\\
+(see also \ref{sec:ranm1}).\\ %, \ref{sec:ranm4} and \ref{sec:ranm3}).\\
 {\tt randvector} returns a vector of size $n$ containing random integers 
 uniformly distributed between -99 and +99 (default), or between 0 and $k-1$
 or containing random 
@@ -11480,8 +11730,8 @@ Indeed :
 $-5=2*2-3*3$, $ 10=-1*2+4*3$, $ -5=1*3-2*4$.
 \section{Statistics functions : {\tt mean,variance,stddev, stddevp,median,quantile,quartiles,boxwhisker}}\index{mean} \index{stddev}\index{variance}\index{median}\index{stddevp}\index{quantile}\index{boxwhisker}\index{quartiles}\label{sec:statlist}
 The functions described here may be used if the statistics series 
-is contained in a list. See also section \ref{sec:statmat} for matrices and  
-chapter \ref{sec:stat} for weighted lists.
+is contained in a list. See also section \ref{sec:statmat} for matrices.
+%and chapter \ref{sec:stat} for weighted lists.
 \begin{itemize}
 \item{\tt mean} computes the arithmetic mean of a list\\
 Input :
@@ -11645,7 +11895,7 @@ Output :
 \noindent{\tt ranm} or {\tt randMat} or {\tt randmatrix} takes as argument an 
 integer $n$ or two integers $n,m$ and optionally a third argument, either an 
 integer $k$ or the quoted name of a random distribution law
-(see also \ref{sec:ranm1}, \ref{sec:ranm4} and \ref{sec:ranm3}).\\
+(see also \ref{sec:ranm1} and  \ref{sec:ranm4}.\\ % and \ref{sec:ranm3}).\\
 {\tt ranm} returns a vector of size $n$ or a matrix of size $n\times m$
  containing random integers uniformly distributed between -99 and +99 
 (default), or between 0 and $k-1$ or  a matrix  of size $n\times m$
@@ -13656,7 +13906,7 @@ Input :
 Output :
 \begin{center}{\tt [[0.324869129433,0,0],[0,4.21431974338,0],[0,0,1.46081112719]]}\end{center}
 
-\subsection{Eigenvectors : {\tt egv eigenvectors eigenvects \\
+\subsection{Eigenvectors : {\tt egv eigenvectors eigenvects
 eigVc}}\index{egv}\index{eigenvectors}\index{eigenvects}\index{eigVc}
 \noindent{\tt egv} (or {\tt eigenvectors eigenvects eigVc}) takes as argument 
 a square matrix $A$ of size $n$.\\
@@ -13849,7 +14099,7 @@ charpoly([[4,1,-2],[1,2,-1],[2,1,0]],X)}\end{center}
 Output :
 \begin{center}{\tt X\verb|^|3-6*X\verb|^|2+12*X-8}\end{center}
 
-\subsection{Characteristic polynomial using Hessenberg algorithm :\\
+\subsection{Characteristic polynomial using Hessenberg algorithm :
  {\tt pcar\_hessenberg}}\index{pcar\_hessenberg}
 \noindent{\tt pcar\_hessenberg} takes as argument a square 
 matrix $A$ of size $n$ and optionally the name of a symbolic variable.\\
@@ -15058,7 +15308,7 @@ For numeric solutions of differential equations, see {\tt odesolve}.
 For graphic representation of solutions of differential equations, 
 see  {\tt plotfield}, {\tt plotode} and {\tt interactive\_plotode}. 
 
-\subsection{Solving differential equations : {\tt desolve deSolve \\
+\subsection{Solving differential equations : {\tt desolve deSolve 
 dsolve}}\index{desolve}\index{deSolve}\index{dsolve}
 {\tt desolve} (or {\tt deSolve}) can solve :
 \begin{itemize}
@@ -15887,8 +16137,8 @@ Output :
 
 \section{Graph of a line and tangent to a graph}
 \subsection{Draw a line : {\tt line}}\index{line}\label{sec:doite}
-{\bf See also :} \ref{sec:droite2} and \ref{sec:droite3} for line usage in 
-geometry and see \ref{sec:axe2} and \ref{sec:axe3} for axis.\\
+%{\bf See also :} \ref{sec:droite2} and \ref{sec:droite3} for line usage in 
+%geometry and see \ref{sec:axe2} and \ref{sec:axe3} for axis.\\
 \noindent {\tt line} takes as argument cartesian equation(s) :
 \begin{itemize}
 \item in 2D: one line equation,
@@ -15965,8 +16215,8 @@ Output :
 \begin{center}{\tt y=(x-1)}\end{center}
 
 \subsection{Tangent to a 2D graph : {\tt tangent}}\index{tangent|textbf}\label{sec:tangente}
-{\bf See also :} \ref{sec:tangent} for plane geometry and 
-\ref{sec:tangent3} for 3D geometry.\\
+%{\bf See also :} \ref{sec:tangent} for plane geometry and 
+%\ref{sec:tangent3} for 3D geometry.\\
 \noindent {\tt tangent} takes two arguments : a geometric object and a point 
 {\tt A}.\\
 {\tt tangent} draws tangent(s) to this geometric object crossing through 
@@ -16070,7 +16320,7 @@ Output :
     to approach the integral}\end{center}
 \end{itemize}
 
-\section{Contour lines: {\tt plotcontour contourplot \\DrwCtour}}\index{plotcontour|textbf}\index{contourplot|textbf}\index{DrwCtour|textbf}\label{sec:plotcontour}
+\section{Contour lines: {\tt plotcontour contourplot DrwCtour}}\index{plotcontour|textbf}\index{contourplot|textbf}\index{DrwCtour|textbf}\label{sec:plotcontour}
 \noindent{\tt plotcontour(f(x,y),[x,y])} (or {\tt DrwCtour(f(x,y),[x,y])} or \\
  {\tt contourplot(f(x,y),[x,y])})
 draws the contour lines of the surface defined by $z=f(x,y)$ for $z=-10$, 
@@ -16281,7 +16531,7 @@ defined by  $x=f(t),y=g(t)$
 with the default range of values of $t$ (resp. for $t1 \leq t\leq t2$).\\
 The default range of values is taken as specified 
 in the graphic configuration ({\tt t-} and {\tt t+}, 
-cf. \ref{sec:configgeo}).
+cf. \ref{ssec:confgraph}).
 {\tt plotparam} accepts an optional argument to specify the discretization
 step for $t$ with {\tt tstep=}.\\ 
 Input :
@@ -16430,7 +16680,7 @@ To have a 2-d graph (in the plane), use the option
 {\tt S:=odeplot([h-0.3*h*p, 0.3*h*p-p], [t,h,p],[0,0.3,0.7],plane)}
 \end{center}
 To compute the values of the solution, see
-the section \ref{sec:odesolve}.
+the subsection \ref{ssec:odesolve}.
 
 \section{Interactive plotting of solutions of a differential equation : {\tt interactive\_plotode interactive\_odeplot}}\index{interactive\_plotode}\index{interactive\_odeplot}
 \noindent Let $f(t,y)$ be an expression depending on two 
@@ -16598,8 +16848,6 @@ Then, input :
 \begin{center}{\tt animation(s)}\end{center}
 We see, each segment, one to one with a display time that
 depends of the {\tt animate} value in {\tt cfg}.
-
-
 
 \chapter{Numerical computations}\label{sec:numeric}
 Real numbers may have an exact representation
@@ -16840,6 +17088,7 @@ Output :
 \begin{center}{\tt 1.46265174591}\end{center}
 
 \subsection{Approximate solution of y'=f(t,y) : {\tt odesolve}}\index{odesolve|textbf}
+\label{ssec:odesolve}
 \begin{itemize}
 \item Let $f$ be a function from $\mathbb R^2$ to $\mathbb R$.\\
  {\tt odesolve(f(t,y),[t,y],[t0,y0],t1)} or\\
@@ -17312,5 +17561,1237 @@ To have the value of a constant, input the constant name in the command line
 of {\tt Xcas} and evaluate with {\tt enter} (don't forget to put 
 {\tt \_} at the beginning and at the end of the constant name).
 
+\chapter{Programming}
+
+\section{Functions, programs and scripts}
+
+\subsection{The program editor}
+
+\texttt{Xcas} provides a program editor, which you can open with
+\texttt{Alt+P}.  This can be useful for writing small programs, but
+for writing larger programs you may want to use your usual editor.
+(Note that this requires an editor, such as \texttt{emacs}, and not a
+word processor.)    If you use your own editor, then you will need to
+save the program to a file, such as \texttt{myprog.cxx}, and then load
+it into \texttt{Xcas} with the command line command \texttt{load},  as
+in \texttt{load("myprog.cxx")}.
+
+\subsection{Functions\index{functions}}
+
+You have already seen functions defined with \texttt{:=}.  For
+example, to define a function \texttt{sumprod} which takes two inputs
+and returns a list with the sum and the product of the inputs, you can
+enter
+\begin{center}
+{\tt sumprod(a,b) := [a+b,a*b]}
+\end{center}
+Afterwards, entering
+\begin{center}
+{\tt sumprod(3,5)}
+\end{center}
+will return
+\begin{center}
+{\tt [8,15]}
+\end{center}
+
+You can define functions that are computed with a sequence of
+instructions by putting the instructions between braces, where each
+command ends with a semicolon.   If any local variables will be used,
+they can be declared with the \texttt{local\index{local}} keyword,
+followed by the variable names.   The value returned by the function
+will be indicated with the \texttt{return\index{return}} keyword.  For
+example, the above function \texttt{sumprod} could also be defined by
+\begin{verbatim}
+sumprod(a,b) := {
+local s, p;
+s := a + b;
+p := a*b;
+return [s,p];
+}
+\end{verbatim}
+
+Another way to use a sequence of instructions to define a function is
+with the \texttt{function\index{function}} \ldots
+\texttt{endfunction\index{endfunction}} construction. With this
+approach, the function name and parameters follow the
+\texttt{function} keyword.  This is otherwise like the previous
+approach.  The \texttt{sumprod} function could be defined by
+\begin{verbatim}
+function sumprod(a,b)
+local s, p;
+s := a + b;
+p := a*b;
+return [s,p];
+endfunction
+\end{verbatim}
+
+\subsection{Local variables}
+
+Local variables in a function definition can be given initial values
+in the line they are declared in if you put their initialization in
+parentheses; for example,
+\begin{verbatim}
+local a,b;
+a := 1;
+\end{verbatim}
+is the same as
+\begin{verbatim}
+local (a := 1), b;
+\end{verbatim}
+
+Local variables should be given values within the function definition.
+If you want to use a local variable as a symbolic variable, then you
+can indicate that with the \texttt{assume\index{assume}} command.  For
+example, if you define a function \texttt{myroots} by
+\begin{verbatim}
+myroots (a) := {
+local x;
+return solve(x^2=a,x);
+}
+\end{verbatim}
+then calling
+\begin{center}
+{\tt myroots(4)}
+\end{center}
+will simply return the empty list.  You could leave \texttt{x}
+undeclared, but that would make \texttt{x} a global variable and could
+interact with other functions in unexpected ways.  You can get the
+behavior you probably expected by explicitly assuming \texttt{x} to be a
+symbol\index{symbol@\textit{symbol}}; 
+\begin{verbatim}
+myroots (a) := {
+local x;
+assume(x,symbol);
+return solve(x^2=a,x);
+}
+\end{verbatim}
+(Alternatively, you could use \texttt{purge(x)\index{purge}} instead
+of \texttt{assume(x,symbol)}.) Now if you enter
+\begin{center}
+{\tt myroots(4)}
+\end{center}
+you will get
+\begin{center}
+  \[ [-2,2]\]
+\end{center}
+
+\subsection{Default values of the parameters}
+
+You can give the parameters of a function default values by putting 
+\textit{parameter}\texttt{=}\textit{value} in the parameter list of
+the function.  For example, if you define a function
+\begin{verbatim}
+f(x,y=5,z) := {
+return x*y*z;
+}
+\end{verbatim}
+then
+\begin{center}
+{\tt f(1,2,3)}
+\end{center}
+will return the product $1*2*3=6$.  If you give \texttt{f} only two
+values as input,
+\begin{center}
+{\tt f(3,4)}
+\end{center}
+then these values will be given to the parameters which don't have default
+values; in this case, \texttt{y} will get its default value \texttt{5} while
+\texttt{3} and \texttt{4} will be assigned to \texttt{x} and
+\texttt{z}, respectively.  The result will be $x*y*z=3*5*4=60$.
+
+\subsection{Programs}
+
+A program\index{program} is similar to a function, and written like a
+function without a return value.  Programs are used to display results
+or to create drawings.  It is a good idea to turn a program into a
+function by putting \texttt{return 0} at the end; this way you will
+get a response of \texttt{0} when the program executes.
+
+\subsection{Scripts}
+
+A script is a file containing a sequence of instructions, each ending
+with a semicolon.
+
+\subsection{Code blocks}
+
+A code block, such as used in defining functions, is a sequence of
+statements delimited by braces or by \texttt{begin\index{begin}} and
+\texttt{end\index{end}}.  Each statement must end with a semicolon.
+(If the block makes up a function, you can step through it one
+statement at a time by using the debugger\index{debugger}; see section
+\ref{sec:debug}.)
+
+\section{Basic instructions}
+
+\subsection{Comments\index{comments}}
+
+The characters \texttt{//} indicate that you are writing a comment;
+any text between \texttt{//} and the end of the line will be ignored
+by \texttt{Xcas}.
+
+\subsection{Input}
+
+You can prompt the user to enter a value for a variable with the
+\texttt{input\index{input}} (or \texttt{Input} command).  If you enter
+\begin{center}
+{\tt input(a)}
+\end{center}
+the the user will be given a box where they can enter a value for the
+variable \texttt{a}.    There will be a prompt
+indicating the name of the variable; if you want a more descriptive
+prompt, you can give \texttt{input} a string argument before the
+variable name.
+\begin{center}
+{\tt input("Set a to the value: ",a)}
+\end{center}
+will prompt the user with "Set a to the value: " before the input box.
+
+If the value that you enter for \texttt{input} is a string, it should
+be between quotes.  If you want the user to enter a string without
+having to use the quotes, you can use
+\texttt{InputStr\index{InputStr}} or
+\texttt{textinput\index{textinput}}, which will assume the input will
+be a string and so the user won't need to use quotes.
+
+The \texttt{output\index{output}} (or \texttt{Output\index{Output}})
+command can take strings (or variables representing strings) as
+arguments and can be used to add information to the input window.  For
+example, if you enter
+\begin{center}
+{\tt input(output("Calculate p(a)"),"polynomial",p,"value",a)}
+\end{center}
+then you will get a window with a box containing
+\begin{center}
+{\tt Calculate p(a)}
+\end{center}
+followed by the prompts for \texttt{p} and \texttt{a}.
+
+\subsection{Reading a single keystroke}
+
+If you want the user to enter a single key, you can use the
+\texttt{getKey\index{getKey}} command, which doesn't take any
+arguments, to get the ASCII code of the next keystroke.  For example,
+if you enter
+\begin{center}
+{\tt  asciicode := getKey()}
+\end{center}
+and then hit the \texttt{A} key, then the variable \texttt{asciicode}
+will have the value $65$, which is the ASCII code of capital A.
+
+\subsection{Checking conditions with \texttt{assert\index{assert}}}
+
+You can break out of a function with an error by using the
+\texttt{assert} command, which takes a boolean as an argument.  If the
+boolean is false, then the function will return with an error.  For
+example, if you define a function
+\begin{verbatim}
+  sqofpos(x) := {assert(x > 0); return x^2;}
+\end{verbatim}
+then if you enter
+\begin{center}
+{\tt  sqofpos(4)}
+\end{center}
+you will get $16$, but 
+\begin{center}
+{\tt  sqofpos(-4)}
+\end{center}
+will return an error, since \texttt{-4 > 0} is false.
+
+\subsection{Checking the type of the argument}
+
+You can check the type of the argument of a function (or anything
+else, for that matter) with the \texttt{type\index{type}} command.
+For example, entering
+\begin{center}
+{\tt type(4)}
+\end{center}
+will return
+\begin{center}
+{\tt integer}
+\end{center}
+
+The output of a \texttt{type} command is actually an integer from 1 to
+12.  The output of \texttt{type(4)} is \texttt{integer}, which is a
+constant with the value 1.  Another way to represent this type is with
+\texttt{DOM\_INT}; entering
+\begin{center}
+{\tt  type(4) == DOM\_INT}
+\end{center}
+will return
+\begin{center}
+{\tt  true}
+\end{center}
+Possible types (followed by the integer they represent) include:
+\begin{itemize}
+  \item
+  \texttt{real}, \texttt{double} or \texttt{DOM\_FLOAT} (1).
+  \item
+  \texttt{integer} or \texttt{DOM\_INT} (2).
+  \item
+  \texttt{complex} or \texttt{DOM\_COMPLEX} (4).
+  \item
+  \texttt{identifier} or \texttt{DOM\_IDENT} (6).
+  \item
+  \texttt{vector} or \texttt{DOM\_LIST} (7).
+  \item
+  \texttt{func} or \texttt{DOM\_FUNC} (13).
+  \item
+  \texttt{expression} or \texttt{DOM\_SYMBOLIC} (8).
+  \item
+  \texttt{rational} or \texttt{DOM\_RAT} (10).
+  \item
+  \texttt{string} or \texttt{DOM\_STRING} (12).
+\end{itemize}
+
+If the item being tested is a list (in \texttt{DOM\_LIST}), then the
+\texttt{subtype\index{subtype}} command can determine what type of
+list it is.  If the object is a sequence, then \texttt{subtype} returns $1$;
+\begin{center}
+{\tt  subtype(1,2,3)}
+\end{center}
+returns
+\begin{center}
+{\tt  1}
+\end{center}
+If the object is a set, then \texttt{subtype} returns 2.  If the
+object is a polynomial represented as a list (see section
+\ref{sec:polynomials}), then \texttt{subtype} will return 10.  If the
+object isn't one of these types of list, then \texttt{subtype} returns 0.
+
+The \texttt{compare\index{compare}} function will compare two objects
+taking their type into account; in other words, \texttt{compare(a,b)}
+returns \texttt{1} (true) if \texttt{a} and \texttt{b} have the same
+type with \texttt{a} less than \texttt{b}, or if \texttt{a} and
+\texttt{b} have different types and the integer \texttt{type(a)} is
+less than \texttt{type(b)}.  For example,
+\begin{center}
+{\tt compare("a","b")}
+\end{center}
+returns
+\begin{center}
+{\tt 1}
+\end{center}
+since \texttt{"a"} and \texttt{"b"} have the same type
+(\texttt{string}) and \texttt{"a"} is less than \texttt{"b"} in the
+string ordering.  Also, if \texttt{b} is a formal variable, then
+\begin{center}
+{\tt compare("a",b)}
+\end{center}
+returns
+\begin{center}
+{\tt 0}
+\end{center}
+since the type of \texttt{"a"} is \texttt{string} (the integer 12)
+while the type of \texttt{b} is \texttt{identifier} (the integer 6)
+and \texttt{12} is not less than \texttt{6}.
+
+The \texttt{getType\index{getType}} command is similar to \texttt{type} in that it
+takes an object and returns the type, but it has different possible
+return values.  It is included for compatibility reasons.
+For example,
+\begin{center}
+{\tt getType(3.14)}
+\end{center}
+returns
+\begin{center}
+{\tt NUM}
+\end{center}
+and 
+\begin{center}
+{\tt getType(x)}
+\end{center}
+returns 
+\begin{center}
+{\tt VAR}
+\end{center}
+Other possible return values include \texttt{STR}, \texttt{EXPR},
+\texttt{NONE}, \texttt{PIC}, \texttt{MAT} and \texttt{FUNC}.
+
+\subsection{Printing}
+
+The \texttt{print\index{print}} (or \texttt{Disp\index{Disp}}) command
+will print its arguments in a special pane and return the number
+\texttt{1}.  For example, 
+\begin{center}
+{\tt print("Hello")}
+\end{center}
+will result in
+\begin{center}
+{\tt Hello}
+\end{center}
+If you enter
+\begin{center}
+{\tt a := 12}
+\end{center}
+then
+\begin{center}
+{\tt print("a =",a)}
+\end{center}
+will print
+\begin{center}
+{\tt "a =", 12}
+\end{center}
+
+The \texttt{ClrIO\index{ClrIO}} (no argument) will erase the printing
+that was done in the level it was typed.  For example,
+\begin{center}
+{\tt print("Hello"); ClrIO()}
+\end{center}
+will simply return the result \texttt{(1,1)}.
+
+\subsection{Displaying exponents}
+
+The \texttt{printpow} command determines how the \texttt{print}
+command will print exponents.  By default,
+\begin{center}
+{\tt print(x\^{}3)}
+\end{center}
+will print
+\begin{center}
+{\tt x\^{}3}
+\end{center}
+If you use the command
+\begin{center}
+{\tt printpow(1)}
+\end{center}
+then
+\begin{center}
+{\tt print(x\^{}3)}
+\end{center}
+will print as
+\begin{center}
+{\tt pow(x,3)}
+\end{center}
+If you use the command
+\begin{center}
+{\tt printpow(-1)}
+\end{center}
+then
+\begin{center}
+{\tt print(x\^{}3)}
+\end{center}
+will print as
+\begin{center}
+{\tt x**3}
+\end{center}
+Finally,
+\begin{center}
+{\tt printpow(0)}
+\end{center}
+will restore the default form.
+
+\section{Control structures}
+
+\subsection{\texttt{if\index{if}} statements}
+
+The \texttt{Xcas} language has different ways of writing
+\texttt{if\ldots then} statements (see section \ref{subsec:piecewise}).  The
+standard version of the \texttt{if\ldots then} statement consists of
+the \texttt{if} keyword, followed by a boolean expression (see section
+\ref{sec:boolean} in parentheses, followed by a statement block which
+will be executed if the boolean is true.
+
+As an example, if the variables \texttt{a} and \texttt{b} have the
+values \texttt{3} and \texttt{2}, respectively, and you enter
+\begin{center}
+  {\tt if (a > b) \{ a := a + 5; b := a - b;\}}
+\end{center}
+then since \texttt{a > b} will evaluate to true, the variable
+\texttt{a} will be reset to \texttt{8} and \texttt{b} will be reset
+to the value \texttt{6}. 
+
+An \texttt{if} statement can include a block of statements to execute
+when the boolean is false by putting it at the end following the
+\texttt{else\index{else}} keyword.  For example, if the variable
+\texttt{val} has a real value, then the statement
+\begin{center}
+  {\tt if (val > 0) \{abs := val;\} else \{abs := -1*val; \} }
+\end{center}
+will set \texttt{abs} to the same value as \texttt{val} if
+\texttt{val} is positive and it will set \texttt{abs} to negative the
+value of \texttt{val} otherwise.
+
+An alternate way to write an \texttt{if} statement is to
+enclose the code block in \texttt{then\index{then}} and
+\texttt{end\index{end}} instead of braces;  if the variable \texttt{a}
+is equal to \texttt{3}, then 
+\begin{center}
+  {\tt if (a > 1) then a := a + 5; end}
+\end{center}
+will reset \texttt{a} to \texttt{8}.  
+An \texttt{else} block can be included by putting the else statements
+after \texttt{else} and before the \texttt{end}.  For example, with
+\texttt{a} having the value \texttt{8} as above, 
+\begin{center}
+  {\tt if (a > 10) then a := a + 10; else a := a - 5; end}
+\end{center}
+will reset \texttt{a} to the value \texttt{3}.  
+This
+can also be written:
+\begin{center}
+  {\tt si (a > 10) alors a := a + 10; sinon a := a - 5; fsi}
+\end{center}
+
+Several \texttt{if} statements can be nested; for example, the statement
+\begin{center}
+  {\tt if (a > 1) then a := 1; else if (a < 0) then a := 0; else a :=
+  0.5; end; end}
+\end{center}
+A simpler way is to replace the \texttt{else if} by \texttt{elif\index{elif}}; the
+above statement can be written
+\begin{center}
+  {\tt if (a > 1) then a := 1; elif (a < 0) then a := 0; else a :=
+  0.5; end}
+\end{center}
+In general, such a combination can be written
+\begin{verbatim}
+  if (boolean 1) then
+  block 1;
+  elif (boolean 2) then
+  block 2;
+  ... 
+  elif (boolean n) then
+  block n;
+  else
+  last block;
+  end
+\end{verbatim}
+(where the last \texttt{else} is optional.)
+For example, if you want to define a function $f$ by
+\[
+f(x) =
+  \begin{cases}
+   8 & \text{if } x > 8\\
+   4 & \text{if } 4 < x \le 8\\
+   2 & \text{if } 2 < x \le 4\\
+   1 & \text{if } 0 < x \le 2\\
+   0 & \text{if } x \le 0
+ \end{cases}
+\]
+you can enter
+\begin{verbatim}
+  f(x) := {
+  if (x > 8) then
+    return 8;
+  elif (x > 4) then
+    return 4;
+  elif (x > 2) then
+    return 2;
+  elif (x > 0) then
+    return 1;
+  else
+    return 0;
+  end;
+  }
+\end{verbatim}
+
+\subsection{The \texttt{switch\index{switch}} statement}
+
+The \texttt{switch} statement can be used when you want the value of
+a block to depend on an integer.  It takes one argument, an
+expression which evaluates to an integer.  It should be followed by
+a sequence of \texttt{case\index{case}} statements, which takes the form
+\texttt{case} followed by an integer and then a colon, which is
+followed by a code block to be executed if the expression equals the
+integer.  At the end is an optional \texttt{default\index{default}:}
+statement, which is followed by a code block to be executed if the
+expression doesn't equal any of the given integers.  For example, if
+you wanted to define a function of three variables which performed an
+operation on the first two variables depending on the third, you could
+enter 
+\begin{verbatim}
+  oper(a,b,c) := {
+  switch (c) {
+    case 1: {a := a + b; break;}
+    case 2: {a := a - b; break;}
+    case 3: {a := a * b; break;}
+    default: {a := a ^ b;}
+    }
+  return a;
+  }
+\end{verbatim}
+Then
+\begin{center}
+  oper(2,3,1)
+\end{center}
+will return $2+3=5$, since the third argument is \texttt{1}, and 
+\begin{center}
+  oper(2,3,2)
+\end{center}
+will return $2-3=-1$, since the third argument is \texttt{2}.
+
+\subsection{The \texttt{for\index{for}} loop}
+
+The \texttt{for} loop has three different forms, each of which uses an
+index variable.  If the \texttt{for} loop is used in a program, the
+index variable should be declared as a local variable.  (Recall that
+\texttt{i} represents the imaginary unit, and so cannot be used as the
+index.)
+
+\paragraph{The first form}
+For the first form, the \texttt{for} is followed by the starting value
+for the index, the end condition, and the increment step, separated by
+semicolons and in parentheses.  Afterwards is a block of code to be
+executed for each iteration.  For example, to add the even numbers
+less than 100, you can set the running total to 0,
+\begin{center}
+  {\tt S := 0}
+\end{center}
+and the use an \texttt{for} loop to do the summing,
+\begin{center}
+  {\tt for (j := 0; j < 100; j := j + 2) \{S := S + j\}}
+\end{center}
+
+\paragraph{The second form}
+The second form of a \texttt{for} loop has a fixed increment for the
+index.  It is
+written out with \texttt{for} followed by the index, followed by
+\texttt{from}, the initial value, \texttt{to}, the ending value,
+\texttt{step}, the size of the increment, and finally the statements
+to be executed between \texttt{do} and \texttt{end\_for}.  For
+example, having set the variable \texttt{S} equal to 0, you can again
+add the even numbers less than 100 with
+\begin{center}
+  {\tt for j from 2 to 98 step 2 do S := S + j; end\_for}
+\end{center}
+There is also a French version of this syntax;
+\begin{center}
+  {\tt pour j de 2 jusque 98 pas 2 faire S := S + j; fpour}
+\end{center}
+
+\paragraph{The third form}
+The third form of the \texttt{for} loop lets you iterate over the
+values in a list (or a set or a range).  In this form, the
+\texttt{for} is followed by the index, then \texttt{in}, the list, and
+then the instructions between \texttt{do} and \texttt{end\_for}.  For
+example, to add all integers from 1 to 100, you can again set the
+running total \texttt{S} to 0, then
+\begin{center}
+  {\tt for j in 1..100 do S:= S + j; end\_for}
+\end{center}
+or
+\begin{center}
+  {\tt pour j in 1..100 faire S:= S + j; fpour}
+\end{center}
+
+\subsection{The \texttt{repeat\index{repeat}} loop}
+
+The \texttt{repeat} loop allows you to repeat statements until a given
+condition is met.  To use it, enter \texttt{repeat}, the statements,
+the keyword \texttt{until\index{until}} followed by the condition, a
+boolean.  For example, if you want the user to enter a value for a
+variable \texttt{x} which is greater than 4, you could have
+\begin{verbatim}
+  repeat
+  input("Enter a value for x (greater than 4)",x);
+  until (x > 4);
+\end{verbatim}
+This can also be written\index{repeter}\index{jusqua}
+\begin{verbatim}
+  repeter
+  input("Enter a value for x (greater than 4)",x);
+  jusqua (x > 4);
+\end{verbatim}
+
+\subsection{The \texttt{while\index{while}} loop}
+
+The \texttt{while} loop is used to repeat a code block as long as a
+given condition holds.  To use it, enter \texttt{while}, the
+condition, and then a code block.  For example, to add the terms of
+the harmonic series $1 + 1/2 + 1/3 + 1/4 + \dots$ until a term is less
+than 0.05, you could initialize the sum \texttt{S} to 0 and let
+\texttt{j} be the first term 1.  Then
+\begin{center}
+{\tt  while (1/j >= 0.05) \{S := S + 1/j; j := j+1;\}}
+\end{center}
+will find the sum.  This line is the same as
+\begin{center}
+{\tt  tantque (1/j >= 0.05) faire S := S + 1/j; j := j+1; ftantque}
+\end{center}
+
+Note that a \texttt{while} loop can also be written as a \texttt{for}
+loop.  For example, as long as \texttt{S} is set to 0 and \texttt{j}
+is set to 1 , the above loop
+can be written as 
+\begin{center}
+{\tt  for (;1/j >= 0.05;) \{S := S + 1/j; j := j+1;\}}
+\end{center}
+or, with only \texttt{S} set to 0,
+\begin{center}
+{\tt  for (j := 1; 1/j >= 0.05; j++) \{S := S + 1/j;\}}
+\end{center}
+
+\subsection{Breaking out a loop}
+
+If your program is running a loop and you want it to exit the loop
+without finishing it, you can use the \texttt{break\index{break}}
+command.   For example, you can define a program
+\begin{verbatim}
+  testbreak(a,b) := {
+  local r;
+  while (true) {
+    if (b == 0) {break;}
+    r := irem(a,b);
+    a := b;
+    b := r;
+  }
+  return a;
+  }
+\end{verbatim}
+If you then enter
+\begin{center}
+  {\tt testbreak(4,0)}
+\end{center}
+it will return
+\begin{center}
+  {\tt 4}
+\end{center}
+since the \texttt{while} loop is interrupted when \texttt{b} is 0 and
+\texttt{a} is 4.
+
+\subsection{Going to the next iteration of a loop}
+
+The \texttt{continue} command will skip the rest of the current
+iteration of a loop and go to the next iteration.  For example,
+if you enter
+\begin{verbatim}
+  S := 0
+  for (j := 1, j <= 10; j++) {
+     if (j == 5) {continue;}
+     S := S + j;
+  }
+\end{verbatim}
+then \texttt{S} will be 50, which is the sum of the integers from 1 to
+10 except for 5, since the loop never gets to \texttt{S := S + j} when
+\texttt{j} is equal to 5.
+
+\subsection{Changing the order of execution}
+
+The \texttt{goto} command will tell a program to jump to a different
+spot in a program, where the spot needs to have been marked with
+\texttt{label}.   They both must have the same argument, which is
+simply a sequence of characters.  For example, the following program
+will add the terms of the harmonic series until the term is less than
+some specified value \texttt{eps} and print the result.
+\begin{verbatim}
+  harmsum(eps) := {
+  local S, j;
+  S := 0;
+  j := 0;
+  label(spot);
+  j := j + 1;	      
+  S := S + 1/j;
+  if (1/j >= eps) goto (spot);
+  print(S);
+  return 0;
+  }
+\end{verbatim}
+
+\section{Other useful instructions}
+
+\subsection{Assignments in a program}
+
+Recall that the \texttt{=<} operator will change the value of a single
+entry in a list or matrix by reference (see subsection \ref{subsec:refassign}).
+This make it efficient when changing many values, one at a time, in a
+list, as might be done by a program.  
+
+Care must be taken, since your intent might be changed when a program
+is compiled.  For example, if a program contains
+\begin{verbatim}
+  local a;
+  a := [0,1,2,3,4];
+  ...
+  a[3] =< 33;
+\end{verbatim}
+then in the compiled program, \texttt{a := [0,1,2,3,4]} will be
+replaced by \texttt{a := [0,1,2,33,4]}.  To avoid this, you can assign
+a copy of the list to \texttt{a}; you could write
+\begin{verbatim}
+  local a;
+  a := copy([0,1,2,3,4]);
+  ...
+  a[3] =< 33;
+\end{verbatim}
+Alternately, you could use a command which recreates a list every time
+the program is run, such as \texttt{makelist\index{makelist}} or
+\texttt{\$}, instead of copying a list;  \texttt{a :=
+makelist(n,n,0,4)} or \texttt{a := [n\$(n=0..4)]} can also be used in
+place of \texttt{a := [0,1,2,3,4]}.
+
+\subsection{Writing variable values to a file}
+
+You can save variable values to a file, to be read later, with the
+\texttt{write\index{write}} command.  This command takes a string for a file name
+and a list of variables to save.  For example, if \texttt{a} has the
+value \texttt{3.14} and \texttt{b} has the value \texttt{7}, then
+\begin{center}
+  {\tt write("foo",a,b)}
+\end{center}
+will create a file named ``foo'' with the contents
+\begin{verbatim}
+  a:=(3.14);
+  b:=7;
+\end{verbatim}
+If you wanted to store the first million digits of $\pi$ to a file,
+you could set it equal to a variable
+\begin{center}
+  {\tt pidec := evalf(pi,10\^{}6):;}
+\end{center}
+and then store it in a file
+\begin{center}
+  {\tt write("pi1million",pidec)}
+\end{center}
+
+If you want to restore the values of variables saved this way, for
+example in a different session or if you have purged the
+variables, then you can use the \texttt{read} command, which simply
+takes a file name as a string.  If, in a different session, you want
+to use the values of \texttt{a} and \texttt{b} above, the command
+\begin{center}
+  {\tt read("foo")}
+\end{center}
+will give them the values \texttt{3.14} and \texttt{7} again.  Note
+that this will silently overwrite any values that \texttt{a} and
+\texttt{b} might have had.
+
+\subsection{Writing output to a file}
+
+You can use the \texttt{fopen\index{fopen}},
+\texttt{fprint\index{fprint}} and \texttt{fclose\index{fclose}}
+commands to write output to a file instead of the screen.
+
+To begin, you need to open the file and associate it with a variable.
+You use \texttt{fopen} for this, which takes a file name as argument.
+For example,
+\begin{center}
+  {\tt f := fopen("bar")}
+\end{center}
+will create a file named ``bar'' (and so erase it if it already
+exists).  You can use the \texttt{fprint} command to write to the
+file; it takes the variable representing the file as the first
+argument, followed by what you want to write to the file.  For
+example, if \texttt{x} is equal to 9, then
+\begin{center}
+  {\tt fprint(f,"x + 1 is ", x+1)}
+\end{center}
+will put
+\begin{verbatim}
+  "x + 1 is "10
+\end{verbatim}
+in the file.  Note that the quotation marks are inserted with the
+string.  If you want to insert strings without quotes, then you can
+give \texttt{fprint} a second argument of
+\texttt{Unquoted\index{Unquoted@\texttt{Unquoted}}}.  If instead of
+the above \texttt{printf} you entered
+\begin{center}
+  {\tt fprint(f,Unquoted,"x + 1 is ", x+1)}
+\end{center}
+then the file would contain
+\begin{verbatim}
+  x + 1 is 10
+\end{verbatim}
+Finally, after you have finished writing what you want into the file,
+you close the file with the \texttt{fclose} command,
+\begin{center}
+  {\tt fclose(f)}
+\end{center}
+
+\subsection{Using strings as names}
+
+Variable and function names are symbols, namely sequences of characters, which are
+different from strings.  For example, you can have a variable named \texttt{abc}, but
+not \texttt{"abc"}.  The \texttt{\#\index{\#}} operator will turn a
+string into a symbol; for example \texttt{(\#"abc")} is the symbol
+\texttt{abc}.
+
+If you enter
+\begin{center}
+  {\tt a := "abc"; (\#a) := 3}
+\end{center}
+or
+\begin{center}
+  {\tt (\#"abc") := 3}
+\end{center}
+then the variable \texttt{abc} will have the value \texttt{3}.
+Entering \texttt{\#a} will still give you \texttt{abc}; you can get
+\texttt{3} with \texttt{eval(\#a)}.
+
+Similarly for functions.  If you enter
+\begin{center}
+  {\tt b := "sin"; (\#b)(pi/4)}
+\end{center}
+or
+\begin{center}
+  {\tt (\#"sin")(pi/4)}
+\end{center}
+you will get
+\begin{center}
+  {\tt 1/sqrt(2)}
+\end{center}
+which is {\tt sin(pi/4)}.
+
+\subsection{Using strings as commands}
+
+The \texttt{expr\index{expr}} command will let you use a string as a
+command.  Given a string that expresses a valid command, \texttt{expr}
+will convert the string to the command and evaluate it.  
+For example, if you enter
+\begin{center}
+  {\tt expr("c := 1")}
+\end{center}
+then the variable \texttt{c} will be set to 1.  
+Similarly, if you enter
+\begin{center}
+  {\tt a := "ifactor(54)"}
+\end{center}
+then
+\begin{center}
+  {\tt expr(a)}
+\end{center}
+will return
+\begin{center}
+  {\tt 2 * 3\^{}3}
+\end{center}
+which is the same thing as entering \texttt{ifactor(54)} directly.
+
+You can also use \texttt{expr} to convert a string to a number.
+If a string is simply a number enclosed by quotation marks, then
+\texttt{expr} will return the number.  For example,
+\begin{center}
+  {\tt expr("123")}
+\end{center}
+will return 
+\begin{center}
+  {\tt 123}
+\end{center}
+In particular, the following strings will be converted to the
+appropriate number.
+\begin{itemize}
+  \item
+  A string consisting of the digits 0 through 9 which doesn't start
+  with 0 will be converted to an integer.  For example,
+  \begin{center}
+    {\tt expr("2133")}
+  \end{center}
+  will return
+  \begin{center}
+    {\tt 2133}
+  \end{center}
+
+  \item
+  A string consisting of the digits 0 through 9 which contains a
+  single decimal point will be converted to a decimal.
+   For example,
+  \begin{center}
+    {\tt expr("123.4")}
+  \end{center}
+  will return
+  \begin{center}
+    {\tt 123.4}
+  \end{center}
+
+  \item
+  A string consisting of the digits 0 through 9, possibly containing a
+  single decimal point, followed by \texttt{e} and then more digits 0
+  through 9, will be read as a decimal in exponential notation.
+  For example,
+  \begin{center}
+    {\tt expr("1.23e4")}
+  \end{center}
+  will return
+  \begin{center}
+    {\tt 12300.0}
+  \end{center}
+
+  \item  
+  A string consisting of the digits 0 through 7 which  starts
+  with 0 will be read as an integer base 8.  For example,
+  \begin{center}
+    {\tt expr("0176")}
+  \end{center}
+  will return
+  \begin{center}
+    {\tt 126}
+  \end{center}
+  since 176 base 8 equals 126 base 10.
+  
+  \item
+  A string starting with \texttt{0x} followed by digits 0 through 9
+  and letters \texttt{a} through \texttt{f} will be read as an integer
+  base 16.  For example,
+  \begin{center}
+    {\tt expr("0x2a3f")}
+  \end{center}
+  will return
+  \begin{center}
+    {\tt 10815}
+  \end{center}
+  since \texttt{2a3f} base 16 equals 10815 base 10.
+  
+  \item
+  A string starting with \texttt{0b} followed by digits 0 and 1 will
+  be read as a binary integer.  For example,
+  \begin{center}
+    {\tt expr("0b1101")}
+  \end{center}
+  will return
+  \begin{center}
+    {\tt 13}
+  \end{center}
+  since 1101 base 2 equals 13 base 10.
+\end{itemize}
+
+\subsection{Converting an expression to a string}
+
+The \texttt{string\index{string}} can be used to convert an expression
+to a string.  If you give it an expression as an argument, the
+expression will be evaluated and then converted to a string.  For
+example, if you enter
+\begin{center}
+  {\tt string(ifactor(6))}
+\end{center}
+the result will be the string
+\begin{center}
+  {\tt "2 * 3"}
+\end{center}
+This is the same thing as adding the empty string to the expression;
+\begin{center}
+  {\tt ifactor(6) + ""}
+\end{center}
+
+If you want to convert an unevaluated expression to a string, you can
+quote the expression.  If you enter
+\begin{center}
+  {\tt string(quote(ifactor(6)))}
+\end{center}
+then you will get the string
+\begin{center}
+  {\tt "ifactor(6)"}
+\end{center}
+
+\subsection{Working with the graphics screen}
+
+Recall that the \texttt{DispG\index{DispG}} screen contains the
+graphical output of \texttt{Xcas}.  You can use the \texttt{DispG}
+command (without parentheses) to bring it up; entering
+\begin{center}
+  {\tt DispG;}
+\end{center}
+will open the graphics screen.
+
+To clear the graphics screen, you can use the
+\texttt{ClrGraph\index{ClrGraph}} command.  If you enter
+\begin{center}
+  {\tt ClrGraph}
+\end{center}
+or
+\begin{center}
+  {\tt ClrGraph()}
+\end{center}
+then the \texttt{DispG} screen will be erased.
+
+You can close the \texttt{DispG} screen with the \texttt{DispHome}
+command; entering
+\begin{center}
+  {\tt DispHome;}
+\end{center}
+will make the graphics screen go away.
+
+\subsection{Pausing a program}
+
+The \texttt{Pause\index{Pause}} command (written without parentheses)
+will bring up a Pause informational window and pause \texttt{Xcas}
+until you click \texttt{Close} in the Pause window.  If you enter
+\texttt{Pause} followed by a number, then \texttt{Xcas} will pause for
+that number of seconds; entering
+\begin{center}
+  {\tt Pause 10}
+\end{center}
+will pause \texttt{Xcas} for 10 seconds.
+
+The \texttt{WAIT\index{WAIT}} command will also pause \texttt{Xcas};
+it requires an argument in parentheses.  To pause \texttt{Xcas} for 10
+seconds, you can enter
+\begin{center}
+  {\tt WAIT(10)}
+\end{center}
+
+\subsection{Dealing with errors}
+
+Some commands produce errors, and if your program tries to run such a
+command it will halt with an error.  To avoid this, you can use the
+\texttt{try\index{try}} and \texttt{catch\index{catch}} commands.  To
+use these, you put any potentially problematic statements in a block
+following \texttt{try}, and immediately after the block put
+\texttt{catch} with an argument of an unused symbol.  If the
+\texttt{try} block doesn't produce an error, then \texttt{catch} and
+the block following \texttt{catch} will be ignored.  If the
+\texttt{try} block does produce an error, then a string describing the
+error is assigned to the argument to \texttt{catch}, and the block
+following catch is evaluated.  For example, the command
+\begin{center}
+  {\tt [[1,1]]*[[2,2]]}
+\end{center}
+will produce an error saying \textit{Error: Invalid dimension}.  
+However,
+\begin{verbatim}
+  try {[[1,1]]*[[2,2]]}
+  catch (err) {
+    print("The error is " + err)
+    }
+\end{verbatim}
+will not produce an error; instead it will print
+\begin{center}
+  {\tt The error is Error: Invalid dimension}
+\end{center}
+
+With the following program
+\begin{verbatim}
+  test(x) := {
+    local y, str, err;
+    try { y := [[1,1]]*x; str := "This produced a product.";}
+    catch (err)
+    {y := x; 
+     str := "This produced an error " + err + " The input is returned.";}
+    print(str);
+    return y;
+    }
+\end{verbatim}
+if you enter
+\begin{center}
+  {\tt test([[2],[2]])}
+\end{center}
+then 
+\begin{center}
+  {\tt This produced a product.}
+\end{center}
+will be printed and the result will be
+\begin{center}
+  {\tt [4]}
+\end{center}.
+If you enter
+\begin{center}
+  {\tt test([[2,2]])}
+\end{center}
+then
+\begin{center}
+  {\tt This produced an error  Error: Invalid dimension The input is
+  returned.}
+\end{center}
+will be printed and the result will be
+\begin{center}
+  {\tt [[2,2]]}
+\end{center}
+
+You can use the \texttt{throw\index{throw}} command (or equivalently,
+the \texttt{error\index{error}} or \texttt{ERROR\index{ERROR}}
+command) to generate an error and error string, possibly to be caught
+by \texttt{catch}.  The \texttt{throw} command takes as argument a
+string, which will be used as the error message.  For example, suppose
+you have the program
+\begin{verbatim}
+  f(x) := {
+  if (type(x) != DOM_INT)
+    throw("Not an integer");
+  else
+    return x;
+  }
+\end{verbatim}
+Then
+\begin{center}
+  {\tt f(12)}
+\end{center}
+will simply return
+\begin{center}
+  {\tt 12}
+\end{center}
+since 12 is an integer, but
+\begin{center}
+  {\tt f(1.2)}
+\end{center}
+will signal an error
+\begin{center}
+  {\tt Not an integer Error: Bad Argument Value}
+\end{center}
+since 1.2 in not an integer.  You can catch this error in other
+programs; the program
+\begin{verbatim}
+  g(x) := {
+  try(f(x)) catch(err) {x := 0;}
+  return x;
+  }
+\end{verbatim}
+will return \texttt{x} is \texttt{x} is an integer, but if \texttt{x}
+is not an integer, \texttt{f(x)} will give an error and so
+\texttt{g(x)} will return 0.
+    
+\section{Debugging}
+\label{sec:debug}
+
+\subsection{Starting the debugger}
+
+To start the debugger, you give the \texttt{debug\index{debug}} command an argument
+of a function and its argument.  That will bring up a debug window
+which contains a pane with the program with the current line highlighted, an
+\texttt{eval} entry box, a pane with the program including the
+breakpoints, a row of buttons, and a pane keeping track of
+the values of variables.  By default, the value of all variables in
+the program are in this pane.  The buttons are shortcuts
+for entering commands in the \texttt{eval} box, but you can enter
+other commands in the \texttt{eval} box to change the values of
+variables or to run a command in the context of the program.
+
+\paragraph{The \texttt{sst\index{sst}} button}
+This button will run the \texttt{sst} command, which takes no
+arguments and runs the highlighted line in the program before moving
+to the next line.
+
+\paragraph{The \texttt{in\index{in}} button}
+This button will run the \texttt{sst\_in} command, which takes no
+argument and runs one step in the program or a user defined
+function used in the program.
+
+\paragraph{The \texttt{cont\index{cont}} button}
+This button will run the \texttt{cont} command, which takes no
+arguments and runs the commands from the highlighted line to a  breakpoint.
+
+\paragraph{The \texttt{kill\index{kill}} button}
+This button will run the \texttt{kill} command, which exits the debugger.
+
+\paragraph{The \texttt{break\index{break}} button}
+This button will put the command \texttt{breakpoint\index{breakpoint}}
+in the \texttt{eval} box, with default
+arguments of the current program and the current line.  It sets a
+breakpoint at the given line of the given program.
+Alternatively, if you click on a line in the program in the top pane,
+you will get the \texttt{breakpoint} command with that program and the
+line you clicked on.
+
+You can set a breakpoint when you write a program with the
+\texttt{halt\index{halt}()} command.  When a program has a
+\texttt{halt} command, then running the program will bring up the
+debugger.  If you want to debug the program, though, it is still
+better to use the debug command.  Also, you should remove any
+\texttt{halt} commands when you are done debugging.
+
+\paragraph{The \texttt{rmbrk\index{rmbrk}} button}
+This button will put the command
+\texttt{rmbreakpoint\index{rmbreakpoint}} in the \texttt{eval} box , with default
+arguments of the current program and the current line.  It removes a 
+breakpoint at the given line of the given program.  Alternatively, you
+can click on the line in the program in the top pane with the bookmark
+you want to remove.
+
+\paragraph{The \texttt{watch\index{watch}} button}
+This button will put the command \texttt{watch} in the
+\texttt{eval} box, without the arguments
+filled in.  It takes a list of variables as arguments, and will keep
+track of the values of these variables in the variable pane.
+
+\paragraph{The \texttt{rmwtch\index{rmwtch}} button}
+This button will put the command \texttt{rmwatch\index{rmwatch}} in
+the \texttt{eval} box without the arguments filled in.  The arguments
+are the variables you want to remove from the watch list.
 
 \end{document}

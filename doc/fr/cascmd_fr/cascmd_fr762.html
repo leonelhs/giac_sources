@@ -4,26 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Tirage selon une loi exponentielle : randexp</title>
+<title>Tirage selon une loi de Poisson : randpoisson</title>
 </head>
 <body >
 <a href="cascmd_fr761.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr763.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec939" class="subsection">8.3.7  Tirage selon une loi exponentielle : <span style="font-family:monospace">randexp</span></h3>
-<p><a id="hevea_default1376"></a>
-<span style="font-family:monospace">randexp(a)</span> renvoie au hasard 
-des nombres répartis selon la loi exponentielle de paramètre <span style="font-family:monospace">a</span>
-positif.<br>
-La densité de probabilité est proportionnelle à exp(−<span style="font-style:italic">a</span>*<span style="font-style:italic">t</span>) et on a :<br>
-Proba(<span style="font-style:italic">X</span>≤ <span style="font-style:italic">t</span>)=<span style="font-style:italic">a</span>∫<sub>0</sub><sup><span style="font-style:italic">t</span></sup>exp(−<span style="font-style:italic">a</span>*<span style="font-style:italic">u</span>)<span style="font-style:italic">du</span>.<br>
+<h3 id="sec939" class="subsection">8.3.5  Tirage selon une loi de Poisson : <span style="font-family:monospace">randpoisson</span></h3>
+<p><a id="hevea_default1386"></a>
+<span style="font-family:monospace">randpoisson(</span>λ<span style="font-family:monospace">)</span> renvoie au hasard des nombres entiers 
+répartisselon la loi de Poisson <span style="font-style:italic">P</span>(λ) de moyenne λ et 
+d’écart type √<span style="text-decoration:overline">λ</span>.<br>
+On a :<br>
+Proba(<span style="font-style:italic">X</span>≤ <span style="font-style:italic">k</span>)=exp(−λ)λ<sup><span style="font-style:italic">k</span></sup>/<span style="font-style:italic">k</span>!.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">randexp(1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">randpoisson(10.6)</span></div><p>
 On obtient par exemple :
-</p><div class="center"><span style="font-family:monospace">0.310153677284</span></div><p>
+</p><div class="center"><span style="font-family:monospace">8</span></div><p>
 ou on obtient par exemple :
-</p><div class="center"><span style="font-family:monospace">0.776007926195</span></div>
+</p><div class="center"><span style="font-family:monospace">17</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">randpoisson(2.4)</span></div><p>
+On obtient par exemple :
+</p><div class="center"><span style="font-family:monospace">1</span></div>
 <hr>
 <a href="cascmd_fr761.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

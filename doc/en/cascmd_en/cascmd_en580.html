@@ -4,39 +4,62 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>fsolve or nSolve with the option secant_solver</title>
+<title>Approximate solution of y’=f(t,y) : odesolve</title>
 </head>
 <body >
 <a href="cascmd_en579.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en581.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec720" class="subsection">7.4.5  <span style="font-family:monospace">fsolve</span> or <span style="font-family:monospace">nSolve</span> with the option <span style="font-family:monospace">secant_solver</span></h3>
-<p><a id="hevea_default914"></a>
-The secant method is a simplified version of the Newton method.
-The computation of <span style="font-style:italic">x</span><sub>1</sub> is done using the Newton method.
-The computation of <span style="font-style:italic">f</span>′(<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>), <span style="font-style:italic">n</span>&gt;1 is done approximately. 
-This method is used when the 
-computation of the derivative is expensive:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>+1</sub> = <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"> <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>′<sub><span style="font-style:italic">est</span></sub></td></tr>
-</table></td><td class="dcell">,    
-<span style="font-style:italic">f</span>′<sub><span style="font-style:italic">est</span></sub> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>) − <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>−1</sub>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> − <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span>−1</sub>)</td></tr>
-</table></td></tr>
-</table><p>
-The convergence for roots of multiplicity 1
-is of order (1 + √<span style="text-decoration:overline">5</span>)/2 ≈ 1.62... .<br>
+<h3 id="sec720" class="subsection">7.3.4  Approximate solution of y’=f(t,y) : <span style="font-family:monospace">odesolve</span></h3>
+<p><a id="hevea_default916"></a>
+<a id="ssec:odesolve"></a>
+</p><ul class="itemize"><li class="li-itemize">
+Let <span style="font-style:italic">f</span> be a function from ℝ<sup>2</sup> to ℝ.<br>
+ <span style="font-family:monospace">odesolve(f(t,y),[t,y],[t0,y0],t1)</span> or<br>
+<span style="font-family:monospace">odesolve(f(t,y),t=t0..t1,y,y0)</span> or<br>
+<span style="font-family:monospace">odesolve(t0..t1,f,y0)</span> or<br>
+<span style="font-family:monospace">odesolve(t0..t1,(t,y)-&gt;f(t,y),y0)</span><br>
+returns an approximate value of <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>1) where <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>) is the 
+solution of:
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)),     <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>0)=<span style="font-style:italic">y</span>0 </td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-family:monospace">odesolve</span> accepts an optional argument for the 
+discretization of <span style="font-family:monospace">t</span> (<span style="font-family:monospace">tstep=value</span>). 
+This value is passed as initial tstep value to the numeric solver
+from the GSL (Gnu Scientific Library), it may be modified
+by the solver. It is also used to control the number of iterations
+of the solver by <span style="font-family:monospace">2*(t1-t0)/tstep</span> (if the number
+of iterations exceeds this value, the solver will stops at a time <span style="font-style:italic">t</span>&lt;<span style="font-style:italic">t</span>1).
+</li><li class="li-itemize"><span style="font-family:monospace">odesolve</span> accepts <span style="font-family:monospace">curve</span> as an optional argument.
+In that case, 
+<span style="font-family:monospace">odesolve</span> returns the list of all the [<span style="font-style:italic">t</span>,[<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)]] values
+that were computed.
+</li></ul><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">fsolve((cos(x))=x,x,-1..1,secant_solver)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),[t,y],[0,1],2)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">odesolve(0..2,(t,y)-&gt;sin(t*y),1)</span></div><p>
+or define the function :
+</p><div class="center"><span style="font-family:monospace">f(t,y):=sin(t*y)</span> </div><p>
+and input :
+</p><div class="center"><span style="font-family:monospace">odesolve(0..2,f,1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0.739085078239,0.739085137844]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[1.82241255675]</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">fsolve((cos(x))=x,x,0,secant_solver)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">odesolve(0..2,f,1,tstep=0.3)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">0.739085133215</span></div>
+</p><div class="center"><span style="font-family:monospace">[1.82241255675]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1,tstep=0.5)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1.82241255675]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1,tstep=0.5,curve)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0.760963063136,[1.30972370515]],[1.39334557388,[1.86417104853]]]</span></div>
 <hr>
 <a href="cascmd_en579.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

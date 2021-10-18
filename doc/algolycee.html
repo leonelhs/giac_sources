@@ -8962,7 +8962,9 @@ Il faut donc faire attention :
 lorsqu’on copie un programme <span style="font-family:monospace">Python</span> avec un copier-coller : cela 
 risque de modifier l’indentation,
 </li><li class="li-itemize">lorsqu’on écrit un texte contenant un programme <span style="font-family:monospace">Python</span>
-de faire en sorte que ce programme apparaisse sur une seule page (ce qui n’est pas toujours possible pour un programme contenant beaucoup d’instructions !).
+de faire en sorte que ce programme apparaisse sur une seule page (ce qui 
+n’est pas toujours possible pour un programme contenant beaucoup 
+d’instructions !).
 </li></ul><p>
 Attention, le mode de compatibilité Python de Xcas n’est pas identique
 à Python. Seules les constructions de base sont acceptées (pas de
@@ -9152,13 +9154,17 @@ Il possède un type spécifique pour les entiers.
 Sa principale différence par rapport aux autres langages est
 que les structures de controle n’ont pas de délimiteur explicite
 de fin de bloc, c’est l’indentation qui joue ce role. L’obligation
-d’indenter correctement a certes des vertus pédagogiques, mais 
+d’indenter correctement a certaines vertus pédagogiques, mais 
 pas l’absence de délimiteur explicite de fin de bloc. Ceci rend aussi
 l’échange de code source Python avec des applications orientées
 texte (copier/coller, mail, forums, traitement de texte) 
 plus fragile<sup><a id="text5" href="#note5">1</a></sup>, 
 ou même la lecture difficile si le code est affiché sur 
-plus qu’une page.
+plus qu’une page. Si on modifie du code existant, par exemple
+pour placer une boucle dans une autre ou dans un test, devoir réindenter
+le code est une source d’erreur potentielle (d’où l’intérêt
+d’avoir quelques espaces en réserve, ce qui explique
+sans doute la recommandation d’utiliser 4 espaces pour indenter).
 De plus, la déclaration
 de variables locales dans une fonction
 est implicite, ce qui n’est pas très pédagogique.
@@ -9280,8 +9286,39 @@ d’instructions faisant des boucles implicitement et
 la complexité des opérations nécessaires et pourraient être
 remplacés par des types plus simples, par exemple
 utiliser un dictionnaire (ou annuaire) 
-alors qu’un tableau ferait l’affaire. 
-D’ailleurs d’un point de vue
+alors qu’un tableau ferait l’affaire.
+Un exemple avec la recherche de nombres premiers plus petits que
+<math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>n</mi></mrow><annotation encoding='application/x-tex'>n</annotation></semantics></math> par crible, écrit de deux manières
+</p><pre class="verbatim">def premiers1(n):
+    prem=list(range(2,n+1))
+    k=2
+    nRacine=n**0.5
+    while k&lt;nRacine :
+        prem=[p for p in prem if p&lt;=k or p%k!=0]
+        k=prem[prem.index(k)+1]   # nouveau nombre premier
+    return prem
+
+def premiers2(n):
+    prem=list(range(0,n))
+    k=2
+    while k*k&lt;n :
+        for j in range(2*k,n,k): # on barre les multiples de k
+            prem[j]=0
+        k += 1
+        while prem[k]==0: k += 1 # cherche le premier non barre
+    res=[]  
+    for k in prem:
+        if k!=0: res.append(k) # on garde les 0 uniquement
+    return res
+</pre><p>
+<code>premiers2</code> est un crible, il n’effectue aucune division
+et travaille sur une seule liste (plus une deuxième à la fin
+pour garder uniquement les nombres premiers).
+<code>premiers1</code> a un code plus compact, mais il effectue des divisions
+pour tester la primalité
+et recrée une liste à chaque itération, et est donc significativement
+plus lent, par exemple pour <math xmlns='http://www.w3.org/1998/Math/MathML' display='inline'><semantics><mrow><mi>n</mi><mo>=</mo></mrow><annotation encoding='application/x-tex'>n=</annotation></semantics></math><code>10**6</code>, il prend presque 
+10 fois plus de temps.</p><p>D’ailleurs d’un point de vue
 pédagogique il est toujours bon de savoir ce qu’il y a derrière une boite
 noire lorsque c’est accessible au niveau de l’élève ou de l’étudiant. 
 De plus le style algébrique
@@ -9453,6 +9490,7 @@ d’être capable de coder avec des objets de base.
 var Module = { 
         htmlcheck:true,
         htmlbuffer:'',
+        ready:false,
         preRun: [],
         postRun: [],
         print: (function() {
@@ -9477,11 +9515,66 @@ var Module = {
           };
         })(),
      canvas: document.getElementById('canvas'),};
+Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.ready=true;}
 </script>
 
 
-<script src="giac.js" async></script> 
 
+<script async>
+  var UI={
+   detectmob:function() { 
+    if( navigator.userAgent.match(/Android/i)
+	|| navigator.userAgent.match(/webOS/i)
+	|| navigator.userAgent.match(/iPhone/i)
+	|| navigator.userAgent.match(/iPad/i)
+	|| navigator.userAgent.match(/iPod/i)
+	|| navigator.userAgent.match(/BlackBerry/i)
+	|| navigator.userAgent.match(/Windows Phone/i)
+      ) return true;
+    else 
+      return false;
+   },
+   readCookie:function(name) {
+    if (window.localStorage){
+      var tmp=localStorage.getItem(name);
+      if (tmp!=null) return tmp;
+    }
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+      var c = ca[i];
+      while (c.charAt(0)==' ') c = c.substring(1,c.length);
+      if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+   },
+  }
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  var webAssemblyAvailable = false;
+  if (Boolean(window.chrome)){
+    if (!UI.detectmob()) webAssemblyAvailable =  window.location.href.substr(0,4)!='file';
+  }
+  else {
+    var ua = window.navigator.userAgent;
+    var old_ie = ua.indexOf('MSIE ');
+    var new_ie = ua.indexOf('Trident/');
+    if (!UI.detectmob() && old_ie<=-1 && new_ie<=-1)
+      webAssemblyAvailable =!!window.WebAssembly;
+  }
+  if (webAssemblyAvailable){
+`<    var ck=UI.readCookie('xcas_wasm');
+    if (ck)
+      webAssemblyAvailable=(ck=='1');
+  }
+  if (webAssemblyAvailable) // fixme: enable
+    script.src =""+"giacwasm.js";
+  else
+    script.src  =""+"giac.js";
+  document.getElementsByTagName("head")[0].appendChild(script);
+</script>
+
+""
 
 
 <script language="javascript">
@@ -9491,7 +9584,7 @@ var Module = {
   lastcmd:'',
   clone:function(){
     if (UI.lastcmd.length){
-       var tmp=giaceval('VARS(-1)');
+       var tmp=UI.giaceval('VARS(-1)');
        tmp=encodeURIComponent(tmp);
        var url='https://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+'+tmp+':;&+'+UI.lastcmd;
        console.log(url);
@@ -9571,11 +9664,16 @@ var Module = {
     field.nextSibling.innerHTML='&nbsp;'+tmp;
    //UI.render_canvas(nextSibling);  
   },
+  giaceval:function(text){
+     if (!Module.ready){ window.setTimeout(UI.giaceval,100,text); return "Not ready";}
+     var dogiaceval=Module.cwrap('caseval',  'string', ['string']);
+     return dogiaceval(text);
+  },
   caseval:function(text){
     UI.lastcmd=text;
     var s="non evalu&eacute;",err;
     try {
-       s= giaceval(text);
+       s= UI.giaceval(text);
     } catch (err) { s=err.message;}
     var is_3d=s.length>5 && s.substr(0,5)=='gl3d ';
     if (is_3d){
@@ -9598,7 +9696,7 @@ var Module = {
    }
   },
   eval_form: function(field){
-    giaceval('assume('+field.name.value+'=round('+field.valname.value+',12))');
+    UI.giaceval('assume('+field.name.value+'=round('+field.valname.value+',12))');
     var s=UI.caseval(field.prog.value);
     var is_svg=s.substr(1,4)=='<svg';
     if (is_svg) field.parentNode.lastChild.innerHTML=s.substr(1,s.length-2);
@@ -9612,12 +9710,12 @@ var Module = {
     if (tmp.length>5 && tmp.substr(1,4)=='<svg') return tmp.substr(1,tmp.length-2);
     if (tmp.length>5 && tmp.substr(0,4)=='<svg') return tmp;
      if (UI.usemathjax){
-       tmp=giaceval('latex(quote('+tmp+'))');
+       tmp=UI.giaceval('latex(quote('+tmp+'))');
        var dollar=String.fromCharCode(36);
        tmp=dollar+dollar+tmp.substr(1,tmp.length-2)+dollar+dollar;
        return tmp;
      }
-     tmp=giaceval('mathml(quote('+tmp+',1))');
+     tmp=UI.giaceval('mathml(quote('+tmp+',1))');
      tmp=tmp.substr(1,tmp.length-2);
     return tmp;   
   },
@@ -9702,11 +9800,10 @@ var Module = {
     elem.style.maxHeight=(window.innerHeight-120)+'px';
   elem= document.getElementById('maindiv');
   elem.style.maxHeight=(window.innerHeight-150)+'px';
-  giaceval=Module.cwrap('caseval',  'string', ['string']);
   giac3d = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
-  giaceval('set_language(1);');
-  giaceval('factor(x^4-1)');
-  giaceval('sin(x+y)+f(t)');
+  UI.giaceval('set_language(1);');
+  //UI.giaceval('factor(x^4-1)');
+  //UI.giaceval('sin(x+y)+f(t)');
   UI.textarealtgt(document.documentElement);
   UI.execonload(document.documentElement);
   document.getElementById('output').innerHTML='';

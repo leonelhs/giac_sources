@@ -4,41 +4,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Unassigning variables</title>
+<title>Assignment by reference</title>
 </head>
 <body >
 <a href="cascmd_en046.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en048.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec70" class="subsection">4.5.7  Unassigning variables</h3>
-<p>The <span style="font-family:monospace">VARS()</span><a id="hevea_default34"></a> command will list the variables to which you have
-assigned values or assumptions. If you begin by entering
-</p><blockquote class="quote"><span style="font-family:monospace">
-a := 1
-</span></blockquote><p>
-and
-</p><blockquote class="quote"><span style="font-family:monospace">
-anothervar := 2
-</span></blockquote><p>
-then 
-</p><blockquote class="quote"><span style="font-family:monospace">
-VARS()
-</span></blockquote><p>
-will return
-</p><blockquote class="quote"><span style="font-family:monospace">
-[a, anothervar]
-</span></blockquote><p>The <span style="font-family:monospace">purge</span><a id="hevea_default35"></a> command will clear the values and
-assumptions you make on variables. You can clear the values and
-assumptions you have made on all variables with
-</p><blockquote class="quote"><span style="font-family:monospace">
-restart</span><a id="hevea_default36"></a><span style="font-family:monospace">
-</span></blockquote><p>
-or
-</p><blockquote class="quote"><span style="font-family:monospace">
-rm_all_vars()</span><a id="hevea_default37"></a><span style="font-family:monospace">
-</span></blockquote><p>
-command.</p>
+<h3 id="sec71" class="subsection">4.6.3  Assignment by reference</h3>
+<p>
+<a id="subsec:refassign"></a>
+A list is simply a sequence of values separated by commas and
+delimited by <span style="font-family:monospace">[</span> and <span style="font-family:monospace">]</span> (see section <a href="index.html#sec%3Aseq">5.36</a>).
+Suppose you give the variable <span style="font-family:monospace">a</span> the value <span style="font-family:monospace">[1,1,3,4,5]</span>,
+</p><div class="center">
+<span style="font-family:monospace">a := [1,2,3,4,5]</span>
+</div><p>
+If you later assign to <span style="font-family:monospace">a</span> the value <span style="font-family:monospace">[1,2,3,4,5]</span>, then
+a new list is created. It may be better to just change the second
+value in the original list by reference. This can be done with the
+<span style="font-family:monospace">=&lt;</span> command. Recalling that lists are indexed beginning at 0,
+the command
+</p><div class="center">
+<span style="font-family:monospace">a[1] =&lt; 2</span>
+</div><p>
+will simply change the value of the second element of the list instead
+of creating a new list, and is a more efficient way to change the
+value of <span style="font-family:monospace">a</span> to <span style="font-family:monospace">[1,2,3,4,5]</span>. </p>
 <hr>
 <a href="cascmd_en046.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

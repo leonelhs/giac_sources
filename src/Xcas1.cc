@@ -111,7 +111,7 @@ namespace xcas {
       Fl::lock();
       gen g=Xcas_PrintG->get_data();
       Fl::unlock();
-      vecteur w=makevecteur(string2gen("",false),string2gen("Step by step console",false));
+      vecteur w=makevecteur(string2gen("",false));//makevecteur(string2gen("",false),string2gen("Step by step console",false));
       if (g.type==_VECT) w=*g._VECTptr;
       // add format,v at the end of w
       int posnl=0;
@@ -435,7 +435,14 @@ namespace xcas {
 		debug_print(w[2],vs,contextptr);
 	      vector<string>::iterator it=vs.begin(),itend=vs.end();
 	      for (;it!=itend;++it){
-		Xcas_source_browser->add(it->c_str());
+		string & cur=*it; // replace \n by space
+		for (;;){
+		  size_t pos=cur.find('\n');
+		  if (pos<0 || pos>=cur.size())
+		    break;
+		  cur[pos]=' ';
+		}
+		Xcas_source_browser->add(cur.c_str());
 	      }
 	    }
 	    msg += dbgptr->debug_prog_name->print(contextptr) + "(" + gen(vecteur(w[0]._VECTptr->begin()+1,w[0]._VECTptr->end()),_SEQ__VECT).print(contextptr)+")";

@@ -10,7 +10,7 @@ domain(log(x)+asin(x))
 2 Smith normal form of a matrix with  polynomial coefficients : returns U,D,V such that U and V invertible, D diagonal, and U*A*V=D.
 3 Calcula la forma normal de Smith de una matriz a coeficientes polominos: devuelve U,B,V tales que U y V invertibles, D diagonal, y D=U*A*V.
 4 Υπολογίζει την κανονική μορφή Smith ενός πίνακα με συντελεστές πολυώνυμα : επιστρέφει U, D, V, τέτοια ώστε U και V αντιστρέψιμα, D διαγώνιος, και D=U*A*V.
-9 Gibt die Smith-Normalform der Koeffizientenmatrix eines Polynoms an (U,D,V wobei U*A*V=D)
+5 Gibt die Smith-Normalform der Koeffizientenmatrix eines Polynoms an (U,D,V wobei U*A*V=D)
 0 Mtrx(A)
 -1 hermite
 -2 ismith
@@ -21,7 +21,7 @@ domain(log(x)+asin(x))
 # wz_certificate
 1 Certificat de Wilf-Zeilberger pour une identite sum(U,k)=res
 2 Wilf-Zeilberger certificate for an identity sum(U,k)=res
-9 Wilf-Zeilberger Zertifikat
+5 Wilf-Zeilberger Zertifikat
 0 Expr(U),[Expr(res)],[Var(n),Var(k)]
 -1 sum
 wz_certificate((-1)^k*comb(n,k)*comb(2k,k)*4^(n-k),comb(2n,n),n,k);
@@ -32,14 +32,14 @@ wz_certificate((a+k)!*(b+k)!*(c+n-k-a-b-1)!/(k+1)!/(n-k)!/(c+k)!,(a-1)!*(b-1)!*(
 # keep_algext
 1 Laisse les extensions algébriques telles quelles (keep_algext:=1) ou tente de les réécrire (keep_algext:=0).
 2 Pseudo-variable to keep algebraic extensions (keep_algext:=1) or try to rewrite them (keep_algext:=0).
-9 Pseudevariable, die benutzt werden kann um algebraische Erweiterungen zu behalten (keep_algext:=1) oder um sie zu überschreiben (keep_algext:=0)
+5 Pseudevariable, die benutzt werden kann um algebraische Erweiterungen zu behalten (keep_algext:=1) oder um sie zu überschreiben (keep_algext:=0)
 0 :=Intg(0 or 1)
  keep_algext:=1
 
 # jacobi_linsolve
 1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Jacobi avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
 2 Resolution of a linear system  A*X=b  by the iterative Jacobi method with eps as error margin  and a number of iterations inferior to maxiter.
-9 Loesung eines linearen Gleichungssystems A*X=b mit dem Jacobi-Verfahren. Die Groesse des Fehlers wird mit eps festgelegt und die die maximale Anzahl der Iterationen mit maxiter
+5 Loesung eines linearen Gleichungssystems A*X=b mit dem Jacobi-Verfahren. Die Groesse des Fehlers wird mit eps festgelegt und die die maximale Anzahl der Iterationen mit maxiter
 0 Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
 -1 gauss_seidel_linsolve
 -2 linsolve
@@ -49,7 +49,7 @@ wz_certificate((a+k)!*(b+k)!*(c+n-k-a-b-1)!/(k+1)!/(n-k)!/(c+k)!,(a-1)!*(b-1)!*(
 # gauss_seidel_linsolve
 1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Gauss-Seidel (par défaut omega=1) ou de relaxation avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
 2 Resolution of a linear system A*X=b  by the iterative Gauss-Seidel method (by defaut omega=1) or by relaxation method, with eps as error margin and a number of iterations inferior to maxiter.
-9 Loesung eines linearen Gleichungssystems A*X=b mit dem Gauss-Seidel-Verfahren (ohne Spezifikition omega=1) oder dem Relaxationsverfahren, wobei die Groesse des Fehlers mit eps und die die maximale Anzahl der Iterationen mit maxiter festgelegt wird
+5 Loesung eines linearen Gleichungssystems A*X=b mit dem Gauss-Seidel-Verfahren (ohne Spezifikition omega=1) oder dem Relaxationsverfahren, wobei die Groesse des Fehlers mit eps und die die maximale Anzahl der Iterationen mit maxiter festgelegt wird
 0 [Real(omega)],Mtrx(A),Vect(b),Real(eps),[Int(maxiter)]
 -1 jacobi_linsolve
 -2 linsolve
@@ -61,7 +61,7 @@ wz_certificate((a+k)!*(b+k)!*(c+n-k-a-b-1)!/(k+1)!/(n-k)!/(c+k)!,(a-1)!*(b-1)!*(
 # linspace
 1 linspace(a,b,n) génère une liste de n éléments régulièrement espacés entre a et b, par défaut n=100 (commande compatible scilab).
 2 linspace(a,b,n) creates a list of n elements at regular intervals between a and b, by defaut n=100 (compatibility with scilab).
-9 linspace(a,b,n) generiert eine Liste aus n aequidistanten Elementen zwischen a und b, ohne Spezifikation n=100 (kompatibel mit scilab)
+5 linspace(a,b,n) generiert eine Liste aus n aequidistanten Elementen zwischen a und b, ohne Spezifikation n=100 (kompatibel mit scilab)
 0 Real(a),Real(b),[Int(n)]
 linspace(0,1,11)
 
@@ -4751,14 +4751,18 @@ isopolygon(point(0,0,0),point(3,3,3),point(0,0,3),5)
 isopolygon(point(0,0,0),point(3,3,3),point(0,0,3),-5)
 
 # arc
-1 Trace un arc de cercle donné par 2 sommets et l'angle au centre [Xcas mettra le centre dans C et le rayon dans r]
-2 Draws a circle arc given by 2 vertices and the angle at center [Xcas will put the center in C and the radius in r]
-3 Traza un arco de circunferencia dado por 2 vértices y el ángulo al centro [el centro va en C y el radio en r]
-4 Σχεδιάζει ένα κυκλικό τόξο που δίνεται από 2 κορυφές και τη γωνία στο κέντρο [το κέντρο θα είναι C και η ακτίνα r]
-0 Pnt, Pnt, Real,[Var(C)],[Var(r)]
+1 Trace un arc de cercle donné par 2 sommets et l'angle au centre [Xcas mettra le centre dans C et le rayon dans r].
+2 Draws a circle arc given by 2 vertices and the angle at center [Xcas will put the center in C and the radius in r].
+3 Traza un arco de circunferencia dado por 2 vértices y el ángulo al centro [el centro va en C y el radio en r].
+4 Σχεδιάζει ένα κυκλικό τόξο που δίνεται από 2 κορυφές και τη γωνία στο κέντρο [το κέντρο θα είναι C και η ακτίνα r].
+0 Pnt, Pnt, Real,[Var(C)],[Var(r)],[Opt(segment)]
 -1 circle
+-2 segment
+-3 plotparam
 arc(0,1,pi/4)
-arc(0,1,pi/4,C,r)
+arc(i,1,pi/4,C,r)
+arc(i,1,pi/4,segment)
+arc(i,1,pi/4,segment,affichage=1+rempli)
 
 # makesuite
 1 Renvoie une séquence faite à partir d'un vecteur.
@@ -5376,15 +5380,30 @@ matpow([[1,2],[3,4]],n)
  [[1,2],[1,4]] &* [[1,2],[3,4]]
 
 # +
-1 Concaténation de 2 chaînes ou addition terme à terme de 2 expressions ou 2 listes ou 2 matrices (opérateur infixé).
-2 String concatenation or addition element by element of 2 expressions or 2 lists or 2 matrix (infixed operator).
-3 Concatenación de 2 cadenas o suma componente por componente de 2 expresiónes o 2 listas o 2 matrices (operador infijo).
-4 Συνένωση αλφαριθμητικών ή πρόσθεση στοιχείο-στοιχείο 2 παραστάσεων ή 2 λιστών ή 2 πινάκων (εντεθειμένος τελεστής).
-0 Str||Lst||Expr, Str||Lst||Expr
+1 Concaténation de 2 chaînes ou addition terme à terme de 2 expressions ou 2 listes ou 2 matrices ou de 2 points (opérateur infixé).
+2 String concatenation or addition element by element of 2 expressions or 2 lists or 2 matrix or of 2 points (infixed operator).
+3 Concatenación de 2 cadenas o suma componente por componente de 2 expresiónes o 2 listas o 2 matrices o 2 puntos (operador infijo).
+4 Συνένωση αλφαριθμητικών ή πρόσθεση στοιχείο-στοιχείο 2 παραστάσεων ή 2 λιστών ή 2 πινάκων  ή 2 σημεία (εντεθειμένος τελεστής).
+0 Str||Lst||Expr||Pnt, Str||Lst||Expr||Pnt
 -1 concat
+-2 .+
  "bon"+"jour"
  1+2
  [1,2]+[3,4,5]
+ point(2+i)+point(1+2i)
+ point(1+2*i)+2+i
+
+# -
+1 soustraction terme à terme de 2 expressions ou 2 listes ou 2 matrices ou de 2 points (opérateur infixé).
+2 substraction element by element of 2 expressions or 2 lists or 2 matrix or of 2 points (infixed operator).
+3 resta componente por componente de 2 expresiónes o 2 listas o 2 matrices o 2 puntos (operador infijo).
+4 αφαίρεσ στοιχείο-στοιχείο 2 παραστάσεων ή 2 λιστών ή 2 πινάκων ή 2 σημεία (εντεθειμένος τελεστής).
+0 Lst||Expr||Pnt, ||Lst||Expr||Pnt
+-1 .-
+ 1-2
+ [1,2]-[3,4,5]
+ point(2+i)-point(1+2i)
+ point(2+i)-(1+2i)
 
 # +&
 1 Concaténation de 2 chaînes ou addition terme à terme de 2 expressions ou 2 listes ou 2 matrices (opérateur infixé, compatibilité TI).
@@ -5543,6 +5562,9 @@ table(3=-10,"a"=10,"b"=20,"c"=30,"d"=40)
 4 Διαβάζει από το αρχείο όνομα_αρχείου τις μεταβλητές και τις τιμές τους.
 0 Str(fich_name)
 -1 write
+-2 readrgb
+-3 readwav
+-4 csv2gen
 read("toto")
 
 # write sauve
@@ -5553,6 +5575,13 @@ read("toto")
 0 Str(fich_name),SeqVar
 -1 read
 write("toto",a,b,c)
+
+# csv2gen
+1 Lit un fichier (ou une chaine) au format CSV
+2 Reads a file (or string) in CSV format
+0 Strng(filename),Strng(sep),Strng(nl),Strng(decsep),Strng(eof),[string]
+-1 read
+csv2gen("mat.txt",",",char(10),".")
 
 # nodisp
 1 Pour afficher Done au lieu d'une valeur.
@@ -5906,7 +5935,7 @@ range(11,1,-1)
 2 Returns the sequence (2 or 3 arg) or the list (4 or 5 arg) obtained when var go from a to b (step p) in Xpr (or the Xpr is repeated n times or returns the sequence of reals from a to b (step p)).And also seq(expression,variable,liste) is equivanent to map(liste,unapply(expression,variable)) 
 3 Devuelve la secuencia (2 o 3 arg) o la lista (4 o 5 arg) obtenida cuando var va desde a hasta b (paso=p) en Xpr (o la expresión Xpr es repetida n veces).
 4 Επιστρέφει την ακολουθία (2 ή 3 ορίσματα) ή τη λίστα (4 ή 5 ορίσματα) που αποκτιέται όταν το var μεταβάλλεται από a έως b (με βήμα p) στην παράσταση (ή η παράσταση επαναλαμβάνεται n φορές).
-0 Expr(Xpr),Var(var)=Int(a..b),[Real(p)]||Expr(Xpr),Var(var),Real(a),Real(b),[Real(p)]
+0 Expr(Xpr),Var(Var)=Int(a..b),[Real(p)]||Expr(Xpr),Var(Var),Real(a),Real(b),[Real(p)]
 -1 $
 -2 makelist
 -3 range
@@ -5929,7 +5958,7 @@ seq(x^3,x,[1,2,3])
 2 Infixed version of seq.
 3 Versión infijo de seq.
 4 Εντεθειμένη εκδοχή του seq.
-0 (Expr(var)||Int(a..b)),(Var(var)=Int(a..b))||Intg(n)||Real(p)
+0 (Expr(Var)||Int(a..b)),(Var(Var)=Int(a..b))||Intg(n)||Real(p)
 -1 seq
 -2 makelist
 -3 range
@@ -6023,7 +6052,7 @@ mult_conjugate(1/(sqrt(3)-sqrt(2)))
 2 Returns the expression after reduction at the same denominator : the numerator and the denominator are developed [according to the powers of the variable var].
 3 Devuelve la expresión después de reducirla a denominador común: el numerador y denominador son desarrollados [de acuerdo con las potencias de la variable var].
 4 Επιστρέφει την παράσταση μετά από αναγωγή στον ίδιο παρονομαστή: ο αριθμητής και ο παρονομαστής αναπτύσονται [σύμφωνα με τις δυνάμεις της μεταβλητής var].
-0 Expr,[Var(var)]
+0 Expr,[Var(Var)]
 -1 normal
 comDenom(1/x+1/y^2+1)
 comDenom(1/x+1/y^2+1,y)
@@ -6439,7 +6468,7 @@ fPart([3.4,sqrt(2)])
 2 Instruction in a program so that you can output an expression stored in var.
 3 Instrucción en un programa que permite mostrar una expresión guardada en var.
 4 Εντολή σε ένα πρόγραμμα για την εξαγωγή μια παράστασης που είναι αποθηκευμένη στη var.
-0 [Str],Var(var)
+0 [Str],Var(Var)
 -1 input
 output("age",a)
 
@@ -6448,7 +6477,7 @@ output("age",a)
 2 Instruction in a program so that you can input an expression and store it in var.
 3 Instrucción en un programa que permite introducir una expresión y guardarla en var.
 4 Εντολή σε ένα πρόγραμμα για την εισαγωγή μιας παράστασης και αποθήκευση στη var.
-0 [Str],Var(var)
+0 [Str],Var(Var)
 -1 InputStr
 -2 output
 input("age",a)
@@ -6458,7 +6487,7 @@ input("age",a)
 2 Instruction in a program so that you can input a string and store it in var.
 3 Instrucción en un programa que permite introducir una cadena de caracteres y guardarla en var.
 4 Εντολή σε ένα πρόγραμμα για την εισαγωγή μιας συμβολοσειράς που θα αποθηκευτεί στη var.
-0 [Str],Var(var)
+0 [Str],Var(Var)
 -1 input
 InputStr("nom?",N)
 
@@ -6492,7 +6521,7 @@ getKey()
 -1 break
 assert(a>0);
 
-# string
+# str string
 1 Retourne l'expression évaluée sous la forme d'une chaîne de caractères ou Option de la commande convert ou convertir (id string).
 2 Returns the evaluated expression as a string or Option of the convert or convertir command (id string).
 3 Devuelve la expresión evaluada como una cadena de caracteres o Opción del comando convert o convertir (id string).
@@ -6709,11 +6738,11 @@ DelFold(essai)
 GetFold()
 
 # avgRC
-1 Calcule le taux d'accroissement de l'expression Xpr quand on passe de var à var+h : (Xpr(var+h)-Xpr(var))/h (par défaut h=0.001).
-2 Returns (Xpr(var+h)-Xpr(var))/h (by default h=0.001).
-3 Devuelve (Xpr(var+h)-Xpr(var))/h (por defecto h=0.001).
-4 Επιστρέφει (Xpr(var+h)-Xpr(var))/h (προεπιλογή h=0.001).
-0 Expr(Xpr),Var(var),[Real(h)]
+1 Calcule le taux d'accroissement de l'expression Xpr quand on passe de var à var+h : (Xpr(var+h)-Xpr(Var))/h (par défaut h=0.001).
+2 Returns (Xpr(var+h)-Xpr(Var))/h (by default h=0.001).
+3 Devuelve (Xpr(var+h)-Xpr(Var))/h (por defecto h=0.001).
+4 Επιστρέφει (Xpr(var+h)-Xpr(Var))/h (προεπιλογή h=0.001).
+0 Expr(Xpr),Var(Var),[Real(h)]
 -1 nDeriv
 avgRC(f(x),x,h)
 avgRC(x^2,x,0.1)
@@ -6724,7 +6753,7 @@ avgRC(x^2,x)
 2 Returns an approximation of the derivative number at a point: (Xpr(var+h)-Xpr(var-h))/(2*h) (by default h=0.001).
 3 Devuelve una aproximación de la derivada numérica en un punto: (Xpr(var+h)-Xpr(var-h))/(2*h) (por defecto h=0.001).
 4 Επιστρέφει μια προσεγγιστική τιμή της παραγώγου σε ένα σημείο:(Xpr(var+h)-Xpr(var-h))/(2*h) (προεπιλογή h=0.001).
-0 Expr(Xpr),Var(var),[Real(h)]
+0 Expr(Xpr),Var(Var),[Real(h)]
 -1 avgRC
 nDeriv(f(x),x,h)
 nDeriv(x^2,x,0.1)
@@ -8165,12 +8194,32 @@ BlockDiagonal([1,2,3])
 -1 identity
 -2 lu
 -3 BlockDiagonal
+-4 upper
+-5 lower
 diag([[1,2],[3,4]])
 diag([1,2,3])
 diag([[1,2],[3,4]],left)
 diag([[1,2],[3,4]],right)
 diag([[1,2],[3,4]],lu)
 diag([1,2],[3,4,5],[6,7])
+
+# upper
+1 Renvoie la partie de matrice au-dessus de la diagonale (incluse) ou met en majuscules
+2 Returns the upper matrix (over the diagonal, included) or write uppercase
+0 Mtrx||Strng
+-1 diag
+-2 lower
+upper([[1,2,3],[4,5,6],[7,8,9]])
+upper("hello")
+
+# lower
+1 Renvoie la partie de matrice en-dessous de la diagonale (incluse) ou met en majuscules
+2 Returns the lower matrix (under the diagonal, included) or write lowercase
+0 Mtrx||Strng
+-1 diag
+-2 upper
+lower([[1,2,3],[4,5,6],[7,8,9]])
+lower("HELLO")
 
 # coeff coeffs
 1 Renvoie la liste des coefficients d'un polynôme P par rapport au 2ème argument ou le coefficient de degré le 3ème argument.
@@ -8540,7 +8589,7 @@ perimeteratraw(polygon(0,1,i),1+i)
 -6 areaatraw
 -7 perimeteratraw
 -8 slopeat
--9 areaat
+-5 areaat
 -10 perimeterat
 extract_measure(distanceatraw(0,1+i,(1+i)/2))
 extract_measure(angleatraw(0,1,1+i,1))
@@ -8893,7 +8942,7 @@ orthocenter(triangle(0,1,1+i))
 changebase([[1,2],[1,3]],[[1,1],[0,1]])
 changebase([[1,2],[1,3]],[[1,0],[1,1]])
 
-# char
+# char chr
 1 Renvoie la chaîne correspondant aux codes des caractères contenus dans l'argument.
 2 Returns the string corresponding to the character code of the argument.
 3 Devuelve la cadena correspondiente a los códigos de caracteres contenidos en el argumento.
@@ -9259,7 +9308,7 @@ debug(pgcd(25,15))
 2 Degree of the polynomial P with respect to the second argument.
 3 Grado del polinomio P con respecto al segundo argumento.
 4 Βαθμός του πολυωνύμου P αναφορικά με το 2ο όρισμα.
-0 Poly(P),Var(var)
+0 Poly(P),Var(Var)
 -1 valuation
 -2 size
 degree(x^3+x)
@@ -11607,7 +11656,10 @@ parallel(line(x=y,y=z),line(x=0,y=0))
 0 Cplx||Lst,Var||Lst(Var)
 -1 plotfunc
 -2 plotpolar
+-3 arc
 plotparam(sin(t)+i*cos(t),t)
+plotparam(exp(i*t),t=0..pi/2,affichage=1)
+plotparam(exp(i*t),t=0..pi/2,affichage=1+rempli)
 plotparam([sin(x),cos(x)],x=0..1)
 plotparam([sin(x),cos(x)],x=0..1,affichage=rouge)
 plotparam(sin(x)+i*cos(x),x=0..1,tstep=0.01)
@@ -11889,13 +11941,38 @@ pmin(sqrt(2)+sqrt(3),x)
 plotpolar(sin(2*x),x,0,pi)
 plotpolar(sin(2*x),x,0,pi,tstep=0.1)
 
+# set_pixel
+1 Colorie un pixel et ajoute a la liste des pixels
+2 Pixel on and adds to the list of pixel
+0 Intg(x),Intg(y),Intg(col)
+-1 clear
+-2 show_pixels
+set_pixel(1,2,3)
+
+# clear
+1 Efface la liste des pixels
+2 Clear the list of pixels
+0 NULL
+-1 set_pixel
+-2 show_pixels
+clear()
+
+# show_pixels
+1 Affiche la liste des pixels
+2 Displays the list of pixels
+0 NULL
+-1 set_pixel
+-2 clear
+show_pixels()
+
 # pixon
 1 Allume un pixel
 2 Pixel on
 3 Activa un pixel
 4 Ενεργοποίηση εικονοστοιχείου
 0 Real(x),Real(y)
--1 pixoff
+-1 set_pixel
+-2 pixoff
 pixon(1,2)
 
 # pixoff
@@ -11904,7 +11981,8 @@ pixon(1,2)
 3 Desactiva un pixel.
 4 Απενεργοποίηση εικονοστοιχείου.
 0 Real(x),Real(y)
--1 pixon
+-1 set_pixel
+-2 pixon
 pixoff(1,2)
 
 # potential
@@ -11947,7 +12025,7 @@ pow(x+1,452)
 3 Devuelve F(b)-F(a).
 4 Επιστρέφει F(b)-F(a).
 8 返回 F(b)-F(a)。
-0 Expr(F(var)),Real(a),Real(b),[Var]
+0 Expr(F(Var)),Real(a),Real(b),[Var]
 -1 subst
 -2 int
 preval(x^2-2,2,3)
@@ -12045,7 +12123,7 @@ Psi(3,1)
 2 Returns the Taylor polynomial of the expression at the given point and order or a polynomial Q such that P(x)=Q(x-a).
 3 Devuelve el polinomio de Taylor Q tal que P(x)=Q(x-a).
 4 Επιστρέφει το πολυώνυμου του Taylor Q τέτοιου ώστε P(x)=Q(x-a).
-0 Expr||Poly(P(var)),Var=Real || Real(a),[Order || Var]
+0 Expr||Poly(P(Var)),Var=Real || Real(a),[Order || Var]
 -1 series
 -2 taylor
 ptayl(sin(x),x=0,5)
@@ -12401,7 +12479,7 @@ randexp(2)
 2 Returns a polynomial of variable var (or x), of degree n and where the coefficients are random integers in the range -99 through 99 with uniform distribution or according to a law.
 3 Devuelve el polinomio de variable var (o x), de grado n y cuyos coeficientes son enteros aleatorios equirepartidos entre -99 y 99.
 4 Επιστρέφει ένα πολυώνυμο μεταβλητής var (ή x), βαθμού n και του οποίου οι συντελεστές είναι τυχαίοι ακέραιοι από -99 μέχρι 99 ομοιόμορφα κατανεμημένοι.
-0 [Var(var)],Intg(n),[law]
+0 [Var(Var)],Intg(n),[law]
 -1 ranm
 -2 randvector
 randpoly(5)
@@ -12710,17 +12788,20 @@ same((2-1)^2,2^2-2*2+1)
 sec(pi/3)
 
 # segment
-1 segment(A,B) trace le segment AB et segment([xM,yM],[xN,yN]) trace le vecteur d'origine [xM,yM], de coordonnées [xN,yN] (i.e trace segment(M,point(M+N)).
-2 segment(A,B) draws the segment AB and segment([xM,yM],[xN,yN]) draws the vector as origin [xM,yM], of coordinates [xN,yN] (i.e draws segment(M,point(M+N)).
-3 segment(A,B) traza el segmento AB y segment([xM,yM],[xN,yN]) traza el vector con origen [xM,yM] de coordenadas [xN,yN] (i.e traza segment(M,point(M+N)).
-4 segment(A,B) σχεδιάζει το ευθύγραμμο τμήμα ΑΒ.
-0 (Pnt or Cplx or Lst([xM,yM])),(Pnt or Cplx or Lst([xN,yN]),[Var],[Var]
+1 segment(A,B) trace le segment AB et segment([xM,yM],[xN,yN]) trace le vecteur d'origine [xM,yM], de coordonnées [xN,yN] (i.e trace segment(M,point(M+N)) ou Option de la commande arc.
+2 segment(A,B) draws the segment AB and segment([xM,yM],[xN,yN]) draws the vector as origin [xM,yM], of coordinates [xN,yN] (i.e draws segment(M,point(M+N)) or Option of the arc command.
+3 segment(A,B) traza el segmento AB y segment([xM,yM],[xN,yN]) traza el vector con origen [xM,yM] de coordenadas [xN,yN] (i.e traza segment(M,point(M+N)) o Opción del comando .
+4 segment(A,B) σχεδιάζει το ευθύγραμμο τμήμα ΑΒ ή Επιλογή της εντολής arc.
+0 (Pnt or Cplx or Lst([xM,yM])),(Pnt or Cplx or Lst([xN,yN]),[Var],[Var] or Opt
 -1 line
+-2 arc
 segment(i,1+i)
 segment(point(i),point(1+i))
 segment(point(i),point(1+i),A,B)
 segment([-1,0],[2,1])
 segment([-1,0],point([-1,0]+[2,1]))
+ arc(i,1,pi/4,segment)
+ affichage( arc(i,1,pi/4,segment),1+rempli)
 
 # half_line
 1 demi_droite(A,B) trace la demi-droite AB d'origine A.
@@ -14507,7 +14588,7 @@ simplify(4*atan(1/5)-atan(1/239))
 simplify(texpand((sin(3*x)+sin(7*x))/sin(5*x)))
 simplify(texpand((cos(3*x)+cos(7*x))/cos(5*x)))
 
-# sort
+# sort sorted
 1 Renvoie la liste (ou suite) triée par ordre croissant ou selon la fonction donnée en second argument qui définit un ordre strict faible ou trie et collecte les termes égaux dans les sommes et produits.
 2 Returns the sorted list (or sequence) with increasing order according with the second argument which defines an weak strict ordering or sort and collect equal terms in sums and products.
 3 Devuelve la lista (o secuencia) ordenada en orden creciente o según la función dada en segundo argumento, o ordena y recupera los términos iguales en las sumas y los productos.
@@ -14775,6 +14856,9 @@ Zeta(2)
 0 Str(s)
 -1 fopen
 -2 close
+-3 readrgb
+-4 readwav
+-5 csv2gen
  f:=open("filename")
 
 # fopen
@@ -14785,6 +14869,9 @@ Zeta(2)
 0 Str(s)
 -1 fprint
 -2 fclose
+-3 readrgb
+-4 readwav
+-5 csv2gen
  f:=fopen("glouglou")
 
 # fclose close
@@ -14816,6 +14903,7 @@ fprint(f,Unquoted,"blabla")
 4 Διαβάζει ένα αρχείο ήχου τύπου WAV.
 0 Str(s)
 -1 writewav
+-2 readrgb
 readwav("pop.wav")
 
 # writewav
@@ -14854,6 +14942,7 @@ soundsec(1,22100)
 4 Διαβάζει ένα αρχείο εικόνας, χρησιμοποιώντας τις αρχικές του διαστάσεις, ή αυτές που δίνονται στο όρισμα.
 0 Str(s),[Intg(w)],[Intg(h)]
 -1 writergb
+-2 readwav
 readrgb("image.png")
 readrgb("image.png",50,50)
 
@@ -15640,3 +15729,1352 @@ trigsimplify(3*sin(x)-4*sin(x)^3)
 -2 thiele
 triginterp([11,10,17,24,32,26,23,19],x=0..21)
 triginterp([11,10,17,24,32,26,23,19],x,0,21)
+
+# heapify
+1 Ordonne partiellement une liste pour en faire un tas
+2 Partial ordering of a list as a heap
+0 List
+-1 heappush
+-2 heappop
+
+# heappush
+1 Ajoute un element dans un tas
+2 Adds an object in a heap
+0 List,Object
+-1 heapify
+-2 heappop
+
+# heappop
+1 Enleve et renvoie le noeud racine d'un tas 
+2 Removes and returns the root node of a heap
+0 List
+-1 heapify
+-2 heappush
+
+# trail
+0 V
+1 Renvoie une suite de sommets d'une suite V (commande inerte).
+2 Returns a trail of vertices from sequence V (this is a inert command, it returns itself).
+-1 graph
+-2 digraph
+trail(1,2,3,4,1)
+
+# graph
+0 [V],[E],[A],[options]
+1 Cree un graphe oriente ou non avec poids ou non a partir d'une liste de sommets V, un ensemble d'aretes E, et/ou une matrice d'adjacence ou de poids. Tous les parametres sont optionnels.
+2 Create an (un)directed (un)weighted graph from list of vertices V, set of edges E, and/or adjacency or weight matrix A. All parameters are optional.
+-1 digraph
+-2 trail
+graph(5)
+graph([a,b,c])
+graph([1,2,3],%{[1,2],[2,3],[3,1]%})
+graph(trail(1,2,3,4,1),directed=true)
+graph([a,b,c],[[0,2,0],[2,0,3],[0,3,0]])
+graph("petersen")
+graph([[0,1,1,0],[1,0,0,1],[1,0,0,0],[0,1,0,0]])
+
+# digraph
+0 [V],[E],[A],[options]
+1 Cree un graphe oriente avec ou sans poids depuis une liste de sommets V, un ensemble d'aretes E et/ou une matrice d'adjacence ou de poids A. Tous les parametres sont optionnels.
+2 Create a directed (un)weighted graph from list of vertices V, set of edges E and/or adjacency or weight matrix A. All parameters are optional.
+-1 graph
+-2 trail
+digraph(%{[1,2],[2,3],[3,4],[4,1]%})
+digraph([a,b,c,d],%{[[a,b],1.0],[[a,c],2.3],[[b,d],3.1],[[c,d],4]%})
+
+# export_graph
+0 G,"path/to/graphname"
+1 Exporte le graphe G vers le fichier "graphname.dot" du repertoire indique au format dot. Renvoie 1 en cas de succes, 0 en cas d'echec.
+2 Writes the graph G to the file 'graphname.dot' in directory 'path/to' using dot format. Returns 1 on success and 0 on failure.
+-1 import_graph
+export_graph(complete_graph(5),"K5")
+
+# import_graph
+0 "path/to/graphname[.dot]"
+1 Renvoie le graphe decrit par les instructions du fichier graphname.dot au format dot, ou "undef" en cas d'echec.
+2 Returns the graph constructed from instructions in the file 'path/to/graphname.dot' (in dot format), or "undef" on failure.
+import_graph("K5.dot")
+
+# graph_vertices
+0 G
+1 Renvoie la liste des sommets du graphe G.
+2 Return the list of vertices of graph G.
+-1 add_vertex
+-2 graph
+-3 neighbors
+-4 permute_vertices
+-5 relabel_vertices
+graph_vertices(graph(%{[a,c],[b,c],[a,b]%}))
+
+# edges
+0 G,[weights]
+1 Renvoie la liste des aretes d'un graphe G (avec les poids).
+2 Return the list of edges of the input graph G [including weights].
+-1 add_edge
+-2 incident_edges
+-3 set_edge_weight
+-4 get_edge_weight
+edges(complete_graph(4))
+
+# has_edge
+0 G,e
+1 Renvoie vrai si l'arete e={i,j} est contenue dans le graphe non oriente G.
+2 Returns true iff the edge e={i,j} is contained in the undirected graph G.
+-1 edges
+-2 has_arc
+has_edge(graph(trail(1,2,3,4,1)),[2,4])
+
+# has_arc
+0 G,e
+2 Returns true iff the arc e=[i,j] is contained in the directed graph G or, if e={i,j} is a set, iff G has both edges [i,j] and [j,i].
+-1 edges
+-2 has_edge
+has_arc(digraph(trail(1,2,3,4,1)),[4,2])
+has_arc(digraph(trail(1,2,3,4,1)),%{4,2%})
+
+# adjacency_matrix
+0 G
+1 Renvoie la matrice d'adjacence du graphe G (lignes/colonnes numerotees par des sommets).
+2 Returns the adjacency matrix of the input graph G whose rows and columns are indexed by the vertices.
+-1 neighbors
+adjacency_matrix(graph(trail(1,2,3,4,2,5,1,3)))
+
+# incidence_matrix
+0 G
+2 Returns the incidence matrix of the input graph G whose rows are indexed by the vertices and columns by the edges (in order defined by the command 'edges').
+-1 incident_edges
+incidence_matrix(graph("tetrahedron"))
+
+# weight_matrix
+0 G
+1 Renvoie la matrice des poids du graphe G.
+2 Returns the weight matrix of the input graph G.
+-1 set_edge_weight
+-2 get_edge_weights
+-3 is_weighted
+-4 make_weighted
+-5 assign_edge_weights
+weight_matrix(graph(%{[[1,2],2],[[2,3],1]%})
+
+# graph_complement
+0 G
+2 Return the graph with the same vertex set as G, but whose edge (arc) set consists of the edges (arcs) not present in G.
+-1 edges
+edges(graph_complement(cycle_graph(5)))
+
+# subgraph
+0 G,E
+1 Sous-graphe de G defini par les aretes de E.
+2 Returns the subgraph of the input graph G defined by the edges in list E.
+-1 induced_subgraph
+-2 highlight_subgraph
+graph_vertices(subgraph(complete_graph(5),[[1,2],[2,3],[3,4],[4,1]]))
+
+# vertex_degree
+0 G,v
+1 Degre du sommet v dans le graphe G (nombre d'aretes incidentes a v).
+2 Returns the degree of the vertex v in the input graph G (number of edges incident to v).
+-1 degree_sequence
+-2 is_regular
+-3 maximum_degree
+-4 minimum_degree
+-5 vertex_in_degree
+-6 vertex_out_degree
+vertex_degree(digraph(trail(1,2,3,4,2)),2)
+
+# vertex_in_degree
+0 G,v
+1 Renvoie le nombre d'arcs du graphe G se terminant par le sommet v.
+2 Returns the number of arcs ending in the vertex v of the input graph G.
+-1 degree_sequence
+-2 is_regular
+-3 maximum_degree
+-4 minimum_degree
+-5 vertex_degree
+-6 vertex_out_degree
+vertex_in_degree(digraph(trail(1,2,3,4,2)),2)
+
+# vertex_out_degree
+0 G,v
+1 Renvoie le nombre d'arcs du graphe G commencant par le sommet v.
+2 Returns the number of arcs starting in the vertex v of the input graph G.
+-1 degree_sequence
+-2 is_regular
+-3 maximum_degree
+-4 minimum_degree
+-5 vertex_degree
+-6 vertex_in_degree
+vertex_out_degree(digraph(trail(1,2,3,4,2)),2)
+
+# induced_subgraph
+0 G,V
+1 Renvoie le sous-graphe de G de sommets dans la liste V.
+2 Returns the subgraph of the input graph G induced by the vertices in list V.
+-1 subgraph
+edges(induced_subgraph(cycle_graph(6),[1,2,6]))
+
+# maximal_independent_set
+0 G
+1 Renvoie un ensemble maximal de sommets independants (non adjacents) du graphe G.
+2 Returns a maximal set of mutually independent (non-adjacent) vertices of the input graph G.
+-1 maximum_independent_set
+maximal_independent_set(graph("petersen"))
+
+# maximum_matching
+0 G
+2 Returns the list of edges representing maximum matching in the input graph G.
+-1 maximum_independent_set
+G:=graph("soccerball"); draw_graph(highlight_edges(G,maximum_matching(G)))
+
+# make_directed
+0 G,[A]
+1 Renvoie une copie orientee du graphe non oriente G.
+2 Returns the copy of the undirected graph G in which every edge is converted to a pair of arcs [and with weights specified by matrix A].
+-1 is_directed
+-2 make_weighted
+-3 underlying_graph
+make_directed(cycle_graph(4),[[0,0,0,1],[2,0,1,3],[0,1,0,4],[5,0,4,0]])
+
+# underlying_graph
+0 G
+2 Returns the graph obtained by stripping directions and weights from arcs (pairs of arcs connecting the same vertices are merged to a single edge).
+-1 is_directed
+-2 is_weighted
+-3 make_directed
+-4 make_weighted
+is_directed(underlying_graph(digraph(trail(1,2,3,4,1))))
+
+# cycle_graph
+0 n or V
+1 Renvoie un graphe cyclique ayant n sommets (ou avec les sommets de la liste V).
+2 Returns a cyclic graph with n vertices (or with vertices from list V).
+-1 graph
+-2 path_graph
+edges(cycle_graph(4))
+
+# lcf_graph
+0 jumps,[exp]
+2 Returns the graph constructed from LCF notation jumps[^exp] given the list of integers 'jumps' [and a positive integer 'exp', by default 1].
+-1 graph
+draw_graph(lcf_graph([-3,3],4))
+
+# hypercube_graph
+0 n
+1 Construit et renvoie le graphe hypercube en dimension n (avec 2^n sommets).
+2 Constructs and returns the hypercube graph in dimension n (with 2^n vertices).
+-1 graph
+draw_graph(hypercube_graph(3))
+
+# seidel_switch
+0 G,V
+2 Returns a copy of the input graph G in which edges between vertices in list V and vertices not in V are inverted (replaced with a set of edges from V to other vertices which is not present in G).
+-1 neighbors
+-2 graph_complement
+draw_graph(seidel_switch(cycle_graph(5),[1,2]))
+
+# draw_graph
+0 G,[options]
+2 Returns the graphic representation of the input graph G obtained by using various algorithms (which can optionally be fine tuned by appending a sequence of options after the first argument).
+-1 highlight_edges
+-2 highlight_subgraph
+-3 highlight_trail
+-4 highlight_vertex
+-5 set_vertex_positions
+-6 get_vertex_positions
+draw_graph(graph("petersen"))
+draw_graph(graph("petersen"),spring)
+draw_graph(random_tree(30))
+draw_graph(sierpinski_graph(5,3,at_triangle))
+draw_graph(graph("soccerball"))
+
+# sierpinski_graph
+0 n,k,[triangle]
+2 Returns Sierpiński (triangle) graph S(n,k) (resp. ST(n,k)).
+-1 graph
+draw_graph(sierpinski_graph(3,3,at_triangle),spring)
+
+# complete_graph
+0 n or V || n1,n2,...,nk
+2 Returns a complete graph with vertices from list V or enumerated with first n integers or, when two or more positive integers n1,n2,...,nk are given, a complete k-partite graph with partition sizes n1,n2,...,nk.
+-1 edges
+draw_graph(complete_graph(4))
+
+# petersen_graph
+0 n,[k]
+2 Returns the generalized Petersen graph G(n,k), where n and k are positive integers (k defaults to 2).
+-1 graph
+petersen_graph(5,2)
+petersen_graph(6,3)
+petersen_graph(10,2)
+
+# random_graph
+0 n or V,p or m
+2 Returns a random undirected unweighted graph with n vertices (list V of labels may me specified) where two vertices are connected with probability p or where m edges are created at random.
+-1 random_bipartite_graph
+-2 random_digraph
+-3 random_planar_graph
+-4 random_regular_graph
+-5 random_tournament
+-6 random_tree
+random_graph(8,0.5)
+random_graph(8,10)
+
+# random_digraph
+0 n or V,p or m
+2 Returns a random directed unweighted graph with n vertices (list V of labels may me specified) where two vertices are connected with probability p or where m edges are created at random.
+-1 random_bipartite_graph
+-2 random_graph
+-3 random_planar_graph
+-4 random_regular_graph
+-5 random_tournament
+-6 random_tree
+random_digraph(8,0.5)
+random_digraph(8,10)
+
+# random_bipartite_graph
+0 n or [a,b],p or m
+2 Returns a random undirected unweighted bipartite graph with n vertices where each possible edge is present with probability p or where m edges are created at random. When the first argument is list [a,b] of integers, two groups of vertices with sizes a and b are created.
+-1 random_digraph
+-2 random_graph
+-3 random_planar_graph
+-4 random_regular_graph
+-5 random_tournament
+-6 random_tree
+random_bipartite_graph(10,0.5)
+random_bipartite_graph([2,3],1.0)
+
+# random_tournament
+0 n or V
+2 Returns a random tournament graph with n vertices, which may be specified as list V of their labels.
+-1 random_bipartite_graph
+-2 random_digraph
+-3 random_graph
+-4 random_planar_graph
+-5 random_regular_graph
+-6 random_tree
+random_tournament(5)
+
+# random_regular_graph
+0 n or V,d,[connected]
+2 Returns a random d-regular graph with n vertices, which may be specified as list V of their labels.
+-1 random_bipartite_graph
+-2 random_digraph
+-3 random_graph
+-4 random_planar_graph
+-5 random_tournament
+-6 random_tree
+random_regular_graph(100,80,connected)
+
+# random_tree
+0 n or V,[d]
+2 Returns a random tree graph with n vertices, which may be specified as list V of their labels [with the upper bound d (positive integer) for the degree of graph].
+-1 random_bipartite_graph
+-2 random_digraph
+-3 random_graph
+-4 random_planar_graph
+-5 random_regular_graph
+-6 random_tournament
+
+# random_planar_graph
+0 n or V,p,[c]
+2 Return random planar graph with n vertices, which can also be specified as a list V of their labels, obtained by trying to remove each edge of a random triangulated graph with probability 0<=p<1 [c is connectivity level : 0 - any, 1 - connected, 2 - biconnected, 3 - triconnected (by default, c=1)].
+-1 random_bipartite_graph
+-2 random_digraph
+-3 random_graph
+-4 random_regular_graph
+-5 random_tournament
+-6 random_tree
+
+# assign_edge_weights
+0 G,(m,n) or a..b
+2 Assigns random edge weights to the edges of the input graph G and returns a modified copy of G. If integers n and m such that n>=m are specified, weights are integers randomly chosen in [m,n]. If an interval a..b is specified, weights are uniformly distributed in the interval [a,b).
+-1 set_edge_weight
+-2 get_edge_weight
+-3 weight_matrix
+-4 random_digraph
+-5 random_tournament
+assign_edge_weights(digraph(trail(1,2,3,4,1)),1,9)
+assign_edge_weights(digraph(trail(1,2,3,4,1)),0..1)
+
+# articulation_points
+0 G
+2 Returns the list of articulation points (cut vertices) of the input graph G.
+-1 biconnected_components
+-2 is_biconnected
+-3 is_connected
+-4 is_triconnected
+articulation_points(path_graph(5))
+articulation_points(cycle_graph(5))
+
+# biconnected_components
+0 G
+2 Returns the biconnected components of the input graph G as a list of lists of vertices.
+-1 articulation_points
+-2 is_biconnected
+-3 is_connected
+-4 trail
+G:=graph(trail(1,2,3,4,2),trail(4,5,6,7,5)); biconnected_components(G)
+
+# add_arc
+0 G,e
+2 Returns a modified copy of the directed graph G with added arc e (or trail or list of arcs).
+-1 add_edge
+-2 delete_arc
+-3 digraph
+-4 edges
+-5 has_arc
+-6 trail
+add_arc(graph(trail(1,2,3,4,5,1)),[[1,3],[2,4]])
+
+# delete_arc
+0 G,e
+2 Returns a modified copy of the directed graph G with arc e (or trail or list of arcs). removed.
+-1 add_arc
+-2 delete_edge
+-3 digraph
+-4 edges
+-5 has_arc
+-6 trail
+delete_arc(graph(trail(1,2,3,4,5,1)),[5,1])
+
+# add_edge
+0 G,e
+2 Returns a modified copy of the undirected graph G with added edge e (or trail or list of edges).
+-1 add_arc
+-2 delete_edge
+-3 edges
+-4 graph
+-5 has_edge
+-6 trail
+add_edge(graph(trail(1,2,3,4)),[4,1])
+
+# delete_edge
+0 G,e
+2 Returns a modified copy of the undirected graph G with edge e (or trail or list of edges) removed.
+-1 add_edge
+-2 delete_arc
+-3 edges
+-4 graph
+-5 has_edge
+-6 trail
+delete_edge(cycle_graph(4),[1,2])
+
+# add_vertex
+0 G,v
+2 Returns a modified copy of the input graph G with added vertex v (or vertices from v if v is a list).
+-1 add_arc
+-2 add_edge
+-3 delete_vertex
+add_vertex(cycle_graph(5),["a","b"])
+
+# delete_vertex
+0 G,v
+2 Returns a modified copy of the input graph G with vertex v (or vertices from v if v is a list) removed.
+-1 add_vertex
+-2 induced_subgraph
+delete_vertex(cycle_graph(5),[1,4])
+
+# contract_edge
+0 G
+2 Returns a modified copy of the input graph G with edge e contracted (to contract more edges apply the foldl command).
+-1 delete_edge
+-2 delete_vertex
+-3 foldl
+contract_edge(complete_graph(4),[1,3])
+
+# connected_components
+0 G
+2 Returns a list of lists of vertices, each sublist representing a connected component of the input graph G.
+-1 articulation_points
+-2 is_biconnected
+-3 is_strongly_connected
+-4 strongly_connected_components
+-5 underlying_graph
+G:=graph_complement(cycle_graph(4)); connected_components(G)
+
+# departures
+0 G,[v]
+2 Returns the list of vertices of the directed graph G which are connected by v with arcs such that tails are in v. If v is omitted, list of departures is computed for every vertex in G.
+-1 out_degree
+departures(digraph(%{[1,2],[1,3],[2,3]%}),1)
+
+# arrivals
+0 G,[v]
+2 Returns the list of vertices of the directed graph G which are connected by v with arcs such that heads are in v. If v is omitted, a list of arrivals is computed for every vertex in G.
+-1 in_degree
+arrivals(digraph(%{[1,2],[1,3],[2,3]%}),1)
+
+# incident_edges
+0 G,v
+2 Returns the list of all edges incident to the vertex v of the input graph G (or to the vertices in the list v).
+-1 adjacency_matrix
+-2 vertex_degree
+-3 incidence_matrix
+-4 neighbors
+incident_edges(cycle_graph(8),[1,5,7])
+
+# make_weighted
+0 G,[M]
+2 Returns a copy of the input graph G with edge/arc weights set as specified by matrix M. If M is omitted, a suqare matrix of ones is used. If G is undirected, M is assumed to be symmetric.
+-1 get_edge_weight
+-2 is_weighted
+-3 make_directed
+-4 set_edge_weight
+-5 underlying_graph
+-6 weight_matrix
+make_weighted(cycle_graph(3),[[0,2,3],[2,0,1],[3,1,0]])
+
+# set_graph_attribute
+0 G,attr1,attr2,...
+2 Stores the attributes attr1, attr2, ..., each in form tag=value, where tag is string, and returns the modified copy of the input graph G. Attributes may also be specified in a list or as two lists [tag1,tag2,...] and [value1,value2,...].
+-1 discard_graph_attribute
+-2 get_graph_attribute
+-3 list_graph_attributes
+set_graph_attribute(cycle_graph(3),"name"="cycle graph")
+
+# get_graph_attribute
+0 G,attr1,attr2,...
+2 Return the graph attributes tag1, tag2, ..., as a sequence of the corresponding values (tags may also be specified in a list).
+-1 discard_graph_attribute
+-2 set_graph_attribute
+-3 list_graph_attributes
+get_graph_attribute(cycle_graph(3),"name")
+
+# discard_graph_attribute
+0 G,attr1,attr2,...
+2 Discards the graph attributes with tags tag1, tag2, ..., which may also be specified in a list, and returns the modified copy of the input graph G.
+-1 get_graph_attribute
+-2 set_graph_attribute
+-3 list_graph_attributes
+discard_graph_attribute(cycle_graph(3),"name")
+
+# set_vertex_attribute
+0 G,v,attr1,attr2,...
+2 Stores the attributes attr1, attr2, ..., each in form tag=value, where tag is string, to vertex v and returns the modified copy of the input graph G. Attributes may also be specified in a list or as two lists [tag1,tag2,...] and [value1,value2,...].
+-1 discard_vertex_attribute
+-2 get_vertex_attribute
+-3 list_vertex_attributes
+set_vertex_attribute(cycle_graph(3),1,"supply"=27)
+
+# get_vertex_attribute
+0 G,v,attr1,attr2,...
+2 Return the attributes tag1, tag2, ... assigned to vertex v in the input graph G as a sequence of the corresponding values (tags may also be specified in a list).
+-1 discard_vertex_attribute
+-2 set_vertex_attribute
+-3 list_vertex_attributes
+get_vertex_attribute(cycle_graph(3),1,"supply")
+
+# discard_vertex_attribute
+0 G,v,attr1,attr2,...
+2 Discards the attributes with tags tag1, tag2, ... assigned to vertex v in the input graph G, which may also be specified in a list, and returns the modified copy of G.
+-1 get_vertex_attribute
+-2 set_vertex_attribute
+-3 list_vertex_attributes
+discard_vertex_attribute(cycle_graph(3),1,"supply")
+
+# set_edge_attribute
+0 G,e,attr1,attr2,...
+2 Stores the attributes attr1, attr2, ..., each in form tag=value, where tag is string, to edge e and returns the modified copy of the input graph G. Attributes may also be specified in a list or as two lists [tag1,tag2,...] and [value1,value2,...].
+-1 discard_edge_attribute
+-2 get_edge_attribute
+-3 list_edge_attributes
+set_edge_attribute(cycle_graph(3),[1,2],"cost"=12.4)
+
+# get_edge_attribute
+0 G,e,attr1,attr2,...
+2 Return the attributes tag1, tag2, ... assigned to edge e in the input graph G as a sequence of the corresponding values (tags may also be specified in a list).
+-1 discard_edge_attribute
+-2 set_edge_attribute
+-3 list_edge_attributes
+get_edge_attribute(cycle_graph(3),[1,2],"cost")
+
+# discard_edge_attribute
+0 G,e,attr1,attr2,...
+2 Discards the attributes with tags tag1, tag2, ... assigned to edge e in the input graph G, which may also be specified in a list, and returns the modified copy of G.
+-1 get_edge_attribute
+-2 set_edge_attribute
+-3 list_edge_attributes
+discard_edge_attribute(cycle_graph(3),[1,2],"cost")
+
+# list_graph_attributes
+0 G
+2 Returns the list of graph attributes of the input graph G in form tag=value.
+-1 set_graph_attribute
+-2 get_graph_attribute
+-3 discard_graph_attribute
+
+# list_vertex_attributes
+0 G,v
+2 Returns the list of attributes assigned to vertex v of the input graph G in form tag=value.
+-1 set_vertex_attribute
+-2 get_vertex_attribute
+-3 discard_vertex_attribute
+
+# list_edge_attributes
+0 G,e
+2 Returns the list of attributes assigned to edge e of the input graph G in form tag=value.
+-1 set_edge_attribute
+-2 get_edge_attribute
+-3 discard_edge_attribute
+
+# number_of_edges
+0 G
+2 Returns the number of edges/arcs of the input graph G.
+-1 edges
+-2 number_of_vertices
+number_of_edges(complete_graph(5))
+
+# number_of_vertices
+0 G
+2 Returns the number of vertices of the input graph G.
+-1 graph_vertices
+-2 number_of_edges
+number_of_vertices(graph("petersen"))
+
+# get_edge_weight
+0 G,e
+2 Returns the weight of the edge e in the weighted graph G.
+-1 is_weighted
+-2 make_weighted
+-3 set_edge_weight
+-4 weight_matrix
+get_edge_weight(graph(%{[[1,2],5],[[2,3],6]%}),[1,2])
+
+# set_edge_weight
+0 G,e,w
+2 Sets weight of the edge e in the weighted graph G to w and returns the modified copy of G
+-1 is_weighted
+-2 get_edge_weight
+-3 make_weighted
+-4 weight_matrix
+set_edge_weight(graph(%{[1,2],[2,3]%}),[1,2],5)
+
+# is_directed
+0 G
+2 Returns true iff the input graph G is directed.
+-1 is_weighted
+-2 digraph
+-3 make_directed
+is_directed(digraph(3))
+
+# neighbors
+0 G,[v]
+2 Returns the list of vertices adjacent to vertex v of the input graph G. If v is omitted, a list of adjacency lists of all vertices in G is returned.
+-1 adjacency_matrix
+-2 vertex_degree
+-3 in_degree
+-3 out_degree
+neighbors(digraph(trail(1,2,3,4,5,6,4,7,8,2)),4)
+
+# minimum_degree
+0 G
+2 Returns the smallest degree among the vertices of the input graph G.
+-1 maximum_degree
+-2 vertex_degree
+minimum_degree(digraph(trail(1,2,3,4,5,6,4,7,8,2)))
+
+# maximum_degree
+0 G
+2 Returns the larges degree among the vertices of the input graph G.
+-1 minimum_degree
+-2 vertex_degree
+maximum_degree(digraph(trail(1,2,3,4,5,6,4,7,8,2)))
+
+# is_regular
+0 G
+2 Returns true iff max and min degrees of the input graph G are equal.
+-1 degree_sequence
+-2 maximum_degree
+-3 minimum_degree
+-4 random_regular_graph
+-5 vertex_degree
+is_regular(complete_graph(5))
+
+# isomorphic_copy
+0 G,sigma
+2 Returns a copy of the input graph G with vertices reordered according to the permutation sigma.
+-1 graph_vertices
+-2 permute_vertices
+-3 relabel_vertices
+graph_vertices(isomorphic_copy(cycle_graph(5),randperm(5)))
+
+# permute_vertices
+0 G,V
+2 Returns a copy of the input graph G with vertices reordered according to the order in the list of vertices V.
+-1 graph_vertices
+-2 isomorphic_copy
+-3 relabel_vertices
+graph_vertices(permute_vertices(graph([a,b,c]),[a,c,b]))
+
+# relabel_vertices
+0 G,L
+2 Returns a copy of the input graph G with vertex labels changed to those in the list L.
+-1 graph_vertices
+-2 isomorphic_copy
+-3 permute_vertices
+graph_vertices(relabel_vertices(graph([a,b,c]),["first","second","third"]))
+
+# is_tree
+0 G
+2 Returns true iff the input graph G is a tree.
+-1 is_forest
+-2 random_tree
+-3 tree_height
+is_tree(random_tree(15))
+is_tree(path_graph(4))
+is_tree(cycle_graph(5))
+
+# is_forest
+0 G
+2 Returns true iff the input graph G is a forest (disjoint union of trees).
+-1 is_tree
+is_forest(graph(trail(1,2,3,4),trail(5,2,6,7),trail(8,9,10)))
+
+# is_tournament
+0 G
+2 Returns true iff the input graph G is a tournament.
+-1 has_edge
+-2 random_tournament
+is_tournament(digraph(%{[1,2],[2,3],[3,1]%}))
+
+# tree_height
+0 T,r
+2 Returns the height of the tree T with r as the root node.
+-1 is_tree
+-2 random_tree
+tree_height(graph(%{[1,2],[2,3],[2,4],[4,5]%}),1)
+
+# is_triangle_free
+0 G
+2 Returns true iff the undirected graph G contains no cliques of order three.
+-1 is_clique
+-2 maximal_clique
+is_triangle_free(graph("soccerball"))
+
+# is_connected
+0 G
+2 Returns true iff the input graph G is connected.
+-1 connected_components
+-2 is_biconnected
+-3 is_triconnected
+is_connected(path_graph(5))
+is_connected(cycle_graph(5))
+is_connected(graph_complement(complete_graph(3,4)))
+
+# is_biconnected
+0 G
+2 Returns true iff the input graph G is biconnected.
+-1 biconnected_components
+-2 is_connected
+-3 is_triconnected
+is_biconnected(path_graph(5))
+is_biconnected(cycle_graph(5))
+is_biconnected(graph("petersen"))
+
+# is_triconnected
+0 G
+2 Returns true iff the input graph G is triconnected.
+-1 is_connected
+-2 is_biconnected
+is_triconnected(graph("soccerball"))
+is_triconnected(graph("petersen"))
+is_triconnected(cycle_graph(5))
+
+# is_weighted
+0 G
+2 Returns true iff the input graph G is weighted.
+-1 get_edge_weight
+-2 make_weighted
+-3 set_edge_weight
+-4 weight_matrix
+is_weighted(graph(%{[a,b],[b,c]%})
+is_weighted(graph(%{[[a,b],2],[[b,c],3]%})
+
+# is_planar
+0 G
+2 Returns true iff the input graph G is planar.
+-1 draw_graph
+-2 random_planar
+is_planar(complete_graph(4))
+is_planar(complete_graph(5))
+
+# complete_binary_tree
+0 n
+2 Returns the complete binary tree with depth equal to n.
+-1 complete_kary_tree
+-2 is_tree
+-3 random_tree
+draw_graph(complete_binary_tree(3))
+
+# complete_kary_tree
+0 n
+2 Returns the complete k-ary tree with depth equal to n.
+-1 complete_binary_tree
+-2 is_tree
+-3 random_tree
+draw_graph(complete_kary_tree(3,3))
+
+# prism_graph
+0 n
+2 Returns the generalized Petersen graph GP(n,1).
+-1 antiprism_graph
+-2 web_graph
+draw_graph(prism_graph(5))
+
+# antiprism_graph
+0 n
+2 Returns the antiprism graph of order n.
+-1 prism_graph
+draw_graph(antiprism_graph(5))
+
+# star_graph
+0 n
+2 Returns the complete bipartite graph complete_graph(1,n).
+-1 complete_graph
+-2 wheel_graph
+draw_graph(star_graph(5),circle=[1,2,3,4,5])
+
+# wheel_graph
+0 n
+2 Returns the wheel graph with n+1 vertices.
+-1 star_graph
+-2 web_graph
+draw_graph(wheel_graph(5))
+
+# grid_graph
+0 m,n
+2 Returns the grid graph on m*n vertices, where m,n>=2.
+-1 torus_grid_graph
+draw_graph(grid_graph(5,8),spring)
+
+# torus_grid_graph
+0 m,n
+2 Returns the torus grid graph on m*n vertices, where m,n>=3.
+-1 grid_graph
+draw_graph(torus_grid_graph(6,12),plot3d,labels=false)
+
+# web_graph
+0 a,b
+2 Returns the web graph on a*b vertices, where a>=3 and b>=2.
+-1 prism_graph
+-2 wheel_graph
+draw_graph(web_graph(5,3))
+
+# cartesian_product
+0 G1,G2,...
+2 Returns the Cartesian product of the input graphs G1, G2, ... with vertices labelled as "u:v:..." where u, v, ... are vertices from G1, G2, ..., respectively.
+-1 tensor_product
+draw_graph(cartesian_product(graph(trail(1,2,3,4,5,2)),star_graph(3)))
+
+# tensor_product
+0 G1,G2,...
+2 Returns the tensor product of the input graphs G1, G2, ... with vertices labelled as "u:v:..." where u, v, ... are vertices from G1, G2, ..., respectively.
+-1 cartesian_product
+draw_graph(tensor_product(graph(trail(1,2,3,4,5,2)),star_graph(3)),spring)
+
+# path_graph
+0 n or V
+2 Returns a path graph with n vertices, which can also be specified as list of their labels.
+-1 cycle_graph
+-2 graph
+-3 trail
+edges(path_graph(5))
+
+# is_eulerian
+0 G,[T]
+2 Return true iff the input graph G is eulerian [and write the corresponding eulerian trail to T].
+-1 path_graph
+-2 trail
+is_eulerian(complete_graph(4))
+is_eulerian(complete_graph(5))
+is_eulerian(graph(trail(1,2,3,1,4,3,5,4)),T)
+
+# kneser_graph
+0 n,k
+2 Returns Kneser graph K(n,k) with comb(n,k) vertices. The largest acceptable value of n is 20.
+-1 odd_graph
+edges(kneser_graph(5,2))
+
+# odd_graph
+0 n
+2 Returns the odd graph of order n as Kneser graph K(2n-1,n-1). The largest acceptable value of n is 8.
+-1 kneser_graph
+draw_graph(odd_graph(3))
+
+# highlight_vertex
+0 G,V,[C]
+2 Change the color of vertex or colors of vertices from list V in the input graph G to C (or green, if C is not specified) and return the modified copy of G.
+-1 highlight_edges
+-2 highlight_subgraph
+-3 highlight_trail
+draw_graph(highlight_vertex(cycle_graph(3),1))
+
+# highlight_edges
+0 G,E,[C]
+2 Change color of edge E or colors of edges in list E in the input graph V to C (or red, if C is not specified) and return the modified copy of G.
+-1 highlight_vertex
+-2 highlight_subgraph
+-3 highlight_trail
+draw_graph(highlight_edges(cycle_graph(3),[1,2]))
+
+# highlight_trail
+0 G,T,[C]
+2 Change colors of edges in G which lie along the trail T to C (or red, if C is not specified) and return the modified copy of G.
+-1 highlight_edges
+-2 highlight_subgraph
+-3 highlight_vertex
+draw_graph(highlight_trail(cycle_graph(5),trail(1,2,3),green)
+
+# highlight_subgraph
+0 G,S,[C1,C2]
+2 Change colors of edges and vertices from S (which is a subgraph of the input graph G or a list of subgraphs of G) to C1 and C2, respectively (by default, C1=red and C2=green) and return the modified copy of G.
+-1 highlight_edges
+-2 highlight_vertex
+-3 highlight_trail
+draw_graph(highlight_subgraph(cycle_graph(5),path_graph(3)))
+
+# disjoint_union
+0 G1,G2,...
+2 Returns the disjoint union of the input graphs. Vertices in the resulting graph are labelled with "k:v", where k is index of the corresponding k-th graph Gk and v is vertex in Gk.
+-1 graph_join
+-2 graph_union
+is_connected(disjoint_union(cycle_graph(5),path_graph(4)))
+
+# graph_union
+0 G1,G2,...
+2 Returns the union of the input graphs. Set of vertices of the resulting graph is the union of the sets of vertices of the input graphs and the set of edges of the resulting graph is the union of sets of edges of the input graphs. If graphs G1 and G2 are both weighted, the weight of any common edge is the sum of the weights of that edge in G1 and G2.
+-1 disjoint_union
+-2 graph_join
+edges(graph_union(cycle_graph(4),path_graph(5)))
+
+# graph_join
+0 G,H
+2 Returns the graph obtained by connecting every vertex from G with every vertex from H. The vertex labels in the resulting graph are strings of form "1:u" and "2:v" where u and v are vertices from G and H, respectively.
+-1 disjoint_union
+-2 graph_union
+edges(graph_join(cycle_graph(3),graph(2)))
+
+# graph_equal
+0 G1,G2
+2 Returns true iff the input graphs G1 and G2 are equal, that is when the sets of vertices and edges of G1 and G2, as well as the orderings of vertices in both graphs, mutually coincide. If the graphs are weighted (they must both be (un)weighted and (un)directed), weights given to the same edge in two graphs must be equal.
+-1 edges
+-2 graph_vertices
+
+# reverse_graph
+0 G
+2 Returns the copy of G with the directions of all edges reversed.
+-1 digraph
+reverse_graph(digraph(%{[1,2],[1,3],[2,3]%}))
+
+# interval_graph
+0 a..b,c..d,... || [a..b,c..d,...]
+2 Returns the interval graph with respect to intervals a..b, c..d, ... on the real line. It has one vertex per interval and two vertices are connected iff the corresponding intervals intersect.
+-1 graph
+-2 kneser_graph
+draw_graph(interval_graph([0..8,1..pi,exp(1)..20,7..18,11..14,17..24,23..25]))
+
+# subdivide_edges
+0 G,E,[r]
+2 Inserts r (by default 1) new vertices to each edge/arc in the input graph G contained in the list E (which may be a single edge/arc) and returns the modified copy of G. New vertices are labelled with smallest available integers.
+-1 edges
+subdivide_edges(complete_graph(2,3),[[1,3],[1,4]],2)
+
+# graph_power
+0 G,k
+2 Returns the k-th power of the input graph G, where two vertices are connected iff there exists a path of length at most k in the original graph.
+-1 adjacency matrix
+-2 graph_diameter
+-3 shortest_path
+edges(graph_power(path_graph(5),3))
+
+# vertex_distance
+0 G,s,t or T
+2 Returns the number of edges in the shortest path from vertex s to vertex t in the input graph G. If such path does not exist, returns +infinity. For vector T of vertices from G returns the list of distances from s to each vertex t in T.
+-1 allpairs_distance
+-2 graph_diameter
+-3 dijkstra
+-4 shortest_path
+vertex_distance(graph("petersen"),1,4)
+vertex_distance(graph("petersen"),1,[2,4])
+
+# shortest_path
+0 G,s,t or T
+2 Returns the shortest path from vertex s to vertex t in the input graph G. If such path does not exist, returns an empty list. If vector T of vertices from G is given, the list of shortest paths from s to each t int T is returned.
+-1 dijkstra
+-2 vertex_distance
+shortest_path(cycle_graph(6),1,5)
+
+# allpairs_distance
+0 G
+2 Returns a square matrix D of order n(=number of vertices in the input graph G) such that D(i,j) is the distance between i-th and j-th vertex of the (weighted) graph G.
+-1 dijkstra
+-2 graph_diameter
+-3 vertex_distance
+allpairs_distance(graph(%{[1,2],[1,3],[1,4],[1,5],[2,3],[3,4],[4,5],[5,2]%}))
+
+# graph_diameter
+0 G
+2 Returns the maximum distance between a pair of vertices in G or +infinity if G is disconnected.
+-1 allpairs_distance
+-2 dijkstra
+-3 shortest_path
+-4 vertex_distance
+graph_diameter(graph("petersen"))
+
+# dijkstra
+0 G,v,[w or W]
+2 Returns the cheapest weighted path from vertex v to w (or to vertices from W) in the undirected graph G. Output is in form [[v1,v2,...,vk],d] (or list of these) where v1,v2,...,vk are vertices along each path and d is the weight of the path.
+-1 allpairs_distance
+-2 shortest_path
+dijkstra(graph(%{[[1,2],1],[[2,3],3],[[3,4],7],[[4,5],3],[[5,6],3],[[1,6],3]%}),1,4)
+
+# topologic_sort topological_sort
+0 G
+2 Returns the list of vertices sorted according to the topological ordering in the directed acyclic graph G.
+-1 digraph
+-2 is_acyclic
+topologic_sort(digraph(%{[c,a],[c,b],[c,d],[a,d],[b,d],[a,b]%}))
+
+# is_acyclic
+0 G
+2 Returns true iff the directed graph G has no topological ordering.
+-1 topologic_sort
+-2 topological_sort
+is_acyclic(digraph(%{[c,a],[c,b],[c,d],[a,d],[b,d],[a,b]%}))
+
+# is_clique
+0 G
+2 Returns true iff the undirected graph G is a clique (a complete graph).
+-1 clique_number
+-2 induced_subgraph
+-3 maximum_clique
+is_clique(complete_graph(3))
+
+# maximum_clique
+0 G
+2 Returns maximum clique of the undirected graph G as a list of vertices.
+-1 clique_number
+-2 is_clique
+-3 maximum_independent_set
+maximum_clique(graph_complement(complete_graph(3,4)))
+
+# clique_number
+0 G
+2 Returns the clique number of the input graph G, which is equal to the size of maximum clique.
+-1 maximum_clique
+clique_number(graph_complement(complete_graph(3,4)))
+
+# clique_cover
+0 G,[k]
+2 Returns a clique vertex cover of the input graph G [containing at most k cliques].
+-1 clique_cover_number
+-2 maximal_cliques
+clique_cover(graph("petersen"))
+clique_cover(cycle_graph(5))
+clique_cover(graph_complement(complete_graph(3,4)))
+
+# clique_cover_number
+0 G
+2 Returns the clique cover number of the input graph G.
+-1 clique_cover
+-3 maximal_cliques
+clique_cover_number(graph("petersen"))
+clique_cover_number(cycle_graph(5))
+clique_cover_number(graph_complement(complete_graph(3,4)))
+
+# chromatic_number
+0 G
+2 Returns the chromatic number of the input graph G.
+chromatic_number(graph("petersen"))
+
+# maximum_independent_set
+0 G
+2 Returns the maximum independent vertex set of the input graph G.
+-1 clique_number
+-2 graph_complement
+-3 independence_number
+-4 maximum_clique
+maximum_independent_set(complete_graph(3,4))
+
+# independence_number
+0 G
+2 Returns the independence number of the input graph G.
+-1 clique_number
+-2 graph_complement
+-3 maximum_clique
+-4 maximum_independent_set
+independence_number(complete_graph(3,4))
+
+# strongly_connected_components
+0 G
+2 Returns the list of strongly connected components of the directed graph G.
+-1 connected_components
+-2 is_connected
+-3 is_strongly_connected
+strongly_connected_components(digraph([1,2,3],%{[1,2],[1,3],[2,3],[3,2]%}))
+
+# is_strongly_connected
+0 G
+2 Returns true iff the directed graph G is strongly connected.
+-1 connected_components
+-2 is_connected
+-3 strongly_connected_components
+is_strongly_connected(digraph([1,2,3],%{[1,2],[1,3],[2,3],[3,2]%}))
+
+# degree_sequence
+0 G
+2 Returns the list of degrees of vertices of the input graph G (arc directions are ignored).
+-1 is_graphic_sequence
+-2 is_regular
+-2 sequence_graph
+-3 vertex_degree
+degree_sequence(graph(trail(1,2,3,4,2)))
+
+# is_graphic_sequence
+0 L
+2 Returns true iff there exists a graph with degree sequence equal to the list L.
+-1 degree_sequence
+-2 sequence_graph
+is_graphic_sequence([3,2,4,2,3,4,5,7])
+
+# sequence_graph
+0 L
+2 Returns an undirected graph with the degree sequence equal to the list L.
+-1 degree_sequence
+-2 is_graphic_sequence
+degree_sequence(sequence_graph([3,2,4,2,3,4,5,7]))
+
+# girth
+0 G
+2 Returns the length of the shortest cycle in the undirected and unweighted graph G.
+-1 odd_girth
+girth(graph("petersen"))
+girth(hypercube_graph(3))
+
+# odd_girth
+0 G
+2 Returns the length of the shortest odd cycle in the undirected and unweighted graph G.
+-1 girth
+odd_girth(graph("petersen"))
+odd_girth(hypercube_graph(3))
+
+# is_arborescence
+0 G
+2 Returns true iff the directed and unweighted graph G is an arborescence.
+-1 is_acyclic
+-2 is_forest
+-3 is_tree
+is_arborescence(digraph(%{[1,2],[1,3]%}))
+is_arborescence(digraph(%{[1,2],[2,3],[3,1]%}))
+
+# foldl
+0 op,id,r1,r2,...
+2 Returns the composition of the binary operator or function op, with an identity or initial value id onto its arguments r1, r2, ..., associating from the left.
+-1 apply
+-2 foldr
+-3 map
+foldl(F,init,a,b,c)
+
+# foldr
+0 op,id,r1,r2,...
+2 Returns the composition of the binary operator or function op, with an identity or initial value id onto its arguments r1, r2, ..., associating from the right.
+-1 apply
+-2 foldl
+-3 map
+foldr(F,init,a,b,c)
+
+# graph_spectrum
+0 G
+2 Returns the graph spectrum of G as a list of lists with two elements, each containing an eigenvalue and its multiplicity.
+-1 graph_charpoly
+-2 seidel_spectrum
+-3 is_integer_graph
+graph_spectrum(cycle_graph(5))
+
+# seidel_spectrum
+0 G
+2 Returns the Seidel spectrum of graph G as a list of lists with two elements, each containing an eigenvalue and its multiplicity.
+-1 graph_spectrum
+seidel_spectrum(graph("clebsch"))
+
+# graph_charpoly
+0 G,[x]
+2 Returns the value p(x) of the characteristic polynomial p of graph G. If x is omitted, a list of coefficients of p is returned.
+-1 graph_spectrum
+-2 charpoly
+graph_charpoly(graph(%{[1,2],[2,3]%}))
+graph_charpoly(graph("shrikhande"))
+
+# is_integer_graph
+0 G
+2 Returns true iff the spectrum of graph G consists only of integers.
+-1 graph_spectrum
+is_integer_graph(graph("levi"))
+
+# spanning_tree
+0 G,[r]
+2 Returns a spanning tree of the undirected graph G [with the vertex r as the root node].
+-1 number_of_spanning_trees
+-2 minimal_spanning_tree
+spanning_tree(graph("petersen"))
+spanning_tree(graph("petersen"),5)
+
+# number_of_spanning_trees
+0 G
+2 Returns the number of spanning trees in the undirected graph G.
+-1 spanning_tree
+number_of_spanning_trees(complete_graph(4))
+number_of_spanning_trees(graph(trail(1,2,3,4,1,3)))
+
+# minimal_spanning_tree
+0 G
+2 Returns the minimal spanning tree of the undirected graph G.
+-1 spanning_tree
+minimal_spanning_tree(graph([[0,1,0,4,0,0],[1,0,1,0,4,0],[0,1,0,3,0,1],[4,0,3,0,1,0],[0,4,0,1,0,4],[0,0,1,0,4,0]]))
+
+# graph_rank
+0 G,[E]
+2 Returns the graph rank of G. If optional set E of edges is given, rank of the spanning subgraph of G with edge set E is returned.
+-1 connected_components
+-2 number_of_vertices
+graph_rank(graph(%{[1,2],[3,4],[4,5]%}))
+graph_rank(graph(%{[1,2],[3,4],[4,5]%}),[[1,2],[3,4])
+
+# lowest_common_ancestor
+0 T,r,(u,v) || [[u1,v1],[u2,v2],...]
+2 Returns the lowest common ancestor of nodes u and v in the tree T with root r, or the list of lowest common ancestors of all pairs [uk,vk].
+-1 is_tree
+-2 tree_height
+T:=random_tree(30); lowest_common_ancestor(T,15,10,20)
+T:=random_tree(30); lowest_common_ancestor(T,15,[[10,20],[11,19]])
+
+# connected
+0 Opt
+2 Option for the random_regular_graph command.
+-1 directed
+-2 weighted
+-3 random_regular_graph
+
+# spring
+0 Opt
+2 Option for the draw_graph command.
+-1 planar
+-2 tree
+-3 draw_graph
+
+# tree
+0 Opt
+2 Option for the draw_graph command.
+-1 planar
+-2 spring
+-3 draw_graph
+
+# planar
+0 Opt
+2 Option for the draw_graph command.
+-1 spring
+-2 tree
+-3 draw_graph
+
+# directed
+0 Opt
+2 Option for graph and digraph commands.
+-1 weighted
+-2 graph
+-3 digraph
+
+# weighted
+0 Opt
+2 Option for graph and digraph commands.
+-1 directed
+-2 graph
+-3 digraph
+
+# weights
+0 Opt
+2 Option for the edges command.
+-1 edges
+
+# bipartite
+0 Opt
+2 Option for the draw_graph command
+-1 draw_graph
+
+# st_ordering
+0 G,s,t
+2 Returns ST numbering for the biconnected graph G with source s and sink (target) t.
+-1 is_biconnected
+st_ordering(graph("petersen"),1,2)
+
+# greedy_color
+0 G,[p]
+2 Returns the list of vertex colors (positive integers) obtained by coloring vertices one at a time [in the order given by permutation p], assigning to it the smallest available color.
+-1 is_vertex_colorable
+-2 chromatic_number
+greedy_color(graph("petersen"))
+
+# is_bipartite
+0 G,[P]
+2 Returns true iff the graph G is bipartite [and assign to P the list of partitions represented as lists of vertices].
+-1 random_bipartite_graph
+-2 draw_graph
+is_bipartite(graph("desargues"))
+
+# plane_dual
+0 G or F
+2 Returns the plane dual of a biconnected planar graph G or constructed from the list of faces F.
+-1 is_planar
+plane_dual(hypercube_graph(3))
+
+# is_vertex_colorable
+0 G,k,[col]
+2 Returns true iff the vertices of graph G can be colored by using at most k colors. If true is returned and an identifier col is given, the colors of the vertices are stored in it.
+-1 greedy_color
+-2 chromatic_number
+is_vertex_colorable(graph("petersen"),2)
+is_vertex_colorable(graph("petersen"),3,cols)
+
+# set_vertex_positions
+0 G,vp
+2 Sets the coordinates, given in the list vp, to the vertices of graph G and returns the modified copy of G.
+-1 draw_graph
+G:=graph([1,2,3,4,5,6],%{[1,2],[1,4],[4,5],[2,5],[2,3],[3,6],[5,6]%}); G:=set_vertex_positions(G,[[0,0],[0.5,0],[1,0],[0,0.5],[0.5,0.5],[1,0.5]])
+
+# clique_stats
+0 G,[k or m..n]
+2 Returns the list of numbers of maximal cliques of size s in the graph G for each s. If parameter k is given, the number of k-cliques is returned. If an interval m..n is given, only cliques with size between m and n (inclusive) are counted (m also may be +infinity).
+-1 maximum_clique
+-2 clique_cover
+clique_stats(random_graph(50,0.5))
+clique_stats(random_graph(50,0.5),5)
+clique_stats(random_graph(50,0.5),3..5)
+
+# minimal_vertex_coloring
+0 G,[sto]
+2 Computes minimal vertex coloring for graph G and returns the colors in the order of vertices. If optional parameter "sto" is given, the colors are assigned to vertices and the modified copy of G is returned.
+-1 chromatic_number
+-2 is_vertex_colorable
+minimal_vertex_coloring(graph("petersen"))
+draw_graph(minimal_vertex_coloring(graph("petersen"),sto))
+
+# bipartite_matching
+0 G
+2 Returns the sequence containing the size of maximum matching of the undirected unweighted bipartite graph G and the list of edges of the matching.
+-1 is_bipartite
+-2 maximum_matching
+bipartite_matching(graph("desargues"))
+
+# line_graph
+0 G
+2 Returns the line graph of the undirected input graph G.
+-1 plane_dual
+line_graph(hypercube_graph(3))
+
+# transitive_closure
+0 G,[weighted[=true or false]]
+2 Returns the [weighted, by default false] transitive closure of the input graph G.
+-1 allpairs_distance
+-2 is_connected
+-3 shortest_path
+-4 vertex_distance
+transitive_closure(digraph([1,2,3,4,5,6],%{[1,2],[2,3],[2,4],[4,5],[3,5]%}),weighted)

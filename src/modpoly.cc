@@ -5130,7 +5130,7 @@ namespace giac {
     return r2e(horner(a,ba),lv,contextptr)/r2e(aad,lv,contextptr);
   }
   static const char _horner_s []="horner";
-  static define_unary_function_eval (__horner,&giac::_horner,_horner_s);
+  static define_unary_function_eval (__horner,&_horner,_horner_s);
   define_unary_function_ptr5( at_horner ,alias_at_horner,&__horner,0,true);
 
   gen symb_horner(const modpoly & p,const gen & x,int d){
@@ -5972,11 +5972,15 @@ namespace giac {
       vector<int> W=vecteur_2_vector_int(w);
       vector<int> RES(F.size());
       int m=env->modulo.val;
+#ifndef FXCG
       if (debug_infolevel>2)
 	CERR << CLOCK()*1e-6 << " begin fft int " << W.size() << " memory " << memory_usage()*1e-6 << "M" << endl;
+#endif
       fft(F,W,RES,m);
+#ifndef FXCG
       if (debug_infolevel>2)
 	CERR << CLOCK()*1e-6 << " end fft int " << W.size() << " memory " << memory_usage()*1e-6 << "M" << endl;
+#endif
       unsigned n=unsigned(RES.size());
       res.clear();
       res.reserve(n);
@@ -6138,8 +6142,10 @@ namespace giac {
   }  
 
   void fft2( complex<double> * A, int n, double theta){
+#ifndef FXCG
     if (debug_infolevel>2)
       CERR << CLOCK()*1e-6 << " begin fft2 C " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+#endif
     vector< complex<double> > W,T(n);
     W.reserve(n); 
     double thetak(theta);
@@ -6153,8 +6159,10 @@ namespace giac {
       }
     }
     fft2(A,n,&W.front(),&T.front());
+#ifndef FXCG
     if (debug_infolevel>2)
       CERR << CLOCK()*1e-6 << " end fft C " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+#endif
   }
 
   void fft(std::complex<double> * f,int n,const std::complex<double> * w,int m,complex< double> * t){
@@ -7206,8 +7214,10 @@ namespace giac {
   }
 
   void fft2(int * A, int n, int w, int p){
+#ifndef FXCG
     if (debug_infolevel>2)
       CERR << CLOCK()*1e-6 << " begin fft2 int " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+#endif
     vector<int> W,T(n);
     fft2w(W,n,w,p);
     int * Aend=A+n;
@@ -7215,9 +7225,11 @@ namespace giac {
       if (*a<0) *a += p;
     fft2(A,n,&W.front(),p,&T.front());
     for (int * a=A;a<Aend;++a)
-      if (*a<0) *a += p;    
+      if (*a<0) *a += p;
+#ifndef FXCG
     if (debug_infolevel>2)
       CERR << CLOCK()*1e-6 << " end fft int " << n << " memory " << memory_usage()*1e-6 << "M" << endl;
+#endif
   }
 
   void makepositive(int * p,int n,int modulo){
@@ -8750,7 +8762,7 @@ namespace giac {
 #ifdef HAVE_LIBPTHREAD
     int locked=pthread_mutex_trylock(&ntl_mutex);
 #endif // HAVE_LIBPTHREAD
-    if (locked)
+    if (locked || ntl_on(context0)==0)
       return giac_gcd_modular_algo1(p,q,d);
     bool res=true;
     try {

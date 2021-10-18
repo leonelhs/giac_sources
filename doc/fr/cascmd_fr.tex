@@ -2141,7 +2141,7 @@ est \'equivalent \`a :
 {\bf Remarque : Diff\'erence entre {\tt ifte} et les autres {\tt when....}}\\
 On tape :
 {\tt f(x):=ifte(x>0,1,0);}\\
-{\tt g(x):=when(x>0,x,-x)} ou {\tt g(x):=quand(x>0,1,0)}\\
+{\tt g(x):=when(x>0,1,0)} ou {\tt g(x):=quand(x>0,1,0)}\\
 puis on tape {\tt f(x)} \\
 on obtient :\\
 Ifte: Unable to check test Error: Bad Argument Value\\
@@ -2415,7 +2415,7 @@ On tape :
 On obtient :
 \begin{center}{\tt c}\end{center}
 puisque {\tt b} contient {\tt c}.
-\subsection{Faire une hypoth\`ese sur une variable : {\tt assume supposons}}\index{assume|textbf}\label{sec:assume}\index{element}\index{integer|textbf}\index{supposons|textbf}\index{additionally@{\sl additionally}}
+\subsection{Faire une hypoth\`ese sur une variable : {\tt assume supposons}}\index{assume|textbf}\label{sec:assume}\index{element}\index{about}\index{integer|textbf}\index{real}\index{supposons|textbf}\index{additionally@{\sl additionally}}
 \noindent{\tt assume} ou {\tt supposons} permet de faire des hypoth\`eses sur 
 une variable.\\
 {\tt assume} ou {\tt supposons} a comme argument un nom de variable suivi d'une
@@ -2427,6 +2427,8 @@ ou {\tt or} selon ce que l'on veut faire ! Toutefois, il faut utiliser
 le type de la variable et une plage de valeurs pour cette variable.\\
 {\tt assume} renvoie le nom de la variable sur laquelle on a fait les 
 hypoth\`eses ou le type de cette variable.\\
+La commande {\tt about}, qui a comme argument un nom de variable, permet de 
+conna\^{i}tre les hypoth\`eses faites sur cette  variable.\\
 {\bf Attention} Si on fait une autre hypoth\`ese avec {\tt assume}, l'ancienne
 hypoth\`ese est effac\'ee : si vous voulez rajoutez une nouvelle hypoth\`ese il
 faut utiliser la commande {\tt additionally} ou mettre {\tt additionally} 
@@ -2468,19 +2470,19 @@ On tape pour supposer que la variable formelle {\tt a } est positive :
 On obtient :
 \begin{center}{\tt a}\end{center}
 On tape :
-\begin{center}{\tt assume(a)}\end{center}
+\begin{center}{\tt about(a)}\end{center}
 On obtient :
-\begin{center}{\tt assume[DOM\_FLOAT,[line[0,+(infinity)]],[0]]}\end{center}
-cela signifie que {\tt a} est une variable r\'eelle appartenant \`a 
-$[0;+\infty$ et que $0$ est exclu (on a le domaine, l'intervalle et les valeurs
-exclues).\\
-On tape pour supposer que la variable formelle {\tt a } est dans
+\begin{center}{\tt assume[[],[[0,+infinity]],[0]]}\end{center}
+cela signifie que {\tt a} est une variable r\'eelle appartenant \`a l'intervalle
+$[0;+\infty$ et que $0$ en est exclu (on a le domaine, l'intervalle et les 
+valeurs exclues).\\
+On tape pour supposer que la variable formelle {\tt a} est dans
 $[2;4[\cup ]6;\infty[$ :
 \begin{center}{\tt assume((a>=2 and a<4) or a>6)}\end{center}
 On obtient :
 \begin{center}{\tt a}\end{center}
 On tape :
-\begin{center}{\tt assume(a)}\end{center}
+\begin{center}{\tt about(a)}\end{center}
 On obtient :
 \begin{center}{\tt assume[DOM\_FLOAT,[[2,4],[6,+(infinity)]],[4,6]]}\end{center}
 cela signifie que {\tt a} est une variable r\'eelle  appartenant \`a
@@ -2495,21 +2497,33 @@ On tape pour dire que {\tt b} est un entier :
 On obtient :
 \begin{center}{\tt DOM\_INT}\end{center}
 On tape :
-\begin{center}{\tt assume(b)}\end{center}
+\begin{center}{\tt about(b)}\end{center}
 On obtient :
 \begin{center}{\tt [DOM\_INT]}\end{center}
-On tape pour dire que {\tt b} est un entier sup\'erieur strictement \`a 5 :
-\begin{center}{\tt assume(b,integer);}\end{center}
-\begin{center}{\tt assume(b>5,additionally)}\end{center}
+On tape pour dire que {\tt b} est un entier de l'intervalle $]-5,10[$ :
+\begin{center}{\tt assume(b,integer);additionally(b>-5 and b<10)}\end{center}
+ou on tape :\\
+\begin{center}{\tt assume(b,integer);assume(b>-5 and b<10,additionally)}\end{center}
 On obtient :
-\begin{center}{\tt DOM\_INT}\end{center}
-puis
-\begin{center}{\tt b}\end{center}
-On tape :
-\begin{center}{\tt assume(b)}\end{center}
+\begin{center}{\tt (integer,b)}\end{center}
+puis on tape :
+\begin{center}{\tt about(b)}\end{center}
 On obtient :
-\begin{center}{\tt [DOM\_INT]}\end{center}
-
+\begin{center}{\tt assume[integer,[[-5,10]],[-5,10]]}\end{center}
+ce qui signifie que {\tt b} est un entier de l'intervalle [-5,10] et que les 
+bornes -5,et 10 en sont exclues.\\
+On tape pour dire que {\tt b} est un entier de l'intervalle $]-5,10]$ :
+\begin{center}{\tt assume(b,integer);additionally(b>-5 and b<=10)}\end{center}
+ou on tape :\\
+\begin{center}{\tt assume(b,integer);assume(b>-5 and b<=10,additionally)}\end{center}
+On obtient :
+\begin{center}{\tt (integer,b)}\end{center}
+puis on tape :
+\begin{center}{\tt about(b)}\end{center}
+On obtient :
+\begin{center}{\tt assume[integer,[[-5,10]],[-5]]}\end{center}
+ce qui signifie que {\tt b} est un entier de l'intervalle [-5,10] et que la 
+borne -5 en est exclue.\\
 {\bf Remarque}\\
 Lorsque {\tt assume} a comme argument une seule \'egalit\'e et que la commande 
 est tap\'ee dans une ligne d'entr\'ee d'un \'ecran de g\'eom\'etrie, cela met
@@ -2561,6 +2575,7 @@ On tape
 \begin{center}{\tt a;b}\end{center}
 On obtient :
 \begin{center}{\tt (a,1)}\end{center}
+
 \subsection{Faire une hypoth\`ese suppl'ementaire sur une variable : {\tt additionally}}\index{additionally|textbf}\index{additionally@{\sl additionally}}
 \noindent{\tt additionally} permet de faire des hypoth\`eses suppl\'ementaires
 sur une variable. En effet, si on fait une autre hypoth\`ese avec {\tt assume}, 
@@ -2576,19 +2591,15 @@ On est oblig\'e d'utiliser
 {\tt additionally} pour sp\'ecifier le type de la variable et une plage de 
 valeurs pour cette variable.\\
 On tape pour dire que {\tt b} est un entier sup\'erieur strictement \`a 5 :
-\begin{center}{\tt assume(b,integer);}\end{center}
-\begin{center}{\tt additionally(b>5)}\end{center}
+\begin{center}{\tt assume(b,integer);additionally(b>5);}\end{center}
 ou bien 
-\begin{center}{\tt assume(b,integer);}\end{center}
-\begin{center}{\tt  assume(b>5,additionally)}\end{center}
+\begin{center}{\tt assume(b,integer);assume(b>5,additionally);}\end{center}
 On obtient :
-\begin{center}{\tt DOM\_INT,b}\end{center}
-puis
-\begin{center}{\tt b}\end{center}
-On tape :
-\begin{center}{\tt assume(b)}\end{center}
+\begin{center}{\tt integer,b}\end{center}
+puis, on tape :
+\begin{center}{\tt about(b)}\end{center}
 On obtient :
-\begin{center}{\tt [DOM\_INT]}\end{center}
+\begin{center}{\tt assume[integer,[[5,+infinity]],[5]]}\end{center}
 
 \subsection{Connaitre les hypoth\`eses faites sur une variable : {\tt about}}\index{about|textbf}\label{sec:about}
 \noindent{\tt about} a comme argument un nom de variable.\\
@@ -2602,7 +2613,7 @@ puis,
 On obtient :
 \begin{center}{\tt assume[DOM\_FLOAT,[0,+(infinity)],[0]]}\end{center}
 {\tt assume[ ]} signifie que l'on a une liste d'un type particulier.\\
-Le dernier {\tt 0} veut dire que {\tt 0} est exclus de l'intervalle
+Le dernier {\tt 0} veut dire que {\tt 0} est exclu de l'intervalle
 {\tt [0,+(infinity)]}.\\
 On tape :
 \begin{center}{\tt assume(b,real);additionally(b>=0 and b<2)}\end{center}
@@ -2619,18 +2630,26 @@ On tape :
 On obtient :
 \begin{center}{\tt x}\end{center}
 ce qui veut dire que {\tt x} est une variable formelle.
-\subsection{Effacer le contenu d'une variable : {\tt purge DelVar}}\index{purge}\index{DelVar}\label{sec:purge}
+
+\subsection{Effacer le contenu d'une variable : {\tt purge DelVar del}}\index{purge}\index{DelVar}\index{del}\label{sec:purge}
 \noindent{\tt purge} ou {\tt DelVar} permet d'effacer le  contenu d'une 
 variable ou d'annuler une hypoth\`ese faite sur cette variable.\\
 On tape :
 \begin{center}{\tt purge(a)}\end{center}
+ou on tape (compatibilit\'e TI)
+\begin{center}{\tt DelVar a}\end{center}
+ou on tape (compatibilit\'e Python)
+\begin{center}{\tt del a}\end{center}
 si {\tt a} n'est pas affect\'e on obtient en mode direct {\tt "a not assigned"}
 et sinon l'ancienne valeur est renvoy\'ee (ou les hypoth\`eses faites sur cette
 variable sont renvoy\'ees) et la variable {\tt a} redevient formelle et sans
 hypoth\`ese.\\
-On peut aussi taper :
+Pour effacer le  contenu des variables {\tt a} et {\tt b}, on peut aussi taper :
 \begin{center}{\tt purge(a,b)} \end{center}
-pour effacer le  contenu des variables {\tt a} et {\tt b}.
+ou (compatibilit\'e TI)
+\begin{center}{\tt DelVar a,b}\end{center}
+ou (compatibilit\'e Python)
+\begin{center}{\tt del a,b}\end{center}
 
 \subsection{Effacer le contenu de toutes les variables : {\tt restart}}\index{restart}
 \noindent{\tt restart} permet d'effacer le contenu de toutes les variables et
@@ -3605,6 +3624,14 @@ Ou on tape :
 \begin{center}{\tt plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)}\end{center}
 On obtient :
 \begin{center}{Le dessin grossier de l'arc du cercle unit\'e allant de -4 \`a 1}\end{center}
+{\bf Remarque}
+On peut utiliser {\tt plotparam} pour dessiner des segments de cercle.\\
+On tape :
+\begin{center}{\tt plotparam(cos(x)+i*sin(x),x=0..pi/2,affichage=1+rempli)}\end{center}On obtient :
+\begin{center}{\tt une surface rouge delimit\'ee par la courbe form\'ee de :\\
+cercle(0,1,0,pi/2);segment(0,i); }\end{center}
+
+
 
 \subsection{Surface 3-d en param\'etrique : {\tt plotparam paramplot DrawParm courbe\_parametrique}}\index{plotparam}\index{paramplot}\index{DrawParm}\index{courbe\_parametrique}
 \noindent{\tt plotparam} a deux arguments principaux et \'eventuellement
@@ -4298,7 +4325,7 @@ On tape :
 On obtient :
 \begin{center}{\tt (exp((x+1e-05)\verb|^|2)-exp((x+-1e-05)\verb|^|2))*50000}\end{center}
 On tape :
-\begin{center}{\tt subst(exp(nDeriv(x\verb|^| 2),x,0.00001),x=1)}\end{center}
+\begin{center}{\tt subst(exp(nDeriv(x\verb|^|2),x,0.00001),x=1)}\end{center}
 On obtient :
 \begin{center}{\tt 5.43656365783}\end{center}
 On a {\tt 2.0*e=5.43656365692}
@@ -4728,7 +4755,7 @@ ou on tape :
 On obtient :
 \begin{center}{\tt [-1.732050807568877294,1.732050807568877294]}\end{center}
 On tape pour avoir les racines num\'eriques de 
-$P(x)=x^10-15*x^8+90*x^6-270*x^4+405*x^2-243$ :
+$P(x)=x^{10}-15*x^8+90*x^6-270*x^4+405*x^2-243$ :
 \begin{center}{\tt proot([1,0,-15,0,90,0,-270,0,405,0,-243])}\end{center}
 ou on tape :
 \begin{center}{\tt proot(x\verb|^|10-15*x\verb|^|8+90*x\verb|^|6-270*x\verb|^|4+405*x\verb|^|2-243) }\end{center}
@@ -4745,13 +4772,14 @@ Pour avoir les factorisations num\'eriques de :
 \item  LU,
 \item  svd,
 \end{itemize}
-d'une matrice, on se repotera \`a la section \ref{sec:factormatrice}.
+d'une matrice, on se reportera \`a la section \ref{sec:factormatrice}.
 
 \chapter{Les unit\'es et les constantes physiques}\label{sec:unit}
 Les constantes physiques (sous-menu {\tt Constante}), les fonctions de 
 conversion (sous-menu {\tt Unit\_convert}), les pr\'efixes  (sous-menu 
 {\tt  Unit\_prefix}) et les unit\'es 
 class\'ees par th\`eme, se trouvent dans le menu {\tt Phys}.
+
 \section{Les unit\'es}
 \subsection{La notation des unit\'es}\index{\_|textbf}
 Les noms des unit\'es sont pr\'ec\'ed\'es du symbole {\tt \_} ("underscore").
@@ -5426,7 +5454,7 @@ Ou on tape ensuite:
 \begin{center}{\tt '+'("abcd",c,"e")}\end{center}
 On obtient :
 \begin{center}{\tt  "abcd5e"}\end{center}
-\subsection{Pour concat\'ener des nombres et des cha\^{i}nes : {\tt cat +}}\index{+}\index{cat}
+\subsection{Pour concat\'ener des nombres et des cha\^{\i}nes : {\tt cat +}}\index{+}\index{cat}
 \noindent {\tt +} ou {\tt cat} \'evalue les arguments et les concat\'ene en une cha\^{i}ne. cela permet donc de  transformer un nombre r\'eel en 
 une cha\^{i}ne de caract\`eres.\\
 On tape :
@@ -5438,23 +5466,28 @@ On obtient :
 On tape :
 \begin{center}{\tt a:=123}\end{center}
 puis,
-\begin{center}{\tt "0n a obtenu : "+a)}\end{center}
+\begin{center}{\tt "On a obtenu : "+a)}\end{center}
 ou
-\begin{center}{\tt cat("0n a obtenu : ",a)}\end{center}
+\begin{center}{\tt cat(On a obtenu : ",a)}\end{center}
 On obtient :
 \begin{center}{\tt  "On a obtenu : 123"}\end{center}
-\subsection{Pour transformer un nombre r\'eel ou entier en une cha\^{i}ne : {\tt string}}\index{string}
+\subsection{Pour transformer un nombre r\'eel ou entier en une cha\^{\i}ne : {\tt string}}\index{string}
 \noindent {\tt string} \'evalue son argument et le transforme en
 une cha\^{i}ne de caract\`eres.\\
 On tape :
 \begin{center}{\tt string(1.32*10\verb|^|20)}\end{center}
 On obtient :
-\begin{center}{\tt  "1.23e+20"}\end{center}
+\begin{center}{\tt  "1.32e+20"}\end{center}
 On tape :
 \begin{center}{\tt a:=1.32*10\verb|^|4)}\end{center}
 \begin{center}{\tt string(a+a)}\end{center}
 On obtient :
-\begin{center}{\tt  "26400"}\end{center}
+\begin{center}{\tt  "26400.0"}\end{center}
+On tape :
+\begin{center}{\tt a:=1.32*10\verb|^|40)}\end{center}
+\begin{center}{\tt string(a+a)}\end{center}
+On obtient :
+\begin{center}{\tt  "2.64e+40"}\end{center}
 
 \subsection{Pour transformer un nombre r\'eel en une cha\^{i}ne : {\tt format}}\index{format}
 \noindent {\tt format} \'evalue son argument et le transforme en
@@ -5481,8 +5514,8 @@ On obtient :
 \begin{center}{\tt  "1.4142135623731e+10"}\end{center}
 \end{itemize}
 
-\subsection{Pour transformer une cha\^ine en un nombre ou en une commande : {\tt expr}}\index{expr|textbf}\label{sec:expr1}
-Voici , selon la cha\^ine, les transformations que fait {\tt expr} :
+\subsection{Pour transformer une cha\^{\i}ne en un nombre, une fonction ou en une commande : {\tt expr}}\index{expr|textbf}\label{sec:expr1}
+Voici , selon la cha\^{\i}ne, les transformations que fait {\tt expr} :
 \begin{itemize}
 \item {\tt expr} permet de transformer une cha\^ine de chiffres ou lettres
 en un nombre entier ayant comme \'ecriture en base 8,ou 10 ou 16 cette cha\^ine
@@ -5517,8 +5550,8 @@ On obtient un nombre flottant :
 En effet {\tt char([48,50,56,56])} renvoie {\tt "0288"}.\\
 Or un nombre entier commençant par 0 est un nombre \'ecrit en octal, du coup 
 il ne doit pas contenir de chiffre sup\'erieur ou \'egal \`a 8. Ici le nombre
-a des chiffres \'egaux \`a 8, il est donc r\'einterpr\'et\'e (apr\`es d\'etection
-d'erreur de saisie en octal) comme un nombre flottant.\\
+a des chiffres \'egaux \`a 8, il est donc r\'einterpr\'et\'e (apr\`es 
+d\'etection d'erreur de saisie en octal) comme un nombre flottant.\\
 On tape :
 \begin{center}{\tt expr(char([48,50,55,55]))}\end{center}
 On obtient un nombre exact car l'\'ecriture {\tt "0277"} est valide :
@@ -5531,7 +5564,6 @@ On obtient un nombre exact car l'\'ecriture {\tt "0023"} est valide :
 \begin{center}{\tt 19}\end{center}
 En effet {\tt char([48,50,55,55])} renvoie {\tt "0023"} et {\tt 0023}
 est l'\'ecriture en base 8 de {\tt 19} (3+2*8=19).
-
 \item  {\tt expr} permet aussi de transformer une cha\^ine de chiffres 
 repr\'esentant un nombre d\'ecimal en ce nombre.\\
 On tape :
@@ -5542,6 +5574,30 @@ On tape :
 \begin{center}{\tt expr("123e-5")}\end{center}
 On obtient :
 \begin{center}{\tt 0.00123}\end{center}
+\item  {\tt expr} permet de transformer une cha\^ine de chiffres 
+repr\'esentant un nombre rationel en ce nombre.\\
+On tape :
+\begin{center}{\tt expr("123/6")}\end{center}
+On obtient :
+\begin{center}{\tt  41/2}\end{center}
+\item  {\tt expr} permet  de transformer une cha\^ine 
+repr\'esentant une expression r\'eelle en ce r\'eel.\\
+On tape :
+\begin{center}{\tt expr("sqrt(2)+pi")}\end{center}
+On obtient :
+\begin{center}{\tt  sqrt(2)+pi}\end{center}
+\item  {\tt expr} permet  de transformer une cha\^ine 
+repr\'esentant un complexe r\'eelle en ce complexe.\\
+On tape :
+\begin{center}{\tt expr("(1+2i)/(1-i)")}\end{center}
+On obtient :
+\begin{center}{\tt  (-1+3*i)/2}\end{center}
+\item  {\tt expr} permet  de transformer une cha\^ine 
+repr\'esentant la d\'efinition d'une fonction en cette fonction.\\
+On tape :
+\begin{center}{\tt f:=expr("x->x\verb|^|2+sqrt(2)");f(2)}\end{center}
+On obtient en vert //Succ\`es:
+\begin{center}{\tt  (x)->x\verb|^|2+sqrt(2),4+sqrt(2)}\end{center}
 \item  {\tt expr}  permet aussi de transformer une cha\^ine de caract\`eres 
 pouvant \^etre interpr\'et\'ee comme une commande.\\
 On tape :
@@ -5549,7 +5605,10 @@ On tape :
 On obtient :
 \begin{center}{\tt 1 et, la variable a contient 1}\end{center}
 \end{itemize}
-
+{\bf Remarque2}\\
+On peut aussi utiliser la commande {\tt convert} en utilisant l'une des options 
+{\sl integer, rational, float, real, complex, symbol, identifier} pour trandformer une cha\^{i}ne de caract\`eres en un nombre entier, rationnel, d\'ecimal,
+r\'eel, complexe ou en une expression ou un nom de variable.
 \section{\'Ecriture en base b d'un entier}\label{sec:convertbase}
 \subsection{Transformer un entier en la liste des coefficients de son \'ecriture en base b : {\tt convert convertir}}\index{convert}\index{convertir}\index{base@{\sl base}|textbf}
 {\tt convert} ou {\tt convertir} permet de faire diff\'erente conversions selon
@@ -6022,9 +6081,9 @@ pour obtenir un certificat de primalit\'e par le test
 de PARI/GP, depuis le menu {\tt Aide->Manuels->PARI-GP)}) et
 {\tt pari("isprime",n,2)} ou {\tt is\_prime(n,2)} pour utiliser le test APRCL
 ou {\tt is\_prime(n)} pour utiliser un test mixte.\\
-En interne isprime appelle  {\tt is\_prime}, et si la reponse est {\tt 0} il la 
-transforme en  {\tt false}, sinon il renvoie {\tt true}. On ne peut donc pas
-obtenir de certificat de primalit\'e avec {\tt isprime}, par 
+En interne {\tt isprime} appelle  {\tt is\_prime}, et si la r\'eponse est 
+{\tt 0} il la transforme en  {\tt false}, sinon il renvoie {\tt true}. On ne
+peut donc pas obtenir de certificat de primalit\'e avec {\tt isprime}, par 
 contre les arguments de {\tt isprime} et {\tt is\_prime} sont identiques.\\
 On tape :
 \begin{center}{\tt is\_prime(100003)}\end{center}
@@ -6852,9 +6911,9 @@ Avec la commande {\tt evalf}, on tape :
 On obtient :
 \begin{center}{\tt 1263794.75367}\end{center}
 On tape :
-\begin{center}{\tt 1.1\verb|^|{20}}\end{center}
+\begin{center}{\tt 1.1\verb|^|20}\end{center}
 On obtient :
-\begin{center}{\tt 6.72749994933}\end{center}
+\begin{center}{\tt 6.72749994932}\end{center}
 On tape :
 \begin{center}{\tt sqrt(2)\verb|^|21}\end{center}
 On obtient :
@@ -6902,10 +6961,10 @@ On obtient :
 Si vous avez une touche carr\'ee ou une touche cube sur votre clavier vous 
 pouvez l'utiliser, par exemple : ${\tt 3^2}$  vaut 9.\\
 {\bf Remarque sur les puissances fractionnaires}\\
-Par d\'efinition  $a^frac{p}{q}=\exp(frac{p}{q}*\ln(a))$ et donc $a^frac{p}{q}$
+Par d\'efinition  $a^{\frac{p}{q}}=\exp(frac{p}{q}*\ln(a))$ et donc $a^{\frac{p}{q}}$
 n'est d\'efini que pour $a>0$.\\
 Il y a donc une diff\'erence entre :\\
-$\sqrt[n]{a}$ et $a^frac{1}{n}$ lorsque $n$ est impair.\\
+$\sqrt[n]{a}$ et $a^{\frac{1}{n}}$ lorsque $n$ est impair.\\
 Si on veut, par exemple, tracer la courbe $y=\sqrt[3]{x^3-x^2}$, il faut 
 taper :\\
 {\tt plotfunc([(x\verb|^|3-x\verb|^|2)\verb|^|(1/3),-(x\verb|^|2-x\verb|^|3)\verb|^|(1/3)],x,xstep=0.01)}\\
@@ -7404,10 +7463,10 @@ cycles par une liste de listes.\\
 permutation $c$ d\'efinie par  $c(3)=2,\ c(2)=1,\ c(1)=3,\ c(0)=0$ (qui est
  repr\'esent\'e en tant que permutation par la liste $[0,3,1,2]$).
  
-\subsection{Permutation al\'eatoire : {\tt randperm}}\index{randperm}
-\noindent{\tt randperm} a comme argument un entier {\tt n} ou une liste 
-{\tt L}.\\
-{\tt randperm} renvoie une permutation al\'eatoire de {\tt [0..n-1]} ou 
+\subsection{Permutation al\'eatoire : {\tt randperm shuffle}}\index{randperm}\index{shuffle}
+\noindent{\tt randperm} ou {\tt shuffle} a comme argument un entier {\tt n} ou 
+une liste {\tt L}.\\
+{\tt randperm} ou {\tt shuffle} renvoie une permutation al\'eatoire de {\tt [0..n-1]} ou 
 une permutation al\'eatoire de {\tt L}.\\
 On tape :
 \begin{center}{\tt randperm(3)}\end{center}
@@ -9015,12 +9074,12 @@ On tape :
 \begin{center}{\tt 5 S 7}\end{center}
 Bien mettre les espace autour de {\tt S}.\\
 On obtient :
-\begin{center}{\tt 0}\end{center}  
+\begin{center}{\tt vrai}\end{center}  
 On tape :
 \begin{center}{\tt 8 S 12}\end{center}
 Bien mettre les espace autour de {\tt S}.\\
 On obtient :
-\begin{center}{\tt 1}\end{center}
+\begin{center}{\tt faux}\end{center}
 
 \section{Les fonctions et les expressions de variables symboliques}
 \subsection{Diff\'erence entre fonction et expression}\index{->}\index{:=}
@@ -9464,6 +9523,16 @@ On tape :
 \begin{center}{\tt (sin@@2)(pi/2)}\end{center}
 On obtient :
 \begin{center}{\tt sin(1)}\end{center} 
+On tape :
+\begin{center}{\tt ((function\_diff@@2)(ln)(x)}\end{center}
+On obtient :
+\begin{center}{\tt -1/x\verb|^|2}\end{center} 
+On tape :
+\begin{center}{\tt (ln@(function\_diff@@3))(sin\verb|^|3)(x)}\end{center}
+Ou on tape :
+\begin{center}{\tt ln(diff(diff(diff(sin(x)\verb|^|3))))}\end{center}
+On obtient :
+\begin{center}{\tt ln(6*cos(x)\verb|^|3-21*cos(x)*sin(x)\verb|^|2)}\end{center} 
 
 \subsection{Definir une fonction avec l'historique : {\tt as\_function\_of}}\index{as\_function\_of}
 \noindent Si on a affect\'e une valeur \`a la variable {\tt a} et si on 
@@ -9556,9 +9625,21 @@ Si on veut modifier l'expression, il suffit de modifier la cellule du tableur
 qui contient cette expression.\\
 Si on veut avoir le graph de la fonction, il suffit de recopier dans une ligne 
 de commande la commande {\tt plotparam(...)} contenu dans une cellule. 
+\subsection{Domaine de d\'efinition d'une fonction de $\R$ dans $\R$ : {\tt domain}}\index{domain}
+{\tt domain(expr,x)} o\`u {\tt expr} est une expression d\'ependant de  {\tt x},
+renvoie le domaine de d\'efinition de la fonction {\tt f(x):=expr}.\\
+On tape :
+\begin{center}{\tt domain(ln(x+1))}\end{center}
+On obtient :\\
+\begin{center}{\tt x>-1}\end{center}
+On tape :
+\begin{center}{\tt domain(asin(2x))}\end{center}
+On obtient :\\
+\begin{center}{\tt ((x>=(-1/2)) and (x<=(1/2)))}\end{center}
+
 \subsection{Tableau de variation d'une fonction de $\R$ dans $\R$ : {\tt tabvar}}\index{tabvar}
- {\tt tabvar(ex,x)} o\`u {\tt ex} est une expression d\'ependant de  {\tt x},
-renvoie le tableau de variation de la fonction {\tt f(x):=ex} et trace son graph
+ {\tt tabvar(expr,x)} o\`u {\tt expr} est une expression d\'ependant de {\tt x},
+renvoie le tableau de variation de la fonction {\tt f(x):=expr} et trace son graph
 dans l'\'ecran {\tt DispG} (que l'on ouvre avec {\tt Cfg->Montrer->DispG}).\\
 On tape :
 \begin{center}{\tt tabvar(y\verb|^|2-y-2,y)}\end{center}
@@ -9752,7 +9833,7 @@ On obtient :
 {\tt derive} ou {\tt deriver} ou {\tt '} renvoie une expression qui est 
 l'expression de la d\'eriv\'ee de l'argument par rapport \`a {\tt x}.   
 On tape :\\
-\begin{center}{\tt f(x):=x\verb|^|+x*cos(x)+}\end{center}
+\begin{center}{\tt f(x):=x*cos(x)+x\verb|^|2}\end{center}
 Pour calculer la d\'eriv\'ee de  $f(x)$, on tape :\\
 \begin{center}{\tt A:=f(x)'}\end{center}
 Ou :
@@ -11205,6 +11286,36 @@ unit\'es. Par exemple, {\tt convert(123,base,10)=[3,2,1]} et r\'eciproquement
 commencant par le chiffre des unit\'es. Par exemple, 
 {\tt convert([3,2,1],base,10)=123} (cf \ref{sec:convertbase}). 
 \end{itemize}
+\subsection{\'Ecriture d'une cha\^{i}ne en un nombre ou en le nom d'une variable avec diff\'erentes options : {\tt convert convertir =>}}
+\index{convert}\index{integer@{\sl integer}}\index{rational@{\sl rational}}\index{float@{\sl float}}\index{real@{\sl real}}\index{symbol@{\sl symbol}}\index{complex@{\sl complex}}
+On tape :\\
+{\tt a:=convert("123",integer)}\\
+On obtient :\\
+{\tt 123}
+On tape :\\
+{\tt a:=convert("123",float)}\\
+On obtient :\\
+{\tt 123.0}
+On tape :\\
+{\tt a:=convert("15/6",rational)}\\
+On obtient :\\
+{\tt 5/2}
+On tape :\\
+{\tt a:=convert("sqrt(2)+sqrt(4)",real)}\\
+On obtient :\\
+{\tt }
+On tape :\\
+{\tt a:=convert("15/6+i/3",complex)}\\
+On obtient :\\
+{\tt (15+2*i)/6}
+On tape :\\
+{\tt b:=convert("a",symbol)}\\
+On obtient :\\
+{\tt a}\\
+On tape :\\
+{\tt a:=3;b+1}\\
+On obtient :\\
+{\tt (3,4)}
 
 \section{Transform\'ee de Fourier}
 
@@ -11617,9 +11728,7 @@ $a*b=F_n^{-1}(F_n(a)\cdot F_n(b))$
 ${\tt [a_0,..a_{N-1}]}$ o\`u {\tt N} est une puissance de deux.\\
 {\tt fft} renvoie la liste ${\tt [b_0,..b_{N-1}]}$ tel que pour {\tt k=0..N-1}
 on ait :\\
-${\tt \displaystyle
-{fft([a_0,..a_{N-1}])}[k]=b_k=\sum_{j=0}^{N-1}x_j\omega_N^{-k\cdot
-j}}$ 
+${\tt \displaystyle{fft([a_0,..a_{N-1}])}[k]=b_k=\sum_{j=0}^{N-1}x_j\omega_N^{-k\cdot j}}$ 
 avec $\omega_N$ racine $N$-i\`eme de l'unit\'e.\\
 On tape :
 \begin{center}{\tt fft(0,1,1,0)}\end{center}
@@ -12554,13 +12663,13 @@ On tape :
 Ou on tape :
 \begin{center}{\tt taylor(sin(x),x=0,5,polynom)}\end{center}
 On obtient :
-\begin{center}{\tt x+1/-6*x\verb|^|3+1/120*\verb|x^|5+x\verb|^|6*0}\end{center}
+\begin{center}{\tt x+1/-6*x\verb|^|3+1/120*x\verb|^|5+x\verb|^|6*0}\end{center}
 On tape :
 \begin{center}{\tt convert(series(sin(x),x=0,6),polynom)}\end{center}
 Ou on tape :
 \begin{center}{\tt series(sin(x),x=0,5,polynom)}\end{center}
 On obtient :
-\begin{center}{\tt x+1/-6*x\verb|^|3+1/120*\verb|x^|5+x\verb|^|7*0}\end{center}
+\begin{center}{\tt x+1/-6*x\verb|^|3+1/120*x\verb|^|5+x\verb|^|7*0}\end{center}
 
 \subsection{Convertir un polyn\^ome de $n$ variables en une liste : {\tt convert convertir}}\index{convert}\index{convertir}\index{list@{\sl list}|textbf}\label{sec:convertpolyl}
 \noindent{\tt convert}, avec l'option {\tt list}, permet de convertir un
@@ -13630,19 +13739,23 @@ Pour deux polyn\^omes $A(x)=\sum_{i=0}^{i=n} a_ix^i$ et
 $B(x)=\sum_{i=0}^{i=m}b_ix^i$, la  matrice {\tt S} de Sylvester est une matrice
 carr\'ee de dimensiom {\tt m+n} dont les {\tt m=degree(B(x))} premi\`eres 
 lignes sont  compos\'ees \`a partir des coefficients de $A(x)$ :
-$$\left(\begin{array}{ccccccc}
+$$
+\left(\begin{array}{ccccccc}
 s_{11}=a_n & s_{12}=a_{n-1}& \cdots & s_{1(n+1)}=a_0 & 0 & \cdots & 0\\
 s_{21}=0 & s_{22}=a_{n}& \cdots & s_{2(n+1)}=a_1 & s_{2(n+2)}=a_0 & \cdots & 0\\
 \vdots &\vdots &\vdots &\ddots &\vdots &\ddots &\vdots\\
 s_{m1}=0 & s_{m2}=0& \cdots & s_{m(n+1)}=a_{m-1} & s_{m(n+2)}=a_{m-2} & \cdots&a_0 
-\end{array}\right)$$
+\end{array}\right)
+$$
 et les {\tt n=degree(A(x))} lignes  suivantes sont compos\'ees de la m\^eme 
 façon \`a partir des coefficients de {\tt B(x)} :
-$$\left(\begin{array}{ccccccc}
+$$
+\left(\begin{array}{ccccccc}
 s_{(m+1)1}=b_m & s_{(m+1)2}=b_{m-1}& \cdots & s_{(m+1)(m+1)}=b_0 & 0 & \cdots & 0\\
 \vdots &\vdots &\vdots &\ddots &\vdots &\ddots &\vdots\\
 s_{(m+n)1}=0 & s_{(m+n)2}=0& \cdots & s_{(m+n)(m+1)}=b_{n-1}  & b_{n-2}  &\cdots&b_0 
-\end{array}\right)$$
+\end{array}\right)
+$$
 On tape :
 \begin{center}{\tt sylvester(x\verb|^|3-p*x+q,3*x\verb|^|2-p,x)}\end{center}
 On obtient :
@@ -13658,7 +13771,8 @@ On obtient :
 Le r\'esultant est le d\'eterminant de la matrice $S$ de Sylvester.\\
 Pour les deux polyn\^omes $A(x)=\sum_{i=0}^{i=n} a_ix^i$ et 
 $B(x)=\sum_{i=0}^{i=m}b_ix^i$, la  matrice $S$ de Sylvester est une matrice 
-carr\'ee de dimensiom $m+n$ dont les $m$ premi\`eres lignes sont  compos\'ees \`a
+carr\'ee de dimensiom $m+n$ dont les $m$ premi\`eres lignes sont  compos\'ees 
+\`a
 partir des coefficients de $A(x)$ :
 $$
 \left(\begin{array}{ccccccc}
@@ -13699,9 +13813,11 @@ A=\left(\begin{array}{ccccc}
 -p & 0 & -p & 0 & 3\\
 q & -p & 0 & -p & 0\\
 0 & q & 0 & 0 & -p
-\end{array}\right)$$
+\end{array}\right)
+$$
 la matrice $S$ de Sylvester est la transpos\'ee de $A$:
-$$S=\left(\begin{array}{ccccc}
+$$
+S=\left(\begin{array}{ccccc}
 1&0&-p&q&0\\
 0&1&0&-p&q\\
 3&0&-p&0&0\\
@@ -13803,8 +13919,8 @@ On tape :\\
 {\tt factor(resultant(eq1,eq2,t))}\\
 On obtient comme r\'esultant :\\
 {\tt (-(64$\cdot$ a\verb|^|2))$\cdot$(x\verb|^|2+y\verb|^|2)$\cdot$(x\verb|^|2$\cdot$a\verb|^|2-x\verb|^|2$\cdot$c\verb|^|2+-2$\cdot$x$\cdot$a\verb|^|2$\cdot$c+2$\cdot$x$\cdot$c\verb|^|3- \\a\verb|^|4+2$\cdot$a\verb|^|2$\cdot$c\verb|^|2+a\verb|^|2$\cdot$y\verb|^|2-c\verb|^|4)}\\
-Le facteur {\tt -64$\cdot$(x\verb|^|2+y\verb|^|2)} ne s'annule jamais donc l'\'equation du 
-lieu est :\\
+Le facteur {\tt -64$\cdot$(x\verb|^|2+y\verb|^|2)} ne s'annule jamais donc 
+l'\'equation du lieu est :\\
 $x^2a^2-x^2c^2+-2xa^2c+2xc^3-a^4+2a^2c^2+a^2y^2-c^4=0$\\
 En prenant l'origine du rep\`ere en $O$ milieu de $F1F2$, on retrouve comme
 pr\'ec\'edemment l'\'equation cart\'esienne de l'ellipse :
@@ -14555,7 +14671,7 @@ coefficients entiers  tapez {\tt o \% 0}. Par exemple, si on tape {\tt o:=4\% 7}
 modulo $p$ : ces entiers sont repr\'esent\'es comme 
 les entiers usuels et pour eviter les confusions on utilise 
 les commandes commen\c{c}ant par une majuscule que l'on fait suivre par la 
-commande  $\bmod$ (on se repotera \`a la section suivante).
+commande  $\bmod$ (on se reportera \`a la section suivante).
 \end{itemize} 
 {\bf Remarques} 
 \begin{itemize}
@@ -15195,7 +15311,7 @@ au voisinage de {\tt x=0}\\
 On tape :
 \begin{center}{\tt taylor(x\verb|^|3+sin(x)\verb|^|3/(x-sin(x)))}\end{center}
 On obtient seulement un d\'eveloppement \`a l'ordre 2 :
-\begin{center}{\tt 6+-27/10*x\verb|^2|+x\verb|^|3*order\_size(x)}\end{center}
+\begin{center}{\tt 6+-27/10*x\verb|^|2+x\verb|^|3*order\_size(x)}\end{center}
 On tape :
 \begin{center}{\tt taylor(x\verb|^|3+sin(x)\verb|^|3/(x-sin(x)),x=0,7)}\end{center}
 On obtient seulement un d\'eveloppement \`a l'ordre 4 :
@@ -15444,11 +15560,11 @@ On obtient :
 On v\'erifie en tapant :
 \begin{center}{\tt series(ans(),x=0,15)}\end{center}
 On obtient :
-\begin{center}{\tt 1+x-x\verb|^|{12}-x\verb|^|{13}+2x\verb|^|{15}+x\verb|^|{16}*order\_size(x)}\end{center}
+\begin{center}{\tt 1+x-x\verb|^|12-x\verb|^|13+2x\verb|^|15+x\verb|^|16*order\_size(x)}\end{center}
 puis en tapant :
-\begin{center}{\tt series((x\verb|^|15+x+1)/(\verb|x^|12+1),x=0,15)}\end{center}
+\begin{center}{\tt series((x\verb|^|15+x+1)/(x\verb|^|12+1),x=0,15)}\end{center}
 On obtient :
-\begin{center}{\tt 1+x-x\verb|^|{12}-x\verb|^|{13}+x\verb|^|{15}+x\verb|^|{16}*order\_size(x)}\end{center}
+\begin{center}{\tt 1+x-x\verb|^|12-x\verb|^|13+x\verb|^|15+x\verb|^|16*order\_size(x)}\end{center}
 Les deux expressions ont m\^eme d\'eveloppement de Taylor \`a l'ordre 14 au 
 voisinage de 0.
 
@@ -15662,8 +15778,7 @@ On obtient :
  le mot reserv\'e {\tt interval} et eventuellement un entier $n>15$ pour donner 
 le nombre de chiffres significatifs d\'esir\'es.\\
 {\tt convert} renvoie le plus petit intervalle dans lequel se trouve la valeur 
-de l'expression ou la valeur 
-de l'expression ????????.\\
+de l'expression ou la valeur de l'expression ????????.\\
 On tape :
 \begin{center}{\tt convert(sin(3)+1,interval)}\end{center}
 On obtient :
@@ -15769,7 +15884,7 @@ avec la possibilit\'e de mettre $p$ comme param\`etre de saut).
 \begin{itemize}
 \item {\bf Syntaxe} simplifi\'ee {\tt Xcas}\\
 Si {\tt seq} a {\bf deux} arguments un intervalle de r\'eels $a..b$ et un r\'eel $p$ (le pas)
-{\tt seq} renvoie la liste des r\'eels entre $a$ et $b$ par pas de $p$.\\
+{\tt seq} renvoie la s\'equence des r\'eels entre $a$ et $b$ par pas de $p$.\\
  {\tt \$}  a les m\^eme arguments mais est une fonction infix\'ee et 
 il faut parenth\'eser les arguments.\\
 On tape :
@@ -15791,15 +15906,20 @@ Ou on tape :
 \begin{center}{\tt [(1..3)\$0.2]}\end{center}
 On obtient :
 \begin{center}{\tt [1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0]}\end{center}
-Si {\tt seq} a {\bf deux ou quatre} arguments une expression d\'ependant d'un 
-param\`etre (par exemple $j$) et $j=a..b$ o\`u $a$ et $b$ sont des nombres 
-r\'eels {\tt seq} renvoie la liste obtenue en remplacant  $j$ par $a$, 
+Si {\tt seq} a {\bf deux} (resp {\bf trois ou quatre}) arguments une expression 
+d\'ependant d'un param\`etre (par exemple $j$) et $j=a..b$ (resp $j,a,b$)
+o\`u $a$ et $b$ sont des nombres r\'eels {\tt seq} renvoie la s\'equence (resp 
+la liste) obtenue en remplacant  $j$ par $a$, 
 $a+1$..$b$ si $b>a$ dans l'expression et par $a$, $a-1$..$b$ si $b<a$.\\
-On tape :\\
+On tape avec 2 arguments :\\
 \begin{center}{\tt seq(2k+1,k=0..6)}\end{center}
 Ou on tape :
+\begin{center}{\tt (2k+1)\$(k=0..6)}\end{center}
+On obtient une s\'equence :
+\begin{center}{\tt (1,3,5,7,9,11,13])}\end{center}
+Mais si on tape 4 arguments :
 \begin{center}{\tt seq(2k+1,k,0,6)}\end{center}
-On obtient :
+On obtient une liste :
 \begin{center}{\tt [1,3,5,7,9,11,13]}\end{center}
  Dans ce cas, on peut ajouter un troisi\`eme ou un cinqui\`eme argument, 
 le pas (qui vaut par d\'efaut 1 ou -1).\\
@@ -15810,10 +15930,18 @@ Ou on tape :
 On obtient :
 \begin{center}{\tt [1,5,9,13]}\end{center}
 Si {\tt seq} a {\bf trois} arguments :\\
-une expression d\'ependant d'une variable, le nom de cette variable et une liste.\\ 
+une expression d\'ependant d'une variable, le nom de cette variable et une 
+liste.\\ 
 {\tt seq(expression,variable,liste)} \'equivaut \`a :\\
 {\tt map(liste,unapply(expression,variable))}
-
+On tape :
+\begin{center}{\tt seq(2k+1,k=0..6,2)}\end{center}
+On obtient :
+\begin{center}{\tt [1,5,9,13]}\end{center}
+On tape :
+\begin{center}{\tt seq(2k+1,k,[1,5,10,15])}\end{center}
+On obtient :
+\begin{center}{\tt [3,11,21,31]}\end{center}
 \ \\
 {\tt \$}  a les m\^eme arguments mais est une fonction infix\'ee et 
 il faut parenth\'eser les arguments.\\
@@ -15822,15 +15950,13 @@ On tape :
 Ou on tape :
 \begin{center}{\tt (1..3)\$0.2}\end{center}
 On obtient :
-\begin{center}{\tt [1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0]}\end{center}
+\begin{center}{\tt (1,1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0)}\end{center}
 On tape :
 \begin{center}{\tt seq(2k+1,k=0..2)}\end{center}
 Ou on tape :
 \begin{center}{\tt (2k+1)\$(k=0..2)}\end{center}
 On obtient :
-\begin{center}{\tt [1,3,5]}\end{center}
-On tape :
-\begin{center}{\tt seq(2k+1,k=0..6,2)}\end{center}
+\begin{center}{\tt (1,3,5)}\end{center}
 On tape :
 \begin{center}{\tt seq(2k+1,k=(0..6)\$2)}\end{center}
 Ou on tape :
@@ -15971,38 +16097,65 @@ On tape :
 \begin{center}{\tt seq(j\verb|^|3,j,1,3,1/2)}\end{center}
 On obtient :
 \begin{center}{\tt [1,27/8,8,125/8,27]}\end{center}
-{\bf Exemples d'utilisation}
+{\bf Exemples d'utilisation du \$ ou de {\tt seq}}
 \begin{itemize}
-\item On tape pour avoir la d\'eriv\'ee troisi\`eme de $\ln(t)$ :
-\begin{center}{\tt diff(log(t),t\$3)}\end{center}
+\item On tape pour avoir la d\'eriv\'ee troisi\`eme de $\ln(x)$ (bien mettre 
+les {\tt '} autour de {\tt x} ou mettre {\tt quote(x)} car sinon il faut que 
+{\tt x} soit purg\'e):
+\begin{center}{\tt diff(ln(x),'x'\$3)}\end{center}
+ou bien
+\begin{center}{\tt diff(ln(x),x,x,x)}\end{center}
 On obtient :
-\begin{center}{\tt -((-(2*t))/t\verb|^|4)}\end{center}
+\begin{center}{\tt 2)/x\verb|^|3)}\end{center}
+ou on tape en utilisant {\tt function\_diff} et {\tt @@}),
+({\bf attention !} {\tt function\_diff} a comme argument une fonction et 
+renvoie une fonction) :
+\begin{center}{\tt g:=function\_diff @@3;g(ln)(x)}\end{center}
+On obtient :
+\begin{center}
+{\tt (` x`)->(('function\_diff')@@3)(` x`),2/x\verb|^|3}
+\end{center}
 On tape :
 \begin{center}{\tt l:=[[2,3],[5,1],[7,2]]}\end{center}
-\begin{center}{\tt seq((l[k][0])\$(l[k][1]),k=0 .. size(l)-1)}\end{center}
+\begin{center}{\tt eval(seq((l[k][0])\$(l[k][1]),k=0..size(l)-1))}\end{center}
 On obtient :
-\begin{center}{\tt 2,2,2,seq[5],7,7}\end{center}
 \begin{center}{\tt 2,2,2,5,7,7}\end{center}
-\item On tape pour transformer une cha\^ine en la liste de ces caract\`eres :
-\begin{center}{\tt f(chn):=\{
-local l;
-l:=size(chn);
-return seq(chn[j],j,0,l-1);
-\}}\end{center}
-puis,
-\begin{center}{\tt f("abracadabra")}\end{center}
-On obtient :
-\begin{center}{\tt ["a","b","r","a","c","a","d","a","b","r","a"]}\end{center}
-\item On tape pour transformer une cha\^ine en la s\'equence de ces caract\`eres :
+\item On tape pour transformer une cha\^ine en la s\'equence de ses 
+caract\`eres :
+\begin{center}
+{\tt char(asc("abracadabrant")[k])\$(k=0..dim("abracadabrant")-1)}
+\end{center}
+ou on tape :
 \begin{center}{\tt f(chn):=\{
 local l;
 l:=size(chn);
 return seq(chn[j],j,0..l-1);
 \}}\end{center}
 puis,
-\begin{center}{\tt f("abracadabra")}\end{center}
+\begin{center}{\tt f("abracadabrant")}\end{center}
 On obtient :
-\begin{center}{\tt ("a","b","r","a","c","a","d","a","b","r","a"]))}\end{center}
+\begin{center}{\tt ("a","b","r","a","c","a","d","a","b","r","a","n","t"]))}\end{center}
+\item On tape pour avoir la s\'equence des carr\'es des nombres premiers de 
+0 \`a 10 :
+\begin{center}
+{\tt eval(seq(ifte(isprime(k),k\verb|^|2,NULL),k=0..10))}
+\end{center}
+ou on tape :
+\begin{center}
+{\tt eval(ifte(isprime(k),k\verb|^|2,NULL)\$(k=0..10))}
+\end{center}
+On obtient :
+\begin{center}{\tt (4,9,25,49)}\end{center}
+Pour avoir une liste on tape :
+\begin{center}
+{\tt eval(seq(ifte(isprime(k),k\verb|^|2,NULL),k,0,10))}
+\end{center}
+ou on tape :
+\begin{center}
+{\tt eval([ifte(isprime(k),k\verb|^|2,NULL)\$(k=0..10)])}
+\end{center}
+On obtient :
+\begin{center}{\tt [4,9,25,49]}\end{center}
 \end{itemize}
 
 \subsection{Pour transformer une s\'equence en liste : {\tt [] nop}}\index{[]}\index{nop}
@@ -16224,6 +16377,7 @@ On obtient :\\
 Pour dessiner ou d\'efinir un vecteur g\'eom\'etrique voir \ref{sec:vecteur2} 
 et \ref{sec:vecteur3}.
 \subsection{Comment d\'efinir une liste :{\tt makelist}}\index{makelist}
+Voir aussi \ref{sec:defliste}.\\
 Pour d\'efinir la liste vide {\tt L0}, on tape :\\ 
 {\tt L0:=[]}
 Pour d\'efinir la liste {\tt L1} \'egale \`a {\tt [1,2,3]}, on tape :\\ 
@@ -16244,7 +16398,7 @@ constante avec {\tt makelist}.\\
 {\tt makelist(x->x\verb|^|2,1,10,2)} ou {\tt [(k\verb|^|2)\$(k=1..10,2)]}
 renvoie {\tt [1,9,25,49,81]}\\
 {\tt makelist(x->x\verb|^|2,2,11,3)} ou {\tt [(k\verb|^|2)\$(k=2..11,3)]}
-renvoie {\tt [4,25,64,121]}\\
+renvoie {\tt [4,25,64,121]}
 
 \subsection{Aplatir une liste : {\tt flatten}}\index{flatten}
 {\tt flatten} a comme argument une liste contenant des listes.\\
@@ -16687,19 +16841,23 @@ On tape :
 \begin{center}{\tt sizes([[3,4],[2]])}\end{center}
 On obtient :
 \begin{center}{\tt [2,1]}\end{center}
-\subsection{Concat\'ener deux listes ou une liste et un \'el\'ement: {\tt concat augment}}\index{concat|textbf}\index{augment|textbf}
-\noindent{\tt concat} (ou {\tt augment})
+\subsection{Concat\'ener deux listes ou une liste et un \'el\'ement: {\tt concat augment}}\index{concat|textbf}\index{augment|textbf}\index{extend|textbf}
+\noindent{\tt concat} (ou {\tt augment} ou {\tt extend})
 concat\'ene deux listes, ou concat\'ene une liste et un \'el\'ement.\\
 On tape :
 \begin{center}{\tt concat([3,4,2],[1,2,4])}\end{center}
 Ou on tape :
 \begin{center}{\tt augment([3,4,2],[1,2,4])}\end{center}
+Ou on tape :
+\begin{center}{\tt extend([3,4,2],[1,2,4])}\end{center}
 On obtient :
 \begin{center}{\tt [3,4,2,1,2,4]}\end{center}
 On tape :
 \begin{center}{\tt concat([3,4,2],5)}\end{center}
 Ou on tape :
 \begin{center}{\tt augment([3,4,2],5)}\end{center}
+Ou on tape :
+\begin{center}{\tt extend([3,4,2],5)}\end{center}
 On obtient :
 \begin{center}{\tt [3,4,2,5]}\end{center}
 {\bf Attention}
@@ -17092,6 +17250,16 @@ On tape :
 \begin{center}{\tt L:=select(x->(x>=2),[0,1,2,3,4,5])}\end{center}
 On obtient comme nouvelle valeur de {\tt L} :
 \begin{center}{\tt  [2,3,4,5]}\end{center}
+{\bf Exemple}:\\
+On cherche la liste des carr\'es des nombres premiers de l'intervalle $[a,b]$
+On tape (on utilise {\tt .\verb|^|2} qui \'el\`eve au carr\'e chaque \'el\'ement
+ de la liste obtenue avec {\tt select(x->isprime(x),range(20))}) :
+\begin{center}{\tt select(x->isprime(x),range(20)).\verb|^|2)}\end{center}
+ou on tape :
+\begin{center}{\tt select(k->isprime(k),[k\$(k=0..20)]).\verb|^|2)}\end{center}
+On obtient :
+\begin{center}{\tt [4,9,25,49,121,169,289,361]}\end{center}
+
 
 \subsection{Supprimer des \'el\'ements d'une liste : {\tt remove}}\index{remove}
 \noindent{\tt remove} a deux param\`etres : une fonction bool\'eenne {\tt f} et
@@ -17669,7 +17837,7 @@ On tape :
 On obtient :
 \begin{center}{\tt   [0,0,0]}\end{center}
 
-\subsection{Faire une liste d'entiers : {\tt range}}\index{range}
+\subsection{Faire une liste d'entiers : {\tt range}}\index{range|textbf}
 \noindent{\tt range} a 1, 2 ou 3 arguments :\\
 \begin{enumerate}
 \item un entier {\tt n}\\
@@ -17696,8 +17864,63 @@ On tape :
 \begin{center}{\tt range(4,13,2)}\end{center}
 On obtient :
 \begin{center}{\tt [4,6,8,10,12]}\end{center}
+{\bf Remarques} : pour faire la liste des valeurs d'une expression $f(k)$ 
+lorsque $k$ est un entier qui v\'erifie une condition.
+\begin{enumerate}
+\item On peut faire la liste des valeurs d'une expression d\'ependant d'un 
+param\`etre, par exemple $k$, lorsque 
+$k$ est un entier qui parcourt une liste d\'efinie par {\tt range}.\\
+On tape :
+\begin{center}{\tt [k\verb|^|2+k for k in range(10)]}\end{center}
+On obtient :
+\begin{center}{\tt [0,2,6,12,20,30,42,56,72,90]}\end{center}
+On tape :
+\begin{center}{\tt [k\verb|^|2+k for k in range(4,10)]}\end{center}
+On obtient :
+\begin{center}{\tt [20,30,42,56,72,90]}\end{center}
+On tape :
+\begin{center}{\tt [k\verb|^|2+k for k in range(0,10,2)]}\end{center}
+On obtient :
+\begin{center}{\tt [0,6,20,42,72]}\end{center}
+\item On peut faire la liste des valeurs d'une expression d\'ependant d'un 
+param\`etre, par exemple $k$, lorsque $k$ est un entier qui 
+parcourt une liste d\'efinie par {\tt range} et qui v\'erifie une condition.\\
+On tape :
+\begin{center}{\tt [k for k in range(10) if isprime(k)]}\end{center}
+On obtient :
+\begin{center}{\tt [2,3,5,7]}\end{center}
+On tape :
+\begin{center}{\tt [k for k in range(4,10) if isprime(k)]}\end{center}
+On obtient :
+\begin{center}{\tt [5,7]]}\end{center}
+On tape :
+\begin{center}{\tt [k for k in range(1,10,2) if isprime(k)]}\end{center}
+On obtient :
+\begin{center}{\tt [3,5,7]}\end{center}
+\item On peut faire la liste des valeurs d'une expression  d\'ependant d'un 
+param\`etre, par exemple $k$, lorsque $k$ est un entier qui parcourt une liste 
+d\'efinie par {\tt range} et qui v\'erifie une condition.\\
+Par exemple on cherche la liste des valeurs de $k^2+k$ lorsque k est un nombre
+premier de l'intervalle $[a,b[$.\\ 
+On tape pour $a=0$ et $b=10$ :
+\begin{center}{\tt [k\verb|^|2+k for k in range(10) if isprime(k)]}\end{center}
+On obtient :
+\begin{center}{\tt [6,12,30,56]}\end{center}
+On tape  pour $a=4$ et $b=10$ :
+\begin{center}{\tt [k\verb|^|2+k for k in range(4,10) if isprime(k)]}\end{center}
+On obtient :
+\begin{center}{\tt [30,56]]}\end{center}
+On tape  pour $a=1$ et $b=10$ et $k$ varie avec un pas de 2 :
+\begin{center}{\tt [k\verb|^|2+k for k in range(1,10,2) if isprime(k)]}\end{center}
+On obtient :
+\begin{center}{\tt [12,30,56]}\end{center}
+On tape  pour $a=0$ et $b=10$ et $k$ varie avec un pas de 2 :
+\begin{center}{\tt [k\verb|^|2+k for k in range(0,10,2) if isprime(k)]}\end{center}
+On obtient (puisque les nombres pairs ne sont pas premiers !):
+\begin{center}{\tt [6]}\end{center}
+\end{enumerate}
 
-\subsection{Faire une liste avec une fonction : {\tt makelist}}\index{makelist}
+\subsection{Faire une liste avec une fonction : {\tt makelist}}\index{makelist|textbf}\label{sec:defliste}
 \noindent{\tt makelist} fabrique une liste \`a l'aide d'une fonction, 
 en donnant les bornes de la variable et le pas de cette variable qui par 
 d\'efaut vaut 1 ou -1 selon que l'ordre des bornes.\\
@@ -17726,7 +17949,16 @@ On peut aussi d\'efinir une liste constante avec {\tt makelist}.\\
 {\tt makelist(4,2,7)} ou {\tt [4\$6]} renvoie {\tt [4,4,4,4,4,4]} (car on
 consid\`ere que 4 est la constante, 2 est l'indice du d\'ebut et 7 est l'indice 
 de fin donc que la liste constante \'egale \`a 4 est de dimension 6.)
-
+{\bf Exemple}
+On veut cr\'eeer la liste des carr\'es des nombres premiers de 1 \`a 10.\\
+On tape :\\
+{\tt eval(makelist(k->ifte(isprime(k),k\verb|^|2,NULL),1,10))}\\
+ou on tape :\\
+{\tt eval(makelist(k->ifte(isprime(k),k\verb|^|2,NULL),1,10))}\\
+ou on tape :\\
+{\tt eval(makelist(k->if isprime(k) then return k\verb|^|2; else return NULL;fi,1,10))}\\
+On obtient :\\
+{\tt [4,9,25,49]}
 \subsection{Faire une liste al\'eatoire : {\tt randvector, ranv}}\index{randvector|textbf}\index{ranv|textbf}\label{sec:ranm4}\index{binomial@{\sl binomial}|textbf}\index{multinomial@{\sl multinomial}|textbf}\index{poisson@{\sl poisson}|textbf}\index{normald@{\sl normald}|textbf}\index{exponential@{\sl exponential}|textbf}\index{fisher@{\sl fisher}|textbf}
 \noindent{\tt randvector} ou {\tt ranv} fabrique une liste de nombres 
 al\'eatoires.\\ 
@@ -27350,7 +27582,7 @@ Donc $\sigma \simeq 3.69302877574$\\
 {\bf Remarque} : On sait que la statistique 
 $displaystyle \frac{n_1S_1^2+n_2S_2^2}{n_1+n_2-2}$
  est un estimateur sans biais de $\sigma^2$ si $\sigma$ est l'\'ecart-type de 
-$X$ (cf \ref{sec:compm}). La valeur
+$X$. La valeur
 de cette statistique est obtenue \`a partir de 
 deux \'echantillons de taille 
 respective $n_1$ et $n_2$ et d'\'ecart-type respectif $s_1$ et $s_2$ qui sont les valeurs de $S_1$ et de $S_2$ (avec comme notation 
@@ -27716,7 +27948,7 @@ on met {\tt toto(a,b):=}  puis les accolades {\tt \{} et {\tt \}} (ou
 bloc qui d\'efinit la fonction {\tt toto} c'est \`a dire les instructions qui 
 d\'efinissent la fonction.
 \item soit si on utilise le langage {\tt Python}, on utilise le mot-cl\'e 
-{\tt def} (voir la compatibilit\'e de Python dans {\tt Xas}). 
+{\tt def} (voir la compatibilit\'e de Python dans {\tt Xcas}). 
 \end{enumerate}
 Dans le bloc qui d\'efinit la fonction chaque instuction se termine par {\tt ;}\\ 
 Si l'algorithme qui d\'efinit la fonction a besoin de 
@@ -28165,23 +28397,23 @@ De plus ces 3 syntaxes sont admises en input.\\
  On tape :
 \begin{center}{\tt printpow(0)}\end{center}
  puis :
-\begin{center}{\tt print(x\verb|^|3)}\end{center}
+\begin{center}{\tt print(2\verb|^|3)}\end{center}
 On obtient :
-\begin{center}{\tt x\verb|^|3 \'ecrit en bleu et 8 comme
+\begin{center}{\tt 2\verb|^|3 \'ecrit en bleu et 8 comme
     r\'eponse}\end{center}
 On tape :
 \begin{center}{\tt printpow(1)}\end{center}
  puis :
-\begin{center}{\tt print(x\verb|^| 3)}\end{center}
+\begin{center}{\tt print(2\verb|^| 3)}\end{center}
 On obtient :
-\begin{center}{\tt pow(x,3) \'ecrit en bleu et 8 comme
+\begin{center}{\tt pow(2,3) \'ecrit en bleu et 8 comme
     r\'eponse}\end{center}
 On tape :
 \begin{center}{\tt printpow(-1)}\end{center}
  puis :
-\begin{center}{\tt print(x\verb|^|3)}\end{center}
+\begin{center}{\tt print(2\verb|^|3)}\end{center}
 On obtient :
-\begin{center}{\tt x**3 \'ecrit en bleu et 8 comme
+\begin{center}{\tt 2**3 \'ecrit en bleu et 8 comme
     r\'eponse}\end{center}
 \subsection{Sortie dans une petite fen\^etre : {\tt output Output}}\index{output}\index{Output}
 \noindent
@@ -28997,7 +29229,7 @@ par les valeurs stock\'ees dans le fichier :\\
 le principe de {\tt read} est que l'utilisateur met dans un fichier
 par exemple des programmes ou des grosses variables, donc il sait
 ce qu'il y a dedans, et lors d'un {\tt read} les instructions sont 
-ex\'ecut\'ees et seules les reponses sont affich\'ees.
+ex\'ecut\'ees et seules les r\'eponses sont affich\'ees.
 \subsection{Pour \'ecrire des variables et leur contenu dans un fichier : {\tt write}}\index{write}
 \noindent{\tt write} a comme argument un nom de fichier et des noms de 
 variables.\\
@@ -29081,6 +29313,7 @@ On tape :
 
 On obtient :
 \begin{center}{\tt ifactor(54)}\end{center}
+
 \subsection{Pour utiliser une cha\^ine comme un nombre : {\tt expr}}\index{expr}\label{sec:expr2}
 \noindent{\tt expr} permet d'utiliser une cha\^ine de chiffres ne 
 commen\c{c}ant pas par un z\'ero comme un nombre entier \'ecrit en base 10
@@ -29112,6 +29345,7 @@ On obtient :
 \begin{center}{\tt 303}\end{center}
 En effet $1*16^2+2*16+15=303$
 Voir aussi \ref{sec:expr1}
+
 \subsection{Pour utiliser une cha\^ine comme nom de commande : {\tt expr}}\index{expr}\label{sec:expr}
 \noindent{\tt expr} permet d'utiliser une cha\^ine de caract\`eres comme une 
 commande.\\
@@ -30381,6 +30615,32 @@ taper sur des niveaux s\'epar\'es :\\
 d'affixe -2 et le point {\tt D} d'affixe i (car l'affixe de {\tt D} n'est pas 
 r\'eel !).\\
 %{\tt E,F:=point(-2+2i),point(2+2i):;eval(E,1);eval(F,1);}
+\subsection{Diff\'erence ou somme de 2 points en g\'eom\'etrie plane : {\tt - +}}\index{-}\index{+}
+Soient 2 points {\tt A} et {\tt B} d'affixes respectifs {\tt a1+i*a2} et 
+{\tt b1+i*b2}.\\
+La diff\'erence {\tt B-A} renvoie l'affixe {\tt (b1-a1)+i*(b2-a2)} du 
+vecteur $\overrightarrow{AB}$.\\
+La somme {\tt B+A} renvoie l'affixe {\tt (b1+a1)+i*(b2+a2)} de 
+$\overrightarrow{OA}+\overrightarrow{0B}$. Si {\tt D:=point(B+A)} on a donc
+$\overrightarrow{BD}=\overrightarrow{OA}$\\
+On tape :\\
+\begin{center}{\tt A:=point(1+2*i);B:=point(3+4*i);C:=point(B-A);}\end{center}
+\begin{center}{\tt O:=point(0);vecteur(A,B),vecteur(O,C)}\end{center}
+On obtient :
+\begin{center}{\tt 2 vecteurs : $\overrightarrow{AB}$=$\overrightarrow{OC}$}\end{center}
+On tape :\\
+\begin{center}{\tt D:=point(B+A)}\end{center}
+On obtient :
+\begin{center}{\tt le point D tel que $\overrightarrow{BD}=\overrightarrow{OA}$}\end{center}
+{\bf Attention}\\
+{\tt A1:=-A} rep\'esente un point qui est le sym\'etrique de {\tt A} par rapport
+ \`a {\tt O}.\\
+{\tt A2:=2+i+A} ou  {\tt A2:=A+2+i} rep\'esente un point qui est le translat\'e 
+de {\tt A} dans la translation de vecteur {\tt [2,1]}.\\
+Donc la somme de 3 points {\tt A+B+C} est le translat\'e de {\tt C} dans la 
+translation de vecteur {\tt [(b1+a1),(b2+a2)]}.\\
+Si les points {\tt A} ou {\tt B} contiennent des param\`etres il faut 
+\'ecrire {\tt C+(A+B)} ou {\tt evalc(A+B)+C}.
 
 \subsection{D\'efinir au hasard un point 2-d : {\tt point2d}}\index{point2d}
 \noindent{\tt point2d} a comme argument une s\'equence de noms de points.\\
@@ -31436,7 +31696,7 @@ On tape :
 \begin{center}{\tt cercle(-1, point(i))}\end{center}
 On obtient :
 \begin{center}{\tt Le cercle de diam\'etre -1,i}\end{center}
-{\bf Attention}
+{\bf Attention !}
 Il faut bien voir la diff\'erence entre :\\
 {\tt cercle(A,B-A)}, {\tt cercle(A,B)} et {\tt cercle(A,affixe(B)-A)}.\\
 {\tt A:=point(1);B:=point(i/2);}
@@ -31517,7 +31777,28 @@ On obtient :
 \begin{center}{\tt Le demi-cercle de centre C=point(1+i), de rayon r=sqrt(2) et allant du point(2) au point(2*i) dans le sens +}\end{center}
 {\bf Remarque}\\
 Lorsque {\tt cercle} a quatre arguments, {\tt cercle} dessine aussi un arc de
-cercle (cf \ref{sec:cercle}).
+cercle (cf \ref{sec:cercle})
+
+\subsection{Les segments circulaires ou segments de cercle : {\tt arc}}\index{arc}\index{segment@{\sl segment}|textbf}
+{\bf D\'efinition} \\
+Un segment circulaire ou un segment de cercle est la portion de disque 
+d\'elimi\'ee par un arc et sa corde.\\
+Lorsqu'on  utilise {\tt arc} avec l'option {\sl segment}, {\tt arc} dessine une
+courbe ferm\'ee qui est constitu\'ee par l'arc et sa corde.\\
+On peut colorer la surface obtenue pour dessiner un  segment circulaire ou un 
+segment de cercle en utilisant par exemple {\tt affichage=1+rempli}.\\
+On tape :
+\begin{center}{\tt arc(1,i,pi/2,segment)}\end{center}
+On obtient :
+\begin{center}{\tt La courbe ferm\'ee form\'ee par arc (1,i,pi/2) et sa corde}\end{center}
+On tape :
+\begin{center}{\tt arc(1,i,pi/2,segment,affichage=1+rempli)}\end{center}
+Ou on tape :
+\begin{center}{\tt affichage(arc(1,i,pi/2,segment),1+rempli)}\end{center}
+On obtient :
+\begin{center}{\tt En rouge, la portion de disque d\'elimi\'ee par l'arc(1,i,pi/2) et sa corde (i.e. un segment de cercle)}\end{center}
+
+
 \subsection{Le cercle (compatibilit\'e TI): {\tt Circle}}\index{Circle}
 \noindent{\tt Circle} a quatre arguments : les coordonn\'ees du centre 
 $(xc,yc)$, la valeur du rayon $r$ et 0 ou 1 (par d\'efaut 1).\\
@@ -32148,9 +32429,11 @@ On peut aussi taper, pour n'avoir que la valeur :
 On obtient :
 \begin{center}{\tt  3/4}\end{center}
 \subsection{Aire d'un polygone : {\tt area aire}}\index{aire}\index{area}
-\noindent {\tt aire} calcule l'aire d'un cercle ou d'un polygone \'etoil\'e par
-rapport \`a son premier sommet.\\
-On tape :
+\noindent {\tt aire} calcule l'aire d'un cercle, d'un arc de cercle ou d'un 
+polygone \'etoil\'e par rapport \`a son premier sommet.\\
+L'aire d'une liste ou d'une s\'equence  d'objets g\'eom\'etriques renvoie la 
+somme des aires de ces objets g\'eom\'etriques. 
+ On tape :
 \begin{center}{\tt aire(triangle(0,1,i))}\end{center}
 On obtient :
 \begin{center}{\tt 1/2}\end{center}
@@ -32158,6 +32441,24 @@ On tape :
 \begin{center}{\tt aire(carre(0,2))}\end{center}
 On obtient :
 \begin{center}{\tt 4}\end{center}
+On tape :
+\begin{center}{\tt aire(cercle(0,2))}\end{center}
+On obtient :
+\begin{center}{\tt 4*pi}\end{center}
+On tape :
+\begin{center}{\tt aire(cercle(0,2,pi/3))}\end{center}
+On tape :
+\begin{center}{\tt aire(cercle(0,2,0,pi/3))}\end{center}
+Ou on tape :
+\begin{center}{\tt aire(arc(2,2*exp(i*pi/3),pi/3))}\end{center}
+On obtient :
+\begin{center}{\tt 2*pi/3}\end{center}
+On tape :
+\begin{center}{\tt aire(arc(2,2*exp(i*pi/3),pi/3),arc(2,exp(i*pi/3),pi/3),
+arc(2*exp(i*pi/3),exp(i*pi/3),pi/3))}\end{center}
+On obtient (2*pi/3+pi/2+pi/6) :
+\begin{center}{\tt 4*pi/3}\end{center}
+
 
 \subsection{L'aire d'un polygone et son affichage : {\tt areaat aireen} et {\tt areaatraw aireenbrut}}\index{areaat|textbf}\index{aireen|textbf}\index{areaatraw|textbf}\index{aireenbrut|textbf}
 \noindent {\tt areaat} ou {\tt aireen} et {\tt areaatraw} ou {\tt aireenbrut} 

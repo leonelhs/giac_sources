@@ -4,36 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Reste euclidien : Rem</title>
+<title>Factorisation d’un polynôme à coefficients dans un corps de Galois : factor</title>
 </head>
 <body >
 <a href="cascmd_fr461.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr463.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec581" class="subsection">6.36.2  Reste euclidien : <span style="font-family:monospace">Rem</span></h3>
-<p><a id="hevea_default832"></a>
-<span style="font-family:monospace">Rem</span> est la forme inerte de <span style="font-family:monospace">rem</span>.<br>
-<span style="font-family:monospace">Rem</span> renvoie <span style="font-family:monospace">rem</span>, le reste de la division euclidienne de deux 
-polynômes sans l’évaluer.<br>
-On utilise <span style="font-family:monospace">Rem</span> et <span style="font-family:monospace">mod</span> pour calculer en mode <span style="font-family:monospace">Maple</span> le 
-reste de la division euclidienne de deux polynômes à coefficients dans 
-ℤ/<span style="font-style:italic">p</span>ℤ.<br>
-On tape, en mode <span style="font-family:monospace">Xcas</span> :
-</p><div class="center"><span style="font-family:monospace">Rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1) mod 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13)</span></div><p>
+<h3 id="sec580" class="subsection">6.35.19  Factorisation d’un polynôme à coefficients dans un corps de Galois : <span style="font-family:monospace">factor</span></h3>
+<p><a id="hevea_default840"></a>
+On peut factoriser un polynôme à coefficients dans un corps de Galois avec
+<span style="font-family:monospace">factor</span>.<br>
+On tape par exemple pour avoir <span style="font-family:monospace">G=</span>F<sub>4</sub> :<br>
+</p><div class="center"><span style="font-family:monospace">GF(2,2,a)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)% 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)% 13)</span></div><p>
-puis en utilisant <span style="font-family:monospace">eval(ans())</span>, on obtient :
-</p><div class="center"><span style="font-family:monospace">(-2% 13)*x+-1% 13</span></div><p>
-<span style="font-weight:bold">Attention</span> <span style="font-family:monospace">Rem</span> est surtout utile en mode <span style="font-family:monospace">Maple</span>.<br>
-On tape alors, en mode <span style="font-family:monospace">Maple</span> :
-</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13</span></div><p>
+</p><div class="center"><span style="font-family:monospace">GF(2,k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+k+1,[k,K,a],undef)</span></div><p>
+On tape par exemple :
+</p><div class="center"><span style="font-family:monospace">factor(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">(-2)*x-1</span></div><p>
-On tape, en mode <span style="font-family:monospace">Maple</span> :
-</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1*x</span></div>
+</p><div class="center"><span style="font-family:monospace">(a+1)*(x+a+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
 <hr>
 <a href="cascmd_fr461.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

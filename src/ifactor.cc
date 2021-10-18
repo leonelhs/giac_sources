@@ -947,7 +947,6 @@ namespace giac {
 	  int j=0;
 	  int bi=recheck[k];
 #ifdef USE_GMP_REPLACEMENTS
-	  div_t qr;
 	  if (!small_){
 	    small_=mpz_sizeinbase(z1,2)<32;
 	    if (small_)
@@ -955,10 +954,17 @@ namespace giac {
 	  }
 	  if (small_){
 	    for (++j;;++j){
+#if 0 // def FXCG
+	      if (Z1 % bi)
+		break;
+	      Z1 /= bi;
+#else	      
+	      div_t qr;
 	      qr=div(Z1,bi);
 	      if (qr.rem)
 		break;
 	      Z1=qr.quot;
+#endif
 	    }
 	  }
 	  else {
@@ -1237,7 +1243,7 @@ namespace giac {
     // r0=b=ab*a+1*b
     // r1=a=aa*a+0*b
     int aa(1),ab(0),ar(0);
-#if 0
+#if 0 // def FXCG
     ushort_t q,r;
     while (a){
       q=b/a;
@@ -3246,8 +3252,11 @@ namespace giac {
   // const short int giac_primes[]={2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103,107,109,113,127,131,137,139,149,151,157,163,167,173,179,181,191,193,197,199,211,223,227,229,233,239,241,251,257,263,269,271,277,281,283,293,307,311,313,317,331,337,347,349,353,359,367,373,379,383,389,397,401,409,419,421,431,433,439,443,449,457,461,463,467,479,487,491,499,503,509,521,523,541,547,557,563,569,571,577,587,593,599,601,607,613,617,619,631,641,643,647,653,659,661,673,677,683,691,701,709,719,727,733,739,743,751,757,761,769,773,787,797,809,811,821,823,827,829,839,853,857,859,863,877,881,883,887,907,911,919,929,937,941,947,953,967,971,977,983,991,997};
 
   bool eratosthene(double n,vector<bool> * & v){
-    static vector<bool> erato;
-    v=&erato;
+    static vector<bool> *ptr=0;
+    if (!ptr)
+      ptr=new vector<bool>;
+    vector<bool> &erato=*ptr;
+    v=ptr;
     if (n+1>erato.size()){
       unsigned N=int(n);
       ++N;
@@ -3274,8 +3283,11 @@ namespace giac {
   }
 
   bool eratosthene2(double n,vector<bool> * & v){
-    static vector<bool> erato;
-    v=&erato;
+    static vector<bool> *ptr=0;
+    if (!ptr)
+      ptr=new vector<bool>;
+    vector<bool> &erato=*ptr;
+    v=ptr;
     if (n/2>=erato.size()){
       unsigned N=int(n);
       ++N;
@@ -3357,7 +3369,7 @@ namespace giac {
       return apply(args,_ithprime,contextptr);
     return ithprime(args,contextptr);
   }
-  static define_unary_function_eval (__ithprime,&giac::_ithprime,_ithprime_s);
+  static define_unary_function_eval (__ithprime,&_ithprime,_ithprime_s);
   define_unary_function_ptr5( at_ithprime ,alias_at_ithprime,&__ithprime,0,true);
 
   static const char _nprimes_s []="nprimes";
@@ -3389,7 +3401,7 @@ namespace giac {
       return apply(args,_nprimes,contextptr);
     return nprimes(args,contextptr);
   }
-  static define_unary_function_eval (__nprimes,&giac::_nprimes,_nprimes_s);
+  static define_unary_function_eval (__nprimes,&_nprimes,_nprimes_s);
   define_unary_function_ptr5( at_nprimes ,alias_at_nprimes,&__nprimes,0,true);
 
   bool is_divisible_by(const gen & n,unsigned long a){
@@ -3661,7 +3673,7 @@ namespace giac {
     // First find if |n-k^d|<=1 for d = 2, 3, 5 or 7
     double nd=evalf_double(n,1,contextptr)._DOUBLE_val;
     double nd2=std::floor(std::sqrt(nd)+.5);
-    if (std::abs(1-nd2*nd2/nd)<1e-10){
+    if (absdouble(1-nd2*nd2/nd)<1e-10){
       gen n2=isqrt(n+1);
       if (n==n2*n2){
 	f=ifactors(n2,contextptr);
@@ -3681,7 +3693,7 @@ namespace giac {
     }
     for (int k=3;;){
       nd2=std::floor(std::pow(nd,1./k)+.5);
-      if (std::abs(1-std::pow(nd2,k)/nd)<1e-10){
+      if (absdouble(1-std::pow(nd2,k)/nd)<1e-10){
 	gen n2=_floor(nd2,contextptr),nf=n2*n2;
 	for (int j=2;j<k;j++)
 	  nf=nf*n2;
@@ -3883,11 +3895,11 @@ namespace giac {
     return ifactors(g,0,contextptr);
   }
   static const char _ifactors_s []="ifactors";
-  static define_unary_function_eval (__ifactors,&giac::_ifactors,_ifactors_s);
+  static define_unary_function_eval (__ifactors,&_ifactors,_ifactors_s);
   define_unary_function_ptr5( at_ifactors ,alias_at_ifactors,&__ifactors,0,true);
 
   static const char _facteurs_premiers_s []="facteurs_premiers";
-  static define_unary_function_eval (__facteurs_premiers,&giac::_ifactors,_facteurs_premiers_s);
+  static define_unary_function_eval (__facteurs_premiers,&_ifactors,_facteurs_premiers_s);
   define_unary_function_ptr5( at_facteurs_premiers ,alias_at_facteurs_premiers,&__facteurs_premiers,0,true);
 
   static const char _maple_ifactors_s []="maple_ifactors";
@@ -3897,7 +3909,7 @@ namespace giac {
       return apply(args,_maple_ifactors,contextptr);
     return ifactors(args,1,contextptr);
   }
-  static define_unary_function_eval (__maple_ifactors,&giac::_maple_ifactors,_maple_ifactors_s);
+  static define_unary_function_eval (__maple_ifactors,&_maple_ifactors,_maple_ifactors_s);
   define_unary_function_ptr5( at_maple_ifactors ,alias_at_maple_ifactors,&__maple_ifactors,0,true);
 
   static vecteur in_factors(const gen & gf,GIAC_CONTEXT){
@@ -3983,7 +3995,7 @@ namespace giac {
       return apply(args,_factors,contextptr);
     return factors(args,vx_var,contextptr);
   }
-  static define_unary_function_eval (__factors,&giac::_factors,_factors_s);
+  static define_unary_function_eval (__factors,&_factors,_factors_s);
   define_unary_function_ptr5( at_factors ,alias_at_factors,&__factors,0,true);
 
   static gen ifactors2ifactor(const vecteur & l,bool quote){
@@ -4179,7 +4191,7 @@ namespace giac {
       return euler(args,contextptr);
     return gentypeerr(contextptr);
   }
-  static define_unary_function_eval (__euler,&giac::_euler,_euler_s);
+  static define_unary_function_eval (__euler,&_euler,_euler_s);
   define_unary_function_ptr5( at_euler ,alias_at_euler,&__euler,0,true);
 
   gen pa2b2(const gen & p,GIAC_CONTEXT){

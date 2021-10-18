@@ -601,7 +601,7 @@ namespace giac {
     ptr->b=0;
     ptr->s_dynalloc=true;
     char * c = new char[s.size()+(b?3:1)];
-#ifdef NSPIRE
+#if defined NSPIRE || defined FXCG
     if (b){
       string s1=('`'+s+'`');
       ptr->s=strcpy(c,s1.c_str());
@@ -611,7 +611,7 @@ namespace giac {
 #else
     ptr->s=strcpy(c,b?('`'+s+'`').c_str():s.c_str());
 #endif
-#if defined GIAC_HAS_STO_38 || defined NSPIRE
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined FXCG
     for (;*c;++c){
       if (*c==' ')
 	*c='_';
@@ -631,7 +631,7 @@ namespace giac {
     ptr->b=0;
     ptr->s_dynalloc=true;
     char * c = new char[s.size()+(b?3:1)];
-#ifdef NSPIRE
+#if defined NSPIRE || defined FXCG
     if (b){
       string s1=('`'+s+'`');
       ptr->s=strcpy(c,s1.c_str());
@@ -658,7 +658,7 @@ namespace giac {
     if (strchr(s,' ')){
       ref_count=0;
       string S(s);
-#if defined GIAC_HAS_STO_38 || defined NSPIRE
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined FXCG
       for (unsigned i=0;i<S.size();++i){
 	if (S[i]==' '){
 	  S[i]='_';
@@ -790,6 +790,8 @@ namespace giac {
       tmp.subtype=_GLOBAL__EVAL;
       break;
     case _VECT:
+      if (lidnt(tmp).empty())
+	return g;
       tmp=apply(tmp,globalize);
       break;
     case _SYMB:
@@ -1076,12 +1078,21 @@ namespace giac {
       if (storcl_38!=NULL && !No38Lookup && abs_calc_mode(contextptr)==38 && storcl_38(evaled,NULL,id_name,undef,false,contextptr, NULL, true)) 
 	return true;
       const context * cur=contextptr;
+      int pythoncompat=python_compat(contextptr)?2:0;
       for (;cur->previous;cur=cur->previous){
 	sym_tab::const_iterator it=cur->tabptr->find(id_name);
 	if (it!=cur->tabptr->end()){
 	  if (!level || !it->second.in_eval(level,evaled,contextptr->globalcontextptr))
 	    evaled=it->second;
 	  return true;
+	}
+	if (pythoncompat){
+	  --pythoncompat;
+	  if (!pythoncompat){
+	    while (cur->previous) 
+	      cur=cur->previous;
+	    break;
+	  }
 	}
       }
       // now at global level
@@ -1125,7 +1136,7 @@ namespace giac {
     }
     // look in current directory for a value
     if ( secure_run || (!variables_are_files(contextptr)) 
-#if !defined __MINGW_H && !defined NSPIRE
+#if !defined __MINGW_H && !defined NSPIRE && !defined FXCG
 	 || (access((name()+string(cas_suffixe)).c_str(),R_OK))
 #endif
 	 ){
@@ -1134,7 +1145,7 @@ namespace giac {
 	evaled.subtype=_GLOBAL__EVAL;
       return true;
     }
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
     // set current value
     ifstream inf((name()+string(cas_suffixe)).c_str());
     evaled=read1arg_from_stream(inf,contextptr);

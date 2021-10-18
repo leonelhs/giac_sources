@@ -120,6 +120,7 @@ namespace giac {
 
   // short integer arithmetic
   int absint(int a);
+  double absdouble(double a);
   int giacmin(int a,int b);
   int giacmax(int a,int b);
   int invmod(int n,int modulo);
@@ -561,11 +562,20 @@ namespace giac {
       return __ZINTptr->ref_count;
 #endif
     }
+#ifdef SMARTPTR64
+    gen()  {
+      * ((ulonglong * ) this)=0;
+#ifdef COMPILE_FOR_STABILITY
+      control_c();
+#endif
+    };
+#else
     gen(): type(_INT_),subtype(0),val(0) {
 #ifdef COMPILE_FOR_STABILITY
       control_c();
 #endif
     };
+#endif
 #ifdef SMARTPTR64
     gen(void *ptr,short int subt)  {
 #ifdef COMPILE_FOR_STABILITY
@@ -588,6 +598,22 @@ namespace giac {
       __POINTERptr=new ref_void_pointer(ptr); 
     };
 #endif
+#ifdef SMARTPTR64
+    gen(int i) {
+      * ((ulonglong * ) this)=0;
+      val=i;
+#ifdef COMPILE_FOR_STABILITY
+      control_c();
+#endif
+    };
+    gen(size_t i) {
+      * ((ulonglong * ) this)=0;
+      val=int(i);
+#ifdef COMPILE_FOR_STABILITY
+      control_c();
+#endif
+    };
+#else
     gen(int i): type(_INT_),subtype(0),val(i) {
 #ifdef COMPILE_FOR_STABILITY
       control_c();
@@ -598,6 +624,7 @@ namespace giac {
       control_c();
 #endif
     };
+#endif
     gen(long i);
     gen(longlong i);
     gen(longlong i,int nbits);
@@ -832,7 +859,7 @@ namespace giac {
     vectpoly():std::vector<polynome>::vector() {};
     vectpoly(size_t i,const polynome & p):std::vector<polynome>::vector(i,p) {};
     const char * dbgprint(){  
-#ifndef NSPIRE
+#if !defined(NSPIRE) && !defined(FXCG)
       CERR << *this << std::endl; 
 #endif
       return "Done";
@@ -936,6 +963,7 @@ namespace giac {
   bool is_zero(const gen & a,GIAC_CONTEXT0);
   bool is_exactly_zero(const gen & a);
   bool is_one(const gen & a);
+  inline bool is_exactly_one(const gen & a){ return is_one(a); }
   bool is_minus_one(const gen & a);
   bool is_sq_minus_one(const gen & a);
   bool is_inf(const gen & e);
@@ -956,13 +984,13 @@ namespace giac {
   gen operator + (const gen & a,const gen & b);
   gen & operator_plus_eq (gen & a,const gen & b,GIAC_CONTEXT);
   inline gen & operator += (gen & a,const gen & b){ 
-    return operator_plus_eq(a,b,giac::context0);
+    return operator_plus_eq(a,b,context0);
   }
   Tfraction<gen> operator + (const Tfraction<gen> & a,const Tfraction<gen> & b); // specialization
   gen sym_add (const gen & a,const gen & b,GIAC_CONTEXT);
   gen & operator_minus_eq (gen & a,const gen & b,GIAC_CONTEXT);
   inline gen & operator -= (gen & a,const gen & b){ 
-    return operator_minus_eq(a,b,giac::context0);
+    return operator_minus_eq(a,b,context0);
   }
   gen operator_minus (const gen & a,const gen & b,GIAC_CONTEXT);
   gen operator - (const gen & a,const gen & b);
@@ -989,7 +1017,7 @@ namespace giac {
 
   inline void swapgen(gen & a,gen &b){
 #ifdef SMARTPTR64
-    std::swap<ulonglong>(* (ulonglong *)&a,* (ulonglong *)&b);
+    std::swap(* (ulonglong *)&a,* (ulonglong *)&b);
 #else
     gen tmp=a; a=b; b=tmp;
 #endif
@@ -1046,10 +1074,10 @@ namespace giac {
   bool is_greater(const gen & a,const gen &b,GIAC_CONTEXT);
   bool is_strictly_greater(const gen & a,const gen &b,GIAC_CONTEXT);
   inline bool operator > (const gen & a,const gen & b){
-    return is_strictly_greater(a,b,giac::context0);
+    return is_strictly_greater(a,b,context0);
   }
   inline bool operator < (const gen & a, const gen & b) {
-    return is_strictly_greater (b, a, giac::context0);
+    return is_strictly_greater (b, a, context0);
   }
   bool is_positive(const gen & a,GIAC_CONTEXT);
   bool is_strictly_positive(const gen & a,GIAC_CONTEXT);
@@ -1218,7 +1246,7 @@ namespace giac {
     const char * dbgprint () const { 
       static std::string s;
       s=this->print(0);
-#ifndef NSPIRE
+#if !defined( NSPIRE) && !defined(FXCG)
       CERR << s << std::endl;
 #endif
       return s.c_str();
@@ -1346,7 +1374,7 @@ namespace giac {
     eqwdata(int dxx,int dyy,int xx, int yy,const attributs & a,const gen& gg):g(gg),eqw_attributs(a),x(xx),y(yy),dx(dxx),dy(dyy),selected(false),active(false),hasbaseline(false),modifiable(true),baseline(0) {};
     eqwdata(int dxx,int dyy,int xx, int yy,const attributs & a,const gen& gg,int mybaseline):g(gg),eqw_attributs(a),x(xx),y(yy),dx(dxx),dy(dyy),selected(false),active(false),hasbaseline(true),modifiable(true),baseline(mybaseline) {};
     const char * dbgprint(){ 
-#ifndef NSPIRE
+#if !defined( NSPIRE) && !defined(FXCG)
       CERR << g << ":" << dx<< ","<< dy<< "+"<<x <<","<< y<< "," << baseline << "," << eqw_attributs.fontsize << "," << eqw_attributs.background << "," << eqw_attributs.text_color << std::endl; 
 #endif
       return "Done";
@@ -1637,6 +1665,8 @@ namespace giac {
   extern const alias_type alias_at_normalmod;  
   extern const alias_type alias_at_pointplus;
   extern const alias_type alias_at_pointminus;
+  extern const alias_type alias_at_struct_dot;
+  extern const alias_type alias_at_try_catch;
 
 #ifdef BCD
   inline bool ck_gentobcd(const gen & g,accurate_bcd_float * bcdptr){

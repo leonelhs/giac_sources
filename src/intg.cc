@@ -1904,7 +1904,7 @@ namespace giac {
     return x*atan(x,contextptr)-rdiv(ln(abs(pow(x,2)-1,contextptr),contextptr),plus_two,contextptr);
   }
 
-  static const gen_op_context primitive_tab_primitive[]={giac::int_sin,giac::int_cos,giac::int_tan,giac::int_exp,giac::int_sinh,giac::int_cosh,giac::int_tanh,giac::int_asin,giac::int_acos,giac::int_atan,giac::xln_x,giac::int_asinh,giac::int_acosh,giac::int_atanh};
+  static const gen_op_context primitive_tab_primitive[]={int_sin,int_cos,int_tan,int_exp,int_sinh,int_cosh,int_tanh,int_asin,int_acos,int_atan,xln_x,int_asinh,int_acosh,int_atanh};
 
 #if 0
   static void insure_real_deno(gen & n,gen & d,GIAC_CONTEXT){
@@ -2694,7 +2694,13 @@ namespace giac {
       gen xvar(gen_x);
       return integrate_rational(e,gen_x,remains_to_integrate,xvar,intmode,contextptr);
     }
-
+    bool do_risch=true;
+    for (size_t i=0;i<rvar.size();++i){
+      if (rvar[i].is_symb_of_sommet(at_pow)){
+	do_risch=false;
+	break;
+      }
+    }
     // square roots
     if ( (rvarsize==2) && (rvar.back().type==_SYMB) && (rvar.back()._SYMBptr->sommet==at_pow) ){
       if (integrate_sqrt(e,gen_x,rvar,res,remains_to_integrate,intmode,contextptr)){
@@ -2874,6 +2880,10 @@ namespace giac {
     }
     if (trig_fraction)
       return integrate_trig_fraction(e,gen_x,var,coeff_trig,trig_fraction,remains_to_integrate,intmode,contextptr);
+    if (!do_risch){
+      remains_to_integrate=e;
+      return 0;
+    }
     // finish by calling the Risch algorithm
     if ( (intmode & 2)==0)
       gprintf(step_risch,gettext("Integrate %gen, no heuristic found, running Risch algorithm"),makevecteur(e),contextptr);
@@ -3145,7 +3155,7 @@ namespace giac {
       if (calc_mode(contextptr)!=1)
 	// indefinite integration with constant of integration
 	return _integrate(gen(makevecteur(v[0],v[1]),_SEQ__VECT),contextptr)+v[2];
-      v.insert(v.begin()+1,ggb_var(v.front()));
+      v.insert(v.begin()+1,ggb_var(eval(v.front(),1,contextptr)));
       ++s;
     }
     if (s>6)
@@ -3545,6 +3555,8 @@ namespace giac {
       return symbolic(at_integrate,makesequence(v[0],x,borne_inf,borne_sup));
     }
 #endif
+    if (!lop(res,at_bounded_function).empty())
+      res=undef;
     if (is_undef(res)){
       if (res.type==_STRNG && abs_calc_mode(contextptr)==38)
 	return res;
@@ -3553,7 +3565,7 @@ namespace giac {
     vecteur sp;
     sp=lidnt(evalf(makevecteur(primitive,borne_inf,borne_sup),1,contextptr));
     if (sp.size()>1){
-      *logptr(contextptr) << gettext("No check were made for singular points of antiderivative ")+primitive.print(contextptr)+gettext(" for definite integration in [")+borne_inf.print(contextptr)+","+borne_sup.print(contextptr)+"]" << endl ;
+      *logptr(contextptr) << gettext("No checks were made for singular points of antiderivative ")+primitive.print(contextptr)+gettext(" for definite integration in [")+borne_inf.print(contextptr)+","+borne_sup.print(contextptr)+"]" << endl ;
       sp.clear();
     }
     else {
@@ -3848,7 +3860,9 @@ namespace giac {
 #endif
 
   bool approxint_exact(const gen &f,const gen &x,GIAC_CONTEXT){
-    if (!loptab(Heavisidetosign(when2sign(piecewise2when(f,contextptr),contextptr),contextptr),sign_floor_ceil_round_tab).empty() )
+    if (!lop(f,at_when).empty() || !lop(f,at_piecewise).empty())
+      return false;
+    if (!loptab(Heavisidetosign(f,contextptr),sign_floor_ceil_round_tab).empty() )
       return false;
     if (f.type!=_SYMB || is_constant_wrt(f,x,contextptr))
       return true;
@@ -4912,7 +4926,7 @@ namespace giac {
     gen nstep=evalf_double((fin-debut)/step,1,contextptr);
     if (nstep.type!=_DOUBLE_)
       return gensizeerr(gettext("Bad step"));
-    res.reserve(int(std::abs(nstep._DOUBLE_val))+1);
+    res.reserve(int(absdouble(nstep._DOUBLE_val))+1);
     identificateur x=independant_identificateur(v[0]);
     tmp=quotesubst(v[0],v[1],x,contextptr);
     gen tmpev=eval(tmp,eval_level(contextptr),contextptr);
@@ -4945,7 +4959,7 @@ namespace giac {
       int level=eval_level(contextptr);
       context * newcontextptr= (context *) contextptr;
       vecteur localvar(1,x);
-      int protect=giac::bind(vecteur(1,debut),localvar,newcontextptr);
+      int protect=bind(vecteur(1,debut),localvar,newcontextptr);
       if (is_strictly_greater(debut,fin,newcontextptr)){
 	if (is_positive(step,newcontextptr)) // correct pos step to -
 	  step=-step;
@@ -6000,7 +6014,7 @@ namespace giac {
   static define_unary_function_eval (__fourier_cn,&_fourier_cn,_fourier_cn_s);
   define_unary_function_ptr5( at_fourier_cn ,alias_at_fourier_cn,&__fourier_cn,0,true);
 
-#ifndef USE_GMP_REPLACEMENTS
+#if defined FXCG || !defined USE_GMP_REPLACEMENTS
   // periodic by Luka Marohnić
   // example f:=periodic(x^2,x,-1,1); plot(f,x=-5..5)
   gen _periodic(const gen & g,GIAC_CONTEXT) {

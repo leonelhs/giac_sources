@@ -143,6 +143,9 @@
 /* Define to 1 if you have the `cocoa' library (-lcocoa). */
 /* #undef HAVE_LIBCOCOA */
 
+/* Define to 1 if you have the `curl' library (-lcurl). */
+/* #undef HAVE_LIBCURL */
+
 /* Define to 1 if you have the `dl' library (-ldl). */
 #define HAVE_LIBDL 1
 

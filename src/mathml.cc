@@ -16,7 +16,7 @@
 
 //#include <fcntl.h>
 #include <cstdlib>
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
 #include <cstdio>
 #if defined VISUALC13 && !defined BESTA_OS
 #undef clock
@@ -29,7 +29,7 @@
 #ifdef HAVE_SSTREAM
 #include <sstream>
 #else
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
 #include <strstream>
 #endif
 #endif
@@ -39,7 +39,7 @@ using namespace std;
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
-#if defined GIAC_HAS_STO_38 || defined NSPIRE
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined FXCG
   gen _mathml_error(const gen & g,GIAC_CONTEXT){
     return gensizeerr(gettext("No mathml support"));
   }
@@ -608,22 +608,21 @@ namespace giac {
 
   //---------------- Zone SVG  ---------------
 
-  static void svg_dx_dy(double svg_width, double svg_height, double & dx, double & dy){
+  static void svg_dx(double svg_width, double & dx){
     // calibrage des graduations
-    int p_h=(int) std::log10(svg_height);
-    int p_w=(int) std::log10(svg_width);
-    dx=std::pow(10.0,p_w-1);
-    dy=std::pow(10.0,p_h-1);
+    int p_w= int(std::floor( std::log10(svg_width)));
+    dx=std::pow(10.0,p_w); // dx<=svg_width<=10*dx
     if (dx==0)
       dx=1;
-    if (dy==0)
-      dy=1;
-    if (svg_width/dx>25){
-      dx *= 5;
-    }
-    if (svg_height/dy>25){
-      dy *=5;
-    }
+    if (svg_width/dx<=2)
+      dx/=5;
+    while (svg_width/dx<=5)
+      dx/=2;
+  }
+
+  static void svg_dx_dy(double svg_width, double svg_height, double & dx, double & dy){
+    svg_dx(svg_width,dx);
+    svg_dx(svg_height,dy);
   }
 
   void arc_en_ciel(int k,int & r,int & g,int & b){
@@ -794,8 +793,8 @@ namespace giac {
     // calibrage des graduations
     double  dx, dy;
     svg_dx_dy(svg_width, svg_height, dx, dy);
-    double i_min_x= xmin/dx;
-    double i_min_y= ymin/dy;
+    double i_min_x= std::ceil(xmin/dx);
+    double i_min_y= std::ceil(ymin/dy);
     // check axe=0 inside g
     if (axes_off(g))
       return buffer;
@@ -804,7 +803,7 @@ namespace giac {
     double xthickness((xmax-xmin)/svg_epaisseur1/3),ythickness((ymax-ymin)/svg_epaisseur1/3);
     // double thickness((xmax+ymax-xmin-ymin)/2000);
     
-    for (i=(int) i_min_x; i*dx<xmax; i++){
+    for (i=(int) i_min_x; i*dx<=xmax; i++){
       x=i*dx;
       sprintf(pos,"<line x1=\"%.5g\" y1=\"%.5g\" x2=\"%.5g\" y2=\"%.5g\"",x,ymin,x,ymax);
       pos=buffer+strlen(buffer);
@@ -819,7 +818,7 @@ namespace giac {
       }
       pos=buffer+strlen(buffer);
     }
-    for (i=(int) i_min_y; i*dy<ymax; i++){
+    for (i=(int) i_min_y; i*dy<=ymax; i++){
       y=i*dy;
       sprintf(pos,"<line x1=\"%.5g\" y1=\"%.5g\" x2=\"%.5g\" y2=\"%.5g\"",xmin,y,xmax,y);
       pos=buffer+strlen(buffer);
@@ -836,6 +835,7 @@ namespace giac {
     }
     //cadre
     sprintf(pos,"<rect stroke=\"black\" stroke-width=\"%.5g\" fill=\"none\" x=\"%.5g\" y=\"%.5g\" width=\"%.5g\" height=\"%.5g\" />",2*std::min(xthickness,ythickness),xmin,ymin,svg_width,svg_height);
+    pos=buffer+strlen(buffer);
     // sortie<<"<rect stroke=\""<<"black"<<"\"  stroke-width=\""<<2*thickness<<"\" fill=\"none\" x=\""<<xmin<<"\" y=\""<<ymin<<"\" width=\""<<svg_width<<"\" height=\""<<svg_height<<"\" />"<<endl;  
     // string s=sortie.str();
     return buffer;
@@ -856,8 +856,27 @@ namespace giac {
   string svg_grid(){
     return svg_grid(gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax);
   }
+
+  static string greek(const string & s){
+    size_t l=s.size(),deb=0;
+    string cur;
+    for (size_t i=0;i<l;++i){
+      if (!isalpha(s[i])){
+	cur=cur+idnt2mathml_(s.substr(deb,i-deb));
+	deb=i;
+	for (;i<l;++i){
+	  if (isalpha(s[i]))
+	    break;
+	}
+	cur = cur +s.substr(deb,i-deb);
+	deb=i;
+      }
+    }
+    cur=cur+idnt2mathml_(s.substr(deb,l-deb));
+    return cur;
+  }
   
-  string svg_grid(double xmin,double xmax,double ymin,double ymax){
+  string svg_grid(double xmin,double xmax,double ymin,double ymax,const plot_attr & p){
     double svg_width=xmax-xmin;
     double svg_height=ymax-ymin;
 #ifdef HAVE_SSTREAM
@@ -873,48 +892,70 @@ namespace giac {
     double fontscale=x_scale*.6; // (x_scale<y_scale?y_scale:x_scale)*.3;
     char buffer[16384];
     char * pos=buffer;
+#if 0
     sprintf(pos,"<rect x=\"%.5g\" y=\"%.5g\" height=\"%.5g\" width=\"%.5g\" stroke=\"none\" fill=\"white\"/\n>\n",xmin-x_scale,ymax,y_scale,svg_width+2*x_scale);
     // sortie<<"<rect x=\""<<xmin-x_scale<<"\" y=\""<<ymax<<"\" height=\""<<y_scale<<"\" width=\""<<svg_width+2*x_scale<< "\" stroke=\"none\" fill=\"white\"/>"<<endl;
     pos = buffer+strlen(buffer);
-    sprintf(pos,"<rect x=\"%.5g\" y=\"%.5g\" height=\"%.5g\" width=\"%.5g\" stroke=\"none\" fill=\"white\"/\n>\n",xmin-x_scale,ymin,x_scale,svg_height);
+    sprintf(pos,"<rect x=\"%.5g\" y=\"%.5g\" width=\"%.5g\" height=\"%.5g\" stroke=\"none\" fill=\"white\"/\n>\n",xmin-x_scale,ymin,x_scale,svg_height);
     // sortie<<"<rect x=\""<<xmin-x_scale<<"\" y=\""<<ymin<<"\" width=\""<<x_scale <<"\" height=\""<<svg_height<< "\" stroke=\"none\" fill=\"white\"/>"<<endl;
     pos = buffer+strlen(buffer);
-    sprintf(pos,"<rect x=\"%.5g\" y=\"%.5g\" height=\"%.5g\" width=\"%.5g\" stroke=\"none\" fill=\"white\"/\n>\n",xmax,ymin,x_scale*2,svg_height);
+    sprintf(pos,"<rect x=\"%.5g\" y=\"%.5g\" width=\"%.5g\" height=\"%.5g\" stroke=\"none\" fill=\"white\"/\n>\n",xmax,ymin,x_scale*2,svg_height);
     // sortie<<"<rect x=\""<<xmax<<"\" y=\""<<ymin<<"\" width=\""<<x_scale*2 <<"\" height=\""<<svg_height<<"\" stroke=\"none\" fill=\"white\"/>"<<endl;
     pos = buffer+strlen(buffer);
-    sprintf(pos,"<rect x=\"%.5g\" y=\"%.5g\" height=\"%.5g\" width=\"%.5g\" stroke=\"none\" fill=\"white\"/\n></g>\n",xmin-x_scale,ymin-y_scale,svg_width+2*x_scale,y_scale);
+    sprintf(pos,"<rect x=\"%.5g\" y=\"%.5g\" width=\"%.5g\" height=\"%.5g\" stroke=\"none\" fill=\"white\"/\n></g>\n",xmin-x_scale,ymin-y_scale,svg_width+2*x_scale,y_scale);
     pos = buffer+strlen(buffer);
     // sortie<<"<rect x=\""<<xmin-x_scale<<"\" y=\""<<ymin-y_scale<<"\" width=\""<<svg_width+2*x_scale <<"\" height=\""<<y_scale <<"\" stroke=\"none\" fill=\"white\"/>\n</g>"<<endl;
-
+#else
+    sprintf(pos,"</g>\n");
+    pos = buffer+strlen(buffer);
+#endif
     // calibrage des graduations
     double dx,dy;
     svg_dx_dy(svg_width, svg_height, dx, dy);
     double x,y;
     int i;
-    if ((xmax-xmin)/dx>9)
-      dx*=5;
-    if ((ymax-ymin)/dy>9)
-      dy*=5;
-    double i_min_x= xmin/dx;
-    double i_min_y= ymin/dy;
-    // index des graduations 
+    double i_min_x= std::ceil(xmin/dx);
+    double i_min_y= std::ceil(ymin/dy);
+    bool xleg=p.xlegende.size(),yleg=p.ylegende.size();
+    // For mathml support inside SVG, <foreignObject x="100" y="0" width="250" height="75"> <math xmlns="http://www.w3.org/1998/Math/MathML"> ... </math></foreighObject>
+    // graduations horizontales
+    if (xleg) i_min_x++;
     for (i=(int) i_min_x;  i*dx<=xmax ; ++i){
       x=i*dx;
-      sprintf(pos,"<text x=\"%.5g\" y=\"%.5g\" transform=\"scale(%.5g,%.5g)\" style=\"font-size:%.5gpt; text-anchor:middle;\">%.5g</text>\n",x/fontscale,(ymax+0.6*y_scale)/ratio/fontscale,fontscale,ratio*fontscale,1.0,x);
+      sprintf(pos,"<text x=\"%.5g\" y=\"%.5g\" transform=\"scale(%.5g,%.5g)\" style=\"font-size:%.5gpt; text-anchor:middle;\">%.4g</text>\n",x/fontscale,(ymax+0.6*y_scale)/ratio/fontscale,fontscale,ratio*fontscale,0.67,x);
       pos = buffer+strlen(buffer);
       // sortie << setprecision(5)<<"<text x=\""<<x<<"\" y=\""<<ymax+0.6*y_scale<<"\" ";
       // sortie <<" style=\"font-size:"<<fontscale<<"pt; text-anchor:middle;\"";
       // sortie << ">" << (float)x <<"</text>"<<endl;
     } 
+    if (xleg){
+      sprintf(pos,"<text x=\"%.5g\" y=\"%.5g\" transform=\"scale(%.5g,%.5g)\" style=\"font-size:%.5gpt; text-anchor:start;\">%s</text>\n",xmin/fontscale,(ymax+0.6*y_scale)/ratio/fontscale,fontscale,ratio*fontscale,0.67,greek(p.xlegende).c_str());
+      pos = buffer+strlen(buffer);
+    }
+    // graduations verticales
     for (i=(int) i_min_y;  i*dy<=ymax ; ++i){
       y=i*dy;
-      sprintf(pos,"<text x=\"%.5g\" y=\"%.5g\" transform=\"scale(%.5g,%.5g)\" style=\"font-size:%.5gpt; text-anchor:middle;\">%.5g</text>\n",(xmax+0.3*x_scale)/fontscale,(ymax+ymin-y+0.1*y_scale)/ratio/fontscale,fontscale,ratio*fontscale,1.0,y);
+      if (yleg && y<=ymin+0.15*y_scale) continue;
+      sprintf(pos,"<text x=\"%.5g\" y=\"%.5g\" transform=\"scale(%.5g,%.5g)\" style=\"font-size:%.5gpt; text-anchor:end;\">%.4g</text>\n",(xmax+0.6*x_scale)/fontscale,(ymax+ymin-y+0.1*y_scale)/ratio/fontscale,fontscale,ratio*fontscale,0.67,y);
       pos = buffer+strlen(buffer);
       // sortie<<setprecision(5)<<"<text x=\""<<xmax+0.2*x_scale<<"\" y=\""<<ymax+ymin-y+0.1*y_scale << "\" ";
       // sortie <<"style=\"font-size:"<<fontscale<<"pt\"";
       // sortie << ">" << (float)y<<"</text>"<<endl;
     }
+    if (yleg){
+      sprintf(pos,"<text x=\"%.5g\" y=\"%.5g\" transform=\"scale(%.5g,%.5g)\" style=\"font-size:%.5gpt; text-anchor:end;\">%s</text>\n",(xmax)/fontscale,(ymin+0.0*y_scale)/ratio/fontscale,fontscale,ratio*fontscale,0.67,greek(p.ylegende).c_str());
+      pos = buffer+strlen(buffer);
+    }
+    if (p.title.size()){
+      sprintf(pos,"<text x=\"%.5g\" y=\"%.5g\" transform=\"scale(%.5g,%.5g)\" style=\"font-size:%.5gpt; text-anchor:middle;\">%s</text>\n",(0.5*xmax+0.5*xmin)/fontscale,(ymin+0.0*y_scale)/ratio/fontscale,fontscale,ratio*fontscale,0.67,greek(p.title).c_str());
+      pos = buffer+strlen(buffer);
+    }
     return buffer;
+  }
+
+  string svg_grid(double xmin,double xmax,double ymin,double ymax){
+    plot_attr P;
+    return svg_grid(xmin,xmax,ymin,ymax,P);
   }
 
   static inline string color_string(svg_attribut attr){
@@ -1442,10 +1483,24 @@ namespace giac {
   gen _svg(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type==_VECT && g.subtype==_SEQ__VECT && g._VECTptr->size()>1){
-      if ((*g._VECTptr)[1].type==_STRNG){
-	ofstream of((*g._VECTptr)[1]._STRNGptr->c_str());
-	of << gen2svg(g._VECTptr->front(),contextptr,false) << endl;
+      gen g1=(*g._VECTptr)[1],g0=g._VECTptr->front();
+      if (g1.type==_STRNG){
+	ofstream of(g1._STRNGptr->c_str());
+	of << gen2svg(g0,contextptr,false) << endl;
 	return plus_one;
+      }
+      if (g1==1){
+	string s=gen2svg(g0,contextptr,true);
+	plot_attr p;
+	title_legende(g0,p);
+	double window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax;
+	vector<double> vx,vy,vz;
+	bool ortho=autoscaleg(g,vx,vy,vz,contextptr);
+	autoscaleminmax(vx,window_xmin,window_xmax,false);
+	autoscaleminmax(vy,window_ymin,window_ymax,false /* fullview */);	
+	bool axes=overwrite_viewbox(g,window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax);
+	s = s+ svg_grid(window_xmin,window_xmax,window_ymin,window_ymax,p);
+	return string2gen(s,false);
       }
       return string2gen(gen2svg(g,contextptr,true),false);
     }
@@ -1469,6 +1524,13 @@ namespace giac {
 	return gen2mathml(myfeuille[0],svg,contextptr)+"<mo>(</mo>"+gen2mathml(g,svg,contextptr)+"<mo>)</mo>";
       g+=array_start(contextptr);
       return "<msub><mrow>"+gen2mathml(myfeuille[0],svg,contextptr)+"</mrow><mrow>"+gen2mathml(g,svg,contextptr)+"</mrow></msub>";
+    }
+    if (mysommet==at_program && myfeuille.type==_VECT && myfeuille._VECTptr->size()>=3){
+      const vecteur & v=*myfeuille._VECTptr;
+      gen f=v[2];
+      if (!f.is_symb_of_sommet(at_local)){
+	return gen2mathml(v[0],contextptr)+string("<mo>→</mo>")+gen2mathml(f,contextptr);
+      }
     }
     if (opstring!="/" && (mysommet.ptr()->texprint || mysommet==at_different))  
       return mathml_print(mys,contextptr);
@@ -1505,7 +1567,7 @@ namespace giac {
 	return gen2mathml(myfeuille,contextptr)+"<mtext>!</mtext>";
       }
       if ((mysommet==at_neg) || (mysommet==at_plus)){
-	if (myfeuille.type!=_SYMB) 
+	if (myfeuille.type!=_SYMB || ( (myfeuille._SYMBptr->sommet==at_at || myfeuille._SYMBptr->sommet==at_of)&& myfeuille._SYMBptr->feuille[0].type==_IDNT) ) 
 	  return string("<mo>")+mysommet.ptr()->print(contextptr)+"</mo>"+gen2mathml(myfeuille,contextptr); 
 	if (myfeuille._SYMBptr->sommet==at_inv || myfeuille._SYMBptr->sommet==at_pow )
 	  return string("<mo>")+mysommet.ptr()->print(contextptr)+"</mo>"+gen2mathml(myfeuille,contextptr) ;
@@ -1573,7 +1635,6 @@ namespace giac {
       return s+"<mfrac><mrow>"+prod_vect2mathml_no_bra(num,contextptr)+"</mrow><mrow>"
 	+prod_vect2mathml_no_bra(den,contextptr)+"</mrow></mfrac>";
     } // end if sommet_is_prod
-
     if (mysommet==at_pow){
       if ( (myfeuille._VECTptr->back()==plus_one_half)  ){
     return "<msqrt><mrow>"+gen2mathml(myfeuille._VECTptr->front(),contextptr)+"</mrow></msqrt>";
@@ -1659,7 +1720,8 @@ namespace giac {
     return "<msub><mi>"+s1+"</mi><mn>"+s2+"</mn></msub>";
   }
 
-  static string idnt2mathml_(const string & sorig){
+  string idnt2mathml_(const string & sorig){
+    if (sorig.empty()) return sorig;
     string s0=sorig;
     int n=int(s0.size()),j;
     for (j=n-1;j>=2;--j){
@@ -1720,7 +1782,7 @@ namespace giac {
     return s0;
   }
 
-  static string idnt2mathml(const string & s0){
+  string idnt2mathml(const string & s0){
     int n=int(s0.size()),j;
     for (j=n-1;j>=1;--j){
       if (j<n-1 && s0[j]=='_')

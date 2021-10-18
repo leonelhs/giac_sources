@@ -4,21 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform an equation into a list : equal2list</title>
+<title>Divergence : divergence</title>
 </head>
 <body >
 <a href="cascmd_en524.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en526.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec640" class="subsection">5.53.3  Transform an equation into a list : <span style="font-family:monospace">equal2list</span></h3>
-<p><a id="hevea_default797"></a>
-<span style="font-family:monospace">equal2list</span> takes as argument an equation.<br>
-<span style="font-family:monospace">equal2list</span> returns the list of the two members of this equation.<br>
+<h3 id="sec640" class="subsection">5.52.4  Divergence : <span style="font-family:monospace">divergence</span></h3>
+<p><a id="hevea_default802"></a>
+<span style="font-family:monospace">divergence</span> takes two arguments : a vector 
+field of dimension <span style="font-style:italic">n</span> depending on <span style="font-style:italic">n</span> real variables.<br>
+<span style="font-family:monospace">divergence</span> returns the divergence of <span style="font-style:italic">F</span> that is the sum 
+of the derivative of the <span style="font-style:italic">k</span>-th component with respect
+to the <span style="font-style:italic">k</span>-th variable. For example in dimension <span style="font-style:italic">n</span>=3:
+</p><div class="center">
+<span style="font-family:monospace">divergence([A,B,C],[x,y,z])</span>=∂ <span style="font-style:italic">A</span>/∂ <span style="font-style:italic">x</span>+∂ <span style="font-style:italic">B</span>/∂ <span style="font-style:italic">y</span>+∂ <span style="font-style:italic">C</span>/∂ <span style="font-style:italic">z</span>
+</div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">equal2list(2x-1=3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">divergence([x*z,-y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">y],[x,y,z])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[2*x-1,3]</span></div>
+</p><div class="center"><span style="font-family:monospace">z+-2*y</span></div>
 <hr>
 <a href="cascmd_en524.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

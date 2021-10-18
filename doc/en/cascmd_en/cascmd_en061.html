@@ -4,34 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>First character, middle and end of a string : head mid tail</title>
+<title>Boolean operators : or xor and not</title>
 </head>
 <body >
 <a href="cascmd_en060.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en062.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec91" class="subsection">5.4.2  First character, middle and end of a string : <span style="font-family:monospace">head mid tail</span></h3>
-<p><a id="hevea_default90"></a> <a id="hevea_default91"></a><a id="hevea_default92"></a>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">head(s)</span> returns the first character of the string <span style="font-family:monospace">s</span>.<br>
- Input :
-<div class="center"><span style="font-family:monospace">head("Hello")</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">"H"</span></div>
-</li><li class="li-itemize"><span style="font-family:monospace">mid(s,p,q)</span> returns the part of the string
-<span style="font-family:monospace">s</span> of size <span style="font-family:monospace">q</span> beginning with the character at index <span style="font-family:monospace">p</span>.<br>
-Remember that the first index is 0 in Xcas mode.<br>
+<h3 id="sec90" class="subsection">5.2.3  Boolean operators : <span style="font-family:monospace">or xor and not</span></h3>
+<p><a id="hevea_default84"></a><a id="hevea_default85"></a><a id="hevea_default86"></a><a id="hevea_default87"></a><a id="hevea_default88"></a><a id="hevea_default89"></a><a id="hevea_default90"></a>
+<span style="font-family:monospace">or</span> (or <span style="font-family:monospace">||</span>), <span style="font-family:monospace">xor</span>, <span style="font-family:monospace">and</span> (or <span style="font-family:monospace">&amp;&amp;</span>) are infixed 
+operators.<br>
+<span style="font-family:monospace">not</span> is a prefixed operators.<br>
+If <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are two booleans :<br>
+<span style="font-family:monospace">(a or b)</span> <span style="font-family:monospace">(a || b)</span> returns <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> and
+<span style="font-family:monospace">b</span> are equal to 0 and returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) otherwise.<br>
+<span style="font-family:monospace">(a xor b)</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is equal to 1 and <span style="font-family:monospace">b</span> is
+equal to 0 or if <span style="font-family:monospace">a</span> is equal to 0 and <span style="font-family:monospace">b</span> is equal to 1 and returns 0
+if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 0
+or if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 1 (it is the "exclusive or").<br>
+<span style="font-family:monospace">(a and b)</span> or <span style="font-family:monospace">(a &amp;&amp; b)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span>
+and <span style="font-family:monospace">b</span> are equal to 1 and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) otherwise.<br>
+<span style="font-family:monospace">not(a)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span> is equal to 0 (or 
+<span style="font-family:monospace">false</span>), and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> is equal to 1 (or 
+<span style="font-family:monospace">true</span>).<br>
 Input :
-<div class="center"><span style="font-family:monospace">mid("Hello",1,3)</span></div>
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 or 1&lt;0</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">"ell"</span></div>
-</li><li class="li-itemize"><span style="font-family:monospace">tail(s)</span> returns the string <span style="font-family:monospace">s</span> without its first character.<br>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 Input :
-<div class="center"><span style="font-family:monospace">tail("Hello")</span></div>
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 xor 1&gt;0</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">"ello"</span></div>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">0</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">1&gt;=0 and 1&gt;0</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">not(0==0)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">0</span></div>
 <hr>
 <a href="cascmd_en060.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

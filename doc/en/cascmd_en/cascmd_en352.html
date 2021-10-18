@@ -4,28 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Division by increasing power order : divpc</title>
+<title>Euclidean remainder: Rem</title>
 </head>
 <body >
 <a href="cascmd_en351.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en353.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec431" class="subsection">5.34.1  Division by increasing power order : <span style="font-family:monospace">divpc</span></h3>
-<p><a id="hevea_default536"></a>
-<span style="font-family:monospace">divpc</span> takes three arguments : two polynomials
-expressions <span style="font-style:italic">A</span>, <span style="font-style:italic">B</span> depending on <span style="font-style:italic">x</span>,
-such that the constant term of <span style="font-style:italic">B</span> is not 0, and an integer <span style="font-style:italic">n</span>.<br>
-<span style="font-family:monospace">divpc</span> returns the quotient <span style="font-style:italic">Q</span> of the division of <span style="font-style:italic">A</span> by <span style="font-style:italic">B</span> 
-by increasing power order, with <span style="font-family:monospace">degree</span>(<span style="font-style:italic">Q</span>)≤ <span style="font-style:italic">n</span> or  <span style="font-style:italic">Q</span>=0.
-In other words, <span style="font-style:italic">Q</span> is the Taylor expansion of order <span style="font-style:italic">n</span> of
- <span style="font-style:italic">A</span>/<span style="font-style:italic">B</span> in the vicinity of <span style="font-style:italic">x</span>=0. <br>
-Input :
-</p><div class="center"><span style="font-family:monospace">divpc(1+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,1+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,5)</span></div><p>
+<h3 id="sec431" class="subsection">5.33.2  Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
+<p><a id="hevea_default539"></a>
+<span style="font-family:monospace">Rem</span> is the inert form of <span style="font-family:monospace">rem</span>.<br>
+<span style="font-family:monospace">Rem</span> returns the euclidean remainder between two polynomials
+without evaluation. 
+It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to compute
+the euclidean remainder of the division of two
+polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
+Input in <span style="font-family:monospace">Xcas</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1) mod 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1</span></div><p>
-Note that this command does not work on polynomials written
-as a list of coefficients.</p>
+</p><div class="center"><span style="font-family:monospace">rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
+you need to <span style="font-family:monospace">eval(ans())</span> to get :
+</p><div class="center"><span style="font-family:monospace">(-2%13)*x+-1%13</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">(-2)*x-1</span></div><p>
+Input in <span style="font-family:monospace">Maple</span> mode :
+</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1*x</span></div>
 <hr>
 <a href="cascmd_en351.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

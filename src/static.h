@@ -136,12 +136,16 @@ namespace giac {
 #define at_vertices_abc at_sommets_abc
 #define at_vertices_abca at_sommets_abca
 
-#include "static_extern.h"
 
 #endif // STATIC_BUILTIN_LEXER_FUNCTIONS
+
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // ndef NO_NAMESPACE_GIAC
+
+#ifdef  STATIC_BUILTIN_LEXER_FUNCTIONS
+#include "static_extern.h"
+#endif // STATIC_BUILTIN_LEXER_FUNCTIONS
 
 #endif // _STATIC_H

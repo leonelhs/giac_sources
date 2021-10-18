@@ -4,35 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The integer Euclidean quotient : iquo intDiv</title>
+<title>GCD of a list of integers : lgcd</title>
 </head>
 <body >
 <a href="cascmd_en079.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en081.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec112" class="subsection">5.6.10  The integer Euclidean quotient : <span style="font-family:monospace">iquo intDiv</span></h3>
-<p><a id="hevea_default116"></a><a id="hevea_default117"></a>
-<span style="font-family:monospace">iquo</span> (or <span style="font-family:monospace">intDiv</span>) returns the integer quotient <span style="font-style:italic">q</span> of the
-Euclidean division of two integers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> given as arguments. 
-(<span style="font-style:italic">a</span>=<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>+<span style="font-style:italic">r</span> with 0≤ <span style="font-style:italic">r</span>&lt; <span style="font-style:italic">b</span>).<br>
-For Gaussian integers, we choose <span style="font-style:italic">q</span> so that <span style="font-style:italic">b</span>*<span style="font-style:italic">q</span> is as near by <span style="font-style:italic">a</span> as 
-possible and it can be proved that <span style="font-style:italic">r</span> may be chosen so that 
-|<span style="font-style:italic">r</span>|<sup>2</sup> ≤ |<span style="font-style:italic">b</span>|<sup>2</sup>/2.<br>
+<h3 id="sec113" class="subsection">5.6.4  GCD of a list of integers : <span style="font-family:monospace">lgcd</span></h3>
+<p><a id="hevea_default118"></a>
+<span style="font-family:monospace">lgcd</span> has a list of integers (or of a list of polynomials)
+as argument.<br>
+<span style="font-family:monospace">lgcd</span> returns the <span style="font-family:monospace">gcd</span> of all integers of the list (or
+the <span style="font-family:monospace">gcd</span> of all polynomials of the list).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">iquo(148,5) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">lgcd([18,15,21,36])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">29</span></div><p>
-<span style="font-family:monospace">iquo</span> works with integers or with Gaussian integers.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">iquo(factorial(148),factorial(145)+2 )</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">3176375</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">iquo(25+12*i,5+7*i) </span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">3-2*i</span></div><p>
-Here <span style="font-style:italic">a</span>−<span style="font-style:italic">b</span>*<span style="font-style:italic">q</span>=−4+<span style="font-style:italic">i</span> and |−4+<span style="font-style:italic">i</span>|<sup>2</sup>=17&lt;|5+7*<span style="font-style:italic">i</span>|<sup>2</sup>/2=74/2=37</p>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p> 
+<span style="font-weight:bold">Remark</span><br>
+<span style="font-family:monospace">lgcd</span> does not accept two lists (even if they have the same size)
+as arguments.</p>
 <hr>
 <a href="cascmd_en079.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

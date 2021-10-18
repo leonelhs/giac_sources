@@ -4,31 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Factorization in ℤ/pℤ[x] : Factor</title>
+<title>Row reduction to echelon form in ℤ/pℤ : rref</title>
 </head>
 <body >
 <a href="cascmd_en347.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en349.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec426" class="subsection">5.33.4  Factorization in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>] : <span style="font-family:monospace">Factor</span></h3>
-<p><a id="hevea_default532"></a>
-<span style="font-family:monospace">Factor</span> is the inert form of <span style="font-family:monospace">factor</span>.<br>
-<span style="font-family:monospace">Factor</span> takes as argument a polynomial.<br>
-<span style="font-family:monospace">Factor</span> returns <span style="font-family:monospace">factor</span> without evaluation. 
-It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to 
-factorize a polynomial with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ
-where <span style="font-style:italic">p</span> must be prime.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode :
-</p><div class="center"><span style="font-family:monospace">Factor((-3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-5*x+4)%13)</span></div><p>
+<h3 id="sec426" class="subsection">5.32.17  Row reduction to echelon form in ℤ/<span style="font-style:italic">p</span>ℤ : <span style="font-family:monospace">rref</span></h3>
+<p><a id="hevea_default533"></a><a id="sec:rrefm"></a>
+<span style="font-family:monospace">rref</span> finds the row reduction to echelon form of
+a matrix with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ. </p><p>This may be used
+to solve a linear system of equations with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ 
+by rewriting it in matrix form (see also <a href="cascmd_en538.html#sec%3Arref">5.54.3</a>) :
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
+<span style="font-family:monospace">rref</span> takes as argument the augmented matrix 
+of the system (the matrix obtained by augmenting matrix <span style="font-family:monospace">A</span> to the 
+right with the column vector <span style="font-family:monospace">B</span>).<br>
+<span style="font-family:monospace">rref</span> returns a matrix <span style="font-family:monospace">[A1,B1]</span> : <span style="font-family:monospace">A1</span> has 1 on
+its principal diagonal, and zeros outside, and the
+solutions in ℤ/<span style="font-style:italic">p</span>ℤ, of :
+</p><div class="center"><span style="font-family:monospace">A1*X=B1</span></div><p> 
+are the same as the solutions of:
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
+Example, solve in ℤ/13ℤ
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >   <span style="font-style:italic">x</span> +   2 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >9 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3 · <span style="font-style:italic">x</span> +10 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >0 </td></tr>
+</table></td></tr>
+</table><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">rref([[1, 2, 9]%13,[3,10,0]%13])</span></div><p> 
+or :
+</p><div class="center"><span style="font-family:monospace">rref([[1, 2, 9],[3,10,0]])%13</span></div><p> 
 Output :
-</p><div class="center"><span style="font-family:monospace">factor((-3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-5*x+4)%13)</span></div><p>
-you need to <span style="font-family:monospace">eval(ans())</span> to get :
-</p><div class="center"><span style="font-family:monospace">((1%13)*x+-6%13)*((-3%13)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-5%13)</span></div><p>
-Input in <span style="font-family:monospace">Maple</span> mode :
-</p><div class="center"><span style="font-family:monospace">Factor(-3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-5*x+4) mod 13</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">-3*(1*x-6)*(1*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6)</span></div>
+</p><div class="center"><span style="font-family:monospace">[[1%13,0%13,3%13],[0%13,1%13,3%13]]</span></div><p> 
+hence <span style="font-family:monospace">x=3%13</span> and <span style="font-family:monospace">y=3%13</span>.</p>
 <hr>
 <a href="cascmd_en347.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

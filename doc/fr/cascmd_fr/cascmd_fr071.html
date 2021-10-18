@@ -12,7 +12,7 @@
 <a href="cascmd_fr072.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
 <h3 id="sec97" class="subsection">2.5.8  Faire une hypothèse suppl’ementaire sur une variable : <span style="font-family:monospace">additionally</span></h3>
-<p><a id="hevea_default70"></a><a id="hevea_default71"></a>
+<p><a id="hevea_default72"></a><a id="hevea_default73"></a>
 <span style="font-family:monospace">additionally</span> permet de faire des hypothèses supplémentaires
 sur une variable. En effet, si on fait une autre hypothèse avec <span style="font-family:monospace">assume</span>, 
 l’ancienne hypothèse est effacée. Donc, si vous voulez rajoutez une 
@@ -27,17 +27,15 @@ On est obligé d’utiliser
 <span style="font-family:monospace">additionally</span> pour spécifier le type de la variable et une plage de 
 valeurs pour cette variable.<br>
 On tape pour dire que <span style="font-family:monospace">b</span> est un entier supérieur strictement à 5 :
-</p><div class="center"><span style="font-family:monospace">assume(b,integer);</span></div><div class="center"><span style="font-family:monospace">additionally(b&gt;5)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">assume(b,integer);additionally(b&gt;5);</span></div><p>
 ou bien 
-</p><div class="center"><span style="font-family:monospace">assume(b,integer);</span></div><div class="center"><span style="font-family:monospace">assume(b&gt;5,additionally)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">assume(b,integer);assume(b&gt;5,additionally);</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">DOM_INT,b</span></div><p>
-puis
-</p><div class="center"><span style="font-family:monospace">b</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">assume(b)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">integer,b</span></div><p>
+puis, on tape :
+</p><div class="center"><span style="font-family:monospace">about(b)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[DOM_INT]</span></div>
+</p><div class="center"><span style="font-family:monospace">assume[integer,[[5,+infinity]],[5]]</span></div>
 <hr>
 <a href="cascmd_fr070.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

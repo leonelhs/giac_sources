@@ -99,7 +99,7 @@ namespace giac {
       Pm=Pm1+am*Pm2;
       Qm=Qm1+am*Qm2;
       // cerr << Pm/Qm << " " << Pm2/Qm2 << endl;
-      if (std::abs(Pm/Qm-Pm2/Qm2)<1e-16*std::abs(Pm/Qm)){
+      if (absdouble(Pm/Qm-Pm2/Qm2)<1e-16*absdouble(Pm/Qm)){
 	double res=Pm/Qm;
 #if 0 // def VISUALC // no lgamma available
 	gen r=res/a*std::pow(p,a)*std::pow(1-p,b-1);
@@ -114,10 +114,10 @@ namespace giac {
       }	
       Pm2=Pm1; Pm1=Pm;
       Qm2=Qm1; Qm1=Qm;
-      if (std::abs(Pm)>deux){
+      if (absdouble(Pm)>deux){
 	Pm2 *= invdeux; Qm2 *= invdeux; Pm1 *= invdeux; Qm1 *= invdeux;
       }
-      if (std::abs(Pm)<invdeux){
+      if (absdouble(Pm)<invdeux){
 	Pm2 *= deux; Qm2 *= deux; Pm1 *= deux; Qm1 *= deux;
       }
     }
@@ -2453,7 +2453,7 @@ namespace giac {
 	for (vector<giac_double>::const_iterator it=X.begin();it!=X.end();){
 	  fback=double(*it)-1;
 	  gen prevtmp=evalf_double(f,1,contextptr);
-	  dcur=std::abs(prevtmp._DOUBLE_val-cumulx);
+	  dcur=absdouble(prevtmp._DOUBLE_val-cumulx);
 	  if (dcur>d)
 	    d=dcur;
 	  fback=double(*it);
@@ -2462,7 +2462,7 @@ namespace giac {
 	  for (++it;it!=X.end() && double(*it)==fback;++it)
 	    ++i;
 	  cumulx += i*invn;
-	  dcur=std::abs(tmp._DOUBLE_val-cumulx);
+	  dcur=absdouble(tmp._DOUBLE_val-cumulx);
 	  if (dcur>d)
 	    d=dcur;
 	}
@@ -2474,11 +2474,11 @@ namespace giac {
 	gen tmp=evalf_double(f,1,contextptr);
 	if (tmp.type!=_DOUBLE_)
 	  return gensizeerr(contextptr);
-	dcur=std::abs(tmp._DOUBLE_val-cumulx);
+	dcur=absdouble(tmp._DOUBLE_val-cumulx);
 	if (dcur>d)
 	  d=dcur;
 	cumulx += invn;
-	dcur=std::abs(tmp._DOUBLE_val-cumulx);
+	dcur=absdouble(tmp._DOUBLE_val-cumulx);
 	if (dcur>d)
 	  d=dcur;
       }
@@ -2510,7 +2510,7 @@ namespace giac {
 	  ++i;
 	}
       }
-      dcur=std::abs(cumulx-cumuly);
+      dcur=absdouble(cumulx-cumuly);
       if (dcur>d)
 	d=dcur;
     }
@@ -3357,10 +3357,12 @@ namespace giac {
   }
 
   gen distribution(int nd){
-    static vecteur d_static(makevecteur(at_normald,at_binomial,at_negbinomial,at_poisson,at_studentd,at_fisherd,at_cauchyd,at_weibulld,at_betad,at_gammad,at_chisquared,at_geometric,at_uniformd,at_exponentiald));
-    if (nd<=0 || nd>int(d_static.size()))
+    static vecteur * d_static=0;
+    if (!d_static)
+      d_static=new vecteur(makevecteur(at_normald,at_binomial,at_negbinomial,at_poisson,at_studentd,at_fisherd,at_cauchyd,at_weibulld,at_betad,at_gammad,at_chisquared,at_geometric,at_uniformd,at_exponentiald));
+    if (nd<=0 || nd>int(d_static->size()))
       return undef;
-    return d_static[nd-1];
+    return (*d_static)[nd-1];
   }
 
   int distrib_nargs(int nd){
@@ -3414,17 +3416,21 @@ namespace giac {
   define_unary_function_ptr5( at_mgf ,alias_at_mgf,&__mgf,0,true);
 
   gen icdf(int n){
-    static vecteur icdf_static(makevecteur(at_normald_icdf,at_binomial_icdf,undef,at_poisson_icdf,at_studentd_icdf,at_fisherd_icdf,at_cauchyd_icdf,at_weibulld_icdf,at_betad_icdf,at_gammad_icdf,at_chisquared_icdf,at_geometric_icdf,at_uniformd_icdf,at_exponentiald_icdf));
-    if (n<=0 || n>int(icdf_static.size()))
+    static vecteur * icdf_static=0;
+    if (!icdf_static)
+      icdf_static=new vecteur(makevecteur(at_normald_icdf,at_binomial_icdf,undef,at_poisson_icdf,at_studentd_icdf,at_fisherd_icdf,at_cauchyd_icdf,at_weibulld_icdf,at_betad_icdf,at_gammad_icdf,at_chisquared_icdf,at_geometric_icdf,at_uniformd_icdf,at_exponentiald_icdf));
+    if (n<=0 || n>int(icdf_static->size()))
       return undef;
-    return icdf_static[n-1];
+    return (*icdf_static)[n-1];
   }
 
   gen cdf(int n){
-    static vecteur cdf_static(makevecteur(at_normald_cdf,at_binomial_cdf,undef,at_poisson_cdf,at_studentd_cdf,at_fisherd_cdf,at_cauchyd_cdf,at_weibulld_cdf,at_betad_cdf,at_gammad_cdf,at_chisquared_cdf,at_geometric_cdf,at_uniformd_cdf,at_exponentiald_cdf));
-    if (n<=0 || n>int(cdf_static.size()))
+    static vecteur * cdf_static=0;
+    if (!cdf_static)
+      cdf_static=new vecteur(makevecteur(at_normald_cdf,at_binomial_cdf,undef,at_poisson_cdf,at_studentd_cdf,at_fisherd_cdf,at_cauchyd_cdf,at_weibulld_cdf,at_betad_cdf,at_gammad_cdf,at_chisquared_cdf,at_geometric_cdf,at_uniformd_cdf,at_exponentiald_cdf));
+    if (n<=0 || n>int(cdf_static->size()))
       return undef;
-    return cdf_static[n-1];
+    return (*cdf_static)[n-1];
   }
 
   // set a and b to the boundaries of the support of distrib number nd
@@ -3638,9 +3644,9 @@ namespace giac {
 
   // kind=0: BesselI, =1 BesselJ, =2 BesselK, =3 BesselY
   gen Bessel(const gen & g,int kind,GIAC_CONTEXT){
-#ifdef BESTA_OS
+#if defined BESTA_OS || defined FXCG
     return gensizeerr(gettext("Bessel not implemented"));
-#endif
+#else
     int n;
     gen a,x;
     if (!find_n_x(g,n,x,a))
@@ -3670,6 +3676,7 @@ namespace giac {
       return symbolic(at_BesselY,gn);
     }
     return gensizeerr(gettext("Bessel"));
+#endif
   }
   gen bessel(const gen & g,int kind,GIAC_CONTEXT){
     if (g.type==_VECT && g._VECTptr->size()>=2)

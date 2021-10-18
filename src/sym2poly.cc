@@ -170,7 +170,7 @@ namespace giac {
     return l;
   }
   static const char _lvar_s []="lvar";
-  static define_unary_function_eval (__lvar,&giac::cklvar,_lvar_s);
+  static define_unary_function_eval (__lvar,&cklvar,_lvar_s);
   define_unary_function_ptr5( at_lvar ,alias_at_lvar,&__lvar,0,true);
 
   static bool is_algebraic_EXTension(const gen & e){
@@ -365,7 +365,7 @@ namespace giac {
     return l;
   }
   static const char _algvar_s []="algvar";
-  static define_unary_function_eval (__algvar,&giac::ckalgvar,_algvar_s);
+  static define_unary_function_eval (__algvar,&ckalgvar,_algvar_s);
   define_unary_function_ptr5( at_algvar ,alias_at_algvar,&__algvar,0,true);
 
   
@@ -1961,7 +1961,7 @@ namespace giac {
 
   gen r2sym(const polynome & p, const vecteur & l,GIAC_CONTEXT){
     if (p.coord.empty())
-      return zero;
+      return 0;
     if (p.dim==0){
       return p.constant_term();
     }
@@ -2535,7 +2535,7 @@ namespace giac {
     return res;
   }
 
-  static gen in_normalize_sqrt(const gen & e,vecteur & L,GIAC_CONTEXT){
+  static gen in_normalize_sqrt(const gen & e,vecteur & L,bool keep_abs,GIAC_CONTEXT){
     if (complex_mode(contextptr) || has_i(e)) 
       return e;
     // remove multiple factors inside sqrt
@@ -2595,7 +2595,10 @@ namespace giac {
 	zint2simpldoublpos(nd,simpl,doubl,pos,2,contextptr);
 	if (!pos) simpl=-simpl;
 	lin.push_back(*it);
-	lout.push_back(pow(doubl/abs(r2e(den,lv,contextptr),contextptr),expnum,contextptr)*pow(simpl*out,nover2,contextptr));
+	gen tmparg=r2e(den,lv,contextptr);
+	if (keep_abs)
+	  tmparg=abs(tmparg,contextptr);
+	lout.push_back(pow(doubl/tmparg,expnum,contextptr)*pow(simpl*out,nover2,contextptr));
 	continue;
       }
       if (nd.type!=_POLY)
@@ -2616,14 +2619,19 @@ namespace giac {
       if (!pos) simpl=-simpl;
       simpl=r2e(polynome(simpl,nd._POLYptr->dim),lv,contextptr); // if simpl is not an integer
       doubl=r2e(polynome(doubl,nd._POLYptr->dim),lv,contextptr); // if doubl is not an integer
-      lout.push_back(pow(simpl*out,nover2,contextptr)*pow(doubl,expnum,contextptr)*pow(recursive_normal(r2e(s,lv,contextptr),contextptr),nover2,contextptr)*pow(abs(r2e(d,lv,contextptr),contextptr),expnum,contextptr)*pow(abs(r2e(den,lv,contextptr),contextptr),-expnum,contextptr));
+      gen tmparg=r2e(den,lv,contextptr),tmpd=r2e(d,lv,contextptr);
+      if (keep_abs){
+	tmparg=abs(tmparg,contextptr);
+	tmpd=abs(tmpd,contextptr);
+      }
+      lout.push_back(pow(simpl*out,nover2,contextptr)*pow(doubl,expnum,contextptr)*pow(recursive_normal(r2e(s,lv,contextptr),contextptr),nover2,contextptr)*pow(tmpd,expnum,contextptr)*pow(tmparg,-expnum,contextptr));
     }
     return subst(e,lin,lout,false,contextptr);
   }
 
-  gen normalize_sqrt(const gen & e,GIAC_CONTEXT){
+  gen normalize_sqrt(const gen & e,GIAC_CONTEXT,bool keep_abs){
     vecteur L;
-    return in_normalize_sqrt(e,L,contextptr);
+    return in_normalize_sqrt(e,L,keep_abs,contextptr);
   }
 
   static bool has_embedded_fractions(const gen & g){
@@ -2687,6 +2695,13 @@ namespace giac {
     return do_mult_i(g._EXTptr->_VECTptr->front());
   }
 
+  static void purgeassumelist(const vecteur & L,GIAC_CONTEXT){
+    for (unsigned k=0;k<L.size();++k){
+      gen Lk=ggb_var(L[k]);
+      purgenoassume(Lk,contextptr);
+    }
+  }
+
   gen normal(const gen & e,bool distribute_div,GIAC_CONTEXT){
     if (has_num_coeff(e))
       return ratnormal(e,contextptr);
@@ -2743,11 +2758,11 @@ namespace giac {
     gen ee,tmp;
     matrice l;
     fraction f(0);
+    vecteur L;
 #ifndef NO_STDEXCEPT
     try {
 #endif
-      vecteur L;
-      ee=in_normalize_sqrt(e,L,contextptr);
+      ee=in_normalize_sqrt(e,L,true,contextptr);
       l=alg_lvar(ee);
       sort0(l);
       if (!L.empty() && debug_infolevel)
@@ -2757,11 +2772,8 @@ namespace giac {
       for (unsigned k=0;k<L.size();++k)
 	giac_assume(L[k],contextptr);
       tmp=e2r(ee,l,contextptr);
-      for (unsigned k=0;k<L.size();++k){
-	gen Lk=ggb_var(L[k]);
-	purgenoassume(Lk,contextptr);
-      }
       if (is_undef(tmp)){
+	purgeassumelist(L,contextptr);
 #ifdef GIAC_GGB
 	return undef;
 #endif
@@ -2779,6 +2791,7 @@ namespace giac {
     catch (std::runtime_error & err){
       last_evaled_argptr(contextptr)=NULL;
       CERR << err.what() << endl;
+      purgeassumelist(L,contextptr);
       return e;
     }
 #endif
@@ -2801,10 +2814,16 @@ namespace giac {
       f.den = cst_i*f.den;
     }
     // search for embedded fractions
-    if (has_embedded_fractions(f.num) || has_embedded_fractions(f.den))
-      return normal(r2sym(f,l,contextptr),distribute_div,contextptr);
-    if (distribute_div && f.num.type==_POLY && f.num._POLYptr->dim && f.den.type<_POLY)
-      return r2sym(gen(*f.num._POLYptr/f.den),l,contextptr);
+    if (has_embedded_fractions(f.num) || has_embedded_fractions(f.den)){
+      gen res=r2sym(f,l,contextptr);
+      purgeassumelist(L,contextptr);
+      return normal(res,distribute_div,contextptr);
+    }
+    if (distribute_div && f.num.type==_POLY && f.num._POLYptr->dim && f.den.type<_POLY){
+      gen res=r2sym(gen(*f.num._POLYptr/f.den),l,contextptr);
+      purgeassumelist(L,contextptr);
+      return res;
+    }
     if (!distribute_div){
       if (f.den.type==_POLY && is_positive(-f.den._POLYptr->coord.front())){
 	f.num=-f.num;
@@ -2812,10 +2831,13 @@ namespace giac {
       }
       if (f.num.type==_POLY && !f.num._POLYptr->coord.empty() && is_positive(-f.num._POLYptr->coord.front())){
 	f.num=-f.num;
-	return symbolic(at_neg,r2sym(f,l,contextptr));
+	gen res=r2sym(f,l,contextptr);
+	purgeassumelist(L,contextptr);	
+	return symbolic(at_neg,res);
       }
     }
     ee=r2sym(f,l,contextptr);
+    purgeassumelist(L,contextptr);
     if (!is_one(f.den) && is_integer(f.den)){
       ee=ratnormal(ratnormal(ee,contextptr),contextptr); // first ratnormal will expand sqrt()^
       // second will remove them
@@ -2843,6 +2865,8 @@ namespace giac {
     if (g.type==_VECT){
       const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
       for (;it!=itend;++it){
+	if (it->type==_STRNG)
+	  return 0;
 	int res=is_program(*it);
 	if (res)
 	  return res;
@@ -3592,7 +3616,7 @@ namespace giac {
   symbolic symb_e2r(const gen & arg1,const gen & arg2){
     return symbolic(at_e2r,makesequence(arg1,arg2));
   }
-  static define_unary_function_eval (__e2r,&giac::_e2r,_e2r_s);
+  static define_unary_function_eval (__e2r,&_e2r,_e2r_s);
   define_unary_function_ptr5( at_e2r ,alias_at_e2r,&__e2r,0,true);
 
   gen _r2e(const gen & args,GIAC_CONTEXT){
@@ -3619,21 +3643,21 @@ namespace giac {
   symbolic symb_r2e(const gen & arg1,const gen & arg2){
     return symbolic(at_r2e,makesequence(arg1,arg2));
   }
-  static define_unary_function_eval (__r2e,&giac::_r2e,_r2e_s);
+  static define_unary_function_eval (__r2e,&_r2e,_r2e_s);
   define_unary_function_ptr5( at_r2e ,alias_at_r2e,&__r2e,0,true);
 
   static const char _normal_s []="normal";
   symbolic symb_normal(const gen & args){
     return symbolic(at_normal,args);
   }
-  static define_unary_function_eval (__normal,(const gen_op_context)giac::_recursive_normal,_normal_s);
+  static define_unary_function_eval (__normal,(const gen_op_context)_recursive_normal,_normal_s);
   define_unary_function_ptr5( at_normal ,alias_at_normal,&__normal,0,true);
 
   static const char _non_recursive_normal_s []="non_recursive_normal";
   symbolic symb_non_recursive_normal(const gen & args){
     return symbolic(at_non_recursive_normal,args);
   }
-  static define_unary_function_eval (__non_recursive_normal,(const gen_op_context)giac::normal,_non_recursive_normal_s);
+  static define_unary_function_eval (__non_recursive_normal,(const gen_op_context)normal,_non_recursive_normal_s);
   define_unary_function_ptr5( at_non_recursive_normal ,alias_at_non_recursive_normal,&__non_recursive_normal,0,true);
 
 
@@ -3662,7 +3686,7 @@ namespace giac {
       res=factorcollect(args,withsqrt(contextptr),contextptr);
     return res;
   }
-  static define_unary_function_eval (__factor,&giac::_factor,_factor_s);
+  static define_unary_function_eval (__factor,&_factor,_factor_s);
   define_unary_function_ptr5( at_factor ,alias_at_factor,&__factor,0,true);
 
   static const char _collect_s []="collect";
@@ -3684,7 +3708,7 @@ namespace giac {
     res=factorcollect(args,false,contextptr);
     return res;
   }
-  static define_unary_function_eval (__collect,&giac::_collect,_collect_s);
+  static define_unary_function_eval (__collect,&_collect,_collect_s);
   define_unary_function_ptr5( at_collect ,alias_at_collect,&__collect,0,true);
 
   static const char _partfrac_s []="partfrac";
@@ -3705,7 +3729,7 @@ namespace giac {
       return gentoomanyargs(_partfrac_s);
     return partfrac(args._VECTptr->front(),args._VECTptr->back(),withsqrt(contextptr),contextptr);
   }
-  static define_unary_function_eval (__partfrac,&giac::_partfrac,_partfrac_s);
+  static define_unary_function_eval (__partfrac,&_partfrac,_partfrac_s);
   define_unary_function_ptr5( at_partfrac ,alias_at_partfrac,&__partfrac,0,true);
 
   static const char _resultant_s []="resultant";
@@ -3949,7 +3973,7 @@ namespace giac {
       return f2;
     return 1;
   }
-  static define_unary_function_eval (__resultant,&giac::_resultant,_resultant_s);
+  static define_unary_function_eval (__resultant,&_resultant,_resultant_s);
   define_unary_function_ptr5( at_resultant ,alias_at_resultant,&__resultant,0,true);
 
   /* I/O on stream */
@@ -4006,6 +4030,9 @@ namespace giac {
   }
 
   void readargs(int ARGC, char *ARGV[],vecteur & args,GIAC_CONTEXT){
+#ifdef FXCG
+    return;
+#else
     // first initialize random generator for factorizations
     srand(0);
     //srand(time(NULL));
@@ -4048,6 +4075,7 @@ namespace giac {
     }
     if (args.empty())
       args.push_back(gentypeerr(contextptr));
+#endif
   }
 
 #if 0

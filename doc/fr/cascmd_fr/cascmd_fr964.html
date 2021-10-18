@@ -4,64 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>La longueur d’un segment et son affichage : distanceat distanceen et distanceatraw distanceenbrut</title>
+<title>L’équation cartésienne d’un objet géométrique : equation</title>
 </head>
 <body >
 <a href="cascmd_fr963.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr965.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1174" class="subsection">10.16.3  La longueur d’un segment et son affichage : <span style="font-family:monospace">distanceat distanceen</span> et <span style="font-family:monospace">distanceatraw distanceenbrut</span></h3>
-<p><a id="hevea_default1873"></a><a id="hevea_default1874"></a><a id="hevea_default1875"></a><a id="hevea_default1876"></a>
-<span style="font-family:monospace">distanceat</span> ou <span style="font-family:monospace">distanceen</span> et <span style="font-family:monospace">distanceatraw</span> ou 
-<span style="font-family:monospace">distanceenbrut</span> sont des commandes obtenues 
-lorsqu’on utilse, dans un niveau de géométrie 2<span style="font-style:italic">d</span> ou 3<span style="font-style:italic">d</span>, le bouton 
-<span style="font-family:monospace">Mode-&gt;Mesures-&gt;ditanceen</span> ou <span style="font-family:monospace">Mode-&gt;Mesures-&gt;distanceenbrut</span>. Dans ce 
-cas il faut que tous les objets, sauf les points, désignés par la souris 
-soient déjà nommés.<br>
-On peut néammoins taper ces commandes dans une ligne de commande.<br>
-<span style="font-family:monospace">distanceat</span> ou <span style="font-family:monospace">distanceen</span> a 3 arguments : le nom de 2 points et 1 point (ou l’affixe de ce point) ou encore le nom de 2 objets 
-géométriques et un point (ou l’affixe de ce point).<br>
-<span style="font-weight:bold">Attention</span> Il faut que les 2 premiers arguments soient des noms. <br>
-<span style="font-family:monospace">distanceat</span> ou <span style="font-family:monospace">distanceen</span> renvoie le point donné en 3-ième 
-argument, calcule la longueur du segment défini par les deux premiers points 
-ou la distance entre les 2 objets géométriques et affiche à l’endroit du 
-3-ième point, cette longueur précédée d’une légende.<br>
-On tape (on doit donnerle nom des objets) :
-</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);segment(A,B);</span></div><div class="center"><span style="font-family:monospace">distanceat(A,B,0.4i)</span></div><p>
-ou
-</p><div class="center"><span style="font-family:monospace">distanceen(A,B,0.4i)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">AB=sqrt(5) s’écrit au point(0.4i)</span></div><p>
-On tape (on doit donnerle nom des objets) :
-</p><div class="center"><span style="font-family:monospace">C:=point(0);d:=droite(-1,1+i)</span></div><div class="center"><span style="font-family:monospace">distanceen(C,d,i/2)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">Cd=sqrt(5)/5 s’écrit au point(i/2)</span></div><p>
-On tape (on doit donner le nom des objets) :
-</p><div class="center"><span style="font-family:monospace">c:=cercle(0,1); d:=droite(-2,1+3i)</span></div><div class="center"><span style="font-family:monospace">distanceen(c,d,0)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">cd=sqrt(2)-1 s’écrit au point(0)</span></div><p><span style="font-family:monospace">distanceatraw</span> ou <span style="font-family:monospace">distanceenbrut</span> a comme argument trois 
-points (ou 2 points et 1 nombre complexe qui est l’affixe d’un point) ou encore
-2 objets géométriques et un point (ou l’affixe de ce point). <br>
-<span style="font-family:monospace">distanceatraw</span> ou <span style="font-family:monospace">distanceenbrut</span> renvoie le point donné en 
-3-ième argument, calcule la longueur du segment défini par les deux 
-premiers points ou la distance entre les 2 ojets géométriques et affiche 
-cette longueur à l’endroit du 3-ième point.<br>
+<h3 id="sec1173" class="subsection">10.15.7  L’équation cartésienne d’un objet géométrique : <span style="font-family:monospace">equation</span></h3>
+<p><a id="hevea_default1880"></a><a id="sec:equation2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1061.html#sec%3Aequation3">11.12.5</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">equation</span> permet d’avoir l’équation cartésienne d’un objet
+géométrique.<br>
+<span style="font-weight:bold">Attention</span> !!! il faut auparavant purger les variables <span style="font-family:monospace">x</span> et 
+<span style="font-family:monospace">y</span> en tapant <span style="font-family:monospace">purge(x)</span> et <span style="font-family:monospace">purge(y)</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);segment(A,B);</span></div><div class="center"><span style="font-family:monospace">distanceenbrut(A,B,0.4i)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">equation(droite(-1,i))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">sqrt(5) s’écrit au point(0.4i)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(x-y)=-1</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">C:=point(0);d:=droite(-1,1+i)</span></div><div class="center"><span style="font-family:monospace">distanceenbrut(C,d,i/2)</span></div><p>
-ou on tape (on n’est pas obligé de donner un nom aux objets) :
-</p><div class="center"><span style="font-family:monospace">distanceenbrut(0,droite(-1,1+i),i/2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">equation(cercle(-1,i))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">sqrt(5)/5 s’écrit au point(i/2)</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">c:=cercle(0,1); d:=droite(-2,1+3i)</span></div><div class="center"><span style="font-family:monospace">distanceenbrut(c,d(-2,1+3i),0)</span></div><p>
-ou on tape (on n’est pas obligé de donner un nom aux objets) :
-</p><div class="center"><span style="font-family:monospace">distanceenbrut(cercle(0,1),droite(-2,1+3i),0)</span></div><p>On obtient :
-</p><div class="center"><span style="font-family:monospace">sqrt(2)-1 s’écrit au point(0)</span></div>
+</p><div class="center"><span style="font-family:monospace">((x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)=1</span></div><p>
+qui est l’équation du cercle de centre -1 et de rayon le module de <span style="font-family:monospace">i</span>.
+</p>
 <hr>
 <a href="cascmd_fr963.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

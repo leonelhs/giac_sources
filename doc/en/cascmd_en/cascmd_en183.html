@@ -4,47 +4,63 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Length of an arc : arcLen</title>
+<title>Usual functions</title>
 </head>
 <body >
 <a href="cascmd_en182.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en184.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec232" class="subsection">5.17.2  Length of an arc : <span style="font-family:monospace">arcLen</span></h3>
-<p><a id="hevea_default311"></a>
-<span style="font-family:monospace">arcLen</span> takes four arguments : an expression <span style="font-style:italic">ex</span> (resp. a list
-of two expressions [<span style="font-style:italic">ex</span>1,<span style="font-style:italic">ex</span>2]), the name of a parameter and two values <span style="font-style:italic">a</span>
-and <span style="font-style:italic">b</span> of this parameter.<br>
-<span style="font-family:monospace">arcLen</span> computes the length of the curve define by the equation 
-<span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">ex</span> (resp. by <span style="font-style:italic">x</span>=<span style="font-style:italic">ex</span>1,<span style="font-style:italic">y</span>=<span style="font-style:italic">ex</span>2) when the parameter values varies from <span style="font-style:italic">a</span> 
-to <span style="font-style:italic">b</span>, using the formula
-<span style="font-family:monospace">arcLen(f(x),x,a,b)=</span><br>
-<span style="font-family:monospace">integrate(sqrt(diff(f(x),x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1),x,a,b)</span><br>
-or <br>
-<span style="font-family:monospace">integrate(sqrt(diff(x(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+diff(y(t),t)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),t,a,b)</span>.<br>
-
-<span style="font-weight:bold">Examples</span>
-</p><ul class="itemize"><li class="li-itemize">
-Compute the length of the parabola <span style="font-style:italic">y</span>=<span style="font-style:italic">x</span><sup>2</sup> from <span style="font-style:italic">x</span>=0 to <span style="font-style:italic">x</span>=1.<br>
-Input :
-<div class="center"><span style="font-family:monospace">arcLen(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x,0,1)</span></div>
-or
-<div class="center"><span style="font-family:monospace">arcLen([t,t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2],t,0,1)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">-1/4*log(sqrt(5)-2)-(-(sqrt(5)))/2</span></div> 
-</li><li class="li-itemize">Compute the length of the curve <span style="font-style:italic">y</span>=cosh(<span style="font-style:italic">x</span>) from <span style="font-style:italic">x</span>=0 to 
-<span style="font-style:italic">x</span>=ln(2).<br>
-Input :
-<div class="center"><span style="font-family:monospace">arcLen(cosh(x),x,0,log(2))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">3/4</span></div>
-</li><li class="li-itemize">Compute the length of the circle <span style="font-style:italic">x</span>=cos(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=sin(<span style="font-style:italic">t</span>) from <span style="font-style:italic">t</span>=0 to 
-<span style="font-style:italic">t</span>=2*π.<br>
-Input :
-<div class="center"><span style="font-family:monospace">arcLen([cos(t),sin(t)],t,0,2*pi)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">2*pi</span></div>
+<h3 id="sec229" class="subsection">5.16.2  Usual functions</h3>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">max</span><a id="hevea_default278"></a> takes as argument two real numbers and 
+returns their maximum,
+</li><li class="li-itemize"><span style="font-family:monospace">min</span><a id="hevea_default279"></a> takes as argument two real numbers and returns 
+their minimum,
+</li><li class="li-itemize"><span style="font-family:monospace">abs</span><a id="hevea_default280"></a> takes as argument a complex number and returns the 
+modulus of the complex parameter (the absolute value if the complex is
+real),
+</li><li class="li-itemize"><span style="font-family:monospace">sign</span><a id="hevea_default281"></a> takes as argument a real number and returns its
+sign (+1 if it is positive, 0 if it is null, and -1 if it is
+negative),
+</li><li class="li-itemize"><span style="font-family:monospace">floor</span><a id="hevea_default282"></a> (or <span style="font-family:monospace">iPart</span><a id="hevea_default283"></a>) 
+takes as argument a real number <span style="font-style:italic">r</span>, 
+and returns the largest integer ≤ <span style="font-style:italic">r</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">round</span><a id="hevea_default284"></a> takes as argument a real number and returns 
+its nearest integer,
+</li><li class="li-itemize"><span style="font-family:monospace">ceil</span> or <span style="font-family:monospace">ceiling</span><a id="hevea_default285"></a><a id="hevea_default286"></a> takes as
+argument a real number and returns the smallest integer ≥ <span style="font-style:italic">r</span>
+</li><li class="li-itemize"><span style="font-family:monospace">frac</span><a id="hevea_default287"></a> (or <span style="font-family:monospace">fPart</span><a id="hevea_default288"></a>) takes as
+argument a real number and returns its fractional part,
+</li><li class="li-itemize"><span style="font-family:monospace">trunc</span><a id="hevea_default289"></a> takes as 
+argument a real number and returns the integer equal to the real without its 
+fractional part,
+</li><li class="li-itemize"><span style="font-family:monospace">id</span><a id="hevea_default290"></a> is the identity function,
+</li><li class="li-itemize"><span style="font-family:monospace">sq</span><a id="hevea_default291"></a> is the square function,
+</li><li class="li-itemize"><span style="font-family:monospace">sqrt</span><a id="hevea_default292"></a> is the squareroot function,
+</li><li class="li-itemize"><span style="font-family:monospace">exp</span><a id="hevea_default293"></a> is the exponential function,
+</li><li class="li-itemize"><span style="font-family:monospace">log</span><a id="hevea_default294"></a> or <span style="font-family:monospace">ln</span><a id="hevea_default295"></a> is the 
+natural logarithm function,
+</li><li class="li-itemize"><span style="font-family:monospace">log10</span><a id="hevea_default296"></a> is the base-10 logarithm function,
+</li><li class="li-itemize"><span style="font-family:monospace">logb</span><a id="hevea_default297"></a> is the logarithm function where the second 
+argument is the base of the logarithm: 
+<span style="font-family:monospace">logb(7,10)=log10(7)=log(7)/log(10)</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">sin</span><a id="hevea_default298"></a> (resp. <span style="font-family:monospace">cos</span><a id="hevea_default299"></a>,
+<span style="font-family:monospace">tan</span><a id="hevea_default300"></a>)
+is the sinus function, cosinus function, tangent function,
+</li><li class="li-itemize"><span style="font-family:monospace">cot, sec, csc</span> are the cotangent, secant, cosecant function
+</li><li class="li-itemize"><span style="font-family:monospace">asin</span> (or <span style="font-family:monospace">arcsin</span>)<a id="hevea_default301"></a><a id="hevea_default302"></a>,
+<span style="font-family:monospace">acos</span> (or <span style="font-family:monospace">arccos</span>)<a id="hevea_default303"></a><a id="hevea_default304"></a>, 
+<span style="font-family:monospace">atan</span> (or <span style="font-family:monospace">arctan</span>)<a id="hevea_default305"></a><a id="hevea_default306"></a>, 
+<span style="font-family:monospace">acot, asec, acsc</span> are the inverse trigonometric functions (see 
+section <a href="cascmd_en202.html#sec%3Atrigo">5.21.1</a> for more info on trigonometric functions)
+</li><li class="li-itemize"><span style="font-family:monospace">sinh</span><a id="hevea_default307"></a> (resp. <span style="font-family:monospace">cosh</span><a id="hevea_default308"></a>,
+<span style="font-family:monospace">tanh</span><a id="hevea_default309"></a>)
+is the hyperbolic sinus function, cosinus function, tangent function,
+</li><li class="li-itemize"><span style="font-family:monospace">asinh</span> or <span style="font-family:monospace">arcsinh</span><a id="hevea_default310"></a><a id="hevea_default311"></a> (resp. 
+<span style="font-family:monospace">acosh</span> or <span style="font-family:monospace">arccosh</span><a id="hevea_default312"></a><a id="hevea_default313"></a>, 
+<span style="font-family:monospace">atanh</span> or <span style="font-family:monospace">arctanh</span><a id="hevea_default314"></a><a id="hevea_default315"></a>)
+is the inverse function of <span style="font-family:monospace">sinh</span> (resp. <span style="font-family:monospace">cosh</span>, <span style="font-family:monospace">tanh</span>)
 </li></ul>
 <hr>
 <a href="cascmd_en182.html"><img src="previous_motif.gif" alt="Previous"></a>

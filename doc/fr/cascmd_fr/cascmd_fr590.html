@@ -4,36 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Remplacer une partie d’une matrice ou d’un vecteur : replace</title>
+<title>Supprimer des lignes ou des colonnes d’une matrice : delrows delcols</title>
 </head>
 <body >
 <a href="cascmd_fr589.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr591.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec727" class="subsection">6.50.6  Remplacer une partie d’une matrice ou d’un vecteur : <span style="font-family:monospace">replace</span></h3>
-<p><a id="hevea_default1074"></a>
-<span style="font-family:monospace">replace</span> a comme argument une matrice <span style="font-style:italic">A</span> (resp un vecteur) et 
-une liste de 2 indices (resp 1 entier) et la matrice (resp le vecteur) qui doit
-être mis en remplacement à partir de ces 2 indices.<br>
-<span style="font-family:monospace">replace</span> effectue ce remplacement en élaguant éventuellement la 
-matrice (resp le vecteur) si elle (resp il) est sur dimensionnée.<br>
+<h3 id="sec727" class="subsection">6.50.4  Supprimer des lignes ou des colonnes d’une matrice : <span style="font-family:monospace">delrows delcols</span></h3>
+<p><a id="hevea_default1084"></a><a id="hevea_default1085"></a>
+<span style="font-family:monospace">delrows</span> (resp <span style="font-family:monospace">delcols</span>) permet de supprimer une ou 
+plusieurs lignes (resp colonnes) d’une matrice.<br>
+<span style="font-family:monospace">delrows</span> (resp <span style="font-family:monospace">delcols</span>) a 2 arguments : une matrice <span style="font-style:italic">A</span>, et 
+un entier <span style="font-style:italic">n</span> ou un intervalle <span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>.<br>
+<span style="font-family:monospace">delrows</span> (resp <span style="font-family:monospace">delcols</span>) renvoie la matrice obtenue en supprimant
+la ligne (resp colonne) <span style="font-style:italic">n</span> ou les lignes (resp colonnes) <span style="font-style:italic">n</span><sub>1</sub> jusqu’à <span style="font-style:italic">n</span><sub>2</sub> 
+de la matrice <span style="font-style:italic">A</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">replace([[1,2,3],[4,5,6]],[1,1],[[5,6],[7,8]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">delrows([[1,2,3],[4,5,6],[7,8,9]],1..1)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[[5,6,3],[7,8,6]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,2,3],[7,8,9]]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">replace([[1,2,3],[4,5,6]],[1,2],[[7,8,10],[9,0,11]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">delrows([[1,2,3],[4,5,6],[7,8,9]],0..1)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[[1,7,8],[4,9,0]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[7,8,9]]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">replace([1,2,3,4],2,[5,6])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">delcols([[1,2,3],[4,5,6],[7,8,9]],1..1)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[1,5,6,4]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,3],[4,6],[7,9]]</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">replace([1,2,3,4],2,[5,6,7,8])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">delcols([[1,2,3],[4,5,6],[7,8,9]],0..1)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[1,5,6,7]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[3],[6],[9]]</span></div>
 <hr>
 <a href="cascmd_fr589.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

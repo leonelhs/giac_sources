@@ -15,40 +15,40 @@
 <p>
 <a id="ssec:complex"></a></p><p>When factoring polynomials, <span style="font-family:monospace">Xcas</span> won’t introduce complex
 numbers if they aren’t already being used. For example,
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">factor(x^2 + 2)</span><span style="font-family:monospace">
-</span></blockquote><p>
+</p><div class="center">
+<span style="font-family:monospace">factor(x^2 + 2)</span>
+</div><p>
 will simply return
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">x^2 + 2</span><span style="font-family:monospace">
-</span></blockquote><p>
+</p><div class="center">
+<span style="font-family:monospace">x^2 + 2</span>
+</div><p>
 but if an expression already involves complex numbers then
 <span style="font-family:monospace">Xcas</span> will use them;
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">factor(i*x^2 + 2*i)</span><span style="font-family:monospace">
-</span></blockquote><p>
+</p><div class="center">
+<span style="font-family:monospace">factor(i*x^2 + 2*i)</span>
+</div><p>
 will return
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">(x - i*sqrt(2))*(i*x - sqrt(2))</span><span style="font-family:monospace">
-</span></blockquote><p>
+</p><div class="center">
+<span style="font-family:monospace">(x - i*sqrt(2))*(i*x - sqrt(2))</span>
+</div><p>
 <span style="font-family:monospace">Xcas</span> also has ways of finding complex roots even when complex
 numbers are not present; for example, the command <span style="font-family:monospace">cfactor</span>
 will factor over the complex numbers
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">cfactor(x^2 + 2)</span><span style="font-family:monospace">
-</span></blockquote><p>
+</p><div class="center">
+<span style="font-family:monospace">cfactor(x^2 + 2)</span>
+</div><p>
 will return
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">(x - i*sqrt(2))*(x + i*sqrt(2))</span><span style="font-family:monospace">
-</span></blockquote><p>If you want <span style="font-family:monospace">Xcas</span> to use complex numbers by default, you can
+</p><div class="center">
+<span style="font-family:monospace">(x - i*sqrt(2))*(x + i*sqrt(2))</span>
+</div><p>If you want <span style="font-family:monospace">Xcas</span> to use complex numbers by default, you can
 turn on complex mode. In complex mode,
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">factor(x^2 + 2)</span><span style="font-family:monospace">
-</span></blockquote><p>
+</p><div class="center">
+<span style="font-family:monospace">factor(x^2 + 2)</span>
+</div><p>
 will return
-</p><blockquote class="quote"><span style="font-family:monospace">
-</span><span style="font-family:monospace">(x - i*sqrt(2))*(x + i*sqrt(2))</span><span style="font-family:monospace">
-</span></blockquote><p>You can turn on complex mode from the CAS configuration screen. This
+</p><div class="center">
+<span style="font-family:monospace">(x - i*sqrt(2))*(x + i*sqrt(2))</span>
+</div><p>You can turn on complex mode from the CAS configuration screen. This
 mode is determined by the value of <span style="font-family:monospace">complex_mode</span>; if this is
 1 then complex mode is on, if this variable is 0 then complex mode is
 off. This option will be stored in the configuration file (see subsection <a href="cascmd_en029.html#ssec%3Aconffile">3.5.10</a>), and

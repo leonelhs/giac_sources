@@ -74,6 +74,7 @@ namespace giac {
     _INT___MAP = _INT_*_DISPATCHBASE+_MAP,
     _INT___REAL = _INT_*_DISPATCHBASE+_REAL,
     _INT___FRAC = _INT_*_DISPATCHBASE+_FRAC,
+    _INT___STRNG = _INT_*_DISPATCHBASE+_STRNG,
     _ZINT__INT_ = _ZINT*_DISPATCHBASE+_INT_,
     _ZINT__ZINT =_ZINT*_DISPATCHBASE+_ZINT,
     _ZINT__CPLX = _ZINT*_DISPATCHBASE+_CPLX,
@@ -142,6 +143,7 @@ namespace giac {
     _DOUBLE___MAP = _DOUBLE_*_DISPATCHBASE+_MAP,
     _DOUBLE___REAL = _DOUBLE_*_DISPATCHBASE+_REAL,
     _DOUBLE___FRAC = _DOUBLE_*_DISPATCHBASE+_FRAC,
+    _DOUBLE___STRNG = _DOUBLE_*_DISPATCHBASE+_STRNG,
     _FLOAT___INT_=  _FLOAT_*_DISPATCHBASE+_INT_,
     _FLOAT___ZINT = _FLOAT_*_DISPATCHBASE+_ZINT,
     _FLOAT___CPLX = _FLOAT_*_DISPATCHBASE+_CPLX,
@@ -195,6 +197,8 @@ namespace giac {
     _EXT__INT_=  _EXT*_DISPATCHBASE+_INT_,
     _EXT__POLY=  _EXT*_DISPATCHBASE+_POLY,
     _STRNG__STRNG = _STRNG*_DISPATCHBASE+_STRNG,
+    _STRNG__INT_=  _STRNG*_DISPATCHBASE+_INT_,
+    _STRNG__DOUBLE_=  _STRNG*_DISPATCHBASE+_DOUBLE_,
     _FUNC__FUNC = _FUNC*_DISPATCHBASE+_FUNC,
     _MOD__MOD = _MOD*_DISPATCHBASE+_MOD,
     _ZINT__MOD = _ZINT*_DISPATCHBASE+_MOD,
@@ -254,6 +258,9 @@ namespace giac {
     _GGBVECT=27,
     _PRINT__VECT=28,
     _TUPLE__VECT=29,
+    _TABLE__VECT=30,
+    _GRAPH__VECT =31,
+    _PRG__VECT=32,
   } ;
 
   enum symb_subtypes {
@@ -578,6 +585,14 @@ namespace giac {
     _NLP_NONNEGATIVE = 139,     //nlp_nonnegative
     _NLP_PRECISION = 140,       //nlp_precision
     _NLP_MAXIMIZE = 141,         //nlp_maximize
+    _GT_CONNECTED = 142, // connected
+    _GT_SPRING = 143, // spring
+    _GT_TREE = 144, // tree
+    _GT_PLANAR = 145, // planar
+    _GT_DIRECTED = 146, // directed
+    _GT_WEIGHTED = 147, // weighted
+    _GT_WEIGHTS = 148, // weights
+    _GT_BIPARTITE = 149, // bipartite
   };
 
   enum mupad_operator {
@@ -630,6 +645,8 @@ namespace giac {
     step_integrate_header=33,
     step_derive_header=34,
   };
+
+
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

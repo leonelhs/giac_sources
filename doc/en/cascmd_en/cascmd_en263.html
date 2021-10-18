@@ -4,23 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Factorize xn in a polynomial : factor_xn</title>
+<title>Coefficients of a polynomial: coeff coeffs</title>
 </head>
 <body >
 <a href="cascmd_en262.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en264.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec329" class="subsection">5.25.9  Factorize <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup> in a polynomial : <span style="font-family:monospace">factor_xn</span></h3>
-<p><a id="hevea_default425"></a>
-<span style="font-family:monospace">factor_xn</span> takes as argument a polynomial <span style="font-family:monospace">P</span>.<br>
-<span style="font-family:monospace">factor_xn</span> returns the polynomial <span style="font-family:monospace">P</span> written
-as the product of its monomial of largest degree <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup> (<span style="font-family:monospace">n=degree(P)</span>)
-with a rational fraction having a non-zero finite limit at infinity.<br>
- Input :
-</p><div class="center"><span style="font-family:monospace">factor_xn(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+3)</span></div><p>
+<h3 id="sec330" class="subsection">5.25.3  Coefficients of a polynomial: <span style="font-family:monospace">coeff coeffs</span></h3>
+<p><a id="hevea_default425"></a><a id="hevea_default426"></a>
+<span style="font-family:monospace">coeff</span> or <span style="font-family:monospace">coeffs</span> takes three arguments : the polynomial, 
+the name of the variable (or the list of the names of variables) and
+the degree (or the list of the degrees of the variables).<br>
+<span style="font-family:monospace">coeff</span> or <span style="font-family:monospace">coeffs</span> returns the coefficient of the polynomial
+of the degree given as third argument. 
+If no degree was specified, <span style="font-family:monospace">coeffs</span> return
+the list of the coefficients of the polynomial, including 0 in the
+univariate dense case and excluding 0 in the multivariate sparse case.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">coeff(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+3*x*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x,x,1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4*(-1+3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">-4)</span></div>
+</p><div class="center"><span style="font-family:monospace">3*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">coeff(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+3x*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x,y,2)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3*x</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">coeff(-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+3x*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x,[x,y],[1,2])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">3</span></div>
 <hr>
 <a href="cascmd_en262.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

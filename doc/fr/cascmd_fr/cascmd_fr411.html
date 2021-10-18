@@ -4,58 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Matrice de Sylvester de deux polynômes : sylvester</title>
+<title>Nombre de changements de signe sur ]a; b] : sturmab</title>
 </head>
 <body >
 <a href="cascmd_fr410.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr412.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec523" class="subsection">6.29.18  Matrice de Sylvester de deux polynômes : <span style="font-family:monospace">sylvester</span></h3>
-<p><a id="hevea_default765"></a>
-<span style="font-family:monospace">sylvester</span> a comme arguments deux polynômes.<br>
-<span style="font-family:monospace">sylvester</span> renvoie la matrice <span style="font-style:italic">S</span> de Sylvester des deux polynômes.<br>
-Pour deux polynômes <span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">i</span>=0</sub><sup><span style="font-style:italic">i</span>=<span style="font-style:italic">n</span></sup> <span style="font-style:italic">a</span><sub><span style="font-style:italic">i</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">i</span></sup> et 
-<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=∑<sub><span style="font-style:italic">i</span>=0</sub><sup><span style="font-style:italic">i</span>=<span style="font-style:italic">m</span></sup><span style="font-style:italic">b</span><sub><span style="font-style:italic">i</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">i</span></sup>, la matrice <span style="font-family:monospace">S</span> de Sylvester est une matrice
-carrée de dimensiom <span style="font-family:monospace">m+n</span> dont les <span style="font-family:monospace">m=degree(B(x))</span> premières 
-lignes sont composées à partir des coefficients de <span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>) :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>11</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>12</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span>−1</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>1(<span style="font-style:italic">n</span>+1)</sub>=<span style="font-style:italic">a</span><sub>0</sub></td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>21</sub>=0</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>22</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>2(<span style="font-style:italic">n</span>+1)</sub>=<span style="font-style:italic">a</span><sub>1</sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>2(<span style="font-style:italic">n</span>+2)</sub>=<span style="font-style:italic">a</span><sub>0</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>1</sub>=0</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>2</sub>=0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>(<span style="font-style:italic">n</span>+1)</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">m</span>−1</sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub><span style="font-style:italic">m</span>(<span style="font-style:italic">n</span>+2)</sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">m</span>−2</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">a</span><sub>0</sub> 
-</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p>
-et les <span style="font-family:monospace">n=degree(A(x))</span> lignes suivantes sont composées de la même 
-façon à partir des coefficients de <span style="font-family:monospace">B(x)</span> :
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+1)1</sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">m</span></sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+1)2</sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">m</span>−1</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+1)(<span style="font-style:italic">m</span>+1)</sub>=<span style="font-style:italic">b</span><sub>0</sub></td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td><td style="text-align:center;white-space:nowrap" >⋱</td><td style="text-align:center;white-space:nowrap" >⋮</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+<span style="font-style:italic">n</span>)1</sub>=0</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+<span style="font-style:italic">n</span>)2</sub>=0</td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">s</span><sub>(<span style="font-style:italic">m</span>+<span style="font-style:italic">n</span>)(<span style="font-style:italic">m</span>+1)</sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span>−1</sub></td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span>−2</sub></td><td style="text-align:center;white-space:nowrap" >⋯</td><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">b</span><sub>0</sub> 
-</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p>
+<h3 id="sec523" class="subsection">6.29.16  Nombre de changements de signe sur ]<span style="font-style:italic">a</span>; <span style="font-style:italic">b</span>] : <span style="font-family:monospace">sturmab</span></h3>
+<p><a id="hevea_default775"></a>
+<span style="font-family:monospace">sturmab</span> a quatre paramètres : une expression polynômiale 
+<span style="font-style:italic">P</span>, le nom de la variable et deux nombres <span style="font-style:italic">a</span> et <span style="font-style:italic">b</span>.
+</p><ul class="itemize"><li class="li-itemize">
+si <span style="font-style:italic">a</span> et <span style="font-style:italic">b</span> sont réels,
+<span style="font-family:monospace">sturmab</span> renvoie soit un nombre strictement positif qui
+est le nombre de changements de signe de <span style="font-style:italic">P</span> sur ]<span style="font-style:italic">a</span>; <span style="font-style:italic">b</span>],
+soit 0 si <span style="font-style:italic">P</span> reste de signe constant positif ou nul sur ]<span style="font-style:italic">a</span>; <span style="font-style:italic">b</span>],
+soit -1 si <span style="font-style:italic">P</span> reste de signe constant négatif ou nul sur ]<span style="font-style:italic">a</span>; <span style="font-style:italic">b</span>].
+Ainsi, <span style="font-family:monospace">sturmab</span> permet d’avoir le nombre de racines sur [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>[
+du polynôme <span style="font-style:italic">P</span>/<span style="font-style:italic">G</span> avec <span style="font-style:italic">G</span>=gcd(<span style="font-style:italic">P</span>,diff(<span style="font-style:italic">P</span>)).
+</li><li class="li-itemize">si <span style="font-style:italic">a</span> ou <span style="font-style:italic">b</span> est complexe, le nombre de racines complexes à 
+l’intérieur du rectangle de sommets opposés <span style="font-style:italic">a</span> et <span style="font-style:italic">b</span>.
+</li></ul><p> 
 On tape :
-</p><div class="center"><span style="font-family:monospace">sylvester(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-p*x+q,3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-p,x)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sturmab(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2),x,-2,0)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]]</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">det([[1,0,-p,q,0],[0,1,0,-p,q],[3,0,-p,0,0], [0,3,0,-p,0],[0,0,3,0,-p]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sturmab(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x,-2-i,5+3i)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">-4*p</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3--27*q</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
+</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">sturmab(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x,-i,5+3i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+<span style="font-weight:bold">Attention!!!!</span><br>
+ <span style="font-style:italic">P</span> doit être donné par son expression symbolique et, si on tape :<br>
+<span style="font-family:monospace">sturmab([1,0,0,2,0,0],x,-2,0)</span>,<br>
+on obtient :<br>
+<span style="font-family:monospace">Bad argument type</span>.</p>
 <hr>
 <a href="cascmd_fr410.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

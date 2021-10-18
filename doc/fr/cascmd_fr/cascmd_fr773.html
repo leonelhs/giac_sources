@@ -4,24 +4,19 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Fonction de répartition inverse de Poisson : poisson_icdf</title>
+<title>Probabilité pour que X égale k lorsque X∈ P(µ) : poisson</title>
 </head>
 <body >
 <a href="cascmd_fr772.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr774.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec951" class="subsection">8.4.10  Fonction de répartition inverse de Poisson : <span style="font-family:monospace">poisson_icdf</span></h3>
-<p><a id="hevea_default1389"></a>
-Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi de Poisson de 
-paramètre <span style="font-family:monospace">mu</span>, c’est à dire de moyenne <span style="font-family:monospace">mu</span> et d’écart-type 
-<span style="font-family:monospace">mu</span>, on a :<br>
-<span style="font-family:monospace">poisson_icdf(mu,t)</span>= <span style="font-style:italic">h</span> équivaut à <br>
-<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span>≤ <span style="font-style:italic">h</span>)=<span style="font-family:monospace">t= poisson_cdf(mu,h)</span> avec <span style="font-style:italic">X</span>∈ <span style="color:red"><span style="font-style:italic">P</span></span>(<span style="font-style:italic">mu</span>).<br>
-<span style="font-family:monospace">poisson_icdf(mu,t)</span> est l’inverse de la fonction de répartition de 
-la loi de Poisson de paramètre <span style="font-family:monospace">mu</span>,
+<h3 id="sec951" class="subsection">8.4.8  Probabilité pour que <span style="font-style:italic">X</span> égale <span style="font-style:italic">k</span> lorsque <span style="font-style:italic">X</span>∈ <span style="color:red"><span style="font-style:italic">P</span></span>(µ) : <span style="font-family:monospace">poisson</span></h3>
+<p><a id="hevea_default1400"></a>
+La densité de probabilité de la loi de Poisson de paramètre <span style="font-family:monospace">mu</span>, c’est à dire de moyenne <span style="font-family:monospace">mu</span> et d’écart-type <span style="font-family:monospace">mu</span> est :<br>
+<span style="font-family:monospace">poisson(mu,k)= exp(-mu)*mu</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k/k!</span>=<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span>=<span style="font-style:italic">k</span>) avec <span style="font-style:italic">X</span>∈ <span style="color:red"><span style="font-style:italic">P</span></span>(<span style="font-style:italic">mu</span>).<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">poisson_icdf(10.0,0.975)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">poisson(10.0,9)</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">0.125110035721</span></div>
 <hr>

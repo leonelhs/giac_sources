@@ -4,23 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>fsolve or nSolve with the option brent_solver</title>
+<title>Approximate solution of an equation : newton</title>
 </head>
 <body >
 <a href="cascmd_en576.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en578.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec717" class="subsection">7.4.2  <span style="font-family:monospace">fsolve</span> or <span style="font-family:monospace">nSolve</span> with the option <span style="font-family:monospace">brent_solver</span></h3>
-<p><a id="hevea_default910"></a><a id="hevea_default911"></a>
-The Brent method interpolates of <span style="font-style:italic">f</span> at three points, finds
-the intersection of the interpolation with the <span style="font-style:italic">x</span> axis, computes
-the sign of <span style="font-style:italic">f</span> at this point and chooses the interval where the sign changes.
-It is generically faster than bisection.<br>
+<h3 id="sec717" class="subsection">7.3.1  Approximate solution of an equation : <span style="font-family:monospace">newton</span></h3>
+<p><a id="hevea_default912"></a>
+<span style="font-family:monospace">newton</span> takes as arguments : an expression <span style="font-family:monospace">ex</span>, 
+the variable
+name of this expression (by default <span style="font-family:monospace">x</span>), and three values <span style="font-family:monospace">a</span> (by 
+default <span style="font-family:monospace">a=0</span>), <span style="font-family:monospace">eps</span> (by default <span style="font-family:monospace">eps=1e-8</span>) and <span style="font-family:monospace">nbiter</span> 
+(by default <span style="font-family:monospace">nbiter=12</span>).<br>
+<span style="font-family:monospace">newton(ex,x,a,eps,nbiter)</span> computes an approximate 
+solution <span style="font-family:monospace">x</span> of the equation <span style="font-family:monospace">ex=0</span>
+using the Newton algorithm with starting point 
+<span style="font-family:monospace">x=a</span>. The maximum number of iterations is <span style="font-family:monospace">nbiter</span>
+and the precision is <span style="font-family:monospace">eps</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">fsolve((cos(x))=x,x,-1..1,brent_solver)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">newton(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x,1) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[0.73908513321 5,0.739085133215]</span></div>
+</p><div class="center"><span style="font-family:monospace">1.41421356237</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">newton(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2,x,-1) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-1.41421356237</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">newton(cos(x)-x,x,0)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">0.739085133215 </span></div>
 <hr>
 <a href="cascmd_en576.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

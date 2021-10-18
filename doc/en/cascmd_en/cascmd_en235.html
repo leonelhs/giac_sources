@@ -4,32 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Cosine window function : cosine_window</title>
+<title>High-pass filtering : highpass</title>
 </head>
 <body >
 <a href="cascmd_en234.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en236.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec299" class="subsection">5.23.11  Cosine window function : <span style="font-family:monospace">cosine_window</span></h3>
+<h3 id="sec300" class="subsection">5.23.5  High-pass filtering : <span style="font-family:monospace">highpass</span></h3>
 <p>
-<span style="font-family:monospace">cosine_window</span> takes as arguments a real vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  of length  <span style="font-style:italic">n</span>  and optionally a positive real number  α  (by default  α=1 ) and/or an interval  <span style="font-style:italic">n</span><sub>1</sub> <span style="font-family:monospace">..</span> <span style="font-style:italic">n</span><sub>2</sub>  (with default values  <span style="font-style:italic">n</span><sub>1</sub>=0  and  <span style="font-style:italic">n</span><sub>2</sub>=<span style="font-style:italic">n</span>−1 ), and returns the elementwise product of the vector  [<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>1</sub></sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>2</sub></sub>]  and the vector  <span style="font-weight:bold"><span style="font-style:italic">w</span></span>  of length  <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span><sub>2</sub>−<span style="font-style:italic">n</span><sub>1</sub>+1  defined by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=sin<sup>α</sup></td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span> π</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p>
-for  <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1 . For example, input :
+<span style="font-family:monospace">highpass</span> takes two or three arguments: a real vector  <span style="font-weight:bold"><span style="font-style:italic">v</span></span>  representing the sampled signal, a real number  <span style="font-style:italic">c</span>  specifying the cutoff frequency and optionally a samplerate (which defaults to 44100). This implementation is an emulation of a simple first-order highpass RC filter.</p><p>For example, input :
 </p><div class="center">
-	<span style="font-family:monospace">L:=cosine_window(randvector(1000,0..1),1.5):;</span>
-</div><p>
-followed by <span style="font-family:monospace">scatterplot(L)</span>.</p>
+	<span style="font-family:monospace">f:=unapply(periodic(sign(x),x,-1/880,1/880),x);<br>
+		s:=2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">14*(apply(f,soundsec(1)));<br>
+		playsnd(highpass(s,5000))</span>
+</div>
 <hr>
 <a href="cascmd_en234.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

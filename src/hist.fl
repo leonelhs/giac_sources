@@ -195,15 +195,15 @@ Function {latex_save_DispG(const char * filename)} {return_type void
 
 Function {a_propos()} {return_type void
 } {
-  code {std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-17, Bernard Parisse, Renee De Graeve\\n";
+  code {std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-18, Bernard Parisse, Renee De Graeve\\n";
   s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\\n";
   s += "If you like Xcas, please link your webpage to the above link to help other find it\\n";
   s += "Software licensed under the GPL, General Public License version 3.0 or later\\nSee the file COPYING in this package for more details\\nOr browse http://www.gnu.org\\n";
   s += "French documentation (c) Renee de Graeve\\n";
   s += "This documentation is freely redistribuable for non commercial purpose\\n";
-  s += "Giacpy module: Frederic Han\\n";
-  s += "Math ML support, Xcas online: Jean-Pierre Branchard\\n";
-  s += "Optimization code: Luka Marohnić\\n";
+  s += "Python giacpy module: Frederic Han\\n";
+  s += "Optimization, signalprocessing, graph theory code: Luka Marohnić\\n";
+  s += "Math ML and SVG support initially written by Jean-Pierre Branchard\\n";
   s += "OpenOffice interface: Christophe Devalland, Serge Moutou\\n";
   s += "Qcas interface: Loic Le Coq, Frederic Han\\n";
   s += "Androcas interface: Thomas Luka\\n";
@@ -1758,6 +1758,19 @@ if (xcas::use_external_browser)
          if (xcas::Xcas_help_window){
            xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"cascmd_"+giac::find_lang_prefix(giac::language(contextptr))+"index.html").c_str());
            xcas::Xcas_help_window->show();
+          }
+         }}
+            xywh {5 5 100 20}
+          }
+          MenuItem Xcas_help_graphtheory {
+            label {Graph theory}
+            callback {if (xcas::use_external_browser)
+           giac::system_browser_command("doc/graphtheory-user_manual.pdf");
+        else {
+         if (xcas::Xcas_help_window){ //disabled because it crashes with builin browser
+           fl_message("%s",("Open with your browser "+giac::giac_aide_dir()+"doc/graphtheory-user_manual.pdf").c_str());
+           // xcas::Xcas_help_window->load((giac::giac_aide_dir()+"algo.html").c_str());
+           // xcas::Xcas_help_window->show();
           }
          }}
             xywh {5 5 100 20}

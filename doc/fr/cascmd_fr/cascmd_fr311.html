@@ -4,173 +4,272 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Intégration par parties : integrer_par_parties_dv ibpdv et integrer_par_parties_u ibpu</title>
+<title>Somme de Riemann : sum_riemann</title>
 </head>
 <body >
 <a href="cascmd_fr310.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr312.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec408" class="subsection">6.21.5  Intégration par parties : <span style="font-family:monospace">integrer_par_parties_dv ibpdv</span> et <span style="font-family:monospace">integrer_par_parties_u ibpu</span></h3>
-<h4 id="sec409" class="subsubsection"><span style="font-family:monospace">ibpdv</span></h4>
-<p><a id="hevea_default578"></a>
-<span style="font-family:monospace">ibpdv</span> permet de chercher une primitive (ou de calculer une 
-intégrale définie) d’une expression de la forme <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>).<br>
-<span style="font-family:monospace">ibpdv</span> a deux paramètres pour les primitives et cinq paramètres pour 
-les intégrales définies :
-</p><ul class="itemize"><li class="li-itemize">
-soit une expression de la forme
-<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>) et <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) (ou une liste de deux expressions 
-[<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>)] et <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>)),
-</li><li class="li-itemize">soit une expression de la forme
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) et 0 (ou une liste de deux expressions [<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)] et 0).
-</li><li class="li-itemize">pour les intégrales définies, il faut rajouter trois autres 
-paramètres : le nom de la variable et les bornes. 
-</li></ul><p>
-Lorsque <span style="font-family:monospace">ibpdv</span> a 2 arguments <span style="font-family:monospace">ibpdv</span> renvoie :
-</p><ul class="itemize"><li class="li-itemize">
-si <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) ≠ 0, une liste formée de <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) et 
-de −<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>) (ou une liste formée de <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) et de 
-−<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)),
-</li><li class="li-itemize">si le deuxième argument est nul, une primitive de 
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) (le premier argument) (ou <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+une primitive de <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)) :<br>
-donc, <span style="font-family:monospace">ibpdv(g(x),0)</span> renvoie une primitive <span style="font-family:monospace">G(x)</span> de <span style="font-family:monospace">g(x)</span> ou <br>
-<span style="font-family:monospace">ibpdv([F(x),g(x)],0)</span> renvoie <span style="font-family:monospace">F(x)+G(x)</span> où <span style="font-family:monospace">diff(G(x))=g(x)</span>.
-</li></ul><p>
-C’est à dire <span style="font-family:monospace">ibpdv</span> renvoie les termes que l’on doit calculer quand on 
-fait une intégration par parties, en faisant éventuellement plusieurs 
-<span style="font-family:monospace">ibpdv</span> à la suite.<br>
-Ainsi, lorsque l’on vient d’utiliser la commande <span style="font-family:monospace">ibpdv(u(x)*v’(x),v(x))</span>, 
-il reste alors
-à calculer l’intégrale du deuxième terme puis à 
-faire la somme avec le premier terme pour obtenir une primitive de <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>): pour cela on peut utiliser à nouveau la commande <span style="font-family:monospace">ibpdv</span> avec comme 
-premier paramètre la liste obtenue et comme deuxième paramètre un 
-nouveau <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) (ou 0 pour terminer l’intégration).<br>
+<h3 id="sec408" class="subsection">6.21.4  Somme de Riemann : <span style="font-family:monospace">sum_riemann</span></h3>
+<p><a id="hevea_default582"></a>
+<span style="font-family:monospace">sum_riemann</span> a deux arguments : une expression <span style="font-family:monospace">Xpr</span>
+dépendant de deux variables et la liste des noms de ces deux variables.<br>
+<span style="font-family:monospace">sum_riemann(Xpr(n,k),[n,k])</span> renvoie un équivalent, au 
+voisinage de <span style="font-style:italic">n</span>=+∞, de ∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> <span style="font-style:italic">Xpr</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) ou de 
+ ∑<sub><span style="font-style:italic">k</span>=0</sub><sup><span style="font-style:italic">n</span>−1</sup> <span style="font-style:italic">Xpr</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) ou de  ∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span>−1</sup> <span style="font-style:italic">Xpr</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>), 
+lorsque la somme considérée est une somme de Riemann associée à une 
+fonction continue sur [0,1] ou répond quand la recherche a été 
+infructueuse <span style="font-family:monospace">"ce n’est probablement pas une somme de Riemann"</span> .<br>
+<span style="font-weight:bold">Exercice 1</span><br>
+Soit  <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>=∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> <span style="font-style:italic">k</span><sup>2</sup>/<span style="font-style:italic">n</span><sup>3</sup>.<br>
+Calculer  lim<sub><span style="font-style:italic">n</span> → +∞</sub> <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">ibpdv(ln(x),x) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[n,k])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[x.ln(x),-1]</span></div><p>
-puis
-</p><div class="center"><span style="font-family:monospace">ibpdv([x.ln(x),-1],0) </span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">-x+x.ln(x)</span></div><p>Lorsque <span style="font-family:monospace">ibpdv</span> a 5 arguments <span style="font-family:monospace">ibpdv(u(x)*v’(x),v(x),x,a,b)</span> ou
-<span style="font-family:monospace">ibpdv([F(x),u(x)*v’(x),v(x),x,a,b)</span> renvoie :
-</p><ul class="itemize"><li class="li-itemize">
-si <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) ≠ 0, une liste formée de <span style="font-style:italic">u</span>(<span style="font-style:italic">b</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">u</span>(<span style="font-style:italic">a</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">a</span>) et 
-de −<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>) (ou une liste formée de <span style="font-style:italic">F</span>(<span style="font-style:italic">b</span>)+<span style="font-style:italic">u</span>(<span style="font-style:italic">b</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">F</span>(<span style="font-style:italic">a</span>)−<span style="font-style:italic">u</span>(<span style="font-style:italic">a</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">a</span>) et 
-de −<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)),
-</li><li class="li-itemize">si le deuxième argument est nul, <span style="font-family:monospace">ibpdv(g(x),0,x,a,b)</span>
-renvoie <span style="font-style:italic">G</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">G</span>(<span style="font-style:italic">a</span>) où <span style="font-style:italic">G</span>(<span style="font-style:italic">x</span>) est une primitive du premier argument 
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) et<br>
-<span style="font-family:monospace">ibpdv([F(x),g(x)],0,x,a,b)</span>
-renvoie <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">G</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">G</span>(<span style="font-style:italic">a</span>) où <span style="font-style:italic">G</span>(<span style="font-style:italic">x</span>) est une primitive de 
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)) de façon à pouvoir faire plusieurs <span style="font-family:monospace">ibpdv</span> à la suite.
-</li></ul><p>
+</p><div class="center"><span style="font-family:monospace">1/3</span></div><p>
+car :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>3</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table><p>
+est la somme de riemann associée à :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">dx</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 2</span><br>
+Soit  <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>=∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> <span style="font-style:italic">k</span><sup>3</sup>/<span style="font-style:italic">n</span><sup>4</sup>.<br>
+Calculer  lim<sub><span style="font-style:italic">n</span> → +∞</sub> <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">ibpdv(ln(x),x,x,2,3) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4,[n,k])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[3*ln(3)-2*ln(2),-1]</span></div><p>
-puis
-</p><div class="center"><span style="font-family:monospace">ibpdv([3*ln(3)-2*ln(2),-1],0,x,2,3) </span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">-1+3*ln(3)-2*ln(2)</span></div><p>
-<span style="font-weight:bold">Remarque</span><br>
- Lorsque le premier paramètre de <span style="font-family:monospace">ibpdv</span> est une liste de deux
-éléments, <span style="font-family:monospace">ibpdv</span> n’agit que sur le dernier élément de cette 
-liste et ajoute le terme intégré au premier élément de la liste 
-(de façon à pouvoir faire plusieurs <span style="font-family:monospace">ibpdv</span> à la suite).<br>
-On a par exemple :<br>
-<span style="font-family:monospace">ibpdv((log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x) = [x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))]</span><br>
-il reste à intégrer <span style="font-family:monospace">-(2*log(x))</span>, on utilise <span style="font-family:monospace">ibpdv(ans(),x)</span> ou 
-on tape :<br>
-<span style="font-family:monospace">ibpdv([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))],x)</span><br>
-On obtient :<br>
-<span style="font-family:monospace">[x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2]</span><br>
-et il reste à intégrer <span style="font-family:monospace">2</span>, on utilise <span style="font-family:monospace">ibpdv(ans(),0)</span> :<br>
-<span style="font-family:monospace">ibpdv([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2],0)</span>.<br>
-On obtient :
-<span style="font-family:monospace">x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x)))+2*x</span>
-</p>
-<h4 id="sec410" class="subsubsection"><span style="font-family:monospace">ibpu</span></h4>
-<p><a id="hevea_default579"></a>
-<span style="font-family:monospace">ibpu</span> permet de chercher une primitive (ou de calculer une 
-intégrale définie) d’une expression de la forme <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>).<br>
-<span style="font-family:monospace">ibpu</span> a deux paramètres pour les primitives et cinq paramètres pour 
-les intégrales définies : 
-</p><ul class="itemize"><li class="li-itemize">
-soit une expression de la forme 
-<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>) et <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) (ou une liste de deux expressions [<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>)] 
-et <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)),
-</li><li class="li-itemize">soit une expression de la forme 
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) et 0 (ou une liste de deux expressions [<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)] 
-et 0).
-</li><li class="li-itemize">pour les intégrales définies, il faut rajouter trois autres 
-paramètres : le nom de la variable et les bornes. 
-</li></ul><p>
-Lorsque <span style="font-family:monospace">ibpu</span> a 2 arguments <span style="font-family:monospace">ibpu</span> renvoie :
-<span style="font-family:monospace">ibpu</span> renvoie :
-</p><ul class="itemize"><li class="li-itemize">
-si <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) ≠ 0, une liste formée de <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) et de −<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>) 
-(ou une liste formée de <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) et de −<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)),
-</li><li class="li-itemize">si le deuxième argument est nul, une primitive de
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) (le premier argument) 
-(ou <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+une primitive de <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)):<br>
-<span style="font-family:monospace">ibpu(g(x),0)</span> renvoie <span style="font-family:monospace">G(x)</span> où <span style="font-family:monospace">diff(G(x))=g(x)</span> ou<br>
- <span style="font-family:monospace">ibpu([F(x),g(x)],0)</span> renvoie <span style="font-family:monospace">F(x)+G(x)</span> où <span style="font-family:monospace">diff(G(x))=g(x)</span>.
-</li></ul><p>
-c’est à dire <span style="font-family:monospace">ibpu</span> renvoie les termes que l’on doit calculer quand on 
-fait une intégration par parties, en faisant éventuellement plusieurs 
-<span style="font-family:monospace">ibpu</span> à la suite.<br>
-Ainsi, lorsque l’on vient d’utiliser la commande <span style="font-family:monospace">ibpu(u(x)*v’(x),u(x))</span>, 
-il reste à calculer l’intégrale du deuxième terme puis à faire la somme 
-avec le premier terme pour obtenir une primitive de <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>). Pour cela, 
-on peut utiliser à nouveau la commande <span style="font-family:monospace">ibpu</span> avec comme 
-premier paramètre la liste obtenue et comme deuxième paramètre un 
-nouveau <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) (ou 0 pour terminer l’intégration).<br>
+</p><div class="center"><span style="font-family:monospace">1/4</span></div><p>
+car :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>4</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>3</sup></td></tr>
+</table></td></tr>
+</table><p>
+est la somme de riemann associée à :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup><span style="font-style:italic">dx</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 3</span><br>
+Calculer 
+ lim<sub><span style="font-style:italic">n</span> → +∞</sub>(1/<span style="font-style:italic">n</span>+1+1/<span style="font-style:italic">n</span>+2+...+1/<span style="font-style:italic">n</span>+<span style="font-style:italic">n</span>).<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">ibpu(ln(x),ln(x)) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(1/(n+k),[n,k])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[x.ln(x),-1]</span></div><p>
-puis
-</p><div class="center"><span style="font-family:monospace">ibpu([x.ln(x),-1],0) </span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">-x+x.ln(x)</span></div><p>Lorsque <span style="font-family:monospace">ibpu</span> a 5 arguments <span style="font-family:monospace">ibpu(u(x)*v’(x),u(x),x,a,b)</span> ou
-<span style="font-family:monospace">ibpu([F(x),u(x)*v’(x)],u(x),x,a,b)</span> renvoie :
-</p><ul class="itemize"><li class="li-itemize">
-si <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) ≠ 0, une liste formée de <span style="font-style:italic">u</span>(<span style="font-style:italic">b</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">u</span>(<span style="font-style:italic">a</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">a</span>) et 
-de −<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>) (ou une liste formée de <span style="font-style:italic">F</span>(<span style="font-style:italic">b</span>)+<span style="font-style:italic">u</span>(<span style="font-style:italic">b</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">F</span>(<span style="font-style:italic">a</span>)−<span style="font-style:italic">u</span>(<span style="font-style:italic">a</span>).<span style="font-style:italic">v</span>(<span style="font-style:italic">a</span>) et 
-de −<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)),
-</li><li class="li-itemize">si le deuxième argument est nul, <span style="font-family:monospace">ibpu(g(x),0,x,a,b)</span>
-renvoie <span style="font-style:italic">G</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">G</span>(<span style="font-style:italic">a</span>) où <span style="font-style:italic">G</span>(<span style="font-style:italic">x</span>) une primitive de 
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) (le premier argument) (ou <span style="font-family:monospace">ibpu([F(x),g(x)],0,x,a,b)</span>)
-renvoie <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">G</span>(<span style="font-style:italic">b</span>)−<span style="font-style:italic">G</span>(<span style="font-style:italic">a</span>) où <span style="font-style:italic">G</span>(<span style="font-style:italic">x</span>) est une primitive de 
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)) de façon à pouvoir faire plusieurs <span style="font-family:monospace">ibpu</span> à la suite.
-</li></ul><p>
+</p><div class="center"><span style="font-family:monospace">log(2)</span></div><p>
+car :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>+<span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)</td></tr>
+</table></td></tr>
+</table><p>
+est la somme de riemann associée à :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=ln(1+1)=ln(2)</td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 4</span><br>
+Soit  <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>=∑<sub><span style="font-style:italic">k</span>=1</sub><sup><span style="font-style:italic">n</span></sup> 32<span style="font-style:italic">n</span><sup>3</sup>/16<span style="font-style:italic">n</span><sup>4</sup>−<span style="font-style:italic">k</span><sup>4</sup>.<br>
+Calculer  lim<sub><span style="font-style:italic">n</span> → +∞</sub> <span style="font-style:italic">S</span><sub><span style="font-style:italic">n</span></sub>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">ibpu(ln(x),ln(x),x,2,3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">sum_riemann(32*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/(16*n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4),[n,k])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[3*ln(3)-2*ln(2),-1]</span></div><p>
-puis
-</p><div class="center"><span style="font-family:monospace">ibpu([3*ln(3)-2*ln(2),-1],0,x,2,3) </span></div><p>
+</p><div class="center"><span style="font-family:monospace">2*atan(1/2)+log(3)</span></div><p>
+car :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">32<span style="font-style:italic">n</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16<span style="font-style:italic">n</span><sup>4</sup>−<span style="font-style:italic">k</span><sup>4</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">32</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16−(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)<sup>4</sup></td></tr>
+</table></td></tr>
+</table><p>
+est la somme de riemann associée à :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">32</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16−<span style="font-style:italic">x</span><sup>4</sup></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>+2</td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−2</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>+4</td></tr>
+</table></td></tr>
+</table><p>
+qui vaut donc ln(3)−ln(2)+ln(2)−ln(1)+2  atan (1/2)=ln(3)+2  atan (1/2)<br>
+<span style="font-weight:bold">Exercice 5</span><br>
+Calculer 
+ lim<sub><span style="font-style:italic">n</span> → +∞</sub>(<span style="font-style:italic">n</span>/<span style="font-style:italic">n</span><sup>2</sup>+1<sup>2</sup>+<span style="font-style:italic">n</span>/<span style="font-style:italic">n</span><sup>2</sup>+2<sup>2</sup>+...+<span style="font-style:italic">n</span>/<span style="font-style:italic">n</span><sup>2</sup>+<span style="font-style:italic">n</span><sup>2</sup>).<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">sum_riemann(n/(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),[n,k])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">-1+3*ln(3)-2*ln(2)</span></div><p>
-<span style="font-weight:bold">Remarque</span><br>
-Lorsque le premier paramètre de <span style="font-family:monospace">ibpu</span> est une liste de deux 
-éléments, <span style="font-family:monospace">ibpu</span> n’agit que sur le dernier élément de cette liste 
-et ajoute le terme intégré au premier élément de la liste (de façon à 
-pouvoir faire plusieurs <span style="font-family:monospace">ibpu</span> à la suite).<br>
-
-On a par exemple :<br>
-<span style="font-family:monospace">ibpu((log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,log(x)) = [x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))]</span><br>
-il reste à intégrer <span style="font-family:monospace">-(2*log(x))</span>, on utilise <span style="font-family:monospace">ibpu(ans(),log(x))</span> 
-ou on tape:<br>
-<span style="font-family:monospace">ibpu([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))],log(x))</span><br>
-On obtient :<br>
-<span style="font-family:monospace">[x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2]</span><br>
-et il reste à intégrer <span style="font-family:monospace">2</span>, on utilise <span style="font-family:monospace">ibpu(ans(),0)</span> :<br>
-<span style="font-family:monospace">ibpu([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2],0)</span>.<br>
+</p><div class="center"><span style="font-family:monospace">pi/4</span></div><p>
+car :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup>2</sup>+<span style="font-style:italic">k</span><sup>2</sup></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)<sup>2</sup></td></tr>
+</table></td></tr>
+</table><p>
+est la somme de riemann associée à :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=  atan (1)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-weight:bold">Exercice 6</span><br>
+Calculer 
+ lim<sub><span style="font-style:italic">n</span> → +∞</sub>(1/√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup><span style="text-decoration:overline">+1</span><sup><span style="text-decoration:overline">2</span></sup>+1/√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup><span style="text-decoration:overline">+2</span><sup><span style="text-decoration:overline">2</span></sup>+...+1/√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup><span style="text-decoration:overline">+</span><span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sup><span style="text-decoration:overline">2</span></sup>).<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">sum_riemann(1/sqrt(n</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+k</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2),[n,k])</span></div><p>
 On obtient :
-<span style="font-family:monospace">x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x)))+2*x</span></p>
+</p><div class="center"><span style="font-family:monospace">-ln(sqrt(2)-1)</span></div><p>
+car :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span><sup>2</sup>+<span style="font-style:italic">k</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+(<span style="font-style:italic">k</span>/<span style="font-style:italic">n</span>)<sup>2</sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table><p>
+est la somme de riemann associée à :
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">dx</span>=ln(1+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+1<sup>2</sup></td></tr>
+</table></td><td class="dcell">−ln(0+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+0<sup>2</sup></td></tr>
+</table></td><td class="dcell">=ln(1+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_fr310.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

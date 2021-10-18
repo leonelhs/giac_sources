@@ -349,6 +349,10 @@ namespace xcas {
   }
 
   void Graph2d3d::update_infos(const gen & g,GIAC_CONTEXT){
+    if (g.type==_VECT && g.subtype==_GRAPH__VECT){
+      show_axes=false;
+      orthonormalize();
+    }
     if (g.is_symb_of_sommet(at_equal)){
       // detect a title or a x/y-axis name
       gen & f = g._SYMBptr->feuille;
@@ -4936,7 +4940,7 @@ namespace xcas {
       // initial point
       if (!Mon_image.findij(*jt,x_scale,y_scale,i0,j0,contextptr))
 	return;
-      if (fill_polygon && *jt==*(jtend-1)){
+      if (fill_polygon){
 	const_iterateur jtsave=jt;
 	gen e,f0,f1;
 	// Compute matrix for complex drawing
@@ -4949,6 +4953,11 @@ namespace xcas {
 	  evalfdouble2reim(*jt,e,f0,f1,contextptr);
 	  if ((f0.type==_DOUBLE_) && (f1.type==_DOUBLE_))
 	    fl_vertex(f0._DOUBLE_val,f1._DOUBLE_val);
+	}
+	if (*jtsave!=*(jtend-1)){
+	  evalfdouble2reim(*jtsave,e,f0,f1,contextptr);
+	  if ((f0.type==_DOUBLE_) && (f1.type==_DOUBLE_))
+	    fl_vertex(f0._DOUBLE_val,f1._DOUBLE_val);	  
 	}
 	fl_end_complex_polygon();
 	fl_pop_matrix(); // Restore initial matrix

@@ -279,6 +279,22 @@ AC_SUBST(CONFIG_GLPK)
 AC_SUBST(GLPK_LIBS)
 AM_CONDITIONAL(CONFIG_GLPK, [test "$CONFIG_GLPK" = "yes"])
 
+dnl AC_CHECK_LIB(curl, main)
+CONFIG_CURL="yes"
+AC_ARG_ENABLE([curl],
+	[AS_HELP_STRING([--enable-curl], [Use CURL [[default=yes]]])],
+	[if test "$enableval" = "no"; then CONFIG_CURL="no"; fi], [])
+
+if test "$CONFIG_CURL" = "yes"; then
+	AC_CHECK_HEADER(curl/curl.h, [], [CONFIG_CURL="no"])
+  fi
+if test "$CONFIG_CURL" = "yes"; then
+	AC_CHECK_LIB(curl, main, [], [CONFIG_CURL="no"])
+  fi
+AC_SUBST(CONFIG_CURL)
+AC_SUBST(CURL_LIBS)
+AM_CONDITIONAL(CONFIG_CURL, [test "$CONFIG_CURL" = "yes"])
+
   
 AC_CANONICAL_HOST
 dnl Check for stuff needed for building the Giac interactive shell (cas).

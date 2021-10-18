@@ -4,56 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>La mesure d’un angle et son affichage : angleat angleen et angleatraw angleenbrut</title>
+<title>La longueur d’un segment et distance entre les deux objets 
+géométriques : distance longueur</title>
 </head>
 <body >
 <a href="cascmd_fr966.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr968.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1177" class="subsection">10.16.6  La mesure d’un angle et son affichage : <span style="font-family:monospace">angleat angleen</span> et <span style="font-family:monospace">angleatraw angleenbrut</span></h3>
-<p><a id="hevea_default1880"></a><a id="hevea_default1881"></a><a id="hevea_default1882"></a><a id="hevea_default1883"></a>
-<span style="font-family:monospace">angleat</span> ou <span style="font-family:monospace">angleen</span> (resp <span style="font-family:monospace">angleatraw</span> ou 
-<span style="font-family:monospace">angleenbrut</span>) sont des commandes qui permettent l’affichage avec légende
-(resp sans légende) de la valeur d’un angle désigné en cliquant (on 
-cliqueson sommet puis ses 2 côtés et enfin la position de la l’affichage).
-Ces commandes sont obtenues 
-lorsqu’on utilse, dans un niveau de géométrie 2<span style="font-style:italic">d</span> ou 3<span style="font-style:italic">d</span>, le bouton 
-<span style="font-family:monospace">Mode-&gt;Mesures-&gt;angleen</span> ou <span style="font-family:monospace">Mode-&gt;Mesures-&gt;angleenbrut</span>. Dans ce cas 
-il faut que tous les objets désignés par la souris soient 
-déjà nommés, sauf les points qui seront alors définis par les différents clicks de la souris.<br>
-
-On peut néammoins taper ces commandes dans une ligne de commande.<br>
-<span style="font-family:monospace">angleat</span> ou <span style="font-family:monospace">angleen</span> a comme argument quatre points (ou 3 points et 
-1 nombre complexe qui est l’affixe d’un point).<br>
-<span style="font-weight:bold">Attention</span> Il faut que les 3 premiers points aient un nom.<br>
-<span style="font-family:monospace">angleat</span> ou <span style="font-family:monospace">angleen</span> renvoie le 4-ième point, calcule la mesure (en
-radians ou en degrés) de l’angle orienté de sommet le premier argument, le
-deuxième argument se trouve sur le premier coté de l’angle et le troisième
-argument se trouve sur le deuxiéme coté et cette mesure est affichée, 
-précédée d’une légende, à l’endroit du 4-ième point.<br>
-Ainsi <span style="font-family:monospace">anglen(A,B,C,D)</span> désigne la mesure de l’angle en radians (ou en 
-degrés) de (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AC</span>) et cette messue sera 
-affichée, pécédée de α<span style="font-family:monospace">A=</span>, à l’endroit du point <span style="font-family:monospace">D</span>.<br>
+<h3 id="sec1177" class="subsection">10.16.2  La longueur d’un segment et distance entre les deux objets 
+géométriques : <span style="font-family:monospace">distance longueur</span></h3>
+<p><a id="hevea_default1888"></a><a id="hevea_default1889"></a><a id="sec:longueur2"></a>
+<span style="font-weight:bold">Voir aussi :</span> <a href="cascmd_fr1063.html#sec%3Alongueur3">11.12.7</a> pour la géométrie 3-d.<br>
+<span style="font-family:monospace">distance</span> ou <span style="font-family:monospace">longueur</span> a comme argument deux points (ou deux
+nombres complexes qui sont l’affixe de ces points) ou deux objets 
+géométriques.<br>
+ <span style="font-family:monospace">distance</span> ou <span style="font-family:monospace">longueur</span> renvoie la longueur du segment défini par 
+ces deux points ou la distance entre les deux objets géométriques.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);C:=point(i);</span></div><div class="center"><span style="font-family:monospace">segment(A,B);segment(A,C);</span></div><div class="center"><span style="font-family:monospace">angleen(A,B,C,0.2i) </span></div><p>
-On obtient si on a coché <span style="font-family:monospace">radian</span> dans la configuration du 
-<span style="font-family:monospace">cas</span> (bouton donnant la ligne d’état) :
-</p><div class="center">α<span style="font-family:monospace">A=atan(1/3) s’écrit au point(0.4i)</span></div><p><span style="font-family:monospace">angleatraw</span> ou <span style="font-family:monospace">angleenbrut</span> a comme argument quatre points
-(ou 3 points et 1 nombre complexe qui est l’affixe d’un point).<br>
-<span style="font-family:monospace">angleatraw</span> ou <span style="font-family:monospace">angleenbrut</span> renvoie le 4-ième point, calcule la 
-mesure (en radians ou en degrés) de l’angle orienté de sommet le premier 
-argument, le deuxième point se trouve sur le premier coté de l’angle et le 
-troisième point se trouve sur le deuxiéme coté et cette mesure est 
-affichée à l’endroit du 4-ième point.
-Ainsi <span style="font-family:monospace">angleenbrut(A,B,C,D)</span> désigne la mesure de l’angle en radians 
-(ou en degrés) de (<span style="font-style:italic">AB</span>,<span style="font-style:italic">AC</span>) et cette mesure
-sera affichée à l’endroit du point <span style="font-family:monospace">D</span>.<br>
+</p><div class="center"><span style="font-family:monospace">longueur(-1,1+i)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">sqrt(5) </span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">A:=point(-1);B:=point(1+i);C:=point(i);</span></div><div class="center"><span style="font-family:monospace">segment(A,B);segment(A,C);</span></div><div class="center"><span style="font-family:monospace">angleenbrut(A,B,C,0.2i) </span></div><p>
-On obtient si on a coché <span style="font-family:monospace">radian</span> dans la configuration du 
-<span style="font-family:monospace">cas</span> (bouton donnant la ligne d’état) :
-</p><div class="center"><span style="font-family:monospace">atan(1/3) s’écrit au point(0.4i)</span></div>
+</p><div class="center"><span style="font-family:monospace">longueur(0,droite(-1,1+i))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">sqrt(5)/5 </span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">longueur(cercle(0,1),droite(-2,1+3i))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">sqrt(2)-1 </span></div><p>
+<span style="font-weight:bold">Attention</span> Lorsque le calcul de longueur utilise des paramètres, il faut
+être en mode réel. Par exemple :<br>
+</p><pre class="verbatim">assume(a=[4,0,5,0.1])};
+A:=point(0);
+B:=point(a);
+simplify(longueur(B,A))
+simplify(longueur(A,B))
+</pre><p>
+en mode complexe on a :<br>
+<span style="font-family:monospace">simplify(longueur(B,A))</span> renvoie <span style="font-family:monospace">a</span> mais <br>
+<span style="font-family:monospace">simplify(longueur(A,B))</span> renvoie <span style="font-family:monospace">-a</span>.<br>
+en mode réel on a :<br>
+<span style="font-family:monospace">simplify(longueur(B,A))</span> et <span style="font-family:monospace">simplify(longueur(A,B))</span> renvoie <span style="font-family:monospace">c</span>. </p>
 <hr>
 <a href="cascmd_fr966.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

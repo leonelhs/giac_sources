@@ -37,11 +37,13 @@ namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
   // unary_function_ptr quoted_op[]={at_of,at_for,at_bloc,at_local,at_program,at_rpn_prog,at_ifte,at_try_catch,at_print,at_signal,at_as_function_of,at_lieu,at_legende,at_debug,at_sst,at_sst_in,at_cont,at_kill,at_halt,at_watch,at_rmwatch,at_breakpoint,at_maple2mupad,at_mupad2maple,at_maple2xcas,at_mupad2xcas,at_purge,0};
+  // functions here must be declared with define_unary_function_eval?_index
+  // index is even for on quoted, odd for quoted (1+)
 #if defined(GIAC_GENERIC_CONSTANTS) || defined(VISUALC) || defined(x86_64)
   const unary_function_ptr * archive_function_tab(){
     static const unary_function_ptr archive_function_tab_ptr[]={*at_plus,*at_neg,*at_binary_minus,*at_prod,*at_division,*at_inv,*at_pow,*at_exp,*at_ln,*at_abs,*at_arg,*at_pnt,*at_point,*at_segment,*at_sto,*at_sin,
 								*at_cos,*at_tan,*at_asin,*at_acos,*at_atan,*at_sinh,*at_cosh,*at_tanh,*at_asinh,*at_acosh,*at_atanh,*at_interval,*at_union,*at_minus,*at_intersect,*at_not,
-								*at_and,*at_ou,*at_inferieur_strict,*at_inferieur_egal,*at_superieur_strict,*at_superieur_egal,*at_different,*at_equal,*at_rpn_prog,*at_local,*at_return,*at_Dialog,*at_double_deux_points,*at_pointprod,*at_pointdivision,*at_pointpow,*at_hash,*at_pourcent,*at_tilocal,*at_break,*at_continue,*at_ampersand_times,*at_maple_lib,*at_unit,*at_plot_style,*at_xor,*at_check_type,*at_quote_pow,*at_case,*at_dollar,*at_IFTE,*at_RPN_CASE,*at_RPN_LOCAL,*at_RPN_FOR,*at_RPN_WHILE,*at_NOP,*at_unit,*at_ifte,*at_for,*at_bloc,*at_program,*at_same,*at_increment,*at_decrement,*at_multcrement,*at_divcrement,*at_sq,*at_display,*at_of,*at_at,*at_normalmod,*at_equal2,*at_pointplus,*at_pointminus,0};
+								*at_and,*at_ou,*at_inferieur_strict,*at_inferieur_egal,*at_superieur_strict,*at_superieur_egal,*at_different,*at_equal,*at_rpn_prog,*at_local,*at_return,*at_Dialog,*at_double_deux_points,*at_pointprod,*at_pointdivision,*at_pointpow,*at_hash,*at_pourcent,*at_tilocal,*at_break,*at_continue,*at_ampersand_times,*at_maple_lib,*at_unit,*at_plot_style,*at_xor,*at_check_type,*at_quote_pow,*at_case,*at_dollar,*at_IFTE,*at_RPN_CASE,*at_RPN_LOCAL,*at_RPN_FOR,*at_RPN_WHILE,*at_NOP,*at_unit,*at_ifte,*at_for,*at_bloc,*at_program,*at_same,*at_increment,*at_decrement,*at_multcrement,*at_divcrement,*at_sq,*at_display,*at_of,*at_at,*at_normalmod,*at_equal2,*at_pointplus,*at_pointminus,*at_struct_dot,*at_try_catch,0};
     archive_function_tab_length=sizeof(archive_function_tab_ptr)/sizeof(const unary_function_ptr *);
     return archive_function_tab_ptr;
   }
@@ -84,7 +86,7 @@ namespace giac {
     // 162
     alias_at_of,alias_at_at,alias_at_normalmod,alias_at_equal2,alias_at_pointplus,
     // 172
-    alias_at_pointminus,
+    alias_at_pointminus,alias_at_struct_dot,alias_at_try_catch,
     0
   };
   const unary_function_ptr * _archive_function_tab = (const unary_function_ptr *) &archive_function_tab_alias;
@@ -335,7 +337,8 @@ namespace giac {
     if (g.feuille.type!=_VECT || g.feuille._VECTptr->size()!=2){
       s += "pow(";
       add_print(s,g.feuille,contextptr);
-      return s+=')';
+      s+=')';
+      return s;
     }
     gen pui=g.feuille._VECTptr->back();
     gen arg=g.feuille._VECTptr->front();
@@ -350,7 +353,7 @@ namespace giac {
     }
 #endif
     bool argpar = ( (arg.type>_CPLX && arg.type!=_FLOAT_) || !is_positive(arg,contextptr)) && arg.type!=_IDNT ;
-#ifdef EMCC
+#if defined EMCC || defined GIAC_GGB
     bool need=need_parenthesis(arg) || arg.type==_SYMB;
     if (pui==plus_one_half){
       s += (need?"√(":"√");
@@ -407,15 +410,14 @@ namespace giac {
       if (pui.type==_SYMB || pui.type==_FRAC || pui.type==_CPLX){
 	add_print(s,arg,contextptr);
 	if (argpar) s +=')';
+#ifdef GIAC_HAS_STO_38
+	s += '^';
+#else
 	if (python_compat(contextptr))
 	  s += "**";
-	else {
-#ifdef GIAC_HAS_STO_38
-	  s += '^';
-#else
+	else 
 	  s += __pow.s;
 #endif
-	}
 	s += '(';
 	add_print(s,pui,contextptr);
 	s += ')';
@@ -427,7 +429,10 @@ namespace giac {
 #ifdef GIAC_HAS_STO_38
 	s += '^';
 #else
-	s += __pow.s;
+	if (python_compat(contextptr))
+	  s += "**";
+	else
+	  s += __pow.s;
 #endif
 	return add_print(s,pui,contextptr);
       }
@@ -611,7 +616,8 @@ namespace giac {
   /* EVAL without system stack */
 
   static void eval_sto_pnt_symb(const gen & feuille,gen & e,GIAC_CONTEXT){
-    if (e.type==_SYMB && e.ref_count()==1 && e._SYMBptr->feuille.type==_VECT && e._SYMBptr->feuille.ref_count()==1){
+    // e is also in history_plot(), ref_count==2
+    if (e.type==_SYMB && e.ref_count()<=2 && e._SYMBptr->feuille.type==_VECT && e._SYMBptr->feuille.ref_count()==1){
       vecteur & v=*e._SYMBptr->feuille._VECTptr;
       // legende not converted to string to avoid malloc ->faster
       v.push_back(feuille._VECTptr->back());
@@ -681,15 +687,39 @@ namespace giac {
     gen e;
     if (quotearg)
       e=feuillev.front();
-    else
-      e=feuillev.front().eval(level,contextptr);
+    else {
+      gen * feuillevfront=&feuillev.front();
+      // avoid self-modifying code in multi-assign
+      if (feuilleback.type==_VECT && feuillevfront->type==_VECT &&feuilleback._VECTptr->size()==feuillevfront->_VECTptr->size()){
+	gen tmp;
+	e =gen(*feuillevfront->_VECTptr,feuillevfront->subtype);
+	iterateur it=e._VECTptr->begin(),itend=e._VECTptr->end();
+	for (;it!=itend;++it){
+	  if (it->in_eval(level,tmp,contextptr))
+	    *it=tmp;
+	  else {
+	    if (it->type==_VECT)
+	      *it=gen(*it->_VECTptr,tmp.subtype);
+	  }
+	}
+      }
+      else {
+	// e=feuillev.front().eval(level,contextptr);
+	if (!feuillevfront->in_eval(level,e,contextptr)){
+	  if (feuillevfront->type==_VECT) // avoid self-modifying code
+	    e=gen(*feuillevfront->_VECTptr,feuillevfront->subtype);
+	  else
+	    e=*feuillevfront;
+	}
+      }
+    }
     if (b)
       showpoint=true;
     if (e.type==_SYMB && e._SYMBptr->sommet==at_pnt && e._SYMBptr->feuille.type==_VECT && e._SYMBptr->feuille._VECTptr->size()==2 && (contextptr?!contextptr->previous:!protection_level) )
       eval_sto_pnt_symb(feuille,e,contextptr);
     if ( e.type==_VECT && !e._VECTptr->empty() && e._VECTptr->back().type==_SYMB && e._VECTptr->back()._SYMBptr->sommet==at_pnt && (contextptr?!contextptr->previous:!protection_level))
       eval_sto_pnt_vect(feuilleback,e,contextptr);
-    return sto(e,feuilleback,contextptr);
+    return sto(e,feuilleback,python_compat(contextptr),contextptr);
   } // end sommet==at_sto
 
   // http://mitpress.mit.edu/sicp/full-text/book/book-Z-H-34.html#%_sec_5.4
@@ -986,7 +1016,7 @@ namespace giac {
 		}
 	      }
 	      prog=prog._VECTptr->back();
-	      protect=giac::bind(*values._VECTptr,*vars._VECTptr,contextptr);
+	      protect=giac_bind(*values._VECTptr,*vars._VECTptr,contextptr);
 	      if (protect==-RAND_MAX){
 		gensizeerr(res,contextptr);
 		return res;
@@ -1274,7 +1304,7 @@ namespace giac {
 	    (*dbgptr->fast_debug_info_ptr)=prog;
 	    (*dbgptr->debug_info_ptr)=prog;
 	    if (!vars._VECTptr->empty())
-	      protect=giac::bind(*values._VECTptr,*vars._VECTptr,contextptr);
+	      protect=giac_bind(*values._VECTptr,*vars._VECTptr,contextptr);
 	    if (protect==-RAND_MAX){
 	      program_leave(*dbgptr->debug_info_ptr,save_sst_mode,dbgptr);
 	      gensizeerr(res,contextptr);

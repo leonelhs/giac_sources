@@ -4,35 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Densité de probabilité de la loi de Cauchy : cauchy cauchyd</title>
+<title>Fonction de répartition de la loi géométrique : geometric_cdf</title>
 </head>
 <body >
 <a href="cascmd_fr798.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr800.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec977" class="subsection">8.4.36  Densité de probabilité de la loi de Cauchy : <span style="font-family:monospace">cauchy cauchyd</span></h3>
-<p><a id="hevea_default1425"></a><a id="hevea_default1426"></a>
-<span style="font-family:monospace">cauchyd</span> a 1 ou 3 paramètres : deux réels <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span> strictement positifs 
-(par défaut <span style="font-style:italic">a</span>=0 et <span style="font-style:italic">b</span>=1) et un réel <span style="font-style:italic">x</span>.<br>
-<span style="font-family:monospace">cauchyd(a,b,x)</span> renvoie la densité de probabilité de la loi de Cauchy
-à savoir : <br>
-<span style="font-family:monospace">cauchy(x)</span>= 1/(<span style="font-style:italic">x</span><sup>2</sup>+1)*<span style="font-style:italic">pi</span><br>
-<span style="font-family:monospace">cauchy(a,b,x)</span>= <span style="font-style:italic">b</span>/((<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)<sup>2</sup>+<span style="font-style:italic">b</span><sup>2</sup>)*<span style="font-style:italic">pi</span><br>
+<h3 id="sec977" class="subsection">8.4.34  Fonction de répartition de la loi géométrique : <span style="font-family:monospace">geometric_cdf</span></h3>
+<p><a id="hevea_default1436"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> à valeur dans ℕ<sup>*</sup> suit une 
+loi géométrique de paramètre <span style="font-style:italic">p</span> (0&lt;<span style="font-style:italic">p</span>&lt;1), on a : <br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)= <span style="font-family:monospace">geometric_cdf(p,x)</span> avec <span style="font-style:italic">x</span>∈ ℕ<sup>*</sup>.<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">x</span>≤ <span style="font-style:italic">X</span>≤ <span style="font-style:italic">y</span>)=<span style="font-family:monospace">geometric_cdf(r,x,y)</span> avec <span style="font-style:italic">x</span>∈ ℕ<sup>*</sup> et <span style="font-style:italic">y</span>∈ ℕ<sup>*</sup>.<br>
+On a :<br>
+<span style="font-family:monospace">geometric_cdf(p,x)</span> est égale à 
+ 1−(1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">x</span></sup> et <br>
+<span style="font-family:monospace">geometric_cdf(p,x,y)</span> est égale à :<br>
+ (1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">x</span>−1</sup>−(1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">y</span></sup><br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">cauchyd(0.3)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">cauchyd(0,1,0.3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.2,3)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">0.292027418517</span></div><p>
+</p><div class="center"><span style="font-family:monospace">0.488</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">cauchyd(2,1,3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.2,5)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">1/(2*pi)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">0.67232</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">cauchy(2.2,1.5,0.8)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.2,3,5)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">0.113412073462</span></div>
+</p><div class="center"><span style="font-family:monospace">0.18432</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.5,1)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.5</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.5,5)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.96875</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">geometric_cdf(0.5,1,5)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.46875</span></div>
 <hr>
 <a href="cascmd_fr798.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

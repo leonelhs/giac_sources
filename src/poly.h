@@ -161,13 +161,17 @@ namespace giac {
         s +=  '+' ;
       }
     };
-    const char * dbgprint() const { 
+    const char * dbgprint() const {
+#if 0
       static std::string s;
       s=print();
-#if 0 // ndef NSPIRE
-      COUT << s << std::endl; 
-#endif
       return s.c_str();
+#else
+      static std::string * sptr=0;
+      if (!sptr) sptr=new std::string;
+      *sptr=print();
+      return sptr->c_str();
+#endif
     }
     void high_order_degree_truncate(int n){
       // suppress terms of order >= n
@@ -611,7 +615,7 @@ namespace giac {
 	add_rem.coord.push_back(it->trunc1());
       }
       else {      // different power do an Horner *
-#ifndef NSPIRE // GIAC_VECTOR
+#if !defined NSPIRE && !defined(FXCG)// GIAC_VECTOR
 	rem.TAdd(add_rem,rem); rem *= pow(x0,pui.front()-it->index.front()); 
 #else
 	rem =(add_rem+rem)*pow(x0,pui.front()-it->index.front());
@@ -623,7 +627,7 @@ namespace giac {
     }
     rem.TAdd(add_rem,rem); // rem=(add_rem+rem);
     if (pui.front()){
-#ifndef NSPIRE // GIAC_VECTOR
+#if !defined (NSPIRE) && !defined(FXCG) // GIAC_VECTOR
       rem *= pow(x0,pui.front());
 #else
       rem = rem*pow(x0,pui.front());
@@ -1250,7 +1254,7 @@ namespace giac {
     index_m ishift(dim);
     tensor<T> b0(Tfirstcoeff(other));
     for (int i=m;i>=n;--i){
-#ifdef NSPIRE
+#if defined NSPIRE || defined(FXCG)
       a=a*b0;
       quo=quo*b0;
 #else
@@ -1264,7 +1268,7 @@ namespace giac {
 #endif // NSPIRE
       typename std::vector< monomial<T> >::const_iterator it=rem.coord.begin(),itend=rem.coord.end();
       if (it==itend || it->index.front()!=i){
-#ifdef NSPIRE
+#if defined NSPIRE || defined(FXCG)
 	rem=rem*b0;
 #else
 #ifdef GIAC_VECTOR
@@ -1294,8 +1298,14 @@ namespace giac {
   T tensor<T>::constant_term () const {  
     if (!((*this).coord.size()))
       return T(0);
+#if 1
+    if (sum_degree((*this).coord.back().index)==0)
+      return (*this).coord.back().value;
+    return T(0);
+#else
     index_m i=(*this).coord.front().index*0;
     return (*this)(i);
+#endif
   }
 
   template <class T>

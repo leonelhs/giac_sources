@@ -4,87 +4,75 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>La boucle : for pour fpour</title>
+<title>L’instruction conditionnelle : if then elif else end</title>
 </head>
 <body >
 <a href="cascmd_fr852.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr854.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1037" class="subsection">9.4.22  La boucle : <span style="font-family:monospace">for pour fpour</span></h3>
-<p><a id="hevea_default1554"></a><a id="hevea_default1555"></a><a id="hevea_default1556"></a><a id="hevea_default1557"></a><a id="hevea_default1558"></a><a id="hevea_default1559"></a><a id="hevea_default1560"></a>
-<span style="font-family:monospace">for</span> et <span style="font-family:monospace">pour</span> se sert d’une variable d’incrémentation par
-exemple <span style="font-family:monospace">j</span> (doit être déclarée comme variable locale).<br>
-<span style="font-weight:bold">Première syntaxe</span> <br>
-On précise entre des parenthèses et en les séparant par 
-un point virgule, la valeur de départ, la condition d’arrêt
-et la façon dont on incrémente la variable d’incrémentation, puis on
-met un bloc d’instructions :<br>
-<span style="font-family:monospace">for</span> permet de faire plusieurs fois un bloc d’instructions selon
-la valeur de la variable d’incrémentation.<br>
-<span style="font-family:monospace">for (j:=j1;j&lt;=j2;j:=j+3) {&lt;instructions&gt; }</span><br>
-Par exemple :<br>
-<span style="font-family:monospace">S:=0;for (j:=3;j&lt;20;j:=j+3) {S:=S+j;}</span><br>
-<span style="font-weight:bold">Deuxième syntaxe</span><br>
-On commence par <span style="font-family:monospace">for</span>, puis, on précise avec les mots <span style="font-family:monospace">from</span>, <span style="font-family:monospace">to</span>
-et <span style="font-family:monospace">step</span>, la valeur de départ, la condition d’arrêt et la faç on 
-dont on incrémente cette variable d’incrémentation, puis on met les 
-instructions à effectuer entre <span style="font-family:monospace">do</span> et <span style="font-family:monospace">end_for</span> :<br>
-<span style="font-family:monospace">for j from j1 to j2 step p do &lt;instructions&gt; end_for;</span><br>
-Ou on utilise sa traduction. On commence par <span style="font-family:monospace">pour</span>, puis, on précise avec
-les mots <span style="font-family:monospace">de</span>, <span style="font-family:monospace">jusque</span> et <span style="font-family:monospace">pas</span>, la valeur de départ, la 
-condition d’arrêt et la façon dont on incrémente cette variable 
-d’incrémentation, puis on met les instructions à effectuer entre <span style="font-family:monospace">faire</span>
-et <span style="font-family:monospace">fpour</span> :<br>
-<span style="font-family:monospace">pour j de j1 jusque j2 pas p faire &lt;instructions&gt; fpour;</span>
-Par exemple :<br>
-<span style="font-family:monospace">S:=0;for j from 3 to 20 step 3 do S:=S+j; end_for;</span><br>
-<span style="font-family:monospace">S:=0;pour j de 3 jusque 20 pas 3 faire S:=S+j; fpour;</span><br>
-<span style="font-weight:bold">Troisième syntaxe</span><br>
-On peut à l’aide d’un ensemble, d’une liste ou d’une plage de valeurs <span style="font-family:monospace">A</span>
-donner les différentes valeurs que doit prendre la variable d’incrémentation <span style="font-family:monospace">j</span>
-en mettant :<br>
-<span style="font-family:monospace">for j in A do ....end_for;</span>.<br>
-ou sa traduction :<br>
-<span style="font-family:monospace">pour j in A faire &lt;instructions&gt; fpour;</span>
-Par exemple lorsque <span style="font-family:monospace">j</span> s’incrémente de 1:<br>
-<span style="font-family:monospace">S:=0;for j in 1..5 do S:=S+j; end_for;</span><br>
-ou sa traduction<br>
-<span style="font-family:monospace">S:=0;pour j in 1..5 faire S:=S+j; fpour;</span><br>
-lorsque <span style="font-family:monospace">j</span> décrit un ensemble de valeurs :<br>
-<span style="font-family:monospace">A:=[3,6,9,15,30,45];S:=0;for j in A do S:=S+j; end_for;</span><br>
-ou sa traduction<br>
-<span style="font-family:monospace">A:=[3,6,9,15,30,45];S:=0;pour j in A faire S:=S+j; fpour;</span><br>
-ou<br>
-<span style="font-family:monospace">A:=%</span><span style="font-family:monospace">3,6,9,15,30,45%</span><span style="font-family:monospace">;S:=0;for j in A do S:=S+j; end_for;</span><br>
-ou sa traduction<br>
-<span style="font-family:monospace">A:=%</span><span style="font-family:monospace">3,6,9,15,30,45%</span><span style="font-family:monospace">;S:=0;pour j in A faire S:=S+j; fpour;</span><br>
-
-<span style="font-weight:bold">Attention</span><br>
- Ne pas choisir <span style="font-family:monospace">i</span> comme variable d’incrémentation car
-<span style="font-family:monospace">i</span> représente un nombre complexe !!!<br>
-On tape :
-</p><pre class="verbatim">somfor(n):={
-local j,s:=0;
-for (j:=1;j&lt;=n;j++){
-   s:=s+1/j;
-} 
-return s;
-}
-</pre><pre class="verbatim">sompour(n):={
-local j,s:=0;
-pour j de 1 jusque n faire
-   s:=s+1/j;
-fpour 
-retourne s;
-}
+<h3 id="sec1037" class="subsection">9.4.20  L’instruction conditionnelle : <span style="font-family:monospace">if then elif else end</span></h3>
+<p><a id="hevea_default1560"></a>
+Lorsqu’il y a plusieurs <span style="font-family:monospace">if...else if...</span> à la suite
+on peut aussi utiliser un <span style="font-family:monospace">elif</span> qui est une écriture 
+condensée de <span style="font-family:monospace">else if</span>. L’instruction <span style="font-family:monospace">elif</span> permet une écriture
+plus lisible car un seul <span style="font-family:monospace">end</span> suffit pour clore le <span style="font-family:monospace">if</span>. 
+Le dernier <span style="font-family:monospace">elif</span> peut comporter 
+ou ne pas comporter un <span style="font-family:monospace">else</span>. Voici la syntaxe :<br>
+<a id="hevea_default1561"></a><a id="hevea_default1562"></a><a id="hevea_default1563"></a></p><p><span style="font-family:monospace">if (</span><span style="font-family:monospace"><em>condition1</em></span><span style="font-family:monospace">) then <br>
+</span><span style="font-family:monospace"><em>action1</em></span><span style="font-family:monospace">; <br>
+elif (</span><span style="font-family:monospace"><em>condition2</em></span><span style="font-family:monospace">) then <br>
+</span><span style="font-family:monospace"><em>action2</em></span><span style="font-family:monospace">;<br>
+elif (</span><span style="font-family:monospace"><em>condition3</em></span><span style="font-family:monospace">) then <br>
+</span><span style="font-family:monospace"><em>action3</em></span><span style="font-family:monospace">;<br>
+end</span><br>
+ou bien
+<span style="font-family:monospace">if (</span><span style="font-family:monospace"><em>condition1</em></span><span style="font-family:monospace">) then <br>
+</span><span style="font-family:monospace"><em>action1</em></span><span style="font-family:monospace">; <br>
+elif (</span><span style="font-family:monospace"><em>condition2</em></span><span style="font-family:monospace">) then <br>
+</span><span style="font-family:monospace"><em>action2</em></span><span style="font-family:monospace">;<br>
+elif (</span><span style="font-family:monospace"><em>condition3</em></span><span style="font-family:monospace">) then <br>
+</span><span style="font-family:monospace"><em>action3</em></span><span style="font-family:monospace">;<br>
+else 
+</span><span style="font-family:monospace"><em>action4</em></span><span style="font-family:monospace">;<br>
+end</span><br>
+On tape par exemple pour définir la fonction <span style="font-family:monospace">f</span> définit par :
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=8 si <span style="font-style:italic">x</span>&gt;8
+</li><li class="li-itemize"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=4 si 4&lt;<span style="font-style:italic">x</span>≥ 8
+</li><li class="li-itemize"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=2 si 2&lt;<span style="font-style:italic">x</span>≥ 4
+</li><li class="li-itemize"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=1 si 0&lt;<span style="font-style:italic">x</span>≥ 2
+</li><li class="li-itemize"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=0 si  <span style="font-style:italic">x</span>≤ 0
+</li></ul><pre class="verbatim">f(a):= {
+  if a&gt;8 then 
+    return 8;
+  elif a&gt;4 then 
+    return 4;
+  elif a&gt;2 then 
+    return 2;
+  elif a&gt;0 then 
+    return 1;
+  elif a&lt;=0 then
+    return 0;
+  end;
+}:;
 </pre><p>
-puis:
-</p><div class="center"><span style="font-family:monospace">somfor(5)</span></div><p>
-ou 
-</p><div class="center"><span style="font-family:monospace">sompour(5)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">137/60</span></div>
+ou plutôt en utilisant un <span style="font-family:monospace">else</span> à la place du dernier <span style="font-family:monospace">elif</span>,
+on tape:
+</p><pre class="verbatim">f(a):= {
+  if a&gt;8 then 
+    return 8;
+  elif a&gt;4 then 
+    return 4;
+  elif a&gt;2 then 
+    return 2;
+  elif a&gt;0 then 
+    return 1;
+  else
+    return 0;
+  end;
+}:;
+</pre>
 <hr>
 <a href="cascmd_fr852.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

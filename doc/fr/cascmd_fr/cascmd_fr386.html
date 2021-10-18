@@ -4,39 +4,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Convertir un développement limité en polynôme : convert convertir</title>
+<title>Coefficients d’un polynôme défini par ses racines : pcoeff pcoef</title>
 </head>
 <body >
 <a href="cascmd_fr385.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr387.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec497" class="subsection">6.28.27  Convertir un développement limité en polynôme : <span style="font-family:monospace">convert convertir</span></h3>
-<p><a id="hevea_default725"></a><a id="hevea_default726"></a><a id="hevea_default727"></a><a id="sec:convertpoly"></a>
-Pour convertir un développement limité en polynôme on peut 
-utiliser <span style="font-family:monospace">convert</span>, avec l’option <span style="font-family:monospace">polynom</span> qui permet de convertir un 
-développement de Taylor en un polynôme ou bien utiliser la syntaxe 
-simplifiée de la commande <span style="font-family:monospace">taylor</span> ou <span style="font-family:monospace">series</span> qui admettent comme 
-dernier paramètre l’option <span style="font-family:monospace">polynom</span>.<br>
-<span style="font-family:monospace">convert</span> est utile pour transformer un développement limité en 
-polynôme : par exemple pour faire le tracé d’une fonction et de ses 
-polynômes de Taylor. <br>
-<span style="font-family:monospace">convert</span> a deux arguments : un développement de Taylor d’ordre <span style="font-style:italic">n</span> 
-et l’option <span style="font-family:monospace">polynom</span>.<br>
-<span style="font-family:monospace">convert</span> renvoie le polynôme de Taylor d’ordre <span style="font-style:italic">n</span> tronqué à 
-l’ordre <span style="font-style:italic">n</span> (on supprime le reste).<br>
+<h3 id="sec497" class="subsection">6.28.25  Coefficients d’un polynôme défini par ses racines : <span style="font-family:monospace">pcoeff pcoef</span></h3>
+<p><a id="hevea_default734"></a><a id="hevea_default735"></a>
+<span style="font-family:monospace">pcoeff</span> (ou <span style="font-family:monospace">pcoef</span>) a comme argument, une liste de 
+composantes les racines d’un polynôme <span style="font-style:italic">P</span>.<br>
+<span style="font-family:monospace">pcoeff</span> (ou <span style="font-family:monospace">pcoef</span>) renvoie une liste de composantes, les 
+coefficients du polynôme unitaire <span style="font-style:italic">P</span> (par ordre décroissant).<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">convert(taylor(sin(x)),polynom)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">taylor(sin(x),x=0,5,polynom)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">pcoef([1,2,0,0,3])</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">x+1/-6*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1/120*</span><code><span style="font-family:monospace">x^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6*0</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">convert(series(sin(x),x=0,6),polynom)</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">series(sin(x),x=0,5,polynom)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">x+1/-6*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1/120*</span><code><span style="font-family:monospace">x^</span></code><span style="font-family:monospace">5+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">7*0</span></div>
+</p><div class="center"><span style="font-family:monospace">[1,-6,11,-6,0,0]</span></div><p>
+c’est à dire (<span style="font-style:italic">x</span>−1)(<span style="font-style:italic">x</span>−2)(<span style="font-style:italic">x</span><sup>2</sup>)(<span style="font-style:italic">x</span>−3)=<span style="font-style:italic">x</span><sup>5</sup>−6<span style="font-style:italic">x</span><sup>4</sup>+11<span style="font-style:italic">x</span><sup>3</sup>−6<span style="font-style:italic">x</span><sup>2</sup>.</p>
 <hr>
 <a href="cascmd_fr385.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,25 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Chaine de Markov : markov</title>
+<title>Distribution cumulée pour une loi de probabilité : cdf</title>
 </head>
 <body >
 <a href="cascmd_fr818.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr820.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec997" class="subsection">8.4.56  Chaine de Markov : <span style="font-family:monospace">markov</span></h3>
-<p><a id="hevea_default1457"></a>
-<span style="font-family:monospace">markov(M)</span> calcule des éléments caractéristiques d’une 
-matrice de transition d’une chaine de Markov <span style="font-family:monospace">M</span>.<br>
-<span style="font-family:monospace">markov(M)</span> renvoie la liste des suites d’états
-récurrents positifs, la liste des probabilités stationnaires 
-correspondantes, la liste des autres composantes fortement connexes, la liste 
-des probabilités de finir sur les états récurrents positifs.<br>
+<h3 id="sec997" class="subsection">8.4.54  Distribution cumulée pour une loi de probabilité : <span style="font-family:monospace">cdf</span></h3>
+<p><a id="hevea_default1468"></a>
+<span style="font-family:monospace">cdf</span> a comme paramètre le nom d’une loi de probabilité suivi
+des paramètres de cette loi.<br>
+<span style="font-family:monospace">cdf</span> renvoie la distribution cumulée pour cette loi de probabilité.
 On tape :
-</p><div class="center"><span style="font-family:monospace">markov([[0,0,1/2,0,1/2],[0,0,1,0,0],[1/4,1/4,0,1/4,1/4], [0,0,1/2,0,1/2],[0,0,0,0,1]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">cdf(binomial,10,0.5,4)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[[4]],[[0,0,0,0,1]],[[3,1,2,0]],[[1],[1],[1],[1],[1]]</span></div>
+</p><div class="center"><span style="font-family:monospace">0.376953125</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">cdf(normald,0.0,1.0,2.0)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.977249868052</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">cdf(betad,2,3,0.9963)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">0.99999979795</span></div>
 <hr>
 <a href="cascmd_fr818.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

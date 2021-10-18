@@ -4,46 +4,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Densité de probabilité de la loi normale : loi_normale normald</title>
+<title>Fonction de répartition de Poisson : poisson_cdf</title>
 </head>
 <body >
 <a href="cascmd_fr773.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr775.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec952" class="subsection">8.4.11  Densité de probabilité de la loi normale : <span style="font-family:monospace">loi_normale normald</span></h3>
-<p><a id="hevea_default1390"></a><a id="hevea_default1391"></a>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">normald(x)</span> ou <span style="font-family:monospace">loi_ normale(x)</span> est la densité de 
-probabilité de la loi normale centrée réduite (de moyenne 0 et 
-d’écart-type 1).<br>
- <span style="font-family:monospace">normald(x)</span> ou <span style="font-family:monospace">loi_ normale(x)</span> est égale à :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2π</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−<span style="font-style:italic">x</span><sup>2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-<tr><td class="dcell">&nbsp;</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-family:monospace">normald(</span>µ,σ<span style="font-family:monospace">,x)</span> est la densité de probabilité de la loi normale 
-de moyenne µ et d’écart-type σ,<br>
-<span style="font-family:monospace">normald(</span>µ,σ<span style="font-family:monospace">,x)</span>, est égale à 
- 1/σ√<span style="text-decoration:overline">2π</span><span style="font-style:italic">e</span><sup>−1/2((<span style="font-style:italic">x</span>−µ)/σ)<sup>2</sup></sup>
-</li></ul><p>
+<h3 id="sec952" class="subsection">8.4.9  Fonction de répartition de Poisson : <span style="font-family:monospace">poisson_cdf</span></h3>
+<p><a id="hevea_default1401"></a>
+Lorsqu’une variable aléatoire <span style="font-style:italic">X</span> suit une loi de Poisson de 
+paramètre <span style="font-family:monospace">mu</span>, c’est à dire de moyenne <span style="font-family:monospace">mu</span> et d’écart-type 
+<span style="font-family:monospace">mu</span>, on a :<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-family:monospace">poisson_cdf( mu,x)</span> avec <span style="font-style:italic">X</span>∈ <span style="color:red"><span style="font-style:italic">P</span></span>(<span style="font-style:italic">mu</span>). et<br>
+<span style="font-style:italic">Proba</span>(<span style="font-style:italic">x</span>1≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>2)=<span style="font-family:monospace">poisson_cdf(mu,x1,x2)=<br>
+poisson_cdf(mu,x1)+...+poisson_cdf(mu,x2)</span> c’est à dire :<br>
+<span style="font-family:monospace">poisson_cdf(mu,x1,x2)=poisson_cdf(mu,x2)-poisson_cdf(mu,x1-1)</span><br>
+<span style="font-family:monospace">poisson_cdf(mu,x)</span> est la fonction de répartition de 
+la loi de Poisson de paramètre <span style="font-family:monospace">mu</span>,
 On tape :
-</p><div class="center"><span style="font-family:monospace">normald(1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">poisson_cdf(10.0,3)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">exp(-1/2)/sqrt(2*pi)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">0.0103360506759</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">normald(2,1,3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">poisson_cdf(10.0,3,10)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">exp(-1/2)/sqrt(2*pi)</span></div>
+</p><div class="center"><span style="font-family:monospace">0.572703699517</span></div>
 <hr>
 <a href="cascmd_fr773.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

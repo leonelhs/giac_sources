@@ -948,6 +948,7 @@ int main(int ARGC, char *ARGV[]){
   }
 #endif
   if (ARGC==2 && (string(ARGV[1])=="-v" || string(ARGV[1])=="--version" ) ){
+    cout << "// (c) 2001, 2018 B. Parisse & others" << endl;
     cout << GIAC_VERSION << endl;
 #ifndef GNUWINCE
     return 0;
@@ -1101,7 +1102,7 @@ int main(int ARGC, char *ARGV[]){
     printf("Giac CAS for mupacs, released under the GPL license 3.0\n");
     printf("See http://www.gnu.org for license details\n");
     printf("May contain BSD licensed software parts (lapack, atlas, tinymt)\n");
-    printf("| (c) 2006, 2017 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
+    printf("| (c) 2006, 2018 B. Parisse & al (giac), F.Maltey & al (mupacs) |\n");
     putchar(EMACS_DATA_END);
     bool prompt=true;
     for (int k=0;;++k) {
@@ -1293,7 +1294,7 @@ int main(int ARGC, char *ARGV[]){
     printf("|     Giac CAS for TeXmacs, released under the GPL license (3.0)    |\n");
     printf("|     See http://www.gnu.org for license details                    |\n");
     printf("|  May contain BSD licensed software parts (lapack, atlas, tinymt)  |\n");
-    printf("| (c) 2003,2017 B. Parisse & al (giac), J. van der Hoeven (TeXmacs) |\n");
+    printf("| (c) 2003,2018 B. Parisse & al (giac), J. van der Hoeven (TeXmacs) |\n");
     printf("--------------------------------------------------------------------\n");
     switch (giac::xcas_mode(contextptr)){
     case 0:
@@ -1504,7 +1505,7 @@ int main(int ARGC, char *ARGV[]){
     struct tms start, end;  
     using_history();
     cout << "Welcome to giac readline interface" << endl;
-    cout << "(c) 2001,2017 B. Parisse & others" << endl;
+    cout << "(c) 2001,2018 B. Parisse & others" << endl;
     cout << "Homepage http://www-fourier.ujf-grenoble.fr/~parisse/giac.html" << endl;
     cout << "Released under the GPL license 3.0 or above" << endl;
     cout << "See http://www.gnu.org for license details" << endl;
@@ -1552,6 +1553,8 @@ int main(int ARGC, char *ARGV[]){
       giac::messages_to_print="";
 #endif
       giac::gen gq(s,contextptr),ge;
+      if (giac::python_compat(contextptr))
+	gq=giac::equaltosto(gq,contextptr);
       if (giac::first_error_line(contextptr)){
 	cout << parser_error(contextptr);
       }

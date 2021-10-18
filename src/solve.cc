@@ -229,12 +229,12 @@ namespace giac {
     return vecteur(0);
   }
 
-  static bool check(const gen & id,const gen & value,GIAC_CONTEXT){
+  static bool check(const gen & id,const gen & value,const gen & ids,const gen & vals,GIAC_CONTEXT){
     if (is_inequation(value))
       return true; // FIXME!!
     if (id.type==_VECT && value.type==_VECT && id._VECTptr->size()==value._VECTptr->size()){
       for (unsigned i=0;i<id._VECTptr->size();++i){
-	if (!check((*id._VECTptr)[i],(*value._VECTptr)[i],contextptr))
+	if (!check((*id._VECTptr)[i],(*value._VECTptr)[i],ids,vals,contextptr))
 	  return false;
       }
       return true;
@@ -242,6 +242,7 @@ namespace giac {
     if (id.type!=_IDNT)
       return true;
     gen g,g2=id._IDNTptr->eval(1,g,contextptr);
+    g2=subst(g2,ids,vals,false,contextptr);
     if ((g2.type==_VECT) && (g2.subtype==_ASSUME__VECT)){
       vecteur v=*g2._VECTptr;
       if (!v.empty() && v[0].type==_INT_ && (v[0].val==_INT_ || v[0].val==_ZINT) && value.type!=_IDNT && value.type!=_SYMB && !is_integer(value))
@@ -1010,7 +1011,8 @@ namespace giac {
       if (!complexmode && is_positive(-delta_prime,contextptr))
 	return;
 #endif
-      delta_prime=normalize_sqrt(sqrt(delta_prime,contextptr),contextptr);
+      delta_prime=sqrt(delta_prime,contextptr);
+      delta_prime=normalize_sqrt(delta_prime,contextptr,false); // no abs in sqrt
       newv.push_back(rdiv(minus_b_over_2+delta_prime,a,contextptr));
       if (!is_zero(delta_prime,contextptr))
 	newv.push_back(rdiv(minus_b_over_2-delta_prime,a,contextptr));
@@ -1639,6 +1641,13 @@ namespace giac {
     }
   }
 
+  bool remove_neg(gen & g){
+    if (g.type!=_SYMB || g._SYMBptr->sommet!=at_neg)
+      return false;
+    g=g._SYMBptr->feuille;
+    return true;
+  }
+
   gen rationalize(const gen & g,const gen & x,GIAC_CONTEXT){
     gen expr=g;
     vecteur lv(lvarx(expr,x));
@@ -1650,6 +1659,33 @@ namespace giac {
     s=int(lv.size());
     if (s==1)
       return expr;
+    // solve(sin(3x)=cos(x))
+    if (expr.is_symb_of_sommet(at_plus) && expr._SYMBptr->feuille.type==_VECT && expr._SYMBptr->feuille._VECTptr->size()==2){
+      const vecteur & v = *expr._SYMBptr->feuille._VECTptr;
+      gen a=v[0],b=v[1];
+      bool nega=remove_neg(a);
+      bool negb=remove_neg(b);
+      if (nega)
+	negb=!negb;
+      bool cosa=a.type==_SYMB && a._SYMBptr->sommet==at_cos;
+      bool sina=a.type==_SYMB && a._SYMBptr->sommet==at_sin;
+      bool cosb=b.type==_SYMB && b._SYMBptr->sommet==at_cos;
+      bool sinb=b.type==_SYMB && b._SYMBptr->sommet==at_sin;
+      if ( (cosa || sina) && (cosb || sinb)){
+	a=a._SYMBptr->feuille;
+	if (negb)
+	  b=b._SYMBptr->feuille+cst_pi;
+	else
+	  b=b._SYMBptr->feuille;
+	if (sina)
+	  a=a-cst_pi/2;
+	if (sinb)
+	  b=b-cst_pi/2;
+	// cos(a)+cos(b)=0 equivalent to cos((a+b)/2)*cos((a-b)/2)=0
+	expr=cos((a+b)/2,contextptr)*cos((a-b)/2,contextptr);
+	return expr;
+      }
+    }
     gen tmp;
     if (lv.size()==2 && lv[0].type==_SYMB && lv[1].type==_SYMB && lv[0]._SYMBptr->feuille==lv[1]._SYMBptr->feuille)
       tmp=expr;
@@ -2276,7 +2312,10 @@ namespace giac {
     res.reserve(itend-it);
     for (;it!=itend;++it,++jt){
       // if (*it!=*jt)
-      res.push_back(symbolic(at_equal,makesequence(*it,*jt)));
+      if (jt->is_symb_of_sommet(at_equal) && jt->_SYMBptr->feuille[0]==*it)
+	res.push_back(*jt);
+      else
+	res.push_back(symbolic(at_equal,makesequence(*it,*jt)));
     }
     if (xcas_mode(contextptr)==3)
       return symbolic(at_and,res);
@@ -2590,7 +2629,7 @@ namespace giac {
 	res.push_back(*it);
 	continue;
       }
-      if (!check(v.back(),*it,contextptr))
+      if (!check(v.back(),*it,v.back(),*it,contextptr))
 	continue;
       gen tmp=subst(arg1,v.back(),*it,false,contextptr);
       tmp=eval(tmp,1,contextptr);
@@ -2640,7 +2679,7 @@ namespace giac {
     return w;
   }
   static const char _realproot_s []="realproot";
-  static define_unary_function_eval (__realproot,&giac::_realproot,_realproot_s);
+  static define_unary_function_eval (__realproot,&_realproot,_realproot_s);
   define_unary_function_ptr5( at_realproot ,alias_at_realproot,&__realproot,0,true);
 
   // bisection solver on a0,b0 with a sign reversal inside
@@ -3357,6 +3396,7 @@ namespace giac {
   }
 
   // same as lidnt but removes mute variable in int/sum/fsolve
+  // FIXME: Home functions names should be removed from the list
   vecteur true_lidnt(const gen & g){
     vecteur v=lvar(g);
     vecteur w;
@@ -4611,7 +4651,7 @@ namespace giac {
 
   struct sort_vectpoly_t {
     sort_vectpoly_t() {}
-    bool operator () (const giac::tensor<gen> & p,const giac::tensor<gen> & q){
+    bool operator () (const tensor<gen> & p,const tensor<gen> & q){
 #if 1
       if (p.coord.empty())
 	return false;
@@ -4620,7 +4660,7 @@ namespace giac {
       return p.is_strictly_greater(p.coord.front().index,q.coord.front().index);
       // return p.is_strictly_greater(q.coord.front().index,p.coord.front().index);
 #else
-      return giac::tensor_is_strictly_greater<gen>(p,q);
+      return tensor_is_strictly_greater<gen>(p,q);
 #endif
     }
   };
@@ -5744,14 +5784,14 @@ namespace giac {
     reverse(res.begin(),res.end());
     if (debug_infolevel>6)
       res.dbgprint();
-#ifndef GIAC_HAS_STO_38 // CAS38_DISABLED
+#if !defined GIAC_HAS_STO_38 && !defined FXCG // CAS38_DISABLED
     if (
 #ifdef GIAC_64VARS
 	1 || 
 #endif
 	 res.front().dim<=GROEBNER_VARS+1-(order!=_PLEX_ORDER)){
       vectpoly tmp;
-      order_t order_={order,lexvars};
+      order_t order_={static_cast<short>(order),lexvars};
       if (!gbasis8(res,order_,tmp,env,modularcheck!=0,modularcheck>=2,rur,contextptr,eliminate_flag))
 	return false;
       int i;
@@ -6946,7 +6986,7 @@ namespace giac {
       return gensizeerr("Bad second argument, expecting a Groebner basis");
     change_monomial_order(eqp,order);
     reverse(eqp.begin(),eqp.end());
-#ifndef CAS38_DISABLED
+#if !defined CAS38_DISABLED && !defined FXCG
     vecteur red_in_(gen2vecteur(v[0])),deno(red_in_.size());
     for (int i=0;i<int(red_in_.size());++i){
       gen eq(e2r(red_in_[i],l,contextptr));
@@ -6962,7 +7002,7 @@ namespace giac {
     if (!vecteur2vector_polynome(red_in_,l,red_in))
       return gensizeerr("Bad first argument, expecting polynomial or list of polynomials");
     change_monomial_order(red_in,order);
-    order_t order_={order.val,0};
+    order_t order_={static_cast<short>(order.val),0};
     environment env;
     env.moduloon=false;
     if (!quoptr && greduce8(red_in,eqp,order_,red_out,&env,contextptr)){
@@ -7352,7 +7392,7 @@ namespace giac {
     if (solu._VECTptr->empty())
       return args._VECTptr->back();
     if (solu._VECTptr->size()>1)
-      *logptr(contextptr) << gettext("Warning: algsubs selected one branch") << endl;
+      *logptr(contextptr) << gettext("Warning: algsubs selected one branch. Consider running G:=gbasis(") << gen2vecteur(eq) << ","<< ids << ");greduce("<<args._VECTptr->back()<<",G," << ids << ");" << endl;
     return normal(solu[0][0],contextptr);
   }
   static const char _algsubs_s []="algsubs";
@@ -7539,7 +7579,7 @@ namespace giac {
     if (eps0d.type==_DOUBLE_)
       eps=eps0d._DOUBLE_val;
     else {
-      eps=(x[0]>1e-10?std::abs(x[0]):1)*epsilon(contextptr);
+      eps=(x[0]>1e-10?absdouble(x[0]):1)*epsilon(contextptr);
       if (eps<1e-13)
 	eps=1e-13;
     }

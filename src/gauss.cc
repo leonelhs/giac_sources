@@ -337,6 +337,7 @@ namespace giac {
       return gendimerr(contextptr);
     if (args._VECTptr->back().type==_VECT)
       return _plus(gauss(args._VECTptr->front(),*(args._VECTptr->back()._VECTptr),contextptr),contextptr);
+    return _randNorm(args,contextptr);
     return symb_gauss(args);
   }
   static const char _gauss_s []="gauss";
@@ -422,7 +423,7 @@ namespace giac {
     gen a,b;
     if (!is_linear_wrt(eqM,x,a,b,contextptr))
       return undef;
-    return M+(-b/a)*(1+cst_i);
+    return M+(-b/a)*(1+cst_i*t);
     vecteur res=solve(eqM,x,0,contextptr); // x in terms of t
     if (res.size()!=1)
       return undef;

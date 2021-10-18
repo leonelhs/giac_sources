@@ -4,40 +4,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Storing and recalling variables and their values</title>
+<title>The spreadsheet window</title>
 </head>
 <body >
 <a href="cascmd_en043.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en045.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec67" class="subsection">4.5.4  Storing and recalling variables and their values</h3>
-<p>You can store variables and their values for later use in a file of
-your choosing with the <span style="font-family:monospace">archive</span><a id="hevea_default20"></a> function. This
-function takes two arguments, a filename to store the variables in and
-a variable or list of variables.</p><p>If you have given the variable <span style="font-family:monospace">a</span> the value <span style="font-family:monospace">2</span> and the
-variable <span style="font-family:monospace">bee</span> the value <span style="font-family:monospace">"letter"</span> (a string), then
-entering
-</p><blockquote class="quote"><span style="font-family:monospace">
-archive("foo",[a,bee])
-</span></blockquote><p>
-will create a file named “<span style="font-family:monospace">foo</span>” which contains the values
-<span style="font-family:monospace">2</span> and <span style="font-family:monospace">"letter"</span> in a format meant to be efficiently
-read by <span style="font-family:monospace">Xcas</span>.</p><p>You can recall the values stored by <span style="font-family:monospace">archive</span> with the
-<span style="font-family:monospace">unarchive</span><a id="hevea_default21"></a> command, which takes a file name
-as argument. If the file “<span style="font-family:monospace">foo</span>” is as above, then 
-</p><blockquote class="quote"><span style="font-family:monospace">
-unarchive("foo")
-</span></blockquote><p>
-will result in
-</p><blockquote class="quote"><span style="font-family:monospace">
-[2, letter]
-</span></blockquote><p>
-If you want to reassign these values to <span style="font-family:monospace">a</span> and <span style="font-family:monospace">bee</span>,
-you can enter
-</p><blockquote class="quote"><span style="font-family:monospace">
-[a,bee] := unarchive("foo")</span><a id="hevea_default22"></a><span style="font-family:monospace">
-</span></blockquote>
+<h3 id="sec67" class="subsection">4.5.2  The spreadsheet window</h3>
+<p>When you open a spreadsheet, the input line will become the
+spreadsheet.
+</p><div class="center">
+<img src="cascmd_en007.png">
+</div><p>
+The top will be a menu bar with
+<span style="font-family:monospace">Table</span>, <span style="font-family:monospace">Edit</span> and <span style="font-family:monospace">Maths</span> menus as well as
+<span style="font-family:monospace">eval</span>, <span style="font-family:monospace">val</span>, <span style="font-family:monospace">init</span>, <span style="font-family:monospace">2-d</span> and
+<span style="font-family:monospace">3-d</span> buttons. To the right will be the name of
+the file the spreadsheet will be saved into. Below the menu bar will
+be two boxes; a box which displays the active cell (and can be used to
+choose a cell) and a command line to enter information into the cell.
+Below that will be a status line, you can click on this to return to
+the configuration screen.</p>
 <hr>
 <a href="cascmd_en043.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,37 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Lecture d’un fichier wav : readwav</title>
+<title>L’icosaèdre : icosahedron icosaedre</title>
 </head>
 <body >
 <a href="cascmd_fr1105.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1107.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1341" class="subsection">12.1.1  Lecture d’un fichier wav : <span style="font-family:monospace">readwav</span></h3>
-<p><a id="hevea_default2138"></a>
-La commande <span style="font-family:monospace">readwav</span> permet de lire un fichier son stocké
-au format WAV (extension de fichier <span style="font-family:monospace">.wav</span>), on stocke en général
-le résultat dans une variable, par exemple :<br>
-<span style="font-family:monospace">s:=readwav("sound.wav")</span> <br>
-lit le fichier <code>sound.wav</code> et place le vecteur résultat dans la variable
-<code>s</code>.<br>
-Le vecteur renvoyé est composé de :
-</p><ul class="itemize"><li class="li-itemize">
-une liste donnant le format déchantillonage du son :
-le nombre de canaux (en général 1 pour mono ou 2 pour stéréo),
-le nombre de bits (en général 16), la fréquence
-d’échantillonage (44100 pour un son de qualité CD),
-et le nombre d’octets des données (hors en-tête), soit
-le nombre de secondes multiplié par la fréquence
-d’échantillonage multiplié par le nombre de bits/8 multiplié par
-le nombre de canaux.
-</li><li class="li-itemize">pour chaque canal, la liste des données numériques du son
-</li></ul><p>
-Ainsi si <code>s[0]</code> vaut <code>[1,16,44100,88200]</code> on a un
-enregistrement d’une seconde sur un canal en 16 bits, un son de
-qualité CD.<br>
-On a alors <code>size(s)==2</code> (1+nombre de canaux), et <code>size(s[1])==44100</code>.</p>
+<h3 id="sec1338" class="subsection">11.17.5  L’icosaèdre : <span style="font-family:monospace">icosahedron icosaedre</span></h3>
+<p><a id="hevea_default2153"></a><a id="hevea_default2154"></a>
+<span style="font-family:monospace">icosaedre</span> a comme argument trois points <span style="font-family:monospace">A,B,C</span>.<br>
+<span style="font-family:monospace">icosaedre(A,B,C)</span> dessine un icosaèdre de centre <span style="font-family:monospace">A</span>, de sommet
+<span style="font-family:monospace">B</span> tel que le plan <span style="font-family:monospace">ABC</span> contienne un sommet parmi les 5 les plus 
+proche de B.<br>
+On tape :
+</p><div class="center"><span style="font-family:monospace">icosaedre([0,0,0],[0,0,5],[0,1,0])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Un icosaèdre de centre l’origine, de sommet [0,0,5] et le plan 0yz contient un sommet</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">icosaedre([0,0,0],[0,0,sqrt(5)],[2,1,0])</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">Un icosaèdre de centre l’origine, de sommet [0,0,sqrt(5)] et les plans z=1 et z=-1 contiennent les sommets de l’icosaèdre formant 2 pentagones</span></div>
 <hr>
 <a href="cascmd_fr1105.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -343,6 +343,9 @@ namespace giac {
 #ifdef GIAC_HAS_STO_38
       return PrimeGetNow()/1000.;
 #endif
+#if defined(EMCC) && !defined(PNACL)
+      return emcctime()/1e6;
+#endif
       return total_time(contextptr);
     }
     double delta;
@@ -368,7 +371,7 @@ namespace giac {
     // return difftime(t2,t1);
     double t1=emcctime();
     eval(a,level,contextptr);
-    return (emcctime()-t1)/1000;
+    return (emcctime()-t1)/1e6;
 #endif
 #if defined(__APPLE__) || defined(PNACL)
     unsigned u1=CLOCK();
@@ -946,7 +949,7 @@ namespace giac {
   // open a file, returns a FD
   gen _open(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
-#if defined(VISUALC) || defined(__MINGW_H) || defined (FIR) || defined(NSPIRE) || defined(__ANDROID__) || defined(NSPIRE_NEWLIB) || defined(EMCC) || defined(GIAC_GGB)
+#if defined(VISUALC) || defined(__MINGW_H) || defined (FIR) || defined(FXCG) || defined(NSPIRE) || defined(__ANDROID__) || defined(NSPIRE_NEWLIB) || defined(EMCC) || defined(GIAC_GGB)
     return gensizeerr(gettext("not implemented"));
 #else
     gen tmp=check_secure();
@@ -997,7 +1000,7 @@ namespace giac {
     vecteur & v=*g._VECTptr;
     int s=int(v.size());
     FILE * f=0;
-#if !defined(BESTA_OS) && !defined(NSPIRE)
+#if !defined(BESTA_OS) && !defined(NSPIRE) && !defined(FXCG)
     if (v[0].type==_INT_ && v[0].subtype==_INT_FD)
       f= fdopen(v[0].val,"a");
 #endif    
@@ -1024,7 +1027,7 @@ namespace giac {
   gen _close(const gen & g0,GIAC_CONTEXT){
     gen g=eval(g0,1,contextptr);
     if ( g.type==_STRNG && g.subtype==-1) return  g;
-#if !defined(VISUALC) && !defined(BESTA_OS) && !defined(__MINGW_H) && !defined(NSPIRE)
+#if !defined(VISUALC) && !defined(BESTA_OS) && !defined(__MINGW_H) && !defined(NSPIRE) && !defined(FXCG)
     if (g.type==_INT_ && g.subtype==_INT_FD){
       purgenoassume(g0,contextptr);
       close(g.val);
@@ -2994,8 +2997,16 @@ namespace giac {
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     // create a table with specified index, may be initialized
     vecteur args;
-    if (g.type==_VECT && g.subtype==_SEQ__VECT)
+    if (g.type==_VECT && g.subtype==_SEQ__VECT){
       args=*g._VECTptr;
+      if (!args.empty()){
+	gen f=args.back();
+	if (f.is_symb_of_sommet(at_equal) && f._SYMBptr->feuille[0]==at_dtype){
+	  args.pop_back();
+	  return _convert(makesequence(_array(args.size()==1?args.front():gen(args,_SEQ__VECT),contextptr),f._SYMBptr->feuille[1]),contextptr);
+	}
+      }
+    }
     else
       args=gen2vecteur(g);
 #if 1 // def NSPIRE
@@ -3026,6 +3037,8 @@ namespace giac {
     }
     if (nindexes>>24)
       return gendimerr(gettext("Array too large")+print_INT_(nindexes));
+    if (nindexes==1)
+      return g;
     int is=int(indexsize.size());
     for (int i=0;i<nindexes;++i){
       // generate index by writing nindexes in bases indexsize
@@ -3671,7 +3684,7 @@ namespace giac {
   static define_unary_function_eval (__cprint,&_cprint,_cprint_s);
   define_unary_function_ptr5( at_cprint ,alias_at_cprint,&__cprint,_QUOTE_ARGUMENTS,true);
 
-#ifndef GIAC_HAS_STO_38
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG
   // make a cpp translation file
   gen _cpp(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
@@ -3776,7 +3789,9 @@ namespace giac {
   static const char _hexprint_s []="hexprint";
   static define_unary_function_eval (__hexprint,&_hexprint,_hexprint_s);
   define_unary_function_ptr5( at_hexprint ,alias_at_hexprint,&__hexprint,0,true);
-  
+  static const char _giac_hex_s []="hex";
+  static define_unary_function_eval (__giac_hex,&_hexprint,_giac_hex_s);
+  define_unary_function_ptr5( at_giac_hex ,alias_at_giac_hex,&__giac_hex,0,true)  
   gen _octprint(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type == _INT_)
@@ -3802,6 +3817,9 @@ namespace giac {
   define_unary_function_ptr5(at_binprint,alias_at_binprint,&__binprint,0,true);
   // const unary_function_ptr at_binprint (&__binprint,0,true);
 
+  static const char _giac_bin_s []="bin";
+  static define_unary_function_eval (__giac_bin,&_binprint,_giac_bin_s);
+  define_unary_function_ptr5( at_giac_bin ,alias_at_giac_bin,&__giac_bin,0,true);
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

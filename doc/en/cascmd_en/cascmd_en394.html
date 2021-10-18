@@ -4,31 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Test if a value is in a list : member</title>
+<title>Prepend an element at the beginning of a list : prepend</title>
 </head>
 <body >
 <a href="cascmd_en393.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en395.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec479" class="subsection">5.38.23  Test if a value is in a list : <span style="font-family:monospace">member</span></h3>
-<p><a id="hevea_default596"></a>
-<span style="font-family:monospace">member</span> takes as argument a value <span style="font-family:monospace">c</span> and a list
-(or a set) <span style="font-family:monospace">L</span>.<br>
-<span style="font-family:monospace">member</span> is a function that tests if <span style="font-family:monospace">c</span> is an element of the 
-list <span style="font-family:monospace">L</span>.<br>
-<span style="font-family:monospace">member</span> returns <span style="font-family:monospace">0</span> if <span style="font-family:monospace">c</span> is not in <span style="font-family:monospace">L</span>, or
-a strictly positive integer which is 
-1 plus the index of the first occurrence of <span style="font-family:monospace">c</span> in <span style="font-family:monospace">L</span>.<br>
-Note the order of the arguments (required for compatibility reasons)<br>
+<h3 id="sec480" class="subsection">5.38.17  Prepend an element at the beginning of a list : <span style="font-family:monospace">prepend</span></h3>
+<p><a id="hevea_default601"></a>
+<span style="font-family:monospace">prepend</span> takes as argument a list and an element.<br>
+<span style="font-family:monospace">prepend</span> puts this element at the beginning of this list.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">member(2,[0,1,2,3,4,2])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">prepend([3,4,2],1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[1,3,4,2]</span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">member(2,%{0,1,2,3,4,2%})</span></div><p>
+</p><div class="center"><span style="font-family:monospace">prepend([1,2],[3,4])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">3</span></div>
+</p><div class="center"><span style="font-family:monospace">[[3,4],1,2]</span></div>
 <hr>
 <a href="cascmd_en393.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

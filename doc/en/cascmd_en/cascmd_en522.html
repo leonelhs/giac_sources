@@ -4,38 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Conservative flux field : vpotential</title>
+<title>Gradient : derive deriver diff grad</title>
 </head>
 <body >
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en523.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec636" class="subsection">5.52.7  Conservative flux field : <span style="font-family:monospace">vpotential</span></h3>
-<p><a id="hevea_default794"></a>
-<span style="font-family:monospace">vpotential</span> takes two arguments : a vector field
-<span style="font-style:italic">V</span> 
-in <span style="font-style:italic">R</span><sup><span style="font-style:italic">n</span></sup> with respect to <span style="font-style:italic">n</span> real variables 
-and the vector of these variable names.<br>
-<span style="font-family:monospace">vpotential</span> returns, if it is possible, a vector <span style="font-style:italic">U</span> such
-that curl(<span style="font-style:italic">U</span>)=<span style="font-style:italic">V</span>.
-When it is possible we say that <span style="font-style:italic">V</span> is a conservative flux 
-field or a solenoidal field.
-The general solution is the sum of a particular solution and of the
-gradient of an arbitrary function, <span style="font-family:monospace">Xcas</span> returns a particular
-solution with zero as first component.<br>
-<span style="font-family:monospace">vpotential</span> is the reciprocal function of <span style="font-family:monospace">curl</span>.<br>
+<h3 id="sec637" class="subsection">5.52.1  Gradient : <span style="font-family:monospace">derive deriver diff grad</span></h3>
+<p><a id="hevea_default794"></a><a id="hevea_default795"></a><a id="hevea_default796"></a><a id="hevea_default797"></a><a id="sec:derive"></a><a id="hevea_default798"></a><a id="hevea_default799"></a>
+<span style="font-family:monospace">derive</span> (or <span style="font-family:monospace">diff</span> or <span style="font-family:monospace">grad</span>) takes two arguments : an 
+expression <span style="font-style:italic">F</span> of <span style="font-style:italic">n</span> real variables and a vector of these variable names.<br>
+<span style="font-family:monospace">derive</span> returns the gradient of <span style="font-style:italic">F</span>,
+where the gradient is the vector of all partial derivatives,
+for example in dimension <span style="font-style:italic">n</span>=3
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell"   style="width:90%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:10%;text-align:center">▸</td></tr>
+<tr><td class="dcell"  colspan="2" style="text-align:center">grad</td></tr>
+<tr><td class="dcell"  colspan="2" style="text-align:center"> </td></tr>
+</table></td><td class="dcell">(<span style="font-style:italic">F</span>)= [</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">z</span></td></tr>
+</table></td><td class="dcell">] </td></tr>
+</table><p>
+<span style="font-weight:bold">Example</span> <br>
+Find the gradient of <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>−<span style="font-style:italic">xz</span><sup>3</sup>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">vpotential([2*x*y+3,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-4*z,-2*y*z],[x,y,z]) </span></div><p>
-Output : 
-</p><div class="center"><span style="font-family:monospace">[0,(-(2*y))*z*x,-x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3/3-(-(4*z))*x+3*y]</span></div><p>
-In ℝ<sup>3</sup>, a vector field <span style="font-style:italic">V</span> is a rotational 
-if and only if its 
-divergence is zero <br>
-(<span style="font-family:monospace">divergence(V,[x,y,z])=0</span>).
-In time-independent electro-magnetism,
-<span style="font-style:italic">V</span>= <span style="font-style:italic">B</span> is the magnetic field and
-<span style="font-style:italic">U</span>= <span style="font-style:italic">A</span> is the potential vector.</p>
+</p><div class="center"><span style="font-family:monospace">derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">diff(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">grad(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[2*2*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(x*3*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
+Output after simplification with <span style="font-family:monospace">normal(ans())</span> :
+</p><div class="center"><span style="font-family:monospace">[4*x*y-z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(3*x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)]</span></div><p>
+To find the critical points of 
+<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>)=2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>−<span style="font-style:italic">xz</span><sup>3</sup>, input :
+</p><div class="center"><span style="font-family:monospace">solve(derive(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*y-x*z</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3,[x,y,z]),[x,y,z])</span></div><p> 
+Output :
+</p><div class="center"><span style="font-family:monospace">[[0,y,0]]</span></div>
 <hr>
 <a href="cascmd_en521.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -50,6 +50,11 @@ using namespace std;
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef FXCG
+extern "C" {
+#include <keyboard.h>
+}
+#endif
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
@@ -362,6 +367,12 @@ namespace giac {
     return solve(remove_equal(v.front()),v.back(),complexmode,contextptr);
   }
   gen _zeros(const gen & g,GIAC_CONTEXT){
+    if (g.type==_VECT && g._VECTptr->size()==2){
+      gen a=eval(g._VECTptr->front(),1,contextptr);
+      gen b=eval(g._VECTptr->back(),1,contextptr);
+      if (is_integral(a) && is_integral(b))
+	return _matrix(makesequence(a,b,0.0),contextptr);
+    }
     return zeros(g,complex_mode(contextptr),contextptr);
   }
   static const char _zeros_s[]="zeros";
@@ -369,7 +380,11 @@ namespace giac {
   define_unary_function_ptr5( at_zeros ,alias_at_zeros,&__zeros,_QUOTE_ARGUMENTS,true);
 
   gen _cZeros(const gen & g,GIAC_CONTEXT){
-    return zeros(g,true,contextptr);
+    bool b=complex_mode(contextptr);
+    complex_mode(true,contextptr);
+    gen res=zeros(g,true,contextptr);
+    complex_mode(b,contextptr);
+    return res;
   }
   static const char _cZeros_s[]="cZeros";
   static define_unary_function_eval_quoted (__cZeros,&_cZeros,_cZeros_s);
@@ -1064,7 +1079,38 @@ namespace giac {
   gen _format(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     vecteur v(gen2vecteur(g));
-    if (v.size()!=2 || v[1].type!=_STRNG)
+    size_t vs=v.size();
+    if (vs>=2 && v[0].type==_STRNG){
+      const string & fmt=*v[0]._STRNGptr;
+      size_t fs=fmt.size(),count=1;
+      string res;
+      for (size_t i=0;i<fs;++i){
+	if (i==fs-1 || fmt[i]!='{' ||  (i!=0 && fmt[i-1]=='\\')){
+	  res += fmt[i];
+	  continue;
+	}
+	if (fmt[i+1]=='}'){
+	  ++i;
+	  if (count<vs)
+	    res += v[count].type==_STRNG? *v[count]._STRNGptr: v[count].print(contextptr);
+	  else
+	    return gendimerr(contextptr);
+	  ++count;
+	  continue;
+	}
+	int c=0;
+	for (++i;i<fs && fmt[i]>='0' && fmt[i]<='9';++i){
+	  c=c*10+int(fmt[i]-'0');	  
+	}
+	if (i==fs || fmt[i]!='}')
+	  return gendimerr(contextptr);
+	c++;
+	res += v[c].type==_STRNG? *v[c]._STRNGptr: v[c].print(contextptr);
+	++count;
+      }
+      return string2gen(res,false);
+    }
+    if (vs!=2 || v[1].type!=_STRNG)
       return gensizeerr(contextptr);
     return string2gen(format(v.front(),*v[1]._STRNGptr,contextptr),false);
   }
@@ -1662,10 +1708,34 @@ namespace giac {
 
   gen _int(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+    if (g.type==_VECT && g.subtype==_SEQ__VECT && g._VECTptr->size()==2 && g._VECTptr->front().type==_STRNG && g._VECTptr->back().type==_INT_){
+      gen b=g._VECTptr->back();
+      if (b.val<2 || b.val>36)
+	return gendimerr(contextptr);
+      gen res=0;
+      const string & s=*g._VECTptr->front()._STRNGptr;
+      int ss=int(s.size());
+      for (int i=0;i<ss;++i){
+	char ch=s[i];
+	if (ch>='0' && ch<='9'){
+	  res = res*b+int(ch-'0');
+	  continue;
+	}
+	if (ch>='A' && ch<='Z'){
+	  res = res*b+int(ch-'A')+10;
+	  continue;
+	}
+	if (ch>='a' && ch<='z'){
+	  res = res*b+int(ch-'a')+10;
+	  continue;
+	}
+      }
+      return res;
+    }
     if (xcas_mode(contextptr)==3 || (python_compat(contextptr) && g.type!=_VECT)){
-      gen g_=g;
-      if (g.type==_STRNG)
-	g_=gen(*g._STRNGptr,contextptr);
+      gen g_=eval(g,1,contextptr);
+      if (g_.type==_STRNG)
+	g_=gen(*g_._STRNGptr,contextptr);
       return _floor(evalf(g_,1,contextptr),contextptr);
     }
     else
@@ -1951,7 +2021,7 @@ namespace giac {
     return res;
   }
   static const char _ref_s[]="ref";
-  static define_unary_function_eval (__ref,&giac::_ref,_ref_s);
+  static define_unary_function_eval (__ref,&_ref,_ref_s);
   define_unary_function_ptr5( at_ref ,alias_at_ref,&__ref,0,true);
 
   vecteur gen2vecteur(const gen & g,int exclude){
@@ -2015,11 +2085,11 @@ namespace giac {
     return matrice_extract(*v[0]._VECTptr,lignedeb-1,colonnedeb-1,lignefin-lignedeb+1,colonnefin-colonnedeb+1);
   }
   static const char _subMat_s[]="subMat";
-  static define_unary_function_eval (__subMat,&giac::_subMat,_subMat_s);
+  static define_unary_function_eval (__subMat,&_subMat,_subMat_s);
   define_unary_function_ptr5( at_subMat ,alias_at_subMat,&__subMat,0,true);
 
   static const char _submatrix_s[]="submatrix";
-  static define_unary_function_eval (__submatrix,&giac::_subMat,_submatrix_s);
+  static define_unary_function_eval (__submatrix,&_subMat,_submatrix_s);
   define_unary_function_ptr5( at_submatrix ,alias_at_submatrix,&__submatrix,0,true);
 
   gen _unitV(const gen & g,GIAC_CONTEXT) {
@@ -2027,7 +2097,7 @@ namespace giac {
     return rdiv(g,_l2norm(g,contextptr),contextptr);
   }
   static const char _unitV_s[]="unitV";
-  static define_unary_function_eval (__unitV,&giac::_unitV,_unitV_s);
+  static define_unary_function_eval (__unitV,&_unitV,_unitV_s);
   define_unary_function_ptr5( at_unitV ,alias_at_unitV,&__unitV,0,true);
 
   gen L1norm(const gen & g,GIAC_CONTEXT){
@@ -2053,11 +2123,11 @@ namespace giac {
     return res;
   }
   static const char _rowNorm_s[]="rowNorm";
-  static define_unary_function_eval (__rowNorm,&giac::_rowNorm,_rowNorm_s);
+  static define_unary_function_eval (__rowNorm,&_rowNorm,_rowNorm_s);
   define_unary_function_ptr5( at_rowNorm ,alias_at_rowNorm,&__rowNorm,0,true);
 
   static const char _rownorm_s[]="rownorm";
-  static define_unary_function_eval (__rownorm,&giac::_rowNorm,_rownorm_s);
+  static define_unary_function_eval (__rownorm,&_rowNorm,_rownorm_s);
   define_unary_function_ptr5( at_rownorm ,alias_at_rownorm,&__rownorm,0,true);
 
   gen _colNorm(const gen & g,GIAC_CONTEXT) {
@@ -2067,11 +2137,11 @@ namespace giac {
     return _rowNorm(mtran(*g._VECTptr),contextptr);
   }
   static const char _colNorm_s[]="colNorm";
-  static define_unary_function_eval (__colNorm,&giac::_colNorm,_colNorm_s);
+  static define_unary_function_eval (__colNorm,&_colNorm,_colNorm_s);
   define_unary_function_ptr5( at_colNorm ,alias_at_colNorm,&__colNorm,0,true);
 
   static const char _colnorm_s[]="colnorm";
-  static define_unary_function_eval (__colnorm,&giac::_colNorm,_colnorm_s);
+  static define_unary_function_eval (__colnorm,&_colNorm,_colnorm_s);
   define_unary_function_ptr5( at_colnorm ,alias_at_colnorm,&__colnorm,0,true);
 
   gen _ClrIO(const gen & g,GIAC_CONTEXT){
@@ -2100,10 +2170,14 @@ namespace giac {
     if (interactive_op_tab && interactive_op_tab[4])
       return interactive_op_tab[4](g,contextptr);
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+#ifdef FXCG
+    return PRGM_GetKey();
+#else
     char ch;
     CERR << "Waiting for a keystroke in konsole screen" << endl;
     CIN >> ch;
     return int(ch);
+#endif
   }
   static const char _getKey_s[]="getKey";
 #if defined RTOS_THREADX || defined BESTA_OS
@@ -2474,7 +2548,7 @@ namespace giac {
     double delay=1.0;
     if (s>2 && v[2].type==_DOUBLE_)
       delay=v[2]._DOUBLE_val;
-    delay=std::abs(delay*1e3);
+    delay=absdouble(delay*1e3);
     int d=int(delay);
     int ds=d/1000,ns=(d%1000)*1000000;
 #ifndef HAVE_NO_SYS_TIMES_H
@@ -2496,11 +2570,7 @@ namespace giac {
 	  gen g(name,contextptr);
 	  if (g.type==_IDNT)
 	    _RplcPic(g,contextptr);
-#ifdef NSPIRE
-	  sleep(d);
-#else
-	  usleep(d*1000);
-#endif
+	  wait_1ms(d);
 	  /*
 	    #ifdef WIN32
 	    sleep(ds);
@@ -2520,11 +2590,7 @@ namespace giac {
 	  gen g(name,contextptr);
 	  if (g.type==_IDNT)
 	    _RplcPic(g,contextptr);
-#ifdef NSPIRE
-	  sleep(d);
-#else
-	  usleep(d*1000);
-#endif
+	  wait_1ms(d);
 	  /*
 	    #ifdef WIN32
 	    sleep(ds);
@@ -2545,9 +2611,10 @@ namespace giac {
   static define_unary_function_eval2 (__CyclePic,&_CyclePic,_CyclePic_s,&printastifunction);
   define_unary_function_ptr5( at_CyclePic ,alias_at_CyclePic,&__CyclePic,0,T_RETURN);
 
+#ifndef FXCG
   gen _RandSeed(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
-#if defined(NSPIRE_NEWLIB) || defined(VISUALC) || defined(__MINGW_H) || defined BESTA_OS || defined EMCC || defined NSPIRE
+#if defined(NSPIRE_NEWLIB) || defined(VISUALC) || defined(__MINGW_H) || defined BESTA_OS || defined EMCC || defined NSPIRE 
     srand(g.val);
 #else
 #ifndef GNUWINCE
@@ -2559,6 +2626,7 @@ namespace giac {
   static const char _RandSeed_s[]="RandSeed";
   static define_unary_function_eval2 (__RandSeed,&_RandSeed,_RandSeed_s,&printastifunction);
   define_unary_function_ptr5( at_RandSeed ,alias_at_RandSeed,&__RandSeed,0,T_RETURN);
+#endif
 
   gen _Store(const gen & g,const context * contextptr){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
@@ -2681,7 +2749,7 @@ namespace giac {
   static define_unary_function_eval (__simult,&simult,_simult_s);
   define_unary_function_ptr5( at_simult ,alias_at_simult,&__simult,0,true);
 
-#ifdef NSPIRE // (almost) inert function system for keyboard template
+#if defined NSPIRE || defined FXCG // (almost) inert function system for keyboard template
   gen system(const gen & g,GIAC_CONTEXT){
     if (g.type==_VECT)
       return *g._VECTptr;
@@ -2728,7 +2796,7 @@ namespace giac {
   // archive is made of couples name/value
   static sym_string_tab read_ti_archive(const string & s,GIAC_CONTEXT){
     vecteur v;
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
     ifstream inf(s.c_str());
     readargs_from_stream(inf,v,contextptr);
 #endif
@@ -2748,7 +2816,7 @@ namespace giac {
   }
   
   static void print_ti_archive(const string & s,const sym_string_tab & m){
-#ifdef NSPIRE
+#if defined NSPIRE || defined FXCG
     return;
 #else
     if (is_undef(check_secure()))
@@ -3907,7 +3975,7 @@ namespace giac {
       --ptr;
       return ti_decode_while(ptr,contextptr);
     case RANDSEED_ITAG:
-      return ti_decode_unary(ptr,at_RandSeed,contextptr);
+      return ti_decode_unary(ptr,at_srand,contextptr);
     case COPYVAR_ITAG:
       return ti_decode_binary(ptr,at_CopyVar,true,contextptr);
     case RENAME_ITAG:
@@ -4737,7 +4805,7 @@ namespace giac {
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if (g.type!=_STRNG)
       return gensizeerr(contextptr);
-#ifdef NSPIRE
+#if defined NSPIRE || defined FXCG
       return gensizeerr(contextptr);
 #else
     if (access(g._STRNGptr->c_str(),R_OK))

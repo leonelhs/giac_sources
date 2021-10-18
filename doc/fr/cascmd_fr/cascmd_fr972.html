@@ -4,65 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Périmètre d’un polygone et son affichage :perimeterat perimetreen et perimeteratraw perimetreenbrut</title>
+<title>Représentation graphique de l’aire d’un polygone : tracer_aire graphe_aire aire_graphe plotarea areaplot</title>
 </head>
 <body >
 <a href="cascmd_fr971.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr973.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1182" class="subsection">10.16.11  Périmètre d’un polygone et son affichage :<span style="font-family:monospace">perimeterat perimetreen</span> et <span style="font-family:monospace">perimeteratraw perimetreenbrut</span></h3>
-<p><a id="hevea_default1897"></a><a id="hevea_default1898"></a><a id="hevea_default1899"></a><a id="hevea_default1900"></a>
-<span style="font-family:monospace">perimeterat</span> ou <span style="font-family:monospace">perimetreen</span> et <span style="font-family:monospace">perimeteratraw</span> ou 
-<span style="font-family:monospace">perimetreenbrut</span> sont des commandes 
-obtenues lorsqu’on utilse, dans un niveau de géométrie 2<span style="font-style:italic">d</span> ou 3<span style="font-style:italic">d</span>, le 
-bouton <span style="font-family:monospace">Mode-&gt;Mesures-&gt;perimetreen</span> ou <span style="font-family:monospace">Mode-&gt;Mesures-&gt;perimetreenbrut</span>.
-Dans ce cas il faut que tous les objets désignés par la souris soient 
-déjà nommés.<br>
-On peut néammoins taper ces commandes dans une ligne de commande.<br>
-
-<span style="font-family:monospace">perimeterat</span> ou <span style="font-family:monospace">perimetreen</span> et <span style="font-family:monospace">perimeteratraw</span> ou 
-<span style="font-family:monospace">perimetreenbrut</span> ont comme argument un cercle ou un polygone et 1
-point (ou 1 nombre complexe qui est l’affixe d’un point).<br>
-<span style="font-family:monospace">perimeterat</span> ou <span style="font-family:monospace">perimetreen</span> renvoie le point, calcule le 
-périmètre du cercle ou du polygone et affiche ce périmètre à 
-l’endroit du point avec une légende. <span style="font-weight:bold">Attention</span> Il faut que le 
-polygone ait un nom.<br>
-<span style="font-family:monospace">perimeteratraw</span> ou <span style="font-family:monospace">perimetreenbrut</span> renvoie le point, calcule le 
-périmètre du cercle ou du polygone et affiche ce périmètre à 
-l’endroit du point.<br>
+<h3 id="sec1182" class="subsection">10.16.7  Représentation graphique de l’aire d’un polygone : <span style="font-family:monospace">tracer_aire graphe_aire aire_graphe plotarea areaplot</span></h3>
+<p><a id="hevea_default1901"></a><a id="hevea_default1902"></a><a id="hevea_default1903"></a> <a id="hevea_default1904"></a><a id="hevea_default1905"></a>
+Avec un polygone comme argument, <span style="font-family:monospace">aire_graphe</span> ou <span style="font-family:monospace">graphe_aire</span> ou
+<span style="font-family:monospace">tracer_aire</span><span style="font-family:monospace">plotarea</span> permet 
+de représenter et d’afficher l’aire d’un polygone. L’aire est positive si le 
+le polygone est direct et est négative sinon
 On tape :
-</p><div class="center"><span style="font-family:monospace">t:=triangle(0,1,i)</span></div><div class="center"><span style="font-family:monospace">perimetreen(t,(1+i)/2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(1),point((1+i)*1/2),point(1+i)))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">2+sqrt(2) s’écrit au point((1+i)/2) avec une légende</span></div><p>
+</p><div class="center"><span style="font-family:monospace">le polygone rempli avec -1/4 affiché au point(1)</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">perimetreenbrut(triangle(0,1,i),(1+i)/2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(1),point(1+i),point((1+i)*1/2)))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">2+sqrt(2) s’écrit au point((1+i)/2)</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">c:=carre(0,2)</span></div><div class="center"><span style="font-family:monospace">perimetreen(c,2.2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">le polygone rempli avec 1/4 affiché au point(1)</span></div><p>
+<span style="font-weight:bold">Remarque</span>
+Si on ne voit pas l’affichage, on tape par exemple : 
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">8 s’écrit au point(2.2) avec une légende</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">perimetreenbrut(carre(0,2),2.2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">le polygone rempli, mais ne l’affichage au point(0) est caché</span></div><p>
+On tape alors :
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)),affichage=quadrant2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">8 s’écrit au point(2.2)</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">cc:=cercle(0,2)</span></div><div class="center"><span style="font-family:monospace">perimetreen(cc,2.2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">le polygone rempli, avec 3/4 affiché au au point(0)</span></div><p>
+On peut aussi taper, pour n’avoir que la valeur :
+</p><div class="center"><span style="font-family:monospace">plotarea(polygone(point(0),point(1),point(1+i),point((1+i)/2),point(i)))[3]</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">4*pi s’écrit au point(2.2) avec une légende</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">perimetreenbrut(cercle(0,2),2.2)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">4*pi s’écrit au point(2.2)</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">h:=hexagone(0,1)</span></div><div class="center"><span style="font-family:monospace">perimetreen(h,1.2)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">6 s’écrit au point(1.2) avec une légende</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">perimetreenbrut(hexagone(0,1),1.2)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">6 s’écrit au point(1.2)</span></div>
+</p><div class="center"><span style="font-family:monospace">3/4</span></div>
 <hr>
 <a href="cascmd_fr971.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

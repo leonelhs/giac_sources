@@ -23,6 +23,11 @@ using namespace std;
 #include <pwd.h>
 #endif
 #endif
+#ifdef FXCG
+extern "C" {
+#include <rtc.h>
+}
+#endif
 #include <stdexcept>
 #include <cmath>
 #include <cstdlib>
@@ -76,9 +81,13 @@ using namespace std;
 u32 PrimeGetNow();
 extern "C" uint32_t mainThreadStack[];
 #else
-#ifndef BESTA_OS
+#if !defined BESTA_OS && !defined FXCG
 #include <time.h>
 #endif
+#endif
+
+#ifdef EMCC
+#include <emscripten.h>
 #endif
 
 #ifndef NO_NAMESPACE_GIAC
@@ -95,6 +104,18 @@ namespace giac {
 #ifdef HAVE_LIBDL
   modules_tab giac_modules_tab;
 #endif
+
+  void alert(const string & s,GIAC_CONTEXT){
+#ifdef EMCC
+    EM_ASM_ARGS({
+	if (UI.warnpy){
+          var msg = Pointer_stringify($0); // Convert message to JS string
+          alert(msg);                      // Use JS version of alert          
+        }
+      }, s.c_str());
+#endif
+    *logptr(contextptr) << s << endl;
+  }
 
   gen equaltosto(const gen & g,GIAC_CONTEXT){
     if (g.type<=_IDNT || !eval_equaltosto(contextptr))
@@ -498,7 +519,7 @@ namespace giac {
       gen & f=g._SYMBptr->feuille;
       if (f.type!=_VECT || f._VECTptr->size()!=2)
 	return;
-      if (protecteval(f._VECTptr->front(),1,contextptr)!=f._VECTptr->front())
+      if (python_compat(contextptr) || protecteval(f._VECTptr->front(),1,contextptr)!=f._VECTptr->front())
 	check_local_assign(f._VECTptr->back(),prog_args,res1,res2,res3,res4,false,contextptr);
       else
 	check_local_assign(f,prog_args,res1,res2,res3,res4,false,contextptr);
@@ -509,7 +530,7 @@ namespace giac {
       return;
     }
     if (g.type!=_VECT){
-      vecteur l(*_lname(g,contextptr)._VECTptr);
+      vecteur l(gen2vecteur(_lname(g,contextptr)));
       const_iterateur it=l.begin(),itend=l.end();
       for (;it!=itend;++it){
 	if (!equalposcomp(res2,*it) && !equalposcomp(prog_args,*it))
@@ -523,7 +544,7 @@ namespace giac {
     }
   }
   bool is_constant_idnt(const gen & g){
-    return g==cst_pi || g==cst_euler_gamma || is_inf(g) || is_undef(g) || (g.type==_IDNT && strcmp(g._IDNTptr->id_name,"i")==0);
+    return g==cst_pi || g==cst_euler_gamma || is_inf(g) || is_undef(g) || (g.type==_IDNT && (strcmp(g._IDNTptr->id_name,"i")==0 || strcmp(g._IDNTptr->id_name,"None")==0 || strcmp(g._IDNTptr->id_name,"cmath")==0 || strcmp(g._IDNTptr->id_name,"math")==0 || strcmp(g._IDNTptr->id_name,"kandinsky")==0 || strcmp(g._IDNTptr->id_name,"pass")==0));
   }
 
   bool warn_equal_in_prog=true;
@@ -600,7 +621,7 @@ namespace giac {
       res +=gettext(" declared as global variable(s). If symbolic variables are required, declare them as local and run purge\n");
     }
     if (res.empty())
-      return giac::first_error_line(contextptr)?gettext("// Error(s)\n"):gettext("// Success\n");
+      return first_error_line(contextptr)?gettext("// Error(s)\n"):gettext("// Success\n");
     else
       return res;
   }
@@ -796,7 +817,22 @@ namespace giac {
     bool python=python_compat(contextptr) && !debug_ptr(contextptr)->debug_mode;
     if (python){
       int & ind=debug_ptr(contextptr)->indent_spaces;
-      vecteur & v =*feuille._VECTptr;
+      vecteur v =*feuille._VECTptr;
+      if (v[2].type==_VECT && v[2].subtype==_PRG__VECT)
+	v[2]=symb_bloc(v[2]);
+      if (!v[2].is_symb_of_sommet(at_bloc) && !v[2].is_symb_of_sommet(at_local)){
+	res=string(ind,' ')+"lambda ";
+	if (v[0].type==_VECT && v[0].subtype==_SEQ__VECT && v[0]._VECTptr->size()==1)
+	  res += v[0]._VECTptr->front().print(contextptr);
+	else 
+	  res += v[0].print(contextptr);
+	res +=':';
+	if (v[2].is_symb_of_sommet(at_return))
+	  res += v[2]._SYMBptr->feuille.print(contextptr);
+	else
+	  res += v[2].print(contextptr);
+	return res;
+      }
       res = string(ind,' ')+"def "+lastprog_name(contextptr)+"(";
       if (v[0].type==_VECT && v[0].subtype==_SEQ__VECT && v[0]._VECTptr->size()==1)
 	res += equaltosto(v[0]._VECTptr->front(),contextptr).print(contextptr);
@@ -1070,6 +1106,8 @@ namespace giac {
 	v1.push_back(*it);
 	string s=gen2string(*it);
 	int ss=int(s.size());
+	if (ss==1)
+	  s += "___";
 	if (ss>2 && s[0]=='\'' && s[ss-1]=='\'')
 	  s=s.substr(1,ss-2);
 	for (unsigned i=0;i<s.size();++i){
@@ -1098,9 +1136,25 @@ namespace giac {
     }
   }
 
+  string mkvalid(const string & s){
+    string res;
+    for (size_t i=0;i<s.size();++i){
+      char ch=s[i];
+      if (ch!='.' && isalphan(ch)){
+	res += ch;
+	continue;
+      }
+      res += "char";
+      res += char('0'+(ch/100));
+      res += char('0'+((ch%100)/10));
+      res += char('0'+(ch%10));
+    }
+    return res;
+  }
+
   // a=arguments, b=values, c=program bloc, d=program name
-  symbolic symb_program_sto(const gen & a_,const gen & b_,const gen & c,const gen & d,bool embedd,GIAC_CONTEXT){
-    gen a(a_),b(b_);
+  symbolic symb_program_sto(const gen & a_,const gen & b_,const gen & c_,const gen & d,bool embedd,GIAC_CONTEXT){
+    gen a(a_),b(b_),c(c_);
     default_args(a,b,contextptr);
     bool warn=false;
 #ifndef GIAC_HAS_STO_38
@@ -1131,6 +1185,34 @@ namespace giac {
 	 }
        }
     }
+    vecteur newcsto(lop(c,at_sto)),newc1,newc2;
+    for (size_t i=0;i<newcsto.size();++i){
+      gen var=newcsto[i]._SYMBptr->feuille[1];
+      if (var.type==_FUNC && (python_compat(contextptr) || !archive_function_index(*var._FUNCptr))){
+	newc1.push_back(var);
+	newc2.push_back(identificateur(mkvalid(var._FUNCptr->ptr()->print(contextptr))+"_rep"));
+      }
+    }
+    newcsto=mergevecteur(lop(c,at_struct_dot),lop(c,at_for));
+    for (size_t i=0;i<newcsto.size();++i){
+      gen var=newcsto[i]._SYMBptr->feuille[0];
+      if (var.type==_FUNC && var!=at_random && (python_compat(contextptr) || !archive_function_index(*var._FUNCptr))){
+	newc1.push_back(var);
+	newc2.push_back(identificateur(mkvalid(var._FUNCptr->ptr()->print(contextptr))+"_rep"));
+      }
+    }
+    newcsto=gen2vecteur(a);
+    for (size_t i=0;i<newcsto.size();++i){
+      gen var=newcsto[i];
+      if (var.type==_FUNC){
+	newc1.push_back(var);
+	newc2.push_back(identificateur(mkvalid(var._FUNCptr->ptr()->print(contextptr))+"_rep"));
+      }
+    }
+    if (!newc1.empty()){
+      c=subst(c,newc1,newc2,true,contextptr);
+      a=subst(a,newc1,newc2,true,contextptr);
+    }
     gen newa,newc;
     replace_keywords(a,((embedd&&c.type==_VECT)?makevecteur(c):c),newa,newc,contextptr);
     if (python_compat(contextptr)){
@@ -1140,12 +1222,36 @@ namespace giac {
 	  Newa[i]=Newa[i]._SYMBptr->feuille[0];
       }
       check_local_assign(newc,Newa,res1,non_decl,res3,res4,false,contextptr);
+      vecteur stov(lop(newc,at_sto));
+      for (size_t i=0;i<stov.size();++i){
+	stov[i]=stov[i]._SYMBptr->feuille[1];
+      }
+      vecteur stoprog(lop(newc,at_program));
+      for (size_t i=0;i<stoprog.size();++i){
+	stoprog[i]=stoprog[i]._SYMBptr->feuille[0];
+      }
+      stov=lidnt(mergevecteur(stov,stoprog));
       int rs=int(non_decl.size());
       for (int i=0;i<rs;i++){
-	// remove constant idnt and recursive def
-	if (is_constant_idnt(non_decl[i]) || non_decl[i]==d){ 
+	// remove var that are not assigned (assumed global), constant idnt and recursive def
+	gen noni=non_decl[i];
+	if (noni.type!=_IDNT){
 	  non_decl.erase(non_decl.begin()+i);
 	  --i; --rs;
+	  continue;
+	}
+	bool b=equalposcomp(stov,noni);
+	if (strcmp(noni._IDNTptr->id_name,"i")==0){
+	  if (!b){
+	    non_decl.erase(non_decl.begin()+i);
+	    --i; --rs;
+	  }
+	}
+	else {
+	  if (!b || is_constant_idnt(noni) || noni==d){ 
+	    non_decl.erase(non_decl.begin()+i);
+	    --i; --rs;
+	  }
 	}
       }
       if (!non_decl.empty()){
@@ -1238,9 +1344,14 @@ namespace giac {
       else
 	v=mergevecteur(v,gen2vecteur(w[0]));
       local_vars(w[1],v,contextptr);
+      return;
     }
-    else
-      local_vars(g._SYMBptr->feuille,v,contextptr);
+    if (g._SYMBptr->sommet==at_program && g._SYMBptr->feuille.type==_VECT){
+      vecteur & w = *g._SYMBptr->feuille._VECTptr;
+      if (w[0].type==_VECT )
+	v=mergevecteur(v,*w[0]._VECTptr);
+    }
+    local_vars(g._SYMBptr->feuille,v,contextptr);
   }
 
   gen quote_program(const gen & args,GIAC_CONTEXT){
@@ -1279,7 +1390,7 @@ namespace giac {
       newres=g;
       return true;
     }
-    if ( (g.type==_VECT && g.subtype ==_SEQ__VECT && g._VECTptr->size()==1) )
+    if ( (g.type==_VECT && (g.subtype ==_SEQ__VECT || g.subtype==_PRG__VECT) && g._VECTptr->size()==1) )
       return is_return(g._VECTptr->front(),newres);
     newres=g;
     return false;
@@ -1389,7 +1500,7 @@ namespace giac {
     (*dbgptr->debug_info_ptr)=prog;
     (*dbgptr->fast_debug_info_ptr)=prog;
     if (!vars._VECTptr->empty())
-      protect=giac::bind(*values._VECTptr,*vars._VECTptr,newcontextptr);
+      protect=giac_bind(*values._VECTptr,*vars._VECTptr,newcontextptr);
     if (protect==-RAND_MAX){
       program_leave(save_debug_info,save_sst_mode,dbgptr);
       if (calc_save) 
@@ -1400,7 +1511,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     try {
 #endif
-      if (prog.type!=_VECT || prog.subtype){
+      if (prog.type!=_VECT || (prog.subtype && prog.subtype!=_PRG__VECT)){
 	++debug_ptr(newcontextptr)->current_instruction;
 	prog=equaltosto(prog,contextptr);
 	if (debug_ptr(newcontextptr)->debug_mode){
@@ -1615,13 +1726,13 @@ namespace giac {
     bool python=python_compat(contextptr) && !debug_ptr(contextptr)->debug_mode;
     if (python){
       int & ind=debug_ptr(contextptr)->indent_spaces;
-      res = '\n'+string(ind,' ')+"if "+it->print(contextptr)+" :\n";
+      res = '\n'+string(ind,' ')+string("if ")+it->print(contextptr)+" :\n";
       ind += 4;
       ++it;
       res += string(ind,' ')+it->print(contextptr);
       ++it;
       if (it->type!=_INT_)
-	res += '\n'+string(ind-4,' ')+"else :\n"+string(ind,' ')+it->print(contextptr);
+	res += '\n'+string(ind-4,' ')+string("else :\n")+string(ind,' ')+it->print(contextptr);
       ind -= 4;
       return res;
     }
@@ -1743,8 +1854,20 @@ namespace giac {
     if (test.type!=_INT_){
       test=equaltosame(test).eval(evallevel,contextptr);
       if (!is_integer(test)){
-	test=test.evalf_double(evallevel,contextptr);
-	if ( (test.type!=_DOUBLE_) && (test.type!=_CPLX) ){
+	test=test.type==_MAP?!test._MAPptr->empty():test.evalf_double(evallevel,contextptr);
+	if (test.type==_VECT && python_compat(contextptr)){
+	  // OR test on a list
+	  const_iterateur it=test._VECTptr->begin(),itend=test._VECTptr->end();
+	  for (;it!=itend;++it){
+	    if (!is_zero(*it,contextptr)){
+	      test=*it;
+	      break;
+	    }
+	  }
+	  if (it==itend)
+	    test=0;
+	}
+	if ( test.type>_CPLX ){
 	  if (isifte){
 	    gensizeerr(gettext("Ifte: Unable to check test"),res); 
 	    return res;
@@ -1923,7 +2046,7 @@ namespace giac {
 	  if ((it+1)->type==_SYMB && ((it+1)->_SYMBptr->sommet==at_inferieur_egal || (it+1)->_SYMBptr->sommet==at_inferieur_strict) && (it+1)->_SYMBptr->feuille[0]==index){
 	    int large=(it+1)->_SYMBptr->sommet==at_inferieur_egal?1:0;
 	    gen stop=(it+1)->_SYMBptr->feuille[1];
-	    res +=  '\n'+string(ind,' ')+"for "+index.print(contextptr)+" in range(";
+	    res +=  '\n'+string(ind,' ')+string("for ")+index.print(contextptr)+" in range(";
 	    if (start!=0)
 	      res +=start.print(contextptr)+",";
 	    res +=(stop+large).print(contextptr)+"):"+'\n';
@@ -1935,7 +2058,7 @@ namespace giac {
 	}
       }
       if (it->type!=_INT_) res += '\n'+string(ind,' ')+it->print(contextptr)+'\n';
-      res += '\n'+string(ind,' ')+"while " + (it+1)->print(contextptr)+" :";
+      res += '\n'+string(ind,' ')+string("while ") + (it+1)->print(contextptr)+" :";
       if (!(it+3)->is_symb_of_sommet(at_bloc))
 	res += '\n';
       ind += 4;
@@ -2155,9 +2278,18 @@ namespace giac {
     }
     return g;
   }
-  static bool ck_is_one(gen & g){
+  static bool ck_is_one(gen & g,GIAC_CONTEXT){
     if (is_one(g))
       return true;
+    if (g.type==_VECT && python_compat(contextptr)){
+      // OR test on a list
+      const_iterateur it=g._VECTptr->begin(),itend=g._VECTptr->end();
+      for (;it!=itend;++it){
+	if (!is_zero(*it,contextptr))
+	  return true;
+      }
+      return false;
+    }
     if (g.type>_POLY){
       g=gensizeerr(gettext("Unable to eval test in loop : ")+g.print());
       return false; // this will stop the loop in caller
@@ -2192,12 +2324,19 @@ namespace giac {
   }
   inline bool for_test(const gen & test,gen & testf,int eval_lev,context * contextptr){
     // ck_is_one( (testf=test.eval(eval_lev,newcontextptr).evalf(1,newcontextptr)) )
-    if (!test.in_eval(eval_lev,testf,contextptr)) testf=test;
+    if (!test.in_eval(eval_lev,testf,contextptr)) 
+      testf=test;
     //testf=test.eval(eval_lev,contextptr);
     if (testf.type==_INT_) 
-      return testf.val==1;
+      return testf.val;
+    if (testf.type==_FRAC) 
+      testf=testf._FRACptr->num;
+    if (test.type<=_POLY)
+      return !is_exactly_zero(test);
+    if (testf.type==_MAP)
+      return !testf._MAPptr->empty();
     testf=testf.evalf(1,contextptr);
-    return ck_is_one(testf);
+    return ck_is_one(testf,contextptr);
   }
 
   // return false if forprog modifies index or stopg
@@ -2241,7 +2380,7 @@ namespace giac {
     if (argsv.size()!=4)
       return gensizeerr(gettext("For must have 4 args"));
     // Initialization
-    gen initialisation=argsv.front();
+    gen initialisation=argsv.front(),forelse;
     // add assigned variables to be local
     bool bound=false;
     vecteur loop_var;
@@ -2253,7 +2392,7 @@ namespace giac {
 	if (contextptr==context0 && (xcas_mode(contextptr)!=1 && (!variable._IDNTptr->localvalue || variable._IDNTptr->localvalue->empty() || (*variable._IDNTptr->localvalue)[variable._IDNTptr->localvalue->size()-2].val<protection_level-1) ) ){
 	  bound=true;
 	  loop_var=makevecteur(variable);
-	  protect=giac::bind(makevecteur(zero),loop_var,newcontextptr);
+	  protect=giac_bind(makevecteur(zero),loop_var,newcontextptr);
 	}
       }
       else {
@@ -2293,13 +2432,27 @@ namespace giac {
       vecteur * for_in_v=0;
       string * for_in_s=0;
       gen index_name;
-      gen gforin;
-      if ((test.is_symb_of_sommet(at_for) || test.is_symb_of_sommet(at_pour))&& test._SYMBptr->feuille.type==_VECT && test._SYMBptr->feuille._VECTptr->size()==2){
-	gen tmp=eval(test._SYMBptr->feuille._VECTptr->back(),eval_lev,newcontextptr);
+      gen gforin; 
+      size_t testsize=0;
+      if ((test.is_symb_of_sommet(at_for) || test.is_symb_of_sommet(at_pour))&& test._SYMBptr->feuille.type==_VECT && (testsize=test._SYMBptr->feuille._VECTptr->size())>=2){
+	gen tmp=eval((*test._SYMBptr->feuille._VECTptr)[1],eval_lev,newcontextptr);
+	if (testsize==3)
+	  forelse=(*test._SYMBptr->feuille._VECTptr)[2];
+	bool ismap=tmp.type==_MAP;
+	if (ismap){
+	  // copy indices
+	  vecteur v;
+	  gen_map::iterator it=tmp._MAPptr->begin(),itend=tmp._MAPptr->end();
+	  for (;it!=itend;++it){
+	    v.push_back(it->first);
+	  }
+	  tmp=v;
+	}
 	if (tmp.type==_VECT){
 	  // re-store a copy of tmp because we might modify it inplace
+	  // (not for maps)
 	  gforin=gen(*tmp._VECTptr,tmp.subtype);
-	  if (test._SYMBptr->feuille._VECTptr->back().type==_IDNT)
+	  if (!ismap && test._SYMBptr->feuille._VECTptr->back().type==_IDNT)
 	    sto(gforin,test._SYMBptr->feuille._VECTptr->back(),false,contextptr);
 	  for_in_v=gforin._VECTptr;
 	  for_in=1;
@@ -2529,6 +2682,8 @@ namespace giac {
       leave(protect,loop_var,newcontextptr);
     if (is_undef(testf))
       return testf;
+    if (res!=at_break && forelse!=0)
+      forelse.in_eval(eval_lev,res,contextptr);
     return res==at_break?string2gen("breaked",false):res;
   }
 
@@ -2537,7 +2692,7 @@ namespace giac {
   define_unary_function_ptr5( at_for ,alias_at_for,&__for,_QUOTE_ARGUMENTS,0);
 
   // returns level or -RAND_MAX on error
-  int bind(const vecteur & vals_,const vecteur & vars_,context * & contextptr){
+  int giac_bind(const vecteur & vals_,const vecteur & vars_,context * & contextptr){
     vecteur vals(vals_),vars(vars_);
 #if 1
     int ins=int(vals.size());
@@ -2545,7 +2700,7 @@ namespace giac {
       if (vars.size()<=vals.size())
 	break;
       if (vars[i].is_symb_of_sommet(at_equal))
-	vals.insert(vals.begin()+ins,vars[i]._SYMBptr->feuille[1]);
+	vals.insert(vals.begin()+ins,eval(vars[i]._SYMBptr->feuille[1],prog_eval_level(contextptr),contextptr));
       else {
 	if (ins>0)
 	  --ins;
@@ -2899,7 +3054,7 @@ namespace giac {
       values.push_back(val);
     }
     context * newcontextptr = (context *) contextptr;
-    int protect=giac::bind(values,names,newcontextptr);
+    int protect=giac_bind(values,names,newcontextptr);
     gen prog=args._VECTptr->back(),res,newres;
     if (protect!=-RAND_MAX){
       if (prog.type!=_VECT){
@@ -3069,7 +3224,7 @@ namespace giac {
       debug_ptr(contextptr)->current_instruction_stack=save_current_instruction_stack;
       gen id=(*(args._VECTptr))[1];
       string er(error.what());
-      er = '"'+er+'"';
+      er = '"'+er+'"'; // FIXME? string2gen(er,false) instead?
       gen tmpsto;
       if (id.type==_IDNT)
 	tmpsto=sto(gen(er,contextptr),id,contextptr);
@@ -3120,7 +3275,7 @@ namespace giac {
     return res;
   }
   static const char _try_catch_s []="try_catch";
-  static define_unary_function_eval2_quoted (__try_catch,&_try_catch,_try_catch_s,&printastry_catch);
+  static define_unary_function_eval2_index (177,__try_catch,&_try_catch,_try_catch_s,&printastry_catch);
   define_unary_function_ptr5( at_try_catch ,alias_at_try_catch,&__try_catch,_QUOTE_ARGUMENTS,0);
 
   static gen feuille_(const gen & g,const gen & interval,GIAC_CONTEXT){
@@ -3463,6 +3618,10 @@ namespace giac {
   static define_unary_function_eval (__select,&_select,_select_s);
   define_unary_function_ptr5( at_select ,alias_at_select,&__select,0,true);
 
+  static const char _filter_s []="filter";
+  static define_unary_function_eval (__filter,&_select,_filter_s);
+  define_unary_function_ptr5( at_filter ,alias_at_filter,&__filter,0,true);
+
   gen _remove(const gen & args,const context * contextptr){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
     return select_remove(args,0,contextptr);
@@ -3604,7 +3763,6 @@ namespace giac {
     return symbolic(at_rand,args);
   }
   static gen rand_integer_interval(const gen & x1,const gen & x2,GIAC_CONTEXT){
-    static gen rand_max_plus_one=gen(rand_max2)+1;
     gen x2x1=x2-x1;
     if (!is_positive(x2x1,contextptr))
       return rand_integer_interval(x2,x1,contextptr);
@@ -3633,6 +3791,11 @@ namespace giac {
       return res;
     }
 #endif
+#ifdef FXCG
+    gen rand_max_plus_one=gen(rand_max2)+1;
+#else
+    static gen rand_max_plus_one=gen(rand_max2)+1;
+#endif
     // Make n random numbers
     for (int i=0;i<n;++i)
       res=rand_max_plus_one*res+giac_rand(contextptr);
@@ -3641,12 +3804,16 @@ namespace giac {
     return x1+_iquo(makevecteur(res*x2x1,pow(rand_max_plus_one,n)),contextptr);
   }
   gen rand_interval(const vecteur & v,bool entier,GIAC_CONTEXT){
-    static gen rand_max_plus_one=gen(rand_max2)+1;
     gen x1=v.front(),x2=v.back();
     if (x1==x2)
       return x1;
     if ((entier || xcas_mode(contextptr)==1) && is_integer(x1) && is_integer(x2) )
       return rand_integer_interval(x1,x2,contextptr);
+#ifdef FXCG
+    gen rand_max_plus_one=gen(rand_max2)+1;
+#else
+    static gen rand_max_plus_one=gen(rand_max2)+1;
+#endif
 #ifdef HAVE_LIBMPFR
     if (x1.type==_REAL && x2.type==_REAL){
       int n=mpfr_get_prec(x1._REALptr->inf);
@@ -3679,7 +3846,7 @@ namespace giac {
   }
 
   vector<int> rand_k_n(int k,int n,bool sorted,GIAC_CONTEXT){
-    if (k<=0 || n<=0)
+    if (k<=0 || n<=0 || k>n)
       return vector<int>(0);
     if (//n>=65536 && 
 	k*double(k)<=n/4){
@@ -3765,6 +3932,7 @@ namespace giac {
   gen _rand(const gen & args,GIAC_CONTEXT){
     int argsval;
     if (args.type==_INT_ && (argsval=args.val)){
+#ifndef FXCG
       global * ptr; int c;
       if (argsval>0 && contextptr && (ptr=contextptr->globalptr) && ptr->_xcas_mode_!=3 && (c=ptr->_calc_mode_)!=-38 && c!=38) {
 	tinymt32_t * rs=&ptr->_rand_seed;
@@ -3776,6 +3944,7 @@ namespace giac {
 	}
 	return int(argsval*(r*inv_rand_max2_p1));
       }
+#endif
       if (argsval<0)
 	return -(xcas_mode(contextptr)==3)+int(argsval*(giac_rand(contextptr)/(rand_max2+1.0)));
       else
@@ -3840,8 +4009,12 @@ namespace giac {
 	if ( (v.back().type==_SYMB) && (v.back()._SYMBptr->sommet==at_interval) ){
 	  // arg1=loi, arg2=intervalle
 	}
+	if (v[0].type==_DOUBLE_ && v[1].type==_INT_)
+	  return _randvector(makesequence(v[1],symb_interval(0,1)),contextptr);
 	return rand_interval(v,args.subtype==0,contextptr);
       }
+      if (s==3 && v[0].type==_DOUBLE_ && v[1].type==_INT_ && v[2].type==_INT_)
+	return _ranm(makesequence(v[1],v[2],symb_interval(0,1)),contextptr);
       if (s==3 && v[0].type==_INT_ && v[1].type==_INT_ && v[2].type==_INT_){ 
 	// 3 integers expected, rand(n,min,max) choose n in min..max
 	int n=v[0].val;
@@ -3850,6 +4023,7 @@ namespace giac {
 	if (m>M){ int tmp=m; m=M; M=tmp; }
 #if 1
 	vector<int> v=rand_k_n(n,M-m+1,false,contextptr);
+	if (v.empty()) return gendimerr(contextptr);
 	for (int i=0;i<n;++i)
 	  v[i] += m;
 	vecteur res;
@@ -3879,23 +4053,37 @@ namespace giac {
 
   gen _randint(const gen & args,GIAC_CONTEXT){
     if (args.type==_INT_)
-      return 1+_rand(args,contextptr);
+      return (abs_calc_mode(contextptr)==38?0:1)+_rand(args,contextptr);
     if (args.type!=_VECT || args._VECTptr->size()!=2)
       return gensizeerr(contextptr);
     gen a=args._VECTptr->front(),b=args._VECTptr->back();
     if (!is_integral(a) || !is_integral(b))
       return gentypeerr(contextptr);
-    return a+_rand(b-a+1,contextptr);
+    return (abs_calc_mode(contextptr)==38?a-1:a)+_rand(b-a+1,contextptr);
   }
   static const char _randint_s []="randint";
   static define_unary_function_eval (__randint,&_randint,_randint_s);
   define_unary_function_ptr5( at_randint ,alias_at_randint,&__randint,0,true);
 
+  gen _randrange(const gen & args,GIAC_CONTEXT){
+    if (args.type==_INT_)
+      return (abs_calc_mode(contextptr)==38?-1:0)+_rand(args,contextptr);
+    if (args.type!=_VECT || args._VECTptr->size()!=2)
+      return gensizeerr(contextptr);
+    gen a=args._VECTptr->front(),b=args._VECTptr->back();
+    if (!is_integral(a) || !is_integral(b))
+      return gentypeerr(contextptr);
+    return (abs_calc_mode(contextptr)==38?a-1:a)+_rand(b-a,contextptr);
+  }
+  static const char _randrange_s []="randrange";
+  static define_unary_function_eval (__randrange,&_randrange,_randrange_s);
+  define_unary_function_ptr5( at_randrange ,alias_at_randrange,&__randrange,0,true);
+
   gen _choice(const gen & args,GIAC_CONTEXT){
     if (args.type!=_VECT || args.subtype==_SEQ__VECT || args._VECTptr->empty())
       return gensizeerr(contextptr);
     int n=int(args._VECTptr->size());
-    gen g=_rand(n,contextptr);
+    gen g=_rand(n,contextptr)+(abs_calc_mode(contextptr)==38?-1:0);
     if (g.type!=_INT_ || g.val<0 || g.val>=n)
       return gendimerr(contextptr);
     return args[g.val];
@@ -3942,7 +4130,9 @@ namespace giac {
 #ifdef GIAC_HAS_STO_38
       n = (1000000000*ulonglong(n))% 2147483647;
 #endif
+#ifndef FXCG
       srand(n);
+#endif
       rand_seed(n,contextptr);
       return args;
     }
@@ -3950,14 +4140,20 @@ namespace giac {
 #if defined RTOS_THREADX || defined BESTA_OS
       int t=PrimeGetNow();
 #else
+#ifdef FXCG
+      int t=RTC_GetTicks();
+#else
       int t=int(time(NULL));
-#endif
+#endif // FXCG
+#endif // RTOS/BESTA
       t = (1000000000*ulonglong(t))% 2147483647;
 #ifdef VISUALC
       // srand48(t);
 #endif
       rand_seed(t,contextptr);
+#ifndef FXCG
       srand(t);
+#endif
       return t;
     }
   }
@@ -3993,6 +4189,10 @@ namespace giac {
   static const char _char_s []="char";
   static define_unary_function_eval (__char,&_char,_char_s);
   define_unary_function_ptr5( at_char ,alias_at_char,&__char,0,true);
+
+  static const char _chr_s []="chr";
+  static define_unary_function_eval (__chr,&_char,_chr_s);
+  define_unary_function_ptr5( at_chr ,alias_at_chr,&__chr,0,true);
 
   static gen symb_asc(const gen & args){
     return symbolic(at_asc,args);
@@ -4034,7 +4234,7 @@ namespace giac {
     gen objet=v.front();
     gen to_map=v[1];
     // FIXME: should have maple_map and mupad_map functions
-    if (xcas_mode(contextptr)==1){
+    if (xcas_mode(contextptr)==1 || (to_map.type!=_FUNC && !to_map.is_symb_of_sommet(at_program) && (objet.type==_FUNC || objet.is_symb_of_sommet(at_program)))){
       objet=v[1];
       to_map=v.front();
     }
@@ -4711,6 +4911,8 @@ namespace giac {
       gen s=args._VECTptr->back();
       if (g.type==_VECT && (g.subtype==_POLY1__VECT || s.type==_SPOL1 || (s.type==_VECT && s.subtype==_POLY1__VECT)) )
 	return horner(*g._VECTptr,s,contextptr);
+      if (ckmatrix(g) && ckmatrix(s))
+	return g*s;
     }
     return symb_compose(args);
   }
@@ -4755,6 +4957,8 @@ namespace giac {
 	  }
 	  return res;
 	}
+	if (ckmatrix(base))
+	  return _pow(args,contextptr);
       }
     }
     return symbolic(at_composepow,args);
@@ -5068,7 +5272,6 @@ namespace giac {
   define_unary_function_ptr5( at_rmbreakpoint ,alias_at_rmbreakpoint,&__rmbreakpoint,_QUOTE_ARGUMENTS,true);
 
 #if defined EMCC && !defined GIAC_GGB
-#include <emscripten.h>
   void debug_loop(gen &res,GIAC_CONTEXT){
     if (!debug_ptr(contextptr)->debug_allowed || (!debug_ptr(contextptr)->sst_mode && !equalposcomp(debug_ptr(contextptr)->sst_at,debug_ptr(contextptr)->current_instruction)) )
       return;
@@ -5091,7 +5294,11 @@ namespace giac {
       w.push_back(undef);
       w.push_back(undef);
     }
-    w.push_back((*debug_ptr(contextptr)->fast_debug_info_ptr));
+    gen w2=(*debug_ptr(contextptr)->fast_debug_info_ptr);
+    if (w2.type==_VECT && w2._VECTptr->size()>3)
+      w2=w2[2];
+    //*logptr(contextptr) << w2 << endl;
+    w.push_back(w2);
     w.push_back(res);
     w.push_back(debug_ptr(contextptr)->current_instruction);
     vecteur dw=debug_ptr(contextptr)->debug_watch;
@@ -5302,11 +5509,7 @@ namespace giac {
       thread_eval_status(2,contextptr);
       for (;;){
 	// Wait until status is put back by main to level 1
-#ifdef NSPIRE
-	sleep(10);
-#else
-	usleep(10000);
-#endif
+	wait_1ms(10);
 	if (thread_eval_status(contextptr)==1){
 	  // the wait function of the main thread should put in debug_info_ptr
 	  // the next instruction, here we check for sst/sst_in/cont/kill
@@ -5471,11 +5674,23 @@ namespace giac {
     gen a,b,c;
     if (!check_binary(args,a,b))
       return a;
-    if (b==at_revlist || b==at_reverse || b==at_sort || b==at_append || b==at_prepend || b==at_concat || b==at_extend || b==at_rotate || b==at_shift || b==at_suppress || b==at_index)
-      return symbolic(at_struct_dot,args);
+    if (b==at_index)
+      return _struct_dot(eval(args,1,contextptr),contextptr);
+    if (b==at_revlist || b==at_reverse || b==at_sort || b==at_sorted || b==at_append || b==at_prepend || b==at_concat || b==at_extend || b==at_rotate || b==at_shift || b==at_suppress || b==at_clear ){	
+#if 1
+	return _struct_dot(args,contextptr);
+#else
+	return symbolic(at_struct_dot,args);
+#endif
+    }
     if (b.type==_SYMB){
       unary_function_ptr c=b._SYMBptr->sommet;
-      if (c==at_revlist || c==at_reverse || c==at_sort || c==at_append || c==at_prepend || c==at_concat || c==at_extend || c==at_rotate || c==at_shift || c==at_suppress || c==at_index){
+      if (c==at_index)
+	return _struct_dot(eval(args,1,contextptr),contextptr);
+      if (c==at_revlist || c==at_reverse || c==at_sort || c==at_sorted || c==at_append || c==at_prepend || c==at_concat || c==at_extend || c==at_rotate || c==at_shift || c==at_suppress || c==at_clear ){
+#if 1
+	return _struct_dot(args,contextptr);
+#else
 	gen d=eval(a,eval_level(contextptr),contextptr);
 	if (b._SYMBptr->feuille.type==_VECT && b._SYMBptr->feuille.subtype==_SEQ__VECT && b._SYMBptr->feuille._VECTptr->empty())
 	  ;
@@ -5483,6 +5698,7 @@ namespace giac {
 	  d=makesuite(d,b._SYMBptr->feuille);
 	d=c(d,contextptr);
 	return sto(d,a,contextptr);
+#endif
       }
     }
     if (storcl_38 && abs_calc_mode(contextptr)==38 && a.type==_IDNT){
@@ -5492,7 +5708,7 @@ namespace giac {
       }
     }
 #ifndef RTOS_THREADX
-#if !defined BESTA_OS && !defined NSPIRE
+#if !defined BESTA_OS && !defined NSPIRE && !defined FXCG
 #ifdef HAVE_LIBPTHREAD
     pthread_mutex_lock(&context_list_mutex);
 #endif
@@ -5577,7 +5793,7 @@ namespace giac {
   }
 
   static bool maple2mupad(const gen & args,int in_maple_mode,int out_maple_mode,GIAC_CONTEXT){
-#ifdef NSPIRE
+#if defined NSPIRE || defined FXCG
     return false;
 #else
     if (is_undef(check_secure()))
@@ -5651,6 +5867,51 @@ namespace giac {
   static const char _mupad2xcas_s []="mupad2xcas";
   static define_unary_function_eval_quoted (__mupad2xcas,&_mupad2xcas,_mupad2xcas_s);
   define_unary_function_ptr5( at_mupad2xcas ,alias_at_mupad2xcas,&__mupad2xcas,_QUOTE_ARGUMENTS,true);
+
+  // py==0 Xcas, py==1 Python-like, py==2 JS-like
+  gen python_xcas(const gen & args,int py,GIAC_CONTEXT){
+    if ( args.type==_STRNG &&  args.subtype==-1) return  args;
+    // parse in current mode and print in python mode
+    gen g(eval(args,1,contextptr));
+    int p=python_compat(contextptr);
+    if (g.type==_STRNG){
+      if (py==0) 
+	return string2gen(python2xcas(*g._STRNGptr,contextptr),false);
+      g=gen(*g._STRNGptr,contextptr);
+    }
+    python_compat(py==2?0:1,contextptr);
+    string s(g.print(contextptr));
+    python_compat(p,contextptr);
+    if (py==0)
+      return string2gen(python2xcas(s,contextptr),false);
+    if (py==2){
+      // TODO add function, replace := by =, local by var, -> by nothing
+      s=args.print()+": function"+s;
+    }
+    g=string2gen(s,false);
+    return g;
+  }
+
+  gen _python(const gen & args,GIAC_CONTEXT){
+    return python_xcas(args,1,contextptr);
+  }
+  static const char _python_s []="python";
+  static define_unary_function_eval_quoted (__python,&_python,_python_s);
+  define_unary_function_ptr5( at_python ,alias_at_python,&__python,_QUOTE_ARGUMENTS,true);
+
+  gen _xcas(const gen & args,GIAC_CONTEXT){
+    return python_xcas(args,0,contextptr);
+  }
+  static const char _xcas_s []="xcas";
+  static define_unary_function_eval_quoted (__xcas,&_xcas,_xcas_s);
+  define_unary_function_ptr5( at_xcas ,alias_at_xcas,&__xcas,_QUOTE_ARGUMENTS,true);
+
+  gen _javascript(const gen & args,GIAC_CONTEXT){
+    return python_xcas(args,2,contextptr);
+  }
+  static const char _javascript_s []="javascript";
+  static define_unary_function_eval_quoted (__javascript,&_javascript,_javascript_s);
+  define_unary_function_ptr5( at_javascript ,alias_at_javascript,&__javascript,_QUOTE_ARGUMENTS,true);
 
   static string printasvirgule(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
     if ( (feuille.type!=_VECT) || (feuille._VECTptr->size()!=2) )
@@ -6243,7 +6504,7 @@ namespace giac {
     return args;
   }
   static const char _cas_setup_s []="cas_setup";
-  static define_unary_function_eval (__cas_setup,&giac::_cas_setup,_cas_setup_s);
+  static define_unary_function_eval (__cas_setup,&_cas_setup,_cas_setup_s);
   define_unary_function_ptr5( at_cas_setup ,alias_at_cas_setup,&__cas_setup,0,true);
 
   void parent_cas_setup(GIAC_CONTEXT){
@@ -6271,7 +6532,7 @@ namespace giac {
     return decimal_digits(contextptr);
   }
   static const char _Digits_s []="Digits";
-  static define_unary_function_eval2 (__Digits,&giac::_Digits,_Digits_s,&printasDigits);
+  static define_unary_function_eval2 (__Digits,&_Digits,_Digits_s,&printasDigits);
   define_unary_function_ptr( at_Digits ,alias_at_Digits ,&__Digits);
 
   gen _xport(const gen & args,GIAC_CONTEXT){
@@ -6403,7 +6664,7 @@ namespace giac {
     if (args.type==_VECT)
       apply(args;
     if (args.type==_VECT)
-      apply(args,giac::rmmod);
+      apply(args,rmmod);
     rmmod(args);    
   }
   */
@@ -6467,7 +6728,11 @@ namespace giac {
 #if 0 // def NSPIRE
     return g;
 #endif
-    if (g.type!=_SYMB || g._SYMBptr->sommet==at_program || g._SYMBptr->sommet==at_pnt || g._SYMBptr->sommet==at_animation || g._SYMBptr->sommet==at_unit || g._SYMBptr->sommet==at_integrate || g._SYMBptr->sommet==at_superieur_strict || g._SYMBptr->sommet==at_superieur_egal || g._SYMBptr->sommet==at_inferieur_strict || g._SYMBptr->sommet==at_inferieur_egal || g._SYMBptr->sommet==at_and || g._SYMBptr->sommet==at_ou || g._SYMBptr->sommet==at_et || g._SYMBptr->sommet==at_not || g._SYMBptr->sommet==at_xor || g._SYMBptr->sommet==at_piecewise || g._SYMBptr->sommet==at_archive)
+    if (g.type!=_SYMB || g._SYMBptr->sommet==at_program || g._SYMBptr->sommet==at_pnt || g._SYMBptr->sommet==at_animation || g._SYMBptr->sommet==at_unit || g._SYMBptr->sommet==at_integrate || g._SYMBptr->sommet==at_superieur_strict || g._SYMBptr->sommet==at_superieur_egal || g._SYMBptr->sommet==at_inferieur_strict || g._SYMBptr->sommet==at_inferieur_egal || g._SYMBptr->sommet==at_and || g._SYMBptr->sommet==at_ou || g._SYMBptr->sommet==at_et || g._SYMBptr->sommet==at_not || g._SYMBptr->sommet==at_xor || g._SYMBptr->sommet==at_piecewise
+#ifndef FXCG
+	|| g._SYMBptr->sommet==at_archive
+#endif
+	)
       return g;
     if (is_equal(g))
       return apply_to_equal(g,simplifier,contextptr);
@@ -6596,10 +6861,15 @@ namespace giac {
     bool usersort=v.size()==2 && v[0].type==_VECT && v[1].type!=_VECT
       // && args.subtype==_SEQ__VECT
       ;
+    bool rev=false;
     if (usersort){
       f=v[1];
       subtype=v[0].subtype;
       v=*v[0]._VECTptr;
+      if (is_equal(f) && f._SYMBptr->feuille[0]==at_reverse && !is_zero(f._SYMBptr->feuille[1])){
+	f=at_inferieur_strict;
+	rev=true;
+      }
     }
     else {
       f=at_inferieur_strict_sort;
@@ -6623,25 +6893,37 @@ namespace giac {
 	      *it=val;
 	    }
 	  }
+	  if (rev)
+	    reverse(res.begin(),res.end());
 	  return gen(res,subtype);
 	}
 	sort(w.begin(),w.end());
 	vector_int2vecteur(w,v);
+	if (rev)
+	  reverse(v.begin(),v.end());
 	return gen(v,subtype);
       }
       vector<giac_double> V;
       if (v.front().type==_DOUBLE_ && is_fully_numeric(v) && convert(v,V,true)){
 	sort(V.begin(),V.end());
 	v=vector_giac_double_2_vecteur(V);
+	if (rev)
+	  reverse(v.begin(),v.end());
 	return gen(v,subtype);
       }
     }
     sort(v.begin(),v.end(),gen_sort(f,contextptr));
+    if (rev)
+      reverse(v.begin(),v.end());
     return gen(v,subtype);
   }
   static const char _sort_s []="sort";
   static define_unary_function_eval (__sort,&_sort,_sort_s);
   define_unary_function_ptr5( at_sort ,alias_at_sort,&__sort,0,true);
+
+  static const char _sorted_s []="sorted";
+  static define_unary_function_eval (__sorted,&_sort,_sorted_s);
+  define_unary_function_ptr5( at_sorted ,alias_at_sorted,&__sorted,0,true);
 
   static gen remove_nodisp(const gen & g){
     if (g.is_symb_of_sommet(at_nodisp))
@@ -6832,6 +7114,8 @@ namespace giac {
 
   gen convert_real(const gen & g,GIAC_CONTEXT){
 #if defined HAVE_LIBMPFI && !defined NO_RTTI
+    if (g.type==_STRNG)
+      return convert_real(gen(*g._STRNGptr,contextptr),contextptr);
     if (g.type==_VECT){
       vecteur res(*g._VECTptr);
       for (unsigned i=0;i<res.size();++i)
@@ -6851,6 +7135,42 @@ namespace giac {
     return gensizeerr("Interval arithmetic support not compiled. Please install MPFI and recompile");
   }
 
+  gen denest_sto(const gen & g){
+    if (g.type==_VECT){
+      vecteur v(*g._VECTptr);
+      iterateur it=v.begin(),itend=v.end();
+      for (;it!=itend;++it)
+	*it=denest_sto(*it);
+      return gen(v,g.subtype);
+    }
+    if (g.is_symb_of_sommet(at_sto) && g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2){
+      gen b=g._SYMBptr->feuille._VECTptr->front();
+      gen a=g._SYMBptr->feuille._VECTptr->back();
+      // a:=b, should be a0,..,an-2,an-1=b
+      if (b.is_symb_of_sommet(at_sto)){
+	// if b is a sto a0,...an-2,a1=c[0],c1,..,cn-1
+	gen c=denest_sto(b);
+	if (a.type==_VECT && c.type==_VECT){
+	  vecteur av=*a._VECTptr;
+	  vecteur cv=*c._VECTptr;
+	  av.back()=symbolic(at_equal,makesequence(av.back(),cv.front()));
+	  cv.erase(cv.begin());
+	  return gen(mergevecteur(av,cv),_SEQ__VECT);
+	}
+      }
+      if (a.type==_VECT){
+	vecteur av=*a._VECTptr;
+	av.back()=symbolic(at_equal,makesequence(av.back(),b));
+	return gen(av,_SEQ__VECT);
+      }
+    }
+    if (g.type==_SYMB){
+      gen f=denest_sto(g._SYMBptr->feuille);
+      return symbolic(g._SYMBptr->sommet,f);
+    }
+    return g;
+  }
+  
   gen _convert(const gen & args,const context * contextptr){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
     if (args.type!=_VECT){
@@ -6947,7 +7267,7 @@ namespace giac {
     }
     if (s==2 && f==at_interval)
       return convert_interval(g,int(decimal_digits(contextptr)*3.2),contextptr);
-    if (s==2 && f==at_real)
+    if (s==2 && f==at_real && f.type==_FUNC)
       return convert_real(g,contextptr);
     if (s>=2 && f==at_series){
       if (g.type==_VECT){
@@ -7000,6 +7320,28 @@ namespace giac {
     }
     if (s>2)
       g=gen(mergevecteur(vecteur(1,g),vecteur(v.begin()+2,v.begin()+s)),args.subtype);
+    if (g.type==_STRNG){
+      string s=*g._STRNGptr;
+      int i=f.type==_INT_?f.val:-1;
+      if (i==_IDNT)
+	return identificateur(s);
+      if (i==_INT_ || i==_ZINT || f==at_int){
+	f=gen(s,contextptr);
+	if (!is_integral(f)) 
+	  return gensizeerr(contextptr);
+	return f;
+      }
+      if (i==_SYMB || i==_FRAC)
+	return gen(s,contextptr);
+      if (i==_FRAC || f==at_frac){
+	f=exact(gen(s,contextptr),contextptr);
+	return f;
+      }
+      if (i==_REAL)
+	return evalf(gen(s,contextptr),1,contextptr);
+      if (i==_DOUBLE_ || f==at_real || f==at_float)
+	return evalf_double(gen(s,contextptr),1,contextptr);
+    }
 #ifndef CAS38_DISABLED
     if (v[1].type==_FUNC){
       if (f==at_sincos)
@@ -7173,7 +7515,19 @@ namespace giac {
   static define_unary_function_eval4 (__deuxpoints,&_deuxpoints,_deuxpoints_s,&printsommetasoperator,&texprintsommetasoperator);
   define_unary_function_ptr( at_deuxpoints ,alias_at_deuxpoints ,&__deuxpoints);
 
+#ifdef FXCG
+  gen _read(const gen & args,GIAC_CONTEXT){ return 0;}   
+  gen _write(const gen & args,GIAC_CONTEXT){ return 0;}    
+  static const char _read_s []="read";
+  static define_unary_function_eval (__read,&_read,_read_s);
+  define_unary_function_ptr5( at_read ,alias_at_read ,&__read,0,T_RETURN);
 
+  static const char _write_s []="write";
+  static define_unary_function_eval_quoted (__write,&_write,_write_s);
+  define_unary_function_ptr5( at_write ,alias_at_write,&__write,_QUOTE_ARGUMENTS,true);
+
+#else
+  
 #ifdef NSPIRE
   template<class T> void in_mws_translate(ios_base<T> &  inf,ios_base<T> &  of)
 #else
@@ -7292,7 +7646,7 @@ namespace giac {
       if (lu=="\\STOP92\\\r"){
         break;
       }
-      lu = giac::tiasc_translate(lu);
+      lu = tiasc_translate(lu);
       if (lu.size())
         of << ":" << lu << endl;
     }
@@ -7452,6 +7806,8 @@ namespace giac {
   static const char _save_history_s []="save_history";
   static define_unary_function_eval (__save_history,&_save_history,_save_history_s);
   define_unary_function_ptr5( at_save_history ,alias_at_save_history,&__save_history,0,true);
+
+#endif // FXCG
   /*
   gen _matrix(const gen & args){
   if ( args){
@@ -7623,6 +7979,11 @@ namespace giac {
     if (s<2)
       return gentoofewargs("");
     int i=-1;
+    if (v[1].type==_MAP){
+      const gen_map & m=*v[1]._MAPptr;
+      gen_map::const_iterator it=m.find(v[0]),itend=m.end();
+      return change_subtype(it!=itend,_INT_BOOLEAN);
+    }
     if (v[0].type==_STRNG && v[1].type==_STRNG){
       string f=*v[0]._STRNGptr,s=*v[1]._STRNGptr;
       int pos=s.find(f);
@@ -7781,7 +8142,7 @@ namespace giac {
   static define_unary_function_eval_quoted (__tableseq,&_tableseq,_tableseq_s);
   define_unary_function_ptr5( at_tableseq ,alias_at_tableseq,&__tableseq,_QUOTE_ARGUMENTS,true);
 
-  gen protecteval(const gen & g,int level, GIAC_CONTEXT){
+  gen protectevalorevalf(const gen & g,int level,bool approx,GIAC_CONTEXT){
     gen res;
 #ifdef HAVE_LIBGSL //
     gsl_set_error_handler_off();
@@ -7806,7 +8167,7 @@ namespace giac {
 #ifndef NO_STDEXCEPT
     try {
 #endif
-      res=approx_mode(contextptr)?g.evalf(level,contextptr):g.eval(level,contextptr);
+      res=approx?g.evalf(level,contextptr):g.eval(level,contextptr);
 #ifndef NO_STDEXCEPT
     }
     catch (std::runtime_error & e){
@@ -7820,6 +8181,14 @@ namespace giac {
     }
 #endif
     return res;
+  }
+
+  gen protectevalf(const gen & g,int level, GIAC_CONTEXT){
+    return protectevalorevalf(g,level,true,contextptr);
+  }
+
+  gen protecteval(const gen & g,int level, GIAC_CONTEXT){
+    return protectevalorevalf(g,level,approx_mode(contextptr),contextptr);
   }
 
   static string printasnodisp(const gen & feuille,const char * sommetstr,GIAC_CONTEXT){
@@ -8192,6 +8561,13 @@ namespace giac {
   // Eval everything except IDNT and symbolics with
   vecteur inputform_pre_analysis(const gen & g,GIAC_CONTEXT){
     vecteur v(gen2vecteur(g));
+    if (python_compat(contextptr)){
+      gen g_=eval(g,1,contextptr);
+      if (g_.type!=_STRNG)
+	g_=string2gen(g_.print(contextptr),false);
+      v=makevecteur(g_,g_,identificateur("_input_"),1);
+      // v=gen2vecteur(eval(g,1,contextptr));
+    }
     int s=int(v.size());
     for (int i=0;i<s;++i){
       if (v[i].type==_IDNT || v[i].type!=_SYMB)
@@ -8204,7 +8580,10 @@ namespace giac {
     return v;
   }
   gen inputform_post_analysis(const vecteur & v,const gen & res,GIAC_CONTEXT){
-    return res.eval(eval_level(contextptr),contextptr);
+    gen tmp=res.eval(eval_level(contextptr),contextptr);
+    if (tmp.type==_VECT && !tmp._VECTptr->empty() && python_compat(contextptr))
+      return tmp._VECTptr->back();
+    return tmp;
   }
   // user input sent back to the parent process
   gen _inputform(const gen & args,GIAC_CONTEXT){
@@ -8248,7 +8627,7 @@ namespace giac {
 #if defined RTOS_THREADX || defined NSPIRE
   static define_unary_function_eval(__inputform,&_inputform,_inputform_s);
 #else
-  unary_function_eval __inputform(1,&giac::_inputform,_inputform_s,&printasinputform);
+  unary_function_eval __inputform(1,&_inputform,_inputform_s,&printasinputform);
 #endif
   define_unary_function_ptr5( at_inputform ,alias_at_inputform,&__inputform,_QUOTE_ARGUMENTS,true);
 
@@ -8257,7 +8636,7 @@ namespace giac {
     return __inputform.op(symbolic(at_choosebox,args),contextptr);
   }
   static const char _choosebox_s []="choosebox";
-  static define_unary_function_eval_quoted (__choosebox,&giac::_choosebox,_choosebox_s);
+  static define_unary_function_eval_quoted (__choosebox,&_choosebox,_choosebox_s);
   define_unary_function_ptr5( at_choosebox ,alias_at_choosebox,&__choosebox,_QUOTE_ARGUMENTS,true);
 
   gen _output(const gen & args,GIAC_CONTEXT){
@@ -8265,18 +8644,29 @@ namespace giac {
     return __inputform.op(symbolic(at_output,args),contextptr);
   }
   static const char _output_s []="output";
-  static define_unary_function_eval_quoted (__output,&giac::_output,_output_s);
+  static define_unary_function_eval_quoted (__output,&_output,_output_s);
   define_unary_function_ptr5( at_output ,alias_at_output,&__output,_QUOTE_ARGUMENTS,true);
 
   gen _input(const gen & args,bool textinput,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
     vecteur v(gen2vecteur(args));
+    gen res(args);
+    if (python_compat(contextptr)){
+      res=eval(args,1,contextptr);
+      if (res.type!=_STRNG)
+	res=string2gen(res.print(contextptr),false);
+#ifdef GIAC_HAS_STO_38
+      if (res.type==_STRNG)
+	res=string2gen(aspen_input(res._STRNGptr->c_str()),false);
+      return res;
+#endif
+      return __click.op(makevecteur(res,0,identificateur("_input_"),1),contextptr);
+    }
     const_iterateur it=v.begin(),itend=v.end();
     if (it==itend)
       return __click.op(args,contextptr);
-    gen res;
-    if (args.type==_STRNG){
-      return __click.op(args,contextptr);
+    if (res.type==_STRNG){
+      return __click.op(res,contextptr);
     }
     for (;it!=itend;++it){
       if (it->type==_IDNT || it->is_symb_of_sommet(at_at) || it->is_symb_of_sommet(at_of)){
@@ -8310,7 +8700,7 @@ namespace giac {
     return __inputform.op(symbolic(at_Text,args),contextptr);
   }
   static const char _Text_s []="Text";
-  static define_unary_function_eval2_quoted (__Text,&giac::_Text,_Text_s,&printastifunction);
+  static define_unary_function_eval2_quoted (__Text,&_Text,_Text_s,&printastifunction);
   define_unary_function_ptr5( at_Text ,alias_at_Text,&__Text,_QUOTE_ARGUMENTS,0);
 
   gen _Title(const gen & args,GIAC_CONTEXT){
@@ -8318,7 +8708,7 @@ namespace giac {
     return __inputform.op(symbolic(at_Title,args),contextptr);
   }
   static const char _Title_s []="Title";
-  static define_unary_function_eval2_quoted (__Title,&giac::_Title,_Title_s,&printastifunction);
+  static define_unary_function_eval2_quoted (__Title,&_Title,_Title_s,&printastifunction);
   define_unary_function_ptr5( at_Title ,alias_at_Title,&__Title,_QUOTE_ARGUMENTS,0);
 
   gen _Request(const gen & args,GIAC_CONTEXT){
@@ -8326,7 +8716,7 @@ namespace giac {
     return __inputform.op(symbolic(at_Request,args),contextptr);
   }
   static const char _Request_s []="Request";
-  static define_unary_function_eval2_quoted (__Request,&giac::_Request,_Request_s,&printastifunction);
+  static define_unary_function_eval2_quoted (__Request,&_Request,_Request_s,&printastifunction);
   define_unary_function_ptr5( at_Request ,alias_at_Request,&__Request,_QUOTE_ARGUMENTS,0);
 
   gen _DropDown(const gen & args,GIAC_CONTEXT){
@@ -8334,7 +8724,7 @@ namespace giac {
     return __inputform.op(symbolic(at_DropDown,args),contextptr);
   }
   static const char _DropDown_s []="DropDown";
-  static define_unary_function_eval2_quoted (__DropDown,&giac::_DropDown,_DropDown_s,&printastifunction);
+  static define_unary_function_eval2_quoted (__DropDown,&_DropDown,_DropDown_s,&printastifunction);
   define_unary_function_ptr5( at_DropDown ,alias_at_DropDown,&__DropDown,_QUOTE_ARGUMENTS,0);
 
   gen _Popup(const gen & args,GIAC_CONTEXT){
@@ -8342,7 +8732,7 @@ namespace giac {
     return __inputform.op(symbolic(at_Popup,args),contextptr);
   }
   static const char _Popup_s []="Popup";
-  static define_unary_function_eval2_quoted (__Popup,&giac::_Popup,_Popup_s,&printastifunction);
+  static define_unary_function_eval2_quoted (__Popup,&_Popup,_Popup_s,&printastifunction);
   define_unary_function_ptr5( at_Popup ,alias_at_Popup,&__Popup,_QUOTE_ARGUMENTS,0);
 
   gen _Dialog(const gen & args,GIAC_CONTEXT){
@@ -8350,7 +8740,7 @@ namespace giac {
     return __inputform.op(args,contextptr);
   }
   static const char _Dialog_s []="Dialog";
-  static define_unary_function_eval2_index (89,__Dialog,&giac::_Dialog,_Dialog_s,&printasdialog);
+  static define_unary_function_eval2_index (89,__Dialog,&_Dialog,_Dialog_s,&printasdialog);
   define_unary_function_ptr5( at_Dialog ,alias_at_Dialog,&__Dialog,_QUOTE_ARGUMENTS,0);
 
   gen _expr(const gen & args,GIAC_CONTEXT){
@@ -8381,11 +8771,11 @@ namespace giac {
     return eval(gen(*args._STRNGptr,contextptr),eval_level(contextptr),contextptr);
   }
   static const char _expr_s []="expr";
-  static define_unary_function_eval (__expr,&giac::_expr,_expr_s);
+  static define_unary_function_eval (__expr,&_expr,_expr_s);
   define_unary_function_ptr5( at_expr ,alias_at_expr,&__expr,0,true);
 
   static const char _execute_s []="execute";
-  static define_unary_function_eval (__execute,&giac::_expr,_execute_s);
+  static define_unary_function_eval (__execute,&_expr,_execute_s);
   define_unary_function_ptr5( at_execute ,alias_at_execute,&__execute,0,true);
 
   gen _string(const gen & args,GIAC_CONTEXT){
@@ -8417,8 +8807,12 @@ namespace giac {
     return string2gen(res,false);
   }
   static const char _string_s []="string";
-  static define_unary_function_eval (__string,&giac::_string,_string_s);
+  static define_unary_function_eval (__string,&_string,_string_s);
   define_unary_function_ptr5( at_string ,alias_at_string,&__string,0,true);
+
+  static const char _str_s []="str";
+  static define_unary_function_eval (__str,&_string,_str_s);
+  define_unary_function_ptr5( at_str ,alias_at_str,&__str,0,true);
 
   gen _part(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
@@ -8450,7 +8844,7 @@ namespace giac {
     return 0;
   }
   static const char _part_s []="part";
-  static define_unary_function_eval (__part,&giac::_part,_part_s);
+  static define_unary_function_eval (__part,&_part,_part_s);
   define_unary_function_ptr5( at_part ,alias_at_part,&__part,0,true);
 
   string tiasc_translate(const string & s){
@@ -8512,11 +8906,7 @@ namespace giac {
     if (is_integer(g1) || g1.type==_REAL)
       g1=evalf_double(g,1,contextptr);
     if (g1.type==_DOUBLE_){
-#ifdef NSPIRE
-      sleep(int(g1._DOUBLE_val*1000));
-#else
-      usleep(int(g1._DOUBLE_val*1000000));
-#endif
+      wait_1ms(g1._DOUBLE_val*1000);
     }
     else
       __interactive.op(symbolic(at_Pause,g),contextptr);
@@ -8686,7 +9076,7 @@ namespace giac {
 #endif
   }
   static const char _interactive_s []="interactive";
-#if defined RTOS_THREADX || defined NSPIRE
+#if defined RTOS_THREADX || defined NSPIRE || defined FXCG
   define_unary_function_eval_index(1,__interactive,&_interactive,_interactive_s);
   // const unary_function_eval __interactive(1,&_interactive,_interactive_s);
 #else
@@ -9839,7 +10229,7 @@ namespace giac {
     gen exponent=evalf_double(exponent_,1,context0);
     if (exponent.type!=_DOUBLE_)
       return gensizeerr(gettext("Invalid unit exponent")+exponent.print());
-    if (std::abs(exponent._DOUBLE_val)<1e-6)
+    if (absdouble(exponent._DOUBLE_val)<1e-6)
       return plus_one;
     if (is_one(exponent))
       return g;
@@ -10022,12 +10412,14 @@ namespace giac {
   static define_unary_function_eval2_index (112,__unit,&unit,_unit_s,&printasunit);
   define_unary_function_ptr( at_unit ,alias_at_unit ,&__unit);
 
+#ifndef FXCG
   const unary_function_ptr * binary_op_tab(){
     static const unary_function_ptr binary_op_tab_ptr []={*at_plus,*at_prod,*at_pow,*at_and,*at_ou,*at_xor,*at_different,*at_same,*at_equal,*at_unit,*at_compose,*at_composepow,*at_deuxpoints,*at_tilocal,*at_pointprod,*at_pointdivision,*at_pointpow,*at_division,*at_normalmod,*at_minus,*at_intersect,*at_union,*at_interval,*at_inferieur_egal,*at_inferieur_strict,*at_superieur_egal,*at_superieur_strict,*at_equal2,0};
     return binary_op_tab_ptr;
   }
   // unary_function_ptr binary_op_tab[]={at_and,at_ou,at_different,at_same,0};
-
+#endif
+  
   // Physical constants -> in input_lexer.ll
 #ifndef NO_PHYSICAL_CONSTANTS
   identificateur _cst_hbar("_hbar_",symbolic(at_unit,makevecteur(1.05457266e-34,_J_unit*_s_unit)));
@@ -10083,7 +10475,7 @@ namespace giac {
   gen cst_qe(_cst_qe); // q 1.60217733e-19 C
   identificateur _cst_hPlanck("_h_",symbolic(at_unit,makevecteur(6.6260755e-34,_J_unit*_s_unit)));
   gen cst_hPlanck(_cst_hPlanck); //  h 6.6260755e-34 Js
-  identificateur _cst_G("_G_",symbolic(at_unit,makevecteur(6.67259e-11,unitpow(_m_unit,3)*unitpow(_s_unit,-2)*unitpow(_kg_unit,-1))));
+  identificateur _cst_G("_G_",symbolic(at_unit,makevecteur(6.67408e-11,unitpow(_m_unit,3)*unitpow(_s_unit,-2)*unitpow(_kg_unit,-1))));
   gen cst_G(_cst_G); // G 6.67259e-11m^3/s^2kg
   identificateur _cst_mu0("_mu0_",symbolic(at_unit,makevecteur(1.25663706144e-6,_H_unit/_m_unit)));
   gen cst_mu0(_cst_mu0); // mu0 1.25663706144e-6 H/m
@@ -10502,17 +10894,100 @@ namespace giac {
     size_t ws=w.size();
     if (ws!=2)
       return gensizeerr(contextptr);
-    gen a=w[0],b=w[1];
+    gen a=w[0],b=w[1],m;
+    if (b.type==_IDNT)
+      b=eval(b,1,contextptr);
+    if (b.type==_SYMB){
+      unary_function_ptr u=b._SYMBptr->sommet;
+      const gen & f=b._SYMBptr->feuille;
+      if (u==at_of && f.type==_VECT && f._VECTptr->size()==2){
+	gen s=eval(f._VECTptr->front(),1,contextptr);
+	if (s.type==_FUNC)
+	  u=*s._FUNCptr;
+      }
+      if (equalposcomp(plot_sommets,u) || u==at_show || u==at_clear || u==at_scatterplot || u==at_diagrammebatons)
+	return eval(b,1,contextptr);
+    }
+    if (b.type==_FUNC)
+      b=symbolic(*b._FUNCptr,gen(vecteur(0),_SEQ__VECT));
     if (a.type==_IDNT){
       gen tmp=eval(a,1,contextptr);
+      if (tmp==a){ // try to eval at global level
+	tmp=global_eval(tmp,1);
+      }
+      if (tmp.type==_MAP && b.is_symb_of_sommet(at_of)){
+	const gen & f =b._SYMBptr->feuille;
+	if (f.type==_VECT && f._VECTptr->size()==2){
+	  const vecteur & v =*f._VECTptr;
+	  if (v.size()==2 && v.front().type==_IDNT && strcmp(v.front()._IDNTptr->id_name,"update")==0){
+	    gen m=eval(v.back(),1,contextptr);
+	    if (m.type==_MAP){
+	      tmp._MAPptr->insert(m._MAPptr->begin(),m._MAPptr->end());
+	      return tmp;
+	    }
+	  }
+	}
+      }
+      if (tmp.type==_IDNT && (strcmp(tmp._IDNTptr->id_name,"numpy")==0 || strcmp(tmp._IDNTptr->id_name,"pylab")==0 || strcmp(tmp._IDNTptr->id_name,"matplotlib")==0)){
+	if (b.type==_SYMB){
+	  gen w1=eval(w[1],1,contextptr);
+	  if (w1==at_float || w1==at_real)
+	    return w1;
+	  tmp=eval(b._SYMBptr->feuille,eval_level(contextptr),contextptr);
+	  tmp=evalf_double(tmp,1,contextptr);
+	  if (b.is_symb_of_sommet(at_dot))
+	    return _prod(tmp,contextptr);
+	  return b._SYMBptr->sommet(tmp,contextptr);
+	}
+	gen tmp=eval(b,1,contextptr);
+	tmp=evalf_double(tmp,1,contextptr);
+	return tmp;
+      }
+      if (tmp.type==_IDNT && 
+	  (strcmp(tmp._IDNTptr->id_name,"math")==0 ||
+	   strcmp(tmp._IDNTptr->id_name,"cmath")==0 ||
+	   strcmp(tmp._IDNTptr->id_name,"kandinsky")==0)
+	  ){
+	if (b.type==_SYMB){
+	  tmp=eval(b._SYMBptr->feuille,eval_level(contextptr),contextptr);
+	  return b._SYMBptr->sommet(tmp,contextptr);
+	}
+      }
+      if (ckmatrix(tmp)){
+	if (w[1].type==_IDNT){
+	  const char * ch =w[1]._IDNTptr->id_name;
+	  if (ch){
+	    if (ch[0]=='T')
+	      return mtran(*tmp._VECTptr);
+	    if (ch[0]=='H')
+	      return _trn(tmp,contextptr);
+	    if (ch[0]=='I')
+	      return minv(*tmp._VECTptr,contextptr);
+	  }
+	}
+	if (w[1].is_symb_of_sommet(at_of))
+	  m=tmp;
+      }
+      else {
+	if (tmp.type==_VECT && w[1].type==_IDNT){
+	  const char * ch =w[1]._IDNTptr->id_name;
+	  if (ch){
+	    if (ch[0]=='T')
+	      return _tran(tmp,contextptr);
+	  }
+	}
+      }
       if (tmp.type==_VECT && b.type==_SYMB){
 	// check tmp size, workaround for progs with l:=[]; l.append(1);
 	// where the code would self modify itself
-	if (b._SYMBptr->sommet==at_append && tmp._VECTptr->size()>3){
+	// disabled, sto should now do a copy of constant lists
+	if (b._SYMBptr->sommet==at_append 
+	    //&& tmp._VECTptr->size()>=8
+	    ){
 	  tmp._VECTptr->push_back(eval(b._SYMBptr->feuille,eval_level(contextptr),contextptr));
 	  return tmp;
 	}
-	if (b._SYMBptr->sommet==at_suppress && b._SYMBptr->feuille.type==_VECT && b._SYMBptr->feuille._VECTptr->empty()){
+	if ( (b._SYMBptr->sommet==at_suppress || b._SYMBptr->sommet==at_clear) && b._SYMBptr->feuille.type==_VECT && b._SYMBptr->feuille._VECTptr->empty()){
 	  tmp._VECTptr->clear();
 	  return tmp;
 	}
@@ -10523,27 +10998,58 @@ namespace giac {
     if (b.type!=_SYMB)
       return _prod(eval(g,eval_level(contextptr),contextptr),contextptr);
     gen f=b;
-    unary_function_ptr & u=b._SYMBptr->sommet;
+    unary_function_ptr u=b._SYMBptr->sommet;
+    bool cmd=false;
     if (a!=at_random){
       f=b._SYMBptr->feuille;
+      if (u==at_of && f.type==_VECT && f._VECTptr->size()==2){
+	gen fn=eval(f._VECTptr->front(),1,contextptr);
+	if (fn.type==_FUNC){
+	  cmd=true;
+	  f=f._VECTptr->back();
+	  u=*fn._FUNCptr;
+	  b=symbolic(u,f);
+	}
+      }
       vecteur v(1,f);
       if (f.type==_VECT && f.subtype==_SEQ__VECT)
 	v=*f._VECTptr;
       if (v.empty())
-	f=a;
+	f=eval(a,1,contextptr);
       else {
-	v.insert(v.begin(),a);
+	if (u==at_remove)
+	  v.push_back(a);
+	else {
+	  if (!cmd && ckmatrix(m) && v.front().type==_IDNT){ // ex: m.reshape(2,4)
+	    b=v.front();
+	    v.front()=m;
+	    v=makevecteur(b,gen(v,_SEQ__VECT));
+	  }
+	  else {
+	    if (u==at_of && v.size()==2){
+	      if (v.back().type==_VECT){
+		vecteur w=*v.back()._VECTptr;
+		w.insert(w.begin(),a);
+		v=makevecteur(v.front(),gen(w,_SEQ__VECT));
+	      }
+	      else
+		v=makevecteur(v.front(),makesequence(a,v.back()));
+	    }
+	    else
+	      v.insert(v.begin(),a);
+	  }
+	}
 	f=gen(v,f.type==_VECT?f.subtype:_SEQ__VECT);
       }
       f=symbolic(u,f);
     }
     f=eval(f,eval_level(contextptr),contextptr);
-    if (u==at_revlist || u==at_reverse || u==at_sort || u==at_append || u==at_prepend || u==at_concat || u==at_extend || u==at_rotate || u==at_shift || u==at_suppress || u==at_insert )
+    if ((a.type==_IDNT || a.type==_SYMB) && (u==at_revlist || u==at_reverse || u==at_sort || u==at_append || u==at_prepend || u==at_concat || u==at_extend || u==at_rotate || u==at_shift || u==at_suppress || u==at_remove || u==at_insert ))
       return sto(f,a,contextptr);
     return f;
   }
   static const char _struct_dot_s []=".";
-  static define_unary_function_eval4 (__struct_dot,&_struct_dot,_struct_dot_s,&printsommetasoperator,&texprintsommetasoperator);
+  static define_unary_function_eval4_index (175,__struct_dot,&_struct_dot,_struct_dot_s,&printsommetasoperator,&texprintsommetasoperator);
   define_unary_function_ptr5( at_struct_dot ,alias_at_struct_dot,&__struct_dot,_QUOTE_ARGUMENTS,true);
 
   gen _giac_assert(const gen & args,GIAC_CONTEXT){
@@ -10571,13 +11077,84 @@ namespace giac {
     if (args.type!=_VECT || args._VECTptr->size()!=2)
       return gensizeerr(contextptr);
     gen l=_find(makesequence(args._VECTptr->back(),args._VECTptr->front()),contextptr);
-    if (l.type!=_VECT || l._VECTptr->empty())
+    if (l.type!=_VECT)
+      return l;
+    if (l._VECTptr->empty())
       return gensizeerr(contextptr);
     return l._VECTptr->front();
   }
   static const char _index_s []="index";
   static define_unary_function_eval (__index,&_index,_index_s);
   define_unary_function_ptr5( at_index ,alias_at_index,&__index,0,true);
+
+  gen _giac_bool(const gen & args,GIAC_CONTEXT){
+    bool b=args.type==_VECT?args._VECTptr->empty():is_exactly_zero(args);
+    gen r=b?0:1;
+    r.subtype=_INT_BOOLEAN;
+    return r;
+  }
+  static const char _giac_bool_s []="bool";
+  static define_unary_function_eval (__giac_bool,&_giac_bool,_giac_bool_s);
+  define_unary_function_ptr5( at_giac_bool ,alias_at_giac_bool,&__giac_bool,0,true);
+
+
+  gen _heapify(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_VECT)
+      return gensizeerr(contextptr);
+    iterateur it=args._VECTptr->begin(),itend=args._VECTptr->end();    
+    gen f=at_inferieur_strict_sort;
+    if (args.type==_SEQ__VECT && itend-it==2 && it->type==_VECT){
+      f=*it;
+      it=f._VECTptr->begin();
+      itend=f._VECTptr->end();
+      f=args._VECTptr->back();
+    }
+    make_heap(it,itend,gen_sort(f,contextptr));
+    return 1;
+  }
+  static const char _heapify_s []="heapify";
+  static define_unary_function_eval (__heapify,&_heapify,_heapify_s);
+  define_unary_function_ptr5( at_heapify ,alias_at_heapify,&__heapify,0,true);
+
+  gen _heappop(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_VECT)
+      return gensizeerr(contextptr);
+    gen v=args;
+    iterateur it=args._VECTptr->begin(),itend=args._VECTptr->end();
+    gen f=at_inferieur_strict_sort;
+    if (args.type==_SEQ__VECT && itend-it==2 && it->type==_VECT){
+      v=*it;
+      it=v._VECTptr->begin();
+      itend=v._VECTptr->end();
+      f=args._VECTptr->back();
+    }
+    if (itend==it)
+      return gendimerr(contextptr);
+    pop_heap(it,itend,gen_sort(f,contextptr));
+    v._VECTptr->pop_back();
+    return *itend;
+  }
+  static const char _heappop_s []="heappop";
+  static define_unary_function_eval (__heappop,&_heappop,_heappop_s);
+  define_unary_function_ptr5( at_heappop ,alias_at_heappop,&__heappop,0,true);
+
+  gen _heappush(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_VECT)
+      return gensizeerr(contextptr);
+    gen f=at_inferieur_strict_sort;
+    if (args.type!=_VECT || args._VECTptr->size()<2)
+      return gensizeerr(contextptr);
+    vecteur & v=*args._VECTptr;
+    if (v.size()==3) f=v[2];
+    if (v[0].type!=_VECT) return gensizeerr(contextptr);
+    v[0]._VECTptr->push_back(v[1]);
+    iterateur it=v[0]._VECTptr->begin(),itend=v[0]._VECTptr->end();
+    push_heap(it,itend,gen_sort(f,contextptr));
+    return v[0];
+  }
+  static const char _heappush_s []="heappush";
+  static define_unary_function_eval (__heappush,&_heappush,_heappush_s);
+  define_unary_function_ptr5( at_heappush ,alias_at_heappush,&__heappush,0,true);
 
 
 #ifndef NO_NAMESPACE_GIAC

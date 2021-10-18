@@ -24,6 +24,11 @@ using namespace std;
 #include "modpoly.h"
 #include "giacintl.h"
 #include "input_parser.h"
+#ifdef FXCG
+extern "C" {
+#include <system.h>
+}
+#endif
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
@@ -150,17 +155,24 @@ mpz_class smod(const mpz_class & a,int reduce){
     return tmp;
   }
 
-  void wait_1ms(context * contextptr){
-#ifdef NSPIRE
-    sleep(1);
+
+#ifdef FXCG
+  void wait_1ms(int ms){
+    OS_InnerWait_ms(ms);
+  }
 #else
-    usleep(1000);
+  void wait_1ms(int ms){
+#ifdef NSPIRE
+    sleep(ms);
+#else
+    usleep(ms*1000);
 #endif
   }
-
+#endif
+  
   void background_callback(const gen & g,void * newcontextptr){
     if (g.type==_VECT && g._VECTptr->size()==2){
-      context * cptr=(giac::context *)newcontextptr;
+      context * cptr=(context *)newcontextptr;
       if (cptr){
 #ifdef HAVE_LIBPTHREAD
 	pthread_mutex_lock(cptr->globalptr->_mutex_eval_status_ptr);
@@ -2481,7 +2493,7 @@ mpz_class smod(const mpz_class & a,int reduce){
       spdeg += pdeg[i];
       sqdeg += qdeg[i];
     }
-    index_t gdeg(dim-1),delta=min(pdeg,qdeg);
+    index_t gdeg(dim-1),delta=index_min(pdeg,qdeg);
     delta.pop_back();
     int e=0; // number of evaluations
     int alpha,alpha1;
@@ -3320,7 +3332,7 @@ mpz_class smod(const mpz_class & a,int reduce){
     index_t pdeg,qdeg,pdegmod,qdegmod,gdegmod,gdegmod2,gdeg;
     degree(p_orig,shift_vars,pdeg);
     degree(q_orig,shift_vars,qdeg);
-    gdeg=min(pdeg,qdeg);
+    gdeg=index_min(pdeg,qdeg);
     // gen m=30000,pimod=1;
     gen m=536871000,pimod=1;
     gen lcoeffp=p_orig.front().g,lcoeffq=q_orig.front().g,gcdlcoeff=gcd(lcoeffp,lcoeffq,context0);
@@ -5106,7 +5118,7 @@ mpz_class smod(const mpz_class & a,int reduce){
       spdeg += pdeg[i];
       sqdeg += qdeg[i];
     }
-    index_t gdeg(dim-1),delta=min(pdeg,qdeg);
+    index_t gdeg(dim-1),delta=index_min(pdeg,qdeg);
     delta.pop_back();
     int e=0; // number of evaluations
     int alpha,alpha1;
@@ -5623,7 +5635,7 @@ mpz_class smod(const mpz_class & a,int reduce){
     index_t pdeg,qdeg,pdegmod,qdegmod,gdegmod,gdegmod2,gdeg;
     degree(p_orig,shift_vars,pdeg);
     degree(q_orig,shift_vars,qdeg);
-    gdeg=min(pdeg,qdeg);
+    gdeg=index_min(pdeg,qdeg);
     if (tp==4){
       // return false;
       vector< T_unsigned<vecteur,hashgcd_U> > p1,q1,g1,pcof1,qcof1,p2,q2,g2,pcof2,qcof2;

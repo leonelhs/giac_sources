@@ -12,7 +12,7 @@
 <a href="cascmd_fr071.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
 <h3 id="sec96" class="subsection">2.5.7  Faire une hypothèse sur une variable : <span style="font-family:monospace">assume supposons</span></h3>
-<p><a id="hevea_default65"></a><a id="sec:assume"></a><a id="hevea_default66"></a><a id="hevea_default67"></a><a id="hevea_default68"></a><a id="hevea_default69"></a>
+<p><a id="hevea_default65"></a><a id="sec:assume"></a><a id="hevea_default66"></a><a id="hevea_default67"></a><a id="hevea_default68"></a><a id="hevea_default69"></a><a id="hevea_default70"></a><a id="hevea_default71"></a>
 <span style="font-family:monospace">assume</span> ou <span style="font-family:monospace">supposons</span> permet de faire des hypothèses sur 
 une variable.<br>
 <span style="font-family:monospace">assume</span> ou <span style="font-family:monospace">supposons</span> a comme argument un nom de variable suivi d’une
@@ -24,6 +24,8 @@ ou <span style="font-family:monospace">or</span> selon ce que l’on veut faire 
 le type de la variable et une plage de valeurs pour cette variable.<br>
 <span style="font-family:monospace">assume</span> renvoie le nom de la variable sur laquelle on a fait les 
 hypothèses ou le type de cette variable.<br>
+La commande <span style="font-family:monospace">about</span>, qui a comme argument un nom de variable, permet de 
+connaître les hypothèses faites sur cette variable.<br>
 <span style="font-weight:bold">Attention</span> Si on fait une autre hypothèse avec <span style="font-family:monospace">assume</span>, l’ancienne
 hypothèse est effacée : si vous voulez rajoutez une nouvelle hypothèse il
 faut utiliser la commande <span style="font-family:monospace">additionally</span> ou mettre <span style="font-family:monospace">additionally</span> 
@@ -65,19 +67,19 @@ On tape pour supposer que la variable formelle <span style="font-family:monospac
 On obtient :
 </p><div class="center"><span style="font-family:monospace">a</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">assume(a)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">about(a)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">assume[DOM_FLOAT,[line[0,+(infinity)]],[0]]</span></div><p>
-cela signifie que <span style="font-family:monospace">a</span> est une variable réelle appartenant à 
-[0;+∞ et que 0 est exclu (on a le domaine, l’intervalle et les valeurs
-exclues).<br>
-On tape pour supposer que la variable formelle <span style="font-family:monospace">a </span> est dans
+</p><div class="center"><span style="font-family:monospace">assume[[],[[0,+infinity]],[0]]</span></div><p>
+cela signifie que <span style="font-family:monospace">a</span> est une variable réelle appartenant à l’intervalle
+[0;+∞ et que 0 en est exclu (on a le domaine, l’intervalle et les 
+valeurs exclues).<br>
+On tape pour supposer que la variable formelle <span style="font-family:monospace">a</span> est dans
 [2;4[∪ ]6;∞[ :
 </p><div class="center"><span style="font-family:monospace">assume((a&gt;=2 and a&lt;4) or a&gt;6)</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">a</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">assume(a)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">about(a)</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">assume[DOM_FLOAT,[[2,4],[6,+(infinity)]],[4,6]]</span></div><p>
 cela signifie que <span style="font-family:monospace">a</span> est une variable réelle appartenant à
@@ -92,19 +94,34 @@ On tape pour dire que <span style="font-family:monospace">b</span> est un entier
 On obtient :
 </p><div class="center"><span style="font-family:monospace">DOM_INT</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">assume(b)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">about(b)</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">[DOM_INT]</span></div><p>
-On tape pour dire que <span style="font-family:monospace">b</span> est un entier supérieur strictement à 5 :
-</p><div class="center"><span style="font-family:monospace">assume(b,integer);</span></div><div class="center"><span style="font-family:monospace">assume(b&gt;5,additionally)</span></div><p>
+On tape pour dire que <span style="font-family:monospace">b</span> est un entier de l’intervalle ]−5,10[ :
+</p><div class="center"><span style="font-family:monospace">assume(b,integer);additionally(b&gt;-5 and b&lt;10)</span></div><p>
+ou on tape :<br>
+</p><div class="center"><span style="font-family:monospace">assume(b,integer);assume(b&gt;-5 and b&lt;10,additionally)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">DOM_INT</span></div><p>
-puis
-</p><div class="center"><span style="font-family:monospace">b</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">assume(b)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">(integer,b)</span></div><p>
+puis on tape :
+</p><div class="center"><span style="font-family:monospace">about(b)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">[DOM_INT]</span></div><p><span style="font-weight:bold">Remarque</span><br>
+</p><div class="center"><span style="font-family:monospace">assume[integer,[[-5,10]],[-5,10]]</span></div><p>
+ce qui signifie que <span style="font-family:monospace">b</span> est un entier de l’intervalle [-5,10] et que les 
+bornes -5,et 10 en sont exclues.<br>
+On tape pour dire que <span style="font-family:monospace">b</span> est un entier de l’intervalle ]−5,10] :
+</p><div class="center"><span style="font-family:monospace">assume(b,integer);additionally(b&gt;-5 and b&lt;=10)</span></div><p>
+ou on tape :<br>
+</p><div class="center"><span style="font-family:monospace">assume(b,integer);assume(b&gt;-5 and b&lt;=10,additionally)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">(integer,b)</span></div><p>
+puis on tape :
+</p><div class="center"><span style="font-family:monospace">about(b)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">assume[integer,[[-5,10]],[-5]]</span></div><p>
+ce qui signifie que <span style="font-family:monospace">b</span> est un entier de l’intervalle [-5,10] et que la 
+borne -5 en est exclue.<br>
+<span style="font-weight:bold">Remarque</span><br>
 Lorsque <span style="font-family:monospace">assume</span> a comme argument une seule égalité et que la commande 
 est tapée dans une ligne d’entrée d’un écran de géométrie, cela met
 un petit curseur en haut et à droite de cet écran. Le nom du paramètre 

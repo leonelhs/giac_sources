@@ -4,36 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Qu’est-ce qu’une image ?</title>
+<title>Lecture d’un fichier wav : readwav</title>
 </head>
 <body >
 <a href="cascmd_fr1109.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr1111.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1346" class="subsection">12.2.1  Qu’est-ce qu’une image ?</h3>
-<p>
-Pour <span style="font-family:monospace">Xcas</span> une image est une liste <span style="font-family:monospace">a</span> de 5 éléments :
+<h3 id="sec1345" class="subsection">12.1.1  Lecture d’un fichier wav : <span style="font-family:monospace">readwav</span></h3>
+<p><a id="hevea_default2155"></a>
+La commande <span style="font-family:monospace">readwav</span> permet de lire un fichier son stocké
+au format WAV (extension de fichier <span style="font-family:monospace">.wav</span>), on stocke en général
+le résultat dans une variable, par exemple :<br>
+<span style="font-family:monospace">s:=readwav("sound.wav")</span> <br>
+lit le fichier <code>sound.wav</code> et place le vecteur résultat dans la variable
+<code>s</code>.<br>
+Le vecteur renvoyé est composé de :
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">a[0]</span> est une liste de 3 éléments : le nombre de canaux (3 ou 4)
-et le nombre de lignes <span style="font-style:italic">n</span> et de colonnes <span style="font-style:italic">p</span> utilisés pour la dimension de
-l’image,
-</li><li class="li-itemize"><span style="font-family:monospace">a[1]</span> correspond au canal rouge : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
-entiers entre 0 et 255,
-</li><li class="li-itemize"><span style="font-family:monospace">a[2]</span> correspond au canal vert : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
-entiers entre 0 et 255,
-</li><li class="li-itemize"><span style="font-family:monospace">a[3]</span> correspond au canal pour la transparence : c’est une matrice
-<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres entiers entre 0 et 255,
-</li><li class="li-itemize"><span style="font-family:monospace">a[4]</span> correspond au canal bleu : c’est une matrice <span style="font-style:italic">n</span>,<span style="font-style:italic">p</span> de nombres
-entiers entre 0 et 255.
+une liste donnant le format déchantillonage du son :
+le nombre de canaux (en général 1 pour mono ou 2 pour stéréo),
+le nombre de bits (en général 16), la fréquence
+d’échantillonage (44100 pour un son de qualité CD),
+et le nombre d’octets des données (hors en-tête), soit
+le nombre de secondes multiplié par la fréquence
+d’échantillonage multiplié par le nombre de bits/8 multiplié par
+le nombre de canaux.
+</li><li class="li-itemize">pour chaque canal, la liste des données numériques du son
 </li></ul><p>
-Pour creer d’autres couleurs que rouge, vert, bleu au pixel ligne i colonne j, 
-il faut donner des valeurs non nulles en ligne i colonne j des 1ere, 2eme et 
-4eme matrices, plus la valeur est grande plus la composante rouge, vert, bleu 
-sera importante.<br>
-Par exemple :<br>
-
-</p>
+Ainsi si <code>s[0]</code> vaut <code>[1,16,44100,88200]</code> on a un
+enregistrement d’une seconde sur un canal en 16 bits, un son de
+qualité CD.<br>
+On a alors <code>size(s)==2</code> (1+nombre de canaux), et <code>size(s[1])==44100</code>.</p>
 <hr>
 <a href="cascmd_fr1109.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

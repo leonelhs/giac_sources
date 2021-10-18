@@ -4,46 +4,100 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Boolean operators : or xor and not</title>
+<title>Defining piecewise defined functions</title>
 </head>
 <body >
 <a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en056.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec83" class="subsection">5.2.3  Boolean operators : <span style="font-family:monospace">or xor and not</span></h3>
-<p><a id="hevea_default75"></a><a id="hevea_default76"></a><a id="hevea_default77"></a><a id="hevea_default78"></a><a id="hevea_default79"></a><a id="hevea_default80"></a><a id="hevea_default81"></a>
-<span style="font-family:monospace">or</span> (or <span style="font-family:monospace">||</span>), <span style="font-family:monospace">xor</span>, <span style="font-family:monospace">and</span> (or <span style="font-family:monospace">&amp;&amp;</span>) are infixed 
-operators.<br>
-<span style="font-family:monospace">not</span> is a prefixed operators.<br>
-If <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are two booleans :<br>
-<span style="font-family:monospace">(a or b)</span> <span style="font-family:monospace">(a || b)</span> returns <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> and
-<span style="font-family:monospace">b</span> are equal to 0 and returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) otherwise.<br>
-<span style="font-family:monospace">(a xor b)</span> returns <span style="font-family:monospace">1</span> if <span style="font-family:monospace">a</span> is equal to 1 and <span style="font-family:monospace">b</span> is
-equal to 0 or if <span style="font-family:monospace">a</span> is equal to 0 and <span style="font-family:monospace">b</span> is equal to 1 and returns 0
-if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 0
-or if <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are equal to 1 (it is the "exclusive or").<br>
-<span style="font-family:monospace">(a and b)</span> or <span style="font-family:monospace">(a &amp;&amp; b)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span>
-and <span style="font-family:monospace">b</span> are equal to 1 and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) otherwise.<br>
-<span style="font-family:monospace">not(a)</span> returns <span style="font-family:monospace">1</span> (or <span style="font-family:monospace">true</span>) if <span style="font-family:monospace">a</span> is equal to 0 (or 
-<span style="font-family:monospace">false</span>), and <span style="font-family:monospace">0</span> (or <span style="font-family:monospace">false</span>) if <span style="font-family:monospace">a</span> is equal to 1 (or 
-<span style="font-family:monospace">true</span>).<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">1&gt;=0 or 1&lt;0</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">1&gt;=0 xor 1&gt;0</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">0</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">1&gt;=0 and 1&gt;0</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">not(0==0)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">0</span></div>
+<h3 id="sec80" class="subsection">4.7.2  Defining piecewise defined functions</h3>
+<p>
+<a id="hevea_default50"></a>
+<a id="subsec:piecewise"></a></p><p>You can use <span style="font-family:monospace">Xcas</span>’s control structures to define functions not
+given by a single simple formula. Notably, you can use the
+<span style="font-family:monospace">ifte</span><a id="hevea_default51"></a> command or <span style="font-family:monospace">? :</span><a id="hevea_default52"></a> operator
+to define piecewise-defined functions.</p><p>The <span style="font-family:monospace">ifte</span> command takes three arguments; the first argument is
+a condition, the second argument tells the command what to return when
+the condition is true, and the third argument tells the command what
+to return when the condition is false. For example, you could define
+your own absolute value function with
+</p><div class="center">
+<span style="font-family:monospace">myabs(x) := ifte(x &gt;= 0, x -1*x)</span>
+</div><p>
+Afterwards, for example, entering
+</p><div class="center">
+<span style="font-family:monospace">myabs(-4)</span>
+</div><p>
+will return
+</p><div class="center">
+<span style="font-family:monospace">4</span>
+</div><p>
+However, this will return an error if it can’t evaluate the
+conditional. For example, if you enter
+</p><div class="center">
+<span style="font-family:monospace">myabs(x)</span>
+</div><p>
+you will get the error
+</p><div class="center">
+<span style="font-family:monospace">Ifte: Unable to check test Error: Bad Argument Value</span>
+</div><p>The <span style="font-family:monospace">?:</span><a id="hevea_default53"></a> construct behaves similarly to <span style="font-family:monospace">ifte</span> but is
+structured differently. Here, the condition comes first, followed by
+<span style="font-family:monospace">?</span>, then what to return if the condition is true, followed by
+the <span style="font-family:monospace">:</span>, and then what to return if the condition is false.
+You could define your absolute value function with
+</p><div class="center">
+<span style="font-family:monospace">myabs(x) := (x &gt;= 0)? x: -1*x</span>
+</div><p>
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">myabs(-4)</span>
+</div><p>
+you will again get
+</p><div class="center">
+<span style="font-family:monospace">4</span>
+</div><p>
+but now if the conditional can’t be evaluated, you won’t get an error.
+</p><div class="center">
+<span style="font-family:monospace">myabs(x)</span>
+</div><p>
+will return
+</p><div class="center">
+<span style="font-family:monospace">((x &gt;= 0)? x: -x)</span>
+</div><p>The <span style="font-family:monospace">when</span><a id="hevea_default54"></a> and <span style="font-family:monospace">IFTE</span><a id="hevea_default55"></a> commands
+are synonyms for the <span style="font-family:monospace">? :</span> construct; 
+</p><div class="center">
+<span style="font-family:monospace">(</span><span style="font-family:monospace"><span style="font-style:italic">condition</span></span><span style="font-family:monospace">)? </span><span style="font-family:monospace"><span style="font-style:italic">true-result</span></span><span style="font-family:monospace">: </span><span style="font-family:monospace"><span style="font-style:italic">false-result</span></span>
+</div><div class="center">
+<span style="font-family:monospace">when(</span><span style="font-family:monospace"><span style="font-style:italic">condition</span></span><span style="font-family:monospace">, </span><span style="font-family:monospace"><span style="font-style:italic">true-result</span></span><span style="font-family:monospace">, </span><span style="font-family:monospace"><span style="font-style:italic">false-result</span></span><span style="font-family:monospace">)</span>
+</div><p>
+and
+</p><div class="center">
+<span style="font-family:monospace">IFTE(</span><span style="font-family:monospace"><span style="font-style:italic">condition</span></span><span style="font-family:monospace">, </span><span style="font-family:monospace"><span style="font-style:italic">true-result</span></span><span style="font-family:monospace">, </span><span style="font-family:monospace"><span style="font-style:italic">false-result</span></span><span style="font-family:monospace">)</span>
+</div><p>
+all represent the same expression.</p><p>If you want to define a function with several pieces, it may be
+simpler to use the <span style="font-family:monospace">piecewise</span><a id="hevea_default56"></a> function. The
+arguments to this function are alternately conditions and results to
+return if the condition is true, with the last argument being what to
+return if none of the conditions are true. For example, to define the
+function given by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) = 
+</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >−2</td><td style="text-align:left;white-space:nowrap" >if  <span style="font-style:italic">x</span> &lt; −2</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span>+4</td><td style="text-align:left;white-space:nowrap" >if  −2 ≤ <span style="font-style:italic">x</span> &lt; −1</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >1</td><td style="text-align:left;white-space:nowrap" >if  −1 ≤ <span style="font-style:italic">x</span> &lt; 0</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">x</span> + 1</td><td style="text-align:left;white-space:nowrap" >if  <span style="font-style:italic">x</span> ≥ 0
+</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table><p>
+you can enter
+</p><div class="center">
+<span style="font-family:monospace">f(x) := piecewise(x &lt; -2, -2, x &lt; -1, 3*x+4, x &lt; 0, 1, x + 1)</span>
+</div>
 <hr>
 <a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

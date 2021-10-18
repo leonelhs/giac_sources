@@ -44,7 +44,7 @@ using namespace std;
 #include <sys/param.h>
 #endif
 
-#if !defined BESTA_OS && !defined NSPIRE && !defined NUMWORKS // test should always return true
+#if !defined BESTA_OS && !defined NSPIRE && !defined FXCG && !defined NUMWORKS // test should always return true
 #include <dirent.h>
 #endif
 
@@ -56,7 +56,7 @@ using namespace std;
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
   
-  const int HELP_LANGUAGES=4;
+  const int HELP_LANGUAGES=5;
 
   struct static_help_t {
     const char * cmd_name;
@@ -70,7 +70,7 @@ namespace giac {
 #if !defined RTOS_THREADX && !defined BESTA_OS && !defined GIAC_HAS_STO_38 
 #include "static_help.h"
 #else
-    { "", { "", "", "", ""}, "", "", "" },
+    { "", { "", "", "", "",""}, "", "", "" },
 #endif
   };
 
@@ -109,7 +109,7 @@ namespace giac {
     int l=int(s.size());
     if ( (l>2) && (s[0]=='\'') && (s[l-1]=='\'') )
       s=s.substr(1,l-2);
-    static_help_t h={s.c_str(),{0,0,0,0},0,0,0};
+    static_help_t h={s.c_str(),{0,0,0,0,0},0,0,0};
     std::pair<const static_help_t *,const static_help_t *> p=equal_range(static_help,static_help+static_help_size,h,static_help_sort());
     if (p.first!=p.second && p.first!=static_help+static_help_size){
       howto=p.first->cmd_howto[lang-1];
@@ -186,12 +186,20 @@ namespace giac {
     return res;
   }
 
-  // Run ./icas with export GIAC_DEBUG=-2 to print static_help.h and static_help_w.h
+  // Run ./icas with export GIAC_DEBUG=-2 to print static_help.h and static_help_w.h, then sort in emacs
+  // cascmd_fr -> longhelp.js: 
   static bool output_static_help(vector<aide> & v,const vector<int> & langv){
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
+    add_language(5,context0); // add german help de/aide_cas
+    cout << "Generating xcascmds, for UI.xcascmds in xcas.js, sort and esc-x replace-string ctrl-Q ctrl-j ret ret" << endl;
+    cout << "Generating static_help.h (sort it in emacs)" << endl;
+    cout << "Generating static_help_w.h (same but UTF16)" << endl;
+    ofstream cmds("xcascmds");
+    cmds << "[" << endl;
     ofstream of("static_help.h");
     vector<aide>::iterator it=v.begin(),itend=v.end();
     for (;it!=itend;){
+      cmds << '"' << output_quote(it->cmd_name) << '"' << "," << endl;
       of << "{";
       of << '"' << output_quote(it->cmd_name) << '"' << ",";
       std::vector<localized_string> & blabla = it->blabla;
@@ -199,7 +207,7 @@ namespace giac {
       int bs=int(blabla.size());
       of << "{";
       for (int i=0;i<HELP_LANGUAGES;i++){
-	if (i<bs && equalposcomp(langv,i+1))
+	if (i<bs && i+1==blabla[i].language && equalposcomp(langv,i+1))
 	  of << '"' << output_quote(blabla[i].chaine) << '"' ;
 	else
 	  of << 0 ;
@@ -244,6 +252,7 @@ namespace giac {
 	break;
       of << "," << endl;
     }
+    cmds << "]" << endl;
     of << endl;
     ofstream ofw("static_help_w.h");
     ofstream ofwindex("index_w.h");
@@ -446,7 +455,7 @@ namespace giac {
   // FIXME: aide_cas may end with synonyms (# cmd synonym1 ...)
   void readhelp(vector<aide> & v,const char * f_name,int & count,bool warn){
     count=0;
-#ifndef NSPIRE
+#if !defined NSPIRE && !defined FXCG
     if (access(f_name,R_OK)){
       if (warn)
 	std::cerr << "Help file " << f_name << " not found" << endl;
@@ -558,8 +567,9 @@ namespace giac {
       vector<int> langv;
       langv.push_back(1);
       langv.push_back(2);
-      // langv.push_back(3);
-      // langv.push_back(4);
+      langv.push_back(3);
+      langv.push_back(4);
+      langv.push_back(5);
       output_static_help(v,langv);
     }
 #endif
@@ -671,7 +681,7 @@ namespace giac {
     return result;
   }
 
-#if !defined(NSPIRE_NEWLIB) || !defined(RTOS_THREADX) && !defined(EMCC) &&!defined(NSPIRE)
+#if !defined(NSPIRE_NEWLIB) && !defined(RTOS_THREADX) && !defined(EMCC) &&!defined(NSPIRE) && !defined FXCG
   multimap<string,string> html_mtt,html_mall;
   std::vector<std::string> html_vtt,html_vall;
 
@@ -905,7 +915,7 @@ namespace giac {
     return 0;
   }
 
-#if ! (defined VISUALC || defined BESTA_OS || defined FREERTOS || defined NSPIRE || defined NSPIRE_NEWLIB)
+#if ! (defined VISUALC || defined BESTA_OS || defined FREERTOS || defined NSPIRE || defined FXCG || defined NSPIRE_NEWLIB)
 #if defined WIN32 || !defined DT_DIR
   static int dir_select (const struct dirent *d){
     string s(d->d_name);
@@ -951,7 +961,7 @@ namespace giac {
 #endif // visualc
 
   void find_all_index(const std::string & subdir,multimap<std::string,std::string> & mtt,multimap<std::string,std::string> & mall){
-#if defined GNUWINCE || defined __MINGW_H || defined __ANDROID__ || defined EMCC || defined NSPIRE_NEWLIB
+#if defined GNUWINCE || defined __MINGW_H || defined __ANDROID__ || defined EMCC || defined NSPIRE_NEWLIB || defined FXCG
     return;
 #else
     // cerr << "HTML help Scanning " << subdir << endl;

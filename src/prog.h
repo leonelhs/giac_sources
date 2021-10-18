@@ -43,6 +43,7 @@ namespace giac {
   extern modules_tab giac_modules_tab;
 #endif
 
+  void alert(const std::string & s,GIAC_CONTEXT);
   gen check_secure(); // in secure mode error
   void set_decimal_digits(int n,GIAC_CONTEXT);
   int digits2bits(int n);
@@ -54,7 +55,7 @@ namespace giac {
   gen equaltosame(const gen & a);
   gen sametoequal(const gen & a);    
   gen equaltosto(const gen & g,GIAC_CONTEXT);
-  int bind(const vecteur & vals,const vecteur & vars,context * & contextptr);
+  int giac_bind(const vecteur & vals,const vecteur & vars,context * & contextptr);
   bool leave(int protect,vecteur & vars,context * & contextptr);
 
   void increment_instruction(const vecteur & v,debug_struct * dbgptr);
@@ -353,6 +354,7 @@ namespace giac {
 
   gen _sort(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_sort;
+  extern const unary_function_ptr * const  at_sorted;
 
   gen _ans(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_ans;
@@ -404,6 +406,7 @@ namespace giac {
   extern const unary_function_ptr * const  at_tableseq;
 
   gen protecteval(const gen & g,int level,GIAC_CONTEXT);
+  gen protectevalf(const gen & g,int level,GIAC_CONTEXT);
 
   gen _nodisp(const gen & args);
   extern const unary_function_ptr * const  at_nodisp;
@@ -440,7 +443,7 @@ namespace giac {
   gen _inputform(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_inputform;
   class unary_function_eval;
-#if !defined RTOS_THREADX && !defined NSPIRE
+#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG
   extern unary_function_eval __inputform;
 #endif
 
@@ -488,13 +491,13 @@ namespace giac {
 
   gen _Row(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_Row;
-#if !defined RTOS_THREADX && !defined NSPIRE
+#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG
   extern unary_function_eval __Row;
 #endif
 
   gen _Col(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_Col;
-#if !defined RTOS_THREADX && !defined NSPIRE
+#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG
   extern unary_function_eval __Col;
 #endif
 
@@ -521,7 +524,7 @@ namespace giac {
   // used to update IO screen and graph inside progs
   gen _interactive(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_interactive;
-#if defined RTOS_THREADX || defined NSPIRE
+#if defined RTOS_THREADX || defined NSPIRE || defined FXCG
   extern const alias_unary_function_eval __interactive;
   // extern const unary_function_eval __interactive;
 #else
@@ -546,7 +549,7 @@ namespace giac {
   gen _ti_semi(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_ti_semi;
 
-#if defined RTOS_THREADX || defined NSPIRE
+#if defined RTOS_THREADX || defined NSPIRE || defined FXCG
   // extern const unary_function_eval __keyboard;
 #else
   extern unary_function_eval __keyboard;
@@ -554,20 +557,20 @@ namespace giac {
   extern const unary_function_ptr * const  at_keyboard;
   gen widget_size(const gen & g,GIAC_CONTEXT);
   gen keyboard(const gen & g,GIAC_CONTEXT);
-#if !defined RTOS_THREADX && !defined NSPIRE
+#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG
   extern unary_function_eval __widget_size;
 #endif
   extern const unary_function_ptr * const  at_widget_size;
 
   gen current_sheet(const gen & g,GIAC_CONTEXT);
-#if !defined RTOS_THREADX && !defined NSPIRE
+#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG
   extern unary_function_eval __current_sheet;
 #endif
   extern const unary_function_ptr * const  at_current_sheet;
 
   gen window_switch(const gen & g,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_window_switch;
-#if !defined RTOS_THREADX && !defined NSPIRE
+#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG
   extern const unary_function_eval __window_switch;
   extern const unary_function_eval __maple_lib;
 #endif
@@ -953,8 +956,10 @@ namespace giac {
   extern gen cst_kBoltzmann;
   extern gen cst_NA;
 #endif // NO_PHYSICAL_CONSTANTS
+#ifndef FXCG
   const unary_function_ptr * binary_op_tab();
-
+#endif
+  
   extern const unary_function_ptr * const  at_piecewise;
   extern const unary_function_ptr * const  at_PIECEWISE;
   gen _piecewise(const gen & g,GIAC_CONTEXT);
@@ -999,9 +1004,25 @@ namespace giac {
 
   gen _autosimplify(const gen & g,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_struct_dot ;
+  gen _struct_dot(const gen & g,GIAC_CONTEXT);
+  // replace := by = in builtin commands (for Python compatible mode)
+  gen denest_sto(const gen & g);
 
   extern const unary_function_ptr * const  at_index ;
   gen _index(const gen & args,GIAC_CONTEXT);
+  extern const unary_function_ptr * const  at_extend ;
+  extern const unary_function_ptr * const  at_python_compat ;
+  extern const unary_function_ptr * const  at_randint ;
+  extern const unary_function_ptr * const  at_choice ;
+  extern const unary_function_ptr * const  at_randrange ;
+  extern const unary_function_ptr * const  at_giac_assert ;
+  extern const unary_function_ptr * const  at_heapify ;
+  extern const unary_function_ptr * const  at_heappop ;
+  extern const unary_function_ptr * const  at_heappush ;
+  extern const unary_function_ptr * const  at_giac_bool ;
+  extern const unary_function_ptr * const  at_shuffle ;
+  extern const unary_function_ptr * const  at_giac_bin ;
+  extern const unary_function_ptr * const  at_giac_hex ;
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

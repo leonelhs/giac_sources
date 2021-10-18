@@ -4,41 +4,49 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>PGCD de deux polynômes par l’algorithme d’Euclide : Gcd</title>
+<title>Quotient et reste euclidien : quorem divide</title>
 </head>
 <body >
 <a href="cascmd_fr400.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr402.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec513" class="subsection">6.29.8  PGCD de deux polynômes par l’algorithme d’Euclide : <span style="font-family:monospace">Gcd</span></h3>
-<p><a id="hevea_default751"></a> <a id="sec:Gcd"></a>
-<span style="font-family:monospace">Gcd</span> est la forme inerte de <span style="font-family:monospace">gcd</span>.<br>
-<span style="font-family:monospace">Gcd</span> renvoie le PGCD (plus grand commun diviseur) de deux 
-polynômes (ou d’une liste de polynômes ou d’une séquence de polynômes) 
-(voir <a href="cascmd_fr162.html#sec%3Aigcd">6.7.2</a> pour le PGCD d’entiers), sans l’évaluer et
-cela permet de calculer le PGCD de deux polynômes à
-coefficients dans ℤ/<span style="font-style:italic">p</span>ℤ en utilisant la syntaxe Maple.<br>
-<span style="font-weight:bold">Attention</span> il faut être en mode Maple pour que cela soit efficace.<br>
-On tape en mode <span style="font-family:monospace">Xcas</span> :
-</p><div class="center"><span style="font-family:monospace">Gcd((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x)mod 5,(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5x) mod 5)</span></div><p>
+<h3 id="sec513" class="subsection">6.29.6  Quotient et reste euclidien : <span style="font-family:monospace">quorem divide</span></h3>
+<p><a id="hevea_default759"></a><a id="hevea_default760"></a><a id="sec:quorem"></a> 
+<span style="font-family:monospace">quorem</span> (ou <span style="font-family:monospace">divide</span>) donne la liste, du quotient et du reste
+de la division euclidienne (selon les puissances décroissantes) de deux 
+polynômes.<br>
+On peut donner les polynômes soit par la liste de leurs coefficients selon 
+les puissances décroissantes, soit sous leurs formes symboliques et dans ce 
+cas la variable doit être rajoutée comme troisième argument (par défaut
+la variable est <span style="font-family:monospace">x</span>).<br>
+On tape pour avoir le quotient et le reste de la division de <span style="font-style:italic">x</span><sup>3</sup>+2<span style="font-style:italic">x</span>+4 par 
+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+2 :
+</p><div class="center"><span style="font-family:monospace">quorem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2x+4,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x+2)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">gcd((1% 5)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(2% 5)*x,(1% 5)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+(1% 5)*x)</span></div><p> 
-puis on obtient :
-</p><div class="center"><span style="font-family:monospace">(1% 5)*x</span></div><p>
-Mais si on tape en mode <span style="font-family:monospace">Xcas</span> :
-</p><div class="center"><span style="font-family:monospace">Gcd((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x),(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5x)) mod 5</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[x-1,x+6]</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">quorem([1,0,2,4],[1,1,2]) </span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">(1% 5)*gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2++6*x+5x)</span></div><p> 
-puis :
-</p><div class="center"><span style="font-family:monospace">(1% 5)</span></div><p>On tape en mode <span style="font-family:monospace">Maple</span> :
-</p><div class="center"><span style="font-family:monospace">Gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">1</span></div><p>
+</p><div class="center"><span style="font-family:monospace">[[1,-1],[1,6]]</span></div><p>
+c’est à dire la liste des polynômes <span style="font-family:monospace">[poly1[1,-1],poly1[1,6]]</span> donc le 
+quotient est le polynôme <span style="font-family:monospace">x-1</span> et le reste est le polynôme <span style="font-family:monospace">x+6</span>.<br>
 On tape :
-</p><div class="center"><span style="font-family:monospace">gcd(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x) mod 5</span></div><p> 
+</p><div class="center"><span style="font-family:monospace">quorem(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2t+4,t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+t+2,t)</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">x</span></div>
+</p><div class="center"><span style="font-family:monospace">[t-1,t+6]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quorem(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2t+4,t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+t+2)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+2*t+4)/(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+t+2),0]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quorem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[x,x-1]</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">quorem(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,t)</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">[t,t-1]</span></div>
 <hr>
 <a href="cascmd_fr400.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

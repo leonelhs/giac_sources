@@ -4,61 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximate solution of y’=f(t,y) : odesolve</title>
+<title>Representation by hardware floats</title>
 </head>
 <body >
 <a href="cascmd_en573.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en575.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec713" class="subsection">7.3.4  Approximate solution of y’=f(t,y) : <span style="font-family:monospace">odesolve</span></h3>
-<p><a id="hevea_default905"></a>
+<h3 id="sec712" class="subsection">7.1.2  Representation by hardware floats</h3>
+<p>
+A real is represented by a floating number <span style="font-style:italic">d</span>, that is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">d</span>=2(1+<span style="font-style:italic">m</span>),     0&lt;<span style="font-style:italic">m</span>&lt;1, −2<sup>10</sup> &lt; α &lt; 2<sup>10</sup> </td></tr>
+</table><p>
+If α&gt;1−2<sup>10</sup>, then <span style="font-style:italic">m</span> ≥ 1/2, and <span style="font-style:italic">d</span> is
+a normalized floating point number, otherwise
+<span style="font-style:italic">d</span> is denormalized (α=1−2<sup>10</sup>). The special exponent 2<sup>10</sup>
+is used to represent plus or minus infinity and NaN (Not a Number).
+A hardware float is made of 64 bits:
 </p><ul class="itemize"><li class="li-itemize">
-Let <span style="font-style:italic">f</span> be a function from ℝ<sup>2</sup> to ℝ.<br>
- <span style="font-family:monospace">odesolve(f(t,y),[t,y],[t0,y0],t1)</span> or<br>
-<span style="font-family:monospace">odesolve(f(t,y),t=t0..t1,y,y0)</span> or<br>
-<span style="font-family:monospace">odesolve(t0..t1,f,y0)</span> or<br>
-<span style="font-family:monospace">odesolve(t0..t1,(t,y)-&gt;f(t,y),y0)</span><br>
-returns an approximate value of <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>1) where <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>) is the 
-solution of:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)),     <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>0)=<span style="font-style:italic">y</span>0 </td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-family:monospace">odesolve</span> accepts an optional argument for the 
-discretization of <span style="font-family:monospace">t</span> (<span style="font-family:monospace">tstep=value</span>). 
-This value is passed as initial tstep value to the numeric solver
-from the GSL (Gnu Scientific Library), it may be modified
-by the solver. It is also used to control the number of iterations
-of the solver by <span style="font-family:monospace">2*(t1-t0)/tstep</span> (if the number
-of iterations exceeds this value, the solver will stops at a time <span style="font-style:italic">t</span>&lt;<span style="font-style:italic">t</span>1).
-</li><li class="li-itemize"><span style="font-family:monospace">odesolve</span> accepts <span style="font-family:monospace">curve</span> as an optional argument.
-In that case, 
-<span style="font-family:monospace">odesolve</span> returns the list of all the [<span style="font-style:italic">t</span>,[<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)]] values
-that were computed.
+the first bit is for the sign of <span style="font-style:italic">d</span> (0 for ’+’ and 1 for ’-’)
+</li><li class="li-itemize">the 11 following bits represents the exponent, more precisely 
+if α denotes the integer from the 11 bits,
+the exponent is α+2<sup>10</sup>−1, 
+</li><li class="li-itemize">the 52 last bits codes the mantissa <span style="font-style:italic">m</span>, more precisely if
+<span style="font-style:italic">M</span> denotes the integer from the 52 bits, then
+<span style="font-style:italic">m</span>=1/2+<span style="font-style:italic">M</span>/2<sup>53</sup> for normalized floats and <span style="font-style:italic">m</span>=<span style="font-style:italic">M</span>/2<sup>53</sup> for
+denormalized floats.
 </li></ul><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),[t,y],[0,1],2)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">odesolve(0..2,(t,y)-&gt;sin(t*y),1)</span></div><p>
-or define the function :
-</p><div class="center"><span style="font-family:monospace">f(t,y):=sin(t*y)</span> </div><p>
-and input :
-</p><div class="center"><span style="font-family:monospace">odesolve(0..2,f,1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1.82241255675]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">odesolve(0..2,f,1,tstep=0.3)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1.82241255675]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1,tstep=0.5)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1.82241255675]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1,tstep=0.5,curve)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[0.760963063136,[1.30972370515]],[1.39334557388,[1.86417104853]]]</span></div>
+Examples of representations of the exponent:
+</p><ul class="itemize"><li class="li-itemize">
+α=0 is coded by 011 1111 1111
+</li><li class="li-itemize">α=1 is coded by 100 0000 0000
+</li><li class="li-itemize">α=4 is coded by 100 0000 0011
+</li><li class="li-itemize">α=5 is coded by 100 0000 0100
+</li><li class="li-itemize">α=−1 is coded by 011 1111 1110
+</li><li class="li-itemize">α=−4 is coded by 011 1111 1011
+</li><li class="li-itemize">α=−5 is coded by 011 1111 1010
+</li><li class="li-itemize">α=2<sup>10</sup> is coded by 111 1111 1111
+</li><li class="li-itemize">α=2<sup>−10</sup>−1 is coded by 000 0000 000
+</li></ul><p>
+<span style="font-weight:bold">Remark</span>: 2<sup>−52</sup>=0.2220446049250313<span style="font-style:italic">e</span>−15</p>
 <hr>
 <a href="cascmd_en573.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

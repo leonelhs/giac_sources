@@ -4,34 +4,122 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Trigonometric functions</title>
+<title>Integration by parts : ibpdv and ibpu</title>
 </head>
 <body >
 <a href="cascmd_en195.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en197.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec253" class="subsection">5.21.1  Trigonometric functions</h3>
-<p><a id="sec:trigo"></a>
+<h3 id="sec249" class="subsection">5.18.4  Integration by parts : <span style="font-family:monospace">ibpdv</span> and <span style="font-family:monospace">ibpu</span></h3>
+<h4 id="sec250" class="subsubsection"><span style="font-family:monospace">ibpdv</span></h4>
+<p><a id="hevea_default334"></a>
+<span style="font-family:monospace">ibpdv</span> is used to search the primitive of an expression written 
+as <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>).<br>
+<span style="font-family:monospace">ibpdv</span> takes two arguments :
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">sin</span> <a id="hevea_default339"></a> is the sine function,
-</li><li class="li-itemize"><span style="font-family:monospace">cos</span> <a id="hevea_default340"></a> is the cosine function,
-</li><li class="li-itemize"><span style="font-family:monospace">tan</span> <a id="hevea_default341"></a> is the tangent function (<span style="font-family:monospace">tan(x)=
-sin(x)/cos(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">cot</span> <a id="hevea_default342"></a> is the cotangent function (<span style="font-family:monospace">cot(x)=
-cos(x)/sin(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">sec</span> <a id="hevea_default343"></a> is the secant function (<span style="font-family:monospace">sec(x)=
-1/cos(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">csc</span> <a id="hevea_default344"></a> is the cosecant function (<span style="font-family:monospace">csc(x) =
-1/sin(x)</span>),
-</li><li class="li-itemize"><span style="font-family:monospace">asin</span> or <span style="font-family:monospace">arcsin</span><a id="hevea_default345"></a><a id="hevea_default346"></a>, <span style="font-family:monospace">acos</span> or <span style="font-family:monospace">arccos</span><a id="hevea_default347"></a><a id="hevea_default348"></a>, <span style="font-family:monospace">atan</span> or <span style="font-family:monospace">arctan</span><a id="hevea_default349"></a><a id="hevea_default350"></a>, <span style="font-family:monospace">acot</span><a id="hevea_default351"></a>, <span style="font-family:monospace">asec</span><a id="hevea_default352"></a>, <span style="font-family:monospace">acsc</span><a id="hevea_default353"></a>
-are the inverse trigonometric functions. The latter are defined by:
-<ol class="enumerate" type=1><li class="li-enumerate">
-<span style="font-family:monospace">asec(x) = acos(1/x)</span>, 
-</li><li class="li-enumerate"><span style="font-family:monospace">acsc(x) = asin(1/x)</span>,
-</li><li class="li-enumerate"><span style="font-family:monospace">acot(x) = atan(1/x)</span>. 
-</li></ol>
-</li></ul>
+an expression 
+<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) * <span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>) and <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) (or a list of two expressions 
+[<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>)] and <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>)),
+</li><li class="li-itemize">or an expression <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) and 0 (or a list of two expressions 
+[<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)] and 0).
+</li></ul><p>
+<span style="font-family:monospace">ibpdv</span> returns :
+</p><ul class="itemize"><li class="li-itemize">
+if <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) ≠ 0, the list [<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>),−<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)] (or 
+[<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>),−<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)]),
+</li><li class="li-itemize">if the second argument is zero, a primitive of the first argument 
+<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) (or <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+a primitive of <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)) :<br>
+hence, <span style="font-family:monospace">ibpdv(g(x),0)</span> returns a primitive <span style="font-family:monospace">G(x)</span> of <span style="font-family:monospace">g(x)</span> or <br>
+<span style="font-family:monospace">ibpdv([F(x),g(x)],0)</span> returns <span style="font-family:monospace">F(x)+G(x)</span> where <span style="font-family:monospace">diff(G(x))=g(x)</span>.
+</li></ul><p>
+Hence, <span style="font-family:monospace">ibpdv</span> returns the terms computed in an integration by parts, 
+with the possibility of doing several <span style="font-family:monospace">ibpdv</span>s successively.<br>
+When the answer of <span style="font-family:monospace">ibpdv(u(x)*v’(x),v(x))</span> is computed, to obtain a 
+primitive of <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>), it remains to 
+compute the integral of the second term of this answer and then, to sum this 
+integral with the first term of this answer : to do this, just use 
+<span style="font-family:monospace">ibpdv</span> command with the answer as first argument and 
+a new <span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>) (or 0 to terminate the integration) as second argument.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">ibpdv(ln(x),x) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[x ln(x),-1]</span></div><p>
+then
+</p><div class="center"><span style="font-family:monospace">ibpdv([x ln(x),-1],0) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-x+x ln(x)</span></div><p>
+<span style="font-weight:bold">Remark</span><br>
+ When the first argument of <span style="font-family:monospace">ibpdv</span> is a list of two elements, <span style="font-family:monospace">ibpdv</span> 
+works only on the last element of this list and adds the integrated term to
+the first element of this list. 
+(therefore it is possible to do several <span style="font-family:monospace">ibpdv</span>s successively).<br>
+For example :<br>
+<span style="font-family:monospace">ibpdv((log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x) = [x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))]</span><br>
+it remains to integrate <span style="font-family:monospace">-(2*log(x))</span>, the input :<br>
+<span style="font-family:monospace">ibpdv(ans(),x)</span> or input :<br>
+<span style="font-family:monospace">ibpdv([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))],x)</span><br>
+Output :<br>
+<span style="font-family:monospace">[x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2]</span><br>
+and it remains to integrate <span style="font-family:monospace">2</span>, hence input <span style="font-family:monospace">ibpdv(ans(),0)</span> or<br>
+<span style="font-family:monospace">ibpdv([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2],0)</span>.<br>
+Output :
+<span style="font-family:monospace">x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x)))+2*x</span>
+</p>
+<h4 id="sec251" class="subsubsection"><span style="font-family:monospace">ibpu</span></h4>
+<p><a id="hevea_default335"></a>
+<span style="font-family:monospace">ibpu</span> is used to search the primitive of an expression written 
+as <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>).<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>)
+<span style="font-family:monospace">ibpu</span> takes two arguments : 
+</p><ul class="itemize"><li class="li-itemize">
+an expression <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>) and <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) (or a list of two expressions 
+[<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>)] and <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)),
+</li><li class="li-itemize">an expression <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>) and 0 (or a list of two expressions [<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)] 
+and 0).
+</li></ul><p>
+<span style="font-family:monospace">ibpu</span> returns :
+</p><ul class="itemize"><li class="li-itemize">
+if <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) ≠ 0, the list [<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>),−<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)] 
+(or returns the list [<span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>),−<span style="font-style:italic">v</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">u</span>′(<span style="font-style:italic">x</span>)]),
+</li><li class="li-itemize">if the second argument is zero, a primitive of the first argument <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)
+(or <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)+a primitive of <span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)):<br>
+<span style="font-family:monospace">ibpu(g(x),0)</span> returns <span style="font-family:monospace">G(x)</span> where <span style="font-family:monospace">diff(G(x))=g(x)</span> or<br>
+ <span style="font-family:monospace">ibpu([F(x),g(x)],0)</span> returns <span style="font-family:monospace">F(x)+G(x)</span> where <span style="font-family:monospace">diff(G(x))=g(x)</span>.
+</li></ul><p>
+Hence, <span style="font-family:monospace">ibpu</span> returns the terms computed in an integration by parts, 
+with the possibility of doing several <span style="font-family:monospace">ibpu</span>s successively.<br>
+When the answer of <span style="font-family:monospace">ibpu(u(x)*v’(x),u(x))</span> is computed, to obtain a 
+primitive of <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">v</span>′(<span style="font-style:italic">x</span>), it remains to 
+compute the integral of the second term of this answer and then, to sum this 
+integral with the first term of this answer : to do this, just use 
+<span style="font-family:monospace">ibpu</span> command with the answer as first argument and 
+a new <span style="font-style:italic">u</span>(<span style="font-style:italic">x</span>) (or 0 to terminate the integration) as second argument.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">ibpu(ln(x),ln(x)) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[x*ln(x),-1]</span></div><p>
+then
+</p><div class="center"><span style="font-family:monospace">ibpu([x*ln(x),-1],0) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-x+x*ln(x)</span></div><p>
+<span style="font-weight:bold">Remark</span><br>
+When the first argument of <span style="font-family:monospace">ibpu</span> is a list of two elements, <span style="font-family:monospace">ibpu</span> 
+works only on the last element of this list and adds the integrated term to
+the first element of this list. 
+(therefore it is possible to do several <span style="font-family:monospace">ibpu</span>s successively).<br>
+For example :<br>
+<span style="font-family:monospace">ibpu((log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,log(x)) = [x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))]</span><br>
+it remains to integrate <span style="font-family:monospace">-(2*log(x))</span>, hence input : <br>
+<span style="font-family:monospace">ibpu(ans(),log(x))</span>
+or input :<br>
+<span style="font-family:monospace">ibpu([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,-(2*log(x))],log(x))</span><br>
+Output :<br>
+<span style="font-family:monospace">[x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2]</span><br>
+it remains to integrate <span style="font-family:monospace">2</span>, hence input :<br>
+<span style="font-family:monospace">ibpu(ans(),0)</span> or input :<br>
+<span style="font-family:monospace">ibpu([x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x))),2],0)</span>.<br>
+Output :
+<span style="font-family:monospace">x*(log(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+x*(-(2*log(x)))+2*x</span></p>
 <hr>
 <a href="cascmd_en195.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

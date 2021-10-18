@@ -4,94 +4,50 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Defining algebraic functions</title>
+<title>Define an operator: user_operator</title>
 </head>
 <body >
 <a href="cascmd_en177.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en179.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec223" class="subsection">5.16.3  Defining algebraic functions</h3>
-<h4 id="sec224" class="subsubsection">Defining a function from ℝ<sup><span style="font-style:italic">p</span></sup> to ℝ</h4>
-<p>
-For <span style="font-style:italic">p</span>=1, e.g. for <span style="font-style:italic">f</span> : (<span style="font-style:italic">x</span>)→ <span style="font-style:italic">x</span>*sin(<span style="font-style:italic">x</span>), input :
-</p><div class="center"><span style="font-family:monospace">f(x):=x*sin(x)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">f:=x-&gt;x*sin(x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(x)-&gt;x*sin(x)</span></div><p>
-If <span style="font-style:italic">p</span>&gt;1, e.g. for <span style="font-style:italic">f</span> : (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ <span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>), input :
-</p><div class="center"><span style="font-family:monospace">f(x,y):=x*sin(y)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">f:=(x,y)-&gt;x*sin(y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(x,y)-&gt;x*sin(y)</span></div><p>
-<span style="font-weight:bold">Warning !!!</span> the expression after <span style="font-family:monospace">-&gt; </span> is not evaluated.
-You should use <span style="font-family:monospace">unapply</span> if you expect the second member to
-be evaluated before the function is defined.</p>
-<h4 id="sec225" class="subsubsection">Defining a function from ℝ<sup><span style="font-style:italic">p</span></sup> to ℝ<sup><span style="font-style:italic">q</span></sup></h4>
-<p>
-For example:
+<h3 id="sec219" class="subsection">5.14.3  Define an operator: <span style="font-family:monospace">user_operator</span></h3>
+<p><a id="hevea_default261"></a><a id="hevea_default262"></a><a id="hevea_default263"></a>
+<span style="font-family:monospace">user_operator</span> takes as argument :
 </p><ul class="itemize"><li class="li-itemize">
-To define the function <span style="font-style:italic">h</span> : (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ (<span style="font-style:italic">x</span>*cos(<span style="font-style:italic">y</span>),<span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>)).<br>
- Input :
-<div class="center"><span style="font-family:monospace">h(x,y):=(x*cos(y),x*sin(y))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">(x,y)-&gt;{ <br>
- x*cos(y),x*sin(y);<br>
-}"</span></div>
-</li><li class="li-itemize">To define the function <span style="font-style:italic">h</span> : (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ [<span style="font-style:italic">x</span>*cos(<span style="font-style:italic">y</span>),<span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>)].<br>
- Input :
-<div class="center"><span style="font-family:monospace">h(x,y):=[x*cos(y),x*sin(y)];</span></div>
-or :
-<div class="center"><span style="font-family:monospace">h:=(x,y)-&gt;[x*cos(y),x*sin(y)];</span></div>
-or :
-<div class="center"><span style="font-family:monospace">h(x,y):={[x*cos(y),x*sin(y)]};</span></div>
-or : 
-<div class="center"><span style="font-family:monospace">h:=(x,y)-&gt;return[x*cos(y),x*sin(y)];</span></div>
-or : 
-<div class="center"><span style="font-family:monospace">h(x,y):={return [x*cos(y),x*sin(y)];}</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">(x,y)-&gt;{return([x*cos(y),x*sin(y)]);}</span></div>
+a string : the name of the operator,
+</li><li class="li-itemize">a function of two variables with values in ℝ or in 
+<span style="font-family:monospace">true, false</span>,
+</li><li class="li-itemize">an option <span style="font-family:monospace">Binary</span> for the definition or <span style="font-family:monospace">Delete</span> to delete
+this definition.
 </li></ul><p>
-<span style="font-weight:bold">Warning !!!</span> The expression after <span style="font-family:monospace">-&gt; </span> is not evaluated.</p>
-<h4 id="sec226" class="subsubsection">Defining families of function from ℝ<sup><span style="font-style:italic">p</span>−1</sup> 
-to ℝ<sup><span style="font-style:italic">q</span></sup> using a function from ℝ<sup><span style="font-style:italic">p</span></sup> to ℝ<sup><span style="font-style:italic">q</span></sup></h4>
-<p>
-Suppose that the function <span style="font-style:italic">f</span>: (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) → <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) is defined, 
-and we want to define a family of functions <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) such
-that <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>)(<span style="font-style:italic">y</span>):=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>) (i.e. <span style="font-style:italic">t</span> is viewed as a parameter).
-Since the expression after <span style="font-family:monospace">-&gt; </span> (or <span style="font-family:monospace">:=</span>)
-is not evaluated, we should not define <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) by <span style="font-family:monospace">g(t):=y-&gt;f(t,y)</span>,
-we have to use the <span style="font-family:monospace">unapply</span> command.</p><p>For example, assuming that <span style="font-style:italic">f</span>:(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)→ <span style="font-style:italic">x</span>sin(<span style="font-style:italic">y</span>) and <span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>): <span style="font-style:italic">y</span>→ <span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>), input :
-</p><div class="center"><span style="font-family:monospace">f(x,y):=x*sin(y);g(t):=unapply(f(t,y),y)</span></div><p>
+<span style="font-family:monospace">user_operator</span> returns 1 if the definition is done and else returns 0.</p><p><span style="font-weight:bold">Example 1</span><br>
+Let <span style="font-style:italic">R</span> be defined on ℝ by <span style="font-style:italic">x</span> <span style="font-style:italic">R</span>  <span style="font-style:italic">y</span>= <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>.<br>
+To define the law <span style="font-style:italic">R</span>, input :
+</p><div class="center"><span style="font-family:monospace">user_operator("R",(x,y)-&gt;x*y+x+y,Binary)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">((x,y)-&gt;x*sin(y), (t)-&gt;unapply(f(t,y),y))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">g(2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">5 R 7</span></div><p>
+Do not forget to put spaces around <span style="font-family:monospace">R</span>.<br>
 Output :
-</p><div class="center"><span style="font-family:monospace">y-&gt;2</span>·<span style="font-family:monospace"> sin(y)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">47</span></div><p><span style="font-weight:bold">Example 2</span><br>
+Let <span style="font-style:italic">S</span> be defined on ℕ by :<br>
+for <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> integers, <span style="font-style:italic">x</span> <span style="font-style:italic">S</span>  <span style="font-style:italic">y</span> &lt;=&gt; <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> are not coprime.<br>
+To define the law <span style="font-style:italic">S</span>, input :
+</p><div class="center"><span style="font-family:monospace">user_operator("S",(x,y)-&gt;(gcd(x,y))!=1,Binary)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">1</span></div><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">g(2)(1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">5 S 7</span></div><p>
+Do not forget to put spaces around <span style="font-family:monospace">S</span>.<br>
 Output :
-</p><div class="center"><span style="font-family:monospace">2</span>·<span style="font-family:monospace"> sin(1)</span></div><p>Next example, suppose that the function 
-<span style="font-style:italic">h</span>: (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) → [<span style="font-style:italic">x</span>*cos(<span style="font-style:italic">y</span>),<span style="font-style:italic">x</span>*sin(<span style="font-style:italic">y</span>)] is defined, and 
-we want to define the family of functions <span style="font-style:italic">k</span>(<span style="font-style:italic">t</span>) having <span style="font-style:italic">t</span> as
-parameter such that <span style="font-style:italic">k</span>(<span style="font-style:italic">t</span>)(<span style="font-style:italic">y</span>):=<span style="font-style:italic">h</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>).
-To define the function <span style="font-style:italic">h</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>), input :
-</p><div class="center"><span style="font-family:monospace">h(x,y):=(x*cos(y),x*sin(y))</span></div><p>
-To define properly the function <span style="font-style:italic">k</span>(<span style="font-style:italic">t</span>), input :
-</p><div class="center"><span style="font-family:monospace">k(t):=unapply(h(x,t),x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(t)-&gt;unapply(h(x,t),x)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">0</span></div><p> 
 Input :
-</p><div class="center"><span style="font-family:monospace">k(2)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">8 S 12</span></div><p>
+Do not forget to put spaces around <span style="font-family:monospace">S</span>.<br>
 Output :
-</p><div class="center"><span style="font-family:monospace">(x)-&gt;(x*cos(2),x*sin(2))</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">k(2)(1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(2*cos(1),2*sin(1))</span></div>
+</p><div class="center"><span style="font-family:monospace">1</span></div>
 <hr>
 <a href="cascmd_en177.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,42 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_fr.css">
-<title>Pente d’une droite : slope pente</title>
+<title>Aire d’un polygone : area aire</title>
 </head>
 <body >
 <a href="cascmd_fr972.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_fr974.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1183" class="subsection">10.16.12  Pente d’une droite : <span style="font-family:monospace">slope pente</span></h3>
-<p><a id="hevea_default1901"></a><a id="hevea_default1902"></a>
-<a id="hevea_default1903"></a><a id="hevea_default1904"></a><a id="sec:pente"></a>
-<span style="font-family:monospace">slope pente</span> est soit une commande soit un attribut de la 
-commande <span style="font-family:monospace">droite</span> pour cela voir <a href="cascmd_fr913.html#sec%3Adroite2">10.9.1</a><br>
-Lorsque <span style="font-family:monospace">slope pente</span> est une commande son argument est une droite ou un 
-segment ou deux points ou deux nombres complexes.<br>
- <span style="font-family:monospace">slope pente</span> renvoie la pente de la droite définie par le segment ou par 
-les 2 points ou leurs affixes.<br>
+<h3 id="sec1183" class="subsection">10.16.8  Aire d’un polygone : <span style="font-family:monospace">area aire</span></h3>
+<p><a id="hevea_default1906"></a><a id="hevea_default1907"></a>
+<span style="font-family:monospace">aire</span> calcule l’aire d’un cercle, d’un arc de cercle ou d’un 
+polygone étoilé par rapport à son premier sommet.<br>
+L’aire d’une liste ou d’une séquence d’objets géométriques renvoie la 
+somme des aires de ces objets géométriques. 
 On tape :
-</p><div class="center"><span style="font-family:monospace">pente(droite(1,2i))</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">pente(segment(1,2i))</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">pente(point(1),point(2i))</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">pente(1,2i)</span></div><p>
-On obtient :
-</p><div class="center"><span style="font-family:monospace">-2</span></div><p>
-On tape :
-</p><div class="center"><span style="font-family:monospace">pente(droite(2y-x=3))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">aire(triangle(0,1,i))</span></div><p>
 On obtient :
 </p><div class="center"><span style="font-family:monospace">1/2</span></div><p>
 On tape :
-</p><div class="center"><span style="font-family:monospace">pente(tangente(plotfunc(sin(x)),pi/4))</span></div><p>
-Ou on tape :
-</p><div class="center"><span style="font-family:monospace">pente(droite_tangente(sin(x),pi/4))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">aire(carre(0,2))</span></div><p>
 On obtient :
-</p><div class="center"><span style="font-family:monospace">(sqrt(2))/2</span></div>
+</p><div class="center"><span style="font-family:monospace">4</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">aire(cercle(0,2))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">4*pi</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">aire(cercle(0,2,pi/3))</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">aire(cercle(0,2,0,pi/3))</span></div><p>
+Ou on tape :
+</p><div class="center"><span style="font-family:monospace">aire(arc(2,2*exp(i*pi/3),pi/3))</span></div><p>
+On obtient :
+</p><div class="center"><span style="font-family:monospace">2*pi/3</span></div><p>
+On tape :
+</p><div class="center"><span style="font-family:monospace">aire(arc(2,2*exp(i*pi/3),pi/3),arc(2,exp(i*pi/3),pi/3),
+arc(2*exp(i*pi/3),exp(i*pi/3),pi/3))</span></div><p>
+On obtient (2*pi/3+pi/2+pi/6) :
+</p><div class="center"><span style="font-family:monospace">4*pi/3</span></div>
 <hr>
 <a href="cascmd_fr972.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
