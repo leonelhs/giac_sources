@@ -285,7 +285,9 @@ namespace giac {
       if (e.type!=_SYMB){
 	if (i)
 	  s += '*';
-	if ( e.type==_CPLX || e.type==_MOD )
+	if ( (e.type==_CPLX 
+	      && need_parenthesis(e) 
+	      ) || e.type==_MOD )
 	  s += "("+e.print(contextptr)+")";
 	else 
 	  add_print(s,e,contextptr); // s +=e.print(contextptr);
