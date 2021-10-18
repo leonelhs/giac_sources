@@ -4,3 +4,5 @@ set print repeats 0
 define v
 print ($arg0).dbgprint()
 end
+echo set print thread-events off
+set print thread-events off

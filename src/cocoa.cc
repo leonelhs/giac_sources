@@ -2935,7 +2935,7 @@ namespace giac {
   }
   
   template<class tdeg_t>
-  void reduce(const poly8<tdeg_t> & p,const vectpoly8<tdeg_t> & res,const vector<unsigned> & G,unsigned excluded,vectpoly8<tdeg_t> & quo,poly8<tdeg_t> & rem,poly8<tdeg_t> & TMP1, poly8<tdeg_t> & TMP2,gen & lambda,environment * env){
+  void reduce(const poly8<tdeg_t> & p,const vectpoly8<tdeg_t> & res,const vector<unsigned> & G,unsigned excluded,vectpoly8<tdeg_t> & quo,poly8<tdeg_t> & rem,poly8<tdeg_t> & TMP1, poly8<tdeg_t> & TMP2,gen & lambda,environment * env,vector<bool> * Gusedptr=0){
     lambda=1;
     // last chance of improving = modular method for reduce or modular algo
     if (&p!=&rem)
@@ -2964,6 +2964,8 @@ namespace giac {
 	// if (small0) TMP1.coord.push_back(*pt);
 	continue;
       }
+      if (Gusedptr)
+	(*Gusedptr)[i]=true;
       gen a(pt->g),b(res[G[i]].coord.front().g);
       if (small0){
 	smallmultsub(rem,0,smod(a*invmod(b,env->modulo),env->modulo).val,res[G[i]],pt->u-res[G[i]].coord.front().u,TMP2,env->modulo.val);
@@ -3028,9 +3030,9 @@ namespace giac {
   }
 
   template<class tdeg_t>
-  void reduce(const poly8<tdeg_t> & p,const vectpoly8<tdeg_t> & res,const vector<unsigned> & G,unsigned excluded,vectpoly8<tdeg_t> & quo,poly8<tdeg_t> & rem,poly8<tdeg_t> & TMP1, poly8<tdeg_t> & TMP2,environment * env){
+  void reduce(const poly8<tdeg_t> & p,const vectpoly8<tdeg_t> & res,const vector<unsigned> & G,unsigned excluded,vectpoly8<tdeg_t> & quo,poly8<tdeg_t> & rem,poly8<tdeg_t> & TMP1, poly8<tdeg_t> & TMP2,environment * env,vector<bool> * Gusedptr=0){
     gen lambda;
-    reduce(p,res,G,excluded,quo,rem,TMP1,TMP2,lambda,env);
+    reduce(p,res,G,excluded,quo,rem,TMP1,TMP2,lambda,env,Gusedptr);
   }
 
   template<class tdeg_t>
@@ -3621,6 +3623,7 @@ namespace giac {
       }
 #endif
       short tab[GROEBNER_VARS+1];
+      tab[GROEBNER_VARS]=0;
       it->u.get_tab(tab,p.order);
       switch (p.order.o){
       case _PLEX_ORDER:
@@ -9069,15 +9072,15 @@ namespace giac {
 	++jt;
       }
     }
+    if (it!=itend && debug_infolevel)
+      CERR << "chinrem (gen): exponent mismatch at end using first, # " << itend-it << endl;
     for (;it!=itend;++it){
-      if (debug_infolevel)
-	CERR << "chinrem: exponent mismatch at end using first " << endl;
       gen g=it->g-u*(it->g)*pmod;
       tmp.coord.push_back(T_unsigned<gen,tdeg_t>(smod(g,pqmod),it->u));
     }
+    if (jt!=jtend && debug_infolevel)
+      CERR << "chinrem (gen): exponent mismatch at end using second " << jtend-jt << endl;
     for (;jt!=jtend;++jt){
-      if (debug_infolevel)
-	CERR << "chinrem: exponent mismatch at end using second " << endl;
       gen g=u*(jt->g)*pmod;
       tmp.coord.push_back(T_unsigned<gen,tdeg_t>(smod(g,pqmod),jt->u));
     }
@@ -9204,15 +9207,15 @@ namespace giac {
 	++jt;
       }
     }
+    if (it!=itend && debug_infolevel)
+      CERR << "chinrem (int): exponent mismatch at end using first #" << itend-it << endl;
     for (;it!=itend;++it){
-      if (debug_infolevel)
-	CERR << "chinrem: exponent mismatch at end using first " << endl;
       gen g=it->g-u*(it->g)*pmod;
       tmp.coord.push_back(T_unsigned<gen,tdeg_t>(smod(g,pqmod),it->u));
     }
+    if (jt!=jtend && debug_infolevel)
+      CERR << "chinrem (int): exponent mismatch at end using second #" << jtend-jt << endl;
     for (;jt!=jtend;++jt){
-      if (debug_infolevel)
-	CERR << "chinrem: exponent mismatch at end using second " << endl;
       gen g=u*((jt->g)*pmod);
       tmp.coord.push_back(T_unsigned<gen,tdeg_t>(smod(g,pqmod),jt->u));
     }
@@ -10241,130 +10244,6 @@ namespace giac {
     return true;
   }
 
-  template<class tdeg_t>
-  bool is_gbasis(const vectpoly8<tdeg_t> & res,double eps,bool modularcheck){
-    if (res.empty())
-      return false;
-    if (debug_infolevel>0)
-      CERR << "basis size " << res.size() << endl;
-    // build possible pairs (i,j) with i<j
-    vector< vector<tdeg_t> > lcmpairs(res.size());
-    vector<unsigned> G(res.size());
-    for (unsigned i=0;i<res.size();++i)
-      G[i]=i;
-    vectpoly8<tdeg_t> vtmp,tocheck;
-    vector< paire > tocheckpairs;
-    if (eps>0 && eps<2e-9)
-      modularcheck=true;
-    if (modularcheck)
-      tocheck.reserve(res.size()*10); // wild guess
-    else
-      tocheckpairs.reserve(res.size()*10);
-    order_t order=res.front().order;
-    int dim=res.front().dim;
-    poly8<tdeg_t> TMP1(order,res.front().dim),TMP2(TMP1),
-      spol(TMP1),spolred(TMP1);
-    polymod<tdeg_t> spolmod(order,dim),TMP1mod(order,dim);
-    vectpolymod<tdeg_t> resmod;
-    for (unsigned i=0;i<res.size();++i){
-      const poly8<tdeg_t> & h = res[i];
-      const tdeg_t & h0=h.coord.front().u;
-      vector<tdeg_t> tmp(res.size());
-      for (unsigned j=i+1;j<res.size();++j){
-	index_lcm(h0,res[j].coord.front().u,tmp[j],h.order); 
-      }
-      swap(lcmpairs[i],tmp);
-    }
-    for (unsigned i=0;i<res.size();++i){    
-      if (debug_infolevel>1)
-	CERR << "checking pairs for i="<<i<<", j=";
-      const poly8<tdeg_t> & resi = res[i];
-      const tdeg_t & resi0=resi.coord.front().u;
-      for (unsigned j=i+1;j<res.size();++j){
-	if (disjoint(resi0,res[j].coord.front().u,order,dim))
-	  continue;
-	// criterion M, F
-	unsigned J=0;
-	tdeg_t & lcmij=lcmpairs[i][j];
-	for (;J<i;++J){
-	  if (tdeg_t_all_greater(lcmij,lcmpairs[J][j],order))
-	    break;
-	}
-	if (J<i)
-	  continue; 
-	for (++J;J<j;++J){
-	  tdeg_t & lcmJj=lcmpairs[J][j];
-	  if (tdeg_t_all_greater(lcmij,lcmJj,order) && lcmij!=lcmJj)
-	    break;
-	}
-	if (J<j)
-	  continue; 
-	// last criterion
-	unsigned k;
-	for (k=j+1;k<res.size();++k){
-	  if (lcmpairs[i][k]!=lcmij && lcmpairs[j][k]!=lcmij
-	      && tdeg_t_all_greater(lcmij,res[k].coord.front().u,order))
-	    break;
-	}
-	if (k<res.size())
-	  continue;
-	// compute and reduce s-poly
-	if (debug_infolevel>1)
-	  CERR <<  j << ",";
-	if (modularcheck){
-	  spoly(resi,res[j],spol,TMP1,0);
-	  tocheck.push_back(poly8<tdeg_t>(order,dim));
-	  swap(tocheck.back(),spol);
-	}
-	else
-	  tocheckpairs.push_back(paire(i,j));
-      } // end j loop
-      if (debug_infolevel>1)
-	CERR << endl;
-    }
-    if (debug_infolevel>0)
-      CERR << "Number of critical pairs to check " << (modularcheck?tocheck.size():tocheckpairs.size()) << endl;
-    if (modularcheck) // modular check is sometimes slow
-      return checkf4buchberger(tocheck,res,G,-1,eps); // split version is slower!
-    // integer check or modular check for one modulus (!= from first prime already used)
-    modint p=(prevprime((1<<29)-30000000)).val;
-    if (eps>0)
-      convert(res,resmod,p);
-    // FIXME should be parallelized
-    for (unsigned i=0;i<tocheckpairs.size();++i){
-#ifdef TIMEOUT
-      control_c();
-#endif
-      if (interrupted || ctrl_c){
-	CERR << "Check interrupted, assuming Groebner basis. Press Ctrl-C again to interrupt computation" << endl;
-	interrupted=ctrl_c=false;
-	return true;
-      }
-      if (eps>0){
-	spolymod<tdeg_t>(resmod[tocheckpairs[i].first],resmod[tocheckpairs[i].second],spolmod,TMP1mod,p);
-	reducemod(spolmod,resmod,G,-1,TMP1mod,p);
-	// gen den; heap_reduce(spol,res,G,-1,vtmp,spolred,TMP1,den,0);
-	if (!TMP1mod.coord.empty())
-	  return false;
-      }
-      else {
-	spoly(res[tocheckpairs[i].first],res[tocheckpairs[i].second],spol,TMP1,0);
-	reduce(spol,res,G,-1,vtmp,spolred,TMP1,TMP2,0);
-	// gen den; heap_reduce(spol,res,G,-1,vtmp,spolred,TMP1,den,0);
-	if (!spolred.coord.empty())
-	  return false;
-      }
-      if (debug_infolevel>0){
-	CERR << "+";
-	if (i%512==511)
-	  CERR << tocheckpairs.size()-i << " remaining" << endl; 
-      }
-    }
-    if (debug_infolevel)
-      CERR << endl << "Successfull check of " << tocheckpairs.size() << " critical pairs" << endl;
-    return true;
-  }
-
   /* ***************
      BEGIN ZPOLYMOD
      ***************  */
@@ -10677,8 +10556,9 @@ namespace giac {
     return true;
   }
 
+  // returns heap actual size, 0 means no quotients (all elements of q empty())
   template<class tdeg_t>
-  void zsymbolic_preprocess(const vector<tdeg_t> & f,const vectzpolymod<tdeg_t> & g,const vector<unsigned> & G,unsigned excluded,vector< vector<tdeg_t> > & q,vector<tdeg_t> & rem,vector<tdeg_t> & R){
+  size_t zsymbolic_preprocess(const vector<tdeg_t> & f,const vectzpolymod<tdeg_t> & g,const vector<unsigned> & G,unsigned excluded,vector< vector<tdeg_t> > & q,vector<tdeg_t> & rem,vector<tdeg_t> & R){
     int countdiscarded=0;
     // divides f by g[G[0]] to g[G[G.size()-1]] except maybe g[G[excluded]]
     // CERR << f << "/" << g << endl;
@@ -10687,7 +10567,7 @@ namespace giac {
     // ref Monaghan Pearce if g.size()==1
     // R is the list of all monomials
     if (f.empty() || G.empty())
-      return ;
+      return 0;
     int dim=g[G.front()].dim;
     order_t order=g[G.front()].order;
 #ifdef GIAC_GBASIS_PERMUTATION
@@ -10775,7 +10655,7 @@ namespace giac {
 	  std::pop_heap(H.begin(),H.end(),key);
 	  H.pop_back();
 	}
-      }
+      } // end while !H.empty()
       // divide (c,m) by one of the g if possible, otherwise push in remainder
       if (finish){
 	rem.push_back(m); // add to remainder
@@ -10849,6 +10729,7 @@ namespace giac {
     } // end main heap pseudo-division loop
     if (debug_infolevel>1)
       CERR << CLOCK()*1e-6 << " Heap actual size was " << H_.size() << " discarded monomials " << countdiscarded << endl;
+    return H_.size();
   }
 
   template<class tdeg_t,class modint_t>
@@ -11356,13 +11237,11 @@ template<class modint_t,class modint_u>
 #endif // def GIAC_SHORTSHIFTTYPE
   }    
 
-#if 0
   template<class tdeg_t>
-  void zcollect_interreduce(const vectzpolymod<tdeg_t> & res,vector< unsigned > & G,vector<tdeg_t> & allf4buchberger){
-    int start=0;
-    vector<heap_tt> Ht;
-    heap_tt heap_elem;
-    vector<heap_tt_ptr> H; 
+  void zcollect_interreduce(const vectzpolymod<tdeg_t> & res,const vector< unsigned > & G,vector<tdeg_t> & allf4buchberger,int start){
+    vector< heap_tt<tdeg_t> > Ht;
+    heap_tt<tdeg_t> heap_elem;
+    vector< heap_tt_ptr<tdeg_t> > H; 
     Ht.reserve(2*G.size()+1);
     H.reserve(2*G.size());
     unsigned s=0;
@@ -11372,16 +11251,16 @@ template<class modint_t,class modint_u>
       keyorder=p.order;
       if (int(p.coord.size())>start){
 	s = giacmax(s, unsigned(p.coord.size()));
-	Ht.push_back(heap_tt(true,i,start,(*p.expo)[p.coord[start].u]));
-	H.push_back(heap_tt_ptr(&Ht.back()));
+	Ht.push_back(heap_tt<tdeg_t>(true,i,start,(*p.expo)[p.coord[start].u]));
+	H.push_back(heap_tt_ptr<tdeg_t>(&Ht.back()));
       }
     }
     allf4buchberger.reserve(s); // int(s*std::log(1+H.size())));
-    compare_heap_tt_ptr key(keyorder);
+    compare_heap_tt_ptr<tdeg_t> key(keyorder);
     make_heap(H.begin(),H.end(),key);
     while (!H.empty()){
       // push root node of the heap in allf4buchberger
-      heap_tt & current = *H.front().ptr;
+      heap_tt<tdeg_t> & current = *H.front().ptr;
       if (allf4buchberger.empty() || allf4buchberger.back()!=current.u)
 	allf4buchberger.push_back(current.u);
       ++current.polymodpos;
@@ -11396,47 +11275,53 @@ template<class modint_t,class modint_u>
       current.u=(*resvpos.expo)[resvpos.coord[current.polymodpos].u];
       // push_back &current into heap so that pop_heap will bubble out the
       // modified root node (initialization will exchange two identical pointers)
-      H.push_back(heap_tt_ptr(&current));
+      H.push_back(heap_tt_ptr<tdeg_t>(&current));
       std::pop_heap(H.begin(),H.end(),key);
       H.pop_back();
     }
   }
 
   template<class tdeg_t>
-  void zinterreduce_convert(vectzpolymod<tdeg_t> & res,vector< unsigned > & G,int env,vectpolymod<tdeg_t> & resmod){
-    if (res.empty()){ resmod.clear(); return; }
+  int zf4mod(vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> * & permuBptr,vectzpolymod<tdeg_t> & f4buchbergerv,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,vector<zinfo_t<tdeg_t> > & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age,bool multimodular,int parallel,bool interreduce);
+
+  template<class tdeg_t>
+  int zinterreduce_convert(vectzpolymod<tdeg_t> & res,vector< unsigned > & G,int env,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,vector<zinfo_t<tdeg_t> > & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age,bool multimodular,int parallel,vectpolymod<tdeg_t> & resmod){
+    if (res.empty()){ resmod.clear(); return 0; }
     order_t order=res.front().order;
     int dim=res.front().dim;
-    vector<tdeg_t> all,q,rem;
-    zcollect_interreduce(res,G,all);
-    // This does not work because we must also zsymbolic_preprocess all and reduce
-    // by res * shift in quotient
-    int Gs=int(G.size()),cols=int(all.size());
-    vector< vector<modint> > M(Gs,vector<modint>(cols));
+    unsigned Gs=G.size();
+    // if (parallel<2 || Gs<200 || !threads_allowed ) return -1; // or fix in computeK1 non parallel case
+    vector<paire> B; // not used
+    const vector<unsigned> * permuBptr=0; // not used
+    vectzpolymod<tdeg_t> f4buchbergerv;
+    int tmp=zf4mod(res,G,env,B,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age,multimodular,parallel,true);
+    //CERR << "interreduce " << tmp << endl;
+    if (tmp<0 || tmp==12345) 
+      return tmp;
+    // build resmod from res leading monomial of res and f4buchbergerv
+    ulonglong tot=0;
+    for (unsigned i=0;i<Gs;++i)
+      tot += f4buchbergerv[i].coord.size();
+    // if (tot==0) return -1;
     for (unsigned i=0;i<Gs;++i){
-      zmakeline(res[G[i]],0,all,M[Gs-i-1],0);
-    }
-    vecteur pivots; vector<int> permutation,maxrankcols; longlong idet;
-    //CERR << M << endl;
-    smallmodrref(1,M,pivots,permutation,maxrankcols,idet,0,Gs,0,cols,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,true,0,true,-1);
-    //CERR << M << endl;
-    resmod.resize(res.size());
-    for (unsigned i=0;i<Gs;++i){
-      vector<modint> & v=M[i];
-      polymod<tdeg_t> & r=resmod[G[Gs-permutation[i]-1]];
-      r.order=order; r.dim=dim;
-      vector< T_unsigned<modint,tdeg_t> > & p=r.coord;
-      p.clear();
-      p.reserve(cols);
-      for (unsigned j=0;j<cols;++j){
-	modint vj=v[j];
-	if (vj!=0){
-	  p.push_back(T_unsigned<modint,tdeg_t>(vj,all[j]));
-	}
+      polymod<tdeg_t> & q=resmod[G[i]];
+      zpolymod<tdeg_t> & p=f4buchbergerv[i]; 
+      const vector<tdeg_t> & expo=*p.expo;
+      q.dim=p.dim;
+      q.order=p.order;
+      q.coord.clear();
+      q.coord.reserve(1+p.coord.size()); 
+      if (res[G[i]].coord.empty()) 
+	return -1;
+      q.coord.push_back(T_unsigned<modint,tdeg_t>(res[G[i]].coord[0].g,(*res[G[i]].expo)[res[G[i]].coord[0].u]));
+      for (unsigned j=0;j<p.coord.size();++j){
+	modint g=p.coord[j].g;
+	// g=(modint2(g)*coeff)%env;
+	q.coord.push_back(T_unsigned<modint,tdeg_t>(g,expo[p.coord[j].u]));
       }
     }
+    return 0;
   }
-#endif
 
   template<class tdeg_t>
   void Rtorem(const vector<tdeg_t> & R,const vector<tdeg_t> & rem,vector<unsigned> & v){
@@ -11457,6 +11342,7 @@ template<class modint_t,class modint_u>
   struct thread_buchberger_t {
     const vectzpolymod<tdeg_t> * resptr;
     vector< vector< modint> > * Kptr;
+    const vector<unsigned> * G;
     const vector< paire > * Bptr;
     const vector<unsigned> * permuBptr;
     const vector<tdeg_t> *leftshiftptr,*rightshiftptr,*Rptr;
@@ -11472,6 +11358,7 @@ template<class modint_t,class modint_u>
     unsigned * bitmap;
     bool displayinfo;
     bool learning;
+    bool interreduce;
     const vector<paire> * pairs_reducing_to_zero; // read-only!
     int learned_position;
   };
@@ -11482,6 +11369,7 @@ template<class modint_t,class modint_u>
     const vectzpolymod<tdeg_t> & res=*ptr->resptr;
     vector< vector<modint> > & K =*ptr->Kptr;
     const vector< paire > & B = *ptr->Bptr;
+    const vector<unsigned> & G = *ptr->G;
     const vector<unsigned> & permuB = *ptr->permuBptr;
     const vector<tdeg_t> & leftshift=*ptr->leftshiftptr;
     const vector<tdeg_t> & rightshift=*ptr->rightshiftptr;
@@ -11497,6 +11385,7 @@ template<class modint_t,class modint_u>
     vector< vector<shifttype> > & indexes=*ptr->indexesptr;
     vector<used_t> & used = *ptr->usedptr;
     bool learning=ptr->learning;
+    bool interreduce=ptr->interreduce;
     int pos=ptr->learned_position;
     const vector<paire> * pairs_reducing_to_zero=ptr->pairs_reducing_to_zero;
     bool displayinfo=ptr->displayinfo;
@@ -11506,6 +11395,20 @@ template<class modint_t,class modint_u>
     const tdeg_t * rightshift_prev =0;
     vector<modint> subcoeff2;
     int effi=-1,Bs=int(B.size());
+    if (interreduce){
+      // tdeg_t nullshift(res[G[0]].dim);
+      for (int i=debut;i<fin;++i){
+	if (interrupted || ctrl_c)
+	  return 0;
+	zmakelinesplit(res[G[i]],(const tdeg_t *) 0,R,Rhashptr,Rdegpos,indexes[i],0,1);
+	zadd(v64,res[G[i]],indexes[i],1,env);
+	K[i].clear();
+	int firstcol=indexes[i].empty()?0:indexes[i].front();
+	colonnes=giacmin(colonnes,reducef4buchbergersplit(v64,Mindex,firstpos,firstcol,Mcoeff,coeffindex,K[i],bitmap,used,env));
+	bitmap += (N>>5)+1;
+      }
+      return ptr_;
+    }
     for (int i=debut;i<fin;++i){
       if (interrupted || ctrl_c)
 	return 0;
@@ -11597,7 +11500,7 @@ template<class modint_t,class modint_u>
    // #define GIAC_CACHE2ND 1; // cache 2nd pair reduction, slower
 
   template<class tdeg_t>
-  int zf4computeK1(const unsigned N,const unsigned nrows,const double mem,const unsigned Bs,vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> & permuB,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,const vector<tdeg_t> & leftshift,const vector<tdeg_t> & rightshift, const vector<tdeg_t> & R ,void * Rhashptr,const vector<int> & Rdegpos,const vector<unsigned> &firstpos,vector<vector<unsigned short> > & Mindex, const vector<coeffindex_t> & coeffindex,vector< vector<modint> > & Mcoeff,zinfo_t<tdeg_t> * info_ptr,vector<used_t> &used,unsigned & usedcount,unsigned * bitmap,vector< vector<modint> > & K,int parallel){
+  int zf4computeK1(const unsigned N,const unsigned nrows,const double mem,const unsigned Bs,vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> & permuB,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,const vector<tdeg_t> & leftshift,const vector<tdeg_t> & rightshift, const vector<tdeg_t> & R ,void * Rhashptr,const vector<int> & Rdegpos,const vector<unsigned> &firstpos,vector<vector<unsigned short> > & Mindex, const vector<coeffindex_t> & coeffindex,vector< vector<modint> > & Mcoeff,zinfo_t<tdeg_t> * info_ptr,vector<used_t> &used,unsigned & usedcount,unsigned * bitmap,vector< vector<modint> > & K,int parallel,bool interreduce){
     bool freemem=mem>4e7; // should depend on real memory available
     bool large=N>8000;
     // CERR << "after sort " << Mindex << endl;
@@ -11624,24 +11527,34 @@ template<class modint_t,class modint_u>
 #endif
     vector< vector<shifttype> > indexes(2*Bs);
 #ifdef HAVE_LIBPTHREAD
-    if (Bs>=256 && threads_allowed && parallel>1 
+    if (Bs>=200 && threads_allowed && parallel>1 
 	//&& (learning || !pairs_reducing_to_zero) 
-	){
-      // prepare memory and positions
-      int pos=learned_position;
-      for (unsigned i=0;i<Bs;++i){
-	if (pairs_reducing_to_zero && !learning && (*pairs_reducing_to_zero)[learned_position]==B[permuB[i]]){
-	  ++learned_position;
-	  continue;
+	/*parallel*/){
+      vector<int> positions(1),learned_parallel(1);
+      if (interreduce){
+	for (unsigned i=0;i<Bs;++i){
+	  indexes[i].reserve(res[G[i]].coord.size()+16);
+	  K[i].reserve(Ksizes);
 	}
+	for (int i=1;i<parallel;++i){
+	  positions.push_back((i*longlong(Bs))/parallel);
+	}
+	positions.push_back(Bs);
+	learned_parallel=positions; // not used
       }
-      // effective number of pairs to reduce is Bs-(learned_position-pos)
-      int effBs=Bs-(learned_position-pos),effstep=effBs/parallel+1,effi=0,effend=effstep;
-      if (effBs<32*parallel) // no parallelization
-	learned_position=pos;
-      else {
+      else { 
+	// prepare memory and positions
+	int pos=learned_position;
+	for (unsigned i=0;i<Bs;++i){
+	  if (pairs_reducing_to_zero && !learning && (*pairs_reducing_to_zero)[learned_position]==B[permuB[i]]){
+	    ++learned_position;
+	    continue;
+	  }
+	}
+	// effective number of pairs to reduce is Bs-(learned_position-pos)
+	int effBs=Bs-(learned_position-pos),effstep=effBs/parallel+1,effi=0,effend=effstep;
+	learned_parallel[0]=pos;
 	// scan again pairs to set end positions and learned_position
-	vector<int> positions(1),learned_parallel(1,pos);
 	for (unsigned i=0;i<Bs;++i){
 	  if (pairs_reducing_to_zero && !learning && (*pairs_reducing_to_zero)[pos]==B[permuB[i]]){
 	    ++pos;
@@ -11669,33 +11582,42 @@ template<class modint_t,class modint_u>
 	  positions.push_back(Bs); 
 	else
 	  positions.back()=Bs;
-	pthread_t tab[64];
-	thread_buchberger_t<tdeg_t> buchberger_param[64];
-	int colonnes=N;
-	for (int j=0;j<=th;++j){
-	  thread_buchberger_t<tdeg_t> tmp={&res,&K,&B,&permuB,&leftshift,&rightshift,&R,Rhashptr,&Rdegpos,env,positions[j],positions[j+1],int(N),int(Kcols),&firstpos,&Mindex,&Mcoeff,&coeffindex,&indexes,&used,bitmap,j==th && debug_infolevel>1,learning,pairs_reducing_to_zero,learned_parallel[j]};
-	  buchberger_param[j]=tmp;
-	  bool res=true;
-	  // CERR << "write " << j << " " << p << endl;
-	  if (j<th)
-	    res=pthread_create(&tab[j],(pthread_attr_t *) NULL,thread_buchberger<tdeg_t>,(void *) &buchberger_param[j]);
-	  if (res)
-	    thread_buchberger<tdeg_t>((void *)&buchberger_param[j]);
-	}
-	Kdone=true;
-	colonnes=buchberger_param[th].colonnes;
-	for (unsigned j=0;j<th;++j){
-	  void * ptr_=(void *)&th; // non-zero initialisation
-	  pthread_join(tab[j],&ptr_);
-	  if (!ptr_)
-	    Kdone=false;
-	  thread_buchberger_t<tdeg_t> * ptr = (thread_buchberger_t<tdeg_t> *) ptr_;
-	  colonnes=giacmin(colonnes,ptr->colonnes);
-	}
+      } // end else interreduce 
+      pthread_t tab[64];
+      thread_buchberger_t<tdeg_t> buchberger_param[64];
+      int colonnes=N;
+      for (int j=0;j<=th;++j){
+	thread_buchberger_t<tdeg_t> tmp={&res,&K,&G,&B,&permuB,&leftshift,&rightshift,&R,Rhashptr,&Rdegpos,env,positions[j],positions[j+1],int(N),int(Kcols),&firstpos,&Mindex,&Mcoeff,&coeffindex,&indexes,&used,bitmap,j==th && debug_infolevel>1,learning,interreduce,pairs_reducing_to_zero,learned_parallel[j]};
+	buchberger_param[j]=tmp;
+	bool res=true;
+	// CERR << "write " << j << " " << p << endl;
+	if (j<th)
+	  res=pthread_create(&tab[j],(pthread_attr_t *) NULL,thread_buchberger<tdeg_t>,(void *) &buchberger_param[j]);
+	if (res)
+	  thread_buchberger<tdeg_t>((void *)&buchberger_param[j]);
       }
-    }
+      Kdone=true;
+      colonnes=buchberger_param[th].colonnes;
+      for (unsigned j=0;j<th;++j){
+	void * ptr_=(void *)&th; // non-zero initialisation
+	pthread_join(tab[j],&ptr_);
+	if (!ptr_)
+	  Kdone=false;
+	thread_buchberger_t<tdeg_t> * ptr = (thread_buchberger_t<tdeg_t> *) ptr_;
+	colonnes=giacmin(colonnes,ptr->colonnes);
+      }
+    } // end parallelization
 #endif
     if (!Kdone){
+      if (interreduce){ 
+	for (unsigned i=0;i<Bs;++i){
+	  indexes[i].reserve(res[G[i]].coord.size()+16);
+	  K[i].reserve(Ksizes);
+	}
+	thread_buchberger_t<tdeg_t> tmp={&res,&K,&G,&B,&permuB,&leftshift,&rightshift,&R,Rhashptr,&Rdegpos,env,0,(int)Bs,int(N),int(Kcols),&firstpos,&Mindex,&Mcoeff,&coeffindex,&indexes,&used,bitmap,debug_infolevel>1,learning,interreduce,pairs_reducing_to_zero,0};
+	thread_buchberger<tdeg_t>((void *)&tmp);
+	return 0;
+      }
       unsigned bk_prev=-1;
       const tdeg_t * rightshift_prev=0;
       int pos=learned_position;
@@ -11916,7 +11838,7 @@ template<class modint_t,class modint_u>
     }
     // compare n to 2*Bs, if caching is efficient compute cache
     CERR << "Cache relative occupation " << n/(2.*Bs) << " pairs " << Bs << endl;
-    return zf4computeK1(N,nrows,mem,Bs,res,G,env, B,permuB,learning,learned_position,pairs_reducing_to_zero,leftshift,rightshift,  R ,Rhashptr,Rdegpos,firstpos,Mindex, coeffindex,Mcoeff,info_ptr,used,usedcount,bitmap,K,parallel);   
+    return zf4computeK1(N,nrows,mem,Bs,res,G,env, B,permuB,learning,learned_position,pairs_reducing_to_zero,leftshift,rightshift,  R ,Rhashptr,Rdegpos,firstpos,Mindex, coeffindex,Mcoeff,info_ptr,used,usedcount,bitmap,K,parallel,interreduce);   
     vector<shifttype> index;
     vector<modint> Ki;
     vector<modint2> v64(N);
@@ -11965,17 +11887,112 @@ template<class modint_t,class modint_u>
     return 0;
   }
 #endif
-  
+
   template<class tdeg_t>
-  int zf4mod(vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> * & permuBptr,vectzpolymod<tdeg_t> & f4buchbergerv,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,vector<zinfo_t<tdeg_t> > & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age,bool multimodular,int parallel){
-    if (B.empty())
+  struct zbuildM_t {
+    const vectzpolymod<tdeg_t> * res;
+    const vector<unsigned> * G;
+    modint env;
+    bool multimodular;
+    const vector< vector<tdeg_t> > * quo;
+    const vector<tdeg_t> * R;
+    const vector<int> * Rdegpos;
+    void * Rhashptr;
+    vector<coeffindex_t> * coeffindex;
+    unsigned N;
+    vector<vector<unsigned short> > * Mindex;
+    vector< vector<modint> > * Mcoeff;
+    vector<sparse_element> * atrier;
+    int i,iend,j;
+  };
+
+  template<class tdeg_t>
+  void do_zbuildM(const vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,bool multimodular,const vector< vector<tdeg_t> > & quo,const vector<tdeg_t> & R,const vector<int> & Rdegpos,void * Rhashptr,vector<coeffindex_t> & coeffindex,unsigned N,vector<vector<unsigned short> > & Mindex,vector< vector<modint> > & Mcoeff,vector<sparse_element> & atrier,int i,int iend,int j){
+    for (;i<iend;++i){
+      // copy coeffs of res[G[i]] in Mcoeff
+      if (!quo[i].empty()) 
+	zcopycoeff(res[G[i]],Mcoeff[i],0);
+      // for each monomial of quo[i], find indexes and put in Mindex
+      // reverse order traversing quo[i]
+      // In zmakelinesplit locate res[G[i]].coord.u+*jt by dichotomoy 
+      // between position just calculated before and 
+      // and same position in previous Mindex
+      typename std::vector< tdeg_t >::const_iterator jt=quo[i].end()-1;
+      int quos=int(quo[i].size());
+      int Gi=G[i];
+      for (int k=quos-1;k>=0;--k,--jt){
+	zmakelinesplit(res[Gi],&*jt,R,Rhashptr,Rdegpos,Mindex[j+k],k==quos-1?0:&Mindex[j+k+1],0);
+      }
+      for (int k=0;k<quos;++j,++k){
+	coeffindex[j]=coeffindex_t(N<=0xffff,i);
+	if (!coeffindex[j].b)
+	  coeffindex[j].b=checkshortshifts(Mindex[j]);
+	atrier[j]=sparse_element(first_index(Mindex[j]),j);
+      }
+    }
+  }
+
+  template<class tdeg_t>
+  void * zbuildM_(void * ptr_){
+    zbuildM_t<tdeg_t> * ptr=(zbuildM_t<tdeg_t> *) ptr_;
+    do_zbuildM<tdeg_t>(*ptr->res,*ptr->G,ptr->env,ptr->multimodular,*ptr->quo,*ptr->R,*ptr->Rdegpos,ptr->Rhashptr,*ptr->coeffindex,ptr->N,*ptr->Mindex,*ptr->Mcoeff,*ptr->atrier,ptr->i,ptr->iend,ptr->j);
+    return ptr_;
+  }
+
+  template<class tdeg_t>
+  void zbuildM(const vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,bool multimodular,int parallel,const vector< vector<tdeg_t> > & quo,const vector<tdeg_t> & R,const vector<int> & Rdegpos,void * & Rhashptr,vector<coeffindex_t> & coeffindex,unsigned N,vector<vector<unsigned short> > & Mindex,vector< vector<modint> > & Mcoeff,vector<sparse_element> & atrier,int nrows){
+#ifdef HAVE_LIBPTHREAD
+    if (nrows<16)
+      parallel=1;
+    pthread_t tab[parallel];
+    zbuildM_t<tdeg_t> zbuildM_param[parallel];
+    int istart=0,iend=0,jstart=0,jend=0;
+    for (int j=0;j<parallel;++j){
+      if (j==parallel-1){
+	iend=G.size();
+      }
+      else {
+	for (iend=istart;iend<G.size();++iend){
+	  jend += quo[iend].size();
+	  if (jend>((j+1)*nrows/parallel)){
+	    ++iend;
+	    break;
+	  }
+	}
+      }
+      zbuildM_t<tdeg_t> tmp={&res,&G,env,multimodular,&quo,&R,&Rdegpos,Rhashptr,&coeffindex,N,&Mindex,&Mcoeff,&atrier,istart,iend,jstart};
+      zbuildM_param[j]=tmp;
+      bool res=true;
+      if (j<parallel-1)
+	res=pthread_create(&tab[j],(pthread_attr_t *) NULL,zbuildM_<tdeg_t>,(void *) &zbuildM_param[j]);
+      if (res)
+	zbuildM_<tdeg_t>((void *)&zbuildM_param[j]);
+      istart=iend;
+      jstart=jend;
+    }
+    for (unsigned j=0;j<parallel-1;++j){
+      void * ptr_=(void *)&parallel; // non-zero initialisation
+      pthread_join(tab[j],&ptr_);
+      if (!ptr_)
+	CERR << "Error building M" << endl;
+    }
+#else
+    zbuildM_t<tdeg_t> tmp={&res,&G,env,multimodular,&quo,&R,&Rdegpos,Rhashptr,&coeffindex,N,&Mindex,&Mcoeff,&atrier,0,G.size(),0};
+    zbuildM_<tdeg_t>((void *)&tmp);
+#endif
+  } // end parallelization
+
+  template<class tdeg_t>
+  int zf4mod(vectzpolymod<tdeg_t> & res,const vector<unsigned> & G,modint env,const vector< paire > & B,const vector<unsigned> * & permuBptr,vectzpolymod<tdeg_t> & f4buchbergerv,bool learning,unsigned & learned_position,vector< paire > * pairs_reducing_to_zero,vector<zinfo_t<tdeg_t> > & f4buchberger_info,unsigned & f4buchberger_info_position,bool recomputeR,int age,bool multimodular,int parallel,bool interreduce){
+    unsigned Bs=unsigned(interreduce?G.size():B.size());
+    if (!Bs)
       return 0;
-    unsigned Bs=unsigned(B.size());
     int dim=res.front().dim;
     order_t order=res.front().order;
     vector<tdeg_t> leftshift(Bs);
     vector<tdeg_t> rightshift(Bs);
-    zleftright(res,B,leftshift,rightshift);
+    if (!interreduce) 
+      zleftright(res,B,leftshift,rightshift);
     // IMPROVEMENT: sort pairs in B according to right term of the pair
     // If several pairs share the same right term, 
     // reduce the right term without leading monomial once
@@ -11989,7 +12006,7 @@ template<class modint_t,class modint_u>
       info_ptr=&f4buchberger_info[f4buchberger_info_position];
       ++f4buchberger_info_position;
       nonzero=info_ptr->nonzero;
-      if (nonzero==0){
+      if (nonzero==0 && !interreduce){
 	for (int i=0;i<f4buchbergerv.size();++i){
 	  // CERR << v << endl;
 	  f4buchbergerv[i].expo=&info_ptr->rem;
@@ -12007,24 +12024,31 @@ template<class modint_t,class modint_u>
       for (unsigned i=0;i<Bs;++i) 
 	permuB[i]=i;
 #if 1 // not required for one modular gbasis, but kept for multi-modular
-      pair_compare<tdeg_t> trieur(&B,&res,&leftshift,&rightshift,order);
-      sort(permuB.begin(),permuB.end(),trieur);
-      if (debug_infolevel>2){
-	unsigned egales=0;
-	for (unsigned i=1;i<Bs;++i){
-	  if (B[permuB[i-1]].second!=B[permuB[i]].second)
-	    continue;
-	  if (rightshift[permuB[i-1]]==rightshift[permuB[i]]){
-	    egales++;
-	    CERR << B[permuB[i-1]] << "=" << B[permuB[i]] << endl;
+      if (!interreduce){
+	pair_compare<tdeg_t> trieur(&B,&res,&leftshift,&rightshift,order);
+	sort(permuB.begin(),permuB.end(),trieur);
+	if (debug_infolevel>2){
+	  unsigned egales=0;
+	  for (unsigned i=1;i<Bs;++i){
+	    if (B[permuB[i-1]].second!=B[permuB[i]].second)
+	      continue;
+	    if (rightshift[permuB[i-1]]==rightshift[permuB[i]]){
+	      egales++;
+	      CERR << B[permuB[i-1]] << "=" << B[permuB[i]] << endl;
+	    }
 	  }
+	  CERR << egales << " right pair elements are the same" << endl;
+	  CERR << CLOCK()*1e-6 << " zf4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
 	}
-	CERR << egales << " right pair elements are the same" << endl;
-	CERR << CLOCK()*1e-6 << " zf4buchberger begin collect monomials on #polys " << f4buchbergerv.size() << endl;
       }
 #endif
-      if (!zcollect(res,B,permuB,all,leftshift,rightshift))
-	return -1;
+      if (interreduce){
+	zcollect_interreduce(res,G,all,1); // all monomials after leading one
+      }
+      else {
+	if (!zcollect(res,B,permuB,all,leftshift,rightshift))
+	  return -1;
+      }
       if (debug_infolevel>1)
 	CERR << CLOCK()*1e-6 << " zf4buchberger symbolic preprocess" << endl;
       zsymbolic_preprocess(all,res,G,-1,info_tmp.quo,info_tmp.rem,info_tmp.R);
@@ -12053,7 +12077,7 @@ template<class modint_t,class modint_u>
     unsigned N = unsigned(R.size()), i, j = 0;
     if (N==0) return 1;
     void * Rhashptr=0;
-#ifdef GIAC_RHASH
+#ifdef GIAC_RHASH // default disabled
     tdeg_t64_hash_t Rhash; 
     if (R.front().vars64()){
       Rhashptr=&Rhash;
@@ -12065,7 +12089,7 @@ template<class modint_t,class modint_u>
 #endif
     int Rcurdeg=R.front().tdeg;
     vector<int> Rdegpos(Rcurdeg+2);
-#ifdef GIAC_RDEG
+#ifdef GIAC_RDEG // default enabled
     for (unsigned i=0;i<N;++i){
       int tmp=R[i].tdeg;
       if (tmp==Rcurdeg)
@@ -12082,16 +12106,20 @@ template<class modint_t,class modint_u>
     for (i=0;i<G.size();++i){
       nrows += unsigned(quo[i].size());
     }
+    if (nrows==0 && interreduce){
+      // allready interreduced, nothing to do...
+      info_ptr->nonzero=G.size();
+      return 12345; // special code, already interreduced
+    }
     double sknon0=0;
     unsigned usedcount=0,zerolines=0;
     vector< vector<modint> > K(Bs);
     vector<vector<unsigned short> > Mindex;
     vector< vector<modint> > Mcoeff(G.size());
-    vector<coeffindex_t> coeffindex;
+    vector<coeffindex_t> coeffindex(nrows);
     Mindex.reserve(nrows);
-    coeffindex.reserve(nrows);
-    vector<sparse_element> atrier;
-    atrier.reserve(nrows);
+    vector<sparse_element> atrier(nrows);
+    // atrier.reserve(nrows);
     for (i=0;i<G.size();++i){
       typename std::vector<tdeg_t>::const_iterator jt=quo[i].begin(),jtend=quo[i].end();
       if (jt!=jtend)
@@ -12101,6 +12129,9 @@ template<class modint_t,class modint_u>
 	Mindex[j].reserve(int(1.1*res[G[i]].coord.size()));
       }
     }
+#ifndef GIAC_MAKELINECACHE
+    zbuildM(res,G,env,multimodular,parallel,quo,R,Rdegpos,Rhashptr,coeffindex,N,Mindex,Mcoeff,atrier,nrows);
+#else // ZBUILDM
 #ifdef GIAC_MAKELINECACHE
     vector< pair<int,int> > zmakelinecache(res.size(),pair<int,int>(-1,-1)); // -1 if res[k] is not in G, (i,j) if k==G[i] where j is the first index in Mindex of the part corresponding to res[G[i]]
 #endif
@@ -12129,22 +12160,25 @@ template<class modint_t,class modint_u>
 	zmakelinesplit(res[Gi],&*jt,R,Rhashptr,Rdegpos,Mindex[j+k],k==quos-1?0:&Mindex[j+k+1],0);
       }
       for (int k=0;k<quos;++j,++k){
-	coeffindex.push_back(coeffindex_t(N<=0xffff,i));
-	if (!coeffindex.back().b)
-	  coeffindex.back().b=checkshortshifts(Mindex[j]);
-	atrier.push_back(sparse_element(first_index(Mindex[j]),j));
+	coeffindex[j]=coeffindex_t(N<=0xffff,i);
+	if (!coeffindex[j].b)
+	  coeffindex[j].b=checkshortshifts(Mindex[j]);
+	// atrier.push_back(sparse_element(first_index(Mindex[j]),j));
+	atrier[j]=sparse_element(first_index(Mindex[j]),j);
       }
 #else
       typename std::vector< tdeg_t >::const_iterator jt=quo[i].begin(),jtend=quo[i].end();
       for (;jt!=jtend;++j,++jt){
-	coeffindex.push_back(coeffindex_t(N<=0xffff,i));
+	coeffindex[j]=coeffindex_t(N<=0xffff,i);
 	zmakelinesplit(res[G[i]],&*jt,R,Rhashptr,Rdegpos,Mindex[j],0,0);
-	if (!coeffindex.back().b)
-	  coeffindex.back().b=checkshortshifts(Mindex[j]);
-	atrier.push_back(sparse_element(first_index(Mindex[j]),j));
+	if (!coeffindex[j].b)
+	  coeffindex[j].b=checkshortshifts(Mindex[j]);
+	// atrier.push_back(sparse_element(first_index(Mindex[j]),j));
+	atrier[j]=sparse_element(first_index(Mindex[j]),j);
       }
 #endif
     }
+#endif // ZBUILM
     if (debug_infolevel>1)
       CERR << CLOCK()*1e-6 << " end build Mindex/Mcoeff zf4mod" << endl;
     // should not sort but compare res[G[i]]*quo[i] monomials to build M already sorted
@@ -12186,11 +12220,12 @@ template<class modint_t,class modint_u>
     vector<used_t> used(N,0);
     vector<unsigned> lebitmap(((N>>5)+1)*Bs);
     unsigned * bitmap=&lebitmap.front();
-    int zres=zf4computeK1(N,nrows,mem,Bs,res,G,env, B,permuB,learning,learned_position,pairs_reducing_to_zero,leftshift,rightshift,  R ,Rhashptr,Rdegpos,firstpos,Mindex, coeffindex,Mcoeff,info_ptr,used,usedcount,bitmap,K,parallel);
+    int zres=zf4computeK1(N,nrows,mem,Bs,res,G,env, B,permuB,learning,learned_position,pairs_reducing_to_zero,leftshift,rightshift,  R ,Rhashptr,Rdegpos,firstpos,Mindex, coeffindex,Mcoeff,info_ptr,used,usedcount,bitmap,K,parallel,interreduce);
     if (zres!=0)
       return zres;
     if (debug_infolevel>1)
       CERR << endl << CLOCK()*1e-6 << " Memory usage: " << memory_usage()*1e-6 << "M" << endl;
+    size_t Mindexsize=Mindex.size();
     Mindex.clear();
     Mcoeff.clear();
     {
@@ -12208,7 +12243,7 @@ template<class modint_t,class modint_u>
     if (learning && info_ptr)
       info_ptr->Ksizes=usedcount;
     if (debug_infolevel>1){
-      CERR << CLOCK()*1e-6 << " number of non-zero columns " << usedcount << " over " << N << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
+      CERR << CLOCK()*1e-6 << " number of non-zero columns " << usedcount << " over " << N-Mindexsize << " (N " << N  << ", Mindex size " << Mindexsize << ")" << endl; // usedcount should be approx N-M.size()=number of cols of M-number of rows
       if (debug_infolevel>3)
 	CERR << " column split used " << used << endl;
     }
@@ -12239,14 +12274,27 @@ template<class modint_t,class modint_u>
       swap(K1,K);
     }
     int th=parallel-1; // giacmin(threads,64)-1;
+    if (interreduce){ // interreduce==true means final interreduction
+      ;
+    }
+    else {
 #if 0
-    // vector< vector<modint> > Kcopy(K);
-    smallmodrref(parallel,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,permutation.empty(),0,!multimodular,0,-1); // disable rref optimization in multi-modular mode otherwise cyclic92 fails
+      // vector< vector<modint> > Kcopy(K);
+      smallmodrref(parallel,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,1/* fullreduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,permutation.empty(),0,!multimodular,0,-1); // disable rref optimization in multi-modular mode otherwise cyclic92 fails
 #else
-    smallmodrref(parallel,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,0/* lower reduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,permutation.empty()/* reset */,0,!multimodular,-1); 
-    if (debug_infolevel>1)
-      CERR << CLOCK()*1e-6 << " rref_upper " << endl;
-    smallmodrref_upper(K,0,int(K.size()),0,usedcount,env);
+      smallmodrref(parallel,K,pivots,permutation,maxrankcols,idet,0,int(K.size()),0,usedcount,0/* lower reduction*/,0/*dontswapbelow*/,env,0/* rrefordetorlu*/,permutation.empty()/* reset */,0,!multimodular,-1); 
+      if (debug_infolevel>1)
+	CERR << CLOCK()*1e-6 << " rref_upper " << endl;
+      int Ksize=int(K.size());
+      if (//1
+	  usedcount<=2*Ksize 
+	  || parallel==1 || Ksize<50
+	  )
+	smallmodrref_upper(K,0,Ksize,0,usedcount,env);
+      else { 
+	thread_smallmodrref_upper(K,0,Ksize,0,usedcount,env,parallel);
+      }
+    } // end if !interreduce
 #endif
     unsigned Kcols=N-nrows;
     free_null_lines(K,0,Bs,0,Kcols);
@@ -12287,11 +12335,12 @@ template<class modint_t,class modint_u>
       CERR << CLOCK()*1e-6 << " f4buchbergerv interreduced" << endl;
     for (i=0;i<f4buchbergerv.size();++i){
       // CERR << v << endl;
-      f4buchbergerv[permutation[i]].expo=&info_ptr->rem;
-      f4buchbergerv[permutation[i]].order=order;
-      f4buchbergerv[permutation[i]].dim=dim;
-      f4buchbergerv[permutation[i]].age=age;
-      vector< zmodint > & Pcoord=f4buchbergerv[permutation[i]].coord;
+      int pi=interreduce?i:permutation[i];
+      f4buchbergerv[pi].expo=&info_ptr->rem;
+      f4buchbergerv[pi].order=order;
+      f4buchbergerv[pi].dim=dim;
+      f4buchbergerv[pi].age=age;
+      vector< zmodint > & Pcoord=f4buchbergerv[pi].coord;
       Pcoord.clear();
       vector<modint> & v =K[i];
       if (v.empty()){
@@ -12315,9 +12364,9 @@ template<class modint_t,class modint_u>
 	  Pcoord.push_back(zmodint(coeff,Rtoremv[pos]));
       }
       if (!Pcoord.empty())
-	f4buchbergerv[permutation[i]].ldeg=(*f4buchbergerv[permutation[i]].expo)[Pcoord.front().u];
-      if (!Pcoord.empty() && ( (env > (1<< 24)) || Pcoord.front().g!=1) ){
-	zsmallmultmod(invmod(Pcoord.front().g,env),f4buchbergerv[permutation[i]],env);	
+	f4buchbergerv[pi].ldeg=(*f4buchbergerv[pi].expo)[Pcoord.front().u];
+      if (!interreduce && !Pcoord.empty() && ( (env > (1<< 24)) || Pcoord.front().g!=1) ){
+	zsmallmultmod(invmod(Pcoord.front().g,env),f4buchbergerv[pi],env);	
 	Pcoord.front().g=1;
       }
       bool freemem=mem>4e7; // should depend on real memory available
@@ -12325,6 +12374,8 @@ template<class modint_t,class modint_u>
 	vector<modint> tmp; tmp.swap(v);
       }
     }
+    if (debug_infolevel>1)
+      CERR << CLOCK()*1e-6 << " f4buchbergerv stored" << endl;
     return 1;
   }
 
@@ -12618,10 +12669,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #if 0
       n %= env;
 #endif
-      if (n*2>env)
+      if (n*2LL>env)
 	it->g -= env;
       else {
-	if (n*2<=-env)
+	if (n*2LL<=-env)
 	  it->g += env;
       }
     }
@@ -12633,8 +12684,60 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       smod(resmod[i],env);
   }
 
+#if 0 // def HAVE_LIBPTHREAD // too slow because of mem locks
+  template<class tdeg_t>
+  struct zfinal_interreduce_t {
+    vectpolymod<tdeg_t> * res,*resmod;
+    vector<unsigned> * G;
+    modint env;
+    int start,end;
+  };
+
+  template<class tdeg_t>
+  void * do_zfinal_interreduce(void * ptr_){
+    zfinal_interreduce_t<tdeg_t> * ptr=(zfinal_interreduce_t<tdeg_t> *) ptr_;
+    vectpolymod<tdeg_t> &res=*ptr->res;
+    const vectpolymod<tdeg_t> &resmod=*ptr->resmod;
+    vector<unsigned> & G=*ptr->G;
+    int end=giacmin(G.size(),ptr->end);
+    polymod<tdeg_t> TMP1(res[G[0]].order,res[G[0]].dim);
+    for (int j=ptr->start; j<end;++j){
+      reducesmallmod(res[G[j]],resmod,G,j,ptr->env,TMP1,true,0);
+    }
+    return ptr;
+  }
+
+  template<class tdeg_t>
+  void zfinal_interreduce(vectpolymod<tdeg_t> &resmod,vector<unsigned> & G,modint env,int parallel){
+    if (resmod.empty() || G.empty())
+      return;
+    vectpolymod<tdeg_t> res(resmod);
+    pthread_t tab[parallel];
+    zfinal_interreduce_t<tdeg_t> interreduceparam[parallel];
+    int kstep=int(std::ceil(G.size()/double(parallel))),start=0,end=kstep;
+    for (int j=0;j<parallel;++j){
+      zfinal_interreduce_t<tdeg_t> tmp={&res,&resmod,&G,env,start,end};
+      start=end;
+      end += kstep;
+      interreduceparam[j]=tmp;
+      bool res=true;
+      if (j<parallel-1)
+	res=pthread_create(&tab[j],(pthread_attr_t *) NULL,do_zfinal_interreduce<tdeg_t>,(void *) &interreduceparam[j]);
+      if (res)
+	do_zfinal_interreduce<tdeg_t>((void *)&interreduceparam[j]);
+    }
+    for (int j=0;j<parallel;++j){
+      void * ptr=(void *)&parallel; // non-zero initialisation
+      if (j<parallel-1)
+	pthread_join(tab[j],&ptr);
+    }    
+    res.swap(resmod);
+  }
+#endif
+
   template<class tdeg_t>
   bool in_zgbasis(vectpolymod<tdeg_t> &resmod,unsigned ressize,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< zinfo_t<tdeg_t> > & f4buchberger_info,bool recomputeR,bool eliminate_flag,bool multimodular,int parallel){
+    unsigned generators=ressize;
     bool seldeg=true; int sel1=0;
     ulonglong cleared=0;
     unsigned learned_position=0,f4buchberger_info_position=0;
@@ -12892,7 +12995,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       }
       else {
 	// multiply by parallel?
-	if (!pairs_reducing_to_zero && np>max_pairs_by_iteration) 
+	if (//!pairs_reducing_to_zero && 
+	    np>max_pairs_by_iteration) 
 	  np=max_pairs_by_iteration;
 	for (unsigned i=0;i<np;++i)
 	  smallposp.push_back(B[smallposv[i]]);
@@ -12911,9 +13015,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	if (!clean[i])
 	  Gall.push_back(i);
       }
-      f4res=zf4mod(res,Gall,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age,multimodular,parallel);
+      f4res=zf4mod(res,Gall,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age,multimodular,parallel,false);
 #else
-      f4res=zf4mod(res,G,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age,multimodular,parallel);
+      f4res=zf4mod(res,G,env,smallposp,permuBptr,f4buchbergerv,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,age,multimodular,parallel,false);
 #endif
       if (f4res==-1)
 	return false;
@@ -13021,43 +13125,52 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     else {
       if (debug_infolevel>1)
 	CERR << CLOCK()*1e-6 << " zfinal interreduction begin " << G.size() << endl;
-#if 0 // does not fully inter-reduce 
-      zinterreduce_convert(res,G,env,resmod);
-#else
       resmod.resize(res.size());
       for (unsigned l=0;l<res.size();++l){
 	resmod[l].coord.clear();
       }
-      for (unsigned l=0;l<G.size();++l){
-	convert(res[G[l]],resmod[G[l]]);
+      int val=-1;
+      if (1//generators<100
+	  //parallel>1 && threads_allowed && G.size()>=200
+	  ){
+	val=zinterreduce_convert(res,G,env,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,-1/* age*/,multimodular,parallel,resmod);
+	if (debug_infolevel && val<0)
+	  CERR << "zinterreduce failure" << endl;
+	// zfinal_interreduce(resmod,G,env,parallel); // res->resmod must be done. discarded because too slow mem locks
       }
-      res.clear();
-      // final interreduce step2
-      // by construction resmod[G[j]] is already interreduced by resmod[G[k]] for k<j
-      polymod<tdeg_t> TMP1(order,dim);
-      for (int j=int(G.size())-1; j>=0;--j){
-	if (debug_infolevel>1){
-	  if (j%10==0){ CERR << "+"; CERR.flush();}
-	  if (j%500==0){ CERR << CLOCK()*1e-6 << " remaining " << j << endl;}
+      if (val<0 || val==12345){ 
+	for (unsigned l=0;l<G.size();++l){
+	  convert(res[G[l]],resmod[G[l]]);
 	}
-	if (!start_index_v.empty() && G[j]<start_index_v.back())
-	  start_index_v.pop_back();
-	if (0 && order.o==_REVLEX_ORDER) // this optimization did not work for cyclic10mod (at least when max_pairs=4096) 
-	  reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,start_index_v.empty()?0:start_index_v.back());
-	else // full interreduction since Buchberger steps do not interreduce
-	  reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,0);
+	res.clear();
+      }
+      if (val<0){
+	// final interreduce step2
+	// by construction resmod[G[j]] is already interreduced by resmod[G[k]] for k<j
+	polymod<tdeg_t> TMP1(order,dim);
+	for (int j=int(G.size())-1; j>=0;--j){
+	  if (debug_infolevel>1){
+	    if (j%10==0){ CERR << "+"; CERR.flush();}
+	    if (j%500==0){ CERR << CLOCK()*1e-6 << " remaining " << j << endl;}
+	  }
+	  if (!start_index_v.empty() && G[j]<start_index_v.back())
+	    start_index_v.pop_back();
+	  if (0 && order.o==_REVLEX_ORDER) // this optimization did not work for cyclic10mod (at least when max_pairs=4096) 
+	    reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,start_index_v.empty()?0:start_index_v.back());
+	  else // full interreduction since Buchberger steps do not interreduce
+	    reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,0);
+	}
       }
       if (debug_infolevel>1)
 	CERR << CLOCK()*1e-6 << " zfinal interreduction end " << G.size() << endl;      
-#endif
     }
     if (ressize<resmod.size())
       res.resize(ressize);
-    if (debug_infolevel>1){
+    if (debug_infolevel){ // was debug_infolevel>1
       unsigned t=0;
       for (unsigned i=0;i<resmod.size();++i)
 	t += unsigned(resmod[i].coord.size());
-      CERR << CLOCK()*1e-6 << " total number of monomials in res " << t << endl;
+      CERR << CLOCK()*1e-6 << " total number of monomials in res " << t << " basis size " << G.size() << endl;
       CERR << "Number of monomials cleared " << cleared << endl;
     }
     smod(resmod,env);
@@ -13080,6 +13193,130 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   /* *************
      END ZPOLYMOD
      ************* */
+  template<class tdeg_t>
+  bool is_gbasis(const vectpoly8<tdeg_t> & res,double eps,bool modularcheck){
+    if (res.empty())
+      return false;
+    if (debug_infolevel>0)
+      CERR << "basis size " << res.size() << endl;
+    // build possible pairs (i,j) with i<j
+    vector< vector<tdeg_t> > lcmpairs(res.size());
+    vector<unsigned> G(res.size());
+    for (unsigned i=0;i<res.size();++i)
+      G[i]=i;
+    vectpoly8<tdeg_t> vtmp,tocheck;
+    vector< paire > tocheckpairs;
+    if (eps>0 && eps<2e-9)
+      modularcheck=true;
+    if (modularcheck)
+      tocheck.reserve(res.size()*10); // wild guess
+    else
+      tocheckpairs.reserve(res.size()*10);
+    order_t order=res.front().order;
+    int dim=res.front().dim;
+    poly8<tdeg_t> TMP1(order,res.front().dim),TMP2(TMP1),
+      spol(TMP1),spolred(TMP1);
+    polymod<tdeg_t> spolmod(order,dim),TMP1mod(order,dim);
+    vectpolymod<tdeg_t> resmod;
+    for (unsigned i=0;i<res.size();++i){
+      const poly8<tdeg_t> & h = res[i];
+      const tdeg_t & h0=h.coord.front().u;
+      vector<tdeg_t> tmp(res.size());
+      for (unsigned j=i+1;j<res.size();++j){
+	index_lcm(h0,res[j].coord.front().u,tmp[j],h.order); 
+      }
+      swap(lcmpairs[i],tmp);
+    }
+    for (unsigned i=0;i<res.size();++i){    
+      if (debug_infolevel>1)
+	CERR << "checking pairs for i="<<i<<", j=";
+      const poly8<tdeg_t> & resi = res[i];
+      const tdeg_t & resi0=resi.coord.front().u;
+      for (unsigned j=i+1;j<res.size();++j){
+	if (disjoint(resi0,res[j].coord.front().u,order,dim))
+	  continue;
+	// criterion M, F
+	unsigned J=0;
+	tdeg_t & lcmij=lcmpairs[i][j];
+	for (;J<i;++J){
+	  if (tdeg_t_all_greater(lcmij,lcmpairs[J][j],order))
+	    break;
+	}
+	if (J<i)
+	  continue; 
+	for (++J;J<j;++J){
+	  tdeg_t & lcmJj=lcmpairs[J][j];
+	  if (tdeg_t_all_greater(lcmij,lcmJj,order) && lcmij!=lcmJj)
+	    break;
+	}
+	if (J<j)
+	  continue; 
+	// last criterion
+	unsigned k;
+	for (k=j+1;k<res.size();++k){
+	  if (lcmpairs[i][k]!=lcmij && lcmpairs[j][k]!=lcmij
+	      && tdeg_t_all_greater(lcmij,res[k].coord.front().u,order))
+	    break;
+	}
+	if (k<res.size())
+	  continue;
+	// compute and reduce s-poly
+	if (debug_infolevel>1)
+	  CERR <<  j << ",";
+	if (modularcheck){
+	  spoly(resi,res[j],spol,TMP1,0);
+	  tocheck.push_back(poly8<tdeg_t>(order,dim));
+	  swap(tocheck.back(),spol);
+	}
+	else
+	  tocheckpairs.push_back(paire(i,j));
+      } // end j loop
+      if (debug_infolevel>1)
+	CERR << endl;
+    }
+    if (debug_infolevel>0)
+      CERR << "Number of critical pairs to check " << (modularcheck?tocheck.size():tocheckpairs.size()) << endl;
+    if (modularcheck) // modular check is sometimes slow
+      return checkf4buchberger(tocheck,res,G,-1,eps); // split version is slower!
+    // integer check or modular check for one modulus (!= from first prime already used)
+    modint p=(prevprime((1<<29)-30000000)).val;
+    if (eps>0)
+      convert(res,resmod,p);
+    // FIXME should be parallelized
+    for (unsigned i=0;i<tocheckpairs.size();++i){
+#ifdef TIMEOUT
+      control_c();
+#endif
+      if (interrupted || ctrl_c){
+	CERR << "Check interrupted, assuming Groebner basis. Press Ctrl-C again to interrupt computation" << endl;
+	interrupted=ctrl_c=false;
+	return true;
+      }
+      if (eps>0){
+	spolymod<tdeg_t>(resmod[tocheckpairs[i].first],resmod[tocheckpairs[i].second],spolmod,TMP1mod,p);
+	reducemod(spolmod,resmod,G,-1,TMP1mod,p);
+	// gen den; heap_reduce(spol,res,G,-1,vtmp,spolred,TMP1,den,0);
+	if (!TMP1mod.coord.empty())
+	  return false;
+      }
+      else {
+	spoly(res[tocheckpairs[i].first],res[tocheckpairs[i].second],spol,TMP1,0);
+	reduce(spol,res,G,-1,vtmp,spolred,TMP1,TMP2,0);
+	// gen den; heap_reduce(spol,res,G,-1,vtmp,spolred,TMP1,den,0);
+	if (!spolred.coord.empty())
+	  return false;
+      }
+      if (debug_infolevel>0){
+	CERR << "+";
+	if (i%512==511)
+	  CERR << tocheckpairs.size()-i << " remaining" << endl; 
+      }
+    }
+    if (debug_infolevel)
+      CERR << endl << "Successfull check of " << tocheckpairs.size() << " critical pairs" << endl;
+    return true;
+  }
+
 
   /* *************
      RUR UTILITIES (rational univariate representation for 0 dimension ideals)
@@ -13586,7 +13823,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   bool check_initial_generators(vectpoly8<tdeg_t> & res,const vectpoly8<tdeg_t> & Wi,vector<unsigned> & G,double eps){
     int initial=int(res.size());
     if (debug_infolevel)
-      CERR << CLOCK()*1e-6 << " begin final check, checking " << initial << " generators" << endl;
+      CERR << CLOCK()*1e-6 << " begin final check, checking that the " << initial << " initial generators belongs to the ideal" << endl;
     poly8<tdeg_t> tmp0,tmp1,tmp2;
     vectpoly8<tdeg_t> wtmp;
     unsigned j=0,finalchecks=initial;
@@ -13595,18 +13832,25 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     G.resize(Wi.size());
     for (j=0;j<Wi.size();++j)
       G[j]=j;
+    vector<bool> Gused(G.size());
     for (j=0;j<finalchecks;++j){
       if (debug_infolevel)
 	CERR << "+";
       sort(res[j].coord.begin(),res[j].coord.end(),tdeg_t_sort_t<tdeg_t>(res[j].order));
-      reduce(res[j],Wi,G,-1,wtmp,tmp0,tmp1,tmp2,0);
+      reduce(res[j],Wi,G,-1,wtmp,tmp0,tmp1,tmp2,0,&Gused);
       if (!tmp0.coord.empty()){
 	break;
       }
       if (debug_infolevel && (j%10==9))
 	CERR << j+1 << endl;
     }
-    CERR << endl;
+    if (debug_infolevel){
+      CERR << endl << " Elements used for reduction ";
+      for (size_t i=0;i<G.size();++i){
+	CERR << (Gused[i]?'+':'-');
+      }
+      CERR << endl;
+    }
     if (j!=finalchecks){
       if (debug_infolevel){
 	CERR << CLOCK()*1e-6 << " final check failure, retrying with another prime " << endl;
@@ -13684,8 +13928,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     bool ok=true;
 #ifdef HAVE_LIBPTHREAD
     int nthreads=(threads_allowed && multithread_enabled)?threads:1,th,parallel=1;
-    pthread_t tab[32];
-    thread_gbasis_t<tdeg_t> gbasis_param[32];
+    pthread_t tab[64];
+    thread_gbasis_t<tdeg_t> gbasis_param[64];
 #else
     int nthreads=1,th,parallel=1;
 #endif
@@ -13701,7 +13945,13 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	parallel=nthreads;
       }
       else {
-	th=giacmin(nthreads-1,simult_primes-1); // no more than simult_primes 
+	unsigned sp=simult_primes;
+	if (count>=simult_primes_seuil2)
+	  sp=simult_primes2;
+	if (count>=simult_primes_seuil3)
+	  sp=simult_primes3;
+	th=giacmin(nthreads-1,sp-1); // no more than simult_primes 
+	th=giacmin(th,63);
 	parallel=nthreads/(th+1);
       }
 #ifndef EMCC
@@ -13746,7 +13996,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       G.clear();
       double t_0=CLOCK()*1e-6;
       if (debug_infolevel)
-	CERR << std::setprecision(15) << t_0 << " begin computing basis modulo " << p << endl;
+	CERR << std::setprecision(15) << t_0 << " begin computing basis modulo " << p << " batch/threads " << th+1 << "/" << parallel << endl;
       // CERR << "write " << th << " " << p << endl;
 #ifdef GBASISF4_BUCHBERGER 
       if (zdata){
@@ -13793,6 +14043,14 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       // CERR << "reduceto0 " << reduceto0.size() << endl;
       //if (!in_gbasis(current,G,&env)) return false;
 #endif
+#ifdef HAVE_LIBPTHREAD
+      // finish threads before chinese remaindering
+      void * threadretval[64];
+      for (int t=0;t<th;++t){
+	threadretval[t]=&threadretval; // non-0 initialization
+	pthread_join(tab[t],&threadretval[t]);
+      }
+#endif
       double t_1=CLOCK()*1e-6;
       if (time1strun<0)
 	time1strun=t_1-t_0;
@@ -13836,8 +14094,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 #ifdef HAVE_LIBPTHREAD
 	else {
-	  void * ptr_=(void *)&nthreads; // non-zero initialisation
-	  pthread_join(tab[t],&ptr_);
+	  void * ptr_=(void *)threadretval[t]; // saved value from ptr_join
 	  if (!ptr_)
 	    continue;
 	  thread_gbasis_t<tdeg_t> * ptr = (thread_gbasis_t<tdeg_t> *) ptr_;
@@ -13992,12 +14249,6 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 		  mpz_clear(zur);
 		  mpz_clear(zr);
 		  mpz_clear(ztmp);
-#ifdef HAVE_LIBPTHREAD
-		  // finish other threads
-		  void * ptr_;
-		  for (;t<th;++t)
-		    pthread_join(tab[t],&ptr_);
-#endif
 		  return true;
 		}
 	      } // end jpos==early.size()
@@ -14101,7 +14352,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	if (jpos<gbmod.size()){
 	  if (debug_infolevel)
-	    CERR << CLOCK()*1e-6 << " i=" << i << " begin chinese remaindering " << p << " (" << count+1 << ")" << endl;
+	    CERR << CLOCK()*1e-6 << " i=" << i << " begin chinese remaindering " << p << " (" << count+(t==th) << ")" << endl;
 	  int r=chinrem(V[i],P[i],gbmod,p.val,poly8tmp,recon_added); // IMPROVE: maybe start at jpos in V[i]? at least start at recon_added
 	  if (debug_infolevel)
 	    CERR << CLOCK()*1e-6 << " end chinese remaindering" << endl;
@@ -14137,12 +14388,6 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    mpz_clear(zur);
 	    mpz_clear(zr);
 	    mpz_clear(ztmp);
-#ifdef HAVE_LIBPTHREAD
-	    // finish other threads
-	    void * ptr_;
-	    for (;t<th;++t)
-	      pthread_join(tab[t],&ptr_);
-#endif
 	    return true;
 	  }
 	  // first verify that the initial generators reduce to 0
@@ -14173,6 +14418,25 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    *logptr(contextptr) << gettext("Running a probabilistic check for the reconstructed Groebner basis. If successfull, error probability is less than ") << eps << gettext(" and is estimated to be less than 10^-") << epsp << gettext(". Use proba_epsilon:=0 to certify (this takes more time).") << endl;
 	  }
 	  G.clear();
+	  if (eps<1.01e-10){
+	    // check modulo another prime that W[i] is a gbasis
+	    vector<unsigned> G;
+	    vectpoly8<tdeg_t> res_(W[i]);
+	    vectpolymod<tdeg_t> resmod;
+	    vector< zinfo_t<tdeg_t> > zf4buchberger_info;
+	    int p=268435399;
+	    if (debug_infolevel)
+	      CERR << CLOCK()*1e-6 << " Checking that the basis is a gbasis modulo " << p << endl;
+	    if (!zgbasis<tdeg_t>(res_,resmod,G,p,true,0,zf4buchberger_info,false,false,false,false,threads /* parallel*/))
+	      return false;
+	    sort(resmod.begin(),resmod.end(),tripolymod_tri<tdeg_t>());
+	    for (size_t jpos=0;jpos<G.size();++jpos){
+	      if (!chk_equal_mod(W[i][jpos],resmod[jpos],p))
+		return false;
+	    }
+	    if (debug_infolevel)
+	      CERR << CLOCK()*1e-6 << " Check successfull mod " << p << endl;
+	  }
 	  if (eps2<1 && !is_gbasis(W[i],eps2,modularcheck)){
 	    ok=false;
 	    continue; // in_gbasis(W[i],G,0,true);
@@ -14190,12 +14454,6 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  mpz_clear(zur);
 	  mpz_clear(zr);
 	  mpz_clear(ztmp);
-#ifdef HAVE_LIBPTHREAD
-	  // finish other threads
-	  void * ptr_;
-	  for (;t<th;++t)
-	    pthread_join(tab[t],&ptr_);
-#endif
 	  return true;
 	}
 #else
@@ -14276,7 +14534,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    CERR << CLOCK()*1e-6 << " end rational reconstruction " << endl;
 	  // now check if W[i] is a Groebner basis over Q, if so it's the answer
 	  if (debug_infolevel)
-	    CERR << CLOCK()*1e-6 << " begin final check, checking " << initial << " generators " << endl;
+	    CERR << CLOCK()*1e-6 << " begin final check, checking that the " << initial << " initial generators belongs to the ideal" << endl;
 	  // first verify that the initial generators reduce to 0
 	  poly8<tdeg_t> tmp0,tmp1,tmp2;
 	  vectpoly8<tdeg_t> wtmp;
@@ -14345,12 +14603,6 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  mpz_clear(zur);
 	  mpz_clear(zr);
 	  mpz_clear(ztmp);
-#ifdef HAVE_LIBPTHREAD
-	  // finish other threads
-	  void * ptr_;
-	  for (;t<th;++t)
-	    pthread_join(tab[t],&ptr_);
-#endif
 	  return true;
 	} // end for (i<V.size())
 	if (i==V.size()){

@@ -4,20 +4,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Averaging channel data : stereo2mono</title>
+<title>Audio playback : playsnd</title>
 </head>
 <body >
 <a href="cascmd_en240.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en242.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec308" class="subsection">5.24.5  Averaging channel data : <span style="font-family:monospace">stereo2mono</span><a id="hevea_default421"></a></h3>
+<h3 id="sec308" class="subsection">5.24.4  Audio playback : <span style="font-family:monospace">playsnd</span><a id="hevea_default420"></a></h3>
 <p>
-<span style="font-family:monospace">stereo2mono</span> takes a multichannel audio clip as its argument and returns a clip with input channels mixed down to a single channel. Every sample in the output is the arithmetic mean of the samples at the same position in the input channels.</p><p>For example, input :
+<span style="font-family:monospace">playsnd</span> takes an audio clip as its argument and plays it back.</p><p>For example, input :
 </p><div class="center">
-<span style="font-family:monospace">t:=soundsec(3):;<br>
-L,R:=sin(2*pi*440*t),sin(2*pi*445*t):;<br>
-s:=stereo2mono(createwav([L,R])):; playsnd(s)</span>
+<span style="font-family:monospace">playsnd(createwav(sin(2*pi*440*soundsec(3))))</span>
 </div>
 <hr>
 <a href="cascmd_en240.html"><img src="previous_motif.gif" alt="Previous"></a>

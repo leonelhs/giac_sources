@@ -4,33 +4,41 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Build a matrix with a function : makemat</title>
+<title>Make a matrix from two matrices : semi_augment</title>
 </head>
 <body >
 <a href="cascmd_en472.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en474.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec569" class="subsection">5.45.24  Build a matrix with a function : <span style="font-family:monospace">makemat</span></h3>
-<p><a id="hevea_default744"></a>
-<span style="font-family:monospace">makemat</span> takes three arguments : 
-</p><ul class="itemize"><li class="li-itemize">
-a function of two variables <span style="font-family:monospace">j</span> and <span style="font-family:monospace">k</span> which
-should return the value of <span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>, the element of
-row index <span style="font-family:monospace">j</span> and column index <span style="font-family:monospace">k</span> of the matrix to be built.
-</li><li class="li-itemize">two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>.
-</li></ul><p>
-<span style="font-family:monospace">makemat</span> returns the matrix <span style="font-style:italic">A</span>=(<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>) 
-(<span style="font-style:italic">j</span>=0..<span style="font-style:italic">n</span>−1 and <span style="font-style:italic">k</span>=0..<span style="font-style:italic">p</span>−1) of dimension <span style="font-style:italic">n</span> × <span style="font-style:italic">p</span>.<br>
+<h3 id="sec569" class="subsection">5.45.22  Make a matrix from two matrices : <span style="font-family:monospace">semi_augment</span></h3>
+<p><a id="hevea_default742"></a>
+<span style="font-family:monospace">semi_augment</span> concat two matrices with the same number 
+of columns.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">makemat((j,k)-&gt;j+k,4,3)</span></div><p>
-or first define the <span style="font-style:italic">h</span> function:
-</p><div class="center"><span style="font-family:monospace">h(j,k):=j+k</span></div><p>
-then, input:
-</p><div class="center"><span style="font-family:monospace">makemat(h,4,3)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">semi_augment([[3,4],[2,1],[0,1]],[[1,2],[4,5]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]</span></div><p>
-Note that the indices are counted starting from 0.</p>
+</p><div class="center"><span style="font-family:monospace">[[3,4],[2,1],[0,1],[1,2],[4,5]]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">semi_augment([[3,4,2]],[[1,2,4]])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[3,4,2],[1,2,4]]</span></div><p>
+Note the difference with <span style="font-family:monospace">concat</span>.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">concat([[3,4,2]],[[1,2,4]]</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[3,4,2,1,2,4]]</span></div><p>
+Indeed, when the two matrices <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> have the same dimension, <span style="font-family:monospace">concat</span> 
+makes a matrix with the same number of rows as <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> by
+gluing them side by side.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">concat([[3,4],[2,1],[0,1]],[[1,2],[4,5]]</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[3,4],[2,1],[0,1],[1,2],[4,5]]</span></div><p>
+but input :
+</p><div class="center"><span style="font-family:monospace">concat([[3,4],[2,1]],[[1,2],[4,5]]</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[[3,4,1,2],[2,1,4,5]]</span></div>
 <hr>
 <a href="cascmd_en472.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

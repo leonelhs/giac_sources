@@ -4,35 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean remainder: Rem</title>
+<title>Factorize a polynomial with coefficients in a Galois field : factor</title>
 </head>
 <body >
 <a href="cascmd_en368.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en370.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec451" class="subsection">5.35.2  Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
-<p><a id="hevea_default579"></a>
-<span style="font-family:monospace">Rem</span> is the inert form of <span style="font-family:monospace">rem</span>.<br>
-<span style="font-family:monospace">Rem</span> returns the euclidean remainder between two polynomials
-without evaluation. 
-It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to compute
-the euclidean remainder of the division of two
-polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode :
-</p><div class="center"><span style="font-family:monospace">Rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1) mod 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13)</span></div><p>
+<h3 id="sec450" class="subsection">5.34.19  Factorize a polynomial with coefficients in a Galois field : <span style="font-family:monospace">factor</span></h3>
+<p><a id="hevea_default576"></a>
+<span style="font-family:monospace">factor</span> can also factorize a univariate
+polynomial with coefficients in a Galois field.<br>
+Input for example to have <span style="font-family:monospace">G=</span>F<sub>4</sub>:<br>
+</p><div class="center"><span style="font-family:monospace">G:=GF(2,2,[’w’,’G’])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-you need to <span style="font-family:monospace">eval(ans())</span> to get :
-</p><div class="center"><span style="font-family:monospace">(-2%13)*x+-1%13</span></div><p>
-Input in <span style="font-family:monospace">Maple</span> mode :
-</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13</span></div><p>
+</p><div class="center"><span style="font-family:monospace">GF(2,w</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+w+1,[w,G],undef)</span></div><p>
+Input for example :
+</p><div class="center"><span style="font-family:monospace">a:=G(w)</span></div><div class="center"><span style="font-family:monospace">factor(a</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(-2)*x-1</span></div><p>
-Input in <span style="font-family:monospace">Maple</span> mode :
-</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">1*x</span></div>
+</p><div class="center"><span style="font-family:monospace">(G(w+1))*(x+G(w+1))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div>
 <hr>
 <a href="cascmd_en368.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

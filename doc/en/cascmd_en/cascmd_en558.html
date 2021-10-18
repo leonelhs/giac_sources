@@ -4,29 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Step by step Gauss-Jordan reduction of a matrix : pivot</title>
+<title>Gauss-Jordan reduction: rref gaussjord</title>
 </head>
 <body >
 <a href="cascmd_en557.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en559.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec678" class="subsection">5.56.5  Step by step Gauss-Jordan reduction of a matrix : <span style="font-family:monospace">pivot</span></h3>
-<p><a id="hevea_default864"></a><a id="sec:pivot"></a>
-<span style="font-family:monospace">pivot</span> takes three arguments : a matrix with <span style="font-style:italic">n</span> rows and <span style="font-style:italic">p</span> 
-columns and two integers <span style="font-style:italic">l</span> and <span style="font-style:italic">c</span> such that 0≤ <span style="font-style:italic">l</span>&lt;<span style="font-style:italic">n</span>, 0≤ <span style="font-style:italic">c</span>&lt;<span style="font-style:italic">p</span>
-and <span style="font-style:italic">A</span><sub><span style="font-style:italic">l</span>,<span style="font-style:italic">c</span></sub>≠ 0.<br>
-<span style="font-family:monospace">pivot(A,l,c)</span> performs one step of the Gauss-Jordan method
-using <span style="font-family:monospace">A[l,c]</span> as pivot and returns an equivalent matrix 
-with zeros in the column <span style="font-family:monospace">c</span> of <span style="font-family:monospace">A</span> (except at row <span style="font-style:italic">l</span>).<br>
+<h3 id="sec678" class="subsection">5.56.3  Gauss-Jordan reduction: <span style="font-family:monospace">rref gaussjord</span></h3>
+<p><a id="hevea_default862"></a><a id="hevea_default863"></a><a id="sec:rref"></a>
+<span style="font-family:monospace">rref</span> solves a linear system of equations written in
+matrix form (see also <a href="cascmd_en367.html#sec%3Arrefm">5.34.17</a>) :
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><p>
+<span style="font-family:monospace">rref</span> takes one or two arguments.
+</p><ul class="itemize"><li class="li-itemize">
+If <span style="font-family:monospace">rref</span> has only one argument, this argument is the augmented matrix 
+of the system (the matrix obtained by augmenting matrix <span style="font-family:monospace">A</span> to the 
+right with the column vector <span style="font-family:monospace">B</span>).<br>
+The result is a matrix <span style="font-family:monospace">[A1,B1]</span> : <span style="font-family:monospace">A1</span> has zeros both above and under 
+its principal diagonal and has 1 on its principal diagonal, and the solutions 
+of:
+<div class="center"><span style="font-family:monospace">A1*X=B1</span></div> 
+are the same as :
+<div class="center"><span style="font-family:monospace">A*X=B</span></div>
+For example, to solve the system:
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table> 
 Input :
-</p><div class="center"><span style="font-family:monospace">pivot([[1,2],[3,4],[5,6]],1,1)</span></div><p>
+<div class="center"><span style="font-family:monospace">rref([[3,1,-2],[3,2,2]])</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[-2,0],[3,4],[2,0]]</span></div><p>
+<div class="center"><span style="font-family:monospace">[[1,0,-2],[0,1,4]]</span></div>
+Hence <span style="font-style:italic">x</span>=−2 and <span style="font-style:italic">y</span>=4 is the solution of this system.<p><span style="font-family:monospace">rref</span> can also solve several linear systems
+of equations having the same first member.
+We write the second members as a column matrix.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">pivot([[1,2],[3,4],[5,6]],0,1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[1,2],[2,0],[4,0]]</span></div>
+</p><div class="center"><span style="font-family:monospace">[[1,0,-2,0],[0,1,4,1]]</span></div><p>
+Which means that (<span style="font-style:italic">x</span>=−2 and <span style="font-style:italic">y</span>=4) is the solution of the system
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >−2 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table><p>
+and (<span style="font-style:italic">x</span>=0 and <span style="font-style:italic">y</span>=1) is the solution of the system
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> + <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >1 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >3<span style="font-style:italic">x</span> +2<span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >2 </td></tr>
+</table></td></tr>
+</table></li><li class="li-itemize">If <span style="font-family:monospace">rref</span> has two parameters, the second parameter must be an integer 
+<span style="font-style:italic">k</span>, and the Gauss-Jordan reduction will be performed on (at most)
+the first <span style="font-style:italic">k</span> columns.<br>
+Input :
+<div class="center"><span style="font-family:monospace">rref([[3,1,-2,1],[3,2,2,2]],1)</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">[[3,1,-2,1],[0,1,4,1]]</span></div>
+</li></ul>
 <hr>
 <a href="cascmd_en557.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

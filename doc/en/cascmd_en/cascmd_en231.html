@@ -4,58 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rewrite an expression with different options : convert convertir</title>
+<title>Simplify and express preferentially with tangents : trigtan</title>
 </head>
 <body >
 <a href="cascmd_en230.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en232.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec291" class="subsection">5.22.24  Rewrite an expression with different options : <span style="font-family:monospace">convert convertir</span></h3>
-<p><a id="hevea_default392"></a><a id="hevea_default393"></a><a id="hevea_default394"></a><a id="hevea_default395"></a><a id="hevea_default396"></a><a id="hevea_default397"></a><a id="hevea_default398"></a><a id="hevea_default399"></a><a id="hevea_default400"></a><a id="hevea_default401"></a><a id="hevea_default402"></a><a id="hevea_default403"></a><a id="hevea_default404"></a><a id="hevea_default405"></a><a id="hevea_default406"></a><a id="sec:convert"></a>
-<span style="font-family:monospace">convert</span> takes two arguments an expression and an option.<br>
-<span style="font-family:monospace">convert</span> rewrites this expression applying rules depending 
-on the option. Valid options are :
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">sin</span> converts an expression like <span style="font-family:monospace">trigsin</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">cos</span> converts an expression like <span style="font-family:monospace">trigcos</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">sincos</span> converts an expression like <span style="font-family:monospace">sincos</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">trig</span> converts an expression like <span style="font-family:monospace">sincos</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">tan</span> converts an expression like <span style="font-family:monospace">halftan</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">exp</span> converts an expression like <span style="font-family:monospace">trig2exp</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">ln</span> converts an expression like <span style="font-family:monospace">trig2exp</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">expln</span> converts an expression like <span style="font-family:monospace">trig2exp</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">string</span> converts an expression into a string.
-</li><li class="li-itemize"><span style="font-family:monospace">matrix</span> converts a list of lists into a matrix.
-</li><li class="li-itemize"><span style="font-family:monospace">polynom</span> converts a Taylor series into a polynomial 
-by removing the remainder (cf <a href="cascmd_en299.html#sec%3Aconvertpoly">5.27.22</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">parfrac</span> or <span style="font-family:monospace">partfrac</span> or <span style="font-family:monospace">fullparfrac</span> converts a rational 
-fraction into its partial fraction decomposition (<a href="cascmd_en342.html#sec%3Aconvertparf">5.31.9</a>).
-</li></ul><p>
-<span style="font-family:monospace">convert</span> can also :
-</p><ul class="itemize"><li class="li-itemize">
-convert units, for example 
-<span style="font-family:monospace">convert(1000_g,_kg)=1.0_kg</span> (cf <a href="cascmd_en680.html#sec%3Aconvertunit">9.1.4</a>).
-</li><li class="li-itemize">write a real as a continued fraction : 
-<span style="font-family:monospace">convert(a,confrac,’fc’)</span> writes <span style="font-family:monospace">a</span> as a continued fraction
-stored in <span style="font-family:monospace">fc</span>. Do not forget to quote the last argument if it
-was assigned.<br>
-For example, <span style="font-family:monospace">convert(1.2,confrac,’fc’)=[1,5]</span> and <span style="font-family:monospace">fc</span> contains the 
-continued fraction equal to 1.2 (cf <a href="cascmd_en115.html#sec%3Aconvertdfc">5.8.7</a>). 
-</li><li class="li-itemize">transform an integer into the list of its digits in a 
-base, beginning with the units digit (and reciprocally)
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">convert(n,base,b)</span> transforms the integer <span style="font-family:monospace">n</span> into the list of its 
-digits in base <span style="font-family:monospace">b</span> beginning with the units digit.<br>
-For example,
-<span style="font-family:monospace">convert(123,base,10)=[3,2,1]</span> and reciprocally
-</li><li class="li-itemize"><span style="font-family:monospace">convert(l,base,b)</span> transforms the list <span style="font-family:monospace">l</span> into the integer <span style="font-family:monospace">n</span> 
-which has <span style="font-family:monospace">l</span> as list of its 
-digits in base <span style="font-family:monospace">b</span> beginning with the units digit.<br>
-For example, 
-<span style="font-family:monospace">convert([3,2,1],base,10)=123</span> (cf <a href="index.html#sec%3Aconvertbase">5.5</a>). 
-</li></ul>
-</li></ul>
+<h3 id="sec291" class="subsection">5.22.23  Simplify and express preferentially with tangents : <span style="font-family:monospace">trigtan</span></h3>
+<p><a id="hevea_default391"></a>
+<span style="font-family:monospace">trigtan</span> takes as argument an expression 
+containing trigonometric functions.<br>
+<span style="font-family:monospace">trigtan</span> simplifies this expression with the formula :<br>
+sin(<span style="font-style:italic">x</span>)<sup>2</sup>+cos(<span style="font-style:italic">x</span>)<sup>2</sup>=1,  tan(<span style="font-style:italic">x</span>)=sin(<span style="font-style:italic">x</span>)/cos(<span style="font-style:italic">x</span>) and 
+tries to rewrite the expression only with tangents.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">trigtan(sin(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+cos(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">((tan(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/(1+(tan(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/(1+(tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+1</span></div><p>
+Output, after simplification with <span style="font-family:monospace">normal</span> :
+</p><div class="center"><span style="font-family:monospace">(2*tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+3*tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2)/(tan(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+2*tan(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div>
 <hr>
 <a href="cascmd_en230.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

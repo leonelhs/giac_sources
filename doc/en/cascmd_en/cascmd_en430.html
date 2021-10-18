@@ -4,34 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Make a list with a function : makelist</title>
+<title>Fold operators : foldl, foldr</title>
 </head>
 <body >
 <a href="cascmd_en429.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en431.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec521" class="subsection">5.40.36  Make a list with a function : <span style="font-family:monospace">makelist</span></h3>
-<p><a id="hevea_default665"></a>
-<span style="font-family:monospace">makelist</span> takes as argument a function <span style="font-family:monospace">f</span>, 
-the bounds <span style="font-family:monospace">a,b</span> of an index variable and a step <span style="font-family:monospace">p</span> 
-(by default 1 or -1 depending on the bounds order).<br>
-<span style="font-family:monospace">makelist</span> makes the list <span style="font-family:monospace">[f(a),f(a+p)...f(a+k*p)]</span> with <span style="font-style:italic">k</span> such
-that : <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≤ <span style="font-style:italic">b</span> &lt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span> or <span style="font-style:italic">a</span>&gt;<span style="font-style:italic">a</span>+<span style="font-style:italic">k</span>*<span style="font-style:italic">p</span> ≥ <span style="font-style:italic">b</span> &gt;<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)*<span style="font-style:italic">p</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5)</span></div><p>
-or
-</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,5,1)</span></div><p>
-or first define the function <span style="font-style:italic">h</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup> by <span style="font-family:monospace">h(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span>
-then input
-</p><div class="center"><span style="font-family:monospace">makelist(h,3,5,1)</span></div><p>
+<h3 id="sec521" class="subsection">5.40.34  Fold operators : <span style="font-family:monospace">foldl</span><a id="hevea_default663"></a>, <span style="font-family:monospace">foldr</span><a id="hevea_default664"></a></h3>
+<p>
+The fold operators <span style="font-family:monospace">foldl</span> and <span style="font-family:monospace">foldr</span> both take a binary operator, identifier or function <span style="font-style:italic">R</span> as the first argument followed by an argument <span style="font-style:italic">I</span> and an arbitrary number of arguments <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>, <span style="font-style:italic">c</span>, …, like for example <span style="font-family:monospace">foldl(R,I,a,b,c,...)</span>.</p><p>The left-fold operator <span style="font-family:monospace">foldl</span> composes a binary operator <span style="font-style:italic">R</span> with initial value <span style="font-style:italic">I</span> onto the arguments <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>, …(which may be zero in number), associating from the left. For example, input :
+</p><div class="center">
+<span style="font-family:monospace">foldl(R,I,a,b,c)
+</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[9,16,25]</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">makelist(x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,3,6,2)</span></div><p>
+</p><div class="center">
+<span style="font-family:monospace">R(R(R(I,a),b),c)
+</span></div><p>The right-fold operator <span style="font-family:monospace">foldr</span> is similar but associates operands from the right. For example, input :
+</p><div class="center">
+<span style="font-family:monospace">foldr(R,I,a,b,c)
+</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[9,25]</span></div><p>
-<span style="font-weight:bold">Warning!!!</span> purge <span style="font-family:monospace">x</span> if <span style="font-family:monospace">x</span> is not symbolic.</p>
+</p><div class="center">
+<span style="font-family:monospace">R(a,R(b,R(c,I)))
+</span></div>
 <hr>
 <a href="cascmd_en429.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

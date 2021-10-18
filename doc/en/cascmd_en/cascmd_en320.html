@@ -4,47 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Cyclotomic polynomial : cyclotomic</title>
+<title>Solving au+bv=c over polynomials: abcuv</title>
 </head>
 <body >
 <a href="cascmd_en319.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en321.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec395" class="subsection">5.28.14  Cyclotomic polynomial : <span style="font-family:monospace">cyclotomic</span></h3>
-<p><a id="hevea_default518"></a>
-<span style="font-family:monospace">cyclotomic</span> takes an integer <span style="font-style:italic">n</span> as argument and
-returns the list of the coefficients of the cyclotomic 
-polynomial of index <span style="font-style:italic">n</span>. This
-is the polynomial having the <span style="font-style:italic">n</span>-th primitive roots of unity
-as zeros (an <span style="font-style:italic">n</span>-th root of unity is primitive if the set of its 
-powers is the set of all the <span style="font-style:italic">n</span>-th roots of unity).</p><p>For example, let <span style="font-style:italic">n</span>=4, the fourth roots of unity are:
-{ 1,<span style="font-style:italic">i</span>,−1,−<span style="font-style:italic">i</span>} and the primitive roots are: {<span style="font-style:italic">i</span>,−<span style="font-style:italic">i</span>}.
-Hence, the cyclotomic polynomial of index 4 is (<span style="font-style:italic">x</span>−<span style="font-style:italic">i</span>).(<span style="font-style:italic">x</span>+<span style="font-style:italic">i</span>)=<span style="font-style:italic">x</span><sup>2</sup>+1.
-Verification:
-</p><div class="center"><span style="font-family:monospace">cyclotomic(4)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1,0,1]</span></div><p>
-Another example, input :
-</p><div class="center"><span style="font-family:monospace">cyclotomic(5)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1,1,1,1,1]</span></div><p>
-Hence, the cyclotomic polynomial of index 5 is <span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1
-which divides <span style="font-style:italic">x</span><sup>5</sup>−1 since (<span style="font-style:italic">x</span>−1)*(<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1)=<span style="font-style:italic">x</span><sup>5</sup>−1.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">cyclotomic(10)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[1,-1,1,-1,1]</span></div><p>
-Hence, the cyclotomic polynomial of index 10 is <span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+1 and
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">(<span style="font-style:italic">x</span><sup>5</sup>−1)*(<span style="font-style:italic">x</span>+1)*(<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+1)=<span style="font-style:italic">x</span><sup>10</sup>−1 </td></tr>
+<h3 id="sec395" class="subsection">5.28.12  Solving au+bv=c over polynomials: <span style="font-family:monospace">abcuv</span></h3>
+<p><a id="hevea_default517"></a>
+<span style="font-family:monospace">abcuv</span> solves the polynomial equation
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">U</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">V</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>) </td></tr>
 </table><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">cyclotomic(20)</span></div><p>
+where <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span> are given polynomials and <span style="font-style:italic">U</span> and <span style="font-style:italic">V</span> are unknown
+polynomials. <span style="font-style:italic">C</span> must be a multiple of the gcd of <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span>
+for a solution to exist. <span style="font-family:monospace">abcuv</span> takes 3 expressions as argument,
+and an optional variable specification (which defaults to <span style="font-style:italic">x</span>)
+and returns a list of 2 expressions (<span style="font-style:italic">U</span> and <span style="font-style:italic">V</span>). Alternatively, the
+polynomials <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span> may be entered as list-polynomials.</p><p>Input :
+</p><div class="center"><span style="font-family:monospace">abcuv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1 ,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x+1)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[1,0,-1,0,1,0,-1,0,1]</span></div><p>
-Hence, the cyclotomic polynomial of index 20 is <span style="font-style:italic">x</span><sup>8</sup>−<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>2</sup>+1 and
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">(<span style="font-style:italic">x</span><sup>10</sup>−1)*(<span style="font-style:italic">x</span><sup>2</sup>+1)*(<span style="font-style:italic">x</span><sup>8</sup>−<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>2</sup>+1)=<span style="font-style:italic">x</span><sup>20</sup>−1 </td></tr>
-</table>
+</p><div class="center"><span style="font-family:monospace">[1/2,1/-2]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">abcuv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1 ,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[1/2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1/-2*x+1/2,-1/2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1/-2*x-1/2]</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">abcuv([1,2,1],[1,0,-1],[1,0,0,1])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">[poly1[1/2,1/-2,1/2],poly1[1/-2,1/2,1/-2]]</span></div>
 <hr>
 <a href="cascmd_en319.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

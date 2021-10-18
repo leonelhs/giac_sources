@@ -4,60 +4,60 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inversion in the plane: inversion</title>
+<title>Similarity in the plane: similarity</title>
 </head>
 <body >
 <a href="cascmd_en805.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en807.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1052" class="subsection">11.15.7  Inversion in the plane: <span style="font-family:monospace">inversion</span><a id="hevea_default1307"></a></h3>
+<h3 id="sec1052" class="subsection">11.15.6  Similarity in the plane: <span style="font-family:monospace">similarity</span><a id="hevea_default1307"></a></h3>
 <p>
-<a id="sec:2dinversion"></a></p><p>See section <a href="cascmd_en896.html#sec%3A3dinversion">12.14.7</a> for inversions in space.</p><p>Given a circle <span style="font-style:italic">C</span> with center <span style="font-style:italic">O</span> and radius <span style="font-style:italic">r</span>, the <em>inversion</em>
-of a point <span style="font-style:italic">A</span> with respect to <span style="font-style:italic">C</span> is the
-point <span style="font-style:italic">A</span>′ on the ray <span style="font-style:italic">OA</span> satisfying
-<span style="text-decoration:overline"><span style="font-style:italic">OA</span></span>·<span style="text-decoration:overline"><span style="font-style:italic">OA</span></span><span style="text-decoration:overline">′</span> = <span style="font-style:italic">r</span><sup>2</sup>.</p><p>The <span style="font-family:monospace">inversion</span> command takes two or three arguments.</p><p>If <span style="font-family:monospace">inversion</span> has two arguments, they are a point (the center
-of inversion) and a real number (the radius).
-<span style="font-family:monospace">inversion</span> returns a new command which performs the
-inversion.<br>
+<a id="sec:2dsimilarity"></a></p><p>See section <a href="cascmd_en896.html#sec%3A3dsimilarity">12.14.6</a> for similarities in space.</p><p>The <span style="font-family:monospace">similarity</span> command rotates and scales about a given
+point. It takes three or four arguments.</p><p>If <span style="font-family:monospace">similarity</span> has three arguments, they are a point (the center
+of rotation), a real number (the scaling ratio) and a real number
+(the angle of rotation). <span style="font-family:monospace">similarity</span> returns a new
+command which performs the transformation.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">inver := inversion(i, 2)
+<span style="font-family:monospace">s := similarity(i, 2, -pi/2)
 </span></div><p>
 then:
 </p><div class="center">
-<span style="font-family:monospace">inver(circle(1+i,1))
+<span style="font-family:monospace">s(1+i)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en157.png">
+</div><p>
+then:
+</p><div class="center">
+<span style="font-family:monospace">s(circle(1+i,1))
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en158.png">
+</div><p>If <span style="font-family:monospace">similarity</span> has four arguments, the first three arguments are a
+point and two numbers as above, and the fourth argument is a geometric
+object. <span style="font-family:monospace">similarity</span> returns and draws the transformed object.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">similarity(i, 2, -pi/2, 1 + i)
 </span></div><p>
 Output:
 </p><div class="center">
 <img src="cascmd_en159.png">
 </div><p>
-then:
+Input:
 </p><div class="center">
-<span style="font-family:monospace">inver(circle(1+i,1/2))
+<span style="font-family:monospace">similarity(i, 2, -pi/2, circle(1+i,1))
 </span></div><p>
 Output:
 </p><div class="center">
 <img src="cascmd_en160.png">
-</div><p>If <span style="font-family:monospace">inversion</span> has three arguments, the first two arguments are a
-point and number as above, and the third argument is a geometric
-object. <span style="font-family:monospace">inversion</span> returns and draws the inverted object.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">inversion(i, 2, circle(1+i,1))
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en161.png">
-</div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">inversion(i, 2, circle(1+i,1/2))
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en162.png">
-</div>
+</div><p>Note that for a point <span style="font-family:monospace">A</span> and numbers <span style="font-family:monospace">k</span> and
+<span style="font-family:monospace">a</span>, the command <span style="font-family:monospace">similarity(A,k,a)</span> is the same as
+<span style="font-family:monospace">homothety(A,k*exp(i*a))</span>.</p>
 <hr>
 <a href="cascmd_en805.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

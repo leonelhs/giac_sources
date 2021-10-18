@@ -4,44 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Draw unit vectors:
-Ox_3d_unit_vector
-Oy_3d_unit_vector
-Oz_3d_unit_vector
-frame_3d</title>
+<title>Envelopes: envelope</title>
 </head>
 <body >
 <a href="cascmd_en832.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en834.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1088" class="subsection">12.3.1  Draw unit vectors:
-<span style="font-family:monospace">Ox_3d_unit_vector</span><a id="hevea_default1335"></a>
-<span style="font-family:monospace">Oy_3d_unit_vector</span><a id="hevea_default1336"></a>
-<span style="font-family:monospace">Oz_3d_unit_vector</span><a id="hevea_default1337"></a>
-<span style="font-family:monospace">frame_3d</span><a id="hevea_default1338"></a></h3>
-<p>The <span style="font-family:monospace">Ox_3d_unit_vector</span> command draws the unit vector in
-the <span style="font-style:italic">x</span>-direction on a three-dimensional graphic screen.<br>
+<h3 id="sec1084" class="subsection">11.18.2  Envelopes: <span style="font-family:monospace">envelope</span><a id="hevea_default1335"></a></h3>
+<p>The <span style="font-family:monospace">envelope</span> command takes two arguments, the first argument is expression 
+<span style="font-family:monospace">expr</span> in the variables <span style="font-family:monospace">x</span>, <span style="font-family:monospace">y</span> and a parameter
+such as <span style="font-family:monospace">t</span>, and the second argument is the name of the
+parameter.</p><p><span style="font-family:monospace">envelope</span> draws the envelope of the family of curves given by
+<span style="font-family:monospace">expr=0</span> over the parameter <span style="font-family:monospace">t</span>.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">Ox_3d_unit_vector()
+<span style="font-family:monospace">envelope(y + x*tan(t) - 2*sin(t),t)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en182.png">
+</div><p>The <span style="font-family:monospace">envelope</span> command can use variables besides <span style="font-family:monospace">x</span> and <span style="font-family:monospace">y</span>. In
+this case, the second argument needs to be a list of the two variables
+and the parameter.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">envelope(v + u*tan(s) - 2*sin(s),[u,v,s]) 
 </span></div><p>
 Output:
 </p><div class="center">
 <img src="cascmd_en183.png">
-</div><p>
-Similarly, the <span style="font-family:monospace">Oy_3d_unit_vector</span> and
-<span style="font-family:monospace">Oz_3d_unit_vector</span> commands draw the unit vector in the <span style="font-style:italic">y</span>
-and <span style="font-style:italic">z</span> directions, respectively.</p><p>These commands have no parameters, but can be decorated with the
-<span style="font-family:monospace">legend</span> command.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">Ox_3d_unit_vector(), legend(point([1,0,0]),"unit x vector",blue)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en184.png">
-</div><p>The <span style="font-family:monospace">frame_3d</span> command draws all three vectors simultaneously.</p>
+</div>
 <hr>
 <a href="cascmd_en832.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

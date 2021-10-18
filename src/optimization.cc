@@ -300,7 +300,7 @@ matrice critical_univariate(const gen &f,const gen &x,GIAC_CONTEXT) {
         cv=mergevecteur(cv,*_zeros(makesequence(den,x),contextptr)._VECTptr);
     }
     find_spikes(f,cv,contextptr);  // assuming that f is not differentiable on transitions
-    for (int i=cv.size()-1;i>=0;--i) {
+    for (int i=cv.size();i-->0;) {
         if (cv[i].is_symb_of_sommet(at_and))
             cv.erase(cv.begin()+i);
         else
@@ -328,6 +328,9 @@ vecteur global_extrema(gen &f,vecteur &g,vecteur &h,vecteur &vars,gen &mn,gen &m
         vecteur gg=subst(g,vars,tmpvars,false,contextptr);
         vecteur hh=subst(h,vars,tmpvars,false,contextptr);
         cv=solve_kkt(ff,gg,hh,tmpvars,contextptr);
+    }
+    for (const_iterateur it=tmpvars.begin();it!=tmpvars.end();++it) {
+        _purge(*it,contextptr);
     }
     if (cv.empty())
         return vecteur(0);
@@ -387,10 +390,10 @@ int parse_varlist(const gen &g,vecteur &vars,vecteur &ineq,vecteur &initial,GIAC
 }
 
 /*
- * Function 'minimize' minimizes a multivariate continuous function on a
+ * Function 'minimize' minimizes a multivariate continuous real function on a
  * closed and bounded region using the method of Lagrange multipliers. The
- * feasible region is specified by bounding variables or by adding one or
- * more (in)equality constraints.
+ * feasible region is specified by bounding variables or by adding one or more
+ * (in)equality constraints.
  *
  * Usage
  * ^^^^^
@@ -508,10 +511,26 @@ gen _minimize(const gen &args,GIAC_CONTEXT) {
     gen &f=argv[0];
     gen mn,mx;
     vecteur loc(global_extrema(f,g,h,vars,mn,mx,contextptr));
-    if (loc.empty())
-        return undef;
+    if (loc.empty() || mn.is_approx()) {
+        /* try using nlpsolve for approx results */
+        gen asol=_nlpsolve(change_subtype(vecteur(argv.begin(),argv.begin()+nargs),_SEQ__VECT),contextptr);
+        if (asol.type==_VECT && asol._VECTptr->size()>1) {
+            mn=asol._VECTptr->front();
+            if (location) {
+                loc.resize(n);
+                gen pos=asol._VECTptr->at(1),v;
+                if (pos.type!=_VECT || pos._VECTptr->size()!=n) return undef;
+                for (const_iterateur it=pos._VECTptr->begin();it!=pos._VECTptr->end();++it) {
+                    if (!it->is_symb_of_sommet(at_equal)) return undef;
+                    const_iterateur jt=find(vars.begin(),vars.end(),it->_SYMBptr->feuille._VECTptr->front());
+                    if (jt==vars.end()) return undef;
+                    loc[jt-vars.begin()]=it->_SYMBptr->feuille._VECTptr->back();
+                }
+            }
+        } else return undef;
+    }
     if (location)
-        return makesequence(_simplify(mn,contextptr),_simplify(loc,contextptr));
+        return makevecteur(_simplify(mn,contextptr),_simplify(loc,contextptr));
     return _simplify(mn,contextptr);
 }
 static const char _minimize_s []="minimize";
@@ -1304,90 +1323,93 @@ void find_local_extrema(gen_map &cpts,const gen &f,const vecteur &g,const vecteu
             if (!fsol.empty())
                 cv.push_back(fsol);
         }
-        if (cv.empty())
-            return;
-        if (nv==1) {
-            gen d,x=vars.front();
-            for (const_iterateur it=cv.begin();it!=cv.end();++it) {
-                gen &x0=it->_VECTptr->front();
-                cls=_CPCLASS_UNDECIDED;
-                for (int k=2;k<=order_size;++k) {
-                    d=_simplify(subst(_derive(makesequence(f,x,k),contextptr),x,x0,false,contextptr),contextptr);
-                    if (is_zero(d))
-                        continue;
-                    if ((k%2)!=0)
-                        cls=_CPCLASS_SADDLE;
-                    else cls=is_strictly_positive(d,contextptr)?_CPCLASS_MIN:_CPCLASS_MAX;
-                    break;
-                }
-                cpts[x0]=gen(cls);
-            }
-        } else {
-            vecteur fvars(vars);
-            fvars.resize(n);
-            ipd.hessian(hess);
-            for (int i=0;i<nv;++i) {
-                a[i]=identificateur(" a"+print_INT_(i));
-            }
-            for (const_iterateur it=cv.begin();it!=cv.end();++it) {
-                for (int j=0;j<nv;++j) {
-                    cpt_arr[arr[j]]=it->_VECTptr->at(j);
-                }
-                cpt_arr=subst(*_simplify(cpt_arr,contextptr)._VECTptr,tmpvars,vars,false,contextptr);
-                gen &cpt_class=cpts[cpt_arr];
-                if (order_size==1 || !is_zero(cpt_class))
-                    continue;
-                cls=_CPCLASS_UNDECIDED;
-                // apply the second partial derivative test
-                matrice H=*_evalf(subst(hess,vars,*it,false,contextptr),contextptr)._VECTptr;
-                vecteur eigvals(*_eigenvals(H,contextptr)._VECTptr);
-                gen e(0);
-                for (const_iterateur et=eigvals.begin();et!=eigvals.end();++et) {
-                    if (is_zero(*et)) {
-                        cls=_CPCLASS_UNDECIDED;
-                        break;
-                    } else if (is_zero(e)) {
-                        e=*et;
-                        cls=is_positive(e,contextptr)?_CPCLASS_MIN:_CPCLASS_MAX;
-                    } else if (is_strictly_positive(-e*(*et),contextptr))
-                        cls=_CPCLASS_SADDLE;
-                }
-                // if that's not enough, use the higher derivatives
-                if (cls==_CPCLASS_UNDECIDED && order_size>=2) {
+        if (!cv.empty()) {
+            if (nv==1) {
+                gen d,x=vars.front();
+                for (const_iterateur it=cv.begin();it!=cv.end();++it) {
+                    gen &x0=it->_VECTptr->front();
+                    cls=_CPCLASS_UNDECIDED;
                     for (int k=2;k<=order_size;++k) {
-                        if (int(taylor_terms.size())<k-1)
-                            taylor_terms.push_back(ipd.taylor_term(a,k));
-                        if (is_zero(taylor_terms.back()))
-                            break;
-                        gen p=expand(subst(taylor_terms[k-2],a,*it,false,contextptr),contextptr);  // homogeneous poly
-                        if (is_zero(p))
+                        d=_simplify(subst(_derive(makesequence(f,x,k),contextptr),x,x0,false,contextptr),contextptr);
+                        if (is_zero(d))
                             continue;
-                        gen pmin,pmax;
-                        gen sphere(-1);
-                        for (int j=0;j<n;++j) {
-                            sphere+=pow(vars[j]-it->_VECTptr->at(j),2);
-                        }
-                        vecteur gp,hp(1,sphere);
-                        if (global_extrema(p,gp,hp,fvars,pmin,pmax,contextptr).empty())
-                            break;
-                        if (is_zero(pmin) && is_zero(pmax)) // p is nullpoly
-                            continue;
-                        if ((k%2)!=0 || (is_strictly_positive(-pmin,contextptr) && is_strictly_positive(pmax,contextptr)))
+                        if ((k%2)!=0)
                             cls=_CPCLASS_SADDLE;
-                        else if (is_strictly_positive(pmin,contextptr))
-                            cls=_CPCLASS_MIN;
-                        else if (is_strictly_positive(-pmax,contextptr))
-                            cls=_CPCLASS_MAX;
-                        else if (is_zero(pmin))
-                            cls=_CPCLASS_POSSIBLE_MIN;
-                        else if (is_zero(pmax))
-                            cls=_CPCLASS_POSSIBLE_MAX;
+                        else cls=is_strictly_positive(d,contextptr)?_CPCLASS_MIN:_CPCLASS_MAX;
                         break;
                     }
+                    cpts[x0]=gen(cls);
                 }
-                cpt_class=gen(cls);
+            } else {
+                vecteur fvars(vars);
+                fvars.resize(n);
+                ipd.hessian(hess);
+                for (int i=0;i<nv;++i) {
+                    a[i]=identificateur(" a"+print_INT_(i));
+                }
+                for (const_iterateur it=cv.begin();it!=cv.end();++it) {
+                    for (int j=0;j<nv;++j) {
+                        cpt_arr[arr[j]]=it->_VECTptr->at(j);
+                    }
+                    cpt_arr=subst(*_simplify(cpt_arr,contextptr)._VECTptr,tmpvars,vars,false,contextptr);
+                    gen &cpt_class=cpts[cpt_arr];
+                    if (order_size==1 || !is_zero(cpt_class))
+                        continue;
+                    cls=_CPCLASS_UNDECIDED;
+                    // apply the second partial derivative test
+                    matrice H=*_evalf(subst(hess,vars,*it,false,contextptr),contextptr)._VECTptr;
+                    vecteur eigvals(*_eigenvals(H,contextptr)._VECTptr);
+                    gen e(0);
+                    for (const_iterateur et=eigvals.begin();et!=eigvals.end();++et) {
+                        if (is_zero(*et)) {
+                            cls=_CPCLASS_UNDECIDED;
+                            break;
+                        } else if (is_zero(e)) {
+                            e=*et;
+                            cls=is_positive(e,contextptr)?_CPCLASS_MIN:_CPCLASS_MAX;
+                        } else if (is_strictly_positive(-e*(*et),contextptr))
+                            cls=_CPCLASS_SADDLE;
+                    }
+                    // if that's not enough, use the higher derivatives
+                    if (cls==_CPCLASS_UNDECIDED && order_size>=2) {
+                        for (int k=2;k<=order_size;++k) {
+                            if (int(taylor_terms.size())<k-1)
+                                taylor_terms.push_back(ipd.taylor_term(a,k));
+                            if (is_zero(taylor_terms.back()))
+                                break;
+                            gen p=expand(subst(taylor_terms[k-2],a,*it,false,contextptr),contextptr);  // homogeneous poly
+                            if (is_zero(p))
+                                continue;
+                            gen pmin,pmax;
+                            gen sphere(-1);
+                            for (int j=0;j<n;++j) {
+                                sphere+=pow(vars[j]-it->_VECTptr->at(j),2);
+                            }
+                            vecteur gp,hp(1,sphere);
+                            if (global_extrema(p,gp,hp,fvars,pmin,pmax,contextptr).empty())
+                                break;
+                            if (is_zero(pmin) && is_zero(pmax)) // p is nullpoly
+                                continue;
+                            if ((k%2)!=0 || (is_strictly_positive(-pmin,contextptr) && is_strictly_positive(pmax,contextptr)))
+                                cls=_CPCLASS_SADDLE;
+                            else if (is_strictly_positive(pmin,contextptr))
+                                cls=_CPCLASS_MIN;
+                            else if (is_strictly_positive(-pmax,contextptr))
+                                cls=_CPCLASS_MAX;
+                            else if (is_zero(pmin))
+                                cls=_CPCLASS_POSSIBLE_MIN;
+                            else if (is_zero(pmax))
+                                cls=_CPCLASS_POSSIBLE_MAX;
+                            break;
+                        }
+                    }
+                    cpt_class=gen(cls);
+                }
             }
         }
+    }
+    for (const_iterateur it=tmpvars.begin();it!=tmpvars.end();++it) {
+        _purge(*it,contextptr);
     }
 }
 
@@ -1677,7 +1699,7 @@ gen _extrema(const gen &g,GIAC_CONTEXT) {
             break;
         }
     }
-    return makesequence(minv,maxv);
+    return makevecteur(minv,maxv);
 }
 static const char _extrema_s []="extrema";
 static define_unary_function_eval (__extrema,&_extrema,_extrema_s);
@@ -3047,6 +3069,132 @@ int finitediff(const gen &f,const gen &x_idn,const gen &y_idn,const gen &dy_idn,
     return 1; // maximum number of iterations is exceeded
 }
 
+gen _bvpsolve(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG && g.subtype==-1) return g;
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
+        return gentypeerr(contextptr);
+    vecteur &gv=*g._VECTptr;
+    gen tk(undef);
+    int maxiter=RAND_MAX;
+    if (gv.size()<3 || gv[1].type!=_VECT || gv[2].type!=_VECT ||
+            gv[1]._VECTptr->size()!=2 || (gv[2]._VECTptr->size()!=2 && gv[2]._VECTptr->size()!=3))
+        return gensizeerr(contextptr);
+    gen &f=gv.front(),&t=gv[1]._VECTptr->front(),&y=gv[1]._VECTptr->back(),
+            y1=_evalf(gv[2]._VECTptr->at(0),contextptr),y2=_evalf(gv[2]._VECTptr->at(1),contextptr);
+    if (gv[2]._VECTptr->size()==3 && (tk=_evalf(gv[2]._VECTptr->at(2),contextptr)).type!=_DOUBLE_)
+        return gensizeerr(contextptr);
+    if (y.type!=_IDNT || !t.is_symb_of_sommet(at_equal) ||
+            t._SYMBptr->feuille._VECTptr->front().type!=_IDNT ||
+            !t._SYMBptr->feuille._VECTptr->back().is_symb_of_sommet(at_interval))
+        return gensizeerr(contextptr);
+    gen &x=t._SYMBptr->feuille._VECTptr->front();
+    vecteur &rng=*t._SYMBptr->feuille._VECTptr->back()._SYMBptr->feuille._VECTptr;
+    gen x1=_evalf(rng.front(),contextptr),x2=_evalf(rng.back(),contextptr);
+    if (x1.type!=_DOUBLE_ || x2.type!=_DOUBLE_ || y1.type!=_DOUBLE_ || y2.type!=_DOUBLE_ ||
+            !is_strictly_greater(x2,x1,contextptr))
+        return gensizeerr(contextptr);
+    int N=100;
+    /* parse options */
+    int output_type=_BVP_LIST;
+    for (const_iterateur it=gv.begin()+3;it!=gv.end();++it) {
+        if (it->is_symb_of_sommet(at_equal)) {
+            gen &lh=it->_SYMBptr->feuille._VECTptr->front();
+            gen &rh=it->_SYMBptr->feuille._VECTptr->back();
+            if (lh==at_output || lh==at_Output) {
+                if (rh==_MAPLE_LIST)
+                    output_type=_BVP_LIST;
+                else if (rh==at_derive)
+                    output_type=_BVP_DIFF;
+                else if (rh==at_piecewise)
+                    output_type=_BVP_PIECEWISE;
+                else if (rh==at_spline)
+                    output_type=_BVP_SPLINE;
+                else return gensizeerr(contextptr);
+            } else if (lh==at_limit) {
+                if (!rh.is_integer() || (maxiter=rh.val)<1)
+                    return gensizeerr(contextptr);
+            } else return gensizeerr(contextptr);
+        } else if (it->is_integer()) {
+            if ((N=it->val)<2)
+                return gensizeerr(contextptr);
+        } else return gensizeerr(contextptr);
+    }
+    gen dy=identificateur(" dy");
+    gen F=_subst(makesequence(f,_derive(makesequence(symb_of(y,x),x),contextptr),dy),contextptr);
+    F=_subst(makesequence(F,symb_of(y,x),y),contextptr);
+    vecteur X,Y,dY;
+    double tol=_evalf(_epsilon(change_subtype(vecteur(0),_SEQ__VECT),contextptr),contextptr).DOUBLE_val();
+    int ec=shooting(F,x,y,dy,tk,x1,x2,y1,y2,N,tol,maxiter,X,Y,dY,contextptr);
+    if (ec==1) {
+        *logptr(contextptr) << "Error: maximum number of iterations exceeded" << endl;
+        return undef;
+    }
+    if (ec==2) {
+        *logptr(contextptr) << "Error: the shooting method failed to converge";
+        if (is_undef(tk))
+            *logptr(contextptr) << ", try to set an initial guess for y'(a)";
+        *logptr(contextptr) << endl;
+        if (N>=3 && (output_type==_BVP_LIST || output_type==_BVP_PIECEWISE)) {
+            *logptr(contextptr) << "Trying the finite-difference method instead" << endl;
+            ec=finitediff(F,x,y,dy,x1,x2,y1,y2,N-1,tol,maxiter,X,Y,contextptr);
+            if (ec==2) {
+                *logptr(contextptr) << "Error: failed to converge" << endl;
+                return undef;
+            }
+            if (ec==1) {
+                *logptr(contextptr) << "Error: maximum number of iterations exceeded" << endl;
+                return undef;
+            }
+        } else return undef;
+    }
+    vecteur res,coeff;
+    matrice m=*_matrix(makesequence(4,4,0),contextptr)._VECTptr;
+    m[0]._VECTptr->at(3)=m[1]._VECTptr->at(3)=m[2]._VECTptr->at(2)=m[3]._VECTptr->at(2)=1;
+    switch (output_type) {
+    case _BVP_LIST:
+        res.reserve(N+1);
+        for (int i=0;i<=N;++i)
+            res.push_back(makevecteur(X[i],Y[i]));
+        break;
+    case _BVP_DIFF:
+        res.reserve(N+1);
+        for (int i=0;i<=N;++i)
+            res.push_back(makevecteur(X[i],Y[i],dY[i]));
+        break;
+    case _BVP_PIECEWISE:
+    case _BVP_SPLINE:
+        res.reserve(2*(N+1)+1);
+        for (int i=0;i<=N;++i) {
+            res.push_back(i<N?symb_inferieur_strict(x,X[i]):symb_inferieur_egal(x,X[i]));
+            if (i==0)
+                res.push_back(0);
+            else if (output_type==_BVP_PIECEWISE)
+                res.push_back(Y[i-1]+(x-X[i-1])*(Y[i]-Y[i-1])/(X[i]-X[i-1]));
+            else {
+                m[0]._VECTptr->at(0)=pow(X[i-1],3);
+                m[0]._VECTptr->at(1)=pow(X[i-1],2);
+                m[0]._VECTptr->at(2)=X[i-1];
+                m[1]._VECTptr->at(0)=pow(X[i],3);
+                m[1]._VECTptr->at(1)=pow(X[i],2);
+                m[1]._VECTptr->at(2)=X[i];
+                m[2]._VECTptr->at(0)=3*m[0][1];
+                m[2]._VECTptr->at(1)=2*X[i-1];
+                m[3]._VECTptr->at(0)=3*m[1][1];
+                m[3]._VECTptr->at(1)=2*X[i];
+                coeff=*_linsolve(makesequence(m,makevecteur(Y[i-1],Y[i],dY[i-1],dY[i])),contextptr)._VECTptr;
+                res.push_back(pow(x,3)*coeff[0]+pow(x,2)*coeff[1]+x*coeff[2]+coeff[3]);
+            }
+        }
+        res.push_back(0);
+        return symbolic(at_piecewise,change_subtype(res,_SEQ__VECT));
+    default:
+        break;
+    }
+    return res;
+}
+static const char _bvpsolve_s []="bvpsolve";
+static define_unary_function_eval (__bvpsolve,&_bvpsolve,_bvpsolve_s);
+define_unary_function_ptr5(at_bvpsolve,alias_at_bvpsolve,&__bvpsolve,0,true)
 
 gen strip_constants(const gen &g,GIAC_CONTEXT) {
     if (g.is_symb_of_sommet(at_neg))
@@ -3090,6 +3238,333 @@ gen _conjugate_equation(const gen &g,GIAC_CONTEXT) {
 static const char _conjugate_equation_s []="conjugate_equation";
 static define_unary_function_eval (__conjugate_equation,&_conjugate_equation,_conjugate_equation_s);
 define_unary_function_ptr5(at_conjugate_equation,alias_at_conjugate_equation,&__conjugate_equation,0,true)
+
+static int cnst_count=0;
+
+/* return the (list of) Euler-Lagrange equation(s) for functional L(u,du,t) */
+gen _euler_lagrange(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG && g.subtype==-1) return g;
+    gen L,t=identificateur("x");
+    vecteur u=makevecteur(identificateur("y"));
+    if (g.type!=_VECT) {
+        L=g;
+        if (!contains(lidnt(g),t))
+            t=t__IDNT_e;
+    } else {
+        if (g.subtype!=_SEQ__VECT)
+            return gensizeerr(contextptr);
+        vecteur &gv=*g._VECTptr;
+        L=gv.front();
+        if (gv.size()>1) {
+            if (gv.size()==2 && gv[1].is_symb_of_sommet(at_of)) {
+                u.front()=gv[1]._SYMBptr->feuille._VECTptr->front();
+                t=gv[1]._SYMBptr->feuille._VECTptr->back();
+            } else if (gv.size()==2 && gv[1].type==_VECT && !gv[1]._VECTptr->empty()) {
+                u.clear();
+                t=undef;
+                for (const_iterateur it=gv[1]._VECTptr->begin();it!=gv[1]._VECTptr->end();++it) {
+                    if (!it->is_symb_of_sommet(at_of))
+                        return gensizeerr(contextptr);
+                    u.push_back(it->_SYMBptr->feuille._VECTptr->front());
+                    if (is_undef(t))
+                        t=it->_SYMBptr->feuille._VECTptr->back();
+                    else if (t!=it->_SYMBptr->feuille._VECTptr->back())
+                        return gensizeerr(contextptr);
+                }
+            } else t=gv[1];
+            if (t.type!=_IDNT)
+                return gensizeerr(contextptr);
+        }
+        if (gv.size()>2) {
+            if (gv[2].type==_IDNT)
+                u.front()=gv[2];
+            else if (gv[2].type==_VECT)
+                u=*gv[2]._VECTptr;
+            else return gensizeerr(contextptr);
+        }
+    }
+    L=idnteval(L,contextptr);
+    int n=u.size();
+    vecteur du(n),Du(n),Dut(n),DU(n),D2U(n),d2u(n),ut(n);
+    for (int i=0;i<n;++i) {
+        if (u[i].type!=_IDNT)
+            return gensizeerr(contextptr);
+        ut[i]=symb_of(u[i],t);
+        du[i]=identificateur(" du"+print_INT_(i));
+        d2u[i]=identificateur(" d2u"+print_INT_(i));
+        Du[i]=symbolic(at_derive,u[i]);
+        Dut[i]=symb_of(Du[i],t);
+        DU[i]=_derive(makesequence(ut[i],t),contextptr);
+        D2U[i]=_derive(makesequence(ut[i],t,2),contextptr);
+    }
+    L=subst(L,Dut,du,false,contextptr);
+    L=subst(L,Du,du,false,contextptr);
+    L=subst(L,DU,du,false,contextptr);
+    L=subst(L,ut,u,false,contextptr);
+    vecteur ret;
+    if (n==1 && !depend(L,*t._IDNTptr)) {
+        ret.push_back(symb_equal(_simplify(du[0]*_derive(makesequence(L,du[0]),contextptr)-L,contextptr),
+                identificateur("K_"+print_INT_(cnst_count++))));
+    }
+    for (int i=0;i<n;++i) {
+        if (!depend(L,*u[i]._IDNTptr)) {
+            ret.push_back(symb_equal(_simplify(_derive(makesequence(L,du[i]),contextptr),contextptr),
+                                     identificateur("K_"+print_INT_(cnst_count++))));
+        } else {
+            gen eq=_derive(makesequence(L,u[i]),contextptr),sol;
+            eq-=_derive(makesequence(subst(_derive(makesequence(L,du[i]),contextptr),makevecteur(du[i],u[i]),
+                                           makevecteur(DU[i],ut[i]),false,contextptr),t),contextptr);
+            eq=subst(eq,makevecteur(DU[i],D2U[i]),makevecteur(du[i],d2u[i]),false,contextptr);
+            eq=symb_equal(_simplify(subst(eq,ut[i],u[i],false,contextptr),contextptr),0);
+            if (depend(eq,*d2u[i]._IDNTptr) && (sol=_solve(makesequence(eq,d2u[i]),contextptr)).type==_VECT)
+                eq=symb_equal(d2u[i],_simplify(sol._VECTptr->front(),contextptr));
+            ret.push_back(eq);
+        }
+    }
+    ret=subst(ret,ut,u,false,contextptr);
+    ret=*radsimp(ret,contextptr)._VECTptr;
+    ret=subst(subst(ret,u,ut,false,contextptr),mergevecteur(du,d2u),mergevecteur(DU,D2U),false,contextptr);
+    return ret.size()==1?ret.front():ret;
+}
+static const char _euler_lagrange_s []="euler_lagrange";
+static define_unary_function_eval (__euler_lagrange,&_euler_lagrange,_euler_lagrange_s);
+define_unary_function_ptr5(at_euler_lagrange,alias_at_euler_lagrange,&__euler_lagrange,_QUOTE_ARGUMENTS,true)
+
+gen parse_functional(const gen &L,const gen &t,const gen &y,const gen &dy,GIAC_CONTEXT) {
+    assert(t.type==_IDNT && y.type==_IDNT && dy.type==_IDNT);
+    gen ret=subst(L,symb_of(symbolic(at_derive,y),t),dy,false,contextptr);
+    ret=subst(ret,symbolic(at_derive,y),dy,false,contextptr);
+    ret=subst(ret,_derive(makesequence(symb_of(y,t),t),contextptr),dy,false,contextptr);
+    ret=subst(ret,symb_of(y,t),y,false,contextptr);
+    return ret;
+}
+
+/* return the Jacobi equation(s) for the functional L(y,y',a<=t<=b) and stationary function Y,
+ * use h as unknown with h(a)=0 */
+gen _jacobi_equation(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG && g.subtype==-1) return g;
+    gen L,t,y,Y,h,a;
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
+        return gensizeerr(contextptr);
+    vecteur &gv=*g._VECTptr;
+    L=gv.front();
+    if (gv.size()==5) {
+        if (!gv[1].is_symb_of_sommet(at_of))
+            return gensizeerr(contextptr);
+        y=gv[1]._SYMBptr->feuille._VECTptr->front();
+        t=gv[1]._SYMBptr->feuille._VECTptr->back();
+        Y=gv[2]; h=gv[3]; a=gv[4];
+    } else if (gv.size()==6) {
+        t=gv[1]; y=gv[2]; Y=gv[3]; h=gv[4]; a=gv[5];
+    } else return gensizeerr(contextptr);
+    if (t.type!=_IDNT || h.type!=_IDNT || y.type!=_IDNT || _evalf(a,contextptr).type!=_DOUBLE_)
+        return gensizeerr(contextptr);
+    L=idnteval(L,contextptr);
+    gen dy=identificateur(" dy");
+    L=parse_functional(L,t,y,dy,contextptr);
+    gen dY=_derive(makesequence(Y,t),contextptr);
+    gen Ldydy=subst(ratnormal(_derive(makesequence(L,dy,dy),contextptr),contextptr),makevecteur(y,dy),makevecteur(Y,dY),false,contextptr);
+    gen Lyy=subst(ratnormal(_derive(makesequence(L,y,y),contextptr),contextptr),makevecteur(y,dy),makevecteur(Y,dY),false,contextptr);
+    gen Lydy=subst(ratnormal(_derive(makesequence(L,y,dy),contextptr),contextptr),makevecteur(y,dy),makevecteur(Y,dY),false,contextptr);
+    gen d=ratnormal(Lyy-_derive(makesequence(Lydy,t),contextptr),contextptr);
+    if (is_zero(Ldydy))
+        return is_zero(d)?change_subtype(gen(0),_INT_BOOLEAN):symb_equal(h,0);
+    gen jeq=ratnormal(_derive(makesequence(Ldydy,t),contextptr),contextptr)*_derive(makesequence(symb_of(h,t),t),contextptr);
+    jeq+=Ldydy*_derive(makesequence(symb_of(h,t),t,2),contextptr)-d*symb_of(h,t);
+    jeq=symb_equal(jeq,0);
+    gen sol=_deSolve(makesequence(makevecteur(jeq,symb_equal(symb_of(h,a),0)),makevecteur(t,h)),contextptr);
+    if (sol.type==_VECT && sol._VECTptr->size()==1 && sol._VECTptr->front().type==_STRNG)
+        return jeq;
+    return makesequence(jeq,sol.is_symb_of_sommet(at_prod) || sol.is_symb_of_sommet(at_neg)?ratnormal(sol,contextptr):sol);
+}
+static const char _jacobi_equation_s []="jacobi_equation";
+static define_unary_function_eval (__jacobi_equation,&_jacobi_equation,_jacobi_equation_s);
+define_unary_function_ptr5(at_jacobi_equation,alias_at_jacobi_equation,&__jacobi_equation,_QUOTE_ARGUMENTS,true)
+
+gen makevars(const gen &e,const gen &t,const vecteur &depvars,const vecteur &diffvars,GIAC_CONTEXT) {
+    if (e.is_symb_of_sommet(at_of) && e._SYMBptr->feuille._VECTptr->back()==t) {
+        gen &u=e._SYMBptr->feuille._VECTptr->front();
+        for (const_iterateur it=depvars.begin();it!=depvars.end();++it) {
+            if (*it==u) return u;
+            if (u==symbolic(at_derive,*it)) return diffvars[it-depvars.begin()];
+        }
+    } else if (e.is_symb_of_sommet(at_derive)) {
+        gen &feu=e._SYMBptr->feuille;
+        if (feu.type!=_VECT || (feu._VECTptr->size()==2 && feu._VECTptr->at(1)==t)) {
+            gen f=makevars(feu.type==_VECT?feu._VECTptr->front():feu,t,depvars,diffvars,contextptr);
+            for (const_iterateur it=depvars.begin();it!=depvars.end();++it) {
+                if (*it==f) return diffvars[it-depvars.begin()];
+            }
+        }
+    } else if (e.type==_SYMB) {
+        gen &feu=e._SYMBptr->feuille;
+        if (feu.type==_VECT) {
+            vecteur nf;
+            nf.reserve(feu._VECTptr->size());
+            for (const_iterateur it=feu._VECTptr->begin();it!=feu._VECTptr->end();++it) {
+                nf.push_back(makevars(*it,t,depvars,diffvars,contextptr));
+            }
+            return symbolic(e._SYMBptr->sommet,change_subtype(nf,_SEQ__VECT));
+        }
+        return symbolic(e._SYMBptr->sommet,makevars(feu,t,depvars,diffvars,contextptr));
+    }
+    return _eval(e,contextptr);
+}
+
+gen apply_sign(const gen &g,const gen &simp,GIAC_CONTEXT) {
+    gen e=_sign(g,contextptr);
+    if (!e.is_symb_of_sommet(at_sign))
+        return e;
+    gen arg=_apply(makesequence(simp,vecteur(1,e._SYMBptr->feuille)),contextptr)._VECTptr->front();
+    arg=_factor(arg,contextptr);
+    if (is_zero(_ratnormal(arg-g,contextptr)))
+        return e;
+    return apply_sign(arg,simp,contextptr);
+}
+
+/* return the sign of the expression, simplified */
+gen determine_sign(const gen &e_orig,const gen &simp,GIAC_CONTEXT) {
+    gen e=_apply(makesequence(simp,vecteur(1,e_orig)),contextptr)._VECTptr->front();
+    if (e.type==_SYMB)
+        return apply_sign(_factor(e,contextptr),simp,contextptr);
+    return _sign(e,contextptr);
+}
+
+gen strip_sign(const gen &g) {
+    if (g.is_symb_of_sommet(at_neg))
+        return -strip_sign(g._SYMBptr->feuille);
+    if (g.is_symb_of_sommet(at_sign))
+        return g._SYMBptr->feuille;
+    if (g.is_symb_of_sommet(at_prod) && g._SYMBptr->feuille.type==_VECT) {
+        gen ret(1);
+        vecteur &v=*g._SYMBptr->feuille._VECTptr;
+        for (const_iterateur it=v.begin();it!=v.end();++it)
+            ret=ret*strip_sign(*it);
+        return ret;
+    }
+    return g;
+}
+
+/* return the condition(s) under which the given function is convex */
+gen _convex(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG && g.subtype==-1) return g;
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
+        return gentypeerr(contextptr);
+    vecteur &gv=*g._VECTptr,vars;
+    gen f=gv.front(),t(undef);
+    if (gv.size()<2)
+        return gensizeerr(contextptr);
+    f=idnteval(f,contextptr);
+    if (gv[1].type==_VECT)
+        vars=*gv[1]._VECTptr;
+    else vars.push_back(gv[1]);
+    if (vars.empty())
+        return gensizeerr(contextptr);
+    gen simp_func=at_simplify;
+    if (gv.size()>2) {
+        gen lh,rh;
+        if (!gv[2].is_symb_of_sommet(at_equal) || (lh=gv[2]._SYMBptr->feuille._VECTptr->front())!=at_simplify ||
+                !(rh=gv[2]._SYMBptr->feuille._VECTptr->back()).is_integer() || rh.subtype!=_INT_BOOLEAN)
+            return false;
+        if (rh.val==0)
+            simp_func=at_ratnormal;
+    }
+    vecteur fvars,depvars;
+    for (iterateur it=vars.begin();it!=vars.end();++it) {
+        if (it->is_symb_of_sommet(at_of)) {
+            gen &u=it->_SYMBptr->feuille._VECTptr->front();
+            gen &v=it->_SYMBptr->feuille._VECTptr->back();
+            if (v.type!=_IDNT || u.type!=_IDNT)
+                return gensizeerr(contextptr);
+            if (is_undef(t))
+                t=v;
+            else if (t!=v)
+                return gensizeerr(contextptr);
+            if (is_zero(_contains(makesequence(depvars,u),contextptr)))
+                depvars.push_back(u);
+        } else if (it->type==_IDNT) {
+            if (is_zero(_contains(makesequence(fvars,*it),contextptr)))
+                    fvars.push_back(*it);
+        } else return gensizeerr(contextptr);
+    }
+    vecteur diffvars,diffs;
+    stringstream ss;
+    int cnt=0;
+    for (const_iterateur it=depvars.begin();it!=depvars.end();++it) {
+        ss.str(""); ss << " tmp" << ++cnt;
+        diffvars.push_back(identificateur(ss.str().c_str()));
+        diffs.push_back(_derive(makesequence(symb_of(*it,t),t),contextptr));
+    }
+    gen F=is_undef(t)?_eval(f,contextptr):makevars(f,t,depvars,diffvars,contextptr);
+    vecteur allvars=mergevecteur(fvars,mergevecteur(depvars,diffvars));
+    gen TRUE=change_subtype(1,_INT_BOOLEAN),FALSE=change_subtype(0,_INT_BOOLEAN);
+    if (allvars.size()==1) { // univariate function
+        if (is_undef(simp_func))
+            return _derive(makesequence(F,allvars.front(),2),contextptr);
+        gen e=determine_sign(_derive(makesequence(F,allvars.front(),2),contextptr),simp_func,contextptr);
+        if (is_one(e))
+            return TRUE;
+        if (is_minus_one(e))
+            return FALSE;
+        e=_apply(makesequence(simp_func,vecteur(1,strip_sign(e))),contextptr)._VECTptr->front();
+        return e.is_symb_of_sommet(at_neg)?symb_inferieur_egal(e._SYMBptr->feuille,0):symb_superieur_egal(e,0);
+    }
+    // multivariate case, compute the eigenvalues of the Hessian
+    int n=allvars.size(),N=std::pow(2,n);
+    matrice H=*_hessian(makesequence(F,allvars),contextptr)._VECTptr;
+    if (is_undef(simp_func))
+        return subst(H,diffvars,diffs,false,contextptr);
+    vecteur cond;
+    cond.reserve(N);
+    for (int i=1;i<N;++i) {
+        matrice m_tmp,m;
+        for (int j=0;j<n;++j) {
+            if (((int)std::pow(2,j) & i)==0) continue;
+            m_tmp.push_back(H[j]);
+        }
+        m_tmp=mtran(m_tmp);
+        for (int j=0;j<n;++j) {
+            if (((int)std::pow(2,j) & i)==0) continue;
+            m.push_back(m_tmp[j]);
+        }
+        cond.push_back(determine_sign(_det(m,contextptr),simp_func,contextptr));
+    }
+    vecteur res;
+    for (const_iterateur it=cond.begin();it!=cond.end();++it) {
+        if (is_minus_one(*it))
+            return FALSE;
+        if (is_one(*it) || is_zero(*it))
+            continue;
+        res.push_back(strip_sign(*it));
+    }
+    if (res.empty())
+        return TRUE;
+    for (int i=0;i<int(res.size());++i) {
+        for (int j=res.size();j-->i+1;) {
+            if (is_zero(_ratnormal(res[j]-res[i],contextptr)))
+                res.erase(res.begin()+j);
+        }
+    }
+    for (int i=res.size();i-->0;) {
+        if (res[i].is_integer() && res[i].subtype==_INT_BOOLEAN) {
+            if (res[i].val==1)
+                res.erase(res.begin()+i);
+            else if (res[i].val==0)
+                return FALSE;
+        }
+        gen &r=res[i];
+        r=_apply(makesequence(simp_func,vecteur(1,r)),contextptr)._VECTptr->front();
+        r=symb_superieur_egal(subst(r,diffvars,diffs,false,contextptr),0);
+    }
+    if (res.empty())
+        return TRUE;
+    if (res.size()==1)
+        return res.front();
+    return res;
+}
+static const char _convex_s []="convex";
+static define_unary_function_eval (__convex,&_convex,_convex_s);
+define_unary_function_ptr5(at_convex,alias_at_convex,&__convex,_QUOTE_ARGUMENTS,true)
 
 #ifndef NO_NAMESPACE_GIAC
 }

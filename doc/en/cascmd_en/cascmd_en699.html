@@ -4,52 +4,41 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Displaying exponents</title>
+<title>Printing</title>
 </head>
 <body >
 <a href="cascmd_en698.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en700.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec911" class="subsection">10.2.7  Displaying exponents</h3>
-<p>The <span style="font-family:monospace">printpow</span> command determines how the <span style="font-family:monospace">print</span>
-command will print exponents. By default,
+<h3 id="sec911" class="subsection">10.2.6  Printing</h3>
+<p>The <span style="font-family:monospace">print</span><a id="hevea_default1156"></a> (or <span style="font-family:monospace">Disp</span><a id="hevea_default1157"></a>) command
+will print its arguments in a special pane and return the number
+<span style="font-family:monospace">1</span>. For example, 
 </p><div class="center">
-<span style="font-family:monospace">print(x^3)</span>
+<span style="font-family:monospace">print("Hello")</span>
+</div><p>
+will result in
+</p><div class="center">
+<span style="font-family:monospace">Hello</span>
+</div><p>
+If you enter
+</p><div class="center">
+<span style="font-family:monospace">a := 12</span>
+</div><p>
+then
+</p><div class="center">
+<span style="font-family:monospace">print("a =",a)</span>
 </div><p>
 will print
 </p><div class="center">
-<span style="font-family:monospace">x^3</span>
-</div><p>
-If you use the command
+<span style="font-family:monospace">"a =", 12</span>
+</div><p>The <span style="font-family:monospace">ClrIO</span><a id="hevea_default1158"></a> (no argument) will erase the printing
+that was done in the level it was typed. For example,
 </p><div class="center">
-<span style="font-family:monospace">printpow(1)</span>
+<span style="font-family:monospace">print("Hello"); ClrIO()</span>
 </div><p>
-then
-</p><div class="center">
-<span style="font-family:monospace">print(x^3)</span>
-</div><p>
-will print as
-</p><div class="center">
-<span style="font-family:monospace">pow(x,3)</span>
-</div><p>
-If you use the command
-</p><div class="center">
-<span style="font-family:monospace">printpow(-1)</span>
-</div><p>
-then
-</p><div class="center">
-<span style="font-family:monospace">print(x^3)</span>
-</div><p>
-will print as
-</p><div class="center">
-<span style="font-family:monospace">x**3</span>
-</div><p>
-Finally,
-</p><div class="center">
-<span style="font-family:monospace">printpow(0)</span>
-</div><p>
-will restore the default form.</p>
+will simply return the result <span style="font-family:monospace">(1,1)</span>.</p>
 <hr>
 <a href="cascmd_en698.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

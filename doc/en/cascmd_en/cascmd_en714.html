@@ -4,35 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Working with the graphics screen</title>
+<title>Converting an expression to a string</title>
 </head>
 <body >
 <a href="cascmd_en713.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en715.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec931" class="subsection">10.4.7  Working with the graphics screen</h3>
-<p>Recall that the <span style="font-family:monospace">DispG</span><a id="hevea_default1182"></a> screen contains the
-graphical output of <span style="font-family:monospace">Xcas</span>. You can use the <span style="font-family:monospace">DispG</span>
-command (without parentheses) to bring it up; entering
+<h3 id="sec931" class="subsection">10.4.6  Converting an expression to a string</h3>
+<p>The <span style="font-family:monospace">string</span><a id="hevea_default1182"></a> can be used to convert an expression
+to a string. If you give it an expression as an argument, the
+expression will be evaluated and then converted to a string. For
+example, if you enter
 </p><div class="center">
-<span style="font-family:monospace">DispG;</span>
+<span style="font-family:monospace">string(ifactor(6))</span>
 </div><p>
-will open the graphics screen.</p><p>To clear the graphics screen, you can use the
-<span style="font-family:monospace">ClrGraph</span><a id="hevea_default1183"></a> command. If you enter
+the result will be the string
 </p><div class="center">
-<span style="font-family:monospace">ClrGraph</span>
+<span style="font-family:monospace">"2 * 3"</span>
 </div><p>
-or
+This is the same thing as adding the empty string to the expression;
 </p><div class="center">
-<span style="font-family:monospace">ClrGraph()</span>
-</div><p>
-then the <span style="font-family:monospace">DispG</span> screen will be erased.</p><p>You can close the <span style="font-family:monospace">DispG</span> screen with the <span style="font-family:monospace">DispHome</span>
-command; entering
+<span style="font-family:monospace">ifactor(6) + ""</span>
+</div><p>If you want to convert an unevaluated expression to a string, you can
+quote the expression. If you enter
 </p><div class="center">
-<span style="font-family:monospace">DispHome;</span>
+<span style="font-family:monospace">string(quote(ifactor(6)))</span>
 </div><p>
-will make the graphics screen go away.</p>
+then you will get the string
+</p><div class="center">
+<span style="font-family:monospace">"ifactor(6)"</span>
+</div>
 <hr>
 <a href="cascmd_en713.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

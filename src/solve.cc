@@ -6202,6 +6202,11 @@ namespace giac {
 		  if (resk.type==_VECT && resk._VECTptr->size()==elim.size()){
 		    vecteur resmodif(*resk._VECTptr);
 		    gen resval=subst(elimj,elim,resk,false,contextptr);
+		    if (is_undef(resval)){
+		      res.erase(res.begin()+k);
+		      --k;
+		      continue;
+		    }
 		    resmodif.insert(resmodif.begin()+j,resval);
 		    resk=gen(resmodif,resk.subtype);
 		  }
@@ -7017,11 +7022,21 @@ namespace giac {
   gen _gbasis_simult_primes(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG &&  g.subtype==-1) return  g;
     gen args(g);
+    int old=simult_primes;
+    if (g.type==_VECT && g._VECTptr->size()==5 && is_integer_vecteur(*g._VECTptr)){
+      const vecteur & v=*g._VECTptr;
+      simult_primes=giacmax(1,v[0].val);
+      simult_primes_seuil2=v[1].val;
+      simult_primes2=giacmax(1,v[2].val);
+      simult_primes_seuil3=v[3].val;
+      simult_primes3=giacmax(1,v[4].val);
+      *logptr(contextptr) << simult_primes << ", n>" << simult_primes_seuil2 << ":" << simult_primes2 << " ,n>" << simult_primes_seuil3 << ":" << simult_primes3 << endl;
+      return old;
+    }
     if (g.type==_DOUBLE_)
       args=int(g._DOUBLE_val);    
     if (args.type!=_INT_)
       return int(simult_primes);
-    int old=simult_primes;
     simult_primes=args.val<1?1:args.val;
     return old;
   }

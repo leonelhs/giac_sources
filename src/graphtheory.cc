@@ -383,8 +383,8 @@ gen flights(const gen &g,bool arrive,bool all,GIAC_CONTEXT) {
             return gt_err(_GT_ERR_VERTEX_NOT_FOUND);
     }
     vecteur res;
+    graphe::ivector adj;
     do {
-        graphe::ivector adj;
         G.adjacent_nodes(i,adj);
         vecteur v;
         for (graphe::ivector::const_iterator it=adj.begin();it!=adj.end();++it) {
@@ -392,7 +392,7 @@ gen flights(const gen &g,bool arrive,bool all,GIAC_CONTEXT) {
                 v.push_back(G.node_label(*it));
         }
         if (!all)
-            return v;
+            return _sort(v,contextptr);
         res.push_back(_sort(v,contextptr));
     } while (++i<G.node_count());
     return change_subtype(res,_LIST__VECT);
@@ -1145,7 +1145,7 @@ gen _has_edge(const gen &g,GIAC_CONTEXT) {
         return gentypeerr(contextptr);
     if (int(gv.back()._VECTptr->size())!=2)
         return gensizeerr(contextptr);
-    vecteur e(*gv.back()._VECTptr);
+    vecteur &e=*gv.back()._VECTptr;
     graphe G(contextptr);
     if (!G.read_gen(gv.front()))
         return gt_err(_GT_ERR_NOT_A_GRAPH);
@@ -1173,11 +1173,11 @@ gen _has_arc(const gen &g,GIAC_CONTEXT) {
     vecteur &gv = *g._VECTptr;
     if (int(gv.size())!=2)
         return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
-    if (gv.back().type!=_VECT || !is_integer_vecteur(*gv.back()._VECTptr))
+    if (gv.back().type!=_VECT)
         return gentypeerr(contextptr);
     if (int(gv.back()._VECTptr->size())!=2)
         return gensizeerr(contextptr);
-    vecteur e(*gv.back()._VECTptr);
+    vecteur &e=*gv.back()._VECTptr;
     bool undirected=gv.back().subtype==_SET__VECT;
     graphe G(contextptr);
     if (!G.read_gen(gv.front()))
@@ -6989,21 +6989,48 @@ static const char _truncate_graph_s[]="truncate_graph";
 static define_unary_function_eval(__truncate_graph,&_truncate_graph,_truncate_graph_s);
 define_unary_function_ptr5(at_truncate_graph,alias_at_truncate_graph,&__truncate_graph,0,true)
 
-/* USAGE:   find_cycles(G)
+/* USAGE:   find_cycles(G,[length=k||lb..ub])
  *
- * Returns the list of elementary cycles of the digraph G.
+ * Returns the list of elementary cycles of the digraph G. If length option is
+ * specified, only cycles of length k resp. of length between lb and ub are
+ * returned.
  */
 gen _find_cycles(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
+    if (g.type!=_VECT)
+        return gentypeerr(contextptr);
+    int lb=-1,ub=-1;
+    if (g.subtype==_SEQ__VECT) {
+        if (g._VECTptr->size()!=2)
+            return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
+        if (!g._VECTptr->at(1).is_symb_of_sommet(at_equal))
+            return gensizeerr(contextptr);
+        gen &opt=g._VECTptr->at(1);
+        if (opt._SYMBptr->feuille._VECTptr->front()!=at_length)
+            return gensizeerr(contextptr);
+        gen &val=opt._SYMBptr->feuille._VECTptr->back();
+        if (val.is_integer() && val.val>0)
+            lb=ub=val.val;
+        else if (val.is_symb_of_sommet(at_interval)) {
+            gen &lo=val._SYMBptr->feuille._VECTptr->front();
+            gen &hi=val._SYMBptr->feuille._VECTptr->back();
+            if (!lo.is_integer() || !hi.is_integer())
+                return gensizeerr(contextptr);
+            lb=lo.val;
+            ub=hi.val;
+            if (lb<0 || ub<0 || lb>ub)
+                return gensizeerr(contextptr);
+        }
+    }
     graphe G(contextptr);
-    if (!G.read_gen(g))
+    if (!G.read_gen(g.subtype==_SEQ__VECT?g._VECTptr->front():g))
         return gt_err(_GT_ERR_NOT_A_GRAPH);
     if (G.is_empty())
         return generr("graph is empty");
     if (!G.is_directed())
         return gt_err(_GT_ERR_DIRECTED_GRAPH_REQUIRED);
     graphe::ivectors cyc;
-    G.elementary_cycles(cyc);
+    G.elementary_cycles(cyc,lb,ub);
     vecteur res;
     G.ivectors2vecteur(cyc,res,false);
     return change_subtype(res,_LIST__VECT);

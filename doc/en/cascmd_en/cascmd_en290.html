@@ -4,52 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Factorization : factor factoriser</title>
+<title>Primitive part of a polynomial : primpart</title>
 </head>
 <body >
 <a href="cascmd_en289.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en291.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec360" class="subsection">5.27.13  Factorization : <span style="font-family:monospace">factor factoriser</span></h3>
-<p><a id="hevea_default478"></a><a id="hevea_default479"></a><a id="sec:factor"></a>
-<span style="font-family:monospace">factor</span> takes as argument a polynomial or a list of 
-polynomials and optionally an algebraic extension, e.g. <span style="font-family:monospace">sqrt(n)</span>.<br>
-<span style="font-family:monospace">factor</span> factorizes the polynomial (or the polynomials in the list) on the
-field of its coefficients (the field is complexified in complex mode)
-or on the smallest extension containing the optional second argument.
-Unlike <span style="font-family:monospace">collect</span>,
-<span style="font-family:monospace">factor</span> will further factorize each factor of degree 2
-if <span style="font-family:monospace">Sqrt</span> is checked in the <span style="font-family:monospace">cas</span> configuration
-(see also <a href="cascmd_en164.html#sec%3Afactore">5.12.9</a>).
-You can check the current configuration in the status button under
-<span style="font-family:monospace">Xcas</span> and change the configuration by hitting this status button.<br>
+<h3 id="sec360" class="subsection">5.27.11  Primitive part of a polynomial : <span style="font-family:monospace">primpart</span></h3>
+<p><a id="hevea_default477"></a>
+<span style="font-family:monospace">primpart</span> takes as argument a polynomial <span style="font-family:monospace">P</span> given by a
+symbolic expression or by the list of its coefficients.<br>
+<span style="font-family:monospace">primpart</span> returns the primitive part of <span style="font-family:monospace">P</span>,
+that is <span style="font-family:monospace">P</span> divided by the GCD 
+(greatest common divisor) of its coefficients.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x+1)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">primpart(6x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-3x+9)</span></div><p>
+or:
+</p><div class="center"><span style="font-family:monospace">primpart([6,-3,9],x))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">(x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(-x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2*(x+1)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
-Output if <span style="font-family:monospace">Sqrt</span> is not checked in the <span style="font-family:monospace">cas</span> configuration :
-</p><div class="center"><span style="font-family:monospace">(x-1)*(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x-1)</span></div><p>
-Output if <span style="font-family:monospace">Sqrt</span> is checked in the <span style="font-family:monospace">cas</span> configuration :
-</p><div class="center"><span style="font-family:monospace">(x-1)*(x+(sqrt(5)-1)/2)*(x+(-sqrt(5)-1)/2)</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,sqrt(5))</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">((2*sqrt(5)-19)*((sqrt(5)+15)*x+</span><br>
-<span style="font-family:monospace">7*sqrt(5)-5)*(-x+1)*((sqrt(5)+25)*x-13*sqrt(5)-15))/6820</span>
-</div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">factor(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)</span></div><p>
-Output in real mode :
-</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1</span></div><p>
-Output in complex mode :
-</p><div class="center"><span style="font-family:monospace">((-i)*x+1)*((i)*x+1)</span></div>
+</p><div class="center"><span style="font-family:monospace">2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x+3</span></div>
 <hr>
 <a href="cascmd_en289.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

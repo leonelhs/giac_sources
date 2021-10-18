@@ -4,38 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Tangent planes in space: tangent</title>
+<title>The bisector plane in space: perpen_bisector</title>
 </head>
 <body >
 <a href="cascmd_en850.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en852.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1109" class="subsection">12.6.3  Tangent planes in space: <span style="font-family:monospace">tangent</span><a id="hevea_default1357"></a></h3>
+<h3 id="sec1109" class="subsection">12.6.2  The bisector plane in space: <span style="font-family:monospace">perpen_bisector</span><a id="hevea_default1357"></a></h3>
 <p>
-<a id="sec:3dtangents"></a></p><p>See section <a href="cascmd_en749.html#sec%3A2dtangents">11.7.7</a> for tangents in the plane.</p><p>The <span style="font-family:monospace">tangent</span> command takes as argument a geometric object and
-a point on the object.</p><p><span style="font-family:monospace">tangent</span> draws and returns the plane through the point tangent
-to the object.</p><p>Input:
+<a id="sec:3dperpbis"></a></p><p>See section <a href="cascmd_en753.html#sec%3A2dperpbis">11.7.10</a> for perpendicular bisectors in the
+plane.</p><p>The <span style="font-family:monospace">perpen_bisector</span> command takes as argument a segment or
+two points.</p><p><span style="font-family:monospace">perpen_bisector</span> returns and draws the perpendicular bisector
+plane of the segment.</p><p>Input:
 </p><div class="center">
-<span style="font-family:monospace">S: = sphere([0,0,0],3)
+<span style="font-family:monospace">perpen_bisector(point(0,0,0),point(4,4,4))
 </span></div><p>
-then:
+or:
 </p><div class="center">
-<span style="font-family:monospace">tangent(S,[2,2,1])
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en206.png">
-</div><p>If the geometric object is the graph of a function, then the second
-argument is a point in the domain of the function; the corresponding point
-on the graph will be used.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">G:=plotfunc(x^2 + y^2, [x,y])
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">tangent(G,[2,2])
+<span style="font-family:monospace">perpen_bisector(segment([0,0,0],[4,4,4])
 </span></div><p>
 Output:
 </p><div class="center">

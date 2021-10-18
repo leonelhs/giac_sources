@@ -597,6 +597,36 @@ static const char _highpass_s []="highpass";
 static define_unary_function_eval (__highpass,&_highpass,_highpass_s);
 define_unary_function_ptr5(at_highpass,alias_at_highpass,&__highpass,0,true)
 
+gen _moving_average(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG && g.subtype==-1) return g;
+    if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
+        return gentypeerr(contextptr);
+    vecteur &gv=*g._VECTptr;
+    if (gv.size()!=2)
+        return gensizeerr("Wrong number of input arguments");
+    if (gv.front().type!=_VECT)
+        return gensizeerr("First argument must be an array");
+    if (!gv.back().is_integer() || gv.back().val<=0)
+        return gensizeerr("Second argument must be a positive integer");
+    vecteur &s=*gv.front()._VECTptr;
+    int n=gv.back().val,len=s.size();
+    if (n>len)
+        return gensizeerr("Filter length exceeds array size");
+    vecteur res(len-n+1);
+    gen acc(0);
+    for (int i=0;i<n;++i) acc+=s[i];
+    res[0]=acc;
+    for (int i=n;i<len;++i) {
+        acc-=s[i-n];
+        acc+=s[i];
+        res[i-n+1]=acc;
+    }
+    return multvecteur(fraction(1,n),res);
+}
+static const char _moving_average_s []="moving_average";
+static define_unary_function_eval (__moving_average,&_moving_average,_moving_average_s);
+define_unary_function_ptr5(at_moving_average,alias_at_moving_average,&__moving_average,0,true)
+
 gen _resample(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
 #ifndef HAVE_LIBSAMPLERATE
@@ -719,12 +749,9 @@ bool nivelate(vecteur &data,int k,const gen &b,const gen &val,const unary_functi
             data[k]=val*data[k]/r;
             return true;
         }
-    }
-    else {
-        if (_eval(symbolic(comp,makevecteur(data[k],b)),contextptr).val!=0) {
-            data[k]=val;
-            return true;
-        }
+    } else if (_eval(symbolic(comp,makevecteur(data[k],b)),contextptr).val!=0) {
+        data[k]=val;
+        return true;
     }
     return false;
 }

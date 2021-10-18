@@ -4,35 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Eigenvectors : egv eigenvectors eigenvects
-eigVc</title>
+<title>Eigenvalues : eigenvals</title>
 </head>
 <body >
 <a href="cascmd_en511.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en513.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec626" class="subsection">5.50.3  Eigenvectors : <span style="font-family:monospace">egv eigenvectors eigenvects
-eigVc</span></h3>
-<p><a id="hevea_default803"></a><a id="hevea_default804"></a><a id="hevea_default805"></a><a id="hevea_default806"></a>
-<span style="font-family:monospace">egv</span> (or <span style="font-family:monospace">eigenvectors eigenvects eigVc</span>) takes as argument 
-a square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
-If <span style="font-style:italic">A</span> is a diagonalizable matrix, <span style="font-family:monospace">egv</span> (or 
-<span style="font-family:monospace">eigenvectors eigenvects eigVc</span>) returns a matrix whose columns are the 
-eigenvectors of the matrix <span style="font-style:italic">A</span>. Otherwise, it will fail (see also
-<span style="font-family:monospace">jordan</span> for characteristic vectors).<br>
+<h3 id="sec626" class="subsection">5.50.1  Eigenvalues : <span style="font-family:monospace">eigenvals</span></h3>
+<p><a id="hevea_default800"></a>
+<span style="font-family:monospace">eigenvals</span> takes as argument a square
+matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
+<span style="font-family:monospace">eigenvals</span> returns the sequence of the <span style="font-style:italic">n</span> eigenvalues of <span style="font-style:italic">A</span>.<br>
+<span style="font-weight:bold">Remark</span> : If <span style="font-style:italic">A</span> is exact, <span style="font-family:monospace">Xcas</span> may not be able
+to find the exact roots of the characteristic polynomial, 
+<span style="font-family:monospace">eigenvals</span> will return approximate eigenvalues of <span style="font-style:italic">A</span> if the
+coefficients are numeric or a subset of the eigenvalues if the
+coefficients are symbolic.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">egv([[1,1,3],[1,3,1],[3,1,1]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">eigenvals([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[-1,1,1],[2,1,0],[-1,1,-1]] </span></div><p>
+</p><div class="center"><span style="font-family:monospace">(2,2,2) </span></div><p>
 Input :
-</p><div class="center"><span style="font-family:monospace">egv([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">eigenvals([[4,1,0],[1,2,-1],[2,1,0]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">"Not diagonalizable at eigenvalue 2"</span></div><p>
-In complex mode, input :
-</p><div class="center"><span style="font-family:monospace">egv([[2,0,0],[0,2,-1],[2,1,2]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[0,1,0],[-1,-2,-1],[i,0,-i]]</span></div>
+</p><div class="center"><span style="font-family:monospace">(0.324869129433,4.21431974338,1.46081112719)</span></div>
 <hr>
 <a href="cascmd_en511.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

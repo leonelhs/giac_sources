@@ -4,31 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Eigenvalues : egvl eigenvalues eigVl</title>
+<title>Matrix column norm : colnorm colNorm</title>
 </head>
 <body >
 <a href="cascmd_en510.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en512.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec625" class="subsection">5.50.2  Eigenvalues : <span style="font-family:monospace">egvl eigenvalues eigVl</span></h3>
-<p><a id="hevea_default800"></a><a id="hevea_default801"></a><a id="hevea_default802"></a>
-<span style="font-family:monospace">egvl</span> (or <span style="font-family:monospace">eigenvalues eigVl</span>) takes as argument a 
-square matrix <span style="font-style:italic">A</span> of size <span style="font-style:italic">n</span>.<br>
-<span style="font-family:monospace">egvl</span> (or <span style="font-family:monospace">eigenvalues eigVl</span>) returns the Jordan normal
-form of <span style="font-style:italic">A</span>.<br>
-<span style="font-weight:bold">Remark</span> : If <span style="font-style:italic">A</span> is exact, <span style="font-family:monospace">Xcas</span> may not be able
-to find the exact roots of the characteristic polynomial, 
-<span style="font-family:monospace">eigenvalues</span> will return an approximate diagonalization of <span style="font-style:italic">A</span> if the
-coefficients are numeric.<br>
+<h3 id="sec624" class="subsection">5.49.4  Matrix column norm : <span style="font-family:monospace">colnorm colNorm</span></h3>
+<p><a id="hevea_default798"></a><a id="hevea_default799"></a>
+<span style="font-family:monospace">colnorm</span> (or <span style="font-family:monospace">colNorm</span>) takes as argument a matrix 
+<span style="font-style:italic">A</span>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>.<br>
+<span style="font-family:monospace">colnorm</span> (or <span style="font-family:monospace">colNorm</span>) returns max<sub><span style="font-style:italic">j</span></sub>(∑<sub><span style="font-style:italic">k</span></sub>(|<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>|)).<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">egvl([[4,1,-2],[1,2,-1],[2,1,0]])</span></div><p>
+</p><div class="center"><span style="font-family:monospace">colnorm([[1,2],[3,-4]])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">colNorm([[1,2],[3,-4]])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">[[2,1,0],[0,2,1],[0,0,2]] </span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">egvl([[4,1,0],[1,2,-1],[2,1,0]])</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[0.324869129433,0,0],[0,4.21431974338,0],[0,0,1.46081112719]]</span></div>
+</p><div class="center"><span style="font-family:monospace">6</span></div><p>
+Indeed : max(1+3,2+4)=6</p>
 <hr>
 <a href="cascmd_en510.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

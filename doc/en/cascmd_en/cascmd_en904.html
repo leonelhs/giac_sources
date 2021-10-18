@@ -4,71 +4,26 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Cubes: cube</title>
+<title>The graph of parametric equations in space: paramplot</title>
 </head>
 <body >
 <a href="cascmd_en903.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en905.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1172" class="subsection">12.16.1  Cubes: <span style="font-family:monospace">cube</span><a id="hevea_default1411"></a></h3>
-<p>The <span style="font-family:monospace">cube</span> command takes as arguments three points, <span style="font-family:monospace">A</span>,
-<span style="font-family:monospace">B</span> and <span style="font-family:monospace">C</span>.</p><p><span style="font-family:monospace">cube</span> returns and draws the following cube:
-</p><ul class="itemize"><li class="li-itemize">
-One edge is <span style="font-family:monospace">AB</span>.
-</li><li class="li-itemize">One face is in the plane <span style="font-family:monospace">ABC</span>, on the same side of
-line <span style="font-family:monospace">AB</span> as is <span style="font-family:monospace">C</span>.
-</li><li class="li-itemize">The cube is on the side of plane <span style="font-family:monospace">ABC</span> that makes the
-points <span style="font-family:monospace">A</span>, <span style="font-family:monospace">B</span> and <span style="font-family:monospace">C</span> counterclockwise.
-</li></ul><p>
+<h3 id="sec1171" class="subsection">12.15.6  The graph of parametric equations in space: <span style="font-family:monospace">paramplot</span><a id="hevea_default1411"></a></h3>
+<p>The <span style="font-family:monospace">paramplot</span> command takes two arguments, a list of three
+expressions involving two parameters, and a list of the two parameters.</p><p><span style="font-family:monospace">paramplot</span> returns and draws the parameterized surface; the
+command <span style="font-family:monospace">paramplot([f(u,v),g(u,v),h(u,v)],[u,v])</span> will return
+and draw the surface given by <span style="font-family:monospace">x=f(u,v)</span>, <span style="font-family:monospace">y=g(u,v)</span>,
+<span style="font-family:monospace">z=h(u,v)</span>.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">C1 := cube([0,0,0],[0,4,0],[0,0,1])
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en237.png">
-</div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">c1,c2,c3,c4,c5,c6,c7,c8 := vertices(C1)
+<span style="font-family:monospace">paramplot([u*cos(v),u*sin(v),u],[u,v])
 </span></div><p>
 Output:
 </p><div class="center">
 <img src="cascmd_en238.png">
-</div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">faces(C1)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">[[[0,0,0],[0,4,0],[0,4,4],[0,0,4]],<br>
-
-[[4,0,0],[4,4,0],[4,4,4],[4,0,4]],<br>
-
-[[0,0,0],[4,0,0],[4,0,4],[0,0,4]],<br>
-
-[[0,0,0],[0,4,0],[4,4,0],[4,0,0]],<br>
-
-[[0,4,0],[0,4,4],[4,4,4],[4,4,0]],<br>
-
-[[0,0,4],[4,0,4],[4,4,4],[0,4,4]]]
-</span></div><p>Input:
-</p><div class="center">
-<span style="font-family:monospace">C2 := cube([0,0,0],[0,4,0],[0,0,-1])
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en239.png">
-</div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">a1,a2,a3,a4,a5,a6,a7,a8 := vertices(C2)
-</span></div><p>
-Output:
-</p><div class="center">
-<img src="cascmd_en240.png">
 </div>
 <hr>
 <a href="cascmd_en903.html"><img src="previous_motif.gif" alt="Previous"></a>

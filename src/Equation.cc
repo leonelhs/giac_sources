@@ -1350,7 +1350,9 @@ namespace xcas {
       return gen(res,_SEQ__VECT);
     }
     if (g.type==_USER){
-      if (dynamic_cast<giac::galois_field *>(g._USERptr)){ 
+      if (giac::galois_field *gptr=dynamic_cast<giac::galois_field *>(g._USERptr)){ 
+	if (gptr->a.type==_VECT && gptr->a._VECTptr->size()==1)
+	  return Equation_compute_size(makemod(gptr->a._VECTptr->front(),gptr->p),a,windowhsize,contextptr);
 	gen g1(g.print(contextptr),contextptr); 
 	return Equation_compute_size(g1,a,windowhsize,contextptr);
       }
@@ -1370,7 +1372,13 @@ namespace xcas {
     vecteur li(lidnt(g));
     if (g.type==_SYMB && lvar(g)==li && lop(g,at_inv).empty()){
       // polynomial check if it has modular coefficients
-      gen p=_symb2poly(makesequence(g,li),contextptr),modulo;
+      gen p,modulo;
+      try {
+	p=_symb2poly(makesequence(g,li),contextptr);
+      }
+      catch (std::runtime_error & error){
+	p=undef;
+      }
       if (p.type==_POLY && has_mod_coeff(p,modulo)){
 	polynome & P=*p._POLYptr;
 	vector< monomial<gen> >::iterator it=P.coord.begin(),itend=P.coord.end();

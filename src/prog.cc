@@ -4872,6 +4872,9 @@ namespace giac {
   }
   gen _makemat(const gen & args,const context * contextptr){
     if ( args.type==_STRNG &&  args.subtype==-1) return  args;
+    if (args.type==_INT_ && args.val>0 && double(args.val)*args.val<LIST_SIZE_LIMIT){
+      return gen(vecteur(args.val,vecteur(args.val,0)),_MATRIX__VECT);
+    }
     if (args.type!=_VECT)
       return symb_makemat(args);
     int s=int(args._VECTptr->size());
@@ -8407,6 +8410,7 @@ namespace giac {
 	return gensizeerr(contextptr);
       return res;
     }
+    if (g.type==_INT_) return _makemat(g,contextptr);
     if (g.type!=_VECT)
       return gentypeerr(contextptr);
     vecteur v=*g._VECTptr;
@@ -9054,6 +9058,28 @@ namespace giac {
   static const char _Pause_s []="Pause";
   static define_unary_function_eval2 (__Pause,&_Pause,_Pause_s,&printastifunction);
   define_unary_function_ptr5( at_Pause ,alias_at_Pause ,&__Pause,0,T_RETURN);
+
+  static const char _sleep_s []="sleep";
+  static define_unary_function_eval (__sleep,&_Pause,_sleep_s);
+  define_unary_function_ptr5( at_sleep ,alias_at_sleep,&__sleep,0,true);
+
+  gen _monotonic(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+#ifdef FXCG
+    return RTC_GetTicks();
+#else
+#if defined __APPLE__ || defined EMCC || !defined HAVE_LIBRT
+    return clock();
+#else
+    timespec t;
+    clock_gettime(CLOCK_MONOTONIC,&t);
+    return t.tv_sec+t.tv_nsec*1e-9;
+#endif
+#endif
+  }
+  static const char _monotonic_s []="monotonic";
+  static define_unary_function_eval (__monotonic,&_monotonic,_monotonic_s);
+  define_unary_function_ptr5( at_monotonic ,alias_at_monotonic,&__monotonic,0,true);
 
   static const char _DelVar_s []="DelVar";
   static define_unary_function_eval2_quoted (__DelVar,&_purge,_DelVar_s,&printastifunction);

@@ -2257,6 +2257,7 @@ bool graphe::dot_parse_attributes(ifstream &dotfile,attrib &attr) {
         if (key==-1 || dot_read_token(dotfile,token)!=1 || token!="=" ||
                 dot_read_token(dotfile,token)!=1 || dot_reading_value || !dot_token_is_id())
             return false;
+        if (key==_GT_ATTRIB_WEIGHT && !is_weighted()) set_weighted(true);
         insert_attribute(attr,key,str2gen(token,dot_token_type==_GT_DOT_TOKEN_TYPE_STRING));
     }
     return true;
@@ -3149,18 +3150,22 @@ void graphe::adjacent_nodes(int i,ivector &adj,bool include_temp_edges) const {
     adj.clear();
     adj.reserve(degree(i));
     int j;
+    iset s;
     for (ivector_iter it=v.neighbors().begin();it!=v.neighbors().end();++it) {
         j=*it;
         if (include_temp_edges || !is_temporary_edge(i,j))
-            adj.push_back(j);
+            s.insert(j);
     }
     if (is_directed()) {
         for (node_iter it=nodes.begin();it!=nodes.end();++it) {
-            if (i!=(j=it-nodes.begin()) && it->has_neighbor(i) &&
+            j=it-nodes.begin();
+            if (i!=j && it->has_neighbor(i) &&
                     (include_temp_edges || !is_temporary_edge(i,j)))
-                adj.push_back(j);
+                s.insert(j);
         }
-        std::sort(adj.begin(),adj.end());
+    }
+    for (iset::const_iterator it=s.begin();it!=s.end();++it) {
+        adj.push_back(*it);
     }
 }
 
@@ -12407,8 +12412,9 @@ void graphe::truncate(graphe &dest,const ivectors &faces) {
  * Implementation of Tarjan's algorithm published in SIAM J. Comp. 2(3), 1973
  */
 
-graphe::circ_enum::circ_enum(graphe *gr) {
+graphe::circ_enum::circ_enum(graphe *gr,int lo,int hi) {
     G=gr;
+    lb=lo; ub=hi;
     int n=G->node_count();
     A.resize(n);
     for (int i=0;i<n;++i) {
@@ -12425,12 +12431,14 @@ void graphe::circ_enum::backtrack(int v,bool &f) {
     point_stack.push_back(v);
     mark[v]=true;
     marked_stack.push(v);
-    int w,u;
+    int w,u,len;
     for (int i=A[v].size();i-->0;) {
         w=A[v][i];
         if (w<s) A[v].erase(A[v].begin()+i);
         else if (w==s) {
-            res.push_back(point_stack);
+            len=point_stack.size();
+            if ((lb<0 || len>=lb) && (ub<0 || len<=ub))
+                res.push_back(point_stack);
             f=true;
         } else if (!mark[w]) {
             backtrack(w,g);
@@ -12471,9 +12479,9 @@ graphe::ivectors graphe::circ_enum::find_cycles() {
  * END OF CIRC_ENUM CLASS IMPLEMENTATION
  */
 
-void graphe::elementary_cycles(ivectors &cyc) {
+void graphe::elementary_cycles(ivectors &cyc,int lo,int hi) {
     assert(is_directed());
-    circ_enum ce(this);
+    circ_enum ce(this,lo,hi);
     cyc=ce.find_cycles();
 }
 

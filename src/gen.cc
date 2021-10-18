@@ -3346,6 +3346,24 @@ namespace giac {
       }
     }
     gen ref,imf;
+    if (u==at_integrate){
+      if (f.type!=_VECT){
+	reim(f,ref,imf,contextptr);
+	r=symbolic(at_integrate,ref); 
+	i=is_exactly_zero(imf)?zero:symbolic(at_integrate,imf); 
+	return;
+      }
+      vecteur v=*f._VECTptr;
+      if (v.size()<=2 || (v.size()>=4 && is_exactly_zero(im(v[2],contextptr)) && is_exactly_zero(im(v[3],contextptr)))){
+	f=v[0];
+	reim(f,ref,imf,contextptr);
+	v[0]=ref;
+	r=is_exactly_zero(ref)?zero:symbolic(at_integrate,gen(v,_SEQ__VECT));
+	v[0]=imf;
+	i=is_exactly_zero(imf)?zero:symbolic(at_integrate,gen(v,_SEQ__VECT));
+	return;
+      }
+    }
     reim(f,ref,imf,contextptr);
     if (is_zero(imf,contextptr) && equalposcomp(reim_op,u)){
       r=s; i=0; return;
@@ -9988,7 +10006,7 @@ namespace giac {
       vecteur & vtmp(*it->_VECTptr);
       gen & tmp = vtmp.back();
       gen coeff=eval(vtmp.front(),1,context0);
-      if (is_zero(coeff))
+      if (is_exactly_zero(coeff))
 	continue;
       if (tmp.is_symb_of_sommet(at_prod) && tmp._SYMBptr->feuille.type==_VECT && tmp._SYMBptr->feuille._VECTptr->size()==1){
 	res.push_back(coeff*tmp._SYMBptr->feuille._VECTptr->front());
@@ -12436,7 +12454,7 @@ namespace giac {
 	return ")";
       else
 	return "]";
-    case _POINT__VECT: case _VECTOR__VECT: 
+    case _POINT__VECT: case _VECTOR__VECT: case _POLY1__VECT: case _PNT__VECT:
       return "]";
     case _GGBVECT:
       return calc_mode(contextptr)==1?")":"]";
@@ -12517,7 +12535,7 @@ namespace giac {
       }
     }
 #if 1 // for debugging/profiling pixon_print
-    if (is_pnt_or_pixon(v.back())){
+    if (!v.empty() && is_pnt_or_pixon(v.back())){
       gen f=v.back();
       if (f.is_symb_of_sommet(at_pnt)){
 	f=f._SYMBptr->feuille;

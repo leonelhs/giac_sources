@@ -4,60 +4,61 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The exponential distribution</title>
+<title>The uniform distribution</title>
 </head>
 <body >
 <a href="cascmd_en636.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en638.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec825" class="subsection">7.4.14  The exponential distribution</h3>
-<h4 id="sec826" class="subsubsection">The probability density function for the exponential distribution: <span style="font-family:monospace">exponential</span><a id="hevea_default1070"></a> <span style="font-family:monospace">exponentiald</span><a id="hevea_default1071"></a></h4>
-<p>The exponential distribution depends on one parameters, λ&gt;0; the
-value of the density function at <span style="font-style:italic">x</span> ≥ 0 is
-<span style="font-family:monospace">exponential</span>(λ,<span style="font-style:italic">x</span>) =
-λ <span style="font-style:italic">e</span><sup>−λ <span style="font-style:italic">x</span></sup>. If you enter
+<h3 id="sec822" class="subsection">7.4.13  The uniform distribution</h3>
+<h4 id="sec823" class="subsubsection">The probability density function for the uniform
+distribution: <span style="font-family:monospace">uniform</span><a id="hevea_default1065"></a> <span style="font-family:monospace">uniformd</span><a id="hevea_default1066"></a></h4>
+<p>Given two values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> with <span style="font-style:italic">a</span> &lt; <span style="font-style:italic">b</span>, the uniform distribution on
+[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] has density function 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>) for <span style="font-style:italic">x</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]. The 
+<span style="font-family:monospace">uniform</span> (or <span style="font-family:monospace">uniformd</span>) command will compute this;
+<span style="font-family:monospace">uniform</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>). If you enter
 </p><div class="center">
-<span style="font-family:monospace">exponential(2.1,3.5)
-</span></div><p>
-for example, you will get
-</p><div class="center">
-<span style="font-family:monospace">0.00134944395675
-</span></div>
-<h4 id="sec827" class="subsubsection">The cumulative distribution function for the exponential distribution: <span style="font-family:monospace">exponential_cdf</span><a id="hevea_default1072"></a> <span style="font-family:monospace">exponentiald_cdf</span><a id="hevea_default1073"></a></h4>
-<p>The cumulative distribution function for the exponential distribution with
-parameter λ &gt; 0 at a value <span style="font-style:italic">x</span> ≥ 0 is
-<span style="font-family:monospace">exponential_cdf</span>(λ,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>).
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">exponential_cdf(2.3,3.2)
-</span></div><p>
-for example, you will get
-</p><div class="center">
-<span style="font-family:monospace">0.99936380154
-</span></div><p>If you give <span style="font-family:monospace">exponential_cdf</span> an extra argument <span style="font-style:italic">y</span> &gt; <span style="font-style:italic">x</span>,
-you will get the probability that
-the random variable lies between the two values;
-<span style="font-family:monospace">exponential_cdf(</span>λ<span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). 
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">exponential_cdf(2.3,0.9,3.2)
+<span style="font-family:monospace">uniform(2.2,3.5,2.8)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">0.125549583246
+<span style="font-family:monospace">0.769230769231
 </span></div>
-<h4 id="sec828" class="subsubsection">The inverse distribution function for the exponential distribution: <span style="font-family:monospace">exponential_icdf</span><a id="hevea_default1074"></a> <span style="font-family:monospace">exponentiald_icdf</span><a id="hevea_default1075"></a></h4>
-<p>The inverse distribution function for the exponential
-distribution with parameter λ &gt; 0 is computed with
-<span style="font-family:monospace">exponential_icdf(</span>λ<span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
-value <span style="font-style:italic">x</span> with <span style="font-family:monospace">exponential_cdf</span>(λ,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
+<h4 id="sec824" class="subsubsection">The cumulative distribution function for the uniform
+distribution: <span style="font-family:monospace">uniform_cdf</span><a id="hevea_default1067"></a> <span style="font-family:monospace">uniformd_cdf</span><a id="hevea_default1068"></a></h4>
+<p>Given two values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> with <span style="font-style:italic">a</span> &lt;<span style="font-style:italic">b</span>, the cumulative distribution
+function for the uniform distribution on [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] is (for <span style="font-style:italic">x</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>])
+<span style="font-family:monospace">uniform_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = (<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
+If you enter
 </p><div class="center">
-<span style="font-family:monospace">exponential_icdf(2.3,0.87)
+<span style="font-family:monospace">uniform_cdf(2,4,3.2)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">0.887052534142
+<span style="font-family:monospace">0.6
+</span></div><p>With an extra argument <span style="font-style:italic">y</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>], <span style="font-family:monospace">uniform_cdf</span> will
+compute <span style="font-family:monospace">uniform_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>)
+= (<span style="font-style:italic">y</span>−<span style="font-style:italic">x</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>). If you enter
+</p><div class="center">
+<span style="font-family:monospace">uniform_cdf(2,4,3,3.2)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.1
+</span></div>
+<h4 id="sec825" class="subsubsection">The inverse distribution function for the
+uniform distribution: <span style="font-family:monospace">uniform_icdf</span><a id="hevea_default1069"></a> <span style="font-family:monospace">uniformd_icdf</span><a id="hevea_default1070"></a></h4>
+<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function for a uniform
+distribution is the value of <span style="font-style:italic">x</span> with <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) =
+<span style="font-family:monospace">uniform_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. This value is computed with the 
+<span style="font-family:monospace">uniform_icdf</span> command. If you enter
+</p><div class="center">
+<span style="font-family:monospace">uniform_icdf(2,3,.6)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">2.6
 </span></div>
 <hr>
 <a href="cascmd_en636.html"><img src="previous_motif.gif" alt="Previous"></a>
