@@ -101,11 +101,7 @@ extern "C" int KeyPressed( void );
 #endif
 
 #ifdef KHICAS
-bool back_key_pressed();
-#endif
-
-#ifdef KHICAS
-const char * read_file(const char * filename);
+#include "kdisplay.h"
 #endif
 
 int my_sprintf(char * s, const char * format, ...){
@@ -201,7 +197,7 @@ namespace giac {
 #endif // POCKETCAS
 #endif // TIMEOUT
 
-#ifdef NSPIRE_NEWLIB
+#if defined NSPIRE_NEWLIB || defined KHICAS
   void usleep(int t){
   }
 #endif
@@ -1794,7 +1790,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   int debug_infolevel=0;
 #endif
   int printprog=0;
-#if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE || defined FXCG || defined NSPIRE_NEWLIB
+#if defined __APPLE__ || defined VISUALC || defined __MINGW_H || defined BESTA_OS || defined NSPIRE || defined FXCG || defined NSPIRE_NEWLIB || defined KHICAS
   int threads=1;
 #else
   int threads=sysconf (_SC_NPROCESSORS_ONLN);
@@ -1933,7 +1929,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 
   void ctrl_c_signal_handler(int signum){
     ctrl_c=true;
-#if !defined NSPIRE_NEWLIB && !defined WIN32 && !defined BESTA_OS && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
+#if !defined KHICAS && !defined NSPIRE_NEWLIB && !defined WIN32 && !defined BESTA_OS && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
     if (child_id)
       kill(child_id,SIGINT);
 #endif
@@ -5434,8 +5430,8 @@ unsigned int ConvertUTF8toUTF162 (
   // moved from input_lexer.ll for easier debug
   const char invalid_name[]="Invalid name";
 
-#if defined USTL || defined GIAC_HAS_STO_38
-#if defined GIAC_HAS_STO_38
+#if defined USTL || defined GIAC_HAS_STO_38 || defined KHICAS
+#if defined GIAC_HAS_STO_38 || defined KHICAS
 void update_lexer_localization(const std::vector<int> & v,std::map<std::string,std::string> &lexer_map,std::multimap<std::string,localized_string> &back_lexer_map,GIAC_CONTEXT){}
 #endif
 #else
@@ -5567,7 +5563,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
       }
       if (!builtin_lexer_functions_sorted){
 #ifndef STATIC_BUILTIN_LEXER_FUNCTIONS
-#ifdef NSPIRE_NEWLIB
+#if defined NSPIRE_NEWLIB || defined KHICAS || defined NUMWORKS
 	builtin_lexer_functions_begin()[builtin_lexer_functions_number]=std::pair<const char *,gen>(s,gen(u));
 #else
 	builtin_lexer_functions_begin()[builtin_lexer_functions_number].first=s;
@@ -5697,13 +5693,17 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 	  res=gen(int((*builtin_lexer_functions_())[p.first-builtin_lexer_functions_begin()]+p.first->second.val));
 	  res=gen(*res._FUNCptr);	  
 #else
-#ifndef NSPIRE_NEWLIB
+#if !defined NSPIRE_NEWLIB || defined KHICAS
 	  res=0;
 	  int pos=int(p.first-builtin_lexer_functions_begin());
+#if defined KHICAS && !defined x86_64
+	  const unary_function_ptr * at_val=*builtin_lexer_functions_[pos];
+#else
 	  size_t val=builtin_lexer_functions_[pos];
 	  unary_function_ptr * at_val=(unary_function_ptr *)val;
+#endif
 	  res=at_val;
-#ifdef GIAC_HAS_STO_38
+#if defined GIAC_HAS_STO_38 || defined KHICAS
 	  if (builtin_lexer_functions[pos]._FUNC_%2){
 #ifdef SMARTPTR64
 	    unary_function_ptr tmp=*at_val;
@@ -6793,12 +6793,16 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 
 
 #ifdef STATIC_BUILTIN_LEXER_FUNCTIONS
-
+    
     const charptr_gen_unary builtin_lexer_functions[] ={
 #if defined(GIAC_HAS_STO_38) && defined(CAS38_DISABLED)
 #include "static_lexer_38.h"
 #else
+#ifdef KHICAS
+#include "static_lexer_numworks.h"
+#else
 #include "static_lexer.h"
+#endif // KHICAS
 #endif
     };
 
@@ -6815,6 +6819,11 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
     }
 #else
     // Array added because GH compiler stores builtin_lexer_functions in RAM
+#ifdef KHICAS
+    const unary_function_ptr * const * const builtin_lexer_functions_[]={
+#include "static_lexer__numworks.h"
+    };
+#else
     const size_t builtin_lexer_functions_[]={
 #if defined(GIAC_HAS_STO_38) && defined(CAS38_DISABLED)
 #include "static_lexer_38_.h"
@@ -6822,7 +6831,8 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 #include "static_lexer_.h"
 #endif
     };
-#endif
+#endif // KHICAS
+#endif // STATIC_BUILTIN
 
 #ifdef SMARTPTR64
     charptr_gen * builtin_lexer_functions64(){

@@ -893,6 +893,7 @@
 {"linear_regression_plot",13,9,0,0},
 {"lineariser",13,9,0,0},
 {"lineariser_trigo",13,9,0,0},
+{"linetan",13,9,0,0},
 {"linfnorm",13,9,0,0},
 {"link2giac",13,9,0,0},
 {"linsolve",13,9,0,0| 1},

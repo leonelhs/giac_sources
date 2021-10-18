@@ -45,7 +45,7 @@ using namespace std;
 #include "quater.h"
 #include "sparse.h"
 #include "giacintl.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 inline giac::gen _graph_charpoly(const giac::gen &g,const giac::context *){ return g;}
 #else
@@ -948,6 +948,45 @@ namespace giac {
   static define_unary_function_eval (__tcoeff,&_tcoeff,_tcoeff_s);
   define_unary_function_ptr5( at_tcoeff ,alias_at_tcoeff,&__tcoeff,0,true);
 
+  gen _homogeneize(const gen & args,GIAC_CONTEXT){
+    if (args.type==_STRNG && args.subtype==-1) return  args;
+    gen t,p;
+    int s=2;
+    if (args.type!=_VECT){
+      t=t__IDNT_e;
+      p=args;
+    }
+    else {
+      vecteur & v=*args._VECTptr;
+      s=int(v.size());
+      if (!s)
+	return args;
+      if ( (args.subtype!=_SEQ__VECT) || (s<2) )
+	return v.front();
+      t=v[1];
+      p=v[0];
+    }
+    vecteur lv(lidnt(p));
+    vecteur lt(lv);
+    lt.push_back(t);
+    gen g=_e2r(makesequence(p,lv),contextptr),n,d;
+    fxnd(g,n,d);
+    if (n.type!=_POLY)
+      return p;
+    polynome nlcoeff(*n._POLYptr);
+    nlcoeff=nlcoeff.homogeneize();
+    if (d.type==_POLY){
+      polynome dlcoeff=d._POLYptr->homogeneize();
+      g=r2e(dlcoeff,lt,contextptr);
+    }
+    else
+      g=r2e(d,lv,contextptr);
+    return r2e(nlcoeff,lt,contextptr)/g;
+  }
+  static const char _homogeneize_s []="homogeneize";
+  static define_unary_function_eval (__homogeneize,&_homogeneize,_homogeneize_s);
+  define_unary_function_ptr5( at_homogeneize ,alias_at_homogeneize,&__homogeneize,0,true);
+
   static gen sqrfree(const gen & g,const vecteur & l,GIAC_CONTEXT){
     if (g.type!=_POLY)
       return r2sym(g,l,contextptr);
@@ -1649,6 +1688,8 @@ namespace giac {
       // z=(a+i*b), (z-a)^2=-b^2
       return gen(makevecteur(1,-2*a,a*a+b*b),_POLY1__VECT);
     }
+    if (g.type==_FRAC)
+      return gen(makevecteur(g._FRACptr->den,-g._FRACptr->num),_POLY1__VECT);
     if (g.type==_USER){
 #ifndef NO_RTTI
       if (galois_field * gf=dynamic_cast<galois_field *>(g._USERptr)){
@@ -3478,7 +3519,7 @@ static define_unary_function_eval (__correlation,&_correlation,_correlation_s);
     return res;
   }
 
-  void tran4(double * colmat){
+  void Tran4(double * colmat){
     giac::swapdouble(colmat[1],colmat[4]);
     giac::swapdouble(colmat[2],colmat[8]);
     giac::swapdouble(colmat[3],colmat[12]);
@@ -3487,23 +3528,23 @@ static define_unary_function_eval (__correlation,&_correlation,_correlation_s);
     giac::swapdouble(colmat[11],colmat[14]);    
   }
 
-  void mult4(double * colmat,double * vect,double * res){
+  void Mult4(double * colmat,double * vect,double * res){
     res[0]=colmat[0]*vect[0]+colmat[4]*vect[1]+colmat[8]*vect[2]+colmat[12]*vect[3];
     res[1]=colmat[1]*vect[0]+colmat[5]*vect[1]+colmat[9]*vect[2]+colmat[13]*vect[3];
     res[2]=colmat[2]*vect[0]+colmat[6]*vect[1]+colmat[10]*vect[2]+colmat[14]*vect[3];
     res[3]=colmat[3]*vect[0]+colmat[7]*vect[1]+colmat[11]*vect[2]+colmat[15]*vect[3];
   }
 
-  void mult4(double * c,double k,double * res){
+  void Mult4(double * c,double k,double * res){
     for (int i=0;i<16;i++)
       res[i]=k*c[i];
   }
   
-  double det4(double * c){
+  double Det4(double * c){
     return c[0]*c[5]*c[10]*c[15]-c[0]*c[5]*c[14]*c[11]-c[0]*c[9]*c[6]*c[15]+c[0]*c[9]*c[14]*c[7]+c[0]*c[13]*c[6]*c[11]-c[0]*c[13]*c[10]*c[7]-c[4]*c[1]*c[10]*c[15]+c[4]*c[1]*c[14]*c[11]+c[4]*c[9]*c[2]*c[15]-c[4]*c[9]*c[14]*c[3]-c[4]*c[13]*c[2]*c[11]+c[4]*c[13]*c[10]*c[3]+c[8]*c[1]*c[6]*c[15]-c[8]*c[1]*c[14]*c[7]-c[8]*c[5]*c[2]*c[15]+c[8]*c[5]*c[14]*c[3]+c[8]*c[13]*c[2]*c[7]-c[8]*c[13]*c[6]*c[3]-c[12]*c[1]*c[6]*c[11]+c[12]*c[1]*c[10]*c[7]+c[12]*c[5]*c[2]*c[11]-c[12]*c[5]*c[10]*c[3]-c[12]*c[9]*c[2]*c[7]+c[12]*c[9]*c[6]*c[3];
   }
 
-  void inv4(double * c,double * res){
+  void Inv4(double * c,double * res){
     res[0]=c[5]*c[10]*c[15]-c[5]*c[14]*c[11]-c[10]*c[7]*c[13]-c[15]*c[9]*c[6]+c[14]*c[9]*c[7]+c[11]*c[6]*c[13];
     res[1]=-c[1]*c[10]*c[15]+c[1]*c[14]*c[11]+c[10]*c[3]*c[13]+c[15]*c[9]*c[2]-c[14]*c[9]*c[3]-c[11]*c[2]*c[13];
     res[2]=c[1]*c[6]*c[15]-c[1]*c[14]*c[7]-c[6]*c[3]*c[13]-c[15]*c[5]*c[2]+c[14]*c[5]*c[3]+c[7]*c[2]*c[13];
@@ -3520,8 +3561,8 @@ static define_unary_function_eval (__correlation,&_correlation,_correlation_s);
     res[13]=c[0]*c[9]*c[14]-c[0]*c[13]*c[10]-c[9]*c[2]*c[12]-c[14]*c[8]*c[1]+c[13]*c[8]*c[2]+c[10]*c[1]*c[12];
     res[14]=-c[0]*c[5]*c[14]+c[0]*c[13]*c[6]+c[5]*c[2]*c[12]+c[14]*c[4]*c[1]-c[13]*c[4]*c[2]-c[6]*c[1]*c[12];
     res[15]=c[0]*c[5]*c[10]-c[0]*c[9]*c[6]-c[5]*c[2]*c[8]-c[10]*c[4]*c[1]+c[9]*c[4]*c[2]+c[6]*c[1]*c[8];
-    double det=det4(c);
-    mult4(res,1/det,res);
+    double det=Det4(c);
+    Mult4(res,1/det,res);
   }
   gen function_regression(const gen & g,const gen & u1,const gen & u2,gen & a,gen &b,double & xmin,double & xmax,gen & correl2,GIAC_CONTEXT){
     gen gv,freq;
@@ -3714,9 +3755,9 @@ static define_unary_function_eval (__correlation,&_correlation,_correlation_s);
 	  d2E[14] += -a_*f*x*ac2s2;
 	  d2E[15] += -a_*f*ac2s2;
 	}
-	tran4(d2E);
-	inv4(d2E,invd2E);
-	mult4(invd2E,dE,delta);
+	Tran4(d2E);
+	Inv4(d2E,invd2E);
+	Mult4(invd2E,dE,delta);
 	a_ -= delta[0];
 	b_ -= delta[1];
 	omega -= delta[2];
@@ -7321,6 +7362,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       return 0;
     gen fg=symbolic(at_nop,makesequence(f,g));
     gen df=domain(fg,t,0,contextptr);
+    if (ctrl_c || interrupted)
+      return 0;
     gprintf(gettext("Domain %gen"),vecteur(1,df),1,contextptr);
     gen df1=domain(fg,t,1,contextptr); // singular values only
     if (df1.type!=_VECT){
@@ -7347,8 +7390,14 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     int cm=calc_mode(contextptr);
     calc_mode(-38,contextptr); // avoid rootof
     gen cx=recursive_normal(solve(f1,t,periode==0?2:0,contextptr),contextptr);
+    if (ctrl_c || interrupted)
+      return 0;
     gen cy=recursive_normal(solve(g1,t,periode==0?2:0,contextptr),contextptr);
+    if (ctrl_c || interrupted)
+      return 0;
     gen cc=recursive_normal(solve(conv,t,periode==0?2:0,contextptr),contextptr);
+    if (ctrl_c || interrupted)
+      return 0;
     calc_mode(cm,contextptr); // avoid rootof
     if (t!=tval)
       sto(tval,t,contextptr);
@@ -7652,7 +7701,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	return 0;
       }
       if (is_strictly_positive(dfx,contextptr)){
-#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T 
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS || defined HAVE_WINT_T 
 #ifdef KHICAS
 	  tvif.push_back(string2gen("inc",false));
 #else
@@ -7664,7 +7713,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidf.push_back(string2gen("+",false));
       }
       else {
-#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T 
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS || defined HAVE_WINT_T 
 #ifdef KHICAS
 	  tvif.push_back(string2gen("dec",false));
 #else
@@ -7675,12 +7724,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #endif
 	tvidf.push_back(string2gen("-",false));
       }
-      if (is_strictly_positive(convt,contextptr))
+      bool convtpos=is_strictly_positive(convt,contextptr);
+      if (convtpos)
 	tviconv.push_back(string2gen(abs_calc_mode(contextptr)==38?"∪":"convex",false));
       else
 	tviconv.push_back(string2gen(abs_calc_mode(contextptr)==38?"∩":"concav",false));
       if (is_strictly_positive(dgx,contextptr)){
-#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T 
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS || defined HAVE_WINT_T 
 #ifdef KHICAS
 	  tvig.push_back(string2gen("inc",false));
 #else
@@ -7692,7 +7742,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidg.push_back(string2gen("+",false));
       }
       else {
-#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T 
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS || defined HAVE_WINT_T 
 #ifdef KHICAS
 	  tvig.push_back(string2gen("dec",false));
 #else
@@ -7712,6 +7762,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  xmax=x;
 	y=try_limit_undef(g,xid,nextt,-1,contextptr);
 	y=recursive_normal(y,contextptr);
+	if (ctrl_c || interrupted)
+	  return 0;
 	if (!has_inf_or_undef(y) && is_greater(ymin,y,contextptr))
 	  ymin=y;
 	if (!has_inf_or_undef(y) && is_greater(y,ymax,contextptr))
@@ -7730,6 +7782,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  xmax=x;
 	y=try_limit_undef(g,xid,nextt,1,contextptr);
 	y=recursive_normal(y,contextptr);
+	if (ctrl_c || interrupted)
+	  return 0;
 	if (!has_inf_or_undef(y) && is_greater(ymin,y,contextptr))
 	  ymin=y;
 	if (!has_inf_or_undef(y) && is_greater(y,ymax,contextptr))
@@ -7750,6 +7804,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  xmax=x;
 	y=try_limit_undef(g,xid,nextt,-1,contextptr);
 	y=recursive_normal(y,contextptr);
+	if (ctrl_c || interrupted)
+	  return 0;
 	if (!has_inf_or_undef(y) && is_greater(ymin,y,contextptr))
 	  ymin=y;
 	if (!has_inf_or_undef(y) && is_greater(y,ymax,contextptr))
@@ -7762,6 +7818,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvidf.push_back(crunch_rootof(y,contextptr));
 	y=try_limit_undef(g1,xid,nextt,-1,contextptr);
 	y=recursive_normal(y,contextptr);
+	if (ctrl_c || interrupted)
+	  return 0;
 	tvidg.push_back(crunch_rootof(y,contextptr));
 	if (equalposcomp(infl,nextt)) y=0;
 	else {
@@ -7921,6 +7979,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     int cm=calc_mode(contextptr);
     calc_mode(-38,contextptr); // avoid rootof
     gen c1=solve(f1,x,periode==0?2:0,contextptr);
+    if (is_undef(c1))
+      return 0;
     gen c2=(!(do_inflex_tabsign & 1) || is_zero(f2))?gen(vecteur(0)):solve(_numer(f2,contextptr),x,periode==0?2:0,contextptr),c(c1);
     calc_mode(cm,contextptr);
     step_infolevel(st,contextptr);
@@ -8195,7 +8255,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
       else {
 	if (is_strictly_positive(dfx,contextptr)){
-#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T 
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS || defined HAVE_WINT_T 
 #ifdef KHICAS
 	  tvif.push_back(string2gen("inc",false));
 #else
@@ -8207,7 +8267,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  tvidf.push_back(string2gen("+",false));
 	}
 	else {
-#if defined NSPIRE || defined NSPIRE_NEWLIB || defined HAVE_WINT_T 
+#if defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS || defined HAVE_WINT_T 
 #ifdef KHICAS
 	  tvif.push_back(string2gen("dec",false));
 #else
@@ -8504,8 +8564,13 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (plot==1)
 	return tvi; // gprintf("%gen",makevecteur(gen(poi,_SEQ__VECT)),1,contextptr);
     }
-    if (abs_calc_mode(contextptr)!=38)
-      *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')' <<"\nInside Xcas you can see the function with Cfg>Show>DispG." <<  '\n';
+    if (abs_calc_mode(contextptr)!=38){
+      *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')'
+#ifdef HAVE_LIBFLTK
+			  <<"\nInside Xcas you can see the function with Cfg>Show>DispG."
+#endif
+			  <<  '\n';
+    }
     return tvi;
   }
   static const char _tabvar_s []="tabvar";

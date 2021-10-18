@@ -2802,7 +2802,7 @@ namespace giac {
 	    glvertex(B,0,0,contextptr);
 	}
 	glEnd();
-	if (v0.subtype==_VECTOR__VECT){
+	if (v0.subtype==_VECTOR__VECT){ // FIXME
 	  double xB=evalf_double(B[0],1,contextptr)._DOUBLE_val;
 	  double yB=evalf_double(B[1],1,contextptr)._DOUBLE_val;
 	  double zB=evalf_double(B[2],1,contextptr)._DOUBLE_val;
@@ -2813,8 +2813,10 @@ namespace giac {
 	  double iA,jA,depthA,iB,jB,depthB,di,dj,dij;
 	  find_ij(xB,yB,zB,iB,jB,depthB);
 	  find_ij(xA,yA,zA,iA,jA,depthA);
+	  //COUT << iA << " " << iB << " " << jA << " " << jB << endl;
 	  di=iA-iB; dj=jA-jB;
 	  dij=std::sqrt(di*di+dj*dj);
+	  //COUT << dij << endl;
 	  if (dij){
 	    dij /= giacmin(5,int(dij/10))+width;
 	    di/=dij;
@@ -2824,11 +2826,14 @@ namespace giac {
 	    dj*=std::sqrt(3.0);
 	    double iC=iB+di+dip,jC=jB+dj+djp;
 	    double iD=iB+di-dip,jD=jB+dj-djp;
+	    //COUT << iC << " " << iD << " " << jC << " " << jD << endl;
 	    double xC,yC,zC,xD,yD,zD;
 	    find_xyz(iC,jC,depthB,xC,yC,zC);
 	    find_xyz(iD,jD,depthB,xD,yD,zD);
-	    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-	    glBegin(GL_POLYGON);
+	    //COUT << "vect 1" << xC << " " << yC << " " << zC << ", " << xB << " " << yB << " " << zB << ", " << xD << " " << yD << " " << zD << endl;
+	    //glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+	    //glBegin(GL_POLYGON);
+	    glBegin(GL_LINE_LOOP);
 	    glVertex3d(xB,yB,zB);
 	    glVertex3d(xC,yC,zC);
 	    glVertex3d(xD,yD,zD);

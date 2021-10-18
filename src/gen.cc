@@ -3,9 +3,9 @@
 #ifdef KHICAS
 #include "kdisplay.h"
 #ifdef DEVICE
-const size_t stackptr=0x20036000;
+size_t stackptr=0x20036000;
 #else
-const size_t stackptr=0xffffffffffffffff;
+size_t stackptr=0xffffffffffffffff;
 #endif
 #endif
 
@@ -59,7 +59,7 @@ using namespace std;
 #include "solve.h"
 #include "csturm.h"
 #include "sparse.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
 #else
 #include "graphtheory.h"
@@ -2307,7 +2307,7 @@ namespace giac {
       return inv(accurate_evalf(g._FRACptr->den,nbits),context0)*accurate_evalf(g._FRACptr->num,nbits);
     if (g.type==_VECT)
       return gen(accurate_evalf(*g._VECTptr,nbits),g.subtype);
-    gen r(g.re(context0)),i(g.im(context0)); // only called for numeric values
+    gen r,i;reim(g,r,i,context0); // only called for numeric values
     if (is_zero(i,context0))
       return set_precision(r,nbits);
     else
@@ -7468,6 +7468,8 @@ namespace giac {
       if (!exponent){
 	if (ckmatrix(base))
 	  return midn(int(base._VECTptr->size()));
+	if (base.type==_USER)
+	  return base*inv(base,context0);
 	return 1;
       }
       inpow(base,exponent,res);

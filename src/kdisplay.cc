@@ -45,6 +45,7 @@ namespace giac {
   void Bdisp_PutDisp_DD(){
   }
   void Bdisp_AllClr_VRAM(){
+    waitforvblank();
     drawRectangle(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,_WHITE);
   }
   void drawLine(int x1,int y1,int x2,int y2,int c){
@@ -74,6 +75,7 @@ namespace giac {
   }
 
   void handle_f5(){
+    lock_alpha();
   }
 
   void delete_clipboard(){}
@@ -113,17 +115,17 @@ namespace giac {
     int textX=30;
     if (msg1){
       if (strlen(msg1)>=30)
-	os_draw_string_small(textX,textY+15,msg1);
+	os_draw_string_small_(textX,textY+15,msg1);
       else
-	os_draw_string(textX,textY+15,msg1);
+	os_draw_string_(textX,textY+15,msg1);
     }
     textX=10;
     textY+=33;
     if (msg2){
       if (strlen(msg2)>=30)
-	os_draw_string_small(textX,textY,msg2);
+	os_draw_string_small_(textX,textY,msg2);
       else      
-	textX=os_draw_string(textX,textY,msg2);
+	textX=os_draw_string_(textX,textY,msg2);
     }
     return textX;
   }
@@ -171,7 +173,7 @@ namespace giac {
 
 #define C24 18 // 24 on 90
 #define C18 18 // 18
-#define C10 18 // 18
+#define C10 10 // 18
 #define C6 6 // 6
 
   int MB_ElementCount(const char * s){
@@ -231,20 +233,22 @@ namespace giac {
       if(menu->statusText != NULL) DefineStatusMessage(menu->statusText, 1, 0, 0);
       // Clear the area of the screen we are going to draw on
       if(0 == menu->pBaRtR) {
-	int x=C18*(menu->startX-1),
-	  y=C24*(menu->miniMiniTitle ? itemsStartY:menu->startY),
-	  w=C18*menu->width*C6+((menu->scrollbar && menu->scrollout)?C6:0),
-	  h=C24*menu->height-(menu->miniMiniTitle ? C24:0);
-	drawRectangle(x, y, w, h, COLOR_WHITE);
+	int x=C10*menu->startX-1,
+	  y=C24*(menu->miniMiniTitle ? itemsStartY:menu->startY)-1,
+	  w=2+C10*menu->width /* + ((menu->scrollbar && menu->scrollout)?C10:0) */,
+	  h=2+C24*menu->height-(menu->miniMiniTitle ? C24:0);
+	// drawRectangle(x, y, w, h, COLOR_WHITE);
 	draw_line(x,y,x+w,y,COLOR_BLACK,context0);
 	draw_line(x,y+h,x+w,y+h,COLOR_BLACK,context0);
 	draw_line(x,y,x,y+h,COLOR_BLACK,context0);
-	draw_line(x+w-1,y,x+w-1,y+h,COLOR_BLACK,context0);
+	draw_line(x+w,y,x+w,y+h,COLOR_BLACK,context0);
       }
       if (menu->numitems>0) {
 	for(int curitem=0; curitem < menu->numitems; curitem++) {
 	  // print the menu item only when appropriate
-	  if(menu->scroll < curitem+1 && menu->scroll > curitem-itemsHeight) {
+	  if(menu->scroll <= curitem && menu->scroll > curitem-itemsHeight) {
+	    if ((curitem-menu->scroll) % 6==0)
+	      waitforvblank();
 	    char menuitem[256] = "";
 	    if(menu->numitems>=100 || menu->type == MENUTYPE_MULTISELECT){
 	      strcpy(menuitem, "  "); //allow for the folder and selection icons on MULTISELECT menus (e.g. file browser)
@@ -271,18 +275,20 @@ namespace giac {
 	      //make sure we have a string big enough to have background when item is selected:          
 	      // MB_ElementCount is used instead of strlen because multibyte chars count as two with strlen, while graphically they are just one char, making fillerRequired become wrong
 	      int fillerRequired = menu->width - MB_ElementCount(menu->items[curitem].text) - (menu->type == MENUTYPE_MULTISELECT ? 2 : 3);
-	      for(int i = 0; i < fillerRequired; i++) strcat(menuitem, " ");
-	      PrintXY(C6*menu->startX,C18*(curitem+itemsStartY-menu->scroll),menuitem, (menu->selection == curitem+1 ? TEXT_MODE_INVERT : TEXT_MODE_NORMAL));
+	      for(int i = 0; i < fillerRequired; i++)
+		strcat(menuitem, " ");
+	      drawRectangle(C10*menu->startX,C18*(curitem+itemsStartY-menu->scroll),C10*menu->width,C24,(menu->selection == curitem+1 ? _BLACK : _WHITE));
+	      PrintXY(C10*menu->startX,C18*(curitem+itemsStartY-menu->scroll),menuitem, (menu->selection == curitem+1 ? TEXT_MODE_INVERT : TEXT_MODE_NORMAL));
 	    } else {
 	      /*int textX = (menu->startX-1) * C18;
-		int textY = curitem*C24+itemsStartY*C24-menu->scroll*C24-C24+C6;
+		int textY = curitem*C24+itemsStartY*C24-menu->scroll*C24-C24+C10;
 		clearLine(menu->startX, curitem+itemsStartY-menu->scroll, (menu->selection == curitem+1 ? textColorToFullColor(menu->items[curitem].color) : COLOR_WHITE));
 		drawLine(textX, textY+C24-4, LCD_WIDTH_PX-2, textY+C24-4, COLOR_GRAY);
 		PrintMini(&textX, &textY, (unsigned char*)menuitem, 0, 0xFFFFFFFF, 0, 0, (menu->selection == curitem+1 ? COLOR_WHITE : textColorToFullColor(menu->items[curitem].color)), (menu->selection == curitem+1 ? textColorToFullColor(menu->items[curitem].color) : COLOR_WHITE), 1, 0);*/
 	    }
 	    // deal with menu items of type MENUITEM_CHECKBOX
 	    if(menu->items[curitem].type == MENUITEM_CHECKBOX) {
-	      PrintXY(C6*(menu->startX+menu->width-1),C18*(curitem+itemsStartY-menu->scroll),
+	      PrintXY(C10*(menu->startX+menu->width-4),C18*(curitem+itemsStartY-menu->scroll),
 		      (menu->items[curitem].value == MENUITEM_VALUE_CHECKED ? " [+]" : " [-]"),
 		      (menu->selection == curitem+1 ? TEXT_MODE_INVERT : (menu->pBaRtR == 1? TEXT_MODE_NORMAL : TEXT_MODE_NORMAL)));
 	    }
@@ -303,14 +309,17 @@ namespace giac {
 	      }
 	      if (menu->items[curitem].isselected) {
 		if (menu->selection == curitem+1) {
-		  PrintXY(C6*menu->startX,C18*(curitem+itemsStartY-menu->scroll),"\xe6\x9b", TEXT_MODE_NORMAL);
+		  PrintXY(C10*menu->startX,C18*(curitem+itemsStartY-menu->scroll),"\xe6\x9b", TEXT_MODE_NORMAL);
 		} else {
-		  PrintXY(C6*menu->startX,C18*(curitem+itemsStartY-menu->scroll),"\xe6\x9b", TEXT_MODE_NORMAL);
+		  PrintXY(C10*menu->startX,C18*(curitem+itemsStartY-menu->scroll),"\xe6\x9b", TEXT_MODE_NORMAL);
 		}
 	      }
 	    }
 	  }
-	}
+	} // end for curitem<menu->numitem
+	int dh=menu->height-menu->numitems-(showtitle?1:0);
+	if (dh>0)
+	  drawRectangle(C10*menu->startX,C24*(menu->numitems+(showtitle?1:0)),C10*menu->width,C24*dh,_WHITE);
 	if (menu->scrollbar) {
 #ifdef SCROLLBAR
 	  TScrollbar sb;
@@ -322,7 +331,7 @@ namespace giac {
 	  sb.barheight = itemsHeight*C24;
 	  sb.bartop = (itemsStartY-1)*C24;
 	  sb.barleft = menu->startX*C18+menu->width*C18 - C18 - (menu->scrollout ? 0 : 5);
-	  sb.barwidth = C6;
+	  sb.barwidth = C10;
 	  Scrollbar(&sb);
 #endif
 	}
@@ -331,16 +340,18 @@ namespace giac {
 	giac::printCentered(menu->nodatamsg, (itemsStartY*C24)+(itemsHeight*C24)/2-12);
       }
       if(showtitle) {
-	if(menu->miniMiniTitle) {
-	  int textX = 0, textY=(menu->startY-1)*C24;
+	int textX = C10*menu->startX, textY=menu->startY*C24;
+	drawRectangle(textX,textY,C10*menu->width,C24,_WHITE);
+	if (menu->miniMiniTitle) 
 	  PrintMini( textX, textY, menu->title, 0 );
-	} else PrintXY(6*menu->startX, 1+C18*menu->startY, menu->title, TEXT_MODE_NORMAL);
+	else
+	  PrintXY(textX, textY, menu->title, TEXT_MODE_NORMAL);
 	if(menu->subtitle != NULL) {
-	  int textX=(MB_ElementCount(menu->title)+menu->startX-1)*C18+C10, textY=C6;
+	  int textX=(MB_ElementCount(menu->title)+menu->startX-1)*C18+C10, textY=C10;
 	  PrintMini(textX, textY, menu->subtitle, 0);
 	}
-	PrintXY(278, 1, "____", 0);
-	PrintXY(278, 1, keyword, 0);
+	PrintXY(textX+C10*(menu->width-5), 1, "____", 0);
+	PrintXY(textX+C10*(menu->width-5), 1, keyword, 0);
       }
       /*if(menu->darken) {
 	DrawFrame(COLOR_BLACK);
@@ -850,15 +861,14 @@ namespace giac {
     {"partfrac(p,x)", 0, "Decomposition en elements simples. Raccourci p=>+", "1/(x^4-1)", 0, CAT_CATEGORY_ALGEBRA},
     {"pas_de_cote n", "pas_de_cote ", "Saut lateral de la tortue, par defaut n=10", "#pas_de_cote 30", 0, CAT_CATEGORY_LOGO},
     {"plot(expr,x)", 0, "Graphe de fonction. Par exemple plot(sin(x)), plot(ln(x),x.0,5)", "ln(x),x=0..5", "1/x,x=1..5,xstep=1", CAT_CATEGORY_PLOT},
-#ifdef RELEASE
-    {"plotarea(expr,x=a..b,[n,meth])", 0, "Aire sous la courbe selon une methode d'integration.", "1/x,x=1..3,2,trapeze", 0, CAT_CATEGORY_PLOT},
-#endif
+    {"plotarea(expr,x=a..b,[n,meth])", 0, "Aire sous la courbe selon une methode d'integration.", "1/x,x=1..5,4,rectangle_gauche", 0, CAT_CATEGORY_PLOT},
+    {"plotcontour(expr,[x=xm..xM,y=ym..yM],niveaux)", 0, "Lignes de niveau de expr.", "x^2+2y^2, [x=-2..2,y=-2..2],[1,2]", 0, CAT_CATEGORY_PLOT},
+    {"plotdensity(expr,[x=xm..xM,y=ym..yM])", 0, "Representation en niveaux de couleurs d'une expression de 2 variables.", "x^2-y^2,[x=-3..3,y=-2..2]", 0, CAT_CATEGORY_PLOT},
+    {"plotfield(f(t,y), [t=tmin..tmax,y=ymin..ymax])", 0, "Champ des tangentes de y'=f(t,y), optionnellement graphe avec plotode=[t0,y0]", "sin(t*y), [t=-3..3,y=-3..3],plotode=[0,1]", "5*[-y,x], [x=-1..1,y=-1..1]", CAT_CATEGORY_PLOT},
+    {"plotlist(list)", 0, "Graphe d'une liste", "[3/2,2,1,1/2,3,2,3/2]", "[1,13],[2,10],[3,15],[4,16]", CAT_CATEGORY_PLOT},
+    {"plotode(f(t,y), [t=tmin..tmax,y],[t0,y0])", 0, "Graphe de solution d'equation differentielle y'=f(t,y), y(t0)=y0.", "sin(t*y),[t=-3..3,y],[0,1]", 0, CAT_CATEGORY_PLOT},
     {"plotparam([x,y],t)", 0, "Graphe en parametriques. Par exemple plotparam([sin(3t),cos(2t)],t,0,pi) ou plotparam(exp(i*t),t,0,pi)", "[sin(3t),cos(2t)],t,0,pi", "[t^2,t^3],t=-1..1,tstep=0.1", CAT_CATEGORY_PLOT},
     {"plotpolar(r,theta)", 0, "Graphe en polaire.","cos(3*x),x,0,pi", "1/(1+cos(x)),x=0..pi,xstep=0.05", CAT_CATEGORY_PLOT},
-    {"plotcontour(expr,[x=xm..xM,y=ym..yM],niveaux)", 0, "Lignes de niveau de expr.", "x^2+2y^2, [x=-2..2,y=-2..2],[1,2]", 0, CAT_CATEGORY_PLOT},
-    {"plotfield(f(t,y), [t=tmin..tmax,y=ymin..ymax])", 0, "Champ des tangentes de y'=f(t,y), optionnellement graphe avec plotode=[t0,y0]", "sin(t*y), [t=-3..3,y=-3..3],plotode=[0,1]", "5*[-y,x], [x=-1..1,y=-1..1]", CAT_CATEGORY_PLOT},
-    {"plotode(f(t,y), [t=tmin..tmax,y],[t0,y0])", 0, "Graphe de solution d'equation differentielle y'=f(t,y), y(t0)=y0.", "sin(t*y),[t=-3..3,y],[0,1]", 0, CAT_CATEGORY_PLOT},
-    {"plotlist(list)", 0, "Graphe d'une liste", "[3/2,2,1,1/2,3,2,3/2]", "[1,13],[2,10],[3,15],[4,16]", CAT_CATEGORY_PLOT},
     {"plotseq(f(x),x=[u0,m,M],n)", 0, "Trace f(x) sur [m,M] et n termes de la suite recurrente u_{n+1}=f(u_n) de 1er terme u0.","sqrt(2+x),x=[6,0,7],5", 0, CAT_CATEGORY_PLOT},
     {"plus_point", "plus_point", "Option d'affichage", "#display=blue+plus_point", 0, CAT_CATEGORY_PROGCMD },
     {"point(x,y)", 0, "Point", "1,2", 0, CAT_CATEGORY_PROGCMD},
@@ -1356,16 +1366,16 @@ namespace giac {
 	  }
 	  // cmdname, desc, ex1, ex2
 	  drawRectangle(0,0,320,222,_WHITE);
-	  os_draw_string(0,0,cmdname.c_str());
+	  os_draw_string_(0,0,cmdname.c_str());
 	  vector<int> endlines;
 	  string res=cut_string(desc,40,endlines);
 	  if (!endlines.empty())
-	    os_draw_string_small(0,20,res.substr(0,endlines[0]).c_str());
+	    os_draw_string_small_(0,20,res.substr(0,endlines[0]).c_str());
 	  for (int i=1;i<endlines.size();++i){
-	    os_draw_string_small(0,20+18*i,res.substr(endlines[i-1]+5,endlines[i]-endlines[i-1]-5).c_str());
+	    os_draw_string_small_(0,20+18*i,res.substr(endlines[i-1]+5,endlines[i]-endlines[i-1]-5).c_str());
 	  }
-	  os_draw_string(0,20+18*endlines.size(),ex.c_str());
-	  os_draw_string(0,40+18*endlines.size(),ex2.c_str());
+	  os_draw_string_(0,20+18*endlines.size(),ex.c_str());
+	  os_draw_string_(0,40+18*endlines.size(),ex2.c_str());
 	  while (1){
 	    int key;
 	    GetKey(&key);
@@ -1407,7 +1417,7 @@ namespace giac {
 	    strcat(insertText,menuitems[menu.selection-1].text);
 	    return 1;
 	  }
-	  sres=KEY_CTRL_F1;
+	  sres=KEY_CTRL_OK;
 	}
 	if(sres == MENU_RETURN_SELECTION || sres == KEY_CTRL_OK) {
 	  reset_kbd();
@@ -1660,10 +1670,10 @@ namespace giac {
 	beg=giac::giacmax(0,int(s.size())-36);
       textX=X1;
 #if 0
-      os_draw_string(textX,textY,(s.substr(beg,pos-beg)+"|"+s.substr(pos,s.size()-pos)).c_str());
+      os_draw_string_(textX,textY,(s.substr(beg,pos-beg)+"|"+s.substr(pos,s.size()-pos)).c_str());
 #else
-      textX=os_draw_string(textX,textY+2,s.substr(beg,pos-beg).c_str());
-      os_draw_string(textX,textY+2,s.substr(pos,s.size()-pos).c_str());
+      textX=os_draw_string_(textX,textY+2,s.substr(beg,pos-beg).c_str());
+      os_draw_string_(textX,textY+2,s.substr(pos,s.size()-pos).c_str());
       drawRectangle(textX,textY+4,2,13,COLOR_BLACK); // cursor
       // PrintMini(0,58,"         |        |        |        |  A<>a  |       ",4);
 #endif
@@ -1673,9 +1683,10 @@ namespace giac {
       if (key==KEY_CTRL_EXE || key==KEY_CTRL_OK)
 	return KEY_CTRL_EXE;
       if (key>=32 && key<128){
-	if (!numeric || key=='-' || (key>='0' && key<='9'))
+	if (!numeric || key=='-' || (key>='0' && key<='9')){
 	  s.insert(s.begin()+pos,char(key));
-	++pos;
+	  ++pos;
+	}
 	continue;
       }
       if (key==KEY_CTRL_DEL){
@@ -4201,7 +4212,7 @@ namespace xcas {
       dy=labelsize-2;
       break;
     }
-    dy += labelsize;
+    //dy += labelsize;
   }
 
   void draw_legende(const vecteur & f,int i0,int j0,int labelpos,const Graph2d * iptr,int clip_x,int clip_y,int clip_w,int clip_h,int deltax,int deltay,int c,GIAC_CONTEXT){
@@ -4496,6 +4507,8 @@ namespace xcas {
 	      h=j0-j0save;
 	    }
 	    draw_rectangle(deltax+x,deltay+y,w,h,couleur);
+	    if (!hidden_name)
+	      draw_legende(f,deltax+x,deltay+y,labelpos,&Mon_image,clip_x,clip_y,clip_w,clip_h,0,0,couleur,contextptr);
 	    return;
 	  }
 	} // end rectangle check
@@ -4509,7 +4522,9 @@ namespace xcas {
 	}
 	if (!closed)
 	  vi.back()=vi.front();
-	draw_filled_polygon(vi,0,LCD_WIDTH_PX,24,LCD_HEIGHT_PX,couleur);
+	draw_filled_polygon(vi,0,LCD_WIDTH_PX,0,LCD_HEIGHT_PX,couleur);
+	if (!hidden_name)
+	  draw_legende(f,round(i0),round(j0),labelpos,&Mon_image,clip_x,clip_y,clip_w,clip_h,0,0,couleur,contextptr);
 	return;
       }
       ++jt;
@@ -5238,7 +5253,8 @@ namespace xcas {
 	if (dy-eqdata.y>eqdata.dy+32)
 	  dy=eqdata.y+eqdata.dy+32;
       }
-      drawRectangle(0, STATUS_AREA_PX, LCD_WIDTH_PX, LCD_HEIGHT_PX-STATUS_AREA_PX,COLOR_WHITE);
+      waitforvblank();
+      drawRectangle(0, 0, LCD_WIDTH_PX, 205,COLOR_WHITE);
       // Bdisp_AllClr_VRAM();
       int save_clip_ymin=clip_ymin;
       clip_ymin=STATUS_AREA_PX;
@@ -5262,7 +5278,7 @@ namespace xcas {
       int key;
       //cout << eq.data << endl;
       GetKey(&key);
-      bool alph=alphawasactive;
+      bool alph=alphawasactive();
       if (key==KEY_CTRL_OK || key==KEY_CTRL_MENU){
 	os_hide_graph();
 	if (edited && xcas::do_select(eq.data,true,value) && value.type==_EQW){
@@ -5750,10 +5766,29 @@ namespace xcas {
     }
     //*logptr(contextptr) << eq.data << endl;
   }
-
-  void do_run(const char * s,gen & g,gen & ge,GIAC_CONTEXT){
+  
+  void clear_turtle_history(GIAC_CONTEXT){
+    history_in(contextptr).clear();
+    history_out(contextptr).clear();
+    turtle_stack()=vector<logo_turtle>(1,logo_turtle());
+  }    
+  
+  void do_restart(GIAC_CONTEXT){
+    if (contextptr){
+      if (contextptr->globalcontextptr && contextptr->globalcontextptr->tabptr)
+	contextptr->globalcontextptr->tabptr->clear();
+    }
+    else
+      _restart(0,contextptr);
+  }
+  void do_run(const char * s,gen & g,gen & ge,const context * & contextptr){
     if (!contextptr)
       contextptr=new giac::context;
+    if (!strcmp(s,"restart")){
+      clear_turtle_history(contextptr);
+      do_restart(contextptr);
+      return;
+    }
     int S=strlen(s);
     char buf[S+1];
     buf[S]=0;
@@ -5777,20 +5812,27 @@ namespace xcas {
     clear_abort();
     // execution_in_progress = 0;
     if (esc_flag || ctrl_c){
+      esc_flag=ctrl_c=interrupted=false;
       while (confirm("Interrupted","OK",true)==-1)
 	; // insure ON has been removed from keyboard buffer
       ge=string2gen("Interrupted",false);
       // memory full?
       if (!kbd_interrupted){
 	// clear turtle, display msg
-	turtle_stack()=vector<logo_turtle>(1,logo_turtle());
-	while (confirm("Memoire remplie! Choisir","des variables a purger",true)==-1)
-	  ;
-	gen g=select_var(contextptr);
-	if (g.type==_IDNT)
+	clear_turtle_history(contextptr);
+	int res=confirm("Memoire remplie! Purger","EXE variable, Back: tout.",false);
+	if (res==KEY_CTRL_F1 && select_var(contextptr).type==_IDNT){
+	  size_t savestackptr = stackptr;
+#ifdef x86_64
+	  stackptr=0xffffffffffffffff;
+#else
+	  stackptr=0xffffffff;
+#endif
 	  _purge(g,contextptr);
-	else 
-	  _restart(0,contextptr);
+	  stackptr=savestackptr;
+	}
+	else
+	  do_restart(contextptr);
       }
     }
     //Console_Output("Done"); return ;
@@ -6634,11 +6676,25 @@ namespace xcas {
 	  change_mode(text,0,contextptr); // text->python=false;
 	if (l>=4 && src[0]=='d' && src[1]=='e' && src[2]=='f' && src[3]==' ')
 	  change_mode(text,1,contextptr); // text->python=true;
-	drawRectangle(text->x, text->y, text->width, LCD_HEIGHT_PX-12, COLOR_WHITE);
+	//drawRectangle(text->x, text->y, text->width, LCD_HEIGHT_PX-(editable?17:0), COLOR_WHITE);
       }
-      int textX=text->x;
-      if(v[cur].newLine) 
-	textY=textY+text->lineHeight+v[cur].lineSpacing; 
+      if (cur%4==0 && textY>=(showtitle?24:0))
+	waitforvblank();
+      int textX=text->x,saveY=textY;
+      if(v[cur].newLine) {
+	textY=textY+text->lineHeight+v[cur].lineSpacing;
+      }
+      int dh=18+v[cur].lineSpacing;
+      if (textY+dh+(editable?17:0)>LCD_HEIGHT_PX){
+	if (isFirstDraw)
+	  dh -= textY+dh+(editable?17:0)-LCD_HEIGHT_PX;
+	else {
+	  textY = saveY;
+	  break;
+	}
+      }
+      if (dh>0 && textY>=(showtitle?24:0))
+	drawRectangle(textX, textY, LCD_WIDTH_PX, dh, COLOR_WHITE);
       if (editable){
 	char line_s[16];
 	sprint_int(line_s,cur+1);
@@ -6723,7 +6779,7 @@ namespace xcas {
 	      }
 	      // go to next space or alphabetic char
 	      for (;*src;++i,++src){
-		if (*src==' ' || (i && *src==',') || (text->python && *src=='#') || (!text->python && *src=='/' && *(src+1)=='/')|| *src=='"' || isalpha(*src))
+		if (*src==' ' || (i && *src>=' ' && *src<='/') || (text->python && *src=='#') || (!text->python && *src=='/' && *(src+1)=='/')|| *src=='"' || isalpha(*src))
 		  break;
 	      }
 	    }
@@ -6779,9 +6835,11 @@ namespace xcas {
 	  //time for a new line
 	  textX=text->x+deltax;
 	  textY=textY+text->lineHeight+v[cur].lineSpacing;
+	  if (textY>=(showtitle?24:0))
+	    drawRectangle(0, textY, LCD_WIDTH_PX, 18+v[cur].lineSpacing, COLOR_WHITE);
 	  ++nlines;
 	} //else still fits, print new word normally (or just increment textX, if we are not "on stage" yet)
-	if(textY >= -24 && textY < LCD_HEIGHT_PX) {
+	if(textY >= (showtitle?24:0) && textY < LCD_HEIGHT_PX) {
 	  temptextX=textX;
 	  if (editable){
 	    couleur=linecomment?5:find_color(singleword,contextptr);
@@ -6850,21 +6908,23 @@ namespace xcas {
       }
       // free(singleword);
       v[cur].nlines=nlines;
-      if(isFirstDraw) {
+      if (isFirstDraw) 
 	totalTextY = textY+(showtitle ? 0 : 24);
-      } else if(textY>LCD_HEIGHT_PX) {
-	break;
-      }
     } // end main draw loop
+    int dh=LCD_HEIGHT_PX-textY-text->lineHeight-(editable?17:0);
+    if (dh>0)
+      drawRectangle(0, textY+text->lineHeight, LCD_WIDTH_PX, dh, COLOR_WHITE);
     isFirstDraw=0;
     if(showtitle) {
+      waitforvblank();
       drawRectangle(0, 0, LCD_WIDTH_PX, 24, _WHITE);
       drawScreenTitle((char*)text->title);
     }
     //if (editable)
     if (editable){
+      // waitforvblank();
       drawRectangle(0,205,LCD_WIDTH_PX,17,44444);
-      PrintMiniMini(0,205,"shift-1 tests|2 loops|3 misc|4 tortue|5 +- |      ",4,44444,giac::_BLACK);
+      PrintMiniMini(0,205,"shift-1 test|2 loop|3 misc|4 tortue|5 +-|6 pixel",4,44444,giac::_BLACK);
       //draw_menu(1);
     }
 #ifdef SCROLLBAR
@@ -8382,8 +8442,11 @@ namespace xcas {
 	s[i]=' ';
     }
     Console_Output((const char *)s);
-    if (l && S[l-1]=='\n')
+    if (l && S[l-1]=='\n'){
       Console_NewLine(LINE_TYPE_OUTPUT, 1);
+      if (!freeze)
+	Console_Disp();
+    }
   }
 
   void dPuts(const char * s){
@@ -8685,6 +8748,7 @@ namespace xcas {
   int giac_filebrowser(char * filename,const char * extension,const char * title){
     const char * filenames[MAX_NUMBER_OF_FILENAMES+1];
     int n=os_file_browser(filenames,MAX_NUMBER_OF_FILENAMES,extension);
+    if (n==0) return 0;
     int choix=select_item(filenames,"Scripts");
     if (choix<0 || choix>=n) return 0;
     strcpy(filename,filenames[choix]);
@@ -8767,10 +8831,6 @@ namespace xcas {
     }
   }
 
-  void do_restart(GIAC_CONTEXT){
-    giac::_restart(gen(vecteur(0),_SEQ__VECT),contextptr);
-  }
-
   void chk_restart(GIAC_CONTEXT){
     drawRectangle(0, 24, LCD_WIDTH_PX, LCD_HEIGHT_PX-24, COLOR_WHITE);
     if (confirm(lang?"Conserver les variables?":"Keep variables?",lang?"OK: conserver, Back: effacer":"OK: keep, Back: erase")==KEY_CTRL_F6)
@@ -8785,13 +8845,15 @@ namespace xcas {
     for (;;){
       int keyflag = GetSetupSetting(0x14);
       GetKey(&key);
-      bool alph=alphawasactive;
+      bool alph=alphawasactive();
       if (key==KEY_PRGM_ACON)
 	Console_Disp();
       translate_fkey(key);
       if (key==KEY_CTRL_PASTE)
 	return Console_Input((const char*) paste_clipboard());
-      if ( (key >= '0' && key <= '9' ) || (key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z')){
+      if ( (key >= ' ' && key <= '~' )
+	   // (key>='0' && key<='9')|| (key >= 'A' && key <= 'Z') || (key >= 'a' && key <= 'z')
+	   ){
 	tmp_str[0] = key;
 	tmp_str[1] = '\0';
 	Console_Input(tmp_str);
@@ -9437,6 +9499,23 @@ namespace xcas {
     return 0; // never reached
   }
 
+  void Console_Free(){
+    for (int i = 0; i < _LINE_MAX; i++){
+      if (Line[i].str){
+	if (Line[i].str==Edit_Line)
+	  Edit_Line=0;
+	console_free(Line[i].str);
+	Line[i].str=0;
+      }
+    }
+    if (Edit_Line)
+      console_free(Edit_Line);
+    if (Line){
+      delete [] Line;
+      Line = 0;
+    }
+  }
+
   int Console_Init()
   {
     console_changed=1;
@@ -9577,8 +9656,7 @@ namespace xcas {
     int print_y = 0; //pixel y cursor
     int print_y_locate;
 
-    if (redraw_mode & 1)
-      Bdisp_AllClr_VRAM();
+    // if (redraw_mode & 1) Bdisp_AllClr_VRAM();
 
     //GetFKeyIconPointer( 0x01BE, &ficon );
     //DisplayFKeyIcon( i, ficon);
@@ -9588,7 +9666,7 @@ namespace xcas {
       console_line & curline=Line[i+Start_Line];
       if (i == Cursor.y){
 	// cursor line
-	if ((redraw_mode & 1)==0)
+	//if ((redraw_mode & 1)==0)
 	  drawRectangle(0,i*vfontsize,LCD_WIDTH_PX,vfontsize,_WHITE);
 	if (curline.type == LINE_TYPE_INPUT || curline.type == LINE_TYPE_OUTPUT && curline.disp_len >= COL_DISP_MAX){
 	  locate(1, i + 1);
@@ -9626,7 +9704,7 @@ namespace xcas {
 	  locate(COL_DISP_MAX, i + 1);
 #else
 	  print_y=i*vfontsize;
-	  print_x=LCD_WIDTH_PX-hfontsize;
+	  print_x=LCD_WIDTH_PX+2-hfontsize;
 #endif
 	  if (curline.readonly){
 	    if(curline.disp_len - curline.start_col != COL_DISP_MAX) {
@@ -9692,6 +9770,7 @@ namespace xcas {
       else {
 	if ((redraw_mode & 1)==0)
 	  continue;
+	drawRectangle(0,i*vfontsize,LCD_WIDTH_PX,vfontsize,_WHITE);
 	bool bigoutput = curline.type==LINE_TYPE_OUTPUT && curline.disp_len>=COL_DISP_MAX-3;
 	locate(bigoutput?3:1,i+1);
 	if (curline.type==LINE_TYPE_INPUT || bigoutput)
@@ -9709,7 +9788,7 @@ namespace xcas {
 #ifdef CURSOR
 	  locate(COL_DISP_MAX, i + 1);
 #else
-	  print_x=LCD_WIDTH_PX-hfontsize;
+	  print_x=LCD_WIDTH_PX+2-hfontsize;
 #endif
 	  Print((char *)">",COLOR_BLUE);
 	}
@@ -9723,8 +9802,11 @@ namespace xcas {
 	}      
       } // end non cursor line
     } // end loop on all lines
+    drawRectangle(0,i*vfontsize,LCD_WIDTH_PX,205-i*vfontsize,_WHITE);
 
     if ((redraw_mode & 1)==1){
+      for (; (i < LINE_DISP_MAX) ; i++)
+	drawRectangle(0,i*vfontsize,LCD_WIDTH_PX,vfontsize,_WHITE);
       string menu("shift-1 ");
       menu += string(menu_f1);
       menu += "|2 ";
@@ -9806,6 +9888,7 @@ namespace xcas {
     while(1){
       if ((expr=Console_GetLine(contextptr))==NULL){
 	save_session(contextptr);
+	Console_Free();
 	return 0;
       }
       if (strcmp((const char *)expr,"restart")==0){
@@ -9829,6 +9912,7 @@ namespace xcas {
       //GetKey(&key);
       Console_Disp();
     }
+    Console_Free();
     return 0;
   }
 
@@ -10068,7 +10152,7 @@ void drawAtom(uint8_t id) {
 	} else {
 	  drawRectangle(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,_WHITE);
 	}
-	os_draw_string_small(0,200,gettext("OK: tout, P:protons, N:nucleons, M:mass, E:khi"));
+	os_draw_string_small_(0,200,gettext("OK: tout, P:protons, N:nucleons, M:mass, E:khi"));
 	for(int i = 0; i < ATOM_NUMS; i++) {
 	  drawAtom(i);
 	}
@@ -10090,17 +10174,17 @@ void drawAtom(uint8_t id) {
 	sprint_int(nucleons,nuc);
 	
 	symbol=atomsdefs[cursor_pos].symbol;
-	os_draw_string(73,23,symbol);
+	os_draw_string_(73,23,symbol);
 	name=atomsdefs[cursor_pos].name;
-	os_draw_string_small(110,27,gettext(name));
-	os_draw_string_small(50,18,nucleons);
-	os_draw_string_small(50,31,protons);
+	os_draw_string_small_(110,27,gettext(name));
+	os_draw_string_small_(50,18,nucleons);
+	os_draw_string_small_(50,31,protons);
 	strcpy(mass,"M:");
 	strcpy(electroneg,"khi:");
 	sprint_double(mass+2,atomsdefs[cursor_pos].mass);
-	os_draw_string_small(0,186,mass);
+	os_draw_string_small_(0,186,mass);
 	sprint_double(electroneg+4,atomsdefs[cursor_pos].electroneg);
-	os_draw_string_small(160,186,electroneg);
+	os_draw_string_small_(160,186,electroneg);
       }
       redraw=false;
       int key;
@@ -10192,7 +10276,11 @@ int select_item(const char ** ptr,const char * title){
 }
 
 // string translations
+#ifdef NUMWORKS
+#include "numworks_translate.h"
+#else
 #include "aspen_translate.h"
+#endif
 bool tri2(const char4 & a,const char4 & b){
   int res= strcmp(a[0],b[0]);
   return res<0;
@@ -10228,6 +10316,5 @@ const char * gettext(const char * s) {
   }
   return s;
 }
-
 
 #endif // KHICAS

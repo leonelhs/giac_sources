@@ -312,6 +312,14 @@ namespace giac {
   void draw_filled_arc(int x,int y,int rx,int ry,int theta1_deg,int theta2_deg,int color,int xmin,int xmax,int ymin,int ymax,bool segment,GIAC_CONTEXT);
 
   std::string fetch(const std::string & url);
+
+  // 4x4 matrix utilities on double, for trig regression
+  void Tran4(double * colmat);
+  void Mult4(double * colmat,double * vect,double * res);
+  void Mult4(double * c,double k,double * res);
+  double Det4(double * c);
+  void Inv4(double * c,double * res);
+
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac
 #endif // NO_NAMESPACE_GIAC

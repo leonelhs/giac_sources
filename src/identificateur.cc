@@ -62,14 +62,6 @@ namespace giac {
     bool s_dynalloc;
   };
 
-  struct alias_identificateur {
-    int * ref_count;
-    gen * value;
-    const char * id_name;
-    vecteur * localvalue;
-    short int * quoted;
-  };
-
 #ifdef DOUBLEVAL // #ifdef GIAC_GENERIC_CONSTANTS
   const char string_euler_gamma[]="euler_gamma";
   identificateur _IDNT_euler_gamma(string_euler_gamma,(double) .577215664901533);
@@ -136,7 +128,7 @@ namespace giac {
 
 #endif // GIAC_GENERIC_CONSTANTS
 
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS
 #if 0
   static const alias_identificateur alias_identificateur_a38={0,0,"A",0,0};
   const identificateur & a__IDNT=* (const identificateur *) &alias_identificateur_a38;

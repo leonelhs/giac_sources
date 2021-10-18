@@ -736,7 +736,7 @@ namespace giac {
       cl=ilaplace(cl,x,x,contextptr);
       return vecteur(1,ratnormal(cl,contextptr));
     }
-    gen i=integrate_without_lnabs(rdiv(b,a,contextptr),x,contextptr);
+    gen i=integrate_without_lnabs(inv(a,contextptr)*b,x,contextptr);
     i=normal(lnexpand(i,contextptr),contextptr);
     i=exp(i,contextptr);
     if (step_info)
@@ -1501,7 +1501,7 @@ namespace giac {
 	    continue;
 	  } // end x-incomplete
 	  gen res(string2gen(gettext("Unable to solve differential equation"),false));
-	  res.subtype=1;
+	  res.subtype=-1;
 	  sol.push_back(res);
 	} 
 	ordre=2;

@@ -17,6 +17,9 @@
  */
 #ifndef _GIAC_GEN_H
 #define _GIAC_GEN_H
+#ifdef KHICAS
+extern size_t stackptr;
+#endif
 
 /* Warning: the size of a gen depend on the architecture and of compile-time flags
    Define -DSMARTPTR64 on 64 bit CPU if the pointers allocated by new are 48 bits
@@ -779,12 +782,12 @@ namespace giac {
     bool is_integer() const ;
     bool is_constant() const;
     std::string print(GIAC_CONTEXT) const;
-    inline const char * printcharptr(GIAC_CONTEXT) const { return print(contextptr).c_str(); };
+    // inline const char * printcharptr(GIAC_CONTEXT) const { return print(contextptr).c_str(); };
     // if sptr==0, return length required, otherwise print at end of *sptr
     int sprint(std::string * sptr,GIAC_CONTEXT) const; 
     std::string print_universal(GIAC_CONTEXT) const;
     std::string print() const;
-    inline const char * printcharptr() const { return print().c_str(); };
+    //inline const char * printcharptr() const { return print().c_str(); };
     wchar_t * wprint(GIAC_CONTEXT) const ; 
     // print then convert to a malloc-ated wchar_t *
     void modify(int i) { *this =gen(i); };

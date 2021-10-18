@@ -25,7 +25,7 @@
 #ifdef __ANDROID__
 using std::vector;
 #endif
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB ||      \
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS ||     \
     defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
 inline bool is_graphe(const giac::gen &g,std::string &disp_out,
                       const giac::context *) {

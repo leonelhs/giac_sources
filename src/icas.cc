@@ -4,7 +4,11 @@
 #include "config.h"
 #endif
 #include "first.h"
-
+#ifdef KHICAS
+int main(){
+  return 0;
+}
+#else
 /*
  *  Copyright (C) 2000,2014 B. Parisse, Institut Fourier, 38402 St Martin d'Heres
  *
@@ -1358,8 +1362,8 @@ int main(int ARGC, char *ARGV[]){
     giac::run_gnuplot(out_handle);
 #endif
     putchar(TEXMACS_DATA_BEGIN);
-    printf("verbatim:");
-    format_plugin();
+    // printf("verbatim:");
+    // format_plugin();
     printf("latex:");
     format_plugin();
     printf("{\\centering\\begin{tabular}{|c|}\\hline Giac CAS for TeXmacs, released under the GPL license (3.0)\\\\See \\url{http://www.gnu.org} for license details\\\\May contain BSD licensed software parts (lapack, atlas, tinymt)\\\\\\copyright\\ 2003--2019 B. Parisse \\& al (giac), J. van der Hoeven (TeXmacs)\\\\\\hline\\end{tabular}\\par}");
@@ -1848,3 +1852,4 @@ int main(int ARGC, char *ARGV[]){
     giac::release_globals();
   return resultat;
 }
+#endif // KHICAS

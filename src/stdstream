@@ -19,6 +19,7 @@ namespace xcas {
   void dConsolePut(const char * S);
   int Console_Output(const char *str);
   int Console_NewLine(int pre_line_type, int pre_line_readonly);
+  int Console_Disp(int redraw_mode);
 #ifndef NO_NAMESPACE_XCAS
 } // namespace xcas
 #endif // ndef NO_NAMESPACE_XCAS
@@ -43,8 +44,10 @@ struct stdistream {
 
 inline void do_print(const char * buf){
   xcas::dConsolePut(buf);
-  //xcas::Console_NewLine(1, 1);    
+  //xcas::Console_NewLine(1, 1);
+#ifdef GIAC_LINKED
   mp_hal_stdout_tx_strn_cooked(buf,strlen(buf));
+#endif
 }
 
 inline stdostream & operator << (stdostream & os,int i){

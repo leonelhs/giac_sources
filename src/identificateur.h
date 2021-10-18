@@ -31,6 +31,14 @@ namespace giac {
 
   const int MAXLENSIZE = 1000000; // max size of a line in files
 
+  struct alias_identificateur {
+    int * ref_count;
+    gen * value;
+    const char * id_name;
+    vecteur * localvalue;
+    short int * quoted;
+  };
+
   // make g identificateurs evaluated as global in null context
   gen global_eval(const gen & g,int level);
   gen global_evalf(const gen & g,int level);
@@ -79,7 +87,7 @@ namespace giac {
   extern const gen & undef;
 #endif
 
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS
   extern const identificateur & a__IDNT;
   extern const alias_gen alias_a38;
 #define a__IDNT_e (*(gen const *)&alias_a38)

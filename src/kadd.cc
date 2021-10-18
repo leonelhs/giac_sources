@@ -12,6 +12,25 @@ using namespace std;
 using namespace giac;
 using namespace xcas;
 
+#if 0
+int ext_main(){
+  while (1){
+    statuslinemsg("Numworks loader");
+    drawRectangle(0,0,LCD_WITH_PX,LCD_HEIGHT_PX,_BLACK);
+    os_draw_string(0,20,_WHITE,_BLACK,"1. Khicas shell");
+    os_draw_string(0,40,_WHITE,_BLACK,"2. Epsilon (Numworks HOME)");
+    int k=getkey(true);
+    if (k=='1' ) run_epsilon();
+    if (k=='2') caseval("*");
+  }
+}
+#else
+int ext_main(){
+  caseval("*");
+  return 0;
+}
+#endif
+
 unsigned short mmind_col[]={COLOR_BLUE,COLOR_RED,COLOR_MAGENTA,COLOR_GREEN,COLOR_CYAN,COLOR_YELLOW};
 
 void mastermind_disp(const vector<int> & solution,const vector< vector<int> > & essais,const vector<int> & essai,bool fulldisp,GIAC_CONTEXT){
@@ -71,17 +90,17 @@ void mastermind_disp(const vector<int> & solution,const vector< vector<int> > & 
     }
   }
   int y=170;
-  int x=os_draw_string_small(x0,y,"0");
+  int x=os_draw_string_small_(x0,y,"0");
   draw_filled_circle(x+10,y+10,10,COLOR_BLUE);
-  x=os_draw_string_small(x+30,y,"1");
+  x=os_draw_string_small_(x+30,y,"1");
   draw_filled_circle(x+10,y+10,10,COLOR_RED);
-  x=os_draw_string_small(x+30,y,"2");
+  x=os_draw_string_small_(x+30,y,"2");
   draw_filled_circle(x+10,y+10,10,COLOR_MAGENTA);
-  x=os_draw_string_small(x+30,y,"3");
+  x=os_draw_string_small_(x+30,y,"3");
   draw_filled_circle(x+10,y+10,10,COLOR_GREEN);
-  x=os_draw_string_small(x+30,y,"4");
+  x=os_draw_string_small_(x+30,y,"4");
   draw_filled_circle(x+10,y+10,10,COLOR_CYAN);
-  x=os_draw_string_small(x+30,y,"5");
+  x=os_draw_string_small_(x+30,y,"5");
   draw_filled_circle(x+10,y+10,10,COLOR_YELLOW);
   y += 20;
   // affichage du coup actuel
