@@ -362,6 +362,10 @@ namespace giac {
   static define_unary_function_eval (__randnormald,&_randNorm,_randnormald_s);
   define_unary_function_ptr5( at_randnormald ,alias_at_randnormald,&__randnormald,0,true);
 
+  static const char _normalvariate_s []="normalvariate";
+  static define_unary_function_eval (__normalvariate,&_randNorm,_normalvariate_s);
+  define_unary_function_ptr5( at_normalvariate ,alias_at_normalvariate,&__normalvariate,0,true);
+
   double randchisquare(int k,GIAC_CONTEXT){
     double res=0.0;
     for (int i=0;i<k;++i){
@@ -465,6 +469,10 @@ namespace giac {
   static const char _randexp_s []="randexp";
   static define_unary_function_eval (__randexp,&_randexp,_randexp_s);
   define_unary_function_ptr5( at_randexp ,alias_at_randexp,&__randexp,0,true);
+
+  static const char _expovariate_s []="expovariate";
+  static define_unary_function_eval (__expovariate,&_randexp,_expovariate_s);
+  define_unary_function_ptr5( at_expovariate ,alias_at_expovariate,&__expovariate,0,true);
 
   // Normal cumulative distribution function
   // proba that X<x for X following a normal distrib of mean mean and dev dev
@@ -2007,6 +2015,10 @@ namespace giac {
   static define_unary_function_eval (__randweibulld,&_randweibulld,_randweibulld_s);
   define_unary_function_ptr5( at_randweibulld ,alias_at_randweibulld,&__randweibulld,0,true);
 
+  static const char _weibullvariate_s []="weibullvariate";
+  static define_unary_function_eval (__weibullvariate,&_randweibulld,_weibullvariate_s);
+  define_unary_function_ptr5( at_weibullvariate ,alias_at_weibullvariate,&__weibullvariate,0,true);
+
   gen betad(const gen &alpha,const gen & beta,const gen & x,GIAC_CONTEXT){
     if ( (x==0 && alpha==1) || (x==1 && beta==1))
       return plus_one/Beta(alpha,beta,contextptr);
@@ -2121,6 +2133,10 @@ namespace giac {
   static const char _randbetad_s []="randbetad";
   static define_unary_function_eval (__randbetad,&_randbetad,_randbetad_s);
   define_unary_function_ptr5( at_randbetad ,alias_at_randbetad,&__randbetad,0,true);
+
+  static const char _betavariate_s []="betavariate";
+  static define_unary_function_eval (__betavariate,&_randbetad,_betavariate_s);
+  define_unary_function_ptr5( at_betavariate ,alias_at_betavariate,&__betavariate,0,true);
 
   gen gammad(const gen &alpha,const gen & beta,const gen & x,GIAC_CONTEXT){
     if (is_zero(x) && alpha==1)
@@ -2401,6 +2417,9 @@ namespace giac {
   static define_unary_function_eval (__randgammad,&_randgammad,_randgammad_s);
   define_unary_function_ptr5( at_randgammad ,alias_at_randgammad,&__randgammad,0,true);
 
+  static const char _gammavariate_s []="gammavariate";
+  static define_unary_function_eval (__gammavariate,&_randgammad,_gammavariate_s);
+  define_unary_function_ptr5( at_gammavariate ,alias_at_gammavariate,&__gammavariate,0,true);
 
   gen uniform(const gen & g,bool ckpython,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
@@ -4129,6 +4148,94 @@ namespace giac {
   static define_unary_function_eval (__hidden_name,&_constants_catalog,_hidden_name_s);
   define_unary_function_ptr5( at_hidden_name ,alias_at_hidden_name,&__hidden_name,0,T_NUMBER);
 
+  complex<double> LambertW(complex<double> z,int n){
+    // n!=0 is not implemented yet
+    if (z==0) return z;
+    complex<double> w; 
+    // initial guess
+    w=2.0*(M_E*z+1.0);
+    if (std::abs(w)<0.1 && (n==0 || ( n==1 && z.imag()<0) || (n==-1 && z.imag()>0))){
+      // near -1/e, set p=sqrt(2(ez+1)), -1+p-1/3*p^2+11/72*p^3+...
+      w=std::sqrt(w);
+      if (n==0) w=-1.0+w*(1.0+w*(-1./3.+w*11./72.));
+      if (n==1 || n==-1) w=-1.0+w*(-1.0+w*(-1./3.-w*11./72.));
+    }
+    else {
+      if (z.imag()==0 && z.real()<1 && w.real()>0 && (n==0 || n==-1)){
+	w=1;
+	if (n==-1 && z.real()<0){
+	  double lnw=std::log(-z.real());
+	  double lnlnw=std::log(-lnw);
+	  w=lnw-lnlnw-lnlnw/lnw;
+	}
+      }
+      else {
+	// almost everywhere Log(z)-ln(Log(z))
+	w=std::log(z)+2.0*n*complex<double>(0,M_PI);
+	if (std::abs(z)>=3)
+	  w=w-std::log(w);
+      }
+    }
+    if (n==0 && std::abs(z - .5)<=.5) 
+      w = (0.35173371 * (0.1237166 + 7.061302897 * z)) / (2. + 0.827184 * (1. + 2. * z));// (1,1) Pade approximant for W(z,0)
+    if (n==-1 && std::abs(z - .5)<=.5) 
+      w = -((complex<double>(2.2591588985 ,4.22096) * (complex<double>(-14.073271 ,-33.767687754) * z - complex<double>(12.7127,-19.071643) * (1. + 2.*z))) / (2. - complex<double>(17.23103,-10.629721) * (1. + 2.*z)));// (1,1) Pade
+    if (z.imag()==0 && w.imag()==0){
+      double Z=z.real(),W=w.real();
+      while (1){
+	// wnext=w-(w*exp(w)-z)/(exp(w)*(w+1)-(w+2)*(w*exp(w)-z)/(2*w+2))
+	double expw(std::exp(W)),wexpwz(W*expw-Z),w1(W+1.0);
+	double wnext(W-wexpwz/(w1*expw-(W+2.0)*wexpwz/w1/2.0));
+	if (abs(wnext-W)<1e-13*std::abs(W))
+	  return wnext;
+	W=wnext;
+      }
+    }
+    while (1){
+      // wnext=w-(w*exp(w)-z)/(exp(w)*(w+1)-(w+2)*(w*exp(w)-z)/(2*w+2))
+      complex<double> expw(std::exp(w)),wexpwz(w*expw-z),w1(w+1.0);
+      complex<double> wnext(w-wexpwz/(w1*expw-(w+2.0)*wexpwz/w1/2.0));
+      if (abs(wnext-w)<1e-13*(1.0+std::abs(w)))
+	return wnext;
+      w=wnext;
+    }
+  }
+
+  gen LambertW(const gen & Z,int n){
+    gen z(Z);
+    if (z==0) return z;
+    int nbits=45;
+    if (z.type==_REAL)
+      nbits=mpfr_get_prec(z._REALptr->inf);
+    if (z.type==_CPLX && z._CPLXptr->type==_REAL)
+      nbits=mpfr_get_prec(z._CPLXptr->_REALptr->inf);
+    // initial guess
+    gen w=evalf_double(z,1,context0);
+    if (w.type==_DOUBLE_)
+      w=LambertW(complex<double>(w._DOUBLE_val,0),n);
+    else {
+      if (w.type!=_CPLX || w.subtype!=3)
+	return gensizeerr("Unable to convert to float");
+      w=LambertW(complex<double>(w._CPLXptr->_DOUBLE_val,(w._CPLXptr+1)->_DOUBLE_val));
+    }
+    if (nbits<=45)
+      return w;
+    int addprec=10;
+    gen tmp=abs(w,context0);
+    if (is_greater(tmp,1,context0))
+      addprec += int(std::floor(evalf_double(ln(tmp,context0),1,context0)._DOUBLE_val));
+    w=accurate_evalf(w,nbits+addprec);
+    z=accurate_evalf(z,nbits+addprec);
+    double eps=std::pow(.5,nbits);
+    while (1){
+      // wnext=w-(w*exp(w)-z)/(exp(w)*(w+1)-(w+2)*(w*exp(w)-z)/(2*w+2))
+      gen expw(exp(w,context0)),wexpwz(w*expw-z),w1(w+1);
+      gen wnext(w-wexpwz/(w1*expw-(w+2)*wexpwz/w1/2));
+      if (abs(wnext-w,context0)<eps*(1.0+abs(w,context0)))
+	return accurate_evalf(wnext,nbits);
+      w=wnext;
+    }
+  }
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

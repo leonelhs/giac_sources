@@ -2035,7 +2035,7 @@ namespace giac {
     case 3: // tan
       switch (utrig){
       case 1: // tan^2=1/(1-sin^2)-1
-	fx=pow(inv(1-pow(gen_x,-2),contextptr)-1,fexp);
+	fx=pow(inv(1-pow(gen_x,2),contextptr)-1,fexp);
 	return true;
       case 2: // tan^2=1/cos^2-1
 	fx=pow(pow(gen_x,-2)-1,fexp);
@@ -2737,6 +2737,23 @@ namespace giac {
       if (rvar[i].is_symb_of_sommet(at_pow)){
 	do_risch=false;
 	break;
+      }
+    }
+    // minimal support for LambertW
+    if (has_op(rvar,*at_LambertW)){
+      vecteur vw(lop(rvar,at_LambertW));
+      gen a,b;
+      if (vw.size()==1 && is_linear_wrt(vw[0]._SYMBptr->feuille,gen_x,a,b,contextptr)){
+	// W(ax+b) inside, change of variables ax+b=z*exp(z)
+	// W(ax+b)=z, dx=(z+1)*exp(z)*dz/a
+	vecteur substin(makevecteur(vw[0],gen_x));
+	vecteur substout(makevecteur(gen_x,(gen_x*symbolic(at_exp,gen_x))));
+	gen tmpe=complex_subst(e,substin,substout,contextptr)*(gen_x+1)*symbolic(at_exp,gen_x)/a,tmprem;
+	gen tmpres=linear_integrate_nostep(tmpe,gen_x,tmprem,intmode,contextptr);
+	substout[1]=symbolic(at_exp,gen_x); substin[1]=(a*gen_x+b)/vw[0];
+	remains_to_integrate=complex_subst(tmprem,substout,substin,contextptr);
+	res=complex_subst(tmpres,substout,substin,contextptr);
+	return res;
       }
     }
     // square roots

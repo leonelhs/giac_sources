@@ -113,7 +113,7 @@ void latex_save_DispG(const char * filename) {
 
 void a_propos() {
   std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-18, Bernard Parisse, Renee De Graeve\n";
-    s += "Optimization, signalprocessing, graph theory code: Luka Marohnić\n";
+    s += "Optimization, signalprocessing, graph theory code and manuals: Luka Marohnić\n";
     s += "http://www-fourier.ujf-grenoble.fr/~parisse/giac.html\n";
     s += "If you like Xcas, please link your webpage to the above link to help other find it\n";
     s += "Software licensed under the GPL, General Public License version 3.0 or later\nSee the file COPYING in this package for more details\nOr browse http://www.gnu.org\n";
@@ -125,11 +125,11 @@ void a_propos() {
     s += "Qcas interface: Loic Le Coq, Frederic Han\n";
     s += "Androcas interface: Thomas Luka\n";
     s += "SmartCAS interface: Nicolas Pujol\n";
-    s += "Tutorial (dxcas) with B. Ycart\n";
+    s += "English user guide translation maintained by Jay Belanger\n";
     s += "Greek localization, Alkiviadis Akritas, Eugenia Kelepesi-Akritas, George Nasopoulos, Nikos Larisis\n";
     s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez\n";
     s += "German short help localization, Philipp Rösch\n";
-    s += "English user guide contributions by Jay Belanger and Luka Marohnić\n";
+    s += "Tutorial (dxcas) with B. Ycart\n";
     s += "Debian package: Carlos Enrique Carleos Artime\n";
     s += "Mac OS X port thanks to Jean-Yves Avenard and IREM Grenoble\n";
     s += "Tablor by Guillaume Connan, Pgiac by Jean-Michel Sarlat\n";
@@ -138,7 +138,7 @@ void a_propos() {
     s += "Thanks to the geogebra team, especially Zoltán Kovács, Michael Borcherds, Markus Hohenwater, Zbyněk Konečný\n";
     s += "Xcas early testers: Christiane Serret (lycée de Crest),\nMichèle Gandit (lycée international de Grenoble)\nStephane Lejoly, Jean-Joel Bataille, Jean-Eric Visca, Thierry Xuereb\nPaul Magnien, Denis Le Fur, Phil Pham\nSébastien Celles, Gérard Vinel, Robert Rolland, Robert Sétif\nJuan Antonio Martinez Rojas, Nicolas Rosillo (Spain)\n";
     s += "Francois Maltey (Mupacs)\nFrederic Faure, Emilien Kia, Andreas Thillosen (giac)\n";
-    s += "Francois Boisson (grace a lui xcas est utilisable a l'agregation de maths)\n";
+    s += "Francois Boisson (grace a lui Xcas est utilisable a l'agregation de maths)\n";
     s += "Luc Briel, Georges Dubouloz, Emmanuel Gaunard, Laurent Hofer, Yvan Duron, Martin Deraux (bugs, suggestions)...\n";
     s += "Uses GMP, (c) T. Granlund & al.\n";
   #ifdef HAVE_LIBMPFR
@@ -146,6 +146,9 @@ void a_propos() {
   #endif //
   #ifdef HAVE_LIBMPFI
     s += "Arithmetic interval support by MPFI, Fabrice Rouillier, Nathalie Revol, Sylvain Chevillard, Hong Diep Nguyen, Christoph Lauter and Philippe Théveny \n";
+  #endif //
+  #ifdef HAVE_LIBECM
+    s += "Elliptic Curve Method support by ECM, Paul Zimmermann, Cyril Bouvier, David Cleaver, Pierrick Gaudry, Brian Gladman, Jim Fougeron, Laurent Fousse, Alexander Kruppa, Francois Morain, Dave Newman, Jason S. Papadopoulos\n";
   #endif //
   #ifdef HAVE_LIBCOCOA
     s += "Alternative Groebner Basis code by CoCoA, J. Abbott & al. \n";

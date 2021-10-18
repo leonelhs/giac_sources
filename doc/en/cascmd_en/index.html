@@ -10,10 +10,9 @@
 <body >
 <!--HEVEA command line is: hevea -fix cascmd_en.tex -->
 <!--HACHA command line is: hacha cascmd_en.html -o cascmd_en/index.html -->
-<table class="title"><tr><td style="padding:1ex"><h1 class="titlemain">Symbolic algebra and Mathematics with <span style="font-family:monospace">Xcas</span></h1><h3 class="titlerest">Renée De Graeve, Bernard Parisse<br>
-University of Grenoble I<br>
-Corrected by Jay Belanger<br>
-Optimization section written by Luka Marohnić</h3></td></tr>
+<table class="title"><tr><td style="padding:1ex"><h1 class="titlemain">Symbolic algebra and Mathematics with <span style="font-family:monospace">Xcas</span></h1><h3 class="titlerest">Renée De Graeve, Bernard Parisse<sup><a id="text1" href="#note1">1</a></sup>,<br>
+Jay Belanger<sup><a id="text2" href="#note2">2</a></sup><br>
+Sections written by Luka Marohnić<sup><a id="text3" href="#note3">3</a></sup></h3></td></tr>
 </table><p>© 2002, 2007 Renée De Graeve, Bernard Parisse<br>
 <code>renee.degraeve@wanadoo.fr</code><br>
 <code>bernard.parisse@ujf-grenoble.fr</code><br>
@@ -1072,6 +1071,186 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 <a href="cascmd_en717.html#sec935">10.5.1  Starting the debugger</a>
 </li></ul>
 </li></ul>
+</li><li class="li-toc"><a href="#sec944">Chapter 11  Two-dimensional Graphics</a>
+<ul class="toc"><li class="li-toc">
+<a href="#sec945">11.1  Introduction</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en718.html#sec946">11.1.1  Points, vectors and complex numbers</a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec947">11.2  Basic commands</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en719.html#sec948">11.2.1  Clear the <span style="font-family:monospace">DispG</span> screen: <span style="font-family:monospace">erase</span></a>
+</li><li class="li-toc"><a href="cascmd_en720.html#sec949">11.2.2  Toggle the axes: <span style="font-family:monospace">switch_axes</span></a>
+</li><li class="li-toc"><a href="cascmd_en721.html#sec950">11.2.3  Draw unit vectors:
+<span style="font-family:monospace">Ox_2d_unit_vector</span>
+<span style="font-family:monospace">Oy_2d_unit_vector</span>
+<span style="font-family:monospace">frame_2d</span></a>
+</li><li class="li-toc"><a href="cascmd_en722.html#sec951">11.2.4  Draw dotted paper: <span style="font-family:monospace">dot_paper</span></a>
+</li><li class="li-toc"><a href="cascmd_en723.html#sec952">11.2.5  Draw lined paper: <span style="font-family:monospace">line_paper</span></a>
+</li><li class="li-toc"><a href="cascmd_en724.html#sec953">11.2.6  Draw grid paper: <span style="font-family:monospace">grid_paper</span></a>
+</li><li class="li-toc"><a href="cascmd_en725.html#sec954">11.2.7  Draw triangular paper: <span style="font-family:monospace">triangle_paper</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec955">11.3  Display features of graphics</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en726.html#sec956">11.3.1  Graphic features</a>
+</li><li class="li-toc"><a href="cascmd_en727.html#sec957">11.3.2  Parameters for changing features</a>
+</li><li class="li-toc"><a href="cascmd_en728.html#sec960">11.3.3  Commands for global display features</a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec963">11.4  Define geometric objects without drawing them: <span style="font-family:monospace">nodisp</span></a>
+</li><li class="li-toc"><a href="#sec964">11.5  Geometric demonstrations: <span style="font-family:monospace">assume</span></a>
+</li><li class="li-toc"><a href="#sec965">11.6  Points in plane geometry</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en729.html#sec966">11.6.1  Points and complex numbers</a>
+</li><li class="li-toc"><a href="cascmd_en730.html#sec967">11.6.2  The point in the plane: <span style="font-family:monospace">point</span></a>
+</li><li class="li-toc"><a href="cascmd_en731.html#sec968">11.6.3  Define random points: <span style="font-family:monospace">point2d</span></a>
+</li><li class="li-toc"><a href="cascmd_en732.html#sec969">11.6.4  Points in polar coordinates: <span style="font-family:monospace">polar_point</span> <span style="font-family:monospace">point_polar</span></a>
+</li><li class="li-toc"><a href="cascmd_en733.html#sec970">11.6.5  Find a point of intersection of two objects: <span style="font-family:monospace">single_inter</span> <span style="font-family:monospace">line_inter</span></a>
+</li><li class="li-toc"><a href="cascmd_en734.html#sec971">11.6.6  Find the points of intersection of two geometric objects: <span style="font-family:monospace">inter</span></a>
+</li><li class="li-toc"><a href="cascmd_en735.html#sec972">11.6.7  Find the orthocenter of a triangle: <span style="font-family:monospace">orthocenter</span></a>
+</li><li class="li-toc"><a href="cascmd_en736.html#sec973">11.6.8  Find the midpoint of a segment: <span style="font-family:monospace">midpoint</span></a>
+</li><li class="li-toc"><a href="cascmd_en737.html#sec974">11.6.9  The barycenter: <span style="font-family:monospace">barycenter</span></a>
+</li><li class="li-toc"><a href="cascmd_en738.html#sec975">11.6.10  The isobarycenter of <span style="font-style:italic">n</span> points: <span style="font-family:monospace">isobarycenter</span></a>
+</li><li class="li-toc"><a href="cascmd_en739.html#sec976">11.6.11  The center of a circle: <span style="font-family:monospace">center</span></a>
+</li><li class="li-toc"><a href="cascmd_en740.html#sec977">11.6.12  The vertices of a polygon: <span style="font-family:monospace">vertices</span> <span style="font-family:monospace">vertices_abc</span></a>
+</li><li class="li-toc"><a href="cascmd_en741.html#sec978">11.6.13  The vertices of a polygon, closed: <span style="font-family:monospace">vertices_abca</span></a>
+</li><li class="li-toc"><a href="cascmd_en742.html#sec979">11.6.14  A point on a geometric object: <span style="font-family:monospace">element</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec980">11.7  Lines in plane geometry</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en743.html#sec981">11.7.1  Lines and directed lines: <span style="font-family:monospace">line</span></a>
+</li><li class="li-toc"><a href="cascmd_en744.html#sec982">11.7.2  Half-lines</a>
+</li><li class="li-toc"><a href="cascmd_en745.html#sec983">11.7.3  Line segments in the plane: <span style="font-family:monospace">segment</span> <span style="font-family:monospace">Line</span></a>
+</li><li class="li-toc"><a href="cascmd_en746.html#sec984">11.7.4  Vectors: <span style="font-family:monospace">segment</span> <span style="font-family:monospace">vector</span></a>
+</li><li class="li-toc"><a href="cascmd_en747.html#sec985">11.7.5  Parallel lines: <span style="font-family:monospace">parallel</span></a>
+</li><li class="li-toc"><a href="cascmd_en748.html#sec986">11.7.6  Perpendicular lines: <span style="font-family:monospace">perpendicular</span></a>
+</li><li class="li-toc"><a href="cascmd_en749.html#sec987">11.7.7  Tangents to curves: <span style="font-family:monospace">tangent</span></a>
+</li><li class="li-toc"><a href="cascmd_en750.html#sec988">11.7.8  The median of a triangle: <span style="font-family:monospace">median_line</span></a>
+</li><li class="li-toc"><a href="cascmd_en751.html#sec989">11.7.9  The altitude of a triangle: <span style="font-family:monospace">altitude</span></a>
+</li><li class="li-toc"><a href="cascmd_en752.html#sec990">11.7.10  The perpendicular bisector of a segment: <span style="font-family:monospace">perpen_bisector</span></a>
+</li><li class="li-toc"><a href="cascmd_en753.html#sec991">11.7.11  The angle bisector: <span style="font-family:monospace">bisector</span></a>
+</li><li class="li-toc"><a href="cascmd_en754.html#sec992">11.7.12  The exterior angle bisector</a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec993">11.8  Triangles</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en755.html#sec994">11.8.1  Arbitrary triangles: <span style="font-family:monospace">triangle</span></a>
+</li><li class="li-toc"><a href="cascmd_en756.html#sec995">11.8.2  Isosceles triangles: <span style="font-family:monospace">isosceles_triangle</span></a>
+</li><li class="li-toc"><a href="cascmd_en757.html#sec996">11.8.3  Right triangles: <span style="font-family:monospace">right_triangle</span></a>
+</li><li class="li-toc"><a href="cascmd_en758.html#sec997">11.8.4  Equilateral triangles: <span style="font-family:monospace">equilateral_triangle</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec998">11.9  Quadrilaterals</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en759.html#sec999">11.9.1  Squares: <span style="font-family:monospace">square</span></a>
+</li><li class="li-toc"><a href="cascmd_en760.html#sec1000">11.9.2  Rhombuses: <span style="font-family:monospace">rhombus</span></a>
+</li><li class="li-toc"><a href="cascmd_en761.html#sec1001">11.9.3  Rectangles: <span style="font-family:monospace">rectangle</span></a>
+</li><li class="li-toc"><a href="cascmd_en762.html#sec1002">11.9.4  Parallelograms: <span style="font-family:monospace">parallelogram</span></a>
+</li><li class="li-toc"><a href="cascmd_en763.html#sec1003">11.9.5  Arbitrary quadrilaterals:
+<span style="font-family:monospace">quadrilateral</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1004">11.10  Other polygons</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en764.html#sec1005">11.10.1  Regular hexagons: <span style="font-family:monospace">hexagon</span></a>
+</li><li class="li-toc"><a href="cascmd_en765.html#sec1006">11.10.2  Regular polygons: <span style="font-family:monospace">isopolygon</span></a>
+</li><li class="li-toc"><a href="cascmd_en766.html#sec1007">11.10.3  General polygons: <span style="font-family:monospace">polygon</span></a>
+</li><li class="li-toc"><a href="cascmd_en767.html#sec1008">11.10.4  Polygonal lines: <span style="font-family:monospace">open_polygon</span></a>
+</li><li class="li-toc"><a href="cascmd_en768.html#sec1009">11.10.5  Convex hulls: <span style="font-family:monospace">convexhull</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1010">11.11  Circles</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en769.html#sec1011">11.11.1  Circles and arcs: <span style="font-family:monospace">circle</span></a>
+</li><li class="li-toc"><a href="cascmd_en770.html#sec1012">11.11.2  Circular arcs: <span style="font-family:monospace">arc</span></a>
+</li><li class="li-toc"><a href="cascmd_en771.html#sec1013">11.11.3  Circles (TI compatibility): <span style="font-family:monospace">Circle</span></a>
+</li><li class="li-toc"><a href="cascmd_en772.html#sec1014">11.11.4  Inscribed circles: <span style="font-family:monospace">incircle</span></a>
+</li><li class="li-toc"><a href="cascmd_en773.html#sec1015">11.11.5  Circumscribed circles: <span style="font-family:monospace">circumcircle</span></a>
+</li><li class="li-toc"><a href="cascmd_en774.html#sec1016">11.11.6  Excircles: <span style="font-family:monospace">excircle</span></a>
+</li><li class="li-toc"><a href="cascmd_en775.html#sec1017">11.11.7  The power of a point relative to a circle: <span style="font-family:monospace">powerpc</span></a>
+</li><li class="li-toc"><a href="cascmd_en776.html#sec1018">11.11.8  The radical axis of two circles: <span style="font-family:monospace">radical_axis</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1019">11.12  Other conic sections</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en777.html#sec1020">11.12.1  The ellipse: <span style="font-family:monospace">ellipse</span></a>
+</li><li class="li-toc"><a href="cascmd_en778.html#sec1021">11.12.2  The hyperbola: <span style="font-family:monospace">hyperbola</span></a>
+</li><li class="li-toc"><a href="cascmd_en779.html#sec1022">11.12.3  The parabola: <span style="font-family:monospace">parabola</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1023">11.13  Coordinates</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en780.html#sec1024">11.13.1  The affix of a point or vector: <span style="font-family:monospace">affix</span></a>
+</li><li class="li-toc"><a href="cascmd_en781.html#sec1025">11.13.2  The abscissa of a point or vector: <span style="font-family:monospace">abscissa</span></a>
+</li><li class="li-toc"><a href="cascmd_en782.html#sec1026">11.13.3  The ordinate of a point or vector: <span style="font-family:monospace">ordinate</span></a>
+</li><li class="li-toc"><a href="cascmd_en783.html#sec1027">11.13.4  The coordinates of a point, vector or line: <span style="font-family:monospace">coordinates</span></a>
+</li><li class="li-toc"><a href="cascmd_en784.html#sec1028">11.13.5  The rectangular coordinates of a point: <span style="font-family:monospace">rectangular_coordinates</span></a>
+</li><li class="li-toc"><a href="cascmd_en785.html#sec1029">11.13.6  The polar coordinates of a point: <span style="font-family:monospace">polar_coordinates</span></a>
+</li><li class="li-toc"><a href="cascmd_en786.html#sec1030">11.13.7  The Cartesian equation of a geometric object: <span style="font-family:monospace">equation</span></a>
+</li><li class="li-toc"><a href="cascmd_en787.html#sec1031">11.13.8  The parametric equation of a geometric object: <span style="font-family:monospace">parameq</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1032">11.14  Measurements</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en788.html#sec1033">11.14.1  Measurement and display:
+<span style="font-family:monospace">distanceat</span>
+<span style="font-family:monospace">distanceatraw</span>
+<span style="font-family:monospace">angleat</span> <span style="font-family:monospace">angleatraw</span>
+<span style="font-family:monospace">areaat</span> <span style="font-family:monospace">areaatraw</span>
+<span style="font-family:monospace">perimeterat</span> <span style="font-family:monospace">perimeteratraw</span>
+<span style="font-family:monospace">slopeat</span> <span style="font-family:monospace">slopeatraw</span>
+<span style="font-family:monospace">extract_measure</span></a>
+</li><li class="li-toc"><a href="cascmd_en789.html#sec1034">11.14.2  The distance between objects: <span style="font-family:monospace">distance</span></a>
+</li><li class="li-toc"><a href="cascmd_en790.html#sec1035">11.14.3  The length squared of a segment: <span style="font-family:monospace">distance2</span></a>
+</li><li class="li-toc"><a href="cascmd_en791.html#sec1036">11.14.4  The measure of an angle: <span style="font-family:monospace">angle</span></a>
+</li><li class="li-toc"><a href="cascmd_en792.html#sec1037">11.14.5  The graphical representation of the area of a polygon:
+<span style="font-family:monospace">plotarea</span><span style="font-family:monospace">areaplot</span></a>
+</li><li class="li-toc"><a href="cascmd_en793.html#sec1038">11.14.6  The area of a polygon: <span style="font-family:monospace">area</span></a>
+</li><li class="li-toc"><a href="cascmd_en794.html#sec1039">11.14.7  The perimeter of a polygon: <span style="font-family:monospace">perimeter</span></a>
+</li><li class="li-toc"><a href="cascmd_en795.html#sec1040">11.14.8  The slope of a line: <span style="font-family:monospace">slope</span></a>
+</li><li class="li-toc"><a href="cascmd_en796.html#sec1041">11.14.9  The radius of a circle: <span style="font-family:monospace">radius</span></a>
+</li><li class="li-toc"><a href="cascmd_en797.html#sec1042">11.14.10  The length of a vector: <span style="font-family:monospace">abs</span></a>
+</li><li class="li-toc"><a href="cascmd_en798.html#sec1043">11.14.11  The angle of a vector: <span style="font-family:monospace">arg</span></a>
+</li><li class="li-toc"><a href="cascmd_en799.html#sec1044">11.14.12  Normale a complex number: <span style="font-family:monospace">normalize</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1045">11.15  Transformations</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en800.html#sec1046">11.15.1  General remarks</a>
+</li><li class="li-toc"><a href="cascmd_en801.html#sec1047">11.15.2  Translations: <span style="font-family:monospace">translation</span></a>
+</li><li class="li-toc"><a href="cascmd_en802.html#sec1048">11.15.3  Reflections: <span style="font-family:monospace">reflection</span></a>
+</li><li class="li-toc"><a href="cascmd_en803.html#sec1049">11.15.4  Rotation: <span style="font-family:monospace">rotation</span></a>
+</li><li class="li-toc"><a href="cascmd_en804.html#sec1050">11.15.5  Homothety: <span style="font-family:monospace">homothety</span></a>
+</li><li class="li-toc"><a href="cascmd_en805.html#sec1051">11.15.6  Similarity: <span style="font-family:monospace">similarity</span></a>
+</li><li class="li-toc"><a href="cascmd_en806.html#sec1052">11.15.7  Inversion: <span style="font-family:monospace">inversion</span></a>
+</li><li class="li-toc"><a href="cascmd_en807.html#sec1053">11.15.8  Orthogonal projection: <span style="font-family:monospace">projection</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1054">11.16  Properties</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en808.html#sec1055">11.16.1  Check if a point is on an object: <span style="font-family:monospace">is_element</span></a>
+</li><li class="li-toc"><a href="cascmd_en809.html#sec1056">11.16.2  Check if three points are collinear: <span style="font-family:monospace">is_collinear</span></a>
+</li><li class="li-toc"><a href="cascmd_en810.html#sec1057">11.16.3  Check if four points are concyclic: <span style="font-family:monospace">is_concyclic</span></a>
+</li><li class="li-toc"><a href="cascmd_en811.html#sec1058">11.16.4  Check if a point is in a polygon or circle: <span style="font-family:monospace">is_inside</span></a>
+</li><li class="li-toc"><a href="cascmd_en812.html#sec1059">11.16.5  Check if an object is an equilateral triangle: <span style="font-family:monospace">is_equilateral</span></a>
+</li><li class="li-toc"><a href="cascmd_en813.html#sec1060">11.16.6  Check if an object is an isosceles triangle: <span style="font-family:monospace">is_isosceles</span></a>
+</li><li class="li-toc"><a href="cascmd_en814.html#sec1061">11.16.7  Check if an object is a right triangle or a rectangle: <span style="font-family:monospace">is_rectangle</span></a>
+</li><li class="li-toc"><a href="cascmd_en815.html#sec1062">11.16.8  Check if an object is a square: <span style="font-family:monospace">is_square</span></a>
+</li><li class="li-toc"><a href="cascmd_en816.html#sec1063">11.16.9  Check if an object is a rhombus: <span style="font-family:monospace">is_rhombus</span></a>
+</li><li class="li-toc"><a href="cascmd_en817.html#sec1064">11.16.10  Check if an object is a parallelogram: <span style="font-family:monospace">is_parallelogram</span></a>
+</li><li class="li-toc"><a href="cascmd_en818.html#sec1065">11.16.11  Check it two lines are parallel: <span style="font-family:monospace">is_parallel</span></a>
+</li><li class="li-toc"><a href="cascmd_en819.html#sec1066">11.16.12  Check if two lines are perpendicular: <span style="font-family:monospace">is_perpendicular</span></a>
+</li><li class="li-toc"><a href="cascmd_en820.html#sec1067">11.16.13  Check if two circles are orthogonal: <span style="font-family:monospace">is_orthogonal</span></a>
+</li><li class="li-toc"><a href="cascmd_en821.html#sec1068">11.16.14  Check if elements are conjugates: <span style="font-family:monospace">is_conjugate</span></a>
+</li><li class="li-toc"><a href="cascmd_en822.html#sec1069">11.16.15  Check if four points form a harmonic division: <span style="font-family:monospace">is_harmonic</span></a>
+</li><li class="li-toc"><a href="cascmd_en823.html#sec1070">11.16.16  Check if lines are in a bundle: <span style="font-family:monospace">is_harmonic_line_bundle</span></a>
+</li><li class="li-toc"><a href="cascmd_en824.html#sec1071">11.16.17  Check if circles are in a bundle: <span style="font-family:monospace">is_harmonic_circle_bundle</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1072">11.17  Harmonic division</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en825.html#sec1073">11.17.1  Find a point dividing a segment in the harminic ratio <span style="font-style:italic">k</span>: <span style="font-family:monospace">division_point</span></a>
+</li><li class="li-toc"><a href="cascmd_en826.html#sec1074">11.17.2  The cross ratio of four collinear points: <span style="font-family:monospace">cross_ratio</span></a>
+</li><li class="li-toc"><a href="cascmd_en827.html#sec1075">11.17.3  Harmonic division: <span style="font-family:monospace">harmonic_division</span></a>
+</li><li class="li-toc"><a href="cascmd_en828.html#sec1076">11.17.4  The harmonic conjugate: <span style="font-family:monospace">harmonic_conjugate</span></a>
+</li><li class="li-toc"><a href="cascmd_en829.html#sec1077">11.17.5  Pole and polar: <span style="font-family:monospace">pole</span> <span style="font-family:monospace">polar</span></a>
+</li><li class="li-toc"><a href="cascmd_en830.html#sec1078">11.17.6  The polar reciprocal: <span style="font-family:monospace">reciprocation</span></a>
+</li></ul>
+</li><li class="li-toc"><a href="#sec1079">11.18  Loci and envelopes</a>
+<ul class="toc"><li class="li-toc">
+<a href="cascmd_en831.html#sec1080">11.18.1  Loci: <span style="font-family:monospace">locus</span></a>
+</li><li class="li-toc"><a href="cascmd_en832.html#sec1083">11.18.2  Envelopes: <span style="font-family:monospace">envelope</span></a>
+</li></ul>
+</li></ul>
 </li></ul>
 <h1 id="sec2" class="chapter">Chapter 1  Index</h1>
 <h1 id="sec3" class="chapter">Index</h1>
@@ -1165,7 +1344,8 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">a2q, <a href="cascmd_en533.html#hevea_default829">5.53.2</a>
 </li><li class="li-indexenv">abcuv, <a href="cascmd_en318.html#hevea_default516">5.28.12</a>
 </li><li class="li-indexenv">about, <a href="cascmd_en052.html#hevea_default40">4.6.8</a>, <a href="cascmd_en232.html#hevea_default413">5.23.1</a>
-</li><li class="li-indexenv">abs, <a href="cascmd_en150.html#hevea_default219">5.11.5</a>, <a href="cascmd_en184.html#hevea_default281">5.16.2</a>
+</li><li class="li-indexenv">abs, <a href="cascmd_en150.html#hevea_default219">5.11.5</a>, <a href="cascmd_en184.html#hevea_default281">5.16.2</a>, <a href="cascmd_en797.html#hevea_default1299">11.14.10</a>
+</li><li class="li-indexenv">abscissa, <a href="cascmd_en781.html#hevea_default1272">11.13.2</a>
 </li><li class="li-indexenv">accumulate_head_tail, <a href="cascmd_en601.html#hevea_default966">7.1.10</a>
 </li><li class="li-indexenv">acos, <a href="cascmd_en184.html#hevea_default304"><span style="font-weight:bold">5.16.2</span></a>, <a href="cascmd_en208.html#hevea_default361">5.22.1</a>
 </li><li class="li-indexenv">acos2asin, <a href="cascmd_en214.html#hevea_default374">5.22.7</a>
@@ -1177,9 +1357,14 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">additionally, <a href="cascmd_en052.html#hevea_default37">4.6.8</a>
 </li><li class="li-indexenv"><span style="font-style:italic">additionally</span>, <a href="cascmd_en052.html#hevea_default38">4.6.8</a>
 </li><li class="li-indexenv">adjoint_matrix, <a href="cascmd_en518.html#hevea_default813">5.50.9</a>
+</li><li class="li-indexenv">affix, <a href="cascmd_en780.html#hevea_default1271">11.13.1</a>
 </li><li class="li-indexenv">alea, <a href="cascmd_en615.html#hevea_default998">7.3.1</a>
 </li><li class="li-indexenv">algvar, <a href="cascmd_en567.html#hevea_default878">5.58.4</a>
+</li><li class="li-indexenv">altitude, <a href="cascmd_en751.html#hevea_default1243">11.7.9</a>
 </li><li class="li-indexenv">and, <a href="cascmd_en052.html#hevea_default35">4.6.8</a>, <a href="cascmd_en061.html#hevea_default86"><span style="font-weight:bold">5.2.3</span></a>
+</li><li class="li-indexenv">angle, <a href="cascmd_en791.html#hevea_default1292">11.14.4</a>
+</li><li class="li-indexenv">angleat, <a href="cascmd_en788.html#hevea_default1281">11.14.1</a>
+</li><li class="li-indexenv">angleatraw, <a href="cascmd_en788.html#hevea_default1282">11.14.1</a>
 </li><li class="li-indexenv">animate, <a href="cascmd_en589.html#hevea_default946">6.17.1</a>
 </li><li class="li-indexenv">animate3d, <a href="cascmd_en590.html#hevea_default948">6.17.2</a>
 </li><li class="li-indexenv">animation, <a href="cascmd_en591.html#hevea_default950">6.17.3</a>
@@ -1187,6 +1372,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">append, <a href="cascmd_en410.html#hevea_default640">5.40.16</a>
 </li><li class="li-indexenv">apply, <a href="cascmd_en426.html#hevea_default659">5.40.32</a>
 </li><li class="li-indexenv">approx, <a href="#hevea_default1098"><span style="font-weight:bold">8.2</span></a>
+</li><li class="li-indexenv">arc, <a href="cascmd_en770.html#hevea_default1261">11.11.2</a>
 </li><li class="li-indexenv">arccos, <a href="cascmd_en184.html#hevea_default305"><span style="font-weight:bold">5.16.2</span></a>, <a href="cascmd_en208.html#hevea_default362">5.22.1</a>
 </li><li class="li-indexenv">arccosh, <a href="cascmd_en184.html#hevea_default314"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">archive, <a href="cascmd_en050.html#hevea_default29">4.6.6</a>
@@ -1195,8 +1381,11 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">arcsinh, <a href="cascmd_en184.html#hevea_default312"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">arctan, <a href="cascmd_en184.html#hevea_default307"><span style="font-weight:bold">5.16.2</span></a>, <a href="cascmd_en208.html#hevea_default364">5.22.1</a>
 </li><li class="li-indexenv">arctanh, <a href="cascmd_en184.html#hevea_default316"><span style="font-weight:bold">5.16.2</span></a>
-</li><li class="li-indexenv">areaplot, <a href="#hevea_default914"><span style="font-weight:bold">6.7</span></a>
-</li><li class="li-indexenv">arg, <a href="cascmd_en151.html#hevea_default220"><span style="font-weight:bold">5.11.6</span></a>
+</li><li class="li-indexenv">area, <a href="cascmd_en793.html#hevea_default1295">11.14.6</a>
+</li><li class="li-indexenv">areaat, <a href="cascmd_en788.html#hevea_default1283">11.14.1</a>
+</li><li class="li-indexenv">areaatraw, <a href="cascmd_en788.html#hevea_default1284">11.14.1</a>
+</li><li class="li-indexenv">areaplot, <a href="#hevea_default914"><span style="font-weight:bold">6.7</span></a>, <a href="cascmd_en792.html#hevea_default1294">11.14.5</a>
+</li><li class="li-indexenv">arg, <a href="cascmd_en151.html#hevea_default220"><span style="font-weight:bold">5.11.6</span></a>, <a href="cascmd_en798.html#hevea_default1300">11.14.11</a>
 </li><li class="li-indexenv">as_function_of, <a href="cascmd_en188.html#hevea_default319">5.16.6</a>
 </li><li class="li-indexenv">asc, <a href="cascmd_en070.html#hevea_default104">5.4.5</a>
 </li><li class="li-indexenv">asec, <a href="cascmd_en208.html#hevea_default366"><span style="font-weight:bold">5.22.1</span></a>
@@ -1206,7 +1395,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">asinh, <a href="cascmd_en184.html#hevea_default311"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">assert, <a href="cascmd_en696.html#hevea_default1150">10.2.4</a>
 </li><li class="li-indexenv">assign, <a href="cascmd_en046.html#hevea_default23">4.6.2</a>
-</li><li class="li-indexenv">assume, <a href="cascmd_en052.html#hevea_default33">4.6.8</a>, <a href="cascmd_en232.html#hevea_default411">5.23.1</a>, <a href="cascmd_en232.html#hevea_default414">5.23.1</a>, <a href="cascmd_en688.html#hevea_default1136">10.1.3</a>
+</li><li class="li-indexenv">assume, <a href="cascmd_en052.html#hevea_default33">4.6.8</a>, <a href="cascmd_en232.html#hevea_default411">5.23.1</a>, <a href="cascmd_en232.html#hevea_default414">5.23.1</a>, <a href="cascmd_en688.html#hevea_default1136">10.1.3</a>, <a href="#hevea_default1217">11.5</a>
 </li><li class="li-indexenv">at, <a href="cascmd_en396.html#hevea_default620"><span style="font-weight:bold">5.40.2</span></a>, <a href="cascmd_en461.html#hevea_default729">5.45.12</a>
 </li><li class="li-indexenv">atan, <a href="cascmd_en184.html#hevea_default306"><span style="font-weight:bold">5.16.2</span></a>, <a href="cascmd_en208.html#hevea_default363">5.22.1</a>
 </li><li class="li-indexenv">atan2acos, <a href="cascmd_en219.html#hevea_default379">5.22.12</a>
@@ -1222,6 +1411,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">BlockDiagonal, <a href="cascmd_en446.html#hevea_default708">5.44.4</a>
 </li><li class="li-indexenv">bar_plot, <a href="cascmd_en604.html#hevea_default971">7.1.13</a>
 </li><li class="li-indexenv">bartlett_hann_window, <a href="cascmd_en253.html#hevea_default436">5.25.7</a>
+</li><li class="li-indexenv">barycenter, <a href="cascmd_en737.html#hevea_default1227">11.6.9</a>
 </li><li class="li-indexenv">barycentre, <a href="cascmd_en155.html#hevea_default225">5.11.10</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">base</span>, <a href="#hevea_default113"><span style="font-weight:bold">5.5</span></a>
 </li><li class="li-indexenv">basis, <a href="cascmd_en492.html#hevea_default775">5.46.9</a>
@@ -1235,6 +1425,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">binomial_cdf, <a href="cascmd_en624.html#hevea_default1015">7.4.1</a>
 </li><li class="li-indexenv">binomial_icdf, <a href="cascmd_en624.html#hevea_default1016">7.4.1</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">bisection_solver</span>, <a href="cascmd_en665.html#hevea_default1110"><span style="font-weight:bold">8.4.1</span></a>
+</li><li class="li-indexenv">bisector, <a href="cascmd_en753.html#hevea_default1245">11.7.11</a>
 </li><li class="li-indexenv">bit_depth, <a href="cascmd_en242.html#hevea_default423">5.24.6</a>
 </li><li class="li-indexenv">bitand, <a href="cascmd_en064.html#hevea_default95"><span style="font-weight:bold">5.3.1</span></a>
 </li><li class="li-indexenv">bitor, <a href="cascmd_en064.html#hevea_default93"><span style="font-weight:bold">5.3.1</span></a>
@@ -1253,6 +1444,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">bvpsolve, <a href="cascmd_en664.html#hevea_default1107">8.3.6</a>
 <br>
 <br>
+</li><li class="li-indexenv">Circle, <a href="cascmd_en771.html#hevea_default1262">11.11.3</a>
 </li><li class="li-indexenv">ClrGraph, <a href="cascmd_en714.html#hevea_default1183">10.4.7</a>
 </li><li class="li-indexenv">ClrIO, <a href="cascmd_en698.html#hevea_default1157">10.2.6</a>
 </li><li class="li-indexenv">CopyVar, <a href="cascmd_en051.html#hevea_default32">4.6.7</a>
@@ -1273,6 +1465,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">cdf, <a href="cascmd_en643.html#hevea_default1086">7.4.20</a>
 </li><li class="li-indexenv">ceil, <a href="cascmd_en184.html#hevea_default286"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">ceiling, <a href="cascmd_en184.html#hevea_default287"><span style="font-weight:bold">5.16.2</span></a>
+</li><li class="li-indexenv">center, <a href="cascmd_en739.html#hevea_default1229">11.6.11</a>
 </li><li class="li-indexenv">center2interval, <a href="cascmd_en383.html#hevea_default600">5.37.4</a>
 </li><li class="li-indexenv">cFactor, <a href="cascmd_en165.html#hevea_default240">5.12.10</a>
 </li><li class="li-indexenv">changebase, <a href="cascmd_en491.html#hevea_default774">5.46.8</a>
@@ -1287,6 +1480,8 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">chisquaret, <a href="cascmd_en652.html#hevea_default1095">7.5.4</a>
 </li><li class="li-indexenv">cholesky, <a href="cascmd_en525.html#hevea_default820">5.52.1</a>
 </li><li class="li-indexenv">chrem, <a href="cascmd_en099.html#hevea_default146">5.6.23</a>
+</li><li class="li-indexenv">circle, <a href="cascmd_en769.html#hevea_default1260">11.11.1</a>
+</li><li class="li-indexenv">circumcircle, <a href="cascmd_en773.html#hevea_default1264">11.11.5</a>
 </li><li class="li-indexenv">classes, <a href="cascmd_en599.html#hevea_default963">7.1.8</a>
 </li><li class="li-indexenv">coeff, <a href="cascmd_en280.html#hevea_default465">5.27.3</a>
 </li><li class="li-indexenv">coeffs, <a href="cascmd_en280.html#hevea_default466">5.27.3</a>
@@ -1296,7 +1491,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">collect, <a href="cascmd_en289.html#hevea_default477">5.27.12</a>
 </li><li class="li-indexenv">colNorm, <a href="cascmd_en509.html#hevea_default797">5.49.4</a>
 </li><li class="li-indexenv">colnorm, <a href="cascmd_en509.html#hevea_default798">5.49.4</a>
-</li><li class="li-indexenv">color, <a href="cascmd_en572.html#hevea_default883">6.1.1</a>
+</li><li class="li-indexenv">color, <a href="cascmd_en572.html#hevea_default883">6.1.1</a>, <a href="cascmd_en728.html#hevea_default1215">11.3.3</a>
 </li><li class="li-indexenv">, <a href="cascmd_en666.html#hevea_default1112"><span style="font-weight:bold">8.4.2</span></a>
 </li><li class="li-indexenv">colspace, <a href="cascmd_en497.html#hevea_default782">5.46.14</a>
 </li><li class="li-indexenv">comb, <a href="cascmd_en106.html#hevea_default156"><span style="font-weight:bold">5.7.2</span></a>
@@ -1320,7 +1515,9 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">convert, <a href="#hevea_default112">5.5</a>, <a href="cascmd_en231.html#hevea_default392"><span style="font-weight:bold">5.22.24</span></a>, <a href="cascmd_en299.html#hevea_default489">5.27.22</a>, <a href="cascmd_en680.html#hevea_default1127">9.1.4</a>
 </li><li class="li-indexenv">convertir, <a href="cascmd_en231.html#hevea_default393"><span style="font-weight:bold">5.22.24</span></a>, <a href="cascmd_en299.html#hevea_default490">5.27.22</a>
 </li><li class="li-indexenv">convex, <a href="cascmd_en199.html#hevea_default337">5.19.1</a>
+</li><li class="li-indexenv">convexhull, <a href="cascmd_en768.html#hevea_default1259">11.10.5</a>
 </li><li class="li-indexenv">convolution, <a href="cascmd_en249.html#hevea_default432">5.25.3</a>
+</li><li class="li-indexenv">coordinates, <a href="cascmd_en783.html#hevea_default1274">11.13.4</a>
 </li><li class="li-indexenv">copy, <a href="cascmd_en048.html#hevea_default24">4.6.4</a>
 </li><li class="li-indexenv">correlation, <a href="cascmd_en606.html#hevea_default974">7.2.1</a>
 </li><li class="li-indexenv">cos, <a href="cascmd_en208.html#hevea_default354">5.22.1</a>
@@ -1339,6 +1536,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">createwav, <a href="cascmd_en237.html#hevea_default417">5.24.1</a>
 </li><li class="li-indexenv">cross, <a href="cascmd_en442.html#hevea_default689">5.41.8</a>
 </li><li class="li-indexenv">cross_correlation, <a href="cascmd_en247.html#hevea_default430">5.25.1</a>
+</li><li class="li-indexenv">cross_ratio, <a href="cascmd_en826.html#hevea_default1327">11.17.2</a>
 </li><li class="li-indexenv">crossP, <a href="cascmd_en442.html#hevea_default690">5.41.8</a>
 </li><li class="li-indexenv">crossproduct, <a href="cascmd_en442.html#hevea_default691">5.41.8</a>
 </li><li class="li-indexenv">cSolve, <a href="cascmd_en553.html#hevea_default858">5.55.7</a>
@@ -1386,14 +1584,20 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">diff, <a href="cascmd_en193.html#hevea_default326"><span style="font-weight:bold">5.17.5</span></a>, <a href="cascmd_en540.html#hevea_default837">5.54.1</a>
 </li><li class="li-indexenv">dim, <a href="cascmd_en481.html#hevea_default758">5.45.32</a>
 </li><li class="li-indexenv">directories, <a href="#hevea_default57">4.8</a>
-</li><li class="li-indexenv">display, <a href="cascmd_en572.html#hevea_default884">6.1.1</a>
+</li><li class="li-indexenv">display, <a href="cascmd_en572.html#hevea_default884">6.1.1</a>, <a href="cascmd_en728.html#hevea_default1214">11.3.3</a>
+</li><li class="li-indexenv">distance, <a href="cascmd_en789.html#hevea_default1290">11.14.2</a>
+</li><li class="li-indexenv">distance2, <a href="cascmd_en790.html#hevea_default1291">11.14.3</a>
+</li><li class="li-indexenv">distanceat, <a href="cascmd_en788.html#hevea_default1279">11.14.1</a>
+</li><li class="li-indexenv">distanceatraw, <a href="cascmd_en788.html#hevea_default1280">11.14.1</a>
 </li><li class="li-indexenv">divergence, <a href="cascmd_en543.html#hevea_default844">5.54.4</a>
 </li><li class="li-indexenv">divide, <a href="cascmd_en312.html#hevea_default506"><span style="font-weight:bold">5.28.6</span></a>
 </li><li class="li-indexenv">divis, <a href="cascmd_en307.html#hevea_default500">5.28.1</a>
+</li><li class="li-indexenv">division_point, <a href="cascmd_en825.html#hevea_default1326">11.17.1</a>
 </li><li class="li-indexenv">divisors, <a href="cascmd_en085.html#hevea_default124">5.6.9</a>
 </li><li class="li-indexenv">divpc, <a href="cascmd_en375.html#hevea_default585">5.36.1</a>
 </li><li class="li-indexenv">dnewton_solver<span style="font-style:oblique">dnewton_solver</span>, <a href="cascmd_en671.html#hevea_default1118"><span style="font-weight:bold">8.5.1</span></a>
 </li><li class="li-indexenv">dot, <a href="cascmd_en441.html#hevea_default683">5.41.7</a>
+</li><li class="li-indexenv">dot_paper, <a href="cascmd_en722.html#hevea_default1209">11.2.4</a>
 </li><li class="li-indexenv">dotP, <a href="cascmd_en441.html#hevea_default684">5.41.7</a>
 </li><li class="li-indexenv">dotprod, <a href="cascmd_en441.html#hevea_default685">5.41.7</a>
 </li><li class="li-indexenv">droit, <a href="cascmd_en551.html#hevea_default856"><span style="font-weight:bold">5.55.5</span></a>
@@ -1413,15 +1617,21 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">eigenvects, <a href="cascmd_en512.html#hevea_default805">5.50.3</a>
 </li><li class="li-indexenv">eigVc, <a href="cascmd_en512.html#hevea_default806">5.50.3</a>
 </li><li class="li-indexenv">eigVl, <a href="cascmd_en511.html#hevea_default801">5.50.2</a>
+</li><li class="li-indexenv">element, <a href="cascmd_en742.html#hevea_default1233">11.6.14</a>
 </li><li class="li-indexenv">elif, <a href="cascmd_en700.html#hevea_default1162">10.3.1</a>
+</li><li class="li-indexenv">ellipse, <a href="cascmd_en777.html#hevea_default1268">11.12.1</a>
 </li><li class="li-indexenv">else, <a href="cascmd_en700.html#hevea_default1159">10.3.1</a>
 </li><li class="li-indexenv">end, <a href="cascmd_en692.html#hevea_default1141">10.1.7</a>, <a href="cascmd_en700.html#hevea_default1161">10.3.1</a>
 </li><li class="li-indexenv">endfunction, <a href="cascmd_en687.html#hevea_default1135">10.1.2</a>
+</li><li class="li-indexenv">envelope, <a href="cascmd_en832.html#hevea_default1334">11.18.2</a>
 </li><li class="li-indexenv">epsilon, <a href="cascmd_en564.html#hevea_default874">5.58.1</a>
 </li><li class="li-indexenv">epsilon2zero, <a href="cascmd_en564.html#hevea_default873">5.58.1</a>
 </li><li class="li-indexenv">equal, <a href="cascmd_en547.html#hevea_default848">5.55.1</a>
 </li><li class="li-indexenv">equal2diff, <a href="cascmd_en548.html#hevea_default849">5.55.2</a>
 </li><li class="li-indexenv">equal2list, <a href="cascmd_en549.html#hevea_default850">5.55.3</a>
+</li><li class="li-indexenv">equation, <a href="cascmd_en786.html#hevea_default1277">11.13.7</a>
+</li><li class="li-indexenv">equilateral_triangle, <a href="cascmd_en758.html#hevea_default1249">11.8.4</a>
+</li><li class="li-indexenv">erase, <a href="cascmd_en719.html#hevea_default1204">11.2.1</a>
 </li><li class="li-indexenv">erf, <a href="cascmd_en123.html#hevea_default185">5.9.5</a>
 </li><li class="li-indexenv">erfc, <a href="cascmd_en124.html#hevea_default186">5.9.6</a>
 </li><li class="li-indexenv">error, <a href="cascmd_en716.html#hevea_default1189">10.4.9</a>
@@ -1435,6 +1645,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">evalm, <a href="cascmd_en450.html#hevea_default712">5.45.1</a>
 </li><li class="li-indexenv">even, <a href="cascmd_en089.html#hevea_default134">5.6.13</a>
 </li><li class="li-indexenv">exact, <a href="cascmd_en109.html#hevea_default163"><span style="font-weight:bold">5.8.1</span></a>, <a href="cascmd_en570.html#hevea_default882">5.58.7</a>
+</li><li class="li-indexenv">excircle, <a href="cascmd_en774.html#hevea_default1265">11.11.6</a>
 </li><li class="li-indexenv">exp, <a href="cascmd_en184.html#hevea_default294"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv"><span style="font-style:oblique">exp</span>, <a href="cascmd_en207.html#hevea_default347"><span style="font-weight:bold">5.21.2</span></a>, <a href="cascmd_en231.html#hevea_default397"><span style="font-weight:bold">5.22.24</span></a>
 </li><li class="li-indexenv">exp2list, <a href="cascmd_en062.html#hevea_default91">5.2.4</a>
@@ -1454,6 +1665,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">expr, <a href="cascmd_en076.html#hevea_default111"><span style="font-weight:bold">5.4.11</span></a>, <a href="cascmd_en712.html#hevea_default1180">10.4.5</a>
 </li><li class="li-indexenv">expression editor, <a href="cascmd_en040.html#hevea_default10">4.3.1</a>
 </li><li class="li-indexenv">expression tree, <a href="cascmd_en041.html#hevea_default12">4.3.2</a>
+</li><li class="li-indexenv">extract_measure, <a href="cascmd_en788.html#hevea_default1289">11.14.1</a>
 </li><li class="li-indexenv">extrema, <a href="cascmd_en503.html#hevea_default789"><span style="font-weight:bold">5.48.2</span></a>
 </li><li class="li-indexenv">ezgcd, <a href="cascmd_en315.html#hevea_default509">5.28.9</a>
 <br>
@@ -1495,6 +1707,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">fprint, <a href="cascmd_en710.html#hevea_default1176">10.4.3</a>
 </li><li class="li-indexenv">frac, <a href="cascmd_en184.html#hevea_default288"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">fracmod, <a href="cascmd_en360.html#hevea_default566">5.34.12</a>
+</li><li class="li-indexenv">frame_2d, <a href="cascmd_en721.html#hevea_default1208">11.2.3</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">frames</span>, <a href="cascmd_en589.html#hevea_default947"><span style="font-weight:bold">6.17.1</span></a>, <a href="cascmd_en590.html#hevea_default949">6.17.2</a>
 </li><li class="li-indexenv">frequences, <a href="cascmd_en602.html#hevea_default968">7.1.11</a>
 </li><li class="li-indexenv">frequences_cumulees, <a href="cascmd_en603.html#hevea_default970">7.1.12</a>
@@ -1537,6 +1750,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">graphe_suite, <a href="#hevea_default939">6.13</a>
 </li><li class="li-indexenv">greduce, <a href="cascmd_en332.html#hevea_default530">5.30.2</a>
 </li><li class="li-indexenv"><span style="font-style:italic">green</span>, <a href="cascmd_en572.html#hevea_default889"><span style="font-weight:bold">6.1.1</span></a>
+</li><li class="li-indexenv">grid_paper, <a href="cascmd_en724.html#hevea_default1211">11.2.6</a>
 </li><li class="li-indexenv">groupermu, <a href="cascmd_en145.html#hevea_default208">5.10.16</a>
 <br>
 <br>
@@ -1548,6 +1762,8 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">hamming_window, <a href="cascmd_en259.html#hevea_default442">5.25.13</a>
 </li><li class="li-indexenv">hann_poisson_window, <a href="cascmd_en260.html#hevea_default443">5.25.14</a>
 </li><li class="li-indexenv">hann_window, <a href="cascmd_en261.html#hevea_default444">5.25.15</a>
+</li><li class="li-indexenv">harmonic_conjugate, <a href="cascmd_en828.html#hevea_default1329">11.17.4</a>
+</li><li class="li-indexenv">harmonic_division, <a href="cascmd_en827.html#hevea_default1328">11.17.3</a>
 </li><li class="li-indexenv">has, <a href="cascmd_en568.html#hevea_default879"><span style="font-weight:bold">5.58.5</span></a>
 </li><li class="li-indexenv">hasard, <a href="cascmd_en108.html#hevea_default161">5.7.4</a>, <a href="cascmd_en615.html#hevea_default999">7.3.1</a>
 </li><li class="li-indexenv">head, <a href="cascmd_en067.html#hevea_default99"><span style="font-weight:bold">5.4.2</span></a>, <a href="cascmd_en398.html#hevea_default623">5.40.4</a>
@@ -1555,17 +1771,20 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">hessenberg, <a href="cascmd_en520.html#hevea_default815">5.50.11</a>
 </li><li class="li-indexenv">hessian, <a href="cascmd_en542.html#hevea_default843">5.54.3</a>
 </li><li class="li-indexenv">heugcd, <a href="cascmd_en315.html#hevea_default512">5.28.9</a>
+</li><li class="li-indexenv">hexagon, <a href="cascmd_en764.html#hevea_default1255">11.10.1</a>
 </li><li class="li-indexenv">highpass, <a href="cascmd_en251.html#hevea_default434">5.25.5</a>
 </li><li class="li-indexenv">hilbert, <a href="cascmd_en448.html#hevea_default710">5.44.6</a>
 </li><li class="li-indexenv">histogram, <a href="cascmd_en600.html#hevea_default964">7.1.9</a>
 </li><li class="li-indexenv">histogramme, <a href="cascmd_en600.html#hevea_default965">7.1.9</a>
 </li><li class="li-indexenv">hold, <a href="cascmd_en158.html#hevea_default229"><span style="font-weight:bold">5.12.3</span></a>
+</li><li class="li-indexenv">homothety, <a href="cascmd_en804.html#hevea_default1305">11.15.5</a>
 </li><li class="li-indexenv">horner, <a href="cascmd_en293.html#hevea_default482">5.27.16</a>
 </li><li class="li-indexenv">hybrid_solver<span style="font-style:oblique">hybrid_solver</span>, <a href="cascmd_en672.html#hevea_default1119"><span style="font-weight:bold">8.5.2</span></a>
 </li><li class="li-indexenv">hybridj_solver<span style="font-style:oblique">hybridj_solver</span>, <a href="cascmd_en675.html#hevea_default1122"><span style="font-weight:bold">8.5.5</span></a>
 </li><li class="li-indexenv">hybrids_solver<span style="font-style:oblique">hybrids_solver</span>, <a href="cascmd_en673.html#hevea_default1120"><span style="font-weight:bold">8.5.3</span></a>
 </li><li class="li-indexenv">hybridsj_solver<span style="font-style:oblique">hybridsj_solver</span>, <a href="cascmd_en676.html#hevea_default1123"><span style="font-weight:bold">8.5.6</span></a>
 </li><li class="li-indexenv">hyp2exp, <a href="cascmd_en269.html#hevea_default452">5.26.1</a>
+</li><li class="li-indexenv">hyperbola, <a href="cascmd_en778.html#hevea_default1269">11.12.2</a>
 <br>
 <br>
 </li><li class="li-indexenv">IFTE, <a href="cascmd_en055.html#hevea_default55">4.7.2</a>
@@ -1600,6 +1819,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">image, <a href="cascmd_en494.html#hevea_default777">5.46.11</a>
 </li><li class="li-indexenv">implicitplot, <a href="#hevea_default925">6.10</a>
 </li><li class="li-indexenv">in, <a href="cascmd_en717.html#hevea_default1193">10.5.1</a>
+</li><li class="li-indexenv">incircle, <a href="cascmd_en772.html#hevea_default1263">11.11.4</a>
 </li><li class="li-indexenv">indets, <a href="cascmd_en565.html#hevea_default876">5.58.2</a>
 </li><li class="li-indexenv">inequationplot, <a href="#hevea_default912"><span style="font-weight:bold">6.6</span></a>
 </li><li class="li-indexenv">infinity, <a href="#hevea_default73">5.1</a>
@@ -1610,6 +1830,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">integer, <a href="cascmd_en232.html#hevea_default407">5.23.1</a>
 </li><li class="li-indexenv"><span style="font-style:italic">integer</span>, <a href="cascmd_en052.html#hevea_default39">4.6.8</a>
 </li><li class="li-indexenv">integrate, <a href="cascmd_en194.html#hevea_default330">5.18.1</a>
+</li><li class="li-indexenv">inter, <a href="cascmd_en734.html#hevea_default1224">11.6.6</a>
 </li><li class="li-indexenv">interactive_odeplot, <a href="#hevea_default945">6.16</a>
 </li><li class="li-indexenv">interactive_plotode, <a href="#hevea_default944">6.16</a>
 </li><li class="li-indexenv">internal directories, <a href="cascmd_en058.html#hevea_default62">4.8.3</a>
@@ -1618,16 +1839,37 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">interval2center, <a href="cascmd_en382.html#hevea_default599">5.37.3</a>
 </li><li class="li-indexenv">inv, <a href="cascmd_en359.html#hevea_default565">5.34.11</a>, <a href="cascmd_en364.html#hevea_default571">5.34.16</a>, <a href="cascmd_en485.html#hevea_default767"><span style="font-weight:bold">5.46.2</span></a>
 </li><li class="li-indexenv">inverse, <a href="cascmd_en364.html#hevea_default572">5.34.16</a>
+</li><li class="li-indexenv">inversion, <a href="cascmd_en806.html#hevea_default1307">11.15.7</a>
 </li><li class="li-indexenv">iPart, <a href="cascmd_en184.html#hevea_default284"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">iquo, <a href="cascmd_en086.html#hevea_default125">5.6.10</a>
 </li><li class="li-indexenv">iquorem, <a href="cascmd_en088.html#hevea_default133">5.6.12</a>
 </li><li class="li-indexenv">irem, <a href="cascmd_en087.html#hevea_default127">5.6.11</a>
-</li></ul></td><td style="vertical-align:top;text-align:left;" ><ul class="indexenv"><li class="li-indexenv">is_cycle, <a href="cascmd_en136.html#hevea_default199">5.10.7</a>
+</li><li class="li-indexenv">is_collinear, <a href="cascmd_en809.html#hevea_default1310">11.16.2</a>
+</li><li class="li-indexenv">is_concyclic, <a href="cascmd_en810.html#hevea_default1311">11.16.3</a>
+</li><li class="li-indexenv">is_conjugate, <a href="cascmd_en821.html#hevea_default1322">11.16.14</a>
+</li><li class="li-indexenv">is_cycle, <a href="cascmd_en136.html#hevea_default199">5.10.7</a>
+</li><li class="li-indexenv">is_element, <a href="cascmd_en808.html#hevea_default1309">11.16.1</a>
+</li><li class="li-indexenv">is_equilateral, <a href="cascmd_en812.html#hevea_default1313">11.16.5</a>
+</li><li class="li-indexenv">is_harmonic, <a href="cascmd_en822.html#hevea_default1323">11.16.15</a>
+</li><li class="li-indexenv">is_harmonic_circle_bundle, <a href="cascmd_en824.html#hevea_default1325">11.16.17</a>
+</li><li class="li-indexenv">is_harmonic_line_bundle, <a href="cascmd_en823.html#hevea_default1324">11.16.16</a>
+</li><li class="li-indexenv">is_inside, <a href="cascmd_en811.html#hevea_default1312">11.16.4</a>
+</li><li class="li-indexenv">is_isosceles, <a href="cascmd_en813.html#hevea_default1314">11.16.6</a>
+</li><li class="li-indexenv">is_orthogonal, <a href="cascmd_en820.html#hevea_default1321">11.16.13</a>
+</li><li class="li-indexenv">is_parallel, <a href="cascmd_en818.html#hevea_default1319">11.16.11</a>
+</li><li class="li-indexenv">is_parallelogram, <a href="cascmd_en817.html#hevea_default1318">11.16.10</a>
 </li><li class="li-indexenv">is_permu, <a href="cascmd_en135.html#hevea_default198">5.10.6</a>
-</li><li class="li-indexenv">is_prime, <a href="cascmd_en092.html#hevea_default137">5.6.16</a>
+</li><li class="li-indexenv">is_perpendicular, <a href="cascmd_en819.html#hevea_default1320">11.16.12</a>
+</li></ul></td><td style="vertical-align:top;text-align:left;" ><ul class="indexenv"><li class="li-indexenv">is_prime, <a href="cascmd_en092.html#hevea_default137">5.6.16</a>
 </li><li class="li-indexenv">is_pseudoprime, <a href="cascmd_en091.html#hevea_default136">5.6.15</a>
+</li><li class="li-indexenv">is_rectangle, <a href="cascmd_en814.html#hevea_default1315">11.16.7</a>
+</li><li class="li-indexenv">is_rhombus, <a href="cascmd_en816.html#hevea_default1317">11.16.9</a>
+</li><li class="li-indexenv">is_square, <a href="cascmd_en815.html#hevea_default1316">11.16.8</a>
 </li><li class="li-indexenv">ismith, <a href="cascmd_en522.html#hevea_default817">5.50.13</a>
+</li><li class="li-indexenv">isobarycenter, <a href="cascmd_en738.html#hevea_default1228">11.6.10</a>
 </li><li class="li-indexenv">isom, <a href="cascmd_en523.html#hevea_default818">5.51.1</a>
+</li><li class="li-indexenv">isopolygon, <a href="cascmd_en765.html#hevea_default1256">11.10.2</a>
+</li><li class="li-indexenv">isosceles_triangle, <a href="cascmd_en756.html#hevea_default1247">11.8.2</a>
 </li><li class="li-indexenv">ithprime, <a href="cascmd_en095.html#hevea_default140">5.6.19</a>
 <br>
 <br>
@@ -1649,6 +1891,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 <br>
 <br>
 </li><li class="li-indexenv">LaTeX, <a href="cascmd_en034.html#hevea_default0">3.7.1</a>
+</li><li class="li-indexenv">Line, <a href="cascmd_en745.html#hevea_default1236">11.7.3</a>
 </li><li class="li-indexenv">LineHorz, <a href="cascmd_en579.html#hevea_default905">6.5.2</a>
 </li><li class="li-indexenv">LineTan, <a href="cascmd_en581.html#hevea_default907">6.5.4</a>
 </li><li class="li-indexenv">LineVert, <a href="cascmd_en580.html#hevea_default906">6.5.3</a>
@@ -1663,6 +1906,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">lcoeff, <a href="cascmd_en283.html#hevea_default470">5.27.6</a>
 </li><li class="li-indexenv">ldegree, <a href="cascmd_en282.html#hevea_default469">5.27.5</a>
 </li><li class="li-indexenv">left, <a href="cascmd_en381.html#hevea_default597">5.37.2</a>, <a href="cascmd_en550.html#hevea_default851"><span style="font-weight:bold">5.55.4</span></a>
+</li><li class="li-indexenv">legend, <a href="cascmd_en728.html#hevea_default1213">11.3.3</a>
 </li><li class="li-indexenv">legendre, <a href="cascmd_en326.html#hevea_default524">5.29.1</a>
 </li><li class="li-indexenv">legendre_symbol, <a href="cascmd_en102.html#hevea_default150">5.6.26</a>
 </li><li class="li-indexenv">length, <a href="cascmd_en407.html#hevea_default636">5.40.13</a>
@@ -1671,7 +1915,9 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">ligne_polygonale, <a href="cascmd_en608.html#hevea_default980">7.2.3</a>
 </li><li class="li-indexenv">limit, <a href="cascmd_en204.html#hevea_default341"><span style="font-weight:bold">5.20.1</span></a>, <a href="cascmd_en205.html#hevea_default342">5.20.2</a>, <a href="cascmd_en205.html#hevea_default343">5.20.2</a>
 </li><li class="li-indexenv">lin, <a href="cascmd_en272.html#hevea_default455">5.26.4</a>
-</li><li class="li-indexenv">line, <a href="cascmd_en578.html#hevea_default904">6.5.1</a>
+</li><li class="li-indexenv">line, <a href="cascmd_en578.html#hevea_default904">6.5.1</a>, <a href="cascmd_en743.html#hevea_default1234">11.7.1</a>
+</li><li class="li-indexenv">line_inter, <a href="cascmd_en733.html#hevea_default1223">11.6.5</a>
+</li><li class="li-indexenv">line_paper, <a href="cascmd_en723.html#hevea_default1210">11.2.5</a>
 </li><li class="li-indexenv">linear_interpolate, <a href="cascmd_en608.html#hevea_default981">7.2.3</a>
 </li><li class="li-indexenv">linear_regression, <a href="cascmd_en609.html#hevea_default984">7.2.4</a>
 </li><li class="li-indexenv">linear_regression_plot, <a href="cascmd_en609.html#hevea_default985">7.2.4</a>
@@ -1687,6 +1933,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">lnexpand, <a href="cascmd_en271.html#hevea_default454">5.26.3</a>
 </li><li class="li-indexenv">load, <a href="cascmd_en057.html#hevea_default61">4.8.2</a>
 </li><li class="li-indexenv">local, <a href="cascmd_en687.html#hevea_default1132">10.1.2</a>
+</li><li class="li-indexenv">locus, <a href="cascmd_en831.html#hevea_default1333">11.18.1</a>
 </li><li class="li-indexenv">log, <a href="cascmd_en184.html#hevea_default295"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv"><span style="font-style:oblique">log</span>, <a href="cascmd_en207.html#hevea_default348"><span style="font-weight:bold">5.21.2</span></a>
 </li><li class="li-indexenv">log10, <a href="cascmd_en184.html#hevea_default297"><span style="font-weight:bold">5.16.2</span></a>
@@ -1721,9 +1968,11 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">maxnorm, <a href="cascmd_en435.html#hevea_default672"><span style="font-weight:bold">5.41.1</span></a>, <a href="cascmd_en507.html#hevea_default794">5.49.2</a>
 </li><li class="li-indexenv">mean, <a href="#hevea_default692">5.42</a>, <a href="cascmd_en480.html#hevea_default751">5.45.31</a>, <a href="cascmd_en592.html#hevea_default951">7.1.1</a>
 </li><li class="li-indexenv">median, <a href="#hevea_default695">5.42</a>, <a href="cascmd_en480.html#hevea_default754">5.45.31</a>, <a href="cascmd_en595.html#hevea_default956">7.1.4</a>
+</li><li class="li-indexenv">median_line, <a href="cascmd_en750.html#hevea_default1242">11.7.8</a>
 </li><li class="li-indexenv">member, <a href="cascmd_en417.html#hevea_default647"><span style="font-weight:bold">5.40.23</span></a>
 </li><li class="li-indexenv">mgf, <a href="cascmd_en642.html#hevea_default1085">7.4.19</a>
 </li><li class="li-indexenv">mid, <a href="cascmd_en067.html#hevea_default101">5.4.2</a>, <a href="cascmd_en397.html#hevea_default621">5.40.3</a>, <a href="cascmd_en397.html#hevea_default622">5.40.3</a>
+</li><li class="li-indexenv">midpoint, <a href="cascmd_en736.html#hevea_default1226">11.6.8</a>
 </li><li class="li-indexenv">min, <a href="cascmd_en184.html#hevea_default280"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">minimax, <a href="cascmd_en505.html#hevea_default791"><span style="font-weight:bold">5.48.4</span></a>
 </li><li class="li-indexenv">minimize, <a href="cascmd_en502.html#hevea_default787"><span style="font-weight:bold">5.48.1</span></a>
@@ -1758,7 +2007,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">nextprime, <a href="cascmd_en093.html#hevea_default138">5.6.17</a>
 </li><li class="li-indexenv">nInt, <a href="cascmd_en661.html#hevea_default1104">8.3.3</a>
 </li><li class="li-indexenv">nlpsolve, <a href="cascmd_en504.html#hevea_default790">5.48.3</a>
-</li><li class="li-indexenv">nodisp, <a href="#hevea_default5">4.1</a>
+</li><li class="li-indexenv">nodisp, <a href="#hevea_default5">4.1</a>, <a href="#hevea_default1216">11.4</a>
 </li><li class="li-indexenv">noise removal, <a href="cascmd_en268.html#hevea_default451">5.25.22</a>
 </li><li class="li-indexenv">nop, <a href="cascmd_en389.html#hevea_default610">5.38.6</a>
 </li><li class="li-indexenv">nops, <a href="cascmd_en407.html#hevea_default635">5.40.13</a>
@@ -1769,7 +2018,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">normald, <a href="cascmd_en628.html#hevea_default1024">7.4.5</a>
 </li><li class="li-indexenv">normald_cdf, <a href="cascmd_en628.html#hevea_default1027">7.4.5</a>
 </li><li class="li-indexenv">normald_icdf, <a href="cascmd_en628.html#hevea_default1029">7.4.5</a>
-</li><li class="li-indexenv">normalize, <a href="cascmd_en152.html#hevea_default222">5.11.7</a>, <a href="cascmd_en436.html#hevea_default675"><span style="font-weight:bold">5.41.2</span></a>
+</li><li class="li-indexenv">normalize, <a href="cascmd_en152.html#hevea_default222">5.11.7</a>, <a href="cascmd_en436.html#hevea_default675"><span style="font-weight:bold">5.41.2</span></a>, <a href="cascmd_en799.html#hevea_default1301">11.14.12</a>
 </li><li class="li-indexenv">normalt, <a href="cascmd_en650.html#hevea_default1093">7.5.2</a>
 </li><li class="li-indexenv">not, <a href="cascmd_en061.html#hevea_default85"><span style="font-weight:bold">5.2.3</span></a>
 </li><li class="li-indexenv">nPr, <a href="cascmd_en107.html#hevea_default159">5.7.3</a>
@@ -1782,14 +2031,19 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 <br>
 <br>
 </li><li class="li-indexenv">Output, <a href="cascmd_en694.html#hevea_default1148">10.2.2</a>
+</li><li class="li-indexenv">Ox_2d_unit_vector, <a href="cascmd_en721.html#hevea_default1206">11.2.3</a>
+</li><li class="li-indexenv">Oy_2d_unit_vector, <a href="cascmd_en721.html#hevea_default1207">11.2.3</a>
 </li><li class="li-indexenv">odd, <a href="cascmd_en090.html#hevea_default135">5.6.14</a>
 </li><li class="li-indexenv">odeplot, <a href="#hevea_default943">6.15</a>
 </li><li class="li-indexenv">odesolve, <a href="cascmd_en662.html#hevea_default1105"><span style="font-weight:bold">8.3.4</span></a>, <a href="cascmd_en663.html#hevea_default1106">8.3.5</a>
 </li><li class="li-indexenv">of, <a href="cascmd_en426.html#hevea_default660">5.40.32</a>
 </li><li class="li-indexenv">op, <a href="cascmd_en182.html#hevea_default270"><span style="font-weight:bold">5.15.3</span></a>, <a href="cascmd_en381.html#hevea_default596">5.37.2</a>, <a href="cascmd_en405.html#hevea_default630">5.40.11</a>
+</li><li class="li-indexenv">open_polygon, <a href="cascmd_en767.html#hevea_default1258">11.10.4</a>
 </li><li class="li-indexenv">or, <a href="cascmd_en052.html#hevea_default36">4.6.8</a>, <a href="cascmd_en061.html#hevea_default84"><span style="font-weight:bold">5.2.3</span></a>
 </li><li class="li-indexenv">ord, <a href="cascmd_en069.html#hevea_default103"><span style="font-weight:bold">5.4.4</span></a>
 </li><li class="li-indexenv">order_size, <a href="cascmd_en376.html#hevea_default587"><span style="font-weight:bold">5.36.2</span></a>, <a href="cascmd_en377.html#hevea_default589">5.36.3</a>
+</li><li class="li-indexenv">ordinate, <a href="cascmd_en782.html#hevea_default1273">11.13.3</a>
+</li><li class="li-indexenv">orthocenter, <a href="cascmd_en735.html#hevea_default1225">11.6.7</a>
 </li><li class="li-indexenv">output, <a href="cascmd_en694.html#hevea_default1147">10.2.2</a>
 <br>
 <br>
@@ -1799,6 +2053,10 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">p1op2, <a href="cascmd_en137.html#hevea_default200">5.10.8</a>
 </li><li class="li-indexenv">pa2b2, <a href="cascmd_en100.html#hevea_default147">5.6.24</a>
 </li><li class="li-indexenv">pade, <a href="cascmd_en379.html#hevea_default591">5.36.5</a>
+</li><li class="li-indexenv">parabola, <a href="cascmd_en779.html#hevea_default1270">11.12.3</a>
+</li><li class="li-indexenv">parallel, <a href="cascmd_en747.html#hevea_default1239">11.7.5</a>
+</li><li class="li-indexenv">parallelogram, <a href="cascmd_en762.html#hevea_default1253">11.9.4</a>
+</li><li class="li-indexenv">parameq, <a href="cascmd_en787.html#hevea_default1278">11.13.8</a>
 </li><li class="li-indexenv">paramplot, <a href="#hevea_default928"><span style="font-weight:bold">6.11</span></a>, <a href="cascmd_en588.html#hevea_default931">6.11.2</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">parfrac</span>, <a href="cascmd_en231.html#hevea_default404"><span style="font-weight:bold">5.22.24</span></a>
 </li><li class="li-indexenv">pari, <a href="cascmd_en118.html#hevea_default178">5.8.10</a>
@@ -1810,11 +2068,16 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">pcar_hessenberg, <a href="cascmd_en516.html#hevea_default811">5.50.7</a>
 </li><li class="li-indexenv">pcoef, <a href="cascmd_en297.html#hevea_default487">5.27.20</a>
 </li><li class="li-indexenv">pcoeff, <a href="cascmd_en297.html#hevea_default486">5.27.20</a>
+</li><li class="li-indexenv">perimeter, <a href="cascmd_en794.html#hevea_default1296">11.14.7</a>
+</li><li class="li-indexenv">perimeterat, <a href="cascmd_en788.html#hevea_default1285">11.14.1</a>
+</li><li class="li-indexenv">perimeteratraw, <a href="cascmd_en788.html#hevea_default1286">11.14.1</a>
 </li><li class="li-indexenv">perm, <a href="cascmd_en107.html#hevea_default158">5.7.3</a>
 </li><li class="li-indexenv">perminv, <a href="cascmd_en142.html#hevea_default205">5.10.13</a>
 </li><li class="li-indexenv">permu2cycles, <a href="cascmd_en131.html#hevea_default194">5.10.2</a>
 </li><li class="li-indexenv">permu2mat, <a href="cascmd_en134.html#hevea_default197">5.10.5</a>, <a href="cascmd_en528.html#hevea_default824">5.52.4</a>
 </li><li class="li-indexenv">permuorder, <a href="cascmd_en144.html#hevea_default207">5.10.15</a>
+</li><li class="li-indexenv">perpen_bisector, <a href="cascmd_en752.html#hevea_default1244">11.7.10</a>
+</li><li class="li-indexenv">perpendicular, <a href="cascmd_en748.html#hevea_default1240">11.7.6</a>
 </li><li class="li-indexenv">peval, <a href="cascmd_en285.html#hevea_default472">5.27.8</a>
 </li><li class="li-indexenv">phi, <a href="cascmd_en101.html#hevea_default149">5.6.25</a>
 </li><li class="li-indexenv">pi, <a href="#hevea_default69">5.1</a>
@@ -1824,7 +2087,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">playsnd, <a href="cascmd_en240.html#hevea_default420">5.24.4</a>
 </li><li class="li-indexenv">plot, <a href="#hevea_default902">6.3</a>
 </li><li class="li-indexenv">plot3d, <a href="#hevea_default903">6.4</a>
-</li><li class="li-indexenv">plotarea, <a href="#hevea_default913"><span style="font-weight:bold">6.7</span></a>
+</li><li class="li-indexenv">plotarea, <a href="#hevea_default913"><span style="font-weight:bold">6.7</span></a>, <a href="cascmd_en792.html#hevea_default1293">11.14.5</a>
 </li><li class="li-indexenv">plotcontour, <a href="#hevea_default919"><span style="font-weight:bold">6.8</span></a>
 </li><li class="li-indexenv">plotdensity, <a href="#hevea_default922"><span style="font-weight:bold">6.9</span></a>
 </li><li class="li-indexenv">plotfield, <a href="#hevea_default940">6.14</a>
@@ -1839,14 +2102,22 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">plotspectrum, <a href="cascmd_en246.html#hevea_default429">5.24.10</a>
 </li><li class="li-indexenv">plotwav, <a href="cascmd_en245.html#hevea_default428">5.24.9</a>
 </li><li class="li-indexenv">pmin, <a href="cascmd_en517.html#hevea_default812">5.50.8</a>
+</li><li class="li-indexenv">point, <a href="cascmd_en730.html#hevea_default1218">11.6.2</a>
+</li><li class="li-indexenv">point2d, <a href="cascmd_en731.html#hevea_default1219">11.6.3</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">point_milieu</span>, <a href="#hevea_default918"><span style="font-weight:bold">6.7</span></a>
+</li><li class="li-indexenv">point_polar, <a href="cascmd_en732.html#hevea_default1221">11.6.4</a>
 </li><li class="li-indexenv">poisson, <a href="cascmd_en627.html#hevea_default1021">7.4.4</a>
 </li><li class="li-indexenv">poisson_cdf, <a href="cascmd_en627.html#hevea_default1022">7.4.4</a>
 </li><li class="li-indexenv">poisson_icdf, <a href="cascmd_en627.html#hevea_default1023">7.4.4</a>
 </li><li class="li-indexenv">poisson_window, <a href="cascmd_en263.html#hevea_default446">5.25.17</a>
+</li><li class="li-indexenv">polar, <a href="cascmd_en829.html#hevea_default1331">11.17.5</a>
+</li><li class="li-indexenv">polar_coordinates, <a href="cascmd_en785.html#hevea_default1276">11.13.6</a>
+</li><li class="li-indexenv">polar_point, <a href="cascmd_en732.html#hevea_default1220">11.6.4</a>
 </li><li class="li-indexenv">polarplot, <a href="#hevea_default934"><span style="font-weight:bold">6.12</span></a>
+</li><li class="li-indexenv">pole, <a href="cascmd_en829.html#hevea_default1330">11.17.5</a>
 </li><li class="li-indexenv">poly2symb, <a href="cascmd_en278.html#hevea_default462">5.27.1</a>
 </li><li class="li-indexenv">polyEval, <a href="cascmd_en285.html#hevea_default473">5.27.8</a>
+</li><li class="li-indexenv">polygon, <a href="cascmd_en766.html#hevea_default1257">11.10.3</a>
 </li><li class="li-indexenv">polygonplot, <a href="cascmd_en608.html#hevea_default979">7.2.3</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">polynom</span>, <a href="cascmd_en231.html#hevea_default403">5.22.24</a>, <a href="cascmd_en299.html#hevea_default491"><span style="font-weight:bold">5.27.22</span></a>
 </li><li class="li-indexenv">polynomial_regression, <a href="cascmd_en613.html#hevea_default992">7.2.8</a>
@@ -1856,6 +2127,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">power_regression, <a href="cascmd_en612.html#hevea_default990">7.2.7</a>
 </li><li class="li-indexenv">power_regression_plot, <a href="cascmd_en612.html#hevea_default991">7.2.7</a>
 </li><li class="li-indexenv">powermod, <a href="cascmd_en358.html#hevea_default563">5.34.10</a>
+</li><li class="li-indexenv">powerpc, <a href="cascmd_en775.html#hevea_default1266">11.11.7</a>
 </li><li class="li-indexenv">powexpand, <a href="cascmd_en274.html#hevea_default457">5.26.6</a>
 </li><li class="li-indexenv">powmod, <a href="cascmd_en358.html#hevea_default562">5.34.10</a>
 </li><li class="li-indexenv">prepend, <a href="cascmd_en411.html#hevea_default641">5.40.17</a>
@@ -1865,6 +2137,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">print, <a href="cascmd_en698.html#hevea_default1155">10.2.6</a>
 </li><li class="li-indexenv">product, <a href="cascmd_en425.html#hevea_default656"><span style="font-weight:bold">5.40.31</span></a>, <a href="cascmd_en455.html#hevea_default721">5.45.6</a>, <a href="cascmd_en457.html#hevea_default725">5.45.8</a>
 </li><li class="li-indexenv">program, <a href="cascmd_en690.html#hevea_default1139">10.1.5</a>
+</li><li class="li-indexenv">projection, <a href="cascmd_en807.html#hevea_default1308">11.15.8</a>
 </li><li class="li-indexenv">proot, <a href="#hevea_default1124">8.6</a>
 </li><li class="li-indexenv">propFrac, <a href="cascmd_en110.html#hevea_default166">5.8.2</a>
 </li><li class="li-indexenv">propfrac, <a href="cascmd_en110.html#hevea_default165">5.8.2</a>, <a href="cascmd_en341.html#hevea_default540">5.31.8</a>
@@ -1878,6 +2151,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">Quo, <a href="cascmd_en309.html#hevea_default502"><span style="font-weight:bold">5.28.3</span></a>, <a href="cascmd_en368.html#hevea_default578">5.35.1</a>
 </li><li class="li-indexenv">q2a, <a href="cascmd_en532.html#hevea_default828">5.53.1</a>
 </li><li class="li-indexenv">qr, <a href="cascmd_en526.html#hevea_default821">5.52.2</a>
+</li><li class="li-indexenv">quadrilateral, <a href="cascmd_en763.html#hevea_default1254">11.9.5</a>
 </li><li class="li-indexenv">quadrique, <a href="cascmd_en538.html#hevea_default834">5.53.7</a>
 </li><li class="li-indexenv">quadrique_reduite, <a href="cascmd_en539.html#hevea_default835">5.53.8</a>
 </li><li class="li-indexenv">quantile, <a href="#hevea_default697">5.42</a>, <a href="cascmd_en480.html#hevea_default756">5.45.31</a>, <a href="cascmd_en597.html#hevea_default960">7.1.6</a>
@@ -1894,6 +2168,8 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">Rem, <a href="cascmd_en311.html#hevea_default504"><span style="font-weight:bold">5.28.5</span></a>, <a href="cascmd_en369.html#hevea_default579">5.35.2</a>
 </li><li class="li-indexenv">Rref, <a href="cascmd_en374.html#hevea_default584">5.35.7</a>
 </li><li class="li-indexenv">r2e, <a href="cascmd_en278.html#hevea_default461">5.27.1</a>
+</li><li class="li-indexenv">radical_axis, <a href="cascmd_en776.html#hevea_default1267">11.11.8</a>
+</li><li class="li-indexenv">radius, <a href="cascmd_en796.html#hevea_default1298">11.14.9</a>
 </li><li class="li-indexenv">rand, <a href="cascmd_en108.html#hevea_default160">5.7.4</a>, <a href="cascmd_en615.html#hevea_default996">7.3.1</a>
 </li><li class="li-indexenv">randbinomial, <a href="cascmd_en617.html#hevea_default1003">7.3.3</a>
 </li><li class="li-indexenv">randexp, <a href="cascmd_en621.html#hevea_default1008">7.3.7</a>
@@ -1923,10 +2199,14 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">readwav, <a href="cascmd_en238.html#hevea_default418">5.24.2</a>
 </li><li class="li-indexenv">real, <a href="cascmd_en147.html#hevea_default215">5.11.2</a>
 </li><li class="li-indexenv">realroot, <a href="cascmd_en344.html#hevea_default543">5.32.2</a>
+</li><li class="li-indexenv">reciprocation, <a href="cascmd_en830.html#hevea_default1332">11.17.6</a>
+</li><li class="li-indexenv">rectangle, <a href="cascmd_en761.html#hevea_default1252">11.9.3</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">rectangle_droit</span>, <a href="#hevea_default915"><span style="font-weight:bold">6.7</span></a>
 </li><li class="li-indexenv"><span style="font-style:oblique">rectangle_gauche</span>, <a href="#hevea_default916"><span style="font-weight:bold">6.7</span></a>
+</li><li class="li-indexenv">rectangular_coordinates, <a href="cascmd_en784.html#hevea_default1275">11.13.5</a>
 </li><li class="li-indexenv"><span style="font-style:italic">red</span>, <a href="cascmd_en572.html#hevea_default885"><span style="font-weight:bold">6.1.1</span></a>
 </li><li class="li-indexenv">ref, <a href="cascmd_en555.html#hevea_default860">5.56.2</a>
+</li><li class="li-indexenv">reflection, <a href="cascmd_en802.html#hevea_default1303">11.15.3</a>
 </li><li class="li-indexenv">rem, <a href="cascmd_en310.html#hevea_default503"><span style="font-weight:bold">5.28.4</span></a>, <a href="cascmd_en354.html#hevea_default557">5.34.6</a>
 </li><li class="li-indexenv">remain, <a href="cascmd_en087.html#hevea_default128">5.6.11</a>
 </li><li class="li-indexenv">remove, <a href="cascmd_en416.html#hevea_default646">5.40.22</a>
@@ -1941,9 +2221,11 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">return, <a href="cascmd_en687.html#hevea_default1133">10.1.2</a>
 </li><li class="li-indexenv">reverse_rsolve, <a href="cascmd_en560.html#hevea_default866">5.56.7</a>
 </li><li class="li-indexenv">revlist, <a href="cascmd_en401.html#hevea_default626">5.40.7</a>
+</li><li class="li-indexenv">rhombus, <a href="cascmd_en760.html#hevea_default1251">11.9.2</a>
 </li><li class="li-indexenv">rhs, <a href="cascmd_en551.html#hevea_default855"><span style="font-weight:bold">5.55.5</span></a>
 </li><li class="li-indexenv">riemann_window, <a href="cascmd_en264.html#hevea_default447">5.25.18</a>
 </li><li class="li-indexenv">right, <a href="cascmd_en381.html#hevea_default598">5.37.2</a>, <a href="cascmd_en551.html#hevea_default854"><span style="font-weight:bold">5.55.5</span></a>
+</li><li class="li-indexenv">right_triangle, <a href="cascmd_en757.html#hevea_default1248">11.8.3</a>
 </li><li class="li-indexenv">rm_all_vars, <a href="cascmd_en053.html#hevea_default46">4.6.9</a>
 </li><li class="li-indexenv">rmbreakpoint, <a href="cascmd_en717.html#hevea_default1200">10.5.1</a>
 </li><li class="li-indexenv">rmbrk, <a href="cascmd_en717.html#hevea_default1199">10.5.1</a>
@@ -1954,6 +2236,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">rootof, <a href="cascmd_en295.html#hevea_default484">5.27.18</a>
 </li><li class="li-indexenv">roots, <a href="cascmd_en296.html#hevea_default485">5.27.19</a>
 </li><li class="li-indexenv">rotate, <a href="cascmd_en402.html#hevea_default627">5.40.8</a>
+</li><li class="li-indexenv">rotation, <a href="cascmd_en803.html#hevea_default1304">11.15.4</a>
 </li><li class="li-indexenv">round, <a href="cascmd_en184.html#hevea_default285"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">row, <a href="cascmd_en463.html#hevea_default731">5.45.14</a>
 </li><li class="li-indexenv">rowAdd, <a href="cascmd_en466.html#hevea_default736">5.45.17</a>
@@ -1976,6 +2259,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">scatterplot, <a href="cascmd_en607.html#hevea_default976">7.2.2</a>
 </li><li class="li-indexenv">sec, <a href="cascmd_en208.html#hevea_default357"><span style="font-weight:bold">5.22.1</span></a>
 </li><li class="li-indexenv">secant_solver<span style="font-style:oblique">secant_solver</span>, <a href="cascmd_en669.html#hevea_default1115"><span style="font-weight:bold">8.4.5</span></a>
+</li><li class="li-indexenv">segment, <a href="cascmd_en745.html#hevea_default1235">11.7.3</a>, <a href="cascmd_en746.html#hevea_default1237">11.7.4</a>
 </li><li class="li-indexenv">select, <a href="cascmd_en415.html#hevea_default645">5.40.21</a>
 </li><li class="li-indexenv">semi_augment, <a href="cascmd_en471.html#hevea_default741"><span style="font-weight:bold">5.45.22</span></a>
 </li><li class="li-indexenv">seq, <a href="cascmd_en388.html#hevea_default607"><span style="font-weight:bold">5.38.5</span></a>
@@ -1986,6 +2270,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">shift, <a href="cascmd_en403.html#hevea_default628">5.40.9</a>
 </li><li class="li-indexenv">sign, <a href="cascmd_en184.html#hevea_default282"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">signature, <a href="cascmd_en141.html#hevea_default204">5.10.12</a>
+</li><li class="li-indexenv">similarity, <a href="cascmd_en805.html#hevea_default1306">11.15.6</a>
 </li><li class="li-indexenv">simp2, <a href="cascmd_en114.html#hevea_default173"><span style="font-weight:bold">5.8.6</span></a>, <a href="cascmd_en339.html#hevea_default538">5.31.6</a>
 </li><li class="li-indexenv">simplex_reduce, <a href="#hevea_default784"><span style="font-weight:bold">5.47</span></a>
 </li><li class="li-indexenv">simplify, <a href="cascmd_en169.html#hevea_default244"><span style="font-weight:bold">5.12.14</span></a>, <a href="cascmd_en212.html#hevea_default372">5.22.5</a>
@@ -1994,9 +2279,13 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv"><span style="font-style:oblique">sin</span>, <a href="cascmd_en207.html#hevea_default350"><span style="font-weight:bold">5.21.2</span></a>, <a href="cascmd_en231.html#hevea_default394"><span style="font-weight:bold">5.22.24</span></a>
 </li><li class="li-indexenv">sincos, <a href="cascmd_en220.html#hevea_default380">5.22.13</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">sincos</span>, <a href="cascmd_en231.html#hevea_default396"><span style="font-weight:bold">5.22.24</span></a>
+</li><li class="li-indexenv">single_inter, <a href="cascmd_en733.html#hevea_default1222">11.6.5</a>
 </li><li class="li-indexenv">sinh, <a href="cascmd_en184.html#hevea_default308"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">size, <a href="cascmd_en407.html#hevea_default634">5.40.13</a>
 </li><li class="li-indexenv">sizes, <a href="cascmd_en408.html#hevea_default637">5.40.14</a>
+</li><li class="li-indexenv">slope, <a href="cascmd_en795.html#hevea_default1297">11.14.8</a>
+</li><li class="li-indexenv">slopeat, <a href="cascmd_en788.html#hevea_default1287">11.14.1</a>
+</li><li class="li-indexenv">slopeatraw, <a href="cascmd_en788.html#hevea_default1288">11.14.1</a>
 </li><li class="li-indexenv">smod, <a href="cascmd_en087.html#hevea_default129"><span style="font-weight:bold">5.6.11</span></a>
 </li><li class="li-indexenv">snedecor, <a href="cascmd_en631.html#hevea_default1042">7.4.8</a>
 </li><li class="li-indexenv">snedecor_cdf, <a href="cascmd_en631.html#hevea_default1045">7.4.8</a>
@@ -2011,6 +2300,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">sq, <a href="cascmd_en184.html#hevea_default292"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">sqrfree, <a href="cascmd_en291.html#hevea_default480">5.27.14</a>
 </li><li class="li-indexenv">sqrt, <a href="cascmd_en184.html#hevea_default293"><span style="font-weight:bold">5.16.2</span></a>
+</li><li class="li-indexenv">square, <a href="cascmd_en759.html#hevea_default1250">11.9.1</a>
 </li><li class="li-indexenv">srand, <a href="cascmd_en616.html#hevea_default1000">7.3.2</a>
 </li><li class="li-indexenv">sst, <a href="cascmd_en717.html#hevea_default1192">10.5.1</a>
 </li><li class="li-indexenv">stdDev, <a href="cascmd_en594.html#hevea_default955">7.1.3</a>
@@ -2043,6 +2333,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">suppress, <a href="cascmd_en399.html#hevea_default624">5.40.5</a>
 </li><li class="li-indexenv">svd, <a href="cascmd_en530.html#hevea_default826">5.52.6</a>
 </li><li class="li-indexenv">switch, <a href="cascmd_en701.html#hevea_default1163">10.3.2</a>
+</li><li class="li-indexenv">switch_axes, <a href="cascmd_en720.html#hevea_default1205">11.2.2</a>
 </li><li class="li-indexenv">sylvester, <a href="cascmd_en324.html#hevea_default522">5.28.18</a>
 </li><li class="li-indexenv">symb2poly, <a href="cascmd_en279.html#hevea_default464">5.27.2</a>
 </li><li class="li-indexenv"><span style="font-style:italic">symbol</span>, <a href="cascmd_en688.html#hevea_default1137">10.1.3</a>
@@ -2059,7 +2350,7 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">tan2cossin2, <a href="cascmd_en223.html#hevea_default384">5.22.16</a>
 </li><li class="li-indexenv">tan2sincos, <a href="cascmd_en221.html#hevea_default382">5.22.14</a>
 </li><li class="li-indexenv">tan2sincos2, <a href="cascmd_en222.html#hevea_default383">5.22.15</a>
-</li><li class="li-indexenv">tangent, <a href="cascmd_en582.html#hevea_default908"><span style="font-weight:bold">6.5.5</span></a>
+</li><li class="li-indexenv">tangent, <a href="cascmd_en582.html#hevea_default908"><span style="font-weight:bold">6.5.5</span></a>, <a href="cascmd_en749.html#hevea_default1241">11.7.7</a>
 </li><li class="li-indexenv">tanh, <a href="cascmd_en184.html#hevea_default310"><span style="font-weight:bold">5.16.2</span></a>
 </li><li class="li-indexenv">taylor, <a href="cascmd_en376.html#hevea_default586">5.36.2</a>
 </li><li class="li-indexenv">tCollect, <a href="cascmd_en211.html#hevea_default371">5.22.4</a>
@@ -2078,8 +2369,11 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">tpsolve, <a href="cascmd_en501.html#hevea_default786"><span style="font-weight:bold">5.47.3</span></a>
 </li><li class="li-indexenv">trace, <a href="cascmd_en486.html#hevea_default769">5.46.3</a>
 </li><li class="li-indexenv">tran, <a href="cascmd_en484.html#hevea_default765">5.46.1</a>
+</li><li class="li-indexenv">translation, <a href="cascmd_en801.html#hevea_default1302">11.15.2</a>
 </li><li class="li-indexenv">transpose, <a href="cascmd_en484.html#hevea_default766">5.46.1</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">trapeze</span>, <a href="#hevea_default917"><span style="font-weight:bold">6.7</span></a>
+</li><li class="li-indexenv">triangle, <a href="cascmd_en755.html#hevea_default1246">11.8.1</a>
+</li><li class="li-indexenv">triangle_paper, <a href="cascmd_en725.html#hevea_default1212">11.2.7</a>
 </li><li class="li-indexenv">triangle_window, <a href="cascmd_en265.html#hevea_default448">5.25.19</a>
 </li><li class="li-indexenv"><span style="font-style:oblique">trig</span>, <a href="cascmd_en207.html#hevea_default352"><span style="font-weight:bold">5.21.2</span></a>
 </li><li class="li-indexenv">trig2exp, <a href="cascmd_en227.html#hevea_default388">5.22.20</a>
@@ -2126,7 +2420,11 @@ distribution: <span style="font-family:monospace">kolmogorovt</span></a>
 </li><li class="li-indexenv">vandermonde, <a href="cascmd_en449.html#hevea_default711">5.44.7</a>
 </li><li class="li-indexenv">variable, <a href="cascmd_en045.html#hevea_default18">4.6.1</a>
 </li><li class="li-indexenv">variance, <a href="#hevea_default694">5.42</a>, <a href="cascmd_en480.html#hevea_default753">5.45.31</a>, <a href="cascmd_en593.html#hevea_default952">7.1.2</a>
+</li><li class="li-indexenv">vector, <a href="cascmd_en746.html#hevea_default1238">11.7.4</a>
 </li><li class="li-indexenv">vectors, <a href="#hevea_default618">5.40</a>
+</li><li class="li-indexenv">vertices, <a href="cascmd_en740.html#hevea_default1230">11.6.12</a>
+</li><li class="li-indexenv">vertices_abc, <a href="cascmd_en740.html#hevea_default1231">11.6.12</a>
+</li><li class="li-indexenv">vertices_abca, <a href="cascmd_en741.html#hevea_default1232">11.6.13</a>
 </li><li class="li-indexenv">vpotential, <a href="cascmd_en546.html#hevea_default847">5.54.7</a>
 <br>
 <br>
@@ -4357,6 +4655,310 @@ the physical constants (<span style="font-family:monospace">Constant</span> sub-
 <ul>
 <li><a href="cascmd_en717.html">Starting the debugger</a>
 </li></ul>
+<h1 id="sec944" class="chapter">Chapter 11  Two-dimensional Graphics</h1>
+<h2 id="sec945" class="section">11.1  Introduction</h2>
+<ul>
+<li><a href="cascmd_en718.html">Points, vectors and complex numbers</a>
+</li></ul>
+<h2 id="sec947" class="section">11.2  Basic commands</h2>
+<ul>
+<li><a href="cascmd_en719.html">Clear the <span style="font-family:monospace">DispG</span> screen: <span style="font-family:monospace">erase</span></a>
+</li><li><a href="cascmd_en720.html">Toggle the axes: <span style="font-family:monospace">switch_axes</span></a>
+</li><li><a href="cascmd_en721.html">Draw unit vectors:
+<span style="font-family:monospace">Ox_2d_unit_vector</span>
+<span style="font-family:monospace">Oy_2d_unit_vector</span>
+<span style="font-family:monospace">frame_2d</span></a>
+</li><li><a href="cascmd_en722.html">Draw dotted paper: <span style="font-family:monospace">dot_paper</span></a>
+</li><li><a href="cascmd_en723.html">Draw lined paper: <span style="font-family:monospace">line_paper</span></a>
+</li><li><a href="cascmd_en724.html">Draw grid paper: <span style="font-family:monospace">grid_paper</span></a>
+</li><li><a href="cascmd_en725.html">Draw triangular paper: <span style="font-family:monospace">triangle_paper</span></a>
+</li></ul>
+<h2 id="sec955" class="section">11.3  Display features of graphics</h2>
+<ul>
+<li><a href="cascmd_en726.html">Graphic features</a>
+</li><li><a href="cascmd_en727.html">Parameters for changing features</a>
+<ul>
+<li><a href="cascmd_en727.html#sec958">Parameters for local features</a>
+</li><li><a href="cascmd_en727.html#sec959">Parameters for global features</a>
+</li></ul>
+</li><li><a href="cascmd_en728.html">Commands for global display features</a>
+<ul>
+<li><a href="cascmd_en728.html#sec961">Add a legend: <span style="font-family:monospace">legend</span></a>
+</li><li><a href="cascmd_en728.html#sec962">Change various features:<span style="font-family:monospace">display</span>
+<span style="font-family:monospace">color</span></a>
+</li></ul>
+</li></ul>
+<h2 id="sec963" class="section">11.4  Define geometric objects without drawing them: <span style="font-family:monospace">nodisp</span><a id="hevea_default1216"></a></h2>
+<p>The <span style="font-family:monospace">nodisp</span> command will define an object without displaying
+it. Setting a variable to a graphic object draws the object.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">C := point(1+i)
+</span></div><p>
+will define the point <span style="font-family:monospace">C</span> as well as draw it. Setting a
+variable to a graphic object inside the <span style="font-family:monospace">nodisp</span> command will
+not draw the object.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">nodisp(C:= point(1+i))
+</span></div><p>
+will define the point <span style="font-style:italic">C</span> but not display it. This is
+equivalent to following the command with <span style="font-family:monospace">:;</span>,
+<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">C := point(1+i):;
+</span></div><p>To define a point as above and display it without the
+label, enter the point’s name;<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">C
+</span></div><p>
+Alternatively, define the point within an
+<span style="font-family:monospace">eval</span> statement;<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">eval(C := point(1+i))
+</span></div><p>
+defines <span style="font-style:italic">C</span> as the point, displays the point, but doesn’t display the
+label. To later display the point with a label, use the
+<span style="font-family:monospace">legend</span> command.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">legend(C,"C")
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">point(affix(C),legend="C")
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace"><img src="cascmd_en062.png">
+</span></div><p>
+In this case, the string "C" can be replaced with any other string 
+as a label. Alternatively, redefine the
+variable as itself;<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">C := C
+</span></div><p>
+prints <span style="font-style:italic">C</span> with its label.</p>
+<h2 id="sec964" class="section">11.5  Geometric demonstrations: <span style="font-family:monospace">assume</span><a id="hevea_default1217"></a></h2>
+<p>Variables should be unspecified to demonstrate a general geometric
+result, but need to have specific values when drawing. There are a
+couple of different approaches of dealing with this.</p><p>One approach is to use the <span style="font-family:monospace">assume</span> command. If a variable is 
+<em>assumed</em> to have a value, then that value will be used in
+graphics but the variable will still be unspecified for calculations.
+For example,<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">assume(a = 2.1)
+</span></div><p>
+then 
+<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A := point(a + i)
+</span></div><p>
+will draw a point at the coordinate (2.1,1),<br>
+Output:
+</p><div class="center">
+<span style="font-family:monospace"><img src="cascmd_en063.png">
+</span></div><p>
+but the variable <span style="font-style:italic">a</span> will still be treated as a variable in
+calculations;<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">distance(0,A)
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">sqrt((-a)^2 + 1)
+</span></div><p>Another approach would be to use <span style="font-family:monospace">point</span> or <span style="font-family:monospace">pointer</span>
+mode in a geometry screen. If there isn’t a geometry screen showing,
+the command <span style="font-family:monospace">Alt-G</span> or the <span style="font-family:monospace">Geo</span>▸<span style="font-family:monospace">New
+figure 2d</span> menu will open a screen. Clicking on the 
+<span style="font-family:monospace">Mode</span> button right above the graphic screen and choosing 
+<span style="font-family:monospace">pointer</span> or <span style="font-family:monospace">point</span> will put the screen in
+<span style="font-family:monospace">pointer</span> or <span style="font-family:monospace">point</span> mode.
+If a point is defined and displayed, such as 
+with <span style="font-family:monospace">A := point(2.1 + i)</span>, then clicking on the name of the
+point (<span style="font-family:monospace">A</span> in this case) with the right mouse button will bring
+up a configuration screen. As long as there is a point defined with
+non-symbolic values, there sill be a <span style="font-family:monospace">symb</span> box on the configuration
+screen. Selecting the <span style="font-family:monospace">symb</span> box and
+choosing <span style="font-family:monospace">OK</span> will be equivalent to the commands
+<span style="font-family:monospace">assume(Ax=[2.1,-8.16901408451,8.16901408451])</span>
+and <span style="font-family:monospace">assume(Ay = [1, -5.0, 5.0]</span>, this will bring up
+two lines beneath the arrows to the right of the screen which can be
+used to change the assumed values of <span style="font-family:monospace">Ax</span> and <span style="font-family:monospace">Ay</span>.
+Also, the point <span style="font-family:monospace">A</span> will be redefined as <span style="font-family:monospace">point(Ax,Ay)</span>.
+</p><div class="center">
+<span style="font-family:monospace"><img src="cascmd_en064.png">
+</span></div>
+<h2 id="sec965" class="section">11.6  Points in plane geometry</h2>
+<ul>
+<li><a href="cascmd_en729.html">Points and complex numbers</a>
+</li><li><a href="cascmd_en730.html">The point in the plane: <span style="font-family:monospace">point</span></a>
+</li><li><a href="cascmd_en731.html">Define random points: <span style="font-family:monospace">point2d</span></a>
+</li><li><a href="cascmd_en732.html">Points in polar coordinates: <span style="font-family:monospace">polar_point</span> <span style="font-family:monospace">point_polar</span></a>
+</li><li><a href="cascmd_en733.html">Find a point of intersection of two objects: <span style="font-family:monospace">single_inter</span> <span style="font-family:monospace">line_inter</span></a>
+</li><li><a href="cascmd_en734.html">Find the points of intersection of two geometric objects: <span style="font-family:monospace">inter</span></a>
+</li><li><a href="cascmd_en735.html">Find the orthocenter of a triangle: <span style="font-family:monospace">orthocenter</span></a>
+</li><li><a href="cascmd_en736.html">Find the midpoint of a segment: <span style="font-family:monospace">midpoint</span></a>
+</li><li><a href="cascmd_en737.html">The barycenter: <span style="font-family:monospace">barycenter</span></a>
+</li><li><a href="cascmd_en738.html">The isobarycenter of <span style="font-style:italic">n</span> points: <span style="font-family:monospace">isobarycenter</span></a>
+</li><li><a href="cascmd_en739.html">The center of a circle: <span style="font-family:monospace">center</span></a>
+</li><li><a href="cascmd_en740.html">The vertices of a polygon: <span style="font-family:monospace">vertices</span> <span style="font-family:monospace">vertices_abc</span></a>
+</li><li><a href="cascmd_en741.html">The vertices of a polygon, closed: <span style="font-family:monospace">vertices_abca</span></a>
+</li><li><a href="cascmd_en742.html">A point on a geometric object: <span style="font-family:monospace">element</span></a>
+</li></ul>
+<h2 id="sec980" class="section">11.7  Lines in plane geometry</h2>
+<ul>
+<li><a href="cascmd_en743.html">Lines and directed lines: <span style="font-family:monospace">line</span></a>
+</li><li><a href="cascmd_en744.html">Half-lines</a>
+</li><li><a href="cascmd_en745.html">Line segments in the plane: <span style="font-family:monospace">segment</span> <span style="font-family:monospace">Line</span></a>
+</li><li><a href="cascmd_en746.html">Vectors: <span style="font-family:monospace">segment</span> <span style="font-family:monospace">vector</span></a>
+</li><li><a href="cascmd_en747.html">Parallel lines: <span style="font-family:monospace">parallel</span></a>
+</li><li><a href="cascmd_en748.html">Perpendicular lines: <span style="font-family:monospace">perpendicular</span></a>
+</li><li><a href="cascmd_en749.html">Tangents to curves: <span style="font-family:monospace">tangent</span></a>
+</li><li><a href="cascmd_en750.html">The median of a triangle: <span style="font-family:monospace">median_line</span></a>
+</li><li><a href="cascmd_en751.html">The altitude of a triangle: <span style="font-family:monospace">altitude</span></a>
+</li><li><a href="cascmd_en752.html">The perpendicular bisector of a segment: <span style="font-family:monospace">perpen_bisector</span></a>
+</li><li><a href="cascmd_en753.html">The angle bisector: <span style="font-family:monospace">bisector</span></a>
+</li><li><a href="cascmd_en754.html">The exterior angle bisector</a>
+</li></ul>
+<h2 id="sec993" class="section">11.8  Triangles</h2>
+<ul>
+<li><a href="cascmd_en755.html">Arbitrary triangles: <span style="font-family:monospace">triangle</span></a>
+</li><li><a href="cascmd_en756.html">Isosceles triangles: <span style="font-family:monospace">isosceles_triangle</span></a>
+</li><li><a href="cascmd_en757.html">Right triangles: <span style="font-family:monospace">right_triangle</span></a>
+</li><li><a href="cascmd_en758.html">Equilateral triangles: <span style="font-family:monospace">equilateral_triangle</span></a>
+</li></ul>
+<h2 id="sec998" class="section">11.9  Quadrilaterals</h2>
+<p>
+<a id="sec:2dquad"></a></p>
+<ul>
+<li><a href="cascmd_en759.html">Squares: <span style="font-family:monospace">square</span></a>
+</li><li><a href="cascmd_en760.html">Rhombuses: <span style="font-family:monospace">rhombus</span></a>
+</li><li><a href="cascmd_en761.html">Rectangles: <span style="font-family:monospace">rectangle</span></a>
+</li><li><a href="cascmd_en762.html">Parallelograms: <span style="font-family:monospace">parallelogram</span></a>
+</li><li><a href="cascmd_en763.html">Arbitrary quadrilaterals:
+<span style="font-family:monospace">quadrilateral</span></a>
+</li></ul>
+<h2 id="sec1004" class="section">11.10  Other polygons</h2>
+<p>
+<a id="sec:2dpolygons"></a></p>
+<ul>
+<li><a href="cascmd_en764.html">Regular hexagons: <span style="font-family:monospace">hexagon</span></a>
+</li><li><a href="cascmd_en765.html">Regular polygons: <span style="font-family:monospace">isopolygon</span></a>
+</li><li><a href="cascmd_en766.html">General polygons: <span style="font-family:monospace">polygon</span></a>
+</li><li><a href="cascmd_en767.html">Polygonal lines: <span style="font-family:monospace">open_polygon</span></a>
+</li><li><a href="cascmd_en768.html">Convex hulls: <span style="font-family:monospace">convexhull</span></a>
+</li></ul>
+<h2 id="sec1010" class="section">11.11  Circles</h2>
+<ul>
+<li><a href="cascmd_en769.html">Circles and arcs: <span style="font-family:monospace">circle</span></a>
+</li><li><a href="cascmd_en770.html">Circular arcs: <span style="font-family:monospace">arc</span></a>
+</li><li><a href="cascmd_en771.html">Circles (TI compatibility): <span style="font-family:monospace">Circle</span></a>
+</li><li><a href="cascmd_en772.html">Inscribed circles: <span style="font-family:monospace">incircle</span></a>
+</li><li><a href="cascmd_en773.html">Circumscribed circles: <span style="font-family:monospace">circumcircle</span></a>
+</li><li><a href="cascmd_en774.html">Excircles: <span style="font-family:monospace">excircle</span></a>
+</li><li><a href="cascmd_en775.html">The power of a point relative to a circle: <span style="font-family:monospace">powerpc</span></a>
+</li><li><a href="cascmd_en776.html">The radical axis of two circles: <span style="font-family:monospace">radical_axis</span></a>
+</li></ul>
+<h2 id="sec1019" class="section">11.12  Other conic sections</h2>
+<ul>
+<li><a href="cascmd_en777.html">The ellipse: <span style="font-family:monospace">ellipse</span></a>
+</li><li><a href="cascmd_en778.html">The hyperbola: <span style="font-family:monospace">hyperbola</span></a>
+</li><li><a href="cascmd_en779.html">The parabola: <span style="font-family:monospace">parabola</span></a>
+</li></ul>
+<h2 id="sec1023" class="section">11.13  Coordinates</h2>
+<ul>
+<li><a href="cascmd_en780.html">The affix of a point or vector: <span style="font-family:monospace">affix</span></a>
+</li><li><a href="cascmd_en781.html">The abscissa of a point or vector: <span style="font-family:monospace">abscissa</span></a>
+</li><li><a href="cascmd_en782.html">The ordinate of a point or vector: <span style="font-family:monospace">ordinate</span></a>
+</li><li><a href="cascmd_en783.html">The coordinates of a point, vector or line: <span style="font-family:monospace">coordinates</span></a>
+</li><li><a href="cascmd_en784.html">The rectangular coordinates of a point: <span style="font-family:monospace">rectangular_coordinates</span></a>
+</li><li><a href="cascmd_en785.html">The polar coordinates of a point: <span style="font-family:monospace">polar_coordinates</span></a>
+</li><li><a href="cascmd_en786.html">The Cartesian equation of a geometric object: <span style="font-family:monospace">equation</span></a>
+</li><li><a href="cascmd_en787.html">The parametric equation of a geometric object: <span style="font-family:monospace">parameq</span></a>
+</li></ul>
+<h2 id="sec1032" class="section">11.14  Measurements</h2>
+<ul>
+<li><a href="cascmd_en788.html">Measurement and display:
+<span style="font-family:monospace">distanceat</span>
+<span style="font-family:monospace">distanceatraw</span>
+<span style="font-family:monospace">angleat</span> <span style="font-family:monospace">angleatraw</span>
+<span style="font-family:monospace">areaat</span> <span style="font-family:monospace">areaatraw</span>
+<span style="font-family:monospace">perimeterat</span> <span style="font-family:monospace">perimeteratraw</span>
+<span style="font-family:monospace">slopeat</span> <span style="font-family:monospace">slopeatraw</span>
+<span style="font-family:monospace">extract_measure</span></a>
+</li><li><a href="cascmd_en789.html">The distance between objects: <span style="font-family:monospace">distance</span></a>
+</li><li><a href="cascmd_en790.html">The length squared of a segment: <span style="font-family:monospace">distance2</span></a>
+</li><li><a href="cascmd_en791.html">The measure of an angle: <span style="font-family:monospace">angle</span></a>
+</li><li><a href="cascmd_en792.html">The graphical representation of the area of a polygon:
+<span style="font-family:monospace">plotarea</span><span style="font-family:monospace">areaplot</span></a>
+</li><li><a href="cascmd_en793.html">The area of a polygon: <span style="font-family:monospace">area</span></a>
+</li><li><a href="cascmd_en794.html">The perimeter of a polygon: <span style="font-family:monospace">perimeter</span></a>
+</li><li><a href="cascmd_en795.html">The slope of a line: <span style="font-family:monospace">slope</span></a>
+</li><li><a href="cascmd_en796.html">The radius of a circle: <span style="font-family:monospace">radius</span></a>
+</li><li><a href="cascmd_en797.html">The length of a vector: <span style="font-family:monospace">abs</span></a>
+</li><li><a href="cascmd_en798.html">The angle of a vector: <span style="font-family:monospace">arg</span></a>
+</li><li><a href="cascmd_en799.html">Normale a complex number: <span style="font-family:monospace">normalize</span></a>
+</li></ul>
+<h2 id="sec1045" class="section">11.15  Transformations</h2>
+<ul>
+<li><a href="cascmd_en800.html">General remarks</a>
+</li><li><a href="cascmd_en801.html">Translations: <span style="font-family:monospace">translation</span></a>
+</li><li><a href="cascmd_en802.html">Reflections: <span style="font-family:monospace">reflection</span></a>
+</li><li><a href="cascmd_en803.html">Rotation: <span style="font-family:monospace">rotation</span></a>
+</li><li><a href="cascmd_en804.html">Homothety: <span style="font-family:monospace">homothety</span></a>
+</li><li><a href="cascmd_en805.html">Similarity: <span style="font-family:monospace">similarity</span></a>
+</li><li><a href="cascmd_en806.html">Inversion: <span style="font-family:monospace">inversion</span></a>
+</li><li><a href="cascmd_en807.html">Orthogonal projection: <span style="font-family:monospace">projection</span></a>
+</li></ul>
+<h2 id="sec1054" class="section">11.16  Properties</h2>
+<ul>
+<li><a href="cascmd_en808.html">Check if a point is on an object: <span style="font-family:monospace">is_element</span></a>
+</li><li><a href="cascmd_en809.html">Check if three points are collinear: <span style="font-family:monospace">is_collinear</span></a>
+</li><li><a href="cascmd_en810.html">Check if four points are concyclic: <span style="font-family:monospace">is_concyclic</span></a>
+</li><li><a href="cascmd_en811.html">Check if a point is in a polygon or circle: <span style="font-family:monospace">is_inside</span></a>
+</li><li><a href="cascmd_en812.html">Check if an object is an equilateral triangle: <span style="font-family:monospace">is_equilateral</span></a>
+</li><li><a href="cascmd_en813.html">Check if an object is an isosceles triangle: <span style="font-family:monospace">is_isosceles</span></a>
+</li><li><a href="cascmd_en814.html">Check if an object is a right triangle or a rectangle: <span style="font-family:monospace">is_rectangle</span></a>
+</li><li><a href="cascmd_en815.html">Check if an object is a square: <span style="font-family:monospace">is_square</span></a>
+</li><li><a href="cascmd_en816.html">Check if an object is a rhombus: <span style="font-family:monospace">is_rhombus</span></a>
+</li><li><a href="cascmd_en817.html">Check if an object is a parallelogram: <span style="font-family:monospace">is_parallelogram</span></a>
+</li><li><a href="cascmd_en818.html">Check it two lines are parallel: <span style="font-family:monospace">is_parallel</span></a>
+</li><li><a href="cascmd_en819.html">Check if two lines are perpendicular: <span style="font-family:monospace">is_perpendicular</span></a>
+</li><li><a href="cascmd_en820.html">Check if two circles are orthogonal: <span style="font-family:monospace">is_orthogonal</span></a>
+</li><li><a href="cascmd_en821.html">Check if elements are conjugates: <span style="font-family:monospace">is_conjugate</span></a>
+</li><li><a href="cascmd_en822.html">Check if four points form a harmonic division: <span style="font-family:monospace">is_harmonic</span></a>
+</li><li><a href="cascmd_en823.html">Check if lines are in a bundle: <span style="font-family:monospace">is_harmonic_line_bundle</span></a>
+</li><li><a href="cascmd_en824.html">Check if circles are in a bundle: <span style="font-family:monospace">is_harmonic_circle_bundle</span></a>
+</li></ul>
+<h2 id="sec1072" class="section">11.17  Harmonic division</h2>
+<ul>
+<li><a href="cascmd_en825.html">Find a point dividing a segment in the harminic ratio <span style="font-style:italic">k</span>: <span style="font-family:monospace">division_point</span></a>
+</li><li><a href="cascmd_en826.html">The cross ratio of four collinear points: <span style="font-family:monospace">cross_ratio</span></a>
+</li><li><a href="cascmd_en827.html">Harmonic division: <span style="font-family:monospace">harmonic_division</span></a>
+</li><li><a href="cascmd_en828.html">The harmonic conjugate: <span style="font-family:monospace">harmonic_conjugate</span></a>
+</li><li><a href="cascmd_en829.html">Pole and polar: <span style="font-family:monospace">pole</span> <span style="font-family:monospace">polar</span></a>
+</li><li><a href="cascmd_en830.html">The polar reciprocal: <span style="font-family:monospace">reciprocation</span></a>
+</li></ul>
+<h2 id="sec1079" class="section">11.18  Loci and envelopes</h2>
+<ul>
+<li><a href="cascmd_en831.html">Loci: <span style="font-family:monospace">locus</span></a>
+<ul>
+<li><a href="cascmd_en831.html#sec1081">The locus of points depending on points on a curve.</a>
+</li><li><a href="cascmd_en831.html#sec1082">The envelope of a family of lines which depend on points on a
+curve.</a>
+</li></ul>
+</li><li><a href="cascmd_en832.html">Envelopes: <span style="font-family:monospace">envelope</span></a>
+</li></ul>
+<hr class="footnoterule"><dl class="thefootnotes"><dt class="dt-thefootnotes">
+<a id="note1" href="#text1">1</a></dt><dd class="dd-thefootnotes"><div class="footnotetext">Université de Grenoble, initial translation of parts of the French user manual</div></dd><dt class="dt-thefootnotes"><a id="note2" href="#text2">2</a></dt><dd class="dd-thefootnotes"><div class="footnotetext">Full translation and improvements</div></dd><dt class="dt-thefootnotes"><a id="note3" href="#text3">3</a></dt><dd class="dd-thefootnotes"><div class="footnotetext">Optimization, signal processing. The graph theory is in a separate manual.</div></dd></dl>
 <!--FOOTER-->
 <hr style="height:2"><blockquote class="quote"><em>This document was translated from L<sup>A</sup>T<sub>E</sub>X by
 </em><a href="http://hevea.inria.fr/index.html"><em>H</em><em><span style="font-size:small"><sup>E</sup></span></em><em>V</em><em><span style="font-size:small"><sup>E</sup></span></em><em>A</em></a><em>.</em></blockquote></body>

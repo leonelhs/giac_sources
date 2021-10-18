@@ -10074,6 +10074,14 @@ igamma(5.0,2.0)
 igamma(-5.1,2.1)
 igamma(5.0,2.0,1)
 
+# LambertW
+1 Renvoie une solution en t de t*exp(t)=x
+2 Returns a solution in t of t*exp(t)=x
+0 Real(x),[Intg(n)]
+LambertW(1.0)
+LambertW(ln(4))
+LambertW(-0.1,-1)
+
 # gauss
 1 Décompose une forme quadratique en somme/différence de carrés
 2 Split a quadratic form as a sum/difference of square
@@ -10506,8 +10514,15 @@ ichinrem([(x+1)%2,(x+2)%3,(3*x-1)%5])
 8 素数分解。  以乘积的形式返回整数 a 的素数分解。 是否可与 STO 一起使用？
 0 Intg(a)
 -1 factor
+-2 ecm_factor
 ifactor(50)
 ifactor(123456789)
+
+# ecm_factor
+1 Factorisation d'un entier n par la methode des courbes elliptiques, B1 parametre optionnel de friabilite
+2 Factorization of integer n by the Elliptic Curve Method algorithm, B1 smoothness optional parameter
+0 Intg(a),[Intg(B1)]
+ecm_factor(1000000000000000003000000000000000000000000000000000031000000000000000093)
 
 # ilaplace invlaplace
 1 Transformée de Laplace inverse d'une fraction rationnelle
@@ -12544,7 +12559,7 @@ randstudent(2)
 randfisher(5,2)
 randfisher(2,4)
 
-# randnorm randNorm
+# randnorm randNorm normalvariate
 1 Renvoie un réel aléatoirement distribué selon la loi normale N(mu,sigma).
 2 Returns a random real with normal distribution N(mu,sigma).
 3 Devuelve un número aleatorio distribuido según la ley normal N(mu,sigma).
@@ -12562,7 +12577,7 @@ randfisher(2,4)
 randnorm(0,1)
 randnorm(2,1)
 
-# randexp
+# randexp expovariate
 1 Renvoie un réel aléatoirement distribué selon la loi exponentielle de paramètre a>0.
 2 Returns a random real according to the exponential distribution of parameter a>0.
 3 Devuelve un número aleatorio distribuido según la ley exponencial (parámetro a>0).
@@ -12575,7 +12590,7 @@ randnorm(2,1)
 randexp(1)
 randexp(2)
 
-# randgammad
+# randgammad gammavariate
 1 Renvoie un réel aléatoirement distribué selon la loi Gamma de paramètre a>0 et b>0
 2 Returns a random real according to the Gamma distribution of parameter a>0 and b>0
 3 Devuelve un número aleatorio distribuido según la ley Gamma (parámetro a>0, b>0).
@@ -12587,7 +12602,7 @@ randexp(2)
 randgammad(1,2)
 randgammad(1.5,4)
 
-# randweibulld
+# randweibulld weibullvariate
 1 Renvoie un réel aléatoirement distribué selon la loi de Weibull de paramètre a>0 et b>0
 2 Returns a random real according to the Weibull distribution of parameter a>0 and b>0
 3 Devuelve un número aleatorio distribuido según la ley Weibull (parámetro a>0, b>0).
@@ -12599,7 +12614,7 @@ randgammad(1.5,4)
 randweibulld(1,2)
 randweibulld(1.5,4)
 
-# randbetad
+# randbetad betavariate
 1 Renvoie un réel aléatoirement distribué selon la loi Beta de paramètre a>0 et b>0
 2 Returns a random real according to the Beta distribution of parameter a>0 and b>0
 3 Devuelve un número aleatorio distribuido según la ley Beta (parámetro a>0, b>0).

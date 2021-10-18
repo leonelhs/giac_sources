@@ -940,19 +940,19 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \newenvironment{giacprog}{
 \verbatim}
 {\endverbatim 
-\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1[0];tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span></span><br>
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1[0];tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span></span><br>
 }
 }
 \newenvironment{giaconload}{
 \verbatim}
 {\endverbatim 
-\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=20;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=20;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span>onload</span><br>
 }
 }
 \newenvironment{giaconloadhide}{
 \verbatim}
 {\endverbatim 
-\@print{<button onclick="this.style.display='none';var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.display='none';t.style.fontSize=16;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
+\@print{<button onclick="this.style.display='none';var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.display='none';t.style.fontSize=16;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span>onload</span><br>
 }
 }
 \else
@@ -1003,7 +1003,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
-\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">exe</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi
@@ -1023,7 +1023,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
-\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">exe</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi
@@ -1044,7 +1044,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \newcommand{\giacinputmath}[2][style="width:400px;font-size:large"]{\ifhevea
 \begin{rawhtml}<br><textarea onkeypress="UI.ckenter(event,this,2)" \end{rawhtml}
 \@getprint{#1>#2} 
-\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><span></span><br>\end{rawhtml}
+\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">exe</button><span></span><br>\end{rawhtml}
 \else
 \lstinline@#2@
 \fi
@@ -1074,7 +1074,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \newcommand{\giacinputbigmath}[2][style="width:800px;font-size:large"]{\ifhevea
 \begin{rawhtml}<div><textarea onkeypress="UI.ckenter(event,this,2)" \end{rawhtml}
 \@getprint{#1>#2} 
-\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>\end{rawhtml}
+\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">exe</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>\end{rawhtml}
 \else
 \lstinline@#2@
 \fi

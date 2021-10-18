@@ -60,6 +60,22 @@ else
   AC_CHECK_HEADERS(mpfi.h,AC_CHECK_LIB(mpfi,main))
 fi
   
+dnl AC_CHECK_LIB(ecm, main)
+CONFIG_ECM="yes"
+AC_ARG_ENABLE([ecm],
+	[AS_HELP_STRING([--enable-ecm], [Use ECM [[default=yes]]])],
+	[if test "$enableval" = "no"; then CONFIG_ECM="no"; fi], [])
+
+if test "$CONFIG_ECM" = "yes"; then
+	AC_CHECK_HEADER(ecm.h, [], [CONFIG_ECM="no"])
+  fi
+if test "$CONFIG_ECM" = "yes"; then
+	AC_CHECK_LIB(ecm, main, [], [CONFIG_ECM="no"])
+  fi
+AC_SUBST(CONFIG_ECM)
+AC_SUBST(ECM_LIBS)
+AM_CONDITIONAL(CONFIG_ECM, [test "$CONFIG_ECM" = "yes"])
+
   
 dnl Optimization or debug
 CONFIG_DEBUG_P="yes"
