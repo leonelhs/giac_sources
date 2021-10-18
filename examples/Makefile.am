@@ -155,6 +155,8 @@ Exemples/demo/milieux.xws \
 Exemples/demo/oct06.xws \
 Exemples/demo/anniversaire.xws \
 Exemples/demo/dijkstra.xws \
+Exemples/demo/Mandelbrot.xws \
+Exemples/demo/giac_Mandelbrot.cpp \
 Exemples/logo/fleur.xws \
 Exemples/logo/sapin.xws \
 Exemples/logo/tulipe.xws \
