@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Vectors in the plane: segment vector
+<title>Line segments in the plane: segment Line
 
 </title>
 </head>
@@ -13,76 +13,42 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en765.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dvectors" class="subsection">13.7.4  Vectors in the plane: <span style="font-family:monospace">segment</span> <span style="font-family:monospace">vector</span>
-<a id="hevea_default1481"></a>
-<a id="hevea_default1482"></a></h3>
-<p>See Section <a href="cascmd_en863.html#ssec%3A3dvectors">14.5.4</a> for vectors in space.</p><p>The <span style="font-family:monospace">segment</span> commands returns and draws
-vectors. (The <span style="font-family:monospace">segment</span> command can also draw line segments,
-see section <a href="cascmd_en763.html#ssec%3A2dsegments">13.7.3</a>.)
+<h3 id="ssec:2dsegments" class="subsection">13.7.3  Line segments in the plane: <span style="font-family:monospace">segment</span> <span style="font-family:monospace">Line</span>
+<a id="hevea_default1479"></a>
+<a id="hevea_default1480"></a></h3>
+<p>See Section <a href="cascmd_en863.html#ssec%3A3dsegments">14.5.3</a> for segments in space.</p><p>The <span style="font-family:monospace">segment</span> command draws line segments. 
+(The <span style="font-family:monospace">segment</span> command can also draw vectors (see
+Section <a href="cascmd_en765.html#ssec%3A2dvectors">13.7.4</a>.)
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">segment</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">p</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">v</span>, a vector.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">segment(</span><span style="font-style:italic">p</span>,<span style="font-style:italic">v</span><span style="font-family:monospace">)</span> returns the corresponding vector and
-draws it as a line segment from <span style="font-style:italic">p</span> to <span style="font-style:italic">p</span>+<span style="font-style:italic">v</span>.
+<span style="font-family:monospace">segment</span> takes two arguments:<br>
+ <span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>, two points (which can also be given as a list).
+</li><li class="li-itemize"><span style="font-family:monospace">segment(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> returns the corresponding line
+segment and draws it. 
+</li></ul><p><br>
+</p><p>The <span style="font-family:monospace">Line</span> command also draws line segments, with a slightly
+different syntax.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">Line</span> takes four arguments:<br>
+ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span>, four real numbers.
+</li><li class="li-itemize"><span style="font-family:monospace">Line(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span><span style="font-family:monospace">)</span> returns and draws the line segment
+from (<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) to (<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span>).
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">segment([-1,0],[1,1])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en175.png">
-</div><p><br>
-</p><p>The <span style="font-family:monospace">vector</span> command also makes vectors, with a different
-syntax. It can take its arguments in different ways.</p><p>The coordinates of the vector.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">vector</span> takes one argument:<br>
- <span style="font-style:italic">L</span>, a list of the coordinates of the vector.
-</li><li class="li-itemize"><span style="font-family:monospace">vector(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns and draws the vector with the
-given coordinates, starting from the origin.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">vector([1,2])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en176.png">
-</div><p><br>
-</p><p>Two points or a point and a vector.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">vector</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">Q</span>, a point or a vector. If <span style="font-style:italic">Q</span> is a point, it can
-be combined with <span style="font-style:italic">P</span> in a list.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">vector(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> returns and draws the
-corresponding vector. If the arguments are two points, the vector
-goes from <span style="font-style:italic">P</span> to <span style="font-style:italic">Q</span>. If the arguments are a point and a
-vector, then the vector starts at <span style="font-style:italic">P</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">vector([-1,0],[1,i])</span>
+<span style="font-family:monospace">segment(-1,1+i)</span>
 </div><p>
 <span style="font-style:italic">or:</span>
 </p><div class="center">
-<span style="font-family:monospace">vector(-1,i)</span>
+<span style="font-family:monospace">segment(point(-1),point(1,1))</span>
 </div><p>
 <span style="font-style:italic">or:</span>
 </p><div class="center">
-<span style="font-family:monospace">V:= vector(1,2+i):; vector(-1,V)</span>
+<span style="font-family:monospace">Line(-1,0,1,1)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
 </p><div class="center">
-<img src="cascmd_en177.png">
+<img src="cascmd_en174.png">
 </div>
 <hr>
 <a href="cascmd_en763.html"><img src="previous_motif.gif" alt="Previous"></a>

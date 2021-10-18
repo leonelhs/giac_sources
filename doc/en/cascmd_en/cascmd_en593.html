@@ -4,7 +4,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Animation of a 2D graph: animate
+<title>3D parametric surface: plotparam paramplot DrawParm
+
+
 
 </title>
 </head>
@@ -13,44 +15,56 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en594.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec780" class="subsection">8.21.1  Animation of a 2D graph: <span style="font-family:monospace">animate</span>
-<a id="hevea_default1115"></a>
-<a id="hevea_default1116"></a></h3>
-<p>The <span style="font-family:monospace">animate</span> command creates two-dimensional animations
-using graphs of functions depending on a parameter. (See also
-Section <a href="index.html#sec%3Aplot2d">8.5</a>.)
+<h3 id="ssec:3dplotparam" class="subsection">8.14.2  3D parametric surface: <span style="font-family:monospace">plotparam</span> <span style="font-family:monospace">paramplot</span> <span style="font-family:monospace">DrawParm</span>
+<a id="hevea_default1098"></a>
+<a id="hevea_default1099"></a>
+<a id="hevea_default1100"></a>
+</h3>
+<p>To draw a parametric surface in ℝ<sup>3</sup>:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">animate</span> takes three mandatory arguments and two optional
+<span style="font-family:monospace">plotparam</span> takes two mandatory arguments and two optional
 arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving two
-variables, one of which will be regarded as the parameter.
-</li><li class="li-itemize"><span style="font-style:italic">var</span> the name of the (non-parameter)
-variable in the expression, which can also specify a range of
-values <span style="font-style:italic">var=a..b</span>.
-</li><li class="li-itemize"><span style="font-style:italic">param</span> the name of the parameter, which can also
-specify a range of values.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span>, where <span style="font-style:italic">n</span> is an integer specifying the
-number of frames.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, which can be
-<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
-step or <span style="font-family:monospace">nstep=</span><span style="font-style:italic">n</span> to specify the number of points used to
-graph.
+<span style="font-style:italic">exprs</span>, a list of three expressions involving two
+parameters.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the parameters, optionally with a range
+<span style="font-style:italic">var=a..b</span>.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">ustep=</span><span style="font-style:italic">n</span>, to set the discretization
+step of the first parameter.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">vstep=</span><span style="font-style:italic">m</span>, to set the discretization
+step of the second parameter.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">animate(</span><span style="font-style:italic">expr,var,param,</span><span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span> ⟨<span style="font-style:italic">opt</span>⟩<span style="font-family:monospace">)</span>
-draws an animation consisting of graph of the function as the
-parameter varies. 
+</li><li class="li-itemize"><span style="font-family:monospace">plotparam(</span><span style="font-style:italic">exprs,vars</span> ⟨
+,<span style="font-family:monospace">ustep=</span><span style="font-style:italic">n</span><span style="font-family:monospace">,vstep=</span><span style="font-style:italic">m</span>⟩<span style="font-family:monospace">)</span> draws the parametric representation
+of the surface.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">animate(sin(a*x),x=-pi..pi,a=-2..2,frames=10,color=red)</span>
+<span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u,v])</span>
 </div>
-<span style="font-style:italic">Output:</span><br>
-The output is an animation beginning with:
+<span style="font-style:italic">Output:</span>
 <div class="center">
-<img src="cascmd_en086.png">
+<img src="cascmd_en072.png">
 </div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en073.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3],ustep=0.5,vstep=0.5)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en074.png">
+</div>
+</li></ul>
 <hr>
 <a href="cascmd_en592.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

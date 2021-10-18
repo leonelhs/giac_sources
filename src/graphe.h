@@ -289,7 +289,7 @@ public:
         ivector cover_number,initially_colored,branch_candidates,temp_colors,ordering;
         std::set<int> used_colors;
         int lb,ub,maxiter,nxcols;
-        bool generate_clique_cuts;
+        bool generate_clique_cuts,select_blb;
         glp_prob *mip;
         double timeout,*heur,*row_coeffs,*best_coeffs;
         int *row_indices,*best_indices;
@@ -303,7 +303,7 @@ public:
         static void callback(glp_tree *tree,void *info);
     public:
         painter(graphe *gr) { G=gr; }
-        int color_vertices(ivector &colors,const ivector &icol,int max_colors=0);
+        int color_vertices(ivector &colors,const ivector &icol,int max_colors=0,int tm_lim=0,bool verbose=false);
         int select_branching_variable(glp_tree *tree);
         void heur_solution(glp_tree *tree);
     };
@@ -313,7 +313,6 @@ public:
             /* arc struct holds only the edge information relevant for TSP */
             int head;
             int tail;
-            int sg_index;
         };
         enum solution_status {
             _GT_TSP_OPTIMAL,
@@ -326,62 +325,40 @@ public:
             _GT_TSP_FARTHEST_INSERTION_HEUR     = 2,
             _GT_TSP_FARTHEST_INSERTION_RANDOM   = 3
         };
-        graphe *G;                              // the graph
-        glp_prob *mip;                          // integer programming problem
-        bool isdirected;                        // true iff G is directed
-        bool isweighted;                        // true iff G is weighted
-        int sg;                                 // current subgraph index
-        std::set<ivector> subtours;             // subtours collected in during solving the last MIP
-        ivectors clustering_forest;             // hierarchical clustering forest of subgraphs
-        ivector tour,old_sol;                   // a tour, old mip solution
-        double *coeff;                          // coefficients to be passed to MIP solver
-        int *indices;                           // indices of row entries to be passed to MIP solver
-        bool *visited;                          // used to mark vertices as visited
-        arc *arcs;                              // arcs of G
-        int *sg_vertices;                       // list of sg_nv vertices of subgraph with index sg
-        int *sg_edges;                          // indices of edges belonging to the subgraph with index sg
-        int sg_nv;                              // number of vertices in subgraph with index sg
-        int sg_ne;                              // number of edges in subgraph with index sg
-        int nv;                                 // total number of vertices
-        int ne;                                 // total number of edges
-        int heur_type;                          // the type of heuristic to be applied
-        bool is_undir_weighted;                 // true iff G is undirected and weighted
-        bool is_symmetric_tsp;                  // true if G is undirected weighted clique
-        int num_nodes;                          // counting the hierarhical clustering forest nodes
-        solution_status status;                 // status of the solution
-        std::map<int,std::map<int,double> > weight_map;
-        std::map<int,std::map<int,double> > rlx_sol_map;
+        graphe *G;
+        glp_prob *mip;
+        bool isweighted,*visited,is_symmetric_tsp,verbose,cancellable;
+        std::set<ivector> subtours;
+        ivector tour,old_sol;
+        double *coeff,gap_tol;
+        arc *arcs;
+        int *indices,nv,ne,heur_type;
+        solution_status status;
+        std::map<int,std::map<int,double> > weight_map,rlx_sol_map;
         std::map<int,std::map<int,int> > loc_map;
-        dvector xev;
-        dvector obj;
+        dvector xev,obj;
         bvector can_branch;
         void formulate_mip();
         bool get_subtours();
         void add_subtours(const ivectors &sv);
-        void lift_subtours(ivectors &sv) const;
-        bool find_subgraph_subtours(ivectors &sv,solution_status &status);
+        bool find_tours(int k,ivectors &sv,solution_status &status);
         bool subtours_equal(const ivector &st1,const ivector &st2);
         ivector canonical_subtour(const ivector &subtour);
         void append_sce(const ivector &subtour);
-        void make_hierarchical_clustering_forest();
-        void hierarchical_clustering_dfs(int i,ivectors &considered_sec,ivectors &relevant_sec);
         ipair make_edge(int i,int j) const;
-        void make_sg_edges();
         int edge_index(const ipair &e);
-        int vertex_index(int i);
         double weight(int i,int j);
         double weight(const ipair &e) { return weight(e.first,e.second); }
         double lower_bound();
-        void perform_3opt_moves(ivector &hc);
-        void straighten(ivector &hc);
         bool is_move_feasible(int k,const ivector &t,const ipairs &x);
-        void lin_kernighan(ivector &hc);
-        bool make_3opt_moves(ivector &hc);
-        void improve_tour(ivector &hc);
+        bool lin_kernighan(ivector &hc);
+        bool perform_3opt_moves(ivector &hc);
+        void straighten(ivector &hc);
+        void improve_tour(ivector &hc,bool do_3opt=true);
         void farthest_insertion(int index,ivector &hc);
-        void christofides(ivector &hc);
+        bool christofides(ivector &hc,bool show_progress=false);
         static void sample_mean_stddev(const dvector &sample,double &mean,double &stddev);
-        void min_weight_matching_bipartite(const ivector &eind,const dvector &weights,ivector &matched_arcs);
+        bool min_weight_matching_bipartite(const ivector &eind,const dvector &weights,ivector &matched_arcs,bool msg=false);
         void select_branching_variable(glp_tree *tree);
         void rowgen(glp_tree *tree);
         void heur(glp_tree *tree);
@@ -399,10 +376,11 @@ public:
         int minimal_cut(int nn,int nedg,const ivector &beg,
                         const ivector &end,const ivector &cap,ivector &cut);
     public:
-        tsp(graphe *gr);
+        tsp(graphe *gr,double gap_tolerance=0,bool is_verbose=false);
         ~tsp();
+        int solve(int k,ivectors &hcv,dvector &costs);
         int solve(ivector &hc,double &cost);
-        double approx(ivector &hc);
+        bool approx(ivector &hc,double &ratio);
         double tour_cost(const ivector &hc);
     };
     
@@ -411,12 +389,14 @@ public:
         glp_prob *mip;
         ipairs mia; // must include arcs
         ivectors ft; // forbidden tours
-        bool isweighted;
+        bool isweighted,select_blb,verbose,terminated;
+        double gap_tol;
         void formulate_mip();
+        static void callback(glp_tree *tree,void *info);
     public:
-        atsp(graphe *gr,const ipairs &must_include_arcs);
+        atsp(graphe *gr,const ipairs &must_include_arcs,double gap_tolerance=0,bool is_verbose=false);
         ~atsp();
-        bool solve(ivector &hc,double &cost); // find shortest tour
+        bool solve(ivector &hc,double &cost); // find the shortest tour
         void ksolve(int k,ivectors &hcv,dvector &costs); // find k shortest tours
     };
 
@@ -432,18 +412,15 @@ public:
         void make_vertex_fixed(glp_prob *p,int j,bool in_cover);
         void find_mirrors(int v);
         void packing(glp_tree *tree);
-        ivector mirrors;
+        ivector mirrors,V,V_pos;
         double *heur_sol;
-        bool compute_heur;
-        bool is_k_vc;
-        ivector V,V_pos;
+        bool compute_heur,is_k_vc;
         ipairs edges;
-        int sg;
-        int last_row;
+        int sg,last_row;
     public:
         mvc_solver(graphe *gr,int s=-1);
         ~mvc_solver();
-        int solve(ivector &cover,int k=-1);
+        int solve(ivector &cover,int k=-1,int tm_lim=0,double gap_tol=0,bool verbose=false);
     };
 
     typedef struct { double rhs, pi; } mcf_v_data;
@@ -783,7 +760,6 @@ public:
 
     static const std::ios::iostate cout_rdstate;
     static const std::ios::iostate cerr_rdstate;
-
 
 private:
     const context *ctx;
@@ -1157,7 +1133,7 @@ public:
     void clique_stats(std::map<int,int> &m,int mode=0);
     int maximum_clique(ivector &clique);
     void greedy_neighborhood_clique_cover_numbers(ivector &cover_numbers);
-    bool clique_cover(ivectors &cover,int k=0);
+    bool clique_cover(ivectors &cover,int k=0,int tm_lim=0,bool verbose=false);
     int maximum_independent_set(ivector &v) const;
     int girth(bool odd=false,int sg=-1);
     bool hakimi(const ivector &L);
@@ -1181,7 +1157,7 @@ public:
     void make_complete_kary_tree(int k,int d);
     bool make_flower_snark(int n,layout *x=NULL);
     bool make_goldberg_snark(int n);
-    bool make_haar_graph(ulong n);
+    bool make_haar_graph(const gen &n);
     void make_paley_graph(int p,int k);
     void make_hypercube_graph(int n);
     void make_random_tree(int maxd=0);
@@ -1241,8 +1217,9 @@ public:
     void parametrized_st_orientation(int s,int t,double p);
     void greedy_vertex_coloring_biggs(ivector &ordering);
     int greedy_vertex_coloring(const ivector &p);
-    int exact_vertex_coloring(int max_colors=0);
-    int exact_edge_coloring(ivector &colors,int *numcol=NULL);
+    int exact_vertex_coloring(int max_colors=0,int tm_lim=0,bool verbose=false);
+    int exact_edge_coloring(ivector &colors,int *numcol=NULL,int tm_lim=0,bool verbose=false);
+    bool edge_coloring_heuristic(ivector &colors);
     int get_node_color(int i) const;
     void get_node_colors(ivector &colors) const;
     bool is_bipartite(ivector &V1,ivector &V2,int sg=-1,gt_conn_check cc=_GT_CC_FIND_COMPONENTS);
@@ -1266,8 +1243,8 @@ public:
     int hamcond(bool make_closure=true);
     bool is_hamiltonian(ivector &hc);
     bool hamcycle(ivector &path);
-    int traveling_salesman(ivector &h,double &cost,bool approximate=false);
-    bool find_directed_tours(int k,ivectors &hcv,dvector &costs,const ipairs &incl);
+    int traveling_salesman(int k,ivectors &hcv,dvector &costs,double gap_tol=0,bool verbose=true);
+    bool find_directed_tours(int k,ivectors &hcv,dvector &costs,const ipairs &incl,double gap_tol=0,bool verbose=false);
     bool make_euclidean_distances();
     gen maxflow_edmonds_karp(int s,int t,std::vector<std::map<int,gen> > &flow,const gen &limit=plusinf());
     void minimum_cut(int s,const std::vector<std::map<int,gen> > &flow,ipairs &cut);
@@ -1295,7 +1272,7 @@ public:
     bool is_split_graph(ivector &clq,ivector &indp) const;
     void contract_subgraph(graphe &G,const ivector &sg,const gen &lb) const;
     void grasp_clique(int maxitr,ivector &clq,bool cmpl=false,int sg=-1);
-    bool mvc(ivector &cover,int vc_alg,int sg=-1);
+    bool mvc(ivector &cover,int vc_alg,int sg=-1,int tm_lim=0,double gap_tol=0,bool verbose=false);
     int k_vertex_cover(ivector &cover,int k);
     int vertex_cover_number(int sg=-1);
     bool is_reachable(int u,int v);
@@ -1327,6 +1304,8 @@ public:
     static bool erase_sorted(ivector &V,int val);
     static ivector make_ivector(int n,...);
     static double poly_area(const layout &x);
+    static int term_hook(void *info,const char *s);
+    static bool is_interrupted();
 };
 
 #ifndef NO_NAMESPACE_GIAC

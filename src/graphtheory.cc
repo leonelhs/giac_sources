@@ -353,6 +353,37 @@ bool parse_edges(graphe &G,const vecteur &E,bool is_set) {
     return true;
 }
 
+void parse_lp_options(const_iterateur opt_start,const_iterateur opt_end,bool *store,int *k,int &tm_lim,double &gap_tol,bool &verbose,GIAC_CONTEXT) {
+    for (const_iterateur it=opt_start;it!=opt_end;++it) {
+        if (store!=NULL && *it==at_sto)
+            *store=true;
+        else if (it->is_integer() && it->val>0) {
+            if (it->subtype==_INT_MAPLECONVERSION && it->val==_LP_VERBOSE)
+                verbose=true;
+            else if (k!=NULL)
+                *k=it->val;
+        } else if (it->is_symb_of_sommet(at_equal)) {
+            const gen &lhs=it->_SYMBptr->feuille._VECTptr->front();
+            const gen &rhs=it->_SYMBptr->feuille._VECTptr->back();
+            if (lhs.is_integer() && lhs.subtype==_INT_MAPLECONVERSION) {
+                switch (lhs.val) {
+                case _LP_TIME_LIMIT:
+                    if (!rhs.is_integer() || rhs.val<=0)
+                        generr("Expected a positive integer");
+                    tm_lim=rhs.val;
+                    break;
+                case _LP_GAP_TOLERANCE:
+                    if (_evalf(rhs,contextptr).type!=_DOUBLE_ || !is_positive(rhs,contextptr))
+                        generr("Expected a nonnegative real number");
+                    gap_tol=rhs.to_double(contextptr);
+                    break;
+                default: gentypeerr(contextptr);
+                }
+            } else gentypeerr(contextptr);
+        } else gentypeerr(contextptr);
+    }
+}
+
 bool delete_edges(graphe &G,const vecteur &E) {
     if (ckmatrix(E)) {
         if (E.front()._VECTptr->size()!=2)
@@ -4219,13 +4250,10 @@ define_unary_function_ptr5(at_goldberg_snark,alias_at_goldberg_snark,&__goldberg
  */
 gen _haar_graph(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
-    int n=0;
-    if (!g.is_integer() || (n=g.val)<1)
-        return gt_err(_GT_ERR_POSITIVE_INTEGER_REQUIRED);
     graphe G(contextptr);
-    if (G.make_haar_graph(n))
-        return G.to_gen();
-    return generr("Failed to construct Haar graph");
+    if (!G.make_haar_graph(g))
+        return gt_err(_GT_ERR_POSITIVE_INTEGER_REQUIRED);
+    return G.to_gen();
 }
 static const char _haar_graph_s[]="haar_graph";
 static define_unary_function_eval(__haar_graph,&_haar_graph,_haar_graph_s);
@@ -5318,13 +5346,14 @@ define_unary_function_ptr5(at_clique_number,alias_at_clique_number,&__clique_num
  */
 gen _clique_cover(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
-    int k=0;
-    if (g.type==_VECT && g.subtype==_SEQ__VECT) {
-        if (g._VECTptr->size()!=2)
-            return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
-        if (!g._VECTptr->back().is_integer() || (k=g._VECTptr->back().val)<1)
-            return gt_err(_GT_ERR_POSITIVE_INTEGER_REQUIRED);
-    }
+    if (g.type!=_VECT)
+        return gentypeerr(contextptr);
+    int k=0,tm_lim=0;
+    double gap_tol=0;
+    bool verbose=false;
+    if (g.subtype==_SEQ__VECT) try {
+        parse_lp_options(g._VECTptr->begin()+1,g._VECTptr->end(),NULL,&k,tm_lim,gap_tol,verbose,contextptr);
+    } catch (gen &e) { return e; }
     graphe G(contextptr);
     if (!G.read_gen(g.subtype==_SEQ__VECT?g._VECTptr->front():g))
         return gt_err(_GT_ERR_NOT_A_GRAPH);
@@ -5333,9 +5362,10 @@ gen _clique_cover(const gen &g,GIAC_CONTEXT) {
     if (G.is_directed())
         return gt_err(_GT_ERR_UNDIRECTED_GRAPH_REQUIRED);
     graphe::ivectors cover;
-    if (!G.clique_cover(cover,k))
+    if (!G.clique_cover(cover,k,tm_lim,verbose))
         return vecteur(0);
     vecteur res;
+    std::sort(cover.begin(),cover.end());
     G.ivectors2vecteur(cover,res,true);
     return change_subtype(res,_LIST__VECT);
 }
@@ -5382,7 +5412,7 @@ gen _chromatic_number(const gen &g,GIAC_CONTEXT) {
     bool only_provide_bounds=false;
     if (g.subtype==_SEQ__VECT) {
         const vecteur &gv=*g._VECTptr;
-        if (gv.size()!=2 || gv.size()>3)
+        if (gv.size()!=2)
             return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
         const gen &opt=g._VECTptr->back();
         if (opt==at_interval || opt==at_approx)
@@ -6247,30 +6277,29 @@ static const char _find_cliques_s[]="find_cliques";
 static define_unary_function_eval(__find_cliques,&_find_cliques,_find_cliques_s);
 define_unary_function_ptr5(at_find_cliques,alias_at_find_cliques,&__find_cliques,0,true)
 
-/* USAGE:   minimal_vertex_coloring(G,[sto])
+/* USAGE:   minimal_vertex_coloring(G,[opts])
  *
  * Computes minimal vertex coloring for graph G and returns the colors in order
- * of vertices. If optional parameter "sto" is given, the colors are assigned
+ * of vertices. If the keyword "sto" is given in opts, the colors are assigned
  * to vertices and the modified copy of G is returned.
+ * Other options include lp_timelimit=Intg(L), lp_gaptolerance=Real(tol), and lp_verbose.
  */
 gen _minimal_vertex_coloring(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT)
         return gentypeerr(contextptr);
-    bool store=false;
-    if (g.subtype==_SEQ__VECT) {
-        if (g._VECTptr->size()!=2)
-            return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
-        if (g._VECTptr->back()!=at_sto)
-            return gentypeerr(contextptr);
-        store=true;
-    }
+    bool store=false,verbose=false;
+    int tm_lim=0;
+    double gap_tol=0;
+    if (g.subtype==_SEQ__VECT) try {
+        parse_lp_options(g._VECTptr->begin()+1,g._VECTptr->end(),&store,NULL,tm_lim,gap_tol,verbose,contextptr);
+    } catch (gen &e) { return e; }
     graphe G(contextptr);
     if (!G.read_gen(g.subtype==_SEQ__VECT?g._VECTptr->front():g))
         return gt_err(_GT_ERR_NOT_A_GRAPH);
     if (G.is_directed())
         return gt_err(_GT_ERR_UNDIRECTED_GRAPH_REQUIRED);
-    G.exact_vertex_coloring();
+    G.exact_vertex_coloring(0,tm_lim,verbose);
     graphe::ivector colors;
     G.get_node_colors(colors);
     vecteur cols=vector_int_2_vecteur(colors);
@@ -6585,24 +6614,25 @@ gen _minimal_edge_coloring(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT)
         return gentypeerr(contextptr);
-    bool store=false;
-    if (g.subtype==_SEQ__VECT) {
-        if (g._VECTptr->size()!=2)
-            return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
-        if (g._VECTptr->back()!=at_sto)
-            return generr("Expected 'sto' as the second argument");
-        store=true;
-    }
+    bool store=false,verbose=false;
+    int tm_lim=0;
+    double gap_tol=0;
+    if (g.subtype==_SEQ__VECT) try {
+        parse_lp_options(g._VECTptr->begin()+1,g._VECTptr->end(),&store,NULL,tm_lim,gap_tol,verbose,contextptr);
+    } catch (gen &e) { return e; }
     graphe G(contextptr);
     if (!G.read_gen(g.subtype==_SEQ__VECT?g._VECTptr->front():g))
         return gt_err(_GT_ERR_NOT_A_GRAPH);
+    if (G.is_directed())
+        return gt_err(_GT_ERR_UNDIRECTED_GRAPH_REQUIRED);
     graphe::ivector colors;
-    int typ=G.exact_edge_coloring(colors);
+    int typ=G.exact_edge_coloring(colors,NULL,tm_lim,verbose);
     if (typ==0)
         return undef;
+    vecteur cols=vector_int_2_vecteur(colors);
     if (store)
-        return G.to_gen();
-    return makesequence(typ,vector_int_2_vecteur(colors));
+        return _highlight_edges(makesequence(g._VECTptr->front(),G.edges(false),cols),contextptr);
+    return makesequence(typ,cols);
 }
 static const char _minimal_edge_coloring_s[]="minimal_edge_coloring";
 static define_unary_function_eval(__minimal_edge_coloring,&_minimal_edge_coloring,_minimal_edge_coloring_s);
@@ -6615,28 +6645,19 @@ define_unary_function_ptr5(at_minimal_edge_coloring,alias_at_minimal_edge_colori
  */
 gen _chromatic_index(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
-    if (g.type!=_VECT)
-        return gentypeerr(contextptr);
-    gen colors_dest=undef;
-    if (g.subtype==_SEQ__VECT) {
-        const vecteur &gv=*g._VECTptr;
-        if (gv.size()!=2)
-            return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
-        if (!is_unassigned_identifier(colors_dest=g._VECTptr->back(),contextptr))
-            return gt_err(_GT_ERR_UNASSIGNED_IDENTIFIER_EXPECTED);
-    }
     graphe G(contextptr);
-    if (!G.read_gen(g.subtype==_SEQ__VECT?g._VECTptr->front():g))
+    if (!G.read_gen(g))
         return gt_err(_GT_ERR_NOT_A_GRAPH);
+    if (G.is_null() || G.is_empty())
+        return 0;
     if (G.is_directed())
         return gt_err(_GT_ERR_UNDIRECTED_GRAPH_REQUIRED);
-    graphe::ivector colors;
+    graphe::ivector a,b;
     int ncolors;
-    if (G.exact_edge_coloring(colors,&ncolors)==0)
+    if (G.is_bipartite(a,b))
+        ncolors=G.maximum_degree();
+    else if (G.exact_edge_coloring(a,&ncolors)==0)
         return undef;
-    if (ncolors>0 && !is_undef(colors_dest)) { // store the coloring
-        identifier_assign(*colors_dest._IDNTptr,vector_int_2_vecteur(colors),contextptr);
-    }
     return ncolors;
 }
 static const char _chromatic_index_s[]="chromatic_index";
@@ -6675,17 +6696,13 @@ static const char _is_hamiltonian_s[]="is_hamiltonian";
 static define_unary_function_eval(__is_hamiltonian,&_is_hamiltonian,_is_hamiltonian_s);
 define_unary_function_ptr5(at_is_hamiltonian,alias_at_is_hamiltonian,&__is_hamiltonian,0,true)
 
-/* USAGE: traveling_salesman(G,[M])
+/* USAGE: traveling_salesman(G,[M],[opts])
  *
  * Returns a sequence of two objects, optimal cost for traveling salesman
  * problem and the corresponding Hamiltonian cycle in the undirected input
  * graph G. If G is not weighted, its adjacency matrix is used instead.
- * Alternatively, weight matrix may be passed as the optional parameter M. If G
- * is not Hamiltonian, an error is returned. A number of options may be passed
- * at the end of sequence of arguments: 'approx' for approximate solution, a
- * nonnegative integer representing the time limit (in milliseconds) or
- * 'vertex_distance' to automatically determine distances between the vertices
- * using their positions.
+ * Alternatively, weight matrix may be passed as the optional parameter M.
+ * If G is not Hamiltonian, an error is returned.
  */
 gen _traveling_salesman(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
@@ -6693,6 +6710,8 @@ gen _traveling_salesman(const gen &g,GIAC_CONTEXT) {
         return gentypeerr(contextptr);
     matrice M;
     vecteur options;
+    bool verbose=false;
+    double gap_tol=0;
     if (g.subtype==_SEQ__VECT) {
         int pos=1;
         const vecteur &gv=*g._VECTptr;
@@ -6713,97 +6732,115 @@ gen _traveling_salesman(const gen &g,GIAC_CONTEXT) {
             return generrdim("The given weight matrix has invalid dimensions");
         G.make_weighted(M);
     }
+    int k=1;
+    graphe::ivectors hcv;
+    graphe::dvector costs;
     if (G.is_directed()) {
         /* solve ATSP */
         graphe::ipairs incl;
-        int i,j,k=1;
+        int i,j;
         for (const_iterateur it=options.begin();it!=options.end();++it) {
-            if (it==options.begin() && it->is_symb_of_sommet(at_equal) &&
-                it->_SYMBptr->feuille._VECTptr->front()==at_is_included &&
-                it->_SYMBptr->feuille._VECTptr->back().type==_VECT) {
-                const vecteur &v=*it->_SYMBptr->feuille._VECTptr->back()._VECTptr;
-                if (ckmatrix(v)) {
-                    incl.reserve(v.size());
-                    for (const_iterateur jt=v.begin();jt!=v.end();++jt) {
-                        const vecteur &vec=*(jt->_VECTptr);
-                        if (vec.size()!=2)
-                            return generr("Expected an edge");
-                        i=G.node_index(vec.front());
-                        j=G.node_index(vec.back());
+            if (it->is_symb_of_sommet(at_equal)) {
+                const gen &lhs=it->_SYMBptr->feuille._VECTptr->front();
+                const gen &rhs=it->_SYMBptr->feuille._VECTptr->back();
+                if (lhs==at_is_included && rhs.type==_VECT) {
+                    const vecteur &v=*rhs._VECTptr;
+                    if (ckmatrix(v)) {
+                        incl.reserve(v.size());
+                        for (const_iterateur jt=v.begin();jt!=v.end();++jt) {
+                            const vecteur &vec=*(jt->_VECTptr);
+                            if (vec.size()!=2)
+                                return generr("Expected an edge");
+                            i=G.node_index(vec.front());
+                            j=G.node_index(vec.back());
+                            if (i<0 || j<0)
+                                return gt_err(i<0?vec.front():vec.back(),_GT_ERR_VERTEX_NOT_FOUND);
+                            incl.push_back(make_pair(i,j));
+                        }
+                    } else if (v.size()==2) {
+                        i=G.node_index(v.front());
+                        j=G.node_index(v.back());
                         if (i<0 || j<0)
-                            return gt_err(i<0?vec.front():vec.back(),_GT_ERR_VERTEX_NOT_FOUND);
+                            return gt_err(i<0?v.front():v.back(),_GT_ERR_VERTEX_NOT_FOUND);
                         incl.push_back(make_pair(i,j));
-                    }
-                } else if (v.size()==2) {
-                    i=G.node_index(v.front());
-                    j=G.node_index(v.back());
-                    if (i<0 || j<0)
-                        return gt_err(i<0?v.front():v.back(),_GT_ERR_VERTEX_NOT_FOUND);
-                    incl.push_back(make_pair(i,j));
-                } else return generr("Expected an edge or list of edges");
+                    } else return generr("Expected an edge or list of edges");
+                } else if (lhs.is_integer() && lhs.subtype==_INT_MAPLECONVERSION && lhs.val==_LP_GAP_TOLERANCE) {
+                    if (_evalf(rhs,contextptr).type!=_DOUBLE_ || is_strictly_greater(0,rhs,contextptr))
+                        return generr("Expected a nonnegative real number");
+                    gap_tol=_evalf(rhs,contextptr).DOUBLE_val();
+                } else return generr("Option not supported");
             } else if (it->is_integer() && it->val>0) {
-                k=it->val;
+                if (it->subtype==_INT_MAPLECONVERSION && it->val==_LP_VERBOSE)
+                    verbose=true;
+                else k=it->val;
             } else return generr("Option not supported");
         }
-        graphe::ivectors hcv;
-        graphe::dvector costs;
-        if (!G.find_directed_tours(k,hcv,costs,incl))
+        if (!G.find_directed_tours(k,hcv,costs,incl,gap_tol,verbose))
             return undef;
         if (hcv.empty())
-            return generr("Unable to find Hamiltonian cycle");
-        vecteur res;
-        G.ivectors2vecteur(hcv,res,false);
-        vecteur cv(costs.size());
-        for (iterateur it=cv.begin();it!=cv.end();++it) *it=gen(costs[it-cv.begin()]);
-        if (G.is_weighted())
-            return makesequence(k==1?cv.front():cv,k==1?res.front():res);
-        return k==1?res.front():res;
-    }
-    if (G.hamcond()==0)
-        return generr("The input graph is not Hamiltonian");
-    /* parse options */
-    bool approximate=false,make_distances=false;
-    int time_limit=rand_max2;
-    for (const_iterateur it=options.begin();it!=options.end();++it) {
-        if (*it==at_approx)
-            approximate=true;
-        else if (approximate && it->is_integer())
-            time_limit=it->val;
-        else if (approximate && it->is_symb_of_sommet(at_equal) &&
-                 it->_SYMBptr->feuille._VECTptr->front()==at_limit &&
-                 it->_SYMBptr->feuille._VECTptr->back().is_integer())
-            time_limit=it->_SYMBptr->feuille._VECTptr->back().val;
-        else if (*it==at_vertex_distance && M.empty())
-            make_distances=true;
-        else return generr("Option not supported");
-    }
-    if (time_limit<0)
-        return generr("Expected a nonnegative integer");
-    if (make_distances) {
-        if (G.is_weighted())
-            return gt_err(_GT_ERR_UNWEIGHTED_GRAPH_REQUIRED);
-        if (!G.make_euclidean_distances())
-            return generr("Some vertex positions are invalid");
-    }
-    G.underlying(U);
-    int res;
-    double cost;
-    if (approximate) {
-        if (!G.is_weighted())
-            gt_err(_GT_ERR_WEIGHTED_GRAPH_REQUIRED);
-        if (!G.is_clique())
-            return generr("The input graph must be complete");
-        G.traveling_salesman(h,cost,true);
+            return generr("Unable to find a Hamiltonian cycle");
     } else {
-        res=U.is_biconnected()?G.traveling_salesman(h,cost):0;
-        if (res==0)
+        if (G.hamcond()==0)
             return generr("The input graph is not Hamiltonian");
-        if (res==-1)
-            return undef;
+        /* parse options */
+        bool approximate=false,make_distances=false;
+        int time_limit=rand_max2;
+        for (const_iterateur it=options.begin();it!=options.end();++it) {
+            if (*it==at_approx)
+                approximate=true;
+            else if (it->is_symb_of_sommet(at_equal)) {
+                const gen &lhs=it->_SYMBptr->feuille._VECTptr->front();
+                const gen &rhs=it->_SYMBptr->feuille._VECTptr->back();
+                if (approximate && lhs==at_limit && rhs.is_integer())
+                    time_limit=rhs.val;
+                else if (lhs.is_integer() && lhs.subtype==_INT_MAPLECONVERSION && lhs==_LP_GAP_TOLERANCE) {
+                    if (_evalf(rhs,contextptr).type!=_DOUBLE_ || is_strictly_greater(0,rhs,contextptr))
+                        return generr("Expected a nonnegative real number");
+                    gap_tol=_evalf(rhs,contextptr).DOUBLE_val();
+                }
+            } else if (*it==at_vertex_distance && M.empty())
+                make_distances=true;
+            else if (it->is_integer() && it->val>0) {
+                if (it->subtype==_INT_MAPLECONVERSION && it->val==_LP_VERBOSE)
+                    verbose=true;
+                else k=it->val;
+            } else return generr("Option not supported");
+        }
+        if (time_limit<0)
+            return generr("Expected a nonnegative integer");
+        if (make_distances) {
+            if (G.is_weighted())
+                return gt_err(_GT_ERR_UNWEIGHTED_GRAPH_REQUIRED);
+            if (!G.make_euclidean_distances())
+                return generr("Some vertex positions are invalid");
+        }
+        G.underlying(U);
+        int res;
+        double cost;
+        if (approximate) {
+            if (!G.is_weighted())
+                gt_err(_GT_ERR_WEIGHTED_GRAPH_REQUIRED);
+            if (!G.is_clique())
+                return generr("The input graph must be complete");
+            G.traveling_salesman(k=0,hcv,costs,gap_tol,verbose);
+        } else {
+            res=U.is_biconnected()?G.traveling_salesman(k=1,hcv,costs,gap_tol,verbose):0;
+            if (res==0)
+                return generr("The input graph is not Hamiltonian");
+            if (res==-1)
+                return undef;
+        }
     }
-    /* success! */
-    return G.is_weighted()?makesequence(!G.is_weighted()?gen(int(std::floor(cost+.5))):gen(cost),G.get_node_labels(h)):
-                           G.get_node_labels(h);
+    /* success */
+    vecteur res;
+    G.ivectors2vecteur(hcv,res,false);
+    vecteur cv(costs.size());
+    for (iterateur it=cv.begin();it!=cv.end();++it) {
+        *it=gen(costs[it-cv.begin()]);
+    }
+    if (G.is_weighted())
+        return makesequence(k<=1?cv.front():cv,k<=1?res.front():res);
+    return k==1?res.front():res;
 }
 static const char _traveling_salesman_s[]="traveling_salesman";
 static define_unary_function_eval(__traveling_salesman,&_traveling_salesman,_traveling_salesman_s);
@@ -8180,20 +8217,20 @@ define_unary_function_ptr5(at_greedy_independent_set,alias_at_greedy_independent
 gen _minimum_vertex_cover(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     graphe G(contextptr);
-    bool approx=false;
+    bool approx=false,verbose=false;
+    int tm_lim=0;
+    double gap_tol=0;
     if (g.type==_VECT && g.subtype==_SEQ__VECT) {
         const vecteur &gv=*g._VECTptr;
-        if (gv.size()!=2)
+        if (gv.size()<2)
             return gt_err(_GT_ERR_WRONG_NUMBER_OF_ARGS);
         if (!G.read_gen(gv.front()))
             return gt_err(_GT_ERR_NOT_A_GRAPH);
-        if (gv.back()==at_approx)
+        if (gv[1]==at_approx)
             approx=true;
-        else if (gv.back().is_symb_of_sommet(at_equal) &&
-                 gv.back()._SYMBptr->feuille._VECTptr->front()==at_approx &&
-                 gv.back()._SYMBptr->feuille._VECTptr->back().subtype==_INT_BOOLEAN)
-            approx=(bool)gv.back()._SYMBptr->feuille._VECTptr->back().val;
-        else return gentypeerr(contextptr);
+        else try {
+            parse_lp_options(gv.begin()+1,gv.end(),NULL,NULL,tm_lim,gap_tol,verbose,contextptr);
+        } catch (gen &e) { return e; }
     } else if (!G.read_gen(g))
         return gt_err(_GT_ERR_NOT_A_GRAPH);
     if (G.is_directed())
@@ -8201,7 +8238,7 @@ gen _minimum_vertex_cover(const gen &g,GIAC_CONTEXT) {
     if (G.is_empty())
         return vecteur(0);
     graphe::ivector cover;
-    if (!G.mvc(cover,approx?_GT_VC_APPROX_CLIQUE:_GT_VC_EXACT))
+    if (!G.mvc(cover,approx?_GT_VC_APPROX_CLIQUE:_GT_VC_EXACT,-1,tm_lim,gap_tol,verbose))
         return undef; // an error occurred
     return G.get_node_labels(cover);
 }
@@ -8232,8 +8269,6 @@ gen _find_vertex_cover(const gen &g,GIAC_CONTEXT) {
                  gv.back()._SYMBptr->feuille._VECTptr->back().is_integer())
             k=gv.back()._SYMBptr->feuille._VECTptr->back().val;
         else return gentypeerr(contextptr);
-        if (k<0)
-            return generr("Expected a nonnegative integer");
         if (k>G.node_count()) {
             *logptr(contextptr) << "Warning: k exceeds the number of vertices in G\n";
             return graphe::FAUX;

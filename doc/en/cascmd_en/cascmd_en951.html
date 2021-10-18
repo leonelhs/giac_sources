@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Boxcar function: boxcar
+<title>Preparing digital sound data: soundsec
+
 </title>
 </head>
 <body >
@@ -12,52 +13,45 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en952.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec:boxcar" class="subsection">15.2.1  Boxcar function: <span style="font-family:monospace">boxcar</span>
-<a id="hevea_default1689"></a></h3>
-<p>The <span style="font-family:monospace">boxcar</span> command creates a function which is 0 everywhere
-except in a given interval, where it is 1.
+<h3 id="ssec:soundsec" class="subsection">15.1.14  Preparing digital sound data: <span style="font-family:monospace">soundsec</span>
+<a id="hevea_default1688"></a>
+</h3>
+<p>The <span style="font-family:monospace">soundsec</span> command prepares sound data in the form of a vector.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">boxcar</span> takes three arguments:
+<span style="font-family:monospace">soundsec</span> takes one mandatory argument and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two real numbers.
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, an identifier or expression.
+<span style="font-style:italic">d</span>, a real number (the duration).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">f</span>, a real number (the sampling frequency, by
+default 44100).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">boxcar(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-θ(<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)−θ(<span style="font-style:italic">x</span>−<span style="font-style:italic">b</span>), where
-θ is the Heaviside function (see
-Section <a href="cascmd_en140.html#ssec%3Aheaviside">6.8.9</a>). The resulting expression defines a
-function which is zero everywhere except within the segment [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>],
-where its value is equal to 1.
+</li><li class="li-itemize"><span style="font-family:monospace">soundsec(</span><span style="font-style:italic">d</span> ⟨ <span style="font-style:italic">f</span>⟩<span style="font-family:monospace">)</span> returns sound data
+with duration <span style="font-style:italic">d</span> seconds, and with sampling frequency <span style="font-style:italic">f</span>. The
+sound data is returned as a vector, whose <span style="font-style:italic">i</span>th element is the
+time corresponding to index <span style="font-style:italic">i</span>. 
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">boxcar(1,2,x)</span>
+<span style="font-family:monospace">soundsec(2.5)</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">−θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−2</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table>
+<span style="font-style:italic">Output:</span><br>
+Sound data 2.5 seconds long sampled at the default frequency of
+44100 Hz.
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">boxcar(1,2,3/2)</span>
+<span style="font-family:monospace">soundsec(1,22050)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
+Sound data 1 second long sampled at the frequency of 22050 Hz.
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">boxcar(1,2,0)</span>
+<span style="font-family:monospace">sin(2*pi*440*soundsec(1.3))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
-</td></tr>
-</table>
+A sinusoid with frequency 440 Hz sampled 44100 times per
+second for 1.3 seconds.
 </li></ul>
 <hr>
 <a href="cascmd_en950.html"><img src="previous_motif.gif" alt="Previous"></a>

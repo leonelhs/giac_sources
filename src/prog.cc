@@ -78,6 +78,7 @@ extern "C" {
 
 #ifdef NSPIRE_NEWLIB
 #include <os.h>
+extern "C" double millis();
 #endif
 
 //#ifdef BESTA_OS
@@ -119,7 +120,7 @@ namespace giac {
   void alert(const string & s,GIAC_CONTEXT){
 #if defined(EMCC) || defined(EMCC2)
     EM_ASM_ARGS({
-	if (UI.warnpy){
+	if (typeof UI!=='undefined' && UI.warnpy){
           var msg = UTF8ToString($0);// Pointer_stringify($0); // Convert message to JS string
           alert(msg);                      // Use JS version of alert          
         }

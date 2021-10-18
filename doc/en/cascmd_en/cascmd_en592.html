@@ -4,65 +4,72 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>3D parametric surface: plotparam paramplot DrawParm
-
-
-
-</title>
+<title>2D parametric curve</title>
 </head>
 <body >
 <a href="cascmd_en591.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en593.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dplotparam" class="subsection">8.14.2  3D parametric surface: <span style="font-family:monospace">plotparam</span> <span style="font-family:monospace">paramplot</span> <span style="font-family:monospace">DrawParm</span>
-<a id="hevea_default1098"></a>
-<a id="hevea_default1099"></a>
-<a id="hevea_default1100"></a>
-</h3>
-<p>To draw a parametric surface in ℝ<sup>3</sup>:
+<h3 id="sec772" class="subsection">8.14.1  2D parametric curve</h3>
+<p>To draw a parametric curve in ℝ<sup>2</sup>:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plotparam</span> takes two mandatory arguments and two optional
-arguments:
+<span style="font-family:monospace">plotparam</span> takes two mandatory and one optional
+argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">exprs</span>, a list of three expressions involving two
-parameters.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the parameters, optionally with a range
-<span style="font-style:italic">var=a..b</span>.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">ustep=</span><span style="font-style:italic">n</span>, to set the discretization
-step of the first parameter.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">vstep=</span><span style="font-style:italic">m</span>, to set the discretization
-step of the second parameter.
+<span style="font-style:italic">exprs</span>, a list of two real expressions or one
+complex expression involving the parameter.
+</li><li class="li-itemize"><span style="font-style:italic">var</span>, the parameter, optionally with a range
+<span style="font-style:italic">var=a..b</span>. If no range is given, the values of
+<span style="font-family:monospace">t-</span> and <span style="font-family:monospace">t+</span> from the graphics configuration will
+be used (see Section <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>).
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span>, to set the discretization
+step.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">plotparam(</span><span style="font-style:italic">exprs,vars</span> ⟨
-,<span style="font-family:monospace">ustep=</span><span style="font-style:italic">n</span><span style="font-family:monospace">,vstep=</span><span style="font-style:italic">m</span>⟩<span style="font-family:monospace">)</span> draws the parametric representation
-of the surface.
+</li><li class="li-itemize"><span style="font-family:monospace">plotparam(</span><span style="font-style:italic">exprs,var</span> ⟨
+,<span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span>⟩<span style="font-family:monospace">)</span> draws the parametric representation of the curve.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u,v])</span>
+<span style="font-family:monospace">plotparam(cos(x)+i*sin(x),x)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">plotparam([cos(x),sin(x)],x)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <div class="center">
-<img src="cascmd_en072.png">
+<img src="cascmd_en069.png">
 </div>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3])</span>
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(x)+i*cos(x),x=-4..1)</span>
+</div>
+<span style="font-style:italic">or (with </span><span style="font-style:italic"><span style="font-family:monospace">t-=4,t+=1</span></span><span style="font-style:italic"> in the graphic configuration):</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t))</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <div class="center">
-<img src="cascmd_en073.png">
+<img src="cascmd_en070.png">
 </div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">plotparam([v*cos(u),v*sin(u),v],[u=0..pi,v=0..3],ustep=0.5,vstep=0.5)</span>
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)</span>
+</div>
+<span style="font-style:italic">or (with </span><span style="font-style:italic"><span style="font-family:monospace">t-=4,t+=1</span></span><span style="font-style:italic"> in the graphic configuration):</span>
+<div class="center">
+<span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t,tstep=0.5)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <div class="center">
-<img src="cascmd_en074.png">
+<img src="cascmd_en071.png">
 </div>
 </li></ul>
 <hr>

@@ -1,3 +1,4 @@
+// (c) Maxime Friess, 2021, licence MIT, https://github.com/M4xi1m3/numworks.js/blob/master/README.md
 var Numworks =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache

@@ -7425,6 +7425,7 @@ namespace xcas {
 	    fl_draw(current.s.c_str(),int(deltax+turtlezoom*(current.x-turtlex)),int(deltay+h()-turtlezoom*(current.y-turtley)));
 	  }
 	  else {
+	    fl_line_style(current.turtle_width>>5,current.turtle_width &0x1f);
 	    if (current.radius>0){
 	      int r=current.radius & 0x1ff; // bit 0-8
 	      double theta1,theta2;
@@ -7488,8 +7489,8 @@ namespace xcas {
 	int y=int(turtlezoom*(t.y-turtley)+.5);
 	double cost=std::cos(t.theta*deg2rad_d);
 	double sint=std::sin(t.theta*deg2rad_d);
-	int Dx=int(turtlezoom*t.turtle_length*cost/2+.5);
-	int Dy=int(turtlezoom*t.turtle_length*sint/2+.5);
+	int Dx=int(turtlezoom*turtle_length*cost/2+.5);
+	int Dy=int(turtlezoom*turtle_length*sint/2+.5);
 	xcas_color(t.color);
 	if (t.visible){
 	  fl_line(deltax+x+Dy,deltay+h()-(y-Dx),deltax+x-Dy,deltay+h()-(y+Dx));
@@ -7499,6 +7500,7 @@ namespace xcas {
 	  fl_line(deltax+x-Dy,deltay+h()-(y+Dx),deltax+x+3*Dx,deltay+h()-(y+3*Dy));
 	}
       }
+      fl_line_style(0);
       return;
     } // End logo mode
   }

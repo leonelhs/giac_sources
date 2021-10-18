@@ -3580,7 +3580,7 @@ namespace giac {
     q.coord.resize(p.coord.size());
     q.dim=p.dim;
     q.order=p.order;
-    q.sugar=0;
+    q.age=q.sugar=0;
     for (unsigned i=0;i<p.coord.size();++i){
       if (!env)
 	q.coord[i].g=1;
@@ -12929,7 +12929,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     vector<int> start_index_v;
     if (debug_infolevel>1)
       CERR << CLOCK()*1e-6 << " begin loop, mem " << memory_usage()*1e-6 << '\n';
-    for (int age=1;!B.empty() && !interrupted && !ctrl_c;++age){
+    int age;
+    for (age=1;!B.empty() && !interrupted && !ctrl_c;++age){
       if (f4buchberger_info.size()>=capa-2 || age>maxage){
 	CERR << "Error zgbasis too many iterations" << '\n';
 	return false; // otherwise reallocation will make pointers invalid
@@ -13234,6 +13235,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       // CERR << "finish loop G.size "<<G.size() << '\n';
       // CERR << added << '\n';
     } // end main loop
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " # F4 steps " << age << '\n';
 #ifdef GIAC_GBASIS_REDUCTOR_MAXSIZE
     // remove small size reductors that were kept despite not being in gbasis
     vector<unsigned> G1;
@@ -15317,7 +15320,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	      || gbasis_par.reinject_for_calc>0
 	      //|| time2ndrun<0.5
 	      ){
-	    // learning is fast enough
+	    // learning is fast enough, don't try reinjection
 	    if (augmentgbasis>0)
 	      augmentgbasis=2;
 	  }
@@ -15435,7 +15438,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	if (rur_do_gbasis>0 && nmonoms>rur_do_gbasis)
 	  rur_gbasis=false;
 	if (debug_infolevel && count==0){
-	  CERR << "G= ";
+	  CERR << "G= index_in_gbasis:index_computed(age,logz,fromleft,fromright)\n";
 	  for (size_t i=0;i<G.size();++i){
 	    CERR << i << ":" << G[i] << "(" << resmod[G[i]].age<<"," << resmod[G[i]].logz << ":" << resmod[G[i]].fromleft << "," << resmod[G[i]].fromright << ")" << '\n';
 	  }
@@ -15817,7 +15820,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	if (jpos<gbmod.size()){
 	  if (debug_infolevel)
 	    CERR << CLOCK()*1e-6 << " i=" << i << " begin chinese remaindering " << p << " (" << count+(t==th) << ")" << '\n';
-	  int r=chinrem(V[i],P[i],gbmod,p.val,poly8tmp,jpos_start); // IMPROVE: maybe start at jpos in V[i]? at least start at recon_added
+	  int r=chinrem(V[i],P[i],gbmod,p.val,poly8tmp,recon_added);// was jpos_start); but fails for cyclic7 // IMPROVE: maybe start at jpos in V[i]? at least start at recon_added
 	  if (debug_infolevel)
 	    CERR << CLOCK()*1e-6 << " end chinese remaindering" << '\n';
 	  if (r==-1){

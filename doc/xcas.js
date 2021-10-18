@@ -1749,7 +1749,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       }
       var p = UI.split(s,'=');
       if (p[0]=='cas' || p[0]=='micropy' || p[0]=='py' || p[0]=='js' || p[0]=='comment' || p[0]=='handwriting' || p[0]=='svg' || p[0]=='img'){
-	let ms = decodeURIComponent(p[1]); // console.log(p[1]);
+	console.log(p[1]);
+	let ms=p[1]; // let ms = decodeURIComponent(p[1]); // already decoded!
 	if (ms.length && ms[0]==',')
 	  ms=ms.substr(1,ms.length-1);
 	//console.log('restoresession',ms);
@@ -5548,7 +5549,7 @@ int main(int argc,const char ** argv){
       ctx.fillText('t:' + prec[2], w - 40, 49);
       // v[i]=[x(0),y(1),cap(2),status(3),r(4),chaine(5)],
       // couleur=status >> 11
-      // longueur_tortue= (status>>3)&0xff
+      // epaisseur_tortue= (status>>3)&0xff
       // direct=status&4 (vrai si angle dans le sens trigo)
       // visible=status&2
       // crayon baisse=status&1
@@ -5559,7 +5560,9 @@ int main(int argc,const char ** argv){
         prec = v[k - 1];
         var cur = v[k];
         var preccouleur = prec[3] >> 11; // -> FIXME colors
-        var curcouleur = prec[3] >> 11; // -> FIXME colors
+        var curcouleur = cur[3] >> 11; // -> FIXME colors
+	let turtlewidth =  (cur[3]>>3)&0xff;
+	ctx.lineWidth = turtlewidth;
         if (cur[5].length) {
           ctx.font = cur[4] + 'px serif';
           ctx.strokeStyle = ctx.fillStyle = UI.turtle_color(curcouleur);
@@ -5583,7 +5586,7 @@ int main(int argc,const char ** argv){
           x = Math.floor(turtlezoom * (cur[0] - turtlex - r * Math.cos(angle2)) + .5);
           y = Math.floor(turtlezoom * (cur[1] - turtley - r * Math.sin(angle2)) + .5);
           ctx.beginPath();
-	  if (seg)
+	  if (seg || !rempli)
             ctx.moveTo(x2, h - y2);
 	  else {
             ctx.moveTo(x, h - y);
@@ -5633,7 +5636,7 @@ int main(int argc,const char ** argv){
         var y = Math.floor(turtlezoom * (cur[1] - turtley) + .5);
         var cost = Math.cos(cur[2] * Math.PI / 180);
         var sint = Math.sin(cur[2] * Math.PI / 180);
-        var turtle_length = (cur[3] >> 3) & 0xff;
+        var turtle_length = 10; // (cur[3] >> 3) & 0xff;
         var Dx = Math.floor(turtlezoom * turtle_length * cost / 2 + .5);
         var Dy = Math.floor(turtlezoom * turtle_length * sint / 2 + .5);
         //console.log('tortue',cur,w,h,turtlezoom,x,y,Dx,Dy);
@@ -5656,6 +5659,7 @@ int main(int argc,const char ** argv){
         ctx.closePath();
         ctx.stroke();
       }
+      ctx.lineWidth = 1;
     }
   }
 }; // closing UI={

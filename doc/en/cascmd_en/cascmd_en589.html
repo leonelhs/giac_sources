@@ -4,75 +4,47 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>2D implicit curve</title>
+<title>Intersection of a 2D graph with the axis
+</title>
 </head>
 <body >
 <a href="cascmd_en588.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en590.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:implicitplot" class="subsection">8.13.1  2D implicit curve</h3>
-<p>For an implicit plot in ℝ<sup>2</sup>:
+<h3 id="sec762" class="subsection">8.7.7  Intersection of a 2D graph with the axis
+<a id="hevea_default1076"></a><a id="hevea_default1077"></a></h3>
+<p>You can find the intersection of the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) of a function with
+the axes using the commands covered so far.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plotimplicit</span> takes three mandatory arguments and
-three optional arguments:
+Finding the intersection of the graph with the
+<span style="font-style:italic">y</span>-axis is simply evaluating
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(0),
+</td></tr>
+</table>
+indeed the point with coordinates (0,<span style="font-style:italic">f</span>(0)) is the intersection point
+of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">y</span>-axis.
+</li><li class="li-itemize">Finding the intersection of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">x</span>-axis
+requires solving the equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=0.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression of two variables implicitly
-defining a curve by <span style="font-style:italic">expr=0</span>.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the two variables, optionally with
-their ranges <span style="font-style:italic">var=a..b</span>. If a range is not given, the
-ranges are determined by <span style="font-family:monospace">WX-, WX+</span> and <span style="font-family:monospace">WY-, WY+</span>
-in the graphical configuration (see Section <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">xstep</span>, which can be
-<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
-step in the <span style="font-style:italic">x</span> direction.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">ystep</span>, which can be
-<span style="font-family:monospace">ystep=</span><span style="font-style:italic">m</span> to specify the discretization
-step in the <span style="font-style:italic">y</span> direction.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">unfactored</span>.
+If <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) is polynomial-like, then you can find the 
+the exact values of the abscissa of these points with 
+<span style="font-family:monospace">solve</span> (see Section <a href="cascmd_en555.html#ssec%3Asolve">6.55.6</a>).<br>
+ <span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>
+</div>
+returns the solution.
+</li><li class="li-itemize">Otherwise, you can find numeric approximations of these
+abscissa. First, look at the graph for an initial guess <span style="font-style:italic">x</span><sub>0</sub> or a 
+range with an intersection and then refine it with
+<span style="font-family:monospace">fsolve</span> (see Section <a href="index.html#sec%3Afsolve">10.4</a>).<br>
+ <span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">fsolve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">method</span><span style="font-family:monospace">)</span>
+</div>
+returns a numeric approximation of a solution.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">plotimplicity(</span><span style="font-style:italic">expr,vars</span> ⟨<span style="font-style:italic">xstep,ystep,</span><span style="font-family:monospace">unfactored</span>⟩<span style="font-family:monospace">)</span>
-draws the graphic representation of the curve defined by the implicit equation 
-<span style="font-style:italic">expr=0</span> over the given ranges of the variables.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">plotimplicit(x^2+y^2-1,x,y)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">plotimplicit(x^2+y^2-1,x,y,unfactored)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en064.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">plotimplicit(x^2+y^2-1,x,y,xstep=0.2,ystep=0.3)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">plotimplicit(x^2+y^2-1,[x,y],xstep=0.2,ystep=0.3)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">plotimplicit(x^2+y^2-1,[x,y], xstep=0.2,ystep=0.3,unfactored)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en065.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">plotimplicit(x^2+y^2-1,x=-2..2,y=-2..2, xstep=0.2,ystep=0.3)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en066.png">
-</div>
 </li></ul>
 <hr>
 <a href="cascmd_en588.html"><img src="previous_motif.gif" alt="Previous"></a>
