@@ -2276,7 +2276,12 @@ namespace giac {
     for (int j=0;j<i;++j){
       gen val=l4[j],a,b,r;
       if (val.is_symb_of_sommet(at_sign)){
-	if (is_linear_wrt(val._SYMBptr->feuille,gen_x,a,b,contextptr) && ((has_evalf(a,r,1,contextptr) && has_evalf(b,r,1,contextptr)) || lvar(res)==lidnt(res))){
+	gen val2=val._SYMBptr->feuille;
+	if (val2.is_symb_of_sommet(at_sin) || val2.is_symb_of_sommet(at_tan))
+	  val2=val2._SYMBptr->feuille;
+	bool warn=true;
+	if (is_linear_wrt(val2,gen_x,a,b,contextptr) && ((has_evalf(a,r,1,contextptr) && has_evalf(b,r,1,contextptr)) || lvar(res)==lidnt(res))){
+	  warn=val._SYMBptr->feuille!=val2;
 	  r=-b/a;
 	  vecteur l5(l4);
 #if 1
@@ -2297,7 +2302,7 @@ namespace giac {
 	  else
 	    resadd += tmp;
 	}
-	else
+	if (warn)
 	  *logptr(contextptr) << gettext("Discontinuities at zeroes of ") << val._SYMBptr->feuille << " were not checked" << endl;
       }
     }
@@ -4089,7 +4094,9 @@ namespace giac {
 	}
       }
       value=i30;
-      // minimal number of intervals added for int(frac(x),x,0,6.4)
+      // could add a minimal number of intervals for integrals like
+      // integrate(when(x > 2, 1,2),x,0,2.01) or int(frac(x),x,0,6.01)
+      // but one will always find intervals where this would fail
       if (!is_undef(ERR) && is_greater(eps,ERR/I30ABS,contextptr)) 
 	return true;
       // cut interval at maxerrpos in 2 parts

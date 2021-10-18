@@ -1003,6 +1003,10 @@ static void cb_Xcas_save_all_sessions(Fl_Menu_*, void*) {
   Xcas_save_all(Xcas_Main_Tab);
 }
 
+static void cb_Xcas_Export_Khicas(Fl_Menu_*, void*) {
+  xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);
+}
+
 static void cb_Xcas_Export_Xcas(Fl_Menu_*, void*) {
   xcas::History_cb_Save_as_xcas_text(Xcas_current_session(),0);
 }
@@ -1919,6 +1923,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Save as", 0,  (Fl_Callback*)cb_Xcas_save_current_session_as, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Save all", 0,  (Fl_Callback*)cb_Xcas_save_all_sessions, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Export as", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+ {"KhiCasio", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"xcas text", 0,  (Fl_Callback*)cb_Xcas_Export_Xcas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"xcas-python text", 0,  (Fl_Callback*)cb_Xcas_Export_XcasPy, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"maple text", 0,  (Fl_Callback*)cb_Xcas_Export_Maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -2924,7 +2929,7 @@ show_rpn_menu(rpn_menu_page);
 xcas::No_Focus_Button *Xcas_CST_Key=(xcas::No_Focus_Button *)0;
 
 static void cb_Xcas_CST_Key(xcas::No_Focus_Button*, void*) {
-  giac::gen e=giac::protecteval(giac::CST__IDNT_e,2,0);
+  giac::gen e=giac::protecteval(giac::CST__IDNT_e,2,Xcas_get_context());
   if (e.type==giac::_VECT){
     rpn_menu=*e._VECTptr;
     show_rpn_menu(0);
@@ -3218,7 +3223,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<338; i++)
+        for ( ; i<339; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

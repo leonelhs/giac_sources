@@ -864,6 +864,13 @@ namespace giac {
     }
   }
 
+  void vreverse(iterateur a,iterateur aend){
+    iterateur b=aend-1;
+    for (;a<b;++a,--b){
+      swapgen(*a,*b);
+    }
+  }
+  
   bool pcompose(const vecteur & v,const sparse_poly1 & p, sparse_poly1 & res,GIAC_CONTEXT){
 #ifdef TIMEOUT
     control_c();
@@ -925,7 +932,7 @@ namespace giac {
     vcopy.reserve(itend-it);
     for (int i=0;it!=itend;++it,i=i+2)
       vcopy.push_back(w[i]*rdiv(vlcm,w[i+1],contextptr));
-    reverse(vcopy.begin(),vcopy.end());
+    vreverse(vcopy.begin(),vcopy.end());
     if (vcopy.empty()  ){
       res=sparse_poly1(1,monome(undef,minus_inf));
       return true;
@@ -2940,7 +2947,7 @@ namespace giac {
 #ifdef TIMEOUT
       control_c();
 #endif
-      if (ctrl_c || interrupted || is_undef(p.front().exponent)) 
+      if (ctrl_c || interrupted || p.empty() || is_undef(p.front().exponent)) 
 	return false;
       if (!p.empty() && !is_undef(p.front().coeff) ){
 	// substitution of ln(w) by +-g should not be useful anymore
@@ -3403,6 +3410,16 @@ namespace giac {
 	   ( v[1].type==_IDNT || ( v[1].type==_SYMB && (v[1]._SYMBptr->sommet==at_equal || v[1]._SYMBptr->sommet==at_equal2 || v[1]._SYMBptr->sommet==at_at ) ) )
 	   )
 	return series( v[0],v[1],v[2],series_default_order(contextptr),contextptr);
+      if (v[1].type==_VECT){
+	vecteur vars=*v[1]._VECTptr,vals(vars.size());
+	for (int i=0;i<vars.size();++i){
+	  if (vars[i].is_symb_of_sommet(at_equal)){
+	    vals[i]=vars[i]._SYMBptr->feuille[1];
+	    vars[i]=vars[i]._SYMBptr->feuille[0];
+	  }
+	}
+	return series(v[0],vars,vals,v[2],contextptr);
+      }
       return series( v[0],symbolic(at_equal,makesequence(vx_var,v[1])),v[2],series_default_order(contextptr),contextptr);
     }
     if (s==4)

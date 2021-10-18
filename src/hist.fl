@@ -1149,6 +1149,11 @@ Function {Xcas_run(int argc,char ** argv)} {open
           label {Export as}
           xywh {0 0 100 20}
         } {
+          MenuItem Xcas_Export_Khicas {
+            label {KhiCasio}
+            callback {xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);}
+            xywh {65 65 100 20}
+          }
           MenuItem Xcas_Export_Xcas {
             label {xcas text}
             callback {xcas::History_cb_Save_as_xcas_text(Xcas_current_session(),0);}
@@ -3775,7 +3780,7 @@ show_rpn_menu(rpn_menu_page);}
         }
         Fl_Button Xcas_CST_Key {
           label cust
-          callback {giac::gen e=giac::protecteval(giac::CST__IDNT_e,2,0);
+          callback {giac::gen e=giac::protecteval(giac::CST__IDNT_e,2,Xcas_get_context());
   if (e.type==giac::_VECT){
     rpn_menu=*e._VECTptr;
     show_rpn_menu(0);

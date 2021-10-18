@@ -1806,6 +1806,91 @@ namespace xcas {
     return res;
   }
 
+  string casio2xws(const char * s,int ss,int l){
+    int pos=0;
+#if 0
+    ofstream of("log.xws");
+#else
+#ifdef HAVE_SSTREAM
+    ostringstream of;
+#else
+    ostrstream of;
+#endif
+#endif
+    int x=49,y=87,w=626,h=l+1;
+    const char * ptr=s;
+    int L=((ptr[0]*256+ptr[1])*256+ptr[2])*256+ptr[3]; ptr+=4; pos+=4;
+    char bufscript[L+1];
+    strncpy(bufscript,ptr,L); ptr+=L; pos+=L;
+    bufscript[L]=0;
+    int dh=5+h*(1+count(bufscript,'\n'));
+    of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << endl;
+    of << "[" << endl;
+    of << "// fltk N4xcas16Xcas_Text_EditorE "<< x << " " << y << " "<< w << " " << dh << " " << h << " " << 0 << endl;
+    y += dh;
+    of << L << " ," << endl << bufscript << "," << endl << "]\n,\n";
+    L=((ptr[0]*256+ptr[1])*256+ptr[2])*256+ptr[3]; ptr+=4; pos+=L;
+    char bufmode[L+1];
+    strncpy(bufmode,ptr,L); ptr+=L; pos+=L;
+    bufmode[L]=0;
+    dh=50+h*(1+count(bufmode,'\n'));
+    of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << endl;
+    of << "[" << endl;
+    of << "// fltk N4Xcas7EditeurE "<< x << " " << y << " "<< w << " " << dh << " " << h << " " << 0 << endl;
+    of << L << " ," << endl << bufmode << "," <<endl << "]\n,\n";
+    y += dh;
+    for (;pos<ss;){
+      L=ptr[0]*256+ptr[1]; ptr+=2; pos+=2;
+      if (L==0) break;
+      // ptr[0],ptr[1] cursor position ignored
+      int type=ptr[2]; ptr+=4; pos+=4;
+      char buf_[L+1];
+      char * buf=buf_;
+      strncpy(buf,ptr,L); ptr+=L; pos+=L;
+      buf[L]=0;
+      dh=5+h*(1+count(buf,'\n'));
+      bool comment=false;
+      if (L>=2){
+	if (buf[0]=='#'){
+	  comment=true;
+	  buf++;
+	  L--;
+	}
+	if (!comment && buf[0]=='/') {
+	  if (buf[1]=='/'){
+	    comment=true;
+	    buf++;
+	    L-=2;
+	  }
+	  else {
+	    if (buf[1]=='*'){
+	      string s(string(buf).substr(2,L-4));
+	      strcpy(buf,s.c_str());
+	      comment=true;
+	      L-=4;
+	    }
+	  }
+	}
+      }
+      if (type==0){
+	of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << endl;
+	of << "[" << endl;
+	of << (comment?"// fltk N4xcas23Comment_Multiline_InputE ":"// fltk N4xcas16Xcas_Text_EditorE ")<< x << " " << y << " "<< w << " " << dh << " " << h << " " << 0 << endl;
+	if (comment)
+	  of << replace(buf,'\n','£');
+	else
+	  of << L << " ," << endl << buf << "," ;
+	of << endl << "]\n,\n";
+	y += dh;
+      }
+    }
+#if 0
+    return "";
+#else
+    return of.str();
+#endif
+  }
+
   // Maple worksheet translate, returns new y position
   int mws2xws(istream & inf,ostream & of,int x,int y,int w,int h){
     string mapletxt;
@@ -1954,8 +2039,13 @@ namespace xcas {
     }
     string s;
     char c;
-    while (1){
+    bool casio=false;
+    int POS;
+    for (POS=0;;++POS){
       c=fgetc(f);
+      if (POS==0 && c==0){
+	casio=true;
+      }
       if (feof(f))
 	break;
       s += c;
@@ -2033,6 +2123,10 @@ namespace xcas {
 	fl_message("%s",gettext("Translating maple worksheet and setting compatibility mode to maple"));
 	xcas_mode(contextptr)=1;
       }
+      new_url((remove_extension(urlname)+".xws").c_str());
+    }
+    if (casio && ss>4){
+      s=casio2xws(s.c_str(),POS,fontsize);
       new_url((remove_extension(urlname)+".xws").c_str());
     }
     bool res= _insert(this,s.c_str(),s.size(),before_position);
@@ -2545,6 +2639,8 @@ namespace xcas {
 
   string mode2extension(int mode){
     switch (mode){
+    case -1:
+      return "xw";
     case 1:
       return "map";
     case 2:
@@ -2558,24 +2654,67 @@ namespace xcas {
     }
   }
 
+  string khicas_state(GIAC_CONTEXT){
+    giac::gen g(giac::_VARS(-1,contextptr)); 
+    int b=python_compat(contextptr);
+    python_compat(0,contextptr);
+    string s(g.print(contextptr));
+    python_compat(b,contextptr);
+    // if (b==0)  b=1; // impose Python mode
+    s += "; python_compat(";
+    s +=  giac::print_INT_(b);
+    s += ");angle_radian(";
+    s += angle_radian(contextptr)?'1':'0';
+    s += ");";
+    return s;
+  }
+
+  void endian_exchange(unsigned & l){
+    unsigned char * ptr=(unsigned char *)&l;
+    unsigned char c=ptr[0];
+    ptr[0]=ptr[3];
+    ptr[3]=c;
+    c=ptr[1];
+    ptr[1]=ptr[2];
+    ptr[2]=c;
+  }
+
+  void endian_exchange(unsigned short & l){
+    unsigned char * ptr=(unsigned char *)&l;
+    unsigned char c=ptr[0];
+    ptr[0]=ptr[1];
+    ptr[1]=c;
+  }
+
   void save_as_text(ostream & of,int mode,History_Pack * pack){
-    bool python=mode>=256;
-    mode = mode & 0xff;
     const giac::context * contextptr=pack?pack->contextptr:context0;
+    bool casio=mode==-1;
+    bool python=mode>=256;
+    if (casio){
+      mode=0;
+      //python=true;
+    }
+    mode = mode & 0xff;
     int save_maple_mode=xcas_mode(contextptr);
     int save_python=python_compat(contextptr);
     python_compat(python,contextptr);
     int n=pack->children();
+    vector<string> casiosave;
+    string casioedit;
     for (int i=0;i<n;i++){
       if (!of)
 	break;
       Fl_Widget * wid=pack->child(i);
       if (History_Fold * hf=dynamic_cast<History_Fold *>(wid)){
-	save_as_text(of,mode,hf->pack);
+	if (!casio)
+	  save_as_text(of,mode,hf->pack);
 	continue;
       }
       Fl_Group * g;
+      Fl_Widget *wid2=0;
       while ( (g=dynamic_cast<Fl_Group *>(wid)) ){ 
+	if (g->children()>2)
+	  wid2=g->child(g->children()-1);
 	if (Figure * fig=dynamic_cast<Figure *>(g))
 	  break;
 	if (Editeur * ed=dynamic_cast<Editeur *>(wid))
@@ -2588,28 +2727,56 @@ namespace xcas {
 	  break;
       }
       if (Editeur * ed=dynamic_cast<Editeur *>(wid)){
-	xcas_mode(contextptr)=mode;
-	gen g(ed->value(),contextptr);
-	if (g.is_symb_of_sommet(at_nodisp))
-	  g=g._SYMBptr->feuille;
-	if (g.is_symb_of_sommet(at_sto) && python_compat(contextptr))
-	  g=g._SYMBptr->feuille[0];
-	of << unlocalize(g.print(contextptr)) << endl;
-	xcas_mode(contextptr)=save_maple_mode;
+	if (casio)
+	  casioedit+=ed->value()+'\n';
+	else {
+	  xcas_mode(contextptr)=mode;
+	  gen g(ed->value(),contextptr);
+	  if (g.is_symb_of_sommet(at_nodisp))
+	    g=g._SYMBptr->feuille;
+	  if (g.is_symb_of_sommet(at_sto) && python_compat(contextptr))
+	    g=g._SYMBptr->feuille[0];
+	  string s(unlocalize(g.print(contextptr)));
+	  of << s << endl;
+	  xcas_mode(contextptr)=save_maple_mode;
+	}
       }
       if (Xcas_Text_Editor * xed=dynamic_cast<Xcas_Text_Editor *>(wid)){
 	xcas_mode(contextptr)=mode;
-	of << unlocalize(xed->value()) << endl;
+	string s(unlocalize(xed->value()));
+	if (casio){
+	  casiosave.push_back(s);
+	  if (Equation * eq=dynamic_cast<Equation *>(wid2))
+	    casiosave.push_back(eq->get_data().print(contextptr));
+	  else {
+	    if (Fl_Group * gr=dynamic_cast<Fl_Group *>(wid2)){
+	      if (gr->children()){
+		if (Graph2d * g=dynamic_cast<Graph2d *>(gr->child(0)))
+		  casiosave.push_back("Graphic object");
+	      }
+	    }
+	    else casiosave.push_back("");
+	  }
+	}
+	else
+	  of << s << endl;
 	xcas_mode(contextptr)=save_maple_mode;
       }
       if (Figure * fig=dynamic_cast<Figure *>(g)){
-	save_as_text(of,mode,fig->geo->hp);
+	if (!casio)
+	  save_as_text(of,mode,fig->geo->hp);
 	continue;
       }
-      if (Comment_Multiline_Input * co=dynamic_cast<Comment_Multiline_Input *>(wid))
-	of << (mode==1?"++ ":"/* ") << co->value() << (mode==1?" ++":" */") << endl;
+      if (Comment_Multiline_Input * co=dynamic_cast<Comment_Multiline_Input *>(wid)){
+	if (casio){
+	  casiosave.push_back("/*"+string(co->value())+"*/");
+	  casiosave.push_back("");
+	}
+	else
+	  of << (mode==1?"++ ":"/* ") << co->value() << (mode==1?" ++":" */") << endl;
+      }
       if (Multiline_Input_tab * mi=dynamic_cast<Multiline_Input_tab *>(wid)){
-	if (strlen(mi->value())){
+	if (!casio && strlen(mi->value())){
 	  gen tmp=mi->g();
 	  xcas_mode(contextptr)=mode;
 	  of << tmp.print(contextptr) << " ;" << endl;
@@ -2618,11 +2785,45 @@ namespace xcas {
       }
       if (Equation * eq=dynamic_cast<Equation *>(wid)){
 	xcas_mode(contextptr)=mode;
-	of << eq->get_data().print(contextptr) << " ;" << endl;
+	string s(eq->get_data().print(contextptr));
+	if (casio){
+	  casiosave.push_back(s);
+	  casiosave.push_back("");
+	}
+	else
+	  of << s << " ;" << endl;
 	xcas_mode(contextptr)=save_maple_mode;
       }
     }
     python_compat(save_python,contextptr);
+    if (!casio) return;
+    // output in casio mode
+    string s(khicas_state(contextptr));
+    unsigned l=s.size();
+    endian_exchange(l);
+    of.write((char *)&l,4);
+    of.write((const char *)s.c_str(),s.size());
+    l=casioedit.size();
+    endian_exchange(l);
+    of.write((char *)&l,4);
+    of.write((const char *)casioedit.c_str(),casioedit.size());
+    for (int i=0;i<casiosave.size();++i){
+      // assume 1 in/1 out
+      string & s=casiosave[i];
+      unsigned short l=s.size();
+      if (l==0) continue;
+      endian_exchange(l);
+      of.write((char *)&l,2);
+      l=0;
+      of.write((char *)&l,2);
+      char c=i%2?1:0;
+      of.write(&c,1);
+      c=1;
+      of.write(&c,1);
+      of.write(s.c_str(),s.size());
+    }
+    l=0;
+    of.write((char *)&l,4);
   }
 
   void History_cb_save_as_text(Fl_Widget * m,int mode){
@@ -2639,6 +2840,10 @@ namespace xcas {
 	save_as_text(of,mode,o->pack);
       }
     }
+  }
+
+  void History_cb_Save_as_xcas_casio(Fl_Widget* m , void*) {
+    History_cb_save_as_text(m,-1);
   }
 
   void History_cb_Save_as_xcas_text(Fl_Widget* m , void*) {

@@ -400,6 +400,11 @@ namespace giac {
     vecteur w,excluded(find_excluded(x,contextptr));
     // assumption on x, either range or integer
     int fr=find_range(x,w,contextptr);
+    // optimization does not work because some tests are done after
+    // examples assume(n>0);solve(((n)^(2))*(((x)/(n))^(log10(x)))=(x)^(2),x);
+    if (0 && fr==1 && w.size()==1 && w.front().type==_VECT && w.front()._VECTptr->front()==minus_inf && w.front()._VECTptr->back()==plus_inf){
+      return;
+    }
     if (fr>=2){
       int s=int(v.size());
       for (int i=0;i<s;++i){
@@ -1897,6 +1902,8 @@ namespace giac {
   }
 
   static vecteur solve_cleaned(const gen & e,const gen & e_check,const identificateur & x,int isolate_mode,GIAC_CONTEXT){
+    if (e.is_symb_of_sommet(at_exp))
+      return vecteur(0);
     gen expr(e),a,b;
     if (is_linear_wrt(e,x,a,b,contextptr)){
       if (contains(a,x)) 
@@ -2228,7 +2235,13 @@ namespace giac {
 #endif
     gen ea,eb,ec;
     if (is_quadratic_wrt(expr,x,ea,eb,ec,contextptr)){
-      gen tmp=factor(expr,false,contextptr); // factor in complex or real mode
+      gen tmp;
+      bool doreal=complex_mode(contextptr) && is_real(ea,contextptr) && is_real(eb,contextptr) && is_real(ec,contextptr) && is_positive(eb*eb-4*ea*ec,contextptr);
+      if (doreal)
+	complex_mode(false,contextptr);
+      tmp=factor(expr,false,contextptr); // factor in complex or real mode
+      if (doreal)
+	complex_mode(true,contextptr);
       if (!lop(tmp,at_rootof).empty())
 	expr=_sqrfree(expr,contextptr);
       else
@@ -3631,8 +3644,11 @@ namespace giac {
 	  return res;
 	}
       }
-      if (lvs>1)
+      gen v0orig(v0); bool testpi=false;
+      if (lvs>1){
 	v0=halftan_hyp2exp(v0,contextptr);
+	testpi=true;
+      }
       lv=lvar(v0);
       lvs=int(lv.size());
       if (lvs==1 && lv[0].type==_SYMB && lv[0]._SYMBptr->feuille.type!=_VECT){
@@ -3645,6 +3661,8 @@ namespace giac {
 	  if (tmp.type==_VECT){
 	    vecteur res0=complex_mode(contextptr)?proot(*tmp._VECTptr,epsilon(contextptr)):real_proot(*tmp._VECTptr,epsilon(contextptr),contextptr);
 	    vecteur res;
+	    if (testpi && is_zero(subst(v0orig,v[1],M_PI,false,contextptr),contextptr))
+	      res.push_back(M_PI);
 	    const_iterateur it=res0.begin(),itend=res0.end();
 	    for (;it!=itend;++it){
 	      vecteur res0val=gen2vecteur(isolate_fcns[pos-1](*it,complex_mode(contextptr),contextptr));
@@ -6686,7 +6704,7 @@ namespace giac {
 	return vecteur(0); // no solution since cst equation
     }
     int rur=0;
-    gbasis_param_t gbasis_param={false,-1,-1};
+    gbasis_param_t gbasis_param={false,-1,-1,-1};
     vectpoly eqpr(gbasis(eqp,_PLEX_ORDER,/* cocoa */false,/* f5 */ false,/*environment * */0,rur,contextptr,gbasis_param));
     // should reorder eqpr with lex order here
     // solve from right to left
@@ -6823,10 +6841,14 @@ namespace giac {
       }
       if (is_equal(v[i])){
 	gen & tmp=v[i]._SYMBptr->feuille;
-	if (tmp.type==_VECT && v[0].type==_VECT && tmp._VECTptr->front()==at_gbasis_reinject && tmp._VECTptr->back().type==_VECT){
-	  gbasis_param.reinject_begin=v[0]._VECTptr->size();
-	  v[0]=mergevecteur(*v[0]._VECTptr,*tmp._VECTptr->back()._VECTptr);
-	  gbasis_param.reinject_end=v[0]._VECTptr->size();
+	if (tmp.type==_VECT && v[0].type==_VECT && tmp._VECTptr->front()==at_gbasis_reinject){
+	  if (tmp._VECTptr->back().type==_VECT){
+	    gbasis_param.reinject_begin=v[0]._VECTptr->size();
+	    v[0]=mergevecteur(*v[0]._VECTptr,*tmp._VECTptr->back()._VECTptr);
+	    gbasis_param.reinject_end=v[0]._VECTptr->size();
+	  }
+	  if (tmp._VECTptr->back().type==_INT_)
+	    gbasis_param.reinject_for_calc=(gbasis_param.reinject_begin>=0?gbasis_param.reinject_begin:v[0]._VECTptr->size())+tmp._VECTptr->back().val;
 	  continue;
 	}
 	if (tmp.type==_VECT && (tmp._VECTptr->front()==at_irem || tmp._VECTptr->front()==at_chinrem) && tmp._VECTptr->back().type==_INT_){
@@ -6973,13 +6995,15 @@ namespace giac {
     int s=int(v.size());
     if (s<2)
       return gentoofewargs("gbasis");
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " gbasis begin :" << memory_usage()*1e-6 << endl;
     if ( (v[0].type!=_VECT) || (v[1].type!=_VECT) )
       return gensizeerr(contextptr);
     v[0]=remove_equal(v[0]);
     gen order=_REVLEX_ORDER; // 0 assumes plex and 0-dimension ideal so that FGLM applies
     // v[2] will serve for ordering
     bool with_f5=false,with_cocoa=false;
-    gbasis_param_t gbasis_param={false,-1,-1};
+    gbasis_param_t gbasis_param={false,-1,-1,-1};
     int modular=1;
     read_gbargs(v,2,s,order,with_cocoa,with_f5,modular,gbasis_param);
     vecteur l1=*v[1]._VECTptr;
@@ -7001,10 +7025,18 @@ namespace giac {
     alg_lvar(v[0],l);
     // if (l.front()._VECTptr->size()==15 && order.val==11) l.front()._VECTptr->insert(l.front()._VECTptr->begin()+11,0);
     // convert eq to polynomial
-    vecteur eq_in(*e2r(v[0],l,contextptr)._VECTptr);
+    if (debug_infolevel)
+      CERR << CLOCK()*1e-6 << " before convert :" << memory_usage()*1e-6 << endl;
     vectpoly eqp;
-    if (!vecteur2vector_polynome(eq_in,l,eqp))
-      return vecteur(1,plus_one);
+    {
+      // all negative integers will be duplicated in e2r, adding about 50% mem
+      gen eqtmp=e2r(v[0],l,contextptr);
+      const vecteur & eq_in=*eqtmp._VECTptr;
+      if (debug_infolevel)
+	CERR << CLOCK()*1e-6 << " after convert :" << memory_usage()*1e-6 << endl;
+      if (!vecteur2vector_polynome(eq_in,l,eqp))
+	return vecteur(1,plus_one);
+    }
     if (eqp.empty()) return vecteur(0);
     // add fake polynomials for fake variables added by revlex_parametrize
     int dim=eqp.front().dim;
@@ -7205,7 +7237,7 @@ namespace giac {
     // v[3] will serve for ordering
     gen order=_REVLEX_ORDER;// _PLEX_ORDER; // FIXME for parameters!
     bool with_f5=false,with_cocoa=false;
-    gbasis_param_t gbasis_param={false,-1,-1};
+    gbasis_param_t gbasis_param={false,-1,-1,-1};
     int modular=1;
     read_gbargs(v,3,s,order,with_cocoa,with_f5,modular,gbasis_param);
     vecteur l1=gen2vecteur(v[2]),l0=lidnt_with_at(makevecteur(v[0],v[1]));
@@ -7290,7 +7322,7 @@ namespace giac {
     if (args._VECTptr->back()==at_resultant)
       returngb=3;
     bool with_f5=false,with_cocoa=false; int modular=1; gen o;
-    gbasis_param_t gbasis_param={epsilon(contextptr)!=0,-1,-1};
+    gbasis_param_t gbasis_param={epsilon(contextptr)!=0,-1,-1,-1};
     read_gbargs(*args._VECTptr,2,int(args._VECTptr->size()),o,with_cocoa,with_f5,modular,gbasis_param);
     vecteur eqs=gen2vecteur(remove_equal(args._VECTptr->front()));
     vecteur elim=gen2vecteur((*args._VECTptr)[1]);
@@ -7667,7 +7699,7 @@ namespace giac {
     alg_lvar(v[0],l);
     gen order=_PLEX_ORDER; // _REVLEX_ORDER;
     bool with_f5=false,with_cocoa=false;
-    gbasis_param_t gbasis_param={false,-1,-1};
+    gbasis_param_t gbasis_param={false,-1,-1,-1};
     int modular=1;
     read_gbargs(v,3,s,order,with_cocoa,with_f5,modular,gbasis_param);
     // convert eq to polynomial

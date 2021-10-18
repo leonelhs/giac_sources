@@ -5944,6 +5944,7 @@ namespace giac {
     case _FLOAT___FLOAT_:
       return a._FLOAT_val*b._FLOAT_val;
     case _INT___ZINT: 
+      if (a.val==1) return b;
       e=new ref_mpz_t(GIAC_MPZ_INIT_SIZE); // (mpz_size(*b._ZINTptr)*mp_bits_per_limb);
       if (a.val<0){
 	mpz_mul_ui(e->z,*b._ZINTptr,-a.val);
@@ -5953,6 +5954,7 @@ namespace giac {
 	mpz_mul_ui(e->z,*b._ZINTptr,a.val);
       return gen(e);
     case _ZINT__INT_:
+      if (b.val==1) return a;
       e=new ref_mpz_t(GIAC_MPZ_INIT_SIZE); // (mpz_size(*a._ZINTptr)*mp_bits_per_limb);
       if (b.val<0){
 	mpz_mul_ui(e->z,*a._ZINTptr,-b.val);
@@ -7708,7 +7710,9 @@ namespace giac {
       return spdiv(*a._SPOL1ptr,*b._SPOL1ptr,contextptr);
     case _POLY__DOUBLE_: case _POLY__FLOAT_: case _POLY__REAL:
       return (*a._POLYptr)/b;
-    case _POLY__INT_: case _POLY__ZINT: case _POLY__CPLX:
+    case _POLY__INT_: 
+      if (b.val==1) return a;
+    case _POLY__ZINT: case _POLY__CPLX:
       return divpoly(*a._POLYptr,b);
     case _INT___POLY: case _ZINT__POLY: case _CPLX__POLY:
       return divpoly(a,*b._POLYptr);
@@ -8434,9 +8438,14 @@ namespace giac {
 
   gen equal(const gen & a,const gen &b,GIAC_CONTEXT){
     if (a.type==_VECT && b.type==_VECT && !b._VECTptr->empty()){
-      if (a._VECTptr->size()==b._VECTptr->size())
-	return apply(a,b,contextptr,equal);
-      return apply2nd(a,b,contextptr,equal);
+      if (calc_mode(contextptr)==1 && a.subtype==_GGBVECT && b.subtype==_GGBVECT){
+	return symbolic(at_equal,makesequence(a,b));
+      }
+      else {
+	if (a._VECTptr->size()==b._VECTptr->size())
+	  return apply(a,b,contextptr,equal);
+	return apply2nd(a,b,contextptr,equal);
+      }
     }
     if (is_equal(a)) // so that equal(a=0 ,1) returns a=1, used for fsolve
       return equal(a._SYMBptr->feuille[0],b,contextptr);
@@ -8547,6 +8556,9 @@ namespace giac {
     case _FRAC:
       return sign(a._FRACptr->num,contextptr)*sign(a._FRACptr->den,contextptr);
     }
+    int fs=fastsign(a,contextptr);
+    if (fs)
+      return fs;
     gen b=evalf_double(a,1,contextptr);
     if (b.type==_DOUBLE_){
       if (b._DOUBLE_val>eps)
@@ -12373,6 +12385,9 @@ namespace giac {
       break;
     case _GGBVECT:
       s=(calc_mode(contextptr)==1?"ggbvect(":"ggbvect[");
+      break;
+    case _LOGO__VECT:
+      s="logo[";
       break;
     case _PNT__VECT:
       s="pnt[";

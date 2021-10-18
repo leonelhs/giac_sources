@@ -11210,8 +11210,13 @@ namespace giac {
   static symbolic unarchive_SYMB(istream & is,GIAC_CONTEXT){
     gen e=unarchive_FUNC(is,contextptr);
     gen f=unarchive(is,contextptr);
-    if (e.type==_FUNC)
+    if (e.type==_FUNC){
+      if (e==at_neg && f.is_symb_of_sommet(at_prod) && f._SYMBptr->feuille.type==_VECT && !f._SYMBptr->feuille._VECTptr->empty() && f._SYMBptr->feuille._VECTptr->front().type==_ZINT){
+	mpz_neg(*f._SYMBptr->feuille._VECTptr->front()._ZINTptr,*f._SYMBptr->feuille._VECTptr->front()._ZINTptr);
+	return *f._SYMBptr;
+      }
       return symbolic(*e._FUNCptr,f);
+    }
     return symb_of(e,f);
   }
 
@@ -11292,7 +11297,7 @@ namespace giac {
     string s;
     is >> s;
     if (s.size()>2 && s[0]=='0' && s[1]=='x'){
-      ref_mpz_t * ptr= new ref_mpz_t;
+      ref_mpz_t * ptr= new ref_mpz_t(s.size()*4);
       mpz_set_str(ptr->z,s.c_str()+2,16);
       gen res(ptr);
       return res;

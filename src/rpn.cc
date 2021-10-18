@@ -915,6 +915,15 @@ namespace giac {
 	  m._MAPptr->erase(it);
 	  return 1;
 	}
+	if (m.type==_VECT && indice.type==_INT_){
+	  vecteur & v = *m._VECTptr;
+	  int i=indice.val;
+	  if (i>=0 && i<v.size()){
+	    v.erase(v.begin()+i);
+	    return 1;
+	  }
+	  return gendimerr(contextptr);
+	}
       }
     }
     if (contextptr && args.is_symb_of_sommet(at_rootof)){
@@ -4559,7 +4568,9 @@ namespace giac {
 
   gen _polar_complex(const gen & g,GIAC_CONTEXT){
     if (g.type==_STRNG && g.subtype==-1) return  g;
-    if (g.type!=_VECT || g._VECTptr->size()!=2)
+    if (g.type!=_VECT)
+      return makevecteur(abs(g,contextptr),arg(g,contextptr));
+    if (g._VECTptr->size()!=2)
       return gensizeerr(contextptr);
     gen res= g._VECTptr->front();
     gen angle=g._VECTptr->back();
