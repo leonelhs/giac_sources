@@ -1078,6 +1078,8 @@ namespace giac {
     vx_var=save_vx;
     // Here f= f(derive(y,x),y) for a 1st order equation
     int n=diffeq_order(f,y);
+    if (n==0)
+      return solve(f,y,0,contextptr);
     if (n<=0)
       return gensizeerr(contextptr);
     vecteur v;

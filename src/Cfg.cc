@@ -93,6 +93,8 @@ namespace xcas {
 
   Fl_Return_Button *Xcas_Cas_setup_OK=(Fl_Return_Button *)0;
 
+  Fl_Button *Xcas_Cas_setup_defaults=(Fl_Return_Button *)0;
+
   Fl_Button *Xcas_cas_setup_OKSave=(Fl_Button *)0;
 
   Fl_Button *Xcas_Cancel_cas_setup=(Fl_Button *)0;
@@ -170,6 +172,39 @@ namespace xcas {
     {gettext("TI89/92"), 0,  (Fl_Callback*)cb_Xcas_Set_TI, 0, 0, 0, 0, 14, 56},
     {0}
   };
+
+  static void cb_Xcas_Cas_setup_defaults(Fl_Return_Button* rb, void* userdata) {
+    Xcas_Epsilon->value(1e-12);
+    Xcas_Proba_Epsilon->value(1e-15);
+    Xcas_Threads->value(1);
+    // giac::variables_are_files(Xcas_Save_var->value(),contextptr);
+    Xcas_Complex_mode->value(false);
+    Xcas_Complex_variables->value(false);
+    do_maple_mode=0; Xcas_Style->value("xcas");
+    Xcas_Increasing_power->value(false);
+    Xcas_Angle_radian->value(true);
+    Xcas_Approx_mode->value(false);
+    Xcas_Autosimplify->value("regroup");
+    do_scientific_format=0; Xcas_Float_style_output->value("standard");
+    do_integer_format=10; Xcas_Integer_style_output->value("10"); 
+    do_max_recursion_level=100;Xcas_recursion_level->value(do_max_recursion_level);
+    do_eval_level=25;Xcas_eval_level->value(do_eval_level);
+    Xcas_prog_eval_level->value(1);
+    Xcas_Newton->value(20);
+    do_debug_infolevel=0;Xcas_debug_infolevel->value(do_debug_infolevel);
+    Xcas_sqrt->value(true);
+    Xcas_all_trig_sol->value(false);
+    Xcas_Set_Digits->value(12);
+    if (Xcas_update_mode_ptr)
+      Xcas_update_mode_ptr();
+    History_Fold * hf=get_history_fold(Xcas_input_focus);
+    if (hf){
+      hf->update_status_count=-1;
+      hf->update_status();
+    }
+    if (Xcas_input_focus)
+      Fl::focus(Xcas_input_focus);
+  }
 
   static void cb_Xcas_Cas_setup_OK(Fl_Return_Button* rb, void* userdata) {
     const giac::context * contextptr = context0;
@@ -330,18 +365,22 @@ namespace xcas {
     o->selection_color((Fl_Color)1);
     o->align(68|FL_ALIGN_INSIDE);
     }
-    { Fl_Return_Button* o = Xcas_Cas_setup_OK = new Fl_Return_Button(15, 280, 100, 25, gettext("Apply"));
+    { Fl_Return_Button* o = Xcas_Cas_setup_OK = new Fl_Return_Button(10, 280, 80, 25, gettext("Apply"));
     o->callback((Fl_Callback*)cb_Xcas_Cas_setup_OK);
     o->align(FL_ALIGN_CLIP);
     }
-    { Fl_Button* o = Xcas_cas_setup_OKSave = new Fl_Button(130, 280, 95, 25, gettext("Save"));
+    { Fl_Button* o = Xcas_cas_setup_OKSave = new Fl_Button(100, 280, 75, 25, gettext("Save"));
     o->shortcut(0xff1b);
     o->callback((Fl_Callback*)cb_Xcas_cas_setup_OKSave);
     o->align(FL_ALIGN_CLIP);
     }
-    { Fl_Button* o = Xcas_Cancel_cas_setup = new Fl_Button(245, 280, 95, 25, gettext("Cancel"));
+    { Fl_Button* o = Xcas_Cancel_cas_setup = new Fl_Button(185, 280, 75, 25, gettext("Cancel"));
     o->shortcut(0xff1b);
     o->callback((Fl_Callback*)cb_Xcas_Cancel_cas_setup);
+    o->align(FL_ALIGN_CLIP);
+    }
+    { Fl_Button* o =   Xcas_Cas_setup_defaults = new Fl_Button(270, 280, 75, 25, gettext("Default"));
+    o->callback((Fl_Callback*)cb_Xcas_Cas_setup_defaults);
     o->align(FL_ALIGN_CLIP);
     }
     { Fl_Value_Input* o = Xcas_Threads = new Fl_Value_Input(130, 230, 40, 25, gettext("threads"));
