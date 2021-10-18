@@ -2734,7 +2734,7 @@ namespace xcas {
       }
       if (Editeur * ed=dynamic_cast<Editeur *>(wid)){
 	if (casio)
-	  casioedit+=ed->value()+'\n';
+	  casioedit+=unlocalize(ed->value())+'\n';
 	else {
 	  xcas_mode(contextptr)=mode;
 	  gen g(ed->value(),contextptr);

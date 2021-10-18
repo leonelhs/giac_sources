@@ -1923,7 +1923,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Save as", 0,  (Fl_Callback*)cb_Xcas_save_current_session_as, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Save all", 0,  (Fl_Callback*)cb_Xcas_save_all_sessions, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Export as", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"KhiCasio", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"KhiCas", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"xcas text", 0,  (Fl_Callback*)cb_Xcas_Export_Xcas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"xcas-python text", 0,  (Fl_Callback*)cb_Xcas_Export_XcasPy, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"maple text", 0,  (Fl_Callback*)cb_Xcas_Export_Maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},

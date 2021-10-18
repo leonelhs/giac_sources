@@ -3028,7 +3028,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         //console.log(cur);
         cur = cur.firstChild;
         //Module.print(cur.name.value+':='+cur.rangename.value);
-        UI.caseval_noautosimp(cur.name.value + ':=' + cur.rangename.value);
+        UI.caseval_noautosimp('assume('+cur.name.value + '=' + cur.rangename.value+')');
         var s = UI.curseurhtml(cur.name.value, cur.minname.value, cur.maxname.value, cur.stepname.value, cur.valname.value);
         level.innerHTML = s;
       }
