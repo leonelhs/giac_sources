@@ -79,7 +79,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	Makefile.android compile.android.arm compile.android.x86 config.h.android Makefile.mingw \
 	config.h.iphone Makefile.iphone \
 	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
-	giac.i runme.java archive_java javascript.cxx giacjs.i giacjs.js README.javascript \
+	giac.i runme.java archive_java archive_java_linux32 archive_java_linux64  javascript.cxx giacjs.i giacjs.js README.javascript \
 	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy giac_wrap.cxx
 
 bin_SCRIPTS = pgiac

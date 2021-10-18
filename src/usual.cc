@@ -703,6 +703,8 @@ namespace giac {
     }
     // if (e.is_symb_of_sommet(at_inv)) return sign(e._SYMBptr->feuille,contextptr)*cst_pi/2-atan(e._SYMBptr->feuille,contextptr);
     if (e.is_symb_of_sommet(at_tan)){
+      if (atan_tan_no_floor(contextptr))
+	return e._SYMBptr->feuille;
       gen tmp=cst_pi;
       if(!angle_radian(contextptr))
       {
@@ -8121,6 +8123,8 @@ namespace giac {
 #endif
   define_unary_function_ptr5( at_erfs ,alias_at_erfs,&__erfs,0,true);
   static gen erf_replace(const gen & g,GIAC_CONTEXT){
+    if (has_i(g))
+      return 1-symbolic(at_exp,-ratnormal(g*g))*_erfs(g,contextptr);
     return symbolic(at_sign,g)*(1-symbolic(at_exp,-g*g)*_erfs(symbolic(at_abs,g),contextptr));
   }
   static gen taylor_erf (const gen & lim_point,const int ordre,const unary_function_ptr & f, int direction,gen & shift_coeff,GIAC_CONTEXT){

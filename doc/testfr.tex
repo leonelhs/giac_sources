@@ -33,8 +33,6 @@
 \fi
 
 \input{giacfr.tex}
-%HEVEA\htmlfoot{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.}
-%HEVEA\htmlhead{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.}
 
 
 \newtheorem{thm}{Théorème}
@@ -51,41 +49,106 @@
 \newcommand{\Q}{{\mathbb{Q}}}
 \newcommand{\tr}{\mbox{tr\,}}
 
+\makeindex
 
-\title {Exemple d'utilisation de giac dans un fichier \LaTeX.}
+\title {Exemple de calculs interactifs dans un fichier \LaTeX\ compil\'e
+en HTML.}
 \author{B. Parisse\\Institut Fourier\\UMR 5582 du CNRS
-\\Université de Grenoble I}
+\\Université de Grenoble}
 
 \date{Juillet 2015}
 
 
 \begin{document}
+\begin{giacjsonline}
+%\loadgiacjs
+%\loadgiacjsonline
+ 
 \maketitle
 
-Ce source \LaTeX\ illustre l'utilisation du moteur de calcul formel Giac
-lorsqu'on le compile en HTML avec {\tt hevea} (test\'e avec \verb|hevea 2.23|).
-La commande \verb|\loadgiacjs| ou \verb|\loadgiacjsonline|
-doit figurer une fois dans le document, selon que l'on va utiliser le moteur
-de calcul \verb|giac.js| depuis une installation de Xcas sur le disque dur
-ou par t\'el\'echargement sur le serveur de l'Institut Fourier.
-%\loadgiacjs
-\loadgiacjsonline
+\tableofcontents
 
-Une commande en ligne avec r\'eponse en mode texte ou sous forme de graphique 2d 
-avec \verb|\giacinput|, ici \verb|\giacinput{factor(x^4-1)}|~:\\
+\printindex
+
+\section{Description}
+Ce source \LaTeX\ illustre l'utilisation du moteur de calcul formel Giac
+lorsqu'on le compile en HTML avec {\tt hevea} (test\'e avec
+\verb|hevea 2.23, 2.25|).
+
+\section{Installation}
+Vous devez installer
+\ahref{http://hevea.inria.fr}{hevea} 
+et recopier
+\ahref{http://www-fourier.ujf-grenoble.fr/\%7eparisse/giac/giacfr.tex}{giacfr.tex}
+et \ahref{http://hevea.inria.fr/distri/hevea.sty}{hevea.sty}
+dans le m\^eme r\'epertoire que votre fichier source.
+Vous pouvez t\'el\'echarger une copie du source
+\ahref{http://www-fourier.ujf-grenoble.fr/\%7eparisse/giac/testfr.tex}{testfr.tex}
+de ce fichier et v\'erifier votre installation en le compilant\\
+\verb|hevea testfr|
+
+\section{Utilisation} 
+La commande \verb|\begin{giacjs}|\index{giacjs} ou \verb|\begin{giacjsonline}|\index{giacjsonline}
+doit figurer juste apr\`es \verb|\begin{document}|, selon que l'on va utiliser le moteur
+de calcul \verb|giac.js| depuis une installation de Xcas sur le disque dur
+ou par t\'el\'echargement sur le serveur de l'Institut Fourier. La
+commande correspondante \verb|\end{giacjs}| ou \verb|\end{giacjsonline}| 
+doit figurer juste avant \verb|\end{document}|.
+Pour que les liens du tableau de bord Table et Index fonctionnent,
+vous devez imprimer la table des mati\`eres et l'index au d\'ebut du
+document, comme dans ce fichier (commandes \verb|\tableofcontents|\index{table} et
+\verb|\printindex|\index{index} juste apr\`es
+\verb|\begin{giacjsonline}| et commande \verb|\makeindex| 
+juste avant \verb|\begin{document}|).
+
+Pour cr\'eer une commande en ligne avec r\'eponse en MathML (ou
+graphique 2d) utilisez
+\verb|\giacinputmath{}|,
+par exemple\\ \verb|\giacinputmath{factor(x^10-1)}|\index{giacinputmath}
+\giacinputmath{factor(x^10-1)}
+On peut ajouter un argument optionnel pour changer le style~:\\
+\verb|\giacinputmath[style="width:200px;height:20px;font-size:large"]{factor(x^10-1)}|\\
+\giacinputmath[style="width:200px;height:20px;font-size:large"]{factor(x^10-1)}
+Vous pouvez imposer la commande appliqu\'ee avec
+\verb|\giaccmdmath{}{}|,
+par exemple\\ \verb|\giaccmdmath{factor}{x^4-1}|\index{giaccmdmath} 
+\giaccmdmath{factor}{x^4-1}
+et ajouter un argument de style\\
+\verb|\giaccmdmath[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}|\\
+\giaccmdmath[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
+
+Pour cr\'eer une commande hors-ligne avec r\'eponse en MathML (ou sous forme de graphique 2d)
+utilisez \verb|\giacinputbigmath{}| ou 
+\verb|\giaccmdbigmath{}{}|, ces commandes
+acceptent aussi un argument optionnel de style~:\\
+\verb|\giacinputbigmath{factor(x^100-1)}|\index{giacinputbigmath}\\
+\giacinputbigmath{factor(x^100-1)}\\
+\verb|\giacinputbigmath[style="width:600px;height:20px;font-size:large"]{factor(x^100-1)}|\\
+\giacinputbigmath[style="width:600px;height:20px;font-size:large"]{factor(x^100-1)}\\
+\verb|\giaccmdbigmath{factor}{x^100-1}|\index{giaccmdbigmath}\\
+\giaccmdbigmath{factor}{x^100-1}\\
+\verb|\giaccmdbigmath[style="width:600px;height:20px;font-size:large"]{factor}{x^100-1}|\\
+\giaccmdbigmath[style="width:600px;height:20px;font-size:large"]{factor}{x^100-1}
+
+
+Pour une commande avec r\'eponse en mode texte ou sous forme de graphique 2d 
+utiliser \verb|\giacinput|ou
+\verb|\giacinputbig|\index{giacinputbig}, 
+par exemple\\ \verb|\giacinput{factor(x^4-1)}|\index{giacinput}  donne~:\\
 \giacinput{factor(x^4-1)}\\
 La m\^eme avec un argument de style optionnel de la ligne de commande\\ 
 \verb|\giacinput[style="width:200px;height:20px;font-size:large"]{plot(sin(x))}|\\
 \giacinput[style="width:200px;height:20px;font-size:large"]{plot(sin(x))}
 
 Un bouton avec une commande qui sera appliqu\'ee \`a un argument avec
-\verb|\giaccmd|, ici \verb|\giaccmd{factor}{x^4-1}|~:\\
+\verb|\giaccmd|, ici \verb|\giaccmd{factor}{x^4-1}|\index{giaccmd}~:\\
 \giaccmd{factor}{x^4-1}\\
-accepte aussi un argument de style optionnel~:
+accepte aussi un argument de style optionnel~:\\
+\verb|\giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}|\\
 \giaccmd[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
 
 La m\^eme chose avec un programme ou tout autre commande de plusieurs lignes
-avec \verb|\begin{giacprog}...\end{giacprog}|~:
+avec \verb|\begin{giacprog}...\end{giacprog}|\index{giacprog}~:
 \begin{giacprog}
 f(x):={
   local y;
@@ -94,25 +157,17 @@ f(x):={
 }
 \end{giacprog}
 
-Une commande en ligne avec r\'eponse en MathML avec
-\verb|\giacinputmath{}| ou \verb|\giaccmdmath{}{}|~:
-\giacinputmath{factor(x^10-1)}
-\giacinputmath[style="width:200px;height:20px;font-size:large"]{factor(x^10-1)}
-\giaccmdmath{factor}{x^4-1}
-\giaccmdmath[style="width:200px;height:20px;font-size:large"]{factor}{x^4-1}
-
-Une commande hors-ligne avec r\'eponse en MathML
-avec \verb|\giacinputbigmath{}| ou \verb|\giaccmdbigmath{}{}|~:
-\giacinputbigmath{factor(x^100-1)}
-\giacinputbigmath[style="width:600px;height:20px;font-size:large"]{factor(x^100-1)}
-\giaccmdbigmath{factor}{x^100-1}
-\giaccmdbigmath[style="width:600px;height:20px;font-size:large"]{factor}{x^100-1}
-
-Un lien vers Xcas au Soleil (appellation faisant r\'ef\'erence aux
-applications dans les nuages qui n\'ecessitent beaucoup plus de
-ressources serveur)
-\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+1,2&+[1,2]&+{1,2}&+poly1[1,2]&+idn(3)&}
-
-Un curseur
+La commande \verb|\giacslider{}{}{}{}{}|
+permet de cr\'eer une variable
+modifiable par le lecteur \`a la souris et des calculs qui
+d\'ependent de cette variable~:\\
+\verb|\giacslider{a}{-5}{5}{0.1}{0}{plot(sin(a*x))}|\index{giacslider} \\
 \giacslider{a}{-5}{5}{0.1}{0}{plot(sin(a*x))}
+
+Pour cr\'eer un lien utiliser \verb|\giaclink{}|, par
+exemple un lien vers Xcas offline~:\\
+\verb|\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+factor(x^4-1)&+a:=idn(3)&}|\index{giaclink}\\
+\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+factor(x^4-1)&+a:=idn(3)&}
+
+\end{giacjsonline}
 \end{document}

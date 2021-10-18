@@ -1296,7 +1296,8 @@ namespace xcas {
   }
 
   Graph2d3d::Graph2d3d(int x,int y,int w,int h,const char * l,double xmin,double xmax,double ymin,double ymax,double zmin,double zmax,double ortho,History_Pack * hp_):
-    Fl_Widget(x,y,w,h,l),pushed(false),
+    Fl_Widget(x,y,w,h,l),
+    pushed(false),
     show_mouse_on_object(false),
     mode(255),args_tmp_push_size(0),no_handle(false),
     display_mode(0x45),
@@ -1326,7 +1327,8 @@ namespace xcas {
   }
 
   Graph2d3d::Graph2d3d(int x,int y,int w,int h,const char * l,History_Pack * hp_):
-    Fl_Widget(x,y,w,h,l),pushed(false),
+    Fl_Widget(x,y,w,h,l),
+    pushed(false),
     show_mouse_on_object(false),
     display_mode(0x45),
     mode(255),args_tmp_push_size(0),no_handle(false),
@@ -5743,7 +5745,7 @@ namespace xcas {
       fcnimplicit->tooltip(gettext("Implicit expression"));
       fcnfield=new Fl_Input(dx/2,2,dx/2-4,dy/lignes-4,gettext("dy/dt(t,y)="));
       fcnfield->value("sin(t*y)");
-      fcnfield->tooltip(gettext("Expression of dy/dt in terms of y and t, e.g. sin(t*y)"));
+      fcnfield->tooltip(gettext("Expression of dy/dt in terms of y and t, e.g. sin(t*y). For autonomous 2d system,change time variable to x and enter d[x,y]/dt in terms of [x,y], e.g. [[1,2],[3,4]]*[x,y]"));
       fcnrhot=new Fl_Input(dx/2,2,dx/2-4,dy/lignes-4,gettext("rho(t)="));
       fcnrhot->value("2*t");
       fcnrhot->tooltip(gettext("Expression of modulus rho wrt to angle t (e.g sin(t))"));
@@ -6733,11 +6735,29 @@ namespace xcas {
     hp->end();
     hp->add_entry(-1);
     s->end();
+    win=0;
     if (dim3){
+#ifdef GRAPH_WINDOW
+      Fl_Group::current(this);
+      if (disposition==1){
+	win = new Fl_Window(X,Y+l,W,H/2);
+	geo = new Geo3d(0,0,W,H/2,hp);
+	win->end();
+      }
+      else {
+	win = new Fl_Window(X+W/3,Y+l,2*W/3,H-l);
+	geo = new Geo3d(0,0,2*W/3,H-l,hp);
+	Fl_Group::current(win);
+	win->end();
+      }
+      // Problem: win is not in the window hierarchy, can not call win->show()
+      Fl_Group::current(this);
+#else
       if (disposition==1)
 	geo = new Geo3d(X,Y+l,W,H/2,hp);
       else
 	geo = new Geo3d(X+W/3,Y+l,2*W/3,H-l,hp);
+#endif
     }
     else {
       if (disposition==1)
@@ -6812,6 +6832,12 @@ namespace xcas {
 
   int BorderBox::handle(int event){
     return 0;
+  }
+
+  void Figure::draw(){
+    if (win && !win->shown())
+      win->show();
+    Fl_Tile::draw();
   }
 
   void Figure::resize(int X,int Y,int W,int H,double dhp,double dgeo,double dmp){

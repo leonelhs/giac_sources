@@ -38,13 +38,15 @@ width:400px;
 <body>
 
 <div id="startup">
-  <b>Pendant le chargement de la page</b> (compter une bonne minute
+  Pendant le chargement de la page (compter une bonne minute
   la premi&egrave;re
   fois, au plus quelques secondes les fois suivantes),
   le tutoriel est affich&eacute;. Lorsque Xcas sera pret,
   le tutoriel sera masqu&eacute;. Vous
   pourrez le faire r&eacute;apparaitre en cliquant sur le bouton
-  Tutoriel.
+  Tutoriel ci-dessous. <br>
+  Si Xcas ne fonctionne pas normalement, effacez le cache de votre
+  navigateur et rechargez la page.
 </div>
 
 <span id="apropos" style="display:none">
@@ -95,17 +97,19 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
   max=2 min=0>
     </td>
     <td>
-Radians <input type="checkbox" name="angle_mode" title="Cocher pour utiliser les radians, d&eacute;cocher pour utiliser les degr&eacute;s" checked>
-Complexe <input type="checkbox" name="complex_mode" title="Cocher pour travailler par d&eacute;faut sur les complexes">
-      √ <input type="checkbox" name="sqrt_mode" title="Cocher pour toujours factoriser les polynomes de degr&eacute; 2">
+Radians <input type="checkbox" name="angle_mode" title="Cocher pour utiliser les radians, d&eacute;cocher pour utiliser les degr&eacute;s" checked>,
+Complexe <input type="checkbox" name="complex_mode" title="Cocher pour travailler par d&eacute;faut sur les complexes">,
+      √ <input type="checkbox" name="sqrt_mode" title="Cocher pour toujours factoriser les polynomes de degr&eacute; 2">,
+      step <input type="checkbox" name="step_mode" title="Cocher pour montrer les &eacute;tapes de certains calculs" checked>,
+      worker <input type="checkbox" name="worker_mode" title="Cocher pour executer les calculs par un webworker">
     </td>
   </tr>
   <tr>
     <td>
       2d <input type="checkbox" name="prettyprint"
-  title="Cocher pour affichage 2d" checked>
-      Q/A sur 1 ligne <input type="checkbox" name="qa"
-  title="Cocher pour avoir commandes et reponses sur le meme niveau">
+  title="Cocher pour affichage 2d" checked>,
+      Q/R sur 1 ligne <input type="checkbox" name="qa"
+  title="Cocher pour avoir commandes et reponses sur le meme niveau">,
       Historique <input type="number" name="history_width" value=1000
         title="Largeur maximale de l'historique">
       par <input type="number" name="history_height" value=400
@@ -121,7 +125,7 @@ Complexe <input type="checkbox" name="complex_mode" title="Cocher pour travaille
   <tr>
     <td colspan=3>
       Documentation <input type="checkbox" name="online_doc"
-  title="Cocher si Xcas n'est pas install&eacute; (utilise la documentation online)">online
+  title="Cocher si Xcas n'est pas install&eacute; (utilise la documentation en ligne)" checked>online
       <input type="text" name="doc_path" size="60"
   value="/usr/share/giac/doc/fr/cascmd_fr/"
   title="Chemin de la documentation hors-ligne (rempli pour une installation Xcas sous linux, sous mac ajouter /Applications)">
@@ -203,6 +207,7 @@ title="Montre ou cache des informations sur la conception de Xcas dans votre nav
 <button title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(0);'>Sauve</button>
 <textarea id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
 <span id='thelink'></span>
+<span id='themailto'></span>
     </span>
     </td>
   </tr>
@@ -220,6 +225,192 @@ title="Montrer ou cacher la liste des manuels">Manuels</button>
 </td>
 </tr>
 </table>
+
+<span id="help">
+<button onclick="document.getElementById('help').style.display='none';">Masquer.</button>
+Cette feuille de calcul est compos&eacute;e de :
+<ul>
+  <li> un logo Xcas et un panel de boutons permettant de restaurer/sauvegarder
+  une session et de g&eacute;rer l'historique, la corbeille et les
+  variables. Lorsque l'historique est vide, le panel est
+  r&eacute;duit &agrave; insertion d'une session, consultation des
+  manuels et configuration. S'il n'est pas vide, notez le lien Clone
+  qui permet de cloner une session existante, ce qui peut servir si
+  le noyau de calcul formel a crash&eacute; ou pour copier-coller
+  vers un email ou une page web. Le lien E-mail permet d'envoyer
+  votre session par e-mail.
+  </li>
+  <li>La zone d'<b>aide</b>, qui contient des courtes description des
+  commandes dont vous avez demand&eacute; la syntaxe.
+  </li>
+  <li> un <b>historique</b> (vide au d&eacute;but).
+  Les lignes de commande y apparaissent en noir, les r&eacute;sultats en
+  bleu, les boutons ↑ et ↓ permettent de d&eacute;placer un niveau
+  dans l'historique, le bouton bleu ~ permet d'avoir une valeur
+  num&eacute;rique du r&eacute;sultat. Vous pouvez modifier une ligne
+  de commande de l'historique et valider en cliquant sur le bouton ok
+  (attention Entree ne valide pas mais ajoute un saut de ligne). Vous
+  pouvez placer un niveau dans la corbeille avec le bouton
+  d'effacement &agrave; droite du niveau (pour l'effacer
+  d&eacute;finitivement cliquer sur le bouton Vider de la Corbeille,
+  pour le restaurer cliquer sur le bouton Restaurer de la Corbeille). 
+  </li>
+  <li> une <b>ligne de commande</b>, on y tape des commandes Xcas, et on
+  valide en cliquant sur le bouton ok ou en tapant Entree.
+  <br>
+    Vous pouvez entrer un <b>commentaire</b> en tapant une ligne de commande
+  commencant par <tt>//</tt> (vous pouvez utiliser des commandes de
+  balisage HTML dans un commentaire).
+  <br>
+  Pour vous aider &agrave; remplir la ligne de commande,
+  vous pouvez cliquer sur les boutons 123+ et outils ci-dessous
+  et d&eacute;placer la souris pr&egrave;s des touches du <b>clavier
+  scientifique</b>. Avec Firefox, vous avez un menu de commande
+  en cliquant avec le bouton droit
+  sur le mot Commande.
+  <br>
+  Vous pouvez taper (le d&eacute;but) du nom d'une commande
+  (par exemple <tt>factor</tt>) puis
+  la touche <button>F1</button> ou <button>Tab</button>
+  ou cliquer sur le bouton <button>?</button>
+  pour obtenir une
+  <b>aide courte</b> sur la commande.
+  <br>
+  Vous pouvez vous inspirer des <a href="#exemples">exemples ci-dessous</a>
+  et consulter la
+  <a
+  href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr">documentation
+  de Xcas</a>.
+  </li>
+  <li>
+  une <b>console</b> qui affiche des messages du CAS :
+  erreurs de syntaxe mais aussi lors
+  d'un calcul en mode pas-&agrave;-pas, par exemple d'une
+  d&eacute;riv&eacute;e.
+  Vous pouvez effacer la console ou ajuster sa taille verticale.
+  </li>
+  <li> un bouton
+  <b>Programme:</b> qui permet d'afficher des boutons assistants pour programmer.
+  </li>
+  <li>
+  une zone affichant des <b>graphes 3d</b> lorsqu'on ex&eacute;cute une commande
+  ayant une sortie graphique 3d.
+  </li>
+</ul>
+Vous pouvez <b>sauvegarder</b> l'historique
+ou <b>exporter</b> la feuille de calcul. La sauvegarde
+  occupe peu de place et s'ouvre depuis cette page avec le bouton
+  Charger, l'export occupe plus de place mais
+  permet de publier le fichier HTML comme une page autonome.
+  Vous pouvez sauvegarder les graphes 2d au format SVG avec le bouton
+  save &agrave; droite du graphe. Le fichier SVG cr&eacute;&eacute;
+  est au format 1.2 (il utilise la balise
+  <tt>vector-effect="non-scaling-stroke"</tt> qui n'est pas compris
+  par tous les visualisateurs ou convertisseurs).
+  <br>
+  Sous Firefox, pour pouvoir
+  choisir l'emplacement de sauvegarde et &eacute;craser
+  une version ant&eacute;rieure, cocher Toujours demander...
+  dans Pr&eacute;f&eacute;rences,
+  G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements)
+
+<a name="exemples"><h3>Quelques exemples :</h3></a>
+<ul>
+  <li> <b>Alg&egrave;bre :</b>
+  Vous pouvez d&eacute;velopper une expression avec
+  <button onclick="UI.insert(UI.focused,'normal(')"><tt>normal</tt></button>
+  par exemple <button
+  onclick="UI.insert(UI.focused,'(x+1)^4')"><tt>(x+1)^4</tt></button>.
+  R&eacute;ciproquement,
+  <button
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'factor(')"><tt>factor</tt></button>
+  (respectivement <button
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cfactor(')"><tt>cfactor</tt></button>)
+  factorise une expression (par exemple <button onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x^4-1')"><tt>x^4-1</tt></button>)
+  sur Q (resp. Q[i]). Pour factoriser un entier, utiliser la commande
+  <button onclick="UI.insert(UI.focused,'ifactor(')"><tt>ifactor</tt></button>.
+  Autres exemples : <tt>simplify(sin(3x)/sin(x)); gcd(x^4-1,x^3-1)
+  </tt> (simplification, PGCD).
+  </li>
+  <li> <b>R&eacute;soudre :</b>
+    <tt> solve(x^2-3*x+2=0);</tt> et <tt>csolve(x^2=2*i);</tt>
+  permettent de r&eacute;soudre une &eacute;quation sur les
+  r&eacute;els ou les complexes. Exemple de r&eacute;solution de syst&egrave;me
+  <tt>solve([x+y=1,x-y=3],[x,y])</tt>. Pour r&eacute;soudre
+  num&eacute;riquement, utiliser <tt>fsolve</tt>.
+  </li>
+  <li><b>Analyse :</b>
+  Vous pouvez d&eacute;finir une fonction <tt>f</tt> par
+  <button onclick="UI.insert(UI.focused,'f(x):=sin(x^2):;')"><tt>f(x):=sin(x^2)</tt></button>, puis calculer la valeur
+  de <tt>f</tt> ou de sa d&eacute;riv&eacute;e par
+  <tt>f(sqrt(pi)); f'(2); f'(y) </tt>. Une primitive d'une
+  expression se calcule par <tt>int(1/(x^4-1));</tt>,
+  pour une int&eacute;grale entre deux bornes
+  <tt>int(1/(x^4+1)^4,x,0,+infinity);</tt>. Enfin 
+  <tt>limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom);</tt>
+  permettent de calculer une limite ou un d&eacute;veloppement de Taylor.
+  </li>
+  <li> <b>Alg&egrave;bre lin&eacute;aire :</b>
+    <button onclick="UI.insert(UI.focused,'A:=[[1,2],[3,4]]')"><tt>A:=[[1,2],[3,4]];</tt></button>
+  d&eacute;finit une matrice <tt>A</tt> ayant 2 lignes et 2 colonnes,
+  on donne les coefficients par lignes. Quelques instructions
+  <tt>inv(A); det(A-x*idn(A)); A[0,0]; rref(A);
+  eigenvalues(A); eigenvectors(A);</tt> (inverse, d&eacute;terminant,
+  matrice identit&eacute;, acc&egrave;s &agrave; un
+  &eacute;l&eacute;ment
+  de matrice, r&eacute;duction sous forme &eacute;chelonn&eacute;e,
+  valeurs et vecteurs propres).
+  </li>
+  <li> <b>Graphes </b> (pour les graphes 3d, vous pouvez changer le point de
+  vue) :
+  <tt>plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])</tt> affiche
+  le graphe des fonctions sin(x) et x-x^3/6 en 2d, alors que
+  <tt>plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);</tt>
+  affiche un graphe 3d avec un plan.
+  Vous pouvez aussi utiliser de nombreuses instructions
+  g&eacute;om&eacute;triques: <tt>droite, cercle, ellipse, ...</tt>
+  </li>
+  <li>
+  <b>Programmes :</b> vous pouvez taper un programme dans l'&eacute;diteur de
+  texte ci-dessous. Plusieurs syntaxes sont accept&eacute;es, pour
+  le moment la coloration syntaxique fonctionne avec la syntaxe Xcas
+  qui est tr&egrave;s proche de Javascript. Par exemple
+  <br>
+  <tt>function f(x){
+  <br>
+  &nbsp;&nbsp;var y;
+  <br>
+  &nbsp;&nbsp;if (x &gt; 100) return "Nombre trop grand";
+  <br>
+  &nbsp;&nbsp;for (y:=0;y &lt; x;y++){
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;print(y+"^2="+y^2);
+  <br>
+  &nbsp;&nbsp;}
+  <br>
+  }
+  </tt>
+  </li>
+  </ul>
+<button onclick="document.getElementById('help').style.display='none';">Masquer.</button>
+</span>
+
+<table>
+  <tr>
+<td id="history4" style="display:none">
+<b>Variables</b>
+<button onclick="UI.addhelp(' ','VARS(1)')" title="Commande pour afficher la liste des variables">Liste</button>
+<button onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Effacer le contenu de toutes les variables">Efface</button>
+&nbsp;  <b>Aide</b>  <button onclick="helpoutput.innerHTML=''">Vide</button>
+  </td>
+</tr>
+</table>
+
+<div id="divhelpoutput" style="max-height: 200px; overflow:auto">
+<table id="helpoutput" title="Aide"
+  style="max-width:1000px "></table>
+</div>
+<hr>
 
 <table>
   <tr>
@@ -241,99 +432,12 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
 <button onclick="UI.emptytrash()" title="Vider la corbeille">Vide</button>
     </td>
   </tr>
-  <tr>
-<td id="history4" style="display:none">
-<b>Variables</b>
-<button onclick="UI.addhelp(' ','VARS(1)')" title="Commande pour afficher la liste des variables">Liste</button>
-<button onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Effacer le contenu de toutes les variables">Efface</button>
-&nbsp;  <b>Aide</b>  <button onclick="helpoutput.innerHTML=''">Vide</button>
-  </td>
-  </tr>
 </table>
-
-<div id="divhelpoutput" style="max-height: 200px; overflow:auto">
-<table id="helpoutput" title="Aide"
-  style="max-width:1000px "></table>
-</div>
-
 <div id="divoutput" style="max-height: 400px; overflow:auto">
 <table id="mathoutput" contextmenu="cmdmenu" title="Historique"
   style="max-width:1000px "></table>
 </div>
 
-
-<table border="0" align="center" summary="" id="keyboardfunc" style="display:none">
-  <tr>
-    <td>
-      <input type="button" style="width:50;height:30"
-  name="add_simplify" value="simplify"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'simplify(')" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">        
-      <input type="button" style="width:50;height:30"
-  name="add_normal" value="normal"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'normal(')" title="normal developpe une expression, par exemple normal((x+1)^6)">        
-      <input type="button" style="width:50;height:30"
-  name="add_factor" value="factor"
-      onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,'factor(')" title="Factorisation, par
-  exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="button" style="width:50;height:30" name="add_solve"
-  value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(')"
-  title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
-      <input type="button" style="width:50;height:30"
-  name="add_fsolve" value="fsolve"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(')" title="fsolve permet de resoudre de maniere approchee une equation ou un systeme, par exemple fsolve(cos(x)=x,x=0..5) ou fsolve(cos(x),x=0.0)">        
-      <input type="button" style="width:50;height:30"
-  name="add_desolve" value="desolve"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'desolve(')" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">        
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="button" style="width:28;height:30" name="add_sum"
-  value="∑" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sum(')" title="Somme d'une expression pour une variable entre deux bornes, par exemple ∑(k,k,1,n) ou ∑(1/n^2,n,1,inf)">  
-      <input type="button" style="width:28;height:30" name="add_diff"
-  value="∂" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'diff(')" title="Derivee d'une expression. Pour une fonction f, par exemple f(x):=sin(x^2), la derivee de f est f', par exemple g:=f' ou f'(2)">        
-      <input type="button" style="width:28;height:30"
-  name="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'int(')"
-  title="Calcul d'integrales, par exemple ∫(x^2*sin(x)*exp(x),x) ou ∫(1/(x^4+1),x,0,inf)">        
-      <input type="button" style="width:50;height:30" name="add_limit"
-      value="limit" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'limit(')" title="limite d'une expression lorsqu'une variable tend vers une limite, par exemple limit(sin(x)/x,x,0). Utiliser un 4eme parametre egal a 1 ou -1 pour une limite a droite ou a gauche.">        
-      <input type="button" style="width:50;height:30"
-  name="add_series" value="series"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(')" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom">        
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="button" style="width:55;height:30" name="add_plot"
-  value="plotfunc" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotfunc(')"
-  title="Graphe d'une expression, par exemple plotfunc(sin(x),x=-5..5,xstep=0.1)">  
-      <input type="button" style="width:55;height:30"
-  name="add_plotparam" value="param"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotparam(')" title="Graphe d'une courbe en parametriques, par exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
-      <input type="button" style="width:55;height:30"
-  name="add_plotpolar" value="polar"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(')" title="Graphe d'une courbe en polaires, par exemple plotpolar(exp(r),r=-3..3)">  
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="button" style="width:28;height:30" name="add_inv"
-  value="1/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'inv(')" title="inverse">        
-      <input type="button" style="width:45;height:30" name="add_log10"
-  value="log10" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'log10(')" title="logarithme a base 10">        
-      <input type="button" style="width:50;height:30"
-  name="add_purge" value="purge"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">         <input type="button" style="width:40;height:30"
-  name="add_rsolve" value="rsolve"
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'rsolve(')" title="Recherche de l'expression du terme general d'une suite recurrente, par exemple rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">             
-    </td>
-  </tr>
-</table>
 
 <table border="0" align="center" summary="" id="keyboard" style="display:none">
   <tr>
@@ -457,8 +561,83 @@ title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</butto
     </td>    
   </tr>
 </table>
+
+<table border="0" align="center" summary="" id="keyboardfunc" style="display:none">
+  <tr>
+    <td>
+      <input type="button" style="width:50;height:30"
+  name="add_simplify" value="simplify"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'simplify(')" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">        
+      <input type="button" style="width:50;height:30"
+  name="add_normal" value="normal"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'normal(')" title="normal developpe une expression, par exemple normal((x+1)^6)">        
+      <input type="button" style="width:50;height:30"
+  name="add_factor" value="factor"
+      onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'factor(')" title="Factorisation, par
+  exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:50;height:30" name="add_solve"
+  value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(')"
+  title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
+      <input type="button" style="width:50;height:30"
+  name="add_fsolve" value="fsolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(')" title="fsolve permet de resoudre de maniere approchee une equation ou un systeme, par exemple fsolve(cos(x)=x,x=0..5) ou fsolve(cos(x),x=0.0)">        
+      <input type="button" style="width:50;height:30"
+  name="add_desolve" value="desolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'desolve(')" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">        
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:28;height:30" name="add_sum"
+  value="∑" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sum(')" title="Somme d'une expression pour une variable entre deux bornes, par exemple ∑(k,k,1,n) ou ∑(1/n^2,n,1,inf)">  
+      <input type="button" style="width:28;height:30" name="add_diff"
+  value="∂" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'diff(')" title="Derivee d'une expression. Pour une fonction f, par exemple f(x):=sin(x^2), la derivee de f est f', par exemple g:=f' ou f'(2)">        
+      <input type="button" style="width:28;height:30"
+  name="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'int(')"
+  title="Calcul d'integrales, par exemple ∫(x^2*sin(x)*exp(x),x) ou ∫(1/(x^4+1),x,0,inf)">        
+      <input type="button" style="width:50;height:30" name="add_limit"
+      value="limit" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'limit(')" title="limite d'une expression lorsqu'une variable tend vers une limite, par exemple limit(sin(x)/x,x,0). Utiliser un 4eme parametre egal a 1 ou -1 pour une limite a droite ou a gauche.">        
+      <input type="button" style="width:50;height:30"
+  name="add_series" value="series"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(')" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom">        
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:55;height:30" name="add_plot"
+  value="plotfunc" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotfunc(')"
+  title="Graphe d'une expression, par exemple plotfunc(sin(x),x=-5..5,xstep=0.1)">  
+      <input type="button" style="width:55;height:30"
+  name="add_plotparam" value="param"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotparam(')" title="Graphe d'une courbe en parametriques, par exemple plotparam([cos(t),sin(t)],t=0..2*pi,tstep=0.1)">  
+      <input type="button" style="width:55;height:30"
+  name="add_plotpolar" value="polar"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(')" title="Graphe d'une courbe en polaires, par exemple plotpolar(exp(r),r=-3..3)">  
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <input type="button" style="width:28;height:30" name="add_inv"
+  value="1/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'inv(')" title="inverse">        
+      <input type="button" style="width:45;height:30" name="add_log10"
+  value="log10" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'log10(')" title="logarithme a base 10">        
+      <input type="button" style="width:50;height:30"
+  name="add_purge" value="purge"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">         <input type="button" style="width:40;height:30"
+  name="add_rsolve" value="rsolve"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'rsolve(')" title="Recherche de l'expression du terme general d'une suite recurrente, par exemple rsolve(u(n+2)=u(n+1)+u(n),u(n),[u(0)=1,u(1)=1])">             
+    </td>
+  </tr>
+</table>
+
 <br>
-  <span contextmenu="cmdmenu" title="F1: aide sur le mot-clef avant le curseur. Clic droit (Firefox): menu des commandes">
+
+<span contextmenu="cmdmenu" title="F1: aide sur le mot-clef avant le curseur. Clic droit (Firefox): menu des commandes">
  <button style="height:25px" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">?</button>
 &nbsp;
   <button onclick="UI.eval_cmdline()" style="color:green; height:25px" title="Evaluer la ligne de commande">
@@ -470,201 +649,32 @@ ok</button>
 &nbsp;
   <button style="height:25px" 
   onclick="if (document.getElementById('keyboardfunc').style.display=='inline') document.getElementById('keyboardfunc').style.display='none'; else document.getElementById('keyboardfunc').style.display='inline';if (UI.focusaftereval) UI.focused.focus();"
-  title="Montrer ou cacher le clavier scientifique">outils</button>
+  title="Montrer ou cacher des commandes frequentes">outils</button>
 &nbsp;
    <button style="height:25px" onclick="cmentree.setValue('//'+cmentree.getValue()); cmentree.focus();" title="Commentaire">//</button>
 &nbsp;
 <button style="height:25px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Ajoute un param&egrave;tre modifiable &agrave; la souris">Curseur</button>
+<button id="stop_button" style="height:25px" onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){ UI.webworker.terminate(); UI.webworker=0;}" title="Termine la session en cours">STOP</button>
 <textarea name="entree" id="entree" size=60></textarea>
 </span>
+<b>Console</b>
+<button title="Effacer la console" onclick="var field=document.getElementById('output');field.innerHTML=''">Efface</button>
+<button title="Augmenter le nombre de lignes" onclick="var field=document.getElementById('output');var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)+20 ;s=s+'px';field.style.maxHeight =s ;">+</button>
+<button title="Diminuer le nombre de lignes" onclick="var field=document.getElementById('output');var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=Math.max(eval(s)-20,40) ;s=s+'px';field.style.maxHeight =s ;">-</button>
+<div id="output" style="max-height: 200px; overflow:auto"></div>
 <hr>
 
-<span id="help">
-<button onclick="document.getElementById('help').style.display='none';">Masquer.</button>
-Cette feuille de calcul est compos&eacute;e de :
-<ul>
-  <li> un logo Xcas et un panel de boutons permettant de restaurer/sauvegarder
-  une session et de g&eacute;rer l'historique, la corbeille et les
-  variables. Lorsque l'historique est vide, le panel est
-  r&eacute;duit &agrave; insertion d'une session, consultation des
-  manuels et configuration. S'il n'est pas vide, notez le lien Clone
-  qui permet de cloner une session existante, ce qui peut servir si
-  le noyau de calcul formel a crash&eacute; ou pour copier-coller
-  vers un email ou une page web.
-  </li>
-  <li> un <b>historique</b> (vide au d&eacute;but).
-  Les lignes de commande y apparaissent en noir, les r&eacute;sultats en
-  bleu, les boutons ↑ et ↓ permettent de d&eacute;placer un niveau
-  dans l'historique, le bouton bleu ~ permet d'avoir une valeur
-  num&eacute;rique du r&eacute;sultat. Vous pouvez modifier une ligne
-  de commande de l'historique et valider en cliquant sur le bouton ok
-  (attention Entree ne valide pas mais ajoute un saut de ligne). Vous
-  pouvez placer un niveau dans la corbeille avec le bouton
-  d'effacement &agrave; droite du niveau (pour l'effacer
-  d&eacute;finitivement cliquer sur le bouton Vider de la Corbeille,
-  pour le restaurer cliquer sur le bouton Restaurer de la Corbeille). 
-  </li>
-  <li> une <b>ligne de commande</b>, on y tape des commandes Xcas, et on
-  valide en cliquant sur le bouton ok ou en tapant Entree.
-  <br>
-    Vous pouvez entrer un <b>commentaire</b> en tapant une ligne de commande
-  commencant par <tt>//</tt> (vous pouvez utiliser des commandes de
-  balisage HTML dans un commentaire).
-  <br>
-  Pour vous aider &agrave; remplir la ligne de commande,
-  vous pouvez cliquer sur le bouton <button onclick="document.getElementById('keyboard').style.display='inline';">clavier</button> ci-dessus
-  et d&eacute;placer la souris pr&egrave;s des touches du clavier
-  scientifique. Avec Firefox, vous avez un menu de commande
-  en cliquant avec le bouton droit
-  sur le mot Commande.
-  <br>
-  Vous pouvez taper (le d&eacute;but) du nom d'une commande
-  (par exemple <tt>factor</tt>) puis
-  la touche <button>F1</button> ou <button>Tab</button>
-  ou cliquer sur le bouton <button>?</button>
-  pour obtenir une
-  <b>aide courte</b> sur la commande.
-  <br>
-  Vous pouvez vous inspirer des <a href="#exemples">exemples ci-dessous</a>
-  et consulter la
-  <a
-  href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr">documentation
-  de Xcas</a>.
-  </li>
-  <li> un <b>clavier scientifique</b>
-  que l'on peut faire apparaitre ou disparaitre
-  entre l'historique des commandes et la ligne de
-  commande (bouton clavier &agrave; droite de la ligne de commande).
-  </li>
-  <li>
-  Le <b>tutoriel</b> que vous lisez, pour le faire disparaitre 
-  cliquez sur le bouton
-  <button onclick="document.getElementById('help').style.display='none';">Tutoriel</button>
-  &agrave; droite de Commande.
-  </li>
-  <li>
-  un <b>&eacute;diteur de programmes</b> avec coloration syntaxique
-  (cliquer sur Editeur pour le cacher ou le montrer). On y
-  tape des programmes en syntaxe Xcas, pour les valider cliquer sur le
-  bouton ok situ&eacute; entre le bouton Editeur et l'&eacute;diteur.
-  </li>
-  <li>
-  une zone affichant des <b>graphes 3d</b> lorsqu'on ex&eacute;cute une commande
-  ayant une sortie graphique 3d.
-  </li>
-  <li>
-  une <b>console</b> qui affiche des messages.
-  </li>
-</ul>
-Vous pouvez <b>sauvegarder</b> l'historique
-ou <b>exporter</b> la feuille de calcul. La sauvegarde
-  occupe peu de place et s'ouvre depuis cette page avec le bouton
-  Charger, l'export occupe plus de place mais
-  permet de publier le fichier HTML comme une page autonome.
-  Vous pouvez sauvegarder les graphes 2d au format SVG avec le bouton
-  save &agrave; droite du graphe. Le fichier SVG cr&eacute;&eacute;
-  est au format 1.2 (il utilise la balise
-  <tt>vector-effect="non-scaling-stroke"</tt> qui n'est pas compris
-  par tous les visualisateurs ou convertisseurs).
-  <br>
-  Sous Firefox, pour pouvoir
-  choisir l'emplacement de sauvegarde et &eacute;craser
-  une version ant&eacute;rieure, cocher Toujours demander...
-  dans Pr&eacute;f&eacute;rences,
-  G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements)
-
-<a name="exemples"><h3>Quelques exemples :</h3></a>
-<ul>
-  <li> <b>Alg&egrave;bre :</b>
-  Vous pouvez d&eacute;velopper une expression avec
-  <button onclick="UI.insert(UI.focused,'normal(')"><tt>normal</tt></button>
-  par exemple <button
-  onclick="UI.insert(UI.focused,'(x+1)^4')"><tt>(x+1)^4</tt></button>.
-  R&eacute;ciproquement,
-  <button
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'factor(')"><tt>factor</tt></button>
-  (respectivement <button
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cfactor(')"><tt>cfactor</tt></button>)
-  factorise une expression (par exemple <button onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x^4-1')"><tt>x^4-1</tt></button>)
-  sur Q (resp. Q[i]). Pour factoriser un entier, utiliser la commande
-  <button onclick="UI.insert(UI.focused,'ifactor(')"><tt>ifactor</tt></button>.
-  Autres exemples : <tt>simplify(sin(3x)/sin(x)); gcd(x^4-1,x^3-1)
-  </tt> (simplification, PGCD).
-  </li>
-  <li> <b>R&eacute;soudre :</b>
-    <tt> solve(x^2-3*x+2=0);</tt> et <tt>csolve(x^2=2*i);</tt>
-  permettent de r&eacute;soudre une &eacute;quation sur les
-  r&eacute;els ou les complexes. Exemple de r&eacute;solution de syst&egrave;me
-  <tt>solve([x+y=1,x-y=3],[x,y])</tt>. Pour r&eacute;soudre
-  num&eacute;riquement, utiliser <tt>fsolve</tt>.
-  </li>
-  <li><b>Analyse :</b>
-  Vous pouvez d&eacute;finir une fonction <tt>f</tt> par
-  <button onclick="UI.insert(UI.focused,'f(x):=sin(x^2):;')"><tt>f(x):=sin(x^2)</tt></button>, puis calculer la valeur
-  de <tt>f</tt> ou de sa d&eacute;riv&eacute;e par
-  <tt>f(sqrt(pi)); f'(2); f'(y) </tt>. Une primitive d'une
-  expression se calcule par <tt>int(1/(x^4-1));</tt>,
-  pour une int&eacute;grale entre deux bornes
-  <tt>int(1/(x^4+1)^4,x,0,+infinity);</tt>. Enfin 
-  <tt>limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom);</tt>
-  permettent de calculer une limite ou un d&eacute;veloppement de Taylor.
-  </li>
-  <li> <b>Alg&egrave;bre lin&eacute;aire :</b>
-    <button onclick="UI.insert(UI.focused,'A:=[[1,2],[3,4]]')"><tt>A:=[[1,2],[3,4]];</tt></button>
-  d&eacute;finit une matrice <tt>A</tt> ayant 2 lignes et 2 colonnes,
-  on donne les coefficients par lignes. Quelques instructions
-  <tt>inv(A); det(A-x*idn(A)); A[0,0]; rref(A);
-  eigenvalues(A); eigenvectors(A);</tt> (inverse, d&eacute;terminant,
-  matrice identit&eacute;, acc&egrave;s &agrave; un
-  &eacute;l&eacute;ment
-  de matrice, r&eacute;duction sous forme &eacute;chelonn&eacute;e,
-  valeurs et vecteurs propres).
-  </li>
-  <li> <b>Graphes </b> (pour les graphes 3d, vous pouvez changer le point de
-  vue) :
-  <tt>plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])</tt> affiche
-  le graphe des fonctions sin(x) et x-x^3/6 en 2d, alors que
-  <tt>plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);</tt>
-  affiche un graphe 3d avec un plan.
-  Vous pouvez aussi utiliser de nombreuses instructions
-  g&eacute;om&eacute;triques: <tt>droite, cercle, ellipse, ...</tt>
-  </li>
-  <li>
-  <b>Programmes :</b> vous pouvez taper un programme dans l'&eacute;diteur de
-  texte ci-dessous. Plusieurs syntaxes sont accept&eacute;es, pour
-  le moment la coloration syntaxique fonctionne avec la syntaxe Xcas
-  qui est tr&egrave;s proche de Javascript. Par exemple
-  <br>
-  <tt>function f(x){
-  <br>
-  &nbsp;&nbsp;var y;
-  <br>
-  &nbsp;&nbsp;if (x &gt; 100) return "Nombre trop grand";
-  <br>
-  &nbsp;&nbsp;for (y:=0;y &lt; x;y++){
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;print(y+"^2="+y^2);
-  <br>
-  &nbsp;&nbsp;}
-  <br>
-  }
-  </tt>
-  </li>
-  </ul>
-</span>
 
 <table border="0" align="left" summary="">
   <tr>
     <td>
-      <button onclick="if(document.getElementById('progform').style.display=='none'){
-      document.getElementById('progform').style.display='block';
+      <button onclick="if(document.getElementById('boutons_prog').style.display=='none'){
       document.getElementById('boutons_prog').style.display='block';
      }      
      else {
-      document.getElementById('progform').style.display='none';
       document.getElementById('boutons_prog').style.display='none';
-     }"
-  title="Affiche ou cache l'&eacute;diteur de programmes">Editeur
+     } UI.focused.focus();"
+  title="Affiche ou cache les assistants pour programmer">Program
   :</button>
       <span id="boutons_prog" style="display:none">
    <button onclick="UI.insert(UI.focused,'// ')" title="Commentaire">//</button>
@@ -679,7 +689,7 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
       </span>
       <div id="assistant_prog" style="display:none">
 	  <b>Nouvelle fonction</b>
-	  <button onclick="UI.insert(cmprog,'function '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+'){\n  local '+document.getElementById('localvars').value+';\n  \n  return '+document.getElementById('returnedvar').value+';\n}:;\n');document.getElementById('assistant_prog').style.display='none';">Cr&eacute;er</button> <button onclick="document.getElementById('assistant_prog').style.display='none'">Annuler</button><br>
+	  <button onclick="UI.insert(UI.focused,'function '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+'){\n  local '+document.getElementById('localvars').value+';\n  \n  return '+document.getElementById('returnedvar').value+';\n}:;\n');document.getElementById('assistant_prog').style.display='none';">Cr&eacute;er</button> <button onclick="document.getElementById('assistant_prog').style.display='none'">Annuler</button><br>
 	  nom de la fonction <textarea id="funcname" rows=1>f</textarea><br>
 	  liste des arguments <textarea id="argsname" rows=1>x,y</textarea><br>
 	  variables locales <textarea id="localvars" rows=1>z</textarea><br>
@@ -726,21 +736,6 @@ ou <b>exporter</b> la feuille de calcul. La sauvegarde
       onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"
       onmouseup="UI.canvas_pushed=false;"   >
       </canvas>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <button onclick="if(document.getElementById('output').style.display=='none'){
-      document.getElementById('output').style.display='inherit';
-      }
-      else {
-      document.getElementById('output').style.display='none';
-      }"
-      >
-      Console</button>
-<textarea class="emscripten" id="output" rows="5"
-cols="80" title="Console"></textarea>
-
     </td>
   </tr>
 </table>
@@ -1298,6 +1293,44 @@ cols="80" title="Console"></textarea>
    // Module.print(text+ ' '+s);
    return s;
   },
+  webworker:0,
+  withworker:0,
+  casevalcb: function(text,callback,args){
+   // prepare for webworker: casevalcb will run docaseval in a worker
+   // too slow to be useful, and plotting does not work...
+   if (UI.withworker && !!window.Worker) {
+     if (!UI.webworker){
+      UI.webworker = new Worker("giacworker.js");
+      console.log('worker created ');
+      UI.webworker.onmessage =  function(e){
+       var s=e.data[1];
+       if (e.data[0]=='cas') Module.print(s);
+       if (e.data[0]=='print') Module.print(s);
+      }
+     }
+     // the worker will do the evaluation and post s
+     // onmessage = function(e){    importScripts('giac.js');     var docaseval = Module.cwrap('caseval',  'string', ['string']);    var value=e.data[0];    var n=value.search(';');    if (n<0 || n>=value.length)	value='add_autosimplify('+value+')';    var s,err;try {s=docaseval(value); } catch(err){ }    postMessage([s]);}
+     // callback(s,args) is run by
+     // passing text
+      UI.webworker.onmessage =  function(e){
+       var s=e.data[1];
+       if (e.data[0]=='cas') callback(s,args);
+       if (e.data[0]=='print') Module.print(s);
+      }
+     UI.webworker.postMessage([text]);
+     return;
+     // STOP: myWorker.terminate()
+   }
+   var docaseval = Module.cwrap('caseval',  'string', ['string']);
+   var value=text;
+   var n=value.search(';');
+   if (n<0 || n>=value.length)
+     value='add_autosimplify('+value+')';
+   var s,err;
+   try {s=docaseval(value); } catch(err){ }
+   // Module.print(text+ ' '+s);
+   callback(s,args);
+  },
   ckenter: function(event,field){
     var key = event.keyCode;
     if (key != 13 || event.shiftKey) return true;
@@ -1310,7 +1343,18 @@ cols="80" title="Console"></textarea>
      s = UI.base_url+"xcasfr.html#"+s;
      //Module.print(s);
      document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Cloner</a>';
+     document.getElementById('themailto').innerHTML='<a href="mailto:?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : '+UI.rewritestring(s)+'">E-mail</a>';
    }
+  },
+  rewritestring: function(s){
+    var res,i,l;
+    l=s.length; res='';
+    for (i=0;i<l;++i){
+      if (s[i]=='&'){ res += "%26"; continue; }
+      if (s[i]=='#'){ res += "%23"; continue; }
+      res += s[i];
+    }
+    return res;
   },
   makelink: function(start){
     var s='';
@@ -1382,7 +1426,8 @@ cols="80" title="Console"></textarea>
    }
    // Module.print(s);
    s=s.replace(/\"/g,'%22');
-   // Module.print(s);
+   s=s.replace(/>/g,'%3e');
+   // console.log(s);
    return s;
   },
   canvas_mousemove:function(event,no){
@@ -1423,7 +1468,7 @@ cols="80" title="Console"></textarea>
    var st=document.getElementById('document_style');
    st.innerHTML=s;
   },
-  set_config:function(){
+  config_string:function(){
    var form=document.getElementById('config');
    if (form.qa.checked) UI.qa=true; else UI.qa=false;
    UI.set_config_width();
@@ -1434,19 +1479,25 @@ cols="80" title="Console"></textarea>
    else
      UI.docprefix="file://"+form.doc_path.value;
    if (form.prettyprint.checked) UI.prettyprint=true; else UI.prettyprint=false;
+   if (form.worker_mode.checked) UI.withworker=true; else UI.withworker=false;
    UI.caseval("autosimplify("+form.autosimp_level.value+")");
    //Module.print(st.innerHTML);
    s='Digits:=';
    s += form.digits_mode.value;
    s += '; angle_radian:=';
    if (form.angle_mode.checked) s += 1; else s += 0;
-   s += '; complex_mode(';
+   s += '; complex_mode:=';
    if (form.complex_mode.checked) s += 1; else s += 0;
-   s += '); with_sqrt(';
+   s += '; with_sqrt(';
    if (form.sqrt_mode.checked) s += 1; else s += 0;
+   s += '); step_infolevel(';
+   if (form.step_mode.checked) s += 1; else s += 0;
    s += ');';
    // Module.print(s);
-   UI.addhelp(' ',s);
+   return s;
+  },
+  set_config:function(){
+   UI.addhelp(' ',UI.config_string());
    document.getElementById('config').style.display='none';
    if (UI.focusaftereval) UI.focused.focus();
   },
@@ -1469,6 +1520,7 @@ cols="80" title="Console"></textarea>
     document.getElementById('history2').style.display='block';
     document.getElementById('history3').style.display='block';
     document.getElementById('history4').style.display='block';
+    document.getElementById('startup').style.display='none';
   },
   loadfile:function(oFiles){
     var nFiles = oFiles.length;
@@ -1632,25 +1684,16 @@ cols="80" title="Console"></textarea>
   if (value.length >= 2 && value.substr(0,2)=='//'){
    out=value;
   } else {
-    if (docaseval){
+    if (docaseval) {
       //Module.print(value);
-      out=UI.caseval(value);
-      // Module.print(out);
-      if (out.substr(1,4)=='<svg' || out.substr(0,5)=='gl3d '){
-        s=out; out='Done_graphic';
-      }
-      else {
-        if (UI.prettyprint){
-         if (UI.usemathjax)
-           s='latex(quote('+out+'))';
-         else
-           s='mathml(quote('+out+'),1)'; //Module.print(s);
-         s=UI.caseval(s);
-        } else s=out;
-      }
+      out=UI.casevalcb(value,UI.eval_cmdline1cb,value);
+      return;
     }
     else { out=' Non evalue '; s=out; }
   }
+  UI.eval_cmdline1end(value,out,s);
+  },
+  eval_cmdline1end:function(value,out,s){
   var add=UI.addinput(value,out,s);
   //var s=UI.caseval('mathml(quote('+value+'),1)');
   //add += '&nbsp;&nbsp;'+s.substr(1,s.length-2);
@@ -1669,6 +1712,22 @@ cols="80" title="Console"></textarea>
   if (UI.prettyprint && UI.usemathjax && UI.histcount>0)
     //console.log('"hist'+(UI.histcount-1)+'"');
     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'"hist'+(UI.histcount-1)+'"']);
+  },
+  eval_cmdline1cb: function(out,value){
+   var s;
+   if (out.substr(1,4)=='<svg' || out.substr(0,5)=='gl3d ') {
+     s=out; out='Done_graphic';
+   }
+   else {
+       if (UI.prettyprint){
+         if (UI.usemathjax)
+           s='latex(quote('+out+'))';
+         else
+           s='mathml(quote('+out+'),1)'; //Module.print(s);
+         s=UI.caseval(s);
+        } else s=out;
+   }
+   UI.eval_cmdline1end(value,out,s);
   },
   set_locale: function(){
   if (UI.langue==-1){ 
@@ -1772,7 +1831,14 @@ cols="80" title="Console"></textarea>
     //console.log('"hist'+(UI.histcount-1)+'"');
     MathJax.Hub.Queue(["Typeset",MathJax.Hub,'"hist'+(UI.histcount-1)+'"']);
   }
-  if (UI.focusaftereval) par.focus();
+  if (UI.focusaftereval){
+    par=par.parentNode.nextSibling;
+    if (par==null) cmentree.focus(); // console.log(par);
+    else {
+      par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
+      par.focus();
+    }
+   }
   },
   eval_level: function(field){
    // ? use cur.nodeType instead of search?
@@ -1962,6 +2028,13 @@ gr(text);
   UI.scrollatend(helpoutput.parentNode); // focus at end
   if (UI.focusaftereval) UI.focused.focus();
   },
+  clean:function(text,quote){
+    var cmd=text;
+    if (quote) cmd=cmd.replace('\'','\\\'','g');
+    cmd=cmd.replace(/>/g,'&gt;');
+    cmd=cmd.replace(/</g,'&lt;');
+    return cmd;
+  },
   renderhelp: function(text){
   var s=text.substr(1,text.length-2);
   var pos0=s.search("</b>");
@@ -1990,11 +2063,11 @@ gr(text);
   while (true){
     pos1=voiraussi.search(',');
     if (pos1 < 0) break;
-    var cmd=voiraussi.substr(0,pos1);
+    var cmd=UI.clean(voiraussi.substr(0,pos1),false);
     if (found)
       s += '<button onmousedown="event.preventDefault()" onclick="UI.addhelp(\'?\',\''+cmd+'\')">'+cmd+'</button>';
     else
-      s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+cmd+'(\')">'+cmd+'</button>';
+      s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+UI.clean(cmd,true)+'(\')">'+cmd+'</button>';
     voiraussi = voiraussi.substr(pos1+1,voiraussi.length-pos1-1);
   }
   if (found)
@@ -2008,13 +2081,13 @@ gr(text);
     pos1=examples.search(';');
     if (pos1<0) break;
     var cmd=examples.substr(0,pos1);
-    cmd=cmd.replace(/>/g,'&gt;');
-    cmd=cmd.replace(/</g,'&lt;');
-    s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+cmd+'\')">'+cmd+'</button>';
+    cmd=UI.clean(cmd,false);
+    s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+UI.clean(cmd,true)+'\')">'+cmd+'</button>';
     examples = examples.substr(pos1+1,examples.length-pos1-1);
    }
   }
-  s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+examples+'\')">'+examples+'</button>';
+  s += '<button onmousedown="event.preventDefault()" onclick="UI.insert(UI.focused,\''+UI.clean(examples,true)+'\')">'+examples+'</button>';
+  //console.log(s);
   return s;
   },
 getsel:function(field){
@@ -2040,6 +2113,7 @@ moveCaret: function(field, charCount) {
   erase: function(field){
   var par=field.parentNode;
   par=par.parentNode;
+  //par.style.display='none';
   par.style.visibility='hidden';
   if (UI.focusaftereval) UI.focused.focus();
   //par=par.parentNode;
@@ -2050,6 +2124,7 @@ moveCaret: function(field, charCount) {
   erase_all: function(field){
     var cur=field.firstChild;
     while (cur){
+     //cur.firstChild.style.display='none';
      cur.firstChild.style.visibility='hidden';
      cur=cur.nextSibling;
     }
@@ -2063,8 +2138,8 @@ moveCaret: function(field, charCount) {
   var hist=document.getElementById('mathoutput');
   var cur=hist.firstChild;
   while (cur){
-    if (cur.firstChild.style.visibility=='hidden')
-      cur.firstChild.style.visibility='visible';
+    //if (cur.style.display=='none') cur.style.display='block';
+    if (cur.firstChild.style.visibility=='hidden') cur.firstChild.style.visibility='visible';
     cur=cur.nextSibling;
   }
   },
@@ -2073,9 +2148,9 @@ moveCaret: function(field, charCount) {
   var cur=hist.firstChild;
   while (cur){
     var nxt=cur.nextSibling;
-    if (cur.firstChild.style.visibility=='hidden')
-      hist.removeChild(cur);
-    cur=nxt;
+    //if (cur.firstChild.style.display=='none') hist.removeChild(cur);
+    if (cur.firstChild.style.visibility=='hidden') hist.removeChild(cur);
+   cur=nxt;
   }
   },
 updatelevel: function(field){
@@ -2129,6 +2204,7 @@ updatelevel: function(field){
     }
   },
 insert: function(myField, myValue) {
+ console.log(myValue);
  if (UI.focusaftereval) myField.focus();
  if (myField.type!="textarea"){
   myField.replaceSelection(myValue);
@@ -2202,20 +2278,30 @@ insert: function(myField, myValue) {
   cmprog.on("blur",function(cm){ if (cm.getSelection().length > 0){ UI.selection=cm.getSelection();} });
   // connect to canvas  
  var Module = {
+        worker:false,
+        htmlcheck:true,
+        htmlbuffer:'',
         preRun: [],
         postRun: [],
         print: (function() {
           var element = document.getElementById('output');
-          element.value = ''; // clear browser cache
+          element.innerHTML='';// element.value = ''; // clear browser cache
           return function(text) {
-            // These replacements are necessary if you render to raw HTML
-            //text = text.replace(/&/g, "&amp;");
-            //text = text.replace(/</g, "&lt;");
-            //text = text.replace(/>/g, "&gt;");
-            //text = text.replace('\n', '<br>', 'g');
-            element.style.display='inherit';
-            element.value += text + "\n";
-    element.scrollTop = 99999; // focus on bottom
+            //console.log(text.charCodeAt(0));
+            if (text.length==1 && text.charCodeAt(0)==12){ element.innerHTML=''; return; }
+            if (text.length>=1 && text.charCodeAt(0)==2) {console.log('STX');Module.htmlcheck=false; htmlbuffer='';return;}
+            if (text.length>=1 && text.charCodeAt(0)==3) {console.log('ETX');Module.htmlcheck=true; element.style.display='inherit'; element.innerHTML += htmlbuffer;htmlbuffer='';element.scrollTop = 99999; return;}
+            if (Module.htmlcheck){
+            // These replacements are necessary if you render to raw HTML 
+             text = text.replace(/&/g, "&amp;");
+             text = text.replace(/</g, "&lt;");
+             text = text.replace(/>/g, "&gt;");
+             text = text.replace('\n', '<br>', 'g');
+             text += '<br>'
+             element.style.display='inherit';
+             element.innerHTML += text; // element.value += text + "\n";
+             element.scrollTop = 99999; // focus on bottom
+            } else htmlbuffer += text;
           };
         })(),
         printErr: function(text) {
@@ -2277,7 +2363,7 @@ insert: function(myField, myValue) {
   var form=document.getElementById('config');
   var hw=window.innerWidth-50;
   if (hw>=1000){ UI.qa=true; form.qa.checked=true;}
-  UI.set_config_width();
+  UI.caseval(UI.config_string()); //UI.set_config_width();
   var ua = window.navigator.userAgent;
   var old_ie = ua.indexOf('MSIE ');
   var new_ie = ua.indexOf('Trident/');
@@ -2292,7 +2378,6 @@ insert: function(myField, myValue) {
   }
  document.getElementById('apropos').style.display='none';
  document.getElementById('help').style.display='none';
- document.getElementById('startup').style.display='none';
  console.log("window.onload");
  var hist=document.getElementById('mathoutput');
  var doexec=false;
@@ -2308,6 +2393,7 @@ insert: function(myField, myValue) {
  // substr(1) to remove the `#`
  for(var i = 0; i < hashParams.length; i++){
     var s = hashParams[i];
+    s=s.replace('%3e','>','g');
     if (s.length && s.charAt(0)=='+'){
        if (!asked) doexec=true;
        UI.eval_cmdline1(s.substr(1),false);

@@ -4572,7 +4572,7 @@ namespace giac {
     }
     if (debug_infolevel>2)
       CERR << CLOCK() << " lcm deno done" << endl;
-#ifndef GIAC_HAS_STO_38
+#if !defined(GIAC_HAS_STO_38) && !defined(EMCC)
     if (
 	//a.front()._VECTptr->size()>=7 &&
 	is_integer_matrice(a) && is_integer_matrice(btran) && mmult_int(a,btran,res)
@@ -5888,10 +5888,11 @@ namespace giac {
     return true;
   }
 
-  bool is_integer_vecteur(const vecteur & m){
+  bool is_integer_vecteur(const vecteur & m,bool intonly){
     const_iterateur it=m.begin(),itend=m.end();
     for (;it!=itend;++it){
       if (it->type==_INT_) continue;
+      if (intonly) return false;
       if (it->type==_ZINT) continue;
       if (it->type==_CPLX && is_exactly_zero(*(it->_CPLXptr+1))) continue;
       return false;
@@ -5900,10 +5901,10 @@ namespace giac {
     return true;
   }
 
-  bool is_integer_matrice(const matrice & m){
+  bool is_integer_matrice(const matrice & m,bool intonly){
     const_iterateur it=m.begin(),itend=m.end();
     for (;it!=itend;++it)
-      if (it->type!=_VECT || !is_integer_vecteur(*it->_VECTptr)) return false;
+      if (it->type!=_VECT || !is_integer_vecteur(*it->_VECTptr,intonly)) return false;
     return true;
   }
 
@@ -6745,7 +6746,7 @@ namespace giac {
 	    res = *r2sym(res,lv,contextptr)._VECTptr;
 	    pivot1 = r2sym(pivot1,lv,contextptr);
 	  }
-	  gprintf(step_rrefpivot,gettext("Matrix %gen\nReducing column %gen using pivot %gen at row %gen"),makevecteur(res,c+1,pivot1,pivotline+1),contextptr);
+	  gprintf(step_rrefpivot,gettext("%gen\nReduce column %gen with pivot %gen at row %gen"),makevecteur(res,c+1,pivot1,pivotline+1),contextptr);
 	}
 	// exchange lines if needed
 	if (l!=pivotline){
@@ -6778,7 +6779,7 @@ namespace giac {
 		coeff1=r2sym(coeff1,lv,contextptr);
 		coeff2=r2sym(coeff2,lv,contextptr);
 	      }
-	      gprintf(step_rrefpivot0,gettext("Matrix %gen\nRow operation L%gen <- (%gen)*L%gen-(%gen)*L%gen"),makevecteur(res,l+1,coeff1,ltemp+1,coeff2,l+1),contextptr);
+	      gprintf(step_rrefpivot0,gettext("L%gen <- (%gen)*L%gen-(%gen)*L%gen on %gen"),makevecteur(ltemp+1,coeff1,ltemp+1,coeff2,l+1,res),contextptr);
 	    }
 	    if (ltemp!=l){
 	      if (algorithm!=RREF_GAUSS_JORDAN) // M[ltemp] = rdiv( pivot * M[ltemp] - M[ltemp][pivotcol]* M[l], bareiss);
@@ -6803,7 +6804,7 @@ namespace giac {
 		coeff1=r2sym(coeff1,lv,contextptr);
 		coeff2=r2sym(coeff2,lv,contextptr);
 	      }
-	      gprintf(step_rrefpivot0,gettext("Matrix %gen\nRow operation L%gen <- (%gen)*L%gen-(%gen)*L%gen"),makevecteur(res,l+1,coeff1,ltemp+1,coeff2,l+1),contextptr);
+	      gprintf(step_rrefpivot0,gettext("L%gen <- (%gen)*L%gen-(%gen)*L%gen on %gen"),makevecteur(ltemp+1,coeff1,ltemp+1,coeff2,l+1,res),contextptr);
 	    }
 	    if (algorithm!=RREF_GAUSS_JORDAN)
 	      linear_combination(pivot,M[ltemp],-M[ltemp][pivotcol],M[l],bareiss,M[ltemp],eps,(c+1)*(rref_or_det_or_lu>0));
@@ -13374,7 +13375,7 @@ namespace giac {
   bool mlu(const matrice & a0,vecteur & P,matrice & L,matrice & U,GIAC_CONTEXT){
     matrice a(a0);
     bool modular=false;
-    if (!is_squarematrix(a)){
+    if (!ckmatrix(a)){ // activate non-square matrix (instead of is_squarematrix)
       if (a.front().type==_VECT && !a.front()._VECTptr->empty() && (a.back()==at_irem || a.back()==at_ichinrem)){
 	modular=true;
 	a=*a.front()._VECTptr;
@@ -13401,7 +13402,7 @@ namespace giac {
       vecteur & v=*res[i]._VECTptr;
       L.push_back(new ref_vecteur(s));
       vecteur & wl=*L.back()._VECTptr;
-      for (int j=0;j<i;++j){ // L part
+      for (int j=0;j<i && j<C;++j){ // L part
 	wl[j]=v[j];
       }
       wl[i]=1;
@@ -14840,7 +14841,7 @@ namespace giac {
 	  nl=(*tmp._STRNGptr)[0];
       }
       if (s>3){
-	tmp=g[1];
+	tmp=g[3];
 	if (tmp.type==_STRNG && !tmp._STRNGptr->empty())
 	  decsep=(*tmp._STRNGptr)[0];
       }

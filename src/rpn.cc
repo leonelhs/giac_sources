@@ -765,7 +765,8 @@ namespace giac {
 	  gen g=identificateur(it->first);
 	  if (!equalposcomp(*keywordsptr,g)){
 	    if (val){
-	      g=symb_sto(it->second,g);
+	      g=symbolic(at_equal,makesequence(g,it->second));
+	      //g=symb_sto(it->second,g);
 	    }
 	    res.push_back(g);
 	  }
@@ -2994,6 +2995,11 @@ namespace giac {
   static define_unary_function_eval (__VIEWS,&_VIEWS,_VIEWS_s);
   define_unary_function_ptr5( at_VIEWS ,alias_at_VIEWS,&__VIEWS,_QUOTE_ARGUMENTS,T_RETURN);
   
+#ifdef USE_GMP_REPLACEMENTS
+  unsigned long long mpz_get_ull(mpz_t n){
+    return 0; // FIXME!!!!
+  }
+#else
   unsigned long long mpz_get_ull(mpz_t n){
     unsigned int lo, hi;
     mpz_t tmp;
@@ -3009,6 +3015,7 @@ namespace giac {
 
     return (((unsigned long long)hi) << 32) + lo;
   }
+#endif
 
   gen _pointer(const gen & args,GIAC_CONTEXT){
     if (args.type!=_VECT || args._VECTptr->size()!=2)
@@ -3257,7 +3264,14 @@ namespace giac {
   static const char _testfunc_s[]="testfunc";
   static define_unary_function_eval(__testfunc,&_testfunc,_testfunc_s);
   define_unary_function_ptr5( at_testfunc ,alias_at_testfunc,&__testfunc,0,true);
+#else
 
+  gen _testfunc(const gen & g0,GIAC_CONTEXT){
+    return g0;
+  }
+  static const char _testfunc_s[]="testfunc";
+  static define_unary_function_eval(__testfunc,&_testfunc,_testfunc_s);
+  define_unary_function_ptr5( at_testfunc ,alias_at_testfunc,&__testfunc,0,true);
 #endif // old code not used anymore
 
 #ifdef DOUBLEVAL

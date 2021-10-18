@@ -2340,7 +2340,7 @@ namespace xcas {
       block=block_signal;
       block_signal=true;
     }
-#ifdef __APPLE__
+#if defined __APPLE__ && !defined GRAPH_WINDOW
     GLContext context;
     if (!glcontext){ // create context
       GLContext shared_ctx = 0;
@@ -2380,9 +2380,13 @@ namespace xcas {
 #else
     gl_start();
     glEnable(GL_SCISSOR_TEST);
-    glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
     // glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+#ifdef GRAPH_WINDOW
+    glViewport(0,0, w(), h()); // lower left
+#else
+    glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
     glViewport(x(),win->h()-y()-h(), w(), h()); // lower left
+#endif
     gl_font(FL_HELVETICA,labelsize());
     // GLint viewport[4];
     // glGetIntergerv(GL_VIEWPORT,viewport);
@@ -2449,7 +2453,7 @@ namespace xcas {
   }
 
   Graph3d::~Graph3d(){ 
-#ifdef __APPLE__
+#if defined __APPLE__ && !defined GRAPH_WINDOW
     if (glcontext){
       aglSetCurrentContext( NULL );
       aglSetWindowRef((GLContext) glcontext, NULL );    

@@ -312,6 +312,7 @@ namespace xcas {
     Fl_Group * barre;
     xcas::HScroll * s;
     Fl_Check_Button * checkdisp;
+    Fl_Window * win;
     int disposition;
     Figure(int X,int Y,int W,int H,int L,bool dim3=false);
     void save_figure_as(const std::string & s);
@@ -319,6 +320,7 @@ namespace xcas {
     void rename(const std::string & s);
     virtual void resize(int X,int Y,int W,int H,double dhp=0.25,double dgeo=0.5,double dmp=0.25);    
     virtual int handle(int event);
+    virtual void draw();
   };
 
   std::string figure_insert(Figure * f);

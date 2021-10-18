@@ -97,8 +97,9 @@ namespace giac {
       return zero;
     // rational operators are treated first for efficiency
     if (s.sommet==at_plus){
-      if (step_infolevel>1 && count_noncst(s.feuille,i)>1)
-	gprintf(gettext("Derivative of a sum: (u+v+...)'=u'+v'+...\n  with u,v,...=%gen"),makevecteur(s.feuille),contextptr);
+      bool do_step=step_infolevel>1 && count_noncst(s.feuille,i)>1;
+      if (do_step)
+	gprintf(gettext("Derivative of %gen apply linearity: (u+v+...)'=u'+v'+..."),makevecteur(s),contextptr);
       if (s.feuille.type!=_VECT)
 	return derive(s.feuille,i,contextptr);
       vecteur::const_iterator iti=s.feuille._VECTptr->begin(),itend=s.feuille._VECTptr->end();
@@ -119,11 +120,15 @@ namespace giac {
 	return v.front();
       if (v.empty())
 	return zero;
-      return _plus(gen(v,_SEQ__VECT),contextptr); // symbolic(at_plus,v);
+      gen res=_plus(gen(v,_SEQ__VECT),contextptr); // symbolic(at_plus,v);
+      if (do_step)
+	gprintf(gettext("Hence derivative of %gen by linearity is %gen"),makevecteur(g_orig,res),contextptr);
+      return res;
     }
     if (s.sommet==at_prod){
-      if (step_infolevel>1 && count_noncst(s.feuille,i)>1)
-	gprintf(gettext("Derivative of a product: (u*v*...)'=u'*v*...+u*v'*...+...\n  with u,v,...=%gen"),makevecteur(s.feuille),contextptr);
+      bool do_step=step_infolevel>1 && count_noncst(s.feuille,i)>1;
+      if (do_step)
+	gprintf(gettext("Derivative of %gen, apply product rule: (u*v*...)'=u'*v*...+u*v'*...+..."),makevecteur(s),contextptr);
       if (s.feuille.type!=_VECT)
 	return derive(s.feuille,i,contextptr);
       vecteur::const_iterator itbegin=s.feuille._VECTptr->begin(),itj,iti,itend=s.feuille._VECTptr->end();
@@ -153,7 +158,10 @@ namespace giac {
 	return v.front();
       if (v.empty())
 	return zero;
-      return symbolic(at_plus,gen(v,_SEQ__VECT));
+      gen res=symbolic(at_plus,gen(v,_SEQ__VECT));
+      if (do_step)
+	gprintf(gettext("Hence derivative of %gen by product rule is %gen"),makevecteur(g_orig,res),contextptr);
+      return res;
     }
     if (s.sommet==at_neg)
       return -derive(s.feuille,i,contextptr);
@@ -161,15 +169,15 @@ namespace giac {
       if (s.feuille.type!=_VECT || s.feuille._VECTptr->size()!=2)
 	return gensizeerr(contextptr);
       gen base = s.feuille._VECTptr->front(),exponent=s.feuille._VECTptr->back();
-      gen dbase=derive(base,i,contextptr),dexponent=derive(exponent,i,contextptr);
-      // diff(base^exponent)=diff(exp(exponent*ln(base)))
-      // =base^exponent*diff(exponent)*ln(base)+base^(exponent-1)*exponent*diff(base)
       if (step_infolevel>1){
-	if (is_zero(dexponent))
-	  gprintf(gettext("Derivative of a power: %gen'=(%gen)*(%gen)'*%gen"),makevecteur(symb_pow(base,exponent),exponent,base,symb_pow(base,exponent-1)),contextptr);
+	if (is_constant_wrt(exponent,i,contextptr))
+	  gprintf(gettext("Derivative of a power: (%gen)'=(%gen)*(%gen)'*%gen"),makevecteur(symb_pow(base,exponent),exponent,base,symb_pow(base,exponent-1)),contextptr);
 	else
 	  gprintf(gettext("Derivative of a power: (%gen)'=%gen*(%gen)'*ln(%gen)+(%gen)*(%gen)'*%gen"),makevecteur(symb_pow(base,exponent),symb_pow(base,exponent),exponent,base,exponent,base,symb_pow(base,exponent-1)),contextptr);
       }
+      gen dbase=derive(base,i,contextptr),dexponent=derive(exponent,i,contextptr);
+      // diff(base^exponent)=diff(exp(exponent*ln(base)))
+      // =base^exponent*diff(exponent)*ln(base)+base^(exponent-1)*exponent*diff(base)
       gen expm1=exponent+gen(-1);
       if (is_zero(dexponent))
 	return exponent*dbase*pow(base,expm1,contextptr);
@@ -219,10 +227,15 @@ namespace giac {
       return gensizeerr(gettext("Derivative of rootof currently not handled"));
     }
     if (step_infolevel>1 && s.feuille.type!=_VECT){
-      if (s.feuille==i)
-	gprintf(gettext("Derivative of function %gen"),makevecteur(s.sommet),contextptr);
+      if (s.feuille==i){
+	int save_step=step_infolevel;
+	step_infolevel=0;
+	gen der=derive_SYMB(g_orig,i,contextptr);
+	step_infolevel=save_step;
+	gprintf(gettext("Derivative of elementary function %gen is %gen"),makevecteur(g_orig,der),contextptr);
+      }
       else
-	gprintf(gettext("Derivative of a composition: (f(u))'=u'*f'(u)\n  where f=%gen and u=%gen"),makevecteur(s.sommet,s.feuille),contextptr);
+	gprintf(gettext("Derivative of a composition: (%gen)'=(%gen)'*f'(%gen) where f=%gen"),makevecteur(g_orig,s.feuille,s.feuille,s.sommet),contextptr);
     }
     if (s.sommet==at_UTPT){
       if (s.feuille.type!=_VECT || s.feuille._VECTptr->size()!=2)
@@ -616,6 +629,8 @@ namespace giac {
       v[1]=eval(v[1],1,contextptr);
     if (is_undef(v))
       return v;
+    if (step_infolevel && v.size()==2)
+      gprintf(step_derive_header,gettext("===== Derive %gen with respect to %gen ====="),makevecteur(v[0],v[1]),contextptr);
     gen var,res;
     if (args.type!=_VECT && is_algebraic_program(v[0],var,res)){
       if (var.type==_VECT && var.subtype==_SEQ__VECT && var._VECTptr->size()==1)
@@ -731,13 +746,17 @@ namespace giac {
       arg=g._VECTptr->front();
       var=(*g._VECTptr)[1];
     }
+    int savestep=step_infolevel;
+    gprintf(gettext("===== Critical points for %gen ====="),makevecteur(arg),contextptr);
+    step_infolevel=0;
     gen d=_derive(makesequence(arg,var),contextptr);
     gen deq=_equal(makesequence(d,0*var),contextptr);
-    gprintf(step_extrema1,gettext("Critical points for %gen: solving %gen with respect to %gen"),makevecteur(arg,deq,var),contextptr);
     // *logptr(contextptr) << "Critical points for "<< arg <<": solving " << deq << " with respect to " << var << endl;
     int c=calc_mode(contextptr);
     calc_mode(0,contextptr);
     gen s=_solve(makesequence(deq,var),contextptr);
+    step_infolevel=savestep;
+    gprintf(step_extrema1,gettext("Derivative of %gen with respect to %gen is %gen\nSolving %gen with respect to %gen answer %gen"),makevecteur(arg,var,d,deq,var,s.type==_VECT?change_subtype(s,_SEQ__VECT):s),contextptr);
     calc_mode(c,contextptr);
     vecteur ls=lidnt(s);
     for (int i=0;i<int(ls.size());++i){
@@ -746,14 +765,16 @@ namespace giac {
     }
     if (s.type==_VECT){
       vecteur res;
+      step_infolevel=0;
       gen d2=_derive(makesequence(d,var),contextptr);
-      gprintf(step_extrema2,gettext("Hessian %gen"),makevecteur(d2),contextptr);
+      step_infolevel=savestep;
+      gprintf(step_extrema2,gettext("Hessian at %gen : %gen"),makevecteur(var,d2),contextptr);
       // *logptr(contextptr) << "Hessian " << d2 << endl;
       vecteur v=*s._VECTptr;
       int vs=int(v.size());
       for (int i=0;i<vs;++i){
 	gen g=simplify(subst(d2,var,v[i],false,contextptr),contextptr);
-	gprintf(step_extrema3,gettext("Hessian at %gen : % gen"),makevecteur(v[i],g),contextptr);
+	gprintf(step_extrema3,gettext("Hessian at %gen : %gen"),makevecteur(v[i],g),contextptr);
 	// *logptr(contextptr) << "Hessian at " << v[i] << ": " << g << endl;
 	if (ckmatrix(g)){
 	  g=evalf(g,1,contextptr);
@@ -776,7 +797,7 @@ namespace giac {
 	      break;
 	    }
 	    if (is_positive(-w[0][0]*w[j][j],contextptr)){
-	      gprintf(step_extrema5,gettext("%gen saddle point (2 eigenvalues with oppositie sign) %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
+	      gprintf(step_extrema5,gettext("%gen is a saddle point (2 eigenvalues with opposite sign) %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
 	      // *logptr(contextptr) << v[i] << " saddle point (2 eigenvalues with opposite sign) " << _diag(w,contextptr) << endl;
 	      break;
 	    }
@@ -784,11 +805,11 @@ namespace giac {
 	  if (j==ws){
 	    res.push_back(v[i]);
 	    if (is_positive(w[0][0],contextptr)){
-	      gprintf(step_extrema6,gettext("%gen local minimum %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
+	      gprintf(step_extrema6,gettext("%gen is a local minimum %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
 	      // *logptr(contextptr) << v[i] << " local minimum " << _diag(w,contextptr) << endl;
 	    }
 	    else {
-	      gprintf(step_extrema6,gettext("%gen local maximum %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
+	      gprintf(step_extrema6,gettext("%gen is a local maximum %gen"),makevecteur(v[i],_diag(w,contextptr)),contextptr);
 	      // *logptr(contextptr) << v[i] << " local maximum " << _diag(w,contextptr) << endl;
 	    }
 	  }
@@ -805,23 +826,23 @@ namespace giac {
 	  }
 	}
 	if (d%2==0 && is_strictly_positive(g,contextptr)){
-	  gprintf(step_extrema7,gettext("%gen local minimum"),makevecteur(v[i]),contextptr);
+	  gprintf(step_extrema7,gettext("%gen is a local minimum"),makevecteur(v[i]),contextptr);
 	  // *logptr(contextptr) << v[i] << " local minimum" << endl;
 	  res.push_back(v[i]);
 	  continue;
 	}
 	if (d%2==0 && is_strictly_positive(-g,contextptr)){
-	  gprintf(step_extrema7,gettext("%gen local maximum"),makevecteur(v[i]),contextptr);
+	  gprintf(step_extrema7,gettext("%gen is a local maximum"),makevecteur(v[i]),contextptr);
 	  // *logptr(contextptr) << v[i] << " local maximum" << endl;
 	  res.push_back(v[i]);
 	  continue;
 	}
 	if (d==NEWTON_DEFAULT_ITERATION){
-	  gprintf(step_extrema4,gettext("%gen critical point (unknown type)"),makevecteur(v[i]),contextptr);
+	  gprintf(step_extrema4,gettext("%gen is a critical point (unknown type)"),makevecteur(v[i]),contextptr);
 	  //*logptr(contextptr) << v[i] << " critical point (unknown type)" << endl;
 	}
 	else {
-	  gprintf(step_extrema8,gettext("%gen inflection point"),makevecteur(v[i]),contextptr);
+	  gprintf(step_extrema8,gettext("%gen is an inflection point"),makevecteur(v[i]),contextptr);
 	  // *logptr(contextptr) << v[i] << " inflection point" << endl;
 	}
       }
@@ -898,6 +919,145 @@ namespace giac {
   static const char _implicit_diff_s []="implicit_diff";
   static define_unary_function_eval (__implicit_diff,&_implicit_diff,_implicit_diff_s);
   define_unary_function_ptr5( at_implicit_diff ,alias_at_implicit_diff,&__implicit_diff,0,true);
+
+  // mode==0 for domain, ==1 for singular values
+  void domain(const gen & f,const gen & x,vecteur & eqs,vecteur &excluded,int mode,GIAC_CONTEXT){
+    vecteur v=lvarxwithinv(f,x,contextptr);
+    lvar(f,v);
+    for (int i=0;i<int(v.size());++i){
+      gen g=v[i];
+      if (g.is_symb_of_sommet(at_nop))
+	g=g._SYMBptr->feuille;
+      if (is_constant_wrt(g,x,contextptr))
+	continue;
+      if (g.type!=_SYMB)
+	continue;
+      gen gf=g._SYMBptr->feuille;
+      domain(gf,x,eqs,excluded,mode,contextptr);
+      unary_function_ptr & u=g._SYMBptr->sommet;
+      if (u==at_inv || u==at_Ei || (mode==1 && (u==at_ln || u==at_log10 || u==at_Ci))){
+	excluded=mergevecteur(excluded,gen2vecteur(_solve(makesequence(symb_equal(gf,0),x),contextptr)));
+	continue;
+      }
+      if (u==at_pow){
+	if (mode==1){
+	  excluded=mergevecteur(excluded,gen2vecteur(_solve(makesequence(symb_equal(gf[0],0),x),contextptr)));
+	  continue;
+	}
+	if (is_greater(gf[1],0,contextptr))
+	  eqs.push_back(symb_superieur_egal(gf[0],0));
+	else
+	  eqs.push_back(symb_superieur_strict(gf[0],0));
+	continue;
+      }
+      if (u==at_ln || u==at_log10 || u==at_Ci){
+	eqs.push_back(symb_superieur_strict(gf,0));
+	continue;
+      }
+      if (u==at_acosh){
+	if (mode==1)
+	  excluded=mergevecteur(excluded,gen2vecteur(_solve(makesequence(symb_equal(gf,0),x),contextptr)));
+	else
+	  eqs.push_back(symb_superieur_egal(gf,1));
+	continue;
+      }
+      if (u==at_asin || u==at_acos || u==at_atanh){
+	if (mode==1)
+	  excluded=mergevecteur(excluded,gen2vecteur(_solve(makesequence(symb_equal(pow(gf,2,contextptr),0),x),contextptr)));
+	else
+	  eqs.push_back(symb_inferieur_egal(pow(gf,2,contextptr),1));
+	continue;
+      }
+      if (u==at_tan){
+	if (mode==1)
+	  excluded=mergevecteur(excluded,gen2vecteur(_solve(makesequence(symb_equal(symb_cos(gf),0),x),contextptr)));
+	else
+	  eqs.push_back(symb_cos(gf));
+	continue;
+      }
+      if (u==at_sin || u==at_cos || u==at_exp || u==at_atan)
+	continue;
+      if (u==at_sinh || u==at_cosh || u==at_tanh)
+	continue;
+      if (u==at_floor || u==at_ceil || u==at_round || u==at_abs || u==at_sign || u==at_max || u==at_min)
+	continue;
+      *logptr(contextptr) << g << " function not supported, doing like if it was defined" << endl;
+    }
+  }
+  gen domain(const gen & f,const gen & x,int mode,GIAC_CONTEXT){
+    // domain of expression f with respect to variable x
+    if (x.type!=_IDNT){
+      gen domainx(identificateur("domainx"));
+      return domain(subst(f,x,domainx,false,contextptr),domainx,mode,contextptr);
+    }
+    vecteur eqs,excluded,res;
+    bool b=complex_mode(contextptr);
+    complex_mode(false,contextptr);
+#ifndef NO_STDEXCEPT
+    try {
+#endif
+      domain(f,x,eqs,excluded,mode,contextptr);
+      res=gen2vecteur(_solve(makesequence(eqs,x),contextptr));
+#ifndef NO_STDEXCEPT
+    } catch (std::runtime_error & e ) { *logptr(contextptr) << e.what() << endl;}
+#endif
+    complex_mode(b,contextptr);
+    comprim(excluded);
+    if (mode==1)
+      return excluded;
+    if (excluded.empty())
+      return res.size()==1?res.front():res;
+    vecteur tmp;
+    for (int i=0;i<excluded.size();++i){
+      tmp.push_back(symbolic(at_different,makesequence(x,excluded[i])));
+    }
+    if (res.size()==1 && res.front()==x)
+      return tmp.size()==1?tmp.front():symbolic(at_and,gen(tmp,_SEQ__VECT));
+    else {
+      // check if excluded values are solutions inside res
+      for (int i=0;i<int(res.size());++i){
+	for (int j=0;j<int(excluded.size());++j){
+	  gen resi=subst(res[i],x,excluded[j],false,contextptr);
+	  resi=eval(resi,1,contextptr);
+	  if (is_zero(resi))
+	    continue;
+	  if (!res[i].is_symb_of_sommet(at_and)){
+	    res[i]=symbolic(at_and,makesequence(res[i],tmp));
+	    continue;
+	  }
+	  vecteur v=gen2vecteur(res[i]._SYMBptr->feuille);
+	  v.push_back(tmp[j]);
+	  res[i]=symbolic(at_and,gen(v,_SEQ__VECT));
+	}
+      }
+      return res;
+    }
+    // not reached
+    if (res.size()==1){
+      tmp.insert(tmp.begin(),res.front());
+      return symbolic(at_and,gen(tmp,_SEQ__VECT));
+    }
+    tmp.insert(tmp.begin(),symbolic(at_ou,gen(res,_SEQ__VECT)));
+    return symbolic(at_and,gen(tmp,_SEQ__VECT));
+  }
+  gen _domain(const gen & args,GIAC_CONTEXT){
+    if (is_undef(args)) return args;
+    if (args.type!=_VECT || args.subtype!=_SEQ__VECT)
+      return domain(args,vx_var,0,contextptr);
+    vecteur v=*args._VECTptr;
+    if (v.size()<2)
+      return gensizeerr(contextptr);
+    if (is_integral(v[1]))
+      v.insert(v.begin()+1,vx_var);
+    if (v.size()==2)
+      v.push_back(0);
+    if (v[2].type!=_INT_)
+      return gensizeerr(contextptr);
+    return domain(v[0],v[1],v[2].val,contextptr);
+  }
+  static const char _domain_s []="domain";
+  static define_unary_function_eval (__domain,&_domain,_domain_s);
+  define_unary_function_ptr5( at_domain ,alias_at_domain,&__domain,0,true);
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

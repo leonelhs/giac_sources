@@ -36,7 +36,8 @@ PREREQUSITES:
 4. [Only if you want GUI] FLTK library (http://www.fltk.org), version 1.3.x
    For scrollbars to work properly, you must check that FL_REGION_STACK_SIZE
    is large enough in FL/Fl_Device.H  (100 should be large enough). 
-  On Mac, you must change FL/Fl_Window.H, add
+  On Mac, you must remove static in src/gl_start.cxx in the declaration
+of gl_choice, change FL/Fl_Window.H, add
   void * window_ref() const; at the end of the class definition
   and in src/Fl_Window.cxx 
 void * Fl_Window::window_ref() const {

@@ -959,6 +959,7 @@ namespace xcas {
     giac::clear_prog_status(contextptr);
     giac::cleanup_context(contextptr);
     History_Pack * hp = get_history_pack(w);
+    if (hp) Fl_Group::current(hp);
     if (calc_mode(contextptr)==-38)
       calc_mode(contextptr)=38;
     /*    FIXME: use simplifier only if the user ask for it
@@ -980,7 +981,14 @@ namespace xcas {
 	Graph2d3d * tmp;
 #ifdef HAVE_LIBFLTK_GL
 	if (is3d(evaled_g._VECTptr->back())){
+#ifdef GRAPH_WINDOW
+	  Fl_Window * win=new Fl_Window(w->x(),w->y(),w->w(),g->h());
+	  tmp =new Graph3d(0,0,w->w(),g->h(),"",hp);
+	  win->end(); win->show();
+	  Fl_Group::current(g);
+#else
 	  tmp =new Graph3d(w->x(),w->y(),w->w(),g->h(),"",hp);
+#endif
 	  tmp->show();
 	}
 	else
@@ -1006,7 +1014,15 @@ namespace xcas {
 	Graph2d3d * res;
 #ifdef HAVE_LIBFLTK_GL
 	if (is3d(evaled_g)){
+#ifdef GRAPH_WINDOW
+	  Fl_Window * win=new Fl_Window(w->x(),w->y(),w->w(),g->h());
+	  res = new Graph3d(0,0,w->w(),g->h(),"",hp);
+	  win->end(); win->show();
+	  g->add(win);
+	  Fl_Group::current(g);
+#else
 	  res = new Graph3d(w->x(),w->y(),w->w(),g->h(),"",hp);
+#endif
 	  res->show();
 	}
 	else

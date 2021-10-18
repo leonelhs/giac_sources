@@ -993,7 +993,11 @@ namespace giac {
     vecteur v=lop(g0,at_Dirac);
     if (!v.empty()){
       gen A,B,a0,b0;
+#ifdef GIAC_HAS_STO_38
+      identificateur t("tsumab_");
+#else
       identificateur t(" tsumab");
+#endif
       gen h=quotesubst(g0,v.front(),t,contextptr);
       if (!is_linear_wrt(h,t,A,B,contextptr))
 	return false;
@@ -1470,7 +1474,11 @@ namespace giac {
       polynome lcoeffs;
       if (is_admissible_poly(s,intstep,lcoeffs,decals,contextptr)){
 	gen lcoeff=r2e(lcoeffs,v,contextptr);
+#ifdef GIAC_HAS_STO_38
+	identificateur idx("sumw_"); // identificateur idx(" x"); // 
+#else
 	identificateur idx(" sumw"); // identificateur idx(" x"); // 
+#endif
 	gen gx(idx); // ("` sumw`",contextptr); 
 	// parser instead of temporary otherwise bug with a:=1; ZT(f,z):=sum(f(n)/z^n,n,0,inf); ZT(k->c^k,z);  ZT;
 	// otherwise while purge(gx) happens, the string `sumw` is destroyed
@@ -1656,6 +1664,29 @@ namespace giac {
       }
     }
     vecteur v=lvarx(g,x);
+    vecteur vD=lop(v,at_Kronecker);
+    if (!vD.empty()){
+      gen vD0=vD.front(),A,B,a,b;
+      if (is_linear_wrt(g,vD0,A,B,contextptr) && is_linear_wrt(vD0._SYMBptr->feuille,x,a,b,contextptr) && in_sumab(B,x,a_orig,b_orig,res,testi,false,contextptr)){
+	// sum(A*Kronecker(a*x+b),x,a_orig,b_orig)+res
+	gen xval=-b/a;
+	if (is_integer(xval) && is_greater(xval,a_orig,contextptr) && is_greater(b_orig,xval,contextptr))
+	  res += subst(A,x,xval,false,contextptr);
+	return true;
+      }
+    }
+    vD=lop(v,at_Heaviside);
+    if (!vD.empty()){
+      gen vD0=vD.front(),A,B,a,b;
+      if (is_linear_wrt(g,vD0,A,B,contextptr) && is_linear_wrt(vD0._SYMBptr->feuille,x,a,b,contextptr) && in_sumab(B,x,a_orig,b_orig,res,testi,false,contextptr)){
+	// sum(A*Heaviside(a*x+b),x,a_orig,b_orig)+res
+	gen xval=-b/a,resadd;
+	if (is_integer(xval) && is_strictly_positive(a,contextptr) && in_sumab(A,x,max(a_orig,xval,contextptr),b_orig,resadd,testi,false,contextptr)){
+	  res += resadd;
+	  return true;
+	}
+      }
+    }
     v=loptab(v,sincostan_tab);
     bool est_reel=testi?!has_i(g):true; 
     if (!v.empty()){

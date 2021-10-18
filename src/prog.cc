@@ -5358,7 +5358,7 @@ namespace giac {
     vecteur v=*args._VECTptr;
     int subtype;
     gen f;
-    bool usersort=v.size()==2 && v[0].type==_VECT 
+    bool usersort=v.size()==2 && v[0].type==_VECT && v[1].type!=_VECT
       // && args.subtype==_SEQ__VECT
       ;
     if (usersort){
@@ -5630,10 +5630,16 @@ namespace giac {
     }
     if (s<2)
       return gensizeerr(contextptr);
-    gen & f=v[1];
+    gen f=v[1];
     gen g=v.front();
     if (f.is_symb_of_sommet(at_unit)){
-      return chk_not_unit(mksa_reduce(evalf(g/f,1,contextptr),contextptr))*f;
+      if (f._SYMBptr->feuille.type==_VECT && f._SYMBptr->feuille._VECTptr->size()==2)
+	f=symbolic(at_unit,makesequence(1,f._SYMBptr->feuille._VECTptr->back()));
+      g=chk_not_unit(mksa_reduce(evalf(g/f,1,contextptr),contextptr));
+      g=evalf_double(g,1,contextptr);
+      if (g.type!=_DOUBLE_ && g.type!=_CPLX && g.type!=_FLOAT_)
+	return gensizeerr(gettext("Some units could not be converted to MKSA"));
+      return g*f;
     }
     if (s==2 && f==at_interval)
       return convert_interval(g,int(decimal_digits(contextptr)*3.2),contextptr);

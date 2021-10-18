@@ -148,6 +148,8 @@ Section "Xcas" SecXcas
   WriteRegDWORD HKLM "${REG_UNINSTALL}" "NoModify" 1
   WriteRegDWORD HKLM "${REG_UNINSTALL}" "NoRepair" 1
 
+; update path, problem: this will add several times the path if reinstall
+; ${EnvVarUpdate} $0 "PATH" "A" "HKLM" $INSTDIR
 SectionEnd
 
 ;--------------------------------

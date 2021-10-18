@@ -2219,6 +2219,10 @@ namespace xcas {
   }
 
   Fl_Group * new_figure(int W,int H,const History_Pack * pack,bool dim3,bool approx){
+#if defined GRAPH_WINDOW && defined __APPLE__
+    if (dim3) fl_alert("Sorry, 3d geometry does not work on Mac OS.");
+    dim3=false; // 3d geo does not work on mac
+#endif
     Fl_Group::current(0);
     Figure * t = new Figure(0,0,W,H,pack->labelsize(),dim3);
     t->labelfont(pack->labelfont());
@@ -3000,6 +3004,11 @@ namespace xcas {
 	int N=hpp->children();
 	for (int i=0;i<N;++i){
 	  Graph2d3d * geo = dynamic_cast<Graph2d3d *>(hpp->child(i));
+	  if (!geo){
+	    Fl_Window * win = dynamic_cast<Fl_Window *>(hpp->child(i));
+	    if (win) 
+	      geo=dynamic_cast<Graph2d3d *>(win->child(0));
+	  }
 	  if (geo){
 	    geo->update(this,update_pos>=0?update_pos:0);
 	    geo->no_handle=false;

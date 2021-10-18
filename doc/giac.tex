@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% giac/hevea interaction code definitions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Type one of the commands \loadgiacjs or \loadgiacjsonline 
+%% Use one of the environment \begin{giacjs}...\end{giacjs} or \begin{giacjsonline}...\end{giacjsonline}
 %% to load the javascript code (from hard disk or Internet)
 %% Commands \giacinput{} or \giacinputmath{} or \giacinputbigmath{} 
 %% \giaccmd{} or \giaccmdmath{} or \giaccmdbigmath{} 
@@ -10,26 +10,119 @@
 \usepackage{hevea} 
 \usepackage{listings}
 \usepackage{fancyvrb}
-\newcommand{\loadgiacjs}{
+\ifhevea 
+\newenvironment{giacjs}[1]["max-height: 500px; overflow:auto"]
+{\loadgiacmain{#1}
+}
+{\loadgiaccontrol
+\loadgiacscriptstart
+\@print{
+<script src="file:///usr/share/giac/doc/giac.js" async></script> 
+}
+\loadgiacscriptend
+} 
+\newenvironment{giacparijs}[1]["max-height: 500px; overflow:auto"]
+{\loadgiacmain{#1}
+}
+{
+\loadgiaccontrol
+\loadgiacscriptstart
+\@print{
+<script src="file:///usr/share/giac/doc/giacpari.js" async></script> 
+}
+\loadgiacscriptend
+} 
+\newenvironment{giacjsonline}[1]["max-height: 500px; overflow:auto"]
+{\loadgiacmain{#1}
+}
+{
+\loadgiaccontrol
+\loadgiacscriptstart
+\@print{
+<script src="http://www-fourier.ujf-grenoble.fr/~parisse/giac.js" async></script> 
+}
+\loadgiacscriptend
+} 
+\newenvironment{giacparijsonline}[1]["max-height: 500px; overflow:auto"]
+{\loadgiacmain{#1}
+}
+{
+\loadgiaccontrol
+\loadgiacscriptstart
+\@print{
+<script src="http://www-fourier.ujf-grenoble.fr/~parisse/giacpari.js" async></script> 
+}
+\loadgiacscriptend
+} 
+\else
+\newenvironment{giacjs}[1]["max-height: 500px; overflow:auto"]{}{}
+\newenvironment{giacparijs}[1]["max-height: 500px; overflow:auto"]{}{}
+\newenvironment{giacjsonline}[1]["max-height: 500px; overflow:auto"]{}{}
+\newenvironment{giacparijsonline}[1]["max-height: 500px; overflow:auto"]{}{}
+\fi
+\newcommand{\loadgiacscriptstart}{
 \ifhevea
 \@print{
-<button onclick="UI.exec(document.documentElement);" title='Click here to execute all commands'>Execute</button>
-<canvas id='canvas' width=0 height=0   onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"  onmouseup="UI.canvas_pushed=false;" onmousemove="UI.canvas_mousemove(event,'')"></canvas>
-<textarea id="output" rows=2 cols="80" title="Console"></textarea>
 <script language="javascript"> 
-var Module = { preRun: [], postRun: [], 
+var Module = { 
+        htmlcheck:true,
+        htmlbuffer:'',
+        preRun: [],
+        postRun: [],
         print: (function() {
           var element = document.getElementById('output');
-          element.value = ''; // clear browser cache
+          element.innerHTML='';// element.value = ''; // clear browser cache
           return function(text) {
-            element.style.display='inherit';
-            element.value += text + "\n";
-            element.scrollTop = 99999; // focus on bottom
+            //console.log(text.charCodeAt(0));
+            if (text.length==1 && text.charCodeAt(0)==12){ element.innerHTML=''; return; }
+            if (text.length>=1 && text.charCodeAt(0)==2) {console.log('STX');Module.htmlcheck=false; htmlbuffer='';return;}
+            if (text.length>=1 && text.charCodeAt(0)==3) {console.log('ETX');Module.htmlcheck=true; element.style.display='inherit'; element.innerHTML += htmlbuffer;htmlbuffer='';element.scrollTop = 99999; return;}
+            if (Module.htmlcheck){
+            // These replacements are necessary if you render to raw HTML 
+             text = text.replace(/&/g, "&amp;");
+             text = text.replace(/</g, "&lt;");
+             text = text.replace(/>/g, "&gt;");
+             text = text.replace('\n', '<br>', 'g');
+             text += '<br>'
+             element.style.display='inherit';
+             element.innerHTML += text; // element.value += text + "\n";
+             element.scrollTop = 99999; // focus on bottom
+            } else htmlbuffer += text;
           };
         })(),
-      canvas: document.getElementById('canvas'),};
+     canvas: document.getElementById('canvas'),};
 </script>
-<script src="file:///usr/share/giac/doc/giac.js" async></script> 
+}
+\fi
+}
+\newcommand{\loadgiacmain}[1]{
+\ifhevea
+\@print{
+<div>
+<div id="maindiv" style=}#1\@print{>}
+\fi
+}
+\newcommand{\loadgiaccontrol}{
+\ifhevea
+\@print{
+</div>
+<div id="controldiv" style="max-height: 400px; overflow:auto">
+<span id="controlindex"></span>
+<button title="Clear console" onclick="document.getElementById('output').innerHTML='';">Clear</button>
+<button title="Increase console size" onclick="var field=document.getElementById('output'); var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)+20 ;s=s+'px';field.style.maxHeight =s;">+</button>
+<button title="Decrease console size" onclick="var field=document.getElementById('output'); var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)-20 ; if(s>100){s=s+'px';field.style.maxHeight =s;}">-</button>
+<textarea title="Commandline for a quick computation" onkeypress="UI.ckenter(event,this,3)" style="width:400px;height:20px;font-size:large"></textarea><button  title="Eval previous cell" onclick="UI.quick(this);">-></button><span></span>
+&nbsp;&nbsp;<button onclick="var s=UI.caseval('restart;'); Module.print(s);" title="Reset CAS computing kernel">Restart</button>
+<button onclick="UI.exec(document.documentElement);" title='Click here to exec all commands (maybe be long!)'>Exec. tout</button>
+<canvas id='canvas' width=0 height=0   onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"  onmouseup="UI.canvas_pushed=false;" onmousemove="UI.canvas_mousemove(event,'')"></canvas>
+<div id="output" style="max-height: 100px; overflow:auto"></div>
+</div>
+</div>}
+\fi
+}
+\newcommand{\loadgiacscriptend}{
+\ifhevea
+\@print{
 <script language="javascript"> 
  var UI = {
   histcount:0,
@@ -69,6 +162,21 @@ var Module = { preRun: [], postRun: [],
      UI.render_canvas(f);
    }
   },
+  quick:function(field){
+    var tmp1=field.previousSibling.value;
+    var tmp=UI.caseval(tmp1);
+    if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); 
+    tmp=UI.latexeval(tmp);
+    Module.print(String.fromCharCode(2));
+    Module.print("<tt>");
+    Module.print(tmp1);
+    Module.print("</tt><br>&nbsp;&nbsp;");
+    Module.print(tmp);
+    Module.print("<br>");
+    Module.print(String.fromCharCode(3));
+    field.nextSibling.innerHTML='&nbsp;'+tmp;
+   //UI.render_canvas(nextSibling);  
+  },
   caseval:function(text){
     var s="not evaled",err;
     try {
@@ -92,27 +200,32 @@ var Module = { preRun: [], postRun: [],
   },
   latexeval:function(text){
     var tmp=text;
+    if (tmp.length>5 && tmp.substr(0,5)=='gl3d_') return tmp;
+    if (tmp.length>5 && tmp.substr(1,4)=='<svg') return tmp.substr(1,tmp.length-2);
+    if (tmp.length>5 && tmp.substr(0,4)=='<svg') return tmp;
      if (UI.usemathjax){
        tmp=giaceval('latex(quote('+tmp+'))');
        tmp='$$'+tmp.substr(1,tmp.length-2)+'$$';
        return tmp;
      }
-     tmp=giaceval('mathml(quote('+text+',1))');
+     tmp=giaceval('mathml(quote('+tmp+',1))');
      tmp=tmp.substr(1,tmp.length-2);
     return tmp;   
   },
   ckenter:function(event,field,mode){
     var key = event.keyCode;
     if (key != 13 || event.shiftKey) return true;
+   if (mode==3){ UI.quick(field.nextSibling); event.preventDefault(); return true; }
     var tmp=field.value;
+   Module.print(tmp);
     tmp=UI.caseval(tmp);
     if (mode==1){
       if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); 
    }
    if (mode==2){
-     tmp=UI.latexeval(text);
+     tmp=UI.latexeval(tmp);
    }
-   field.nextSibling.nextSibling.innerHTML='&nbsp;'+tmp;
+   field.nextSibling.nextSibling.innerHTML=tmp;
    UI.render_canvas(field.nextSibling.nextSibling);
    if (UI.usemathjax) MathJax.Hub.Queue(["Typeset",MathJax.Hub,field.nextSibling.nextSibling]);
    if (event.preventDefault) event.preventDefault();
@@ -150,6 +263,12 @@ var Module = { preRun: [], postRun: [],
     script.src  = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   }
+  var elem= document.getElementById('controlindex');
+  elem.innerHTML='<hr><a href="'+String.fromCharCode(35)+'sec1">Table</a>, <a href="'+String.fromCharCode(35)+'sec2">Index</a>,'+elem.innerHTML;
+  if (elem.style.maxHeight=='500px')
+    elem.style.maxHeight=(window.innerHeight-120)+'px';
+  // Module.print(elem.innerHTML);
+  //elem.parentNode.insertBefore(elem,null);
   giaceval=Module.cwrap('caseval',  'string', ['string']);
   giac3d = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
   giaceval('set_language(1);');
@@ -159,146 +278,6 @@ var Module = { preRun: [], postRun: [],
  };
 </script>
 }
-\else
-The HTML version of this text has interactive fields running Giac
-computer algebra system commands.
-\fi
-}
-\newcommand{\loadgiacjsonline}{
-\ifhevea
-\@print{
-<button onclick="UI.exec(document.documentElement);" title='Click here to execute all commands'>Execute</button>
-<canvas id='canvas' width=0 height=0   onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;"  onmouseup="UI.canvas_pushed=false;" onmousemove="UI.canvas_mousemove(event,'')"></canvas>
-<textarea id="output" rows=2 cols="80" title="Console"></textarea>
-<script language="javascript"> 
-var Module = { preRun: [], postRun: [], 
-        print: (function() {
-          var element = document.getElementById('output');
-          element.value = ''; // clear browser cache
-          return function(text) {
-            element.style.display='inherit';
-            element.value += text + "\n";
-            element.scrollTop = 99999; // focus on bottom
-          };
-        })(),
-      canvas: document.getElementById('canvas'),};
-</script>
-<script src="http://www-fourier.ujf-grenoble.fr/~parisse/giac.js" async></script> 
-<script language="javascript">
- var UI = {
-  histcount:0,
-  usemathjax:false,
-  canvas_pushed:false,
-  canvas_lastx:0,
-  canvas_lasty:0,
-  canvas_mousemove:function(event,no){
-    if (UI.canvas_pushed){
-      // Module.print(event.clientX);
-      if (UI.canvas_lastx!=event.clientX){
-        if (event.clientX>UI.canvas_lastx)
-          giac3d('r'+no);
-        else
-          giac3d('l'+no);
-        UI.canvas_lastx=event.clientX;
-      }
-      if (UI.canvas_lasty!=event.clientY){
-        if (event.clientY>UI.canvas_lasty)
-          giac3d('d'+no);
-        else
-          giac3d('u'+no);
-        UI.canvas_lasty=event.clientY;
-      }
-    }
-  },  
-  caseval:function(text){
-    var s="not evaled",err;
-    try {
-       s= giaceval(text);
-    } catch (err) { s=err.message;}
-    var is_3d=s.length>5 && s.substr(0,5)=='gl3d ';
-    if (is_3d){
-	var n3d=s.substr(5,s.length-5);
-	s = '<canvas id="gl3d_'+n3d+'" onmousedown="UI.canvas_pushed=true;UI.canvas_lastx=event.clientX; UI.canvas_lasty=event.clientY;" onmouseup="UI.canvas_pushed=false;" onmousemove="UI.canvas_mousemove(event,'+n3d+')" width=400 height=250></canvas>';
-    }
-   // console.log(s);
-    return s;
-  },
-  eval_form: function(field){
-    giaceval('assume('+field.name.value+'='+field.valname.value+')');
-    var s=UI.caseval(field.prog.value);
-    var is_svg=s.substr(1,4)=='<svg';
-    if (is_svg) field.parentNode.lastChild.innerHTML=s.substr(1,s.length-2);
-    else field.parentNode.lastChild.innerHTML=s;
-   UI.render_canvas(field.parentNode.lastChild);
-  },
-  latexeval:function(text){
-    var tmp=text;
-     if (UI.usemathjax){
-       tmp=giaceval('latex(quote('+tmp+'))');
-       tmp='$$'+tmp.substr(1,tmp.length-2)+'$$';
-       return tmp;
-     }
-     tmp=giaceval('mathml(quote('+tmp+',1))');
-     tmp=tmp.substr(1,tmp.length-2);
-    return tmp;   
-  },
-  ckenter:function(event,field,mode){
-    var key = event.keyCode;
-    if (key != 13 || event.shiftKey) return true;
-    var tmp=field.value;
-    tmp=UI.caseval(tmp);
-    if (mode==1){
-      if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); 
-   }
-   if (mode==2){
-     tmp=UI.latexeval(tmp);
-   }
-   field.nextSibling.nextSibling.innerHTML=tmp;
-   UI.render_canvas(field.nextSibling.nextSibling);
-   if (UI.usemathjax) MathJax.Hub.Queue(["Typeset",MathJax.Hub,field.nextSibling.nextSibling]);
-   if (event.preventDefault) event.preventDefault();
-    return false;
-  },
-  exec: function(field){
-     if (field.nodeName=="BUTTON"){
-        field.click();
-        return;
-     }
-     var f=field.firstChild;
-     while (f){
-       UI.exec(f);
-       f=f.nextSibling;
-     }
-   }
- };
- window.onload = function(e){
-   var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
-   var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
-  var ua = window.navigator.userAgent;
-  var old_ie = ua.indexOf('MSIE ');
-  var new_ie = ua.indexOf('Trident/');
-  if ((!isFirefox && !isSafari) || (old_ie > -1) || (new_ie > -1) || window.chrome){
-     UI.usemathjax=true;
-     alert("Your browser does not support MathML, using MathJax for 2d rendering. Consider switching to Firefox for better rendering and faster results");
-  }
-  if (UI.usemathjax){
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  }
-  giaceval=Module.cwrap('caseval',  'string', ['string']);
-  giac3d = Module.cwrap('_ZN4giac13giac_rendererEPKc','number', ['string']);
-  giaceval('set_language(1);');
-  giaceval('factor(x^4-1)');
-  giaceval('sin(x+y)+f(t)');
- // if (confirm('Exec commands?')) UI.exec(document.documentElement);
- };
-</script>
-}
-\else
-The HTML version of this text has interactive fields running Giac
-computer algebra system commands.
 \fi
 }
 \ifhevea
