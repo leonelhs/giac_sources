@@ -1449,14 +1449,15 @@ ihermite([[9,-36,30], [-36,192,-180], [30,-180,180]])
 ihermite([[1,2,3],[4,5,6],[7,8,9]])
 
 # GF
-1 Crée un corps de Galois (Galois Field) de caractéristique p ayant p^n éléments.
-2 Create a Galois Field of characteristic p with p^n elements.
+1 Crée un corps de Galois (Galois Field) de caractéristique p ayant p^n éléments. Le polynome minimal est primitif sauf s'il est donné ou si on passe 0 en dernier argument.
+2 Create a Galois Field of characteristic p with p^n elements. The minimal polynomial is primitive except if given or if 0 is passed as last argument.
 3 Crea un campo de Galois de característica p con p^n elementos.
 4 Δημιουργία Σώματος Galois με χαρακτηριστική p και p^n στοιχεία.
 0 Intg(p), Intg(n)|Minpoly,[Variable],[0|undef|Poly]
 GF(2,8)
-GF(5,9)
-GF(2,w^8+w^7+w^5+w+1,w,0)
+GF(5,9,a)
+GF(2,128,0)
+GF(2,w^8+w^7+w^5+w+1)
 GF(2,8,['a','G'])
  G:=GF(2,a^8+a^6+a^3+a^2+1,['a','G'],undef)
 

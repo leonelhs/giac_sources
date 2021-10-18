@@ -65,6 +65,7 @@
 } 
 \else
 \newenvironment{giacjs}[1]["max-height: 500px; overflow:auto"]{}{}
+\newenvironment{giacjshere}[1]["max-height: 500px; overflow:auto"]{}{}
 \newenvironment{giacparijs}[1]["max-height: 500px; overflow:auto"]{}{}
 \newenvironment{giacjsonline}[1]["max-height: 500px; overflow:auto"]{}{}
 \newenvironment{giacparijsonline}[1]["max-height: 500px; overflow:auto"]{}{}
@@ -319,7 +320,7 @@ var Module = {
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
-\@print{</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi
@@ -328,7 +329,7 @@ var Module = {
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
-\@print{</textarea><button onclick="var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">ok</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi

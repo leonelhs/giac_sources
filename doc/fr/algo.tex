@@ -1820,7 +1820,7 @@ suivant. La convergence vient de la
 limite infinie de $k_p$ en l'infini.
 On a donc
 $$ x=a_0+\sum_{p=0}^\infty \frac{(-1)^{p-1}}{k_p k_{p+1}}, 
-\quad \frac{1}{k_p(k_p+k_{p+1})} \leq |x-\frac{}{}| \leq \frac{1}{k_p
+\quad \frac{1}{k_p(k_p+k_{p+1})} \leq |x-\frac{h_p}{k_p}| \leq \frac{1}{k_p
   k_{p+1}}$$
 La convergence est d'autant plus rapide que les $k_p$ tendent
 rapidement vers l'infini, donc si les $a_p$ sont plus grands que 1.
@@ -4968,7 +4968,7 @@ en indice 2, le polyn\^ome minimal de l'\'el\'ement s\'eparant
 exprim\'e en fonction de $x$, en indice 3 sa d\'eriv\'ee qui
 sera le d\'enominateur commun de la solution, en indices
 de 4 \`a la fin le num\'erateur de la solution en fonction de $x$
-\giacinputbigmtah{d:=G[3];[G[4]/d,G[5]/d]; G[2]}
+\giacinputbigmath{d:=G[3];[G[4]/d,G[5]/d]; G[2]}
 On v\'erifie~:
 \giacinputbigmath{N:=numer(normal(subst(syst,[x,y],[G[4]/d,G[5]/d])))}
 \giacinputbigmath{rem(N[0],G[2]); rem(N[1],G[2])}
@@ -8100,7 +8100,7 @@ la permutation et son inverse tiennent dans le cache du
 microprocesseur et les op\'erations sur le corps $K$ se font
 en une dizaine de cycles du microprocesseur.
 
-%\pagebreak
+\pagebreak
 
 \subsection{Exercices}
 Dans Xcas, pour travailler dans $\Z/p\Z$, on utilise l'op\'erateur \verb|%|.
@@ -8149,11 +8149,64 @@ dans un corps de cardinal 25, d\'eterminer son polynome
 minimal et son ordre. Quels sont les ordres possibles~?
 \end{enumerate}
 
-%\pagebreak
+\pagebreak
 
-%\ \\
+\subsection{Rappels de quelques complexit\'es de base}
+$n$ d\'esigne un majorant commun de la taille des arguments, ou bien
+$n_1$ et $n_2$ d\'esignent la taille des 2 arguments.
 
-%\pagebreak
+\subsubsection{Polynomes denses et entiers}
+Pour un polyn\^ome en une variable
+\`a coefficients dans un corps fini, la taille est
+le degr\'e du polyn\^ome, on prend comme convention que
+la somme et le produit des coefficients se fait en temps $O(1)$.
+
+Pour un entier, la taille est le nombre de chiffres dans l'\'ecriture
+dans une base quelconque, $n$ est donc un majorant de $\log_b(N)$.
+\begin{itemize}
+\item Addition, soustraction~: $O(n)$ ou $O($max$(n_1,n_2))$
+\item Multiplication na\"ive~: $O(n^2)$ ou $O(n_1n_2)$
+\item Division na\"ive~: $O(n^2)$ ou $O(n_2(n_1-n_2))$.
+\item Multiplication rapide~: Karatsuba $O(n^{\log(3)/\log(2)})$, ..., FFT
+$O(n\ln(n))$ pour des polyn\^omes
+\item PGCD, B\'ezout~: $O(n^2)$
+\item calcul de $a^N \pmod p$ ou cout d'un test de Miller-Rabin~: 
+en $O(\ln(N))$ \'etapes, donc en $O(\ln(N)\ln(p)^2)$
+\end{itemize}
+
+{\bf Remarques}
+\begin{itemize}
+\item Attention, le cout est plus important si les coefficients sont entiers
+ou rationnels. 
+\item Si on tient compte du cout des op\'erations sur le corps fini
+de cardinal $c$. Il faut multiplier les couts par $O(\ln(c))$ pour $+,-$
+et par $O(\ln(c)^2)$ pour les autres op\'erations.
+\item Pour des polyn\^omes creux, les couts sont
+estim\'es en fonction du nombre de coefficients non nuls.
+\end{itemize}
+
+
+\subsubsection{Alg\`ebre lin\'eaire dense}
+Pour une matrice carr\'ee $n,n$ \`a coefficients dans un corps fini o\`u
+les op\'erations se font en temps $O(1)$.
+\begin{itemize}
+\item Addition, soustraction, multiplication par un scalaire,
+multiplication par un vecteur~: $O(n^2)$
+\item Multiplication de 2 matrices, pivot de Gauss
+(d\'ecomposition $LU$, inverse, d\'eterminant...)~: $O(n^3)$
+\item Multiplication rapide par blocs (Strassen) en $O(n^{\log(7)/\log(2)})$,
+que l'on peut g\'en\'eraliser au pivot de Gauss
+\end{itemize}
+
+{\bf Remarques}
+\begin{itemize}
+\item Attention, le cout est plus important si les coefficients sont entiers
+ou rationnels.
+\item Pour des matrices creuses, les couts sont estim\'es en fonction du nombre
+de coefficients non nuls.
+\end{itemize}
+
+\pagebreak
 
 \subsection{Codes lin\'eaires et polynomiaux.}
 \index{code lin\'eaire} \index{code polynomial}
@@ -8622,7 +8675,8 @@ a^{(N-1)/q} \pmod p$$
 d'apr\`es le petit th\'eor\`eme de Fermat. Ceci contredit 
 le fait que $a^{(N-1)/q}-1$ soit premier avec $N$.
 
-Le couple $(a,q)$ est alors un certificat de primalit\'e pour $N$.
+Le couple $(a,q)$ est alors un 
+{\bf certificat de primalit\'e}\index{certificat de primalit\'e}\index{primalit\'e, certificat} pour $N$.
 Le probl\`eme c'est que trouver $a,q$ peut \^etre tr\`es difficile
 voire impossible. Mais il existe une g\'en\'eralisation de ce
 th\'eor\`eme qui est plus facile \`a r\'ealiser
@@ -16341,7 +16395,9 @@ s\'eries formelles $\sum_{k\geq 0} a_k x^k$. Si la caract\'eristique
 est nulle, on peut \'egalement calculer les fonctions usuelles.
 Dans Xcas, on d\'eclare la variable de s\'erie formelle par la commande
 \verb|series| avec en argument le caract\`ere d\'esignant la variable, 
-par exemple \verb|series("h")| utilisera \verb|h| comme variable. Si la
+par exemple \verb|series("h")| utilisera \verb|h| comme variable,
+\verb|series("h",8)| utilisera \verb|h| comme variable
+et fixera l'ordre par d\'efaut pour les d\'eveloppements \`a 8. Si la
 variable \verb|O| n'est pas affect\'ee, elle sera d\'efinie pour donner
 l'ordre de la s\'erie. Ainsi \verb|1+h+O(h^7)| sera une s\'erie
 dont on connait les termes jusqu'\`a l'ordre 6 inclus.
