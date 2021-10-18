@@ -3795,7 +3795,7 @@ var UI = {
       nodeContent=$id(field_id);
     else 
       x=UI.prepare_png_export();
-    let W=UI.tableau_width(); W*=1.25;
+    let W=UI.tableau_width(); // W*=1.25;
     // html2canvas(nodeContent, {  windowWidth: W    });
     nodeContent.style.width=""+$id('canvas').width;
     nodeBoard.style.width=""+$id('canvas').width;
@@ -3807,8 +3807,8 @@ var UI = {
 	       ).then(canvas => {
       const doc = new jspdf.jsPDF('l');
       let firstpage = true;
-      const h = 1000;//window.innerHeight;
-      const w = 1500;//window.innerWidth;
+      const h = 1200;//window.innerHeight;
+      const w = 1600;//window.innerWidth;
       W=Math.ceil(W/w)*w;
       for (let x = 0; x < W; x += w) {
         if (!firstpage)
@@ -3823,6 +3823,7 @@ var UI = {
 	  UI.invert_canvas(canvasPage);
         const pw = doc.internal.pageSize.getWidth();
         const ph = doc.internal.pageSize.getHeight();
+	//console.log('print',scaleCorrection,w,h,pw,ph,w/h,pw/ph);
         if (w/h > pw/ph)
           doc.addImage(canvasPage, 0, 0, pw, pw*h/w);
         else

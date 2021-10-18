@@ -862,6 +862,9 @@ function load() {
     if (evt.ctrlKey && evt.key == "z") {// ctrl + z = undo 
       BoardManager.cancel();
       evt.preventDefault();
+      User.lastDelineation.finish();
+      // User.lastDelineation.reset();
+      
     }
     if (evt.key == "e")  //e = switch eraser and chalk
       switchChalkEraser();
