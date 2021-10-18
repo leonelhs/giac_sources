@@ -1767,13 +1767,13 @@ namespace giac {
     return 0;
   }
   
-  void gen::uncoerce() {
+  void gen::uncoerce(size_t s) {
     if (type==_INT_){
       int tmp =val;
 #ifdef SMARTPTR64
-      * ((ulonglong * ) this) = ulonglong(new ref_mpz_t) << 16;
+      * ((ulonglong * ) this) = ulonglong(new ref_mpz_t(s)) << 16;
 #else
-      __ZINTptr = new ref_mpz_t;
+      __ZINTptr = new ref_mpz_t(s);
 #endif
       type=_ZINT;
       mpz_set_si(*_ZINTptr,tmp); 
@@ -4725,6 +4725,12 @@ namespace giac {
     if (is_exactly_zero(num))
       return Tfraction<gen>(num,1);
     simplify3(num,den);
+    if (den.type==_CPLX){ // 3 jan 2020, avoid complex denominator
+      gen & a=*den._CPLXptr;
+      gen & b=*(den._CPLXptr+1);
+      num=num*gen(a,-b);
+      den=a*a+b*b;
+    }
     den=den*da*db;
     return Tfraction<gen> (num,den);
   }
