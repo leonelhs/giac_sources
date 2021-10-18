@@ -184,11 +184,12 @@ document.onkeydown = applyKey;
 <div id="startup1" style="display:none">
   Vous pouvez faire apparaitre le tutoriel en cliquant sur le bouton
   Tutoriel ci-dessous.
-  <br> Vous pouvez installer Xcas en local
-  en d&eacute;compressant
+  <br> Vous pouvez installer Xcas en local pour pouvoir l'utiliser
+  sans Internet,
+  d&eacute;compressez
   <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
-  xcashtml.zip</a> puis en
-  recherchant <tt>xcasfr</tt>, par exemple sur un appareil Android
+  xcashtml.zip</a> puis 
+  recherchez <tt>xcasfr</tt>, par exemple sur un appareil Android
   cherchez dans
   <a href="file:///sdcard/"><tt>/sdcard/</tt></a>
 </div>
@@ -587,8 +588,8 @@ title="Montrer ou cacher le tutoriel">Tutoriel</button>
   title="Lance la recherche de l'aide courte" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
   <textarea style="height:25px;font-size:large" id="helptxt"
   title="Aide courte sur un nom de commande" rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
-  <button style="width:40px;height:25px;vertical-align:top"
-  title="Vide le champ de saisie de l'aide courte" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Vide</button>
+  <button style="height:25px;vertical-align:top"
+  title="Efface l'aide" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Efface</button>
 </div>
 
 <div id="divhelpoutput" style="max-height: 200px; overflow:auto">
@@ -877,7 +878,7 @@ id="add_debug"
 	  liste des arguments <textarea id="argsname" title="Arguments de la fonction s&eacute;par&eacute;s par des virgules" rows=1>x,y</textarea><br>
 	  variables locales <textarea id="localvars" title="Variables locales, s&eacute;par&eacute;s par des virgule" rows=1>z</textarea><br>
 	  valeur renvoy&eacute;e <textarea id="returnedvar" title="Valeur de retour" rows=1>z</textarea><br>
-	  <button style="height:25px" onclick="UI.insert(UI.focused,'function '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+'){\n  var '+document.getElementById('localvars').value+';\n  \n  return '+document.getElementById('returnedvar').value+';\n}:;\n');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);document.getElementById('assistant_prog').style.display='none';">Cr&eacute;er</button> <button style="height:25px" onclick="document.getElementById('assistant_prog').style.display='none'">Annuler</button><br>
+	  <button style="height:25px" onclick="UI.insert(UI.focused,'fonction '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+')\n  var '+document.getElementById('localvars').value+';\n  \n  retourne '+document.getElementById('returnedvar').value+';\nffonction:;\n');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);document.getElementById('assistant_prog').style.display='none';">Cr&eacute;er</button> <button style="height:25px" onclick="document.getElementById('assistant_prog').style.display='none'">Annuler</button><br>
       </div>
 
 <br>
@@ -1620,11 +1621,15 @@ var hashParams=chaine.split('&');
     var s = hashParams[i];
     if (s.length)  document.getElementById('startup_restore').style.display='none';
     s=s.replace('%0a','\n','g');
-    s=s.replace('%3b',';','g');
+    s=s.replace('%3b',';','g'); 
+    s=s.replace('%3C','<','g'); 
     s=s.replace('%3e','>','g');
     s=s.replace('%5e','^','g');
     s=s.replace('%20',' ','g');
+    s=s.replace('%27','\'','g');
     s=s.replace('%22','\"','g');
+    s=s.replace('%C3%A9','é','g'); 
+    s=s.replace('%C3%A8','è','g'); 
     if (s.length && s.charAt(0)=='+'){
        if (!asked) doexec=true;
        s=s.substr(1);
@@ -2142,7 +2147,7 @@ var kbd_util=["add_simplify" ,"add_normal",
   set_locale: function(){
   if (UI.langue==-1){ 
     var out=UI.caseval('set_language(1); evalf(1,30);');
-    UI.langue=1;
+    //UI.langue=1; // commente sinon la langue n'est pas toujours reconnue
   }
  },
   switch_buttons: function(field,onoff){
@@ -2340,7 +2345,7 @@ addcomment: function(text){
   },
   addinput: function(textin,textout,mathmlout){
   document.getElementById('startup_restore').style.display='none'
-  //Module.print(textout);
+  //console.log(textout,mathmlout); 
   if (textout.length>=12 && textout.substr(0,12)=='Done_graphic'){ document.getElementById('boutons_3d').style.display='inherit';document.getElementById('boutons_3d0').style.display='inherit';}
   if (textin.length > 2 && textin.substr(0,2)=='//') return UI.addcomment(textin);
          UI.show_history123();

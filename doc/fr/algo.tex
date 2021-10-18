@@ -3621,13 +3621,13 @@ permutations de $a+b$ \'el\'ements, et on regarde le degr\'e
 total d'un terme par rapport aux $d-1$ variables, on a donc
 un produit de $r_{i \sigma(i)}$ pour $i$ entre 1 et $a+b$. Pour $i$
 entre $1$ et $b$, on est dans les $b$ premi\`eres lignes, donc
-avec des coefficients de $A$, le degr\'e total de $r_{i \sigma_i}$
+avec des coefficients de $A$, le degr\'e total de $r_{i \sigma(i)}$
 se d\'eduit de la distance \`a la diagonale, il vaut
-$m-a+\sigma_{i}-i$ puisque sur la diagonale c'est $m-a$.
+$m-a+i-\sigma(i)$ puisque sur la diagonale c'est $m-a$.
 Pour $i$ entre $b+1$ et $b+a$ on est dans les $a$ derni\`eres
 lignes, donc avec des coefficients de $B$, le degr\'e total est
-$n+\sigma_i-i$. Le degr\'e total du produit vaut donc
-$$ b(m-a)+an+\sum_{i=1}^{a+b} \sigma_i -i = b(m-a)+an=mn-(m-a)(n-b)$$
+$n+\sigma(i)-i$. Le degr\'e total du produit vaut donc
+$$ b(m-a)+an+\sum_{i=1}^{a+b} \sigma(i) -i = b(m-a)+an=mn-(m-a)(n-b)$$
 il est donc au plus $mn$ avec \'egalit\'e si $m=a$ ou $n=b$
 (c'est-\`a-dire si le degr\'e total est identique au degr\'e partiel
 en $x$ pour au moins un des deux polyn\^omes).
@@ -6656,14 +6656,17 @@ et on divise par $\pi/4$ l'aire du quart de cercle, on trouve
 donc $(\frac{4}{3\pi},\frac{4}{3\pi})$, on peut visualiser avec
 la commande \verb|cercle(0,1); G:=point(4/(3*pi),4/(3*pi))|
 
-\section{\'Equations et syst\`emes diff\'erentiels.} \label{sec:ode}
+
+
+
+\section{\'Equations et syst\`emes diff\'erentiels.}
 
 \subsection{Introduction et repr\'esentation graphique.}
 On s'int\'eresse \`a l'\'equation diff\'erentielle
 \begin{equation} \label{eq:diff}
  y'=\frac{dy}{dt}=f(y,t)
 \end{equation}
-o\`u $y \in \R^n$ et $f: \R^n \times \R \rightarrow \R^n$.
+o\`u $y(t) \in \R^n$ et $f: \R^n \times \R \rightarrow \R^n$.
 Si $n=1$, c'est une \'equation diff\'erentielle, si $n>1$ c'est
 un syst\`eme diff\'erentiel.
 
@@ -6689,7 +6692,14 @@ Exercice~: tracer le champ des tangentes et quelques solutions
 pour quelques exemples de fonction $f(y,t)$, avec Xcas cr\'eer
 une figure 2d, puis choisir le mode Champ des tangentes
 du menu Geo, Graphe, entrer la fonction, puis cliquer en quelques
-points pour faire tracer la solution passant par ces points.
+points pour faire tracer la solution passant par ces points.\\
+\giacinput{restart;}
+Par exemple pour $y'=-y+\cos(t)$\\
+\giacslider{y0}{-5}{5}{0.1}{1.0}{
+gl_x=-5..5; gl_y=-5..5;
+plotfield(-y+cos(t),[t=-5..5,y=-5..5],xstep=0.4,ystep=0.4);
+plotode(-y+cos(t),[t=-5..5,y],[0,y0],tstep=0.1,color=red)
+}
 
 L'\'equation (\ref{eq:diff}) est d'ordre 1, or certaines \'equations
 diff\'erentielles se pr\'esentent naturellement comme des
@@ -6724,9 +6734,13 @@ si $f(y,t)=f(y)$ ne d\'epend pas explicitement du temps
 cas une courbe int\'egrale a pour tangente en $y\in \R^2$ 
 de direction port\'ee par le vecteur $f(y) \in \R^2$.\\
 {\bf Exemple}~: $(x,v)'=5(-v,x)$. La commande \\
-\verb|plotfield(5*[-y,x],[x=-1..1,y=-1..1],normalize)|\\
+\giacinput{purge(v,x);plotfield(5*[-v,x],[x=-1..1,v=-1..1],normalize)}
+%\verb|plotfield(5*[-v,x],[x=-1..1,v=-1..1],normalize)|
 permet d'en repr\'esenter le champ des tangentes
-et d'avoir une id\'ee approximative de l'allure des solutions.
+et d'avoir une id\'ee approximative de l'allure des solutions
+(\verb|normalize| affiche des vecteur tangents de norme 1, si
+on n'utilise pas cette option, la taille des vecteurs tangents donne
+la ``vitesse'' de d\'eplacement).
 On sait r\'esoudre ce syst\`eme diff\'erentiel, soit en appliquant
 une technique matricielle pr\'esent\'ee ci-dessous, 
 soit en se ramenant \`a une \'equation
@@ -6746,7 +6760,11 @@ explicitement).
 
 Exemple~: en dimension 1, $ty'=y$, on sait r\'esoudre exactement
 cette \'equation \`a variables s\'eparables, les solutions sont de la 
-forme $Ct$. On observe que contrairement \`a $y'=ay$
+forme $Ct$.\\
+\giacinput[style="width:400px;height:100px;font-size:large"]{purge(x,y);gl_x=-1..1;gl_y=-5..5;
+plotfield(y/t,[t=-1..1,y=-5..5],xstep=0.05,ystep=0.5);
+seq(line(y=k*x,color=red),k,-5,5,0.5)}
+On observe que contrairement \`a $y'=ay$
 o\`u passe une solution et une seule par chaque point du plan,
 ici toutes les solutions valent 0 en $t=0$~: il passe une
 infinit\'e de solutions par le point $(0,0)$ et il n'en passe aucune
@@ -6790,7 +6808,7 @@ que celle-ci devient impr\'edictible.
 \item Le th\'eor\`eme ne dit rien sur la taille de l'intervalle
 d'existence de la solution (en temps). Certaines solutions
 peuvent exploser en temps fini, par exemple\\
-\verb|desolve([y'=y^2,y(0)=1])|\\
+\verb|desolve(y'=y^2 and y(0)=1)|\\
 Bien entendu, si on mod\'elise une quantit\'e physique par $y$, dire
 que $y$ explose (en temps fini ou infini du reste)
 signifie que les approximations utilis\'ees pour la mod\'elisation
@@ -6833,7 +6851,13 @@ connait deux courbes int\'egrales de $D$, une courbe int\'egrale
 passant par une condition initiale entre les deux courbes restera
 entre les deux courbes.
 
-{\bf Exemple}~: $y'=y(1-y)$. Cette \'equation autonome admet deux solutions
+{\bf Exemple}~: $y'=y(1-y)$ (\'equation logistique). 
+\giacslider{y0}{-0.5}{1.5}{0.05}{0.5}{
+gl_x=-5..5;gl_y=-1..2;
+plotfield(y*(1-y),[t=-5..5,y=-1..2],xstep=0.4,ystep=0.2);
+plotode(y*(1-y),[t=-5..5,y],[0,y0],tstep=0.1,color=red)
+}
+Cette \'equation autonome admet deux solutions
 \'evidentes $y=0$ et $y=1$. Donc pour toute condition initiale $y(t_0)
 \in ]0,1[$, on a $y(t) \in ]0,1[$\footnote{En toute rigueur,
 il faut prouver que la solution maximale est bien d\'efinie sur
@@ -6863,8 +6887,13 @@ condition initiale $y(t_0)>1$~?
   s\'eparables}\index{s\'eparables, variables}\index{variables s\'eparables}
 Si on peut factoriser $f(y,t)$ en termes ne d\'ependant que
 de $y$ ou ne d\'ependant que de $t$, on dit que l'\'equation
-est \`a variable s\'eparable, et on int\`egre
-$$ y'=f(y,t)=g(t)h(y) \Rightarrow \int \frac{dy}{h(y)} = \int g(t) \
+est \`a variable s\'eparable $$y'=f(y,t)=g(t)h(y)$$
+Cette \'equation admet des solutions constantes $y=y_0$ lorsque
+$h(y_0)=0$. Si $h(y(t_0)) \neq 0$, par le th\'eor\`eme de
+Cauchy-Lipschitz $h(y(t))$ ne s'annule nulle part sur son domaine
+de d\'efinition. On peut donc diviser par $h(y)$ et 
+int\'egrer~:
+$$ \Rightarrow \int \frac{dy}{h(y)} = \int g(t) \
 dt$$
 On obtient une \'equation implicite de la forme $H(y)=G(t)+C$ o\`u
 $G$ est une primitive de $g$, $H$ de $1/h$ et $C$ une constante
@@ -6877,15 +6906,16 @@ une courbe param\'etr\'ee. Dans les cas d\'efavorables, on reste
 sous forme implicite.
 
 {\bf Exercice~}: r\'esoudre explicitement l'\'equation $y'=y(1-y)$
-et retrouver les r\'esultats qualitatifs de la section pr\'ec\'edente.
+et retrouver les r\'esultats qualitatifs de la section pr\'ec\'edente. \\
+\giacinputbigmath{desolve(y'=y*(1-y))}
 
 \subsubsection{\'Equations lin\'eaires}\index{lin\'eaire,
   \'equation}\index{\'equation lin\'eaire}
 On commence par r\'esoudre l'\'equation sans second membre
 (aussi appel\'ee homog\`ene)
-$$ a_n(t) y^{[n]} +...+a_1(t)y'+a_0(t)=0$$
- L'ensemble
-des solutions est un espace vectoriel (car l'\'equation
+$$ a_n(t) y^{[n]} +...+a_1(t)y'+a_0(t)y=0$$
+sur un intervalle ouvert sur lequel $a_n(t) \neq 0$. 
+L'ensemble des solutions est un espace vectoriel (car l'\'equation
 est lin\'eaire) et de dimension l'ordre de
 l'\'equation~: pour le prouver on peut appliquer le th\'eor\`eme
 de Cauchy-Lipschitz au syst\`eme d'ordre 1 \'equivalent, ce
@@ -6917,7 +6947,8 @@ on prend la forme g\'en\'erale de la solution de l'\'equation
 homog\`ene,
 on remplace les constantes d'int\'egration par des fonctions inconnues,
 on remplace dans l'\'equation avec second membre et on
-r\'esoud en les fonctions inconnues.
+r\'esoud en les fonctions inconnues, la m\'ethode d\'etaill\'ee
+dans le cas des coefficients constants s'applique \`a l'identique.
 La solution g\'en\'erale est la somme d'une solution particuli\`ere
 et de la solution g\'en\'erale de l'\'equation sans second membre.
 
@@ -6963,9 +6994,13 @@ si~:
 $$na_n y^{[n-1]} + (n-1)a_{n-1} y^{[n-2]}+...+a_1=0$$
 on reconnait l'\'equation diff\'erentielle lin\'eaire \`a coefficients
 constants dont l'\'equation caract\'eristique est $P'$.
-L'ind\'ependance lin\'eaire de ces fonctions
-se montre en faisant $t=0$ (on est ramen\'e au cas pr\'ec\'edent), 
-puis en divisant par $t$ et en faisant $t=0$, etc.
+La preuve de l'ind\'ependance lin\'eaire de ces fonctions
+est plus technique, elle peut se faire 
+par r\'ecurrence sur le nombre de racines. S'il y
+en a une, on a un polyn\^ome. Sinon, on factorise $e^{r_nt}$,
+et on d\'erive la multiplicit\'e de $r_n$ pour appliquer
+le r\'esultat au cran $n-1$, on a alors un syst\`eme triangulaire
+sur le groupe d'inconnues de la m\^eme exponentielle.
 
 Si $P$ est \`a coefficients r\'eels et admet une racine non r\'eelle
 $z$ alors $\overline{z}$ est encore racine, on peut r\'e\'ecrire 
@@ -6984,6 +7019,7 @@ a une racine double $r=-1$, donc $y(t)=\alpha e^{-t}+\beta t e^{-t}$
 deux racines conjugu\'ees $r=-1\pm i$, donc
 $y(t)=e^{-t}(\alpha \cos(t)+\beta \sin(t))$
 \end{itemize}
+\giacinputbigmath{desolve(y''+2y'+2y=0)}
 
 On peut trouver une solution particuli\`ere de l'\'equation avec
 second membre comme dans le cas g\'en\'eral (m\'ethode de variation
@@ -7025,8 +7061,10 @@ $$y(t)=P\left( \begin{array}{c} c_1 e^{d_1t} \\ ... \\c_n e^{d_nt}
 Le calcul avec Xcas se fait en utilisant la commande \verb|desolve|,
 par exemple\\
 \verb|desolve(y'=[[1,2],[2,1]]*y)|\\
+\giacinputbigmath{desolve(y'=[[1,2],[2,1]]*y)}\\
 ou avec conditions initiales\\
-\verb|desolve([y'=[[1,2],[2,1]]*y,y(0)=[1,2]])|\\
+\verb|desolve(y'=[[1,2],[2,1]]*y and y(0)=[1,2])|\\
+\giacinputbigmath{desolve([y'=[[1,2],[2,1]]*y,y(0)=[1,2]])}\\
 On peut aussi utiliser la fonction \verb|exp|
 avec comme argument $At$ (on g\'en\'eralise ainsi 
 la notation $e^{at}$ 
@@ -7052,8 +7090,9 @@ composante une \'equation
 diff\'erentielle lin\'eaire d'ordre 1 avec un \'eventuel 
 second membre. 
 
-{\bf Remarque~}: il y a un lien avec la section
-pr\'ec\'edente. En effet une \'equation d'ordre $n$ peut
+\subsubsection{Syst\`emes et \'equations}
+Il y a un lien entre syst\`emes diff\'erentiels lin\'eaires
+et \'equations lin\'eaires. En effet une \'equation d'ordre $n$ peut
 s'\'ecrire comme un syst\`eme diff\'erentiel d'ordre 1,
 on peut calculer le polyn\^ome caract\'eristique de la matrice
 on retrouve alors l'\'equation caract\'eristique. Inversement,
@@ -7071,10 +7110,11 @@ caract\'eristique est $P(x)=0$. En effet~:
 $$0=P(A)y=\sum_{k=0}^n p_k A^k y = \sum_{k=0}^n p_k y^{[k]}$$
 
 {\bf Exemple en dimension 2.}
-Soit $A=\left(\begin{array}{cc}
+Soit $$A=\left(\begin{array}{cc}
 a & b \\
 c & d
-\end{array}\right) $. Si $b=0$ alors $y_1'=ay_1$ on en d\'eduit
+\end{array}\right) $$
+Si $b=0$ alors $y_1'=ay_1$ on en d\'eduit
 $y_1$ puis $y_2$. Supposons donc $b\neq 0$, alors
 $$ P(x)=x^{2} - x (a+d) +a d-b c$$
 (on peut v\'erifier que $P(A)=0$)
@@ -7087,9 +7127,37 @@ r\'esoudre tous les syst\`emes de dimension 2, m\^eme
 si la matrice $A$ n'est pas diagonalisable.
 
 {\bf Exercice~}: R\'esoudre de cette mani\`ere le syst\`eme\\
-\verb|desolve([y'=[[1,2],[2,1]]*y,y(0)=[1,2]])|
+\verb|desolve(y'=[[1,2],[2,1]]*y and y(0)=[1,2])|\\
+\giacinputbigmath{desolve([y'=[[1,2],[2,1]]*y,y(0)=[1,2]])}
 
-{\bf Remarque~:} allure des courbes en dimension 2.\\
+{\bf Autre exemple~}: syst\`eme d'ordre 2 se ramenant \`a une \'equation
+d'ordre 2 \`a coefficients complexes. Les \'equations pour une particule
+charg\'ee dans un champ magn\'etique constant port\'e par l'axe $Oz$ et
+un champ \'electrique constant perpendiculaire (donc dans le plan $Oxy$),
+avec vitesse initiale nulle ou contenue dans le plan $Oxy$ donnent une 
+trajectoire plane
+$$ \left\{ \begin{array}{ccc} m\ddot{x}&=&qB\dot{y} +qE_x\\
+m\ddot{y}&=& -qB\dot{x} +qE_y
+\end{array} \right.$$
+Si on pose $z=x+iy$ alors $z$ v\'erifie l'\'equation
+$$ \ddot{z}=-i\frac{qB}{m} \dot{z}+\frac{qE}{m}, \quad E=E_x+iE_y$$
+Le polyn\^ome caract\'eristique de cette \'equation 
+$$r^2=-i\frac{qB}{m}r$$
+poss\`ede deux racines distinctes 0 et $-i\frac{qB}{m}$ (mais pas le
+conjugu\'e, l'\'equation n'est pas \`a coefficients r\'eels!) donc
+la solution homog\`ene est 
+$$z=\alpha + \beta e^{-i\frac{qB}{m}t}, \quad \alpha,\beta \in \C$$
+Le champ \'electrique joue ici le r\^ole de second membre, comme 0
+est solution de l'\'equation caract\'eristique, la forme de la 
+solution particuli\`ere est $z=At$, en rempla\c{c}ant on obtient 
+$ A=iE/B$ donc
+$$z=\alpha + \beta e^{-i\frac{qB}{m}t}+i\frac{E}{B} $$
+La forme g\'en\'erale des solutions est un cercle si $E=0$
+parcouru une infinit\'e de fois, qui se d\'eforme sous l'effet
+du champ \'electrique en une sorte de spirale de ressort, pour
+une valeur seuil de $E$ on obtient une cyclo\"ide.
+
+\subsubsection{Allure des courbes en dimension 2.}
 Si on se place dans le rep\`ere propre (en prenant les vecteurs
 propres comme vecteurs de base), et si $A$ a deux valeurs
 propres distinctes ($A$ est alors diagonalisable),
@@ -7109,6 +7177,13 @@ Ce sont des hyperboles si trace$(A)=0$ (la somme des valeurs
 propres vaut 0 donc le produit des coordonn\'ees dans
 le rep\`ere propre vaut une constante),
 ces hyperboles sont \'equilat\`eres si $A$ est sym\'etrique.
+Quelques exemples~:
+\giacinputbigmath{A:=[[-1,1],[1,2]];p,d:=jordan(A)}
+\giacinputbigmath{A:=[[1,-1],[2,4]];p,d:=jordan(A)}
+\giacinputbigmath{A:=[[0,1],[-1,0]];p,d:=jordan(A)}
+\giacinputmath{A:=[[1,1],[-1,1]];p,d:=jordan(A)}
+\giacinputbig{seq(seq(plotparam(exp(A*t)*[a/5,b/5],t=-1..1),a,-3,3),b,-3,3)}
+%\giaclink{http://www-fourier.ujf-grenoble.fr/\%7eparisse/xcasfr.html#+A:=[[-1,1],[1,2]]&+A:=[[1,-1],[2,4]]&+A:=[[0,1],[-1,0]]&+A:=[[1,1],[-1,1]]&+p,d:=jordan(A)&+seq(seq(plotparam(exp(A*t)*[a/5,b/5],t=-1..1),a,-3,3),b,-3,3)&}
 
 {\bf Remarque~:}pour un syst\`eme diff\'erentiel \`a coefficients
 non constants, il n'existe pas de m\'ethode g\'en\'erale de
@@ -7117,9 +7192,48 @@ on puisse r\'esoudre le syst\`eme, par exemple si on trouve
 une matrice de passage ind\'ependante du temps ramenant
 le syst\`eme \`a un syst\`eme diagonal ou triangulaire~:
 un exemple avec
-$A=\left(\begin{matrix}{cc} 1+t & -t \\ -t & 1+t\end{matrix}\right)$.
+$$A=\left(\begin{array}{cc} 1+t & -t \\ -t & 1+t\end{array}\right)$$
 Ou si $\int A(t) \ dt$ commute avec $A$, on peut prendre 
 $\exp(\int A(t))$ comme solution.
+
+\subsubsection{Syst\`emes d'ordre plus grand que 1}
+On se ram\`ene \`a un syst\`eme d'ordre 1.
+Par exemple deux ressorts coupl\'es
+$$ 
+\left\{ 
+\begin{array}{ccc}
+\ddot{x_1}&=&-2\omega^2 x_1+\omega^2 x_2\\
+\ddot{x_2}&=&\omega^2 x_1-2\omega^2x_2
+\end{array}
+\right. $$
+on pose $Y=(x_1,x_2,\dot{x_1},\dot{x_2})$, on a
+$$\dot{Y}=\left(
+\begin{array}{c}\dot{x_1}\\\dot{x_2}\\\ddot{x_1}\\\ddot{x_2}\end{array}
+\right)
+=\left(\begin{array}{cccc}
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1 \\
+-2\cdot \omega^{2} & \omega^{2} & 0 & 0 \\
+\omega^{2} & -2\cdot \omega^{2} & 0 & 0
+\end{array}\right) 
+\left(
+\begin{array}{c}x_1\\x_2\\\dot{x_1}\\\dot{x_2}\end{array}
+\right)
+$$ 
+On d\'el\`egue le calcul des valeurs propres \`a la machine~:
+\giacinputbigmath{assume(omega>0);a:=omega^2*[[-2,1],[1,-2]]}
+\giacinputbigmath{A:=blockmatrix(2,2,[0*idn(2),idn(2),a,0*idn(2)])}
+\giacinputbigmath{p,d:=jordan(A)}
+%&+normal(inv(p)*A*p)}
+%desolve(y'=A*y,t,y)}
+Les valeurs propres sont $\pm i \omega, \pm i\sqrt{3} \omega$ imaginaires
+pures, donc les solutions du syst\`eme sont p\'eriodiques
+de fr\'equence $\omega$ et $\sqrt{3}\omega$, qui sont des fr\'equences
+intrins\`eques du syst\`eme. Si on ajoute un second membre
+p\'eriodique de p\'eriode $\Omega$, lorsque $\Omega \neq \omega$ et 
+$\Omega \neq \sqrt{3}\omega$, il y a une solution particuli\`ere
+de fr\'equence $\Omega$ et les solutions sont born\'ees (3 fr\'equences),
+par contre si $\Omega=\omega$ ou $\Omega=\sqrt{3}\omega$, il y a r\'esonance.
 
 \subsubsection{Int\'egrales premi\`eres.}\index{premi\`ere,
   int\'egrale}\index{int\'egrale premi\`ere}
@@ -7135,8 +7249,48 @@ premi\`ere \'energie
 totale permet de ramener l'\'equation fondamentale de la
 dynamique d'ordre 2 \`a une \'equation
 du premier ordre \`a variables s\'eparables~:
-$$ \frac12 m x'^2+ V(x) = C $$
-En dimension plus grande, cela peut permettre de 
+$$ \frac12 m x'^2+ V(x) = E $$
+soit
+$$ \frac{dx}{dt} = \sqrt{\frac{2(E-V(x))}{m}}$$
+donc 
+$$ \frac{dx}{\sqrt{\frac{2(E-V(x))}{m}}}=dt$$
+on peut ainsi calculer le temps en fonction de $x$ et tracer
+le graphe de $t$ en fonction de $x$ puis le graphe de $x$ en fonction
+de $t$  par sym\'etrie
+par rapport \`a la premi\`ere bissectrice.
+
+Exemple~: calcul de la p\'eriode d'un pendule, on rep\`ere
+une masse reli\'ee \`a un fil de longueur $l$ \`a un point fixe
+par l'angle $\theta$ form\'e avec la verticale (orient\'e vers le
+bas), de sorte que
+l'\'energie potentielle de la masse est $-mgl\cos(\theta)$
+on a donc 
+$$ \frac12 m l^2\dot{\theta}^2-mgl\cos(\theta)=E$$
+puis
+$$ \dot{\theta}=\sqrt{\frac{2(E+mgl\cos(\theta))}{ml^2}}$$
+Si on lache sans vitesse initiale la masse avec un angle 
+$\theta_0 \in ]-\pi,\pi[$ alors
+$E=-mgl\cos(\theta_0)$ donc
+$$ \dot{\theta}=\sqrt{2\frac{g}{l}(\cos(\theta)-\cos(\theta_0))}$$
+puis
+$$ \frac{d\theta}{\sqrt{2\frac{g}{l}(\cos(\theta)-\cos(\theta_0))}}
+= dt $$
+Pour des raisons de sym\'etrie, la p\'eriode du pendule est donc
+$$ T=4\int_{t/\theta(t)=0}^{t/\theta(t)=\theta_0} dt 
+=4 \int_0^{\theta_0} \frac{d\theta}{\sqrt{2\frac{g}{l}(\cos(\theta)-\cos(\theta_0))}} $$
+L'expression \`a int\'egrer n'admet pas de primitive avec les fonctions
+usuelles, on l'appelle int\'egrale elliptique (il y a un lien avec
+la longueur d'un arc d'ellipse). On peut calculer une valeur num\'erique
+approch\'ee de cette int\'egrale si $\theta_0$ est donn\'e.
+\giacinputmath{theta0:=0.78; 4/sqrt(g/l)*int(1/sqrt(2*(cos(theta)-cos(theta0))),theta,0,theta0)}
+Pour de petites valeurs de $\theta_0$, on peut approcher 
+$\cos(\theta)$ par $1-\theta^2/2$ et calculer l'int\'egrale
+\giacinputmath{assume(theta0>0); 4/sqrt(g/l)*int(1/sqrt(theta0^2-theta^2),theta,0,theta0)}
+qui ne d\'epend pas de $\theta_0$. On observe que cette approximation 
+est encore assez bonne pour $\theta_0<\pi/4$ (erreur<4\%).
+
+En dimension plus grande, l'existence d'int\'egrales
+premi\`eres peut permettre de 
 connaitre la forme de la courbe int\'egrale et m\^eme
 parfois de r\'esoudre compl\`etement l'\'equation (cas du probl\`eme
 \`a deux corps ci-dessous).
@@ -7157,45 +7311,91 @@ $$ \frac{d}{dt} E(y(t))= \sum_{j=1}^n \frac{\partial E}{\partial y_j} f_j$$
 
 {\bf Probl\`eme \`a deux corps~} 
 Cas d'un point de $\R^3$
-soumis \`a une {\bf force centrale}\index{centrale, force}\index{force centrale}
+soumis \`a une force centrale\index{centrale, force}\index{force centrale}
 comme la gravit\'e ou la force coulombienne~:
-$$\frac{d^2 \overrightarrow{r}}{dt^2}=-\mu \frac{\overrightarrow{r}}{r^3}$$ 
+$$\frac{d^2 {\bf r}}{dt^2}=-\mu \frac{{\bf r}}{r^3}$$ 
 on montre
 \begin{itemize}
 \item  la conservation du moment cin\'etique 
-$$\overrightarrow{L}=
-\overrightarrow{r} \wedge \frac{d \overrightarrow{r}}{dt}$$
+$${\bf L}=
+{\bf r} \wedge \frac{d {\bf r}}{dt}$$
 (v\'erification imm\'ediate en d\'erivant).
 Ceci entraine que
 le mouvement est dans un plan orthogonal \`a 
-$\overrightarrow{L}=L\overrightarrow{k}$
+${\bf L}=L \overrightarrow{k}$
 et la loi des aires (o\`u $\theta$ est l'angle form\'e par 
-$\overrightarrow{r}$ avec une direction fixe du plan)~:
+${\bf r}$ avec une direction fixe du plan)~:
 $$r^2 \frac{d\theta}{dt}=L$$
 (ceci est vrai d\`es que la force est centrale, ind\'ependamment
 de la norme de la force)
 \item la conservation du vecteur excentricit\'e d\'efini par~:
-\[ \overrightarrow{E}= \frac{1}{\mu} \frac{d\overrightarrow{r}}{dt} \wedge 
-\overrightarrow{L} - \frac{\overrightarrow{r}}{r} 
-= \frac{L }{\mu} \frac{d\overrightarrow{r}}{dt} \wedge 
+\[ {\bf E}= \frac{1}{\mu} \frac{d{\bf r}}{dt} \wedge 
+{\bf L} - \frac{{\bf r}}{r} 
+= \frac{L }{\mu} \frac{d{\bf r}}{dt} \wedge 
 \overrightarrow{k} - \overrightarrow{e_r} \]
 En effet $d \overrightarrow{e_r}/dt=d\theta/dt
 \overrightarrow{e_\theta}$ o\`u $\{ \overrightarrow{e_r},
 \overrightarrow{e_\theta}, \overrightarrow{k} \}$ est orthonorm\'e direct
 et $L=r^2 d\theta/dt$.
 \end{itemize}
-Si on prend l'axe des $x$ port\'e par $\overrightarrow{E}$,
-en faisant le produit scalaire avec $\overrightarrow{r}$~:
-$$rE \cos(\theta)=\overrightarrow{r}.\overrightarrow{E}
+Si on prend l'axe des $x$ port\'e par ${\bf E}$,
+en faisant le produit scalaire avec ${\bf r}$~:
+$$rE \cos(\theta)={\bf r}.{\bf E}
 = \frac{1}{\mu} 
-(\frac{d\overrightarrow{r}}{dt} \wedge \overrightarrow{L}) . \overrightarrow{r} - r$$
+(\frac{d{\bf r}}{dt} \wedge {\bf L}) . {\bf r} - r$$
 on obtient en appliquant les propri\'et\'es du produit mixte et la
-d\'efinition de $\overrightarrow{L}$~:
+d\'efinition de ${\bf L}$~:
 \[ r = \frac{L^2}{\mu(1+E \cos(\theta))}\]
 la courbe int\'egrale est donc une conique d'excentricit\'e $E$
 ayant l'origine pour foyer et parcourue selon la loi des aires
 (l'aire balay\'ee par le segment origine-point mobile est
 proportionnelle au temps).
+
+\subsubsection{Le mod\`ele proie-pr\'edateur}
+\index{proie-pr\'edateur, mod\`ele}
+\index{mod\`ele proie-pr\'edateur}
+C'est un syst\`eme autonome en dimension 2 pour lequel on sait
+calculer une int\'egrale premi\`ere. Il se pr\'esente sous la forme
+\begin{eqnarray*}
+\dot{x}&=&x(a-by)\\
+\dot{y}&=&-y(c-dx)
+\end{eqnarray*}
+avec $a,b,c,d$ des constantes positives, $x$ l'effectif des proies,
+$y$ celui des pr\'edateurs,
+$a$ correspond \`a la reproduction naturelle des proies, 
+$b$ \`a la mortalit\'e par
+rencontre d'un pr\'edateur, $c$ \`a la mortalit\'e naturelle
+des pr\'edateurs et $d$ \`a la natalit\'e d\'ependant du nombre de
+proies.
+On peut d\'eterminer les points d'\'equilibre et leur stabilit\'e
+comme pour n'importe quel syst\`eme autonome (exercice),
+on trouve $(0,0)$  qui est instable et $(c/d,a/b)$, les valeurs propres
+du lin\'earis\'e 
+sont 2 imaginaires purs conjugu\'es, donc on ne peut pas conclure sur
+la stabilit\'e \`a ce stade.
+
+On peut d\'eterminer une int\'egrale premi\`ere en faisant apparaitre
+des d\'eriv\'ees logarthmiques
+$$ \frac{d}{dt}(\ln(x))=a-by, \quad \frac{d}{dt}(\ln(y))=-c+dx $$
+donc en posant $X=\ln(x), Y=\ln(y)$ on a
+$$ \dot{X}=a-be^Y, \quad \dot{Y}=-c+de^X$$
+d'o\`u~:
+$$ \dot{X} (de^X-c) + \dot{Y}(be^Y-a)=0$$
+donc~:
+$$ f(X,Y)=de^X-cX+be^Y-aY$$
+est une int\'egrale premi\`ere du mouvement, qui se passe donc sur
+les courbes de niveau de $f$ en $(X,Y)$ ou de $dx-c\ln(x)+by-a\ln(y)$
+en $(x,y)$. On observe que ces courbes de niveau sont ferm\'ees, 
+impliquant un mouvement p\'eriodique, si on exprime $y$ en fonction
+de $x$ par le th\'eor\`eme des fonctions implicites donc sur toute la
+courbe \`a l'exception des deux points $x_\pm$ o\`u la tangente est verticale
+$$dx-c\ln(x)+by-a\ln(y)=K \Rightarrow y=y_{\pm}(x)$$
+alors on peut calculer la p\'eriode du mouvement en appliquant~:
+$$ \frac{dx}{x(a-by(x))}=dt$$
+donc
+$$ T=\int dt = \int_{x_-}^{x_+}  \frac{dx}{x(a-by_+(x))}
++ \int_{x_+}^{x_-}  \frac{dx}{x(a-by_-(x))}
+$$
 
 \subsubsection{Quelques autres m\'ethodes}
 On peut encore citer~: 
@@ -7339,6 +7539,12 @@ est divis\'ee par
 $$|-a\omega^2+ib\omega+c|
 =\sqrt{ b^2\omega^2+(a\omega^2-c)^2}
 =\omega^2 \sqrt{ b^2+(a\omega-\frac{c}{\omega})^2}$$
+Si $b=0$ (pas de frottements) 
+et si $i\omega$ est solution de l'\'equation caract\'eristique,
+la solution particuli\`ere est en $ A t e^{i\omega t}$,
+il y a r\'esonance (c'est pour \'eviter d'entrer en r\'esonance
+avec une fr\'equence propre d'un pont qu'on ne doit pas le traverser
+\`a plusieurs en marchant au m\^eme pas cadenc\'e).
 
 \subsubsection{\'Equation autonome sans second membre}\index{autonome}
 Il s'agit d'une \'equation de la forme $y'=f(y)$ o\`u on
@@ -7421,7 +7627,7 @@ l'infini.
 {\bf Exemples }
 \begin{itemize}
 \item
-\verb|[Y]:=desolve([y'=A*y,y(0)=[1,0,0]])| pour\\
+\verb|[Y]:=desolve(y'=A*y and y(0)=[1,0,0])| pour\\
 \verb|A:=[[1,2,3],[4,5,6],[7,8,9]]|, 
 puis \verb|plot(Y[0],x=0..4)| la solution tend vers l'infini,
 \`a vitesse exponentielle comme on peut
@@ -7433,7 +7639,7 @@ diff\`ere de la dimension 1, o\`u en changeant le sens
 du temps une solution divergente devient convergente).
 On peut repr\'esenter le graphe de la courbe d\'ecrite
 dans l'espace par exemple avec \verb|plotparam(Y,x=0..2)|
-\item \verb|[Y]:=desolve([y'=A*y,y(0)=[1,0]])| pour 
+\item \verb|[Y]:=desolve(y'=A*y and y(0)=[1,0])| pour 
 \verb|A:=[[-3,1],[1,-5]]|, la courbe dans le plan est
 obtenue par \verb|plotparam(Y,x=0..10)|, en faisant
 plusieurs zoom out, on voit la courbe partir de la condition
@@ -7464,55 +7670,7 @@ on peut montrer que
 le syst\`eme revient \`a l'\'equilibre exponentiellement vite, si
 l'une des parties r\'eelles est strictement positive,
 pour une condition initiale g\'en\'erique, le syst\`eme s'en
-\'eloigne, et s'il y a des parties r\'eelles nulles, on ne peut pas
-conclure.
-
-\subsubsection{Le mod\`ele proie-pr\'edateur}
-\index{proie-pr\'edateur, mod\`ele}
-\index{mod\`ele proie-pr\'edateur}
-C'est un syst\`eme autonome en dimension 2 pour lequel on sait
-calculer une int\'egrale premi\`ere. Il se pr\'esente sous la forme
-\begin{eqnarray*}
-\dot{x}&=&x(a-by)\\
-\dot{y}&=&-y(c-dx)
-\end{eqnarray*}
-avec $a,b,c,d$ des constantes positives, $x$ l'effectif des proies,
-$y$ celui des pr\'edateurs,
-$a$ correspond \`a la reproduction naturelle des proies, 
-$b$ \`a la mortalit\'e par
-rencontre d'un pr\'edateur, $c$ \`a la mortalit\'e naturelle
-des pr\'edateurs et $d$ \`a la natalit\'e d\'ependant du nombre de
-proies.
-On peut d\'eterminer les points d'\'equilibre et leur stabilit\'e
-comme pour n'importe quel syst\`eme autonome (exercice),
-on trouve $(0,0)$  qui est instable et $(c/d,a/b)$, les valeurs propres
-du lin\'earis\'e 
-sont 2 imaginaires purs conjugu\'es, donc on ne peut pas conclure sur
-la stabilit\'e \`a ce stade.
-
-On peut d\'eterminer une int\'egrale premi\`ere en faisant apparaitre
-des d\'eriv\'ees logarthmiques
-$$ \frac{d}{dt}(\ln(x))=a-by, \quad \frac{d}{dt}(\ln(y))=-c+dx $$
-donc en posant $X=\ln(x), Y=\ln(y)$ on a
-$$ \dot{X}=a-be^Y, \quad \dot{Y}=-c+de^X$$
-d'o\`u~:
-$$ \dot{X} (de^X-c) + \dot{Y}(be^Y-a)=0$$
-donc~:
-$$ f(X,Y)=de^X-cX+be^Y-aY$$
-est une int\'egrale premi\`ere du mouvement, qui se passe donc sur
-les courbes de niveau de $f$ en $(X,Y)$ ou de $dx-c\ln(x)+by-a\ln(y)$
-en $(x,y)$. On observe que ces courbes de niveau sont ferm\'ees, 
-impliquant un mouvement p\'eriodique, si on exprime $y$ en fonction
-de $x$ par le th\'eor\`eme des fonctions implicites donc sur toute la
-courbe \`a l'exception des deux points $x_\pm$ o\`u la tangente est verticale
-$$dx-c\ln(x)+by-a\ln(y)=K \Rightarrow y=y_{\pm}(x)$$
-alors on peut calculer la p\'eriode du mouvement en appliquant~:
-$$ \frac{dx}{x(a-by(x))}=dt$$
-donc
-$$ T=\int dt = \int_{x_-}^{x_+}  \frac{dx}{x(a-by_+(x))}
-+ \int_{x_+}^{x_-}  \frac{dx}{x(a-by_-(x))}
-$$
-
+\'eloigne, et s'il y a des parties r\'eelles nulles, on ne peut pas conclure/
 
 \subsubsection{For\c{c}age pr\`es d'un point d'\'equilibre de syst\`eme.}
 Si on ajoute un terme d\'ependant du temps $y'=f(y)+g(t)$,
@@ -9861,19 +10019,20 @@ on v\'erifie
 \begin{enumerate}
 \item Déterminer le nombre de racines de $-x^7+x^4+12x-5$ comprises
 entre 0 et 6 (en utilisant les suites de Sturm, on donnera les
-d\'etails des calculs).
+d\'etails des calculs). D\'eterminer le nombre de racines r\'eelles
+de ce polyn\^ome en utilisant une majoration du module des racines.
 \item \'Ecrire un programme calculant la suite de Sturm d'un polynôme
 supposé squarefree (on peut tester avec \verb|sqrfree|), en utilisant
-l'algorithme d'Euclide.
+l'algorithme d'Euclide, on renverra $P$, $P'$ et la liste des quotients.
+\'Ecrire un programme calculant le nombre de changements de signe
+de la suite de Sturm en un r\'eel (indication~: utiliser 
+l'algorithme de Horner pour \'evaluer, 
+et \verb|remove| pour \'eliminer les 0 d'une liste)
 \item Prendre un polyn\^ome de degr\'e 100 \`a coefficients
 al\'eatoires (\verb|randpoly|), le factoriser num\'eriquement
 (\verb|proot|) puis donner pour les premi\`eres racines
 approch\'ees renvoy\'ees des intervalles ou disques o\`u
 on peut certifier qu'il existe une racine.
-\item Calculer avec un logiciel les valeurs numériques des racines
-complexes de $P(x)=x^5+x+1$. Trouver les combinaisons de racines
-dont la somme est entière (aux arrondis près). En déduire la factorisation
-en facteurs irréductibles sur $\Z$ de $P$.
 \item Soit $P(x)=x^5+3x+1$. D\'eterminer des valeurs approch\'ees
 des racines complexes de $P$. En d\'eduire des boules dans le
 plan complexe contenant exactement une racine de $P$ et
@@ -9886,6 +10045,10 @@ et le r\'esultant de la partie r\'eelle et imaginaire de
 $P(x+iy)$. Comparer cette m\'ethode avec celle de l'exercice
 pr\'ec\'edent (en particulier que se passe-t-il pour un polyn\^ome
 de degr\'e $n$).
+\item Calculer avec un logiciel les valeurs numériques des racines
+complexes de $P(x)=x^5+x+1$. Trouver les combinaisons de racines
+dont la somme est entière (aux arrondis près). En déduire la factorisation
+en facteurs irréductibles sur $\Z$ de $P$.
 \item Factorisation numérique sur $\C$. \'Ecrire un programme
 qui calcule une racine d'un polynôme à coefficients complexes
 en utilisant une méthode itérative de type méthode de Newton 
@@ -9897,7 +10060,7 @@ racine trouvée (toujours avec Horner). Trouver les combinaisons
 de racines correspondant à un facteur à coefficients entiers.
 \item Soit $p$ un entier premier et $P$ un polynôme \`a
 coefficients dans $\Z/p\Z$. On a la relation
-\[ gcd(X^{p^k}-X,P) = \prod_{ f | P, \mbox{\small deg}(f) | k} f, 
+\[ \mbox{gcd}(X^{p^k}-X,P) = \prod_{ f | P, \mbox{\small deg}(f) | k} f, 
 \quad f \mbox{ irréductible} \]
 En utilisant cette relation, 
 déterminer les degrés des facteurs de 
@@ -12955,9 +13118,15 @@ Il y a $L-1$ lignes à réduire à chaque
 étape et min$(L,C)$ étapes à effectuer, on en déduit que le
 nombre maximal d'opérations pour réduire une matrice est
 $LC$min$(L,C)$. Pour une matrice carrée de taille $n$, cela fait 
-$n^3$ opérations.  Si on effectue une r\'eduction en-dessous de la diagonale, 
-toujours pour une matrice carr\'ee, le nombre d'op\'erations est
-divis\'e par 3 ($\sum_{k=2}^n k^2$).
+$n^3$ opérations. En fait c'est moins, parce que lorsqu'on cr\'ee
+des 0 dans la $k$-i\`eme colonne, la ligne du pivot \`a retrancher
+commence par $k-1$ z\'eros, on peut donc commencer la combinaison lin\'eaire 
+\`a la colonne $k$, donc pour une matrice carr\'ee de taille $n$ cela
+fait en r\'ealit\'e $n^3/2$ op\'erations.
+Si on effectue une r\'eduction en-dessous de la diagonale, 
+toujours pour une matrice carr\'ee, le nombre d'op\'erations 
+devient $n^3/3$ ($\sum_{k=2}^n k^2$). On peut ensuite r\'eduire au-dessus
+de la diagonale.
 
 \subsubsection{Erreurs d'arrondis du pivot de Gauss} \index{erreur}
 \index{pivot partiel}
@@ -13258,8 +13427,11 @@ $A^* A$, on voit qu'il suffit d'en trouver la plus grande valeur
 propre et d'en prendre la racine carr\'ee. Les valeurs propres de
 $A^*A$ sont appel\'ees valeurs singuli\`eres de $A$ (ce sont des
 r\'eels positifs). Le m\^eme raisonnement pour $A^{-1}$ (dont les
-valeurs singuli\`eres sont les inverses des valeurs singuli\`eres de $A$) nous
-donne alors le~:
+valeurs singuli\`eres sont les inverses des valeurs singuli\`eres 
+de $A$\footnote{On le montre en observant que les valeurs propres de 
+$AA^*$ sont identiques \`a celles de $A^*A$, car si $v$ est
+vecteur propre de $A^*A$ alors $Av$ est vecteur
+propre de $AA^*$}) nous donne alors le~:
 \begin{thm}
 Lorsqu'on r\'esoud un syst\`eme lin\'eaire $Ax=b$, $A$ matrice connue
 pr\'ecis\'ement et inversible, $b$ connu avec une erreur relative en
@@ -13328,9 +13500,12 @@ coordonnées de $w$ donnent alors par ordre de degré croissant
 un polynôme $P$ de degr\'e minimal tel que $P(A)v=0$ donc
 $P$ divise le polynôme minimal $M$. Donc si $P$ est de
 degré $n$, $P=M$. Sinon, il faut v\'erifier que le polynôme obtenu 
-annule la matrice $A$. On peut aussi calculer en parallèle le polynôme $P$
+annule la matrice $A$. On peut aussi calculer le polynôme $P$
 précédent pour quelques vecteurs aléatoires et prendre le PPCM des
-polynômes obtenus.
+polynômes obtenus, il suffit de s'arr\^eter lorsque l'espace engendr\'e
+par les vecteurs et les images par les puissances de $A$ engendrent
+tout $\R^n$. On peut aussi utiliser l'algorithme de Danilevsky (voir
+plus bas) qui est int\'eressant sur les corps finis.
 
 {\bf Exemple 1}\\
 Polynôme minimal de $\left(\begin{array}{cc} 1 & -1 \\ 2 & 4
@@ -13525,6 +13700,31 @@ colonnes et les lignes $k+1$ et $k'$ correspondantes. Si tout le reste
 de la ligne est nul, alors le polynom\^ome caract\'eristique est le
 produit du polyn\^ome de la matrice companion lignes et colonnes 
 0 \`a $k$ incluses et de la matrice lignes et colonnes $k+1$ \`a $n-1$.
+Si on s'int\'eresse au polyn\^ome minimal, on prend le PPCM
+au lieu du produit.
+
+Le co\^ut de l'algorithme de Danilvesky est de $O(n^3)$ op\'erations
+sur le corps. Si on travaille sur les entiers, on peut reconstruire
+le polyn\^ome minimal ou caract\'eristique par les restes chinois,
+en estimant la taille des coefficients, on obtient un temps de calcul
+en $O(n^4 \ln(n))$. Si la matrice est \`a coefficients d\'ependant 
+polynomialement d'un param\`etre, on peut reconstruire par interpolation
+en majorant le degr\'e du polyn\^ome minimal ou caract\'eristique. Dans
+le cas du polyn\^ome minimal, on prendra garde aux valeurs du param\`etre
+de mauvaise r\'eduction, c'est-\`a-dire dont le degr\'e est trop petit, il
+ne faut garder pour l'interpolation que les valeurs du param\`etre telles
+que le degr\'e du polyn\^ome minimal soit maximal. Le nombre
+de points d'interpolation n\'ecessaire est \'egal \`a 1 plus le degr\'e du
+polynome minimal de la matrice multipli\'e par le degr\'e maximal
+de la matrice en le param\`etre.
+Le polyn\^ome interpol\'e
+est alors bien le polyn\^ome minimal. En effet 
+appliqu\'e sur la matrice de d\'epart
+on obtient une matrice \`a coefficients polyn\^omiaux en le param\`etre.
+Chaque coefficient est un polyn\^ome 
+dont le degr\'e en le param\`etre est major\'e par le nombre de points
+d'interpolation utilis\'es moins 1, et est donc nul car sinon il aurait
+trop de racines avec tous les points d'interpolation utilis\'es.
 
 \subsubsection{La m\'ethode de
   Leverrier-Faddeev-Souriau}\index{Leverrier} \index{Faddeev}\index{Souriau}
@@ -15031,17 +15231,27 @@ avec une majuscule (forme inerte) suivi de {\tt mod n}.
 
 \subsubsection{Exercices}
 \begin{enumerate}
+\item \'Ecrire un programme calculant l'inverse d'une matrice
+en utilisant sa d\'ecomposition $LU$. Tester avec une matrice
+\`a coefficients dans $\Z/p\Z$ puis dans un corps fini non premier.
+Que se passe-t-il sur $\Q$~?
 \item En utilisant un logiciel de calcul formel,
 comparez le temps de calcul d'un d\'eterminant de matrice
-al\'eatoire \`a coefficients entiers de tailles 50 et 100, 
-d'une matrice de taille 6 et 12 avec comme coefficients symboliques
+al\'eatoire de tailles 50, 100 et 200 \`a coefficients dans
+un corps fini, puis dans les entiers. \\
+M\^eme
+question pour une matrice de taille 20, 40 et 80
+dans des polyn\^omes de degr\'e 2
+\`a 1 variables sur un corps fini premier.\\
+M\^eme question pour 
+une matrice de taille 6 et 12 avec comme coefficients symboliques
 ligne $j$ colonne $k$, $x_{j+k}$ lorsque $j+k$ est pair
 et 0 sinon. Peut-on en déduire une indication sur l'algorithme
-utilisé?
+utilisé~?
 \item \'Ecrire un programme calculant la borne de Hadamard d'un
 déterminant à coefficients réels (rappel~: c'est la borne obtenue en faisant
-le produit des normes euclidiennes des vecteurs colonnes).
-\item Créez une matrice 4x4 aléatoire avec des coefficients entiers
+le produit des normes euclidiennes des vecteurs colonnes).\\
+Créez une matrice 4x4 aléatoire avec des coefficients entiers
 compris entre -100 et 100, calculer la borne de Hadamard de son déterminant
 avec le programme précédent, calculer ce déterminant modulo
 quelques nombres premiers choisis en fonction de la borne de Hadamard
@@ -15050,12 +15260,11 @@ et vérifiez le résultat de la reconstruction modulaire du déterminant.
 et calculez son déterminant
 modulo quelques nombres premiers. Dans quels cas peut-on
 conclure que la matrice est inversible dans $\R$? dans $\Z$?
-\item \'Ecrire un programme calculant par interpolation de Lagrange
+\item \'Ecrire un programme calculant par interpolation de Lagrange 
+(\verb|interp|)
 le polyn\^ome caract\'eristique d'une matrice (en donnant \`a $\lambda$
 de $\det(\lambda I -A)$, $n+1$ valeurs distinctes).
-\item (Long) \'Ecrire un programme qui calcule un d\'eterminant de matrice
-en calculant les mineurs 2x2 puis 3x3 etc. (m\'ethode de Laplace)
-\item Recherche du polynôme minimal. On prend un vecteur aléatoire
+\item Recherche du polynôme minimal (Krylov). On prend un vecteur aléatoire
 à coefficients entiers et on calcule $v$, $Av$, ..., $A^nv$ puis
 on cherche une relation linéaire minimale entre ces vecteurs, en
 calculant le noyau de la matrice ayant ces vecteurs colonnes. Si le
@@ -15069,6 +15278,8 @@ Essayez avec la matrice $A$ de taille 3 ayant des 0 sur la diagonale et
 des 1 ailleurs.
 \'Ecrire un programme mettant en oeuvre cette recherche, testez-le avec
 une matrice al\'eatoire de taille 30.
+\item (Long) \'Ecrire un programme qui calcule un d\'eterminant de matrice
+en calculant les mineurs 2x2 puis 3x3 etc. (m\'ethode de Laplace)
 \item Testez l'algorithme méthode de Fadeev pour la matrice $A$ ci-dessus.
 Même question pour 
 \[ A=\left(\begin{array}{ccc}
@@ -17845,9 +18056,9 @@ pour la recherche en calcul formel, sans parler de l'orientation
 calculatrice de l'interface de Xcas \`a l'\'epoque.
 C'est plut\^ot vers le projet Sage que la
 communaut\'e recherche de calcul formel ``libre'' se tournera un peu
-plus tard. Les deux projets Giac/Xcas et Sage sont
-aujourd'hui concurrents (m\^eme si on peut appeler Giac
-depuis Sage), voir plus bas section \ref{sec:concurrents}.
+plus tard. Les deux projets Giac/Xcas et Sage coop\`erent aujourd'hui
+au sens o\`u Giac est un paquet standard de Sage, mais restent concurrents 
+voir plus bas section \ref{sec:concurrents}.
 
 Parall\`element, Ren\'ee a lanc\'e \`a l'IREM de Grenoble
 un groupe de travail sur l'utilisation des calculatrices
@@ -17963,7 +18174,8 @@ pour le CAS des calculatrices HP-Prime.
 
 \subsection{Les concurrents open-source.} \label{sec:concurrents}
 Les principaux concurrents open-source de Giac/Xcas sont Maxima et
-Sage. Il existe d'autres logiciels libres de calcul formel g\'en\'eralistes, mais ils
+Sage. Il existe d'autres logiciels libres de calcul formel 
+g\'en\'eralistes, mais ils
 ne semblent pas avoir beaucoup d'utilisateurs.
 
 L'utilisation de Giac et de Maxima est assez proche, ce sont
@@ -17990,7 +18202,7 @@ du temps pour am\'eliorer la documentation en anglais.
 
 Sage est tr\`es diff\'erent de Xcas et Maxima. On peut certes l'utiliser
 comme un logiciel local en ligne de commande, mais
-pour une interface plus conviviale il faut utiliser une 
+pour une interface plus conviviale il faut utiliser le mod\`ele
 client-serveur, l'interface \'etant alors dans le navigateur. Les
 ressources n\'ecessaires sont significativement plus importantes
 si on l'installe localement, et l'acc\`es Internet est indispensable
@@ -18004,11 +18216,16 @@ pendant une journ\'ee}. Le langage de
 Sage est beaucoup plus typ\'e que celui de Giac, il est
 philosophiquement
 plus proche de Magma que de Maple ou Mathematica,
-donc plus difficile \`a apprendre pour qui n'est pas alg\'ebriste.
+donc plus difficile \`a apprendre pour qui n'a pas la fibre 
+alg\'ebriste~: il faut commencer par d\'eclarer dans quel
+ensemble on travaille, est-ce un anneau, un corps, un anneau
+de polyn\^omes par rapport \`a quelle(s) variable(s)\footnote{sauf si
+on utilise l'anneau symbolique, analogue \`a ce qui se passe
+dans Xcas, Maple ou Mathematica}.
 Sage se fonde sur un \'enorme corpus de logiciels et
 biblioth\`eques (dont Maxima, appel\'e pour les calculs symboliques,
-Giac peut d'ailleurs en \^etre un composant
-optionnel), qu'il fait communiquer entre eux, un peu \`a la
+Giac en est aussi un composant mais peu utilis\'e par d\'efaut), 
+qu'il fait communiquer entre eux, un peu \`a la
 mani\`ere d'une distribution linux qui fait cohabiter des composants
 logiciels, mais de mani\`ere plus intime, Python servant
 de colle entre les briques logicielles \'ecrits en diff\'erents
@@ -18037,9 +18254,9 @@ de Groebner sur les entiers utilise Singular, dont la version
 actuelle est tr\`es inefficace sur $\Z$
 \end{itemize} 
 De ce fait, le portage est difficile~: sans m\^eme parler des OS de tablettes
-et smartphones, il n'y a pas de version native Windows,
-on fait communiquer le navigateur sous Windows avec un serveur
-sage dans une machine virtuelle sous linux, ce qui n\'ecessite
+et smartphones, ce n'est que fin 2016 qu'apparait une version 
+Windows, sinon il faut faire communiquer le navigateur sous Windows 
+avec un serveur sage dans une machine virtuelle sous linux, ce qui n\'ecessite
 significativement plus de ressources\footnote{512M de RAM pour la
 machine virtuelle linux, \`a quoi il faut ajouter 
 le logiciel VirtualBox et le navigateur. De plus la taille des
@@ -18313,18 +18530,18 @@ faire le trac\'e et l'\'etude simultan\'ement, l\'etude analytique
 servant \`a expliquer les particularit\'es du trac\'e.
 
 Utiliser des outils de calcul n'est pas contradictoire avec faire
-du calcul, en particulier faire un peu de calcul mental pour avoir
+du calcul, en particulier faire suffisamment de calcul mental pour avoir
 une id\'ee de la plausibilit\'e d'un r\'esultat obtenu par
 un logiciel (ordre de grandeur). C'est
 de l'hygi\`ene intellectuelle, analogue \`a faire de l'exercice
-physique. Faire quelques calculs \`a la main est aussi une
+physique. Faire quelques calculs avec papier et stylo est aussi une
 fa\c{c}on de s'approprier de nouveaux concepts. Mais une fois
 cette \'etape franchie, je ne vois aucune raison de devoir
 continuer \`a apprendre \`a faire des calculs fastidieux
 ou techniques, alors que l'ordinateur fait cela beaucoup mieux
 que nous. Il est beaucoup plus judicieux de savoir diriger
 un logiciel pour cela, et donc de passer un peu de temps
-(autrefois consacr\'e \`a faire des calculs techniques)
+(le temps autrefois consacr\'e \`a faire des calculs techniques)
 \`a connaitre leurs possibilit\'es
 et limites (\`a la fois en termes de fonctionnalit\'es et
 de temps de calcul).
@@ -18342,7 +18559,7 @@ des \'el\`eves \`a continuer \`a faire ces calculs \`a la main
 s'ils savent les faire avec un logiciel ou une calculatrice. En les
 bloquant sur un point technique, on ne fera
 que les braquer et on les emp\^echera de comprendre \`a quoi
-cela peut servir (par exemple ici faire un tableau de variations).
+cela peut servir (par exemple faire un tableau de variations).
 Il faut arr\^eter de croire que tous les
 scientifiques fonctionnent comme les matheux qui veulent
 comprendre de A \`a Z, c'est d'ailleurs souvent devenu

@@ -3252,6 +3252,8 @@ namespace xcas {
   // eval g to gg, if g is a read command, replace g by the file content
   // and set reading_file to true
   void icas_eval(giac::gen & g,giac::gen & gg,int & reading_file,std::string &filename,giac::context * contextptr){
+    if (debug_infolevel)
+      CERR << CLOCK() << " icas_eval " << g << endl;
     try {
       reading_file=read_file(g);
       if (g.type==_SYMB && g._SYMBptr->feuille.type==giac::_STRNG)

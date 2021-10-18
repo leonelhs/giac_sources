@@ -1485,9 +1485,11 @@ namespace giac {
 	    else {
 	      tmpatan=atan(tmpatan,contextptr);
 	      if (xvar.is_symb_of_sommet(at_tan)){
-		// add residue
-		residue=r2e(it->fact.derivative().derivative(),l,contextptr);
-		residue=cst_pi*sign(residue,contextptr)*_floor((xvar._SYMBptr->feuille/cst_pi+plus_one_half),contextptr);
+		if (do_lnabs(contextptr)){
+		  // add residue
+		  residue=r2e(it->fact.derivative().derivative(),l,contextptr);
+		  residue=cst_pi*sign(residue,contextptr)*_floor((xvar._SYMBptr->feuille/cst_pi+plus_one_half),contextptr);
+		}
 	      }
 	      else {
 		// if xvar has a singularity at 0 e.g. xvar =x+1/x or x-1/x, 
@@ -4264,7 +4266,7 @@ namespace giac {
   // then try gcd(A(x),B(x+t))
   vecteur decalage(const polynome & A,const polynome & B){
     int s=A.dim;
-    //if (s==1)
+    if (s==1)
       return decalage_(A,B);
     vecteur l(s),L(s);
     for (int i=0;i<s;++i)
@@ -4272,34 +4274,29 @@ namespace giac {
     gen a=r2e(A,l,context0);
     gen b=r2e(B,l,context0);
     gen t=identificateur("t");
+    gen r=_sylvester(makesequence(a,subst(b,l[0],l[0]+t,false,context0),l[0]),context0);
     L[0]=l[0];
-    gen a0=subst(a,l,L,false,context0);
-    L[0]=l[0]+t;
-    gen b0=subst(b,l,L,false,context0);
-    gen r=_resultant(makesequence(a0,b0,l[0]),context0);
-    if (is_zero(derive(r,t,context0))){
+    gen r0=_det(subst(r,l,L,false,context0),context0);
+    if (is_zero(derive(r0,t,context0))){
       int essai=0;
       for (;essai<s;++essai){
 	L=vranm(s,0,0); // find random evaluation
 	L[0]=l[0];
-	a0=subst(a,l,L,false,context0);
-	L[0]=l[0]+t;
-	b0=subst(b,l,L,false,context0);
-	r=_resultant(makesequence(a0,b0,l[0]),context0);
-	if (!is_zero(derive(r,t,context0)))
+	r0=_det(subst(r,l,L,false,context0),context0);
+	if (!is_zero(derive(r0,t,context0)))
 	  break;
       }
       if (essai==s)
 	return decalage_(A,B);
     }
-    r=e2r(r,vecteur(1,t),context0);
-    if (r.type!=_POLY)
+    r0=e2r(r0,vecteur(1,t),context0);
+    if (r0.type!=_POLY)
       return decalage_(A,B);
-    vecteur v=iroots(*r._POLYptr);
+    vecteur v=iroots(*r0._POLYptr);
     vecteur res;
     for (int i=0;i<v.size();++i){
       gen ti=v[i];
-      gen bti=subst(b,t,ti,false,context0);
+      gen bti=subst(b,l[0],l[0]+ti,false,context0);
       gen g=gcd(a,bti,context0);
       if (!is_zero(derive(g,l[0],context0)))
 	res.push_back(ti);
@@ -4379,7 +4376,7 @@ namespace giac {
       y=p-giacmax(q,r);
       if (q>0){
 	vecteur vq=polynome2poly1(Q,1),vr=polynome2poly1(R,1);
-	gen ydeg=(vr[q-1]-vq[q-1])/qq;
+	gen ydeg=(vr[1]-vq[1])/qq;//gen ydeg=(vr[q-1]-vq[q-1])/qq;
 	if (ydeg.type==_INT_ && ydeg.val>y){
 	  y=ydeg.val;
 	  p=y+q-1;
@@ -4914,7 +4911,7 @@ namespace giac {
 #endif
 	for (unsigned i=0;i<w.size();++i){
 	  if (is_integer(w[i]) && is_greater((v[3]-w[i])*(w[i]-v[2]),0,contextptr)) {
-	    gen v0w=subst(v0,v[1],w[i],false,contextptr);
+	    gen v0w=limit(v0,*v[1]._IDNTptr,w[i],0,contextptr);// gen v0w=subst(v0,v[1],w[i],false,contextptr);
 	    if (is_undef(v0w) || is_inf(v0w))
 	      return gensizeerr("Pole at "+w[i].print(contextptr));
 	  }
@@ -5015,6 +5012,33 @@ namespace giac {
   static const char _Sum_s []="Sum";
   static define_unary_function_eval_quoted (__Sum,&_Sum,_Sum_s);
   define_unary_function_ptr5( at_Sum ,alias_at_Sum,&__Sum,_QUOTE_ARGUMENTS,true);
+
+  gen _wz_certificate(const gen & args,GIAC_CONTEXT) {
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    gen F,dF,G,n(n__IDNT_e),k(k__IDNT_e);
+    if (args.type==_VECT){
+      int s=args._VECTptr->size();
+      const vecteur & v=*args._VECTptr;
+      if (s==0 || s>4) return gensizeerr(contextptr);
+      if (s==1) F=v[0];
+      if (s==2) F=v[0]/v[1];
+      if (s==3){ F=v[0]; n=v[1]; k=v[2]; }
+      if (s==4){ F=v[0]/v[1]; n=v[2]; k=v[3]; }
+    }
+    else
+      F=args;
+    dF=simplify(subst(F,n,n+1,false,contextptr)-F,contextptr);
+    G=_sum(makesequence(dF,k),contextptr);
+    if (lop(G,at_sum).empty()){
+      gen R=G/subst(F,k,k-1,false,contextptr);
+      R=_eval(simplify(R,contextptr),contextptr);
+      return _factor(R,contextptr);
+    }
+    return 0;
+  }  
+  static const char _wz_certificate_s []="wz_certificate";
+  static define_unary_function_eval_quoted (__wz_certificate,&_wz_certificate,_wz_certificate_s);
+  define_unary_function_ptr5( at_wz_certificate ,alias_at_wz_certificate,&__wz_certificate,0,true);
 
   // sum does also what maple add does
   /*
