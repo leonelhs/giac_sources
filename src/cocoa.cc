@@ -14177,13 +14177,15 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	// if augmentgbasis>0 (at least) gbmod must be sorted
 	//if (augmentgbasis>0)
 	sort(gbmod.begin(),gbmod.end(),tripolymod_tri<polymod<tdeg_t> >(gbasis_logz_age));
+	if (!rur && gbasis_stop<0)
+	  gbmod.resize(-gbasis_stop);
 	if (debug_infolevel && count==0){
 	  CERR << "G= ";
 	  for (size_t i=0;i<G.size();++i){
 	    CERR << i << ":" << G[i] << "(" << resmod[G[i]].age<<"," << resmod[G[i]].logz << ":" << resmod[G[i]].fromleft << "," << resmod[G[i]].fromright << ")" << endl;
 	  }
 	  CERR << "sorted" << endl;
-	  for (size_t i=0;i<G.size();++i){
+	  for (size_t i=0;i<gbmod.size();++i){
 	    CERR << i << "(" << gbmod[i].age << "," << gbmod[i].logz << ":" << gbmod[i].fromleft << "," << gbmod[i].fromright << ")" << endl;
 	  }
 	  CERR << endl;
@@ -14274,7 +14276,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  if (jpos!=Wlast[i].size() || P[i].type==_INT_){
 	    // CERR << jpos << endl;
 	    // IMPROVE: make it work for rur!
-	    if (!rur && eps>0 && P[i].type==_INT_ && recon_added==0){
+	    if (!rur && eps>0 && P[i].type==_INT_ && recon_added==0 && gbasis_stop!=0){
 	      // check for non modular gb with early reconstruction */
 	      // first build a candidate in early with V[i]
 	      vectpoly8<tdeg_t> early(V[i]);
@@ -14433,7 +14435,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  P.push_back(p);
 	  continue; // next prime
 	}
-	if (!rur && gbasis_stop && recon_n2>=-gbasis_stop){
+	if (!rur && gbasis_stop<0 && recon_n2>=-gbasis_stop){
 	  // stop here
 	  W[i]=Wlast[i];
 	  W[i].resize(recon_n2);
