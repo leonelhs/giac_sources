@@ -58,7 +58,7 @@ purge(x,y);
  solx:=[solve(eqred,x)];
  soly:=seq(gcd(subs(x=solx[i],C1),subs(x=solx[i],C2)),i=1..3);
 /*  les ordonn\'ees des points d'abscisse solx[i] sont:*/
- seq(cSolve(soly[i],y),i=1..3);
+ sort(seq(cSolve(soly[i],y),i=1..3));
 /*  On constate que pour solx[3] les ordonn\'ees des points de C1 inter£  C2 ayant cette abscisse sont complexes conjuguees bien que solx[3]£ soit reel ce qui explique pourquoi le dessin ne nous donnait que 4 points.*/
 /* ----------------------------------------Exercice---Intersections de quadriques--------------------------------------*/
 purge(u);

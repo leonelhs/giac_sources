@@ -1229,14 +1229,16 @@ namespace giac {
     bool addremains=false;
     for (int i=0;i<nargs/2;++i){
       remainsv[2*i+1]=0;
-      piecev[2*i+1]=integrate_id_rem(piecev[2*i+1],gen_x,remainsv[2*i+1],contextptr,intmode);
+      gen tmp=subst(e,piece,piecev[2*i+1],false,contextptr);
+      piecev[2*i+1]=integrate_id_rem(tmp,gen_x,remainsv[2*i+1],contextptr,intmode);
       addremains = addremains || !is_zero(remainsv[2*i+1]);
     }
     if (nargs%2){
       remainsv[nargs-1]=0;
-      piecev[nargs-1]=integrate_id_rem(piecev[nargs-1],gen_x,remainsv[nargs-1],contextptr,intmode);
+      gen tmp=subst(e,piece,piecev[nargs-1],false,contextptr);
+      piecev[nargs-1]=integrate_id_rem(tmp,gen_x,remainsv[nargs-1],contextptr,intmode);
       addremains = addremains || !is_zero(remainsv[nargs-1]);
-	}
+    }
     if (addremains)
       remains_to_integrate=symbolic(at_piecewise,gen(remainsv,_SEQ__VECT));
     return symbolic(at_piecewise,gen(piecev,_SEQ__VECT));
@@ -2146,10 +2148,18 @@ namespace giac {
 	if (is_linear_wrt(val._SYMBptr->feuille,gen_x,a,b,contextptr) && has_evalf(a,r,1,contextptr) && has_evalf(b,r,1,contextptr)){
 	  r=-b/a;
 	  vecteur l5(l4);
+#if 1
 	  l5[j]=1;
 	  gen limsup=subst(res,l3,l5,false,contextptr);
 	  l5[j]=-1;
 	  gen liminf=subst(res,l3,l5,false,contextptr);
+#else
+	  l5[j]=1;
+	  bool dolim=l3.size()==1 && l5.size()==1 && l3.front().type==_IDNT;
+	  gen limsup=dolim?limit(res,*l3.front()._IDNTptr,l5.front(),0,contextptr):subst(res,l3,l5,false,contextptr);
+	  l5[j]=-1;
+	  gen liminf=dolim?limit(res,*l3.front()._IDNTptr,l5.front(),0,contextptr):subst(res,l3,l5,false,contextptr);
+#endif
 	  gen tmp=ratnormal((limit(liminf,id_x,r,-1,contextptr)-limit(limsup,id_x,r,1,contextptr))/2,contextptr)*val;
 	  if (is_undef(tmp) || is_inf(tmp))
 	    *logptr(contextptr) << gettext("Unable to cancel step at ")+r.print(contextptr) + " of " << limsup << "-" << liminf << endl;
@@ -2290,7 +2300,7 @@ namespace giac {
     gen e(e_orig);
     // Step -3: replace when by piecewise
     e=when2piecewise(e,contextptr);
-    e=Heavisidetosign(e,contextptr);
+    e=Heavisidetopiecewise(e,contextptr); // e=Heavisidetosign(e,contextptr);
     if (is_constant_wrt(e,gen_x,contextptr) && lop(e,at_sign).empty())
       return e*gen_x;
     if (e.type!=_SYMB) {
@@ -2434,7 +2444,7 @@ namespace giac {
     }
     vecteur rvar=v;
     gen fu,fx;
-    if (rvarsize<TRY_FU_UPRIME){ // otherwise no hope
+    if (rvarsize<=TRY_FU_UPRIME){ // otherwise no hope
       const_iterateur it=v.begin(),itend=v.end();
       ++it; // don't try x!
       for (;it!=itend;++it){
@@ -2456,6 +2466,8 @@ namespace giac {
 	  fu=_trigcos(tan2sincos(fu,contextptr),contextptr);
 	if (it->is_symb_of_sommet(at_sin))
 	  fu=_trigsin(tan2sincos(fu,contextptr),contextptr);
+	if (it->is_symb_of_sommet(at_tan))
+	  fu=_trigtan(fu,contextptr);
 	if (is_rewritable_as_f_of(fu,*it,fx,gen_x,contextptr)){
 	  if ( (intmode & 2)==0)
 	    gprintf(step_fuuprime,gettext("Integration of %gen: f(u)*u' where f=%gen->%gen and u=%gen"),makevecteur(e,gen_x,fx,*it),contextptr);
@@ -3140,6 +3152,7 @@ namespace giac {
     if (contextptr && contextptr->quoted_global_vars){
       contextptr->quoted_global_vars->push_back(x);
       gen tmp=eval(v[0],eval_level(contextptr),contextptr); 
+      tmp=Heavisidetopiecewise(tmp,contextptr);
       if (!is_undef(tmp)) v[0]=tmp;
       contextptr->quoted_global_vars->pop_back();
     }
@@ -3152,6 +3165,7 @@ namespace giac {
       if (contextptr && contextptr->quoted_global_vars){
 	contextptr->quoted_global_vars->push_back(x);
 	gen tmp=eval(v[0],eval_level(contextptr),contextptr); 
+	tmp=Heavisidetopiecewise(tmp,contextptr);
 	if (!is_undef(tmp)) v[0]=tmp;
 	contextptr->quoted_global_vars->pop_back();
       }

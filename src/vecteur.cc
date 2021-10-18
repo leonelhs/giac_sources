@@ -5767,7 +5767,7 @@ namespace giac {
 	it1end=v1.begin()+cend;
       it1_=it1end-4;
       vector<int>::const_iterator it2=v2.begin()+cstart;
-#if defined(PSEUDO_MOD) && !(defined(VISUALC) || defined (BESTA_OS) || defined(OSX)  || defined(OSXIOS) || defined(FIR_LINUX) || defined(ANDROID))
+#if defined(PSEUDO_MOD) && !(defined(VISUALC) || defined (BESTA_OS) || defined(OSX)  || defined(OSXIOS) || defined(FIR_LINUX) || defined(FIR_ANDROID) || defined(ANDROID))
       c2 %= modulo;
       if (pseudo && (modulo<(1<<29) 
 		     // && modulo>=(1<<16)
@@ -14777,10 +14777,15 @@ namespace giac {
     size_t nrows=0,ncols=0;
     char c;
     string s;
-    for (;i;){
+    bool ok=true;
+    for (;ok && i;){
       c=i.get();
-      if (i.eof() || c==eof)
-	break;
+      if (i.eof() || c==eof){
+	if (s.empty())
+	  break;
+	ok=false;
+	c=nl;
+      }
       if (c=='%')
 	c=' ';
       if (c==sep || c==nl){

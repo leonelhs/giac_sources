@@ -2214,8 +2214,10 @@ namespace giac {
     }
     gen coeff,mrv_var,exponent;
     sparse_poly1 p;
-    if (!mrv_lead_term(e_copy,x,coeff,mrv_var,exponent,p,mrv_begin_order,contextptr,false) || is_undef(coeff))
-      return gensizeerr("Limit: Max order reached or unable to make series expansion");
+    if (!mrv_lead_term(e_copy,x,coeff,mrv_var,exponent,p,mrv_begin_order,contextptr,false) || is_undef(coeff)){
+      gensizeerr("Limit: Max order reached or unable to make series expansion");
+      return undef;
+    }
     // check added for limit((tan(x)-x)/x^3,x=inf)
     for (unsigned i=0;i<p.size();++i){
       if (check_bounded(p[i].coeff,contextptr)==-1)
@@ -2335,7 +2337,9 @@ namespace giac {
       }
       bool absb=eval_abs(contextptr);
       eval_abs(false,contextptr);
-      first_try = recursive_normal(eval(first_try,eval_level(contextptr),contextptr),contextptr);
+      first_try=eval(first_try,eval_level(contextptr),contextptr);
+      first_try = recursive_normal(first_try,contextptr);
+      //first_try=eval(first_try,1,contextptr);
       eval_abs(absb,contextptr);
       if (is_undef(first_try) && first_try.type==_STRNG)
 	return first_try;
@@ -2719,7 +2723,7 @@ namespace giac {
 #ifdef TIMEOUT
       control_c();
 #endif
-      if (ctrl_c || interrupted) 
+      if (ctrl_c || interrupted || is_undef(p.front().exponent)) 
 	return false;
       if (!p.empty() && !is_undef(p.front().coeff) ){
 	// substitution of ln(w) by +-g should not be useful anymore
@@ -2976,8 +2980,13 @@ namespace giac {
     if (lim_point==plus_inf){
       gen coeff,mrv_var,exponent,remains;
       sparse_poly1 s;
-      if (!mrv_lead_term(e,x,coeff,mrv_var,exponent,s,ordre,contextptr,true))
+      if (!mrv_lead_term(e,x,coeff,mrv_var,exponent,s,ordre,contextptr,true)){
+#ifdef EMCC
+	return undef;
+#else
 	return gensizeerr(contextptr);
+#endif
+      }
       return sparse_poly12gen_expand(s,x,mrv_var,ordre,remains,true,contextptr);
     }
     if (lim_point==minus_inf){

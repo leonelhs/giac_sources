@@ -1635,7 +1635,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   int FFTMUL_SIZE=100; 
   int FFTMUL_INT_MAXBITS=1024;
   int MAX_ALG_EXT_ORDER_SIZE = 6;
-#ifdef EMCC
+#if defined EMCC || defined NO_TEMPLATE_MULTGCD
   int MAX_COMMON_ALG_EXT_ORDER_SIZE = 16;
 #else
   int MAX_COMMON_ALG_EXT_ORDER_SIZE = 64;
@@ -4892,7 +4892,11 @@ unsigned int ConvertUTF8toUTF16 (
 #endif
 
   void gprintf(unsigned special,const string & format,const vecteur & v,GIAC_CONTEXT){
-    if (step_infolevel(contextptr)==0)
+    return gprintf(special,format,v,step_infolevel(contextptr),contextptr);
+  }
+
+  void gprintf(unsigned special,const string & format,const vecteur & v,int step_info,GIAC_CONTEXT){
+    if (step_info==0)
       return;
     if (my_gprintf){
       my_gprintf(special,format,v,contextptr);
@@ -4930,6 +4934,10 @@ unsigned int ConvertUTF8toUTF16 (
 
   void gprintf(const string & format,const vecteur & v,GIAC_CONTEXT){
     gprintf(step_nothing_special,format,v,contextptr);
+  }
+
+  void gprintf(const string & format,const vecteur & v,int step_info,GIAC_CONTEXT){
+    gprintf(step_nothing_special,format,v,step_info,contextptr);
   }
 
   // moved from input_lexer.ll for easier debug
