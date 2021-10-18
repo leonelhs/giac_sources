@@ -6802,7 +6802,7 @@ On consid\'ere une m\'ethode de r\'esolution \`a un pas~:
 $$ y_{i+1}=y_i+h_i\Phi(t_i,y_i,h_i)$$ 
 Si la m\'ethode est d'ordre $p$, i.e. si pour $h=max(h_i)$ 
 l'erreur locale satisfait 
-$$|y(t) + h\Phi(t,y(t),h)-y(t+h)|\leq C_p h^{p+1}, \ quad \forall t \in [t_0,T], h \leq H $$ 
+$$|y(t) + h\Phi(t,y(t),h)-y(t+h)|\leq C_p h^{p+1}, \quad \forall t \in [t_0,T], h \leq H $$ 
 et si la fonction $\Phi$ est 
 lipschitzienne en $y$ de constante $\Lambda$ pour $h\leq H$ et $y$ dans un 
 voisinage de la solution $y(t)$, 
@@ -10230,6 +10230,101 @@ trap\`ezes & (\ref{eq:trapezes}) & 1 & 1 & $M_2 h^2 (b-a)/12$ \\
 Simpson & (\ref{eq:simpson})& 2 & 3 & $M_4 h^4 (b-a)/2880$  \\ \hline
 \end{tabular}
 
+\subsection{Accélération de Richardson-Romberg}
+\index{Romberg}\index{Richardson-Romberg}
+\begin{prop}
+Soit $g$ une fonction de classe $C^{2k}$ sur $[a,b]$, 
+$T_h(g)$ la valeur de la méthode des trapèzes sur $[a,b]$ de pas 
+$h=(b-a)/N$ ($N$ entier).
+Alors $T_h(g)$ admet un développement en puissances paires de $h$
+à l'ordre $2k$.
+\end{prop}
+
+Pour montrer ce résultat, il faut établir la formule d'Euler-Mac
+Laurin. On commence par se placer sur une subdivision de l'intervalle
+$[0,1]$, on intègre par parties $\int_0^1 f(t)\ dt$ en faisant apparaitre
+la formule des trapèzes, on intègre donc 1 en $t-\frac12$
+$$ \int_0^1 f(t) \ dt = 
+[(t-\frac12)f(t)]_0^1 - \int_0^1 (t-\frac12)f'(t) \ dt =
+\frac{f(0)+f(1)}{2} - \int_0^1 (t-\frac12)f'(t) \ dt
+$$
+où encore
+$$ T_1(f)=\int_0^1 f(t) \ dt 
++  \int_0^1 (t-\frac12)f'(t) \ dt $$
+Pour poursuivre, on pose $B_1(t)=t-\frac12$, qu'on va intégrer
+en $\frac12((t-\frac12)^2+c)$, où on choisit $c$ pour que l'intégrale
+soit nulle, donc $c=-1/6$. On pose $B_2=(t-\frac12)^2-1/6$, on a~:
+$$  T_1(f)=\int_0^1 f(t) \ dt 
++ [\frac{B_2}{2} f']_0^1 - \int_0^1 \frac{B_2}{2}f'{'}(t) \ dt 
+$$
+Plus
+généralement, on pose
+$$ B_{p+1}'=pB_p, \quad \int_0^1 B_{p+1}(t) \ dt=0 $$
+ce qui définit de manière unique les $B_p$. La nullité de l'intégrale
+montre que $B_{p+1}(1)=B_{p+1}(0)$ ce qui simplifiera l'expression des
+termes tout intégrés. De plus, on montre par récurrence
+que les $B_p$ ont une symétrie paire
+ou impaire selon la parité de $p$ par rapport à $t=1/2$.
+Après $p$ intégrations par parties, on obtient~:
+\begin{eqnarray*}
+  T_1(f)&=&\int_0^1 f(t) \ dt 
++ \frac{B_2(0)}{2} (f'(1)-f'(0)) 
++ ... \\
+& &+ \frac{B_{2k}(0)}{(2k)!} (f^{[2k-1]}(1)-f^{[2k-1]}(0)) 
+- \int_0^1 \frac{B_{2k}}{(2k)!} f^{[2k]}(t) \ dt 
+\end{eqnarray*}
+En faisant le même raisonnement sur $[k,k+1]$ pour $k=1,...,N-1$
+et en sommant, on obtient la formule 
+d'{\bf Euler-Mac Laurin}\index{Euler, Mac Laurin}\index{Mac Laurin, Euler}~:
+\begin{eqnarray*}
+  T_1^{[0,N]}(f)&=&\int_0^N f(t) \ dt 
++ \frac{B_2(0)}{2} (f'(N)-f'(0)) 
++ ... \\
+& & + \frac{B_{2k}(0)}{(2k)!} (f^{[2k-1]}(N)-f^{[2k-1]}(0)) 
+- \int_0^N \frac{B_{2k}}{(2k)!} f^{[2k]}(t) \ dt 
+\end{eqnarray*}
+On pose alors $x=a+ht$ (donc $dt=dx/h$) et $f(t)=g(x)$
+(donc $f'(t)=df/dt=h dg/dx$), on obtient 
+\begin{eqnarray*}
+ \frac1h T_h^{[a,b]}(g)&=& \frac1h \int_0^N g(x) \ dx 
++ \frac{B_2(0)}{2} h(g'(b)-g'(a)) 
++ ... \\
+& &+ \frac{B_{2k}(0)}{(2k)!} h^{2k-1} (g^{[2k-1]}(N)-g^{[2k-1]}(0)) 
+- \int_0^N \frac{B_{2k}}{(2k)!} h^{2k} g^{[2k]}(x) \ \frac1h dx 
+\end{eqnarray*}
+donc
+\begin{eqnarray*}
+ T_h^{[a,b]}(g) &=&  \int_0^N g(x) \ dx 
++ h^2 \frac{B_2(0)}{2} (g'(b)-g'(a)) 
++ ... \\
+& & + h^{2k} \frac{B_{2k}(0)}{(2k)!}  (g^{[2k-1]}(N)-g^{[2k-1]}(0)) 
+- h^{2k} \int_0^N \frac{B_{2k}}{(2k)!}  g^{[2k]}(x) \  dx 
+\end{eqnarray*}
+
+L'accélération consiste à éliminer les puissances de $h^2$ en
+commençant par $h^2$ avec des subdivisions deux fois plus fines
+à chaque itération.
+Ainsi $T_h^1(f) = (4T_{h/2}(f)-T_h(f))/(4-1)$ n'a plus de termes en $h^2$
+et tend vers l'intégrale à approcher lorsque $h$ tend vers 0. 
+On peut d'ailleurs vérifier qu'il s'agit de la méthode de Simpson.
+On élimine ensuite le terme en $h^4$ en posant
+$T_h^2(f)=(4^2 T_{h/2}^1(f)-T_h^1(f))/(4^2-1)$ et ainsi
+de suite. On construit un tableau triangulaire \verb|T|
+dont chaque
+ligne $l$ contient $T_{h/2^l}(f), T_{h/2^l}^1(f), ...$ 
+(avec des indices qui commencent à 0). Pour
+calculer le terme d'indice 0 de la ligne courante
+on fait une méthode des trapèzes sur 2 fois plus
+de subdivisions que la précédente, puis pour le $j$-ième terme
+\verb|T[l,j]|
+on effectue \verb|(4^j*T[l-1,j-1]-T[l,j-1])/(4^j-1)|
+(on n'a donc besoin que de la ligne précédente pour calculer
+la ligne courante).
+On s'arrête par exemple lorsque la valeur absolue de la différence
+entre les derniers termes de deux lignes consécutives est inférieur
+à la précision souhaitée (erreur empirique).
+
+
 \subsection{Cas des fonctions p\'eriodiques.}
 Si $f$ est une fonction p\'eriodique r\'eguli\`ere ($C^\infty$),
 alors la m\'ethode des trap\`ezes sur une p\'eriode est d'ordre 
@@ -12610,6 +12705,31 @@ De m\^eme on peut gagner sur le calcul du polyn\^ome minimal en
 faisant des op\'erations de multiplication par bloc.
 
 \subsection{Quelques m\'ethodes it\'eratives alternatives au pivot}
+\subsubsection{Factorisation $QR$}
+La factorisation $QR$ 
+consiste à écrire une matrice $A$ comme produit d'une matrice
+orthogonale (ou unitaire dans $\C$) et d'une matrice triangulaire
+supérieure. Les matrices orthogonales ayant un conditionnement
+de 1 (en norme $L^2$) cette factorisation est numériquement stable.
+
+On peut alors écrire $Ax=b$ sous la forme $QRx=b$
+donc $Rx=Q^*b$ qui est un système triangulaire supérieur,
+donc résoudre $Ax=b$ en $O(n^2)$ opérations.
+Mais c'est surtout pour résoudre au sens des moindres carrés
+un système sur-déterminé que la factorisation $QR$ trouve tout
+son intérêt. En effet, minimiser $\| Ax-b \|_2^2$,
+revient à résoudre $A^* Ax=A^* b$, donc $R^*Q^*QRx=R^*Q^*b$
+soit $R^*Rx=R^*Q^*b$. Si $A$ est une matrice ayant $L$ lignes et $C$
+colonnes avec $L \geq C$ et de rang $L$, alors
+les $L$ premières lignes de $R$ forment une matrice $R_1$ inversible
+et les $C-L$ lignes restantes sont nulles. L'équation précédente
+devient $R_1^* R_1 x=R_1^* Q^* b$ et se simplifie en $R_1x=Q^*b$,
+il vaut mieux résoudre cette équation que $A^* Ax=A^*b$ car
+le conditionnement de cette dernière est le carré du conditionnement
+de $A$ (le nombre d'opérations est multiplié par une constante
+car $QR$ a une constante plus grande que Cholesky, mais le résultat
+est plus précis).
+
 \subsubsection{Jacobi, Gauss-Seidel, relaxation}\index{Jacobi} \index{Gauss-Seidel}
 Lorsqu'on a une matrice creuse (peu d'\'el\'ements non nuls),
 l'algorithme du pivot de Gauss a tendance \`a densifier rapidement
@@ -12651,12 +12771,44 @@ que la m\'ethode de Gauss-Seidel prend pour $M$ la partie triangulaire
 inf\'erieure $D+L$ de $A$ (diagonale comprise). 
 Pour Jacobi, on a donc
 $$ x_{n+1}=D^{-1}(b+(D-A)x_n)=x_n+D^{-1}(b-Ax_n)$$
+En Xcas, on peut programmer la m\'ethode par
+\begin{verbatim}
+jacobi(A,b,N,eps):={
+  local D,x0,x1,n,j;
+  n:=size(A);
+  D:=diag(A)^-1;
+  x0:=[0.0$n];
+  pour j de 1 jusque N faire
+    x1:=b-A*x0;
+    si l2norm(x1)<eps alors return x0; fsi;
+    x0:=x0+D .*x1;
+  fpour;
+  return "non convergent";
+}
+\end{verbatim}
 Pour Gauss-Seidel,
 le calcul de $M^{-1}$ n'est pas effectu\'e, on r\'esoud
 directement le syst\`eme triangulaire $Mx_{n+1}=b+Nx_n$ soit
 $$ (D+L)x_{n+1}=b-Ux_n$$ 
 Gauss-Seidel
 est moins adapt\'e \`a la parall\'elisation que Jacobi.
+On adapte le programme pr\'ec\'edent
+\begin{verbatim}
+seidel(A,b,N,eps):={
+  local L,U,x0,x1,n,j;
+  n:=size(A);
+  L:=diag(A,left);
+  U:=A-L;
+  x0:=[0.0$n];
+  pour j de 1 jusque N faire
+    x1:=b-U*x0;
+    x1:=linsolve(L,x1);
+    si l2norm(x1-x0)<eps*l2norm(x0) alors return x0; fsi;
+    x0:=x1;
+  fpour;
+  return "non convergent";
+}:;
+\end{verbatim}
 
 Dans la m\'ethode de relaxation, on pose pour $M$ la matrice triangulaire
 inf\'erieure $M=\frac1\omega D+L$ o\`u $\omega >0$, donc
@@ -12667,8 +12819,10 @@ $M(x_{n+1}-x_n)=b-Ax_n$ puis
 $$ (D+\omega L) (x_{n+1}-x_n) = \omega(b-Ax_n)$$
 On remarque que Gauss-Seidel correspond \`a $\omega=1$.
 
-Convergence~: si $A=M-N$ est une matrice sym\'etrique d\'efinie positive
+\begin{prop} (Convergence~): 
+si $A=M-N$ est une matrice sym\'etrique d\'efinie positive
 et si $M^*+N$ est d\'efinie positive, alors la m\'ethode converge. 
+\end{prop}
 On utilise la norme correspondant \`a
 la forme quadratique de matrice $A$ et on calcule la norme subordonn\'ee
 de $M^{-1}N$, on a $ M^{-1}Nx=x-y$ avec $y=M^{-1}Ax$ donc 
@@ -12683,7 +12837,7 @@ Cons\'equence~: si $A$ sym\'etrique d\'efinie positive, alors
 Gauss-Seidel converge, car $M^*+N=D$. Pour la relaxation,
 on a $M^*+N=(2/\omega -1)D$ qui est d\'efinie positive si $\omega<2$.
 
-\subsubsection{Gradient conjugu\'e}\index{gradient conjugu\'e}
+ \subsubsection{Gradient conjugu\'e}\index{gradient conjugu\'e}
 Il s'agit de résoudre $Ax=b$, où $A$ est définie positive. 
 Si on a une base orthogonale pour le produit scalaire induit par $A$, 
 on peut calculer la $j$-ième coordonn\'ee de $x$ 

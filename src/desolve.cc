@@ -626,6 +626,52 @@ namespace giac {
     }
   }
 
+  // solve linear diff eq of order 1 a*y'+b*y+c=0
+  gen desolve_lin1(const gen &a,const gen &b,const gen & c,const gen & x,vecteur & parameters,GIAC_CONTEXT){
+    if (a.type==_VECT){
+      // y'+inv(a)*b(x)*y+inv(a)*c(x)=0
+      // take laplace transform
+      // p*Y-Y(0)+bsura*Y+csura=0
+      // (p+bsura)*Y=Y(0)-csura
+      int n=a._VECTptr->size();
+      if (!ckmatrix(a) || !ckmatrix(b))
+	return gensizeerr(contextptr);
+      gen inva=inv(a,contextptr);
+      gen bsura=inva*b,csura,cl;
+      if (!is_zero(derive(bsura,x,contextptr)))
+	return gensizeerr("Non constant linear differential system");
+      if (c.type==_VECT){
+	vecteur & cv=*c._VECTptr;
+	for (unsigned i=0;i<cv.size();++i){
+	  if (cv[i].type==_VECT && cv[i]._VECTptr->size()==1)
+	    cv[i]=cv[i]._VECTptr->front();
+	}
+	csura=inva*c;
+	cl=_laplace(makesequence(csura,x,x),contextptr);
+      }
+      else {
+	if (!is_zero(c))
+	  return gensizeerr("Invalid second member");
+	cl=vecteur(n);
+      }
+      if (cl.type!=_VECT || int(cl._VECTptr->size())!=n)
+	return gensizeerr("Invalid second member");	    
+      for (int i=0;i<n;++i){
+	parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+	(*cl._VECTptr)[i] = parameters.back()- (*cl._VECTptr)[i];
+      }
+      cl=inv(bsura+x,contextptr)*cl;
+      cl=ilaplace(cl,x,x,contextptr);
+      return vecteur(1,ratnormal(cl));
+    }
+    gen i=integrate_without_lnabs(rdiv(b,a,contextptr),x,contextptr);
+    i=exp(i,contextptr);
+    i=simplify(i,contextptr);
+    gen C=integrate_without_lnabs(ratnormal(rdiv(-c,a,contextptr)*i),x,contextptr);
+    parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+    return ratnormal(_lin((C+parameters.back())/i,contextptr));
+  }
+
   gen desolve_f(const gen & f_orig,const gen & x_orig,const gen & y_orig,int & ordre,vecteur & parameters,gen & fres,GIAC_CONTEXT){
     gen x(x_orig);
     if ( (x_orig.type==_VECT) && (x_orig._VECTptr->size()==1) )
@@ -680,46 +726,7 @@ namespace giac {
 	gen & a=v[0];
 	gen & b=v[1];
 	gen & c=v[2];
-	if (a.type==_VECT){
-	  // y'+inv(a)*b(x)*y+inv(a)*c(x)=0
-	  // take laplace transform
-	  // p*Y-Y(0)+bsura*Y+csura=0
-	  // (p+bsura)*Y=Y(0)-csura
-	  int n=a._VECTptr->size();
-	  if (!ckmatrix(a) || !ckmatrix(b))
-	    return gensizeerr(contextptr);
-	  gen inva=inv(a,contextptr);
-	  gen bsura=inva*b,csura,cl;
-	  if (!is_zero(derive(bsura,x,contextptr)))
-	    return gensizeerr("Non constant linear differential system");
-	  if (c.type==_VECT){
-	    vecteur & cv=*c._VECTptr;
-	    for (unsigned i=0;i<cv.size();++i){
-	      if (cv[i].type==_VECT && cv[i]._VECTptr->size()==1)
-		cv[i]=cv[i]._VECTptr->front();
-	    }
-	    csura=inva*c;
-	    cl=_laplace(makesequence(csura,x,x),contextptr);
-	  }
-	  else {
-	    if (!is_zero(c))
-	      return gensizeerr("Invalid second member");
-	    cl=vecteur(n);
-	  }
-	  if (cl.type!=_VECT || int(cl._VECTptr->size())!=n)
-	    return gensizeerr("Invalid second member");	    
-	  for (int i=0;i<n;++i){
-	    parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
-	    (*cl._VECTptr)[i] = parameters.back()- (*cl._VECTptr)[i];
-	  }
-	  cl=inv(bsura+x,contextptr)*cl;
-	  cl=ilaplace(cl,x,x,contextptr);
-	  return vecteur(1,ratnormal(cl));
-	}
-	gen i=simplify(exp(integrate_without_lnabs(rdiv(b,a,contextptr),x,contextptr),contextptr),contextptr);
-	gen C=integrate_without_lnabs(ratnormal(rdiv(-c,a,contextptr)*i),x,contextptr);
-	parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
-	return ratnormal(_lin((C+parameters.back())/i,contextptr));
+	return desolve_lin1(a,b,c,x,parameters,contextptr);
       }
       // cst coeff?
       gen cst=v.back();
@@ -863,6 +870,86 @@ namespace giac {
 	}
 	// IMPROVE: if a, b, c are polynomials, search for a polynomial solution
 	// of the homogeneous equation, if found we can solve the diffeq
+	if (lvarxwithinv(makevecteur(a,b,c),x,contextptr)==vecteur(1,x)){
+	  vecteur l=vecteur(1,x);
+	  gen a0(a),b0(b);
+	  a=_coeff(makesequence(a,x),contextptr);
+	  b=_coeff(makesequence(b,x),contextptr);
+	  c=_coeff(makesequence(c,x),contextptr);
+	  if (a.type==_VECT && b.type==_VECT && c.type==_VECT){
+	    int A=a._VECTptr->size()-1,B=b._VECTptr->size()-1,C=c._VECTptr->size()-1,N=-1;
+	    if (C==B-1){
+	      gen n=-c._VECTptr->front()/b._VECTptr->front();
+	      if (n.type==_INT_ && n.val>N){
+		if (A-2<C || n==1)
+		  N=n.val;
+	      }
+	      if (A-2==C){
+		// a*n*(n-1)+b*n+c=a*n^2+(b-1)*n+c=0
+		gen aa=a._VECTptr->front(),bb=b._VECTptr->front()-1,cc=c._VECTptr->front();
+		gen delta=(sqrt(b*b-4*aa*cc,contextptr)+bb)/2;
+		if (delta.type==_INT_ && delta.val>N)
+		  N=delta.val;
+	      }
+	    }
+	    if (A-2==B-1 && C<B-1){
+	      gen n=-b._VECTptr->front()/a._VECTptr->front()+1;
+	      if (n.type==_INT_ && n.val>N)
+		N=n.val;
+	    }
+	    if (C==A-2 && B-1<C){
+	      gen delta=(1+sqrt(1+4*c._VECTptr->front()/a._VECTptr->front(),contextptr))/2;
+	      if (delta.type==_INT_ && delta.val>N)
+		N=delta.val;
+	    }
+	    if (N>=0){
+	      int nrows=giacmax(giacmax(B,C+1),N==1?0:A)+N;
+	      // search a solution sum(y_k*x*k,k,0,N)
+	      matrice m(nrows);
+	      for (int i=0;i<nrows;++i)
+		m[i]=vecteur(N+1);
+	      // a*y''
+	      for (int i=0;i<a._VECTptr->size();++i){
+		int j=a._VECTptr->size()-i-1;
+		for (int k=2;k<=N;++k){
+		  (*m[j+k-2]._VECTptr)[k] += k*(k-1)*a[i];
+		}
+	      }
+	      // b*y'
+	      for (int i=0;i<b._VECTptr->size();++i){
+		int j=b._VECTptr->size()-i-1;
+		for (int k=1;k<=N;++k){
+		  (*m[j+k-1]._VECTptr)[k] += k*b[i];
+		}
+	      }
+	      // c*y
+	      for (int i=0;i<c._VECTptr->size();++i){
+		int j=c._VECTptr->size()-i-1;
+		for (int k=0;k<=N;++k){
+		  (*m[j+k]._VECTptr)[k] += c[i];
+		}
+	      }
+	      m=mker(m,contextptr);
+	      if (!m.empty()){
+		gen sol=m.front();
+		if (sol.type==_VECT){
+		  vecteur v=*sol._VECTptr;
+		  reverse(v.begin(),v.end());
+		  sol=symb_horner(-v,x);
+		  *logptr(contextptr) << "Polynomial solution found " << sol << endl;
+		  // now solve equation a*y''+b*y'+c*y+d=0 with y=sol*z
+		  // a*sol*z''+(2*a*sol'+b*sol)*z'=d
+		  gen res=desolve_lin1(a0*sol,2*a0*derive(sol,x,contextptr)+b0*sol,d,x,parameters,contextptr);
+		  res=_integrate(makesequence(res,x),contextptr);
+		  parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
+		  res += parameters.back();
+		  res=res*sol;
+		  return res;
+		}
+	      }
+	    }
+	  }
+	}
       } // end 2nd order eqdiff
     }
     vecteur substin(n);

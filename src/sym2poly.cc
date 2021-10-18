@@ -3312,7 +3312,8 @@ namespace giac {
     return res; // +r2sym(pfde_VECT,l);
   }
 
-  gen partfrac(const gen & e,const identificateur & x,bool with_sqrt,GIAC_CONTEXT){
+  gen partfrac(const gen & e_,const identificateur & x,bool with_sqrt,GIAC_CONTEXT){
+    gen e=normalize_sqrt(e_,contextptr);
     vecteur l;
     l.push_back(x); // insure x is the main var
     l=vecteur(1,l);
@@ -3320,7 +3321,8 @@ namespace giac {
     return partfrac(e,l,with_sqrt,contextptr);
   }
 
-  gen partfrac(const gen & e,bool with_sqrt,GIAC_CONTEXT){
+  gen partfrac(const gen & e_,bool with_sqrt,GIAC_CONTEXT){
+    gen e=normalize_sqrt(e_,contextptr);
     vecteur l;
     alg_lvar(e,l);
     return partfrac(e,l,with_sqrt,contextptr);

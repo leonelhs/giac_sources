@@ -63,6 +63,8 @@ namespace giac {
   gen symb_linsolve(const gen & syst,const gen & vars);
   gen _linsolve(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_linsolve ;
+  void linsolve_u(const matrice & m,const vecteur & y,vecteur & a);
+  void linsolve_l(const matrice & m,const vecteur & y,vecteur & a);
   
   /*
   gen newtona(const gen & f, const gen & x, const gen & arg,int niter1, int niter2, double eps1,double eps2,double prefact1,double prefact2, int & b);

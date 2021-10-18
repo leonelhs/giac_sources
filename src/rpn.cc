@@ -2794,9 +2794,39 @@ namespace giac {
       res=gen2vecteur(_trn(res,contextptr));
       return res;
     }
-    // orthogonal projection of each vector of B on image of A
-    matrice r,Ag=gramschmidt(A,r,false,contextptr);
     matrice res;
+    if (has_num_coeff(v)){
+      // <Ax-b|Ax-b> minimal, i.e. A* Ax=A* b or 
+      // A=QR, if A has m rows and n cols and m>=n, then Q is m*m and R is m*n
+      // first n cols of Q are Q1, first n rows of R are R1
+      // solve R1*x=Q1^t*b
+      gen qrdec=qr(v[0],contextptr);
+      if (qrdec.type==_VECT && qrdec._VECTptr->size()==2){
+	gen q=qrdec._VECTptr->front(),r=qrdec._VECTptr->back();
+	if (ckmatrix(q) && ckmatrix(r)){ 
+	  if (!is_zero(r[A.size()-1])){
+	    gen qt=_trn(q,contextptr);
+	    vecteur R(r._VECTptr->begin(),r._VECTptr->begin()+A.size());
+	    for (int i=0;i<bs;++i){
+	      gen Bi=B[i];
+	      vecteur v;
+	      linsolve_u(R,multmatvecteur(*qt._VECTptr,*Bi._VECTptr),v);
+	      res.push_back(v);
+	    }
+	    return mtran(res);
+	  }
+	  // A* Ax=A* b => R* Rx=R* Qb
+	  gen rstar=_trn(r,contextptr);
+	  gen rr=rstar*r;
+	  gen rq=rstar*q*B;
+	  return _linsolve(makesequence(rr,rq),contextptr);
+	}
+      }
+    }
+    // orthogonal projection of each vector of B on image of A
+    if (A.size()>20)
+      *logptr(contextptr) << "LSQ: exact data, running Gramschmidt instead of qr, this is much slower for large matrices" << endl;
+    matrice r,Ag=gramschmidt(A,r,false,contextptr);
     for (int i=0;i<bs;++i){
       gen Bi=B[i];
       vecteur tmp(as);

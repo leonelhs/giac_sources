@@ -236,6 +236,7 @@ namespace giac {
   bool has_undef_stringerr(const gen & g,std::string & err);
 
   bool is_sparse_matrix(const gen & g,int & nrows,int & ncols,int & n);
+  bool is_sparse_vector(const gen & g,int & nrows,int & n);
 
 #ifndef NO_NAMESPACE_GIAC
 } // namespace giac

@@ -4266,7 +4266,11 @@ unsigned int ConvertUTF8toUTF16 (
       }
       return true;
     }
-    string s=g.print(contextptr);
+    string s;
+    if (g.type==_ZINT)
+      s=hexa_print_ZINT(*g._ZINTptr);
+    else
+      s=g.print(contextptr);
     // fprintf(f,"%s",s.c_str());
     writefunc(s.c_str(),1,s.size(),f);
     return true;

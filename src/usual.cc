@@ -4621,6 +4621,8 @@ namespace giac {
       gen_map::const_iterator it=a._MAPptr->find(b),itend=a._MAPptr->end();
       if (it!=itend)
 	return it->second;
+      if (a.subtype==_SPARSE_MATRIX)
+	return 0;
       return symb_at(makevecteur(v.front(),b));
     }
     return a.operator_at(b,contextptr);

@@ -124,6 +124,13 @@ namespace giac {
     }
     if (s>=3)
       x=v[2];
+    if (v0.type!=_VECT && v1.type==_VECT){
+      gen tmp=v1;
+      v1=_apply(makesequence(v0,v1),contextptr);
+      v0=tmp;
+    }
+    if (v1.type!=_VECT && v0.type==_VECT)
+      v1=_apply(makesequence(v1,v0),contextptr);
     if ( (v0.type!=_VECT) || (v1.type!=_VECT) )
       return gensizeerr(contextptr);
     vecteur & vx =*v0._VECTptr;
@@ -5934,10 +5941,26 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       gen c=g._VECTptr->back();
       if (!is_integral(l) || !is_integral(c) || l.val<0 || c.val<0)
 	return false;
-      if (nrows<l.val)
-	nrows=l.val;
-      if (ncols<c.val)
-	ncols=c.val;
+      if (nrows<=l.val)
+	nrows=l.val+1;
+      if (ncols<=c.val)
+	ncols=c.val+1;
+    }
+    return true;
+  }
+
+  bool is_sparse_vector(const gen & g,int & nrows,int & n){
+    if (g.type!=_MAP)
+      return false;
+    nrows=0;n=0;
+    gen_map & m=*g._MAPptr;
+    gen_map::const_iterator it=m.begin(),itend=m.end();
+    for (;it!=itend;++n,++it){
+      gen l=it->first;
+      if (!is_integral(l) || l.val<0)
+	return false;
+      if (nrows<=l.val)
+	nrows=l.val+1;
     }
     return true;
   }

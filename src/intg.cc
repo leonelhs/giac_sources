@@ -1681,7 +1681,24 @@ namespace giac {
       gprintf(step_ratfracfinal,gettext("Partial fraction integration of %gen"),makevecteur(r2sym(finaldecomp,l,contextptr)),contextptr);
     it=finaldecomp.begin();
     itend=finaldecomp.end();
-    return integrate_rational_end(it,itend,x,xvar,l,lprime,ipnum,ipden,r2sym(intdecomp,l,contextptr),remains_to_integrate,intmode,contextptr);
+    gen ratpart=r2sym(intdecomp,l,contextptr);
+    // should remove constants in ratpart
+    gen tmp1=_fxnd(ratpart,contextptr);
+    if (tmp1.type==_VECT && tmp1._VECTptr->size()==2){
+      gen tmp2=_quorem(makesequence(tmp1._VECTptr->front(),tmp1._VECTptr->back(),xvar),contextptr);
+      if (tmp2.type==_VECT && tmp2._VECTptr->size()==2){
+	gen q=tmp2._VECTptr->front(),r=tmp2._VECTptr->back();
+	gen C=subst(q,xvar,0,false,contextptr);
+	if (!is_zero(C)){
+	  q=ratnormal(q-C);
+	  tmp1=tmp1._VECTptr->back();
+	  tmp1=_collect(tmp1,contextptr);
+	  tmp1=r*inv(tmp1,contextptr);
+	  ratpart=q+tmp1;
+	}
+      }
+    }
+    return integrate_rational_end(it,itend,x,xvar,l,lprime,ipnum,ipden,ratpart,remains_to_integrate,intmode,contextptr);
   }
 
   // integration of e when linear operations have been applied
@@ -4563,15 +4580,51 @@ namespace giac {
   define_unary_function_ptr5( at_add ,alias_at_add,&__add,_QUOTE_ARGUMENTS,true);
 
   gen bernoulli(const gen & x){
-    if ( (x.type!=_INT_)  || (x.val<0))// Should add bernoulli polynomials 
+    if (x.type==_VECT && x._VECTptr->size()==2){
+      gen a=x._VECTptr->front(),y=x._VECTptr->back();
+      if (a.type!=_INT_)
+	return gensizeerr(gettext("bernoulli"));
+      bool all=a.val<0;
+      int n=absint(a.val);
+      gen bi=bernoulli(-n);
+      if (bi.type!=_VECT)
+	return gensizeerr(gettext("bernoulli"));
+      vecteur biv=*bi._VECTptr;
+      if (biv.size()<n)
+	biv.push_back(0);
+      // bernoulli polynomials B_n=n*int(B_n-1)+bi[n]
+      vecteur allv;
+      vecteur cur(1,1);
+      if (all)
+	allv.push_back((y.type==_VECT?cur:plus_one));
+      for (int i=1;i<=n;++i){
+	cur=multvecteur(i,integrate(cur,1));
+	cur.insert(cur.begin(),biv[i]);
+	if (all){
+	  vecteur tmp(cur);
+	  reverse(tmp.begin(),tmp.end());
+	  if (y.type==_VECT)
+	    allv.push_back(tmp);
+	  else
+	    allv.push_back(symb_horner(tmp,y));
+	}
+      }
+      reverse(cur.begin(),cur.end());
+      return all?allv:(y.type==_VECT?cur:symb_horner(cur,y));
+    }
+    if (x.type!=_INT_)
       return gensizeerr(gettext("bernoulli"));
-    int n=x.val;
+    bool all=x.val<0;
+    int n=absint(x.val);
     if (!n)
       return plus_one;
     if (n==1)
       return minus_one_half;
-    if (n%2)
-      return zero;
+    if (n%2){
+      if (!all)
+	return zero;
+      --n;
+    }
     gen a(plus_one);
     gen b(rdiv(1-n,plus_two,context0));
     vecteur bi(makevecteur(plus_one,minus_one_half));
@@ -4589,10 +4642,16 @@ namespace giac {
       a=iquo( (a*gen(n+3-i)*gen(n+2-i)),((i-1)*i));
       b=b+a* bi[i];
     }
+    if (all){
+      bi.push_back(rdiv(-b,n+1,context0));
+      return bi;
+    }
     return rdiv(-b,n+1,context0);
   }
   gen _bernoulli(const gen & args,GIAC_CONTEXT) {
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type==_VECT && args._VECTptr->size()==2 && args._VECTptr->back().type!=_INT_)
+      return bernoulli(args);
     return apply(args,bernoulli);
   }
   static const char _bernoulli_s []="bernoulli";

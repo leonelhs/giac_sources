@@ -5558,9 +5558,78 @@ namespace giac {
 	MAX_PRINTABLE_ZINT=maxp;
 	return res;
       }
-      if (f==at_matrix || f==at_vector || f==at_array){
-	g.subtype=_MATRIX__VECT;
-	return g;
+      if (g.type==_MAP){
+	if (f==at_matrix || f==at_vector){
+	  if (g.subtype==_SPARSE_MATRIX)
+	    *logptr(contextptr) << "Run convert(matrix,array) for dense conversion" << endl;
+	  g.subtype=_SPARSE_MATRIX;
+	  return g;
+	}
+	if (f==at_array){
+	  int n,nrows,ncols;
+	  if (!is_sparse_matrix(g,nrows,ncols,n)){
+	    if (!is_sparse_vector(g,nrows,n))
+	      return gensizeerr("Invalid map");
+	    vecteur res(nrows);
+	    gen_map & m=*g._MAPptr;
+	    gen_map::const_iterator it=m.begin(),itend=m.end();
+	    for (;it!=itend;++it){
+	      gen l=it->first;
+	      is_integral(l); 
+	      res[l.val]=it->second;
+	    }
+	    return res;
+	  }
+	  vecteur res(nrows);
+	  for (int i=0;i<nrows;++i){
+	    vecteur l(ncols);
+	    res[i]=l;
+	  }
+	  gen_map & m=*g._MAPptr;
+	  gen_map::const_iterator it=m.begin(),itend=m.end();
+	  for (;it!=itend;++it){
+	    gen g=it->first;
+	    gen l=g._VECTptr->front();
+	    gen c=g._VECTptr->back();
+	    is_integral(l); is_integral(c);
+	    (*res[l.val]._VECTptr)[c.val]=it->second;
+	  }
+	  return res;
+	}
+	if (f==at_table){
+	  g.subtype=0;
+	  return g;
+	}
+      }
+      if (g.type==_VECT){
+	if (f==at_matrix || f==at_vector || f==at_array){
+	  g.subtype=_MATRIX__VECT;
+	  return g;
+	}
+	if (f==at_table){
+	  const vecteur & m = *g._VECTptr;
+	  // conversion to sparse matrix
+	  gen_map M;
+	  gen resg(M);
+	  resg.subtype=_SPARSE_MATRIX;
+	  gen_map & res=*resg._MAPptr;
+	  if (ckmatrix(g)){
+	    for (int i=0;i<int(m.size());++i){
+	      const vecteur & v = *m[i]._VECTptr;
+	      for (int j=0;j<int(v.size());++j){
+		if (!is_zero(v[j]))
+		  res[makesequence(i,j)]=v[j];
+	      }
+	    }
+	  }
+	  else {
+	    for (int i=0;i<int(m.size());++i){
+	      if (!is_zero(m[i]))
+		res[i]=m[i];
+	    }
+	  }
+	  return resg;
+	}
       }
       return f(g,contextptr);
       // setsizeerr();

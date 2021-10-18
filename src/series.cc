@@ -2295,7 +2295,9 @@ namespace giac {
 	// first_try = subst(ratnormal(e),x,lim_point,false,contextptr);
       }
       else {
+	//bool b=assume_t_in_ab(x,direction==1?lim_point:lim_point-1,direction==-1?lim_point:lim_point+1,true,true,contextptr);
 	first_try = quotesubst(partfrac(e,false,contextptr),x,lim_point,contextptr);
+	// if (b) purgenoassume(x,contextptr);
 	// first_try = quotesubst(ratnormal(e),x,lim_point,contextptr);
       }
       bool absb=eval_abs(contextptr);

@@ -337,7 +337,7 @@ namespace giac {
   static define_unary_function_eval (__singular,&_singular,_singular_s);
   define_unary_function_ptr5( at_singular ,alias_at_singular,&__singular,0,true);
 
-  bool assume_t_in_ab(gen & t,const gen & a,const gen & b,bool exclude_a,bool exclude_b,GIAC_CONTEXT){
+  bool assume_t_in_ab(const gen & t,const gen & a,const gen & b,bool exclude_a,bool exclude_b,GIAC_CONTEXT){
     vecteur v_interval(1,gen(makevecteur(a,b),_LINE__VECT));
     vecteur v_excluded;
     if (exclude_a)
@@ -1305,8 +1305,11 @@ namespace giac {
 	      gof=recursive_normal(gof,contextptr);
 	      // complex_mode(b,contextptr);
 	      // Sucess! Now integration of gof on the unit circle using residues
-	      *logptr(contextptr) << gettext("Searching int of ") << gof << gettext(" where ") << x << gettext(" is on the unit circle, using residues") << endl;
-	      vecteur w=singular(gof,x,contextptr);
+	      if (debug_infolevel)
+		*logptr(contextptr) << gettext("Searching int of ") << gof << gettext(" where ") << x << gettext(" is on the unit circle, using residues") << endl;
+	      // replace x by another variable because we might have assumptions on x
+	      identificateur tmpid("_intgab38");
+	      vecteur w=singular(subst(gof,x,tmpid,false,contextptr),tmpid,contextptr);
 	      if (is_undef(w))
 		return false;
 	      int s=w.size();

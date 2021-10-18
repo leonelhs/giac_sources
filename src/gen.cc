@@ -8004,6 +8004,8 @@ namespace giac {
       gen_map::const_iterator it=_MAPptr->find(i),itend=_MAPptr->end();
       if (it!=itend)
 	return it->second;
+      if (subtype==_SPARSE_MATRIX)
+	return 0;
     }
     if (is_symb_of_sommet(at_at)){ // add i at the end of the index
       if (_SYMBptr->feuille.type==_VECT && _SYMBptr->feuille._VECTptr->size()==2){
