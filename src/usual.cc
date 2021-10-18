@@ -5570,7 +5570,7 @@ namespace giac {
   }
 
   string print_with_parenthesis_if_required(const gen & g,int format,GIAC_CONTEXT){
-    if (g.type==_SYMB || g.type==_FRAC || g.type==_CPLX || (g.type==_VECT && g.subtype==_SEQ__VECT) )
+    if ( (g.type==_SYMB && g._SYMBptr->sommet!=at_derive) || g.type==_FRAC || g.type==_CPLX || (g.type==_VECT && g.subtype==_SEQ__VECT) )
       return '('+gen2string(g,format,contextptr)+')';
     else
       return gen2string(g,format,contextptr);
@@ -6664,6 +6664,8 @@ namespace giac {
       }
     }
     gen tmp=subst(args,l,lnew,false,contextptr);
+    if (tmp.type==_CPLX && is_zero(*(tmp._CPLXptr+1),contextptr))
+      tmp=*tmp._CPLXptr;
     if (tmp.type==_REAL){
 #ifdef HAVE_LIBMPFR
       // reeval with the right precision

@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking for a permutation: is_permu
+<title>Transforming a permutation into a matrix: permu2mat
+
 </title>
 </head>
 <body >
@@ -12,36 +13,40 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en157.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec196" class="subsection">6.9.7  Checking for a permutation: <span style="font-family:monospace">is_permu</span>
-<a id="hevea_default270"></a></h3>
-<p>A permutation can be written as a list, but not every list corresponds
-to a permutation. The <span style="font-family:monospace">is_permu</span> is a boolean function which
-checks to see if a given list is a permutation.
+<h3 id="ssec:permu2mat" class="subsection">6.9.6  Transforming a permutation into a matrix: <span style="font-family:monospace">permu2mat</span>
+<a id="hevea_default270"></a>
+</h3>
+<p>The matrix of a permutation <span style="font-style:italic">p</span> of size <span style="font-style:italic">n</span> is the matrix obtained by
+permuting the rows of the identity matrix of size <span style="font-style:italic">n</span> with the
+permutation <span style="font-style:italic">p</span>. Multiplying this matrix by a column vector of size
+<span style="font-style:italic">n</span> is the same as permuting the elements of the vector with the
+permutation <span style="font-style:italic">p</span>.</p><p>The <span style="font-family:monospace">permu2mat</span> command finds the matrix of a given
+permutation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_permu</span> takes one argument:<br>
- <span style="font-style:italic">L</span>, a list.
-</li><li class="li-itemize"><span style="font-family:monospace">is_permu(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">L</span> is a permutation and returns
-0 if <span style="font-style:italic">L</span> is not a permutation.
+<span style="font-family:monospace">permu2mat</span> takes one argument:<br>
+ <span style="font-style:italic">p</span>, a permutation <span style="font-style:italic">p</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">permu2mat(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns the matrix of the permutation <span style="font-style:italic">p</span>.
 </li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_permu([2,1,3])</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">permu2mat([2,0,1])</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >       0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >       1</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >       0</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0
 </td></tr>
+</table></td><td class="dcell">
+</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_permu([2,1,3,0])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
-</table>
-</li></ul>
 <hr>
 <a href="cascmd_en155.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

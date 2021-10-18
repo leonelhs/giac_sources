@@ -4,7 +4,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Forcing evaluation: unquote
+<title>Preventing evaluation: quote hold ’
+
+
+
 </title>
 </head>
 <body >
@@ -12,29 +15,30 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en179.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec221" class="subsection">6.12.5  Forcing evaluation: <span style="font-family:monospace">unquote</span>
-<a id="hevea_default305"></a></h3>
-<p><span style="font-family:monospace">unquote</span> is used for evaluation inside a quoted expression.<br>
-For example in an assignment, the variable is automatically quoted
-(not evaluated) so that the user does not have to quote it explicitly
-each time he want to modify its value. In some circumstances, you
-might want to evaluate it.<br>
+<h3 id="ssec:qt" class="subsection">6.12.4  Preventing evaluation: <span style="font-family:monospace">quote</span> <span style="font-family:monospace">hold</span> <span style="font-family:monospace">’</span>
+<a id="hevea_default303"></a>
+<a id="hevea_default304"></a>
+<a id="hevea_default305"></a>
+</h3>
+<p>You can prevent an expression from being evaluated by <em>quoting</em>
+it, either by preceding it with <span style="font-family:monospace">’</span> or with the <span style="font-family:monospace">quote</span>
+or <span style="font-family:monospace">hold</span>) command.</p><p><br>
+</p><p><span style="font-weight:bold">Remark.</span><br>
+If <span style="font-style:italic">a</span> is a variable, then <span style="font-style:italic">a</span><span style="font-family:monospace">:=quote(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> (or
+<span style="font-style:italic">a</span><span style="font-family:monospace">:=hold(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span>) is equivalent to <span style="font-family:monospace">purge(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> (for the
+sake of Maple compatibility). It returns the value of this variable
+(or the hypothesis done on this variable).</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">purge(b);a:=b;unquote(a):=3</span>
+<span style="font-family:monospace">a:=2;quote(2+3*a)</span>
 </div><p>
-The variable <span style="font-family:monospace">b</span> begins as a purely symbolic variable, and
-the value of <span style="font-family:monospace">a</span> is equal to the symbolic variable <span style="font-family:monospace">b</span>. In the
-assignment <span style="font-family:monospace">unquote(a):=3</span>, the left hand side
-<span style="font-family:monospace">unquote(a)</span> is evaluated to <span style="font-family:monospace">b</span>, and so <span style="font-family:monospace">b</span> is
-assigned the value <span style="font-family:monospace">3</span>. Since <span style="font-family:monospace">a</span> evaluates to
-the same thing as <span style="font-weight:bold">b</span>, <span style="font-family:monospace">a</span> also evaluated to <span style="font-family:monospace">3</span>.<br>
-<span style="font-style:italic">Input:</span>
+<span style="font-style:italic">or:</span>
 </p><div class="center">
-<span style="font-family:monospace">a,b</span>
+<span style="font-family:monospace">a:=2;’2+3*a’</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3,3
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2,2+3 <span style="font-style:italic">a</span>
 </td></tr>
 </table>
 <hr>

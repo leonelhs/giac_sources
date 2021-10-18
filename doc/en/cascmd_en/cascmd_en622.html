@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Producing random numbers with a multinomial distribution: randmultinomial
+<title>Producing random numbers with the binomial distribution: randbinomial
 
 </title>
 </head>
@@ -13,43 +13,31 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en623.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:randmultinomial" class="subsection">9.3.4  Producing random numbers with a multinomial distribution: <span style="font-family:monospace">randmultinomial</span>
+<h3 id="ssec:randbinomial" class="subsection">9.3.3  Producing random numbers with the binomial distribution: <span style="font-family:monospace">randbinomial</span>
 <a id="hevea_default1172"></a>
 </h3>
-<p>The <span style="font-family:monospace">randmultinomial</span> command finds random numbers chosen
-according to a multinomial distribution (see Section <a href="cascmd_en639.html#ssec%3Amultinomial">9.4.5</a>).
+<p>The <span style="font-family:monospace">randbinomial</span> command finds random numbers chosen
+according to the binomial distribution (see Section <a href="cascmd_en638.html#ssec%3Abinomial">9.4.3</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">randmultinomial</span> takes one mandatory and one optional argument:
+<span style="font-family:monospace">randbinomial</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a list <span style="font-style:italic">P</span>=[<span style="font-style:italic">p</span><sub>0</sub>,…,<span style="font-style:italic">p</span><sub><span style="font-style:italic">n</span>−1</sub>] of <span style="font-style:italic">n</span> probabilities
-which add to 1 (representing the probability that one of several
-mutually exclusive events occurs).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">K</span>, a list of length <span style="font-style:italic">n</span>.
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize"><span style="font-style:italic">p</span>, a probability (a number between 0 and 1).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">randmultinomial(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns an index chosen randomly
-according to the corresponding multinomial distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">randmultinomial(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)</span> returns an element of <span style="font-style:italic">K</span>
-whose index is chosen randomly.
+</li><li class="li-itemize"><span style="font-family:monospace">randbinomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns an integer from 0 to <span style="font-style:italic">n</span> chosen
+randomly according to the binomial distribution with parameters <span style="font-style:italic">n</span>
+and <span style="font-style:italic">p</span>; i.e., the number of successes you might get if you did an
+experiment <span style="font-style:italic">n</span> times, where the probability of success each time is <span style="font-style:italic">p</span>.
 </li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmultinomial([1/2, 1/3, 1/6])</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</p><div class="center">
+<span style="font-family:monospace">randbinomial(100,0.4)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">42
 </td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmultinomial([1/2, 1/3, 1/6],["R","V","B"])</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">"R"
-</td></tr>
-</table>
-</li></ul>
 <hr>
 <a href="cascmd_en621.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

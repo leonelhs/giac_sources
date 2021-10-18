@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform a floating point number into a rational: exact float2rational
+<title>Wilf-Zeilberger pairs: wz_certificate
 </title>
 </head>
 <body >
@@ -12,75 +12,146 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en122.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec159" class="subsection">6.7.1  Transform a floating point number into a rational: <span style="font-family:monospace">exact</span> <span style="font-family:monospace">float2rational</span>
-<a id="hevea_default219"></a><a id="hevea_default220"></a><a id="hevea_default221"></a></h3>
-<p>Rational numbers can be approximated by floating point numbers, but
-since floating point numbers are not exact, they can’t typically be
-converted back to the original rational number. However, the
-<span style="font-family:monospace">float2rational</span> command will try convert a
-floating point to a nearby rational number.<br>
-<span style="font-family:monospace">exact</span> is a synonym for <span style="font-family:monospace">float2rational</span>.
+<h3 id="sec158" class="subsection">6.6.4  Wilf-Zeilberger pairs: <span style="font-family:monospace">wz_certificate</span>
+<a id="hevea_default219"></a></h3>
+<p>The Wilf-Zeilberger certificate <span style="font-style:italic">R</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) is used to prove the identity
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">U</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = <span style="font-style:italic">C</span> <span style="font-style:italic">res</span>(<span style="font-style:italic">n</span>)</td></tr>
+</table><p> for some constant <span style="font-style:italic">C</span> (typically 1)
+whose value can be determined by evaluating both sides for some value
+of <span style="font-style:italic">k</span>. To see how that works, note that the above identity is
+equivalent to </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>)</td></tr>
+</table><p> being constant, where <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) =
+<span style="font-style:italic">U</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>)/<span style="font-style:italic">res</span>(<span style="font-style:italic">n</span>). The Wilf-Zeilberger certificate is a rational
+function <span style="font-style:italic">R</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) that make <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) and <span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = <span style="font-style:italic">R</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) a
+Wilf-Zeilberger pair, meaning
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">float2rational</span> takes one argument:<br>
- <span style="font-style:italic">d</span>, a floating point number.
-</li><li class="li-itemize"><span style="font-family:monospace">float2rational(</span><span style="font-style:italic">d</span><span style="font-family:monospace">)</span> returns
-a rational number <span style="font-style:italic">q</span> close to <span style="font-style:italic">d</span>; namely such that
-|<span style="font-style:italic">d</span>−<span style="font-style:italic">q</span>|&lt;<span style="font-family:monospace">epsilon</span>, where <span style="font-family:monospace">epsilon</span> is defined in the
-<span style="font-family:monospace">cas</span> configuration (<span style="font-family:monospace">Cfg</span> menu, see
-Section <a href="cascmd_en027.html#ssec%3Aconfcomp">3.5.7</a>, item <a href="cascmd_en027.html#enum%3Aeps">9</a>) or with the
-<span style="font-family:monospace">cas_setup</span> command (see Section <a href="cascmd_en030.html#ssec%3Aconffile">3.5.10</a>).
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+<span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>+1,<span style="font-style:italic">k</span>) − <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = <span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>+1) − <span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) for integers <span style="font-style:italic">n</span> ≥
+0, <span style="font-style:italic">k</span>.
+</li><li class="li-itemize">lim<sub><span style="font-style:italic">k</span> → ±∞</sub> <span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = 0 for each <span style="font-style:italic">n</span>≥ 0.
+</li></ul><p>
+To see how this helps, adding the first equation from <span style="font-style:italic">k</span>=−<span style="font-style:italic">M</span> to <span style="font-style:italic">k</span>=<span style="font-style:italic">N</span>
+gives you
+∑<sub><span style="font-style:italic">k</span>=−<span style="font-style:italic">M</span></sub><sup><span style="font-style:italic">N</span></sup>(<span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>+1,<span style="font-style:italic">k</span>)−<span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>)) = ∑<sub><span style="font-style:italic">k</span>=−<span style="font-style:italic">M</span></sub><span style="font-style:italic">N</span>(<span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>+1) −
+<span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>)). The right-hand side is a telescoping series, and so the
+equality can be written
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=−<span style="font-style:italic">M</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>+1,<span style="font-style:italic">k</span>) − </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=−<span style="font-style:italic">M</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) =
+<span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">N</span>+1)−<span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,−<span style="font-style:italic">M</span>).</td></tr>
+</table><p>
+Taking the limit as <span style="font-style:italic">N</span>,<span style="font-style:italic">M</span> → ∞ and using the second condition of
+Wilf-Zeilberger pairs, you get
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>+1,<span style="font-style:italic">k</span>) = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>)</td></tr>
+</table><p>
+and so ∑<sub><span style="font-style:italic">k</span></sub><span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) does not depend on <span style="font-style:italic">n</span>, and so is a constant.</p><p>The <span style="font-family:monospace">wz_certificate</span> command computes Wilf-Zeilberger pairs.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">float2rational(0.3670520231)</span>
-</div>
-<span style="font-style:italic">Output (when </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-10</span></span><span style="font-style:italic">):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">127</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">346</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">evalf(363/28)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  12.9642857143
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">float2rational(12.9642857143)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">363</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">28</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize">If two representations are mixed, for example:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">1/2+0.7</span>
-</div>
-the rational is converted to a float.<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1.2
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">1/2+float2rational(0.7)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">6</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td></tr>
-</table>
+<span style="font-family:monospace">wz_certificate</span> takes four arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">U</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>), an expression in two variables.
+</li><li class="li-itemize"><span style="font-style:italic">res</span>(<span style="font-style:italic">k</span>), an expression in one
+of the variables.
+</li><li class="li-itemize"><span style="font-style:italic">n</span> and <span style="font-style:italic">k</span>, the variables.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">wz_certificate(</span><span style="font-style:italic">U</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>)<span style="font-family:monospace">,</span><span style="font-style:italic">res</span>(<span style="font-style:italic">k</span>)<span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">k</span><span style="font-family:monospace">)</span> returns
+the Wilf-Zeilberger certificate <span style="font-style:italic">R</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) for the identity
+∑<sub><span style="font-style:italic">k</span>=−∞</sub><sup><span style="font-style:italic">infty</span></sup> <span style="font-style:italic">U</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = <span style="font-style:italic">res</span>(<span style="font-style:italic">n</span>).
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+To show
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell"> (−1)<sup><span style="font-style:italic">k</span></sup> </td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
+</table></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2<span style="font-style:italic">k</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
+</table></td><td class="dcell">4<sup><span style="font-style:italic">n</span>−<span style="font-style:italic">k</span></sup> = </td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2<span style="font-style:italic">n</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
+</table></td><td class="dcell">:
+</td></tr>
+</table><p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">wz_certificate((-1)^k*comb(n,k)*comb(2k,k)*4^(n-k),comb(2n,n),n,k)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">k</span>−1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">n</span>+1</td></tr>
+</table></td></tr>
+</table><p>
+This means that <span style="font-style:italic">R</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = (2<span style="font-style:italic">k</span>−1)/(2<span style="font-style:italic">n</span>+1) is a Wilf-Zeilberger
+certificate; in other words
+<span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = (−1)<sup><span style="font-style:italic">k</span></sup> (</p><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">k</span></td></tr>
+</table><p>)(</p><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2<span style="font-style:italic">k</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">k</span></td></tr>
+</table><p>) 4<sup><span style="font-style:italic">n</span>−<span style="font-style:italic">k</span></sup>/(</p><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2<span style="font-style:italic">n</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span></td></tr>
+</table><p>) and
+<span style="font-style:italic">G</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = <span style="font-style:italic">R</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>)<span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) are a Wilf-Zeilberger pair. So
+∑<sub><span style="font-style:italic">k</span></sub> <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) is a constant. Since <span style="font-style:italic">F</span>(0,0)=1 and <span style="font-style:italic">F</span>(0,<span style="font-style:italic">k</span>) = 0
+for <span style="font-style:italic">k</span>&gt;0,
+∑<sub><span style="font-style:italic">k</span></sub> <span style="font-style:italic">F</span>(0,<span style="font-style:italic">k</span>) = 1
+and so ∑<sub><span style="font-style:italic">k</span></sub> <span style="font-style:italic">F</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>) = 1 for all <span style="font-style:italic">n</span>, showing
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell"> (−1)<sup><span style="font-style:italic">k</span></sup> </td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
+</table></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2<span style="font-style:italic">k</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
+</table></td><td class="dcell">4<sup><span style="font-style:italic">n</span>−<span style="font-style:italic">k</span></sup> = </td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2<span style="font-style:italic">n</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en120.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

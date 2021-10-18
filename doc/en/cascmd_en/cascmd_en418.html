@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Modifying the elements of a list: subsop
+<title>The left and right portions of a list: left right
+
 
 </title>
 </head>
@@ -13,97 +14,50 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en419.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:subsoplist" class="subsection">6.40.7  Modifying the elements of a list: <span style="font-family:monospace">subsop</span>
+<h3 id="ssec:lrlist" class="subsection">6.40.6  The left and right portions of a list: <span style="font-family:monospace">left</span> <span style="font-family:monospace">right</span>
+<a id="hevea_default705"></a>
 <a id="hevea_default706"></a>
 </h3>
-<p>The <span style="font-family:monospace">subsop</span> command can be used to
-modify elements in a list.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">subsop</span> takes two arguments:
+<p>The <span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span> can find the left and right parts
+of a list. (See Section <a href="cascmd_en078.html#ssec%3Alrstring">6.3.4</a>, Section <a href="cascmd_en207.html#ssec%3Aop">6.15.3</a>,
+Section <a href="cascmd_en391.html#ssec%3Arange">6.37.1</a>, Section <a href="cascmd_en395.html#ssec%3Alrinterval">6.38.2</a>, 
+Section <a href="cascmd_en553.html#ssec%3Alhs">6.55.4</a> and Section <a href="cascmd_en554.html#ssec%3Arhs">6.55.5</a> for
+other uses of <span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span>.)</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">left</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">L</span>, a list.
-</li><li class="li-itemize"><span style="font-style:italic">i</span><span style="font-style:italic">=value</span>, an index and a new value.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, a positive integer.
 </li></ul>
-</li><li class="li-itemize">(In all but <span style="font-family:monospace">Maple</span> mode).<br>
- <span style="font-family:monospace">subsop(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">i</span><span style="font-family:monospace">=</span><span style="font-style:italic">value</span><span style="font-family:monospace">)</span> returns the list <span style="font-style:italic">L</span>
-with the value at index <span style="font-style:italic">i</span> replaced by <span style="font-style:italic">value</span>.
-</li><li class="li-itemize">(In <span style="font-family:monospace">Maple</span> mode; the only difference is the order of
-the arguments).<br>
- <span style="font-family:monospace">subsop(</span><span style="font-style:italic">i</span><span style="font-family:monospace">=</span><span style="font-style:italic">value,</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the list <span style="font-style:italic">L</span>
-with the value at index <span style="font-style:italic">i</span> replaced by <span style="font-style:italic">value</span>. 
-</li></ul><p>
-<span style="font-weight:bold">Remark:</span> If the second argument is <span style="font-style:italic">i</span><span style="font-family:monospace">=NULL</span>, then
-the element at index <span style="font-style:italic">i</span> is removed from <span style="font-style:italic">L</span>.</p><p><br>
-</p><p>You can also redefine elements (or define new elements, but not remove
-elements) with <span style="font-family:monospace">:=</span>.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Xcas</span></span><span style="font-style:italic"> mode, the index of the first element is 0):</span>
-<div class="center">
-<span style="font-family:monospace">subsop([0,1,2],1=5)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[0,1,2];L[1]:=5</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,5,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Xcas</span></span><span style="font-style:italic"> mode, the index of the first element is 0):</span>
-<div class="center">
-<span style="font-family:monospace">subsop([0,1,2],’1=NULL’)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Mupad TI</span></span><span style="font-style:italic"> mode, the index of the first element is 1):</span>
-<div class="center">
-<span style="font-family:monospace">subsop([0,1,2],2=5)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,5,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize">When using <span style="font-family:monospace">:=</span> to insert an element in a list, the list will
-be padded with 0s if necessary.<br>
-<span style="font-family:monospace">Input:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[]</span>
-</div>
-<span style="font-style:italic">then:</span>
-<div class="center">
-<span style="font-family:monospace">L[3]:=5</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,0,5</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize">In <span style="font-family:monospace">Maple</span> mode the arguments are permuted and the index of
-the first element is 1.<br>
+</li><li class="li-itemize"><span style="font-family:monospace">left(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the first <span style="font-style:italic">n</span> elements of <span style="font-style:italic">L</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">subsop(2=5,[0,1,2])</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">left([0,1,2,3,4,5,6,7,8],3)</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,5,2 </td><td class="dcell">⎤<br>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">0,1,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table><p><br>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">right</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, a positive integer.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">right(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the last <span style="font-style:italic">n</span> elements of <span style="font-style:italic">L</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">right([0,1,2,3,4,5,6,7,8],4)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">5,6,7,8</td><td class="dcell">⎤<br>
 ⎦</td></tr>
 </table>
-</li></ul>
 <hr>
 <a href="cascmd_en417.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

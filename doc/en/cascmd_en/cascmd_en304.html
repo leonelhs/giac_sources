@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Exact roots of a polynomial: roots
+<title>Computing with the exact root of a polynomial: rootof
+
 </title>
 </head>
 <body >
@@ -12,126 +13,61 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en305.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec373" class="subsection">6.27.22  Exact roots of a polynomial: <span style="font-family:monospace">roots</span>
-<a id="hevea_default543"></a></h3>
-<p>The <span style="font-family:monospace">roots</span> command finds roots of polynomials with their
-multiplicities
+<h3 id="ssec:rootof" class="subsection">6.27.21  Computing with the exact root of a polynomial: <span style="font-family:monospace">rootof</span>
+<a id="hevea_default543"></a>
+</h3>
+<p>The <span style="font-family:monospace">rootof</span> command finds the value of one polynomial at a
+root of another.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">roots</span> takes one mandatory and one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a symbolic polynomial expression.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, the name of the variable (the default is
-<span style="font-family:monospace">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">roots(</span><span style="font-style:italic">P</span>  ⟨ ,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns a 2
-column matrix: each row is the list consisting of a root of
-<span style="font-style:italic">P</span> and its multiplicity.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+<span style="font-family:monospace">rootof</span> takes two arguments:<br>
+ <span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span>, two polynomials given by the lists of their
+coefficients.
+</li><li class="li-itemize"><span style="font-family:monospace">rootof(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> gives the value <span style="font-style:italic">P</span>(α)
+where α is the root of <span style="font-style:italic">Q</span> with largest real part (and largest
+imaginary part in case of equality).
+</li></ul><p> 
+In exact computations, <span style="font-family:monospace">Xcas</span> will rewrite rational
+evaluations of <span style="font-family:monospace">rootof</span> as a unique <span style="font-family:monospace">rootof</span> with
+degree(<span style="font-style:italic">P</span>)&lt;degree(<span style="font-style:italic">Q</span>). If the resulting rootof is the solution of
+a second degree equation, it will be simplified.</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+Let α be the root with largest imaginary part of
+<span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>4</sup>+10<span style="font-style:italic">x</span><sup>2</sup>+1 (all roots of <span style="font-style:italic">Q</span> have real part 
+equal to 0).
 </p><ul class="itemize"><li class="li-itemize">
-Find the roots of <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>5</sup>−2<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">roots(x^5-16*x^4+x^3)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">3 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >7</td></tr>
-</table></td><td class="dcell">+8</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−3 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >7</td></tr>
-</table></td><td class="dcell">+8</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize">Find the roots of
-<span style="font-style:italic">x</span><sup>10</sup>−15<span style="font-style:italic">x</span><sup>8</sup>+90<span style="font-style:italic">x</span><sup>6</sup>−270<span style="font-style:italic">x</span><sup>4</sup>+405<span style="font-style:italic">x</span><sup>2</sup>−243=(<span style="font-style:italic">x</span><sup>2</sup>−3)<sup>5</sup>.<br>
+Compute  1/α.<br>
  <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">roots(x^10-15*x^8+90*x^6-270*x^4+405*x^2-243)</span>
+<span style="font-family:monospace">normal(1/rootof([1,0],[1,0,10,0,1]))</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span> is represented by [1,0] and α
+by <span style="font-family:monospace">rootof([1,0],[1,0,10,0,1])</span>.<br>
+ <span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  −<span style="font-style:italic">i</span> </td><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
 <tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >5</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td></tr>
 </table>
-</li><li class="li-itemize">Find the roots of <span style="font-style:italic">t</span><sup>3</sup>−1.<br>
+</li><li class="li-itemize">Compute α<sup>2</sup>.<br>
  <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">roots(t^3-1,t)</span>
+<span style="font-family:monospace">normal(rootof([1,0],[1,0,10,0,1])^2)</span>
+</div>
+or (since <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>2</sup> is represented by [1,0,0]):<br>
+ <span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">normal(rootof([1,0,0],[1,0,10,0,1]))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">                        </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">i</span> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">−1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">                        </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−<span style="font-style:italic">i</span> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">−1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >1
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  −2 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
+</table></td><td class="dcell">−5
 </td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
 </table>
 </li></ul>
 <hr>

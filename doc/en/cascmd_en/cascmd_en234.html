@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Conservative flux field: vpotential
+<title>Potential: potential
 </title>
 </head>
 <body >
@@ -12,55 +12,40 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en235.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec292" class="subsection">6.21.7  Conservative flux field: <span style="font-family:monospace">vpotential</span>
+<h3 id="sec292" class="subsection">6.21.6  Potential: <span style="font-family:monospace">potential</span>
 <a id="hevea_default437"></a></h3>
-<p>A vector field <span style="font-weight:bold"><span style="font-style:italic">F</span></span> in ℝ<sup>3</sup> is a conservative flux
-field, or a solenoidal field, if there is a vector field <span style="font-weight:bold"><span style="font-style:italic">G</span></span>
-such that <span style="font-weight:bold"><span style="font-style:italic">curl</span></span><span style="font-weight:bold"><span style="font-style:italic">G</span></span> = <span style="font-weight:bold"><span style="font-style:italic">F</span></span>. Given a
-conservative flux vector field <span style="font-weight:bold"><span style="font-style:italic">F</span></span>, the general solution of
-<span style="font-weight:bold"><span style="font-style:italic">curl</span></span><span style="font-weight:bold"><span style="font-style:italic">G</span></span> = <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is the sum of a particular
-solution and the gradient of an arbitrary functions.</p><p>The <span style="font-family:monospace">vpotential</span> command finds a particular vector field
-<span style="font-weight:bold"><span style="font-style:italic">G</span></span> such that <span style="font-weight:bold"><span style="font-style:italic">curl</span></span><span style="font-weight:bold"><span style="font-style:italic">G</span></span> = <span style="font-weight:bold"><span style="font-style:italic">F</span></span> if
-<span style="font-weight:bold"><span style="font-style:italic">F</span></span> is a conservative flux field, and signals an error
-otherwise. Specifically, <span style="font-family:monospace">vpotential</span> returns the solution
-<span style="font-weight:bold"><span style="font-style:italic">G</span></span> with zero as the first component.
+<p>Recall that a vector field <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is conservative if there is a
+scalar-valued function <span style="font-style:italic">f</span> such that grad <span style="font-style:italic">f</span>=<span style="font-weight:bold"><span style="font-style:italic">F</span></span>. In
+this case, <span style="font-style:italic">f</span> is called a potential of <span style="font-weight:bold"><span style="font-style:italic">F</span></span>, and is only
+determined up to a constant.</p><p>The <span style="font-family:monospace">potential</span> command computes the potential of a vector
+field, or signals an error if the vector field is not conservative.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">vpotential</span> takes two arguments:
+<span style="font-family:monospace">potential</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">F</span>, a vector field in ℝ<sup>3</sup>, given as a list of
-three expressions depending on three variables.
+<span style="font-weight:bold"><span style="font-style:italic">F</span></span>, a vector field given as a list of <span style="font-style:italic">n</span> expressions
+involving <span style="font-style:italic">n</span> variables.
 </li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variable names.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">vpotential(</span><span style="font-style:italic">F</span><span style="font-style:italic">vars</span><span style="font-family:monospace">)</span> returns a
-solution of <span style="font-weight:bold"><span style="font-style:italic">curl</span></span><span style="font-weight:bold"><span style="font-style:italic">G</span></span> = <span style="font-weight:bold"><span style="font-style:italic">F</span></span> whose first
-coordinate is zero if <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is a conservative vector field,
-and signals an error otherwise.
+</li><li class="li-itemize"><span style="font-family:monospace">potential(</span><span style="font-weight:bold"><span style="font-style:italic">F</span></span><span style="font-style:italic">,vars</span><span style="font-family:monospace">)</span>
+returns a potential function for <span style="font-weight:bold"><span style="font-style:italic">F</span></span> if <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is
+conservative, and raises an error otherwise.
 </li></ul><p>
-<span style="font-family:monospace">vpotential</span> is the reciprocal function of <span style="font-family:monospace">curl</span>.</p><p><br>
+Note that <span style="font-family:monospace">potential</span> is the reciprocal function of <span style="font-family:monospace">derive</span>.</p><p><br>
 </p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">vpotential([2*x*y+3,x^2-4*z,-2*y*z],[x,y,z])</span>
+<span style="font-family:monospace">potential([2*x*y+3,x^2-4*z,-4*y],[x,y,z])</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell">0,−2 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span> <span style="font-style:italic">z</span>,−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>3</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td><td class="dcell">+4 <span style="font-style:italic">x</span> <span style="font-style:italic">z</span>+3 <span style="font-style:italic">y</span></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup> <span style="font-style:italic">y</span>+3 <span style="font-style:italic">x</span>−4 <span style="font-style:italic">y</span> <span style="font-style:italic">z</span>
+</td></tr>
 </table><p><br>
-</p><p>In ℝ<sup>3</sup>, a vector field <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is a curl if and only
-if its divergence is zero.
+</p><p>Note that in ℝ<sup>3</sup>, a vector field <span style="font-weight:bold"><span style="font-style:italic">F</span></span> is
+conservative if and only if its curl is zero; i.e., if
+<span style="font-weight:bold"><span style="font-style:italic">curl</span></span><span style="font-weight:bold"><span style="font-style:italic">F</span></span>=<span style="font-weight:bold">0</span>.
 In time-independent electro-magnetism,
-<span style="font-weight:bold"><span style="font-style:italic">F</span></span> = <span style="font-weight:bold"><span style="font-style:italic">B</span></span>
-is the magnetic field and
-<span style="font-weight:bold"><span style="font-style:italic">G</span></span> = <span style="font-weight:bold"><span style="font-style:italic">A</span></span>
-is the potential vector.</p>
+<span style="font-weight:bold"><span style="font-style:italic">F</span></span>=<span style="font-weight:bold"><span style="font-style:italic">E</span></span> is the electric field and <span style="font-style:italic">f</span> is the electric
+potential.</p>
 <hr>
 <a href="cascmd_en233.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

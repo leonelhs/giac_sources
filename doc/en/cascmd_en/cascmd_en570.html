@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Replacing small values by 0: epsilon2zero
+<title>The inverse Z-transform of a rational function: invztrans
 </title>
 </head>
 <body >
@@ -12,43 +12,57 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en571.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:epsilon2zero" class="subsection">6.59.1  Replacing small values by 0: <span style="font-family:monospace">epsilon2zero</span>
+<h3 id="sec727" class="subsection">6.58.2  The inverse Z-transform of a rational function: <span style="font-family:monospace">invztrans</span>
 <a id="hevea_default978"></a></h3>
-<p>The <span style="font-family:monospace">epsilon2zero</span> command replaces small values by 0.
+<p>The inverse Z-transform of a rational expression is
+a formula for the general term of a sequence with the given rational
+expression as its Z-transform. The <span style="font-family:monospace">invztrans</span> command finds
+the inverse Z-transform of a rational expression.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">epsilon2zero</span> takes one argument:<br>
- <span style="font-style:italic">expr</span>, an expression in <span style="font-family:monospace">x</span>.<br>
- </li><li class="li-itemize"><span style="font-family:monospace">epsilon2zero(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns 
-<span style="font-style:italic">expr</span> where any values of modulus less than <span style="font-family:monospace">epsilon</span><a id="hevea_default979"></a>
-(see Section <a href="cascmd_en027.html#ssec%3Aconfcomp">3.5.7</a>, item <a href="cascmd_en027.html#enum%3Aeps">9</a>, by default
-<span style="font-family:monospace">epsilon=1e-10</span>) are replaced by
-zero. The expression is not evaluated.
+<span style="font-family:monospace">invztrans</span> command takes one mandatory and two
+optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">rat</span>, a rational expression.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span> the variable (by default <span style="font-family:monospace">x</span>).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span>, a variable to be used by the result (by
+default <span style="font-style:italic">x</span>).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">ztrans(</span><span style="font-family:monospace">rat</span> ⟨ <span style="font-style:italic">x</span>,<span style="font-style:italic">n</span>⟩<span style="font-family:monospace">)</span>
+returns the inverse Z-transform of <span style="font-style:italic">rat</span>.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">epsilon2zero(1e-13+x)</span>
+<span style="font-family:monospace">invztrans(x/(x-1))</span>
 </div>
-<span style="font-style:italic">Output (with </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-10</span></span><span style="font-style:italic">):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0+<span style="font-style:italic">x</span>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+(since <span style="font-family:monospace">ztrans(1)=x/(x-1)</span>)
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">invztrans(z/(z-1),z,n)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
 </td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">epsilon2zero((1e-13+x)*100000)</span>
+<span style="font-family:monospace">invztrans(x/(x-1)^2)</span>
 </div>
-<span style="font-style:italic">Output (with </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-10</span></span><span style="font-style:italic">):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">100000 </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">0+<span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
-⎠</td></tr>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>
+</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">epsilon2zero(0.001+x)</span>
+<span style="font-family:monospace">invztrans(z/(z-1)^2,z,n)</span>
 </div>
-<span style="font-style:italic">Output (with </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=0.0001</span></span><span style="font-style:italic">):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.001+<span style="font-style:italic">x</span>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">n</span>
 </td></tr>
 </table>
 </li></ul>

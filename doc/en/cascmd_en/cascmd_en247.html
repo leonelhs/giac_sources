@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Simplifying trigonometric expressions: trigsimplify
+<title>Simplifying: simplify
 </title>
 </head>
 <body >
@@ -12,40 +12,32 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en248.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec307" class="subsection">6.23.6  Simplifying trigonometric expressions: <span style="font-family:monospace">trigsimplify</span>
+<h3 id="sec307" class="subsection">6.23.5  Simplifying: <span style="font-family:monospace">simplify</span>
 <a id="hevea_default448"></a></h3>
-<p>The <span style="font-family:monospace">trigsimplify</span> command simplifies trigonometric expressions
-by combining <span style="font-family:monospace">simplify</span> (see Section <a href="cascmd_en187.html#ssec%3Asimplify">6.12.14</a>),
-<span style="font-family:monospace">texpand</span> (see Section <a href="cascmd_en277.html#ssec%3Atexpand">6.25.1</a>), <span style="font-family:monospace">tlin</span> (see
-Section <a href="cascmd_en243.html#ssec%3Atlin">6.23.2</a>), <span style="font-family:monospace">tcollect</span> (see Section <a href="cascmd_en245.html#ssec%3Atcollect">6.23.4</a>),
-<span style="font-family:monospace">trigsin</span> (see Section <a href="cascmd_en264.html#ssec%3Atrigsin">6.23.23</a>), <span style="font-family:monospace">trigcos</span> (see
-Section <a href="cascmd_en265.html#ssec%3Atrigcos">6.23.24</a>) and <span style="font-family:monospace">trigtan</span> (see
-Section <a href="cascmd_en266.html#ssec%3Atrigtan">6.23.25</a>) commands in a certain order.
+<p>The <span style="font-family:monospace">simplify</span> command simplifies expressions. As with all
+automatic simplifications, do not expect miracles; you will have to
+use specific rewriting rules if it does not work.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">trigsimplify</span> takes one argument:<br>
- <span style="font-style:italic">expr</span>, an argument containing trigonometric functions.
-</li><li class="li-itemize"><span style="font-family:monospace">trigsimplify(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the
-simplified form of <span style="font-style:italic">expr</span>.
+<span style="font-family:monospace">simplify</span> takes one argument:<br>
+ <span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-family:monospace">simplify(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the
+simplified version of <span style="font-style:italic">expr</span>.
 </li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">trigsimplify((sin(x+y)-sin(x-y))/(cos(x+y)+cos(x-y)))</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">simplify((sin(3*x)+sin(7*x))/sin(5*x))</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">tan<span style="font-style:italic">y</span>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">trigsimplify(1-1/4*sin(2a)^2-sin(b)^2-cos(a)^4)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">sin<sup>2</sup><span style="font-style:italic">a</span>−sin<sup>2</sup><span style="font-style:italic">b</span>
-</td></tr>
-</table>
-</li></ul>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2 cos</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table><p><br>
+</p><p><span style="font-weight:bold">Warning.</span><br>
+<span style="font-family:monospace">simplify</span> is more efficient in <span style="font-family:monospace">radian</span> mode (which you
+can turn on, if it isn’t already, by checking <span style="font-family:monospace">radian</span> in the
+<span style="font-family:monospace">cas</span> configuration or inputting <span style="font-family:monospace">angle_radian:=1</span>, see
+Section <a href="cascmd_en023.html#ssec%3Aangles">3.5.3</a>).</p>
 <hr>
 <a href="cascmd_en246.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

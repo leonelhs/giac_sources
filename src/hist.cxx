@@ -5522,7 +5522,11 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     giac::python_compat(0,giac::context0);  // otherwise factor(x^4-4,sqrt(2)) fails if pari is disabled
     bool running=true;
   #ifdef WIN32
+  #ifdef __MINGW_H
+    static std::string windowname=std::string("Xcas ")+GIAC_VERSION+" (mingw win"+giac::print_INT_(8*sizeof(long))+")";
+  #else 
     static std::string windowname=std::string("Xcas ")+GIAC_VERSION+" (win"+giac::print_INT_(8*sizeof(long))+")";
+  #endif
   #else
   #ifdef __APPLE__ 
     static std::string windowname=std::string("Xcas ")+GIAC_VERSION+" (osx"+giac::print_INT_(8*sizeof(long))+")";

@@ -1531,6 +1531,10 @@ namespace giac {
       else
 	remain.push_back(tmp);
       f=_floor(tmp,0);
+      if (has_op(f,*at_floor)){
+	*logptr(contextptr) << "Unable to simplify " << f << "\n";
+	return res; 
+      }
       res.push_back(f);
       if (is_zero(tmp-f))
 	return res;
@@ -8306,10 +8310,16 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     gen f2=derive(f1,x,contextptr);
 #if 1
     int cm=calc_mode(contextptr);
+    gen c,c1,c2;
+#ifndef NO_STDEXCEPT
+    try {
+#endif
     calc_mode(-38,contextptr); // avoid rootof
-    gen c1=solve(f1,x,periode==0?2:0,contextptr);
-    if (is_undef(c1))
+    c1=solve(f1,x,periode==0?2:0,contextptr);
+    if (is_undef(c1)){
+      calc_mode(cm,contextptr); 
       return 0;
+    }
     // add approx root if not detected by exact solver
     double eps=epsilon(contextptr);
     gen c1f=evalf(c1,1,contextptr);
@@ -8331,7 +8341,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
       c1=gen(w,c1.subtype);
     }
-    gen c2=(!(do_inflex_tabsign & 1) || is_zero(f2))?gen(vecteur(0)):solve(_numer(f2,contextptr),x,periode==0?2:0,contextptr),c(c1);
+    c2=(!(do_inflex_tabsign & 1) || is_zero(f2))?gen(vecteur(0)):solve(_numer(f2,contextptr),x,periode==0?2:0,contextptr);
+    c=c1;
+#ifndef NO_STDEXCEPT
+    } catch (std::runtime_error & err) { calc_mode(cm,contextptr); throw(err);}
+#endif
     calc_mode(cm,contextptr);
     step_infolevel(st,contextptr);
     if (x!=xval)

@@ -197,13 +197,20 @@ void format_plugin () {
   cout << TEXMACS_DATA_END;
 }
 
-void flush_stdout(){
+void flush_stdout(int slp = 0){
 #ifdef NSPIRE_NEWLIB
   giac::usleep(2000);
 #else
   usleep(2000);
 #endif
   fflush (stdout);
+  if (slp>0) {
+#ifdef NSPIRE_NEWLIB
+    giac::usleep(slp*1000);
+#else
+    usleep(slp*1000);
+#endif
+  }
 }
 
 void flush_stderr(){
@@ -224,40 +231,6 @@ void texmacs_next_input () {
   flush_stdout();
 }
 
-#define TEXMACS_IMAGE_SCALE 57.0 // percent
-#define TEXMACS_IMAGE_PADDING_ABOVE 1.75 // ex
-#define TEXMACS_IMAGE_PADDING_BELOW 1.75 // ex
-
-void ifstream_output(istream & tmpif){
-  flush_stdout();
-  putchar(TEXMACS_DATA_BEGIN);
-#if 0 // changes by L. Marohnić
-  printf("scheme:(with \"par-mode\" \"center\" (document (image (tuple (raw-data \"");
-  char c;
-  for (int j=1;!tmpif.eof();++j){
-    tmpif.get(c);
-    putchar(c);
-    if (!(j%1024))
-      flush_stdout();
-  }
-  flush_stdout();
-  printf("\n\") \"ps\") \"0.7par\" \"\" \"\" \"\")))");
-#else
-  printf("ps:");
-  char c;
-  for (int j=1;!tmpif.eof();++j){
-    tmpif.get(c);
-    putchar(c);
-    if (!(j%1024))
-      flush_stdout();
-  }
-#endif
-  putchar(TEXMACS_DATA_END);
-  flush_stdout();
-}
-
-
-
 void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfilename,int file_type,const giac::context * contextptr){
 #if 1 // changes by L. Marohnić
   char buf[L_tmpnam];
@@ -267,7 +240,7 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
   string tmpdir=getenv("TEMP")?getenv("TEMP"):"c:\\Users\\Public";
   tmpname=tmpdir+tmpname;
 #endif
-  string ext=".eps",extc="cl.eps";
+  string ext=".eps",extc=".pdf";
   if (!xcas::fltk_view(g,gg,tmpname+ext,figfilename,file_type,contextptr)){
     putchar(TEXMACS_DATA_BEGIN);
     printf("verbatim:Plot cancelled or unable to plot\n");
@@ -293,7 +266,7 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
 #ifdef HAVE_SYSTEM
     if (system(NULL)) {
       int status;
-      status=system(("eps2eps "+tmpname+ext+" "+tmpname+extc).c_str());
+      status=system(("eps2eps "+tmpname+ext+" - | ps2pdf -dEPSCrop - "+tmpname+extc).c_str());
       if (status!=-1
 #ifndef __MINGW_H
 			&& WEXITSTATUS(status)==0
@@ -302,9 +275,16 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
         cleaned=true;
     }
 #endif
-    ifstream tmpif((tmpname+(cleaned?extc:ext)).c_str());
-    ifstream_output(tmpif); // send PS to TeXmacs
-    tmpif.close();
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("scheme:(htab \"\")");
+    putchar(TEXMACS_DATA_END);
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("file:%s", (tmpname+(cleaned?extc:ext)).c_str());
+    putchar(TEXMACS_DATA_END);
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("scheme:(htab \"\")");
+    putchar(TEXMACS_DATA_END);
+    flush_stdout(200);
     // remove temporary files:
     bool remove_fail=false;
     if (remove((tmpname+ext).c_str())!=0)

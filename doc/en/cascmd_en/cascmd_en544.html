@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Gram-Schmidt orthonormalization: gramschmidt
+<title>The conjugate gradient algorithm: conjugate_gradient
 </title>
 </head>
 <body >
@@ -12,162 +12,61 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en545.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec697" class="subsection">6.54.5  Gram-Schmidt orthonormalization: <span style="font-family:monospace">gramschmidt</span>
+<h3 id="sec697" class="subsection">6.54.4  The conjugate gradient algorithm: <span style="font-family:monospace">conjugate_gradient</span>
 <a id="hevea_default941"></a></h3>
-<p>The <span style="font-family:monospace">gramschmidt</span> command uses the Gram-Schmidt procedure to
-find an orthonormal set of vectors with the same span as a given set.
+<p>The <span style="font-family:monospace">conjugate_gradient</span> command uses the conjugate gradient
+algorithm to solve a linear system of equations.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">gramschmidt</span> takes one or two arguments.<br>
- With one argument:
+<span style="font-family:monospace">conjugate_gradient</span> takes two mandatory arguments
+and two optional arguments.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, a matrix viewed as a list of row vectors or 
-a list of elements that is a basis of a vector subspace.
-</li><li class="li-itemize"><span style="font-style:italic">f</span>, a function that defines a scalar product on this vector
-space. If <span style="font-style:italic">A</span> is a matrix, then this is optional, and by default
-will be the standard scalar product.
+<span style="font-style:italic">A</span>, an <span style="font-style:italic">n</span>× <span style="font-style:italic">n</span> positive definite symmetric matrix.
+</li><li class="li-itemize"><span style="font-style:italic">y</span>, a vector of length <span style="font-style:italic">n</span>.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span><sub>0</sub>, a vector of length <span style="font-style:italic">n</span>, an initial
+approximation.
+</li><li class="li-itemize">є, a positive number (by default <span style="font-family:monospace">epsilon</span>,
+see Section <a href="cascmd_en027.html#ssec%3Aconfcomp">3.5.7</a>, item <a href="cascmd_en027.html#enum%3Aeps">9</a>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">gramschmidt(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> or <span style="font-family:monospace">gramschmidt(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">f</span><span style="font-family:monospace">)</span>
-returns an orthonormal basis for this scalar product.
+</li><li class="li-itemize"><span style="font-family:monospace">conjugate_gradient(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">y</span> ⟨ <span style="font-style:italic">x</span><sub>0</sub>,є⟩<span style="font-family:monospace">)</span>
+returns the solution to <span style="font-style:italic">Ax</span> = <span style="font-style:italic">y</span> to within є.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]]))</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))</span>
+<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0])</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
 ⎢<br>
 ⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td></tr>
-</table></td></tr>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td></tr>
-</table></td></tr>
+<tr><td class="dcell" style="text-align:center">9</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td class="dcell" style="text-align:center">9</td></tr>
 </table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
 ⎥<br>
 ⎥<br>
 ⎦</td></tr>
 </table>
-</li><li class="li-itemize">Define a scalar product on the vector space of
-polynomials by:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>· <span style="font-style:italic">Q</span>=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">−1</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>) <span style="font-style:italic">Q</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">dx</span></td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">p_scal(p,q):=integrate(p*q,x,-1,1)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">gramschmidt([1,1+x],p_scal)</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">gramschmidt([1,1+x],(p,q)-&gt;integrate(p*q,x,-1,1))</span>
+<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-2)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">x</span>−1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
+⎣</td><td class="dcell">0.555,−0.11</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-10)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">0.555555555556,−0.111111111111</td><td class="dcell">⎤<br>
 ⎦</td></tr>
 </table>
 </li></ul>

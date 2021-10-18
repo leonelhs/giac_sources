@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Listing all compositions of an integer into k parts: icomp
+<title>Jacobi symbol: jacobi_symbol
 </title>
 </head>
 <body >
@@ -12,113 +12,87 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en117.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec152" class="subsection">6.5.26  Listing all compositions of an integer into <span style="font-style:italic">k</span> parts: <span style="font-family:monospace">icomp</span>
+<h3 id="sec152" class="subsection">6.5.26  Jacobi symbol: <span style="font-family:monospace">jacobi_symbol</span>
 <a id="hevea_default209"></a></h3>
-<p>A composition of a positive integer <span style="font-style:italic">n</span> is an ordered set of
-non-negative integers which sum to <span style="font-style:italic">n</span>. For example, three
-compositions of 4 are
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  4</td><td style="text-align:left;white-space:nowrap" >= 1 + 3 </td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-4</td><td style="text-align:left;white-space:nowrap" >= 3 + 1</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-4</td><td style="text-align:left;white-space:nowrap" >= 1 + 1 + 2
-</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-These compositions have two, two and three elements, respectively.
-The <span style="font-family:monospace">icomp</span> command finds all compositions of an integer with a
-given number of elements.
+<p>The Jacobi symbol is a generalization of the Legendre symbol
+(<span style="font-style:italic">a</span>/<span style="font-style:italic">n</span>) for when <span style="font-style:italic">n</span> isn’t prime. Let </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">n</span>=<span style="font-style:italic">p</span><sub>1</sub><sup>α <sub>1</sub></sup>… <span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub><sup>α <sub><span style="font-style:italic">k</span></sub></sup> </td></tr>
+</table><p> be the prime factorization
+of <span style="font-style:italic">n</span>. The Jacobi symbol of <span style="font-style:italic">a</span> is defined by: </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">=
+</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">p</span><sub>1</sub></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">α<sub>1</sub></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">…</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">α
+<sub><span style="font-style:italic">k</span></sub></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell"> </td></tr>
+</table><p> Where the left hand side is the Jacobi symbol and the right
+hand side contains Legendre symbols. The <span style="font-family:monospace">jacobi_symbol</span>
+command computes the Jacobi symbol.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">icomp</span> accepts two mandatory arguments and one optional
-argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, a positive integer.
-</li><li class="li-itemize"><span style="font-style:italic">k</span>, a positive integer not larger than <span style="font-style:italic">n</span>.
-</li><li class="li-itemize">Optionally, either <span style="font-family:monospace">zeros=true</span> or <span style="font-family:monospace">zeros=false</span>.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">icomp(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">k</span> ⟨<span style="font-family:monospace">,zeros=</span><span style="font-style:italic">bool</span>⟩<span style="font-family:monospace">)</span>
-returns the list of all compositions of <span style="font-style:italic">n</span> into <span style="font-style:italic">k</span> parts, where a part can be
-0. This is equivalent to the optional argument with
-<span style="font-style:italic">bool</span> equal to <span style="font-family:monospace">true</span>. With <span style="font-style:italic">bool</span> equal to
-<span style="font-family:monospace">false</span>, <span style="font-family:monospace">icomp(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">k</span><span style="font-family:monospace">,zeros=false)</span> returns the
-list of all compositions of <span style="font-style:italic">n</span> into <span style="font-style:italic">k</span> parts, where each part is
-nonzero (positive).
+<span style="font-family:monospace">jacobi_symbol</span> takes two arguments:<br>
+ <span style="font-style:italic">a</span> and <span style="font-style:italic">n</span>, integers.
+</li><li class="li-itemize"><span style="font-family:monospace">jacobi_symbol(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the Jacobi symbol
+(<span style="font-style:italic">a</span>/<span style="font-style:italic">n</span>).
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">icomp(4,2)</span>
+<span style="font-family:monospace">jacobi_symbol(25,12)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell">
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >        4</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        3</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        2</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        1</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        0</td><td style="text-align:center;white-space:nowrap" >4
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
 </td></tr>
-</table></td><td class="dcell">
-</td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">icomp(6,3,zeros=false)</span>
+<span style="font-family:monospace">jacobi_symbol(35,12)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell">
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >        4</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        3</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        2</td><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        1</td><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        3</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        2</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        1</td><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        2</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        1</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >        1</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >4
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  −1
 </td></tr>
-</table></td><td class="dcell">
-</td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">jacobi_symbol(33,12)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0
+</td></tr>
 </table>
 </li></ul>
 <hr>

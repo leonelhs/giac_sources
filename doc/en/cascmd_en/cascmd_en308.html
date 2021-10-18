@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Random polynomial: randpoly randPoly
+<title>Converting a series expansion into a polynomial: convert convertir
 
 
 </title>
@@ -14,50 +14,52 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en309.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:randpoly" class="subsection">6.27.26  Random polynomial: <span style="font-family:monospace">randpoly</span> <span style="font-family:monospace">randPoly</span>
-<a id="hevea_default550"></a>
-<a id="hevea_default551"></a>
-</h3>
-<p>The <span style="font-family:monospace">randpoly</span> command finds random polynomials.<br>
-<span style="font-family:monospace">randPoly</span> is a synonym for <span style="font-family:monospace">randpoly</span>.
+<h3 id="ssec:convertpoly" class="subsection">6.27.25  Converting a series expansion into a polynomial: <span style="font-family:monospace">convert</span> <span style="font-family:monospace">convertir</span>
+<a id="hevea_default548"></a>
+<a id="hevea_default549"></a>
+<a id="hevea_default550"></a></h3>
+<p>The <span style="font-family:monospace">convert</span> command (see Section <a href="cascmd_en268.html#ssec%3Aconvert">6.23.26</a>), 
+with the option <span style="font-family:monospace">polynom</span>, converts
+a series (see Section <a href="cascmd_en387.html#ssec%3Ataylor">6.36.2</a>) into a
+polynomial. It should be used for operations
+like drawing the graph of the Taylor series of a function near a
+point.</p><p>For this purpose:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">randpoly</span> takes two optional
-arguments: 
+<span style="font-family:monospace">convert</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-Optionally <span style="font-style:italic">x</span>, the name of a variable (by default <span style="font-family:monospace">x</span>).
-</li><li class="li-itemize">Optionally <span style="font-style:italic">n</span>, an integer (by default 10).
+<span style="font-style:italic">series</span>, a series.
+</li><li class="li-itemize"><span style="font-family:monospace">polynom</span>, the option.
 </li></ul>
-The order of the arguments is not important.
-</li><li class="li-itemize"><span style="font-family:monospace">randpoly(</span>⟨ <span style="font-style:italic">x</span>⟩ ⟨ ,<span style="font-style:italic">n</span>⟩<span style="font-family:monospace">)</span>
-returns a monic polynomial in the variable <span style="font-style:italic">x</span> of degree <span style="font-style:italic">n</span>,
-having as coefficients random integers evenly
-distributed on -99..+99.
+</li><li class="li-itemize"><span style="font-family:monospace">convert(</span><span style="font-style:italic">series</span><span style="font-family:monospace">,polynom)</span> returns
+<span style="font-style:italic">series</span> with the <span style="font-family:monospace">order_size</span> function replaced by 0.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">randpoly(t,4)</span>
+<span style="font-family:monospace">convert(taylor(sin(x)),polynom)</span>
 </div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">t</span><sup>4</sup>+86 <span style="font-style:italic">t</span><sup>3</sup>−97 <span style="font-style:italic">t</span><sup>2</sup>−82 <span style="font-style:italic">t</span>+7
-</td></tr>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>5</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">120</td></tr>
+</table></td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">randpoly(4)</span>
+<span style="font-family:monospace">convert(series(sin(x),x=0,6),polynom)</span>
 </div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span><sup>4</sup>−27 <span style="font-style:italic">x</span><sup>3</sup>+26 <span style="font-style:italic">x</span><sup>2</sup>−89 <span style="font-style:italic">x</span>+63
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randpoly(4,u)</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">u</span><sup>4</sup>−49 <span style="font-style:italic">u</span><sup>3</sup>−86 <span style="font-style:italic">u</span><sup>2</sup>−64 <span style="font-style:italic">u</span>−30
-</td></tr>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>5</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">120</td></tr>
+</table></td></tr>
 </table>
 </li></ul>
 <hr>

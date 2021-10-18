@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transforming an expression into a function: unapply
+<title>The difference between a function and an expression
+
 
 </title>
 </head>
@@ -13,113 +14,31 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en206.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:unapply" class="subsection">6.15.2  Transforming an expression into a function: <span style="font-family:monospace">unapply</span>
+<h3 id="ssec:fnexpr" class="subsection">6.15.1  The difference between a function and an expression
+<a id="hevea_default344"></a>
 <a id="hevea_default345"></a>
 </h3>
-<p>The <span style="font-family:monospace">unapply</span> command transforms an expression into a function.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">unapply</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression.
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, the name of a variable or sequence of names
-of variables.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">unapply(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span>
-returns the function defined by the expression <span style="font-style:italic">expr</span> and
-variable(s) <span style="font-style:italic">x</span>, as in <span style="font-style:italic">x</span><span style="font-family:monospace">-&gt;</span><span style="font-style:italic">expr</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">unapply(exp(x+2),x)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>↦ <span style="font-style:italic">e</span><sup><span style="font-style:italic">x</span>+2</sup>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">unapply(x*y-x-y,(x,y))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">↦ <span style="font-style:italic">x</span> <span style="font-style:italic">y</span>−<span style="font-style:italic">x</span>−<span style="font-style:italic">y</span>
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Warning.</span><br>
-When a function being is defined, the right side of the assignment is
-not evaluated, hence <span style="font-family:monospace">g:=sin(x+1); f(x):=g</span> does not define the
-function <span style="font-style:italic">f</span>: <span style="font-style:italic">x</span> → sin(<span style="font-style:italic">x</span>+1) but defines the function <span style="font-style:italic">f</span>: <span style="font-style:italic">x</span>
-→ <span style="font-style:italic">g</span>. To define the former function, <span style="font-family:monospace">unapply</span> should
-be used, as in the following example:<br>
-<span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">g:= sin(x+1); f:=unapply(g,x)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">sin</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>+1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">,<span style="font-style:italic">x</span>↦ sin</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>+1</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table><p>
-hence, the variable <span style="font-family:monospace">g</span> is assigned to a symbolic expression
-and the variable <span style="font-family:monospace">f</span> is assigned to a function.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">f:=unapply(lagrange([1,2,3],[4,8,12]),x)</span>
-</div>
-(See Section <a href="cascmd_en311.html#ssec%3Alagrange">6.27.29</a>.)
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>↦ 4 </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">+4
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>↦ <span style="font-style:italic">x</span> ln<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span>+1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f:=unapply(integrate(log(t),t,1,x),x):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f(x)</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span> ln<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span>+1
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Remark.</span><br>
-Suppose that <span style="font-style:italic">f</span> is a function of 2 variables <span style="font-style:italic">f</span>:(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>)→
-<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>), and that <span style="font-style:italic">g</span> is the function defined by <span style="font-style:italic">g</span>: <span style="font-style:italic">w</span> →
-<span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub>, where <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub> is the function defined by <span style="font-style:italic">h</span><sub><span style="font-style:italic">w</span></sub>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">w</span>).<br>
-<span style="font-family:monospace">unapply</span> can also be used to define <span style="font-style:italic">g</span>.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">f(x,w):=2*x+w:;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">g(w):=unapply(f(x,w),x):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">g(3)</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>↦ 2 <span style="font-style:italic">x</span>+3
-</td></tr>
-</table>
+<p>Functions are often defined with expressions; for example,
+<span style="font-family:monospace">f(x):=x^2-1</span> defines a function <span style="font-family:monospace">f</span>, whose value at
+<span style="font-style:italic">x</span> is given by <span style="font-style:italic">x</span><sup>2</sup>+1. (The function <span style="font-family:monospace">f</span> can also be
+defined by <span style="font-family:monospace">f:=x-&gt;x^2-1</span>.) But the function is not the same
+as the expression; the variable <span style="font-family:monospace">x</span> is only a placeholder for
+the function; it is not part of actual definition of the function.
+Compare this with <span style="font-family:monospace">g:=x^2-1</span>, where <span style="font-family:monospace">g</span> is a variable
+which stores the expression <span style="font-family:monospace">x^2-1</span> and so the identifier
+<span style="font-family:monospace">x</span> is part of the definition of <span style="font-family:monospace">g</span>. To find the value
+of <span style="font-style:italic">f</span> for <span style="font-style:italic">x</span>=2, you can enter <span style="font-family:monospace">f(2)</span>, but to use <span style="font-family:monospace">g</span>
+to find the same value you have to do an explicit substitution and
+enter <span style="font-family:monospace">subst(g,x=2)</span>.</p><p>When a command expects a function as argument, this argument should be
+either the definition of the function (e.g. <span style="font-family:monospace">x-&gt;x^2-1</span>) or a
+variable name assigned to a function (e.g. <span style="font-family:monospace">f</span> previously
+defined by <span style="font-family:monospace">f(x):=x^2-1</span>).<br>
+When a command expects an expression as argument, this argument should
+be either the definition of the expression (for example
+<span style="font-family:monospace">x^2-1</span>), or a variable name assigned to an expression (e.g.
+<span style="font-family:monospace">g</span> previously defined by <span style="font-family:monospace">g:=x^2-1</span>), or the
+evaluation of a function (e.g. <span style="font-family:monospace">f(x)</span> where <span style="font-family:monospace">f</span> is the
+previously defined function by <span style="font-family:monospace">f(x):=x^2-1</span>).</p>
 <hr>
 <a href="cascmd_en204.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

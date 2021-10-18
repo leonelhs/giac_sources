@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Values of a recurrence relation or a system: seqsolve
-
+<title>Array of values of a sequence : tablefunc
 </title>
 </head>
 <body >
@@ -13,205 +12,55 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en200.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:seqsolve" class="subsection">6.13.2  Values of a recurrence relation or a system: <span style="font-family:monospace">seqsolve</span>
-<a id="hevea_default330"></a>
-</h3>
-<p>(See also Section <a href="cascmd_en200.html#ssec%3Arsolve">6.13.3</a>.)</p><p>The <span style="font-family:monospace">seqsolve</span> command finds the terms of a recurrence
-relation.
+<h3 id="sec243" class="subsection">6.13.1  Array of values of a sequence : <span style="font-family:monospace">tablefunc</span>
+<a id="hevea_default330"></a></h3>
+<p>The <span style="font-family:monospace">tablefunc</span> command fills two columns of a spreadsheet with
+a table of values of a function. The spreadsheet can be opened with
+<span style="font-family:monospace">Alt+t</span> (see Section <a href="index.html#sec%3Aspreadsheet">4.5</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">seqsolve</span> takes three arguments:
+<span style="font-family:monospace">tablefunc</span> takes four arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">exprs</span>, an expression or list of expressions that
-define the recurrence relation.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variables used.
-</li><li class="li-itemize"><span style="font-style:italic">a</span>, the starting value.
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>), a formula for a function.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, the variable.
+</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, the beginning value of <span style="font-style:italic">x</span>.
+</li><li class="li-itemize"><span style="font-style:italic">inc</span>, an increment for <span style="font-style:italic">x</span>.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">seqsolve(</span><span style="font-style:italic">exprs</span><span style="font-family:monospace">,</span><span style="font-style:italic">vars</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span>
-returns a formula for the <span style="font-style:italic">n</span>th term of the sequence.
-</li></ul><p>
-For example, if a recurrence relation is defined by <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> =
-<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">n</span>) with <span style="font-style:italic">u</span><sub>0</sub> = <span style="font-style:italic">a</span>, the arguments to <span style="font-family:monospace">seqsolve</span> will be
-<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">n</span>), [<span style="font-style:italic">x</span>,<span style="font-style:italic">n</span>] and <span style="font-style:italic">a</span>. If the recurrence
-relation is defined by <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+2</sub> = <span style="font-style:italic">g</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>,<span style="font-style:italic">n</span>) with <span style="font-style:italic">u</span><sub>0</sub> = <span style="font-style:italic">a</span> and
-<span style="font-style:italic">u</span><sub>1</sub> = <span style="font-style:italic">b</span>, the arguments to <span style="font-family:monospace">seqsolve</span> will be
-<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">n</span>), [<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">n</span>] and [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>].</p><p>The recurrence relation must have a homogeneous linear part, the
-nonhomogeneous part must be a linear combination of a polynomials in
-<span style="font-style:italic">n</span> times geometric terms in <span style="font-style:italic">n</span>.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> and <span style="font-style:italic">u</span><sub>0</sub>=3.<br>
+</li><li class="li-itemize"><span style="font-family:monospace">tablefunc(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><sub>0</sub><span style="font-family:monospace">,</span><span style="font-style:italic">inc</span><span style="font-family:monospace">)</span>
+fills two columns of the spreadsheet, the current column and the
+following column, starting with the chosen cell. The current column
+starts with the variable <span style="font-style:italic">x</span>, followed by the initial value <span style="font-style:italic">x</span><sub>0</sub>,
+then <span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">inc</span>, <span style="font-style:italic">x</span><sub>0</sub>+2<span style="font-style:italic">inc</span>, …. The
+following column starts with the formula <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>), followed by <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)
+evaluated at the values in the first column. (If the current cell is
+column <span style="font-style:italic">C</span>, row <span style="font-style:italic">n</span>, it will contain <span style="font-style:italic">x</span>, the
+cell below it will contain <span style="font-style:italic">inc</span>, and the cell below it in row <span style="font-style:italic">k</span> will contain
+<span style="font-family:monospace">=</span><span style="font-style:italic">C</span>(<span style="font-style:italic">k</span>−1)<span style="font-family:monospace"> + </span><span style="font-style:italic">C</span><span style="font-family:monospace">$</span>(<span style="font-style:italic">n</span>+1), and the corresponding cells in the
+next column will contain
+<span style="font-family:monospace">=evalf(subst(</span><span style="font-style:italic">D</span><span style="font-family:monospace">$</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">C</span><span style="font-family:monospace">$</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">Ck</span><span style="font-family:monospace">))</span>.)
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+Display the values of the sequence <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>=sin(<span style="font-style:italic">n</span>)<br>
+Select a cell of a spreadsheet (for example <span style="font-family:monospace">C0</span>)
+and:<br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">seqsolve(2x+n,[x,n],3)</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">tablefunc(sin(n),n,0,1)</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−<span style="font-style:italic">n</span>−1+4· 2<sup><span style="font-style:italic">n</span></sup>
-</td></tr>
-</table>
-</li><li class="li-itemize">Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> 3<sup><span style="font-style:italic">n</span></sup> and <span style="font-style:italic">u</span><sub>0</sub>=3.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">seqsolve(2x+n*3^n,[x,n],3)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">n</span>−3</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">· 3<sup><span style="font-style:italic">n</span></sup>+6· 2<sup><span style="font-style:italic">n</span></sup>
-</td></tr>
-</table>
-</li><li class="li-itemize">Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>−1</sub>, <span style="font-style:italic">u</span><sub>0</sub> = 0 and
-<span style="font-style:italic">u</span><sub>1</sub>=1.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">seqsolve(x+y,[x,y,n],[0,1])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">5 </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td><td class="dcell">−4 </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">−5 </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td><td class="dcell">+5 </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td><td class="dcell">+4 </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">−5 </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">20</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize">Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> and <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>=<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + 2<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span>+1</sub> =
-<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> + 1 with <span style="font-style:italic">u</span><sub>0</sub> = 1, <span style="font-style:italic">v</span><sub>0</sub> = 1.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">seqsolve([x+2*y,n+1+x],[x,y,n],[0,1])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−2 <span style="font-style:italic">n</span>−</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><sup><span style="font-style:italic">n</span></sup>+4· 2<sup><span style="font-style:italic">n</span></sup>−3</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><sup><span style="font-style:italic">n</span></sup>+2· 2<sup><span style="font-style:italic">n</span></sup>−1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li></ul>
+</p><div class="center">
+<span style="font-family:monospace">
+</span><table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">row</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">C</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">D</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">&nbsp;</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">n</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">sin(n)</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">&nbsp;</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">0</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">0.0</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">&nbsp;</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">1</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">0.841470984808</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">&nbsp;</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">2</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">0.909297426826</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">&nbsp;</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">3</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">0.14112000806</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">&nbsp;</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">4</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">-0.756802495308</span></td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">&nbsp;</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">⋮</span></td><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-family:monospace">⋮</span></td></tr>
+</table><span style="font-family:monospace">
+</span>
+</div><p>The graphic representation may be plotted with the <span style="font-family:monospace">plotfunc</span>
+command (see <a href="cascmd_en580.html#ssec%3Aplotfunc">8.4.1</a>).</p>
 <hr>
 <a href="cascmd_en198.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

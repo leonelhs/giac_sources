@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Cubes: cube
+<title>The graph of parametric equations in space: paramplot
 </title>
 </head>
 <body >
@@ -12,125 +12,21 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en924.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1226" class="subsection">14.16.1  Cubes: <span style="font-family:monospace">cube</span>
+<h3 id="sec1225" class="subsection">14.15.6  The graph of parametric equations in space: <span style="font-family:monospace">paramplot</span>
 <a id="hevea_default1657"></a></h3>
-<p>The <span style="font-family:monospace">cube</span> command creates cubes.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">cube</span> takes three arguments:<br>
- <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
-</li><li class="li-itemize"><span style="font-family:monospace">cube(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the following cube:
-<ul class="itemize"><li class="li-itemize">
-One edge is <span style="font-style:italic">AB</span>.
-</li><li class="li-itemize">One face is in the plane <span style="font-style:italic">ABC</span>, on the same side of line
-<span style="font-style:italic">AB</span> as is <span style="font-style:italic">C</span>.
-</li><li class="li-itemize">The cube is on the side of plane <span style="font-style:italic">ABC</span> that makes the
-points <span style="font-style:italic">A</span>, <span style="font-style:italic">B</span> and <span style="font-style:italic">C</span> counterclockwise.
-</li></ul>
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+<p>The <span style="font-family:monospace">paramplot</span> command can draw a parametric surface in 
+ℝ<sup>3</sup> (see Section <a href="cascmd_en592.html#ssec%3A3dplotparam">8.14.2</a> for a full description).</p><p><span style="font-family:monospace">paramplot</span> can take two arguments; a list of three expressions
+involving two parameters and a list of the parameters (possibly with
+bounds), and it returns and draws the parameterized surface.</p><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">C1:= cube([0,0,0],[0,4,0],[0,0,1])</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">paramplot([u*cos(v),u*sin(v),u],[u,v])</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en354.png">
+</p><div class="center">
+<img src="cascmd_en353.png">
 </div>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">c1,c2,c3,c4,c5,c6,c7,c8:= vertices(C1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en355.png">
-</div>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">faces(C1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,4,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,4,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,0,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,4,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,4,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,0,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,0,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,0,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,4,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,4,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,0,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,4,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,4,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,4,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,4,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,0,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,4,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,4,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">C2:= cube([0,0,0],[0,4,0],[0,0,-1])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en356.png">
-</div>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">a1,a2,a3,a4,a5,a6,a7,a8:= vertices(C2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en357.png">
-</div>
-</li></ul>
 <hr>
 <a href="cascmd_en922.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

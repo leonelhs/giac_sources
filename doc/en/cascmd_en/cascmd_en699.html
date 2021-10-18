@@ -4,65 +4,73 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Local variables</title>
+<title>Functions: function endfunction { } local return
+
+
+
+
+
+</title>
 </head>
 <body >
 <a href="cascmd_en698.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en700.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec953" class="subsection">12.1.3  Local variables</h3>
-<p>Local variables in a function definition can be given initial values
-in the line they are declared in by putting their initialization in
-parentheses; for example,
+<h3 id="ssec:funcs" class="subsection">12.1.2  Functions: <span style="font-family:monospace">function</span> <span style="font-family:monospace">endfunction</span> <span style="font-family:monospace">{</span> <span style="font-family:monospace">}</span> <span style="font-family:monospace">local</span> <span style="font-family:monospace">return</span>
+<a id="hevea_default1315"></a>
+<a id="hevea_default1316"></a>
+<a id="hevea_default1317"></a>
+<a id="hevea_default1318"></a>
+<a id="hevea_default1319"></a>
+</h3>
+<p>You have already seen functions defined with <span style="font-family:monospace">:=</span>. For
+example, to define a function <span style="font-family:monospace">sumprod</span> which takes two inputs
+and returns a list with the sum and the product of the inputs, you can
+enter:<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>local a,b;</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>a:= 1;</code>
+<span style="font-family:monospace">sumprod(a,b):= [a+b,a*b]</span>
+</div><p>
+Afterwards, you can use this new function.
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">sumprod(3,5)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">8,15</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table><p>You can define functions that are computed with a sequence of
+instructions by putting the instructions between braces, where each
+command ends with a semicolon. To use local variables,
+you can declare them with the <span style="font-family:monospace">local</span> keyword, followed by the
+variable names. The value returned by the function will be indicated
+with the <span style="font-family:monospace">return</span> keyword. For example, the above function
+<span style="font-family:monospace">sumprod</span> could also be defined by:<br>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">sumprod(a,b):= {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">local s, p;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:= a + b;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">p:= a*b;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">return [s,p];</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
 </td></tr>
 </table>
-</div><p>
-is the same as
+</div><p>Another way to use a sequence of instructions to define a function is
+with the <span style="font-family:monospace">function</span> …<span style="font-family:monospace">endfunction</span> construction.
+With this approach, the function name and parameters follow the
+<span style="font-family:monospace">function</span> keyword. This is otherwise like the previous
+approach. The <span style="font-family:monospace">sumprod</span> function could be defined by:<br>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<code>local (a:= 1), b;</code>
-</div><p>Local variables should be given values within the function definition.
-If you want to use a local variable as a symbolic variable, then you
-can indicate that with the <span style="font-family:monospace">assume</span><a id="hevea_default1319"></a> command
-(see Section <a href="cascmd_en059.html#ssec%3Aabout">5.4.8</a>). For
-example, if you define a function <span style="font-family:monospace">myroots</span> by
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>myroots (a):= {</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>local x;</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>return solve(x^2=a,x);</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>}</code>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>function sumprod(a,b)</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>local s, p;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>s:= a + b;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>p:= a*b;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>return [s,p];</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>endfunction</code>
 </td></tr>
-</table>
-</div><p>
-then calling
-</p><div class="center">
-<span style="font-family:monospace">myroots(4)</span>
-</div><p>
-will simply return the empty list. You could leave <span style="font-family:monospace">x</span>
-undeclared, but that would make <span style="font-family:monospace">x</span> a global variable and could
-interact with other functions in unexpected ways. You can get the
-behavior you probably expected by explicitly assuming <span style="font-family:monospace">x</span> to be a
-symbol<a id="hevea_default1320"></a>;
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>myroots (a):= {</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>local x;</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>assume(x,symbol);</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>return solve(x^2=a,x);</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>}</code>
-</td></tr>
-</table>
-</div><p>
-(Alternatively, you could use <span style="font-family:monospace">purge(x)</span><a id="hevea_default1321"></a> instead
-of <span style="font-family:monospace">assume(x,symbol)</span>.) Now if you enter
-</p><div class="center">
-<span style="font-family:monospace">myroots(4)</span>
-</div><p>
-you will get
-</p><div class="center">
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−2,2]</td></tr>
 </table>
 </div>
 <hr>

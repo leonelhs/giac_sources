@@ -4,152 +4,222 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Numerical differentiation: numdiff</title>
+<title>Implicit differentiation: implicitdiff
+</title>
 </head>
 <body >
 <a href="cascmd_en219.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en221.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec274" class="subsection">6.19.6  Numerical differentiation: <span style="font-family:monospace">numdiff</span><a id="hevea_default417"></a></h3>
-<p>The <span style="font-family:monospace">numdiff</span> command finds numerical approximations to
-derivatives.
+<h3 id="sec274" class="subsection">6.19.5  Implicit differentiation: <span style="font-family:monospace">implicitdiff</span>
+<a id="hevea_default417"></a></h3>
+<p>The <span style="font-family:monospace">implicitdiff</span> command can differentiate implicitly defined
+functions or expressions containing implicitly defined functions. It
+has three different calling sequences.</p><p><br>
+</p><p>To implicitly differentiate dependent variables:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">numdiff</span> takes three mandatory arguments and one
-optional argument.
+<span style="font-family:monospace">implicitdiff</span> takes four arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">X</span>=[α<sub>0</sub>,α<sub>1</sub>,…,α<sub><span style="font-style:italic">n</span></sub>],
-<span style="font-style:italic">Y</span>=[β<sub>0</sub>,β<sub>1</sub>,…,β<sub><span style="font-style:italic">n</span></sub>], two lists of real numbers,
-where <span style="font-style:italic">n</span>≥ 1.
-</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, a real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">m</span>, an integer or a sequence of integers (by default 1).
+<span style="font-style:italic">constraints</span>, an equation or list of equations which
+implicitly define the dependent variables as functions of the
+independent variables; these will be of the form
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">g</span><sub><span style="font-style:italic">i</span></sub>(<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">y</span><sub>1</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>)=0</td></tr>
+</table>
+for
+<span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">m</span>, where <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">ldots</span>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> are the
+independent variables and <span style="font-style:italic">y</span><sub>1</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub> are the
+dependent variables.
+</li><li class="li-itemize"><span style="font-style:italic">depvars</span>, the list of dependent variables, where each
+dependent variable can optionally be written as a function of the
+<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub> or the name written as a function of the
+independent variables <span style="font-style:italic">y</span><sub><span style="font-style:italic">i</span></sub>(<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>). If there is only
+one dependent variable, this can be omitted.
+</li><li class="li-itemize"><span style="font-style:italic">y</span>, a dependent variable or a list of dependent variables to
+be differentiated.
+</li><li class="li-itemize"><span style="font-style:italic">diffvars</span>, a sequence of independent variables
+<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span><sub>1</sub></sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span><sub><span style="font-style:italic">k</span></sub></sub> with respect to differentiate.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">numdiff(</span><span style="font-style:italic">X</span>,<span style="font-style:italic">Y</span>,<span style="font-style:italic">x</span><sub>0</sub> ⟨,<span style="font-style:italic">m</span>⟩<span style="font-family:monospace">)</span>
-returns an approximation of the <span style="font-style:italic">m</span>-th derivative of a function <span style="font-style:italic">f</span>
-at <span style="font-style:italic">x</span><sub>0</sub>, or a sequence of derivatives of order given by the
-sequence <span style="font-style:italic">m</span>, where <span style="font-style:italic">f</span> has values given by <span style="font-style:italic">f</span>(α<sub><span style="font-style:italic">k</span></sub>)=β<sub><span style="font-style:italic">k</span></sub>,
-<span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">n</span>.
-</li></ul><p>
-<span style="font-family:monospace">numdiff</span> uses Fornberg’s algorithm described in “Generation
-of Finite Difference Formulas on Arbitrarily Spaced Grids”, <span style="font-style:italic">Mathematics of Computation</span>, 51(184):699–706, 1988. The complexity of
-this algorithm is <span style="font-style:italic">O</span>(<span style="font-style:italic">n</span><sup>2</sup><span style="font-style:italic">m</span>) in both time and space. To avoid numerical
-instabilities, <span style="font-family:monospace">numdiff</span> operates in exact arithmetic.</p><p>Note that α<sub>0</sub>,α<sub>1</sub>,…,α<sub><span style="font-style:italic">n</span></sub> do not have to be equally
-spaced, but they must be mutually different and input in ascending
-order. There are no restrictions on the choice of <span style="font-style:italic">x</span><sub>0</sub>.</p><p><br>
+</li><li class="li-itemize"><span style="font-family:monospace">implicitdiff(</span><span style="font-style:italic">constraints </span> ⟨<span style="font-style:italic">,depvars
+</span>⟩<span style="font-style:italic">],y,diffvars</span><span style="font-family:monospace">)</span>
+returns the derivative (or list of derivatives) of <span style="font-style:italic">y</span> with respect to
+<span style="font-style:italic">diffvars</span>.
+</li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
-Let <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=sin(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup>, <span style="font-style:italic">x</span>∈[0,1]. Sample this function
-at the points in
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">X</span>=[0,0.1,0.2,0.4,0.5,0.7,0.8,1] 
-</td></tr>
-</table>
-to approximate <span style="font-style:italic">f</span>″(1/π).<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">f:=unapply(sin(x)*exp(-x),x):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">X:=[0,0.1,0.2,0.4,0.5,0.7,0.8,1]:;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Y:=apply(f,X):;</span>
-</td></tr>
-</table>
-</div>
-Now you can approximate the second derivative of <span style="font-style:italic">f</span> at the point
-<span style="font-style:italic">x</span><sub>0</sub>=1/π.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">x0:=1/pi:;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">d:=numdiff(X,Y,x0,2)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">implicitdiff(x^2*y+y^2=1,y,x)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−1.38167652799
-</td></tr>
-</table>
-Finally, compute the relative error of the obtained approximation.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">abs(d-f’’(x0))/abs(f’’(x0))*100</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2.82975186496×10<sup>−5</sup>
-</td></tr>
-</table>
-The result is expressed in percentages.
-</li><li class="li-itemize">Use a sequence of values for the parameter <span style="font-style:italic">m</span> to find a list of
-approximations of the respective derivatives at <span style="font-style:italic">x</span><sub>0</sub>. This is faster
-than calling <span style="font-family:monospace">numdiff</span> to approximate one derivative at a time.<br>
-Specifically, approximate the zeroth, first and second derivative of
-the function
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=1−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
-</table></td><td class="dcell">,   <span style="font-style:italic">x</span>∈[0,1], 
-</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>+2 <span style="font-style:italic">y</span></td></tr>
+</table></td></tr>
 </table>
-at the point <span style="font-style:italic">x</span><sub>0</sub>=γ, where γ≈ 0.57722 is the
-Euler-Mascheroni constant, by sampling <span style="font-style:italic">f</span> at 21 equidistant points in
-the segment [0,1].<br>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">implicitdiff([x^2+y=z,x+y*z=1],[y(x),z(x)],y,x)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−2 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span>−1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">y</span>+<span style="font-style:italic">z</span></td></tr>
+</table></td></tr>
+</table>
+</li></ul><p><br>
+</p><p>To find a specified derivative of an expression containing
+implicitly defined functions:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">implicitdiff</span> takes four arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, a differentiable expression involving
+independent variables <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>
+and dependent variables <span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>.
+</li><li class="li-itemize"><span style="font-style:italic">constraints</span>, an equation or list of equations which
+implicitly define the dependent variables as functions of the
+independent variables; these will be of the form
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">g</span><sub><span style="font-style:italic">i</span></sub>(<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">y</span><sub>1</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>)=0</td></tr>
+</table>
+for
+<span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">m</span>.
+</li><li class="li-itemize"><span style="font-style:italic">depvars</span>, the dependent variable or list of dependent
+variables, where each dependent variable can either be the
+variable name <span style="font-style:italic">y</span><sub><span style="font-style:italic">i</span></sub> or the name written as a function of
+the independent variables <span style="font-style:italic">y</span><sub><span style="font-style:italic">i</span></sub>(<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)).
+</li><li class="li-itemize"><span style="font-style:italic">diffvars</span>, a sequence of independent variables
+<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span><sub>1</sub></sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span><sub><span style="font-style:italic">k</span></sub></sub> with respect to which <span style="font-style:italic">expr</span> is differentiated.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">implicitdiff(</span><span style="font-style:italic">expr,implicitdef,depvars,diffvars</span><span style="font-family:monospace">)</span>
+returns the expression <span style="font-style:italic">expr</span> differentiated with respect to
+<span style="font-style:italic">diffvars</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">implicitdiff(x*y,-2x^3+15x^2*y+11y^3-24y=0,y(x),x)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">x</span><sup>3</sup>−5 <span style="font-style:italic">x</span><sup>2</sup> <span style="font-style:italic">y</span>+11 <span style="font-style:italic">y</span><sup>3</sup>−8 <span style="font-style:italic">y</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">5 <span style="font-style:italic">x</span><sup>2</sup>+11 <span style="font-style:italic">y</span><sup>2</sup>−8</td></tr>
+</table></td></tr>
+</table><p><br>
+</p><p>To find all <span style="font-style:italic">k</span>th order derivatives of an expression
+involving implicitly defined functions:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">implicitdiff</span> takes four mandatory arguments and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, a differentiable expression involving
+independent variables <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>
+and dependent variables <span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>.
+</li><li class="li-itemize"><span style="font-style:italic">constraints</span>, an equation or list of equations which
+implicitly define the dependent variables as functions of the
+independent variables; these will be of the form
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">g</span><sub><span style="font-style:italic">i</span></sub>(<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">y</span><sub>1</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>)=0</td></tr>
+</table> for
+<span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">m</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">vars</span>, a list [<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">y</span><sub>1</sub>,…, <span style="font-style:italic">y</span><sub><span style="font-style:italic">m</span></sub>]
+of the independent and dependent variables
+entered as symbols in single list such that dependent variables
+come last.
+</li><li class="li-itemize"><span style="font-family:monospace">order=</span><span style="font-style:italic">k</span>, where <span style="font-style:italic">k</span> is the order of the derivatives
+to be taken.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span>, a point where the partial derivatives
+should be evaluated at.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">implicitdiff(</span><span style="font-style:italic">expr,implicitdef,vars,</span><span style="font-family:monospace">order=</span><span style="font-style:italic">k</span>
+ ⟨,<span style="font-style:italic">a</span>⟩<span style="font-family:monospace">)</span>
+returns all partial derivatives of order <span style="font-style:italic">k</span>. If <span style="font-style:italic">k</span>=1 they are
+returned in a single list, which represents the gradient of
+<span style="font-family:monospace">expr</span> with respect to independent variables. If <span style="font-style:italic">k</span>=2 the
+corresponding Hessian matrix is returned (see Section <a href="cascmd_en231.html#ssec%3Ahessian">6.21.3</a>). 
+If <span style="font-style:italic">k</span>&gt;2, a table with
+keys in form <span style="font-family:monospace">[</span><span style="font-style:italic">k</span><sub>1</sub><span style="font-family:monospace">,</span><span style="font-style:italic">k</span><sub>2</sub><span style="font-family:monospace">,..,</span><span style="font-style:italic">k</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">]</span>, where
+∑<sub><span style="font-style:italic">i</span>=1</sub><sup><span style="font-style:italic">n</span></sup><span style="font-style:italic">k</span><sub><span style="font-style:italic">i</span></sub>=<span style="font-style:italic">k</span>, is returned. Such a key corresponds to
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup><span style="font-style:italic">k</span></sup> <span style="font-style:italic">f</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">var</span><sub>1</sub><sup><span style="font-style:italic">k</span><sub>1</sub></sup> ∂
+<span style="font-style:italic">var</span><sub>2</sub><sup><span style="font-style:italic">k</span><sub>2</sub></sup> ⋯ ∂ <span style="font-style:italic">var</span><sub><span style="font-style:italic">n</span></sub><sup><span style="font-style:italic">k</span><sub><span style="font-style:italic">n</span></sub></sup></td></tr>
+</table></td><td class="dcell">. </td></tr>
+</table>
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Examples.</span>
+</p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f:=unapply(1-1/(1+x^2),x)</span>
-<span style="font-family:monospace">X:=[(0.05*k)$(k=0..20)]:; Y:=apply(f,X):;</span>
-<span style="font-family:monospace">numdiff(X,Y,euler_gamma,0,1,2)</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f:=x*y*z; g:=-2x^3+15x^2*y+11y^3-24y=0;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">implicitdiff(f,g,[x,z,y],order=1)</span>
 </td></tr>
 </table>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0.249912571952,0.649519026356,0.000393517941567</td><td class="dcell">⎤<br>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">x</span><sup>3</sup> <span style="font-style:italic">z</span>−5 <span style="font-style:italic">x</span><sup>2</sup> <span style="font-style:italic">y</span> <span style="font-style:italic">z</span>+11 <span style="font-style:italic">y</span><sup>3</sup> <span style="font-style:italic">z</span>−8 <span style="font-style:italic">y</span> <span style="font-style:italic">z</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">5 <span style="font-style:italic">x</span><sup>2</sup>+11 <span style="font-style:italic">y</span><sup>2</sup>−8</td></tr>
+</table></td><td class="dcell">,<span style="font-style:italic">x</span> <span style="font-style:italic">y</span></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
 ⎦</td></tr>
 </table>
-The correct values are <span style="font-style:italic">f</span>(γ)=0.249912571952,
-<span style="font-style:italic">f</span>′(γ)=0.649519026356 and <span style="font-style:italic">f</span>″(γ)=0.000393517946748.
-</li></ul><p><br>
-</p><p><span style="font-family:monospace">numdiff</span> can be used for generating custom finite-difference
-stencils for approximation of derivatives.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-Let <span style="font-style:italic">X</span>=[−1,0,2,4], <span style="font-style:italic">Y</span>=[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span>] and <span style="font-style:italic">x</span><sub>0</sub>=1. To obtain an
-approximation formula for the second derivative:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">numdiff([-1,0,2,4],[a,b,c,d],1,2)</span>
-</div><p>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">implicitdiff(f,g,[x,z,y],order=2,[1,-1,0])</span>
+</div>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">         </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">64</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">a</span>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">b</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">10</td></tr>
+<tr><td class="dcell" style="text-align:center">9</td></tr>
 </table></td></tr>
-</table><p>
-The approximation is always a linear combination of elements in <span style="font-style:italic">Y</span>,
-regardless of <span style="font-style:italic">X</span>, <span style="font-style:italic">x</span><sub>0</sub> and <span style="font-style:italic">m</span>. </p><p><br>
-</p><p>Given the lists
-<span style="font-style:italic">X</span>=[α<sub>0</sub>,α<sub>1</sub>,…,α<sub><span style="font-style:italic">n</span></sub>] and <span style="font-style:italic">Y</span>=[β<sub>0</sub>,β<sub>1</sub>,…,β<sub><span style="font-style:italic">n</span></sub>],
-the Lagrange polynomial passing through points
-(α<sub><span style="font-style:italic">k</span></sub>,β<sub><span style="font-style:italic">k</span></sub>) where <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">n</span> can be obtained by setting
-<span style="font-style:italic">m</span>=0 and entering a symbol for <span style="font-style:italic">x</span><sub>0</sub>.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-Let <span style="font-style:italic">X</span>=[−2,0,1] and <span style="font-style:italic">Y</span>=[2,4,1]:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">expand(numdiff([-2,0,1],[2,4,1],x,0))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">x</span><sup>2</sup>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">         −</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">x</span>+4
+</table></td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" >0
 </td></tr>
-</table><p>
-The same result is obtained by entering <span style="font-family:monospace">lagrange([-2,0,1],[2,4,1],x)</span>.</p>
+</table></td><td class="dcell">
+</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize">In the next example, the value of ∂<sup>4</sup> <span style="font-style:italic">f</span>/∂ <span style="font-style:italic">x</span><sup>4</sup>
+is computed at the point (<span style="font-style:italic">x</span>=0,<span style="font-style:italic">y</span>=0,<span style="font-style:italic">z</span>).<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">pd:=implicitdiff(f,g,[x,z,y],order=4,[0,z,0]);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">pd[4,0]</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−2 <span style="font-style:italic">z</span>
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en219.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
