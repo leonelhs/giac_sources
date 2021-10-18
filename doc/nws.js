@@ -1,12 +1,16 @@
 function $id(id) { return document.getElementById(id); }
 
 var UI = {
+  nws_progress:0,
+  nws_progresslegend:0,
   Datestart:Date.now(),
   langue: -1, // -1 french
   calc: 2, // 1 KhiCAS, 2 Numworks, 3 TI Nspire CX
   calculator:0, // !=0 if hardware Numworks connected
   calculator_connected:false,
   nws_connect:function(){
+    UI.nws_progress=$id('plog');
+    UI.nws_progresslegend=$id('ploglegend');
     if (navigator.usb){
       //console.log('nws_connect 0');
       UI.calculator=0;
@@ -59,12 +63,13 @@ var UI = {
       return 0;
     }
   },
-  sig_check:async function(sig,data){
+  sig_check:async function(sig,data,fname){
     // sig should be a list of lists of size 3 (name, length, hash)
     let i=0,l=sig.length;
     for (;i<l;++i){
       let cur=sig[i];
-      console.log('sig_check',cur[1],data.byteLength);
+      if (cur[0]!=fname) continue;
+      console.log('sig_check',i,cur[1],data.byteLength);
       if (cur[1]>data.byteLength) continue;
       let dat=data.slice(0,cur[1]);
       let digest = await window.crypto.subtle.digest('SHA-256', dat);
@@ -186,15 +191,18 @@ var UI = {
       return -1;
     } 
     UI.calculator.device.startAddress = 0x08000000;
+    UI.calculator.device.logProgress(0,'internal');
     let data=await UI.loadfile('delta.internal.bin');
     let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print('=========== installing Delta+KhiCAS');
+    UI.print('=========== installing KhiCAS');
     UI.print('internal OK, erase/write external, wait about 1/2 minute');
     UI.calculator.device.startAddress = 0x90000000;
     data=await UI.loadfile('delta.external.bin');
+    UI.calculator.device.logProgress(0,'external');
     res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
     UI.print('external OK, erase/write apps, wait about 2 minutes');
     UI.calculator.device.startAddress = 0x90200000;
+    UI.calculator.device.logProgress(0,'apps');
     data=await UI.loadfile('apps.tar');
     res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
     UI.print('apps OK, press RESET on calculator back');
@@ -247,35 +255,35 @@ var UI = {
       return -1;
     }
     if (rwcheck)
-      alert(UI.langue==-1?'Le test va prendre une petite minute':'Test will take about 1 minute');
-    else
-      alert(UI.langue==-1?'Le test va prendre environ 20 secondes':'Test will take about 20 seconds');
+      if (!confirm(UI.langue==-1?"Ce test necessite l'accord du proprietaire de la calculatrice, il dure environ 1 minute. Poursuivre?":'This test requires the calculator owner authorization. It will take about 1 minute. Perform?'))
+	return -1;
+    //else alert(UI.langue==-1?'Le test va prendre environ 20 secondes':'Test will take about 20 seconds');
     UI.print('========');
     let internal=await UI.calculator.get_internal_flash();
     //console.log(sigfile);
-    let res=await UI.sig_check(sigfile,internal);
+    let res=await UI.sig_check(sigfile,internal,'delta.internal.bin');
     if (!res){
-      alert(UI.langue==-1?'Flash interne non certifiee':'Internal flash not certified');
+      alert(UI.langue==-1?'Flash interne non certifiee. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'Internal flash not certified');
       return 1;
     }
     UI.print('Internal flash OK');
     let external=await UI.calculator.get_external_flash();
-    res=await UI.sig_check(sigfile,external);
+    res=await UI.sig_check(sigfile,external,'delta.external.bin');
     if (!res){
-      alert(UI.langue==-1?'Flash externe non certifiee':'External flash not certified');
+      alert(UI.langue==-1?'Flash externe non certifiee. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'External flash not certified');
       return 2;
     }
     UI.print('External flash OK');
     let apps=await UI.calculator.get_apps();
-    res=await UI.sig_check(sigfile,apps);
+    res=await UI.sig_check(sigfile,apps,'apps.tar');
     if (!res){
-      alert(UI.langue==-1?'Applications non certifiees':'Applications not certified');
+      alert(UI.langue==-1?'Applications non certifiees. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'Applications not certified');
       return 3;
     }
     UI.print('Apps OK');
     if (rwcheck){
       UI.print('R/W check');
-      res=await UI.calculator.rw_check(0x90100000,0x100000);
+      res=await UI.calculator.rw_check(0x90120000,0xe0000);
       if (!res){
 	alert(UI.langue==-1?'Echec du test lecture/ecriture':'Read/Write test failure');
 	return 4;

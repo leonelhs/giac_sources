@@ -74,15 +74,20 @@ button:hover, input:hover {
 <script src="FileSaver.js"></script>
 
 <body>
-<h1>Kit de connection Numworks</h1>
-<b>Attention, Numworks va verrouiller ses calculatrices</b> &agrave;
-partir de la version 16 de son logiciel (pr&eacute;vue pour la
-rentr&eacute;e 2021) ce qui les rendra incompatibles avec Xcas et tous
+<h1>Kit de connection Numworks non verrouill&eacute;e</h1>
+<b>Attention, Numworks verrouille ses calculatrices</b> &agrave;
+partir de la version 16 de son logiciel (sortie en aout 2021)
+ce qui les rend incompatibles avec Xcas et tous
 les logiciels d&eacute;velopp&eacute;s par la communaut&eacute;.
-<b>Ne faites pas de mise &agrave; jour, car c'est
-irr&eacute;versible</b>. Cette page contient un kit de connexion
+<b>Ne faites pas de mise &agrave; jour sur le site de Numworks, car c'est
+irr&eacute;versible</b> : cela diminue les possibilit&eacute;s
+de votre calculatrice et lui fait perdre de la valeur
+sur le march&eacute; d'occasion.
+<br>
+Cette page contient un kit de connexion
 avec votre calculatrice qui vous &eacute;vitera d'aller sur
-le workshop de Numworks et de faire une mise &agrave; jour par inadvertance.
+le workshop de Numworks et de faire une mise &agrave; jour par
+inadvertance.
 <ul>
   <li> 
 <button id="numworks_load" class="bouton" onclick="UI.numworks_load(false)">Numworks→</button>
@@ -107,25 +112,19 @@ le workshop de Numworks et de faire une mise &agrave; jour par inadvertance.
   Xcas pour Firefox </a>, les modifier, les tester, et les partager
   sous forme de liens par email ou
   sur des forums.
-  <li>
+  <li> <hr>
+  <span id="ploglegend"></span>
+  <progress id="plog" value=0 style="display:none"></progress>
+  <div id="output" style="max-height: 200px; overflow:auto"></div>
+  <hr>
+  <li> 
   <button
   onclick="UI.numworks_install_delta();">Installation
-  KhiCAS+Delta</button> : installe Xcas sur votre calculatrice Numworks.
-  <li>
-  <button
-  onclick="UI.numworks_rescue();">R&eacute;cup&eacute;ration</button> :
-  Assistance si votre calculatrice est bloqu&eacute;e.<br>
-  Connectez la calculatrice, appuyez sur la touche 6 de la
-  calculatrice, enfoncez un stylo dans le bouton RESET au dos
-  en laissant la touche 6 appuy&eacute;e,
-  relachez la touche 6, l'&eacute;cran doit etre &eacute;teint et la
-  diode rouge allum&eacute;e.
-  <br>
-  Si le message <tt>http://... tente de se connecter</tt> apparait, cliquez
-  sur <tt>STM32 BOOTLOADER associ&eacute;</tt> puis sur le bouton <tt>Connexion</tt>.
+  KhiCAS</button> : installe Xcas sur votre calculatrice Numworks
+  N0110. <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>
   <li>
   <em>Lutte contre la fraude :</em> pour certifier que le firmware d'une calculatrice Numworks N0110 est
-  une version non modifi&eacute;e de Delta+KhiCAS, cliquez sur l'un des
+  une version non modifi&eacute;e de KhiCAS, cliquez sur l'un des
   deux boutons
   <br>
   <button
@@ -141,6 +140,22 @@ href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/nws.html">ce
 lien</a>
 avec un
 <a href="https://tiplanet.org/forum/viewtopic.php?f=99&t=25091">cable smartphone-Numworks</a>.
+  <li>
+  <button
+  onclick="UI.numworks_rescue();">R&eacute;cup&eacute;ration</button> :
+  Assistance si votre calculatrice N0110 est bloqu&eacute;e.<br>
+  Connectez la calculatrice, appuyez sur la touche 6 de la
+  calculatrice, enfoncez un stylo dans le bouton RESET au dos
+  en laissant la touche 6 appuy&eacute;e,
+  relachez la touche 6, l'&eacute;cran doit etre &eacute;teint et la
+  diode rouge allum&eacute;e.
+  <br>
+  Si le message <tt>http://... tente de se connecter</tt> apparait, cliquez
+  sur <tt>STM32 BOOTLOADER associ&eacute;</tt> puis sur le bouton
+  <tt>Connexion</tt>.
+  <br>
+  Si la r&eacute;cup&eacute;ration ne fonctionne pas, essayez avec
+  Xcas PC.
 </ul>
 Cette page fonctionne uniquement avec un navigateur compatible webusb,
 par exemple Chromium ou Chrome et depuis un serveur web. Firefox n'a pas de
@@ -167,10 +182,9 @@ depuis le r&eacute;pertoire o&ugrave; vous avez d&eacute;compress&eacute;
 MIT).
 <br> Remerciements &agrave; Elio Poletti pour le style de la page 
 
-<div id="output" style="max-height: 200px; overflow:auto"></div>
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Mon Aug 30 12:51:45 CEST 2021 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Mon Sep 13 13:04:57 CEST 2021 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
 window.onload = function (e) {

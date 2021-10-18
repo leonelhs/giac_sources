@@ -1337,15 +1337,17 @@ Function {Xcas_run(int argc,char ** argv)} {open
           label {Certification du firmware Numworks N0110}
           callback {
 	    bool b=giac::nws_certify_firmware(false,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
           }
           xywh {30 30 100 20}
          } 
          MenuItem Xcas_nw_certify_overwrite {
           label {Certification N0110 avec test R/W}
           callback {
+	    int i=fl_ask("Ce test necessite l'accord du proprietaire de la calculatrice et dure environ 1 minute. Effectuer?");
+            if (i==0) return;
 	    bool b=giac::nws_certify_firmware(true,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
           }
           xywh {30 30 100 20}
          }

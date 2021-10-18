@@ -1305,17 +1305,30 @@ c_complex mult(c_complex a,c_complex b){
   return c;
 }
 
-// transpose matrix in place
+// transpose matrix (in place for square matrices)
 void transpose(c_complex *x,int n,int m){
-  for (int i=1;i<n;++i){
-    for (int j=0;j<i;++j){
-      c_complex * a=x+i*m+j;
-      c_complex * b=x+j*m+i;
-      c_complex t=*a;
-      *a=*b;
-      *b=t;
+  if (n==m){
+    for (int i=1;i<n;++i){
+      for (int j=0;j<i;++j){
+	c_complex * a=x+i*m+j;
+	c_complex * b=x+j*m+i;
+	c_complex t=*a;
+	*a=*b;
+	*b=t;
+      }
+    }
+    return;
+  }
+  c_complex * tmp=(c_complex *) malloc(n*m*sizeof(c_complex));
+  if (!tmp)
+    return; // should error!
+  for (int i=0;i<n;++i){
+    for (int j=0;j<m;++j){
+      *(tmp+j*n+i)=*(x+i*m+j);
     }
   }
+  memcpy(x,tmp,n*m*sizeof(c_complex));
+  free(tmp);
 }
 
 
@@ -2028,13 +2041,13 @@ mp_obj_t turtle_ret(const char * val){
 
 static mp_obj_t turtle_forward(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  double i=10;
+  int i=10;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
   if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
   char buf[256];
-  sprintf(buf,"avance(%.4g):;",i);
+  sprintf(buf,"avance(%i):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
 }
@@ -2042,13 +2055,13 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_forward_obj, 0, 1, turtle_forward);
 
 static mp_obj_t turtle_backward(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  double i=10;
+  int i=10;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
   if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
   char buf[256];
-  sprintf(buf,"recule(%.4g):;",i);
+  sprintf(buf,"recule(%i):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));

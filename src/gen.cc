@@ -4160,7 +4160,7 @@ namespace giac {
   gen arg(const gen & a,GIAC_CONTEXT){ 
     if (a.type==_CPLX && a._CPLXptr->type==_DOUBLE_ && (a._CPLXptr+1)->type==_DOUBLE_){
       double d=atan2((a._CPLXptr+1)->_DOUBLE_val,a._CPLXptr->_DOUBLE_val);
-      if (!angle_radian(contextptr))
+      if (angle_radian(contextptr))
 	return d;
       int mode = get_mode_set_radian(contextptr);
       if(mode == 1) //if was in degrees

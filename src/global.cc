@@ -299,15 +299,15 @@ bool dfu_get_epsilon_internal(const char * fname){
 
 bool dfu_get_epsilon(const char * fname){
   unlink(fname);
-  string s=string("dfu-util -i 0 -a 0 -s 0x90000000:0x100000 -U ")+ fname;
+  string s=string("dfu-util -i 0 -a 0 -s 0x90000000:0x120000 -U ")+ fname;
   return !dfu_exec(s.c_str());
 }
 
-// check that we can really read/write on the Numworks at 0x90100000
+// check that we can really read/write on the Numworks at 0x90120000
 // and get the same
 bool dfu_check_epsilon2(const char * fname){
   FILE * f=fopen(fname,"w");
-  int n=0x100000;
+  int n=0xe0000;
   char * ptr=(char *) malloc(n);
   srand(time(NULL));
   int i;
@@ -321,12 +321,12 @@ bool dfu_check_epsilon2(const char * fname){
   fclose(f);
   // write to the device something that can not be guessed 
   // without really storing to flash
-  string s=string("dfu-util -i 0 -a 0 -s 0x90100000:0x100000 -D ")+ fname;
+  string s=string("dfu-util -i 0 -a 0 -s 0x90120000:0xe0000 -D ")+ fname;
   if (dfu_exec(s.c_str()))
     return false;
   // retrieve it and compare
   unlink(fname);
-  s=string("dfu-util -i 0 -a 0 -s 0x90100000:0x100000 -U ")+ fname;
+  s=string("dfu-util -i 0 -a 0 -s 0x90120000:0xe0000 -U ")+ fname;
   if (dfu_exec(s.c_str()))
     return false;
   f=fopen(fname,"r");
@@ -615,7 +615,7 @@ namespace giac {
   }
   /* END OF SHA256 */
 
-  int rsa_check(const char * sigfilename,int maxkeys,BYTE hash[][SHA256_BLOCK_SIZE],int * tailles){
+  int rsa_check(const char * sigfilename,int maxkeys,BYTE hash[][SHA256_BLOCK_SIZE],int * tailles,vector<string> & fnames){
     gen rsa_n(tabunsignedchar2gen(rsa_n_tab,sizeof(rsa_n_tab)));
     gen N=pow(gen(2),768),q;
     // read by blocks of 2048 bits=256 bytes
@@ -628,6 +628,7 @@ namespace giac {
       gen key=0;
       // skip firmware filename and size
       fscanf(f,"%i %s",&tailles[i],firmwarename);
+      fnames.push_back(firmwarename);
       // skip 0x prefix
       for (;;){
 	unsigned char c=fgetc(f);
@@ -720,10 +721,11 @@ namespace giac {
 
   const int MAXKEYS=64;
   // Numworks firmwares signature file is in doc/shakeys
-  bool sha256_check(const char * sigfilename,const char * filename){
+  bool sha256_check(const char * sigfilename,const char * filename,const char *firmwarename){
     BYTE hash[MAXKEYS][SHA256_BLOCK_SIZE];
     int tailles[MAXKEYS];
-    int nkeys=rsa_check(sigfilename,MAXKEYS,hash,tailles);
+    vector<string> fnames;
+    int nkeys=rsa_check(sigfilename,MAXKEYS,hash,tailles,fnames);
     if (nkeys==0) return false;
     BYTE buf[SHA256_BLOCK_SIZE];
     SHA256_CTX ctx;
@@ -741,7 +743,9 @@ namespace giac {
     fclose(f);
     unsigned char * ptr=(unsigned char *)text.c_str();
     for (int i=0;i<nkeys;++i){
-      if (taille<tailles[i])
+      if (debug_infolevel)
+	CERR << i << " " << firmwarename << " " << taille << " " << fnames[i] << " " << tailles[i] << '\n';
+      if (firmwarename!=fnames[i] || taille<tailles[i])
 	continue;
       // now try for all compatible sizes
       // we do not know the firmware size, we extract 2M or 6M
@@ -783,15 +787,15 @@ namespace giac {
     *logptr(contextptr) << "Extraction du firmware interne epsilon\n" ;
     if (!dfu_get_epsilon_internal(epsilon)) return false;
     *logptr(contextptr) << "Verification de signature interne epsilon\n" ;
-    if (!sha256_check(sig.c_str(),epsilon)) return false;
+    if (!sha256_check(sig.c_str(),epsilon,"delta.internal.bin")) return false;
     *logptr(contextptr) << "Extraction du firmware externe epsilon\n" ;
     if (!dfu_get_epsilon(epsilon)) return false;
     *logptr(contextptr) << "Verification de signature externe epsilon\n" ;
-    if (!sha256_check(sig.c_str(),epsilon)) return false;
+    if (!sha256_check(sig.c_str(),epsilon,"delta.external.bin")) return false;
     *logptr(contextptr) << "Signature firmware conforme\nExtraction des applications\n" ;
     if (!dfu_get_apps(apps)) return false;
-    *logptr(contextptr) << "Verification de signature epsilon\n" ;
-    if (!sha256_check(sig.c_str(),epsilon)) return false;
+    *logptr(contextptr) << "Verification de signature applications externes\n" ;
+    if (!sha256_check(sig.c_str(),apps,"apps.tar")) return false;
     const char eps2name[]="eps2__";
     if (withoverwrite && !dfu_check_epsilon2(eps2name)){
       *logptr(contextptr) << "Le test d'ecriture et relecture a echoue. Le firwmare n'est peut-etre pas conforme.\n";

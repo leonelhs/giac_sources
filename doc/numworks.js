@@ -307,13 +307,31 @@ DFU.Device = class {
         console.error(msg);
     }
     
-    logProgress(done, total) {
-        if (typeof total === 'undefined') {
-            this.logDebug(done)
-        } else {
-            this.logDebug(done + '/' + total);
-        }
+  logProgress(done, total) {
+    //console.log('logprogress',UI.nws_progress,done,total);
+    if (typeof UI!=='undefined' && typeof UI.nws_progress!=='undefined'){
+      UI.nws_progress.style.display='inline';
+      UI.nws_progress.scrollIntoView();
+      if (typeof total !== 'undefined'){
+	if (typeof total=='string')
+	  UI.nws_progresslegend.innerHTML=total;
+	else {
+	  UI.nws_progress.max=total;
+	  if (done>=total){
+	    UI.nws_progress.style.display='none';
+	    UI.nws_progresslegend.innerHTML='';
+	  }
+	}
+      }
+      UI.nws_progress.value=done;
+      return;
     }
+    if (typeof total === 'undefined') {
+      this.logDebug(done)
+    } else {
+      this.logDebug(done + '/' + total);
+    }
+  }
     
     async open() {
         await this.device_.open();
@@ -643,9 +661,9 @@ DFU.Device = class {
                 bytes_read += result.byteLength;
             }
             if (Number.isFinite(max_size)) {
-                //this.logProgress(bytes_read, max_size);
+                this.logProgress(bytes_read, max_size);
             } else {
-                //this.logProgress(bytes_read);
+                this.logProgress(bytes_read);
             }
         } while ((bytes_read < max_size) && (result.byteLength === bytes_to_read));
 
@@ -1126,8 +1144,9 @@ class Numworks {
      * @param   buffer      ArrayBuffer to flash.
      */
     async flashInternal(buffer) {
-        this.device.startAddress = 0x08000000;
-        await this.device.do_download(this.transferSize, buffer, true);
+      this.device.startAddress = 0x08000000;
+      this.device.logProgress(0,'Erase and flash internal');
+      await this.device.do_download(this.transferSize, buffer, true);
     }
     
     /**
@@ -1136,8 +1155,9 @@ class Numworks {
      * @param   buffer      ArrayBuffer to flash.
      */
     async flashExternal(buffer) {
-        this.device.startAddress = 0x90000000;
-        await this.device.do_download(this.transferSize, buffer, false);
+      this.device.startAddress = 0x90000000;
+      this.device.logProgress(0,'Erase and flash external');
+      await this.device.do_download(this.transferSize, buffer, false);
     }
     
     async __getDFUDescriptorProperties(device) {
@@ -1246,7 +1266,7 @@ class Numworks {
         device.logInfo = console.info;
         device.logWarning = console.warn;
         device.logError = console.error;
-        device.logProgress = console.log;
+        //device.logProgress = console.log;
         
         return device;
     }
@@ -1334,15 +1354,17 @@ class Numworks {
     }
     
     async get_internal_flash() {
-        this.device.startAddress = 0x08000000;
-        const blob = await this.device.do_upload(this.transferSize, 0x8000);
-        return await blob.arrayBuffer();
+      this.device.startAddress = 0x08000000;
+      this.device.logProgress(0,'Get internal');
+      const blob = await this.device.do_upload(this.transferSize, 0x8000);
+      return await blob.arrayBuffer();
     }
     
     async get_external_flash() {
-        this.device.startAddress = 0x90000000;
-        const blob = await this.device.do_upload(this.transferSize, 0x100000);
-        return await blob.arrayBuffer();
+      this.device.startAddress = 0x90000000;
+      this.device.logProgress(0,'Get external');
+      const blob = await this.device.do_upload(this.transferSize, 0x120000);
+      return await blob.arrayBuffer();
     }
 
     async rw_check(addr,n){
@@ -1353,6 +1375,7 @@ class Numworks {
 	let j=Math.floor(Math.random()*n);
 	data[j]=Math.floor(Math.random()*0xff);
       }
+      this.device.logProgress(0,'Read/Write check');
       await this.device.do_download(this.transferSize, data, false);
       const blob = await this.device.do_upload(this.transferSize, n);
       let data1= new Uint8Array(await blob.arrayBuffer());
@@ -1364,9 +1387,10 @@ class Numworks {
     }
   
     async get_apps() {
-        this.device.startAddress = 0x90200000;
-        const blob = await this.device.do_upload(this.transferSize, 0x600000);
-        return await blob.arrayBuffer();
+      this.device.startAddress = 0x90200000;
+      this.device.logProgress(0,'Get apps');
+      const blob = await this.device.do_upload(this.transferSize, 0x600000);
+      return await blob.arrayBuffer();
     }
     
     async __autoConnectDevice(device) {
@@ -1764,9 +1788,18 @@ DFUse.Device = class extends DFU.Device {
         } else if (this.getSegment(startAddress) === null) {
             this.logError(`Start address 0x${startAddress.toString(16)} outside of memory map bounds`);
         }
-        await this.erase(startAddress, expected_size);
-
-        this.logInfo("Copying data from browser to DFU device");
+      let savelegend='';
+      if (typeof UI!=='undefined' && typeof UI.nws_progresslegend!=='undefined'){
+	savelegend=UI.nws_progresslegend.innerHTML;
+	this.logProgress(0,'Erase '+savelegend);
+	//console.log('do_download before erase',savelegend);
+      }
+      await this.erase(startAddress, expected_size);
+      if (savelegend!=''){
+	//console.log('do_download after erase',savelegend);
+	this.logProgress(0,'Flash '+savelegend);
+      }
+      this.logInfo("Copying data from browser to DFU device");
 
         let address = startAddress;
         while (bytes_sent < expected_size) {

@@ -1169,7 +1169,9 @@ static void cb_Xcas_nw_certify(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_nw_certify_overwrite(Fl_Menu_*, void*) {
-  bool b=giac::nws_certify_firmware(true,Xcas_get_context());
+  int i=fl_ask("Ce test necessite l'accord du proprietaire de la calculatrice et dure environ 1 minute. Effectuer?");
+            if (i==0) return;
+	    bool b=giac::nws_certify_firmware(true,Xcas_get_context());
             fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation (assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas. Vérifiez que la calculatrice est bien connectée!");
 }
 

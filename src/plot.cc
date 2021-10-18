@@ -1335,6 +1335,12 @@ namespace giac {
   double max_nstep=2e4;
 
   gen plotfunc(const gen & f_,const gen & vars,const vecteur & attributs,bool densityplot,double function_xmin,double function_xmax,double function_ymin,double function_ymax,double function_zmin, double function_zmax,int nstep,int jstep,bool showeq,const context * contextptr){
+    vecteur L=andor2list(f_,contextptr);
+    if (are_inequations(L)){
+      vecteur res;
+      if (lin_ineq_plot(L,x__IDNT_e,y__IDNT_e,attributs,res,contextptr))
+	return gen(res,_SEQ__VECT);
+    }
     if (f_.is_symb_of_sommet(at_equal) || is_inequation(f_)){
       return string2gen("Try plot(["+f_._SYMBptr->feuille.print(contextptr)+"],"+vars.print(contextptr)+"). (In)equations can not be plotted.",false);
     }
@@ -11039,6 +11045,9 @@ namespace giac {
     double echelle,minxstepystep;
     if (xstep<ystep) minxstepystep=xstep; else minxstepystep=ystep;
     echelle=minxstepystep;
+    int n1=1+std::ceil((xmax-xmin)/(scaling*xstep));
+    int n2=1+std::ceil((ymax-ymin)/(scaling*ystep));
+    res.reserve(n1*n2+1);
     for (double curx=xmin;curx<=xmax;curx+=scaling*xstep){
       if (ctrl_c || interrupted) break;
       curxcury[0]=curx;

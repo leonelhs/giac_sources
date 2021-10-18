@@ -15439,10 +15439,12 @@ void G_idn(vector<unsigned> & G,size_t s){
 	  rur_gbasis=false;
 	if (debug_infolevel && count==0){
 	  CERR << "G= index_in_gbasis:index_computed(age,logz,fromleft,fromright)\n";
+	  int maxlogz=0;
 	  for (size_t i=0;i<G.size();++i){
+	    maxlogz=giacmax(maxlogz,resmod[G[i]].logz);
 	    CERR << i << ":" << G[i] << "(" << resmod[G[i]].age<<"," << resmod[G[i]].logz << ":" << resmod[G[i]].fromleft << "," << resmod[G[i]].fromright << ")" << '\n';
 	  }
-	  CERR << "sorted" << '\n';
+	  CERR << "maxlogz " << maxlogz << '\n';
 	  CERR << '\n' << "Partial number of monoms " << nmonoms << '\n';
 	}
 	// compare gb to existing computed basis

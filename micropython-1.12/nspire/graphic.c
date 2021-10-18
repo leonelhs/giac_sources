@@ -1305,17 +1305,30 @@ c_complex mult(c_complex a,c_complex b){
   return c;
 }
 
-// transpose matrix in place
+// transpose matrix (in place for square matrices)
 void transpose(c_complex *x,int n,int m){
-  for (int i=1;i<n;++i){
-    for (int j=0;j<i;++j){
-      c_complex * a=x+i*m+j;
-      c_complex * b=x+j*m+i;
-      c_complex t=*a;
-      *a=*b;
-      *b=t;
+  if (n==m){
+    for (int i=1;i<n;++i){
+      for (int j=0;j<i;++j){
+	c_complex * a=x+i*m+j;
+	c_complex * b=x+j*m+i;
+	c_complex t=*a;
+	*a=*b;
+	*b=t;
+      }
+    }
+    return;
+  }
+  c_complex * tmp=(c_complex *) malloc(n*m*sizeof(c_complex));
+  if (!tmp)
+    return; // should error!
+  for (int i=0;i<n;++i){
+    for (int j=0;j<m;++j){
+      *(tmp+j*n+i)=*(x+i*m+j);
     }
   }
+  memcpy(x,tmp,n*m*sizeof(c_complex));
+  free(tmp);
 }
 
 

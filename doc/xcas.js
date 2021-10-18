@@ -2600,7 +2600,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     UI.nws_connect();
     window.setTimeout(UI.numworks_load_,100);
   },
-  sig_check:async function(sig,data){
+  sig_check:async function(sig,data,fname){
     // sig should be a list of lists of size 3 (name, length, hash)
     /* c++ program to generate nws_sig.js
 // -*- mode:C++ ; compile-command: "/usr/bin/g++ -g nws_sig.cc sha256.c -Wall -o nws_sig" -*-
@@ -2670,6 +2670,7 @@ int main(int argc,const char ** argv){
     let i=0,l=sig.length;
     for (;i<l;++i){
       let cur=sig[i];
+      if (cur[0]!=fname) continue;
       console.log('sig_check',cur[1],data.byteLength);
       if (cur[1]>data.byteLength) continue;
       let dat=data.slice(0,cur[1]);
@@ -2706,21 +2707,21 @@ int main(int argc,const char ** argv){
       alert(UI.langue==-1?'Le test va prendre environ 20 secondes':'Test will take about 20 seconds');
     let internal=await UI.calculator.get_internal_flash();
     //console.log(sigfile);
-    let res=await UI.sig_check(sigfile,internal);
+    let res=await UI.sig_check(sigfile,internal,'delta.internal.bin');
     if (!res){
       alert(UI.langue==-1?'Flash interne non certifiee':'Internal flash not certified');
       return 1;
     }
     Module.print('Internal flash OK');
     let external=await UI.calculator.get_external_flash();
-    res=await UI.sig_check(sigfile,external);
+    res=await UI.sig_check(sigfile,external,'delta.external.bin');
     if (!res){
       alert(UI.langue==-1?'Flash externe non certifiee':'External flash not certified');
       return 2;
     }
     Module.print('External flash OK');
     let apps=await UI.calculator.get_apps();
-    res=await UI.sig_check(sigfile,apps);
+    res=await UI.sig_check(sigfile,apps,'apps.tar');
     if (!res){
       alert(UI.langue==-1?'Applications non certifiees':'Applications not certified');
       return 3;
