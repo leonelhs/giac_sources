@@ -2033,7 +2033,7 @@ namespace giac {
       return vecteur(0);
     if (vsize==2)
       return vecteur(1,rprec<=50?evalf(-v[1]/v[0],1,context0):accurate_evalf(-v[1]/v[0],rprec)); // ok
-    if (vsize==3 && !is_zero(v.back())){
+    if (vsize==3 && !is_exactly_zero(v.back())){
       gen b2=accurate_evalf(-v[1]/2,rprec);
       gen delta=accurate_evalf(b2*b2-v[0]*v[2],rprec); // ok
       gen r1,r2;

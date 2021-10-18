@@ -843,9 +843,9 @@ namespace giac {
       new_coord.clear();
       return;
     }
-    std::vector< monomial<gen> > multcoord;
     int asize=int(ita_end-ita),bsize=int(itb_end-itb);
     int d=int(ita->index.size());
+    std::vector< monomial<gen> > multcoord;
     multcoord.reserve(asize*bsize); // correct for sparse polynomial
     std::vector< monomial<gen> >::const_iterator ita_begin = ita,itb_begin=itb ;
     index_m old_pow=(*ita).index+(*itb).index;
@@ -925,6 +925,19 @@ namespace giac {
       CERR << "// Actual mul size " << new_coord.size() << endl;
   }
 
+  bool is_integer_poly(const polynome & p,bool intonly){
+    vector< monomial<gen> >::const_iterator it=p.coord.begin(),itend=p.coord.end();
+    for (;it!=itend;++it){
+      if (it->value.type==_INT_) continue;
+      if (intonly) return false;
+      if (it->value.type==_ZINT) continue;
+      // if (it->type==_CPLX && is_exactly_zero(*(it->_CPLXptr+1))) continue;
+      return false;
+      // if (!is_integer(*it)) return false;
+    }
+    return true;
+  }
+
   // Fast multiplication using hash maps, might also use an int for reduction
   // but there is no garantee that res is smod-ed modulo reduce
   void mulpoly(const polynome & th, const polynome & other,polynome & res,const gen & reduce){
@@ -956,6 +969,19 @@ namespace giac {
       return ;
     }
     index_t d1=th.degree(),d2=other.degree(),d(th.dim);
+    int d10,d20;
+    if ( 0 && 
+	 th.dim==1 
+	 && (d10=d1[0])>=FFTMUL_SIZE && (d20=d2[0])>=FFTMUL_SIZE && (ita_end-ita)*double(itb_end-itb)>(d10+d20)*std::log(double(d10+d20))
+	 && is_integer_poly(th,false) && is_integer_poly(other,false)
+	 ){
+      modpoly A=polynome2poly1(th,1);
+      modpoly B=polynome2poly1(other,1);
+      modpoly C;
+      mulmodpoly(A,B,0,C);
+      poly12polynome(C,1,res,1);
+      return;
+    }
     double lagrtime=1.,sumdeg=0.;
     for (int i=0;i<th.dim;++i){
       int tmp=(d1[i]+d2[i]+1);
@@ -2360,7 +2386,11 @@ namespace giac {
       CERR << CLOCK() << "ducos_e1 D begin" << endl;
     for (int j=e-1;j>=0;--j){
       sh[0]=j;
+#if 0
+      D.append((Av[Av.size()-1-j]*se).untrunc1().shift(sh));
+#else
       D.append(Av[Av.size()-1-j].untrunc1()*se.shift(sh));
+#endif
     }
     if (debug_infolevel)
       CERR << CLOCK() << "ducos_e1 D j=e" << endl;
@@ -2470,9 +2500,9 @@ namespace giac {
     }
     double pq=double(p.coord.size())*q.coord.size();
     unsigned dim=p.dim;
-#if 0 // def HAVE_LIBPARI : PARI is faster but has problems with some large inputs
+#if 0 // def HAVE_LIBPARI // : PARI is faster but has problems with some large inputs
     // we must keep the same variable ordering than in PARI
-    if (dim>=2 && dim<=4 && pq>256 && p>4 && q>4){
+    if (dim>=2 && dim<=4 && pq>256 && p.coord.size()>4 && q.coord.size()>4){
       gen coefft,coeffqt;
       int pt=coefftype(p,coefft),qt=coefftype(q,coeffqt);
       if (pt==0 && qt==0){

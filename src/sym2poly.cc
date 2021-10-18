@@ -651,7 +651,7 @@ namespace giac {
 	    break;
 	}
       }
-      if (!is_zero(coeffn)){
+      if (!is_exactly_zero(coeffn)){
 	// simplify inum and iden
 	bool hasnum=false,hasden=false;
 	for (int i=0;i<l_size;i++){
