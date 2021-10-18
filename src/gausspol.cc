@@ -2837,7 +2837,7 @@ namespace giac {
 	  if (cclock-iclock>15)
 	    debug_infolevel=1;
 	}
-	if (debug_infolevel)
+	if (debug_infolevel && (i%16==0))
 	  CERR << CLOCK()*1e-6 << " interp horner, loop index " << i << '\n';
 	gen xi;
 	for (;;++j){
@@ -2853,7 +2853,7 @@ namespace giac {
 	X[i]=xi;
 	gen gp=horner(vp,xi);
 	gen gq=horner(vq,xi);
-	if (debug_infolevel)
+	if (debug_infolevel && (i%16==0))
 	  CERR << CLOCK()*1e-6 << " interp resultant evaled at " << j << ", " << 100*double(i)/(d+1) << "% done" << '\n';
 	if (gp.type==_POLY && gq.type==_POLY){
 	  Y[i]=resultant(*gp._POLYptr,*gq._POLYptr);
@@ -2935,7 +2935,17 @@ namespace giac {
     gen coefft,coeffqt;
     int pt=coefftype(p,coefft),qt=coefftype(q,coeffqt);
     polynome g;
+    c=pow(pz,q.lexsorted_degree())*pow(qz,p.lexsorted_degree());
     if (pt==0 && qt==0){
+      if (P.dim==1 && p.lexsorted_degree()>MODRESULTANT && q.lexsorted_degree()>MODRESULTANT){
+	gen r=mod_resultant(polynome2poly1(p,1),polynome2poly1(q,1),0.0);
+	c=c*r;
+	if (is_zero(r))
+	  C.coord.clear();
+	else
+	  poly12polynome(vecteur(1,1),1,C);
+	return;
+      }
       // try gcd only if it is fast (integer coefficients for example)
       g=gcd(p,q);
       if (g.lexsorted_degree()){
@@ -2952,7 +2962,6 @@ namespace giac {
       q=q/g;
     }
     subresultant(p,q,C,ducos);
-    c=pow(pz,q.lexsorted_degree())*pow(qz,p.lexsorted_degree());
     if (!is_one(g)){
       int expo=p.lexsorted_degree()+q.lexsorted_degree();
       for (int i=0;i<expo;++i)
@@ -4399,7 +4408,7 @@ namespace giac {
 	polynome Fb(1),Gb(1),Db(1);
 	if (debug_infolevel >= 20-p_simp.dim)
 	  CERR << "// GCD eval dimension " << p_simp.dim << " " << CLOCK() << " " << p_deg << " " << p_simp.coord.size() << " " << q_deg << q_simp.coord.size() << " " << '\n';
-	gen essaimod=30011; // mod 4 = 3
+	gen essaimod=30013; // 30011; // mod 4 = 3
 	for (int essai=0;essai<2;++essai){
 	  if (essai)
 	    b=vranm(p_simp.dim-1,0,0); // find another random point
@@ -4407,7 +4416,7 @@ namespace giac {
 	  for (;!find_good_eval(p_simp,q_simp,Fb,Gb,b,debug_infolevel >= 20-p_simp.dim,essaimod);){
 	    for (;;){
 	      essaimod=nextprime(essaimod+1);
-	      if (!is_one(smod(essaimod,4)))
+	      if (is_one(smod(essaimod,4)))
 		break;
 	    }
 	  }
@@ -4530,7 +4539,7 @@ namespace giac {
       env->complexe=!est_reel;
       for (int essai=0;essai<2 && !avoid_it;++essai){
 	env->modulo=nextprime(env->modulo+2);
-	while ( is_one(smod(env->modulo,4)) || !is_one(gcd(gcd(env->modulo,pp.front(),context0),qq.front(),context0)) )
+	while ( !is_one(smod(env->modulo,4)) || !is_one(gcd(gcd(env->modulo,pp.front(),context0),qq.front(),context0)) )
 	  env->modulo=nextprime(env->modulo+2);
 	modpoly _gcdmod;
 	gcdmodpoly(pp,qq,env,_gcdmod);
@@ -6251,6 +6260,21 @@ namespace giac {
 	if (dd.type==_VECT){
 	  const_iterateur it=dd._VECTptr->begin(),itend=dd._VECTptr->end();
 	  for (;it!=itend;++it){
+	    if (with_sqrt){
+	      if (it->val==5 || it->val==10){
+		gen e=algebraic_EXTension(makevecteur(1,0),makevecteur(1,0,-5));
+		gen f=it->val==5?1:-1;
+		addtov(poly12polynome(makevecteur(1,(f-e)/2,1),1),v,false,false);
+		addtov(poly12polynome(makevecteur(1,(f+e)/2,1),1),v,false,false);
+		continue;
+	      }
+	      if (it->val==8){
+		gen e=algebraic_EXTension(makevecteur(1,0),makevecteur(1,0,-2));
+		addtov(poly12polynome(makevecteur(1,e,1),1),v,false,false);
+		addtov(poly12polynome(makevecteur(1,-e,1),1),v,false,false);
+		continue;
+	      }
+	    }
 	    polynome tmp=poly12polynome(cyclotomic(it->val),1);
 	    addtov(tmp,v,with_sqrt,complexmode);
 	  }

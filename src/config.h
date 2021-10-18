@@ -1,6 +1,9 @@
 /* config.h.  Generated from config.h.in by configure.  */
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
+/* Define if building universal (internal helper macro) */
+/* #undef AC_APPLE_UNIVERSAL_BUILD */
+
 /* Define if <unordered_map> header is available */
 /* #undef C11_UNORDERED_MAP */
 
@@ -432,6 +435,9 @@
 /* Define if you have the 'unsigned long long' type. */
 #define HAVE_UNSIGNED_LONG_LONG 1
 
+/* Define to 1 if you have the <vcl1/vectorclass.h> header file. */
+/* #undef HAVE_VCL1_VECTORCLASS_H */
+
 /* Define if you have the 'wchar_t' type. */
 #define HAVE_WCHAR_T 1
 
@@ -473,7 +479,7 @@
 #define PACKAGE_NAME "giac"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "giac 1.5.0"
+#define PACKAGE_STRING "giac 1.6.0"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "giac"
@@ -482,7 +488,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "1.5.0"
+#define PACKAGE_VERSION "1.6.0"
 
 /* Define if <inttypes.h> exists and defines unusable PRI* macros. */
 /* #undef PRI_MACROS_BROKEN */
@@ -524,7 +530,19 @@
 /* #undef USE_OPENGL32 */
 
 /* Version number of package */
-#define VERSION "1.5.0"
+#define VERSION "1.6.0"
+
+/* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
+   significant byte first (like Motorola and SPARC, unlike Intel). */
+#if defined AC_APPLE_UNIVERSAL_BUILD
+# if defined __BIG_ENDIAN__
+#  define WORDS_BIGENDIAN 1
+# endif
+#else
+# ifndef WORDS_BIGENDIAN
+/* #  undef WORDS_BIGENDIAN */
+# endif
+#endif
 
 /* Define to 1 if the X Window System is missing or not being used. */
 /* #undef X_DISPLAY_MISSING */

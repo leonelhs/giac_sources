@@ -391,9 +391,13 @@ namespace giac {
   gen quote_read(const gen & args,GIAC_CONTEXT); // read in a file and return non evaled
   gen _read(const gen & args,GIAC_CONTEXT); // read in a file and return evaled
   extern const unary_function_ptr * const  at_read;
+  extern const unary_function_ptr * const  at_read16;
+  extern const unary_function_ptr * const  at_read32;
 
   gen _write(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_write;
+  extern const unary_function_ptr * const  at_write16;
+  extern const unary_function_ptr * const  at_write32;
 
   gen _save_history(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_save_history;
@@ -568,7 +572,7 @@ namespace giac {
   extern const unary_function_ptr * const  at_widget_size;
 
   gen current_sheet(const gen & g,GIAC_CONTEXT);
-#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG
+#if !defined RTOS_THREADX && !defined NSPIRE && !defined FXCG && !defined KHICAS
   extern unary_function_eval __current_sheet;
 #endif
   extern const unary_function_ptr * const  at_current_sheet;

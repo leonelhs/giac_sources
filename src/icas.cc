@@ -217,9 +217,23 @@ void texmacs_next_input () {
   flush_stdout();
 }
 
+#define TEXMACS_IMAGE_SCALE 57.0 // percent
+#define TEXMACS_IMAGE_PADDING_ABOVE 1.75 // ex
+#define TEXMACS_IMAGE_PADDING_BELOW 1.75 // ex
+
 void ifstream_output(istream & tmpif){
   flush_stdout();
   putchar(TEXMACS_DATA_BEGIN);
+#if 1 // changes by L. Marohnić
+  printf("scheme:(padded-centered \"%gex\" \"%gex\" (document (image (tuple (raw-data \"",
+         TEXMACS_IMAGE_PADDING_ABOVE,TEXMACS_IMAGE_PADDING_BELOW);
+  char c;
+  for (int j=1;!tmpif.eof();++j){
+    tmpif.get(c);
+    putchar(c);
+  }
+  printf("\") \"ps\") \"%g%%\" \"\" \"\" \"\")))",TEXMACS_IMAGE_SCALE);
+#else
   printf("ps:");
   char c;
   for (int j=1;!tmpif.eof();++j){
@@ -229,6 +243,7 @@ void ifstream_output(istream & tmpif){
       flush_stdout();
   }
   putchar('\n');
+#endif
   putchar(TEXMACS_DATA_END);
   flush_stdout();
 }
@@ -236,6 +251,53 @@ void ifstream_output(istream & tmpif){
 
 
 void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfilename,int file_type,const giac::context * contextptr){
+#if 1 // changes by L. Marohnić
+  char buf[L_tmpnam];
+  bool has_temp_file=(tmpnam(buf)!=NULL);
+  string tmpname(has_temp_file?buf:"casgraph"),eps_ext=".eps",pdf_ext=".pdf";
+  if (!xcas::fltk_view(g,gg,tmpname+eps_ext,figfilename,file_type,contextptr)){
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("verbatim:Plot cancelled or unable to plot\n");
+    putchar(TEXMACS_DATA_END);
+    flush_stdout();
+    return;
+  }
+  if (0  && figfilename.empty()){
+    putchar(TEXMACS_DATA_BEGIN);
+    if (gg.is_symb_of_sommet(giac::at_program))
+      printf("verbatim:%s\n",gg.print().c_str());
+    else {
+      if (gg.type==giac::_STRNG)
+        printf("verbatim:%s\n",gg._STRNGptr->c_str());
+      else 
+        printf("scheme:(equation* (document %s))",giac::gen2scm(gg,giac::context0).c_str());
+    }
+    putchar(TEXMACS_DATA_END);
+    flush_stdout();
+  }
+  else {
+    bool cropped=false;
+    if (system(NULL)) {
+      int ret;
+      string c1="epstopdf ",c2="pdfcrop ",c3="pdftops ",quiet=" >/dev/null 2>&1";
+      ret=system(("cat "+tmpname+eps_ext+" | epstopdf --filter 2>/dev/null | pdfcrop - "+tmpname+pdf_ext+quiet).c_str());
+      ret=system(("pdftops "+tmpname+pdf_ext+" "+tmpname+eps_ext+quiet).c_str());
+      cropped=true;
+    }
+    ifstream tmpif((tmpname+eps_ext).c_str());
+    ifstream_output(tmpif); // send PS to TeXmacs
+    // remove temporary files:
+    bool remove_fail=false;
+    if (remove((tmpname+eps_ext).c_str())!=0)
+      remove_fail=true;
+    if (cropped) {
+      if (remove((tmpname+pdf_ext).c_str())!=0)
+        remove_fail=true;
+    }
+    if (remove_fail)
+      cerr << "Warning: failed to remove temporary file(s)\n";
+  }
+#else
   if (!xcas::fltk_view(g,gg,"casgraph.eps",figfilename,file_type,contextptr)){
     putchar(TEXMACS_DATA_BEGIN);
     printf("verbatim: Plot cancelled or unable to plot\n");
@@ -272,11 +334,35 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
     // ofstream log("log");
     // log << g << '\n';
   }
+  #endif
 }
 
 void texmacs_output(const giac::gen & g,giac::gen & gg,bool reading_file,int no,const giac::context * contextptr){
   giac::history_in(contextptr).push_back(g);
   giac::history_out(contextptr).push_back(gg);
+#if 1 // changes by L. Marohnić
+  if (reading_file){
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("verbatim:%s\n",g.print().c_str());
+    putchar(TEXMACS_DATA_END);
+    flush_stdout();
+  }
+  int graph_output=graph_output_type(gg);
+  if (graph_output){
+    string filename="";
+    texmacs_graph_output(g,gg,filename,0,contextptr);
+    return;
+  }
+  if (reading_file && gg.is_symb_of_sommet(giac::at_program))
+     return; 
+  if (g.is_symb_of_sommet(giac::at_nodisp))
+    return;
+  putchar(TEXMACS_DATA_BEGIN);
+  if (gg.type==giac::_STRNG)
+    printf("verbatim:%s\n",gg._STRNGptr->c_str());
+  else 
+    printf("scheme:(equation* (document %s))",giac::gen2scm(gg,giac::context0).c_str());
+#else
   if (reading_file){
     putchar(TEXMACS_DATA_BEGIN);
     printf("verbatim: %s\n",g.print().c_str());
@@ -305,8 +391,8 @@ void texmacs_output(const giac::gen & g,giac::gen & gg,bool reading_file,int no,
     else 
       printf("latex:\\[ %s \\]",giac::gen2tex(gg,giac::context0).c_str());
   }
+#endif
   putchar(TEXMACS_DATA_END);
-  // putchar(TEXMACS_DATA_END);
   flush_stdout();
 }
 
@@ -1848,7 +1934,7 @@ int main(int ARGC, char *ARGV[]){
 #ifdef WITH_GNUPLOT
   giac::kill_gnuplot();
 #endif
-  if (getenv("GIAC_RELEASE"))
+  if (getenv("GIAC_RELEASE")) // for valgrind
     giac::release_globals();
   return resultat;
 }

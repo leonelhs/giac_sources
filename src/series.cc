@@ -2147,10 +2147,29 @@ namespace giac {
     }
   }
 
+  void tri_rlvarx(vecteur & v){
+    int s=v.size();
+    for (;;){
+      bool ok=true;
+      for (int i=0;i<s-1;++i){
+	if (symb_size_less(v[i+1],v[i])){
+	  ok=false;
+	  swapgen(v[i],v[i+1]);
+	}
+      }
+      if (ok)
+	return;
+    }
+  }
+
   vecteur rlvarx(const gen &e,const gen & x){
     vecteur res;
     rlvarx(e,x,res);
+#ifdef FXCG
+    tri_rlvarx(res);
+#else
     gen_sort_f(res.begin(),res.end(),symb_size_less);
+#endif
     return res;
   }
 
@@ -2269,6 +2288,26 @@ namespace giac {
   gen limit_symbolic_preprocess(const gen & e0,const identificateur & x,const gen & lim_point,int direction,GIAC_CONTEXT){
     // FIXME: add support for int and sum
     gen e=factorial2gamma(e0,contextptr);
+    int trigs=loptab(e,sincostan_tab).size();
+    if (trigs>=2){
+      gen tmp=trigcos(e,contextptr);
+      int trigtmps=loptab(tmp,sincostan_tab).size();
+      if (trigtmps<trigs){
+	e=ratnormal(tmp);
+	trigs=loptab(e,sincostan_tab).size();
+      }
+      tmp=trigsin(e,contextptr);
+      trigtmps=loptab(tmp,sincostan_tab).size();
+      if (trigtmps<trigs){
+	e=ratnormal(tmp);
+	trigs=loptab(e,sincostan_tab).size();
+      }
+      tmp=trigtan(e,contextptr);
+      trigtmps=loptab(tmp,sincostan_tab).size();
+      if (trigtmps<trigs){
+	e=ratnormal(tmp);
+      }
+    }
     gen first_try=subst(e,x,lim_point,false,contextptr);
     first_try=simplifier(first_try,contextptr);
     if (!contains(lidnt(first_try),unsigned_inf)){
@@ -2557,7 +2596,7 @@ namespace giac {
 	if (first_try!=unsigned_inf)
 	  return first_try;
       }
-    }
+    } // end if vsign.empty()
     if (has_op(e,*at_surd) || has_op(e,*at_NTHROOT)){
       // FIXME: adjust using limit/direction information
       vecteur subst1,subst2;

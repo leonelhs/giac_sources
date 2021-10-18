@@ -28,7 +28,7 @@
  cas_setup(0,0,1,1,0,1e-10,10,[1,50,0,25],0,1,0); #mode complexe est racines carrees.
  rat_jordan(A);
  rat_jordan(companion((x^3-2)^2,x));
- J:=jordan(A,'Q');Q;
+ J:=jordan(A,'Q');Q; #normal(Q^-1*A*Q-J);
  f:=(i,j)->if i=j then J[i,j] else 0 fi;
  dia:=matrix(op(dim(J)),f);
  S:=normal(Q*dia*Q^(-1));N:=A-S; #on remarque que les coeff sont dans le meme corps que ceux de A

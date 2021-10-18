@@ -5,7 +5,7 @@ proc(A)
   local n,i,j,P,L,M; 
   n:=(dim(A))[1];  
   P:=0;  
-  L:=[seq(i,i=(0 .. n))];  
+  L:=copy([seq(i,i=(0 .. n))]);  
   for i from 0 to n do  
   M:=1; 
   for j in L minus [i] do M:=M*(x-j)/(i-j); 

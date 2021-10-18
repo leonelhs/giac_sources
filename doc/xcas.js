@@ -1612,6 +1612,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       //s=encodeURIComponent(s); // does not work innerHTML will add a prefix
       //var sforum=encodeURIComponent('[url]'+s+'[/url]');
       sforum = '[url=' + sforum + ']session Xcas[/url]';
+      //console.log(sforum);
       $id('theforumlink').innerHTML = sforum;
       var copy = "<button title=";
       copy += UI.langue == -1 ? "'Partager cette session sur le forum'" : "'Share this session on the forum'";
@@ -1693,21 +1694,25 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         if (fs.length > 5) {
           var fs1 = fs.substr(0, 5);
           if (fs1 == "<form") {
+	    //console.log(fs);
             var pos1 = fs.search("<input");
             fs = fs.substr(pos1, fs.length - pos1);
             //console.log(fs);
             var pos1 = fs.search("value=");
             pos1 += 7;
             fs = fs.substr(pos1, fs.length - pos1);
+	    //console.log(fs);
             var pos2 = fs.search("\"");
             fs1 = fs.substr(0, pos2); // cursor name
 	    if (start==-1) fs1='assume('+fs1;
+	    //console.log(fs1);
             var pos1 = fs.search("value=");
             pos1 += 7;
             fs = fs.substr(pos1, fs.length - pos1);
             var pos2 = fs.search("\"");
             fs1 += start==-1?"=[":',';
 	    fs1 += fs.substr(0, pos2); // current value
+	    //console.log(fs1);
             var pos1 = fs.search("minname");
             pos1 += 7;
             fs = fs.substr(pos1, fs.length - pos1);
@@ -1716,6 +1721,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
             fs = fs.substr(pos1, fs.length - pos1);
             var pos2 = fs.search("\"");
             fs1 += ',' + fs.substr(0, pos2); // min
+	    //console.log(fs1);
             var pos1 = fs.search("maxname");
             pos1 += 7;
             fs = fs.substr(pos1, fs.length - pos1);
@@ -1724,11 +1730,13 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
             fs = fs.substr(pos1, fs.length - pos1);
             var pos2 = fs.search("\"");
             fs1 += ',' + fs.substr(0, pos2); //max
+	    //console.log(fs1);
             var pos1 = fs.search("value=");
             pos1 += 7;
             fs = fs.substr(pos1, fs.length - pos1);
             var pos2 = fs.search("\"");
             fs1 += ',' + fs.substr(0, pos2); // step
+	    //console.log(fs1);
 	    if (start==-1){
 	      fs1 +='])';
               //console.log(fs1);
@@ -1736,6 +1744,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	      casioin.push('');
 	    }
             s += '*' + fs1 + '&';
+	    //console.log(s);
             cur = cur.nextSibling;
             continue;
           }
@@ -1788,6 +1797,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     s = s.replace(/\"/g, '%22');
     s = s.replace(/>/g, '%3e');
     if (start==-1) return [casiovars,casioscript,casioin];
+    //console.log(s);
     return s;
   },
   canvas_mousemove: function (event, no) {

@@ -390,6 +390,8 @@ namespace giac {
     if (args.type!=_VECT || args._VECTptr->size()!=2)
       return gensizeerr(contextptr);
     gen a=args._VECTptr->front(),aa,b=args._VECTptr->back(),c;
+    if (a.is_symb_of_sommet(at_abs) || a.is_symb_of_sommet(at_exp))
+      return pow(a,inv(b,contextptr),contextptr);
     if (is_equal(a)){
       gen a0=a._SYMBptr->feuille[0],a1=a._SYMBptr->feuille[1];
       return symbolic(at_equal,makesequence(_surd(makesequence(a0,b),contextptr),_surd(makesequence(a1,b),contextptr)));
@@ -2548,6 +2550,14 @@ namespace giac {
 	return res;
     }
     // Step1: detection of some unary_op[linear fcn]
+    if (e.is_symb_of_sommet(at_inv) && e._SYMBptr->feuille.is_symb_of_sommet(at_pow)){
+      gen f=e._SYMBptr->feuille._SYMBptr->feuille;
+      if (f.type==_VECT && f._VECTptr->size()==2){
+	gen b=f._VECTptr->back();
+	if (!is_integer(b) && b.type!=_FRAC)
+	  e=symbolic(at_pow,makevecteur(f._VECTptr->front(),-b));
+      }
+    }
     unary_function_ptr u=e._SYMBptr->sommet;
     gen f=e._SYMBptr->feuille,a,b;
     // particular case for ^, _FUNCnd arg must be constant
@@ -2646,7 +2656,8 @@ namespace giac {
 	  continue;
 	gen df=derive(*it,gen_x,contextptr);
 	gen tmprem;
-	fu=ratnormal(rdiv(e,df,contextptr),contextptr);
+	fu=rdiv(e,df,contextptr);
+	fu=recursive_ratnormal(fu,contextptr);
 	fu=eval(fu,1,contextptr);
 	if ((is_undef(fu) || is_inf(fu)) && is_zero(ratnormal(df,contextptr))){
 	  // *it is constant -> find the value
@@ -4130,8 +4141,10 @@ namespace giac {
       }
       if (approxint_exact(f,x,contextptr)){
 	gen r,F=linear_integrate(f,x,r,contextptr);
-	value=subst(F,x,b,false,contextptr)-subst(F,x,a,false,contextptr);
-	return true;
+	if (is_zero(r)){
+	  value=subst(F,x,b,false,contextptr)-subst(F,x,a,false,contextptr);
+	  return true;
+	}
       }
     }
     // adaptive integration, cf. Hairer

@@ -6,22 +6,88 @@
 #ifdef KHICAS
 #include "misc.h"
 
+#include <exception>
+
+class autoshutdown : public std::exception{
+  const char * what () const throw ()
+  {
+    return "autoshutdown";
+  }
+};
+
 extern  const int LCD_WIDTH_PX;
 extern   const int LCD_HEIGHT_PX;
+extern char* fmenu_cfg;
 #define STATUS_AREA_PX 0 // 24
 #define GIAC_HISTORY_MAX_TAILLE 32
 #define GIAC_HISTORY_SIZE 2
 
+#ifdef MICROPY_LIB
 extern "C" {
+  int do_file(const char *file);
+  char * micropy_init();
+  int micropy_eval(const char * line);
+  void  mp_deinit();
+  void mp_stack_ctrl_init();
+  extern int parser_errorline,parser_errorcol;
+}
+#endif
+
 #include "k_csdk.h"
+
+extern "C" {
+  int do_shutdown(); // auto-shutdown
+  void console_output(const char *,int );
+  const char * console_input(const char * msg1,const char * msg2,bool numeric,int ypos);
+  void c_draw_rectangle(int x,int y,int w,int h,int c);
+  void c_fill_rect(int x,int y,int w,int h,int c);
+  void c_draw_line(int x0,int y0,int x1,int y1,int c);
+  void c_draw_circle(int xc,int yc,int r,int color,bool q1,bool q2,bool q3,bool q4);
+  void c_draw_filled_circle(int xc,int yc,int r,int color,bool left,bool right);
+  void c_draw_polygon(int * x,int *y ,int n,int color);
+  void c_draw_filled_polygon(int * x,int *y, int n,int xmin,int xmax,int ymin,int ymax,int color);
+  void c_draw_arc(int xc,int yc,int rx,int ry,int color,double theta1, double theta2);
+  void c_draw_filled_arc(int x,int y,int rx,int ry,int theta1_deg,int theta2_deg,int color,int xmin,int xmax,int ymin,int ymax,bool segment);
+  void c_set_pixel(int x,int y,int c);
+  int c_draw_string(int x,int y,int c,int bg,const char * s,bool fake);
+  int c_draw_string_small(int x,int y,int c,int bg,const char * s,bool fake);
+  int c_draw_string_medium(int x,int y,int c,int bg,const char * s,bool fake);
+  int select_item(const char ** ptr,const char * title,bool askfor1=true);
+  // C conversion to gen from atomic data type 
+  unsigned long long c_double2gen(double); 
+  unsigned long long c_int2gen(int);
+  // linalg on double matrices
+  void doubleptr2matrice(double * x,int n,giac::matrice & m);
+  bool matrice2doubleptr(const giac::matrice &M,double *x); // x must have enough space
+  bool r_inv(double *,int n);
+  bool r_rref(double *,int n,int m);
+  double r_det(double *,int);
+  struct double_pair {
+    double r,i;
+  } ;
+  typedef struct double_pair c_complex;
+  bool matrice2c_complexptr(const giac::matrice &M,c_complex *x);
+  void c_complexptr2matrice(c_complex * x,int n,int m,giac::matrice & M);  
+  bool c_inv(c_complex *,int n);
+  bool c_rref(c_complex *,int n,int m);
+  c_complex c_det(c_complex *,int);
+  bool c_egv(c_complex * x,int n); // eigenvectors
+  bool c_eig(c_complex * x,c_complex * d,int n); // x eigenvect, d reduced mat
+  bool c_proot(c_complex * x,int n); // poly root
+  bool c_pcoeff(c_complex * x,int n); // root->coeffs
+  bool c_fft(c_complex * x,int n,bool inverse); // FFT
+  void turtle_freeze();
+  void c_sprint_double(char * s,double d);
 }
 extern int lang;
-int select_item(const char ** ptr,const char * title);
+extern bool warn_nr;
+int select_interpreter(); // 0 Xcas, 1|2 Xcas python_compat(1|2), 3 MicroPython 
 const char * gettext(const char * s) ;
 
 #ifndef NO_NAMESPACE_XCAS
 namespace xcas {
 #endif // ndef NO_NAMESPACE_XCAS
+  void set_exam_mode(int i,const giac::context *);
   int giac_filebrowser(char * filename,const char * extension,const char * title);
   void draw_rectangle(int x,int y,int w,int h,int c);
   void draw_line(int x0,int y0,int x1,int y1,int c);
@@ -97,11 +163,12 @@ namespace xcas {
 #endif
     int turtlex,turtley; // Turtle translate
     double turtlezoom; // Zoom factor for turtle screen
-    int maillage; // 0 (none), 1 (square), 2 (triangle), bit3 used for printing
+    short int maillage=0; // 0 (none), 1 (square), 2 (triangle), bit3 used for printing
+    short int speed=0;
   };
   
-  void displaygraph(const giac::gen & ge, const giac::context * contextptr);
-  void displaylogo();
+  int displaygraph(const giac::gen & ge, const giac::context * contextptr);
+  int displaylogo();
   giac::gen eqw(const giac::gen & ge,bool editable,const giac::context * contextptr);
   typedef short int color_t;
   typedef struct
@@ -154,6 +221,7 @@ namespace xcas {
   void reload_edptr(const char * filename,textArea *edptr,const giac::context *);
   void print(int &X,int&Y,const char * buf,int color,bool revert,bool fake,bool minimini);
 
+  void save_session(const giac::context * );
 #if 1
 #define MAX_FILENAME_SIZE 63
   void save_console_state_smem(const char * filename,const giac::context *);
@@ -173,7 +241,7 @@ namespace xcas {
 			   CONSOLE_SUCCEEDED = 0,
 			   CONSOLE_MEM_ERR = -1,
 			   CONSOLE_ARG_ERR = -2,
-			   CONSOLE_NO_EVENT = -3
+			   CONSOLE_NO_EVENT = -3,
   };
 
   enum CONSOLE_CURSOR_DIRECTION{
@@ -200,7 +268,11 @@ namespace xcas {
   enum CONSOLE_SCREEN_SPEC {
 			    _LINE_MAX = 48,
 			    LINE_DISP_MAX = 11,
+#ifdef NSPIRE_NEWLIB
+			    COL_DISP_MAX = 32,
+#else
 			    COL_DISP_MAX = 30,//32
+#endif
 			    EDIT_LINE_MAX = 2048
   };
   
@@ -238,14 +310,14 @@ namespace xcas {
   int Console_Output(const char *str);
   void Console_Clear_EditLine();
   int Console_NewLine(int pre_line_type, int pre_line_readonly);
-  int Console_Backspace(void);
+  int Console_Backspace(const giac::context *);
   int Console_GetKey(const giac::context *);
-  int Console_Init(void);
-  int Console_Disp(int redraw_mode=1);
+  int Console_Init(const giac::context *);
+  int Console_Disp(int redraw_mode,const giac::context*ptr);
   int Console_FMenu(int key,const giac::context *);
   extern char menu_f1[8],menu_f2[8],menu_f3[8],menu_f4[8],menu_f5[8],menu_f6[8];
   const char * console_menu(int key,char* cfg,int active_app);
-  void Console_FMenu_Init(void);
+  void Console_FMenu_Init(const giac::context *);
   const char * Console_Draw_FMenu(int key, struct FMenu* menu,char * cfg_,int active_app);
   char *Console_Make_Entry(const char* str);
   char *Console_GetLine(const giac::context *);
@@ -265,11 +337,26 @@ namespace xcas {
 #endif
   int periodic_table(const char * & name,const char * & symbol,char * protons,char * nucleons,char * mass,char * electroneg);
 
+  struct tableur {
+    giac::matrice m,clip,undo;
+    giac::gen var;
+    int nrows,ncols;
+    int cur_row,cur_col,disp_row_begin,disp_col_begin;
+    int sel_row_begin,sel_col_begin;
+    std::string cmdline,filename;
+    int cmd_pos,cmd_row,cmd_col; // row/col of current cmdline, -1 if not active
+    bool changed,recompute,matrix_fill_cells,movedown;
+  } ;
+  extern tableur * sheetptr;
+
+  int check_do_graph(giac::gen & ge,int do_logo_graph_eqw,const giac::context *);
+  int get_filename(char * filename,const char * extension);
 
 #ifndef NO_NAMESPACE_XCAS
 } // namespace xcas
 #endif // ndef NO_NAMESPACE_XCAS
 
+giac::gen sheet(const giac::context *); // in kadd.cc
 /* ************************************************************
 **************************************************************
 ***********************************************************  */
@@ -278,6 +365,8 @@ namespace xcas {
 #ifndef NO_NAMESPACE_XCAS
 namespace giac {
 #endif // ndef NO_NAMESPACE_XCAS
+  std::string help_insert(const char * cmdline,const giac::context *);
+  void copy_clipboard(const std::string & s,bool status);
 #define TEXT_MODE_NORMAL 0
 #define TEXT_MODE_INVERT 1
 #define MENUITEM_NORMAL 0
@@ -347,7 +436,12 @@ namespace giac {
     int category;
   } catalogFunc;
 
+  void aide2catalogFunc(const giac::aide & a,catalogFunc & c);
+
   giac::gen select_var(const giac::context * contextptr);
+  const char * keytostring(int key,int keyflag,bool py,const giac::context * contextptr);
+  void insert(std::string & s,int pos,const char * add);
+  
   int showCatalog(char* insertText,int preselect,int menupos,const giac::context * contextptr);
   int doMenu(Menu* menu, MenuItemIcon* icontable=NULL);
   void reset_alpha();
@@ -372,6 +466,25 @@ namespace giac {
 } // namespace giac
 #endif // ndef NO_NAMESPACE_XCAS
 
+
+#define COLOR_BLACK giac::_BLACK
+#define COLOR_RED giac::_RED
+#define COLOR_GREEN giac::_GREEN
+#define COLOR_CYAN giac::_CYAN
+#define COLOR_BLUE giac::_BLUE
+#define COLOR_YELLOW giac::_YELLOW
+#define COLOR_MAGENTA giac::_MAGENTA
+#define COLOR_WHITE giac::_WHITE
+#define COLOR_YELLOWDARK 64934
+#define COLOR_BROWN 65000
+#define TEXT_COLOR_BLACK giac::_BLACK
+#define TEXT_COLOR_RED giac::_RED
+#define TEXT_COLOR_GREEN giac::_GREEN
+#define TEXT_COLOR_CYAN giac::_CYAN
+#define TEXT_COLOR_BLUE giac::_BLUE
+#define TEXT_COLOR_YELLOW giac::_YELLOW
+#define TEXT_COLOR_WHITE giac::_WHITE
+#define TEXT_COLOR_MAGENTA giac::_MAGENTA
 
 
 #endif // _KDISPLAY_H

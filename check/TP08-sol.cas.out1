@@ -23,11 +23,11 @@ proc(a,b,c,P,Q)
   local d,C,QQ,M,sol,R; 
   C:=(-y^2)*z+x^3+a*x^2*z+b*x*z^2+c*z^3;  
   if egal(P,Q) then  
-    QQ:=[subs(x=(P[1]),y=(P[2]),z=(P[3]),diff(C,y)),subs(x=(P[1]),y=(P[2]),z=(P[3]),-(diff(C,x))),0]; 
+    QQ:=copy([subs(x=(P[1]),y=(P[2]),z=(P[3]),diff(C,y)),subs(x=(P[1]),y=(P[2]),z=(P[3]),-(diff(C,x))),0]); 
     M:=normal(P+t*QQ); 
     d:=subs(x=(M[1]),y=(M[2]),z=(M[3]),C); 
     sol:=quo(d,t^2,t); 
-    if egal(QQ,[0,1,0]) then R:=[0,1,0]; else R:=normal((-coeff(sol,t,1))*P+coeff(sol,t,0)*QQ); 
+    if egal(QQ,[0,1,0]) then R:=copy([0,1,0]); else R:=normal((-coeff(sol,t,1))*P+coeff(sol,t,0)*QQ); 
     fi  else  
     M:=expand(P+t*Q); 
     d:=subs(x=(M[1]),y=(M[2]),z=(M[3]),C); 
@@ -59,7 +59,7 @@ end;,
 [-1,1,1],
 proc(a,b,c,P,n) 
   local Y,m,X; 
-  Y:=[0,1,0];  
+  Y:=copy([0,1,0]);  
   X:=P;  
   m:=n;  
   while m>0 do if odd(m) then  
@@ -80,7 +80,7 @@ end;,
 [0,0],
 proc(P,N) 
   local Q,a,b,c,g; 
-  Q:=[0,1,0];  
+  Q:=copy([0,1,0]);  
   a:=expand(P[1]*Q[2]-P[2]*Q[1]);  
   b:=expand(P[3]*Q[2]-P[2]*Q[3]);  
   c:=expand(P[1]*Q[3]-P[3]*Q[1]);  
@@ -91,7 +91,7 @@ proc(P,N)
 end;,
 proc(a,b,c,P,n,N) 
   local Y,m,X; 
-  Y:=[0,1,0];  
+  Y:=copy([0,1,0]);  
   X:=P;  
   m:=n;  
   while (m>0) and ((egalomega(Y,N)) = 1) do  

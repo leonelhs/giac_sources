@@ -455,6 +455,7 @@ namespace giac {
   extern const unary_function_ptr * const  at_homothetie;
   gen _est_coplanaire(const gen & args,GIAC_CONTEXT);
 
+  extern const unary_function_ptr * const  at_est_dans;
   gen _est_aligne(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_est_aligne;
 
@@ -630,8 +631,8 @@ namespace giac {
   gen _switch_axes(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_switch_axes;
 
-  int find_plotseq_args(const gen & args,gen & expr,gen & x,double & x0d,double & xmin,double & xmax,int & niter,vecteur & attributs,GIAC_CONTEXT);
-  gen plotseq(const gen& f,const gen&x,double x0,double xmin,double xmax,int niter,const vecteur & attributs,const context * contextptr);
+  int find_plotseq_args(const gen & args,gen & expr,gen & x,double & x0d,double & xmin,double & xmax,int & niter,vecteur & attributs,GIAC_CONTEXT,bool & print);
+  gen plotseq(const gen& f,const gen&x,double x0,double xmin,double xmax,int niter,const vecteur & attributs,const context * contextptr,bool print);
   gen _plotseq(const gen & args,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_plotseq;
   extern const unary_function_ptr * const  at_seqplot;

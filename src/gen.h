@@ -131,6 +131,7 @@ namespace giac {
   int invmod(int n,int modulo);
   unsigned invmod(unsigned a,int b);
   int invmod(longlong a,int b);
+  longlong invmodll(longlong a,longlong b);
 #ifdef INT128
   int invmod(int128_t a,int b);
   inline int smod(int128_t r,int m){
@@ -145,6 +146,7 @@ namespace giac {
   }
   int smod(int a,int b); // where b is assumed to be positive
   int smod(longlong a,int b); 
+  longlong smodll(longlong res,longlong m);
   int simplify(int & a,int & b);
 
   struct ref_mpz_t {
@@ -1016,6 +1018,7 @@ namespace giac {
   gen rdiv(const gen & a,const gen & b,GIAC_CONTEXT0); // rational division
   inline gen operator /(const gen & a,const gen & b){ return rdiv(a,b); };
   gen operator %(const gen & a,const gen & b); // for int only
+  bool is_multiple(const gen & a,const gen &b);
   // gen inv(const gen & a);
   gen inv(const gen & a,GIAC_CONTEXT);
   inline wchar_t * wprint(const gen & g,GIAC_CONTEXT){ return g.wprint(contextptr); }
@@ -1110,6 +1113,7 @@ namespace giac {
   // more advanced arithmetic
   gen gcd(const gen & A,const gen & B,GIAC_CONTEXT);
   gen gcd(const gen & A,const gen & B);
+  int iegcd(int a_,int b_,int &u,int & v);
   gen lcm(const gen & a,const gen & b);
   gen simplify(gen & n, gen & d);
   void egcd(const gen &a,const gen &b, gen & u,gen &v,gen &d );
@@ -1118,6 +1122,7 @@ namespace giac {
   gen fracmod(const gen & a_orig,const gen & modulo); // -> p/q=a mod modulo
   bool fracmod(const gen & a_orig,const gen & modulo,gen & res);
   bool in_fracmod(const gen &m,const gen & a,mpz_t & d,mpz_t & d1,mpz_t & absd1,mpz_t &u,mpz_t & u1,mpz_t & ur,mpz_t & q,mpz_t & r,mpz_t &sqrtm,mpz_t & tmp,gen & num,gen & den);
+  bool alloc_fracmod(const gen & a_orig,const gen & modulo,gen & res,mpz_t & d,mpz_t & d1,mpz_t & absd1,mpz_t &u,mpz_t & u1,mpz_t & ur,mpz_t & q,mpz_t & r,mpz_t &sqrtm,mpz_t & tmp);
   gen powmod(const gen &base,const gen & expo,const gen & modulo);
   gen isqrt(const gen & A);
   gen re(const gen & a,GIAC_CONTEXT);

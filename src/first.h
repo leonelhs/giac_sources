@@ -59,6 +59,8 @@
 #define NO_STDEXCEPT 1
 #endif
 
+#define MAX_INTSTACK 32768 // maximal size for allocating an array by int tab[]
+
 #ifdef FXCG
 #define RAND_MAX 2147483647
 #define clock() 0
@@ -131,6 +133,8 @@ typedef long double giac_double;
 #else
 typedef double giac_double;
 #endif
+
+typedef long double  long_double;
 
 // sprintf replacement
 int my_sprintf(char * s, const char * format, ...);
@@ -281,8 +285,8 @@ typedef unsigned __int64 ulonglong ;
 typedef long long longlong;
 typedef unsigned long long ulonglong;
 #ifdef x86_64
-  typedef int int128_t __attribute__((mode(TI)));
-  typedef unsigned int uint128_t __attribute__((mode(TI)));
+typedef int int128_t __attribute__((mode(TI)));
+typedef unsigned int uint128_t __attribute__((mode(TI)));
 #ifndef INT128
 #define INT128 1
 #endif
@@ -301,6 +305,7 @@ typedef unsigned long long ulonglong;
 #endif
 
 #endif // __VISUALC__
+
 
 #ifdef VISUALC
 inline void swap_giac_double(double & a,double & b){ double c=a; a=b; b=c; }

@@ -1488,6 +1488,11 @@ namespace giac {
     gen a(a_orig);
     for (int i=begin;i<signed(primeargs.size());){
       gen g=simplify3(a,primeargs[i]);
+      if (g.type==_FRAC){
+	a=a*g;
+	primeargs[i]=primeargs[i]*g;
+	++i; continue;
+      }
       if (is_strictly_positive(r2e(-g,vars,contextptr),contextptr)){
 	g=-g; a=-a; primeargs[i]=-primeargs[i];
       }
@@ -2434,6 +2439,10 @@ namespace giac {
     }
     e=quotesubst(e,vabs,vabs2,contextptr);
     e=quotesubst(e,vabs,vabs2,contextptr); // second replacement because vabs2 might contain expression in vabs
+    vecteur ve(lop(e,at_exp));
+    ve=lop(ve,at_atan);
+    if (!ve.empty())
+      e=_exp2trig(e,contextptr); // exp(i*atan())
     e=recursive_normal(e,contextptr); 
     if (is_undef(e)) return e;
     if (!bases.empty())

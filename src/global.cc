@@ -104,6 +104,10 @@ extern "C" int KeyPressed( void );
 #include "kdisplay.h"
 #endif
 
+#ifdef NSPIRE_NEWLIB
+#include <libndls.h>
+#endif
+
 int my_sprintf(char * s, const char * format, ...){
     int z;
     va_list ap;
@@ -161,13 +165,14 @@ namespace giac {
   void control_c(){
 #if defined NSPIRE || defined KHICAS
     if (
-#ifdef NSPIRE
-	on_key_pressed()
+#if defined NSPIRE || defined NSPIRE_NEWLIB
+	on_key_enabled && on_key_pressed()
 #else
 	back_key_pressed()
 #endif
 	){ 
-      kbd_interrupted=ctrl_c=interrupted=true; 
+      kbd_interrupted=true;
+      ctrl_c=interrupted=true; 
     }
 #else
     if (caseval_unitialized!=-123454321){
@@ -197,9 +202,17 @@ namespace giac {
 #endif // POCKETCAS
 #endif // TIMEOUT
 
-#if defined NSPIRE_NEWLIB || defined KHICAS
+#if defined KHICAS
   void usleep(int t){
+    os_wait_1ms(t/1000);
   }
+#else
+#ifdef NSPIRE_NEWLIB
+  void usleep(int t){
+    msleep(t/1000);
+  }
+#endif
+  
 #endif
 
 #if defined VISUALC || defined BESTA_OS
@@ -594,7 +607,12 @@ extern "C" void Sleep(unsigned int miliSecond);
   }
 
   bool python_color=false;
+#ifdef NSPIRE_NEWLIB
+  bool os_shell=false;
+#else
   bool os_shell=true;
+#endif
+
 #ifdef KHICAS
   static int _python_compat_=true;
 #else
@@ -1825,8 +1843,10 @@ extern "C" void Sleep(unsigned int miliSecond);
   int GCDHEU_DEGREE=100;
   int DEFAULT_EVAL_LEVEL=5;
   int MODFACTOR_PRIMES =5;
-  int NTL_MODGCD=50;
-  int HGCD=16384;
+  int NTL_MODGCD=1<<30; // default: ntl gcd disabled
+  int NTL_RESULTANT=382; 
+  int NTL_XGCD=50;
+  int HGCD=128;//16384;
   int HENSEL_QUADRATIC_POWER=25;
   int KARAMUL_SIZE=13;
   int INT_KARAMUL_SIZE=300;
@@ -1862,8 +1882,10 @@ extern "C" void Sleep(unsigned int miliSecond);
   int GCDHEU_DEGREE=100;
   int DEFAULT_EVAL_LEVEL=25;
   int MODFACTOR_PRIMES =5;
-  int NTL_MODGCD=50;
-  int HGCD=16384;
+  int NTL_MODGCD=1<<30; // default: ntl gcd disabled
+  int NTL_RESULTANT=382; 
+  int NTL_XGCD=50;
+  int HGCD=128;//16384;
   int HENSEL_QUADRATIC_POWER=25;
   int KARAMUL_SIZE=13;
   int INT_KARAMUL_SIZE=300;
@@ -1902,6 +1924,7 @@ extern "C" void Sleep(unsigned int miliSecond);
 #else
   int PROOT_FACTOR_MAXDEG=30;
 #endif
+  int MODRESULTANT=20;
   int ABS_NBITS_EVALF=1000;
 
   // used by WIN32 for the path to the xcas directory
@@ -6015,7 +6038,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 
   static void python_import(string & cur,int cs,int posturtle,int poscmath,int posmath,int posnumpy,int posmatplotlib,GIAC_CONTEXT){
     if (posmatplotlib>=0 && posmatplotlib<cs){
-      cur += "np:=numpy:;xlim(a,b):=gl_x=a..b:;ylim(a,b):=gl_y=a..b:;scatter:=scatterplot:;bar:=bar_plot:;text:=legend:;xlabel:=gl_x_axis_name:;ylabel:=gl_y_axis_name:;";
+      cur += "np:=numpy:;xlim(a,b):=gl_x=a..b:;ylim(a,b):=gl_y=a..b:;scatter:=scatterplot:;bar:=bar_plot:;text:=legend:;xlabel:=gl_x_axis_name:;ylabel:=gl_y_axis_name:;arrow:=vector:;boxplot:=moustache:;";
       posnumpy=posmatplotlib;
     }
     if (posnumpy>=0 && posnumpy<cs){
@@ -6140,6 +6163,17 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
     first=s_orig.find("xcas_mode");
     if (first>=0 && first<sss)
       return s_orig;
+    first=s_orig.find('\n');
+    if (first<0 || first>=sss){
+      first=s_orig.find('\''); // derivative or Python string delimiter?
+      if (first>=0 && first<sss){
+	if (first==sss-1 || s_orig[first+1]=='\'') // '' is a second derivative
+	  return s_orig;
+	first=s_orig.find('\'',first+1);
+	if (first<0 || first>=sss)
+	  return s_orig;
+      }
+    }
     bool pythoncompat=python_compat(contextptr);
     bool pythonmode=false;
     first=0;
@@ -6516,6 +6550,10 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 	  }
 	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,q)){
 	    pythonmode=true;
+#if 1
+	    res = cur.substr(0,p)+":\n"+string(progpos+4,' ')+cur.substr(p+1,pos-p)+'\n'+res;
+	    continue;
+#else
 	    cur=cur.substr(0,p)+" then "+cur.substr(p+1,pos-p);
 	    convert_python(cur,contextptr);
 	    // no fi if there is an else or elif
@@ -6523,18 +6561,25 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 	      if (res[p]!=' ' && res[p]!=char(9))
 		break;
 	    }
-	    if (p<res.size()+5 && (res.substr(p,4)=="else" || res.substr(p,4)=="elif"))
+	    if (p<res.size()+5 && (res.substr(p,4)=="else" || res.substr(p,4)=="elif")){
 	      cur += " ";
+	    }
 	    else
 	      cur += " fi";
 	    p=0;
+#endif
 	  }
 	  progpos=cur.find("else");
 	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){
 	    pythonmode=true;
+#if 1
+	    res = cur.substr(0,p)+":\n"+string(progpos+4,' ')+cur.substr(p+1,pos-p)+'\n'+res;
+	    continue;
+#else
 	    cur=cur.substr(0,p)+' '+cur.substr(p+1,pos-p)+" fi";
 	    convert_python(cur,contextptr);
 	    p=0;
+#endif
 	  }
 	  progpos=cur.find("for");
 	  if (p && progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
@@ -6803,7 +6848,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 #if defined(GIAC_HAS_STO_38) && defined(CAS38_DISABLED)
 #include "static_lexer_38.h"
 #else
-#ifdef KHICAS
+#if defined KHICAS || defined NSPIRE_NEWLIB
 #include "static_lexer_numworks.h"
 #else
 #include "static_lexer.h"
@@ -6824,7 +6869,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
     }
 #else
     // Array added because GH compiler stores builtin_lexer_functions in RAM
-#ifdef KHICAS
+#if defined KHICAS || defined NSPIRE_NEWLIB
     const unary_function_ptr * const * const builtin_lexer_functions_[]={
 #include "static_lexer__numworks.h"
     };
@@ -6897,7 +6942,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 
   // optional, call it just before exiting
   int release_globals(){
-#ifndef VISUALC
+#if !defined VISUALC && !defined KHICAS
     delete normal_sin_pi_12_ptr_();
     delete normal_cos_pi_12_ptr_();
 #endif

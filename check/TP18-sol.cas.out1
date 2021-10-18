@@ -37,7 +37,7 @@ matrix[[1,0,1,0,1,0,1],[0,1,1,0,0,1,1],[0,0,0,1,1,1,1]],
 proc(NULL) 
   local m; 
  
-m:=[0$7]; 
+m:=copy([0$7]); 
   H:=matrix([[1,0,1,0,1,0,1],[0,1,1,0,0,1,1],[0,0,0,1,1,1,1]]);  
   input(output("est il >=8?(1 si oui, 0 sinon)"),rep);  
   m[1]:=rep;  
@@ -104,9 +104,9 @@ proc(E,n)
 end;,
 proc(E,n) 
   local ltmp; 
-  if n=0 then ltmp:=[[]]; else  
-    ltmp:=[]; 
-    for i from 0 to nops(E)^n-1 do ltmp:=[op(ltmp),[seq(E[j+1],j=(convert(i,base,nops(E))+[0$n]))]]; 
+  if n=0 then ltmp:=copy([[]]); else  
+    ltmp:=copy(NULL); 
+    for i from 0 to nops(E)^n-1 do ltmp:=copy([op(ltmp),[seq(E[j+1],j=(convert(i,base,nops(E))+[0$n]))]]); 
      od; 
   fi ;  
   ltmp;  

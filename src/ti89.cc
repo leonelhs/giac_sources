@@ -1768,7 +1768,7 @@ namespace giac {
       return _integrate(g,contextptr);
   }
   static const char _int_s[]="int";
-  static define_unary_function_eval (__int,(const gen_op_context)_int,_int_s);
+  static define_unary_function_eval_quoted (__int,(const gen_op_context)_int,_int_s);
   define_unary_function_ptr5( at_int ,alias_at_int,&__int,_QUOTE_ARGUMENTS,true);
 
   static const char _isPrime_s[]="isPrime";
@@ -2195,7 +2195,7 @@ namespace giac {
   gen _getKey(const gen & g,GIAC_CONTEXT){
 #ifdef KHICAS
     control_c();
-    int key=getkey(false);
+    int key=getkey(0);
     return key;
 #else
     if (interactive_op_tab && interactive_op_tab[4])
@@ -2222,6 +2222,19 @@ namespace giac {
   static const char _get_key_s[]="get_key";
   static define_unary_function_eval(__get_key,&_getKey,_get_key_s);
   define_unary_function_ptr5( at_get_key ,alias_at_get_key,&__get_key,0,true);
+
+  gen _keydown(const gen & g,GIAC_CONTEXT){
+    if (g.type!=_INT_)
+      return gensizeerr(contextptr);
+#ifdef KHICAS
+    return iskeydown(g.val);
+#else
+    return 0;
+#endif
+  }
+  static const char _keydown_s[]="keydown";
+  static define_unary_function_eval(__keydown,&_keydown,_keydown_s);
+  define_unary_function_ptr5( at_keydown ,alias_at_keydown,&__keydown,0,true);
 
   gen _CopyVar(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
@@ -3135,11 +3148,11 @@ namespace giac {
   define_unary_function_ptr5( at_tantque ,alias_at_tantque,&__tantque,_QUOTE_ARGUMENTS,T_MUPMAP_WHILE);
 
   static const char _et_s[]="et";
-  static define_unary_function_eval4 (__et,&_and,_et_s,&printasand,&texprintasand);
+  static define_unary_function_eval4_quoted (__et,&_and,_et_s,&printasand,&texprintasand);
   define_unary_function_ptr5( at_et ,alias_at_et,&__et,_QUOTE_ARGUMENTS,T_AND_OP);
 
   static const char _oufr_s[]="ou";
-  static define_unary_function_eval4 (__oufr,&_ou,_oufr_s,&printasor,&texprintasor);
+  static define_unary_function_eval4_quoted (__oufr,&_ou,_oufr_s,&printasor,&texprintasor);
   define_unary_function_ptr5( at_oufr ,alias_at_oufr,&__oufr,_QUOTE_ARGUMENTS,T_AND_OP);
 
   static const char _non_s[]="non";

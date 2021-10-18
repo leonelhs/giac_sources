@@ -130,7 +130,7 @@ void a_propos() {
     s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez\n";
     s += "German short help localization, Philipp Rösch\n";
     s += "Tutorial (dxcas) with B. Ycart\n";
-    s += "Debian package: Carlos Enrique Carleos Artime\n";
+    s += "Debian package: Julien Puydt (current maintainer), Carlos Enrique Carleos Artime (first package)\n";
     s += "Mac OS X port thanks to Jean-Yves Avenard and IREM Grenoble\n";
     s += "Tablor by Guillaume Connan, Pgiac by Jean-Michel Sarlat\n";
     s += "FreeBSD port, sage interface and agreg tests by Frederic Han\n";
@@ -1639,7 +1639,7 @@ static void cb_Xcas_help_connan(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_help_alb(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://lycee-rodezlaroque.eap.entmip.fr/le-lycee/xcas/");
+  giac::system_browser_command("https://lycee-rodezlaroque.eap.mon-ent-occitanie.fr/le-lycee/xcas/");
 }
 
 static void cb_Xcas_help_cheval(Fl_Menu_*, void*) {

@@ -2,7 +2,7 @@ dnl Run autoreconf -iv to produce the configure script and associated files.
 
 dnl Giac version number
 m4_define([giac_major_version], [1])
-m4_define([giac_minor_version], [5])
+m4_define([giac_minor_version], [6])
 m4_define([giac_micro_version], [0])
 m4_define([giac_version], [giac_major_version.giac_minor_version.giac_micro_version])
 
@@ -42,6 +42,12 @@ AC_C_BIGENDIAN
 
 dnl Check for standard C+headers
 GINAC_STD_CXX_HEADERS
+
+dnl Define DOUBLEVAL if bigendian
+if test "x$ac_cv_c_bigendian" = "xyes"; then
+	CXXFLAGS="$CXXFLAGS -DDOUBLEVAL"
+fi
+
 
 dnl Check for GMP
 CONFIG_TOMMATH="no"
@@ -397,6 +403,8 @@ LIBS="$save_LIBS"
 
 AC_CHECK_LIB(nauty,main)
 AC_CHECK_HEADERS(nauty/naututil.h)
+dnl https://github.com/vectorclass by Agner Fog
+AC_CHECK_HEADERS(vcl1/vectorclass.h)
   
 AC_CHECK_LIB(pthread,main)
 AC_CHECK_HEADERS(pthread.h)

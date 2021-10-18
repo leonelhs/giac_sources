@@ -547,7 +547,7 @@ namespace xcas {
 	    /* GL_LIGHT_MODEL_AMBIENT=[r,g,b,a] */
 	    if (optname.val==_GL_LIGHT_MODEL_AMBIENT && optvalf.type==_VECT && optvalf._VECTptr->size()==4){
 	      vecteur & w=*optvalf._VECTptr;
-	      GLfloat tab[4]={w[0]._DOUBLE_val,w[1]._DOUBLE_val,w[2]._DOUBLE_val,w[3]._DOUBLE_val};
+	      GLfloat tab[4]={(GLfloat)w[0]._DOUBLE_val,(GLfloat)w[1]._DOUBLE_val,(GLfloat)w[2]._DOUBLE_val,(GLfloat)w[3]._DOUBLE_val};
 	      glLightModelfv(GL_LIGHT_MODEL_AMBIENT,tab);
 	    }
 	    // gl_blend=[d,s] 
@@ -5256,6 +5256,219 @@ namespace xcas {
     History_Pack * hp =get_history_pack(this);
     context * contextptr=hp?hp->contextptr:get_context(this);
     find_title_plot(title_tmp,plot_tmp,contextptr);
+#if 1 // changes by L. Marohnic
+    int horizontal_pixels=w()-(show_axes>0?int(ylegende*labelsize())+2:0);
+    vertical_pixels=h()-((show_axes!=0 && show_axes!=2?2:0)+(!title.empty()))*labelsize();
+    int deltax=x(),deltay=y();
+    double y_scale=vertical_pixels/(window_ymax-window_ymin);
+    double x_scale=horizontal_pixels/(window_xmax-window_xmin);
+    // Then redraw the background
+    fl_color(FL_WHITE);
+    fl_rectf(clip_x, clip_y, clip_w, clip_h);
+    if (background_image){
+      if (!background_image->second || background_image->second->w()!=w() || background_image->second->h()!=h()){
+	if (background_image->second)
+	  delete background_image->second;
+	if (background_image->first)
+	  background_image->second=background_image->first->copy(w(),h());
+      }
+      if (background_image->second)
+	background_image->second->draw(x(),y(),w(),h());
+    }
+    // History draw
+    /****************/
+    int xx,yy,ww,hh;
+    fl_clip_box(clip_x,clip_y,horizontal_pixels,vertical_pixels,xx,yy,ww,hh);
+    fl_push_clip(xx,yy,ww,hh);
+    // fl_push_clip(clip_x,clip_y,horizontal_pixels,vertical_pixels);
+    /****************/
+    fl_color(FL_BLACK);
+    fl_font(FL_HELVETICA,labelsize());
+    if ( (display_mode & 2) && !animation_instructions.empty()){
+      gen tmp=animation_instructions[animation_instructions_pos % animation_instructions.size()];
+      fltk_draw(*this,-1,tmp,x_scale,y_scale,clip_x,clip_y,clip_w,clip_h);
+    }
+    if ( display_mode & 0x40 ){
+      fltk_draw(*this,-1,trace_instructions,x_scale,y_scale,clip_x,clip_y,clip_w,clip_h);
+    }
+    if (display_mode & 1) {
+      const_iterateur at=plot_instructions.begin(),atend=plot_instructions.end(),it,itend;
+      for (int plot_i=0;at!=atend;++at,++plot_i){
+	if (at->type==_INT_)
+	  continue;
+	update_infos(*at,contextptr);
+	if (at->is_symb_of_sommet(at_parameter)){
+	  gen ff = at->_SYMBptr->feuille;
+	  vecteur f;
+	  if (ff.type==_VECT && (f=*ff._VECTptr).size()==4){
+	    // parameters.push_back(f);
+	  }
+	  continue;
+	}
+	fltk_draw(*this,plot_i,*at,x_scale,y_scale,clip_x,clip_y,clip_w,clip_h);
+      } // end for at
+    }
+    vecteur plot_tmp_v=gen2vecteur(plot_tmp);
+    const_iterateur jt=plot_tmp_v.begin(),jtend=plot_tmp_v.end();
+    for (;jt!=jtend;++jt){
+      gen plot_tmp=*jt;
+      if (plot_tmp.is_symb_of_sommet(at_pnt) && plot_tmp._SYMBptr->feuille.type==_VECT && !plot_tmp._SYMBptr->feuille._VECTptr->empty()){
+	vecteur & v=*plot_tmp._SYMBptr->feuille._VECTptr;
+	// cerr << v << '\n';
+	if (v[1].type==_INT_)
+	  plot_tmp=symbolic(at_pnt,makevecteur(v[0],v[1].val | _DOT_LINE | _LINE_WIDTH_2));
+	else
+	  plot_tmp=symbolic(at_pnt,v);
+	try {
+	  fltk_draw(*this,-1,plot_tmp,x_scale,y_scale,clip_x,clip_y,clip_w,clip_h);
+	}
+	catch (...){
+	}
+      }
+    }
+    fl_line_style(0); // back to default line style
+    // Draw axis
+    double I0,J0;
+    findij(zero,x_scale,y_scale,I0,J0,contextptr);
+    int i_0=round(I0),j_0=round(J0);
+    if ( show_axes==1 &&  (window_ymax>=0) && (window_ymin<=0)){ // X-axis
+      fl_color(x_axis_color);
+      check_fl_line(deltax,deltay+j_0,deltax+horizontal_pixels,deltay+j_0,clip_x,clip_y,clip_w,clip_h,0,0);
+      fl_color(FL_CYAN);
+      check_fl_line(deltax+i_0,deltay+j_0,deltax+i_0+int(x_scale),deltay+j_0,clip_x,clip_y,clip_w,clip_h,0,0);
+      fl_color(x_axis_color);
+      if (x_tick>0 && (horizontal_pixels)/(x_scale*x_tick) < 40){
+	double nticks=(horizontal_pixels-I0)/(x_scale*x_tick);
+	int count=0;
+	for (int ii=int(-I0/(x_tick*x_scale));ii<=nticks && count<40;++ii,++count){
+	  int iii=int(I0+ii*x_scale*x_tick+.5);
+	  check_fl_line(deltax+iii,deltay+j_0+2,deltax+iii,deltay+j_0-2,clip_x,clip_y,clip_w,clip_h,0,0);
+	}
+      }
+      string tmp=(x_axis_name.empty()?"x":x_axis_name)+" ";
+      check_fl_draw(tmp.c_str(),deltax+horizontal_pixels-int(fl_width(tmp.c_str())),deltay+j_0+labelsize(),clip_x,clip_y,clip_w,clip_h,0,0);
+    }
+    if ( show_axes==1 && (window_xmax>=0) && (window_xmin<=0) ) {// Y-axis
+      fl_color(y_axis_color);
+      check_fl_line(deltax+i_0,deltay,deltax+i_0,deltay+vertical_pixels,clip_x,clip_y,clip_w,clip_h,0,0);
+      fl_color(FL_CYAN);
+      check_fl_line(deltax+i_0,deltay+j_0,deltax+i_0,deltay+j_0-int(y_scale),clip_x,clip_y,clip_w,clip_h,0,0);
+      fl_color(y_axis_color);
+      if (y_tick>0 && vertical_pixels/(y_tick*y_scale) <40 ){
+	double nticks=(vertical_pixels-J0)/(y_tick*y_scale);
+	int count=0;
+	for (int jj=int(-J0/(y_tick*y_scale));jj<=nticks && count<25;++jj,++count){
+	  int jjj=int(J0+jj*y_scale*y_tick+.5);
+	  check_fl_line(deltax+i_0-2,deltay+jjj,deltax+i_0+2,deltay+jjj,clip_x,clip_y,clip_w,clip_h,0,0);
+	}
+      }
+      string tmp=" "+(y_axis_name.empty()?"y":y_axis_name);
+      check_fl_draw(tmp.c_str(),deltax+i_0+2,deltay+labelsize(),clip_x,clip_y,clip_w,clip_h,0,0);
+    }
+    // Ticks
+    if (show_axes==1 && (horizontal_pixels)/(x_scale*x_tick) < 40 && vertical_pixels/(y_tick*y_scale) <40  ){
+      if (x_tick>0 && y_tick>0 ){
+  fl_color(FL_BLACK);
+	double nticks=(horizontal_pixels-I0)/(x_scale*x_tick);
+	double mticks=(vertical_pixels-J0)/(y_tick*y_scale);
+	int count=0;
+	for (int ii=int(-I0/(x_tick*x_scale));ii<=nticks;++ii){
+	  int iii=int(I0+ii*x_scale*x_tick+.5);
+	  for (int jj=int(-J0/(y_tick*y_scale));jj<=mticks && count<1600;++jj,++count){
+	    int jjj=int(J0+jj*y_scale*y_tick+.5);
+	    check_fl_point(deltax+iii,deltay+jjj,clip_x,clip_y,clip_w,clip_h,0,0);
+	  }
+	}
+      }
+    }
+    /****************/
+    fl_pop_clip();
+    /****************/
+    fl_color(FL_BLACK);
+    fl_font(FL_HELVETICA,labelsize());
+    if (!args_help.empty() && args_tmp.size()<= args_help.size()){
+      fl_draw((gettext("Click ")+args_help[giacmax(1,args_tmp.size())-1]).c_str(),x(),y()+labelsize()-2);
+    }
+    string mytitle(title);
+    if (!is_zero(title_tmp) && function_final.type==_FUNC)
+      mytitle=gen(symbolic(*function_final._FUNCptr,title_tmp)).print(contextptr);
+    if (!mytitle.empty()){
+      int dt=int(fl_width(mytitle.c_str()));
+      check_fl_draw(mytitle.c_str(),deltax+(horizontal_pixels-dt)/2,deltay+h()-labelsize()/4,clip_x,clip_y,clip_w,clip_h,0,0);
+    }
+    // Boundary values
+    fl_font(FL_HELVETICA,labelsize());
+    if (show_axes>=1){ 
+      int taille,affs,delta;
+      vecteur aff;
+      string tmp;
+      bool logx=display_mode & 0x400,logy=display_mode & 0x800;
+      if (show_axes!=2) {
+        // X
+        //fl_color(x_axis_color);
+        aff=ticks(window_xmin,window_xmax,true);
+        affs=aff.size();
+        double tickx,minx=DBL_MAX,maxx=DBL_MIN;
+        for (int i=0;i<affs;++i){
+    double d=evalf_double(aff[i],1,contextptr)._DOUBLE_val;
+    tmp=print_DOUBLE_(logx?std::pow(10,d):d);
+    delta=int(horizontal_pixels*(d-window_xmin)/(window_xmax-window_xmin));
+    taille=int(fl_width(tmp.c_str()));
+    if (delta>=taille/2 && delta<=horizontal_pixels){
+      tickx=x()+delta;
+      if (show_axes>1 || logx || d!=0)
+        fl_line(tickx,y()+vertical_pixels-1,tickx,y()+vertical_pixels-5);
+      if (minx>tickx) minx=tickx;
+      if (maxx<tickx) maxx=tickx;
+      if (args_tmp.empty()) {
+        if  (show_axes==1) fl_color(x_axis_color);
+        fl_draw(tmp.c_str(),tickx-taille/2,y()+vertical_pixels+labelsize());
+        if (show_axes==1) fl_color(FL_BLACK);
+      }
+    }
+        }
+        if (args_tmp.empty())
+    fl_draw(x_axis_unit.c_str(),x()+horizontal_pixels,y()+vertical_pixels+labelsize()-2);
+        if (show_axes==3 && maxx!=DBL_MIN && minx!=DBL_MAX)
+          fl_line(minx,y()+vertical_pixels,maxx,y()+vertical_pixels);
+      }
+      // Y
+      //fl_color(y_axis_color);
+      aff=ticks(window_ymin,window_ymax,true);
+      affs=aff.size();
+      taille=labelsize()/2;
+      double ticky,miny=DBL_MAX,maxy=DBL_MIN;
+      for (int j=0;j<affs;++j){
+	double d=evalf_double(aff[j],1,contextptr)._DOUBLE_val;
+  if (show_axes>=2 && !logy && d<0)
+    continue;
+	tmp=print_DOUBLE_(logy?std::pow(10,d):d)+y_axis_unit;
+	delta=int(vertical_pixels*(window_ymax-d)/(window_ymax-window_ymin));
+	if (delta>=taille && delta<=vertical_pixels-taille){
+    ticky=y()+delta;
+    if (show_axes>1 || logy || d!=0)
+      fl_line(x()+horizontal_pixels-1,ticky,x()+horizontal_pixels-5,ticky);
+    if (miny>ticky) miny=ticky;
+    if (maxy<ticky) maxy=ticky;
+    if (show_axes==1) fl_color(y_axis_color);
+    fl_draw(tmp.c_str(),x()+horizontal_pixels+3,ticky+taille);
+    if (show_axes==1) fl_color(FL_BLACK);
+	  int tmpi=fl_width(tmp.c_str());
+	  if (tmpi+horizontal_pixels+3>w()){
+	    ylegende=(tmpi+3.)/labelsize();
+	    redraw();
+	  }
+	}
+      }
+      if (show_axes>=2 && maxy!=DBL_MIN && miny!=DBL_MAX)
+        fl_line(x()+horizontal_pixels,miny,x()+horizontal_pixels,maxy);
+    }
+    if (show_axes==1 || background_image) {
+      fl_color(FL_BLACK);
+      if ( !(display_mode & 0x100) )
+        fl_rect(x(), y(), horizontal_pixels, vertical_pixels);
+    }
+#else
     int horizontal_pixels=w()-(show_axes?int(ylegende*labelsize()):0);
     vertical_pixels=h()-((show_axes?1:0)+(!title.empty()))*labelsize();
     int deltax=x(),deltay=y();
@@ -5441,6 +5654,7 @@ namespace xcas {
 	}
       }
     }
+#endif
   }
 
   void Graph2d::draw(){

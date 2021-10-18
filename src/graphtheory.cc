@@ -1056,7 +1056,7 @@ gen _export_graph(const gen &g,GIAC_CONTEXT) {
     }
     if (!has_suffix(filename,".dot") && !has_suffix(filename,".gv"))
         filename=filename+".dot";
-    return G.write_dot(filename)?1:0;
+    return 0;//G.write_dot(filename)?1:0;
 }
 static const char _export_graph_s[]="export_graph";
 static define_unary_function_eval(__export_graph,&_export_graph,_export_graph_s);

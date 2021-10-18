@@ -113,7 +113,13 @@ namespace giac {
     }
     if (!assume_t_in_ab(t,plus_inf,plus_inf,true,true,contextptr))
       return gensizeerr(contextptr);
-    gen res=_integrate(gen(makevecteur(f*exp(-t*x,contextptr),x,0,plus_inf),_SEQ__VECT),contextptr);
+    gen res=_integrate(makesequence(f*exp(-t*x,contextptr),x),contextptr);
+    if (lop(res,at_integrate).empty())
+      res=-_limit(makesequence(res,x,0,1),contextptr);
+    else
+      res=undef;
+    if (is_undef(res))
+      res=_integrate(makesequence(f*exp(-t*x,contextptr),x,0,plus_inf),contextptr);
     for (int i=1;i<=n;++i){
       if (is_undef(res))
 	return res;
@@ -879,6 +885,15 @@ namespace giac {
       gen & b=v[1];
       gen & c=v[2];
       gen & d=cst;
+#if 0
+      if (is_exactly_zero(c)){
+	vecteur v1(makevecteur(a,b,d));
+	if (desolve_linn(x,y,t,1,v1,parameters,result,step_info,contextptr)){
+	  result=_integrate(makesequence(result,x),contextptr);
+	  return true;
+	}
+      }
+#endif
       gen u=-b/a,V=-c/a,w=-d/a,
 	k=simplify(u*u/4-derive(u,x,contextptr)/2+V,contextptr);
       // y''=u*y'+V*y+w  (with u,V,w functions of x)
@@ -1592,7 +1607,7 @@ namespace giac {
     return ggbputinlist(desolve( v[0],v[1],v[2],ordre,parameters,contextptr),contextptr);    
   }
   static const char _desolve_s []="desolve";
-  static define_unary_function_eval (__desolve,&_desolve,_desolve_s);
+  static define_unary_function_eval_quoted (__desolve,&_desolve,_desolve_s);
   define_unary_function_ptr5( at_desolve ,alias_at_desolve,&__desolve,1,true);
 
   static const char _dsolve_s []="dsolve";
@@ -2460,7 +2475,7 @@ namespace giac {
     return kovacicsols(r,x,p,contextptr);
   }
   static const char _kovacicsols_s []="kovacicsols";
-  static define_unary_function_eval (__kovacicsols,&_kovacicsols,_kovacicsols_s);
+  static define_unary_function_eval_quoted (__kovacicsols,&_kovacicsols,_kovacicsols_s);
   define_unary_function_ptr5(at_kovacicsols,alias_at_kovacicsols,&__kovacicsols,_QUOTE_ARGUMENTS,true)
 
   /*

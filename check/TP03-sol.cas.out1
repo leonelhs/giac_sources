@@ -56,7 +56,7 @@ matrix[[0,-1,-1,-3],[0,6,-2,-3],[3,1,1,0],[0,1,-3,-3]],
 proc(A) 
   k:=0;  
   n:=(dim(A))[1];  
-  l:=[seq(0,k=(1 .. n))];  
+  l:=copy([seq(0,k=(1 .. n))]);  
   B:=A;  
   i,j:=minval(B);  
   while (([i,j])<>[0,0]) and ((nops(B))>1) do  
@@ -99,7 +99,7 @@ end;,
 proc(A) 
   k:=0;  
   n:=(dim(A))[1];  
-  l:=[seq(0,k=(1 .. n))];  
+  l:=copy([seq(0,k=(1 .. n))]);  
   B:=A;  
   i,j:=minval(B);  
   while (([i,j])<>[0,0]) and ((nops(B))>1) do  
@@ -118,11 +118,11 @@ end;,
 proc(A) 
   n:=(dim(A))[1];  
   d:=Zequiv(A);  
-  L:=[];  
+  L:=copy(NULL);  
   for i from 1 to n-1 do  
   T:=matrix(n+1-i,n+1-i,f); 
   d:=ZequivC(T*d); 
-  L:=[op(L),d[1,1]]; 
+  L:=copy([op(L),d[1,1]]); 
   d:=delrows(delcols(d,1 .. 1),1 .. 1); 
    od;;  
   [op(L),d[1,1]];  

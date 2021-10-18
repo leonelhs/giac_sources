@@ -652,7 +652,7 @@ namespace giac {
 	      // A*exp(t)+C*(t-b)/a+D=0 -> A*exp(t)+C/a*t+D-C*b/a=0
 	      gen a_(A),b_(C/a),c_(D-C*b/a);
 	      gen delta=a_/b_*exp(-c_/b_,contextptr);
-	      if (is_greater(m1,delta,contextptr))
+	      if (is_strictly_greater(m1,delta,contextptr))
 		return; // no solution
 	      gen sol=-_LambertW(delta,contextptr)-c_/b_;
 	      v.push_back((sol-b)/a);
@@ -1074,7 +1074,7 @@ namespace giac {
 	    if (complexmode)
 	      newv=proot(w,epsilon(contextptr));
 	    else {
-	      if (lidnt(w_orig).empty() && !has_num_coeff(w))
+	      if (lvar(w_orig).empty() && !has_num_coeff(w_orig))
 		newv=gen2vecteur(_realroot(gen(makevecteur(w_orig,epsilon(contextptr),at_evalf),_SEQ__VECT),contextptr));
 	      else 
 		newv=real_proot(w,epsilon(contextptr),contextptr);
@@ -2367,7 +2367,15 @@ namespace giac {
   vecteur solve(const gen & e,const identificateur & x,int isolate_mode,GIAC_CONTEXT){
     ck_isolate_mode(isolate_mode,x,contextptr);
     if (is_undef(e)) return vecteur(0);
-    gen expr(exp2pow(e,contextptr));//gen expr(e);
+    gen expr(exp2pow(e,contextptr));
+    // keep e if x is isolable inside
+    vecteur lv0(lvarx(e,x));
+    int s0=int(lv0.size());
+    if (s0==1){
+      gen xvar(lv0.front());
+      if (xvar!=x && xvar.type==_SYMB && equalposcomp(solve_fcns_tab,xvar._SYMBptr->sommet))
+	expr=e;
+    }
     gen modulo;
     if (has_mod_coeff(expr,modulo)){
       vecteur v;
@@ -2599,6 +2607,8 @@ namespace giac {
   gen _solve_uncompressed(const gen & args,GIAC_CONTEXT){
     if (args.type==_VECT && args.subtype==0 && ckmatrix(args))
       return _solve_uncompressed(change_subtype(args,_SEQ__VECT),contextptr);
+    if (args.type==_VECT && args.subtype==_SEQ__VECT && lidnt(args).empty())
+      return _linsolve(args,contextptr);
     if (args.type==_VECT && !args._VECTptr->empty() && args._VECTptr->back()==at_equal){
       int x=calc_mode(contextptr);
       calc_mode(1,contextptr);
@@ -2617,7 +2627,7 @@ namespace giac {
       }
     }
     if (args.type!=_VECT) // change 9 dec 2019: x no more default var
-      return _solve(makesequence(args,ggb_var(args)),contextptr);
+      return _solve(makesequence(args,ggb_var(eval(args,1,contextptr))),contextptr);
     if (has_op(args,*at_irem)){
       vector<const unary_function_ptr *> v(1,at_irem);
       vector<gen_op_context> w(1,_normalmod);
@@ -2948,9 +2958,15 @@ namespace giac {
   // -1 means no step specified, positive means nstep specified
   vecteur bisection_solver(const gen & equation,const gen & var,const gen & a0,const gen &b0,int & iszero,GIAC_CONTEXT){
     bool onlyone=iszero==0;
-    int nstep=iszero>0?iszero:gnuplot_pixels_per_eval;
+    int nstep=gnuplot_pixels_per_eval;
+    if (iszero>0)
+      nstep=iszero;
+    else {
+      if (has_op(equation,*at_tan))
+	nstep *= 16;
+    }
     iszero=0;
-    gen a(evalf_double(a0,1,contextptr)),b(evalf_double(b0,1,contextptr));
+    gen a(is_inf(a0)?gnuplot_xmin:evalf_double(a0,1,contextptr)),b(is_inf(b0)?gnuplot_xmax:evalf_double(b0,1,contextptr));
     if (is_strictly_greater(a,b,contextptr))
       swapgen(a,b);
     gen fa,fb,decal=(b-a)/nstep;
@@ -3005,7 +3021,7 @@ namespace giac {
       }
     }
     ab=(b-a)/ntries;
-    if (fb.type==_DOUBLE_ && fa.type!=_DOUBLE_){
+    if (fb.type==_DOUBLE_ && (fa.type!=_DOUBLE_ || is_undef(fa))){
       for (int i=0;i<ntries;++i){
 	a += ab;
 	fa=subst(equation,var,a,false,contextptr);
@@ -3748,7 +3764,7 @@ namespace giac {
       if (1
 	  //abs_calc_mode(contextptr)==38
 	  ){
-	*logptr(contextptr) << gettext("Solving by bisection with change of variable x=tan(t) and t=-1.57..1.57. Try fsolve(equation,x=guess) for iterative solver or fsolve(equation,x=xmin..xmax) for bisection.") << '\n';
+	*logptr(contextptr) << gettext("Solving by bisection with change of variable x=tan(t) and t=-1.57..1.57. Try fsolve(equation,x=guess) for iterative solver or fsolve(equation,x=xmin..xmax) for bisection.") << "\nEquation: " << v[0] << '\n';
 	gen eq=subst(v[0],v[1],tan(v[1],contextptr),false,contextptr);
   //grad
 	vecteur v_=makevecteur(eq,symb_equal(v[1],angle_radian(contextptr)?symb_interval(-1.57,1.57):(angle_degree(contextptr)?symb_interval(-89.97,89.97):symb_interval(-99.97,99.97))));
@@ -4469,6 +4485,12 @@ namespace giac {
 	fa=evalf(eval(subst(f,x,a,false,contextptr),eval_level(contextptr),contextptr),1,contextptr); 
 	// First loop to localize the solution with prefactor
 	gen lambda(init_prefactor);
+#ifdef HAVE_LIBMPFR
+	if (a.type==_REAL){
+	  int prec=mpfr_get_prec(a._REALptr->inf);
+	  lambda=accurate_evalf(exact(lambda,contextptr),prec);
+	}
+#endif
 	int k;
 	for (k=0;k<niter;++k){
 #ifdef TIMEOUT
@@ -4534,7 +4556,7 @@ namespace giac {
 	  if ( (real && !is_zero(im(fb,contextptr),contextptr)) ||
 	       is_positive(_l2norm(fb,contextptr)-_l2norm(fa,contextptr),contextptr)){
 	    // Decrease prefactor and try again
-	    lambda=evalf(plus_one_half,1,contextptr)*lambda;
+	    lambda=evalf(plus_one_half*lambda,1,contextptr);
 	  }
 	  else {
 	    // Save new value of a and increase the prefactor slightly
@@ -6252,8 +6274,9 @@ namespace giac {
 	// first check for linear dependencies -> substitutions
 	gen a,b;
 	for (unsigned i=0;i<eq.size();++i){
+	  gen numeqi=_numer(eq[i],contextptr);
 	  for (unsigned j=0;j<var.size();++j){
-	    if (is_linear_wrt(eq[i],var[j],a,b,contextptr)){
+	    if (is_linear_wrt(numeqi,var[j],a,b,contextptr)){
 	      if (j==0 && is_zero(a) && is_zero(b)){
 		// suppress eq[i]
 		eq.erase(eq.begin()+i);
@@ -6266,7 +6289,7 @@ namespace giac {
 		  // maybe eq[i] is linear wrt var[jj] for jj>j with a simpler a coeff
 		  for (unsigned jj=j+1;jj<var.size();++jj){
 		    gen aa,bb;
-		    if (is_linear_wrt(eq[i],var[jj],aa,bb,contextptr) 
+		    if (is_linear_wrt(numeqi,var[jj],aa,bb,contextptr) 
 			&& is_zero(derive(aa,var,contextptr),contextptr) 
 			&& !is_zero(simplify(aa,contextptr),contextptr)){
 		      if (aa.islesscomplexthan(a)){
@@ -7447,6 +7470,10 @@ namespace giac {
 	}
       }
     }
+    if (elim.size()==1 && returngb!=1 && eqs.size()>1) {
+      *logptr(contextptr) << "1 variable to eliminate, using resultant. Run with last optional parameter gbasis if you want to force gbasis\n";
+      returngb=3; // for example for eliminate([((-((t)^(2)))*((((t)^(2))+(1))^(3)))+((((((t)^(4))+((x)*((((t)^(2))+(1))^(2))))+((6)*((t)^(2))))-(3))^(2)), (-((((t)^(2))+(1))^(3)))+((((-(8))*((t)^(3)))+((y)*((((t)^(2))+(1))^(2))))^(2))],[t])
+    }
     vecteur linelim;
 #ifdef GIAC_GBASISLEX
     if (returngb==3 && eqs.size()<=l.size()+3){
@@ -7474,7 +7501,7 @@ namespace giac {
 #if 1
     // check if we should eliminate linear dependency with resultant
     // to fit inside 3/11 or 7/7 or 11/3
-    if (returngb==3 && eqs.size()<=l.size()+3){
+    if (returngb==3 && neq>=2 && neq<=l.size()+3){
       bool ok=es>=1;
       if (ok){
 	*logptr(contextptr) << "Eliminating with resultant. Original equations may reduce further."<<'\n';
@@ -7545,6 +7572,8 @@ namespace giac {
 	    if (a.type!=_VECT || a._VECTptr->size()!=2)
 	      return gensizeerr(contextptr);
 	    gen r=_resultant(makesequence(a._VECTptr->front(),a._VECTptr->back(),bestvar),contextptr);
+	    vecteur rv=lvar(r);
+	    r=_primpart(makesequence(r,rv),contextptr);
 	    neweq.push_back(r);
 	  }
 	  vecteur newelim;

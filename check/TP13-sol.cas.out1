@@ -14,11 +14,11 @@ X^6-1,
 "Done",
 (1 % 7)*X^6-1 % 7,
 ((1 % 7)*X+1 % 7)*((1 % 7)*X-1 % 7)*((1 % 7)*X+2 % 7)*((1 % 7)*X-2 % 7)*((1 % 7)*X+3 % 7)*((1 % 7)*X-3 % 7),
-(-3 % 7)*X^3-3 % 7,
+(-3 % 7)*X^3+(0 % 7)*X^2+(0 % 7)*X-3 % 7,
 X^6-1,
 2*X^3-2 % 7,
 (2*X^3-2 % 7)*(1 % 7),
-1/2*X^3-3 % 7,
+(-3 % 7)*X^3+(0 % 7)*X^2+(0 % 7)*X-3 % 7,
 (-3 % 7)*X^3+(0 % 7)*X^2+(0 % 7)*X-3 % 7,
 (1 % 7)*X^3-1 % 7,
 "No such variable a","No such variable b","No such variable c","No such variable d","No such variable e",
@@ -52,13 +52,13 @@ proc(P,p)
   V:=irem(Quo(P,T),p);  
   V:=irem(Gcd(P,V),p);  
   T:=irem(Quo(P,V),p);  
-  L:=[];  
+  L:=copy(NULL);  
   k:=1;  
   while (degree(V))>0 do  
     VV:=V; 
     V:=irem(Gcd(T,V),p); 
     T:=irem(Quo(T,V),p); 
-    if (degree(V))<(degree(VV)) then L:=[op(L),[irem(Quo(VV,V),p),k]]; 
+    if (degree(V))<(degree(VV)) then L:=copy([op(L),[irem(Quo(VV,V),p),k]]); 
     fi ; 
     k:=k+1; 
    od;;  
@@ -74,7 +74,7 @@ proc(P,p)
   T:=irem(Gcd(P,diff(P,x)),p);  
   V:=irem(Quo(P,T),p);  
   T:=irem(Quo(P,V),p);  
-  L:=[];  
+  L:=copy(NULL);  
   k:=1;  
   j:=1;  
   while (degree(T))>0 do  
@@ -82,7 +82,7 @@ proc(P,p)
       VV:=V; 
       V:=irem(Gcd(T,V),p); 
       T:=irem(Quo(T,V),p); 
-      if (degree(V))<(degree(VV)) then L:=[op(L),[irem(Quo(VV,V),p),k]]; 
+      if (degree(V))<(degree(VV)) then L:=copy([op(L),[irem(Quo(VV,V),p),k]]); 
       fi ; 
       k:=k+j; 
      od;; 

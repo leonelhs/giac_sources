@@ -81,6 +81,10 @@ namespace giac {
     }
     return i;
   }
+  inline ulonglong nextpow2(ulonglong n){
+    unsigned i=sizeinbase2(n);
+    return 1ULL<<i;
+  }
   std::vector<int> operator % (const std::vector<int> & a,int modulo);
   std::vector<int> operator / (const std::vector<int> & v,const std::vector<int> & b);
   std::vector<int> operator % (const std::vector<int> & v,const std::vector<int> & b);
@@ -181,6 +185,8 @@ namespace giac {
   void addmod(std::vector< std::vector<int> > & v,const std::vector< std::vector<int> > & w,int m);
   // v <- v-w % m
   void submod(std::vector<int> & v,const std::vector<int> & w,int m);
+  // v <- w-v % m
+  void submodneg(std::vector<int> & v,const std::vector<int> & w,int m);
   // v <- v*k % m
   void mulmod(std::vector<int> & v,int k,int m);
   // v <- v*k % m
@@ -793,6 +799,7 @@ namespace giac {
 
   bool mod_gcd(const std::vector< T_unsigned<int,hashgcd_U> > & p_orig,const std::vector< T_unsigned<int,hashgcd_U> > & q_orig,int modulo,std::vector< T_unsigned<int,hashgcd_U> > & d, std::vector< T_unsigned<int,hashgcd_U> > & pcofactor, std::vector< T_unsigned<int,hashgcd_U> > & qcofactor,const std::vector<hashgcd_U> & vars, bool compute_pcofactor,bool compute_qcofactor,int nthreads);
 
+  int modsqrtminus1(int modulo);
   bool gcd(const std::vector< T_unsigned<gen,hashgcd_U> > & p_orig,const std::vector< T_unsigned<gen,hashgcd_U> > & q_orig,std::vector< T_unsigned<gen,hashgcd_U> > & d, std::vector< T_unsigned<gen,hashgcd_U> > & pcofactor, std::vector< T_unsigned<gen,hashgcd_U> > & qcofactor,const std::vector<hashgcd_U> & vars, bool compute_cofactors,int nthreads=1);
 
   bool gcd_ext(const std::vector< T_unsigned<gen,hashgcd_U> > & p_orig,const std::vector< T_unsigned<gen,hashgcd_U> > & q_orig,std::vector< T_unsigned<gen,hashgcd_U> > & d, std::vector< T_unsigned<gen,hashgcd_U> > & pcofactor, std::vector< T_unsigned<gen,hashgcd_U> > & qcofactor,const std::vector<hashgcd_U> & vars, bool compute_cofactors,int nthreads=1);

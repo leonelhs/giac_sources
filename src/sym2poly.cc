@@ -2183,12 +2183,16 @@ namespace giac {
     }
     if (b==plus_inf)
       return _rand(makesequence(a+1,a+100),contextptr);
-    return _rand(gen(boundaries,_SEQ__VECT),contextptr);
+    return (b-a)*_rand(makesequence(0.0,1.0),contextptr)+a;
   }
 
   static void check_assume(vecteur & vzero,const vecteur & vassume,GIAC_CONTEXT){
     for (unsigned i=0;i<vzero.size();++i){
-      gen assi=vassume[i];
+      gen assi=vassume[i],tmp;
+      if (assi.type==_IDNT && has_evalf(assi,tmp,1,contextptr)){
+	vzero[i]=tmp;
+	continue;
+      }
       if (assi.type==_VECT && assi.subtype==_ASSUME__VECT && assi._VECTptr->size()==3){
 	if((*assi._VECTptr)[1].type==_VECT && !(*assi._VECTptr)[1]._VECTptr->empty()){
 	  vzero[i]=randassume(*(*assi._VECTptr)[1]._VECTptr,contextptr);
@@ -2368,6 +2372,7 @@ namespace giac {
 	    vzero=*vinitd._VECTptr;
 	  else 
 	    check_assume(vzero,vassume,contextptr);
+	  vzero=subst(vzero,vinit,vzero,false,contextptr);
 	  gen tmp0=r2sym(*pp._EXTptr,lt,ltend,contextptr);
 	  gen tmp1=r2sym(f,lt,ltend,contextptr);
 	  for (int ntry=0;ntry<10;++ntry,tst=false){
@@ -2376,7 +2381,7 @@ namespace giac {
 	    if (!lvar(makevecteur(tmp00,tmp10)).empty())
 	      break;
 	    if (tmp10.type==_VECT && _size(_gcd(makesequence(tmp10,derivative(*tmp10._VECTptr)),contextptr),contextptr)>1)
-	      tmp00=cst_i; // retry
+	      tmp00=plus_one_half; // retry
 	    else {
 	      tmp00=algebraic_EXTension(tmp00,tmp10);
 	      tmp00=accurate_evalf_until(tmp00,contextptr); // tmp00.evalf_double(1,contextptr); 
@@ -2657,6 +2662,8 @@ namespace giac {
     if (!is_greater(a,b,contextptr))
       swapgen(a,b);
     res=sqrt(a,contextptr)+cs*sqrt(b,contextptr);
+    if (!is_greater(a,b,contextptr))
+      *logptr(contextptr) << "Warning, assuming " << a-b << " is positive. Hint: run assume to make assumptions on a variable\n";
     return true;
   }
 
@@ -3355,14 +3362,14 @@ namespace giac {
     if (fg.type==_FRAC && fg._FRACptr->num.type==_FRAC){
       fraction f(fg._FRACptr->num._FRACptr->num,fg._FRACptr->den*fg._FRACptr->num._FRACptr->den);
       f.normal();
-      return r2sym(f,l,contextptr); 
+      return ratnormal(r2sym(f,l,contextptr),contextptr); 
     }
     if (fg.type==_FRAC && fg._FRACptr->den.type==_CPLX){
       gen tmp=conj(fg._FRACptr->den,contextptr);
       fg._FRACptr->num = fg._FRACptr->num * tmp;
       fg._FRACptr->den = fg._FRACptr->den * tmp;
     }
-    return r2sym(fg,l,contextptr);
+    return ratnormal(r2sym(fg,l,contextptr),contextptr);
   }
   gen rationalgcd(const gen & a, const gen & b,GIAC_CONTEXT){
     gen A,B,C,D;
@@ -3996,7 +4003,46 @@ namespace giac {
 	return evalf(g,1,contextptr);
       }
     }
-    if (v[0].type==_VECT && v[1].type==_VECT){ // not very efficient...
+    if (v[0].type==_VECT && v[1].type==_VECT){ 
+      gen g1,g2;
+      int t1=coefftype(*v[0]._VECTptr,g1),t2=coefftype(*v[1]._VECTptr,g2);
+      double eps=epsilon(contextptr);
+      if (t1==0 && t2==0){
+	if (eps>0)
+	  return mod_resultant(*v[0]._VECTptr,*v[1]._VECTptr,eps);
+	gen res;
+	subresultant(*v[0]._VECTptr,*v[1]._VECTptr,res);
+	return res;
+      }
+      if (t1==_MOD || t2==_MOD){
+	gen m=t1==_MOD?*(g1._MODptr+1):*(g2._MODptr+1);
+	modpoly A=unmod(*v[0]._VECTptr,m);
+	modpoly B=unmod(*v[1]._VECTptr,m);
+	gen res;
+	if (ntlresultant(A,B,m,res))
+	  return res;
+	if (m.type==_INT_){
+	  vector<int> a,b,tmp1,tmp2;
+	  vecteur2vector_int(A,m.val,a);
+	  vecteur2vector_int(B,m.val,b);
+	  return makemod(resultant_int(a,b,tmp1,tmp2,m.val),m);
+	}
+#ifdef INT128
+	if (m.type==_ZINT && sizeinbase2(m)<61){
+	  longlong p=mpz_get_si(*m._ZINTptr);
+	  int n=giacmax(A.size(),B.size());
+	  int l=sizeinbase2(n);
+	  if (((p-1)>>l)<<l==p-1){
+	    vector<longlong> a,b,tmp1,tmp2;
+	    vecteur2vector_ll(A,p,a);
+	    vecteur2vector_ll(B,p,b);
+	    return makemod(resultantll(a,b,tmp1,tmp2,p),m);
+	  }
+	}
+#endif
+	return makemod(mod_resultant(A,B,eps),m);
+      }
+      // not very efficient...
       gen g(identificateur("tresultant"));
       v[0]=_poly2symb(makesequence(v[0],g),contextptr);
       v[1]=_poly2symb(makesequence(v[1],g),contextptr);
@@ -4106,7 +4152,7 @@ namespace giac {
 	    gen den=pow(r2sym(f1_den,l,contextptr),qp.lexsorted_degree(),contextptr)*pow(r2sym(f2_den,l,contextptr),pp.lexsorted_degree(),contextptr);
 	    vecteur tmpv1,tmpv2,S;
 	    for (int i=0;i<=d;++i,++j){
-	      if (debug_infolevel)
+	      if (debug_infolevel && i%16==0)
 		CERR << CLOCK()*1e-6 << " interp horner " << i << "\n";
 	      gen xi;
 	      for (;;++j){
@@ -4123,7 +4169,7 @@ namespace giac {
 	      X[i]=xi;
 	      gen gp=horner(vp,xi);
 	      gen gq=horner(vq,xi);
-	      if (debug_infolevel)
+	      if (debug_infolevel && i%16==0)
 		CERR << CLOCK()*1e-6 << " interp resultant " << j << ", " << 100*double(i)/(d+1) << "% done" << "\n";
 	      if (gp.type==_POLY && gq.type==_POLY){
 		if (0 &&

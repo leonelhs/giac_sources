@@ -1,21 +1,23 @@
-<HTML>
-<HEAD>
-  <TITLE>
-    Catalogue of GP/PARI Functions: Conversions and similar elementary functions or commands
-  </TITLE>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Catalogue of GP/PARI Functions: Conversions and similar elementary functions or commands</title>
 
-  <META NAME="author"       CONTENT="Nils-Peter Skoruppa">
-  <META NAME="created"      CONTENT="Sat Mar 22 18:13:28 2014">
-  <META NAME="author-email" CONTENT="skoruppa@math.uni-siegen.de">
-  <META NAME="keywords"     CONTENT="PARI, GP, DOC">
+  <meta name="author"       content="Karim Belabas">
+  <meta name="created"      content="Wed Jan 22 18:53:36 2020">
+  <meta name="author-email" content="pari@math.u-bordeaux.fr">
+  <meta name="keywords"     content="PARI, GP, DOC">
+  <meta name="robots" content="noindex">
   <link rel="stylesheet" href="/pari.css">
-</HEAD>
-<BODY bgcolor = "#FFFFFF">
-
-<h3 align=center>Index: Conversions and similar elementary functions or commands</h3>
+  <link rel="stylesheet" href="./gphtml.css">
+</head>
+<body >
+<h3 class="center">Index: Conversions and similar elementary functions or commands</h3>
 <div style="font-size: 80%; text-align: justify;"><A href="Conversions_and_similar_elementary_functions_or_commands.html#Col" target="entryFrame">Col</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#Colrev" target="entryFrame">Colrev</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#List" target="entryFrame">List</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#Map" target="entryFrame">Map</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#Mat" target="entryFrame">Mat</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#Mod" target="entryFrame">Mod</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#Pol" target="entryFrame">Pol</A>,
@@ -35,6 +37,7 @@
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#bitneg" target="entryFrame">bitneg</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#bitnegimply" target="entryFrame">bitnegimply</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#bitor" target="entryFrame">bitor</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#bitprecision" target="entryFrame">bitprecision</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#bittest" target="entryFrame">bittest</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#bitxor" target="entryFrame">bitxor</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#ceil" target="entryFrame">ceil</A>,
@@ -45,9 +48,10 @@
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#conjvec" target="entryFrame">conjvec</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#denominator" target="entryFrame">denominator</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#digits" target="entryFrame">digits</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#exponent" target="entryFrame">exponent</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#floor" target="entryFrame">floor</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#frac" target="entryFrame">frac</A>,
-<A href="Conversions_and_similar_elementary_functions_or_commands.html#hammingweight" target="entryFrame">hammingweight</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#fromdigits" target="entryFrame">fromdigits</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#imag" target="entryFrame">imag</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#length" target="entryFrame">length</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#lift" target="entryFrame">lift</A>,
@@ -56,19 +60,21 @@
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#liftpol" target="entryFrame">liftpol</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#norm" target="entryFrame">norm</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#numerator" target="entryFrame">numerator</A>,
-<A href="Conversions_and_similar_elementary_functions_or_commands.html#numtoperm" target="entryFrame">numtoperm</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#oo" target="entryFrame">oo</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#padicprec" target="entryFrame">padicprec</A>,
-<A href="Conversions_and_similar_elementary_functions_or_commands.html#permtonum" target="entryFrame">permtonum</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#precision" target="entryFrame">precision</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#random" target="entryFrame">random</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#real" target="entryFrame">real</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#round" target="entryFrame">round</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#serchop" target="entryFrame">serchop</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#serprec" target="entryFrame">serprec</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#simplify" target="entryFrame">simplify</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#sizebyte" target="entryFrame">sizebyte</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#sizedigit" target="entryFrame">sizedigit</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#truncate" target="entryFrame">truncate</A>,
 <A href="Conversions_and_similar_elementary_functions_or_commands.html#valuation" target="entryFrame">valuation</A>,
-<A href="Conversions_and_similar_elementary_functions_or_commands.html#variable" target="entryFrame">variable</A>
-</div>
-</BODY>
-</HTML>
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#varhigher" target="entryFrame">varhigher</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#variable" target="entryFrame">variable</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#variables" target="entryFrame">variables</A>,
+<A href="Conversions_and_similar_elementary_functions_or_commands.html#varlower" target="entryFrame">varlower</A>
+</div></body>

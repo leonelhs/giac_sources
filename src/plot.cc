@@ -3296,8 +3296,8 @@ namespace giac {
     symbolic e=symbolic(at_pnt,gen(makevecteur(x,c,nom),_PNT__VECT));
     gen ee(e);
     ee.subtype=gnuplot_show_pnt(e,contextptr);
-#ifndef KHICAS
     history_plot(contextptr).push_back(ee);
+#ifndef KHICAS
     if (io_graph(contextptr))
       __interactive.op(ee,contextptr);
 #endif
@@ -3313,8 +3313,8 @@ namespace giac {
       e=symbolic(at_pnt,gen(makevecteur(gen(makevecteur(x,y),type),c[0],c[1]),_PNT__VECT));
     gen ee(e);
     ee.subtype=gnuplot_show_pnt(*e._SYMBptr,contextptr);
-#ifndef KHICAS
     history_plot(contextptr).push_back(ee);
+#ifndef KHICAS
     if (io_graph(contextptr))
       __interactive.op(ee,contextptr);
 #endif
@@ -3328,8 +3328,8 @@ namespace giac {
 #else
     ee.subtype=-1;
 #endif
-#ifndef KHICAS
     history_plot(contextptr).push_back(ee);
+#ifndef KHICAS
     if (io_graph(contextptr))
       __interactive.op(ee,contextptr);
 #endif
@@ -3722,15 +3722,19 @@ namespace giac {
       gen b=c._VECTptr->back();
       if (a.type==_VECT && b.type==_VECT){
 	gen tmp=a-b;
-	if (tmp.type!=_VECT || tmp._VECTptr->size()!=2)
-	  return gensizeerr(contextptr);
-	a=tmp._VECTptr->front();
-	b=tmp._VECTptr->back();
+	if (tmp.type==_VECT && tmp._VECTptr->size()==2){
+	  a=tmp._VECTptr->front();
+	  b=tmp._VECTptr->back();
+	  c=a+cst_i*b;
+	}
       }
-      c=a+cst_i*b;
+      else {
+	if (!has_i(a) && !has_i(b))
+	  c=a+cst_i*b;
+      }
     }
     if (c.type==_VECT)
-      return gensizeerr(contextptr);
+      return apply(c,_coordonnees_polaires,contextptr);
     gen a=abs(c,contextptr);
     gen b=arg(c,contextptr);
     return makevecteur(a,b);
@@ -3746,10 +3750,12 @@ namespace giac {
     if (args.type!=_VECT)
       return makevecteur(re(args,contextptr),im(args,contextptr));
     if (args._VECTptr->size()!=2)
-      return gensizeerr(contextptr);
+      return apply(args,_coordonnees_rectangulaires,contextptr);
     gen a=args._VECTptr->front();
     gen b=args._VECTptr->back();
-    return makevecteur(a*cos(b,contextptr),a*sin(b,contextptr));
+    if (a.type!=_VECT && b.type!=_VECT)
+      return makevecteur(a*cos(b,contextptr),a*sin(b,contextptr));
+    return apply(args,_coordonnees_rectangulaires,contextptr);
   }
   static const char _coordonnees_rectangulaires_s []="rectangular_coordinates";
   static define_unary_function_eval (__coordonnees_rectangulaires,&_coordonnees_rectangulaires,_coordonnees_rectangulaires_s);
@@ -3779,6 +3785,8 @@ namespace giac {
     if (is_undef(args)) return args;
     // inert form (since cercle return itself with a pnt__vect arg)
     if (args.type==_VECT && args.subtype==_PNT__VECT) return symbolic(at_cercle,args); 
+    if (args.type==_INT_)
+      return _rond(args,contextptr);
     vecteur v(gen2vecteur(args));
     if (v.empty())
       return gensizeerr(gettext("circle"));
@@ -8721,7 +8729,7 @@ namespace giac {
       vecteur w0=*v0._VECTptr,w1=*v1._VECTptr;
       int ss=w0.size(),i;
       for (i=0;i<ss;++i){
-	if (w0[i].type>_REAL || w1[i].type>_REAL)
+	if ( (w0[i].type>_REAL && w0[i].type!=_FRAC) || (w1[i].type>_REAL && w1[i].type!=_FRAC))
 	  break;
       }
       if (i==ss){
@@ -10834,8 +10842,8 @@ namespace giac {
     vecteur v(*b._SYMBptr->feuille._VECTptr);
     v[1]=c;
     gen e=symbolic(at_pnt,gen(v,_PNT__VECT));
-#ifndef KHICAS
     history_plot(contextptr).push_back(e);
+#ifndef KHICAS
     if (io_graph(contextptr))
       __interactive.op(e,contextptr);    
 #endif
@@ -11254,7 +11262,7 @@ namespace giac {
   static define_unary_function_eval (__interactive_odeplot,&_interactive_plotode,_interactive_odeplot_s);
   define_unary_function_ptr5( at_interactive_odeplot ,alias_at_interactive_odeplot,&__interactive_odeplot,0,true);
 
-#if !defined NSPIRE && !defined FXCG
+#if !defined NSPIRE && !defined FXCG //&& !defined EMCC
   static vecteur unarchive_VECT(istream & is,GIAC_CONTEXT){
     vecteur v;
     int taille;
@@ -11996,7 +12004,7 @@ namespace giac {
   static define_unary_function_eval (__switch_axes,&_switch_axes,_switch_axes_s);
   define_unary_function_ptr5( at_switch_axes ,alias_at_switch_axes,&__switch_axes,0,true);
 
-  gen plotseq(const gen& f,const gen&x,double x0,double xmin,double xmax,int niter,const vecteur & attributs,const context * contextptr){
+gen plotseq(const gen& f,const gen&x,double x0,double xmin,double xmax,int niter,const vecteur & attributs,const context * contextptr,bool print){
     if (xmin>xmax)
       swapdouble(xmin,xmax);
     vecteur res(2*niter+1);
@@ -12005,10 +12013,12 @@ namespace giac {
     gen newx0;
     double x1;
     //gprintf("======== u_(n+1)=(%gen->%gen)(u_n), u0=%gen",makevecteur(x,f,x0),1,contextptr);
-    gprintf("======== %gen=%gen), %gen=%gen",makevecteur(symb_at(u__IDNT_e,n__IDNT_e+1,contextptr),subst(f,x,symb_at(u__IDNT_e,n__IDNT_e,contextptr),false,contextptr),symb_at(u__IDNT_e,0,contextptr),x0),1,contextptr);
+    if (print)
+      gprintf("======== %gen=%gen), %gen=%gen",makevecteur(symb_at(u__IDNT_e,n__IDNT_e+1,contextptr),subst(f,x,symb_at(u__IDNT_e,n__IDNT_e,contextptr),false,contextptr),symb_at(u__IDNT_e,0,contextptr),x0),1,contextptr);
     for (int i=0;i<niter;++i){
       newx0=subst(f,x,x0,false,contextptr).evalf2double(eval_level(contextptr),contextptr);
-      gprintf("n=%gen u_n=%gen",makevecteur(i+1,newx0),1,contextptr);
+      if (print)
+	gprintf("n=%gen u_n=%gen",makevecteur(i+1,newx0),1,contextptr);
       if (newx0.type!=_DOUBLE_)
 	return gensizeerr(gettext("Bad iteration"));
       x1=newx0._DOUBLE_val;
@@ -12031,8 +12041,13 @@ namespace giac {
     g.push_back(symb_pnt(gen(makevecteur(gen(x0,x0),gen(x0,xmin)),_VECTOR__VECT), color | _DASH_LINE,contextptr));
     return g; // gen(g,_SEQ__VECT);
   }
-  int find_plotseq_args(const gen & args,gen & expr,gen & x,double & x0d,double & xmin,double & xmax,int & niter,vecteur & attributs,GIAC_CONTEXT){
+int find_plotseq_args(const gen & args,gen & expr,gen & x,double & x0d,double & xmin,double & xmax,int & niter,vecteur & attributs,GIAC_CONTEXT,bool & print){
     vecteur v=gen2vecteur(args);
+    print=true;
+    if (v.back()==at_tableseq){
+      print=false;
+      v.pop_back();
+    }
     attributs=vecteur(1,default_color(contextptr));
     int l=read_attributs(v,attributs,contextptr);
     if (l<2)
@@ -12089,9 +12104,10 @@ namespace giac {
     double x0d,xmin,xmax;
     int niter;
     vecteur attributs;
-    if (find_plotseq_args(args,expr,var,x0d,xmin,xmax,niter,attributs,contextptr)<0)
+    bool print;
+    if (find_plotseq_args(args,expr,var,x0d,xmin,xmax,niter,attributs,contextptr,print)<0)
       return gentypeerr(contextptr);
-    return plotseq(expr,var,x0d,xmin,xmax,niter,attributs,contextptr);
+    return plotseq(expr,var,x0d,xmin,xmax,niter,attributs,contextptr,print);
   }
   static const char _plotseq_s []="plotseq";
   static define_unary_function_eval (__plotseq,&_plotseq,_plotseq_s);
@@ -14528,6 +14544,20 @@ gen _vers(const gen & g,GIAC_CONTEXT){
     // logo instruction
     turtle(contextptr) = logo_turtle();
     turtle_stack(contextptr).clear();
+    if (g.type==_VECT && g._VECTptr->size()==2){
+      vecteur v = *g._VECTptr;
+      int s=int(v.size());
+      v[0]=evalf_double(v[0],1,contextptr);
+      if (s>1)
+	v[1]=evalf_double(v[1],1,contextptr);
+      turtle(contextptr).mark = false;
+      turtle(contextptr).radius = 0;
+      update_turtle_state(true,contextptr);
+      set_turtle_state(v,contextptr); // baisse_crayon
+      update_turtle_state(true,contextptr);
+      turtle(contextptr).mark = true;
+      turtle(contextptr).radius = 0;
+    }
     return update_turtle_state(true,contextptr);
   }
   static const char _efface_s []="efface";

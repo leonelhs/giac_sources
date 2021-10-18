@@ -1593,6 +1593,7 @@ extern const unary_function_ptr * const  at_sortd;
 extern const unary_function_ptr * const  at_sorted;
 extern const unary_function_ptr * const  at_soundsec;
 extern const unary_function_ptr * const  at_spanning_tree;
+extern const unary_function_ptr * const  at_speed;
 extern const unary_function_ptr * const  at_sphere;
 extern const unary_function_ptr * const  at_spherical2rectangular;
 extern const unary_function_ptr * const  at_spline;
