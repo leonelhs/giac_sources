@@ -228,7 +228,7 @@ namespace giac {
       index=new_i;
     }
     void reorder(const std::vector<int> & permutation)  {
-      int s=int(index.size());
+      int s=index.size();
       if (unsigned(s)!=permutation.size()){
 #ifndef NO_STDEXCEPT
 	setsizeerr("Error monomial.h reorder(const index_t &)");

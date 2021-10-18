@@ -49,7 +49,7 @@ namespace giac {
     tensor() : dim(0), is_strictly_greater(i_lex_is_strictly_greater), m_is_strictly_greater(std::ptr_fun<const monomial<T> &, const monomial<T> &, bool>(m_lex_is_strictly_greater<T>)) { }
     explicit tensor(int d) : dim(d), is_strictly_greater(i_lex_is_strictly_greater), m_is_strictly_greater(std::ptr_fun<const monomial<T> &, const monomial<T> &, bool>(m_lex_is_strictly_greater<T>)) { }
     explicit tensor(int d,const tensor<T> & t) : dim(d),is_strictly_greater(t.is_strictly_greater), m_is_strictly_greater(t.m_is_strictly_greater)  { }
-    tensor(const monomial<T> & v) : dim(int(v.index.size())), is_strictly_greater(i_lex_is_strictly_greater), m_is_strictly_greater(std::ptr_fun<const monomial<T> &, const monomial<T> &, bool>(m_lex_is_strictly_greater<T>)) { 
+    tensor(const monomial<T> & v) : dim(v.index.size()), is_strictly_greater(i_lex_is_strictly_greater), m_is_strictly_greater(std::ptr_fun<const monomial<T> &, const monomial<T> &, bool>(m_lex_is_strictly_greater<T>)) { 
       coord.push_back(v);
     }
     tensor(const T & v, int d) : dim(d), is_strictly_greater(i_lex_is_strictly_greater), m_is_strictly_greater(std::ptr_fun<const monomial<T> &, const monomial<T> &, bool>(m_lex_is_strictly_greater<T>)) {
@@ -839,7 +839,7 @@ namespace giac {
     if (it==itend)
       return tensor<T>(0);
     int n=it->index.front();
-    int d=int(it->index.size());
+    int d=it->index.size();
     tensor<T> res(d-1);
     for (;(it!=itend) && (it->index.front()==n);++it)
       res.coord.push_back(it->trunc1());
@@ -1129,13 +1129,13 @@ namespace giac {
 
   template <class T>
   bool tensor<T>::TDivRem (const tensor<T> & other, tensor<T> & quo, tensor<T> & rem, bool allowrational ) const {  
-    int asize=int((*this).coord.size());
+    int asize=(*this).coord.size();
     if (!asize){
       quo=*this;
       rem=*this; 
       return true;
     }
-    int bsize=int(other.coord.size());
+    int bsize=other.coord.size();
     if (!bsize){
       quo.dim=dim; quo.coord.clear();
       rem=*this;

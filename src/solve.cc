@@ -348,10 +348,9 @@ namespace giac {
 	  if (is_inequation(e)){
 	    vecteur tmp=solve(e._SYMBptr->feuille._VECTptr->front()-e._SYMBptr->feuille._VECTptr->back(),x,cplxmode,contextptr);
 	    // is *it continuous at tmp
-	    gen etoileit=subst(*it,undef,identificateur("undef_"),false,contextptr);
 	    const_iterateur jt=tmp.begin(),jtend=tmp.end();
 	    for (;jt!=jtend;++jt){
-	      if (!is_zero(limit(etoileit,x,*jt,1,contextptr)-limit(etoileit,x,*jt,-1,contextptr),contextptr))
+	      if (!is_zero(limit(*it,x,*jt,1,contextptr)-limit(*it,x,*jt,-1,contextptr),contextptr))
 		res.push_back(*jt);
 	    }
 	  }
@@ -524,8 +523,6 @@ namespace giac {
 
   static vecteur solve_piecewise(const gen & args_,const gen & value,const identificateur & x,int isolate_mode,GIAC_CONTEXT){
     gen args=_exp2pow(args_,contextptr);
-    if (is_undef(args))
-      args=args_;
     if (args.type!=_VECT)
       return vecteur(1,gensizeerr(contextptr));
     vecteur & piece_args=*args._VECTptr;
@@ -2403,7 +2400,6 @@ namespace giac {
 #endif
     }
     arg1=apply(arg1,equal2diff);
-    arg1=subst(arg1,undef,identificateur("undef_"),false,contextptr);
     vecteur _res=solve(arg1,v.back(),isolate_mode,contextptr);
     if (_res.empty() || _res.front().type==_STRNG || is_undef(_res))
       return _res;
@@ -5487,11 +5483,26 @@ namespace giac {
     if (res.front().dim<=GROEBNER_VARS+1-(order==_REVLEX_ORDER || order==_TDEG_ORDER)){
       vectpoly tmp;
       gbasis8(res,order,tmp,env,modularcheck,rur,contextptr); 
-      tmp.swap(res);
+      int i;
+      for (i=0;i<tmp.size();++i){
+	if (tmp[i].coord.empty())
+	  break;
+      }
+      if (i==tmp.size())
+	tmp.swap(res);
+      else {
+	// remove 0
+	res.clear();
+	for (int i=0;i<tmp.size();++i){
+	  if (!tmp[i].coord.empty())
+	    res.push_back(tmp[i]);
+	}
+      }
       // reduce(res,env);
       if (!rur){
 	sort_vectpoly(res.begin(),res.end());
-	reverse(res.begin(),res.end());
+	if (increasing_power(contextptr))
+	  reverse(res.begin(),res.end());
       }
       return true;
     }

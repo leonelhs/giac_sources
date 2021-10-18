@@ -248,12 +248,8 @@ namespace giac {
     // a.size()<=b.size()
     if (a.size()==b.size()){
       for (int i=0;i<a.size();++i){
-	if (a[i].type==_VECT && b[i].type==_VECT){
-	  if (a[i]._VECTptr->size()<b[i]._VECTptr->size())
-	    break;
-	  if (a[i]._VECTptr->size()>b[i]._VECTptr->size())
-	    return ext_glue_matrices(b,a);
-	}
+	if (a[i].type==_VECT && b[i].type==_VECT && a[i]._VECTptr->size()>b[i]._VECTptr->size())
+	  return ext_glue_matrices(b,a);
       }
     }
     if (b.empty() || a.empty() || (a==b))

@@ -893,39 +893,60 @@ namespace giac {
       simpl=e;
       return;
     }
+    if (is_zero(e)){
+      simpl=e;
+      return;
+    }
     gen e_copy;
     pos=ck_is_positive(e,context0); // ok
     if (!pos)
       e_copy=-e;
     else
       e_copy=e;
-    if (is_zero(e)){
-      simpl=e;
-      return;
-    }
-#ifdef GIAC_HAS_STO_38 
-    vecteur u(pfacprem(e_copy,true,contextptr));
-#else
     vecteur u;
-#ifdef NO_STDEXCEPT
-    u=ifactors(e_copy,contextptr);
-    if (is_undef(u)){
-      *logptr(contextptr) << gettext("Unable to factor ") << e << endl;
-      simpl=e;
-      pos=true;
-      return;
-    }
+#ifdef HAVE_GMP_REPLACEMENTS
+    bool trial=true;
 #else
-    try {
-      u=ifactors(e_copy,contextptr);
-    } catch (std::runtime_error & err){
-      *logptr(contextptr) << gettext("Unable to factor ") << e << endl;
-      simpl=e;
-      pos=true;
-      return;      
+    bool trial=false;
+    if (e_copy.type==_ZINT && mpz_sizeinbase(*e_copy._ZINTptr,2)>128){
+      // detect perfect square
+      if (mpz_perfect_power_p(*e_copy._ZINTptr)){
+	int nbits=mpz_sizeinbase(*e_copy._ZINTptr,2);
+	gen h=accurate_evalf(e_copy,nbits);
+	h=pow(h,inv(d,contextptr),contextptr);
+	h=_floor(h,contextptr);
+	if (pow(h,d,contextptr)==e_copy){
+	  simpl=1;
+	  doubl=h;
+	  return ;
+	}
+      }
+      // trial division only
+      trial=true;
     }
 #endif
-#endif
+    if (trial)
+      u=pfacprem(e_copy,true,contextptr);
+    else {
+#ifdef NO_STDEXCEPT
+      u=ifactors(e_copy,contextptr);
+      if (is_undef(u)){
+	*logptr(contextptr) << gettext("Unable to factor ") << e << endl;
+	simpl=e;
+	pos=true;
+	return;
+      }
+#else
+      try {
+	u=ifactors(e_copy,contextptr);
+      } catch (std::runtime_error & err){
+	*logptr(contextptr) << gettext("Unable to factor ") << e << endl;
+	simpl=e;
+	pos=true;
+	return;      
+      }
+#endif // no_stdexcept
+    }
     // *logptr(contextptr) << u.size() << endl;
     gen f;
     int m,k;

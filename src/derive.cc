@@ -102,7 +102,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return derive(s.feuille,i,contextptr);
       vecteur::const_iterator iti=s.feuille._VECTptr->begin(),itend=s.feuille._VECTptr->end();
-      int taille=int(itend-iti);
+      int taille=itend-iti;
       if (taille==2)
 	return derive(*iti,i,contextptr)+derive(*(iti+1),i,contextptr);
       vecteur v;
@@ -127,7 +127,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return derive(s.feuille,i,contextptr);
       vecteur::const_iterator itbegin=s.feuille._VECTptr->begin(),itj,iti,itend=s.feuille._VECTptr->end();
-      int taille=int(itend-itbegin);
+      int taille=itend-itbegin;
       // does not work because of is_linear_wrt e.g. for cos(3*pi/4)
       // if (taille==2) return derive(*itbegin,i,contextptr)*(*(itbegin+1))+(*itbegin)*derive(*(itbegin+1),i,contextptr);
       vecteur v,w;
@@ -263,7 +263,7 @@ namespace giac {
     }
     if (s.feuille.type==_VECT){
       vecteur v=*s.feuille._VECTptr;
-      int vs=int(v.size());
+      int vs=v.size();
       if (vs>=3 && (s.sommet==at_ifte || s.sommet==at_when) ){
 	for (int j=1;j<vs;++j){
 	  gen & tmp=v[j];
@@ -326,7 +326,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return (*s.sommet.ptr()->D)(1)(s.feuille,contextptr)*derive(s.feuille,i,contextptr);
       // multiargs operators
-      int taille=int(s.feuille._VECTptr->size());
+      int taille=s.feuille._VECTptr->size();
       vecteur v;
       v.reserve(taille);
       vecteur::const_iterator iti=s.feuille._VECTptr->begin(),itend=s.feuille._VECTptr->end();
@@ -349,7 +349,7 @@ namespace giac {
       if (s.feuille.type!=_VECT)
 	return s.feuille;
       vecteur v=*s.feuille._VECTptr;
-      int nargs=int(v.size());
+      int nargs=v.size();
       if (nargs<=1)
 	return s.feuille;
       if (nargs==2 && is_equal(v[1])){
@@ -575,7 +575,7 @@ namespace giac {
     // multi-index derivation
     if (nderiv.type!=_VECT ||
 	vars.type!=_VECT)  return gensizeerr(gettext("derive.cc/derive"));
-    int s=int(nderiv._VECTptr->size());
+    int s=nderiv._VECTptr->size();
     if (s!=signed(vars._VECTptr->size()))  return gensizeerr(gettext("derive.cc/derive"));
     int j=0;
     gen ecopie(e);
@@ -623,11 +623,11 @@ namespace giac {
       res=derive(res,var,contextptr);
       return symbolic(at_program,makesequence(var,0,res));
     }
-    int s=int(v.size());
+    int s=v.size();
     if (s==2){
       if (v[1].type==_VECT && v[1].subtype==_SEQ__VECT){
 	vecteur & w=*v[1]._VECTptr;
-	int ss=int(w.size());
+	int ss=w.size();
 	gen res=v[0];
 	for (int i=0;i<ss;++i)
 	  res=ratnormal(derive(res,w[i],contextptr));

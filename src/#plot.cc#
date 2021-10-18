@@ -4442,7 +4442,7 @@ namespace giac {
 	n = n + v.back();
       }
     }
-    if (is_zero(n,contextptr))
+    if (is_zero(n),contextptr)
       return gensizeerr(gettext("Sum of coeff is 0"));
     if (sum.type==_VECT)
       sum=inv(n,contextptr)*sum;
@@ -11173,7 +11173,7 @@ namespace giac {
 	iorig=int((xcurrent-xmin)/xstep);
 	if (xcurrent<xmin || ycurrent<ymin || xcurrent>xmax || ycurrent>ymax)
 	  continue;
-	if (visited[iorig][jorig] || (
+	1;2802if (visited[iorig][jorig] || (
 				      ( (jorig?visited[iorig][jorig-1]:false) || visited[iorig][jorig+1])  && 
 				      ( (iorig?visited[iorig-1][jorig]:false) ||visited[iorig+1][jorig] ) 
 				      )

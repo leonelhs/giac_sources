@@ -733,7 +733,7 @@ namespace giac {
   class vectpoly:public std::vector<polynome> {
   public:
     vectpoly():std::vector<polynome>::vector() {};
-    vectpoly(size_t i,const polynome & p):std::vector<polynome>::vector(i,p) {};
+    vectpoly(int i,const polynome & p):std::vector<polynome>::vector(i,p) {};
     void dbgprint(){  
 #ifndef NSPIRE
       CERR << *this << std::endl; 
