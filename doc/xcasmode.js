@@ -190,13 +190,18 @@ CodeMirror.defineSimpleMode("simplemode", {
 	    var dedent_done=false;
             if (rule.data.mode)
 		enterLocalMode(config, state, rule.data.mode, rule.token);
+            //console.log(matches,rule.data,stream,state.indent);
             if (rule.data.indent)
 		state.indent.push(stream.indentation() + config.indentUnit);
 	    else {
-		if (state.indent.length>0 &&stream.start<state.indent[state.indent.length - 1]){
-		//console.log("test",stream.start,state.indent[state.indent.length - 1]);
-		    state.indent.pop();
-		    dedent_done=true;
+		// console.log("test0",stream.start,state.indent.length);
+		if (state.indent.length>0 && stream.start<state.indent[state.indent.length - 1]){
+		    //console.log(matches,stream.start,stream.indentation(),state.indent[state.indent.length - 1]);
+		    if (stream.indentation()==stream.start){
+			//console.log("dedent");
+			state.indent.pop();
+			dedent_done=true;
+		    }
 		}
 	    }
             if (!dedent_done && rule.data.dedent)

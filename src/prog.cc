@@ -1864,6 +1864,21 @@ namespace giac {
     bool python=python_compat(contextptr) && !debug_ptr(contextptr)->debug_mode;
     if (python){
       int & ind=debug_ptr(contextptr)->indent_spaces;
+      if (inc.is_symb_of_sommet(at_sto) && inc._SYMBptr->feuille[1].type==_IDNT){
+	gen index=inc._SYMBptr->feuille[1];
+	if (inc._SYMBptr->feuille[0]==index+1 && it->is_symb_of_sommet(at_sto) && it->_SYMBptr->feuille[1]==index){
+	  gen start=it->_SYMBptr->feuille[0];
+	  if ((it+1)->type==_SYMB && ((it+1)->_SYMBptr->sommet==at_inferieur_egal || (it+1)->_SYMBptr->sommet==at_inferieur_strict) && (it+1)->_SYMBptr->feuille[0]==index){
+	    int large=(it+1)->_SYMBptr->sommet==at_inferieur_egal?1:0;
+	    gen stop=(it+1)->_SYMBptr->feuille[1];
+	    res +=  '\n'+string(ind,' ')+"for "+index.print(contextptr)+" in range("+start.print(contextptr)+","+(stop+large).print(contextptr)+"):"+'\n';
+	    ind += 4;
+	    res += string(ind,' ')+(it+3)->print(contextptr);
+	    ind -=4;
+	    return res;
+	  }
+	}
+      }
       if (it->type!=_INT_) res += '\n'+string(ind,' ')+it->print(contextptr)+'\n';
       res += '\n'+string(ind,' ')+"while " + (it+1)->print(contextptr)+" :";
       if (!(it+3)->is_symb_of_sommet(at_bloc))
@@ -2541,7 +2556,7 @@ namespace giac {
 	const char * name=tmp._IDNTptr->id_name;
 	int bl=strlen(name);
 	gen a=*it;
-	if (name[bl-2]=='_'){
+	if (name[bl-2]=='_' && (a.type!=_STRNG || a.subtype!=-1)){
 	  switch (name[bl-1]){
 	  case 'd':
 	    if (a.type!=_INT_ && a.type!=_DOUBLE_ && a.type!=_FRAC){
@@ -5036,14 +5051,22 @@ namespace giac {
     }
     else
       progs += "\nprg: "+s+" # "+w[4].print(contextptr);
+    progs += "======\n";
     // evaluate watch with debug_ptr(contextptr)->debug_allowed=false
     debug_ptr(contextptr)->debug_allowed=false;
     string evals,breaks;
     iterateur it=dw.begin(),itend=dw.end();
-    for (;it!=itend;++it){
+    int nvars=itend-it;
+    for (int nv=0;it!=itend;++nv,++it){
       evals += it->print(contextptr)+"=";
       gen tmp=protecteval(*it,1,contextptr);
-      evals += tmp.print(contextptr)+",";
+      string s=tmp.print(contextptr);
+      if (s.size()>100) s=s.substr(0,97)+"...";
+      evals += s+",";
+      if (nvars<4 || (nv % 2)==1 || nv==nvars-1)
+	evals += '\n';
+      else
+	evals += "    ";
     }
     w.push_back(dw);
     debug_ptr(contextptr)->debug_allowed=true;
@@ -5068,7 +5091,7 @@ namespace giac {
 	  if (tst=='break' || tst=='b' ) return -5;
 	  if (tst=='delete' || tst=='d' ) return -6;
 	  return allocate(intArrayFromString(tst), 'i8', ALLOC_NORMAL);
-	}, (progs+breaks+evals+"\nn: next, s:step in, c:cont, b: break, d:del").c_str());
+	}, (progs+breaks+evals+"======\nn: next, s:step in, c:cont, b: break, d:del").c_str());
       breaks="";
       if (i>0){
 	char *ptr=(char *)i;
@@ -8373,6 +8396,10 @@ namespace giac {
   static const char _DelVar_s []="DelVar";
   static define_unary_function_eval2_quoted (__DelVar,&_purge,_DelVar_s,&printastifunction);
   define_unary_function_ptr5( at_DelVar ,alias_at_DelVar,&__DelVar,_QUOTE_ARGUMENTS,T_RETURN);
+
+  static const char _del_s []="del";
+  static define_unary_function_eval2_quoted (__del,&_purge,_del_s,&printastifunction);
+  define_unary_function_ptr5( at_del ,alias_at_del,&__del,_QUOTE_ARGUMENTS,T_RETURN);
 
   gen _Row(const gen & g,GIAC_CONTEXT){
     if (interactive_op_tab && interactive_op_tab[6])

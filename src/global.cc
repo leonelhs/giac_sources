@@ -3537,7 +3537,9 @@ extern "C" void Sleep(unsigned int miliSecond);
 #endif
     gen g = (*v)[0];
     g = giac::protecteval(g,(*v)[1].val,contextptr);
+#ifndef NO_STDEXCEPT
     try {
+#endif
 #ifndef __MINGW_H
       times(&tmp2);
       double dt=delta_tms(tmp1,tmp2);
@@ -3548,8 +3550,10 @@ extern "C" void Sleep(unsigned int miliSecond);
       (*v)[4]=end-beg;
 #endif
       (*v)[5]=g;
+#ifndef NO_STDEXCEPT
     } catch (std::runtime_error & e){
     }
+#endif
     ptr->stackaddr=0;
     thread_eval_status(0,contextptr);
     pthread_exit(0);
@@ -3629,10 +3633,14 @@ extern "C" void Sleep(unsigned int miliSecond);
 #ifndef __MINGW_H
       *logptr(contextptr) << gettext("Thread ") << tp.eval_thread << " has been cancelled" << endl;
 #endif
+#ifdef NO_STDEXCEPT
+      pthread_cancel(tp.eval_thread) ;
+#else
       try {
 	pthread_cancel(tp.eval_thread) ;
       } catch (...){
       }
+#endif
       pthread_mutex_unlock(mutexptr(contextptr));
       return -1;
     }
@@ -5686,6 +5694,8 @@ unsigned int ConvertUTF8toUTF16 (
       return s_orig;
     bool pythonmode=false;
     for (first=0;first<sss;){
+      if (first==0 && s_orig[0]=='#')
+	break;
       int pos=s_orig.find(":]");
       if (pos>=0 && pos<sss){
 	pythonmode=true;

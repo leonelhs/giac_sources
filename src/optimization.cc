@@ -677,12 +677,16 @@ impldiff derive_diffterms(impldiff & terms,int n,int m,vint & sig) {
 
 gen get_pd(map<vint,gen> & pdv,const vint & sig) {
     gen ret;
+#ifdef NO_STDEXCEPT
+    ret=pdv.at(sig);
+#else
     try {
         ret=pdv.at(sig);
     }
     catch (out_of_range & e) {
         ret=undef;
     }
+#endif
     return ret;
 }
 

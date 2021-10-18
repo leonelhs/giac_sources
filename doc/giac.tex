@@ -277,6 +277,7 @@ var Module = {
   },
   latexeval:function(text){
     var tmp=text;
+    if (tmp.length>10 && tmp.substr(0,10)=='GIAC_ERROR') return '"'+tmp.substr(11,tmp.length-11)+'"';
     if (tmp.length>5 && tmp.substr(0,5)=='gl3d_') return tmp;
     if (tmp.length>5 && tmp.substr(1,4)=='<svg') return tmp.substr(1,tmp.length-2);
     if (tmp.length>5 && tmp.substr(0,4)=='<svg') return tmp;

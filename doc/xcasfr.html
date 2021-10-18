@@ -907,9 +907,9 @@ onclick="var tmp=document.getElementById('tutoanalyse'); if (tmp.style.display==
   onclick="UI.insert(UI.focused,'diff(')">diff</button> ou <tt>'</tt>.
   Une primitive d'une
   expression se calcule avec <button class="bouton"
-  onclick="UI.insert(UI.focused,'int(')">int</button>, par
+  onclick="UI.insert(UI.focused,'integrate(')">int</button>, par
   exemple <button class="bouton"
-  onclick="UI.insert(UI.focused,'int(1/(x^4-1))')">int(1/(x^4-1));</button>,
+  onclick="UI.insert(UI.focused,'integrate(1/(x^4-1))')">int(1/(x^4-1));</button>,
   pour une int&eacute;grale entre deux bornes
   <button class="bouton"
   onclick="UI.insert(UI.focused,'int(1/(x^4+1),x,0,+infinity)')">
@@ -1194,8 +1194,8 @@ title="Montrer ou cacher le tutoriel"><strong>Tutoriel</strong></button>
   title="Lance la recherche de l'aide courte" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
   <textarea cols="11" class="bouton" style="font-size:large;vertical-align:bottom" id="helptxt"
   title="Aide courte sur un nom de commande" rows=1 onclick="UI.focused=this;" onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
-  <button class="bouton" style="vertical-align:bottom"
-  title="Efface l'aide" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Del</button>
+  <button class="bouton" style="vertical-align:bottom" onmousedown="event.preventDefault()"
+  title="Efface l'aide, si elle est vide agit comme Backspace" onclick="var helptxt=document.getElementById('helptxt'); if (helpoutput.innerHTML=='' && helptxt.value==''){UI.backspace(UI.focused); UI.focused.focus();return;} helpoutput.innerHTML='';helptxt.value='';document.getElementById('helptxt').focus();">Del</button>
 </div>
 
 <div id="divhelpoutput" style="max-height: 200px; overflow:auto">
@@ -1353,10 +1353,6 @@ id="add_e"
 id="add_solve"
   value="solve" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_solve').style.display='block';UI.set_focus('solveeq') ;"
   title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([2x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
-      <input type="button" style="width:60px;height:35px" name="add_linsolve"
-id="add_linsolve"
-  value="linslv" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'linsolve(') ;UI.funcoff();"
-  title="r&eacute;soudre un syst&egrave;me lin&eacute;aire, par exemple linsolve([x+y=1,a*x-y=2],[x,y])">        
       <input type="button" style="width:60px;height:35px"
   name="add_desolve" id="add_desolve" value="deslv"
   onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused;document.getElementById('assistant_desolve').style.display='block';UI.set_focus('desolveeq');" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">        
@@ -1368,9 +1364,13 @@ id="add_linsolve"
       <input type="button" style="width:29px;height:35px" name="add_sum"
 id="add_sum"
   value="∑" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused;document.getElementById('assistant_sum').style.display='block';UI.set_focus('sumexpr') ; " title="Somme d'une expression pour une variable entre deux bornes, par exemple ∑(k,k,1,n) ou ∑(1/n^2,n,1,inf)">  
-      <input type="button" style="width:50px;height:35px" name="add_limit"
-id="add_limit"
-      value="limit" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_limit').style.display='block';UI.set_focus('limitexpr') ;" title="limite d'une expression lorsqu'une variable tend vers une limite, par exemple limit(sin(x)/x,x,0). Utiliser un 4eme parametre egal a 1 ou -1 pour une limite a droite ou a gauche.">        
+      <input type="button" style="width:29px;height:35px"
+  name="add_integrate" id="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_int').style.display='block';UI.set_focus('intexpr');"
+  title="Calcul d'int&eacute;grales, par exemple ∫(x^2*sin(x)*exp(x),x) ou ∫(1/(x^4+1),x,0,inf)">        
+      <input type="button" style="width:29px;height:35px" name="add_delmath"
+      id="add_delmath"
+      value="del" onmousedown="event.preventDefault()"
+      onClick="UI.backspace(UI.focused)" title="Efface un caract&egrave;re.">        
     </td>
   </tr>
   <tr>
@@ -1400,9 +1400,9 @@ id="add_plot"
       <input type="button" style="width:60px;height:35px"
   name="add_plotimplicit" id="add_plotimplicit" value="impl"
   onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_plotimplicit').style.display='block';UI.set_focus('plotimplicitexprf') ;" title="Graphe d'une courbe implicite, par exemple plotimplicit(x^2+x*y+y^2=3)">  
-      <input type="button" style="width:29px;height:35px" name="add_diff"
-id="add_diff"
-  value="∂" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused;document.getElementById('assistant_diff').style.display='block';UI.set_focus('diffexpr') ;" title="Derivee d'une expression. Pour une fonction f, par exemple f(x):=sin(x^2), la derivee de f est f', par exemple g:=f' ou f'(2)">        
+      <input type="button" style="width:50px;height:35px" name="add_limit"
+id="add_limit"
+      value="limit" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_limit').style.display='block';UI.set_focus('limitexpr') ;" title="limite d'une expression lorsqu'une variable tend vers une limite, par exemple limit(sin(x)/x,x,0). Utiliser un 4eme parametre egal a 1 ou -1 pour une limite a droite ou a gauche.">        
       <input type="button" style="width:50px;height:35px"
   name="add_series" id="add_series" value="series"
   onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_series').style.display='block';UI.set_focus('seriesexpr') ;" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom"> 
@@ -1437,9 +1437,9 @@ id="add_diff"
 id="add_polar"
   value="polar" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_plotpolar').style.display='block';UI.xtn='t'; UI.set_focus('plotpolarexpr');"
   title="Graphe en polaires, par exemple plotpolar(sin(3*t),t)">        
-      <input type="button" style="width:29px;height:35px"
-  name="add_integrate" id="add_integrate" value="∫" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused; document.getElementById('assistant_int').style.display='block';UI.set_focus('intexpr');"
-  title="Calcul d'integrales, par exemple ∫(x^2*sin(x)*exp(x),x) ou ∫(1/(x^4+1),x,0,inf)">        
+      <input type="button" style="width:29px;height:35px" name="add_diff"
+id="add_diff"
+  value="∂" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused;document.getElementById('assistant_diff').style.display='block';UI.set_focus('diffexpr') ;" title="Derivee d'une expression. Pour une fonction f, par exemple f(x):=sin(x^2), la derivee de f est f', par exemple g:=f' ou f'(2)">        
       <input type="button" value="curseur" id="add_curseur" style="height:35px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Ajoute un param&egrave;tre modifiable &agrave; la souris"></button>
     </td>
   </tr>
@@ -1669,7 +1669,7 @@ title="1er param&egrave;tre" value=0 step=0.01>
   title="argument de la loi, par exemple 1 ou 2 ou 1.3 ou x" value=1>
   <br>
   Choisir une autre loi
-  <input type="button" onclick="document.getElementById('rand_law').value='uniform';document.getElementById('rand_law1').value=0;document.getElementById('rand_law1').step=0.01;document.getElementById('rand_law2').value=1;document.getElementById('rand_law1').style.display='inline';document.getElementById('rand_law2').style.display='inline';" value="uniform">
+  <input type="button" onclick="document.getElementById('rand_law').value='uniformd';document.getElementById('rand_law1').value=0;document.getElementById('rand_law1').step=0.01;document.getElementById('rand_law2').value=1;document.getElementById('rand_law1').style.display='inline';document.getElementById('rand_law2').style.display='inline';" value="uniformd">
   <input type="button" onclick="document.getElementById('rand_law').value='normald';document.getElementById('rand_law1').value=0;document.getElementById('rand_law1').step=0.01;document.getElementById('rand_law2').value=1;document.getElementById('rand_law1').style.display='inline';document.getElementById('rand_law2').style.display='inline';" value="normald">
   <input type="button" onclick="document.getElementById('rand_law').value='binomial';document.getElementById('rand_law1').value=10;document.getElementById('rand_law1').step=1;document.getElementById('rand_law2').value=0.5;document.getElementById('rand_law1').style.display='inline';document.getElementById('rand_law2').style.display='inline';" value="binomial">
   <input type="button" onclick="document.getElementById('rand_law').value='negbinomial';document.getElementById('rand_law1').value=10;document.getElementById('rand_law1').step=1;document.getElementById('rand_law2').value=0.5;document.getElementById('rand_law1').style.display='inline';document.getElementById('rand_law2').style.display='inline';" value="negbinomial">
@@ -1700,28 +1700,28 @@ ou
   <button class="bouton" onclick="UI.assistant_pour_ok();"><strong>OK</strong></button> 
 </div>
 <div id="assistant_tantque" style="display:none">
+  Tests : <button  class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'==')">==</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'!=')">!=</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'<=')">&lt;=</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'>=')">&gt;=</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'<')">&lt</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'>')">&gt</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,' et ')">et</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,' ou ')">ou</button>
+   <button  class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'!')">!</button>
+  <br>
   tantque <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
   id="tantquecond" title="Test de continuation de la boucle"
   rows=1></textarea>
-  <br>
-  Tests : <button  class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),'==')">==</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),'!=')">!=</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),'<=')">&lt;=</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),'>=')">&gt;=</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),'<')">&lt</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),'>')">&gt</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),' et ')">et</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),' ou ')">ou</button>
-   <button  class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('tantquecond'),'!')">!</button>
   <br>
 <button class="bouton" onclick="UI.focused=UI.savefocused;document.getElementById('assistant_boucle').style.display='none';document.getElementById('assistant_pour').style.display='none'">Annuler</button>  <button class="bouton" onclick="UI.assistant_tantque_ok();"><strong>OK</strong></button> <br>
 </div>
@@ -1878,6 +1878,25 @@ onclick="UI.assistant_desolve_ok();"><strong>OK</strong></button>
 </div>
 
 <div id="assistant_test" style="display:none">
+  Tests : <button  class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'==')">==</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'!=')">!=</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'<=')">&lt;=</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'>=')">&gt;=</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'<')">&lt</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'>')">&gt</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,' et ')">et</button>
+  <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,' ou ')">ou</button>
+   <button class="bouton" onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'!')">!</button>
+  <br>
   si <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
   id="sicond" title="Test, par exemple j!=0"
   rows=1></textarea> 
@@ -1889,25 +1908,6 @@ onclick="UI.assistant_desolve_ok();"><strong>OK</strong></button>
   sinon (optionnel) <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
   id="sisinon" title="Clause fausse"
   rows=1></textarea>
-  <br>
-  Tests : <button  class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),'==')">==</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),'!=')">!=</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),'<=')">&lt;=</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),'>=')">&gt;=</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),'<')">&lt</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),'>')">&gt</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),' et ')">et</button>
-  <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),' ou ')">ou</button>
-   <button class="bouton" onmousedown="event.preventDefault()"
-  onclick="UI.insert(document.getElementById('sicond'),'!')">!</button>
   <br>
 <button class="bouton"
   onclick="UI.focused=UI.savefocused;document.getElementById('assistant_test').style.display='none'">Annuler</button>
@@ -2487,6 +2487,7 @@ for (var i=0;i<kbd_a.length;i++){
   canvas_pushed:false,
   initconfigstring:'',
   python_mode:false,
+  python_indent:4,
   xtn:'x', // var name, depends on last app
   sleep:function(miliseconds) {
      var currentTime = new Date().getTime();
@@ -2629,10 +2630,10 @@ UI.focused=UI.savefocused;var tmp= document.getElementById('rsolvef').value ;if 
   assistant_plot_polar:function(){UI.focused=UI.savefocused;var tmp='plotpolar('+document.getElementById('plotpolarexpr').value+','+document.getElementById('plotpolarvarname').value+','+document.getElementById('plotpolarvarmin').value+','+document.getElementById('plotpolarvarmax').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('plotpolarvarstep').value; if(tmp.length) UI.insert(UI.focused,',tstep='+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_plotpolar').style.display='none';},
   assistant_series_ok:function(){UI.focused=UI.savefocused;var tmp='series('+document.getElementById('seriesexpr').value+','+document.getElementById('seriesvarname').value+'='+document.getElementById('seriesvarlim').value+','+document.getElementById('seriesvarorder').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('seriesvarstep').value; if(tmp.length) UI.insert(UI.focused,','+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_series').style.display='none';},
   assistant_limit_ok:function(){UI.focused=UI.savefocused;var tmp='limit('+document.getElementById('limitexpr').value+','+document.getElementById('limitvarname').value+','+document.getElementById('limitvarlim').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('limitvardir').value; if(tmp.length) UI.insert(UI.focused,','+tmp); UI.insert(UI.focused,')');document.getElementById('assistant_limit').style.display='none';},
-  assistant_int_ok:function(){UI.focused=UI.savefocused;var tmp=document.getElementById('intexpr').value;if (tmp.length){ tmp='int('+tmp+','+document.getElementById('intvarname').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('intvarmin').value; if(tmp.length) UI.insert(UI.focused,','+tmp+','+document.getElementById('intvarmax').value); UI.insert(UI.focused,')');}else UI.insert(UI.focused,'int(');document.getElementById('assistant_int').style.display='none';},
+  assistant_int_ok:function(){UI.focused=UI.savefocused;var tmp=document.getElementById('intexpr').value;if (tmp.length){ tmp='integrate('+tmp+','+document.getElementById('intvarname').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('intvarmin').value; if(tmp.length) UI.insert(UI.focused,','+tmp+','+document.getElementById('intvarmax').value); UI.insert(UI.focused,')');}else UI.insert(UI.focused,'integrate(');document.getElementById('assistant_int').style.display='none';},
   assistant_diff_ok:function(){UI.focused=UI.savefocused;var tmp=document.getElementById('diffexpr').value;if (tmp.length){ tmp='diff('+tmp+','+document.getElementById('diffvarname').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('diffnumber').value; if(tmp.length) UI.insert(UI.focused,','+tmp); UI.insert(UI.focused,')');}else UI.insert(UI.focused,'diff(');document.getElementById('assistant_diff').style.display='none';},
   assistant_sum_ok:function(){UI.focused=UI.savefocused;var tmp=document.getElementById('sumexpr').value;if (tmp.length){ tmp='sum('+tmp+','+document.getElementById('sumvarname').value; UI.insert(UI.focused,tmp);tmp=document.getElementById('sumvarmin').value; if(tmp.length) UI.insert(UI.focused,','+tmp+','+document.getElementById('sumvarmax').value); UI.insert(UI.focused,')');}else UI.insert(UI.focused,'sum(');document.getElementById('assistant_sum').style.display='none';},
-  assistant_tabvarfunc_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_tabvar').style.display='none';document.getElementById('assistant_tabvarfunc').style.display='none'; var tmp=document.getElementById('tabvarfuncname').value;if (tmp.length){tmp+=':='+document.getElementById('tabvarfuncvarname').value+'->'+document.getElementById('tabvarfuncexpr').value+';\n';};tmp=tmp+'tabvar('+document.getElementById('tabvarfuncexpr').value+','+document.getElementById('tabvarfuncvarname').value+','+document.getElementById('tabvarfuncvarmin').value+','+document.getElementById('tabvarfuncvarmax').value;var tmp1=document.getElementById('tabvarfuncopt').value; if(tmp1.length) tmp+=','+tmp1; tmp1=document.getElementById('tabvarfuncvarstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1; tmp+=',plot)';UI.insert(UI.focused,tmp);},
+  assistant_tabvarfunc_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_tabvar').style.display='none';document.getElementById('assistant_tabvarfunc').style.display='none'; var tmp=document.getElementById('tabvarfuncname').value;if (tmp.length){tmp+=':='+document.getElementById('tabvarfuncvarname').value+'->'+document.getElementById('tabvarfuncexpr').value+';\n';tmp=tmp+'tabvar('+document.getElementById('tabvarfuncname').value+'('+document.getElementById('tabvarfuncvarname').value+'),';}else{tmp=tmp+'tabvar('+document.getElementById('tabvarfuncexpr').value+','} tmp+=document.getElementById('tabvarfuncvarname').value+','+document.getElementById('tabvarfuncvarmin').value+','+document.getElementById('tabvarfuncvarmax').value;var tmp1=document.getElementById('tabvarfuncopt').value; if(tmp1.length) tmp+=','+tmp1; tmp1=document.getElementById('tabvarfuncvarstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1; tmp+=',plot)';UI.insert(UI.focused,tmp);},
   assistant_tabvarparam_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_tabvar').style.display='none'; document.getElementById('assistant_tabvarparam').style.display='none'; var varname=document.getElementById('tabvarparamvarname').value; var exprx=document.getElementById('tabvarparamexprx').value ; var expry=document.getElementById('tabvarparamexpry').value ;var tmp=document.getElementById('tabvarparamnamex').value;if (tmp.length) tmp=tmp+':='+varname+'->'+exprx+';\n'+document.getElementById('tabvarparamnamey').value+':='+varname+'->'+expry+';\n';tmp=tmp+'tabvar(['+exprx+','+expry+'],'+varname+'='+document.getElementById('tabvarparamvarmin').value+'..'+document.getElementById('tabvarparamvarmax').value;var tmp1=document.getElementById('tabvarparamvarstep').value; if(tmp1.length) tmp=tmp+',tstep='+tmp1; tmp+=',plot)';UI.insert(UI.focused,tmp);},
   assistant_plotfunc1var_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotfunc').style.display='none'; document.getElementById('assistant_plotfunc1var').style.display='none'; var tmp='plotfunc('+document.getElementById('plotfuncexpr').value+','+document.getElementById('plotfuncvarname').value+','+document.getElementById('plotfuncvarmin').value+','+document.getElementById('plotfuncvarmax').value;var tmp1=document.getElementById('plotfuncvarstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
   assistant_plotfunc2var_ok:function(){UI.focused=UI.savefocused;document.getElementById('assistant_plotfunc').style.display='none'; document.getElementById('assistant_plotfunc2var').style.display='none'; var tmp='plotfunc('+document.getElementById('plotfunc2expr').value+',['+document.getElementById('plotfunc2varx').value+','+document.getElementById('plotfunc2vary').value+']';var tmp1=document.getElementById('plotfunc2varxstep').value; if(tmp1.length) tmp=tmp+',xstep='+tmp1;tmp1=document.getElementById('plotfunc2varystep').value; if(tmp1.length) tmp=tmp+',ystep='+tmp1; tmp+=')';UI.insert(UI.focused,tmp);},
@@ -3270,6 +3271,7 @@ UI.insert(UI.focused,tmp);
     });
      //console.log(entree.type);
      //cmentree.setSize(window.innerWidth-20,40);
+     cmentree.options.indentUnit=UI.python_mode?UI.python_indent:2; 
      cmentree.on("focus",function(cm){ UI.set_focused(cm); });
      cmentree.on("blur",function(cm) { if (cm.getSelection().length > 0){UI.selection=cm.getSelection();} });
      cmentree.setValue(entree.value);
@@ -3277,6 +3279,9 @@ UI.insert(UI.focused,tmp);
      cmentree.setOption("extraKeys", {
      Enter: function(cm){
       UI.eval_cmdline();
+     },
+     Backspace: function(cm){
+       UI.backspace(cm);
      },
      F1: function(cm) {
       UI.completion(cm);
@@ -3699,7 +3704,7 @@ var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
 "button_gauche","button_droit","select_button"];
 var kbd_math=["add_simplify" ,"add_matr",
 "add_factor" ,"add_stats","add_tableur","open_rewritetrig","add_solve","add_polar",
-"add_linsolve","add_rand" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
+"add_delmath","add_rand" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
 "add_integrate" ,"add_limit","add_series","add_seq","add_tabvar","add_plot",
 "add_plotparam" ,"add_plotfield","add_plotimplicit","add_curseur"];
 var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
@@ -3780,6 +3785,7 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
    UI.createCookie('xcas_angle_radian',form.angle_mode.checked?1:-1,10000);
    UI.createCookie('xcas_python_mode',form.python_mode.checked?1:-1,10000);
    UI.python_mode=form.python_mode.checked; document.getElementById('add_//').value=UI.python_mode?'#':'//';
+   if (cmentree.type!='textarea') cmentree.options.indentUnit=UI.python_mode?UI.python_indent:2; 
    UI.createCookie('xcas_complex_mode',form.complex_mode.checked?1:-1,10000);
    UI.createCookie('xcas_with_sqrt',form.sqrt_mode.checked?1:-1,10000);
    UI.createCookie('xcas_step_infolevel',form.step_mode.checked?1:-1,10000);
@@ -4038,8 +4044,10 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
            s='latex(quote('+out+'))';
          else
            s='mathml(quote('+out+'),1)'; //Module.print(s);
-         //console.log(s);
-         s=UI.caseval(s);
+         // console.log(out,s);
+         if (out.length>10 && out.substr(0,10)=='GIAC_ERROR')
+           s='"'+out.substr(11,out.length-11)+'"';
+         else s=UI.caseval(s);
         } else s=out;
    }
    UI.eval_cmdline1end(value,out,s);
@@ -4272,7 +4280,7 @@ addcomment: function(text){
     else
 	//s += 'rows='+(UI.count_newline(textin)+1) +' style="font-size:large"';
 	s += 'style="height:'+(20+16*UI.count_newline(textin))+'px; font-size:large"';
-    s += ' title="Shift-Enter: saut de ligne, Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm){var h=offsetHeight;var cm=CodeMirror.fromTextArea(this,{ matchBrackets: true}); UI.prepare_cm(this,h,cm);UI.changefontsize(cm,16); UI.set_focused(cm);} else UI.set_focused(this);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
+    s += ' title="Shift-Enter: saut de ligne, Enter: eval" onkeypress="UI.ckenter(event,this)" onblur="UI.updatelevel(this);" onfocus="if (UI.usecm){var h=offsetHeight;var cm=CodeMirror.fromTextArea(this,{ matchBrackets: true}); cm.options.indentUnit=UI.python_mode?UI.python_indent:2; UI.prepare_cm(this,h,cm);UI.changefontsize(cm,16); UI.set_focused(cm);} else UI.set_focused(this);" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);">'+textin+'</textarea>';
     if (UI.qa) s += '</td>'; 
     if (is_svg || is_3d){
       if (UI.qa) s += '<td>'; else s+='<br>';
@@ -4307,7 +4315,8 @@ addcomment: function(text){
       s += '<button style="display:none" onclick="previousSibling.previousSibling.style.display=\'block\'; previousSibling.style.display=\'none\';this.style.display=\'none\'">cancel</button>';
       s += '</td>';
       s += '<td><button style="width:20px;height:30px;" onclick=\'UI.insert(UI.focused,decodeURIComponent("evalf('+encodeURIComponent(textin)+')"))\' title="Valeur approch&eacute;e" style="color:blue">~</button>';
-    if (!UI.qa) { s += '<button style="height:25px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">del</button>'; delbut=true; }
+      //s += '<button style="width:20px;height:30px;" onclick=\'UI.insert(UI.focused,decodeURIComponent("latex('+encodeURIComponent(textin)+')"))\' title="convertir en LaTeX" style="color:blue">TeX</button>';
+     if (!UI.qa) { s += '<button style="height:25px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">del</button>'; delbut=true; }
       s +='</td>';
     }
   }
@@ -4786,7 +4795,26 @@ updatelevel: function(field){
       else {
         var c=start.ch; var l=start.line;
         if (start.ch==0 && start.line==0) return;
-        if (c>0){ c--; field.replaceRange('',{line: l,ch:c},end); }
+        if (c>0){
+           var s=field.getRange({line: l,ch:0},end),i;
+           for (i=0;i<s.length;i++){
+             if (s.charAt(i)!=' ') break;
+           }
+           //console.log(i,s.length,c);
+           if (i==s.length && c>=2){
+             var l1=l-1;
+             for (;l1>=0;--l1){
+               s=field.getLine(l1);
+               for (i=0;i<s.length && i<c;i++){
+                 if (s[i]!=' ') break;
+               }
+               if (i!=s.length && i<c) break;
+             }
+             if (l1>=0) c=i; else c-=2;
+           }
+           else c--;
+           field.replaceRange('',{line: l,ch:c},end);
+        }
         else { l--; var s=field.getRange({line: l,ch:c},end); field.replaceRange('',{line: l,ch:s.length-1},end); }
       }
       var t=field.getTextArea(); t.value=field.getValue();

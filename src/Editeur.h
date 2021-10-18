@@ -80,6 +80,7 @@ namespace xcas {
     int completion();
     int indent(int pos); // indent current line, return new cursor position
     void indent(); // indent all
+    void dedent(); // dedent current line
     void match();
     std::string value() const ;
     void resize_nl_before(unsigned nl);
