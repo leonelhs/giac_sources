@@ -5685,7 +5685,7 @@ namespace giac {
       polynome h=spoly(res[bk.first],res[bk.second],env);
       if (debug_infolevel>1)
 	CERR << clock() << " reduce begin, pair " << bk << " remainder size " << h.coord.size() << endl;
-      reduce(h,res,G,-1,h,env);
+      reduce(h,res,G,unsigned(-1),h,env);
       if (debug_infolevel>1){
 	if (debug_infolevel>2){ CERR << h << endl; }
 	CERR << clock() << " reduce end, remainder size " << h.coord.size() << endl;

@@ -6938,7 +6938,7 @@ namespace giac {
     if (s>=2){
       a=remove_at_pnt(v[0]);
       gen b=remove_at_pnt(v[1]);
-      bool res;
+      bool res=false;
       int i=2;
       while (a==b && i<s){
 	b=remove_at_pnt(v[i]);
@@ -14310,7 +14310,7 @@ namespace giac {
 	return gensizeerr(contextptr);
       c1=remove_at_pnt(c1);
       c2=remove_at_pnt(c2);
-      int res;
+      int res=0;
       int i=2;
       while (c1==c2 && R1==R2 && i<s){
 	if (!centre_rayon(v[i],c2,R2,false,contextptr))

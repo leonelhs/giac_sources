@@ -696,7 +696,7 @@ namespace giac {
     if (is_equal(e))
       return apply_to_equal(e,atan,contextptr);
     vecteur v1(loptab(e,sincostan_tab));
-    if (v1.size()>1){
+    if ((series_flags(contextptr)&8)==0 && v1.size()>1){
       gen e1=ratnormal(_trigtan(e,contextptr));
       if (loptab(e1,sincostan_tab).size()<=1)
 	return atan(e1,contextptr);
@@ -6453,6 +6453,8 @@ namespace giac {
     gen b=double_is_int(b_orig,contextptr);
     if (a.type!=_INT_ || b.type!=_INT_)
       return Gamma(a+1,contextptr)/Gamma(b+1,contextptr)/Gamma(a-b+1,contextptr);
+    if (a.val<0 || b.val<0)
+      return gensizeerr(contextptr);
     return comb((unsigned long int) a.val,(unsigned long int) b.val);
   }
   gen _comb(const gen & args,GIAC_CONTEXT){
