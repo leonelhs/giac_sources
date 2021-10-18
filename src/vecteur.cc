@@ -1787,6 +1787,11 @@ namespace giac {
   }
 
   static bool in_proot(const vecteur & w,double & eps,int & rprec,vecteur & res,bool isolaterealroot,GIAC_CONTEXT){
+#ifdef EMCC
+    if (eps<1e-300)
+      eps=1e-11;
+    return proot_real1(w,eps,rprec,res,contextptr);
+#endif
     // new code using francis_schur
     // if (has_num_coeff(w))
       isolaterealroot=false; // eliminating real roots is not stable enough
@@ -6472,10 +6477,17 @@ namespace giac {
       // convert a to internal form
       lv=alg_lvar(res);
       if (!lv.empty() && lv.front().type==_VECT && lv.front()._VECTptr->size()>1){
-	vecteur lw=*tsimplify(lv.front(),contextptr)._VECTptr;
+	vecteur lw=*halftan(lv.front(),contextptr)._VECTptr;
 	if (lvar(lw).size()<lv.front()._VECTptr->size()){
 	  res=*subst(gen(res),lv.front(),lw,false,contextptr)._VECTptr;
 	  lv=alg_lvar(res);
+	}
+	if (!lv.empty() && lv.front().type==_VECT && lv.front()._VECTptr->size()>1){
+	  lw=*tsimplify(lv.front(),contextptr)._VECTptr;
+	  if (lvar(lw).size()<lv.front()._VECTptr->size()){
+	    res=*subst(gen(res),lv.front(),lw,false,contextptr)._VECTptr;
+	    lv=alg_lvar(res);
+	  }
 	}
       }
       res = *(e2r(res,lv,contextptr)._VECTptr);

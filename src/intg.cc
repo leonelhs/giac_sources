@@ -2369,6 +2369,30 @@ namespace giac {
 	  e=linear_integrate_nostep(fx,gen_x,tmprem,intmode,contextptr);
 	  remains_to_integrate=remains_to_integrate+complex_subst(tmprem,gen_x,*it,contextptr)*df;
 	  e=complex_subst(e,gen_x,*it,contextptr);
+	  // additional check for integrals like
+	  // int(sqrt (1+x^(-2/3)),x,-1,0)
+	  if (it->is_symb_of_sommet(at_pow)){
+	    gen powarg=(*it)[1],powa,powb;
+	    if (is_linear_wrt(powarg,gen_x,powa,powb,contextptr) && !is_zero(powa)){
+	      gen powx=-powb/powa;
+	      // check derivative at powx+-1
+	      gen check=ratnormal(derive(e,gen_x,contextptr)/e_orig);
+	      gen chkplus=subst(check,gen_x,powx+1.0,false,contextptr);
+	      gen chkminus=subst(check,gen_x,powx-1.0,false,contextptr);
+	      bool tstplus=is_zero(chkplus+1,contextptr);		
+	      bool tstminus=is_zero(chkminus+1,contextptr);		
+	      if (tstplus){
+		if (tstminus)
+		  e=-e;
+		else
+		  e=-sign(gen_x,contextptr)*e;
+	      }
+	      else {
+		if (tstminus)
+		  e=sign(gen_x,contextptr)*e;
+	      }
+	    }
+	  }
 	  return e;
 #endif
 	}
@@ -2534,6 +2558,10 @@ namespace giac {
 	  gprintf(step_bypart1,gettext("Integration of %gen by part of u*v' where u=1 and v=%gen'"),makevecteur(e,e),contextptr);
 	gen tmpres,tmprem;
 	tmpres=linear_integrate_nostep(gen_x*derive(e,gen_x,contextptr),gen_x,tmprem,intmode,contextptr);
+	if (!has_i(e) && has_i(tmpres)){
+	  remains_to_integrate=e;
+	  return 0;
+	}
 	remains_to_integrate=-tmprem;
 	return gen_x*e-tmpres;
       }
@@ -2869,6 +2897,25 @@ namespace giac {
 	    a=v[3]; b=v[2];
 	    neg=true;
 	    v[2]=a; v[3]=b;
+	  }
+	  vecteur lv=lop(lvarx(v[0],v[1]),at_pow);
+	  lv=mergevecteur(lv,lop(lvarx(v[0],v[1]),at_surd));
+	  lv=mergevecteur(lv,lop(lvarx(v[0],v[1]),at_NTHROOT));
+	  if (lv.size()==1 && v[1].type==_IDNT){
+	    gen powarg=lv[0][1];
+	    if (lv[0][0]==at_NTHROOT)
+	      powarg=lv[0][2];
+	    lv=protect_solve(powarg,*v[1]._IDNTptr,0,contextptr);
+	    for (int i=0;i<int(lv.size());++i){
+	      if (is_strictly_greater(lv[i],a,contextptr) && is_strictly_greater(b,lv[i],contextptr)){
+		v[3]=lv[i];
+		gen res1=_integrate(v,contextptr);
+		v[3]=b;
+		v[2]=lv[i];
+		gen res2=_integrate(v,contextptr);
+		return res1+res2;
+	      }
+	    }
 	  }
 	  giac_assume(symb_and(symb_superieur_egal(x,a),symb_inferieur_egal(x,b)),contextptr);
 	  v.push_back(at_assume);

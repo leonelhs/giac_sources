@@ -29,7 +29,7 @@
 
 #include "sym2poly.h"
 #include <iostream>
-#include <time.h>
+//#include <time.h>
 
 using namespace giac;
 
