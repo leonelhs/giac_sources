@@ -4,44 +4,25 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Sort : sort</title>
+<title>Transform a list into a sequence : op makesuite</title>
 </head>
 <body >
 <a href="cascmd_en474.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en476.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec567" class="subsection">5.43.22  Sort : <span style="font-family:monospace">sort</span></h3>
-<p><a id="hevea_default738"></a>
-<span style="font-family:monospace">sort</span> takes as argument a list or an expression.
-</p><ul class="itemize"><li class="li-itemize">
-For a list,<br>
-<span style="font-family:monospace">sort</span> returns the list sorted in increasing order.<br>
+<h3 id="sec567" class="subsection">5.43.15  Transform a list into a sequence : <span style="font-family:monospace">op makesuite</span></h3>
+<p><a id="hevea_default735"></a><a id="hevea_default736"></a>
+<span style="font-family:monospace">op</span> or <span style="font-family:monospace">makesuite</span> takes as argument a list.<br>
+<span style="font-family:monospace">op</span> or <span style="font-family:monospace">makesuite</span> transforms this list into a sequence.
+<a id="sec:makesuiteop"></a><br>
+See <a href="cascmd_en213.html#sec%3Aop">5.16.3</a> for other usages of <span style="font-family:monospace">op</span>.<br>
 Input :
-<div class="center"><span style="font-family:monospace">sort([3,4,2])</span></div>
+</p><div class="center"><span style="font-family:monospace">op([0,1,2])</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">makesuite([0,1,2])</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">[2,3,4]</span></div></li><li class="li-itemize">For an expression,<br>
- <span style="font-family:monospace">sort</span> sorts and collects terms in sums and products.<br>
-Input : 
-<div class="center"><span style="font-family:monospace">sort(exp(2*ln(x))+x*y-x+y*x+2*x)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">2*x*y+exp(2*ln(x))+x</span></div> 
-Input : 
-<div class="center"><span style="font-family:monospace">simplify(exp(2*ln(x))+x*y-x+y*x+2*x)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x*y+x</span></div> 
-</li></ul><p>
-<span style="font-family:monospace">sort</span> accepts an optional second argument, which is a bivariate
-function returning 0 or 1. If provided, this function
-will be used to sort the list, for example
-<span style="font-family:monospace">(x,y)-&gt;x&gt;=y</span> may be used as second argument
-to sort the list in decreasing order.
-This may also be used to sort list of lists 
-(that <span style="font-family:monospace">sort</span> with one argument does not know how to sort).<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">sort([3,4,2],(x,y)-&gt;x&gt;=y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[4,3,2]</span></div>
+</p><div class="center"><span style="font-family:monospace">(0,1,2)</span></div>
 <hr>
 <a href="cascmd_en474.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

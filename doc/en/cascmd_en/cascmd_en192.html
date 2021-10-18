@@ -4,68 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Automatic simplification: autosimplify</title>
+<title>Normal form : normal</title>
 </head>
 <body >
 <a href="cascmd_en191.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en193.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec232" class="subsection">5.13.17  Automatic simplification: <span style="font-family:monospace">autosimplify</span></h3>
-<p><a id="hevea_default299"></a></p><p>The <span style="font-family:monospace">autosimplify</span> command takes a single argument; a command
-that will be used to rewrite the results in <span style="font-family:monospace">Xcas</span>, such as
-<span style="font-family:monospace">simplify</span>, <span style="font-family:monospace">factor</span>, <span style="font-family:monospace">regroup</span>, or for no
-simplification, <span style="font-family:monospace">nop</span>. When <span style="font-family:monospace">Xcas</span> starts, the
-autosimplify command is <span style="font-family:monospace">regroup</span>.</p><p>To change the simplification mode during a session, the
-<span style="font-family:monospace">autosimplify</span> command should be on its own line.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">autosimplify(nop)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">1 + x^2 - 2
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1+x^2-2 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">autosimplify(simplify)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">1 + x^2 - 2
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">x^2 - 1
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">autosimplify(factor)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">1 + x^2 - 2
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">(x-1)*(x+1) 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">autosimplify(regroup)
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">1 + x^2 - 2
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">x^2 - 1 
-</span></div>
+<h3 id="sec232" class="subsection">5.13.15  Normal form : <span style="font-family:monospace">normal</span></h3>
+<p><a id="hevea_default299"></a>
+<span style="font-family:monospace">normal</span> takes as argument an expression. 
+The expression is considered as a rational fraction with respect 
+to generalized identifiers
+(either true identifiers or transcendental functions replaced by 
+a temporary identifiers) with coefficients in ℚ or ℚ[<span style="font-style:italic">i</span>]
+or in an algebraic extension (e.g. ℚ[√<span style="text-decoration:overline">2</span>]).
+<span style="font-family:monospace">normal</span> returns the expanded irreducible representation
+of this rational fraction. See also <span style="font-family:monospace">ratnormal</span> for pure rational
+fractions or <span style="font-family:monospace">simplify</span> if the transcendental functions are
+not algebraically independent.<br>
+Input : 
+</p><div class="center"><span style="font-family:monospace">normal((x-1)*(x+1))</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span></div><p> 
+<span style="font-weight:bold">Remarks</span>
+</p><ul class="itemize"><li class="li-itemize">
+Unlike <span style="font-family:monospace">simplify</span>,
+<span style="font-family:monospace">normal</span> does not try to find algebraic relations between
+transcendental functions like cos(<span style="font-style:italic">x</span>)<sup>2</sup>+sin(<span style="font-style:italic">x</span>)<sup>2</sup>=1.
+</li><li class="li-itemize">It is sometimes necessary to run the <span style="font-family:monospace">normal</span> command twice to
+get a fully irreducible representation of an expression
+containing algebraic extensions.
+</li></ul>
 <hr>
 <a href="cascmd_en191.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

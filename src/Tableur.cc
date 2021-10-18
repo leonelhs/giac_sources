@@ -583,7 +583,7 @@ namespace xcas {
       // int mode=Fl::event_state(FL_CTRL);
       if (Fl::event_key()==FL_Escape){
 	editing=false;
-	// cerr << "Mtrw edit leave"<<endl;
+	// cerr << "Mtrw edit leave"<<'\n';
       }
       if (Fl::event_key()==FL_Delete){
 	erase_row_col(2);
@@ -1054,7 +1054,7 @@ namespace xcas {
     if (iscell(g,c,r,contextptr) ){
       if (r>=spread_ptr->rows()||c>=spread_ptr->cols())
 	spread_ptr->resizesheet(max(r+1,spread_ptr->rows()),max(c+1,spread_ptr->cols()));
-      // cerr << g << " " << r << " " << c << endl;
+      // cerr << g << " " << r << " " << c << '\n';
       spread_ptr->row(r);
       spread_ptr->col(c);
       spread_ptr->select_start_row(r);
@@ -1102,7 +1102,7 @@ namespace xcas {
     Fl::focus(spread_ptr);
     if (spread_ptr && spread_ptr->editing){
       spread_ptr->editing=false;
-      // cerr << "Mtrw edit end" << endl;
+      // cerr << "Mtrw edit end" << '\n';
       spread_ptr->row(spread_ptr->edit_row);
       spread_ptr->col(spread_ptr->edit_col);
     }
@@ -1114,7 +1114,7 @@ namespace xcas {
       g=gen(str,contextptr);
     }
     catch (std::runtime_error & e){
-      cerr << e.what() << endl;
+      cerr << e.what() << '\n';
     }
     // count number of newline
     unsigned strs=str.size();
@@ -1346,10 +1346,10 @@ namespace xcas {
       fl_message("%s","Write error");
       return;
     }
-    of << mathml_preamble << endl;
+    of << mathml_preamble << '\n';
     int formule=tg->is_spreadsheet?0:1;
     of << spread2mathml(tg->m,formule,contextptr);
-    of << mathml_end << endl;
+    of << mathml_end << '\n';
   }
 
    void cb_Tableur_Save_CSV(Fl_Menu_* m , void*) {
@@ -1371,10 +1371,10 @@ namespace xcas {
 	for (;jt!=jtend;++jt){
 	  of << *jt << ";";
 	}
-	of << endl;
+	of << '\n';
       }
     }
-    of << endl;
+    of << '\n';
     of.close();
   }
 
@@ -1391,9 +1391,9 @@ namespace xcas {
 	return;
       }
       if (tg->is_spreadsheet)
-	of << gen(tg->m,_SPREAD__VECT) << endl;
+	of << gen(tg->m,_SPREAD__VECT) << '\n';
       else
-	of << gen(extractmatricefromsheet(tg->m)) << endl;
+	of << gen(extractmatricefromsheet(tg->m)) << '\n';
       of.close();
       tg->changed_ = false;
     }
@@ -2185,7 +2185,7 @@ namespace xcas {
       if (iscell(g,c,r,contextptr) ){
 	if (r>=spread_ptr->rows()||c>=spread_ptr->cols())
 	  spread_ptr->resizesheet(max(r+1,spread_ptr->rows()),max(c+1,spread_ptr->cols()));
-	// cerr << g << " " << r << " " << c << endl;
+	// cerr << g << " " << r << " " << c << '\n';
 	spread_ptr->row(r);
 	spread_ptr->col(c);
 	spread_ptr->select_start_row(r);
@@ -3415,7 +3415,7 @@ namespace xcas {
   int Tableur_Group::handle(int event){
     if (table && event==FL_UNFOCUS){
       if (Fl::event_x()<x() || Fl::event_x()>x()+w() || Fl::event_y()<y() || Fl::event_y()>y()+h()){
-	// cerr << "unfocus " << endl;
+	// cerr << "unfocus " << '\n';
 	table->editing=false;
       }
     }

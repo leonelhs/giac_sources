@@ -4,66 +4,42 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The for loop: for, from, to, step, do, end_for</title>
+<title>Printing: print, Disp, ClrIO</title>
 </head>
 <body >
 <a href="cascmd_en790.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en792.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1019" class="subsection">11.3.3  The for loop: <span style="font-family:monospace">for, from, to, step, do, end_for</span></h3>
+<h3 id="sec1018" class="subsection">11.2.6  Printing: <span style="font-family:monospace">print, Disp, ClrIO</span></h3>
 <p>
-<a id="hevea_default1405"></a><a id="hevea_default1406"></a><a id="hevea_default1407"></a><a id="hevea_default1408"></a><a id="hevea_default1409"></a><a id="hevea_default1410"></a></p><p>The <span style="font-family:monospace">for</span> loop has three different forms, each of which uses an
-index variable. If the <span style="font-family:monospace">for</span> loop is used in a program, the
-index variable should be declared as a local variable. (Recall that
-<span style="font-family:monospace">i</span> represents the imaginary unit, and so cannot be used as the
-index.)</p>
-<h5 id="sec1020" class="paragraph">The first form</h5>
-<p>
-For the first form, the <span style="font-family:monospace">for</span> is followed by the starting value
-for the index, the end condition, and the increment step, separated by
-semicolons and in parentheses. Afterwards is a block of code to be
-executed for each iteration. For example, to add the even numbers
-less than 100, you can set the running total to 0,
+<a id="hevea_default1398"></a><a id="hevea_default1399"></a><a id="hevea_default1400"></a></p><p>The <span style="font-family:monospace">print</span> (or <span style="font-family:monospace">Disp</span>) command
+will print its arguments in a special pane and return the number
+<span style="font-family:monospace">1</span>. For example, 
 </p><div class="center">
-<span style="font-family:monospace">S := 0</span>
+<span style="font-family:monospace">print("Hello")</span>
 </div><p>
-and the use an <span style="font-family:monospace">for</span> loop to do the summing,
+will result in
 </p><div class="center">
-<span style="font-family:monospace">for (j := 0; j &lt; 100; j := j + 2) {S := S + j}</span>
-</div>
-<h5 id="sec1021" class="paragraph">The second form</h5>
-<p>
-The second form of a <span style="font-family:monospace">for</span> loop has a fixed increment for the
-index. It is
-written out with <span style="font-family:monospace">for</span> followed by the index, followed by
-<span style="font-family:monospace">from</span>, the initial value, <span style="font-family:monospace">to</span>, the ending value,
-<span style="font-family:monospace">step</span>, the size of the increment, and finally the statements
-to be executed between <span style="font-family:monospace">do</span> and <span style="font-family:monospace">end_for</span>. For
-example, having set the variable <span style="font-family:monospace">S</span> equal to 0, you can again
-add the even numbers less than 100 with
-</p><div class="center">
-<span style="font-family:monospace">for j from 2 to 98 step 2 do S := S + j; end_for</span>
+<span style="font-family:monospace">Hello</span>
 </div><p>
-There is also a French version of this syntax;
+If you enter
 </p><div class="center">
-<span style="font-family:monospace">pour j de 2 jusque 98 pas 2 faire S := S + j; fpour</span>
-</div>
-<h5 id="sec1022" class="paragraph">The third form</h5>
-<p>
-The third form of the <span style="font-family:monospace">for</span> loop lets you iterate over the
-values in a list (or a set or a range). In this form, the
-<span style="font-family:monospace">for</span> is followed by the index, then <span style="font-family:monospace">in</span>, the list, and
-then the instructions between <span style="font-family:monospace">do</span> and <span style="font-family:monospace">end_for</span>. For
-example, to add all integers from 1 to 100, you can again set the
-running total <span style="font-family:monospace">S</span> to 0, then
-</p><div class="center">
-<span style="font-family:monospace">for j in 1..100 do S:= S + j; end_for</span>
+<span style="font-family:monospace">a := 12</span>
 </div><p>
-or
+then
 </p><div class="center">
-<span style="font-family:monospace">pour j in 1..100 faire S:= S + j; fpour</span>
-</div>
+<span style="font-family:monospace">print("a =",a)</span>
+</div><p>
+will print
+</p><div class="center">
+<span style="font-family:monospace">"a =", 12</span>
+</div><p>The <span style="font-family:monospace">ClrIO</span> (no argument) will erase the printing
+that was done in the level it was typed. For example,
+</p><div class="center">
+<span style="font-family:monospace">print("Hello"); ClrIO()</span>
+</div><p>
+will simply return the result <span style="font-family:monospace">(1,1)</span>.</p>
 <hr>
 <a href="cascmd_en790.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -97,7 +97,7 @@ namespace giac {
   }
 
   gen tanh2exp(const gen & e,GIAC_CONTEXT){
-    gen a=pow(exp(e,contextptr),2);
+    gen a=exp(2*e,contextptr);//pow(exp(e,contextptr),2);
     return rdiv(a-plus_one,a+plus_one,contextptr);
   }
 
@@ -431,7 +431,7 @@ namespace giac {
     }
     v=subst(v,i,newi,quotesubst,contextptr);
     if (intg && s>=3 && v[2]==v[3]){
-      // *logptr(contextptr) << "Warning, assuming that " << v[0] << " is regular at " << v[2] << endl;
+      // *logptr(contextptr) << "Warning, assuming that " << v[0] << " is regular at " << v[2] << '\n';
       return 0; 
     }
     return symbolic((intg==0?at_sum:at_integrate),gen(v,_SEQ__VECT));
@@ -478,7 +478,7 @@ namespace giac {
 	return true;
       }
       if ( e._SYMBptr->sommet==at_pow && i.type==_SYMB && i._SYMBptr->sommet==at_exp && (*(e._SYMBptr->feuille._VECTptr))[1]*ln((*(e._SYMBptr->feuille._VECTptr))[0],contextptr) == i._SYMBptr->feuille ) {
-	CERR << e << "=" << i << endl;
+	CERR << e << "=" << i << '\n';
 	newe=newi;
 	return true;
       }
@@ -533,7 +533,7 @@ namespace giac {
       return subst(e,*i._VECTptr,*newi._VECTptr,quotesubst,contextptr);
     }
     if (i.type!=_IDNT && i.type!=_SYMB && i.type!=_FUNC)
-      *logptr(contextptr) << gettext("Warning, replacing ") << i << gettext(" by ") << newi << gettext(", a substitution variable should perhaps be purged.") << endl;
+      *logptr(contextptr) << gettext("Warning, replacing ") << i << gettext(" by ") << newi << gettext(", a substitution variable should perhaps be purged.") << '\n';
     gen res;
     if (has_subst(e,i,newi,res,quotesubst,contextptr))
       return res;
@@ -757,7 +757,7 @@ namespace giac {
   static void sort2(vecteur & i,vecteur & newi,GIAC_CONTEXT){
     for (unsigned k=0;k<i.size();++k){
       if (i[k].type!=_IDNT && i[k].type!=_SYMB && i[k].type!=_FUNC && !is_zero(i[k]-newi[k]))
-	*logptr(contextptr) << gettext("Warning, replacing ") << i[k] << gettext(" by ") << newi[k] << gettext(", a substitution variable should perhaps be purged.") << endl;
+	*logptr(contextptr) << gettext("Warning, replacing ") << i[k] << gettext(" by ") << newi[k] << gettext(", a substitution variable should perhaps be purged.") << '\n';
     }
     int is=int(i.size());
     if (is<2)
@@ -1526,7 +1526,7 @@ namespace giac {
 	  else
 	    point=ratnormal((l+m)/2,contextptr);
 	  if (!is_inf(point) && !is_undef(point)){
-	    *logptr(contextptr) << gettext("Simplification assuming ") << v[i] << " near " << point << endl;
+	    *logptr(contextptr) << gettext("Simplification assuming ") << v[i] << " near " << point << '\n';
 	    point=subst(gg,*v[i]._IDNTptr,point,false,contextptr);
 	    if (!is_inf(point) && !is_undef(point)){
 	      return evalf(point,1,contextptr);
@@ -1544,7 +1544,7 @@ namespace giac {
 	}
       }
       if (!is_inf(point) && !is_undef(point))
-	*logptr(contextptr) << gettext("Simplification assuming ") << v[i] << " near " << point << (direction==1?"+":"-") << endl;
+	*logptr(contextptr) << gettext("Simplification assuming ") << v[i] << " near " << point << (direction==1?"+":"-") << '\n';
 #ifdef NO_STDEXCEPT
       gg=limit(gg,*v[i]._IDNTptr,point,direction,contextptr);
 #ifdef TIMEOUT
@@ -2037,8 +2037,13 @@ namespace giac {
   gen tsimplify_noexpln(const gen & e,int s1,int s2,GIAC_CONTEXT){
     int te=taille(e,65536);
     gen g=e;
-    if (s1>1 && angle_radian(contextptr))
-      g=subst(e,sincostan_tab,trig2exp_tab,false,contextptr,false); // g=trig2exp(e,contextptr);
+    if (s1>1 && angle_radian(contextptr)){
+#ifdef FXCG
+      vecteur v1(loptab(e,sincostan_tab));
+      if (!v1[0].is_symb_of_sommet(at_tan) || !v1[1].is_symb_of_sommet(at_tan))
+#endif
+	g=subst(g,sincostan_tab,trig2exp_tab,false,contextptr,false); // g=trig2exp(e,contextptr);
+    }
     if (s2>1 && angle_radian(contextptr))
       g=subst(g,asinacosatan_tab,atrig2ln_tab,false,contextptr,false);//g=atrig2ln(g,contextptr);
     bool b=complex_mode(contextptr);
@@ -2358,7 +2363,7 @@ namespace giac {
 #ifdef NO_STDEXCEPT
       vecteur vabs2tmp=*tsimplify_common(vabs2,contextptr)._VECTptr;
       if (is_undef(vabs2tmp)){
-	*logptr(contextptr) << vabs2tmp << endl;
+	*logptr(contextptr) << vabs2tmp << '\n';
 	return e_orig;
       }
       // check for rootof?
@@ -2447,7 +2452,7 @@ namespace giac {
       }
     }
     if (!vabs.empty() && debug_infolevel)
-      *logptr(contextptr) << gettext("simplify preserving ") << vabs << endl;
+      *logptr(contextptr) << gettext("simplify preserving ") << vabs << '\n';
     int s=int(vabs.size());
     vabs2=vecteur(s);
     for (int i=0;i<s;++i){
@@ -2512,6 +2517,7 @@ namespace giac {
     bool glinb=glin!=g;
     g=glin;
     g=_exp2pow(g,contextptr);
+    // if s2==0 and s1>1 and only tan, should return trigtan(exp2trig(g))?
     if (s1<=1 && s2<= 1){
       g=quotesubst(g,vabs2,vabs,contextptr);
       return ratnormal(g,contextptr);//glinb?g:ratnormal(g,contextptr);
@@ -2530,7 +2536,10 @@ namespace giac {
 	  return quotesubst(g,vabs2,vabs,contextptr);
 	}
       }
-      g=recursive_normal(trigcos(g,contextptr),contextptr); 
+#ifdef FXCG
+      if (s1!=2 || !v1[0].is_symb_of_sommet(at_tan) || !v1[1].is_symb_of_sommet(at_tan))
+#endif
+	g=recursive_normal(trigcos(g,contextptr),contextptr); 
       return quotesubst(g,vabs2,vabs,contextptr);
     }
     gen reg,img;
@@ -2578,7 +2587,7 @@ namespace giac {
 	}
 	catch(std::runtime_error & e){ 
 	  last_evaled_argptr(contextptr)=NULL;
-	  *logptr(contextptr) << e.what() << endl;
+	  *logptr(contextptr) << e.what() << '\n';
 	}
 #endif
       }

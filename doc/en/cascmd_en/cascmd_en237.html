@@ -4,105 +4,94 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Limits : limit</title>
+<title>Finding conjugate points : conjugate_equation</title>
 </head>
 <body >
 <a href="cascmd_en236.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en238.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec297" class="subsection">5.22.1  Limits : <span style="font-family:monospace">limit</span></h3>
-<p><a id="hevea_default406"></a><a id="sec:limit"></a></p><p><span style="font-family:monospace">limit</span> computes the limit of an expression at a finite or infinite point.
-It is also possible with an optional argument to compute a one-sided
-limit (1 for the right limit and -1 for the left limit).<br>
-<span style="font-family:monospace">limit</span> takes three or four arguments :<br>
-an expression, the name of a variable (for example <span style="font-family:monospace">x</span>), the limit point 
-(for example <span style="font-family:monospace">a</span>) and an optional argument, by default <span style="font-family:monospace">0</span>, to 
-indicate if the limit is unidirectional. 
-This argument is equal to 
-<span style="font-family:monospace">-1</span> for a left limit (<span style="font-family:monospace">x&lt;a</span>) or is equal to <span style="font-family:monospace">1</span> 
-for a right limit (<span style="font-family:monospace">x&gt;a</span>) or is equal to <span style="font-family:monospace">0</span> for a limit.<br>
-<span style="font-family:monospace">limit</span> returns the limit of the expression when the variable (for example
-<span style="font-family:monospace">x</span>) approaches the limit point (for example <span style="font-family:monospace">a</span>).<br>
-<span style="font-weight:bold">Remark</span><br>
-It is also possible to put <span style="font-family:monospace">x=a</span> as argument instead of <span style="font-family:monospace">x,a</span>, hence :
-<span style="font-family:monospace">limit</span> takes also as arguments an expression depending of a variable, 
-an equality (variable =value of the limit point) and perhaps 1 or -1 to 
-indicate the direction.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,-1)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,-1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">-(infinity)</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,1)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,0)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">infinity</span></div><p> 
-Hence, <span style="font-family:monospace">abs(1/x)</span> approaches +∞ when <span style="font-style:italic">x</span> approaches 0.</p><p><span style="font-weight:bold">Exercises</span> :
+<h3 id="sec296" class="subsection">5.21.4  Finding conjugate points : <span style="font-family:monospace">conjugate_equation</span><a id="hevea_default407"></a></h3>
+<p>
+<span style="font-family:monospace">conjugate_equation</span> takes four arguments :
 </p><ul class="itemize"><li class="li-itemize">
-Find for <span style="font-style:italic">n</span>&gt;2, the limit when <span style="font-style:italic">x</span> approaches 0 of :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>tan(<span style="font-style:italic">x</span>)−tan(<span style="font-style:italic">nx</span>)</td></tr>
+expression <span style="font-style:italic">y</span><sub>0</sub> which depends on the independent variable and two parameters,
+</li><li class="li-itemize">list [α,β] of parameters which <span style="font-style:italic">y</span><sub>0</sub> depends on,
+</li><li class="li-itemize">list [<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>] of the values of parameters α and β, respectively,
+</li><li class="li-itemize">independent variable <span style="font-style:italic">x</span>,
+</li><li class="li-itemize">real number <span style="font-style:italic">a</span> equal to the lower or to the upper bound for <span style="font-style:italic">x</span>.
+</li></ul><p>
+The function <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">x</span>) is assumed to be stationary for the problem of minimizing some functional <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>. The return value is the expression
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:conjugate-equation"></a>
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">t</span>)</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">sin(<span style="font-style:italic">nx</span>)−<span style="font-style:italic">n</span>sin(<span style="font-style:italic">x</span>)</td></tr>
-</table></td></tr>
-</table>
-Input :
-<div class="center"><span style="font-family:monospace">limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">2 </span></div>
-</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches +∞ of :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:4em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:0em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
-</table></td></tr>
-</table> 
-Input :
-<div class="center"><span style="font-family:monospace">limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">1/2 </span></div>
-</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches 0 of :
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>/2</td></tr>
-</table></td><td class="dcell">−exp(<span style="font-style:italic">x</span>/2)</td></tr>
-</table></td></tr>
+<tr><td class="dcell" style="text-align:center">∂α</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">a</span>)</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">(1−cos(<span style="font-style:italic">x</span>))sin(<span style="font-style:italic">x</span>)</td></tr>
+<tr><td class="dcell" style="text-align:center">∂β</td></tr>
+</table></td><td class="dcell">−
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">a</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂α</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span><sub>0</sub>(<span style="font-style:italic">t</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂β</td></tr>
+</table></td><td class="dcell">,
+    (4)</td></tr>
+</table><p>
+at α=<span style="font-style:italic">A</span> and β=<span style="font-style:italic">B</span>, which is zero if and only if <span style="font-style:italic">t</span> is conjugate to <span style="font-style:italic">a</span>. To find any conjugate points, set the returned expression to zero and solve.</p><p>For example, we find a minimum for the functional
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><table class="display"><tr><td class="dcell" style="text-align:center">π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
 </table></td></tr>
-</table> 
-Input :
-<div class="center"><span style="font-family:monospace">limit((sqrt(1+x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</span></div>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>)<sup>2</sup>−<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)<sup>2</sup></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"> <span style="font-style:italic">d</span><span style="font-style:italic">x</span> </td></tr>
+</table><p>
+on <span style="font-style:italic">D</span>={<span style="font-style:italic">y</span>∈ <span style="font-style:italic">C</span><sup>1</sup>[0,π/2]:<span style="font-style:italic">y</span>(0)=<span style="font-style:italic">y</span>(π/2)=0}. The corresponding Euler-Lagrange equation is :
+</p><div class="center">
+<span style="font-family:monospace">eq:=euler_lagrange(y’(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-x*y(x)-y(x)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,y(x))
+</span></div><p>
 Output :
-<div class="center"><span style="font-family:monospace">-1/6 </span></div>
-</li></ul><p><span style="font-weight:bold">Remark</span><br>
-To compute limits, it is better sometimes to quote the first argument.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">limit(’(2*x-1)*exp(1/(x-1))’,x=+infinity)</span></div><p>
-Note that the first argument is quoted, because it is better that
-this argument is not simplified (i.e. not evaluated).<br>
+</p><div class="center">
+<span style="font-family:monospace">diff(y(x),x,2)=((-2*y(x)-x)/2)
+</span></div><p>
+The general solution is :
+</p><div class="center">
+<span style="font-family:monospace">y0:=dsolve(eq,x,y)
+</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div>
+</p><div class="center">
+<span style="font-family:monospace">c_0*cos(x)+c_1*sin(x)-x/2
+</span></div><p>
+The stationary function depends on two parameters <span style="font-style:italic">c</span><sub>0</sub> and <span style="font-style:italic">c</span><sub>1</sub> which are fixed by the boundary conditions :
+</p><div class="center">
+<span style="font-family:monospace">c:=solve([subs(y0,x,0)=0,subs(y0,x,pi/2)=0],[c_0,c_1])
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">[[0,pi/4]]
+</span></div><p>
+Input :
+</p><div class="center">
+<span style="font-family:monospace">conjugate_equation(y0,[c_0,c_1],c[0],x,0)
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">sin(x)
+</span></div><p>
+The above expression obviously has no zeros in (0,π/2], hence there are no points conjugate to 0. Since <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>=2&gt;0, where <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>) is the integrand in <span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>) (the strong Legendre condition), <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> on <span style="font-style:italic">D</span>. To obtain <span style="font-style:italic">y</span><sub>0</sub> explicitly, input :
+</p><div class="center">
+<span style="font-family:monospace">subs(y0,[c_0,c_1],c[0])
+</span></div><p>
+Output :
+</p><div class="center">
+<span style="font-family:monospace">pi*sin(x)/4-x/2
+</span></div>
 <hr>
 <a href="cascmd_en236.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

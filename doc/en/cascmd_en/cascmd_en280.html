@@ -4,31 +4,21 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Changing the sampling rate : resample</title>
+<title>Averaging channel data : stereo2mono</title>
 </head>
 <body >
 <a href="cascmd_en279.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en281.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec349" class="subsection">5.26.8  Changing the sampling rate : <span style="font-family:monospace">resample</span><a id="hevea_default496"></a></h3>
+<h3 id="sec349" class="subsection">5.26.5  Averaging channel data : <span style="font-family:monospace">stereo2mono</span><a id="hevea_default495"></a></h3>
 <p>
-<span style="font-family:monospace">resample</span> takes an audio clip as its first argument. The target sample rate can be passed as the second argument (by default 44100 Hz), optionally followed by a quality level specification (an integer). The return value is the input audio clip resampled to the desired rate. The quality level can range from 0 (poor) to 4 (best). By default, it is set to 2.</p><p>Giac does resampling by using <a href="http://www.mega-nerd.com/libsamplerate/"><span style="font-family:monospace">libsamplerate</span></a> library written by Erik de Castro Lopo. For more information see the library documentation.</p><p>For example, assume that the directory <span style="font-family:monospace">sounds</span> contains a WAV file <span style="font-family:monospace">example.wav</span>. Input :
+<span style="font-family:monospace">stereo2mono</span> takes a multichannel audio clip as its argument and returns a clip with input channels mixed down to a single channel. Every sample in the output is the arithmetic mean of the samples at the same position in the input channels.</p><p>For example, input :
 </p><div class="center">
-<span style="font-family:monospace">clip:=readwav("/path/to/sounds/example.wav"):; samplerate(clip)
-</span></div><p>
-Output :
-</p><div class="center">
-<span style="font-family:monospace">44100
-</span></div><p>
-Input :
-</p><div class="center">
-<span style="font-family:monospace">res:=resample(clip,48000):; samplerate(res)
-</span></div><p>
-Output :
-</p><div class="center">
-<span style="font-family:monospace">48000
-</span></div>
+<span style="font-family:monospace">t:=soundsec(3):;<br>
+L,R:=sin(2*pi*440*t),sin(2*pi*445*t):;<br>
+s:=stereo2mono(createwav([L,R])):; playsnd(s)</span>
+</div>
 <hr>
 <a href="cascmd_en279.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

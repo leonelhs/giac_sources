@@ -4,41 +4,53 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximate computation of the derivative number : nDeriv</title>
+<title>Testing a distribution with the Kolmogorov-Smirnov
+distribution: kolmogorovt</title>
 </head>
 <body >
 <a href="cascmd_en743.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en745.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en746.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec959" class="subsection">9.3.2  Approximate computation of the derivative number : <span style="font-family:monospace">nDeriv</span></h3>
-<p><a id="hevea_default1300"></a>
-<span style="font-family:monospace">nDeriv</span> takes as arguments : an expression <span style="font-family:monospace">ex</span>, the variable
-name of this expression (by default <span style="font-family:monospace">x</span>), and <span style="font-family:monospace">h</span> (by default 
-<span style="font-family:monospace">h=0.001</span>).<br>
-<span style="font-family:monospace">nDeriv(ex,x,h)</span> computes an approximated value of the derivative of the
-expression <span style="font-family:monospace">ex</span> at the point <span style="font-family:monospace">x</span> and returns :
-</p><div class="center"><span style="font-family:monospace">(f(x+h)-f(x+h))/2*h</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">((x+0.001)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-(x+-0.001)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)*500.0</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">subst(nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,x),x=1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">2</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">nDeriv(exp(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2),x,0.00001)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(exp((x+1e-05)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)-exp((x+-1e-05)</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))*50000</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">subst(exp(nDeriv(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 2),x,0.00001),x=1)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">5.43656365783</span></div><p>
-which is an approximate value of <span style="font-family:monospace">2e=5.43656365692</span>.</p>
+<h3 id="sec956" class="subsection">8.5.5  Testing a distribution with the Kolmogorov-Smirnov
+distribution: <span style="font-family:monospace">kolmogorovt</span><a id="hevea_default1303"></a></h3>
+<p>The <span style="font-family:monospace">kolmogorovt</span> command will use the Kolmogorov test to compare
+sample data to a specified continuous distribution.
+You need to provide <span style="font-family:monospace">kolmogorovt</span> with either two lists of data
+or a list of data followed by the name of a distribution with the
+parameters.
+The <span style="font-family:monospace">kolmogorovt</span> command will return three values:
+</p><ul class="itemize"><li class="li-itemize">
+The <span style="font-style:italic">D</span> statistic, which is the maximum distance between the
+cumulative distribution functions of the samples or the sample and
+the given distribution.
+</li><li class="li-itemize">The <span style="font-style:italic">K</span> value, where <span style="font-style:italic">K</span> = <span style="font-style:italic">D</span>√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span> (for a single data set,
+where <span style="font-style:italic">n</span> is the size of the data set) or <span style="font-style:italic">K</span>=<span style="font-style:italic">D</span>√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sub><span style="text-decoration:overline">1</span></sub><span style="text-decoration:overline"> </span><span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sub><span style="text-decoration:overline">2</span></sub><span style="text-decoration:overline"> /(</span><span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sub><span style="text-decoration:overline">1</span></sub><span style="text-decoration:overline"> +
+</span><span style="text-decoration:overline"><span style="font-style:italic">n</span></span><sub><span style="text-decoration:overline">2</span></sub><span style="text-decoration:overline">)</span> (when there are two data sets, with sizes <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>).
+The <span style="font-style:italic">K</span> value will tend towards the Kolmogorov-Smirnov distribution
+as the size of the data set goes to infinity.
+</li><li class="li-itemize"><span style="font-family:monospace">1 - kolmogorovd(K)</span>, which will be close to 1 when the
+distributions look like they match.
+</li></ul><p>
+For example, if you enter
+</p><div class="center">
+<span style="font-family:monospace">kolmogorovt(randvector(100,normald,0,1),normald(0,1))
+</span></div><p>
+you might get
+</p><div class="center">
+<span style="font-family:monospace">["D=",0.112592987625,"K=",1.12592987625,"1-kolmogorovd(K)=",0.158375510292]
+</span></div><p>
+and if you enter
+</p><div class="center">
+<span style="font-family:monospace">kolmogorovt(randvector(100,normald,0,1),student(2))
+</span></div><p>
+you might get
+</p><div class="center">
+<span style="font-family:monospace">["D=",0.0996114067923,"K=",0.996114067923,"1-kolmogorovd(K)=",0.27418851907]
+</span></div>
 <hr>
 <a href="cascmd_en743.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en745.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en746.html"><img src="next_motif.gif" alt="Next"></a>
 </body>
 </html>

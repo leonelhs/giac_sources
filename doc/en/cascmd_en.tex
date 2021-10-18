@@ -1725,6 +1725,116 @@ information to make it a complete HTML document.
 You can translate an entire spreadsheet to MathML with the spreadsheet
 menu command \texttt{Table$\blacktriangleright$Save as mathml}.
 
+\subsection{Export to presentation or content MathML : {\tt export\_mathml}\index{export\_mathml}}
+The command {\tt export\_mathml} accepts one or two arguments: an expression and optionally the symbol {\tt content} or {\tt display}. If {\tt content} is specified, it converts the expression to content MathML, while for {\tt display} it converts it to presentation MathML. If the second argument is omitted, the return value contains both presentation and content MathML within a {\tt semantics} block. The return value in each case is a string containing a single {\tt math} block.
+
+For example, input :
+\begin{center}
+	\tt xml\_print(export\_mathml(a+2*b))
+\end{center}
+Output :
+\begin{verbatim}
+<math xmlns='http://www.w3.org/1998/Math/MathML'>
+  <semantics>
+    <mrow xref='id5'>
+      <mi xref='id1'>a</mi>
+      <mo>+</mo>
+      <mrow xref='id4'>
+        <mn xref='id2'>2</mn>
+        <mo>&it;</mo>
+        <mi xref='id3'>b</mi>
+      </mrow>
+    </mrow>
+    <annotation-xml encoding='MathML-Content'>
+      <apply id='id5'>
+        <plus/>
+        <ci id='id1'>a</ci>
+        <apply id='id4'>
+          <times/>
+          <cn id='id2' type='integer'>2</cn>
+          <ci id='id3'>b</ci>
+        </apply>
+      </apply>
+    </annotation-xml>
+    <annotation encoding='Giac'>a+2*b</annotation>
+  </semantics>
+</math>
+\end{verbatim}
+Input :
+\begin{center}
+	\tt xml\_print(export\_mathml(a+2*b,content))
+\end{center}
+Output :
+\begin{verbatim}
+<math xmlns='http://www.w3.org/1998/Math/MathML'>
+  <apply id='id5'>
+    <plus/>
+    <ci id='id1'>a</ci>
+    <apply id='id4'>
+      <times/>
+      <cn id='id2' type='integer'>2</cn>
+      <ci id='id3'>b</ci>
+    </apply>
+  </apply>
+</math>
+\end{verbatim}
+Input :
+\begin{center}
+	\tt xml\_print(export\_mathml(a+2*b,display))
+\end{center}
+Output :
+\begin{verbatim}
+<math xmlns='http://www.w3.org/1998/Math/MathML'>
+  <mrow>
+    <mi>a</mi>
+    <mo>+</mo>
+    <mrow>
+      <mn>2</mn>
+      <mo>&it;</mo>
+      <mi>b</mi>
+    </mrow>
+  </mrow>
+</math>
+\end{verbatim}
+
+\subsection{Indent a XML string : {\tt xml\_print}\index{xml\_print}}
+{\tt xml\_print} takes a string as its only argument, assumes that it contains XML code and indents it for better readability. The indented code is returned as string. The default indent is two spaces.
+
+For example, input :
+\begin{center}
+  \tt xml\_print("<?xml version='1.0'?><root><child1>some content</child1><child2></child2><child3/></root>")
+\end{center}
+Output :
+\begin{verbatim}
+<?xml version='1.0'?>
+<root>
+  <child1>some content</child1>
+  <child2></child2>
+  <child3/>
+</root>
+\end{verbatim}
+Input :
+\begin{center}
+	\tt s:=export\_mathml(1/(x\^{}2+1),display):;\\
+	    xml\_print(s)
+\end{center}
+Output :
+\begin{verbatim}
+<math mode='display' xmlns='http://www.w3.org/1998/Math/MathML'>
+  <mfrac>
+    <mn>1</mn>
+    <mrow>
+      <msup>
+        <mi>x</mi>
+        <mn>2</mn>
+      </msup>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+  </mfrac>
+</math>
+\end{verbatim}
+
 \subsection{Translating a Maple\index{Maple} file to Xcas: \texttt{maple2xcas}}\index{maple2xcas}
 
 You can translate a file of Maple commands to the Xcas language with
@@ -7445,7 +7555,7 @@ The right way to define a derivative is either with {\tt
 \begin{enumerate}
 \item {\tt expr}, {\tt constr}, {\tt depvars}, {\tt diffvars}
 \item {\tt constr}, {\tt [depvars]}, {\tt y}, {\tt diffvars}
-\item {\tt expr}, {\tt constr}, {\tt vars}, {\tt order\_size=k}, {\tt [pt]}
+\item {\tt expr}, {\tt constr}, {\tt vars}, {\tt order=k}, {\tt [pt]}
 \end{enumerate}
 Details on parameters :
 \begin{itemize}
@@ -7497,11 +7607,11 @@ Output :
 {\tt (2*x*y-y*z*exp(x*z)-z)/(x*y*exp(x*z)+x)]}
 \end{center}
 
-For the third case of input syntax, all partial derivatives of order equal to {\tt order\_size}, i.e.~$ k $, are computed. If $ k=1 $ they are returned in a single list, which represents the gradient of {\tt expr} with respect to independent variables. For $ k=2 $ the corresponding hessian matrix is returned. When $ k>2 $, a table with keys in form {\tt [k1,k2,..,kn]}, where $ \sum_{i=1}^nk_i=k $, is returned. Such key corresponds to \[ \frac{\partial^k f}{\partial x_1^{k_1}\,\partial x_2^{k_2}\,\cdots\,\partial x_n^{k_n}}. \]
+For the third case of input syntax, all partial derivatives of order equal to {\tt order}, i.e.~$ k $, are computed. If $ k=1 $ they are returned in a single list, which represents the gradient of {\tt expr} with respect to independent variables. For $ k=2 $ the corresponding hessian matrix is returned. When $ k>2 $, a table with keys in form {\tt [k1,k2,..,kn]}, where $ \sum_{i=1}^nk_i=k $, is returned. Such key corresponds to \[ \frac{\partial^k f}{\partial x_1^{k_1}\,\partial x_2^{k_2}\,\cdots\,\partial x_n^{k_n}}. \]
 Input :
 \begin{center}
 {\tt f:=x*y*z; g:=-2x\verb|^|3+15x\verb|^|2*y+11y\verb|^|3-24y=0;}\\
-{\tt implicitdiff(f,g,[x,z,y],order\_size=1)}
+{\tt implicitdiff(f,g,[x,z,y],order=1)}
 \end{center}
 Output :
 \begin{center}
@@ -7510,7 +7620,7 @@ Output :
 \end{center}
 Input :
 \begin{center}
-{\tt implicitdiff(f,g,order\_size=2,[1,-1,0])}
+{\tt implicitdiff(f,g,order=2,[1,-1,0])}
 \end{center}
 Output :
 \begin{center}
@@ -7519,7 +7629,7 @@ Output :
 In the next example, the value of $ \frac{\partial^4 f}{\partial x^4} $ is computed at point $ (x=0,y=0,z) $.\\
 Input :
 \begin{center}
-{\tt pd:=implicitdiff(f,g,[x,z,y],order\_size=4,[0,z,0]);}\\
+{\tt pd:=implicitdiff(f,g,[x,z,y],order=4,[0,z,0]);}\\
 {\tt pd[4,0]}
 \end{center}
 Output :
@@ -9120,6 +9230,317 @@ Input {\tt about(n)}\index{about} or {\tt assume(n)}\index{assume}, to know
 the hypothesis done on the variable $n$.
 \end{itemize}
 
+\subsection{Continuous Fourier Transform : {\tt fourier}\index{fourier}, {\tt ifourier}\index{ifourier}}
+The command {\tt fourier} takes one to three arguments: an expression $ f(x) $ and (optionally) identifiers $ x $ and $ s $. It returns the Fourier transform $ F $ of $ f $ defined by
+\begin{equation}\label{eq:fourier-def}
+F(s)=\int_{-\infty}^{+\infty}\mathrm{e}^{-\mathrm{i}\,s\,x}\,f(x)\,\mathrm{d}x,\quad s\in\mathbb{R}.
+\end{equation}
+If $ s $ is not given, $ F $ is returned as a function of $ x $.
+
+The command {\tt ifourier} works the other way round: it takes arguments $ F(s) $ and (optionally) $ s $ and $ x $, and returns the expression $ f(x) $ using the formula
+\[ f(x)=\frac{1}{2\,\pi}\,\int_{-\infty}^{+\infty}\mathrm{e}^{\mathrm{i}\,s\,x}\,F(s)\,\mathrm{d}s. \]
+To compute the above integral, {\tt fourier} is called with input parameters $ \frac{F(s)}{2\,\pi} $, $ s $ and $ x $, replacing $ x $ with $ -x $ in the result.
+
+Arbitrary rational functions can be transformed. For example, to find the Fourier transform of $ f(x)=\frac{x}{x^3-19\,x+30} $, input :
+\begin{center}
+  \tt F:=fourier(x/(x\^{}3-19x+30),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt pi*(5*i*exp(5*i*s)+(-21*i)*exp((-3*i)*s)+16*i*exp((-2*i)*s))*sign(s)/56
+\end{center}
+Input :
+\begin{center}
+  \tt ifourier(F,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt x/(x\^{}3-19*x+30)
+\end{center}
+Similarly, to find the transform of $ f(x)=\frac{x^2+1}{x^2-1} $, input :
+\begin{center}
+  \tt F:=fourier((x\^{}2+1)/(x\^{}2-1),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*pi*(Dirac(s)-sign(s)*sin(s))
+\end{center}
+Input :
+\begin{center}
+  \tt ifourier(F,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt (x\^{}2+1)/(x\^{}2-1)
+\end{center}
+A range of other (generalized) functions and distributions can be transformed, as demonstrated in the following examples. If {\tt fourier} does not know how to transform a function, say $ f $, it returns the unevaluated integral~\eqref{eq:fourier-def}. In these cases one may try to evaluate the result using {\tt eval}.\\
+Input :
+\begin{center}
+  \tt fourier(3x\^{}2+2x+1,x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*pi*(Dirac(s)+2*i*Dirac(s,1)-3*Dirac(s,2))
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(Dirac(x-1)+Dirac(x+1),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*cos(s)
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(exp(-2*abs(x-1)),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 4*exp(-i*s)/(s\^{}2+4)
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(atan(1/(2x\^{}2)),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*pi*sin(s/2)*exp(-abs(s)/2)/s
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(BesselJ(3,x),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt -s*(4*s\^{}2-3)*(-i*sign(s+1)+i*sign(s-1))/sqrt(-s\^{}2+1)
+\end{center}
+Input :
+\begin{center}
+  \tt F:=fourier(sin(x)*sign(x),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt -2/(s\^{}2-1)
+\end{center}
+Input :
+\begin{center}
+  \tt ifourier(F,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt sign(x)*sin(x)
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(log(abs(x)),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt -pi*(2*euler\_gamma*Dirac(s)*abs(s)+1)/abs(s)
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(rect(x),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*sin(s/2)/s
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(exp(-abs(x))*sinc(x),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt atan(s+1)-atan(s-1)
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(1/sqrt(abs(x)),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt sqrt(2)*sqrt(pi)/sqrt(abs(s))
+\end{center}
+Input :
+\begin{center}
+  \tt F:=fourier(1/cosh(2x),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt pi/(exp(pi*s/4)+exp(-pi*s/4))
+\end{center}
+Input :
+\begin{center}
+  \tt ifourier(F,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt 2/(exp(2*x)+exp(-2*x))
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(Airy\_Ai(x/2),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*exp(8*i*s\^{}3/3)
+\end{center}
+Input :
+\begin{center}
+  \tt F:=fourier(Gamma(1+i*x/3),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 6*pi*exp(-exp(-3*s)-3*s)
+\end{center}
+Input :
+\begin{center}
+  \tt ifourier(F,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt Gamma(i*x/3+1)
+\end{center}
+Input :
+\begin{center}
+  \tt F:=fourier(atan(x/4)/x,x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt pi*ugamma(0,4*abs(s))
+\end{center}
+Input :
+\begin{center}
+  \tt ifourier(F,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt atan(x/4)/x
+\end{center}
+Input :
+\begin{center}
+  \tt assume(a>0):; fourier(exp(-a*x\^{}2+b),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt sqrt(a)*sqrt(pi)*exp(-s\^{}2/(4*a)+b)/a
+\end{center}
+In the following example we compute the convolution of $ f(x)=\mathrm{e}^{-|x|} $ with itself using the convolution theorem. Input :
+\begin{center}
+  \tt F:=fourier(exp(-abs(x)),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2/(s\^{}2+1)
+\end{center}
+Input :
+\begin{center}
+  \tt ifourier(F\^{}2,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt x*Heaviside(x)*exp(-x)-x*Heaviside(-x)*exp(x)+exp(-abs(x))
+\end{center}
+The above result is the desired convolution $ f\ast f(x)=\int_{-\infty}^{+\infty}f(t)\,f(x-t)\,\mathrm{d}t $.
+
+Piecewise functions can be transformed if defined as
+\begin{center}
+  \tt piecewise(x<a1,f1,x<a2,f2,...,x<an,fn,f0)
+\end{center}
+where $ a_1,a_2,\dots,a_n $ are real numbers such that $ a_1<a_2<\cdots<a_n $. Inequalities may be strict or non-strict.\\
+Input :
+\begin{center}
+  \tt f:=piecewise(x<=-1,exp(x+1),x<=1,1,exp(2-2x)):; F:=fourier(f,x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt (-i*s*sin(s)+3*s*cos(s)+4*sin(s))/(s*(s-2*i)*(s+i))
+\end{center}
+The original function $ f $ is obtained from the above result by applying {\tt ifourier}. Input :
+\begin{center}
+  \tt ifourier(F,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt Heaviside(x+1)-Heaviside(x-1)+Heaviside(x-1)*exp(-2*x+2)+ Heaviside(-x-1)*exp(x+1)
+\end{center}
+One may verify that the above expression is equal to $ f(x) $ by plotting.
+
+To transform unknown functions, one can use the command {\tt addtable}\index{addtable} which takes five arguments: {\tt fourier} or {\tt laplace} (to indicate the desired transform definition), $ f(x) $, $ F(s) $, $ x $ and $ s $, where $ f $, $ F $, $ x $ and $ s $ are identifiers. If the first argument is {\tt fourier}, this means that $ \mathcal{F}\{f(x)\}(s)=F(s) $ i.e.~that the command
+\begin{center}
+  \tt fourier(f(x),x,s)
+\end{center}
+would return {\tt F(s)}. The return value of {\tt addtable} is 1 on success and 0 on failure. The second and the third argument can also be expressions depending on several variables.\\
+Input :
+\begin{center}
+  \tt addtable(fourier,y(x),Y(s),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 1
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(y(a*x+b),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt Y(s/a)*exp(i*s*b/a)/abs(a)
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(Y(x),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*pi*y(-s)
+\end{center}
+Input :
+\begin{center}
+  \tt addtable(fourier,g(x,t),G(s,t),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 1
+\end{center}
+Input :
+\begin{center}
+  \tt fourier(g(x/2,3*t),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*G(2*s,3*t)
+\end{center}
+
+Fourier transform can be used for solving linear differential equations with constant coefficients. For example, we obtain a particular solution to the equation
+\[ y(x)+4\,y^{(4)}(x)=\delta(x), \]
+where $ \delta $ is the Dirac delta function. First we transform both sides of the above equation. Input :
+\begin{center}
+  \tt L:=fourier(y(x)+4*diff(y(x),x,4),x,s); R:=fourier(Dirac(x),x,s)
+\end{center}
+Output :
+\begin{center}
+  \tt Y(s)-4*s\^{}4*Y(s), 1
+\end{center}
+Then we solve the equation $ L=R $ for $ Y(s) $. Generally, one should apply {\tt csolve} instead of {\tt solve}. Input :
+\begin{center}
+  \tt sol:=csolve(L=R,Y(s))[0]
+\end{center}
+Output :
+\begin{center}
+  \tt 1/(4*s\^{}4+1)
+\end{center}
+Finally, we apply {\tt ifourier} to obtain $ y(x) $. Input :
+\begin{center}
+  \tt ifourier(sol,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt (sin(abs(x)/2)+cos(abs(x)/2))*exp(-abs(x)/2)/4
+\end{center}
+The above solution can be combined with solutions of the corresponding homogeneous equation to obtain the general solution.
+
 \subsection{Discrete Fourier Transform}
 Let $N$ be an integer.
 The Discrete Fourier Transform (DFT) is a transformation $F_N$ defined on
@@ -9617,6 +10038,91 @@ Output :
 One can observe that the dominant frequency is around 220~Hz, which is the middle of tenor range. This is consistent with the fact that a man is speaking in the clip.
 
 \section{Signal Processing}
+\subsection{Boxcar function : {\tt boxcar}\index{boxcar}}\label{sec:boxcar}
+The {\tt boxcar} command takes three arguments: real numbers $ a $, $ b $ and an identifier or an expression $ x $. It returns $ u(x-a)-u(x-b) $, where $ u $ is the Heaviside function. The resulting expression defines a function which is zero everywhere except within the segment $ [a,b] $, where its value is equal to 1.
+
+For example, input :
+\begin{center}
+  \tt boxcar(1,2,x)
+\end{center}
+Output :
+\begin{center}
+  \tt Heaviside(x-1)-Heaviside(x-2)
+\end{center}
+Input :
+\begin{center}
+  \tt boxcar(1,2,3/2)
+\end{center}
+Output :
+\begin{center}
+  \tt 1
+\end{center}
+Input :
+\begin{center}
+  \tt boxcar(1,2,0)
+\end{center}
+Output :
+\begin{center}
+  \tt 0
+\end{center}
+
+\subsection{Rectangle function : {\tt rect}\index{rect}}\label{sec:rect}
+The {\tt rect} command takes an identifier or an expression $ x $ and returns the value of the rectangle function at $ x $, which is defined by $ \Pi(x)=u(x+1/2)-u(x-1/2) $ where $ u $ is the Heaviside function. The rectangle function is a special case of boxcar function (see Section~\ref{sec:boxcar}) for $ a=-\frac{1}{2} $ and $ b=\frac{1}{2} $.
+
+For example, input :
+\begin{center}
+  \tt rect(x/2)
+\end{center}
+Output :
+\begin{center}
+  \tt Heaviside(x/2+1/2)-Heaviside(x/2-1/2)
+\end{center}
+
+To compute the convolution of the rectangle function with itself, use the convolution theorem. Input :
+\begin{center}
+  \tt R:=fourier(rect(x),x,s):; ifourier(R\^{}2,s,x)
+\end{center}
+Output :
+\begin{center}
+  \tt Heaviside(x+1)-Heaviside(x-1)-2*x*Heaviside(x)+ x*Heaviside(x+1)+x*Heaviside(x-1)
+\end{center}
+The above result is the triangle function $ \mathrm{tri}(x) $ (see Section~\ref{sec:tri}).
+
+\subsection{Triangle function : {\tt tri}\index{tri}}\label{sec:tri}
+The {\tt tri} command takes an expression $ x $ as its only argument and returns the value of triangle function at $ x $, defined by
+\[ \Lambda(x)=\begin{cases}1-|x|,&|x|<1,\\0,&\text{otherwise}.\end{cases} \]
+The above expression is equal to the convolution of rectangle function with itself (see Section~\ref{sec:rect}).
+
+For example, input :
+\begin{center}
+  \tt tri(x-1)
+\end{center}
+Output :
+\begin{center}
+  \tt x*(Heaviside(-x+1)-Heaviside(-x))+ (Heaviside(x-1)-Heaviside(x-2))*(-x+2)
+\end{center}
+
+\subsection{Cardinal sine function : {\tt sinc}\index{sinc}}\label{sec:sinc}
+The {\tt sinc} command takes an expression $ x $ as its only argument and returns the value of sinc function at $ x $, defined by
+\[ \mathrm{sinc}(x)=\begin{cases}\frac{\sin(x)}{x},&x\neq 0,\\1,&x=0.\end{cases} \]
+
+For example, input :
+\begin{center}
+  \tt sinc(pi*x)
+\end{center}
+Output :
+\begin{center}
+  \tt sin(pi*x)/(pi*x)
+\end{center}
+Input :
+\begin{center}
+  \tt sinc(0)
+\end{center}
+Output :
+\begin{center}
+  \tt 1
+\end{center}
+
 \subsection{Cross-correlation of two signals : {\tt cross\_correlation}\index{cross\_correlation}}
 \label{sec:crosscorr}
 {\tt cross\_correlation} takes two arguments, a complex vector $ \mathbf{v} $ of length $ n $ and a complex vector $ \mathbf{w} $ of length $ m $. The returned value is the complex vector $ \mathbf{z}=\mathbf{v}\star\mathbf{w} $ of length $ N=n+m-1 $ which is the cross-correlation of the two input vectors, i.e.~such that the following holds :
@@ -9656,10 +10162,12 @@ Output :
 		91.0,68.0,58.0,58.0,44.0,37.0,28.0,15.0,9.0,2.0]}
 \end{center}
 
-\subsection{Convolution of two signals : {\tt convolution}\index{convolution}}
+\subsection{Convolution of two signals or functions : {\tt convolution}\index{convolution}}
 {\tt convolution} takes two arguments, a real vector $ \mathbf{v} $ of length $ n $ and a real vector $ \mathbf{w} $ of length $ m $, and returns their convolution $ \mathbf{z}=\mathbf{v}\ast\mathbf{w} $ which is the vector of length $ N=n+m-1 $ defined as :
 \[ z_k=\sum_{i=0}^{k}v_i\,w_{k-i},\quad k=0,1,\dots,N-1, \]
-such that $ v_j=0 $ for $ j\geq n $ and $ w_j=0 $ for $ j\geq m $.
+such that $ v_j=0 $ for $ j\geq n $ and $ w_j=0 $ for $ j\geq m $. The two arguments may also be real functions $ f(x) $ and $ g(x) $, with the variable $ x $ as an optional third argument, in which case the integral
+\[ \int_{-\infty}^{+\infty}f(t)\,g(x-t)\,\mathrm{d}t \]
+is computed. It is assumed that $ f $ and $ g $ are causal functions, i.e.~$ f(x)=g(x)=0 $ for $ x<0 $. Therefore both $ f $ and $ g $ are multiplied by Heaviside function prior to integration.
 
 For example, input :
 \begin{center}
@@ -9668,6 +10176,24 @@ For example, input :
 Output :
 \begin{center}
 	{\tt [1.0,1.0,2.0,-2.0,1.0,-3.0]}
+\end{center}
+
+To compute the convolution of $ f(x)=25\,\mathrm{e}^{2\,x}\,u(x) $ and $ g(x)=x\,\mathrm{e}^{-3\,x}\,u(x) $, where $ u $ is the Heaviside function, input :
+\begin{center}
+  \tt convolution(25*exp(2x),x*exp(-3x))
+\end{center}
+Output :
+\begin{center}
+  \tt Heaviside(x)*(-5*x*exp(-3*x)+exp(2*x)-exp(-3*x))
+\end{center}
+
+To compute the convolution of $ f(t)=\ln(1+t)\,u(t) $ and $ g(t)=\frac{1}{\sqrt{t}} $, input :
+\begin{center}
+  \tt convolution(ln(1+t),1/sqrt(t),t)
+\end{center}
+Output :
+\begin{center}
+  \tt 2*Heaviside(t)*((t+1)*ln(abs(sqrt(t)-sqrt(t+1))/(sqrt(t)+sqrt(t+1)))+ 2*sqrt(t\^{}2+t))/sqrt(t+1)
 \end{center}
 
 In the following example convolution is used for reverberation. Assume that the directory {\tt sounds} contains two files, a dry, mono recording of a guitar stored in {\tt guitar.wav} and a two-channel impulse response recorded in a French 18th century salon and stored in {\tt salon-ir.wav}. Files are loaded with the following command lines :
@@ -17829,7 +18355,7 @@ Local extrema of a univariate or multivariate differentiable expression under eq
 \item {\tt expr} : differentiable expression
 \item {\tt constr} (optional) : list of equality constraints
 \item {\tt vars} : list of variables
-\item {\tt order\_size=<positive integer>} or {\tt lagrange} (optional) : upper bound for the order of derivatives examined in the process (defaults to 5) or the specifier for the method of Lagrange multipliers
+\item {\tt order=<positive integer>} or {\tt lagrange} (optional) : upper bound for the order of derivatives examined in the process (defaults to 5) or the specifier for the method of Lagrange multipliers
 \end{itemize}
 Function returns a list containing two lists of points: local minima and local maxima of {\tt expr}, respectively. Saddle and unclassified points are reported in the message area. Also, information about possible (non)strict extrema is printed out. If {\tt lagrange} is passed as an optional last argument, the method of Lagrange multipliers is used. Else, the problem is reduced to an unconstrained one by applying implicit differentiation.
 
@@ -17839,7 +18365,7 @@ Number of constraints must be strictly less than number of variables. Additional
 
 Variables may be specified with bounds, e.g.~{\tt x=a..b}, which is interpreted as $ x\in(a,b) $. For semi-bounded variables one can use {\tt -infinity} for $ a $ or {\tt +infinity} for $ b $. Also, parameter {\tt vars} may be entered as e.g.~{\tt [x1=a1,x2=a2,...,xn=an]}, in which case the critical point close to $ \mathbf{a}=(a_1,a_2,\dots,a_n) $ is computed numerically, applying an iterative method with initial point $ \mathbf{a} $.
 
-If {\tt order\_size=<n>} is specified as the fourth argument, derivatives up to order $ n $ are inspected to find critical points and classify them. For {\tt order\_size=1} the function returns a single list containing all critical points found. The default is $ n=5 $. If some critical points are left unclassified one might consider repeating the process with larger value of $ n $, although the success is not guaranteed.
+If {\tt order=<n>} is specified as the fourth argument, derivatives up to order $ n $ are inspected to find critical points and classify them. For {\tt order=1} the function returns a single list containing all critical points found. The default is $ n=5 $. If some critical points are left unclassified one might consider repeating the process with larger value of $ n $, although the success is not guaranteed.
 
 
 \subsubsection{Examples}
@@ -17901,7 +18427,7 @@ Output :
 \end{center}
 Input :
 \begin{center}
-{\tt extrema(x*y*z,x+y+z=1,[x,y,z],order\_size=1)}
+{\tt extrema(x*y*z,x+y+z=1,[x,y,z],order=1)}
 \end{center}
 Output :
 \begin{center}

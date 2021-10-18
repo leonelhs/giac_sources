@@ -353,10 +353,18 @@ namespace giac {
     }
 #endif
     bool argpar = ( (arg.type>_CPLX && arg.type!=_FLOAT_) || !is_positive(arg,contextptr)) && arg.type!=_IDNT ;
-#if defined EMCC || defined GIAC_GGB
+#if defined EMCC || defined GIAC_GGB || defined NUMWORKS
     bool need=need_parenthesis(arg) || arg.type==_SYMB;
     if (pui==plus_one_half){
+#ifdef NUMWORKS
+      need=true;
+      s += char(226);
+      s += char(136);
+      s += char(154);
+      s+= '(';
+#else
       s += (need?"√(":"√");
+#endif
       add_print(s,arg,contextptr);
       s += (need?")":"");
       return s;
@@ -413,7 +421,12 @@ namespace giac {
 #ifdef GIAC_HAS_STO_38
 	s += '^';
 #else
-	if (python_compat(contextptr))
+	if (
+	    python_compat(contextptr)
+#ifdef NUMWORKS
+	    && numworks_shell
+#endif
+	    )
 	  s += "**";
 	else 
 	  s += __pow.s;
@@ -429,7 +442,11 @@ namespace giac {
 #ifdef GIAC_HAS_STO_38
 	s += '^';
 #else
-	if (python_compat(contextptr))
+	if (python_compat(contextptr)
+#ifdef NUMWORKS
+	    && numworks_shell
+#endif
+	    )
 	  s += "**";
 	else
 	  s += __pow.s;
@@ -445,7 +462,12 @@ namespace giac {
 #ifdef GIAC_HAS_STO_38
     s += '^';
 #else
-    s += python_compat(contextptr)?"**":__pow.s;
+    s +=
+      python_compat(contextptr)
+#ifdef NUMWORKS
+      && numworks_shell
+#endif
+      ?"**":__pow.s;
 #endif
     bool puipar = pui.type==_SYMB || pui.type==_FRAC || pui.type==_CPLX || (pui.type==_VECT && pui.subtype==_SEQ__VECT);
     if (puipar)

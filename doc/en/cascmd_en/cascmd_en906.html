@@ -4,56 +4,61 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Check if an object in the plane is a right triangle or a rectangle: is_rectangle</title>
+<title>Orthogonal projection in the plane: projection</title>
 </head>
 <body >
 <a href="cascmd_en905.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en907.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1168" class="subsection">12.16.7  Check if an object in the plane is a right triangle or a rectangle: <span style="font-family:monospace">is_rectangle</span><a id="hevea_default1580"></a></h3>
+<h3 id="sec1167" class="subsection">12.15.8  Orthogonal projection in the plane: <span style="font-family:monospace">projection</span><a id="hevea_default1582"></a></h3>
 <p>
-<a id="sec:2dcheckrect"></a></p><p>See section <a href="cascmd_en980.html#sec%3A3dcheckrect">13.13.11</a> for checking for right triangles and rectangles
-in three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_rectangle</span> command takes as argument a geometric object or a
-sequence of three or four points. </p><p>When the argument is a triangle or three points, <span style="font-family:monospace">is_rectangle</span> returns 
-<span style="font-family:monospace">1</span>, <span style="font-family:monospace">2</span> or <span style="font-family:monospace">3</span> if the triangle is a right
-triangle; the number indicates which vertex has the right angle.
-When the argument is a quadrilateral or four points, <span style="font-family:monospace">is_rectangle</span> returns 
-<span style="font-family:monospace">1</span> or <span style="font-family:monospace">2</span> if the quadrilateral is a rectangle;
-<span style="font-family:monospace">1</span> if it is a rectangle but not a square and <span style="font-family:monospace">2</span> if it
-is a square. The command returns <span style="font-family:monospace">0</span> if the object is not a
-right triangle or rectangle.<br>
+<a id="sec:2dprojection"></a></p><p>See section <a href="cascmd_en998.html#sec%3A3dprojection">13.14.8</a> for projections in space.</p><p>The <span style="font-family:monospace">projection</span> command takes one or two arguments.</p><p>If <span style="font-family:monospace">projection</span> has one argument, it is a geometric object.
+<span style="font-family:monospace">projection</span> returns a new command which projects points onto
+the object.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">is_rectangle(1,1+i,i)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">2 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">is_rectangle(1+i, -2+i, -2-i, 1-i)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">R := rectangle(-2-i,1-i, 3, C, D)
+<span style="font-family:monospace">p1 := projection(line(-1,i))
 </span></div><p>
 then:
 </p><div class="center">
-<span style="font-family:monospace">is_rectangle(R[0])
+<span style="font-family:monospace">p1(i+1)
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">1
+<img src="cascmd_en175.png">
+</div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">p2 := projection(circle(-1,1))
 </span></div><p>
-Note that <span style="font-family:monospace">R[0]</span> is a rectangle since <span style="font-family:monospace">R</span> is a list made
-of a rectangle and vertices <span style="font-family:monospace">C</span> and <span style="font-family:monospace">D</span>. Entering
-<span style="font-family:monospace">affix(C,D)</span> returns <span style="font-family:monospace">-2+8*i, 1+8*i</span>.</p>
+then:
+</p><div class="center">
+<span style="font-family:monospace">p2(i)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en176.png">
+</div><p>If <span style="font-family:monospace">projection</span> has two arguments, the first arguments is a
+geometric object as above, and the second argument is a point.
+<span style="font-family:monospace">projection</span> returns and draws the projection of the point onto
+the object.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">projection(line(-1, i), 1+i)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en177.png">
+</div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">projection(circle(-1,1), i)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en178.png">
+</div>
 <hr>
 <a href="cascmd_en905.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

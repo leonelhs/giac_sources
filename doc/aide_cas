@@ -5650,8 +5650,24 @@ scale([[1,2],[3,4],[5,6]],12,0)
 3 Convierte la expresión en una cadena que permite mostrar matemáticas en la web.
 4 Μετατρέπει την παράσταση σε μια συμβολσειρά ώστε να μπορέσει να εμφανίσει τα μαθηματικά στο διαδίκτυο.
 0 Expr
--1 latex
+-1 export_mathml
+-2 latex
 mathml(1/2)
+
+# export_mathml
+2 Converts an expression to presentation or content MathML block.
+0 Expr,[display||content]
+-1 mathml
+-2 latex
+export_mathml(a+2*b)
+export_mathml(a+2*b,display)
+export_mathml(a+2*b,content)
+
+# xml_print
+2 Indents a XML code given in a string (pretty print).
+0 Str
+-1 export_mathml
+xml_print(export_mathml(a+2*b))
 
 # fracmod iratrecon
 1 Retourne la fraction a/b tel que b*Xpr=a mod n, -sqrt(n)/2<a<=sqrt(n)/2 et 0<=b<sqrt(n)/2.
@@ -13722,11 +13738,22 @@ syst2mat([x-y=1,x+2*y],[x,y])
 4 Πίνακας μιας συνάρτησης
 0 Expr,Var
 -1 tablefunc
+-2 tabsign
 tabvar(sin(x),x)
 tabvar(1/ln(x^2-1),x,diff=1)
 tabvar(x^2+x+1,x)
 tabvar(x^2,x,-3,5)
 tabvar([sin(2t),cos(3t)])
+
+# tabsign
+1 Tableau de signes d'une fonction (et graphe dans DispG)
+2 Table of sign of a function.
+0 Expr,Var
+-1 tablefunc
+-2 tabvar
+tabsign(x^2-x,x)
+tabsign(x^2,x,-3,5)
+tabsign(sin(x),x)
 
 # tablefunc
 1 Tableau de valeurs d'une fonction : on doit être dans un tableur.
@@ -15534,9 +15561,9 @@ implicitdiff([-2x*z+y^2=1,x^2-exp(x*z)=y],[y(x),z(x)],[y,z],x)
 implicitdiff([a*sin(u*v)+b*cos(w*x)=c,u+v+w+x=z,u*v+w*x=z],[u(x,z),v(x,z),w(x,z)],u,z)
 implicitdiff(x*y,-2x^3+15x^2*y+11y^3-24y=0,y(x),x$2)
 implicitdiff((x-u)^2+(y-v)^2,[x^2/4+y^2/9=1,(u-3)^2+(v+5)^2=1],[v(u,x),y(u,x)],u,x)
-implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=1)
-implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=2,[1,-1,0])
- pd:=implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order_size=4,[0,z,0]);pd[4,0,0]
+implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order=1)
+implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order=2,[1,-1,0])
+ pd:=implicitdiff(x*y*z,-2x^3+15x^2*y+11y^3-24y=0,[x,z,y],order=4,[0,z,0]);pd[4,0,0]
 
 # lp_assume lp_binary lp_binaryvariables lp_depthlimit lp_integer lp_integervariables lp_maximize lp_nonnegative lp_nonnegint lp_variables lp_nodelimit lp_integertolerance lp_method lp_simplex lp_interiorpoint lp_initialpoint lp_maxcuts lp_gaptolerance lp_nodeselect lp_varselect lp_firstfractional lp_lastfractional lp_mostfractional lp_pseudocost lp_depthfirst lp_breadthfirst lp_bestprojection lp_hybrid lp_iterationlimit lp_timelimit lp_verbose
 1 Options de la commande lpsolve
@@ -15589,7 +15616,7 @@ extrema(x+y+z,[x^2+y^2=1,2x+z=1],[x,y,z])
 extrema((x-u)^2+(y-v)^2,[x^2/4+y^2/9=1,(u-3)^2+(v+5)^2=1],[u,v,x,y])
 extrema(x2^6+x1^3+4x1+4x2,x1^5+x2^4+x1+x2=0,[x1,x2])
 extrema(x*y,-2x^3+15x^2*y+11y^3-24y=0,[x,y])
-extrema(x2^4-x1^4-x2^8+x1^10,[x1,x2],order_size=1)
+extrema(x2^4-x1^4-x2^8+x1^10,[x1,x2],order=1)
 extrema(x2^4-x1^4-x2^8+x1^10,[x1,x2])
 extrema(x2^6+x1^3+4x1+4x2,x1^5+x2^4+x1+x2=0,[x1,x2])
 extrema(x2^6+x1^3+2x1^2-x2^2+4x1+4x2,x1^5+x2^4+x1+x2=0,[x1,x2])
@@ -15704,6 +15731,78 @@ plotwav(readwav("/some/file"),range=[10000,22000]) // range in samples
 plotspectrum(readwav("/some/file"))
 plotspectrum(readwav("/some/file"),range=100..1000)
 
+# boxcar
+2 Returns the value at x of the boxcar function corresponding to a and b.
+0 Real(a),Real(b),Expr(x)
+-1 rect
+-2 Heaviside
+boxcar(1,2,x)
+
+# rect
+2 Returns the value of the rectangle function at x.
+0 Expr(x)
+-1 boxcar
+-2 tri
+-3 Heaviside
+rect(x/2)
+
+# tri
+2 Returns the value of the triangle function at x.
+0 Expr(x)
+-1 rect
+-2 Heaviside
+tri(x-1)
+
+# sinc
+2 Returns the value of the cardinal sine function at x.
+0 Expr(x)
+-1 sin
+sinc(pi*x)
+
+# fourier
+2 Returns the Fourier transform F(s) of f(x).
+0 Expr(f(x)),[Var(x),[Var(s)]]
+-1 ifourier
+-2 fourier_cn
+-3 fft
+fourier(x/(x^3-19x+30),x,s)
+fourier((x^2+1)/(x^2-1),x,s)
+fourier(3x^2+2x+1,x,s)
+fourier(Dirac(x-1)+Dirac(x+1),x,s)
+fourier(exp(-2*abs(x-1)),x,s)
+fourier(atan(1/(2x^2)),x,s)
+fourier(BesselJ(3,x),x,s)
+fourier(sin(x)*sign(x),x,s)
+fourier(log(abs(x)),x,s)
+fourier(rect(x),x,s)
+fourier(exp(-abs(x))*sinc(x),x,s)
+fourier(1/sqrt(abs(x)),x,s)
+fourier(1/cosh(2x),x,s)
+fourier(Gamma(1+i*x/3),x,s)
+fourier(atan(x/4)/x,x,s)
+fourier(piecewise(x<=-1,exp(x+1),x<=1,1,exp(2-2x)),x,s)
+
+# ifourier
+2 Returns the inverse Fourier transform f(x) of F(s).
+0 Expr(F(s)),[Var(s),[Var(x)]]
+-1 fourier
+-2 fourier_cn
+-3 ifft
+ifourier(2*pi*(Dirac(s)-sign(s)*sin(s)),s,x)
+ifourier(-2/(s^2-1),s,x)
+ifourier(pi/(exp(pi*s/4)+exp(-pi*s/4)),s,x)
+ifourier(6*pi*exp(-exp(-3*s)-3*s),s,x)
+ifourier(pi*ugamma(0,4*abs(s)),s,x)
+ifourier(fourier(exp(-abs(x)),x,s)^2,s,x)
+ifourier(sinc(s),s,x)
+
+# addtable
+2 Stores an unknown Fourier/Laplace transform pair (f,F).
+0 fourier||laplace,f(x),F(s),Var(x),Var(s)
+-1 fourier
+-2 laplace
+addtable(fourier,y(x),Y(s),x,s)
+
 # cross_correlation
 2 Returns the cross_correlation of two signals u and v.
 0 cross_correlation(Lst(u),Lst(v))
@@ -15720,12 +15819,13 @@ cross_correlation([1,2],[3,4,5])
 auto_correlation([1,-1,0,2,1])
 
 # convolution
-1 Convolution de 2 signaux (liste) u et v
-2 Returns the convolution of two signals u and v.
+1 Convolution de 2 signaux (liste) ou fonctions causales u et v
+2 Returns the convolution of two signals or causal functions u and v.
 0 Lst(u),Lst(v)
 -1 fft
 -2 cross_correlation
 convolution([1,2,3],[1,-1,1,-1])
+convolution(25*exp(2*x),x*exp(-3*x),x)
 
 # lowpass
 2 Returns the result of applying a simple first-order lowpass RC filter with cutoff frequency c (the default samplerate is 44100) to the given signal s.

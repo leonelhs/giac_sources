@@ -398,7 +398,7 @@ namespace xcas {
 	Xcas_debug_input->when(FL_WHEN_ENTER_KEY|FL_WHEN_NOT_CHANGED);
       }
       // Debugging mode
-      // cerr << "Debugging" << endl;
+      // cerr << "Debugging" << '\n';
       debug_struct * dbgptr=debug_ptr(contextptr);
       if (dbgptr){
 	if (dbgptr->debug_info_ptr && dbgptr->debug_info_ptr->type==_VECT){
@@ -471,11 +471,11 @@ namespace xcas {
 	  /* console mode debugging
 	     if (dbgptr->debug_refresh){
 	     if (dbgptr->fast_debug_info_ptr)
-	     cerr << *dbgptr->fast_debug_info_ptr << endl;
+	     cerr << *dbgptr->fast_debug_info_ptr << '\n';
 	     }
 	     else {
 	     if (dbgptr->debug_info_ptr)
-	     cerr << *dbgptr->debug_info_ptr << endl;
+	     cerr << *dbgptr->debug_info_ptr << '\n';
 	       }
 	  */
 	}
@@ -695,10 +695,10 @@ namespace xcas {
       menufile_found=is_file_available(menufile.c_str());
     }
     if (!menufile_found){
-      cerr << "// Unable to open menu file "<< menufile << endl;
+      cerr << "// Unable to open menu file "<< menufile << '\n';
       return false;
     }
-    cerr << "// Using menu file " << menufile << endl;
+    cerr << "// Using menu file " << menufile << '\n';
     // Now reading commandnames from file for menus
     // Syntax is menu/submenu/item, callback inserts item name
     ifstream in(menufile.c_str());
@@ -1000,7 +1000,7 @@ namespace xcas {
 
   giac::gen thread_eval(const giac::gen & g,int level,context * contextptr){
     // Remove idle function for wait to work
-    // cerr << "remove idle " << endl;
+    // cerr << "remove idle " << '\n';
     Fl::remove_idle(xcas::Xcas_idle_function,0);
     gen res=giac::thread_eval(g,level,contextptr,fl_wait_0001);
     if (Xcas_Debug_Window) Xcas_Debug_Window->hide();
@@ -1169,7 +1169,7 @@ namespace xcas {
     if (!hp || !gr)
       return;
 #ifdef HAVE_LIBPTHREAD
-    // cerr << "geo2d lock" << endl;
+    // cerr << "geo2d lock" << '\n';
     pthread_mutex_lock(&interactive_mutex);
 #endif
     bool b=io_graph(contextptr);
@@ -1302,7 +1302,7 @@ namespace xcas {
     if (!w)
       return 0;
     if (debug_infolevel>=5)
-      cerr << "eval " << g_ << endl;
+      cerr << "eval " << g_ << '\n';
     Fl_Group * gr=w->parent();
     Fl_Group::current(gr);
     // Find history_pack above for context from widget 
@@ -1444,7 +1444,7 @@ namespace xcas {
 	if (t<10) res += ('0'+t); else res += 'a'+(t-10);
       }
     }
-    //std::cerr << s << endl << res << endl;
+    //std::cerr << s << '\n' << res << '\n';
     return res;
   }
 
@@ -1722,7 +1722,7 @@ namespace xcas {
 	break;
       }
     }
-    // cerr << i << " " << line << endl;
+    // cerr << i << " " << line << '\n';
   }
 
   void next_line_nonl(const string & s,int L,string & line,int & i){
@@ -2531,7 +2531,7 @@ namespace xcas {
       // if (chaine[i0]!=13) 
 	s += chaine[i0];
     }
-    // cerr << s << endl;
+    // cerr << s << '\n';
     int L=s.size(),i=0;
     // Check for an HTML link
     if (L>8 && (s.substr(0,6)=="http:/" || s.substr(0,7)=="https:/" || s.substr(0,6)=="file:/") ){
@@ -2772,11 +2772,11 @@ namespace xcas {
   
   giac::gen Xcas_fltk_interactive(const giac::gen & g,GIAC_CONTEXT){
 #ifdef HAVE_LIBPTHREAD
-    // cerr << "xcas lock" << g << endl;
+    // cerr << "xcas lock" << g << '\n';
     pthread_mutex_lock(&interactive_mutex);
 #endif
     if (block_signal){
-      cerr << "blocked " << g << endl;
+      cerr << "blocked " << g << '\n';
 #ifdef HAVE_LIBPTHREAD
       pthread_mutex_unlock(&interactive_mutex);
 #endif
@@ -2785,7 +2785,7 @@ namespace xcas {
     gen res=in_Xcas_fltk_interactive(g,contextptr); 
     // FIXME change interactive for context, like input
 #ifdef HAVE_LIBPTHREAD
-    // cerr << "xcas unlock" << endl;
+    // cerr << "xcas unlock" << '\n';
     pthread_mutex_unlock(&interactive_mutex);
 #endif
     return res;
@@ -2850,7 +2850,7 @@ namespace xcas {
     }
     if (v.size()==1 && v.front().type==_STRNG){
       v.push_back(identificateur("_input_"));
-      // CERR << v << endl;
+      // CERR << v << '\n';
     }
     if (!v.empty() && v.front()==at_getKey){
       Fl_Widget * foc=Fl::focus();
@@ -3319,7 +3319,7 @@ namespace xcas {
 
   void icas_eval_callback(const giac::gen & evaled_g,void * param){
     giac::gen * resptr=(giac::gen *) param;
-    // cerr << "icas_eval_callback " << evaled_g << endl;
+    // cerr << "icas_eval_callback " << evaled_g << '\n';
     *resptr=evaled_g;
   }
   
@@ -3327,7 +3327,7 @@ namespace xcas {
   // and set reading_file to true
   void icas_eval(giac::gen & g,giac::gen & gg,int & reading_file,std::string &filename,giac::context * contextptr){
     if (debug_infolevel)
-      CERR << CLOCK() << " icas_eval " << g << endl;
+      CERR << CLOCK() << " icas_eval " << g << '\n';
     try {
       reading_file=read_file(g);
       if (g.type==_SYMB && g._SYMBptr->feuille.type==giac::_STRNG)
@@ -3620,7 +3620,7 @@ namespace xcas {
 	    if (!of)
 	      fl_message("%s","Write error");
 	    else
-	      of << giac::gen(t->table->m,giac::_SPREAD__VECT) << endl;
+	      of << giac::gen(t->table->m,giac::_SPREAD__VECT) << '\n';
 	    of.close();
 	  }
 	}

@@ -4,35 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Euclidean remainder: Rem</title>
+<title>Factorization over ℤ/pℤ[x] : factor factoriser</title>
 </head>
 <body >
 <a href="cascmd_en414.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en416.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec499" class="subsection">5.37.2  Euclidean remainder: <span style="font-family:monospace">Rem</span></h3>
-<p><a id="hevea_default658"></a>
-<span style="font-family:monospace">Rem</span> is the inert form of <span style="font-family:monospace">rem</span>.<br>
-<span style="font-family:monospace">Rem</span> returns the euclidean remainder between two polynomials
-without evaluation. 
-It is used in conjunction with <span style="font-family:monospace">mod</span> in Maple syntax mode to compute
-the euclidean remainder of the division of two
-polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ.<br>
-Input in <span style="font-family:monospace">Xcas</span> mode :
-</p><div class="center"><span style="font-family:monospace">Rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1) mod 13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13)</span></div><p>
+<h3 id="sec498" class="subsection">5.36.14  Factorization over ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>] : <span style="font-family:monospace">factor factoriser</span></h3>
+<p><a id="hevea_default656"></a><a id="hevea_default657"></a>
+<span style="font-family:monospace">factor</span> takes as argument a polynomial
+with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<br>
+<span style="font-family:monospace">factor</span> factorizes this polynomial in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>] (<span style="font-style:italic">p</span> must
+be prime).<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">factor((-3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+5*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-5*x+4)%13)</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">rem((x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)%13,(2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4)%13)</span></div><p>
-you need to <span style="font-family:monospace">eval(ans())</span> to get :
-</p><div class="center"><span style="font-family:monospace">(-2%13)*x+-1%13</span></div><p>
-Input in <span style="font-family:monospace">Maple</span> mode :
-</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1,2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+4) mod 13</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(-2)*x-1</span></div><p>
-Input in <span style="font-family:monospace">Maple</span> mode :
-</p><div class="center"><span style="font-family:monospace">Rem(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+2*x,x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+6*x+5) mod 5</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">1*x</span></div>
+</p><div class="center"><span style="font-family:monospace">((1%13)*x+-6%13)*((-3%13)*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+-5%13)</span></div>
 <hr>
 <a href="cascmd_en414.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

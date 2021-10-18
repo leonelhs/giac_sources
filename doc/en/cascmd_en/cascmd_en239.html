@@ -4,74 +4,105 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Expand a transcendental and trigonometric expression : texpand tExpand</title>
+<title>Limits : limit</title>
 </head>
 <body >
 <a href="cascmd_en238.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en240.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec300" class="subsection">5.23.1  Expand a transcendental and trigonometric expression : <span style="font-family:monospace">texpand tExpand</span></h3>
-<p><a id="hevea_default409"></a><a id="hevea_default410"></a>
-<span style="font-family:monospace">texpand</span> or <span style="font-family:monospace">tExpand</span> takes as argument an
-expression containing transcendental or trigonometric functions.<br>
-<span style="font-family:monospace">texpand</span> or <span style="font-family:monospace">tExpand</span> expands these functions, like simultaneous
-calling <span style="font-family:monospace">expexpand</span>, <span style="font-family:monospace">lnexpand</span> and <span style="font-family:monospace">trigexpand</span>, 
-for example, ln(<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>) becomes  <span style="font-style:italic">n</span>ln(<span style="font-style:italic">x</span>), exp(<span style="font-style:italic">nx</span>) 
-becomes  exp(<span style="font-style:italic">x</span>)<sup><span style="font-style:italic">n</span></sup>, sin(2<span style="font-style:italic">x</span>) becomes  2sin(<span style="font-style:italic">x</span>)cos(<span style="font-style:italic">x</span>)...<br>
-<span style="font-weight:bold">Examples</span> :<br>
+<h3 id="sec299" class="subsection">5.22.1  Limits : <span style="font-family:monospace">limit</span></h3>
+<p><a id="hevea_default408"></a><a id="sec:limit"></a></p><p><span style="font-family:monospace">limit</span> computes the limit of an expression at a finite or infinite point.
+It is also possible with an optional argument to compute a one-sided
+limit (1 for the right limit and -1 for the left limit).<br>
+<span style="font-family:monospace">limit</span> takes three or four arguments :<br>
+an expression, the name of a variable (for example <span style="font-family:monospace">x</span>), the limit point 
+(for example <span style="font-family:monospace">a</span>) and an optional argument, by default <span style="font-family:monospace">0</span>, to 
+indicate if the limit is unidirectional. 
+This argument is equal to 
+<span style="font-family:monospace">-1</span> for a left limit (<span style="font-family:monospace">x&lt;a</span>) or is equal to <span style="font-family:monospace">1</span> 
+for a right limit (<span style="font-family:monospace">x&gt;a</span>) or is equal to <span style="font-family:monospace">0</span> for a limit.<br>
+<span style="font-family:monospace">limit</span> returns the limit of the expression when the variable (for example
+<span style="font-family:monospace">x</span>) approaches the limit point (for example <span style="font-family:monospace">a</span>).<br>
+<span style="font-weight:bold">Remark</span><br>
+It is also possible to put <span style="font-family:monospace">x=a</span> as argument instead of <span style="font-family:monospace">x,a</span>, hence :
+<span style="font-family:monospace">limit</span> takes also as arguments an expression depending of a variable, 
+an equality (variable =value of the limit point) and perhaps 1 or -1 to 
+indicate the direction.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,-1)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,-1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">-(infinity)</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,1)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0,1)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div><p> 
+Input :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0,0)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x,0)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">limit(1/x,x=0)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">infinity</span></div><p> 
+Hence, <span style="font-family:monospace">abs(1/x)</span> approaches +∞ when <span style="font-style:italic">x</span> approaches 0.</p><p><span style="font-weight:bold">Exercises</span> :
 </p><ul class="itemize"><li class="li-itemize">
-<ol class="enumerate" type=1><li class="li-enumerate">
-Expand cos(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>).<br>
+Find for <span style="font-style:italic">n</span>&gt;2, the limit when <span style="font-style:italic">x</span> approaches 0 of :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>tan(<span style="font-style:italic">x</span>)−tan(<span style="font-style:italic">nx</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">sin(<span style="font-style:italic">nx</span>)−<span style="font-style:italic">n</span>sin(<span style="font-style:italic">x</span>)</td></tr>
+</table></td></tr>
+</table>
 Input :
-<div class="center"><span style="font-family:monospace">texpand(cos(x+y))</span></div>
+<div class="center"><span style="font-family:monospace">limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</span></div>
 Output :
-<div class="center"><span style="font-family:monospace">cos(x)*cos(y)-sin(x)*sin(y)</span></div>
-</li><li class="li-enumerate">Expand cos(3<span style="font-style:italic">x</span>).<br>
+<div class="center"><span style="font-family:monospace">2 </span></div>
+</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches +∞ of :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:4em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:0em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
+</table></td></tr>
+</table> 
 Input :
-<div class="center"><span style="font-family:monospace">texpand(cos(3*x))</span></div>
+<div class="center"><span style="font-family:monospace">limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</span></div>
 Output :
-<div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace"> 3-3*cos(x)</span></div>
-</li><li class="li-enumerate">Expand  sin(3*<span style="font-style:italic">x</span>)+sin(7*<span style="font-style:italic">x</span>)/sin(5*<span style="font-style:italic">x</span>).<br>
+<div class="center"><span style="font-family:monospace">1/2 </span></div>
+</li><li class="li-itemize">Find the limit when <span style="font-style:italic">x</span> approaches 0 of :
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>/2</td></tr>
+</table></td><td class="dcell">−exp(<span style="font-style:italic">x</span>/2)</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">(1−cos(<span style="font-style:italic">x</span>))sin(<span style="font-style:italic">x</span>)</td></tr>
+</table></td></tr>
+</table> 
 Input :
-<div class="center"><span style="font-family:monospace">texpand((sin(3*x)+sin(7*x))/sin(5*x))</span></div>
-Output
-<div class="center"><span style="font-family:monospace">(4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)*(sin(x)/(16*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4- 12*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1))/sin(x)+(64*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6- 80*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+24*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1)*sin(x)/ (16*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4-12*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+1)/sin(x)</span></div>
-Output, after a simplification with <span style="font-family:monospace">normal(ans())</span> :
-<div class="center"><span style="font-family:monospace">4*(cos(x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-2</span></div>
-</li></ol>
-</li><li class="li-itemize"><ol class="enumerate" type=1><li class="li-enumerate">
-Expand exp(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>).<br>
+<div class="center"><span style="font-family:monospace">limit((sqrt(1+x+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">-1/6 </span></div>
+</li></ul><p><span style="font-weight:bold">Remark</span><br>
+To compute limits, it is better sometimes to quote the first argument.<br>
 Input :
-<div class="center"><span style="font-family:monospace">texpand(exp(x+y))</span></div>
+</p><div class="center"><span style="font-family:monospace">limit(’(2*x-1)*exp(1/(x-1))’,x=+infinity)</span></div><p>
+Note that the first argument is quoted, because it is better that
+this argument is not simplified (i.e. not evaluated).<br>
 Output :
-<div class="center"><span style="font-family:monospace">exp(x)*exp(y)</span></div>
-</li><li class="li-enumerate">Expand ln(<span style="font-style:italic">x</span>× <span style="font-style:italic">y</span>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(log(x*y))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">log(x)+log(y)</span></div>
-</li><li class="li-enumerate">Expand ln(<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(ln(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">n))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">n*ln(x)</span></div>
-</li><li class="li-enumerate">Expand ln((<span style="font-style:italic">e</span><sup>2</sup>)+exp(2*ln(2))+exp(ln(3)+ln(2))).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(log(e</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+exp(2*log(2))+exp(log(3)+log(2)))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">6+3*2</span></div>
-Or input :
-<div class="center"><span style="font-family:monospace">texpand(log(e</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2)+exp(2*log(2)))+ lncollect(exp(log(3)+log(2)))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">12</span></div>
-</li></ol>
-</li><li class="li-itemize">Expand exp(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>)+cos(<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>)+ln(3<span style="font-style:italic">x</span><sup>2</sup>).<br>
-Input :
-<div class="center"><span style="font-family:monospace">texpand(exp(x+y)+cos(x+y)+ln(3*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div>
-Output :
-<div class="center"><span style="font-family:monospace">cos(x)*cos(y)-sin(x)*sin(y)+exp(x)*exp(y)+ ln(3)+2*ln(x)</span></div>
-</li></ul>
+</p><div class="center"><span style="font-family:monospace">+(infinity)</span></div>
 <hr>
 <a href="cascmd_en238.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -530,7 +530,7 @@ namespace xcas {
       g=gen(tmp,contextptr);
     }
     catch (std::runtime_error & err){
-      cerr << err.what() << endl;
+      cerr << err.what() << '\n';
     }
     xcas_mode(contextptr)=save_maple_mode;
     python_compat(save_python,contextptr);
@@ -558,7 +558,7 @@ namespace xcas {
       g=gen(res,contextptr);
     }
     catch (std::runtime_error & err){
-      cerr << err.what() << endl;
+      cerr << err.what() << '\n';
       return;
     }
     int save_maple_mode=xcas_mode(contextptr);
@@ -591,7 +591,7 @@ namespace xcas {
       g=gen(res,contextptr);
     }
     catch (std::runtime_error & err){
-      cerr << err.what() << endl;
+      cerr << err.what() << '\n';
       return;
     }
     if (is_file_available(newfile.c_str())){
@@ -1158,7 +1158,7 @@ namespace xcas {
 	  g=gen(s,contextptr);
 	}
 	catch (std::runtime_error & e){
-	  cerr << e.what() << endl;
+	  cerr << e.what() << '\n';
 	}
 	lexer_close_parenthesis(close,contextptr);
 	if (giac::first_error_line(contextptr)){
@@ -1236,7 +1236,7 @@ namespace xcas {
       g=gen(res,contextptr);
     }
     catch (std::runtime_error & er){
-      cerr << er.what() << endl;
+      cerr << er.what() << '\n';
     }
     lexer_close_parenthesis(close,contextptr);
     if (giac::first_error_line(contextptr)){
@@ -1415,7 +1415,7 @@ namespace xcas {
 	    calc_mode(contextptr)=-38;
 	  g=gen(s,contextptr); 
 	} 
-	catch (std::runtime_error & e){ cerr << e.what() << endl; }
+	catch (std::runtime_error & e){ cerr << e.what() << '\n'; }
 	lexer_close_parenthesis(close,contextptr);
 	if (giac::first_error_line(contextptr)){
 	  int pos1=e->editor->buffer()->skip_lines(0,giac::first_error_line(contextptr)-1);
@@ -2990,7 +2990,7 @@ namespace xcas {
     if (nl==1){
       fl_font(FL_HELVETICA,labelsize());
       double taille=1.4*fl_width(s.c_str());
-      // cerr << ch << " " << taille << " " << labelsize() << endl;
+      // cerr << ch << " " << taille << " " << labelsize() << '\n';
       if (taille>w()) // make enough room for scrollbar
 	increase_size(this,25+labelsize()-h());
       else 
@@ -3129,7 +3129,7 @@ namespace xcas {
 	if (!*ptr){
 	  fl_font(FL_HELVETICA,labelsize());
 	  double taille=1.4*fl_width(ch);
-	  // cerr << ch << " " << taille << " " << labelsize() << endl;
+	  // cerr << ch << " " << taille << " " << labelsize() << '\n';
 	  if (taille>w()){ // make enough room for scrollbar
 	    increase_size(this,25+labelsize()-h());
 	  }
@@ -3172,7 +3172,7 @@ namespace xcas {
 	    break;
 	}
 	if (i<curind){
-	  // std::cerr << "fixme del" << endl;
+	  // std::cerr << "fixme del" << '\n';
 	  for (;curind>i;--curind)
 	    Fl_Text_Editor::kf_backspace(0,this);
 	  break;

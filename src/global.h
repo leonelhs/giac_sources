@@ -300,17 +300,17 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
 #elif defined FIR
 #define control_c()
 #else
-#ifdef TIMEOUT
+#if defined TIMEOUT && !defined POCKETCAS
   void control_c();
 #else
 #if 0
-#define control_c() if (ctrl_c) { interrupted = true; CERR << "Throwing exception for user interruption." << std::endl; throw(std::runtime_error("Stopped by user interruption.")); }
+#define control_c() if (ctrl_c) { interrupted = true; CERR << "Throwing exception for user interruption." << '\n'; throw(std::runtime_error("Stopped by user interruption.")); }
 #else
 #define control_c() if (ctrl_c) { \
 interrupted = true; \
 std::string source_path = __FILE__; \
 std::string source_filename = source_path.substr(source_path.find_last_of("/\\") + 1); \
-CERR << "Throwing exception for user interruption (" << source_filename << ":" << __LINE__ << ")" << std::endl; \
+CERR << "Throwing exception for user interruption (" << source_filename << ":" << __LINE__ << ")" << '\n'; \
 throw(std::runtime_error("Stopped by user interruption.")); \
 }
 #endif
@@ -330,7 +330,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
     dbgprint_vector(size_t i,const T & t) : std::imvector<T>::imvector(i,t) { };
     // ~dbgprint_vector() { };
     // inherited destructors
-    void dbgprint() const { COUT << *this << std::endl; }
+    void dbgprint() const { COUT << *this << '\n'; }
   };
 #else // IMMEDIATE_VECTOR
   template <class T> class dbgprint_vector: public std::vector<T> {
@@ -345,7 +345,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
     dbgprint_vector(size_t i,const T & t) : std::vector<T>::vector(i,t) { };
     // ~dbgprint_vector() { };
     // inherited destructors
-    void dbgprint() const { COUT << *this << std::endl; }
+    void dbgprint() const { COUT << *this << '\n'; }
   };
 #endif // IMMEDIATE_VECTOR
   
@@ -385,7 +385,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
       }
       return res;
     }
-    void dbgprint() { COUT << *this << std::endl; }
+    void dbgprint() { COUT << *this << '\n'; }
   };
 
   struct user_function {
@@ -493,6 +493,22 @@ throw(std::runtime_error("Stopped by user interruption.")); \
     int _i_sqrt_minus1_;
   };
   std::string gen2string(const gen & g);
+#ifdef NUMWORKS
+  struct logo_turtle {
+    double x,y;
+    double theta; // theta is given in degrees or radians dep. on angle_mode
+    bool visible; // true if turtle visible
+    bool mark; // true if moving marks
+    bool direct; // true if rond/disque is done in the trigonometric direction
+    int color;
+    int turtle_length;
+    int radius; // 0 nothing, >0 -> draw a plain disk 
+    // bit 0-8=radius, bit9-17 angle1, bit 18-26 angle2, bit 27=1 filled  or 0 
+    // <0 fill a polygon from previous turtle positions
+    int s;//std::string s;
+    logo_turtle(): x(100),y(100),theta(0),visible(true),mark(true),direct(true),color(0),turtle_length(10),radius(0) {}
+  };
+#else // NUMWORKS
   struct logo_turtle {
     double x,y;
     double theta; // theta is given in degrees or radians dep. on angle_mode
@@ -512,7 +528,8 @@ throw(std::runtime_error("Stopped by user interruption.")); \
     logo_turtle(): x(100),y(100),theta(0),visible(true),mark(true),direct(true),color(0),turtle_length(10),radius(0),widget(0) {}
 #endif
   };
-
+#endif // NUMWORKS
+    
   // a structure that should contain all global variables
   class global {
   public:
@@ -568,7 +585,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
 #ifdef NSPIRE
     nio::console * _logptr_;
 #else
-#ifdef WITH_MYOSTREAM
+#if 1 // def WITH_MYOSTREAM
     my_ostream * _logptr_;
 #else
     std::ostream * _logptr_;
@@ -599,7 +616,9 @@ throw(std::runtime_error("Stopped by user interruption.")); \
     std::string _autosimplify_;
     std::string _lastprog_name_;
     std::string _currently_scanned_;
+#ifndef NUMWORKS
     std::vector<logo_turtle> _turtle_stack_; 
+#endif
     double _total_time_;
     void * _evaled_table_;
     void * _extra_ptr_;
@@ -646,7 +665,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
   extern pthread_mutex_t context_list_mutex;
 #endif
   
-#if !defined(RTOS_THREADX) && !defined(BESTA_OS) && !defined(NSPIRE) && !defined(FXCG)
+#if !defined(RTOS_THREADX) && !defined(BESTA_OS) && !defined(NSPIRE) && !defined(FXCG) && !defined NUMWORKS
   extern std::map<std::string,context *> * context_names ;
 #endif
 
@@ -678,6 +697,7 @@ throw(std::runtime_error("Stopped by user interruption.")); \
   void python_compat(int b,GIAC_CONTEXT);
   int array_start(GIAC_CONTEXT);
   extern bool python_color; // global variable for syntax highlighting
+  extern bool numworks_shell; // true if Numworks called from shell
 
   int & calc_mode(GIAC_CONTEXT);
   int abs_calc_mode(GIAC_CONTEXT);
@@ -775,8 +795,12 @@ throw(std::runtime_error("Stopped by user interruption.")); \
   std::string lastprog_name(GIAC_CONTEXT);
   std::string lastprog_name(const std::string & b,GIAC_CONTEXT);
 
+#ifdef NUMWORKS
+  logo_turtle & turtle();
+#else
   logo_turtle & turtle(GIAC_CONTEXT);
   std::vector<logo_turtle> & turtle_stack(GIAC_CONTEXT);
+#endif
 
   int & angle_mode(GIAC_CONTEXT);
   int get_mode_set_radian(GIAC_CONTEXT);

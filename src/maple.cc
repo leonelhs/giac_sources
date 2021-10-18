@@ -73,6 +73,21 @@ using namespace std;
   TMillisecs PrimeGetNow();
 #endif
 
+#ifdef NUMWORKS
+namespace Ion {
+  namespace Timing {
+    
+    void usleep(uint32_t us);
+    void msleep(uint32_t ms);
+    
+    /* millis is the number of milliseconds ellapsed since a random epoch.
+     * On the device, epoch is the boot time. */
+    volatile uint64_t millis();
+    
+  }
+}
+#endif
+
 
 #if defined(EMCC) && !defined(PNACL)
 extern "C" double emcctime();
@@ -329,7 +344,7 @@ namespace giac {
     if (args==at_solve) return 1;
     init_context((context *) ((void *) contextptr));
     gen res= _rm_all_vars(args,contextptr);
-    *logptr(contextptr) << "============== restarted ===============" << endl;
+    *logptr(contextptr) << "============== restarted ===============" << '\n';
     if (args.type==_VECT && args.subtype==_SEQ__VECT && args._VECTptr->empty())
       _srand(_time(gen(vecteur(0),_SEQ__VECT),contextptr),contextptr);
     return res;
@@ -353,6 +368,42 @@ namespace giac {
   static define_unary_function_eval (__restart_modes,&_restart_modes,_restart_modes_s);
   define_unary_function_ptr5( at_restart_modes ,alias_at_restart_modes,&__restart_modes,0,T_RETURN);
 
+#ifdef NUMWORKS
+  gen _time(const gen & a,GIAC_CONTEXT){
+    if ( a.type==_STRNG && a.subtype==-1) return  a;
+    if (a.type==_VECT && a.subtype==_SEQ__VECT){
+#if 0
+      if (a._VECTptr->size()==2 && a._VECTptr->front().type==_INT_ && a._VECTptr->back().type==_INT_){
+	int h=a._VECTptr->front().val;
+	h=h%24;
+	if (h<0)
+	  h+=24;
+	int m=a._VECTptr->back().val;
+	m=m%60;
+	if (m<0)
+	  m+=60;
+	set_time(h,m);
+	return 1;
+      }
+#endif
+      return double(Ion::Timing::millis()); // RTC_GetTicks();
+    }
+    double delta;
+    int ntimes=1,i=0;
+    int level=eval_level(contextptr);
+    double t1= Ion::Timing::millis(); // RTC_GetTicks(); // 1 tick=1/128 s
+    // CERR << t1 << endl;
+    for (unsigned i=1;i<=100;++i){
+      eval(a,level,contextptr);
+      double t2= Ion::Timing::millis(); // RTC_GetTicks();
+      if (t2>=t1+32)
+	return double(t2-t1)/double(i)/1000;
+    }
+    return 0.0;
+  }
+
+#else // NUMWORKS
+  
   gen _time(const gen & a,GIAC_CONTEXT){
     if ( a.type==_STRNG && a.subtype==-1) return  a;
     if (a.type==_VECT && a.subtype==_SEQ__VECT){
@@ -379,7 +430,7 @@ namespace giac {
 #if defined NSPIRE || defined NSPIRE_NEWLIB
     unsigned NSPIRE_RTC_ADDR=0x90090000;
     unsigned t1= * (volatile unsigned *) NSPIRE_RTC_ADDR;
-    // CERR << t1 << endl;
+    // CERR << t1 << '\n';
     for (unsigned i=1;i<=100;++i){
       eval(a,level,contextptr);
       unsigned t2= * (volatile unsigned *) NSPIRE_RTC_ADDR;
@@ -487,6 +538,8 @@ namespace giac {
     return (delta/ntimes);
 #endif
   }
+  
+#endif // NUMWORKS
   static const char _time_s []="time";
   static define_unary_function_eval_quoted (__time,&_time,_time_s);
   define_unary_function_ptr5( at_time ,alias_at_time,&__time,_QUOTE_ARGUMENTS,true);
@@ -1316,7 +1369,7 @@ namespace giac {
       return gendimerr();
     vecteur a,b;
     if (!egcd_pade(Np,fp,p,a,b,0))
-      *logptr(contextptr) << gettext("Solution may be wrong since a and b are not prime together: ")+gen(a).print(contextptr)+","+gen(b).print(contextptr) << endl;
+      *logptr(contextptr) << gettext("Solution may be wrong since a and b are not prime together: ")+gen(a).print(contextptr)+","+gen(b).print(contextptr) << '\n';
     gen res=poly12polynome(a,1,ls);
     res=res/(fd*gen(poly12polynome(b,1,ls)));
     res=r2sym(res,l,contextptr);
@@ -1382,7 +1435,7 @@ namespace giac {
 	omega=invmod(omega,modulo);
       if (omega.type==_INT_ && modulo.type==_INT_ && n==(1<<(sizeinbase2(n)-1))){
 	if (debug_infolevel)
-	  CERR << CLOCK()*1e-6 << " fft start" << endl;
+	  CERR << CLOCK()*1e-6 << " fft start" << '\n';
 	vector<int> A; A.reserve(n);
 	for (int i=0;i<n;++i){
 	  if (v[i].type==_INT_)
@@ -1406,7 +1459,7 @@ namespace giac {
 	    res.push_back((ninv*A[i])%p);
 	}
 	if (debug_infolevel)
-	  CERR << CLOCK()*1e-6 << "fft end" << endl;
+	  CERR << CLOCK()*1e-6 << "fft end" << '\n';
 	return r;
       }
       vecteur w(n),res;
@@ -1443,7 +1496,7 @@ namespace giac {
     vector< complex<double> > vd;
     if (convert(*g._VECTptr,vd,true)){
       if (debug_infolevel)
-	CERR << CLOCK()*1e-6 << " fft start" << endl;
+	CERR << CLOCK()*1e-6 << " fft start" << '\n';
       double theta=2.0*M_PI/n;
       if (direct) theta=-theta;
       bool done=false;
@@ -1481,13 +1534,13 @@ namespace giac {
 	  }
 	}
 	if (debug_infolevel)
-	  CERR << CLOCK()*1e-6 << " fft end" << endl;
+	  CERR << CLOCK()*1e-6 << " fft end" << '\n';
 	return r;
       }
     }
     g=evalf_double(g_orig,1,contextptr);
     if (debug_infolevel)
-      CERR << CLOCK()*1e-6 << " fft start" << endl;
+      CERR << CLOCK()*1e-6 << " fft start" << '\n';
     vecteur v =*g._VECTptr;
 #ifdef HAVE_LIBGSL
     if (direct && is_zero(im(v,contextptr))){
@@ -1529,7 +1582,7 @@ namespace giac {
       }
       delete [] data;
       if (debug_infolevel)
-	CERR << CLOCK()*1e-6 << " fft end" << endl;
+	CERR << CLOCK()*1e-6 << " fft end" << '\n';
       return v;
     }
     // Could be improved by keeping the wavetable
@@ -1573,7 +1626,7 @@ namespace giac {
     }
     delete [] data;
     if (debug_infolevel)
-      CERR << CLOCK()*1e-6 << " fft end" << endl;
+      CERR << CLOCK()*1e-6 << " fft end" << '\n';
     return v;
 #endif
     /* 
@@ -1771,7 +1824,7 @@ namespace giac {
 	return gensizeerr(gettext("Invalid sound data"));
     }
     if (data_size){
-      *logptr(contextptr) << gettext("Using sound parameters: channels, rate, bits, records ") << format.channels << "," << format.rate << "," << format.bits << "," << data_size << endl;
+      *logptr(contextptr) << gettext("Using sound parameters: channels, rate, bits, records ") << format.channels << "," << format.rate << "," << format.bits << "," << data_size << '\n';
       device = ao_open_live(default_driver, &format, NULL /* no options */);
       if (device == NULL) 
 	return gensizeerr(gettext("Error opening audio device."));
@@ -1826,14 +1879,14 @@ namespace giac {
 	return gensizeerr(gettext("Invalid sound data"));
     }
     if (data_size){
-      *logptr(contextptr) << gettext("Using sound parameters: channels, rate, bits, records ") << nchannels << "," << nrate << "," << data_size << endl;
+      *logptr(contextptr) << gettext("Using sound parameters: channels, rate, bits, records ") << nchannels << "," << nrate << "," << data_size << '\n';
       unsigned nDataBytes=data_size*nchannels*sizeof(float);
       // copy data from v into buffer and play it
       unsigned b=nbits/8;
       float * ptr = (float *) malloc(nDataBytes);
       for (unsigned j=0;j<nchannels;++j){
 	vecteur & w=(*v[j+1]._VECTptr);
-	COUT << "channel " << j << endl;
+	COUT << "channel " << j << '\n';
 	for (unsigned i=0;i<data_size;++i){
 	  unsigned u=w[i].val;
 	  double ud=0;
@@ -1846,7 +1899,7 @@ namespace giac {
 	  ptr[j*data_size+i]=ud;
 	}
       }
-      COUT << "playing" << endl;
+      COUT << "playing" << '\n';
       EM_ASM_ARGS({
 	  var nchannels;
 	  var nDataBytes;
@@ -2437,12 +2490,12 @@ namespace giac {
     vecteur v;
     polynome P,Q,R;
     if (!is_hypergeometric(e,*n._IDNTptr,v,P,Q,R,contextptr)){
-      *logptr(contextptr) << gettext("Cst part must be hypergeometric") << endl;
+      *logptr(contextptr) << gettext("Cst part must be hypergeometric") << '\n';
       remains=e;
       return 0;
     }
     if (Q.lexsorted_degree() || R.lexsorted_degree()){
-      *logptr(contextptr) << gettext("Cst part must be of type a^n*P(n)") << endl;
+      *logptr(contextptr) << gettext("Cst part must be of type a^n*P(n)") << '\n';
       remains=e;
       return 0;
     }
@@ -2623,7 +2676,7 @@ namespace giac {
 	vecteur v;
 	polynome P,Q,R;
 	if (!is_hypergeometric(l,*n._IDNTptr,v,P,Q,R,contextptr)){
-	  *logptr(contextptr) << gettext("Cst part must be hypergeometric") << endl;
+	  *logptr(contextptr) << gettext("Cst part must be hypergeometric") << '\n';
 	  return symbolic(at_seqsolve,args);
 	}
 	// l(n+1)/l(n) = P(n+1)/P(n)*Q(n)/R(n+1)
@@ -2632,7 +2685,7 @@ namespace giac {
 	it=R.coord.begin();
 	polynome r0=Tnextcoeff<gen>(it,R.coord.end()).untrunc1();
 	if (!is_zero(r0*Q-q0*R)){
-	  *logptr(contextptr) << gettext("Unable to handle coeff of homogeneous part") << endl;
+	  *logptr(contextptr) << gettext("Unable to handle coeff of homogeneous part") << '\n';
 	  return symbolic(at_seqsolve,args);
 	}
 	// -> l(n)=l(0)*P(n)/P(0) -> product(l(n))
@@ -2672,12 +2725,12 @@ namespace giac {
 	    return sol+C*res;
 	  }
 	}
-	*logptr(contextptr) << gettext("Unable to find a particular solution for inhomogeneous part") << endl;
+	*logptr(contextptr) << gettext("Unable to find a particular solution for inhomogeneous part") << '\n';
 	return symbolic(at_seqsolve,args);
       }
       gen d=linear_apply(c,n,l,remains,contextptr,rsolve);
       if (!is_zero(remains))
-	*logptr(contextptr) << gettext("Unable to solve recurrence") << endl;
+	*logptr(contextptr) << gettext("Unable to solve recurrence") << '\n';
       // d is a particular solution of u(n+1)=l*u(n)+c(n)
       // add a general solution d(n)+C*l^n
       // such that at n=0 we get u0 -> C+d(0)=u0
@@ -2713,7 +2766,7 @@ namespace giac {
       c=normal(c,contextptr);
       gen remains,d=linear_apply(c,n,l,remains,contextptr,rsolve);
       if (!is_zero(remains))
-	*logptr(contextptr) << gettext("Unable to solve recurrence") << endl;
+	*logptr(contextptr) << gettext("Unable to solve recurrence") << '\n';
       gen C=normal(vzero[i]-quotesubst(d,n,0,contextptr),contextptr);
       if (is_zero(l))
 	res[i]=d+C*symbolic(at_same,gen(makevecteur(n,0),_SEQ__VECT));
@@ -3876,66 +3929,66 @@ namespace giac {
   static define_unary_function_eval (__cprint,&_cprint,_cprint_s);
   define_unary_function_ptr5( at_cprint ,alias_at_cprint,&__cprint,_QUOTE_ARGUMENTS,true);
 
-#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
   int cpp_write_compile(const string & filename,const string & funcname,const string &s,GIAC_CONTEXT){
     ofstream of(filename.c_str());
 #ifdef __APPLE__
-    of << "// -*- mode:c++; compile-command:\" c++ -Wall -fno-strict-aliasing -I/Applications/usr/include -I.. -I. -fPIC -DPIC -g -O2 -dynamiclib giac_" << funcname << ".cpp -o libgiac_" << funcname << ".dylib -L/Applications/usr/lib -L/Applications/usr/64/local/lib -lgiac \" -*-" << endl;
+    of << "// -*- mode:c++; compile-command:\" c++ -Wall -fno-strict-aliasing -I/Applications/usr/include -I.. -I. -fPIC -DPIC -g -O2 -dynamiclib giac_" << funcname << ".cpp -o libgiac_" << funcname << ".dylib -L/Applications/usr/lib -L/Applications/usr/64/local/lib -lgiac \" -*-" << '\n';
 #else
-    of << "// -*- mode:c++; compile-command:\" c++ -Wall -fno-strict-aliasing -I.. -I. -fPIC -DPIC -g -O2 -c giac_" << funcname << ".cpp -o giac_" << funcname << ".lo && cc -shared giac_"<<funcname<<".lo -lgiac -lc -Wl,-soname -Wl,libgiac_"<<funcname<<"so.0 -o libgiac_"<<funcname<<".so.0.0.0 && ln -sf libgiac_"<<funcname<<".so.0.0.0 libgiac_"<<funcname<<".so\" -*-" << endl;
+    of << "// -*- mode:c++; compile-command:\" c++ -Wall -fno-strict-aliasing -I.. -I. -fPIC -DPIC -g -O2 -c giac_" << funcname << ".cpp -o giac_" << funcname << ".lo && cc -shared giac_"<<funcname<<".lo -lgiac -lc -Wl,-soname -Wl,libgiac_"<<funcname<<"so.0 -o libgiac_"<<funcname<<".so.0.0.0 && ln -sf libgiac_"<<funcname<<".so.0.0.0 libgiac_"<<funcname<<".so\" -*-" << '\n';
 #endif
-    of << "#include <giac/config.h>" << endl;
-    of << "#include <giac/giac.h>" << endl;
-    of << "using namespace std;" << endl;
-    of << "namespace giac {" << endl;
-    of << "inline gen _sqrt(const gen & a,GIAC_CONTEXT){return sqrt(a,contextptr);}" << endl;
-    of << "inline gen _arg(const gen & a,GIAC_CONTEXT){return arg(a,contextptr);}" << endl;
-    of << "inline gen _complex(const gen & a,GIAC_CONTEXT){return _build_complex(a,contextptr);}" << endl;
-    of << "inline gen operator *(const gen & a,double b){return b*a;}" << endl;
-    of << "inline bool operator <= (const gen & a,const gen &b){ return is_greater(b,a,giac::context0); }\ninline bool operator >= (const gen & a,const gen &b){ return is_greater(a,b,giac::context0); }" <<endl;
-    of << s << endl;
-    of << "const string _"+funcname+"_s(\""+funcname+"\");" << endl;
-    of << "unary_function_eval __"+funcname+"(0,&_"+funcname+",_"+funcname+"_s);" << endl;
-    of << "unary_function_ptr at_"+funcname+"(&__"+funcname+",0,true);" << endl;
-    of << "}" << endl;
+    of << "#include <giac/config.h>" << '\n';
+    of << "#include <giac/giac.h>" << '\n';
+    of << "using namespace std;" << '\n';
+    of << "namespace giac {" << '\n';
+    of << "inline gen _sqrt(const gen & a,GIAC_CONTEXT){return sqrt(a,contextptr);}" << '\n';
+    of << "inline gen _arg(const gen & a,GIAC_CONTEXT){return arg(a,contextptr);}" << '\n';
+    of << "inline gen _complex(const gen & a,GIAC_CONTEXT){return _build_complex(a,contextptr);}" << '\n';
+    of << "inline gen operator *(const gen & a,double b){return b*a;}" << '\n';
+    of << "inline bool operator <= (const gen & a,const gen &b){ return is_greater(b,a,giac::context0); }\ninline bool operator >= (const gen & a,const gen &b){ return is_greater(a,b,giac::context0); }" <<'\n';
+    of << s << '\n';
+    of << "const string _"+funcname+"_s(\""+funcname+"\");" << '\n';
+    of << "unary_function_eval __"+funcname+"(0,&_"+funcname+",_"+funcname+"_s);" << '\n';
+    of << "unary_function_ptr at_"+funcname+"(&__"+funcname+",0,true);" << '\n';
+    of << "}" << '\n';
     of.close();
-    *logptr(contextptr) << "File " << filename << " created." << endl;
+    *logptr(contextptr) << "File " << filename << " created." << '\n';
     string cmd="indent -br -brf -l256 giac_"+funcname+".cpp"; int not_ok;
 #ifndef __APPLE__
-    *logptr(contextptr) << "Running " << cmd << endl;
+    *logptr(contextptr) << "Running " << cmd << '\n';
     not_ok=system_no_deprecation(cmd.c_str());
     if (not_ok)
-      *logptr(contextptr) << "Warning, indent not found, please install for nice output" << endl;
+      *logptr(contextptr) << "Warning, indent not found, please install for nice output" << '\n';
 #endif
 #ifdef __APPLE__
     cmd="g++ -Wall -fno-strict-aliasing -dynamiclib -I/Applications/usr/include -I.. -I. -fPIC -DPIC -g -O2 -dy giac_"+funcname+".cpp -o libgiac_"+funcname+".dylib -L/Applications/usr/lib -L/Applications/usr/64/local/lib -lgiac";
 #else
     cmd="c++ -Wall -fno-strict-aliasing -I.. -I. -fPIC -DPIC -g -O2 -c giac_"+funcname+".cpp -o giac_"+funcname+".lo";
 #endif
-    *logptr(contextptr) << "Running\n" << cmd << endl;
+    *logptr(contextptr) << "Running\n" << cmd << '\n';
     not_ok=system_no_deprecation(cmd.c_str());
     if (not_ok){
-      *logptr(contextptr) << "Unable to compile, please fix cpp file" << endl;
+      *logptr(contextptr) << "Unable to compile, please fix cpp file" << '\n';
       return -1;
     }
     //cmd="ln -sf giac_"+funcname+".lo giac_"+funcname+".o";
-    //*logptr(contextptr) << "Running " << cmd << endl;
+    //*logptr(contextptr) << "Running " << cmd << '\n';
     //not_ok=system_no_deprecation(cmd.c_str());
 #ifndef __APPLE__
     cmd="cc -shared giac_"+funcname+".lo -lgiac -lc -Wl,-soname -Wl,libgiac_"+funcname+".so.0 -o libgiac_"+funcname+".so.0.0.0";
-    *logptr(contextptr) << cmd << endl;
+    *logptr(contextptr) << cmd << '\n';
     not_ok=system_no_deprecation(cmd.c_str());
     if (not_ok){
-      *logptr(contextptr) << "Unable to create shared library, perhaps missing libraries?" << endl;
+      *logptr(contextptr) << "Unable to create shared library, perhaps missing libraries?" << '\n';
       return -2;
     }
     //cmd="ln -sf libgiac_"+funcname+".so.0.0.0 libgiac_"+funcname+".so.0";
     //system_no_deprecation(cmd.c_str());
     cmd="ln -sf libgiac_"+funcname+".so.0.0.0 libgiac_"+funcname+".so";
-    *logptr(contextptr) << cmd << endl;
+    *logptr(contextptr) << cmd << '\n';
     not_ok=system_no_deprecation(cmd.c_str());
 #endif
-    *logptr(contextptr) << "You can now run insmod(\"" << funcname << "\")" << endl;
+    *logptr(contextptr) << "You can now run insmod(\"" << funcname << "\")" << '\n';
     return 1;
   }
 

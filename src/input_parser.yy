@@ -66,7 +66,7 @@ namespace giac {
 // therefore I redefine YYINITDEPTH to 4000 (max size is YYMAXDEPTH)
 // instead of 200
 // Feel free to change if you need but then readjust YYMAXDEPTH
-#if defined RTOS_THREADX || defined NSPIRE
+#if defined RTOS_THREADX || defined NSPIRE || defined NUMWORKS
 #define YYINITDEPTH 100
 #define YYMAXDEPTH 101
 #else // RTOS_THREADX
@@ -204,8 +204,8 @@ exp	: T_NUMBER		{$$ = $1;}
 	| T_NUMBER symbol_or_literal %prec T_IMPMULT	{if (is_one($1)) $$=$2; else $$=symbolic(at_prod,gen(makevecteur($1,$2),_SEQ__VECT));}
 	| T_NUMBER symbol_or_literal T_POW T_NUMBER %prec T_IMPMULT	{if (is_one($1)) $$=symb_pow($2,$4); else $$=symbolic(at_prod,gen(makevecteur($1,symb_pow($2,$4)),_SEQ__VECT));}
 	| T_NUMBER symbol_or_literal T_SQ %prec T_IMPMULT	{$$=symbolic(at_prod,gen(makevecteur($1,symb_pow($2,$3)) ,_SEQ__VECT));}
-	| T_NUMBER T_UNARY_OP T_BEGIN_PAR exp T_END_PAR	{ $$ =$1*symbolic(*$2._FUNCptr,python_compat(giac_yyget_extra(scanner))?denest_sto($4):$4); }
-	| T_NUMBER T_UNARY_OP T_BEGIN_PAR exp T_END_PAR T_POW T_NUMBER	{ $$ =$1*symb_pow(symbolic(*$2._FUNCptr,python_compat(giac_yyget_extra(scanner))?denest_sto($4):$4),$7); }
+	| T_NUMBER T_UNARY_OP T_BEGIN_PAR exp T_END_PAR	{ $$ =$1*symbolic(*$2._FUNCptr,python_compat(giac_yyget_extra(scanner))?denest_sto(numworks_nary_workaround($4)):numworks_nary_workaround($4)); }
+	| T_NUMBER T_UNARY_OP T_BEGIN_PAR exp T_END_PAR T_POW T_NUMBER	{ $$ =$1*symb_pow(symbolic(*$2._FUNCptr,python_compat(giac_yyget_extra(scanner))?denest_sto(numworks_nary_workaround($4)):numworks_nary_workaround($4)),$7); }
 	/* | T_LITERAL T_NUMBER	{$$=symbolic(at_prod,makevecteur($1,$2));} */
 	| T_STRING		{ $$=$1; }
 	| T_EXPRESSION		{ if ($1.type==_FUNC) $$=symbolic(*$1._FUNCptr,gen(vecteur(0),_SEQ__VECT)); else $$=$1; }
@@ -230,8 +230,8 @@ exp	: T_NUMBER		{$$ = $1;}
 	| exp TI_STO T_VIRGULE { $$=symbolic(at_time,$1);}
 	| exp TI_STO TI_STO { $$=symbolic(at_POLYFORM,gen(makevecteur($1,at_eval),_SEQ__VECT));}
 	| exp TI_STO T_UNIT exp { $$=symbolic(at_convert,gen(makevecteur($1,symb_unit(plus_one,$4,giac_yyget_extra(scanner))),_SEQ__VECT)); opened_quote(giac_yyget_extra(scanner)) &= 0x7ffffffd;}	
-	| symbol T_BEGIN_PAR suite T_END_PAR {$$ = check_symb_of($1,python_compat(giac_yyget_extra(scanner))?denest_sto($3):$3,giac_yyget_extra(scanner));}
-	| exp T_BEGIN_PAR suite T_END_PAR {$$ = check_symb_of($1,python_compat(giac_yyget_extra(scanner))?denest_sto($3):$3,giac_yyget_extra(scanner));}
+	| symbol T_BEGIN_PAR suite T_END_PAR {$$ = check_symb_of($1,python_compat(giac_yyget_extra(scanner))?denest_sto(numworks_nary_workaround($3)):numworks_nary_workaround($3),giac_yyget_extra(scanner));}
+	| exp T_BEGIN_PAR suite T_END_PAR {$$ = check_symb_of($1,python_compat(giac_yyget_extra(scanner))?denest_sto(numworks_nary_workaround($3)):numworks_nary_workaround($3),giac_yyget_extra(scanner));}
 	| symbol 		{$$ = $1;}  
 	| T_LITERAL		{$$ = $1;}
 	| T_DIGITS		{$$ = $1;}
@@ -239,8 +239,8 @@ exp	: T_NUMBER		{$$ = $1;}
 	| T_DIGITS T_BEGIN_PAR exp T_END_PAR	{$$ = symbolic(*$1._FUNCptr,$3);}
 	| T_DIGITS T_BEGIN_PAR T_END_PAR	{$$ = symbolic(*$1._FUNCptr,gen(vecteur(0),_SEQ__VECT));}
 	| exp TI_STO T_DIGITS	{$$ = symbolic(*$3._FUNCptr,$1);}
-	| exp T_TEST_EQUAL exp	{if (is_inequation($1) || ($1.is_symb_of_sommet(at_same) && ($3.type!=_INT_ || $3.subtype!=_INT_BOOLEAN))){ $$ = symb_and($1,symbolic(*$2._FUNCptr,gen(makevecteur($1._SYMBptr->feuille[1],$3),_SEQ__VECT)));} else $$ = symbolic(*$2._FUNCptr,gen(makevecteur($1,$3),_SEQ__VECT));}
-	| exp T_TEST_EQUAL symbol T_TEST_EQUAL exp	{$$ = symb_and(symbolic(*$2._FUNCptr,gen(makevecteur($1,$3),_SEQ__VECT)),symbolic(*$4._FUNCptr,gen(makevecteur($3,$5),_SEQ__VECT)));}
+	| exp T_TEST_EQUAL exp	{$$=symb_test_equal($1,$2,$3);}
+	/* | exp T_TEST_EQUAL symbol T_TEST_EQUAL exp	{$$ = symb_and(symbolic(*$2._FUNCptr,gen(makevecteur($1,$3),_SEQ__VECT)),symbolic(*$4._FUNCptr,gen(makevecteur($3,$5),_SEQ__VECT)));} */
 	| exp T_EQUAL exp	        {$$ = symbolic(*$2._FUNCptr,makesequence($1,$3)); }
 	| T_EQUAL exp %prec T_BIDON { 
 	if ($2.type==_SYMB) $$=$2; else $$=symbolic(at_nop,$2); 
@@ -288,14 +288,14 @@ exp	: T_NUMBER		{$$ = $1;}
         }
 	/* | T_ROOTOF_BEGIN exp T_VIRGULE exp T_ROOTOF_END {if ($2.type==_VECT) $$ = real_complex_rootof(*$2._VECTptr,$4); else $$=zero;} */
 	| T_OF { $$=gen(at_of,2); }
-	| exp T_AFFECT exp 		{if ($1.type==_FUNC) *logptr(giac_yyget_extra(scanner))<< ("Warning: "+$1.print(context0)+" is a reserved word")<<endl; if ($1.type==_INT_) $$=symb_equal($1,$3); else {$$ = symb_sto($3,$1,$2==at_array_sto); if ($3.is_symb_of_sommet(at_program)) *logptr(giac_yyget_extra(scanner))<<"// End defining "<<$1<<endl;}}
+	| exp T_AFFECT exp 		{if ($1.type==_FUNC) *logptr(giac_yyget_extra(scanner))<< ("Warning: "+$1.print(context0)+" is a reserved word")<<'\n'; if ($1.type==_INT_) $$=symb_equal($1,$3); else {$$ = symb_sto($3,$1,$2==at_array_sto); if ($3.is_symb_of_sommet(at_program)) *logptr(giac_yyget_extra(scanner))<<"// End defining "<<$1<<'\n';}}
 	| T_NOT exp	{ $$ = symbolic(*$1._FUNCptr,$2);}
 	| T_ARGS T_BEGIN_PAR exp T_END_PAR	{$$ = symb_args($3);}
 	| T_ARGS T_INDEX_BEGIN exp T_VECT_END	{$$ = symb_args($3);}
 	| T_ARGS { $$=symb_args(vecteur(0)); }
 	| T_UNARY_OP T_BEGIN_PAR exp T_END_PAR	{
-	gen tmp=python_compat(giac_yyget_extra(scanner))?denest_sto($3):$3;
-	// CERR << python_compat(giac_yyget_extra(scanner)) << tmp << endl;
+	gen tmp=python_compat(giac_yyget_extra(scanner))?denest_sto(numworks_nary_workaround($3)):numworks_nary_workaround($3);
+	// CERR << python_compat(giac_yyget_extra(scanner)) << tmp << '\n';
 	$$ = symbolic(*$1._FUNCptr,tmp);
         const giac::context * contextptr = giac_yyget_extra(scanner);
 	if (*$1._FUNCptr==at_maple_mode ||*$1._FUNCptr==at_xcas_mode ){
@@ -308,7 +308,7 @@ exp	: T_NUMBER		{$$ = $1;}
 	| T_UNARY_OP_38 T_BEGIN_PAR exp T_END_PAR	{
 	if ($3.type==_VECT && $3._VECTptr->empty())
           giac_yyerror(scanner,"void argument");
-	$$ = symbolic(*$1._FUNCptr,python_compat(giac_yyget_extra(scanner))?denest_sto($3):$3);	
+	$$ = symbolic(*$1._FUNCptr,python_compat(giac_yyget_extra(scanner))?denest_sto(numworks_nary_workaround($3)):numworks_nary_workaround($3));	
 	}
 	| T_UNARY_OP T_INDEX_BEGIN exp T_VECT_END { 
           const giac::context * contextptr = giac_yyget_extra(scanner);
@@ -393,7 +393,7 @@ exp	: T_NUMBER		{$$ = $1;}
        if (st==1 && $4!=1) st=$4;
           const giac::context * contextptr = giac_yyget_extra(scanner);
 	  if (!lidnt(st).empty())
-            *logptr(contextptr) << "Warning, step is not numeric " << st << std::endl;
+            *logptr(contextptr) << "Warning, step is not numeric " << st << '\n';
           bool b=has_evalf(st,tmp,1,context0);
           if (!b || is_positive(tmp,context0)) 
              $$=symbolic(*$1._FUNCptr,makevecteur(symb_sto($3,$2),symb_inferieur_egal($2,$5),symb_sto(symb_plus($2,b?abs(st,context0):symb_abs(st)),$2),symb_bloc($8))); 
@@ -406,7 +406,7 @@ exp	: T_NUMBER		{$$ = $1;}
         if (st==1 && $5!=1) st=$5;
          const giac::context * contextptr = giac_yyget_extra(scanner);
 	 if (!lidnt(st).empty())
-            *logptr(contextptr) << "Warning, step is not numeric " << st << std::endl;
+            *logptr(contextptr) << "Warning, step is not numeric " << st << '\n';
          bool b=has_evalf(st,tmp,1,context0);
          if (!b || is_positive(tmp,context0)) 
            $$=symbolic(*$1._FUNCptr,makevecteur(symb_sto($3,$2),symb_inferieur_egal($2,$6),symb_sto(symb_plus($2,b?abs(st,context0):symb_abs(st)),$2),symb_bloc($8))); 
@@ -456,7 +456,7 @@ exp	: T_NUMBER		{$$ = $1;}
 	| exp T_DOLLAR_MAPLE exp { $$ = symb_dollar(gen(makevecteur($1,$3) ,_SEQ__VECT)); } 
 	| exp T_DOLLAR exp { $$ = symb_dollar(gen(makevecteur($1,$3) ,_SEQ__VECT)); } 
 	| T_DOLLAR T_SYMBOL { $$=symb_dollar($2); }
-	| exp T_COMPOSE exp {  //CERR << $1 << " compose " << $2 << $3 << endl;
+	| exp T_COMPOSE exp {  //CERR << $1 << " compose " << $2 << $3 << '\n';
 $$ = symbolic(*$2._FUNCptr,gen(makevecteur($1,python_compat(giac_yyget_extra(scanner))?denest_sto($3):$3) ,_SEQ__VECT)); }
 	| T_COMPOSE {$$=symbolic(at_ans,-1);}
 	| exp T_UNION exp { $$ = symbolic(($2.type==_FUNC?*$2._FUNCptr:*at_union),gen(makevecteur($1,$3) ,_SEQ__VECT)); }
@@ -504,12 +504,12 @@ $$ = symbolic(*$2._FUNCptr,gen(makevecteur($1,python_compat(giac_yyget_extra(sca
 	 }
         } 
 	| T_VECT_DISPATCH suite T_VECT_END { 
-        //cerr << $1 << " " << $2 << endl;
+        //cerr << $1 << " " << $2 << '\n';
         $$ = gen(*($2._VECTptr),$1.val);
 	if ($2._VECTptr->size()==1 && $2._VECTptr->front().is_symb_of_sommet(at_ti_semi) ) {
 	  $$=$2._VECTptr->front();
         }
-        // cerr << $$ << endl;
+        // cerr << $$ << '\n';
 
         }
 	| exp T_VIRGULE exp           { 
@@ -554,7 +554,7 @@ $$ = symbolic(*$2._FUNCptr,gen(makevecteur($1,python_compat(giac_yyget_extra(sca
 	}
 	| T_IF T_BEGIN_PAR exp T_END_PAR exp T_SEMI else {
         vecteur v=makevecteur(equaltosame($3),$5,$7);
-	// *logptr(giac_yyget_extra(scanner)) << v << endl;
+	// *logptr(giac_yyget_extra(scanner)) << v << '\n';
 	$$ = symbolic(*$1._FUNCptr,v);
 	}
 	| T_RPN_BEGIN rpn_suite T_RPN_END { $$=symb_rpn_prog($2); }
@@ -660,7 +660,7 @@ $$ = symbolic(*$2._FUNCptr,gen(makevecteur($1,python_compat(giac_yyget_extra(sca
 	| TI_FOR suite TI_DEUXPOINTS prg_suite ti_bloc_end {
            vecteur & v=*$2._VECTptr;
            if ( (v.size()<3) || v[0].type!=_IDNT){
-             *logptr(giac_yyget_extra(scanner)) << "Syntax For name,begin,end[,step]" << endl;
+             *logptr(giac_yyget_extra(scanner)) << "Syntax For name,begin,end[,step]" << '\n';
              $$=undef;
            }
            else {
@@ -755,8 +755,8 @@ affectable_symbol : symbol { $$=$1; }
 	     | T_SYMBOL T_EQUAL exp { $$=symb_equal($1,$3); }
 	     | T_SYMBOL T_DEUXPOINTS exp { $$=symbolic(at_deuxpoints,makesequence($1,$3));  }
 	     | T_BEGIN_PAR affectable_symbol T_END_PAR { $$=$2; }
-	     | T_UNARY_OP { $$=$1; *logptr(giac_yyget_extra(scanner)) << "Error: reserved word "<< $1 <<endl;}
-	     | T_UNARY_OP T_DOUBLE_DEUX_POINTS exp { $$=symb_double_deux_points(makevecteur($1,$3)); *logptr(giac_yyget_extra(scanner)) << "Error: reserved word "<< $1 <<endl; }
+	     | T_UNARY_OP { $$=$1; *logptr(giac_yyget_extra(scanner)) << "Error: reserved word "<< $1 <<'\n';}
+	     | T_UNARY_OP T_DOUBLE_DEUX_POINTS exp { $$=symb_double_deux_points(makevecteur($1,$3)); *logptr(giac_yyget_extra(scanner)) << "Error: reserved word "<< $1 <<'\n'; }
 	     | T_TYPE_ID { 
   const giac::context * contextptr = giac_yyget_extra(scanner);
   $$=string2gen("_"+$1.print(contextptr),false); 

@@ -4,33 +4,23 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transform complex exponentials into sin and cos : sincos exp2trig</title>
+<title>Transform arctan into arcsin : atan2asin</title>
 </head>
 <body >
 <a href="cascmd_en253.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en255.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec316" class="subsection">5.24.14  Transform complex exponentials into sin and cos : <span style="font-family:monospace">sincos exp2trig</span></h3>
-<p><a id="hevea_default446"></a><a id="hevea_default447"></a>
-<span style="font-family:monospace">sincos</span> or <span style="font-family:monospace">exp2trig</span> takes as argument an expression 
-containing complex exponentials.<br>
-<span style="font-family:monospace">sincos</span> or <span style="font-family:monospace">exp2trig</span> rewrites this expression in terms of 
-sin and cos.<br>
+<h3 id="sec316" class="subsection">5.24.12  Transform arctan into arcsin : <span style="font-family:monospace">atan2asin</span></h3>
+<p><a id="hevea_default446"></a>
+<span style="font-family:monospace">atan2asin</span> takes as argument an expression
+containing inverse trigonometric functions.
+<span style="font-family:monospace">atan2asin</span> replaces arctan(<span style="font-style:italic">x</span>) by 
+ arcsin(<span style="font-style:italic">x</span>/√<span style="text-decoration:overline">1+</span><span style="text-decoration:overline"><span style="font-style:italic">x</span></span><span style="text-decoration:overline">2</span>) in this expression.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">sincos(exp(i*x))</span></div><p>
+</p><div class="center"><span style="font-family:monospace">atan2asin(atan(x))</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">cos(x)+(i)*sin(x)</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">exp2trig(exp(-i*x))</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">cos(x)+(i)*(-(sin(x)))</span></div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">simplify(sincos(((i)*(exp((i)*x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-i)/(2*exp((i)*x))))</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">simplify(exp2trig(((i)*(exp((i)*x))</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-i)/(2*exp((i)*x))))</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">-sin(x)</span></div>
+</p><div class="center"><span style="font-family:monospace">asin(x/sqrt(1+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2))</span></div>
 <hr>
 <a href="cascmd_en253.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

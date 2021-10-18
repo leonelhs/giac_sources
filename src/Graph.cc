@@ -221,7 +221,7 @@ namespace xcas {
     unsigned l=0;
     for (unsigned i=0;i<ih;++i){
       if (debug_infolevel)
-	cerr << "readrgb, reading row " << i << endl;
+	cerr << "readrgb, reading row " << i << '\n';
       vr[i]=vecteur(iw);
       vg[i]=vecteur(iw);
       vb[i]=vecteur(iw);
@@ -259,16 +259,16 @@ namespace xcas {
       giac::readrgb_ptr=readrgb;
 #ifdef HAVE_LC_MESSAGES
       xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):giac_locale_location;	
-      cerr << "// Using locale " << xcas_locale() << endl;
+      cerr << "// Using locale " << xcas_locale() << '\n';
       const char * ptr=setlocale (LC_MESSAGES, "");
       if (ptr)
-	cerr << "// " << ptr << endl;
+	cerr << "// " << ptr << '\n';
       else
-	cerr << "// setlocale returns 0" << endl;
+	cerr << "// setlocale returns 0" << '\n';
 #if defined(HAVE_GETTEXT) 
-      cerr << "// " << bindtextdomain (PACKAGE, xcas_locale().c_str()) << endl;
-      cerr << "// " << textdomain (PACKAGE) << endl;
-      cerr << "// " << bind_textdomain_codeset (PACKAGE, "UTF-8") << endl;
+      cerr << "// " << bindtextdomain (PACKAGE, xcas_locale().c_str()) << '\n';
+      cerr << "// " << textdomain (PACKAGE) << '\n';
+      cerr << "// " << bind_textdomain_codeset (PACKAGE, "UTF-8") << '\n';
 #endif
 #endif
     }
@@ -973,7 +973,7 @@ namespace xcas {
 	for (int j=0;j<8;++j){ 
 	  if (type & (1<<j)){
 	    rotate(rx,ry,rz,theta,lx[j],ly[j],lz[j],lX,lY,lZ);
-	    // cerr << theta << ":" << lX << "," << lY << "," << lZ << endl;
+	    // cerr << theta << ":" << lX << "," << lY << "," << lZ << '\n';
 	    gr3->light_x[j]=lX;
 	    gr3->light_y[j]=lY;
 	    gr3->light_z[j]=lZ;
@@ -2159,7 +2159,7 @@ namespace xcas {
 	      // A*x+B*y+C*z=d -> depth=(d-A*tx-B*ty-C*tz)/(A*Zx+B*Zy+C*Zz)
 	      n=aorig*(window_xmax-window_xmin)*a+borig*(window_ymax-window_ymin)*b+corig*(window_zmax-window_zmin)*c;
 	      gr3d->depth = -2/std::sqrt(double(3.0))*(nd->value()-aorig*(window_xmax+window_xmin)/2-borig*(window_ymax+window_ymin)/2-corig*(window_zmax+window_zmin)/2)/n;
-	      // cerr << gr3d->depth << endl;
+	      // cerr << gr3d->depth << '\n';
 	      double A0,B0,C0; // coordinates of OX0
 	      if (std::abs(b)>std::abs(c)){
 		A0=b;
@@ -2191,7 +2191,7 @@ namespace xcas {
 		  2 B E b
 		  3 C F c
 	      */
-	      // cerr << "axis " << F-b << "," << a-C << "," << B-D << endl;
+	      // cerr << "axis " << F-b << "," << a-C << "," << B-D << '\n';
 	      double qx,qy,qz,qw;
 	      qw=std::sqrt(1+A+E+c)/2;
 	      qx=(F-b)/4/qw;
@@ -2659,7 +2659,7 @@ namespace xcas {
       j0=(window_ymax-f1._DOUBLE_val)*y_scale;
       return true;
     }
-    // cerr << "Invalid drawing data" << endl;
+    // cerr << "Invalid drawing data" << '\n';
     return false;
   }
 
@@ -3521,7 +3521,7 @@ namespace xcas {
     }
     else
       decal=in_area?geometry_round_numeric(newx,newy,eps,approx):0;
-    // cerr << in_area << " " << decal << endl;
+    // cerr << in_area << " " << decal << '\n';
     if (event==FL_RELEASE && Fl::event_button()== FL_RIGHT_MOUSE && (is_zero(decal)) ){
       pushed=moving=moving_frame=false;
       change_attributs();
@@ -3567,7 +3567,7 @@ namespace xcas {
 	return 0;
       if (moving && (event==FL_DRAG || event==FL_RELEASE) ){
 	if (mouse_position) mouse_position->redraw();
-	// cerr << current_i << " " << current_j << endl;
+	// cerr << current_i << " " << current_j << '\n';
 	// avoid point()+complex+complex+complex
 	gen newval;
 	if (drag_original_value.is_symb_of_sommet(at_plus) && drag_original_value._SYMBptr->feuille.type==_VECT && drag_original_value._SYMBptr->feuille._VECTptr->size()>=2){
@@ -3887,7 +3887,7 @@ namespace xcas {
       return 0;
     context * contextptr=hp?hp->contextptr:get_context(this);
 #ifdef HAVE_LIBPTHREAD
-    // cerr << "handle lock" << endl;
+    // cerr << "handle lock" << '\n';
     int locked=pthread_mutex_trylock(&interactive_mutex);
     if (locked)
       return 0;
@@ -3900,7 +3900,7 @@ namespace xcas {
     no_handle=false;
 #ifdef HAVE_LIBPTHREAD
     pthread_mutex_unlock(&interactive_mutex);
-    // cerr << "handle unlock" << endl;
+    // cerr << "handle unlock" << '\n';
 #endif
     return res;
   }
@@ -4260,7 +4260,7 @@ namespace xcas {
       return 1;
     if (!hp)
       hp=geo_find_history_pack(this);
-    // cerr << event << " " << mode << endl;
+    // cerr << event << " " << mode << '\n';
     int res=common_in_handle(event);
     if (Fl::event_button()==FL_RIGHT_MOUSE && res && mode==255)
       return res; // right click desactivated
@@ -4326,7 +4326,7 @@ namespace xcas {
     context * contextptr = hp?hp->contextptr:0;
     int locked=0;
 #ifdef HAVE_LIBPTHREAD
-    // cerr << "geo2d draw lock" << endl;
+    // cerr << "geo2d draw lock" << '\n';
     locked=pthread_mutex_trylock(&interactive_mutex);
 #endif
     bool b,block;
@@ -4337,7 +4337,7 @@ namespace xcas {
       block_signal=true;
     }
     int clip_x,clip_y,clip_w,clip_h;
-    // cerr << "geo2d draw block signal " << this << endl;
+    // cerr << "geo2d draw block signal " << this << '\n';
     fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
     fl_push_clip(clip_x,clip_y,clip_w,clip_h);
     int vertical_pixels;
@@ -4360,11 +4360,11 @@ namespace xcas {
     ++animation_instructions_pos;    
     if (!locked){
       block_signal=block;
-      // cerr << "geo2d draw unblock signal " << this << endl;
+      // cerr << "geo2d draw unblock signal " << this << '\n';
       io_graph(contextptr)=b;
 #ifdef HAVE_LIBPTHREAD
       pthread_mutex_unlock(&interactive_mutex);
-    // cerr << "geo2d draw unlock" << endl;
+    // cerr << "geo2d draw unlock" << '\n';
 #endif
     }
   }
@@ -4378,7 +4378,7 @@ namespace xcas {
   void check_fl_draw(const char * ch,int i0,int j0,int imin,int jmin,int di,int dj,int delta_i,int delta_j){
     /* int n=fl_size();
        if (j0>=jmin-n && j0<=jmin+dj+n) */
-    // cerr << i0 << " " << j0 << endl;
+    // cerr << i0 << " " << j0 << '\n';
     if (strlen(ch)>2000)
       fl_draw("String too long for display",i0+delta_i,j0+delta_j);
     else
@@ -5210,12 +5210,12 @@ namespace xcas {
 	    approx_mode(true,contextptr);
 	  plot_tmp=symbolic(*function._FUNCptr,title_tmp);
 	  if (!lidnt(title_tmp).empty())
-	    ; // cerr << plot_tmp << endl;
+	    ; // cerr << plot_tmp << '\n';
 	  bool bb=io_graph(contextptr);
 	  int locked=0;
 	  if (bb){
 #ifdef HAVE_LIBPTHREAD
-	    // cerr << "plot title lock" << endl;
+	    // cerr << "plot title lock" << '\n';
 	    locked=pthread_mutex_trylock(&interactive_mutex);
 #endif
 	    if (!locked)
@@ -5226,7 +5226,7 @@ namespace xcas {
 	    io_graph(bb,contextptr);
 #ifdef HAVE_LIBPTHREAD
 	    pthread_mutex_unlock(&interactive_mutex);
-	    // cerr << "plot title unlock" << endl;
+	    // cerr << "plot title unlock" << '\n';
 #endif
 	  }
 	  if (!b)
@@ -5308,7 +5308,7 @@ namespace xcas {
       gen plot_tmp=*jt;
       if (plot_tmp.is_symb_of_sommet(at_pnt) && plot_tmp._SYMBptr->feuille.type==_VECT && !plot_tmp._SYMBptr->feuille._VECTptr->empty()){
 	vecteur & v=*plot_tmp._SYMBptr->feuille._VECTptr;
-	// cerr << v << endl;
+	// cerr << v << '\n';
 	if (v[1].type==_INT_)
 	  plot_tmp=symbolic(at_pnt,makevecteur(v[0],v[1].val | _DOT_LINE | _LINE_WIDTH_2));
 	else
@@ -5441,7 +5441,7 @@ namespace xcas {
       hp=geo_find_history_pack(this);
     context * contextptr = hp?hp->contextptr:0;
 #ifdef HAVE_LIBPTHREAD
-    // cerr << "graph2d draw lock" << endl;
+    // cerr << "graph2d draw lock" << '\n';
     int locked=pthread_mutex_trylock(&interactive_mutex);
     if (locked)
       return;
@@ -5450,7 +5450,7 @@ namespace xcas {
     io_graph(false,contextptr);
     bool block=block_signal;
     block_signal=true;
-    // cerr << "graph2d draw " << this << " block_signal" << endl;
+    // cerr << "graph2d draw " << this << " block_signal" << '\n';
     fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
     fl_push_clip(clip_x,clip_y,clip_w,clip_h);
     int horizontal_pixels=w()-(show_axes?int(ylegende*labelsize()):0);
@@ -5465,12 +5465,12 @@ namespace xcas {
     fl_pop_clip();
     if (!paused)
       ++animation_instructions_pos;
-    // cerr << "graph2d draw " << this << " restore block_signal" << endl;
+    // cerr << "graph2d draw " << this << " restore block_signal" << '\n';
     block_signal=block;
     io_graph(b,contextptr);
 #ifdef HAVE_LIBPTHREAD
     pthread_mutex_unlock(&interactive_mutex);
-    // cerr << "graph2d draw unlock" << endl;
+    // cerr << "graph2d draw unlock" << '\n';
 #endif
   }
 
@@ -5501,10 +5501,10 @@ namespace xcas {
 	    if (go->value().is_symb_of_sommet(at_parameter))
 	      ++pos;
 	  }
-	  // cerr << clock() << " ++pos " << pos << " " << last_event << endl;
+	  // cerr << clock() << " ++pos " << pos << " " << last_event << '\n';
 	}
 	else
-	  ; // cerr << clock() << " =pos " << pos << " " << last_event <<  endl;
+	  ; // cerr << clock() << " =pos " << pos << " " << last_event <<  '\n';
       }
     }
     else
@@ -5608,12 +5608,12 @@ namespace xcas {
 	    w=s->child(0);
 	  if (Multiline_Input_tab * m=dynamic_cast<Multiline_Input_tab *>(w)){
 	    if (strlen(m->value()))
-	      of << replace(m->value(),'\n',' ')+";" << endl;
+	      of << replace(m->value(),'\n',' ')+";" << '\n';
 	  }
 	  if (Xcas_Text_Editor * m=dynamic_cast<Xcas_Text_Editor *>(w)){
 	    string s=m->value();
 	    if (!s.empty())
-	      of << replace(s,'\n',' ')+";" << endl;
+	      of << replace(s,'\n',' ')+";" << '\n';
 	  }
 	}
       }
@@ -7265,7 +7265,7 @@ namespace xcas {
     if (is_context_busy(contextptr))
       return 0;
 #endif
-    // cerr << event << endl;
+    // cerr << event << '\n';
     if ( (event==FL_ENTER) || (event==FL_LEAVE) ){
       if (event==FL_LEAVE)
 	redraw_cap_only=true;
@@ -7804,7 +7804,7 @@ namespace xcas {
     Graph2d *i=dynamic_cast<Graph2d *>(w);
     if (!i)
       return archive(os,string2gen("Done",false),contextptr);
-    os << _POINTER_ << " " << _FL_WIDGET_POINTER << endl;
+    os << _POINTER_ << " " << _FL_WIDGET_POINTER << '\n';
     archive(os,i->plot_instructions,contextptr);
     archive(os,makevecteur(i->x(),i->y(),i->w(),i->h(),i->window_xmin,i->window_xmax,i->window_ymin,i->window_ymax),contextptr);
     return os;

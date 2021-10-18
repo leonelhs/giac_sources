@@ -4,45 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Copying variables: CopyVar</title>
+<title>Incrementing variables: += -= *= /=</title>
 </head>
 <body >
 <a href="cascmd_en052.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en054.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec77" class="subsection">4.6.8  Copying variables: <span style="font-family:monospace">CopyVar</span></h3>
-<p><a id="hevea_default53"></a>
-<a id="subsec:copyvar"></a></p><p>If a variable has a value, such as
+<h3 id="sec77" class="subsection">4.6.6  Incrementing variables: <span style="font-family:monospace">+= -= *= /=</span></h3>
+<p><a id="hevea_default48"></a><a id="hevea_default49"></a><a id="hevea_default50"></a><a id="hevea_default51"></a></p><p>You can increase the value of a variable <span style="font-family:monospace">a</span> by <span style="font-family:monospace">4</span>, for
+example, with
 </p><div class="center">
-<span style="font-family:monospace">a := 1</span>
+<span style="font-family:monospace">a := a + 4</span>
 </div><p>
-and you set a second variable to the first variable
+If beforehand <span style="font-family:monospace">a</span> were equal to <span style="font-family:monospace">4</span>, it would now be
+equal to <span style="font-family:monospace">8</span>. A shorthand way of doing this is with the
+<span style="font-family:monospace">+=</span><a id="hevea_default52"></a> operator;
 </p><div class="center">
-<span style="font-family:monospace">b := a</span>
+<span style="font-family:monospace">a += 4</span>
 </div><p>
-the new variable will have the same value as the first; in this case
-<span style="font-family:monospace">b</span> will be equal to <span style="font-family:monospace">1</span>. If you later give the first
-variable a new value;
+will also increase the value of <span style="font-family:monospace">a</span> by <span style="font-family:monospace">4</span>.</p><p>Similar shorthands exist for subtraction, multiplication and division.
+If <span style="font-family:monospace">a</span> is equal to <span style="font-family:monospace">8</span> and you enter
 </p><div class="center">
-<span style="font-family:monospace">a := 5</span>
+<span style="font-family:monospace">a -= 2</span>
 </div><p>
-the new value will still have the old value, in this case, <span style="font-family:monospace">b</span>
-will still be equal to <span style="font-family:monospace">1</span>.</p><p>The <span style="font-family:monospace">CopyVar</span> command will copy one variable to
-another without evaluating the first variable; the new variable will
-simply be a copy of the first. With <span style="font-family:monospace">a</span> having the value of
-<span style="font-family:monospace">5</span>, as above, the command
+then <span style="font-family:monospace">a</span> will be equal to <span style="font-family:monospace">6</span>. If you follow this with
 </p><div class="center">
-<span style="font-family:monospace">CopyVar(a,c)</span>
+<span style="font-family:monospace">a *= 3</span>
 </div><p>
-will make <span style="font-family:monospace">c</span> a copy of the variable <span style="font-family:monospace">a</span>, so it will
-have the value <span style="font-family:monospace">5</span> also. If you now change the value of
-<span style="font-family:monospace">a</span>
+then <span style="font-family:monospace">a</span> will be equal to <span style="font-family:monospace">18</span>, and finally
 </p><div class="center">
-<span style="font-family:monospace">a := 10</span>
+<span style="font-family:monospace">a /= 9</span>
 </div><p>
-then the value of <span style="font-family:monospace">c</span> will also change; here, <span style="font-family:monospace">c</span> will
-now have the value <span style="font-family:monospace">10</span>.</p>
+will end with <span style="font-family:monospace">a</span> equal to <span style="font-family:monospace">2</span>.</p>
 <hr>
 <a href="cascmd_en052.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

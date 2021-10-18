@@ -4,63 +4,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Top and leaves of an expression : sommet feuille op</title>
+<title>The difference between a function and an expression</title>
 </head>
 <body >
 <a href="cascmd_en210.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en212.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec254" class="subsection">5.16.3  Top and leaves of an expression : <span style="font-family:monospace">sommet feuille op</span></h3>
-<p><a id="hevea_default329"></a><a id="hevea_default330"></a><a id="hevea_default331"></a><a id="sec:op"></a>
-An operator is an infixed function : for example ’+’ is an 
-operator and ’sin’ is a function.<br>
-An expression can be represented by a tree. The top of the tree is 
-either an operator, or a function and the leaves of the tree are the 
-arguments of the operator or of the function 
-(see also <a href="cascmd_en468.html#sec%3Amakesuiteop">5.43.15</a>).<br>
-The instruction <span style="font-family:monospace">sommet</span> (resp. <span style="font-family:monospace">feuille</span> (or <span style="font-family:monospace">op</span>))
-returns the top (resp. the list of the leaves) of an expression.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">sommet(sin(x+2))</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">’sin’</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">sommet(x+2*y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">’+’</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">feuille(sin(x+2))</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">op(sin(x+2))</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">x+2</span></div><p> 
-Input :
-</p><div class="center"><span style="font-family:monospace">feuille(x+2*y)</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">op(x+2*y)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">(x,2*y) </span></div><p> 
-<span style="font-weight:bold">Remark</span><br>
-Suppose that a function is defined by a program, for example 
-let us define the <span style="font-family:monospace">pgcd</span> function :
-</p><div class="center"><span style="font-family:monospace">pgcd(a,b):={local r; while (b!=0) {r:=irem(a,b);a:=b;b:=r;} return a;}</span></div><p>
-Then input :
-</p><div class="center"><span style="font-family:monospace">sommet(pgcd)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">’program’</span></div><p> 
-Then input :
-</p><div class="center"><span style="font-family:monospace">feuille(pgcd)[0]</span></div><p> 
-Output :
-</p><div class="center"><span style="font-family:monospace">(a,b)</span></div><p>
-Then input :
-</p><div class="center"><span style="font-family:monospace">feuille(pgcd)[1]</span></div><p> 
-Output :
-</p><div class="center"><span style="font-family:monospace">(0,0) or (15,25) if the last input was pgcd(15,25)</span></div><p>
-Then input :
-</p><div class="center"><span style="font-family:monospace">feuille(pgcd)[2]</span></div><p> 
-Output :
-</p><div class="center"><span style="font-family:monospace">The body of the program : {local r;....return(a);}</span></div>
+<h3 id="sec254" class="subsection">5.16.1  The difference between a function and an expression</h3>
+<p><a id="hevea_default328"></a><a id="hevea_default329"></a>
+A function <span style="font-family:monospace">f</span> is defined for example by :<br>
+<span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> or by <span style="font-family:monospace">f:=x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> <br>
+that is to say, for all <span style="font-style:italic">x</span>, <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) is equal to the expression 
+<span style="font-style:italic">x</span><sup>2</sup>−1. In that case, to have the value of <span style="font-style:italic">f</span> for <span style="font-style:italic">x</span>=2, input :<span style="font-family:monospace">f(2)</span>.<br>
+But if the input is 
+<span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>, then <span style="font-family:monospace">g</span> is a variable where the 
+expression <span style="font-style:italic">x</span><sup>2</sup>−1 is stored. In that case, to have the value of <span style="font-style:italic">g</span> for <span style="font-style:italic">x</span>=2,
+input : <span style="font-family:monospace">subst(g,x=2)</span> (<span style="font-style:italic">g</span> is an expression depending on <span style="font-style:italic">x</span>).</p><p>When a command expects a function as argument, this argument should
+be either the definition of the function (e.g. <span style="font-family:monospace">x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>)
+or a variable name assigned to a function (e.g. <span style="font-family:monospace">f</span>
+previously defined by e.g. <span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>).<br>
+When a command expects an expression as argument, this argument should
+be either the definition of the expression (for example <span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>), 
+or a variable name assigned to an expression (e.g. 
+<span style="font-family:monospace">g</span> previously defined, for example, by 
+<span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>), or the evaluation of a function. e.g.
+<span style="font-family:monospace">f(x)</span> if <span style="font-family:monospace">f</span> is a previously defined function,
+for example, by <span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>).</p>
 <hr>
 <a href="cascmd_en210.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

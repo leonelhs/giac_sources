@@ -4,22 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Sum of elements of a list : sum add</title>
+<title>Remove elements of a list : remove</title>
 </head>
 <body >
 <a href="cascmd_en485.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en487.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec578" class="subsection">5.43.33  Sum of elements of a list : <span style="font-family:monospace">sum add</span></h3>
-<p><a id="hevea_default749"></a><a id="hevea_default750"></a>
-<span style="font-family:monospace">sum</span> or <span style="font-family:monospace">add</span> takes as argument a list <span style="font-family:monospace">l</span> (resp. 
-sequence) of reals.<br>
-<span style="font-family:monospace">sum</span> or <span style="font-family:monospace">add</span> returns the sum of the elements of <span style="font-family:monospace">l</span>.<br>
+<h3 id="sec578" class="subsection">5.43.26  Remove elements of a list : <span style="font-family:monospace">remove</span></h3>
+<p><a id="hevea_default751"></a>
+<span style="font-family:monospace">remove</span> takes as argument : a boolean function <span style="font-family:monospace">f</span> and 
+a list <span style="font-family:monospace">L</span>.<br>
+<span style="font-family:monospace">remove</span> removes in the list <span style="font-family:monospace">L</span>, the elements <span style="font-family:monospace">c</span> such that 
+<span style="font-family:monospace">f(c)==true</span>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">sum(2,3,4,5,6)</span></div><p>
+</p><div class="center"><span style="font-family:monospace">remove(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">20</span></div>
+</p><div class="center"><span style="font-family:monospace">[0,1,1]</span></div><p>
+<span style="font-weight:bold">Remark</span> The same applies on strings, for example,
+to remove all the "a" of a string:<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">ord("a")</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">97</span></div><p>
+Input :
+</p><pre class="verbatim">f(chn):={
+  local l:=length(chn)-1;
+  return remove(x-&gt;(ord(x)==97),seq(chn[k],k,0,l));
+}
+</pre><p>
+Then, input :
+</p><div class="center"><span style="font-family:monospace">f("abracadabra")</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">["b","r","c","d","b","r"]</span></div><p>
+To get a string, input :
+</p><div class="center"><span style="font-family:monospace">char(ord(["b","r","c","d","b","r"])</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">"brcdbr"</span></div>
 <hr>
 <a href="cascmd_en485.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

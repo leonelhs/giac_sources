@@ -1,4 +1,4 @@
-#ifdef NSPIRE_NEWLIB
+#if defined NSPIRE_NEWLIB && !defined NUMWORKS
 #include "os.h"
 #endif
 #ifdef HAVE_CONFIG_H

@@ -4,44 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Find the barycenter of a set of points in space: barycenter</title>
+<title>Draw unit vectors:
+Ox_3d_unit_vector
+Oy_3d_unit_vector
+Oz_3d_unit_vector
+frame_3d</title>
 </head>
 <body >
 <a href="cascmd_en932.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en934.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1204" class="subsection">13.4.7  Find the barycenter of a set of points in space: <span style="font-family:monospace">barycenter</span><a id="hevea_default1612"></a></h3>
-<p>
-<a id="sec:3dbarycenter"></a></p><p>See section <a href="cascmd_en829.html#sec%3A2dbarycenter">12.6.10</a> for barycenters of objects in
-the plane.</p><p>The <span style="font-family:monospace">barycenter</span> command returns and draws the barycenter of a set of
-weighted points. If the sum of the weights is zero, then this command
-returns an error.</p><p>The points and their weights (real numbers) can be
-given in two different ways.
-</p><ol class="enumerate" type=1><li class="li-enumerate">
-A sequence of lists of length two.<br>
- The first element of each list is a point and the second element is
-the weight of the point.
-</li><li class="li-enumerate">A matrix with two columns.<br>
- The first column of the matrix contains the points and the
-second column contains the corresponding weights.
-</li></ol><p>
+<h3 id="sec1203" class="subsection">13.3.1  Draw unit vectors:
+<span style="font-family:monospace">Ox_3d_unit_vector</span><a id="hevea_default1610"></a>
+<span style="font-family:monospace">Oy_3d_unit_vector</span><a id="hevea_default1611"></a>
+<span style="font-family:monospace">Oz_3d_unit_vector</span><a id="hevea_default1612"></a>
+<span style="font-family:monospace">frame_3d</span><a id="hevea_default1613"></a></h3>
+<p>The <span style="font-family:monospace">Ox_3d_unit_vector</span> command draws the unit vector in
+the <span style="font-style:italic">x</span>-direction on a three-dimensional graphic screen.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">BC := barycenter([point(1,4,0),1],[point(1,-2,0),1])
-</span></div><p>
-or:
-</p><div class="center">
-<span style="font-family:monospace">BC := barycenter([[point(1,4,0),1],[point(1,-2,0),1]])
-</span></div><p>
-then:
-</p><div class="center">
-<span style="font-family:monospace">coordinates(BC)
+<span style="font-family:monospace">Ox_3d_unit_vector()
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">[1,1,0]
-</span></div>
+<img src="cascmd_en195.png">
+</div><p>
+Similarly, the <span style="font-family:monospace">Oy_3d_unit_vector</span> and
+<span style="font-family:monospace">Oz_3d_unit_vector</span> commands draw the unit vector in the <span style="font-style:italic">y</span>
+and <span style="font-style:italic">z</span> directions, respectively.</p><p>These commands have no parameters, but can be decorated with the
+<span style="font-family:monospace">legend</span> command.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">Ox_3d_unit_vector(), legend(point([1,0,0]),"unit x vector",blue)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en196.png">
+</div><p>The <span style="font-family:monospace">frame_3d</span> command draws all three vectors simultaneously.</p>
 <hr>
 <a href="cascmd_en932.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

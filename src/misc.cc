@@ -52,6 +52,14 @@ inline giac::gen _graph_charpoly(const giac::gen &g,const giac::context *){ retu
 #include "graphtheory.h"
 #endif
 
+#ifdef NUMWORKS
+const char * mp_hal_input(const char * prompt) ;
+void numworks_giac_set_pixel(int x,int y,int c);
+void numworks_giac_fill_rect(int x,int y,int w,int h,int c);
+int numworks_giac_get_pixel(int x,int y);
+void numworks_giac_draw_string(int x,int y,int c,int bg,const char * s);
+#endif
+
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
@@ -181,7 +189,7 @@ namespace giac {
       for (int j=s-1;j>=k;--j){
 	res[j]=(res[j]-res[j-1])/(x[j]-x[j-k]);
       }
-      //CERR << k << res << endl;
+      //CERR << k << res << '\n';
     }
     return res;
   }
@@ -564,9 +572,18 @@ namespace giac {
   const int pixel_lines=1; // 320; // calculator screen 307K
   const int pixel_cols=1; // 240;
 #else
+#ifdef NUMWORKS
+  const int pixel_lines=320;
+  const int pixel_cols=240;
+#else
   const int pixel_lines=1024;
   const int pixel_cols=768;
 #endif
+#endif
+#ifdef NUMWORKS
+  void clear_pixel_buffer(){
+  }
+#else
   int pixel_buffer[pixel_lines][pixel_cols]; 
   void clear_pixel_buffer(){
     for (int i=0;i<pixel_lines;++i){
@@ -585,17 +602,21 @@ namespace giac {
     }
     return *ptr;
   }
+#endif
   gen _clear(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type==_VECT && args._VECTptr->empty()){
+#ifdef NUMWORKS
+#else // NUMWORKS
 #ifdef GIAC_HAS_STO_38
       static gen RECT_P(identificateur("RECT_P"));
       _of(makesequence(RECT_P,args),contextptr);
 #else
       clear_pixel_buffer();
-#endif
+#endif // else HP
       pixel_v()._VECTptr->clear();
       history_plot(contextptr).clear();
+#endif // else NUMWORKS
       return 1;
     }
     gen g=eval(args,1,contextptr);
@@ -614,6 +635,7 @@ namespace giac {
   static define_unary_function_eval (__clear,&_clear,_clear_s);
   define_unary_function_ptr5( at_clear ,alias_at_clear,&__clear,_QUOTE_ARGUMENTS,true);
 
+#ifndef NUMWORKS
   gen _show_pixels(const gen & args,GIAC_CONTEXT){
 #ifdef GIAC_HAS_STO_38
     static gen FREEZE(identificateur("FREEZE"));
@@ -629,6 +651,7 @@ namespace giac {
   static const char _show_pixels_s []="show_pixels";
   static define_unary_function_eval (__show_pixels,&_show_pixels,_show_pixels_s);
   define_unary_function_ptr5( at_show_pixels ,alias_at_show_pixels,&__show_pixels,0,true);
+#endif
 
   gen _show(const gen & args,GIAC_CONTEXT){
     return history_plot(contextptr);
@@ -2041,7 +2064,7 @@ namespace giac {
     matrice m;
     vecteur d;
     if (!egv(*g._VECTptr,m,d,contextptr,false,false,true))
-      *logptr(contextptr) << gettext("Low accuracy") << endl;
+      *logptr(contextptr) << gettext("Low accuracy") << '\n';
     complex_mode(b,contextptr);
     return gen(d,_SEQ__VECT);
   }
@@ -2459,10 +2482,15 @@ namespace giac {
   define_unary_function_ptr5( at_BlockDiagonal ,alias_at_BlockDiagonal,&__BlockDiagonal,0,true);
 
   gen _input(const gen & args,GIAC_CONTEXT){
+#ifdef NUMWORKS
+    const char * s=mp_hal_input("?") ;
+    return string2gen(s,false);
+#else
     if (interactive_op_tab && interactive_op_tab[0])
       return interactive_op_tab[0](args,contextptr);
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     return _input(args,false,contextptr);
+#endif
   }
   static const char _input_s []="input";
 #ifdef RTOS_THREADX
@@ -3071,7 +3099,7 @@ namespace giac {
     if (withstddev){
       m2=m2-apply(s,apply(m,m,prod),prod);
       if (s.type!=_VECT && is_greater(1,s,contextptr) && withstddev==2)
-	*logptr(contextptr) << "stddevp called with N<=1, perhaps you are misusing this command with frequencies" << endl;
+	*logptr(contextptr) << "stddevp called with N<=1, perhaps you are misusing this command with frequencies" << '\n';
       m2=apply(m2,s-(withstddev==2),contextptr,rdiv);
       if (withstddev==3)
 	return m2;
@@ -3532,7 +3560,7 @@ static define_unary_function_eval (__correlation,&_correlation,_correlation_s);
     b=(sigmay-a*sigmax)/n;
     correl2=(tmp*tmp)/(n*sigmax2-sigmax*sigmax)/(n*sigmay2-sigmay*sigmay);
     return makevecteur(sigmax,sigmay,n,sigmax2,sigmay2);
-    // cerr << sigmax << " "<< sigmay << " " << sigmaxy << " " << n << " " << sigmax2 << " " << sigmay2 << endl;
+    // cerr << sigmax << " "<< sigmay << " " << sigmaxy << " " << n << " " << sigmax2 << " " << sigmay2 << '\n';
   }
 
   static gen function_regression(const gen & g,const gen & u1,const gen & u2,GIAC_CONTEXT){
@@ -3632,7 +3660,7 @@ static define_unary_function_eval (__power_regression,&_power_regression,_power_
     if (ad.type==_DOUBLE_ && bd.type==_DOUBLE_ && cd.type==_DOUBLE_){
       string eqs="y="+print_DOUBLE_(ad._DOUBLE_val,3)+"*x+"+print_DOUBLE_(bd._DOUBLE_val,3);
       string R2s=" , R2="+print_DOUBLE_(cd._DOUBLE_val,3);
-      *logptr(contextptr) << eqs << R2s << endl;
+      *logptr(contextptr) << eqs << R2s << '\n';
       string s;
       if (eq)
 	s += eqs;
@@ -3659,7 +3687,7 @@ static define_unary_function_eval (__linear_regression_plot,&_linear_regression_
     if (ad.type==_DOUBLE_ && bd.type==_DOUBLE_ && cd.type==_DOUBLE_){
       string eqs="y="+print_DOUBLE_(std::exp(ad._DOUBLE_val),3)+"^x*"+print_DOUBLE_(std::exp(bd._DOUBLE_val),3);
       string R2s=" , R2="+print_DOUBLE_(cd._DOUBLE_val,3);
-      *logptr(contextptr) << eqs << R2s << endl;
+      *logptr(contextptr) << eqs << R2s << '\n';
       string s;
       if (eq)
 	s += eqs;
@@ -3687,7 +3715,7 @@ static define_unary_function_eval (__exponential_regression_plot,&_exponential_r
     if (ad.type==_DOUBLE_ && bd.type==_DOUBLE_ && cd.type==_DOUBLE_){
       string eqs="y="+print_DOUBLE_(ad._DOUBLE_val,3)+"*ln(x)+"+print_DOUBLE_(bd._DOUBLE_val,3);
       string R2s=" , R2="+print_DOUBLE_(cd._DOUBLE_val,3);
-      *logptr(contextptr) << eqs << R2s << endl;
+      *logptr(contextptr) << eqs << R2s << '\n';
       string s;
       if (eq)
 	s += eqs;
@@ -3715,7 +3743,7 @@ static define_unary_function_eval (__logarithmic_regression_plot,&_logarithmic_r
     if (ad.type==_DOUBLE_ && bd.type==_DOUBLE_ && cd.type==_DOUBLE_){
       string eqs="y="+print_DOUBLE_(exp(bd,contextptr)._DOUBLE_val,3)+"*x^"+print_DOUBLE_(ad._DOUBLE_val,3);
       string R2s=" , R2="+print_DOUBLE_(cd._DOUBLE_val,3);
-      *logptr(contextptr) << eqs << R2s << endl;
+      *logptr(contextptr) << eqs << R2s << '\n';
       string s;
       if (eq)
 	s += eqs;
@@ -3842,7 +3870,7 @@ static define_unary_function_eval (__polynomial_regression_plot,&_polynomial_reg
       gen tmp=_correlation(evalf_double(args,1,contextptr),contextptr);
       if (tmp.type==_STRNG && tmp.subtype==-1) return  tmp;
       Pinit=w[0]/(exp(res._VECTptr->front(),contextptr)-1);
-      *logptr(contextptr) << gettext("Initial cumulative estimated to ") << Pinit << endl << gettext("Correlation for 5 first years to estimate initial cumulative : ") << tmp << endl;
+      *logptr(contextptr) << gettext("Initial cumulative estimated to ") << Pinit << '\n' << gettext("Correlation for 5 first years to estimate initial cumulative : ") << tmp << '\n';
     }
     else
       Pinit=v[2];
@@ -3881,7 +3909,7 @@ static define_unary_function_eval (__polynomial_regression_plot,&_polynomial_reg
     if (res.type!=_VECT || res._VECTptr->size()!=2)
       return gendimerr(contextptr);
     gen a=res._VECTptr->front(),b=res._VECTptr->back(),urr=-b/a;
-    *logptr(contextptr) << gettext("Pinstant=") << a << gettext("*Pcumul+") << b << endl << gettext("Correlation ") << r << gettext(", Estimated total P=") << urr << endl << gettext("Returning estimated Pcumul, Pinstant, Ptotal, Pinstantmax, tmax, R")<< endl;
+    *logptr(contextptr) << gettext("Pinstant=") << a << gettext("*Pcumul+") << b << '\n' << gettext("Correlation ") << r << gettext(", Estimated total P=") << urr << '\n' << gettext("Returning estimated Pcumul, Pinstant, Ptotal, Pinstantmax, tmax, R")<< '\n';
     // y'/y=a*y+b -> y=urr/[1+exp(-b*(t-t0))]
     // urr/y-1=exp(-b*(t-t0))
     // -> -b*(t-t0) = ln(urr/y-1)
@@ -4061,7 +4089,7 @@ static define_unary_function_eval (__parabolic_interpolate,&_parabolic_interpola
     if (data.empty())
       return data;
     if (class_size<=0){
-      *logptr(contextptr) << gettext("Invalid class size (replaced by 1) ") << class_size << endl;
+      *logptr(contextptr) << gettext("Invalid class size (replaced by 1) ") << class_size << '\n';
       class_size=1;
     }
     vector<double>  w1;
@@ -5739,7 +5767,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       ms=m.size();
       g=_sum(m,contextptr);
       if (!is_zero(g-vecteur(ms,1)))
-	*logptr(contextptr) << gettext("Warning: not a graph matrix!") << endl;
+	*logptr(contextptr) << gettext("Warning: not a graph matrix!") << '\n';
     }
     // first make points, 
     double xmin(0),xmax(0),ymin(0),ymax(0);
@@ -6020,7 +6048,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       addvecteur(rk,tmp,pk);
       rk2=newrk2;
     }
-    *logptr(contextptr) << gettext("Warning! Leaving conjugate gradient algorithm after dimension of matrix iterations. Check that your matrix is hermitian/symmetric definite.") << endl;
+    *logptr(contextptr) << gettext("Warning! Leaving conjugate gradient algorithm after dimension of matrix iterations. Check that your matrix is hermitian/symmetric definite.") << '\n';
     return xk;
   }
 
@@ -6050,7 +6078,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (is_greater(eps,g,contextptr))
 	return xn;
     }
-    *logptr(contextptr) << gettext("Warning! Leaving Jacobi iterative algorithm after maximal number of iterations. Check that your matrix is diagonal dominant.") << endl;
+    *logptr(contextptr) << gettext("Warning! Leaving Jacobi iterative algorithm after maximal number of iterations. Check that your matrix is diagonal dominant.") << '\n';
     return xn;    
   }
   
@@ -6082,7 +6110,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (is_greater(eps,g,contextptr))
 	return xn;
     }
-    *logptr(contextptr) << gettext("Warning! Leaving Gauss-Seidel iterative algorithm after maximal number of iterations. Check that your matrix is diagonal dominant.") << endl;
+    *logptr(contextptr) << gettext("Warning! Leaving Gauss-Seidel iterative algorithm after maximal number of iterations. Check that your matrix is diagonal dominant.") << '\n';
     return xn;    
   }
   
@@ -6717,7 +6745,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       string as=*a._STRNGptr;
       if (s.size()>as.size()){
 	s.swap(as);
-	*logptr(contextptr) << "Exchanging arguments" << endl;
+	*logptr(contextptr) << "Exchanging arguments" << '\n';
       }
       vecteur res;
       for (;;++pos){
@@ -6732,7 +6760,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     }
     if (v[1].type!=_VECT){
       if (a.type==_VECT){
-	*logptr(contextptr) << "Exchanging arguments" << endl;
+	*logptr(contextptr) << "Exchanging arguments" << '\n';
 	v[0]=v[1];
 	v[1]=a;
 	a=v[0];
@@ -7034,7 +7062,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 
   gen try_limit_undef(const gen & f,const identificateur & x,const gen & x0,int direction,GIAC_CONTEXT){
     gen res;
-    //COUT << "try_limit_undef " << f << " " << x << "=" << x0 << endl;
+    //COUT << "try_limit_undef " << f << " " << x << "=" << x0 << '\n';
 #ifdef NO_STDEXCEPT
     res=limit(f,x,x0,direction,contextptr);
     if (res.type==_STRNG)
@@ -7118,7 +7146,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       sto(tval,t,contextptr);
     step_infolevel(st,contextptr);
     if (cx.type!=_VECT || cy.type!=_VECT){
-      *logptr(contextptr) << gettext("Unable to find critical points") << endl;
+      *logptr(contextptr) << gettext("Unable to find critical points") << '\n';
       purgenoassume(t,contextptr);
       return 0;
     }
@@ -7128,14 +7156,14 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       c=mergevecteur(c,infl);
     }
     else
-      *logptr(contextptr) << gettext("Unable to find inflection points") << endl;
+      *logptr(contextptr) << gettext("Unable to find inflection points") << '\n';
     for (int i=0;i<int(infl.size());++i)
       infl[i]=ratnormal(infl[i],contextptr);
     for (int i=0;i<int(c.size());++i)
       c[i]=ratnormal(c[i],contextptr);
     comprim(c);
     if (!lidnt(evalf(c,1,contextptr)).empty()){
-      *logptr(contextptr) << gettext("Infinite number of critical points. Try with optional argument ") << t << "=tmin..tmax" << endl;
+      *logptr(contextptr) << gettext("Infinite number of critical points. Try with optional argument ") << t << "=tmin..tmax" << '\n';
       purgenoassume(t,contextptr);
       return 0;
     }
@@ -7555,7 +7583,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     gprintf(gettext("Variations (%gen,%gen)\n%gen"),makevecteur(f,g,tvi),1,contextptr);
 #ifndef EMCC
     if (printtvi && step_infolevel(contextptr)==0)
-      *logptr(contextptr) << tvi << endl;
+      *logptr(contextptr) << tvi << '\n';
 #endif
     // finished!
     purgenoassume(t,contextptr);
@@ -7565,7 +7593,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   int step_param(const gen & f,const gen & g,const gen & t,gen & tmin,gen&tmax,vecteur & poi,vecteur & tvi,bool printtvi,bool exactlegende,GIAC_CONTEXT){
     bool c=complex_mode(contextptr); int st=step_infolevel(contextptr),s=0;
     if (t==x__IDNT_e || t==y__IDNT_e)
-      *logptr(contextptr) << gettext("Warning, using x or y as variable in parametric plot may lead to confusion!") << endl;
+      *logptr(contextptr) << gettext("Warning, using x or y as variable in parametric plot may lead to confusion!") << '\n';
     step_infolevel(0,contextptr);
 #ifdef NO_STDEXCEPT
     s=step_param_(f,g,t,tmin,tmax,poi,tvi,printtvi,exactlegende,contextptr);
@@ -7604,10 +7632,11 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   // pass -inf and inf by default.
   // poi will contain point of interest: asymptotes and extremas
   // xmin and xmax will be set to values containing all points in poi
-  int step_func_(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,gen& periode,vecteur & asym,vecteur & parab,vecteur & crit,vecteur & infl,bool printtvi,bool exactlegende,GIAC_CONTEXT,bool do_inflex){
+  int step_func_(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,gen& periode,vecteur & asym,vecteur & parab,vecteur & crit,vecteur & infl,bool printtvi,bool exactlegende,GIAC_CONTEXT,int do_inflex_tabsign){
     if (x.type!=_IDNT)
       return 0;
-    gprintf(gettext("====================\nFunction plot %gen, variable %gen"),makevecteur(f,x),1,contextptr);
+    if (do_inflex_tabsign!=2) 
+      gprintf(gettext("====================\nFunction plot %gen, variable %gen"),makevecteur(f,x),1,contextptr);
     if (is_periodic(f,x,periode,contextptr)){
       gprintf(gettext("Periodic function T=%gen"),vecteur(1,periode),1,contextptr);
       if (is_greater(xmax-xmin,periode,contextptr)){
@@ -7621,7 +7650,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	gprintf(gettext("Even function %gen. Reflection Oy"),vecteur(1,f),1,contextptr);
       else
 	gprintf(gettext("Odd function %gen. Center O"),vecteur(1,f),1,contextptr);
-      xmin=0;
+      if ((do_inflex_tabsign & 1)==1)
+	xmin=0;
     }
     gen xmin0=ratnormal(xmin,contextptr),xmax0=ratnormal(xmax,contextptr);
     vecteur lv=lidnt(evalf(f,1,contextptr));
@@ -7653,19 +7683,19 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     // Extremas
     int st=step_infolevel(contextptr);
     step_infolevel(0,contextptr);
-    gen f1=_factor(derive(f,x,contextptr),contextptr);
+    gen f1=do_inflex_tabsign==2?f:_factor(derive(f,x,contextptr),contextptr);
     gen f2=derive(f1,x,contextptr);
 #if 1
     int cm=calc_mode(contextptr);
     calc_mode(-38,contextptr); // avoid rootof
     gen c1=solve(f1,x,periode==0?2:0,contextptr);
-    gen c2=(!do_inflex || is_zero(f2))?gen(vecteur(0)):solve(_numer(f2,contextptr),x,periode==0?2:0,contextptr),c(c1);
+    gen c2=(!(do_inflex_tabsign & 1) || is_zero(f2))?gen(vecteur(0)):solve(_numer(f2,contextptr),x,periode==0?2:0,contextptr),c(c1);
     calc_mode(cm,contextptr);
     step_infolevel(st,contextptr);
     if (x!=xval)
       sto(xval,x,contextptr);
     if (c1.type!=_VECT){
-      *logptr(contextptr) << gettext("Unable to find critical points") << endl;
+      *logptr(contextptr) << gettext("Unable to find critical points") << '\n';
       return 0;
     }
     if (c2.type==_VECT){
@@ -7673,19 +7703,19 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       c=gen(mergevecteur(gen2vecteur(c1),infl));
     }
     else
-      *logptr(contextptr) << gettext("Unable to find convexity") << endl;
+      *logptr(contextptr) << gettext("Unable to find convexity") << '\n';
     // if (c.type==_VECT && c._VECTptr->empty()) c=_fsolve(makesequence(f,x),contextptr);
 #else
     gen c=critical(makesequence(f,x),false,contextptr);
     step_infolevel(st,contextptr);
     if (c.type!=_VECT){
-      *logptr(contextptr) << gettext("Unable to find critical points") << endl;
+      *logptr(contextptr) << gettext("Unable to find critical points") << '\n';
       purgenoassume(x,contextptr);
       return 0;
     }
 #endif
     if (!lidnt(evalf(c,1,contextptr)).empty()){
-      *logptr(contextptr) << gettext("Infinite number of critical points. Try with optional argument ") << x << "=xmin..xmax" << endl;
+      *logptr(contextptr) << gettext("Infinite number of critical points. Try with optional argument ") << x << "=xmin..xmax" << '\n';
       purgenoassume(x,contextptr);
       return 0;
     }
@@ -7729,7 +7759,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
     }
     it=sing.begin();itend=sing.end();
-    for (;it!=itend;++it){
+    for (;do_inflex_tabsign!=2 && it!=itend;++it){
       gen equ;
       if (!has_inf_or_undef(*it)){ // vertical
 	if (is_greater(xmin,*it,contextptr))
@@ -7870,9 +7900,9 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     gen yof=y__IDNT_e; // symb_of(y__IDNT_e,x); // 
     vecteur tvif=makevecteur(symb_equal(yof,f),y);
     gen nothing=string2gen(" ",false);
-    vecteur tvidf=makevecteur(symb_equal(symbolic(at_derive,yof),f1),try_limit_undef(f1,xid,nextx,1,contextptr));
+    vecteur tvidf=makevecteur(do_inflex_tabsign==2?f1:symb_equal(symbolic(at_derive,yof),f1),try_limit_undef(f1,xid,nextx,1,contextptr));
     vecteur tvidf2;
-    if (do_inflex)
+    if ((do_inflex_tabsign & 1))
       tvidf2=makevecteur(symbolic(at_derive,symbolic(at_derive,yof)),try_limit_undef(f2,xid,nextx,1,contextptr));
     int tvs=int(tvx.size());
     for (int i=1;i<tvs;++i){
@@ -7883,17 +7913,17 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       tvix.push_back(nothing);
       if (is_inf(nextx) && is_inf(curx)){
 	dfx=try_limit_undef(f1,xid,0,0,contextptr);
-	if (do_inflex) df2=try_limit_undef(f2,xid,0,0,contextptr);
+	if ((do_inflex_tabsign & 1)) df2=try_limit_undef(f2,xid,0,0,contextptr);
       }
       else {
 	if (curx==minus_inf){
 	  dfx=try_limit_undef(f1,xid,nextx-1,0,contextptr);
-	  if (do_inflex) df2=try_limit_undef(f2,xid,nextx-1,0,contextptr);
+	  if ((do_inflex_tabsign & 1)) df2=try_limit_undef(f2,xid,nextx-1,0,contextptr);
 	}
 	else {
 	  if (nextx==plus_inf){
 	    dfx=try_limit_undef(f1,xid,curx+1,0,contextptr);
-	    if (do_inflex) df2=try_limit_undef(f2,xid,curx+1,0,contextptr);
+	    if ((do_inflex_tabsign & 1)) df2=try_limit_undef(f2,xid,curx+1,0,contextptr);
 	  }
 	  else {
 	    gen m=(curx+nextx)/2;
@@ -7907,7 +7937,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	    }
 	    if (in_domain(df,x,m,contextptr)){
 	      dfx=try_limit_undef(f1,xid,m,0,contextptr);
-	      if (do_inflex) df2=try_limit_undef(f2,xid,m,0,contextptr);
+	      if ((do_inflex_tabsign & 1)) df2=try_limit_undef(f2,xid,m,0,contextptr);
 	    }
 	    else dfx=df2=undef;
 	  }
@@ -7939,7 +7969,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  tvidf.push_back(string2gen("-",false));
 	}
       }
-      if (do_inflex){
+      if ((do_inflex_tabsign & 1)){
 	if (is_undef(df2))
 	  tvidf2.push_back(string2gen("X",false));
 	else {
@@ -7961,7 +7991,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvix.push_back(nextx);
 	tvif.push_back(crunch_rootof(y,contextptr));
 	tvidf.push_back(string2gen("||",false));
-	if (do_inflex) tvidf2.push_back(string2gen("||",false));
+	if ((do_inflex_tabsign & 1)) tvidf2.push_back(string2gen("||",false));
 	y=try_limit_undef(f,xid,nextx,1,contextptr);
 	y=recursive_normal(y,contextptr);
 	if (!has_inf_or_undef(y) && is_greater(ymin,y,contextptr))
@@ -7971,7 +8001,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	tvix.push_back(nextx);
 	tvif.push_back(crunch_rootof(y,contextptr));
 	tvidf.push_back(string2gen("||",false));
-	if (do_inflex) tvidf2.push_back(string2gen("||",false));
+	if ((do_inflex_tabsign & 1)) tvidf2.push_back(string2gen("||",false));
       }
       else {
 	y=try_limit_undef(f,xid,nextx,-1,contextptr); 
@@ -7991,15 +8021,15 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	  y=makevecteur(y,ysecond);
 	y=recursive_normal(y,contextptr);
 	tvidf.push_back(crunch_rootof(y,contextptr));
-	if (do_inflex){
+	if ((do_inflex_tabsign & 1)){
 	  y=try_limit_undef(f2,xid,nextx,0,contextptr);
 	  y=recursive_normal(y,contextptr);
 	  tvidf2.push_back(crunch_rootof(y,contextptr));
 	}
       }
     }
-    tvi=makevecteur(tvix,tvidf,tvif);
-    if (do_inflex) tvi.push_back(tvidf2);
+    tvi=do_inflex_tabsign==2?makevecteur(tvix,tvidf):makevecteur(tvix,tvidf,tvif);
+    if ((do_inflex_tabsign & 1)) tvi.push_back(tvidf2);
     vecteur tvit(mtran(tvi));
     for (size_t i=1;i<tvit.size();++i){
       if (tvit[i]==tvit[i-1])
@@ -8029,24 +8059,26 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     gly.subtype=_INT_PLOT;
     gly=symb_equal(gly,symb_interval(ymin-yscale/2,ymax+yscale/2));
     poi.insert(poi.begin(),gly);
-    gprintf(gettext("Variations %gen\n%gen"),makevecteur(f,tvi),1,contextptr);
+    gprintf(gettext(do_inflex_tabsign==2?"Sign %gen\n%gen":"Variations %gen\n%gen"),makevecteur(f,tvi),1,contextptr);
 #ifndef EMCC
     if (printtvi && step_infolevel(contextptr)==0)
-      *logptr(contextptr) << tvi << endl;
+      *logptr(contextptr) << tvi << '\n';
 #endif
     // finished!
     purgenoassume(x,contextptr);
     return 1 + (periode!=0);
   }
 
-  int step_func(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,gen & periode,vecteur & asym,vecteur & parab,vecteur & crit,vecteur & inflex,bool printtvi,bool exactlegende,GIAC_CONTEXT,bool do_inflex){
+  // bit 0 of do_inflex_tabsign = set to 1 for inflexion (valid for tabvar)
+  // bit 1 of do_inflex_tabsign = set to 1 for tabsign, 0 for tabvar
+  int step_func(const gen & f,const gen & x,gen & xmin,gen&xmax,vecteur & poi,vecteur & tvi,gen & periode,vecteur & asym,vecteur & parab,vecteur & crit,vecteur & inflex,bool printtvi,bool exactlegende,GIAC_CONTEXT,int do_inflex_tabsign){
     bool c=complex_mode(contextptr); int st=step_infolevel(contextptr),s=0;
     step_infolevel(0,contextptr);
 #ifdef NO_STDEXCEPT
-    s=step_func_(f,x,xmin,xmax,poi,tvi,periode,asym,parab,crit,inflex,printtvi,exactlegende,contextptr,do_inflex);
+    s=step_func_(f,x,xmin,xmax,poi,tvi,periode,asym,parab,crit,inflex,printtvi,exactlegende,contextptr,do_inflex_tabsign);
 #else
     try {
-      s=step_func_(f,x,xmin,xmax,poi,tvi,periode,asym,parab,crit,inflex,printtvi,exactlegende,contextptr,do_inflex);
+      s=step_func_(f,x,xmin,xmax,poi,tvi,periode,asym,parab,crit,inflex,printtvi,exactlegende,contextptr,do_inflex_tabsign);
     } catch (std::runtime_error & e){
       last_evaled_argptr(contextptr)=NULL;
       s=0;
@@ -8066,8 +8098,14 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #else
     int plot=0;
 #endif
-    bool return_tabvar=false,return_equation=false,return_coordonnees=false,do_inflex=true;
+    bool return_tabvar=false,return_equation=false,return_coordonnees=false;
+    int do_inflex_tabsign=1;
     for (int i=0;i<s;++i){
+      if (v[i]==at_sign){
+	v.erase(v.begin()+i);
+	do_inflex_tabsign=2;
+	--s; --i; continue;
+      }
       if (v[i]==at_plot){
 	plot=2;
 	v.erase(v.begin()+i);
@@ -8089,7 +8127,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	--s; --i; continue;
       }
       if (v[i]==at_derive){
-	do_inflex=false;
+	do_inflex_tabsign=0;
 	v.erase(v.begin()+i);
 	--s; --i; continue;
       }
@@ -8097,9 +8135,9 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	gen & f=v[i]._SYMBptr->feuille;
 	if (f.type==_VECT && f._VECTptr->size()==2 && f._VECTptr->front()==at_derive){
 	  if (f._VECTptr->back()==2)
-	    do_inflex=true;
+	    do_inflex_tabsign=1;
 	  else
-	    do_inflex=false;
+	    do_inflex_tabsign=0;
 	  v.erase(v.begin()+i);
 	  --s; --i; continue;
 	}
@@ -8155,7 +8193,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       periodic=step_param(f._VECTptr->front(),f._VECTptr->back(),x,xmin,xmax,poi,tvi,false,exactlegende,contextptr);
     else {
       gen periode; vecteur asym,parab,crit,inflex;
-      periodic=step_func(f,x,xmin,xmax,poi,tvi,periode,asym,parab,crit,inflex,false,exactlegende,contextptr,do_inflex);
+      periodic=step_func(f,x,xmin,xmax,poi,tvi,periode,asym,parab,crit,inflex,false,exactlegende,contextptr,do_inflex_tabsign);
     }
     // round floats in tvi
     for (int i=0;i<int(tvi.size());++i){
@@ -8209,12 +8247,22 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 	return tvi; // gprintf("%gen",makevecteur(gen(poi,_SEQ__VECT)),1,contextptr);
     }
     if (abs_calc_mode(contextptr)!=38)
-      *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')' <<"\nInside Xcas you can see the function with Cfg>Show>DispG." <<  endl;
+      *logptr(contextptr) << (param?"plotparam(":"plotfunc(") << gen(w,_SEQ__VECT) << ')' <<"\nInside Xcas you can see the function with Cfg>Show>DispG." <<  '\n';
     return tvi;
   }
   static const char _tabvar_s []="tabvar";
   static define_unary_function_eval (__tabvar,&_tabvar,_tabvar_s);
   define_unary_function_ptr5( at_tabvar ,alias_at_tabvar,&__tabvar,0,true);
+
+  gen _tabsign(const gen & g,GIAC_CONTEXT){
+    if ( g.type==_STRNG && g.subtype==-1) return  g;
+    vecteur v(gen2vecteur(g));
+    v.push_back(at_sign);
+    return _tabvar(gen(v,_SEQ__VECT),contextptr);
+  }
+  static const char _tabsign_s []="tabsign";
+  static define_unary_function_eval (__tabsign,&_tabsign,_tabsign_s);
+  define_unary_function_ptr5( at_tabsign ,alias_at_tabsign,&__tabsign,0,true);
 
   gen _printf(const gen & args,GIAC_CONTEXT){
     if (args.type!=_VECT || args.subtype!=_SEQ__VECT){
@@ -8524,7 +8572,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   gen _set_pixel(const gen & a_,GIAC_CONTEXT){
     gen a(a_);
     if (a.type==_STRNG && a.subtype==-1) return  a;
-#ifdef GIAC_HAS_STO_38
+#if defined GIAC_HAS_STO_38 || defined NUMWORKS
     if (a.type!=_VECT || a._VECTptr->size()<2)
       return gentypeerr(contextptr);
     const vecteur & v=*a._VECTptr;
@@ -8537,14 +8585,18 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       if (y.type==_DOUBLE_)
 	y=int(y._DOUBLE_val+.5);
       if (x.type==_INT_ &&  y.type==_INT_ ){
+#ifdef NUMWORKS
+	numworks_giac_set_pixel(x.val,y.val,vs==2?0:v[2].val);
+#else
 	aspen_set_pixel(x.val,y.val,vs==2?0:v[2].val);
+#endif // NUMWORKS
 	return 1;
       }
     }
     return gensizeerr(contextptr);
     //static gen PIXEL(identificateur("PIXON_P"));
     //return _of(makesequence(PIXEL,a_),contextptr);
-#else
+#else // HP && NUMWORKS
     if (a.type==_VECT && a._VECTptr->empty())
       return pixel_v();
     if (is_integral(a)){
@@ -8567,14 +8619,23 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
     }
     return pixel_v();
-#endif
+#endif // else HP && NUMWORKS
   }
+#ifdef NUMWORKS
+  void set_pixel(int x,int y,int c,GIAC_CONTEXT){
+    numworks_giac_set_pixel(x,y,c);
+  }
+  void set_pixel(double x,double y,int c,GIAC_CONTEXT){
+    numworks_giac_set_pixel(int(x+.5),int(y+.5),c);
+  }
+#else  
   void set_pixel(int x,int y,int c,GIAC_CONTEXT){
     _set_pixel(makesequence(x,y,c),contextptr);
   }
   void set_pixel(double x,double y,int c,GIAC_CONTEXT){
     _set_pixel(makesequence(int(x+.5),int(y+.5),c),contextptr);
   }
+#endif
   static const char _set_pixel_s []="set_pixel";
   static define_unary_function_eval (__set_pixel,&_set_pixel,_set_pixel_s);
   define_unary_function_ptr5( at_set_pixel ,alias_at_set_pixel,&__set_pixel,0,true);
@@ -8785,10 +8846,14 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     if (x<0){ width+=x; x=0;}
     if (y<0){ height+=y; y=0;}
     if (width<0 || height<0) return;
+#ifdef NUMWORKS
+    numworks_giac_fill_rect(x,y,width,height,color);
+#else
     for (int j=0;j<=height;++j){
       for (int i=0;i<width;++i)
 	set_pixel(x+i,y+j,color,contextptr);
     }
+#endif
   }
 
   void draw_circle(int xc,int yc,int r,int color,bool q1,bool q2,bool q3,bool q4,GIAC_CONTEXT){
@@ -8862,7 +8927,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   void draw_arc(int xc,int yc,int rx,int ry,int color,double t1, double t2,bool q1,bool q2,bool q3,bool q4,GIAC_CONTEXT){
     double x=0,y=rx,delta=0;
     double ryx=double(ry)/rx;
-    // *logptr(contextptr) << "t1,t2:" << t1 << "," << t2 << ",q1234" << q1 << "," << q2 << "," << q3 << "," << q4 << endl;
+    // *logptr(contextptr) << "t1,t2:" << t1 << "," << t2 << ",q1234" << q1 << "," << q2 << "," << q3 << "," << q4 << '\n';
     while (x<=y){
       double xeff=x*ryx,yeff=y*ryx;
       if (q4){
@@ -8904,7 +8969,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     // if theta1 is almost pi/2 mod pi, t1 might be wrong because of rounding
     if (std::fabs(theta1-(theta-M_PI))<1e-6 && t1>0) 
 	t1=-1e307;
-    //*logptr(contextptr) << "thetas:" << theta1 << "," << theta << "," << theta2 << ", n " << n << ", t:" << t1 << "," << t2 << endl;
+    //*logptr(contextptr) << "thetas:" << theta1 << "," << theta << "," << theta2 << ", n " << n << ", t:" << t1 << "," << t2 << '\n';
     if (theta2>theta){
       if (theta2>=theta+M_PI){
 	if (n%2==0){ // -pi/2<theta1<pi/2<3*pi/2<theta2
@@ -9094,22 +9159,27 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #ifdef GIAC_HAS_STO_38
     static gen PIXEL(identificateur("TEXTOUT_P"));
     return _of(makesequence(PIXEL,a_),contextptr);
-#else
+#else // HP
     gen a(a_);
     if (a.type==_STRNG && a.subtype==-1) return  a;
     if (a.type!=_VECT)
       return gensizeerr(contextptr);
     vecteur v(*a._VECTptr);
-    if (v.size()!=3 && v.size()!=4)
+    if (v.size()<3 || v.size()>4)
       return gendimerr(contextptr);
     if (v[0].type!=_STRNG || !is_integral(v[1]) || !is_integral(v[2]))
       return gensizeerr(contextptr);
     gen s=v[0];
+#ifdef NUMWORKS
+    numworks_giac_draw_string(v[1].val,v[2].val,v.size()>3?v[3].val:_BLACK,v.size()>4?v[4].val:_WHITE,s._STRNGptr->c_str());
+    return 1;
+#else
     v.erase(v.begin());
     v.push_back(s);
     pixel_v()._VECTptr->push_back(_pixon(gen(v,_SEQ__VECT),contextptr));
     return pixel_v();
-#endif
+#endif // NUMWORKS
+#endif // HP
   }
   static const char _draw_string_s []="draw_string";
   static define_unary_function_eval (__draw_string,&_draw_string,_draw_string_s);
@@ -9119,14 +9189,22 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #ifdef GIAC_HAS_STO_38
     static gen PIXEL(identificateur("GETPIX_P"));
     return _of(makesequence(PIXEL,a_),contextptr);
-#else
+#else // GIAC_HAS_STO_38
     gen a(a_);
     if (a.type==_STRNG && a.subtype==-1) return  a;
     if (a.type!=_VECT || a._VECTptr->size()!=2)
       return gensizeerr(contextptr);
     gen x=a._VECTptr->front(),y=a._VECTptr->back();
-    if (x.type==_INT_ && x.val>=0 && x.val<pixel_cols && y.type==_INT_ && y.val>=0 && y.val<pixel_lines)
+    if (x.type==_INT_ && x.val>=0 && x.val<pixel_cols && y.type==_INT_ && y.val>=0 && y.val<pixel_lines){
+#ifdef NUMWORKS
+      return numworks_giac_get_pixel(x.val,y.val);
+#else      
       return pixel_buffer[y.val][x.val];
+#endif
+    }
+#ifdef NUMWORKS
+    return undef;
+#else // NUMWORKS
     const vecteur v= *pixel_v()._VECTptr;
     for (size_t i=0;i<v.size();++i){
       const gen & vi_=v[i];
@@ -9152,7 +9230,8 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       }
     }
     return int(FL_WHITE);
-#endif
+#endif // NUMWORKS
+#endif // GIAC_HAS_STO_38
   }
   static const char _get_pixel_s []="get_pixel";
   static define_unary_function_eval (__get_pixel,&_get_pixel,_get_pixel_s);
@@ -9201,19 +9280,58 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static define_unary_function_eval (__rgb,&_rgb,_rgb_s);
   define_unary_function_ptr5( at_rgb ,alias_at_rgb,&__rgb,0,true);
 
+  gen prediction(const gen & args,int type,GIAC_CONTEXT){
+    if (args.type!=_VECT || args._VECTptr->size()!=2)
+      return gensizeerr(contextptr);
+    const vecteur & v=*args._VECTptr;
+    gen p=v[0],n=v[1],b=inv(sqrt(n,contextptr),contextptr);
+    if (type==0 || type==2){
+      if (type==0 &&(is_strictly_greater(25,n,contextptr) || is_strictly_greater(.2,p,contextptr) || is_strictly_greater(p,.8,contextptr)))
+	return gensizeerr("Unable to predict");
+      return makevecteur(max(p-b,0,contextptr),min(p+b,1,contextptr));
+    }
+    if (type==1){
+      b=1.96*sqrt(p*(1-p),contextptr)*b;
+      if (is_strictly_greater(30,n,contextptr) || is_greater(5,n*p,contextptr) || is_greater(5,n*(1-p),contextptr))
+	return gensizeerr("Unable to predict");
+      return makevecteur(max(p-b,0,contextptr),min(p+b,1,contextptr));
+    }
+    return undef;
+  }
+  gen _prediction(const gen & args,GIAC_CONTEXT){
+    return prediction(args,0,contextptr);
+  }
+  static const char _prediction_s []="prediction";
+  static define_unary_function_eval (__prediction,&_prediction,_prediction_s);
+  define_unary_function_ptr5( at_prediction ,alias_at_prediction,&__prediction,0,true);
+
+  gen _confidence(const gen & args,GIAC_CONTEXT){
+    return prediction(args,2,contextptr);
+  }
+  static const char _confidence_s []="confidence";
+  static define_unary_function_eval (__confidence,&_confidence,_confidence_s);
+  define_unary_function_ptr5( at_confidence ,alias_at_confidence,&__confidence,0,true);
+
+  gen _prediction95(const gen & args,GIAC_CONTEXT){
+    return prediction(args,1,contextptr);
+  }
+  static const char _prediction95_s []="prediction95";
+  static define_unary_function_eval (__prediction95,&_prediction95,_prediction95_s);
+  define_unary_function_ptr5( at_prediction95 ,alias_at_prediction95,&__prediction95,0,true);
+
 #ifdef EMCC
 #ifdef EMCC_FETCH
   // with emscripten 1.37.28, it does not work
 #include <emscripten/fetch.h>
 
   string fetch(const string & url){
-    COUT << "fetch " << url << endl;
+    COUT << "fetch " << url << '\n';
     emscripten_fetch_attr_t attr;
     emscripten_fetch_attr_init(&attr);
     strcpy(attr.requestMethod, "GET");
     attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY | EMSCRIPTEN_FETCH_SYNCHRONOUS;
     emscripten_fetch_t *fetch = emscripten_fetch(&attr, url.c_str()); // Blocks here until the operation is complete.
-    COUT << "status, bytes: " << fetch->status << "," << fetch->numBytes << endl;
+    COUT << "status, bytes: " << fetch->status << "," << fetch->numBytes << '\n';
     if (fetch->status == 200) {
       string fetch_string="";
       for (int i=0;i< fetch->numBytes;++i)
@@ -9226,7 +9344,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 #include <emscripten/emscripten.h>
 
   string fetch(const string & url){
-    COUT << "wget_data " << url << endl;
+    COUT << "wget_data " << url << '\n';
     char * buf;
 #if 0 // does not work emscripten 1.34/37
     int data_size,data_error;
@@ -9234,7 +9352,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
     if (data_size>0){
       buf[data_size-1]=0;
       string s(buf);
-      COUT << "buffer " << s << endl;
+      COUT << "buffer " << s << '\n';
       free(buf);
       return s;
     }
@@ -9277,7 +9395,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   //#include <curl/curlbuild.h>
   size_t write_data(void *ptr, size_t size, size_t nmemb, void *stream) {
     string data((const char*) ptr, (size_t) size * nmemb);
-    *((stringstream*) stream) << data << endl;
+    *((stringstream*) stream) << data << '\n';
     return size * nmemb;
   }
   string fetch(const string & url){

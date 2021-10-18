@@ -29,7 +29,7 @@ namespace giac {
   extern bool user_screen; 
   extern int user_screen_io_x,user_screen_io_y,user_screen_fontsize;
   extern const int rand_max2; // replace RAND_MAX if giac_rand(contextptr) is used
-  extern bool warn_equal_in_prog;
+  extern bool warn_equal_in_prog,warn_symb_program_sto;
 
   struct user_function;
   struct module_info {
@@ -76,6 +76,8 @@ namespace giac {
   gen quote_program(const gen & args,GIAC_CONTEXT);
   gen _program(const gen & args,const gen & name,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_program ;
+  // parser helper
+  gen symb_test_equal(const gen & a,const gen & op,const gen & b);
   void adjust_sst_at(const gen & name,GIAC_CONTEXT); //used in symbolic.cc by nr_eval
   void program_leave(const gen & save_debug_info,bool save_sst_mode,debug_struct * dbgptr);
 
@@ -624,6 +626,7 @@ namespace giac {
   vecteur mksa_convert(const gen & g,GIAC_CONTEXT);
   gen _ufactor(const gen & g,GIAC_CONTEXT);
   gen _usimplify(const gen & g,GIAC_CONTEXT);
+  extern const unary_function_ptr * const  at_regrouper;  
 
   extern const mksa_unit __m_unit;
   extern const mksa_unit __kg_unit;
@@ -1010,6 +1013,7 @@ namespace giac {
   gen _struct_dot(const gen & g,GIAC_CONTEXT);
   // replace := by = in builtin commands (for Python compatible mode)
   gen denest_sto(const gen & g);
+  gen numworks_nary_workaround(const gen & g); // replace [[a,b,...]] by a,b,...
 
   extern const unary_function_ptr * const  at_index ;
   gen _index(const gen & args,GIAC_CONTEXT);

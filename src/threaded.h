@@ -93,8 +93,8 @@ namespace giac {
   gen _debug_infolevel(const gen & g0,const context *);
   gen _background(const gen & g,const context *);
 
-  // #define hashgcd_U unsigned int
-  typedef unsigned int hashgcd_U; // replace with ulonglong for large index capacity on 32 bit CPU
+  typedef unsigned long long hashgcd_U; 
+  //typedef unsigned int hashgcd_U; // replace with ulonglong for large index capacity on 32 bit CPU
 
 #ifdef HAVE_GMPXX_H
 
@@ -108,9 +108,9 @@ namespace giac {
 
 
   inline void type_operator_times(const mpz_class & a,const mpz_class & b,mpz_class & c){
-    // cerr << gen(c) << " = " << gen(a) << "*" << gen(b) << std::endl;
+    // cerr << gen(c) << " = " << gen(a) << "*" << gen(b) << '\n';
     mpz_mul(c.get_mpz_t(),a.get_mpz_t(),b.get_mpz_t());
-    // cerr << gen(c) << std::endl;
+    // cerr << gen(c) << '\n';
   }
 
   inline void type_operator_reduce(const mpz_class & a,const mpz_class & b,mpz_class & c,int reduce){
@@ -121,10 +121,10 @@ namespace giac {
   }
 
   inline void type_operator_plus_times(const mpz_class & a,const mpz_class & b,mpz_class & c){
-    // cerr << gen(c) << " += " << gen(a) << "*" << gen(b) << std::endl;
+    // cerr << gen(c) << " += " << gen(a) << "*" << gen(b) << '\n';
     // c+=a*b
     mpz_addmul(c.get_mpz_t(),a.get_mpz_t(),b.get_mpz_t());
-    // cerr << gen(c) << std::endl;
+    // cerr << gen(c) << '\n';
   }
 
   inline void type_operator_plus_times_reduce(const mpz_class & a,const mpz_class & b,mpz_class & c,int reduce){
@@ -336,6 +336,16 @@ namespace giac {
   }
   typedef T_unsigned<int,unsigned> int_unsigned;
 
+#ifdef NUMWORKS
+  template<class T,class U>
+  stdostream & operator << (stdostream & os, const std::vector< T_unsigned<T,U> > & v){  
+    typename std::vector< T_unsigned<T,U> >::const_iterator it=v.begin(),itend=v.end();
+    for (;it!=itend;++it){
+      os << "(" << it->g << "," << it->u << "),";
+    }
+    return os << '\n';
+  }
+#endif
 #ifdef NSPIRE    
   template<class T,class U,class I>
   nio::ios_base<I> & operator << (nio::ios_base<I> & os, const std::vector< T_unsigned<T,U> > & v){  
@@ -343,7 +353,7 @@ namespace giac {
     for (;it!=itend;++it){
       os << "(" << it->g << "," << it->u << "),";
     }
-    return os << std::endl;
+    return os << '\n';
   }
 #else
   template<class T,class U>
@@ -352,7 +362,7 @@ namespace giac {
     for (;it!=itend;++it){
       os << "(" << it->g << "," << it->u << "),";
     }
-    return os << std::endl;
+    return os << '\n';
   }
 #endif
 
@@ -445,6 +455,15 @@ namespace giac {
 	std::vector<T> & v = * (std::vector<T> *) &taille;
 	return v[pos];
       }
+    }
+    size_t size() const {
+      return end()-begin();
+    }
+    size_t capacity() const {
+      if (taille % 2)
+	return 0;
+      std::vector<T> & v = * (std::vector<T> *) &taille;
+      return v.capacity();
     }
     typename std::vector<T>::const_iterator begin() const {
       if (taille %2)
@@ -715,6 +734,18 @@ namespace giac {
 	return typename std::vector<T>::const_iterator(mytabptr->_tab+mytabptr->_size);
       }
     }
+    size_t size() const {
+      if (taille % 2)
+	return taille/2;
+      mytab<T> * mytabptr = (mytab<T> *) this;
+      return mytabptr->_size;
+    }
+    size_t capacity() const {
+      if (taille % 2)
+	return 6;
+      mytab<T> * mytabptr = (mytab<T> *) this;
+      return mytabptr->_capacity;
+    }
     typename std::vector<T>::iterator end() {
       if (taille %2)
 	return typename std::vector<T>::iterator(&v0+taille/2);
@@ -817,6 +848,53 @@ namespace giac {
       v.push_back(*it1);
     for (;it2!=it2end;++it2)
       v.push_back(*it2);
+  }
+
+  // v:=v1+x*v2
+  template<class T,class U,class R>
+  void smalladdmult(const std::vector< T_unsigned<T,U> > & v1,const T & x,const std::vector< T_unsigned<T,U> > & v2,std::vector< T_unsigned<T,U> > & v,const R & reduce){
+    if (x==0){
+      if (&v!=&v1) 
+	v=v1;
+      return;
+    }
+    if (&v1==&v || &v2==&v){
+      std::vector< T_unsigned<T,U> > tmp;
+      smalladdmult(v1,x,v2,tmp,reduce);
+      std::swap< std::vector< T_unsigned<T,U> > >(v,tmp);
+      return;
+    }
+    typename std::vector< T_unsigned<T,U> >::const_iterator it1=v1.begin(),it1end=v1.end(),it2=v2.begin(),it2end=v2.end();
+    T g;
+    v.clear();
+    v.reserve((it1end-it1)+(it2end-it2)); // worst case
+    for (;it1!=it1end && it2!=it2end;){
+      if (it1->u==it2->u){
+	g=it1->g;
+	type_operator_plus_times_reduce(x,it2->g,g,reduce);
+	if (!is_zero(g))
+	  v.push_back(T_unsigned<T,U>(g,it1->u));
+	++it1;
+	++it2;
+      }
+      else {
+	if (it1->u>it2->u){
+	  v.push_back(*it1);
+	  ++it1;
+	}
+	else {
+	  type_operator_reduce(x,it2->g,g,reduce);
+	  v.push_back(T_unsigned<T,U>(g,it2->u));
+	  ++it2;
+	}
+      }
+    }
+    for (;it1!=it1end;++it1)
+      v.push_back(*it1);
+    for (;it2!=it2end;++it2){
+      type_operator_reduce(x,it2->g,g,reduce);
+      v.push_back(T_unsigned<T,U>(g,it2->u));
+    }
   }
 
   template<class T,class U>
@@ -1088,11 +1166,11 @@ namespace giac {
       smallhorner<T,U>(v1,alpha,vars,tmp2,reduce);
       smallhorner<T,U>(v2,alpha,vars,tmp3,reduce);
       smallmulpoly_interpolate<T,U>(tmp2,tmp3,tab[alpha],vars1,vdeg,reduce);
-      CERR << alpha << ":" << tab[alpha] << std::endl;
+      CERR << alpha << ":" << tab[alpha] << '\n';
     }
     // divided differences
     for (int k=1;k<s;++k){
-      CERR << k << std::endl;
+      CERR << k << '\n';
       for (int j=s-1;j>=k;--j){
 	smallsub(tab[j],tab[j-1],tmp2,reduce);
 	smallmult(invmod(k,reduce),tmp2,tab[j],reduce);
@@ -1126,7 +1204,7 @@ namespace giac {
       smallhorner<T,U>(v1,alpha,vars,tmp2);
       smallhorner<T,U>(v2,alpha,vars,tmp3);
       smallmulpoly_interpolate<T,U>(tmp2,tmp3,tab[alpha],vars1,vdeg);
-      // CERR << tab[alpha] << std::endl;
+      // CERR << tab[alpha] << '\n';
     }
     // divided differences
     for (int k=1;k<s;++k){
@@ -1246,6 +1324,7 @@ namespace giac {
     if (v2.empty()){ 
       v.clear(); return; 
     }
+    // if (&v2==&v && v2.size()==1 && v2.front().u==0 && is_one(v2.front().g)) return;
     if (&v1==&v || &v2==&v){
       std::vector< T_unsigned<T,U> > tmp;
       smallmult(v1,v2,tmp,reduce,possible_size);
@@ -1262,7 +1341,7 @@ namespace giac {
     // compare u12 and v1v2*ln(v1v2)
     if ( heap_mult>=0 && possible_size && u12<512e6/sizeof(T) && std::log(double(std::min(v1s,v2s)))/std::log(2.0)>1+2*u12/v1v2){
       if (debug_infolevel>20)
-	CERR << "array multiplication, v1 size " << v1s << " v2 size " << v2s << " u1+u2 " << u12 << std::endl;
+	CERR << "array multiplication, v1 size " << v1s << " v2 size " << v2s << " u1+u2 " << u12 << '\n';
       // array multiplication
       T * prod = new T[unsigned(u12+1)];
       for (u=0;u<=u12;++u)
@@ -1313,7 +1392,7 @@ namespace giac {
 	CERR << "heap";
       else
 	CERR << heap_mult;
-      CERR<< " multiplication" << std::endl;
+      CERR<< " multiplication" << '\n';
     }
     if (heap_mult<0 || use_heap){
       if (v1s>v2s){
@@ -1326,6 +1405,10 @@ namespace giac {
 	// using heap of chains
 	// std::vector< vector_size64< std::pair<unsigned,unsigned> > > vindex(v1s);
 	std::vector< std::vector< std::pair<unsigned,unsigned> > > vindex(v1s);
+#if 0
+	for (int i=0;i<v1s;++i)
+	  vindex[i].reserve(32);
+#endif
 #ifdef HEAP_STATS
 	double count1=0,count2=0,total=double(v1s)*v2s;
 #endif
@@ -1333,7 +1416,7 @@ namespace giac {
 	U_unsigned<U> * heap0, *heapbeg=heap,* heapend=heap+v1s;
 	for (it1=it1beg,heap0=heap;heap0!=heapend;++heap0,++it1){
 	  // vindex[it1-it1beg]=vector_size64< std::pair<unsigned,unsigned> >(1,std::pair<unsigned,unsigned>(it1-it1beg,0));
-	  vindex[it1-it1beg]=std::vector< std::pair<unsigned,unsigned> >(1,std::pair<unsigned,unsigned>(unsigned(it1-it1beg),0));
+	  vindex[it1-it1beg].push_back(std::pair<unsigned,unsigned>(unsigned(it1-it1beg),0));//vindex[it1-it1beg]=std::vector< std::pair<unsigned,unsigned> >(1,std::pair<unsigned,unsigned>(unsigned(it1-it1beg),0));
 	  *heap0=U_unsigned<U>(it1->u+u2,unsigned(it1-it1beg));
 	}
 	// vector_size64< std::pair<unsigned,unsigned> > nouveau;
@@ -1424,7 +1507,11 @@ namespace giac {
 	} // end for heapbeg!=heapend
 #ifdef HEAP_STATS
 	if (debug_infolevel>20)
-	  CERR << CLOCK() << " heap_mult, %age of chains" << count1/total << " " << count2/total << " " << std::endl;
+	  CERR << CLOCK() << " heap_mult, %age of chains" << count1/total << " " << count2/total << " " << '\n';
+#endif
+#if 0
+	for (int i=0;i<v1s;++i)
+	  CERR << vindex[i].size() << "," << vindex[i].capacity() << '\n';
 #endif
 	delete [] heap;
 	return;
@@ -1571,14 +1658,14 @@ namespace giac {
 #ifdef HASH_MAP_NAMESPACE
       typedef HASH_MAP_NAMESPACE::hash_map< U,T,hash_function_unsigned_object > hash_prod ;
       hash_prod produit(possible_size); // try to avoid reallocation
-      // cout << "hash " << CLOCK() << std::endl;
+      // cout << "hash " << CLOCK() << '\n';
 #else
 #ifdef USTL
       typedef ustl::map<U,T> hash_prod;
 #else
       typedef std::map<U,T> hash_prod;
 #endif
-      // cout << "small map" << std::endl;
+      // cout << "small map" << '\n';
       hash_prod produit; 
 #endif    
       typename hash_prod::iterator prod_it,prod_itend;
@@ -1619,12 +1706,21 @@ namespace giac {
 	  v.push_back(gu);
 	}
       }    
-      // CERR << "smallmult sort " << CLOCK() << std::endl;
+      // CERR << "smallmult sort " << CLOCK() << '\n';
       sort(v.begin(),v.end());
-      // CERR << "smallmult sort end " << CLOCK() << std::endl;
+      // CERR << "smallmult sort end " << CLOCK() << '\n';
     } // endif // HEAP_MULT
   }
 
+
+  template<class T,class U,class V>
+  struct triplet {
+    T first;
+    U second;
+    V third;
+    triplet (const T & f,const U & s,const V & t):first(f),second(s),third(t){};
+    triplet():first(0),second(0),third(0){};
+  };
 
   template<class T,class U,class R>
   struct threadmult_t {
@@ -1638,8 +1734,8 @@ namespace giac {
     int status;
     bool use_heap;
     T * prod;
-    std::vector< vector_size64< std::pair<unsigned,unsigned> > > * vindexptr;
-    std::vector< vector_size32< std::pair<unsigned short,unsigned short> > > * vsmallindexptr;
+    std::vector< std::vector< triplet<unsigned,unsigned,int> > > * vindexptr;
+    std::vector< std::vector< triplet<unsigned short,unsigned short,int> > > * vsmallindexptr;
     U_unsigned<U> * heapptr;
   };
 
@@ -1757,11 +1853,12 @@ namespace giac {
 	){
       // using heap of chains
       // int v1s=it1end-it1,v2s=it2end-it2;
-      std::vector< vector_size64< std::pair<unsigned,unsigned> > > * vindexptr=argptr->vindexptr;
-      std::vector< vector_size32< std::pair<unsigned short,unsigned short> > > * vsmallindexptr=argptr->vsmallindexptr;
+      std::vector< std::vector< triplet<unsigned,unsigned,int> > > * vindexptr=argptr->vindexptr;
+      std::vector< std::vector< triplet<unsigned short,unsigned short,int> > > * vsmallindexptr=argptr->vsmallindexptr;
       bool smallindex=vsmallindexptr;
       U_unsigned<U> * heap = argptr->heapptr ; // pointers to v2 monomials
       U_unsigned<U> * heap0, *heapbeg=heap,* heapend;
+#if 0
       // initial fill of the heap
       int count=0;
       for (it1=it1beg,heap0=heap;it1!=it1end;++it1){
@@ -1781,11 +1878,11 @@ namespace giac {
 	  continue;
 	if (smallindex){
 	  (*vsmallindexptr)[count].clear();
-	  (*vsmallindexptr)[count].push_back(std::pair<unsigned short,unsigned short>(it1-it1beg,0));
+	  (*vsmallindexptr)[count].push_back(triplet<unsigned short,unsigned short,int>(it1-it1beg,0,d2));
 	}
 	else {
 	  (*vindexptr)[count].clear();
-	  (*vindexptr)[count].push_back(std::pair<unsigned,unsigned>(it1-it1beg,0));
+	  (*vindexptr)[count].push_back(triplet<unsigned,unsigned,int>(it1-it1beg,0,d2));
 	}
 	*heap0=U_unsigned<U>(u1+u2,count);
 	++heap0;
@@ -1793,8 +1890,70 @@ namespace giac {
       }
       heapend=heap0;
       std::make_heap(heapbeg,heapend);
+#else
+      // initial fill of the heap
+      int count=0;
+      heap0=heap;
+      d1=it1->u/degdiv;
+      int v1ptrpos=0;
+      if (d1>d)
+	v1ptrpos=d1-d;
+      it1=(*argptr->v1ptrs)[v1ptrpos];
+      for (;it1!=it1end;){
+	u1=it1->u;
+	d1=u1/degdiv;
+	if (d1>d){ // first partial degree too large, should not happen
+	  while ((*argptr->v1ptrs)[v1ptrpos]<=it1)
+	    ++v1ptrpos;
+	  it1=(*argptr->v1ptrs)[v1ptrpos];	  
+	  continue;
+	}
+	d2=v2deg-(d-d1);
+	if (d2<0){ // first partial degree too small
+	  break;
+	  //++it1; continue;
+	}
+	it2=(*v2ptrs)[d2]; // first monomial of second poly having a compatible partial degree
+	it2end=(*v2ptrs)[d2+1];
+	if (it2==it2end){
+	  while ((*argptr->v1ptrs)[v1ptrpos]<=it1)
+	    ++v1ptrpos;
+	  it1=(*argptr->v1ptrs)[v1ptrpos];	  
+	  continue;
+	}
+	u2=it2->u;
+	if (int(u2/degdiv+d1)!=d){
+	  while ((*argptr->v1ptrs)[v1ptrpos]<=it1)
+	    ++v1ptrpos;
+	  it1=(*argptr->v1ptrs)[v1ptrpos];	  
+	  continue;
+	}
+	for (;it1!=it1end;++it1){
+	  u1=it1->u;
+	  if (u1<longlong(d1)*degdiv){
+	    while ((*argptr->v1ptrs)[v1ptrpos]<=it1)
+	      ++v1ptrpos;
+	    //CERR << it1->u << " | " << (*argptr->v1ptrs)[v1ptrpos]->u  << '\n';
+	    break;
+	  }
+	  if (smallindex){
+	    (*vsmallindexptr)[count].clear();
+	    (*vsmallindexptr)[count].push_back(triplet<unsigned short,unsigned short,int>(it1-it1beg,0,d2));
+	  }
+	  else {
+	    (*vindexptr)[count].clear();
+	    (*vindexptr)[count].push_back(triplet<unsigned,unsigned,int>(it1-it1beg,0,d2));
+	  }
+	  *heap0=U_unsigned<U>(u1+u2,count);
+	  ++heap0;
+	  ++count;
+	}
+      } // end for (it1=it1beg...)
+      heapend=heap0;
+      std::make_heap(heapbeg,heapend);
+#endif
       if (smallindex){
-	vector_size32< std::pair<unsigned short,unsigned short> > nouveau;
+	std::vector< triplet<unsigned short,unsigned short,int> > nouveau;
 	for (;heapbeg!=heapend;){
 	  U topu=heapbeg->u;
 	  if (!v.empty() && v.back().u==heapbeg->u){
@@ -1803,8 +1962,8 @@ namespace giac {
 	  }
 	  else
 	    g=T(0);
-	  std::vector< std::pair<unsigned short,unsigned short> >::iterator it,itend;
-	  vector_size32< std::pair<unsigned short,unsigned short> > * vptr;
+	  std::vector< triplet<unsigned short,unsigned short,int> >::iterator it,itend;
+	  std::vector< triplet<unsigned short,unsigned short,int> > * vptr;
 	  nouveau.clear();
 	  while (heapend!=heapbeg && topu==heapbeg->u){
 	    // add all elements of the top chain	
@@ -1812,17 +1971,12 @@ namespace giac {
 	    it=vptr->begin();
 	    itend=vptr->end();
 	    for (;it!=itend;++it){
-	      it1=it1beg+it->first;
-	      u1=it1->u;
-	      d1=u1/degdiv;
-	      d2=v2deg-(d-d1);
-	      it2beg=(*v2ptrs)[d2];
-	      it2=it2beg+it->second;
-	      type_operator_plus_times_reduce(it1->g,it2->g,g,reduce);
+	      it2beg=(*v2ptrs)[it->third];
+	      type_operator_plus_times_reduce((it1beg+it->first)->g,(it2beg+it->second)->g,g,reduce);
 	      // increment 2nd poly index of the elements of the top chain
 	      ++it->second;
 	      // check if it is still with a compatible partial degree
-	      if (it->second+it2beg-(*v2ptrs)[d2+1]<0)
+	      if (it->second<(*v2ptrs)[it->third+1]-it2beg)
 		nouveau.push_back(*it);
 	    }
 #ifdef USTL
@@ -1840,12 +1994,7 @@ namespace giac {
 	  itend=nouveau.end();
 	  U prevu=0; int previndex=-1;
 	  for (;it!=itend;++it){
-	    it1=it1beg+it->first;
-	    u1=it1->u;
-	    d1=u1/degdiv;
-	    d2=v2deg-(d-d1);
-	    it2beg=(*v2ptrs)[d2];
-	    u=u1+(it2beg+it->second)->u;
+	    u=(it1beg+it->first)->u+((*v2ptrs)[it->third]+it->second)->u;
 	    if (u==prevu && previndex>=0){
 	      vptr=&(*vsmallindexptr)[previndex];
 	      vptr->push_back(*it);
@@ -1890,7 +2039,7 @@ namespace giac {
 	} // end for heapbeg!=heapend
       } // end smallindex
       else {
-	vector_size64< std::pair<unsigned,unsigned> > nouveau;
+	std::vector< triplet<unsigned,unsigned,int> > nouveau;
 	for (;heapbeg!=heapend;){
 	  U topu=heapbeg->u;
 	  if (!v.empty() && v.back().u==heapbeg->u){
@@ -1899,8 +2048,8 @@ namespace giac {
 	  }
 	  else
 	    g=T(0);
-	  std::vector< std::pair<unsigned,unsigned> >::iterator it,itend;
-	  vector_size64< std::pair<unsigned,unsigned> > * vptr;
+	  std::vector< triplet<unsigned,unsigned,int> >::iterator it,itend;
+	  std::vector< triplet<unsigned,unsigned,int> > * vptr;
 	  nouveau.clear();
 	  while (heapend!=heapbeg && topu==heapbeg->u){
 	    // add all elements of the top chain	
@@ -1908,17 +2057,12 @@ namespace giac {
 	    it=vptr->begin();
 	    itend=vptr->end();
 	    for (;it!=itend;++it){
-	      it1=it1beg+it->first;
-	      u1=it1->u;
-	      d1=u1/degdiv;
-	      d2=v2deg-(d-d1);
-	      it2beg=(*v2ptrs)[d2];
-	      it2=it2beg+it->second;
-	      type_operator_plus_times_reduce(it1->g,it2->g,g,reduce);
+	      it2beg=(*v2ptrs)[it->third];
+	      type_operator_plus_times_reduce((it1beg+it->first)->g,(it2beg+it->second)->g,g,reduce);
 	      // increment 2nd poly index of the elements of the top chain
 	      ++it->second;
 	      // check if it is still with a compatible partial degree
-	      if (it->second+it2beg-(*v2ptrs)[d2+1]<0)
+	      if (it->second<(*v2ptrs)[it->third+1]-it2beg)
 		nouveau.push_back(*it);
 	    }
 #ifdef USTL
@@ -1936,12 +2080,7 @@ namespace giac {
 	  itend=nouveau.end();
 	  U prevu=0; int previndex=-1;
 	  for (;it!=itend;++it){
-	    it1=it1beg+it->first;
-	    u1=it1->u;
-	    d1=u1/degdiv;
-	    d2=v2deg-(d-d1);
-	    it2beg=(*v2ptrs)[d2];
-	    u=u1+(it2beg+it->second)->u;
+	    u=(it1beg+it->first)->u+((*v2ptrs)[it->third]+it->second)->u;
 	    if (u==prevu && previndex>=0){
 	      vptr=&(*vindexptr)[previndex];
 	      vptr->push_back(*it);
@@ -1994,7 +2133,7 @@ namespace giac {
     hash_prod produit; // try to avoid reallocation
 #else
     typedef std::map<U,T> hash_prod;
-    // cout << "small map" << std::endl;
+    // cout << "small map" << '\n';
     hash_prod produit; 
 #endif    
     typename hash_prod::iterator prod_it,prod_itend;
@@ -2045,9 +2184,9 @@ namespace giac {
 	v.push_back(gu);
       }
     }    
-    // CERR << "do_threadmult end " << CLOCK() << std::endl;
+    // CERR << "do_threadmult end " << CLOCK() << '\n';
     sort(v.begin(),v.end());
-    // CERR << "do_threadmult sort end " << CLOCK() << std::endl;
+    // CERR << "do_threadmult sort end " << CLOCK() << '\n';
     argptr->clock = CLOCK() - argptr->clock;
     argptr->status = 2;
     return &v;
@@ -2077,7 +2216,7 @@ namespace giac {
     // compare u12 and v1v2*ln(v1v2)
     if ( heap_mult>=0 && possible_size>100 && u12<512e6/sizeof(T) && u12<v1v2*std::log(double(possible_size))*2){
       if (debug_infolevel>20)
-	CERR << "array multiplication, v1 size " << v1s << " v2 size " << v2s << " u1+u2 " << u12 << std::endl;
+	CERR << "array multiplication, v1 size " << v1s << " v2 size " << v2s << " u1+u2 " << u12 << '\n';
       // array multiplication
       prod = new T[u12+1];
       for (U u=0;u<=u12;++u)
@@ -2086,7 +2225,7 @@ namespace giac {
     // if array multiplication is faster, set prod
     bool use_heap = (heap_mult<0) || (heap_mult>0 && v1v2>heap_mult);
     if (!prod && use_heap 
-	&& nthreads<2 // ???
+	&& nthreads<2// nthreads>1 //  // 
 	) // multi-thread heap disabled because of locks by inserting in chains 
       return false;  
     if (debug_infolevel>20){
@@ -2095,7 +2234,7 @@ namespace giac {
 	CERR << "heap";
       else 
 	CERR << "hash";
-      CERR << " multiplication" << std::endl;
+      CERR << " multiplication" << '\n';
     }
     unsigned d2=v2.front().u/degdiv,deg1v=v1.front().u/degdiv+d2;
     int cur_deg=-1,prev_deg=d2;
@@ -2140,12 +2279,14 @@ namespace giac {
     int res=0;
     int i=deg1v;
     bool smallindex=(v1s<65535 && v2s<65535);
+    if (debug_infolevel>20)
+      CERR << CLOCK()*1e-6 << " product " << v1s << "*" << v2s << " smallindex " << smallindex << '\n';
     if (
 	// true || 
 	nthreads==1){
       U_unsigned<U> *heapptr=new U_unsigned<U>[v1si];
-      std::vector< vector_size64< std::pair<unsigned,unsigned> > >* vindexptr=smallindex?0:(new std::vector< vector_size64< std::pair<unsigned,unsigned> > >(v1si));
-      std::vector< vector_size32< std::pair<unsigned short,unsigned short> > >* vsmallindexptr=smallindex?(new std::vector< vector_size32< std::pair<unsigned short,unsigned short> > >(v1si)):0;
+      std::vector< std::vector< triplet<unsigned,unsigned,int> > >* vindexptr=smallindex?0:(new std::vector< std::vector< triplet<unsigned,unsigned,int> > >(v1si));
+      std::vector< std::vector< triplet<unsigned short,unsigned short,int> > >* vsmallindexptr=smallindex?(new std::vector< std::vector< triplet<unsigned short,unsigned short,int> > >(v1si)):0;
       for (;i>=0;--i){
 	arg[i].v1ptr=&v1;
 	arg[i].v1ptrs=&v1it;
@@ -2171,7 +2312,7 @@ namespace giac {
 	  arg[i].vsmallindexptr=0;
 	}
 	if (debug_infolevel>30)
-	  CERR << "Computing degree " << i << " " << CLOCK() << std::endl;
+	  CERR << "Computing degree " << i << " " << CLOCK() << '\n';
 	do_threadmult<T,U,R>(&arg[i]);
 	threads_time += arg[i].clock;
 	possible_size += arg[i].vptr->size();	
@@ -2179,8 +2320,33 @@ namespace giac {
       delete [] heapptr;
       if (vindexptr) delete vindexptr;
       if (vsmallindexptr) delete vsmallindexptr;
-    }
+    } // end nthreads==1
     else {
+#if 1
+      // FIXME find max possible size of heap and vindex/vsmallindex
+      // instead of v1si
+      unsigned d1=v1.begin()->u/degdiv;
+      size_t v1si_tab[deg1v+1];
+      for (int j=0;j<=deg1v;++j)
+	v1si_tab[j]=0;
+      for (int deg1=d1;deg1>=0;--deg1){
+	size_t nmonom= v1it[(d1-deg1)+1]-v1it[d1-deg1];
+	for (int deg2=d2;deg2>=0;--deg2){
+	  if (v2it[d2-deg2+1]-v2it[d2-deg2])
+	    v1si_tab[deg1+deg2] += nmonom;
+	}
+      }
+      size_t v1si_eff=0;
+      for (int j=0;j<=deg1v;++j){
+	if (v1si_eff<v1si_tab[j])
+	  v1si_eff=v1si_tab[j];
+      }
+      // end v1si_eff size determination
+      if (debug_infolevel>20)
+	CERR << "effective heap size " << v1si_eff << ", v1si=" << v1si << '\n';
+#else
+      size_t v1si_eff=v1si;
+#endif
       std::vector<int> in_progress;
       // create initials threads
       for (int j=0;i>=0 && j<nthreads;--i,++j){
@@ -2196,9 +2362,9 @@ namespace giac {
 	arg[i].prod=prod;
 	if (use_heap){
 	  arg[i].use_heap=use_heap;
-	  arg[i].heapptr=new U_unsigned<U>[v1si];
-	  arg[i].vindexptr=smallindex?0:(new std::vector< vector_size64< std::pair<unsigned,unsigned> > >(v1si));
-	  arg[i].vsmallindexptr=smallindex?(new std::vector< vector_size32< std::pair<unsigned short,unsigned short> > >(v1si)):0;
+	  arg[i].heapptr=new U_unsigned<U>[v1si_eff];
+	  arg[i].vindexptr=smallindex?0:(new std::vector< std::vector< triplet<unsigned,unsigned,int> > >(v1si_eff));
+	  arg[i].vsmallindexptr=smallindex?(new std::vector< std::vector< triplet<unsigned short,unsigned short,int> > >(v1si_eff)):0;
 	}
 	else {
 	  arg[i].use_heap=false;
@@ -2267,13 +2433,31 @@ namespace giac {
 	i=deg1v;
 	for (int j=0;i>=0 && j<nthreads;--i,++j){
 	  delete [] arg[i].heapptr;
-	  if (arg[i].vindexptr) delete arg[i].vindexptr;
-	  if (arg[i].vsmallindexptr) delete arg[i].vsmallindexptr;
+	  if (arg[i].vindexptr){
+	    if (debug_infolevel>21){
+	      CERR << "heap_mult vindex size/capacity for i=" << i << '\n';
+	      std::vector< std::vector< triplet<unsigned,unsigned,int> > > & v=*arg[i].vindexptr;
+	      for (int j=0;j<v.size();++j)
+		CERR << v[j].size() << " " << v[j].capacity() << '\n';
+	    }
+	    delete arg[i].vindexptr;
+	    arg[i].vindexptr=0;
+	  }
+	  if (arg[i].vsmallindexptr){ 
+	    if (debug_infolevel>21){
+	      CERR << "heap_mult vsmallindex size/capacity for i=" << i << '\n';	      
+	      std::vector< std::vector< triplet<unsigned short,unsigned short,int> > > & v=*arg[i].vsmallindexptr;
+	      for (int j=0;j<v.size();++j)
+		CERR << v[j].size() << " " << v[j].capacity() << '\n';
+	    }
+	    delete arg[i].vsmallindexptr;
+	    arg[i].vsmallindexptr=0;
+	  }
 	}
       }
     } // end else of if (nthreads==1)
-    if (debug_infolevel>30)
-      CERR << "Begin copy " << CLOCK() << std::endl;
+    if (debug_infolevel>20)
+      CERR << CLOCK()*1e-6 << "Begin copy " << '\n';
     // store to v
     if (prod){
       int n=0;
@@ -2321,8 +2505,8 @@ namespace giac {
       }
       */
     }
-    if (debug_infolevel>30)
-      CERR << "End copy " << CLOCK() << std::endl;
+    if (debug_infolevel>20)
+      CERR << CLOCK()*1e-6 << "End copy " << '\n';
     delete [] arg;
     return true;
   }
@@ -2439,7 +2623,7 @@ namespace giac {
   // returns 1 if ok, 2 if ok but remainder not computed, 0 or -1 otherwise
   template<class T,class U,class R>
   int hashdivrem(const std::vector< T_unsigned<T,U> > & a,const std::vector< T_unsigned<T,U> > & b,std::vector< T_unsigned<T,U> > & q,std::vector< T_unsigned<T,U> > & r,const std::vector<U> & vars,const R & reduce,double qmax,bool allowrational,int quo_only=0){
-    // CERR << "hashdivrem dim " << vars.size() << " clock " << CLOCK() << std::endl;
+    // CERR << "hashdivrem dim " << vars.size() << " clock " << CLOCK() << '\n';
     q.clear();
     r.clear();
     if (a.empty()){
@@ -2486,7 +2670,7 @@ namespace giac {
       }
       for (;cit!=citend;++cit)
 	r.push_back(*cit);
-      // CERR << "hashdivrem end dim " << vars.size() << " clock " << CLOCK() << std::endl;
+      // CERR << "hashdivrem end dim " << vars.size() << " clock " << CLOCK() << '\n';
       return 1;
     }
     unsigned as=unsigned(a.size()),bs=unsigned(b.size());
@@ -2499,7 +2683,7 @@ namespace giac {
 	&& heap_mult>=0 && a.front().u < 512e6/sizeof(T)){
       U umax=a.front().u,u;
       if (debug_infolevel>1)
-	CERR << CLOCK()*1e-6 << " array division, a size " << a.size() << " b size " << b.size() << " u " << umax << std::endl;
+	CERR << CLOCK()*1e-6 << " array division, a size " << a.size() << " b size " << b.size() << " u " << umax << '\n';
       // array division
       T * rem = new T[unsigned(umax+1)];
       for (u=0;u<=umax;++u)
@@ -2628,7 +2812,7 @@ namespace giac {
       unsigned chain=0,nochain=0,typeopreduce=0,nullq=0;
 #endif
       if (debug_infolevel>1)
-	CERR << CLOCK()*1e-6 << " heap division, a size " << a.size() << " b size " << b.size() << " vars " << vars << std::endl;
+	CERR << CLOCK()*1e-6 << " heap division, a size " << a.size() << " b size " << b.size() << " vars " << vars << '\n';
       // heap division:
       // ita an iterator on a, initial value a.begin()
       // a heap with the current state of q*b, initialized to empty heap
@@ -2860,11 +3044,11 @@ namespace giac {
       } // for (;;)
 #ifdef HEAP_STATS
       if (debug_infolevel)
-	CERR << "chain " << chain << ", nochain " << nochain << ", type_op_reduce " << typeopreduce << " null quotients" << nullq << std::endl;
+	CERR << "chain " << chain << ", nochain " << nochain << ", type_op_reduce " << typeopreduce << " null quotients" << nullq << '\n';
 #endif
       // r still empty
       if (debug_infolevel>2)
-	CERR << CLOCK()*1e-6 << " Finished computing quotient, size " << q.size() << std::endl ;
+	CERR << CLOCK()*1e-6 << " Finished computing quotient, size " << q.size() << '\n' ;
       if (quo_only==2 || quo_only==-2){
 	delete [] heap;
 	return 1;
@@ -2874,7 +3058,7 @@ namespace giac {
 	double qb=double(q.size())*b.size();
 	qb /= a.size();
 	if (debug_infolevel>1)
-	  CERR << CLOCK()*1e-6 << " qb=" << qb << std::endl;
+	  CERR << CLOCK()*1e-6 << " qb=" << qb << '\n';
 	if (qb>100){
 	  // the coefficients might be not optimal (mpz_class instead of int)
 	  if (hashdivrem_finish_later(a.front().g)){
@@ -2895,15 +3079,18 @@ namespace giac {
 	  convert(bcopy,vars,newvars);
 	  convert(qcopy,vars,newvars);
 	  if (debug_infolevel>1)
-	    CERR << CLOCK()*1e-6 << " compress monomials done" <<std::endl;
+	    CERR << CLOCK()*1e-6 << " compress monomials done" <<'\n';
 	  if (!threadmult(bcopy,qcopy,bq,newvars.front(),reduce,a.size()))
 	    smallmult(bcopy,qcopy,bq,reduce,as);
-	  smallsub(acopy,bq,r);
+	  if (!is_zero(reduce))
+	    smallsub(acopy,bq,r,reduce);
+	  else
+	    smallsub(acopy,bq,r);
 	  if (debug_infolevel>1)
-	    CERR << CLOCK()*1e-6 << " uncompress monomials" <<std::endl;
+	    CERR << CLOCK()*1e-6 << " uncompress monomials" <<'\n';
 	  convert(r,newvars,vars);
 	  if (debug_infolevel>1)
-	    CERR << CLOCK()*1e-6 << " uncompress monomials end"<< std::endl;
+	    CERR << CLOCK()*1e-6 << " uncompress monomials end"<< '\n';
 	  delete [] heap;
 	  return 1;
 	}
@@ -3024,17 +3211,41 @@ namespace giac {
       lcoeffb.push_back(T_unsigned<T,U>(cit->g,u-rstop));
     }
     // copy a to remainder
+    std::vector< T_unsigned<T,U> > maincoeff,quo,tmp;
+#if 1
+    // memory estimations
+    size_t produit_s[adeg+1]; // size_t * produit_s=(size_t *) alloca((adeg+1)*sizeof(size_t));
+    for (int i=0;i<=adeg;++i)
+      produit_s[i]=0;
+    size_t curcoeffsize=0;
+    for (cit=a.begin(),citend=a.end();cit!=citend;++cit){ 
+      U u=cit->u; 
+      ++produit_s[unsigned(u >> mainvar)];
+    }
+    for (int i=0;i<=adeg;++i){
+      produit.reserve(int(produit_s[i]*1.1));
+      if (i>=bdeg && curcoeffsize<produit_s[i])
+	curcoeffsize=produit_s[i];
+    }
+    curcoeffsize = int(1.1*curcoeffsize);
+    maincoeff.reserve(curcoeffsize);
+    quo.reserve(curcoeffsize);
+    q.reserve(curcoeffsize*2);
+    tmp.reserve(curcoeffsize);
+#endif
+    std::vector<U> vars2(vars.begin()+1,vars.end());
+    // do it
     for (cit=a.begin(),citend=a.end();cit!=citend;++cit){ 
       U u=cit->u; 
       produit[unsigned(u >> mainvar)][u]=cit->g; 
     }
     for (rdeg=adeg;rdeg>=bdeg;--rdeg){
       if (debug_infolevel>20)
-	CERR << "hashdivrem degree " << rdeg << " " << CLOCK() << std::endl;
+	CERR << "hashdivrem degree " << rdeg << " " << CLOCK() << '\n';
       if (produit[rdeg].empty())
 	continue;
       // find degree of remainder and main coeff
-      std::vector< T_unsigned<T,U> > maincoeff,quo,tmp;
+      maincoeff.clear(); quo.clear(); tmp.clear();
       U ushift=U(rdeg) << mainvar;
       for (prod_it=produit[rdeg].begin(),prod_itend=produit[rdeg].end();prod_it!=prod_itend;++prod_it){
 	if (!is_zero(prod_it->second))
@@ -3063,7 +3274,7 @@ namespace giac {
 	q.push_back(quo.back());
       }
       else {
-	int recdivres=hashdivrem(maincoeff,lcoeffb,quo,tmp,std::vector<U>(vars.begin()+1,vars.end()),reduce,qmax,allowrational);
+	int recdivres=hashdivrem(maincoeff,lcoeffb,quo,tmp,vars2,reduce,qmax,allowrational);
 	if (recdivres<1)
 	  return recdivres;
 	if (!tmp.empty())
@@ -3116,7 +3327,10 @@ namespace giac {
 	}
       }
       // end rem -= quo*b
-    }
+    } // end for (redg=...)
+#if 0
+    CERR << "dim " << vars.size() << ", curcoeffsize " << curcoeffsize << '\n' << "maincoeff " << maincoeff.size() << "," << maincoeff.capacity() << '\n' << "quo " << quo.size() << "," << quo.capacity() << '\n' << "q " << q.size() << "," << q.capacity() << '\n';
+#endif
     // copy remainder to r and sort
     unsigned rsize=0;
     for (int i=0;i<bdeg;++i)
@@ -3143,14 +3357,14 @@ namespace giac {
 #ifdef HASH_MAP_NAMESPACE
     typedef HASH_MAP_NAMESPACE::hash_map< U,T,hash_function_unsigned_object > hash_prod ;
     hash_prod produit; // try to avoid reallocation
-    // cout << "hash " << CLOCK() << std::endl;
+    // cout << "hash " << CLOCK() << '\n';
 #else
 #ifdef USTL
     typedef ustl::map<U,T> hash_prod;
 #else
     typedef std::map<U,T> hash_prod;
 #endif
-    // cout << "small map" << std::endl;
+    // cout << "small map" << '\n';
     hash_prod produit; 
 #endif
     U outer_index,inner_index;

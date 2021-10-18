@@ -93,11 +93,11 @@ namespace xcas {
       (*giac::vector_aide_ptr())=giac::readhelp(helpfile.c_str(),helpitems);
     }
     if (!helpitems){
-      cerr << "// Unable to open help file "<< helpfile << endl;
+      cerr << "// Unable to open help file "<< helpfile << '\n';
       return false;
     }
     else {
-      cerr << "// Using help file " << helpfile << endl;
+      cerr << "// Using help file " << helpfile << '\n';
       giac::xcasroot()=giac::xcasroot_dir((char *) progname.c_str());
       /* patch for gsview TEMP, but does not work
       if (!getenv("TEMP")){
@@ -107,7 +107,7 @@ namespace xcas {
 	  setenv("TEMP",giac::xcasroot().c_str(),1);
       }
       */
-      cerr << "// root dir " << giac::xcasroot() << endl;
+      cerr << "// root dir " << giac::xcasroot() << '\n';
       giac::html_help_init((char *) progname.c_str(),language);
       giac::update_completions();
       return true;
@@ -490,7 +490,7 @@ namespace xcas {
 	  int j=0;
 	  for (;j<TAB_ARGS;j++){
 	    if (o==argtab[j]){ 
-	      cerr << j << endl;
+	      cerr << j << '\n';
 	      Fl::e_keysym=argtab[j]->value()[0];
 	      break;
 	    }
@@ -785,7 +785,7 @@ namespace xcas {
 
   void increase_size(Fl_Widget * wid, int L){
     if (!wid) return;
-    // CERR << "increase size " << L << endl;
+    // CERR << "increase size " << L << '\n';
     if (L+wid->h()<=wid->labelsize()+4)
       L=wid->labelsize()+5-wid->h();
     if (!L) return;

@@ -45,6 +45,11 @@
  */
 
 %{
+#ifdef NUMWORKS
+#define at_log at_logb
+#else
+#define at_log at_ln
+#endif
 #include "giacPCH.h"
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -275,7 +280,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 %%
 
 [ \t\\]+			/* skip whitespace */
-\n                increment_lexer_line_number_setcol(yyscanner,yyextra); //CERR << "Scanning line " << lexer_line_number(yyextra) << endl;
+\n                increment_lexer_line_number_setcol(yyscanner,yyextra); //CERR << "Scanning line " << lexer_line_number(yyextra) << '\n';
   /* Strings */
   /* \"[^\"]*\"        yylval = string2gen( giac_yytext); return T_STRING; */
 \"                BEGIN(str); comment_s("",yyextra);
@@ -314,7 +319,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 
 <comment>[^*\n]*        comment_s(yyextra)+=yytext; /* eat anything that's not a '*' */
 <comment>"*"+[^*/\n]*   comment_s(yyextra)+=yytext; /* eat up '*'s not followed by '/'s */
-<comment>\n             comment_s(yyextra) += '\n'; increment_lexer_line_number_setcol(yyscanner,yyextra); CERR << "(Comment) scanning line " << lexer_line_number(yyextra) << endl;
+<comment>\n             comment_s(yyextra) += '\n'; increment_lexer_line_number_setcol(yyscanner,yyextra); CERR << "(Comment) scanning line " << lexer_line_number(yyextra) << '\n';
 <comment>"*"+"/"        BEGIN(INITIAL); index_status(yyextra)=0; /* (*yylval) = string2gen(comment_s(yyextra),false); return T_COMMENT; */
 "#++"[^*]*"++#"         index_status(yyextra)=0; /* (*yylval) = string2gen('"'+string(yytext).substr(3,string(yytext).size()-6)+'"'); return T_COMMENT; */
 "#--"[^*]*"--#"         index_status(yyextra)=0; /* (*yylval) = string2gen('"'+string(yytext).substr(3,string(yytext).size()-6)+'"'); return T_COMMENT; */
@@ -334,6 +339,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "θ"	index_status(yyextra)=1; (*yylval)=theta__IDNT_e; return T_SYMBOL;
 "i"			index_status(yyextra)=1; if (xcas_mode(yyextra) > 0 || !i_sqrt_minus1(yyextra)) { (*yylval)=i__IDNT_e; return T_SYMBOL; } else { (*yylval) = cst_i; return T_LITERAL;};
 "ί"                      index_status(yyextra)=1; (*yylval) = cst_i; return T_LITERAL;
+"𝐢"                     index_status(yyextra)=1; (*yylval) = cst_i; return T_LITERAL;
 ""                      index_status(yyextra)=1; (*yylval) = cst_i; return T_LITERAL;
 \xa1                    index_status(yyextra)=1; (*yylval) = cst_i; return T_LITERAL;
   /* \xef\xbd\x89            index_status(yyextra)=1; (*yylval) = cst_i; return T_LITERAL; */
@@ -351,6 +357,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "∞"		index_status(yyextra)=1; (*yylval) = plus_inf; return T_LITERAL;
 "± ∞"            index_status(yyextra)=1; (*yylval) = unsigned_inf; return T_LITERAL;
 "inf"		index_status(yyextra)=1; (*yylval) = plus_inf; return T_LITERAL;
+"oo"		index_status(yyextra)=1; (*yylval) = plus_inf; return T_LITERAL;
 "unsigned_inf"		index_status(yyextra)=1; (*yylval) = unsigned_inf; return T_LITERAL;
 "plus_inf"		index_status(yyextra)=1; (*yylval) = plus_inf; return T_LITERAL;
 "minus_inf"		index_status(yyextra)=1; (*yylval) = minus_inf; return T_LITERAL;
@@ -530,7 +537,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "'+'"                   index_status(yyextra)=0; (*yylval)=gen(at_plus,2); return T_QUOTED_BINARY;
 "_plus"                   index_status(yyextra)=0; (*yylval)=gen(at_plus,2); return T_QUOTED_BINARY;
 "-"                     index_status(yyextra)=0; (*yylval)=gen(at_binary_minus,2); return T_MOINS; // return (calc_mode(yyextra)==38)?T_MOINS38:T_MOINS;
-"−"                     index_status(yyextra)=0; if (calc_mode(yyextra)==38){ (*yylval)=gen(at_neg,2); return T_NEG38; } else { CERR << 1 << endl; (*yylval)=gen(at_binary_minus,2); return T_MOINS;}
+"−"                     index_status(yyextra)=0; if (calc_mode(yyextra)==38){ (*yylval)=gen(at_neg,2); return T_NEG38; } else { CERR << 1 << '\n'; (*yylval)=gen(at_binary_minus,2); return T_MOINS;}
 ".-"                     index_status(yyextra)=0; (*yylval)=gen(at_pointminus,2); return T_PLUS;
 "'-'"                   index_status(yyextra)=0; (*yylval)=gen(at_binary_minus,2); return T_QUOTED_BINARY;
 "_subtract"                   index_status(yyextra)=0; (*yylval)=gen(at_binary_minus,2); return T_QUOTED_BINARY;
@@ -642,7 +649,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 "'intersect'"                  index_status(yyextra)=0; (*yylval)=gen(at_intersect,2); return T_QUOTED_BINARY;
 "_intersect"                  index_status(yyextra)=0; (*yylval)=gen(at_intersect,2); return T_QUOTED_BINARY;
 "KILL"		        (*yylval) = gen(at_kill,1); index_status(yyextra)=0; return T_UNARY_OP;
-"log"			(*yylval) = gen(at_ln,1); index_status(yyextra)=1; return T_UNARY_OP; /* index_status(yyextra)=1 to accept log[] for a basis log */
+"log"			(*yylval) = gen(at_log,1); index_status(yyextra)=1; return T_UNARY_OP; /* index_status(yyextra)=1 to accept log[] for a basis log */
 "sin"                  (*yylval) = gen(at_asin,1); index_status(yyextra)=1; return T_UNARY_OP;
 "cos"                  (*yylval) = gen(at_acos,1); index_status(yyextra)=1; return T_UNARY_OP;
 "tan"                  (*yylval) = gen(at_atan,1); index_status(yyextra)=1; return T_UNARY_OP;
@@ -807,7 +814,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
     if (yytext[i]=='.')
       dot=i;
   }
-  // CERR << yytext << " " << interv << endl;
+  // CERR << yytext << " " << interv << '\n';
   if (dot>=0 && interv>1){
     --interv; // interv is the relative precision of the interval
     if (interv && dot>=1 && yytext[dot-1]=='0')
@@ -891,7 +898,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
  return res;
 } 
 "#"                     if (!xcas_mode(yyextra) || xcas_mode(yyextra)==3) { 
-  // CERR << "hash" << endl;
+  // CERR << "hash" << '\n';
   (*yylval)=gen(at_hash,1); return TI_HASH; 
 } else BEGIN(comment_hash);
 <comment_hash>[^*\n]*\n BEGIN(INITIAL); index_status(yyextra)=0; increment_lexer_line_number_setcol(yyscanner,yyextra);  /* comment_s(yyextra)=string(yytext); (*yylval)=string2gen(comment_s(yyextra).substr(0,comment_s(yyextra).size()-1),false); return T_COMMENT; */
@@ -917,7 +924,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
       fclose(f);
 #else
       ofstream of("log"); // ends up in fir/windows/log
-      of << s_orig<< endl;
+      of << s_orig<< '\n';
 #endif
 #endif
       if (abs_calc_mode(contextptr)==38 && s_orig==string(s_orig.size(),' '))
@@ -930,15 +937,15 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	builtin_lexer_functions_sorted=true;
 	int nfunc=builtin_lexer_functions_number;
 	if (debug_infolevel==-2 || debug_infolevel==-4 || debug_infolevel==-5){
-	  CERR << "Writing " << nfunc << " in static_lexer.h and static_extern.h "<< endl;
-	  CERR << "Check at_FP->at_FRAC, at_IP->at_INT, at_lgamma->at_lower_incomplete_gamma, at_is_inside->at_est_dans, at_regroup->at_regrouper, at_ugamma->at_upper_incomplete_gamma, at_∡ -> at_polar_complex, at_LINEAR? -> at_IS_LINEAR" << endl;
+	  CERR << "Writing " << nfunc << " in static_lexer.h and static_extern.h "<< '\n';
+	  CERR << "Check at_FP->at_FRAC, at_IP->at_INT, at_lgamma->at_lower_incomplete_gamma, at_is_inside->at_est_dans, at_regroup->at_regrouper, at_ugamma->at_upper_incomplete_gamma, at_∡ -> at_polar_complex, at_LINEAR? -> at_IS_LINEAR" << '\n';
 	  /*
 	  ofstream static_add_ll("static_add.ll");
 	  for (int i=0;i<nfunc;i++){
 	    static_add_ll << "\"" << builtin_lexer_functions_begin()[i].first << "\" " ;
 	    static_add_ll << "*yylval=gen(at_" << translate_at(builtin_lexer_functions_begin()[i].first) << ",0); index_status(yyextra)=0; ";
 	    static_add_ll << "return " << signed(builtin_lexer_functions_begin()[i].second.subtype)+256 << ";" ;
-            static_add_ll << endl;
+            static_add_ll << '\n';
 	  }
 	  static_add_ll.close();
 	  */
@@ -954,7 +961,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	    static_lexer << "}" ;
 	    if (i!=nfunc-1)
 	      static_lexer << ",";
-	    static_lexer << endl;
+	    static_lexer << '\n';
 	  }
 	  static_lexer.close();
 	  if (debug_infolevel==-4){
@@ -963,7 +970,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	      static_lexer_ << "*((size_t *) at_" << translate_at(builtin_lexer_functions_begin()[i].first) << ")";
 	      if (i!=nfunc-1)
 		static_lexer_ << ",";
-	      static_lexer_ << endl;
+	      static_lexer_ << '\n';
 	    }
 	    static_lexer_.close();
 	  }
@@ -973,25 +980,47 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	      static_lexer_ << "res->push_back(*(size_t *)at_" << translate_at(builtin_lexer_functions_begin()[i].first) <<")";
 	      if (i!=nfunc-1)
 		static_lexer_ << ",";
-	      static_lexer_ << endl;
+	      static_lexer_ << '\n';
 	    }
 	    static_lexer_.close();
 	  }
 	  ofstream static_extern("static_extern.h");
-	  static_extern << "#ifndef STATIC_EXTERN" << endl;
-	  static_extern << "#define STATIC_EXTERN" << endl;
-	  static_extern << "namespace giac{" << endl;
-	  static_extern << "struct unary_function_ptr;" << endl;
+	  static_extern << "#ifndef STATIC_EXTERN" << '\n';
+	  static_extern << "#define STATIC_EXTERN" << '\n';
+	  static_extern << "namespace giac{" << '\n';
+	  static_extern << "struct unary_function_ptr;" << '\n';
 	  for (int i=0;i<nfunc;i++){
-	    static_extern << "extern const unary_function_ptr * const  at_" << translate_at(builtin_lexer_functions_begin()[i].first) << ";" << endl;
+	    static_extern << "extern const unary_function_ptr * const  at_" << translate_at(builtin_lexer_functions_begin()[i].first) << ";" << '\n';
 	  }
-	  static_extern << "}" << endl;
-	  static_extern << "#endif // STATIC_EXTERN" << endl;
+	  static_extern << "}" << '\n';
+	  static_extern << "#endif // STATIC_EXTERN" << '\n';
 	  static_extern.close();
 	}
       }
 #endif // RTOS_THREADX
       string s(s_orig),lexer_string;
+      // change for Numworks built-in calculation app replacement
+      for (size_t i=0;i<s_orig.size();++i){
+	if (s[i]==18) 
+	  s[i]='(';
+	if (s[i]==19)
+	  s[i]=')';
+	if (i<s.size()-2 && (unsigned char)s[i]==226 && (unsigned char)s[i+1]==134 && (unsigned char)s[i+2]==146){
+	  s[i]=' ';
+	  s[i+1]='=';
+	  s[i+2]='>';
+	}
+	if (i<s.size()-1){ 
+	  if ( ((unsigned char)s[i]==195) && ((unsigned char)s[i+1]==151) ){
+	    s[i]='*';
+	    s[i+1]=' ';
+	  }
+#ifdef NUMWORKS
+	  if (s[i]==']' && s[i+1]=='[')
+	    s.insert(s.begin()+i+1,',');
+#endif
+	}
+      }
 #if defined NSPIRE || defined FXCG
       for (unsigned i=0;i<s.size()-1;++i){
 	if (s[i]==']' && s[i+1]=='['){
@@ -1026,7 +1055,7 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	    }
 	    if (i==l){
 	      s = s.substr(0,l-1)+"*/"+s[l-1];
-	      CERR << "unfinished comment, adding */" << endl << s << endl;
+	      CERR << "unfinished comment, adding */" << '\n' << s << '\n';
 	    }
 	    continue;
 	  }
@@ -1060,9 +1089,9 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	  }
 	}
 	if (nb<0)
-	  *logptr(contextptr) << "Too many ]" << endl;
+	  *logptr(contextptr) << "Too many ]" << '\n';
 	if (np<0)
-	  *logptr(contextptr) << "Too many )" << endl;
+	  *logptr(contextptr) << "Too many )" << '\n';
 	while (np<0 && i>=0 && s[i-1]==')'){
 	  --i;
 	  ++np;
@@ -1073,11 +1102,11 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	}
 	s=s.substr(0,i);
 	if (nb>0){
-	  *logptr(contextptr) << "Warning adding " << nb << " ] at end of input" << endl;
+	  *logptr(contextptr) << "Warning adding " << nb << " ] at end of input" << '\n';
 	  s=s+string(nb,']');
 	}
 	if (np>0){
-	  *logptr(contextptr) << "Warning adding " << np << " ) at end of input" << endl;
+	  *logptr(contextptr) << "Warning adding " << np << " ) at end of input" << '\n';
 	  s=s+string(np,')');
 	}
       }
@@ -1226,9 +1255,9 @@ AN	[0-9a-zA-Z_~ ?\200-\355\357-\376]
 	    ss+=s[i];
 	}
       }
-      // ofstream of("log"); of << s << endl << ss << endl; of.close();
+      // ofstream of("log"); of << s << '\n' << ss << '\n'; of.close();
       if (debug_infolevel>2)
-	CERR << "lexer " << ss << endl;
+	CERR << "lexer " << ss << '\n';
       lexer_string = ss+" \n ÿ";
       yylex_init(&scanner);
       yyset_extra(contextptr, scanner);

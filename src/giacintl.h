@@ -10,11 +10,11 @@
 #ifndef FIR
 #if (defined(__APPLE__) && !defined(INT128)) || defined(__FreeBSD__)
 #include <libintl.h>
-#ifndef _LIBINTL_H
+#if !defined POCKETCAS && !defined _LIBINTL_H
 #define _LIBINTL_H      1
 #endif
 #endif
-#endif
+#endif // ndef FIR
 
 #ifdef HAVE_GETTEXT
 #include <libintl.h>

@@ -4,109 +4,88 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Student’s distribution</title>
+<title>Producing random matrices: randmatrix ranm randMat</title>
 </head>
 <body >
 <a href="cascmd_en712.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en714.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec888" class="subsection">8.4.6  Student’s distribution</h3>
-<h4 id="sec889" class="subsubsection">The probability density function for Student’s
-distribution: <span style="font-family:monospace">student</span><a id="hevea_default1228"></a> <span style="font-family:monospace">studentd</span><a id="hevea_default1229"></a></h4>
-<p>Student’s distribution (also called Student’s <span style="font-style:italic">t</span>-distribution or just
-the <span style="font-style:italic">t</span>-distribution) with
-<span style="font-style:italic">n</span> degrees of freedom has density function given by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">student</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) =
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">Γ((<span style="font-style:italic">n</span>+1)/2)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">Γ(<span style="font-style:italic">n</span>/2)</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span>π</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1 +
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">−<span style="font-style:italic">n</span>−1/2</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-where recall the Gamma function is defined for <span style="font-style:italic">x</span>&gt;0 by Γ(<span style="font-style:italic">x</span>) =
-∫<sub>0</sub><sup>∞</sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span></sup><span style="font-style:italic">t</span><sup><span style="font-style:italic">x</span>−1</sup><span style="font-style:italic">dx</span>. If you enter
-</p><div class="center">
-<span style="font-family:monospace">student(2,3)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">sqrt(pi)/(11*sqrt(2*pi)*sqrt(11/2))
-</span></div><p>
-which can be numerically approximated by
-</p><div class="center">
-<span style="font-family:monospace">evalf(student(2,3))
-</span></div><p>
-which is
-</p><div class="center">
-<span style="font-family:monospace">0.0274101222343
+<h3 id="sec871" class="subsection">8.3.8  Producing random matrices: <span style="font-family:monospace">randmatrix</span><a id="hevea_default1215"></a> <span style="font-family:monospace">ranm</span><a id="hevea_default1216"></a> <span style="font-family:monospace">randMat</span><a id="hevea_default1217"></a></h3>
+<p>You can produce a random vector or matrix with the <span style="font-family:monospace">randmatrix</span>
+(or <span style="font-family:monospace">ranm</span> or <span style="font-family:monospace">randMat</span>) command. (See also sections
+<a href="cascmd_en349.html#sec%3Aranm1">5.29.28</a> and <a href="cascmd_en516.html#sec%3Aranm2">5.47.3</a>.) The <span style="font-family:monospace">randmatrix</span> command
+has the following possible arguments.
+</p><dl class="description"><dt class="dt-description">
+<span style="font-weight:bold">An integer </span><span style="font-style:italic">n</span></dt><dd class="dd-description">
+With an integer <span style="font-style:italic">n</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> will return a vector of
+length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
+[−99,−98,…,98,99] with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(5)
 </span></div>
-<h4 id="sec890" class="subsubsection">The cumulative distribution function for Student’s
-distribution: <span style="font-family:monospace">student_cdf</span><a id="hevea_default1230"></a></h4>
-<p>The cumulative distribution function for Student’s distribution with
-<span style="font-style:italic">n</span> degrees of freedom at a value <span style="font-style:italic">x</span> is
-<span style="font-family:monospace">student_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>); if you
-enter
-</p><div class="center">
-<span style="font-family:monospace">student_cdf(5,2)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.949030260585
-</span></div><p>If you give <span style="font-family:monospace">student_cdf</span> an extra argument,
-you will get the probability that
-the random variable lies between two values;
-<span style="font-family:monospace">student_cdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
-enter
-</p><div class="center">
-<span style="font-family:monospace">student_cdf(5,-2,2)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.89806052117
+you might get
+<div class="center">
+<span style="font-family:monospace">[86,-97,-82,7,-27]
 </span></div>
-<h4 id="sec891" class="subsubsection">The inverse distribution function for Student’s
-distribution: <span style="font-family:monospace">student_icdf</span><a id="hevea_default1231"></a></h4>
-<p>The inverse distribution function for Student’s
-distribution with <span style="font-style:italic">n</span> degrees of freedom is computed with
-<span style="font-family:monospace">student_icdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
-value <span style="font-style:italic">x</span> with <span style="font-family:monospace">student_cdf</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
-</p><div class="center">
-<span style="font-family:monospace">student_icdf(5,0.95)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">2.01504837333
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span></dt><dd class="dd-description">
+Given two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
+[−99,99] with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3)
 </span></div>
-<h4 id="sec892" class="subsubsection">The upper tail cumulative function for Student’s
-distribution: <span style="font-family:monospace">UTPT</span><a id="hevea_default1232"></a></h4>
-<p>The <span style="font-family:monospace">UTPT</span> (the Upper Tail Probability - T distribution) will compute
-Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>). 
+you might get
+<div class="center">
+<span style="font-family:monospace">[[26,-89,63],[-49,-86,-64]] 
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Three integers </span><span style="font-style:italic">n</span><span style="font-weight:bold">, </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and </span><span style="font-style:italic">a</span></dt><dd class="dd-description">
+Given three integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and <span style="font-style:italic">a</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
+[0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0] is <span style="font-style:italic">a</span> is negative) with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3,10)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[4,7,6],[7,4,5]]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold">, and an interval </span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-weight:bold">.</span></dt><dd class="dd-description">
+Given two integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and an <span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>,
+<span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are real numbers chosen randomly from
+[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3,0..1)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[0.90923402831,0.594602484722,0.250897713937],[0.332611694932,0.145975249354,0.543010003399]]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and a function (which must be quoted)
+to produce random numbers</span></dt><dd class="dd-description"> 
+In this case, the third argument must be
+one of <span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">’</span>,
+<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’poisson, </span>λ<span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’normald(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’normald,</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">’</span>,
+<span style="font-family:monospace">’randnorm(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">’</span>, or
+’randfisher(<span style="font-style:italic">n</span>,<span style="font-style:italic">m</span>)’.
+</dd></dl><p>
+Given such an <span style="font-style:italic">R</span>, the command <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">R</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
+randomly according to the rule determined by <span style="font-style:italic">R</span>.
 If you enter
 </p><div class="center">
-<span style="font-family:monospace">UTPT(5,2)
+<span style="font-family:monospace">randmatrix(2,3,’randnorm(2,1)’)
 </span></div><p>
-you will get
+you might get
 </p><div class="center">
-<span style="font-family:monospace">0.0509697394149
+<span style="font-family:monospace">[[2.6324726358,0.539273367446,0.793750476229],[2.24729803442,1.28189228187,2.25750809791]] 
 </span></div>
 <hr>
 <a href="cascmd_en712.html"><img src="previous_motif.gif" alt="Previous"></a>

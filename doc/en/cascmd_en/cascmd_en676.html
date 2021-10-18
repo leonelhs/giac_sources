@@ -4,59 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The mean: mean</title>
+<title>2D implicit curve</title>
 </head>
 <body >
 <a href="cascmd_en675.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en677.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec832" class="subsection">8.1.1  The mean: <span style="font-family:monospace">mean</span><a id="hevea_default1148"></a></h3>
-<p>Recall that the mean of a list <span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> is simply their numeric
-average (<span style="font-style:italic">x</span><sub>1</sub> + ⋯ + <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)/<span style="font-style:italic">n</span>. <span style="font-family:monospace">Xcas</span> can calculate the
-mean of a list of numbers with the <span style="font-family:monospace">mean</span> command.
-If you enter 
-</p><div class="center">
-<span style="font-family:monospace">mean([1,2,3,4])
-</span></div><p>
-then you will get
-</p><div class="center">
-<span style="font-family:monospace">5/2
-</span></div><p>
-since (1+2+3+4)/4 = 5/2.
-If you give <span style="font-family:monospace">mean</span> a matrix as an argument, then it will return a
-list with the numeric average of each column;
-</p><div class="center">
-<span style="font-family:monospace">mean([[1,2,3],[5,6,7]]) 
-</span></div><p>
-will return
-</p><div class="center">
-<span style="font-family:monospace">[3,4,5]
-</span></div><p>
-since (1+5)/2 = 3, (2+6)/2 = 4 and (3 + 7)/2 = 5.</p><p>To get the weighted average of a list of numbers you can give
-<span style="font-family:monospace">mean</span> a second argument, which should be a list of the
-weights. For example,
-</p><div class="center">
-<span style="font-family:monospace">mean([2,4,6,8],[2,2,3,3])
-</span></div><p>
-will return
-</p><div class="center">
-<span style="font-family:monospace">27/5
-</span></div><p>
-since (2· 2 + 4· 2 + 6· 3 + 8· 3)/(2 + 2 + 3 + 3) =
-27/5.
-Similarly, you can find the weighted average of the columns of a
-matrix by giving <span style="font-family:monospace">mean</span> a second argument of a matrix of
-weights. If you enter
-</p><div class="center">
-<span style="font-family:monospace">mean([[1,2],[3,4]],[[1,2],[2,1]])
-</span></div><p>
-then you will get
-</p><div class="center">
-<span style="font-family:monospace">[7/3,8/3]
-</span></div><p>
-since (1· 1 + 3· 2)/(1+2) = 7/3 and (2· 2 + 4· 1)/(2 +
-1) = 8/3.</p>
+<h3 id="sec822" class="subsection">7.13.1  2D implicit curve</h3>
+<p><a id="sec:implicitplot"></a>
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">plotimplicit(f(x,y),x,y)</span> draws the graphic representation of the
+curve defined by the implicit equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)=0 when <span style="font-style:italic">x</span> (resp. <span style="font-style:italic">y</span>) 
+is in <span style="font-family:monospace">WX-, WX+</span> (resp. in <span style="font-family:monospace">WY-, WY+</span>) defined by <span style="font-family:monospace">cfg</span>, </li><li class="li-itemize"><span style="font-family:monospace">plotimplicit(f(x,y),x=0..1,y=-1..1)</span> draws the graphic 
+representation of the curve defined by the implicit equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)=0 
+when 0≤ <span style="font-style:italic">x</span> ≤ 1 and −1≤ <span style="font-style:italic">y</span> ≤ 1
+</li></ul><p> 
+It is possible to add two arguments to specify the discretization
+steps for <span style="font-style:italic">x</span> 
+and <span style="font-style:italic">y</span> with <span style="font-family:monospace">xstep=...</span> and <span style="font-family:monospace">ystep=...</span>.<br>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x,y)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x,y,unfactored)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">The unit circle</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x,y,xstep=0.2,ystep=0.3)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,[x,y],xstep=0.2,ystep=0.3)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,[x,y], xstep=0.2,ystep=0.3,unfactored)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">The unit circle</span></div><p>
+Input :
+</p><div class="center"><span style="font-family:monospace">plotimplicit(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1,x=-2..2,y=-2..2, xstep=0.2,ystep=0.3)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">The unit circle</span></div>
 <hr>
 <a href="cascmd_en675.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

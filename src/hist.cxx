@@ -5405,6 +5405,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     }
   }
   else make_history();
+    giac::python_compat(0,giac::context0);  // otherwise factor(x^4-4,sqrt(2)) fails if pari is disabled
     bool running=true;
   #ifdef WIN32
     static std::string windowname=std::string("Xcas ")+GIAC_VERSION+" (win"+giac::print_INT_(8*sizeof(long))+")";

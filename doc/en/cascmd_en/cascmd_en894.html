@@ -4,48 +4,54 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Reflections in the plane: reflection</title>
+<title>The slope of a line: slope</title>
 </head>
 <body >
 <a href="cascmd_en893.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en895.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1155" class="subsection">12.15.3  Reflections in the plane: <span style="font-family:monospace">reflection</span><a id="hevea_default1568"></a></h3>
+<h3 id="sec1154" class="subsection">12.14.8  The slope of a line: <span style="font-family:monospace">slope</span><a id="hevea_default1571"></a></h3>
 <p>
-<a id="sec:2dreflections"></a></p><p>See section <a href="cascmd_en986.html#sec%3A3dreflections">13.14.3</a> for reflections in space.</p><p>The <span style="font-family:monospace">reflection</span> command can take one or two arguments.</p><p>If <span style="font-family:monospace">reflection</span> has a single argument, that argument is a point
-or line. <span style="font-family:monospace">reflection</span> returns a new command which performs the reflection
-with respect to the point or line.<br>
+<a id="sec:slope"></a></p><p>The <span style="font-family:monospace">slope</span> command takes as argument either a line, a line
+segment, or two points which determine a line.</p><p><span style="font-family:monospace">slope</span> returns the slope of the line.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">rf := reflection(-1)
+<span style="font-family:monospace">slope(line(1,2i))
 </span></div><p>
-then:
+or:
 </p><div class="center">
-<span style="font-family:monospace">rf(1+i)
+<span style="font-family:monospace">slope(segment(1,2i))
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">slope(1,2i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en158.png">
-</div><p>If <span style="font-family:monospace">reflection</span> has two arguments, the first argument is a
-point or line as above, and the second argument is a geometric
-object. <span style="font-family:monospace">reflection</span> returns and draws the reflection of the object.<br>
+<span style="font-family:monospace">-2 
+</span></div><p>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">reflection(-1, 1+i)
+<span style="font-family:monospace">slope(line(x - 2y = 3))
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en159.png">
-</div><p>
+<span style="font-family:monospace">1/2 
+</span></div><p>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">reflection(line(-1,i),1+i)
+<span style="font-family:monospace">slope(tangent(plotfunc(sin(x)),pi/4))
+</span></div><p>
+or:
+</p><div class="center">
+<span style="font-family:monospace">slope(LineTan(sin(x),pi/4))
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en160.png">
-</div>
+<span style="font-family:monospace">sqrt(2)/2 
+</span></div><p>The <span style="font-family:monospace">slope</span> command has <span style="font-family:monospace">slopeat</span> and
+<span style="font-family:monospace">slopeatraw</span> versions (see section <a href="cascmd_en887.html#sec%3Ameasdisplay">12.14.1</a>).</p>
 <hr>
 <a href="cascmd_en893.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

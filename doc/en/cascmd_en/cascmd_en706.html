@@ -4,88 +4,113 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Producing random matrices: randmatrix ranm randMat</title>
+<title>Producing uniformly distributed random numbers: rand random alea hasard</title>
 </head>
 <body >
 <a href="cascmd_en705.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en707.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec864" class="subsection">8.3.8  Producing random matrices: <span style="font-family:monospace">randmatrix</span><a id="hevea_default1206"></a> <span style="font-family:monospace">ranm</span><a id="hevea_default1207"></a> <span style="font-family:monospace">randMat</span><a id="hevea_default1208"></a></h3>
-<p>You can produce a random vector or matrix with the <span style="font-family:monospace">randmatrix</span>
-(or <span style="font-family:monospace">ranm</span> or <span style="font-family:monospace">randMat</span>) command. (See also sections
-<a href="cascmd_en342.html#sec%3Aranm1">5.29.28</a> and <a href="cascmd_en509.html#sec%3Aranm2">5.47.3</a>.) The <span style="font-family:monospace">randmatrix</span> command
-has the following possible arguments.
-</p><dl class="description"><dt class="dt-description">
-<span style="font-weight:bold">An integer </span><span style="font-style:italic">n</span></dt><dd class="dd-description">
-With an integer <span style="font-style:italic">n</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> will return a vector of
-length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
-[−99,−98,…,98,99] with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(5)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[86,-97,-82,7,-27]
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span></dt><dd class="dd-description">
-Given two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
-[−99,99] with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[[26,-89,63],[-49,-86,-64]] 
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Three integers </span><span style="font-style:italic">n</span><span style="font-weight:bold">, </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and </span><span style="font-style:italic">a</span></dt><dd class="dd-description">
-Given three integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and <span style="font-style:italic">a</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
-[0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0] is <span style="font-style:italic">a</span> is negative) with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3,10)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[[4,7,6],[7,4,5]]
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold">, and an interval </span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-weight:bold">.</span></dt><dd class="dd-description">
-Given two integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and an <span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>,
-<span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are real numbers chosen randomly from
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability. If you enter
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3,0..1)
-</span></div>
-you might get
-<div class="center">
-<span style="font-family:monospace">[[0.90923402831,0.594602484722,0.250897713937],[0.332611694932,0.145975249354,0.543010003399]]
-</span></div>
-</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and a function (which must be quoted)
-to produce random numbers</span></dt><dd class="dd-description"> 
-In this case, the third argument must be
-one of <span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">’</span>,
-<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’poisson, </span>λ<span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’normald(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’normald,</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">’</span>,
-<span style="font-family:monospace">’randnorm(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">’</span>, or
-’randfisher(<span style="font-style:italic">n</span>,<span style="font-style:italic">m</span>)’.
-</dd></dl><p>
-Given such an <span style="font-style:italic">R</span>, the command <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">R</span><span style="font-family:monospace">)</span> will
-return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
-randomly according to the rule determined by <span style="font-style:italic">R</span>.
-If you enter
+<h3 id="sec864" class="subsection">8.3.1  Producing uniformly distributed random numbers: <span style="font-family:monospace">rand</span><a id="hevea_default1202"></a> <span style="font-family:monospace">random</span><a id="hevea_default1203"></a> <span style="font-family:monospace">alea</span><a id="hevea_default1204"></a> <span style="font-family:monospace">hasard</span><a id="hevea_default1205"></a></h3>
+<p>The <span style="font-family:monospace">rand</span> (or <span style="font-family:monospace">random</span>) command will produce a number in
+[0,1) randomly and with equal probability. If you enter
 </p><div class="center">
-<span style="font-family:monospace">randmatrix(2,3,’randnorm(2,1)’)
+<span style="font-family:monospace">rand()
+</span></div><p>
+you might get, for example,
+</p><div class="center">
+<span style="font-family:monospace">0.93233498279
+</span></div><p>If you want a random number in a different interval, you can give
+<span style="font-family:monospace">rand</span> two real arguments; <span style="font-family:monospace">rand(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will return a
+random number from the interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>). If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(1,1.5)
+</span></div><p>
+for example, you might get
+</p><div class="center">
+<span style="font-family:monospace">1.27419309644
+</span></div><p>
+If you give <span style="font-family:monospace">rand</span> an interval, then you will get function
+which will generate a random number in the interval. If you enter
+</p><div class="center">
+<span style="font-family:monospace">r:=rand(1.0..2.5)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">// Success
+(NULL)-&gt;rand(1.0,2.5)
+</span></div><p>
+and you can get a random number in the interval by calling the function;
+</p><div class="center">
+<span style="font-family:monospace">r()
+</span></div><p>
+might return
+</p><div class="center">
+<span style="font-family:monospace">1.76314622024
+</span></div><p>If you want to generate a random integer, then <span style="font-family:monospace">rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> (for
+integer <span style="font-style:italic">n</span>) will return a random integer in [0,<span style="font-style:italic">n</span>) (or (<span style="font-style:italic">n</span>,0] if
+<span style="font-style:italic">n</span> is negative). If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(5)
+</span></div><p>
+for example, you might get
+</p><div class="center">
+<span style="font-family:monospace">2
+</span></div><p>You can then use <span style="font-family:monospace">rand</span> to find a random integer in a specified interval; if
+you want an random integer between 6 and 10, inclusive, for example,
+you can enter
+</p><div class="center">
+<span style="font-family:monospace">6 + rand(11-6)
+</span></div><p>
+You might get
+</p><div class="center">
+<span style="font-family:monospace">7
+</span></div><p>
+Alternatively, the <span style="font-family:monospace">randint</span> will give you a random integer in
+a given interval; <span style="font-family:monospace">randint(</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> will return a random
+integer between <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, inclusive; to get a random integer
+from 6 to 10, you could enter
+</p><div class="center">
+<span style="font-family:monospace">randint(6,10)
+</span></div><p>The <span style="font-family:monospace">rand</span> command can also choose elements without
+replacement. If you give <span style="font-family:monospace">rand</span> three integer arguments, 
+<span style="font-family:monospace">rand(</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> then it will return <span style="font-style:italic">p</span> distinct random
+integers from <span style="font-style:italic">n</span><sub>1</sub> to <span style="font-style:italic">n</span><sub>2</sub>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(2,1,10)
+</span></div><p>
+for example, you will get 2 distinct random numbers from 1 to 10;
+perhaps
+</p><div class="center">
+<span style="font-family:monospace">[2,9]
+</span></div><p>You can also choose (without replacement) random elements of a given
+list. For this, you give <span style="font-family:monospace">rand</span>, a postive integer <span style="font-style:italic">n</span>
+and a list <span style="font-style:italic">L</span>; <span style="font-family:monospace">rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> will then return <span style="font-style:italic">n</span> random
+elements from the list. If you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(3,["a","b","c","d","e","f","g","h"])
 </span></div><p>
 you might get
 </p><div class="center">
-<span style="font-family:monospace">[[2.6324726358,0.539273367446,0.793750476229],[2.24729803442,1.28189228187,2.25750809791]] 
+<span style="font-family:monospace">["c","b","e"]
+</span></div><p>
+The list can have repeated elements; if you enter
+</p><div class="center">
+<span style="font-family:monospace">rand(4,["r","r","r","r","v","v","v"])
+</span></div><p>
+you might get
+</p><div class="center">
+<span style="font-family:monospace">["v","v","r","v"]
+</span></div><p>
+The <span style="font-family:monospace">sample</span> command will also randomly select items from a
+list without replacement. With the <span style="font-family:monospace">sample</span> command, the list
+comes first and then the integer. If you enter
+</p><div class="center">
+<span style="font-family:monospace">sample(["r","r","r","r","v","v","v"],4)
+</span></div><p>
+you might get
+</p><div class="center">
+<span style="font-family:monospace">["v","r","r","r"]
 </span></div>
 <hr>
 <a href="cascmd_en705.html"><img src="previous_motif.gif" alt="Previous"></a>

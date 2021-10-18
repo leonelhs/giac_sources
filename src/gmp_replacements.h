@@ -1,4 +1,4 @@
-#include <tommath.h>
+#include "tommath.h"
 #include <limits>
 #ifdef NSPIRE
 extern "C" {
@@ -226,7 +226,7 @@ typedef double mpf_t;
 #define mpf_set_z(x,y) 
 #define mpf_set(x,y) (x=y)
 inline int mpf_set_str(double & x,const char * s,int base){ if (base!=10) return 1; x=strtod(s,0); return 0; } 
-#define mpf_get_d(x) x
+#define mpf_get_d(x) (x)
 #define mpf_add(x,y,z) (x=y+z)
 #define mpf_sub(x,y,z) (x=y-z)
 #define mpf_mul(x,y,z) (x=y*z)

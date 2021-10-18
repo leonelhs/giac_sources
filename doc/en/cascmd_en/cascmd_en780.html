@@ -4,48 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Input: input, Input, InputStr, textinput, output,
-Output</title>
+<title>Functions: function, endfunction, { }, local,
+return</title>
 </head>
 <body >
 <a href="cascmd_en779.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en781.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1007" class="subsection">11.2.2  Input: <span style="font-family:monospace">input, Input, InputStr, textinput, output,
-Output</span></h3>
+<h3 id="sec1006" class="subsection">11.1.2  Functions: <span style="font-family:monospace">function, endfunction, { }, local,
+return</span></h3>
 <p>
-<a id="hevea_default1349"></a><a id="hevea_default1350"></a><a id="hevea_default1351"></a><a id="hevea_default1352"></a><a id="hevea_default1353"></a>
-<a id="hevea_default1354"></a></p><p>You can prompt the user to enter a value for a variable with the
-<span style="font-family:monospace">input</span> (or <span style="font-family:monospace">Input</span> command). If you enter
+<a id="hevea_default1344"></a><a id="hevea_default1345"></a><a id="hevea_default1346"></a><a id="hevea_default1347"></a><a id="hevea_default1348"></a></p><p>You have already seen functions defined with <span style="font-family:monospace">:=</span>. For
+example, to define a function <span style="font-family:monospace">sumprod</span> which takes two inputs
+and returns a list with the sum and the product of the inputs, you can
+enter
 </p><div class="center">
-<span style="font-family:monospace">input(a)</span>
+<span style="font-family:monospace">sumprod(a,b) := [a+b,a*b]</span>
 </div><p>
-the the user will be given a box where they can enter a value for the
-variable <span style="font-family:monospace">a</span>. There will be a prompt
-indicating the name of the variable; if you want a more descriptive
-prompt, you can give <span style="font-family:monospace">input</span> a string argument before the
-variable name.
+Afterwards, entering
 </p><div class="center">
-<span style="font-family:monospace">input("Set a to the value: ",a)</span>
+<span style="font-family:monospace">sumprod(3,5)</span>
 </div><p>
-will prompt the user with "Set a to the value: " before the input box.</p><p>If the value that you enter for <span style="font-family:monospace">input</span> is a string, it should
-be between quotes. If you want the user to enter a string without
-having to use the quotes, you can use
-<span style="font-family:monospace">InputStr</span> or
-<span style="font-family:monospace">textinput</span>, which will assume the input will
-be a string and so the user won’t need to use quotes.</p><p>The <span style="font-family:monospace">output</span> (or <span style="font-family:monospace">Output</span>)
-command can take strings (or variables representing strings) as
-arguments and can be used to add information to the input window. For
-example, if you enter
+will return
 </p><div class="center">
-<span style="font-family:monospace">input(output("Calculate p(a)"),"polynomial",p,"value",a)</span>
-</div><p>
-then you will get a window with a box containing
-</p><div class="center">
-<span style="font-family:monospace">Calculate p(a)</span>
-</div><p>
-followed by the prompts for <span style="font-family:monospace">p</span> and <span style="font-family:monospace">a</span>.</p>
+<span style="font-family:monospace">[8,15]</span>
+</div><p>You can define functions that are computed with a sequence of
+instructions by putting the instructions between braces, where each
+command ends with a semicolon. If any local variables will be used,
+they can be declared with the <span style="font-family:monospace">local</span> keyword,
+followed by the variable names. The value returned by the function
+will be indicated with the <span style="font-family:monospace">return</span> keyword. For
+example, the above function <span style="font-family:monospace">sumprod</span> could also be defined by
+</p><pre class="verbatim">sumprod(a,b) := {
+local s, p;
+s := a + b;
+p := a*b;
+return [s,p];
+}
+</pre><p>Another way to use a sequence of instructions to define a function is
+with the <span style="font-family:monospace">function</span> …<span style="font-family:monospace">endfunction</span> construction. With this
+approach, the function name and parameters follow the
+<span style="font-family:monospace">function</span> keyword. This is otherwise like the previous
+approach. The <span style="font-family:monospace">sumprod</span> function could be defined by
+</p><pre class="verbatim">function sumprod(a,b)
+local s, p;
+s := a + b;
+p := a*b;
+return [s,p];
+endfunction
+</pre>
 <hr>
 <a href="cascmd_en779.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

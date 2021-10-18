@@ -4,33 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The difference between a function and an expression</title>
+<title>Xcas operators </title>
 </head>
 <body >
 <a href="cascmd_en208.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en210.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec252" class="subsection">5.16.1  The difference between a function and an expression</h3>
-<p><a id="hevea_default326"></a><a id="hevea_default327"></a>
-A function <span style="font-family:monospace">f</span> is defined for example by :<br>
-<span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> or by <span style="font-family:monospace">f:=x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span> <br>
-that is to say, for all <span style="font-style:italic">x</span>, <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) is equal to the expression 
-<span style="font-style:italic">x</span><sup>2</sup>−1. In that case, to have the value of <span style="font-style:italic">f</span> for <span style="font-style:italic">x</span>=2, input :<span style="font-family:monospace">f(2)</span>.<br>
-But if the input is 
-<span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>, then <span style="font-family:monospace">g</span> is a variable where the 
-expression <span style="font-style:italic">x</span><sup>2</sup>−1 is stored. In that case, to have the value of <span style="font-style:italic">g</span> for <span style="font-style:italic">x</span>=2,
-input : <span style="font-family:monospace">subst(g,x=2)</span> (<span style="font-style:italic">g</span> is an expression depending on <span style="font-style:italic">x</span>).</p><p>When a command expects a function as argument, this argument should
-be either the definition of the function (e.g. <span style="font-family:monospace">x-&gt;x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>)
-or a variable name assigned to a function (e.g. <span style="font-family:monospace">f</span>
-previously defined by e.g. <span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>).<br>
-When a command expects an expression as argument, this argument should
-be either the definition of the expression (for example <span style="font-family:monospace">x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>), 
-or a variable name assigned to an expression (e.g. 
-<span style="font-family:monospace">g</span> previously defined, for example, by 
-<span style="font-family:monospace">g:=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>), or the evaluation of a function. e.g.
-<span style="font-family:monospace">f(x)</span> if <span style="font-family:monospace">f</span> is a previously defined function,
-for example, by <span style="font-family:monospace">f(x):=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-1</span>).</p>
+<h3 id="sec251" class="subsection">5.15.2  <span style="font-family:monospace">Xcas</span> operators </h3>
+<p><a id="hevea_default321"></a><a id="hevea_default322"></a><a id="hevea_default323"></a><a id="hevea_default324"></a> 
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">$ </span> is the infixed version of <span style="font-family:monospace">seq</span>, for example :<br>
+<span style="font-family:monospace">(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k)$(k=0..3)= seq(2</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">k,k=0..3)=(1,2,4,8)</span> (do not forget 
+to put parenthesis around the arguments),
+</li><li class="li-itemize"><span style="font-family:monospace">mod</span> or <span style="font-family:monospace">%</span> to define a modular number,
+</li><li class="li-itemize"><span style="font-family:monospace">@</span> to compose functions for example :
+<span style="font-family:monospace">(f@g)(x)=f(g(x))</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">@@ </span> to compose a function many times (like a power, replacing
+multiplication by composition), for example :
+<span style="font-family:monospace">(f@@3)(x)=f(f(f(x)))</span>,
+</li><li class="li-itemize"><span style="font-family:monospace">minus union intersect</span> to get the difference, the union and the 
+intersection of two sets,
+</li><li class="li-itemize"><span style="font-family:monospace">-&gt;</span> to define a function,
+</li><li class="li-itemize"><span style="font-family:monospace">:= =&gt;</span> to store an expression in a variable (it is the infixed 
+version of <span style="font-family:monospace">sto</span> and the argument order is permuted for <span style="font-family:monospace">:=</span>), 
+for example : <span style="font-family:monospace">a:=2</span> or <span style="font-family:monospace">2=&gt;a</span> or <span style="font-family:monospace">sto(2,a)</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">=&lt;</span> to store an expression in a variable, but the storage is
+done by reference if the target is a matrix element or a list element.
+This is faster if you modify objects inside an existing list or matrix
+of large size, because no copy is made, the change is done in place.
+Use with care, all objects pointing to this matrix or list will
+be modified.
+</li></ul>
 <hr>
 <a href="cascmd_en208.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

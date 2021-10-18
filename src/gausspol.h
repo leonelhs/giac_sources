@@ -536,7 +536,7 @@ namespace giac {
 #endif
     else {
       index_t i(pdim);
-      index_t::iterator iitbeg=i.begin(),iitback=i.end()-1,iitbackm1=iitback-1;
+      index_t::iterator /*iitbeg=i.begin(),*/ iitback=i.end()-1,iitbackm1=iitback-1;
       for (--prevu;it!=itend;++it,++jt){
 	u=it->u;
 	if (prevu<=u+*iitback){
@@ -548,7 +548,7 @@ namespace giac {
 	    --(*iitbackm1);
 	    *iitback += short((u+(*ditbeg))-prevu);
 	    prevu=u;
-	    // cerr << "/" << u << ":" << i << endl;
+	    // cerr << "/" << u << ":" << i << '\n';
 	  }
 	  else 
           {
@@ -571,7 +571,7 @@ namespace giac {
       }
     }
     if (debug_infolevel>5)
-      CERR << "Divisions: " << count << std::endl;
+      CERR << "Divisions: " << count << '\n';
   }
 
   
@@ -616,7 +616,7 @@ namespace giac {
       if (coeff_apart){
 	convert_from<T,U>(it,itend,deg,jt,1); // convert first coefficients
 	if (debug_infolevel>5)
-	  CERR << CLOCK()*1e-6 << " end coefficients conversion" << std::endl;
+	  CERR << CLOCK()*1e-6 << " end coefficients conversion" << '\n';
       }
       for (int i=0;i<nthreads;i++){
 	convert_t<T,U> tmp={it+i*(taille/nthreads),it+(i+1)*taille/nthreads,&deg,jt+i*(taille/nthreads),coeff_apart?2:0};
@@ -627,7 +627,7 @@ namespace giac {
 	else {
 	  arg[i]=tmp;
 	  int res=pthread_create(&tab[i],(pthread_attr_t *) NULL,do_convert_from<T,U>,(void *) &arg[i]);
-	  if (res)
+	  if (res) // thread not created
 	    convert_from<T,U>(tmp.it,tmp.itend,deg,tmp.jt,tmp.mode);
 	}
       }

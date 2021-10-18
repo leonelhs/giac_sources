@@ -4,51 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Lagrange’s polynomial : lagrange interp</title>
+<title>Exact roots of a polynomial : roots</title>
 </head>
 <body >
 <a href="cascmd_en342.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en344.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec415" class="subsection">5.29.29  Lagrange’s polynomial : <span style="font-family:monospace">lagrange interp</span></h3>
-<p><a id="hevea_default569"></a><a id="hevea_default570"></a>
-<span style="font-family:monospace">lagrange</span> takes as argument two lists of size <span style="font-family:monospace">n</span> (resp. a 
-matrix with two rows and <span style="font-family:monospace">n</span> columns) and the name of a variable 
-<span style="font-family:monospace">var</span> (by default <span style="font-family:monospace">x</span>).<br>
-The first list (resp. row) corresponds to the abscissa values <span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub> (<span style="font-style:italic">k</span>=1..<span style="font-style:italic">n</span>), 
-and the second list (resp. row) corresponds to ordinate values <span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub> 
-(<span style="font-style:italic">k</span>=1..<span style="font-style:italic">n</span>).<br>
-<span style="font-family:monospace">lagrange</span> returns a polynomial expression <span style="font-family:monospace">P</span> 
-with respect to <span style="font-family:monospace">var</span> of degree 
-<span style="font-family:monospace">n-1</span>, such that <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">i</span></sub>.<br>
+<h3 id="sec415" class="subsection">5.29.22  Exact roots of a polynomial : <span style="font-family:monospace">roots</span></h3>
+<p><a id="hevea_default567"></a>
+<span style="font-family:monospace">roots</span> takes as arguments a symbolic
+polynomial expression and the name of its variable.<br>
+<span style="font-family:monospace">roots</span> returns a 2 columns matrix : each row is 
+the list of a root of the polynomial and its multiplicity.<br>
+<span style="font-weight:bold">Examples</span>
+</p><ul class="itemize"><li class="li-itemize">
+Find the roots of <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>5</sup>−2<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">lagrange([[1,3],[0,1]])</span></div><p>
-or :
-</p><div class="center"><span style="font-family:monospace">lagrange([1,3],[0,1])</span></div><p>
+<div class="center"><span style="font-family:monospace">roots(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">5-2*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3) </span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(x-1)/2</span></div><p>
-since <span style="font-style:italic">x</span>−1/2=0 for <span style="font-style:italic">x</span>=1, and <span style="font-style:italic">x</span>−1/2=1 for <span style="font-style:italic">x</span>=3.<br>
+<div class="center"><span style="font-family:monospace">[[8+3*sqrt(7),1],[8-3*sqrt(7),1],[0,3]]</span></div>
+</li><li class="li-itemize">Find the roots of
+<span style="font-style:italic">x</span><sup>10</sup>−15<span style="font-style:italic">x</span><sup>8</sup>+90<span style="font-style:italic">x</span><sup>6</sup>−270<span style="font-style:italic">x</span><sup>4</sup>+405<span style="font-style:italic">x</span><sup>2</sup>−243=(<span style="font-style:italic">x</span><sup>2</sup>−3)<sup>5</sup>.<br>
+ Input :
+<div class="center"><span style="font-family:monospace">roots(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">10-15*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">8+90*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">6-270*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">4+405*x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2-243)</span></div>
+Output :
+<div class="center"><span style="font-family:monospace">[[sqrt(3),5],[-(sqrt(3)),5]]</span></div>
+</li><li class="li-itemize">Find the roots of <span style="font-style:italic">t</span><sup>3</sup>−1.<br>
 Input :
-</p><div class="center"><span style="font-family:monospace">lagrange([1,3],[0,1],y)</span></div><p>
+<div class="center"><span style="font-family:monospace">roots(t</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">3-1,t)</span></div>
 Output :
-</p><div class="center"><span style="font-family:monospace">(y-1)/2</span></div><p>
-<span style="font-weight:bold">Warning</span><br>
-<span style="font-family:monospace">f:=lagrange([1,2],[3,4],y)</span> does not return a function 
-but an expression with respect to <span style="font-style:italic">y</span>.
-To define <span style="font-style:italic">f</span> as a function, input
-</p><div class="center">
-<span style="font-family:monospace">f:=unapply(lagrange([1,2],[3,4],x),x)</span>
-</div><p>
-Avoid <span style="font-family:monospace">f(x):=lagrange([1,2],[3,4],x)</span> since
-the Lagrange polynomial would be computed each time <span style="font-family:monospace">f</span> is called
-(indeed in a function definition, the second member of the assignment
-is not evaluated).
-Note also that <br>
-<span style="font-family:monospace">g(x):=lagrange([1,2],[3,4])</span> would not work
-since the default argument of <span style="font-family:monospace">lagrange</span>
-would be global, hence not the same as the local
-variable used for the definition of <span style="font-family:monospace">g</span>.</p>
+<div class="center"><span style="font-family:monospace">[[(-1+(i)*sqrt(3))/2,1],[(-1-(i)*sqrt(3))/2,1],[1,1]]</span></div>
+</li></ul>
 <hr>
 <a href="cascmd_en342.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

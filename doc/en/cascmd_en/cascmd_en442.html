@@ -4,34 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Definition : seq[] ()</title>
+<title>Multiplying intervals</title>
 </head>
 <body >
 <a href="cascmd_en441.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en443.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec530" class="subsection">5.41.1  Definition : <span style="font-family:monospace">seq[] ()</span></h3>
-<p><a id="hevea_default689"></a><a id="hevea_default690"></a>
-A sequence is represented by 
-a sequence of elements separated by commas, without
-delimiters or with either <span style="font-family:monospace">( )</span> or <span style="font-family:monospace">seq[...]</span>
-as delimiters, for example
+<h3 id="sec529" class="subsection">5.40.5  Multiplying intervals</h3>
+<p>Intervals are multiplied by multiplying both end points of the first
+interval by both end points of the second interval. The smallest product
+will be the left end point of the product interval, and the largest
+product will be the right end point of the product interval.<br>
+Input:
 </p><div class="center">
-<span style="font-family:monospace">(1,2,3,4)</span><br>
-<span style="font-family:monospace">seq[1,2,3,4]</span>
-</div><p>
-Input :
-</p><div class="center"><span style="font-family:monospace">A:=(1,2,3,4)</span> or <span style="font-family:monospace">A:=seq[1,2,3,4]</span></div><div class="center"><span style="font-family:monospace">B:=(5,6,3,4)</span> or <span style="font-family:monospace">B:=seq[5,6,3,4]</span></div><p>
-<span style="font-weight:bold">Remarks</span>
-</p><ul class="itemize"><li class="li-itemize">
-The order of the elements of the sequence is significant.
-For example, if <span style="font-family:monospace">B:=(5,6,3,4)</span> and <span style="font-family:monospace">C:=(3,4,5,6)</span>, then
-<span style="font-family:monospace">B==C</span> returns <span style="font-family:monospace">0</span>.
-</li><li class="li-itemize">(see also <a href="index.html#sec%3Aseq">5.41</a>)<br>
-<span style="font-family:monospace">seq([0,2])=(0,0)</span> and <span style="font-family:monospace">seq([0,1,1,5])=[0,0,0,0,0]</span> but<br>
-<span style="font-family:monospace">seq[0,2]=(0,2)</span> and <span style="font-family:monospace">seq[0,1,1,5]=(0,1,1,5)</span>
-</li></ul>
+<span style="font-family:monospace">i[1,4]*i[2,3]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[2.00000000000000..0.120000000000000e2] 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">i[-2,4]*i[3,5]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[-0.100000000000000e2..0.200000000000000e2] 
+</span></div>
 <hr>
 <a href="cascmd_en441.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

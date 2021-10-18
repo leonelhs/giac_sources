@@ -4,83 +4,93 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The Fisher-Snédécor distribution</title>
+<title>The binomial distribution</title>
 </head>
 <body >
 <a href="cascmd_en714.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en716.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec898" class="subsection">8.4.8  The Fisher-Snédécor distribution</h3>
-<h4 id="sec899" class="subsubsection">The probability density function for the Fisher-Snédécor distribution: <span style="font-family:monospace">fisher</span><a id="hevea_default1237"></a> <span style="font-family:monospace">fisherd</span><a id="hevea_default1238"></a> <span style="font-family:monospace">snedecor</span><a id="hevea_default1239"></a> <span style="font-family:monospace">snedecord</span><a id="hevea_default1240"></a></h4>
-<p>The Fisher-Snédécor distribution (also called the F-distribution)
-with <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub> degrees of freedom has density function given by
-for <span style="font-style:italic">x</span> ≥ 0,
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">fisher</span>(<span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span>) =
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">n</span><sub>1</sub>/<span style="font-style:italic">n</span><sub>2</sub>)<sup><span style="font-style:italic">n</span><sub>1</sub>/2</sup>Γ((<span style="font-style:italic">n</span><sub>1</sub>+<span style="font-style:italic">n</span><sub>2</sub>)/2)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">Γ(<span style="font-style:italic">n</span><sub>1</sub>/2)Γ(<span style="font-style:italic">n</span><sub>2</sub>/2)</td></tr>
-</table></td><td class="dcell">
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>(<span style="font-style:italic">n</span><sub>1</sub>−2)/2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">(1+(<span style="font-style:italic">n</span><sub>1</sub>/<span style="font-style:italic">n</span><sub>2</sub>)<span style="font-style:italic">x</span>)<sup>(<span style="font-style:italic">n</span><sub>1</sub>+<span style="font-style:italic">n</span><sub>2</sub>)/2</sup></td></tr>
-</table></td></tr>
+<h3 id="sec877" class="subsection">8.4.1  The binomial distribution</h3>
+<h4 id="sec878" class="subsubsection">The probability density function for the binomial
+distribution : <span style="font-family:monospace">binomial</span><a id="hevea_default1220"></a></h4>
+<p>If you perform an experiment <span style="font-style:italic">n</span> times, where the probability of
+success each time is <span style="font-style:italic">p</span>, then the probability of exactly <span style="font-style:italic">k</span>
+successes is 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">k</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> = </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><span style="font-style:italic">p</span><sup><span style="font-style:italic">k</span></sup> (1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">n</span>−<span style="font-style:italic">k</span></sup></td></tr>
 </table><p>
-(The <span style="font-family:monospace">snecedor</span> command is the same as the <span style="font-family:monospace">fisher</span>
-command.)
+This determines the binomial distribution, and so this is called the 
+<span style="font-family:monospace">binomial</span> command. If you enter
+</p><div class="center">
+<span style="font-family:monospace">binomial(10,2,0.4)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.120932352
+</span></div><p>
+If no third argument <span style="font-style:italic">p</span> is given, then <span style="font-family:monospace">binomial</span> will just
+compute (<sub><span style="font-style:italic">k</span></sub><sup><span style="font-style:italic">n</span></sup>), which recall is called the binomial
+coefficient and is also computed by <span style="font-family:monospace">comb</span>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">binomial(10,2)
+</span></div><p>
+or
+</p><div class="center">
+<span style="font-family:monospace">comb(10,2)
+</span></div><p>
+then you will get
+</p><div class="center">
+<span style="font-family:monospace">45
+</span></div>
+<h4 id="sec879" class="subsubsection">The cumulative distribution function for the binomial
+distribution: <span style="font-family:monospace">binomial_cdf</span><a id="hevea_default1221"></a></h4>
+<p>Recall that the cumulative distribution function (cdf) for a
+distribution is <span style="font-style:italic">cdf</span>(<span style="font-style:italic">x</span>) = Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>). For the binomial
+distribution, this is given by the <span style="font-family:monospace">binomial_cdf</span> command; 
+<span style="font-family:monospace">binomial_cdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span>, which in this case will equal
+<span style="font-family:monospace">binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span>0<span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">) + …+ binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,floor(</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span>.
 If you enter
 </p><div class="center">
-<span style="font-family:monospace">fisher(5,3,2.5)
+<span style="font-family:monospace">binomial_cdf(4,0.5,2)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">0.10131184472
-</span></div>
-<h4 id="sec900" class="subsubsection">The cumulative distribution function for the Fisher-Snédécor distribution: <span style="font-family:monospace">fisher_cdf</span><a id="hevea_default1241"></a> <span style="font-family:monospace">snedecor_cdf</span><a id="hevea_default1242"></a></h4>
-<p>The cumulative distribution function for the Fisher-Snédécor
-distribution with <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub> degrees of freedom at a value <span style="font-style:italic">x</span> is
-<span style="font-family:monospace">fisher_cdf</span>(<span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">snedecor</span>(<span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span>) =
-<span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>); if you enter
-</p><div class="center">
-<span style="font-family:monospace">fisher_cdf(5,3,9)
+<span style="font-family:monospace">0.6875
 </span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">Beta(5/2,3/2,15/16,1)
-</span></div><p>
-which can be numerically approximated with
-</p><div class="center">
-<span style="font-family:monospace">evalf(fisher_cdf(5,3,9,10))
-</span></div><p>
-which is
-</p><div class="center">
-<span style="font-family:monospace">0.949898927032
-</span></div>
-<h4 id="sec901" class="subsubsection">The inverse distribution function for the Fisher-Snédécor distribution: <span style="font-family:monospace">fisher_icdf</span><a id="hevea_default1243"></a> <span style="font-family:monospace">snedecor_icdf</span><a id="hevea_default1244"></a></h4>
-<p>The inverse distribution function for the 
-Fisher-Snédécor
-distribution with <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub> degrees of freedom is computed with
-<span style="font-family:monospace">fisher_icdf(</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
-value <span style="font-style:italic">x</span> with <span style="font-family:monospace">fisher_cdf</span>(<span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
-</p><div class="center">
-<span style="font-family:monospace">fisher_icdf(5,3,0.95)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">9.01345516752
-</span></div>
-<h4 id="sec902" class="subsubsection">The upper tail cumulative function for the Fisher-Snédécor distribution: <span style="font-family:monospace">UTPF</span><a id="hevea_default1245"></a></h4>
-<p>The <span style="font-family:monospace">UTPF</span> (the Upper Tail Probability -
-Fisher-Snédécor distribution) will compute 
-Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>). 
+You can give <span style="font-family:monospace">binomial_cdf</span> an additional argument;
+<span style="font-family:monospace">binomial_cdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">) = Prob(</span><span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span><span style="font-family:monospace">)</span>, which
+in this case would be
+<span style="font-family:monospace">binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,ceil(</span><span style="font-style:italic">x</span><span style="font-family:monospace">),</span><span style="font-style:italic">p</span><span style="font-family:monospace">) + </span>⋯<span style="font-family:monospace"> + binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,floor(</span><span style="font-style:italic">y</span><span style="font-family:monospace">),</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span>.
 If you enter
 </p><div class="center">
-<span style="font-family:monospace">UTPF(5,3,9)
+<span style="font-family:monospace">binomial_cdf(2,0.3,1,2)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">0.050101072968
+<span style="font-family:monospace">0.51
 </span></div>
+<h4 id="sec880" class="subsubsection">The inverse distribution function for the binomial
+distribution: <span style="font-family:monospace">binomial_icdf</span><a id="hevea_default1222"></a></h4>
+<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function gives the value
+of <span style="font-style:italic">x</span> so that Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>; or for discrete distributions,
+the smallest <span style="font-style:italic">x</span> so that Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) ≥ <span style="font-style:italic">h</span>. For the binomial
+distribution with <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, the <span style="font-family:monospace">binomial_icdf</span> gives the
+inverse distribution function. If you enter
+</p><div class="center">
+<span style="font-family:monospace">binomial_icdf(4,0.5,0.9)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">3
+</span></div><p>
+Note that <span style="font-family:monospace">binomial_cdf(4,0.5,3)</span>
+is 0.9375, bigger than 0.9, while 
+<span style="font-family:monospace">binomial_cdf(4,0.5,2)</span> is 0.6875, smaller than 0.9.</p>
 <hr>
 <a href="cascmd_en714.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

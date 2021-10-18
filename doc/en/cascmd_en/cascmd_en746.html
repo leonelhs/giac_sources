@@ -4,40 +4,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximate integral with an adaptive Gaussian quadrature
-at 15 points: gaussquad</title>
+<title>Digits</title>
 </head>
 <body >
-<a href="cascmd_en745.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="cascmd_en744.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en747.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec961" class="subsection">9.3.4  Approximate integral with an adaptive Gaussian quadrature
-at 15 points: <span style="font-family:monospace">gaussquad</span></h3>
-<p><a id="hevea_default1303"></a></p><p>The <span style="font-family:monospace">gaussquad</span> command takes four arguments; an expression,
-the variable used by the expression, and two numbers.<br>
-<span style="font-family:monospace">gaussquad</span> returns an approximation to the definite integral
-of the expression over the limits given by the two numbers. The
-approximation is calculated by an adaptive method by Ernst Hairer
-which uses a 15-point Gaussian quadrature.<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">gaussquad(exp(x^2),x,0,1)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1.46265174591 
-</span></div><p>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">gaussquad(exp(-x^2),x,-1,1)
-</span></div><p>
-Output:
-</p><div class="center">
-<span style="font-family:monospace">1.49364826562 
-</span></div>
+<h3 id="sec959" class="subsection">9.1.1  Digits</h3>
+<p>
+The <span style="font-family:monospace">Digits</span> variable is used to control how real numbers
+are represented and also how they are displayed.
+When the specified
+number of digits is less or equal to 14 (for example <span style="font-family:monospace">Digits:=14</span>), then hardware floating point
+numbers are used and they are displayed using the specified
+number of digits.
+When <span style="font-family:monospace">Digits</span> is larger than 14, Xcas uses the MPFR
+library, the representation is similar to hardware floats
+(cf. infra) but the number of bits of
+the mantissa is not fixed and the range of exponents is much larger.
+More precisely, the number of bits of the mantissa of a created MPFR float
+is <span style="font-family:monospace">ceil(Digits*log(10)/log(2))</span>.</p><p>Note that if you change the value of <span style="font-family:monospace">Digits</span>, this will affect
+the creation of new real numbers compiled from command lines 
+or programs or by instructions like <span style="font-family:monospace">approx</span>, but it will
+not affect existing real numbers. Hence hardware floats may coexist
+with MPFR floats, and even in MPFR floats, some may have 100 bits
+of mantissa and some may have 150 bits of mantissa. If operations
+mix different kinds of floats, the most precise kind of floats
+are coerced to the less precise kind of floats.</p>
 <hr>
-<a href="cascmd_en745.html"><img src="previous_motif.gif" alt="Previous"></a>
+<a href="cascmd_en744.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en747.html"><img src="next_motif.gif" alt="Next"></a>
 </body>

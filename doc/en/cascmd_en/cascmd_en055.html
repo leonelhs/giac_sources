@@ -4,63 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Unassigning variables: VARS purge DelVar del restart rm_a_z rm_all_vars</title>
+<title>Copying variables: CopyVar</title>
 </head>
 <body >
 <a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en056.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec79" class="subsection">4.6.10  Unassigning variables: <span style="font-family:monospace">VARS purge DelVar del restart rm_a_z rm_all_vars</span></h3>
-<p><a id="hevea_default64"></a><a id="hevea_default65"></a><a id="hevea_default66"></a><a id="hevea_default67"></a><a id="hevea_default68"></a><a id="hevea_default69"></a><a id="hevea_default70"></a></p><p>The <span style="font-family:monospace">VARS()</span> command will list the variables to which you have
-assigned values or assumptions. If you begin by entering
+<h3 id="sec79" class="subsection">4.6.8  Copying variables: <span style="font-family:monospace">CopyVar</span></h3>
+<p><a id="hevea_default55"></a>
+<a id="subsec:copyvar"></a></p><p>If a variable has a value, such as
 </p><div class="center">
 <span style="font-family:monospace">a := 1</span>
 </div><p>
-and
+and you set a second variable to the first variable
 </p><div class="center">
-<span style="font-family:monospace">anothervar := 2</span>
+<span style="font-family:monospace">b := a</span>
 </div><p>
-then 
+the new variable will have the same value as the first; in this case
+<span style="font-family:monospace">b</span> will be equal to <span style="font-family:monospace">1</span>. If you later give the first
+variable a new value;
 </p><div class="center">
-<span style="font-family:monospace">VARS()</span>
+<span style="font-family:monospace">a := 5</span>
 </div><p>
-will return
+the new value will still have the old value, in this case, <span style="font-family:monospace">b</span>
+will still be equal to <span style="font-family:monospace">1</span>.</p><p>The <span style="font-family:monospace">CopyVar</span> command will copy one variable to
+another without evaluating the first variable; the new variable will
+simply be a copy of the first. With <span style="font-family:monospace">a</span> having the value of
+<span style="font-family:monospace">5</span>, as above, the command
 </p><div class="center">
-<span style="font-family:monospace">[a, anothervar]</span>
-</div><p>The <span style="font-family:monospace">purge</span> command will clear the values and
-assumptions you make on variables. To clear the values and
-assumptions on <span style="font-family:monospace">a</span>, for example, you can enter<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">purge(a)
-</span></div><p>
-For <span style="font-family:monospace">TI</span> compatibility, you can also enter<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">DelVar a
-</span></div><p>
-and for Python compatibility, you can also enter
-Output:
-</p><div class="center">
-<span style="font-family:monospace">del a 
-</span></div><p>To clear the values and assumptions you have made on all variables you
-can use the
-</p><div class="center">
-<span style="font-family:monospace">restart</span>
+<span style="font-family:monospace">CopyVar(a,c)</span>
 </div><p>
-or
+will make <span style="font-family:monospace">c</span> a copy of the variable <span style="font-family:monospace">a</span>, so it will
+have the value <span style="font-family:monospace">5</span> also. If you now change the value of
+<span style="font-family:monospace">a</span>
 </p><div class="center">
-<span style="font-family:monospace">rm_all_vars()</span>
+<span style="font-family:monospace">a := 10</span>
 </div><p>
-command. The command <span style="font-family:monospace">rm_a_z</span> will clear the values and
-assumptions of the variables with single lowercase letter names. If
-you have variables names <span style="font-family:monospace">A,B,a,b,myvar</span>, then after<br>
-Input:
-</p><div class="center">
-<span style="font-family:monospace">rm_a_z() 
-</span></div><p>
-you will only have the variables named <span style="font-family:monospace">A,B,myvar</span>.</p>
+then the value of <span style="font-family:monospace">c</span> will also change; here, <span style="font-family:monospace">c</span> will
+now have the value <span style="font-family:monospace">10</span>.</p>
 <hr>
 <a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

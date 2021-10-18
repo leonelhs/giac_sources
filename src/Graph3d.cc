@@ -89,10 +89,10 @@ namespace xcas {
     int res= write_png(filename.c_str(), rows, w(), h(), PNG_COLOR_TYPE_RGBA, 8);
     if (res!=-1){
       string command="pngtopnm "+filename+" | pnmtops > "+remove_extension(filename)+".ps &";
-      cerr << command << endl;
+      cerr << command << '\n';
       system_no_deprecation(command.c_str()); 
       command="pngtopnm "+filename+" | pnmtojpeg > "+remove_extension(filename)+".jpg &";
-      cerr << command << endl;
+      cerr << command << '\n';
       system_no_deprecation(command.c_str()); 
     }
 #endif
@@ -313,7 +313,7 @@ namespace xcas {
       for (int y=0;y<H;++y){
 	for (int x=0;x<W;x++)
 	  cerr << unsigned(*(ptr+(x+y*W)*depth)) << " " << unsigned(*(ptr+(x+y*W)*depth+1)) << " " << unsigned(*(ptr+(x+y*W)*depth+2)) << ", ";
-	cerr << endl;
+	cerr << '\n';
       }
       */
       // texture->w() and texture->h() must be a power of 2!!
@@ -619,7 +619,7 @@ namespace xcas {
       prevline[nv]=old;
       /* for (int j=0;j<=nv;++j)
 	 cerr << prevline[j] << " " ;
-	cerr << endl;
+	cerr << '\n';
       */
     }
   }
@@ -730,7 +730,7 @@ namespace xcas {
     case _GL_COLOR_INDEXES:
       return GL_COLOR_INDEXES;
     }
-    cerr << "No GL equivalent for " << i << endl;
+    cerr << "No GL equivalent for " << i << '\n';
     return i;
   }
 
@@ -869,7 +869,7 @@ namespace xcas {
 	if (attrv.size()==2 && attrv.front().type==_INT_ && attrv.front().val==_GL_MATERIAL){
 	  gen attrm =evalf_double(attrv.back(),1,contextptr);
 	  if (debug_infolevel)
-	    cerr << "Setting material " << attrm << endl;
+	    cerr << "Setting material " << attrm << '\n';
 	  if (attrm.type==_VECT && attrm._VECTptr->size()<=3 ){
 	    gen attrv0=attrv.back()._VECTptr->front();
 	    if (attrv0.type==_INT_ && attrv0.val==_GL_TEXTURE){
@@ -907,13 +907,13 @@ namespace xcas {
     bool hidden_line = fill_polygon && (width==7 || (display_mode & 0x8) || texture );
     xcas_color(couleur,true);
     if (debug_infolevel){
-      cerr << "opengl displaying " << g << endl;
+      cerr << "opengl displaying " << g << '\n';
       GLint b;
       GLfloat posf[4],direcf[4],ambient[4],diffuse[4],specular[4],emission[4],shini[1];
       GLfloat expo,cutoff;
       double pos[4],direc[4];
       glGetIntegerv(GL_BLEND,&b);
-      cerr << "blend " << b << endl;
+      cerr << "blend " << b << '\n';
       for (int i=0;i<8;++i){
 	glGetIntegerv(GL_LIGHT0+i,&b);
 	if (b){
@@ -935,7 +935,7 @@ namespace xcas {
 	    " ambient " << ambient[0] << "," << ambient[1] << "," << ambient[2] << "," << ambient[3] << 
 	    " diffuse " << diffuse[0] << "," << diffuse[1] << "," << diffuse[2] << "," << diffuse[3] << 
 	    " specular " << specular[0] << "," << specular[1] << "," << specular[2] << "," << specular[3] << 
-	    " exponent " << expo << " cutoff " << cutoff << endl;
+	    " exponent " << expo << " cutoff " << cutoff << '\n';
 	}
       }
       // material colors
@@ -949,7 +949,7 @@ namespace xcas {
 	" diffuse " << diffuse[0] << "," << diffuse[1] << "," << diffuse[2] << "," << diffuse[3] << 
 	" specular " << specular[0] << "," << specular[1] << "," << specular[2] << "," << specular[3] << 
 	" emission " << emission[0] << "," << emission[1] << "," << emission[2] << "," << emission[3] << 
-	" shininess " << shini[0] << endl;
+	" shininess " << shini[0] << '\n';
       glGetMaterialfv(GL_BACK,GL_AMBIENT,ambient);
       glGetMaterialfv(GL_BACK,GL_DIFFUSE,diffuse);
       glGetMaterialfv(GL_BACK,GL_SPECULAR,specular);
@@ -960,7 +960,7 @@ namespace xcas {
 	" diffuse " << diffuse[0] << "," << diffuse[1] << "," << diffuse[2] << "," << diffuse[3] << 
 	" specular " << specular[0] << "," << specular[1] << "," << specular[2] << "," << specular[3] << 
 	" emission " << emission[0] << "," << emission[1] << "," << emission[2] << "," << emission[3] << 
-	" shininess " << shini[0] << endl;	
+	" shininess " << shini[0] << '\n';	
     }
     if (est_hyperplan){
       vecteur P,n;
@@ -1035,7 +1035,7 @@ namespace xcas {
 	      glvertex(P3,0,0,contextptr);
 	      glvertex(P2,0,0,contextptr);
 	      glEnd();
-	      // cerr << P1 << "," << P2 << "," << P3 << "," << P4 << endl;
+	      // cerr << P1 << "," << P2 << "," << P3 << "," << P4 << '\n';
 	      P1=P2;
 	    }
 	  }
@@ -1657,7 +1657,7 @@ namespace xcas {
 #else
     j=window()->h()-j;
 #endif
-    // cout << i << " " << j <<  endl;
+    // cout << i << " " << j <<  '\n';
   }
 
   void Graph3d::find_xyz(double i,double j,double depth_,double & x,double & y,double & z) {
@@ -1782,7 +1782,7 @@ namespace xcas {
     glEnable(GL_CLIP_PLANE3);
     glEnable(GL_CLIP_PLANE4);
     glEnable(GL_CLIP_PLANE5);
-    // cout << glIsEnabled(GL_CLIP_PLANE0) << endl;
+    // cout << glIsEnabled(GL_CLIP_PLANE0) << '\n';
     glDepthFunc(GL_LESS);
     glEnable(GL_DEPTH_TEST);
     glShadeModel((display_mode & 0x10)?GL_FLAT:GL_SMOOTH);
@@ -1813,7 +1813,7 @@ namespace xcas {
     if (dz==0) { dz=1; ++window_zmax; }
     double x,y,z,theta;
     get_axis_angle_deg( (dragi || dragj)?(quaternion_double(dragi*180/h(),0,0)*rotation_2_quaternion_double(1,0,0,dragj*180/w())*q):q,x,y,z,theta);
-    // cerr << theta << " " << x << "," << y << "," << z << endl;
+    // cerr << theta << " " << x << "," << y << "," << z << '\n';
     if (!notperspective)
       glTranslated(0,0,-2*sqrt3over2);
     glRotated(theta,x,y,z);
@@ -1853,19 +1853,19 @@ namespace xcas {
       mult4(model,&model_inv[12],&check[12]);
       for (int i=0;i<16;++i){
 	cout << model[i] << ",";
-	if (i%4==3) cout << endl;
+	if (i%4==3) cout << '\n';
       }
-      cout << endl;
+      cout << '\n';
       for (int i=0;i<16;++i){
 	cout << model_inv[i] << ",";
-	if (i%4==3) cout << endl;
+	if (i%4==3) cout << '\n';
       }
-      cout << endl;
+      cout << '\n';
       for (int i=0;i<16;++i){
 	cout << check[i] << ",";
-	if (i%4==3) cout << endl;
+	if (i%4==3) cout << '\n';
       }
-      cout << endl;
+      cout << '\n';
     }
     // drax
     bool fbox=(display_mode & 0x100);
@@ -2165,7 +2165,7 @@ namespace xcas {
 	    " ambient " << ambient[0] << "," << ambient[1] << "," << ambient[2] << "," << ambient[3] << 
 	    " diffuse " << diffuse[0] << "," << diffuse[1] << "," << diffuse[2] << "," << diffuse[3] << 
 	    " specular " << specular[0] << "," << specular[1] << "," << specular[2] << "," << specular[3] << 
-	    " exponent " << expo << " cutoff " << cutoff << endl;
+	    " exponent " << expo << " cutoff " << cutoff << '\n';
 	}
       }
     }
@@ -2240,7 +2240,7 @@ namespace xcas {
     glRasterPos3d(-0.98,0.87,depth-0.001);
     if (show_axes && !printing){
       string tmps=gettext("mouse plan ")+giac::print_DOUBLE_(normal_a,3)+"x+"+giac::print_DOUBLE_(normal_b,3)+"y+"+giac::print_DOUBLE_(normal_c,3)+"z="+ giac::print_DOUBLE_(plan_t0,3);
-      // cerr << tmps << endl;
+      // cerr << tmps << '\n';
       draw_string(tmps); // +" Z="+giac::print_DOUBLE_(-depth,3));
     }
     if (below_depth_hidden){
@@ -2307,13 +2307,13 @@ namespace xcas {
 
   // if printing is true, we call gl2ps to make an eps file
   void Graph3d::draw(){
-    // cerr << "graph3d" << endl;
+    // cerr << "graph3d" << '\n';
     int clip_x,clip_y,clip_w,clip_h;
 #ifdef __APPLE__
     if (!find_clip_box(this,clip_x,clip_y,clip_w,clip_h))
 #endif
       fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
-    // cerr << clip_x << " " << clip_y<< " " << clip_w<< " " << clip_h << endl;
+    // cerr << clip_x << " " << clip_y<< " " << clip_w<< " " << clip_h << '\n';
     if (printing){
       fprintf(printing,"%s","\nGS\n\nCR\nCS\n% avant eps -> BeginDocument\n/b4_Inc_state save def\n%save state for cleanup\n/dict_count countdictstack def\n/op_count count 1 sub def\n%count objects on op stack\nuserdict begin\n%make userdict current dict\n/showpage { } def\n%redefine showpage to be null\n0 setgray 0 setlinecap\n1 setlinewidth 0 setlinejoin\n10 setmiterlimit [] 0 setdash newpath\n/languagelevel where\n%if not equal to 1 then\n{pop languagelevel                %set strokeadjust and\n1 ne\n%overprint to their defaults\n{false setstrokeadjust false setoverprint\n} if\n} if\n");
       // Translate by previous widget h()
@@ -2416,10 +2416,10 @@ namespace xcas {
 	string epsfile(remove_extension(filename)+".eps");
 	FILE * f=fopen(epsfile.c_str(),"w");
 	if (f){
-	  of << "% Generated by xcas\n" << endl;
-	  of << giac::tex_preamble << endl;
-	  of << "\\includegraphics[bb=0 0 400 "<< h() <<"]{" << remove_path(epsfile) << "}" << endl << endl ;
-	  of << giac::tex_end << endl;
+	  of << "% Generated by xcas\n" << '\n';
+	  of << giac::tex_preamble << '\n';
+	  of << "\\includegraphics[bb=0 0 400 "<< h() <<"]{" << remove_path(epsfile) << "}" << '\n' << '\n' ;
+	  of << giac::tex_end << '\n';
 	  of.close();
 	  int gw=w();
 	  resize(x(),y(),400,h());
@@ -2627,7 +2627,7 @@ namespace xcas {
       return 1;
     if (!hp)
       hp=geo_find_history_pack(this);
-    // cerr << event << " " << mode << endl;
+    // cerr << event << " " << mode << '\n';
     int res=Graph3d::in_handle(event);
     if (event==FL_UNFOCUS){
       return 1;

@@ -4,32 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>General polygons in the plane: polygon</title>
+<title>Squares in the plane: square</title>
 </head>
 <body >
 <a href="cascmd_en857.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en859.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1114" class="subsection">12.10.3  General polygons in the plane: <span style="font-family:monospace">polygon</span><a id="hevea_default1522"></a></h3>
+<h3 id="sec1113" class="subsection">12.9.1  Squares in the plane: <span style="font-family:monospace">square</span><a id="hevea_default1524"></a></h3>
 <p>
-<a id="sec:2dgenpolygon"></a></p><p>See section <a href="cascmd_en956.html#sec%3A3dgenpolygon">13.9.3</a> for general polygons in space.</p><p>The <span style="font-family:monospace">polygon</span> command takes as argument a sequence or list of points. </p><p><span style="font-family:monospace">polygon</span> returns and draws the polygon with the given vertices.<br>
+<a id="sec:2dsquares"></a></p><p>See section <a href="cascmd_en956.html#sec%3A3dsquares">13.8.1</a> for squares in space.</p><p>The <span style="font-family:monospace">square</span> command takes two mandatory arguments and one or
+two optional arguments. The mandatory arguments are points <span style="font-family:monospace">A</span> and
+<span style="font-family:monospace">B</span>.</p><p><span style="font-family:monospace">square</span> returns and draws the square <span style="font-family:monospace">ABCD</span>, where the
+square is traversed counterclockwise.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">polygon(-1,-1+i/2,i,1+i,-i)
+<span style="font-family:monospace">square(0,1+i)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en120.png">
+<img src="cascmd_en105.png">
 </div><p>
+The optional third fourth arguments need to be
+variable names, which will be assigned to vertex <span style="font-family:monospace">C</span> (and
+<span style="font-family:monospace">D</span>).<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">polygon(makelist(x-&gt;exp(i*pi*x/3),0,5,1))
+<span style="font-family:monospace">square(0,1+i,C,D)
 </span></div><p>
 Output:
 </p><div class="center">
-<img src="cascmd_en121.png">
-</div>
+<span style="font-family:monospace"><img src="cascmd_en106.png">
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">affix(C), affix(D)
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">2*i, -1 + i
+</span></div>
 <hr>
 <a href="cascmd_en857.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

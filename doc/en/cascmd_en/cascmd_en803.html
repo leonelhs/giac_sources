@@ -4,37 +4,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Converting an expression to a string: string</title>
+<title>Changing the order of execution: goto, label</title>
 </head>
 <body >
 <a href="cascmd_en802.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en804.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1035" class="subsection">11.4.7  Converting an expression to a string: <span style="font-family:monospace">string</span></h3>
-<p><a id="hevea_default1428"></a></p><p>The <span style="font-family:monospace">string</span> command can be used to convert an expression
-to a string. If you give it an expression as an argument, the
-expression will be evaluated and then converted to a string. For
-example, if you enter
-</p><div class="center">
-<span style="font-family:monospace">string(ifactor(6))</span>
-</div><p>
-the result will be the string
-</p><div class="center">
-<span style="font-family:monospace">"2 * 3"</span>
-</div><p>
-This is the same thing as adding the empty string to the expression;
-</p><div class="center">
-<span style="font-family:monospace">ifactor(6) + ""</span>
-</div><p>If you want to convert an unevaluated expression to a string, you can
-quote the expression. If you enter
-</p><div class="center">
-<span style="font-family:monospace">string(quote(ifactor(6)))</span>
-</div><p>
-then you will get the string
-</p><div class="center">
-<span style="font-family:monospace">"ifactor(6)"</span>
-</div>
+<h3 id="sec1034" class="subsection">11.3.8  Changing the order of execution: <span style="font-family:monospace">goto, label</span></h3>
+<p>
+<a id="hevea_default1426"></a><a id="hevea_default1427"></a></p><p>The <span style="font-family:monospace">goto</span> command will tell a program to jump to a different
+spot in a program, where the spot needs to have been marked with
+<span style="font-family:monospace">label</span>. They both must have the same argument, which is
+simply a sequence of characters. For example, the following program
+will add the terms of the harmonic series until the term is less than
+some specified value <span style="font-family:monospace">eps</span> and print the result.
+</p><pre class="verbatim">  harmsum(eps) := {
+  local S, j;
+  S := 0;
+  j := 0;
+  label(spot);
+  j := j + 1;       
+  S := S + 1/j;
+  if (1/j &gt;= eps) goto (spot);
+  print(S);
+  return 0;
+  }
+</pre>
 <hr>
 <a href="cascmd_en802.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

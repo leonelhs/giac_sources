@@ -1352,6 +1352,7 @@ int main(int ARGC, char *ARGV[]){
      ********************************************************* */
   if ( intexmacs){
     giac::html_help_init(ARGV[0],false);
+    giac::enable_texmacs_compatible_latex_export(true);
     int out_handle;
 #ifdef WITH_GNUPLOT
     giac::run_gnuplot(out_handle);
@@ -1359,12 +1360,12 @@ int main(int ARGC, char *ARGV[]){
     putchar(TEXMACS_DATA_BEGIN);
     printf("verbatim:");
     format_plugin();
-    printf("--------------------------------------------------------------------\n");
-    printf("|     Giac CAS for TeXmacs, released under the GPL license (3.0)    |\n");
-    printf("|     See http://www.gnu.org for license details                    |\n");
-    printf("|  May contain BSD licensed software parts (lapack, atlas, tinymt)  |\n");
-    printf("| (c) 2003,2018 B. Parisse & al (giac), J. van der Hoeven (TeXmacs) |\n");
-    printf("--------------------------------------------------------------------\n");
+    printf("latex:");
+    format_plugin();
+    printf("{\\centering\\begin{tabular}{|c|}\\hline Giac CAS for TeXmacs, released under the GPL license (3.0)\\\\See \\url{http://www.gnu.org} for license details\\\\May contain BSD licensed software parts (lapack, atlas, tinymt)\\\\\\copyright\\ 2003--2019 B. Parisse \\& al (giac), J. van der Hoeven (TeXmacs)\\\\\\hline\\end{tabular}\\par}");
+    putchar(TEXMACS_DATA_END);
+    putchar(TEXMACS_DATA_BEGIN);
+    printf("verbatim:\n\n");
     switch (giac::xcas_mode(contextptr)){
     case 0:
       printf("Xcas (C-like) syntax mode\n");
