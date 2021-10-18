@@ -1010,6 +1010,12 @@ namespace giac {
     }
   }
 
+#ifndef DOUBLEVAL
+  gen::gen(double d){ 
+    opaque_double_copy(&d,this); type=_DOUBLE_; 
+  };
+#endif
+
   gen::gen(double a,double b){
     subtype=0;
     // COUT << a << " " << b << " " << epsilon << endl;
@@ -1121,9 +1127,7 @@ namespace giac {
 #ifdef DOUBLEVAL
     return _DOUBLE_val;
 #else
-    longlong r = * (longlong *)(this) ;
-    (* (gen *) (&r)).type = 0;
-    return * (double *)(&r); 
+    return opaque_double_val(this);
 #endif
   }
 
@@ -10269,6 +10273,15 @@ namespace giac {
     longlong ll=strtoll(s,&endchar,base);
 #endif
     int l =strlen(s);
+    if (l>0 && s[l-1]=='.'){
+      // make a copy of s, call chartab2gen recursivly, 
+      // because some implementations of strtod do not like a . at the end
+      char * scopy=(char *)alloca(l+2);
+      strcpy(scopy,s);
+      scopy[l]='0';
+      scopy[l+1]=0;
+      return chartab2gen(scopy,contextptr);
+    }
     if (*endchar) {// non integer
       int digits=decimal_digits(contextptr);
       // count numeric char

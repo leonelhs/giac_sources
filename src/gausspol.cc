@@ -5879,7 +5879,21 @@ namespace giac {
     return (is_positive(p.coord.front().value,context0));
   }
 
-  void partfrac(const polynome & num, const polynome & den, const vector< facteur< polynome > > & v , vector < pf <gen> > & pfdecomp, polynome & ipnum, polynome & ipden,bool rational ){
+  void partfrac(const polynome & num_, const polynome & den_, const vector< facteur< polynome > > & v_ , vector < pf <gen> > & pfdecomp, polynome & ipnum, polynome & ipden,bool rational ){
+    polynome num(num_),den(den_);
+    vector< facteur< polynome > > v(v_);
+    vector< facteur< polynome > >::iterator jt=v.begin(),jtend=v.end()
+;
+    for (;jt!=jtend;++jt){
+      gen tmp(1);
+      lcmdeno(jt->fact,tmp);
+      if (!is_one(tmp)){
+	jt->fact=tmp*jt->fact;
+	tmp=pow(tmp,jt->mult,context0);
+	num=tmp*num;
+	den=tmp*den;
+      }
+    }
     // check that all mult == 1 and deg<=2
     // later will split in 2 parts, 1st having this property
     vector< facteur< polynome > >::const_iterator it=v.begin(),itend=v.end();

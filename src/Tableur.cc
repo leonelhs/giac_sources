@@ -187,7 +187,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(varname);
     for (;;) {
       Fl_Widget *o = Fl::readqueue();
       if (!o) Fl::wait();
@@ -1548,7 +1548,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(separator);
     for (;;) {
       Fl_Widget *o = Fl::readqueue();
       if (!o) Fl::wait();
@@ -1915,7 +1915,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(varname);
     for (;;) {
       Fl_Widget *o = Fl::readqueue();
       if (!o) Fl::wait();
@@ -2054,7 +2054,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(target);
     for (;;) {
       Fl_Widget *o = Fl::readqueue();
       if (!o) Fl::wait();
@@ -2147,7 +2147,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(fcn);
     for (;;) {
       Fl_Widget *o = Fl::readqueue();
       if (!o) Fl::wait();
@@ -2370,7 +2370,7 @@ namespace xcas {
       w->show();
       autosave_disabled=true;
       w->hotspot(w);
-      Fl::focus(w);
+      Fl::focus(i1);
       for (;;) {
 	Fl_Widget *o = Fl::readqueue();
 	if (!o) Fl::wait();

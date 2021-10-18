@@ -7332,11 +7332,13 @@ namespace giac {
     gen x(args._VECTptr->front()),n(args._VECTptr->back());
     if (n.type==_REAL)
       n=n.evalf_double(1,contextptr);
-    if (n.type==_DOUBLE_)
-      n=int(n._DOUBLE_val);
-    if (n.type!=_INT_)
-      return gensizeerr(contextptr);
-    return Psi(x,n.val,contextptr);
+    if (is_integral(n))
+      return Psi(x,n.val,contextptr);
+    if (is_integral(x)){
+      *logptr(contextptr) << "Warning, please use Psi(x,n), not Psi(n,x)" << endl;
+      return Psi(n,x.val,contextptr);
+    }
+    return gensizeerr(contextptr);
   }
   static const char _Psi_s []="Psi";
 #ifdef GIAC_HAS_STO_38
@@ -8419,6 +8421,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_Si," D_at_Si",&d_Si);
   gen _Si(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type==_VECT) return apply(args,_Si,contextptr);
     if (args.type==_FLOAT_)
       return evalf2bcd(_Si(get_double(args._FLOAT_val),contextptr),1,contextptr);
     if (is_zero(args,contextptr))
@@ -8474,6 +8477,7 @@ namespace giac {
   define_partial_derivative_onearg_genop( D_at_Ci," D_at_Ci",&d_Ci);
   gen _Ci(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type==_VECT) return apply(args,_Ci,contextptr);
     if (args.type==_FLOAT_)
       return evalf2bcd(_Ci(get_double(args._FLOAT_val),contextptr),1,contextptr);
     if (is_zero(args,contextptr))
@@ -8913,6 +8917,7 @@ namespace giac {
   }
   gen _Ei(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type==_VECT) return apply(args,_Ei,contextptr);
     if (args.type==_FLOAT_)
       return evalf2bcd(_Ei(get_double(args._FLOAT_val),contextptr),1,contextptr);
     if (args.type!=_VECT){

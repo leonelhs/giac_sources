@@ -3657,14 +3657,14 @@ namespace giac {
     int n=y.size();
     a.resize(n);
     gen * astart=&a[0];
-    *astart=y[0];
+    *astart=y[0]/m[0][0];
     for (int k=1;k<n;++k){
       const gen * mkj=&m[k]._VECTptr->front();
       gen *aj=astart,*ak=astart+k;
       gen res=y[k];
       for (;aj<ak;++mkj,++aj)
 	res -= (*mkj)*(*aj); 
-      *ak=res;
+      *ak=res/(*mkj);
     }
   }
 
@@ -3729,6 +3729,59 @@ namespace giac {
     }
     if (s!=2)
       return gentoomanyargs("linsolve");
+    if (is_squarematrix(v[0]) && v[1].type==_VECT){
+      // maybe it's a triangular system
+      matrice & m=*v[0]._VECTptr;
+      int n=m.size();
+      bool mat=ckmatrix(v[1]);
+      vecteur b,res;
+      if (!mat){
+	b=vecteur(1,v[1]);	
+	if (!ckmatrix(b))
+	  return gensizeerr(contextptr);
+      }
+      else 
+	b=mtran(*v[1]._VECTptr);
+      if (n>=2){
+	if (is_zero(m[0][1],contextptr)){
+	  // lower triangular?
+	  bool lower=true;
+	  for (unsigned i=0;lower && i<n;++i){
+	    vecteur & v=*m[i]._VECTptr;
+	    for (unsigned j=i+1;lower && j<n;++j){
+	      lower=is_zero(v[j]);
+	    }
+	  }
+	  for (unsigned i=0;i<b.size();++i){
+	    vecteur y(n);
+	    if (lower)
+	      linsolve_l(m,*b[i]._VECTptr,y);
+	    if (!mat)
+	      return y;
+	    res.push_back(y);
+	  }
+	  return res;
+	}
+	// upper triangular?
+	bool upper=true;
+	for (unsigned i=1;upper && i<n;++i){
+	  vecteur & v=*m[i]._VECTptr;
+	  for (unsigned j=0;upper && j<i;++j){
+	    upper=is_zero(v[j]);
+	  }
+	}
+	if (upper){
+	  for (unsigned i=0;i<b.size();++i){
+	    vecteur y(n);
+	    linsolve_u(m,*b[i]._VECTptr,y);
+	    if (!mat)
+	      return y;
+	    res.push_back(y);
+	  }
+	  return res;
+	}
+      }
+    }
     if (v[1].type==_IDNT)
       v[1]=eval(v[1],eval_level(contextptr),contextptr);
     gen syst=apply(v[0],equal2diff),vars=v[1];

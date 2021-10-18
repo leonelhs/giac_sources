@@ -113,6 +113,15 @@ int my_sprintf(char * s, const char * format, ...){
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
+  void opaque_double_copy(void * source,void * target){
+    *((double *) target) = * ((double *) source);
+  }
+
+  double opaque_double_val(const void * source){
+    longlong r = * (longlong *)(source) ;
+    (* (gen *) (&r)).type = 0;
+    return * (double *)(&r); 
+  }
 
 #ifdef TIMEOUT
 #ifndef EMCC

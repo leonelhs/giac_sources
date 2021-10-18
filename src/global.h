@@ -104,6 +104,8 @@ inline double giac_log(double d){
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
+  void opaque_double_copy(void * source,void * target);
+  double opaque_double_val(const void * source);
 
   double giac_floor(double d);
   double giac_ceil(double d);

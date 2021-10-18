@@ -382,14 +382,15 @@ namespace std {
     unsigned max_size() const {
       return (1 << 30) -1;
     }
+    static _Tp &OutOfBoundsDefault() { static _Tp value; value = _Tp(); return value; }
     _Tp & at(unsigned n){
       if (n>_abs(_taille))
-	return _Tp(); // should be defined somewhere else
+	return OutOfBoundsDefault();
       return *(begin()+n);
     }
     const _Tp at(unsigned n) const {
       if (n>_abs(_taille))
-	return _Tp(); // should be defined somewhere else
+	return OutOfBoundsDefault();
       return *(begin()+n);
     }
   };
@@ -623,9 +624,7 @@ namespace std {
     return true;
   }
 
-  template<typename _Tp>
-    inline bool operator!=(const vector<_Tp>& __x, const vector<_Tp>& __y){ return !(__x==__y);
-  }
+  // template<typename _Tp> inline bool operator!=(const vector<_Tp>& __x, const vector<_Tp>& __y){ return !(__x==__y); }
 
   template<typename _Tp>
     inline bool operator < (const vector<_Tp>& __x, const vector<_Tp>& __y){ 

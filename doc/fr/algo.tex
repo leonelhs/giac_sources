@@ -353,7 +353,7 @@ d'un entier repr\'esent\'e par un flottant on \'ecrit
 l'entier suivi de \verb|.0| par exemple \verb|23.0|.
 
 {\bf Remarque}~:\\
-Les microprocesseurs ayant un mode BCD\index{BCD} peuvent avoir un format
+Les microprocesseurs ayant un mode {\bf BCD}\index{BCD} peuvent avoir un format
 de repr\'esentation des flottants en base 10, les nombres d\'ecimaux
 comme par exemple 0.3 peuvent \^etre repr\'esent\'es exactement. 
 Certains logiciels, notamment maple, utilisent par d\'efaut des
@@ -1179,7 +1179,7 @@ l'identit\'e de B\'ezout, que l'on retrouve
 d'ailleurs un peu partout (par exemple pour le calcul de primitives). 
 
 Illustrons cette méthode sur un exemple simple, la recherche de 
-racines rationnelles\index{racine rationnelle} d'un polyn\^ome $P(X)=a_d X^d + \cdots + a_0$ 
+{\bf racines rationnelles}\index{racine rationnelle} d'un polyn\^ome $P(X)=a_d X^d + \cdots + a_0$ 
 \`a coefficients entiers ou polynomiaux, avec $a_d$ et $a_0$ non nuls. 
 L'algorithme g\'en\'erique (assez connu) consiste 
 \`a chercher les diviseurs de $a_0$ et de $a_d$ et \`a tester toutes 
@@ -1342,7 +1342,7 @@ on utilise une variation adaptée à la
 représentation binaire des entiers (cf. Cohen ou le manuel de GMP version 4 
 pour plus de détails). Nous décrirons des
 algorithmes de PGCD plus efficaces pour les polynômes dans le prochain article.
-\item l'identité de Bézout\index{B\'ezout, identit\'e de}, aussi appelée PGCD étendu. \'Etant donné
+\item l'{\bf identité de Bézout}\index{B\'ezout, identit\'e de}, aussi appelée PGCD étendu. \'Etant donné
 deux entiers ou deux polyn\^omes $a$ et $b$ on calcule $u$, $v$ et
 $d$ tels que $au+bv=d$. On écrit la matrice~:
 \[ \left( \begin{array}{lll}
@@ -2330,7 +2330,8 @@ coefficients binomiaux par $2^{m - 1}$ (obtenue en développant $( 1 + 1 )^{m -
 1}$). D'où le
 
 \begin{thm}\index{Landau} \index{Mignotte}
-  (Landau-Mignotte) Soit $P$ un polynôme à coefficients entiers (ou entiers de
+  ({\bf Landau-Mignotte}) 
+Soit $P$ un polynôme à coefficients entiers (ou entiers de
   Gauss) et $D$ un diviseur de $P$ de degré $m$. Si $| P |$ désigne la norme
   euclidienne du vecteur des coefficients de $P$ et $p$ le coefficient
   dominant de $P$ alors les coefficients $d_j$ de $D$ satisfont l'inégalité
@@ -3357,10 +3358,10 @@ classique (changement de signe), ou \`a la m\'ethode de Newton
 \`a une puissance de 2). C'est ce qui est utilis\'e par
 l'instruction \verb|realroot| de Giac.
 \item Il existe un autre algorithme de localisation de racines
-r\'eelles d\^u \`a Vincent, Akritas et 
-Strzebonski\index{Vincent}\index{Akritas}\index{Strzebonski}, cf. la
+r\'eelles d\^u \`a {\bf Vincent, Akritas et 
+Strzebonski}\index{Vincent}\index{Akritas}\index{Strzebonski}, cf. la
 commande \verb|VAS| de Xcas. Cet algorithme est tr\`es
-efficace pour donner des intervalles d'isolation\index{isolation de racines} des racines
+efficace pour donner des intervalles d'{\bf isolation}\index{isolation de racines} des racines
 (sur lesquels on peut faire de la dichotomie).
 \item Ces suites se g\'en\'erallisent dans le plan complexe, on
 peut d\'eterminer le nombre de racines contenues dans un
@@ -4408,8 +4409,9 @@ il suffit de poser le syst\`eme form\'e par les relations
 racines-coefficients de ce polyn\^ome et d'en chercher la
 repr\'esentation rationnelle univari\'ee, cf. la section 
 \ref{sec:factorisation_extension}.
-On peut \'egalement s'en servir pour trouver une extension
-alg\'ebrique\index{extension alg\'ebrique}\index{alg\'ebrique, extension} 
+On peut \'egalement s'en servir pour trouver une 
+{\bf extension
+alg\'ebrique}\index{extension alg\'ebrique}\index{alg\'ebrique, extension} 
 unique contenant plusieurs extensions de $\Q$
 dont on a le polyn\^ome minimal. Par exemple pour
 travailler dans $\Q[\sqrt{2},\sqrt{3},\sqrt{5}]$, on pose \\
@@ -4589,9 +4591,9 @@ cherchant le signe de $y-l$ ou $x-l$ lorsque $t$ tend
 vers la valeur particuli\`ere (limite \`a droite et limite
 \`a gauche). Enfin si $x$ et $y$ tendent vers l'infini
 tous les deux, on cherche la limite de $y/x$,
-Si $\frac{y}{x} \rightarrow a \neq 0$, on a une branche
-parabolique\index{branche, parabolique} 
-de direction asymptotique\index{asymptotique, direction} $y=ax$,
+Si $\frac{y}{x} \rightarrow a \neq 0$, on a une {\bf branche
+parabolique}\index{branche, parabolique} 
+de {\bf direction asymptotique}\index{asymptotique, direction} $y=ax$,
 on cherche alors la limite
 $y-ax$, si cette limite est finie et vaut $b$ 
 on a une asymptote\index{asymptote} oblique $y=ax+b$ (on peut d\'eterminer
@@ -4628,7 +4630,7 @@ est \'equivalent \`a un vecteur colin\'eaire \`a $\overrightarrow{v}=(x'(t_0),y'
 qui est donc vecteur tangent \`a la courbe en $(x(t_0),y(t_0))$.
 
 \begin{defn}
-On appelle point r\'egulier\index{r\'egulier, point} d'une courbe param\'etrique
+On appelle {\bf point r\'egulier}\index{r\'egulier, point} d'une courbe param\'etrique
 un point o\`u la vitesse $\overrightarrow{v}(t)=(x'(t),y'(t))$ est non nulle.
 En un point r\'egulier, la courbe est tangente au vecteur vitesse
 (la direction du vecteur vitesse est donc une propri\'et\'e
@@ -4637,7 +4639,7 @@ cin\'ematique).
 On notera en particulier que la tangente est horizontale si $y'=0$
 et verticale si $x'=0$.
 
-On appelle point singulier\index{singulier, point} 
+On appelle {\bf point singulier}\index{singulier, point} 
 un point o\`u la vitesse s'annulle.
 \end{defn}
 On verra dans la suite comment \'etudier la tangente en un point
@@ -4684,7 +4686,7 @@ alors $\{\overrightarrow{v},\overrightarrow{a}\}$ forme
 une base, et dans cette base $\overrightarrow{M(t_0)M(t_0+h)}$
 a pour coordonn\'ees $(h,h^2/2)+O(h^3)$, l'arc
 de courbe est identique \`a un arc de parabole \`a l'ordre 2. 
-On parle de point bir\'egulier\index{bir\'egulier}.
+On parle de {\bf point bir\'egulier}\index{bir\'egulier}.
 Si $\{\overrightarrow{v},\overrightarrow{a}\}$ est une base directe,
 l'arc est convexe (la vitesse
 ``tourne'' dans le sens trigonom\'etrique),
@@ -4696,9 +4698,9 @@ de variations de la pente de la tangente
 \begin{thm}
 Si $x'y'{'}-x'{'}y'>0$ [resp $<0$] sur un intervalle du domaine de d\'efinition,
 la courbe n'a que des points r\'eguliers, la direction de la tangente en un point
-est donn\'ee par le vecteur vitesse, et la courbe est convexe\index{convexe}
+est donn\'ee par le vecteur vitesse, et la courbe est {\bf convexe}\index{convexe}
 [resp. concave].
-Si $x'y'{'}-x'{'}y'=0$, on parle de point d'inflexion\index{inflexion} analytique.
+Si $x'y'{'}-x'{'}y'=0$, on parle de point d'{\bf inflexion}\index{inflexion} analytique.
 \end{thm}
 
 Exemple~: point d'inflexion en $t=0$ de
@@ -4758,7 +4760,7 @@ o\`u $h=t-t_0$.
 On en d\'eduit que la tangente \`a la courbe est port\'ee par
 $\overrightarrow{T}$.
 \begin{itemize}
-\item si $p$ est pair, on a un rebroussement\index{rebroussement} 
+\item si $p$ est pair, on a un {\bf rebroussement}\index{rebroussement} 
 de premi\`ere esp\`ece 
 si $q$ est impair (cas g\'en\'erique d'un point singulier, $p=2, q=3$)
 ou de deuxi\`eme esp\`ece si $q$ est pair. On ne peut pas
@@ -4946,7 +4948,7 @@ vers $-b/(2c)$ par la droite ou la gauche).
 \item si $b^2>4ac$, il y a deux racines distinctes $t_\pm$ , 
 donc deux valeurs de $t$ o\`u il faut faire une \'etude
 de branche infinie, on a alors une
-hyperbole\index{hyperbole}
+{\bf hyperbole}\index{hyperbole}
 avec 4 branches infinies et deux asymptotes parall\`eles \`a
 $y=t_\pm x$ (en effet le rapport $y/x=t$ tend bien
 vers $t_\pm$ et $y-t_\pm x$ a une limite car la racine au
@@ -5163,7 +5165,7 @@ Il y a quelques exceptions~ par exemple la longueur d'un arc de
 parabole se calcule avec une formule explicite (essayez la
 commande \verb|int(sqrt(1+4t^2),t,t0,t1)| ou
 \verb|arcLen([t,t^2],t,t0,t1)|). La 
-cyclo\"ide\index{cyclo\"ide}\footnote{qui tire
+{\bf cyclo\"ide}\index{cyclo\"ide}\footnote{qui tire
 son nom de la trajectoire d'un point fix\'e \`a un cercle roulant
 sans glisser sur une droite, par exemple l'extr\'emit\'e d'un rayon 
 sur une roue de v\'elo.} 
@@ -5211,13 +5213,13 @@ $$ \overrightarrow{a}=\frac{d^2M}{dt^2}= \frac{d\|\overrightarrow{v}\|}{dt} \fra
 L'accélération se décompose donc en deux parties~
 \begin{itemize}
 \item  le premier
-terme colinéaire au vecteur tangent est l'accélération 
-tangentielle\index{acc\'el\'eration tangentielle}, 
+terme colinéaire au vecteur tangent est {\bf l'accélération 
+tangentielle}\index{acc\'el\'eration tangentielle}, 
 de norme $\|\overrightarrow{v}\|'$, 
 \item le second terme perpendiculaire au vecteur tangent
-est l'accélération normale\index{acc\'el\'eration normale}, 
+est {\bf l'accélération normale}\index{acc\'el\'eration normale}, 
 dont la norme est $v^2/R$,
-où $R$ est le rayon de courbure\index{courbure, rayon}
+où $R$ est le {\bf rayon de courbure}\index{courbure, rayon}
 \end{itemize}
 
 Autre formule de calcul~: l'accélération normale $a_n$ vaut $v^2/R$ donc
@@ -5228,7 +5230,7 @@ a_n \|\overrightarrow{v}\|=\frac{\|\overrightarrow{v}\|^3}{R}
 $$
 
 \begin{prop}
-On appelle repère de Frenet\index{Frenet} 
+On appelle repère de {\bf Frenet}\index{Frenet} 
 en un point $M$ r\'egulier d'une courbe, 
 le repère orthonorm\'e direct form\'e par
 le point de la courbe, le vecteur tangent $\overrightarrow{T}$ 
@@ -5248,7 +5250,7 @@ R=\frac{\sqrt{x'^2+y'^2}^3}{|x'y'{'}-y'x'{'}|}$$
 On appelle centre de courbure le point $\Omega=M+\frac1\kappa
 \overrightarrow{N}$. Le cercle de centre $\Omega$ passant par $M$
 (de rayon $R$)
-est appel\'e cercle osculateur\index{osculateur, cercle} en $M$ \`a la courbe.
+est appel\'e {\bf cercle osculateur}\index{osculateur, cercle} en $M$ \`a la courbe.
 \end{prop}
 {\bf Exemple}~: calcul du cercle osculateur en un point d'une parabole
 $(t,t^2)$.
@@ -5267,7 +5269,7 @@ ou avec Xcas version 1.1.1-18 ou sup\'erieure\\
 
 {\bf Remarques~}: 
 \begin{itemize}
-\item La courbure\index{courbure} est aussi la d\'eriv\'ee par
+\item La {\bf courbure}\index{courbure} est aussi la d\'eriv\'ee par
 rapport \`a l'abscisse curviligne de 
 l'angle $\theta$ fait par la
   tangente avec une direction fixe, par exemple l'axe $Ox$.
@@ -5327,7 +5329,7 @@ Cf. aussi les animations de l'article D\'evelopp\'ee de wikipedia.\\
 par exemple $x(t)=4\cos(t), y(t)=3\sin(t)$
 puis le rayon de courbure, puis la d\'evelopp\'ee $A$
 (on obtient une courbe image par affinit\'e
-d'une astro\"ide\index{astro\"ide}). Donner une \'equation
+d'une {\bf astro\"ide}\index{astro\"ide}). Donner une \'equation
 param\'etrique simple de $A$.\\
 V\'erification avec Xcas (version \`a jour)~:\\
 \verb|E:=plotparam([4cos(t),3sin(t)],t,0,2pi); A:=developpee(E);|\\
@@ -5487,7 +5489,7 @@ fonctions implicites.
 Certains cas particuliers peuvent \^etre trait\'es en
 transformant la courbe implicite en courbe param\'etrique,
 c'est le cas des courbes alg\'ebriques de degr\'e 2, qui
-sont des coniques\index{conique}. On peut les param\'etrer rationnellement
+sont des {\bf coniques}\index{conique}. On peut les param\'etrer rationnellement
 si on en connait un point (en prenant la droite passant par ce point
 de pente $m$ et en cherchant l'autre point d'intersection
 avec la conique (il y en a forc\'ement un et un seul autre,
@@ -5543,7 +5545,7 @@ Pour tout vecteur $w=(w_1,w_2)$, la d\'eriv\'ee de $V$ en $(x,y)$
 dans la direction $w$ est donn\'ee par~:
 $$ \lim_{h\rightarrow 0} \frac{V((x,y)+wh)-V(x,y)}{h}=
 \partial_xVw_1+\partial_yV w_2$$
-On appelle diff\'erentielle\index{diff\'erentielle} 
+On appelle {\bf diff\'erentielle}\index{diff\'erentielle} 
 de $V$ et on note $dV$ l'application
 qui en un point $(x,y)$ associe au vecteur $w$ la valeur de la
 d\'eriv\'ee directionnelle de $V$ en $(x,y)$ selon $w$
@@ -5577,7 +5579,7 @@ unitaire port\'e par $\rightarrow{AM}$.
 
 {\bf Remarque~: Diff\'erentielle et gradient}\\
 La diff\'erentielle $dV$ a les m\^emes composantes que
-le gradient\index{gradient} de $V$ (\verb|gradient(V,[x,y])| avec Xcas), 
+le {\bf gradient}\index{gradient} de $V$ (\verb|gradient(V,[x,y])| avec Xcas), 
 mais ce ne sont pas les m\^emes objets~: 
 en un point donn\'e
 $dV$ est une application lin\'eaire (qui a un sens ind\'ependamment
@@ -5644,8 +5646,8 @@ $$ dx(v_1,v_2)=v_1, \quad dy(v_1,v_2)=v_2 $$}
 on a~:
 $$ dV=\partial_xV dx + \partial_yV dy$$
 
-Une forme 
-diff\'erentielle\index{diff\'erentielle, forme}\index{forme diff\'erentielle}
+Une {\bf forme 
+diff\'erentielle}\index{diff\'erentielle, forme}\index{forme diff\'erentielle}
 $\omega$ est la g\'en\'eralisation
 de la diff\'erentielle d'une fonction, elle s'\'ecrit sous la forme
 $$ \omega=M(x,y) dx + N(x,y) dy$$
@@ -5671,8 +5673,8 @@ $M(x,y),N(x,y)$.
 \subsection{Int\'egrale curviligne}
 Ceci permet de donner la~:
 \begin{defn}
-Pour calculer l'int\'egrale 
-curviligne\index{curviligne, int\'egrale}\index{int\'egrale curviligne}
+Pour calculer {\bf l'int\'egrale 
+curviligne}\index{curviligne, int\'egrale}\index{int\'egrale curviligne}
  d'une forme diff\'erentielle 
 le long d'un arc de courbe orient\'e,
 on choisit un param\'etrage de l'arc continument d\'erivable par morceaux
@@ -5750,7 +5752,7 @@ fonction $V$ telle que sur tout arc de courbe $\gamma$ d'origine $A$ et
 extr\'emit\'e $B$
 $$ \int_\gamma \omega = V(B)-V(A)$$
 Attention la convention de signe est oppos\'ee \`a celle utilis\'ee
-pour le potentiel\index{potentiel} d'une force en physique.
+pour le {\bf potentiel}\index{potentiel} d'une force en physique.
 \end{defn}
 Si on choisit comme chemin un segment entre deux points $A$ et $B$
 d'ordonn\'ees identiques $y$ et d'abscisses $x$ et $x+h$, alors
@@ -5825,9 +5827,9 @@ sur un lacet (chemin ferm\'e) et int\'egrale double \`a l'int\'erieur
 du lacet. C'est \'evidemment surtout int\'eressant pour les
 formes non exactes, car si $\gamma$ est un lacet et $\omega$
 une forme exacte, alors $\int_\gamma \omega=0$.
-On a le th\'eor\`eme de Stokes\index{Stokes}, 
+On a le th\'eor\`eme de {\bf Stokes}\index{Stokes}, 
 aussi appel\'e en dimension 2 
-formule de Green-Riemann\index{Green-Riemann}~:
+formule de {\bf Green-Riemann}\index{Green-Riemann}~:
 \begin{thm}
 Si $U$ est un domaine de fronti\`ere orient\'ee
 $\gamma$ continument d\'erivable 
@@ -5860,8 +5862,8 @@ y=b\sin(t)$ vaut
 $$ \int_0^{2\pi} \frac{b \sin(t) d(a\cos(t)) - a\cos(t)
   d(b\sin(t))}{2} = ab\pi $$
 
-On peut aussi calculer des moments d'inertie\index{inertie, moment} 
-ou la position d'un centre de gravit\'e\index{gravit\'e, centre}
+On peut aussi calculer des moments d'{\bf inertie}\index{inertie, moment} 
+ou la position d'un {\bf centre de gravit\'e}\index{gravit\'e, centre}
 en se ramenant \`a une int\'egrale curviligne.\\
 {\bf Exemple~}: Calculer la position du centre d'inertie d'un quart
 de cercle $C=\{(\cos(t),\sin(t)), \ t \in [0,\pi/2]\}$.\\
@@ -6376,7 +6378,7 @@ $$ \frac{d}{dt} E(y(t))= \sum_{j=1}^n \frac{\partial E}{\partial y_j} f_j$$
 
 {\bf Probl\`eme \`a deux corps~} 
 Cas d'un point de $\R^3$
-soumis \`a une force centrale\index{centrale, force}\index{force centrale}
+soumis \`a une {\bf force centrale}\index{centrale, force}\index{force centrale}
 comme la gravit\'e ou la force coulombienne~:
 $$\frac{d^2 \overrightarrow{r}}{dt^2}=-\mu \frac{\overrightarrow{r}}{r^3}$$ 
 on montre
@@ -6754,7 +6756,7 @@ la méthode à un pas se traduit par une relation de récurrence entre
 $y_i$ et $y_{i+1}$ qui reflète une méthode d'intégration
 approchée de
 $$ y(t_{i+1})=y(t_i)+\int_{t_i}^{t_{i+1}} f(t,y(t)) \ dt$$
-Par exemple, la méthode d'Euler explicite\index{Euler, m\'ethode d'} 
+Par exemple, la {\bf méthode d'Euler explicite}\index{Euler, m\'ethode d'} 
 utilise la méthode des
 rectangles à gauche
 $$ y_{i+1} = y_i + (t_{i+1}-t_i) f(t_i,y_i)=y_i+hf(t_i,y_i)$$
@@ -6981,7 +6983,7 @@ $$ L(x,\dot{x},t)=-mc^2\sqrt{1-\frac{\dot{x}^2}{c^2}}-V(x,t)$$
 \end{itemize}
 
 \begin{prop}
-\'Equations d'Euler-Lagrange\index{Euler-Lagrange}~: 
+\'Equations d'{\bf Euler-Lagrange}\index{Euler-Lagrange}~: 
 ce sont des conditions n\'ecessaires
 pour que $\gamma(t)$ soit un extr\^emum, si
 $x=(x_1,...,x_n)$ est un syst\`eme de coordonn\'ees (pas
@@ -7198,7 +7200,7 @@ Pour repr\'esenter $K$, on utilise g\'en\'eralement la
 repr\'esentation dite additive, c'est-\`a-dire que $K$
 est isomorphe \`a $\Z/p\Z[X]/P(X)$ avec $P$ un polyn\^ome
 irr\'eductible de $\Z/p\Z[X]$ de degr\'e $n$. Si la classe de $X$
-est d'ordre $p^n-1$ dans $K^*$ on dit que $P$ est primitif\index{primitif}.
+est d'ordre $p^n-1$ dans $K^*$ on dit que $P$ est {\bf primitif}\index{primitif}.
 Dans Xcas, c'est cette repr\'esentation qui est utilis\'ee,
 l'instruction \verb|GF(p,n)| g\'en\`ere al\'eatoirement
 un polyn\^ome irr\'eductible de degr\'e $n$ sur $\Z/p\Z$,
@@ -7214,7 +7216,7 @@ symbolique en fonction du g\'en\'erateur. On peut aussi
 utiliser un entier entre 0 et $p^n-1$ dont l'\'ecriture en base
 $p$ repr\'esente les coefficients du polyn\^ome.
 
-Pour g\'en\'erer un polyn\^ome irr\'eductible\index{irr\'eductible}, on utilise
+Pour g\'en\'erer un polyn\^ome {\bf irr\'eductible}\index{irr\'eductible}, on utilise
 un g\'enerateur al\'eatoire d'entiers dans $[0,p[$,
 on cr\'ee un polyn\^ome unitaire de degr\'e $n$, et
 on teste son irr\'eductibilit\'e en calculant le PGCD
@@ -7228,7 +7230,7 @@ On peut calculer la probabilit\'e de r\'eussir en d\'enombrant
 les polyn\^omes irr\'eductibles de degr\'e $n$ \`a l'aide
 de la formule $x^{p^n}-x=\prod_{P \mbox{ irréductible unitaire }/ \mbox{deg}(P)\mbox{ divise } n} P$.
 
-Trouver un \'el\'ement cyclique\index{cyclique, \'el\'ement} se fait aussi au hasard
+Trouver un \'el\'ement {\bf cyclique}\index{cyclique, \'el\'ement} se fait aussi au hasard
 (\verb|rand(g)| en Xcas si \verb|g| est le g\'en\'erateur
 d'un corps fini), la
 probabilit\'e se calcule \`a l'aide de l'indicatrice d'Euler de
@@ -7684,10 +7686,10 @@ Cela permet la factorisation partielle des entiers plus grands.
 Le temps d'ex\'ecution est proportionnel au nombre de premiers
 dans la table plus petits que $\sqrt{N}$, multipli\'e par un facteur
 $\ln(N)$ pour la factorisation partielle.\\
-Le crible d'Erathosth\`ene\index{crible} permet de trouver la liste des premiers
+Le {\bf crible} d'Erathosth\`ene\index{crible} permet de trouver la liste des premiers
 plus petits qu'une valeur donn\'ee. Voir le manuel de programmation
 de Xcas.
-\item le test de pseudo-primalit\'e de Miller-Rabin\index{Miller}\index{Rabin} (voir
+\item le test de pseudo-primalit\'e de {\bf Miller-Rabin}\index{Miller}\index{Rabin} (voir
 le manuel de programmation de Xcas)~: effectu\'e
 pour 20 bases $a$, il donne en cas de r\'eussite la primalit\'e
 pour les entiers plus petits que $10^{14}$, au-del\`a le nombre
@@ -8524,7 +8526,7 @@ Mais ces astuces n'évitent pas l'énumération de toutes les combinaisons
 possibles de facteurs et donc la complexité exponentielle. Lorsque
 les combinaisons d'un petit nombre de facteurs (par exemple 3)
 échouent, les systèmes récents utilisent
-l'algorithme knapsack\index{knapsack} de Van Hoeij basé sur l'algorithme LLL
+l'algorithme {\bf knapsack}\index{knapsack} de Van Hoeij basé sur l'algorithme LLL
 (recherche de base d'un réseau ayant des vecteurs de petite norme) 
 qui permet d'eliminer complètement cette complexité exponentielle.
 
@@ -10105,7 +10107,7 @@ $$ \int_{\alpha}^{\beta} f-I(f)
 ( \frac{(\beta-x)^{n+1}}{(n+1)!} -  \sum_{j=1}^k w_j \frac{(y_j-x)_+^{n}}{n!})
 f^{[n+1]}(x) \ dx
 $$
-On appelle noyau de P\'eano\index{P\'eano, noyau de} l'expression
+On appelle noyau de {\bf P\'eano}\index{P\'eano, noyau de} l'expression
 $$ N(x)=\frac{(\beta-x)^{n+1}}{(n+1)!} -  \sum_{j=1}^k w_j
 \frac{(y_j-x)_+^{n}}{n!}$$
 On a alors~:
@@ -10319,7 +10321,58 @@ Hairer propose de prendre comme quadrature la plus fine en $h^{30}$
 sauf le point central), moins fine en $h^6$ (avec les points 1, 3, 5,
 9, 11, 13), et d'estimer l'erreur par 
 $$ \epsilon_1=| I_{30}-I_{14}|,  \epsilon_2=| I_{30}-I_{6}|; 
-\epsilon = \epsilon_1 \left(\frac{\epsilon_1}{epsilon_2} \right)^2 $$
+\epsilon = \epsilon_1 \left(\frac{\epsilon_1}{\epsilon_2} \right)^2 $$
+On observe en effet que $\epsilon$ est en $h^{30}$, comme
+l'ordre de la m\'ethode.
+
+\subsection{M\'ethodes probabilistes.} \index{Monte-Carlo}
+Pour d\'eterminer $\int_a^b f(t) \ dt $, on l'interpr\`ete comme
+une esp\'erance, plus pr\'ecis\'ement comme $(b-a)E(f(X))$ 
+o\`u $X$ est une variable al\'eatoire
+qui suit la loi uniforme sur $[a,b]$, et on approche cette valeur
+par 
+$$ \frac{b-a}{n} \sum_{k=1}^n f(x_k) $$
+o\`u $x_k$ est obtenu par un g\'en\'erateur pseudo-al\'eatoire
+(selon la loi uniforme).
+Par exemple
+\begin{verbatim}
+f(t):=exp(-t^2); n:=1000;
+l:=ranv(n,uniform,0,2);
+(2-0)*sum(apply(f,l))/n; int(f(t),t,0,2.0);
+\end{verbatim}
+La convergence en fonction de $n$ est assez lente, on peut l'observer
+en faisant plusieurs estimations~:
+\begin{verbatim}
+m:=ranm(500,n,uniform,0,2);
+I:=seq(2*sum(apply(f,m[k]))/n,k,0,size(m)-1);
+histogram(I,0,0.01)
+\end{verbatim}
+En effet, les tirages sont \'equidistribu\'es selon la m\^eme loi,
+la loi des grands nombres s'applique donc~: on fait $b-a$ fois
+une moyenne de
+$n$ tirages, si $n$ est grand, on converge vers une loi normale
+dont l'\'ecart-type est en $(b-a)\sigma/\sqrt{n}$.
+La valeur de la constante $\sigma$
+peut se calculer \`a partir de $f$
+$$ \sigma^2 = \frac{1}{b-a}\int_a^b f^2(t) \ dt -
+\left( \frac{1}{b-a}\int_a^b f(t) \ dt  \right)^2 $$
+par exemple ici\\
+\verb|2*sqrt(int(f(t)^2,t,0,2.)/2-(1/2*int(f(t),t,0,2.))^2)/sqrt(n)|\\
+mais on ne fait pas ce calcul en pratique
+(puisqu'il faudrait calculer une int\'egrale), on estime
+l'\'ecart-type $\sigma/\sqrt{n}$ de la loi normale par
+l'\'ecart-type de l'\'echantillon des estimations \verb|stddevp(I)|.
+
+Cette m\'ethode converge donc beaucoup moins vite que les quadratures,
+en dimension 1. Mais elle se g\'en\'eralise tr\`es facilement en
+dimension plus grande en conservant la m\^eme vitesse de convergence
+alors que le travail n\'ecessaire pour une m\'ethode de quadrature
+croit comme une puissance de la dimension, et ne n\'ecessite pas
+de param\'etrer des domaines d'int\'egration compliqu\'es  (il suffit
+par exemple d'utiliser la m\'ethode du rejet pour avoir un
+g\'en\'erateur uniforme
+dans un domaine inclus dans un cube).
+
 
 \section{Suites récurrentes et applications} \label{sec:rec}
 \index{r\'ecurrence}\index{suite}
@@ -10418,7 +10471,7 @@ d'assurer que la suite (\ref{eq:u_n_fixe}) converge, et que la limite
 est l'unique solution de $f(l)=l$ sur $I$.
 
 \begin{defn}
-On dit que $f$ est contractante\index{contractante} de rapport $k<1$ sur $I$ si
+On dit que $f$ est {\bf contractante}\index{contractante} de rapport $k<1$ sur $I$ si
 \[ \forall x,y \in I, \quad |f(y)-f(x)| \leq k |y-x| \]
 \end{defn}
 
@@ -10433,7 +10486,7 @@ maximum de $|f'|$ et pas du maximum de $f'$, ce qui revient à chercher
 le maximum de $f'$ et de $-f'$).
 
 On a alors le 
-\begin{thm} (du point fixe)\index{point fixe}\\
+\begin{thm} (du {\bf point fixe})\index{point fixe}\\
 si $f$ est contractante de $I=[a,b]$
 dans $I$ de rapport $k$ 
 alors la suite (\ref{eq:u_n_fixe}) converge vers l'unique
@@ -10701,7 +10754,7 @@ $n$ fixé au bout de par exemple 50 itérations (la $n+1$-ième couleur
 servant aux origines de suite qui ne semblent pas converger).
 
 Passons maintenant à un critère tr\`es utile en pratique~:
-\begin{defn} (convexité)\index{convexe}\\
+\begin{defn} ({\bf convexité})\index{convexe}\\
 Une fonction $f$ continument dérivable sur un intervalle $I$ de $\R$
 est dite convexe si son graphe est au-dessus de la tangente en tout point
 de $I$.
@@ -10924,7 +10977,7 @@ la taille des coefficients intermédiaires en divisant chaque
 ligne par le PGCD de ses coefficients, mais comme pour le
 calcul du PGCD par l'algorithme du sous-résultant, il existe
 une méthode plus efficace présentée ci-dessous.
-\item La m\'ethode de Bareiss~:\index{Bareiss} on initialise un coefficient $b$ \`a 1.
+\item La m\'ethode de {\bf Bareiss}~:\index{Bareiss} on initialise un coefficient $b$ \`a 1.
 On remplace l'\'etape de r\'eduction ci-dessus
 par $L_j \leftarrow (pL_j -p_j L_i)/b$.
 \`A la fin de l'\'etape de r\'eduction, on met le coefficient $b$
@@ -10990,7 +11043,7 @@ R_{n,n} &=& \mbox{det}(M)
 
 Pour les matrices \`a coefficients entiers, on peut aussi utiliser une
 m\'ethode 
-modulaire\index{déterminant, modulaire}\index{modulaire, déterminant}~:
+{\bf modulaire}\index{déterminant, modulaire}\index{modulaire, déterminant}~:
 on calcule une borne \`a priori sur le d\'eterminant
 et on calcule le d\'eterminant modulo suffisamment de petits nombres
 premiers pour le reconstruire par les restes chinois. En effet
@@ -11000,7 +11053,7 @@ déterminant, alors le déterminant est le résultat des restes chinois
 écrit en représentation symétrique.
 L'avantage de cet algorithme est qu'il est simple et facile à paralléliser.
 
-On utilise souvent la borne d'Hadamard\index{Hadamard, borne} 
+On utilise souvent la {\bf borne d'Hadamard}\index{Hadamard, borne} 
 sur le d\'eterminant~:
 \[ |\det(M)| \leq \prod_{1\leq i \leq n} 
 \sqrt{\sum_{1\leq j \leq n} |m_{i,j}|^2}\]
@@ -11301,19 +11354,32 @@ u & v \\
 -\frac{b}{d} & \frac{a}{d}
 \end{array} \right| = 1
 \]
+On peut donc cr\'eer des z\'eros en-dessous de la diagonale, il existe
+une matrice inversible $L$ telle que $LM=U$ o\`u $U$ est triangulaire
+sup\'erieure. On peut m\^eme rendre les coefficients hors diagonale
+de $U$ inf\'erieur aux pivots de leurs colonnes respectives en faisant
+une combinaison lin\'eaire de lignes $L_j = L_j-qL_p, j<p$ o\`u $q$
+est le quotient de la division euclidienne de $M_{jc}$ par $M_{pc}$
+($p$ la ligne du pivot, en principe $p=c$).
+On observe aussi que les pivots sont les pgcd des \'el\'ements de la colonne
+du pivot \`a partir de la ligne du pivot.
+
+Applications~: 
 Cette r\'eduction (dite forme normale de Hermite 
 lorsqu'on r\'eduit les lignes
 au-dessus de la diagonale par division euclidienne par
 le pivot) permet de trouver une base du noyau
 \`a coefficients entiers et telle que tout \'el\'ement du noyau \`a 
 coefficient entier s'\'ecrit comme combinaison lin\'eaire \`a coefficients
-entiers des \'el\'ements de la base.
+entiers des \'el\'ements de la base. Il suffit d'appliquer la
+r\'eduction de Hermite \`a $(M^t|I)$, on obtient une matrice $(U|L)$
+telle que $U=LM^t$.
 Dans Xcas, on peut utiliser l'instruction \verb|ihermite| (ou
 \verb|mathnf| de PARI). L'aide
 d\'etaill\'ee de Xcas donne un exemple de calcul de $\Z$-base
 d'un noyau. 
 
-Applications~: soit \`a r\'esoudre en entiers $2x+3y+5z=0$.
+Exemple~: soit \`a r\'esoudre en entiers $2x+3y+5z=0$.
 On pose \verb|M:=[[2,3,5]]| puis 
 \verb|L,U:=ihermite(tran(M))|, les lignes nulles de $U$ correspondent
 \`a des lignes de $L$ qui forment une base du noyau de $M$, soit
@@ -11350,28 +11416,53 @@ La r\'eduction \'echelonn\'ee sous la diagonale correspond \`a
 calcule la d\'ecomposition de Smith d'une matrice $A$ \`a coefficients
 entiers et en donne les coefficients invariants.
 Il faut pour cela alterner plusieurs d\'ecomposition de Hermite en
-ligne et en colonne. En effet les \'el\'ements hors diagonaux d'une
-r\'eduction de Hermite sont des restes de division euclidienne par
-les pivots sur la diagonale, ils sont donc plus petits si non nuls, et
-\`a l'\'etape de r\'eduction suivante ils donneront lieu \`a un pgcd
-plus petit.
-La forme normale de Smith d'une matrice $A$ impose \'egalement que les coefficients
-diagonaux non nuls $d_1|d_2|...|d_r$ se divisent. Elle sert par exemple \`a montrer
+ligne et en colonne. En effet un \'el\'ement hors diagonale $a_{ij}$
+non nul d'une
+r\'eduction de Hermite est un reste de division euclidienne par
+le pivot $a_{jj}$ (respectivement $a_{ii}$ selon qu'on r\'eduit en lignes ou en
+colonnes) sur la diagonale, il est donc 
+strictement plus petit et donnera lieu \`a
+l'\'etape de r\'eduction suivante \`a un pgcd
+soit \'egal en $a_{ii}$ [resp. $a_{jj}$] 
+(et dans ce cas $a_{ij}$ deviendra nul), soit strictement plus
+petit, donc soit l'un des pivots d\'ecroit, soit l'un des $a_{ij}$
+hors diagonale s'annule. On obtient en un nombre fini d'\'etape
+une matrice diagonale.
+La forme normale de Smith d'une matrice $A$ impose \'egalement 
+que les coefficients
+diagonaux non nuls $d_1|d_2|...|d_r$ se divisent. Pour r\'ealiser
+cela, si par exemple $d_1$ ne divise pas $d_2$, on remplace $C_1$ par
+$C_1+C_2$, puis on fait apparaitre le pgcd de $d_1$ et $d_2$ en ligne
+1 colonne 1 en cr\'eant un 0 en ligne 2 colonne 1. 
+
+La r\'eduction de Smith sert par exemple \`a montrer
 qu'un sous-module de $\Z^n$ obtenu par quotient par l'image 
 d'une application lin\'eaire de matrice $A$ est isomorphe 
 \`a $\Z/d_i \times ... \times \Z/d_r \times \Z^{n-r}$. C'est ce
 qu'on obtient pour un module pr\'esent\'e par des g\'en\'erateurs
 et relations entre g\'en\'erateurs.
+Les coefficients $d_i$ sont appel\'es {\bf facteurs
+invariants}\index{facteurs invariants} de la
+matrice $A$, leur factorisation en produit de nombres 
+premiers \`a une certaine puissance donne les {\bf diviseurs 
+\'el\'ementaires}\index{diviseur \'el\'ementaire}.
 
-Exemple~: on se donne un module sur $\Z$ engendr\'e par $m_1,m_2,m_3$
+Exemple 1~: on se donne le groupe ab\'elien engendr\'e par $x_1$ et
+$x_2$ v\'erifiant les relations $2x_1+4x_2=0, -2x_1+6x_2=0$. On fait
+$L_2=L_2+L_1$ et $C_2=C_2-C_1$ ce qui donne la matrice r\'eduite
+de diagonale 2 et 10, qui en sont les facteurs invariants, le groupe
+est isomorphe \`a $\Z/2 \times \Z/10$ (parfois not\'e 
+$\oplus$ au lieu de $\times$).
+
+Exemple 2~: on se donne un module sur $\Z$ engendr\'e par $m_1,m_2,m_3$
 et les relations $2m_1+3m_2+5m_3=0, 7m_1+3m_2-5m_3=0$.
 On pose \verb|A:=[[2,3,5],[7,3,-5]]|, puis
 \verb|U,B,V:=ismith(A)|, on a donc $B=UAV$.
 Si $M=(m_1,m_2,m_3)$, on a $AM=0$ donc $B V^{-1}M=UAM=0$.
 On pose $(n_1,n_2,n_3)=N=V^{-1}M$, 
 les g\'en\'erateurs $n_1=m_1-6m_2-20m_3, n_2=m_2+3m_3,n_3=m_3$
-v\'erifient donc $b_1 n_1=0, 15 b_2n_2=0$, le module est donc
-isomorphe \`a  $\Z/1 \times \Z/15 \times Z$ soit encore $\Z/15\Z
+v\'erifient donc $b_1 n_1=0, b_2n_2=0, b_1=1, b_2=15$, le module est donc
+isomorphe \`a  $\Z/1 \times \Z/15 \times \Z$ soit encore $\Z/15\Z
 \times \Z$.
 
 \subsubsection{L'algorithme LLL.} \index{LLL}
@@ -11753,7 +11844,7 @@ d'isométrie ou car $AA^*=I$).
 S'il est de l'ordre de $2^c$ on perdra (au plus) $c$ bits de
 pr\'ecision sur la mantisse de $x$.
 \end{thm}
-Avec Xcas, les valeurs singuli\`eres\index{singuli\`ere, valeur} 
+Avec Xcas, les {\bf valeurs singuli\`eres}\index{singuli\`ere, valeur} 
 \index{valeur singuli\`ere}
 s'obtiennent par l'instruction
 \verb|SVL(A)|, le conditionnement $L^2$ par \verb|COND(A,2)|.
@@ -11918,7 +12009,7 @@ variable produit contenant successivement les $\prod H'_{m-j+1,m-j}$.
 
 {\bf Remarques}
 Une variante de la r\'eduction ci-dessus utilise des matrices de
-rotation de Givens\index{Givens}~: il s'agit d'une rotation
+{\bf rotation de Givens}\index{Givens}~: il s'agit d'une rotation
 dans le plan engendr\'e par deux vecteurs de base $e_i,e_j$ 
 prolong\'ee par l'identit\'e. On doit alors effectuer 
 deux combinaisons lin\'eaires de ligne
@@ -11927,8 +12018,8 @@ donc deux fois plus de calculs, mais l'avantage est que la matrice
 de transformation est unitaire (donc facile \`a inverser, et bien
 conditionn\'ee).
 
-On peut aussi utiliser des matrices de
-Householder\index{Householder} 
+On peut aussi utiliser des {\bf matrices de
+Householder}\index{Householder} 
 pour  se ramener \`a une forme de Hessenberg.
 La matrice de Householder associ\'ee \`a $v$ est d\'efinie par~;
 $$H=I-2\frac{v v^t}{\|v\|^2}$$
@@ -12470,8 +12561,8 @@ f^{(j)}(d_m))}{j!} N^j \right) P^{-1}\]
 \subsection{Quelques autres algorithmes utiles}
 \subsubsection{Complexit\'e asymptotique}
 Pour calculer le produit de matrices, on peut utiliser
-l'algorithme de Strassen, on pr\'esente ici la variante
-de Winograd\index{Strassen}\index{Winograd}. Soit \`a calculer~:
+l'algorithme de {\bf Strassen}, on pr\'esente ici la variante
+de {\bf Winograd}\index{Strassen}\index{Winograd}. Soit \`a calculer~:
 \[ \left(\begin{array}{cc} a_{1,1} & a_{1,2} \\
 a_{2,1} & a_{2,2} \end{array}\right) 
 \left(\begin{array}{cc} b_{1,1} & b_{1,2} \\
@@ -12526,38 +12617,71 @@ la matrice r\'eduite (surtout avec le pivot partiel o\`u on ne
 controle pas le nombre de z\'eros de la ligne contenant le pivot). Il
 peut alors \^etre int\'eressant d'utiliser des m\'ethodes alternatives
 ne faisant intervenir que des produits de matrice, donnant \'eventuellement
-un r\'esultat seulement approch\'e. Par exemple pour calculer
-l'inverse d'une matrice $A=F+E$, avec $F$ facile \`a inverser (par
-exemple diagonale) et 
-$E$ petit en norme (et creuse), on peut \'ecrire~:
-$$ A^{-1}=(F+E)^{-1} =
-(F(I+F^{-1}E))^{-1}=(I-F^{-1}E+(F^{-1}E)^2+...)F^{-1}$$
-De m\^eme pour r\'esoudre un syst\`eme lin\'eaire $Ax=b=Fx+Ex$,
-on consid\`ere la suite $Fx_{n+1}+Ex_n=b$ soit
-$$ x_{n+1}=F^{-1}b-F^{-1} E x_n, \quad x_0=0$$
-pour laquelle on v\'erifiera les hypoth\`eses du th\'eor\`eme du point
-fixe, ce qui revient \`a v\'erifier que la plus
-grande valeur singuli\`ere de $F^{-1}E$ est strictement plus petite que 1.
-Si la matrice $E$ n'est pas creuse, le proc\'ed\'e est int\'eressant
-pour r\'esoudre un syst\`eme si $n$ est grand
-(puisque chaque it\'eration est en $O(n^2)$), mais pas pour le calcul de
-l'inverse.
- 
-La m\'ethode de Jacobi utilise une matrice diagonale pour $F$, alors
-que la m\'ethode de Gauss-Seidel prend pour $F$ la partie triangulaire
-inf\'erieure de $A$ (diagonale comprise). Dans ce dernier
-cas le calcul de $F^{-1}$ n'est pas effectu\'e, on r\'esoud
-directement le syst\`eme triangulaire $Fx_{n+1}=b-Ex_n$, cette
-m\'ethode est donc moins adapt\'ee \`a la parall\'elisation si $E$
-n'est pas creuse. 
-Par contre, la convergence est plus rapide puisque $E$ n'a que
-des 0 en-dessous de la diagonale (ce qui diminue la plus grande
-valeur propre de $F^{-1}E$).
+un r\'esultat seulement approch\'e. 
 
-La m\'ethode de relaxation peut se voir comme une variante de Jacobi, on utilise la r\'ecurrence~:
-$$ x_{n+1} = (I-J^{-1} A) x_n +J^{-1} b$$
-avec $J=\frac1\omega D-E$ o\`u $\omega \in ]0,1[$ (Jacobi
-correspond \`a $J=D$).
+Par exemple pour calculer
+l'inverse d'une matrice $A=M-N$, avec $M$ facile \`a inverser (par
+exemple diagonale) et 
+$N$ petit en norme et creuse, on peut \'ecrire~:
+$$ A^{-1}=(M-N)^{-1} =
+(M(I-M^{-1}N))^{-1}=(I+M^{-1}N+(M^{-1}N)^2+...)M^{-1}$$
+
+De m\^eme pour r\'esoudre un syst\`eme lin\'eaire $Ax=b$
+avec $A=M-N$,
+on consid\`ere la suite $Mx_{n+1}-Nx_n=b$, donc $x_{n+1}$ est obtenu
+en r\'esolvant le syst\`eme~:
+$$ Mx_{n+1}=b+N x_n, \quad x_0=0$$
+pour laquelle on v\'erifiera les hypoth\`eses du th\'eor\`eme du point
+fixe, il suffit par exemple de v\'erifier que la plus
+grande valeur singuli\`ere de $M^{-1}N$ est strictement plus petite que 1.
+Lorsque la matrice $N$ n'est pas creuse, le proc\'ed\'e est int\'eressant
+pour r\'esoudre approximativement un syst\`eme si $n$ est grand
+et si chaque it\'eration est en $O(n^2)$ (ceci veut
+dire qu'on ne calcule pas $M^{-1}$ sauf si c'est
+\'evident, par exemple si $M$ est diagonale), 
+mais le proc\'ed\'e n'est pas int\'eressant pour le calcul de
+l'inverse de $A$.
+ 
+Notons $D$ la partie diagonale de $A$,
+$L$ sa partie triangulaire inf\'erieure stricte, $U$ sa partie
+triangulaire sup\'erieure stricte,
+La m\'ethode de Jacobi utilise pour $M$ la
+diagonale $D$ de $A$, alors
+que la m\'ethode de Gauss-Seidel prend pour $M$ la partie triangulaire
+inf\'erieure $D+L$ de $A$ (diagonale comprise). 
+Pour Jacobi, on a donc
+$$ x_{n+1}=D^{-1}(b+(D-A)x_n)=x_n+D^{-1}(b-Ax_n)$$
+Pour Gauss-Seidel,
+le calcul de $M^{-1}$ n'est pas effectu\'e, on r\'esoud
+directement le syst\`eme triangulaire $Mx_{n+1}=b+Nx_n$ soit
+$$ (D+L)x_{n+1}=b-Ux_n$$ 
+Gauss-Seidel
+est moins adapt\'e \`a la parall\'elisation que Jacobi.
+
+Dans la m\'ethode de relaxation, on pose pour $M$ la matrice triangulaire
+inf\'erieure $M=\frac1\omega D+L$ o\`u $\omega >0$, donc
+$N=(\frac1\omega-1) D-U$
+et on utilise la r\'ecurrence $Mx_{n+1}=b+Nx_n$ donc
+$Mx_{n+1}=b+(M-A)x_n$ puis
+$M(x_{n+1}-x_n)=b-Ax_n$ puis
+$$ (D+\omega L) (x_{n+1}-x_n) = \omega(b-Ax_n)$$
+On remarque que Gauss-Seidel correspond \`a $\omega=1$.
+
+Convergence~: si $A=M-N$ est une matrice sym\'etrique d\'efinie positive
+et si $M^*+N$ est d\'efinie positive, alors la m\'ethode converge. 
+On utilise la norme correspondant \`a
+la forme quadratique de matrice $A$ et on calcule la norme subordonn\'ee
+de $M^{-1}N$, on a $ M^{-1}Nx=x-y$ avec $y=M^{-1}Ax$ donc 
+\begin{eqnarray*} 
+\| M^{-1}Nx \|^2_A&=&<x-y|A (x-y))> \\
+&=&<x|Ax>+<y|Ay>-<y|Ax>-<x|Ay> \\
+&=&<x|Ax>+<y|Ay>-<y|My> -<My|y>\\
+&=&<x|Ax>-<y|(M^*+N)y>\\
+& < & <x|Ax>=\|x\|_A^2
+\end{eqnarray*}
+Cons\'equence~: si $A$ sym\'etrique d\'efinie positive, alors 
+Gauss-Seidel converge, car $M^*+N=D$. Pour la relaxation,
+on a $M^*+N=(2/\omega -1)D$ qui est d\'efinie positive si $\omega<2$.
 
 \subsubsection{Gradient conjugu\'e}\index{gradient conjugu\'e}
 Il s'agit de résoudre $Ax=b$, où $A$ est définie positive. 
@@ -12753,7 +12877,8 @@ restreint, on prend \`a nouveau une valeur propre et un vecteur propre
 correspondant, etc.
 
 On peut approcher cette factorisation par un algorithme it\'eratif
-qui utilise la factorisation $QR$\index{QR} d'une matrice quelconque comme
+qui utilise la {\bf factorisation $QR$}\index{QR} 
+d'une matrice quelconque comme
 produit d'une matrice unitaire par une matrice triangulaire sup\'erieure
 \`a coefficients positifs sur la diagonale. On fait l'hypoth\`ese que les
 valeurs propres de $S$ sur la diagonale sont class\'ees par ordre de module 
@@ -13274,7 +13399,7 @@ l'erreur sur le polyn\^ome d'interpolation est major\'ee par~:
 $$ \epsilon \, \mbox{max}_j|y_j| \sum_j |\pi_j(x)| $$
 il y a amplification de l'erreur par un facteur major\'e par~
 $$ \mbox{max}_{x \in [a,b]} \sum_{j=0}^n |\pi_j(x)| $$
-Ce facteur s'appelle constante de Lebesgue\index{Lebesgue, constante
+Ce facteur s'appelle {\bf constante de Lebesgue}\index{Lebesgue, constante
   de}\index{constante de Lebesgue} relative \`a la
 subdivision $x_0,...,x_n$ de $[a,b]$. On peut le calculer
 num\'eriquement pour une subdivision \'equidistribu\'ee,
@@ -14014,7 +14139,9 @@ mais sont divergentes. Ce type de développement s'avère néanmoins très utile
 n'a pas besoin d'une trop grande précision sur la valeur de la fonction.
 
 Nous allons illustrer ce type de développement sur un exemple, la fonction 
-exponentielle intégrale\index{Ei}\index{exponentielle int\'egrale}, définie à une constante près par
+{\bf exponentielle intégrale}\index{Ei}\index{exponentielle
+  int\'egrale}, 
+définie à une constante près par
 \[ f(x)=\int_x^{+\infty} \frac{e^{-t}}{t} \ dt \]
 On peut montrer que l'intégrale existe bien, car l'intégrand est positif et inférieur à $e^{-t}$
 (qui admet $-e^{-t}$ comme primitive, cette primitive ayant une limite en $+\infty$).
@@ -14147,7 +14274,7 @@ aymptotique de $f$).
 
 On peut calculer $\pi$ de la même manière avec le développement 
 en séries et asymptotique
-de la fonction sinus intégral\index{Si}\index{sinus int\'egral} (on remplace exponentielle par sinus dans
+de la fonction {\bf sinus intégral}\index{Si}\index{sinus int\'egral} (on remplace exponentielle par sinus dans
 la définition de $f$) et l'égalité (dont un sch\'ema de preuve est aussi
 donn\'e plus bas)
 \begin{equation} \label{eq:Siinf}
@@ -15735,9 +15862,9 @@ vers l'\'etranger qu'il faut maintenant gagner des parts de march\'e
 en anglais).
 
 Au concours de l'agr\'egation externe,
-en 2012, Xcas est choisi par une fraction
+Xcas est choisi par une fraction
 significative des candidats en mod\'elisation option C
-(un tiers environ).
+(un tiers environ en 2012).
 Parall\`element \`a la mont\'ee en
 puissance de Xcas, l'arriv\'ee de Sage, la fin de Maple (et
 Mathematica) en classes pr\'eparatoires
@@ -15784,7 +15911,7 @@ pour le CAS des calculatrices HP-Prime.
 \subsection{Les concurrents open-source.} \label{sec:concurrents}
 Les principaux concurrents open-source de Giac/Xcas sont Maxima et
 Sage. Il existe d'autres logiciels libres de calcul formel g\'en\'eralistes, mais ils
-n'ont pas beaucoup d'utilisateurs.
+ne semblent pas avoir beaucoup d'utilisateurs.
 
 L'utilisation de Giac et de Maxima est assez proche, ce sont
 tous deux des logiciels qui fonctionnent localement (sans
@@ -15817,7 +15944,7 @@ si on l'installe localement, et l'acc\`es Internet est indispensable
 sinon\footnote{Il serait d'ailleurs int\'eressant de calculer le 
 cout \'energ\'etique d'un m\^eme calcul fait par Sage, Maxima, 
 Xcas et une calculatrice formelle! Pour avoir un ordre
-de grandeur, une recherche sur google \'emet 7g de CO2, 
+de grandeur, une recherche sur google \'emettrait 7g de CO2, 
 soit environ 16Wh, de quoi faire fonctionner un ordinateur 
 portable un quart d'heure et une calculatrice haut de gamme
 pendant une journ\'ee}. Le langage de 
@@ -15826,7 +15953,8 @@ philosophiquement
 plus proche de Magma que de Maple ou Mathematica,
 donc plus difficile \`a apprendre pour qui n'est pas alg\'ebriste.
 Sage se fonde sur un \'enorme corpus de logiciels et
-biblioth\`eques (Giac peut d'ailleurs en \^etre un composant
+biblioth\`eques (dont Maxima, appel\'e pour les calculs symboliques,
+Giac peut d'ailleurs en \^etre un composant
 optionnel), qu'il fait communiquer entre eux, un peu \`a la
 mani\`ere d'une distribution linux qui fait cohabiter des composants
 logiciels, mais de mani\`ere plus intime, Python servant
@@ -15987,18 +16115,25 @@ Geogebra, Xcas sont maintenant bien pr\'esents dans
 les lyc\'ees et manuels, mais l'OS reste Windows et
 l'\'evolution dans le monde des calculatrices va dans le mauvais sens.
 
-L'id\'ee de mettre en place un mode examen va \`a l'encontre
+L'id\'ee de mettre en place un mode examen en 2018 va \`a l'encontre
 de la possibilit\'e pour l'acheteur de tirer parti de sa calculatrice
 comme il l'entend, il suffit de voir la guerre entre les
 d\'eveloppeurs de TI et la communaut\'e Ndless, digne
 de la lutte men\'ee par Apple contre les``jailbreaks''
 qui permettent d'utiliser l'Ipad avec des logiciels en-dehors
 du march\'e control\'e par Apple ou avec d'autres op\'erateurs
-t\'el\'ephoniques. L'institution devrait bien r\'efl\'echir...
+t\'el\'ephoniques. L'institution devrait bien r\'efl\'echir avant de
+se lancer dans l'aventure. Certes, le mode examen \'evitera le
+recours parfois abusif aux anti-s\`eches, mais cela va d\'ecourager
+le d\'eveloppement de programmes par les \'el\`eves sur leurs
+calculatrices (car ces programmes seront effac\'es le jour de
+l'examen) et renforcer les in\'egalit\'es, en particulier pour
+l'acc\`es au calcul formel (qui est possible sur des mod\`eles
+d'entr\'ee de gamme aujourd'hui).
 
-Je pense que si on veut des calculatrices avec mode examen,
-alors c'est \`a l'institution de les acheter, de les donner
-en pr\^et aux \'el\`eves. L'\'education nationale devrait aussi
+Je pense que si on veut vraiment des calculatrices avec mode examen,
+alors c'est \`a l'institution de les acheter, puis de les 
+pr\^eter aux \'el\`eves. L'\'education nationale devrait aussi
 avoir plus de contr\^ole sur les logiciels
 embarqu\'es, qui ne devraient pas tant
 d\'ependre des constructeurs
@@ -16007,7 +16142,7 @@ aussi de mettre fin \`a des rentes pour les constructeurs
 en situation de position dominante, que l'on songe par
 exemple au b\'en\'efice sur les mod\`eles de calculatrices les plus
 conseill\'ees et vendues, calculatrices qui ne se sont
-pratiquement pas am\'elior\'ees depuis 20 ans.
+gu\`ere am\'elior\'ees depuis 20 ans.
 
 Si ce sont les \'el\`eves qui sont propri\'etaires du mat\'eriel, alors
 ils doivent pouvoir y installer les logiciels de leur choix.

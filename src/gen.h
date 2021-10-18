@@ -595,8 +595,8 @@ namespace giac {
 #ifdef DOUBLEVAL
     gen(double d): type(_DOUBLE_),_DOUBLE_val(d) {};
 #else
-    // Warning this does not work on ia64 with -O2
-    gen(double d) { *((double *) this) = d; type=_DOUBLE_; };
+    // may not work on ia64 with -O2
+    gen(double d);
 #endif
     gen(const giac_float & f);
 #ifdef BCD

@@ -734,7 +734,12 @@ namespace giac {
 	    parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
 	    parameters.push_back(diffeq_constante(int(parameters.size()),contextptr));
 	    gen sol = exp(rac.front()*x,contextptr)*(parameters[parameters.size()-2]*x+parameters.back());
+	    bool b=calc_mode(contextptr)==1;
+	    if (b)
+	      calc_mode(0,contextptr);
 	    gen part=_integrate(makesequence(-cst/v.front()*exp(-rac.front()*x,contextptr),x),contextptr)*x+_integrate(makesequence(cst/v.front()*x*exp(-rac.front()*x,contextptr),x),contextptr);
+	    if (b)
+	      calc_mode(1,contextptr);
 	    part=simplify(part*exp(rac.front()*x,contextptr),contextptr);
 	    return sol+part;
 	  }
@@ -856,7 +861,9 @@ namespace giac {
 	  gen sol=w+parameters[parameters.size()-2]*u+parameters[parameters.size()-1]*V;
 	  return sol;
 	}
-      }
+	// IMPROVE: if a, b, c are polynomials, search for a polynomial solution
+	// of the homogeneous equation, if found we can solve the diffeq
+      } // end 2nd order eqdiff
     }
     vecteur substin(n);
     vecteur substout(n);
@@ -1088,6 +1095,9 @@ namespace giac {
 	    }
 	    continue;
 	  } // end x-incomplete
+	  gen res(string2gen(gettext("Unable to solve differential equation"),false));
+	  res.subtype=1;
+	  sol.push_back(res);
 	} 
 	ordre=2;
 	return sol;
@@ -1132,6 +1142,17 @@ namespace giac {
 	return desolve(args,f1,f[0],ordre,parameters,contextptr);
       }
       gen vx,vy;
+      lv=lidnt(args);
+      if (lv.size()==2){
+	vx=lv[0];
+	vy=lv[1];
+	lv=lvar(equal2diff(args));
+	lv=lop(lv,at_derive);
+	lv=lidnt(lv);
+	if (lv.size()==1 && vx==lv.front())
+	  swapgen(vx,vy);
+	return _desolve(makesequence(args,vx,vy),contextptr);
+      }
       ggb_varxy(args,vx,vy,contextptr);
       return _desolve(makesequence(args,vx,vy),contextptr);
     }

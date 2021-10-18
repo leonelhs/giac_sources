@@ -1608,7 +1608,7 @@ namespace xcas {
     w->set_modal();
     w->show();
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(cond);
     autosave_disabled=true;
     context * contextptr=get_context(ed);
     int r=-2;
@@ -1724,7 +1724,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(loop);
     context * contextptr=get_context(ed);
     int r=-2;
     for (;;) {
@@ -1848,7 +1848,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(name);
     context * contextptr=get_context(ed);
     int lang=language(contextptr);
     int r=-2;

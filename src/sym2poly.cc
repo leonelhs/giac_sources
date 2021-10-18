@@ -3295,7 +3295,7 @@ namespace giac {
     for (;it!=itend;++it){
       const pf<gen> & current=*it;
       gen reste(r2e(gen(current.num),l,contextptr)),deno(r2e(gen(current.fact),l,contextptr));
-      gen cur_deno(r2e(gen(it->den/(it->mult==1?it->fact:pow(it->fact,it->mult))),l,contextptr));
+      gen cur_deno(ratnormal(r2e(it->den,l,contextptr)/r2e(it->mult==1?it->fact:pow(it->fact,it->mult),l,contextptr)));
       if (current.mult==1)
 	res += reste/cur_deno/deno;
       else {

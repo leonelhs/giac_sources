@@ -1442,7 +1442,7 @@ namespace giac {
       return l2norm(v,contextptr);      
     }
     if (ckmatrix(g))
-      return _max(_SVL(g,contextptr),contextptr);
+      return _max(_SVL(g,contextptr)[1],contextptr);
     v=*g._VECTptr;
     return l2norm(v,contextptr);
   }
@@ -1759,6 +1759,68 @@ namespace giac {
       return gensizeerr(contextptr);
     vecteur v=*g._VECTptr;
     int l=v.size();
+    if (l==2 && ckmatrix(v[0])){
+      if (v[1]==at_left){
+	matrice m=*v[0]._VECTptr,res;
+	int n=m.size();
+	res.reserve(n);
+	for (int i=0;i<n;++i){
+	  vecteur v=*m[i]._VECTptr;
+	  int s=v.size();
+	  for (int j=i+1;j<s;++j)
+	    v[j]=0;
+	  res.push_back(v);
+	}
+	return res;
+      }
+      if (v[1]==at_right){
+	matrice m=*v[0]._VECTptr,res;
+	int n=m.size();
+	res.reserve(n);
+	for (int i=0;i<n;++i){
+	  vecteur v=*m[i]._VECTptr;
+	  for (int j=0;j<i;++j)
+	    v[j]=0;
+	  res.push_back(v);
+	}
+	return res;
+      }
+      if (v[1]==at_lu){
+	matrice m=*v[0]._VECTptr,resl,resu,diag;
+	int n=m.size();
+	resl.reserve(n); resu.reserve(n);
+	for (int i=0;i<n;++i){
+	  vecteur v=*m[i]._VECTptr;
+	  diag.push_back(v[i]);
+	  for (int j=0;j<=i;++j)
+	    v[j]=0;
+	  resu.push_back(v);
+	  v=*m[i]._VECTptr;
+	  int s=v.size();
+	  for (int j=i;j<s;++j)
+	    v[j]=0;
+	  resl.push_back(v);
+	}
+	return makesequence(resl,diag,resu);
+      }
+    }
+    if (l==3 && v[0].type==_VECT && v[1].type==_VECT && v[2].type==_VECT && v[0]._VECTptr->size()+1==v[1]._VECTptr->size() && v[0]._VECTptr->size()==v[2]._VECTptr->size() ){
+      vecteur & l=*v[0]._VECTptr;
+      vecteur & d=*v[1]._VECTptr;
+      vecteur & u=*v[2]._VECTptr;
+      int n=d.size();
+      matrice res(n);
+      for (int i=0;i<n;++i){
+	vecteur w(n);
+	if (i)
+	  w[i-1]=l[i-1];
+	w[i]=d[i];
+	if (i<n-1)
+	  w[i+1]=u[i];
+	res[i]=w;
+      }
+      return res;
+    }
     if (is_squarematrix(v)){
       vecteur res(l);
       for (int i=0;i<l;++i)
@@ -5851,6 +5913,34 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static define_unary_function_eval (__evalfa,&_evalfa,_evalfa_s);
   define_unary_function_ptr5( at_evalfa ,alias_at_evalfa,&__evalfa,0,true);
 
+  gen _Li(const gen & args,GIAC_CONTEXT){
+    return _Ei(ln(args,contextptr),contextptr);
+  }
+  static const char _Li_s []="Li";
+  static define_unary_function_eval (__Li,&_Li,_Li_s);
+  define_unary_function_ptr5( at_Li ,alias_at_Li,&__Li,0,true);
+
+  bool is_sparse_matrix(const gen & g,int & nrows,int & ncols,int & n){
+    if (g.type!=_MAP)
+      return false;
+    nrows=0;ncols=0;n=0;
+    gen_map & m=*g._MAPptr;
+    gen_map::const_iterator it=m.begin(),itend=m.end();
+    for (;it!=itend;++n,++it){
+      gen g=it->first;
+      if (g.type!=_VECT || g._VECTptr->size()!=2)
+	return false;
+      gen l=g._VECTptr->front();
+      gen c=g._VECTptr->back();
+      if (!is_integral(l) || !is_integral(c) || l.val<0 || c.val<0)
+	return false;
+      if (nrows<l.val)
+	nrows=l.val;
+      if (ncols<c.val)
+	ncols=c.val;
+    }
+    return true;
+  }
 
 #if 0
   // Small graphs, not tested

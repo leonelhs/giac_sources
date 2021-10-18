@@ -959,7 +959,7 @@ namespace xcas {
       w->set_modal();
       w->show();
       w->hotspot(w);
-      Fl::focus(w);
+      Fl::focus(button);
       double step=2*M_PI/nstep,lx[8],ly[8],lz[8],lX,lY,lZ;
       quaternion_double qsave(gr3->q);
       for (int j=0;j<8;++j){
@@ -1508,7 +1508,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(pos_x);
     int r=-2;
     for (;;) {
       if (r==-2){
@@ -1989,7 +1989,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(wxmin);
     int r;
     for (;;) {
       r=-1;
@@ -3187,7 +3187,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(epaisseur);
     for (;;) {
       Fl_Widget *o = Fl::readqueue();
       if (!o) Fl::wait();
@@ -5642,7 +5642,7 @@ namespace xcas {
       w->show();
       autosave_disabled=true;
       w->hotspot(w);
-      Fl::focus(w);
+      Fl::focus(wxmin);
       int r;
       for (;;) {
 	Fl_Widget *o = Fl::readqueue();
@@ -5939,7 +5939,7 @@ namespace xcas {
     w->show();
     autosave_disabled=true;
     w->hotspot(w);
-    Fl::focus(w);
+    Fl::focus(button0);
     for (;;) {
       Fl_Widget *o = Fl::readqueue();
       if (!o) Fl::wait();
