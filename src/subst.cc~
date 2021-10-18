@@ -2123,6 +2123,7 @@ namespace giac {
     if (l1.empty())
       return e;
     f=subst(f,l1,l2,false,contextptr);
+    f=normal(f,contextptr);
     return f;
   }
 
@@ -2144,10 +2145,8 @@ namespace giac {
       e=_exp2pow(e,contextptr);
     if (!lop(e,at_pow).empty())
       e=powneg2invpow(e,contextptr);
-    if (contains(e,cst_pi)){
+    if (contains(e,cst_pi))
       e=cossinexp2rootof(e,contextptr);
-      e=normal(e,contextptr);
-    }
     if (e.type==_SYMB && e._SYMBptr->feuille.type!=_VECT){
       if (e._SYMBptr->sommet!=at_inv && e._SYMBptr->sommet!=at_neg)
 	return e._SYMBptr->sommet(simplify(e._SYMBptr->feuille,contextptr),contextptr); 

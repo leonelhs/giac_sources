@@ -343,9 +343,10 @@ namespace giac {
     gen uprime(normal(rdiv(uprimev,v,contextptr),contextptr));
     u=integrate_gen(uprime,x,contextptr);
     if (is_undef(u)) return u;
-    F += u*v;
     if (bound)
-      F = preval(F,x,a,b,contextptr);
+      F += preval(u*v,x,a,b,contextptr);    
+    else
+      F += u*v;
     return makevecteur(F,normal(-u*derive(v,x,contextptr),contextptr));
   }
   static const char _ibpu_s []="ibpu";
@@ -1179,6 +1180,41 @@ namespace giac {
     }
   }
 
+  /*
+  gen exptorootof(const gen & g,GIAC_CONTEXT){
+    gen h=ratnormal(g/cst_two_pi/cst_i);
+    if (h.type!=_FRAC || h._FRACptr->num.type!=_INT_ || h._FRACptr->den.type!=_INT_)
+      return symbolic(at_exp,g);
+    int n=h._FRACptr->num.val,d=h._FRACptr->den.val;
+    n=n%d;
+    if (d<0){ d=-d; n=-n; }
+    vecteur v=cyclotomic(d);
+    vecteur w(absint(n)+1);
+    w[0]=1;
+    w=w%v;
+    h=symbolic(at_rootof,makesequence(w,v));
+    if (n>0)
+      return h;
+    return inv(h,contextptr);
+  }
+  const gen_op_context exp2rootof_tab[]={exptorootof,0};
+  gen exp2rootof(const gen & g,GIAC_CONTEXT){
+    return subst(g,exp_tab,exp2rootof_tab,false,contextptr);
+  }
+  gen _exp2rootof(const gen & args,GIAC_CONTEXT){
+    if ( args.type==_STRNG && args.subtype==-1) return  args;
+    gen var,res;
+    if (is_algebraic_program(args,var,res))
+      return symbolic(at_program,makesequence(var,0,_exp2rootof(res,contextptr)));
+    if (is_equal(args))
+      return apply_to_equal(args,_exp2rootof,contextptr);
+    return exp2rootof(args,contextptr);
+  }
+  static const char _exp2rootof_s []="exp2rootof";
+  static define_unary_function_eval (__exp2rootof,&giac::_exp2rootof,_exp2rootof_s);
+  define_unary_function_ptr5( at_exp2rootof ,alias_at_exp2rootof,&__exp2rootof,0,true);
+*/
+
   static gen pmin(const matrice & m,GIAC_CONTEXT){
     int s=m.size();
     matrice mpow(midn(s));
@@ -1219,7 +1255,8 @@ namespace giac {
       return pmin(m,contextptr);
     }
     if (is_integer(g) || g.type==_MOD)
-      return gen(makevecteur(1,g),_POLY1__VECT);
+      return gen(makevecteur(1,-g),_POLY1__VECT);
+    // if (g.type==_FRAC) return gen(makevecteur(g._FRACptr->den,-g._FRACptr->num),_POLY1__VECT);
     if (is_cinteger(g) && g.type==_CPLX){
       gen a=*g._CPLXptr,b=*(g._CPLXptr+1);
       // z=(a+i*b), (z-a)^2=-b^2
@@ -1268,9 +1305,12 @@ namespace giac {
     if (g.type==_EXT)
       return minimal_polynomial(g,true,contextptr);
     if (g.type!=_VECT){
-      vecteur v=alg_lvar(g);
+      gen g_(g);
+      // if (!lop(g_,at_exp).empty())
+      g_=cossinexp2rootof(g_,contextptr);
+      vecteur v=alg_lvar(g_);
       if (v.size()==1 && v.front().type==_VECT && v.front()._VECTptr->empty()){
-	gen tmp=e2r(g,v,contextptr);
+	gen tmp=e2r(g_,v,contextptr);
 	gen d=1;
 	if (tmp.type==_FRAC){
 	  d=tmp._FRACptr->den;

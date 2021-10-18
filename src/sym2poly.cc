@@ -2030,6 +2030,7 @@ namespace giac {
 	m[i]=*ppi._EXTptr;
 	if (m[i].type!=_VECT)
 	  return gensizeerr(contextptr);
+	m[i]=*m[i]._VECTptr;
 	if (int(m[i]._VECTptr->size())<d-1)
 	  *m[i]._VECTptr=mergevecteur(vecteur(d-1-m[i]._VECTptr->size()),*m[i]._VECTptr);
       }
@@ -3295,7 +3296,7 @@ namespace giac {
     for (;it!=itend;++it){
       const pf<gen> & current=*it;
       gen reste(r2e(gen(current.num),l,contextptr)),deno(r2e(gen(current.fact),l,contextptr));
-      gen cur_deno(ratnormal(r2e(it->den,l,contextptr)/r2e(it->mult==1?it->fact:pow(it->fact,it->mult),l,contextptr)));
+      gen cur_deno(normal(r2e(it->den,l,contextptr)/r2e(it->mult==1?it->fact:pow(it->fact,it->mult),l,contextptr),contextptr));
       if (current.mult==1)
 	res += reste/cur_deno/deno;
       else {

@@ -2337,7 +2337,7 @@ namespace giac {
     }
     gen e_copy;
     // Rewrite non rational ^ and tan 
-    e_copy=_pow2exp(tan2sincos(e,contextptr),contextptr);
+    e_copy=_pow2exp(tan2sincos(exact(e,contextptr),contextptr),contextptr);
     // FIXME: this translate exp(i*...) to sin/cos without bugging for
     // exp(exp(exp(x)/(1-1/x)))-exp(exp(exp(x)/(1-1/x-exp((-(ln(x)))*ln(ln(x))))))
     if (has_i(e_copy)) {

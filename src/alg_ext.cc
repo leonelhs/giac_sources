@@ -121,9 +121,12 @@ namespace giac {
     return true;
   }
 
-  gen algebraic_EXTension(const gen & a,const gen & v){
+  gen algebraic_EXTension(const gen & a_,const gen & v){
+    gen a(a_);
+    if (a.type==_VECT)
+      a=trim(*a._VECTptr,0);
     if (is_zero(a) )
-      return a;
+      return 0;
     if (a.type==_VECT){
       if (a._VECTptr->empty())
 	return zero;

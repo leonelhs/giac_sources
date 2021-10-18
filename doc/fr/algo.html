@@ -46,7 +46,7 @@ TD P{margin:0px;}
 </STYLE>
 </HEAD>
 <BODY >
-<!--HEVEA command line is: /usr/bin/hevea algo.tex -->
+<!--HEVEA command line is: /usr/bin/hevea algo -->
 <!--HTMLHEAD-->
 Retour à la page principale de <A HREF="http://www-fourier.ujf-grenoble.fr/parisse/giac_fr.html">Giac/Xcas</A>.<!--ENDHTML-->
 <!--CUT DEF section 1 --><TABLE CLASS="title"><TR><TD><H1 CLASS="titlemain">Algorithmes de calcul formel et numérique</H1><H3 CLASS="titlerest">B. Parisse<BR>
@@ -9987,8 +9987,9 @@ l’étape difficile, la recherche des <I>a</I><SUB><I>p</I></SUB> n’est pas u
 <H3 CLASS="subsection"><!--SEC ANCHOR --><A NAME="htoc132">15.2</A>  La méthode ρ de Pollard</H3><!--SEC END --><P> <A NAME="@default172"></A>
 <B>Théorème des anniversaires </B>: la probabilité que <I>n</I> éléments pris au
 hasard parmi <I>N</I> soient distincts 2 à 2 pour 
-<I>n</I>&lt;&lt;<I>N</I> et <I>N</I>→ ∞ est au premier ordre 
-1−<I>n</I><SUP>2</SUP>/2/<I>N</I>. Donc si <I>n</I>=<I>O</I>(<I>sqrt</I>(<I>N</I>)) cette proba peut être rendue petite.</P><P>En effet, cette probabilité vaut
+<I>n</I>=<I>a</I> √<SPAN style="text-decoration:overline">(</SPAN><I>N</I>)) et <I>N</I>→ ∞ 
+est équivalente à <I>e</I><SUP>−<I>a</I><SUP>2</SUP>/2</SUP>, 
+et peut donc être rendue arbitrairement petite.</P><P>En effet, cette probabilité vaut
 </P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>P</I>=1(1−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
@@ -10010,57 +10011,70 @@ donc
 </TABLE></TD><TD CLASS="dcell">)  </TD></TR>
 </TABLE><P>
 on reconnait une méthode de rectangles pour approcher ∫
-−<I>ln</I>(1−<I>t</I>), fonction croissante positive sur [0,1[ d’où l’encadrement
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><I>N</I></TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I>−1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
-</TABLE></TD></TR>
+−ln(1−<I>t</I>), fonction croissante positive sur ℝ<SUP>+</SUP> d’où l’encadrement
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>n</I>−1</TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left">0</TD></TR>
-</TABLE></TD><TD CLASS="dcell"> −ln(1−<I>t</I>)   <I>dt</I> ≤ −ln(<I>P</I>) ≤
-<I>N</I></TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> −ln(1−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
-</TABLE></TD></TR>
+</TABLE></TD><TD CLASS="dcell">)   <I>dt</I> ≤ −ln(<I>P</I>) ≤
+</TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="left"><I>n</I></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="left"><BR>
 <BR>
 </TD></TR>
-<TR><TD CLASS="dcell" ALIGN="left"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
+<TR><TD CLASS="dcell" ALIGN="left">1</TD></TR>
+</TABLE></TD><TD CLASS="dcell"> −ln(1−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD><TD CLASS="dcell"> −ln(1−<I>t</I>)   <I>dt</I> </TD></TR>
+</TABLE></TD><TD CLASS="dcell">)    <I>dt</I> </TD></TR>
 </TABLE><P>
-On peut faire un développement des ln si <I>n</I>/<I>N</I>
-tend vers 0, on obtient si <I>n</I>=<I>O</I>(√<SPAN style="text-decoration:overline"><I>N</I></SPAN>) par les commandes
-<CODE>series(N*int(ln(1-t),t,0,(n-1)/N),N,inf)</CODE>
-et <CODE>series(N*int(ln(1-t),t,1/N,n/N),N,inf)</CODE>
-</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−<I>n</I>+</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
+On intègre par parties, en posant −1=(<I>N</I>−<I>t</I>)′ 
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell">−ln(1−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">)   <I>dt</I> 
+= (<I>N</I>−<I>t</I>) ln(1−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) + </TD><TD CLASS="dcell"><FONT SIZE=6>∫</FONT></TD><TD CLASS="dcell"> <I>dt</I> 
+= (<I>N</I>−<I>t</I>) ln(1−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) + <I>t</I> </TD></TR>
+</TABLE><P>
+Si <I>t</I>/<I>N</I>=<I>o</I>(1) la primitive vaut :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell">(<I>N</I>−<I>t</I>)(−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<I>N</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">+<I>O</I>(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I><SUP>3</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I><SUP>3</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">)+<I>t</I>
+=−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2<I>N</I></TD></TR>
+</TABLE></TD><TD CLASS="dcell"> + <I>O</I>(</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>t</I><SUP>3</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center"><I>N</I><SUP>2</SUP></TD></TR>
+</TABLE></TD><TD CLASS="dcell">) </TD></TR>
+</TABLE><P>
+Donc pour <I>n</I>=<I>a</I>√<SPAN style="text-decoration:overline"><I>N</I></SPAN>, on a :
+</P><TABLE CLASS="display dcenter"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUP>2</SUP></TD></TR>
+<TR><TD CLASS="hbar"></TD></TR>
+<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
 </TABLE></TD><TD CLASS="dcell">+ <I>O</I>(</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
 <TR><TD ALIGN=center NOWRAP><I>N</I></TD></TR>
 </TABLE></TD><TD CLASS="dcell"><SUP>−1</SUP>)
 ≤ −ln(<I>P</I>) 
-≤ −</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><TABLE CLASS="display"><TR VALIGN="middle"><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>n</I><SUP>2</SUP></TD></TR>
+≤ </TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center"><I>a</I><SUP>2</SUP></TD></TR>
 <TR><TD CLASS="hbar"></TD></TR>
 <TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD><TD CLASS="dcell">−</TD><TD CLASS="dcell"><TABLE CLASS="display"><TR><TD CLASS="dcell" ALIGN="center">1</TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center">2</TD></TR>
-</TABLE></TD></TR>
-</TABLE></TD></TR>
-<TR><TD CLASS="hbar"></TD></TR>
-<TR><TD CLASS="dcell" ALIGN="center"><I>N</I></TD></TR>
 </TABLE></TD><TD CLASS="dcell">+ <I>O</I>(</TD><TD CLASS="dcell"><FONT SIZE=5>√</FONT></TD><TD CLASS="dcell"><TABLE border=0 cellspacing=1 cellpadding=0><TR><TD CLASS="hbar"></TD></TR>
 <TR><TD ALIGN=center NOWRAP><I>N</I></TD></TR>
 </TABLE></TD><TD CLASS="dcell"><SUP>−1</SUP>)</TD></TR>

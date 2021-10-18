@@ -2592,9 +2592,14 @@ namespace giac {
     int step_infolevelsave=step_infolevel;
     if ((intmode & 2)==2) 
       step_infolevel=0;
-    gen ee(normalize_sqrt(e,contextptr));
-    gen res=linear_apply(ee,x,remains_to_integrate,contextptr,integrate_gen_rem);
+    // temporarily remove assumptions by changing integration variable
+    identificateur t("t_nostep");
+    gen tt(t);
+    gen ee=quotesubst(e,x,tt,contextptr);
+    ee=normalize_sqrt(ee,contextptr);
+    gen res=linear_apply(ee,tt,remains_to_integrate,contextptr,integrate_gen_rem);
     step_infolevel=step_infolevelsave;
+    res=quotesubst(res,tt,x,contextptr);
     return res;
   }
 
@@ -3078,7 +3083,7 @@ namespace giac {
     vecteur sp;
     sp=lidnt(evalf(primitive,1,contextptr));
     if (sp.size()>1){
-      *logptr(contextptr) << gettext("Unable to check if antiderivative  ")+primitive.print(contextptr)+gettext(" has singular points for definite integration in [")+borne_inf.print(contextptr)+","+borne_sup.print(contextptr)+"]" << endl ;
+      *logptr(contextptr) << gettext("No check were made for singular points of antiderivative ")+primitive.print(contextptr)+gettext(" for definite integration in [")+borne_inf.print(contextptr)+","+borne_sup.print(contextptr)+"]" << endl ;
       sp.clear();
     }
     else {
@@ -4432,7 +4437,7 @@ namespace giac {
     vecteur v(*args._VECTptr);
     maple_sum_product_unquote(v,contextptr);
     int s=v.size();
-    if (is_zero(v[0]))
+    if (is_zero(ratnormal(v[0])))
       return 0;
     if (!adjust_int_sum_arg(v,s))
       return gensizeerr(contextptr);
@@ -4450,7 +4455,7 @@ namespace giac {
 	vecteur w;
 	gen v0=eval(v[0],1,contextptr);
 #ifdef NO_STDEXCEPT
-	w=protect_find_singularities(v0,*v[1]._IDNTptr,0,contextptr);
+	  w=protect_find_singularities(v0,*v[1]._IDNTptr,0,contextptr);
 #else
 	try {
 	  w=protect_find_singularities(v0,*v[1]._IDNTptr,0,contextptr);
@@ -4590,6 +4595,8 @@ namespace giac {
 	return gensizeerr(gettext("bernoulli"));
       bool all=a.val<0;
       int n=absint(a.val);
+      if (n==0)
+	return plus_one;
       gen bi=bernoulli(-n);
       if (bi.type!=_VECT)
 	return gensizeerr(gettext("bernoulli"));
@@ -4623,7 +4630,7 @@ namespace giac {
     if (!n)
       return plus_one;
     if (n==1)
-      return minus_one_half;
+      return all?vecteur(1,minus_one_half):minus_one_half;
     if (n%2){
       if (!all)
 	return zero;
@@ -5266,9 +5273,10 @@ namespace giac {
       return tmp+F;
     }
     v=normal(rdiv(uprimev,derive(u,x,contextptr),contextptr),contextptr);
-    F += u*v;
     if (bound)
-      F = preval(F,x,a,b,contextptr);    
+      F += preval(u*v,x,a,b,contextptr);    
+    else
+      F += u*v;
     return makevecteur(F,normal(-u*derive(v,x,contextptr),contextptr));
   }
   static const char _ibpdv_s []="ibpdv";
