@@ -177,6 +177,9 @@ int my_sprintf(char * s, const char * format, ...);
 #endif
 #endif
 
+#ifdef GIAC_HAS_STO_38
+#define GIAC_GENERIC_CONSTANTS
+#endif
 
 #ifdef __VISUALC__ 
 #define GIAC_GENERIC_CONSTANTS

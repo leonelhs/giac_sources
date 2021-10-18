@@ -119,10 +119,17 @@ namespace giac {
     bit mask & shift operations.
 ------------------------------------------------------------------------ */
 
+#ifdef GIAC_HAS_STO_38
+typedef unsigned long UTF32; /* at least 32 bits */
+typedef wchar_t UTF16; /* at least 16 bits */
+typedef unsigned char UTF8; /* typically 8 bits */
+typedef unsigned char Boolean; /* 0 or 1 */
+#else
 typedef unsigned long UTF32; /* at least 32 bits */
 typedef unsigned short UTF16; /* at least 16 bits */
 typedef unsigned char UTF8; /* typically 8 bits */
 typedef unsigned char Boolean; /* 0 or 1 */
+#endif
 
 /* Some fundamental constants */
 #define UNI_REPLACEMENT_CHAR (UTF32)0x0000FFFD

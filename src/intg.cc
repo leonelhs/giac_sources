@@ -347,6 +347,8 @@ namespace giac {
     }
     if (is_zero(b))
       return undef;
+    if (is_inf(a))
+      return pow(a,inv(b,contextptr),contextptr);
     c=_floor(b,contextptr);
     if (c.type==_FLOAT_)
       c=get_int(c._FLOAT_val);

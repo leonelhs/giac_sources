@@ -1107,8 +1107,12 @@ namespace giac {
 	  return vecteur(1,gensizeerr(gettext("Unable to check test at x=")+test.print()));
       }
       if (test!=1){
-	if (!equalposcomp(already_added,l) && equalposcomp(veq_not_singu,l))
-	  add_eq.push_back(l);
+	if (!equalposcomp(already_added,l) && equalposcomp(veq_not_singu,l)){
+	  gen a=e0._SYMBptr->feuille[0];
+	  a=subst(a,x,l,false,contextptr);
+	  if (!has_i(a))
+	    add_eq.push_back(l);
+	}
 	continue;
       }
       already_added.push_back(m);
@@ -1153,9 +1157,10 @@ namespace giac {
       }
       else
 	test=eval(subst(e0,x,m,false,contextptr),eval_level(contextptr),contextptr);
+      lf=evalf_double(m,1,contextptr);
       testeq=abs(evalf(subst(e,x,m,false,contextptr),eval_level(contextptr),contextptr),contextptr);
       eps=epsilon(contextptr);
-      lf=evalf_double(m,1,contextptr);
+      // if ( (lf.type!=_DOUBLE_ && lf.type!=_CPLX) || (testeq.type!=_DOUBLE_ || testeq.type != _CPLX && !is_undef(testeq) && !is_inf(testeq)) ) return vecteur(1,gensizeerr("Unable to solve inequation"));
       if (lf.type==_DOUBLE_){
 	double lfd=fabs(lf._DOUBLE_val);
 	if (lfd>1)
@@ -1737,7 +1742,11 @@ namespace giac {
       lv=lvarx(expr,x);
       s=int(lv.size());
       if (s>1){
-	gen tmp=_texpand(expr,contextptr);
+	gen tmp;
+	if (lv.size()==2 && lv[0].type==_SYMB && lv[1].type==_SYMB && lv[0]._SYMBptr->feuille==lv[1]._SYMBptr->feuille)
+	  tmp=expr;
+	else
+	  tmp=_texpand(expr,contextptr);
 	vecteur tmplv=lvarx(tmp,x);
 	if (tmplv.size()==2 && tmplv[0].type==_SYMB && tmplv[1].type==_SYMB && tmplv[0]._SYMBptr->feuille==tmplv[1]._SYMBptr->feuille){
 	  gen a,b,c,d;
@@ -1783,6 +1792,11 @@ namespace giac {
 	    if (int(lvarx(tmp,x).size())<s){
 	      // Note: we are checking solutions numerically later
 	      *logptr(contextptr) << gettext("Warning: solving in ") << x << gettext(" equation ") << tmp << "=0" << endl;
+	      expr=tmp;
+	    }
+	    // code added 11 october 2015 for solve(2^(3*x-1)+2^(6*x-2)-2^(3*x+3)-(4^(3*x-2))=0);
+	    tmp=_tsimplify(tmps<s?tmp:expr,contextptr);
+	    if (int(lvarx(tmp,x).size())<s){
 	      expr=tmp;
 	    }
 	  }
@@ -6491,10 +6505,12 @@ namespace giac {
     if (eqp.empty()) return vecteur(0);
     // add fake polynomials for fake variables added by revlex_parametrize
     int dim=eqp.front().dim;
+#if 1
     for (;faken<lsize;++faken){
       polynome fakep(dim,vector< monomial<gen> >(1,monomial<gen>(1,faken+1,dim)));
       eqp.push_back(fakep);
     }
+#endif
     gen coeff;
     environment env ;
     if (modular){
