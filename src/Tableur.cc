@@ -1844,7 +1844,7 @@ namespace xcas {
       xmin->step(0.5);
       xmin->tooltip(gettext("Minimal value for 1st independant variable"));
       xstep = new Fl_Value_Input(3*dx/6,2+2*dy/lignes,dx/6-2,dy/lignes-4,gettext("xstep"));
-      xstep->value(0.25);
+      xstep->value(0.1);
       xstep->step(0.01);
       xstep->tooltip(gettext("Discretization step for 1st independant variable"));
       xmax = new Fl_Value_Input(5*dx/6,2+2*dy/lignes,dx/6-2,dy/lignes-4,gettext("xmax"));
@@ -1858,7 +1858,7 @@ namespace xcas {
       ymin->step(0.5);
       ymin->tooltip(gettext("Minimal value for 2nd independant variable"));
       ystep = new Fl_Value_Input(3*dx/6,2+3*dy/lignes,dx/6-2,dy/lignes-4,gettext("ystep"));
-      ystep->value(0.25);
+      ystep->value(0.1);
       ystep->step(0.01);
       ystep->tooltip(gettext("Discretization step for 2nd independant variable"));
       ymax = new Fl_Value_Input(5*dx/6,2+3*dy/lignes,dx/6-2,dy/lignes-4,gettext("ymax"));

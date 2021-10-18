@@ -1643,6 +1643,29 @@ namespace giac {
     return 2;
   }
 
+  int print_max_depth=100;
+  unsigned depth(const gen & g,unsigned add,unsigned max){
+    gen g_(g);
+    for (;g_.type==_SYMB;++add){
+      g_=g_._SYMBptr->feuille;
+    }
+    if (add>=max)
+      return add;
+    if (g_.type==_VECT){
+      unsigned res=add;
+      const_iterateur it=g_._VECTptr->begin(),itend=g_._VECTptr->end();
+      for (;it!=itend;++it){
+	unsigned cur=depth(*it,add,max);
+	if (max && cur>max)
+	  return res;
+	if (cur>res)
+	  res=cur;
+      }
+      return res;
+    }
+    return add;
+  }
+
 #ifdef NSPIRE
   template<class T> nio::ios_base<T> & operator << (nio::ios_base<T> & os,const symbolic & s) { return os << s.print(context0); }
 #else    

@@ -11,10 +11,10 @@ P:=P+det(i*identity(n)-A)*M;
 od:
 normal(P);
 end_proc;
- k:=50:A:=matrix(k,k,(i,j)->rand(21)-10):
+ k:=50:srand(12);A:=matrix(k,k,(i,j)->rand(21)-10):
 normal(monlagrange(A)-det(A-x*idn(k)));
 
- k:=50:A:=matrix(k,k,(i,j)->rand(21)-10):
+ k:=50:srand(132);A:=matrix(k,k,(i,j)->rand(21)-10):
  pari():;
  pari_charpoly(A,0);
  pppp3:=poly2symb(pari_charpoly(A,1),x);
@@ -25,7 +25,7 @@ normal(monlagrange(A)-det(A-x*idn(k)));
  if normal(pppp3-pppp2)==0 then print("pcar OK") else print("pcar Erreur") ; fi;
  pcar(A,pmin);
  det(A-x*idn(k));
- k:=30:A:=matrix(k,k,(i,j)->(rand(21)-10)/(rand(4)^2+rand(1,3)^2)):
+ k:=30:srand(123);A:=matrix(k,k,(i,j)->(rand(21)-10)/(rand(4)^2+rand(1,3)^2)):
  pari_charpoly(A,0);
  pari_charpoly(A,1);
 /* c'est en O(n^4), en fait n^4/3, alors que Faddeev est en n^4. Mais il y a plus£de fractions chez lagrange, ce qui peut donner l'avantage a faddeev.*/
@@ -37,7 +37,7 @@ revlist(v);
  subs(x=sqrt(2),P);
 unapply(P,x)(sqrt(2));
  peval(LP,sqrt(2));
- n:=8:v:=[seq(i,i=1..n)]; A:=matrix(n,n,(i,j)-> rand(20)-10);
+ n:=8:srand(8);v:=[seq(i,i=1..n)]; A:=matrix(n,n,(i,j)-> rand(20)-10);
  B:=v; AA:=v;
  for i from 1 to n do AA:=A*AA;B:=B,AA; od;
  N:=nullspace(transpose([B]))[1];

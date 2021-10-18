@@ -1316,6 +1316,35 @@ namespace giac {
     if (is_squarematrix(g)){
       matrice &m =*g._VECTptr;
       vecteur w;
+      gen p=m[0][0];
+      if (p.type==_USER){
+	std_matrix<gen> M;
+	matrice2std_matrix_gen(m,M);
+	mod_pcar(M,w,true);
+	return gen(w,_POLY1__VECT);
+      }
+      if (p.type==_MOD && (p._MODptr+1)->type==_INT_){
+	gen mg=unmod(m);
+	if (mg.type==_VECT){
+	  matrice M=*mg._VECTptr;
+	  vector< vector<int> > N;
+	  int modulo=(p._MODptr+1)->val;
+	  bool krylov=true;
+	  vector<int> res;
+	  if (mod_pcar(M,N,modulo,krylov,res,contextptr,true)){
+	    vector_int2vecteur(res,w);
+	    environment env;
+	    w=modularize(w,modulo,&env);
+	    return gen(w,_POLY1__VECT);
+	  }
+	}
+      }
+      if (is_integer_matrice(m)){
+	w=mpcar_int(m,true,contextptr,true);
+	return gen(w,_POLY1__VECT);
+      }
+      if (poly_pcar_interp(m,w,true,contextptr))
+	return gen(w,_POLY1__VECT);
       if (proba_epsilon(contextptr) && probabilistic_pmin(m,w,true,contextptr))
 	return gen(w,_POLY1__VECT);
       return pmin(m,contextptr);

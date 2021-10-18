@@ -325,6 +325,17 @@ var Module = {
 \lstinline@#2@
 \fi
 }
+\newcommand{\giachidden}[3][style="display:none;width:400px;height:20px;font-size:large"]{
+\ifhevea
+\@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
+\@getprint{#1>#2}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);if (tmp.charCodeAt(0)==34) tmp=tmp.substr(1,tmp.length-2); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">}
+\@getprint{#3}
+\@print{</button><span></span><br>}
+\else
+\lstinline@#2@
+\fi
+}
 \newcommand{\giacinputbig}[2][style="width:800px;height:20px;font-size:large"]{
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
@@ -350,7 +361,17 @@ var Module = {
 \newcommand{\giacinputmath}[2][style="width:400px;height:20px;font-size:large"]{\ifhevea
 \begin{rawhtml}<br><textarea onkeypress="UI.ckenter(event,this,2)" \end{rawhtml}
 \@getprint{#1>#2} 
-\begin{rawhtml}</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><span></span><br>\end{rawhtml}
+\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><span></span><br>\end{rawhtml}
+\else
+\lstinline@#2@
+\fi
+}
+\newcommand{\giachiddenmath}[3][style="display:none;width:400px;height:20px;font-size:large"]{\ifhevea
+\begin{rawhtml}<br><textarea onkeypress="UI.ckenter(event,this,2)" \end{rawhtml}
+\@getprint{#1>#2} 
+\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML='&nbsp;'+tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">\end{rawhtml}
+\@getprint{#3}
+\begin{rawhtml}</button><span></span><br>\end{rawhtml}
 \else
 \lstinline@#2@
 \fi
@@ -370,7 +391,7 @@ var Module = {
 \newcommand{\giacinputbigmath}[2][style="width:800px;height:20px;font-size:large"]{\ifhevea
 \begin{rawhtml}<div><textarea onkeypress="UI.ckenter(event,this,2)" \end{rawhtml}
 \@getprint{#1>#2} 
-\begin{rawhtml}</textarea><button onclick="var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>\end{rawhtml}
+\begin{rawhtml}</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value); tmp=UI.latexeval(tmp);nextSibling.innerHTML=tmp; if (UI.usemathjax) MathJax.Hub.Queue(['Typeset',MathJax.Hub,nextSibling])">ok</button><div style="width:800px;max-height:200px;overflow:auto;color:blue;text-align:center"></div></div>\end{rawhtml}
 \else
 \lstinline@#2@
 \fi

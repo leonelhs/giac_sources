@@ -1023,9 +1023,10 @@ namespace giac {
   }
 
   gen desolve_f(const gen & f_orig,const gen & x_orig,const gen & y_orig,int & ordre,vecteur & parameters,gen & fres,int step_info,GIAC_CONTEXT){
-    if (x_orig.type!=_VECT &&eval(x_orig,1,contextptr)!=x_orig)
+    // if x_orig.type==_VECT || y_orig.type==_VECT, they should be evaled
+    if (x_orig.type!=_VECT && eval(x_orig,1,contextptr)!=x_orig)
       return gensizeerr("Independant variable assigned. Run purge("+x_orig.print(contextptr)+")\n");
-    if (y_orig.type!=_VECT &&eval(y_orig,1,contextptr)!=y_orig)
+    if (y_orig.type!=_VECT && eval(y_orig,1,contextptr)!=y_orig)
       return gensizeerr("Dependant variable assigned. Run purge("+y_orig.print(contextptr)+")\n");
     gen x(x_orig);
     if ( (x_orig.type==_VECT) && (x_orig._VECTptr->size()==1) )
@@ -1231,12 +1232,15 @@ namespace giac {
 	  }
 #else
 	  vecteur newsol;
+	  int cm=calc_mode(contextptr);
+	  calc_mode(0,contextptr);
 	  try {
 	    newsol=solve(implicitsol,*y._IDNTptr,3,contextptr);
 	  } catch(std::runtime_error & err){
 	    newsol.clear();
 	    *logptr(contextptr) << "Unable to solve implicit equation "<< implicitsol << "=0 in " << y << endl;
 	  }
+	  calc_mode(cm,contextptr);
 #endif
 	  sol=mergevecteur(sol,newsol);
 	  continue;
@@ -1256,7 +1260,12 @@ namespace giac {
 	if (is_zero(derive(fc,x,contextptr)) && is_zero(derive(fc,y,contextptr))){
 	  gen eff=subst(*it,y,y-fc*x,false,contextptr); // does not depend on x
 	  gen pr=integrate_without_lnabs(inv(eff+fc,contextptr),y,contextptr)+parameters.back();
-	  pr=subst(pr,y,y+fc*x,false,contextptr);	  
+	  pr=subst(pr,y,y+fc*x,false,contextptr);
+	  vecteur l1=lop(lvarx(pr,y),at_floor);
+	  if (!l1.empty()){
+	    vecteur l2(l1.size());
+	    pr=subst(pr,l1,l2,false,contextptr);
+	  }
 	  vecteur sol1=solve(pr-x,*y._IDNTptr,3,contextptr);
 	  sol=mergevecteur(sol,sol1);
 	  continue;

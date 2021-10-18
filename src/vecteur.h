@@ -229,6 +229,7 @@ namespace giac {
 
   // mmult assumes dimensions are correct
   void mmult(const matrice & a,const matrice & b,matrice &res);
+  void mmult_atranb(const matrice & a,const matrice & btran,matrice & res);
   matrice mmult(const matrice & a,const matrice & b);
   bool mmultck(const matrice & a,const matrice & b,matrice & res);
   matrice mmultck(const matrice & a,const matrice & b);
@@ -268,7 +269,8 @@ namespace giac {
     RREF_LAGRANGE=5
   };
   // For approx linear combination, anything ||<eps will be replaced by 0
-  void linear_combination(const gen & c1,const vecteur & v1,const gen & c2,const vecteur & v2,const gen & c,vecteur & v,double eps,int cstart=0);
+  void linear_combination(const gen & c1,const vecteur & v1,const gen & c2,const vecteur & v2,const gen & c,const gen & cinv,vecteur & v,double eps,int cstart=0);
+  gen exact_div(const gen & a,const gen & b);
 
   // row reduction from line l and column c to line lmax and column cmax
   // lmax and cmax are not included
@@ -371,9 +373,13 @@ namespace giac {
   gen _hessenberg(const gen & g,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_hessenberg ;
 
-  bool balance_krylov(matrix_double & H,std::vector<giac_double> & d,int niter=5,double cutoff=1e-8);
+  bool balance_krylov(const matrix_double & H,std::vector<giac_double> & d,int niter=5,double cutoff=1e-8);
   bool probabilistic_pmin(const matrice & m,vecteur & w,bool check,GIAC_CONTEXT);
-  bool mod_pcar(std::vector< std::vector<int> > & N,int modulo,bool & krylov,std::vector<int> & res,GIAC_CONTEXT);
+  vecteur mpcar_int(const matrice & A,bool krylov,GIAC_CONTEXT,bool compute_pmin);
+
+  void mod_pcar(std_matrix<gen> & N,vecteur & res,bool compute_pmin);
+  bool mod_pcar(const matrice & A,std::vector< std::vector<int> > & N,int modulo,bool & krylov,std::vector<int> & res,GIAC_CONTEXT,bool compute_pmin);
+  bool mod_pcar(std::vector< std::vector<int> > & N,int modulo,bool & krylov,std::vector<int> & res,GIAC_CONTEXT,bool compute_pmin);
   vecteur mpcar_hessenberg(const matrice & A,int modulo,GIAC_CONTEXT);
   gen _pcar_hessenberg(const gen & g,GIAC_CONTEXT);
   extern const unary_function_ptr * const  at_pcar_hessenberg ;

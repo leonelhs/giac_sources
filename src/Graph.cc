@@ -5860,7 +5860,7 @@ namespace xcas {
       xmin->value(-5);
       xmin->step(0.5);
       xstep = new Fl_Value_Input(3*dx/6,2+2*dy/lignes,dx/6-2,dy/lignes-4,gettext("xstep"));
-      xstep->value(0.25);
+      xstep->value(0.1);
       xstep->step(0.01);
       xmax = new Fl_Value_Input(5*dx/6,2+2*dy/lignes,dx/6-2,dy/lignes-4,gettext("xmax"));
       xmax->value(5);
@@ -5869,7 +5869,7 @@ namespace xcas {
       ymin->value(-5);
       ymin->step(0.5);
       ystep = new Fl_Value_Input(3*dx/6,2+3*dy/lignes,dx/6-2,dy/lignes-4,gettext("ystep"));
-      ystep->value(0.25);
+      ystep->value(0.1);
       ystep->step(0.01);
       ymax = new Fl_Value_Input(5*dx/6,2+3*dy/lignes,dx/6-2,dy/lignes-4,gettext("ymax"));
       ymax->value(5);
@@ -5982,10 +5982,10 @@ namespace xcas {
 	fcnfield->value(gr->fcnfield.c_str());
       xmin->value(gr->window_xmin);
       xmax->value(gr->window_xmax);
-      xstep->value((xmax->value()-xmin->value())/16);
+      xstep->value((xmax->value()-xmin->value())/64);
       ymin->value(gr->window_xmin);
       ymax->value(gr->window_xmax);
-      ystep->value((xmax->value()-xmin->value())/16);
+      ystep->value((xmax->value()-xmin->value())/64);
     }
     int r=-1;
     w->set_modal();

@@ -116,7 +116,7 @@ namespace giac {
     if ( (e.type!=_VECT) || (e._VECTptr->size()!=2))
       return symbolic(at_pow,e);
     if ( (e._VECTptr->back().type!=_INT_) || (e._VECTptr->back().val>=0) || ( (e._VECTptr->front().type==_SYMB) && (e._VECTptr->front()._SYMBptr->sommet==at_exp) ) )
-      return symbolic(at_pow,e);
+      return symbolic(at_pow,change_subtype(e,_SEQ__VECT));
     return nop_inv(symbolic(at_pow,gen(makevecteur(e._VECTptr->front(),-e._VECTptr->back()),_SEQ__VECT)),contextptr);
   }
 
@@ -5301,7 +5301,7 @@ namespace giac {
     vecteur resv; // contains the curve
     if (return_curve)
       resv.push_back(makevecteur(t0_e,y0v));
-#ifdef HAVE_LIBGSL
+#if 0 //def HAVE_LIBGSL
     if (!iscomplex && t0_e.type==_DOUBLE_ && t1_e.type==_DOUBLE_ && is_zero(im(tmp,contextptr))){
       double t0=t0_e._DOUBLE_val;
       double t1=t1_e._DOUBLE_val;

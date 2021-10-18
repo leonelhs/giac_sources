@@ -1221,7 +1221,7 @@ namespace xcas {
       /***************
        *   MATRICE   *
        ***************/
-      if (ckmatrix(g) && g.subtype!=_SEQ__VECT && g.subtype!=_SET__VECT && g._VECTptr->front().subtype!=_SEQ__VECT){
+      if (ckmatrix(g) && g.subtype!=_SEQ__VECT && g.subtype!=_SET__VECT && g.subtype!=_POLY1__VECT && g._VECTptr->front().subtype!=_SEQ__VECT){
 	gen mkvect(at_makevector);
 	mkvect.subtype=_SEQ__VECT;
 	gen mkmat(at_makevector);

@@ -132,6 +132,14 @@ function applyKey (_event_){
     UI.move_focus(UI.focused,-1);
     done=true;
    }
+   if (intKeyCode == KEY_N || intKeyCode == KEY_DOWN){
+    UI.move_focus(UI.focused,1); UI.move_focus(UI.focused,1);
+    done=true;
+   }
+   if (intKeyCode == KEY_P || intKeyCode == KEY_UP){
+    UI.move_focus(UI.focused,-1); UI.move_focus(UI.focused,-1);
+    done=true;
+   }
    if (intKeyCode == KEY_A){
     document.getElementById('helptxt').focus();
     done=true;
@@ -896,7 +904,7 @@ id="add_debug"
 <button id="stop_button" style="height:25px;visibility:hidden" onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){ UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. Toutes les variables ont ete effacees.');}" title="Termine la session en cours">STOP</button>
 
 <br>
-<textarea name="entree" id="entree" title="Ligne de commande" style="font-size:18px;width:98%"
+<textarea name="entree" id="entree" title="Taper une commande ici puis Entree pour valider" style="font-size:18px;width:98%"
   rows=1 onkeypress="UI.focused=this; if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
 </span>
 </br>
@@ -2517,7 +2525,8 @@ var endPos = field.selectionEnd;
   },
 move_caret_or_focus:function(field,n){
  if (UI.detectmob()){ UI.moveCaret(field,n); return; }
- move_focus(field,n);
+ while(n>=1){ UI.move_focus(field,1); n--; }
+ while(n<=-1){ UI.move_focus(field,-1); n++; }
 },
 move_focus:function(field,n){
  // focus on next or previous history level

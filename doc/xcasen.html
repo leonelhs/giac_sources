@@ -114,15 +114,23 @@ function applyKey (_event_){
  // F1 aide, c cmdline, m menu, 
  if (intAltKey) {
    var done=false;
-   if (intKeyCode == KEY_RIGHT){
+   if (intKeyCode == KEY_D || intKeyCode == KEY_B || intKeyCode == KEY_RIGHT){
     UI.move_focus(UI.focused,1);
     done=true;
    }		
-   if (intKeyCode == KEY_LEFT){
+   if (intKeyCode == KEY_G || intKeyCode == KEY_V || intKeyCode == KEY_LEFT){
     UI.move_focus(UI.focused,-1);
     done=true;
    }
-   if (intKeyCode == KEY_PF1){
+   if (intKeyCode == KEY_N || intKeyCode == KEY_DOWN){
+    UI.move_focus(UI.focused,1); UI.move_focus(UI.focused,1);
+    done=true;
+   }
+   if (intKeyCode == KEY_P || intKeyCode == KEY_UP){
+    UI.move_focus(UI.focused,-1); UI.move_focus(UI.focused,-1);
+    done=true;
+   }
+   if (intKeyCode == KEY_A){
     document.getElementById('helptxt').focus();
     done=true;
    }
@@ -134,7 +142,7 @@ function applyKey (_event_){
     UI.show_menu();
     done=true;
    }
-   if (intKeyCode == KEY_SPACE){
+   if (intKeyCode == KEY_T || intKeyCode==KEY_TAB || intKeyCode==KEY_PF1){
     UI.completion(cmentree);
     done=true;
    }

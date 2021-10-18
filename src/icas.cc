@@ -929,9 +929,24 @@ int main(int ARGC, char *ARGV[]){
       *logptr(contextptr) << "Setting threads to " << t << endl;
     }
   }
+  if (getenv("GIAC_FFTMUL_SIZE")){
+    int t=atoi(getenv("GIAC_FFTMUL_SIZE"));
+    if (t>=1){
+      giac::FFTMUL_SIZE=t;
+      *logptr(contextptr) << "Setting FFT mult size to " << t << endl;
+    }
+  }
+  if (getenv("GIAC_MIN_PROBA_TIME")){
+    double t=atof(getenv("GIAC_MIN_PROBA_TIME"));
+    if (t>=0){
+      giac::min_proba_time=t;
+      *logptr(contextptr) << "Setting minimal probabilistic answer time delat to " << t << endl;
+    }
+  }
   if (savedbg)
     giac::debug_infolevel=savedbg;
   if (ARGC>=2){
+    giac::set_language(giac::language(contextptr),contextptr);
     ostream * checkptr=0,*checkptrin=0;
     std::string infile(ARGV[1]),outfile=giac::remove_extension(infile);
     if (infile==outfile && !giac::is_file_available(ARGV[1]) && giac::is_file_available((infile+".tex").c_str()))
@@ -964,6 +979,7 @@ int main(int ARGC, char *ARGV[]){
     }
   }
   if (ARGC>=3 && std::string(ARGV[1])=="--tex"){
+    giac::set_language(giac::language(contextptr),contextptr);
     ostream * checkptr=0,*checkptrin=0;
     // scan ARGV[2], search for commands starting by \giac...{}
     // output .g command, output everything else verbatim 

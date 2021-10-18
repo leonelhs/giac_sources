@@ -1251,6 +1251,9 @@ namespace giac {
     }
 #ifndef GNUWINCE
     if (vars.type==_IDNT){ // function plot
+      gen a,b;
+      if (taille(f,100)<=100 && is_linear_wrt(f,vars,a,b,contextptr))	
+	return _droite(makesequence(b,b+cst_i*a),contextptr);
       gen locvar(vars);
       locvar.subtype=0;
       gen y=quotesubst(f,vars,locvar,contextptr),yy;
@@ -9138,6 +9141,7 @@ namespace giac {
 	  }
 	}
 	gen M=remove_at_pnt(t);
+	if (M.is_symb_of_sommet(at_curve)) return gensizeerr(contextptr);
 	gen m,tmin,tmax;
 	double T=1;
 	if (v[1].type==_IDNT && find_curve_parametrization(curve,m,v[1],T,tmin,tmax,false,contextptr)){
