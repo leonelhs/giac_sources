@@ -437,24 +437,24 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
   COUT << "Partly inspired from pgiac by Jean-Michel Sarlat" << endl;
   if (!giac::is_file_available("giac.tex")){
     if (giac::is_file_available("/usr/share/giac/doc/giac.tex"))
-      system("cp /usr/share/giac/doc/giac.tex .");
+      giac::system_no_deprecation("cp /usr/share/giac/doc/giac.tex .");
     else {
       if (giac::is_file_available("/usr/local/share/giac/doc/giac.tex"))
-	system("cp /usr/local/share/giac/doc/giac.tex .");
+	giac::system_no_deprecation("cp /usr/local/share/giac/doc/giac.tex .");
       else 
 	if (giac::is_file_available("/Applications/share/giac/doc/giac.tex"))
-	  system("cp /Applications/share/giac/doc/giac.tex .");
+	  giac::system_no_deprecation("cp /Applications/share/giac/doc/giac.tex .");
     }
   }
   if (!giac::is_file_available("giacfr.tex")){
     if (giac::is_file_available("/usr/share/giac/doc/giacfr.tex"))
-      system("cp /usr/share/giac/doc/giacfr.tex .");
+      giac::system_no_deprecation("cp /usr/share/giac/doc/giacfr.tex .");
     else {
       if (giac::is_file_available("/usr/local/share/giac/doc/giacfr.tex"))
-	system("cp /usr/local/share/giac/doc/giacfr.tex .");
+	giac::system_no_deprecation("cp /usr/local/share/giac/doc/giacfr.tex .");
       else 
 	if (giac::is_file_available("/Applications/share/giac/doc/giacfr.tex"))
-	  system("cp /Applications/share/giac/doc/giacfr.tex .");
+	  giac::system_no_deprecation("cp /Applications/share/giac/doc/giacfr.tex .");
     }
   }
   std::string infile_=giac::remove_extension(infile),warn;
@@ -525,15 +525,15 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 	  if (dohevea){
 	    std::string cmd="hevea -fix "+infile_+" &";
 	    COUT << "Running " << cmd << endl;
-	    system(cmd.c_str());
+	    giac::system_no_deprecation(cmd.c_str());
 	  }
 	  else
 	    COUT << "For HTML5 output, you can run\nhevea -fix " << infile_ << endl;
 	  std::string cmd="makeindex "+giac::remove_extension(outfile);
-	  system(cmd.c_str());
+	  giac::system_no_deprecation(cmd.c_str());
 	  cmd=("pdflatex "+giac::remove_extension(outfile)+" && mv "+giac::remove_extension(outfile)+".pdf "+infile_+".pdf");
 	  COUT << cmd << endl;
-	  system(cmd.c_str());
+	  giac::system_no_deprecation(cmd.c_str());
 	  if (!warn.empty()){
 	    COUT << "*********************************" << endl;
 	    COUT << "*********************************" << endl;
@@ -688,7 +688,7 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
   }
   out.close();
   COUT << "Missing \\end{document}. File " << outfile << " created" << endl;
-  //system(("pgiac "+outfile).c_str());
+  //giac::system_no_deprecation(("pgiac "+outfile).c_str());
 }
 
 #else
@@ -751,10 +751,10 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
 	  out.close();
 	  COUT << "File " << outfile << " created, now running hevea in background and pgiac " << outfile << endl << "Then I will run pdflatex " << giac::remove_extension(outfile) << endl << "For HTML5 output, you can run\nhevea -fix " << giac::remove_extension(infile) << endl;
 	  std::string cmd="hevea -fix "+giac::remove_extension(infile)+" &";
-	  system(cmd.c_str());
+	  giac::system_no_deprecation(cmd.c_str());
 	  cmd=("pgiac "+outfile+" && pdflatex "+giac::remove_extension(outfile)+" && mv "+giac::remove_extension(outfile)+".pdf "+giac::remove_extension(infile)+".pdf");
 	  COUT << cmd << endl;
-	  system(cmd.c_str());
+	  giac::system_no_deprecation(cmd.c_str());
 	  return;
 	}
       }
@@ -874,7 +874,7 @@ void pgiac(std::string infile,std::string outfile,std::ostream * checkptr,std::o
   }
   out.close();
   COUT << "Missing \\end{document}. File " << outfile << " created, now running pgiac" << endl;
-  system(("pgiac "+outfile).c_str());
+  giac::system_no_deprecation(("pgiac "+outfile).c_str());
 }
 #endif
 

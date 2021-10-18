@@ -1593,7 +1593,7 @@ namespace xcas {
       res += '\n';
       res += print_DOUBLE_(i->window_xmin) + ',' + print_DOUBLE_(i->window_xmax) + ',';
       res += print_DOUBLE_(i->window_ymin) + ',' + print_DOUBLE_(i->window_ymax) + ',';
-      res += replace(giac::gen(seq2vecteur(i->plot_instructions)).print(contextptr),'\n','£');
+      res += replace(giac::gen(giac::merge_pixon(seq2vecteur(i->plot_instructions))).print(contextptr),'\n','£');
       res += ','+ print_DOUBLE_(i->window_zmin) + ',' + print_DOUBLE_(i->window_zmax)+','+print_DOUBLE_(i->q.w) +','+print_DOUBLE_(i->q.x)+','+print_DOUBLE_(i->q.y)+','+print_DOUBLE_(i->q.z) + ','+print_DOUBLE_(i->x_tick) + ',' + print_DOUBLE_(i->y_tick)+','+print_INT_(i->show_axes)+','+print_INT_(i->couleur)+','+print_INT_(i->approx)+','+print_DOUBLE_(i->ylegende)+',';
       if (i->paused)
 	res += "-";

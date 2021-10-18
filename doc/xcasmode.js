@@ -38,7 +38,7 @@ CodeMirror.defineSimpleMode("simplemode", {
      token: "keyword",
      indent: true
     },
-    {regex: /(?:fi|od|ffonction|fsi|fpour|ftantque|end)\b/,
+    {regex: /(?:fi|od|ffonction|ffunction|fsi|fpour|ftantque|end)\b/,
      token: "keyword",
      dedent: true
     },

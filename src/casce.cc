@@ -112,7 +112,7 @@ void xdvi_view_2d_plot(){
     unit=vert_unit;
   int i=giac::history_out(0).size();
   giac::graph2tex("casgraph.tex",giac::vecteur(giac::history_out(0).begin()+giac::erase_pos(i),giac::history_out(0).begin()+i),giac::gnuplot_xmin,giac::gnuplot_xmax,giac::gnuplot_ymin,giac::gnuplot_ymax,unit);
-  system("latex casgraph.tex >& casgraph.___ && xdvi casgraph &") ;
+  system_no_deprecation("latex casgraph.tex >& casgraph.___ && xdvi casgraph &") ;
 }
  
 void check_browser_help(const giac::gen & g){

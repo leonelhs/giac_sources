@@ -1756,7 +1756,7 @@ namespace xcas {
     else 
       usepos=(dynamic_cast<Equation *>(Xcas_input_focus)==0);
     _sel_begin=savepos;
-    fprintf(f,"// xcas version=%s fontsize=%i font=%i currentlevel=%i\n",VERSION,labelsize(),labelfont(),pos);
+    fprintf(f,"// xcas version=%s fontsize=%i font=%i currentlevel=%i pixon=%i\n",VERSION,labelsize(),labelfont(),pos,pixon_size);
     fprintf(f,"%s",chs);
     if (savecontext){
       string tmps=archive_session(false,contextptr);
@@ -1999,6 +1999,11 @@ namespace xcas {
 		newpos=atoi(optvalue.c_str());
 		if (before_position>0)
 		  newpos += before_position;
+	      }
+	      if (optname=="pixon"){
+		newpos=atoi(optvalue.c_str());
+		if (newpos>=1 && newpos<=9)
+		  pixon_size=newpos;
 	      }
 	    }
 	    optname="";
@@ -3124,9 +3129,9 @@ namespace xcas {
   void xdvi(const std::string & name){
     string s=remove_extension(name);
 #ifdef WIN32
-    system((xcasroot()+"latex.bat "+s).c_str());
+    system_no_deprecation((xcasroot()+"latex.bat "+s).c_str());
     cerr << xcasroot()+"latex.bat "+s << endl;
-    system((xcasroot()+"xdvi.bat "+s+" &").c_str());
+    system_no_deprecation((xcasroot()+"xdvi.bat "+s+" &").c_str());
     cerr << xcasroot()+"xdvi.bat "+s+" &" << endl;
 #else
     string path=get_path(s);
@@ -3135,23 +3140,23 @@ namespace xcas {
       char buf[1024];
       path=getcwd(buf,1024);
     }
-    int tmpresult=system(("cd "+path+" ; latex "+s+" ").c_str());
-    tmpresult=system(("cd "+path+" ; xdvi "+s+" &").c_str());
-    tmpresult=system(("cd "+path+" ; dvips "+s+" -o "+s+".ps && pstopnm -stdout "+s+" | pnmtopng > "+s+".png").c_str());
+    int tmpresult=system_no_deprecation(("cd "+path+" ; latex "+s+" ").c_str());
+    tmpresult=system_no_deprecation(("cd "+path+" ; xdvi "+s+" &").c_str());
+    tmpresult=system_no_deprecation(("cd "+path+" ; dvips "+s+" -o "+s+".ps && pstopnm -stdout "+s+" | pnmtopng > "+s+".png").c_str());
     fl_message("%s",("->"+s+".tex/.dvi/.ps/.png").c_str());
 #endif //    
   }
   
   void dvips(const std::string & name){
 #ifdef WIN32
-    system((xcasroot()+"latex.bat "+remove_extension(name)).c_str());
-    system((xcasroot()+"dvips.bat "+remove_extension(name)+" &").c_str());
+    system_no_deprecation((xcasroot()+"latex.bat "+remove_extension(name)).c_str());
+    system_no_deprecation((xcasroot()+"dvips.bat "+remove_extension(name)+" &").c_str());
 #else
     string s=remove_extension(name);
     string path=get_path(s);
     s=remove_path(s);
-    int tmpresult=system(("cd "+path+" ; latex "+s+" ").c_str());
-    tmpresult=system(("cd "+path+" ; dvips "+s+" -o "+s+".ps && pstopnm -stdout "+s+" | pnmtopng > "+s+".png").c_str());
+    int tmpresult=system_no_deprecation(("cd "+path+" ; latex "+s+" ").c_str());
+    tmpresult=system_no_deprecation(("cd "+path+" ; dvips "+s+" -o "+s+".ps && pstopnm -stdout "+s+" | pnmtopng > "+s+".png").c_str());
 #endif //    
   }
 

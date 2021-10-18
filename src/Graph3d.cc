@@ -90,10 +90,10 @@ namespace xcas {
     if (res!=-1){
       string command="pngtopnm "+filename+" | pnmtops > "+remove_extension(filename)+".ps &";
       cerr << command << endl;
-      system(command.c_str()); 
+      system_no_deprecation(command.c_str()); 
       command="pngtopnm "+filename+" | pnmtojpeg > "+remove_extension(filename)+".jpg &";
       cerr << command << endl;
-      system(command.c_str()); 
+      system_no_deprecation(command.c_str()); 
     }
 #endif
     return -1;

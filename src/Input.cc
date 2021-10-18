@@ -74,7 +74,7 @@ namespace xcas {
   Fl_Widget * Xcas_input_focus=0;
 
   void system_browser(const string & s){
-    int i=system(s.c_str());
+    int i=giac::system_no_deprecation(s.c_str());
     if (i!=0){
       fl_alert("%s",("Switching to internal browser, error running browser command "+s).c_str());
       use_external_browser=false;

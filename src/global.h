@@ -131,12 +131,11 @@ typedef unsigned char UTF8; /* typically 8 bits */
 typedef unsigned char Boolean; /* 0 or 1 */
 #endif
 
-#ifdef __APPLE__
-#include "TargetConditionals.h"
-#if defined(TARGET_IPHONE_SIMULATOR) || defined(TARGET_OS_IPHONE)
+#ifdef _IOS_FIX_
 #define system(params) 0
-#endif /* defined(TARGET_IPHONE_SIMULATOR) || defined(TARGET_OS_IPHONE) */
-#endif /* __APPLE__ */
+#endif /* _IOS_FIX_ */
+
+  int system_no_deprecation(const char *command);
 
 /* Some fundamental constants */
 #define UNI_REPLACEMENT_CHAR (UTF32)0x0000FFFD

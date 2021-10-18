@@ -914,28 +914,28 @@ namespace xcas {
       widget->resize(x,y,w,h);
 #ifndef WIN32 // def __APPLE__
       if (pngpdf & 0x1)
-	system(("convert "+fname+" "+remove_extension(fname)+".png &").c_str()); 
+	system_no_deprecation(("convert "+fname+" "+remove_extension(fname)+".png &").c_str()); 
       if (pngpdf & 0x2)
-	system(("convert "+fname+" "+remove_extension(fname)+".pdf &").c_str()); 
+	system_no_deprecation(("convert "+fname+" "+remove_extension(fname)+".pdf &").c_str()); 
       if (pngpdf & 0x4)
-	system(("convert "+fname+" "+remove_extension(fname)+".jpg &").c_str()); 
+	system_no_deprecation(("convert "+fname+" "+remove_extension(fname)+".jpg &").c_str()); 
 #else
 #ifdef WIN32
       if (pngpdf & 0x4)
-	system((xcasroot()+"pstopnm -stdout -portrait '"+fname+"' | "+xcasroot()+"pnmtojpeg > '"+remove_extension(fname)+".jpg'").c_str()); 
+	system_no_deprecation((xcasroot()+"pstopnm -stdout -portrait '"+fname+"' | "+xcasroot()+"pnmtojpeg > '"+remove_extension(fname)+".jpg'").c_str()); 
       if (pngpdf & 0x1)
-	system((xcasroot()+"pstopnm -stdout -portrait '"+fname+"' | "+xcasroot()+"pnmtopng > '"+remove_extension(fname)+".png' &").c_str()); 
+	system_no_deprecation((xcasroot()+"pstopnm -stdout -portrait '"+fname+"' | "+xcasroot()+"pnmtopng > '"+remove_extension(fname)+".png' &").c_str()); 
       if (pngpdf & 0x2){
 	// epstopdf is a perl script, it won't work wo perl
-	system(("cp -f '"+fname+"' tmpeps.eps && epstopdf tmpeps.eps && cp -f tmpeps.pdf '"+remove_extension(fname)+".pdf' &").c_str());
+	system_no_deprecation(("cp -f '"+fname+"' tmpeps.eps && epstopdf tmpeps.eps && cp -f tmpeps.pdf '"+remove_extension(fname)+".pdf' &").c_str());
       }
 #else // not used anymore, assuming convert is avail. on linux
       if (pngpdf & 0x1)
-	system(("pstopnm -stdout -portrait "+fname+" | pnmtopng > "+remove_extension(fname)+".png &").c_str()); 
+	system_no_deprecation(("pstopnm -stdout -portrait "+fname+" | pnmtopng > "+remove_extension(fname)+".png &").c_str()); 
       if (pngpdf & 0x2)
-	system(("epstopdf "+fname+" &").c_str()); 
+	system_no_deprecation(("epstopdf "+fname+" &").c_str()); 
       if (pngpdf & 0x4)
-	system(("pstopnm -stdout -portrait "+fname+" | pnmtojpeg > "+remove_extension(fname)+".jpg &").c_str()); 
+	system_no_deprecation(("pstopnm -stdout -portrait "+fname+" | pnmtojpeg > "+remove_extension(fname)+".jpg &").c_str()); 
 #endif
 #endif
     }
@@ -945,13 +945,13 @@ namespace xcas {
       system_browser_command(fname);
       /*
       string fn=absolute_path(fname);
-      if (system((((ps_preview+" ")+fn)+" &").c_str())){
+      if (system_no_deprecation((((ps_preview+" ")+fn)+" &").c_str())){
 	cerr << (("cygstart.exe '"+remove_extension(fname)+".jpg' &").c_str()) << endl;
-	system((xcasroot()+"cygstart.exe '"+remove_extension(fname)+".jpg' &").c_str());
+	system_no_deprecation((xcasroot()+"cygstart.exe '"+remove_extension(fname)+".jpg' &").c_str());
       }
       */
 #else
-      system((((ps_preview+" ")+fname)+" &").c_str());
+      system_no_deprecation((((ps_preview+" ")+fname)+" &").c_str());
 #endif
     }
     if (eps && pngpdf){

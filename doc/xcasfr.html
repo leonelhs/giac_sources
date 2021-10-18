@@ -1234,6 +1234,7 @@ title="Placer tout les niveaux de l'historique dans la
 </div>
 
 
+
 <table border="0" align="center" summary="" id="keyboard"
   style="display:none" onmousedown="event.preventDefault()" >
   <tr>
@@ -1262,11 +1263,12 @@ id="add_/"
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:29px;height:35px;"
-  name="add_left_[" id="add_left_[" value="[ ]" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value);UI.moveCaret(UI.focused,-2);"
-  title="[ servent de d&eacute;limiteurs pour les vecteurs, listes et matrices, par exemple [1,2,3] ou [[1,2],[3,4]]. { } servent de d&eacute;limiteur pour les programmes.">  
-      <input type="button" style="width:29px;height:35px;" name="add_left_paren" id="add_left_paren" value="( )" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'()');UI.moveCaret(UI.focused,-1);">  
-      <input type="button" style="width:29px;height:35px;" name="add_xtn"
+      <input type="button" id="add_infer" value="&lt;"
+      title="[ servent de d&eacute;limiteurs pour les vecteurs, listes et matrices, par exemple [1,2,3] ou [[1,2],[3,4]]. { } servent de d&eacute;limiteur pour les programme"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value);">
+      <input type="button" style="width:29px;height:35px;" name="add_left_par" id="add_left_par" value="(" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value);">  
+      <input type="button" style="width:29px;height:35px;" name="add_right_par" id="add_right_par" value=")" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value);">  
+      <input type="button" style="display:none;width:29px;height:35px;" name="add_xtn"
 id="add_xtn"
   value="x,t,n" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.xtn)" title="Ins&egrave;re x ou t ou n">
       <input type="button" style="width:29px;height:35px;" name="add_pi" id="add_pi" value="π" onmousedown="event.preventDefault()" onClick="if (UI.kbdshift) UI.insert(UI.focused,'∞'); else UI.insert(UI.focused,'pi')">
@@ -1285,9 +1287,9 @@ id="add_sqrt"
   <tr>
     <td>
       <input type="button" style="width:29px;height:35px;"
-  onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,value);" id="add_inferieur" value="<"
-  title="Inf&eacute;rieur ou sup&eacute;rieur">
+  name="add_abc" id="add_abc" value="abc"
+  onmousedown="event.preventDefault()" onClick="var tmp=document.getElementById('alpha_keyboard'); if (tmp.style.display=='none') tmp.style.display='inline'; else tmp.style.display='none'"
+  title="clavier alphab&eacute;tique">  
       <input type="button" style="width:29px;height:35px;" name="add-=" id="add-=" value="=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
       <input type="button" style="width:29px;height:35px;" name="add_,"
 id="add_,"
@@ -2286,7 +2288,7 @@ ou  <button class="bouton" onclick="document.getElementById('assistant_plotfunc1
 <div contextmenu="cmdmenu" title="F1: aide sur le mot-clef avant le curseur.">
   
   <button style="width:35px;height:35px" id="button_123" onmousedown="event.preventDefault()" 
-  onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
+  onclick="if (document.getElementById('keyboard').style.display=='inline'){ document.getElementById('keyboard').style.display='none'; document.getElementById('alpha_keyboard').style.display='none';} else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
   title="Montrer ou cacher le clavier scientifique">123</button>
 
 
@@ -2306,17 +2308,101 @@ onclick="UI.show_menu();"
   title="Montrer ou cacher les assistants math&eacute;matiques">math</button>  
 
   <button style="width:37px;height:35px" id="button_cmd" onmousedown="event.preventDefault()"
-  onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.assistant_close(); var tmp=document.getElementById('progbuttons'); if(tmp.style.display=='none') tmp.style.display='block'; else {tmp.style.display='none'; UI.focused=cmentree;cmentree.focus();} UI.resizetextarea(cmentree);"
+  onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; document.getElementById('alpha_keyboard').style.display='none'; UI.assistant_close(); var tmp=document.getElementById('progbuttons'); if(tmp.style.display=='none') tmp.style.display='block'; else {tmp.style.display='none'; UI.focused=cmentree;cmentree.focus();} UI.resizetextarea(cmentree);"
   title="Programmation">prog</button>
 
 <button style="width:35px;height:35px;color:green" id="button_ok" onclick="if (UI.assistant_ok()) return; if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'');}" title="Evaluer la ligne de commande">
   <strong>ok</strong></button>
 &nbsp;
 <button id="stop_button" style="height:35px;visibility:hidden" onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){ UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. Toutes les variables ont ete effacees.');}" title="Termine la session en cours">STOP</button>
-<br>
+
 <textarea name="entree" id="entree" title="Taper une commande ici puis Entree pour valider" style="font-size:18px;width:98%"
 rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode==13 && event.shiftKey){UI.insert(this,'\n'); UI.indentline(this); return false;} if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
 </div>
+<table border="0" align="center" summary="" id="alpha_keyboard"
+  style="display:none" onmousedown="event.preventDefault()" >
+  <tr>
+    <td> 
+      <input type="button" id="add_alpha_a" value="a"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_z" value="z"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_e" value="e"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_r" value="r"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_t" value="t"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_y" value="y"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_u" value="u"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_i" value="i"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_o" value="o"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_p" value="p"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+    </td>
+  </tr>
+  <tr>
+    <td> 
+      <input type="button" id="add_alpha_q" value="q"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_s" value="s"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_d" value="d"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_f" value="f"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_g" value="g"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_h" value="h"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_j" value="j"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_k" value="k"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_l" value="l"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_m" value="m"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+    </td>
+  </tr>
+  <tr>
+    <td> 
+      <input type="button" 
+  onmousedown="event.preventDefault()"
+  onClick='var kbd_a=["a","b","c","d","e",
+"f","j","n","r","u","x",
+"g","k","o","s","v","y",
+"h","l","p","t","w","z",
+"i","m","q"];
+for (var i=0;i<kbd_a.length;i++){
+  var tmp=document.getElementById("add_alpha_"+kbd_a[i]);
+  if (tmp.value<="Z") tmp.value=String.fromCharCode(tmp.value.charCodeAt(0)+32); else tmp.value=String.fromCharCode(tmp.value.charCodeAt(0)-32);
+}' id="add_alpha_" value="maj">
+      <input type="button" id="add_alpha_w" value="w"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_x" value="x"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_c" value="c"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_v" value="v"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_b" value="b"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_n" value="n"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_{" value="{"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_}" value="}"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+      <input type="button" id="add_alpha_deuxpoints" value=":"
+  onmousedown="event.preventDefault()"  onClick="UI.insert(UI.focused,value)">
+    </td>
+  </tr>
+</table>
 <hr>
 <div id="consolediv" style="display:none">
 <h1>Console</h1>
@@ -3139,6 +3225,8 @@ UI.insert(UI.focused,tmp);
     UI.kbdshift=!UI.kbdshift;
     if (UI.kbdshift){
       document.getElementById('shift_key').style.backgroundColor="white";
+      document.getElementById('add_left_par').value="[";
+      document.getElementById('add_right_par').value="]";
       document.getElementById('add_ln').value="exp";
       document.getElementById('add_sin').value="asin";
       document.getElementById('add_cos').value="acos";
@@ -3148,14 +3236,15 @@ UI.insert(UI.focused,tmp);
       document.getElementById('add_:').value="!";
       document.getElementById('add_semi').value="\"";
       document.getElementById('add-=').value="_";
-      document.getElementById('add_inferieur').value=">";
+      document.getElementById('add_infer').value=">";
       document.getElementById('add_sqrt').value="^2";
-      document.getElementById('add_left_[').value="{ }";
       document.getElementById('add_/').value="%";
       document.getElementById('add_pi').value="∞";
     }
     else {
       document.getElementById('shift_key').style.backgroundColor="cyan";
+      document.getElementById('add_left_par').value="(";
+      document.getElementById('add_right_par').value=")";
       document.getElementById('add_ln').value="ln";
       document.getElementById('add_sin').value="sin";
       document.getElementById('add_cos').value="cos";
@@ -3165,9 +3254,8 @@ UI.insert(UI.focused,tmp);
       document.getElementById('add_:').value=":=";
       document.getElementById('add_semi').value=";";
       document.getElementById('add-=').value="=";
-      document.getElementById('add_inferieur').value="<";
+      document.getElementById('add_infer').value="<";
       document.getElementById('add_sqrt').value="√";
-      document.getElementById('add_left_[').value="[ ]";
       document.getElementById('add_/').value="/";
       document.getElementById('add_pi').value="π";
     }
@@ -3213,8 +3301,9 @@ UI.insert(UI.focused,tmp);
   },
   restorefrom:function(c){
     var s=UI.readCookie(c);
-    //console.log(s);
     UI.restoresession(s,document.getElementById('mathoutput'),true,false);
+    //console.log(c.substring(6,c.length));
+    document.getElementById('outputfilename').value=c.substring(6,c.length);
     document.getElementById('loadfile_cookie').innerHTML='';
   },
   listCookies:function() { // list cookies with name begin == ' xcas__'
@@ -3358,6 +3447,7 @@ var hashParams=chaine.split('&');
  for(var i = 0; i < hashParams.length; i++){
     var s = hashParams[i];
     if (s.length)  document.getElementById('startup_restore').style.display='none';
+    s=s.replace(/___/g,'%'); 
     s=decodeURIComponent(s); //console.log(s);
     // s=s.replace('%0a','\n','g');
     s=s.replace(/%3b/g,';'); 
@@ -3420,15 +3510,17 @@ var hashParams=chaine.split('&');
      s = UI.base_url+"xcasfr.html#"+s;
      //Module.print(s);
      document.getElementById('thelink').innerHTML='<a href="'+s+'" target="_blank">Cloner</a>';
-     document.getElementById('themailto').innerHTML='<a href="mailto:?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : '+UI.rewritestring(s)+'">E-mail</a>';
+     document.getElementById('themailto').innerHTML='<a href="mailto:?subject=session Xcas&body=Bonjour%0d%0aVeuillez suivre ce lien : <'+UI.rewritestring(s)+'>">E-mail</a>';
    }
   },
   rewritestring: function(s){
-    var res,i,l;
+    var res,i,l,ch;
     l=s.length; res='';
     for (i=0;i<l;++i){
-      if (s[i]=='&'){ res += "%26"; continue; }
-      if (s[i]=='#'){ res += "%23"; continue; }
+      ch=s[i];
+      if (ch=='&'){ res += "%26"; continue; }
+      if (ch=='#'){ res += "%23"; continue; }
+      if (i<l-2 && ch=='%' && s[i+1]!='7') { res += "___"; continue; }
       res += s[i];
     }
     return res;
@@ -3534,6 +3626,7 @@ show_menu:function(){
  else {
   document.getElementById('keyboardfunc').style.display='inline';
   document.getElementById('keyboard').style.display='none';
+  document.getElementById('alpha_keyboard').style.display='none';
   document.getElementById('progbuttons').style.display='none';
   var tab=['boucle','seq','rand','series','int','sum','limit','plotfunc','plotparam',
            'plotpolar','plotimplicit','plotfield','tabvar','test','prog','solve',
@@ -3572,15 +3665,21 @@ show_menu:function(){
    // console.log(s);// Module.print(s);
    var st=document.getElementById('document_style');
    st.innerHTML=s;
-var kbd_l=["add_newline","add_left_paren",
+var kbd_l=["add_newline","add_infer","add_left_par","add_right_par",
 "add_i","add_7" ,"add_8" ,"add_9" ,"add_/",
-"add_semi" ,"add_left_[" ,"add_pi" ,
+"add_semi" ,"add_abc" ,"add_pi" ,
 "add_4" ,"add_5" ,"add_6" ,"add_*" ,"add_beg","add_end","add_:",
 "add_,","add_xtn","add_1" ,"add_2" ,
 "add_3" ,"add_-" ,"copy_button" ,"curseur_up","add-=" ,
 "add_backspace","add_ln","add_e","add_0" ,"add_." ,
-"add_+" ,"add_inferieur","curseur_down" ,"shift_key" ,"add_sin" ,"add_cos",
+"add_+" ,"curseur_down" ,"shift_key" ,"add_sin" ,"add_cos",
 "add_tan","add_sqrt","add_^"];
+var kbd_a=["add_alpha_a","add_alpha_b","add_alpha_c","add_alpha_d","add_alpha_e",
+"add_alpha_f","add_alpha_j","add_alpha_n","add_alpha_r","add_alpha_u","add_alpha_x",
+"add_alpha_g","add_alpha_k","add_alpha_o","add_alpha_s","add_alpha_v","add_alpha_y",
+"add_alpha_h","add_alpha_l","add_alpha_p","add_alpha_t","add_alpha_w","add_alpha_z",
+"add_alpha_i","add_alpha_m","add_alpha_q","add_alpha_{","add_alpha_}",
+"add_alpha_deuxpoints","add_alpha_"];
 var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
 "button_gauche","button_droit","select_button"];
 var kbd_math=["add_simplify" ,"add_matr",
@@ -3595,6 +3694,10 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
    for (var i=0;i<kbd_l.length;i++){
      document.getElementById(kbd_l[i]).style.width=w;
      document.getElementById(kbd_l[i]).style.height=h;
+   }
+   for (var i=0;i<kbd_a.length;i++){
+     document.getElementById(kbd_a[i]).style.width=w;
+     document.getElementById(kbd_a[i]).style.height=h;
    }
    w=Math.floor(hw/9)-1; if (w<30) w=30; w=w+"px"; 
    h=Math.floor(hh/20); if (h<35) h=35; h=h+"px"; // console.log(hw,w,hh,h);
@@ -3850,7 +3953,9 @@ var kbd_prog=["add_//","add_nlprog","add_delprog","add_indent","add_test",
   },
   eval_cmdline: function(){
    var value;
-   document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none';
+   document.getElementById('keyboardfunc').style.display='none';
+   document.getElementById('keyboard').style.display='none';
+   document.getElementById('alpha_keyboard').style.display='none';
    if (cmentree.type!='textarea') value=cmentree.getValue(); else value=entree.value;
    UI.eval_cmdline1(value,true);
   },
@@ -4181,7 +4286,7 @@ addcomment: function(text){
       s += '<textarea class="outdiv" onfocus="UI.set_focused(this)" onselect="if (UI.getsel(this).length>0) UI.selection=UI.getsel(this);" style="display:none">'+textout+'</textarea>';
       s += '<button style="display:none" onclick="previousSibling.previousSibling.style.display=\'block\'; previousSibling.style.display=\'none\';this.style.display=\'none\'">cancel</button>';
       s += '</td>';
-      s += '<td><button style="width:20px;height:30px;" onclick=\'UI.insert(UI.focused,"evalf('+textin+')")\' title="Valeur approch&eacute;e" style="color:blue">~</button>';
+      s += '<td><button style="width:20px;height:30px;" onclick=\'UI.insert(UI.focused,decodeURIComponent("evalf('+encodeURIComponent(textin)+')"))\' title="Valeur approch&eacute;e" style="color:blue">~</button>';
     if (!UI.qa) { s += '<button style="height:25px;" onclick=\'UI.erase(this)\' title="placer ce niveau dans la corbeille">del</button>'; delbut=true; }
       s +='</td>';
     }

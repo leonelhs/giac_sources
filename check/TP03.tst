@@ -11,9 +11,9 @@ x,
 [[1,1]],
 [[3,0,0,0],[0,6,0,0],[0,0,18,0],[0,0,0,36]],
 "Done",
-"Integer matrix expected Error: Bad Argument Value",
-"Integer matrix expected Error: Bad Argument Value",
-"Error: Invalid dimension",
+0,
+"Done",
+matrix[[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 proc(A) 
   local m,u,v,i,j; 
   m:=0;  
@@ -83,18 +83,9 @@ matrix[[4,0,0],[0,6,0],[0,0,8]],
 [[4,0,0],[0,6,0],[0,0,8]],
  (i,j)->if (i-j)*(i-1)=0 then 1; 
 fi ,
-[[ (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi , (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi , (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi ],[ (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi , (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi , (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi ],[ (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi , (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi , (i,j)->if (i-j)*(i-1)=0 then 1; 
-fi ]],
-matrix[[ (i,j)->0, (i,j)->0, (i,j)->0],[ (i,j)->0, (i,j)->0, (i,j)->0],[ (i,j)->0, (i,j)->0, (i,j)->0]],
-"[` x`] size() != [i_i_,j] Error: Bad Argument Value Error: Bad Argument Value Error: Bad Argument Value",
+matrix[[1,1,1],[0,1,0],[0,0,1]],
+matrix[[4,6,8],[0,6,0],[0,0,8]],
+[[2,0,0],[0,8,0],[0,0,-12]],
 proc(A,i,j) 
   local n,U,l; 
   n:=(dim(A))[1];  
@@ -138,7 +129,7 @@ proc(A)
  
 end;,
 matrix[[2,2,2],[6,12,6],[6,4,12]],
-"[` x`] size() != [i_i_,j] Error: Bad Argument Value Error: Bad Argument Value Error: Bad Argument Value Error: Bad Argument Value",
+[2,-2,18],
 [[2,0,0],[0,2,0],[0,0,18]],
-"[` x`] size() != [i_i_,j] Error: Bad Argument Value Error: Bad Argument Value Error: Bad Argument Value Error: Bad Argument Value",
+[2,4,48],
 [[2,0,0],[0,4,0],[0,0,48]]
