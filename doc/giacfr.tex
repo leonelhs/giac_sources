@@ -10,6 +10,23 @@
 \usepackage{listings}
 \usepackage{fancyvrb}
 \ifhevea 
+\newcommand\giacmathjax{
+\usepackage[auto]{mathjax}
+\renewcommand{\jax@meta}{\begin{rawhtml}<script language="javascript"> 
+var ua = window.navigator.userAgent;  
+var old_ie = ua.indexOf('MSIE ');  
+var new_ie = ua.indexOf('Trident/');  
+if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
+ (function () {
+  var script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML";
+  document.getElementsByTagName("head")[0].appendChild(script);
+})();
+}
+</script>
+\end{rawhtml}}
+}
 \newenvironment{giacjs}[1]["max-height: 500px; overflow:auto"]
 {\loadgiacmain{#1}
 }
@@ -64,6 +81,7 @@
 \loadgiacscriptend
 } 
 \else
+\newcommand\giacmathjax{}
 \newenvironment{giacjs}[1]["max-height: 500px; overflow:auto"]{}{}
 \newenvironment{giacjshere}[1]["max-height: 500px; overflow:auto"]{}{}
 \newenvironment{giacparijs}[1]["max-height: 500px; overflow:auto"]{}{}
@@ -159,6 +177,13 @@ var Module = {
       }
     }
   },  
+  count_newline:function(s){
+    var ss=s.length,i,res=1;
+    for (i=0;i<ss;i++){
+      if (s[i]=='\n') res++;
+    }
+    return res;
+  },
   ltgt:function(s){
     var ss=s.length,i,res='';
     for (i=0;i<ss-4;i++){
@@ -348,7 +373,7 @@ var Module = {
 \newenvironment{giaconload}{
 \verbatim}
 {\endverbatim 
-\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp);t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling.innerHTML); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">ok</button><span>onload</span><br>
 }
 }
 \else

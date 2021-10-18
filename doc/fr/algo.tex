@@ -1,6 +1,6 @@
 % Merci a Yannick Chevallier pour la version mathjax-enabled
 % hevea -mathjax algo.tex puis itex2MML -d --forbid-markup <~/giac-1.2.3/src/algo.html > algo.html
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,11pt]{book}
 %\textwidth 11,8 cm
 %\textheight 17 cm
 \textheight 23 cm
@@ -32,7 +32,7 @@
             citecolor=green
             ]{hyperref}
 \fi
-%HEVEA\htmlfoot{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.}
+%\htmlfoot{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.} % ajouter HEVEA au debut pour activer
 
 
 %\def\@evenhead{\thepage\hfill{\footnotesize\textit{\leftmark}}}
@@ -58,21 +58,9 @@
 \makeindex
 
 \input{giacfr.tex}
-\usepackage[auto]{mathjax}
-\renewcommand{\jax@meta}{\begin{rawhtml}<script language="javascript"> 
-var ua = window.navigator.userAgent;  
-var old_ie = ua.indexOf('MSIE ');  
-var new_ie = ua.indexOf('Trident/');  
-if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
- (function () {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
-  script.src  = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML";
-  document.getElementsByTagName("head")[0].appendChild(script);
-})();
-}
-</script>
-\end{rawhtml}}
+
+\giacmathjax
+%HEVEA\renewcommand{\footertext}{}
 
 \begin{document}
 \begin{giacjshere} % ne pas oublier de changer \end{giacjs...} a la fin
@@ -98,23 +86,6 @@ if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
 \newcommand{\tr}{\mbox{tr\,}}
 \fi
 
-La version HTML de ce document comporte des champs de saisie
-interactifs, ceux-ci apparaissent comme des commandes ``mortes'' dans
-la version PDF (elles sont ex\'ecut\'ees une fois pour toutes
-par la version non interactive de \verb|giac|). 
-La version HTML est optimis\'ee pour le navigateur Firefox. 
-Elle est g\'en\'er\'ee avec \verb|hevea.inria.fr| de Luc Maranget,
-ou le fork de Yannick Chevallier pour le support mathjax, ainsi
-qu'une version modifi\'ee de \verb|itex2MML| 
-de Jacques Distler pour la conversion en MathML.
-Si vous avez une machine tr\`es puissante, vous pouvez
-ex\'ecuter toutes les commandes interactives en cliquant sur le bouton
-Ex\'ecuter. En-dessous de ce bouton se trouve 
-la console de l'interpr\'eteur du
-logiciel de calcul formel.
-
-
-\begin{abstract}
 Giac/Xcas est un logiciel libre de calcul formel dont
 une caract\'eristique est de n\'ecessiter peu de ressources sans
 sacrifier les performances (en particulier sur les calculs polynomiaux).
@@ -132,13 +103,28 @@ ils sont en g\'en\'eral accompagn\'es de preuves
 et souvent d'illustrations avec Xcas.\\
 Pour plus d'informations sur Giac/Xcas, cf.~:\\
 \verb|www-fourier.ujf-grenoble.fr/~parisse/giac_fr.html|
-\end{abstract}
+
+N.B.: La version HTML de ce document comporte des champs de saisie
+interactifs, ceux-ci apparaissent comme des commandes ``mortes'' dans
+la version PDF (elles sont ex\'ecut\'ees une fois pour toutes
+par la version non interactive de \verb|giac|). 
+La version HTML est optimis\'ee pour le navigateur Firefox. 
+Elle est g\'en\'er\'ee avec \verb|hevea.inria.fr| de Luc Maranget,
+ou le fork de Yannick Chevallier pour le support mathjax, ainsi
+qu'une version modifi\'ee de \verb|itex2MML| 
+de Jacques Distler pour la conversion en MathML.
+Si vous avez une machine tr\`es puissante, vous pouvez
+ex\'ecuter toutes les commandes interactives en cliquant sur le bouton
+Ex\'ecuter. En-dessous de ce bouton se trouve 
+la console de l'interpr\'eteur du
+logiciel de calcul formel.
+
 
 \tableofcontents 
 
 \pagebreak 
 
-\section{Index, plan} \label{sec:index}
+\chapter{Plan et index} \label{sec:index}
 L'index commence page suivante dans la version PDF.
 
 Quelques conseils de lecture~:
@@ -173,7 +159,7 @@ r\'epartition du rayonnement solaire sur Terre \ref{sec:soleil}
 
 \pagebreak
 
-\section{Trousse de survie Xcas} \label{sec:survie}
+\chapter{Trousse de survie Xcas} \label{sec:survie}
 Cette section peut \^etre vue comme un tutoriel tr\`es abr\'eg\'e 
 pour rapidement
 prendre en main Xcas par des exemples au niveau fin de licence
@@ -182,7 +168,7 @@ d'enseignants. Le lecteur pourra consulter le tutoriel calcul
 formel (menu Xcas, Aide, D\'ebuter en calcul formel, tutoriel) pour
 plus de d\'etails ou/et \`a un niveau math\'ematique moins \'elev\'e.
 
-\subsection{Utilisation comme super-calculatrice}
+\section{Utilisation comme super-calculatrice}
 \begin{itemize}
 \item 
 On saisit une ligne de commande, on tape sur la touche Entree pour
@@ -240,8 +226,8 @@ pour commencer \`a 1).
 pour ne pas les afficher\\\giacinput{step_infolevel:=0}
 \end{itemize}
 
-\subsection{Calcul exact}
-\subsubsection{Arithm\'etique}
+\section{Calcul exact}
+\subsection{Arithm\'etique}
 \begin{itemize}
 \item division euclidienne des entiers
 \giacinputbig{a:=25; b:=7; q:=iquo(25,7); r:=irem(25,7); b*q+r;}
@@ -285,7 +271,7 @@ on peut travailler avec des polyn\^omes ou des matrices
 \giacinputbigmath{p:=(g+x)^7; normal(p); quo(p,x^6+g*x^3+x+g^2-2)}
 \end{itemize}
 
-\subsubsection{Alg\`ebre lin\'eaire exacte}
+\subsection{Alg\`ebre lin\'eaire exacte}
 \begin{itemize}
 \item Pivot de Gauss~: \verb|rref| cr\'ee des 0 de part et d'autre
 de la diaginale, \verb|ref| en-dessous de la diagonale,
@@ -307,8 +293,8 @@ On peut forcer l'utilisation d'un algorithme
 \giacinputbigmath{m:=ranm(3,3); ihermite(m); ismith(m);}
 \end{itemize}
 
-\subsection{Calcul scientifique}
-\subsubsection{Analyse num\'erique}
+\section{Calcul scientifique}
+\subsection{Analyse num\'erique}
 \begin{itemize}
 \item R\'esolution approch\'e d\'equation par m\'ethode it\'erative
 ou par bisection
@@ -329,7 +315,7 @@ Trac\'e sur l'intervalle $t \in [-10,10]$
 \end{itemize}
 
 
-\subsubsection{Alg\`ebre lin\'eaire num\'erique}
+\subsection{Alg\`ebre lin\'eaire num\'erique}
 \begin{itemize}
 \item factorisation LU et r\'esolution de syst\`eme,
 \giacinputbigmath{m:=ranm(3,3,uniform,0,1); p,l,u:=lu(m); v:=[1,2,3]; linsolve(m,v); linsolve(p,l,u,v);}
@@ -347,9 +333,9 @@ Trac\'e sur l'intervalle $t \in [-10,10]$
 \giacinputbigmath{restart;p,u:=schur(m); trn(p)*m*p-u;}
 \end{itemize}
 
-\section{Calculer sur ordinateur} \label{sec:calculer}
+\chapter{Calculer sur ordinateur} \label{sec:calculer}
 
-\subsection{Représentation des entiers}
+\section{Représentation des entiers}
 
 \begin{prop}
 {\bf Division euclidienne de deux entiers~:} si $a$ et $b$ sont
@@ -431,12 +417,12 @@ faire des calculs interm\'ediaires exacts. N\'eanmoins, l'utilisation
 d'un logiciel de calcul formel permettra dans certains cas d'illustrer
 certains ph\'enom\`enes dus au calcul approch\'e.
 
-\subsection{Les r\'eels}
+\section{Les r\'eels}
 On se ram\`ene d'abord au cas des r\'eels positifs, en machine
 on garde traditionnellement un bit pour stocker le signe du r\'eel
 \`a repr\'esenter.
 
-\subsubsection{Virgule fixe et flottante.}
+\subsection{Virgule fixe et flottante.}
 La premi\`ere id\'ee qui vient naturellement serait d'utiliser
 un entier et de d\'eplacer la virgule
 d'un nombre fixe de position, ce qui revient \`a mulitplier
@@ -590,7 +576,7 @@ rapidit\'e importante pour les calculs num\'eriques (on peut
 partiellement am\'eliorer les performances en utilisant \verb|evalhf|
 en maple).
 
-\subsubsection{Les flottants au format {\tt double}} 
+\subsection{Les flottants au format {\tt double}} 
 \index{flottant} \index{double}
 Cette section d\'eveloppe les notions de la section pr\'ec\'edente
 pour les flottants machine selon la norme IEEE-754, utilisables dans les langage de
@@ -659,7 +645,7 @@ ces flottants longs avec le type \verb|long double| ou
 les types \verb|__float80| et \verb|__float128| en utilisant
 un drapeau de compilation du type \verb|-msse|
 
-\subsubsection{Op\'erations sur les flottants}
+\subsection{Op\'erations sur les flottants}
 Les opérations arithmétiques de base sur les flottants
 se font de la manière suivante~:
 \begin{itemize}
@@ -678,7 +664,7 @@ mantisses (division ``à virgule''), on tronque et on
 ajuste l'exposant si nécessaire
 \end{itemize}
 
-\subsubsection{Erreurs} \index{erreur}
+\subsection{Erreurs} \index{erreur}
 La repr\'esentation des nombres r\'eels par des doubles pr\'esente
 des avantages, les op\'erations arithm\'etiques
 sont faites au plus vite par le microprocesseur.
@@ -718,7 +704,7 @@ multipli\'ee par $|x|$.
 \giacinputbigmath{a:=convert(100,interval); (right(a)-left(a))/evalf(a,12)}\\
 \giacinputbigmath{b:=exp(a); (right(b)-left(b))/evalf(b,12)}
 
-\subsubsection{Erreur absolue, relative, arrondi propagation des erreurs.}
+\subsection{Erreur absolue, relative, arrondi propagation des erreurs.}
 On a vu pr\'ec\'edemment que pour repr\'esenter un r\'eel, on devait
 l'arrondir, ce qui introduit une erreur m\^eme si le r\'eel est
 connu exactement (par exemple 1/10).
@@ -889,8 +875,9 @@ bien meilleure que
 la majoration $\epsilon ((n-1)|x_1|+(n-2)|x_2|+...+|x_n||)$
 calcul\'ee pr\'ec\'edemment.
 
+
 Par exemple
-\giacinput{n:=25000; l:=seq(1/j,j,1,n); Somme(l);}
+\giacinput{n:=25000; l:=seq(1/j,j,1,n):; Somme(l);}
 \`a comparer avec
 \giacinput{S:=sum(1/j,j,1,n); evalf(S); sum(1. /j,j,1,n);}
 (le calcul de $S$ est fait en exact, celui de {\tt sum(1. /j,j,1,n)}
@@ -908,7 +895,9 @@ Si on veut travailler en toute rigueur sans
 pour autant calculer les erreurs à priori, il faut utiliser un logiciel
 utilisant des intervalles pour représenter les réels (section suivante)
 
-\subsection{L'arithm\'etique d'intervalle.}\index{intervalle, arithm\'etique}
+
+\section{L'arithm\'etique d'intervalle.}\index{intervalle, arithm\'etique}
+
 Certains syst\`emes de calcul formel peuvent manipuler directement
 des intervalles r\'eels, par exemple par l'interm\'ediaire de la
 bibliothèque C MPFI. Les op\'erations arithm\'etiques sur des
@@ -939,7 +928,8 @@ r\'eelles et imaginaires qui ne tiendront pas compte du ph\'enom\`ene
 ci-dessus sur la diff\'erence entre $xy, \ x \in [-1,2], y \in [-1,2]$
 et $x^2, \ x \in [-1,2]$.
 
-\subsection{Calcul exact et approché, types, évaluation.}\index{evaluation}
+
+\section{Calcul exact et approché, types, évaluation.}\index{evaluation}
 Dans les langages de programmation traditionnel (C, Pascal,...), il existe 
 déjà des types permettant une représentation 
 exacte des données (type entier) ou une représentation approchée 
@@ -1003,7 +993,7 @@ Lisp). Certaines fonctions doivent toujours quoter leurs arguments
 on parle parfois d'autoquotation.
 
 
-\subsection{Forme normale et reconnaissance du 0.}
+\section{Forme normale et reconnaissance du 0.}
 Une fois défini ces types de base représentant les nombres d'un système de 
 calcul formel, il faut pouvoir comparer ces 
 nombres, en particulier décider si deux représentations distinctes 
@@ -1088,7 +1078,7 @@ pgcdderiv(a):={
 \end{giacprog}
 \giacinput{P:=(x+1)^7-(x-1)^6;pgcdderiv(P)}
 
-\subsection{Valeur générique des variables et
+\section{Valeur générique des variables et
   hypothèses}\index{hypoth\`ese} \index{assume}
 Lorsqu'on utilise un symbole sans lui affecter de valeurs en mathématiques 
 on s'attend à une discussion en fonction du 
@@ -1108,7 +1098,7 @@ On peut aussi anticiper ce type de décision en faisant des hypothèses
 sur une paramètre, la plupart des systèmes de calcul formel actuel
 proposent cette possibilité.
 
-\subsection{Structures de données}
+\section{Structures de données}
 On a vu plus haut qu'on souhaitait manipuler des entiers de taille non 
 fixe, des réels de précision fixe ou non, des
 fractions, des nombres complexes, des extensions algébriques, des 
@@ -1196,7 +1186,7 @@ Ce sont des systèmes plutôt destinés à l'enseignement, soumis
 à traiter des petits problèmes.
 
 
-\subsubsection{Maple, Mathematica, ...}
+\subsection{Maple, Mathematica, ...}
 Ces syst\`emes ont un noyau ferm\'e, au sens o\`u l'utilisateur n'a pas
 acc\`es du tout, ou en tout cas pas facilement, aux structures de donn\'ees
 de base. Je ne dispose donc pas d'information sur les structures de donn\'ees
@@ -1217,7 +1207,7 @@ de programmation traditionnel. Leur intérêt principal réside donc
 dans une utilisation interactive en profitant de la librairie de 
 fonctions accessibles.
 
-\subsubsection{Giac/Xcas}
+\subsection{Giac/Xcas}
 Il s'agit du système de calcul formel que j'implémente actuellement sous 
 forme d'une biblioth\`eque C++ (ce qui
 permettra aux programmes tiers d'utiliser beaucoup plus facilement du 
@@ -1276,7 +1266,7 @@ Une hypthèse sur un paramètre est une valeur spéciale
 affectée au paramètre, valeur ignorée par la routine d'évaluation.
 
 
-\subsubsection{Calculatrices formelles HP48/49}
+\subsection{Calculatrices formelles HP48/49}
 Les langages utilis\'es pour programmer ces calculateurs sont l'assembleur
 et le RPL (Reverse Polish Lisp) adapt\'e \`a l'\'ecriture de code
 en m\'emoire morte tr\`es compact.
@@ -1360,7 +1350,7 @@ décidé de réserver la variable globale \verb|INTEGERASSUME| à cet effet.
 Il n'y a pas de possibilité de faire des hypothèses ayant une portée
 locale.
 
-\subsubsection{Calculatrices formelles TI92/89/Voyage 200}
+\subsection{Calculatrices formelles TI92/89/Voyage 200}
 Le langage utilis\'e pour programmer ces calculatrices est le langage C
 (on peut aussi \'ecrire du code en assembleur pour ces calculatrices).
 On retrouve ici les diff\'erents types de donn\'ees regroup\'e en un
@@ -1413,7 +1403,7 @@ On ne peut pas faire d'hypothèse globale sur un paramètre par
 contre on peut faire des hypothèses de type appartenance à un intervalle 
 ayant une portée locale.
 
-\subsection{Algorithmes et complexité.}
+\section{Algorithmes et complexité.}
 On va présenter dans la suite quelques algorithmes que l'on peut
 considérer comme classiques dans le domaine du calcul formel. Avant 
 d'implémenter ce type d'algorithmes, on a besoin des algorithmes de base
@@ -1426,7 +1416,7 @@ ce même si le résultat est lui aussi de taille petite. Un
 exemple est la réduction des systèmes de plusieurs équations polynomiales
 (bases de Groebner).
 
-\subsubsection{Algorithmes modulaires ou p-adiques}
+\subsection{Algorithmes modulaires ou p-adiques}
 Dans certains cas, l'application de théories mathématiques
 parfois sophistiquées permet de réduire la complexité (par exemple,
 M. Van Hoeij a découvert récemment qu'un algorithme très utilisé en théorie des
@@ -1569,7 +1559,7 @@ sym\'etrique, le PGCD de 2 et -3 est 1 donc on teste le facteur
 $2X-3$, ici il divise $P$ donc $P$ admet un unique facteur entier
 de degr\'e 1 qui est $2X-3$.
 
-\subsubsection{Algorithmes d\'eterministes. Algorithmes probabilistes: Las Vegas
+\subsection{Algorithmes d\'eterministes. Algorithmes probabilistes: Las Vegas
 et Monte-Carlo}\index{Las Vegas}\index{Monte-Carlo}\index{d\'eterministe}\index{probabiliste}
 L'algorithme p-adique pr\'esent\'e ci-dessus est un algorithme
 d\'eterministe, il renvoie toujours un r\'esultat certifi\'e et 
@@ -1618,7 +1608,7 @@ preuve ne peut se faire qu'avec un logiciel open-source, puisqu'il
 faut aussi pouvoir montrer que l'algorithme utilis\'e
 est correctement impl\'ement\'e.
 
-\subsection{Quelques algorithmes d'arithmétique de base.}
+\section{Quelques algorithmes d'arithmétique de base.}
 \begin{itemize}
 \item Les algorithmes de multiplication et division dit rapides
 des entiers et polyn\^omes (Karatsuba, FFT, ...). Cf. par exemple Knuth.
@@ -1709,7 +1699,7 @@ des méthodes modulaires et $p$-adiques. On utilise souvent le
 programmation de Xcas.
 \end{itemize}
 
-\subsubsection{Exemple de multiplication rapide~: l'algorithme de Karatsuba}\index{Karatsuba}
+\subsection{Exemple de multiplication rapide~: l'algorithme de Karatsuba}\index{Karatsuba}
 Soient $P, Q$ deux polyn\^omes de degr\'es strictement inf\'erieur \`a
 $2n$. On suppose que le cout d'une op\'eration arithm\'etique dans le
 corps des coefficients vaut 1 et on n\'eglige les autres
@@ -1750,7 +1740,7 @@ soit $8n<2n^2$ soit $n>4$, en pratique plut\^ot pour $n$ de l'ordre de quelques
 dizaines selon les impl\'ementations, car nous n'avons tenu compte
 que des op\'erations arithm\'etiques).
 
-\subsubsection{Calcul de la racine carr\'ee enti\`ere}
+\subsection{Calcul de la racine carr\'ee enti\`ere}
 \'Etant donn\'e un entier $N$, il s'agit de d\'eterminer le plus grand
 entier $n$ tel que $n^2\leq N$, $n$ est la racine
 carr\'ee\index{racine carr\'ee enti\`ere} de $N$.
@@ -1814,7 +1804,7 @@ isqrt(x):={
 \end{giacprog}
 \giacinput{isqrt(2*10^8)}
 
-\subsubsection{Bezout sur les entiers et les fractions continues}
+\subsection{Bezout sur les entiers et les fractions continues}
 Il existe une variante de l'identit\'e de B\'ezout pr\'esent\'ee
 ci-dessus pour les entiers. Soient $a\geq b>0$ deux entiers, on pose
 $$ (L_n) \quad a u_n - b v_n = (-1)^n r_n $$ 
@@ -1915,7 +1905,7 @@ rapidement vers l'infini, donc si les $a_p$ sont plus grands que 1.
 La convergence la plus lente correspond au cas o\`u tous les $a_p=1$
 cas du nombre d'or, ou \`a partir d'un certain rang (nombre de $Q[\sqrt{5}]$).
 
-\subsubsection{La puissance rapide it\'erative}\index{puissance
+\subsection{La puissance rapide it\'erative}\index{puissance
   rapide}\index{rapide, puissance}
 Pour calculer $a^k \pmod n$, on d\'ecompose $k$ en base 2
 $$ k=\sum_{j=0}^J k_j 2^j, \quad a^k = \prod_{j=0}^{J} a^{k_j 2^j} 
@@ -1945,7 +1935,7 @@ rapide(a,k,n):={
 En mode pas \`a pas~:\\
 \giacinput{debug(rapide(123,4567890,123456))}\\
 
-\subsection{Pour en savoir plus.}
+\section{Pour en savoir plus.}
 Sur des aspects plus th\'eoriques~:
 \begin{itemize}
 \item Knuth: TAOCP (The Art of Computer Programming), volumes 1 et suivants
@@ -1976,7 +1966,7 @@ NTL, GAP, CoCoA, ...), rechercher ces mots-clefs sur un moteur de recherche.
 
 \pagebreak
 
-\subsection{Exercices  sur types, calcul exact et approch\'e, 
+\section{Exercices  sur types, calcul exact et approch\'e, 
 algorithmes  de  bases} \label{sec:exos_algobase}
 Vous pouvez 
 \begin{rawhtml}
@@ -2141,10 +2131,10 @@ le d\'eveloppement de Taylor complet d'un polyn\^ome en un point.
 \end{enumerate}
 \pagebreak
 
-\section{Les générateurs de nombres pseudo-aléatoires.}
+\chapter{Les générateurs de nombres pseudo-aléatoires.}
 \label{sec:random}
 \index{al\'eatoire}
-\subsection{Selon la loi uniforme}
+\section{Selon la loi uniforme}
 Les générateurs d'entiers dans une plage donnée selon la loi
 uniforme servent en général de base pour générer des 
 nombres aléatoires entiers ou non selon des lois classiques.
@@ -2154,7 +2144,7 @@ la plage donnée et avoir de bonnes propriétés statistiques.
 Xcas utilise un ``tiny'' Mersenne Twister (de période environ $2^{127}$),
 certaines implantations de Giac utilisent un générateur congruentiel.
 
-\subsubsection{Les générateurs congruentiels \`a 1 cran.}\index{g\'en\'erateur congruentiel}
+\subsection{Les générateurs congruentiels \`a 1 cran.}\index{g\'en\'erateur congruentiel}
 \index{congruentiel, g\'en\'erateur} 
 Etant donnés trois entiers $a, c$ et $m$ on considère la suite
 $$ u_{n+1}=au_n+c \pmod m $$
@@ -2249,7 +2239,7 @@ qui d\'etecte des biais invisibles avec le test pr\'ec\'edent, par
 exemple pour 
 \giacinputbig{a:=7;seq(point(evalf(r()/m,r()/m),display=point_point),j,1,1000)}.
 
-\subsubsection{R\'ecurrence \`a $k$ \'el\'ements}
+\subsection{R\'ecurrence \`a $k$ \'el\'ements}
 Au lieu d'une r\'ecurrence $u_{k+1}=au_k+c$ on conserve en m\'emoire
 $k+1$ valeurs successives de la suite et on calcule
 $$ u_{n+k+1} = a_0 u_n+...+a_{k}u_{n+k} \pmod p$$
@@ -2263,7 +2253,7 @@ Ce que l'on peut faire en construire un polyn\^ome $P$ irr\'eductible
 primitif (cf. la section \ref{sec:gf} sur la construction de repr\'esentation
 des corps finis).
 
-\subsubsection{Mersenne twister.}
+\subsection{Mersenne twister.}
 Ce sont des générateurs plus performants, avec un état interne
 en général plus grand, dont l'état initial est généré par
 un générateur congruentiel. Ils utilisent une relation
@@ -2274,7 +2264,7 @@ par le CPU, et on fait des op\'erations de type matriciels
 avec des op\'erations bit \`a bit (ou exclusif par exemple)
 au lieu d'op\'erations arithm\'etiques.
 
-\subsection{Selon plusieurs lois classiques}
+\section{Selon plusieurs lois classiques}
 La m\'ethode g\'en\'erale consiste \`a calculer la distribution
 cumul\'ee de la loi et \`a prendre la fonction r\'eciproque
 d'un r\'eel g\'en\'er\'e al\'eatoirement entre 0 et 1 selon
@@ -2330,7 +2320,7 @@ selon la loi du $\chi^2$ en $k_2$ degrés de liberté divisé par
 $k_2$
 \end{itemize}
 
-\section{Le PGCD de polynômes.} \label{sec:pgcd} \index{PGCD (polyn\^omes)}
+\chapter{Le PGCD de polynômes.} \label{sec:pgcd} \index{PGCD (polyn\^omes)}
 Comme on l'a remarqué dans le premier article, l'algorithme d'Euclide est
 inefficace pour calculer le pgcd de deux polynômes à coefficients entiers. On
 va présenter ici les algorithmes utilisés habituellement par les systèmes de
@@ -2399,7 +2389,7 @@ On en d\'eduit que~:
    \mbox{pp} ( P ), \mbox{pp} ( Q )) \]
 
 
-\subsection{Le sous-résultant.}\index{sous-r\'esultant}
+\section{Le sous-résultant.}\index{sous-r\'esultant}
 
 La première idée qui vient à l'esprit pour améliorer l'efficacité de
 l'algorithme d'Euclide consiste à éviter les fractions qui sont créées par les
@@ -2607,9 +2597,9 @@ tout coefficient de $R_3$ est \'egal au produit d'un d\'eterminant
 qui est justement le coefficient ``magique'' par lequel on divise le reste
 de $R_1=Q$ par $R_2$ lors de l'algorithme du sous-r\'esultant.
 
-\subsection{Le pgcd en une variable.}
+\section{Le pgcd en une variable.}
 
-\subsubsection{Le pgcd heuristique.}\index{heuristique, PGCD}
+\subsection{Le pgcd heuristique.}\index{heuristique, PGCD}
 
 On suppose ici que les coefficients sont entiers ou entiers de Gauss.
 {\bf{On peut donc se ramener au cas où les polynômes sont primitifs.}}
@@ -2766,7 +2756,7 @@ procédure gcdheu deux paramètres supplémentaires par référence, les deux
 polynômes que l'on affectera en cas de succès, ce qui optimise la
 simplification d'une fraction de 2 polynômes.
 
-\subsubsection{Le pgcd modulaire}\index{modulaire, PGCD}
+\subsection{Le pgcd modulaire}\index{modulaire, PGCD}
 
 On part du fait que si $D$ est le pgcd de $P$ et $Q$ dans $\mathbb{Z}$ (ou
 $\mathbb{Z} [ i ] )$ alors après réduction modulo un nombre premier $n$ qui ne
@@ -3004,9 +2994,9 @@ représentation symétrique), donc le polynôme modulo 15 est $X^6 - 3 X^4 + 3
 X^2 - 1 = ( X^2 - 1 )^3$. Ce polynôme divise $P$ et $Q$, c'est donc le pgcd de
 $P$ et de $Q$.
 
-\subsection{Le pgcd à plusieurs variables.}
+\section{Le pgcd à plusieurs variables.}
 
-\subsubsection{Le pgcd heuristique.}\index{heuristique, PGCD}
+\subsection{Le pgcd heuristique.}\index{heuristique, PGCD}
 
 On suppose comme dans le cas à une variable que les polynômes sont primitifs,
 donc qu'on a simplifié les polynômes par le pgcd entier de leurs coefficients
@@ -3046,7 +3036,7 @@ En pratique, cet algorithme nécessite le calcul récursif de pgcd sans
 garantie de réussite. On l'évite donc s'il y a beaucoup de variables (la
 limite est par exemple de 5 pour MuPAD).
 
-\subsubsection{Le pgcd modulaire multivariables.}\index{modulaire, PGCD}
+\subsection{Le pgcd modulaire multivariables.}\index{modulaire, PGCD}
 
 Ici, on travaille modulo $X_n - \alpha_{}$, où $X_1, \ldots ., X_n$ désignent
 les variables des polynômes. On considère donc deux polynômes $P$ et $Q$ comme
@@ -3251,7 +3241,7 @@ donc
 On divise $D'$ par son contenu et on trouve $x^2 + x y + y + 1$ qui est bien
 le pgcd de $P$ et $Q$.
 
-\subsubsection{EZGCD.}
+\subsection{EZGCD.}
 
 Il s'agit d'une méthode $p$-adique. On évalue toutes les variables sauf une,
 on calcule le pgcd en une variable et on remonte au pgcd variable par variable
@@ -3479,7 +3469,7 @@ partie primitive de $P$ vu comme polynôme en $y$, ici c'est encore $P$ car le
 contenu de $P$ est 1 (remarque: pour $Q$ le contenu est $x + 1$).\\
 On trouve donc $P$ comme pgcd.
 
-\subsection{Quel algorithme choisir?}
+\section{Quel algorithme choisir?}
 
 Il est toujours judicieux de faire une évaluation en quelques $n - 1$ uplets
 pour traquer les pgcd triviaux. (E)EZGCD sera efficace si (0,...,0) est un
@@ -3495,7 +3485,7 @@ Avec des machines multiprocesseurs, on a probablement intérêt à lancer en
 parallèle plusieurs algorithmes et à s'arrêter dès que l'un deux recontre le
 succès.
 
-\subsection{Pour en savoir plus.}
+\section{Pour en savoir plus.}
 Parmi les références citées dans le premier article, ce sont les livres de
 Knuth, H. Cohen, et Davenport-Siret-Tournier qui traitent des algorithmes de
 pgcd. On peut bien sûr consulter le source de son système de calcul formel
@@ -3529,8 +3519,8 @@ in: Symbolic \& Algebraic Comp. (Ed E.W.Ng), Springer 1979, pp216,
 \end{itemize}
 
 
-\section{Le résultant} \label{sec:resultant} \index{resultant}
-\subsection{D\'efinition}
+\chapter{Le résultant} \label{sec:resultant} \index{resultant}
+\section{D\'efinition}
 Il s'agit d'un point de vue d'algèbre linéaire sur le PGCD. Considérons
 deux polynômes $A$ et $B$ \`a coefficients dans un corps,
 de degrés $p$ et $q$ et de pgcd $D$ et 
@@ -3601,7 +3591,7 @@ Ce résultat a un intérêt pour par exemple minorer à priori l'écart entre
 2 racines d'un polynôme à coefficients entiers.
 
 
-\subsection{Applications}
+\section{Applications}
 Revenons au cas o\`u nos polyn\^omes sont \`a coefficients dans un
 anneau contenu dans un corps, par exemple $\mathbb{Z} \in \mathbb{Q}$ ou un anneau 
 de polyn\^omes $\mathbb{Z}[X_2,...,X_n] $  dans son corps de fractions.
@@ -3633,7 +3623,7 @@ derni\`ere colonne, on obtient l'identit\'e de B\'ezout.
 $$ (x+1)U+(x-1)V=2$$ a une solution $U=1$ et $V=-1$ dans $\mathbb{Z}[X]$,
 par contre $$ (x+1)U+(x-1)V=1$$ n'a pas de solution dans $\mathbb{Z}[X]$.
 
-\subsubsection{Syst\`emes polynomiaux}
+\subsection{Syst\`emes polynomiaux}
 Ceci peut servir \`a \'eliminer des inconnues lorsqu'on r\'esoud un
 syst\`eme d'\'equations polynomiales~:
 $$ P_1(X_1,...,X_n)=0, ..., P_n(X_1,...,X_n)=0$$
@@ -3667,7 +3657,7 @@ calcul de bases de Groebner. Mais le r\'esultant est tr\`es bien
 adapt\'e par exemple \`a la recherche d'\'equations cart\'esiennes
 d'une courbe ou surface param\'etr\'ee par des fractions rationnelles.
 
-\subsubsection{Identit\'e de B\'ezout dans $\mathbb{Z}[X]$.}
+\subsection{Identit\'e de B\'ezout dans $\mathbb{Z}[X]$.}
 Lorsque les polyn\^omes $A$ et $B$ sont \`a coefficients entiers,
 on peut r\'esoudre l'identit\'e de B\'ezout en r\'esolvant le
 syst\`eme lin\'eaire $AU+BV=D$ o\`u $D$ est calcul\'e par
@@ -3693,7 +3683,7 @@ et $v$ le reste de$ \frac{\tilde{B}}{B}\tilde{V}$ par $A$.
 Si les polyn\^omes ne sont pas premiers entre eux, on s'y ram\`ene
 en divisant par leur pgcd.
 
-\subsection{R\'esultant et degr\'es}
+\section{R\'esultant et degr\'es}
 Si $A$ et $B$ sont des polyn\^omes en $d$ variables de degr\'e
 total $m$ et $n$ alors le r\'esultant de $A$ et $B$ par rapport \`a
 une des variables, disons la premi\`ere not\'ee $x$,
@@ -3779,7 +3769,7 @@ degr\'e $625^2=390625$ et enfin un polyn\^ome de degr\'e ...
 152587890625. Pour $n$ \'equations de degr\'e $n$, on a une majoration
 par $n^{(2^{n-1})}$, ainsi pour $n=4$ on trouve 65536 qui est d\'ej\`a discutable...
 
-\subsection{Lien avec l'algorithme du sous-résultant (calcul de PGCD)}
+\section{Lien avec l'algorithme du sous-résultant (calcul de PGCD)}
 On peut calculer le déterminant avec la suite des restes de divisions
 euclidiennes de la manière suivante, on part de la pseudo-division
 de $A$ par $B$~:
@@ -3872,7 +3862,7 @@ une racine multiple en fonction de $p$ et $q$. On calcule le
 r\'esultant de $P$ et $P'$ et on trouve $4p^3+27q^2$, donc $P$
 a une racine multiple si et seulement si $4p^3+27q^2=0$.
 
-\subsection{Calcul efficace du r\'esultant}
+\section{Calcul efficace du r\'esultant}
 On dispose essentiellement de deux strat\'egies avec des sous-strat\'egies~:
 \begin{itemize}
 \item Calcul comme un d\'eterminant.
@@ -3890,14 +3880,14 @@ Exemple de comparaison~:\\
 \giacinputbigmath{n:=100; A:=randpoly(n):; B:=randpoly(n):;}\\
 \giacinputbigmath{time(resultant(A,B)); time(det(sylvester(A,B)))}
 
-\section{Localisation des racines} \label{sec:racines}
-\subsection{Majoration}
+\chapter{Localisation des racines} \label{sec:racines}
+\section{Majoration}
 On a vu au lemme \ref{lemme:majoration}, 
 que si $z$ est une racine complexe d'un polyn\^ome $P$ 
 de coefficient dominant $p_n$ alors
 $$ |z| \leq 1 + \frac{|P|_\infty}{|p_n|}$$ 
 
-\subsection{Les suites de Sturm.}\index{Sturm, suites de}
+\section{Les suites de Sturm.}\index{Sturm, suites de}
 L'algorithme du sous-r\'esultant appliqu\'e \`a un polyn\^ome sans
 racine multiple $P$ et \`a sa d\'eriv\'ee
 permet, \`a condition de changer les signes dans la suite des restes, 
@@ -3945,7 +3935,7 @@ ou +,- vers -,-, ce qui diminue $s$ d'une unit\'e.
 
 \giacinputbig{purge(x);sturmab(x^3+7x-5,0,1)}
 
-\subsection{Autres algorithmes} \label{sec:autres_algorithmes}
+\section{Autres algorithmes} \label{sec:autres_algorithmes}
 \begin{itemize}
 \item On peut localiser les racines r\'eelles par dichotomie~: on
 sait que toutes les racines sont situ\'ees dans l'intervalle
@@ -4049,9 +4039,9 @@ un point fixe qui n'est autre qu'une racine de $g$.
 
 \pagebreak
 
-\section{Exercices (PGCD, r\'esultant, ...)}
+\chapter{Exercices (PGCD, r\'esultant, ...)}
 
-\subsection{Instructions}
+\section{Instructions}
 %Les instructions arithm\'etiques sont en g\'en\'eral dans
 %la librairie standard. 
 Elles sont dans les menus
@@ -4066,7 +4056,7 @@ Cmds->Integer et Cmds->Polynomes de \verb|Xcas|.
 % \verb|with(numtheory);| ou en MuPAD 
 % \verb|export(numlib);|.
 
-\subsubsection{Entiers}
+\subsection{Entiers}
 \begin{itemize}
 \item \verb|chrem|~:
 %(en MuPAD \verb|numlib::ichrem|)~:
@@ -4093,7 +4083,7 @@ calcul de $a^b \pmod n$ par
 l'algorithme de la puissance rapide
 \end{itemize}
 
-\subsubsection{Polyn\^omes}
+\subsection{Polyn\^omes}
 On peut repr\'esenter les polyn\^omes par leur \'ecriture symbolique
 (par exemple \verb|x^2+1|), ou par des listes (repr\'esentation dense
 ou creuse, r\'ecursive ou distribu\'ee). 
@@ -4163,7 +4153,7 @@ du plan complexe.
 Notez aussi que le menu \verb|Exemples->poly->pgcd.xws| de Xcas contient 
 des exemples de programmes de calcul de pgcd de type Euclide.
 
-\subsubsection{Calculs modulo $n$}
+\subsection{Calculs modulo $n$}
 Pour travailler dans $\mathbb{Z}/n\mathbb{Z}[X]$~:
 \begin{itemize}
 \item avec \verb|Xcas| on utilise la notation \% comme en C, par
@@ -4182,7 +4172,7 @@ habituel mais pr\'ec\'ed\'e par une majuscule, puis on indique
 
 \pagebreak
 
-\subsection{Exercices PGCD}
+\section{Exercices PGCD}
 \begin{enumerate}
 
 \item Calculez le pgcd de $x^{202}+x^{101}+1$
@@ -4236,7 +4226,7 @@ $x^{14}-x^{13}-14x^{12}+12x^{11}+78x^{10}-54x^9-224x^8+116x^7+361x^6-129x^5-330x
 \end{enumerate}
 
 
-\subsection{Exercices (r\'esultant)}
+\section{Exercices (r\'esultant)}
 
 \begin{enumerate}
 \item Pour quelles valeurs de $p$ le polyn\^ome $X^5+X^3-pX+1$ admet-il
@@ -4274,7 +4264,7 @@ la courbe admet un point singulier, repr\'esenter le graphe dans ce(s)
 cas et faire l'\'etude de la courbe.
 \end{enumerate}
 
-\subsection{Exercice (Bézout modulaire)}
+\section{Exercice (Bézout modulaire)}
 Soit $A$ et $B$ deux polynômes à coefficients entiers et premiers
 entre eux. Soit $c \in \mathbb{Z}^* $ le résultant de $A$ et $B$,
 on va calculer les polynômes $U$ et $V$ de l'identité de Bézout 
@@ -4311,7 +4301,7 @@ l'algorithme d'Euclide étendu dans $\mathbb{Z}[X]$?
 \end{enumerate}
 
 
-\subsection{Exercice (G\'eom\'etrie et r\'esultants).}
+\section{Exercice (G\'eom\'etrie et r\'esultants).}
 On cherche une relation alg\'ebrique entre les coordonn\'ees de 4 points
 $A,B,C,D$ qui traduise le fait que ces 4 points sont cocycliques. Cette
 condition \'etant invariante par translation, on cherche une
@@ -4352,7 +4342,7 @@ de la partie imaginaire du birapport des affixes $\alpha, \beta, \gamma,
 \end{enumerate}
 
 
-\subsection{Décalage entier entre racines.}
+\section{Décalage entier entre racines.}
 Soit $P$ un polynôme à coefficients entiers sans racines multiples. 
 On dira que $P$ a la propriété $\mathcal{I}$ si
 deux des racines de $P$ sont d\'ecal\'ees d'un entier. 
@@ -4422,7 +4412,7 @@ quelconque, lorsque cela est possible.
 
 \pagebreak
 
-\subsection{Exemple de correction de g\'eom\'etrie et r\'esultant}
+\section{Exemple de correction de g\'eom\'etrie et r\'esultant}
 \begin{verbatim}
 e1:=x1-R*((1-b^2)/(1+b^2)-(1-a^2)/(1+a^2));
 e2:=y1-R*(2b/(1+b^2)-2*a/(1+a^2));
@@ -4445,8 +4435,8 @@ eq2:=numer(im((-x1-i*y1)/(-x2-i*y2)*
 normal(eq1-eq2);
 \end{verbatim}
 
-\section{Bases de Gr\"obner.} \label{sec:groebner} \index{Gröbner, base de} \index{base de Gröbner}
-\subsection{Ordre et réduction}\index{ordre de monômes} \index{réduction}
+\chapter{Bases de Gr\"obner.} \label{sec:groebner} \index{Gröbner, base de} \index{base de Gröbner}
+\section{Ordre et réduction}\index{ordre de monômes} \index{réduction}
 L'anneau des polyn\^omes \`a plusieurs variables n'a pas de division
 euclidienne. On est donc oblig\'e d'utiliser des outils moins
 performants.
@@ -4500,7 +4490,7 @@ l'ordre $>$ avec les $A_k$.
 On peut même diviser $A$ par plusieurs polynômes $B,C,..$ en utilisant
 cet algorithme.
 
-\subsection{Idéaux}\index{idéal}
+\section{Idéaux}\index{idéal}
 En dimension 1, les idéaux sont engendrés par un polynôme $P$ et
 c'est la division euclidienne par $P$ qui permet de savoir si on est
 dans l'idéal. En dimension plus grande, l'analogue est la base
@@ -4566,7 +4556,7 @@ Les instructions Xcas correspondantes sont {\tt gbasis, greduce}.
 
 \bibliographystyle{abbrv}
 
-\subsection{Introduction}
+\section{Introduction}
 During the last decades, considerable improvements have been made 
 in CAS like Maple or specialized systems like Magma, Singular, 
 Cocoa, Macaulay... to compute Groebner basis. 
@@ -4616,7 +4606,7 @@ Moreover the modular algorithm memory usage is essentially
 twice the memory required to store the basis on $\mathbb{Q}$, sometimes
 much less than the memory required by other algorithms.
 
-\subsection{Checking a reconstructed Groebner basis} \label{sec:probagb}
+\section{Checking a reconstructed Groebner basis} \label{sec:probagb}
 Let $f_1,..,f_m$ be polynomials in $\mathbb{Q}[x_1,..,x_n]$, $I=<f_1,...,f_m>$
 be the ideal generated by $f_1,...,f_n$. Without loss of generality, we may
 assume that the $f_i$ have coefficients in $\mathbb{Z}$ by multiplying
@@ -4687,7 +4677,7 @@ if we have enough primes (with appropriate bounds on
 the coefficients of $G_c$ and the lcm of the denominators of the
 reconstructed quotients).
 
-\subsection{Speeding up by learning from previous primes} \label{sec:learning}
+\section{Speeding up by learning from previous primes} \label{sec:learning}
 Once we have computed a Groebner basis modulo an initial prime $p$, if $p$ is
 not an unlucky prime, then we can speedup computing Groebner basis
 modulo other lucky primes. Indeed, if one s-poly reduce to 0 modulo
@@ -4710,7 +4700,7 @@ requirement is that the new generated ideal is contained in the
 initial ideal modulo all primes (which is still true) and 
 that the reconstructed $G_c$ is a Groebner basis.
 
-\subsection{Giac/Xcas implementation and experimentation} \label{sec:giacf4}
+\section{Giac/Xcas implementation and experimentation} \label{sec:giacf4}
 We describe here briefly some details of the Giac/Xcas gbasis implementation
 and give a few benchmarks.
 
@@ -4913,7 +4903,7 @@ Note that for small examples (like Cyclic5), the system performs always the dete
 check (this is the case if the number of elements of the reconstructed basis
 to 50).
 
-\subsection{Conclusion}
+\section{Conclusion}
 I have described some enhancements to a modular algorithm
 to compute Groebner basis over $\mathbb{Q}$ which, combined to 
 linear algebra from F4, gives
@@ -4964,7 +4954,7 @@ Thanks to Vanessa Vitse for insightfull discussions.
 
 \bibliography{gb.bib}
 
-\subsection{Représentation rationnelle univariée 
+\section{Représentation rationnelle univariée 
 (rur\index{rur}\index{rationnelle, repr\'esentation
   univari\'ee}\index{repr\'esentation rationnelle univari\'ee}).}
 \label{sec:rur}
@@ -5091,9 +5081,9 @@ $\pm \sqrt{3}=$\verb|rootof(G[5],G[2])/rootof(G[3],G[2])|,\\
 $\pm \sqrt{5}=$\verb|rootof(G[6],G[2])/rootof(G[3],G[2])|\\
 (on peut utiliser \verb|normal| ou \verb|evalf| pour d\'ecider du signe).
 
-\section{Courbes param\'etriques et polaires} \label{sec:courbes}
+\chapter{Courbes param\'etriques et polaires} \label{sec:courbes}
 
-\subsection{Introduction}
+\section{Introduction}
 Le graphe d'une fonction $f: I \mapsto \mathbb{R}$ ($I$ un intervalle)
 est un exemple de courbe du plan, mais il
 n'est pas assez g\'en\'eral pour repr\'esenter tous les types de
@@ -5149,7 +5139,7 @@ ou avec les nombres complexes\\
 \giacinput{plotparam((1+i*t)/(1-i*t),t=-10..10)}
 \end{itemize}
 
-\subsection{Repr\'esentation graphique} 
+\section{Repr\'esentation graphique} 
 La plupart des calculatrices graphiques
 et de nombreux logiciels de maths permettent de
 repr\'esenter graphiquement un arc de courbe en donnant des valeurs
@@ -5199,7 +5189,7 @@ Exemples~: essayez de tracer quelques courbes en param\'etriques
 $$ (2\cos(t),3\sin(t)), \quad (\cos(2t),\sin(3t)), \quad (t^2,t^3),
 \quad (t+1/t, t^2+2/t), \quad (\sqrt{t-1},\sqrt{2-t}) $$
 
-\subsection{Param\'etrage}
+\section{Param\'etrage}
 On adoptera souvent la convention d'appeler temps le param\'etre $t$.
 Mais cela ne signifie pas que le param\'etrage est r\'eellement le
 temps mesur\'e en secondes. On peut tr\`es bien param\'etrer une
@@ -5230,10 +5220,10 @@ raison qu'il est beaucoup plus difficile (et couteux en temps)
 d'obtenir une repr\'esentation graphique d'une courbe donn\'ee
 par son \'equation cart\'esienne.
 
-\subsection{\'Etude analytique d'une courbe en param\'etrique}
+\section{\'Etude analytique d'une courbe en param\'etrique}
 \index{param\'etrique, courbe}
 
-\subsubsection{Rappel sur les graphes de fonction}
+\subsection{Rappel sur les graphes de fonction}
 Pour tracer le graphe d'une fonction $f$, on commence par
 d\'eterminer le domaine de
 d\'efinition, on restreint \'eventuellement l'intervalle d'\'etude
@@ -5275,7 +5265,7 @@ mais l'\'etude est un peu plus compliqu\'ee puisqu'on a
 deux fonctions $t \rightarrow x(t)$ et $t \rightarrow y(t)$
 au lieu d'une seule $x \rightarrow y(x)$.
 
-\subsubsection{Domaine et p\'eriodicit\'e}
+\subsection{Domaine et p\'eriodicit\'e}
 On supposera dans toute la suite que les fonctions $x(t)$ et $y(t)$
 sont continument d\'erivables au moins 2 fois, sauf peut-\^etre
 en un nombre fini de r\'eels d'un intervalle $I$ de $\mathbb{R}$.
@@ -5294,7 +5284,7 @@ Dans le cas p\'eriodique, on peut tester des sym\'etries correspondant
 \`a des demi (voire quart) de p\'eriode.
 Exemple~: $(3\cos(t)+2\cos(3t),3\sin(t)-2\sin(3t))$ 
 
-\subsubsection{Branches infinies}\index{branche, infinie}
+\subsection{Branches infinies}\index{branche, infinie}
 On s'int\'eresse ensuite aux bornes du domaine de d\'efinition
 et aux points o\`u $x$ ou/et $y$ ne sont pas d\'efinis.
 Si $x$ et $y$ admettent une limite finie, on peut prolonger la
@@ -5339,7 +5329,7 @@ line(y=a*x+b,color=red);line(y=Y(-1),color=green)}
 Autre exemple~:
 \giacinput{X(t):=t^3/(t^2+1);Y(t):=t+1/(t^2+2);}
 
-\subsubsection{\'Etude locale}
+\subsection{\'Etude locale}
 On se place en une valeur de $t_0$ o\`u $x$ et $y$ sont continument
 d\'erivables au moins deux fois. On notera la dérivation par rapport 
 au paramètre par le signe ' (en physique on utilise aussi le point).
@@ -5451,9 +5441,9 @@ crit\`ere usuel $y'{'}>0$.
 $$ (\frac{t^3}{t^2+1},t+\frac{1}{t^2+2}) $$
 La courbe admet deux autres points d'inflexion ($t=-3.16...$ et
 $t=1.31...$) qu'on peut d\'eterminer avec les commandes Xcas suivantes~:\\
-\giacinputbigmath{purge(x,y);X:=x^3/(x^2+1); Y:=x+1/(x^2+2);}\\
+\giacinputbigmath{purge(x,y);X:=x^3/(x^2+1); Y:=x+1/(x^2+2); plotparam([X,Y],x)}
 \giacinputmath{fsolve(X'*Y''-X''*Y',x)}\\
-\giacinput[style="width:400px;height:40px;font-size:large"]{tabvar([X,Y]);}
+\giacinputmath[style="width:400px;height:40px;font-size:large"]{tabvar([X,Y]);}
 Note~: on utilise comme param\`etre \verb|x| au lieu de \verb|t| pour pouvoir 
 utiliser la notation \verb|'| pour d\'eriver (si on utilise \verb|t|
 comme param\`etre, il faut utiliser \verb|diff(.,t)| pour calculer
@@ -5548,7 +5538,7 @@ arriver que toutes les d\'eriv\'ees soit colin\'eaires \`a la
 premi\`ere d\'eriv\'ee non nulle, si on se d\'eplace sur une droite
 ou si la tangeance est plate.
 
-\subsection{Plan d'\'etude d'une courbe}
+\section{Plan d'\'etude d'une courbe}
 \begin{enumerate}
 \item On d\'etermine et on restreint le domaine de d\'efinition
 (p\'eriodicit\'e, sym\'etries). 
@@ -5572,7 +5562,7 @@ du tableau de variations.
 \end{rawhtml}
 \fi
 
-\subsection{Courbes en polaires}\index{polaire, courbe}
+\section{Courbes en polaires}\index{polaire, courbe}
 Une courbe en polaire est essentiellement
 donn\'ee par la distance au centre $O$ d'un
 point $M$ de la courbe en fonction de l'angle $\theta$ 
@@ -5680,7 +5670,7 @@ et $X$ et $Y$ les deux coordonnées.
 $$ \kappa = \frac{r^2+2r'^2-rr'{'}}{\sqrt{r^2+r'^2}^3}$$
 \end{enumerate}
 
-\subsection{Coniques}\index{conique}
+\section{Coniques}\index{conique}
 Les coniques sont des courbes implicites dont l'\'equation
 cart\'esienne est du second degr\'e~
 $$ax^2+cy^2+bxy+dx+ey+f=0$$
@@ -5704,7 +5694,7 @@ l'orbite d\'ecrite par une plan\`ete est une ellipse dont
 le Soleil occupe un foyer).
 
 
-\subsubsection{Ellipse}\index{ellipse}
+\subsection{Ellipse}\index{ellipse}
 \begin{defn}
 L'ellipse $E$ de foyers $F_1$ et $F_2$ de demi-grand axe
 $a$ est l'ensemble des points $M$ du plan tels que 
@@ -5803,7 +5793,7 @@ voit-on pour E=0.0, E un peu inf\'erieur \`a 1 (par exemple 0.8) et un peu sup\'
 \`a 1 (par exemple 1.3)\\
 \giacinput[style="width:400px;height:60px;font-size:large"]{E:=0.5; gl_x=-5..5;gl_y=-3..3;plotpolar(1/(1+E*cos(t)),t=0..2*pi,tstep=pi/100)}
 
-\subsubsection{Parabole}\index{parabole}
+\subsection{Parabole}\index{parabole}
 Si $F$ est un point et $D$ une droite ne passant pas par $F$, la
 parabole de foyer $F$ et directrice $D$ est l'ensemble des points
 \'equidistants de $F$ et $D$.
@@ -5854,7 +5844,7 @@ elle est ind\'ependante de $a$ et est le foyer. On peut
 montrer qu'une courbe ayant cette propri\'et\'e est
 une parabole.
  
-\subsubsection{Hyperbole}
+\subsection{Hyperbole}
 Une hyperbole de foyers $F$ et $F'$ est d\'efinie comme l'ensemble
 des points $M$ tels que~:
 $$ |MF-MF'|=2a$$
@@ -5881,9 +5871,9 @@ $$ \rho=\frac{a(1-e^2)}{1+e\cos(\theta)}$$
 Exercice~: faire l'\'etude de la courbe param\'etr\'ee et montrer que
 l'hyperbole admet deux asymptotes d'\'equation $y = \pm \frac{b}{a} x$.
 
-%\subsection{Autres exemples de courbes}
+%\section{Autres exemples de courbes}
 
-\subsubsection{Param\'etrisation rationnelle}
+\subsection{Param\'etrisation rationnelle}
 Si on connait un point d'une conique, on peut effectuer
 un changement d'origine en ce point, l'\'equation cart\'esienne
 devient
@@ -5965,8 +5955,8 @@ $x,y \rightarrow X,Y$ pour annuler le coefficient de $XY$. Par exemple\\
 on voit que l'angle de la rotation \`a effectuer v\'erifie
 $$(c-a)\sin(2d)+b\cos(2d)=0 \quad \Rightarrow \quad \tan(2d)=\frac{b}{a-c}$$
 
-\section{Propri\'et\'es m\'etriques des courbes.} \label{sec:courbes_m}
-\subsection{Longueur d'arc}
+\chapter{Propri\'et\'es m\'etriques des courbes.} \label{sec:courbes_m}
+\section{Longueur d'arc}
 La longueur $ds$ d'un morceau de courbe r\'egulier parcouru
 pendant un petit intervalle de temps $dt$ est égal
 au premier ordre à la longueur du segment tangent parcouru,
@@ -6017,7 +6007,7 @@ adaptées, appel\'ees int\'egrales elliptiques)~:\\
 \giacinputbigmath{a:=int(sqrt(sin(t)^2+4*cos(t)^2),t,0,2*pi); evalf(a)}
 
 
-\subsection{Courbure, rep\`ere de Frenet, accélération normale et
+\section{Courbure, rep\`ere de Frenet, accélération normale et
   tangentielle.} \label{sec:courbure}
 Si on choisit $s$, la longueur d'arc, comme nouveau paramètre de temps, 
 la longueur parcourue est égale au temps, donc la vitesse instantannée
@@ -6279,7 +6269,7 @@ Pour $b=1/\sqrt{2}$, le trac\'e est obtenu par la commande\\
 
 
 
-\section{Repr\'esentation des courbes implicites.} \label{sec:implicite}
+\chapter{Repr\'esentation des courbes implicites.} \label{sec:implicite}
 Certaines repr\'esentations graphiques n\'ecessitent peu d'outillage
 math\'ematique, ainsi les fonctions, les courbes param\'etrique
 et polaires peuvent \^etre repr\'esent\'ees en \'echantillonant 
@@ -6378,9 +6368,9 @@ au moins num\'erique dans $\mathbb{C}[x,y]$). Pour le moment,
 Xcas fait simplement une factorisation sur le corps
 des coefficients, et rep\`ere les \'equations de coniques.
 
-%\subsection{Autres exemples de courbes}
+%\section{Autres exemples de courbes}
 
-\section{Formes diff\'erentielles et int\'egrales curvilignes} 
+\chapter{Formes diff\'erentielles et int\'egrales curvilignes} 
 \label{sec:diff}
 Il s'agit dans cette section de calculer des int\'egrales
 le long de l'arc. Cela intervient
@@ -6401,7 +6391,7 @@ exactes (c'est le cas favorable, il correspond aux forces
 conservatives en m\'ecanique ou aux diff\'erentielles totales
 de fonctions d'\'etat en thermodynamique).
 
-\subsection{Forme diff\'erentielle}
+\section{Forme diff\'erentielle}
 Soit $V(x,y)$ une fonction de deux variables continument d\'erivable.
 On s'int\'eresse aux variations de $V$ lorsqu'on se d\'eplace dans le
 plan depuis le point $M(x,y)$ dans une direction donn\'ee \`a
@@ -6538,7 +6528,7 @@ a donc deux coefficients $M$ et $N$, une forme diff\'erentielle
 \'equivaut donc bien \`a la donn\'ee d'un couple de fonction 
 $M(x,y),N(x,y)$.
 
-\subsection{Int\'egrale curviligne}
+\section{Int\'egrale curviligne}
 Ceci permet de donner la~:
 \begin{defn}
 Pour calculer {\bf l'int\'egrale 
@@ -6589,7 +6579,7 @@ Remarque~: le travail d'une force $\overrightarrow{F}=(F_x,F_y)$ le
 long d'un arc de courbe est donn\'e par l'int\'egrale curviligne de la forme
 diff\'erentielle $F_x dx+F_ydy$. 
 
-\subsection{Forme diff\'erentielle exacte}\index{exacte, forme diff\'erentielle}
+\section{Forme diff\'erentielle exacte}\index{exacte, forme diff\'erentielle}
 Voyons maintenant \`a quelle condition il existe un analogue du calcul
 avec une primitive. On a:
 $$ \int_\gamma dV=V(\gamma(t_1))-V(\gamma(t_0)), $$
@@ -6689,7 +6679,7 @@ est constant, donc la forme appliqu\'ee au vecteur tangent
 est nulle, on dit que la courbe de niveau est une courbe
 int\'egrale de la forme diff\'erentielle (exacte).
 
-\subsection{Int\'egrale curviligne et int\'egrales doubles.}
+\section{Int\'egrale curviligne et int\'egrales doubles.}
 Terminons ce chapitre par le lien entre int\'egrale curviligne
 sur un lacet (chemin ferm\'e) et int\'egrale double \`a l'int\'erieur 
 du lacet. C'est \'evidemment surtout int\'eressant pour les
@@ -6748,9 +6738,9 @@ la commande \verb|cercle(0,1); G:=point(4/(3*pi),4/(3*pi))|
 
 
 
-\section{\'Equations et syst\`emes diff\'erentiels.} \label{sec:ode}
+\chapter{\'Equations et syst\`emes diff\'erentiels.} \label{sec:ode}
 
-\subsection{Introduction et repr\'esentation graphique.}
+\section{Introduction et repr\'esentation graphique.}
 On s'int\'eresse \`a l'\'equation diff\'erentielle
 \begin{equation} \label{eq:diff}
  y'=\frac{dy}{dt}=f(y,t)
@@ -6868,7 +6858,7 @@ quelques m\'ethodes explicites
 pour certaines \'equations diff\'erentielles que l'on sait
 r\'esoudre.
 
-\subsection{Existence et unicit\'e} \label{sec:existence}
+\section{Existence et unicit\'e} \label{sec:existence}
 Il s'agit ici de pr\'eciser dans quelles conditions le r\'esultat
 intuitif suivant est vrai~: \'etant donn\'e une condition initiale
 $y(t_0)=y_0$, il y a une et une seule \'evolution possible, donc
@@ -6970,9 +6960,9 @@ pr\'ecise de la condition initiale, pourvu qu'elle soit dans $]0,1[$.
 {\bf Exercice~}: toujours pour $y'=y(1-y)$ que se passe-t-il pour une
 condition initiale $y(t_0)>1$~?
 
-\subsection{Quelques m\'ethodes de r\'esolution explicite.}
+\section{Quelques m\'ethodes de r\'esolution explicite.}
 
-\subsubsection{\'Equations \`a variables
+\subsection{\'Equations \`a variables
   s\'eparables}\index{s\'eparables, variables}\index{variables s\'eparables}
 Si on peut factoriser $f(y,t)$ en termes ne d\'ependant que
 de $y$ ou ne d\'ependant que de $t$, on dit que l'\'equation
@@ -6998,7 +6988,7 @@ sous forme implicite.
 et retrouver les r\'esultats qualitatifs de la section pr\'ec\'edente. \\
 \giacinputbigmath{desolve(y'=y*(1-y))}
 
-\subsubsection{\'Equations lin\'eaires}\index{lin\'eaire,
+\subsection{\'Equations lin\'eaires}\index{lin\'eaire,
   \'equation}\index{\'equation lin\'eaire}
 On commence par r\'esoudre l'\'equation sans second membre
 (aussi appel\'ee homog\`ene)
@@ -7047,7 +7037,7 @@ on remplace $y(t)=C(t)e^{t^2/2}$ dans $y'-ty=-t$ et on obtient
 $C' e^{t^2/2}=-t$, donc $C'=-te^{-t^2/2}$ et $C=e^{-t^2/2}+K$,
 d'o\`u la solution g\'en\'erale $y(t)=(e^{-t^2/2}+K)e^{t^2/2}=1+Ke^{t^2/2}$.
 
-\subsubsection{\'Equations lin\'eaires \`a coefficients constants}
+\subsection{\'Equations lin\'eaires \`a coefficients constants}
 On peut chercher des solutions de l'\'equation sans second membre
 sous la forme d'exponentielles
 $e^{rt}$, $r$ doit alors v\'erifier une \'equation polynomiale $P(r)=0$
@@ -7131,7 +7121,7 @@ degr\'e que $b$ si $r$ n'est pas racine de $P$, ou de degr\'e le
 degr\'e de $b$ plus la multiplicit\'e de $r$ comme racine de $P$.
 On peut aussi utiliser la transformation de Laplace et son inverse.
 
-\subsubsection{Syst\`emes diff\'erentiels lin\'eaires \`a coefficients
+\subsection{Syst\`emes diff\'erentiels lin\'eaires \`a coefficients
 constants d'ordre 1.}\index{lin\'eaire, syst\`eme diff\'erentiel}
 Il s'agit donc de syst\`emes de la forme
 $$ y'=Ay+b(t)$$
@@ -7179,7 +7169,7 @@ composante une \'equation
 diff\'erentielle lin\'eaire d'ordre 1 avec un \'eventuel 
 second membre. 
 
-\subsubsection{Syst\`emes et \'equations}
+\subsection{Syst\`emes et \'equations}
 Il y a un lien entre syst\`emes diff\'erentiels lin\'eaires
 et \'equations lin\'eaires. En effet une \'equation d'ordre $n$ peut
 s'\'ecrire comme un syst\`eme diff\'erentiel d'ordre 1,
@@ -7246,7 +7236,7 @@ parcouru une infinit\'e de fois, qui se d\'eforme sous l'effet
 du champ \'electrique en une sorte de spirale de ressort, pour
 une valeur seuil de $E$ on obtient une cyclo\"ide.
 
-\subsubsection{Allure des courbes en dimension 2.}
+\subsection{Allure des courbes en dimension 2.}
 Si on se place dans le rep\`ere propre (en prenant les vecteurs
 propres comme vecteurs de base), et si $A$ a deux valeurs
 propres distinctes ($A$ est alors diagonalisable),
@@ -7285,7 +7275,7 @@ $$A=\left(\begin{array}{cc} 1+t & -t \\ -t & 1+t\end{array}\right)$$
 Ou si $\int A(t) \ dt$ commute avec $A$, on peut prendre 
 $\exp(\int A(t))$ comme solution.
 
-\subsubsection{Syst\`emes d'ordre plus grand que 1}
+\subsection{Syst\`emes d'ordre plus grand que 1}
 On se ram\`ene \`a un syst\`eme d'ordre 1.
 Par exemple deux ressorts coupl\'es
 $$ 
@@ -7324,7 +7314,7 @@ $\Omega \neq \sqrt{3}\omega$, il y a une solution particuli\`ere
 de fr\'equence $\Omega$ et les solutions sont born\'ees (3 fr\'equences),
 par contre si $\Omega=\omega$ ou $\Omega=\sqrt{3}\omega$, il y a r\'esonance.
 
-\subsubsection{Int\'egrales premi\`eres.}\index{premi\`ere,
+\subsection{Int\'egrales premi\`eres.}\index{premi\`ere,
   int\'egrale}\index{int\'egrale premi\`ere}
 Lorsqu'on ne sait pas r\'esoudre explicitement une \'equation
 ou un syst\`eme diff\'erentiel, il peut arriver qu'on connaisse
@@ -7440,7 +7430,7 @@ ayant l'origine pour foyer et parcourue selon la loi des aires
 (l'aire balay\'ee par le segment origine-point mobile est
 proportionnelle au temps).
 
-\subsubsection{Le mod\`ele proie-pr\'edateur}
+\subsection{Le mod\`ele proie-pr\'edateur}
 \index{proie-pr\'edateur, mod\`ele}
 \index{mod\`ele proie-pr\'edateur}
 C'est un syst\`eme autonome en dimension 2 pour lequel on sait
@@ -7486,7 +7476,7 @@ $$ T=\int dt = \int_{x_-}^{x_+}  \frac{dx}{x(a-by_+(x))}
 + \int_{x_+}^{x_-}  \frac{dx}{x(a-by_-(x))}
 $$
 
-\subsubsection{Quelques autres m\'ethodes}
+\subsection{Quelques autres m\'ethodes}
 On peut encore citer~: 
 changement de fonction, changement de variables, 
 \'equation homog\`ene, \'equations de Bernoulli,
@@ -7494,7 +7484,7 @@ de Clairault, de Ricatti, d\'eveloppements en s\'eries
 enti\`eres..., certaines de ces m\'ethodes sont
 impl\'ement\'ees par les logiciels de calcul formel.
 
-\subsection{Comportement asymptotique des solutions}
+\section{Comportement asymptotique des solutions}
 Les \'equations de la physique sont souvent des \'equations
 autonomes sans second membre (pas de d\'ependance explicite en temps) 
 ou avec un second membre
@@ -7519,7 +7509,7 @@ les \'equations autonomes sans second membre,
 et dans le cas de syst\`emes diff\'erentiels lin\'eaires \`a
 coefficients constants.
 
-\subsubsection{\'Equations lin\'eaires \`a coefficients constants 
+\subsection{\'Equations lin\'eaires \`a coefficients constants 
 d'ordre 1 et 2}
 Pour les \'equations homog\`enes d'ordre 1 $y'+ay=0$, 
 la solution g\'en\'erale est $y(t)=Ce^{-at}$, le comportement
@@ -7593,7 +7583,7 @@ elle est appel\'ee r\'egime transitoire. Quelle que
 soit la condition initiale, on tend vers la solution particuli\`ere
 appel\'ee r\'egime permanent.
 
-\subsubsection{For\c{c}age p\'eriodique}\index{for\c{c}age}
+\subsection{For\c{c}age p\'eriodique}\index{for\c{c}age}
 Il arrive souvent qu'un syst\`eme physique soit soumis \`a
 un for\c{c}age ext\'erieur p\'eriodique, par exemple
 pour la temp\'erature \`a \'echelle fine, l'alternance jour-nuit,
@@ -7635,7 +7625,7 @@ il y a r\'esonance (c'est pour \'eviter d'entrer en r\'esonance
 avec une fr\'equence propre d'un pont qu'on ne doit pas le traverser
 \`a plusieurs en marchant au m\^eme pas cadenc\'e).
 
-\subsubsection{\'Equation autonome sans second membre}\index{autonome}
+\subsection{\'Equation autonome sans second membre}\index{autonome}
 Il s'agit d'une \'equation de la forme $y'=f(y)$ o\`u on
 suppose $f$ continument d\'erivable. Les solutions
 stationnaires sont donn\'ees par les racines de $f$ (les
@@ -7696,7 +7686,7 @@ il y a deux \'equilibres $r_0=0$ et $r_1=1$, avec $f'(r_0)=1>0$
 et $f'(r_1)=-1<0$ donc un \'equilibre stable en 1, et un \'equilibre
 instable en 0.
 
-\subsubsection{Syst\`emes lin\'eaires}\index{lin\'eaire, syst\`eme diff\'erentiel}
+\subsection{Syst\`emes lin\'eaires}\index{lin\'eaire, syst\`eme diff\'erentiel}
 {\bf Cas lin\'eaire}\\
 L'\'evolution du syst\`eme est gouvern\'ee par les valeurs propres
 de la matrice $A$ du syst\`eme, exactement comme pour les \'equations
@@ -7761,7 +7751,7 @@ l'une des parties r\'eelles est strictement positive,
 pour une condition initiale g\'en\'erique, le syst\`eme s'en
 \'eloigne, et s'il y a des parties r\'eelles nulles, on ne peut pas conclure/
 
-\subsubsection{For\c{c}age pr\`es d'un point d'\'equilibre de syst\`eme.}
+\subsection{For\c{c}age pr\`es d'un point d'\'equilibre de syst\`eme.}
 Si on ajoute un terme d\'ependant du temps $y'=f(y)+g(t)$,
 on ne sait plus r\'esoudre l'\'equation ni d\'ecrire
 son comportement qualitatif en toute g\'en\'eralit\'e. Si
@@ -7813,8 +7803,8 @@ tiers appliqu\'ee \`a la masse de glace sert \`a passer d'un volume
 de glace sur l'alb\'edo).
 
 
-\subsection{Résolution numérique}
-\subsubsection{Méthodes à un pas}
+\section{Résolution numérique}
+\subsection{Méthodes à un pas}
 On considère l'équation différentielle 
 $$y'=f(t,y), \quad t \in \mathbb{R}, \quad y(t) \in \mathbb{R}^d, y(0)=y_0$$ 
 o\`u $y(t)$ est la fonction inconnue cherchée
@@ -7921,7 +7911,7 @@ atteindre.
 
 R\'ef\'erences~: Hairer, Demailly.
 
-\subsubsection{Méthodes de Runge-Kutta (explicites)}\index{Runge-Kutta}
+\subsection{Méthodes de Runge-Kutta (explicites)}\index{Runge-Kutta}
 Ce sont des méthodes explicites qui 
 utilisent une méthode de Newton-Cotes pour approcher
 $\int f(t,y(t)) \ dt$ sur $[t_i,t_{i+1}]$.
@@ -8003,7 +7993,7 @@ avec 2 méthodes emboitées RK4 et
 Prince-Dormand, cf. Hairer).
 
 
-\section{Introduction au calcul variationnel}
+\chapter{Introduction au calcul variationnel} \label{sec:lagrangien}
 La recherche de minimas/maximas est une des application 
 du calcul diff\'erentiel~: en dimension 1, la d\'eriv\'ee s'annule
 lorsque la fonction est maximale ou minimale, en dimension plus
@@ -8323,8 +8313,8 @@ m\'ecanique quantique (principe de correspondance).
 \end{itemize}
 
 
-\section{Corps finis.} \label{sec:gf}\index{corps fini}\index{GF}
-\subsection{Rappels}
+\chapter{Corps finis.} \label{sec:gf}\index{corps fini}\index{GF}
+\section{Rappels}
 Soit $K$ un corps fini. Le plus petit entier $p$ tel que
 $p.1=0$ est la caract\'eristique du corps, c'est un nombre premier
 (car $xy=0 \Rightarrow x=0$ ou $y=0$), et $K$ est un $\mathbb{Z}/p\mathbb{Z}$
@@ -8351,8 +8341,8 @@ irr\'eductible, puis tester \verb|factor(P,g)|.
 Evidemment, ce r\'esultat n'est plus vrai si $P$ a des coefficients
 dans $K$ au lieu de $\mathbb{Z}/p\mathbb{Z}$ (essayer avec \verb|P:=randpoly(5,g)|).
 
-\subsection{Repr\'esentation des corps non premiers.}
-\subsubsection{Cas g\'en\'eral.}
+\section{Repr\'esentation des corps non premiers.}
+\subsection{Cas g\'en\'eral.}
 Pour repr\'esenter $K$, on utilise g\'en\'eralement la
 repr\'esentation dite additive, c'est-\`a-dire que $K$
 est isomorphe \`a $\mathbb{Z}/p\mathbb{Z}[X]/P(X)$ avec $P$ un polyn\^ome
@@ -8409,7 +8399,7 @@ est alors difficile sauf si on dispose d'une table passant
 de la repr\'esentation additive \`a la repr\'esentation
 multiplicative.
 
-\subsubsection{Corps de petit cardinal, cas de la caract\'eristique 2}
+\subsection{Corps de petit cardinal, cas de la caract\'eristique 2}
 Si le cardinal du corps n'est pas trop grand (par exemple
 moins que quelques milliers), il est int\'eressant de construire
 une table de passage entre repr\'esentation additive et
@@ -8439,7 +8429,7 @@ en une dizaine de cycles du microprocesseur.
 
 \pagebreak
 
-\subsection{Exercices}
+\section{Exercices}
 Dans Xcas, pour travailler dans $\mathbb{Z}/p\mathbb{Z}$, on utilise l'op\'erateur \verb|%|.
 Attention \`a bien laisser un espace avant ou/et apr\`es \verb|%| si vous 
 utilisez des noms de variables. Par exemple \verb|p:=7; 3 % p| repr\'esente
@@ -8488,11 +8478,11 @@ minimal et son ordre. Quels sont les ordres possibles~?
 
 \pagebreak
 
-\subsection{Rappels de quelques complexit\'es de base}
+\section{Rappels de quelques complexit\'es de base}
 $n$ d\'esigne un majorant commun de la taille des arguments, ou bien
 $n_1$ et $n_2$ d\'esignent la taille des 2 arguments.
 
-\subsubsection{Polynomes denses et entiers}
+\subsection{Polynomes denses et entiers}
 Pour un polyn\^ome en une variable
 \`a coefficients dans un corps fini, la taille est
 le degr\'e du polyn\^ome, on prend comme convention que
@@ -8523,7 +8513,7 @@ estim\'es en fonction du nombre de coefficients non nuls.
 \end{itemize}
 
 
-\subsubsection{Alg\`ebre lin\'eaire dense}
+\subsection{Alg\`ebre lin\'eaire dense}
 Pour une matrice carr\'ee $n,n$ \`a coefficients dans un corps fini o\`u
 les op\'erations se font en temps $O(1)$.
 \begin{itemize}
@@ -8545,7 +8535,7 @@ de coefficients non nuls.
 
 \pagebreak
 
-\subsection{Codes lin\'eaires et polynomiaux.}
+\section{Codes lin\'eaires et polynomiaux.}
 \index{code lin\'eaire} \index{code polynomial}
 \index{code correcteur}
 Les corps finis premiers servent dans tous les algorithmes modulaires,
@@ -8568,7 +8558,7 @@ de d\'etection et de correction d'erreurs, pour cela on rajoute
 des symboles calcul\'es \`a partir des pr\'ec\'edents, 
 on envoie un \'el\'ement d'un code ayant $n$ symboles.
 
-\subsubsection{Le bit de parit\'e.}\index{parit\'e (bit de)}
+\subsection{Le bit de parit\'e.}\index{parit\'e (bit de)}
 On prend $k=7$ bits et $n=8$ bits. On compte
 le nombre de 1 parmi les 7 bits envoy\'es, si ce nombre est pair, 
 on envoie 0 comme 8i\`eme bit, sinon 1. 
@@ -8589,7 +8579,7 @@ pour pouvoir effectuer des opérations arithmétiques polynomiales,
 et vous effectuerez la vérification de deux manières, en comptant
 le nombre de 1 ou avec l'instruction \verb|rem|.
 
-\subsubsection{Codes lin\'eaires}
+\subsection{Codes lin\'eaires}
 \index{lin\'eaire, code}\index{code lin\'eaire}
 {\bf D\'efinition}~:
 On multiplie le vecteur des $k$ symboles par
@@ -8626,7 +8616,7 @@ Instructions utiles~: \verb|idn| (matrice identité)
 les lignes de 2 matrices $A$ et $B$ par \verb|[op(A),op(B)]| ou avec
 \verb|blockmatrix|.
 
-\subsubsection{Codes polynomiaux}
+\subsection{Codes polynomiaux}
 \index{polynomial, code}\index{code polynomial}
 {\bf Définition}~:
 Il s'agit d'un cas particulier de codes lin\'eaires.
@@ -8643,7 +8633,7 @@ une proc\'edure Xcas de codage utilisant $g=X^7+X^3+1$
 N.B. on obtient le polynôme $X^{n-k}$ sous forme
 de polynome-liste dans Xcas par {\tt poly1[1,0\$(n-k)]}.
 
-\subsubsection{D\'etection et correction d'erreur}
+\subsection{D\'etection et correction d'erreur}
 \index{correction d'erreur} \index{erreur, correction}
 Si le mot recu n'est pas dans l'image de l'application
 lin\'eaire il y a eu erreur de transmission. Sinon, il n'y
@@ -8672,7 +8662,7 @@ ou directement \verb|1-binomial_cdf(1000,1e-3,3)|.
 
 {\bf Exemple}~: On ne peut pas corriger d'erreur avec le bit de parité.
 
-\subsubsection{Distances} \index{distance de Hamming}
+\subsection{Distances} \index{distance de Hamming}
 La {\bf distance de Hamming}\index{Hamming, distance} 
 de 2 mots est le nombre de symboles qui diffèrent.
 (il s'agit bien d'une distance au sens mathématique, 
@@ -8713,7 +8703,7 @@ polynomiaux, par exemple convolutifs, la distance n'est pas
 forc\'ement le
 param\`etre le mieux adapt\'e \`a la correction d'erreurs.
 
-\subsubsection{Correction au mot le plus proche}
+\subsection{Correction au mot le plus proche}
 Une strat\'egie de correction bas\'ee sur la distance consiste \`a
 trouver le mot de code le plus proche d'un mot donn\'e.
 Si la distance d'un code est sup\'erieure ou \'egale
@@ -8733,7 +8723,7 @@ est disjointe et recouvre l'ensemble des mots ($K^n$).
 Exercice~: votre code linéaire sur $\mathbb{Z}/2\mathbb{Z}$ (celui de distance 3) 
 est-il un code 1-correcteur parfait~?
 
-\subsubsection{Codes de Hamming}
+\subsection{Codes de Hamming}
 Soit un code de longueur $n$, de dimension $k$, le nombre
 d'informations suppl\'ementaires est not\'e $m=n-k$. Un code
 de Hamming\index{Hamming, code}\index{code de Hamming} 
@@ -8787,13 +8777,13 @@ p8      &    &    &    &    &    &   &  & x   & x & x  & x   & x & x & x & x \\
 
 Autre exemple~: le minitel utilisait $d=2, m=7, n=2^m-1$.
 
-\subsection{Les codes de Reed-Solomon}\index{Reed-Solomon (codes)}
+\section{Les codes de Reed-Solomon}\index{Reed-Solomon (codes)}
 Il s'agit de codes polynomiaux qui r\'ealisent la distance maximale
 possible $n-k+1$. De plus la recherche du mot de code le plus
 proche peut se faire par un algorithme de B\'ezout avec arr\^et 
 pr\'ematur\'e.
 
-\subsubsection{Théorie}
+\subsection{Théorie}
 On se donne un g\'en\'erateur $a$ 
 de $F_q^*$ et le polyn\^ome $g(x)=(x-a)...(x-a^{2t})$ (donc $n-k=2t$). 
 Typiquement $q=2^m$ avec $m=8$, 
@@ -8862,7 +8852,7 @@ on a~:
 Finalement~:
 \[ \alpha_k = -\frac{w(a^{-i_k})}{l'(a^{-i_k})} \]
 
-\subsubsection{Preuve du calcul de $l$}
+\subsection{Preuve du calcul de $l$}
 On avait $s(x)$ avec deg$(s)<=2t-1$,
 il s'agissait de voir comment la solution $u,v,r$ calculee par Bezout
 \begin{equation}   \label{eq:loc}
@@ -8909,14 +8899,14 @@ son pgcd) le polynome localisateur \`a une constante pr\`es (donc les
 racines et les positions des erreurs), et on peut calculer
 les valeurs des erreurs avec $v$ et $r$ car la constante $C$ se simplifie.
 
-\subsubsection{Avec Xcas}
+\subsection{Avec Xcas}
 %R\'ecup\'erez la session \\
 %\verb|http://www-fourier.ujf-grenoble.fr/~parisse/agreg/reed_s.xws|
 Ouvrir la session \verb|Aide->Exemples->crypto->reed_s|
 
 
 \pagebreak
-\section{Factorisation des entiers et primalit\'e.} \label{sec:ifactor}
+\chapter{Factorisation des entiers et primalit\'e.} \label{sec:ifactor}
 \index{factorisation}
 Les principaux algorithmes utilis\'es dans Xcas sont les suivants~:
 \begin{itemize}
@@ -8999,7 +8989,7 @@ crible(n):={
 \end{giacprog}
 \giacinput{crible(100)}
 
-\subsection{Le test de primalit\'e de Pocklington.}\index{Pocklington} \index{primalit\'e}
+\section{Le test de primalit\'e de Pocklington.}\index{Pocklington} \index{primalit\'e}
 \begin{thm}
 Soit $N>1$ entier. S'il existe deux entiers $a$ et $q$ tels que
 \begin{itemize}
@@ -9046,7 +9036,7 @@ de certifier que les facteurs obtenus sont eux-m\^eme premiers,
 ce qui peut n\'ecessiter une sorte d'appel r\'ecursif du test. C'est
 l'\'etape difficile, la recherche des $a_p$ n'est pas un blocage en pratique.
 
-\subsection{La m\'ethode $\rho$ de Pollard} \index{Pollard}
+\section{La m\'ethode $\rho$ de Pollard} \index{Pollard}
 {\bf Théorème des anniversaires~}: la probabilit\'e que $n$ éléments pris au
 hasard parmi $N$ soient distincts 2 à 2 pour 
 $n=a \sqrt(N))$ et $N\rightarrow \infty$ 
@@ -9099,7 +9089,7 @@ d'o\`u la m\'ethode tire son nom).
 Le calcul nécessite donc $O(\sqrt{p}*\ln(n)^2)$ opérations 
 (ce qui est toujours mieux que la division triviale car $p \leq \sqrt{n}$).
 
-\subsection{Le crible quadratique}\index{crible quadratique}
+\section{Le crible quadratique}\index{crible quadratique}
 \index{quadratique, crible}
 On cherche des relations $x^2=y^2 \pmod N$, en espérant trouver un
 facteur de $N$  en calculant pgcd$(x-y,N)$.
@@ -9132,7 +9122,7 @@ $x^2=y^2 \pmod N$.
 Comme chaque relation a une chance sur 2 de donner un facteur de $N$, 
 on pourra factoriser $N$, sauf malchance vraiment exceptionnelle!
 
-\subsubsection{Recherche de racine carrée modulo p}\index{racine carr\'ee modulaire}
+\subsection{Recherche de racine carrée modulo p}\index{racine carr\'ee modulaire}
 Pour trouver les solutions $x$ de $x^2-N$ divisible par $p$, il
 faut calculer les racines carr\'ees de $N$ modulo $p$. On proc\`ede
 comme suit~:
@@ -9153,7 +9143,7 @@ d'égalité avec $N$, le tout avec des entiers courts (32 bits) ce qui est
 très rapide.
 \end{itemize}
 
-\section{Factorisation des polynômes.} \label{sec:factor}
+\chapter{Factorisation des polynômes.} \label{sec:factor}
 On présente ici quelques algorithmes utilisés pour factoriser un polynôme 
 à coefficients entiers, pour la recherche de racines approch\'ees
 d'un polyn\^ome, cf. la section \ref{sec:proot}.
@@ -9175,7 +9165,7 @@ une méthode analogue à celle permettant de trouver le pgcd de polynômes
 Le pgcd des coefficients d'un polynôme est appelé contenu de ce polynôme.
 Un polynôme est dit primitif si son contenu est égal à 1.
 
-\subsection{Les facteurs multiples}\index{Yun} \index{multiplicit\'e} \index{squarefree}
+\section{Les facteurs multiples}\index{Yun} \index{multiplicit\'e} \index{squarefree}
 \'Etant donné un polynôme $P$ à coefficients entiers, on cherche à 
 écrire~:
 \[ P=\Pi_{k=1}^n P_k^k \]
@@ -9276,7 +9266,7 @@ G:=gcd(W,Y);
 puis $W=1$ et $Y=0$ et le prochain $G$ vaut 1, on a bien trouvé tous
 les facteurs $P_i$.
 
-\subsection{Factorisation en une variable}
+\section{Factorisation en une variable}
 On suppose maintenant qu'on veut factoriser un polynôme $P$ sans facteur
 multiple (et primitif). En général on commence par simplifier $P$ par
 ses facteurs linéaires (détectés avec l'algorithme présenté dans le
@@ -9292,7 +9282,7 @@ Tous les polynômes ayant leurs coefficients dans un corps fini sont
 supposés avoir comme coefficient dominant 1 lorsque le choix
 existe (par exemple les facteurs d'un polynôme modulo $p$).
 
-\subsubsection{Factorisation dans $\mathbb{Z}/p\mathbb{Z}[X]$}
+\subsection{Factorisation dans $\mathbb{Z}/p\mathbb{Z}[X]$}
 On suppose qu'on a un polynôme $P$ à coefficients dans $\mathbb{Z}/p\mathbb{Z}$ sans
 facteur multiple. Il s'agit de factoriser $P$ dans $\mathbb{Z}/p\mathbb{Z}[X]$.
 Il existe essentiellement deux stratégies, l'une commence par factoriser par
@@ -9315,7 +9305,7 @@ Pour mettre en oeuvre ces algorithmes, on commence par déterminer la matrice
 de l'endomorphisme $\varphi: x \mapsto x^p$ dans $\mathbb{Z}/p\mathbb{Z}[X] \pmod {P(X)}$
 muni de sa base canonique $\{ 1, X,...,X^{\mbox{deg}(P)-1} \}$.
 
-\subsubsection{Distinct degree factorization} \index{ddf (distinct
+\subsection{Distinct degree factorization} \index{ddf (distinct
   degree factorization)}
 Cette méthode consiste à détecter les groupes de facteurs
 ayant un degré donné (distinct degree factorization). Si nécessaire, 
@@ -9424,7 +9414,7 @@ de factorisation effectuent la factorisation en degré distinct
 modulo plusieurs entiers (ce qui peut de plus être parallélisé)
 et choisissent le meilleur.
 
-\subsubsection{La méthode de Cantor-Zassenhaus}
+\subsection{La méthode de Cantor-Zassenhaus}
 \index{Cantor-Zassenhaus}
 Cet algorithme sert à casser des groupes de facteurs de même degré,
 c'est une méthode probabiliste. On suppose donc qu'on a un produit $P$
@@ -9512,7 +9502,7 @@ qui vaut $x^3+x+1 \pmod 5$, on a donc cassé $P$ en deux.
 En prenant $T:=x^4-x^3+x+2$, on trouve $T^{62}=1 \pmod P$, donc
 ce $T$ n'aurait pas permis de casser $P$.
 
-\subsubsection{La méthode de Berlekamp}\index{Berlekamp}
+\subsection{La méthode de Berlekamp}\index{Berlekamp}
 Cette méthode permet de factoriser un polynôme sans facteurs multiples,
 elle peut aussi servir à casser des groupes de facteurs de même degré.
 Ici on travaille dans l'anneau des polynômes à coefficients dans $\mathbb{Z}/p\mathbb{Z}$
@@ -9581,7 +9571,7 @@ vecteur de la base du noyau. On obtient pour $s=0$ un pcgd non trivial
 essayé d'autres valeurs de $s$, pour $s=1$ on obtient comme pgcd 1, pour
 $s=2$ on trouve le 2ème facteur $x^3+2x^2-x+2$.
 
-\subsubsection{Remontée (Hensel)} \index{Hensel}
+\subsection{Remontée (Hensel)} \index{Hensel}
 Il s'agit de passer d'une factorisation de $P$ dans $\mathbb{Z}/p\mathbb{Z}[X]$ à une
 factorisation de $P$ dans $\mathbb{Z}/p^k Z[X]$, la méthode est analogue à celle
 de l'algorithme EZGCD de calcul de pgcd de polynômes.
@@ -9748,7 +9738,7 @@ puisque le degré est 4 et la norme euclidienne du polynôme est $\sqrt{3}$.
 Il suffit alors de remonter dans $\mathbb{Z}/125 \mathbb{Z}$ au lieu de $\mathbb{Z}/625 \mathbb{Z}$
 (on gagne ainsi une itération).
 
-\subsubsection{Combinaison de facteurs}
+\subsection{Combinaison de facteurs}
 Lorsqu'on a les facteurs de $P$ dans $\mathbb{Z}/p^k\mathbb{Z}[X]$ avec $p^k$ plus grand
 que le produit du coefficient dominant de $P$ multiplié par la borne
 de Landau-Mignotte sur les coefficients de $P$, on commence par
@@ -9827,7 +9817,7 @@ séparément, sans succès. On les multiplie alors modulo 125,
 ce qui donne $x^4-x+1$ en représentation symétrique qui est bien
 un facteur de $P$ (donc un facteur irréductible).
 
-\subsection{Factorisation à plusieurs variables}
+\section{Factorisation à plusieurs variables}
 Comme pour le PGCD en plusieurs variables, on se ramène d'abord en
 une variable, en général on évalue toutes les variables sauf celle
 correspondant au degré partiel le plus faible. On factorise ensuite
@@ -9971,7 +9961,7 @@ irréductible à la liste $L$, et diviser $P$ par ce facteur.
 $\sqrt{2}z$.
 \end{itemize}
 
-\subsection{Preuve de l'identité de Bézout généralisée}
+\section{Preuve de l'identité de Bézout généralisée}
 Elle se fait par récurrence. Pour $n=2$, c'est l'identité de Bézout usuelle. 
 Pour passer
 du rang $n-1$ au rang $n$, on isole $P_n$ dans l'identité à résoudre~:
@@ -9987,7 +9977,7 @@ Il reste à résoudre
 \[ \sum_{j=1}^{n-1} Q_j \Pi_{1 \leq k \leq n-1,k\neq j} P_k=R_n \pmod p\]
 ce que l'on peut faire par hypothèse de récurrence.
 
-\subsection{Algorithme de Bézout généralisé}\index{B\'ezout g\'en\'eralis\'e}
+\section{Algorithme de Bézout généralisé}\index{B\'ezout g\'en\'eralis\'e}
 Arguments: une liste $P_1,...,P_n$ de polynômes premiers entre eux 2 à 2  
 et un polynôme $Q$ à coefficients dans $\mathbb{Z}/p\mathbb{Z}$\\
 Valeur renvoyée: la liste de polynômes $Q_1,...,Q_n$ tels que
@@ -10010,7 +10000,7 @@ remplacer les $Q_i$ par le reste euclidien de $Q_i$ par $P_i$ sans
 changer l'égalité.
 
 
-\subsection{Factorisation rationnelle et sur une extension}
+\section{Factorisation rationnelle et sur une extension}
 \label{sec:factorisation_extension}
 \index{factorisation alg\'ebrique} \index{extension alg\'ebrique}\index{alg\'ebrique, extension} 
 Pour factoriser des polynômes ayant des coefficients dans des
@@ -10103,7 +10093,7 @@ variables. En cas d'\'echec, l'algorithme de Trager est utilis\'e,
 ce qui est en g\'en\'eral beaucoup plus lent (\`a commencer par le
 calcul de la ``norme'' du polyn\^ome \`a factoriser par un r\'esultant).
 
-\subsection{Factorisation absolue}\index{factorisation absolue} \label{sec:factorisation_absolue}
+\section{Factorisation absolue}\index{factorisation absolue} \label{sec:factorisation_absolue}
 On peut aussi se demander pour un polyn\^ome \`a coefficients
 rationnels (squarefree) quelle extension\index{extension
   alg\'ebrique}\index{alg\'ebrique, extension} 
@@ -10138,7 +10128,7 @@ obtient que la seule extension possible est $\sqrt{2}$.
 
 Voir aussi la session \verb|afactor.xws| du menu Exemple, poly de Xcas.
 
-\subsection{Compl\'ements}
+\section{Compl\'ements}
 Pour factoriser sur des corps finis, on peut consulter la thèse
 de Bernardin disponible sur le web (\verb|http://www.bernardin.lu|).
 
@@ -10172,7 +10162,7 @@ sym(P,X):={ // P polynome symetrique, X liste des variables
   Q:=normal(subst(P,xs=0)); // Q est symetrique en X[0..s-2]
   V:=sym(Q,X[0..s-2]); // appel recursif
   S:=pcoeff(X[0..s-1]); // polynomes symetriques en les X
-  pour k de 0 jusque size(S)-1 faire S[k]=(-1)^k*S[k]; fpour;
+  pour k de 0 jusque size(S)-1 faire S[k]:=(-1)^k*S[k]; fpour;
   q,r:=quorem((P-subst(V,X[0..s-2],S[1..s-1])),S[s],xs); // reste nul
   si r!=0 alors throw("non symetrique"); fsi;
   W:=sym(q,X);
@@ -10193,7 +10183,7 @@ on v\'erifie
 
 \pagebreak
 
-\subsection{Exercices (factorisation des polynômes)}
+\section{Exercices (factorisation des polynômes)}
 \begin{enumerate}
 \item Déterminer le nombre de racines de $-x^7+x^4+12x-5$ comprises
 entre 0 et 6 (en utilisant les suites de Sturm, on donnera les
@@ -10278,8 +10268,8 @@ lorsqu'on est proche du facteur.
 
 \pagebreak
 
-\section{Int\'egration formelle.}\label{sec:intg}\index{Risch} \index{int\'egration}
-\subsection{Introduction}
+\chapter{Int\'egration formelle.}\label{sec:intg}\index{Risch} \index{int\'egration}
+\section{Introduction}
 Que peut-on espérer d'un système de calcul formel lorsqu'il s'agit
 de calculer une primitive? Tout d'abord, on peut espérer qu'il
 sache résoudre ce que l'on donne en exercice à nos étudiants!
@@ -10329,9 +10319,9 @@ plus g\'en\'erales (incluant en particulier les fonctions
 tangente, arctangente), la r\'ef\'erence est le livre de Bronstein 
 donnée en section \ref{sec:rischref}.
 
-\subsection{Fonctions élémentaires} \label{sec:elem}
+\section{Fonctions élémentaires} \label{sec:elem}
 
-\subsubsection{Extensions transcendantes, tour de variables}
+\subsection{Extensions transcendantes, tour de variables}
 On se donne une expression $f(x)$ dépendant de la variable $x$ que l'on 
 souhaite intégrer par rapport à $x$. L'algorithme de Risch s'applique à
 cette expression si on peut l'écrire comme une fraction rationnelle à
@@ -10400,7 +10390,7 @@ e^{3 \ln(x)+\ln(x)^2+5} & \rightarrow & x^3 e^{\ln(x)^2+5}
 \end{eqnarray*}
 
 
-\subsubsection{Théorème de structure de Risch}
+\subsection{Théorème de structure de Risch}
 On voit donc qu'il est nécessaire de disposer d'un algorithme
 pour décider si des exponentielles et logarithmes sont
 algébriquement indépendants. Cet algorithme est basé sur
@@ -10625,7 +10615,7 @@ des exponentielles et logarithmes complexes dans une expression
 réelle, on peut autoriser
 par exemple des extensions en tangente ou en arctangente.
 
-\subsubsection{Théorème de Liouville}\index{Liouville}
+\subsection{Théorème de Liouville}\index{Liouville}
 On a vu que la d\'eriv\'ee d'une fonction élémentaire dépendant 
 d'une tour de variables est une fonction élémentaire dépendant 
 de la même tour de variables.
@@ -10747,7 +10737,7 @@ de la partie polynomiale (éventuellement généralisée) et de la
 partie fractionnaire ne font en effet intervenir que des coefficients
 dans le corps $K$.
 
-\subsection{L'algorithme de Risch} \label{sec:risch}
+\section{L'algorithme de Risch} \label{sec:risch}
 On suppose dans la suite qu'on s'est ramené à une fraction rationnelle
 par rapport à une tour de variables (où on a effectué les simplifications
 évidentes $\ln \circ \exp$, ainsi que $\exp \circ \ln$, dans le
@@ -10811,8 +10801,8 @@ est $-x^2/(x+X)$
 la partie polynôme généralisé est $xX^{-1}$
 \end{itemize}
 
-\subsubsection{Intégration d'une fraction propre}\index{Hermite, r\'eduction de}
-\subsubsection{Réduction sans facteurs multiples}
+\subsection{Intégration d'une fraction propre}\index{Hermite, r\'eduction de}
+\subsection{Réduction sans facteurs multiples}
 On factorise $D$ en $\prod_i P_i^i$ avec $P_i$ sans facteurs multiples 
 (et les $P_i$ premiers entre eux 2 \`a 2) et on décompose
 en éléments simples relativement à cette factorisation (en appliquant
@@ -10839,7 +10829,7 @@ $B_2=-2x$~:
 - \frac{2}{P_2}\]
 il reste donc à intégrer $(2x-2)/(e^x+1)$.
 
-\subsubsection{La partie logarithmique}
+\subsection{La partie logarithmique}
 Comme on l'a vu lors de la preuve du théorème de structure de Risch,
 si on dérive une fraction en $X$, le dénominateur de la dérivée ne
 peut se décomposer qu'en produit de facteurs de multiplicité supérieure
@@ -10904,7 +10894,7 @@ calcul\'ee comme ci-dessus contiendra en g\'en\'eral
 une partie enti\`ere constante par rapport \`a $X$, il faut
 donc retirer cette partie enti\`ere \`a la partie polynomiale.
 
-\subsubsection{La partie polynomiale (généralisée)}
+\subsection{La partie polynomiale (généralisée)}
 On doit résoudre~:
 \[ (\sum_j A_j X^j)'=\sum_j a_j X^j \]
 avec une somme sur $j \in\mathbb{Z}$ si $X$ est une exponentielle et
@@ -10913,7 +10903,7 @@ $j\in \mathbb{N}$ sinon.
 Si $X=x$, $j\geq 0$ et la résolution est immédiate: on prend $A_0=0$ et 
 $A_{j+1}=a_{j}/(j+1)$.
 
-\subsubsection{Extension logarithmique}
+\subsection{Extension logarithmique}
 Si $X=\ln(Y)$ est un logarithme, $j \geq 0$ et on doit résoudre~:
 \[ \sum_{j\geq 0} (A_j'+(j+1)A_{j+1} \frac{Y'}{Y}) X^j = \sum_j a_j X^j \]
 Soit $k$ la plus grande puissance non nulle de $f$ ($a_j=0$ 
@@ -10956,7 +10946,7 @@ Remarque: si on avait voulu intégrer $X$ au lieu de $X^2$, la même
 méthode montre que la primitive existe, car au rang 0 il n'y
 a plus de contraintes sur les $\ln$ qu'on peut rajouter.
 
-\subsubsection{Extension exponentielle}
+\subsection{Extension exponentielle}
 Si $X=\exp(Y)$ est une exponentielle, on doit résoudre~:
 \[ \sum_{j} (A_j'+j Y'A_{j}) X^j = \sum_j a_j X^j \]
 Ceci va se faire degré par degré~:
@@ -11216,9 +11206,9 @@ l'algorithme SPDE de Rothstein pour réduire le degré, ou ici conclure
 à la main, $x$ divise $nA_1$ donc $A_1=Cx$ qu'on remplace et $C=1/(n+1)$.
 Finalement, $A_1=x/(n+1)$ et $\int x^n=x/(n+1) \* x^n$.
 
-%\section{Cas des extensions plus générales}
+%\chapter{Cas des extensions plus générales}
 
-\subsection{Quelques références} \label{sec:rischref}
+\section{Quelques références} \label{sec:rischref}
 \begin{itemize}
 \item M. Bronstein:\\
 Symbolic Integration I, Transcendental functions, Springer
@@ -11245,7 +11235,7 @@ PHD thesis MIT, 1984
 
 \end{itemize}
 
-\section{Intégration numérique} \label{sec:intnum}% équations différentielles(?)
+\chapter{Intégration numérique} \label{sec:intnum}% équations différentielles(?)
 \index{integration} \index{quadrature}
 Les fractions rationnelles admettent une primitive que l'on calcule
 en décomposant la fraction avec Bézout comme expliqué précédemment.
@@ -11260,7 +11250,7 @@ en subdivisions $[a,b]=[a,a+h] + [a+h,a+2h]+...[a+(n-1)h,a+nh=b$, où
 $h=(b-a)/n$ est le pas de la subdivision, et
 sur chaque subdivision, on approche l'aire sous la courbe.
 
-\subsection{Les rectangles et les trapèzes}
+\section{Les rectangles et les trapèzes}
 Sur une subdivision $[\alpha,\beta]$, on approche la fonction par un segment.
 Pour les rectangles, il s'agit d'une horizontale~: on peut prendre 
 $f(\alpha)$, $f(\beta)$ (rectangle à droite et gauche)
@@ -11369,7 +11359,7 @@ $k$ est grand, plus $M_k$ est grand en général). Nous allons voir dans la suit
 comment se comporte cette puissance de $h$ en fonction de la facon
 dont on approche $f$.
 
-\subsection{Ordre d'une méthode} \index{ordre}
+\section{Ordre d'une méthode} \index{ordre}
 On appelle méthode d'intégration l'écriture d'une approximation
 de l'intégrale sur une subdivision sous la forme
 \[ \int_{\alpha}^{\beta} f(t) dt \approx I(f)=\sum_{j=1}^k w_j f(x_j) \]
@@ -11486,7 +11476,7 @@ $$ |\int_{\alpha}^{\beta} f-I(f)|
 \leq \int_{\alpha}^{\beta} |N(x)| |f^{[n+1]}(x)| \ dx
 \leq M_{n+1} \int_{\alpha}^{\beta} |N(x)| \ dx$$
 
-\subsection{Simpson} \index{Simpson}
+\section{Simpson} \index{Simpson}
 Il s'agit de la m\'ethode obtenue en approchant la fonction
 sur la subdivision $[\alpha,\beta]$ par son polynome de Lagrange
 aux points $\alpha,(\alpha+\beta)/2,\beta$. On calcule l'int\'egrale
@@ -11575,7 +11565,7 @@ de Simpson est meilleur, on l'utilise donc plutot que les
 m\'ethodes pr\'ec\'edentes sauf si $f$ n'a pas la r\'egularit\'e
 suffisante (ou si $M_4$ est trop grand).
 
- \subsection{Newton-Cotes} \index{Newton-Cotes}
+ \section{Newton-Cotes} \index{Newton-Cotes}
 On peut g\'en\'eraliser l'id\'ee pr\'ec\'edente, d\'ecouper la subdivision 
 $[\alpha,\beta]$ en $n$ parts \'egales et utiliser le polynôme d'interpolation
 en ces $n+1$ points $x_0=\alpha, x_1, ..., x_n=\beta$. 
@@ -11626,7 +11616,7 @@ de $h$). De plus, on peut être amen\'e à faire varier le pas $h$
 en fonction de la plus ou moins grande r\'egularit\'e de la fonction.
 
 
-\subsection{Calcul des poids $w_i$} \label{sec:poids}
+\section{Calcul des poids $w_i$} \label{sec:poids}
 Si la m\'ethode d'int\'egration consiste \`a interpoler 
 $f$ en $n$ points $x_0,...,x_n$, alors la m\'ethode est exacte pour
 tout polyn\^ome de degr\'e $n$. Si on prend 
@@ -11642,7 +11632,7 @@ membre a pour $j$-i\`eme composante $\int_\alpha^\beta x^j \ dx$.
 \giacinputbigmath{inv(tran(vandermonde(0,1/2,1)))*[1,1/2,1/3]}
 
 
-\subsection{En r\'esum\'e}
+\section{En r\'esum\'e}
 Int\'egration sur $[a,b]$, $h$ pas d'une subdivision, $M_k$ majorant
 de la d\'eriv\'ee $k$-i\`eme de la fonction sur $[a,b]$\\
 \begin{tabular}{|c|c|c|c|c|} \hline 
@@ -11653,7 +11643,7 @@ trap\`ezes & (\(\ref{eq:trapezes}\)) & 1 & 1 & $M_2 h^2 (b-a)/12$ \\
 Simpson & (\(\ref{eq:simpson}\))& 2 & 3 & $M_4 h^4 (b-a)/2880$  \\ \hline
 \end{tabular}
 
-\subsection{Accélération de Richardson-Romberg}
+\section{Accélération de Richardson-Romberg}
 \index{Romberg}\index{Richardson-Romberg}
 \begin{prop}
 Soit $g$ une fonction de classe $C^{2k}$ sur $[a,b]$, 
@@ -11748,7 +11738,7 @@ entre les derniers termes de deux lignes consécutives est inférieur
 à la précision souhaitée (erreur empirique).
 
 
-\subsection{Cas des fonctions p\'eriodiques.}
+\section{Cas des fonctions p\'eriodiques.}
 Si $f$ est une fonction p\'eriodique r\'eguli\`ere ($C^\infty$),
 alors la m\'ethode des trap\`ezes sur une p\'eriode est d'ordre 
 arbitrairement grand. En effet, pour une s\'erie de Fourier tronqu\'ee
@@ -11790,9 +11780,9 @@ fonction p\'eriodique plus compliqu\'ee ou pour une fonction
 p\'eriodique dont on ne connait qu'un \'echantillonage r\'egulier
 (par exemple un fichier num\'erique audio).
 
-\subsection{Quadratures gaussiennes.}
+\section{Quadratures gaussiennes.}
 \index{gaussienne, quadrature}\index{quadrature gaussienne}
-\subsubsection{Description}
+\subsection{Description}
 On a vu que l'interpolation polynomiale \'etait de meilleure
 qualit\'e en prenant les points de Tchebyshev plutot que
 des points \'equidistants, il est donc naturel de calculer
@@ -11825,7 +11815,7 @@ Exemple~:
 \giacinputbigmath{f(x):=ln(1+x^2); int(f(x),x,-1.0,1.0);}\\
 \giacinputbigmath{p:=interp(l,f); int(p,x,-1.0,1.0)}
 
-\subsubsection{Calcul des poids}
+\subsection{Calcul des poids}
 On peut calculer les poids en appliquant
 la section \ref{sec:poids}. On peut ainsi montrer
 que les poids sont positifs en appliquant la formule
@@ -11865,7 +11855,7 @@ $$w_i P'_n(x_i)=
 On conclut en utilisant la valeur de $a_{n-1}=(2n-1)/n$ et de
 $\| P_{n-1}\|^2=2/(2(n-1)+1)$.
 
-\subsubsection{Erreur d'une quadrature gaussienne}
+\subsection{Erreur d'une quadrature gaussienne}
 On consid\`ere une quadrature gaussienne d'ordre $2n+1$ obtenue
 par interpolation aux $n+1$ racines du $n+1$-i\`eme polynome de
 Legendre sur $[-1,1]$.
@@ -11917,7 +11907,7 @@ de $L_2=x^2-1/3$ et l'erreur d'interpolation
 est major\'ee par $M_4/24\int_{-1}^1(x^2-1/3) \ dx=M_4/24 \times 8/45=M_4/135$.
 
 
-\subsection{M\'ethode adaptative.}
+\section{M\'ethode adaptative.}
 On calcule une valeur approch\'ee de l'int\'egrale sur $[a,b]$ par
 deux quadratures gaussiennes emboit\'ees, on estime l'erreur,
 si elle est sup\'erieure \`a la tol\'erance on divise en 2. On
@@ -11941,7 +11931,7 @@ $$ \epsilon_1=| I_{30}-I_{14}|,  \epsilon_2=| I_{30}-I_{6}|;
 On observe en effet que $\epsilon$ est en $h^{30}$, comme
 l'ordre de la m\'ethode.
 
-\subsection{M\'ethodes probabilistes.} \index{Monte-Carlo}
+\section{M\'ethodes probabilistes.} \index{Monte-Carlo}
 Pour d\'eterminer $\int_a^b f(t) \ dt $, on l'interpr\`ete comme
 une esp\'erance, plus pr\'ecis\'ement comme $(b-a)E(f(X))$ 
 o\`u $X$ est une variable al\'eatoire
@@ -11991,7 +11981,7 @@ g\'en\'erateur uniforme
 dans un domaine inclus dans un cube).
 
 
-\section{Suites récurrentes et applications} \label{sec:rec}
+\chapter{Suites récurrentes et applications} \label{sec:rec}
 \index{r\'ecurrence}\index{suite}
 Cette section comporte une première petite partie sur le calcul
 de l'expression exacte de suites récurrences (linéaires), puis
@@ -11999,13 +11989,13 @@ une deuxième partie sur l'intérêt du calcul approché de limites
 de suites récurrentes (dont on ne sait en général pas déterminer l'expression
 générale).
 
-\subsection{Calcul de l'expression des suites récurrentes.}
+\section{Calcul de l'expression des suites récurrentes.}
 Le problème général est l'analogue discret de la recherche de solutions
 d'équations différentielles. On ne sait en général pas le résoudre, sauf
 pour certaines classes de suites, en particulier celles qui suivent
 une récurrence affine.
 
-\subsubsection{Récurrence affine}\index{affine, r\'ecurrence}
+\subsection{Récurrence affine}\index{affine, r\'ecurrence}
 \index{lin\'eaire, r\'ecurrence}
 On peut toujours se ramener au cas d'une suite vectorielle dans $\mathbb{R}^d$
 vérifiant un récurrence à un cran~:
@@ -12060,7 +12050,7 @@ $c(Q(n+1)-Q(n))=$polynôme connu, équation
 que l'on peut résoudre efficacement avec
 la base de Newton (voir section ci-dessous).
 
-\subsubsection{Utilisation de la base de Newton si $A=I_d$ et $c=1$}
+\subsection{Utilisation de la base de Newton si $A=I_d$ et $c=1$}
 \index{Newton, base de}
 Plutôt que d'exprimer les polynômes dans la base canonique, il est
 intéressant d'utiliser la base $1,n,n(n-1),n(n-1)(n-2),...,n(n-1)...(n-p+1)$.
@@ -12070,7 +12060,7 @@ donc $Q_{k+1}=P_{k}/(k+1)$. Le calcul des coefficients $P_k$ s'effectue
 efficacement par l'algorithme des différences divisées à partir
 du polynôme $P$ et de sa valeur en 0,1,2,...,degré$(P)$.
 
-\subsection{Le point fixe dans $\mathbb{R}$}\index{fixe, point} 
+\section{Le point fixe dans $\mathbb{R}$}\index{fixe, point} 
 Soit $f$ une fonction continue sur un intervalle $I=[a,b]$ de $\mathbb{R}$, et 
 à valeurs dans $I$ (attention à bien choisir $I$ pour que l'image
 de $I$ par $f$ reste dans $I$).
@@ -12233,7 +12223,7 @@ constante de contractance est suffisamment petite (par exemple $k=0.1$
 garantit 15 d\'ecimales en 15 it\'erations) et pr\'esente l'avantage
 de se g\'en\'eraliser en dimension plus grande, cf. la section suivante.
 
-\subsection{Le point fixe dans $\mathbb{R}^n$}
+\section{Le point fixe dans $\mathbb{R}^n$}
 Le th\'eor\`eme pr\'ec\'edent se g\'en\'eralise. 
 \begin{thm}
 Soit $I$ un ensemble
@@ -12277,7 +12267,7 @@ constant et du produit du vecteur $x$ par une matrice $A$ transpos\'ee
 d'une matrice stochastique.
 \end{itemize}
 
-\subsection{La méthode de Newton dans $\mathbb{R}$.}
+\section{La méthode de Newton dans $\mathbb{R}$.}
 La méthode de Newton est une méthode de résolution de l'équation
 $f(x)=0$, attention à la différence avec le théorème du point fixe
 qui permet de résoudre numériquement $f(x)=x$.
@@ -12466,7 +12456,7 @@ on peut donc choisir comme test d'arr\^et
 Par exemple pour $\sqrt{2}$, le test d'arr\^et serait 
 $u_n^2-2 \leq 2 \varepsilon$.
 
-\subsection{La m\'ethode de Newton dans $\mathbb{R}^n$.}
+\section{La m\'ethode de Newton dans $\mathbb{R}^n$.}
 Le premier \'enonc\'e du cas de la dimension 1 se g\'en\'eralise en~:
 \begin{thm} \index{Newton}
 Soit $f$ une fonction de classe $C^2$ (2 fois continument d\'erivable)
@@ -12512,7 +12502,7 @@ par l'application $x\rightarrow x-f'(x)^{-1} f(x)$.
 %% en précision double ou illimitée. Exemple de cas où Newton marche
 %% et ne marche pas, utilisation du préfacteur.
 
-\subsection{Calcul approch\'e des racines complexes simples} 
+\section{Calcul approch\'e des racines complexes simples} 
 \index{factorisation} \index{racine} \label{sec:proot}
 La section pr\'ec\'edente nous a montr\'e qu'on pouvait
 se ramener \`a la recherche de racines simples, ce qui 
@@ -12610,7 +12600,7 @@ On peut am\'eliorer la pr\'ecision d'une racine
 par des it\'erations inverses ou par la m\'ethode de Newton en une
 variable.
 
-\subsection{M\'ethodes de gradient (sans contrainte)}
+\section{M\'ethodes de gradient (sans contrainte)}
 Il s'agit ici de minimiser une fonction $f$ d'un ouvert $U$ de $\mathbb{R}^n$ 
 \`a valeurs dans $\mathbb{R}$. Lorsque la fonction $f$ est
 suffisamment r\'eguli\`ere sur $U$, une condition n\'ecessaire
@@ -12726,15 +12716,15 @@ Cette dichotomie est couteuse car ex\'ecut\'ee \`a chaque it\'eration
 de la descente, on peut l'acc\'el\'erer en interpolant $f(v+sw)$ (par
 exemple par un polyn\^ome de Lagrange/Hermite de degr\'e 3 en 0,0,$s$, $s$).
 
-\section{Alg\`ebre lin\'eaire} \label{sec:linalg}
+\chapter{Alg\`ebre lin\'eaire} \label{sec:linalg}
 On présente ici des algorithmes autour de la résolution exacte
 et approch\'ee de systèmes (réduction des matrices sous forme échelonnée) 
 et la recherche de valeurs propres et de vecteurs propres 
 (diagonalisation et jordanisation des matrices).
 
-\subsection{R\'esolution de syst\`emes, calcul de d\'eterminant.}
+\section{R\'esolution de syst\`emes, calcul de d\'eterminant.}
 
-\subsubsection{La m\'ethode du pivot de Gau\ss.}\index{pivot} \index{Gau\ss}
+\subsection{La m\'ethode du pivot de Gau\ss.}\index{pivot} \index{Gau\ss}
 \begin{itemize}
 \item Le pivot~: on détermine à partir d'une ligne $i$ 
 la ligne $j$ où apparait le premier coefficient non nul $p$ dans
@@ -12808,7 +12798,7 @@ factor(M[2,2]);
 \end{verbatim}
 Ce qui met bien en évidence le facteur $A$ dans $M_{3,3}$.
 
-\subsubsection{Le d\'eterminant.}\index{d\'eterminant}
+\subsection{Le d\'eterminant.}\index{d\'eterminant}
 On peut bien sûr appliquer les m\'ethodes ci-dessus en tenant compte
 des pivots utilisés et du produit des coefficients diagonaux. Dans le cas de 
 la méthode de Bareiss, si on effectue la réduction sous-diagonale
@@ -12919,7 +12909,7 @@ le test O1 de Lewis-Wester\\
 \verb|http://www.bway.net/~lewis/calatex.html|\\
 il s'agit de calculer un d\'eterminant de taille 15 avec 18 param\`etres.
 
-\subsubsection{Syst\`emes lin\'eaires}\index{p-adique (syst\`eme lin\'eaire)}
+\subsection{Syst\`emes lin\'eaires}\index{p-adique (syst\`eme lin\'eaire)}
 On peut appliquer la m\'ethode du pivot de Gau\ss\ ou les r\`egles
 de Cramer (matrices creuses avec beaucoup de param\`etres par exemple). 
 
@@ -12950,7 +12940,7 @@ de $y_k$ dans le produit $Cy_k$),
 donc pour pouvoir reconstruire $x$, il faut prendre $k$ de l'ordre
 de $n\ln(n)$, ce qui n\'ecessite finalement $O(n^3\ln(n)^2)$ op\'erations.
 
-\subsubsection{B\'ezout et les $p$-adiques.}
+\subsection{B\'ezout et les $p$-adiques.}
 Soit $n$ et $a/b$ une fraction irr\'eductible d'entiers tels que 
 $b$ est premier avec $n$ et $|a| < \sqrt{n}/2$ et $ 0 \leq b \leq \sqrt{n}/2$.
 Il s'agit de reconstruire $a$ et $b$ connaissant 
@@ -13043,7 +13033,7 @@ end_proc;
 \end{verbatim}
 
 
-\subsubsection{Base du noyau}\index{noyau}
+\subsection{Base du noyau}\index{noyau}
 On pr\'esente ici deux m\'ethodes, la premi\`ere se g\'en\'eralise
 au cas des syst\`emes \`a coefficients entiers, la deuxi\`eme
 utilise un peu moins de m\'emoire (elle travaille sur une matrice 2 fois
@@ -13092,9 +13082,9 @@ que tous les vecteurs de ce type forment une famille libre de
 la bonne taille, c'est donc bien une base du noyau.
 
 
-\subsection{Alg\`ebre lin\'eaire sur $\mathbb{Z}$}
+\section{Alg\`ebre lin\'eaire sur $\mathbb{Z}$}
 
-\subsubsection{Calcul du d\'eterminant d'une matrice \`a coefficient entiers}
+\subsection{Calcul du d\'eterminant d'une matrice \`a coefficient entiers}
 L'algorithme $p$-adique de r\'esolution de syst\`emes
 lin\'eaires peut servir \`a acc\'el\'erer le calcul du
 d\'eterminant d'une matrice \`a coefficients entiers de grande taille.
@@ -13120,7 +13110,7 @@ alors pas certifi\'e, c'est ce qui se passe dans Xcas si
 ou utiliser des m\'ethodes
 d'inversion ou de r\'eduction de type Strassen.
 
-\subsubsection{R\'eduction de Hermite et Smith}\index{Hermite (forme
+\subsection{R\'eduction de Hermite et Smith}\index{Hermite (forme
   de)} \index{Smith (forme de)}
 Lorsque $M$ est une matrice \`a coefficients entiers, 
 on ne peut plus faire l'algorithme du pivot de Gauss ou de
@@ -13266,7 +13256,7 @@ v\'erifient donc $b_1 n_1=0, b_2n_2=0, b_1=1, b_2=15$, le module est donc
 isomorphe \`a  $\mathbb{Z}/1 \times \mathbb{Z}/15 \times \mathbb{Z}$ soit encore $\mathbb{Z}/15\mathbb{Z}
 \times \mathbb{Z}$.
 
-\subsubsection{L'algorithme LLL.} \index{LLL}
+\subsection{L'algorithme LLL.} \index{LLL}
 Il s'agit d'une m\'ethode permettant d'obtenir rapidement
 une base courte d'un r\'eseau. Ce n'est pas la base la plus courte
 possible mais un compromis temps d'ex\'ecution rapide/base
@@ -13318,8 +13308,8 @@ encadrements rigoureux pour d\'eterminer la pr\'ecision \`a utiliser
 pour les racines pour prouver l'irr\'eductibilit\'e de $P$ si $A$ ne
 contient pas de vecteur court contenant uniquement des 1 et 0.
 
-\subsection{Le pivot de Gauss num\'erique.}
-\subsubsection{Efficacité de l'algorithme}
+\section{Le pivot de Gauss num\'erique.}
+\subsection{Efficacité de l'algorithme}
 Si la matrice possède $L$ lignes et $C$ colonnes,
 le nombre maximal d'opérations pour réduire une ligne est 
 $C$ op\'erations (une op\'eration=1 multiplication + 1 soustraction, 
@@ -13338,7 +13328,7 @@ toujours pour une matrice carr\'ee, le nombre d'op\'erations
 devient $n^3/3$ ($\sum_{k=2}^n k^2$). On peut ensuite r\'eduire au-dessus
 de la diagonale.
 
-\subsubsection{Erreurs d'arrondis du pivot de Gauss} \index{erreur}
+\subsection{Erreurs d'arrondis du pivot de Gauss} \index{erreur}
 \index{pivot partiel}
 Comme $|a_{jc}| \leq |a_{lc}|$, une étape de réduction multiplie
 au plus l'erreur absolue des coefficients par 2. Donc la
@@ -13392,7 +13382,7 @@ la plus grande sur la valeur propre la plus petite), plus
 ce nombre est grand, plus la solution variera (donc plus on
 perd en précision).
 
-\subsection{La méthode de factorisation $LU$} \index{LU}
+\section{La méthode de factorisation $LU$} \index{LU}
 \index{factorisation LU}
 Dans sa forme la plus simple, elle permet d'écrire
 une matrice $A$ comme produit de deux matrices triangulaire
@@ -13402,7 +13392,7 @@ Pour tenir compte d'\'el\'ements diagonaux nuls et pour optimiser
 les erreurs d'arrondi, il est n\'ecessaire d'effectuer des
 permutations sur les lignes de la matrice.
 
-\subsubsection{Interpr\'etation matricielle du pivot de Gauss}
+\subsection{Interpr\'etation matricielle du pivot de Gauss}
 On notera $l$ et $c$ le nombre de lignes et colonnes de $A$ (pour
 \'eviter la confusion avec le facteur $L$) et on
 supposera $A$ non singuli\`ere pour simplifier l'exposition.
@@ -13455,7 +13445,7 @@ $l-1$! On peut l'obtenir en faisant
 une r\'eduction sous-diagonale de la matrice bloc obtenue en collant
 $A$ avec la matrice identit\'e ayant $l$ lignes.
 
-\subsubsection{Factorisation $PA=LU$}
+\subsection{Factorisation $PA=LU$}
 Si on veut mettre en oeuvre la strat\'egie du pivot partiel (ou en
 calcul exact si un coefficient diagonal est nul), il est n\'ecessaire
 d'intervertir une ligne de la matrice partiellement r\'eduite
@@ -13476,7 +13466,7 @@ alors d\'eduire le rang de $U$ du nombre de lignes non nulles).
 On peut aussi effectuer un \'echange de colonnes (ce qui revient
 \`a multiplier \`a droite par une matrice de permutation).
 
-\subsubsection{Applications de la d\'ecomposition $LU$}
+\subsection{Applications de la d\'ecomposition $LU$}
 On peut r\'esoudre des syst\`emes lin\'eaires par la factorisation
 $LU$. En effet soit \`a r\'esoudre $Ax=b$. On effectue la permutation
 de lignes sur $A$ et $b$ (correspondant \`a la matrice de permutation
@@ -13534,7 +13524,7 @@ To store the solution in place, we first compute all the x_{n-1}
 put them in the last line of m, then all the x_{n-2}, etc.
 \end{verbatim}
 
-\subsection{La factorisation de Cholesky} \index{Cholesky}
+\section{La factorisation de Cholesky} \index{Cholesky}
 \index{factorisation de Cholesky}
 Dans le cas o\`u la matrice est r\'eelle sym\'etrique d\'efinie
 positive (ou plus g\'en\'eralement hermitienne), 
@@ -13610,7 +13600,7 @@ factorisation $LU$.
 La commande Xcas correspondante est \verb|cholesky| et renvoie
 la matrice $L$.
 
-\subsection{Conditionnement} \index{conditionnement} \index{nombre de condition}
+\section{Conditionnement} \index{conditionnement} \index{nombre de condition}
 Le conditionnement mesure la sensibilit\'e de la solution renvoy\'ee d'un
 syst\`eme lin\'eaire aux donn\'ees du probl\`eme.
 
@@ -13702,8 +13692,8 @@ $$ \frac{\| \Delta x \|}{\|x\|} \leq \kappa(A)
 
 
 
-\subsection{R\'eduction des endomorphismes}
-\subsubsection{Le polyn\^ome minimal (Krylov)}\index{minimal, polyn\^ome}
+\section{R\'eduction des endomorphismes}
+\subsection{Le polyn\^ome minimal (Krylov)}\index{minimal, polyn\^ome}
 \index{Krylov}
 On prend un vecteur $v$ au hasard et on calcule la relation lin\'eaire
 de degr\'e minimal entre $v$, $Av$, ..., $A^nv$ en cherchant
@@ -13751,7 +13741,7 @@ en prenant $v=(1,0,0)$ on obtient la matrice~:
 le permier vecteur du noyau est $(-1,2,-1)$ d'où un polynôme divisant
 le polynôme minimal $-x^2+2x-1$.
 
-\subsubsection{Le polyn\^ome caract\'eristique}
+\subsection{Le polyn\^ome caract\'eristique}
 \index{caract\'eristique, polyn\^ome}
 Pour une matrice générique, le polynôme caractéristique est égal
 au polynôme minimal, il est donc intéressant de chercher si le polynôme
@@ -13778,7 +13768,7 @@ on calcule le polyn\^ome caract\'eristique modulo suffisamment
 de petits entiers puis on remonte par les restes chinois.
 \end{itemize}
 
-\subsubsection{La m\'ethode de Hessenberg}\index{Hessenberg}
+\subsection{La m\'ethode de Hessenberg}\index{Hessenberg}
 Pour les matrices \`a coefficients de taille born\'ee (modulaires par exemple)
 on préfère la m\'ethode de Hessenberg qui est plus
 efficace, car elle n\'ecessite de l'ordre de $n^3$ op\'erations sur
@@ -13939,7 +13929,7 @@ dont le degr\'e en le param\`etre est major\'e par le nombre de points
 d'interpolation utilis\'es moins 1, et est donc nul car sinon il aurait
 trop de racines avec tous les points d'interpolation utilis\'es.
 
-\subsubsection{La m\'ethode de
+\subsection{La m\'ethode de
   Leverrier-Faddeev-Souriau}\index{Leverrier} \index{Faddeev}\index{Souriau}
 Cette m\'ethode permet le calcul simultan\'e des coefficients 
 $p_i \ (i=0..n)$ du polyn\^ome caract\'eristique 
@@ -14027,7 +14017,7 @@ Faddeev(A):={ // renvoie la liste des matrices B et le polynome P
 }:;
 \end{verbatim}
 
-\subsubsection{Les vecteurs propres simples.}
+\subsection{Les vecteurs propres simples.}
 On suppose ici qu'on peut factoriser le polyn\^ome caract\'eristique
 (ou calculer dans une extension alg\'ebrique d'un corps).
 Lorsqu'on a une valeur propre simple $\lambda_0$, en \'ecrivant
@@ -14045,7 +14035,7 @@ calcule $B(\lambda_0) $ par la m\'ethode de Horner appliqu\'ee au
 polyn\^ome $B(\lambda)$ en $\lambda=\lambda_0$, et on r\'eduit en
 colonnes la matrice obtenue.
 
-\subsubsection{La forme normale de Jordan} \label{sec:jordan}\index{Jordan}
+\subsection{La forme normale de Jordan} \label{sec:jordan}\index{Jordan}
 Pour les valeurs propres de multiplicit\'e plus grande que 1, on souhaiterait 
 g\'en\'eraliser la m\'ethode ci-dessus pour obtenir une base
 de l'espace caractéristique, sous forme de cycles de Jordan.
@@ -14132,7 +14122,7 @@ Plus g\'en\'eralement, on obtiendra plus qu'un cycle de Jordan
 (et dans ce cas $B(\lambda _i)= 0$).
 
 
-\subsubsection{Exemple 1} \label{sec:ex1}
+\subsection{Exemple 1} \label{sec:ex1}
 
 \[ A=\left(\begin{array}{ccc}
  3 & -1 & 1 \\
@@ -14198,7 +14188,7 @@ qui se r\'eduit en~:
 on chercherait alors dans les colonnes 2 et 3 de nouveaux cycles (puisque
 la colonne 1 a d\'eja \'et\'e utilis\'ee pour fournir un cycle).
 
-\subsubsection{Exemple 2} \label{sec:ex2}
+\subsection{Exemple 2} \label{sec:ex2}
 \[ A=\left(\begin{array}{ccc}
  3 & 2 & -2 \\
 -1 &0 &1 \\
@@ -14260,13 +14250,13 @@ Puis on effectue $C_3-C_2 \rightarrow C_3$ et la deuxi\`eme colonne
 nous donne le deuxi\`eme cycle de Jordan, r\'eduit ici \`a un
 seul vecteur propre $(0,1,1)$.
 
-\subsubsection{Le polyn\^ome minimal par Faddeev}
+\subsection{Le polyn\^ome minimal par Faddeev}
 On v\'erifie ais\'ement que le degr\'e du facteur 
 $(\lambda-\lambda_i)$ dans le polyn\^ome minimal de $A$ est \'egal
 \`a $n_i-k$ o\`u $k$ est le plus grand entier tel que~:
 \[ \forall j<k, \quad B^{(j)}(\lambda_i)=0 \]
 
-\subsubsection{Formes normales rationnelles}\index{Jordan rationnel}
+\subsection{Formes normales rationnelles}\index{Jordan rationnel}
 On se place ici dans une probl\'ematique diff\'erente~: trouver une matrice
 semblable la plus simple possible sans avoir \`a introduire d'extension
 alg\'ebrique pour factoriser le polyn\^ome caract\'eristique.
@@ -14494,7 +14484,7 @@ donc ~:
 \]
 On v\'erifie bien que $Av_{1,1}=2v_{1,0}+v_{0,1}$.
 
-\subsubsection{Fonctions analytiques}
+\subsection{Fonctions analytiques}
 Soit $f$ une fonction analytique et $M$ une matrice. Pour calculer
 $f(M)$, on calcule la forme normale de Jordan de 
 $M=P(D+N)P^{-1}$ o\`u $D=$diag$(d_1,...,d_m)$ est diagonale et $N$ nilpotente
@@ -14504,8 +14494,8 @@ $n-1$, on a alors~:
 \[ f(N)=P \left(\sum_{j=0}^{n-1} \frac{\mbox{diag}(f^{(j)}(d_1),...,
 f^{(j)}(d_m))}{j!} N^j \right) P^{-1}\]
 
-\subsection{Quelques autres algorithmes utiles}
-\subsubsection{Complexit\'e asymptotique}
+\section{Quelques autres algorithmes utiles}
+\subsection{Complexit\'e asymptotique}
 Pour calculer le produit de matrices, on peut utiliser
 l'algorithme de {\bf Strassen}, on pr\'esente ici la variante
 de {\bf Winograd}\index{Strassen}\index{Winograd}. Soit \`a calculer~:
@@ -14555,8 +14545,8 @@ de taille plus petites que plusieurs centaines de lignes et colonnes.
 De m\^eme on peut gagner sur le calcul du polyn\^ome minimal en
 faisant des op\'erations de multiplication par bloc.
 
-\subsection{Quelques m\'ethodes alternatives au pivot}
-\subsubsection{Factorisation $QR$}\index{QR}
+\section{Quelques m\'ethodes alternatives au pivot}
+\subsection{Factorisation $QR$}\index{QR}
 La factorisation $QR$ 
 consiste à écrire une matrice $A$ comme produit d'une matrice
 orthogonale (ou unitaire dans $\mathbb{C}$) et d'une matrice triangulaire
@@ -14730,7 +14720,7 @@ raisons de stabilit\'e, en tout cas pour des matrices denses (pour des
 matrices creuses des consid\'erations d'efficacit\'e peuvent faire
 pr\'ef\'erer la factorisation de Cholesky).
  
-\subsubsection{M\'ethodes it\'eratives de
+\subsection{M\'ethodes it\'eratives de
 Jacobi, Gauss-Seidel, relaxation}\index{Jacobi} \index{Gauss-Seidel}
 \label{sec:jacobi}
 Lorsqu'on a une matrice creuse (peu d'\'el\'ements non nuls),
@@ -14869,7 +14859,7 @@ on a $M^*+N=(2/\omega -1)D$ qui est d\'efinie positive si $\omega<2$.
 {\bf Remarque~}: Jacobi et Gauss-Seidel sont impl\'ement\'ees dans les commandes
 Xcas {\tt jacobi\_linsolve} et {\tt gauss\_seidel\_linsolve}.
 
-\subsubsection{M\'ethode du gradient \`a pas constant}\index{pas constant, gradient}
+\subsection{M\'ethode du gradient \`a pas constant}\index{pas constant, gradient}
 \index{gradient \`a pas constant}
 Soit $A$ est une matrice sym\'etrique d\'efinie positive (relativement
 \`a un produit scalaire not\'e $<|>$), on
@@ -14913,7 +14903,7 @@ La vitesse de convergence est assez lente, car $|I-\rho A|$ a pour
 valeur propre maximale $\cos(\pi/(n+1))$, par exemple pour $n=20$,
 $\cos(pi/21.) \equiv 0.988$ est tr\`es proche de 1.
  
-\subsubsection{M\'ethode it\'erative du gradient conjugu\'e}\index{gradient conjugu\'e}
+\subsection{M\'ethode it\'erative du gradient conjugu\'e}\index{gradient conjugu\'e}
 Il s'agit de résoudre $Ax=b$, où $A$ est définie positive. 
 Si on a une base orthogonale pour le produit scalaire induit par $A$, 
 on peut calculer la $j$-ième coordonn\'ee de $x$ 
@@ -14980,7 +14970,7 @@ et une précision \verb|eps| en tapant
 Voir aussi le programme en langage Xcas depuis le 
 menu {\tt Exemple, analyse, gradconj}
  
-\subsection{Réduction approchée des endomorphismes}
+\section{Réduction approchée des endomorphismes}
 On pourrait trouver des valeurs propres approchées d'une matrice
 en calculant le polynome caractéristique ou minimal puis en le
 factorisant numériquement. Mais cette méthode n'est pas idéale
@@ -14990,7 +14980,7 @@ de $A-\lambda I$), lorsqu'on veut calculer quelques valeurs propres
 on préfère utiliser des méthodes itératives directement sur $A$
 ce qui évite la propagation des erreurs d'arrondi.
 
-\subsubsection{Méthode de la puissance} \index{puissance}
+\subsection{Méthode de la puissance} \index{puissance}
 Elle permet de déterminer la plus grande valeur propre en valeur absolue
 d'une matrice diagonalisable lorsque celle-ci est unique.
 Supposons en effet que les valeurs propres de $A$ soient
@@ -15142,7 +15132,7 @@ majorant les racines, et
 on peut minorer le résultant à priori par 1 si $P$ est à coefficients
 entiers.
 
-\subsubsection{Itérations inverses} \index{it\'erations inverses}
+\subsection{Itérations inverses} \index{it\'erations inverses}
 La méthode précédente permet de calculer la valeur propre
 de module maximal d'une matrice. Pour trouver une valeur
 propre proche d'une quantité donnée $x$, on peut appliquer
@@ -15154,7 +15144,7 @@ la norme est maximale lorsqu'on se rapproche de $x_i$. Attention
 de $(A-xI)u_{n+1}=u_n$ est alors peu précis (la matrice étant
 mal conditionnée).
 
-\subsubsection{Elimination des valeurs propres trouvées}
+\subsection{Elimination des valeurs propres trouvées}
 Si la matrice $A$ est symétrique, et
 si $e_n$ est un vecteur propre normé écrit en colonne, on peut considérer
 la matrice $B=A-x_n e_n e_n^t$ qui possède les mêmes valeurs
@@ -15175,7 +15165,7 @@ car $Ae_k.f_j=x_ke_k.f_j=e_k.A^tf_j=x_je_kf_j$ et donc $f_k.e_k \neq 0$
 (sinon $e_k$ est dans l'orthogonal de $\mathbb{R}^n=$Vect$(f_1,...,f_n)$.
 
 
-\subsubsection{D\'ecomposition de Schur}\index{Schur (factorisation)}
+\subsection{D\'ecomposition de Schur}\index{Schur (factorisation)}
 \index{factorisation de Schur}
 Il s'agit d'une factorisation de matrice sous la forme
 \[ A = P S P^{-1}\]
@@ -15406,7 +15396,7 @@ de $P$, qu'il faut au pire $b=O(n)$ bits pour séparer les racines).
 
 
 
-\subsection{Quelques r\'ef\'erences} \label{sec:ref}
+\section{Quelques r\'ef\'erences} \label{sec:ref}
 
 \begin{itemize}
 \item Comme toujours on renvoie à l'excellent livre de Henri Cohen:
@@ -15421,8 +15411,8 @@ Pour des algorithmes numériques (sur les matrices et autres).
 \end{itemize}
 
 
-\subsection{Exercices (alg\`ebre lin\'eaire)}
-\subsubsection{Instructions}
+\section{Exercices (alg\`ebre lin\'eaire)}
+\subsection{Instructions}
 \begin{itemize}
 \item Les commandes d'alg\`ebre lin\'eaire de Xcas sont
 regroup\'ees dans le menu {\tt Cmds->Alglin}.
@@ -15447,7 +15437,7 @@ avec une majuscule (forme inerte) suivi de {\tt mod n}.
 \end{itemize}
 
 
-\subsubsection{Exercices}
+\subsection{Exercices}
 \begin{enumerate}
 \item \'Ecrire un programme calculant l'inverse d'une matrice
 en utilisant sa d\'ecomposition $LU$. Tester avec une matrice
@@ -15526,14 +15516,14 @@ par une méthode $p$-adique.
 
 \pagebreak
 
-% \subsection{L'algorithme du simplexe}
+% \section{L'algorithme du simplexe}
 
-\section{Approximation polynomiale} \label{sec:interp}
+\chapter{Approximation polynomiale} \label{sec:interp}
 On présente dans cette section quelques méthodes d'approximation
 de fonctions par des polynômes sur un intervalle, la section suivante 
 présente des méthodes d'approximation près d'un point ou de l'infini.
 
-\subsection{Polyn\^ome de Lagrange}\index{Lagrange} \index{interpolation}
+\section{Polyn\^ome de Lagrange}\index{Lagrange} \index{interpolation}
 \'Etant donn\'e la facilit\'e de manipulation qu'apportent les
 polynomes, on peut chercher \`a approcher une fonction par un
 polyn\^ome. La m\'ethode la plus naturelle consiste \`a chercher
@@ -15543,7 +15533,7 @@ et \`a trouver une majoration de la diff\'erence entre la fonction
 et le polyn\^ome.
 Le polynome interpolateur de Lagrange r\'epond \`a cette question.
 
-\subsubsection{Existence et unicit\'e}
+\subsection{Existence et unicit\'e}
 Soit donc $x_0,...,x_n$ des r\'eels distincts et $y_0,...,y_n$
 les valeurs de la fonction \`a approcher en ces points (on posera
 $y_j=f(x_j)$ pour approcher la fonction $f$). On cherche
@@ -15592,7 +15582,7 @@ $P_2(2)=3+2 \alpha_{2}=1$
 donc $ \alpha_{2}=-1$, finalement $P_2=1+X-X(X-1)$.\\
 \giacinputbigmath{P:=interp([0,1,2],[1,2,1]);}
 
-\subsubsection{Majoration de l'erreur d'interpolation.}
+\subsection{Majoration de l'erreur d'interpolation.}
 Reste \`a estimer l'\'ecart entre une fonction et son polynome
 interpolateur, on a le~:
 \begin{thm} \index{lagrange}
@@ -15639,7 +15629,7 @@ Attention, l'erreur d'interpolation peut devenir tr\`es grande
 lorsqu'on utilise beaucoup de points d'interpolation.
 
 
-\subsubsection{Calcul efficace du polyn\^ome de
+\subsection{Calcul efficace du polyn\^ome de
   Lagrange.}\index{divis\'ees, diff\'erences}\index{diff\'erences divis\'ees}
 Avec la m\'ethode de calcul pr\'ec\'edent, on remarque que le
 polyn\^ome de Lagrange peut s'\'ecrire \`a la Horner sous la forme~:
@@ -15752,7 +15742,7 @@ P_n(x)-f(x)=(x-x_0)..(x-x_{n})f[x_0,..,x_n,x]
 \end{equation}
 On en d\'eduit aussi que $f[x_0,...,x_n,x]=f^{[n+1]}(\xi_x)/(n+1)!$.
 
-\subsubsection{Sensibilit\'e aux erreurs sur les donn\'ees.}
+\subsection{Sensibilit\'e aux erreurs sur les donn\'ees.}
 Si les $y_j$ sont connus avec une certaine erreur, alors le polyn\^ome 
 d'interpolation est connu de mani\`ere approch\'ee. Plus
 pr\'ecis\'ement, si on note
@@ -15787,7 +15777,7 @@ on a alors un polyn\^ome, dont on calcule l'abscisse du maximum par\\
 puis \giacinput{subst(g,x=l[0])} qui donne environ {\tt 4.7e9}.
 
 
-\subsection{Interpolation aux points de Tchebyshev}\index{Tchebyshev}
+\section{Interpolation aux points de Tchebyshev}\index{Tchebyshev}
 L'id\'ee la plus naturelle pour interpoler un polyn\^ome en $n+1$
 points d'un intervalle $[a,b]$ consiste \`a couper en $n$ morceaux
 de m\^eme longueur. Mais ce n'est pas le plus efficace car le
@@ -15850,7 +15840,7 @@ t(k,n):={
 \end{giacprog}
 \giacinput[style="width:800px;height:20px;font-style:large"]{n:=40; f:=add(abs(t(k,n)),k,0,n):;plot(f,x=-1..1)}
 
-\subsection{Interpolation de Hermite}\index{Hermite, interpolation de}
+\section{Interpolation de Hermite}\index{Hermite, interpolation de}
 Si on fait tendre un des points d'interpolation vers un autre, la
 donn\'ee de la valeur en ces 2 points serait redondante, elle 
 est remplac\'ee par la valeur de la d\'eriv\'ee. Dans le calcul
@@ -15866,7 +15856,7 @@ identiques ou des multiplicit\'es plus grandes faisant intervenir
 des d\'eriv\'ees d'ordre sup\'erieures, dans ce cas la diff\'erence
 divis\'ee $f[x_i,...,x_{i+m}]$ sera remplac\'ee par $f^{[m]}(x_i)/m!$.
 
-\subsection{Polyn\^omes de Bernstein et courbes de
+\section{Polyn\^omes de Bernstein et courbes de
   B\'ezier}\index{Bernstein, polyn\^omes de} \index{B\'ezier, courbes de}
 Les polyn\^omes de Bernstein de degr\'e $m$ sont les
 $$ B^n_k (x) = 
@@ -15911,7 +15901,7 @@ $$ A(t) = \sum_{k=0}^n A_k \left( \begin{array}{c} n\\ i \end{array} \right) x^i
 (1-x)^{n-i} $$
 appel\'ee courbe de B\'ezier. En pratique on les utilise pour $n=3$.
 
-\subsection{Polynômes orthogonaux.}\index{orthogonaux, polyn\^omes}
+\section{Polynômes orthogonaux.}\index{orthogonaux, polyn\^omes}
 \index{polyn\^omes orthogonaux}
 Il s'agit d'une autre m\'ethode d'approximation, 
 particuli\`erement important pour l'int\'egration~: les polyn\^omes
@@ -16059,7 +16049,7 @@ de polyn\^omes par une base orthogonale de sinus, cosinus
 ou exponentielles.
 \end{itemize}
 
-\subsection{Les splines}\index{splines}
+\section{Les splines}\index{splines}
 Il s'agit de fonctions définies par des polynomes de degré borné
 sur des intervalles, dont on fixe la valeur
 aux extrémités des intervalles (comme pour le polynome de Lagrange)
@@ -16099,7 +16089,7 @@ le système et on remplace pour avoir les valeurs numériques
 des coefficients du polynome.
 
 
-\section{Développement de Taylor, asymptotiques, 
+\chapter{Développement de Taylor, asymptotiques, 
 s\'eries enti\`eres, fonctions usuelles}
 \label{sec:series}
 \index{Taylor, d\'eveloppement}
@@ -16132,7 +16122,7 @@ entre $x_0$ et $x$ tel que
 C'est le cas pour la fonction exponentielle que nous allons
 détailler, ainsi que les fonctions sinus et cosinus.
 
-\subsection{La fonction exponentielle}\index{exp}\index{exponentielle}
+\section{La fonction exponentielle}\index{exp}\index{exponentielle}
 Soit $f(x)=\exp(x)$ et $x_0=0$, la dérivée $n$-ième de $f$ 
 est $\exp(x)$, donc $R_n(x)=\exp(\theta)x^{n+1}/(n+1)!$ avec $\theta$
 compris entre 0 et $x$, ainsi si $x$ est positif 
@@ -16233,7 +16223,7 @@ des fonctions qui sont égales à leur développement de Taylor à l'infini
 d'une part, et d'avoir d'autres méthodes pour majorer le reste, nous
 présentons ici le cas des séries alternées.
 
-\subsection{Séries entières.}\index{s\'erie enti\`ere}
+\section{Séries entières.}\index{s\'erie enti\`ere}
 Les séries de type prendre la limite lorsque $n$ tend vers
 l'infini du développement de Taylor en x=0 sont de la forme
 \[ \sum_{n=0}^\infty a_n x^n := \lim_{ k \rightarrow +\infty} 
@@ -16335,7 +16325,7 @@ On va donner un autre critère qui ne nécessite pas
 de calculer cette dérivée mais utilise l'alternance des signes
 dans la somme.
 
-\subsection{Série alternée}\index{s\'erie alt\`ern\'ee}
+\section{Série alternée}\index{s\'erie alt\`ern\'ee}
 \begin{thm}
 Soit $S_n= \sum_{k=0}^n (-1)^k u_k$ la somme jusqu'au rang $n$ d'une
 s\'erie de r\'eels tels que la suite des $u_k$ d\'ecroit \`a partir
@@ -16363,7 +16353,7 @@ vite vers 0, sinon il y aura perte de pr\'ecision sur la mantisse
 lorsqu'on effectuera $u_{2n}-u_{2n+1}$. On sommera aussi les termes
 par ordre d\'ecroissant pour diminuer les erreurs d'arrondi.
 
-\subsection{La fonction logarithme}\index{ln}\index{logarithme}
+\section{La fonction logarithme}\index{ln}\index{logarithme}
 Si nous voulons calculer $\ln(1+x)$ pour $x \in [0,1[$ avec une
 pr\'ecision $\varepsilon$, il suffit de calculer
 \[ \sum_{k=0}^n (-1)^k \frac{x^{k+1}}{k+1}\]
@@ -16452,7 +16442,7 @@ m\'ethode de calcul de $\pi$. On peut par exemple faire le calcul
 de $16 \arctan(1/5)-4\arctan(1/239)$ en utilisant le d\'eveloppement
 de la fonction $\arctan$ \`a un ordre suffisant.
 
-\subsection{Approximants de Padé.}\index{Pad\'e}
+\section{Approximants de Padé.}\index{Pad\'e}
 Soit une fonction $f(x)$ dont on connait le développement
 de Taylor $B$ en 0 à l'ordre $n$, on souhaiterait plutot
 approcher $f$ par une fraction $P/Q$ avec degré$(P) \leq d$
@@ -16519,14 +16509,14 @@ f(x):={
 plot([f(x),exp(x)],x=-6..6,color=[blue,red]);
 \end{verbatim}
 
-\subsection{Autres applications}
+\section{Autres applications}
 On peut calculer certaines int\'egrales de la m\^eme mani\`ere,
 par exemple
 \[ \int _0^{1/2} \frac{1}{\sqrt{1+x^3}}\]
 mais aussi des fonctions définies par des intégrales (cas de nombreuses
 fonctions spéciales).
 
-\subsubsection{Exemple~: la fonction d'erreur (error fonction, {\tt
+\subsection{Exemple~: la fonction d'erreur (error fonction, {\tt
     erf})}\index{erf}\index{erreur, fonction}
 Cette fonction est définie à une constante multiplicative près par~:
 \[ f(x)=\int_0^x e^{-t^2} \ dt \]
@@ -16576,7 +16566,7 @@ de termes faut-il calculer pour déterminer $f(10)$ à $1e-16$ près
 par le développement asymptotique et par le développement en séries~?
 Quelle est la meilleure méthode pour calculer $f(10)$~?
 
-\subsubsection{Recherche de solutions d'\'equations diff\'erentielles}
+\subsection{Recherche de solutions d'\'equations diff\'erentielles}
 On peut aussi appliquer les techniques ci-dessus pour calculer
 des solutions de certaines \'equations diff\'erentielles dont les
 solutions ne s'expriment pas \`a l'aide des fonctions usuelles,
@@ -16591,7 +16581,7 @@ $|x|<1/C$, on peut alors calculer des valeurs approch\'ees
 de la fonction solution \`a la pr\'ecision souhait\'ee en utilisant
 le d\'eveloppement en s\'eries enti\`eres.
 
-\subsubsection{Exemple~: fonctions de Bessel d'ordre entier}\index{Bessel}
+\subsection{Exemple~: fonctions de Bessel d'ordre entier}\index{Bessel}
 Soit $m$ un entier positif fix\'e, on consid\`ere l'\'equation
 diff\'erentielle
 \[ x^2 y'{'} + x y' + (x^2-m^2)y=0 \]
@@ -16642,7 +16632,7 @@ diff\'erentielle (en posant $y=y_0 z$ et en cherchant $z$).
 {\bf Exercice~:} faire de m\^eme pour les solutions de
 $y'{'}-xy=0$ (fonctions de Airy).
 
-\subsection{Développements asymptotiques et séries
+\section{Développements asymptotiques et séries
   divergentes}\index{d\'eveloppement asymptotique}
 Un développement asymptotique est une généralisation d'un développement de Taylor, par exemple
 lorsque le point de développement est en l'infini. De nombreuses fonctions ayant
@@ -16856,7 +16846,7 @@ dont la partie imaginaire nous donne (\(\ref{eq:Siinf}\)), et la
 partie r\'eelle une autre identit\'e sur $\gamma$ faisant intervenir
 la fonction cosinus int\'egral.
 
-\subsection{S\'eries formelles.}\index{s\'eries formelles} \index{formelles, s\'eries}
+\section{S\'eries formelles.}\index{s\'eries formelles} \index{formelles, s\'eries}
 On peut aussi s'int\'eresser aux s\'eries d'un point de vue purement
 alg\'ebrique en mettant de cot\'e tous
 les aspects li\'es \`a la convergence. On parle alors de s\'erie
@@ -16901,11 +16891,11 @@ Les op\'erations sur les s\'eries sont impl\'ement\'ees sans optimisation
 particuli\`ere, leur utilisation principale dans Xcas \'etant le
 calcul de d\'eveloppement de Taylor ou asymptotique sur $\mathbb{Q}$.
 
-\section{La transform\'ee de Fourier discr\`ete.}
+\chapter{La transform\'ee de Fourier discr\`ete.}
 \label{sec:dft}
 \index{DFT}\index{Fourier, transform\'ee
   discr\`ete}\index{transform\'ee de Fourier discr\`ete}
-\subsection{D\'efinition et propri\'et\'es}
+\section{D\'efinition et propri\'et\'es}
 Soit $N$ un entier fixé. Une suite $x$ p\'eriodique de p\'eriode $N$ est
 d\'etermin\'ee par le vecteur $x=[x_0,x_1,...x_{N-1}]$.
 La transform\'ee de Fourier discr\'ete (DFT) notée $F_N$ fait correspondre 
@@ -17022,7 +17012,7 @@ de 10, on doit trouver $y_k$ proche de 0 relativement à la valeur des $|x_j|$.
 Les périodes et pseudo-périodes de $x$ correspondent donc aux
 valeurs de $y_k$ grandes par la règle $k$ * période =$N$.
 
-\subsection{La transformée de Fourier rapide}\index{FFT}
+\section{La transformée de Fourier rapide}\index{FFT}
 \index{transform\'ee de Fourier rapide}\index{rapide, transform\'ee de
 Fourier}
 Le calcul de la DFT est relativement lent, il nécessite de l'ordre
@@ -17078,7 +17068,7 @@ On appelle alors FFT cette méthode de calcul (DFT=FFT si $N=2^n$).
 Cette m\'ethode se g\'en\'eralise \`a des $N$ qui ne sont pas des puissances
 de 2.
 
-\subsection{Applications.}
+\section{Applications.}
 La DFT peut servir \`a trouver des p\'eriodes dans des donn\'ees
 exp\'erimentales dat\'ees. On peut par exemple le voir sur
 des enregistrements de son (par exemple avec le logiciel
@@ -17188,9 +17178,9 @@ de faire des restes chinois avec des
 entiers de plus de 64 bits (ce qui est possible avec des entiers 128
 bits mais au prix de r\'eductions modulo couteuses).
 
-\section{Le rayonnement solaire.} \label{sec:soleil}
+\chapter{Le rayonnement solaire.} \label{sec:soleil}
 
-\subsection{L'insolation au cours de l'ann\'ee.} \index{insolation}
+\section{L'insolation au cours de l'ann\'ee.} \index{insolation}
 Pour connaitre la quantit\'e d'\'energie recue \`a un moment
 donn\'e, il faut calculer l'angle entre la verticale du lieu
 et la direction du Soleil. Plus g\'en\'eralement, on va calculer
@@ -17335,7 +17325,7 @@ solstice d'été. Comme 3\%
 de l'écart moyen entre 2 culminations (4 minutes=240 secondes) 
 correspond à 7 secondes cela explique la différence.
 
-\subsection{Les saisons}\index{saisons}
+\section{Les saisons}\index{saisons}
 % Les deux figures (\ref{fig:nord}, \ref{fig:sud})
 % qui suivent représentent la Terre en 4 points de son orbite, les 
 % 2 solstices et les 2 \'equinoxes.
@@ -17361,7 +17351,7 @@ Au solstice d'été, on est dans la situation inverse de l'hiver.
 
 \pagebreak
 
-\subsection{L'orbite de la Terre.}\index{orbite de la Terre}
+\section{L'orbite de la Terre.}\index{orbite de la Terre}
 En première approximation, l'orbite de la Terre est uniquement
 influencée par la force de gravitation entre la Terre et le Soleil,
 ce dernier pouvant être considéré comme fixe en raison de sa masse
@@ -17393,7 +17383,7 @@ la composante sur le vecteur radial ${\bf e_r}$ est $d\rho/dt$, et
 la composante sur le vecteur perpendiculaire ${\bf e_\theta}$
 est $\rho d\theta/dt$.
 
-\subsubsection{Calcul en utilisant le vecteur excentricit\'e.}\index{excentricit\'e}
+\subsection{Calcul en utilisant le vecteur excentricit\'e.}\index{excentricit\'e}
 Montrons que le vecteur
 \[ {\bf E}= \frac{1}{\mu} \frac{\bf dr}{dt} \wedge {\bf L} - 
 \frac{\bf r}{\rho}\]
@@ -17423,7 +17413,7 @@ on obtient en notant $e$ la norme de $E$
 d'o\`u~:
 \[ \rho = \frac{L^2}{\mu(1+e \cos(\theta))}\]
 
-\subsubsection{Calcul par l'\'equation diff\'erentielle.}
+\subsection{Calcul par l'\'equation diff\'erentielle.}
 On a les équations de conservation de l'\'energie et du moment cin\'etique~:
 \[ \frac{K}{\rho}+\frac{m}{2} \left( \left(\frac{d\rho}{dt}\right)^2
 + \left(\rho \frac{d\theta}{dt} \right)^2 \right)
@@ -17471,7 +17461,7 @@ foyers~:
 On suppose maintenant quitte à faire pivoter l'axe des $x$ que
 $\theta_0=0$.
 
-\subsubsection{Lois de K\'epler.}\index{K\'epler}
+\subsection{Lois de K\'epler.}\index{K\'epler}
 L'orbite de la Terre est donc une ellipse dont le Soleil occupe un des foyers
 (1\`ere loi de K\'epler).
 On a aussi vu que $L=\rho^2 d\theta/dt$ est constant, ceci entraine la loi
@@ -17491,7 +17481,7 @@ o\`u on rappelle que $\mu$ est le produit de la constante de gravitation
 universelle par la masse du Soleil. (On peut \'evidemment faire
 le m\^eme calcul pour la Lune autour de la Terre).
 
-\subsection{Quelques propriétés de l'ellipse}\index{ellipse}
+\section{Quelques propriétés de l'ellipse}\index{ellipse}
 {\bf D\'efinition}\\
 L'ellipse $E$ de foyers $F_1$ et $F_2$ de demi-grand axe
 $a$ est l'ensemble des points $M$ du plan tels que 
@@ -17548,7 +17538,7 @@ ce qui nous permet d'affirmer que l'orbite de la Terre dans
 l'approximation du point mat\'eriel soumis uniquement au Soleil
 suppos\'e fixe est une ellipse dont le Soleil occupe un foyer.
 
-\subsection{Influence de l'ellipse sur les saisons}
+\section{Influence de l'ellipse sur les saisons}
 Il faut prendre garde \`a ne pas confondre les solstices et
 \'equinoxes avec le moment o\`u la Terre coupe le grand axe
 de son ellipse autour du Soleil. Il n'y a aucune raison que la
@@ -17567,7 +17557,7 @@ bor\'eal et augmente la dur\'ee de l'\'et\'e bor\'eal (c'est
 peut-\^etre pour cette raison que f\'evrier n'a que 
 28 jours alors que juillet et aout ont 31 jours).
 
-\subsection{L'équation du temps, la durée des
+\section{L'équation du temps, la durée des
   saisons.} \label{sec:dureesaison}
 \index{temps, \'equation du} \index{saisons, dur\'ee}
 \begin{figure}[h] \label{fig:ell}
@@ -17640,7 +17630,7 @@ Alors $\theta$ est donné par
 \[  \cos(\theta)=\frac{\cos(V)-e}{1-e \cos(V)}  \]
 \end{thm}
 
-\subsection{Les variations des paramètres orbitaux}
+\section{Les variations des paramètres orbitaux}
 La Terre n'est pas une sphère idéale, elle a un renflement au niveau
 de l'équateur, due à rotation de la Terre sur elle-même (la force
 centrifuge y est plus importante). Ce renflement est dans un plan
@@ -17687,7 +17677,7 @@ circulaire), soit, sans r\'etroactions, une variation globale
 de 0.2 degr\'es Kelvin.
 
 
-\section{La moyenne arithm\'etico-g\'eom\'etrique.}
+\chapter{La moyenne arithm\'etico-g\'eom\'etrique.}
 \label{sec:agm}
 \index{moyenne arithm\'etico-g\'eom\'etrique}
 La moyenne arithm\'etico-g\'eom\'etrique est un processus it\'eratif
@@ -17696,7 +17686,7 @@ les fonctions transcendantes r\'eciproques en multi-pr\'ecision.
 On peut alors trouver les fonctions transcendantes directes
 par application de la m\'ethode de Newton.
 
-\subsection{D\'efinition et convergence}
+\section{D\'efinition et convergence}
 Soient $a$ et $b$ deux r\'eels positifs,
 on d\'efinit les 2 suites 
 \begin{equation} \label{eq:agm}
@@ -17820,7 +17810,7 @@ On en déduit
 La convergence du $\ln(u_n/v_n)$ vers 0 est donc géométrique, donc $u_n$ et $v_n$ convergent
 quadratiquement.
 
-\subsection{Lien avec les int\'egrales elliptiques}\index{elliptique, int\'egrale}
+\section{Lien avec les int\'egrales elliptiques}\index{elliptique, int\'egrale}
 Le calcul de la limite commune des suites $u_n$ et $v_n$ en fonction
 de $a$ et $b$ n'est pas trivial
 au premier abord. Il est reli\'e aux int\'egrales elliptiques, plus
@@ -17881,7 +17871,7 @@ Dans l'autre sens, pour $x$ et $y$ positifs
 et finalement
 \[ M(x,y)=\frac{\pi}{4} \frac{x+y}{ K\left( (\frac{x-y}{x+y}\right)^2 )}\]
 
-\subsection{Application~: calcul efficace du logarithme.}\index{logarithme}
+\section{Application~: calcul efficace du logarithme.}\index{logarithme}
 On peut utiliser la moyenne arithm\'etico-g\'eom\'etrique pour
 calculer le logarithme efficacement, pour cela on cherche le d\'eveloppement
 asymptotique de $K(m)$ lorsque $m$ tend vers 1. Plus pr\'ecis\'ement,
@@ -18146,9 +18136,9 @@ en utilisant la m\'ethode de Newton.
 
 \appendix
 
-\section{Bonus~: le ``making of'' de Giac/Xcas}
+\chapter{Bonus~: le ``making of'' de Giac/Xcas}
 
-\subsection{Comment le projet Giac/Xcas est n\'e.}
+\section{Comment le projet Giac/Xcas est n\'e.}
 Lorsque j'\'etais au lyc\'ee au d\'ebut des ann\'ees 80,
 nous avions des calculatrices
 scientifiques mais les calculatrices graphiques n'existaient pas
@@ -18256,7 +18246,7 @@ logiciels de l'oral de mod\'elisation (ce fut le cas en 2005, mais
 les premiers candidats \`a l'utiliser ne l'ont fait que vers 2007 ou
 2008...).
 
-\subsection{L'enfance d'Xcas: 2000-2006}
+\section{L'enfance d'Xcas: 2000-2006}
 L'ann\'ee 2000 marque sans doute un tournant dans ma carri\`ere,
 je viens d'achever l'ann\'ee de d\'el\'egation pour mettre au point
 la HP49, et le travail se poursuit pour sortir la HP40 \`a la
@@ -18333,7 +18323,7 @@ d\'ecollage de Xcas, que l'on peut juger
 au nombre de t\'el\'echargements, ainsi que par
 les interactions avec des utilisateurs inconnus.
 
-\subsection{La mont\'ee en puissance: 2007-2013}
+\section{La mont\'ee en puissance: 2007-2013}
 En 2007, Xcas participe aux Troph\'ees du Libre, (concours
 de logiciels libres qui n'existe plus aujourd'hui), et obtient
 la 3i\`eme place dans la cat\'egorie logiciels scientifiques.
@@ -18366,7 +18356,7 @@ de contacter les services de valorisation de l'universit\'e, d\'ebut d'un \'epis
 difficile que je ne peux pas commenter plus pour des
 raisons de confidentialit\'e.
 
-\subsection{Le pr\'esent et le futur proche}
+\section{Le pr\'esent et le futur proche}
 Le nombre de t\'el\'echargements de Xcas d\'epasse maintenant
 les 50 000 par an avec des pointes mensuelles en septembre et octobre
 \`a plus de 12 000 (principalement sous Windows). Xcas est
@@ -18425,7 +18415,7 @@ plusieurs contrats de
 commercialisation (en dual-licensing), dont un avec HP
 pour le CAS des calculatrices HP-Prime.
 
-\subsection{Les concurrents open-source.} \label{sec:concurrents}
+\section{Les concurrents open-source.} \label{sec:concurrents}
 Les principaux concurrents open-source de Giac/Xcas sont Maxima et
 Sage. Il existe d'autres logiciels libres de calcul formel 
 g\'en\'eralistes, mais ils
@@ -18538,8 +18528,8 @@ buyouts for faculty, support of students, etc.), similar to how Magma
 (and Mathematica, etc.) development is funded.'' ({\tt \tiny
   http://sagemath.blogspot.co.uk/2014/08/what-is-sagemathcloud-lets-clear-some.html}).
 
-\section{Quelques opinions.}
-\subsection{Languages}
+\chapter{Quelques opinions.}
+\section{Languages}
 La question du choix de langage en informatique est r\'ecurrente.
 J'ai choisi C++ pour Giac/Xcas, en fait c'est plut\^ot du C-- (au
 sens o\`u Giac d\'efinit tr\`es peu de classes lui-m\^eme, mais
@@ -18629,7 +18619,7 @@ plus difficile \`a concevoir, relire et modifier et moins
 efficace dans un langage compil\'e).
 
 
-\subsection{Le libre, la recherche et l'\'education}
+\section{Le libre, la recherche et l'\'education}
 Le logiciel libre a fini par se faire une place au soleil,
 mais cela n'a pas \'et\'e facile. Au sein de l'\'education
 nationale, c'est probablement les restrictions budg\'etaires qui ont \'et\'e
@@ -18735,10 +18725,10 @@ de valorisation. Ce n'est pas seulement une question financi\`ere
 mais tout simplement de qui controle quoi, une fois un logiciel
 lib\'er\'e, le contr\^ole est dans les mains des personnes qui codent,
 et \'echappe aux services de valorisation ou aux scientifiques
-qui dirigent le projet\footnote{ainsi Allan Steel, le principal codeur du logiciel 
+qui dirigent le projet (ainsi Allan Steel, le principal codeur du logiciel 
 Magma, dont l'attractivit\'e doit tout au g\'enie algorithmique de cet
 auteur, n'apparait m\^eme pas dans la citation recommend\'ee
-du logiciel.}.
+du logiciel).
 \item Plus g\'en\'eralement, le financement de la recherche
 aujourd'hui n'est pas favorable aux projets de long terme.
 Le manque de confiance des d\'ecideurs envers les chercheurs
@@ -18754,7 +18744,7 @@ p\'erennes et la fin des contr\^oles syst\'ematiques, bien sur il y aura
 toujours quelques abus, mais globalement on gagnerait en efficacit\'e.
 \end{itemize}
 
-\subsection{Les maths et les outils de calcul.}
+\section{Les maths et les outils de calcul.}
 En un demi-si\`ecle les outils de calcul informatiques ont
 gagn\'e en puissance de mani\`ere radicale. Aujourd'hui,
 pour une centaine d'euros, on a la puissance de calcul
@@ -18866,7 +18856,7 @@ et \`a moyen terme (10 ans?), ces calculatrices
 auront suffisamment de capacit\'e m\'emoire pour
 permettre le portage de logiciels de calcul formel complets comme Giac.
 
-\subsection{Calculatrices, tablettes ou PC~?}
+\section{Calculatrices, tablettes ou PC~?}
 Si on est convaincu de l'int\'er\^et d'utiliser un outil de calcul,
 se pose alors la question du choix de l'outil. Voici quelques
 \'el\'ements de r\'eflexion.

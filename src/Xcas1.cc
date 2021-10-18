@@ -3357,17 +3357,34 @@ namespace xcas {
   }
 #endif
 
+  bool has_graph3d(Fl_Widget * widget){
+#ifdef HAVE_LIBFLTK
+    Fl_Group * g=dynamic_cast<Fl_Group *>(widget);
+    if (!g)
+      return false;
+    int n=g->children();
+    for (int i=0;i<n;++i){
+      Fl_Widget * wid = g->child(i);
+      if (Fl_Group * gr=dynamic_cast<Fl_Group * >(wid)){
+	if (has_graph3d(gr))
+	  return true;
+      }
+      if (Graph3d * gr3=dynamic_cast<Graph3d * >(wid))
+	return true;
+    }
+#endif
+    return false;
+  }
+
   void quit_idle_function(void * widget){
     static int t=0;
     if (!widget){
-      //t=CLOCK();
+      t=CLOCK();
       return;
-    }
-    else {
-      // if (CLOCK()-t<1e5) return;
     }
 #ifdef HAVE_LIBFLTK
     Fl_Widget * w=(Fl_Widget *)(widget);
+    if (has_graph3d(w) && (CLOCK()-t<1e5)) return;
     w->hide();
     fltk_return_value=0;
 #endif

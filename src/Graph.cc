@@ -4590,10 +4590,10 @@ namespace xcas {
   void petite_fleche(double i1,double j1,double dx,double dy,int deltax,int deltay,int width){
     double dxy=std::sqrt(dx*dx+dy*dy);
     if (dxy){
-      dxy/=min(5,int(dxy/10))+width;
+      dxy/=max(2,min(5,int(dxy/10)))+width;
       dx/=dxy;
       dy/=dxy;
-      double dxp=-dy,dyp=dx;
+      double dxp=-dy,dyp=dx; // perpendicular
       dx*=std::sqrt(3.0);
       dy*=sqrt(3.0);
       fl_polygon(round(i1)+deltax,round(j1)+deltay,round(i1+dx+dxp)+deltax,round(j1+dy+dyp)+deltay,round(i1+dx-dxp)+deltax,round(j1+dy-dyp)+deltay);
@@ -4693,6 +4693,16 @@ namespace xcas {
       if ( (f[0].type==_SYMB) && (f[0]._SYMBptr->sommet==at_curve) && (f[0]._SYMBptr->feuille.type==_VECT) && (f[0]._SYMBptr->feuille._VECTptr->size()) ){
 	// Mon_image.show_mouse_on_object=false;
 	point=f[0]._SYMBptr->feuille._VECTptr->back();
+	if (point.type==_VECT && point._VECTptr->size()>2){
+	  vecteur v=*point._VECTptr;
+	  int vs=v.size()/2; // 3 -> 1
+	  if (Mon_image.findij(v[vs],x_scale,y_scale,i0,j0,contextptr) && Mon_image.findij(v[vs+1],x_scale,y_scale,i1,j1,contextptr)){
+	    bool logx=Mon_image.display_mode & 0x400,logy=Mon_image.display_mode & 0x800;
+	    checklog_fl_line(i0,j0,i1,j1,deltax,deltay,logx,logy,Mon_image.window_xmin,x_scale,Mon_image.window_ymax,y_scale);
+	    double dx=i0-i1,dy=j0-j1;
+	    petite_fleche(i1,j1,dx,dy,deltax,deltay,width+3);
+	  }
+	}
       }
       if (is_undef(point))
 	return;
