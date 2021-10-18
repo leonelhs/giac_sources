@@ -683,7 +683,7 @@ target="_blank">from Euclide to sub-resultant</a>
 <a
 href="#exec&python=0&+//%3Ch1%3eLinear%20algebra%20on%20a%20finite%20field.%3C/h1%3e%0aLU%20decomposition%20and%20application%20to%20linear%20system%20solving.&+n%3A%3D5%3B%20p%3A%3D17%3B%20a%3A%3Drandmatrix(n%2Cn%2C1%20mod%20p)&+p%2Cl%2Cu%3A%3Dlu(a)&+function%20myinv(a)%0A%20%20local%20b%2Cc%2Cj%2Cp%2Cl%2Cu%3B%0A%20%20n%3A%3Dsize(a)%3B%0A%20%20b%3A%3Da%3B%20%0A%20%20c%3A%3Didentity(n)%3B%0A%20%20p%2Cl%2Cu%3A%3Dlu(a)%3B%0A%20%20for%20j%20from%200%20to%20n-1%20do%20%0A%20%20%20%20b%5Bj%5D%3A%3Dlinsolve(p%2Cl%2Cu%2Cc%5Bj%5D)%3B%0A%20%20od%3B%0A%20%20return%20b%3B%0Affunction%3A%3B&+myinv(a)%3B%20inv(a)&+//Algorithm%20to%20compute%20the%20characteristic%20polynomial%20by%20interpolation%20in%20$O(n^4)$%20operations.&+function%20polchar(a)%0A%20%20local%20j%2Cp%2Cn%2CI%2CN%2Cg%2Cgj%2CX%2CY%3B%0A%20%20if%20type(a%5B0%2C0%5D)!%3D15%20then%20%0A%20%20%20%20return%20%22expecting%20matrix%20with%20coefficients%20in%20Z%2FpZ%22%3B%20%0A%20%20fi%3B%0A%20%20p%3A%3Da%5B0%2C0%2C2%5D%3B%20%2F%2F%20field%20char.%0A%20%20if%20!isprime(p)%20then%20%0A%20%20%20%20return%20p%2B%22%20is%20not%20prime%22%3B%20%0A%20%20fi%3B%0A%20%20n%3A%3Dsize(a)%3B%0A%20%20I%3A%3Didentity(n)%3B%0A%20%20X%3A%3D%5B%5D%3B%20Y%3A%3D%5B%5D%3B%0A%20%20if%20n%3Cp%20then%0A%20%20%20%20for%20j%20from%200%20to%20n%20do%0A%20%20%20%20%20%20X%5Bj%5D%3A%3Dj%3B%0A%20%20%20%20%20%20Y%5Bj%5D%3A%3Ddet(j*I-a)%3B%0A%20%20%20%20od%3B%0A%20%20%20%20return%20normal(interp(X%2CY))%3B%0A%20%20fi%3B%0A%20%20%2F%2F%20construct%20an%20extension%20of%20Z%2FpZ%0A%20%20N%3A%3Dceil(log(n%2B1)%2Flog(p))%3B%0A%20%20purge(g)%3B%0A%20%20GF(p%2CN%2Cg)%3B%0A%20%20%2F%2F%20interpolation%20at%20g%5Ej%0A%20%20gj%3A%3D1%3B%0A%20%20for%20j%20from%200%20to%20n%20do%0A%20%20%20%20X%5Bj%5D%3A%3Dgj%3B%0A%20%20%20%20Y%5Bj%5D%3A%3Ddet(gj*I-a)%3B%0A%20%20%20%20gj%3A%3Dg*gj%3B%0A%20%20od%3B%0A%20%20return%20normal(interp(X%2CY))%3B%0Affunction%3A%3B&+polchar(a)%3B%20charpoly(a%2Cx)&+a%3A%3Drandmatrix(8%2C8%2C1%20mod%205)&+polchar(a)%3B%20charpoly(a%2Cx)&"
 target="_blank">
-Linear algebra on a finite field
+Linear algebra over a finite field
 </a>
 </li>
 <li> Groebner  basis
@@ -807,19 +807,28 @@ From the top you will see:
   You can <strong>comment</strong> an exisiting level by pressing
   the &#x270e; key. You can write boldface, italic, etc. in a comment
   using the buttons below the comment or typing HTML code.
-  If you want to render maths, enter a valid Xcas input between
-  $$, the input will be parsed unevaled and converted to MathML for 2d
+  If you want to render maths, you have two methods
+  <ul>
+    <li>enter a valid Xcas input between two dollars
+  (<tt>$...$</tt>), the input will be parsed unevaled and converted to MathML for 2d
   display. For example <tt>$x[n+1]^2$</tt> will display x with
   exponent n+1, <tt>$A=[[1,2],[3,4]]$</tt> will display a matrix
   (it will not modify A), <tt>$integrate(sin(x),x,0,pi)$</tt>
   will display the integral of sin(x) between 0 and pi (the integral will not be
-  computed). Symbols of sets like ℤ,ℕ may be obtained by entering
+    computed), <tt>vector(u), vector(A,B)</tt> will display an arrow
+    over u or AB.
+    Symbols of sets like ℤ,ℕ may be obtained by entering
   <tt>$ZZ$, $NN$</tt>, for example type <tt>$x in QQ$</tt> to get x∈ℚ. HTML code may
   also help like <tt>&amp;forall;</tt> for &forall;,
   <tt>&amp;exist;</tt>, <tt>&amp;oplus;</tt>, <tt>&amp;otimes;</tt>,
 <tt>&amp;notin;</tt>, <tt>&amp;empty;</tt>, <tt>&amp;part;</tt>, etc.
 or copy/paste a symbol from
 <a href="https://www.w3schools.com/charsets/ref_utf_math.asp">here</a>.
+    <li> or enter a comment containing at least one pair of
+    double dollars (<tt>$$...$$</tt>), the whole comment will be
+    rendered as a LaTeX formatted comment by loading MathJax
+    (beware that this will not work offline).
+  </ul>
   </li>
   <li>
     a <strong>console</strong> that will display CAS messages,
@@ -1299,7 +1308,7 @@ onclick="var tmp=document.getElementById('tutoanalyse'); if (tmp.style.display==
   Once <tt>f</tt> is defined, we can compute the value of the function
   and derivative like this:
   <button  
-  onclick="UI.insert(UI.focused,'f(sqrt(pi)); f'(2);f'(y);')">
+  onclick="UI.insert(UI.focused,'f(sqrt(pi)); f\'(2);f'(y);')">
   <tt>f(sqrt(pi)); f'(2); f'(y) </tt></button>.
   <br>
   <tt>'</tt> denotes the derivative with respect to <tt>x</tt>,

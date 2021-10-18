@@ -4043,16 +4043,31 @@ ffonction:;
 fonction isole(P) // racines positives de P
   local l,M;
   l:=coeffs(P);
-  M:=ceil(maxnorm(l)/abs(l[0]));
+  M:=ceil(maxnorm(l)/abs(l[0]))+1;
   P:=P(x=M*x);
   return isole01(P,0,M);
 ffonction:;
 \end{giacprog}
 Racines de $P$ dans $\mathbb{R}^{*+}$
-\giacinputmath{P:=(x-1/3)*(x-2)*(x^2+1); descartes(P)}
+\giacinputmath{P:=(x-1/3)*(x-3)*(x^2+1); descartes(P)}
+il y a 2 racines positives au moins.
 Racines de $P$ dans $]0,1[$
-\giacinputmath{Q:=normal(x^degree(P)*P(x=1/x)); descartes(Q(x=x+1))}
-Isolation des racines positives de $P$
+\giacinputmath{P1:=normal(x^degree(P)*P(x=1/x)); descartes(P1(x=x+1))}
+Donc une racine dans $]0,1[$.
+
+Isolation des racines positives de $P$: 
+on commence par se ramener \`a chercher les racines
+de $Q$ sur $]0,1[$ (il faudra les multiplier par $M$ \`a la fin)
+\giacinputmath{M:=ceil(maxnorm(coeffs(P))/abs(lcoeff(P)))+1;Q:=P(x=M*x)}
+\giacinputmath{P1:=normal(x^degree(Q)*Q(x=1/x)); descartes(P1(x=x+1))}
+Il y a plus que une racine, il faut d\'ecouper en deux~:
+\giacinputmath{Q1:=Q(x=x/2); P1:=normal(x^degree(Q1)*Q1(x=1/x)); descartes(P1(x=x+1))}
+donc il y a une racine de $Q$ dans $]0,1/2[$, donc de $P$ dans $]0,5/2[$
+\giacinputmath{Q1:=Q(x=(x+1)/2); P1:=normal(x^degree(Q1)*Q1(x=1/x)); descartes(P1(x=x+1))}
+donc il y a une racine de $Q$ dans $]1/2,1[$, donc de $P$ dans $]5/2,5[$.
+\giacinputmath{normal(Q(x=1/2))}
+$Q$ n'est pas nul en $1/2$, on conclut donc qu'il existe 2 racines positives
+pour $P$. V\'erification avec {\tt isole}~:
 \giacinputmath{isole(P);}
 
 L'algorithme VAS utilise ce type de r\'esultat et des changements de variable
@@ -4066,7 +4081,14 @@ Malheureusement, il faut calculer une nouvelle suite de Sturm
 pour chaque rectangle (alors que dans $\mathbb{R}$ on peut r\'eutiliser la
 m\^eme suite de Sturm). Ce qui est donc beaucoup plus couteux,
 en pratique on ne peut gu\`ere aller au-del\`a du degr\'e 10 avec
-l'instruction \verb|complexroot| de Giac, analogue de \verb|realroot|.
+l'instruction \verb|sturm| dans $\mathbb{C}$
+(on peut montrer que la 
+complexit\'e asymptotique pour d\'eterminer les racines
+avec une pr\'ecision relative de $b$ bits 
+est en $\tilde{O}(n^4b^2)$ mais ces complexit\'es
+sont valides pour de grandes valeurs de $n$, pour des $n$
+de quelques dizaines, l'arithm\'etique sur les entiers de taille $n$
+est par exemple plus proche du cas na\"if que de l'asymptotique).
 \item Une autre m\'ethode dans le cas complexe, 
 consiste \`a utiliser
 un hybride num\'erique-exact. Les racines d'un polyn\^ome $Q$
@@ -10413,6 +10435,31 @@ on v\'erifie
 
 \section{Exercices (factorisation des polynômes)}
 \begin{enumerate}
+\item Soit le polyn\^ome $P(x)=x^{5}+x^{4}-5x^{3}-5x^{2}+6x+6$.
+On veut d\'eterminer des intervalles d'isolation des racines r\'eelles
+positives de $P$.
+\begin{enumerate} 
+\item Impl\'ementer la r\`egle de Descartes sur $]0,+\infty[$
+(nombre de racines $\leq$ au nombre de changements de signe des
+coefficients).
+\item Pour faire de m\^eme sur $]0,1[$, on fait d'abord
+le changement de variables $x\rightarrow 1/x$ 
+($\tilde{P}(x)=x^5P(1/x)$) qui permet
+de se ramener \`a des racines dans $]1,+\infty[$ puis  
+$x \rightarrow x+1$ ($\tilde{P}(x)=P(x+1)$) sur $]0,+\infty[$.
+\item D\'eterminer une majoration $M$ des racines de $P$ en module.
+\item D\'eterminer le polyn\^ome $Q$ tel que $Q(x)=P(Mx)$. 
+Les racines positives de $P$ correspondent
+\`a des racines de $Q$ dans $]0,1[$ pour lesquelles on peut
+appliquer la r\`egle de Descartes adapt\'ee.
+\item S'il y a 2 changements de signe ou plus de $Q$ sur $]0,1[$,
+rechercher les racines de $Q$ dans $]0,1/2[$ en se ramenant
+aux racines de $R$ dans $]0,1[$ avec $R(x)=Q(x/2)$
+puis les racines de $Q$ dans $]1/2,1[$ en posant $S(x)=Q((x+1)/2)$.
+\item Discuter la complexit\'e des changements de variables
+qui apparaissent dans cette m\'ethode, en particulier en utilisant
+une repr\'esentation des polyn\^omes par une liste de coefficients.
+\end{enumerate}
 \item Déterminer le nombre de racines de $-x^7+x^4+12x-5$ comprises
 entre 0 et 6 (en utilisant les suites de Sturm, on donnera les
 d\'etails des calculs). D\'eterminer le nombre de racines r\'eelles
@@ -13973,6 +14020,25 @@ en prenant $v=(1,0,0)$ on obtient la matrice~:
 le permier vecteur du noyau est $(-1,2,-1)$ d'où un polynôme divisant
 le polynôme minimal $-x^2+2x-1$.
 
+{\bf Cout}\\
+Le calcul de la suite des $v_k=A^kv$ se fait par valeurs de $k$ croissantes 
+$v_{k+1}=Av_k$ en $n \times O(n^2)$ op\'erations soit en $O(n^3)$
+(il ne faut pas calculer $A^k$ ce qui n\'ecessiterait $O(n^4)$
+op\'erations).\\
+On peut am\'eliorer la complexit\'e asymptotique de la mani\`ere 
+suivante~: on calcule $v, Av$ et $A^2$ avec une multiplication rapide
+de matrices \`a la Strassen, on multiplie $A^2$ par $v,Av$ obtenant ainsi
+$A^2v, A^3v$, on calcule $A^4=(A^2)^2$ on multiplie $A^4$ par $v,Av,A^2v,A^3v$
+obtenant ainsi $A^4v,...,A^7v$, etc. Il
+faut faire $\log_2(n)$ multiplications de matrices, 
+on a donc une complexit\'e en $O(n^{\log_2(7)}\log(n))$ avec une 
+multiplication \`a la Strassen, mais il 
+faudrait des valeurs de $n$ vraiment grandes (plus d'une dizaine
+de millions donc impossible \`a stocker en m\'emoire)
+pour que cet algorithme soit int\'eressant comme le montre le calcul
+\giacinput{fsolve(n^(log(7.)/log(2)-3)*log(n)/log(2)=1,n=1e5)}
+
+
 \subsection{Le polyn\^ome caract\'eristique}
 \index{caract\'eristique, polyn\^ome}
 Pour une matrice générique, le polynôme caractéristique est égal
@@ -14138,7 +14204,7 @@ produit du polyn\^ome de la matrice companion lignes et colonnes
 Si on s'int\'eresse au polyn\^ome minimal, on prend le PPCM
 au lieu du produit.
 
-Le co\^ut de l'algorithme de Danilvesky est de $O(n^3)$ op\'erations
+Le co\^ut de l'algorithme de Danilevsky est de $O(n^3)$ op\'erations
 sur le corps. Si on travaille sur les entiers, on peut reconstruire
 le polyn\^ome minimal ou caract\'eristique par les restes chinois,
 en estimant la taille des coefficients, on obtient un temps de calcul
@@ -14160,6 +14226,55 @@ Chaque coefficient est un polyn\^ome
 dont le degr\'e en le param\`etre est major\'e par le nombre de points
 d'interpolation utilis\'es moins 1, et est donc nul car sinon il aurait
 trop de racines avec tous les points d'interpolation utilis\'es.
+
+\subsection{Les traces et les identit\'es de Newton}\index{Newton, identit\'es}
+Une autre id\'ee pour calculer le polyn\^ome caract\'eristique,
+on calcule les $A^k, k=0..n$ (en posant $A_{k+1}=AA_k$), puis les
+traces. Si le polyn\^ome caract\'eristique est $P=x^n+c_{n-1}x^{n-1}...+c_0$
+alors les $c_i$ sont au signe et indice pr\`es les polyn\^omes
+sym\'etriques \'el\'ementaires $e_j$ en les racines $r_j$ de $P$  
+(=valeurs propres de $A$, dans une extension
+alg\'ebrique du corps si n\'ecessaire). On pose
+$$ e_j=\sum_{1\leq i_1<i_2<...<i_j\leq n} r_{i_1}...r_{i_j} $$
+On a alors (en consid\'erant $t^nP(1/t)$)
+\begin{equation}\label{eq:idnewt1}
+\prod_{j=1}^n(1-r_jt)=\sum_{k=0}^n t^k (-1)^k e_k
+\end{equation}
+On peut passer facilement des $e_j$ aux $ p_j=\sum_{k=1}^n r_k^j$ par
+les identt\'es de Newton. On calcule la d\'eriv\'ee par rapport \`a $t$
+de (\ref{eq:idnewt1}) et on multiplie par $t$
+$$ \sum_{j=1}^n \frac{-r_jt}{1-r_jt} \prod_{k=1}^n(1-r_kt) 
+=\sum_{k=0}^n kt^k (-1)^k e_k  $$
+on d\'eveloppe en s\'erie enti\`ere 
+$$\frac{r_jt}{1-r_jt}=\sum_{k=1}^\infty (r_jt)^k$$
+on inverse les sommes d'o\`u
+$$ -\left(\sum_{k=1}^\infty t^k (\sum_{j=1}^n r_j^k) \right) 
+\times \sum_{k=0}^n t^k (-1)^k e_k = \sum_{k=0}^n k t^k (-1)^k e_k$$
+on remplace $\sum_{j=1}^n r_j^k$ par $p_k$ et
+on \'ecrit la relation induite pour la puissance $t^k$
+$$ -\sum_{j=1}^k p_j (-1)^{k-j} e_{k-j} =(-1)^k ke_k$$
+ou encore
+$$ ke_k=\sum_{j=1}^k  (-1)^{j-1} p_j e_{k-j}$$
+Ainsi, connaissant les $p_k, k=0..n$, 
+on peut calculer les $e_k,k=0..n$ par ordre croissant sur un corps
+de caract\'eristique nulle ou sup\'erieure \`a $n$:
+\begin{eqnarray*}
+ e_0&=&1, \\ 
+e_1&=&p_1e_0=p_1, \\ 
+2e_2&=&p_1e_1-p_2,\\
+3e_3&=&p_1e_2-p_2e_1+p_3, \\
+4e_4&=& p_1e_3-p_2e_2+p_3e_1-p_4, \\
+&...&
+\end{eqnarray*}
+Le cout de calcul par cette m\'ethode est en $O(n^4)$ 
+(avec multiplication na\"ive
+des matrices, ce cout est am\'elior\'e avec une multiplication
+rapide \`a la Strassen) 
+et n'est donc pas comp\'etitif par rapport \`a 
+l'algorithme de Danilevsky. La section suivante pr\'esente un
+algorithme assez proche, toujours en $O(n^4)$, mais qui permet 
+\'egalement de calculer facilement les vecteurs propres lorsqu'on
+peut trouver les racines du polyn\^ome caract\'eristique.
 
 \subsection{La m\'ethode de
   Leverrier-Faddeev-Souriau}\index{Leverrier} \index{Faddeev}\index{Souriau}
@@ -14264,8 +14379,11 @@ or le 2\`eme membre est inversible en $\lambda_0$ ce qui n'est pas le
 cas du premier.
 Pour avoir une base des vecteurs propres associ\'es \`a $\lambda_0$, on
 calcule $B(\lambda_0) $ par la m\'ethode de Horner appliqu\'ee au
-polyn\^ome $B(\lambda)$ en $\lambda=\lambda_0$, et on r\'eduit en
-colonnes la matrice obtenue.
+polyn\^ome $B(\lambda)$ en $\lambda=\lambda_0$. En fait il suffit de
+calculer chaque colonne l'une \`a la suite de l'autre et s'arr\^eter
+d\`es qu'on rencontre une colonne non nulle. Le calcul d'un vecteur
+propre associ\'e \`a une valeur propre simple 
+se fait donc g\'en\'eriquement en $O(n^2)$ op\'erations. 
 
 \subsection{La forme normale de Jordan} \label{sec:jordan}\index{Jordan}
 Pour les valeurs propres de multiplicit\'e plus grande que 1, on souhaiterait 
@@ -14794,7 +14912,8 @@ num\'eriquement stable (car on retranche d'un vecteur
 une combinaison lin\'eaire des vecteurs pr\'ec\'dents pour rendre
 le nouveau vecteur orthogonal et les erreurs d'arrondi s'accumulent
 rendant l'orthogonalit\'e plus al\'eatoire).
-La m\'ethode de Householder utilise des matrices de sym\'etrie
+La m\'ethode de Householder\index{Householder} 
+utilise des matrices de sym\'etrie
 par rapport \`a un hyperplan et ne souffre pas de ce probl\`eme d'instabilit\'e.
 Pour annuler les coefficients de la premi\`ere colonne $c_1$ de $A$,
 on construit le vecteur $u=c_1 \pm \|c_1\| e_1$ o\`u $e_1$
@@ -18423,7 +18542,7 @@ certain point de vue, c'\'etait une chance, puisqu'il y avait
 tout \`a faire donc tout \`a apprendre.
 Au cours des ann\'ees qui ont suivi, j'ai am\'elior\'e ces programmes,
 et je les ai mis \`a disposition de la communaut\'e des utilisateurs
-de calculatrices HP sous le nom d'Erable (clin d'oeil \`a Maple).
+de calculatrices HP sous le nom d'Erable (en clin d'oeil \`a Maple).
 Erable fait partie de ce que l'on peut qualifier de syst\`eme de
 calcul formel ``jouets'', j'entends par l\`a capable de r\'esoudre
 les exercices calculatoires donn\'es du lyc\'ee \`a la licence de maths.
@@ -18433,7 +18552,7 @@ une \'equipe tr\`es sympathique~: Ren\'ee, Roland,
 G\'erard, Fr\'ed\'eric). On programmait en Pascal au d\'ebut, puis
 rapidement on a bascul\'e les enseignements en C/C++.
 Ren\'ee s'int\'eressait
-aussi aux calculatrices et pensait qu'il faut contacter HP (il
+aussi aux calculatrices et pensait qu'il fallait contacter HP (il
 y a un centre HP en banlieue de Grenoble),
 ce qui ne fut pas \'evident mais finit par d\'eboucher sur
 la cr\'eation d'un module optionnel calculatrices en Deug
@@ -18450,11 +18569,11 @@ ne sont pas assez rentables, les efforts de Jean pour
 faire la publicit\'e de la HP40 sont stopp\'es juste au
 moment o\`u ils commen\c{c}aient \`a porter leurs fruits
 (avec une calculatrice formelle au prix de la TI83,
-la HP40 avait pourtant toutes ses chances, c'est
+la HP40 avait pourtant toutes ses chances, c'\'etait
 d'ailleurs encore vrai en 2014,
-la HP40GS est la calculatrice formelle
-la moins ch\`ere du march\'e, on la trouve cette rentr\'ee 2014
-\`a un prix \'equivalent aux graphiques d'entr\'ee de gamme de TI et Casio).
+la HP40GS \'etait la calculatrice formelle
+la moins ch\`ere du march\'e, 
+\`a un prix \'equivalent aux graphiques d'entr\'ee de gamme de TI et Casio.
 
 C'est cette exp\'erience avec HP
 qui m'a fait prendre conscience qu'il \'etait possible d'\'ecrire un logiciel
@@ -18584,11 +18703,12 @@ Le projet Giac va aussi prendre en 2011 une direction un peu
 impr\'evue, c'est la valorisation. Le noyau de Giac va
 en effet pour la premi\`ere fois \^etre int\'egr\'e
 \`a une application commerciale, PocketCAS. Ce qui n\'ecessitera
-de contacter les services de valorisation de l'universit\'e, d\'ebut d'un \'episode
+de contacter les services de valorisation de l'universit\'e, 
+d\'ebut d'un \'episode
 difficile que je ne peux pas commenter plus pour des
 raisons de confidentialit\'e.
 
-\section{Le pr\'esent et le futur proche}
+\section{2013-2017}
 Le nombre de t\'el\'echargements de Xcas d\'epasse maintenant
 les 50 000 par an avec des pointes mensuelles en septembre et octobre
 \`a plus de 12 000 (principalement sous Windows). Xcas est
@@ -18633,10 +18753,10 @@ m\^eme si plusieurs pr\'eparations semblent utiliser Xcas.
 La collaboration entam\'ee avec Geogebra en 2013
 se concr\'etise avec la version 4.4 sortie en d\'ecembre 2013
 qui interface Giac (module natif java et version
-web) avec l'\'ecran CAS de Geogebra.
+web) avec la fen\^etre CAS de Geogebra.
 Les interfaces vers d'autres langages s'am\'eliorent,
 module Python, interface avec Sage (F. Han),
-utilisation depuis javascript. Plusieurs projets
+utilisation depuis Javascript. Plusieurs projets
 libres utilisent Giac comme moteur de calcul~: Qcas (interface
 alternative, qui pourrait remplacer Xcas un jour),
 Smartcas (calculatrice CAS dans votre navigateur),
@@ -18644,8 +18764,49 @@ Xcas Pad (sur tablettes)...
 
 Cot\'e valorisation, Giac fait aujourd'hui l'objet de
 plusieurs contrats de
-commercialisation (en dual-licensing), dont un avec HP
+commercialisation (en dual-licensing), le plus important avec HP
 pour le CAS des calculatrices HP-Prime.
+
+\section{Le pr\'esent et le futur proche}
+La collaboration avec Geogebra m'ayant fait d\'evelopper une version 
+compil\'ee en Javascript de Giac, j'avais \'ecrit 
+une petite interface web pour la tester. D\'ecid\'e \`a pouvoir
+utiliser Xcas sur mon smartphone, je l'avais am\'elior\'e petit \`a
+petit. En mars 2018 elle commence \`a \^etre une alternative envisageable \`a la
+version native de Xcas. On y retrouve l'essentiel des fonctionnalit\'es
+de Xcas (il manque certaines fonctionnalit\'es, mais dans des domaines
+comme la g\'eom\'etrie interactive o\`u les utilisateurs 
+travaillent avec des logiciels concurrents), en bien plus transparent
+pour l'utilisateur qui n'a pas besoin
+d'installer quoi que ce soit, et qui peut
+\'echanger bien plus facilement des sessions de calculs par email.
+Toujours avec le moteur Javscript de Giac, j'impl\'emente un
+jeu de commandes utilisables dans un fichier \LaTeX\ pour en
+avoir une sortie HTML+Mathml consultable depuis un navigateur, ce
+qui permet de faire des documents math\'ematiques interactifs o\`u
+le lecteur peut ex\'ecuter des commandes du document 
+apr\`es les avoir \'eventuellement modifi\'es.
+
+En 2017, les programmes d'algorithmique de seconde changent, en introduisant
+la notion de fonction en algorithmique, ce qui donne une nouvelle
+opportunit\'e d'utiliser Xcas au lyc\'ee. Mais m\^eme si les programmes
+officiels n'imposent aucun langage, la hi\'erarchie de l'\'Education
+Nationale veut imposer Python
+ce qui va fatalement emp\^echer l'adoption de Xcas. \`A la rentr\'ee 2017,
+une nouvelle calculatrice graphique sort, la Numworks, avec micro-Python
+comme langage de programmation, elle sera d'ailleurs
+suivie par Casio en mars 2018. 
+Il devient donc strat\'egiquement 
+important de faciliter le passage de Python \`a Xcas, je d\'ecide
+de cr\'eer un traducteur. Six mois plus tard, il permet de faire
+fonctionner de nombreux scripts niveau lyc\'ee avec
+des modifications mineures, voire tels quels dans les cas favorables.
+Combin\'e avec l'interface Xcas pour Firefox, on peut imaginer
+dans un futur proche que des \'el\`eves de lyc\'ee programment
+directement sur leur smartphone ou tablette
+avec Xcas en mode compatible Python. La compatibilit\'e Python
+devrait \'egalement \^etre appr\'eci\'ee par les possesseurs
+de calculatrices HP Prime.
 
 \section{Les concurrents open-source.} \label{sec:concurrents}
 Les principaux concurrents open-source de Giac/Xcas sont Maxima et
