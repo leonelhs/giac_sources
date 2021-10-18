@@ -1181,11 +1181,11 @@ namespace xcas {
     {gettext("Graph off"), 0,  (Fl_Callback *) cb_Graph_Graphoff, 0, 0, 0, 0, 14, 56},
     {0},
     {gettext("3-d"), 0,  0, 0, 64, 0, 0, 14, 56},
-    {gettext("Mouse plan equation"), 0,  (Fl_Callback*)cb_Graph2d3d_mouse_plan, 0, 0, 0, 0, 14, 56},
+    {gettext("Mouse plane equation"), 0,  (Fl_Callback*)cb_Graph2d3d_mouse_plan, 0, 0, 0, 0, 14, 56},
     {gettext("Oyz view (x=cst=depth)"), 0,  (Fl_Callback*)cb_Graph2d3d_xview, 0, 0, 0, 0, 14, 56},
     {gettext("Oxz view (y=cst=depth)"), 0,  (Fl_Callback*)cb_Graph2d3d_yview, 0, 0, 0, 0, 14, 56},
-    {gettext("upper view (z=cst=depth)"), 0,  (Fl_Callback*)cb_Graph2d3d_zview, 0, 0, 0, 0, 14, 56},
-    {gettext("default view"), 0,  (Fl_Callback*)cb_Graph2d3d_startview, 0, 0, 0, 0, 14, 56},
+    {gettext("Upper view (z=cst=depth)"), 0,  (Fl_Callback*)cb_Graph2d3d_zview, 0, 0, 0, 0, 14, 56},
+    {gettext("Default view"), 0,  (Fl_Callback*)cb_Graph2d3d_startview, 0, 0, 0, 0, 14, 56},
     {gettext("Rotate animation"), 0,  (Fl_Callback*)cb_Graph2d3d_rotate, 0, 0, 0, 0, 14, 56},
     {gettext("Hide below depth"), 0,  (Fl_Callback*)cb_Graph2d3d_hide, 0, 0, 0, 0, 14, 56},
     {gettext("Show below depth"), 0,  (Fl_Callback*)cb_Graph2d3d_show, 0, 0, 0, 0, 14, 56},
@@ -1689,22 +1689,22 @@ namespace xcas {
       ty->tooltip(gettext("Number of units or pixels for ticks on Y"));
       y_ += dh;
       nx=new Fl_Value_Input(30,y_,dx/7-30,dh-4,"x*");
-      nx->tooltip(gettext("x coefficient of mouse plan equation"));
+      nx->tooltip(gettext("x coefficient of mouse plane equation"));
       nx->step(0.1);
       nx->minimum(-10.1);
       nx->maximum(10.1);
       ny=new Fl_Value_Input(dx/7+30,y_,dx/7-30,dh-4,"+y*");
-      ny->tooltip(gettext("y coefficient of mouse plan equation"));
+      ny->tooltip(gettext("y coefficient of mouse plane equation"));
       ny->step(0.1);
       ny->minimum(-10.1);
       ny->maximum(10.1);
       nz=new Fl_Value_Input(2*dx/7+30,y_,dx/7-30,dh-4,"+z*");
-      nz->tooltip(gettext("z coefficient of mouse plan equation"));
+      nz->tooltip(gettext("z coefficient of mouse plane equation"));
       nz->step(0.1);
       nz->minimum(-10.1);
       nz->maximum(10.1);
       nd=new Fl_Value_Input(3*dx/7+30,y_,dx/7-30,dh-4,"=");
-      nd->tooltip(gettext("constant coefficient of mouse plan equation"));
+      nd->tooltip(gettext("constant coefficient of mouse plane equation"));
       nd->step(0.1);
       nd->minimum(-30.1);
       nd->maximum(30.1);
@@ -6721,9 +6721,9 @@ namespace xcas {
     {gettext("Insert"), 0,  (Fl_Callback*)cb_Figure_Insert, 0, 0, 0, 0, 14, 56},
     {gettext("Export Print"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("EPS PNG and preview"), 0,  (Fl_Callback*)cb_Figure_Preview, 0, 0, 0, 0, 14, 56},
-    {gettext("to printer"), 0,  (Fl_Callback*)cb_Figure_Print, 0, 0, 0, 0, 14, 56},
-    {gettext("latex preview"), 0,  (Fl_Callback*)cb_Figure_LaTeX_Preview, 0, 0, 0, 0, 14, 56},
-    {gettext("latex printer"), 0,  (Fl_Callback*)cb_Figure_LaTeX_Print, 0, 0, 0, 0, 14, 56},
+    {gettext("To printer"), 0,  (Fl_Callback*)cb_Figure_Print, 0, 0, 0, 0, 14, 56},
+    {gettext("Latex preview"), 0,  (Fl_Callback*)cb_Figure_LaTeX_Preview, 0, 0, 0, 0, 14, 56},
+    {gettext("Latex printer"), 0,  (Fl_Callback*)cb_Figure_LaTeX_Print, 0, 0, 0, 0, 14, 56},
     {0}, // end print
     {0}, // end file
     {gettext("Edit"), 0,  0, 0, 64, 0, 0, 14, 56},

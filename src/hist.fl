@@ -761,7 +761,8 @@ Function {cb_Insert_ItemName(Fl_Widget * w , void*)} {} {
 	  eqwptr->replace_selection(giac::symbolic(*tmp._FUNCptr,eqwptr->get_selection()));
 	return;
       }
-      menu_buffer += '(';
+      if (!Xcas_automatic_completion_browser->value())
+        menu_buffer += '(';
     }
     static std::string ans;
     ans=menu_buffer;
@@ -1070,12 +1071,12 @@ Function {Xcas_run(int argc,char ** argv)} {open
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_open_maple {
-            label {maple worksheet}
+            label {Maple worksheet}
             callback {load_history(1);}
             xywh {15 15 100 20}
           }
           MenuItem Xcas_open_ti89 {
-            label {ti89 program}
+            label {TI89 program}
             callback {load_history(3);}
             xywh {15 15 100 20}
           }
@@ -1105,27 +1106,27 @@ Function {Xcas_run(int argc,char ** argv)} {open
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_Insert_Session {
-            label {xcas session}
+            label {Xcas session}
             callback {xcas::History_cb_Insert(Xcas_current_session(),0);}
             xywh {55 55 100 20}
           }
           MenuItem Xcas_Firefox_Insert_Session {
-            label {xcas Firefox link}
+            label {Xcas Firefox link}
             callback {fl_alert("Click on a history level then paste (Ctrl-V)");}
             xywh {55 55 100 20}
           }
           MenuItem Xcas_Insert_Figure {
-            label figure
+            label Figure
             callback {xcas::History_cb_Insert_Figure(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
           MenuItem Xcas_Insert_Tableur {
-            label spreadsheet
+            label Spreadsheet
             callback {xcas::History_cb_Insert_Tableur(Xcas_current_session(),0);}
             xywh {75 75 100 20}
           }
           MenuItem Xcas_Insert_Program {
-            label program
+            label Program
             callback {xcas::History_cb_Insert_Program(Xcas_current_session(),0);}
             xywh {85 85 100 20}
           }
@@ -1155,27 +1156,27 @@ Function {Xcas_run(int argc,char ** argv)} {open
             xywh {65 65 100 20}
           }
           MenuItem Xcas_Export_Xcas {
-            label {xcas text}
+            label {Xcas text}
             callback {xcas::History_cb_Save_as_xcas_text(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
           MenuItem Xcas_Export_XcasPy {
-            label {xcas-python text}
+            label {Xcas-Python text}
             callback {xcas::History_cb_Save_as_xcaspy_text(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
           MenuItem Xcas_Export_Maple {
-            label {maple text}
+            label {Maple text}
             callback {xcas::History_cb_Save_as_maple_text(Xcas_current_session(),0);}
             xywh {75 75 100 20}
           }
           MenuItem Xcas_Export_Mupad {
-            label {mupad text}
+            label {Mupad text}
             callback {xcas::History_cb_Save_as_mupad_text(Xcas_current_session(),0);}
             xywh {85 85 100 20}
           }
           MenuItem Xcas_Export_TI {
-            label {ti text}
+            label {TI text}
             callback {xcas::History_cb_Save_as_ti_text(Xcas_current_session(),0);}
             xywh {95 95 100 20}
           }
@@ -1190,17 +1191,17 @@ Function {Xcas_run(int argc,char ** argv)} {open
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_Print_Preview {
-            label preview
+            label Preview
             callback {xcas::History_cb_Preview(Xcas_current_session(),0);}
             xywh {95 95 100 20}
           }
           MenuItem Xcas_Print_Printer {
-            label {to printer}
+            label {To printer}
             callback {xcas::History_cb_Print(Xcas_current_session(),0);}
             xywh {105 105 100 20}
           }
           MenuItem Xcas_Print_Preview_Selected {
-            label {preview selected levels}
+            label {Preview selected levels}
             callback {xcas::History_cb_Preview_selected(Xcas_current_session(),0);}
             xywh {115 115 100 20}
           }
@@ -1210,17 +1211,17 @@ Function {Xcas_run(int argc,char ** argv)} {open
           xywh {15 15 100 20}
         } {
           MenuItem Xcas_LaTeX_Print_Preview {
-            label {latex preview}
+            label {LaTeX preview}
             callback {xcas::History_cb_LaTeX_Preview(Xcas_current_session(),0);}
             xywh {110 110 100 20}
           }
           MenuItem Xcas_LaTeX_Print_Printer {
-            label {latex print}
+            label {LaTeX print}
             callback {xcas::History_cb_LaTeX_Print(Xcas_current_session(),0);}
             xywh {120 120 100 20}
           }
           MenuItem Xcas_LaTeX_Print_Selection {
-            label {latex print selection}
+            label {LaTeX print selection}
             callback {xcas::History_cb_LaTeX_Print_sel(Xcas_current_session(),0);}
             xywh {130 130 100 20}
           }
@@ -1323,7 +1324,7 @@ update_xcas=0;}
           xywh {190 190 100 20}
         }
         MenuItem Xcas_Tex_Selection {
-          label {selection -> LaTeX}
+          label {Selection -> LaTeX}
           callback {static std::string s; giac::gen g;
     const giac::context * contextptr=xcas::get_context(xcas::Xcas_input_focus);
   try {
@@ -1490,17 +1491,17 @@ Xcas_DispG_Cancel_->hide();}
             xywh {45 45 100 20} shortcut 0x80064
           }
           MenuItem Xcas_show_keyboard {
-            label keyboard
+            label Keyboard
             callback {Xcas_Keyboard_Group->show(); Xcas_resize_mainwindow();}
             xywh {30 30 100 20}
           }
           MenuItem Xcas_show_bandeau {
-            label bandeau
+            label Bandeau
             callback {Xcas_Bandeau_Keys->show(); Xcas_resize_mainwindow();}
             xywh {40 40 100 20}
           }
           MenuItem Xcas_show_msg {
-            label msg
+            label Msg
             callback {Xcas_Messages->show(); Xcas_resize_mainwindow();}
             xywh {45 45 100 20}
           }
@@ -1521,17 +1522,17 @@ Xcas_DispG_Cancel_->hide();}
             xywh {55 55 100 20}
           }
           MenuItem Xcas_hide_keyboard {
-            label keyboard
+            label Keyboard
             callback {Xcas_Keyboard_Group->hide(); Xcas_resize_mainwindow();}
             xywh {25 25 100 20}
           }
           MenuItem Xcas_hide_bandeau {
-            label bandeau
+            label Bandeau
             callback {Xcas_Bandeau_Keys->hide(); Xcas_resize_mainwindow();}
             xywh {40 40 100 20}
           }
           MenuItem Xcas_hide_msg {
-            label msg
+            label Msg
             callback {Xcas_Messages->hide(); Xcas_resize_mainwindow();}
             xywh {45 45 100 20}
           }
@@ -1541,7 +1542,7 @@ Xcas_DispG_Cancel_->hide();}
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_index_Francais {
-            label francais
+            label Francais
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(1,giac::context0);
 doc_prefix=giac::set_language(1,contextptr);
@@ -1550,7 +1551,7 @@ giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_index_English {
-            label english
+            label English
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(2,giac::context0);
 doc_prefix=giac::set_language(2,contextptr);
@@ -1559,7 +1560,7 @@ giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_index_Espanol {
-            label espanol
+            label Espanol
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(3,giac::context0);
 doc_prefix=giac::set_language(3,contextptr);
@@ -1568,7 +1569,7 @@ giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_index_Greek {
-            label greek
+            label Greek
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(4,giac::context0);
 doc_prefix=giac::set_language(4,contextptr);
@@ -1577,7 +1578,7 @@ giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_index_Chinese {
-            label chinese
+            label Chinese
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(4,giac::context0);
 doc_prefix=giac::set_language(8,contextptr);
@@ -1586,7 +1587,7 @@ giac::html_help_init("aide_cas",1);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_index_German {
-            label deutsch
+            label Deutsch
             callback {const giac::context * contextptr=Xcas_get_context();
 // doc_prefix=giac::set_language(3,giac::context0);
 doc_prefix=giac::set_language(9,contextptr);
@@ -1600,77 +1601,77 @@ giac::html_help_init("aide_cas",1);}
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_background_color_item {
-            label {default background}
+            label {Default background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_background_color);
 xcas::Xcas_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {10 10 100 20}
           }
           MenuItem Xcas_input_text_color {
-            label {input text}
+            label {Input text}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_input_color);
 xcas::Xcas_input_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_input_text_background_color {
-            label {input background}
+            label {Input background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_input_background_color);
 xcas::Xcas_input_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_comment_color_item {
-            label {comment text}
+            label {Comment text}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_comment_color);
 xcas::Xcas_comment_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_comment_background_color_item {
-            label {comment background}
+            label {Comment background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_comment_background_color);
 xcas::Xcas_comment_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_log_color_item {
-            label {log text}
+            label {Log text}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_log_color);
 xcas::Xcas_log_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_log_background_color_item {
-            label {log background}
+            label {Log background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_log_background_color);
 xcas::Xcas_log_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_equation_color_item {
-            label {equation text}
+            label {Equation text}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_equation_color);
 xcas::Xcas_equation_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_equation_background_color_item {
-            label {equation background}
+            label {Equation background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_equation_background_color);
 xcas::Xcas_equation_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
           }
           MenuItem Xcas_editor_color_item {
-            label {editor text}
+            label {Editor text}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_color);
 xcas::Xcas_editor_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20} hide
           }
           MenuItem Xcas_editor_background_color_item {
-            label {editor background}
+            label {Editor background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_background_color);
 xcas::Xcas_editor_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
@@ -1707,7 +1708,7 @@ xcas::set_colors(Xcas_Main_Window_);}
           xywh {10 10 100 20}
         }
         MenuItem Xcas_browser {
-          label browser
+          label Browser
           callback {std::string s=Xcas_browser_name();
 const char * ch=fl_input(gettext("Enter new help browser program (empty line for builtin)"),s.c_str());
 if (!ch)
@@ -2012,7 +2013,7 @@ if (xcas::use_external_browser)
             xywh {15 15 100 20}
           }
           MenuItem Xcas_help_solution {
-            label solutions
+            label Solutions
             callback {const char * ch=fl_input(gettext("Exercise number (from 1 to 25)?"));
 if (!ch) return;
 int i=atoi(ch);
@@ -2276,11 +2277,11 @@ giac::html_help_init("aide_cas",language(contextptr),true,true);}
             xywh {35 35 100 20}
           }
           MenuItem Xcas_help_pourcent {
-            label {%: Z/pZ, p premier}
+            label {%: Z/pZ, p prime}
             xywh {35 35 100 20}
           }
           MenuItem Xcas_help_GF {
-            label {GF: Corps fini non premier}
+            label {GF: Finite non prime fields}
             xywh {35 35 100 20}
           }
         }
@@ -2334,7 +2335,7 @@ giac::html_help_init("aide_cas",language(contextptr),true,true);}
             xywh {35 35 100 20}
           }
           MenuItem Xcas_help_comb {
-            label {comb: comb(n.k) k parmi n}
+            label {comb: comb(n,k) n choose k}
             xywh {35 35 100 20}
           }
           MenuItem Xcas_help_normald {
@@ -4034,27 +4035,27 @@ Xcas_Page_Format_Output->value("8");}
         xywh {0 0 100 20}
       } {
         MenuItem {} {
-          label preview
+          label Preview
           callback {xcas::widget_ps_print(Xcas_DispG_,"DispG",true,3,true,true,true);}
           xywh {0 0 100 20}
         }
         MenuItem {} {
-          label print
+          label Print
           callback {xcas::widget_print(Xcas_DispG_);}
           xywh {0 0 100 20}
         }
         MenuItem {} {
-          label {latex preview}
+          label {LaTeX preview}
           callback {latex_save_DispG("DispG.tex"); xcas::xdvi("DispG.tex")}
           xywh {0 0 100 20}
         }
         MenuItem {} {
-          label {latex print}
+          label {LaTeX print}
           callback {latex_save_DispG("DispG.tex"); xcas::dvips("DispG.tex")}
           xywh {0 0 100 20}
         }
         MenuItem {} {
-          label close
+          label Close
           callback {Xcas_DispG_Window_->hide();}
           xywh {0 0 100 20}
         }

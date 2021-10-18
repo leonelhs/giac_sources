@@ -1273,6 +1273,7 @@ namespace giac {
       rho=ratnormal(rho,contextptr);
       if (abs_calc_mode(contextptr)==38 && !lvarfracpow(rho).empty())
 	return pow(e,plus_one_half,contextptr);
+      if (lvar(rho).empty()) rho=eval(rho,1,contextptr);
       rho=sqrt(rho,contextptr);
       if (abs_calc_mode(contextptr)==38 && rho.type!=_FRAC && rho.type>=_IDNT){
 	rho=evalf(rho,1,contextptr);
@@ -7981,6 +7982,8 @@ namespace giac {
     return gammatofactorial(x,contextptr);
 #else
     // if (x.is_symb_of_sommet(at_plus) && x._SYMBptr->feuille.type==_VECT && !x._SYMBptr->feuille._VECTptr->empty() && is_one(x._SYMBptr->feuille._VECTptr->back())) return gammatofactorial(x,contextptr);
+    if (is_assumed_integer(x,contextptr))
+      return gammatofactorial(x,contextptr);
     return symbolic(at_Gamma,x);
 #endif
   }

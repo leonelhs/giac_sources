@@ -670,7 +670,8 @@ void cb_Insert_ItemName(Fl_Widget * w , void*) {
   	  eqwptr->replace_selection(giac::symbolic(*tmp._FUNCptr,eqwptr->get_selection()));
   	return;
         }
-        menu_buffer += '(';
+        if (!Xcas_automatic_completion_browser->value())
+          menu_buffer += '(';
       }
       static std::string ans;
       ans=menu_buffer;
@@ -1904,8 +1905,8 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Open (recovery mode)", 0,  (Fl_Callback*)cb_Xcas_open_recovery, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Import", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"maple worksheet", 0,  (Fl_Callback*)cb_Xcas_open_maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"ti89 program", 0,  (Fl_Callback*)cb_Xcas_open_ti89, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maple worksheet", 0,  (Fl_Callback*)cb_Xcas_open_maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"TI89 program", 0,  (Fl_Callback*)cb_Xcas_open_ti89, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"V200 program", 0,  (Fl_Callback*)cb_Xcas_open_v200, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Clone", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
@@ -1913,33 +1914,33 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Online", 0,  (Fl_Callback*)cb_Xcas_CloneOnline, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Insert", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"xcas session", 0,  (Fl_Callback*)cb_Xcas_Insert_Session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"xcas Firefox link", 0,  (Fl_Callback*)cb_Xcas_Firefox_Insert_Session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"figure", 0,  (Fl_Callback*)cb_Xcas_Insert_Figure, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"spreadsheet", 0,  (Fl_Callback*)cb_Xcas_Insert_Tableur, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"program", 0,  (Fl_Callback*)cb_Xcas_Insert_Program, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Xcas session", 0,  (Fl_Callback*)cb_Xcas_Insert_Session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Xcas Firefox link", 0,  (Fl_Callback*)cb_Xcas_Firefox_Insert_Session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Figure", 0,  (Fl_Callback*)cb_Xcas_Insert_Figure, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Spreadsheet", 0,  (Fl_Callback*)cb_Xcas_Insert_Tableur, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Program", 0,  (Fl_Callback*)cb_Xcas_Insert_Program, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Save", 0x80073,  (Fl_Callback*)cb_Xcas_save_current_session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Save as", 0,  (Fl_Callback*)cb_Xcas_save_current_session_as, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Save all", 0,  (Fl_Callback*)cb_Xcas_save_all_sessions, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Export as", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"KhiCas", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"xcas text", 0,  (Fl_Callback*)cb_Xcas_Export_Xcas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"xcas-python text", 0,  (Fl_Callback*)cb_Xcas_Export_XcasPy, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"maple text", 0,  (Fl_Callback*)cb_Xcas_Export_Maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"mupad text", 0,  (Fl_Callback*)cb_Xcas_Export_Mupad, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"ti text", 0,  (Fl_Callback*)cb_Xcas_Export_TI, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Xcas text", 0,  (Fl_Callback*)cb_Xcas_Export_Xcas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Xcas-Python text", 0,  (Fl_Callback*)cb_Xcas_Export_XcasPy, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Maple text", 0,  (Fl_Callback*)cb_Xcas_Export_Maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Mupad text", 0,  (Fl_Callback*)cb_Xcas_Export_Mupad, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"TI text", 0,  (Fl_Callback*)cb_Xcas_Export_TI, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Kill", 0,  (Fl_Callback*)cb_Xcas_Close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Print", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"preview", 0,  (Fl_Callback*)cb_Xcas_Print_Preview, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"to printer", 0,  (Fl_Callback*)cb_Xcas_Print_Printer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"preview selected levels", 0,  (Fl_Callback*)cb_Xcas_Print_Preview_Selected, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Preview", 0,  (Fl_Callback*)cb_Xcas_Print_Preview, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"To printer", 0,  (Fl_Callback*)cb_Xcas_Print_Printer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Preview selected levels", 0,  (Fl_Callback*)cb_Xcas_Print_Preview_Selected, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"LaTeX", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"latex preview", 0,  (Fl_Callback*)cb_Xcas_LaTeX_Print_Preview, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"latex print", 0,  (Fl_Callback*)cb_Xcas_LaTeX_Print_Printer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"latex print selection", 0,  (Fl_Callback*)cb_Xcas_LaTeX_Print_Selection, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"LaTeX preview", 0,  (Fl_Callback*)cb_Xcas_LaTeX_Print_Preview, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"LaTeX print", 0,  (Fl_Callback*)cb_Xcas_LaTeX_Print_Printer, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"LaTeX print selection", 0,  (Fl_Callback*)cb_Xcas_LaTeX_Print_Selection, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Screen capture", 0,  (Fl_Callback*)cb_Xcas_screen_capture, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"--- ", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -1957,7 +1958,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Redo", 0x40079,  (Fl_Callback*)cb_Xcas_Redo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Paste", 0,  (Fl_Callback*)cb_Xcas_Paste, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Del selected levels", 0,  (Fl_Callback*)cb_Xcas_Delete, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"selection -> LaTeX", 0x40074,  (Fl_Callback*)cb_Xcas_Tex_Selection, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Selection -> LaTeX", 0x40074,  (Fl_Callback*)cb_Xcas_Tex_Selection, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"New entry", 0x8006e,  (Fl_Callback*)cb_Xcas_Add_Entry1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"New parameter", 0x40070,  (Fl_Callback*)cb_Xcas_Add_Parameter, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Insert newline", 0,  (Fl_Callback*)cb_Xcas_Insert_Newline, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -1980,41 +1981,41 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Show", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"DispG", 0x80064,  (Fl_Callback*)cb_Xcas_show_DispG, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"keyboard", 0,  (Fl_Callback*)cb_Xcas_show_keyboard, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"bandeau", 0,  (Fl_Callback*)cb_Xcas_show_bandeau, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"msg", 0,  (Fl_Callback*)cb_Xcas_show_msg, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Keyboard", 0,  (Fl_Callback*)cb_Xcas_show_keyboard, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Bandeau", 0,  (Fl_Callback*)cb_Xcas_show_bandeau, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Msg", 0,  (Fl_Callback*)cb_Xcas_show_msg, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Show script window", 0,  (Fl_Callback*)cb_Xcas_show_script_window, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Hide", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"DispG", 0,  (Fl_Callback*)cb_Xcas_hide_DispG, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"keyboard", 0,  (Fl_Callback*)cb_Xcas_hide_keyboard, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"bandeau", 0,  (Fl_Callback*)cb_Xcas_hide_bandeau, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"msg", 0,  (Fl_Callback*)cb_Xcas_hide_msg, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Keyboard", 0,  (Fl_Callback*)cb_Xcas_hide_keyboard, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Bandeau", 0,  (Fl_Callback*)cb_Xcas_hide_bandeau, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Msg", 0,  (Fl_Callback*)cb_Xcas_hide_msg, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Index language", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"francais", 0,  (Fl_Callback*)cb_Xcas_index_Francais, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"english", 0,  (Fl_Callback*)cb_Xcas_index_English, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"espanol", 0,  (Fl_Callback*)cb_Xcas_index_Espanol, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"greek", 0,  (Fl_Callback*)cb_Xcas_index_Greek, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"chinese", 0,  (Fl_Callback*)cb_Xcas_index_Chinese, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"deutsch", 0,  (Fl_Callback*)cb_Xcas_index_German, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Francais", 0,  (Fl_Callback*)cb_Xcas_index_Francais, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"English", 0,  (Fl_Callback*)cb_Xcas_index_English, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Espanol", 0,  (Fl_Callback*)cb_Xcas_index_Espanol, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Greek", 0,  (Fl_Callback*)cb_Xcas_index_Greek, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Chinese", 0,  (Fl_Callback*)cb_Xcas_index_Chinese, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Deutsch", 0,  (Fl_Callback*)cb_Xcas_index_German, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Colors", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"default background", 0,  (Fl_Callback*)cb_Xcas_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"input text", 0,  (Fl_Callback*)cb_Xcas_input_text_color, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"input background", 0,  (Fl_Callback*)cb_Xcas_input_text_background_color, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"comment text", 0,  (Fl_Callback*)cb_Xcas_comment_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"comment background", 0,  (Fl_Callback*)cb_Xcas_comment_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"log text", 0,  (Fl_Callback*)cb_Xcas_log_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"log background", 0,  (Fl_Callback*)cb_Xcas_log_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"equation text", 0,  (Fl_Callback*)cb_Xcas_equation_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"equation background", 0,  (Fl_Callback*)cb_Xcas_equation_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"editor text", 0,  (Fl_Callback*)cb_Xcas_editor_color_item, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
- {"editor background", 0,  (Fl_Callback*)cb_Xcas_editor_background_color_item, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Default background", 0,  (Fl_Callback*)cb_Xcas_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Input text", 0,  (Fl_Callback*)cb_Xcas_input_text_color, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Input background", 0,  (Fl_Callback*)cb_Xcas_input_text_background_color, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Comment text", 0,  (Fl_Callback*)cb_Xcas_comment_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Comment background", 0,  (Fl_Callback*)cb_Xcas_comment_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Log text", 0,  (Fl_Callback*)cb_Xcas_log_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Log background", 0,  (Fl_Callback*)cb_Xcas_log_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Equation text", 0,  (Fl_Callback*)cb_Xcas_equation_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Equation background", 0,  (Fl_Callback*)cb_Xcas_equation_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Editor text", 0,  (Fl_Callback*)cb_Xcas_editor_color_item, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Editor background", 0,  (Fl_Callback*)cb_Xcas_editor_background_color_item, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Session font", 0,  (Fl_Callback*)cb_Xcas_change_current_fontsize, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"All fonts", 0,  (Fl_Callback*)cb_Xcas_change_fontsize, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"browser", 0,  (Fl_Callback*)cb_Xcas_browser, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Browser", 0,  (Fl_Callback*)cb_Xcas_browser, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Save configuration", 0,  (Fl_Callback*)cb_Save_config, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Help", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
@@ -2051,7 +2052,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Start with CAS", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"Tutorial", 0,  (Fl_Callback*)cb_Xcas_help_tutorial, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"solutions", 0,  (Fl_Callback*)cb_Xcas_help_solution, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Solutions", 0,  (Fl_Callback*)cb_Xcas_help_solution, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Tutoriel algo", 0,  (Fl_Callback*)cb_Xcas_help_start_algoseconde, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Rebuild help cache", 0,  (Fl_Callback*)cb_Xcas_help_make_index, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -2115,8 +2116,8 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"rem: remainder (poly. synthetic division)", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"abcuv: Solve a.u+b.v=c for polynomials", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"chinrem: Chinese remainder for polynomials", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"%: Z/pZ, p premier", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"GF: Corps fini non premier", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"%: Z/pZ, p prime", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"GF: Finite non prime fields", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Linear algebra", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"matrix: Create a matrix", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -2131,7 +2132,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Proba", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"binomial: Binomial distribution", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"comb: comb(n.k) k parmi n", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"comb: comb(n,k) n choose k", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"normald: Normal density", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"seq: list", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"rand: random number", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3168,34 +3169,34 @@ xcas::DispG_Window *Xcas_DispG_Window_=(xcas::DispG_Window *)0;
 
 Fl_Menu_Bar *Xcas_DispG_Menu=(Fl_Menu_Bar *)0;
 
-static void cb_preview(Fl_Menu_*, void*) {
+static void cb_Preview(Fl_Menu_*, void*) {
   xcas::widget_ps_print(Xcas_DispG_,"DispG",true,3,true,true,true);
 }
 
-static void cb_print(Fl_Menu_*, void*) {
+static void cb_Print(Fl_Menu_*, void*) {
   xcas::widget_print(Xcas_DispG_);
 }
 
-static void cb_latex(Fl_Menu_*, void*) {
+static void cb_LaTeX(Fl_Menu_*, void*) {
   latex_save_DispG("DispG.tex"); xcas::xdvi("DispG.tex");
 }
 
-static void cb_latex1(Fl_Menu_*, void*) {
+static void cb_LaTeX1(Fl_Menu_*, void*) {
   latex_save_DispG("DispG.tex"); xcas::dvips("DispG.tex");
 }
 
-static void cb_close(Fl_Menu_*, void*) {
+static void cb_Close(Fl_Menu_*, void*) {
   Xcas_DispG_Window_->hide();
 }
 
 unsigned char menu_Xcas_DispG_Menu_i18n_done = 0;
 Fl_Menu_Item menu_Xcas_DispG_Menu[] = {
  {"Print", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"preview", 0,  (Fl_Callback*)cb_preview, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"print", 0,  (Fl_Callback*)cb_print, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"latex preview", 0,  (Fl_Callback*)cb_latex, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"latex print", 0,  (Fl_Callback*)cb_latex1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"close", 0,  (Fl_Callback*)cb_close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Preview", 0,  (Fl_Callback*)cb_Preview, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Print", 0,  (Fl_Callback*)cb_Print, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"LaTeX preview", 0,  (Fl_Callback*)cb_LaTeX, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"LaTeX print", 0,  (Fl_Callback*)cb_LaTeX1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Close", 0,  (Fl_Callback*)cb_Close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {0,0,0,0,0,0,0,0,0}
 };

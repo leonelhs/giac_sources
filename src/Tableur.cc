@@ -2973,8 +2973,8 @@ namespace xcas {
     {gettext("Move down"), 0,  (Fl_Callback *) cb_Tableur_MoveDown, 0, 0, 0, 0, 14, 56},
     {gettext("Auto Recompute"), 0,  (Fl_Callback *) cb_Tableur_Auto_Recompute, 0, 0, 0, 0, 14, 56},
     {gettext("No Recompute"), 0,  (Fl_Callback *) cb_Tableur_No_Recompute, 0, 0, 0, 0, 14, 56},
-    {gettext("Dispatch matrice to cells"), 0,  (Fl_Callback *) cb_Tableur_Matrix_Fill, 0, 0, 0, 0, 14, 56},
-    {gettext("Keep matrice in one cell"), 0,  (Fl_Callback *) cb_Tableur_No_Matrix_Fill, 0, 0, 0, 0, 14, 56},
+    {gettext("Dispatch matrix to cells"), 0,  (Fl_Callback *) cb_Tableur_Matrix_Fill, 0, 0, 0, 0, 14, 56},
+    {gettext("Keep matrix in one cell"), 0,  (Fl_Callback *) cb_Tableur_No_Matrix_Fill, 0, 0, 0, 0, 14, 56},
     {0}, // end Configuration
     {gettext("Fill"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("Copy right"), 0x40072,  (Fl_Callback *) cb_Tableur_Copy_Right, 0, 0, 0, 0, 14, 56},

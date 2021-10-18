@@ -2666,6 +2666,91 @@ Pour tester en mode pas \`a pas, ajoutez \verb|debug(| au
 d\'ebut de la commande qui pr\'ec\`ede\\
 \verb|debug(rapide(123,4567890,123456))|
 
+\subsection{Application de la puissance rapide: cryptographie RSA}
+\subsubsection{Interpr\'etation du codage et du d\'ecodage.}
+Nous revenons sur la cryptographie RSA, en utilisant les notions
+vue dans les sections pr\'ec\'edentes.
+On rappelle qu'on se donne un entier $n=pq$ produit de deux
+nombres premiers $p$ et $q$. Les entiers $p$ et $q$ sont
+secrets alors que $n$ est public. On choisit ensuite deux entiers
+$d$ et $e$ tels que $de=1 + k(p-1)(q-1)$, ou encore $d$ et $e$
+sont inverses modulo l'indicatrice d'Euler de $n$~:
+$$ de=1 \pmod {\varphi(n)} $$
+Le codage et le d\'ecodage se font avec l'algorithme de la puissance
+modulaire rapide~:
+$$ a \rightarrow b=a^e \pmod n \rightarrow c=b^d \pmod n$$
+le cout est de $O(\ln(e)\ln(n)^2)$ et $O(\ln(d)\ln(n)^2)$ op\'erations.
+
+On peut maintenant facilement montrer que ces deux fonctions
+sont r\'eciproques l'une de l'autre lorsque $a$ est premier avec $n$.
+En effet, on a $a^{\varphi(n)}=1 \pmod n$ donc~:
+$$ c=a^{de} \pmod n = a^{1+k \varphi(n)} \pmod n
+=a (a^{\varphi(n)})^k \pmod n = a \pmod n$$
+
+\subsubsection{Comment g\'en\'erer des clefs}
+On choisit $p$ et $q$ en utilisant le test de Miller-Rabin. Par
+exemple\\
+\giacinput{p:=nextprime(randint(10^150));
+q:=nextprime(randint(10^200));
+n:=p*q;}
+
+On choisit un couple de clefs priv\'ee-publique en utilisant
+l'identit\'e de B\'ezout (ou inverse modulaire). Par exemple\\
+\giacinput{E:=65537; gcd(E,(p-1)*(q-1));
+d:=iegcd(E,(p-1)*(q-1))[0];
+}
+Ici, on a pris \verb|E| de sorte que l'exponentiation
+modulaire rapide \`a la puissance \verb|E|
+n\'ecessite peu d'op\'erations arithm\'etiques (17),
+compar\'e au calcul de la puissance \verb|d|, ceci
+permet de faire l'op\'eration ``publique'' plus rapidement
+(encodage ou v\'erification d'une signature) si le microprocesseur
+a peu de ressources (par exemple puce d'une carte bancaire).\\
+\giacinput{
+a:=randint(123456789);
+b:=powmod(a,E,n);
+c:=powmod(b,d,n);
+}
+
+\subsubsection{Sur quoi repose la s\'ecurit\'e de RSA.}
+\begin{itemize}
+\item Difficult\'e de factoriser $n$. \\ Si on arrive \`a factoriser
+$n$, tous les autres calculs se font en temps polynomial en $\ln(n)$
+donc la clef est compromise. Il faut bien choisir $p$ et $q$ pour
+que certains algorithmes de factorisation ne puissent pas s'appliquer.
+Par exemple choisir\\
+\giacinput{
+p:=nextprime(10^100):;
+q:=nextprime(10^101):;
+n:=p*q;
+}
+n'est pas une bonne id\'ee car $n$ a beaucoup trop de 0 dans son
+\'ecriture d\'ecimale, on peut donc facilement le factoriser, en
+essayant les diviseurs de 801 ajout\'es \`a $10^{100}$.
+\item
+Difficult\'e de trouver $d$ connaissant $n$ et $e$, si on ne connait pas
+la factorisation de $n$.\\
+On peut tenter de trouver $d$ sans chercher \`a factoriser $n$. Notons
+que ce n'est pas avec l'identit\'e de B\'ezout qu'on proc\`edera, car
+connaitre l'indicatrice d'Euler de $n=pq$ permet de trouver $p$ et $q$
+imm\'ediatement. 
+Une attaque de ce type pour $p$ et $q$ presque egaux et $d$ petit
+devant $n$ est d\'ecrite par exemple 
+\ahref{https://agreg.org/Textes/public2018-C2.pdf}{ici}.
+\item Difficult\'e de trouver $a$ connaissant $b=a^e \pmod n$.
+Il n'y a pas d'algorithme connu permettant de le faire dans tous les
+cas (c'est ce qu'on appelle le logarithme discret). 
+Mais il faut quand m\^eme faire attention au choix de $e$.
+Par exemple prendre $e=3$ pour minimiser le nombre d'\'etapes
+de la puissance modulaire n'est pas judicieux, car si un message
+commun est envoy\'e \`a 3 personnes ayant des clefs publiques 
+$(n_1,3)$, $(n_2,3)$, $(n_3,3)$, la connaissance de 
+$$ a^3 \pmod{ n_1}, \quad a^3 \pmod{ n_2}, \quad a^3 \pmod{ n_3} $$
+permet de retrouver $a^3 \pmod{ n_1n_2n_3}$ par le lemme chinois si
+$n_1,n_2,n_3$ sont premiers entre eux 2 \`a deux, puis $a^3$ puis $a$.
+\end{itemize}
+
+
 \section{Pour en savoir plus.}
 Sur des aspects plus th\'eoriques~:
 \begin{itemize}
@@ -9577,9 +9662,10 @@ On dit qu'un vecteur de $n$ symboles est un mot du code
 s'il est dans l'image de l'application lin\'eaire.
 
 Pour assurer l'injectivité tout en facilitant le décodage, 
-on utilise souvent une matrice identité $k,k$ comme sous-bloc
+on utilise tr\`es souvent une matrice identité $k,k$ comme sous-bloc
 de la matrice $n,k$, par exemple on prend l'identité pour
 les $k$ premières lignes de $M$, on ajoute ensuite $n-k$ lignes.
+On parle de code syst\'ematique.
 
 Pour savoir si un vecteur est un mot de code, il faut vérifier
 qu'il est dans l'image de $M$. On peut par exemple vérifier
@@ -9587,10 +9673,10 @@ qu'en ajoutant la colonne de ses coordonnées à $M$, on ne change
 pas le rang de $M$ (qui doit être $k$) mais c'est assez couteux.
 On pr\'ef\`ere utiliser une matrice de controle $H$
 $$ x \in \mbox{Im}(M) \Leftrightarrow Hx=0$$
-Si la matrice $M$ est compos\'ee de l'identit\'e $I_{k}$
+Pour un code syst\'ematique, la matrice $M$ est compos\'ee de l'identit\'e $I_{k}$
 et d'une matrice $C$ sur ses $n-k$ derni\`eres lignes, 
 alors $H=(-C,I_{n-k})$.
-
+ 
 {\bf Exercice}~: créez une matrice $M$ de taille 7,4 injective. Puis
 un programme qui teste si un vecteur est un mot de code et en
 extrait alors la partie avant codage. Vérifiez votre programme
@@ -9603,11 +9689,16 @@ les lignes de 2 matrices $A$ et $B$ par \verb|[op(A),op(B)]| ou avec
 
 \subsection{Codes polynomiaux}
 \index{polynomial, code}\index{code polynomial}
+Il s'agit d'un cas particulier de codes lin\'eaires. 
 {\bf Définition}~:
-Il s'agit d'un cas particulier de codes lin\'eaires.
 On se donne un polyn\^ome $g(x)$ de degr\'e $n-k$,
 On repr\'esente le message de longueur $k$ \`a coder par un polyn\^ome 
-$P$ de degr\'e $k-1$.
+$P$ de degr\'e $k-1$. On envoie alors $Pg$. Le r\'ecepteur
+peut controler que le reste de la division euclidienne du polyn\^ome
+re\c{c}u par $g$ est nul, et extraire l'information qui est le
+quotient de la division euclidienne par $g$.
+Ce code n'est pas syst\'ematique, mais on peut facilement l'adapter
+pour le rendre syst\'ematique.
 On multiplie $P$ par $x^{n-k}$, on calcule le reste $R$ de la division
 de $P x^{n-k}$ par $g$. On \'emet alors $P x^{n-k}-R$ qui est divisible
 par $g$. Les mots de code sont les polyn\^omes divisibles par $g$.
@@ -9718,7 +9809,18 @@ $\delta$ est (au moins) 3. Si le code est parfait sur $K=F_d$, on a
 $$ (1+n(d-1))d^k=d^{n} \Rightarrow n=\frac{d^m-1}{d-1}$$
 
 Par exemple si $d=2$ et $m=4$ alors $n=15$. 
-Il n'y a qu'une matrice de controle possible de taille
+Les codes possibles pour $d=2$ sont~:
+\begin{itemize}
+\item $m=2, n=3, k=1$ c'est le code de r\'ep\'etition
+\item $m=3,n=7,k=4$ 
+\item $m=4,n=15,k=11$
+\item ...
+\item $m=7, n=127,k=120$~: 
+on verra plus bas que le code polynomial de polyn\^ome
+$x^7+x^3+1$ est un code de Hamming binaire
+\item ...
+\end{itemize}
+Le cas $m=4$~: il n'y a qu'une matrice de controle possible de taille
 $(15,4)$ telle que $Hx$ donne la position de l'erreur (en base 2),
 elle est obtenue en \'ecrivant les entiers de 1 \`a 15 en base 2
 $$ H=\left( \begin{array}{ccccccccccccccc}
@@ -9760,7 +9862,6 @@ p8      &    &    &    &    &    &   &  & x   & x & x  & x   & x & x & x & x \\
 \hline 
 \end{tabular}
 
-Autre exemple~: le minitel utilisait $d=2, m=7, n=2^m-1$.
 
 {\bf Remarque}\\
 On peut aussi g\'en\'erer des codes de Hamming binaire
@@ -9781,9 +9882,16 @@ En pratique, on calcule $Q(\alpha)$ en repr\'sentation additive,
 si on n'obtient pas 0,
 on passe en repr\'esentation multiplicative et on corrige.
 
-{\bf Exercice}\\
+Exemple~: le minitel utilisait $d=2, m=7, n=2^m-1=127, k=120$
+avec $P=x^7+x^3+1$, qui est un polyn\^ome irr\'eductible primitif
+(car 127 est premier).
+
+{\bf Exercices}\\
 \'Ecrire un programme codant et d\'ecodant avec correction d'au plus une
-erreur avec le code de Hamming binaire (11,4).
+erreur avec le code de Hamming binaire (7,3).
+
+\'Ecrire un programme codant et d\'ecodant avec correction d'au plus une
+erreur avec le code polynomial du Minitel.
 
 \vfill
 
@@ -13748,7 +13856,104 @@ et la recherche de valeurs propres et de vecteurs propres
 
 \section{R\'esolution de syst\`emes, calcul de d\'eterminant.}
 
-\subsection{La m\'ethode du pivot de Gau\ss.}\index{pivot} \index{Gau\ss}
+\subsection{La m\'ethode du pivot de Gau\ss.}\index{pivot}
+\index{Gau\ss}
+{\bf Algorithme du pivot de Gauss (sur un corps)}\\
+Soit $M$ une matrice ayant $L$ lignes et $C$ colonnes. On num\'erote
+\`a partir de 0.
+\begin{enumerate}
+\item initialiser les indices du pivot ligne $l$ et $c$ \`a 0.
+\item Tant que $l<L$ et $c<C$ faire~:
+\begin{enumerate}
+\item Parcourir la colonne $c$ \`a partir de la ligne $l$ et chercher
+  un coefficient non nul.\\
+Si tous les coefficients sont nuls, incr\'ementer $c$ de 1 et passer
+\`a l'it\'eration suivante de la boucle Tant que.
+\item Si n\'ecessaire, \'echanger la ligne ayant un coefficient non nul
+avec la ligne $l$
+\item Maintenant $M_{l,c}\neq 0$. Si $M_{l,c} \neq 1$ on effectue~:
+$$ L_l \leftarrow \frac{1}{M_{l,c}} L_l $$
+Cette op\'eration est r\'eversible car on multiplie la ligne par un
+coefficient non nul.
+\item
+Pour $j$ de $l+1$ \`a $L-1$ effectuer la manipulation de ligne sur la
+matrice $M$ (dont la ligne $l$ a \'et\'e modifi\'ee)~:
+$$ L_j \leftarrow L_j - M_{j,c} L_l, $$
+Cette op\'eration cr\'ee un 0 \`a la ligne $j$ en colonne $c$
+sans d\'etruire les 0 existants en ligne $j$ pour des indices de
+colonne strictement inf\'erieurs \`a $c$.\\
+Cette op\'eration est r\'eversible d'inverse 
+$L_j \leftarrow L_j+M_{j,c} L_l $ (avec le coefficient de la matrice
+{\em avant} l'op\'eration)
+\item Incr\'ementer $l$ et $c$ de 1.
+\end{enumerate}
+\end{enumerate}
+Toutes les op\'erations sont r\'eversibles, donc le syst\`eme obtenu est \'equivalent au
+syst\`eme initial. Mais il est plus simple, car triangulaire
+sup\'erieur, il y a des 0 en-dessous d'une ``diagonale
+g\'en\'eralis\'ee'' (normalement c'est une diagonale, mais
+elle peut se d\'ecaler vers la droite s'il y a des colonnes o\`u
+on n'a pas trouv\'e de 0).
+On r\'esoud alors le syst\`eme de bas en haut.
+
+On peut aussi faire l'\'etape 2d pour $j$ de 0 jusque $L-1$ et $j\neq
+L$ et obtenir une matrice \'echelonn\'ee, avec des 0 de part et
+d'autre de la diagonale, plus pr\'ecis\'ement des 0 dans toutes les
+colonnes correspondant \`a des coefficients non nuls sur la diagonale
+g\'en\'eralis\'ee. On peut aussi ne pas faire l'\'etape 2c, et
+remplacer 2d par $ L_j \leftarrow L_j - \frac{M_{j,c}}{M_{l,c}} L_l, $
+\begin{giaconload}
+def piv(M):
+    L,C=dim(M)
+    l,c=0,0
+    while l<L and c<C:
+        for j in range(l,L):
+            if M[j,c]!=0: 
+                break
+        if j==L:
+            c += 1
+            continue
+        if j!=l: 
+            M[j],M[l]=M[l],M[j]
+        if M[l,c]!=1:
+            M[l]=inv(M[l,c])*M[l]
+        for j in range(l+1,L):
+            M[j] -= M[j,c]*M[l]
+        c += 1
+        l += 1
+    return M
+\end{giaconload}
+Exemple~:
+\giacinputmath{M:=[[2,2,3,4],[1,-2,1,2],[-2,2,3,5]] mod 11; piv(M)}
+On a donc triangularis\'e le syst\`eme~:
+$$ \left\{
+\begin{array}{cccc}
+2x&+2y&+3z&=4 [11]\\
+x&-2y&+z&=2 [11] \\
+-2x&+2y&+3z&=5 [11]
+\end{array} \right.
+\Leftrightarrow
+\left\{\begin{array}{cccc}
+x&+y&-4z&=2 [11]\\
+  &y&+2z&=0 [11] \\
+  & &z&=1 [11]
+\end{array} \right.
+$$
+sa solution s'obtient en r\'esolvant l'\'equation correspondant \`a la derni\`ere
+ligne de la matrice r\'eduite, donc $z=1 [11]$, puis
+l'avant-derni\`ere ligne donne $y=-2z=-2[11]$ puis la premi\`ere
+\'equation donne $x=-y+4z+2=8[11]=-3[11]$.\\
+On v\'erifie\\
+\giacinput{
+linsolve(M*[x,y,z,-1],[x,y,z])
+}
+N.B.: on verra \`a la section \ref{sec:LU}
+que l'algorithme du pivot de Gauss peut s'effectuer directement sur la
+matrice $A$ d'un syst\`eme sans son second membre, c'est la factorisation
+$PA=LU$ d'une matrice, qui permet de se ramener \`a r\'esoudre
+deux syst\`emes triangulaires.
+
+{\bf Variantes en fonction du corps des coefficients}~:
 \begin{itemize}
 \item Le pivot~: on détermine à partir d'une ligne $i$ 
 la ligne $j$ où apparait le premier coefficient non nul $p$ dans
@@ -14407,7 +14612,7 @@ ce nombre est grand, plus la solution variera (donc plus on
 perd en précision).
 
 \section{La méthode de factorisation $LU$} \index{LU}
-\index{factorisation LU}
+\index{factorisation LU} \label{sec:LU}
 Dans sa forme la plus simple, elle permet d'écrire
 une matrice $A$ comme produit de deux matrices triangulaire
 inférieures et supérieures, ce qui ram\`ene la résolution

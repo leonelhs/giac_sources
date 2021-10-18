@@ -698,6 +698,13 @@ namespace xcas {
     }
   }
 
+  static void cb_Editeur_Translate_Python(Fl_Menu_* m , void*) {
+    Fl_Text_Editor * e = find_editor(m);
+    if (e){
+      editeur_translate(e,256); // not working
+    }
+  }
+
   static void cb_Editeur_Translate_Xcas(Fl_Menu_* m , void*) {
     Fl_Text_Editor * e = find_editor(m);
     if (e){
@@ -2435,28 +2442,28 @@ namespace xcas {
     {gettext("Prog"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("Load"), 0,  (Fl_Callback*)cb_Editeur_Load, 0, 0, 0, 0, 14, 56},
     {gettext("Insert"), 0,  0, 0, 64, 0, 0, 14, 56},
-    {gettext("file"), 0,  (Fl_Callback*)cb_Editeur_Insert_File, 0, 0, 0, 0, 14, 56},
-    {gettext("xcas text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Xcas, 0, 0, 0, 0, 14, 56},
-    {gettext("xcas python text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Python, 0, 0, 0, 0, 14, 56},
-    {gettext("maple text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Maple, 0, 0, 0, 0, 14, 56},
-    {gettext("mupad text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Mupad, 0, 0, 0, 0, 14, 56},
-    {gettext("ti text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Ti, 0, 0, 0, 0, 14, 56},
+    {gettext("File"), 0,  (Fl_Callback*)cb_Editeur_Insert_File, 0, 0, 0, 0, 14, 56},
+    {gettext("Xcas text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Xcas, 0, 0, 0, 0, 14, 56},
+    {gettext("Xcas Python text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Python, 0, 0, 0, 0, 14, 56},
+    {gettext("Maple text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Maple, 0, 0, 0, 0, 14, 56},
+    {gettext("Mupad text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Mupad, 0, 0, 0, 0, 14, 56},
+    {gettext("TI text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Ti, 0, 0, 0, 0, 14, 56},
     {0},
     {gettext("Save"), 0,  (Fl_Callback*)cb_Editeur_Save, 0, 0, 0, 0, 14, 56},
     {gettext("Save as"), 0,  (Fl_Callback*)cb_Editeur_Save_as, 0, 0, 0, 0, 14, 56},
     {gettext("File extension"), 0,  (Fl_Callback*)cb_Editeur_Extension, 0, 0, 0, 0, 14, 56},
     {gettext("Export"), 0,  0, 0, 64, 0, 0, 14, 56},
-    {gettext("xcas text"), 0,  (Fl_Callback*)cb_Editeur_Export_Xcas, 0, 0, 0, 0, 14, 56},
-    {gettext("xcas-python text"), 0,  (Fl_Callback*)cb_Editeur_Export_Python, 0, 0, 0, 0, 14, 56},
-    {gettext("maple text"), 0,  (Fl_Callback*)cb_Editeur_Export_Maple, 0, 0, 0, 0, 14, 56},
-    {gettext("mupad text"), 0,  (Fl_Callback*)cb_Editeur_Export_Mupad, 0, 0, 0, 0, 14, 56},
-    {gettext("ti text"), 0,  (Fl_Callback*)cb_Editeur_Export_Ti, 0, 0, 0, 0, 14, 56},
+    {gettext("Xcas text"), 0,  (Fl_Callback*)cb_Editeur_Export_Xcas, 0, 0, 0, 0, 14, 56},
+    {gettext("Xcas-python text"), 0,  (Fl_Callback*)cb_Editeur_Export_Python, 0, 0, 0, 0, 14, 56},
+    {gettext("Maple text"), 0,  (Fl_Callback*)cb_Editeur_Export_Maple, 0, 0, 0, 0, 14, 56},
+    {gettext("Mupad text"), 0,  (Fl_Callback*)cb_Editeur_Export_Mupad, 0, 0, 0, 0, 14, 56},
+    {gettext("TI text"), 0,  (Fl_Callback*)cb_Editeur_Export_Ti, 0, 0, 0, 0, 14, 56},
     {0},
     {gettext("Translate"), 0,  0, 0, 64, 0, 0, 14, 56},
-    {gettext("xcas"), 0,  (Fl_Callback*)cb_Editeur_Translate_Xcas, 0, 0, 0, 0, 14, 56},
-    {gettext("maple"), 0,  (Fl_Callback*)cb_Editeur_Translate_Maple, 0, 0, 0, 0, 14, 56},
-    {gettext("mupad"), 0,  (Fl_Callback*)cb_Editeur_Translate_Mupad, 0, 0, 0, 0, 14, 56},
-    {gettext("ti"), 0,  (Fl_Callback*)cb_Editeur_Translate_Ti, 0, 0, 0, 0, 14, 56},
+    {gettext("Xcas"), 0,  (Fl_Callback*)cb_Editeur_Translate_Xcas, 0, 0, 0, 0, 14, 56},
+    {gettext("Maple"), 0,  (Fl_Callback*)cb_Editeur_Translate_Maple, 0, 0, 0, 0, 14, 56},
+    {gettext("Mupad"), 0,  (Fl_Callback*)cb_Editeur_Translate_Mupad, 0, 0, 0, 0, 14, 56},
+    {gettext("TI"), 0,  (Fl_Callback*)cb_Editeur_Translate_Ti, 0, 0, 0, 0, 14, 56},
     {0},
     {gettext("Export/Print"), 0,  0, 0, 64, 0, 0, 14, 56},
     //    {gettext("latex preview"), 0,  (Fl_Callback*)cb_Tableur_LaTeX_Preview, 0, 0, 0, 0, 14, 56},
