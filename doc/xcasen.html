@@ -15,7 +15,8 @@ textarea.emscripten { font-family: monospace; width: 100%; }
 div.emscripten { text-align: center; }
 </style>
 
-<style id="document_style">
+<style id="document_style" type="text/css">
+h1,h2,h3 { display:inline; }
 input[type="number"] {
    width:40px;
 }
@@ -37,6 +38,120 @@ width:400px;
 
 <body>
 <script language="javascript">
+
+KEY_DOWN	= 40;
+KEY_UP		= 38;
+KEY_LEFT	= 37;
+KEY_RIGHT	= 39;
+
+KEY_END		= 35;
+KEY_BEGIN	= 36;
+
+
+
+KEY_BACK_TAB 	= 8;
+KEY_TAB				= 9;
+KEY_SH_TAB  	= 16;
+KEY_ENTER			= 13;
+KEY_ESC				= 27;
+KEY_SPACE			= 32;
+KEY_DEL				= 46;
+
+KEY_A		= 65;
+KEY_B		= 66;
+KEY_C		= 67;
+KEY_D		= 68;
+KEY_E		= 69;
+KEY_F		= 70;
+KEY_G		= 71;
+KEY_H		= 72;
+KEY_I		= 73;
+KEY_J		= 74;
+KEY_K		= 75;
+KEY_L		= 76;
+KEY_M		= 77;
+KEY_N		= 78;
+KEY_O		= 79;
+KEY_P		= 80;
+KEY_Q		= 81;
+KEY_R		= 82;
+KEY_S		= 83;
+KEY_T		= 84;
+KEY_U		= 85;
+KEY_V		= 86;
+KEY_W		= 87;
+KEY_X		= 88;
+KEY_Y		= 89;
+KEY_Z		= 90;
+
+KEY_PF1		= 112;
+KEY_PF2		= 113;
+KEY_PF3		= 114;
+KEY_PF4		= 115;
+KEY_PF5		= 116;
+KEY_PF6		= 117;
+KEY_PF7		= 118;
+KEY_PF8		= 119;
+
+REMAP_KEY_T	= 5019;
+	
+function checkEventObj ( _event_ ){
+	// --- IE explorer
+	if ( window.event )
+		return window.event;
+	// --- Netscape and other explorers
+	else
+		return _event_;
+}
+	
+function applyKey (_event_){	
+ // --- Retrieve event object from current web explorer
+ var winObj = checkEventObj(_event_);	
+ var intKeyCode = winObj.keyCode;
+ var intAltKey = winObj.altKey;
+ var intCtrlKey = winObj.ctrlKey;
+ // raccourcis avec Alt
+ // F1 aide, c cmdline, m menu, 
+ if (intAltKey) {
+   var done=false;
+   if (intKeyCode == KEY_RIGHT){
+    UI.move_focus(UI.focused,1);
+    done=true;
+   }		
+   if (intKeyCode == KEY_LEFT){
+    UI.move_focus(UI.focused,-1);
+    done=true;
+   }
+   if (intKeyCode == KEY_PF1){
+    document.getElementById('helptxt').focus();
+    done=true;
+   }
+   if (intKeyCode == KEY_C){
+    cmentree.focus();
+    done=true;
+   }
+   if (intKeyCode == KEY_M){
+    UI.show_menu();
+    done=true;
+   }
+   if (intKeyCode == KEY_SPACE){
+    UI.completion(cmentree);
+    done=true;
+   }
+   if (done){
+    // --- Map the keyCode in another keyCode not used
+    winObj.keyCode = REMAP_KEY_T;
+    winObj.returnValue = false;
+    return false;
+   }
+ }	
+}
+
+document.onkeydown = applyKey;
+
+</script>
+
+<script language="javascript">
   var ua = window.navigator.userAgent;
   var old_ie = ua.indexOf('MSIE ');
   var new_ie = ua.indexOf('Trident/');
@@ -52,7 +167,7 @@ width:400px;
 
 <div id="startup1" style="display:none">
   You can display the tutorial by clicking on the Tutorial button below.
-  You can install Xcas on Android devices
+  <br>You can install Xcas on Android devices
   by unzipping 
   <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
   xcashtml.zip</a> in the <tt>/sdcard</tt> directory, then search
@@ -60,6 +175,7 @@ width:400px;
   <a href="file:///sdcard/xcasoffline/xcasfr.html"><tt>/sdcard/xcasoffline/xcasfr.html</tt></a>
   or <a
   href="file:///sdcard/xcasoffline/AndroZip/xcasfr.html"><tt>/sdcard/xcasoffline/AndroZip/xcasfr.html</tt></a>
+  </div>
 <div id="startup">
   If Xcas does not work correctly, clear your browser cache and reload
   the page, with Firefox if possible.
@@ -303,52 +419,41 @@ with the commandline, please use the del key above.</b><br>
 onclick="document.getElementById('help').style.display='none';">Hide tutorial</button>
 </span>
 
-<table>
-  <tr>
-    <td id="history4" style="display:none">
-      <b>Variables</b>
-      <button style="height:25px"  name="add_purge" 
+<div id="history4" style="display:none">
+  <h3>Variables</h3>
+  <button style="height:25px"  name="add_purge" 
   onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'purge(')" title="Clear content of one or more variables, for example purge(a) or purge(a,b,c)">purge</button>
-      <button style="height:25px" onclick="UI.addhelp(' ','VARS(1)')" title="Show list of variables/values">List</button>
-      <button style="height:25px" onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Erase content for all variables">Erase</button>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Help</b>
-      <button style="width:45px;height:25px;vertical-align:top" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
-      <textarea style="height:25px;font-size:large" id="helptxt" columns=15 rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
-      <button style="width:45px;height:25px;vertical-align:top" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Clear</button>
-    </td>
-  </tr>
-</table>
+  <button style="height:25px" onclick="UI.addhelp(' ','VARS(1)')" title="Show list of variables/values">List</button>
+  <button style="height:25px" onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Erase content for all variables">Erase</button>
+</div>
+<div>
+  <h3>Help</h3>
+  <button style="width:45px;height:25px;vertical-align:top" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
+  <textarea style="height:25px;font-size:large" id="helptxt" columns=15 rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
+  <button style="width:45px;height:25px;vertical-align:top" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Clear</button>
+</div>
   
 <div id="divhelpoutput" style="max-height: 200px; overflow:auto">
 <table id="helpoutput" title="Aide"
   style="max-width:1000px "></table>
 </div>
 <hr>
-<table>
-  <tr>
-    <td id="history2" style="display:none">
-      <b>History</b>
-      <button style="height:25px" onclick="UI.exec(document.getElementById('mathoutput'),0)"
+
+<div id="history2" style="display:none">
+  <h3>History</h3>
+  <button style="height:25px" onclick="UI.exec(document.getElementById('mathoutput'),0)"
 title="Evaluate all levels">Eval</button>
-<button style="height:25px" onclick="UI.show_answers(true)" title="Show answers">+</button>
-<button style="height:25px" onclick="UI.show_answers(false)" title="Hide answers">-</button>
-<button style="height:25px" onclick="UI.erase_all(document.getElementById('mathoutput'))"
+  <button style="height:25px" onclick="UI.show_answers(true)" title="Show answers">+</button>
+  <button style="height:25px" onclick="UI.show_answers(false)" title="Hide answers">-</button>
+  <button style="height:25px" onclick="UI.erase_all(document.getElementById('mathoutput'))"
 title="Move all levels to trash">Clear</button>
-    </td>
-  </tr>
-  <tr>
-    <td id="history3" style="display:none">
-      <b>Trash</b>
-      <button style="height:25px" onclick="UI.restoretrash()" title="Restore history levels from trash">Restore</button>
-      <button style="height:25px" onclick="UI.emptytrash()" title="Empty trash">Empty</button>
-    </td>
-    </tr>
-</table>
+  <br>
+  <h3>Trash</h3>
+  <button style="height:25px" onclick="UI.restoretrash()" title="Restore history levels from trash">Restore</button>
+  <button style="height:25px" onclick="UI.emptytrash()" title="Empty trash">Empty</button>
+</div>
+
 <div id="divoutput" style="max-height: 400px; overflow:auto">
 <table id="mathoutput" contextmenu="cmdmenu" title="History"
   style="max-width:1000px "  ></table>
@@ -449,7 +554,7 @@ id="add_e"
     <td>
       <input type="button" id="curseur_gauche" style="width:30px;height:35px"
   onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); UI.moveCaret(UI.focused,-1)" value=" ← "
-  title="Move caret to the left (useful for tablets)">
+  title="Move caret or focus to the left (useful for tablets)">
       <input type="button" style="width:30px;height:35px;" name="curseur_down"
 id="curseur_down"
       value="↓" onmousedown="event.preventDefault()"
@@ -467,9 +572,9 @@ id="add_cos"
       <input type="button" style="width:30px;height:35px" name="add_tan"
 id="add_tan"
   value="tan" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tan(')" title="tangent function, type atan for arctangente">        
-      <input type="button" style="width:30px;height:35px" name="kbd_square"
-id="kbd_square"
-  value="^2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused.'^2')" title="Square">  
+      <input type="button" style="width:29px;height:35px;" name="add_sq"
+id="add_sq"
+  value="^2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'^2')" title="Square">        
       <input type="button" style="width:30px;height:35px" name="add_sqrt"
 id="add_sqrt"
   value="√" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sqrt(')" title="square root">        
@@ -495,6 +600,16 @@ id="add_sqrt"
   name="add_partfrac" id="add_partfrac" value="partfrac"
       onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'partfrac(') ;UI.kbdonfuncoff();" title="Partial fraction decomposition, e.g. partfrac(1/(x^4-1)). Use cpartfrac on C">
+      <input type="button" style="width:60px;height:35px"
+  name="add_tcollect" id="add_tcollect" value="tcollect"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'tcollect(') ;UI.kbdonfuncoff();"
+  title="Linearize and regroup trigonometric expressions">        
+      <input type="button" style="width:60px;height:35px"
+  name="add_texpand" id="add_texpand" value="texpand"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'texpand(') ;UI.kbdonfuncoff();"
+  title="Expand trigonometric, exponential and log expressions">  
 
     </td>
   </tr>
@@ -503,7 +618,14 @@ id="add_sqrt"
       <input type="button" style="width:60px;height:35px" name="add_solve"
 id="add_solve"
   value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(') ;UI.kbdonfuncoff();"
-  title="Solve equation or expression=0 wrt 1 or more variables, for example solve(x^4-1=0) or solve(y^3-1,y) or solve([x^2-y^2=1,x+y=3],[x,y]). Run csolve for solving over C.">        
+  title="Solve equation or expression=0 wrt 1 or more variables, for example solve(x^4-1=0) or solve(y^3-1,y) or solve([x^2-y^2=1,x+y=3],[x,y]). Run csolve for solving over C.">       <input type="button" style="width:60px;height:35px" name="add_csolve"
+id="add_csolve"
+  value="csolve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'csolve(') ;UI.kbdonfuncoff();"
+  title="Solve over C equation or expression=0 wrt 1 or more variables, for example csolve(x^4-1=0) or csolve(y^3-1,y) or csolve([x^2-y^2=1,x+y=3],[x,y]). Run solve for solving over R."> 
+      <input type="button" style="width:60px;height:35px" name="add_linsolve"
+id="add_linsolve"
+  value="linsolve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'linsolve(') ;UI.kbdonfuncoff();"
+  title="solve a linear system, for example linsolve([x+y=1,a*x-y=2],[x,y])">        
       <input type="button" style="width:60px;height:35px"
   name="add_fsolve" id="add_fsolve" value="fsolve"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(') ;UI.kbdonfuncoff();" title="fsolve solves numerically an equation or system, for example fsolve(cos(x)=x,x=0..5) or fsolve(cos(x),x=0.0)">        
@@ -534,8 +656,10 @@ id="add_limit"
       <input type="button" style="width:60px;height:35px"
   name="add_series" id="add_series" value="series"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(') ;UI.kbdonfuncoff();" title="series computes the Taylor expansion of an expression as a variable tends to a limit-point, for example series(sin(x),x=0,5,polynom). Without polynom, a remainder term is returned. For unidirectional expansion, add 1 or -1 before polynom">        
-      &nbsp;&nbsp;
-      <input type="button" style="height:35px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Add a slider" value="Slider">
+         <input type="button" style="width:30px;height:35px" name="add_space"
+id="add_space"
+  value=" " onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,' ')" title="add space">        
     </td>
   </tr>
   <tr>
@@ -554,6 +678,10 @@ id="add_plot"
       <input type="button" style="width:60px;height:35px"
   name="add_plotpolar" id="add_plotpolar" value="polar"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(') ;UI.kbdonfuncoff();" title="Polar plot, for example plotpolar(exp(r),r=-3..3)">  
+      <input type="button" style="width:60px;height:35px"
+  name="add_plotimplicit" id="add_plotimplicit" value="implicit"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotimplicit(') ;UI.kbdonfuncoff();" title="Implicit plot, for example plotimplicit(x^2+x*y+y^2=3)">  
+      <input type="button" id="add_curseur" style="height:35px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Add a slider" value="Slider">
     </td>
   </tr>
   <tr>
@@ -561,22 +689,18 @@ id="add_plot"
         <input type="button" style="width:30px;height:35px" name="add_//"
 id="add_//"
   value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'//')" title="comment">        
-         <input type="button" style="width:30px;height:35px" name="add_space"
-id="add_space"
-  value=" " onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,' ')" title="comment">        
-      <input type="button" style="width:45px;height:35px" name="add_si"
-id="add_si"
+      <input type="button" style="width:45px;height:35px" name="add_test"
+id="add_test"
   value="if" onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'\nif  then  else  end;\n   ');UI.moveCaretUpDown(UI.focused,-1); " title="Test">        
-      <input type="button" style="width:45px;height:35px" name="add_si"
-id="add_si"
+      <input type="button" style="width:45px;height:35px" name="add_pour"
+id="add_pour"
   value="for" onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,'\nfor  from  to  do \n    \n  od;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);" title="Loop">         <input type="button" style="width:45px;height:35px" name="add_si"
-id="add_si"
+  onClick="UI.insert(UI.focused,'\nfor  from  to  do \n    \n  od;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);" title="Loop">         <input type="button" style="width:45px;height:35px" name="add_tantque"
+id="add_tantque"
   value="while" onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'\nwhile  do\n    \n end;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,4)" title="Loop">        
-      <input type="button" style="height:35px" value="function" onclick="if(document.getElementById('assistant_prog').style.display=='none'){
+      <input type="button" id="add_function" style="height:35px" value="function" onclick="if(document.getElementById('assistant_prog').style.display=='none'){
       document.getElementById('assistant_prog').style.display='block';
      }      
      else {
@@ -608,13 +732,13 @@ ok</button>
   onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else { document.getElementById('keyboard').style.display='inline'; document.getElementById('keyboardfunc').style.display='none';} if (UI.focusaftereval){ UI.focused.focus(); UI.focused.blur();}"
   title="Show or hide scientific keyboard">123</button>
   <button id="button_util" style="width:37px;height:35px" onmousedown="event.preventDefault()"
-  onclick="if (document.getElementById('keyboardfunc').style.display=='inline') document.getElementById('keyboardfunc').style.display='none'; else { document.getElementById('keyboardfunc').style.display='inline'; document.getElementById('keyboard').style.display='none';} if (UI.focusaftereval){ UI.focused.focus(); UI.focused.blur();}"
-  title="Show or hide frequently used commands">tool</button>
+  onclick="UI.show_menu();"
+  title="Show or hide frequently used commands">menu</button>
    <button id="button_cmd" style="width:37px;height:35px" onmousedown="event.preventDefault()" onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0) MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
   title="Focus on commandline">cmd</button>
       <button id="button_gauche" style="width:32px;height:35px"
-  onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); UI.moveCaret(UI.focused,-1)"  title="Move caret to the left (useful for tablets)"> ← </button>
-      <button id="button_droit" style="width:32px;height:35px" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); UI.moveCaret(UI.focused,1)"> → </button>
+  onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"  title="Move caret (tablets) or focus (PC) to the left"> ← </button>
+      <button id="button_droit" style="width:32px;height:35px" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Move caret (tablets) or focus (PC) to the right"> → </button>
 <button id="select_button" style="width:32px;height:35px" name="select_button" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Select commandline"> sel</button>
 <button id="button_del" style="width:30px;height:35px" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Erase 1 char">del</button>
 &nbsp;
@@ -626,8 +750,8 @@ ok</button>
   or <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">with evaluation</button>
 </div>
 
-<textarea name="entree" id="entree"  style="font-size:18px;" rows=1
-  cols=32 onkeypress="UI.focused=this;if (event.keyCode!=13) return true;UI.eval_cmdline1(value,true); return false;" ></textarea>
+<textarea name="entree" id="entree"  style="font-size:18px;width:98%" rows=1
+  onkeypress="UI.focused=this;if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;" ></textarea>
 </span>
 <br>
 <b>Console</b>
@@ -1249,6 +1373,18 @@ ok</button>
   eraseCookie:function(name) {
 	createCookie(name,"",-1);
   },
+  detectmob:function() { 
+ if( navigator.userAgent.match(/Android/i)
+ || navigator.userAgent.match(/webOS/i)
+ || navigator.userAgent.match(/iPhone/i)
+ || navigator.userAgent.match(/iPad/i)
+ || navigator.userAgent.match(/iPod/i)
+ || navigator.userAgent.match(/BlackBerry/i)
+ || navigator.userAgent.match(/Windows Phone/i)
+ ) return true;
+ else 
+    return false;
+},
   browser_type: function(){
    var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
    var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
@@ -1271,6 +1407,7 @@ ok</button>
   caseval: function(text){
    var docaseval = Module.cwrap('caseval',  'string', ['string']);
    var value=text;
+   value=value.replace('%22','\"','g'); 
    var n=value.search(';');
    if (n<0 || n>=value.length)
      value='add_autosimplify('+value+')';
@@ -1328,6 +1465,7 @@ restoresession: function(chaine,hist,asked,doexec){
     s=s.replace('%3e','>','g');
     s=s.replace('%5e','^','g');
     s=s.replace('%20',' ','g');
+    s=s.replace('%22','\"','g');
     if (s.length && s.charAt(0)=='+'){
        if (!asked) doexec=true;
        s=s.substr(1);
@@ -1359,6 +1497,11 @@ restoresession: function(chaine,hist,asked,doexec){
     if (p[0]=='') continue;
     if (p[0]=='entree' || p[0]=='cmentree'){
       cmentree.setValue( decodeURIComponent(p[1]));
+      continue;
+    }
+    if (p[0]=='codemirror'){
+      if (p[1]=='0') { document.getElementById('config').usecm.checked=false;  UI.set_config();}
+      if (p[1]=='1') { document.getElementById('config').usecm.checked=true;  UI.set_config();}
       continue;
     }
     document.getElementById(p[0]).value = decodeURIComponent(p[1]);
@@ -1476,6 +1619,15 @@ restoresession: function(chaine,hist,asked,doexec){
       }
     }
   },
+show_menu:function(){
+ if (document.getElementById('keyboardfunc').style.display=='inline')
+   document.getElementById('keyboardfunc').style.display='none';
+ else {
+  document.getElementById('keyboardfunc').style.display='inline';
+  document.getElementById('keyboard').style.display='none';
+ }
+ if (UI.focusaftereval){ UI.focused.focus(); }
+},
   show_config:function(){
     var form=document.getElementById('config');
     form.style.display='inline';
@@ -1493,7 +1645,7 @@ restoresession: function(chaine,hist,asked,doexec){
    if (w>hw-300) w=hw-300;
    var hi=hw-w-200;
    if (!UI.qa){ hi=hw-130; w=hi; }
-   s='input[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}';
+   s='h1,h2,h3 { display:inline; }\ninput[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}';
    var st=document.getElementById('document_style');
    st.innerHTML=s;
 var kbd_l=["add_newline","add_'","add_,","add_left_paren",
@@ -1504,16 +1656,16 @@ var kbd_l=["add_newline","add_'","add_,","add_left_paren",
 "add_3" ,"add_-" ,"copy_button" ,"curseur_up","add-=" ,"add__" ,
 "add_exp","add_ln","add_e","add_0" ,"add_." ,
 "add_+" ,"curseur_gauche","curseur_down" ,"curseur_droit","add_a" ,"add_sin" ,"add_cos",
-"add_tan","kbd_square","add_sqrt","add_^"];
+"add_tan","add_sq","add_sqrt","add_^"];
 var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
 "button_gauche","button_droit","select_button","button_del"];
-var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
-"add_factor" ,"add_partfrac","add_solve",
-"add_fsolve" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
+var kbd_util=["add_simplify" ,"add_normal",
+"add_factor" ,"add_partfrac","add_texpand","add_tcollect","add_solve","add_csolve",
+"add_linsolve","add_fsolve" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
 "add_integrate" ,"add_limit","add_series" ,"add_tabvar","add_plot",
-"add_plotparam" ,"add_plotpolar" ,"add_//","add_space","add_test",
-"add_pour","add_tantque","add_debug"];
-   w=Math.floor(hw/12)+"px"; 
+"add_plotparam" ,"add_plotpolar","add_plotimplicit","add_//","add_space","add_test",
+"add_pour","add_tantque","add_function","add_debug","add_curseur"];
+  w=Math.floor(hw/12)+"px"; 
    h=Math.floor(hh/20)+"px"; console.log(hw,w,hh,h);
    w=Math.floor(hw/12); w=w+"px"; 
    h=Math.floor(hh/20); if (h<30) h=30; h=h+"px"; // console.log(hw,w,hh,h);
@@ -1526,6 +1678,12 @@ var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
    for (var i=0;i<kbd_cmd.length;i++){
      document.getElementById(kbd_cmd[i]).style.width=w;
      document.getElementById(kbd_cmd[i]).style.height=h;
+   }
+   w=Math.floor(hw/8); if (w<34) w=34; w=w+"px"; 
+   h=Math.floor(hh/20); if (h<35) h=35; h=h+"px"; // console.log(hw,w,hh,h);
+   for (var i=0;i<kbd_util.length;i++){
+     document.getElementById(kbd_util[i]).style.width=w;
+     document.getElementById(kbd_util[i]).style.height=h;
    }
   },
   config_string:function(){
@@ -1602,7 +1760,6 @@ var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
   show_history123:function(){
     document.getElementById('history1').style.visibility='visible';
     document.getElementById('history2').style.display='block';
-    document.getElementById('history3').style.display='block';
     document.getElementById('history4').style.display='block';
     document.getElementById('startup').style.display='none';
     document.getElementById('startup1').style.display='none';
@@ -2013,6 +2170,7 @@ addcomment: function(text){
    return r;
   },
   addinput: function(textin,textout,mathmlout){
+ document.getElementById('startup_restore').style.display='none'  
   if (textout.length>=12 && textout.substr(0,12)=='Done_graphic'){ document.getElementById('boutons_3d').style.display='inherit';document.getElementById('boutons_3d0').style.display='inherit';}
   if (textin.length > 2 && textin.substr(0,2)=='//') return UI.addcomment(textin);
          UI.show_history123();
@@ -2194,6 +2352,100 @@ var endPos = field.selectionEnd;
     var selectedText = field.value.substring(startPos, endPos);
   return selectedText;
   },
+move_caret_or_focus:function(field,n){
+ if (UI.detectmob()){ UI.moveCaret(field,n); return; }
+  move_focus(field,n);
+},
+move_focus:function(field,n){
+ // device with kbd, focus on next or previous history level
+ if (n>0){
+  if (field==cmentree) return;
+  if (field.type!="textarea")
+   field=field.getTextArea();
+  if (field.previousSibling==null){
+   var par=field.parentNode;
+   UI.switch_buttons(par.parentNode,true)
+   par=par.nextSibling;
+   par=par.firstChild;
+   if (par.nextSibling==null){
+     par=par.parentNode.parentNode.parentNode.nextSibling;
+     if (par==null) cmentree.focus(); // console.log(par);
+     else {
+      UI.switch_buttons(par.firstChild,true) 
+      par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
+      par.focus();
+     }
+     return;
+   }
+   par.style.display='none';
+   par=par.nextSibling;
+   par.style.display='inherit';
+   par.select();
+   UI.set_focused(par);
+   par.focus();
+   return;
+  }
+  var bidon=field.previousSibling;
+  if (bidon.style.display!='none') return;
+  bidon.style.display='block';
+  field.style.display='none';
+  var par=field.parentNode.parentNode.parentNode.nextSibling;
+  if (par==null) {
+   UI.set_focused(cmentree); cmentree.focus();
+   //  console.log(par);
+  }
+  else {
+    UI.switch_buttons(par.firstChild,true) 
+    par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
+    par.focus();
+   }
+  return;
+ }
+ if (field==cmentree){
+  var par=document.getElementById('mathoutput').lastChild;
+  if (par==null) return;
+   UI.switch_buttons(par.firstChild,true) 
+   par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
+   if (par.nextSibling==null){
+    par=par.parentNode.previousSibling.firstChild;
+    par.focus(); return;
+   } 
+   //console.log(par.innerHTML);
+   par.style.display='none';
+   par=par.nextSibling;
+   par.style.display='inherit';
+   par.select();
+   UI.set_focused(par);
+   par.focus();
+   return;
+ }
+  if (field.type!="textarea")
+   field=field.getTextArea();
+  if (field.previousSibling==null){
+   var par=field.parentNode.parentNode.parentNode.previousSibling;
+   UI.switch_buttons(par.firstChild,true) 
+   par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
+   if (par.nextSibling==null){
+    //console.log(par.nextSibling);
+    par=par.parentNode.previousSibling.firstChild;
+    par.focus(); return;
+   } 
+   par.style.display='none';
+   par=par.nextSibling;
+   par.style.display='inherit';
+   par.select();
+   UI.set_focused(par);
+   par.focus();
+   return;
+  }
+  var bidon=field.previousSibling;
+  if (bidon.style.display!='none') return;
+  bidon.style.display='block';
+  field.style.display='none';
+  var par=field.parentNode.previousSibling.firstChild;
+  par.focus();
+  UI.switch_buttons(par.parentNode.parentNode,true) 
+},
 moveCaret: function(field, charCount) {
   if (field.type!="textarea"){
     var pos=field.getCursor();

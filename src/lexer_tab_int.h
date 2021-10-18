@@ -13,6 +13,7 @@
       {"DOM_MAP"               ,0, _MAP, _INT_TYPE, T_TYPE_ID},
       {"DOM_MATRIX"              ,0, _VECT, _INT_TYPE, T_TYPE_ID},
       {"DOM_RAT"              ,0, _FRAC, _INT_TYPE, T_TYPE_ID},
+      {"DOM_SERIES"               ,0, _SPOL1, _INT_TYPE, T_TYPE_ID},
       {"DOM_SPECIALFLOAT"                  ,0,  _FLOAT_, _INT_TYPE, T_TYPE_ID},
       {"DOM_STRING"                ,0, _STRNG, _INT_TYPE, T_TYPE_ID},
       {"DOM_SYMBOLIC"              ,0, _SYMB, _INT_TYPE, T_TYPE_ID},

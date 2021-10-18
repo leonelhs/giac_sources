@@ -54,7 +54,7 @@
 
 \title {Algorithmes de calcul formel et num\'erique}
 \author{B. Parisse\\Institut Fourier\\UMR 5582 du CNRS
-\\Université de Grenoble I}
+\\Université de Grenoble}
 
 \date{}
 
@@ -2052,6 +2052,194 @@ le d\'eveloppement de Taylor complet d'un polyn\^ome en un point.
 
 \end{enumerate}
 \pagebreak
+
+\section{Les générateurs de nombres pseudo-aléatoires.}
+\label{sec:random}
+\index{al\'eatoire}
+\subsection{Selon la loi uniforme}
+Les générateurs d'entiers dans une plage donnée selon la loi
+uniforme servent en général de base pour générer des 
+nombres aléatoires entiers ou non selon des lois classiques.
+Ils doivent à la fois être rapides, avoir une période égale à
+la plage donnée et avoir de bonnes propriétés statistiques.
+
+Xcas utilise un ``tiny'' Mersenne Twister (de période environ $2^{127}$),
+certaines implantations de Giac utilisent un générateur congruentiel.
+
+\subsubsection{Les générateurs congruentiels \`a 1 cran.}\index{g\'en\'erateur congruentiel}
+\index{congruentiel, g\'en\'erateur} 
+Etant donnés trois entiers $a, c$ et $m$ on considère la suite
+$$ u_{n+1}=au_n+c \pmod m $$
+où on choisit (par exemple) comme représentant de $u_n$
+le reste de la division euclidienne par $m$. La valeur de $u_0$
+est appelée seed en anglais, elle est initialisée usuellement
+soit à 0 (ce qui permet de reproduire des bugs dans un programme
+dépendant du hasard), soit avec l'horloge système ou tout autre
+entrée de l'ordinateur (par exemple périphériques).
+
+On supposera que $a\neq 1$, le cas $a=1$ n'est pas tr\`es
+int\'eressant. On a alors~:
+$$ u_n=a^n u_0 + \frac{a^n-1}{a-1} c \pmod m$$
+On cherche \`a r\'ealiser une p\'eriode la plus grande possible
+id\'ealement $m$, mais $m-1$ peut fort bien convenir, et c'est
+possible si $m$ est premier en choisissant 
+$a$ g\'en\'erateur du groupe cyclique, car on a alors $a\neq 1 \pmod m$ et~:
+$$ u_n=a^n (u_0 + \frac{c}{a-1}) - \frac{c}{a-1}  \pmod m$$
+donc la suite est stationnaire ou prend toutes les valeurs sauf $- \frac{c}{a-1} $.
+
+Exemple~: choisir pour $m$ une puissance de 2 permet d'effectuer
+la division euclidienne tr\`es rapidement, mais cela a un
+inconv\'enient assez important~: les bits de poids faible
+de $u_n$ ont une p\'eriodicit\'e tr\`es (trop) petite.
+Il est alors int\'eressant de prendre $m=2^k \pm 1$, parce
+que la division euclidienne par $m$ peut se coder efficacement en base
+2, on divise par $2^k$ (d\'ecalage de $k$ bits) et on ajuste
+$x=(2^k \pm 1)q+r=2^k q + (r \pm q)$.
+Ainsi pour $k=4$ et $m=2^4+1=17$, $m$ est premier.
+On peut construire une suite de p\'eriode 16 en choisissant $a$ g\'en\'erateur
+de $(\Z/17\Z)^*$, par exemple $a=3$ et $c=2$ donne la suite
+$0,2,8,9,12,4,14,10,15,13,7,6,3,11,1,5$.
+
+On a le~:
+\begin{thm}
+La suite $(u_n)$ définie ci-dessus est de périodicité maximale $m$ si
+et seulement si~:
+\begin{enumerate}
+\item $c$ et $m$ sont premiers entre eux
+\item $a-1$ est divisible par tous les facteurs premiers de $m$
+\item $a-1$ est multiple de 4 si $m$ l'est.
+\end{enumerate}
+\end{thm}
+On observe d'abord que vouloir la périodicité maximale revient
+à pouvoir supposer que $u_0=0$. 
+Il est donc nécessaire d'avoir $c$
+et $m$ premiers entre eux, sinon tous les $u_n$ sont multiples du
+pgcd de $c$ et $m$. Ensuite, on pose $m=\prod p_i^{r_i}$ la
+décomposition en facteurs premiers de $m$ et on raisonne modulo
+chaque premier (par le lemme chinois, la p\'eriodicit\'e
+est le PPCM des p\'eriodicit\'es modulo chaque $p_i^{r_i}$). 
+Si $a\neq 1 \pmod p_i$
+alors $a-1$ est inversible modulo $p_i$ donc modulo 
+$p_i^{r_i}$ on a
+$$ u_n=a^n (u_0 + \frac{c}{a-1}) + \frac{-c}{a-1}  $$
+et la valeur $-c/(a-1)$ ne peut pas \^etre atteinte
+(ou alors la suite est stationnaire).
+Donc $a-1$ doit \^etre divisible par tous les facteurs premiers de $m$
+pour avoir la p\'eriodicit\'e maximale.
+R\'eciproquement, il faut trouver le premier ordre $n$ tel que
+$(a^n-1)/(a-1)=0 \pmod{p^r}$. On pose $a=b+1$, on a
+$$ \frac{a^n-1}{a-1}=\frac{(b+1)^n-1}{b} = \sum_{k=1}^n
+\left(^n_k\right) b^{k-1} = n +\frac{n(n-1)}{2}b +... $$
+On sait que $b=a-1$ est un multiple de $p$, disons $b=qp$, on en d\'eduit que
+pour $n=p^r$, on a bien $(a^n-1)/(a-1)=0 \pmod{p^r}$, alors que
+pour $n=p^{r-1}$ et $p\neq 2$, $(a^n-1)/(a-1)=n \pmod{p^r} \neq 0$.
+Le m\^eme calcul pour $p=2$ (prise en compte de la division par 2 de
+$n(n-1)$) donne la condition $b=a-1$ est multiple de 4 si $m$ l'est.
+
+On trouvera dans Knuth une discussion détaillée du choix de $a, b, m$.
+
+
+Exemple~: $m=2^{31}-1$ est premier, on peut donc construire un
+g\'en\'erateur congruentiel de p\'eriode $m-1$ en choisissant $a$
+g\'en\'erateur de $\Z/m\Z^*$. Pour en trouver un, on peut tester
+$a$ pris au hasard et voir si $a^{\frac{m-1}{j}} \neq 1 \pmod m$
+pour tous les diviseurs premiers de $m-1$. Par exemple\\
+\giacinputbigmath{m:=2^31-1;F:=ifactors(b:=m-1); G:=seq(F[2*j],j,0,iquo(size(F)-1,2))}
+\giacinputbigmath{a:=456783546; for k in G do print(powmod(a,b/k,m)); od}\\
+\giacinputbig{r():=return (etat:=irem(a*etat,m)); }\\
+\giacinput{etat:=1;} initialise l'\'etat du g\'en\'erateur.
+Un appel \`a \verb|r()| renvoie un entier entre 1 et $m-1$, pour avoir
+un g'en\'erateur pseudo-al\'eatoire selon la loi uniforme sur $]0,1[$, on tape
+\giacinput{evalf(r()/m)}.
+Ainsi \\
+\giacinputbig{L:=seq(evalf(r()/m),j,1,1000):;histogram(L,0,.05)}
+permet de v\'erifier visuellement si les r\'eels g\'en\'er\'es sont
+bien r\'epartis, ou bien\\
+\giacinputbig{seq(point(evalf(r()/m,r()/m),affichage=point_point),j,1,1000)}
+qui d\'etecte des biais invisibles avec le test pr\'ec\'edent, par
+exemple pour 
+\giacinputbig{a:=7;seq(point(evalf(r()/m,r()/m),affichage=point_point),j,1,1000)}.
+
+\subsubsection{R\'ecurrence \`a $k$ \'el\'ements}
+Au lieu d'une r\'ecurrence $u_{k+1}=au_k+c$ on conserve en m\'emoire
+$k+1$ valeurs successives de la suite et on calcule
+$$ u_{n+k+1} = a_0 u_n+...+a_{k}u_{n+k} \pmod p$$
+Si on note $U_n$ le vecteur $(u_n,...,u_{n+k})$ et $A$
+la matrice companion du polyn\^ome $a_0+a_1x+...+a_kx^k$,
+on a $U_{n+1}=AU_n$. Rechercher un g\'en\'erateur de p\'eriode
+maximale revient \`a chercher $A$ d'ordre le plus grand possible, donc
+les valeurs propres de $A$, i.e. les racines de $P$, doivent \^etre
+racines de l'unit\'e d'ordre le plus grand possible donc $p^k-1$. 
+Ce que l'on peut faire en construire un polyn\^ome $P$ irr\'eductible
+primitif (cf. la section \ref{sec:gf} sur la construction de repr\'esentation
+des corps finis).
+
+\subsubsection{Mersenne twister.}
+Ce sont des générateurs plus performants, avec un état interne
+en général plus grand, dont l'état initial est généré par
+un générateur congruentiel. Ils utilisent une relation
+de r\'ecurrence qui ressemble aux g\'en\'erateurs
+congruentiels, mais au lieu de travailler sur de grands
+entiers, on d\'ecoupe l'entier en mots de taille g\'er\'ee
+par le CPU, et on fait des op\'erations de type matriciels
+avec des op\'erations bit \`a bit (ou exclusif par exemple)
+au lieu d'op\'erations arithm\'etiques.
+
+\subsection{Selon plusieurs lois classiques}
+La m\'ethode g\'en\'erale consiste \`a calculer la distribution
+cumul\'ee de la loi et \`a prendre la fonction r\'eciproque
+d'un r\'eel g\'en\'er\'e al\'eatoirement entre 0 et 1 selon
+la loi uniforme. Lorsqu'on a un nombre discret de valeurs possibles
+pas trop grand et que l'on veut g\'en\'erer plusieurs
+nombres selon la m\^eme loi, on peut pr\'ecalculer la distribution cumul\'ee
+en chaque valeur, et faire une dichotomie pour trouver
+la valeur de la fonction r\'eciproque du nombre al\'eatoire
+g\'en\'er\'e. Les calculs peuvent être rendus difficiles
+par des dépassement de capacité des flottants si on utilise
+des méthodes naives pour estimer les fonction de répartition.
+On trouvera dans Abramowitz-Stegun diverses formules 
+pour initialiser les méthodes de Newton pour inverser les
+fonction de répartition courante.
+
+Il existe aussi quelques cas particuliers o\`u
+on peut obtenir plus facilement un r\'eel selon la loi
+donn\'ee~:
+\begin{itemize}
+\item Pour la loi normale\index{normale, loi}, on g\'en\`ere 2 r\'eels $u,d$
+entre 0 et 1, on calcule \\
+$\sqrt{-2 \log(u)} \cos(2\pi d)$\\
+En effet si on considère un couple de variables qui
+suivent une loi normale centrée réduite, la densité de probabilité
+au point $(x,y)$ (coordonnées cartésiennes) ou $(r,\theta)$ est~:
+$$ \frac{1}{\sqrt{2\pi}^2} e^{-\frac{x^2+y^2}{2}} \, dx \, dy
+=  \left( e^{-\frac{r^2}{2}} r  \, dr \right)
+\left( \frac{1}{2\pi} \, d\theta \right)
+= \left( \frac12 e^{-\frac s2} \, ds \right)
+\left( \frac{1}{2\pi} \, d\theta \right)$$
+où $r^2=s$. Donc $s$ suit une loi exponentielle (générée
+par la réciproque de la distribution cumulée) et $\theta$
+uniforme, les deux sont indépendantes. On écrit 
+alors $x=r\cos(\theta)$. On peut pour le même prix
+générer $y=r\sin(\theta)$. \\
+Pour éviter de calculer
+des lignes trigonométriques, on peut aussi tirer
+$x$ et $y$ uniformément dans $[-1,1]$, accepter le tirage
+si $s=x^2+y^2 \in ]0,1]$ et renvoyer deux valeurs
+aléatoires selon la loi normale
+$$ x \sqrt{\frac{-2\ln(s)}{s}}, \quad y \sqrt{\frac{-2\ln(s)}{s}} $$
+\item Pour la loi du $\chi^2$ \`a $k$ degr\'es de libert\'e, 
+on fait la somme
+des carr\'es de $k$ r\'eels al\'eatoires selon la loi normale
+\item Pour la loi de Student, on fait le quotient d'un réel
+selon la loi normale par la racine carrée
+d'un réel selon la loi du $\chi^2$ divisé par le nombre
+de degré de liberté
+\item Pour la loi de Fisher, on fait le quotient d'un réel
+selon la loi du $\chi^2$ en $k_1$ degrés de liberté divisé par
+$k_1$ et d'un réel
+selon la loi du $\chi^2$ en $k_2$ degrés de liberté divisé par
+$k_2$
+\end{itemize}
 
 \section{Le PGCD de polynômes.} \label{sec:pgcd} \index{PGCD (polyn\^omes)}
 Comme on l'a remarqué dans le premier article, l'algorithme d'Euclide est
@@ -4859,9 +5047,10 @@ du cercle, mais contrairement au param\'etrage trigonom\'etrique,
 il n'est pas ``uniforme''.\\
 Exemple 
 \giacinput{plotparam([cos(t),sin(t)],t=0..2*pi)}
-\giacinput [style="width:400px;height:40px;font-size:large"]{gl_x=-2..2,gl_y=-1..1,plotparam([(1-t^2)/(1+t^2),2t/(1+t^2)],t=-10..10)}
+
+\giacinput[style="width:400px;height:40px;font-size:large"]{plotparam([(1-t^2)/(1+t^2),2t/(1+t^2)],t=-10..10)}
 ou avec les nombres complexes\\
-\giacinput{gl_x=-2..2,gl_y=-1..1,plotparam((1+i*t)/(1-i*t),t=-10..10)}
+\giacinput{plotparam((1+i*t)/(1-i*t),t=-10..10)}
 \end{itemize}
 
 \subsection{Repr\'esentation graphique} 
@@ -4877,7 +5066,7 @@ cela donne une bonne id\'ee de la courbe, mais parfois on peut
 manquer un d\'etail int\'eressant (valeur de $\Delta t$ trop
 grande), ou un morceau de courbe (mauvaises
 valeurs de $t_-$ et $t_+$). Par exemple 
-\giacinput{plotfunc(x+0.01/(x-sqrt(2)),x=-2..2,xstep=0.1)}
+\giacinput[style="width:400px;height:40px;font-size:large"]{plotfunc(x+0.01/(x-sqrt(2)),x=-2..2,xstep=0.1)}
 
 Il peut \^etre n\'ecessaire d'ajuster le cadrage graphique
 \`a l'affichage (\verb|xmin|, \verb|xmax|, \verb|ymin|, \verb|ymax|) ou
@@ -5049,9 +5238,8 @@ b:=limit(Y(t)-a*X(t),t=inf)}\\
 Si $a$ est fini non nul et $b$ fini, on en d\'eduit que $y=ax+b$ est asymptote \`a la courbe. Il y a une
 autre asymptote pour $t=-1$ ($Y$ fini, $X$ tend vers l'infini)\\
 \giacinput[style="width:400px;height:100px;font-size:large"]{gl_x=-7..7;gl_y=-7..7;
-plotparam([X(t),Y(t)],t=-7..7);
+purge(x,y);plotparam([X(t),Y(t)],t=-7..7);
 line(y=a*x+b,color=red);line(y=Y(-1),color=green)}
-
 Autre exemple~:
 \giacinput{X(t):=t^3/(t^2+1);Y(t):=t+1/(t^2+2);}
 
@@ -5145,16 +5333,20 @@ Si $\{\overrightarrow{v},\overrightarrow{a}\}$ est une base directe,
 l'arc est {\bf convexe}\index{convexe} (la vitesse
 ``tourne'' dans le sens trigonom\'etrique),
 sinon il est concave. On peut tester cela en calculant
-le d\'eterminant des coordonn\'ees de $\{\overrightarrow{v},\overrightarrow{a}\}$ ou le sens
+le d\'eterminant des coordonn\'ees de 
+$\{\overrightarrow{v},\overrightarrow{a}\}$ ou le sens
 de variations de $m$, la pente de la tangente 
 \[ m=\frac{y'}{x'}, \quad m'=\frac{x'y'{'}-x'{'}y'}{x'^2} \]
 
 \begin{thm}
-Si $x'y'{'}-x'{'}y'>0$ [resp $<0$] sur un intervalle du domaine de d\'efinition,
-la courbe n'a que des points r\'eguliers, la direction de la tangente en un point
+Si det$(v,a)=x'y'{'}-x'{'}y'>0$ [resp $<0$] 
+sur un intervalle du domaine de d\'efinition,
+la courbe n'a que des points r\'eguliers, 
+la direction de la tangente en un point
 est donn\'ee par le vecteur vitesse, et la courbe est convexe\index{convexe}
 [resp. concave].
-Si $x'y'{'}-x'{'}y'=0$, on parle de {\bf point d'inflexion}\index{inflexion} analytique.
+Si $x'y'{'}-x'{'}y'=0$, on parle de 
+{\bf point d'inflexion}\index{inflexion} analytique.
 \end{thm}
 {\bf Remarque~}: pour un graphe de fonction, $x=t$, on retrouve le
 crit\`ere usuel $y'{'}>0$.
@@ -5163,10 +5355,9 @@ crit\`ere usuel $y'{'}>0$.
 $$ (\frac{t^3}{t^2+1},t+\frac{1}{t^2+2}) $$
 La courbe admet deux autres points d'inflexion ($t=-3.16...$ et
 $t=1.31...$) qu'on peut d\'eterminer avec les commandes Xcas suivantes~:\\
-\giacinputbigmath{purge(x);X:=x^3/(x^2+1); Y:=x+1/(x^2+2);}\\
+\giacinputbigmath{purge(x,y);X:=x^3/(x^2+1); Y:=x+1/(x^2+2);}\\
 \giacinputmath{fsolve(X'*Y''-X''*Y',x)}\\
-\giacinput[style="width:400px;height:40px;font-size:large"]{plotparam([X,Y],x=-5..3);line(y=x,color=red)}
-
+\giacinput[style="width:400px;height:40px;font-size:large"]{tabvar([X,Y]);}
 Note~: on utilise comme param\`etre \verb|x| au lieu de \verb|t| pour pouvoir 
 utiliser la notation \verb|'| pour d\'eriver (si on utilise \verb|t|
 comme param\`etre, il faut utiliser \verb|diff(.,t)| pour calculer
@@ -5175,7 +5366,7 @@ effectue une r\'esolution num\'erique, pour tenter une r\'esolution
 exacte, utiliser \verb|solve|, mais on risque alors de manquer
 certaines solutions.
 
-On observe que la convexit\'e est presque une propri\'et\'e g\'eom\'etrique,
+On observe que la convexit\'e est (presque) une propri\'et\'e g\'eom\'etrique,
 en effet si on change de param\'etrage
 $$ x'=\frac{dx}{dt} =\frac{dx}{ds} s' $$
 on d\'erive par rapport \`a $t$
@@ -5192,7 +5383,8 @@ on retrouve en facteur $s'^3$ qui est positif si on parcourt la courbe
 dans le m\^eme sens ou n\'egatif sinon.
 
 La convexit\'e d\'ecrit qualitativement la g\'eom\'etrie
-de la courbe \`a l'ordre 1. On verra plus loin que le rayon de courbure d\'ecrit
+de la courbe (orient\'ee) \`a l'ordre 1. 
+On verra plus loin que le rayon de courbure d\'ecrit
 quantitativement la g\'eom\'etrie de la courbe \`a l'ordre
 2 (comme la tangente d\'ecrit la g\'eom\'etrie de la courbe
 \`a l'ordre 1).
@@ -5238,10 +5430,12 @@ Exemples de points singuliers en $t=0$ avec dans l'ordre rebroussement
 de 1\`ere puis 2i\`eme esp\`ece, m\'eplat et inflexion~: 
 $$ (t^2,t^3), \ (t^2+t^4,t^4+t^5), \ (t^3,t^4), \ (t^3,t^5) $$\\
 \giacinput{plotparam([t^2,t^3],t=-1..1)}
-\giacinput{plotparam([t^2+t^4,t^4+t^5],t=-1..1)}
-\giacinput{plotparam([t^3,t^4],t=-1..1)}
-\giacinput{plotparam([t^3,t^5],t=-1..1)}
 
+\giacinput{plotparam([t^2+t^4,t^4+t^5],t=-1..1)}
+
+\giacinput{plotparam([t^3,t^4],t=-1..1)}
+
+\giacinput{plotparam([t^3,t^5],t=-1..1)}
 Les deux derniers cas peuvent \^etre reparam\'etr\'es (au prix
 de la perte de d\'erivabilit\'e seconde) en posant $t'=t^{1/3}$.
 
@@ -5276,6 +5470,11 @@ en \'etudiant le signe de $x'y'{'}-x'{'}y'$.
 on les relie entre eux en suivant les sens de variations
 du tableau de variations.
 \end{enumerate}
+\ifhevea
+\begin{rawhtml}
+<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+//%20Etude%20analytique%20de%20la%20courbe%20parametrique%20ci-dessous,%20assistee%20par%20le%20calcul%20formel&+xt:=2t+1/%282t+1%29;%20yt:=t^2-1/%282t+1%29&+//%20Branches%20infinies&+limit%28xt,t,-1/2%29;%20limit%28yt,t,-1/2%29;%20a:=limit%28yt/xt,t=-1/2%29&+b:=limit%28yt-a*xt,t=-1/2%29&+//%20Donc%20asymptote%20oblique%20pour%20t=-1/2%20d%27equation%20y=a*x+b=-x-3/4%3Cbr%3EOn%20peut%20faire%20la%20meme%20etude%20en%20-inf%20et%20+inf&+limit%28xt,t,-inf%29;%20limit%28yt,t,-inf%29;%20a:=limit%28yt/xt,t,-inf%29&+//%20Branche%20parabolique%20de%20direction%20asymptotique%20Oy%20en%20t=-inf,%20meme%20chose%20en%20+inf%3Cbr%3EOn%20passe%20aux%20point%20singuliers&+x1:=factor%28diff%28xt,t%29%29;%20y1:=factor%28diff%28yt,t%29%29&+//%20Donc%20un%20seul%20point%20singulier%20en%20t=-1,%20on%20cherche%20la%20tangente%20en%20ce%20point%20%28acceleration%29%3Cbr%3E%20et%20le%20type%20de%20point%20%28rebroussement%201ere%20espece%29&+x2:=diff%28xt,t,2%29;%20y2:=diff%28yt,t,2%29;%20x3:=diff%28xt,t,3%29;%20y3:=diff%28yt,t,3%29&+[x2,y2]%28t=-1%29;%20&+//%20Acceleration%20non%20nulle%20donc%20vecteur%20directeur%20de%20la%20tangente%20au%20point%20singulier.%3Cbr%3EOn%20peut%20aussi%20faire%20le%20DL%20en%20t=-1%20a%20un%20ordre%20suffisant&+series%28xt,t=-1,3%29;%20series%28yt,t=-1,3%29&+subst%28x2*y3-x3*y2,t=-1%29;%20//%20Si%20non%20nul,%20on%20a%20un%20rebroussement%20de%201ere%20espece&+//%20Etude%20de%20la%20convexite&+factor%28x1*y2-x2*y1%29&+//%20Point%20d%27inflexion%20analytique%20pout%20t=1/2,%20coordonnes%20du%20point%20et%20vecteur%20directeur%20de%20la%20tangente&+[xt,yt]%28t=1/2%29;%20[x1,y1]%28t=1/2%29&+//%20Tableau%20de%20variations%20commun%20de%20xt%20et%20yt,%20calcule%20par%20Xcas&+tabvar%28[xt,yt]%29&+&" target="_blank">Exemple</a>
+\end{rawhtml}
+\fi
 
 \subsection{Courbes en polaires}\index{polaire, courbe}
 Une courbe en polaire est essentiellement
@@ -5294,10 +5493,17 @@ sur TI89/92/V200) ou
 l'application Polaire ou G\'eom\'etrie sur les HP Prime.
 Par exemple 
 \giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1,x=0..2*pi)}
+
 \giacinput{plotpolar(cos(2x),x=0..2*pi,tstep=0.01)}
+
 \giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1/(2+cos(x)),x=0..2*pi);}
+
 \giacinput[style="width:400px;height:60px;font-size:large"]{purge(x,y);plotpolar(1/(1+2*cos(x)),x=0..2*pi); rotation(0,2*pi/3,line(y=-sqrt(3)/3),color=red)}
+
 \giacinput{plotpolar(x,x=-10..10)}
+
+Remarque~: une courbe en polaires est toujours parcourue dans le sens
+trigonom\'etrique.
 
 C'est un cas particulier de courbe en param\'etriques puisque
 $$ (x,y)=(r(\theta) \cos(\theta), r(\theta) \sin(\theta))$$
@@ -5305,7 +5511,7 @@ mais on pr\'ef\`ere souvent faire l'\'etude directement sur la
 fonction $r$. Le plan d'\'etude est calqu\'e sur celui
 d'une courbe en param\'etrique, mais on n'a qu'une seule fonction
 $r$ \`a \'etudier.
-\begin{itemize}
+\begin{enumerate}
 \item domaine de d\'efinition de $r$, recherche
 de p\'eriodicit\'es et sym\'etries ($\theta \rightarrow -\theta$
 ou ajout d'une demi ou d'un quart de p\'eriode).
@@ -5322,7 +5528,7 @@ est finie et vaut $l$
 on a une asymptote (d'équation $Y=l$ dans le repère tourné).\\
 Exemple $r=1/(1+2\cos(\theta))$. $r$ n'est pas d\'efini pour
 $\cos(\theta)=-1/2$, donc $\theta=\pm 2\pi/3$. Pour $\theta_0=2\pi/3$,
-on calcule $\lim_{\theta \rightarrow -2\pi/3}r\sin(\theta-2\pi/3)$\\
+on calcule $\lim_{\theta \rightarrow 2\pi/3}r\sin(\theta-2\pi/3)$\\
 \giacinputmath[style="width:400px;height:40px;font-size:large"]{limit(1/(1+2cos(x))*sin(x-2pi/3),x=2pi/3)}\\
 La tangente est donc l'image par la rotation de centre $O$ et d'angle
 $2\pi/3$ de la droite $Y=-\sqrt{3}/3$
@@ -5358,16 +5564,25 @@ $$\frac1r + \left(\frac1r\right)'{'}=0
 \Leftrightarrow
 r^2+2r'^2-rr'{'}=0
 $$
-On peut le montrer en calculant la d\'eriv\'ee de
+On peut le montrer de diff\'erentes mani\`eres~:
+\begin{itemize}
+\item En calculant le d\'eterminant de \{vitesse,acc\'el\'eration \}
+par rapport \`a $\theta$ dans le rep\`ere $e_r,e_\theta$, on a
+$$v=r'e_r+re_\theta \quad a=r'{'}e_r+2r'e_\theta-re_r$$
+$$ \Rightarrow \mbox{det}(v,a)=\left| \begin{array}{cc} r' & r'{'}-r \\
+r & 2r'\end{array}\right|=2r'^2-r r'{'}+r^2$$ 
+\item En calculant la d\'eriv\'ee de l'angle fait avec l'axe Ox
 $\theta+\arctan(r/r')$ 
-ou avec Xcas de la manière suivante\\
-\verb|X:=r(x)*cos(x); Y:=r(x)*sin(x); simplify(X'*Y''-Y'*X'')|\\
-\verb|simplify(1/r(x)+(1/r(x))'')|\\
+\item avec Xcas en se ramenant en param\'etriques
+\giacinputbigmath[style="width:400px;height:60px;font-size:large"]{
+X:=r(x)*cos(x); Y:=r(x)*sin(x); simplify(X'*Y''-Y'*X'');
+simplify(1/r(x)+(1/r(x))'');}
 où on a noté $x$ l'angle $\theta$ pour pouvoir dériver avec \verb|'|
 et $X$ et $Y$ les deux coordonnées.
+\end{itemize}
 \item de même on calcule la courbure d\'efinie en section \ref{sec:courbure}
 $$ \kappa = \frac{r^2+2r'^2-rr'{'}}{\sqrt{r^2+r'^2}^3}$$
-\end{itemize}
+\end{enumerate}
 
 \subsection{Coniques}\index{conique}
 Les coniques sont des courbes implicites dont l'\'equation
@@ -5375,6 +5590,7 @@ cart\'esienne est du second degr\'e~
 $$ax^2+cy^2+bxy+dx+ey+f=0$$
 Exemples:\\
 \giacinput{purge(x,y);plotimplicit(x^2+y^2+x*y=4)}
+
 \giacinput{plotimplicit(x^2+y^2+3*x*y=4)}
 
 On va voir qu'elles sont de trois types~: ellipses, hyperbole,
@@ -5535,7 +5751,7 @@ ligne, commencez par initialiser la trace en ex\'ecutant
 puis faites varier $a$ en cliquant sur le bouton \verb|+| ou \verb|-|~: 
 \giacslider{a}{-5}{5}{0.1}{0.6}{gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=evalf(a),color=red);M:=single_inter(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)}
 %\begin{rawhtml}
-%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+L:=[]&*a,0.6,-5,5,0.1&+gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=a,color=red);M:=single_inter(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)&" target="_blank">Tester en ligne.</a>
+%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+L:=[]&*a,0.6,-5,5,0.1&+gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=a,color=red);M:=inter_unique(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)&" target="_blank">Tester en ligne.</a>
 %\end{rawhtml}
 Noter la valeur\\ \verb|inter_unique(R,line(x=0))|\\
 elle est ind\'ependante de $a$ et est le foyer. On peut
@@ -5608,8 +5824,7 @@ calculer  (pour $c\neq 0$ et en supposant que la fraction
 $\frac{-d-et}{ct^2+bt+a}$ est irr\'eductible\footnote{sinon, on 
 aura deux droites parce que le
 polyn\^ome $P(x,y)$ se factorise en produit de deux facteurs
-de degr\'e 1 dont $dx+ey$. Plus pr\'ecis\'ement, ce cas
-correspond \`a $t=-d/e$ racine de $ct^2+bt+a=0$})
+de degr\'e 1 dont $dx+ey$})
 le discriminant\footnote{On peut aussi voir ce discriminant comme le
 d\'eterminant de la matrice de la forme quadratique associ\'ee} 
 de l'\'equation du second degr\'e
@@ -5649,10 +5864,10 @@ on a calcul\'e une param\'etrisation rationnelle, mais pas
 d\'emontr\'e que c'\'etait forc\'ement une conique. Pour faire
 cela, l'outil adapt\'e est l'\'etude des formes quadratiques. On peut
 toutefois le faire \`a la main en dimension 2, en faisant une rotation
-pour annuler le coefficient de $xy$. Par exemple\\
-\giacinputbigmath[style="width:800px;height:40px;font-size:large"]{restart; X:=cos(d)*x+sin(d)*y; Y:=-sin(d)*x+cos(d)*y; E:=a*X^2+b*X*Y+c*Y^2; C:=coeff(coeff(E,x,1),y,1); tlin(C) }\\
+$x,y \rightarrow X,Y$ pour annuler le coefficient de $XY$. Par exemple\\
+\giacinputbigmath[style="width:800px;height:40px;font-size:large"]{restart; z:=(X+i*Y)*exp2trig(exp(i*alpha));x:=re(z); y:=im(z);tlin(coeff(a*x^2+b*x*y+c*y^2,[X,Y],[1,1])) }\\
 on voit que l'angle de la rotation \`a effectuer v\'erifie
-$$(a-c)\sin(2d)+b\cos(2d)=0 \quad \Rightarrow \quad \tan(2d)=\frac{b}{c-a}$$
+$$(c-a)\sin(2d)+b\cos(2d)=0 \quad \Rightarrow \quad \tan(2d)=\frac{b}{a-c}$$
 
 \section{Propri\'et\'es m\'etriques des courbes.} \label{sec:courbes_m}
 \subsection{Longueur d'arc}
@@ -5831,7 +6046,13 @@ $$ \frac{d}{dt}(M+\frac1\kappa \vec{N})=v\vec{T} +
 \vec{T})
 = \frac{d\frac1\kappa}{dt} \vec{N} $$
 on en d\'eduit que la tangente \`a la d\'evelopp\'ee en $\Omega$ a
-pour direction la normale $\vec{N}$. 
+pour direction la normale $\vec{N}$  (si $\kappa$ admet un
+point critique, par exemple en un sommet de la courbe,
+la d\'evelopp\'ee admet g\'en\'eriquement
+un point de rebroussement\footnote{On peut montrer qu'une courbe
+convexe admet au moins 4 sommets (th\'eor\`eme des quatre sommets), 
+sa d\'evelopp\'ee admet donc
+au moins 4 points de rebroussements.}). 
 {\em L'enveloppe\index{enveloppe}\footnote{L'enveloppe d'une famille
 de droites est une courbe dont l'ensemble des tangentes est la famille de droite} 
 des normales \`a une courbe est donc sa d\'evelopp\'ee.}\\
@@ -5839,6 +6060,8 @@ Exemple~: d\'evelopp\'ee de l'ellipse $(2\cos(t),\sin(t))$\\
 Initialiser la trace avec \giacinput{L:=[]}\\
 puis faire varier $t0$~:
 \giacslider{t0}{-5}{5}{0.1}{0.7}{gl_x=-6..6;gl_y=-4..4;G:=plotparam([2*cos(t),sin(t)],t=0..2*pi);M:=element(G,evalf(t0));T:=tangent(M);N:=perpendiculaire(M,T);L:=append(L,N);evolute(G,color=red)}
+On observe 4 sommets pour l'ellipse, situ\'es sur les grands et
+petits axes, et donc 4 points de rebroussements pour la d\'evelopp\'ee.
 %\begin{rawhtml}
 %<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+L:=[]&*t0,0.7,-5,5,0.1&+gl_x=-6..6;gl_y=-4..4;G:=plotparam([2*cos(t),sin(t)],t=0..2*pi);M:=element(G,t0);T:=tangent(M);N:=perpendiculaire(M,T);L:=append(L,N);developpee(G,color=red)&" target="_blank">Tester en ligne</a>
 %\end{rawhtml}
@@ -7880,6 +8103,29 @@ en une dizaine de cycles du microprocesseur.
 %\pagebreak
 
 \subsection{Exercices}
+Dans Xcas, pour travailler dans $\Z/p\Z$, on utilise l'op\'erateur \verb|%|.
+Attention \`a bien laisser un espace avant ou/et apr\`es \verb|%| si vous 
+utilisez des noms de variables. Par exemple \verb|p:=7; 3 % p| repr\'esente
+la classe de 3 dans $\Z/7\Z$.
+Pour travailler dans un corps fini non premier de caract\'eristique $p$
+et de cardinal $p^n$,
+on cr\'ee le corps avec la commande \verb|GF(p,n)| ou une variante.
+Les variantes permettent de pr\'eciser le nom de variable pour 
+g\'en\'erer les \'el\'ements du corps comme polyn\^omes en cette variable, 
+ou pour pr\'eciser le polyn\^ome minimal ou pour indiquer si on ne souhaite
+pas que le polyn\^ome minimal soit primitif (i.e. que les puissances
+de la variable engendre le corps moins 0). Par exemple
+\begin{itemize}
+\item \verb|GF(2,8,r)| utilisera \verb|r| comme variable
+\item \verb|GF(2,128,0)| utilisera un polyn\^ome minimal pas forc\'ement 
+primitif
+\item \verb|GF(2,128,r,0)| combine les deux
+\item \verb|GF(2,w^8+w^7+w^5+w+1,w,0)| utilise \verb|w| comme variable,
+le polyn\^ome minimal \verb|w^8+w^7+w^5+w+1| qui n'est pas forc\'ement
+primitif.
+\end{itemize}
+
+Exercices~:
 \begin{enumerate}
 \item Trouver un polyn\^ome irr\'eductible $P$ de degr\'e 5 sur $\Z/7\Z$.
 En d\'eduire une repr\'esentation de \verb|GF(7,5)|. Factoriser 
@@ -7898,6 +8144,9 @@ multiplicative et additive de \verb|GF(2,4)|.
   polyn\^ome $A$ est irr\'eductible modulo $p$, en utilisant le
 PGCD avec les $x^{p^k}-x$ modulo $p$. Quelle est sa complexit\'e
 si $A$ est irr\'eductible de degr\'e $d$~?
+\item Cr\'eer une matrice carr\'ee $M$ d'ordre 3 \`a coefficients
+dans un corps de cardinal 25, d\'eterminer son polynome
+minimal et son ordre. Quels sont les ordres possibles~?
 \end{enumerate}
 
 %\pagebreak
@@ -8428,17 +8677,18 @@ $$ \frac{a^2}{2}+ O(\sqrt{N}^{-1})
 \leq \frac{a^2}{2}+ O(\sqrt{N}^{-1})$$
 d'o\`u le r\'esultat annonc\'e.
 
-{\bf Application~}: si $N$ est composé, on prend des entiers modulo $N$
+{\bf Application~}: si $n$ est composé, on prend des entiers modulo $n$
 générés par une suite 
-récurrente $x_{n+1}=f(x_n) \pmod N$, 
+récurrente $x_{k+1}=f(x_k) \pmod n$, 
 on espère qu'ils ont de bonne propriétés de répartition, 
 et on regarde s'ils sont distincts modulo $p$ où $p$ est 
-le plus petit facteur de $N$. Il suffira d'en générer 
+le plus petit facteur de $n$. Il suffira d'en générer 
 $O(\sqrt{p})$ pour avoir une bonne proba d'en trouver 
 deux égaux modulo $p$. 
 Comme on ne connait pas $p$, le test d'égalité modulo $p$ 
-se fait en calculant le pgcd des différence des 2 entiers modulo $N$
-et de $N$ qui doit être non trivial. 
+se fait en calculant le pgcd de $n$ et
+de la différence des 2 entiers modulo $n$,
+qui doit être non trivial. 
 La fonction $f$ peut par exemple être $x \rightarrow x^2+1$ 
 (ou $x^2-1$ ou $x^2+3$)\footnote{Il n'existe \`a ma connaissance
 pas de résultat sur pourquoi ces choix de $f$ donnent 
@@ -8449,8 +8699,8 @@ mais les $x_{2k}-x_k$ pour $k=1,2,...$
 ce qui suffit car la suite $x_k$ est ultimement périodique 
 (le dessin d'une suite ultimement p\'eriodique est un $\rho$
 d'o\`u la m\'ethode tire son nom). 
-Le calcul nécessite donc $O(\sqrt{p}*\ln(N)^2)$ opérations 
-(ce qui est toujours mieux que la division triviale car $p \leq \sqrt{N}$).
+Le calcul nécessite donc $O(\sqrt{p}*\ln(n)^2)$ opérations 
+(ce qui est toujours mieux que la division triviale car $p \leq \sqrt{n}$).
 
 \subsection{Le crible quadratique}\index{crible quadratique}
 \index{quadratique, crible}
@@ -8476,7 +8726,7 @@ tous les éléments d'un tableau dont l'indice correspond
 Lorsqu'on a parcouru tous les premiers de la base de nombres premiers, 
 on regarde dans le tableau les valeurs assez grandes 
 vont correspondre à des possibilités d'entiers friables, 
-on factorise alors les $x_i$ correspondants pour avoir des relations. 
+on factorise alors les $x_i^2-N$ correspondants pour avoir des relations. 
 Dès qu'on a $k$+une marge de sécurité (par exemple 20 ou 50) 
 relations où $k$ est le nombre de premiers de la base 
 on est sur qu'on trouvera une vingtaine ou une cinquantaine de
@@ -9495,6 +9745,48 @@ Voir aussi la session \verb|afactor.xws| du menu Exemple, poly de Xcas.
 Pour factoriser sur des corps finis, on peut consulter la thèse
 de Bernardin disponible sur le web (\verb|http://www.bernardin.lu|).
 
+L'algorithme r\'ecursif qui suit permet d'\'ecrire un {\bf polyn\^ome
+sym\'etrique}\index{polyn\^ome sym\'etrique}\index{sym\'etrique, polyn\^ome}
+en $n$ variables (not\'e \verb|s| dans le programme)
+en fonction des polyn\^omes sym\'etriques \'el\'ementaires. L'id\'ee
+est de remplacer la derni\`ere variable $x_n$ par 0, le polyn\^ome
+obtenu $Q$ est sym\'etrique en les autres variables, on appelle
+r\'ecursivement la proc\'edure (avec une variable de moins),
+elle renvoie un polyn\^ome
+$V$. On cr\'ee dans \verb|S| les polyn\^omes sym\'etriques
+\'el\'ementaires avec la fonction \verb|pcoeff|, on les utilise
+pour substituer
+dans $V$ par les polyn\^omes sym\'etriques \'el\'ementaires sauf
+le dernier, ce qui donne $V_s$ sym\'etris\'e de $V$ par rapport aux
+$n$ variables, puis on retranche $V_s$ de $P$. Par construction on doit 
+obtenir un polyn\^ome divisible par le produit des $x_i$>: en effet
+$P-Q$ est divisible par $x_n$ donc $P-V_s$ aussi donc par sym\'etrie
+il est divisible par le produit des $x_i$. C'est le polyn\^ome
+$q$ ci-dessous, auquel on applique r\'ecursivement l'algorithme
+(le degr\'e a \'et\'e dimun\'e de $n$).
+\begin{giacprog}
+restart;
+sym(P,X):={ // P polynome symetrique, X liste des variables
+  local s,xs,Q,V,W,S,q,r;
+  s:=size(X);
+  si s<=1 alors return P; fsi;
+  xs:=X[s-1];
+  si !contains(lname(P),xs) alors return P; fsi; // polynome constant
+  Q:=normal(subst(P,xs=0)); // Q est symetrique en X[0..s-2]
+  V:=sym(Q,X[0..s-2]); // appel recursif
+  S:=pcoeff(X[0..s-1]); // polynomes symetriques en les X
+  pour k de 0 jusque size(S)-1 faire S[k]=(-1)^k*S[k]; fpour;
+  q,r:=quorem((P-subst(V,X[0..s-2],S[1..s-1])),S[s],xs); // reste nul
+  si r!=0 alors throw("non symetrique"); fsi;
+  W:=sym(q,X);
+  retourne V+W*xs;
+}:;
+\end{giacprog}
+Par exemple
+\giacinputbigmath{p:=sym(x^3+y^3+z^3,[x,y,z])}
+exprime $x^3+y^3+z^3$ en fonction de $x+y+z,xy+xz+yz,xyz$,
+on v\'erifie 
+\giacinputbigmath{normal(subst(p,[x,y,z],[x+y+z,x*y+x*z+y*z,x*y*z]))}
 % On peut aussi consulter le code source de Mupad, les routines
 % de factorisation se trouvent dans le répertoire \verb|lib/POLYLIB/FACLIB|
 % après avoir désarchivé la \verb|lib.tar|. Le point d'entrée pour factoriser
@@ -16039,6 +16331,48 @@ dont la partie imaginaire nous donne (\ref{eq:Siinf}), et la
 partie r\'eelle une autre identit\'e sur $\gamma$ faisant intervenir
 la fonction cosinus int\'egral.
 
+\subsection{S\'eries formelles.}\index{s\'eries formelles} \index{formelles, s\'eries}
+On peut aussi s'int\'eresser aux s\'eries d'un point de vue purement
+alg\'ebrique en mettant de cot\'e tous
+les aspects li\'es \`a la convergence. On parle alors de s\'erie
+formelle. Si le corps de base est de caract\'eristique quelconque
+on peut faire les op\'erations arithm\'etiques usuelles sur les
+s\'eries formelles $\sum_{k\geq 0} a_k x^k$. Si la caract\'eristique
+est nulle, on peut \'egalement calculer les fonctions usuelles.
+Dans Xcas, on d\'eclare la variable de s\'erie formelle par la commande
+\verb|series| avec en argument le caract\`ere d\'esignant la variable, 
+par exemple \verb|series("h")| utilisera \verb|h| comme variable. Si la
+variable \verb|O| n'est pas affect\'ee, elle sera d\'efinie pour donner
+l'ordre de la s\'erie. Ainsi \verb|1+h+O(h^7)| sera une s\'erie
+dont on connait les termes jusqu'\`a l'ordre 6 inclus.
+Les op\'erations usuelles sont impl\'ement\'ees dans Xcas
+\begin{itemize}
+\item addition \verb|+|, oppos\'e \verb|-|, multiplication \verb|*|
+\item inverse \verb|inv| 
+si le coefficient de puissance 0 n'est pas inversible, 
+Xcas renvoie une s\'erie de Laurent
+$\sum_{k\geq -N} a_k x^k$.
+\item composition de deux s\'eries \verb|@|
+\item inverse pour la composition \verb|revert|
+\item les conversions se font avec la commande \verb|convert|, par
+exemple \verb|a:=convert(sin(x),series,x=0,8)|,
+\verb|b:=convert(a,polynom)|.
+\end{itemize}
+On peut aussi appliquer les fonctions usuelles en caract\'eristique 0, par
+exemple
+\giacinputbigmath{restart;series("h");}
+\giacinputbigmath{a:=ln(1+h+O(h^8));}
+\giacinputbigmath{exp(a);}
+Pour travailler avec un autre corps de base, il suffit de donner des
+coefficients dans ce corps. Si la caract\'eristique du corps est assez
+grande, les fonctions usuelles sont aussi applicables.
+\giacinputbigmath{GF(11,3);}
+\giacinputbigmath{a:=ln(1+g*h+O(h^6));}
+\giacinputbigmath{exp(a);}
+
+Les op\'erations sur les s\'eries sont impl\'ement\'ees sans optimisation
+particuli\`ere, leur utilisation principale dans Xcas \'etant le
+calcul de d\'eveloppement de Taylor ou asymptotique sur $\Q$.
 
 \section{La transform\'ee de Fourier discr\`ete.}
 \label{sec:dft}
@@ -17278,192 +17612,6 @@ sp\'eciales $\theta$) et d'autres formules pour calculer $\pi$.
 On peut ensuite \`a partir du logarithme, calculer l'exponentielle
 en utilisant la m\'ethode de Newton.
 
-\section{Les générateurs de nombres pseudo-aléatoires.}
-\label{sec:random}
-\index{al\'eatoire}
-\subsection{Selon la loi uniforme}
-Les générateurs d'entiers dans une plage donnée selon la loi
-uniforme servent en général de base pour générer des 
-nombres aléatoires entiers ou non selon des lois classiques.
-Ils doivent à la fois être rapides, avoir une période égale à
-la plage donnée et avoir de bonnes propriétés statistiques.
-
-Xcas utilise un ``tiny'' Mersenne Twister (de période environ $2^{127}$),
-certaines implantations de Giac utilisent un générateur congruentiel.
-
-\subsubsection{Les générateurs congruentiels \`a 1 cran.}\index{g\'en\'erateur congruentiel}
-\index{congruentiel, g\'en\'erateur} 
-Etant donnés trois entiers $a, c$ et $m$ on considère la suite
-$$ u_{n+1}=au_n+c \pmod m $$
-où on choisit (par exemple) comme représentant de $u_n$
-le reste de la division euclidienne par $m$. La valeur de $u_0$
-est appelée seed en anglais, elle est initialisée usuellement
-soit à 0 (ce qui permet de reproduire des bugs dans un programme
-dépendant du hasard), soit avec l'horloge système ou tout autre
-entrée de l'ordinateur (par exemple périphériques).
-
-On supposera que $a\neq 1$, le cas $a=1$ n'est pas tr\`es
-int\'eressant. On a alors~:
-$$ u_n=a^n u_0 + \frac{a^n-1}{a-1} c \pmod m$$
-On cherche \`a r\'ealiser une p\'eriode la plus grande possible
-id\'ealement $m$, mais $m-1$ peut fort bien convenir, et c'est
-possible si $m$ est premier en choisissant 
-$a$ g\'en\'erateur du groupe cyclique, car on a alors $a\neq 1 \pmod m$ et~:
-$$ u_n=a^n (u_0 + \frac{c}{a-1}) - \frac{c}{a-1}  \pmod m$$
-donc la suite est stationnaire ou prend toutes les valeurs sauf $- \frac{c}{a-1} $.
-
-Exemple~: choisir pour $m$ une puissance de 2 permet d'effectuer
-la division euclidienne tr\`es rapidement, mais cela a un
-inconv\'enient assez important~: les bits de poids faible
-de $u_n$ ont une p\'eriodicit\'e tr\`es (trop) petite.
-Il est alors int\'eressant de prendre $m=2^k \pm 1$, parce
-que la division euclidienne par $m$ peut se coder efficacement en base
-2, on divise par $2^k$ (d\'ecalage de $k$ bits) et on ajuste
-$x=(2^k \pm 1)q+r=2^k q + (r \pm q)$.
-Ainsi pour $k=4$ et $m=2^4+1=17$, $m$ est premier.
-On peut construire une suite de p\'eriode 16 en choisissant $a$ g\'en\'erateur
-de $(\Z/17\Z)^*$, par exemple $a=3$ et $c=2$ donne la suite
-$0,2,8,9,12,4,14,10,15,13,7,6,3,11,1,5$.
-
-On a le~:
-\begin{thm}
-La suite $(u_n)$ définie ci-dessus est de périodicité maximale $m$ si
-et seulement si~:
-\begin{enumerate}
-\item $c$ et $m$ sont premiers entre eux
-\item $a-1$ est divisible par tous les facteurs premiers de $m$
-\item $a-1$ est multiple de 4 si $m$ l'est.
-\end{enumerate}
-\end{thm}
-On observe d'abord que vouloir la périodicité maximale revient
-à pouvoir supposer que $u_0=0$. 
-Il est donc nécessaire d'avoir $c$
-et $m$ premiers entre eux, sinon tous les $u_n$ sont multiples du
-pgcd de $c$ et $m$. Ensuite, on pose $m=\prod p_i^{r_i}$ la
-décomposition en facteurs premiers de $m$ et on raisonne modulo
-chaque premier (par le lemme chinois, la p\'eriodicit\'e
-est le PPCM des p\'eriodicit\'es modulo chaque $p_i^{r_i}$). 
-Si $a\neq 1 \pmod p_i$
-alors $a-1$ est inversible modulo $p_i$ donc modulo 
-$p_i^{r_i}$ on a
-$$ u_n=a^n (u_0 + \frac{c}{a-1}) + \frac{-c}{a-1}  $$
-et la valeur $-c/(a-1)$ ne peut pas \^etre atteinte
-(ou alors la suite est stationnaire).
-Donc $a-1$ doit \^etre divisible par tous les facteurs premiers de $m$
-pour avoir la p\'eriodicit\'e maximale.
-R\'eciproquement, il faut trouver le premier ordre $n$ tel que
-$(a^n-1)/(a-1)=0 \pmod{p^r}$. On pose $a=b+1$, on a
-$$ \frac{a^n-1}{a-1}=\frac{(b+1)^n-1}{b} = \sum_{k=1}^n
-\left(^n_k\right) b^{k-1} = n +\frac{n(n-1)}{2}b +... $$
-On sait que $b=a-1$ est un multiple de $p$, disons $b=qp$, on en d\'eduit que
-pour $n=p^r$, on a bien $(a^n-1)/(a-1)=0 \pmod{p^r}$, alors que
-pour $n=p^{r-1}$ et $p\neq 2$, $(a^n-1)/(a-1)=n \pmod{p^r} \neq 0$.
-Le m\^eme calcul pour $p=2$ (prise en compte de la division par 2 de
-$n(n-1)$) donne la condition $b=a-1$ est multiple de 4 si $m$ l'est.
-
-On trouvera dans Knuth une discussion détaillée du choix de $a, b, m$.
-
-
-Exemple~: $m=2^{31}-1$ est premier, on peut donc construire un
-g\'en\'erateur congruentiel de p\'eriode $m-1$ en choisissant $a$
-g\'en\'erateur de $\Z/m\Z^*$. Pour en trouver un, on peut tester
-$a$ pris au hasard et voir si $a^{\frac{m-1}{j}} \neq 1 \pmod m$
-pour tous les diviseurs premiers de $m-1$. Par exemple\\
-\giacinputbigmath{m:=2^31-1;F:=ifactors(b:=m-1); G:=seq(F[2*j],j,0,iquo(size(F)-1,2))}
-\giacinputbigmath{a:=456783546; for k in G do afficher(powmod(a,b/k,m)); od}\\
-\giacinputbig{r():=(etat:=irem(a*etat,m)); }\\
-\giacinput{etat:=1;} initialise l'\'etat du g\'en\'erateur.
-Un appel \`a \verb|r()| renvoie un entier entre 1 et $m-1$, pour avoir
-un g'en\'erateur pseudo-al\'eatoire selon la loi uniforme sur $]0,1[$, on tape
-\giacinput{evalf(r()/m)}.
-Ainsi \\
-\giacinputbig{L:=seq(evalf(r()/m),j,1,10000);histogramme(L,0,.02)}
-permet de v\'erifier visuellement si les r\'eels g\'en\'er\'es sont
-bien r\'epartis, ou bien\\
-\giacinputbig{seq(point(evalf(r()/m,r()/m),affichage=point_point),j,1,2000)}
-qui d\'etecte des biais invisibles avec le test pr\'ec\'edent, par
-exemple pour \giacinput{a:=7}.
-
-\subsubsection{R\'ecurrence \`a $k$ \'el\'ements}
-Au lieu d'une r\'ecurrence $u_{k+1}=au_k+c$ on conserve en m\'emoire
-$k+1$ valeurs successives de la suite et on calcule
-$$ u_{n+k+1} = a_0 u_n+...+a_{k}u_{n+k} \pmod p$$
-Si on note $U_n$ le vecteur $(u_n,...,u_{n+k})$ et $A$
-la matrice companion du polyn\^ome $a_0+a_1x+...+a_kx^k$,
-on a $U_{n+1}=AU_n$. Rechercher un g\'en\'erateur de p\'eriode
-maximale revient \`a chercher $A$ d'ordre le plus grand possible, donc
-les valeurs propres de $A$, i.e. les racines de $P$, doivent \^etre
-racines de l'unit\'e d'ordre le plus grand possible donc $p^k-1$. 
-Ce que l'on peut faire en construire un polyn\^ome $P$ irr\'eductible
-primitif (cf. la section \ref{sec:gf} sur la construction de repr\'esentation
-des corps finis).
-
-\subsubsection{Mersenne twister.}
-Ce sont des générateurs plus performants, avec un état interne
-en général plus grand, dont l'état initial est généré par
-un générateur congruentiel. Ils utilisent une relation
-de r\'ecurrence qui ressemble aux g\'en\'erateurs
-congruentiels, mais au lieu de travailler sur de grands
-entiers, on d\'ecoupe l'entier en mots de taille g\'er\'ee
-par le CPU, et on fait des op\'erations de type matriciels
-avec des op\'erations bit \`a bit (ou exclusif par exemple)
-au lieu d'op\'erations arithm\'etiques.
-
-\subsection{Selon plusieurs lois classiques}
-La m\'ethode g\'en\'erale consiste \`a calculer la distribution
-cumul\'ee de la loi et \`a prendre la fonction r\'eciproque
-d'un r\'eel g\'en\'er\'e al\'eatoirement entre 0 et 1 selon
-la loi uniforme. Lorsqu'on a un nombre discret de valeurs possibles
-pas trop grand et que l'on veut g\'en\'erer plusieurs
-nombres selon la m\^eme loi, on peut pr\'ecalculer la distribution cumul\'ee
-en chaque valeur, et faire une dichotomie pour trouver
-la valeur de la fonction r\'eciproque du nombre al\'eatoire
-g\'en\'er\'e. Les calculs peuvent être rendus difficiles
-par des dépassement de capacité des flottants si on utilise
-des méthodes naives pour estimer les fonction de répartition.
-On trouvera dans Abramowitz-Stegun diverses formules 
-pour initialiser les méthodes de Newton pour inverser les
-fonction de répartition courante.
-
-Il existe aussi quelques cas particuliers o\`u
-on peut obtenir plus facilement un r\'eel selon la loi
-donn\'ee~:
-\begin{itemize}
-\item Pour la loi normale\index{normale, loi}, on g\'en\`ere 2 r\'eels $u,d$
-entre 0 et 1, on calcule \\
-$\sqrt{-2 \log(u)} \cos(2\pi d)$\\
-En effet si on considère un couple de variables qui
-suivent une loi normale centrée réduite, la densité de probabilité
-au point $(x,y)$ (coordonnées cartésiennes) ou $(r,\theta)$ est~:
-$$ \frac{1}{\sqrt{2\pi}^2} e^{-\frac{x^2+y^2}{2}} \, dx \, dy
-=  \left( e^{-\frac{r^2}{2}} r  \, dr \right)
-\left( \frac{1}{2\pi} \, d\theta \right)
-= \left( \frac12 e^{-\frac s2} \, ds \right)
-\left( \frac{1}{2\pi} \, d\theta \right)$$
-où $r^2=s$. Donc $s$ suit une loi exponentielle (générée
-par la réciproque de la distribution cumulée) et $\theta$
-uniforme, les deux sont indépendantes. On écrit 
-alors $x=r\cos(\theta)$. On peut pour le même prix
-générer $y=r\sin(\theta)$. \\
-Pour éviter de calculer
-des lignes trigonométriques, on peut aussi tirer
-$x$ et $y$ uniformément dans $[-1,1]$, accepter le tirage
-si $s=x^2+y^2 \in ]0,1]$ et renvoyer deux valeurs
-aléatoires selon la loi normale
-$$ x \sqrt{\frac{-2\ln(s)}{s}}, \quad y \sqrt{\frac{-2\ln(s)}{s}} $$
-\item Pour la loi du $\chi^2$ \`a $k$ degr\'es de libert\'e, 
-on fait la somme
-des carr\'es de $k$ r\'eels al\'eatoires selon la loi normale
-\item Pour la loi de Student, on fait le quotient d'un réel
-selon la loi normale par la racine carrée
-d'un réel selon la loi du $\chi^2$ divisé par le nombre
-de degré de liberté
-\item Pour la loi de Fisher, on fait le quotient d'un réel
-selon la loi du $\chi^2$ en $k_1$ degrés de liberté divisé par
-$k_1$ et d'un réel
-selon la loi du $\chi^2$ en $k_2$ degrés de liberté divisé par
-$k_2$
-\end{itemize}
 
 %\end{document}
 

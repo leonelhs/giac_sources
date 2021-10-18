@@ -371,6 +371,11 @@ namespace giac {
 #endif
       }
     }
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_zero(expo))
+	return series(*e._SPOL1ptr,*at_ln,0,contextptr);
+    }
     if (e.type==_REAL){
       if (is_positive(e,contextptr))
 	return e._REALptr->log();
@@ -576,6 +581,11 @@ namespace giac {
 	      return res*rad2deg_d;
       else
         return res*rad2grad_d;
+    }
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_atan,0,contextptr);
     }
     if (e.type==_REAL){
       if (angle_radian(contextptr)) 
@@ -799,8 +809,11 @@ namespace giac {
     if (is_integer(e0) && is_strictly_greater(0,e0,contextptr))
       return symb_inv(symb_exp(-e0));
     gen e=frac_neg_out(e0,contextptr);
-    if (e.type==_SPOL1)
-      return symb_exp(e);
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_exp,0,contextptr);
+    }
     if (e.type==_DOUBLE_){
 #ifdef _SOFTMATH_H
       return std::giac_gnuwince_exp(e._DOUBLE_val);
@@ -1385,8 +1398,11 @@ namespace giac {
 #endif
     }
     gen e=frac_neg_out(e0,contextptr);
-    if (e.type==_SPOL1)
-      return symb_cos(e);
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_cos,0,contextptr);
+    }
     if (e.type==_DOUBLE_){
       double d;
       if (angle_radian(contextptr)) 
@@ -1619,8 +1635,11 @@ namespace giac {
 #endif
     }
     gen e=frac_neg_out(e0,contextptr);
-    if (e.type==_SPOL1)
-      return symb_sin(e);
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_sin,0,contextptr);
+    }
     if (e.type==_DOUBLE_){
       double d;
       if (angle_radian(contextptr)) 
@@ -1849,6 +1868,11 @@ namespace giac {
 #endif
     }
     gen e=frac_neg_out(e0,contextptr);
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_tan,0,contextptr);
+    }
     if (e.type==_DOUBLE_){
       double d;
       if (angle_radian(contextptr)) 
@@ -2022,6 +2046,11 @@ namespace giac {
   gen asin(const gen & e0,GIAC_CONTEXT){
     if ( (calc_mode(contextptr)==38 || !escape_real(contextptr) ) && !complex_mode(contextptr) && (e0.type<=_POLY || e0.type==_FLOAT_) && (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr)))
       return gensizeerr(contextptr);
+    if (e0.type==_SPOL1){
+      gen expo=e0._SPOL1ptr->empty()?undef:e0._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e0._SPOL1ptr,*at_asin,0,contextptr);
+    }
     if (e0.type==_FLOAT_){
       if (!is_positive(e0+1,contextptr) || !is_positive(1-e0,contextptr))
 	return asinasln(e0,contextptr)*gen(angle_radian(contextptr)?1.0:(angle_degree(contextptr)?rad2deg_d:rad2grad_d)); //grad // cst_i*ln(sqrt(e0*e0-1,contextptr)+e0,contextptr)+evalf(cst_pi_over_2,1,contextptr);
@@ -2274,6 +2303,11 @@ namespace giac {
 	  return d*rad2grad_d;
       }
     }
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_exp,0,contextptr);
+    }
     if (e.type==_REAL){
       if (angle_radian(contextptr)) 
 	return e._REALptr->acos();
@@ -2374,6 +2408,11 @@ namespace giac {
       return std::sinh(e._DOUBLE_val);
 #endif
     }
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_sinh,0,contextptr);
+    }
     if (e.type==_REAL)
       return e._REALptr->sinh();
     if (e.type==_CPLX){
@@ -2439,6 +2478,11 @@ namespace giac {
       return std::cosh(e._DOUBLE_val);
 #endif
     }
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_cosh,0,contextptr);
+    }
     if (e.type==_REAL)
       return e._REALptr->cosh();
     if (e.type==_CPLX){
@@ -2502,6 +2546,11 @@ namespace giac {
 #else
       return std::tanh(e._DOUBLE_val);
 #endif
+    }
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_tanh,0,contextptr);
     }
     if (e.type==_REAL)
       return e._REALptr->tanh();
@@ -2571,6 +2620,11 @@ namespace giac {
     gen e=frac_neg_out(e0,contextptr);
     if (e.type==_DOUBLE_)
       return asinhasln(e,contextptr);
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_asinh,0,contextptr);
+    }
     if (e.type==_REAL)
       return e._REALptr->asinh();
     if ( (e.type==_CPLX) && (e.subtype || e._CPLXptr->type==_REAL))
@@ -2622,6 +2676,11 @@ namespace giac {
     gen e=frac_neg_out(e0,contextptr);
     if (e.type==_DOUBLE_)
       return acoshasln(e,contextptr);
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_acosh,0,contextptr);
+    }
     if (e.type==_REAL)
       return e._REALptr->acosh();
     if ( (e.type==_CPLX) && (e.subtype|| e._CPLXptr->type==_REAL || e._CPLXptr->type==_FLOAT_))
@@ -2675,6 +2734,11 @@ namespace giac {
 #else
       return std::log((1+e._DOUBLE_val)/(1-e._DOUBLE_val))/2;
 #endif
+    }
+    if (e.type==_SPOL1){
+      gen expo=e._SPOL1ptr->empty()?undef:e._SPOL1ptr->front().exponent;
+      if (is_positive(expo,contextptr))
+	return series(*e._SPOL1ptr,*at_atanh,0,contextptr);
     }
     if (e.type==_REAL)
       return e._REALptr->atanh();
@@ -2756,6 +2820,13 @@ namespace giac {
     return symbolic(at_order_size,e);
   }
   gen order_size(const gen & arg,GIAC_CONTEXT){
+    if (arg.type==_SPOL1 && arg._SPOL1ptr->size()==1){
+      gen expo=arg._SPOL1ptr->front().exponent;
+      char sv=series_variable_name(contextptr);
+      if (expo!=1)
+	*logptr(contextptr) << "order_size argument should always be the series variable name. This means that O("<<sv<<"^"<<expo << ") should be written "<< sv << "^" << expo <<"*order_size("<< sv << ")" << endl;
+      return sparse_poly1(1,monome(undef,0));
+    }
     return symb_order_size(arg);
   }
   define_partial_derivative_onearg_genop( D_at_order_size," D_at_order_size",order_size);
@@ -3267,6 +3338,16 @@ namespace giac {
     if (b.type==_IDNT){
       // typed variable name must end with _d (double) or _i (int)
       int bl=strlen(b._IDNTptr->id_name);
+      if (bl==1){
+	if (b._IDNTptr->id_name[0]=='O' && (series_flags(contextptr) & (1<<6)) )
+	  series_flags(contextptr) ^= (1<<6);
+	if (b._IDNTptr->id_name[0]==series_variable_name(contextptr)){
+	  if (series_flags(contextptr) & (1<<5))
+	    series_flags(contextptr) ^= (1<<5);
+	  if (series_flags(contextptr) & (1<<6))
+	    series_flags(contextptr) ^= (1<<6);
+	}
+      }
       if (bl>=3){
 	const char * name=b._IDNTptr->id_name;
 	if (name[bl-2]=='_'){
@@ -5769,6 +5850,11 @@ namespace giac {
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if ((args.type!=_VECT) || (args._VECTptr->size()<2) )
       return gensizeerr(contextptr);
+    if (args.type==_VECT && args._VECTptr->size()>=3 && args[2].type==_VECT){
+      vecteur v = *args._VECTptr;
+      v.push_back(at_quo);
+      return _revlist(_greduce(gen(v,_SEQ__VECT),contextptr),contextptr);
+    }
     vecteur & a =*args._VECTptr;
     if ( (a.front().type==_VECT) && (a[1].type==_VECT))
       return quorem(a.front(),a[1]);
@@ -5842,6 +5928,11 @@ namespace giac {
   // symbolic symb_quo(const gen & a,const gen & b){    return symbolic(at_quo,makevecteur(a,b));  }
   gen _quo(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (args.type==_VECT && args._VECTptr->size()>=3 && args[2].type==_VECT){
+      vecteur v = *args._VECTptr;
+      v.push_back(at_quo);
+      return _greduce(gen(v,_SEQ__VECT),contextptr)[1];
+    }
     return _quorem(args,contextptr)[0];
   }
   static const char _quo_s []="quo";
@@ -5853,9 +5944,11 @@ namespace giac {
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type==_VECT && args._VECTptr->size()>=3 && args[2].type==_VECT){
       vecteur v = *args._VECTptr;
-      gen g(_WITH_COCOA);
-      g.subtype=_INT_GROEBNER;
-      v.push_back(symb_equal(g,0));
+#if 0 
+	 gen g(_WITH_COCOA);
+	 g.subtype=_INT_GROEBNER;
+	 v.push_back(symb_equal(g,0));
+#endif
       return _greduce(gen(v,_SEQ__VECT),contextptr);
     }
     return _quorem(args,contextptr)[1];

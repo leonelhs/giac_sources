@@ -4422,6 +4422,10 @@ namespace giac {
 	return string2gen(*a._STRNGptr+b.print(contextptr),false);
       if (b.type==_STRNG)
 	return string2gen(a.print(contextptr)+*b._STRNGptr,false);
+      if (a.type==_SPOL1)
+	return spadd(*a._SPOL1ptr,gen2spol1(b),contextptr);
+      if (b.type==_SPOL1)
+	return spadd(gen2spol1(a),*b._SPOL1ptr,contextptr);
       if (a.type==_USER)
 	return (*a._USERptr)+b;
       if (b.type==_USER)
@@ -5131,6 +5135,10 @@ namespace giac {
 	  return operator_minus(a1,b,contextptr);
 	return operator_minus(a,evalf_double(b,1,contextptr),contextptr);     
       }
+      if (a.type==_SPOL1)
+	return spsub(*a._SPOL1ptr,gen2spol1(b),contextptr);
+      if (b.type==_SPOL1)
+	return spsub(gen2spol1(a),*b._SPOL1ptr,contextptr);
       if (a.type==_USER)
 	return (*a._USERptr)-b;
       if (b.type==_USER)
@@ -5993,6 +6001,10 @@ namespace giac {
 	  return a1*b;
 	return operator_times(a,evalf_double(b,1,contextptr),contextptr);
       }
+      if (a.type==_SPOL1)
+	return spmul(*a._SPOL1ptr,gen2spol1(b),contextptr);
+      if (b.type==_SPOL1)
+	return spmul(gen2spol1(a),*b._SPOL1ptr,contextptr);
       if (a.type==_USER)
 	return (*a._USERptr)*b;
       if (b.type==_USER)
@@ -6415,6 +6427,8 @@ namespace giac {
 #endif
 	return undef;
       }
+      if (base.type==_SPOL1)
+	return sppow(*base._SPOL1ptr,exponent,contextptr);
       if (is_integer(base) && is_positive(-base,contextptr)){
 #if 0
 	if (abs_calc_mode(contextptr)==38 && !complex_mode(contextptr))
@@ -6504,14 +6518,14 @@ namespace giac {
       return a;
     if (is_undef(b))
       return b;
-    if (is_inequality(a)){
+    if (is_inequality(a) && !is_equal(a)){
       int bs=fastsign(b,contextptr);
       if (bs==-1)
 	return new_ref_symbolic(symbolic(a._SYMBptr->sommet,makesequence(a._SYMBptr->feuille._VECTptr->back()*b,a._SYMBptr->feuille._VECTptr->front()*b)));
       if (bs==1)
 	return new_ref_symbolic(symbolic(a._SYMBptr->sommet,makesequence(a._SYMBptr->feuille._VECTptr->front()*b,a._SYMBptr->feuille._VECTptr->back()*b)));
     }
-    if (is_inequality(b)){
+    if (is_inequality(b) && !is_equal(b)){
       int bs=fastsign(a,contextptr);
       if (bs==-1)
 	return new_ref_symbolic(symbolic(b._SYMBptr->sommet,makesequence(a*b._SYMBptr->feuille._VECTptr->back(),a*b._SYMBptr->feuille._VECTptr->front())));
@@ -6932,6 +6946,8 @@ namespace giac {
       return gen(inv__VECT(*a._VECTptr,contextptr),a.subtype);
     case _EXT:
       return inv_EXT(a);
+    case _SPOL1:
+      return spdiv(gen2spol1(1),*a._SPOL1ptr,contextptr);
     case _USER:
       return a._USERptr->inv();
     case _MOD:
@@ -7472,6 +7488,10 @@ namespace giac {
 	return (*a._REALptr)*inv(b,contextptr);
       if (b.type==_REAL)
 	return a*b._REALptr->inv();
+      if (a.type==_SPOL1)
+	return spdiv(*a._SPOL1ptr,gen2spol1(b),contextptr);
+      if (b.type==_SPOL1)
+	return spdiv(gen2spol1(a),*b._SPOL1ptr,contextptr);      
       if (a.type==_USER && b.type!=_USER)
 	return (*a._USERptr)/b;
       if (a.type==_USER || b.type==_USER) 
@@ -7674,8 +7694,13 @@ namespace giac {
   }
 
   bool is_strictly_positive(const gen & a,GIAC_CONTEXT){
-    if (is_zero(a,contextptr) || (a.type==_REAL && a._REALptr->maybe_zero()))
-      return false;
+    if (a.type==_REAL){
+      if (a._REALptr->maybe_zero())
+	return false;
+    } else {
+      if (is_zero(a,contextptr))
+	return false;
+    }
     return is_positive(a,contextptr);
   }
 
@@ -7889,6 +7914,8 @@ namespace giac {
       return double(a.val)==b._DOUBLE_val;
     case _DOUBLE___INT_:
       return a._DOUBLE_val==double(b.val);
+    case _REAL__INT_: case _INT___REAL: case _REAL__ZINT: case _ZINT__REAL: case _REAL__FRAC: case _FRAC__REAL:
+      return is_exactly_zero(a-b);
     case _INT___FLOAT_:
       return giac_float(a.val)==b._FLOAT_val;
     case _FLOAT___INT_:
@@ -11866,13 +11893,23 @@ namespace giac {
   string print_SPOL1(const sparse_poly1 & p,GIAC_CONTEXT){
     if (p.empty())
       return "0";
+    int sf=series_flags(contextptr);
+    if (sf & (1<<5) && !(sf & (1<<4))){
+      identificateur tt(string(1,series_variable_name(contextptr)));
+      gen remains,g=sparse_poly12gen(p,tt,remains,!(sf & (1<<6)));
+      if ( (sf & (1<<6)) && !is_zero(remains))
+	g += symb_of(gen("O",contextptr),remains);
+      return g.print(contextptr);
+    }
     string s;
     sparse_poly1::const_iterator it=p.begin(), itend=p.end();
+    bool paren=itend-it>1;
+    if (paren) s+='(';
     for(;;){
-      s += it->print();
+      s += it->print(contextptr);
       ++it;
       if (it==itend)
-          return s;
+	return paren?s+')':s;
       s += '+';
     }
   }
@@ -11929,6 +11966,8 @@ namespace giac {
       return "DOM_LONGFLOAT";
     case _MAP:
       return "DOM_MAP";
+    case _SPOL1:
+      return "DOM_SERIES";
     }
     return print_INT_(val);
   }
@@ -12858,13 +12897,15 @@ namespace giac {
   ostream & operator << (ostream & os,const gen & a) { return os << a.print(context0); }
 #endif
 
-  string monome::print() const {
-    return '<' + coeff.print(context0) + ',' + exponent.print(context0) + '>' ;
+  string monome::print(GIAC_CONTEXT) const {
+    if (abs_calc_mode(contextptr)==38)
+      return "%%%{" + coeff.print(contextptr) + ',' + exponent.print(contextptr) + "%%%}" ;
+    return "<<" + coeff.print(contextptr) + ',' + exponent.print(contextptr) + ">>" ;
   }
 
   const char * monome::dbgprint() const {
     static std::string s;
-    s=this->print();
+    s=this->print(context0);
 #if 0 // ndef NSPIRE
     COUT << s;
 #endif
@@ -12873,7 +12914,7 @@ namespace giac {
 
 #ifndef NSPIRE
   ostream & operator << (ostream & os,const monome & m){
-    return os << m.print() ;
+    return os << m.print(context0) ;
   }
 #endif
 

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html id="fulldocument" manifest="xcas.appcache">
+<html id="fulldocument" manifest="xcas.appcache" lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name=viewport content="width=device-width, initial-scale=1">
@@ -15,8 +15,9 @@ textarea.emscripten { font-family: monospace; width: 100%; }
 div.emscripten { text-align: center; }
 </style>
 
-<style id="document_style">
-input[type="number"] {
+<style id="document_style" type="text/css">
+h1,h2,h3 { display:inline; font-size:1em;}
+ input[type="number"] {
 width:40px;
 font-size:24px;
 }
@@ -46,20 +47,147 @@ width:400px;
 
 <body>
 
+<script language="javascript">
+
+KEY_DOWN	= 40;
+KEY_UP		= 38;
+KEY_LEFT	= 37;
+KEY_RIGHT	= 39;
+
+KEY_END		= 35;
+KEY_BEGIN	= 36;
+
+
+
+KEY_BACK_TAB 	= 8;
+KEY_TAB				= 9;
+KEY_SH_TAB  	= 16;
+KEY_ENTER			= 13;
+KEY_ESC				= 27;
+KEY_SPACE			= 32;
+KEY_DEL				= 46;
+
+KEY_A		= 65;
+KEY_B		= 66;
+KEY_C		= 67;
+KEY_D		= 68;
+KEY_E		= 69;
+KEY_F		= 70;
+KEY_G		= 71;
+KEY_H		= 72;
+KEY_I		= 73;
+KEY_J		= 74;
+KEY_K		= 75;
+KEY_L		= 76;
+KEY_M		= 77;
+KEY_N		= 78;
+KEY_O		= 79;
+KEY_P		= 80;
+KEY_Q		= 81;
+KEY_R		= 82;
+KEY_S		= 83;
+KEY_T		= 84;
+KEY_U		= 85;
+KEY_V		= 86;
+KEY_W		= 87;
+KEY_X		= 88;
+KEY_Y		= 89;
+KEY_Z		= 90;
+
+KEY_PF1		= 112;
+KEY_PF2		= 113;
+KEY_PF3		= 114;
+KEY_PF4		= 115;
+KEY_PF5		= 116;
+KEY_PF6		= 117;
+KEY_PF7		= 118;
+KEY_PF8		= 119;
+
+REMAP_KEY_T	= 5019;
+	
+function checkEventObj ( _event_ ){
+	// --- IE explorer
+	if ( window.event )
+		return window.event;
+	// --- Netscape and other explorers
+	else
+		return _event_;
+}
+	
+function applyKey (_event_){	
+ // --- Retrieve event object from current web explorer
+ var winObj = checkEventObj(_event_);	
+ var intKeyCode = winObj.keyCode;
+ var intAltKey = winObj.altKey;
+ var intCtrlKey = winObj.ctrlKey;
+ // raccourcis avec Alt
+ // F1 aide, c cmdline, m menu, 
+ if (intAltKey) {
+   var done=false;
+   if (intKeyCode == KEY_D || intKeyCode == KEY_B || intKeyCode == KEY_RIGHT){
+    UI.move_focus(UI.focused,1);
+    done=true;
+   }		
+   if (intKeyCode == KEY_G || intKeyCode == KEY_V || intKeyCode == KEY_LEFT){
+    UI.move_focus(UI.focused,-1);
+    done=true;
+   }
+   if (intKeyCode == KEY_A){
+    document.getElementById('helptxt').focus();
+    done=true;
+   }
+   if (intKeyCode == KEY_C){
+    cmentree.focus();
+    done=true;
+   }
+   if (intKeyCode == KEY_M){
+    UI.show_menu();
+    done=true;
+   }
+   if (intKeyCode == KEY_T || intKeyCode==KEY_TAB || intKeyCode==KEY_PF1){
+    UI.completion(cmentree);
+    done=true;
+   }
+   if (done){
+    // --- Map the keyCode in another keyCode not used
+    winObj.keyCode = REMAP_KEY_T;
+    winObj.returnValue = false;
+    return false;
+   }
+ }	
+}
+
+document.onkeydown = applyKey;
+
+</script>
+
+<div id="startup2" style="display:none">
+  Ce <button
+  onclick="if (UI.usecm){ document.getElementById('config').usecm.checked=false;  UI.set_config();} cmentree.focus();">bouton</button>
+  permet de rendre la page accessible 
+  et met le focus sur la ligne de commande.
+</div>  
+<div id="startup_restore" style="display:none">
+  Vous pouvez restaurer votre pr&eacute;c&eacute;dente session
+  <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),true,false);">sans &eacute;valuation</button>
+  ou
+  <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">avec &eacute;valuation</button>
+</div>
 <div id="startup1" style="display:none">
   Vous pouvez faire apparaitre le tutoriel en cliquant sur le bouton
-  Tutoriel ci-dessous. Vous pouvez installer Xcas sur un appareil
-  Android en d&eacute;compressant
+  Tutoriel ci-dessous.
+  <br> Vous pouvez installer Xcas en local
+  en d&eacute;compressant
   <a href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/xcashtml.zip">
-  xcashtml.zip</a> dans le r&eacute;pertoire <tt>/sdcard</tt> puis en
-  recherchant <tt>xcasfr</tt> qui peut par exemple etre
-  <a href="file:///sdcard/xcasoffline/xcasfr.html"><tt>/sdcard/xcasoffline/xcasfr.html</tt></a>
-  ou <a
-  href="file:///sdcard/xcasoffline/AndroZip/xcasfr.html"><tt>/sdcard/xcasoffline/AndroZip/xcasfr.html</tt></a>
+  xcashtml.zip</a> puis en
+  recherchant <tt>xcasfr</tt>, par exemple sur un appareil Android
+  cherchez dans
+  <a href="file:///sdcard/"><tt>/sdcard/</tt></a>
 </div>
 <div id="startup">
   Si Xcas ne fonctionne pas normalement, effacez le cache de votre
   navigateur et rechargez la page, avec Firefox si possible.
+  <hr>
 </div>
 <span id="apropos" style="display:none">
 Xcasfr.html est une interface javascript optimis&eacute;e pour Firefox
@@ -97,7 +225,7 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
 <form id="config" style="display:none" onsubmit="setTimeout(function(){
   UI.set_config();
 }); return false">
-<b>Configuration</b>
+<h2>Configuration</h2>
 <table>
   <tr>
     <td>
@@ -110,20 +238,20 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
     </tr>
     <tr>
     <td>
-      <input style="height:25px" type="button" value="Radians" onclick="angle_mode.checked=!angle_mode.checked;"> <input style="height:25px" type="checkbox" name="angle_mode" title="Cocher pour utiliser les radians, d&eacute;cocher pour utiliser les degr&eacute;s" checked>,
-      <input style="height:25px" type="button" value="Complexe" onclick="complex_mode.checked=!complex_mode.checked"> <input style="height:25px" type="checkbox" name="complex_mode" title="Cocher pour travailler par d&eacute;faut sur les complexes">,
-      <input style="height:25px" type="button" value=" √ " onclick="sqrt_mode.checked=!sqrt_mode.checked"> <input style="height:25px" type="checkbox" name="sqrt_mode" title="Cocher pour toujours factoriser les polynomes de degr&eacute; 2">,
-      <input style="height:25px" type="button" value="step" onclick="step_mode.checked=!step_mode.checked"> <input style="height:25px" type="checkbox" name="step_mode" title="Cocher pour montrer les &eacute;tapes de certains calculs" checked>,
-      <input style="height:25px" type="button" value="worker" onclick="worker_mode.checked=!worker_mode.checked"> <input style="height:25px" type="checkbox" name="worker_mode" title="Cocher pour executer les calculs par un webworker">
+      <input style="height:25px" type="button" title="Bascule unit&eacute; d'angles radians/degr&eacute;s" value="Radians" onclick="angle_mode.checked=!angle_mode.checked;"> <input style="height:25px" type="checkbox" name="angle_mode" title="Cocher pour utiliser les radians, d&eacute;cocher pour utiliser les degr&eacute;s" checked>,
+      <input style="height:25px" type="button" title="Bascule mode complexe/r&eacute;el" value="Complexe" onclick="complex_mode.checked=!complex_mode.checked"> <input style="height:25px" type="checkbox" name="complex_mode" title="Cocher pour travailler par d&eacute;faut sur les complexes">,
+      <input style="height:25px" type="button" title="Bascule pour toujours factoriser les polynomes de degr&eacute; 2" value=" √ " onclick="sqrt_mode.checked=!sqrt_mode.checked"> <input style="height:25px" type="checkbox" name="sqrt_mode" title="Cocher pour toujours factoriser les polynomes de degr&eacute; 2">,
+      <input style="height:25px" type="button" title="Bascule pour montrer les &eacute;tapes de certains calculs" value="step" onclick="step_mode.checked=!step_mode.checked"> <input style="height:25px" type="checkbox" name="step_mode" title="Cocher pour montrer les &eacute;tapes de certains calculs" checked>,
+      <input style="height:25px" type="button" title="Bascule pour executer les calculs par un webworker" value="worker" onclick="worker_mode.checked=!worker_mode.checked"> <input style="height:25px" type="checkbox" name="worker_mode" title="Cocher pour executer les calculs par un webworker">
     </td>
   </tr>
   <tr>
     <td>
-      <input style="height:25px" type="button" value="2d" onclick="prettyprint.checked=!prettyprint.checked"> <input style="height:25px" type="checkbox" name="prettyprint"
+      <input style="height:25px" type="button" title="Bascule pour affichage 2d" value="2d" onclick="prettyprint.checked=!prettyprint.checked"> <input style="height:25px" type="checkbox" name="prettyprint"
   title="Cocher pour affichage 2d" checked>,
-      <input style="height:25px" type="button" value="Q/R sur 1 ligne" onclick="qa.checked=!qa.checked"> <input style="height:25px" type="checkbox" name="qa"
+      <input style="height:25px" type="button" title="Bascule pour avoir commandes et reponses sur le meme niveau" value="Q/R sur 1 ligne" onclick="qa.checked=!qa.checked"> <input style="height:25px" type="checkbox" name="qa"
   title="Cocher pour avoir commandes et reponses sur le meme niveau">,
-      <input style="height:25px" type="button" value="Coloration syntaxique" onclick="usecm.checked=!usecm.checked"> <input style="height:25px" type="checkbox" name="usecm"
+      <input style="height:25px" type="button" title="Coloration syntaxique si on edite un niveau existant" value="Coloration syntaxique" onclick="usecm.checked=!usecm.checked"> <input style="height:25px" type="checkbox" name="usecm"
       title="Coloration syntaxique si on edite un niveau existant">
       (ne fonctionne pas bien sur mobile)
     </td>
@@ -146,17 +274,251 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
   title="Cocher si Xcas n'est pas install&eacute; (utilise la documentation en ligne)" checked>online
       <input style="height:25px" type="text" name="doc_path" size="60"
   value="/usr/share/giac/doc/fr/cascmd_fr/"
-  title="Chemin de la documentation hors-ligne (rempli pour une installation Xcas sous linux, sous mac ajouter /Applications)">
+  title="Chemin de la documentation hors-ligne (pr&eacute;rempli pour une installation Xcas sous linux, sous mac ajouter /Applications)">
       </td>
     </tr>
   </table>
-<input style="height:25px" type="button" value="annul." onclick="form.style.display='none';  UI.focused.focus();">
-  <input style="height:25px" type="submit" value="ok">
+<input style="height:25px" type="button" title="Annule les changements de configuration" value="annul." onclick="form.style.display='none';  UI.focused.focus();">
+  <input style="height:25px" type="submit" title="ok" value="ok">
   <hr>
 </form>
   
+<table>
+  <tr>
+    <th rowspan=2>
+      <button  onclick="if(document.getElementById('apropos').style.display=='none')
+      document.getElementById('apropos').style.display='block';
+      else document.getElementById('apropos').style.display='none';"
+      title="Montre ou cache des informations sur la conception de Xcas dans votre navigateur">
+      <img WIDTH="64" HEIGHT="64" SRC="logo.png" alt="Xcas">
+      </button>
+    </th>
+    <td>
+      <h1>Session</h1>
+      <span id='thelink'></span>
+      <span id='themailto'></span>
+      <button style="height:25px" onclick="UI.show_config()" title="Permet de modifier la configuration">Config</button>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <button style="height:25px" title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charge</button>
+      <form id="loadfile" style="display:none">
+      <input id="loadfileinput" accept=".xw" type="file"  title="Parcourir" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
+      <input type="text" value="annuler" title="Annuler" onclick="form.style.display='none'">
+      <input type="submit" value="ok" style="display:none">
+      </form>
+      <span id="history1" style="visibility:hidden">
+      <button style="height:25px" title="Cliquer ici pour publier la session en HTML avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(1);'>Export</button>
+      <button style="height:25px" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(0);'>Sauve</button>
+      <textarea id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
+      </span>
+    </td>
+  </tr>
+</table>
+
+<span id="help">
+<button style="height:25px"
+onclick="document.getElementById('help').style.display='none';">Masquer
+le tutoriel</button>
+Cette feuille de calcul est compos&eacute;e de :
+<ul>
+  <li> un logo Xcas et un panel de boutons permettant de restaurer/sauvegarder
+  une session et de g&eacute;rer l'historique, la corbeille et les
+  variables. Lorsque l'historique est vide, le panel est
+  r&eacute;duit &agrave; insertion d'une session, consultation des
+  manuels et configuration. S'il n'est pas vide, notez le lien Clone
+  qui permet de cloner une session existante, ce qui peut servir si
+  le noyau de calcul formel a crash&eacute; ou pour copier-coller
+  vers un email ou une page web. Le lien E-mail permet d'envoyer
+  votre session par e-mail.
+  </li>
+  <li>La zone d'<strong>aide</strong>, qui contient des courtes description des
+  commandes dont vous avez demand&eacute; la syntaxe.
+  </li>
+  <li> un <strong>historique</strong> (vide au d&eacute;but).
+  Les lignes de commande y apparaissent en noir, les r&eacute;sultats en
+  bleu, les boutons ↑ et ↓ permettent de d&eacute;placer un niveau
+  dans l'historique, le bouton bleu ~ permet d'avoir une valeur
+  num&eacute;rique du r&eacute;sultat. Vous pouvez modifier une ligne
+  de commande de l'historique et valider en cliquant sur le bouton ok
+  (attention Entree ne valide pas mais ajoute un saut de ligne). Vous
+  pouvez placer un niveau dans la corbeille avec le bouton
+  d'effacement &agrave; droite du niveau (pour l'effacer
+  d&eacute;finitivement cliquer sur le bouton Vider de la Corbeille,
+  pour le restaurer cliquer sur le bouton Restaurer de la Corbeille). 
+  </li>
+  <li> une <strong>ligne de commande</strong>, on y tape des commandes Xcas, et on
+  valide en cliquant sur le bouton ok ou en tapant Entree.
+  <br>
+    Vous pouvez entrer un <strong>commentaire</strong> en tapant une ligne de commande
+  commencant par <tt>//</tt> (vous pouvez utiliser des commandes de
+  balisage HTML dans un commentaire).
+  <br>
+  Pour vous aider &agrave; remplir la ligne de commande,
+  vous pouvez cliquer sur le bouton 123 qui fait apparaitre
+  le <strong>clavier scientifique</strong> et sur le bouton util ci-dessous
+  (d&eacute;placez la souris pr&egrave;s des boutons pour
+  une description de leur action). Avec Firefox, on acc&egrave;de
+  au menu des commandes de Xcas
+  en cliquant avec le bouton droit
+  sur la ligne de commande.
+  <br>
+  Vous pouvez taper (le d&eacute;but) du nom d'une commande
+  (par exemple <tt>factor</tt>) puis
+  la touche <button>F1</button> ou <button>Tab</button>
+  ou cliquer sur le bouton <button>?</button>
+  pour obtenir une
+  <strong>aide courte</strong> sur la commande.
+  <br>
+  Vous pouvez vous inspirer des <a href="#exemples">exemples ci-dessous</a>
+  et consulter la
+  <a
+  href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr">documentation
+  de Xcas</a>.
+  </li>
+  <li>
+  une <strong>console</strong> qui affiche des messages du CAS :
+  erreurs de syntaxe mais aussi lors
+  d'un calcul en mode pas-&agrave;-pas, par exemple d'une
+  d&eacute;riv&eacute;e.
+  Vous pouvez effacer la console ou ajuster sa taille verticale.
+  </li>
+  <li>
+  une zone affichant des <strong>graphes 3d</strong> lorsqu'on ex&eacute;cute une commande
+  ayant une sortie graphique 3d.
+  </li>
+</ul>
+Lorsque vous chargez la page de Xcas, vous pouvez restaurer la
+session pr&eacute;c&eacute;dente.
+Vous pouvez <strong>sauvegarder</strong> l'historique
+ou <strong>exporter</strong> la feuille de calcul. La sauvegarde
+  occupe peu de place et s'ouvre depuis cette page avec le bouton
+  Charger, l'export occupe plus de place mais
+  permet de publier le fichier HTML comme une page autonome.
+  Vous pouvez sauvegarder les graphes 2d au format SVG avec le bouton
+  save &agrave; droite du graphe. Le fichier SVG cr&eacute;&eacute;
+  est au format 1.2 (il utilise la balise
+  <tt>vector-effect="non-scaling-stroke"</tt> qui n'est pas compris
+  par tous les visualisateurs ou convertisseurs).
+  <br>
+  Sous Firefox, pour pouvoir
+  choisir l'emplacement de sauvegarde et &eacute;craser
+  une version ant&eacute;rieure : cocher Toujours demander...
+  dans Pr&eacute;f&eacute;rences,
+  G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.
+<br>
+  Vous pouvez ouvrir (partiellement) une session existante Xcas en la clonant
+  (menu Fich, Clone du programme Xcas, ou en ligne de commande
+<tt>xcas --online nom_fichier.xws</tt>)
+
+<a name="exemples"><strong>Quelques exemples :</strong></a>
+<ul>
+  <li> <strong>Alg&egrave;bre :</strong>
+  Vous pouvez d&eacute;velopper une expression avec
+  <button onclick="UI.insert(UI.focused,'normal(')"><tt>normal</tt></button>
+  par exemple <button
+  onclick="UI.insert(UI.focused,'(x+1)^4')"><tt>(x+1)^4</tt></button>.
+  R&eacute;ciproquement,
+  <button
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'factor(')"><tt>factor</tt></button>
+  (respectivement <button
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cfactor(')"><tt>cfactor</tt></button>)
+  factorise une expression (par exemple <button onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x^4-1')"><tt>x^4-1</tt></button>)
+  sur Q (resp. Q[i]). Pour factoriser un entier, utiliser la commande
+  <button onclick="UI.insert(UI.focused,'ifactor(')"><tt>ifactor</tt></button>.
+  Autres exemples : <tt>simplify(sin(3x)/sin(x)); gcd(x^4-1,x^3-1)
+  </tt> (simplification, PGCD).
+  </li>
+  <li> <strong>R&eacute;soudre :</strong>
+    <tt> solve(x^2-3*x+2=0);</tt> et <tt>csolve(x^2=2*i);</tt>
+  permettent de r&eacute;soudre une &eacute;quation sur les
+  r&eacute;els ou les complexes. Exemple de r&eacute;solution de syst&egrave;me
+  <tt>solve([x+y=1,x-y=3],[x,y])</tt>. Pour r&eacute;soudre
+  num&eacute;riquement, utiliser <tt>fsolve</tt>.
+  </li>
+  <li><strong>Analyse :</strong>
+  Vous pouvez d&eacute;finir une fonction <tt>f</tt> par
+  <button onclick="UI.insert(UI.focused,'f(x):=sin(x^2):;')"><tt>f(x):=sin(x^2)</tt></button>, puis calculer la valeur
+  de <tt>f</tt> ou de sa d&eacute;riv&eacute;e par
+  <tt>f(sqrt(pi)); f'(2); f'(y) </tt>. Une primitive d'une
+  expression se calcule par <tt>int(1/(x^4-1));</tt>,
+  pour une int&eacute;grale entre deux bornes
+  <tt>int(1/(x^4+1)^4,x,0,+infinity);</tt>. Enfin 
+  <tt>limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom);</tt>
+  permettent de calculer une limite ou un d&eacute;veloppement de Taylor.
+  </li>
+  <li> <strong>Alg&egrave;bre lin&eacute;aire :</strong>
+    <button onclick="UI.insert(UI.focused,'A:=[[1,2],[3,4]]')"><tt>A:=[[1,2],[3,4]];</tt></button>
+  d&eacute;finit une matrice <tt>A</tt> ayant 2 lignes et 2 colonnes,
+  on donne les coefficients par lignes. Quelques instructions
+  <tt>inv(A); det(A-x*idn(A)); A[0,0]; rref(A);
+  eigenvalues(A); eigenvectors(A);</tt> (inverse, d&eacute;terminant,
+  matrice identit&eacute;, acc&egrave;s &agrave; un
+  &eacute;l&eacute;ment
+  de matrice, r&eacute;duction sous forme &eacute;chelonn&eacute;e,
+  valeurs et vecteurs propres).
+  </li>
+  <li> <strong>Graphes </strong> (pour les graphes 3d, vous pouvez changer le point de
+  vue) :
+  <tt>plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])</tt> affiche
+  le graphe des fonctions sin(x) et x-x^3/6 en 2d, alors que
+  <tt>plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);</tt>
+  affiche un graphe 3d avec un plan.
+  Vous pouvez aussi utiliser de nombreuses instructions
+  g&eacute;om&eacute;triques: <tt>droite, cercle, ellipse, ...</tt>
+  </li>
+  <li>
+  <strong>Programmes :</strong> vous pouvez utiliser les assistants du menu
+  util pour cr&eacute;er les structures de programmation
+  (fonction, test, boucle). Plusieurs syntaxes sont accept&eacute;es, pour
+  le moment la coloration syntaxique fonctionne avec la syntaxe Xcas
+  qui est tr&egrave;s proche de Javascript. Par exemple
+  <br>
+  <tt>function f(x){
+  <br>
+  &nbsp;&nbsp;var y;
+  <br>
+  &nbsp;&nbsp;if (x &gt; 100) return "Nombre trop grand";
+  <br>
+  &nbsp;&nbsp;for (y:=0;y &lt; x;y++){
+  <br>
+  &nbsp;&nbsp;&nbsp;&nbsp;print(y+"^2="+y^2);
+  <br>
+  &nbsp;&nbsp;}
+  <br>
+  }
+  </tt>
+  <br>
+  La commande <button  onmousedown="event.preventDefault()"
+  onclick="UI.insert(UI.focused,'debug(')"><tt>debug</tt></button>
+  permet d'ex&eacute;cuter une fonction en mode pas &agrave; pas
+  pour la mettre au point.
+  </li>
+</ul>
+<br>
+Sur les appareils mobiles, certaines fonctionnalit&eacute;s sont desactiv&eacute;es,
+parce qu'elles ne fonctionnent pas correctement avec Firefox, par
+exemple la coloration syntaxique lors de l'&eacute;dition d'un niveau
+existant.
+Notez aussi que Chrome mobile (et plus g&eacute;n&eacute;ralement
+le navigateur install&eacute; par d&eacute;faut sur votre appareil)
+est beaucoup plus lent que Firefox pour
+faire les calculs (5 fois plus lent environ), en particulier le
+premier calcul dure plusieurs dizaines de secondes. De plus, Chrome
+n'a pas de support natif pour afficher les formules en 2d en mathml,
+on est donc oblig&eacute; de charger MathJax ce qui n&eacute;cessite
+un acc&egrave;s r&eacute;seau
+et peut donc &eacute;chouer.
+<br>
+<strong>Il est donc fortement recommend&eacute; de t&eacute;l&eacute;charger
+Firefox et d'ex&eacute;cuter Xcas depuis Firefox</strong>
+<br>
+<button style="height:25px" onclick="document.getElementById('help').style.display='none';">Masquer le tutoriel</button>
+</span>
+
 <span id="manuels" style="display:none">
-  Manuels de Xcas <button
+  <string>Manuels de Xcas</strong> <button
   onclick="document.getElementById('manuels').style.display='none';">Masquer</button>
   <ul>
     <li> Algorithmes de calcul formel et num&eacute;rique:
@@ -202,35 +564,8 @@ Sortie mathml et SVG (c) code principalement &eacute;crit par J.P. Branchard.
   </ul>
   </span>
   
-<table>
-  <tr>
-    <th rowspan=2>
-<button  onclick="if(document.getElementById('apropos').style.display=='none')
-  document.getElementById('apropos').style.display='block';
-  else document.getElementById('apropos').style.display='none';"
-title="Montre ou cache des informations sur la conception de Xcas dans votre navigateur">
-<img WIDTH="64" HEIGHT="64" SRC="logo.png" alt="Xcas">
-</button>
-      </th>
-      <td>
-	
-<button style="height:25px" title="Cliquer ici pour ajouter &agrave; la session courante le contenu d'une session sauvegard&eacute;e" onclick='document.getElementById("loadfile").reset();document.getElementById("loadfile").style.display="block";'>Charge</button>
-<form id="loadfile" style="display:none">
-<input id="loadfileinput" accept=".xw" type="file" onchange="UI.loadfile(this.files);document.getElementById('loadfile').style.display='none'">
-<input type="text" value="annuler" onclick="form.style.display='none'">
-<input type="submit" value="ok" style="display:none">
-</form>
-    <span id="history1" style="visibility:hidden">
-<button style="height:25px" title="Cliquer ici pour publier la session en HTML avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(1);'>Export</button>
-<button style="height:25px" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick='UI.savesession(0);'>Sauve</button>
-<textarea id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
-<span id='thelink'></span>
-<span id='themailto'></span>
-    </span>
-    </td>
-  </tr>
-<tr>
-  <td>
+<div>
+  <h1>Aide</h1>
 <button style="height:25px" 
   onclick="if(document.getElementById('help').style.display=='none')
   document.getElementById('help').style.display='block';
@@ -238,260 +573,43 @@ title="Montre ou cache des informations sur la conception de Xcas dans votre nav
 title="Montrer ou cacher le tutoriel">Tutoriel</button>
 <button style="height:25px" 
   onclick="document.getElementById('manuels').style.display='block';"
-title="Montrer ou cacher la liste des manuels">Manuels</button>
-    <button style="height:25px" onclick="UI.show_config()" title="Permet de modifier la configuration">Config</button>
-</td>
-</tr>
-</table>
-
-<span id="help">
-<button style="height:25px"
-onclick="document.getElementById('help').style.display='none';">Masquer
-le tutoriel</button>
-Cette feuille de calcul est compos&eacute;e de :
-<ul>
-  <li> un logo Xcas et un panel de boutons permettant de restaurer/sauvegarder
-  une session et de g&eacute;rer l'historique, la corbeille et les
-  variables. Lorsque l'historique est vide, le panel est
-  r&eacute;duit &agrave; insertion d'une session, consultation des
-  manuels et configuration. S'il n'est pas vide, notez le lien Clone
-  qui permet de cloner une session existante, ce qui peut servir si
-  le noyau de calcul formel a crash&eacute; ou pour copier-coller
-  vers un email ou une page web. Le lien E-mail permet d'envoyer
-  votre session par e-mail.
-  </li>
-  <li>La zone d'<b>aide</b>, qui contient des courtes description des
-  commandes dont vous avez demand&eacute; la syntaxe.
-  </li>
-  <li> un <b>historique</b> (vide au d&eacute;but).
-  Les lignes de commande y apparaissent en noir, les r&eacute;sultats en
-  bleu, les boutons ↑ et ↓ permettent de d&eacute;placer un niveau
-  dans l'historique, le bouton bleu ~ permet d'avoir une valeur
-  num&eacute;rique du r&eacute;sultat. Vous pouvez modifier une ligne
-  de commande de l'historique et valider en cliquant sur le bouton ok
-  (attention Entree ne valide pas mais ajoute un saut de ligne). Vous
-  pouvez placer un niveau dans la corbeille avec le bouton
-  d'effacement &agrave; droite du niveau (pour l'effacer
-  d&eacute;finitivement cliquer sur le bouton Vider de la Corbeille,
-  pour le restaurer cliquer sur le bouton Restaurer de la Corbeille). 
-  </li>
-  <li> une <b>ligne de commande</b>, on y tape des commandes Xcas, et on
-  valide en cliquant sur le bouton ok ou en tapant Entree.
+  title="Montrer ou cacher la liste des manuels">Manuels</button>
   <br>
-    Vous pouvez entrer un <b>commentaire</b> en tapant une ligne de commande
-  commencant par <tt>//</tt> (vous pouvez utiliser des commandes de
-  balisage HTML dans un commentaire).
-  <br>
-  Pour vous aider &agrave; remplir la ligne de commande,
-  vous pouvez cliquer sur le bouton 123 qui fait apparaitre
-  le <b>clavier scientifique</b> et sur le bouton util ci-dessous
-  (d&eacute;placez la souris pr&egrave;s des boutons pour
-  une description de leur action). Avec Firefox, on acc&egrave;de
-  au menu des commandes de Xcas
-  en cliquant avec le bouton droit
-  sur la ligne de commande.
-  <br>
-  Vous pouvez taper (le d&eacute;but) du nom d'une commande
-  (par exemple <tt>factor</tt>) puis
-  la touche <button>F1</button> ou <button>Tab</button>
-  ou cliquer sur le bouton <button>?</button>
-  pour obtenir une
-  <b>aide courte</b> sur la commande.
-  <br>
-  Vous pouvez vous inspirer des <a href="#exemples">exemples ci-dessous</a>
-  et consulter la
-  <a
-  href="http://www-fourier.ujf-grenoble.fr/~parisse/giac/doc/fr/cascmd_fr">documentation
-  de Xcas</a>.
-  </li>
-  <li>
-  une <b>console</b> qui affiche des messages du CAS :
-  erreurs de syntaxe mais aussi lors
-  d'un calcul en mode pas-&agrave;-pas, par exemple d'une
-  d&eacute;riv&eacute;e.
-  Vous pouvez effacer la console ou ajuster sa taille verticale.
-  </li>
-  <li>
-  une zone affichant des <b>graphes 3d</b> lorsqu'on ex&eacute;cute une commande
-  ayant une sortie graphique 3d.
-  </li>
-</ul>
-Lorsque vous chargez la page de Xcas, vous pouvez restaurer la
-session pr&eacute;c&eacute;dente.
-Vous pouvez <b>sauvegarder</b> l'historique
-ou <b>exporter</b> la feuille de calcul. La sauvegarde
-  occupe peu de place et s'ouvre depuis cette page avec le bouton
-  Charger, l'export occupe plus de place mais
-  permet de publier le fichier HTML comme une page autonome.
-  Vous pouvez sauvegarder les graphes 2d au format SVG avec le bouton
-  save &agrave; droite du graphe. Le fichier SVG cr&eacute;&eacute;
-  est au format 1.2 (il utilise la balise
-  <tt>vector-effect="non-scaling-stroke"</tt> qui n'est pas compris
-  par tous les visualisateurs ou convertisseurs).
-  <br>
-  Sous Firefox, pour pouvoir
-  choisir l'emplacement de sauvegarde et &eacute;craser
-  une version ant&eacute;rieure : cocher Toujours demander...
-  dans Pr&eacute;f&eacute;rences,
-  G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.
-<br>
-  Vous pouvez ouvrir (partiellement) une session existante Xcas en la clonant
-  (menu Fich, Clone du programme Xcas, ou en ligne de commande
-<tt>xcas --online nom_fichier.xws</tt>)
-
-<a name="exemples"><h3>Quelques exemples :</h3></a>
-<ul>
-  <li> <b>Alg&egrave;bre :</b>
-  Vous pouvez d&eacute;velopper une expression avec
-  <button onclick="UI.insert(UI.focused,'normal(')"><tt>normal</tt></button>
-  par exemple <button
-  onclick="UI.insert(UI.focused,'(x+1)^4')"><tt>(x+1)^4</tt></button>.
-  R&eacute;ciproquement,
-  <button
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'factor(')"><tt>factor</tt></button>
-  (respectivement <button
-  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'cfactor(')"><tt>cfactor</tt></button>)
-  factorise une expression (par exemple <button onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'x^4-1')"><tt>x^4-1</tt></button>)
-  sur Q (resp. Q[i]). Pour factoriser un entier, utiliser la commande
-  <button onclick="UI.insert(UI.focused,'ifactor(')"><tt>ifactor</tt></button>.
-  Autres exemples : <tt>simplify(sin(3x)/sin(x)); gcd(x^4-1,x^3-1)
-  </tt> (simplification, PGCD).
-  </li>
-  <li> <b>R&eacute;soudre :</b>
-    <tt> solve(x^2-3*x+2=0);</tt> et <tt>csolve(x^2=2*i);</tt>
-  permettent de r&eacute;soudre une &eacute;quation sur les
-  r&eacute;els ou les complexes. Exemple de r&eacute;solution de syst&egrave;me
-  <tt>solve([x+y=1,x-y=3],[x,y])</tt>. Pour r&eacute;soudre
-  num&eacute;riquement, utiliser <tt>fsolve</tt>.
-  </li>
-  <li><b>Analyse :</b>
-  Vous pouvez d&eacute;finir une fonction <tt>f</tt> par
-  <button onclick="UI.insert(UI.focused,'f(x):=sin(x^2):;')"><tt>f(x):=sin(x^2)</tt></button>, puis calculer la valeur
-  de <tt>f</tt> ou de sa d&eacute;riv&eacute;e par
-  <tt>f(sqrt(pi)); f'(2); f'(y) </tt>. Une primitive d'une
-  expression se calcule par <tt>int(1/(x^4-1));</tt>,
-  pour une int&eacute;grale entre deux bornes
-  <tt>int(1/(x^4+1)^4,x,0,+infinity);</tt>. Enfin 
-  <tt>limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom);</tt>
-  permettent de calculer une limite ou un d&eacute;veloppement de Taylor.
-  </li>
-  <li> <b>Alg&egrave;bre lin&eacute;aire :</b>
-    <button onclick="UI.insert(UI.focused,'A:=[[1,2],[3,4]]')"><tt>A:=[[1,2],[3,4]];</tt></button>
-  d&eacute;finit une matrice <tt>A</tt> ayant 2 lignes et 2 colonnes,
-  on donne les coefficients par lignes. Quelques instructions
-  <tt>inv(A); det(A-x*idn(A)); A[0,0]; rref(A);
-  eigenvalues(A); eigenvectors(A);</tt> (inverse, d&eacute;terminant,
-  matrice identit&eacute;, acc&egrave;s &agrave; un
-  &eacute;l&eacute;ment
-  de matrice, r&eacute;duction sous forme &eacute;chelonn&eacute;e,
-  valeurs et vecteurs propres).
-  </li>
-  <li> <b>Graphes </b> (pour les graphes 3d, vous pouvez changer le point de
-  vue) :
-  <tt>plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])</tt> affiche
-  le graphe des fonctions sin(x) et x-x^3/6 en 2d, alors que
-  <tt>plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);</tt>
-  affiche un graphe 3d avec un plan.
-  Vous pouvez aussi utiliser de nombreuses instructions
-  g&eacute;om&eacute;triques: <tt>droite, cercle, ellipse, ...</tt>
-  </li>
-  <li>
-  <b>Programmes :</b> vous pouvez utiliser les assistants du menu
-  util pour cr&eacute;er les structures de programmation
-  (fonction, test, boucle). Plusieurs syntaxes sont accept&eacute;es, pour
-  le moment la coloration syntaxique fonctionne avec la syntaxe Xcas
-  qui est tr&egrave;s proche de Javascript. Par exemple
-  <br>
-  <tt>function f(x){
-  <br>
-  &nbsp;&nbsp;var y;
-  <br>
-  &nbsp;&nbsp;if (x &gt; 100) return "Nombre trop grand";
-  <br>
-  &nbsp;&nbsp;for (y:=0;y &lt; x;y++){
-  <br>
-  &nbsp;&nbsp;&nbsp;&nbsp;print(y+"^2="+y^2);
-  <br>
-  &nbsp;&nbsp;}
-  <br>
-  }
-  </tt>
-  <br>
-  La commande <button  onmousedown="event.preventDefault()"
-  onclick="UI.insert(UI.focused,'debug(')"><tt>debug</tt></button>
-  permet d'ex&eacute;cuter une fonction en mode pas &agrave; pas
-  pour la mettre au point.
-  </li>
-</ul>
-<br>
-Sur les appareils mobiles, certaines fonctionnalit&eacute;s sont desactiv&eacute;es,
-parce qu'elles ne fonctionnent pas correctement avec Firefox, par
-exemple la coloration syntaxique lors de l'&eacute;dition d'un niveau
-existant.
-Notez aussi que Chrome mobile (et plus g&eacute;n&eacute;ralement
-le navigateur install&eacute; par d&eacute;faut sur votre appareil)
-est beaucoup plus lent que Firefox pour
-faire les calculs (5 fois plus lent environ), en particulier le
-premier calcul dure plusieurs dizaines de secondes. De plus, Chrome
-n'a pas de support natif pour afficher les formules en 2d en mathml,
-on est donc oblig&eacute; de charger MathJax ce qui n&eacute;cessite
-un acc&egrave;s r&eacute;seau
-et peut donc &eacute;chouer.
-<br>
-<b>Il est donc fortement recommend&eacute; de t&eacute;l&eacute;charger
-Firefox et d'ex&eacute;cuter Xcas depuis Firefox</b>
-<br>
-<button style="height:25px" onclick="document.getElementById('help').style.display='none';">Masquer le tutoriel</button>
-</span>
-
-<table>
-  <tr>
-    <td id="history4" style="display:none">
-      <b>Variables</b>
-      <button style="height:25px"  name="add_purge"
-      onmousedown="event.preventDefault()"
-      onClick="UI.insert(UI.focused,'purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">purge</button>
-      <button style="height:25px" onclick="UI.addhelp(' ','VARS(1)')" title="Commande pour afficher la liste des variables">Liste</button>
-      <button style="height:25px" onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Effacer le contenu de toutes les variables">Efface</button>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <b>Aide</b>
-      <button style="width:40px;height:25px;vertical-align:top" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
-      <textarea style="height:25px;font-size:large" id="helptxt" rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
-      <button style="width:40px;height:25px;vertical-align:top" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Vide</button>
-    </td>
-  </tr>
-</table>
+  <button style="width:40px;height:25px;vertical-align:top"
+  title="Lance la recherche de l'aide courte" onclick="UI.addhelp('?',document.getElementById('helptxt').value)">?</button>
+  <textarea style="height:25px;font-size:large" id="helptxt"
+  title="Aide courte sur un nom de commande" rows=1 onkeypress="if (event.keyCode!=13) return true;UI.addhelp('?',value); return false;"></textarea>
+  <button style="width:40px;height:25px;vertical-align:top"
+  title="Vide le champ de saisie de l'aide courte" onclick="helpoutput.innerHTML='';document.getElementById('helptxt').value='';document.getElementById('helptxt').focus();">Vide</button>
+</div>
 
 <div id="divhelpoutput" style="max-height: 200px; overflow:auto">
 <table id="helpoutput" title="Aide"
   style="max-width:1000px "></table>
 </div>
+<div id="history4" style="display:none">
+  <h1>Variables</h1>
+  <button style="height:25px"  name="add_purge"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">purge</button>
+  <button style="height:25px" onclick="UI.addhelp(' ','VARS(1)')" title="Commande pour afficher la liste des variables">Liste</button>
+  <button style="height:25px" onclick="UI.addhelp(' ','rm_all_vars(1)')" title="Effacer le contenu de toutes les variables">Efface</button>
+</div>
 <hr>
-
-<table>
-  <tr>
-    <td id="history2" style="display:none">
-      <b>Historique</b>
-      <button style="height:25px" onclick="UI.exec(document.getElementById('mathoutput'),0)"
-title="Executer toutes les commandes de
-l'historique">Exec</button>
-<button style="height:25px" onclick="UI.show_answers(true)" title="Montrer les r&eacute;ponses">+</button>
-<button style="height:25px" onclick="UI.show_answers(false)" title="Cacher les r&eacute;ponses">-</button>
-<button style="height:25px" onclick="UI.erase_all(document.getElementById('mathoutput'))"
-title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</button>
-    </td>
-  </tr>
-  <tr>
-    <td id="history3" style="display:none">
-<b>Corbeille</b>
+<div id="history2" style="display:none">
+<h1>Corbeille</h1>
 <button style="height:25px" onclick="UI.restoretrash()" style="height:25px" title="Restaurer les niveaux plac&eacute;s dans la corbeille">Restaure</button>
 <button style="height:25px" onclick="UI.emptytrash()" style="height:25px" title="Vider la corbeille">Vide</button>
-    </td>
-  </tr>
-</table>
+  <br>
+  <h1>Historique</h1>
+  <button style="height:25px" onclick="UI.exec(document.getElementById('mathoutput'),0)"
+  title="Executer toutes les commandes de l'historique">Exec</button>
+  <button style="height:25px" onclick="UI.show_answers(true)" title="Montrer les r&eacute;ponses">+</button>
+  <button style="height:25px" onclick="UI.show_answers(false)" title="Cacher les r&eacute;ponses">-</button>
+  <button style="height:25px" onclick="UI.erase_all(document.getElementById('mathoutput'))"
+title="Placer tout les niveaux de l'historique dans la corbeille">Effacer</button>
+</div>
+
 <div id="divoutput" style="max-height: 400px; overflow:auto">
 <table id="mathoutput" contextmenu="cmdmenu" title="Historique"
   style="max-width:1000px "></table>
@@ -607,9 +725,9 @@ id="add_cos"
       <input type="button" style="width:29px;height:35px;" name="add_tan"
 id="add_tan"
   value="tan" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'tan(')" title="fonction tangente, taper atan pour arctangente">        
-      <input type="button" style="width:29px;height:35px;" name="kbd_square"
-id="kbd_square"
-  value="^2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'^2)" title="Carr&eacute;">  
+      <input type="button" style="width:29px;height:35px;" name="add_sq"
+id="add_sq"
+  value="^2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'^2')" title="carre">        
       <input type="button" style="width:29px;height:35px;" name="add_sqrt"
 id="add_sqrt"
   value="√" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'sqrt(')" title="racine carree">        
@@ -636,6 +754,16 @@ id="add_sqrt"
   name="add_partfrac" id="add_partfrac" value="partfrac"
       onmousedown="event.preventDefault()"
   onClick="UI.insert(UI.focused,'partfrac(') ;UI.kbdonfuncoff();" title="Decomposition en elements simples, par exemple partfrac(1/(x^4-1)). Utiliser cpartfrac sur C">
+      <input type="button" style="width:60px;height:35px"
+  name="add_tcollect" id="add_tcollect" value="tcollect"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'tcollect(') ;UI.kbdonfuncoff();"
+  title="Linearise et regroupe les expressions trigonometriques">        
+      <input type="button" style="width:60px;height:35px"
+  name="add_texpand" id="add_texpand" value="texpand"
+  onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,'texpand(') ;UI.kbdonfuncoff();"
+  title="Developpe les expressions trigonometriques, exponentielles et logarithmes">  
     </td>
   </tr>
   <tr>
@@ -644,6 +772,14 @@ id="add_sqrt"
 id="add_solve"
   value="solve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'solve(') ;UI.kbdonfuncoff();"
   title="r&eacute;soudre une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple solve(x^4-1=0) ou solve(y^3-1,y) ou solve([x^2-y^2=1,x+y=3],[x,y]). Utiliser csolve pour r&eacute;soudre sur C.">        
+      <input type="button" style="width:60px;height:35px" name="add_csolve"
+id="add_csolve"
+  value="csolve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'csolve(') ;UI.kbdonfuncoff();"
+  title="r&eacute;soudre sur C une &eacute;quation ou expression=0 par rapport &agrave; une ou plusieurs variables, par exemple csolve(x^4-1=0) ou csolve(y^3-1,y) ou csolve([x^2-y^2=1,x+y=3],[x,y]). Utiliser solve pour r&eacute;soudre sur R.">        
+      <input type="button" style="width:60px;height:35px" name="add_linsolve"
+id="add_linsolve"
+  value="linsolve" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'linsolve(') ;UI.kbdonfuncoff();"
+  title="r&eacute;soudre un syst&egrave;me lin&eacute;aire, par exemple linsolve([x+y=1,a*x-y=2],[x,y])">        
       <input type="button" style="width:60px;height:35px"
   name="add_fsolve" id="add_fsolve" value="fsolve"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'fsolve(') ;UI.kbdonfuncoff();" title="fsolve permet de resoudre de maniere approchee une equation ou un systeme, par exemple fsolve(cos(x)=x,x=0..5) ou fsolve(cos(x),x=0.0)">        
@@ -672,8 +808,10 @@ id="add_limit"
       <input type="button" style="width:50px;height:35px"
   name="add_series" id="add_series" value="series"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'series(') ;UI.kbdonfuncoff();" title="series calcule le developpement de Taylor d'une expression lorsqu'une variable tend vers un point, par exemple series(sin(x),x=0,5,polynom). Si on omet polynom un terme de reste est renvoye. On peut specifier un developpement a droite ou a gauche en ajoutant 1 ou -1 avant polynom"> 
-      &nbsp; &nbsp;
-      <input type="button" value="curseur" style="height:35px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Ajoute un param&egrave;tre modifiable &agrave; la souris"></button>
+      <input type="button" style="width:29px;height:35px" name="add_space"
+id="add_space"
+  value=" " onmousedown="event.preventDefault()"
+  onClick="UI.insert(UI.focused,' ')" title="Ajoute un espace">        
     </td>
   </tr>
   <tr>
@@ -692,6 +830,10 @@ id="add_plot"
       <input type="button" style="width:60px;height:35px"
   name="add_plotpolar" id="add_plotpolar" value="polar"
   onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotpolar(');UI.kbdonfuncoff();" title="Graphe d'une courbe en polaires, par exemple plotpolar(exp(r),r=-3..3)">  
+      <input type="button" style="width:60px;height:35px"
+  name="add_plotimplicit" id="add_plotimplicit" value="implicit"
+  onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'plotimplicit(');UI.kbdonfuncoff();" title="Graphe d'une courbe implicite, par exemple plotimplicit(x^2+x*y+y^2=3)">  
+      <input type="button" value="curseur" id="add_curseur" style="height:35px" onclick="UI.addcurseur(String.fromCharCode(UI.paramname),0,-5,5,0.1); UI.paramname++;" title="Ajoute un param&egrave;tre modifiable &agrave; la souris"></button>
     </td>
   </tr>
   <tr>
@@ -699,10 +841,6 @@ id="add_plot"
       <input type="button" style="width:29px;height:35px" name="add_//"
 id="add_//"
   value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'//')" title="commentaire">        
-      <input type="button" style="width:29px;height:35px" name="add_space"
-id="add_space"
-  value=" " onmousedown="event.preventDefault()"
-  onClick="UI.insert(UI.focused,' ')" title="Ajoute un espace">        
       <input type="button" style="width:29px;height:35px" name="add_test"
 id="add_test"
   value="si" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20)" title="inverse">        
@@ -712,7 +850,7 @@ id="add_pour"
       <input type="button" style="width:55px;height:35px" name="add_tantque"
 id="add_tantque"
   value="tantque" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\ntantque  faire\n    \n  ftantque;\n  ');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,6);" title="logarithme a base 10">        
-      <input type="button" value="fonction" style="width:55px;height:35px" onclick="if(document.getElementById('assistant_prog').style.display=='none'){
+      <input type="button" value="fonction" style="width:55px;height:35px" id="add_function" onclick="if(document.getElementById('assistant_prog').style.display=='none'){
       document.getElementById('assistant_prog').style.display='block';
      }      
      else {
@@ -726,11 +864,11 @@ id="add_debug"
   </tr>
 </table>
       <div id="assistant_prog" style="display:none">
-	  <b>Nouvelle fonction</b><br>
-	  nom de la fonction <textarea id="funcname" rows=1>f</textarea><br>
-	  liste des arguments <textarea id="argsname" rows=1>x,y</textarea><br>
-	  variables locales <textarea id="localvars" rows=1>z</textarea><br>
-	  valeur renvoy&eacute;e <textarea id="returnedvar" rows=1>z</textarea><br>
+	  <strong>Nouvelle fonction</strong><br>
+	  nom de la fonction <textarea id="funcname" title="Nom de la fonction, par exemple f" rows=1>f</textarea><br>
+	  liste des arguments <textarea id="argsname" title="Arguments de la fonction s&eacute;par&eacute;s par des virgules" rows=1>x,y</textarea><br>
+	  variables locales <textarea id="localvars" title="Variables locales, s&eacute;par&eacute;s par des virgule" rows=1>z</textarea><br>
+	  valeur renvoy&eacute;e <textarea id="returnedvar" title="Valeur de retour" rows=1>z</textarea><br>
 	  <button style="height:25px" onclick="UI.insert(UI.focused,'function '+document.getElementById('funcname').value+'('+document.getElementById('argsname').value+'){\n  var '+document.getElementById('localvars').value+';\n  \n  return '+document.getElementById('returnedvar').value+';\n}:;\n');UI.moveCaretUpDown(UI.focused,-3);UI.moveCaret(UI.focused,2);document.getElementById('assistant_prog').style.display='none';">Cr&eacute;er</button> <button style="height:25px" onclick="document.getElementById('assistant_prog').style.display='none'">Annuler</button><br>
       </div>
 
@@ -738,37 +876,31 @@ id="add_debug"
 
 <span contextmenu="cmdmenu" title="F1: aide sur le mot-clef avant le curseur. Clic droit (Firefox): menu des commandes">
   <button style="width:35px;height:35px;color:green" id="button_ok" onclick="if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'');}" title="Evaluer la ligne de commande">
-ok</button>
+<strong>ok</strong></button>
  <button style="width:35px;height:35px" id="button_help" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">?</button>
   <button style="width:35px;height:35px" id="button_123" onmousedown="event.preventDefault()" 
   onclick="if (document.getElementById('keyboard').style.display=='inline') document.getElementById('keyboard').style.display='none'; else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
   title="Montrer ou cacher le clavier scientifique">123</button>
   <button style="width:35px;height:35px" id="button_util" onmousedown="event.preventDefault()"
-  onclick="if (document.getElementById('keyboardfunc').style.display=='inline') document.getElementById('keyboardfunc').style.display='none'; else { document.getElementById('keyboardfunc').style.display='inline'; document.getElementById('keyboard').style.display='none';} if (UI.focusaftereval){ UI.focused.focus(); }"
-  title="Montrer ou cacher des commandes frequentes">util</button>
-   <button style="width:37px;height:35px" id="button_cmd" onmousedown="event.preventDefault()"
-  onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0)MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
-  title="Focus sur la ligne de commande">cmd</button>
-      <button style="width:33px;height:35px;" id="button_gauche" onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,-1)"   title="Deplace le curseur vers la gauche (utile pour les tablettes)"> ← </button>
-      <button type="button" style="width:29px;height:35px;" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.moveCaret(UI.focused,1)" title="Deplace le curseur vers la droite (utile pour les tablettes)"> → </button>
+  onclick="UI.show_menu();"
+  title="Montrer ou cacher des commandes frequentes">menu</button>
 <button style="width:33px;height:35px;" name="select_button"
   id="select_button" onmousedown="event.preventDefault()" onClick="if (UI.focusaftereval) UI.focused.focus(); if (UI.focused.type!='textarea'){UI.focused.execCommand('selectAll'); } else {UI.focused.select(); UI.selection=UI.focused.value;}" title="Selectionne la ligne de commande">sel</button>
 <button style="width:33px;height:35px" id="button_del" onmousedown="event.preventDefault()" onclick="UI.backspace(UI.focused)" title="Efface 1 caract&egrave;re">del</button>
+      <button style="width:33px;height:35px;" id="button_gauche" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)"   title="Deplace vers la gauche le curseur sur mobiles ou le focus sur PC"> ← </button>
+      <button type="button" style="width:29px;height:35px;" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur sur mobiles ou le focus sur PC"> → </button>
+   <button style="width:37px;height:35px" id="button_cmd" onmousedown="event.preventDefault()"
+  onclick="document.getElementById('keyboardfunc').style.display='none'; document.getElementById('keyboard').style.display='none'; UI.focused=cmentree;cmentree.focus(); UI.resizetextarea(cmentree);//if (UI.prettyprint && UI.usemathjax && UI.histcount>0)MathJax.Hub.Queue(["Typeset",MathJax.Hub]);"
+  title="Focus sur la ligne de commande"><h1>cmd</h1></button>
 &nbsp;
 <button id="stop_button" style="height:25px;visibility:hidden" onclick="if (UI.webworker && confirm('Voulez-vous vraiment terminer la session ?')){ UI.webworker.terminate(); UI.busy=0;UI.webworker=0; alert('Session redemarree. Toutes les variables ont ete effacees.');}" title="Termine la session en cours">STOP</button>
-<div id="startup_restore" style="display:none">
-  Vous pouvez restaurer votre pr&eacute;c&eacute;dente session
-  <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),true,false);">sans &eacute;valuation</button>
-  ou
-  <button style="height:25px" onclick="var s=UI.readCookie('xcas_session');UI.restoresession(s,document.getElementById('mathoutput'),false,false);">avec &eacute;valuation</button>
-</div>
 
 <br>
-<textarea name="entree" id="entree" style="font-size:18px;"
-  rows=1 cols=32 onkeypress="UI.focused=this; if (event.keyCode!=13) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
+<textarea name="entree" id="entree" title="Ligne de commande" style="font-size:18px;width:98%"
+  rows=1 onkeypress="UI.focused=this; if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
 </span>
 </br>
-<b>Console</b>
+<h1>Console</h1>
 <button style="height:35px" title="Effacer la console" onclick="var field=document.getElementById('output');field.innerHTML=''">Efface</button>
 <button style="height:35px" title="Augmenter le nombre de lignes" onclick="var field=document.getElementById('output');var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=eval(s)+20 ;s=s+'px';field.style.maxHeight =s ;">+</button>
 <button style="height:35px" title="Diminuer le nombre de lignes" onclick="var field=document.getElementById('output');var s=field.style.maxHeight; s=s.substr(0,s.length-2);s=Math.max(eval(s)-20,40) ;s=s+'px';field.style.maxHeight =s ;">-</button>
@@ -1387,6 +1519,18 @@ ok</button>
   eraseCookie:function(name) {
 	createCookie(name,"",-1);
   },
+  detectmob:function() { 
+ if( navigator.userAgent.match(/Android/i)
+ || navigator.userAgent.match(/webOS/i)
+ || navigator.userAgent.match(/iPhone/i)
+ || navigator.userAgent.match(/iPad/i)
+ || navigator.userAgent.match(/iPod/i)
+ || navigator.userAgent.match(/BlackBerry/i)
+ || navigator.userAgent.match(/Windows Phone/i)
+ ) return true;
+ else 
+    return false;
+},
   browser_type: function(){
    var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
    var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
@@ -1409,6 +1553,7 @@ ok</button>
   caseval: function(text){
    var docaseval = Module.cwrap('caseval',  'string', ['string']);
    var value=text;
+   value=value.replace('%22','\"','g'); 
    var n=value.search(';');
    if (n<0 || n>=value.length)
      value='add_autosimplify('+value+')';
@@ -1471,6 +1616,7 @@ var hashParams=chaine.split('&');
     s=s.replace('%3e','>','g');
     s=s.replace('%5e','^','g');
     s=s.replace('%20',' ','g');
+    s=s.replace('%22','\"','g');
     if (s.length && s.charAt(0)=='+'){
        if (!asked) doexec=true;
        s=s.substr(1);
@@ -1502,6 +1648,11 @@ var hashParams=chaine.split('&');
     if (p[0]=='') continue;
     if (p[0]=='entree' || p[0]=='cmentree'){
       cmentree.setValue( decodeURIComponent(p[1]));
+      continue;
+    }
+    if (p[0]=='codemirror'){
+      if (p[1]=='0') { document.getElementById('config').usecm.checked=false;  UI.set_config();}
+      if (p[1]=='1') { document.getElementById('config').usecm.checked=true;  UI.set_config();}
       continue;
     }
     document.getElementById(p[0]).value = decodeURIComponent(p[1]);
@@ -1622,6 +1773,15 @@ var hashParams=chaine.split('&');
       }
     }
   },
+show_menu:function(){
+ if (document.getElementById('keyboardfunc').style.display=='inline')
+   document.getElementById('keyboardfunc').style.display='none';
+ else {
+  document.getElementById('keyboardfunc').style.display='inline';
+  document.getElementById('keyboard').style.display='none';
+ }
+ if (UI.focusaftereval){ UI.focused.focus(); }
+},
   show_config:function(){
     var form=document.getElementById('config');
     form.style.display='inline';
@@ -1640,7 +1800,7 @@ var hashParams=chaine.split('&');
    if (w>hw-300) w=hw-300;
    var hi=hw-w-200;
    if (!UI.qa){ hi=hw-130; w=hi; }
-   s='input[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}';
+   s='h1,h2,h3 { display:inline; font-size:1em;}\ninput[type="number"] { width:40px;}\n .outdiv { width:'+w+'px; max-height: '+form.outdiv_height.value+'px;  overflow: auto;}\n.filenamecss {width:120px;height:20px}\n.historyinput {width:'+hi+'px;}';
    // Module.print(s);
    var st=document.getElementById('document_style');
    st.innerHTML=s;
@@ -1652,15 +1812,15 @@ var kbd_l=["add_newline","add_'","add_,","add_left_paren",
 "add_3" ,"add_-" ,"copy_button" ,"curseur_up","add-=" ,"add__" ,
 "add_exp","add_ln","add_e","add_0" ,"add_." ,
 "add_+" ,"curseur_gauche","curseur_down" ,"curseur_droit","add_a" ,"add_sin" ,"add_cos",
-"add_tan","kbd_square","add_sqrt","add_^"];
+"add_tan","add_sq","add_sqrt","add_^"];
 var kbd_cmd=["button_ok","button_help","button_123","button_util","button_cmd",
 "button_gauche","button_droit","select_button","button_del"];
-var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
-"add_factor" ,"add_partfrac","add_solve",
-"add_fsolve" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
+var kbd_util=["add_simplify" ,"add_normal",
+"add_factor" ,"add_partfrac","add_tcollect","add_texpand","add_solve","add_csolve",
+"add_linsolve","add_fsolve" ,"add_desolve" ,"add_rsolve" ,"add_sum","add_diff",
 "add_integrate" ,"add_limit","add_series" ,"add_tabvar","add_plot",
-"add_plotparam" ,"add_plotpolar" ,"add_//","add_space","add_test",
-"add_pour","add_tantque","add_debug"];
+"add_plotparam" ,"add_plotpolar","add_plotimplicit" ,"add_//","add_space","add_test",
+"add_pour","add_tantque","add_function","add_debug","add_curseur"];
    w=Math.floor(hw/12); w=w+"px"; 
    h=Math.floor(hh/20); if (h<30) h=30; h=h+"px"; // console.log(hw,w,hh,h);
    for (var i=0;i<kbd_l.length;i++){
@@ -1672,6 +1832,12 @@ var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
    for (var i=0;i<kbd_cmd.length;i++){
      document.getElementById(kbd_cmd[i]).style.width=w;
      document.getElementById(kbd_cmd[i]).style.height=h;
+   }
+   w=Math.floor(hw/8); if (w<34) w=34; w=w+"px"; 
+   h=Math.floor(hh/20); if (h<35) h=35; h=h+"px"; // console.log(hw,w,hh,h);
+   for (var i=0;i<kbd_util.length;i++){
+     document.getElementById(kbd_util[i]).style.width=w;
+     document.getElementById(kbd_util[i]).style.height=h;
    }
   },
   config_string:function(){
@@ -1749,10 +1915,10 @@ var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
   show_history123:function(){
     document.getElementById('history1').style.visibility='visible';
     document.getElementById('history2').style.display='block';
-    document.getElementById('history3').style.display='block';
     document.getElementById('history4').style.display='block';
     document.getElementById('startup').style.display='none';
     document.getElementById('startup1').style.display='none';
+    document.getElementById('startup2').style.display='none';
   },
   loadfile:function(oFiles){
     var nFiles = oFiles.length;
@@ -2031,7 +2197,7 @@ var kbd_util=["keyboardfunc","add_simplify" ,"add_normal",
       if (UI.usemathjax)
         s=UI.caseval('latex(quote('+out+'))');
       else
-      s=UI.caseval('mathml(quote('+out+'),1)');
+        s=UI.caseval('mathml(quote('+out+'),1)');
      } else s=out;
    }
    s=UI.addinput(textin,out,s);
@@ -2165,6 +2331,7 @@ addcomment: function(text){
    return r;
   },
   addinput: function(textin,textout,mathmlout){
+  document.getElementById('startup_restore').style.display='none'
   //Module.print(textout);
   if (textout.length>=12 && textout.substr(0,12)=='Done_graphic'){ document.getElementById('boutons_3d').style.display='inherit';document.getElementById('boutons_3d0').style.display='inherit';}
   if (textin.length > 2 && textin.substr(0,2)=='//') return UI.addcomment(textin);
@@ -2348,6 +2515,100 @@ var endPos = field.selectionEnd;
     var selectedText = field.value.substring(startPos, endPos);
   return selectedText;
   },
+move_caret_or_focus:function(field,n){
+ if (UI.detectmob()){ UI.moveCaret(field,n); return; }
+ move_focus(field,n);
+},
+move_focus:function(field,n){
+ // focus on next or previous history level
+ if (n>0){
+  if (field==cmentree) return;
+  if (field.type!="textarea")
+   field=field.getTextArea();
+  if (field.previousSibling==null){
+   var par=field.parentNode;
+   UI.switch_buttons(par.parentNode,true)
+   par=par.nextSibling;
+   par=par.firstChild;
+   if (par.nextSibling==null){
+     par=par.parentNode.parentNode.parentNode.nextSibling;
+     if (par==null) cmentree.focus(); // console.log(par);
+     else {
+      UI.switch_buttons(par.firstChild,true) 
+      par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
+      par.focus();
+     }
+     return;
+   }
+   par.style.display='none';
+   par=par.nextSibling;
+   par.style.display='inherit';
+   par.select();
+   UI.set_focused(par);
+   par.focus();
+   return;
+  }
+  var bidon=field.previousSibling;
+  if (bidon.style.display!='none') return;
+  bidon.style.display='block';
+  field.style.display='none';
+  var par=field.parentNode.parentNode.parentNode.nextSibling;
+  if (par==null) {
+   UI.set_focused(cmentree); cmentree.focus();
+   //  console.log(par);
+  }
+  else {
+    UI.switch_buttons(par.firstChild,true) 
+    par=par.firstChild.firstChild.nextSibling.nextSibling.firstChild;
+    par.focus();
+   }
+  return;
+ }
+ if (field==cmentree){
+  var par=document.getElementById('mathoutput').lastChild;
+  if (par==null) return;
+   UI.switch_buttons(par.firstChild,true) 
+   par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
+   if (par.nextSibling==null){
+    par=par.parentNode.previousSibling.firstChild;
+    par.focus(); return;
+   } 
+   //console.log(par.innerHTML);
+   par.style.display='none';
+   par=par.nextSibling;
+   par.style.display='inherit';
+   par.select();
+   UI.set_focused(par);
+   par.focus();
+   return;
+ }
+  if (field.type!="textarea")
+   field=field.getTextArea();
+  if (field.previousSibling==null){
+   var par=field.parentNode.parentNode.parentNode.previousSibling;
+   UI.switch_buttons(par.firstChild,true) 
+   par=par.firstChild.firstChild.nextSibling.nextSibling.nextSibling.firstChild;
+   if (par.nextSibling==null){
+    //console.log(par.nextSibling);
+    par=par.parentNode.previousSibling.firstChild;
+    par.focus(); return;
+   } 
+   par.style.display='none';
+   par=par.nextSibling;
+   par.style.display='inherit';
+   par.select();
+   UI.set_focused(par);
+   par.focus();
+   return;
+  }
+  var bidon=field.previousSibling;
+  if (bidon.style.display!='none') return;
+  bidon.style.display='block';
+  field.style.display='none';
+  var par=field.parentNode.previousSibling.firstChild;
+  par.focus();
+  UI.switch_buttons(par.parentNode.parentNode,true) 
+},
 moveCaret: function(field, charCount) {
   if (field.type!="textarea"){
     var pos=field.getCursor();
@@ -2676,7 +2937,7 @@ insert: function(myField, myValue) {
   window.onload = function(e){
   //UI.caseval('abc(x=0); [x, y]; z+1;');
   var form=document.getElementById('config');
-  var hw=window.innerWidth-50;
+  var hw=window.innerWidth-50;  
   if (hw>=1000){ UI.qa=true; UI.usecm=true; form.qa.checked=true; form.usecm.checked=true;} else {UI.qa=false;UI.usecm=false; form.qa.checked=false; form.usecm.checked=false;}
   // config in cookies
   var ck;
@@ -2735,7 +2996,8 @@ insert: function(myField, myValue) {
  // substr(1) to remove the `#`
  document.getElementById('startup_restore').style.display='block';
  UI.restoresession(hashParams,hist,asked,doexec);
-  document.getElementById('startup1').style.display='block';
+ document.getElementById('startup1').style.display='block';
+ if (UI.usecm) document.getElementById('startup2').style.display='block';
 }
 </script>
 
