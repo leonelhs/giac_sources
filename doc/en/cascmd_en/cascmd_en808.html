@@ -4,41 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Using strings as names: #</title>
+<title>Writing variable values to a file: write</title>
 </head>
 <body >
 <a href="cascmd_en807.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en809.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1040" class="subsection">11.4.5  Using strings as names: <span style="font-family:monospace">#</span></h3>
-<p><a id="hevea_default1435"></a></p><p>Variable and function names are symbols, namely sequences of characters, which are
-different from strings. For example, you can have a variable named <span style="font-family:monospace">abc</span>, but
-not <span style="font-family:monospace">"abc"</span>. The <span style="font-family:monospace">#</span> operator will turn a
-string into a symbol; for example <span style="font-family:monospace">(#"abc")</span> is the symbol
-<span style="font-family:monospace">abc</span>.</p><p>If you enter
+<h3 id="sec1040" class="subsection">11.4.3  Writing variable values to a file: <span style="font-family:monospace">write</span></h3>
+<p>
+<a id="hevea_default1433"></a></p><p>You can save variable values to a file, to be read later, with the
+<span style="font-family:monospace">write</span> command. This command takes a string for a file name
+and a list of variables to save. For example, if <span style="font-family:monospace">a</span> has the
+value <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">b</span> has the value <span style="font-family:monospace">7</span>, then
 </p><div class="center">
-<span style="font-family:monospace">a := "abc"; (#a) := 3</span>
+<span style="font-family:monospace">write("foo",a,b)</span>
 </div><p>
-or
+will create a file named “foo” with the contents
+</p><pre class="verbatim">  a:=(3.14);
+  b:=7;
+</pre><p>
+If you wanted to store the first million digits of π to a file,
+you could set it equal to a variable
 </p><div class="center">
-<span style="font-family:monospace">(#"abc") := 3</span>
+<span style="font-family:monospace">pidec := evalf(pi,10^6):;</span>
 </div><p>
-then the variable <span style="font-family:monospace">abc</span> will have the value <span style="font-family:monospace">3</span>.
-Entering <span style="font-family:monospace">#a</span> will still give you <span style="font-family:monospace">abc</span>; you can get
-<span style="font-family:monospace">3</span> with <span style="font-family:monospace">eval(#a)</span>.</p><p>Similarly for functions. If you enter
+and then store it in a file
 </p><div class="center">
-<span style="font-family:monospace">b := "sin"; (#b)(pi/4)</span>
-</div><p>
-or
+<span style="font-family:monospace">write("pi1million",pidec)</span>
+</div><p>If you want to restore the values of variables saved this way, for
+example in a different session or if you have purged the
+variables, then you can use the <span style="font-family:monospace">read</span> command, which simply
+takes a file name as a string. If, in a different session, you want
+to use the values of <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> above, the command
 </p><div class="center">
-<span style="font-family:monospace">(#"sin")(pi/4)</span>
+<span style="font-family:monospace">read("foo")</span>
 </div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">1/sqrt(2)</span>
-</div><p>
-which is <span style="font-family:monospace">sin(pi/4)</span>.</p>
+will give them the values <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">7</span> again. Note
+that this will silently overwrite any values that <span style="font-family:monospace">a</span> and
+<span style="font-family:monospace">b</span> might have had.</p>
 <hr>
 <a href="cascmd_en807.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

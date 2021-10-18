@@ -94,12 +94,13 @@ int mp_js_process_char(int c) {
     return pyexec_event_repl_process_char(c);
 }
 
-void mp_js_init(int heap_size) {
+char * mp_js_init(int heap_size) {
     int stack_dummy;
     stack_top = (char*)&stack_dummy;
-
+    char * ptr=0;
     #if MICROPY_ENABLE_GC
     char *heap = (char*)malloc(heap_size * sizeof(char));
+    ptr=heap;
     gc_init(heap, heap + heap_size);
     #endif
 
@@ -113,6 +114,7 @@ void mp_js_init(int heap_size) {
     mp_obj_list_init(mp_sys_path, 0);
     mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR_));
     mp_obj_list_init(mp_sys_argv, 0);
+    return ptr;
 }
 
 void mp_js_init_repl() {

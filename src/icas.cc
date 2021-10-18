@@ -406,7 +406,7 @@ void check_browser_help(const giac::gen & g){
       f=f._SYMBptr->sommet;
     if (f.type==giac::_FUNC)
       s=f._FUNCptr->ptr()->s;
-#if !defined EMCC && !defined NSPIRE_NEWLIB && !defined KHICAS
+#if !defined EMCC && !defined EMCC2 && !defined NSPIRE_NEWLIB && !defined KHICAS
     giac::html_vtt=giac::html_help(giac::html_mtt,s);
 #ifndef HAVE_NO_SYSTEM
     if (!giac::html_vtt.empty())
@@ -1073,6 +1073,7 @@ int micropy_evaled(string & s,const giac::context * contextptr){
 }
 
 int main(int ARGC, char *ARGV[]){    
+  giac::__get_key.op=&xcas::Xcas_fltk_getKey;
   //giac::step_infolevel=1;
   cerr << "// Maximum number of parallel threads " << giac::threads << '\n';
   giac::context giac_context;
@@ -1082,7 +1083,7 @@ int main(int ARGC, char *ARGV[]){
   bool dohevea=true;
   if (ARGC>1 && strcmp(ARGV[ARGC-1],"--pdf")==0)
     dohevea=false;
-#if !defined EMCC && !defined NSPIRE_NEWLIB && !defined KHICAS
+#if !defined EMCC && !defined EMCC2 && !defined NSPIRE_NEWLIB && !defined KHICAS
   giac::xcasroot()=giac::xcasroot_dir(ARGV[0]);
 #endif
 #ifndef VISUALC
@@ -1099,7 +1100,7 @@ int main(int ARGC, char *ARGV[]){
     Fl::gl_visual(FL_RGB | FL_DEPTH | FL_ACCUM | FL_ALPHA);
 #endif
   giac::secure_run=false;
-#if !defined EMCC && !defined NSPIRE_NEWLIB && !defined KHICAS
+#if !defined EMCC && !defined EMCC2 && !defined NSPIRE_NEWLIB && !defined KHICAS
   if (ARGC==2 && !strcmp(ARGV[1],"--rebuild-help-cache")){
     // works with old version of hevea (1.10) but not with hevea 2.29
     for (int i=0;i<=4;++i)
@@ -1283,7 +1284,7 @@ int main(int ARGC, char *ARGV[]){
    * EMACS *
    *********/
   // #define EMACS_DEBUG 1
-#if !defined EMCC && !defined NSPIRE_NEWLIB && !defined KHICAS
+#if !defined EMCC && !defined EMCC2 && !defined NSPIRE_NEWLIB && !defined KHICAS
   if (inemacs){
     giac::html_help_init(ARGV[0],false);
     int out_handle;

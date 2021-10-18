@@ -4854,17 +4854,31 @@ namespace xcas {
 	  if (point._SYMBptr->feuille.type!=_VECT)
 	    return;
 	  vecteur &v=*point._SYMBptr->feuille._VECTptr;
-	  if (v.size()<3 || v[0].type!=_INT_ || v[1].type!=_INT_ || v[2].type!=_INT_)
+	  if (v.size()<3 || v[0].type!=_INT_ || v[1].type!=_INT_ )
 	    return;
 	  int delta_i=v[0].val,delta_j=v[1].val,psx=0,psy=0;
+	  delta_i *= pixon_size;
+	  delta_j *= pixon_size;
+	  if (v.back().type==_STRNG){
+	    int color=FL_BLACK;
+	    if (v[2].type==_INT_)
+	      color=v[2].val;
+	    xcas_color(color);
+	    int fontsize=12;
+	    if (v.size()>3 && v[3].type==_INT_)
+	      fontsize=giacmax(10,v[3].val);
+	    fl_font(FL_HELVETICA,fontsize);
+	    check_fl_draw(v.back()._STRNGptr->c_str(),deltax,deltay+fontsize-1,0,0,0,0,delta_i,delta_j);
+	    return;
+	  }
+	  if (v[2].type!=_INT_)
+	    return;
 	  if (v.size()>3 && v[3].type==_INT_){
 	    if (v[3].val>0) psy=v[3].val; else psx=-v[3].val;
 	  }
 	  psx=pixon_size*(psx+1);
 	  psy=pixon_size*(psy+1);
 	  xcas_color(v[2].val);
-	  delta_i *= pixon_size;
-	  delta_j *= pixon_size;
 	  if (delta_i>=0 && delta_i<mxw && delta_j>=0 && delta_j<myw){
 #if 1
 	    check_fl_rectf(deltax+delta_i,deltay+delta_j,psx,psy,clip_x,clip_y,clip_w,clip_h,0,0);

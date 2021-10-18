@@ -4,37 +4,65 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The while loop: while</title>
+<title>The for loop: for, from, to, step, do, end_for</title>
 </head>
 <body >
 <a href="cascmd_en799.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en801.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1031" class="subsection">11.3.5  The while loop: <span style="font-family:monospace">while</span></h3>
+<h3 id="sec1028" class="subsection">11.3.3  The for loop: <span style="font-family:monospace">for, from, to, step, do, end_for</span></h3>
 <p>
-<a id="hevea_default1424"></a></p><p>The <span style="font-family:monospace">while</span> loop is used to repeat a code block as long as a
-given condition holds. To use it, enter <span style="font-family:monospace">while</span>, the
-condition, and then a code block. For example, to add the terms of
-the harmonic series 1 + 1/2 + 1/3 + 1/4 + … until a term is less
-than 0.05, you could initialize the sum <span style="font-family:monospace">S</span> to 0 and let
-<span style="font-family:monospace">j</span> be the first term 1. Then
+<a id="hevea_default1417"></a><a id="hevea_default1418"></a><a id="hevea_default1419"></a><a id="hevea_default1420"></a><a id="hevea_default1421"></a><a id="hevea_default1422"></a></p><p>The <span style="font-family:monospace">for</span> loop has three different forms, each of which uses an
+index variable. If the <span style="font-family:monospace">for</span> loop is used in a program, the
+index variable should be declared as a local variable. (Recall that
+<span style="font-family:monospace">i</span> represents the imaginary unit, and so cannot be used as the
+index.)</p>
+<h5 id="sec1029" class="paragraph">The first form</h5>
+<p>
+For the first form, the <span style="font-family:monospace">for</span> is followed by the starting value
+for the index, the end condition, and the increment step, separated by
+semicolons and in parentheses. Afterwards is a block of code to be
+executed for each iteration. For example, to add the even numbers
+less than 100, you can set the running total to 0,
 </p><div class="center">
-<span style="font-family:monospace">while (1/j &gt;= 0.05) {S := S + 1/j; j := j+1;}</span>
+<span style="font-family:monospace">S := 0</span>
 </div><p>
-will find the sum. This line is the same as
+and the use an <span style="font-family:monospace">for</span> loop to do the summing,
 </p><div class="center">
-<span style="font-family:monospace">tantque (1/j &gt;= 0.05) faire S := S + 1/j; j := j+1; ftantque</span>
-</div><p>Note that a <span style="font-family:monospace">while</span> loop can also be written as a <span style="font-family:monospace">for</span>
-loop. For example, as long as <span style="font-family:monospace">S</span> is set to 0 and <span style="font-family:monospace">j</span>
-is set to 1 , the above loop
-can be written as 
+<span style="font-family:monospace">for (j := 0; j &lt; 100; j := j + 2) {S := S + j}</span>
+</div>
+<h5 id="sec1030" class="paragraph">The second form</h5>
+<p>
+The second form of a <span style="font-family:monospace">for</span> loop has a fixed increment for the
+index. It is
+written out with <span style="font-family:monospace">for</span> followed by the index, followed by
+<span style="font-family:monospace">from</span>, the initial value, <span style="font-family:monospace">to</span>, the ending value,
+<span style="font-family:monospace">step</span>, the size of the increment, and finally the statements
+to be executed between <span style="font-family:monospace">do</span> and <span style="font-family:monospace">end_for</span>. For
+example, having set the variable <span style="font-family:monospace">S</span> equal to 0, you can again
+add the even numbers less than 100 with
 </p><div class="center">
-<span style="font-family:monospace">for (;1/j &gt;= 0.05;) {S := S + 1/j; j := j+1;}</span>
+<span style="font-family:monospace">for j from 2 to 98 step 2 do S := S + j; end_for</span>
 </div><p>
-or, with only <span style="font-family:monospace">S</span> set to 0,
+There is also a French version of this syntax;
 </p><div class="center">
-<span style="font-family:monospace">for (j := 1; 1/j &gt;= 0.05; j++) {S := S + 1/j;}</span>
+<span style="font-family:monospace">pour j de 2 jusque 98 pas 2 faire S := S + j; fpour</span>
+</div>
+<h5 id="sec1031" class="paragraph">The third form</h5>
+<p>
+The third form of the <span style="font-family:monospace">for</span> loop lets you iterate over the
+values in a list (or a set or a range). In this form, the
+<span style="font-family:monospace">for</span> is followed by the index, then <span style="font-family:monospace">in</span>, the list, and
+then the instructions between <span style="font-family:monospace">do</span> and <span style="font-family:monospace">end_for</span>. For
+example, to add all integers from 1 to 100, you can again set the
+running total <span style="font-family:monospace">S</span> to 0, then
+</p><div class="center">
+<span style="font-family:monospace">for j in 1..100 do S:= S + j; end_for</span>
+</div><p>
+or
+</p><div class="center">
+<span style="font-family:monospace">pour j in 1..100 faire S:= S + j; fpour</span>
 </div>
 <hr>
 <a href="cascmd_en799.html"><img src="previous_motif.gif" alt="Previous"></a>

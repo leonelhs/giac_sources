@@ -4,35 +4,61 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Check if three points are collinear in the plane: is_collinear</title>
+<title>Orthogonal projection in the plane: projection</title>
 </head>
 <body >
 <a href="cascmd_en907.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en909.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1170" class="subsection">12.16.2  Check if three points are collinear in the plane: <span style="font-family:monospace">is_collinear</span><a id="hevea_default1584"></a></h3>
+<h3 id="sec1169" class="subsection">12.15.8  Orthogonal projection in the plane: <span style="font-family:monospace">projection</span><a id="hevea_default1585"></a></h3>
 <p>
-<a id="sec:2dcheckcollinear"></a></p><p>See section <a href="cascmd_en982.html#sec%3A3dcheckcollinear">13.13.6</a> for checking for collinearity in
-three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_collinear</span> command is a Boolean function which takes as argument a list or
-sequence of points.</p><p><span style="font-family:monospace">is_collinear</span> returns <span style="font-family:monospace">1</span> if the points are collinear
-and returns <span style="font-family:monospace">0</span> otherwise.<br>
+<a id="sec:2dprojection"></a></p><p>See section <a href="cascmd_en1000.html#sec%3A3dprojection">13.14.8</a> for projections in space.</p><p>The <span style="font-family:monospace">projection</span> command takes one or two arguments.</p><p>If <span style="font-family:monospace">projection</span> has one argument, it is a geometric object.
+<span style="font-family:monospace">projection</span> returns a new command which projects points onto
+the object.<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">is_collinear(0,1+i,-1-i)
+<span style="font-family:monospace">p1 := projection(line(-1,i))
+</span></div><p>
+then:
+</p><div class="center">
+<span style="font-family:monospace">p1(i+1)
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">1 
-</span></div><p>
+<img src="cascmd_en175.png">
+</div><p>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">is_collinear(i/100, 1+i, -1-i)
+<span style="font-family:monospace">p2 := projection(circle(-1,1))
+</span></div><p>
+then:
+</p><div class="center">
+<span style="font-family:monospace">p2(i)
 </span></div><p>
 Output:
 </p><div class="center">
-<span style="font-family:monospace">0 
-</span></div>
+<img src="cascmd_en176.png">
+</div><p>If <span style="font-family:monospace">projection</span> has two arguments, the first arguments is a
+geometric object as above, and the second argument is a point.
+<span style="font-family:monospace">projection</span> returns and draws the projection of the point onto
+the object.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">projection(line(-1, i), 1+i)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en177.png">
+</div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">projection(circle(-1,1), i)
+</span></div><p>
+Output:
+</p><div class="center">
+<img src="cascmd_en178.png">
+</div>
 <hr>
 <a href="cascmd_en907.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

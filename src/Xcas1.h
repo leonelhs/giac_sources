@@ -55,6 +55,7 @@ namespace xcas {
   class Equation;
   extern Equation * Xcas_PrintG;
   void xcas_gprintf(unsigned special,const std::string & format,const giac::vecteur & v,const giac::context *);
+  extern Fl_Window * getkeywin;
   extern Fl_Window * Xcas_DispG_Window;
   extern Fl_Window * Xcas_Main_Window;
   extern Fl_Button *Xcas_DispG_Cancel;

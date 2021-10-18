@@ -4,29 +4,46 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Animation of a 2D graph : animate</title>
+<title>2D parametric curve </title>
 </head>
 <body >
 <a href="cascmd_en679.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en681.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec834" class="subsection">7.21.1  Animation of a 2D graph : <span style="font-family:monospace">animate</span></h3>
-<p><a id="hevea_default1152"></a>
-<span style="font-family:monospace">animate</span> can create a 2-d animation with graphs of functions
-depending on a parameter. The parameter is specified as the 
-third argument of 
-<span style="font-family:monospace">animate</span>, the number of pictures as fourth argument with
-<span style="font-family:monospace">frames=</span><a id="hevea_default1153"></a>number, 
-the remaining arguments are the same as those of the <span style="font-family:monospace">plot</span> command, 
-see section <a href="index.html#sec%3Aplot2d">7.5</a>, p. <a href="index.html#sec%3Aplot2d">??</a>.<br>
+<h3 id="sec827" class="subsection">7.14.1  2D parametric curve </h3>
+<p>
+<span style="font-family:monospace">plotparam([f(t),g(t)],t)</span>
+or <span style="font-family:monospace">plotparam(f(t)+i*g(t),t)</span> (resp. 
+<span style="font-family:monospace">plotparam(f(t)+i*g(t),t=t1..t2)</span>)
+draws the parametric representation of the curve 
+defined by <span style="font-style:italic">x</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>),<span style="font-style:italic">y</span>=<span style="font-style:italic">g</span>(<span style="font-style:italic">t</span>) 
+with the default range of values of <span style="font-style:italic">t</span> (resp. for <span style="font-style:italic">t</span>1 ≤ <span style="font-style:italic">t</span>≤ <span style="font-style:italic">t</span>2).<br>
+The default range of values is taken as specified 
+in the graphic configuration (<span style="font-family:monospace">t-</span> and <span style="font-family:monospace">t+</span>, 
+cf. <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>).
+<span style="font-family:monospace">plotparam</span> accepts an optional argument to specify the discretization
+step for <span style="font-style:italic">t</span> with <span style="font-family:monospace">tstep=</span>.<br>
 Input :
-</p><div class="center">
-<span style="font-family:monospace">animate(sin(a*x),x=-pi..pi,a=-2..2,frames=10,color=red)</span>
-</div><p>
+</p><div class="center"><span style="font-family:monospace">plotparam(cos(x)+i*sin(x),x) </span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam([cos(x),sin(x)],x) </span></div><p>
 Output :
-</p><div class="center"><span style="font-family:monospace">a sequence of graphic representations of y=sin(</span><span style="font-style:italic">a</span><span style="font-family:monospace">x) for 
-11 values of </span><span style="font-style:italic">a</span><span style="font-family:monospace"> between -2 and 2</span></div>
+</p><div class="center"><span style="font-family:monospace">The unit circle</span></div><p>
+If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t))</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1) </span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(x)+i*cos(x),x=-4..1) </span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div><p>
+If in the graphic configuration <span style="font-family:monospace">t</span> goes from -4 to 1, input :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t,tstep=0.5)</span></div><p>
+or :
+</p><div class="center"><span style="font-family:monospace">plotparam(sin(t)+i*cos(t),t=-4..1,tstep=0.5)</span></div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">A polygon approaching the arc (sin(-4)+i*cos(-4),sin(1)+i*cos(1)) of the unit circle</span></div>
 <hr>
 <a href="cascmd_en679.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

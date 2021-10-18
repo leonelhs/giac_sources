@@ -1,24 +1,19 @@
 //
-// "$Id: Fl_Gl_Choice.H,v 1.4.2.6.2.3 2001/12/18 11:00:09 matthiaswm Exp $"
+// "$Id$"
 //
 // OpenGL definitions for the Fast Light Tool Kit (FLTK).
 //
-// Copyright 1998-2001 by Bill Spitzak and others.
+// Copyright 1998-2018 by Bill Spitzak and others.
 //
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Library General Public
-// License as published by the Free Software Foundation; either
-// version 2 of the License, or (at your option) any later version.
+// This library is free software. Distribution and use rights are outlined in
+// the file "COPYING" which should have been included with this file.  If this
+// file is missing or damaged, see the license at:
 //
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Library General Public License for more details.
+//     http://www.fltk.org/COPYING.php
 //
-// You should have received a copy of the GNU Library General Public
-// License along with this library. If not, see <http://www.gnu.org/licenses/>.
+// Please report all bugs and problems on the following page:
 //
-// Please report all bugs and problems to "fltk-bugs@easysw.com".
+//     http://www.fltk.org/str.php
 //
 
 // Internal interface to set up OpenGL.
@@ -55,13 +50,23 @@
 #ifdef WIN32
 #  include <FL/gl.h>
 #  define GLContext HGLRC
-#elif defined(__APPLE__)
+#elif defined(__APPLE_QUARTZ__)
 #  include <OpenGL/gl.h>
-#  include <AGL/agl.h>
-#  define GLContext AGLContext
+#ifdef __OBJC__
+@class NSOpenGLPixelFormat;
+@class NSOpenGLContext;
+#else
+class NSOpenGLPixelFormat;
+class NSOpenGLContext;
+#endif // __OBJC__
+typedef NSOpenGLContext* FLOpenGLContextPtr;
+#  define GLContext FLOpenGLContextPtr
 #else
 #  include <GL/glx.h>
 #  define GLContext GLXContext
+#  if ! defined(GLX_VERSION_1_3)
+#    typedef void *GLXFBConfig;
+#  endif
 #endif
 
 // Describes crap needed to create a GLContext.
@@ -73,11 +78,12 @@ public:
 #ifdef WIN32
   int pixelformat;	// the visual to use
   PIXELFORMATDESCRIPTOR pfd; // some wgl calls need this thing
-#elif defined(__APPLE__)
-  AGLPixelFormat pixelformat;
+#elif defined(__APPLE_QUARTZ__)
+  NSOpenGLPixelFormat* pixelformat;
 #else
   XVisualInfo *vis;	// the visual to use
   Colormap colormap;	// a colormap for that visual
+  GLXFBConfig best_fb;
 #endif
   // Return one of these structures for a given gl mode.
   // The second argument is a glX attribute list, and is used if mode is
@@ -91,7 +97,7 @@ class Fl_Window;
 
 GLContext fl_create_gl_context(Fl_Window*, const Fl_Gl_Choice*, int layer=0);
 
-#elif defined(__APPLE__)
+#elif defined(__APPLE_QUARTZ__)
 
 GLContext fl_create_gl_context(Fl_Window*, const Fl_Gl_Choice*, int layer=0);
 
@@ -99,19 +105,19 @@ GLContext fl_create_gl_context(Fl_Window*, const Fl_Gl_Choice*, int layer=0);
 
 GLContext fl_create_gl_context(XVisualInfo* vis);
 
-static inline
-GLContext fl_create_gl_context(Fl_Window*, const Fl_Gl_Choice* g) {
+//static inline
+ GLContext fl_create_gl_context(Fl_Window*, const Fl_Gl_Choice* g);/* {
   return fl_create_gl_context(g->vis);
-}
+}*/
 
 #endif
 
-void fl_set_gl_context(Fl_Widget*, GLContext);
+void fl_set_gl_context(Fl_Window*, GLContext);
 void fl_no_gl_context();
 void fl_delete_gl_context(GLContext);
 
 #endif
 
 //
-// End of "$Id: Fl_Gl_Choice.H,v 1.4.2.6.2.3 2001/12/18 11:00:09 matthiaswm Exp $".
+// End of "$Id$".
 //

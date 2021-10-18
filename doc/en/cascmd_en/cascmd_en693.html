@@ -4,34 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Frequencies: frequencies frequences</title>
+<title>Histograms: histogram histogramme</title>
 </head>
 <body >
 <a href="cascmd_en692.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en694.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec849" class="subsection">8.1.11  Frequencies: <span style="font-family:monospace">frequencies</span><a id="hevea_default1173"></a> <span style="font-family:monospace">frequences</span><a id="hevea_default1174"></a></h3>
-<p>Given a list of numbers, the <span style="font-family:monospace">frequencies</span> (or
-<span style="font-family:monospace">frequences</span>) command will return
-the numbers in the list with their frequencies; i.e., the fraction of
-list items equal to the number. For example,
+<h3 id="sec849" class="subsection">8.1.9  Histograms: <span style="font-family:monospace">histogram</span><a id="hevea_default1173"></a> <span style="font-family:monospace">histogramme</span><a id="hevea_default1174"></a></h3>
+<p>Given a list of intervals and a number of points in each interval,
+such as is given by the output of the <span style="font-family:monospace">classes</span> command, the
+<span style="font-family:monospace">histogram</span> (or <span style="font-family:monospace">histogramme</span>) command will draw a box
+over each interval so that the height of each box is proportional to
+the number of points and the total area of the boxes is 1. For
+example, if you enter
 </p><div class="center">
-<span style="font-family:monospace">frequencies([1,2,1,1,2,1,2,4,3,3])
+<span style="font-family:monospace">histogram([[1.5..1.65,50],[1.65..1.7,20],[1.7..1.8,30]])
 </span></div><p>
-will return
+you will get
 </p><div class="center">
-<span style="font-family:monospace">[[1,0.4],[2,0.3],[3,0.2],[4,0.1]]
-</span></div><p>You can use this, for example, to simulate flipping a fair coin and
-seeing how many times each side appears; to flip a coin 1000 times,
-for example, you can enter
+<img src="cascmd_en033.png">
+</div><p>If you just give the <span style="font-family:monospace">histogram</span> a list of numbers, or a list
+with values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, then you will get the histogram of the result
+of applying <span style="font-family:monospace">classes</span> to the list.
+For example, if you enter
 </p><div class="center">
-<span style="font-family:monospace">frequencies([rand(2) $ (k=1..1000)])
+<span style="font-family:monospace">histogram([1,2,2.5,2.5,3],0.5,0.75)
 </span></div><p>
-and you might get
+you will get
 </p><div class="center">
-<span style="font-family:monospace">[[0,0.513],[1,0.487]]
-</span></div>
+<img src="cascmd_en034.png">
+</div>
 <hr>
 <a href="cascmd_en692.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

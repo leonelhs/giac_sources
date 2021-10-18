@@ -4,33 +4,112 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Build a matrix with a function : makemat</title>
+<title>Creating matrices and modifying elements by assignment</title>
 </head>
 <body >
 <a href="cascmd_en522.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en524.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec622" class="subsection">5.48.3  Build a matrix with a function : <span style="font-family:monospace">makemat</span></h3>
-<p><a id="hevea_default817"></a>
-<span style="font-family:monospace">makemat</span> takes three arguments : 
-</p><ul class="itemize"><li class="li-itemize">
-a function of two variables <span style="font-family:monospace">j</span> and <span style="font-family:monospace">k</span> which
-should return the value of <span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>, the element of
-row index <span style="font-family:monospace">j</span> and column index <span style="font-family:monospace">k</span> of the matrix to be built.
-</li><li class="li-itemize">two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>.
-</li></ul><p>
-<span style="font-family:monospace">makemat</span> returns the matrix <span style="font-style:italic">A</span>=(<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>) 
-(<span style="font-style:italic">j</span>=0..<span style="font-style:italic">n</span>−1 and <span style="font-style:italic">k</span>=0..<span style="font-style:italic">p</span>−1) of dimension <span style="font-style:italic">n</span> × <span style="font-style:italic">p</span>.<br>
-Input :
-</p><div class="center"><span style="font-family:monospace">makemat((j,k)-&gt;j+k,4,3)</span></div><p>
-or first define the <span style="font-style:italic">h</span> function:
-</p><div class="center"><span style="font-family:monospace">h(j,k):=j+k</span></div><p>
-then, input:
-</p><div class="center"><span style="font-family:monospace">makemat(h,4,3)</span></div><p>
-Output :
-</p><div class="center"><span style="font-family:monospace">[[0,1,2],[1,2,3],[2,3,4],[3,4,5]]</span></div><p>
-Note that the indices are counted starting from 0.</p>
+<h3 id="sec622" class="subsection">5.48.1  Creating matrices and modifying elements by assignment</h3>
+<p>You can give a matrix a name with assignment.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A := [[1,2,6], [3,4,8], [1,0,1]]
+</span></div><p>
+The rows are then accessed with indices.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[0]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[1,2,6] 
+</span></div><p>
+Individual elements are simply elements of the rows.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[0][1]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">2 
+</span></div><p>
+This can be abbreviated by listing the row and column separated by a
+comma.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[0,1]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">2 
+</span></div><p>
+The indexing begins with 0; if you want the indexing to begin with 1
+by enclosing them in double brackets.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[[1,2]]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">2 
+</span></div><p>
+You can use a range of indices to get submatrices.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[0..2,1]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[2,4,0] 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[0..2,1..2]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[[2,6],[4,8],[0,1]] 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[0..1,1..2]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[[2,6],[4,8]] 
+</span></div><p>
+An index of -1 returns the last element of a list, an index of -2 the
+second to last element, etc.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[-1]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[1,0,1] 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[1,-1]
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">8 
+</span></div><p>Individual elements of a matrix can be changed by assignment.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[0,1] := 5
+</span></div><p>
+then:
+</p><div class="center">
+<span style="font-family:monospace">A
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[[1,5,6],[3,4,8],[1,0,1]] 
+</span></div>
 <hr>
 <a href="cascmd_en522.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,35 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Bar graphs: bar_plot</title>
+<title>Frequencies: frequencies frequences</title>
 </head>
 <body >
 <a href="cascmd_en694.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en696.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec851" class="subsection">8.1.13  Bar graphs: <span style="font-family:monospace">bar_plot</span><a id="hevea_default1177"></a></h3>
-<p>You can draw bar graphs with the <span style="font-family:monospace">bar_plot</span> command. You give
-it a list, whose elements are pairs of labels and values, and the
-result will be a bar graph with a bar for each label, whose height is
-given by the corresponding value. For example, if you enter
+<h3 id="sec851" class="subsection">8.1.11  Frequencies: <span style="font-family:monospace">frequencies</span><a id="hevea_default1176"></a> <span style="font-family:monospace">frequences</span><a id="hevea_default1177"></a></h3>
+<p>Given a list of numbers, the <span style="font-family:monospace">frequencies</span> (or
+<span style="font-family:monospace">frequences</span>) command will return
+the numbers in the list with their frequencies; i.e., the fraction of
+list items equal to the number. For example,
 </p><div class="center">
-<span style="font-family:monospace">bar_plot([["France", 6],["Germany", 12], ["Switzerland", 5]])
+<span style="font-family:monospace">frequencies([1,2,1,1,2,1,2,4,3,3])
 </span></div><p>
-you will get
+will return
 </p><div class="center">
-<img src="cascmd_en038.png">
-</div><p>If you have more than one set of values for each label, you can use
-<span style="font-family:monospace">bar_plot</span> to draw several bar graphs at the same time by
-including all values for each label, with a list of identifiers for
-the bar graphs given by the first argument. If you enter
+<span style="font-family:monospace">[[1,0.4],[2,0.3],[3,0.2],[4,0.1]]
+</span></div><p>You can use this, for example, to simulate flipping a fair coin and
+seeing how many times each side appears; to flip a coin 1000 times,
+for example, you can enter
 </p><div class="center">
-<span style="font-family:monospace">bar_plot([[2,"xyz","abc"],["A",2,5],["B",5,6],["C",6,6]])
+<span style="font-family:monospace">frequencies([rand(2) $ (k=1..1000)])
 </span></div><p>
-you will get
+and you might get
 </p><div class="center">
-<img src="cascmd_en039.png">
-</div>
+<span style="font-family:monospace">[[0,0.513],[1,0.487]]
+</span></div>
 <hr>
 <a href="cascmd_en694.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,29 +4,47 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The repeat loop: repeat, until</title>
+<title>The switch statement: switch,
+case, default</title>
 </head>
 <body >
 <a href="cascmd_en798.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en800.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1030" class="subsection">11.3.4  The repeat loop: <span style="font-family:monospace">repeat, until</span></h3>
-<p>
-<a id="hevea_default1420"></a><a id="hevea_default1421"></a></p><p>The <span style="font-family:monospace">repeat</span> loop allows you to repeat statements until a given
-condition is met. To use it, enter <span style="font-family:monospace">repeat</span>, the statements,
-the keyword <span style="font-family:monospace">until</span> followed by the condition, a
-boolean. For example, if you want the user to enter a value for a
-variable <span style="font-family:monospace">x</span> which is greater than 4, you could have
-</p><pre class="verbatim">  repeat
-  input("Enter a value for x (greater than 4)",x);
-  until (x &gt; 4);
+<h3 id="sec1027" class="subsection">11.3.2  The switch statement: <span style="font-family:monospace">switch,
+case, default</span></h3>
+<p><a id="hevea_default1414"></a><a id="hevea_default1415"></a><a id="hevea_default1416"></a></p><p>The <span style="font-family:monospace">switch</span> statement can be used when you want the value of
+a block to depend on an integer. It takes one argument, an
+expression which evaluates to an integer. It should be followed by
+a sequence of <span style="font-family:monospace">case</span> statements, which takes the form
+<span style="font-family:monospace">case</span> followed by an integer and then a colon, which is
+followed by a code block to be executed if the expression equals the
+integer. At the end is an optional <span style="font-family:monospace">default:</span>
+statement, which is followed by a code block to be executed if the
+expression doesn’t equal any of the given integers. For example, if
+you wanted to define a function of three variables which performed an
+operation on the first two variables depending on the third, you could
+enter 
+</p><pre class="verbatim">  oper(a,b,c) := {
+  switch (c) {
+    case 1: {a := a + b; break;}
+    case 2: {a := a - b; break;}
+    case 3: {a := a * b; break;}
+    default: {a := a ^ b;}
+    }
+  return a;
+  }
 </pre><p>
-This can also be written<a id="hevea_default1422"></a><a id="hevea_default1423"></a>
-</p><pre class="verbatim">  repeter
-  input("Enter a value for x (greater than 4)",x);
-  jusqua (x &gt; 4);
-</pre>
+Then
+</p><div class="center">
+oper(2,3,1)
+</div><p>
+will return 2+3=5, since the third argument is <span style="font-family:monospace">1</span>, and 
+</p><div class="center">
+oper(2,3,2)
+</div><p>
+will return 2−3=−1, since the third argument is <span style="font-family:monospace">2</span>.</p>
 <hr>
 <a href="cascmd_en798.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

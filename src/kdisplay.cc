@@ -293,22 +293,34 @@ namespace giac {
   void PrintXY(int x,int y,const char * s,int mode,int c=giac::_BLACK,int bg=giac::_WHITE){
     if (mode==TEXT_MODE_NORMAL)
       os_draw_string(x,y,c,bg,s);
-    else
-      os_draw_string(x,y,bg,c,s);
+    else {
+      if (c==giac::_BLACK && bg==giac::_WHITE)
+	os_draw_string(x,y,c,color_gris,s);
+      else
+	os_draw_string(x,y,bg,c,s);
+    }
   }
 
   int PrintMiniMini(int x,int y,const char * s,int mode,int c=giac::_BLACK,int bg=giac::_WHITE,bool fake=false){
     if (mode==TEXT_MODE_NORMAL)
       return os_draw_string_small(x,y,c,bg,s,fake);
-    else
-      return os_draw_string_small(x,y,bg,c,s,fake);
+    else {
+      if (c==giac::_BLACK && bg==giac::_WHITE)
+	return os_draw_string_small(x,y,c,color_gris,s,fake);
+      else
+	return os_draw_string_small(x,y,bg,c,s,fake);	
+    }
   }
   
   int PrintMini(int x,int y,const char * s,int mode,int c=giac::_BLACK,int bg=giac::_WHITE,bool fake=false){
     if (mode==TEXT_MODE_NORMAL)
       return os_draw_string(x,y,c,bg,s,fake);
-    else
-      return os_draw_string(x,y,bg,c,s,fake);
+    else {
+      if (c==giac::_BLACK && bg==giac::_WHITE)
+	return os_draw_string(x,y,c,color_gris,s,fake);
+      else
+	return os_draw_string(x,y,bg,c,s,fake);
+    }
   }
   
   void printCentered(const char* text, int y) {
@@ -387,7 +399,7 @@ namespace giac {
 	      int fillerRequired = menu->width - MB_ElementCount(menu->items[curitem].text) - (menu->type == MENUTYPE_MULTISELECT ? 2 : 3);
 	      for(int i = 0; i < fillerRequired; i++)
 		strcat(menuitem, " ");
-	      drawRectangle(C10*menu->startX,C18*(curitem+itemsStartY-menu->scroll),C10*menu->width,C24,(menu->selection == curitem+1 ? _BLACK : _WHITE));
+	      drawRectangle(C10*menu->startX,C18*(curitem+itemsStartY-menu->scroll),C10*menu->width,C24,(menu->selection == curitem+1 ? color_gris : _WHITE));
 	      PrintXY(C10*menu->startX,C18*(curitem+itemsStartY-menu->scroll),menuitem, (menu->selection == curitem+1 ? TEXT_MODE_INVERT : TEXT_MODE_NORMAL));
 	    } else {
 	      /*int textX = (menu->startX-1) * C18;
@@ -1432,8 +1444,8 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   const char shortcuts_fr_string[]="Raccourcis clavier (shell et editeur)\nshift-/: %\nalpha shift \": '\nshift--: \\\nshift-ans: completion\nshift-*: factor\nshift-+: normal\nshift-1 a 6: selon bandeau en bas\nshift-7: matrices\nshift-8: complexes\nshift-9:arithmetique entiere\nshift-0: probas\nshift-.: reels\nshift-10^: polynomes\nvar: liste des variables\nans: figure tortue (editeur)\n\nshift-x^y (sto) renvoie =>\n=>+: partfrac\n=>*: factor\n=>sin/cos/tan\n=>=>: solve\n\nShell:\nshift-5: Editeur 2d ou graphique ou texte selon objet\nshift-6: editeur texte\n+ ou - modifie un parametre en surbrillance\n\nEditeur d'expressions\nshift-cut: defaire/refaire (1 fois)\npave directionnel: deplace la selection dans l'arborescence de l'expression\nshift-droit/gauche echange selection avec argument a droite ou a gauche\nalpha-droit/gauche dans une somme ou un produit: augmente la selection avec argument droit ou gauche\nshift-4: Editer selection, shift-5: taille police + ou - grande\nEXE: evaluer la selection\nshift-6: valeur approchee\nBackspace: supprime l'operateur racine de la selection\n\nEditeur de scripts\nEXE: passage a la ligne\nshift-CUT: documentation\nshift COPY (ou shift et deplacement curseur simultanement): marque le debut de la selection, deplacer le curseur vers la fin puis Backspace pour effacer ou shift-COPY pour copier sans effacer. shift-PASTE pour coller.\nHome-6 recherche seule: entrer un mot puis EXE puis EXE. Taper EXE pour l'occurence suivante, Back pour annuler.\nHome-6 remplacer: entrer un mot puis EXE puis le remplacement et EXE. Taper EXE ou Back pour remplacer ou non et passer a l'occurence suivante, AC pour annuler\nOK: tester syntaxe\n\nRaccourcis Graphes:\n+ - zoom\n(-): zoomout selon y\n*: autoscale\n/: orthonormalisation\nOPTN: axes on/off";
   const char shortcuts_en_string[]="Keyboard shortcuts (shell and editor)\nshift-/: %\nalpha shift \": '\nshift--: \\\nshift ans: completion\nshift-*: factor\nshift-+: normal\nshift-1 to 6: cf. screen bottom\nshift-7: matrices\nshift-8: complexes\nshift-9:arithmetic\nshift-0: proba\nshift-.: reals\nshift-10^: polynomials\nvar: variables list\nans: turtle screen (editor)\n\nshift-x^y (sto) returns =>\n=>+: partfrac\n=>*: factor\n=>sin/cos/tan\n=>=>: solve\n\nShell:\nshift-5: 2d editor or graph or text\nshift-6: text edit\n+ ou - modifies selected slider\n\nExpressions editor\nshift-cut: undo/redo (1 fois)\nkeypad: move selection inside expression tree\nshift-right/left exchange selection with right or left argument\nalpha-right/left: inside a sum or product: increase selection with right or left argument\nshift-4: Edit selection, shift-5: change fontsize\nEXE: eval selection\nshift-6: approx value\nBackspace: suppress selection's rootnode operator\n\nScript Editor\nEXE: newline\nshift-CUT: documentation\nshift-COPY: marks selection begin, move the cursor to the end, then hit Backspace to erase or shift-COPY to copy (no erase). shift-PASTE to paste.\nHome-6 search: enter a word then EXE then again EXE. Type EXE for next occurence, Back to cancel.\nHome-6 replace: enter a word then EXE then replacement word then EXE. Type EXE or Back to replace or ignore and go to next occurence, AC to cancel\nOK: test syntax\n\nGraph shortcuts:\n+ - zoom\n(-): zoomout along y\n*: autoscale\n/: orthonormalization\nOPTN: axes on/off";
 #else
-  const char shortcuts_fr_string[]="Raccourcis clavier (shell et editeur)\nlivre: aide/complete\ntab: complete (shell)/indente (editeur)\nshift-/: %\nshift *: '\nctrl-/: \\\nshift-1 a 6: selon bandeau en bas\nshift-7: matrices\nshift-8: complexes\nshift-9:arithmetique\nshift-0: probas\nshift-.: reels\nctrl P: programme\nvar: liste des variables\nans (shift (-)): figure tortue (editeur)\n\nctrl-var (sto) renvoie =>\n=>+: partfrac\n=>*: factor\n=>sin/cos/tan\n=>=>: solve\n\nShell:\nshift-5: Editeur 2d ou graphique ou texte selon objet\nshift-4: editeur texte\n+ ou - modifie un parametre en surbrillance\n\nEditeur d'expressions\nctrl z: defaire/refaire (1 fois)\npave directionnel: deplace la selection dans l'arborescence de l'expression\nshift-droit/gauche echange selection avec argument a droite ou a gauche\nctrl droit/gauche dans une somme ou un produit: augmente la selection avec argument droit ou gauche\nshift-4: Editer selection, shift-5: taille police + ou - grande\nenter: evaluer la selection\nshift-6: valeur approchee\nDel: supprime l'operateur racine de la selection\n\nEditeur de scripts\nenter: passage a la ligne\nctrl z: defaire/refaire (1 fois)\nctrl c ou shift et touche curseur simultanement: marque le debut de la selection, deplacer le curseur vers la fin puis Del pour effacer ou ctrl c pour copier sans effacer. ctrl v pour coller.\nMenu-6 recherche seule: entrer un mot puis enter puis enter. Taper enter pour l'occurence suivante, esc pour annuler.\nMenu-6 remplacer: entrer un mot puis enter puis le remplacement et enter. Taper enter ou esc pour remplacer ou non et passer a l'occurence suivante, ctrl del pour annuler\nvalidation (a droite de U): tester syntaxe\n\nRaccourcis Graphes:\n+ - zoom\n(-): zoomout selon y\n*: autoscale\n/: orthonormalisation\nOPTN: axes on/off";
-  const char shortcuts_en_string[]="Keyboard shortcuts (shell and editor)\nbook: help or completion\ntab: completion (shell), indent (editor)\nshift-/: %\nalpha shift *: '\nctrl-/: \\\nshift-1 a 6: see at bottom\nshift-7: matrices\nshift-8: complexes\nshift-9:arithmetic\nshift-0: probas\nshift-.: reals\nctrl P: program\nvar: variables list\n ans (shift (-)): turtle screen (editor)\n\nctrl var (sto) returns =>\n=>+: partfrac\n=>*: factor\n=>sin/cos/tan\n=>=>: solve\n\nShell:\nshift-5: 2d editor or graph or text\nshift-4: text edit\n+ ou - modifies selected slider\n\nExpressions editor\nctrl z: undo/redo (1 fois)\nkeypad: move selection inside expression tree\nshift-right/left exchange selection with right or left argument\nalpha-right/left: inside a sum or product: increase selection with right or left argument\nshift-4: Edit selection, shift-5: change fontsize\nenter: eval selection\nshift-6: approx value\nDel: suppress selection's rootnode operator\n\nScript Editor\nenter: newline\nctrl z: undo/redo (1 time)\nctrl c or shift + cursor key simultaneously: marks selection begin, move the cursor to the end, then hit Del to erase or ctrl c to copy (no erase). ctrl v to paste.\nMenu-6 search: enter a word then enter then again enter. Type enter for next occurence, esc to cancel.\nMenu-6 replace: enter a word then enter then replacement word then enter. Type enter or esc to replace or ignore and go to next occurence, AC to cancel\nOK: test syntax\n\nGraph shortcuts:\n+ - zoom\n(-): zoomout along y\n*: autoscale\n/: orthonormalization\nOPTN: axes on/off";
+  const char shortcuts_fr_string[]="Raccourcis clavier (shell et editeur)\nlivre: aide/complete\ntab: complete (shell)/indente (editeur)\nshift-/: %\nshift *: '\nctrl-/: \\\nshift-1 a 6: selon bandeau en bas\nshift-7: matrices\nshift-8: complexes\nshift-9:arithmetique\nshift-0: probas\nshift-.: reels\nctrl P: programme\nvar: liste des variables\nans (shift (-)): figure tortue (editeur)\n\nctrl-var (sto) renvoie =>\n=>+: partfrac\n=>*: factor\n=>sin/cos/tan\n=>=>: solve\n\nShell:\nshift-5: Editeur 2d ou graphique ou texte selon objet\nshift-4: editeur texte\n+ ou - modifie un parametre en surbrillance\n\nEditeur d'expressions\nctrl z: defaire/refaire (1 fois)\npave directionnel: deplace la selection dans l'arborescence de l'expression\nshift-droit/gauche echange selection avec argument a droite ou a gauche\nctrl droit/gauche dans une somme ou un produit: augmente la selection avec argument droit ou gauche\nshift-4: Editer selection, shift-5: taille police + ou - grande\nenter: evaluer la selection\nshift-6: valeur approchee\nDel: supprime l'operateur racine de la selection\n\nEditeur de scripts\nenter: passage a la ligne\nctrl z: defaire/refaire (1 fois)\nctrl c ou shift et touche curseur simultanement: marque le debut de la selection, deplacer le curseur vers la fin puis Del pour effacer ou ctrl c pour copier sans effacer. ctrl v pour coller.\ndoc-6 recherche seule: entrer un mot puis enter puis enter. Taper enter pour l'occurence suivante, esc pour annuler.\ndoc-6 remplacer: entrer un mot puis enter puis le remplacement et enter. Taper enter ou esc pour remplacer ou non et passer a l'occurence suivante, ctrl del pour annuler\nvalidation (a droite de U): tester syntaxe\n\nRaccourcis Graphes:\n+ - zoom\n(-): zoomout selon y\n*: autoscale\n/: orthonormalisation\nOPTN: axes on/off";
+  const char shortcuts_en_string[]="Keyboard shortcuts (shell and editor)\nbook: help or completion\ntab: completion (shell), indent (editor)\nshift-/: %\nalpha shift *: '\nctrl-/: \\\nshift-1 a 6: see at bottom\nshift-7: matrices\nshift-8: complexes\nshift-9:arithmetic\nshift-0: probas\nshift-.: reals\nctrl P: program\nvar: variables list\n ans (shift (-)): turtle screen (editor)\n\nctrl var (sto) returns =>\n=>+: partfrac\n=>*: factor\n=>sin/cos/tan\n=>=>: solve\n\nShell:\nshift-5: 2d editor or graph or text\nshift-4: text edit\n+ ou - modifies selected slider\n\nExpressions editor\nctrl z: undo/redo (1 fois)\nkeypad: move selection inside expression tree\nshift-right/left exchange selection with right or left argument\nalpha-right/left: inside a sum or product: increase selection with right or left argument\nshift-4: Edit selection, shift-5: change fontsize\nenter: eval selection\nshift-6: approx value\nDel: suppress selection's rootnode operator\n\nScript Editor\nenter: newline\nctrl z: undo/redo (1 time)\nctrl c or shift + cursor key simultaneously: marks selection begin, move the cursor to the end, then hit Del to erase or ctrl c to copy (no erase). ctrl v to paste.\ndoc-6 search: enter a word then enter then again enter. Type enter for next occurence, esc to cancel.\ndoc-6 replace: enter a word then enter then replacement word then enter. Type enter or esc to replace or ignore and go to next occurence, AC to cancel\nOK: test syntax\n\nGraph shortcuts:\n+ - zoom\n(-): zoomout along y\n*: autoscale\n/: orthonormalization\nOPTN: axes on/off";
 #endif
   
   const char apropos_fr_string[]="Giac/Xcas 1.6.0, (c) 2020 B. Parisse et R. De Graeve, www-fourier.univ-grenoble-alpes.fr/~parisse.\nKhicas, interface pour calculatrices par B. Parisse, license GPL version 2, adaptee de l'interface d'Eigenmath pour Casio, G. Maia (http://gbl08ma.com), Mike Smith, Nemhardy, LePhenixNoir, ...\nPortage sur Numworks par Damien Nicolet. Remerciements a Jean-Baptiste Boric et Maxime Friess\nPortage sur Nspire grace a Fabian Vogt (firebird-emu, ndless...).\nTable periodique d'apres Maxime Friess\nRemerciements au site tiplanet, en particulier Xavier Andreani, Adrien Bertrand, Lionel Debroux";
@@ -2526,7 +2538,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
     turtle_stack().push_back((*turtleptr));
 #endif
     gen res=turtle_state(contextptr);
-#ifdef EMCC // should directly interact with canvas
+#if defined EMCC || defined (EMCC2) // should directly interact with canvas
     return gen(turtlevect2vecteur(turtle_stack()),_LOGO__VECT);
 #endif
     return res;
@@ -3470,6 +3482,10 @@ namespace xcas {
   void text_print(int fontsize,const char * s,int x,int y,int c=COLOR_BLACK,int bg=COLOR_WHITE,int mode=0){
     // *logptr(contextptr) << x << " " << y << " " << fontsize << " " << s << endl; return;
     c=(unsigned short) c;
+    if (mode==4 && c==COLOR_BLACK && bg==COLOR_WHITE){
+      bg=color_gris;
+      mode=0;
+    }
     if (x>LCD_WIDTH_PX) return;
     int ss=strlen(s);
     if (ss==1 && s[0]==0x1e){ // arrow for limit
@@ -4351,12 +4367,12 @@ namespace xcas {
     int background=w.eqw_attributs.background;
     int text_color=w.eqw_attributs.text_color;
     int mode=selected?4:0;
-    int draw_line_color=selected?background:text_color;
+    int draw_line_color=text_color; // selected?background:text_color;
     int x0=w.x;
     int y0=w.y; // lower coordinate of the master vector
     int y1=y0+w.dy; // upper coordinate of the master vector
     if (selected)
-      drawRectangle(eqx+w.x-x,eqy+y-w.y-w.dy+1,w.dx,w.dy+1,text_color);
+      drawRectangle(eqx+w.x-x,eqy+y-w.y-w.dy+1,w.dx,w.dy+1,color_gris); // text_color);
     // draw arguments of v
     const_iterateur it=v.begin(),itend=v.end()-1;
     if (oper==at_expr && v.size()==3){
@@ -6057,7 +6073,7 @@ namespace xcas {
       menu += string(menu_f2);
       menu += "|3 undo|4 edt|5 +-|6 approx";
       drawRectangle(0,205,LCD_WIDTH_PX,17,22222);
-      PrintMiniMini(0,205,menu.c_str(),4,22222,giac::_BLACK);
+      PrintMiniMini(0,205,menu.c_str(),0,giac::_BLACK,22222);
 #endif
       //draw_menu(2);
       clip_ymin=save_clip_ymin;
@@ -6900,6 +6916,34 @@ namespace xcas {
     }
     return false;
   }
+
+  void nspire_copy_data(int nkeys,BYTE hash[][SHA256_BLOCK_SIZE],GIAC_CONTEXT){
+    const char * dirname="/documents/ndless";
+    const char * targetdirname="/exammode/usr/ndless";
+    DIR *dp;
+    dp = opendir(targetdirname);
+    if (!dp)
+      mkdir(targetdirname,0755);
+    else
+      closedir(dp);
+    struct dirent *ep;
+    dp = opendir (dirname);
+    if (!dp)
+      return ;
+    while ( (ep = readdir (dp)) ){
+      string s=ep->d_name;
+      int t=s.size();
+      if (t<4 || s.substr(t-4,4)!=".tns")
+	continue;
+      if ( (s=="khicas.tns" || s=="luagiac.luax.tns" || s=="khicaslua.tns" || s=="ptt.tns" || s.substr(0,17)=="ndless_installer_" || s=="ndless_resources.tns" || s=="ndless.cfg.tns")){
+	string ss=dirname+("/"+s);
+	*logptr(contextptr) << "copy " << s << " to exammode directory\n" ; //" " << ss << " " << (targetdirname+("/"+s)) << '\n';
+	if (sha_check(ss.c_str(),nkeys,hash)){
+	  cp(ss.c_str(),(targetdirname+("/"+s)).c_str());
+	}
+      }
+    }     
+  }
   
   DIR * nspire_clear_data(const char * dirname,int nkeys,BYTE hash[][SHA256_BLOCK_SIZE],GIAC_CONTEXT){
     bool toplevel=strcmp(dirname,"/exammode/usr")==0;
@@ -6949,7 +6993,7 @@ namespace xcas {
     return dp;
   }
   
-  void nspire_clear_data(GIAC_CONTEXT){
+  void nspire_clear_data(GIAC_CONTEXT,bool copy){
     int maxkeys=32;
     BYTE hash[maxkeys][SHA256_BLOCK_SIZE]={
     };
@@ -6965,10 +7009,15 @@ namespace xcas {
       for (int j=0;j<SHA256_BLOCK_SIZE;j++){
 	*logptr(contextptr) << hash[i][j] <<",";
       }
-      *logptr(contextptr) << (lang==1?"Teste et efface les fichiers non autorisess\n":"}\nChecking and clearing non secure files\n");
+      *logptr(contextptr) << "}\n";
     }
+    *logptr(contextptr) << (lang==1?"Teste et efface les fichiers non autorises\n":"Checking and clearing non secure files\n");
     nspire_clear_data("/exammode/usr",nkeys,hash,contextptr);
-    *logptr(contextptr) << (lang==1?"Fichiers non autorises effaces\nTapez menu menu pour relancer le mode examen\n":"Filesystem checked.\nPress menu menu to restart exam mode\n");
+    *logptr(contextptr) << (lang==1?"Fichiers non autorises effaces\n":"Filesystem checked.\n");
+    if (copy)
+      nspire_copy_data(nkeys,hash,contextptr);
+    else
+      *logptr(contextptr) << (lang==1?"Tapez doc doc pour relancer le mode examen\n":"Press doc doc to restart exam mode\n");
   }
 #endif
 
@@ -6984,12 +7033,20 @@ namespace xcas {
     gen n=tabunsignedchar2gen(rsa_n_tab,sizeof(rsa_n_tab));
     gen key=powmod(longlong(t1),65537,n);
     key.uncoerce();
-    // char exec[]="/documents/ndless/ptt.tns";
-    char exec[]="/exammode/usr/ndless/ptt.tns";
+    const char * exec=0;
+    if (i==-1)
+      exec="/documents/ndless/ptt.tns";
+    else
+      exec="/exammode/usr/ndless/ptt.tns";
     char clef[]="/documents/rtc.tns";
-    char mode[2]="0";
-    char * args[]={clef,mode};
+    char mode[3]="0";
     mode[0] += i;
+    if (i==-1){
+      mode[0]='-';
+      mode[1]='1';
+      mode[2]=0;
+    }
+    char * args[]={clef,mode,0};
     FILE * f=fopen(clef,"w");
     mpz_out_str(f,10,*key._ZINTptr);
     fclose(f);
@@ -9473,7 +9530,7 @@ namespace xcas {
       set_exam_mode(0,contextptr);
     }
     if (exam_mode)
-      confirm((lang==1)?"Pour arreter le mode examen":"To stop exam mode",(lang==1)?"branchez la calculatrice puis menu menu":"plug in the calculator then menu menu");
+      confirm((lang==1)?"Pour arreter le mode examen":"To stop exam mode",(lang==1)?"branchez la calculatrice puis doc doc":"plug in the calculator then doc doc");
     else
       confirm((lang==1)?"Fin du mode examen":"End exam mode","enter: OK");
   }    
@@ -9601,7 +9658,9 @@ namespace xcas {
 	}
 	if (smallmenu.selection == 11){
 #ifdef NSPIRE_NEWLIB
-	  if (nspire_exam_mode==1){
+	  if (nspire_exam_mode==1
+	      && !is_cx2
+	      ){
 	    if (confirm((lang==1?"Quitter Xcas pour relancer le mode examen":"Leave Xcas to re-enter exam mode"),(lang==1?"!enter OK, esc annul":"enter OK, esc cancel."))!=KEY_CTRL_F1)
 	      break;
 	    do_restart(contextptr);
@@ -9609,14 +9668,24 @@ namespace xcas {
 	    Console_Init(contextptr);
 	    Console_Clear_EditLine();
 	    console_changed=0;
-	    nspire_clear_data(contextptr);
+	    nspire_clear_data(contextptr,false);
 	    nspire_exam_mode=2;
 	    set_exam_mode(0,contextptr);
 	    break;
 	  }
 	  else {
-	    //nspire_clear_data(contextptr);
-	    //set_exam_mode(0,contextptr);
+	    if (!is_cx2){
+	      if (do_confirm((lang==1)?"Lancer le mode examen avec CAS?":"Run exam mode with CAS?")){
+		rm("/exammode/usr/ndless");
+		nspire_clear_data(contextptr,true);
+		set_exam_mode(-1,contextptr); // end up with reset()
+	      }
+	      break;
+	    }
+	    else {
+	      confirm((lang==1)?"Desole. Le mode examen de KhiCAS":"Sorry, KhiCAS exam mode",(lang==1)?"ne fonctionne pas sur Nspire CX II":"is not supported on Nspire CX II");
+	      break;
+	    }
 	    if (1
 		|| is_cx2
 		){
@@ -9627,8 +9696,8 @@ namespace xcas {
 	      add(&text,(lang==1)?
 		  "Attention, verifiez que le calcul formel est autorise avant d'utiliser KhiCAS en mode examen. En France, c'est en principe autorise lorsque la calculatrice graphique l'est (par exemple au bac)":
 		  "Warning! Check that CAS is allowed before running KhiCAS in exam mode.");
-	      const char exam_mode_fr_string[]="Pour utiliser KhiCAS en mode examen, il faut effectuer une preparation chez soi quelques heures avant avec une connection PC ou quelques minutes avant l'examen avec un autre etudiant ayant une Nspire CX ou CX II.\nLancer le mode examen sur la calculatrice cible (esc-on), recopier ndless et khicas.tns (ou luagiac.luax.tns et khicaslua.tns) sur la calculatrice cible en mode examen. Avec 2 calculatrices, recommencez sur l'autre calculatrice (mettre l'autre calculatrice en mode examen et copiez dessus ndless et khicas).\nActiver ndless (cable debranche) puis lancez KhiCAS puis touche calculatrice (en-dessous de esc) puis selectionner l'item 11. mode examen, valider : ceci va effacer les donnees et desactiver le clignotement des leds.\n\nAu debut de l'examen, lorsque le surveillant demande d'activer le mode examen, quittez KhiCAS en tapant menu menu (ou appuyez sur reset), le mode examen sera a nouveau actif et les leds clignoteront. Vous pouvez activer ndless et lancez KhiCAS.\nPour les institutions n'acceptant pas KhiCAS en mode examen: demandez a vos etudiants de redemarrer la calculatrice, puis faire esc-on et reinitialiser le mode examen.";
-	      const char exam_mode_en_string[]="Running KhiCAS in exam mode requires preparation at home with a PC or a few minutes with another student having a Nspire CX/CXII.\nActivate exam mode on the target calculator (esc-on), connect the PC or the other calculator, copy ndless and khicas.tns (or luagiac.luax.tns and khicaslua.tns) to the target calc (kept in exam mode). With 2 calculators, repeat on the other calculator.\n Activate ndless (disconnect the link) and run KhiCAS. Type the calculator key below esc then select 11. Exam mode. This will desactivate leds blinking and clear data. When exam begins, quit KhiCAS (menu menu) or press reset, exam mode will be active again and leds will blink. Activate ndless and run KhiCAS.\n\nFor institutions who do not want to allow KhiCAS, ask your students to reset their calculator, press esc-on and restart exam mode, this will clear ndless and KhiCAS.";
+	      const char exam_mode_fr_string[]="Pour utiliser KhiCAS en mode examen, il faut effectuer une preparation chez soi quelques heures avant avec une connection PC ou quelques minutes avant l'examen avec un autre etudiant ayant une Nspire CX ou CX II.\nLancer le mode examen sur la calculatrice cible (esc-on), recopier ndless et khicas.tns (ou luagiac.luax.tns et khicaslua.tns) sur la calculatrice cible en mode examen. Avec 2 calculatrices, recommencez sur l'autre calculatrice (mettre l'autre calculatrice en mode examen et copiez dessus ndless et khicas).\nActiver ndless (cable debranche) puis lancez KhiCAS puis touche calculatrice (en-dessous de esc) puis selectionner l'item 11. mode examen, valider : ceci va effacer les donnees et desactiver le clignotement des leds.\n\nAu debut de l'examen, lorsque le surveillant demande d'activer le mode examen, quittez KhiCAS en tapant doc doc (ou appuyez sur reset), le mode examen sera a nouveau actif et les leds clignoteront. Vous pouvez activer ndless et lancez KhiCAS.\nPour les institutions n'acceptant pas KhiCAS en mode examen: demandez a vos etudiants de redemarrer la calculatrice, puis faire esc-on et reinitialiser le mode examen.";
+	      const char exam_mode_en_string[]="Running KhiCAS in exam mode requires preparation at home with a PC or a few minutes with another student having a Nspire CX/CXII.\nActivate exam mode on the target calculator (esc-on), connect the PC or the other calculator, copy ndless and khicas.tns (or luagiac.luax.tns and khicaslua.tns) to the target calc (kept in exam mode). With 2 calculators, repeat on the other calculator.\n Activate ndless (disconnect the link) and run KhiCAS. Type the calculator key below esc then select 11. Exam mode. This will desactivate leds blinking and clear data. When exam begins, quit KhiCAS (doc doc) or press reset, exam mode will be active again and leds will blink. Activate ndless and run KhiCAS.\n\nFor institutions who do not want to allow KhiCAS, ask your students to reset their calculator, press esc-on and restart exam mode, this will clear ndless and KhiCAS.";
 	      add(&text,(lang==1)?exam_mode_fr_string:exam_mode_en_string);
 	      if (doTextArea(&text,contextptr)==KEY_SHUTDOWN)
 		return ;
@@ -10967,7 +11036,7 @@ namespace xcas {
       PrintMini(x,y,(lang==1)?"Si le calcul formel est interdit":"If CAS is forbidden!",TEXT_MODE_NORMAL, COLOR_RED, COLOR_WHITE);
       y += 18;
 #ifdef NSPIRE_NEWLIB
-      PrintMini(x,y,(lang==1)?"quittez Khicas (menu menu menu)":"Leave Khicas (menu menu menu)",TEXT_MODE_NORMAL, COLOR_RED, COLOR_WHITE);
+      PrintMini(x,y,(lang==1)?"quittez Khicas (doc doc doc)":"Leave Khicas (doc doc doc)",TEXT_MODE_NORMAL, COLOR_RED, COLOR_WHITE);
       if (confirm("Interpreter? enter: Xcas, esc: MicroPython",(lang==1?"Peut se modifier depuis menu configuration":"May be changed later from menu configuration"),false,130)==KEY_CTRL_F6){
 	python_compat(4,contextptr);
 	xcas_python_eval=1;
@@ -11237,7 +11306,9 @@ namespace xcas {
 	*(unsigned *) 0x900a0008=2;
     }
     if (nspire_exam_mode==1){
-      set_exam_mode(3,contextptr); exam_mode=0;
+      // disabled: restore LED state
+      // set_exam_mode(3,contextptr);
+      exam_mode=0;
     }
   }
 #else
@@ -12610,10 +12681,6 @@ namespace xcas {
     unsigned red=*(unsigned *) 0x90110b0c;
     if (green || red){
       nspire_exam_mode=1;
-      if (1 || is_cx2){
-	if (!do_confirm(lang?"Le CAS est-il autorise en examen?":"Is CAS allowed during exam?"))
-	  return 0;
-      }
     }
     // CX and CX II we should modify the led colors to match CAS exam mode
     // red value should be the same as green value -> yellow
@@ -12632,22 +12699,28 @@ namespace xcas {
     lang=b?1:0;
 #endif
     // SetQuitHandler(save_session); // automatically save session when exiting
+    int key;
+    Console_Init(contextptr);
     if (!turtleptr){
       turtle();
       _efface_logo(vecteur(0),contextptr);
     }
     caseval("floor"); // init xcas parser for Python syntax coloration (!)
-    int key;
-    Console_Init(contextptr);
     Bdisp_AllClr_VRAM();
     rand_seed(millis(),contextptr);
+    if (nspire_exam_mode){ // disabled: save LED state for restoration at end
+      // set_exam_mode(2,contextptr);
+      exam_mode=0;
+      if (1 || is_cx2){
+	if (!do_confirm(lang?"Le CAS est-il autorise en examen?":"Is CAS allowed during exam?"))
+	  return 0;
+	Bdisp_AllClr_VRAM();
+      }
+    }
     restore_session(sessionname,contextptr);
     giac::angle_radian(os_get_angle_unit()==0,contextptr);
     //GetKey(&key);
     Console_Disp(1,contextptr);
-    if (nspire_exam_mode){ // must save LED state for restoration at end
-      set_exam_mode(2,contextptr); exam_mode=0;
-    }
     // GetKey(&key);
     char *expr=0;
 #ifndef NO_STDEXCEPT

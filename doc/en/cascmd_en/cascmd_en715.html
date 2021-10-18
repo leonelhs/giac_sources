@@ -4,93 +4,89 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The binomial distribution</title>
+<title>Producing random matrices: randmatrix ranm randMat</title>
 </head>
 <body >
 <a href="cascmd_en714.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en716.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec877" class="subsection">8.4.1  The binomial distribution</h3>
-<h4 id="sec878" class="subsubsection">The probability density function for the binomial
-distribution : <span style="font-family:monospace">binomial</span><a id="hevea_default1220"></a></h4>
-<p>If you perform an experiment <span style="font-style:italic">n</span> times, where the probability of
-success each time is <span style="font-style:italic">p</span>, then the probability of exactly <span style="font-style:italic">k</span>
-successes is 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-family:monospace">binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">k</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> = </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">k</span></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">p</span><sup><span style="font-style:italic">k</span></sup> (1−<span style="font-style:italic">p</span>)<sup><span style="font-style:italic">n</span>−<span style="font-style:italic">k</span></sup></td></tr>
-</table><p>
-This determines the binomial distribution, and so this is called the 
-<span style="font-family:monospace">binomial</span> command. If you enter
-</p><div class="center">
-<span style="font-family:monospace">binomial(10,2,0.4)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.120932352
-</span></div><p>
-If no third argument <span style="font-style:italic">p</span> is given, then <span style="font-family:monospace">binomial</span> will just
-compute (<sub><span style="font-style:italic">k</span></sub><sup><span style="font-style:italic">n</span></sup>), which recall is called the binomial
-coefficient and is also computed by <span style="font-family:monospace">comb</span>. If you enter
-</p><div class="center">
-<span style="font-family:monospace">binomial(10,2)
-</span></div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">comb(10,2)
-</span></div><p>
-then you will get
-</p><div class="center">
-<span style="font-family:monospace">45
+<h3 id="sec873" class="subsection">8.3.8  Producing random matrices: <span style="font-family:monospace">randmatrix</span><a id="hevea_default1218"></a> <span style="font-family:monospace">ranm</span><a id="hevea_default1219"></a> <span style="font-family:monospace">randMat</span><a id="hevea_default1220"></a></h3>
+<p>You can produce a random vector or matrix with the <span style="font-family:monospace">randmatrix</span>
+(or <span style="font-family:monospace">ranm</span> or <span style="font-family:monospace">randMat</span>) command. (See also sections
+<a href="cascmd_en351.html#sec%3Aranm1">5.29.28</a> and <a href="cascmd_en518.html#sec%3Aranm2">5.47.3</a>.) The <span style="font-family:monospace">randmatrix</span> command
+has the following possible arguments.
+</p><dl class="description"><dt class="dt-description">
+<span style="font-weight:bold">An integer </span><span style="font-style:italic">n</span></dt><dd class="dd-description">
+With an integer <span style="font-style:italic">n</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> will return a vector of
+length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
+[−99,−98,…,98,99] with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(5)
 </span></div>
-<h4 id="sec879" class="subsubsection">The cumulative distribution function for the binomial
-distribution: <span style="font-family:monospace">binomial_cdf</span><a id="hevea_default1221"></a></h4>
-<p>Recall that the cumulative distribution function (cdf) for a
-distribution is <span style="font-style:italic">cdf</span>(<span style="font-style:italic">x</span>) = Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>). For the binomial
-distribution, this is given by the <span style="font-family:monospace">binomial_cdf</span> command; 
-<span style="font-family:monospace">binomial_cdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span>, which in this case will equal
-<span style="font-family:monospace">binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span>0<span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">) + …+ binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,floor(</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span>.
+you might get
+<div class="center">
+<span style="font-family:monospace">[86,-97,-82,7,-27]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span></dt><dd class="dd-description">
+Given two integers <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
+[−99,99] with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[26,-89,63],[-49,-86,-64]] 
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Three integers </span><span style="font-style:italic">n</span><span style="font-weight:bold">, </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and </span><span style="font-style:italic">a</span></dt><dd class="dd-description">
+Given three integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and <span style="font-style:italic">a</span>, <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are integers chosen randomly from
+[0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0] is <span style="font-style:italic">a</span> is negative) with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3,10)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[4,7,6],[7,4,5]]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold">, and an interval </span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-weight:bold">.</span></dt><dd class="dd-description">
+Given two integers <span style="font-style:italic">n</span>, <span style="font-style:italic">p</span> and an <span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>,
+<span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are real numbers chosen randomly from
+[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability. If you enter
+<div class="center">
+<span style="font-family:monospace">randmatrix(2,3,0..1)
+</span></div>
+you might get
+<div class="center">
+<span style="font-family:monospace">[[0.90923402831,0.594602484722,0.250897713937],[0.332611694932,0.145975249354,0.543010003399]]
+</span></div>
+</dd><dt class="dt-description"><span style="font-weight:bold">Two integers </span><span style="font-style:italic">n</span><span style="font-weight:bold"> and </span><span style="font-style:italic">p</span><span style="font-weight:bold"> and a function (which must be quoted)
+to produce random numbers</span></dt><dd class="dd-description"> 
+In this case, the third argument must be
+one of <span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">’</span>,
+<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’poisson, </span>λ<span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’normald(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’normald,</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">’</span>,
+<span style="font-family:monospace">’randnorm(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span>, <span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>,
+<span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">’</span>, or
+’randfisher(<span style="font-style:italic">n</span>,<span style="font-style:italic">m</span>)’.
+</dd></dl><p>
+Given such an <span style="font-style:italic">R</span>, the command <span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">R</span><span style="font-family:monospace">)</span> will
+return an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
+randomly according to the rule determined by <span style="font-style:italic">R</span>.
 If you enter
 </p><div class="center">
-<span style="font-family:monospace">binomial_cdf(4,0.5,2)
+<span style="font-family:monospace">randmatrix(2,3,’randnorm(2,1)’)
 </span></div><p>
-you will get
+you might get
 </p><div class="center">
-<span style="font-family:monospace">0.6875
-</span></div><p>
-You can give <span style="font-family:monospace">binomial_cdf</span> an additional argument;
-<span style="font-family:monospace">binomial_cdf(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">) = Prob(</span><span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span><span style="font-family:monospace">)</span>, which
-in this case would be
-<span style="font-family:monospace">binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,ceil(</span><span style="font-style:italic">x</span><span style="font-family:monospace">),</span><span style="font-style:italic">p</span><span style="font-family:monospace">) + </span>⋯<span style="font-family:monospace"> + binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,floor(</span><span style="font-style:italic">y</span><span style="font-family:monospace">),</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span>.
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">binomial_cdf(2,0.3,1,2)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.51
+<span style="font-family:monospace">[[2.6324726358,0.539273367446,0.793750476229],[2.24729803442,1.28189228187,2.25750809791]] 
 </span></div>
-<h4 id="sec880" class="subsubsection">The inverse distribution function for the binomial
-distribution: <span style="font-family:monospace">binomial_icdf</span><a id="hevea_default1222"></a></h4>
-<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function gives the value
-of <span style="font-style:italic">x</span> so that Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>; or for discrete distributions,
-the smallest <span style="font-style:italic">x</span> so that Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) ≥ <span style="font-style:italic">h</span>. For the binomial
-distribution with <span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, the <span style="font-family:monospace">binomial_icdf</span> gives the
-inverse distribution function. If you enter
-</p><div class="center">
-<span style="font-family:monospace">binomial_icdf(4,0.5,0.9)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">3
-</span></div><p>
-Note that <span style="font-family:monospace">binomial_cdf(4,0.5,3)</span>
-is 0.9375, bigger than 0.9, while 
-<span style="font-family:monospace">binomial_cdf(4,0.5,2)</span> is 0.6875, smaller than 0.9.</p>
 <hr>
 <a href="cascmd_en714.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -2539,6 +2539,8 @@ namespace xcas {
 
   Xcas_Text_Editor::Xcas_Text_Editor(int X, int Y, int W, int H, Fl_Text_Buffer *b,const char* l ):Fl_Text_Editor(X,Y,W,H,l){
     styletable=vector<Fl_Text_Display::Style_Table_Entry>(styletable_init,styletable_init+styletable_n);
+    styletable[0].color=Xcas_editor_color;
+    cursor_color(Xcas_editor_color);
     tableur=0;
     gchanged=true;
     labeltype(FL_NO_LABEL);

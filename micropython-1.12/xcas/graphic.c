@@ -18,6 +18,7 @@
 #include "lexer.h"
 #include "parse.h"
 #include "compile.h"
+const char * caseval(const char *);
 extern const struct _mp_obj_module_t mp_module_graphic;
 // basic
 #ifdef NUMWORKS
@@ -170,6 +171,12 @@ mp_obj_t mp_color_tuple(int c){
 
 static mp_obj_t graphic_set_pixel(size_t n_args, const mp_obj_t *args) {
   if (n_args<2){
+    double d;
+    if (mp_int_float(args[0],&d)){
+      char buf[256];
+      sprintf(buf,"set_pixel(%.14g):;",d);
+      caseval(buf);
+    }
     return mp_const_none;
   }
   uint16_t x = mp_obj_get_int(args[0]), y = mp_obj_get_int(args[1]),color=0;
@@ -343,9 +350,11 @@ static mp_obj_t graphic_draw_string(size_t n_args, const mp_obj_t *args) {
   const char * text = mp_obj_str_get_str(args[2]);
   if (n_args>=4)
     c = mp_get_color(args[3]);
-  const char * font = 0;
   if (n_args>=5)
-    font=mp_obj_str_get_str(args[4]);
+    bg = mp_get_color(args[4]);
+  const char * font = 0;
+  if (n_args>=6)
+    font=mp_obj_str_get_str(args[5]);
   if (font && strcmp(font,"small")==0)
     c_draw_string_small(x,y,c,bg,text,false);
   else {
@@ -356,7 +365,7 @@ static mp_obj_t graphic_draw_string(size_t n_args, const mp_obj_t *args) {
   }
   return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_draw_string_obj, 3, 5, graphic_draw_string);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_draw_string_obj, 3, 6, graphic_draw_string);
 
 //
 static const mp_map_elem_t graphic_locals_dict_table[] = {
@@ -806,7 +815,6 @@ mp_obj_t c_complextab2mp_array(c_complex *x,size_t n,size_t m){
   return r;
 }
 
-const char * caseval(const char *);
 
 // mp_obj_t mp_obj_str_make_new(const mp_obj_type_t *type_in, size_t n_args, size_t n_kw, const mp_obj_t *args);
 // type= &mp_type_str, n_args==1, n_kw=0
@@ -838,9 +846,16 @@ static mp_obj_t cas_caseval(size_t n_args, const mp_obj_t *args) {
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 8, cas_caseval);
 
+static mp_obj_t cas_get_key(size_t n_args, const mp_obj_t *args) {
+    const char * val=caseval("caseval(get_key())");
+    return mp_obj_new_int(atoi(val));
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_get_key_obj, 0, 0, cas_get_key);
+
 //
 static const mp_map_elem_t cas_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+	{ MP_ROM_QSTR(MP_QSTR_get_key), (mp_obj_t) &cas_get_key_obj },
 	{ MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
 	{ MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };
@@ -858,6 +873,7 @@ const mp_obj_type_t cas_type = {
 STATIC const mp_map_elem_t mp_module_cas_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR__cas) },
     { MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+    { MP_ROM_QSTR(MP_QSTR_get_key), (mp_obj_t) &cas_get_key_obj },
     { MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
     { MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };

@@ -80,7 +80,7 @@ extern "C" uint32_t mainThreadStack[];
 #include <emscripten/bind.h>  
 #endif
 
-#if defined EMCC && !defined GIAC_GGB
+#if (defined EMCC || defined EMCC2) && !defined GIAC_GGB
 
 #if 0 // def EMCC_GLUT
 #include <GL/glut.h>
@@ -281,7 +281,7 @@ namespace giac {
 #ifdef NSPIRE
     dtostr(d,8,ch); // FIXME!
 #else
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     sprintf(ch,format,d);
 #else
     my_sprintf(ch,format,d);
@@ -453,7 +453,7 @@ namespace giac {
 #endif // NO_STDEXCEPT
 
   gen undeferr(const string & s){
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     CERR << s << '\n';
 #endif
 #if defined NSPIRE || defined FXCG
@@ -3891,6 +3891,15 @@ namespace giac {
     return res;
   }
 
+  static gen linfnorm(const vecteur & a,GIAC_CONTEXT){
+    gen res(0);
+    vecteur::const_iterator it=a.begin(), itend=a.end();
+    for (;it!=itend;++it){
+      res=max(res,linfnorm(*it,contextptr),contextptr);
+    }
+    return res;
+  }
+
   static gen real_abs(const gen & s,GIAC_CONTEXT){
     gen tmp=evalf_double(s,1,contextptr);
     if (tmp.type==_DOUBLE_){
@@ -4004,23 +4013,21 @@ namespace giac {
       return a._REALptr->abs();
     case _CPLX:
 #ifdef GIAC_HAS_STO_38
-      {
-        if (a._CPLXptr->type==_FLOAT_ && (a._CPLXptr+1)->type==_FLOAT_)
+      if (a._CPLXptr->type==_FLOAT_ && (a._CPLXptr+1)->type==_FLOAT_)
         {
           HP_gen r;
           cAbs_g(gen2HP(*a._CPLXptr), gen2HP(*(a._CPLXptr+1)), &r);
           return HP2gen(r);
         }
-        return sqrt(sq(*a._CPLXptr)+sq(*(a._CPLXptr+1)),contextptr) ;
-      }
-#else
+#endif
       if (a.subtype==3){
 	gen * aptr=a._CPLXptr;
 	double ar=aptr->_DOUBLE_val,ai=(aptr+1)->_DOUBLE_val;
-	return gen(std::sqrt(ar*ar+ai*ai));
+	double z=std::abs(ar)+std::abs(ai); ar/=z; ai/=z;
+	return z*std::sqrt(ar*ar+ai*ai);
+	// return gen(std::sqrt(ar*ar+ai*ai));
       }
       return sqrt(sq(*a._CPLXptr)+sq(*(a._CPLXptr+1)),contextptr) ;
-#endif
     case _DOUBLE_:
       return fabs(a._DOUBLE_val);
     case _FLOAT_:
@@ -4410,7 +4417,7 @@ namespace giac {
   }
 
   gen & operator_plus_eq(gen &a,const gen & b,GIAC_CONTEXT){
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     a=operator_plus(a,b,contextptr);
     return a;
 #endif
@@ -5210,7 +5217,7 @@ namespace giac {
   }
 
   gen & operator_minus_eq (gen & a,const gen & b,GIAC_CONTEXT){
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     a=operator_minus(a,b,contextptr);
     return a;
 #endif
@@ -5775,7 +5782,7 @@ namespace giac {
   // a*b -> tmp, modifies tmp in place
   void type_operator_times(const gen & a,const gen &b,gen & tmp){
     register unsigned t=(a.type<< _DECALAGE) | b.type;
-#ifndef EMCC
+#if !defined(EMCC) && !defined(EMCC2)
     if (tmp.type==_DOUBLE_ && t==_DOUBLE___DOUBLE_){
 #ifdef DOUBLEVAL
       tmp._DOUBLE_val=a._DOUBLE_val*b._DOUBLE_val;
@@ -5839,7 +5846,7 @@ namespace giac {
 
   void type_operator_plus_times(const gen & a,const gen & b,gen & c){
     register unsigned t=(a.type<< _DECALAGE) | b.type;
-#ifndef EMCC
+#if !defined(EMCC) && !defined(EMCC2)
     if (c.type==_DOUBLE_ && t==_DOUBLE___DOUBLE_){
 #ifdef DOUBLEVAL
       c._DOUBLE_val += a._DOUBLE_val*b._DOUBLE_val;
@@ -5919,7 +5926,7 @@ namespace giac {
 
   void type_operator_minus_times(const gen & a,const gen & b,gen & c){
     register unsigned t=(a.type<< _DECALAGE) | b.type;
-#ifndef EMCC
+#if !defined(EMCC) && !defined(EMCC2)
     if (c.type==_DOUBLE_ && t==_DOUBLE___DOUBLE_){
 #ifdef DOUBLEVAL
       c._DOUBLE_val -= a._DOUBLE_val*b._DOUBLE_val;
@@ -7565,7 +7572,7 @@ namespace giac {
 
   gen pow(unsigned long int base, unsigned long int exponent){
     ref_mpz_t *e=new ref_mpz_t;
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     mpz_set_si(e->z,base);
     mpz_pow_ui(e->z,e->z,exponent);
     return e;
@@ -7775,6 +7782,8 @@ namespace giac {
       else
 	return rdivsimp(a,b);
     case _CPLX__CPLX: 
+      if (a.subtype==3 || b.subtype==3)
+	return a*inv(b,contextptr);
       return adjust_complex_display(rdiv(a*conj(b,contextptr),b.squarenorm(contextptr),contextptr),a,b);
     case _DOUBLE___CPLX: case _FLOAT___CPLX: case _INT___CPLX: case _ZINT__CPLX: case _REAL__CPLX:
       if (is_one(a))
@@ -10395,7 +10404,7 @@ namespace giac {
     return absint(a);
   }
 
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
   void my_mpz_gcd(mpz_t &z,const mpz_t & A,const mpz_t & B){
     mpz_t a,b;
     mpz_init_set(a,A);
@@ -11672,7 +11681,7 @@ namespace giac {
     // val = 0;
     if (!*s)
       return res;
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     int base=10;
 #else
     int base=(abs_calc_mode(contextptr)==38 || calc_mode(contextptr)==1)?10:0;
@@ -12758,7 +12767,7 @@ void sprint_double(char * s,double d){
     case _GGBVECT:
       s=(calc_mode(contextptr)==1?"ggbvect(":"ggbvect[");
       break;
-#ifndef EMCC
+#if !defined(EMCC) && !defined(EMCC2)
     case _LOGO__VECT:
       s="logo[";
       break;
@@ -12868,7 +12877,7 @@ void sprint_double(char * s,double d){
   }
 
   const char * svg2doutput(const gen & g,string & S,GIAC_CONTEXT){
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     bool fullview=true;
     vector<double> vx,vy,vz;
     double window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax;
@@ -12881,6 +12890,8 @@ void sprint_double(char * s,double d){
 #ifndef GIAC_GGB
     gwidth=EM_ASM_DOUBLE_V({
 	var hw=window.innerWidth;
+	if (typeof(svgwidth)!="undefined")
+	  return svgwidth*1.0;
 	if (hw>=1000)
 	  return 9.0*hw/1000.0;
 	else
@@ -12909,11 +12920,11 @@ void sprint_double(char * s,double d){
     ratio=yscale/xscale;
     //COUT << window_xmin << " " << window_xmax << " " << window_ymin << " " << window_ymax << '\n';
     //g=_symetrie(makesequence(_droite(makesequence(0,1),contextptr),g),contextptr);
-    //S='"'+svg_preamble(7,7,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,ortho,false)+gen2svg(g,contextptr)+svg_grid(gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax)+"</svg>\"";
-    S='"'+svg_preamble_pixel(g,gwidth,gwidth*gratio,window_xmin,window_xmax,window_ymin,window_ymax,ortho,false);
+    //S='"'+svg_preamble(7,7,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,ortho,false,default_color(contextptr))+gen2svg(g,contextptr)+svg_grid(gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,default_color(contextptr))+"</svg>\"";
+    S='"'+svg_preamble_pixel(g,gwidth,gwidth*gratio,window_xmin,window_xmax,window_ymin,window_ymax,ortho,false,default_color(contextptr));
     plot_attr P;
     title_legende(g,P);
-    S= S+(gen2svg(g,window_xmin,window_xmax,window_ymin,window_ymax,ratio/gratio,contextptr,false)+(axes?svg_grid(window_xmin,window_xmax,window_ymin,window_ymax,P)+"</svg>\"":""));
+    S= S+(gen2svg(g,window_xmin,window_xmax,window_ymin,window_ymax,ratio/gratio,contextptr,false)+(axes?svg_grid(window_xmin,window_xmax,window_ymin,window_ymax,P,default_color(contextptr))+"</svg>\"":""));
 #endif
     return S.c_str();
   }
@@ -12951,7 +12962,7 @@ void sprint_double(char * s,double d){
 #endif
     string s;
     if (subtype==_SPREAD__VECT && !v.empty() && v.front().type==_VECT){
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
       bool add_quotes=true;
       s = "[";
 #else
@@ -15979,7 +15990,7 @@ void sprint_double(char * s,double d){
       return negatif?"-infinity":"+infinity";
     mp_exp_t expo;
     int dd=mpfr_get_prec(inf);
-#ifdef EMCC // workaround: mpfr_set_prec or get_prec has problems with emcc
+#if defined(EMCC) || defined(EMCC2) // workaround: mpfr_set_prec or get_prec has problems with emcc
     if (dd==53)
       dd=100;
 #endif
@@ -16369,7 +16380,7 @@ void sprint_double(char * s,double d){
       // COUT << "hout " << g << '\n';
     }
 #endif
-#ifdef EMCC
+#if defined(EMCC) || defined(EMCC2)
     // compile with -s LEGACY_GL_EMULATION=1
     gen last=g;
     while (last.type==_VECT && last.subtype!=_LOGO__VECT && !last._VECTptr->empty()){
@@ -16384,13 +16395,16 @@ void sprint_double(char * s,double d){
       return S.c_str();
     }
     if (calc_mode(&C)!=1 && (last.is_symb_of_sommet(at_pnt) || last.is_symb_of_sommet(at_pixon))){
-#if !defined(GIAC_GGB) && defined(EMCC)
+#if !defined(GIAC_GGB) && (defined(EMCC) || defined EMCC2)
       if (is3d(last)){
-	bool worker=false;
+	int worker=0;
 	worker=EM_ASM_INT_V({
+	    if (typeof(UI.disable3d) !== 'undefined' && UI.disable3d)
+	      return UI.disable3d;
 	    if (Module.worker) return 1; else return 0;
 	});
-	if (worker) return "3d not supported if workers are enabled";
+	if (worker==-1) return "gl3d_not_supported";
+	if (worker) return "gl3d_not_supported_if_workers_are_enabled";
 	//giac_renderer(last.print(&C).c_str());
 	int n=giac_gen_renderer(g,&C);
 	S="gl3d "+print_INT_(n);

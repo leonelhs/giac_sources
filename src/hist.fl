@@ -1134,7 +1134,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_open_casio {
-            label {Khicas}
+            label Khicas
             callback {load_history(-1);}
             xywh {15 15 100 20}
           }
@@ -1229,7 +1229,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_Export_Khicas_Casio {
-            label {KhiCas}
+            label KhiCas
             callback {xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
@@ -1695,19 +1695,33 @@ xcas::Xcas_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {10 10 100 20}
           }
+          MenuItem Xcas_editor_color_item {
+            label {Editor text}
+            callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_color);
+xcas::Xcas_editor_color=c;
+xcas::set_colors(Xcas_Main_Window_);}
+            xywh {0 0 100 20} 
+          }
+          MenuItem Xcas_editor_background_color_item {
+            label {Editor background}
+            callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_background_color);
+xcas::Xcas_editor_background_color=c;
+xcas::set_colors(Xcas_Main_Window_);}
+            xywh {0 0 100 20} 
+          }
           MenuItem Xcas_input_text_color {
             label {Input text}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_input_color);
 xcas::Xcas_input_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
-            xywh {0 0 100 20}
+            xywh {0 0 100 20} hide
           }
           MenuItem Xcas_input_text_background_color {
             label {Input background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_input_background_color);
 xcas::Xcas_input_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
-            xywh {0 0 100 20}
+            xywh {0 0 100 20} hide
           }
           MenuItem Xcas_comment_color_item {
             label {Comment text}
@@ -1750,20 +1764,6 @@ xcas::set_colors(Xcas_Main_Window_);}
 xcas::Xcas_equation_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
             xywh {0 0 100 20}
-          }
-          MenuItem Xcas_editor_color_item {
-            label {Editor text}
-            callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_color);
-xcas::Xcas_editor_color=c;
-xcas::set_colors(Xcas_Main_Window_);}
-            xywh {0 0 100 20} hide
-          }
-          MenuItem Xcas_editor_background_color_item {
-            label {Editor background}
-            callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_background_color);
-xcas::Xcas_editor_background_color=c;
-xcas::set_colors(Xcas_Main_Window_);}
-            xywh {0 0 100 20} hide
           }
         }
         MenuItem Xcas_change_current_fontsize {
@@ -2905,7 +2905,7 @@ if (f && plotparam_dialog(f,arg,2)){
       } {
         MenuItem Xcas_Add_Logo {
           label {New turtle}
-          callback {xcas::History_cb_New_Logo(Xcas_current_session(),0);} selected
+          callback {xcas::History_cb_New_Logo(Xcas_current_session(),0);}
           xywh {105 105 100 20} shortcut 0x8006c
         }
       }
@@ -3356,7 +3356,7 @@ Xcas_Alpha_Keyboard->redraw();}
       Fl_Group Xcas_Scientific_Keyboard {open
         xywh {0 415 310 100}
       } {
-        Fl_Group Lettre_keyboard {
+        Fl_Group Lettre_keyboard {open
           xywh {0 415 50 50}
         } {
           Fl_Button Xcas_Variable_x {
@@ -3375,8 +3375,8 @@ Xcas_Alpha_Keyboard->redraw();}
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Variable_t {
-            label t
-            xywh {25 440 25 25} labelsize 10
+            label t selected
+            xywh {25 440 25 25} shortcut 0x74 labelsize 10
             class {xcas::No_Focus_Button}
           }
         }
@@ -4484,6 +4484,7 @@ giac::__inputform.op=&xcas::Xcas_fltk_inputform;
 giac::__interactive.op=&xcas::Xcas_fltk_interactive;
 giac::__widget_size.op=&Xcas_widget_size;
 giac::__getKey.op=&xcas::Xcas_fltk_getKey;
+giac::__get_key.op=&xcas::Xcas_fltk_getKey;
 //__keyboard.op=&fltk_keyboard;
 giac::__current_sheet.op=&xcas::Xcas_fltk_current_sheet;
 giac::__Row.op=&xcas::Xcas_fltk_Row;
@@ -4563,8 +4564,7 @@ else make_history();
 
 Function {main(int argc,char ** argv)} {open return_type int
 } {
-  code {
-\#ifdef HAVE_LIBMICROPYTHON
+  code {\#ifdef HAVE_LIBMICROPYTHON
     python_heap=micropy_init(python_stack_size,python_heap_size);
 \#endif
 if (argc==2 && strlen(argv[1])==0)

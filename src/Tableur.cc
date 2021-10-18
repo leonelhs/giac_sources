@@ -1201,8 +1201,11 @@ namespace xcas {
 	else 
 	  (*v[C]._VECTptr)[1]=g;
       }
-      else
+      else {
 	v[C]=g;
+	if (spread_ptr->is_spreadsheet && spread_ptr->spreadsheet_recompute)
+          spread_ptr->spread_eval_interrupt();
+      }
       if (spread_ptr->matrix_symmetry && spread_ptr->matrix_symmetry %2)
         g=-g;
       if (spread_ptr->matrix_symmetry && spread_ptr->matrix_symmetry/2)
@@ -2644,7 +2647,14 @@ namespace xcas {
   static Flv_Table_Gen * current_spread_ptr;
   bool thesheetsort(const gen & a,const gen &b){
     const giac::context * contextptr = get_context(current_spread_ptr);
-    gen a1=a[current_spread_ptr->sort_col][1].evalf_double(1,contextptr),a2=b[current_spread_ptr->sort_col][1].evalf_double(1,contextptr); 
+    gen a1=a[current_spread_ptr->sort_col];
+    if (a1.type==_VECT)
+      a1=a1[1];
+    a1=a1.evalf_double(1,contextptr);
+    gen a2=b[current_spread_ptr->sort_col];
+    if (a2.type==_VECT)
+      a2=a2[1];
+    a2=a2.evalf_double(1,contextptr); 
     if (a1.type!=_DOUBLE_ || a2.type!=_DOUBLE_)
       return a1.islesscomplexthan(a2);
     return a1._DOUBLE_val<a2._DOUBLE_val;

@@ -1430,6 +1430,18 @@ xcas::Xcas_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);
 }
 
+static void cb_Xcas_editor_color_item(Fl_Menu_*, void*) {
+  Fl_Color c=fl_show_colormap(xcas::Xcas_editor_color);
+xcas::Xcas_editor_color=c;
+xcas::set_colors(Xcas_Main_Window_);
+}
+
+static void cb_Xcas_editor_background_color_item(Fl_Menu_*, void*) {
+  Fl_Color c=fl_show_colormap(xcas::Xcas_editor_background_color);
+xcas::Xcas_editor_background_color=c;
+xcas::set_colors(Xcas_Main_Window_);
+}
+
 static void cb_Xcas_input_text_color(Fl_Menu_*, void*) {
   Fl_Color c=fl_show_colormap(xcas::Xcas_input_color);
 xcas::Xcas_input_color=c;
@@ -1475,18 +1487,6 @@ xcas::set_colors(Xcas_Main_Window_);
 static void cb_Xcas_equation_background_color_item(Fl_Menu_*, void*) {
   Fl_Color c=fl_show_colormap(xcas::Xcas_equation_background_color);
 xcas::Xcas_equation_background_color=c;
-xcas::set_colors(Xcas_Main_Window_);
-}
-
-static void cb_Xcas_editor_color_item(Fl_Menu_*, void*) {
-  Fl_Color c=fl_show_colormap(xcas::Xcas_editor_color);
-xcas::Xcas_editor_color=c;
-xcas::set_colors(Xcas_Main_Window_);
-}
-
-static void cb_Xcas_editor_background_color_item(Fl_Menu_*, void*) {
-  Fl_Color c=fl_show_colormap(xcas::Xcas_editor_background_color);
-xcas::Xcas_editor_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);
 }
 
@@ -2103,16 +2103,16 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Colors", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"Default background", 0,  (Fl_Callback*)cb_Xcas_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Input text", 0,  (Fl_Callback*)cb_Xcas_input_text_color, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Input background", 0,  (Fl_Callback*)cb_Xcas_input_text_background_color, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Editor text", 0,  (Fl_Callback*)cb_Xcas_editor_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Editor background", 0,  (Fl_Callback*)cb_Xcas_editor_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Input text", 0,  (Fl_Callback*)cb_Xcas_input_text_color, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Input background", 0,  (Fl_Callback*)cb_Xcas_input_text_background_color, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
  {"Comment text", 0,  (Fl_Callback*)cb_Xcas_comment_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Comment background", 0,  (Fl_Callback*)cb_Xcas_comment_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Log text", 0,  (Fl_Callback*)cb_Xcas_log_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Log background", 0,  (Fl_Callback*)cb_Xcas_log_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Equation text", 0,  (Fl_Callback*)cb_Xcas_equation_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Equation background", 0,  (Fl_Callback*)cb_Xcas_equation_background_color_item, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Editor text", 0,  (Fl_Callback*)cb_Xcas_editor_color_item, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
- {"Editor background", 0,  (Fl_Callback*)cb_Xcas_editor_background_color_item, 0, 16, FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Session font", 0,  (Fl_Callback*)cb_Xcas_change_current_fontsize, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"All fonts", 0,  (Fl_Callback*)cb_Xcas_change_fontsize, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3924,6 +3924,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
           } // xcas::No_Focus_Button* Xcas_Variable_z
           { Xcas_Variable_t = new xcas::No_Focus_Button(25, 440, 25, 25, gettext("t"));
             Xcas_Variable_t->box(FL_UP_BOX);
+            Xcas_Variable_t->shortcut(0x74);
             Xcas_Variable_t->color(FL_BACKGROUND_COLOR);
             Xcas_Variable_t->selection_color(FL_BACKGROUND_COLOR);
             Xcas_Variable_t->labeltype(FL_NORMAL_LABEL);
@@ -5455,6 +5456,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   giac::__interactive.op=&xcas::Xcas_fltk_interactive;
   giac::__widget_size.op=&Xcas_widget_size;
   giac::__getKey.op=&xcas::Xcas_fltk_getKey;
+  giac::__get_key.op=&xcas::Xcas_fltk_getKey;
   //__keyboard.op=&fltk_keyboard;
   giac::__current_sheet.op=&xcas::Xcas_fltk_current_sheet;
   giac::__Row.op=&xcas::Xcas_fltk_Row;

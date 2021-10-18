@@ -4,59 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The mean: mean</title>
+<title>Animation of a 3D graph : animate3d</title>
 </head>
 <body >
 <a href="cascmd_en682.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en684.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec839" class="subsection">8.1.1  The mean: <span style="font-family:monospace">mean</span><a id="hevea_default1157"></a></h3>
-<p>Recall that the mean of a list <span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> is simply their numeric
-average (<span style="font-style:italic">x</span><sub>1</sub> + ⋯ + <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>)/<span style="font-style:italic">n</span>. <span style="font-family:monospace">Xcas</span> can calculate the
-mean of a list of numbers with the <span style="font-family:monospace">mean</span> command.
-If you enter 
+<h3 id="sec837" class="subsection">7.21.2  Animation of a 3D graph : <span style="font-family:monospace">animate3d</span></h3>
+<p><a id="hevea_default1157"></a>
+<span style="font-family:monospace">animate3d</span> can create a 3-d animation with 
+function graphs depending on a parameter. The parameter is specified as
+the third argument of <span style="font-family:monospace">animate3d</span>, the number of pictures
+as fourth argument with 
+<span style="font-family:monospace">frames=</span><a id="hevea_default1158"></a>number, the remaining arguments
+are the same as those of the <span style="font-family:monospace">plotfunc</span> command, see
+section <a href="cascmd_en668.html#sec%3Aplotfunc3">7.4.2</a>, p. <a href="cascmd_en668.html#sec%3Aplotfunc3">??</a>.<br>
+Input :
 </p><div class="center">
-<span style="font-family:monospace">mean([1,2,3,4])
-</span></div><p>
-then you will get
-</p><div class="center">
-<span style="font-family:monospace">5/2
-</span></div><p>
-since (1+2+3+4)/4 = 5/2.
-If you give <span style="font-family:monospace">mean</span> a matrix as an argument, then it will return a
-list with the numeric average of each column;
-</p><div class="center">
-<span style="font-family:monospace">mean([[1,2,3],[5,6,7]]) 
-</span></div><p>
-will return
-</p><div class="center">
-<span style="font-family:monospace">[3,4,5]
-</span></div><p>
-since (1+5)/2 = 3, (2+6)/2 = 4 and (3 + 7)/2 = 5.</p><p>To get the weighted average of a list of numbers you can give
-<span style="font-family:monospace">mean</span> a second argument, which should be a list of the
-weights. For example,
-</p><div class="center">
-<span style="font-family:monospace">mean([2,4,6,8],[2,2,3,3])
-</span></div><p>
-will return
-</p><div class="center">
-<span style="font-family:monospace">27/5
-</span></div><p>
-since (2· 2 + 4· 2 + 6· 3 + 8· 3)/(2 + 2 + 3 + 3) =
-27/5.
-Similarly, you can find the weighted average of the columns of a
-matrix by giving <span style="font-family:monospace">mean</span> a second argument of a matrix of
-weights. If you enter
-</p><div class="center">
-<span style="font-family:monospace">mean([[1,2],[3,4]],[[1,2],[2,1]])
-</span></div><p>
-then you will get
-</p><div class="center">
-<span style="font-family:monospace">[7/3,8/3]
-</span></div><p>
-since (1· 1 + 3· 2)/(1+2) = 7/3 and (2· 2 + 4· 1)/(2 +
-1) = 8/3.</p>
+<span style="font-family:monospace">animate3d(x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+a*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2,[x=-2..2,y=-2..2],a=-2..2, frames=10,display=red+filled)</span>
+</div><p>
+Output :
+</p><div class="center"><span style="font-family:monospace">a sequence of graphic representations
+of z=x</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2+</span><span style="font-style:italic">a</span><span style="font-family:monospace">*y</span><code><span style="font-family:monospace">^</span></code><span style="font-family:monospace">2 for 11 values of </span><span style="font-style:italic">a</span><span style="font-family:monospace"> between -2 and 2</span>
+</div>
 <hr>
 <a href="cascmd_en682.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

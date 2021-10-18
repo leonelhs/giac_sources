@@ -1521,7 +1521,7 @@ namespace xcas {
     res += " " + giac::print_INT_(o->x()) + " " + giac::print_INT_(o->y())+ " " + giac::print_INT_(o->w()) + " " + giac::print_INT_(wh) + " " + giac::print_INT_(o->labelsize()) + " " + giac::print_INT_(o->labelfont()) ;
     // Add here code for specific widgets
     if (const Flv_Table_Gen * g = dynamic_cast<const Flv_Table_Gen *>(o)){
-      res += '\n'+print_INT_(g->is_spreadsheet)+" "+print_INT_(g->matrix_fill_cells)+" "+print_INT_(g->spreadsheet_recompute)+" "+print_INT_(g->matrix_symmetry)+ " " +replace(gen(g->m,_SPREAD__VECT).print(contextptr),'\n','£')+'\n';
+      res += '\n'+print_INT_(g->is_spreadsheet?1:0)+" "+print_INT_(g->matrix_fill_cells?1:0)+" "+print_INT_(g->spreadsheet_recompute?1:0)+" "+print_INT_(g->matrix_symmetry?1:0)+ " " +replace(gen(g->m,_SPREAD__VECT).print(contextptr),'\n',char(0x7f))+'\n';
       return res;
     }
     if (const Tableur_Group * t = dynamic_cast<const Tableur_Group *>(o)){
@@ -1565,7 +1565,7 @@ namespace xcas {
 	  }
 	}
       }
-      res += '\n'+print_INT_(g->is_spreadsheet)+" "+print_INT_(g->matrix_fill_cells)+" "+print_INT_(g->spreadsheet_recompute)+" "+print_INT_(g->matrix_symmetry)+ " " +replace(gen(m,_SPREAD__VECT).print(contextptr),'\n','£')+'\n';
+      res += '\n'+print_INT_(g->is_spreadsheet)+" "+print_INT_(g->matrix_fill_cells)+" "+print_INT_(g->spreadsheet_recompute)+" "+print_INT_(g->matrix_symmetry)+ " " +replace(gen(m,_SPREAD__VECT).print(contextptr),'\n',char(0x7f))+'\n';
       return res;
     }
     if (const Figure * f = dynamic_cast<const Figure *>(o)){
@@ -1597,7 +1597,7 @@ namespace xcas {
       res += '\n';
       string s=taille(i->value(),100)>100?string("Done"):i->value().print(contextptr);
       s=unlocalize(s);
-      res += replace(s,'\n','£');
+      res += replace(s,'\n',char(0x7f));
       // res += '"';
       return res + '\n';
     }
@@ -1606,14 +1606,14 @@ namespace xcas {
       string s=i->value();
       if ( dynamic_cast<const Multiline_Input_tab *>(i) )
 	s=unlocalize(s);
-      res += replace(s,'\n','£');
+      res += replace(s,'\n',char(0x7f));
       // res += '"';
       return res + '\n';
     }
     if (const Log_Output * i=dynamic_cast<const Log_Output *>(o)){
       res += '\n';
       // res += '"';
-      res += replace(i->value(),'\n','£');
+      res += replace(i->value(),'\n',char(0x7f));
       // res += '"';
       return res + '\n';
     }
@@ -1622,7 +1622,7 @@ namespace xcas {
       res += '\n';
       // res += '"';
       string s=taille(i->get_data(),1000)>1000?string("Done"):i->value();
-      res += replace(unlocalize(s),'\n','£');
+      res += replace(unlocalize(s),'\n',char(0x7f));
       // res += '"';
       return res + '\n';
     }
@@ -1630,7 +1630,7 @@ namespace xcas {
       res += '\n';
       res += print_DOUBLE_(i->window_xmin) + ',' + print_DOUBLE_(i->window_xmax) + ',';
       res += print_DOUBLE_(i->window_ymin) + ',' + print_DOUBLE_(i->window_ymax) + ',';
-      res += replace(giac::gen(giac::merge_pixon(seq2vecteur(i->plot_instructions))).print(contextptr),'\n','£');
+      res += replace(giac::gen(giac::merge_pixon(seq2vecteur(i->plot_instructions))).print(contextptr),'\n',char(0x7f));
       res += ','+ print_DOUBLE_(i->window_zmin) + ',' + print_DOUBLE_(i->window_zmax)+','+print_DOUBLE_(i->q.w) +','+print_DOUBLE_(i->q.x)+','+print_DOUBLE_(i->q.y)+','+print_DOUBLE_(i->q.z) + ','+print_DOUBLE_(i->x_tick) + ',' + print_DOUBLE_(i->y_tick)+','+print_INT_(i->show_axes)+','+print_INT_(i->couleur)+','+print_INT_(i->approx)+','+print_DOUBLE_(i->ylegende)+',';
       if (i->paused)
 	res += "-";
@@ -1676,7 +1676,7 @@ namespace xcas {
       return res + '\n';
     }
     if (const History_Fold * g=dynamic_cast<const History_Fold *>(o)){
-      res += '\n'+replace(g->input->value(),'\n','£') + '\n';
+      res += '\n'+replace(g->input->value(),'\n',char(0x7f)) + '\n';
       res += widget_sprint(g->pack);
       return res;
     }
@@ -1719,7 +1719,7 @@ namespace xcas {
   void next_line(const string & s,int L,string & line,int & i){
     line="";
     for (;i<L;++i){
-      line += (s[i]=='£'?'\n':s[i]);
+      line += ( (s[i]==char(0x7f) || s[i]==char(0243))?'\n':s[i]);
       if (s[i]=='\n'){
 	++i;
 	break;
@@ -2565,7 +2565,7 @@ namespace xcas {
 	      continue;
 	    }
 	    if (s.size()>pos+3 && s[pos+2]=='/' && s[pos+3]=='/'){
-	      txt=replace(txt,'\n',char(163)); // should count \n and ajust size
+	      txt=replace(txt,'\n',char(0x7f)); // should count \n and ajust size
 	      txt="// fltk 7Fl_Tile 14 68 845 25 18 0\n[\n// fltk N4xcas23Comment_Multiline_InputE 14 68 845 24 18 0\n"+txt.substr(2,txt.size()-2)+"\n,\n// fltk N4xcas10Log_OutputE 14 93 845 1 18 0\n\n]";
 	    }
 	    else {
@@ -2776,7 +2776,15 @@ namespace xcas {
   giac::gen Xcas_fltk_interactive(const giac::gen & g,GIAC_CONTEXT){
 #ifdef HAVE_LIBPTHREAD
     // cerr << "xcas lock" << g << '\n';
-    pthread_mutex_lock(&interactive_mutex);
+    int locked=pthread_mutex_trylock(&interactive_mutex);
+    if (locked){
+      usleep(1000);
+      locked=pthread_mutex_trylock(&interactive_mutex);
+      if (locked){
+	cerr << "locked " << g << '\n' ;
+	return 0;
+      }
+    }
 #endif
     if (block_signal){
       cerr << "blocked " << g << '\n';
@@ -2843,6 +2851,35 @@ namespace xcas {
     return res;
   }
 
+  Fl_Window * getkeywin=0;
+  class Fl_Key :public Fl_Input {
+  public:
+    int key;
+    Fl_Key(int x,int y,int w,int h):Fl_Input(x,y,w,h){key=-1;}
+    virtual int handle(int event){
+      if (event==FL_KEYBOARD){
+	int k=Fl::event_key();
+	switch (k){
+	case FL_Right:
+	  key=3;
+	  break;
+	case FL_Left:
+	  key=0;
+	  break;
+	case FL_Up:
+	  key=1;
+	  break;
+	case FL_Down:
+	  key=2;
+	  break;
+	}
+	if (key>=0)
+	  return 1;
+      }
+      return Fl_Input::handle(event);
+    }    
+  };
+  
   // Given a vector v describing an input form, return
   gen makeform(const vecteur & v0,GIAC_CONTEXT) {
     vecteur v;
@@ -2857,25 +2894,71 @@ namespace xcas {
     }
     if (!v.empty() && v.front()==at_getKey){
       Fl_Widget * foc=Fl::focus();
-      static Fl_Window * getkeywin=0;
       static Fl_Button * getkeybut = 0;
-      static Fl_Input * getkeyin = 0;
+      static Fl_Button * getkeyleft = 0;
+      static Fl_Button * getkeyright = 0;
+      static Fl_Button * getkeyup = 0;
+      static Fl_Button * getkeydown = 0;
+      static Fl_Button * getkeyesc = 0;
+      static Fl_Button * getkeyok = 0;
+      static Fl_Key * getkeyin = 0;
       static Fl_Multiline_Output * getkeyout = 0;
+      static Graph2d * getkeyscreen = 0 ;
       if (!getkeywin){
 	Fl_Group::current(0);
-	getkeywin=new Fl_Window(50,50,200,200);
+	getkeywin=new Fl_Window(50,50,460,360);
 	getkeywin->label(gettext("Press a key"));
-	getkeyout= new Fl_Multiline_Output(2,24,196,170);
+	getkeyscreen=new Graph2d(0,120,460,240);
+	getkeyscreen->show_axes=0;
+	// getkeyscreen->legende_size=0;
+	getkeyout= new Fl_Multiline_Output(2,64,456,56);
 	getkeybut=new Fl_Button(2,2,96,20);
 	getkeybut->label(gettext("Cancel"));
 	getkeybut->shortcut("^[");
-	getkeyin = new Fl_Input(102,2,96,20);
+	getkeyesc=new Fl_Button(2,34,36,20);
+	getkeyesc->label("esc");
+	getkeyleft=new Fl_Button(42,34,36,20);
+	getkeyleft->label("â—€");
+	getkeyleft->shortcut(0xff51);
+	getkeyright=new Fl_Button(122,34,36,20);
+	getkeyright->label("â–¶");
+	getkeyright->shortcut(0xff53);
+	getkeyup=new Fl_Button(82,24,36,20);
+	getkeyup->label("â–²");
+	getkeyup->shortcut(0xff52);
+	getkeydown=new Fl_Button(82,44,36,20);
+	getkeydown->label("â–¼");
+	getkeydown->shortcut(0xff54);
+	getkeyok=new Fl_Button(162,34,36,20);
+	getkeyok->label("OK");
+	getkeyesc->shortcut(0xff1b);
+	getkeyok->shortcut(0xff0d);
+	getkeyin = new Fl_Key(102,2,96,20);
 	getkeyin->when(FL_WHEN_CHANGED);
 	getkeywin->end();
-	getkeywin->resizable(getkeywin);
+	getkeywin->resizable(getkeyscreen); // (getkeywin);
       }
-      string msg(gettext("Press a key\n"));
+      getkeyin->key=-1;
+      getkeyscreen->clear();
+      vecteur V=get_pixel_v();
+      getkeyscreen->add(V);
+      int I=320,J=240;
+      adjust_pixels_dim(V,I,J);
+      I=giacmin(I,giac::screen_w);
+      J=giacmin(J,giac::screen_h);
+      getkeywin->resize(getkeywin->x(),getkeywin->y(),I+140,J+120);
+      getkeyout->resize(2,64,456,56);
+      getkeyscreen->resize(0,120,I+140,J);
+      //getkeyscreen->resize_mouse_param_group(140);
+      getkeyscreen->mouse_param_group->redraw();
+      //getkeyscreen->redraw();
+      string msg; double delay=-1;
       int vs=v.size();
+      if (vs==2 && v[1].type==_DOUBLE_){
+	delay=v[1]._DOUBLE_val;
+	if (delay<0)
+	  delay=0;
+      }
       for (int i=1;i<vs;++i){
 	if (v[i].type==_STRNG)
 	  msg += *v[i]._STRNGptr;
@@ -2885,6 +2968,8 @@ namespace xcas {
 	  break;
 	msg += '\n';
       }
+      if (delay==-1)
+	msg += gettext("Press a key\n");
       getkeyout->value(msg.c_str());
       getkeyin->value("");
       getkeywin->show();
@@ -2895,12 +2980,52 @@ namespace xcas {
       }
       Fl::flush();
       gen res=undef;
-      for (;;){
+      for (int n=0;;n++){
+	if (getkeyin->key>=0){
+	  res=getkeyin->key;
+	  break;
+	}
 	Fl_Widget *o = Fl::readqueue();
-	if (!o) Fl::wait();
+	if (!o){
+	  if (delay>=0){
+	    Fl::wait(0.001);
+	    usleep(1000);
+	    if (n>delay*500){
+	      res=0;
+	      break;
+	    }
+	    else
+	      continue;
+	  }
+	  Fl::wait();
+	}
 	if (o==getkeybut)
 	  res=unsigned_inf;
 	if (o==getkeybut || o==getkeywin){
+	  break;
+	}
+	if (o==getkeyesc){
+	  res=5;
+	  break;
+	}
+	if (o==getkeyok){
+	  res=4;
+	  break;
+	}
+	if (o==getkeyleft){
+	  res=0;
+	  break;
+	}
+	if (o==getkeyright){
+	  res=3;
+	  break;
+	}
+	if (o==getkeyup){
+	  res=1;
+	  break;
+	}
+	if (o==getkeydown){
+	  res=2;
 	  break;
 	}
 	if (o==getkeyin){
@@ -2911,7 +3036,7 @@ namespace xcas {
 	  }
 	}
       }
-      getkeywin->hide();
+      // getkeywin->hide();
       Fl::focus(foc);
       return res;
     }
@@ -3234,10 +3359,15 @@ namespace xcas {
   }
 
   // FIXME: forms should work under win32!!
-#if defined WIN32 || defined __APPLE__
+#if defined __APPLE__ || defined WIN32 
   giac::gen Xcas_fltk_input(const giac::gen & arg,const giac::context * contextptr){
     Fl::lock();
-    if (Xcas_DispG) Xcas_DispG->waiting_click_value=arg;
+    if (Xcas_DispG){
+      if (arg==at_getKey)
+	Xcas_DispG->waiting_click_value=makevecteur(arg,gen(vecteur(0),_SEQ__VECT));
+      else
+	Xcas_DispG->waiting_click_value=arg;
+    }
     Fl::unlock();
     thread_eval_status(3,contextptr);
     for (;;){

@@ -4,47 +4,75 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The switch statement: switch,
-case, default</title>
+<title>The difference between := and =&lt;</title>
 </head>
 <body >
 <a href="cascmd_en796.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en798.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1025" class="subsection">11.3.2  The switch statement: <span style="font-family:monospace">switch,
-case, default</span></h3>
-<p><a id="hevea_default1411"></a><a id="hevea_default1412"></a><a id="hevea_default1413"></a></p><p>The <span style="font-family:monospace">switch</span> statement can be used when you want the value of
-a block to depend on an integer. It takes one argument, an
-expression which evaluates to an integer. It should be followed by
-a sequence of <span style="font-family:monospace">case</span> statements, which takes the form
-<span style="font-family:monospace">case</span> followed by an integer and then a colon, which is
-followed by a code block to be executed if the expression equals the
-integer. At the end is an optional <span style="font-family:monospace">default:</span>
-statement, which is followed by a code block to be executed if the
-expression doesn’t equal any of the given integers. For example, if
-you wanted to define a function of three variables which performed an
-operation on the first two variables depending on the third, you could
-enter 
-</p><pre class="verbatim">  oper(a,b,c) := {
-  switch (c) {
-    case 1: {a := a + b; break;}
-    case 2: {a := a - b; break;}
-    case 3: {a := a * b; break;}
-    default: {a := a ^ b;}
-    }
-  return a;
-  }
-</pre><p>
-Then
+<h3 id="sec1024" class="subsection">11.2.10  The difference between <span style="font-family:monospace">:=</span> and <span style="font-family:monospace">=&lt;</span></h3>
+<p>
+<a id="ssec:assignmentdiffs"></a></p><p>The <span style="font-family:monospace">:=</span> and <span style="font-family:monospace">=&lt;</span> assignment operators have different
+effects when they are used to modify an element of a list contained in
+a variable, since <span style="font-family:monospace">=&lt;</span> modifies the element by reference.
+Otherwise, they will have the same effect.</p><p>For example, if<br>
+Input:
 </p><div class="center">
-oper(2,3,1)
-</div><p>
-will return 2+3=5, since the third argument is <span style="font-family:monospace">1</span>, and 
+<span style="font-family:monospace">A := [1,2,3]
+</span></div><p>
+then <br>
+Input:
 </p><div class="center">
-oper(2,3,2)
-</div><p>
-will return 2−3=−1, since the third argument is <span style="font-family:monospace">2</span>.</p>
+<span style="font-family:monospace">A[1] := 5
+</span></div><p>
+and<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A[1] =&lt; 5
+</span></div><p>
+both change <span style="font-family:monospace">A[1]</span> to 5, so <span style="font-family:monospace">A</span> will be
+<span style="font-family:monospace">[1,5,3]</span>, but they do it in different ways. The command
+<span style="font-family:monospace">A[1] =&lt; 5</span> changes the middle value in the list that
+<span style="font-family:monospace">A</span> originally pointed to, and so any other variable pointing
+to the list will be changed, but <span style="font-family:monospace">A[1] := 5</span> will create a
+duplicate list with the middle element of 5, and so any other variable
+pointing to the original list won’t be affected.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A:=[0,1,2,3,4]<br>
+ B:=A<br>
+ B[3]=&lt;33<br>
+ A,B
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[0,1,2,33,4],[0,1,2,33,4] 
+</span></div><p>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A:=[0,1,2,3,4]<br>
+ B:=A<br>
+ B[3]:=33<br>
+ A,B
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[0,1,2,3,4],[0,1,2,33,4] 
+</span></div><p>
+If <span style="font-family:monospace">B</span> is set equal to a copy of <span style="font-family:monospace">A</span> instead of
+<span style="font-family:monospace">A</span>, then changing <span style="font-family:monospace">B</span> won’t affect <span style="font-family:monospace">A</span>.<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">A:=[0,1,2,3,4]<br>
+ B:=copy(A)<br>
+ B[3]=&lt;33<br>
+ A,B
+</span></div><p>
+Output:
+</p><div class="center">
+<span style="font-family:monospace">[0,1,2,3,4],[0,1,2,33,4] 
+</span></div>
 <hr>
 <a href="cascmd_en796.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

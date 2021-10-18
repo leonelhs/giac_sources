@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="keywords" content="xcas, firefox, navigateur, calcul, formel, en, ligne, programmation, algorithmique">
   <title>
-    xcas ou python : change l'&eacute;valuateur
+    xcas ou python
   </title>
   <style>
     html {
@@ -668,7 +668,7 @@
                                 href="#exec&python=1&+///Le%20prince%20de%20Toscane%20avait%20remarqu%C3%A9%20que%2C%20bien%20qu'il%20y%20ait%20autant%20de%20fa%C3%A7ons%20d'%C3%A9crire%209%20et%2010%20comme%20somme%20de%203%20nombres%20compris%20entre%201%20et%206%2C%20on%20obtient%20plus%20souvent%20un%20total%20de%2010%20lorsqu'on%20lance%203%20d%C3%A9s.%0ACliquez%20sur%20Exec%20en%20bas%20pour%20relancer%20une%20simulation.&+fonction%20toscane(Nombre)%0A%20%20sommeA%20%3A%3D%20%5B0%5D*18%3B%0A%20%20pour%20j%20de%201%20jusque%20Nombre%20faire%0A%20%20%20%20s%20%3A%3D%20randint(1%2C6)%2Brandint(1%2C6)%2Brandint(1%2C6)%3B%0A%20%20%20%20sommeA%5Bs-1%5D%2B%2B%3B%0A%20%20fpour%3B%0A%20%20print(sommeA%5B9%5D%2B%20%22%20neufs%20et%20%22%2BsommeA%5B10%5D%2B%20%22%20dix%22)%3B%0A%20%20return%20sommeA%2FNombre%3B%0Affonction%3A%3B&+t%3Dtoscane(100000)&+barplot(t)&"
                                 target="_blank">Xcas</a>,
                             <a
-                                href="#exec&python=1&+///Le%20prince%20de%20Toscane%20avait%20remarqu%C3%A9%20que%2C%20bien%20qu'il%20y%20ait%20autant%20de%20fa%C3%A7ons%20d'%C3%A9crire%209%20et%2010%20comme%20somme%20de%203%20nombres%20compris%20entre%201%20et%206%2C%20on%20obtient%20plus%20souvent%20un%20total%20de%2010%20lorsqu'on%20lance%203%20d%C3%A9s.%0ACliquez%20sur%20Exec%20en%20bas%20pour%20relancer%20une%20simulation.&+def%20toscane(Nombre)%3A%0A%20%20%20%20sommeA%20%3D%20%5B0%5D*18%0A%20%20%20%20for%20j%20in%20range(Nombre)%3A%0A%20%20%20%20%20%20%20%20s%3Drandint(1%2C6)%2Brandint(1%2C6)%2Brandint(1%2C6)%0A%20%20%20%20%20%20%20%20sommeA%5Bs-1%5D%2B%3D1%0A%20%20%20%20print(sommeA%5B9%5D%2B%20%22%20neufs%20et%20%22%2BsommeA%5B10%5D%2B%20%22%20dix%22)%0A%20%20%20%20sommeA%3D%5BsommeA%5Bj%5D%2FNombre%20for%20j%20in%20range(18)%5D%0A%20%20%20%20return%20sommeA&+t%3Dtoscane(100000)&+barplot(t)&"
+                                href="#exec&python=1&+///Le%20prince%20de%20Toscane%20avait%20remarqu%C3%A9%20que%2C%20bien%20qu'il%20y%20ait%20autant%20de%20fa%C3%A7ons%20d'%C3%A9crire%209%20et%2010%20comme%20somme%20de%203%20nombres%20compris%20entre%201%20et%206%2C%20on%20obtient%20plus%20souvent%20un%20total%20de%2010%20lorsqu'on%20lance%203%20d%C3%A9s.%0ACliquez%20sur%20Exec%20en%20bas%20pour%20relancer%20une%20simulation.&+def%20toscane(Nombre)%3A%0A%20%20%20%20sommeA%20%3D%20%5B0%20for%20j%20in%20range(18)%5D%0A%20%20%20%20for%20j%20in%20range(Nombre)%3A%0A%20%20%20%20%20%20%20%20s%3Drandint(1%2C6)%2Brandint(1%2C6)%2Brandint(1%2C6)%0A%20%20%20%20%20%20%20%20sommeA%5Bs-1%5D%2B%3D1%0A%20%20%20%20print(sommeA%5B9%5D%2B%20%22%20neufs%20et%20%22%2BsommeA%5B10%5D%2B%20%22%20dix%22)%0A%20%20%20%20sommeA%3D%5BsommeA%5Bj%5D%2FNombre%20for%20j%20in%20range(18)%5D%0A%20%20%20%20return%20sommeA&+t%3Dtoscane(100000)&+barplot(t)&"
                                 target="_blank">
                             Python
                             </a>
@@ -1878,9 +1878,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
           title="Montrer ou cacher les assistants math&eacute;matiques">
     <img WIDTH="28" HEIGHT="28" SRC="logo.png" alt="Maths" align="center">
     Math
-  </button>
-  <button id="prog_key" class="bouton" title="Programmation" onclick="var tmp=$id('progbuttons'); if (tmp.style.display=='none'){ tmp.style.display='block';} else { tmp.style.display='none';}">Prog</button>
-  <button class="bouton" id="button_123" onmousedown="event.preventDefault()"
+  </button><button id="prog_key" class="bouton" title="Programmation" onclick="var tmp=$id('progbuttons'); if (tmp.style.display=='none'){ tmp.style.display='block';} else { tmp.style.display='none';}">Prog</button><button class="bouton" id="button_123" onmousedown="event.preventDefault()"
           onclick="if ($id('keyboard').style.display=='inline'){ $id('keyboard').style.display='none'; $id('alpha_keyboard').style.display='none';} else UI.kbdonfuncoff(); if (UI.focusaftereval){ UI.focused.focus(); }"
           title="Montrer ou cacher le clavier scientifique">123
   </button>

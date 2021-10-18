@@ -51,7 +51,8 @@
 #include "gl2ps.h"
 
 #ifdef __APPLE__
-#include <AGL/agl.h>
+//#include <OpenGL/gl.h>
+//#include <AGL/agl.h>
 #include <FL/x.H>
 #include <FL/fl_draw.H>
 #define __APPLE_QUARTZ__ 1
@@ -2243,6 +2244,8 @@ namespace xcas {
       // cerr << tmps << '\n';
       draw_string(tmps); // +" Z="+giac::print_DOUBLE_(-depth,3));
     }
+    glRasterPos3d(-0.98,-0.99,depth-0.001);
+    draw_string(gettext("click k: kill 3d view"));
     if (below_depth_hidden){
       /* current mouse position
 	double i=Fl::event_x();
@@ -2344,7 +2347,7 @@ namespace xcas {
     GLContext context;
     if (!glcontext){ // create context
       GLContext shared_ctx = 0;
-      context = aglCreateContext( gl_choice->pixelformat, shared_ctx);
+      context = fl_create_gl_context(Fl_Window::current(), gl_choice);//aglCreateContext( gl_choice->pixelformat, shared_ctx);
       if (!context){ 
 	if (!locked){
 	  block_signal=block;
@@ -2359,18 +2362,20 @@ namespace xcas {
     }
     else
       context = (GLContext) glcontext;
-    aglSetCurrentContext(context);
-    GLint rect[] = { clip_x, win->h()-clip_y-clip_h, clip_w, clip_h};
-    aglSetInteger( (GLContext)context, AGL_BUFFER_RECT, rect );
-    aglEnable( (GLContext)context, AGL_BUFFER_RECT );
-    OpaqueWindowPtr * winid=(OpaqueWindowPtr*) win->window_ref();
-    aglSetWindowRef( context, winid );
+    fl_set_gl_context(Fl_Window::current(), context);
+  
+    //aglSetCurrentContext(context);
+    //GLint rect[] = { clip_x, win->h()-clip_y-clip_h, clip_w, clip_h};
+    //aglSetInteger( (GLContext)context, AGL_BUFFER_RECT, rect );
+    //aglEnable( (GLContext)context, AGL_BUFFER_RECT );
+    //OpaqueWindowPtr * winid=(OpaqueWindowPtr*) win->window_ref();
+    //aglSetWindowRef( context, winid );
     glEnable(GL_DEPTH_TEST);
-    // glLoadIdentity();
-    // glEnable(GL_SCISSOR_TEST);
-    // glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    // glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    glViewport(0,0,w(),h());
+    glLoadIdentity();
+    glEnable(GL_SCISSOR_TEST);
+    glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+    glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+    //glViewport(0,0,w(),h());
     // glDrawBuffer(GL_FRONT);
     gl_font(FL_HELVETICA,labelsize());
     // GLint viewport[4];
@@ -2455,9 +2460,10 @@ namespace xcas {
   Graph3d::~Graph3d(){ 
 #if defined __APPLE__ && !defined GRAPH_WINDOW
     if (glcontext){
-      aglSetCurrentContext( NULL );
-      aglSetWindowRef((GLContext) glcontext, NULL );    
-      aglDestroyContext((GLContext)glcontext);
+      fl_delete_gl_context((GLContext) glcontext);
+      //aglSetCurrentContext( NULL );
+      //aglSetWindowRef((GLContext) glcontext, NULL );    
+      //aglDestroyContext((GLContext)glcontext);
     }
 #endif
   }
@@ -2524,6 +2530,21 @@ namespace xcas {
 	below_depth_hidden=false;
 	redraw();
 	return 1;
+      case 'k': case 'K': 
+	{// kill 3d window (for Mac)
+	  int hp_pos;
+	  History_Pack * hp=get_history_pack(this,hp_pos);
+	  if (hp){
+	    Fl_Widget * g=hp->child(hp_pos);
+	    if (Fl_Group * gr=dynamic_cast<Fl_Group *>(g)){
+	      g=gr->child(0);
+	      hp->add_entry(hp_pos+1,g);
+	    }
+	    hp->remove_entry(hp_pos);
+	  }
+	  //delete this;
+	  return 1;	
+	}
       }
     }
     current_i=Fl::event_x();

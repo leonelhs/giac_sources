@@ -345,9 +345,11 @@ static mp_obj_t graphic_draw_string(size_t n_args, const mp_obj_t *args) {
   const char * text = mp_obj_str_get_str(args[2]);
   if (n_args>=4)
     c = mp_get_color(args[3]);
-  const char * font = 0;
   if (n_args>=5)
-    font=mp_obj_str_get_str(args[4]);
+    bg = mp_get_color(args[4]);
+  const char * font = 0;
+  if (n_args>=6)
+    font=mp_obj_str_get_str(args[5]);
   if (font && strcmp(font,"small")==0)
     c_draw_string_small(x,y,c,bg,text,false);
   else {
@@ -358,7 +360,7 @@ static mp_obj_t graphic_draw_string(size_t n_args, const mp_obj_t *args) {
   }
   return mp_const_none;
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_draw_string_obj, 3, 5, graphic_draw_string);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_draw_string_obj, 3, 6, graphic_draw_string);
 
 //
 static const mp_map_elem_t graphic_locals_dict_table[] = {
@@ -840,9 +842,16 @@ static mp_obj_t cas_caseval(size_t n_args, const mp_obj_t *args) {
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 8, cas_caseval);
 
+static mp_obj_t cas_get_key(size_t n_args, const mp_obj_t *args) {
+    const char * val=caseval("caseval(get_key())");
+    return mp_obj_new_int(atoi(val));
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_get_key_obj, 0, 0, cas_get_key);
+
 //
 static const mp_map_elem_t cas_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+	{ MP_ROM_QSTR(MP_QSTR_get_key), (mp_obj_t) &cas_get_key_obj },
 	{ MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
 	{ MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };
@@ -860,6 +869,7 @@ const mp_obj_type_t cas_type = {
 STATIC const mp_map_elem_t mp_module_cas_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR__cas) },
     { MP_ROM_QSTR(MP_QSTR_caseval), (mp_obj_t) &cas_caseval_obj },
+    { MP_ROM_QSTR(MP_QSTR_get_key), (mp_obj_t) &cas_get_key_obj },
     { MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &cas_caseval_obj },
     { MP_ROM_QSTR(MP_QSTR_eval_expr), (mp_obj_t) &cas_caseval_obj },
 };

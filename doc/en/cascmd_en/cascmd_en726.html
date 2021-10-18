@@ -4,88 +4,64 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The Cauchy distribution</title>
+<title>The beta distribution</title>
 </head>
 <body >
 <a href="cascmd_en725.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en727.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec922" class="subsection">8.4.12  The Cauchy distribution</h3>
-<h4 id="sec923" class="subsubsection">The probability density function for the Cauchy
-distribution: <span style="font-family:monospace">cauchy</span><a id="hevea_default1264"></a> <span style="font-family:monospace">cauchyd</span><a id="hevea_default1265"></a></h4>
-<p>The probability density function of the Cauchy distribution (sometimes
-called the Lorentz distribution) is given by the
-<span style="font-family:monospace">cauchy</span> (or <span style="font-family:monospace">cauchyd</span>) command. The Cauchy
-distribution depends on two parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, and the value of
-the density function at <span style="font-style:italic">x</span> is 
-<span style="font-family:monospace">cauchy</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">b</span>/(π ((<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)<sup>2</sup> + <span style="font-style:italic">b</span><sup>2</sup>)).
-If you enter 
+<h3 id="sec916" class="subsection">8.4.10  The beta distribution</h3>
+<h4 id="sec917" class="subsubsection">The probability density function for the beta distribution: <span style="font-family:monospace">betad</span><a id="hevea_default1261"></a></h4>
+<p>The beta distribution depends on two parameters, <span style="font-style:italic">a</span>&gt;0 and <span style="font-style:italic">b</span>&gt;0; the
+value of the density function at <span style="font-style:italic">x</span> in [0,1] is
+<span style="font-family:monospace">betad</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) =
+Γ(<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)<span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span>−1</sup>(1−<span style="font-style:italic">x</span>)<sup><span style="font-style:italic">b</span>−1</sup>/(Γ(<span style="font-style:italic">a</span>)Γ(<span style="font-style:italic">b</span>)). If you enter
 </p><div class="center">
-<span style="font-family:monospace">cauchy(2.2,1.5,0.8)
+<span style="font-family:monospace">betad(2,1,0.3)
 </span></div><p>
-you will get
+for example, you will get
 </p><div class="center">
-<span style="font-family:monospace">0.113412073462
-</span></div><p>If you leave out the parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, they will default to 0
-and 1, respectively; <span style="font-family:monospace">cauchy</span>(<span style="font-style:italic">x</span>) = 1/(π (<span style="font-style:italic">x</span><sup>2</sup> + 1)). If
-you enter
-</p><div class="center">
-<span style="font-family:monospace">cauchy(0.3)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.292027418517
+<span style="font-family:monospace">0.6
 </span></div>
-<h4 id="sec924" class="subsubsection">The cumulative distribution function for the Cauchy
-distribution: <span style="font-family:monospace">cauchy_cdf</span><a id="hevea_default1266"></a> <span style="font-family:monospace">cauchyd_cdf</span><a id="hevea_default1267"></a></h4>
-<p>The command <span style="font-family:monospace">cauchy_cdf</span> (or <span style="font-family:monospace">cauchyd_cdf</span>) computes
-the cumulative distribution function for the Cauchy distribution.
-Like <span style="font-family:monospace">cauchy</span>, you can give it the parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, or
-let them default to 0 and 1. The Cauchy cumulative distribution
-function is given by the formula
-<span style="font-family:monospace">cauchy_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = 1/2 + arctan((<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)/<span style="font-style:italic">b</span>)/π.
-If you enter
-</p><div class="center">
-<span style="font-family:monospace">cauchy_cdf(2,3,1.4)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.437167041811
-</span></div><p>
-and if you enter
-</p><div class="center">
-<span style="font-family:monospace">cauchy_cdf(1.4)
-</span></div><p>
-you will get
-</p><div class="center">
-<span style="font-family:monospace">0.802568456711
-</span></div><p>If you give <span style="font-family:monospace">cauchy_cdf</span> an extra argument (with or without
-the parameters), you will get the probability that
-the random variable lies between two values;
-<span style="font-family:monospace">cauchy_cdf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). If you
+<h4 id="sec918" class="subsubsection">The cumulative distribution function for the beta distribution: <span style="font-family:monospace">betad_cdf</span><a id="hevea_default1262"></a></h4>
+<p>The cumulative distribution function for the beta distribution with
+parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> at a value <span style="font-style:italic">x</span> in [0,1] is
+<span style="font-family:monospace">betad_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>). It turns out
+that <span style="font-family:monospace">betad_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) =
+β(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)Γ(<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)/(Γ(<span style="font-style:italic">a</span>)Γ(<span style="font-style:italic">b</span>)) where
+β(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = ∫<sub>0</sub><sup><span style="font-style:italic">x</span></sup> <span style="font-style:italic">t</span><sup><span style="font-style:italic">a</span>−1</sup>(1−<span style="font-style:italic">t</span>)<sup><span style="font-style:italic">b</span>−1</sup> <span style="font-style:italic">dt</span>. 
+If you
 enter
 </p><div class="center">
-<span style="font-family:monospace">cauchy_cdf(2,3,-1.9,1.4)
+<span style="font-family:monospace">betad_cdf(2,3,0.2)
 </span></div><p>
-you will get
+for example, you will get
 </p><div class="center">
-<span style="font-family:monospace">0.228452641651
-</span></div>
-<h4 id="sec925" class="subsubsection">The inverse distribution function for the
-Cauchy distribution: <span style="font-family:monospace">cauchy_icdf</span><a id="hevea_default1268"></a> <span style="font-family:monospace">cauchyd_icdf</span><a id="hevea_default1269"></a></h4>
-<p>Given a value <span style="font-style:italic">h</span>, the inverse distribution function gives
-the value of <span style="font-style:italic">x</span> with <span style="font-family:monospace">Prob</span>(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>.
-The <span style="font-family:monospace">cauchy_icdf</span> will compute the
-inverse distribution for the Cauchy distribution. (If no
-parameters are given, they will be assumed to be 0 and 1.)
+<span style="font-family:monospace">0.1808
+</span></div><p>If you give <span style="font-family:monospace">betad_cdf</span> an extra argument <span style="font-style:italic">y</span>, also in [0,1],
+you will get the probability that
+the random variable lies between the two values;
+<span style="font-family:monospace">betad_cdf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">,</span><span style="font-style:italic">y</span><span style="font-family:monospace">)</span> = Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>). 
 If you enter
 </p><div class="center">
-<span style="font-family:monospace">cauchy_icdf(2,3,0.23)
+<span style="font-family:monospace">betad_cdf(2,3,0.25,.5)
 </span></div><p>
 you will get
 </p><div class="center">
-<span style="font-family:monospace">-1.40283204777
+<span style="font-family:monospace">0.42578125
+</span></div>
+<h4 id="sec919" class="subsubsection">The inverse distribution function for the beta distribution: <span style="font-family:monospace">betad_icdf</span><a id="hevea_default1263"></a></h4>
+<p>The inverse distribution function for the beta
+distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> is computed with
+<span style="font-family:monospace">betad_icdf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span>; recall that this will return the
+value <span style="font-style:italic">x</span> with <span style="font-family:monospace">betad_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>. If you enter
+</p><div class="center">
+<span style="font-family:monospace">betad_icdf(2,3,0.2)
+</span></div><p>
+you will get
+</p><div class="center">
+<span style="font-family:monospace">0.212317128278
 </span></div>
 <hr>
 <a href="cascmd_en725.html"><img src="previous_motif.gif" alt="Previous"></a>

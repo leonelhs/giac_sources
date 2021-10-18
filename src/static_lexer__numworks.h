@@ -540,6 +540,8 @@
  & at_baisse_crayon,
  & at_draw_arc,
  & at_draw_circle,
+ & at_draw_filled_arc,
+ & at_draw_filled_circle,
  & at_draw_line,
  & at_set_pixel,
  & at_draw_polygon,

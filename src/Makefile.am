@@ -76,7 +76,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	hist.fl hist.h hist.cxx hist.menus\
 	renee.cc renee.h cas2.cc README.ipaq README.WIN   \
 	readme.doc latex.bat xdvi.bat dvips.bat xcasfr.bat xcases.bat \
-	xcasfr.sh xcases.sh xcasen.sh mkstat mkhist mkdyn mkdyn10 mkxdyn10 \
+	xcasfr.sh xcases.sh xcasen.sh mkstat mkhist mkdylib10 mkdyn10 mkxdyn10 \
         update.sh update.bat \
 	opengl.cc opengl.h freeglut_stroke_roman.c mp.cc mp.h \
 	giac.pl cas2html.cc all_global_var find_global_var.cc static_init \

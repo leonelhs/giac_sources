@@ -2449,6 +2449,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       var s;
       reader.onloadend = function (e) {
         s = e.target.result;
+	if (s.length>11 && (s.substr(3,7)=='<tbody>' || s.substr(3,8)=='#xwaspy\n') )
+	  s=s.substr(3,s.length-3);
+	//console.log(s.substr(0,7));
 	if (s.length>8 && s.substr(0,8)=='#xwaspy\n'){
 	  // decode sessions saved as fake py files (Numworks)
 	  pos=8;
@@ -3128,6 +3131,10 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       out=UI.mpeval(text);
     else
       out = UI.caseval(text);
+    if (out==null){
+      console.log(text,out);
+      return;
+    }
     //console.log(text,out);
     var s = ' ';
     var isstr = out[0] == '"';

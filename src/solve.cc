@@ -2073,7 +2073,7 @@ namespace giac {
 	if ( (g1f.type==_DOUBLE_ || g1f.type==_FLOAT_ || g1f.type==_REAL) && is_positive(g1,contextptr))
 	  res.push_back(*it);
 	else {
-	  if (normal(abs(g1,contextptr)-g1,contextptr)==0) // was ratnormal, but insufficient
+	  if (fastsign(simplifier(g1,contextptr),contextptr)==1 || normal(abs(g1,contextptr)-g1,contextptr)==0) // was ratnormal, but insufficient
 	    res.push_back(*it);
 	}
       }
@@ -2180,7 +2180,7 @@ namespace giac {
 	      continue;
 	    }
 	    if (is_undef(tmp)){
-#ifdef EMCC // computation takes too long in emscripten, accept the solution without check
+#if defined(EMCC) || defined(EMCC2) // computation takes too long in emscripten, accept the solution without check
 	      tmp=0;
 	      *logptr(contextptr) << "Warning, " << *it << " not checked" << '\n';
 #else
@@ -7478,10 +7478,12 @@ namespace giac {
     }
     if (elim.empty()){
       for (int i=0;i<eqs.size();++i){
-	if (eqs[i].type<_POLY)
+	if (eqs[i].type<_POLY && !is_zero(eqs[i]))
 	  eqs[i]=1;
       }
       comprim(eqs);
+      if (eqs.size()==1 && is_zero(eqs[0]))
+	eqs.clear();
       return eqs;
     }
     vecteur l(elim);
@@ -7566,6 +7568,7 @@ namespace giac {
 	  if (tdeg<curdeg){
 	    curdeg=tdeg;
 	    pos=vector<int>(1,i);
+	    continue;
 	  }
 	  pos.push_back(i);
 	}
@@ -7589,7 +7592,10 @@ namespace giac {
 	    }
 	  }
 	}
-	if (1 || curdeg==1){
+	if (poselim.empty()) // do not call resultant, var is not there
+	  returngb=0;
+	else if (1 || curdeg==1
+		 ){
 	  // Choose lowest number of dependant equations in poselim
 	  gen besteq(0),bestvar(0); int bestpos=-1,n0deps=-1;
 	  for (int i=0;i<int(poselim.size());++i){
@@ -7619,12 +7625,20 @@ namespace giac {
 	    gen a=_simp2(makesequence(eqs[i],besteq),contextptr);
 	    if (a.type!=_VECT || a._VECTptr->size()!=2)
 	      return gensizeerr(contextptr);
-	    gen r=_resultant(makesequence(a._VECTptr->front(),a._VECTptr->back(),bestvar),contextptr);
+	    gen r=_resultant(makesequence(a._VECTptr->front(),a._VECTptr->back(),bestvar),contextptr)*_gcd(makesequence(eqs[i],besteq),contextptr);;
+	    vecteur vr(lidnt(r));
+	    if (!vr.empty()){
+	      gen dr=_diff(makesequence(r,vr[0]),contextptr);
+	      dr=_gcd(makesequence(r,dr),contextptr);
+	      r=_quo(makesequence(r,dr,vr[0]),contextptr);
+	    }
 	    vecteur rv=lvar(r);
 	    r=_primpart(makesequence(r,rv),contextptr);
 	    neweq.push_back(r);
 	  }
 	  vecteur newelim;
+	  if (contains(lidnt(neweq),bestvar))
+	    newelim.push_back(bestvar);
 	  for (int i=0;i<int(elim.size());++i){
 	    if (elim[i]!=bestvar)
 	      newelim.push_back(elim[i]);
@@ -7729,7 +7743,7 @@ namespace giac {
 	  eqpr=gbasis(eqp,makevecteur(order,lexvars),false,modular,&env,rur,contextptr,gbasis_param);
 	vectpoly::const_iterator it=eqpr.begin(),itend=eqpr.end();
 	gb.reserve(itend-it);
-	if (returngb){
+	if (returngb && returngb!=3){
 	  for (;it!=itend;++it){
 	    gb.push_back(r2e(*it,l,contextptr));
 	  }

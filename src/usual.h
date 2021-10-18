@@ -536,13 +536,23 @@ namespace giac {
   gen _Heaviside(const gen & args,GIAC_CONTEXT);
   gen _Dirac(const gen & args,GIAC_CONTEXT);
 
+#if defined(EMCC) || defined(EMCC2)
+#define gen_zero gen(0)
+#else
+#define gen_zero zero
+#endif
+
 #if defined(GIAC_GENERIC_CONSTANTS) // || (defined(VISUALC) && !defined(RTOS_THREADX)) || defined(x86_64)
   extern const gen zero;
   extern const gen plus_one;
   extern const gen minus_one;
   extern const gen plus_two;
   extern const gen plus_three;
+#if defined(EMCC) || defined(EMCC2)
+#define cst_i gen(0,1)
+#else
   extern const gen cst_i;
+#endif
 #else
   extern const alias_gen alias_zero;
   extern const gen & zero;

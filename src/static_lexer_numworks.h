@@ -540,6 +540,8 @@
 {"down",13,126,0,0},
 {"draw_arc",13,9,0,0},
 {"draw_circle",13,9,0,0},
+{"draw_filled_arc",13,9,0,0},
+{"draw_filled_circle",13,9,0,0},
 {"draw_line",13,9,0,0},
 {"draw_pixel",13,9,0,0},
 {"draw_polygon",13,9,0,0},

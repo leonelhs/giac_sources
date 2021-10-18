@@ -4,34 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Draw dotted paper: dot_paper</title>
+<title>Toggle the axes: switch_axes</title>
 </head>
 <body >
 <a href="cascmd_en819.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en821.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1064" class="subsection">12.2.4  Draw dotted paper: <span style="font-family:monospace">dot_paper</span><a id="hevea_default1469"></a></h3>
-<p>The <span style="font-family:monospace">dot_paper</span> command draws dotted paper. This
-command takes three mandatory arguments and two optional arguments.
-The first argument is the spacing in the <span style="font-style:italic">x</span> direction, the second
-argument is the angle from the horizontal to draw the dots, and the
-third argument is the spacing in the <span style="font-style:italic">y</span> direction. By default, the
-dots extend in the <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> directions for the distances given in
-the graphic configuration page accessible from the main menu; the
-optional fourth and fifth 
-arguments <span style="font-family:monospace">x=xmin..xmax</span> and <span style="font-family:monospace">y=ymin..ymax</span> change the
-size of the dotted paper.<br>
+<h3 id="sec1064" class="subsection">12.2.2  Toggle the axes: <span style="font-family:monospace">switch_axes</span><a id="hevea_default1468"></a></h3>
+<p>The <span style="font-family:monospace">switch_axes</span> command shows, hides or toggles the 
+coordinate axes on the graphics screen depending on whether the
+argument is <span style="font-family:monospace">1</span>, <span style="font-family:monospace">0</span> or empty.
+(This can also be controlled by a <span style="font-family:monospace">show axes</span> checkbox in the
+configuration panel brought up with the <span style="font-family:monospace">cfg</span> button on the
+graphic screen control panel.) </p><p>Entering<br>
 Input:
 </p><div class="center">
-<span style="font-family:monospace">dot_paper(0.6,pi/2,0.6)
+<span style="font-family:monospace">switch_axes()
 </span></div><p>
-Output:
+toggles whether or not the coordinate axes are shown in subsequent
+graphic screens. Rather than toggling,<br>
+Input:
 </p><div class="center">
-<img src="cascmd_en060.png">
-</div><p>
-Unchecking <span style="font-family:monospace">Show Axes</span> on the <span style="font-family:monospace">cfg</span> screen removes
-the axes.</p>
+<span style="font-family:monospace">switch_axes(1)
+</span></div><p>
+causes all later graphic screens to have the axes, and<br>
+Input:
+</p><div class="center">
+<span style="font-family:monospace">switch_axes(0)
+</span></div><p>
+causes all later graphic screens to omit the axes.</p><p>When the axes are visible, they have tick marks whose
+separation is determined by the X-tick and Y-tick values on the
+graphic configuration screen. Setting these values to 0 removes the
+axes.</p>
 <hr>
 <a href="cascmd_en819.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
