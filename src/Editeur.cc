@@ -30,6 +30,7 @@ extern "C" int mp_token(const char * line);
 #include <FL/fl_ask.H>
 #include <FL/Fl_Return_Button.H>
 #include <FL/Fl_Tooltip.H>
+#include <FL/Fl_Hold_Browser.H>
 #include <fstream>
 #include "vector.h"
 #include <algorithm>
@@ -646,13 +647,22 @@ namespace xcas {
     xcas_mode(contextptr)=save_maple_mode;
   }
 
-  void cb_editeur_insert(Fl_Menu_ * m,const string & extension,int mode){
+  void cb_editeur_insert(Fl_Menu_ * m,const string & extension,int mode,bool lock=false){
     Fl_Text_Editor * e = find_editor(m);
     if (e){
       char * newfile = load_file_chooser("Insert program",("*"+extension).c_str(), ("session"+extension).c_str(),0,false);
       if ( file_not_available(newfile) )
 	return;
       editeur_insert(e,newfile,mode);
+      // lock it
+      if (lock){
+	if (Xcas_Text_Editor *xe=dynamic_cast<Xcas_Text_Editor *>(e)){
+	  xe->locked=true;
+	  if (Editeur * ed=dynamic_cast<Editeur *>(e->parent())){
+	    ed->output->value(remove_path(newfile).c_str());
+	  }
+	}
+      }
     }
   }
 
@@ -662,6 +672,10 @@ namespace xcas {
 
   static void cb_Editeur_Insert_Xcas(Fl_Menu_* m , void*) {
     cb_editeur_insert(m,".cxx",0);
+  }
+
+  static void cb_Editeur_Insert_Numworks(Fl_Menu_* m , void*) {
+    cb_editeur_insert(m,"xw.py",0,true /* lock */);
   }
 
   static void cb_Editeur_Insert_Python(Fl_Menu_* m , void*) {
@@ -789,8 +803,126 @@ namespace xcas {
     }
   }
 
+  void send_numworks(const string & name_,const string & res){
+    string name=remove_path(remove_extension(name_));
+    if (name.size()<1) name="prog";
+    if (res.size()>8 && res.substr(0,8)=="#xwaspy\n"){
+      if (name.size()<3 || name.substr(name.size()-3,3)!="_xw"){
+	if (name.substr(name.size()-2,2)=="xw")
+	  name=name.substr(0,name.size()-2)+"_xw";
+	else
+	  name+="_xw";
+      }      
+    }
+    name+=".py";
+    char backup[]="__calcbk.nws";
+    if (!dfu_get_scriptstore(backup)){
+      fl_alert("%s",gettext("Check calculator connection"));
+      return;
+    }
+    nws_map m;
+    if (!scriptstore2map(backup,m)){
+      fl_alert("%s",gettext("Invalid scriptstore"));
+      return;
+    }
+    nws_map::const_iterator it=m.find(name),itend=m.end();
+    if (it!=itend){
+      int i=fl_ask("%s",gettext("Program exists on calculator. Overwrite?"));
+      if (i==0)
+	return;      
+    }
+    nwsrec r;
+    r.type=0;
+    r.data.resize(res.size());
+    memcpy(&r.data[0],res.c_str(),res.size());
+    m[name]=r;
+    if (!map2scriptstore(m,backup)){
+      fl_alert("%s",gettext("Data would not fit on calculator, probably too large."));
+      return;
+    }
+    if (!dfu_send_scriptstore(backup)){
+      fl_alert("%s",gettext("Check calculator connection"));
+      return;
+    }    
+  }
+
+  string select_nws(const nws_map & m,bool pyonly,bool xcasonly){
+    static Fl_Window * w = 0;
+    static Fl_Hold_Browser * br = 0;
+    if (!w){
+      Fl_Group::current(0);
+      w=new Fl_Window(300,300);
+      br = new Fl_Hold_Browser(2,2,w->w()-4,w->h()-4);
+      br->label(gettext("Select a script"));
+      w->label(gettext("Numworks scripts"));
+      w->end();
+    }
+    br->clear();
+    nws_map::const_iterator it=m.begin(),itend=m.end();
+    vector<string> v;
+    for (;it!=itend;++it){
+      string s=it->first;
+      if (s.size()<3 || s.substr(s.size()-3,3)!=".py")
+	continue;
+      bool xcas=s.size()>5 && s.substr(s.size()-5,2)=="xw";
+      if (pyonly && xcas) continue;
+      if (xcasonly && !xcas) continue;
+      v.push_back(it->first);
+      br->add(v.back().c_str());
+    }
+    w->set_modal();
+    w->show();
+    w->hotspot(w);
+    Fl::focus(br);
+    Fl_Widget *o=0;
+    for (;;){
+      o = Fl::readqueue();
+      if (o==w || o==br)
+	break;
+      else {
+	Fl::wait(0.0001);
+	usleep(1000);
+      }
+    }
+    w->hide();
+    if (o==w || br->value()==0) return "";
+    return v[br->value()-1];
+  }
+
+  void cb_Editeur_Send_Numworks(Fl_Widget * m_ , void*) {
+    Fl_Text_Editor * e = find_editor(m_);
+    if (!e) return;
+    Editeur * ed=dynamic_cast<Editeur *>(e->parent());
+    string name(ed->output->value());
+    char * ch=e->buffer()->text(); 
+    string res(ch); 
+    free(ch);
+    send_numworks(name,res);
+  }
+
   static void cb_Editeur_Save(Fl_Widget * m , void*) {
     Fl_Text_Editor * e = find_editor(m);
+    Editeur * ed=dynamic_cast<Editeur *>(e->parent());
+    if (strlen(ed->output->value())){
+      if (ed->editor->locked){
+	string filename(remove_extension(ed->output->value()));
+	char * ch=ed->editor->buffer()->text(); 
+	string res(ch),S; 
+	free(ch);
+	if (filename.size()>2 && xwaspy_decode(res.c_str(),S)){
+	  S=casio2xws(S.c_str(),S.size(),e->labelsize(),get_context(ed),false /* do not eval variables */);
+	  filename=filename.substr(0,filename.size()-2)+".xws";
+	  ofstream of(filename.c_str());
+	  of << S ;
+	  of.close();
+	  fl_alert("Encoded Xcas session saved to %s",filename.c_str());
+	  return;
+	}
+      }
+      e->buffer()->savefile(ed->output->value());
+      e->clear_changed();
+      return;
+    }
     if (e // && e->changed()
 	){
       if (e->label() && e->label()[0]){
@@ -2540,6 +2672,7 @@ namespace xcas {
     {gettext("Load"), 0,  (Fl_Callback*)cb_Editeur_Load, 0, 0, 0, 0, 14, 56},
     {gettext("Insert"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("File"), 0,  (Fl_Callback*)cb_Editeur_Insert_File, 0, 0, 0, 0, 14, 56},
+    {gettext("Numworks Xcas session"), 0,  (Fl_Callback*)cb_Editeur_Insert_Numworks, 0, 0, 0, 0, 14, 56},
     {gettext("Xcas text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Xcas, 0, 0, 0, 0, 14, 56},
     {gettext("Xcas Python text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Python, 0, 0, 0, 0, 14, 56},
     {gettext("Maple text"), 0,  (Fl_Callback*)cb_Editeur_Insert_Maple, 0, 0, 0, 0, 14, 56},
@@ -2548,6 +2681,7 @@ namespace xcas {
     {0},
     {gettext("Save"), 0,  (Fl_Callback*)cb_Editeur_Save, 0, 0, 0, 0, 14, 56},
     {gettext("Save as"), 0,  (Fl_Callback*)cb_Editeur_Save_as, 0, 0, 0, 0, 14, 56},
+    {gettext("Send to Numworks"), 0,  (Fl_Callback*)cb_Editeur_Send_Numworks, 0, 0, 0, 0, 14, 56},
     {gettext("File extension"), 0,  (Fl_Callback*)cb_Editeur_Extension, 0, 0, 0, 0, 14, 56},
     {gettext("Export"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("Xcas text"), 0,  (Fl_Callback*)cb_Editeur_Export_Xcas, 0, 0, 0, 0, 14, 56},
@@ -2624,7 +2758,7 @@ namespace xcas {
     styletable[0].color=Xcas_editor_color;
     cursor_color(Xcas_editor_color);
     tableur=0;
-    gchanged=true;
+    gchanged=true; locked=false;
     labeltype(FL_NO_LABEL);
     color(FL_WHITE);
     buffer(b); 
@@ -2725,7 +2859,7 @@ namespace xcas {
     save_button->label("Save");
     save_button->tooltip(gettext("Save current program"));
     save_button->callback((Fl_Callback *) cb_Editeur_Save);
-    output = new Fl_Output(x+w/2+w/4+save_button->w(),y,w-w/2-w/4-save_button->w(),L);
+    output = new Fl_Input(x+w/2+w/4+save_button->w(),y,w-w/2-w/4-save_button->w(),L);
     output->labelsize(labelsize());
     end();
 
@@ -3307,6 +3441,8 @@ namespace xcas {
   }
 
   int Xcas_Text_Editor::handle(int event){    
+    if (locked) 
+      return 0;
     if (event==FL_UNFOCUS)
       return 1;
     if (event==FL_FOCUS || event==FL_PUSH){

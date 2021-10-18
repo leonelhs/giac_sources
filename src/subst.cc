@@ -2265,9 +2265,11 @@ namespace giac {
 
   gen powneg2invpow(const gen & e,GIAC_CONTEXT){
     gen res=subst(e,pow_tab,powneg2invpow_tab,false,contextptr);
-    const vector< const unary_function_ptr *> exp_v(1,at_exp);
-    const vector< gen_op_context > expneg2invexp_v(1,expnegtoinvexp);
-    res=subst(res,exp_v,expneg2invexp_v,false,contextptr);
+    vector< const unary_function_ptr *> exp_v(1,at_exp);
+    // exp_v.push_back(at_pow);
+    vector< gen_op_context > expneg2invexp_v(1,expnegtoinvexp);
+    // expneg2invexp_v.push_back(pownegtoinvpow);
+    res=subst(res,exp_v,expneg2invexp_v,true,contextptr);
     return res;
   }
 

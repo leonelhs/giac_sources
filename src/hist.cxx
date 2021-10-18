@@ -1023,6 +1023,10 @@ static void cb_Xcas_open_casio(Fl_Menu_*, void*) {
   load_history(-1);
 }
 
+static void cb_Xcas_open_nws(Fl_Menu_*, void*) {
+  load_history(-4);
+}
+
 static void cb_Xcas_open_numworks(Fl_Menu_*, void*) {
   load_history(-2);
 }
@@ -1083,12 +1087,77 @@ static void cb_Xcas_save_all_sessions(Fl_Menu_*, void*) {
   Xcas_save_all(Xcas_Main_Tab);
 }
 
-static void cb_Xcas_Export_Khicas_Casio(Fl_Menu_*, void*) {
-  xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);
+static void cb_Xcas_nws_doc(Fl_Menu_*, void*) {
+  giac::system_browser_command("doc/khicasnw.html");
+}
+
+static void cb_Xcas_open_numworks_xws(Fl_Menu_*, void*) {
+  load_history(-6);
+}
+
+static void cb_Xcas_send_numworks_xws(Fl_Menu_*, void*) {
+  xcas::History_cb_Send_session_numworks(Xcas_current_session(),0);
+}
+
+static void cb_Xcas_send_numworks_xws1(Fl_Menu_*, void*) {
+  xcas::cb_Editeur_Send_Numworks(xcas::Xcas_input_focus,0);
+}
+
+static void cb_Xcas_open_nws_calc(Fl_Menu_*, void*) {
+  load_history(-5);Fl_Widget * wid = Xcas_current_session();
+  xcas::History_Fold * hf=xcas::get_history_fold(wid); hf->pack->in_modified();
+}
+
+static void cb_Xcas_Export_nws_calc(Fl_Menu_*, void*) {
+  xcas::History_cb_Save_as_numworks_calculator(Xcas_current_session(),0);
+}
+
+static void cb_Xcas_nw_backup(Fl_Menu_*, void*) {
+  const char * newfile=file_chooser("Enter file name", "*.nws", "backup.nws");
+             if (!newfile) return;
+             if (giac::is_file_available(newfile)){
+                int i=fl_ask("File %s exists. Overwrite?",newfile);
+                if ( !i ) return;
+             }
+             if (!dfu_get_scriptstore(newfile))
+               fl_alert("%s","Unable to backup calculator");
+}
+
+static void cb_Xcas_nw_restore(Fl_Menu_*, void*) {
+  const char * newfile=load_file_chooser("","*.nws","*.nws",0,false); 
+             if (newfile){ 
+                if (!dfu_send_scriptstore(newfile))
+                  fl_alert("%s","Unable to restore backup to calculator");
+             };
+}
+
+static void cb_Xcas_nw_install(Fl_Menu_*, void*) {
+  char fname[]="backup.nws";
+             if (!dfu_get_scriptstore(fname))
+               fl_alert("%s","Unable to backup calculator");
+	     else {
+              std::string prefix=giac::giac_aide_dir()+"doc/";
+              if (!dfu_send_firmware((prefix+"epsilon.dfu").c_str()))
+                fl_alert("%s","Unable to send firmware");
+              else if (!dfu_send_apps((prefix+"apps.tar").c_str()))
+                fl_alert("%s","Unable to send KhiCAS");
+              else {
+                fl_alert("Install success. Reset the calculator, then connect to restore backup %s",fname);
+		dfu_send_scriptstore(fname);
+              }
+             };
+}
+
+static void cb_Xcas_Export_nws(Fl_Menu_*, void*) {
+  xcas::History_cb_Save_as_numworks_archive(Xcas_current_session(),0);
 }
 
 static void cb_Xcas_Export_Khicas_Numworks(Fl_Menu_*, void*) {
   xcas::History_cb_Save_as_xcas_numworks(Xcas_current_session(),0);
+}
+
+static void cb_Xcas_Export_Khicas_Casio(Fl_Menu_*, void*) {
+  xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);
 }
 
 static void cb_Xcas_Export_Khicas_Nspire(Fl_Menu_*, void*) {
@@ -2009,7 +2078,8 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Open (recovery mode)", 0,  (Fl_Callback*)cb_Xcas_open_recovery, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Import", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"Khicas", 0,  (Fl_Callback*)cb_Xcas_open_casio, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Khicas Numworks", 0,  (Fl_Callback*)cb_Xcas_open_numworks, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Numworks Backup", 0,  (Fl_Callback*)cb_Xcas_open_nws, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Numworks Khicas session", 0,  (Fl_Callback*)cb_Xcas_open_numworks, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Khicas Nspire", 0,  (Fl_Callback*)cb_Xcas_open_nspire, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Maple worksheet", 0,  (Fl_Callback*)cb_Xcas_open_maple, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"TI89 program", 0,  (Fl_Callback*)cb_Xcas_open_ti89, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -2029,9 +2099,21 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Save", 0x80073,  (Fl_Callback*)cb_Xcas_save_current_session, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Save as", 0,  (Fl_Callback*)cb_Xcas_save_current_session_as, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Save all", 0,  (Fl_Callback*)cb_Xcas_save_all_sessions, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Numworks", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Documentation", 0,  (Fl_Callback*)cb_Xcas_nws_doc, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Open calculator session", 0,  (Fl_Callback*)cb_Xcas_open_numworks_xws, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send session to calculator", 0,  (Fl_Callback*)cb_Xcas_send_numworks_xws, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Send program to calculator", 0,  (Fl_Callback*)cb_Xcas_send_numworks_xws1, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Import all programs from calculator", 0,  (Fl_Callback*)cb_Xcas_open_nws_calc, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Overwrite calculator", 0,  (Fl_Callback*)cb_Xcas_Export_nws_calc, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Backup Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_backup, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Restore Numworks from backup", 0,  (Fl_Callback*)cb_Xcas_nw_restore, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Install KhiCAS on Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_install, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0},
  {"Export as", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
- {"KhiCas", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Casio, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Numworks Archive", 0,  (Fl_Callback*)cb_Xcas_Export_nws, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"KhiCas Numworks", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Numworks, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"KhiCas Casio", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Casio, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"KhiCas TI Nspire CX", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Nspire, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Xcas text", 0,  (Fl_Callback*)cb_Xcas_Export_Xcas, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Xcas-Python text", 0,  (Fl_Callback*)cb_Xcas_Export_XcasPy, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3336,7 +3418,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<348; i++)
+        for ( ; i<361; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

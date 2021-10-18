@@ -1960,7 +1960,40 @@ namespace xcas {
     return res;
   }
 
-  string casio2xws(const char * s,int ss,int l,GIAC_CONTEXT){
+  bool xwaspy_decode(const char * s_,string & s){
+    int l=strlen(s_);
+    if (l<8 || strncmp(s_,"#xwaspy\n",8)){ 
+      s=s_;
+      return false;
+    }
+    char c; unsigned char xw[4]; // rebuild xw 3 bytes from fake Numworks python file 4 bytes
+    for (int POS=8;POS<l;++POS){
+      c=s_[POS];
+      if (c==' ' || c=='\n' || (c>='a' && c<='~')){
+	if (c=='}')
+	  c=')';
+	if (c=='|')
+	  c=';';
+	if (c=='~')
+	  c=':';
+	s += c;
+	continue;
+      }
+      xw[0]=c>=xwaspy_shift?c-xwaspy_shift:c;
+      ++POS; c=s_[POS];
+      xw[1]=c>=xwaspy_shift?c-xwaspy_shift:c;
+      ++POS; c=s_[POS];
+      xw[2]=c>=xwaspy_shift?c-xwaspy_shift:c;
+      ++POS; c=s_[POS];
+      xw[3]=c>=xwaspy_shift?c-xwaspy_shift:c;
+      s += (xw[0]<<2)|(xw[1]>>4);
+      s += (xw[1]<<4)|(xw[2]>>2);
+      s += (xw[2]<<6)|xw[3];
+    }
+    return true;
+  }
+
+  string casio2xws(const char * s,int ss,int l,GIAC_CONTEXT,bool eval_var){
     int pos=0;
 #if 0
     ofstream of("log.xws");
@@ -1978,9 +2011,14 @@ namespace xcas {
     strncpy(buf_mode,(const char *)ptr,L); ptr+=L; pos+=L;
     buf_mode[L]=0;
 #if 1
-    python_compat(0,contextptr);
-    gen vars(buf_mode,contextptr);
-    vars=eval(vars,1,contextptr);
+    if (eval_var){
+      python_compat(0,contextptr);
+      gen vars(buf_mode,contextptr);
+      vars=eval(vars,1,contextptr);
+    }
+    else {
+      // FIXME add variables and spreadsheet 
+    }
 #else
     int dh=5+h*(1+count(buf_mode,'\n'));
     of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << '\n';
@@ -2051,6 +2089,46 @@ namespace xcas {
 #endif
   }
 
+  string nws2xws(const char * s,int ss,int l,GIAC_CONTEXT){
+#ifdef HAVE_SSTREAM
+    ostringstream of;
+#else
+    ostrstream of;
+#endif
+    int x=49,y=87,w=626,h=l+1;
+    unsigned const char * ptr=(unsigned const char*)s;
+    // Numworks script store archive
+    // record format: length on 2 bytes
+    // if not zero length
+    // record name 
+    // 00
+    // 01 
+    // record string 
+    for (int pos=0;pos<ss;){
+      size_t L=ptr[1]*256+ptr[0]; 
+      ptr+=2; pos+=2;
+      if (L==0) break;
+      L-=2;
+      char buf_[L+1];
+      memcpy(buf_,(const char *)ptr,L); ptr+=L; pos+=L;
+      string name(buf_);
+      if (name.size()>3 && name.substr(name.size()-3,3)==".xw")
+	continue;
+      const char * buf_mode=buf_+name.size()+2;
+      int dh=giacmin(600,35+h*(3+count(buf_mode,'\n')));
+      string content;
+      // conversion of Xcas session as py should open a new session tab
+      if (0 && xwaspy_decode(buf_mode,content)) 
+	of << casio2xws(content.c_str(),content.size(),dh,contextptr);
+      of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << '\n';
+      of << "[" << '\n';
+      of << "// fltk N4xcas7EditeurE "<< x << " " << y << " "<< w << " " << dh << " " << h << " " << 0 << '\n';
+      of << L-name.size()-3 << " " << 4 << " " << name << " ," << '\n' << buf_mode << "," << '\n' << "]\n,\n";      
+      y += dh;
+    }
+    return of.str();
+  }
+
   // Maple worksheet translate, returns new y position
   int mws2xws(istream & inf,ostream & of,int x,int y,int w,int h){
     string mapletxt;
@@ -2101,19 +2179,85 @@ namespace xcas {
       return false;
     // get filename
     const char * newfile ;
+    string fname_base="calc",fname; 
     switch (mws){
     case -1:
-      newfile = load_file_chooser("Load KhiCAS worksheet","*.xw","*.xw",0,false);
+      newfile = load_file_chooser(gettext("Load KhiCAS worksheet"),"*.xw","*.xw",0,false);
       mws=0;
       break;
     case -2:
-      newfile = load_file_chooser("Load KhiCAS Numworks worksheet","*_xw.py","*_xw.py",0,false);
+      newfile = load_file_chooser(gettext("Load KhiCAS Numworks worksheet"),"*_xw.py","*_xw.py",0,false);
       mws=0;
       break;
     case -3:
-      newfile = load_file_chooser("Load KhiCAS TI Nspire worksheet","*.xw.tns","*.xw.tns",0,false);
+      newfile = load_file_chooser(gettext("Load KhiCAS TI Nspire worksheet"),"*.xw.tns","*.xw.tns",0,false);
       mws=0;
       break;
+    case -4:
+      newfile = load_file_chooser(gettext("Load Numworks archive"),"*.nws","*.nws",0,false);
+      mws=0;
+      break;
+    case -5:{
+      FILE * f=0;
+      for (int i=0;;++i){
+	fname=fname_base+print_INT_(i)+".nws"; // check for a free calc?? name
+	f=fopen(fname.c_str(),"r");
+	if (!f)
+	  break;
+	fclose(f);
+      }
+      if ( !dfu_get_scriptstore(fname.c_str()) || !(f=fopen(fname.c_str(),"r"))){
+	fl_alert("%s","Unable to connect to calculator");
+	return 0;
+      }
+      fclose(f);
+      newfile=fname.c_str();
+      mws=0;
+      break;
+    }
+    case -6: {
+      char filename[]="__calc.nws";
+      FILE * f=0;
+      if ( //0 && // dbg
+	   (!dfu_get_scriptstore(filename) || !(f=fopen(filename,"r")))){
+	fl_alert("%s","Unable to connect to calculator");
+	return 0;
+      }
+      if (f) fclose(f);
+      nws_map m;
+      if (!scriptstore2map(filename,m)){
+	fl_alert("%s","Invalid scriptstore");
+	return 0;
+      }
+      string s=select_nws(m,false,false); 
+      if (s.empty()) return 0;
+      nws_map::iterator it=m.find(s),itend=m.end();
+      if (it==itend) return 0;
+      string src;
+      for (int i=0;i<it->second.data.size();++i)
+	src +=(const char) it->second.data[i];
+      if (src.size()>=8 && src.substr(0,8)=="#xwaspy\n"){
+	//src=nws2xws(src.c_str(),src.size(),labelsize(),get_context(this));
+	fname="__calc.xws";
+	if (s.size()>=6 && s.substr(s.size()-6,6)=="_xw.py")
+	  fname=s.substr(0,s.size()-6)+".xws";
+	ofstream of(fname.c_str());
+	of << src ;
+	of.close();
+	mws=0;
+	newfile=fname.c_str();
+	break;
+      }
+      new_program(this,-1);
+      if (Fl_Text_Editor * ed=dynamic_cast<Fl_Text_Editor *>(Fl::focus())){
+	int i=ed->insert_position();
+	ed->buffer()->insert(i,src.c_str());
+	ed->insert_position(i+src.size()+1);
+	Editeur * e=dynamic_cast<Editeur *> (ed->parent());
+	if (e) e->output->value(s.c_str());
+      }
+      return false;
+    }
     case 1:
       newfile = load_file_chooser("Load maple worksheet","*.mws","*.mws",0,false);
       break;
@@ -2212,13 +2356,20 @@ namespace xcas {
     }
     string s;
     char c;
-    bool casio=false,xwaspy=false;
+    bool casio=false,xwaspy=false,nws=false;
     unsigned char xw[4]; // rebuild xw 3 bytes from fake Numworks python file 4 bytes
     int POS;
     for (POS=0;;++POS){
       c=fgetc(f);
       if (POS==0 && c==0){
 	casio=true;
+      }
+      if (POS==0 && (unsigned char)c==0xba){
+	unsigned char c1=fgetc(f),c2=fgetc(f),c3=fgetc(f);
+	if (c1==0xdd && c2==0x0b && c3==0xee){
+	  nws=true;
+	  continue;
+	}
       }
       if (feof(f))
 	break;
@@ -2326,6 +2477,10 @@ namespace xcas {
 	fl_message("%s",gettext("Translating maple worksheet and setting compatibility mode to maple"));
 	xcas_mode(contextptr)=1;
       }
+      new_url((remove_extension(urlname)+".xws").c_str());
+    }
+    if (nws){
+      s=nws2xws(s.c_str(),POS,fontsize,contextptr);
       new_url((remove_extension(urlname)+".xws").c_str());
     }
     if (casio && ss>4){
@@ -2853,6 +3008,8 @@ namespace xcas {
       return "py";
     case -3:
       return "tns";
+    case -4:
+      return "nws";
     case 1:
       return "map";
     case 2:
@@ -2899,9 +3056,16 @@ namespace xcas {
   }
 
   void save_as_text(ostream & of,int mode,History_Pack * pack){
+#if 0
+    //dbg
+    nws_map m; scriptstore2map("calc.nws",m); 
+    string nws_sel=select_nws(m,true,true);
+    // map2scriptstore(m,"calc_.nws");
+#endif
     const giac::context * contextptr=pack?pack->contextptr:context0;
     bool casio=mode<0;
     bool python=mode>=256;
+    bool nws=mode==-4;
     if (casio){
       mode=0;
       //python=true;
@@ -2913,6 +3077,25 @@ namespace xcas {
     int n=pack->children();
     vector<string> casiosave;
     string casioedit,casiosheet;
+    int nws_counter=0;
+    unsigned char nwsbuf[nwstoresize2];
+    // upload it (this is also a backup)
+    char backup[]="__calcbk.nws";
+    vector<string> nwsv;
+    if (nws){
+      dfu_get_scriptstore(backup);
+      FILE * f =fopen(backup,"r");
+      if (!f){
+	fl_alert("%s","Unable to upload backup");
+	return ;
+      }
+      fread(nwsbuf,1,sizeof(nwsbuf),f);
+      fclose(f);
+      // clean
+      for (int i=4;i<sizeof(nwsbuf)-0x10;++i)
+	nwsbuf[i]=0;
+    }
+    unsigned char * nwsptr=nwsbuf+4;
     for (int i=0;i<n;i++){
       if (!of)
 	break;
@@ -2946,6 +3129,63 @@ namespace xcas {
 	  of << casiosheet << '\n';
       }
       if (Editeur * ed=dynamic_cast<Editeur *>(wid)){
+	if (nws){
+	  string src=unlocalize(ed->value());
+	  const char * name=ed->output->value();
+	  size_t l=strlen(name);
+	  string autoname="prog"+print_INT_(nws_counter)+".py";
+	  if (l==0){
+	    name=autoname.c_str();
+	    l=strlen(name);
+	  }
+	  if (ed->editor->locked){ // force _xw.py suffix
+	    autoname=remove_extension(name);
+	    if (autoname.size() && autoname[autoname.size()-1]=='w')
+	      autoname=autoname.substr(0,autoname.size()-1);
+	    if (autoname.size() && autoname[autoname.size()-1]=='x')
+	      autoname=autoname.substr(0,autoname.size()-1);
+	    if (autoname.size() && autoname[autoname.size()-1]=='_')
+	      autoname=autoname.substr(0,autoname.size()-1);
+	    autoname += "_xw.py";
+	    name=autoname.c_str();
+	  }
+	  autoname=remove_path(name);
+	  // insure that the program name has py extension and is not already used
+	  if (autoname.size()<3 || autoname.substr(autoname.size()-3,3)!=".py")
+	    autoname += ".py";
+	  for (int i=0;i<=999;++i){
+	    if (equalposcomp(nwsv,autoname)){
+	      int l=autoname.size()-3;
+	      while (l>0 && autoname[l]>='0' && autoname[l]<='9'){
+		autoname=autoname.substr(0,l);
+		autoname+=print_INT_(i);
+	      }
+	    }
+	    else {
+	      nwsv.push_back(autoname);
+	      break;
+	    }
+	  }
+	  name=autoname.c_str();
+	  l=strlen(name);
+	  size_t L=src.size();
+	  size_t tot=l+5+L;
+	  if (tot+(nwsptr-nwsbuf)>=sizeof(nwsbuf)-0x14){
+	    fl_alert("%s",gettext("Data too large to fit in Numworks calculator"));
+	    return ;
+	  }
+	  *nwsptr=tot % 256; ++nwsptr;
+	  *nwsptr=tot/256; ++nwsptr;
+	  strcpy((char *)nwsptr,name);
+	  nwsptr[l]=0;
+	  nwsptr[l+1]=1;
+	  nwsptr += l+2;
+	  strcpy((char *)nwsptr,src.c_str());
+	  nwsptr += L;
+	  nwsptr[0]=0;
+	  nwsptr++;
+	  continue;
+	}
 	if (casio)
 	  casioedit+=unlocalize(ed->value())+'\n';
 	else {
@@ -2977,7 +3217,7 @@ namespace xcas {
 	    else casiosave.push_back("");
 	  }
 	}
-	else
+	else if (!nws)
 	  of << s << '\n';
 	xcas_mode(contextptr)=save_maple_mode;
       }
@@ -3015,6 +3255,10 @@ namespace xcas {
       }
     }
     python_compat(save_python,contextptr);
+    if (nws){
+      of.write((char *)nwsbuf,32768); // don't overwrite 20 last bytes of storage
+      return;
+    }
     if (!casio) return;
     // output in casio mode
     string s(khicas_state(contextptr));
@@ -3046,6 +3290,31 @@ namespace xcas {
     of.write((char *)&l,4);
   }
 
+  string xws2fakepy(const string & s){
+    string target="#xwaspy\n";
+    int len=s.size();
+    for (int i=0;i<len;i+=3){
+      char c;
+      // keep space and a..z chars
+      while (i<len && ((c=s[i])==' ' || c=='\n' || c==')' || c=='{' || c==';' || c==':' || (c>='a' && c<='z'))){
+	++i;
+	if (c==')')
+	  c='}';
+	if (c==':')
+	  c='~';
+	if (c==';')
+	  c='|';
+	target += c;
+      }
+      unsigned char a=s[i],b=i+1<len?s[i+1]:0,C=i+2<len?s[i+2]:0;
+      target += xwaspy_shift+(a>>2);
+      target += xwaspy_shift+(((a&3)<<4)|(b>>4));
+      target += xwaspy_shift+(((b&0xf)<<2)|(C>>6));
+      target += xwaspy_shift+(C&0x3f);
+    }
+    return target;
+  }
+
   void History_cb_save_as_text(Fl_Widget * m,int mode){
     if (m && m->parent()){
       History_Fold * o = get_history_fold(m);
@@ -3067,27 +3336,8 @@ namespace xcas {
 	  ostrstream of;
 #endif
 	  save_as_text(of,mode,o->pack);
-	  string s=of.str(); int len=s.size();
-	  string target="#xwaspy\n";
-	  for (int i=0;i<len;i+=3){
-	    char c;
-	    // keep space and a..z chars
-	    while (i<len && ((c=s[i])==' ' || c=='\n' || c==')' || c=='{' || c==';' || c==':' || (c>='a' && c<='z'))){
-	      ++i;
-	      if (c==')')
-		c='}';
-	      if (c==':')
-		c='~';
-	      if (c==';')
-		c='|';
-	      target += c;
-	    }
-	    unsigned char a=s[i],b=i+1<len?s[i+1]:0,C=i+2<len?s[i+2]:0;
-	    target += xwaspy_shift+(a>>2);
-	    target += xwaspy_shift+(((a&3)<<4)|(b>>4));
-	    target += xwaspy_shift+(((b&0xf)<<2)|(C>>6));
-	    target += xwaspy_shift+(C&0x3f);
-	  }
+	  string s=of.str(); 
+	  string target=xws2fakepy(s);
 	  ofstream f(newfile);
 	  f << target;
 	}
@@ -3105,6 +3355,40 @@ namespace xcas {
 
   void History_cb_Save_as_xcas_numworks(Fl_Widget* m , void*) {
     History_cb_save_as_text(m,-2);
+  }
+
+  void History_cb_Send_session_numworks(Fl_Widget* m , void*) {
+    if (m && m->parent()){
+      History_Fold * o = get_history_fold(m);
+      if (o){
+#ifdef HAVE_SSTREAM
+	ostringstream of;
+#else
+	ostrstream of;
+#endif
+	save_as_text(of,-2,o->pack);
+	string s=xws2fakepy(of.str());
+	if (o->pack->url)
+	  send_numworks(*o->pack->url,s);
+	else
+	  send_numworks("session",s);
+      }
+    }
+  }
+
+  void History_cb_Save_as_numworks_archive(Fl_Widget* m , void*) {
+    History_cb_save_as_text(m,-4);
+  }
+
+  void History_cb_Save_as_numworks_calculator(Fl_Widget* m , void*) {
+    if (m && m->parent()){
+      History_Fold * o = get_history_fold(m);
+      char fname[]="__calc.nws";
+      ofstream f(fname);
+      save_as_text(f,-4,o->pack);
+      f.close();
+      dfu_send_scriptstore(fname);
+    }
   }
 
   void History_cb_Save_as_xcas_nspire(Fl_Widget* m , void*) {
@@ -3333,7 +3617,7 @@ namespace xcas {
     }
   }
 
-  void new_program(Fl_Widget * m, bool load){
+  void new_program(Fl_Widget * m, int load){
     if (m && m->parent()){
       History_Fold * o = get_history_fold_focus(m);
       if (o){
@@ -3343,7 +3627,7 @@ namespace xcas {
 	change_group_fontsize(e,o->labelsize());
 	o->pack->add_entry(pos,e);
 	if (Editeur * ed=dynamic_cast<Editeur *>(e)){
-	  if (load){
+	  if (load>0){
 	    string s=editeur_load(ed->editor);
 	    if (!s.empty()){
 	      ed->editor->label(s.c_str());
@@ -3351,7 +3635,7 @@ namespace xcas {
 	      ed->output->redraw();
 	    }
 	  }
-	  else
+	  else if (load==0)
 	    cb_choose_func(ed->editor);
 	  // else ed->editor->buffer()->insert(0,"\n:;");
 	  Fl::focus(ed->editor);
@@ -3361,11 +3645,11 @@ namespace xcas {
   }
 
   void History_cb_New_Program(Fl_Widget* m , void*) {
-    new_program(m,false);
+    new_program(m,0);
   }
 
   void History_cb_Insert_Program(Fl_Widget* m , void*) {
-    new_program(m,true);
+    new_program(m,1);
   }
 
   void new_figure(Fl_Widget * m,bool load,bool dim3,bool approx=true){

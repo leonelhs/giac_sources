@@ -1610,7 +1610,7 @@ namespace xcas {
     }
     if (const Editeur * ed=dynamic_cast<const Editeur *>(o)){
       string s=unlocalize(ed->value());
-      res += '\n'+print_INT_(s.size())+" "+print_INT_(ed->editor->pythonjs)+" ,\n"+s;
+      res += '\n'+print_INT_(s.size())+" "+print_INT_(ed->editor->pythonjs)+" "+string(ed->output->value())+" ,\n"+s;
       return res;
     }
     if (const Xcas_Text_Editor * ed=dynamic_cast<const Xcas_Text_Editor *>(o)){
@@ -2068,6 +2068,8 @@ namespace xcas {
     res = new Editeur(x,y,w,h,"");
     res->callback(History_Pack_cb_eval,0);
     res->editor->buffer()->insert(0,s.c_str());
+    if (s.size()>=7 && s.substr(0,7)=="#xwaspy")
+      res->editor->locked=true;
   }
 
   bool split_string(const string & s,char sep,string & before,string & after){
@@ -2081,7 +2083,8 @@ namespace xcas {
       return false;
   }
 
-  void read_size_mode(const string & line, int & taille,int & mode){
+  void read_size_mode(const string & line, int & taille,int & mode,string & filename){
+    filename="";
     taille=mode=0;
     int i=0,n=line.size();
     for (;i<n;++i){
@@ -2104,6 +2107,13 @@ namespace xcas {
       mode += line[i]-'0';
     }
     if (neg) mode=-mode;
+    for (;i<n;++i){
+      if (line[i]!=' ') break;
+    }
+    for (;i<n;++i){
+      if (isalpha(line[i]) || line[i]=='.')
+	filename += line[i];
+    }
   }
 
   // Read a widget from string s starting at position i
@@ -2405,8 +2415,8 @@ namespace xcas {
 	Xcas_Text_Editor * res=0;
 	next_line_nonl(s,L,line,i);
 	// read size
-	int taille,mode=python_compat(contextptr);
-	read_size_mode(line,taille,mode);
+	int taille,mode=python_compat(contextptr); string filename;
+	read_size_mode(line,taille,mode,filename);
 	string tmp=localize(s.substr(i,taille),language(contextptr));
 	xcas_text_editor_load(res,tmp,x,y,w,h);
 	res->pythonjs=mode;
@@ -2418,11 +2428,16 @@ namespace xcas {
 	Editeur * res=0;
 	next_line_nonl(s,L,line,i);
 	// read size
-	int taille,mode=python_compat(contextptr);
-	read_size_mode(line,taille,mode);
+	int taille,mode=python_compat(contextptr); string filename;
+	read_size_mode(line,taille,mode,filename);
 	string tmp=localize(s.substr(i,taille),language(contextptr));
 	editeur_load(res,tmp,x,y,w,h);
-	res->editor->pythonjs=mode;
+	res->editor->pythonjs=mode; 
+	if (filename.size()){
+	  string * fname=new string(filename); // will be lost
+	  res->output->value(fname->c_str());
+	  res->editor->set_changed();//label(fname->c_str());
+	}
 	i += taille ;
 	return res;
       }

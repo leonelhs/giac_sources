@@ -453,6 +453,9 @@ dnl		AC_CHECK_LIB(GLU, main)
   fi
 LIBS="$save_LIBS"
 
+AC_CHECK_HEADERS(dfu_lib.h) 
+AC_CHECK_LIB(usb-1.0,main) 
+AC_CHECK_LIB(dfu,dfu_main) 
 AC_CHECK_LIB(cliquer,main) 
 AC_CHECK_LIB(nauty,main)
 AC_CHECK_HEADERS(nauty/naututil.h)

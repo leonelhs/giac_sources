@@ -675,7 +675,8 @@ Xcas_Main_Tab->redraw();} {}
 
 Function {load_history(int mws)} {open
 } {
-  code {Fl_Group * s = Xcas_Main_Tab;
+  code {
+Fl_Group * s = Xcas_Main_Tab;
 Fl_Group::current(0);
 xcas::History_Fold * w = new xcas::History_Fold(s->x()+2,s->y()+s->labelsize()+4,s->w()-4,s->h()-s->labelsize()-6,1);
 w->end();
@@ -1145,8 +1146,13 @@ Function {Xcas_run(int argc,char ** argv)} {open
             callback {load_history(-1);}
             xywh {15 15 100 20}
           }
+          MenuItem Xcas_open_nws {
+            label {Numworks Backup}
+            callback {load_history(-4);}
+            xywh {15 15 100 20}
+          }
           MenuItem Xcas_open_numworks {
-            label {Khicas Numworks}
+            label {Numworks Khicas session}
             callback {load_history(-2);}
             xywh {15 15 100 20}
           }
@@ -1231,18 +1237,103 @@ Function {Xcas_run(int argc,char ** argv)} {open
           callback {Xcas_save_all(Xcas_Main_Tab);}
           xywh {10 10 100 20}
         }
+        Submenu Xcas_Numworks_menu {
+          label {Numworks}
+          xywh {0 0 100 20}
+        } {
+          MenuItem Xcas_nws_doc {
+            label {Documentation}
+            callback {giac::system_browser_command("doc/khicasnw.html")}
+            xywh {15 15 100 20}
+          }
+          MenuItem Xcas_open_numworks_xws {
+            label {Open calculator session}
+            callback {load_history(-6);}
+            xywh {15 15 100 20}
+          }
+          MenuItem Xcas_send_numworks_xws {
+            label {Send session to calculator}
+            callback {xcas::History_cb_Send_session_numworks(Xcas_current_session(),0);}
+            xywh {15 15 100 20}
+          }
+          MenuItem Xcas_send_numworks_xws {
+            label {Send program to calculator}
+            callback {xcas::cb_Editeur_Send_Numworks(xcas::Xcas_input_focus,0);}
+            xywh {15 15 100 20}
+          }
+          MenuItem Xcas_open_nws_calc {
+            label {Import all programs from calculator}
+            callback {load_history(-5);Fl_Widget * wid = Xcas_current_session();
+  xcas::History_Fold * hf=xcas::get_history_fold(wid); hf->pack->in_modified();}
+            xywh {15 15 100 20}
+          }
+          MenuItem Xcas_Export_nws_calc {
+            label {Overwrite calculator}
+            callback {xcas::History_cb_Save_as_numworks_calculator(Xcas_current_session(),0);}
+            xywh {15 15 100 20}
+          }
+         MenuItem Xcas_nw_backup {
+          label {Backup Numworks calculator}
+          callback {const char * newfile=file_chooser("Enter file name", "*.nws", "backup.nws");
+             if (!newfile) return;
+             if (giac::is_file_available(newfile)){
+                int i=fl_ask("File %s exists. Overwrite?",newfile);
+                if ( !i ) return;
+             }
+             if (!dfu_get_scriptstore(newfile))
+               fl_alert("%s","Unable to backup calculator");
+          }
+          xywh {30 30 100 20}
+         }
+         MenuItem Xcas_nw_restore {
+          label {Restore Numworks from backup}
+          callback {const char * newfile=load_file_chooser("","*.nws","*.nws",0,false); 
+             if (newfile){ 
+                if (!dfu_send_scriptstore(newfile))
+                  fl_alert("%s","Unable to restore backup to calculator");
+             }
+          }
+          xywh {30 30 100 20}
+         }
+         MenuItem Xcas_nw_install {
+          label {Install KhiCAS on Numworks calculator}
+          callback {
+             char fname[]="backup.nws";
+             if (!dfu_get_scriptstore(fname))
+               fl_alert("%s","Unable to backup calculator");
+	     else {
+              std::string prefix=giac::giac_aide_dir()+"doc/";
+              if (!dfu_send_firmware((prefix+"epsilon.dfu").c_str()))
+                fl_alert("%s","Unable to send firmware");
+              else if (!dfu_send_apps((prefix+"apps.tar").c_str()))
+                fl_alert("%s","Unable to send KhiCAS");
+              else {
+                fl_alert("Install success. Reset the calculator, then connect to restore backup %s",fname);
+		dfu_send_scriptstore(fname);
+              }
+             }
+          }
+          xywh {30 30 100 20}
+         }
+
+        }
         Submenu Xcas_Export {
           label {Export as}
           xywh {0 0 100 20}
         } {
-          MenuItem Xcas_Export_Khicas_Casio {
-            label KhiCas
-            callback {xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);}
-            xywh {65 65 100 20}
+          MenuItem Xcas_Export_nws {
+            label {Numworks Archive}
+            callback {xcas::History_cb_Save_as_numworks_archive(Xcas_current_session(),0);}
+            xywh {15 15 100 20}
           }
           MenuItem Xcas_Export_Khicas_Numworks {
             label {KhiCas Numworks}
             callback {xcas::History_cb_Save_as_xcas_numworks(Xcas_current_session(),0);}
+            xywh {65 65 100 20}
+          }
+          MenuItem Xcas_Export_Khicas_Casio {
+            label {KhiCas Casio}
+            callback {xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
           MenuItem Xcas_Export_Khicas_Nspire {

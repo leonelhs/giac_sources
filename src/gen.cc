@@ -14995,7 +14995,7 @@ void sprint_double(char * s,double d){
       }
     }
     int save_decimal_digits=decimal_digits(context0);
-    set_decimal_digits(std::ceil(precision*M_LN2/M_LN10),context0);
+    set_decimal_digits(giacmax(20,std::ceil(precision*M_LN2/M_LN10)),context0);
     gen tmp=re(evalf(g,1,context0),context0);
     set_decimal_digits(save_decimal_digits,context0);
     if (tmp.type!=_REAL){
@@ -16269,7 +16269,7 @@ void sprint_double(char * s,double d){
     context & C=*contextptr;
     if (!strcmp(s,"caseval contextptr"))
       return (const char *) contextptr;
-    history_plot(contextptr).clear();
+    // history_plot(contextptr).clear(); // must be commented otherwise matplotl fails
     if (!strcmp(s,"shell off")){
       os_shell=false;
       return "shell off";

@@ -18983,6 +18983,102 @@ fi
   fi
 LIBS="$save_LIBS"
 
+for ac_header in dfu_lib.h
+do :
+  ac_fn_cxx_check_header_mongrel "$LINENO" "dfu_lib.h" "ac_cv_header_dfu_lib_h" "$ac_includes_default"
+if test "x$ac_cv_header_dfu_lib_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_DFU_LIB_H 1
+_ACEOF
+
+fi
+
+done
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lusb-1.0" >&5
+$as_echo_n "checking for main in -lusb-1.0... " >&6; }
+if ${ac_cv_lib_usb_1_0_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lusb-1.0  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_usb_1_0_main=yes
+else
+  ac_cv_lib_usb_1_0_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_usb_1_0_main" >&5
+$as_echo "$ac_cv_lib_usb_1_0_main" >&6; }
+if test "x$ac_cv_lib_usb_1_0_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBUSB_1_0 1
+_ACEOF
+
+  LIBS="-lusb-1.0 $LIBS"
+
+fi
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for dfu_main in -ldfu" >&5
+$as_echo_n "checking for dfu_main in -ldfu... " >&6; }
+if ${ac_cv_lib_dfu_dfu_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-ldfu  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char dfu_main ();
+int
+main ()
+{
+return dfu_main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_dfu_dfu_main=yes
+else
+  ac_cv_lib_dfu_dfu_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_dfu_dfu_main" >&5
+$as_echo "$ac_cv_lib_dfu_dfu_main" >&6; }
+if test "x$ac_cv_lib_dfu_dfu_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBDFU 1
+_ACEOF
+
+  LIBS="-ldfu $LIBS"
+
+fi
+
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lcliquer" >&5
 $as_echo_n "checking for main in -lcliquer... " >&6; }
 if ${ac_cv_lib_cliquer_main+:} false; then :

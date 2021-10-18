@@ -159,7 +159,7 @@ extern "C" int KeyPressed( void );
 #endif
 
 #ifdef NUMWORKS
-size_t pythonjs_stack_size=30*1024,pythonjs_heap_size=40*1024,
+size_t pythonjs_stack_size=30*1024,pythonjs_heap_size=40*1024;
 #else
   size_t pythonjs_stack_size=128*1024,pythonjs_heap_size=(2*1024-256)*1024;
 #endif
@@ -201,9 +201,161 @@ const char * console_prompt(const char * s){
   return S.c_str();
 }
 
+#ifdef HAVE_LIBDFU
+extern "C" { 
+#include "dfu_lib.h"
+}
+#endif
+
+// Numworks calculator
+int dfu_exec(const char * s_){
+  CERR << s_ << "\n";
+#if 0 // def HAVE_LIBDFU
+  std::istringstream ss(s_);
+  std::string arg;
+  std::vector<std::string> ls;
+  std::vector<char*> v;
+  while (ss >> arg)
+    {
+      ls.push_back(arg); 
+      v.push_back(const_cast<char*>(ls.back().c_str()));
+    }
+  v.push_back(0);  // need terminating null pointer
+  int res=dfu_main(v.size()-1,&v[0]);
+  return res;
+#else
+#ifdef WIN32 
+  string s(s_);
+#ifdef __MINGW_H
+  if (giac::is_file_available("c:\\xcaswin\\dfu-util.exe"))
+    s="c:\\xcaswin\\"+s;
+  // otherwise dfu-util should be in the path
+#else
+  s="./"+s;
+#endif
+  return system(s.c_str());
+#else // WIN32
+#ifdef __APPLE__
+  string s(s_);
+  s="/Applications/usr/bin/"+s;
+  return system(s.c_str());
+#else
+  return system(s_);
+#endif
+#endif // WIN32
+#endif 
+}
+
+bool dfu_get_scriptstore_addr(size_t & start,size_t & taille){
+  unlink("__platf");
+  if (dfu_exec("dfu-util -i0 -a0 -s 0x080001c4:0x20 -U __platf"))
+    return false;
+  FILE * f=fopen("__platf","r");
+  if (!f){ return false; }
+  unsigned char r[32];
+  int i=fread(r,1,32,f);
+  start=((r[23]*256U+r[22])*256+r[21])*256+r[20];
+  taille=((r[27]*256U+r[26])*256+r[25])*256+r[24];
+  // taille=(taille/32768)*32768; // do not care of end of scriptstore
+  fclose(f);
+  return i==32;
+}
+
+bool dfu_get_scriptstore(const char * fname){
+  unlink(fname);
+  size_t start,taille;
+  if (!dfu_get_scriptstore_addr(start,taille)) return false;
+  string s="dfu-util -U "+string(fname)+" -i0 -a0 -s "+ giac::print_INT_(start)+":"+giac::print_INT_(taille)+":force";
+  return !dfu_exec(s.c_str());
+}
+
+bool dfu_send_scriptstore(const char * fname){
+  size_t start,taille;
+  if (!dfu_get_scriptstore_addr(start,taille)) return false;
+  string s="dfu-util -D "+string(fname)+" -i0 -a0 -s "+ giac::print_INT_(start)+":"+giac::print_INT_(taille)+":force";
+  return !dfu_exec(s.c_str());
+} 
+
+bool dfu_send_firmware(const char * fname){
+  string s=string("dfu-util -i0 -a0 -D ")+ fname;
+  return !dfu_exec(s.c_str());
+}
+
+bool dfu_send_apps(const char * fname){
+  string s=string("dfu-util -i 0 -a 0 -s 0x90200000 -D ")+ fname;
+  return !dfu_exec(s.c_str());
+}
+
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
+
+  bool scriptstore2map(const char * fname,nws_map & m){
+    FILE * f=fopen(fname,"r");
+    if (!f)
+      return false;
+    unsigned char buf[nwstoresize1];
+    fread(buf,1,nwstoresize1,f);
+    fclose(f);
+    unsigned char * ptr=buf;
+    // Numworks script store archive
+    // record format: length on 2 bytes
+    // if not zero length
+    // record name 
+    // 00
+    // type 
+    // record data
+    int pos=4; ptr+=4;
+    for (;pos<nwstoresize1;){
+      size_t L=ptr[1]*256+ptr[0]; 
+      ptr+=2; pos+=2;
+      if (L==0) break;
+      L-=2;
+      char buf_[L+1];
+      memcpy(buf_,(const char *)ptr,L); ptr+=L; pos+=L;
+      string name(buf_);
+      const char * buf_mode=buf_+name.size()+2;
+      nwsrec r;
+      r.type=buf_mode[-1];
+      r.data.resize(L-name.size()-3);
+      memcpy(&r.data[0],buf_mode,r.data.size());
+      m[name]=r;
+    }
+    if (pos>=nwstoresize1)
+      return false;
+    return true;
+  }
+
+  bool map2scriptstore(const nws_map & m,const char * fname){
+    unsigned char buf[nwstoresize1];
+    for (int i=0;i<nwstoresize1;++i)
+      buf[i]=0;
+    unsigned char * ptr=buf;
+    *(unsigned *) ptr= 0xee0bddba;
+    ptr += 4;
+    nws_map::const_iterator it=m.begin(),itend=m.end();
+    int total=0;
+    for (;it!=itend;++it){
+      const string & s=it->first;
+      unsigned l1=s.size();
+      unsigned l2=it->second.data.size();
+      short unsigned L=2+l1+1+1+l2+1;
+      total += L;
+      if (total>=nwstoresize1)
+	return false;
+      *ptr=L % 256; ++ptr; *ptr=L/256; ++ptr;
+      memcpy(ptr,s.c_str(),l1+1); ptr += l1+1;
+      *ptr=it->second.type; ++ptr;
+      memcpy(ptr,&it->second.data[0],l2); ptr+=l2;
+      *ptr=0; ++ptr; 
+    }
+    FILE * f=fopen(fname,"w");
+    if (!f)
+      return false;
+    fwrite(buf,1,nwstoresize1,f);
+    fclose(f);
+    return true;
+  }
 
   const context * python_contextptr=0;
 
