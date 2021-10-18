@@ -1636,7 +1636,7 @@ namespace xcas {
 
 #ifdef WIN32
   std::string unix_path(const std::string & winpath){
-#ifdef __x86_64__
+#ifdef x86_64
     int s = cygwin_conv_path (CCP_WIN_A_TO_POSIX , winpath.c_str(), NULL, 0);
     char * unixpath = (char *) malloc(s);
     cygwin_conv_path(CCP_WIN_A_TO_POSIX,winpath.c_str(), unixpath,s);

@@ -5756,7 +5756,7 @@ namespace xcas {
     static Fl_Value_Input * ymin=0,*ystep=0,*ymax=0;
     static Fl_Return_Button * button0 = 0 ;
     static Fl_Button * button1 =0;
-    static Fl_Check_Button * do_plotfield = 0,*do_normal=0;
+    static Fl_Check_Button * do_plotfield = 0,*do_normal=0,*do_autonome=0;
     static Line_Type *ltres=0;
     // static int curvestyle=0;
     Graph2d3d * gr = dynamic_cast<Graph2d3d *>(spread_ptr);
@@ -5781,13 +5781,16 @@ namespace xcas {
       do_plotfield= new Fl_Check_Button (l+2,2,dx/6-4-l,dy/lignes-4,"Field");
       do_plotfield->value(true);
       do_plotfield->tooltip(gettext("Draw slopefield"));
-      do_normal= new Fl_Check_Button (2+dx/6,2,dx/6-4,dy/lignes-4,"||=1");
+      do_autonome= new Fl_Check_Button (2+dx/6,2,dx/6-4,dy/lignes-4,"d=2");
+      do_autonome->value(false);
+      do_autonome->tooltip(gettext("Autonomous 2d systems."));
+      do_normal= new Fl_Check_Button (2+dx/3,2,dx/6-4,dy/lignes-4,"||=1");
       do_normal->value(true);
       do_normal->tooltip(gettext("Normalize slopefield"));
       fcnimplicit=new Fl_Input(dx/2,2,dx/2-4,dy/lignes-4,gettext("F(x,y)="));
       fcnimplicit->value("x^4+y^4+x*y=25");
       fcnimplicit->tooltip(gettext("Implicit expression"));
-      fcnfield=new Fl_Input(dx/2,2,dx/2-4,dy/lignes-4,gettext("dy/dt(t,y)="));
+      fcnfield=new Fl_Input(dx/2+dx/6,2,dx/2-dx/6-4,dy/lignes-4,gettext("dy/dt(t,y)="));
       fcnfield->value("sin(t*y)");
       fcnfield->tooltip(gettext("Expression of dy/dt in terms of y and t, e.g. sin(t*y). For autonomous 2d system,change time variable to x and enter d[x,y]/dt in terms of [x,y], e.g. [[1,2],[3,4]]*[x,y]"));
       fcnrhot=new Fl_Input(dx/2,2,dx/2-4,dy/lignes-4,gettext("rho(t)="));
@@ -5930,6 +5933,7 @@ namespace xcas {
     ystep->hide();
     do_plotfield->hide();
     do_normal->hide();
+    do_autonome->hide();
     if (modeplot>=2){
       xmin->show();
       xstep->show();
@@ -5943,6 +5947,7 @@ namespace xcas {
 	fcnfield->show();
 	do_plotfield->show();
 	do_normal->show();
+	do_autonome->show();
       }
       else {
 	varnamex->show();
@@ -6002,6 +6007,18 @@ namespace xcas {
 	  bool formel=false,untranslate=false,approx=false;
 	  change_line_type(i,true,approx,"",fcnzuv->visible(),formel,untranslate,false,spread_ptr?spread_ptr->labelsize():14);
 	  ltres->line_type(i);
+	}
+	if (o==do_autonome){
+	  if (do_autonome->value()){
+	    fcnfield->value("[[1,2],[3,4]]*[x,y]");
+	    varnametfield->value("x");
+	    varnameyfield->value("y");
+	  }
+	  else {
+	    fcnfield->value("sin(t*y)");
+	    varnametfield->value("t");
+	    varnameyfield->value("y");
+	  }
 	}
 	if (o == button0) {r = 0; break;}
 	if (o == button1) {r = 1; break;}
