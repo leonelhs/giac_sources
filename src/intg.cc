@@ -1181,6 +1181,11 @@ namespace giac {
 	  }
 	  else {
 	    gen D=sqrt_noabs(b*b-gen(4)*a*c,contextptr);
+	    gen sD=sign(D,contextptr);
+	    if (is_minus_one(sD)){
+	      D=-D;
+	      sD=1;
+	    }
 	    /*
 	      ( *	D=sqrt(b^2-4ac)                                    * )
 	      ( * 	a<0 and D>0 ->	x=[D*2u/[1+u^2]-b]/2a		   * )
@@ -1197,9 +1202,7 @@ namespace giac {
 	    tmpres=integrate_rational(tmpe,u,tmprem,uu,intmode,contextptr);
 	    // sqrt(a*x^2+b*x+c) -> a*[(x+b/2/a)^2-(D/a)^2]
 	    // -> asin(a*x+b/2)
-	    if (!is_positive(D,contextptr))
-	      D=-D;
-	    vecteur vin(makevecteur(u,symbolic(at_atan,u))),vout(makevecteur(uasx,inv(-2,contextptr)*asin(ratnormal((-2*a*gen_x-b)/D),contextptr)));
+	    vecteur vin(makevecteur(u,symbolic(at_atan,u))),vout(makevecteur(uasx,inv(-2,contextptr)*sD*asin(ratnormal((-2*a*gen_x-b)/D),contextptr)));
 	    remains_to_integrate=remains_to_integrate+complex_subst(tmprem,vin,vout,contextptr);
 	    res=alpha+complex_subst(tmpres,vin,vout,contextptr);
 	    return true;

@@ -2984,24 +2984,88 @@ namespace giac {
   static define_unary_function_eval (__makemod,&_makemod,_makemod_s);
   define_unary_function_ptr5( at_makemod ,alias_at_makemod,&__makemod,0,true);
 
+  gen cpp_convert_0(const gen &g,GIAC_CONTEXT){
+    return g;
+  }
+
+  longlong cpp_convert_2(const gen & g,GIAC_CONTEXT){
+    gen h=g;
+    if (!is_integral(h)){
+      gensizeerr(contextptr);
+      return 0;
+    }
+    if (h.type==_INT_)
+      return h.val;
+#ifdef USE_GMP_REPLACEMENTS
+    gensizeerr(contextptr);
+    return 0;
+#else 
+    if (mpz_sizeinbase(*h._ZINTptr,2)>62){
+      gensizeerr(contextptr);      
+      return 0;
+    }
+    if (is_greater(0,g,context0))
+      return -cpp_convert_2(-g,contextptr);
+    unsigned int lo, hi;
+    mpz_t tmp;
+    mpz_init( tmp );
+    mpz_mod_2exp( tmp, *h._ZINTptr, 64 );   /* tmp = (lower 64 bits of n) */    
+    lo = mpz_get_ui( tmp );       /* lo = tmp & 0xffffffff */ 
+    mpz_div_2exp( tmp, tmp, 32 ); /* tmp >>= 32 */
+    hi = mpz_get_ui( tmp );       /* hi = tmp & 0xffffffff */
+    mpz_clear( tmp );
+    longlong i=(((unsigned long long)hi) << 32) + lo;
+    return i;
+#endif
+  }
+
+  double cpp_convert_1(const gen & g,GIAC_CONTEXT){
+    gen h=evalf_double(g,1,context0);
+    if (h.type!=_DOUBLE_){
+      gensizeerr(contextptr);
+      return 0;
+    }
+    return h._DOUBLE_val;
+  }
+
+  vecteur cpp_convert_7(const gen & g,GIAC_CONTEXT){
+    if (g.type!=_VECT){
+      gensizeerr(contextptr);
+      return 0;
+    }
+    return *g._VECTptr;
+  }
+
+  std::string cpp_convert_12(const gen & g,GIAC_CONTEXT){
+    if (g.type!=_STRNG){
+      gensizeerr(contextptr);
+      return "";
+    }
+    return *g._STRNGptr;
+  }
+
   int is_int_or_double(const gen & g){
     if (g.type==_INT_)
-      return 1;
-    if (g.type==_DOUBLE_)
       return 2;
+    if (g.type==_DOUBLE_)
+      return _DOUBLE_;
     if (g.type==_IDNT){
       const char * ch =g._IDNTptr->id_name;
       int s=strlen(ch);
       if (s>=3 && ch[s-2]=='_') {
-	if (ch[s-1]=='d')
+	switch (ch[s-1]){
+	case 'i': case 'l':
 	  return 2;
-	if (ch[s-1]=='i')
-	  return 1;
+	case 'd':
+	  return _DOUBLE_;
+	}
       }
       return 0;
     }
     if (g.type==_SYMB){
-      vecteur v=lidnt(g);
+      if (g._SYMBptr->sommet==at_size)
+	return 2;
+      vecteur v=lvar(g._SYMBptr->feuille);
       return is_int_or_double(v);
     }
     if (g.type!=_VECT)
@@ -3014,7 +3078,58 @@ namespace giac {
     return 3;
   }
 
-  std::string cprintvars(const gen & f0,bool cst,GIAC_CONTEXT){
+  int cpp_vartype(const gen & g){
+    switch (g.type){
+    case _INT_: case _ZINT:
+      return 2;
+    case _DOUBLE_:
+      return _DOUBLE_;
+    case _VECT:
+      return _VECT;
+    case _STRNG:
+      return _STRNG;
+    }
+    if (g.type==_SYMB){
+      if (g._SYMBptr->sommet==at_size)
+	return 2;
+      vecteur v=lvar(g._SYMBptr->feuille);
+      const_iterateur it=v.begin(),itend=v.end();
+      int cur=-1;
+      for (;it!=itend;++it){
+	int i=cpp_vartype(*it);
+	if (i==0)
+	  return 0;
+	if (cur==2 && i==_DOUBLE_)
+	  cur=_DOUBLE_;
+	if (cur==i || (cur==_DOUBLE_ && i==2))
+	  continue;
+	if (cur==-1)
+	  cur=i;
+	else 
+	  return 0;
+      }
+      return cur;
+    }
+    if (g.type!=_IDNT)
+      return 0;
+    const char * ch=g._IDNTptr->id_name;
+    int cl=strlen(ch);
+    if (cl>=3 && ch[cl-2]=='_'){
+      switch (ch[cl-1]){
+      case 'i':case 'l':
+	return 2;
+      case 'd':
+	return _DOUBLE_;
+      case 'v':
+	return _VECT;
+      case 's':
+	return _STRNG;
+      }
+    }
+    return 0;
+  }
+
+  std::string cprintvars(const gen & f0,bool cst,const string & sep,int * typeptr,GIAC_CONTEXT){
     vecteur fv=gen2vecteur(f0);
     string res;
     for (int i=0;;){
@@ -3030,31 +3145,66 @@ namespace giac {
       const char * ch=fvi._IDNTptr->id_name;
       int cl=strlen(ch);
       string vtype=cst?"const giac::gen & ":"giac::gen ";
+      if (typeptr) *typeptr=0;
       if (cl>=3 && ch[cl-2]=='_'){
-	if (ch[cl-1]=='d')
+	switch (ch[cl-1]){
+	case 'i': case 'l':
+	  vtype="long ";
+	  if (typeptr) *typeptr=2;
+	  break;
+	case 'd':
 	  vtype="double ";
-	if (ch[cl-1]=='i')
-	  vtype="int ";
+	  if (typeptr) *typeptr=_DOUBLE_;
+	  break;
+	case 'v':
+	  vtype="giac::vecteur ";
+	  if (typeptr) *typeptr=_VECT;
+	  break;
+	case 's':
+	  vtype="std::string ";
+	  if (typeptr) *typeptr=_STRNG;
+	  break;
+	}
       }
+      if (typeptr) ++typeptr;
       vtype = vtype+ch;
       if (eq || eqsto){ 
-	vtype = vtype+'=';
 	gen g=(fv[i])[1];
 	if (eq)
 	  g=(fv[i])[2];
+#if 1
+	int i=cpp_vartype(fvi);
+	if (!i || i==cpp_vartype(g))
+	  vtype = vtype + " = " +cprint(g,0,contextptr);
+	else 
+	  vtype = vtype + " = cpp_convert_"+print_INT_(i)+"("+cprint(g,0,contextptr)+",contextptr)";
+#else
+	vtype = vtype+'=';
 	int i=is_int_or_double(fvi);
 	if (!i || is_int_or_double(g))
 	  vtype = vtype +g.print(contextptr);
 	else {
 	  vtype = vtype + "("+g.print(contextptr);
-	  vtype += (i==1)?").val":")._DOUBLE_val";
+	  vtype += (i==_DOUBLE_)?")._DOUBLE_val":").val";
 	}
+#endif
       }
       ++i;
       if (i==int(fv.size()))
 	return res+vtype;
-      res = res + vtype + ";\n";
+      res = res + vtype + sep;
     }
+  }
+  
+  std::string cpp_stoprint(const gen & g,GIAC_CONTEXT){
+    if (g.is_symb_of_sommet(at_at) && g._SYMBptr->feuille.type==_VECT && g._SYMBptr->feuille._VECTptr->size()==2){
+      gen f=g._SYMBptr->feuille._VECTptr->front();
+      gen i=g._SYMBptr->feuille._VECTptr->back();
+      int t=cpp_vartype(i);
+      if (t!=2)
+	return cprint(f,0,contextptr)+"[cpp_convert_2("+cprint(i,0,contextptr)+",contextptr)]";
+    }
+    return cprint(g,0,contextptr);
   }
 
   // name is the program name if args==program(..) or 1 for vectors of instructions or 0 otherwise or -1 for vector to put in a makesequence
@@ -3087,12 +3237,49 @@ namespace giac {
     unary_function_ptr & u=args._SYMBptr->sommet;
     gen f=args._SYMBptr->feuille;
     if (u==at_sto && f.type==_VECT && f._VECTptr->size()==2){
+#if 1
+      int i=cpp_vartype(f[1]);
+      if (!i || i==cpp_vartype(f[0]))
+	return cpp_stoprint(f[1],contextptr)+'='+cprint(f[0],0,contextptr);;
+      string res= cpp_stoprint(f[1],contextptr)+" = cpp_convert_"+print_INT_(i)+"("+cprint(f[0],0,contextptr)+",contextptr)";
+      return res;
+#else
       int i=is_int_or_double(f[1]);
       if (!i || is_int_or_double(f[0]))
-	return f[1].print(contextptr)+'='+f[0].print(contextptr);;
-      string res= f[1].print(contextptr)+"=("+f[0].print(contextptr);
-      res += (i==1)?").val":")._DOUBLE_val";
+	return f[1].print(contextptr)+'='+cprint(f[0],0,contextptr);;
+      string res= f[1].print(contextptr)+"=("+cprint(f[0],0,contextptr);
+      res += (i==_DOUBLE_)?")._DOUBLE_val":").val";
       return res;
+#endif
+    }
+    if (u==at_equal && f.type==_VECT && f._VECTptr->size()==2){
+#if 1
+      int i=cpp_vartype(f[0]);
+      if (!i || i==cpp_vartype(f[1]))
+	return cpp_stoprint(f[0],contextptr)+'='+cprint(f[1],0,contextptr);
+      string res= cpp_stoprint(f[0],contextptr)+" = cpp_convert_"+print_INT_(i)+"("+cprint(f[1],0,contextptr)+",contextptr)";
+      return res;
+#else
+      int i=is_int_or_double(f[0]);
+      if (!i || is_int_or_double(f[1]))
+	return f[0].print(contextptr)+'='+cprint(f[1],0,contextptr);;
+      string res= f[0].print(contextptr)+"=("+cprint(f[1],0,contextptr);
+      res += (i==_DOUBLE_)?")._DOUBLE_val":").val";
+      return res;
+#endif
+    }
+    if (u==at_size){
+      int i=cpp_vartype(f);
+      if (i==_VECT)
+	return cprint(f,0,contextptr)+".size()";
+      return "cpp_convert_7("+cprint(f,0,contextptr)+").size()";
+    }
+    if (u==at_at && f.type==_VECT && f._VECTptr->size()==2){
+      int i=cpp_vartype(f._VECTptr->front());
+      int j=cpp_vartype(f._VECTptr->back());
+      if (i==0 || j==2)
+	return f._VECTptr->front().print(contextptr)+"["+cprint(f._VECTptr->back(),0,contextptr)+"]";
+      return f._VECTptr->front().print(contextptr)+"[cpp_convert_2("+cprint(f._VECTptr->back(),0,contextptr)+",contextptr)]";
     }
     if (u==at_program && f.type==_VECT && f._VECTptr->size()==3){
       // header
@@ -3102,23 +3289,29 @@ namespace giac {
       if (head){
 	// IMPROVE if name=="main" make it argv,argc->int
 	string rtype="giac::gen ";
-	const char * ch=name._IDNTptr->id_name;
-	int l=strlen(ch);
-	if (l>=3 && ch[l-2]=='_'){
-	  if (ch[l-1]=='d'){
-	    convert=2;
+	convert=cpp_vartype(name);
+	if (convert){
+	  switch (convert){
+	  case _DOUBLE_:
 	    rtype="double ";
-	  }
-	  if (ch[l-1]=='i'){
-	    convert=1;
-	    rtype="int ";
+	    break;
+	  case 2:
+	    rtype="long ";
+	    break;
+	  case _VECT:
+	    rtype="giac::vecteur ";
+	    break;
+	  case _STRNG:
+	    rtype="std::string ";
+	    break;
 	  }
 	}
-	heads=rtype+ch+"(";
+	heads=rtype+name._IDNTptr->id_name+"(";
       }
       else
 	heads="giac::gen f(";
-      heads += cprintvars(f[0],false,contextptr)+",const giac::context * contextptr)";
+      vector<int> argtype(gen2vecteur(f[0]).size());
+      heads += cprintvars(f[0],false,",",&argtype.front(),contextptr)+",const giac::context * contextptr=0)";
       // core
       string core=cprint(f[2],0,contextptr);
       string res= heads+"{\n"+core+"\n}\n";
@@ -3127,28 +3320,66 @@ namespace giac {
 	heads=name._IDNTptr->id_name;
       if (f[0].type!=_VECT || f[0]._VECTptr->size()<=1){
 	if (f[0].type==_VECT && f[0]._VECTptr->empty())
-	  core ="return "+heads+"(contextptr)";
+	  core ="return "+heads+"(contextptr);";
 	else {
+#if 1
+	  core = "return "+heads+"(cpp_convert_"+print_INT_(convert)+"(g,contextptr),contextptr);";
+#else
 	  switch (convert){
 	  case 0:
 	    core="return "+heads+"(g,contextptr);";
 	    break;
-	  case 1:
+	  case 2:
 	    core="if (g.type!=_INT_) return gensizeerr(contextptr); else return "+heads+"(g.val,contextptr);";
 	    break;
-	  case 2:
+	  case _DOUBLE_:
 	    core="if (g.type!=_DOUBLE_) return gensizeerr(contextptr); else return "+heads+"(g._DOUBLE_val,contextptr);";
 	    break;
 	  }
+#endif
 	}
       }
       else {
 	int nargs=f[0]._VECTptr->size();
 	core = "if (g.type!=_VECT || g.subtype!=_SEQ__VECT || g._VECTptr->size()!="+print_INT_(nargs)+") return gendimerr(contextptr);\n";
-	core += "const vecteur & v = *g._VECTptr;";
+	core += "vecteur v = *g._VECTptr;";
+	for (int i=0;i<nargs;++i){
+	  string vi="v["+print_INT_(i)+"]";
+	  switch(argtype[i]){
+	  case _DOUBLE_:
+	    core += vi+"=evalf_double("+vi+",1,contextptr);\n";
+	    core += "if ("+vi+".type!=_DOUBLE_) return gensizeerr(contextptr);\n";
+	    break;
+	  case 2:
+	    core += "if (!is_integral("+vi+")) return gensizeerr(contextptr);\n";
+	    break;
+	  case _VECT:
+	    core += "if ("+vi+".type!=_VECT) return gensizeerr(contextptr);\n";
+	    break;
+	  case _STRNG:
+	    core += "if ("+vi+".type!=_STRNG) return gensizeerr(contextptr);\n";
+	    break;
+	  }
+	}
 	core += "return "+heads+"(" ;
 	for (int i=0;;){
-	  core += "v["+print_INT_(i)+"]";
+	  string vi="v["+print_INT_(i)+"]";
+	  switch (argtype[i]){
+	  case _DOUBLE_:
+	    core += vi+"._DOUBLE_val";
+	    break;
+	  case 2:
+	    core += vi+".val";
+	    break;
+	  case _VECT:
+	    core += "*"+vi+"._VECTptr";
+	    break;
+	  case _STRNG:
+	    core += "*"+vi+"._STRNGptr";
+	    break;
+	  default:
+	    core += vi;
+	  }
 	  ++i;
 	  if (i==nargs) break;
 	  core += ",";
@@ -3160,7 +3391,7 @@ namespace giac {
       return res;
     }
     if (u==at_local)
-      return cprintvars(f[0][0],false,contextptr)+";\n"+cprint(f[1],1,contextptr);
+      return cprintvars(f[0][0],false,";\n",0,contextptr)+";\n"+cprint(f[1],1,contextptr);
     if (u==at_for && f.type==_VECT && f._VECTptr->size()==4){
       string res="for(";
       res = res +cprint(f[0],0,contextptr);
@@ -3208,26 +3439,48 @@ namespace giac {
     // operators: if all vars are double or int args.print()
     // otherwise or not an operator giac::opname(,contextptr)
     string res=u.ptr()->print(contextptr);
-    if (u==at_sin || u==at_cos || u==at_tan || u==at_asin || u==at_acos || u==at_atan || u==at_exp || u==at_ln )
-      ;
+    bool idf=is_int_or_double(f);
+    if (u==at_sin || u==at_cos || u==at_tan || u==at_asin || u==at_acos || u==at_atan || u==at_exp || u==at_ln || u==at_abs){
+      if (idf)
+	return "std::"+args.print(contextptr);
+    }
     else
       res = '_'+res;
-    if (u.ptr()->printsommet==printsommetasoperator){
-      if (is_int_or_double(f))
-	return args.print(contextptr);
+    if (u.ptr()->printsommet==printsommetasoperator || (idf && (u==at_inferieur_strict || u==at_inferieur_egal || u==at_superieur_strict || u==at_superieur_egal))){
       int rs=int(res.size());
+      if (idf || (rs==2 && res[1]=='+' || res[1]=='*')){
+	res=u.ptr()->print(contextptr);
+	string sres;
+	vecteur v=gen2vecteur(f);
+	for (int i=0;;){
+	  bool b=need_parenthesis(v[i]);
+	  if (b) sres += '(';
+	  sres += cprint(v[i],0,contextptr);
+	  if (b) sres += ')';
+	  ++i;
+	  if (i>=v.size())
+	    break;
+	  sres += res;
+	}
+	return sres;
+      }
       if (rs==2){
 	switch (res[1]){
 	case '+':
 	  res="_plus";
+	  break;
 	case '*':
 	  res="_prod";
+	  break;
 	case '<':
 	  res="_inferieur_strict";
+	  break;
 	case '>':
 	  res="_superieur_strict";
+	  break;
 	case '=':
 	  res="_equal";
+	  break;
 	}
       }
     }
@@ -3297,16 +3550,16 @@ namespace giac {
       int not_ok=system(cmd.c_str());
       if (not_ok)
 	*logptr(contextptr) << "Warning, indent not found, please install for nice output" << endl;
-      cmd="c++ -I.. -fPIC -DPIC -g -c giac_"+funcname+".cpp -o giac_"+funcname+".lo";
+      cmd="c++ -I.. -I. -fPIC -DPIC -g -c giac_"+funcname+".cpp -o giac_"+funcname+".lo";
       *logptr(contextptr) << "Running " << cmd << endl;
       not_ok=system(cmd.c_str());
       if (not_ok){
 	*logptr(contextptr) << "Unable to compile, please fix cpp file" << endl;
 	return -1;
       }
-      cmd="ln -sf giac_"+funcname+".lo giac_"+funcname+".o";
-      *logptr(contextptr) << "Running " << cmd << endl;
-      not_ok=system(cmd.c_str());
+      //cmd="ln -sf giac_"+funcname+".lo giac_"+funcname+".o";
+      //*logptr(contextptr) << "Running " << cmd << endl;
+      //not_ok=system(cmd.c_str());
       cmd="cc -shared giac_"+funcname+".lo -lgiac -lc -Wl,-soname -Wl,libgiac_"+funcname+"so.0 -o libgiac_"+funcname+".so.0.0.0";
       *logptr(contextptr) << "Running " << cmd << endl;
       not_ok=system(cmd.c_str());

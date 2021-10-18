@@ -1,3 +1,9 @@
+# keep_algext
+1 Laisse les extensions algébriques telles quelles (keep_algext:=1) ou tente de les réécrire (keep_algext:=0).
+2 Pseudo-variable to keep algebraic extensions (keep_algext:=1) or try to rewrite them (keep_algext:=0)
+0 :=Intg(0 or 1)
+ keep_algext:=1
+
 # jacobi_linsolve
 1 Résolution d'un système linéaire de matrice A et de second membre b, par la méthode itérative de Jacobi avec une tolérance de eps et un nombre maximal d'itérations de maxiter. 
 2 Resolution of a linear system  A*X=b  by the iterative Jacobi method with eps as error margin  and a number of iterations inferior to maxiter.
@@ -675,8 +681,8 @@ polar_point(1,pi/4)
 polar_point(2,-pi/3)
 
 # vector
-1 Définit et trace un vecteur (origine 0 si 1 arg) par deux points ou par un couple de coordonnées ou par un couple d'affixe (en 2D) ou par un point et un vecteur ou par un point (son extrémité et son origine étant [0,0,0]). Utiliser une liste pour les composantes d'un vecteur de R^n.
-2 Defines a vector (origin is 0 if 1 arg) with two points or two components or two affix (for 2D) or with a point and a vector or with a point (its extremity and its origin is [0,0,0]). 
+1 Définit et trace un vecteur (origine 0 si 1 arg) par deux points ou par un couple de coordonnées ou par un couple d'affixe (en 2D) ou par un point et un vecteur ou par un point (son extrémité et son origine étant [0,0,0]). Il faut utiliser des listes pour les composantes d'un vecteur de R^n.
+2 Defines a vector (origin is 0 if 1 arg) with two points or two components or two affix (for 2D) or with a point and a vector or with a point (its extremity and its origin is [0,0,0]). You have to use lists for de components of an R^n vector.
 3 Define un vector por dos puntos o por un par de coordenadas o por un par de afijos (en 2D) o con un punto y un vector o con un punto A (con origen [0,0,0]).
 4 Ορισμός διανύσματος με δύο σημεία ή με ένα ζευγάρι συντεταγμένων ή δύο προσθήκες (για 2D) ή με ένα σημείο και ένα διάνυσμα ή με ένα σημείο (το άκρο του και την αρχική του θέση να είναι [0,0,0]).
 8 向量。
@@ -760,7 +766,7 @@ odd(1251)
  plotimplicit(x^2+y^2+z^2-1,[x,y,z],xstep=0.2,ystep=0.2,zstep=0.2,unfactored)
  plotimplicit(x^2+y^2+z^2-1,x=0..1,y=0..1,z=0..1,xstep=0.2,ystep=0.2,zstep=0.2,unfactored)
 
-# DOM_FLOAT float
+# DOM_FLOAT float double
 1 DOM_FLOAT ou float est un entier qui représente le type d'une variable flottante, valeur de la commande type. C'est aussi une option de assume.
 2 DOM_FLOAT or float is an integer representing the type of a floating point variable, returned by the type command. It is also an option of the assume command.
 3 DOM_FLOAT o float es un entero que representa el tipo de una variable flotante, valor del comando type o es una opción del comando assume.
@@ -2200,6 +2206,7 @@ position([50,70])
 -2 initialise
  cap
 cap()
+cap 90
 
 # vers
 1 Dirige la tortue en direction du point donné en argument.
@@ -4615,6 +4622,7 @@ line_paper(0.5,3*pi/4)
 0 Real(ux),Real(t),Real(uy),[x=xmin..xmax,y=ymin..ymax]
 triangle_paper(1,pi/3,sqrt(3)/2)
 triangle_paper(1,pi/3,sqrt(3)/2,x=-1..4,y=-2..2)
+papier_triangule(1,pi/3,sqrt(3)/2,x=-2..6,y=-4*sqrt(3)..4*sqrt(3))
 triangle_paper(0.5,3*pi/4,0.5)
 
 # dot_paper
@@ -5873,6 +5881,7 @@ seq(2^k,k,0,8,2)
  [(2^k)$(k=0..3)]
  (0.3..2)$0.2
  (k^2)$(k=(1..10)$2)
+ (k^2)$(k=1..10,2)
  (k+1)$(k=(0..1)$(1/2))
  (k+1)$(k=(0..1)$0.5)
  [k^2,k^3]$(k=1..10)
@@ -6887,8 +6896,8 @@ colspace([[1,2,3],[1,3,6],[2,5,9]],d)
  (sq@sin)(x)
 
 # angle_radian
-1 Nom qui permet de travailler en radian (angle_radian:=1) ou en degré (angle_radian:=0).
-2 Name which allow to work with radian (angle_radian:=1) or degree (angle_radian:=0).
+1 Pseudo-variable pour travailler en radian (angle_radian:=1) ou en degré (angle_radian:=0).
+2 Pseudo-variable to work with radian (angle_radian:=1) or degree (angle_radian:=0).
 3 Nombre que permite trabajar con radianes (angle_radian:=1) o grados (angle_radian:=0).
 4 Ορίζει αν οι πράξεις θα εκτελούνται σε ακτίνια (angle_radian:=1) ή σε μοίρες (angle_radian:=0).
 0 :=Intg(0 or 1)
@@ -6897,8 +6906,8 @@ colspace([[1,2,3],[1,3,6],[2,5,9]],d)
  angle_radian:=0
 
 # approx_mode
-1 Nom qui permet de travailler en mode approximatif (approx_mode:=1) ou en mode exact (approx_mode:=0).
-2 Name which allow to work in approximative mode (approx_mode:=1) or in exact mode (approx_mode:=0).
+1 Pseudo-variable pour travailler en mode approximatif (approx_mode:=1) ou en mode exact (approx_mode:=0).
+2 Pseudo-variable to work in approximative mode (approx_mode:=1) or in exact mode (approx_mode:=0).
 3 Nombre que permite trabajar en modo aproximado (approx_mode:=1) o en modo exacto (approx_mode:=0).
 4 Ορίζει αν οι πράξεις θα εκτελούνται προσεγγιστικά (approx_mode:=1) ή με ακρίβεια (approx_mode:=0).
 0 :=Intg(0 or 1)
@@ -6907,8 +6916,8 @@ colspace([[1,2,3],[1,3,6],[2,5,9]],d)
  approx_mode:=0
 
 # complex_mode
-1 Nom qui permet de travailler en mode complexe (complex_mode:=1) ou en mode réel (complex_mode:=0).
-2 Name which allow to work in complex mode (complex_mode:=1) or in real mode (complex_mode:=0).
+1 Pseudo-variable pour travailler en mode complexe (complex_mode:=1) ou en mode réel (complex_mode:=0).
+2 Pseudo-variable to work in complex mode (complex_mode:=1) or in real mode (complex_mode:=0).
 3 Nombre que permite trabajar en modo complejo (complex_mode:=1) o en modo real (complex_mode:=0).
 4 Ορίζει αν οι πράξεις θα εκτελούνται στους μιγαδικούς (complex_mode:=1) ή στους πραγματικούς (complex_mode:=0).
 0 :=Intg(0 or 1)
@@ -6917,8 +6926,8 @@ colspace([[1,2,3],[1,3,6],[2,5,9]],d)
  complex_mode:=0
 
 # complex_variables
-1 Nom qui permet de travailler avec des variables complexes (complex_variables:=1) ou avec des variables réelles (complex_variables:=0).
-2 Name which allow to work with complex variables (complex_variables:=1) or with real variables (complex_variables:=0).
+1 Pseudo-variable pour travailler avec des variables complexes (complex_variables:=1) ou avec des variables réelles (complex_variables:=0).
+2 Pseudo-variable to work with complex variables (complex_variables:=1) or with real variables (complex_variables:=0).
 3 Nombre que permite trabajar con variables complejas (complex_variables:=1) o con variables reales (complex_variables:=0).
 4 Ορίζει αν οι πράξεις θα εκτελούνται με μιγαδικές μεταβλητές (complex_variables:=1) ή με πραγματικές μεταβλητές (complex_variables:=0).
 0 :=Intg(0 or 1)
@@ -6927,8 +6936,8 @@ colspace([[1,2,3],[1,3,6],[2,5,9]],d)
  complex_variables:=0
 
 # variables_are_files
-1 Nom qui permet de spécifier si on veut sauver les différentes variables dans un fichier "nomdelavariable.cas".
-2 Name which allow to specify if you want to save the variables as file "nameofthevariable.cas".
+1 Pseudo-variable pour spécifier si on veut sauver les différentes variables dans un fichier "nomdelavariable.cas".
+2 Pseudo-variable to specify if you want to save the variables as file "nameofthevariable.cas".
 3 Nombre que permite especificar si se quieren guardar las variables como "nombredevariable.cas".
 4 Επιτρέπει να καθορίσουμε αν επιθυμούμε την αποθήκευση των μεταβλητών στο αρχείο "nameofthevariable.cas".
 0 :=Intg(0 or 1)
@@ -6937,8 +6946,8 @@ colspace([[1,2,3],[1,3,6],[2,5,9]],d)
  variables_are_files:=0
 
 # Digits DIGITS
-1 Nom qui permet de modifier le nombre n de chiffres significatifs (Digits:=n).
-2 Name which allow to modify the number of significant digits (Digits:=n).
+1 Pseudo-variable pour modifier le nombre n de chiffres significatifs (Digits:=n).
+2 Pseudo-variable to modify the number of significant digits (Digits:=n).
 3 Nombre que permite modificar el número de dígitos significantes (Digits:=n).
 4 Επιτρέπει την τροποποίηση του αριθμού n των σημαντικών ψηφίων (Digits:=n).
 0 :=Intg(n)
@@ -10083,8 +10092,6 @@ head("bonjour")
 0 Intg(n)
 -1 legendre
 -2 laguerre
--3 tchebyshev1
--4 tchebyshev2
 hermite(3)
 
 # grad
@@ -10657,8 +10664,6 @@ lagrange([0,1,2],exp,lagrange)
 0 Intg(n)
 -1 legendre
 -2 hermite
--3 tchebyshev1
--4 tchebyshev2
 laguerre(4)
 
 # laplace
@@ -10676,15 +10681,16 @@ laplace(sin(x)^2,x,s)
 laplace(Heaviside(x-1),x,s)
 
 # laplacian
-1 Calcule le laplacien de l'expression Xpr par rapport à la liste de variables ou la matrice du Laplacien discret 1-d
-2 Returns the Laplacian of the expression Xpr with respect to the list of variables
+1 Calcule le laplacien de l'expression Xpr par rapport à la liste de variables et laplacian(n) pour n entier ou flottant entier renvoie la matrice de taille n du laplacien discret en dimension 1. 
+2 Returns the Laplacian of the expression Xpr with respect to the list of variables and laplacian(n) for n  integer or float integer returns the matrix of size n of the discret laplacian en dimension 1.
 3 Calcula el laplaciano de Xpr con respecto a la lista de variables
 4 Επιστρέφει την Λαπλασιανή της Xpr αναφορικά με μια λίστα μεταβλητών
 0 Expr(Xpr),LstVar
 -1 
 -2
 laplacian(exp(z)*cos(x*y),[x,y,z])
-laplacian(100)
+laplacian(3)
+laplacian(3.0)
 
 # lcm
 1 PPCM de 2 polynômes de plusieurs variables ou de 2 entiers ou de 2 rationnels.
@@ -10706,10 +10712,7 @@ lcm((x^2-1)*(y^2-1)*z^2,x^3*y^3*z+(-(y^3))*z+x^3*z-z)
 3 Devuelve el n-ésimo polinomio de Legendre
 4 Επιστρέφει το n-στο πολυώνυμο Legendre
 0 Intg(n)
--1 hermite
--2 laguerre
--3 tchebyshev1
--4 tchebyshev2
+-1 
 legendre(4)
 
 # locus

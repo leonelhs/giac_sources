@@ -92,6 +92,7 @@
       {"default",1,0,0,T_DEFAULT},
       {"dnewton_solver"         ,1, _DNEWTON_SOLVER, _INT_SOLVER,T_NUMBER},
       {"dot_line"         ,1, _DOT_LINE, _INT_COLOR ,T_NUMBER},
+      {"double"               ,0, _DOUBLE_, _INT_TYPE, T_TYPE_ID},
       {"downto",0,-1,0,T_TO},
       {"elif",0,0,0,T_ELIF},
       {"else",0,0,0,T_ELSE},

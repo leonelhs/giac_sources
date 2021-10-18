@@ -1761,6 +1761,24 @@ namespace giac {
     if (s<1)
       return gensizeerr(contextptr);
     gen e1=vargs[1];
+    if (!densityplot && e1.type==_IDNT){
+      gen m=minus_inf,M=plus_inf;
+      vecteur poi,tvi;
+      if (step_func(vargs[0],e1,m,M,poi,tvi,true,contextptr)){
+	gen scale=(gnuplot_xmax-gnuplot_xmin)/5.0;
+	if (is_inf(m))
+	  m=gnuplot_xmin;
+	if (is_inf(M))
+	  M=gnuplot_xmax;
+	if (m!=M)
+	  scale=(M-m)/3.0;
+	m=m-scale*0.999; M=M+scale*1.001;
+	vargs[1]=symb_equal(vargs[1],symb_interval(m,M));
+	gen p=funcplotfunc(gen(vargs,_SEQ__VECT),false,contextptr);
+	poi=mergevecteur(poi,gen2vecteur(p));
+	return gen(poi,_SEQ__VECT);
+      }
+    }
     bool newsyntax;
     if (e1.type!=_VECT){
       newsyntax=readrange(e1,gnuplot_xmin,gnuplot_xmax,e1,xmin,xmax,contextptr) && (is_equal(vargs[1]) || s<4);
