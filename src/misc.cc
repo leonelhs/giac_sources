@@ -123,6 +123,7 @@ namespace giac {
 	return false;
       return is_greater(m,d1+20,context0);
     }
+    return true;
   }
   vecteur divided_differences(const vecteur & x,const vecteur & y){
     vecteur res(y);
@@ -7735,7 +7736,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
 
   gen _printf(const gen & args,GIAC_CONTEXT){
     if (args.type!=_VECT || args.subtype!=_SEQ__VECT){
+      int st=step_infolevel(contextptr);
+      step_infolevel(1,contextptr);
       gprintf("%gen",vecteur(1,args),contextptr);
+      step_infolevel(st,contextptr);
       return 1;
     }
     vecteur v=*args._VECTptr;
@@ -7743,7 +7747,10 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       return 0;
     string s=*v.front()._STRNGptr;
     v.erase(v.begin());
+    int st=step_infolevel(contextptr);
+    step_infolevel(1,contextptr);
     gprintf(s,v,contextptr);
+    step_infolevel(st,contextptr);
     return 1;
   }
   static const char _printf_s []="printf";
