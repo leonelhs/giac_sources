@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xcas 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-24 13:33+0200\n"
+"POT-Creation-Date: 2016-05-26 13:13+0200\n"
 "PO-Revision-Date: 2004-04-19 08:26+0100\n"
 "Last-Translator: J.Manrique Lopez de la Fuente <jsmanrique_lopez@yahoo.es>\n"
 "Language-Team: es@li.org <es@li.org>\n"
@@ -7785,7 +7785,7 @@ msgstr ""
 #: src/maple.cc:1085 src/ti89.cc:2486 src/modpoly.cc:464 src/modpoly.cc:482
 #: src/modpoly.cc:616 src/modpoly.cc:634 src/modpoly.cc:710 src/modpoly.cc:726
 #: src/modpoly.cc:748 src/modpoly.cc:764 src/modpoly.cc:1179 src/solve.cc:4116
-#: src/solve.cc:4198 src/intg.cc:3206 src/intgab.cc:264 src/prog.cc:1890
+#: src/solve.cc:4198 src/intg.cc:3209 src/intgab.cc:264 src/prog.cc:1890
 #: src/gen.cc:1893 src/gen.cc:2043 src/gen.cc:2221 src/gen.cc:4196
 #: src/gen.cc:4242 src/gen.cc:4501 src/gen.cc:4951 src/gen.cc:4990
 #: src/gen.cc:5153 src/gen.cc:5659 src/gen.cc:6092 src/gen.cc:6456
@@ -7843,34 +7843,34 @@ msgstr ""
 msgid "gausspol.cc/gcdheu"
 msgstr ""
 
-#: src/gausspol.cc:4675
+#: src/gausspol.cc:4790
 msgid "Square free factor mod bug"
 msgstr ""
 
-#: src/gausspol.cc:4809
+#: src/gausspol.cc:4924
 msgid ""
 "Multivariate finite field factorzation expects a unitary polynomial regular "
 "at 0. Try to translate with respect to one variable"
 msgstr ""
 
-#: src/gausspol.cc:4905
+#: src/gausspol.cc:5020
 msgid "gausspol.cc/mod_factor"
 msgstr ""
 
-#: src/gausspol.cc:5086
+#: src/gausspol.cc:5202
 msgid "Factor: Only one algebraic extension allowed"
 msgstr ""
 
-#: src/gausspol.cc:5103
+#: src/gausspol.cc:5219
 msgid "Modular factorization not yet accessible"
 msgstr ""
 
 # src/xcas.cxx:6534
-#: src/gausspol.cc:5196
+#: src/gausspol.cc:5312
 msgid "To be implemented"
 msgstr "Por implementar"
 
-#: src/gausspol.cc:6891 src/gausspol.cc:6893
+#: src/gausspol.cc:7007 src/gausspol.cc:7009
 msgid "Too much substitution variables"
 msgstr ""
 
@@ -8117,7 +8117,7 @@ msgstr "Por implementar"
 msgid "Bessel"
 msgstr ""
 
-#: src/maple.cc:202 src/vecteur.cc:10292
+#: src/maple.cc:202 src/vecteur.cc:10315
 msgid "Option keep_pivot not applicable"
 msgstr ""
 
@@ -8362,7 +8362,7 @@ msgstr "Ordena"
 msgid "Not a vector potential"
 msgstr ""
 
-#: src/misc.cc:1609 src/vecteur.cc:12887 src/vecteur.cc:12908
+#: src/misc.cc:1609 src/vecteur.cc:12910 src/vecteur.cc:12931
 msgid "Low accuracy"
 msgstr ""
 
@@ -8739,15 +8739,15 @@ msgstr ""
 msgid "modpoly.cc/DivRem"
 msgstr ""
 
-#: src/modpoly.cc:3593
+#: src/modpoly.cc:3597
 msgid "Argument must be a vector of even size"
 msgstr ""
 
-#: src/modpoly.cc:3718
+#: src/modpoly.cc:3722
 msgid "modpoly.cc/powmod"
 msgstr ""
 
-#: src/modpoly.cc:7147 src/modpoly.cc:7168
+#: src/modpoly.cc:7151 src/modpoly.cc:7172
 msgid "modpoly.cc/ininttype2ZZ"
 msgstr ""
 
@@ -8789,125 +8789,130 @@ msgstr ""
 msgid "Hence derivative of %gen by linearity is %gen"
 msgstr ""
 
-#: src/derive.cc:131
+#: src/derive.cc:133
+#, c-format
+msgid "Derivative of %gen/%gen, a quotient: (u/v)'=(u'*v-u*v')/v^2"
+msgstr ""
+
+#: src/derive.cc:137
 #, c-format
 msgid ""
 "Derivative of %gen, apply product rule: (u*v*...)'=u'*v*...+u*v'*...+..."
 msgstr ""
 
-#: src/derive.cc:163
+#: src/derive.cc:169
 #, c-format
 msgid "Hence derivative of %gen by product rule is %gen"
 msgstr ""
 
-#: src/derive.cc:174
+#: src/derive.cc:180
 #, c-format
 msgid "Derivative of a power: (%gen)'=(%gen)*(%gen)'*%gen"
 msgstr ""
 
-#: src/derive.cc:176
+#: src/derive.cc:182
 #, c-format
 msgid ""
 "Derivative of a power: (%gen)'=%gen*(%gen)'*ln(%gen)+(%gen)*(%gen)'*%gen"
 msgstr ""
 
-#: src/derive.cc:188
+#: src/derive.cc:194
 #, c-format
 msgid "Derivative of inv(u)=-u'/u^2 with u=%gen"
 msgstr ""
 
-#: src/derive.cc:227
+#: src/derive.cc:233
 msgid "Derivative of rootof currently not handled"
 msgstr ""
 
 # src/xcas.cxx:3724
 # src/xcas.cxx:3761
 # src/xcas.cxx:4777
-#: src/derive.cc:235
+#: src/derive.cc:241
 #, fuzzy, c-format
 msgid "Derivative of elementary function %gen is %gen"
 msgstr "Guardar config."
 
-#: src/derive.cc:238
+#: src/derive.cc:244
 #, c-format
 msgid "Derivative of a composition: (%gen)'=(%gen)'*f'(%gen) where f=%gen"
 msgstr ""
 
-#: src/derive.cc:259
+#: src/derive.cc:265
 msgid "Expecting an expression, not a function"
 msgstr ""
 
-#: src/derive.cc:428 src/derive.cc:446 src/derive.cc:465 src/derive.cc:468
+#: src/derive.cc:434 src/derive.cc:452 src/derive.cc:471 src/derive.cc:474
 msgid "derive.cc/derive_SYMB"
 msgstr ""
 
-#: src/derive.cc:590 src/derive.cc:592
+#: src/derive.cc:596 src/derive.cc:598
 msgid "derive.cc/derive"
 msgstr ""
 
-#: src/derive.cc:633
+#: src/derive.cc:639
 #, c-format
 msgid "===== Derive %gen with respect to %gen ====="
 msgstr ""
 
-#: src/derive.cc:750
+#: src/derive.cc:756
 #, c-format
 msgid "===== Critical points for %gen ====="
 msgstr ""
 
-#: src/derive.cc:759
+#: src/derive.cc:765
 #, c-format
 msgid ""
 "Derivative of %gen with respect to %gen is %gen\n"
 "Solving %gen with respect to %gen answer %gen"
 msgstr ""
 
-#: src/derive.cc:771 src/derive.cc:777
+#: src/derive.cc:777 src/derive.cc:783
 #, c-format
 msgid "Hessian at %gen : %gen"
 msgstr ""
 
-#: src/derive.cc:782 src/derive.cc:788
+#: src/derive.cc:788 src/derive.cc:794
 #, c-format
 msgid "%gen critical point (unknown type)"
 msgstr ""
 
-#: src/derive.cc:795
+#: src/derive.cc:801
 #, c-format
 msgid "%gen critical point (0 as eigenvalue) %gen"
 msgstr ""
 
-#: src/derive.cc:800
+#: src/derive.cc:806
 #, c-format
 msgid "%gen is a saddle point (2 eigenvalues with opposite sign) %gen"
 msgstr ""
 
-#: src/derive.cc:808
+#: src/derive.cc:814
 #, c-format
 msgid "%gen is a local minimum %gen"
 msgstr ""
 
-#: src/derive.cc:812
+#: src/derive.cc:818
 #, c-format
 msgid "%gen is a local maximum %gen"
 msgstr ""
 
-#: src/derive.cc:829
+#: src/derive.cc:835
 #, c-format
 msgid "%gen is a local minimum"
 msgstr ""
 
-#: src/derive.cc:835
+#: src/derive.cc:841
 #, c-format
 msgid "%gen is a local maximum"
 msgstr ""
 
-#: src/derive.cc:841
+#: src/derive.cc:847
 #, c-format
 msgid "%gen is a critical point (unknown type)"
 msgstr ""
 
-#: src/derive.cc:845
+#: src/derive.cc:851
 #, c-format
 msgid "%gen is an inflection point"
 msgstr ""
@@ -9179,179 +9184,179 @@ msgstr ""
 # src/xcas.cxx:3697
 # src/xcas.cxx:3735
 # src/xcas.cxx:5378
-#: src/intg.cc:1241
+#: src/intg.cc:1243
 #, fuzzy
 msgid "trig_fraction"
 msgstr "Programando"
 
-#: src/intg.cc:1251
+#: src/intg.cc:1253
 #, c-format
 msgid ""
 "Integrate rational fraction of exponential %gen by %gen change of variable, "
 "leading to integral of %gen"
 msgstr ""
 
-#: src/intg.cc:1255 src/intg.cc:1273 src/intg.cc:2208
+#: src/intg.cc:1257 src/intg.cc:1275 src/intg.cc:2210
 #, c-format
 msgid "Back substitution %gen->%gen in %gen"
 msgstr ""
 
-#: src/intg.cc:1265
+#: src/intg.cc:1267
 #, c-format
 msgid ""
 "Integrate rational fraction of trigonometric %gen by %gen change of "
 "variable, leading to integral of %gen"
 msgstr ""
 
-#: src/intg.cc:1326
+#: src/intg.cc:1328
 msgid "in intgab_rational"
 msgstr ""
 
-#: src/intg.cc:1548
+#: src/intg.cc:1550
 msgid "in integrate_rational"
 msgstr ""
 
-#: src/intg.cc:1607
+#: src/intg.cc:1609
 #, c-format
 msgid "Integrate rational fraction %gen, change of variable %gen"
 msgstr ""
 
-#: src/intg.cc:1741
+#: src/intg.cc:1743
 #, c-format
 msgid "Integrate rational fraction %gen"
 msgstr ""
 
-#: src/intg.cc:1759
+#: src/intg.cc:1761
 #, c-format
 msgid ""
 "Partial fraction %gen -> Hermite reduction -> integrate squarefree part %gen"
 msgstr ""
 
-#: src/intg.cc:1767
+#: src/intg.cc:1769
 #, c-format
 msgid "Partial fraction integration of %gen"
 msgstr ""
 
-#: src/intg.cc:2120
+#: src/intg.cc:2122
 msgid ""
 "Warning, integration of abs or sign assumes constant sign by intervals "
 "(correct if the argument is real):\n"
 "Check "
 msgstr ""
 
-#: src/intg.cc:2138
+#: src/intg.cc:2140
 msgid "Unable to cancel step at "
 msgstr ""
 
-#: src/intg.cc:2143
+#: src/intg.cc:2145
 msgid "Discontinuities at zeroes of "
 msgstr ""
 
-#: src/intg.cc:2205
+#: src/intg.cc:2207
 #, c-format
 msgid "Integrate %gen, change of variable %gen->%gen, new integral %gen"
 msgstr ""
 
-#: src/intg.cc:2253
+#: src/intg.cc:2255
 msgid "Temporary replacing surd/NTHROOT by fractional powers"
 msgstr ""
 
-#: src/intg.cc:2270
+#: src/intg.cc:2272
 msgid "integrate id_rem "
 msgstr ""
 
-#: src/intg.cc:2290
+#: src/intg.cc:2292
 msgid ""
 "Warning: piecewise indefinite integration does not return a continuous "
 "antiderivative"
 msgstr ""
 
-#: src/intg.cc:2296
+#: src/intg.cc:2298
 msgid "integrate step -2 "
 msgstr ""
 
-#: src/intg.cc:2309
+#: src/intg.cc:2311
 msgid "Bad when "
 msgstr ""
 
-#: src/intg.cc:2327
+#: src/intg.cc:2329
 msgid "integrate step 0 "
 msgstr ""
 
-#: src/intg.cc:2345
+#: src/intg.cc:2347
 #, c-format
 msgid ""
 "Integrate %gen, a linear expression u=%gen to a constant power n=%gen,\n"
 "If n=-1 then ln(u)/a else u^(n+1)/((n+1)*%gen)"
 msgstr ""
 
-#: src/intg.cc:2353 src/intg.cc:2361
+#: src/intg.cc:2355 src/intg.cc:2363
 #, c-format
 msgid ""
 "Integrate %gen, a linear expression u=%gen to a constant power n=1/%gen,\n"
 "If n=-1 then ln(u)/a else u^(n+1)/((n+1)*%gen)"
 msgstr ""
 
-#: src/intg.cc:2379
+#: src/intg.cc:2381
 msgid "integrate step 1 "
 msgstr ""
 
-#: src/intg.cc:2399
+#: src/intg.cc:2401
 #, c-format
 msgid ""
 "Integrate %gen: function %gen applied to a linear expression u=%gen, result "
 "%gen"
 msgstr ""
 
-#: src/intg.cc:2444 src/intg.cc:2498 src/intg.cc:2518 src/intg.cc:2585
-#: src/intg.cc:2607
+#: src/intg.cc:2446 src/intg.cc:2500 src/intg.cc:2520 src/intg.cc:2587
+#: src/intg.cc:2609
 #, c-format
 msgid "Integration of %gen: f(u)*u' where f=%gen->%gen and u=%gen"
 msgstr ""
 
-#: src/intg.cc:2526
+#: src/intg.cc:2528
 msgid "integrate step 2 "
 msgstr ""
 
-#: src/intg.cc:2616
+#: src/intg.cc:2618
 msgid "integrate step 3 "
 msgstr ""
 
-#: src/intg.cc:2675
+#: src/intg.cc:2677
 #, c-format
 msgid "Integration of %gen: by part, u*v'=%gen*(%gen)'"
 msgstr ""
 
-#: src/intg.cc:2709
+#: src/intg.cc:2711
 #, c-format
 msgid "Integration of %gen by part of u*v' where u=1 and v=%gen'"
 msgstr ""
 
-#: src/intg.cc:2805
+#: src/intg.cc:2807
 #, c-format
 msgid "Integrate %gen, no heuristic found, running Risch algorithm"
 msgstr ""
 
-#: src/intg.cc:2874
+#: src/intg.cc:2876
 #, c-format
 msgid "===== Step/step primitive of %gen with respect to %gen ====="
 msgstr ""
 
-#: src/intg.cc:2887
+#: src/intg.cc:2889
 #, c-format
 msgid "Hence primitive of %gen with respect to %gen is %gen"
 msgstr ""
 
-#: src/intg.cc:2934
+#: src/intg.cc:2936
 msgid "Checking exact value of integral with numeric approximation"
 msgstr ""
 
-#: src/intg.cc:2944
+#: src/intg.cc:2946
 msgid ""
 "Error while checking exact value with approximate value, returning both!"
 msgstr ""
 
-#: src/intg.cc:2978
+#: src/intg.cc:2980
 msgid ""
 "Warning, complex variables is set, this can lead to fairly complex answers. "
 "It is recommended to switch off complex variables in the settings or by "
@@ -9359,70 +9364,70 @@ msgid ""
 "assume(a,complex)."
 msgstr ""
 
-#: src/intg.cc:2980
+#: src/intg.cc:2982
 msgid "integrate begin"
 msgstr ""
 
-#: src/intg.cc:3178
+#: src/intg.cc:3181
 msgid "Floor definite integration: can only handle linear < or > condition"
 msgstr ""
 
 # src/xcas.cxx:3724
 # src/xcas.cxx:3761
 # src/xcas.cxx:4777
-#: src/intg.cc:3237 src/prog.cc:9039
+#: src/intg.cc:3240 src/prog.cc:9039
 #, fuzzy
 msgid "Assuming false condition "
 msgstr "Guardar config."
 
-#: src/intg.cc:3241 src/prog.cc:9043
+#: src/intg.cc:3244 src/prog.cc:9043
 msgid "Assuming true condition "
 msgstr ""
 
-#: src/intg.cc:3256
+#: src/intg.cc:3259
 msgid "Piecewise definite integration: can only handle linear < or > condition"
 msgstr ""
 
-#: src/intg.cc:3404
+#: src/intg.cc:3407
 msgid "No check were made for singular points of antiderivative "
 msgstr ""
 
-#: src/intg.cc:3404
+#: src/intg.cc:3407
 msgid " for definite integration in ["
 msgstr ""
 
-#: src/intg.cc:3423
+#: src/intg.cc:3426
 msgid "Unable to find singular points of antiderivative"
 msgstr ""
 
-#: src/intg.cc:3434
+#: src/intg.cc:3437
 msgid "Unable to handle approx. or algebraic extension singular point "
 msgstr ""
 
-#: src/intg.cc:3434
+#: src/intg.cc:3437
 msgid " of antiderivative"
 msgstr ""
 
-#: src/intg.cc:3786
+#: src/intg.cc:3789
 msgid ""
 "Infinity or undefined limit at bounds.\n"
 "Using middle point Romberg method"
 msgstr ""
 
-#: src/intg.cc:3839 src/intg.cc:3881
+#: src/intg.cc:3842 src/intg.cc:3884
 msgid ""
 "Unable to find numeric integral using Romberg method, returning the last "
 "approximations"
 msgstr ""
 
-#: src/intg.cc:4474
+#: src/intg.cc:4477
 msgid "prodsum"
 msgstr ""
 
 # src/xcas.cxx:3705
 # src/xcas.cxx:3742
 # src/xcas.cxx:5051
-#: src/intg.cc:4598
+#: src/intg.cc:4601
 #, fuzzy
 msgid "Unable to sort boundaries "
 msgstr "Resolver ecuación (num.)"
@@ -9430,24 +9435,24 @@ msgstr "Resolver ecuación (num.)"
 # src/xcas.cxx:6939
 # src/xcas.cxx:7009
 # src/xcas.cxx:9771
-#: src/intg.cc:4661
+#: src/intg.cc:4664
 #, fuzzy
 msgid "Bad step"
 msgstr "ENTER"
 
-#: src/intg.cc:4788
+#: src/intg.cc:4791
 msgid "i=sqrt(-1), please use a valid identifier name"
 msgstr ""
 
-#: src/intg.cc:4947 src/intg.cc:4954 src/intg.cc:4979
+#: src/intg.cc:4950 src/intg.cc:4957 src/intg.cc:4982
 msgid "bernoulli"
 msgstr ""
 
-#: src/intg.cc:5309
+#: src/intg.cc:5312
 msgid "RK8 evolve not successfull"
 msgstr ""
 
-#: src/intg.cc:5534
+#: src/intg.cc:5537
 msgid "Warning time reversal"
 msgstr ""
 
@@ -9765,114 +9770,114 @@ msgstr ""
 msgid "Incompatible system"
 msgstr ""
 
-#: src/vecteur.cc:9435
+#: src/vecteur.cc:9458
 msgid "minor_det option applies only to det"
 msgstr ""
 
 # src/xcas.cxx:8156
 # src/xcas.cxx:8234
 # src/xcas.cxx:8783 src/xcas.cxx:8953
-#: src/vecteur.cc:9487
+#: src/vecteur.cc:9510
 #, fuzzy
 msgid "idn"
 msgstr "dentro"
 
-#: src/vecteur.cc:10157 src/cocoa.cc:3335 src/gen.cc:4130 src/gen.cc:9415
+#: src/vecteur.cc:10180 src/cocoa.cc:3335 src/gen.cc:4130 src/gen.cc:9415
 msgid "Not invertible"
 msgstr ""
 
 # src/xcas.cxx:5595
 # src/xcas.cxx:5632
 # src/xcas.cxx:5685
-#: src/vecteur.cc:10296
+#: src/vecteur.cc:10319
 #, fuzzy
 msgid "Warning: non-square matrix!"
 msgstr "Hermítica"
 
-#: src/vecteur.cc:11973
+#: src/vecteur.cc:11996
 msgid "polymat2matpoly"
 msgstr ""
 
-#: src/vecteur.cc:12005
+#: src/vecteur.cc:12028
 msgid "polymat2mat"
 msgstr ""
 
-#: src/vecteur.cc:12050
+#: src/vecteur.cc:12073
 msgid "rat_jordan_block"
 msgstr ""
 
-#: src/vecteur.cc:12096
+#: src/vecteur.cc:12119
 msgid "pseudo_rat_ro_rat"
 msgstr ""
 
-#: src/vecteur.cc:12161
+#: src/vecteur.cc:12184
 msgid "Low accuracy for Schur row "
 msgstr ""
 
-#: src/vecteur.cc:12698
+#: src/vecteur.cc:12721
 msgid "Unable to find exact eigenvalues. Trying approx"
 msgstr ""
 
-#: src/vecteur.cc:12859
+#: src/vecteur.cc:12882
 msgid ""
 "Low accuracy or not diagonalizable at some eigenvalue. Try jordan if the "
 "matrix is exact."
 msgstr ""
 
-#: src/vecteur.cc:12983
+#: src/vecteur.cc:13006
 msgid "Unable to find all eigenvalues"
 msgstr ""
 
-#: src/vecteur.cc:13007
+#: src/vecteur.cc:13030
 msgid " is not analytic"
 msgstr ""
 
-#: src/vecteur.cc:13163 src/vecteur.cc:13210
+#: src/vecteur.cc:13186 src/vecteur.cc:13233
 msgid "cross"
 msgstr ""
 
-#: src/vecteur.cc:13278
+#: src/vecteur.cc:13301
 msgid "vecteur.cc vecteur2gsl_vector"
 msgstr ""
 
-#: src/vecteur.cc:13510 src/vecteur.cc:13534
+#: src/vecteur.cc:13533 src/vecteur.cc:13557
 msgid "LAPACK LU error"
 msgstr ""
 
-#: src/vecteur.cc:13557
+#: src/vecteur.cc:13580
 msgid "Expecting a square matrix"
 msgstr ""
 
-#: src/vecteur.cc:13680 src/vecteur.cc:13921
+#: src/vecteur.cc:13703 src/vecteur.cc:13944
 msgid "LAPACK not available"
 msgstr ""
 
-#: src/vecteur.cc:13686
+#: src/vecteur.cc:13709
 msgid "Lapack conversion error"
 msgstr ""
 
-#: src/vecteur.cc:13698 src/vecteur.cc:13710 src/vecteur.cc:13729
-#: src/vecteur.cc:13946 src/vecteur.cc:13960
+#: src/vecteur.cc:13721 src/vecteur.cc:13733 src/vecteur.cc:13752
+#: src/vecteur.cc:13969 src/vecteur.cc:13983
 msgid "LAPACK error "
 msgstr ""
 
-#: src/vecteur.cc:13913
+#: src/vecteur.cc:13936
 msgid "Warning: svd is implemented for numeric matrices"
 msgstr ""
 
-#: src/vecteur.cc:14173
+#: src/vecteur.cc:14196
 msgid "Non positive definite"
 msgstr ""
 
-#: src/vecteur.cc:14193
+#: src/vecteur.cc:14216
 msgid "Not invertible matrice"
 msgstr ""
 
-#: src/vecteur.cc:14557 src/vecteur.cc:14719
+#: src/vecteur.cc:14580 src/vecteur.cc:14742
 msgid "Integer matrix expected"
 msgstr ""
 
-#: src/vecteur.cc:14861
+#: src/vecteur.cc:14884
 msgid "Expecting file name to convert"
 msgstr ""
 

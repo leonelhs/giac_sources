@@ -31,7 +31,6 @@
             ]{hyperref}
 \fi
 %HEVEA\htmlfoot{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.}
-%HEVEA\htmlhead{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\~parisse/giac_fr.html}{Giac/Xcas}.}
 
 
 %\def\@evenhead{\thepage\hfill{\footnotesize\textit{\leftmark}}}
@@ -64,6 +63,8 @@
 \input{giacfr.tex}
 
 \begin{document}
+%\begin{giacjs}
+\begin{giacjsonline}
 
 \maketitle
 
@@ -74,7 +75,6 @@ optimis\'ee pour le navigateur Firefox. Vous pouvez
 ex\'ecuter toutes les commandes interactives en cliquant sur le bouton
 Ex\'ecuter, le champ suivant est la console de l'interpr\'eteur du
 logiciel de calcul formel.
-\loadgiacjs
 
 \begin{abstract}
 Giac/Xcas est un logiciel libre de calcul formel dont
@@ -3093,6 +3093,7 @@ derni\`ere colonne, on obtient l'identit\'e de B\'ezout.
 $$ (x+1)U+(x-1)V=2$$ a une solution $U=1$ et $V=-1$ dans $\Z[X]$,
 par contre $$ (x+1)U+(x-1)V=1$$ n'a pas de solution dans $\Z[X]$.
 
+\subsubsection{Syst\`emes polynomiaux}
 Ceci peut servir \`a \'eliminer des inconnues lorsqu'on r\'esoud un
 syst\`eme d'\'equations polynomiales~:
 $$ P_1(X_1,...,X_n)=0, ..., P_n(X_1,...,X_n)=0$$
@@ -3125,6 +3126,32 @@ des syst\`emes plus ambitieux, on utilisera plut\^ot un
 calcul de bases de Groebner. Mais le r\'esultant est tr\`es bien
 adapt\'e par exemple \`a la recherche d'\'equations cart\'esiennes
 d'une courbe ou surface param\'etr\'ee par des fractions rationnelles.
+
+\subsubsection{Identit\'e de B\'ezout dans $\Z[X]$.}
+Lorsque les polyn\^omes $A$ et $B$ sont \`a coefficients entiers,
+on peut r\'esoudre l'identit\'e de B\'ezout en r\'esolvant le
+syst\`eme lin\'eaire $AU+BV=D$ o\`u $D$ est calcul\'e par
+un algorithme de calcul de PGCD. C'est un syst\`eme lin\'eaire
+de $a+b$ \'equations en $a+b$ inconnues, que l'on peut r\'esoudre
+par une m\'ethode $p$-adique, permettant de calculer efficacement
+les coefficients rationnels de $U$ et $V$.
+
+On peut \'etendre \`a des polyn\^omes premiers entre eux ayant des coefficients
+dans une extension alg\'ebrique de $\Q$, en calculant l'identit\'e
+de B\'ezout pour $\tilde{A}$=norme$(A)$ et 
+$\tilde{B}$=norme$(B)$ (norme au sens de norme
+alg\'ebrique, obtenue en multipliant par les conjugu\'es du
+polyn\^ome, calcul\'e en pratique en prenant le r\'esultant
+du polyn\^ome avec le polyn\^ome minimal de l'extension
+alg\'ebrique) et en observant que
+la norme est divisible par le polyn\^ome
+$$ \tilde{A} \tilde{U}+\tilde{B}\tilde{V}=1
+\Rightarrow A \frac{\tilde{A}}{A} \tilde{U}+ 
+B \frac{\tilde{B}}{B}\tilde{V}=1$$
+On pose alors $u$ le reste de $ \frac{\tilde{A}}{A} \tilde{U}$ par $B$
+et $v$ le reste de$ \frac{\tilde{B}}{B}\tilde{V}$ par $A$.
+Si les polyn\^omes ne sont pas premiers entre eux, on s'y ram\`ene
+en divisant par leur pgcd.
 
 \subsection{R\'esultant et degr\'es}
 Si $A$ et $B$ sont des polyn\^omes en $d$ variables de degr\'e
@@ -4559,10 +4586,10 @@ param\'etrage permet de calculer plus facilement des points
 du cercle, mais contrairement au param\'etrage trigonom\'etrique,
 il n'est pas ``uniforme''.\\
 Exemple 
-\giacinput{plotparam([cos(t),sin(t)],t=0..2*pi)}\\
-\giacinput [style="width:400px;height:40px;font-size:large"]{plotparam([(1-t^2)/(1+t^2),2t/(1+t^2)],t=-10..10)}\\
+\giacinput{plotparam([cos(t),sin(t)],t=0..2*pi)}
+\giacinput [style="width:400px;height:40px;font-size:large"]{gl_x=-2..2,gl_y=-1..1,plotparam([(1-t^2)/(1+t^2),2t/(1+t^2)],t=-10..10)}
 ou avec les nombres complexes\\
-\giacinput{plotparam((1+i*t)/(1-i*t),t=-10..10)}
+\giacinput{gl_x=-2..2,gl_y=-1..1,plotparam((1+i*t)/(1-i*t),t=-10..10)}
 \end{itemize}
 
 \subsection{Repr\'esentation graphique} 
@@ -4752,6 +4779,7 @@ autre asymptote pour $t=-1$ ($Y$ fini, $X$ tend vers l'infini)\\
 \giacinput[style="width:400px;height:100px;font-size:large"]{gl_x=-7..7;gl_y=-7..7;
 plotparam([X(t),Y(t)],t=-7..7);
 line(y=a*x+b,color=red);line(y=Y(-1),color=green)}
+
 Autre exemple~:
 \giacinput{X(t):=t^3/(t^2+1);Y(t):=t+1/(t^2+2);}
 
@@ -4865,7 +4893,8 @@ La courbe admet deux autres points d'inflexion ($t=-3.16...$ et
 $t=1.31...$) qu'on peut d\'eterminer avec les commandes Xcas suivantes~:\\
 \giacinputbigmath{purge(x);X:=x^3/(x^2+1); Y:=x+1/(x^2+2);}\\
 \giacinputmath{fsolve(X'*Y''-X''*Y',x)}\\
-\giacinput[style="width:400px;height:40px;font-size:large"]{plotparam([X,Y],x=-5..3);line(y=x,color=red)}\\
+\giacinput[style="width:400px;height:40px;font-size:large"]{plotparam([X,Y],x=-5..3);line(y=x,color=red)}
+
 Note~: on utilise comme param\`etre \verb|x| au lieu de \verb|t| pour pouvoir 
 utiliser la notation \verb|'| pour d\'eriver (si on utilise \verb|t|
 comme param\`etre, il faut utiliser \verb|diff(.,t)| pour calculer
@@ -4936,10 +4965,11 @@ g\'eom\'etrique (changement de sens de convexit\'e).
 Exemples de points singuliers en $t=0$ avec dans l'ordre rebroussement
 de 1\`ere puis 2i\`eme esp\`ece, m\'eplat et inflexion~: 
 $$ (t^2,t^3), \ (t^2+t^4,t^4+t^5), \ (t^3,t^4), \ (t^3,t^5) $$\\
-\giacinput{plotparam([t^2,t^3],t=-1..1)}\\
-\giacinput{plotparam([t^2+t^4,t^4+t^5],t=-1..1)}\\
-\giacinput{plotparam([t^3,t^4],t=-1..1)}\\
-\giacinput{plotparam([t^3,t^5],t=-1..1)}\\
+\giacinput{plotparam([t^2,t^3],t=-1..1)}
+\giacinput{plotparam([t^2+t^4,t^4+t^5],t=-1..1)}
+\giacinput{plotparam([t^3,t^4],t=-1..1)}
+\giacinput{plotparam([t^3,t^5],t=-1..1)}
+
 Les deux derniers cas peuvent \^etre reparam\'etr\'es (au prix
 de la perte de d\'erivabilit\'e seconde) en posant $t'=t^{1/3}$.
 
@@ -4991,10 +5021,10 @@ graphiques, s\'electionner le mode de trac\'e en polaire (touche Mode
 sur TI89/92/V200) ou
 l'application Polaire ou G\'eom\'etrie sur les HP Prime.
 Par exemple 
-\giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1,x=0..2*pi)}\\
-\giacinput{plotpolar(cos(2x),x=0..2*pi,tstep=0.01)}\\
-\giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1/(2+cos(x)),x=0..2*pi);}\\
-\giacinput[style="width:400px;height:60px;font-size:large"]{purge(x,y);plotpolar(1/(1+2*cos(x)),x=0..2*pi); rotation(0,2*pi/3,line(y=-sqrt(3)/3),color=red)}\\
+\giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1,x=0..2*pi)}
+\giacinput{plotpolar(cos(2x),x=0..2*pi,tstep=0.01)}
+\giacinput[style="width:400px;height:40px;font-size:large"]{circle(0,1,color=red); plotpolar(1/(2+cos(x)),x=0..2*pi);}
+\giacinput[style="width:400px;height:60px;font-size:large"]{purge(x,y);plotpolar(1/(1+2*cos(x)),x=0..2*pi); rotation(0,2*pi/3,line(y=-sqrt(3)/3),color=red)}
 \giacinput{plotpolar(x,x=-10..10)}
 
 C'est un cas particulier de courbe en param\'etriques puisque
@@ -5072,8 +5102,9 @@ Les coniques sont des courbes implicites dont l'\'equation
 cart\'esienne est du second degr\'e~
 $$ax^2+cy^2+bxy+dx+ey+f=0$$
 Exemples:\\
-\giacinput{purge(x,y);plotimplicit(x^2+y^2+x*y=4)}\\
-\giacinput{plotimplicit(x^2+y^2+3*x*y=4)}\\
+\giacinput{purge(x,y);plotimplicit(x^2+y^2+x*y=4)}
+\giacinput{plotimplicit(x^2+y^2+3*x*y=4)}
+
 On va voir qu'elles sont de trois types~: ellipses, hyperbole,
 parabole\footnote{En toute rigueur il faut ajouter deux autres cas~;
 l'ensemble vide et les paires \'eventuellement confondues de droites} 
@@ -5230,9 +5261,9 @@ puis faire varier $a$ en cliquant sur les fl\`eches. Pour tester en
 ligne, commencez par initialiser la trace en ex\'ecutant
 \giacinput{purge(x,y);L:=[]}
 puis faites varier $a$ en cliquant sur le bouton \verb|+| ou \verb|-|~: 
-\giacslider{a}{-5}{5}{0.1}{0.6}{gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=evalf(a),color=red);M:=inter_unique(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)}
+\giacslider{a}{-5}{5}{0.1}{0.6}{gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=evalf(a),color=red);M:=single_inter(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)}
 %\begin{rawhtml}
-%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+L:=[]&*a,0.6,-5,5,0.1&+gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=a,color=red);M:=inter_unique(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)&" target="_blank">Tester en ligne.</a>
+%<a href="http://www-fourier.ujf-grenoble.fr/~parisse/xcasfr.html#+L:=[]&*a,0.6,-5,5,0.1&+gl_x=-5..5;gl_y=0..6;P:=plotfunc(x^2/2+1/2,x=-5..5);D:=line(x=a,color=red);M:=single_inter(P,D);T:=tangent(P,M);R:=symetrie(T,D,color=red);L:=append(L,R)&" target="_blank">Tester en ligne.</a>
 %\end{rawhtml}
 Noter la valeur\\ \verb|inter_unique(R,line(x=0))|\\
 elle est ind\'ependante de $a$ et est le foyer. On peut
@@ -9102,6 +9133,15 @@ local l,s,g;
 \end{verbatim}
 mais les calculs deviennent tr\`es vite monstrueux!
 
+Pour les polyn\^omes \`a plusieurs variables, Giac commence par donner
+la valeur 0 \`a toutes les variables sauf celle correspondant \`a la variable de
+degr\'e partiel minimum. Si le polyn\^ome obtenu est square-free, alors Giac
+reconstruit par remont\'ee de Hensel les facteurs, en augmentant
+au fur et \`a mesure le degr\'e des facteurs par rapport aux autres
+variables. En cas d'\'echec, l'algorithme de Trager est utilis\'e,
+ce qui est en g\'en\'eral beaucoup plus lent (\`a commencer par le
+calcul de la ``norme'' du polyn\^ome \`a factoriser par un r\'esultant).
+
 \subsection{Factorisation absolue}\index{factorisation absolue} \label{sec:factorisation_absolue}
 On peut aussi se demander pour un polyn\^ome \`a coefficients
 rationnels (squarefree) quelle extension\index{extension
@@ -10253,7 +10293,11 @@ Plus généralement, les formules sont donc les suivantes~:
 h \left(\frac{f(a)+f(b)}{2}+\sum_{j=1}^{n-1} f(a+jh) \right) 
 \label{eq:trapezes}
 \end{eqnarray}
-où $h=(b-a)/n$ est le pas de la subdivision, $n$ le nombre de subdivisions.
+où $h=(b-a)/n$ est le pas de la subdivision, $n$ le nombre de subdivisions.\\
+\giacinputbigmath{f(x):=ln(1+x^2); a:=0; b:=1.0; n:=100.0; h:=(b-a)/n;int(f(x),x,a,b)}\\
+\giacinputbigmath{h*sum(f(a+j*h),j,0,n-1); h*sum(f(a+j*h),j,1,n);}\\
+\giacinputbigmath{h*sum(f(a+h/2+j*h),j,0,n-1);}\\
+\giacinputbigmath{h*(f(a)/2+f(b)/2+sum(f(a+j*h),j,1,n-1));}\\
 
 On observe sur l'exemple que le point milieu et les trapèzes donnent
 une bien meilleure précision que les rectangles. Plus généralement,
@@ -10320,11 +10364,11 @@ dont on approche $f$.
 \subsection{Ordre d'une méthode} \index{ordre}
 On appelle méthode d'intégration l'écriture d'une approximation
 de l'intégrale sur une subdivision sous la forme
-\[ \int_{\alpha}^{\beta} f(t) dt \approx I(f)=\sum_{j=1}^k w_j f(y_j) \]
-où les $y_j$ sont dans l'intervalle $[\alpha,\beta]$, par exemple équirépartis
+\[ \int_{\alpha}^{\beta} f(t) dt \approx I(f)=\sum_{j=1}^k w_j f(x_j) \]
+où les $x_j$ sont dans l'intervalle $[\alpha,\beta]$, par exemple équirépartis
 sur $[\alpha,\beta]$. On utilise aussi la d\'efinition~:
 \[ \int_{\alpha}^{\beta} f(t) dt \approx I(f)=
-(\beta-\alpha)\sum_{j=1}^k \tilde{w}_j f(y_j) \]
+(\beta-\alpha)\sum_{j=1}^k \tilde{w}_j f(x_j) \]
 On prend toujours $\sum_j w_j=\beta-\alpha$ (ou $\sum_j \tilde{w}_j=1$) pour
 que la m\'ethode donne le r\'esultat exact si la fonction est constante.
 
@@ -10362,7 +10406,7 @@ De plus,
 \begin{eqnarray*}
  |I(f) -I(T_n(f))| =|I\left( f^{[n+1]}(\theta_t)
   \frac{(t-\alpha)^{n+1}}{(n+1)!} \right)|
-& \leq &  \sum_{j=1}^k |w_j| M_{n+1} \frac{(y_j-\alpha)^{n+1}}{(n+1)!} 
+& \leq &  \sum_{j=1}^k |w_j| M_{n+1} \frac{(x_j-\alpha)^{n+1}}{(n+1)!} 
 \\
 & \leq & \sum_{j=1}^k |w_j| M_{n+1} \frac{(\beta-\alpha)^{n+1}}{(n+1)!}
 \end{eqnarray*}
@@ -10418,29 +10462,29 @@ D'autre part~:
 I\left( \int_\alpha^\beta \frac{(x-t)_+^{n}}{n!}  f^{[n+1]}(t) \ dt 
   \right) \\
 & = &  \sum_{j=1}^k w_j 
-\int_\alpha^\beta \frac{(y_i-t)_+^{n}}{n!} f^{[n+1]}(t) \ dt 
+\int_\alpha^\beta \frac{(x_j-t)_+^{n}}{n!} f^{[n+1]}(t) \ dt 
 \end{eqnarray*}
 Donc~:
 $$ \int_{\alpha}^{\beta} f-I(f)
 = \int_{\alpha}^{\beta} 
-( \frac{(\beta-x)^{n+1}}{(n+1)!} -  \sum_{j=1}^k w_j \frac{(y_j-x)_+^{n}}{n!})
+( \frac{(\beta-x)^{n+1}}{(n+1)!} -  \sum_{j=1}^k w_j \frac{(x_j-x)_+^{n}}{n!})
 f^{[n+1]}(x) \ dx
 $$
 On appelle noyau de {\bf P\'eano}\index{P\'eano, noyau de} l'expression
 $$ N(x)=\frac{(\beta-x)^{n+1}}{(n+1)!} -  \sum_{j=1}^k w_j
-\frac{(y_j-x)_+^{n}}{n!}$$
+\frac{(x_j-x)_+^{n}}{n!}$$
 On a alors~:
 $$ |\int_{\alpha}^{\beta} f-I(f)|
 \leq \int_{\alpha}^{\beta} |N(x)| |f^{[n+1]}(x)| \ dx
 \leq M_{n+1} \int_{\alpha}^{\beta} |N(x)| \ dx$$
 
 \subsection{Simpson} \index{Simpson}
-Il s'agit de la méthode obtenue en approchant la fonction
+Il s'agit de la m\'ethode obtenue en approchant la fonction
 sur la subdivision $[\alpha,\beta]$ par son polynome de Lagrange
 aux points $\alpha,(\alpha+\beta)/2,\beta$. On calcule l'int\'egrale
 par exemple avec un logiciel de calcul formel, avec Xcas~:
 \begin{center}
-\verb|factor(int(lagrange([a,(a+b)/2,b],[fa,fm,fb]),x=a..b))| 
+\giacinputbigmath{factor(int(lagrange([a,(a+b)/2,b],[fa,fm,fb]),x=a..b))}
 \end{center}
 qui donne la formule sur une subdivision
 \[ I(f) = \frac{h}{6} (f(\alpha)+4f(\frac{\alpha+\beta}{2}) + f(\beta)) \]
@@ -10449,16 +10493,18 @@ et sur $[a,b]$~:
 I(f) = \frac{h}{6} \left( f(a)+f(b)+ 4 \sum_{j=0}^{n-1} f(a+jh+\frac{h}{2})
 + 2  \sum_{j=1}^{n-1} f(a+jh) \right)
 \end{equation}
-Si on intègre $t^3$ sur $[0,1]$ en 1 subdivision par cette méthode,
+\giacinputbigmath{f(x):=ln(1+x^2); a:=0; b:=1.0; n:=100.0; h:=(b-a)/n; int(f(x),x,a,b)}\\
+\giacinputbigmath{h/6*(f(a)+f(b)+4*sum(f(a+j*h+h/2),j,0,n-1)+2*sum(f(a+j*h),j,1,n-1))}\\
+Si on int\`egre $t^3$ sur $[0,1]$ en 1 subdivision par cette m\'ethode,
 on obtient
 \[ \frac{1}{6} (0+ 4 \frac{1}{2^3} + 1)=\frac{1}{4} \]
-c'est-à-dire le résultat exact, ceci est aussi vérifié pour $f$ polynome
-de degré inférieur ou égal à 2 puisque l'approximation de Lagrange
-de $f$ est alors égale à $f$. On en déduit que la méthode de Simpson
-est d'ordre 3 (pas plus car la méthode
-de Simpson appliquée à l'intégrale de
-$t^4$ sur $[0,1]$ n'est pas exacte). On peut améliorer
-la constante générale de la section précédente pour la majoration
+c'est-à-dire le r\'esultat exact, ceci est aussi v\'erifi\'e pour $f$ polynome
+de degr\'e inf\'erieur ou \'egal à 2 puisque l'approximation de Lagrange
+de $f$ est alors \'egale à $f$. On en d\'eduit que la m\'ethode de Simpson
+est d'ordre 3 (pas plus car la m\'ethode
+de Simpson appliqu\'ee à l'int\'egrale de
+$t^4$ sur $[0,1]$ n'est pas exacte). On peut am\'eliorer
+la constante g\'en\'erale de la section pr\'ec\'edente pour la majoration
 de l'erreur en~:
 \[ |\int_a^b f - I(f)| \leq \frac{h^4}{2880} (b-a) M_4 \]
 En effet sur une subdivision \'el\'ementaire $[\alpha,\beta]$, 
@@ -10473,26 +10519,27 @@ le noyau de P\'eano vaut~:
 -\frac23 \frac{(\frac{\alpha+\beta}2-x)_+^{3}}{3!} 
 \end{eqnarray*}
 on observe que $N(x)\leq 0$ sur $[\alpha,\beta]$ \\
-\verb|N(x):=(1-x)^4/4!-1/6*(1-x)^3/3!-2/3/3!*max(0,1/2-x)^3|\\
-\verb|plot(N(x),x=0..1)|\\
-et son int\'egrale vaut $-1/2880(\beta-\alpha)^4$~:\\
-\verb|int(N(x),x=0..1/2)+int(N(x),x=1/2..1)|
+\giacinputbigmath{N(x):=(1-x)^4/4!-1/6*(1-x)^3/3!-2/3/3!*max(0,1/2-x)^3}
 
-La méthode de Simpson nécessite $2n+1$ évaluations de $f$ (le calcul
-de $f$ est un point étant presque toujours 
-l'opération la plus couteuse en temps d'une
-méthode de quadrature), au lieu de $n$ pour les rectangles
-et le point milieu et $n+1$ pour les trapèzes. Mais on a une majoration
-en $h^4$ au lieu de $h^2$ donc le ``rapport qualité-prix'' de la méthode
+\giacinput{plot(1000*N(x),x=0..1)}
+et son int\'egrale vaut $-1/2880(\beta-\alpha)^4$~:\\
+\giacinputbigmath{int(N(x),x=0..1/2)+int(N(x),x=1/2..1)}
+
+La m\'ethode de Simpson n\'ecessite $2n+1$ \'evaluations de $f$ (le calcul
+de $f$ est un point \'etant presque toujours 
+l'op\'eration la plus couteuse en temps d'une
+m\'ethode de quadrature), au lieu de $n$ pour les rectangles
+et le point milieu et $n+1$ pour les trap\`ezes. Mais on a une majoration
+en $h^4$ au lieu de $h^2$ donc le ``rapport qualit\'e-prix'' de la m\'ethode
 de Simpson est meilleur, on l'utilise donc plutot que les
 m\'ethodes pr\'ec\'edentes sauf si $f$ n'a pas la r\'egularit\'e
 suffisante (ou si $M_4$ est trop grand).
 
-\subsection{Newton-Cotes} \index{Newton-Cotes}
-On peut généraliser l'idée précédente, découper la subdivision 
+ \subsection{Newton-Cotes} \index{Newton-Cotes}
+On peut g\'en\'eraliser l'id\'ee pr\'ec\'edente, d\'ecouper la subdivision 
 $[\alpha,\beta]$ en $n$ parts \'egales et utiliser le polynôme d'interpolation
 en ces $n+1$ points $x_0=\alpha, x_1, ..., x_n=\beta$. 
-Ce sont les méthodes de Newton-Cotes,
+Ce sont les m\'ethodes de Newton-Cotes,
 qui sont d'ordre $n$ au moins. Comme le polyn\^ome d'interpolation
 d\'epend lin\'eairement des ordonn\'ees, cette m\'ethode est bien
 de la forme~:
@@ -10507,10 +10554,11 @@ Exemple~: on prend le polyn\^ome d'interpolation en 5 points
 Pour calculer les
 $\tilde{w}_j$, on se ram\`ene \`a $[0,1]$, puis on tape
 \begin{center}
-\verb|int(lagrange(seq(j/4,j,0,4),[f0,f1,f2,f3,f4]),x=0..1)|
+\giacinputbigmath{int(lagrange(seq(j/4,j,0,4),[f0,f1,f2,f3,f4]),x=0..1)}
 \end{center}
 et on lit les coefficients de \verb|f0| \`a \verb|f4|
-qui sont les $\tilde{w}_0$ \`a  $\tilde{w}_4$: 7/90, 32/90, 12/90, 32/90, 7/90.
+qui sont les $\tilde{w}_0$ \`a  $\tilde{w}_4$: 7/90, 32/90, 12/90,
+32/90, 7/90. Voir aussi la section \ref{sec:poids}
 La m\'ethode est d'ordre au moins 4 par construction, mais on v\'erifie
 qu'elle est en fait d'ordre 5 (exercice), la majoration de l'erreur
 d'une m\'ethode d'ordre 5 est 
@@ -10518,24 +10566,40 @@ d'une m\'ethode d'ordre 5 est
 elle peut \^etre am\'elior\'ee pour cette m\'ethode pr\'ecise en
 \[ |\int_a^b f -I(f)| \leq \frac{M_6}{1935360} h^6 (b-a) \]
 
-En pratique, on ne les utilise pas très souvent, car d'une part
+En pratique, on ne les utilise pas tr\`es souvent, car d'une part
 pour $n\geq 8$, les $w_j$ ne sont pas tous positifs, et
 d'autre part, parce que la constante $M_n$ devient trop
-grande. On préfère utiliser la méthode de Simpson en utilisant
+grande. On pr\'ef\`ere utiliser la m\'ethode de Simpson en utilisant
 un pas plus petit.
 
-Il existe aussi d'autres méthodes, par exemple les quadratures de Gauss
-(on choisit d'interpoler en utilisant des points non équirépartis 
-tels que l'ordre de la méthode soit le plus grand possible)
-ou la méthode de Romberg qui est une méthode d'accélération
-de convergence basée sur la méthode des trapèzes (on prend
-la méthode des trapèzes en 1 subdivision de $[a,b]$, puis
-2, puis $2^2$, ..., et on élimine les puissances de $h$
-du reste $\int f-I(f)$ en utilisant un théorème d'Euler-Mac Laurin
-qui montre que le développement asymptotique de
+Il existe aussi d'autres m\'ethodes, par exemple les quadratures de Gauss
+(on choisit d'interpoler en utilisant des points non \'equir\'epartis 
+tels que l'ordre de la m\'ethode soit le plus grand possible, cf. infra)
+ou la m\'ethode de Romberg qui est une m\'ethode d'acc\'el\'eration
+de convergence bas\'ee sur la m\'ethode des trap\`ezes (on prend
+la m\'ethode des trap\`ezes en 1 subdivision de $[a,b]$, puis
+2, puis $2^2$, ..., et on \'elimine les puissances de $h$
+du reste $\int f-I(f)$ en utilisant un th\'eor\`eme d'Euler-Mac Laurin
+qui montre que le d\'eveloppement asymptotique de
 l'erreur en fonction de $h$ ne contient que des puissances paires
-de $h$). De plus, on peut être amené à faire varier le pas $h$
-en fonction de la plus ou moins grande régularité de la fonction.
+de $h$). De plus, on peut être amen\'e à faire varier le pas $h$
+en fonction de la plus ou moins grande r\'egularit\'e de la fonction.
+
+
+\subsection{Calcul des poids $w_i$} \label{sec:poids}
+Si la m\'ethode d'int\'egration consiste \`a interpoler 
+$f$ en $n$ points $x_0,...,x_n$, alors la m\'ethode est exacte pour
+tout polyn\^ome de degr\'e $n$. Si on prend 
+$P_j(x)=\prod_{k \neq j}(x-x_k)$, on en d\'eduit~:
+$$ \int_\alpha^\beta P_j(x) \ dx = w_j P_j(x_j) $$ 
+Par exemple en interpolant en $0,1/2,1$ sur $[0,1]$, on obtient
+$$w_0 P_0(0)=\int_0^1 P_0(x) \ dx, \quad P_0(x)=(x-\frac12)(x-1)$$
+\giacinputbigmath{P0:=(x-1)*(x-1/2); int(P0,x,0,1)/P0(x=0);}\\
+On peut aussi r\'esoudre un syst\`eme lin\'eaire en prenant pour $f$
+les polyn\^omes de la base canonique, la matrice du syst\`eme est
+la transpos\'ee de la matrice de Vandermonde en les $x_j$ et le second
+membre a pour $j$-i\`eme composante $\int_\alpha^\beta x^j \ dx$.
+\giacinputbigmath{inv(tran(vandermonde(0,1/2,1)))*[1,1/2,1/3]}
 
 
 \subsection{En r\'esum\'e}
@@ -10663,22 +10727,21 @@ des valeurs de la fonction $f$ aux $N$ points de la subdivision, elle
 se calcule donc rapidement avec la transform\'ee de Fourier rapide.
 Par exemple, pour approcher $f(x)=e^{\sin(x)}$, on peut utiliser les
 commandes suivantes en Xcas~:
-\begin{verbatim}
+\begin{giacprog}
 f(x):=exp(sin(x));
-N:=100; F:=seq(f(k/N*2.*pi),k,0,N-1); G:=fft(F);
+N:=16; F:=seq(f(k/N*2.*pi),k,0,N-1); G:=fft(F);
 k:=4;
 g:=G[0]+sum(G[j]*exp(i*j*x),j,1,k)+sum(G[N-j]*exp(-i*j*x),j,1,k);
-h:=normal(exp2trig(g)/N);
-plot(h,x=-pi..pi,color=red); //plot(f(x),x=-pi..pi)
-\end{verbatim}
+h:=normal(re(exp2trig(g))/N);
+\end{giacprog}
+\giacinputbig{plot(h,x=-pi..pi,color=red); //plot(f(x),x=-pi..pi)}
+
 Ou directement \verb|2*re(G[j]/N)| est une valeur approch\'ee du
 $j$-i\`eme coefficient de Fourier $a_j$ de $f$, et \verb|-2*im(G[j]/N)|
-de $b_j$, par exemple~:
-\begin{verbatim}
-1/pi*int(f(x)*cos(4x),x,0,2.*pi); 2*re(G[4]/N);
-1/pi*int(f(x)*sin(5x),x,0,2.*pi); -2*im(G[5]/N);
-\end{verbatim}
-On observe en effet une tr\`es bonne concordance (11 d\'ecimales).
+de $b_j$, par exemple~:\\
+\giacinputbig{1/pi*int(f(x)*cos(4x),x,0,2.*pi); 2*re(G[4]/N);}
+\giacinputbig{1/pi*int(f(x)*sin(5x),x,0,2.*pi); -2*im(G[5]/N);}
+On observe en effet une tr\`es bonne concordance.
 
 Bien entendu, cela n'est pas tr\`es utile pour approcher $e^{\sin(x)}$
 (il vaut mieux composer exponentielle et sinus), 
@@ -10687,7 +10750,9 @@ fonction p\'eriodique plus compliqu\'ee ou pour une fonction
 p\'eriodique dont on ne connait qu'un \'echantillonage r\'egulier
 (par exemple un fichier num\'erique audio).
 
-\subsection{Quadratures gaussiennes.}\index{quadratures gaussiennes}
+\subsection{Quadratures gaussiennes.}
+\index{gaussienne, quadrature}\index{quadrature gaussienne}
+\subsubsection{Description}
 On a vu que l'interpolation polynomiale \'etait de meilleure
 qualit\'e en prenant les points de Tchebyshev plutot que
 des points \'equidistants, il est donc naturel de calculer
@@ -10696,23 +10761,120 @@ ou encore d'optimiser le choix des abscisses pour avoir
 une m\'ethode d'int\'egration d'ordre maximal.
 
 Si on se fixe $n$ abscisses $x_1$ \`a $x_n$, on peut obtenir l'ordre
-$2n-1$. En effet, si on consid\`ere le polyn\^ome $P_n=\prod_{i=1}^n (x-x_i)$,
-il est de degr\'e $n$, si la m\'ethode est d'ordre $2n-1$ alors
+$2n-1$. En effet, consid\'erons le polyn\^ome $P_n=\prod_{i=1}^n (x-x_i)$,
+qui est de degr\'e $n$, si la m\'ethode est d'ordre $2n-1$ alors
 il sera orthogonal \`a tous les polyn\^omes de degr\'e inf\'erieur
-strict \`a $n$ pour le produit scalaire $f.g=\int_a^b f(x) g(x) \ dx$
-puisque $P_n.x^j=\int_a^b P_n x^j $ sera combinaison lin\'eaire des
-$P_n x^j$ en $x_k, k=1..n$ (car l'int\'egrale est exacte puisque le degr\'e
-du polyn\^ome est au plus $2n-1$). Donc $P_n$ est \`a une constante
+strict \`a $n$ pour le produit scalaire 
+$$<f|g>=\int_a^b f(x) g(x) \ dx$$
+puisque $<P_n|x^j>=\int_a^b P_n x^j $ sera combinaison lin\'eaire des
+$P_n x^j$ en $x_k, k=1..n$ (car la formule d'int\'egration est exacte puisque le degr\'e
+du polyn\^ome $P_nx^j$ est au plus $2n-1$). Donc $P_n$ est \`a une constante
 multiplicative pr\`es le $n$-i\`eme polyn\^ome orthogonal pour
-l'integrale sur $[a,b]$, si $[a,b]=[-1,1]$ c'est \verb|legendre(n)|\index{Legendre}.
+l'integrale sur $[a,b]$, si $[a,b]=[-1,1]$ c'est \verb|legendre(n)|.
 R\'eciproquement, si les $x_k$ sont les racines de ce polyn\^ome,
 alors la formule d'int\'egration est exacte, on effectue la division
 euclidienne du polyn\^ome $P$ de degr\'e au plus $2n-1$ \`a
 int\'egrer par $P_n$
 $$ P= P_n Q + R , \quad \mbox{deg}(Q) \leq n-1 $$
 On a $\int_a^b P_n Q=0$ par orthogonalit\'e et la combinaison
-lin\'eaire correspondante en les $x_k$ est nulle, et on a exactitude
+lin\'eaire correspondante en les $x_k$ est nulle, et on a exactiture
 pour $R$, car de degr\'e au plus $n-1$.
+
+Exemple~:
+\giacinputbigmath{l:=proot(legendre(10));}\\
+\giacinputbigmath{f(x):=ln(1+x^2); int(f(x),x,-1.0,1.0);}\\
+\giacinputbigmath{p:=interp(l,f); int(p,x,-1.0,1.0)}
+
+\subsubsection{Calcul des poids}
+On peut calculer les poids en appliquant
+la section \ref{sec:poids}. On peut ainsi montrer
+que les poids sont positifs en appliquant la formule
+d'int\'egration au polyn\^ome
+$\prod_{j\neq k}(x-x_j)$
+(la formule est exacte \`a cause du degr\'e du polynome).
+On peut d'ailleurs montrer que le poids $w_i$ 
+en une racine du polyn\^ome de Legendre
+sur $[-1,1]$ est donn\'e par~:
+$$ w_i=\frac{2}{(1-x_i^2)P'_n(x_i)^2} = \frac{2(1-x_i^2)}{n^2P_{n-1}(x_i)^2}=\frac{2}{nP_{n-1}(x_i)P_n'(x_i)}$$
+\giacinputbigmath{n:=10; P:=legendre(n); Q:=legendre(n-1); l:=proot(P);}\\
+\giacinputbigmath{a:=inv(trn(vandermonde(l))):; a*seq((1+(-1)^j)/(j+1),j,0,n-1);}\\
+\giacinputbigmath{seq(2/(1-l[j]^2)/P'(x=l[j])^2,j,0,n-1)}\\
+\giacinputbigmath{seq(2*(1-l[j]^2)/n^2/Q(x=l[j])^2,j,0,n-1)}\\
+\giacinputbigmath{seq(2/n/Q(x=l[j])/P'(x=l[j]),j,0,n-1)}\\
+Preuve de la derni\`ere formule~:\\
+On a $I(P_n/(x-x_i))=w_i P'_n(x_i)$ la valeur de $(P_n/(x-x_i))$
+en $x_i$ est par d\'efinition de $P'_n(x_i)$ la limite $(P_n(x)-P_n(x_i))/(x-x_i)$
+lorsque $x$ tend vers $x_i$ (rappelons que $P_n(x_i)=0$).
+Par exactitude de la formule d'int\'egration
+$$w_i P'_n(x_i)=\int_{-1}^1 \frac{P_n}{x-x_i} =
+\frac1{P_{n-1}(x_i)}\int_{-1}^1 P_n \frac{P_{n-1}(x_i)}{x-x_i} 
+= \frac1{P_{n-1}(x_i)}\int_{-1}^1 P_n \frac{P_{n-1}(x)}{x-x_i} $$
+la derni\`ere \'egalit\'e r\'esulte du fait que
+$(P_{n-1}(x)-P_{n-1}(x_i))/(x-x_i)$
+est un polyn\^ome de degr\'e au plus $n-2$ donc orthogonal \`a $P_n$.
+Donc
+$$w_i P'_n(x_i)=
+= \frac1{P_{n-1}(x_i)}\int_{-1}^1 P_{n-1} \frac{P_n(x)}{x-x_i} $$
+Or $P_n(x)/(x-x_i)$ est un polyn\^ome de degr\'e $n-1$, si on fait son
+quotient par $P_{n-1}$ on obtient une constante qui vaut $a_{n-1}$ en
+utilisant la relation de r\'ecurrence \`a 2 crans
+$P_n=(a_{n-1}x-b_{n-1})P_{n-1}-c_{n-1}P_{n-2}$. Le reste est de
+degr\'e $n-2$ donc orthogonal \`a $P_{n-1}$, d'o\`u
+$$w_i P'_n(x_i)=
+= \frac1{P_{n-1}(x_i)}\int_{-1}^1 P_{n-1}^2 a_{n-1} $$
+On conclut en utilisant la valeur de $a_{n-1}=(2n-1)/n$ et de
+$\| P_{n-1}\|^2=2/(2(n-1)+1)$.
+
+\subsubsection{Erreur d'une quadrature gaussienne}
+On consid\`ere une quadrature gaussienne d'ordre $2n+1$ obtenue
+par interpolation aux $n+1$ racines du $n+1$-i\`eme polynome de
+Legendre sur $[-1,1]$.
+
+Rappelons que le polyn\^ome d'interpolation de $f$ aux points
+$x_0,x_1,...,x_n$ s'\'ecrit
+$$ P_n(t)=f[x_0]+f[x_0,x_1](t-x_0)+...+f[x_0,...,x_n](t-x_0)...(t-x_{n-1})$$
+Si on ajoute $x$ on obtient un polyn\^ome d'interpolation de degr\'e $n+1$
+$$ P_{n+1}(t)=f[x_0]+f[x_0,x_1](t-x_0)+...+f[x_0,...,x_n,x](t-x_0)...(t-x_{n-1})(t-x_n)$$
+qui coincide avec $f$ en $t=x$ donc
+$$
+f(x)=f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n,x](x-x_0)...(x-x_{n-1})(x-x_n)$$
+Le m\^eme calcul fait avec un point $x_{n+1}$ en plus donne
+$$
+f(x)=f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n,x_{n+1}](x-x_0)...(x-x_{n-1})(x-x_n)
++ f[x_0,...,x_n,x_{n+1},x](x-x_0)...(x-x_{n-1})(x-x_n)(x-x_{n+1})$$
+On a donc montr\'e la formule~:
+\begin{equation} \label{eq:diffdivtranslate}
+f[x_0,...,x_n,x]=f[x_0,...,x_n,x_{n+1}]+f[x_0,...,x_n,x_{n+1},x](x-x_{n+1})
+\end{equation}
+mais en fait on va ajouter plus qu'un point, on va en ajouter $n+1$
+\begin{eqnarray*}
+&&f(x)-(f[x_0]+f[x_0,x_1](x-x_0)+...+f[x_0,...,x_n](x-x_0)...(x-x_{n-1})
+)\\
+&=&f[x_0,...,x_n,x_{n+1}](x-x_0)...(x-x_{n-1})(x-x_n) +...+f[x_0,...,x_{2n+1}](x-x_0)...(x-x_{2n})
++ f[x_0,...,x_{2n+1},x](x-x_0)...(x-x_{2n+1})
+\end{eqnarray*}
+puis on int\`egre sur $[-1,1]$, on obtient \`a gauche l'erreur et \`a
+droite, seul le dernier terme est non nul, car le polyn\^ome de Legendre
+proportionnel \`a $(x-x_0)...(x-x_{n-1})(x-x_n) $, de degr\'e $n+1$,
+est orthogonal \`a tous les polyn\^ome de degr\'e $\leq n$
+$$ \int_{-1}^1 (f(x) -P_n(x)) \ dx = \int_{-1}^1
+f[x_0,...,x_{2n+1},x](x-x_0)...(x-x_{2n+1}) \ dx $$
+D'autre part, le r\'esultat sur l'erreur d'interpolation \ref{eq:lagrange} donne
+$$ f[x_0,...,x_n,x]=\frac{f^{[n+1]}(\xi_x)}{(n+1)!}$$
+en particulier $|f[x_0,...,x_n,x]| \leq M_{n+1}/(n+1)!$
+D'o\`u la majoration
+$$ |  \int_{-1}^1 (f(x) -P_n(x)) \ dx | \leq \frac{M_{2n+2}}{(2n+2)!}
+\int_{-1}^1|(x-x_0)...(x-x_{2n+1})| \ dx $$
+Il suffit ensuite de faire tendre les $x_{n+1},...,x_{2n+1}$ vers
+$x_0,...,x_n$ pour enlever la valeur absolue et obtenir
+$$ |  \int_{-1}^1 (f(x) -P_n(x)) \ dx | \leq \frac{M_{2n+2}}{(2n+2)!}
+ \int_{-1}^1 L_{n+1}^2(x) \ dx $$ 
+o\`u $L_{n+1}$ est proportionnel au $n+1$-i\`eme polyn\^ome de
+Legendre de coefficient dominant 1.
+
+Par exemple, pour $n=1$, on a 2 points d'interpolation en les racines
+de $L_2=x^2-1/3$ et l'erreur d'interpolation
+est major\'ee par $M_4/24\int_{-1}^1(x^2-1/3) \ dx=M_4/24 \times 8/45=M_4/135$.
 
 
 \subsection{M\'ethode adaptative.}
@@ -10748,19 +10910,14 @@ par
 $$ \frac{b-a}{n} \sum_{k=1}^n f(x_k) $$
 o\`u $x_k$ est obtenu par un g\'en\'erateur pseudo-al\'eatoire
 (selon la loi uniforme).
-Par exemple
-\begin{verbatim}
-f(t):=exp(-t^2); n:=1000;
-l:=ranv(n,uniform,0,2);
-(2-0)*sum(apply(f,l))/n; int(f(t),t,0,2.0);
-\end{verbatim}
+Par exemple\\
+\giacinputbigmath{f(t):=exp(-t^2); n:=1000; a:=0; b:=2.0;l:=ranv(n,uniform,a,b):;}\\
+\giacinputbigmath{(b-a)*sum(apply(f,l))/n; int(f(t),t,a,b);}\\
 La convergence en fonction de $n$ est assez lente, on peut l'observer
-en faisant plusieurs estimations~:
-\begin{verbatim}
-m:=ranm(500,n,uniform,0,2);
-I:=seq(2*sum(apply(f,m[k]))/n,k,0,size(m)-1);
-histogram(I,0,0.01)
-\end{verbatim}
+en faisant plusieurs estimations~:\\
+\giacinputbigmath{m:=ranm(500,n,uniform,a,b):;I:=seq(2*sum(apply(f,m[k]))/n,k,0,size(m)-1);}\\
+\giacinput{histogram(I,0,0.01)}
+
 En effet, les tirages sont \'equidistribu\'es selon la m\^eme loi,
 la loi des grands nombres s'applique donc~: on fait $b-a$ fois
 une moyenne de
@@ -10771,11 +10928,17 @@ peut se calculer \`a partir de $f$
 $$ \sigma^2 = \frac{1}{b-a}\int_a^b f^2(t) \ dt -
 \left( \frac{1}{b-a}\int_a^b f(t) \ dt  \right)^2 $$
 par exemple ici\\
-\verb|2*sqrt(int(f(t)^2,t,0,2.)/2-(1/2*int(f(t),t,0,2.))^2)/sqrt(n)|\\
+\giacinputbigmath{2*sqrt(int(f(t)^2,t,0,2.)/2-(1/2*int(f(t),t,0,2.))^2)/sqrt(n); stddevp(I);}\\
 mais on ne fait pas ce calcul en pratique
 (puisqu'il faudrait calculer une int\'egrale), on estime
 l'\'ecart-type $\sigma/\sqrt{n}$ de la loi normale par
-l'\'ecart-type de l'\'echantillon des estimations \verb|stddevp(I)|.
+l'\'ecart-type de l'\'echantillon des estimations \verb|stddevp(I)|.\\
+\giacinputbig{histogram(I,0,0.01); plot(normald(mean(I),stddevp(I),x),x=0.8..1)}
+
+On peut donc obtenir rapidement une estimation de $\sigma$ en prenant
+l'\'ecart-type d'une s\'equence de valeurs de $f$\\
+\giacinputbigmath{f(t):=exp(-t^2); n:=1000; a:=0;  b:=2.0;l:=ranv(n,uniform,a,b):;}\\
+\giacinputbigmath{fl:=apply(f,l):;m:=(b-a)*mean(fl);s:=(b-a)*stddevp(fl)/sqrt(n);[m-2s,m+2s]}
 
 Cette m\'ethode converge donc beaucoup moins vite que les quadratures,
 en dimension 1. Mais elle se g\'en\'eralise tr\`es facilement en
@@ -11407,6 +11570,122 @@ On peut am\'eliorer la pr\'ecision d'une racine
 par des it\'erations inverses ou par la m\'ethode de Newton en une
 variable.
 
+\subsection{M\'ethodes de gradient (sans contrainte)}
+Il s'agit ici de minimiser une fonction $f$ d'un ouvert $U$ de $\R^n$ 
+\`a valeurs dans $\R$. Lorsque la fonction $f$ est
+suffisamment r\'eguli\`ere sur $U$, une condition n\'ecessaire
+en un extremum local de l'ouvert est que la diff\'erentielle $df$
+s'annulle. R\'eciproquement, la recherche d'une solution de $f(x)=0$
+peut se ramener \`a minimiser $\|f\|^2$.
+Les m\'ethodes de gradient en dimension 2 peuvent se comprendre 
+\`a partir de la repr\'esentation des lignes
+de niveau de la fonction. Le long de la tangente \`a une ligne
+de niveau $f$ reste constant (la tangente est dans le noyau de $df$),
+si on est en un point $v$ de la ligne de niveau,
+intuitivement suivre la direction perpendiculaire \`a la ligne de niveau
+devrait permettre de faire diminuer $f$ efficacement, c'est la ligne de
+plus grande pente choisie par l'eau pour s'\'ecouler vers le bas le
+plus rapidement possible. Ceci n'est toutefois pas intrins\`eque mais
+d\'ependant du produit scalaire choisi, toutefois si on ne choisit pas la
+direction du gradient, on choisira une direction de descente $w$ telle
+que $d_vf(w)<0$. Pour le gradient on a bien
+$$ d_vf(-\nabla f)=-<\nabla f|\nabla f><0$$
+Une fois la direction de descente choisie, il faut d\'eterminer quelle
+distance parcourir dans cette direction, c'est le pas $\rho$ et le
+nouveau $v$ s'obtient par la formule
+$$ \tilde{v}=v + \rho w = v-\rho \nabla_v f$$
+pour la m\'ethode de gradient. Plusieurs choix sont possibles pour
+$\rho$
+\begin{itemize}
+\item $\rho$ est fix\'e une fois pour toutes, c'est le gradient \`a
+  pas constant, le cout d'une it\'eration est minimal.
+\item on d\'etermine $\rho$ pour minimiser $f$ le long de la
+  direction, c'est le gradient \`a pas optimial, le cout d'une
+  iteration peut \^etre important car il faut minimiser une fonction
+  d'une variable
+\item on d\'etermine $\rho$ pour faire diminuer $f$ un peu et $\|
+  \nabla f\|$ suffisamment pour assurer la convergence. Les conditions
+de Wolfe permettent de pr\'eciser ces objectifs. 
+Pour $0<\varepsilon_1<\varepsilon_2<1$ fix\'es (par exemple
+$\varepsilon_1=1e-4, \varepsilon_2=0.99$)
+\begin{eqnarray*} f(v+\rho w) &\leq& f(v) +\varepsilon_1 \rho d_vf(w) ,\\
+0 \leq -d_{v+\rho w}f(w) &\leq& -\varepsilon_2 d_vf(w)
+\end{eqnarray*}
+\end{itemize}
+\begin{prop}
+Les conditions de Wolfe permettent d'assurer la convergence d'une
+suite it\'erative $v_{k+1}=v_k+\rho_k w_k$ si la direction de descente
+est ``suffisante'', plus pr\'ecis\'ement si $f$ est $C^1$ de d\'eriv\'ee
+lipschitizienne et born\'ee inf\'erieurement, si on pose
+$$ \cos(\theta_k)=\frac{<\nabla f(v_k)|w_k>}{\| \nabla f(v_k)\| \|w_k\|}$$
+alors la s\'erie
+$ \sum \cos(\theta_k)^2 \| \nabla f(v_k)\|^2 $ converge.
+Ainsi si la direction de descente forme un angle minimal avec la
+tangente \`a la courbe de niveau (en dimension 2), $\cos(\theta_k)^2$
+est born\'e ind\'ependamment de $k$ et $\sum \|  \nabla f(v_k)\|^2$
+est convergente donc le gradient de $f$ tend vers 0.
+\end{prop}
+Preuve~: on a avec la deuxi\`eme condition de Wolfe
+$$ <\nabla f(v_{k+1})|w_k>=d_{v_{k+1}}f(w_k) 
+\geq \varepsilon_2 d_{v_k}f(w_k)= \varepsilon_2<\nabla f(v_k)|w_k>$$
+donc
+$$ <\nabla f(v_{k+1})-\nabla f(v_k)|w_k> \ \geq (\varepsilon_2-1) <\nabla f(v_k)|w_k>$$
+Par Cauchy-Schwartz et en notant $M_2$ la constante de Lipschitz de $\nabla f$
+le membre de gauche est plus petit que 
+$$ \| \nabla f(v_{k+1})-\nabla f(v_k) \| \| w_k \| \leq 
+M_2\|v_{k+1}-v_k\| \| w_k\| = M_2 \rho_k \| w_k \|^2$$
+Donc
+\begin{equation} \label{eq:minor_rho}
+ (\varepsilon_2-1)<\nabla f(v_k)|w_k> \leq M_2 \rho_k \| w_k \|^2
+\end{equation}
+On consid\`ere ensuite la s\'erie de terme g\'en\'eral
+$f(v_{k})-f(v_{k+1})$  qui est \`a terme positif, donc convergente
+(elle ne peut tendre vers l'infini car $f$ est born\'ee
+inf\'erieurement).
+La premi\`ere condition de Wolfe donne
+$$ f(v_{k})-f(v_{k+1})  \ \geq  \ \varepsilon_1 \rho_k <-\nabla
+f(v_k)|w_k> $$
+puis (\ref{eq:minor_rho})~:
+$$ f(v_{k})-f(v_{k+1})  \geq \ 
+\varepsilon_1  (1-\varepsilon_2)<\nabla f(v_k)|w_k>^2\frac{1}{M_2  \|  w_k \|^2} 
+ \geq 0 $$
+d'o\`u le r\'esultat.
+
+L'existence de pas de Wolfe se montre en consid\'erant le max $r$ des
+pas v\'erifiant la premi\`ere condition de Wolfe
+$$f(v+\rho w) \leq f(v) +\varepsilon_1 \rho d_vf(w) $$
+C'est bien un max si la fonction
+$f$ est born\'ee inf\'erieurement. On a alors l'\'egalit\'e pour le pas
+$r$ (par passage \`a la limite des deux cot\'es de $r$)
+$$f(v+r w) = f(v) +\varepsilon_1 r d_vf(w) $$
+et l'in\'egalit\'e dans l'autre sens pour un pas $\rho>r$
+$$f(v+\rho w) > f(v) +\varepsilon_1 \rho d_vf(w) $$
+Donc
+$$ f(v+\rho w)-f(v+r w) > \varepsilon_1 d_vf(w) (\rho -r)$$
+A la limite lorsque $\rho$ tend vers $r$, on a~:
+$$ d_{v+rw}f(w) \geq \varepsilon_1 d_vf(w) \Rightarrow -d_{v+rw}f(w) \leq \varepsilon_1 (-d_vf(w))$$
+et comme $\varepsilon_1<\varepsilon_2$ on v\'erifie la deuxi\`eme
+condition de Wolfe.
+
+La recherche d'un pas de Wolfe peut se faire par dichotomie. On
+initialise $s_-,s_+,s=0,+\infty,$estimation initiale. Puis on fait une boucle
+\begin{enumerate}
+\item On teste si $s$ v\'erifie la premi\`ere condition de Wolfe:
+\item Si c'est le cas, on teste la deuxi\`eme condition de Wolfe
+\begin{enumerate}
+\item si la deuxi\`eme condition est
+  v\'erifi\'ee, on renvoie $s$ qui est un pas de Wolfe. 
+\item Sinon
+on pose $s_-=s$
+et ($s=2s$ si $s=+\infty$ ou $s=(s_-+s_+)/2$ si $s_+\neq +\infty$).
+\end{enumerate}
+\item Si ce n'est pas le cas, $s$ est trop
+grand, on pose donc $s_+=s$, et $s=(s_-+s_+)/2$ et on re\'essaie.
+\end{enumerate}
+Cette dichotomie est couteuse car ex\'ecut\'ee \`a chaque it\'eration
+de la descente, on peut l'acc\'el\'erer en interpolant $f(v+sw)$ (par
+exemple par un polyn\^ome de Lagrange/Hermite de degr\'e 3 en 0,0,$s$, $s$).
+
 \section{Alg\`ebre lin\'eaire} \label{sec:linalg}
 On présente ici des algorithmes autour de la résolution exacte
 et approch\'ee de systèmes (réduction des matrices sous forme échelonnée) 
@@ -11860,6 +12139,11 @@ sur les vecteurs colonnes de $L^t$ avec des coefficients entiers
 (puisque $L\in$GL$_n(\Z)$), on applique $M$ et on conclut
 que ses composantes sur les colonnes non nulles de $U^t$ sont nulles.
 
+Remarque~: l'algorithme du pivot de Gauss permet de trouver plus
+rapidement une base sur $\Q$ du noyau de $M$ \`a coefficients entiers,
+par exemple ici $\{ v_1=(-3,2,0), v_2=(-5,0,2)\}$ mais ce n'est pas une base
+sur $\Z$, par exemple $1/2v_1+1/2v_2 \in \Z^3$.
+
 Plus g\'en\'eralement, chercher une solution particuli\`ere
 du syst\`eme $MX=B$ revient \`a r\'esoudre
 $U^t Y=B$ avec $Y=(L^t)^{-1} X$, la recherche de $Y$ est
@@ -11899,9 +12183,11 @@ colonnes) sur la diagonale, il est donc
 strictement plus petit et donnera lieu \`a
 l'\'etape de r\'eduction suivante \`a un pgcd
 soit \'egal en $a_{ii}$ [resp. $a_{jj}$] 
-(et dans ce cas $a_{ij}$ deviendra nul), soit strictement plus
+(dans ce cas $a_{ij}$ deviendra nul et on effectue une seule
+manipulation de lignes de type Gauss et non deux, ce qui ne changera
+pas les 0 dans la ligne du pivot), soit strictement plus
 petit, donc soit l'un des pivots d\'ecroit, soit l'un des $a_{ij}$
-hors diagonale s'annule. On obtient en un nombre fini d'\'etape
+hors diagonale s'annule. On obtient en un nombre fini d'\'etapes
 une matrice diagonale.
 La forme normale de Smith d'une matrice $A$ impose \'egalement 
 que les coefficients
@@ -12345,12 +12631,22 @@ qui est renvoy\'e par \verb|COND(A)| en Xcas.
 Si la matrice du syst\`eme $A$ (de nombre de condition not\'e
 $\kappa(A)$) est elle-m\^eme connue avec une
 certaine incertitude, alors pour $||\Delta A||$ suffisamment petit,
-on montre que la solution de
+la solution de
 $(A+\Delta A)(x+\Delta x)=b+\Delta b$ v\'erifie
 $$ \frac {|\Delta x |}{|x|}\leq
 \frac{\kappa(A)}{1-\kappa(A)\frac{||\Delta A||}{||A||}}
 \left(\frac{|\Delta b|}{|b|}+\frac{||\Delta A||}{||A||}
 \right) $$
+En effet, on a 
+$$ A \Delta x =\Delta b - \Delta A(x+\Delta x)
+\Rightarrow \Delta x = A^{-1}(\Delta b - \Delta A(x+\Delta x))  $$
+donc en norme
+$$ \| \Delta x \| \leq |||A^{-1}||| (\frac{\|\Delta b\|}{\|b\|}\|Ax\|
++ \frac{||| \Delta A |||}{|||A|||} |||A||| (\|x\|+\|\Delta x\|))$$
+puis~:
+$$ \frac{\| \Delta x \|}{\|x\\} \leq \kappa(A)
+(\frac{\|\Delta b\|}{\|b\|}
++ \frac{||| \Delta A |||}{|||A|||} (1+\frac{\| \Delta x \|}{\|x\\}) $$
 
 
 
@@ -12846,7 +13142,43 @@ partir de la forme simplifi\'ee. Il existe diverses formes associées
 à une matrice et plusieurs algorithmes permettant de les relier entre elles,
 forme de Smith, de Frobenius, forme normale de Jordan rationnelle.
 
-On va pr\'esenter une m\'ethode directe de calcul d'une forme normale
+On commence par un algorithme tr\`es simple qui donne la d\'ecomposition
+dite de Dunford\index{Dunford} (somme d'une matrice diagonalisable et d'une matrice
+nilpotente) sans calculer les valeurs propres (donc en faisant
+tous les calculs dans le corps des coefficients de la matrice).
+Il utilise la m\'ethode de Newton, la forme diagonale
+annulant le polyn\^ome caract\'eristique o\`u on met \`a 1 toutes
+les multiplicit\'es, la partie nilpotente \'etant vue comme le
+terme d'erreur (la taille de l'erreur est en raison inverse
+de l'exposant n\'ecessaire pour annuler le nilpotent).
+\begin{giacprog}
+dunford(A):={
+  local D,p,q,q1,j,d,n;
+  D:=A;
+  n:=nrows(D);
+  p:=charpoly(D);
+  q:=p/gcd(p,p'); // partie sans multiplicite
+  q1:=q';
+  for (j:=1;j<=n;j:=2*j){
+    d:=inv(horner(q1,D))*horner(q,D); // pas de Newton
+    if (d==0*d) return D,A-D;
+    D:=D-d;
+  }
+  return D,A-D;
+}:;
+\end{giacprog}
+\giacinputbigmath{J:=[[2,1,0],[0,1,1],[0,0,1]]; P:=trn([[1,2,3],[0,-1,4],[0,0,1]]); A:=P*J*inv(P)}\\
+\giacinputbigmath{D,N:=dunford(A); N^2; N^3}\\
+Mais cet algorithme est trop simple pour \^etre efficace pour de
+grandes matrices, pour le rendre plus efficace, il faut travailler un
+peu en utilisant la factorisation la plus pouss\'ee possible sur le
+polyn\^ome caract\'eristique (en tout cas au moins la d\'ecomposition
+\verb|sqrfree|) et B\'ezout pour calculer les projecteurs spectraux,
+on diminue ainsi la dimension pour acc\'el\'erer les \'evaluations du
+polyn\^ome d'endomorphisme (en $O($dimesion$)^4$). Et au demeurant
+la forme de Dunford n'a pas beaucoup d'applications.
+
+On va maintenant pr\'esenter une m\'ethode directe de calcul d'une forme normale
 contenant le maximum de z\'eros (dont la forme dite normale de Jordan
 rationnelle peut se d\'eduire) en utilisant le m\^eme algorithme que pour 
 la forme
@@ -13228,12 +13560,23 @@ une matrice carr\'ee d'ordre 2, $Q$ une matrice carr\'ee d'ordre $n$,
 la premi\`ere colonne de $Q$ est le vecteur de coordonn\'ees
 $\pm (1,...,1)/\sqrt{n}$.
 
+Exemple~: on se donne les points $(1,2), (2,1), (3,5), (4,4)$. La
+matrice $A$ et $b$ sont donc\\
+\giacinputbigmath{A:=evalf(tran([seq(1,4),seq(j,j,1,4)])); b:=[2,1,5,4];}\\
+\giacinputbigmath{q,r:=qr(A); y0,m:=normal(r[0..1,0..1]^-1*trn(q)[0..1]*b);}\\
+\giacinputbig[style="width:800px;height:40px;font-style:large"]{purge(x);droite(y=m*x+y0); scatterplot(seq(j,j,1,4),b);linear_regression_plot(seq(j,j,1,4),b)}
+
 {\bf Exemple 2: r\'egression polynomiale}~:\\
 C'est une g\'en\'eralisation de l'exemple pr\'ec\'edent, on cherche un polyn\^ome $P(x)$
 de degr\'e fix\'e tel que $\sum_i (y_i-P(x_i))^2$ soit minimal. Si on
 choisit la base canonique des polyn\^omes, la
 matrice $A$ est alors une matrice de Vandermonde 
-et son conditionnement est en g\'en\'eral tr\`es mauvais.
+et son conditionnement est en g\'en\'eral tr\`es mauvais. 
+De plus, plus le degr\'e augmente, plus l'extrapolation 
+est hasardeuse~:\\
+\giacinputbigmath{a:=[[0,-3],[1,-1],[2,0],[3,1],[4,3],[5,4],[6,5],[10,9]]:;}\\
+\giacinputbig[style="width:800px;height:40px;font-style:large"]{scatterplot(a); linear_regression_plot(a[0..6]); polynomial_regression_plot(a[0..6],4);}
+
 On pr\'ef\`erera utiliser une base de polyn\^omes orthogonaux pour
 le produit scalaire $\sum_i P(x_i)Q(x_i)$
 ou minimiser une autre fonctionnelle quadratique, par
@@ -13387,6 +13730,49 @@ on a $M^*+N=(2/\omega -1)D$ qui est d\'efinie positive si $\omega<2$.
 {\bf Remarque~}: Jacobi et Gauss-Seidel sont impl\'ement\'ees dans les commandes
 Xcas {\tt jacobi\_linsolve} et {\tt gauss\_seidel\_linsolve}.
 
+\subsubsection{M\'ethode du gradient \`a pas constant}\index{pas constant, gradient}
+\index{gradient \`a pas constant}
+Soit $A$ est une matrice sym\'etrique d\'efinie positive (relativement
+\`a un produit scalaire not\'e $<|>$), on
+consid\`ere la fonctionnelle~:
+$$ J(v)=\frac12 <Av|v>-<b|v>$$
+$J(v)$ tend vers $+\infty$ lorsque $\|v\|$ tend vers l'infini, 
+car si $\lambda_1>0$ est la plus petite valeur propre de $A$,
+on a $J(v)\geq \frac12 \lambda_1 \|v\|^2-\|b\|\|v\|$.
+Elle admet donc un minimum global, qui v\'erifie $J'(v)=\nabla J(v)=0$
+Or $d_vJ(w)=<Av-b|w>$, en effet
+$$<A(v+hw)|(v+hw)>-<Av|v>=h<Aw|v>+h<Av|w>+O(h^2)=2h<Av|w>+O(h^2)$$
+donc $\nabla J (v)=Av-b$
+Donc le minimum global est l'unique solution de $Av=b$.
+
+La m\'ethode du gradient \`a pas constant consiste \`a r\'esoudre le
+syst\`eme $Av=b$ en minimisant $J$. Pour cela on calcule une suite r\'ecurrente
+de premier terme par exemple $v_0=0$, et au rang $k+1$ on suit la
+direction oppos\'ee au gradient de $J$ en $v_k$ selon un pas constant~:
+$$ v_{n+1}=v_k-\rho (Av_k-b)$$
+La plus grande et plus petite valeur propre de $I-\rho A$ sont 
+$1-\rho \lambda_1$ et $1-\rho \lambda_n$, si ces deux valeurs propres
+sont en module strictement inf\'erieure \`a 1, alors $v_k$ va
+converger \`a vitesse g\'eom\'etrique (de raison max($|1-\rho
+\lambda_1|,|1-\rho \lambda_n|$) vers l'unique point fixe de
+$f(v)=(I-\rho A)v+\rho b$, qui est la solution du syst\`eme $Av=b$.
+Il suffit de choisir $\rho$ (si on a une estimation sur $\lambda_1$ et
+$\lambda_n$).
+
+Par exemple, pour la matrice du laplacien discret (2 sur la diagonale,
+et -1 sur les 2 diagonales de part et d'autre), les valeurs propres
+sont les $2(1-\cos(k\pi/(n+1)))$, il faut donc que 
+$ -1 < 1-2\rho (1+\cos(\pi/(n+1)))$
+soit $0<\rho<\frac1{1+\cos(\pi/(n+1))}$.
+La valeur optimale est obtenue lorsque les 2 valeurs extr\^emales ont
+m\^eme valeur absolue
+$$ 2\rho (1+\cos(\pi/(n+1))-1=1-2\rho (1-\cos(\pi/(n+1)) 
+\ \Rightarrow \
+\rho = \frac12
+$$
+La vitesse de convergence est assez lente, car $|I-\rho A|$ a pour
+valeur propre maximale $\cos(\pi/(n+1))$, par exemple pour $n=20$,
+$\cos(pi/21.) \equiv 0.988$ est tr\`es proche de 1.
  
 \subsubsection{M\'ethode it\'erative du gradient conjugu\'e}\index{gradient conjugu\'e}
 Il s'agit de résoudre $Ax=b$, où $A$ est définie positive. 
@@ -13955,7 +14341,7 @@ calculant le noyau de la matrice ayant ces vecteurs colonnes. Si le
 noyau est de dimension 1, alors le polynôme minimal est égal au
 polynome caractéristique et correspond à un vecteur de la base du noyau.
 Sinon, il faut choisir un vecteur du noyau correspondant au degré
-le plus petit possible puis faire le PPCM avec les polynomes obtenurs
+le plus petit possible puis faire le PPCM avec les polynomes obtenus
 avec d'autres vecteurs pour obtenir le polynôme minimal avec une grande
 probabilité.
 Essayez avec la matrice $A$ de taille 3 ayant des 0 sur la diagonale et 
@@ -14093,8 +14479,10 @@ l'intervalle contenant les $x_j$ et $x$ tel que
 \[ C=\frac{f^{[n+1]}(\xi_x)}{(n+1)!} \]
 \giacinputbigmath{f(x):=ln(x^2+1); n:=10; X:=evalf(seq(j/n,j,0,n)); Y:=map(X,f);}\\
 \giacinputbigmath{P:=interp(X,Y);}\\
-\giacinput{plot([f(x),P],x=-1..2,color=[red,blue])}\\
-\giacinput{plot(1e7*abs(f(x)-P),x=0..1)}\\
+\giacinput{plot([f(x),P],x=-1..2,color=[red,blue])}
+
+\giacinput{plot(1e7*abs(f(x)-P),x=0..1)}
+
 Attention, l'erreur d'interpolation peut devenir tr\`es grande
 lorsqu'on utilise beaucoup de points d'interpolation.
 
@@ -14202,14 +14590,18 @@ num\'eriquement pour une subdivision \'equidistribu\'ee,
 et montrer qu'il croit comme $\frac{2^{n+1}}{e n \ln(n)}$,
 par exemple pour $n=40$, il vaut environ {\tt 5e9}.
 Illustration avec Xcas~:\\
-\giacinputbigmath{l(k,n):=product((x-j)/(k-j),j,0,k-1)*product((x-j)/(k-j),j,k+1,n);}\\
-\giacinput[style="width:800px;height:40px;font-style:large"]{n:=10; f:=add(abs(l(k,n)),k,0,n); plot(f,x=0..n)}\\
+\giacinputbigmath{restart();l(k,n):=product((x-j)/(k-j),j,0,k-1)*product((x-j)/(k-j),j,k+1,n);}
+
+\giacinput[style="width:800px;height:40px;font-style:large"]{n:=10; f:=add(abs(l(k,n)),k,0,n); plot(f,x=0..n)}
+
 puis essayer avec $n=20$. Pour $n=40$, en observant que le max
 est atteint dans $[0,1]$, on peut remplacer les valeurs absolues
 par la bonne puissance de -1\\
-\giacinputbigmath{n:=40; g:=l(0,n)+add((-1)^(k+n-1)*l(k,n),k,1,n)}\\
+\giacinputbigmath{n:=40; g:=l(0,n)+add((-1)^(k+n-1)*l(k,n),k,1,n)}
+
 on a alors un polyn\^ome, dont on calcule l'abscisse du maximum par\\
-\giacinputbigmath{g1:=normal(g'); l:=realroot(g1,1e-12,evalf)}\\
+\giacinputbigmath{g1:=normal(g'); l:=realroot(g1,1e-12,evalf)}
+
 puis \giacinput{subst(g,x=l[0])} qui donne environ {\tt 4.7e9}.
 
 
@@ -14226,7 +14618,8 @@ $$ T_n(\cos(x))=\cos(nx) $$
 Sur $[-1,1]$, le polyn\^ome $T_n$ vaut en valeur absolue au plus 1, et
 atteint cette valeur exactement $n+1$ fois lorsque $x=k\pi/n$ donc 
 $X=\cos(x)=\cos(k\pi/n)$.\\
-\giacinput{n:=7; plot(tchebyshev1(n),x=-1..1)}\\
+\giacinput{n:=7; plot(tchebyshev1(n),x=-1..1)}
+
 De plus cette majoration est optimale. En effet
 soit $U$ un polyn\^ome de degr\'e au plus $n$ 
 qui v\'erifie $|U|_\infty<1$ sur $[-1,1]$
@@ -14245,9 +14638,10 @@ Runge\index{Runge, ph\'enom\`ene de} qui apparait par
 exemple pour $f(x)=1/(25x^2+1)$ sur $[-1,1]$ avec des points d'interpolation
 \'equidistants n'apparait plus si on prend des points de Tchebyshev.\\
 \giacinputbigmath{f(x):=1/(1+25x^2); n:=20; X:=seq(2*j/n-1.0,j,0,n); }\\
-\giacinput{l:=lagrange(X,map(X,f)):; plot(l-f(x),x=-1..1)}\\
-\giacinputbigmath{T:=seq(cos((j+0.5)*pi/n),j,0,n);}\\
-\giacinput[style="width:800px;height:20px;font-style:large"]{l:=lagrange(T,map(T,f)):; plot(100*(l-f(x)),x=-1..1)}\\
+\giacinput{l:=lagrange(X,map(X,f)):; plot(l-f(x),x=-1..1)}
+
+\giacinputbigmath{T:=seq(cos((j+0.5)*pi/(n+1)),j,0,n);}\\
+\giacinput[style="width:800px;height:20px;font-style:large"]{l:=lagrange(T,map(T,f)):; plot(100*(l-f(x)),x=-1..1)}
 
 Ceci est reli\'e \`a la constante de Lebesgue 
 qui pour des points de Tchebyshev vaut un peu moins de 4 pour $n<100$
@@ -14337,19 +14731,148 @@ appel\'ee courbe de B\'ezier. En pratique on les utilise pour $n=3$.
 
 \subsection{Polynômes orthogonaux.}\index{orthogonaux, polyn\^omes}
 \index{polyn\^omes orthogonaux}
-Autre exemple important pour l'int\'egration~: les polyn\^omes
+Il s'agit d'une autre m\'ethode d'approximation, 
+particuli\`erement important pour l'int\'egration~: les polyn\^omes
 de meilleur approximation au sens de normes $L^2$ ou $L^2$
-\`a poids (on projette alors sur une base de polyn\^omes orthogonaux
-de degr\'es croissants pour le produit scalaire attach\'e \`a la
-norme).
+\`a poids $w(x)>0$ sur l'intervalle de bornes $\alpha$ et $\beta$
+(finis ou infinis). 
+On consid\`ere le produit scalaire
+$$ <f|g>=\int_\alpha^\beta w(x) f(x)g(x) \ dx$$
+et on projette alors la fonction \`a approcher 
+sur une base de polyn\^omes orthogonaux
+de degr\'es croissants construit par la proc\'edure
+de Gram-Schmidt \`a partir de la base canonique
+pour le produit scalaire ci-dessus.
 
-Par exemple, pour l'int\'egrale sur $[-1,1]$ sans poids, 
-les polyn\^omes de Legendre forment une base orthonorm\'ee~:\\
-\giacinputbig{S(f,g):=int(f*g,x,-1,1);}\\
+\begin{prop}
+Le polyn\^ome $P_n$ de degr\'e $n$
+obtenu par orthogonalisation de Gram-Schmidt
+pour le produit scalaire $\int_\alpha^\beta w(x) f(x)g(x) \ dx$
+poss\`ede $n$ racines r\'eelles.
+\end{prop}
+En effet, soit $r$ le nombre de racines r\'eelles de $P_n$, on pose $f=P_n$ et 
+$g=\prod_{i=1}^r (x-x_i)$, $wfg$ est de signe constant
+et non identiquement nul donc $<f|g> \neq 0$ donc
+$r=n$ sinon $g$ serait de degr\'e strictement plus petit que $n$
+donc orthogonal \`a $P_n$.
+
+On peut aussi construire ces polyn\^omes en cherchant les valeurs
+propres de
+$$ T(f)=\frac{1}{w} (awf')'$$
+o\`u $a>0$ est un polyn\^ome de degr\'e au plus 2
+sur $]\alpha,\beta[$, tel que $aw$ s'annule (ou tend vers 0) 
+aux bornes de l'intervalle d'int\'egration~: si $\alpha$ et $\beta$ sont finis
+$a(x)=(x-\alpha)(\beta-x)$.
+On a alors
+$$ <T(f)|g>=\int_\alpha^\beta (awf')'g =
+[awf'g]_\alpha^\beta-\int_\alpha^\beta awg'f'
+=-\int_\alpha^\beta awg'f'$$
+car le terme tout int\'egr\'e s'annule 
+(puisque $aw$ s'annule en $\alpha$ et $\beta$). Donc $<T(f)|g>=<f|T(g)>$
+est sym\'etrique, les vecteurs propres de $T$ correspondant \`a des
+valeurs propres distinctes sont donc orthogonaux entre eux.
+Pour trouver ces valeurs propres/polyn\^omes vecteurs propres, on
+\'ecrit $T(P_n)=\lambda_n P_n$ pour un polyn\^ome $P_n$ de degr\'e
+$n$. Si $aw'/w$ est un polyn\^ome de degr\'e au plus 1, 
+le terme de degr\'e dominant de cette \'equation
+donne la valeur de $\lambda_n$ et les termes de degr\'e plus petits
+permettent en g\'en\'eral de d\'eterminer de mani\`ere unique les
+coefficients de $P_n$ en fonction du coefficient dominant.
+
+Pour certains poids $w(x)$ standards,
+les polyn\^omes obtenus ont un nom~:
+\begin{itemize}
+\item Legendre\index{Legendre} pour $w(x)=1$ sur $[-1,1]$,
+  $a(x)=1-x^2$
+\item Hermite pour $w(x)=e^{-x^2}$ sur $\R$, $a(x)=1$
+\item Laguerre pour $w(x)=x^a e^{-x}$ sur $\R^+$, 
+\item Tchebyshev de premi\`ere esp\`ece pour $w(x)=1/\sqrt{1-x^2}$ sur
+  $[-1,1]$, $a(x)=1-x^2$
+\item Tchebyshev de deuxi\`eme esp\`ece pour $w(x)=\sqrt{1-x^2}$ sur
+  $[-1,1]$, $a(x)=1-x^2$
+\end{itemize}
+
+Ainsi, les polyn\^omes de Legendre v\'erifient
+$$ ((1-x^2)P_n')'=\lambda_n P_n$$
+Le terme de degr\'e $n$ de cette \'equation donne $\lambda_n=-n(n+1)$,
+le terme sous-dominant est nul. Plus g\'en\'erallement, 
+le terme de degr\'e $k$ v\'erifie
+$$ (k+2)(k+1)p_{k+2}-k(k+1)p_k=-n(n+1)p_k \Rightarrow
+p_{k+2}=\frac{k(k+1)-n(n+1)}{(k+2)(k+1)} p_k$$
+Ceci permet de calculer le polyn\^ome $P_n$, on normalise
+$P_n$ par $P_n(1)=1$.\\
+\giacinputbig{n:=10; p:=makelist(n+1); p[0]:=1;}\\
+\giacinputbig{for k from 0 to size(p)-3 step 2 do p[k+2]:=(k*(k+1)-n*(n+1))/(k+2)/(k+1)*p[k]; od;}\\
+\giacinputbigmath{q:=p*1/sum(p); normal(poly2symb(revlist(q))); legendre(n)}
+
+Le calcul de ces polyn\^omes peut aussi se faire par une r\'ecurrence \`a 2
+crans du type~:
+\begin{equation} \label{eq:rec_orthogonaux}
+P_{n+1}=(a_nx-b_n)P_n-c_nP_{n-1}
+\end{equation}
+La valeur de $a_n$ est d\'efinie par la normalisation de la famille de
+polyn\^omes, ensuite $b_n$ et $c_n$ sont d\'etermin\'es respectivement
+par 
+$$<P_{n+1}|P_n>=0 \Rightarrow b_n<P_n|P_n>=a_n<xP_n|P_n>$$ 
+et
+$$<P_{n+1}|P_{n-1}>=0 \Rightarrow
+c_n<P_{n-1}|P_{n-1}>=a_n<xP_n|P_{n-1}>=a_n<P_n|xP_{n-1}>$$
+donc
+$$c_n<P_{n-1}|P_{n-1}>=\frac{a_n}{a_{n-1}}<P_n|P_n+b_{n-1}P_{n-1}+c_{n-1}P_{n-2}>
+=\frac{a_n}{a_{n-1}}<P_n|P_n>$$
+Les autres relations
+d'orthogonalit\'e $<P_{n+1}|P_j>=0, j<n-1$ sont automatiquement
+v\'erifi\'ees puisque $<xP_n|P_j>=<P_n|xP_j>=0$ et $P_n$ est orthogonal
+aux polyn\^omes de degr\'e $\leq n-1$.
+
+Dans l'exemple des polyn\^omes de Legendre, les polyn\^omes obtenus
+sont pairs si $n$ est pair et impairs sinon, la relation de 
+r\'ecurrence a donc un coefficient $b_n$ nul. La convention
+de normalisation usuelle est $P_n(1)=1$, on peut montrer qu'on a
+$a_n=(2n+1)/(n+1)$ et $<P_n|P_n>=2/(2n+1)$ 
+donc $c_n=n/(n+1)$.
+$$ (n+1)P_{n+1}=(2n+1)xP_n-nP_{n-1}$$
+En effet la normalisation en 1 donne $1=a_n-c_n$ donc $c_n=a_n-1$,
+les termes de degr\'e $n+1$ et $n-1$ de $P_{n+1}=a_nxP_n-c_nP_{n-1}$ donnent
+$$ p_{n+1,n+1}=a_np_{n,n}, \quad p_{n+1,n-1}=a_n
+p_{n,n-2}-(a_n-1)p_{n-1,n-1}$$
+On applique alors (\ref{eq:legendre_rec}) et on d\'eduit de la
+deuxi\`eme \'equation ci-dessus~:
+$$ -\frac{n(n+1)}{2(2n+1)} p_{n+1,n+1}= -\frac{n(n-1)}{2(2n+1)} a_n
+p_{n,n}-(a_n-1)p_{n-1,n-1}$$
+puis on applique la premi\`ere~:
+$$ \frac{n(n+1)}{2(2n+1)} -
+\frac{n(n-1)}{2(2n+1)}=\frac{a_n-1}{a_na_{n-1}}$$
+d'o\`u 
+$$ a_n=\frac{1}{1-\frac{n^2}{4n^2-1} a_{n-1}}$$
+
+
+\giacinputbigmath{S(f,g):=int(f*g,x,-1,1);}
+
 \giacinputbigmath{gramschmidt([1,x,x^2,x^3,x^4],S);}\\
 \giacinputbigmath{f:=ln(x+2);C:=seq(S(f,legendre(k))/S(legendre(k),legendre(k)),k,0,4);}\\
 \giacinputbigmath{g:=sum(C[j]*legendre(j),j,0,4);}\\
 \giacinputbig{plot([f,g],x,-1.4,1.4,color=[red,blue]);}
+
+{\bf Remarques}
+\begin{itemize}
+\item On peut utiliser la r\'ecurrence \`a deux crans pour \'evaluer
+le polyn\^ome en un r\'eel, il n'est alors pas n\'ecessaire
+de calculer $P_n$ dans la base canonique.
+\item La r\'ecurrence \`a deux crans se g\'en\'eralise pour les degr\'es
+plus petits que $d$ au produit scalaire
+$$ <P|Q>=\sum_{j=0}^d P(x_j) Q(x_j) $$
+o\`u les $x_j$ sont des abscisses distinctes 2 \`a 2. Le calcul
+d'une base orthogonale permet de
+faire des calculs de r\'egressions polynomiales mieux conditionn\'es
+qu'en utilisant la base canonique (et la matrice de Vandermonde).
+\item
+On peut voir l'interpolation trigonom\'etrique (s\'eries de Fourier,
+transform\'ee de Fourier discr\`ete) comme une
+g\'en\'eralisation en rempla\c{c}ant une base orthonormalis\'ee
+de polyn\^omes par une base orthogonale de sinus, cosinus
+ou exponentielles.
+\end{itemize}
 
 \subsection{Les splines}\index{splines}
 Il s'agit de fonctions définies par des polynomes de degré borné
@@ -15203,6 +15726,16 @@ N & \mbox{si} & \omega_N^{(k-l)} = 1
 Or si $\omega_N^{k-l}=e^{2i\pi(k-l)/N}=1$ si et seulement si $k=l$
 d'où le résultat.
 
+{\bf Remarque}~: dans le cas complexe $\omega=e^{2i\pi/N}$, 
+on peut interpr\'eter la DFT
+en termes du produit scalaire hermitien
+$$ <x|y>=\sum_{j=0}^{N-1} \overline{x}_j y_j$$
+sur l'espace $\C^N$, on a une base orthogonale donn\'ee par 
+les $\{ W_k=(\omega^{jk})_{j=0..N-1}, k=0..N-1\}$, la DFT d'une suite $x$ est le calcul
+des produits scalaires $<W_k|x>$, et la r\'ecriproque est l'\'ecriture
+de $x$ dans cette base orthogonale.
+
+
 {\bf Propriété}\\
 La transformée de Fourier discrète d'une suite réelle vérifie
 $y_{N-k}=\overline{y_k}$.\\
@@ -15270,22 +15803,50 @@ de degré $N-1$:
 aux $N$ points $1$, $\omega_N$, ..., $\omega_N^{N-1}$ 
 (on a $y_k=P(\omega_N^k)$).
 Mais si $N$ est une puissance de 2, on peut calculer de manière plus
-astucieuse et réduire le nombre d'opérations à un ordre $N \ln(N)$.
+astucieuse et réduire le nombre d'opérations à un ordre $T(N)=O(N \ln(N))$.
 En effet $N=2M$,
-on d\'ecoupe $P$ en 2 parties de m\^eme longueur~:
+on prend les
+puissances paires et impaires de $P$
+$$ P(x)=Q(x^2)+xR(x^2)$$
+On a alors
+$$ P(\omega^k)=Q( (\omega^2)^k)+\omega^k R((\omega^2)^k)$$
+On calcule les DFT de $Q$ et $R$, puis pour chaque valeur de $k$ on a
+1 multiplication et 1 addition donc $4M$ op\'erations plus le calcul
+de deux DFT d'ordre $M$ (on peut \'economiser $M$ multiplications
+en utilisant $\omega^{k+M} =-\omega^k$). On a donc $T(2M)=cM+2T(M)$
+avec $c=4$ ou $c=3$. Si $N=2^n$ on a 
+$$T(2^n)=c2^{n-1}+2T(2^{n-1})
+= c2^{n-1}+2(c2^{n-2}+2T(2^{n-2})
+=...=nc2^{n-1}+2^nT(0)$$
+donc $T(2^n) \approx cn2^{n-1}$ op\'erations, donc $O(N\ln(N))$
+opérations.
+
+Une m\'ethode alternative consiste \`a 
+d\'ecouper $P$ en 2 parties de m\^eme longueur~:
 \[ P(x)=x^M Q(X) + R(X) \]
 on a alors
-\[ P(\omega^{2k})= (Q+R) ((\omega^2)^{k}), \quad
-P(\omega^{2k+1})= (-Q +R)_\omega ((\omega^2)^k) \quad
-S_\omega(x)=\sum s_k w^k x^k
-\]
+\begin{eqnarray*}
+P(\omega^{2k}) &= (Q+R) ((\omega^2)^{k}), \\
+P(\omega^{2k+1}) &= (-Q +R)_\omega ((\omega^2)^k) \quad
+&\mbox{ o\`u }  S_\omega(x)=\sum s_k \omega^k x^k
+\end{eqnarray*}
 On est donc ramen\'e \`a deux additions de 2 polyn\^omes de degr\'e $M$,
-une multiplication coefficient par puissances ($4M$ op\'erations),
-et au calcul des deux DFT de $Q+R$ et $R-Q$. Si $N=2^n$ on
-v\'erifie que cela n\'ecessite $O(n2^n)$ op\'erations, donc $N\ln(N)$
-opérations.
-On appelle alors FFT cette méthode de calcul (DFT=FFT si $N2^n$).
-Elle se g\'en\'eralise \`a des $N$ qui ne sont pas des puissances
+une multiplication coefficient par puissances sur un polyn\^ome de
+degr\'e $M$ (soit $3M$ op\'erations),
+et au calcul des deux DFT de $Q+R$ et $R-Q$. 
+Lorsqu'on impl\'emente cette m\'ethode de mani\`ere efficace, 
+on calcule le r\'esultat de la DFT en place (en \'ecrasant $P$ par sa DFT)
+il faut utiliser un espace m\'emoire
+de travail de m\^eme longueur que le polyn\^me de d\'epart, on en
+utilise la premi\`ere partie pour calculer $Q+R$ et la seconde partie
+pour $(R-Q)_\omega$. On calcule les deux DFT en utilisant comme
+espaces m\'emoire de travail la zone qui contient $P$ (qui sera donc
+perdu), puis on effectue les permutations donnant la DFT de $P$
+\`a partir de celles de $Q$ et $R$ en \'ecrasant la zone qui contenait $P$.
+
+On appelle alors FFT cette méthode de calcul (DFT=FFT si $N=2^n$).
+
+Cette m\'ethode se g\'en\'eralise \`a des $N$ qui ne sont pas des puissances
 de 2.
 
 \subsection{Applications.}
@@ -15300,9 +15861,56 @@ de Milankovitch.
 
 En calcul exact, la FFT permet d'obtenir une complexit\'e optimale
 pour calculer des produits de grands entiers ou de polyn\^omes
-en une variable. Voir par exemple la session \verb|multfft|du menu 
-\verb|Aide, Exemples, arit| de Xcas.
+en une variable. La session \verb|multfft|du menu 
+\verb|Aide, Exemples, arit| de Xcas impl\'emente le principe
+du calcul du produit $P$ de deux polyn\^omes $A$ et $B$ \`a coefficients entiers
+en utilisant un seul nombre premier $p$ tel que 
+\begin{itemize}
+\item 1 admette
+une racine primitive $2^n$-i\`eme de l'unit\'e modulo $p$ 
+pour un $n$ assez grand ($2^n$ strictement plus grand que le degr\'e
+du produit $P$) 
+\item tel que $p>2|P|_\infty$ pour d\'eterminer $P$ \`a partir de son
+\'ecriture en repr\'esentation sym\'etrique.
+\end{itemize}
+On \'ecrit les coefficients de $A$ et $B$ dans un vecteur de longueur
+$2^n$ en compl\'etant par des 0, on calcule la DFT de $A$ et de $B$,
+puis on fait le produit \'el\'ement par \'el\'ement puis on calcule la
+DFT inverse.
 
+Pour une impl\'ementation efficace, on utilise plusieurs nombres
+premiers et les restes chinois (en fait \`a deux reprises). 
+On calcule le produit des polyn\^omes
+modulo plusieurs nombres premiers $p_i$, dont le produit $\prod
+p_i$  est sup\'erieur \`a deux fois la norme infinie de $P$ pour
+pouvoir en d\'eduire $P$.
+Pour calculer un des produits $AB \pmod {p_i}$, on r\'eduit $A$ et $B$ modulo $p_i$,
+on multiplie les polyn\^omes r\'eduits $\overline{A} \overline{B}$ 
+comme s'ils \'etaient \`a coefficients
+entiers et on r'eduit le r\'esultat modulo $p_i$. 
+Le calcul de chaque $\overline{A}\overline{B}$ ($p_i$ fix\'e) se fait en utilisant 2 ou 3
+premiers choisis une fois pour toutes qui sont proches de $2^{31}$
+et ont des racines $2^n$-i\`eme de l'unit\'e pour $n$ assez proche de 31.
+Ainsi, Law et Monagan, proposent 
+dans``A parallel implementation for polynomial multiplication
+modulo a prime'',  PASCO 2015,
+\begin{itemize}
+\item $n_1 = 2013265921 =15 \times 2^{27}+1$ 
+($r=1227303670$ est racine root d'ordre $2^{27}$)
+\item
+  $n_2 = 1811939329 =27 \times 2^{26}$ ($r=814458146$ est racine d'ordre $2^{26}$) 
+\item $n_3 = 469762049 $ ($r=2187$ est racine d'ordre $2^{26}$)
+\end{itemize}
+On peut retrouver ces nombres premiers avec la boucle suivante
+\giacinputbig{p:=2^25; for k from 64 downto 1 do if isprime(k*p+1) then print(k*p+1); fi od}
+Ce choix permet de multiplier des polyn\^omes dont le degr\'e du produit
+est strictement inf\'erieur \`a $2^{26}$ (environ 67 millions). Si on utilise deux de ces 3
+premiers, $n_1$ et $n_2$, on peut prendre des $p_i$ dont la taille en bits est
+plus petite que (60 bits moins le nombre de bits du degr\'e minimal de
+$A$ et $B$) divis\'e par 2. Avec les trois $n_1$, $n_2$ et $n_3$ on peut prendre
+$p_i$ ayant 31 bits, mais il faut faire des restes chinois avec des
+entiers de plus de 64 bits (ce qui est possible avec des entiers 128
+bits mais au prix de r\'eductions modulo couteuses).
 
 \section{Le rayonnement solaire.} \label{sec:soleil}
 
@@ -17204,6 +17812,9 @@ faire. Les tablettes avec possibilit\'e de branchement
 de clavier ont un potentiel int\'eressant pour un usage
 en mobilit\'e avec un peu plus de donn\'ees \`a saisir.
 \end{itemize}
+
+\end{giacjsonline}
+%\end{giacjs}
 
 \end{document}
 
