@@ -30,7 +30,7 @@
 #endif
 //#include <stdint.h>
 
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(__arm64__)
 #define x86_64 1
 #endif
 
@@ -159,7 +159,7 @@ int my_sprintf(char * s, const char * format, ...);
 #define alias_type size_t
 #endif
 
-#if defined(RTOS_THREADX) || defined(BESTA_OS) || defined NSPIRE
+#if defined(RTOS_THREADX) || defined(BESTA_OS) || defined NSPIRE || defined KHICAS
 #define NO_TEMPLATE_MULTGCD
 #endif
 

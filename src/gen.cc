@@ -2184,7 +2184,7 @@ namespace giac {
 	    return true;
 	  }
 #else // rtos
-#if !defined(WIN32) && defined(HAVE_PTHREAD_H)
+#if !defined(WIN32) && defined(HAVE_PTHREAD_H) && defined HAVE_LIBPTHREAD
 	  void * stackaddr;
 	  if (contextptr && (stackaddr=thread_param_ptr(contextptr)->stackaddr)){
 	    // CERR << &slevel << " " << thread_param_ptr(contextptr)->stackaddr << '\n';
@@ -4914,12 +4914,12 @@ namespace giac {
 	  return symbolic(at_program,gen(makevecteur(var1,0,operator_plus(res1,res2,contextptr)),_SEQ__VECT));
       }
       if (!is_constant_wrt(b,var1,contextptr))
-	*logptr(contextptr) << "Warning function+constant with constant dependant of mute variable" << '\n';
+	*logptr(contextptr) << "Warning function+constant with constant dependent of mute variable" << '\n';
       return symbolic(at_program,gen(makevecteur(var1,0,operator_plus(res1,b,contextptr)),_SEQ__VECT));
     }
     if (is_algebraic_program(b,var2,res2)){
       if (!is_constant_wrt(a,var2,contextptr))
-	*logptr(contextptr) << "Warning constant+function with constant dependant of mute variable" << '\n';
+	*logptr(contextptr) << "Warning constant+function with constant dependent of mute variable" << '\n';
       return symbolic(at_program,gen(makevecteur(var2,0,operator_plus(a,res2,contextptr)),_SEQ__VECT));
     }
     if (a.type==_VECT){
@@ -6999,12 +6999,12 @@ namespace giac {
 	  return symbolic(at_program,gen(makevecteur(var1,0,operator_times(res1,res2,contextptr)),_SEQ__VECT));
       }
       if (!is_constant_wrt(b,var1,contextptr))
-	*logptr(contextptr) << "Warning function*constant with constant dependant of mute variable" << '\n';
+	*logptr(contextptr) << "Warning function*constant with constant dependent of mute variable" << '\n';
       return symbolic(at_program,gen(makevecteur(var1,0,operator_times(res1,b,contextptr)),_SEQ__VECT));
     }
     if (is_algebraic_program(b,var2,res2)){
       if (!is_constant_wrt(a,var2,contextptr))
-	*logptr(contextptr) << "Warning constant*function with constant dependant of mute variable" << '\n';
+	*logptr(contextptr) << "Warning constant*function with constant dependent of mute variable" << '\n';
       return symbolic(at_program,gen(makevecteur(var2,0,operator_times(a,res2,contextptr)),_SEQ__VECT));
     }
     if (is_inf(a)){
@@ -7888,12 +7888,12 @@ namespace giac {
 	      return symbolic(at_program,gen(makevecteur(var1,0,rdiv(res1,res2,contextptr)),_SEQ__VECT));
 	  }
 	  if (!is_constant_wrt(b,var1,contextptr))
-	    *logptr(contextptr) << "Warning function/constant with constant dependant of mute variable" << '\n';
+	    *logptr(contextptr) << "Warning function/constant with constant dependent of mute variable" << '\n';
 	  return symbolic(at_program,gen(makevecteur(var1,0,rdiv(res1,b,contextptr)),_SEQ__VECT));
 	}
 	if (is_algebraic_program(b,var2,res2)){
 	  if (!is_constant_wrt(a,var2,contextptr))
-	    *logptr(contextptr) << "Warning constant/function with constant dependant of mute variable" << '\n';
+	    *logptr(contextptr) << "Warning constant/function with constant dependent of mute variable" << '\n';
 	  return symbolic(at_program,gen(makevecteur(var2,0,rdiv(a,res2,contextptr)),_SEQ__VECT));	
 	}
       }
@@ -11892,7 +11892,7 @@ namespace giac {
 	return 1;
       }
     }
-#if !defined(WIN32) && defined(HAVE_PTHREAD_H)
+#if !defined(WIN32) && defined(HAVE_PTHREAD_H) && defined HAVE_LIBPTHREAD
     if (contextptr && thread_param_ptr(contextptr)->stackaddr && thread_param_ptr(contextptr)->stacksize/2){
       gen er;
       short int err=s.size();
@@ -15086,6 +15086,9 @@ void sprint_double(char * s,double d){
     return res;
   }
 
+  gen real_object::subtract (const gen & g,GIAC_CONTEXT) const{
+    return substract(g,contextptr); 
+  }
   gen real_object::substract (const gen & g,GIAC_CONTEXT) const{
     switch (g.type){
     case _REAL:
@@ -15104,7 +15107,9 @@ void sprint_double(char * s,double d){
     }
     return gensizeerr(gettext("real_object + gen")+this->print(contextptr)+","+g.print(contextptr));
   }
-  
+  gen real_interval::subtract (const gen & g,GIAC_CONTEXT) const{
+    return substract(g,contextptr);
+  }
   gen real_interval::substract (const gen & g,GIAC_CONTEXT) const{
     switch (g.type){
     case _REAL:
@@ -16143,6 +16148,8 @@ void sprint_double(char * s,double d){
     static context * contextptr=0;
     if (!contextptr) contextptr=new context;
     context & C=*contextptr;
+    if (!strcmp(s,"caseval contextptr"))
+      return (const char *) contextptr;
     if (!strcmp(s,"shell off")){
       os_shell=false;
       return "shell off";

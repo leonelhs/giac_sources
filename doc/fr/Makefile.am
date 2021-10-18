@@ -21,7 +21,7 @@ HTML_LOCAL = algo.html algo*png
 
 FIGURES = figure1 figure2 figure3 figure4 figure5 th1968* windowinter* undemix* cesaro* baton* camembert* plotlist*  nuage* nuee* quadrill* etoile*  inscrit* sphere* nico* suite* trialea* factalea* codrot* codage* pasde2.* carr.* exoparam.* dessincomb.*  fougere* tirage* xex02* xexyey* triequi* Newtonimpl* chouchou* chouxfleur* demarr1* diffsuite* graph* triangl*.* carre*.* spiral*.* morley*.* pantalon.* airemax*.* trajetmin*.* napo*.* pytha*.* conj*.* moustache.* pain*.* parsim.* expole*.* mini*.* hexag*.* logoxas.* dragon.* sphinx*.* bouquet.* arbre*.* fleur.* sapin*.* gosper*.* hilbert*.* poly*.* floc*.* carrt.* peano*.* tor*eps tor*png ecran2* mobius* parabole* fibon* uniforme* cartexcas.* cube.* trio* goutte* biscuit* cercle* baceinst* exo*d* exomean* sierpinsk* newsq* newlog* bac?or* trace* casjohn* cassym* casetoi* deca* vasa* pa2b2* alga2b2* ellipse* conicfd* tangent* writergb* siglece* ciss* trisect* *folium* approx* visu* lohseg* tort* poletoil* chat* point* bezout* rect* fichgraph* tablefonc* pyramide* buffon* simul* hexagone* pont3* peauce* desolve* picarre* sinusoide* lunules* penta1* ujf* pli* doderhomb* patron* triacon* cyclohex* gluc* illusion* damier* trap* rota* simi* syracuse* trisbatab* ecartype* ecartbi* tetra* pavage* airearc* bassin* equagraph* systgraph* mondrian* delaunay* trois* castrois* factorise* algo*png stat* pappus* pussle* mab* bissect* quasi* csarre* puzzle* minamb* courbure* image* lieu* equi* barycentre* partager*
 
-EXTRA_DIST = $(TEX_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
+EXTRA_DIST = aide_cas $(TEX_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
 	     $(HTML_DIRS_LOCAL)/* cutting.hva cutting.sty $(FIGURES) \
 		$(PDF_LOCAL) 
 
@@ -156,6 +156,7 @@ endif
 
 install-exec-hook: 
 	mkdir -p $(DESTDIR)$(prefix)/share/giac/doc/fr/
+	/bin/cp -f aide_cas $(DESTDIR)$(prefix)/share/giac/doc/fr
 	ln -sf ../giac.js $(DESTDIR)$(prefix)/share/giac/doc/fr/giac.js
 	ln -sf ../giacwasm.js $(DESTDIR)$(prefix)/share/giac/doc/fr/
 	ln -sf ../giacwasm.wasm $(DESTDIR)$(prefix)/share/giac/doc/fr/

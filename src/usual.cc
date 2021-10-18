@@ -21,7 +21,7 @@ using namespace std;
 #include <stdexcept>
 #include <cmath>
 #include <cstdlib>
-#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG 
 #include <fstream>
 #endif
 #include "gen.h"
@@ -7525,7 +7525,17 @@ namespace giac {
 
 
   string version(){
-    return string("giac ")+GIAC_VERSION+string(", (c) B. Parisse and R. De Graeve, Institut Fourier, Universite de Grenoble I");
+    return
+#ifdef NUMWORKS
+      string("giac for Numworks ")
+#else
+#ifdef NSPIRE_NEWLIB
+      string("giac for TI Nspire CX ")
+#else
+      string("giac ")
+#endif
+#endif
+      +GIAC_VERSION+string(", (c) B. Parisse and R. De Graeve, Institut Fourier, Universite de Grenoble I");
   }
   gen _version(const gen & a,GIAC_CONTEXT){
     if ( a.type==_STRNG && a.subtype==-1) return  a;
@@ -8567,7 +8577,7 @@ namespace giac {
     if (n<-1)
       return gensizeerr(contextptr);
     if (n==-1)
-      return Gamma(x,contextptr);
+      return ln(Gamma(x,contextptr),contextptr);
     if (n==0)
       return Psi(x,contextptr);
     if (is_integer(x) && is_positive(-x,contextptr))
@@ -10568,7 +10578,11 @@ namespace giac {
   const define_alias_gen(alias_plus_one,_INT_,0,1);
   const gen & zero = *(const gen *) & alias_zero;
   const gen & plus_one = *(const gen *) & alias_plus_one;
+#ifdef BIGENDIAN
+  define_alias_ref_complex(cst_i_ref,_INT_,0,1,_INT_,0,0);
+#else
   define_alias_ref_complex(cst_i_ref,_INT_,0,0,_INT_,0,1);
+#endif
   const define_alias_gen(alias_cst_i,_CPLX,0,&cst_i_ref);
   const gen & cst_i = *(const gen *) & alias_cst_i;
 

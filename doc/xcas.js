@@ -24,6 +24,8 @@ var UI = {
   histcount: 0,
   selection: '',
   langue: -1,
+  calc: 1, // 1 KhiCAS, 2 Numworks, 3 TI Nspire CX
+  xwaspy_shift: 33, // must be >32 for space encoding, and <=35 for a..z encoding
   canvas_w: 350,
   canvas_h: 200,
   canvas_lastx: 0,
@@ -35,6 +37,13 @@ var UI = {
   python_indent: 4,
   warnpy: true, // set to false if you do not want Python compat warning
   xtn: 'x', // var name, depends on last app
+  clean_for_html: function(text){
+    text = text.replace(/&/g, "&amp;");
+    text = text.replace(/</g, "&lt;");
+    text = text.replace(/>/g, "&gt;");
+    text = text.replace(/\n/g, '<br>');
+    return text;
+  },    
   sleep: function (miliseconds) {
     var currentTime = new Date().getTime();
     while (currentTime + miliseconds >= new Date().getTime()) {
@@ -426,7 +435,9 @@ var UI = {
   is_sheet: true,
   sheet_i: 0,
   sheet_j: 0,
+  save_sheet:false,
   open_sheet: function (tableur) {
+    UI.savesheet=true;
     UI.funcoff();
     UI.savefocused = UI.focused;
     $id('assistant_matr').style.display = 'block';
@@ -485,6 +496,43 @@ var UI = {
     if (cmd == 4) UI.sheet_coladd(1);
     if (cmd == 5) UI.sheet_coladd(-1);
   },
+  sheet_set_ij:function(s,i,j){
+    //console.log('sheet_set',s,i,j);
+    // set cell i,j from spreadsheet
+    // must set UI.sheet=true and call UI.sheet_recompute(''); at some point after
+    if (i>=UI.assistant_matr_maxrows || j>=UI.assistant_matr_maxcols)
+      return 0;
+    var field=$id('matr_nrows');
+    if (i>=field.value)
+      field.value=i+1;
+    field=$id('matr_ncols');
+    if (j>=field.value)
+      field.value=j+1;
+    field = $id('matr_case' + i + '_' + j);
+    field.value=s;
+    return 1;
+  },
+  current_sheet: function(t){ // t=0 create 3 values per cell, t=1 1 value
+    var R = $id('matr_nrows').value;//UI.assistant_matr_maxrows;
+    var C = $id('matr_ncols').value; // UI.assistant_matr_maxcols;
+    var s = 'spreadsheet[';
+    for (var i = 0; i < R; i++) {
+      s += '[';
+      for (var j = 0; j < C; j++) {
+        var field = $id('matr_case' + i + '_' + j);
+	if (t==0){
+          var tmp = '[' + field.value;
+          if (tmp.length == 1) tmp += '""';
+          s += tmp + ',0,0],';
+	}
+	else
+	  s += field.value+',';
+      }
+      s += '],';
+    }
+    s += ']';
+    return s;
+  },    
   sheet_recompute: function (cmd) {
     // if cmd=='' convert to CAS sheet, eval and convert back
     // else calls convert(matrix,cmd), where cmd='command,row,col',
@@ -492,19 +540,7 @@ var UI = {
     // console.log('sheet_recompute',cmd);
     var R = UI.assistant_matr_maxrows;
     if (!UI.is_sheet || R == 0) return;
-    var s = 'spreadsheet[';
-    for (var i = 0; i < R; i++) {
-      var C = UI.assistant_matr_maxcols;
-      s += '[';
-      for (var j = 0; j < C; j++) {
-        var field = $id('matr_case' + i + '_' + j);
-        var tmp = '[' + field.value;
-        if (tmp.length == 1) tmp += '""';
-        s += tmp + ',0,0],';
-      }
-      s += '],';
-    }
-    s += ']';
+    var s=UI.current_sheet(0);
     if (cmd.length != 0)
       s = 'convert(' + s + ',cell,' + cmd + ')';
     //console.log(s);
@@ -540,6 +576,7 @@ var UI = {
         // field.style.display='inline';
       }
     }
+    UI.link(0);
     return 1;
   },
   matrix2spreadsheet: function () {
@@ -624,7 +661,7 @@ var UI = {
     mydiv.style.overflow = "auto";
     UI.assistant_matr_maxrows = l;
     UI.assistant_matr_maxcols = c;
-    var s = '<table>\n';
+    var s = '<table onkeydown="return UI.sheet_handle(this,event);">\n';
     var h = '<tr><th id="matr_head">@</th>';
     for (var j = 0; j < c; ++j) {
       h += '<th id="matr_head_' + j + '" style="text-align:center">' + j + '</th>';
@@ -636,16 +673,16 @@ var UI = {
       s += '<td id="matr_line_' + i + '">' + i + '</td>';
       for (var j = 0; j < c; ++j) {
         var field = $id('matr_case' + i + '_' + j);
-        var oldval = '';
+        var oldval = '0'; // '';
         //console.log(i,j,field.value);
         if (field !== null) oldval = field.value;
         if (UI.assistant_matr_textarea > 0)
           s += '<td class="matrixcell"><textarea class="matrixcell" \
-onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this,true); return false;" \
+onkeypress="return UI.cell_handle(this,event);" \
 onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" \
 id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);" id="matr_span' + i + '_' + j + '"></div></td>';
         else
-          s += '<td class="matrixcell" onclick="UI.sheet_onfocus(lastChild);"><input class="matrixcell" onkeypress="if (event.keyCode!=13) return true; UI.cb_matr_enter(this,true); return false;" onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" id="matr_case' + i + '_' + j + '" value="' + oldval + '" /><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);"  id="matr_span' + i + '_' + j + '"></div></td>';
+          s += '<td class="matrixcell" onclick="UI.sheet_onfocus(lastChild);"><input class="matrixcell" onkeypress="return UI.cell_handle(this,event);" onclick="UI.focused=this;" onblur="UI.sheet_blur(this)" onfocus="nextSibling.style.display=\'none\';UI.focused=this;" id="matr_case' + i + '_' + j + '" value="' + oldval + '" /><div class="matrixcell" style="display:none;width:20px" onclick="UI.sheet_onfocus(this);"  id="matr_span' + i + '_' + j + '"></div></td>';
       }
       s += '</tr>\n';
     }
@@ -664,6 +701,16 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     //console.log(field.nextSibling.innerHTML);
     field.style.display = 'none';
     field.nextSibling.style.display = 'inline';
+  },
+  cell_handle: function(field,event){
+    console.log('cell',event);
+    if (event.keyCode!=13) return true;
+    UI.cb_matr_enter(field,true);
+    return false;
+  },
+  sheet_handle: function(field,event){
+    console.log('sheet',event);
+    return true;
   },
   cb_matr_enter: function (field, focusnext) {
     var s = 'csv2gen("' + field.value + '",string)';
@@ -1288,10 +1335,90 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     }
     return value;
   },
+  mp_init:function(taille){
+    var init = Module.cwrap('mp_js_init', 'null', ['number']);
+    UI.micropy_initialized=1;
+    return init(taille);
+  },
+  mp_str:function(s){
+    var ev = Module.cwrap('mp_js_do_str', 'number', ['string']);
+    return ev(s);
+  },
+  micropy:0,
+  micropy_initialized:0,
+  micropy_heap:128000,
+  python_output:"",
+  add_python_output:function(s){
+    UI.python_output += s;
+    //console.log(s);//console.log(UI.python_output);
+  },
+  mpeval:function(text){
+    if (text=='xcas' || text=='xcas '){
+      UI.micropy=0; UI.python_mode=0; 
+      var form = $id('config');
+      form.python_xor.checked = false;
+      form.python_mode.checked = true;
+      UI.set_settings();
+      return UI.caseval('python_compat(1)');
+    }
+    if (text=='.'){ // show turtle
+      var s=UI.caseval('avance(0)');
+      //console.log(s);
+      return s;
+    }
+    if (text==','){ // show (matplotl)
+      Module.print('>>> show()');
+      var s=UI.caseval('show()');
+      return s;
+    }
+    if (text==';'){
+      var s=UI.caseval('show_pixels()');
+      return s;
+    }
+    if (!UI.micropy_initialized){
+      UI.mp_init(UI.micropy_heap);
+      console.log('mp init done');
+    }
+    UI.python_output='';
+    /*
+    var pos=text.search('=');
+    if (pos<0){
+      pos=text.search('print');
+      if (pos<0)
+	text='print('+text+')';
+    }
+    */
+    //console.log('mpeval',text);
+    Module.print('>>> '+text);
+    UI.mp_str(text);
+    // console.log('mpevaled',UI.python_output);
+    if (UI.python_output==''){
+      return '"Done"';
+    }
+    if (UI.python_output.substr(UI.python_output.length-1,1)=='\n')
+      UI.python_output=UI.python_output.substr(0,UI.python_output.length-1);
+    if (UI.python_output.length>4 && UI.python_output.substr(0,5)=='"<svg')
+      return UI.caseval('show()');
+    return '"'+UI.python_output+'"';
+  },
+  handle_shortcuts:function(text){
+    if (text=='.') return 'avance(0)';
+    if (text==',') return 'show()';
+    if (text==';') return 'show_pixels()';
+    if (text=='python' || text=='python '){
+      UI.micropy=1; UI.python_mode = 4;
+      UI.set_settings();
+      var form = $id('config');
+      form.python_xor.checked = true;
+      form.python_mode.checked = true;
+      return 'python_compat(4)';
+    }
+    return text;
+  },
   caseval: function (text) {
     if (!UI.ready) return ' Clic_on_Exec ';
     var docaseval = Module.cwrap('caseval', 'string', ['string']);
-    var value = text;
+    var value = UI.handle_shortcuts(text);
     value = value.replace(/%22/g, '\"');
     value = UI.add_autosimplify(value);
     var s, err;
@@ -1308,7 +1435,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (!UI.ready) return ' Clic_on_Exec ';
     //console.log(text);
     var docaseval = Module.cwrap('caseval', 'string', ['string']);
-    var value = text;
+    var value = UI.handle_shortcuts(text);
     value = value.replace(/%22/g, '\"');
     var s, err;
     try {
@@ -1346,8 +1473,17 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       return;
       // STOP: myWorker.terminate()
     }
+    if (UI.micropy)
+      return callback(UI.mpeval(text),args);
+    if (text=='python'){
+      UI.micropy=1; UI.python_mode = 4; UI.set_settings();
+      var form = $id('config');
+      form.python_xor.checked = true;
+      form.python_mode.checked = true;
+      return callback(UI.caseval('python_compat(4)'),args);
+    }
     var docaseval = Module.cwrap('caseval', 'string', ['string']);
-    var value = UI.add_autosimplify(text);
+    var value = UI.add_autosimplify(UI.handle_shortcuts(text));
     var s, err;
     //console.log(value);
     try {
@@ -1528,10 +1664,11 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	  form.python_xor.checked = false;
           UI.python_mode = 1;
         }
-        if (p[1] == '2') {
+        if (p[1] == '4') {
           form.python_mode.checked = true;
 	  form.python_xor.checked = true;
-          UI.python_mode = 2;
+          UI.python_mode = 4;
+	  UI.micropy=1;
         }
         UI.setoption_mode(cmentree);
         continue;
@@ -1565,8 +1702,14 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         }
         continue;
       }
+      if (p[0]=='sheet'){
+	console.log(p[1]);
+	UI.caseval_noautosimp('current_sheet('+p[1]+')');
+	continue;
+      }
       $id(p[0]).value = decodeURIComponent(p[1]);
     } // end for (i=...)
+    UI.set_settings();
     if (doexec) {
       UI.exec(hist, 0);
     }
@@ -1672,6 +1815,13 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (savepy)
       UI.caseval_noautosimp('python_compat('+savepy+')');
     casiovars += ';python_compat('+UI.python_mode+');angle_radian('+ ($id('config').angle_mode.checked?1:0)+');';
+    // console.log('UI.savesheet=',UI.savesheet);
+    if (UI.savesheet){
+      var tabl=UI.current_sheet(1);
+      casiovars += 'current_sheet('+tabl+');';
+      s += 'sheet='+tabl+'&';
+    }
+    // console.log(casiovars);
     var casioscript="",casioin=[];
     for (; cur; i++) {
       if (i >= start) {
@@ -1869,20 +2019,28 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         field.style.display = b ? 'inline' : 'none';
     }
   },
+  python_mode_str: function(i){
+    if (i==0) return 'xcas';
+    if (i==1) return 'pyth xor';
+    if (i==2) return 'pyth **';
+    if (i & 4) return 'Python';
+    return '?';
+  },
   set_settings: function () {
+    $id('bouton_math').style.display=UI.micropy?'none':'inline';
     var form = $id('config');
     var hw = window.innerWidth;
     //console.log(hw);
     if (hw >= 700) {
       var cfg = $id('curcfg');
       var s = "";
-      s += UI.python_mode ? (UI.python_mode==2?' pyth xor ':'pyth ** ' ): 'xcas ';
+      s += UI.python_mode_str(UI.python_mode)+' ';
       s += form.angle_mode.checked ? 'rad ' : 'deg ';
       s += form.digits_mode.value;
       if (form.complex_mode.checked) s += " ℂ"; // else s+=" ℝ";
       if (form.sqrt_mode.checked) s += " &radic;";
       cfg.innerHTML = s;
-    }
+      window.getComputedStyle(cfg, null);    }
   },
   set_config_width: function () {
     UI.set_settings();
@@ -2034,10 +2192,23 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     s += '); step_infolevel(';
     if (form.step_mode.checked) s += 1; else s += 0;
     s += ');python_compat(';
-    if (form.python_mode.checked){ if (form.python_xor.checked) s+=2; else s += 1; } else s += 0;
+    if (form.python_xor.checked)
+      form.python_mode.checked=true;
+    if (form.python_mode.checked){
+      if (form.python_xor.checked){ s+=4; UI.micropy=1; } else { s += 1; UI.micropy=0; }
+    }
+    else {
+      s += 0; UI.micropy=0;
+    }
     s += ');';
     // Module.print(s);
     return s;
+  },
+  set_calc_type:function(test){
+    UI.calc=test;
+    if (test==1) $id('loadfileinput').accept=".xw";
+    if (test==2) $id('loadfileinput').accept=".py";
+    if (test==3) $id('loadfileinput').accept=".tns";
   },
   set_config: function (setcm_mode) { // b==true if we set cmentree
     var form = $id('config');
@@ -2056,13 +2227,20 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (test > 5 || test == 2) test = 0;
     UI.langue = -test;
     UI.createCookie('xcas_lang', test, 10000);
+    for (test = 0; test < 3; ++test) {
+      if (form.calc[test].checked) break;
+    }
+    test++;
+    UI.set_calc_type(test);
+    console.log('accept file',$id('loadfileinput').accept);
+    UI.createCookie('xcas_calc', test, 10000);
     UI.createCookie('xcas_from', form.from.value, 10000);
     UI.createCookie('xcas_to', form.to.value, 10000);
     UI.createCookie('xcas_digits', form.digits_mode.value, 10000);
     UI.createCookie('xcas_angle_radian', form.angle_mode.checked ? 1 : -1, 10000);
     UI.warnpy = form.warnpy_mode.checked;
     UI.createCookie('xcas_warnpy', form.warnpy_mode.checked ? 1 : -1, 10000);
-    UI.python_mode = form.python_mode.checked?(form.python_xor.checked?2:1):0;
+    UI.python_mode = form.python_mode.checked?(form.python_xor.checked?4:1):0;
     UI.createCookie('xcas_python_mode', UI.python_mode, 10000);
     UI.set_settings();
     if (setcm_mode) {
@@ -2094,6 +2272,22 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     //$id('settings').style.backgroundImage = "url('config.png')";
     //document.body.style.backgroundImage = "url('logo.png')";
   },
+  copystringtoclipboard:function(str){
+    // Create new element
+    var el = document.createElement('textarea');
+    // Set value (string to be copied)
+    el.value = str;
+    // Set non-editable to avoid focus and move outside of view
+    el.setAttribute('readonly', '');
+    el.style = {position: 'absolute', left: '-9999px'};
+    document.body.appendChild(el);
+    // Select text inside element
+    el.select();
+    // Copy text to clipboard
+    document.execCommand('copy');
+    // Remove temporary element
+    document.body.removeChild(el);
+  },    
   savesession: function (i) {
     // console.log('save_session',i);
     var s;
@@ -2112,7 +2306,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       for (var j=0;j<s[2].length;j++)
 	l+=6+s[2][j].length;
       console.log(l);
-      var buf=new Uint8Array(l+2);
+      var L=l+2;
+      var buf=new Uint8Array(L);
       buf[0]=0;
       l=s[0].length;
       buf[1]=l/65536;
@@ -2144,8 +2339,46 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	}
 	pos += 6+l;
       }
+      if (UI.calc==2){ // encode as a Python file for Numworks workshop
+	var newbuf=new Uint8Array(4*(L+2)/3+10); // 4/3 oldlen + 8(#xwaspy\n) + 2 for ending  zeros);
+	S="#xwaspy\n";
+	for (var j=0;j<S.length;++j)
+	  newbuf[j]=S.charCodeAt(j);
+	pos=8;
+	for (var i=0;i<L;i+=3){
+	  // keep space newlines and a..z characters
+	  while (i<L && (buf[i]==32 || buf[i]==10 || buf[i]==58 || buf[i]==59 || buf[i]==41 || (buf[i]>=97 && buf[i]<=123))){
+	    var c=buf[i];
+	    if (c==58) // : -> ~ 
+	      c=126;
+	    if (c==59) // ; -> |
+	      c=124;
+	    if (c==41) // ) -> }
+	      c=125; 
+	    newbuf[pos]=c;
+	    ++i;
+	    ++pos;
+	  }
+	  var a=buf[i],b=i+1<L?buf[i+1]:0,c=i+2<L?buf[i+2]:0;
+	  var A=UI.xwaspy_shift+(a>>2),B=UI.xwaspy_shift+(((a&3)<<4)|(b>>4)),C=UI.xwaspy_shift+(((b&0xf)<<2)|(c>>6)),D=UI.xwaspy_shift+(c&0x3f);
+	  newbuf[pos]=A; ++pos;
+	  newbuf[pos]=B; ++pos;
+	  newbuf[pos]=C; ++pos;
+	  newbuf[pos]=D; ++pos;
+	  S += String.fromCharCode(A,B,C,D);
+	}
+	// newbuf[pos]=0; ++pos; newbuf[pos]=0; ++pos;
+	// UI.copystringtoclipboard(S); // does not work
+	buf=new Uint8Array(pos);
+	for (var i=0;i<pos;++i)
+	  buf[i]=newbuf[i];
+      }
       var blob = new Blob([buf]);
-      filename += ".xw";
+      if (UI.calc==2)
+	filename += "_xw.py";
+      else
+        filename += ".xw";
+      if (UI.calc==3) filename += ".tns";
       saveAs(blob, filename);
       return;
       // Casio change: make a Int8Array
@@ -2174,6 +2407,20 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     else
       tmp.style.display = 'none'
   },
+  hide_show_xcas: function (t) {
+    var tmp=$id(t);
+    if (UI.micropy)
+      tmp.style.display = 'none';
+    else
+      tmp.style.display = 'inline'
+  },
+  hide_show_python: function (t) {
+    var tmp=$id(t);
+    if (UI.micropy)
+      tmp.style.display = 'inline';
+    else
+      tmp.style.display = 'none'
+  },
   remove_extension: function(name){
     var s=name.length,i;
     for (i=s-1;i>=0;--i){
@@ -2199,6 +2446,35 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       var s;
       reader.onloadend = function (e) {
         s = e.target.result;
+	if (s.length>8 && s.substr(0,8)=='#xwaspy\n'){
+	  // decode sessions saved as fake py files (Numworks)
+	  pos=8;
+	  var str="";
+	  for (;;){
+	    while (pos<s.length && (s[pos]=='\n' || s[pos]==' ' || (s[pos]>='a' && s[pos]<='~'))){
+	      var c=s[pos];
+	      if (c=='}')
+		c=')';
+	      if (c=='~')
+		c=':';
+	      if (c=='|')
+		c=';';
+	      str += c; ++pos;
+	    }
+	    if (pos>=s.length) break;
+	    var a=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+	    if (a<0) break;
+	    var b=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+	    if (b<0) break;
+	    var c=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+	    if (c<0) break;
+	    var d=s.charCodeAt(pos)-UI.xwaspy_shift; ++pos;
+	    if (d<0) break;
+	    str += String.fromCharCode((a<<2)|(b>>4),((b&0xf)<<4)|(c>>2),((c&0x3)<<6)|d);
+	  }
+	  console.log(str);
+	  s=str;
+	}
         if (s.length > 7 && s.substr(0, 7) == '<tbody>') {
           UI.show_history123();
           $id("mathoutput").innerHTML += s;
@@ -2223,6 +2499,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	    if (edits.length)
 	      UI.caseval(edits);
 	    UI.python_mode=py;
+	    UI.micropy=py==4;
+	    form.python_xor.checked=UI.micropy;
+	    UI.set_settings();
 	    editpos=4+editl;
 	    editl=UI.unsignedchar(s,editpos);
 	    // console.log(0,editl);
@@ -2517,6 +2796,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     UI.eval_cmdline1end(value, out, s);
   },
   eval_cmdline1end: function (value, out, s) {
+    //console.log('eval_cmdline1end',value,out,s);
     var add = UI.addinput(value, out, s);
     //var s=UI.caseval_noautosimp('mathml(quote('+value+'),1)');
     //add += '&nbsp;&nbsp;'+s.substr(1,s.length-2);
@@ -2550,7 +2830,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   eval_cmdline1cb: function (out, value) {
     var s;
-    //console.log(out);
+    //console.log('eval_cmdline1cb',out);
     if (out.length > 5 && (out.substr(1, 4) == '<svg' || out.substr(0, 5) == 'gl3d ' || out.substr(0, 5) == 'gr2d(')) {
       //console.log(s);
       s = out;
@@ -2559,7 +2839,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     else {
       if (out.length > 1 && out[out.length - 1] == ';')
         out = out.substr(0, out.length - 1);
-      if (out[0] == '"')
+      if (out[0] == '"' || UI.micropy)
         s = 'text ' + out;
       else {
         if (UI.prettyprint) {
@@ -2840,7 +3120,11 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   eval: function (text, textin) {
     UI.set_locale();
-    var out = UI.caseval(text);
+    var out ;
+    if (UI.micropy)
+      out=UI.mpeval(text);
+    else
+      out = UI.caseval(text);
     //console.log(text,out);
     var s = ' ';
     var isstr = out[0] == '"';
@@ -2852,7 +3136,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     }
     else {
       // Module.print(text+' -> '+out);
-      if (out[0] == '"')
+      if (out[0] == '"' || UI.micropy)
         s = 'text ' + out;
       else {
 	if (out.substr(0, 10) == 'GIAC_ERROR')
@@ -3158,6 +3442,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     return r;
   },
   addinput: function (textin, textout, mathmlout) {
+    //console.log('addinput in',textin,'out',textout,'mathml',mathmlout);
     $id('startup_restore').style.display = 'none'
     //console.log(textin,textout,mathmlout);
     if (mathmlout.length >= 5 && mathmlout.substr(0, 5) == 'gl3d ') {
@@ -3440,7 +3725,10 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   addhelp: function (prefixe, text) {
     $id('helptxt').value = text;
     var input = prefixe + text;
+    var mp=UI.micropy;
+    UI.micropy=0;
     var out = UI.eval(input, input);
+    UI.micropy=mp;
     var add = out;
     var helpoutput = $id('helpoutput');
     helpoutput.innerHTML += add;
@@ -3941,6 +4229,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         UI.resizetextarea(field);
       }
     }
+  },
+  insert_focused:function(value){
+    UI.insert(UI.focused,value);
   },
   insert: function (field, value) {
     var myValue = value.replace(/&quote;/g, '\"');

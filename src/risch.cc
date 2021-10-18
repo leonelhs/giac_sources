@@ -559,7 +559,7 @@ namespace giac {
     // int( ipnum/ipden*exp(a*x),x)
     int save=calc_mode(contextptr);
     calc_mode(0,contextptr);
-    prim += _integrate(gen(makevecteur(expax*r2sym(ipnum/ipden,l,contextptr),x),_SEQ__VECT),contextptr);
+    prim += _integrate(gen(makevecteur(expax*r2sym(ipnum,l,contextptr)/r2sym(ipden,l,contextptr),x),_SEQ__VECT),contextptr);
     calc_mode(save,contextptr);
     if (is_undef(prim)) return false;
     // Hermite reduction 
@@ -771,7 +771,7 @@ namespace giac {
 	// Logarithmic part: compute resultant of num - t * den
 	polynome p1(s);
 	polynome pres=rothstein_trager_resultant(tmp.num,tmp.den,vl,p1,contextptr);
-	// Factorization, should return 1st order factor independant of
+	// Factorization, should return 1st order factor independent of
 	// the tower variables
 	factorization vden;
 	gen extra_div=1;
@@ -898,7 +898,7 @@ namespace giac {
       remsum += rem;
     }
     res = res+risch_lin(remsum,x,remains_to_integrate,contextptr);
-    if (is_zero(res)){ // perhaps we should derive res and substract it from e_orig
+    if (is_zero(res)){ // perhaps we should derive res and subtract it from e_orig
       remains_to_integrate=e_orig;
     }
     else {

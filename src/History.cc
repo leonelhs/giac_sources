@@ -25,6 +25,7 @@
  */
 
 #ifdef HAVE_LIBFLTK
+const int xwaspy_shift=33;
 #include <FL/Fl.H>
 #include <FL/fl_draw.H>
 #include <FL/Fl_Window.H>
@@ -40,6 +41,7 @@
 #include "Tableur.h"
 #include "Editeur.h"
 #include "Cfg.h"
+#include "Python.h"
 #ifndef IN_GIAC
 #include <giac/tex.h>
 #else
@@ -475,6 +477,15 @@ namespace xcas {
     else
       contextptr=get_context(w);
     if (Multiline_Input_tab * m=dynamic_cast<Multiline_Input_tab *>(w)){
+#ifdef HAVE_LIBMICROPYTHON
+      bool py=python_compat(contextptr) & 4;
+      if (py){
+	python_contextptr=contextptr;
+	int i=micropy_ck_eval(m->value());
+	g=string2gen("Done",false);
+	return 1;
+      }
+#endif
       if (m && !m->changed()){
 	g = warn_equal(m->g(),contextptr);
 	return !is_undef(g);
@@ -499,6 +510,81 @@ namespace xcas {
     if (Xcas_Text_Editor * ed=dynamic_cast<Xcas_Text_Editor *>(w)){
       if (ed->buffer()->length()==0)
 	return 0;
+#ifdef HAVE_LIBMICROPYTHON
+      bool py=python_compat(contextptr) & 4;
+      if (py){
+	freeze=false;
+	python_contextptr=contextptr;
+	python_console="";
+	char * s=ed->buffer()->text();
+	bool xc=strlen(s)>=4 && strncmp(s,"xcas",4)==0;
+	if (xc)
+	  python_compat(python_compat(contextptr) & 3,contextptr);
+	char * ptr=s;
+	while (*ptr==' ')
+	  ++ptr;
+	bool gr= strcmp(ptr,"show()")==0 || strcmp(ptr,",")==0;
+	bool pix =strcmp(ptr,";")==0;
+	bool turt=strcmp(ptr,".")==0;
+	if (!gr && !xc && !turt && !pix ){
+	  int i=micropy_ck_eval(s);
+	}
+	free(s);
+	context * cascontextptr=(context *)caseval("caseval contextptr");
+	if (freezeturtle || turt){
+	  // copy caseval turtle to this context
+	  turtle(contextptr)=turtle(cascontextptr);
+	  turtle_stack(contextptr)=turtle_stack(cascontextptr);
+	  g=symbolic(at_avance,0);
+	}
+	else {
+	  if (freeze || pix)
+	    g=symbolic(at_show_pixels,vecteur(0));
+	  else {
+	    if (gr)
+	      g=history_plot(cascontextptr);
+	    else {
+	      if (python_console.empty())
+		g=string2gen("Done",false);
+	      else {
+		if (python_console[python_console.size()-1]=='\n')
+		  python_console=python_console.substr(0,python_console.size()-1);
+		g=string2gen(python_console.empty()?"Done":python_console,false);
+	      }
+	      //return -1; // run worksheet does not work
+	    }
+	  }
+	}
+	return 1;
+      }
+      else {
+	char * s=ed->buffer()->text();
+	if (strcmp(s,"python")==0){
+	  python_compat(python_compat(contextptr) | 4,contextptr);
+	  g=string2gen("Done",false);
+	  free(s);
+	  return 1;
+	}
+	if (strlen(s)==1){
+	  char c=s[0];
+	  free(s);
+	  if (c=='.'){
+	    g=symbolic(at_avance,0);
+	    return 1;
+	  }
+	  if (c==';'){
+	    g=symbolic(at_show_pixels,0);
+	    return 1;
+	  }
+	  if (c==','){
+	    g=symbolic(at_show,0);
+	    return 1;
+	  }
+	}
+	else
+	  free(s);
+      }
+#endif
       if (!ed->changed()){
 	g = warn_equal(ed->g(),contextptr);
 	return !is_undef(g);
@@ -720,6 +806,8 @@ namespace xcas {
     History_Fold * f=get_history_fold(xcas::Xcas_input_focus);
     return f?f:get_history_fold(wid);
   }
+
+  History_Pack * last_history_pack=0;
 
   History_Pack * get_history_pack(const Fl_Widget * w,int & pos){
     pos = -1;
@@ -1210,6 +1298,7 @@ namespace xcas {
 #endif
     }
     if (event==FL_FOCUS){
+      last_history_pack=this;
       return Fl_Group::handle(event);
     }
     if (event==FL_UNFOCUS){
@@ -1948,6 +2037,18 @@ namespace xcas {
     // get filename
     const char * newfile ;
     switch (mws){
+    case -1:
+      newfile = load_file_chooser("Load KhiCAS worksheet","*.xw","*.xw",0,false);
+      mws=0;
+      break;
+    case -2:
+      newfile = load_file_chooser("Load KhiCAS Numworks worksheet","*_xw.py","*_xw.py",0,false);
+      mws=0;
+      break;
+    case -3:
+      newfile = load_file_chooser("Load KhiCAS TI Nspire worksheet","*.xw.tns","*.xw.tns",0,false);
+      mws=0;
+      break;
     case 1:
       newfile = load_file_chooser("Load maple worksheet","*.mws","*.mws",0,false);
       break;
@@ -2028,6 +2129,7 @@ namespace xcas {
   bool History_Pack::insert_url(const char * urlname0,int before_position){
     if (!urlname0 || !_insert )
       return false;
+    last_history_pack=this;
     string urlname = unix_path(urlname0).c_str();
 #if 1 // ndef WIN32
     string sn=get_path(urlname);
@@ -2045,7 +2147,8 @@ namespace xcas {
     }
     string s;
     char c;
-    bool casio=false;
+    bool casio=false,xwaspy=false;
+    unsigned char xw[4]; // rebuild xw 3 bytes from fake Numworks python file 4 bytes
     int POS;
     for (POS=0;;++POS){
       c=fgetc(f);
@@ -2054,7 +2157,36 @@ namespace xcas {
       }
       if (feof(f))
 	break;
-      s += c;
+      if (xwaspy){
+	if (c==' ' || c=='\n' || (c>='a' && c<='~')){
+	  if (c=='}')
+	    c=')';
+	  if (c=='|')
+	    c=';';
+	  if (c=='~')
+	    c=':';
+	  s += c;
+	  continue;
+	}
+	xw[0]=c>=xwaspy_shift?c-xwaspy_shift:c;
+	++POS; c=fgetc(f);
+	xw[1]=c>=xwaspy_shift?c-xwaspy_shift:c;
+	++POS; c=fgetc(f);
+	xw[2]=c>=xwaspy_shift?c-xwaspy_shift:c;
+	++POS; c=fgetc(f);
+	xw[3]=c>=xwaspy_shift?c-xwaspy_shift:c;
+	s += (xw[0]<<2)|(xw[1]>>4);
+	s += (xw[1]<<4)|(xw[2]>>2);
+	s += (xw[2]<<6)|xw[3];
+	continue;
+      }
+      else
+	s += c;
+      if (POS==7 && s=="#xwaspy\n"){
+	xwaspy=true;
+	casio=true;
+	s.clear();
+      }
     }
     fclose(f);
     unsigned ss=s.size();
@@ -2647,6 +2779,10 @@ namespace xcas {
     switch (mode){
     case -1:
       return "xw";
+    case -2:
+      return "py";
+    case -3:
+      return "tns";
     case 1:
       return "map";
     case 2:
@@ -2694,7 +2830,7 @@ namespace xcas {
 
   void save_as_text(ostream & of,int mode,History_Pack * pack){
     const giac::context * contextptr=pack?pack->contextptr:context0;
-    bool casio=mode==-1;
+    bool casio=mode<0;
     bool python=mode>=256;
     if (casio){
       mode=0;
@@ -2706,7 +2842,7 @@ namespace xcas {
     python_compat(python,contextptr);
     int n=pack->children();
     vector<string> casiosave;
-    string casioedit;
+    string casioedit,casiosheet;
     for (int i=0;i<n;i++){
       if (!of)
 	break;
@@ -2725,12 +2861,19 @@ namespace xcas {
 	  break;
 	if (Editeur * ed=dynamic_cast<Editeur *>(wid))
 	  break;
+	if (Tableur_Group * tg=dynamic_cast<Tableur_Group *>(wid))
+	  break;
 	if (Xcas_Text_Editor * ed=dynamic_cast<Xcas_Text_Editor *>(wid))
 	  break;
 	if (g->children())
 	  wid=g->child(0);
 	else
 	  break;
+      }
+      if (Tableur_Group * tg=dynamic_cast<Tableur_Group *>(wid)){
+	casiosheet = "current_sheet(spreadsheet"+gen(extractmatricefromsheet(tg->table->m,false)).print(contextptr)+");";
+	if (!casio)
+	  of << casiosheet << '\n';
       }
       if (Editeur * ed=dynamic_cast<Editeur *>(wid)){
 	if (casio)
@@ -2805,6 +2948,7 @@ namespace xcas {
     if (!casio) return;
     // output in casio mode
     string s(khicas_state(contextptr));
+    s+=casiosheet;
     unsigned l=s.size();
     endian_exchange(l);
     of.write((char *)&l,4);
@@ -2837,19 +2981,64 @@ namespace xcas {
       History_Fold * o = get_history_fold(m);
       if (o){
 	string tmp=o->pack->url?remove_extension(*o->pack->url):"session";
+	if (mode==-2)
+	  tmp += "_xw";
+	if (mode==-3)
+	  tmp += ".xw";
 	tmp += "."+mode2extension(mode);
 	char * newfile = file_chooser(gettext("Export worksheet as"), ("*."+mode2extension(mode)).c_str(), tmp.c_str());
 	// check filename
 	if ( !newfile )
 	  return ;
-	ofstream of(newfile);
-	save_as_text(of,mode,o->pack);
+	if (mode==-2){ // save as a fake Python file for Numworks workshop
+#ifdef HAVE_SSTREAM
+	  ostringstream of;
+#else
+	  ostrstream of;
+#endif
+	  save_as_text(of,mode,o->pack);
+	  string s=of.str(); int len=s.size();
+	  string target="#xwaspy\n";
+	  for (int i=0;i<len;i+=3){
+	    char c;
+	    // keep space and a..z chars
+	    while (i<len && ((c=s[i])==' ' || c=='\n' || c==')' || c=='{' || c==';' || c==':' || (c>='a' && c<='z'))){
+	      ++i;
+	      if (c==')')
+		c='}';
+	      if (c==':')
+		c='~';
+	      if (c==';')
+		c='|';
+	      target += c;
+	    }
+	    unsigned char a=s[i],b=i+1<len?s[i+1]:0,C=i+2<len?s[i+2]:0;
+	    target += xwaspy_shift+(a>>2);
+	    target += xwaspy_shift+(((a&3)<<4)|(b>>4));
+	    target += xwaspy_shift+(((b&0xf)<<2)|(C>>6));
+	    target += xwaspy_shift+(C&0x3f);
+	  }
+	  ofstream f(newfile);
+	  f << target;
+	}
+	else {
+	  ofstream of(newfile);
+	  save_as_text(of,mode,o->pack);
+	}
       }
     }
   }
 
   void History_cb_Save_as_xcas_casio(Fl_Widget* m , void*) {
     History_cb_save_as_text(m,-1);
+  }
+
+  void History_cb_Save_as_xcas_numworks(Fl_Widget* m , void*) {
+    History_cb_save_as_text(m,-2);
+  }
+
+  void History_cb_Save_as_xcas_nspire(Fl_Widget* m , void*) {
+    History_cb_save_as_text(m,-3);
   }
 
   void History_cb_Save_as_xcas_text(Fl_Widget* m , void*) {
@@ -3007,7 +3196,7 @@ namespace xcas {
     }
   }
 
-  void new_tableur(Fl_Widget * m,bool load){
+  Fl_Widget * new_tableur(Fl_Widget * m,int load){
     if (m && m->parent()){
       History_Fold * o = get_history_fold_focus(m);
       if (o){
@@ -3019,7 +3208,7 @@ namespace xcas {
 	Tableur_Group * t =dynamic_cast<Tableur_Group *>(e);
 	if (t){
 	  context * contextptr=get_context(o);
-	  if (load){
+	  if (load==1){
 	    string s(tableur_insert(t->table));
 	    if (!s.empty()){
 	      gen tmp(s,contextptr);
@@ -3036,7 +3225,7 @@ namespace xcas {
 	    }
 	  }
 	  else
-	    if (!t->table->filename)
+	    if (load==0 && !t->table->filename)
 	      t->table->config();
 	  t->table->row(0);
 	  t->table->col(0);
@@ -3047,17 +3236,19 @@ namespace xcas {
 	      tmp=tmp._VECTptr->front();
 	    t->table->input->value(tmp.print(contextptr).c_str(),true);
 	  }
+	  return t;
 	}
       }
     }
+    return 0;
   }
 
   void History_cb_New_Tableur(Fl_Widget* m , void*) {
-    new_tableur(m,false);
+    new_tableur(m,0);
   }
 
   void History_cb_Insert_Tableur(Fl_Widget* m , void*) {
-    new_tableur(m,true);
+    new_tableur(m,1);
   }
 
   void History_cb_New_Comment_Input(Fl_Widget* m , void*) {
@@ -4038,8 +4229,12 @@ namespace xcas {
       mode_s += ' ';
       switch (giac::xcas_mode(ptr)){
       case 0: 
-	if (python_compat(ptr))
-	  mode_s += python_compat(ptr)==2?"python ^==xor ":"python ^=** ";
+	if (python_compat(ptr)){
+	  if (python_compat(ptr)&4)
+	    mode_s += "MicroPython ";
+	  else
+	    mode_s += python_compat(ptr)==2?"python ^==xor ":"python ^=** ";
+	}
 	else
 	  mode_s+="xcas "; 
 	break;

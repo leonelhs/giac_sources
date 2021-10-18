@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="keywords" content="xcas, firefox, browser, computer algebra system, online, offline">
   <title>
-    Session_Xcas
+    xcas or python : change interpreter
   </title>
   <style>
     html {
@@ -277,6 +277,7 @@
             if (intKeyCode == KEY_T) {
                 $id('progbuttons').style.display = 'block';
                 $id('boutons_tortue').style.display = 'block';
+                UI.hide_show_xcas('boutons_tortue_xcas');
                 done = true;
             }
             if (intKeyCode == KEY_P) {
@@ -319,7 +320,7 @@
 </div>
 <div id="startup1">
   Welcome to Xcas for Firefox or compatible browser
-  (c) 2018, B. Parisse and R. De Graeve, Institut Fourier,
+  (c) 2020, B. Parisse and R. De Graeve, Institut Fourier,
   Universit&eacute; de Grenoble.
 </div>
 <div id="startup">
@@ -356,6 +357,10 @@
         <input type="radio" name="lang" value="radio" title="Spanish">sp
         <input type="radio" name="lang" value="radio" title="Greek">el
         <input type="radio" name="lang" value="radio" title="Deutsch">de
+	<br> Export to
+        <input type="radio" name="calc" value="radio" title="Casio" checked>Casio Prizm or Fx-9750GIII
+        <input type="radio" name="calc" value="radio" title="Numworks">Numworks
+        <input type="radio" name="calc" value="radio" title="Nspire">TI Nspire CX
       </td>
     </tr>
     <tr>
@@ -371,8 +376,8 @@
 	onclick="python_mode.checked=!python_mode.checked;">
 	<input
           class="bouton" type="checkbox" name="python_mode" title="Check to enable Python syntax compatibility">,
-	^ for xor <input class="bouton" type="checkbox" name="python_xor"
-	title="If checked, ^ is bit-exclusive or in Python mode, otherwise ^ is power">,
+	MicroPython <input class="bouton" type="checkbox" name="python_xor"
+	title="If checked, interpreter is MicroPython, otherwise Xcas">,
         <input class="bouton" type="button" title="Display Python alerts" value="warnings" onclick="warnpy_mode.checked=!warnpy_mode.checked">
         <input class="bouton" type="checkbox" name="warnpy_mode"
                title="Check to display Python alerts" checked>
@@ -485,7 +490,7 @@
                   style="font-size:large"
                   title="Saving session filename.">session</textarea>
         <button id="exportbutton" class="bouton"
-                title="Export session to KhiCas"
+                title="Export session to KhiCas (Casio Prizm or Fx-9750GIII, Numworks, TI Nspire CX, to be configured in the Settings)"
                 onclick='UI.savesession(1);'>Export</button>
         </span>
 <button id="loadbutton_cookie" class="bouton"
@@ -584,6 +589,10 @@
                         <li> Linux: <a href="file:///usr/share/giac/doc/xcasen.html"
                                        target="_blank"><tt>/usr/share/giac/doc/xcasen.html</tt></a>,
                     </ul>
+		    If Xcas for Firefox does not work locally with
+		    Firefox, disable
+		    <tt>security.fileuri.strict_origin_policy</tt>
+		    in <tt>about:config</tt>.
                 </div>
             </li>
             <li style="display:inline">
@@ -1853,21 +1862,25 @@ If you want to see informations while a computation is running, run first
          value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.python_mode?'#':'//');UI.funcoff();" title="comment">
   <input type="button" style="width:29px;height:35px" name="add_nlprog"
          id="add_nlprog"
-         value="[]" onmousedown="event.preventDefault()"
-         onClick="UI.hide_show($id('list_cmds'))"
+         value="cmds" onmousedown="event.preventDefault()"
+         onClick="UI.hide_show($id('list_cmds')); UI.hide_show_xcas('list_cmds_xcas'); UI.hide_show_python('python_mods');"
          title="List commands">
   <input type="button" style="width:29px;height:35px" name="add_listechaine"
          id="add_listechaine"
-         value='""' onmousedown="event.preventDefault()"
-         onClick="UI.hide_show($id('prog_cmds'));"
+         value='graph' onmousedown="event.preventDefault()"
+         onClick="UI.hide_show($id('prog_graph_cmds'));"
          title="Strings and sets commands">
   <input type="button" style="width:29px;height:35px"
          id="add_tortue"
          value="Turtle" onmousedown="event.preventDefault()"
-         onClick="var f=$id('boutons_tortue'); if (f.style.display=='none'){ f.style.display='block'; } else { f.style.display='none'; }" title="turtle commands">
+         onClick="UI.hide_show_xcas('boutons_tortue_xcas'); var f=$id('boutons_tortue'); if (f.style.display=='none'){ f.style.display='block'; } else { f.style.display='none'; }" title="turtle commands">
   <div id="list_cmds" style="display:none">
-    <button class="bouton" onclick="UI.insert(UI.focused,'seq(');">seq</button>
+    <button class="bouton" onclick="UI.insert(UI.focused,'range(');">range</button>
+    <button class="bouton" onclick="UI.insert(UI.focused,'len(');">len</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'append(');">append</button>
+    <button class="bouton" onclick="UI.insert(UI.focused,'sorted(');">sort</button>
+    <div id="list_cmds_xcas">
+    <button class="bouton" onclick="UI.insert(UI.focused,'seq(');">seq</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'concat(');">concat</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'head(');">head</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'tail(');">tail</button>
@@ -1875,13 +1888,9 @@ If you want to see informations while a computation is running, run first
     <button class="bouton" onclick="UI.insert(UI.focused,'member(');">member</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'revlist(');">revlist</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'mid(');">mid</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'size(');">size</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'sort(');">sort</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'suppress(');">suppress</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'select(');">select</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'count(');">count</button>
-  </div>
-  <div id="prog_cmds" style="display:none">
     <strong>set[]</strong>
     <button class="bouton" onclick="UI.insert(UI.focused,'intersect(');">intersect</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'minus(');">minus</button>
@@ -1897,28 +1906,68 @@ If you want to see informations while a computation is running, run first
     <button class="bouton" onclick="UI.insert(UI.focused,'ord(');">ord</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'droit(');">droit</button>
     <button class="bouton" onclick="UI.insert(UI.focused,'string(');">string</button>
+    </div>
+    <div id="python_mods" style="display:none">
+      <br>
+    <button class="bouton" onclick="UI.insert_focused('from math import *');"><strong>math</strong></button><button class="bouton" onclick="UI.insert_focused('sqrt(');">racine</button><button class="bouton" onclick="UI.insert_focused('abs(');">abs</button><button class="bouton" onclick="UI.insert_focused('max(');">max</button><button class="bouton" onclick="UI.insert_focused('min(');">min</button><button class="bouton" onclick="UI.insert_focused('round(');">arrondi</button><button class="bouton" onclick="UI.insert_focused('floor(');">floor</button>
+    <br>
+<button class="bouton" onclick="UI.insert_focused('from cmath import *');"><strong>cmath</strong></button>
+    <button class="bouton" onclick="UI.insert_focused('from random import *');"><strong>random</strong></button><button class="bouton" onclick="UI.insert_focused('random(');">random</button><button class="bouton" onclick="UI.insert_focused('randint(');">randint</button><button class="bouton" onclick="UI.insert_focused('choice(');">choice</button>
+    <br>
+    
+    <button class="bouton" onclick="UI.insert_focused('from arit import *');"><strong>arit</strong></button><button class="bouton" onclick="UI.insert_focused('isprime(');">isprime</button><button class="bouton" onclick="UI.insert_focused('nextprime(');">nextp</button><button class="bouton" onclick="UI.insert_focused('ifactor(');">ifactor</button><button class="bouton" onclick="UI.insert_focused('gcd(');">gcd</button><button class="bouton" onclick="UI.insert_focused('lcm(');">lcm</button><button class="bouton" onclick="UI.insert_focused('iegcd(');">iegcd</button>
+    <br>
+
+    <button class="bouton" onclick="UI.insert_focused('from linalg import *');"><strong>linalg</strong></button><button class="bouton" onclick="UI.insert_focused('add(');">add</button><button class="bouton" onclick="UI.insert_focused('sub(');">sub</button><button class="bouton" onclick="UI.insert_focused('mul(');">mul</button><button class="bouton" onclick="UI.insert_focused('inv(');">inv</button><button class="bouton" onclick="UI.insert_focused('transpose(');">tran</button><button class="bouton" onclick="UI.insert_focused('rref(');">rref</button>
+    <br>
+
+    <button class="bouton" onclick="UI.insert_focused('from numpy import *');"><strong>numpy</strong></button><button class="bouton" onclick="UI.insert_focused('array(');">array</button><button class="bouton" onclick="UI.insert_focused('linspace(');">linspace</button><button class="bouton" onclick="UI.insert_focused('arange(');">arange</button><button class="bouton" onclick="UI.insert_focused('solve(');">solve</button><button class="bouton" onclick="UI.insert_focused('eig(');">eig</button><button class="bouton" onclick="UI.insert_focused('inv(');">inv</button>
+    <br>
+  </div>
+  </div>
+  <div id="prog_graph_cmds" style="display:none">
+    <button class="bouton" title="Type ; on an empty commandline to display graph." onclick="UI.insert_focused('from graphic import *');"><strong>graphic</strong></button><button class="bouton" onclick="UI.insert_focused('set_pixel(');">pixel</button><button class="bouton" onclick="UI.insert_focused('draw_line(');">line</button><button class="bouton" onclick="UI.insert_focused('draw_rectangle(');">rect</button><button class="bouton" onclick="UI.insert_focused('draw_circle(');">circle</button><button class="bouton" onclick="UI.insert_focused('draw_string(');">string</button><button class="bouton" onclick="UI.insert_focused(';');">show</button>
+    <br>
+    <button class="bouton" onclick="UI.insert_focused('red');">red</button><button class="bouton" onclick="UI.insert_focused('green');">green</button><button class="bouton" onclick="UI.insert_focused('blue');">blue</button><button class="bouton" onclick="UI.insert_focused('yellow');">yellow</button><button class="bouton" onclick="UI.insert_focused('cyan');">cyan</button><button class="bouton" onclick="UI.insert_focused('magenta');">magenta</button>
+    <br>
+    
+    <button class="bouton" title="Inside MicroPython, type , on an empty commandline to display graph." onclick="UI.insert_focused('from matplotl import *');"><strong>matplotl</strong></button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'bar(':'barplot(');">bar</button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'scatter(':'scatterplot(');">scat.</button><button class="bouton" onclick="UI.insert_focused('arrow(');">arrow</button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'plot(':'polygonplot(');">plot</button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'text(':'legend(');">txt</button><button class="bouton" onclick="UI.insert_focused(',');">,</button><button class="bouton" onclick="UI.insert_focused('clf()');">clf</button>
+    
   </div>
   <div id="boutons_tortue" style="display:none">
     <input type="button" style="width:46px;height:35px" name="add_efface"
            id="add_efface"
            value="clear" onmousedown="event.preventDefault()"
-           onClick="if (UI.python_mode){ UI.eval_cmdline1('# script functions\n',true);UI.eval_cmdline1('clearscreen # Move script\n',true);} else {UI.eval_cmdline1('/* utility functions for the script */\n',true); UI.eval_cmdline1('/* Move script*/\nclearscreen;\n',true);}" title="create a turtle picture">
+           onClick="if (UI.python_mode){ UI.eval_cmdline1('# script functions\nfrom turtle import *\nreset()\n',true);UI.eval_cmdline1(UI.micropy?'.':'clearscreen # Move script\n',true);} else {UI.eval_cmdline1('/* utility functions for the script */\n',true); UI.eval_cmdline1('/* Move script*/\nclearscreen;\n',true);}" title="Create a turtle picture. Type . in an empty commandline to display turtle.">
     <input type="button" style="width:46px;height:35px" name="add_avance"
            id="add_avance"
            value="forward" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'forward ');" title="n steps forward (defaut 10)">
+           onClick="UI.insertsemi(UI.focused,'forward(');" title="n steps forward (defaut 10)">
     <input type="button" style="width:46px;height:35px" name="add_recule"
            id="add_recule"
            value="backward" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'backward ');" title="n steps backward (defaut 10)">
+           onClick="UI.insertsemi(UI.focused,'backward(');" title="n steps backward (defaut 10)">
     <input type="button" style="width:46px;height:35px" name="add_tourne_droite"
            id="add_tourne_droite"
            value="tright" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'right( ');" title="turn right n degrees (default 90)">
+           onClick="UI.insertsemi(UI.focused,'right(');" title="turn right n degrees (default 90)">
     <input type="button" style="width:46px;height:35px" name="add_tourne_gauche"
            id="add_tourne_gauche"
            value="tleft" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'left( ');" title="turn left n degrees (default 90)">
+           onClick="UI.insertsemi(UI.focused,'left(');" title="turn left n degrees (default 90)">
+    <input type="button" style="width:46px;height:35px" name="add_crayon"
+           id="add_crayon"
+           value="pen" onmousedown="event.preventDefault()"
+           onClick="UI.insertsemi(UI.focused,'pencolor(');" title="change color for the turtle pen">
+    <input type="button" style="width:46px;height:35px" name="add_rond"
+           id="add_rond"
+           value="arc" onmousedown="event.preventDefault()"
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'circle(':'rond ');" title="Arc of circle">
+    <input type="button" style="width:46px;height:35px" name="add_ecris"
+           id="add_ecris"
+           value="write" onmousedown="event.preventDefault()"
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'write(':'ecris ');" title="Write a string">
+    <span id="boutons_tortue_xcas">
     <input type="button" style="width:46px;height:35px" name="add_pas_de_cote"
            id="add_pas_de_cote"
            value="skip" onmousedown="event.preventDefault()"
@@ -1927,15 +1976,7 @@ If you want to see informations while a computation is running, run first
            id="add_saute"
            value="jump" onmousedown="event.preventDefault()"
            onClick="UI.insertsemi(UI.focused,'jump ');" title="turtle jumps n steps (default 10)">
-    <input type="button" style="width:46px;height:35px" name="add_crayon"
-           id="add_crayon"
-           value="pen" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'pencolor ');" title="change color for the turtle pen">
     <br>
-    <input type="button" style="width:46px;height:35px" name="add_rond"
-           id="add_rond"
-           value="arc" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'rond ');" title="Arc of circle">
     <input type="button" style="width:46px;height:35px" name="add_disque"
            id="add_disque"
            value="farc" onmousedown="event.preventDefault()"
@@ -1948,10 +1989,6 @@ If you want to see informations while a computation is running, run first
            id="add_triangle_plein"
            value="triangle" onmousedown="event.preventDefault()"
            onClick="UI.insertsemi(UI.focused,'triangle_plein ');" title="Filled triangle">
-    <input type="button" style="width:46px;height:35px" name="add_ecris"
-           id="add_ecris"
-           value="write" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'ecris ');" title="Write a string">
     <input type="button" style="width:46px;height:35px" name="add_repete"
            id="add_repete"
            value="repeat" onmousedown="event.preventDefault()"
@@ -1961,6 +1998,7 @@ If you want to see informations while a computation is running, run first
            id="tortue_maillage"
            value="mesh" onmousedown="event.preventDefault()"
            onClick="UI.turtle_maillage=(UI.turtle_maillage+1)%3" title="Change mesh type (quad, triang, none)">
+</span>
     <input type="button" style="width:46px;height:35px" name="tortue_clear"
            id="tortue_clear"
            value="&#x274C;" onmousedown="event.preventDefault()"
@@ -3719,6 +3757,15 @@ If you want to see informations while a computation is running, run first
             }
             if (test >= -1) UI.langue = -test - 1;
         }
+        ck = UI.readCookie('xcas_calc');
+        if (ck) {
+            var test = eval(ck) - 1; //console.log(test);
+            if (test >= 0 && test < 3) {
+                form.calc[0].checked = false;
+                form.calc[test].checked = true;
+                UI.set_calc_type(test+1);
+            }
+        }
         ck = UI.readCookie('xcas_from');
         if (ck) {
             form.from.value = ck;
@@ -3736,14 +3783,20 @@ If you want to see informations while a computation is running, run first
         ck = UI.readCookie('xcas_warnpy');
         if (ck) UI.warnpy = form.warnpy_mode.checked = (ck == '1');
         ck = UI.readCookie('xcas_python_mode');
+        var hashParams = window.location.hash.substr(1);
+        var forcepy=hashParams.substr(0,6)=='python';
+        if (forcepy) ck='1';
         if (!ck) {
-            if (confirm('Activate Python syntax compatibility ?'))
-                ck = 1;
-            else ck = 0;
+           var tmp=prompt("Choisir l'interpreteur. 1: Xcas compatible Python, 0: Xcas en francais, 4: MicroPython");
+           if (tmp=='0' || tmp=='4') ck=tmp; else ck='1'; 
+           if (tmp=='xcas' || tmp=='Xcas') ck='0';
+           if (tmp=='python' || tmp=='Python') ck='4';
+           //if (confirm('Voulez-vous activer la compatibilite de syntaxe Python ?')) ck = 1; else ck = 0;
         }
-        form.python_mode.checked = (ck == '1' || ck=='2');
-        form.python_xor.checked = (ck=='2');
+        form.python_mode.checked = (ck == '1' || ck=='4');
+        form.python_xor.checked = (ck=='4');
         UI.python_mode = eval(ck);
+        if (UI.python_mode==4) UI.micropy=1;
         $id('add_//').value = UI.python_mode ? '#' : '//';
         if (!UI.kbdshift) $id('add_:').value = UI.python_mode ? ':' : ':=';
         UI.createCookie('xcas_python_mode', UI.python_mode, 10000);
@@ -3818,13 +3871,12 @@ If you want to see informations while a computation is running, run first
             }
             // else {alert('History not executed');}
         }
-        var hashParams = window.location.hash.substr(1);
         // substr(1) to remove the `#`
         if (UI.readCookie('xcas_session') != null) {
             $id('startup_restore').style.display = 'inline';
             $id('startup1').style.display = 'none';
         }
-        else $id('help').style.display = 'block';
+        else { if (!forcepy) $id('help').style.display = 'block'; }
         //UI.restoresession(hashParams,hist,asked,doexec);
         var cons = $id('restoresession');
         cons.style.display = 'inherit';

@@ -47,6 +47,9 @@ decl {\#include "Tableur.h"} {public local
 decl {\#include "Cfg.h"} {public local
 } 
 
+decl {\#include "Python.h"} {public local
+} 
+
 decl {\#include <giac/giac.h>} {public local
 } 
 
@@ -851,12 +854,22 @@ Function {load_autorecover_data()} {open
      int n=fl_choice(gettext("Choose syntax compatibility"),gettext("Python"),gettext("Xcas"),gettext("Other")),mm=-1; // n==2 other
     if (n<2) n=1-n;
 \#else
-     int n=fl_choice(gettext("Choose syntax compatibility"),gettext("Xcas"),gettext("Python"),gettext("Other")),mm=-1; // n==2 other
+     int n=fl_choice(gettext("Choose syntax compatibility. This may be changed later in Cfg>Cas configuration."),gettext("Xcas"),gettext("Xcas with Python syntax"),
+\#ifdef HAVE_LIBMICROPYTHON
+    gettext("MicroPython")
+\#else
+    gettext("Other")
 \#endif
+    ),mm=-1; // n==2 other
+\#endif
+\#ifndef HAVE_LIBMICROPYTHON
      if (n==2){
         mm=fl_choice(gettext("Choose start mode"),gettext("Turtle"),gettext("Spreadsheet"),gettext("Geometry"));
-        if (mm==0) mm=7;
+        if (mm==0){
+	  mm=7;
+        }
      }
+\#endif
 \#ifdef IPAQ // default with bandeau
      std::string configs="widget_size(12,1,1,300,240,1,2,1,";
 \#else // ifndef IPAQ, 
@@ -874,9 +887,15 @@ Function {load_autorecover_data()} {open
      configs += ",0";
      configs +=");xcas_mode(";
      if (n==1)
-      configs+="256"; 
-     else
-      configs+='0';
+      configs += "256";  // Xcas Python syntax
+     else {
+\#ifdef HAVE_LIBMICROPYTHON
+      if (n==2)          
+        configs += "1024"; // MicroPython
+      else
+\#endif
+        configs += '0';
+     }
      configs += ");xyztrange(-10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-1.4,1.1,1,0.0,1.0);";
      std::ofstream configfile(configname.c_str());
      configfile << configs << std::endl;
@@ -1070,6 +1089,21 @@ Function {Xcas_run(int argc,char ** argv)} {open
           label Import
           xywh {0 0 100 20}
         } {
+          MenuItem Xcas_open_casio {
+            label {Khicas}
+            callback {load_history(-1);}
+            xywh {15 15 100 20}
+          }
+          MenuItem Xcas_open_numworks {
+            label {Khicas Numworks}
+            callback {load_history(-2);}
+            xywh {15 15 100 20}
+          }
+          MenuItem Xcas_open_nspire {
+            label {Khicas Nspire}
+            callback {load_history(-3);}
+            xywh {15 15 100 20}
+          }
           MenuItem Xcas_open_maple {
             label {Maple worksheet}
             callback {load_history(1);}
@@ -1150,9 +1184,19 @@ Function {Xcas_run(int argc,char ** argv)} {open
           label {Export as}
           xywh {0 0 100 20}
         } {
-          MenuItem Xcas_Export_Khicas {
+          MenuItem Xcas_Export_Khicas_Casio {
             label {KhiCas}
             callback {xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);}
+            xywh {65 65 100 20}
+          }
+          MenuItem Xcas_Export_Khicas_Numworks {
+            label {KhiCas Numworks}
+            callback {xcas::History_cb_Save_as_xcas_numworks(Xcas_current_session(),0);}
+            xywh {65 65 100 20}
+          }
+          MenuItem Xcas_Export_Khicas_Nspire {
+            label {KhiCas TI Nspire CX}
+            callback {xcas::History_cb_Save_as_xcas_nspire(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
           MenuItem Xcas_Export_Xcas {
@@ -1946,7 +1990,7 @@ if (xcas::use_external_browser)
           }
           MenuItem Xcas_help_alb {
             label {Site Lycee de L. Briel}
-            callback {giac::system_browser_command("https://lycee-rodezlaroque.eap.mon-ent-occitanie.fr/le-lycee/xcas/");}
+            callback {giac::system_browser_command("https://drive.google.com/drive/folders/0B-C6S6qF14V6X0VoUHhLZEY0VFU");}
             xywh {45 45 100 20}
           }
           MenuItem Xcas_help_cheval {
@@ -1978,7 +2022,7 @@ if (xcas::use_external_browser)
             label {Update help}
             callback {\#ifdef WIN32
   fl_message("%s","Xcas will launch your browser to get the help archive giacshare.tgz.\\nAfter the download is completed, please unarchive casdoc.tgz\\nin the Xcas directory (c:Ês by default)");
- giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/casdoc.tgz");
+ giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/casdoc.tgz");
  return;
 \#endif
   std::string path=giac::xcasroot();
@@ -1990,7 +2034,7 @@ if (xcas::use_external_browser)
  path=path.substr(0,i+1)+"share";
  i=fl_ask("%s",("Check that you can write over "+path+",\\ncheck that your Internet connection is ready\\nand check that wget, tar and gzip are installed.\\nProceed?").c_str());
   if (i){
-    fl_message("%s",("Executing: mkdir /tmp ; cd /tmp && wget http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giacshare.tgz && cd "+path+" && tar xvfz /tmp/giacshare.tgz").c_str());
+    fl_message("%s",("Executing: mkdir /tmp ; cd /tmp && wget https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giacshare.tgz && cd "+path+" && tar xvfz /tmp/giacshare.tgz").c_str());
     system(("mkdir /tmp ; cd /tmp && wget http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giacshare.tgz && cd "+path+" && tar xvfz /tmp/giacshare.tgz").c_str());
   }}
             xywh {5 5 100 20}
@@ -4455,7 +4499,11 @@ else make_history();
 
 Function {main(int argc,char ** argv)} {open return_type int
 } {
-  code {if (argc==2 && strlen(argv[1])==0)
+  code {
+\#ifdef HAVE_LIBMICROPYTHON
+    python_heap=micropy_init(python_stack_size,python_heap_size);
+\#endif
+if (argc==2 && strlen(argv[1])==0)
   argc=1;
 if (getenv("XCAS_AUTOSAVE_FOLDER")){
   xcas::autosave_folder=getenv("XCAS_AUTOSAVE_FOLDER");

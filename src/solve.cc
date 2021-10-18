@@ -1496,6 +1496,43 @@ namespace giac {
     return true;
   }
   
+  bool remove_neg(gen & g){
+    if (g.type!=_SYMB || g._SYMBptr->sommet!=at_neg)
+      return false;
+    g=g._SYMBptr->feuille;
+    return true;
+  }
+
+  bool is_rewritable_as_trigprod(gen & expr,GIAC_CONTEXT){
+    if (expr.is_symb_of_sommet(at_plus) && expr._SYMBptr->feuille.type==_VECT && expr._SYMBptr->feuille._VECTptr->size()==2){
+      const vecteur & v = *expr._SYMBptr->feuille._VECTptr;
+      gen a=v[0],b=v[1];
+      bool nega=remove_neg(a);
+      bool negb=remove_neg(b);
+      if (nega)
+	negb=!negb;
+      bool cosa=a.type==_SYMB && a._SYMBptr->sommet==at_cos;
+      bool sina=a.type==_SYMB && a._SYMBptr->sommet==at_sin;
+      bool cosb=b.type==_SYMB && b._SYMBptr->sommet==at_cos;
+      bool sinb=b.type==_SYMB && b._SYMBptr->sommet==at_sin;
+      if ( (cosa || sina) && (cosb || sinb)){
+	a=a._SYMBptr->feuille;
+	if (negb)
+	  b=b._SYMBptr->feuille+cst_pi;
+	else
+	  b=b._SYMBptr->feuille;
+	if (sina)
+	  a=a-cst_pi/2;
+	if (sinb)
+	  b=b-cst_pi/2;
+	// cos(a)+cos(b)=0 equivalent to cos((a+b)/2)*cos((a-b)/2)=0
+	expr=cos((a+b)/2,contextptr)*cos((a-b)/2,contextptr);
+	return true;
+      }
+    }
+    return false;
+  }
+
   static void clean(gen & e,const identificateur & x,GIAC_CONTEXT){
     if (e.type!=_SYMB)
       return;
@@ -1513,6 +1550,11 @@ namespace giac {
 	  e=es;
 	  return;
 	}
+      }
+      es=rationalize(e,x,contextptr);
+      if (lvarx(es,x).size()==1){
+	e=es;
+	return;
       }
       es=simplify(e,contextptr);
       if (lvarx(es,x).size()==1){
@@ -1785,13 +1827,6 @@ namespace giac {
     }
   }
 
-  bool remove_neg(gen & g){
-    if (g.type!=_SYMB || g._SYMBptr->sommet!=at_neg)
-      return false;
-    g=g._SYMBptr->feuille;
-    return true;
-  }
-
   gen rationalize(const gen & g,const gen & x,GIAC_CONTEXT){
     gen expr=g;
     vecteur lv(lvarx(expr,x));
@@ -1804,32 +1839,8 @@ namespace giac {
     if (s==1)
       return expr;
     // solve(sin(3x)=cos(x))
-    if (expr.is_symb_of_sommet(at_plus) && expr._SYMBptr->feuille.type==_VECT && expr._SYMBptr->feuille._VECTptr->size()==2){
-      const vecteur & v = *expr._SYMBptr->feuille._VECTptr;
-      gen a=v[0],b=v[1];
-      bool nega=remove_neg(a);
-      bool negb=remove_neg(b);
-      if (nega)
-	negb=!negb;
-      bool cosa=a.type==_SYMB && a._SYMBptr->sommet==at_cos;
-      bool sina=a.type==_SYMB && a._SYMBptr->sommet==at_sin;
-      bool cosb=b.type==_SYMB && b._SYMBptr->sommet==at_cos;
-      bool sinb=b.type==_SYMB && b._SYMBptr->sommet==at_sin;
-      if ( (cosa || sina) && (cosb || sinb)){
-	a=a._SYMBptr->feuille;
-	if (negb)
-	  b=b._SYMBptr->feuille+cst_pi;
-	else
-	  b=b._SYMBptr->feuille;
-	if (sina)
-	  a=a-cst_pi/2;
-	if (sinb)
-	  b=b-cst_pi/2;
-	// cos(a)+cos(b)=0 equivalent to cos((a+b)/2)*cos((a-b)/2)=0
-	expr=cos((a+b)/2,contextptr)*cos((a-b)/2,contextptr);
-	return expr;
-      }
-    }
+    if (is_rewritable_as_trigprod(expr,contextptr))
+      return expr;
     gen tmp;
     if (lv.size()==2 && lv[0].type==_SYMB && lv[1].type==_SYMB && lv[0]._SYMBptr->feuille==lv[1]._SYMBptr->feuille)
       tmp=expr;
@@ -5376,7 +5387,7 @@ namespace giac {
     swap(C,G);
   }
 
-  // first occurence in v: i<0 not found, i>=0 means v[i]==idx
+  // first occurrence in v: i<0 not found, i>=0 means v[i]==idx
   int find(const vector<index_m> & v,const index_m & idx){
     unsigned debut=0,fin=unsigned(v.size()); // search in [debut,fin[
     if (v.empty() || i_lex_is_strictly_greater(v[0],idx))
@@ -6018,7 +6029,7 @@ namespace giac {
       if (debug_infolevel>6)
 	res.dbgprint();
     }
-#if !defined GIAC_HAS_STO_38 && !defined FXCG // CAS38_DISABLED
+#if !defined GIAC_HAS_STO_38 && !defined FXCG && !defined KHICAS // CAS38_DISABLED
     if (
 #ifdef GIAC_64VARS
 	1 || 
@@ -7254,7 +7265,7 @@ namespace giac {
     vectpoly rescocoa;
     if (!env.moduloon && with_cocoa && cocoa_greduce(vectpoly(1,p),eqp,order,rescocoa))
       return r2e(rescocoa.front(),l,contextptr);
-    // FIXME: get constant term, substract one to get the correct constant
+    // FIXME: get constant term, subtract one to get the correct constant
     // gen C(p.constant_term());
     // eq=eq-C+plus_one;
     // p=*eq._POLYptr;
@@ -7366,7 +7377,7 @@ namespace giac {
       return gensizeerr("Bad second argument, expecting a Groebner basis");
     change_monomial_order(eqp,order);
     reverse(eqp.begin(),eqp.end());
-#if !defined CAS38_DISABLED && !defined FXCG
+#if !defined CAS38_DISABLED && !defined FXCG && !defined KHICAS
     vecteur red_in_(gen2vecteur(v[0])),deno(red_in_.size());
     for (int i=0;i<int(red_in_.size());++i){
       gen eq(e2r(red_in_[i],l,contextptr));

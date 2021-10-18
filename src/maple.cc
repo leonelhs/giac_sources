@@ -24,7 +24,7 @@ using namespace std;
 #include <cmath>
 #include <cstdlib>
 #include <stdio.h>
-#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG 
 #include <fstream>
 #endif
 #if !defined HAVE_NO_SYS_TIMES_H && defined HAVE_SYS_TIME_H
@@ -812,7 +812,7 @@ namespace giac {
     gen v((*args._VECTptr)[1]);
     gen f(args._VECTptr->front());
     if (f.type==_STRNG && v.type==_STRNG){
-      // (Python-like) count occurences of v in f
+      // (Python-like) count occurrences of v in f
       int count=0,pos=-1,s=f._STRNGptr->size();
       for (;pos<s;++count){
 	pos=f._STRNGptr->find(*v._STRNGptr,pos+1);

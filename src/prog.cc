@@ -116,7 +116,7 @@ namespace giac {
 #ifdef EMCC
     EM_ASM_ARGS({
 	if (UI.warnpy){
-          var msg = Pointer_stringify($0); // Convert message to JS string
+          var msg = UTF8ToString($0);// Pointer_stringify($0); // Convert message to JS string
           alert(msg);                      // Use JS version of alert          
         }
       }, s.c_str());
@@ -1035,7 +1035,7 @@ namespace giac {
       a=a._SYMBptr->feuille[0];
       return;
     }
-    b=string2gen(gettext("Unitialized parameter ")+a.print(contextptr),false);
+    b=string2gen(gettext("Uninitialized parameter ")+a.print(contextptr),false);
     b.subtype=-1;
   }
 
@@ -1494,7 +1494,7 @@ namespace giac {
       return res;
     }
 #else
-#if !defined(WIN32) && defined HAVE_PTHREAD_H
+#if !defined(WIN32) && defined HAVE_LIBPTHREAD
     if (contextptr){
       // CERR << &slevel << " " << thread_param_ptr(contextptr)->stackaddr << '\n';
       if ( ((size_t) &res) < ((size_t) thread_param_ptr(contextptr)->stackaddr)+8192){
@@ -3126,7 +3126,7 @@ namespace giac {
       if (it->type==_IDNT){
 	names.push_back(*it);
 #if 1
-	gen err=string2gen(gettext("Unitialized local variable ")+it->print(contextptr),false);
+	gen err=string2gen(gettext("Uninitialized local variable ")+it->print(contextptr),false);
 	err.subtype=-1;
 	values.push_back(err);
 #else
@@ -3673,7 +3673,7 @@ namespace giac {
       if (selecting)
 	return symb_select(args);
       else {
-	if (f.type==_VECT){ // remove 1st occurence of v
+	if (f.type==_VECT){ // remove 1st occurrence of v
 	  vecteur w=*f._VECTptr;
 	  for (unsigned i=0;i<w.size();++i){
 	    if (w[i]==v){
@@ -5737,13 +5737,13 @@ namespace giac {
     // need a way to pass w to EM_ASM like environment and call HTML5 prompt
 #if 0
     EM_ASM_ARGS({
-        var msg = Pointer_stringify($0); // Convert message to JS string
+        var msg = UTF8ToString($0);//Pointer_stringify($0); // Convert message to JS string
         alert(msg);                      // Use JS version of alert          
       }, (progs+evals).c_str());
 #else
     while (1){
       int i=EM_ASM_INT({
-	  var msg = Pointer_stringify($0); // Convert message to JS string
+	  var msg = UTF8ToString($0);//Pointer_stringify($0); // Convert message to JS string
 	  var tst=prompt(msg,'n');             // Use JS version of alert
 	  if (tst==null) return -4;
 	  if (tst=='next' || tst=='n' || tst=='sst') return -1;
@@ -6450,12 +6450,24 @@ namespace giac {
   define_unary_function_ptr5( at_maple_mode ,alias_at_maple_mode,&__maple_mode,0,true);
   gen _python_compat(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG &&  g.subtype==-1) return  g;
+    int p=python_compat(contextptr);
     gen args(g);
     if (g.type==_DOUBLE_)
-      args=int(g._DOUBLE_val);    
+      args=int(g._DOUBLE_val);
+    if (args.type==_VECT && args._VECTptr->size()==3){
+      vecteur & v=*args._VECTptr;
+      gen a=v[0],b=v[1],c=v[2];
+      if (is_integral(a) && is_integral(b) && is_integral(c)){
+	python_compat(a.val,contextptr) ;
+#ifdef KHICAS
+	python_heap_size=giacmax(absint(b.val),16*1024);
+	python_stack_size=giacmax(absint(c.val),8*1024);
+#endif
+	return p;
+      }
+    }
     if (args.type!=_INT_)
-      return python_compat(contextptr);
-    int p=python_compat(contextptr);
+      return gensizeerr(contextptr);
     python_compat(args.val,contextptr) ;
     return p;
   }
@@ -9782,6 +9794,34 @@ namespace giac {
 
 #ifndef KHICAS // see kadd.cc
   gen current_sheet(const gen & g,GIAC_CONTEXT){
+#if defined EMCC && !defined GIAC_GGB
+    if (ckmatrix(g,true)){
+      matrice m=*g._VECTptr;
+      int R=m.size(),C=m.front()._VECTptr->size();
+      CERR << "current1 " << R << " " << C << '\n';
+      R=giacmin(R,EM_ASM_INT({ return UI.assistant_matr_maxrows; },0));
+      C=giacmin(C,EM_ASM_INT({ return UI.assistant_matr_maxcols; },0));
+      CERR << "current2 " << R << " " << C << '\n';
+      int save_r=printcell_current_row(contextptr);
+      int save_c=printcell_current_col(contextptr);
+      for (int i=0;i<R;++i){
+	printcell_current_row(contextptr)=i;
+	for (int j=0;j<C;++j){
+	  printcell_current_col(contextptr)=j;
+	  string s=m[i][j].print(contextptr);
+	  CERR << "current3 " << s << " " << i << " " << j << '\n';
+	  EM_ASM_ARGS({
+	      var s=UTF8ToString($0);//Pointer_stringify($0);//
+	      console.log(s);
+	      UI.sheet_set_ij(s,$1,$2);
+	    },s.c_str(),i,j);
+	}
+      }
+      printcell_current_col(contextptr)=save_c;
+      printcell_current_row(contextptr)=save_r;
+      EM_ASM_ARGS({var s=' ';UI.sheet_recompute(s.substr(0,0)); UI.open_sheet(true);},0);
+    }
+#endif
     if (interactive_op_tab && interactive_op_tab[5])
       return interactive_op_tab[5](g,contextptr);
     return zero;

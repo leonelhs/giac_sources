@@ -154,7 +154,7 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
   }
   var script = document.createElement("script");
   script.type = "text/javascript";
-  var webAssemblyAvailable = true; // false;
+  var webAssemblyAvailable = false;
   if (Boolean(window.chrome)){
     if (!UI.detectmob()) webAssemblyAvailable =  window.location.href.substr(0,4)!='file';
   }
@@ -309,11 +309,23 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
       s += explication.substr(0, pos0);
     return s;
   },   
+  quickmode:0,
   quick:function(field){
-    var tmp1=field.previousSibling.value;
-    var tmp=UI.caseval(tmp1);
-    tmp=UI.rmquote(tmp); 
-    tmp=UI.latexeval(tmp);
+    var tmp1=field.previousSibling.value,tmp;
+    if (tmp1=='python' || tmp1=='xcas'){
+      UI.quickmode=(tmp1=='python');
+      tmp='Type python or xcas to change mode';
+    }
+    else {
+     if (UI.quickmode){
+        tmp=UI.pythoneval(tmp1);
+     }
+     else {
+       tmp=UI.caseval(tmp1);
+       tmp=UI.rmquote(tmp); 
+       tmp=UI.latexeval(tmp);
+     }
+    }
     Module.print(String.fromCharCode(2));
     Module.print("<tt>");
     Module.print(tmp1);
@@ -332,11 +344,40 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
      var dogiaceval=Module.cwrap('caseval',  'string', ['string']);
      return dogiaceval(text);
   },
-  caseval:function(text){
+  micropy_initialized:0,
+  micropy_heapsize:4*1024*1024,
+  python_output:"",
+  clean_for_html: function(text){
+    text = text.replace(/&/g, "&amp;");
+    text = text.replace(/</g, "&lt;");
+    text = text.replace(/>/g, "&gt;");
+    text = text.replace(/\n/g, '<br>');
+    return text;
+  },    
+  add_python_output:function(s){
+    UI.python_output += s;
+    //console.log(s);//console.log(UI.python_output);
+  },
+  mpeval:function(text){
+     if (!Module.ready){ window.setTimeout(UI.mpeval,100,text); return " ... ";}
+     if (text=='.') return UI.giaceval('avance(0)');
+     if (text==',') return UI.giaceval('show(0)');
+     if (text==';') return UI.giaceval('show_pixels(0)');
+     if (UI.micropy_initialized==0){
+        var init = Module.cwrap('mp_js_init', 'null', ['number']);
+        UI.micropy_initialized=1;
+        init(UI.micropy_heapsize);
+     }
+     UI.python_output="";
+     var dompeval=Module.cwrap('mp_js_do_str', 'number', ['string']);
+     dompeval(text);
+     return UI.python_output;
+  },
+  script_eval:function(text,f){
     UI.lastcmd=text;
     var s="not evaled",err;
     try {
-       s= UI.giaceval(text);
+       s= f(text);
     } catch (err) { s=err.message;}
     var is_2d=s.length>4 && s.substr(0,4)=='gr2d';
     if (is_2d){
@@ -351,6 +392,15 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
     }
    //console.log(s);
     return s;
+  },
+  caseval:function(text){
+    if (text=='.') return UI.caseval('avance(0)');
+    if (text==',') return UI.caseval('show(0)');
+    if (text==';') return UI.caseval('show_pixels(0)');
+    return UI.script_eval(text,UI.giaceval);
+  },
+  pythoneval:function(text){
+    return UI.script_eval(text,UI.mpeval);
   },
   pourcentmod:function(a,b){
     return a-Math.floor(a/b)*b;
@@ -944,10 +994,22 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1[0];tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span></span><br>
 }
 }
+\newenvironment{pythonprog}{
+\verbatim}
+{\endverbatim 
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=16;t.cols=60;t.rows=10;var tmp1=UI.ltgt(tmp);t.value=tmp1[0];tmp=UI.pythoneval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span></span><br>
+}
+}
 \newenvironment{giaconload}{
 \verbatim}
 {\endverbatim 
 \@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=20;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span>onload</span><br>
+}
+}
+\newenvironment{pythononload}{
+\verbatim}
+{\endverbatim 
+\@print{<button onclick="var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.fontSize=20;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.pythoneval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span>onload</span><br>
 }
 }
 \newenvironment{giaconloadhide}{
@@ -956,9 +1018,23 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \@print{<button onclick="this.style.display='none';var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.display='none';t.style.fontSize=16;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.caseval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span>onload</span><br>
 }
 }
+\newenvironment{pythononloadhide}{
+\verbatim}
+{\endverbatim 
+\@print{<button onclick="this.style.display='none';var field=parentNode.previousSibling; var tmp=field.innerHTML;if(tmp.length==0) tmp=field.value;var t=createElement('TEXTAREA');t.style.display='none';t.style.fontSize=16;t.cols=60;t.rows=UI.count_newline(tmp);var tmp1=UI.ltgt(tmp)[0];t.value=tmp1;tmp=UI.pythoneval(tmp);tmp=UI.rmquote(tmp);nextSibling.innerHTML=tmp; UI.render_canvas(nextSibling); field.parentNode.insertBefore(t,field);field.parentNode.removeChild(field);">exe</button><span>onload</span><br>
+}
+}
 \else
 \newcommand\giacpython{}
 \newenvironment{giacprog}
+{
+\VerbatimEnvironment
+\begin{Verbatim}
+}
+{
+\end{Verbatim}
+}
+\newenvironment{pythonprog}
 {
 \VerbatimEnvironment
 \begin{Verbatim}
@@ -974,7 +1050,23 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 {
 \end{Verbatim}
 }
+\newenvironment{pythononload}
+{
+\VerbatimEnvironment
+\begin{Verbatim}
+}
+{
+\end{Verbatim}
+}
 \newenvironment{giaconloadhide}
+{
+\VerbatimEnvironment
+\begin{Verbatim}
+}
+{
+\end{Verbatim}
+}
+\newenvironment{pythononloadhide}
 {
 \VerbatimEnvironment
 \begin{Verbatim}
@@ -998,11 +1090,33 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \lstinline@#2(#3)@
 \fi
 }
+\newcommand{\pythoncmd}[3][style="width:400px;font-size:large"]{
+\ifhevea
+\@print{<textarea}
+\@getprint{#1>#3}
+\@print{</textarea><button onclick="var tmp=UI.pythoneval(}
+\@getprint{'#2('}
+\@print{+previousSibling.value+')');tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling)">}
+\@getprint{#2}
+\@print{</button><span></span><br>}
+\else
+\lstinline@#2(#3)@
+\fi
+}
 \newcommand{\giacinput}[2][style="width:400px;font-size:large"]{
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
 \@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">exe</button><span></span><br>}
+\else
+\lstinline@#2@
+\fi
+}
+\newcommand{\pythoninput}[2][style="width:400px;font-size:large"]{
+\ifhevea
+\@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
+\@getprint{#1>#2}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.pythoneval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">exe</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi
@@ -1018,11 +1132,31 @@ Module['onRuntimeInitialized']=function(){ console.log('UI is ready'); Module.re
 \lstinline@#2@
 \fi
 }
+\newcommand{\pythonhidden}[3][style="display:none;width:400px;font-size:large"]{
+\ifhevea
+\@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
+\@getprint{#1>#2}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.pythoneval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">}
+\@getprint{#3}
+\@print{</button><span></span><br>}
+\else
+\lstinline@#2@
+\fi
+}
 \newcommand{\giacinputbig}[2][style="width:800px;font-size:large"]{
 \ifhevea
 \@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
 \@getprint{#1>#2}
 \@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.caseval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">exe</button><span></span><br>}
+\else
+\lstinline@#2@
+\fi
+}
+\newcommand{\pythoninputbig}[2][style="width:800px;font-size:large"]{
+\ifhevea
+\@print{<textarea onkeypress="UI.ckenter(event,this,1)" }
+\@getprint{#1>#2}
+\@print{</textarea><button onclick="previousSibling.style.display='inherit';var tmp=UI.pythoneval(previousSibling.value);tmp=UI.rmquote(tmp); nextSibling.innerHTML='&nbsp;'+tmp;UI.render_canvas(nextSibling);">exe</button><span></span><br>}
 \else
 \lstinline@#2@
 \fi

@@ -75,6 +75,9 @@
 #include "misc.h"
 #include "gen.h"
 #endif
+#ifdef HAVE_SIGNAL_H
+#include <signal.h>
+#endif
 using namespace std;
 using namespace giac;
 

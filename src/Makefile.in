@@ -79,7 +79,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
 	$(top_srcdir)/m4/uintmax_t.m4 $(top_srcdir)/m4/ulonglong.m4 \
 	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wint_t.m4 \
 	$(top_srcdir)/m4/xsize.m4 $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/config/mkinstalldirs
@@ -136,7 +136,7 @@ am_libxcas_la_OBJECTS = History.lo Input.lo Xcas1.lo Equation.lo \
 	Print.lo Tableur.lo Editeur.lo Graph.lo Graph3d.lo Help1.lo \
 	Cfg.lo Flv_CStyle.lo Flve_Check_Button.lo Flve_Input.lo \
 	Flv_Style.lo Flv_Data_Source.lo Flve_Combo.lo Flv_List.lo \
-	Flv_Table.lo gl2ps.lo
+	Flv_Table.lo gl2ps.lo Python.lo
 libxcas_la_OBJECTS = $(am_libxcas_la_OBJECTS)
 PROGRAMS = $(bin_PROGRAMS)
 am_aide_OBJECTS = aide.$(OBJEXT)
@@ -418,7 +418,7 @@ libxcas_la_SOURCES = History.cc Input.cc Xcas1.cc Equation.cc Print.cc \
 	Flve_Check_Button.cc Flve_Input.cc Flv_Style.cc Flv_Data_Source.cc \
 	Flve_Combo.cc Flv_List.cc Flv_Table.cc gl2ps.c \
 	History.h Input.h Xcas1.h Equation.h Print.h Tableur.h \
-	Editeur.h Graph.h Graph3d.h Help1.h Cfg.h \
+	Editeur.h Graph.h Graph3d.h Help1.h Cfg.h Python.cc Python.h \
 	Flv_CStyle.H  Flve_Check_Button.H  Flve_Input.H  Flv_Style.H \
 	Flv_Data_Source.H  Flve_Combo.H Flv_List.H Flv_Table.H gl2ps.h
 
@@ -447,7 +447,8 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	renee.cc renee.h cas2.cc README.ipaq README.WIN   \
 	readme.doc latex.bat xdvi.bat dvips.bat xcasfr.bat xcases.bat \
 	xcasfr.sh xcases.sh xcasen.sh mkstat mkhist mkdyn mkdyn10 mkxdyn10 \
-        update.sh update.bat opengl.cc opengl.h freeglut_stroke_roman.c\
+        update.sh update.bat \
+	opengl.cc opengl.h freeglut_stroke_roman.c mp.cc mp.h \
 	giac.pl cas2html.cc all_global_var find_global_var.cc static_init \
 	Fl_GDI_Printer.cxx  Fl_PS_Printer.cxx Fl_Gl_Choice.H \
 	casce.cc xcasce.cc xcasctrl.cc casctrl.cc \
@@ -660,6 +661,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/History.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Input.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Print.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Python.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Tableur.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TmpFGLM.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TmpLESystemSolver.Plo@am__quote@

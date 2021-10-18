@@ -606,7 +606,7 @@ namespace giac {
 	else
 	  inplace=!is_zero((*th_it)-(*other_it));
       }
-      if (inplace){ // in-place substraction
+      if (inplace){ // in-place subtraction
 	modpoly::iterator th=new_coord.begin();
 	if (env && env->moduloon){
 	  for (;m>n;++th,--m)
@@ -2322,7 +2322,7 @@ namespace giac {
       return (modulo(*a._ZINTptr,m)-p)%m==0;
     if (a.type==_INT_)
       return (a.val-p)%m==0;
-    CERR << "Unknow type in reconstruction " << a << '\n';
+    CERR << "Unknown type in reconstruction " << a << '\n';
     return false;
   }
 
@@ -4192,6 +4192,7 @@ namespace giac {
     return q%p;
   }
 
+#ifndef USE_GMP_REPLACEMENTS
   void vecteur2vector_ll(const vecteur & v,longlong m,vector<longlong> & res){
     vecteur::const_iterator it=v.begin(),itend=v.end();
     res.clear();
@@ -4208,6 +4209,7 @@ namespace giac {
       res.push_back(r);
     }
   } 
+#endif
 
   // longlong fft
   // exemple of Fourier primes (with 2^53-roots of unity)
@@ -9912,7 +9914,7 @@ namespace giac {
 #endif
       if (D!=1)
 	r=(r*longlong(invmod(smod(D,m).val,m)))%m;
-#if 1 // ndef USE_GMP_REPLACEMENTS
+#ifndef USE_GMP_REPLACEMENTS
       if (pim.type==_ZINT && res.type==_ZINT){
 	if (debug_infolevel>1)
 	  CERR << CLOCK()*1e-6 << " ichinrem start\n";
@@ -11431,11 +11433,11 @@ namespace giac {
     for (;it!=itend;){
       mpz_set(tmpqz,*it->_ZINTptr);
       mpz_set(*it->_ZINTptr,*f->_ZINTptr);
-      mpz_set(*f._ZINTptr,tmpqz);
+      mpz_set(*f->_ZINTptr,tmpqz);
       ++it; ++f;
       mpz_set(tmpqz,*itn->_ZINTptr);
       mpz_set(*itn->_ZINTptr,*f->_ZINTptr);
-      mpz_set(*f._ZINTptr,tmpqz);
+      mpz_set(*f->_ZINTptr,tmpqz);
       ++itn; ++f;
     }
 #else
@@ -15246,12 +15248,12 @@ namespace giac {
   pthread_mutex_t ntl_mutex = PTHREAD_MUTEX_INITIALIZER;
 #endif
 
-#if 0
-  void ininttype2ZZ(const inttype & temp,const inttype & step,NTL::ZZ & z,const NTL::ZZ & zzstep){
+#if 0 // def __i386__
+  bool ininttype2ZZ(const inttype & temp,const inttype & step,NTL::ZZ & z,const NTL::ZZ & zzstep){
     if (temp==0){
       long j=0;
       z=j;
-      return;
+      return true;
     }
     inttype q;
     inttype rem(irem(temp,step,q));
@@ -15263,6 +15265,7 @@ namespace giac {
     NTL::ZZ zztemp;
     zztemp=longtemp;
     z=z*zzstep+zztemp;
+    return true;
   }
 #else
   bool ininttype2ZZ(const inttype & temp,const inttype & step,NTL::ZZ & z,const NTL::ZZ & zzstep){
@@ -15352,7 +15355,10 @@ namespace giac {
       return -ZZ2inttype(-z);
     inttype temp(0);
     NTL::ZZ zztemp(z);
-    inZZ2inttype(zztemp,62,temp);
+    if (sizeof(int*)==4)
+      inZZ2inttype(zztemp,30,temp);
+    else
+      inZZ2inttype(zztemp,62,temp);
     // COUT << "zz2cl_I " << z << " -> " << temp << '\n';
     return temp;
   }

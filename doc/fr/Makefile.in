@@ -73,7 +73,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/codeset.m4 \
 	$(top_srcdir)/m4/uintmax_t.m4 $(top_srcdir)/m4/ulonglong.m4 \
 	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wint_t.m4 \
 	$(top_srcdir)/m4/xsize.m4 $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.in
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(SHELL) $(top_srcdir)/config/mkinstalldirs
@@ -344,7 +344,7 @@ FIGURES = figure1 figure2 figure3 figure4 figure5 th1968* windowinter* \
 	algo*png stat* pappus* pussle* mab* bissect* quasi* csarre* \
 	puzzle* minamb* courbure* image* lieu* equi* barycentre* \
 	partager*
-EXTRA_DIST = $(TEX_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
+EXTRA_DIST = aide_cas $(TEX_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
 	     $(HTML_DIRS_LOCAL)/* cutting.hva cutting.sty $(FIGURES) \
 		$(PDF_LOCAL) 
 
@@ -690,6 +690,7 @@ install-data-local:
 
 install-exec-hook: 
 	mkdir -p $(DESTDIR)$(prefix)/share/giac/doc/fr/
+	/bin/cp -f aide_cas $(DESTDIR)$(prefix)/share/giac/doc/fr
 	ln -sf ../giac.js $(DESTDIR)$(prefix)/share/giac/doc/fr/giac.js
 	ln -sf ../giacwasm.js $(DESTDIR)$(prefix)/share/giac/doc/fr/
 	ln -sf ../giacwasm.wasm $(DESTDIR)$(prefix)/share/giac/doc/fr/

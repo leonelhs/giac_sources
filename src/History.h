@@ -221,6 +221,8 @@ namespace xcas {
   void History_cb_Save(Fl_Widget* m , void*) ;
   void History_cb_Save_as(Fl_Widget* m , void*) ;
   void History_cb_Save_as_xcas_casio(Fl_Widget* m , void*) ;
+  void History_cb_Save_as_xcas_nspire(Fl_Widget* m , void*) ;
+  void History_cb_Save_as_xcas_numworks(Fl_Widget* m , void*) ;
   void History_cb_Save_as_xcas_text(Fl_Widget* m , void*) ;
   void History_cb_Save_as_xcaspy_text(Fl_Widget* m , void*) ;
   void History_cb_Save_as_maple_text(Fl_Widget* m , void*) ;
@@ -273,6 +275,7 @@ namespace xcas {
   void set_context(Fl_Widget * w,giac::context * contextptr);
   History_Pack * get_history_pack(const Fl_Widget * w,int & pos);
   History_Fold * get_history_fold(const Fl_Widget * wid);
+  extern History_Pack * last_history_pack;
 
   // History is a class for generic history support like in many
   // scientific softwares (e.g. CAS or matlab-like,...)
@@ -360,6 +363,7 @@ namespace xcas {
   Fl_Widget * new_program(int W,int H,const History_Pack * pack);
   Fl_Widget * new_text_input(int W,int H);
   Fl_Widget * new_tableur(int W,int H,const History_Pack * pack);
+  Fl_Widget * new_tableur(Fl_Widget * w,int load);
   Fl_Group * new_figure(int W,int H,const History_Pack * pack,bool dim3=false,bool approx=true);
   Fl_Group * new_logo(int W,int H,const History_Pack * pack);
 

@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="keywords" content="xcas, firefox, navigateur, calcul, formel, en, ligne, programmation, algorithmique">
   <title>
-    Session_Xcas
+    xcas ou python : change l'&eacute;valuateur
   </title>
   <style>
     html {
@@ -236,7 +236,7 @@
         var intCtrlKey = winObj.ctrlKey;
         var done = false;
         if (intShiftKey && intKeyCode == KEY_ENTER) {
-            UI.insert(UI.focused, '\n');
+            UI.insert_focused( '\n');
             done = true;
         }
         // raccourcis avec Alt
@@ -286,6 +286,7 @@
             if (intKeyCode == KEY_T) {
                 $id('progbuttons').style.display = 'block';
                 $id('boutons_tortue').style.display = 'block';
+                UI.hide_show_xcas('boutons_tortue_xcas');
                 done = true;
             }
             if (intKeyCode == KEY_P) {
@@ -328,7 +329,7 @@
 </div>
 <div id="startup1">
   Bienvenue dans Xcas pour Firefox ou navigateur compatible
-  (c) 2018, B. Parisse et R. De Graeve, Institut Fourier,
+  (c) 2020, B. Parisse et R. De Graeve, Institut Fourier,
   Universit&eacute; de Grenoble.
 </div>
 <div id="startup">
@@ -355,12 +356,17 @@
                                 title="Indiquez ici votre adresse e-mail" value="">
         correspondant <input class="bouton" type="text" name="to"
                              title="Indiquez ici l'adresse de la personne &agrave; qui vous envoyez habituellement des sessions, par exemple celle de l'enseignant pour un &eacute;l&egrave;ve" value="">,
-        langue de l'aide
+        <br> langue de l'aide
         <input type="radio" name="lang" value="radio" title="Francais" checked>fr
         <input type="radio" name="lang" value="radio" title="English">en
         <input type="radio" name="lang" value="radio" title="Spanish">sp
         <input type="radio" name="lang" value="radio" title="Greek">el
         <input type="radio" name="lang" value="radio" title="Deutsch">de
+	<br> Export vers
+        <input type="radio" name="calc" value="radio" title="Casio" checked>Casio 35eii&90
+        <input type="radio" name="calc" value="radio" title="Numworks">Numworks
+        <input type="radio" name="calc" value="radio" title="Nspire">TI Nspire CX
+	
       </td>
     </tr>
     <tr>
@@ -374,8 +380,9 @@
                        onclick="python_mode.checked=!python_mode.checked;"> <input
           class="bouton" type="checkbox" name="python_mode"
 	title="Cocher pour utiliser la syntaxe compatible Python">,
-	^ pour xor <input class="bouton" type="checkbox" name="python_xor"
-	title="Si coche, ^ est le ou exclusif bit a bit en mode Python, si non coche ^ est la puissance">,
+	<input class="bouton" type="button" value="MicroPython"
+                       onclick="python_xor.checked=!python_xor.checked;"> <input class="bouton" type="checkbox" name="python_xor"
+	title="Si coche, l'interpreteur Micropython est utilise, sinon Xcas">,
         <input class="bouton" type="button" title="Afficher les alertes Python" value="warnings" onclick="warnpy_mode.checked=!warnpy_mode.checked">
         <input class="bouton" type="checkbox" name="warnpy_mode"
                title="Cocher pour afficher les alertes Python" checked>
@@ -451,13 +458,13 @@
 <span id="history1" style="display:none">
         <button class="bouton" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick="if ($id('loadbutton_file').style.display=='none') UI.savesession(2); else UI.savesession(0);">&#x1f4be;</button>
         <textarea cols="7" id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
-        <button id="exportbutton" class="bouton" title="Cliquer ici pour exporter pour KhiCas avec le nom de fichier du champ texte qui pr&eacute;c&egrave;de" onclick='UI.savesession(1);'>Export</button>
+        <button id="exportbutton" class="bouton" title="Cliquer ici pour exporter pour calculatrices (Casio Graph 35eii&90, Numworks ou TI Nspire CX, &agrave; configurer dans les pr&eacute;f&eacute;rences) avec le nom de fichier du champ texte qui pr&eacute;c&egrave;de" onclick='UI.savesession(1);'>Export</button>
         </span>
 <button id="loadbutton_cookie" class="bouton" title="Cliquer ici pour charger une session sauvegard&eacute;e" onclick="$id('loadfile_cookie').innerHTML=UI.listCookies();">Charge</button>
   <span id="loadfile_cookie"></span>
 <form id="loadbutton_file" style="display:none">
   <label for="loadfileinput">Charger</label>
-  <input id="loadfileinput" accept=".xw" type="file" title="Cliquer ici pour charger une session sauvegard&eacute;e" onchange="UI.loadfile(this.files);this.value=''">
+  <input id="loadfileinput" accept=".xw" type="file" title="Cliquer ici pour charger une session sauvegard&eacute;e (s&eacute;lectionner un fichier terminant par .xw.tns pour les TI Nspire CX ou _xw.py pour les Numworks)" onchange="UI.loadfile(this.files);this.value=''">
 </form>
 <span id="help" style="display:none">
         <ul>
@@ -569,7 +576,11 @@
                                     target="_blank"><tt>/Applications/usr/share/giac/doc/xcasfr.html</tt></a>,
                         <li> Linux: <a href="file:///usr/share/giac/doc/xcasfr.html"
                                        target="_blank"><tt>/usr/share/giac/doc/xcasfr.html</tt></a>,
-                    </ul>
+		    </ul>
+		    Si Xcas pour Firefox ne fonctionne pas avec Firefox en local,
+		    il faut d&eacute;sactiver
+		    <tt>security.fileuri.strict_origin_policy</tt>
+		    dans <tt>about:config</tt>.
                 </div>
             </li>
             <li style="display:inline">
@@ -1171,15 +1182,27 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                         onclick="var tmp=$id('tutocfg'); if (tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">
                 <strong>Configuration</strong></button>
                 <div id="tutocfg" style="display:none">
-                    Le bouton en haut &agrave; gauche de la feuille permet de changer
-                    la configuration de Xcas pour Firefox. Vous pouvez par exemple
-                    modifier le nombre de chiffres significatifs utilis&eacute;s par
-                    d&eacute;faut,  l'unit&eacute; d'angle, le mode pas &agrave; pas,
-                    etc. Si vous avez un navigateur compatible, par exemple Firefox&geq;58,
-                    vous pouvez activer l'option <tt>wasm</tt> qui permet d'effectuer
-                    la plupart des calculs plus rapidement et donne acc&egrave;s aux
-                    commandes de PARI-GP (apr&egrave;s avoir &eacute;valu&eacute; la
-                    commande <tt>pari()</tt>)
+		  Le bouton en haut &agrave; gauche de la feuille permet de changer
+		  la configuration de Xcas pour Firefox. Vous pouvez par exemple
+		  modifier le nombre de chiffres significatifs utilis&eacute;s par
+		  d&eacute;faut,  l'unit&eacute; d'angle, le mode pas &agrave; pas,
+		  etc. Si vous avez un navigateur compatible, par exemple Firefox&geq;58,
+		  vous pouvez activer l'option <tt>wasm</tt> qui permet d'effectuer
+		  la plupart des calculs plus rapidement et donne acc&egrave;s aux
+		  commandes de PARI-GP (apr&egrave;s avoir &eacute;valu&eacute; la
+		  commande <tt>pari()</tt>). Vous pouvez aussi
+		  utiliser l'interpr&eacute;teur MicroPython &agrave;
+		  la place de l'interpr&eacute;teur Xcas si la compatibilit&eacute;
+		  Python de Xcas est insuffisante: il est fourni avec
+		  des modules pour un usage scolaire (math, cmath,
+		  random, turtle, matplotl, linalg, numpy, graphic, arit,
+		  cas). Le passage d'un interpr&eacute;teur &agrave;
+		  l'autre peut aussi s'effectuer avec les commandes
+		  <tt>python</tt> ou <tt>xcas</tt>.
+		  Pour visualiser la tortue en mode MicroPython, taper <tt>.</tt>
+		  sur une ligne de commande vide, pour visualiser un
+		  graphique de <tt>graphic</tt> taper <tt>;</tt>, pour
+		  un graphique dans un rep&eacute;re, taper <tt>,</tt>.
                 </div>
             </li>
             <li style="display:inline">
@@ -1294,13 +1317,13 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                             L'appui sur le bouton <tt>math</tt> puis <tt>r&eacute;ecr.</tt> puis <tt>simpl</tt>
                             ins&egrave;re
                             la commande
-                            <button onclick="UI.insert(UI.focused,'simplify(')">simplify</button>,
+                            <button onclick="UI.insert_focused('simplify(')">simplify</button>,
                             tapez ensuite
                             l'expression que
                             vous voulez d&eacute;velopper et simplifier.<br>
-                            <button onclick="UI.insert(UI.focused,'normal(')">normal</button>,
-                            <button onclick="UI.insert(UI.focused,'reorder(')">reorder</button>,
-                            <button onclick="UI.insert(UI.focused,'ratnormal(')">ratnormal</button>
+                            <button onclick="UI.insert_focused('normal(')">normal</button>,
+                            <button onclick="UI.insert_focused('reorder(')">reorder</button>,
+                            <button onclick="UI.insert_focused('ratnormal(')">ratnormal</button>
                             sont des versions moins puissantes mais plus rapides que simplify
                             (normal ne recherche pas de relations entre fonctions
                             trigonom&eacute;triques et exponentielles, ratnormal n'effectue
@@ -1308,41 +1331,41 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                             selon une liste de variables).
                         </li>
                         <li>
-                            <button onclick="UI.insert(UI.focused,'factor(')">factor</button>
+                            <button onclick="UI.insert_focused('factor(')">factor</button>
                             factorise sur R,
-                            <button onclick="UI.insert(UI.focused,'cfactor(')">cfactor</button>
+                            <button onclick="UI.insert_focused('cfactor(')">cfactor</button>
                             sur C
                         </li>
                         <li>
-                            <button onclick="UI.insert(UI.focused,'partfrac(')">partfrac</button>
+                            <button onclick="UI.insert_focused('partfrac(')">partfrac</button>
                             d&eacute;compose en &eacute;l&eacute;ments simples sur R,
-                            <button onclick="UI.insert(UI.focused,'cpartfrac(')">cpartfrac</button>
+                            <button onclick="UI.insert_focused('cpartfrac(')">cpartfrac</button>
                             sur C.
                         </li>
                         <li>
-                            <button onclick="UI.insert(UI.focused,'texpand(')">texpand</button>
+                            <button onclick="UI.insert_focused('texpand(')">texpand</button>
                             d&eacute;veloppe les expressions trigonom&eacute;triques,
                             exponentielles et logarithmes,
-                            <button onclick="UI.insert(UI.focused,'lin(')">lin</button>
+                            <button onclick="UI.insert_focused('lin(')">lin</button>
                             lin&eacute;rise les exponentielles,
-                            <button onclick="UI.insert(UI.focused,'tlin(')">tlin</button>
+                            <button onclick="UI.insert_focused('tlin(')">tlin</button>
                             lin&eacute;rise les expressions trigonom&eacute;triques.
                         </li>
-                        <li> <button onclick="UI.insert(UI.focused,'subst(')">subst</button>
+                        <li> <button onclick="UI.insert_focused('subst(')">subst</button>
                             permet de substituer une ou des variables par une ou des valeurs
                         </li>
-                        <li> Conversions trigo: <button onclick="UI.insert(UI.focused,'trigcos(')">trigcos</button>,
-                            <button onclick="UI.insert(UI.focused,'trigsin(')">trigsin</button>,
-                            <button onclick="UI.insert(UI.focused,'trigtan(')">trigtan</button>,
-                            <button onclick="UI.insert(UI.focused,'halftan(')">halftan</button>,
-                            <button onclick="UI.insert(UI.focused,'tan2sincos(')">tan2sincos</button>
+                        <li> Conversions trigo: <button onclick="UI.insert_focused('trigcos(')">trigcos</button>,
+                            <button onclick="UI.insert_focused('trigsin(')">trigsin</button>,
+                            <button onclick="UI.insert_focused('trigtan(')">trigtan</button>,
+                            <button onclick="UI.insert_focused('halftan(')">halftan</button>,
+                            <button onclick="UI.insert_focused('tan2sincos(')">tan2sincos</button>
                         </li>
-                        <li> Autres: <button onclick="UI.insert(UI.focused,'trig2exp(')">trig2exp</button>,
-                            <button onclick="UI.insert(UI.focused,'exp2trig(')">exp2trig</button>
-                            <button onclick="UI.insert(UI.focused,'pow2exp(')">pow2exp</button>,
-                            <button onclick="UI.insert(UI.focused,'exp2pow(')">exp2pow</button>
-                            <button onclick="UI.insert(UI.focused,'lncollect(')">lncollect</button>
-                            <button onclick="UI.insert(UI.focused,'lnexpand(')">lnexpand</button>
+                        <li> Autres: <button onclick="UI.insert_focused('trig2exp(')">trig2exp</button>,
+                            <button onclick="UI.insert_focused('exp2trig(')">exp2trig</button>
+                            <button onclick="UI.insert_focused('pow2exp(')">pow2exp</button>,
+                            <button onclick="UI.insert_focused('exp2pow(')">exp2pow</button>
+                            <button onclick="UI.insert_focused('lncollect(')">lncollect</button>
+                            <button onclick="UI.insert_focused('lnexpand(')">lnexpand</button>
                         </li>
                     </ul>
                 </span>
@@ -1356,8 +1379,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                     <ul>
                         <li>  Pour cr&eacute;er un vecteur, tapez ses coordonn&eacute;es
                             s&eacute;par&eacute;es par des virgules entre 2 crochets [].
-                            <button onclick="UI.insert(UI.focused,'dot(')">dot</button> produit
-                            scalaire de deux vecteurs,   <button onclick="UI.insert(UI.focused,'cross(')">cross</button> produit
+                            <button onclick="UI.insert_focused('dot(')">dot</button> produit
+                            scalaire de deux vecteurs,   <button onclick="UI.insert_focused('cross(')">cross</button> produit
                             vectoriel en dimension 2 ou 3.
                         </li>
                         <li>
@@ -1374,50 +1397,50 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                             seule paire de <tt>[]</tt> et &agrave; 1 avec une double-paire
                             <tt>[[]]</tt>, par
                             exemple
-                            <button onclick="UI.insert(UI.focused,'A[0,1]')">A[0,1]</button>
-                            ou <button onclick="UI.insert(UI.focused,'A[[1,2]]')">A[[1,2]]</button>.
+                            <button onclick="UI.insert_focused('A[0,1]')">A[0,1]</button>
+                            ou <button onclick="UI.insert_focused('A[[1,2]]')">A[[1,2]]</button>.
                         <li>
-                            Vous pouvez utiliser <tt>+,-,*</tt> et <button onclick="UI.insert(UI.focused,'matpow(')">matpow</button> pour
+                            Vous pouvez utiliser <tt>+,-,*</tt> et <button onclick="UI.insert_focused('matpow(')">matpow</button> pour
                             effectuer les op&eacute;rations usuelles sur les matrices.
                         </li>
                         <li>
-                            <button onclick="UI.insert(UI.focused,'tran(')">tran</button>
-                            transpos&eacute;e, <button onclick="UI.insert(UI.focused,'tran(')">trn</button>: transconjugu&eacute;e,
-                            <button onclick="UI.insert(UI.focused,'idn(')">idn</button> identit&eacute;
+                            <button onclick="UI.insert_focused('tran(')">tran</button>
+                            transpos&eacute;e, <button onclick="UI.insert_focused('tran(')">trn</button>: transconjugu&eacute;e,
+                            <button onclick="UI.insert_focused('idn(')">idn</button> identit&eacute;
                         </li>
                         <li>
-                            <button onclick="UI.insert(UI.focused,'linsolve(')">linsolve</button>
+                            <button onclick="UI.insert_focused('linsolve(')">linsolve</button>
                             syst&egrave;me lin&eacute;aire,
-                            <button onclick="UI.insert(UI.focused,'rref(')">rref</button> :
+                            <button onclick="UI.insert_focused('rref(')">rref</button> :
                             pivot de Gauss,
-                            <button onclick="UI.insert(UI.focused,'p,l,u:=lu(')">det</button>
+                            <button onclick="UI.insert_focused('p,l,u:=lu(')">det</button>
                             : d&eacute;terminant,
-                            <button onclick="UI.insert(UI.focused,'inv(')">inv</button>
+                            <button onclick="UI.insert_focused('inv(')">inv</button>
                             : inverse,
-                            <button onclick="UI.insert(UI.focused,'p,l,u:=lu(')">lu</button>
+                            <button onclick="UI.insert_focused('p,l,u:=lu(')">lu</button>
                             : d&eacute;composition LU et application &agrave;
-                            <button onclick="UI.insert(UI.focused,'linsolve(p,l,u,')">linsolve</button>,
+                            <button onclick="UI.insert_focused('linsolve(p,l,u,')">linsolve</button>,
                         </li>
                         <li>
-                            <button onclick="UI.insert(UI.focused,'charpoly(')">charpoly(</button>
+                            <button onclick="UI.insert_focused('charpoly(')">charpoly(</button>
                             polynome caract&eacute;ristique ou
-                            <button onclick="UI.insert(UI.focused,'pmin(')">pmin(</button>
+                            <button onclick="UI.insert_focused('pmin(')">pmin(</button>
                             minimal,
-                            <button onclick="UI.insert(UI.focused,'p,d:=jordan(')">p,d:=jordan(</button>
+                            <button onclick="UI.insert_focused('p,d:=jordan(')">p,d:=jordan(</button>
                             vecteurs et valeurs propres.
                         </li>
                         <li>
                             Factorisations
-                            <button onclick="UI.insert(UI.focused,'lu(')">lu</button>,
-                            <button onclick="UI.insert(UI.focused,'cholesky(')">cholesky</button>,
-                            <button onclick="UI.insert(UI.focused,'qr(')">qr</button>,
-                            <button onclick="UI.insert(UI.focused,'svd(')">svd</button>
+                            <button onclick="UI.insert_focused('lu(')">lu</button>,
+                            <button onclick="UI.insert_focused('cholesky(')">cholesky</button>,
+                            <button onclick="UI.insert_focused('qr(')">qr</button>,
+                            <button onclick="UI.insert_focused('svd(')">svd</button>
                         </li>
                         <li> Normes
-                            <button onclick="UI.insert(UI.focused,'l1norm(')">l1norm</button>,
-                            <button onclick="UI.insert(UI.focused,'l2norm(')">l2norm</button>,
-                            <button onclick="UI.insert(UI.focused,'maxnorm(')">maxnorm</button> :
-                            <button onclick="UI.insert(UI.focused,'matrix_norm(')">matrix_norm</button>
+                            <button onclick="UI.insert_focused('l1norm(')">l1norm</button>,
+                            <button onclick="UI.insert_focused('l2norm(')">l2norm</button>,
+                            <button onclick="UI.insert_focused('maxnorm(')">maxnorm</button> :
+                            <button onclick="UI.insert_focused('matrix_norm(')">matrix_norm</button>
                             de matrice subordonn&eacute;e
                         </li>
                     </ul>
@@ -1435,50 +1458,50 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             euclidien pour des entiers, et <tt>rem</tt> pour des polyn&ocirc;mes.
             <ul>
             <li>
-            <button onclick="UI.insert(UI.focused,'gcd(')">gcd</button>,
-            <button onclick="UI.insert(UI.focused,'lcm(')">lcm</button> PGCD et PPCM
+            <button onclick="UI.insert_focused('gcd(')">gcd</button>,
+            <button onclick="UI.insert_focused('lcm(')">lcm</button> PGCD et PPCM
             </li>
             <li>
-            <button onclick="UI.insert(UI.focused,'irem(')">irem</button>,
-            <button onclick="UI.insert(UI.focused,'iquo(')">iquo</button>,
-            <button onclick="UI.insert(UI.focused,'iquorem(')">iquorem</button>:
+            <button onclick="UI.insert_focused('irem(')">irem</button>,
+            <button onclick="UI.insert_focused('iquo(')">iquo</button>,
+            <button onclick="UI.insert_focused('iquorem(')">iquorem</button>:
             reste et quotient de la division euclidienne sur les entiers
             </li>
             <li>
-            <button onclick="UI.insert(UI.focused,'iegcd(')">iegcd</button> identit&eacute;
+            <button onclick="UI.insert_focused('iegcd(')">iegcd</button> identit&eacute;
             de B&eacute;zout sur les entiers,
-            <button onclick="UI.insert(UI.focused,'iabcuv(')">iabcuv</button> solutions
+            <button onclick="UI.insert_focused('iabcuv(')">iabcuv</button> solutions
             de au+bv=c,
-            <button onclick="UI.insert(UI.focused,'isprime(')">isprime</button> test de pseudo-primalit&eacute;,
-            <button onclick="UI.insert(UI.focused,'nextprime(')">nextprime</button>
+            <button onclick="UI.insert_focused('isprime(')">isprime</button> test de pseudo-primalit&eacute;,
+            <button onclick="UI.insert_focused('nextprime(')">nextprime</button>
             prochain nombre premier,
-            <button onclick="UI.insert(UI.focused,'ifactor(')">ifactor</button>
-            factorisation d'entier, indicatrice d'<button onclick="UI.insert(UI.focused,'euler(')">Euler</button>,
-            <button onclick="UI.insert(UI.focused,'powmod(')">powmod</button> puissance
+            <button onclick="UI.insert_focused('ifactor(')">ifactor</button>
+            factorisation d'entier, indicatrice d'<button onclick="UI.insert_focused('euler(')">Euler</button>,
+            <button onclick="UI.insert_focused('powmod(')">powmod</button> puissance
             modulaire rapide.
             </li>
             <li>
-            <button onclick="UI.insert(UI.focused,'rem(')">rem</button>,
-            <button onclick="UI.insert(UI.focused,'quo(')">quo</button>,
-            <button onclick="UI.insert(UI.focused,'quorem(')">quorem</button>:
+            <button onclick="UI.insert_focused('rem(')">rem</button>,
+            <button onclick="UI.insert_focused('quo(')">quo</button>,
+            <button onclick="UI.insert_focused('quorem(')">quorem</button>:
             reste et quotient de la division euclidienne sur les polynomes. La
             variable par d&eacute;faut est <tt>x</tt>, sinon l'indiquer en
             3&egrave;me argument
             <li>
-            <button onclick="UI.insert(UI.focused,'egcd(')">egcd</button> identit&eacute;
+            <button onclick="UI.insert_focused('egcd(')">egcd</button> identit&eacute;
             de B&eacute;zout sur les polynomes,
-            <button onclick="UI.insert(UI.focused,'abcuv(')">abcuv</button> solutions
+            <button onclick="UI.insert_focused('abcuv(')">abcuv</button> solutions
             de au+bv=c,
-            <button onclick="UI.insert(UI.focused,'horner(')">horner</button> valeur en
+            <button onclick="UI.insert_focused('horner(')">horner</button> valeur en
             un point par Horner,
-            <button onclick="UI.insert(UI.focused,'interp(')">interp</button> interpolation
+            <button onclick="UI.insert_focused('interp(')">interp</button> interpolation
             polynomiale.
             </li>
             <li> Pour travailler dans ℤ/nℤ, utiliser le signe <tt>mod</tt>, par
             exemple <tt>x^3+5x-11 mod 17</tt> est un polynome a coefficients dans ℤ/17ℤ.
             Pour travailler sur un corps fini non premier, utiliser la
             commande
-            <button onclick="UI.insert(UI.focused,'GF(')">GF</button>
+            <button onclick="UI.insert_focused('GF(')">GF</button>
             </li>
             </ul>
             </span>
@@ -1496,26 +1519,26 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             syst&egrave;me
             polynomial en mode exact ou approch&eacute; sur les r&eacute;els ou
             les complexes (fonctions
-            <button onclick="UI.insert(UI.focused,'solve(')">solve</button>
-            <button onclick="UI.insert(UI.focused,'csolve(')">csolve</button>
-            <button onclick="UI.insert(UI.focused,'fsolve(')">fsolve</button>
-            <button onclick="UI.insert(UI.focused,'cfsolve(')">cfsolve</button>)
+            <button onclick="UI.insert_focused('solve(')">solve</button>
+            <button onclick="UI.insert_focused('csolve(')">csolve</button>
+            <button onclick="UI.insert_focused('fsolve(')">fsolve</button>
+            <button onclick="UI.insert_focused('cfsolve(')">cfsolve</button>)
             </li>
             <li>
             Pour r&eacute;soudre une &eacute;quation diff&eacute;rentielle,
             cliquez sur <tt>analyse</tt> du menu <tt>Math</tt>,
-            <button onclick="UI.insert(UI.focused,'desolve(')">desolve</button> pour un
+            <button onclick="UI.insert_focused('desolve(')">desolve</button> pour un
             calcul exact,
-            <button onclick="UI.insert(UI.focused,'odesolve(')">odesolve</button>
+            <button onclick="UI.insert_focused('odesolve(')">odesolve</button>
             approch&eacute;, ou cliquez sur <tt>graphe</tt> puis
-            <button onclick="UI.insert(UI.focused,'odeplot(')">ode</button>
+            <button onclick="UI.insert_focused('odeplot(')">ode</button>
             pour un graphe de solution approch&eacute;e.
             </li>
             <li>
             Pour calculer le terme g&eacute;n&eacute;ral d'une suite
             r&eacute;currente (ou d'un syst&egrave;me), cliquez sur <tt>u_n</tt>
             du menu <tt>Math</tt> (commande
-            <button onclick="UI.insert(UI.focused,'rsolve(')">rsolve</button>).
+            <button onclick="UI.insert_focused('rsolve(')">rsolve</button>).
             </li>
             </ul>
             </span>
@@ -1542,26 +1565,26 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             mettre <tt>f</tt> comme nom de fonction,
             <tt>x</tt> comme liste des arguments et <tt>sin(x^2)</tt> comme
             valeur renvoy&eacute;ee :
-            <button onclick="UI.insert(UI.focused,'f(x):=sin(x^2):;')"><tt>f(x):=sin(x^2)</tt></button>.
+            <button onclick="UI.insert_focused('f(x):=sin(x^2):;')"><tt>f(x):=sin(x^2)</tt></button>.
             On peut ensuite calcule la valeur
             de <tt>f</tt> ou de sa d&eacute;riv&eacute;e par
-            <button onclick="UI.insert(UI.focused,'f(sqrt(pi)); f\'(2);f\'(y);')">
+            <button onclick="UI.insert_focused('f(sqrt(pi)); f\'(2);f\'(y);')">
             <tt>f(sqrt(pi)); f'(2); f'(y) </tt></button>.
             <br>
             Une d&eacute;riv&eacute;e se calcule avec
-            <button onclick="UI.insert(UI.focused,'diff(')">diff</button> ou <tt>'</tt>.
+            <button onclick="UI.insert_focused('diff(')">diff</button> ou <tt>'</tt>.
             Une primitive d'une
-            expression se calcule avec <button onclick="UI.insert(UI.focused,'integrate(')">int</button>, par
-            exemple <button onclick="UI.insert(UI.focused,'integrate(1/(x^4-1))')">int(1/(x^4-1));</button>,
+            expression se calcule avec <button onclick="UI.insert_focused('integrate(')">int</button>, par
+            exemple <button onclick="UI.insert_focused('integrate(1/(x^4-1))')">int(1/(x^4-1));</button>,
             pour une int&eacute;grale entre deux bornes
-            <button onclick="UI.insert(UI.focused,'int(1/(x^4+1),x,0,+infinity)')">
+            <button onclick="UI.insert_focused('int(1/(x^4+1),x,0,+infinity)')">
             int(1/(x^4+1)^4,x,0,+infinity);</button>.
             <br>
-            Enfin  <button onclick="UI.insert(UI.focused,'limit(')">limit</button> et
-            <button onclick="UI.insert(UI.focused,'series(')">series</button>
+            Enfin  <button onclick="UI.insert_focused('limit(')">limit</button> et
+            <button onclick="UI.insert_focused('series(')">series</button>
             permettent de calculer une limite ou un d&eacute;veloppement de
             Taylor, par exemple
-            <button onclick="UI.insert(UI.focused,'limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom)')">
+            <button onclick="UI.insert_focused('limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom)')">
             limit(sin(x)/x,x=0); series(sin(x),x=0,5,polynom);</button>
             </span>
             </li>
@@ -1574,30 +1597,30 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             g&eacute;n&eacute;rer des nombres pseudo-al&eacute;atoires.
             <br>
             Lois continues:
-            <button onclick="UI.insert(UI.focused,'uniformd(')">uniformd</button>,
-            <button onclick="UI.insert(UI.focused,'normald(')">normald</button>,
-            <button onclick="UI.insert(UI.focused,'studentd(')">studentd</button>,
-            <button onclick="UI.insert(UI.focused,'chisquared(')">chisquared</button>,
-            <button onclick="UI.insert(UI.focused,'gammad(')">gammad</button>,
-            <button onclick="UI.insert(UI.focused,'exponentiald(')">exponentiald</button>,
-            <button onclick="UI.insert(UI.focused,'cauchyd(')">cauchyd</button>,
-            <button onclick="UI.insert(UI.focused,'fisherd(')">fisherd</button>,
-            <button onclick="UI.insert(UI.focused,'betad(')">betad</button>.
+            <button onclick="UI.insert_focused('uniformd(')">uniformd</button>,
+            <button onclick="UI.insert_focused('normald(')">normald</button>,
+            <button onclick="UI.insert_focused('studentd(')">studentd</button>,
+            <button onclick="UI.insert_focused('chisquared(')">chisquared</button>,
+            <button onclick="UI.insert_focused('gammad(')">gammad</button>,
+            <button onclick="UI.insert_focused('exponentiald(')">exponentiald</button>,
+            <button onclick="UI.insert_focused('cauchyd(')">cauchyd</button>,
+            <button onclick="UI.insert_focused('fisherd(')">fisherd</button>,
+            <button onclick="UI.insert_focused('betad(')">betad</button>.
             <br>
             Lois discr&egrave;tes :
-            <button onclick="UI.insert(UI.focused,'binomial(')">binomial</button>,
-            <button onclick="UI.insert(UI.focused,'negbinomial(')">negbinomial</button>,
-            <button onclick="UI.insert(UI.focused,'geometric(')">geometric</button>,
-            <button onclick="UI.insert(UI.focused,'poisson(')">poisson</button>.
+            <button onclick="UI.insert_focused('binomial(')">binomial</button>,
+            <button onclick="UI.insert_focused('negbinomial(')">negbinomial</button>,
+            <button onclick="UI.insert_focused('geometric(')">geometric</button>,
+            <button onclick="UI.insert_focused('poisson(')">poisson</button>.
             <br>
             Les distributions cumul&eacute;es s'obtiennent en rajoutant le
-            suffixe <tt>_cdf</tt> ou par la commande  <button onclick="UI.insert(UI.focused,'cdf(')">cdf</button>, et les
-            inverses avec le suffixe  <tt>_icdf</tt> ou par la commande  <button onclick="UI.insert(UI.focused,'icdf(')">icdf</button>.
+            suffixe <tt>_cdf</tt> ou par la commande  <button onclick="UI.insert_focused('cdf(')">cdf</button>, et les
+            inverses avec le suffixe  <tt>_icdf</tt> ou par la commande  <button onclick="UI.insert_focused('icdf(')">icdf</button>.
             <br>
-            La commande    <button onclick="UI.insert(UI.focused,'histogram(')">histogram</button>
+            La commande    <button onclick="UI.insert_focused('histogram(')">histogram</button>
             permet de repr&eacute;senter un histogramme.
             <br>
-            La commande    <button onclick="UI.insert(UI.focused,'markov(')">markov</button> permet
+            La commande    <button onclick="UI.insert_focused('markov(')">markov</button> permet
             de d&eacute;composer une matrice de transition.
             </span>
             </li>
@@ -1615,11 +1638,11 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             pour une &eacute;quation diff&eacute;rentielle (<tt>field</tt>).
             <br>
             Exemples
-            <button onclick="UI.insert(UI.focused,'plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])')">
+            <button onclick="UI.insert_focused('plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])')">
             <tt>plot([sin(x),x-x^3/3!],x=-3..3,color=[red,blue])</tt>
             </button> affiche
             le graphe 2d des fonctions sin(x) et x-x^3/6, alors que
-            <button onclick="UI.insert(UI.focused,'plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);')">
+            <button onclick="UI.insert_focused('plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);')">
             <tt>plotfunc(x^2-y^2,[x=-2..2,y=-2..2]);plan(z=0,color=cyan+filled);</tt>
             </button>
             affiche un graphe 3d avec un plan, vous pouvez changer de point de
@@ -1627,17 +1650,17 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             <br>
             Vous pouvez aussi utiliser de nombreuses instructions
             g&eacute;om&eacute;triques:
-            <button onclick="UI.insert(UI.focused,'point(')">point</button>,
-            <button onclick="UI.insert(UI.focused,'milieu(')">milieu</button>,
-            <button onclick="UI.insert(UI.focused,'droite(')">droite</button>,
-            <button onclick="UI.insert(UI.focused,'bissectrice(')">bissectrice</button>,
-            <button onclick="UI.insert(UI.focused,'mediatrice(')">mediatrice</button>,
-            <button onclick="UI.insert(UI.focused,'segment(')">segment</button>,
-            <button onclick="UI.insert(UI.focused,'triangle(')">triangle</button>,
-            <button onclick="UI.insert(UI.focused,'cercle(')">cercle</button>,
-            <button onclick="UI.insert(UI.focused,'ellipse(')">ellipse</button>,
-            <button onclick="UI.insert(UI.focused,'hyperbole(')">hyperbole</button>,
-            <button onclick="UI.insert(UI.focused,'parabole(')">parabole</button>, ...
+            <button onclick="UI.insert_focused('point(')">point</button>,
+            <button onclick="UI.insert_focused('milieu(')">milieu</button>,
+            <button onclick="UI.insert_focused('droite(')">droite</button>,
+            <button onclick="UI.insert_focused('bissectrice(')">bissectrice</button>,
+            <button onclick="UI.insert_focused('mediatrice(')">mediatrice</button>,
+            <button onclick="UI.insert_focused('segment(')">segment</button>,
+            <button onclick="UI.insert_focused('triangle(')">triangle</button>,
+            <button onclick="UI.insert_focused('cercle(')">cercle</button>,
+            <button onclick="UI.insert_focused('ellipse(')">ellipse</button>,
+            <button onclick="UI.insert_focused('hyperbole(')">hyperbole</button>,
+            <button onclick="UI.insert_focused('parabole(')">parabole</button>, ...
             </span>
             </li>
             <li style="display:inline">
@@ -1767,8 +1790,8 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s=s+y**2<br>
             &nbsp;&nbsp;&nbsp;&nbsp;return s<br>
             </tt>
-            <button onclick="UI.insert(UI.focused,'fonction f(x)\n  local y,s;\n  si x &gt; 100 alors retourne &quot;Nombre trop grand&quot; fsi;\n  s:=0;\n  pour y de 1 jusque x faire\n    s:=s+y^2;\n  fpour\n  retourne s;\nffonction:; ')">Tester (Xcas)</button>
-            <button onclick="UI.insert(UI.focused,'def f(x):\n    # local y,s\n    if x > 100000:\n        return &quot;Nombre trop grand&quot;\n    s=0\n    for y in range(x+1):\n        s=s+y**2\n    return s\n')">Tester (Python)</button>
+            <button onclick="UI.insert_focused('fonction f(x)\n  local y,s;\n  si x &gt; 100 alors retourne &quot;Nombre trop grand&quot; fsi;\n  s:=0;\n  pour y de 1 jusque x faire\n    s:=s+y^2;\n  fpour\n  retourne s;\nffonction:; ')">Tester (Xcas)</button>
+            <button onclick="UI.insert_focused('def f(x):\n    # local y,s\n    if x > 100000:\n        return &quot;Nombre trop grand&quot;\n    s=0\n    for y in range(x+1):\n        s=s+y**2\n    return s\n')">Tester (Python)</button>
             <br>
             <br>
             </div>
@@ -1877,44 +1900,44 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
     <td>
       <input type="button" style="width:29px;height:35px;"
              name="add_newline" id="add_newline" value=" "
-             onmousedown="event.preventDefault()" onClick="if (UI.kbdshift) UI.insert(UI.focused,' \n') ; else UI.insert(UI.focused,' ');">
-      <input type="button" style="width:29px;height:35px;" name="add_sin" id="add_sin" value="sin" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value+'(')" title="fonction sinus, taper asin pour arcinus">
+             onmousedown="event.preventDefault()" onClick="if (UI.kbdshift) UI.insert_focused(' \n') ; else UI.insert_focused(' ');">
+      <input type="button" style="width:29px;height:35px;" name="add_sin" id="add_sin" value="sin" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value+'(')" title="fonction sinus, taper asin pour arcinus">
       <input type="button" style="width:29px;height:35px;" name="add_cos"
              id="add_cos"
-             value="cos" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value+'(')" title="fonction cosinus, taper acos pour arccosinus">
+             value="cos" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value+'(')" title="fonction cosinus, taper acos pour arccosinus">
       <input type="button" style="width:29px;height:35px;" name="add_tan"
              id="add_tan"
-             value="tan" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value+'(')" title="fonction tangente, taper atan pour arctangente">
+             value="tan" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value+'(')" title="fonction tangente, taper atan pour arctangente">
       <input type="button" style="width:29px;height:35px;" name="add_ln"
              id="add_ln"
-             value="exp" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value+'(')" title="logarithme neperien et exponentielle.">
-      <input type="button" style="width:29px;height:35px;" name="add_^" id="add_^" value="^" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'^')">
-      <input type="button" style="width:29px;height:35px;" name="add_7" id="add_7" value="7" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'7')">
-      <input type="button" style="width:29px;height:35px;" name="add_8" id="add_8" value="8" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'8')">
-      <input type="button" style="width:29px;height:35px;" name="add_9" id="add_9" value="9" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'9')">
+             value="exp" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value+'(')" title="logarithme neperien et exponentielle.">
+      <input type="button" style="width:29px;height:35px;" name="add_^" id="add_^" value="^" onmousedown="event.preventDefault()" onClick="UI.insert_focused('^')">
+      <input type="button" style="width:29px;height:35px;" name="add_7" id="add_7" value="7" onmousedown="event.preventDefault()" onClick="UI.insert_focused('7')">
+      <input type="button" style="width:29px;height:35px;" name="add_8" id="add_8" value="8" onmousedown="event.preventDefault()" onClick="UI.insert_focused('8')">
+      <input type="button" style="width:29px;height:35px;" name="add_9" id="add_9" value="9" onmousedown="event.preventDefault()" onClick="UI.insert_focused('9')">
       <input type="button" style="width:29px;height:35px;" name="add_/"
              id="add_/"
-             value="/" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)" title="Division. // pour faire un commentaire, % pour travailler dans Z/nZ.">
+             value="/" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)" title="Division. // pour faire un commentaire, % pour travailler dans Z/nZ.">
     </td>
   </tr>
   <tr>
     <td>
-      <input type="button" style="width:29px;height:35px;" name="add_left_par" id="add_left_par" value="(" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value);">
-      <input type="button" style="width:29px;height:35px;" name="add_right_par" id="add_right_par" value=")" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value);">
+      <input type="button" style="width:29px;height:35px;" name="add_left_par" id="add_left_par" value="(" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value);">
+      <input type="button" style="width:29px;height:35px;" name="add_right_par" id="add_right_par" value=")" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value);">
       <input type="button" style="width:29px;height:35px;" name="add_xtn"
              id="add_xtn"
-             value="x,t,n" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.xtn)" title="Ins&egrave;re x ou t ou n">
-      <input type="button" style="width:29px;height:35px;" name="add_pi" id="add_pi" value="π" onmousedown="event.preventDefault()" onClick="if (UI.kbdshift) UI.insert(UI.focused,'∞'); else UI.insert(UI.focused,'pi')">
+             value="x,t,n" onmousedown="event.preventDefault()" onClick="UI.insert_focused(UI.xtn)" title="Ins&egrave;re x ou t ou n">
+      <input type="button" style="width:29px;height:35px;" name="add_pi" id="add_pi" value="π" onmousedown="event.preventDefault()" onClick="if (UI.kbdshift) UI.insert_focused('∞'); else UI.insert_focused('pi')">
       <input type="button" style="width:29px;height:35px;" name="add_i"
              id="add_i"
-             value="i" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'i')" title="Nombre complexe racine carree de -1">
+             value="i" onmousedown="event.preventDefault()" onClick="UI.insert_focused('i')" title="Nombre complexe racine carree de -1">
       <input type="button" style="width:29px;height:35px;" name="add_sqrt"
              id="add_sqrt"
-             value="√" onmousedown="event.preventDefault()" onClick="if (UI.kbdshift) UI.insert(UI.focused,'^2'); else UI.insert(UI.focused,'sqrt(');" title="racine carree">
-      <input type="button" style="width:29px;height:35px;" name="add_4" id="add_4" value="4" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'4')">
-      <input type="button" style="width:29px;height:35px;" name="add_5" id="add_5" value="5" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'5')">
-      <input type="button" style="width:29px;height:35px;" name="add_6" id="add_6" value="6" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'6')">
-      <input type="button" style="width:29px;height:35px;" name="add_*" id="add_*" value="*" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'*')">
+             value="√" onmousedown="event.preventDefault()" onClick="if (UI.kbdshift) UI.insert_focused('^2'); else UI.insert_focused('sqrt(');" title="racine carree">
+      <input type="button" style="width:29px;height:35px;" name="add_4" id="add_4" value="4" onmousedown="event.preventDefault()" onClick="UI.insert_focused('4')">
+      <input type="button" style="width:29px;height:35px;" name="add_5" id="add_5" value="5" onmousedown="event.preventDefault()" onClick="UI.insert_focused('5')">
+      <input type="button" style="width:29px;height:35px;" name="add_6" id="add_6" value="6" onmousedown="event.preventDefault()" onClick="UI.insert_focused('6')">
+      <input type="button" style="width:29px;height:35px;" name="add_*" id="add_*" value="*" onmousedown="event.preventDefault()" onClick="UI.insert_focused('*')">
     </td>
   </tr>
   <tr>
@@ -1923,25 +1946,25 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
              name="add_abc" id="add_abc" value="abc"
              onmousedown="event.preventDefault()" onClick="var tmp=$id('alpha_keyboard'); if (tmp.style.display=='none') tmp.style.display='inline'; else tmp.style.display='none'"
              title="clavier alphab&eacute;tique">
-      <input type="button" style="width:29px;height:35px;" name="add-=" id="add-=" value="=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+      <input type="button" style="width:29px;height:35px;" name="add-=" id="add-=" value="=" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" style="width:29px;height:35px;" name="add_,"
              id="add_,"
-             value="," onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)" title="La virgule est utilisee comme separateur des composantes d'un vecteur. La quote sert &agrave; empecher l'&eacute;valuation.">
+             value="," onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)" title="La virgule est utilisee comme separateur des composantes d'un vecteur. La quote sert &agrave; empecher l'&eacute;valuation.">
       <input type="button" id="add_infer" value="&lt;"
              title=""
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value);">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value);">
       <input type="button" style="display:none" name="curseur_up"
              id="curseur_up"
              value="↑" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="deplace le curseur vers le haut">
       <input type="button" style="width:29px;height:35px;" name="copy_button" id="copy_button" value="cp"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.selection)" title="Copie la derni&egrave;re ligne de commande s&eacute;lectionn&eacute;e vers le focus.">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(UI.selection)" title="Copie la derni&egrave;re ligne de commande s&eacute;lectionn&eacute;e vers le focus.">
       <input type="button" style="width:29px;height:35px;" name="add_dosel"
              id="add_dosel"
              value="sel" onmousedown="event.preventDefault()" onClick="UI.selectionne()" title="Selectionne.">
-      <input type="button" style="width:29px;height:35px;" name="add_1" id="add_1" value="1" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'1')">
-      <input type="button" style="width:29px;height:35px;" name="add_2" id="add_2" value="2" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'2')">
-      <input type="button" style="width:29px;height:35px;" name="add_3" id="add_3" value="3" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'3')">
-      <input type="button" style="width:29px;height:35px;" name="add_-" id="add_-" value="-" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'-')">
+      <input type="button" style="width:29px;height:35px;" name="add_1" id="add_1" value="1" onmousedown="event.preventDefault()" onClick="UI.insert_focused('1')">
+      <input type="button" style="width:29px;height:35px;" name="add_2" id="add_2" value="2" onmousedown="event.preventDefault()" onClick="UI.insert_focused('2')">
+      <input type="button" style="width:29px;height:35px;" name="add_3" id="add_3" value="3" onmousedown="event.preventDefault()" onClick="UI.insert_focused('3')">
+      <input type="button" style="width:29px;height:35px;" name="add_-" id="add_-" value="-" onmousedown="event.preventDefault()" onClick="UI.insert_focused('-')">
     </td>
   </tr>
   <tr>
@@ -1949,13 +1972,13 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
       <input type="button" style="width:29px;height:35px" id="shift_key" value="alt" title="Touches compl&eacute;mentaires" onmousedown="event.preventDefault()" onClick="UI.toggleshift();">
       <input type="button" style="width:29px;height:35px;" name="add_:"
              id="add_:"
-             value=":=" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)" title=":= effectue une affectation, par exemple a:=pi/2; sin(a). ! calcule une factorielle.">
+             value=":=" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)" title=":= effectue une affectation, par exemple a:=pi/2; sin(a). ! calcule une factorielle.">
       <input type="button" style="width:29px;height:35px;"
-             name="add_semi" id="add_semi" value=";" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)"
+             name="add_semi" id="add_semi" value=";" onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)"
              title="Le point virgule permet de separer plusieurs commandes pour les executer en une fois, par exemple dans un programme.">
       <input type="button" id="add_super" value="&gt;"
              title=""
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value);">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value);">
       <input type="button" style="display:none" name="curseur_down" id="curseur_down" value="↓" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="deplace le curseur vers le bas">
       <input type="button" style="width:29px;height:35px;"
              id="add_beg"
@@ -1967,10 +1990,10 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
              onClick="UI.setselend(UI.focused)" title="Fin selection">
       <input type="button" style="width:29px;height:35px;" name="add_e"
              id="add_e"
-             value="e" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'e')" title="e est la base de l'exponentielle ou le separateur entre la mantisse et l'exposant d'un nombre approche ">
-      <input type="button" style="width:29px;height:35px;" name="add_0" id="add_0" value="0" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'0')">
-      <input type="button" style="width:29px;height:35px;" name="add_." id="add_." value="." onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'.')">
-      <input type="button" style="width:29px;height:35px;" name="add_+" id="add_+" value="+" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'+')">
+             value="e" onmousedown="event.preventDefault()" onClick="UI.insert_focused('e')" title="e est la base de l'exponentielle ou le separateur entre la mantisse et l'exposant d'un nombre approche ">
+      <input type="button" style="width:29px;height:35px;" name="add_0" id="add_0" value="0" onmousedown="event.preventDefault()" onClick="UI.insert_focused('0')">
+      <input type="button" style="width:29px;height:35px;" name="add_." id="add_." value="." onmousedown="event.preventDefault()" onClick="UI.insert_focused('.')">
+      <input type="button" style="width:29px;height:35px;" name="add_+" id="add_+" value="+" onmousedown="event.preventDefault()" onClick="UI.insert_focused('+')">
     </td>
   </tr>
 </table>
@@ -2058,85 +2081,124 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
 <div id="progbuttons" style="display:none">
   <input type="button" style="width:29px;height:35px" name="add_test"
          id="add_test"
-         value="test" onmousedown="event.preventDefault()" onClick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none'; $id('assistant_prog').style.display='none'; $id('assistant_test').style.display='block' ;UI.set_focus('sicond'); //UI.insert(UI.focused,'\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20);UI.funcoff();" title="Assistant de cr&eacute;ation de test">
+         value="test" onmousedown="event.preventDefault()" onClick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none'; $id('assistant_prog').style.display='none'; $id('assistant_test').style.display='block' ;UI.set_focus('sicond'); //UI.insert_focused('\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20);UI.funcoff();" title="Assistant de cr&eacute;ation de test">
   <input type="button" style="width:40px;height:35px"
          id="add_boucle" value="boucle" onclick="UI.savefocused=UI.focused; $id('assistant_boucle').style.display='block';$id('assistant_test').style.display='none';$id('assistant_prog').style.display='none'" title="Assistant de cr&eacute;ation de boucle">
   <input type="button" value="fonct" title="Assistant de cr&eacute;ation de fonction" style="width:55px;height:35px" id="add_function" onclick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none';  $id('assistant_test').style.display='none'; $id('assistant_prog').style.display='block';UI.set_focus('funcname');$id('localvarspan').style.display=UI.python_mode?'none':'inline';">
   <input type="button" style="width:46px;height:35px" name="add_debug"
          id="add_debug"
          value="debug" onmousedown="event.preventDefault()"
-         onClick="UI.insert(UI.focused,'debug(')" title="Mettre au point, par exemple debug(f(2,3)) execute la fonction f avec arguments 2 et 3 en pas &agrave; pas">
+         onClick="UI.insert_focused('debug(')" title="Mettre au point, par exemple debug(f(2,3)) execute la fonction f avec arguments 2 et 3 en pas &agrave; pas">
   <input type="button" style="width:29px;height:35px" name="add_//"
          id="add_//"
-         value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.python_mode?'#':'//');UI.funcoff();" title="commentaire">
+         value="//" onmousedown="event.preventDefault()" onClick="UI.insert_focused(UI.python_mode?'#':'//');UI.funcoff();" title="commentaire">
   <input type="button" style="width:29px;height:35px" name="add_nlprog"
          id="add_nlprog"
-         value="[]" onmousedown="event.preventDefault()"
-         onClick="UI.hide_show($id('list_cmds'))"
-         title="Commandes listes">
+         value="cmds" onmousedown="event.preventDefault()"
+         onClick="UI.hide_show($id('list_cmds')); UI.hide_show_xcas('list_cmds_xcas'); UI.hide_show_python('python_mods');"
+         title="Commandes">
   <input type="button" style="width:29px;height:35px" name="add_listechaine"
          id="add_listechaine"
-         value='""' onmousedown="event.preventDefault()"
-         onClick="UI.hide_show($id('prog_cmds'));"
-         title="Commandes chaines et ensembles">
+         value='graph' onmousedown="event.preventDefault()"
+         onClick="UI.hide_show($id('prog_graph_cmds'));"
+         title="Commandes graphiques">
   <input type="button" style="width:29px;height:35px"
          id="add_tortue"
          value="Tortue" onmousedown="event.preventDefault()"
-         onClick="var f=$id('boutons_tortue'); if (f.style.display=='none'){ f.style.display='block'; } else { f.style.display='none'; }" title="Commandes de la tortue">
+         onClick="UI.hide_show_xcas('boutons_tortue_xcas'); var f=$id('boutons_tortue'); if (f.style.display=='none'){ f.style.display='block'; } else { f.style.display='none'; }" title="Commandes de la tortue">
   <div id="list_cmds" style="display:none">
-    <button class="bouton" onclick="UI.insert(UI.focused,'seq(');">seq</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'append(');">append</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'concat(');">concat</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'head(');">head</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'tail(');">tail</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'makelist(');">makelist</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'member(');">member</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'revlist(');">revlist</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'mid(');">mid</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'size(');">size</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'sort(');">sort</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'suppress(');">suppress</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'select(');">select</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'count(');">count</button>
-  </div>
-  <div id="prog_cmds" style="display:none">
-    <strong>set[]</strong>
-    <button class="bouton" onclick="UI.insert(UI.focused,'intersect(');">intersect</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'minus(');">minus</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'union(');">union</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'est_element(');">est_element</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'est_inclus(');">est_inclus</button>
+<button class="bouton" onclick="UI.insert_focused('pow(');">pow</button> <button class="bouton" onclick="UI.insert_focused('range(');">range</button><button class="bouton" onclick="UI.insert_focused('len(');">len</button><button class="bouton" onclick="UI.insert_focused('append(');">append</button><button class="bouton" onclick="UI.insert_focused('sorted(');">sorted</button>
+    <div id="list_cmds_xcas">
+    <button class="bouton" onclick="UI.insert_focused('seq(');">seq</button>
+    <button class="bouton" onclick="UI.insert_focused('makelist(');">makelist</button>
+    <button class="bouton" onclick="UI.insert_focused('concat(');">concat</button>
+    <button class="bouton" onclick="UI.insert_focused('head(');">head</button>
+    <button class="bouton" onclick="UI.insert_focused('tail(');">tail</button>
+    <button class="bouton" onclick="UI.insert_focused('member(');">member</button>
+    <button class="bouton" onclick="UI.insert_focused('revlist(');">revlist</button>
+    <button class="bouton" onclick="UI.insert_focused('mid(');">mid</button>
+    <button class="bouton" onclick="UI.insert_focused('suppress(');">suppress</button>
+    <button class="bouton" onclick="UI.insert_focused('select(');">select</button>
+    <button class="bouton" onclick="UI.insert_focused('count(');">count</button>
     <br>
-    <strong> ""</strong>
-    <button class="bouton" onclick="UI.insert(UI.focused,'asc(');">asc</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'char(');">char</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'inString(');">inString</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'gauche(');">gauche</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'ord(');">ord</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'droit(');">droit</button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'string(');">string</button>
+    <button class="bouton" onclick="UI.insert_focused('set[');"><strong>set[]</strong></button>
+    <button class="bouton" onclick="UI.insert_focused('intersect(');">intersect</button>
+    <button class="bouton" onclick="UI.insert_focused('minus(');">minus</button>
+    <button class="bouton" onclick="UI.insert_focused('union(');">union</button>
+    <button class="bouton" onclick="UI.insert_focused('est_element(');">est_element</button>
+    <button class="bouton" onclick="UI.insert_focused('est_inclus(');">est_inclus</button>
+    <br>
+    <button class="bouton" onclick="UI.insert_focused('&quote;');"><strong>""</strong></button>
+    <button class="bouton" onclick="UI.insert_focused('asc(');">asc</button>
+    <button class="bouton" onclick="UI.insert_focused('char(');">char</button>
+    <button class="bouton" onclick="UI.insert_focused('inString(');">inString</button>
+    <button class="bouton" onclick="UI.insert_focused('gauche(');">gauche</button>
+    <button class="bouton" onclick="UI.insert_focused('ord(');">ord</button>
+    <button class="bouton" onclick="UI.insert_focused('droit(');">droit</button>
+    <button class="bouton" onclick="UI.insert_focused('string(');">string</button>
+    </div>
+    <div id="python_mods" style="display:none">
+      <br>
+    <button class="bouton" onclick="UI.insert_focused('from math import *');"><strong>math</strong></button><button class="bouton" onclick="UI.insert_focused('sqrt(');">racine</button><button class="bouton" onclick="UI.insert_focused('abs(');">abs</button><button class="bouton" onclick="UI.insert_focused('max(');">max</button><button class="bouton" onclick="UI.insert_focused('min(');">min</button><button class="bouton" onclick="UI.insert_focused('round(');">arrondi</button><button class="bouton" onclick="UI.insert_focused('floor(');">floor</button>
+    <br>
+<button class="bouton" onclick="UI.insert_focused('from cmath import *');"><strong>cmath</strong></button>
+    <button class="bouton" onclick="UI.insert_focused('from random import *');"><strong>random</strong></button><button class="bouton" onclick="UI.insert_focused('random(');">random</button><button class="bouton" onclick="UI.insert_focused('randint(');">randint</button><button class="bouton" onclick="UI.insert_focused('choice(');">choice</button>
+    <br>
+    
+    <button class="bouton" onclick="UI.insert_focused('from arit import *');"><strong>arit</strong></button><button class="bouton" onclick="UI.insert_focused('isprime(');">isprime</button><button class="bouton" onclick="UI.insert_focused('nextprime(');">nextp</button><button class="bouton" onclick="UI.insert_focused('ifactor(');">ifactor</button><button class="bouton" onclick="UI.insert_focused('gcd(');">gcd</button><button class="bouton" onclick="UI.insert_focused('lcm(');">lcm</button><button class="bouton" onclick="UI.insert_focused('iegcd(');">iegcd</button>
+    <br>
+
+    <button class="bouton" onclick="UI.insert_focused('from linalg import *');"><strong>linalg</strong></button><button class="bouton" onclick="UI.insert_focused('add(');">add</button><button class="bouton" onclick="UI.insert_focused('sub(');">sub</button><button class="bouton" onclick="UI.insert_focused('mul(');">mul</button><button class="bouton" onclick="UI.insert_focused('inv(');">inv</button><button class="bouton" onclick="UI.insert_focused('transpose(');">tran</button><button class="bouton" onclick="UI.insert_focused('rref(');">rref</button>
+    <br>
+
+    <button class="bouton" onclick="UI.insert_focused('from numpy import *');"><strong>numpy</strong></button><button class="bouton" onclick="UI.insert_focused('array(');">array</button><button class="bouton" onclick="UI.insert_focused('linspace(');">linspace</button><button class="bouton" onclick="UI.insert_focused('arange(');">arange</button><button class="bouton" onclick="UI.insert_focused('solve(');">solve</button><button class="bouton" onclick="UI.insert_focused('eig(');">eig</button><button class="bouton" onclick="UI.insert_focused('inv(');">inv</button>
+    <br>
+  </div>
+
+  </div>
+  <div id="prog_graph_cmds" style="display:none">
+    <button class="bouton" title="Taper ; sur une ligne de commande vide pour voir le graphique." onclick="UI.insert_focused('from graphic import *');"><strong>graphic</strong></button><button class="bouton" onclick="UI.insert_focused('set_pixel(');">pixel</button><button class="bouton" onclick="UI.insert_focused('draw_line(');">line</button><button class="bouton" onclick="UI.insert_focused('draw_rectangle(');">rect</button><button class="bouton" onclick="UI.insert_focused('draw_circle(');">cercle</button><button class="bouton" onclick="UI.insert_focused('draw_string(');">string</button><button class="bouton" onclick="UI.insert_focused(';');">show</button>
+    <br>
+    <button class="bouton" onclick="UI.insert_focused('red');">rouge</button><button class="bouton" onclick="UI.insert_focused('green');">vert</button><button class="bouton" onclick="UI.insert_focused('blue');">bleu</button><button class="bouton" onclick="UI.insert_focused('yellow');">jaune</button><button class="bouton" onclick="UI.insert_focused('cyan');">cyan</button><button class="bouton" onclick="UI.insert_focused('magenta');">magenta</button>
+    <br>
+    
+    <button class="bouton" title="En MicroPython, taper , sur une ligne de commande vide pour voir le graphique." onclick="UI.insert_focused('from matplotl import *');"><strong>matplotl</strong></button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'bar(':'barplot(');">bar</button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'scatter(':'scatterplot(');">scat.</button><button class="bouton" onclick="UI.insert_focused('arrow(');">arrow</button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'plot(':'polygonplot(');">plot</button><button class="bouton" onclick="UI.insert_focused(UI.micropy?'text(':'legend(');">txt</button><button class="bouton" onclick="UI.insert_focused(',');">,</button><button class="bouton" onclick="UI.insert_focused('clf()');">clf</button>
+    
   </div>
   <div id="boutons_tortue" style="display:none">
     <input type="button" style="width:46px;height:35px" name="add_efface"
            id="add_efface"
            value="nouveau" onmousedown="event.preventDefault()"
-           onClick="if (UI.python_mode){ UI.eval_cmdline1('# fonctions du script\n',true);UI.eval_cmdline1('efface # Script de d&eacute;placement\n',true);} else {UI.eval_cmdline1('/* fonctions du script */\n',true); UI.eval_cmdline1('/* Script de d&eacute;placement*/\nefface;\n',true);}" title="cr&eacute; un &eacute;cran tortue">
+           onClick="if (UI.python_mode){ UI.eval_cmdline1('# fonctions du script\nfrom turtle import *\nreset()\n',true);UI.eval_cmdline1(UI.micropy?'.':'efface # Script de d&eacute;placement\n',true);} else {UI.eval_cmdline1('/* fonctions du script */\n',true); UI.eval_cmdline1('/* Script de d&eacute;placement*/\nefface;\n',true);}" title="cr&eacute; un &eacute;cran tortue. Taper . dans une ligne de commande vide pour voir la tortue.">
     <input type="button" style="width:46px;height:35px" name="add_avance"
            id="add_avance"
            value="av" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'avance ');" title="la tortue avance de n pas (10 par d&eacute;faut)">
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'forward(':'avance ');" title="la tortue avance de n pas (10 par d&eacute;faut)">
     <input type="button" style="width:46px;height:35px" name="add_recule"
            id="add_recule"
            value="rec" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'recule ');" title="la tortue recule de n pas (10 par d&eacute;faut)">
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'backward(':'recule ');" title="la tortue recule de n pas (10 par d&eacute;faut)">
     <input type="button" style="width:46px;height:35px" name="add_tourne_droite"
            id="add_tourne_droite"
            value="td" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'tourne_droite ');" title="la tortue tourne &agrave; droite de n degr&eacute;s (90 par d&eacute;faut)">
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'right(':'tourne_droite ');" title="la tortue tourne &agrave; droite de n degr&eacute;s (90 par d&eacute;faut)">
     <input type="button" style="width:46px;height:35px" name="add_tourne_gauche"
            id="add_tourne_gauche"
            value="tg" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'tourne_gauche ');" title="la tortue tourne &agrave; gauche de n degr&eacute;s (90 par d&eacute;faut)">
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'left(':'tourne_gauche ');" title="la tortue tourne &agrave; gauche de n degr&eacute;s (90 par d&eacute;faut)">
+    <input type="button" style="width:46px;height:35px" name="add_crayon"
+           id="add_crayon"
+           value="crayon" onmousedown="event.preventDefault()"
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'pencolor(':'crayon ');" title="change la couleur du crayon de la tortue"> 
+    <input type="button" style="width:46px;height:35px" name="add_rond"
+           id="add_rond"
+           value="rond" onmousedown="event.preventDefault()"
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'circle(':'rond ');" title="Arc de cercle">
+    <input type="button" style="width:46px;height:35px" name="add_ecris"
+           id="add_ecris"
+           value="ecris" onmousedown="event.preventDefault()"
+           onClick="UI.insertsemi(UI.focused,UI.micropy?'write(':'ecris ');" title="&Eacute;crire &agrave; la droite de la tortue"><br>
+    <span id="boutons_tortue_xcas">
     <input type="button" style="width:46px;height:35px" name="add_pas_de_cote"
            id="add_pas_de_cote"
            value="pas_de_cote" onmousedown="event.preventDefault()"
@@ -2145,14 +2207,6 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
            id="add_saute"
            value="saute" onmousedown="event.preventDefault()"
            onClick="UI.insertsemi(UI.focused,'saute ');" title="la tortue saute de n pas (10 par d&eacute;faut)">
-    <input type="button" style="width:46px;height:35px" name="add_crayon"
-           id="add_crayon"
-           value="crayon" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'crayon ');" title="change la couleur du crayon de la tortue"> <br>
-    <input type="button" style="width:46px;height:35px" name="add_rond"
-           id="add_rond"
-           value="rond" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'rond ');" title="Arc de cercle">
     <input type="button" style="width:46px;height:35px" name="add_disque"
            id="add_disque"
            value="disque" onmousedown="event.preventDefault()"
@@ -2166,10 +2220,6 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
            id="add_triangle_plein"
            value="triangle_plein" onmousedown="event.preventDefault()"
            onClick="UI.insertsemi(UI.focused,'triangle_plein ');" title="Triangle plein">
-    <input type="button" style="width:46px;height:35px" name="add_ecris"
-           id="add_ecris"
-           value="ecris" onmousedown="event.preventDefault()"
-           onClick="UI.insertsemi(UI.focused,'ecris ');" title="&Eacute;crire &agrave; la droite de la tortue">
     <input type="button" style="width:46px;height:35px" name="add_repete"
            id="add_repete"
            value="repete" onmousedown="event.preventDefault()"
@@ -2179,56 +2229,57 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
            id="tortue_maillage"
            value="maillage" onmousedown="event.preventDefault()"
            onClick="UI.turtle_maillage=(UI.turtle_maillage+1)%3" title="Change de type de maillage (successivement quadrillage, triangulaire, rien)">
-    <input type="button" style="width:46px;height:35px" name="tortue_clear"
+   </span>
+   <input type="button" style="width:46px;height:35px" name="tortue_clear"
            id="tortue_clear"
            value="Annul." onmousedown="event.preventDefault()"
            onClick="$id('boutons_tortue').style.display='none'" title="Enleve les boutons de la tortue">
   </div>
 </div>
 <div id="assistant_rewrite" style="display:none">
-  <button class="bouton" onclick="UI.insert(UI.focused,'simplify(')" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">simpl.</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'normal(')"
+  <button class="bouton" onclick="UI.insert_focused('simplify(')" title="Tentative de simplifier une expression, par exemple simplify(sin(3x)/sin(x)). Essayez une commande comme ratnormal, normal ou de reecriture si simplify echoue.">simpl.</button>
+  <button class="bouton" onclick="UI.insert_focused('normal(')"
           title="D&eacute;veloppe et r&eacute;duit au meme d&eacute;nominateur">normal
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'c')" title="Pr&eacute;fixe pour factoriser sur C">c</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'factor(')" title="Factorisation, par exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">factor</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'partfrac(')" title="D&eacute;composition en &eacute;l&eacute;ments simples. Utiliser cpartfrac pour d&eacute;composer sur C">partf</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'subst(')" title="Substituer">subst</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'reorder(')" title="Changer l'ordre des variables d'un polynome">reord</button>
+  <button class="bouton" onclick="UI.insert_focused('c')" title="Pr&eacute;fixe pour factoriser sur C">c</button>
+  <button class="bouton" onclick="UI.insert_focused('factor(')" title="Factorisation, par exemple factor(x^4-1). Utiliser cfactor pour factoriser sur C">factor</button>
+  <button class="bouton" onclick="UI.insert_focused('partfrac(')" title="D&eacute;composition en &eacute;l&eacute;ments simples. Utiliser cpartfrac pour d&eacute;composer sur C">partf</button>
+  <button class="bouton" onclick="UI.insert_focused('subst(')" title="Substituer">subst</button>
+  <button class="bouton" onclick="UI.insert_focused('reorder(')" title="Changer l'ordre des variables d'un polynome">reord</button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'texpand(')"
+  <button class="bouton" onclick="UI.insert_focused('texpand(')"
           title="D&eacute;veloppe sin/cos/tan/exp/ln">texpand
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'tlin(')"
+  <button class="bouton" onclick="UI.insert_focused('tlin(')"
           title="Lin&eacute;rise les expressions trigonom&eacute;triques">tlin
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'tcollect(')"
+  <button class="bouton" onclick="UI.insert_focused('tcollect(')"
           title="Rassemble les expressions trigonom&eacute;triques">tcoll.
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'trigsin(')"
+  <button class="bouton" onclick="UI.insert_focused('trigsin(')"
           title="R&eacute;ecrire avec des sinus">trigsin
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'trigcos(')"
+  <button class="bouton" onclick="UI.insert_focused('trigcos(')"
           title="R&eacute;ecrire avec des cos">cos
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'trigtan(')"
+  <button class="bouton" onclick="UI.insert_focused('trigtan(')"
           title="R&eacute;ecrire avec des tan">tan
   </button>
   <button class="bouton"
-          onclick="UI.insert(UI.focused,'halftan(')"
+          onclick="UI.insert_focused('halftan(')"
           title="R&eacute;ecrire en fonction de tan de l'angle moiti&eacute;">halftan
   </button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'trig2exp(')"
+  <button class="bouton" onclick="UI.insert_focused('trig2exp(')"
           title="sin/cos/tan en fonction de exp(i*.)">trig2exp
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'exp2trig(')" title="exp(i*.)->cos(.)+i*sin(.)">exp2trig</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'lin(')" title="Lin&eacute;arise les exponentielles">lin</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'lncollect(')"
+  <button class="bouton" onclick="UI.insert_focused('exp2trig(')" title="exp(i*.)->cos(.)+i*sin(.)">exp2trig</button>
+  <button class="bouton" onclick="UI.insert_focused('lin(')" title="Lin&eacute;arise les exponentielles">lin</button>
+  <button class="bouton" onclick="UI.insert_focused('lncollect(')"
           title="Rassemble les logarithmes">lncoll.
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'exp2pow(')" title="e^(a*ln(b))->b^a">exp2^</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'pow2exp(')" title="b^a->e^(a*ln(b))">^2exp</button>
+  <button class="bouton" onclick="UI.insert_focused('exp2pow(')" title="e^(a*ln(b))->b^a">exp2^</button>
+  <button class="bouton" onclick="UI.insert_focused('pow2exp(')" title="b^a->e^(a*ln(b))">^2exp</button>
   <button class="bouton"
           onclick="$id('assistant_rewrite').style.display='none'">Annul.
   </button>
@@ -2243,44 +2294,44 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused;$id('assistant_plotfield').style.display='block';UI.set_focus('plotfieldexprf');"
           title="Champ des tangentes, par exemple plotfield(sin(t*y),[t===-5..5,y===-3..3],xstep===0.5,ystep===0.5))">field
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'plotode(')"
+  <button class="bouton" onclick="UI.insert_focused('plotode(')"
           title="Graphe d'une solution d'&eacute;quation diff&eacute;rentielle">ode
   </button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'plotseq(')"
+  <button class="bouton" onclick="UI.insert_focused('plotseq(')"
           title="Graphe en toile d'araign&eacute;e d'une suite r&eacute;currente">suite
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'plotlist(')"
+  <button class="bouton" onclick="UI.insert_focused('plotlist(')"
           title="Trac&eacute; des points (i,y_i) d'une liste [y_i]">liste
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'moustache(')"
+  <button class="bouton" onclick="UI.insert_focused('moustache(')"
           title="Boite &agrave; moustaches">moustache
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'histogram(')"
+  <button class="bouton" onclick="UI.insert_focused('histogram(')"
           title="Histogramme">histo.
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'scatterplot(')"
+  <button class="bouton" onclick="UI.insert_focused('scatterplot(')"
           title="Nuage de points">nuage
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'polygonplot(')"
+  <button class="bouton" onclick="UI.insert_focused('polygonplot(')"
           title="Ligne polygonale donn&eacute;e par une liste de points">polyg.
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'linear_regression_plot(')"
+  <button class="bouton" onclick="UI.insert_focused('linear_regression_plot(')"
           title="Droite de r&eacute;gression lin&eacute;aire">regr.
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'bar_plot(')"
+  <button class="bouton" onclick="UI.insert_focused('bar_plot(')"
           title="Diagramme batons">baton
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'plotcdf(')"
+  <button class="bouton" onclick="UI.insert_focused('plotcdf(')"
           title="Graphe d'une loi de r&eacute;partition cumul&eacute;e">cdf
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'plotcontour(')"
+  <button class="bouton" onclick="UI.insert_focused('plotcontour(')"
           title="Courbes de niveau d'une fonction de 2 variables">niveau
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'plotarea(')"
+  <button class="bouton" onclick="UI.insert_focused('plotarea(')"
           title="Aire sous la courbe">aire
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'bezier(')"
+  <button class="bouton" onclick="UI.insert_focused('bezier(')"
           title="Courbe de Bezier">bezier
   </button>
   <button class="bouton"
@@ -2480,46 +2531,46 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
           onmousedown="event.preventDefault()" onClick="UI.funcoff();UI.savefocused=UI.focused;$id('assistant_desolve').style.display='block';UI.set_focus('desolveeq');" title="Resolution d'une equation differentielle, par exemple desolve(y''+y=0), desolve(y'+y=0,y(0)=1)">desolve
   </button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'ilaplace(')"
+  <button class="bouton" onclick="UI.insert_focused('ilaplace(')"
           title="ilaplace: transform&eacute;e de Laplace inverse">i
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'laplace(')"
+  <button class="bouton" onclick="UI.insert_focused('laplace(')"
           title="Transform&eacute;e de Laplace">laplace
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'odesolve(')"
+  <button class="bouton" onclick="UI.insert_focused('odesolve(')"
           title="odesolve: r&eacute;solution approch&eacute;e d'&eacute;quation diff&eacute;rentielles">o
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'desolve(')"
+  <button class="bouton" onclick="UI.insert_focused('desolve(')"
           title="R&eacute;solution exacte d'&eacute;quation diff&eacute;rentielle">desolve
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'ifft(')"
+  <button class="bouton" onclick="UI.insert_focused('ifft(')"
           title="ifft: transform&eacute;e de Fourier rapide inverse">i
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'fft(')"
+  <button class="bouton" onclick="UI.insert_focused('fft(')"
           title="Transform&eacute;e de Fourier rapide">fft
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'invztrans(')"
+  <button class="bouton" onclick="UI.insert_focused('invztrans(')"
           title="invztrans: transform&eacute;e en z inverse d'une fraction rationnelle">inv
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'ztrans(')"
+  <button class="bouton" onclick="UI.insert_focused('ztrans(')"
           title="Transform&eacute;e en z d'une suite">ztrans
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'grad(')"
+  <button class="bouton" onclick="UI.insert_focused('grad(')"
           title="Gradient">grad
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'hessian(')"
+  <button class="bouton" onclick="UI.insert_focused('hessian(')"
           title="Hessien">hess
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'curl(')"
+  <button class="bouton" onclick="UI.insert_focused('curl(')"
           title="Rotationnel">rot
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'divergence(')"
+  <button class="bouton" onclick="UI.insert_focused('divergence(')"
           title="Divergence">div
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'vpotential(')"
+  <button class="bouton" onclick="UI.insert_focused('vpotential(')"
           title="vpotential: potentiel vecteur">v
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'potential(')"
+  <button class="bouton" onclick="UI.insert_focused('potential(')"
           title="Potentiel">poten.
   </button>
   <button class="bouton"
@@ -2544,16 +2595,16 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
               cols=20></textarea>
     <br>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.set_focus('desolveeq');UI.insert(UI.focused,'t')">t
+            onclick="UI.set_focus('desolveeq');UI.insert_focused('t')">t
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.set_focus('desolveeq') ;UI.insert(UI.focused,'y\'\'')">y''
+            onclick="UI.set_focus('desolveeq') ;UI.insert_focused('y\'\'')">y''
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'y\'')">y'
+            onclick="UI.insert_focused('y\'')">y'
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'y')">y
+            onclick="UI.insert_focused('y')">y
     </button>
     <br>
     <button class="bouton"
@@ -2659,81 +2710,81 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   </div>
 </div>
 <div id="assistant_geo" style="display:none">
-  <button class="bouton" onclick="UI.insert(UI.focused,'point(')"
+  <button class="bouton" onclick="UI.insert_focused('point(')"
           title="Point donn&eacute; par ses coordonn&eacute;es ou son affixe">point
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'segment(')"
+  <button class="bouton" onclick="UI.insert_focused('segment(')"
           title="Segment reliant 2 points ou 2 affixes">segment
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'droite(')"
+  <button class="bouton" onclick="UI.insert_focused('droite(')"
           title="Droite passant par 2 points">droite
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'vecteur(')"
+  <button class="bouton" onclick="UI.insert_focused('vecteur(')"
           title="Vecteur">vecteur
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'equation(')"
+  <button class="bouton" onclick="UI.insert_focused('equation(')"
           title="&Eacute;quation">equation
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'parameq(')"
+  <button class="bouton" onclick="UI.insert_focused('parameq(')"
           title="&Eacute;quation param&eacute;trique">param
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'milieu(')"
+  <button class="bouton" onclick="UI.insert_focused('milieu(')"
           title="Milieu de 2 points">milieu
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'cercle(')"
+  <button class="bouton" onclick="UI.insert_focused('cercle(')"
           title="Cercle par centre, rayon ou diam&eacute;tre">&#x25ef;
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'centre(')"
+  <button class="bouton" onclick="UI.insert_focused('centre(')"
           title="Centre d'un cercle">centre
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'isobarycentre(')"
+  <button class="bouton" onclick="UI.insert_focused('isobarycentre(')"
           title="Centre de gravit&eacute;">gravit&eacute;
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'inter(')"
+  <button class="bouton" onclick="UI.insert_focused('inter(')"
           title="Liste des intersections, utiliser inter_unique pour un point">inter
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'inter_unique(')"
+  <button class="bouton" onclick="UI.insert_focused('inter_unique(')"
           title="Premier ou unique point d'intersection">unique
   </button>
   <button class="bouton" onclick="var tmp=$id('assitant_geo_plus'); if(tmp.style.display=='none') tmp.style.display='block'; else tmp.style.display='none';">+</button>
   <div id="assitant_geo_plus" style="display:none">
-    <button class="bouton" onclick="UI.insert(UI.focused,'triangle(')"
+    <button class="bouton" onclick="UI.insert_focused('triangle(')"
             title="Triangle">&#x25b3;
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'rectangle(')"
+    <button class="bouton" onclick="UI.insert_focused('rectangle(')"
             title="Rectangle">&#x25ad;
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'parallelogramme(')"
+    <button class="bouton" onclick="UI.insert_focused('parallelogramme(')"
             title="Parallelogramme">&#x25b1;
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'carre(')"
+    <button class="bouton" onclick="UI.insert_focused('carre(')"
             title="Carre">&#x25a2;
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'polygone(')"
+    <button class="bouton" onclick="UI.insert_focused('polygone(')"
             title="Polygone">polygone
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'isopolygone(')"
+    <button class="bouton" onclick="UI.insert_focused('isopolygone(')"
             title="Polygone r&eacute;gulier">r&eacute;gulier
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'parallele(')"
+    <button class="bouton" onclick="UI.insert_focused('parallele(')"
             title="Parall&egrave;le">//
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'perpendiculaire(')"
+    <button class="bouton" onclick="UI.insert_focused('perpendiculaire(')"
             title="Perpendiculaire">&perp;
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'mediatrice(')"
+    <button class="bouton" onclick="UI.insert_focused('mediatrice(')"
             title="Mediatrice">mediatrice
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'bissectrice(')"
+    <button class="bouton" onclick="UI.insert_focused('bissectrice(')"
             title="Bissectrice">biss
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'hauteur(')"
+    <button class="bouton" onclick="UI.insert_focused('hauteur(')"
             title="Hauteur">hauteur
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'tangent(')"
+    <button class="bouton" onclick="UI.insert_focused('tangent(')"
             title="Tangente &agrave; un graphe">tangent
     </button>
-    <button class="bouton" onclick="UI.insert(UI.focused,'distance(')"
+    <button class="bouton" onclick="UI.insert_focused('distance(')"
             title="Distance">dist.
     </button>
     <button class="bouton"
@@ -2742,69 +2793,69 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   </div>
 </div>
 <div id="assistant_arit" style="display:none">
-  <button class="bouton" onclick="UI.insert(UI.focused,'gcd(')"
+  <button class="bouton" onclick="UI.insert_focused('gcd(')"
           title="PGCD d'entiers ou de polynomes">gcd
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'iquo(')"
+  <button class="bouton" onclick="UI.insert_focused('iquo(')"
           title="iquo: quotient de la division euclidienne d'entiers">&nbsp;&nbsp;i
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'quo(')"
+  <button class="bouton" onclick="UI.insert_focused('quo(')"
           title="Quotient euclidien de 2 polynomes">quo
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'irem(')"
+  <button class="bouton" onclick="UI.insert_focused('irem(')"
           title="irem: reste de la division euclidienne d'entiers">&nbsp;&nbsp;i
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'rem(')"
+  <button class="bouton" onclick="UI.insert_focused('rem(')"
           title="Reste euclidien de 2 polynomes">rem
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'iabcuv(')"
+  <button class="bouton" onclick="UI.insert_focused('iabcuv(')"
           title="iabcuv: r&eacute;soudre a*u+b*v=c pour a,b,c donn&eacute;s">&nbsp;&nbsp;i
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'abcuv(')"
+  <button class="bouton" onclick="UI.insert_focused('abcuv(')"
           title="Solution polynomiale de A*U+B*V=C">abcuv
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'ifactor(')"
+  <button class="bouton" onclick="UI.insert_focused('ifactor(')"
           title="ifactor: factorisation d'un entier">&nbsp;&nbsp;i
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'factor(')"
+  <button class="bouton" onclick="UI.insert_focused('factor(')"
           title="Factorisation d'un polynome">factor
   </button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'lcm(')"
+  <button class="bouton" onclick="UI.insert_focused('lcm(')"
           title="PPCM d'entiers ou de polynomes">lcm
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'ichinrem(')"
+  <button class="bouton" onclick="UI.insert_focused('ichinrem(')"
           title="Restes chinois entiers">ichrem
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'isprime(')"
+  <button class="bouton" onclick="UI.insert_focused('isprime(')"
           title="Test de pseudo-primalit&eacute;">isprime
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'nextprime(')"
+  <button class="bouton" onclick="UI.insert_focused('nextprime(')"
           title="Prochain entier pseudo-premier">next
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'powmod(')"
+  <button class="bouton" onclick="UI.insert_focused('powmod(')"
           title="powmod: puissance modulaire rapide">pow
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'mod(')"
+  <button class="bouton" onclick="UI.insert_focused('mod(')"
           title="Cr&eacute;ation d'un &eacute;l&eacute;ment de
                 Z/nZ">mod
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'GF(')"
+  <button class="bouton" onclick="UI.insert_focused('GF(')"
           title="Cr&eacute;ation d'un corps fini non premier">GF
   </button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'lcoeff(')"
+  <button class="bouton" onclick="UI.insert_focused('lcoeff(')"
           title="lcoeff: coefficient dominant">&nbsp;l
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'coeff(')" title="Coefficient">coeff</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'degree(')" title="Degr&eacute;">degree</button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'horner(')"
+  <button class="bouton" onclick="UI.insert_focused('coeff(')" title="Coefficient">coeff</button>
+  <button class="bouton" onclick="UI.insert_focused('degree(')" title="Degr&eacute;">degree</button>
+  <button class="bouton" onclick="UI.insert_focused('horner(')"
           title="&Eacute;valuation">horner
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'ptayl(')"
+  <button class="bouton" onclick="UI.insert_focused('ptayl(')"
           title="D&eacute;veloppement de Taylor">ptayl
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'proot(')"
+  <button class="bouton" onclick="UI.insert_focused('proot(')"
           title="Racines complexes approch&eacute;es d'un polyn&circ;ome">proot
   </button>
   <button class="bouton"
@@ -2812,72 +2863,72 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   </button>
 </div>
 <div id="assistant_linalg" style="display:none">
-  <button class="bouton" onclick="UI.insert(UI.focused,'dot(')"
+  <button class="bouton" onclick="UI.insert_focused('dot(')"
           title="Produit scalaire de deux vecteurs">dot
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'cross(')"
+  <button class="bouton" onclick="UI.insert_focused('cross(')"
           title="Produit vectoriel de 2 vecteurs de R^2 ou R^3">cross
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'tran(')"
+  <button class="bouton" onclick="UI.insert_focused('tran(')"
           title="Transpos&eacute;e d'une matrice, utiliser trn(M) ou M^* pour la transconjugu&eacute;e de M">tran
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'idn(')"
+  <button class="bouton" onclick="UI.insert_focused('idn(')"
           title="Matrice identit&eacute; de taille n">idn
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'matrix(')"
+  <button class="bouton" onclick="UI.insert_focused('matrix(')"
           title="Cr&eacute;e une matrice">matr
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'hilbert(')"
+  <button class="bouton" onclick="UI.insert_focused('hilbert(')"
           title="Matrice de Hilbert de taille n">hilb
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'vandermonde(')"
+  <button class="bouton" onclick="UI.insert_focused('vandermonde(')"
           title="Matrice de Vandermonde de taille n">vand
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'laplace(')"
+  <button class="bouton" onclick="UI.insert_focused('laplace(')"
           title="Matrice du laplacien discret 1-d de taille n">lapl.
   </button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'rref(')"
+  <button class="bouton" onclick="UI.insert_focused('rref(')"
           title="R&eacute;duction sous forme &eacute;chelonn&eacute;e">rref
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'ker(')"
+  <button class="bouton" onclick="UI.insert_focused('ker(')"
           title="ker(M) renvoie une base du noyau d'une application lin&eacute;aire de matrice M">ker
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'det(')"
+  <button class="bouton" onclick="UI.insert_focused('det(')"
           title="D&eacute;terminant d'une matrice carr&eacute;e">det
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'linsolve(')"
+  <button class="bouton" onclick="UI.insert_focused('linsolve(')"
           title="R&eacute;solution d'un syst&egrave;me lin&eacute;aire">linsolve
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'lu(')"
+  <button class="bouton" onclick="UI.insert_focused('lu(')"
           title="Factorisation P*A=L*U d'une matrice A">lu
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'qr(')"
+  <button class="bouton" onclick="UI.insert_focused('qr(')"
           title="Factorisation A=Q*R d'une matrice A">qr
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'cholesky(')"
+  <button class="bouton" onclick="UI.insert_focused('cholesky(')"
           title="Factorisation de Cholesky A=L*L^* d'une matrice sym&eacute;trique d&eacute;finie positive">chol.
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'cond(')"
+  <button class="bouton" onclick="UI.insert_focused('cond(')"
           title="Nombre de condition d'une matrice relativement &agrave; la norme 1, 2 ou inf">cond
   </button>
   <br>
-  <button class="bouton" onclick="UI.insert(UI.focused,'egv(')"
+  <button class="bouton" onclick="UI.insert_focused('egv(')"
           title="Vecteurs propres d'une matrice">egv
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'egvl(')"
+  <button class="bouton" onclick="UI.insert_focused('egvl(')"
           title="Valeurs propres d'une matrice">egvl
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'jordan(')"
+  <button class="bouton" onclick="UI.insert_focused('jordan(')"
           title="R&eacute;duction de Jordan d'une matrice A*P=P*J">jordan
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'pcar(')"
+  <button class="bouton" onclick="UI.insert_focused('pcar(')"
           title="Polynome caract&eacute;ristique">pcar
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'pmin(')"
+  <button class="bouton" onclick="UI.insert_focused('pmin(')"
           title="Polynome minimal">pmin
   </button>
-  <button class="bouton" onclick="UI.insert(UI.focused,'matrix_norm(')"
+  <button class="bouton" onclick="UI.insert_focused('matrix_norm(')"
           title="Norme matricielle (1, 2 ou inf) ">norm
   </button>
   <button class="bouton"
@@ -3046,10 +3097,10 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
            onclick="UI.sheet_edit_cmd(5)" onmousedown="event.preventDefault()"
            title="Enlever une colonne" value="c-">
     <input class="bouton" type="button"
-           onclick="UI.insert(UI.focused,'=')" onmousedown="event.preventDefault()"
+           onclick="UI.insert_focused('=')" onmousedown="event.preventDefault()"
            title="Pr&eacute;fixe de formule tableur" value="=">
     <input class="bouton" type="button"
-           onclick="UI.insert(UI.focused,'$')" onmousedown="event.preventDefault()"
+           onclick="UI.insert_focused('$')" onmousedown="event.preventDefault()"
            title="Pr&eacute;fixe de positionnement absolu" value="$">
     <div id="matr_casediv">
     </div>
@@ -3087,14 +3138,14 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <br><input class="bouton" type="button" title="ok" value="Ok"
              onclick="UI.assistant_rand_ok()">
   <input class="bouton" type="button" title="r&eacute;el al&eacute;atoire entre 0 et 1"
-         value="rand" onclick="UI.insert(UI.focused,'rand()');"><input class="bouton" type="button" title="randint(a,b): entier al&eacute;atoire entre a et b inclus"
-                                                                       value="int" onclick="UI.insert(UI.focused,'randint(');"><input class="bouton" type="button" title="r&eacute;el al&eacute;atoire selon la loi normale (centr&eacute;e r&eacute;duite par d&eacute;faut)"
-                                                                                                                                      value="norm" onclick="UI.insert(UI.focused,'randNorm(');"><input class="bouton" type="button" title="r&eacute;el al&eacute;atoire selon la loi exponentielle de param&egrave;tre a"
-                                                                                                                                                                                                       value="exp" onclick="UI.insert(UI.focused,'randexp(');">
+         value="rand" onclick="UI.insert_focused('rand()');"><input class="bouton" type="button" title="randint(a,b): entier al&eacute;atoire entre a et b inclus"
+                                                                       value="int" onclick="UI.insert_focused('randint(');"><input class="bouton" type="button" title="r&eacute;el al&eacute;atoire selon la loi normale (centr&eacute;e r&eacute;duite par d&eacute;faut)"
+                                                                                                                                      value="norm" onclick="UI.insert_focused('randNorm(');"><input class="bouton" type="button" title="r&eacute;el al&eacute;atoire selon la loi exponentielle de param&egrave;tre a"
+                                                                                                                                                                                                       value="exp" onclick="UI.insert_focused('randexp(');">
   <input class="bouton" type="button" title="Permutation al&eacute;atoire d'une liste ou de n"
-         value="perm" onclick="UI.insert(UI.focused,'randperm(');">
+         value="perm" onclick="UI.insert_focused('randperm(');">
   <input class="bouton" type="button" title="sample(L,n) tirage de n parmi la liste L sans remise"
-         value="sample" onclick="UI.insert(UI.focused,'sample(');">
+         value="sample" onclick="UI.insert_focused('sample(');">
   <input class="bouton" type="button" title="Annuler" value="Annul." onclick="$id('chooselawdiv').style.display='none';form.style.display='none'; UI.focused=UI.savefocused; UI.focused.focus();">
 </form>
 <div id="assistant_boucle" style="display:none">
@@ -3122,31 +3173,31 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <div id="assistant_tantque" style="display:none">
     Tests :
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'==')">==
+            onclick="UI.insert_focused('==')">==
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'!=')">!=
+            onclick="UI.insert_focused('!=')">!=
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'<=')">&lt;=
+            onclick="UI.insert_focused('<=')">&lt;=
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'>=')">&gt;=
+            onclick="UI.insert_focused('>=')">&gt;=
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'<')">&lt
+            onclick="UI.insert_focused('<')">&lt
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'>')">&gt
+            onclick="UI.insert_focused('>')">&gt
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,' et ')">et
+            onclick="UI.insert_focused(' et ')">et
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,' ou ')">ou
+            onclick="UI.insert_focused(' ou ')">ou
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'!')">!
+            onclick="UI.insert_focused('!')">!
     </button>
     <br>
     tantque <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
@@ -3218,22 +3269,22 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
               cols=20>u(0)===1</textarea>
     <br>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.set_focus('rsolveeq') ;UI.insert(UI.focused,'u(n+2)')">u(n+2)
+            onclick="UI.set_focus('rsolveeq') ;UI.insert_focused('u(n+2)')">u(n+2)
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.set_focus('rsolveeq') ;UI.insert(UI.focused,'u(n+1)')">u(n+1)
+            onclick="UI.set_focus('rsolveeq') ;UI.insert_focused('u(n+1)')">u(n+1)
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.insert(UI.focused,'u(n)')">u(n)
+            onclick="UI.insert_focused('u(n)')">u(n)
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.set_focus('rsolveeq') ;UI.insert(UI.focused,'u(n-1)')">u(n-1)
+            onclick="UI.set_focus('rsolveeq') ;UI.insert_focused('u(n-1)')">u(n-1)
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.set_focus('rsolveinit') ;UI.insert(UI.focused,'u(0)===')">u(0)=
+            onclick="UI.set_focus('rsolveinit') ;UI.insert_focused('u(0)===')">u(0)=
     </button>
     <button class="bouton" onmousedown="event.preventDefault()"
-            onclick="UI.set_focus('rsolveinit');UI.insert(UI.focused,'u(1)===')">u(1)=
+            onclick="UI.set_focus('rsolveinit');UI.insert_focused('u(1)===')">u(1)=
     </button>
     <br>
     <button class="bouton"
@@ -3283,31 +3334,31 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
 <div id="assistant_test" style="display:none">
   Tests :
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,'==')">==
+          onclick="UI.insert_focused('==')">==
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,'!=')">!=
+          onclick="UI.insert_focused('!=')">!=
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,'<=')">&lt;=
+          onclick="UI.insert_focused('<=')">&lt;=
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,'>=')">&gt;=
+          onclick="UI.insert_focused('>=')">&gt;=
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,'<')">&lt
+          onclick="UI.insert_focused('<')">&lt
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,'>')">&gt
+          onclick="UI.insert_focused('>')">&gt
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,' et ')">et
+          onclick="UI.insert_focused(' et ')">et
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,' ou ')">ou
+          onclick="UI.insert_focused(' ou ')">ou
   </button>
   <button class="bouton" onmousedown="event.preventDefault()"
-          onclick="UI.insert(UI.focused,'!')">!
+          onclick="UI.insert_focused('!')">!
   </button>
   <br>
   si <textarea onclick="UI.focused=this;" style="height:25px;font-size:large"
@@ -3448,49 +3499,49 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <tr>
     <td>
       <input type="button" id="add_alpha_a" value="a"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_z" value="z"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_e" value="e"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_r" value="r"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_t" value="t"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_y" value="y"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_u" value="u"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_i" value="i"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_o" value="o"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_p" value="p"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
     </td>
   </tr>
   <tr>
     <td>
       <input type="button" id="add_alpha_q" value="q"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_s" value="s"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_d" value="d"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_f" value="f"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_g" value="g"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_h" value="h"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_j" value="j"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_k" value="k"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_l" value="l"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_m" value="m"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
     </td>
   </tr>
   <tr>
@@ -3507,23 +3558,23 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                         if (tmp.value<="Z") tmp.value=String.fromCharCode(tmp.value.charCodeAt(0)+32); else tmp.value=String.fromCharCode(tmp.value.charCodeAt(0)-32);
                         }' id="add_alpha_" value="maj">
       <input type="button" id="add_alpha_w" value="w"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_x" value="x"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_c" value="c"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_v" value="v"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_b" value="b"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_n" value="n"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_{" value="{"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_}" value="}"
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,value)">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(value)">
       <input type="button" id="add_alpha_space" value=" "
-             onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,' ')">
+             onmousedown="event.preventDefault()" onClick="UI.insert_focused(' ')">
     </td>
   </tr>
 </table>
@@ -3535,13 +3586,13 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
 <div id="history4" style="display:none">
   <button class="bouton" onclick="var tmp=$id('variables'); if(tmp.style.display=='inline') tmp.style.display='none'; else {tmp.style.display='inline';UI.listvars(3);}"><strong>Vars</strong></button>
   <span id="variables" style="display:none">
-            <button class="bouton" onclick="UI.insert(UI.focused,'python(')"
+            <button class="bouton" onclick="UI.insert_focused('python(')"
                     title="python(f) affiche la conversion en syntaxe Python d'une fonction stock&eacute; dans la variable f ">→python</button>
-            <button class="bouton" onclick="UI.insert(UI.focused,'xcas(')"
+            <button class="bouton" onclick="UI.insert_focused('xcas(')"
                     title="xcas(f) affiche la conversion en syntaxe Xcas d'une fonction stock&eacute; dans la variable f ">→xcas</button>
             <button class="bouton" name="add_purge"
                     onmousedown="event.preventDefault()"
-                    onClick="UI.insert(UI.focused,'purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">efface</button>
+                    onClick="UI.insert_focused('purge(')" title="Efface le contenu d'une ou plusieurs variables, par exemple purge(a) ou purge(a,b,c)">efface</button>
             <button class="bouton" onclick="UI.addhelp(' ','rm_all_vars(1)')"
                     title="Effacer le contenu de toutes les variables">tout</button>
             <span id="listvars"> </span>
@@ -3571,7 +3622,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             onClick="UI.indentline(UI.focused)"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             title="Indente">→|</button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.backspace(UI.focused)" title="Efface">&nbsp;&#x232b;&nbsp;</button>
-            <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,'\n')" title="Saut de ligne">\n</button>
+            <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.insert_focused('\n')" title="Saut de ligne">\n</button>
             <button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,6)" title="Annuler"><img width="16" height="16" src="undo.png" alt="Annuler" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,7)" title="Refaire"><img width="16" height="16" src="redo.png" alt="Refaire" align="center"></button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,0)" title="Rechercher">find</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,1)" title="Rechercher suivant">&#x21D2;</button><button class="bouton" onmousedown="event.preventDefault()" onclick="UI.search(this,2)" title="Rechercher pr&eacute;c&eacute;dent">&#x21D0;</button><button
       class="bouton"
       onmousedown="event.preventDefault()"
@@ -3780,8 +3831,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
         } catch (e) {}
         return false;
     })();
-    if (Boolean(window.chrome) && UI.detectmob())
-       supported=false;
+    if (Boolean(window.chrome) && UI.detectmob()) supported=false;
     var webAssemblyAvailable = supported;
     /*
     if (Boolean(window.chrome)){
@@ -3865,7 +3915,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
         if (Boolean(window.chrome) && window.location.href.substr(0, 4) != 'file') UI.prettyprint = false;
         if ((old_ie > -1) || (new_ie > -1)) UI.isie = true;
         var bt = UI.browser_type();
-        if (UI.isie || (bt != 1 && bt != 2)) {
+        if (UI.isie || (bt!=1 && bt!=2)) {
             UI.usemathjax = true;
             var alertmsg = "Les calculs seraient plus rapides avec Firefox.";
             if (0 && Boolean(window.chrome)) {
@@ -3902,6 +3952,15 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             }
             if (test >= -1) UI.langue = -test - 1;
         }
+        ck = UI.readCookie('xcas_calc');
+        if (ck) {
+            var test = eval(ck) - 1; //console.log(test);
+            if (test >= 0 && test < 3) {
+                form.calc[0].checked = false;
+                form.calc[test].checked = true;
+                UI.set_calc_type(test+1);
+            }
+        }
         ck = UI.readCookie('xcas_from');
         if (ck) {
             form.from.value = ck;
@@ -3919,14 +3978,20 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
         ck = UI.readCookie('xcas_warnpy');
         if (ck) UI.warnpy = form.warnpy_mode.checked = (ck == '1');
         ck = UI.readCookie('xcas_python_mode');
+        var hashParams = window.location.hash.substr(1);
+        var forcepy=hashParams.substr(0,6)=='python';
+        if (forcepy) ck='1';
         if (!ck) {
-            if (confirm('Voulez-vous activer la compatibilite de syntaxe Python ?'))
-                ck = 1;
-            else ck = 0;
+           var tmp=prompt("Choisir l'interpreteur. 1: Xcas compatible Python (defaut), 0: Xcas en francais, 4: MicroPython");
+           if (tmp=='0' || tmp=='4') ck=tmp; else ck='1'; 
+           if (tmp=='xcas' || tmp=='Xcas') ck='0';
+           if (tmp=='python' || tmp=='Python') ck='4';
+           //if (confirm('Voulez-vous activer la compatibilite de syntaxe Python ?')) ck = 1; else ck = 0;
         }
-        form.python_mode.checked = (ck == '1' || ck=='2');
-        form.python_xor.checked = (ck=='2');
+        form.python_mode.checked = (ck == '1' || ck=='4');
+        form.python_xor.checked = (ck=='4');
         UI.python_mode = eval(ck);
+        if (UI.python_mode==4) UI.micropy=1;
         $id('add_//').value = UI.python_mode ? '#' : '//';
         if (!UI.kbdshift) $id('add_:').value = UI.python_mode ? ':' : ':=';
         UI.createCookie('xcas_python_mode', UI.python_mode, 10000);
@@ -3962,7 +4027,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             ;
         else {
             console.log('qa', UI.qa);
-            ck = (UI.qa ? Math.floor(window.innerWidth / 2) : window.innerWidth - 110);
+            ck = (UI.qa ? Math.floor(window.innerWidth / 2.5) : window.innerWidth - 110);
         }
         console.log('canvas_w', ck);
         UI.canvas_w = ck;
@@ -4004,13 +4069,12 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
             }
             // else {alert('Historique non execute');}
         }
-        var hashParams = window.location.hash.substr(1);
         // substr(1) to remove the `#`
         if (UI.readCookie('xcas_session') != null) {
             $id('startup_restore').style.display = 'inline';
             $id('startup1').style.display = 'none';
         }
-        else $id('help').style.display = 'block';
+        else { if (!forcepy) $id('help').style.display = 'block'; }
         //UI.restoresession(hashParams,hist,asked,doexec);
         //console.log(UI.wasm_mode);
         var cons = $id('restoresession');

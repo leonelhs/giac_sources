@@ -9,16 +9,17 @@ __attribute__((noinline)) int main_(int argc,char ** argv){
   lcd_init(lcd_type()); // clrscr();
 #ifdef MICROPY_LIB
   mp_stack_ctrl_init();
-  char * heap=micropy_init();
-  if (!heap)
-    return 1;
+  // python_heap=micropy_init(128*1024,1024*1024);
+  // if (!python_heap) return 1;
 #endif
   vx_var=identificateur("x");
   giac::context c;
 #if 1
   xcas::console_main(&c);
 #ifdef MICROPY_LIB
-  mp_deinit(); free(heap);
+  mp_deinit();
+  if (python_heap)
+    free(python_heap);
 #endif
   return 0;
 #else
@@ -50,7 +51,8 @@ __attribute__((noinline)) int main_(int argc,char ** argv){
 #endif
 #ifdef MICROPY_LIB
   mp_deinit();
-  if (heap) free(heap);
+  if (python_heap)
+    free(python_heap);
 #endif
   return 0;
 }

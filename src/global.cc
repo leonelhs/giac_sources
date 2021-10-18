@@ -25,7 +25,7 @@ using namespace std;
 #else
 #include <strstream>
 #endif
-#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG && !defined POCKETCAS
+#if !defined GIAC_HAS_STO_38 && !defined NSPIRE && !defined FXCG 
 #include <fstream>
 #endif
 #include "global.h"
@@ -5349,7 +5349,7 @@ unsigned int ConvertUTF8toUTF162 (
     int nb[256],pointdecsep=0,commadecsep=0; 
     for (int i=0;i<256;++i)
       nb[i]=0;
-    // count occurence of each char
+    // count occurrence of each char
     // and detect decimal separator between . or ,
     for (int i=1;i<count-1;++i){
       if (data[i]=='[' || data[i]==']')
