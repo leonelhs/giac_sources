@@ -1310,20 +1310,18 @@ Function {Xcas_run(int argc,char ** argv)} {open
          MenuItem Xcas_nw_install {
           label {Install Khi and KhiCAS on Numworks calculator}
           callback {
-             char fname[]="backup.nws";
-             if (!dfu_get_scriptstore(fname))
-               fl_alert("%s",gettext("Unable to backup calculator"));
-	     else {
               std::string prefix=giac::giac_aide_dir()+"doc/";
-              if (!dfu_send_firmware((prefix+"epsilon.dfu").c_str()))
-                fl_alert("%s",gettext("Unable to send firmware"));
+              if (!dfu_send_bootloader((prefix+"bootloader.bin").c_str()))
+	        fl_alert("%s",gettext("Unable to send multi-boot loader. You will be asked to update your bootloader when running KhiCAS for the first time."));
+              if (!dfu_send_firmware((prefix+"khi.A.bin").c_str(),0))
+                fl_alert("%s",gettext("Unable to send slot 1\\nBackup your data and try again after reset+4 on the Numworks"));
+              else if (!dfu_send_firmware((prefix+"khi.B.bin").c_str(),0x18))
+                fl_alert("%s",gettext("Unable to send slot 2."));
               else if (!dfu_send_apps((prefix+"apps.tar").c_str()))
                 fl_alert("%s",gettext("Unable to send KhiCAS"));
               else {
-                fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
-		dfu_send_scriptstore(fname);
+                fl_alert(gettext("Install success. Reset the calculator"));
               }
-             }
           }
           xywh {30 30 100 20}
          }
@@ -1333,14 +1331,12 @@ Function {Xcas_run(int argc,char ** argv)} {open
              char fname[]="backup.nws";
              if (!dfu_get_scriptstore(fname))
                fl_alert("%s",gettext("Unable to backup calculator"));
-	     else {
-              std::string prefix=giac::giac_aide_dir()+"doc/";
-              if (!dfu_update_khicas((prefix+"apps.tar").c_str()))
-                fl_alert("%s",gettext("Unable to update KhiCAS"));
-              else {
+	     std::string prefix=giac::giac_aide_dir()+"doc/";
+             if (!dfu_update_khicas((prefix+"apps.tar").c_str()))
+                fl_alert("%s",gettext("Unable to update KhiCAS. Press reset+4 on the calculator and try again."));
+             else {
                 fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
 		dfu_send_scriptstore(fname);
-              }
              }
           }
           xywh {30 30 100 20}
@@ -1354,7 +1350,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
 	     else {
               std::string prefix=giac::giac_aide_dir()+"doc/";
               if (!dfu_update_khicas((prefix+"appsalpha.tar").c_str()))
-                fl_alert("%s",gettext("Unable to update KhiCAS"));
+                fl_alert("%s",gettext("Unable to update KhiCAS. Press reset+4 on the calculator and try again."));
               else {
                 fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
 		dfu_send_scriptstore(fname);
@@ -1372,8 +1368,10 @@ Function {Xcas_run(int argc,char ** argv)} {open
                fl_alert("%s",gettext("Unable to send rescue RAM image to the Numworks calculator."));
               i=fl_ask(gettext("Install KhiCAS?"));
               if (!i) return;
-              if (!dfu_send_firmware((prefix+"epsilon.dfu").c_str()))
-                fl_alert("%s",gettext("Unable to send firmware"));
+              if (!dfu_send_firmware((prefix+"khi.A.bin").c_str(),0))
+                fl_alert("%s",gettext("Unable to send slot 1\\nTry again after reset+4 on the Numworks"));
+              else if (!dfu_send_firmware((prefix+"khi.B.bin").c_str(),0x18))
+                fl_alert("%s",gettext("Unable to send slot 2."));
               else if (!dfu_send_apps((prefix+"apps.tar").c_str()))
                 fl_alert("%s",gettext("Unable to send KhiCAS"));
               else 
@@ -1385,7 +1383,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
           label {Certification du firmware Numworks N0110}
           callback {
 	    bool b=giac::nws_certify_firmware(false,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
           }
           xywh {30 30 100 20}
          } 
@@ -1395,7 +1393,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
 	    int i=fl_ask("Ce test necessite l'accord du proprietaire de la calculatrice et dure environ 1 minute. Effectuer?");
             if (i==0) return;
 	    bool b=giac::nws_certify_firmware(true,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
           }
           xywh {30 30 100 20}
          }

@@ -88,18 +88,38 @@ overflow:auto
 <a href="nws_en.html">English</a>,
 <a href="#python">Python</a>, <a href="#install">Install, <a href="#rescue">Rescue</a>
 <br>
-<b>Attention, ne faites pas de mise &agrave; jour depuis le site de Numworks!</b> <button
+<b>Attention, ne faites pas de mise &agrave; jour depuis le site de
+Numworks!</b> <button
 onclick="let field=$id('update'); if (field.style.display=='block')
 field.style.display='none'; else field.style.display='block'">+
 d'infos</button>
 <div id='update' style="display:none">
-  Attention, toute mise &agrave; jour sur le site de Numworks verrouillera
-votre calculatrice et la rendra 
-  incompatible avec Xcas. Le processus est (presque)
+  Toute mise &agrave; jour sur le site de Numworks verrouille
+votre calculatrice et la rend incompatible avec Xcas.
+  Grace aux efforts de M4x1m3,
+  il est temporairement possible (27/3/22) de revenir en arri&egrave;re en
+  utilisant une faille du verrouillage mis en place par Numworks,
+  rendez-vous <a
+  href="https://phi.getomega.dev/">ici</a>.
+  Mais si vous avez fait une mise &agrave; jour
+  depuis que cette faille a &eacute;t&eacute; corrig&eacute;e (le 28/3/22),
+  le verrouillage est &agrave; nouveau (presque)
   irr&eacute;versible, la seule solution publique de
   <a href="https://tiplanet.org/forum/viewtopic.php?f=113&t=25191">retour en arri&egrave;re</a>
   n&eacute;cessite du mat&eacute;riel et l'ouverture
   de la calculatrice.
+  <br>
+  Depuis le 3 avril 2022, l'installation de Khi+KhiCAS depuis ce site
+  prot&egrave;ge contre une tentative de verrouillage par
+  liaison cable USB. Pour acc&eacute;der &agrave; la flash de la
+  calculatrice, il faut avoir activ&eacute; le secteur d'amorcage.
+  Pour cela, enfoncez la touche 4 puis piquez le bouton reset
+  avec une pointe de stylo, puis relachez la touche 4. 
+  <b>Attention, ne faites reset+4 ou reset+6 que depuis un site sur,
+  comme celui-ci</b>. Si vous faites reset+4 ou reset+6 depuis
+  le site de Numworks, vous risquez de verrouiller votre
+  calculatrice.
+  <!--
   Si vous avez fait une mise &agrave; jour
 depuis une version non verrouill&eacute;e
 sans en avoir compris les cons&eacute;quences, je vous sugg&egrave;re
@@ -108,14 +128,15 @@ d'effacer tous leurs logiciels de la calculatrice, cf. cet
 <a
 href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec60">argumentaire
 juridique</a>, vous pourrez ensuite installer KhiCAS en utilisant le
-bouton R&eacute;cup&eacute;ration ci-dessous.
-<br>
+  bouton R&eacute;cup&eacute;ration ci-dessous.
+<br>  
 <b>Installez KhiCAS</b> (bouton ci-dessous) pour transformer votre
 Numworks N0110 en calculatrice CAS, tr&egrave;s utile pour des &eacute;tudes
 scientifiques (vous &eacute;conomisez environ
 50 euros par rapport aux calculatrices CAS concurrentes). Et si
 vous arretez les maths, vous pourrez revendre votre calculatrice CAS
 sur le march&eacute; d'occasion &agrave; un prix plus &eacute;lev&eacute;!
+  -->
 </div>
 <hr>
 Si cette page ne fonctionne pas normalement,
@@ -128,7 +149,11 @@ navigateur</a> et r&eacute;essayez.
   <li> <button class="bouton" onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)">D&eacute;tecter</button>
 la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
   l'&eacute;cran de votre Numworks N0110 est &eacute;teint, cliquez sur
-  le bouton R&eacute;cup&eacute;ration.
+  le bouton R&eacute;cup&eacute;ration. Si votre calculatrice est
+  verrouill&eacute;ee, rendez-vous <a
+  href="https://phi.getomega.dev/">ici</a> pour la
+  d&eacute;verrouiller, puis installez
+  <button onclick="UI.numworks_install_delta(1,2);">Khi slot 1</button>.
   <li> <b>Scripts Python et Backups</b>
   <ul> <a name=python>
     <li>
@@ -152,21 +177,25 @@ la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
     (<tt>.nws</tt>) vers la calculatrice.
     </ul>
     <li> <a name=install>
-    <b>Installation, mise &agrave; jour, ...</b>
-      <ul>
+    <b>Installation, mise &agrave; jour, ... pour Numworks N0110.</b>
+    <ul>
 	<li>
-  Installation <button
+      Installation :
+      <button onclick="UI.numworks_install_delta(0,4)">multi-boot</button>,
+      <button
   onclick="UI.numworks_install_delta();">
-  Khi+KhiCAS (1/12/2021)</button>: sur votre calculatrice Numworks
-  N0110. <a
+  Khi+KhiCAS (17.0.58, 03/04/2022)</button> : <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>,
   <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec45">Licences</a>,
   <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec47">Source</a>.
-  <li> Mise &agrave; jour :
-  <button onclick="UI.numworks_getarchive(0);">KhiCAS stable</button>,
-  <button onclick="UI.numworks_getarchive(1);">KhiCAS alpha</button>,
-  <button onclick="UI.numworks_install_delta(1,1);">Khi</button>
+      <li> Mise &agrave; jour (reset+4 n&eacute;cessaire)
+	<button onclick="UI.numworks_getarchive(0);">KhiCAS stable</button>,
+	<button onclick="UI.numworks_getarchive(1);">KhiCAS alpha</button>,
+	<button onclick="UI.numworks_install_delta(1,1);">Khi slot 1</button>,
+      <button onclick="UI.numworks_install_delta(0,5)">Khi slot 2</button>
+  <li> Pour passer du slot 1 au slot 2 faire reset+1 ou reset+2. Le
+      slot 2 permet de lancer KhiCAS avec plus de m&eacute;moire.
   <li> <button onclick="UI.numworks_getarchive('nwsflash.tar',0)">Archiver la
   flash </button>de la Numworks 
   <li> <button
@@ -206,29 +235,28 @@ ou <button onclick="UI.tar_clear(UI.numworks_buffer)">Effacer</button>
   </span>
     </span>
     </ul>
-  <li> Progression de l'installation ou de la certification<hr>
+    <li> Rapport sur l'installation ou la certification
+    <button onclick="$id('output').innerHTML=''">Effacer</button>
+    <hr>
   <span id="ploglegend"></span>
   <progress id="plog" value=0 style="display:none"></progress>
   <div id="output" style="max-height: 200px; overflow:auto"></div>
   <hr>
   <li>
-  <strong>Lutte contre la fraude :</strong> pour certifier que le firmware d'une calculatrice Numworks N0110 est
-  une version non modifi&eacute;e de KhiCAS, cliquez sur l'un des
-  deux boutons
-  <br>
+  <strong>Mode examen :</strong><br>
+  Pour certifier que le firmware d'une calculatrice Numworks N0110 est
+  une version non modifi&eacute;e de Khi+KhiCAS, compatible avec la
+  r&eacute;glementation francaise du mode examen, cliquez sur le bouton
   <button
-  onclick="UI.numworks_certify(nws_sig,false);">Certification</button> 
-  <button
-  onclick="UI.numworks_certify(nws_sig,true);">Certification + R/W test</button>
-  <br>
-  Le premier test prend 15 secondes environ, le deuxi&egrave;me est plus
-s&eacute;curis&eacute; mais dure 1 minute environ. Ce test peut etre fait
+  onclick="UI.numworks_certify(nws_sig,false);">Certification</button><br>
+  Le test prend 30 secondes environ et peut etre fait
 par un surveillant pendant un examen depuis son smartphone depuis
 <a
 href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/nws.html">ce
 lien</a>
 avec un
-<a href="https://tiplanet.org/forum/viewtopic.php?f=99&t=25091">cable smartphone-Numworks</a>.
+<a href="https://tiplanet.org/forum/viewtopic.php?f=99&t=25091">cable
+  smartphone-Numworks</a>.
   <li> <a name=rescue>
   <b> Calculatrice bloqu&eacute;e</b>
   <button
@@ -315,7 +343,7 @@ MIT). Cette page utilise aussi
 
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Sat Jan 15 13:28:13 CET 2022 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Sun Apr  3 16:53:06 CEST 2022 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
     if (window.location.href.substr(0, 4) == "http") {

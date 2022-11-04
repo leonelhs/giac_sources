@@ -1810,6 +1810,7 @@ int main(int ARGC, char *ARGV[]){
     cerr << "// Setting tex log" << '\n';
     show_tex=true;
   }
+#ifdef HAVE_LIBMICROPYTHON
   if (getenv("GIAC_MICROPY")){
     cerr << "Micropython mode\n";
     python_compat(4 | python_compat(contextptr),contextptr);
@@ -1821,6 +1822,7 @@ int main(int ARGC, char *ARGV[]){
       return 0;
     }
   }
+#endif
 #ifdef HAVE_LIBREADLINE
   if (ARGC==1){
     int taillemax=1000;

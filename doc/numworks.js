@@ -1288,72 +1288,105 @@ class Numworks {
         return out;
     }
     
-    __parsePlatformInfo(array) {
-        var dv = new DataView(array);
-        var data = {};
+  __parsePlatformInfo(array,internalflash) {
+    var dv = new DataView(array);
+    var data = {};
+    
+    //data["magik"] = dv.getUint32(0x00, false) === 0xF00DC0DE;
+    
+    data["magik"] = dv.getUint32(0x00, false) === 0xF00DC0DE;
+    if (internalflash){
+      if (data["magik"]) {
+        data["oldplatform"] = !(dv.getUint32(0x1C, false) === 0xF00DC0DE);
         
-        data["magik"] = dv.getUint32(0x00, false) === 0xF00DC0DE;
+        data["omega"] = {};
         
-        data["magik"] = dv.getUint32(0x00, false) === 0xF00DC0DE;
-        
-        if (data["magik"]) {
-            data["oldplatform"] = !(dv.getUint32(0x1C, false) === 0xF00DC0DE);
+        if (data["oldplatform"]) {
+          data["omega"]["installed"] = dv.getUint32(0x1C + 8, false) === 0xF00DC0DE || dv.getUint32(0x1C + 16, false) === 0xDEADBEEF || dv.getUint32(0x1C + 32, false) === 0xDEADBEEF;
+          if (data["omega"]["installed"]) {
+            data["omega"]["version"] = this.__readFString(dv, 0x0C, 16);
             
-            data["omega"] = {};
+            data["omega"]["user"] = "";
             
-            if (data["oldplatform"]) {
-                data["omega"]["installed"] = dv.getUint32(0x1C + 8, false) === 0xF00DC0DE || dv.getUint32(0x1C + 16, false) === 0xDEADBEEF || dv.getUint32(0x1C + 32, false) === 0xDEADBEEF;
-                if (data["omega"]["installed"]) {
-                    data["omega"]["version"] = this.__readFString(dv, 0x0C, 16);
-                    
-                    data["omega"]["user"] = "";
-                    
-                }
-                
-                data["version"] = this.__readFString(dv, 0x04, 8);
-                var offset = 0;
-                if (dv.getUint32(0x1C + 8, false) === 0xF00DC0DE) {
-                    offset = 8;
-                } else if (dv.getUint32(0x1C + 16, false) === 0xF00DC0DE) {
-                    offset = 16;
-                } else if (dv.getUint32(0x1C + 32, false) === 0xF00DC0DE) {
-                    offset = 32;
-                }
-                
-                data["commit"] = this.__readFString(dv, 0x0C + offset, 8);
-                data["storage"] = {};
-                data["storage"]["address"] = dv.getUint32(0x14 + offset, true);
-                data["storage"]["size"] = dv.getUint32(0x18 + offset, true);
-            } else {
-                data["omega"]["installed"] = dv.getUint32(0x20, false) === 0xDEADBEEF && dv.getUint32(0x44, false) === 0xDEADBEEF;
-                if (data["omega"]["installed"]) {
-                    data["omega"]["version"] = this.__readFString(dv, 0x24, 16);
-                    data["omega"]["user"] = this.__readFString(dv, 0x34, 16);
-                }
-
-                data["version"] = this.__readFString(dv, 0x04, 8);
-                data["commit"] = this.__readFString(dv, 0x0C, 8);
-                data["storage"] = {};
-                data["storage"]["address"] = dv.getUint32(0x14, true);
-                data["storage"]["size"] = dv.getUint32(0x18, true);
-            }
+          }
+          
+          data["version"] = this.__readFString(dv, 0x04, 8);
+          var offset = 0;
+          if (dv.getUint32(0x1C + 8, false) === 0xF00DC0DE) {
+            offset = 8;
+          } else if (dv.getUint32(0x1C + 16, false) === 0xF00DC0DE) {
+            offset = 16;
+          } else if (dv.getUint32(0x1C + 32, false) === 0xF00DC0DE) {
+            offset = 32;
+          }
+          
+          data["commit"] = this.__readFString(dv, 0x0C + offset, 8);
+          data["storage"] = {};
+          data["storage"]["address"] = dv.getUint32(0x14 + offset, true);
+          data["storage"]["size"] = dv.getUint32(0x18 + offset, true);
         } else {
-            data["omega"] = false;
+          data["omega"]["installed"] = dv.getUint32(0x20, false) === 0xDEADBEEF && dv.getUint32(0x44, false) === 0xDEADBEEF;
+          if (data["omega"]["installed"]) {
+            data["omega"]["version"] = this.__readFString(dv, 0x24, 16);
+            data["omega"]["user"] = this.__readFString(dv, 0x34, 16);
+          }
+	  
+          data["version"] = this.__readFString(dv, 0x04, 8);
+          data["commit"] = this.__readFString(dv, 0x0C, 8);
+          data["storage"] = {};
+          data["storage"]["address"] = dv.getUint32(0x14, true);
+          data["storage"]["size"] = dv.getUint32(0x18, true);
         }
-        
-        return data;
-    }
+      } else {
+        data["omega"] = false;
+      }
+      
+      return data;
+    } // end internalflash
+    data["storage"] = {};
+    data["storage"]["address"] = dv.getUint32(0xc, true);
+    data["storage"]["size"] = dv.getUint32(0x10, true);
+    // console.log('external flash platinfo',data["storage"]["address"],data["storage"]["size"]);
+    return data;
+  }
+  
     
     /**
      * Get the platforminfo section of the calculator.
      *
      * @return  an object representing the platforminfo.
      */
-    async getPlatformInfo() {
-        this.device.startAddress = 0x080001c4;
-        const blob = await this.device.do_upload(this.transferSize, 0x48);
-        return this.__parsePlatformInfo(await blob.arrayBuffer());
+  async getPlatformInfo() {
+    let tab=[0x90000000,0x90180000,0x90400000],res;
+    for (let j=0;j<tab.length;j++){
+      this.device.startAddress = tab[j];
+      const blobk = await this.device.do_upload(this.transferSize, 0x20);
+      let dv=new DataView(await blobk.arrayBuffer()),res;
+      console.log('getplatfrominfo 1',tab[j],dv.getUint32(0x0,false),dv.getUint32(0x4,false),dv.getUint32(0x8,false),dv.getUint32(0xc,false));
+      if (dv.getUint32(0x8,false)===0xF00DC0DE){ // f0 0d c0 de
+	this.device.startAddress += 0x10000;
+	const blob = await this.device.do_upload(this.transferSize, 0x48);
+	const blobb = await blob.arrayBuffer();
+	let dvb=new DataView(blobb);
+	console.log('getplatfrominfo 2',tab[j],dv.getUint32(0x0,false),dv.getUint32(0x4,false),dv.getUint32(0x8,false),dv.getUint32(0xc,false));
+	this.device.startAddress=dvb.getUint32(0xc, true)
+	const blob2 = await this.device.do_upload(this.transferSize, 0x4);
+	const blobb2 = await blob2.arrayBuffer();
+	let dv2b=new DataView(blobb2);
+	console.log(dv2b.getUint32(0x00, false));
+	if (dv2b.getUint32(0x00, false) === 0xbadd0bee){
+          res=this.__parsePlatformInfo(blobb,false);
+	  res["bootloader"]=1;
+	  return res;
+	}
+      }
     }
+    this.device.startAddress = 0x080001c4;
+    const blob = await this.device.do_upload(this.transferSize, 0x48);
+    res=this.__parsePlatformInfo(await blob.arrayBuffer(),true);
+    res["bootloader"]=0;
+    return res;
+  }
     
     async get_internal_flash() {
       this.device.startAddress = 0x08000000;
@@ -1362,12 +1395,17 @@ class Numworks {
       return await blob.arrayBuffer();
     }
     
-    async get_external_flash() {
+  async get_external_flash(slot) {
+    if (slot==2)
+      this.device.startAddress = 0x90180000;
+    else if (slot==3)
+      this.device.startAddress = 0x90400000;
+    else
       this.device.startAddress = 0x90000000;
-      this.device.logProgress(0,'Get external');
-      const blob = await this.device.do_upload(this.transferSize, 0x120000);
-      return await blob.arrayBuffer();
-    }
+    this.device.logProgress(0,'Get external');
+    const blob = await this.device.do_upload(this.transferSize, slot==2?0x80000:0x130000);
+    return await blob.arrayBuffer();
+  }
 
     async rw_check(addr,n){
       this.device.startAddress = addr;
@@ -1666,7 +1704,7 @@ DFUse.Device = class extends DFU.Device {
         }
         for (let segment of this.memoryInfo.segments) {
             if (segment.start <= addr && addr < segment.end) {
-	  console.log('getSegment',segment,addr);
+	      // console.log('getSegment',segment,addr);
                 return segment;
             }
         }
@@ -1743,114 +1781,125 @@ DFUse.Device = class extends DFU.Device {
     };
 
   async erase(startAddr, length) {
-        let segment = this.getSegment(startAddr);
-    // console.log('erase',startAddr,length,segment);
-        let addr = this.getSectorStart(startAddr, segment);
-        const endAddr = this.getSectorEnd(startAddr + length - 1);
-
-        let bytesErased = 0;
-        const bytesToErase = endAddr - addr;
-        if (bytesToErase > 0) {
-            this.logProgress(bytesErased, bytesToErase);
-        }
-
-        while (addr < endAddr) {
-            if (segment.end <= addr) {
-                segment = this.getSegment(addr);
-            }
-            if (!segment.erasable) {
-                // Skip over the non-erasable section
-                bytesErased = Math.min(bytesErased + segment.end - addr, bytesToErase);
-                addr = segment.end;
-                this.logProgress(bytesErased, bytesToErase);
-                continue;
-            }
-            const sectorIndex = Math.floor((addr - segment.start)/segment.sectorSize);
-            const sectorAddr = segment.start + sectorIndex * segment.sectorSize;
-            this.logDebug(`Erasing ${segment.sectorSize}B at 0x${sectorAddr.toString(16)}`);
-            await this.dfuseCommand(DFUse.ERASE_SECTOR, sectorAddr, 4);
-            addr = sectorAddr + segment.sectorSize;
-            bytesErased += segment.sectorSize;
-            this.logProgress(bytesErased, bytesToErase);
-        }
-    };
+    let segment = this.getSegment(startAddr);
+    console.log('erase',startAddr,length,segment);
+    if (!segment.erasable){
+      if (segment.writable) return 1;
+      return 0;
+    }
+    let addr = this.getSectorStart(startAddr, segment);
+    const endAddr = this.getSectorEnd(startAddr + length - 1);
+    
+    let bytesErased = 0;
+    const bytesToErase = endAddr - addr;
+    if (bytesToErase > 0) {
+      this.logProgress(bytesErased, bytesToErase);
+    }
+    
+    while (addr < endAddr) {
+      if (segment.end <= addr) {
+        segment = this.getSegment(addr);
+      }
+      if (!segment.erasable) {
+        // Skip over the non-erasable section
+        bytesErased = Math.min(bytesErased + segment.end - addr, bytesToErase);
+        addr = segment.end;
+        this.logProgress(bytesErased, bytesToErase);
+        continue;
+      }
+      const sectorIndex = Math.floor((addr - segment.start)/segment.sectorSize);
+      const sectorAddr = segment.start + sectorIndex * segment.sectorSize;
+      this.logDebug(`Erasing ${segment.sectorSize}B at 0x${sectorAddr.toString(16)}`);
+      await this.dfuseCommand(DFUse.ERASE_SECTOR, sectorAddr, 4);
+      addr = sectorAddr + segment.sectorSize;
+      bytesErased += segment.sectorSize;
+      this.logProgress(bytesErased, bytesToErase);
+    }
+    return 1;
+  };
 
     async do_download(xfer_size, data, manifestationTolerant) {
-        if (!this.memoryInfo || ! this.memoryInfo.segments) {
-            throw new Error("No memory map available");
-        }
-
-        this.logInfo("Erasing DFU device memory");
-
-        let bytes_sent = 0;
-        let expected_size = data.byteLength;
-
-        let startAddress = this.startAddress;
-        if (isNaN(startAddress)) {
-            startAddress = this.memoryInfo.segments[0].start;
-            this.logWarning("Using inferred start address 0x" + startAddress.toString(16));
-        } else if (this.getSegment(startAddress) === null) {
-            this.logError(`Start address 0x${startAddress.toString(16)} outside of memory map bounds`);
-        }
+      if (!this.memoryInfo || ! this.memoryInfo.segments) {
+        throw new Error("No memory map available");
+      }
+      
+      this.logInfo("Erasing DFU device memory");
+      
+      let bytes_sent = 0;
+      let expected_size = data.byteLength;
+      
+      let startAddress = this.startAddress;
+      if (isNaN(startAddress)) {
+        startAddress = this.memoryInfo.segments[0].start;
+        this.logWarning("Using inferred start address 0x" + startAddress.toString(16));
+      } else if (this.getSegment(startAddress) === null) {
+        this.logError(`Start address 0x${startAddress.toString(16)} outside of memory map bounds`);
+	return 0;
+      }
       let savelegend='';
       if (typeof UI!=='undefined' && typeof UI.nws_progresslegend!=='undefined'){
 	savelegend=UI.nws_progresslegend.innerHTML;
 	this.logProgress(0,'Erase '+savelegend);
 	//console.log('do_download before erase',savelegend);
       }
-      await this.erase(startAddress, expected_size);
+      let res=0;
+      try {
+	res=await this.erase(startAddress, expected_size);
+      } catch(err) { res=0;}
+      if (res==0) return 0;
       if (savelegend!=''){
 	//console.log('do_download after erase',savelegend);
 	this.logProgress(0,'Flash '+savelegend);
       }
       this.logInfo("Copying data from browser to DFU device");
-
-        let address = startAddress;
-        while (bytes_sent < expected_size) {
-            const bytes_left = expected_size - bytes_sent;
-            const chunk_size = Math.min(bytes_left, xfer_size);
-
-            let bytes_written = 0;
-            let dfu_status;
-            try {
-                await this.dfuseCommand(DFUse.SET_ADDRESS, address, 4);
-                this.logDebug(`Set address to 0x${address.toString(16)}`);
-                bytes_written = await this.download(data.slice(bytes_sent, bytes_sent+chunk_size), 2);
-                this.logDebug("Sent " + bytes_written + " bytes");
-                dfu_status = await this.poll_until_idle(DFU.dfuDNLOAD_IDLE);
-                address += chunk_size;
-            } catch (error) {
-                throw new Error("Error during DfuSe download: " + error);
-            }
-
-            if (dfu_status.status !== DFU.STATUS_OK) {
-                throw new Error(`DFU DOWNLOAD failed state=${dfu_status.state}, status=${dfu_status.status}`);
-            }
-
-            this.logDebug("Wrote " + bytes_written + " bytes");
-            bytes_sent += bytes_written;
-
-            this.logProgress(bytes_sent, expected_size);
+      
+      let address = startAddress;
+      while (bytes_sent < expected_size) {
+        const bytes_left = expected_size - bytes_sent;
+        const chunk_size = Math.min(bytes_left, xfer_size);
+	
+        let bytes_written = 0;
+        let dfu_status;
+        try {
+          await this.dfuseCommand(DFUse.SET_ADDRESS, address, 4);
+          this.logDebug(`Set address to 0x${address.toString(16)}`);
+          bytes_written = await this.download(data.slice(bytes_sent, bytes_sent+chunk_size), 2);
+          this.logDebug("Sent " + bytes_written + " bytes");
+          dfu_status = await this.poll_until_idle(DFU.dfuDNLOAD_IDLE);
+          address += chunk_size;
+        } catch (error) {
+          throw new Error("Error during DfuSe download: " + error);
         }
-        this.logInfo(`Wrote ${bytes_sent} bytes`);
-
-        if(manifestationTolerant) {
-          this.logInfo("Manifesting new firmware");
-          try {
-              await this.dfuseCommand(DFUse.SET_ADDRESS, startAddress, 4);
-              await this.download(new ArrayBuffer(), 2);
-          } catch (error) {
-              throw new Error("Error during DfuSe manifestation: " + error);
-          }
-
-          try {
-              await this.poll_until(state => (state === DFU.dfuMANIFEST));
-          } catch (error) {
-              this.logError(error);
-          }
+	
+        if (dfu_status.status !== DFU.STATUS_OK) {
+          throw new Error(`DFU DOWNLOAD failed state=${dfu_status.state}, status=${dfu_status.status}`);
         }
+	
+        this.logDebug("Wrote " + bytes_written + " bytes");
+        bytes_sent += bytes_written;
+	
+        this.logProgress(bytes_sent, expected_size);
+      }
+      this.logInfo(`Wrote ${bytes_sent} bytes`);
+      
+      if(manifestationTolerant) {
+        this.logInfo("Manifesting new firmware");
+        try {
+          await this.dfuseCommand(DFUse.SET_ADDRESS, startAddress, 4);
+          await this.download(new ArrayBuffer(), 2);
+        } catch (error) {
+          throw new Error("Error during DfuSe manifestation: " + error);
+        }
+	
+        try {
+          await this.poll_until(state => (state === DFU.dfuMANIFEST));
+        } catch (error) {
+          this.logError(error);
+        }
+      }
+      return 1;
     }
-
+  
     async do_upload(xfer_size, max_size) {
         let startAddress = this.startAddress;
         if (isNaN(startAddress)) {

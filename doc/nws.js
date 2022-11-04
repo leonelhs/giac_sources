@@ -78,6 +78,15 @@ var UI = {
       return 0;
     }
   },
+  adjust_exam_sector:function(data){
+    let l=data.byteLength;
+    if (l<0x3000) return;
+    let tab=new Uint8Array(data);
+    for (let i=0x1000;i<0x2000;i++)
+      tab[i]=0xff;
+    for (let i=0x2000;i<0x3000;i++)
+      tab[i]=0x0;
+  },
   sig_check:async function(sig,data,fname){
     // sig should be a list of lists of size 3 (name, length, hash)
     let i=0,l=sig.length;
@@ -230,6 +239,8 @@ var UI = {
       UI.calculator.device.startAddress = pinfo["storage"]["address"];
       //console.log(UI.calculator.device.startAddress,S); return;
       let res=await UI.calculator.device.do_download(UI.calculator.transferSize, S, false);
+      if (res==0)
+	alert('Unable to store to the calculator');
       return res;
     }
     if (UI.is_py(filename))
@@ -263,33 +274,94 @@ var UI = {
     window.setTimeout(UI.numworks_install_delta_,100,do_backup,khionly);
   },
   numworks_install_delta_:async function(do_backup,khionly){
+    if (khionly==5){
+      UI.calculator.device.startAddress = 0x90180000;
+      UI.calculator.device.logProgress(0,'khi slot B');
+      let data=await UI.loadfile('khi.B.bin');
+      let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
+      if (res==0){
+	alert(UI.langue==-1?'Erreur d\'ecriture flash. Tapez reset+4 et reessayez':'Error writing flash. Type reset+4 and try again.');
+	return 3;
+      }
+      alert(UI.langue==-1?'Tapez reset+2 pour booter un lanceur minimal de KhiCAS sur le slot B. Ceci augmente la memoire de 50% environ. Attention, cela ne fonctionnera que si vous installez le bootloader de cette page!':'Type reset+2 to boot a minimal KhiCAS launcher from slot B. This increases memory available. Beware this works only if you install the bootloader of this page!');
+      UI.print('Khi slot B OK, press RESET on calculator back');
+      return 0;
+    }
+    if (khionly==4){
+      UI.calculator.device.startAddress = 0x08000000;
+      UI.calculator.device.logProgress(0,'protection');
+      let data=await UI.loadfile('bootloader.bin');
+      let res=0;
+      res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
+      if (res==0){
+	alert(UI.langue==-1?'Erreur d\'ecriture flash interne. Tapez reset+6 et reessayez. Si reset+6 ne fonctionne pas, essayez de deverrouiller votre Numworks sur phi.getomega.dev':'Error writing internal flash. Type reset+6 and try again. If reset+6 does not work, try to unlock your Numworks on phi.getomega.dev');
+	return 3;
+      }
+      alert(UI.lang==-1?'Le multi-boot permet de lancer 2 firmwares A (<=1.5M) et B(<=0.5M) : reset-1 ou reset-2 permet de changer. Si vous installez Khi A et B, votre calculatrice sera protegee contre des mises a jour (risque de verrouillage). Cette protection se desactive temporairement par reset-4, par exemple pour mettre a jour Khi. Tapez reset+6 pour effacer le multiboot':'With multi-boot installed you can run 2 firmwares A (<=1.5M) and B (<=0.5M). If you install Khi A and B, your calculator will be protected against upgrade (lock risk). Type reset-4 to temporarily remove firmware protection, e.g. to upgrade Khi. Type reset-6 to remove the multi-boot');
+      UI.print('Bootloader OK, press RESET on calculator back');
+      return 0;
+    }
     if (UI.calculator==0 || !UI.calculator_connected){
       alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return -1;
     } 
     UI.print(khionly?'=========== installing Khi':'=========== installing Khi and KhiCAS');
+    let data,res;
+    if (!khionly){
+      UI.print('erase/write KhiCAS apps, wait about 2 minutes');
+      data=await UI.loadfile('apps.tar');
+      UI.calculator.device.startAddress = 0x90200000;
+      UI.calculator.device.logProgress(0,'apps');
+      res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
+      UI.print(res?'KhiCAS installed':'error installing KhiCAS');
+      if (res==0){
+	alert('error installing KhiCAS');
+	return 1;
+      }
+    }
+    let installboot=0;
+    let pinfo = await UI.calculator.getPlatformInfo();
+    if (pinfo["bootloader"]==0 || khionly==3){
+      installboot=1;
+      if (khionly==3) // skip protection question parameter
+	khionly=1;
+      else {
+	if (1 ||
+	    confirm(UI.langue==-1?'Votre calculatrice n\'est pas protegee contre un verrouillage. Voulez-vous la proteger?':'Your calculator is not protected against an hostile lock. Protect?')){
+	  alert(UI.langue==-1?'Le bootloader de protection sera installe. Vous pourrez l\'effacer avec reset+6. Attention, ceci ne protege pas d\'une mise a jour sur le site de Numworks.':'Protecting bootloader will be installed, you will be able to remove it with reset+6. Beware, this does not protect from running an upgrade from Numworks.');
+	  khionly=2;
+	}
+	else
+	  khionly=1;
+      }
+    }
+    else
+      khionly=2;
     UI.print('erase/write Khi external, wait about 1/2 minute');
     UI.calculator.device.startAddress = 0x90000000;
-    let data=await UI.loadfile('delta.external.bin');
-    UI.calculator.device.logProgress(0,'external');
-    let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print('Khi external OK, erase/write internal');
-    UI.calculator.device.startAddress = 0x08000000;
-    UI.calculator.device.logProgress(0,'internal');
-    data=await UI.loadfile('delta.internal.bin');
+    let firmwarename=khionly==2?'khi.A.bin':'delta.external.bin';
+    data=await UI.loadfile(firmwarename);
+    UI.calculator.device.logProgress(0,firmwarename);
     res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    if (khionly){
-      UI.print('Khi internal OK, press RESET on calculator back');
-      alert(UI.langue==-1?'Installation terminee. Appuyer sur RESET a l\'arriere de la calculatrice':'Install success. Press RESET on the calculator back.');
-      return;
+    if (res==0){
+      alert('Error writing Khi');
+      return 2;
     }
-    UI.print('Khi internal OK, erase/write KhiCAS and apps, wait about 2 minutes');
-    UI.calculator.device.startAddress = 0x90200000;
-    UI.calculator.device.logProgress(0,'apps');
-    data=await UI.loadfile('apps.tar');
-    res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
-    UI.print('apps OK, press RESET on calculator back');
+    if (installboot){
+      UI.print('Khi external OK, erase/write internal');
+      UI.calculator.device.startAddress = 0x08000000;
+      UI.calculator.device.logProgress(0,'internal');
+      data=await UI.loadfile(khionly==2?'bootloader.bin':'delta.internal.bin');
+      res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
+      if (res==0){
+	alert(UI.langue==-1?'Erreur d\'ecriture flash interne. Tapez reset+6, installez le mode de recuperation et reessayez.':'Error writing internal flash. Type reset+6, run rescue mode and try again');
+	return 3;
+      }
+      UI.print((installboot?'Bootloader OK':'Khi internal OK')+', press RESET on calculator back');
+    }
+    else 
+      UI.print('Khi external OK');
     alert(UI.langue==-1?'Installation terminee. Appuyer sur RESET a l\'arriere de la calculatrice':'Install success. Press RESET on the calculator back.');
     return 0;
   },
@@ -322,9 +394,13 @@ var UI = {
     UI.calculator.device.startAddress = 0x20030000;
     let data=await UI.loadfile('recovery');
     await UI.calculator.device.clearStatus();
-    await UI.calculator.device.do_download(UI.calculator.transferSize, data, true);
+    let res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, true);
+    if (res==0){
+      alert('Error sending recovery');
+      return 1;
+    }
     let tmp=confirm(UI.langue==-1?'La calculatrice devrait etre en mode recuperation. Cliquer sur le bouton Detecter puis sur install KhiCAS':'Calculator should be in rescue mode. Click on the Detect button then install KhiCAS.');
-    return;
+    return 0;
     if (tmp)
       UI.nws_detect(UI.numworks_install_delta,UI.nws_detect_failure);
     else
@@ -984,21 +1060,23 @@ var UI = {
 	return -1;
     //else alert(UI.langue==-1?'Le test va prendre environ 20 secondes':'Test will take about 20 seconds');
     UI.print('========');
-    let internal=await UI.calculator.get_internal_flash();
-    //console.log(sigfile);
-    let res=await UI.sig_check(sigfile,internal,'delta.internal.bin');
-    if (!res){
-      alert(UI.langue==-1?'Flash interne non certifiee. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'Internal flash not certified');
-      return 1;
-    }
-    UI.print('Internal flash OK');
-    let external=await UI.calculator.get_external_flash();
+    let res;
+    let external=await UI.calculator.get_external_flash(1);
+    UI.adjust_exam_sector(external);
     res=await UI.sig_check(sigfile,external,'delta.external.bin');
     if (!res){
-      alert(UI.langue==-1?'Flash externe non certifiee. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'External flash not certified');
+      alert(UI.langue==-1?'Flash externe slot 1 non certifiee. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'External flash slot 1 not certified');
       return 2;
     }
-    UI.print('External flash OK');
+    UI.print('External flash slot 1 OK');
+    external=await UI.calculator.get_external_flash(2);
+    UI.adjust_exam_sector(external);
+    res=await UI.sig_check(sigfile,external,'khi.B.bin');
+    if (!res){
+      alert(UI.langue==-1?'Flash externe slot 2 non certifiee. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'External flash slot 2 not certified');
+      return 2;
+    }
+    UI.print('External flash slot 2 OK');
     let apps=await UI.calculator.get_apps();
     res=await UI.sig_check(sigfile,apps,'apps.tar');
     if (!res){
@@ -1007,11 +1085,13 @@ var UI = {
     }
     UI.print('Apps OK');
     if (rwcheck){
-      UI.print('R/W check 0x91200000');
-      res=await UI.calculator.rw_check(0x90120000,0xe0000);
-      if (!res){
-	alert(UI.langue==-1?'Echec du test lecture/ecriture':'Read/Write test failure');
-	return 4;
+      if (0){
+	UI.print('R/W check 0x91300000');
+	res=await UI.calculator.rw_check(0x90130000,0xd0000);
+	if (!res){
+	  alert(UI.langue==-1?'Echec du test lecture/ecriture':'Read/Write test failure');
+	  return 4;
+	}
       }
       UI.print('R/W check 0x90740000');
       res=await UI.calculator.rw_check(0x90740000,0xa0000);
@@ -1021,7 +1101,20 @@ var UI = {
       }
       UI.print('R/W OK');
     }
-    alert(UI.langue==-1?'Firmware certifie':'Firmware certified');
+    let pinfo = await UI.calculator.getPlatformInfo();
+    if (pinfo["bootloader"]==0){
+      let internal=await UI.calculator.get_internal_flash();
+      //console.log(sigfile);
+      res=await UI.sig_check(sigfile,internal,'delta.internal.bin');
+      if (!res){
+	alert(UI.langue==-1?'Flash interne non certifiee. Cliquer sur installer KhiCAS pour installer un firmware certifie.':'Internal flash not certified');
+	return 1;
+      }
+      UI.print('Internal flash OK');
+      alert(UI.langue==-1?'Firmware certifie (interne, externe et KhiCAS)':'Certified firmware (internal, external and KhiCAS)');
+    }
+    else
+      alert(UI.langue==-1?'Firmware certifie (externe et KhiCAS). Pour certifier la flash interne, faire Reset et lancer KhiCAS.':'Firmware certified (external and KhiCAS). Reset the calculator and run KhiCAS to certify internal flash.');      
     return 0;
   },
   htmlbuffer:'',

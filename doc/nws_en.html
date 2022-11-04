@@ -89,11 +89,26 @@ overflow:auto
 <b>Beware, don't upgrade from Numworks site!</b> <button
 onclick="let field=$id('update'); if (field.style.display=='block') field.style.display='none'; else field.style.display='block'">More info</button>
 <div id='update' style="display:none">
-  If you upgrade from Numworks site, this will lock your calculator
-  and make it incompatible with Xcas. This is an (almost) irreversible
-  process, the only known workaround is explained 
+  If you have upgraded from Numworks site, your calculator is locked
+  and therefore incompatible with KhiCAS. Thanks to M4x1m3,
+  there is temporarily a
+  workaround to unlock your Numworks, follow instructions
+  <a
+  href="https://phi.getomega.dev/">here</a>.
+  If the workaround fails (if you made an update from Numworks site
+  after 22/03/28), the locking process is (almost) irreversible,
+  the only known workaround is explained 
   <a href="https://tiplanet.org/forum/viewtopic.php?f=113&t=25191">here (French)</a>
   it requires some additional hardware and opening the calculator.
+  <br>
+  If you install Khi+KhiCAS from this site, it will protect
+  your calc against lock from USB connection.
+  You will have to press reset and 4 simultaneously to open
+  the bootloader in order to access flash.
+  <b>Beware, don't do reset+4 or reset+6 unless you are sure to be
+  on a safe site</b>, if you do that on Numworks site, you might
+  end up with a locked calculator.
+  <!--
 <br>
   <b>Installing KhiCAS</b> will transform your Numworks N0110
   in a powerful CAS calculator (a CASworks!), very useful
@@ -114,14 +129,23 @@ onclick="let field=$id('update'); if (field.style.display=='block') field.style.
   It's perhaps not too late to make them change their minds, if you
   think like me, tell them your opinion (they will probably take care
   if they receive many feedbacks, especially from math teachers).
+  -->
 </div>
 <hr>
 
 <ul id="main" class="b">
   <li> <button class="bouton" onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)">Detect</button>
   the Numworks. Click it if the buttons below do not work.
-  If your N0110 calculator screen is off, click on the Rescue button instead.
-  <li> 
+  If your N0110 calculator screen is off, click on the Rescue button
+  instead.
+  If your N0110 is locked, follow instructions
+  <a href="https://phi.getomega.dev/">here</a>
+  then install
+  <button onclick="UI.numworks_install_delta(1,2);">Khi slot 1</button>.
+
+  <li> <b>Python scripts</b>
+  <ul>
+  <li>
 <button id="numworks_load" class="bouton"
   onclick="UI.numworks_load(false)"
   title="Click here to get the scripts of the calculator">Numworks→</button> or
@@ -129,11 +153,11 @@ onclick="let field=$id('update'); if (field.style.display=='block') field.style.
   title="Click here to load a backup (.nws) from computer"
   onchange="UI.backup_load((this.files)[0]);">
 <button onclick="UI.backup_load(($id('loadbackupinput').files)[0]);">Backup→</button>
-  : Python scripts from the calculator or from a backup.
+  : get Python scripts from the calculator or from a backup.
   <span id='storelist'></span>
   <li><button id="numworks_load" class="bouton"
   onclick="UI.numworks_load(true)">Backup</button> :
-  save all scripts from the calculator.
+  get all scripts from the calculator in one archive and save it
   <li>
   <input id="loadfileinput" accept=".py,.nws" type="file"
   title="Cliquer ici pour charger un fichier Python (.py) ou un backup (.nws)"
@@ -141,10 +165,15 @@ onclick="let field=$id('update'); if (field.style.display=='block') field.style.
   <button onclick="UI.loadFile(($id('loadfileinput').files)[0]);">→Numworks</button>
   : send a script (<tt>.py</tt> extension) or restore a backup
   (<tt>.nws</tt>) to the calculator.
+  </ul>
   <li> 
-  Install <button
-  onclick="UI.numworks_install_delta();">Khi+KhiCAS 
-  (2021/12/1)</button>: on your N0110 calculator
+  <b>Install, upgrade on your N0110 calculator</b>
+  <ul>
+  <li> Install
+  <button onclick="UI.numworks_install_delta(0,4)">multi-boot</button>,
+  <button
+  onclick="UI.numworks_install_delta();">Khi+KhiCAS 17.0.58
+  (2022/04/03)</button>: 
   <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>,
   <a
@@ -152,10 +181,14 @@ onclick="let field=$id('update'); if (field.style.display=='block') field.style.
   (French),
   <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec47">Source</a>.
-  <li> Update :
+  <li> Update (reset+4 required):
   <button onclick="UI.numworks_getarchive(0);">KhiCAS stable</button>,
   <button onclick="UI.numworks_getarchive(1);">KhiCAS alpha</button>,
-  <button onclick="UI.numworks_install_delta(1,1);">Khi</button>.
+<button onclick="UI.numworks_install_delta(1,1);">Khi slot 1</button>,
+      <button onclick="UI.numworks_install_delta(0,5)">Khi slot
+    2</button>,
+    <li> Press reset+1 or reset+2 in order to boot from slot 1 or 2.
+    Run KhiCAS from slot 2 if you need more memory.
   <li> <button onclick="UI.numworks_getarchive('nwsflash.tar',0)">Archive
   flash </button>from your Numworks 
   <li> <button
@@ -190,22 +223,25 @@ ou <button onclick="UI.tar_clear(UI.numworks_buffer)">Clear</button>
     <button onclick="UI.numworks_sendtar();">Install</button> or
     <button onclick="UI.file_savetar(UI.numworks_buffer,'myapps.tar')">save</button> customization.
   </span>
-  </span>
-  <li> Install or certification progress<hr>
+    </span>
+    </ul>
+    <li> Install or certification log
+    <button onclick="$id('output').innerHTML=''">Clear</button>
+    <hr>
   <span id="ploglegend"></span>
   <progress id="plog" value=0 style="display:none"></progress>
   <div id="output" style="max-height: 200px; overflow:auto"></div>
   <hr>
-  <li>
+  <li><b>Exam mode</b><br> 
   If you want to certify that a N0110 calculator firmware  is
-  a genuine version of KhiCAS, click on one of the two buttons.
+  a genuine version of Khi+KhiCAS, click on one of the two buttons.
   <br>
   <button
   onclick="UI.numworks_certify(nws_sig,false);">Certification</button> 
   <button
   onclick="UI.numworks_certify(nws_sig,true);">Certification + R/W test</button>
   <br>
-  First test takes about 15 secondes, the second one is more secure
+  The first test takes about 30 secondes, the second one is more secure
   but it takes about 1 minute and it writes data on the calc.
   These tests may be done by a proctor during an exam with a
   smartphone from this
@@ -274,7 +310,7 @@ This page is also using
 
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Wed Dec  1 20:31:30 CET 2021 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Sun Apr  3 16:53:13 CEST 2022 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
     if (window.location.href.substr(0, 4) == "http") {

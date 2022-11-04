@@ -104,7 +104,7 @@ EXTRA_DIST = .gdbinit xgiac pgiac prime.table gen_user \
 	config.h.iphone Makefile.iphone \
 	config.h.numworks.* Makefile.numworks.* \
 	stdstream \
-	f2c.h clapack.h blaswrap.h mklocal64 pnt_gen \
+	f2c.h clapack.h clapack_new.h blaswrap.h mklocal64 pnt_gen \
 	giac.i runme.java archive_java archive_java_linux32 archive_java_linux64  javascript.cxx giacjs.i README.javascript \
 	Makefile.jni README.jni README.nacl mkdylib mkdylib10 mkgiacpy mkgiacpy10 giac_wrap.cxx aspen_translate.h numworks_translate.h translate.cc \
 	itex2MML.* y_tab.h static_lexer_numworks.h static_lexer__numworks.h k_csdk.c \

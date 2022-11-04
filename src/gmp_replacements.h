@@ -58,7 +58,7 @@ inline int mpz_tdiv_r(mpz_t & c,const mpz_t & a,const mpz_t & b){ return mp_mod(
 inline void mpz_fdiv_r_ui(mpz_t & c,const mpz_t & a,unsigned b){ mp_digit C; mp_mod_d((mp_int *)&a,b,&C); mp_set_int(&c,C); }
 inline void mpz_fdiv_q_ui(mpz_t & c,const mpz_t & a,unsigned b){ mp_digit C; mp_div_d((mp_int *)&a,b,&c,&C);}
 inline void mpz_divexact_ui(mpz_t & c,const mpz_t & a,unsigned b){ mp_digit C; mp_div_d((mp_int *)&a,b,&c,&C);}
-inline void mpz_fdiv_qr_ui(mpz_t & c,mpz_tmpz_t& d,const mpz_t & a,unsigned b){ mp_digit D; mp_div_d((mp_int *)&a,b,&c,&D); mp_set_int(&d,D); }
+inline void mpz_fdiv_qr_ui(mpz_t & c,mpz_t& d,const mpz_t & a,unsigned b){ mp_digit D; mp_div_d((mp_int *)&a,b,&c,&D); mp_set_int(&d,D); }
 inline void mpz_fdiv_q(mpz_t & c,const mpz_t & a,const mpz_t & b){ mp_int d; mp_init(&d); mp_div((mp_int *)&a,(mp_int *)&b,&c,&d); mp_clear(&d); }
 inline void mpz_tdiv_q(mpz_t & c,const mpz_t & a,const mpz_t & b){ mp_int d; mp_init(&d); mp_div((mp_int *)&a,(mp_int *)&b,&c,&d); mp_clear(&d); }
 inline int mpz_fdiv_qr(mpz_t & c,mpz_t & d,const mpz_t & a,const mpz_t & b){ return mp_div((mp_int *)&a,(mp_int *)&b,&c,&d); }
