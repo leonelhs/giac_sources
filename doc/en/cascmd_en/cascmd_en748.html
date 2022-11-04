@@ -4,7 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Infixed assignments: =&gt; := =&lt;
+<title>Checking the type of the argument: type
+subtype compare getType
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </title>
@@ -14,84 +44,178 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en749.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1913" class="subsection">12.2.8  Infixed assignments: <span style="font-family:monospace">=&gt;</span> <span style="font-family:monospace">:=</span> <span style="font-family:monospace">=&lt;</span>
-<a id="hevea_default1383"></a>
-<a id="hevea_default1384"></a>
-<a id="hevea_default1385"></a></h3>
-<p>The infixed operators <span style="font-family:monospace">=&gt;</span>, <span style="font-family:monospace">:=</span>, and <span style="font-family:monospace">=&lt;</span> can
-all store a value in a variable, but their arguments are in different
-order. (See Section <a href="cascmd_en055.html#ssec%3Aassign">4.4.2</a> and Section <a href="cascmd_en056.html#ssec%3Arefassign">4.4.3</a>.)
-Also, <span style="font-family:monospace">:=</span> and <span style="font-family:monospace">=&lt;</span> have different effects when
-the first argument is an element of a list stored in a variable, since
-<span style="font-family:monospace">=&lt;</span> modifies list elements by reference (see section
-<a href="cascmd_en750.html#ssec%3Aassignmentdiffs">12.2.10</a>).</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">=&gt;</span> is the infixed version of <span style="font-family:monospace">sto</span>, it stores
-the value in the first argument in the variable in the second
-argument. Both<br>
- <div class="center">
-<span style="font-family:monospace">4 =&gt; a</span>
-</div>
-and:
+<h3 id="ssec:type" class="subsection">12.2.5  Checking the type of the argument: <span style="font-family:monospace">type</span>
+<span style="font-family:monospace">subtype</span> <span style="font-family:monospace">compare</span> <span style="font-family:monospace">getType</span>
+<a id="hevea_default1350"></a>
+<a id="hevea_default1351"></a>
+<a id="hevea_default1352"></a>
+<a id="hevea_default1353"></a>
+<a id="hevea_default1354"></a>
+<a id="hevea_default1355"></a>
+<a id="hevea_default1356"></a>
+<a id="hevea_default1357"></a>
+<a id="hevea_default1358"></a>
+<a id="hevea_default1359"></a>
+<a id="hevea_default1360"></a>
+<a id="hevea_default1361"></a>
+<a id="hevea_default1362"></a>
+<a id="hevea_default1363"></a>
+<a id="hevea_default1364"></a>
+<a id="hevea_default1365"></a>
+<a id="hevea_default1366"></a>
+<a id="hevea_default1367"></a>
+<a id="hevea_default1368"></a>
+<a id="hevea_default1369"></a>
+<a id="hevea_default1370"></a>
+<a id="hevea_default1371"></a>
+<a id="hevea_default1372"></a>
+<a id="hevea_default1373"></a>
+<a id="hevea_default1374"></a>
+<a id="hevea_default1375"></a>
+<a id="hevea_default1376"></a>
+<a id="hevea_default1377"></a>
+<a id="hevea_default1378"></a>
+<a id="hevea_default1379"></a>
+<a id="hevea_default1380"></a>
+<a id="hevea_default1381"></a></h3>
+<p>The <span style="font-family:monospace">type</span> command finds the type of its input.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">type</span> takes one argument:
+<span style="font-style:italic">arg</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">type(</span><span style="font-style:italic">arg</span><span style="font-family:monospace">)</span> returns an integer 
+indicating the type of <span style="font-style:italic">arg</span>.<br>
+ The integer is given as a constant symbol which is equal to the integer.
+The possible values are: 
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">1</span>, equivalently
+<span style="font-family:monospace">real</span>, <span style="font-family:monospace">double</span> or <span style="font-family:monospace">DOM_FLOAT</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">2</span>, equivalently
+<span style="font-family:monospace">integer</span> or <span style="font-family:monospace">DOM_INT</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">4</span>, equivalently
+<span style="font-family:monospace">complex</span> or <span style="font-family:monospace">DOM_COMPLEX</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">6</span>, equivalently
+<span style="font-family:monospace">identifier</span> or <span style="font-family:monospace">DOM_IDENT</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">7</span>, equivalently
+<span style="font-family:monospace">vector</span> or <span style="font-family:monospace">DOM_LIST</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">8</span>, equivalently
+<span style="font-family:monospace">expression</span> or <span style="font-family:monospace">DOM_SYMBOLIC</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">10</span>, equivalently
+<span style="font-family:monospace">rational</span> or <span style="font-family:monospace">DOM_RAT</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">12</span>, equivalently
+<span style="font-family:monospace">string</span> or <span style="font-family:monospace">DOM_STRING</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">13</span>, equivalently
+<span style="font-family:monospace">func</span> or <span style="font-family:monospace">DOM_FUNC</span>.
+</li></ul>
+</li></ul><h4 id="sec1911" class="subsubsection">Examples</h4>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">sto(4,a)</span>
+<span style="font-family:monospace">type(4)</span>
 </div>
-store the value 4 in the variable <span style="font-family:monospace">a</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">:=</span> and <span style="font-family:monospace">=&lt;</span> both have a variable as the first
-argument and the value to store in the variable as the second
-argument. Both<br>
- <div class="center">
-<span style="font-family:monospace">a:= 4</span>
-</div>
-and:
+<span style="font-style:italic">Output:</span>
 <div class="center">
-<span style="font-family:monospace">a =&lt; 4</span>
+<span style="font-family:monospace">integer</span>
 </div>
-store the value 4 in the variable <span style="font-family:monospace">a</span>.<p>However, suppose you have entered:
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">type(3.1) == DOM_FLOAT</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<span style="font-family:monospace">true</span>
+</div>
+</li></ul><p><span style="font-family:monospace">Xcas</span> has various types of lists; the <span style="font-family:monospace">subtype</span> command
+can determine what kind of list it is.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">subtype</span> takes one argument:<br>
+ <span style="font-style:italic">L</span>, a list (in <span style="font-family:monospace">DOM_LIST</span>).
+</li><li class="li-itemize"><span style="font-family:monospace">subtype(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns an integer indicating what type
+of list <span style="font-style:italic">L</span> is.<br>
+ The possible values are:
+<ul class="itemize"><li class="li-itemize">
+1 is <span style="font-style:italic">L</span> is a sequence.
+</li><li class="li-itemize">2 if <span style="font-style:italic">L</span> is a set.
+</li><li class="li-itemize">10 if <span style="font-style:italic">L</span> is a polynomial represented by a list (see
+Section <a href="index.html#sec%3Apolynomials">5.27</a>).
+</li><li class="li-itemize">0 if <span style="font-style:italic">L</span> isn’t one of the above types of list.
+</li></ul>
+</li></ul><h4 id="sec1912" class="subsubsection">Example</h4>
+<p>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">A:= [0,1,2,3,4]</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">B:= A</span>
-</td></tr>
-</table>
-</div><p>
-and you want to change <span style="font-family:monospace">A[3]</span>.<br>
- </p><div class="center">
-<span style="font-family:monospace">A[3] =&lt; 33</span>
-</div><p>
-will change both <span style="font-family:monospace">A</span> and <span style="font-family:monospace">B</span>:<br>
- <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">A, B</span>
+<span style="font-family:monospace">subtype(1,2,3)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,1,2,33,4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,1,2,33,4</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p>
-Here, <span style="font-family:monospace">A</span> pointed to the list <span style="font-family:monospace">[0,1,2,3,4]</span> and
-after setting <span style="font-family:monospace">B</span> to <span style="font-family:monospace">A</span>, <span style="font-family:monospace">B</span> also pointed to
-<span style="font-family:monospace">[0,1,2,3,4]</span>. Changing an element of <span style="font-family:monospace">A</span> by
-reference changes the list that <span style="font-family:monospace">A</span> points to, which
-<span style="font-family:monospace">B</span> also points to.
-</p></li></ul><p>Note that multiple assigments can be made using sequences or lists.
-Both
-</p><div class="center">
-<span style="font-family:monospace">[a, b, c]:= [1, 2, 3]</span>
-</div><p>
-and:
-</p><div class="center">
-<span style="font-family:monospace">(a, b, c):= (1, 2, 3)</span>
-</div><p>
-assign <span style="font-family:monospace">a</span> the value 1, <span style="font-family:monospace">b</span> the value 2, and <span style="font-family:monospace">c</span>
-the value 3. If multiple assignments are made this way and variables
-are on the right hand side, they will be replaced by their values
-before the assignment. If <span style="font-family:monospace">a</span> contains 5 and you enter:
-</p><div class="center">
-<span style="font-family:monospace">(a,b):= (2,a)</span>
-</div><p>
-then <span style="font-family:monospace">b</span> will get the previous value of <span style="font-family:monospace">a</span>, 5, and not
-the new value of <span style="font-family:monospace">a</span>, 2.</p>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table><p><br>
+</p><p>The <span style="font-family:monospace">compare</span> operator compares two objects taking their
+type into account.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">compare</span> takes two arguments:<br>
+ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two objects.
+</li><li class="li-itemize"><span style="font-family:monospace">compare(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns
+<ul class="itemize"><li class="li-itemize">
+1 (<span style="font-family:monospace">true</span>) if <span style="font-family:monospace">type(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span>&lt;<span style="font-family:monospace">type(</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> or if
+<span style="font-family:monospace">type(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span>=<span style="font-family:monospace">type(</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> and <span style="font-style:italic">a</span> is less than <span style="font-style:italic">b</span> in the
+ordering of their type.
+</li><li class="li-itemize">0 (<span style="font-family:monospace">false</span>) otherwise.
+</li></ul>
+</li></ul><h4 id="sec1913" class="subsubsection">Examples</h4>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">compare("a","b")</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+since <span style="font-family:monospace">"a"</span> and <span style="font-family:monospace">"b"</span> have the same type
+(<span style="font-family:monospace">string</span>) and <span style="font-family:monospace">"a"</span> is less than <span style="font-family:monospace">"b"</span> in the
+string ordering.
+</li><li class="li-itemize">If <span style="font-family:monospace">b</span> is a formal variable:<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">compare("a",b)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+since the type of <span style="font-family:monospace">"a"</span> is <span style="font-family:monospace">string</span> (the integer 12)
+while the type of <span style="font-family:monospace">b</span> is <span style="font-family:monospace">identifier</span> (the integer 6)
+and <span style="font-family:monospace">12</span> is not less than <span style="font-family:monospace">6</span>.
+</li></ul><p><br>
+</p><p>The <span style="font-family:monospace">getType</span> command is similar to <span style="font-family:monospace">type</span> in that it
+takes an object and returns the type, but it has different possible
+return values. It is included for compatibility reasons.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">getType</span> takes one argument:<br>
+ <span style="font-style:italic">obj</span>, an object.
+</li><li class="li-itemize"><span style="font-family:monospace">getType(</span><span style="font-style:italic">obj</span><span style="font-family:monospace">)</span> returns the type of
+<span style="font-style:italic">obj</span>, which in this case means one of:<br>
+ <span style="font-family:monospace">NUM</span>, <span style="font-family:monospace">VAR</span>, <span style="font-family:monospace">STR</span>, <span style="font-family:monospace">EXPR</span>,
+<span style="font-family:monospace">NONE</span>, <span style="font-family:monospace">PIC</span>, <span style="font-family:monospace">MAT</span> or <span style="font-family:monospace">FUNC</span>.
+</li></ul><h4 id="sec1914" class="subsubsection">Examples</h4>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">getType(3.14)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<span style="font-family:monospace">NUM</span>
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">getType(x)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<span style="font-family:monospace">VAR</span>
+</div>
+</li></ul>
 <hr>
 <a href="cascmd_en747.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

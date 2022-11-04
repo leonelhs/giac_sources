@@ -132,6 +132,7 @@ namespace xcas {
     Graph2d3d(x,y,width, height, title,hp_),
     theta_z(-110),theta_x(-13),theta_y(-95),
     delta_theta(5),draw_mode(GL_QUADS),printing(0),glcontext(0),dragi(0),dragj(0),push_in_area(false),depth(0),below_depth_hidden(false),screenbuf(0) {
+    current_depth=0;
     displayhint=true;
 #if 1 // ndef WIN32 // def HYPERSURFACE3
     if (gnuplot_opengl)
@@ -166,7 +167,6 @@ namespace xcas {
       lcdz= h()/4;
       autoscale(false);
       update_rotation();
-      // update_scales();
       precision=1;
     }
 
@@ -483,6 +483,21 @@ namespace xcas {
     return true;
   }
   
+  struct float2 {
+    float f,a;
+  } ;
+  double absarg(const gen & g,double & argcolor){
+    if (g.type==_DOUBLE_){
+      double d=g._DOUBLE_val;
+      if (d>=0){ argcolor=0;  return d; }
+      argcolor=-M_PI; return -d;
+    }
+    double x=g._CPLXptr->_DOUBLE_val,y=(g._CPLXptr+1)->_DOUBLE_val;
+    argcolor=std::atan2(x,y);
+    double n=std::sqrt(x*x+y*y); // will be encoded in a float, no overflow care
+    return n;
+  }
+
   void glsurface(const gen & surfaceg,int draw_mode,Fl_Image * texture,GIAC_CONTEXT){
     if (!ckmatrix(surfaceg,true))
       return;
@@ -1687,16 +1702,6 @@ namespace xcas {
     // cout << i << " " << j <<  '\n';
   }
 
-  void Graph3d::find_xyz(double i,double j,double depth_,double & x,double & y,double & z) {
-#ifdef __APPLE__
-    j=this->y()+h()-j;
-    i=i-this->x();
-#else
-    j=window()->h()-j;
-#endif
-    dim22dim3(view,proj_inv,model_inv,i,j,depth_,x,y,z);
-  }
-
   double sqrt3over2=std::sqrt(double(3.0))/2;
 
   bool find_xmin_dx(double x0,double x1,double & xmin,double & dx){
@@ -2346,6 +2351,32 @@ namespace xcas {
     // double t=mat[12]*x+mat[13]*y+mat[14]*z+mat[15];
     // X/=t; Y/=t; Z/=t;
   }
+  void Graph3d::find_xyz(double i,double j,double depth_,double & x,double & y,double & z) {
+    if (!opengl){ // FIXME
+      update_rotation();
+      // cout <<  i << " " << j << "  " <<  this->x() << " " <<  this->y() << " " << this->w() << " " << this->h() << " \n" ;
+      i -= this->x();
+      j -= this->y();
+      int horiz=LCD_WIDTH_PX/2,vert=horiz/2;//LCD_HEIGHT_PX/2;
+      double lcdz= LCD_HEIGHT_PX/4;
+      double xmin=-1,ymin=-1,xmax=1,ymax=1,xscale=0.6*(xmax-xmin)/horiz,yscale=0.6*(ymax-ymin)/vert;
+      double Z=current_depth; // -1..1
+      double I=i-horiz;
+      double J=j-LCD_HEIGHT_PX/2+lcdz*Z;
+      double X=yscale*J-xscale*I;
+      double Y=yscale*J+xscale*I;
+      do_transform(invtransform3d,X,Y,Z,x,y,z);
+      return;
+    }
+#ifdef __APPLE__
+    j=this->y()+h()-j;
+    i=i-this->x();
+#else
+    j=window()->h()-j;
+#endif
+    dim22dim3(view,proj_inv,model_inv,i,j,depth_,x,y,z);
+  }
+
   void Graph3d::xyz2ij(const double3 &d,int &i,int &j) const {
     double X,Y,Z;
     do_transform(transform3d,d.x,d.y,d.z,X,Y,Z);
@@ -2358,6 +2389,12 @@ namespace xcas {
     do_transform(transform3d,d.x,d.y,d.z,X,Y,Z);
     i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
     j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
+  }
+  
+  void Graph3d::xyz2ij(const double3 &d,double &i,double &j,double3 & d3) const {
+    do_transform(transform3d,d.x,d.y,d.z,d3.x,d3.y,d3.z);
+    i=LCD_WIDTH_PX/2+(d3.y-d3.x)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-d3.z*lcdz+(d3.y+d3.x)/9.6*LCD_WIDTH_PX;    
   }
   
   void Graph3d::XYZ2ij(const double3 &d,int &i,int &j) const {
@@ -2486,31 +2523,33 @@ namespace xcas {
 	continue;
       }
       bool line=G.subtype==_LINE__VECT,halfline=G.subtype==_HALFLINE__VECT,segment= G.subtype==_GROUP__VECT;
-      if (G.type==_VECT && G._VECTptr->size()==2 && (line || halfline || segment)){
-	gen a=evalf_double(G._VECTptr->front(),1,contextptr),b=evalf_double(G._VECTptr->back(),1,contextptr);
-	if (a.type==_VECT && b.type==_VECT && a._VECTptr->size()==3 && b._VECTptr->size()==3){
-	  vecteur & A=*a._VECTptr;
-	  vecteur & B=*b._VECTptr;
-	  if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ && B[0].type==_DOUBLE_ && B[1].type==_DOUBLE_ && B[2].type==_DOUBLE_ ){
-	    lines.push_back(ptr);
-	    double x=A[0]._DOUBLE_val,y=A[1]._DOUBLE_val,z=A[2]._DOUBLE_val;
+      if (G.type==_VECT && G._VECTptr->size()>=2 && (line || halfline || segment)){
+	for (int n=1;n<G._VECTptr->size();++n){
+	  gen a=evalf_double((*G._VECTptr)[n-1],1,contextptr),b=evalf_double((*G._VECTptr)[n],1,contextptr);
+	  if (a.type==_VECT && b.type==_VECT && a._VECTptr->size()==3 && b._VECTptr->size()==3){
+	    vecteur & A=*a._VECTptr;
+	    vecteur & B=*b._VECTptr;
+	    if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ && B[0].type==_DOUBLE_ && B[1].type==_DOUBLE_ && B[2].type==_DOUBLE_ ){
+	      lines.push_back(ptr);
+	      double x=A[0]._DOUBLE_val,y=A[1]._DOUBLE_val,z=A[2]._DOUBLE_val;
 #if 0 // ndef OLD_LINE_RENDERING
-	    double3 prev(x,y,z);
-	    linev.push_back(prev);
+	      double3 prev(x,y,z);
+	      linev.push_back(prev);
 #endif
-	    double X,Y,Z;
-	    do_transform(transform3d,x,y,z,X,Y,Z);
-	    double3 M(X,Y,Z);
-	    x=B[0]._DOUBLE_val;y=B[1]._DOUBLE_val;z=B[2]._DOUBLE_val;
+	      double X,Y,Z;
+	      do_transform(transform3d,x,y,z,X,Y,Z);
+	      double3 M(X,Y,Z);
+	      x=B[0]._DOUBLE_val;y=B[1]._DOUBLE_val;z=B[2]._DOUBLE_val;
 #if 0 // ndef OLD_LINE_RENDERING
-	    linev.push_back(double3(x-prev.x,y-prev.y,z-prev.z));
+	      linev.push_back(double3(x-prev.x,y-prev.y,z-prev.z));
 #endif
-	    do_transform(transform3d,x,y,z,X,Y,Z);
-	    double3 N(X,Y,Z);
-	    double3 v(N.x-M.x,N.y-M.y,N.z-M.z);
-	    linev.push_back(M); linev.push_back(v);
-	    linetypev.push_back(G.subtype);
-	    line_color.push_back(int4(u,d,du,dd));
+	      do_transform(transform3d,x,y,z,X,Y,Z);
+	      double3 N(X,Y,Z);
+	      double3 v(N.x-M.x,N.y-M.y,N.z-M.z);
+	      linev.push_back(M); linev.push_back(v);
+	      linetypev.push_back(G.subtype);
+	      line_color.push_back(int4(u,d,du,dd));
+	    }
 	  }
 	}
 	continue;
@@ -2574,6 +2613,8 @@ namespace xcas {
 	if (h.type==_VECT && h.subtype==_POLYEDRE__VECT)
 	  G=h;
 	else if (ckmatrix(h,true)){
+	  bool cplx=has_i(h); // 4d hypersurface, encode color in a float+int
+	  double argcplx;
 	  surfacev.push_back(vector< vector<float3d> >(0));
 	  vector< vector<float3d> > & S=surfacev.back();
 	  const vecteur & V=*h._VECTptr;
@@ -2592,8 +2633,19 @@ namespace xcas {
 		  continue;
 		const vecteur & cur=*vj[k]._VECTptr;
 		double X,Y,Z;
-		do_transform(mat,cur[0]._DOUBLE_val,cur[1]._DOUBLE_val,cur[2]._DOUBLE_val,X,Y,Z);
-		S_.push_back(X); S_.push_back(Y); S_.push_back(Z);
+		if (cplx)
+		  do_transform(mat,cur[0]._DOUBLE_val,cur[1]._DOUBLE_val,absarg(cur[2],argcplx),X,Y,Z);
+		else
+		  do_transform(mat,cur[0]._DOUBLE_val,cur[1]._DOUBLE_val,cur[2]._DOUBLE_val,X,Y,Z);		
+		S_.push_back(X); S_.push_back(Y);
+		if (cplx){
+		  float2 * fptr=(float2 *) &Z;
+		  fptr->f = Z;
+		  fptr->a = argcplx;
+		  S_.push_back(Z);
+		}
+		else
+		  S_.push_back(Z);
 	      }
 	    }
 	    else {
@@ -2606,7 +2658,7 @@ namespace xcas {
 	      }
 	    }
 	  }
-	  hyp_color.push_back(int4(u,d,du,dd));
+	  hyp_color.push_back(cplx?int4(0,0,0,0):int4(u,d,du,dd));
 	  continue;
 	} // end quad hypersurface
       } // end hypersurface
@@ -2685,6 +2737,56 @@ namespace xcas {
 	continue;
       }      
     }
+  }
+
+  void Graph3d::displaypolyg(const std::vector<int2> & polyg,const int2 & IJmin,int color,int & Px,int & Py) const {
+    if (polyg.empty())
+      return;
+    // sort list of arguments
+    vector<int2_double2> p;
+    for (int k=0;k<polyg.size();++k){
+      const int2 & cur=polyg[k];
+      if (cur==IJmin){
+	int2_double2 id={cur.i,cur.j,0,0};
+	p.push_back(id);
+      } else {
+	double di=cur.i-IJmin.i,dj=cur.j-IJmin.j;
+	int2_double2 id={cur.i,cur.j,std::atan2(di,dj),di*di+dj*dj};
+	p.push_back(id);
+      }
+    }
+    sort(p.begin(),p.end());
+    // draw polygon
+    vector< vector<int> > P;
+    for (int k=0;k<p.size();++k){
+      vector<int> vi(2);
+      vi[0]=p[k].i;
+      vi[1]=p[k].j;
+      P.push_back(vi);
+    }
+    xcas_color(color & 0xffff);
+    int Ps=P.size();
+    for (int i=0;i<Ps;++i){
+      const vector<int> & A=P[(i?i:Ps)-1];
+      const vector<int> & B=P[i];
+      fl_line(x()+A[0],y()+A[1],x()+B[0],y()+B[1]);
+    }
+    Px=P[0][0];
+    Py=P[0][1];
+  }
+
+  void Graph3d::adddepth(vector<int2> & polyg,const double3 &A,const double3 &B,int2 & IJmin) const {
+    if ((A.z-current_depth)*(B.z-current_depth)>0)
+      return;
+    double t=(current_depth-A.z)/(B.z-A.z);
+    double x=A.x+t*(B.x-A.x);
+    double y=A.y+t*(B.y-A.y);
+    int I,J;
+    XYZ2ij(double3(x,y,current_depth),I,J);
+    int2 IJ(I,J);
+    polyg.push_back(IJ);
+    if (IJ<IJmin)
+      IJmin=IJ;
   }
 
   void Graph3d::addpolyg(vector<int2> & polyg,double x,double y,double z,int2 & IJmin) const {
@@ -3185,8 +3287,178 @@ namespace xcas {
     gr.XYZ2ij(double3(x,y,z),i,j);
   }    
   
+  /* generate colors
+#include <iostream>
+
+using namespace std;
+
+// t angle in radians -> r,g,b
+int arc_en_ciel(int k,double intensite){
+  int r,g,b;
+  k = (k+126)%126;
+  if (k<21){
+    r=251; g=0; b=12*k;
+  }
+  if (k>=21 && k<42){
+    r=251-(12*(k-21)); g=0; b=251;
+  } 
+  if (k>=42 && k<63){
+    r=0; g=(k-42)*12; b=251;
+  } 
+  if (k>=63 && k<84){
+    r=0; g=251; b=251-(k-63)*12;
+  } 
+  if (k>=84 && k<105){
+    r=(k-84)*12; g=251; b=0;
+  } 
+  if (k>=105 && k<126){
+    r=251; g=251-(k-105)*12; b=0;
+  }
+  r*=intensite; g*=intensite; b*=intensite;
+  if (r==0) r=8;
+  return (((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
+}
+
+
+int main(){
+  for (int i=0;i<126;++i){
+    int u=arc_en_ciel(i,1),d=arc_en_ciel(i,.75),du=arc_en_ciel(i,.5),dd=arc_en_ciel(i,.25);
+    cout << "{" << u << "," << d << "," << du << "," << dd << "},\n";
+  }
+}
+  */
+
+  const int4 tabcolorcplx[]={
+{63488,47104,30720,14336},
+{63489,47105,30720,14336},
+{63491,47106,30721,14336},
+{63492,47107,30722,14337},
+{63494,47108,30723,14337},
+{63495,47109,30723,14337},
+{63497,47110,30724,14338},
+{63498,47111,30725,14338},
+{63500,47113,30726,14339},
+{63501,47114,30726,14339},
+{63503,47115,30727,14339},
+{63504,47116,30728,14340},
+{63506,47117,30729,14340},
+{63507,47118,30729,14340},
+{63509,47119,30730,14341},
+{63510,47120,30731,14341},
+{63512,47122,30732,14342},
+{63513,47123,30732,14342},
+{63515,47124,30733,14342},
+{63516,47125,30734,14343},
+{63518,47126,30735,14343},
+{63519,47127,30735,14343},
+{59423,45079,28687,14343},
+{57375,43031,28687,14343},
+{53279,40983,26639,12295},
+{51231,38935,24591,12295},
+{47135,34839,22543,10247},
+{45087,32791,22543,10247},
+{40991,30743,20495,10247},
+{38943,28695,18447,8199},
+{34847,26647,16399,8199},
+{32799,24599,16399,8199},
+{28703,22551,14351,6151},
+{26655,20503,12303,6151},
+{22559,16407,10255,4103},
+{20511,14359,10255,4103},
+{16415,12311,8207,4103},
+{14367,10263,6159,2055},
+{10271,8215,4111,2055},
+{8223,6167,4111,2055},
+{4127,4119,2063,7},
+{2079,2071,15,7},
+{2079,2071,2063,2055},
+{2175,2135,2095,2055},
+{2271,2199,2159,2087},
+{2367,2263,2191,2119},
+{2463,2359,2255,2151},
+{2559,2423,2287,2151},
+{2655,2487,2351,2183},
+{2751,2551,2383,2215},
+{2847,2647,2447,2247},
+{2943,2711,2479,2247},
+{3039,2775,2543,2279},
+{3135,2839,2575,2311},
+{3231,2935,2639,2343},
+{3327,2999,2671,2343},
+{3423,3063,2735,2375},
+{3519,3127,2767,2407},
+{3615,3223,2831,2439},
+{3711,3287,2863,2439},
+{3807,3351,2927,2471},
+{3903,3415,2959,2503},
+{3999,3511,3023,2535},
+{4063,3575,3055,2535},
+{4061,3574,3054,2535},
+{4060,3573,3054,2535},
+{4058,3572,3053,2534},
+{4057,3571,3052,2534},
+{4055,3569,3051,2533},
+{4054,3568,3051,2533},
+{4052,3567,3050,2533},
+{4051,3566,3049,2532},
+{4049,3565,3048,2532},
+{4048,3564,3048,2532},
+{4046,3563,3047,2531},
+{4045,3562,3046,2531},
+{4043,3560,3045,2530},
+{4042,3559,3045,2530},
+{4040,3558,3044,2530},
+{4039,3557,3043,2529},
+{4037,3556,3042,2529},
+{4036,3555,3042,2529},
+{4034,3554,3041,2528},
+{4033,3553,3040,2528},
+{4032,3552,3040,2528},
+{4032,3552,992,480},
+{8128,5600,3040,480},
+{10176,7648,5088,2528},
+{14272,9696,7136,2528},
+{16320,11744,7136,2528},
+{20416,13792,9184,4576},
+{22464,15840,11232,4576},
+{26560,19936,13280,6624},
+{28608,21984,13280,6624},
+{32704,24032,15328,6624},
+{34752,26080,17376,8672},
+{38848,28128,19424,8672},
+{40896,30176,19424,8672},
+{44992,32224,21472,10720},
+{47040,34272,23520,10720},
+{51136,38368,25568,12768},
+{53184,40416,25568,12768},
+{57280,42464,27616,12768},
+{59328,44512,29664,14816},
+{63424,46560,31712,14816},
+{65472,48608,31712,14816},
+{65376,48512,31648,14784},
+{65280,48448,31616,14784},
+{65184,48384,31552,14752},
+{65088,48320,31520,14720},
+{64992,48224,31456,14688},
+{64896,48160,31424,14688},
+{64800,48096,31360,14656},
+{64704,48032,31328,14624},
+{64608,47936,31264,14592},
+{64512,47872,31232,14592},
+{64416,47808,31168,14560},
+{64320,47744,31136,14528},
+{64224,47648,31072,14496},
+{64128,47584,31040,14496},
+{64032,47520,30976,14464},
+{63936,47456,30944,14432},
+{63840,47360,30880,14400},
+{63744,47296,30848,14400},
+{63648,47232,30784,14368},
+{63552,47168,30752,14336},
+  };
+  
   struct hypertriangle_t {
-    int4 * colorptr; // hypersurface color 
+    const int4 * colorptr; // hypersurface color 
     double xmin,xmax,ymin,ymax; // minmax values intersection with plane y-x=Cte
     double a,b,c; // plane equation of triangle
     double zG; // altitude for gravity center 
@@ -3305,6 +3577,62 @@ namespace xcas {
       return true;
     return false;
   }
+
+  void Graph3d::draw_decorations(const giac::gen & title_tmp){
+    if (args_tmp.empty()){ // add selected names
+      char s[256]; strcpy(s,modestr.c_str());
+      int pos=0,modestrsize=modestr.size();
+      pos += modestrsize;
+      s[pos++]=' ';
+      if (mode!=0 && drag_name.type==_IDNT){
+	strcpy(s+pos,drag_name._IDNTptr->id_name);
+	pos += strlen(drag_name._IDNTptr->id_name);
+      }
+      else {
+	if (1 || mode==0 || mode==255){ // print selected names 
+	  vecteur v;
+	  if (mode!=255) v=selected_names(true,false);
+	  int vs=v.size();
+	  if (!vs){ // print current coordinates
+	    double i=Fl::event_x()-x(),j=Fl::event_y()-y(),x,y,z;
+	    find_xyz(i,j,current_depth,x,y,z);
+	    round3(z,window_zmin,window_zmax);
+	    sprintf(s+pos," %.3g,%.3g,%.3g",x,y,z);
+	    pos=strlen(s);
+	  }
+	  for (int i=0;i<vs && pos<100;++i){
+	    if (v[i].type==_IDNT){
+	      strcpy(s+pos,v[i]._IDNTptr->id_name);
+	      pos += strlen(v[i]._IDNTptr->id_name);
+	      if (i<vs-1){
+		s[pos++]=',';
+	      }
+	    }
+	  }
+	}
+      }
+      s[pos]=0;
+      os_draw_string_small(LCD_WIDTH_PX-fl_width(s),LCD_HEIGHT_PX-14,FL_WHITE,FL_BLACK,s,false);
+    }
+    if (mode && title.size()<100 && (!title.empty() || !is_zero(title_tmp))){
+      std::string mytitle;
+      if (!is_zero(title_tmp) && function_final.type==_FUNC){
+	if (function_final==at_point && title_tmp.is_symb_of_sommet(at_point))
+	  mytitle=title_tmp.print(context0);
+	else
+	  mytitle=function_final._FUNCptr->ptr()->s+('('+title_tmp.print(context0)+')'); // gen(symbolic(*function_final._FUNCptr,title_tmp)).print(contextptr);
+      }
+      else
+	mytitle=title;
+      if (!mytitle.empty()){
+	int dt=int(fl_width(mytitle.c_str()));
+	if (dt>LCD_WIDTH_PX)
+	  dt=LCD_WIDTH_PX;
+	os_draw_string_small((LCD_WIDTH_PX-dt)/2,LCD_HEIGHT_PX-14,FL_WHITE,FL_BLACK,mytitle.c_str(),false);
+      }
+    }
+  }
+
   
   // hpersurface encoded as a matrix
   // with lines containing 3 coordinates per point
@@ -3417,6 +3745,7 @@ namespace xcas {
       double hyperxymax=-1e307,hyperxymin=1e307;
       double3 tri[4]; 
       for (int k=0;k<int(hypv.size());k+=2){
+	bool cplx=hyp_color[k].u==0 && hyp_color[k].d==0 && hyp_color[k].du==0 && hyp_color[k].dd==0;
 	vector< vector<float3d> >::const_iterator sbeg=hypv[k],send=hypv[k+1],sprec,scur;
 	vector<float3d>::const_iterator itprec,itcur,itprecend;
 	for (sprec=sbeg,scur=sprec+1;scur<send;++sprec,++scur){
@@ -3473,6 +3802,17 @@ namespace xcas {
 	    double x1=*(itprec-3),x2=*(itprec),x3=*(itcur-3),x4=*(itcur);
 	    double y1=*(itprec-2),y2=*(itprec+1),y3=*(itcur-2),y4=*(itcur+1);
 	    double z1=*(itprec-1),z2=*(itprec+2),z3=*(itcur-1),z4=*(itcur+2);
+	    double a1,a2,a3,a4;
+	    if (cplx){
+	      a1 = ((float2 *)&z1)->a;
+	      z1 = ((float2 *)&z1)->f;
+	      a2 = ((float2 *)&z2)->a;
+	      z2 = ((float2 *)&z2)->f;
+	      a3 = ((float2 *)&z3)->a;
+	      z3 = ((float2 *)&z3)->f;
+	      a4 = ((float2 *)&z4)->a;
+	      z4 = ((float2 *)&z4)->f;
+	    }
 	    yx1=y1-x1; yx2=y2-x2; yx3=y3-x3; yx4=y4-x4;
 	    tri[0]=double3(x1,y1,z1);
 	    tri[1]=double3(x2,y2,z2);
@@ -3483,8 +3823,21 @@ namespace xcas {
 	    if (xy123<hyperxymin) hyperxymin=xy123;
 	    if (xy123>hyperxymax) hyperxymax=xy123;
 	    do_transform(invtransform3d,x123,y123,z123,X,Y,Z);
-	    if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax ){
-	      hypertriangle_t res; res.colorptr=&hyp_color[k];
+	    if ( Z>=window_zmin && Z<=window_zmax &&
+		X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax ){
+	      hypertriangle_t res; 
+	      if (cplx){
+		int idx=(a1+M_PI)*sizeof(tabcolorcplx)/(sizeof(int4)*2*M_PI);
+		if (idx<0 || idx >=sizeof(tabcolorcplx)/(sizeof(int4))){
+		  idx = 0;
+		}
+		// arg of z1*exp(i*a1)+z2*exp(i*a2)+z3*exp(i*a3)+z4*exp(i*a4)
+		// does not work because z1,... are transformed
+		//CERR << idx << " ";
+		res.colorptr=&tabcolorcplx[idx];
+	      }
+	      else
+		res.colorptr=&hyp_color[k];
 	      compute(yx,tri,res);
 	      hypertriangles.push_back(res);
 	    }
@@ -4113,15 +4466,18 @@ namespace xcas {
       F(window_xmin,window_ymax,window_zmax),
       G(window_xmax,window_ymax,window_zmin),
       H(window_xmax,window_ymax,window_zmax);
-    xyz2ij(A,Ai,Aj);
-    xyz2ij(B,Bi,Bj);
-    xyz2ij(C,Ci,Cj);
-    xyz2ij(D,Di,Dj);
-    xyz2ij(E,Ei,Ej);
-    xyz2ij(F,Fi,Fj);
-    xyz2ij(G,Gi,Gj);
-    xyz2ij(H,Hi,Hj);
+    double3 A3,B3,C3,D3,E3,F3,G3,H3;
+    xyz2ij(A,Ai,Aj,A3);
+    xyz2ij(B,Bi,Bj,B3);
+    xyz2ij(C,Ci,Cj,C3);
+    xyz2ij(D,Di,Dj,D3);
+    xyz2ij(E,Ei,Ej,E3);
+    xyz2ij(F,Fi,Fj,F3);
+    xyz2ij(G,Gi,Gj,G3);
+    xyz2ij(H,Hi,Hj,H3);
     indraw3d(precision,precision,lcdz,contextptr,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor);
+    if (hp)
+      draw_decorations(title_tmp);
     if (show_edges){
       // polyhedrons
       for (int k=0;k<int(polyedrev.size());++k){
@@ -4253,6 +4609,30 @@ namespace xcas {
       drawLine(Ei,Ej,Fi,Fj,COLOR_BLUE | 0x800000);
       drawLine(Gi,Gj,Hi,Hj,COLOR_BLUE | 0x800000);
       // planes
+      // current_depth
+      if (dynamic_cast<Geo3d *>(this)){
+	vector<int2> polyg; int2 IJmin(RAND_MAX,RAND_MAX);
+	// x: A3-C3, B3-D3; E3-G3,F3-H3
+	adddepth(polyg,A3,C3,IJmin);
+	adddepth(polyg,B3,D3,IJmin);
+	adddepth(polyg,E3,G3,IJmin);
+	adddepth(polyg,F3,H3,IJmin);
+	// y: A3-E3; B3-F3; C3-G3, D3-H3
+	adddepth(polyg,A3,E3,IJmin);
+	adddepth(polyg,B3,F3,IJmin);
+	adddepth(polyg,C3,G3,IJmin);
+	adddepth(polyg,D3,H3,IJmin);
+	// z: A3-B3, C3-D3, E3-F3, G3-H3
+	adddepth(polyg,A3,B3,IJmin);
+	adddepth(polyg,C3,D3,IJmin);
+	adddepth(polyg,E3,F3,IJmin);
+	adddepth(polyg,G3,H3,IJmin);
+	int Px,Py;
+	displaypolyg(polyg,IJmin,
+		     // FL_CYAN,
+		     FL_YELLOW | 0x400000,
+		     Px,Py);
+      }
       vecteur attrv(native_renderer_instructions);
       for (int i=0;i<attrv.size();++i){
 	gen attr=attrv[i];
@@ -4644,11 +5024,19 @@ namespace xcas {
 	return 1;
       case 'u': case 'f':
 	depth += 0.01;
+	if (!opengl){
+	  if (depth>0.99) depth=0.99;
+	  current_depth=depth;
+	}
 	mouse_position->redraw();
 	redraw();
 	return 1;
       case 'd': case 'n':
 	depth -= 0.01;
+	if (!opengl){
+	  if (depth<-0.99) depth=-0.99;
+	  current_depth=depth;
+	}
 	mouse_position->redraw();
 	redraw();
 	return 1;
@@ -4690,12 +5078,21 @@ namespace xcas {
     current_depth=depth;
     double x,y,z;
     find_xyz(current_i,current_j,current_depth,x,y,z);
+    //std::cout << current_i << " " << current_j << " " << current_depth << " " << x << " " << y << " " << z << '\n';
     in_area=(x>=window_xmin) && (x<=window_xmax) &&
       (y>=window_ymin) && (y<=window_ymax) && 
       (z>=window_zmin) && (z<=window_zmax);
     if (event==FL_MOUSEWHEEL){
       if (!Fl::event_inside(this))
 	return 0;
+      if (!opengl){
+	depth -= Fl::e_dy*0.01;
+	if (depth<-0.99) depth=-0.99;
+	if (depth>0.99) depth=0.99;
+	current_depth=depth;
+	redraw();
+	return 1;
+      }
       if (show_axes){ // checking in_area seems to difficult, especially if mouse plan is not viewed
 	depth = int(1000*(depth-Fl::e_dy *0.01)+.5)/1000.0;
 	mouse_position->redraw();
@@ -4776,12 +5173,15 @@ namespace xcas {
     return res;
   }
 
-  Geo3d::Geo3d(int x,int y,int width, int height, History_Pack * _hp): Graph3d(x,y,width,height,0,_hp) { 
+  Geo3d::Geo3d(int x,int y,int width, int height, History_Pack * _hp): Graph3d(x,y,width,height,0,_hp) {
+    displayhint=false;
     hp=_hp?_hp:geo_find_history_pack(this);
     if (hp){
       hp->eval_below=true;
       hp->eval_below_once=false;
       show_mouse_on_object=true;
+      update_rotation();
+      //default_color(FL_WHITE,hp->contextptr);
     }
   }
 

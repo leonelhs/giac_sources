@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if four points are concyclic in the plane: is_concyclic
+<title>Orthogonal projection in the plane: projection
+
 </title>
 </head>
 <body >
@@ -12,34 +13,61 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en867.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dcheckconcycle" class="subsection">13.16.3  Checking if four points are concyclic in the plane: <span style="font-family:monospace">is_concyclic</span>
+<h3 id="ssec:2dprojection" class="subsection">13.15.8  Orthogonal projection in the plane: <span style="font-family:monospace">projection</span>
+
 <a id="hevea_default1567"></a></h3>
-<p>See Section <a href="cascmd_en941.html#ssec%3A3dcheckconcycle">14.13.7</a> for checking for concyclicity in
-three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_concyclic</span> command determines whether or not
-points are cyclic.
+<p>See Section <a href="cascmd_en959.html#ssec%3A3dprojection">14.14.8</a> for projections in space.</p><p>The <span style="font-family:monospace">projection</span> command creates a projection.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_concyclic</span> takes one argument:<br>
- <span style="font-style:italic">L</span>, a list or sequence of points.
-</li><li class="li-itemize"><span style="font-family:monospace">is_concyclic(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if the points
-in <span style="font-style:italic">L</span> all lie on the same circle, and returns <span style="font-family:monospace">0</span> otherwise.
-</li></ul><h4 id="sec2200" class="subsubsection">Examples.</h4>
+<span style="font-family:monospace">projection</span> takes one mandatory argument and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">O</span>, a geometric object.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">projection(</span><span style="font-style:italic">O</span><span style="font-family:monospace">)</span> returns a new command which projects
+points onto <span style="font-style:italic">O</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">projection(</span><span style="font-style:italic">O</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the projection of
+<span style="font-style:italic">G</span> onto <span style="font-style:italic">O</span>.
+</li></ul><h4 id="sec2200" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_concyclic(1+i, -1+i, -1-i, 1-i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">p1:= projection(line(-1,i))</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">p1(i+1)</span>
 </td></tr>
 </table>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en272.png">
+</div>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_concyclic(i, -1+i, -1-i, 1-i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">p2:= projection(circle(-1,1))</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">p2(i)</span>
 </td></tr>
 </table>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en273.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">projection(line(-1, i), 1+i)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en274.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">projection(circle(-1,1), i)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en275.png">
+</div>
 </li></ul>
 <hr>
 <a href="cascmd_en865.html"><img src="previous_motif.gif" alt="Previous"></a>

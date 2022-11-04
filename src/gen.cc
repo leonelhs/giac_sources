@@ -9037,7 +9037,7 @@ namespace giac {
 #ifdef HAVE_LIBMPFR
 	// FIXME?? try to avoid rounding error with more digits
 	if (fabs(approx._DOUBLE_val)<1e-5 && (a-b).type!=_FRAC){
-	  gen tmp=accurate_evalf(eval(a-b,1,contextptr),1000);
+	  gen tmp=accurate_evalf(eval(a-b,1,contextptr),1100); // 1100 bits exceeds double precision, if a and b are equal up to double precision, this will be rounded to 0.0
 	  tmp=evalf_double(tmp,1,contextptr);
 	  if (tmp.type==_DOUBLE_)
 	    approx=tmp;
@@ -16860,7 +16860,7 @@ void sprint_double(char * s,double d){
 #ifdef KHICAS // replace ],[ by ][
       if (last.is_symb_of_sommet(at_pnt)){
 	if (os_shell || nspirelua)
-	  xcas::displaygraph(g,&C);
+	  xcas::displaygraph(g,gp,&C);
 	S="Graphic_object";
       }
       else {

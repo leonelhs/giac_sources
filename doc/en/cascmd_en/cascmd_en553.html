@@ -162,7 +162,7 @@ written in the AMPL modeling language (such files commonly have the extension <s
 <span style="font-family:monospace">nlpsolve</span> contains a very basic parser for such files and is able to read
 problem variables, objective and constraints. For example, problems from
 <a href="https://www.minlplib.org/instances.html"><span style="font-family:monospace">https://www.minlplib.org/instances.html</span></a> can be loaded this way. Solver parameters
-can be provided in <span style="font-style:italic">opt</span>.
+can be specified in <span style="font-style:italic">opt</span>.
 </dd><dt class="dt-description"><span style="font-weight:bold">Automatic selection of the optimization method.</span></dt><dd class="dd-description">
 If objective and constraints are twice differentiable, then interior-point method is used.
 If no initial point is provided and there are only box constraints, then differential evolution
@@ -191,7 +191,7 @@ When integrality constraints are provided, <span style="font-family:monospace">n
 integer-feasible solutions. For differentiable input, the branch&amp;bound method is used, unless
 the problem is convex, in which case the outer-approximation method is used. In the non-differentiable
 case, differential evolution is applied.
-</dd></dl><h4 id="sec1386" class="subsubsection">Examples.</h4>
+</dd></dl><h4 id="sec1386" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 The continuous function <span style="font-style:italic">f</span> defined by
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=min{</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
@@ -381,7 +381,7 @@ where 0≤ <span style="font-style:italic">x</span><sub><span style="font-style:
 </table>
 for 0≤ <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>≤ 10 and <span style="font-style:italic">a</span>=2.<br>
 <span style="font-style:italic">Input:</span>
-<div class="center">
+<blockquote class="quote">
 <table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f:=proc(x1,x2,a)</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  local t; purge(t);</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  if x1&lt;x2 then</span></td></tr>
@@ -389,10 +389,12 @@ for 0≤ <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-
 <tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  else</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">    return 0;</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  fi;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">end:;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">nlpsolve(quote(f(x1,x2,2)),[x1,x2]=0..10)</span>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">end:;</span>
 </td></tr>
 </table>
+</blockquote>
+<div class="center">
+<span style="font-family:monospace">nlpsolve(quote(f(x1,x2,2)),[x1,x2]=0..10)</span>
 </div>
 </li><li class="li-itemize"><span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>

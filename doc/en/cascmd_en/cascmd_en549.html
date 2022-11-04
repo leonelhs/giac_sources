@@ -45,12 +45,12 @@ destination for <span style="font-style:italic">i</span>=1,2,…,<span style="fo
 <span style="font-style:italic">X</span><sup>*</sup> is the optimal solution and
 <span style="font-style:italic">c</span>=∑<sub><span style="font-style:italic">i</span>=1</sub><sup><span style="font-style:italic">m</span></sup>∑<sub><span style="font-style:italic">j</span>=1</sub><sup><span style="font-style:italic">n</span></sup><span style="font-style:italic">c</span><sub><span style="font-style:italic">ij</span></sub> <span style="font-style:italic">x</span><sub><span style="font-style:italic">ij</span></sub><sup>*</sup> is the total (minimal)
 cost of transportation.
-</li></ul><h4 id="sec1375" class="subsubsection">Example.</h4>
+</li></ul><h4 id="sec1375" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:=[12,17,11];d:=[10,10,10,10];</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">C:=[[50,75,30,45],[65,80,40,60],[40,70,50,55]];</span></td></tr>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:=[12,17,11]:; d:=[10,10,10,10]:;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">C:=[[50,75,30,45],[65,80,40,60],[40,70,50,55]]:;</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">tpsolve(s,d,C)</span>
 </td></tr>
 </table>
@@ -73,13 +73,13 @@ is said to be <em>closed</em> or <em>balanced</em>, otherwise it is
 said to be <em>unbalanced</em>. The excess
 supply/demand is covered by adding a dummy demand/supply point with
 zero cost of “transportation” from/to that point. The 
-<span style="font-family:monospace">tpsolve</span> command handles such cases automatically.</p><h4 id="sec1376" class="subsubsection">Example.</h4>
+<span style="font-family:monospace">tpsolve</span> command handles such cases automatically.</p><h4 id="sec1376" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:=[7,10,8,8,9,6];d:=[9,6,12,8,10];</span></td></tr>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:=[7,10,8,8,9,6]:; d:=[9,6,12,8,10]:;</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">C:=[[36,40,32,43,29],[28,27,29,40,38],[34,35,41,29,31],</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">[41,42,35,27,36],[25,28,40,34,38],[31,30,43,38,40]];</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">    [41,42,35,27,36],[25,28,40,34,38],[31,30,43,38,40]]:;</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">tpsolve(s,d,C)</span>
 </td></tr>
 </table>
@@ -113,12 +113,12 @@ represented by a symbol (usually <span style="font-style:italic">M</span>), to t
 Hence all instances of a symbol in the cost matrix are automatically replaced
 by a practically infinite number (precisely
 (<span style="font-style:italic">m</span> <span style="font-style:italic">n</span> + 1)/ε, where ε is returned
-by <span style="font-family:monospace">epsilon</span>), which forces the algorithm to avoid the associated routes. </p><h4 id="sec1377" class="subsubsection">Example.</h4>
+by <span style="font-family:monospace">epsilon</span>), which forces the algorithm to avoid the associated routes. </p><h4 id="sec1377" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:=[95,70,165,165];d:=[195,150,30,45,75];</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">C:=[[15,M,45,M,0],[12,40,M,M,0],[0,15,25,25,0],[M,0,M,12,0]]</span></td></tr>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:=[95,70,165,165]:; d:=[195,150,30,45,75]:;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">C:=[[15,M,45,M,0],[12,40,M,M,0],[0,15,25,25,0],[M,0,M,12,0]]:;</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">tpsolve(s,d,C)</span>
 </td></tr>
 </table>

@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Solving general linear programming problems: lpsolve
+<title>Solving (mixed integer) linear programming problems: lpsolve
 </title>
 </head>
 <body >
@@ -12,7 +12,7 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en549.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1353" class="subsection">5.52.2  Solving general linear programming problems: <span style="font-family:monospace">lpsolve</span>
+<h3 id="sec1353" class="subsection">5.52.2  Solving (mixed integer) linear programming problems: <span style="font-family:monospace">lpsolve</span>
 <a id="hevea_default939"></a></h3>
 <p>The <span style="font-family:monospace">lpsolve</span> command can solve linear programming problems,
 where a multivariate linear function needs to be maximized or
@@ -128,22 +128,19 @@ solution. If there is no feasible solution, an empty list is returned.
 When the objective function is unbounded, <span style="font-style:italic">optimum</span> is returned
 as <span style="font-family:monospace">+infinity</span> (for maximization problems) or
 <span style="font-family:monospace">-infinity</span> (for minimization problems). If an error is
-experienced while solving (terminating the process), then <span style="font-family:monospace">undef</span> is
+experienced while solving, then the process is terminated and <span style="font-family:monospace">undef</span> is
 returned.
 </li></ul><p>
 The given objective function is minimized by default. To maximize it,
 include the option <span style="font-family:monospace">lp_maximize=true</span> or <span style="font-family:monospace">lp_maximize</span>
 or simply <span style="font-family:monospace">maximize</span>. Also note that all variables are, unless
 specified otherwise, assumed to be continuous and unrestricted in
-sign.</p><h4 id="sec1355" class="subsubsection">Examples.</h4>
+sign.</p><h4 id="sec1355" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 Solve the problem specified in (<a href="cascmd_en547.html#eq%3Alpexample">11</a>):<br>
 <span style="font-style:italic">Input</span>:
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">constr:=[x&lt;=1,y&gt;=2,x+3y-z=2,3x-y+z&lt;=8,-x+y&lt;=5];</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lpsolve(2x+y-z+4,constr)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">lpsolve(2x+y-z+4,[x&lt;=1,y&gt;=2,x+3y-z=2,3x-y+z&lt;=8,-x+y&lt;=5])</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
@@ -215,10 +212,7 @@ entered after the constraints. For example, minimize −6<span style="font-style
 where 1≤ <span style="font-style:italic">x</span>≤ 20 and <span style="font-style:italic">y</span>≥ 0.<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">constr:=[5x-10y&lt;=20,2z-3y=6,-x+3y&lt;=3];</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lpsolve(-6x+4y+z,constr,x=1..20,y=0..inf)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">lpsolve(-6x+4y+z,[5x-10y&lt;=20,2z-3y=6,-x+3y&lt;=3],x=1..20,y=0..inf)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
@@ -274,11 +268,14 @@ as <span style="font-family:monospace">+infinity</span> (for maximization proble
 experienced while solving (terminating the process), <span style="font-family:monospace">undef</span> is
 returned.
 
-</li></ul><h4 id="sec1357" class="subsubsection">Examples.</h4>
+</li></ul><h4 id="sec1357" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
+We minimize −2<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span> subject to −<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>≤ 3, <span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>≤ 5, <span style="font-style:italic">x</span>≥ 0 and <span style="font-style:italic">y</span>≥ 0
+by providing the parameters <span style="font-style:italic">A</span> and <span style="font-style:italic">b</span>.
+<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">c:=[-2,1];A:=[[-1,1],[1,1],[-1,0],[0,-1]];b:=[3,5,0,0];</span></td></tr>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">c:=[-2,1]:; A:=[[-1,1],[1,1],[-1,0],[0,-1]]:; b:=[3,5,0,0]:;</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lpsolve(c,[A,b])</span>
 </td></tr>
 </table>
@@ -290,12 +287,12 @@ returned.
 ⎦</td><td class="dcell">⎤<br>
 ⎦</td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+</li><li class="li-itemize">Enter variable bounds as the third argument. The following example minimizes −2<span style="font-style:italic">x</span>+5<span style="font-style:italic">y</span>−3<span style="font-style:italic">z</span>
+subject to 2≤ <span style="font-style:italic">x</span>≤ 6, 3≤ <span style="font-style:italic">y</span>≤ 10 and 1≤ <span style="font-style:italic">z</span>≤ 7/2.
+<br>
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">c:=[-2,5,-3];bl:=[2,3,1];bu:=[6,10,7/2];</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lpsolve(c,[],[bl,bu])</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">lpsolve([-2,5,-3],[],[[2,3,1],[6,10,7/2]])</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
@@ -318,12 +315,12 @@ returned.
 ⎥<br>
 ⎦</td></tr>
 </table>
+</li><li class="li-itemize">To solve problems with only equality constraints, enter empty lists in places of <span style="font-style:italic">A</span> and <span style="font-style:italic">b</span>.
+The following example minimizes 4<span style="font-style:italic">x</span>+5<span style="font-style:italic">y</span> subject to −<span style="font-style:italic">x</span>+3/2 <span style="font-style:italic">y</span>=2 and −3<span style="font-style:italic">x</span>+2<span style="font-style:italic">y</span>=3.
+<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">c:=[4,5];Aeq:=[[-1,3/2],[-3,2]];beq:=[2,3];</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lpsolve(c,[[],[],Aeq,beq])</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">lpsolve([4,5],[[],[],[[-1,3/2],[-3,2]],[2,3]])</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
@@ -370,7 +367,7 @@ the safeguarding, use the option <span style="font-family:monospace">acyclic=fal
 integer values. Such problems, called (<em>mixed</em>) <em>integer
 programming problems</em>, are solved by applying the branch-and-bound method.</p><p>To solve pure integer programming problems, in which all variables are
 integers, use the option <span style="font-family:monospace">assume=integer</span> or
-<span style="font-family:monospace">assume=lp_integer</span>.</p><h4 id="sec1360" class="subsubsection">Example.</h4>
+<span style="font-family:monospace">assume=lp_integer</span>.</p><h4 id="sec1360" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
@@ -386,11 +383,11 @@ integers, use the option <span style="font-family:monospace">assume=integer</spa
 </p><p>Use the option <span style="font-family:monospace">assume=lp_binary</span> to specify that all variables
 are binary, i.e. the only allowed values are 0 and 1. These usually 
 represent <span style="font-family:monospace">false</span> and <span style="font-family:monospace">true</span>, respectively, giving the
-variable a certain meaning in a logical context.</p><h4 id="sec1361" class="subsubsection">Example.</h4>
+variable a certain meaning in a logical context.</p><h4 id="sec1361" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4&lt;=14], assume=lp_binary,maximize)</span>
+<span style="font-family:monospace">lpsolve(8x1+11x2+6x3+4x4,[5x1+7x2+4x3+3x4&lt;=14],assume=lp_binary,maximize)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
@@ -405,15 +402,14 @@ to specify integer variables and/or <span style="font-family:monospace">lp_binar
 specify binary variables.</p><p>Input:
 </p><div class="center">
 <span style="font-family:monospace">lpsolve(x+3y+3z,[x+3y+2z&lt;=7,2x+2y+z&lt;=11],</span><br>
-<span style="font-family:monospace">assume=lp_nonnegative,lp_maximize,</span>
-<span style="font-family:monospace">lp_integervariables=[x,z])</span>
+<span style="font-family:monospace">assume=lp_nonnegative,lp_maximize,lp_integervariables=[x,z])</span>
 </div><p>
 Output:
 </p><div class="center">
 	<span style="font-family:monospace">[10,[x=1,y=0,z=3]]</span>
 </div><p><br>
 </p><p>Use the <span style="font-family:monospace">assume=lp_nonnegint</span> or <span style="font-family:monospace">assume=nonnegint</span>
-option to get nonnegative integer values.</p><h4 id="sec1362" class="subsubsection">Example.</h4>
+option to get nonnegative integer values.</p><h4 id="sec1362" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
@@ -428,11 +424,11 @@ option to get nonnegative integer values.</p><h4 id="sec1362" class="subsubsecti
 </table><p><br>
 </p><p>When specifying MIP problems in matrix form, the lists corresponding to
 the options <span style="font-family:monospace">lp_integervariables</span> and <span style="font-family:monospace">lp_binaryvariables</span>
-should contain indices of the variables, as in the following example.</p><h4 id="sec1363" class="subsubsection">Example.</h4>
+should contain indices of the variables, as in the following example.</p><h4 id="sec1363" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">c:=[2,-3,-5];A:=[[-5,4,-5],[2,5,7],[2,-3,4]];b:=[3,1,-2];</span></td></tr>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">c:=[2,-3,-5]:; A:=[[-5,4,-5],[2,5,7],[2,-3,4]]:; b:=[3,1,-2]:;</span></td></tr>
 <tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lpsolve(c,[A,b],lp_integervariables=[0,2])</span>
 </td></tr>
 </table>
@@ -513,7 +509,7 @@ the <span style="font-family:monospace">lp_mostfractional</span> strategy is use
 fulfilled.</p><p>Using an appropriate combination of node/variable selection strategies may
 significantly reduce the number of subproblems needed to be examined
 when solving a particular MIP problem, as illustrated in the following example.
-</p><h4 id="sec1367" class="subsubsection">Example.</h4>
+</p><h4 id="sec1367" class="subsubsection">Example</h4>
 <p>
 Minimize <span style="font-style:italic">z</span>=<span style="font-weight:bold"><span style="font-style:italic">c</span></span>·<span style="font-weight:bold"><span style="font-style:italic">x</span></span> subject to 
 <span style="font-weight:bold"><span style="font-style:italic">A</span></span> <span style="font-weight:bold"><span style="font-style:italic">x</span></span>=<span style="font-weight:bold"><span style="font-style:italic">b</span></span>, where 
@@ -662,14 +658,16 @@ algorithm is finished, a summary is displayed containing the total number of
 examined subproblems, the number of most nodes being active at the same time, and
 the number of applied GMI cuts along with the respective average objective value
 improvement. </p><p>In the following example, we solve the MIP given above.
-The solver shows all progress and summary messages.</p><h4 id="sec1371" class="subsubsection">Example.</h4>
+The solver shows all progress and summary messages.</p><h4 id="sec1371" class="subsubsection">Example</h4>
 <p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">A:=[[22,13,26,33,21,3,14,26],[39,16,22,28,26,30,23,24], 
-[18,14,29,27,30,38,26,26],[41,26,28,36,18,38,16,26]]:;</span><br>
- <span style="font-family:monospace">b:=[7872,10466,11322,12058]:;c:=[2,10,13,17,7,5,7,3]:;</span><br>
- <span style="font-family:monospace">lpsolve(c,[[],[],A,b],assume=nonnegint,lp_verbose)</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">A:=[[22,13,26,33,21,3,14,26],[39,16,22,28,26,30,23,24],</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">    [18,14,29,27,30,38,26,26],[41,26,28,36,18,38,16,26]]:;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">b:=[7872,10466,11322,12058]:; c:=[2,10,13,17,7,5,7,3]:;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">lpsolve(c,[[],[],A,b],assume=nonnegint,lp_verbose)</span>
+</td></tr>
+</table>
 </div><p>
 <span style="font-style:italic">Output:</span>
 </p><div class="center">
@@ -790,8 +788,8 @@ the interior-point solver by using the
 ⎦</td></tr>
 </table>
 <h4 id="sec1373" class="subsubsection">Loading a problem from a file</h4>
-<p>Linear (integer) programming problems can be loaded from MPS<sup><a id="text4" href="cascmd_en592.html#note4">1</a></sup> or CPLEX
-LP<sup><a id="text5" href="cascmd_en592.html#note5">2</a></sup> format files. The file name should be a string passed as
+<p>Linear (integer) programming problems can be loaded from MPS<sup><a id="text4" href="cascmd_en593.html#note4">1</a></sup> or CPLEX
+LP<sup><a id="text5" href="cascmd_en593.html#note5">2</a></sup> format files. The file name should be a string passed as
 the <span style="font-style:italic">obj</span> parameter. If the file name has extension <span style="font-family:monospace">.lp</span>, then CPLEX LP format is assumed. If the extension is <span style="font-family:monospace">.mps</span> resp. <span style="font-family:monospace">.gz</span>, then MPS resp. gzipped MPS format is assumed.</p><p>For example, assume that the file <span style="font-family:monospace">somefile.lp</span> is stored in
 the working directory and that it contains the following lines of text:
 </p><pre class="verbatim">Maximize

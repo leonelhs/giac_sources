@@ -115,6 +115,7 @@ namespace xcas {
     virtual void draw();
     virtual void orthonormalize();
     void display(); 
+    void displaypolyg(const std::vector<int2> & polyg,const int2 & IJmin,int color,int & Px,int & Py) const ;
     // internally callled by draw, maybe multiple times when printing
     void print(); // assumes that printing is assigned to a FILE *
     virtual int in_handle(int event);
@@ -158,11 +159,14 @@ namespace xcas {
 	       ) const;
 
     bool indraw3d(int w,int h,int lcdz,const giac::context*,int upcolor,int downcolor,int downupcolor,int downdowncolor) ;
+    void draw_decorations(const giac::gen & title_tmp);
     void xyz2ij(const double3 & d,int &i,int &j) const; // d not transformed
     void xyz2ij(const double3 & d,double &i,double &j) const; // d not transformed
+    void xyz2ij(const double3 & d,double &i,double &j,double3 & d3) const; // d not transformed, d3 is
     void XYZ2ij(const double3 & d,int &i,int &j) const; // d is transformed
     void draw3d(const giac::context *); // 3d rendering engine if opengl is false (e.g. for mac os)
     void addpolyg(vector<int2> & polyg,double x,double y,double z,int2 & IJmin) const ;
+    void adddepth(vector<int2> & polyg,const double3 &A,const double3 &B,int2 & IJmin) const;
     double transform3d[16],invtransform3d[16];
     int show_edges,lcdz,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor,LCD_WIDTH_PX,LCD_HEIGHT_PX;
     short int precision,diffusionz,diffusionz_limit;

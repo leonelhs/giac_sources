@@ -14,7 +14,7 @@
 <h3 id="sec671" class="subsection">5.26.3  Discrete Fourier Transform and the Fast Fourier Transform</h3>
 <p>For any integer <span style="font-style:italic">N</span>, the Discrete Fourier Transform (DFT) is a
 transformation <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub> defined on the set of periodic sequences of
-period <span style="font-style:italic">N</span>; it depends on a choice of a primitive <span style="font-style:italic">N</span>-th root of unity
+period <span style="font-style:italic">N</span>; it depends on a choice of a primitive <span style="font-style:italic">n</span>th root of unity
 ω<sub><span style="font-style:italic">N</span></sub>. For sequences with complex coefficients, we take: 
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">ω<sub><span style="font-style:italic">N</span></sub>=<span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">i</span> π</td></tr>
 <tr><td class="hbar"></td></tr>
@@ -69,7 +69,7 @@ computed with the Fast Fourier Transform.
 </li><li class="li-itemize"><span style="font-family:monospace">ifft(</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">x</span>), the inverse
 discrete Fourier transform of <span style="font-style:italic">x</span>.<br>
  If <span style="font-style:italic">x</span> has length which is a power of 2, then <span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">x</span>) is
-computed with the Fast Fourier Transform.</li></ul><h4 id="sec672" class="subsubsection">Examples.</h4>
+computed with the Fast Fourier Transform.</li></ul><h4 id="sec672" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
@@ -142,7 +142,7 @@ This is just the discrete Fourier transform of <span style="font-style:italic">c
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
 </table></td><td class="dcell"><span style="font-style:italic">c</span><sub><span style="font-style:italic">j</span></sub>(ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">k</span></sup>)<sup><span style="font-style:italic">j</span></sup>=<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>(<span style="font-style:italic">c</span>)<sub><span style="font-style:italic">k</span></sub> 
 </td></tr>
-</table><h4 id="sec675" class="subsubsection">Example.</h4>
+</table><h4 id="sec675" class="subsubsection">Example</h4>
 <p>
 Find the values of <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>) at <span style="font-style:italic">x</span>=1,<span style="font-style:italic">i</span>,−1,−<span style="font-style:italic">i</span>.<br>
  <span style="font-style:italic">Input:</span>
@@ -179,7 +179,7 @@ This is <span style="font-style:italic">N</span> times the inverse fourier trans
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
 </table></td><td class="dcell"><span style="font-style:italic">c</span><sub><span style="font-style:italic">j</span></sub>(ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">k</span></sup>)<sup><span style="font-style:italic">j</span></sup>=<span style="font-style:italic">NF</span><sub><span style="font-style:italic">N</span></sub><sup>−1</sup>(<span style="font-style:italic">c</span>)<sub><span style="font-style:italic">k</span></sub> 
 </td></tr>
-</table><h4 id="sec676" class="subsubsection">Example.</h4>
+</table><h4 id="sec676" class="subsubsection">Example</h4>
 <p>
 Use this method to find the values of <span style="font-style:italic">P</span>(<span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>) at <span style="font-style:italic">x</span>=1,<span style="font-style:italic">i</span>,−1,−<span style="font-style:italic">i</span>.
 <span style="font-style:italic">Input:</span><br>
@@ -431,7 +431,7 @@ Replace <span style="font-style:italic">y</span><sub><span style="font-style:ita
 <span style="font-style:italic">c</span><sub><span style="font-style:italic">m</span></sub>ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">km</span></sup>ω<sub><span style="font-style:italic">N</span></sub><sup>−<span style="font-style:italic">kn</span></sup> 
 </td></tr>
 </table>
-If <span style="font-style:italic">m</span>≠ <span style="font-style:italic">n</span> (mod <span style="font-style:italic">N</span> ), ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">m</span>−<span style="font-style:italic">n</span></sup> is an <span style="font-style:italic">N</span>-th root of unity different
+If <span style="font-style:italic">m</span>≠ <span style="font-style:italic">n</span> (mod <span style="font-style:italic">N</span> ), ω<sub><span style="font-style:italic">N</span></sub><sup><span style="font-style:italic">m</span>−<span style="font-style:italic">n</span></sup> is an <span style="font-style:italic">n</span>th root of unity different
 from 1, hence:
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">ω<sub><span style="font-style:italic">N</span></sub><sup>(<span style="font-style:italic">m</span>−<span style="font-style:italic">n</span>)<span style="font-style:italic">N</span></sup>=1,    </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
@@ -468,7 +468,7 @@ Conclusion: if |<span style="font-style:italic">n</span>|&lt;<span style="font-s
 with large indices
 (at least <span style="font-style:italic">N</span>/2 in absolute value), hence is small (depending on the
 rate of convergence of the Fourier series).
-</li></ul><h4 id="sec677" class="subsubsection">Example.</h4>
+</li></ul><h4 id="sec677" class="subsubsection">Example</h4>
 <p> 
 <span style="font-style:italic">Input:</span>
 </p><div class="center">

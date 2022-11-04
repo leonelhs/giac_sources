@@ -412,6 +412,7 @@ namespace giac {
     intvar_counter=0;
     realvar_counter=0;
     if (args==at_solve) return 1;
+    //clear_context((context *) contextptr);
     init_context((context *) ((void *) contextptr));
     gen res= _rm_all_vars(args,contextptr);
     *logptr(contextptr) << "============== restarted ===============" << '\n';

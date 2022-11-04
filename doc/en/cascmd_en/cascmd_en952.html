@@ -4,50 +4,32 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rotation in space: rotation
-</title>
+<title>General remarks</title>
 </head>
 <body >
 <a href="cascmd_en951.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en953.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3drotations" class="subsection">14.14.4  Rotation in space: <span style="font-family:monospace">rotation</span>
-<a id="hevea_default1658"></a></h3>
-<p>See Section <a href="cascmd_en859.html#ssec%3A2drotations">13.15.4</a> for rotations in the plane.</p><p>The <span style="font-family:monospace">rotation</span> command creates a rotation.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rotation</span> takes two mandatory arguments and
-one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a line (to rotate about).
-</li><li class="li-itemize">θ, the angle of rotation.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">rotation(</span><span style="font-style:italic">L</span>,θ<span style="font-family:monospace">)</span> returns a new command which
-rotations about <span style="font-style:italic">L</span> through an angle of θ.
-</li><li class="li-itemize"><span style="font-family:monospace">reflection(</span><span style="font-style:italic">L</span>,θ,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the
-rotation of <span style="font-style:italic">G</span> about <span style="font-style:italic">L</span> through an angle of θ.
-</li></ul><h4 id="sec2409" class="subsubsection">Examples.</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">S:= sphere([1,0,0],0.5)</span>
-<span style="font-family:monospace">r:= rotation(line(point(0,0,0),point(0,0,1)), 2*pi/3)</span>
-<span style="font-family:monospace">color(S,blue),r(S)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en341.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">rotation(line(point(0,0,0),point(0,0,1)), 2*pi/3,S)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en342.png">
-</div>
-</li></ul>
+<h3 id="sec2410" class="subsection">14.14.1  General remarks</h3>
+<p>The transformations in this section operate on any geometric object.
+They take as arguments parameters to specify the transformation. They
+can optionally take a geometric object as the last argument, in which
+case the transformed object is returned. Without the geometric object
+as an argument, these transformations will return a new command which
+performs the transformation. For example, to move an object
+<span style="font-family:monospace">P</span> 3 units up, either
+</p><div class="center">
+<span style="font-family:monospace">translation([0,0,3],P)</span>
+</div><p>
+or
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">t:= translation([0,0,3])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">t(P)</span>
+</td></tr>
+</table>
+</div><p>
+works.</p>
 <hr>
 <a href="cascmd_en951.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

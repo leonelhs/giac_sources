@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inversion in space: inversion
+<title>Rotation in space: rotation
 </title>
 </head>
 <body >
@@ -12,45 +12,40 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en956.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dinversion" class="subsection">14.14.7  Inversion in space: <span style="font-family:monospace">inversion</span>
+<h3 id="ssec:3drotations" class="subsection">14.14.4  Rotation in space: <span style="font-family:monospace">rotation</span>
 <a id="hevea_default1661"></a></h3>
-<p>See Section <a href="cascmd_en862.html#ssec%3A2dinversion">13.15.7</a> for inversions in the plane.</p><p>Given a point <span style="font-style:italic">P</span> and a real number <span style="font-style:italic">k</span>, the corresponding
-<em>inversion</em> of a point <span style="font-style:italic">A</span> is the point <span style="font-style:italic">A</span>′ on the ray
-<span style="font-style:italic">PA</span> satisfying <span style="text-decoration:overline"><span style="font-style:italic">PA</span></span>·<span style="text-decoration:overline"><span style="font-style:italic">PA</span></span><span style="text-decoration:overline">′</span> =
-<span style="font-style:italic">k</span><sup>2</sup>. The <span style="font-family:monospace">inversion</span> command creates inversions.
+<p>See Section <a href="cascmd_en862.html#ssec%3A2drotations">13.15.4</a> for rotations in the plane.</p><p>The <span style="font-family:monospace">rotation</span> command creates a rotation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">inversion</span> takes two mandatory and one optional
-argument:
+<span style="font-family:monospace">rotation</span> takes two mandatory arguments and
+one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">k</span>, the inversion ratio.
+<span style="font-style:italic">L</span>, a line (to rotate about).
+</li><li class="li-itemize">θ, the angle of rotation.
 </li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">inversion(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">k</span><span style="font-family:monospace">)</span> returns a new command which
-does an inversion about <span style="font-style:italic">P</span> with a ratio <span style="font-style:italic">k</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">inversion(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">k</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the inversion of
-<span style="font-style:italic">G</span>.
-</li></ul><h4 id="sec2415" class="subsubsection">Examples.</h4>
+</li><li class="li-itemize"><span style="font-family:monospace">rotation(</span><span style="font-style:italic">L</span>,θ<span style="font-family:monospace">)</span> returns a new command which
+rotations about <span style="font-style:italic">L</span> through an angle of θ.
+</li><li class="li-itemize"><span style="font-family:monospace">reflection(</span><span style="font-style:italic">L</span>,θ,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the
+rotation of <span style="font-style:italic">G</span> about <span style="font-style:italic">L</span> through an angle of θ.
+</li></ul><h4 id="sec2416" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">S := sphere([0,1,0],0.5)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">inver:= inversion(point(0,0,0), 2)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">color(S,blue),inver(S)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">S:= sphere([1,0,0],0.5)</span>
+<span style="font-family:monospace">r:= rotation(line(point(0,0,0),point(0,0,1)), 2*pi/3)</span>
+<span style="font-family:monospace">color(S,blue),r(S)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en346.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">rotation(line(point(0,0,0),point(0,0,1)), 2*pi/3,S)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <div class="center">
 <img src="cascmd_en347.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">inversion(point(0,0,0),2,S)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en348.png">
 </div>
 </li></ul>
 <hr>

@@ -91,6 +91,7 @@ namespace xcas {
   void browser_help(const giac::gen & f,int language); // Help on object f
   void check_browser_help(const giac::gen & g,int language); // Help on g is it's a ?()
   void help_output(const std::string & s,int language); // help in Xcas_help_output
+  void next_line(const std::string & s,int L,std::string & line,int & i);
 
   // Apparence
   void nextfl_menu(Fl_Menu_Item * & m);

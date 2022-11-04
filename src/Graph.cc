@@ -3481,11 +3481,17 @@ namespace xcas {
       return 0;
     if (!hp)
       return 0;
+    if (gr3d && !gr3d->opengl && (couleur&0xffff)==0)
+      couleur |= FL_WHITE;
     if (gr3d && !gr3d->push_in_area){
       if (event==FL_RELEASE && Fl::event_button()== FL_RIGHT_MOUSE ){
 	pushed=moving=moving_frame=false;
 	change_attributs();
 	args_tmp.clear();
+	return 1;
+      }
+      if (!gr3d->opengl && event==FL_MOVE && mode!=255){
+	redraw();
 	return 1;
       }
       return 0;
@@ -3591,8 +3597,11 @@ namespace xcas {
 	  moving_frame=false;
 	return 1;
       }
-      if (mode==255)
+      if (mode==255){
+	if (gr3d && !gr3d->opengl)
+	  redraw();
 	return 0;
+      }
       if (moving && (event==FL_DRAG || event==FL_RELEASE) ){
 	if (mouse_position) mouse_position->redraw();
 	// cerr << current_i << " " << current_j << '\n';
@@ -4237,7 +4246,6 @@ namespace xcas {
   }
 
   void cb_set_mode(Fl_Widget * m ,const gen & f_tmp,const gen & f_final,int mode,const string & help){
-    static string modestr;
     static bool asked=false;
     Figure * f=find_figure(m);
     if (f && f->geo){
@@ -4269,10 +4277,10 @@ namespace xcas {
 	}
       }
       if (mode==255)
-	modestr=gettext("Frame");
+	f->geo->modestr=gettext("Frame");
       else
-	modestr=mode?gen2string(f_final):gettext("Pointer");
-      f->mode->value(modestr.c_str());
+	f->geo->modestr=mode?gen2string(f_final):gettext("Pointer");
+      f->mode->value(f->geo->modestr.c_str());
     }
   }
 
@@ -4502,6 +4510,12 @@ namespace xcas {
     fl_line(i0+delta_i,j0+delta_j,i1+delta_i,j1+delta_j);
   }
 
+  void fl_line_color(int x1,int y1,int x2,int y2,int color){
+    xcas_color(color);
+    fl_line(x1,y1,x2,y2);
+  }
+
+  
   int logplot_points=20;
 
   void checklog_fl_line(double i0,double j0,double i1,double j1,double deltax,double deltay,bool logx,bool logy,double window_xmin,double x_scale,double window_ymax,double y_scale){
@@ -5220,6 +5234,23 @@ namespace xcas {
     if (g.type==_STRNG)
       return *g._STRNGptr;
     return g.print(contextptr);
+  }
+
+  vecteur Graph2d3d::selected_names(bool allobjects,bool withdef) const {
+    vector<int>::const_iterator it=selected.begin(),itend=selected.end();
+    vecteur res;
+    for (;it!=itend;++it){
+      gen g=plot_instructions[*it];
+      if (g.is_symb_of_sommet(at_pnt)){
+	gen tmp=g._SYMBptr->feuille;
+	if (tmp.type==_VECT && tmp._VECTptr->size()==3){
+	  gen n=tmp[2];
+	  if (n.type==_IDNT)
+	    res.push_back(n);
+	}
+      }
+    }
+    return res;
   }
 
   void Graph2d3d::os_set_pixel(int x_,int y_,int c) const {

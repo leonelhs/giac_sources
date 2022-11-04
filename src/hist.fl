@@ -77,11 +77,11 @@ decl {char ** xcas_argv;} {private local
 decl {int xcas_argc,xcas_user_level,update_xcas=0;} {private local
 } 
 
-declblock {\#ifdef USE_OBJET_BIDON } {open after {\#endif}
-} { 
+declblock {\#ifdef USE_OBJET_BIDON} {open after {\#endif}
+} {
   decl {xcas::objet_bidon mon_objet_bidon;} {private local
   }
-}
+} 
 
 decl {giac::vecteur rpn_menu;} {private local
 } 
@@ -626,8 +626,7 @@ Function {Xcas_widget_size(const giac::gen & g,const giac::context * cptr)} {ret
 
 Function {make_history()} {open
 } {
-  code {
-const giac::context * oldctxptr=Xcas_get_context();
+  code {const giac::context * oldctxptr=Xcas_get_context();
 Fl_Group * s = Xcas_Main_Tab;
         Fl_Group::current(0);
 s->handle(FL_FOCUS);
@@ -683,8 +682,7 @@ Xcas_Main_Tab->redraw();} {}
 
 Function {load_history(int mws)} {open
 } {
-  code {
-Fl_Group * s = Xcas_Main_Tab;
+  code {Fl_Group * s = Xcas_Main_Tab;
 Fl_Group::current(0);
 xcas::History_Fold * w = new xcas::History_Fold(s->x()+2,s->y()+s->labelsize()+4,s->w()-4,s->h()-s->labelsize()-6,1);
 w->end();
@@ -1248,11 +1246,11 @@ Function {Xcas_run(int argc,char ** argv)} {open
           xywh {10 10 100 20}
         }
         Submenu Xcas_Numworks_menu {
-          label {Numworks}
+          label Numworks
           xywh {0 0 100 20}
         } {
           MenuItem Xcas_nws_doc {
-            label {Documentation}
+            label Documentation
             callback {giac::system_browser_command("doc/khicasnw.html")}
             xywh {15 15 100 20}
           }
@@ -1282,38 +1280,35 @@ Function {Xcas_run(int argc,char ** argv)} {open
             callback {xcas::History_cb_Save_as_numworks_calculator(Xcas_current_session(),0);}
             xywh {15 15 100 20}
           }
-         MenuItem Xcas_nw_backup {
-          label {Backup Numworks calculator}
-          callback {const char * newfile=file_chooser("Enter file name", "*.nws", "backup.nws");
+          MenuItem Xcas_nw_backup {
+            label {Backup Numworks calculator}
+            callback {const char * newfile=file_chooser("Enter file name", "*.nws", "backup.nws");
              if (!newfile) return;
              if (giac::is_file_available(newfile)){
                 int i=fl_ask(gettext("File %s exists. Overwrite?"),newfile);
                 if ( !i ) return;
              }
              if (!dfu_get_scriptstore(newfile))
-               fl_alert("%s",gettext("Unable to backup calculator"));
+               fl_alert("%s",gettext("Unable to backup calculator"));}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         }
-         MenuItem Xcas_nw_restore {
-          label {Restore Numworks from backup}
-          callback {const char * newfile=load_file_chooser("","*.nws","*.nws",0,false); 
+          MenuItem Xcas_nw_restore {
+            label {Restore Numworks from backup}
+            callback {const char * newfile=load_file_chooser("","*.nws","*.nws",0,false); 
              if (newfile){ 
                 if (!dfu_send_scriptstore(newfile))
                   fl_alert("%s",gettext("Unable to restore backup to calculator"));
-             }
+             }}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         }
           MenuItem Xcas_Handle_nws_flash {
             label {Customize flash}
             callback {xcas::nws_flash();}
             xywh {15 15 100 20}
           }
-         MenuItem Xcas_nw_install {
-          label {Install Khi and KhiCAS on Numworks calculator}
-          callback {
-              std::string prefix=giac::giac_aide_dir()+"doc/";
+          MenuItem Xcas_nw_install {
+            label {Install Khi and KhiCAS on Numworks calculator}
+            callback {std::string prefix=giac::giac_aide_dir()+"doc/";
               if (!dfu_send_bootloader((prefix+"bootloader.bin").c_str()))
 	        fl_alert("%s",gettext("Unable to send multi-boot loader. You will be asked to update your bootloader when running KhiCAS for the first time."));
               if (!dfu_send_firmware((prefix+"khi.A.bin").c_str(),0))
@@ -1324,14 +1319,12 @@ Function {Xcas_run(int argc,char ** argv)} {open
                 fl_alert("%s",gettext("Unable to send KhiCAS"));
               else {
                 fl_alert(gettext("Install success. Reset the calculator"));
-              }
+              }}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         }
-         MenuItem Xcas_nw_update {
-          label {Update KhiCAS on Numworks calculator}
-          callback {
-             char fname[]="backup.nws";
+          MenuItem Xcas_nw_update {
+            label {Update KhiCAS on Numworks calculator}
+            callback {char fname[]="backup.nws";
              if (!dfu_get_scriptstore(fname))
                fl_alert("%s",gettext("Unable to backup calculator"));
 	     std::string prefix=giac::giac_aide_dir()+"doc/";
@@ -1340,14 +1333,12 @@ Function {Xcas_run(int argc,char ** argv)} {open
              else {
                 fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
 		dfu_send_scriptstore(fname);
-             }
+             }}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         }
-         MenuItem Xcas_nw_alpha {
-          label {Test KhiCAS Alpha on Numworks calculator}
-          callback {
-             char fname[]="backup.nws";
+          MenuItem Xcas_nw_alpha {
+            label {Test KhiCAS Alpha on Numworks calculator}
+            callback {char fname[]="backup.nws";
              if (!dfu_get_scriptstore(fname))
                fl_alert("%s",gettext("Unable to backup calculator"));
 	     else {
@@ -1358,14 +1349,12 @@ Function {Xcas_run(int argc,char ** argv)} {open
                 fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
 		dfu_send_scriptstore(fname);
               }
-             }
+             }}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         }
-         MenuItem Xcas_nw_rescue {
-          label {Rescue mode (calculator assistance)}
-          callback {
-             int i=fl_ask(gettext("Connect the calculator,\\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\\nThe screen should be down and the led should be red")); if (!i) return;
+          MenuItem Xcas_nw_rescue {
+            label {Rescue mode (calculator assistance)}
+            callback {int i=fl_ask(gettext("Connect the calculator,\\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\\nThe screen should be down and the led should be red")); if (!i) return;
              std::string prefix=giac::giac_aide_dir()+"doc/";
              if (!dfu_send_rescue((prefix+"recovery").c_str()))
                fl_alert("%s",gettext("Unable to send rescue RAM image to the Numworks calculator."));
@@ -1378,29 +1367,23 @@ Function {Xcas_run(int argc,char ** argv)} {open
               else if (!dfu_send_apps((prefix+"apps.tar").c_str()))
                 fl_alert("%s",gettext("Unable to send KhiCAS"));
               else 
-                fl_alert(gettext("Install success. Press the RESET button on the calculator back."));
+                fl_alert(gettext("Install success. Press the RESET button on the calculator back."));}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         }
-         MenuItem Xcas_nw_certify {
-          label {Certification du firmware Numworks N0110}
-          callback {
-	    bool b=giac::nws_certify_firmware(false,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
+          MenuItem Xcas_nw_certify {
+            label {Certification du firmware Numworks N0110}
+            callback {bool b=giac::nws_certify_firmware(false,Xcas_get_context());
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         } 
-         MenuItem Xcas_nw_certify_overwrite {
-          label {Certification N0110 avec test R/W}
-          callback {
-	    int i=fl_ask("Ce test necessite l'accord du proprietaire de la calculatrice et dure environ 1 minute. Effectuer?");
+          MenuItem Xcas_nw_certify_overwrite {
+            label {Certification N0110 avec test R/W}
+            callback {int i=fl_ask("Ce test necessite l'accord du proprietaire de la calculatrice et dure environ 1 minute. Effectuer?");
             if (i==0) return;
 	    bool b=giac::nws_certify_firmware(true,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\\nVérifiez que la calculatrice est bien connectée!");}
+            xywh {30 30 100 20}
           }
-          xywh {30 30 100 20}
-         }
-
         }
         Submenu Xcas_Export {
           label {Export as}
@@ -1883,14 +1866,14 @@ xcas::set_colors(Xcas_Main_Window_);}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_color);
 xcas::Xcas_editor_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
-            xywh {0 0 100 20} 
+            xywh {0 0 100 20}
           }
           MenuItem Xcas_editor_background_color_item {
             label {Editor background}
             callback {Fl_Color c=fl_show_colormap(xcas::Xcas_editor_background_color);
 xcas::Xcas_editor_background_color=c;
 xcas::set_colors(Xcas_Main_Window_);}
-            xywh {0 0 100 20} 
+            xywh {0 0 100 20}
           }
           MenuItem Xcas_input_text_color {
             label {Input text}
@@ -2353,8 +2336,8 @@ giac::html_help_init("aide_cas",language(contextptr),true,true);}
         }
         MenuItem Xcas_Add_Comment {
           label {New comment}
-          callback {xcas::History_cb_New_Comment_Input(Xcas_current_session(),0);}
-          xywh {40 40 100 20} shortcut 0x80063
+          callback {xcas::History_cb_New_Comment_Input(Xcas_current_session(),0);} selected
+          xywh {40 40 100 20} shortcut 0x80071
         }
         Submenu Xcas_help_equations {
           label Equations
@@ -3558,7 +3541,7 @@ Xcas_Alpha_Keyboard->redraw();}
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Variable_t {
-            label t selected
+            label t
             xywh {25 440 25 25} shortcut 0x74 labelsize 10
             class {xcas::No_Focus_Button}
           }

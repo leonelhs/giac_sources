@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if an object in space is an equilateral triangle: is_equilateral
+<title>Checking if points in space are collinear: is_collinear
 </title>
 </head>
 <body >
@@ -12,22 +12,21 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en944.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dcheckequilateral" class="subsection">14.13.9  Checking if an object in space is an equilateral triangle: <span style="font-family:monospace">is_equilateral</span>
+<h3 id="ssec:3dcheckcollinear" class="subsection">14.13.6  Checking if points in space are collinear: <span style="font-family:monospace">is_collinear</span>
 <a id="hevea_default1649"></a></h3>
-<p>See Section <a href="cascmd_en868.html#ssec%3A2dcheckequilateral">13.16.5</a> for checking for equilateral
-triangles in two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_equilateral</span> command determines whether or not a
-geometric object is an equilateral triangle.
+<p>See Section <a href="cascmd_en868.html#ssec%3A2dcheckcollinear">13.16.2</a> for checking for collinearity in
+two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_collinear</span> command determines whether or not points in
+space are collinear.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_equilateral</span> takes one argument:<br>
- <span style="font-style:italic">G</span>, a geometric object or a sequence of three points assumed to be
-the vertices of a triangle.
-</li><li class="li-itemize"><span style="font-family:monospace">is_equilateral(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if the object
-is an equilateral triangle and returns <span style="font-family:monospace">0</span> otherwise.
-</li></ul><h4 id="sec2391" class="subsubsection">Examples.</h4>
+<span style="font-family:monospace">is_collinear</span> takes one argument:<br>
+ <span style="font-style:italic">L</span>, a list or sequence of points.
+</li><li class="li-itemize"><span style="font-family:monospace">is_collinear(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns 1 if the points in <span style="font-style:italic">L</span> are
+collinear, it returns 0 otherwise.
+</li></ul><h4 id="sec2392" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</span>
+<span style="font-family:monospace">is_collinear([2,0,0],[0,2,0],[1,1,0])</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
@@ -35,18 +34,7 @@ is an equilateral triangle and returns <span style="font-family:monospace">0</sp
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">T:= triangle_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">is_equilateral(T)</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_equilateral([2,0,0],[0,2,0],[1,1,0])</span>
+<span style="font-family:monospace">is_collinear([2,0,0],[0,2,0],[0,1,1])</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0

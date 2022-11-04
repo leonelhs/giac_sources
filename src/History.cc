@@ -2027,7 +2027,7 @@ namespace xcas {
 
   string casio2xws(const char * s,int ss,int l,GIAC_CONTEXT,bool eval_var){
     int pos=0;
-#if 0
+#if DBG
     ofstream of("log.xws");
 #else
 #ifdef HAVE_SSTREAM
@@ -2042,10 +2042,12 @@ namespace xcas {
     char buf_mode[L+1];
     strncpy(buf_mode,(const char *)ptr,L); ptr+=L; pos+=L;
     buf_mode[L]=0;
+    vecteur vars_orig;
 #if 1
     if (eval_var){
       python_compat(0,contextptr);
       gen vars(buf_mode,contextptr);
+      vars_orig=gen2vecteur(vars);
       vars=eval(vars,1,contextptr);
     }
     else {
@@ -2059,6 +2061,58 @@ namespace xcas {
     y += dh;
     of << L << " ," << '\n' << buf_mode << "," << '\n' << "]\n,\n";
 #endif
+    // detect figures saved in variables
+    for (int i=0;i<vars_orig.size();++i){
+      gen cur(vars_orig[i]);
+      if (cur.is_symb_of_sommet(at_nodisp))
+	cur=cur._SYMBptr->feuille;
+      cur=equaltosto(cur,contextptr);
+      if (!cur.is_symb_of_sommet(at_sto))
+	continue;
+      gen cv(cur._SYMBptr->feuille[0]), cn(cur._SYMBptr->feuille[1]);
+      if (cv.is_symb_of_sommet(at_copy))
+	cv=cv._SYMBptr->feuille;
+      if (cn.type!=_IDNT || cv.type!=_VECT || cv._VECTptr->size()!=2 || cv._VECTptr->front()!=at_pnt || cv._VECTptr->back().type!=_STRNG)
+	continue;
+      string cs=*cv._VECTptr->back()._STRNGptr;
+      int dh=50+(h+6)*2*(1+count(cs.c_str(),'\n'));
+      if (dh>500) dh=500;
+      of << "// fltk 7Fl_Tile " << x << " " << y << " "<< w << " " << dh << '\n';
+      of << "[" << '\n';
+      of << "// fltk N4xcas6FigureE " << x << " " << y << " " << w << " " << dh << " " << h << " 0 landscape=0 history=0.33 geo=0.57  mouse_param=0.1\n" ;
+      y += h+6;
+      of << "// fltk N4xcas12History_PackE " << x << " " << y << " " << w/3 << " " << dh << " " << h << " 0 \n" ;
+      of << "[\n";
+      int Y=y,H=h+6,L=cs.size(),pos=0; bool dim3=false; vecteur plotv;
+      for (;;){
+	string line;
+	next_line(cs,L,line,pos);
+	if (line.size()) line=line.substr(0,line.size()-1);
+	of << "// fltk 7Fl_Tile " << x+15 << " " << Y << " " << w/3-15 << " " << 2*H << " " << h << " 0 \n" ;
+	of << "[\n";
+	of << "// fltk N4xcas16Xcas_Text_EditorE " << x+15 << " " << Y << " " << w/3-15 << " " << H-1 << " " << h << " 0 \n" ;
+	of << line.size() << " 0 ,\n" << line << ",\n"; // replace(cs,'\n',char(0x7f)) << '\n';
+	Y+=H;
+	of << "// fltk N4xcas10Log_OutputE " << x+15 << " " << Y-1 << " " << w/3-15 << " " << 1 << " " << h << " 0 \n\n,\n";
+	of << "// fltk N4xcas10Gen_OutputE " << x+15 << " " << Y << " " << w/3-15 << " " << H << " " << h << " 0 \n";
+	gen cur(line,contextptr);
+	cur=protecteval(cur,1,contextptr);
+	plotv.push_back(cur);
+	if (!dim3 && is3d(cur))
+	  dim3=true;
+	of << cur << '\n';
+	Y+=H;
+	of << "]\n" ; // end figure level tile
+	if (pos>=cs.size())
+	  break;
+	of << ",\n";
+      }
+      of << "]\n" ; // end history pack
+      of << (dim3?"// fltk N4xcas5Geo3dE ":"// fltk N4xcas5Geo2dE ") << x+w/3 << " " << y << " " << 0.57*w << " " << dh << " " << h << " 0 \n" << (dim3?"-5,5,-5,5,":"-7.6683,7.6683,-5,5,") << plotv << ",-5,5,1,0,0,0,2,2,1,0,1,1.25,0,1,69," << (dim3?"[[0,0,1,0,1,1,1,1,1,1,1,1,0,0,0,1,0,0,-1,0,0,180,1,0,0,3],[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,-1,0,0,180,1,0,0,2],[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,-1,0,0,180,1,0,0,2],[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,-1,0,0,180,1,0,0,2],[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,-1,0,0,180,1,0,0,2],[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,-1,0,0,180,1,0,0,2],[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,-1,0,0,180,1,0,0,2],[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,-1,0,0,180,1,0,0,2]]":"[]")<<",24,18,256,0,100,0,0,1,0.03,88,61,216\n\n";
+      of << "]\n" ; // end history level tile
+      of << ",\n" ; 
+      y += dh;
+    }
     L=((ptr[0]*256+ptr[1])*256+ptr[2])*256+ptr[3]; ptr+=4; 
     char buf_script[L+1];
     strncpy(buf_script,(const char *)ptr,L); ptr+=L; pos+=L;
@@ -2114,7 +2168,7 @@ namespace xcas {
 	y += dh;
       }
     }
-#if 0
+#if DBG
     return "";
 #else
     return of.str();
@@ -3128,6 +3182,7 @@ namespace xcas {
 	nwsbuf[i]=0;
     }
     unsigned char * nwsptr=nwsbuf+4;
+    int figcount=1;
     for (int i=0;i<n;i++){
       if (!of)
 	break;
@@ -3139,7 +3194,7 @@ namespace xcas {
       }
       Fl_Group * g;
       Fl_Widget *wid2=0;
-      while ( (g=dynamic_cast<Fl_Group *>(wid)) ){ 
+      for (int count=0; (g=dynamic_cast<Fl_Group *>(wid));++count ){ 
 	if (g->children()>2)
 	  wid2=g->child(g->children()-1);
 	if (Figure * fig=dynamic_cast<Figure *>(g))
@@ -3255,8 +3310,32 @@ namespace xcas {
 	xcas_mode(contextptr)=save_maple_mode;
       }
       if (Figure * fig=dynamic_cast<Figure *>(g)){
+#if 1
+	string name=fig->namestr?remove_extension(remove_path(fig->namestr)):"figure"+print_INT_(figcount),S;
+	History_Pack * hp=fig->geo->hp;
+	for (int i=0;i<hp->children();++i){
+	  Fl_Widget * wid=hp->child(i);
+	  if (Fl_Group * gr=dynamic_cast<Fl_Group *>(wid)){
+	    if (gr->children()){
+	      wid=gr->child(0);
+	      if (Xcas_Text_Editor * xed=dynamic_cast<Xcas_Text_Editor *>(wid)){
+		string s(unlocalize(xed->value()));
+		S += s+'\n';
+	      }
+	    }
+	  }
+	}
+	gen g;
+	try {
+	  g=gen(name,contextptr);
+	} catch (std::runtime_error & err){
+	  g=gen("figure"+print_INT_(figcount),contextptr);
+	}
+	sto(makevecteur(at_pnt,string2gen(S,false)),g,contextptr);
+#else
 	if (!casio)
 	  save_as_text(of,mode,fig->geo->hp);
+#endif
 	continue;
       }
       if (Comment_Multiline_Input * co=dynamic_cast<Comment_Multiline_Input *>(wid)){
@@ -3288,11 +3367,12 @@ namespace xcas {
       }
     }
     python_compat(save_python,contextptr);
+    // FIXME should save variable state? nws is true if mode==-4
     if (nws){
       of.write((char *)nwsbuf,32768); // don't overwrite 20 last bytes of storage
       return;
     }
-    if (!casio) return;
+    if (!casio) return; // casio is also true for Numworks and Nspire
     // output in casio mode
     string s(khicas_state(contextptr));
     s+=casiosheet;

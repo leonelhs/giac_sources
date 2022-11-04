@@ -39,11 +39,12 @@ of the variables; e.g.
 [<span style="font-style:italic">x</span><sub>1</sub>=<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>=<span style="font-style:italic">a</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>], in which case the critical
 point close to <span style="font-style:italic">a</span>=(<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>,…,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>) is computed
 numerically by applying an iterative method with initial point <span style="font-style:italic">a</span>.
-</p></li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, which can be <span style="font-family:monospace">order=</span><span style="font-style:italic">n</span>
-to make <span style="font-style:italic">n</span> the upper bound for the order of derivatives examined
-in the process (so if <span style="font-style:italic">n</span>=1 only critical points are found, by
-default <span style="font-family:monospace">order=</span>5) or <span style="font-family:monospace">lagrange</span> to specify the
-method of Lagrange multipliers.
+</p></li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, which can be either
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">order=</span><span style="font-style:italic">n</span>, to make <span style="font-style:italic">n</span> the upper bound for the order of derivatives examined
+in the process (so if <span style="font-style:italic">n</span>=1 only critical points are found, by default <span style="font-family:monospace">order=</span>5), or
+</li><li class="li-itemize"><span style="font-family:monospace">lagrange</span> to specify the method of Lagrange multipliers.
+</li></ul>
 </li></ul>
 </li><li class="li-itemize"><span style="font-family:monospace">extrema(</span><span style="font-style:italic">expr </span> ⟨<span style="font-style:italic"> constr </span>⟩<span style="font-style:italic">,
 vars </span> ⟨<span style="font-style:italic"> opt </span>⟩<span style="font-family:monospace">)</span> returns
@@ -58,7 +59,7 @@ by the <span style="font-family:monospace">assume</span> command.
 </p></li></ul><p>
 If critical points are left unclassified you might consider repeating the
 process with larger value of <span style="font-style:italic">n</span>, although the success is not
-guaranteed.</p><h4 id="sec1384" class="subsubsection">Examples.</h4>
+guaranteed.</p><h4 id="sec1384" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">

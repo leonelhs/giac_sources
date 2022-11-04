@@ -4,49 +4,63 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Approximating computation of integrals: romberg nInt
-
-</title>
+<title></title>
 </head>
 <body >
 <a href="cascmd_en705.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en707.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1824" class="subsection">10.3.3  Approximating computation of integrals: <span style="font-family:monospace">romberg</span> <span style="font-family:monospace">nInt</span>
-<a id="hevea_default1290"></a>
-<a id="hevea_default1291"></a></h3>
-<p>The <span style="font-family:monospace">romberg</span> command finds approximate values of integrals
-using the Romberg method.<br>
-<span style="font-family:monospace">nInt</span> is a synonym for <span style="font-family:monospace">rombert</span>.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">romberg</span> takes three mandatory arguments and one
-optional argument:
+<h4 id="sec1825" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving one variable.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span>, the variable (by default
-<span style="font-family:monospace">x</span>).
-</li><li class="li-itemize"><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, two real numbers.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">romberg(</span><span style="font-style:italic">expr</span> ⟨,<span style="font-style:italic">var</span>⟩ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span>
-returns an approximated value of the integral
-∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup><span style="font-style:italic">expr</span><span style="font-style:italic">d</span><span style="font-style:italic">var</span>. The integrand must be
-sufficiently regular for the approximation to be accurate,
-otherwise, <span style="font-family:monospace">romberg</span> returns a list of real values that
-come from the application of the Romberg algorithm (the first list
-element is the trapezoid rule approximation, the next ones come from
-the application of the Euler-MacLaurin formula to remove successive
-even powers of the step of the trapezoid rule).
-</li></ul><h4 id="sec1825" class="subsubsection">Example.</h4>
-<p>
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">romberg(exp(x^2),x,0,1)</span>
-</div><p>
+<div class="center">
+<span style="font-family:monospace">evalf(sqrt(2))</span>
+</div>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1.46265174591
+(Assuming that in the <span style="font-family:monospace">cas</span> configuration (<span style="font-family:monospace">Cfg</span> menu)
+<span style="font-family:monospace">Digits=7</span>, so hardware floats are used, and 7 digits are displayed)
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1.414214
 </td></tr>
 </table>
+</li><li class="li-itemize">You can change the number of digits in a command line by assigning
+the variable <span style="font-family:monospace">DIGITS</span> or <span style="font-family:monospace">Digits</span>.<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">DIGITS:=20</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">evalf(sqrt(2))</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1.4142135623730950488
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">evalf(10^-5)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1e-05
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">evalf(10^15)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1e+15
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">evalf(sqrt(2))*10^-5</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1.41421356237e-05
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en705.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -2327,7 +2327,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {0,0,0,0,0,0,0,0,0},
  {"Toolbox", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"New entry", 0x8006e,  (Fl_Callback*)cb_Xcas_Add_Entry, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"New comment", 0x80063,  (Fl_Callback*)cb_Xcas_Add_Comment, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"New comment", 0x80071,  (Fl_Callback*)cb_Xcas_Add_Comment, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Equations", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
  {"solve: Solve equation or system", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"fsolve: Solve equation numerically", 0,  0, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},

@@ -93,6 +93,7 @@ namespace xcas {
   void check_fl_rect(int i0,int j0,int i1,int j1,int imin,int jmin,int di,int dj,int delta_i,int delta_j);
   void check_fl_rectf(int i0,int j0,int i1,int j1,int imin,int jmin,int di,int dj,int delta_i,int delta_j);
   void check_fl_line(int i0,int j0,int i1,int j1,int imin,int jmin,int di,int dj,int delta_i,int delta_j);
+  void fl_line_color(int x1,int y1,int x2,int y2,int color);
 
   class Graph2d3d;
   extern Fl_Menu_Item Graph2d3d_menu[];
@@ -129,6 +130,7 @@ namespace xcas {
     giac::vecteur args_tmp; // WARNING should only contain numeric value
     unsigned args_tmp_push_size;
   public:
+    std::string modestr;
     std::vector<std::string> args_help;
     bool no_handle; // disable mouse handling
     bool show_mouse_on_object; // FL_MOVE always handled or not
@@ -185,6 +187,7 @@ namespace xcas {
     Graph2d3d(int x,int y,int w,int h,const char * l=0,History_Pack * hp_=0);
     double find_eps(); // find value of a small real wrt the current graph
     void update_infos(const giac::gen & g,const giac::context * contextptr);
+    giac::vecteur selected_names(bool allobjects,bool withdef) const;
     virtual void zoom(double d);
     virtual void zoomx(double d,bool round=false);
     virtual void zoomy(double d,bool round=false);

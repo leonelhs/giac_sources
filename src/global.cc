@@ -53,7 +53,7 @@ using namespace std;
 #include <stdexcept>
 #include <algorithm>
 #if !defined RTOS_THREADX
-#include <vector>
+//#include <vector>
 #endif
 #if !defined BESTA_OS && !defined FXCG
 #include <cerrno>
@@ -5402,6 +5402,34 @@ NULL,NULL,SW_SHOWNORMAL);
     context * ptr = new context;
     *ptr->globalptr = *globalptr;
     return ptr;
+  }
+
+  void clear_context(context * ptr){
+    if (!ptr)
+      return;
+    ptr->parent=0;
+    if (ptr->history_in_ptr)
+      delete ptr->history_in_ptr;
+    if (ptr->history_out_ptr)
+      delete ptr->history_out_ptr;
+    if (ptr->history_plot_ptr)
+      delete ptr->history_plot_ptr;
+    if (ptr->quoted_global_vars)
+      delete ptr->quoted_global_vars;
+    if (ptr->rootofs)
+      delete ptr->rootofs;
+    if (ptr->globalptr)
+      delete ptr->globalptr;
+    if (ptr->tabptr)
+      delete ptr->tabptr;
+    ptr->tabptr=new sym_tab; 
+    ptr->globalcontextptr=ptr; ptr->previous=0; ptr->globalptr=new global; 
+    ptr->quoted_global_vars=new vecteur;
+    ptr->rootofs=new vecteur;
+    ptr->history_in_ptr=new vecteur;
+    ptr->history_out_ptr=new vecteur;
+    ptr->history_plot_ptr=new vecteur;
+    //init_context(ptr);
   }
 
   void init_context(context * ptr){

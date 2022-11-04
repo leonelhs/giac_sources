@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if two circles in the plane are orthogonal: is_orthogonal
+<title>Checking if an object in the plane is a parallelogram: is_parallelogram
 </title>
 </head>
 <body >
@@ -12,29 +12,25 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en877.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dcheckorth" class="subsection">13.16.13  Checking if two circles in the plane are orthogonal: <span style="font-family:monospace">is_orthogonal</span>
+<h3 id="ssec:2dcheckparallelogram" class="subsection">13.16.10  Checking if an object in the plane is a parallelogram: <span style="font-family:monospace">is_parallelogram</span>
 <a id="hevea_default1577"></a></h3>
-<p>See Section <a href="cascmd_en939.html#ssec%3A3dcheckorth">14.13.5</a> for checking for orthogonality in
-three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_orthogonal</span> command determines whether or not two
-lines or circles are orthogonal.
+<p>See Section <a href="cascmd_en951.html#ssec%3A3dcheckparallelogram">14.13.14</a> for checking for parallelograms
+in three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_parallelogram</span> command determines whether or not an
+object is a parallelogram.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_orthogonal</span> takes two arguments:<br>
- <span style="font-style:italic">C</span><sub>1</sub>,<span style="font-style:italic">C</span><sub>2</sub>, two objects, both lines or both circles.
-</li><li class="li-itemize"><span style="font-family:monospace">is_orthogonal(</span><span style="font-style:italic">C</span><sub>1</sub>,<span style="font-style:italic">C</span><sub>2</sub><span style="font-family:monospace">)</span> returns 1 if
-<span style="font-style:italic">C</span><sub>1</sub> and <span style="font-style:italic">C</span><sub>2</sub> are orthogonal and returns 0 otherwise.
-</li></ul><h4 id="sec2220" class="subsubsection">Examples.</h4>
+<span style="font-family:monospace">is_parallelogram</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of four points assumed to be
+the vertices of a quadrilateral.
+</li><li class="li-itemize"><span style="font-family:monospace">is_parallelogram(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">G</span>
+is a parallelogram, but not a rhombus or a rectangle, returns 2 if
+<span style="font-style:italic">G</span> is a rhombus but not a rectangle, returns 3 if <span style="font-style:italic">G</span> is a
+rectangle but not a square, returns 4 is <span style="font-style:italic">G</span> is a square, and
+returns 0 otherwise. 
+</li></ul><h4 id="sec2221" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_orthogonal(line(0,1+i),line(i,1))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_orthogonal(line(2,i),line(0,1+i))</span>
+<span style="font-family:monospace">is_parallelogram(i, -1+i, -1-i, 1-i)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
@@ -42,7 +38,7 @@ lines or circles are orthogonal.
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_orthogonal(circle(0,1+i),circle(2,1+i))</span>
+<span style="font-family:monospace">is_parallelogram(1+i, -1+i, -1-i, 1-i)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
@@ -50,10 +46,34 @@ lines or circles are orthogonal.
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_orthogonal(circle(0,1),circle(2,1))</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">Q:= quadrilateral(1+i, -1+i, -1-i, 1-i)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_parallelogram(Q)</span>
+</td></tr>
+</table>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">P:= parallelogram(-1-i, 1-i, i, D)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_parallelogram(P[0])</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+Note that <span style="font-family:monospace">P[0]</span> is a parallelogram since <span style="font-family:monospace">P</span> is a list made
+of a parallelogram and vertex <span style="font-family:monospace">D</span>.<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">affix(D)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−2+<span style="font-style:italic">i</span>
 </td></tr>
 </table>
 </li></ul>

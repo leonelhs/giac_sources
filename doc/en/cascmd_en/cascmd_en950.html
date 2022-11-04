@@ -4,50 +4,55 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Translation in space: translation</title>
+<title>Checking if an object in space is a rhombus: is_rhombus
+</title>
 </head>
 <body >
 <a href="cascmd_en949.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en951.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dtranslations" class="subsection">14.14.2  Translation in space: <span style="font-family:monospace">translation</span></h3>
-<p>
-<a id="hevea_default1655"></a></p><p>See Section <a href="cascmd_en857.html#ssec%3A2dtranslations">13.15.2</a> for translations in the plane.</p><p>The <span style="font-family:monospace">translation</span> command creates a translation.
+<h3 id="ssec:3dcheckrhombus" class="subsection">14.13.13  Checking if an object in space is a rhombus: <span style="font-family:monospace">is_rhombus</span>
+<a id="hevea_default1656"></a></h3>
+<p>See Section <a href="cascmd_en875.html#ssec%3A2dcheckrhombus">13.16.9</a> for checking for rhombuses in
+two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_rhombus</span> command determines whether or not a
+geometric object is a rhombus.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">translation</span> takes one mandatory argument and
-one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">v</span>, the translation vector, which can be given as a vector or
-a list of coordinates.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">translation(</span><span style="font-style:italic">v</span><span style="font-family:monospace">)</span> returns a new command which
-translates by <span style="font-style:italic">v</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">translation(</span><span style="font-style:italic">v</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the translation
-<span style="font-style:italic">G</span> by the vector <span style="font-style:italic">v</span>. 
-</li></ul><h4 id="sec2405" class="subsubsection">Examples.</h4>
+<span style="font-family:monospace">is_rhombus</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of four points assumed to be
+the vertices of a quadrilateral.
+</li><li class="li-itemize"><span style="font-family:monospace">is_square(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">G</span>
+is a rhombus but not a square, returns 2 if <span style="font-style:italic">G</span> is a square and
+returns 0 otherwise. 
+</li></ul><h4 id="sec2406" class="subsubsection">Examples</h4>
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">t:= translation([1,1,1])</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">S:= sphere([0,0,0],0.5)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">color(S,blue),t(S)</span>
+<span style="font-family:monospace">is_rhombus([2,0,0],[0,1,0],[-2,0,0],[0,-1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">R:= rhombus([0,0,0],[2,0,0],[[0,0,1],pi/4])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_rhombus(S)</span>
 </td></tr>
 </table>
 </div>
 <span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en337.png">
-</div>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">translation([1,1,1],S)</span>
+<span style="font-family:monospace">is_rhombus([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en338.png">
-</div>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
 </li></ul>
 <hr>
 <a href="cascmd_en949.html"><img src="previous_motif.gif" alt="Previous"></a>

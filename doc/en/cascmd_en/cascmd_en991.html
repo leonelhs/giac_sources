@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rectangle function: rect
+<title>Listening to a digital sound: playsnd
 </title>
 </head>
 <body >
@@ -12,72 +12,19 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en992.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec:rect" class="subsection">15.2.2  Rectangle function: <span style="font-family:monospace">rect</span>
+<h3 id="sec2486" class="subsection">15.1.13  Listening to a digital sound: <span style="font-family:monospace">playsnd</span>
 <a id="hevea_default1701"></a></h3>
-<p>The rectangle function Π is 0 everywhere except on [−1/2,1/2],
-where it is 1; namely,
-Π(<span style="font-style:italic">x</span>)=θ(<span style="font-style:italic">x</span>+1/2)−θ(<span style="font-style:italic">x</span>−1/2)
-where θ is the 
-Heaviside function. The rectangle function is a special case of boxcar function
-(see section <a href="cascmd_en990.html#sec%3Aboxcar">15.2.1</a>) for <span style="font-style:italic">a</span>=−1/2 and <span style="font-style:italic">b</span>=1/2.
+<p>The <span style="font-family:monospace">playsnd</span> command plays digitized sound data.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rect</span> takes one argument:<br>
- <span style="font-style:italic">x</span>, an identifier or an expression.
-</li><li class="li-itemize"><span style="font-family:monospace">rect(</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the rectangle function
-at <span style="font-style:italic">x</span>.
-</li></ul><h4 id="sec2486" class="subsubsection">Example.</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">rect(x/2)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">θ</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">−θ</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p><br>
-</p><p>To compute the convolution of the rectangle function with itself, you
-can use the convolution theorem.<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">R:=fourier(rect(x),x,s):; ifourier(R^2,s,x)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−2 <span style="font-style:italic">x</span> θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">+<span style="font-style:italic">x</span> θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>+1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">+<span style="font-style:italic">x</span> θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">+θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>+1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">−θ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−1</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table><p>
-This result is the triangle function  <span style="font-style:italic">tri</span>(<span style="font-style:italic">x</span>)  (see section <a href="cascmd_en992.html#ssec%3Atri">15.2.3</a>).</p>
+<span style="font-family:monospace">playsnd</span> takes one argument:<br>
+ <span style="font-style:italic">s</span>, digitized sound data, such as that which can be read with the
+<span style="font-family:monospace">readwav</span> command or generated with the help of
+<span style="font-family:monospace">soundsec</span>. <span style="font-style:italic">s</span> should be either in the format 
+of the output of the <span style="font-family:monospace">readwav</span> command or a list of sampled
+data for mono sound with the default settings of 1 channel, 16 bits
+and 44100 Hz.
+</li><li class="li-itemize"><span style="font-family:monospace">playsnd(</span><span style="font-style:italic">s</span><span style="font-family:monospace">)</span> plays the given sound.
+</li></ul>
 <hr>
 <a href="cascmd_en990.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
