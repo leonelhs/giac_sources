@@ -37,6 +37,14 @@
 #include "py/stackctrl.h"
 #include "py/stream.h" // for mp_obj_print
 
+mp_obj_dict_t *mp_obj_module_get_globals(mp_obj_t module) {
+    return ((mp_obj_module_t*)MP_OBJ_TO_PTR(module))->globals;
+}
+
+mp_map_t *mp_obj_dict_get_map(mp_obj_t dict) {
+    return &((mp_obj_dict_t*)MP_OBJ_TO_PTR(dict))->map;
+}
+
 mp_obj_type_t *mp_obj_get_type(mp_const_obj_t o_in) {
     if (mp_obj_is_small_int(o_in)) {
         return (mp_obj_type_t*)&mp_type_int;
@@ -76,6 +84,8 @@ void mp_obj_print_helper(const mp_print_t *print, mp_obj_t o_in, mp_print_kind_t
 void mp_obj_print(mp_obj_t o_in, mp_print_kind_t kind) {
     mp_obj_print_helper(MP_PYTHON_PRINTER, o_in, kind);
 }
+
+char FileAndLineSpecifier[]= "  File \"%q\", line %d"; // made available externally for detection of that type of errors and going to edition
 
 // helper function to print an exception with traceback
 void mp_obj_print_exception(const mp_print_t *print, mp_obj_t exc) {
@@ -529,3 +539,4 @@ mp_obj_t mp_generic_unary_op(mp_unary_op_t op, mp_obj_t o_in) {
         default: return MP_OBJ_NULL; // op not supported
     }
 }
+

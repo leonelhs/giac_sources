@@ -32,7 +32,7 @@
 #include "py/stackctrl.h"
 
 STATIC mp_obj_t mp_obj_new_list_iterator(mp_obj_t list, size_t cur, mp_obj_iter_buf_t *iter_buf);
-STATIC mp_obj_list_t *list_new(size_t n);
+mp_obj_list_t *list_new(size_t n);
 STATIC mp_obj_t list_extend(mp_obj_t self_in, mp_obj_t arg_in);
 STATIC mp_obj_t list_pop(size_t n_args, const mp_obj_t *args);
 
@@ -475,7 +475,7 @@ void mp_obj_list_init(mp_obj_list_t *o, size_t n) {
     mp_seq_clear(o->items, n, o->alloc, sizeof(*o->items));
 }
 
-STATIC mp_obj_list_t *list_new(size_t n) {
+mp_obj_list_t *list_new(size_t n) {
     mp_obj_list_t *o = m_new_obj(mp_obj_list_t);
     mp_obj_list_init(o, n);
     return o;
@@ -508,6 +508,11 @@ void mp_obj_list_store(mp_obj_t self_in, mp_obj_t index, mp_obj_t value) {
     mp_obj_list_t *self = MP_OBJ_TO_PTR(self_in);
     size_t i = mp_get_index(self->base.type, self->len, index, false);
     self->items[i] = value;
+}
+
+void mp_obj_list_store2(mp_obj_t self_in, mp_int_t index, mp_obj_t value) {
+  mp_obj_list_t *self = MP_OBJ_TO_PTR(self_in);
+  self->items[index] = value;
 }
 
 /******************************************************************************/

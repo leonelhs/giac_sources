@@ -1335,9 +1335,13 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (n < 0 || n >= value.length) {
       var n = value.search('//');
       if (n < 0 || n >= value.length) {
-        if (UI.python_mode)
-          return 'add_autosimplify(@@' + value + ')';
-        return 'add_autosimplify(' + value + ')';
+	n = value.search('\'');
+	if (n < 0 || n >= value.length) {
+	  //console.log('add_autosimp', value);
+          if (UI.python_mode)
+            return 'add_autosimplify(@@' + value + ')';
+          return 'add_autosimplify(' + value + ')';
+	}
       }
     }
     return value;

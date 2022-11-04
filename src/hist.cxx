@@ -531,12 +531,14 @@ giac::gen Xcas_widget_size(const giac::gen & g,const giac::context * cptr) {
 }
 
 void make_history() {
+  const giac::context * oldctxptr=Xcas_get_context();
   Fl_Group * s = Xcas_Main_Tab;
           Fl_Group::current(0);
   s->handle(FL_FOCUS);
   xcas::History_Fold * w = new xcas::History_Fold(s->x()+2,s->y()+s->labelsize()+4,s->w()-4,s->h()-s->labelsize()-6,1);
   w->end();
   w->pack->contextptr = giac::clone_context(giac::context0);
+  python_compat(python_compat(oldctxptr),w->pack->contextptr);
   w->handle(FL_FOCUS);
   w->pack->handle(FL_FOCUS);
   w->labelsize(s->labelsize());

@@ -151,14 +151,14 @@ static mp_obj_t graphic_clear_screen(size_t n_args, const mp_obj_t *args){
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_clear_screen_obj, 0, 1, graphic_clear_screen);
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_clear_obj, 0, 1, graphic_clear_screen);
 
-static mp_obj_t graphic_show_screen(){
+static mp_obj_t graphic_show_screen(size_t n_args, const mp_obj_t *args){
 #ifndef NUMWORKS
   sync_screen();
 #endif
   return mp_const_none;
 }
-static MP_DEFINE_CONST_FUN_OBJ_0(graphic_show_screen_obj, graphic_show_screen);
-static MP_DEFINE_CONST_FUN_OBJ_0(graphic_show_obj, graphic_show_screen);
+static MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_show_screen_obj,0,1, graphic_show_screen);
+static MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(graphic_show_obj, 0,1,graphic_show_screen);
 
 mp_obj_t mp_color_tuple(int c){
   mp_obj_tuple_t * t = (mp_obj_tuple_t *)(MP_OBJ_TO_PTR(mp_obj_new_tuple(3, NULL)));
@@ -914,12 +914,14 @@ static mp_obj_t str2list2int(const char * val,int N){
     for (int i=0;i<N;++i){
       char * buf2=buf1;
       for (;*buf2;++buf2){
-	if (*buf2==',')
+	if (*buf2==','|| *buf2==']')
 	  break;
       }
       *buf2=0;
       mp_obj_list_append(res,str2int(buf1));
       buf1=buf2+1;
+      while (*buf1==' ')
+	++buf1;
     }
   }
   return res;
@@ -1806,6 +1808,7 @@ static mp_obj_t linalg_apply(size_t n_args, const mp_obj_t *args) {
     return fun_builtin_1_call(args[0],1,0,args+1);
   }
   else {
+    nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "Wrong type of 1st argument."));
     if (((int) n)>=0){
       mp_obj_t r = mp_obj_new_list(0, NULL);
       mp_obj_t args_[2];
@@ -2400,7 +2403,7 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_write_obj, 1, 1, turtle_write);
 static mp_obj_t turtle_colormode(size_t n_args, const mp_obj_t *args) {
   if (n_args==0)
     return mp_obj_new_int(255);    
-  return turtle_ret("");
+  return turtle_ret("\"Done");
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_colormode_obj, 0, 1, turtle_colormode);
 
@@ -2946,7 +2949,7 @@ static mp_obj_t matplotl_boxplot(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(matplotl_boxplot_obj, 1, 2, matplotl_boxplot);
 
 static mp_obj_t matplotl_arrow(size_t n_args, const mp_obj_t *args) {
-  double a=0,b=0,c=0,d=d;
+  double a=0,b=0,c=0,d=0;
   int col=0;
   if (n_args==5)
     col=mp_get_color(args[4]);

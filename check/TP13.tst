@@ -52,7 +52,7 @@ proc(P,p)
   V:=irem(Quo(P,T),p);  
   V:=irem(Gcd(P,V),p);  
   T:=irem(Quo(P,V),p);  
-  L:=copy(NULL);  
+  L:=copy([]);  
   k:=1;  
   while (degree(V))>0 do  
     VV:=V; 
@@ -61,7 +61,7 @@ proc(P,p)
     if (degree(V))<(degree(VV)) then L:=copy([op(L),[irem(Quo(VV,V),p),k]]); 
     fi ; 
     k:=k+1; 
-   od;;  
+   od;  
   L;  
  
 end;,
@@ -74,7 +74,7 @@ proc(P,p)
   T:=irem(Gcd(P,diff(P,x)),p);  
   V:=irem(Quo(P,T),p);  
   T:=irem(Quo(P,V),p);  
-  L:=copy(NULL);  
+  L:=copy([]);  
   k:=1;  
   j:=1;  
   while (degree(T))>0 do  
@@ -85,13 +85,13 @@ proc(P,p)
       if (degree(V))<(degree(VV)) then L:=copy([op(L),[irem(Quo(VV,V),p),k]]); 
       fi ; 
       k:=k+j; 
-     od;; 
+     od; 
     j:=j*p; 
     k:=j; 
     T:=poly2symb([seq(coeff(T,i*p),i=((degree(T)/p) .. 1))],x); 
     V:=irem(Quo(T,irem(Gcd(T,diff(T,x)),p)),p); 
     T:=irem(Quo(T,V),p); 
-   od;;  
+   od;  
   L;  
  
 end;,

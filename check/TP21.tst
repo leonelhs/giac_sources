@@ -50,7 +50,7 @@ proc(U,n)
     bb:=normal(b-q*bb); 
     b:=tmp; 
     print("ca doit etre nul",normal(a*U+x^(2*n)*b-r)); 
-   od;;  
+   od;  
   S:=a;  
   T:=r;  
   S,T;  

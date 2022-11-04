@@ -14482,8 +14482,8 @@ gbasis_reinject(0.1)
 gbasis_reinject(0.1,0.05)
 
 # rur_gbasis
-1 Reglage expert de gbasis; dans l'algorithme modulaire de calcul d'une rur sur Q, on calcule une base de Groebner sur Q au prealable si n=1, ou si le nombre de monomes de la base de Groebner est <n si n>1. Si n=0 on ne reconstruit pas la base sur Q.
-2 Gbasis fine-tuning; in the modular algorithm of a rur over Q, reconstruct a gbasis over Q if n=1, or if the number of monomials of the gbasis is <n if n>1. If n=0 no gbasis reconstruction over Q
+1 Reglage expert de gbasis; dans l'algorithme modulaire de calcul d'une rur sur Q, on calcule une base de Groebner sur Q au prealable si n=1, ou si le nombre de monomes de la base de Groebner est <n si n>1. Si n=0 on ne reconstruit pas la base sur Q. Si n==-1 et si on calcule une representation rationnelle univariee pour un ideal est de dimension>0, on renvoie rapidement [rur]. Si n==-2 et si l'ideal est de dimension>0, on calcule la base de Groebner.
+2 Gbasis fine-tuning; in the modular algorithm of a rur over Q, reconstruct a gbasis over Q if n=1, or if the number of monomials of the gbasis is <n if n>1. If n=0 no gbasis reconstruction over Q. If n==-1 and if one computes a rational univariate representation for a non 0 dimensional ideal, returns fast [rur]. If n==-2 returns a Groebner basis instead.
 0 Intg(n)
 -1 gbasis
 -2 rur_certify

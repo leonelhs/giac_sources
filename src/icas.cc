@@ -1810,6 +1810,17 @@ int main(int ARGC, char *ARGV[]){
     cerr << "// Setting tex log" << '\n';
     show_tex=true;
   }
+  if (getenv("GIAC_MICROPY")){
+    cerr << "Micropython mode\n";
+    python_compat(4 | python_compat(contextptr),contextptr);
+    if (ARGC==2){
+      python_console()="";
+      micropy_ck_eval(ARGV[1]);
+      cout << python_console() ;
+      giac::release_globals();
+      return 0;
+    }
+  }
 #ifdef HAVE_LIBREADLINE
   if (ARGC==1){
     int taillemax=1000;

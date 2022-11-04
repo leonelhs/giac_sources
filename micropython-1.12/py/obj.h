@@ -281,6 +281,27 @@ typedef struct _mp_rom_obj_t { mp_const_obj_t o; } mp_rom_obj_t;
 #define MP_DEFINE_CONST_FUN_OBJ_3(obj_name, fun_name) \
     const mp_obj_fun_builtin_fixed_t obj_name = \
         {{&mp_type_fun_builtin_3}, .fun._3 = fun_name}
+#define MP_DEFINE_CONST_FUN_OBJ_4(obj_name, fun_name) \
+    const mp_obj_fun_builtin_fixed_t obj_name = \
+        {{&mp_type_fun_builtin_4}, .fun._4 = fun_name}
+#define MP_DEFINE_CONST_FUN_OBJ_5(obj_name, fun_name) \
+    const mp_obj_fun_builtin_fixed_t obj_name = \
+        {{&mp_type_fun_builtin_5}, .fun._5 = fun_name}
+#define MP_DEFINE_CONST_FUN_OBJ_6(obj_name, fun_name) \
+    const mp_obj_fun_builtin_fixed_t obj_name = \
+        {{&mp_type_fun_builtin_6}, .fun._6 = fun_name}
+#define MP_DEFINE_CONST_FUN_OBJ_7(obj_name, fun_name) \
+    const mp_obj_fun_builtin_fixed_t obj_name = \
+        {{&mp_type_fun_builtin_7}, .fun._7 = fun_name}
+#define MP_DEFINE_CONST_FUN_OBJ_8(obj_name, fun_name) \
+    const mp_obj_fun_builtin_fixed_t obj_name = \
+        {{&mp_type_fun_builtin_8}, .fun._8 = fun_name}
+#define MP_DEFINE_CONST_FUN_OBJ_9(obj_name, fun_name) \
+    const mp_obj_fun_builtin_fixed_t obj_name = \
+        {{&mp_type_fun_builtin_9}, .fun._9 = fun_name}
+#define MP_DEFINE_CONST_FUN_OBJ_10(obj_name, fun_name) \
+    const mp_obj_fun_builtin_fixed_t obj_name = \
+        {{&mp_type_fun_builtin_10}, .fun._10 = fun_name}
 #define MP_DEFINE_CONST_FUN_OBJ_VAR(obj_name, n_args_min, fun_name) \
     const mp_obj_fun_builtin_var_t obj_name = \
         {{&mp_type_fun_builtin_var}, MP_OBJ_FUN_MAKE_SIG(n_args_min, MP_OBJ_FUN_ARGS_MAX, false), .fun.var = fun_name}
@@ -401,6 +422,13 @@ typedef mp_obj_t (*mp_fun_0_t)(void);
 typedef mp_obj_t (*mp_fun_1_t)(mp_obj_t);
 typedef mp_obj_t (*mp_fun_2_t)(mp_obj_t, mp_obj_t);
 typedef mp_obj_t (*mp_fun_3_t)(mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_4_t)(mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_5_t)(mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_6_t)(mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_7_t)(mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_8_t)(mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_9_t)(mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t);
+typedef mp_obj_t (*mp_fun_10_t)(mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t, mp_obj_t);
 typedef mp_obj_t (*mp_fun_var_t)(size_t n, const mp_obj_t *);
 // mp_fun_kw_t takes mp_map_t* (and not const mp_map_t*) to ease passing
 // this arg to mp_map_lookup().
@@ -526,6 +554,8 @@ struct _mp_obj_type_t {
     struct _mp_obj_dict_t *locals_dict;
 };
 
+#define DEF_mp_obj_type_t(base, name, print, make_new, call, unary_op, binary_op, attr, subscr, getiter, iternext, buffer_p, protocol, parent, locals_dict) { base, name, print, make_new, call, unary_op, binary_op, attr, subscr, getiter, iternext, buffer_p, protocol, parent, locals_dict }
+
 // Constant types, globally accessible
 extern const mp_obj_type_t mp_type_type;
 extern const mp_obj_type_t mp_type_object;
@@ -560,6 +590,13 @@ extern const mp_obj_type_t mp_type_fun_builtin_0;
 extern const mp_obj_type_t mp_type_fun_builtin_1;
 extern const mp_obj_type_t mp_type_fun_builtin_2;
 extern const mp_obj_type_t mp_type_fun_builtin_3;
+extern const mp_obj_type_t mp_type_fun_builtin_4;
+extern const mp_obj_type_t mp_type_fun_builtin_5;
+extern const mp_obj_type_t mp_type_fun_builtin_6;
+extern const mp_obj_type_t mp_type_fun_builtin_7;
+extern const mp_obj_type_t mp_type_fun_builtin_8;
+extern const mp_obj_type_t mp_type_fun_builtin_9;
+extern const mp_obj_type_t mp_type_fun_builtin_10;
 extern const mp_obj_type_t mp_type_fun_builtin_var;
 extern const mp_obj_type_t mp_type_fun_bc;
 extern const mp_obj_type_t mp_type_module;
@@ -771,10 +808,7 @@ size_t mp_obj_dict_len(mp_obj_t self_in);
 mp_obj_t mp_obj_dict_get(mp_obj_t self_in, mp_obj_t index);
 mp_obj_t mp_obj_dict_store(mp_obj_t self_in, mp_obj_t key, mp_obj_t value);
 mp_obj_t mp_obj_dict_delete(mp_obj_t self_in, mp_obj_t key);
-static inline mp_map_t *mp_obj_dict_get_map(mp_obj_t dict) {
-    return &((mp_obj_dict_t*)MP_OBJ_TO_PTR(dict))->map;
-}
-
+mp_map_t *mp_obj_dict_get_map(mp_obj_t dict);
 // set
 void mp_obj_set_store(mp_obj_t self_in, mp_obj_t item);
 
@@ -790,6 +824,13 @@ typedef struct _mp_obj_fun_builtin_fixed_t {
         mp_fun_1_t _1;
         mp_fun_2_t _2;
         mp_fun_3_t _3;
+        mp_fun_4_t _4;
+        mp_fun_5_t _5;
+        mp_fun_6_t _6;
+        mp_fun_7_t _7;
+        mp_fun_8_t _8;
+        mp_fun_9_t _9;
+        mp_fun_10_t _10;
     } fun;
 } mp_obj_fun_builtin_fixed_t;
 
@@ -814,9 +855,7 @@ typedef struct _mp_obj_module_t {
     mp_obj_base_t base;
     mp_obj_dict_t *globals;
 } mp_obj_module_t;
-static inline mp_obj_dict_t *mp_obj_module_get_globals(mp_obj_t module) {
-    return ((mp_obj_module_t*)MP_OBJ_TO_PTR(module))->globals;
-}
+mp_obj_dict_t *mp_obj_module_get_globals(mp_obj_t module);
 // check if given module object is a package
 bool mp_obj_is_package(mp_obj_t module);
 

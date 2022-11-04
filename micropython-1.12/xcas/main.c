@@ -570,7 +570,7 @@ char * micropy_init(int stack_size,int heap_size){
     gc_init(heap, heap + heap_size - 1);
 #endif
     mp_init();
-    return heap;
+    return (char *) 1;
   }
   return 0;
 }

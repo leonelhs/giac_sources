@@ -417,10 +417,11 @@ namespace giac {
     }
     if (w.size()!=1 || w.front().type!=_VECT)
       return;
-    w=*w.front()._VECTptr;
+    gen wfront=w.front();
+    w=*wfront._VECTptr;
     if (w.size()!=2)
       return;
-    gen l(w.front()),m(w.back());
+    gen l(w[0]),m(w[1]);
     vecteur newv;
     iterateur it=v.begin(),itend=v.end();
     for (;it!=itend;++it){
@@ -1992,10 +1993,10 @@ namespace giac {
       return vecteur(0);
     gen expr(e),a,b;
     if (is_linear_wrt(e,x,a,b,contextptr)){
-      if (contains(a,x)) 
+      if (contains(a,x))  
 	a=ratnormal(a,contextptr);
-      if (is_exactly_zero(a)){
-	if (is_exactly_zero(b))
+      if (is_exactly_zero(ratnormal(a,contextptr))){
+	if (is_exactly_zero(ratnormal(b,contextptr)))
 	  return vecteur(1,x);
 	return vecteur(0);
       }
@@ -7129,6 +7130,14 @@ namespace giac {
   gen _rur_gbasis(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG &&  g.subtype==-1) return  g;
     if (g.type==_INT_){
+      if (g.val==-1){ 
+	rur_error_ifnot0dimensional=true;
+	return string2gen("rur: if not 0 dimensional return error code",false);
+      }
+      if (g.val==-2){ 
+	rur_error_ifnot0dimensional=false;
+	return string2gen("rur: if not 0 dimensional, compute gbasis",false);
+      }
       if (g.val<=0) *logptr(contextptr) << "rur: do not compute gbasis over Q\n";
       if (g.val==1) *logptr(contextptr) << "rur: compute gbasis over Q\n";
       if (g.val>1) *logptr(contextptr) << "rur: compute gbasis over Q if total nmumber of monomials is <=" << g.val << "\n";

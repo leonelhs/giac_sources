@@ -3254,7 +3254,7 @@ namespace xcas {
 	    indent -=indentunit;
 	    break;
 	  }
-	  if (*ch=='/' && *(ch+1)=='/')
+	  if ((python && *ch=='#') || (!python && *ch=='/' && *(ch+1)=='/') )
 	    break;
 	  if (*ch!=' '){
 	    prevlast=lastchar;

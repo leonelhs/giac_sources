@@ -376,7 +376,7 @@ namespace xcas {
     { Fl_Menu_Button* o = Xcas_Prg_style = new Fl_Menu_Button(15, 15, 90, 25, gettext("Prog style"));
     o->align(FL_ALIGN_CLIP);
     o->menu(menu_Xcas_Prg_style);
-    o->tooltip(gettext("Shortcut to change interpreter for a history level: Alt-x: Xcas, Alt-c: Cas, Alt-m: MicroPython or Alt-j: QuickJS"));
+    o->tooltip(gettext("Shortcut to change interpreter for a history level: Alt-x: Xcas, Alt-c: CasPy, Alt-m: MicroPython or Alt-j: QuickJS"));
     }
     { Fl_Output* o = Xcas_Style = new Fl_Output(15, 40, 90, 25);
     o->tooltip(gettext("Current programmation syntax style"));
@@ -512,7 +512,7 @@ or default eval level)"));
     }
     switch(do_maple_mode){
     case 0: Xcas_Style->value("Xcas"); break;
-    case 256: Xcas_Style->value("Python ^=**"); break;
+    case 256: Xcas_Style->value("Caspy ^=**"); break;
     case 512: Xcas_Style->value("Python ^==xor"); break;
     case 1024: Xcas_Style->value("MicroPython"); break;
     case -1: Xcas_Style->value("QuickJS"); break;

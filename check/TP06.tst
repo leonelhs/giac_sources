@@ -9,9 +9,9 @@ proc(A)
   for i from 0 to n do  
   M:=1; 
   for j in L minus [i] do M:=M*(x-j)/(i-j); 
-   od;; 
+   od; 
   P:=P+det(i*identity(n)-A)*M; 
-   od;;  
+   od;  
   normal(P);  
  
 end;,

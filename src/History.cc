@@ -1282,7 +1282,7 @@ namespace xcas {
 		if (pythonjs==4)
 		  normalcolor=FL_YELLOW;
 		else
-		  normalcolor=245;
+		  normalcolor=pythonjs?245:253;
 	      }
 	    }
 	  }
@@ -4600,7 +4600,7 @@ namespace xcas {
 #ifdef HAVE_LIBMICROPYTHON
 			      (pyc&4)?FL_YELLOW:
 #endif
-			      245);
+			      pyc?245:253);
       string mode_s="Config ";
       if (pack->url)
 	mode_s += '\''+remove_path(*pack->url)+'\'';
@@ -4646,7 +4646,7 @@ namespace xcas {
 	      mode_s += "MicroPython ";
 	    else
 #endif
-	      mode_s += pyc==2?"python ^==xor ":"python ^=** ";
+	      mode_s += pyc==2?"python ^==xor ":"caspy ^=** ";
 	  }
 	}
 	else

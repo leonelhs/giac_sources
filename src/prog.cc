@@ -4215,7 +4215,7 @@ namespace giac {
 #endif
       }
     }
-    if ( (args.type==_SYMB) && (args._SYMBptr->sommet==at_interval) ){
+    if ( (args.type==_SYMB) && args._SYMBptr->sommet==at_interval && args._SYMBptr->feuille.type==_VECT ){
       vecteur & v=*args._SYMBptr->feuille._VECTptr;
       return symb_program(vecteur(0),vecteur(0),symb_rand(gen(v,_SEQ__VECT)),contextptr);
       // return rand_interval(v);
@@ -6344,7 +6344,7 @@ namespace giac {
 	python_contextptr=contextptr;
 	python_console()="";
 	gen g;
-	if (!gr && !xc && !turt && !pix ){
+	if ( strcmp(ptr,",") && !xc && !turt && !pix ){
 	  (*micropy_ptr)(ptr);
 	}
 	context * cascontextptr=(context *)caseval("caseval contextptr");

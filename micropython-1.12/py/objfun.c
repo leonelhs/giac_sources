@@ -105,6 +105,23 @@ const mp_obj_type_t mp_type_fun_builtin_3 = {
     .unary_op = mp_generic_unary_op,
 };
 
+#define deffuncn(n, ...) \
+STATIC mp_obj_t fun_builtin_##n##_call(mp_obj_t self_in, size_t n_args, size_t n_kw, const mp_obj_t *args) { \
+  assert(MP_OBJ_IS_TYPE(self_in, &mp_type_fun_builtin_##n)); \
+  mp_obj_fun_builtin_fixed_t *self = MP_OBJ_TO_PTR(self_in); \
+  mp_arg_check_num(n_args, n_kw, n, n, false); \
+  return self->fun._##n ( __VA_ARGS__); \
+} \
+const mp_obj_type_t mp_type_fun_builtin_##n = DEF_mp_obj_type_t({ &mp_type_type }, MP_QSTR_function, 0, 0,  fun_builtin_##n##_call, mp_generic_unary_op, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+deffuncn(4,  args[0], args[1], args[2], args[3])
+deffuncn(5,  args[0], args[1], args[2], args[3], args[4])
+deffuncn(6,  args[0], args[1], args[2], args[3], args[4], args[5])
+deffuncn(7,  args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+deffuncn(8,  args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7])
+deffuncn(9,  args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8])
+deffuncn(10, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9])
+#undef deffuncn
+
 STATIC mp_obj_t fun_builtin_var_call(mp_obj_t self_in, size_t n_args, size_t n_kw, const mp_obj_t *args) {
     assert(mp_obj_is_type(self_in, &mp_type_fun_builtin_var));
     mp_obj_fun_builtin_var_t *self = MP_OBJ_TO_PTR(self_in);

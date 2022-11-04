@@ -6,14 +6,14 @@ x^16+x^14+58*x^15+1386*x^14+17715*x^13+131260*x^12+578697*x^11+1538013*x^10+2648
 1,
 proc(p,PP) 
   local L,tmp,i,j,F; 
-  L:=copy(NULL);  
+  L:=copy([]);  
   if degree(irem(Gcd(PP,diff(PP,x)),p))=0 then  
     for i from 0 to degree(PP)-1 do  
     tmp:=powmod(x,i*p,p,PP,x); 
     tmp:=irem(Rem(tmp-x^i,PP),p); 
     l:=copy([seq(coeff(tmp,x,j),j=(0 .. (degree(PP)-1)))]); 
     L:=copy([op(L),l]); 
-     od;; 
+     od; 
     F:=transpose(L); 
     irem(Nullspace(F),p) else  
     print("facteurs multiples",p); 
@@ -64,7 +64,7 @@ proc(d)
   while (degree(t))<(degree(tt)) do  
     tt:=t; 
     t:=unfacteur(t); 
-   od;;  
+   od;  
   t;  
  
 end;,
