@@ -25,15 +25,6 @@
 #ifdef __ANDROID__
 using std::vector;
 #endif
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined KHICAS ||     \
-    defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS
-inline bool is_graphe(const giac::gen &g,std::string &disp_out,
-                      const giac::context *) {
-  return false;
-}
-#else
-#include "graphtheory.h"
-#endif
 
 using namespace std;
 
@@ -1610,17 +1601,6 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
     ml.type=_MLBLOCK_FUNC;
     return ml;
   case _VECT:
-    if (st==_GRAPH__VECT && is_graphe(g,str,contextptr)) {
-      if (mml_content)
-        ml.content=mml_tag("cs",str,++idc);
-      if (mml_presentation)
-        ml.markup=mml_tag("mtext",str,idc);
-      if (tex)
-        ml.latex="\\text{"+str+"}";
-      if (scm)
-        ml.scheme="(text \""+str+"\")";
-      return ml;
-    }
     if (ckmatrix(*g._VECTptr) && (st==0 || st==_MATRIX__VECT)) {
       ml.type=_MLBLOCK_MATRIX;
       for (const_iterateur it=g._VECTptr->begin();it!=g._VECTptr->end();++it) {

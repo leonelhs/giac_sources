@@ -466,9 +466,10 @@ namespace giac {
   int vecteur2gsl_vector(const vecteur & v,gsl_vector * w,GIAC_CONTEXT); // no alloc
   int vecteur2gsl_vector(const_iterateur it,const_iterateur itend,gsl_vector * w,GIAC_CONTEXT);
   vecteur gsl_vector2vecteur(const gsl_vector * v);
+  int matrice2gsl_matrix(const matrice & m,int i0,int j0,int n1,int n2,bool transp,gsl_matrix * w,GIAC_CONTEXT);
   int matrice2gsl_matrix(const matrice & m,gsl_matrix * w,GIAC_CONTEXT);
   gsl_matrix * matrice2gsl_matrix(const matrice & m,GIAC_CONTEXT);
-  matrice gsl_matrix2matrice(const gsl_matrix * v);
+  matrice gsl_matrix2matrice(const gsl_matrix * v,bool transp=false);
   vecteur gsl_permutation2vecteur(const gsl_permutation * p,GIAC_CONTEXT);
 #endif // HAVE_LIBGSL
   

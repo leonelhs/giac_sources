@@ -14237,6 +14237,24 @@ void sprint_double(char * s,double d){
         return "bandwidth";
       case _KDE_BINS:
         return "bins";
+      case _ANN_LEARNING_RATE:
+        return "learning_rate";
+      case _ANN_WEIGHT_DECAY:
+        return "weight_decay";
+      case _ANN_RELU:
+        return "ReLU";
+      case _ANN_HALF_MSE:
+        return "MSE";
+      case _ANN_CROSS_ENTROPY:
+        return "cross_entropy";
+      case _ANN_LOG_LOSS:
+        return "log_loss";
+      case _ANN_BLOCK_SIZE:
+        return "block_size";
+      case _ANN_MOMENTUM:
+        return "momentum";
+      case _ANN_TOPOLOGY:
+        return "topology";
       }
     }
     if (subtype==_INT_MUPADOPERATOR){

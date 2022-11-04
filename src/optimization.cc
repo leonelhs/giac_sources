@@ -5695,15 +5695,7 @@ bool nlp_problem::ipt_solver::optimize(optima_t &res) {
         optimum_t opt;
         remove_elements_with_indices(ip,prob._fixed_vars);
         vecteur x_k=vars2x(ip),z_k(nvars,1),lambda_k=init_lambda(x_k,z_k);
-        try {
-            opt.res=ls_filter_barrier_method(x_k,lambda_k,z_k,mu0);
-        } catch (const std::runtime_error &e) {
-            if (factorization!=NULL) delete[] factorization;
-            if (lapack_work!=NULL) delete[] lapack_work;
-            if (lapack_ipiv!=NULL) delete[] lapack_ipiv;
-            if (lapack_rhs!=NULL) delete[] lapack_rhs;
-            throw e;
-        }
+        opt.res=ls_filter_barrier_method(x_k,lambda_k,z_k,mu0);
         opt.x=x2vars(x_k);
         prob.insert_fixed_vars(opt.x);
         if (opt.res<_NLP_INFEAS)
@@ -7111,7 +7103,7 @@ gen _nlpsolve(const gen &g,GIAC_CONTEXT) {
     default: // not implemented
         break;
     }
-    assert(false);
+    return undef; // should not be reachable
 }
 static const char _nlpsolve_s []="nlpsolve";
 static define_unary_function_eval (__nlpsolve,&_nlpsolve,_nlpsolve_s);
@@ -11365,7 +11357,7 @@ double hclust::formula(int a,int b,int x,int na,int nb,int nx,double dab,int met
     default:
         break;
     }
-    assert(false); // bad linkage method
+    return giac::nan(); // should not be reachable
 }
 int hclust::k_low(const dendrogram &dg) {
     double dprev=0,max_step=-1,d;
@@ -11806,7 +11798,7 @@ gen clustering_result(const vecteur &data,int NP,int p,int out_what,int k,int di
     default:
         break;
     }
-    assert(false);
+    return undef; // should not be reachable
 }
 
 gen _kmeans(const gen &g,GIAC_CONTEXT) {

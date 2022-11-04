@@ -15372,7 +15372,7 @@ namespace giac {
     gen g;
     int res=GSL_SUCCESS;
     for (int i = 0; it!=itend; ++i,++it){
-      g=it->evalf(1,contextptr);
+      g=it->evalf_double(1,contextptr);
       if (g.type==_DOUBLE_)
 	gsl_vector_set (w, i, g._DOUBLE_val);
       else {
@@ -15406,6 +15406,32 @@ namespace giac {
     return res;
   }
 
+  // Added by L. Marohnić
+  // Copies the submatrix of m starting at (i0,j0) with n1 rows and n2 columns to GSL matrix w.
+  // If transp=true, then w contains the transposed submatrix.
+  int matrice2gsl_matrix(const matrice & m,int i0,int j0,int n1,int n2,bool transp,gsl_matrix * w,GIAC_CONTEXT) {
+    gen g;
+    const_iterateur it=m.begin()+i0,jt;
+    int res=GSL_SUCCESS,i,j,rc=n1>0?n1:(mrows(m)-i0),cc=n2>0?n2:(mcols(m)-j0);
+    if (w->size1<(transp?cc:rc) || w->size2<(transp?rc:cc))
+      return !GSL_SUCCESS;
+    for (i=0; i<rc; ++i,++it){
+      if (it->type!=_VECT)
+	return !GSL_SUCCESS;
+      vecteur & v =*it->_VECTptr;
+      for (j=0,jt=v.begin()+j0;j<cc;++j,++jt){
+	g=evalf_double(*jt,1,contextptr);
+	if (g.type==_DOUBLE_)
+	  gsl_matrix_set(w,transp?j:i,transp?i:j,g._DOUBLE_val);
+	else {
+	  res=!GSL_SUCCESS;
+	  gsl_matrix_set(w,transp?j:i,transp?i:j,nan());	  
+	}
+      }
+    }
+    return res;
+  }
+
   int matrice2gsl_matrix(const matrice & m,gsl_matrix * w,GIAC_CONTEXT){
     int s1=w->size1,s2=w->size2;
 #ifdef DEBUG_SUPPORT
@@ -15413,6 +15439,7 @@ namespace giac {
     if (mrows(m)!=s1 || mcols(m)!=s2)
       setdimerr();
 #endif
+    return matrice2gsl_matrix(m,0,0,0,0,false,w,contextptr); // change by L. Marohnić
     gen g;
     const_iterateur it=m.begin(),itend=m.end();
     int res=GSL_SUCCESS;
@@ -15444,7 +15471,8 @@ namespace giac {
   
   // this function does not deallocate the gsl vector
   // call gsl_matrix_free(v) for this
-  matrice gsl_matrix2matrice(const gsl_matrix * v){
+  // Addition by L. Marohnić: if transp=true, then the result is transposed (sub)matrix v.
+  matrice gsl_matrix2matrice(const gsl_matrix * v,bool transp){
     matrice res;
     int s1=v->size1,s2=v->size2;
     res.reserve(s1);
@@ -15452,7 +15480,7 @@ namespace giac {
       vecteur tmp;
       tmp.reserve(s2);
       for (int j=0;j<s2;++j){
-	tmp.push_back(gsl_matrix_get(v,i,j));
+	tmp.push_back(gsl_matrix_get(v,transp?j:i,transp?i:j));
       }
       res.push_back(tmp);
     }

@@ -1353,6 +1353,7 @@ namespace xcas {
 	gen g1(g.print(contextptr),contextptr); 
 	return Equation_compute_size(g1,a,windowhsize,contextptr);
       }
+      else return Equation_compute_size(string2gen(g._USERptr->print(contextptr),false),a,windowhsize,contextptr);
     }
     if (g.type!=_SYMB){
       string s=g.print(contextptr);
