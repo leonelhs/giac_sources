@@ -1536,6 +1536,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     return text;
   },
   caseval: function (text) {
+    if (text.length>5 && text.substr(0.5)=="gr2d(")
+      return text; // this for debugging purpose
     if (!UI.ready) return ' Clic_on_Exec ';
     var docaseval = Module.cwrap('caseval', 'string', ['string']);
     var value = UI.handle_shortcuts(text);
@@ -5616,6 +5618,35 @@ int main(int argc,const char ** argv){
       }
     }
   },
+  xmin:-5,
+  xmax:5,
+  ymin:-5,
+  ymax:5,
+  gr_draw:function(id,s){
+    let canvas=$id(id);
+    let w=canvas.width, h=canvas.height;
+    if (!canvas.getContext)
+      console.log('Invalid canvas id '+id);
+    let ctx=canvas.getContext('2d');
+    console.log(w,h);
+    let xmin=UI.xmin,xmax=UI.xmax,ymin=UI.ymin,ymax=UI.ymax;
+    if (canvas.hasAttribute("data-xmin")){
+      xmin=canvas.getAttribute("data-xmin");
+      xmax=canvas.getAttribute("data-xmax");
+      ymin=canvas.getAttribute("data-ymin");
+      ymax=canvas.getAttribute("data-ymax");
+    }
+    else {
+      // s might initialize xmin xmax ymin ymax
+      // format gl_<attribute> value
+      // e.g gl_xmin -5
+      // gl_showaxes 0
+      canvas.setAttribute("data-xmin",xmin);
+      canvas.setAttribute("data-xmax",xmax);
+      canvas.setAttribute("data-ymin",ymin);
+      canvas.setAttribute("data-ymax",ymax);
+    }
+  },
   turtle_dx: 0, // shift frame
   turtle_dy: 0,
   turtle_z: 1,  // zoom factor
@@ -5623,6 +5654,10 @@ int main(int argc,const char ** argv){
   turtle_draw: function (id, s) {
     if (s.length < 7) return;
     s = s.substr(5, s.length - 6);
+    if (s.length > 3 && s.substr(s, 3) == "gr(") {
+      UI.gr_draw(id, s.substr(6, s.length - 4));
+      return;
+    }
     if (s.length > 7 && s.substr(s, 6) == "pixon(") {
       UI.pixon_draw(id, s.substr(6, s.length - 7));
       return;
@@ -5630,7 +5665,7 @@ int main(int argc,const char ** argv){
     if (s.length < 6 || s.substr(s, 5) != "logo(")
       return;
     s = s.substr(5, s.length - 6);
-    //console.log(s);
+    console.log(s);
     var v = eval(s);
     if (!Array.isArray(v)) return;
     //console.log(v[0]);

@@ -77,9 +77,21 @@ extern "C" {
   bool c_proot(c_complex * x,int n); // poly root
   bool c_pcoeff(c_complex * x,int n); // root->coeffs
   bool c_fft(c_complex * x,int n,bool inverse); // FFT
-  void turtle_freeze();
   void c_sprint_double(char * s,double d);
   int os_get_pixel(int x,int y);
+  void turtle_freeze();
+  void c_turtle_forward(double d);
+  void c_turtle_left(double d);
+  void c_turtle_up(int i);
+  void c_turtle_goto(double x,double y);
+  void c_turtle_cap(double x);
+  void c_turtle_crayon(int i);
+  void c_turtle_rond(int x,int y,int z);
+  void c_turtle_disque(int x,int y,int z,int centered);
+  void c_turtle_fill(int i);
+  void c_turtle_fillcolor(double r,double g,double b,int entier);
+  void c_turtle_getposition(double * x,double * y);
+  
 }
 struct micropy_bidon_t {
   micropy_bidon_t(){ giac::micropy_ptr=micropy_ck_eval; micropy_ck_eval("1");}

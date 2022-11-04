@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The repeat loop: repeat until
-
+<title>fsolve with the option hybrid_solver
 </title>
 </head>
 <body >
@@ -13,32 +12,19 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en721.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec981" class="subsection">12.3.4  The repeat loop: <span style="font-family:monospace">repeat</span> <span style="font-family:monospace">until</span>
-<a id="hevea_default1392"></a>
-<a id="hevea_default1393"></a></h3>
-<p>The <span style="font-family:monospace">repeat</span> loop allows you to repeat statements until a given
-condition is met. To use it, enter <span style="font-family:monospace">repeat</span>, the statements,
-the keyword <span style="font-family:monospace">until</span> followed by the condition, a boolean:
+<h3 id="sec1852" class="subsection">10.5.2  <span style="font-family:monospace">fsolve</span> with the option <span style="font-family:monospace">hybrid_solver</span>
+<a id="hevea_default1310"></a></h3>
+<h4 id="sec1853" class="subsubsection">Example.</h4>
+<p>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">repeat </span><span style="font-style:italic">statements</span><span style="font-family:monospace"> until </span><span style="font-style:italic">bool</span>
-</div><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-If you want the user to enter a value for a variable
-<span style="font-family:monospace">x</span> which is greater than 4, you could use:
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">repeat</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">input("Enter a value for x (greater than 4)",x);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">until (x &gt; 4);</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">fsolve([x^2+y-2,x+y^2-2],[x,y],[2,2],hybrid_solver)</span>
 </div><p>
-This can also be written<a id="hevea_default1394"></a><a id="hevea_default1395"></a>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">repeter</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">input("Enter a value for x (greater than 4)",x);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">jusqua (x &gt; 4);</span></td></tr>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.0,1.0</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
-</div>
 <hr>
 <a href="cascmd_en719.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

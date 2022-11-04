@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Storing and recalling variables and their values: archive unarchive
+<title>Copying lists: copy
 
 </title>
 </head>
@@ -13,52 +13,43 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en058.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec85" class="subsection">5.4.6  Storing and recalling variables and their values: <span style="font-family:monospace">archive</span> <span style="font-family:monospace">unarchive</span>
-<a id="hevea_default77"></a>
-<a id="hevea_default78"></a></h3>
-<p>The <span style="font-family:monospace">archive</span> command stores the values of variables for later
-use in a file of your choosing.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">archive</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">filename</span>, a filename in which to store values.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a variable or list of variables.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">archive("</span><span style="font-style:italic">filename</span><span style="font-family:monospace">",</span><span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
-saves the values of <span style="font-style:italic">vars</span> (or the values of the variables in
-the list) in file <span style="font-style:italic">filename</span>.
-</li></ul><p>
-For example, if the variable <span style="font-family:monospace">a</span> has the value <span style="font-family:monospace">2</span> and the variable
-<span style="font-family:monospace">bee</span> has the value <span style="font-family:monospace">"letter"</span> (a string), then entering
+<h3 id="ssec:copy" class="subsection">4.4.4  Copying lists: <span style="font-family:monospace">copy</span>
+<a id="hevea_default71"></a>
+</h3>
+<p>If you enter
 </p><div class="center">
-<span style="font-family:monospace">archive("foo",[a,bee])</span>
+<span style="font-family:monospace">list1:= [1,2,3]</span>
 </div><p>
-will create a file named “<span style="font-family:monospace">foo</span>” which contains the values
-<span style="font-family:monospace">2</span> and <span style="font-family:monospace">"letter"</span> in a format meant to be efficiently
-read by <span style="font-family:monospace">Xcas</span>.</p><p>The <span style="font-family:monospace">unarchive</span> command will read the values from a file
-created with <span style="font-family:monospace">archive</span>.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">unarchive</span> takes one argument:<br>
-<span style="font-style:italic">filename</span>, the filename.
-</li><li class="li-itemize"><span style="font-family:monospace">unarchive("</span><span style="font-style:italic">filename</span><span style="font-family:monospace">")</span> returns the value
-or list of values stored in <span style="font-style:italic">filename</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-With the file “<span style="font-family:monospace">foo</span>” as above:<br>
-<span style="font-style:italic">Input:</span>
+and then
 </p><div class="center">
-<span style="font-family:monospace">unarchive("foo")</span>
+<span style="font-family:monospace">list2:= list1</span>
 </div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,"letter"</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p>
-If you want to reassign these values to <span style="font-family:monospace">a</span> and <span style="font-family:monospace">bee</span>,
-you can enter
+then <span style="font-family:monospace">list1</span> and <span style="font-family:monospace">list2</span> will be equal to the same list,
+not simply two lists with the same elements. In particular, if you
+change (by reference) the value of an element of <span style="font-family:monospace">list1</span>, then
+the change will also be reflected in <span style="font-family:monospace">list2</span>. For example, if
+you enter
 </p><div class="center">
-<span style="font-family:monospace">[a,bee]:= unarchive("foo")</span>
-</div>
+<span style="font-family:monospace">list1[1] =&lt; 5</span>
+</div><p>
+then both <span style="font-family:monospace">list1</span> and <span style="font-family:monospace">list2</span> will be equal to
+<span style="font-family:monospace">[1,5,3]</span>.</p><p>The <span style="font-family:monospace">copy</span> command creates a copy of a list (or vector or
+matrix) which is equal to the original list, but distinct from it. For
+example, if you enter
+</p><div class="center">
+<span style="font-family:monospace">list1:= [1,2,3]</span>
+</div><p>
+and then
+</p><div class="center">
+<span style="font-family:monospace">list2:= copy(list1)</span>
+</div><p>
+then <span style="font-family:monospace">list1</span> and <span style="font-family:monospace">list2</span> will both be <span style="font-family:monospace">[1,2,3]</span>,
+but now if you enter
+</p><div class="center">
+<span style="font-family:monospace">list1[1] =&lt; 5</span>
+</div><p>
+then <span style="font-family:monospace">list1</span> will be equal to <span style="font-family:monospace">[1,5,3]</span> but
+<span style="font-family:monospace">list2</span> will still be <span style="font-family:monospace">[1,2,3]</span>.</p>
 <hr>
 <a href="cascmd_en056.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

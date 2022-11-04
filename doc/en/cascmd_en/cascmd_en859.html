@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Finding the midpoint of a segment in space: midpoint
+<title>Rotation in the plane: rotation
 </title>
 </head>
 <body >
@@ -12,28 +12,51 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en860.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dmidpt" class="subsection">14.4.5  Finding the midpoint of a segment in space: <span style="font-family:monospace">midpoint</span>
-<a id="hevea_default1591"></a></h3>
-<p>See Section <a href="cascmd_en756.html#ssec%3A2dmidpt">13.6.9</a> for midpoints in the plane.</p><p>The <span style="font-family:monospace">midpoint</span> command finds the midpoint of two points.
+<h3 id="ssec:2drotations" class="subsection">13.15.4  Rotation in the plane: <span style="font-family:monospace">rotation</span>
+<a id="hevea_default1560"></a></h3>
+<p>See Section <a href="cascmd_en952.html#ssec%3A3drotations">14.14.4</a> for rotations in space.</p><p>The <span style="font-family:monospace">rotation</span> command creates a rotation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">midpoint</span> takes two arguments:<br>
- <span style="font-style:italic">P</span>, <span style="font-style:italic">Q</span>, two points (which can also be given as a list).
-</li><li class="li-itemize"><span style="font-family:monospace">midpoint(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> draws and returns the midpoint of the
-segment determined by these points.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">rotation</span> takes two mandatory arguments and
+one optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a point (the center of rotation).
+</li><li class="li-itemize">θ, the angle of rotation.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">rotation(</span><span style="font-style:italic">P</span>,θ<span style="font-family:monospace">)</span> returns a new command which
+rotations about <span style="font-style:italic">P</span> through an angle of θ.
+</li><li class="li-itemize"><span style="font-family:monospace">reflection(</span><span style="font-style:italic">P</span>,θ,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the
+rotation of <span style="font-style:italic">G</span> about <span style="font-style:italic">P</span> through an angle of θ.
+</li></ul><h4 id="sec2185" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">MP:= midpoint(point(1,4,0),point(1,-2,0)):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">coordinates(MP)</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">r:= rotation(i, -pi/2)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">r(1+i)</span>
 </td></tr>
 </table>
-</div><p>
+</div>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,1,0</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
+<div class="center">
+<img src="cascmd_en253.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">rotation(i, -pi/2, 1+i)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en254.png">
+</div>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">rotation(i, -pi/2, line(1+i,-1))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en255.png">
+</div>
+</li></ul>
 <hr>
 <a href="cascmd_en858.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

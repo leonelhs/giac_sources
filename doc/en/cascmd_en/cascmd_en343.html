@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hermite polynomial: hermite
+<title>An upper bound for the positive real roots of a polynomial: posubLMQ
 </title>
 </head>
 <body >
@@ -12,56 +12,40 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en344.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec420" class="subsection">6.30.2  Hermite polynomial: <span style="font-family:monospace">hermite</span>
-<a id="hevea_default597"></a></h3>
-<p>The Hermite polynomials <span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) satisfy the recurrence relation:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">H</span>(0,<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >=1</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">H</span>(1,<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >=2<span style="font-style:italic">x</span></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)=2<span style="font-style:italic">xH</span>(<span style="font-style:italic">n</span>−1,<span style="font-style:italic">x</span>)−2(<span style="font-style:italic">n</span>−1)<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>−2,<span style="font-style:italic">x</span>)
-</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p> 
-These polynomials are orthogonal for the scalar product: 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">−∞</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span><sup>2</sup></sup><span style="font-style:italic">dx</span> 
-</td></tr>
-</table><p>The <span style="font-family:monospace">hermite</span> command finds the Hermite polynomials.
+<h3 id="sec797" class="subsection">5.29.5  An upper bound for the positive real roots of a polynomial: <span style="font-family:monospace">posubLMQ</span>
+<a id="hevea_default594"></a></h3>
+<p>The <span style="font-family:monospace">posubLMQ</span> command uses the Local Max Quadratic (LMQ)
+Akritas-Strzebonski-Vigklas algorithm to find upper bounds for the
+positive real roots of polynomials.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">hermite</span> takes one mandatory argument and one
-optional argument:
+<span style="font-family:monospace">posubLMQ</span> takes one argument:<br>
+ <span style="font-style:italic">P</span>, a polynomial.
+</li><li class="li-itemize"><span style="font-family:monospace">posubLMQ(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns a
+(non-optimal) upper bound for the positive real roots of <span style="font-style:italic">P</span>.
+</li></ul><h4 id="sec798" class="subsubsection">Examples.</h4>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable name (by default
-<span style="font-family:monospace">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">hermite(</span><span style="font-style:italic">n</span>  ⟨ ,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span>
-returns the Hermite polynomial of degree <span style="font-style:italic">n</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">hermite(6)</span>
+<span style="font-family:monospace">posubLMQ(x^3 - 7*x + 7)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">64 <span style="font-style:italic">x</span><sup>6</sup>−480 <span style="font-style:italic">x</span><sup>4</sup>+720 <span style="font-style:italic">x</span><sup>2</sup>−120
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4
 </td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">hermite(6,y)</span>
+<span style="font-family:monospace">posubLMQ(x^5 + 2*x^4 - 6*x^3 - 7*x^2 + 7*x + 7)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">64 <span style="font-style:italic">y</span><sup>6</sup>−480 <span style="font-style:italic">y</span><sup>4</sup>+720 <span style="font-style:italic">y</span><sup>2</sup>−120
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">posubLMQ(x^3 - x^2 -2*x + 2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
 </td></tr>
 </table>
 </li></ul>

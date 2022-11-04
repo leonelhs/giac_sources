@@ -47,7 +47,9 @@ using namespace giac;
 namespace xcas {
 #endif // ndef NO_NAMESPACE_XCAS
 
+#ifdef USE_OBJET_BIDON // change by L. Marohnić
   objet_bidon mon_objet_bidon_tableur;
+#endif
 
 #ifdef IPAQ
   int Flv_Table_Gen::def_rows=10,Flv_Table_Gen::def_cols=4;

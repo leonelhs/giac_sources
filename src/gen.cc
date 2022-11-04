@@ -4669,7 +4669,7 @@ namespace giac {
       if (a.type==_INT_){
 	longlong tmp=((longlong) a.val+b.val);
 	a.val=(int)tmp;
-	if (a.val==tmp)
+	if (a.val==tmp && tmp!=-2147483648)
 	  return a;
 	return a=tmp;
       }
@@ -5475,7 +5475,7 @@ namespace giac {
       if (a.type==_INT_){
 	longlong tmp=((longlong) a.val-b.val);
 	a.val=(int)tmp;
-	if (a.val==tmp)
+	if (a.val==tmp && tmp!=-2147483648)
 	  return a;
 	return a=tmp;
       }
@@ -6025,7 +6025,7 @@ namespace giac {
       if (ab>>31)
 	tmp=ab;
 #else
-      if (tmp.val!=ab)
+      if (tmp.val!=ab || tmp==-2147483648)
 	tmp=ab;
 #endif
       return;
@@ -14181,6 +14181,8 @@ void sprint_double(char * s,double d){
 	return "lp_heuristic";
       case _NLP_PRESOLVE:
 	return "nlp_presolve";
+      case _NLP_METHOD:
+ 	return "nlp_method";      
       case _NLP_SAMPLES:
 	return "nlp_samples";
       case _NLP_INTEGER:
@@ -14193,6 +14195,10 @@ void sprint_double(char * s,double d){
 	return "nlp_binaryvariables";
       case _NLP_NONNEGINT:
 	return "nlp_nonnegint";
+      case _NLP_TOLERANCE:
+ 	return "nlp_tolerance";
+      case _NLP_VERBOSE:
+ 	return "nlp_verbose";
       case _NLP_FEAS_TOL:
 	return "nlp_feasibilitytolerance";
       case _NLP_INT_TOL:
@@ -16797,7 +16803,7 @@ void sprint_double(char * s,double d){
       if (is3d(last)){
 	int worker=0;
 	worker=EM_ASM_INT_V({
-	    if (typeof(UI.disable3d) !== 'undefined' && UI.disable3d)
+	    if (typeof(UI)!=="undefined" && typeof(UI.disable3d) !== 'undefined' && UI.disable3d)
 	      return UI.disable3d;
 	    if (Module.worker) return 1; else return 0;
 	});
@@ -16844,7 +16850,7 @@ void sprint_double(char * s,double d){
 	  if (islogo(g))
 	    xcas::displaylogo();
 	  else {
-	    if ( (g.type==_SYMB || (warn_symb_program_sto && g.type==_VECT)) && taille(g,256)<=256)
+	    if ( (g.type==_SYMB || (warn_symb_program_sto && g.type==_VECT && !g._VECTptr->empty() && g._VECTptr->front().type!=_STRNG)) && taille(g,256)<=256)
 	      g=xcas::eqw(g,true,&C);
 	  }
 	}
@@ -16878,12 +16884,12 @@ void sprint_double(char * s,double d){
 #if !defined GIAC_GGB 
 #if defined EMCC || defined EMCC2
 	double add_evalf=EM_ASM_DOUBLE_V({
-	    if (typeof(UI.add_evalf)!="undefined")
+	    if (typeof(UI)!=="undefined" && typeof(UI.add_evalf)!="undefined")
 	      return UI.add_evalf*1.0;
 	    return 1.0;
 	  }),
 	  js_bigint=EM_ASM_DOUBLE_V({
-	      if (typeof(UI.js_bigint)!="undefined")
+	      if (typeof(UI)!=="undefined" && typeof(UI.js_bigint)!="undefined")
 	      return UI.js_bigint*1.0;
 	    return 0.0;
 	  });

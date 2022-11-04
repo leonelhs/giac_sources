@@ -4,11 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Defining an operator: user_operator
-
-
-
-
+<title>Values of a recurrence relation or a system: seqsolve
 
 </title>
 </head>
@@ -17,141 +13,203 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en205.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec249" class="subsection">6.14.2  Defining an operator: <span style="font-family:monospace">user_operator</span>
-<a id="hevea_default338"></a>
-<a id="hevea_default339"></a>
-<a id="hevea_default340"></a>
-<a id="hevea_default341"></a>
-<a id="hevea_default342"></a>
-<a id="hevea_default343"></a></h3>
-<p>The <span style="font-family:monospace">user_operator</span> command lets you define an operator or
-delete an operator you previously defined. When you use an operator
-you defined, you have to make sure that you leave spaces around the
-operator.</p><p>To define an operator:
+<h3 id="ssec:seqsolve" class="subsection">5.13.2  Values of a recurrence relation or a system: <span style="font-family:monospace">seqsolve</span>
+<a id="hevea_default333"></a>
+</h3>
+<p>(See also Section <a href="cascmd_en205.html#ssec%3Arsolve">5.13.3</a>.)</p><p>The <span style="font-family:monospace">seqsolve</span> command finds the terms of a recurrence
+relation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">user_operator</span> takes three arguments:
+<span style="font-family:monospace">seqsolve</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">name</span>, a string which is the name of the operator.
-</li><li class="li-itemize"><span style="font-style:italic">fn</span>, a function of one or two variables with values
-in ℝ or in <span style="font-family:monospace">true</span>, <span style="font-family:monospace">false</span>.
-</li><li class="li-itemize"><span style="font-style:italic">type</span>, to specify what kind of an operator you are
-defining. The possible values are:
+<span style="font-style:italic">exprs</span>, an expression or list of expressions that
+define the recurrence relation.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variables used.
+</li><li class="li-itemize"><span style="font-style:italic">a</span>, the starting value.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">seqsolve(</span><span style="font-style:italic">exprs</span><span style="font-family:monospace">,</span><span style="font-style:italic">vars</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span>
+returns a formula for the <span style="font-style:italic">n</span>th term of the sequence.
+</li></ul><p>
+For example, if a recurrence relation is defined by <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> =
+<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">n</span>) with <span style="font-style:italic">u</span><sub>0</sub> = <span style="font-style:italic">a</span>, the arguments to <span style="font-family:monospace">seqsolve</span> will be
+<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">n</span>), [<span style="font-style:italic">x</span>,<span style="font-style:italic">n</span>] and <span style="font-style:italic">a</span>. If the recurrence
+relation is defined by <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+2</sub> = <span style="font-style:italic">g</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>,<span style="font-style:italic">n</span>) with <span style="font-style:italic">u</span><sub>0</sub> = <span style="font-style:italic">a</span> and
+<span style="font-style:italic">u</span><sub>1</sub> = <span style="font-style:italic">b</span>, the arguments to <span style="font-family:monospace">seqsolve</span> will be
+<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">n</span>), [<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">n</span>] and [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>].</p><p>The recurrence relation must have a homogeneous linear part, the
+nonhomogeneous part must be a linear combination of a polynomials in
+<span style="font-style:italic">n</span> times geometric terms in <span style="font-style:italic">n</span>.</p><h4 id="sec426" class="subsubsection">Examples.</h4>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">Binary</span>, to define an infixed operator. In this
-case, <span style="font-family:monospace">fn</span> must be a function of two variables.
-</li><li class="li-itemize"><span style="font-family:monospace">Prefix</span> (or <span style="font-family:monospace">Unary</span>), to define a prefixed
-operator. In this case, <span style="font-style:italic">fn</span> must be a function of one variable.
-</li><li class="li-itemize"><span style="font-family:monospace">Postfix</span>, to define a postfixed operator. In this
-case <span style="font-style:italic">fn</span> must be a function of one variable.
-</li></ul>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">user_operator(</span><span style="font-style:italic">name,fn,type</span><span style="font-family:monospace">)</span>
-returns 1 if the definition was successful and
-otherwise returns 0.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-weight:bold">Example 1.</span><br>
- Let <span style="font-style:italic">R</span> be defined on
-ℝ×ℝ by <span style="font-style:italic">x</span> <span style="font-style:italic">R</span>  <span style="font-style:italic">y</span>= <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>.<br>
- To define <span style="font-style:italic">R</span>:<br>
- <span style="font-style:italic">Input:</span>
+Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> and <span style="font-style:italic">u</span><sub>0</sub>=3.<br>
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">user_operator("R",(x,y)-&gt;x*y+x+y,Binary)</span>
+<span style="font-family:monospace">seqsolve(2x+n,[x,n],3)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−<span style="font-style:italic">n</span>−1+4· 2<sup><span style="font-style:italic">n</span></sup>
 </td></tr>
 </table>
+</li><li class="li-itemize">Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = 2<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> 3<sup><span style="font-style:italic">n</span></sup> and <span style="font-style:italic">u</span><sub>0</sub>=3.<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">5 R 7</span>
-</div>
-(Do not forget to put spaces around <span style="font-family:monospace">R</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  47
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-weight:bold">Example 2.</span><br>
- Let <span style="font-style:italic">S</span> be defined on ℕ by:<br>
- for <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> integers, <span style="font-style:italic">x</span> <span style="font-style:italic">S</span>  <span style="font-style:italic">y</span> means that <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> are <em>not</em> coprime.<br>
- To define <span style="font-style:italic">S</span>:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">user_operator("S",(x,y)-&gt;(gcd(x,y))!=1,Binary)</span>
+<span style="font-family:monospace">seqsolve(2x+n*3^n,[x,n],3)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">n</span>−3</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">· 3<sup><span style="font-style:italic">n</span></sup>+6· 2<sup><span style="font-style:italic">n</span></sup>
 </td></tr>
 </table>
+</li><li class="li-itemize">Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub> = <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>−1</sub>, <span style="font-style:italic">u</span><sub>0</sub> = 0 and
+<span style="font-style:italic">u</span><sub>1</sub>=1.<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">5 S 7</span>
-</div>
-(Do not forget to put spaces around <span style="font-family:monospace">S</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">false</span>
-</td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">8 S 12</span>
-</div>
-Do not forget to put spaces around <span style="font-family:monospace">S</span>.<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">true</span>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-weight:bold">Example 3.</span><br>
- Let <span style="font-style:italic">T</span> be defined on ℝ by <span style="font-style:italic">T</span> <span style="font-style:italic">x</span> = <span style="font-style:italic">x</span><sup>2</sup>.<br>
- To define <span style="font-style:italic">T</span>:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">user_operator("T",x-&gt;x^2,Prefix)</span>
+<span style="font-family:monospace">seqsolve(x+y,[x,y,n],[0,1])</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">5 </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
 </td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">−4 </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">−5 </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">+5 </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">+4 </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">−5 </td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">20</td></tr>
+</table></td></tr>
 </table>
+</li><li class="li-itemize">Find <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> and <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>, given that <span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>+1</sub>=<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + 2<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span>+1</sub> =
+<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub> + <span style="font-style:italic">n</span> + 1 with <span style="font-style:italic">u</span><sub>0</sub> = 1, <span style="font-style:italic">v</span><sub>0</sub> = 1.<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">T 4</span>
-</div>
-(Do not forget to put a space before <span style="font-family:monospace">T</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  16
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-weight:bold">Example 4.</span><br>
- Let <span style="font-style:italic">U</span> be defined on ℝ by <span style="font-style:italic">x</span> <span style="font-style:italic">U</span> = 5<span style="font-style:italic">x</span>.<br>
- To define <span style="font-style:italic">U</span>:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">user_operator("U",x-&gt;5*x,Postfix)</span>
+<span style="font-family:monospace">seqsolve([x+2*y,n+1+x],[x,y,n],[0,1])</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−2 <span style="font-style:italic">n</span>−</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−1</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><sup><span style="font-style:italic">n</span></sup>+4· 2<sup><span style="font-style:italic">n</span></sup>−3</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−1</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><sup><span style="font-style:italic">n</span></sup>+2· 2<sup><span style="font-style:italic">n</span></sup>−1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
 </table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">3 U</span>
-</div>
-(Do not forget to put a space before <span style="font-family:monospace">T</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  15
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p>To delete an operator:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">user_operator</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">name</span>, a string which is the name of the operator.
-</li><li class="li-itemize"><span style="font-family:monospace">Delete</span>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">user_operator(</span><span style="font-style:italic">name</span><span style="font-family:monospace">,Delete)</span> deletes
-the operator.
 </li></ul>
 <hr>
 <a href="cascmd_en203.html"><img src="previous_motif.gif" alt="Previous"></a>

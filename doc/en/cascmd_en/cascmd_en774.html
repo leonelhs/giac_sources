@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The exterior angle bisector: exbisector
+<title>Toggling the axes: switch_axes
 </title>
 </head>
 <body >
@@ -12,26 +12,24 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en775.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1049" class="subsection">13.7.12  The exterior angle bisector: <span style="font-family:monospace">exbisector</span>
-<a id="hevea_default1491"></a></h3>
-<p>The <span style="font-family:monospace">exbisector</span> command finds exterior angle bisectors.
+<h3 id="sec1990" class="subsection">13.2.2  Toggling the axes: <span style="font-family:monospace">switch_axes</span>
+<a id="hevea_default1447"></a></h3>
+<p>The <span style="font-family:monospace">switch_axes</span> command shows, hides or toggles the
+coordinate axes on the graphics screen. This can also be
+controlled by a <span style="font-family:monospace">show axes</span> checkbox in the configuration panel
+brought up with the <span style="font-family:monospace">cfg</span> button on the graphic screen control
+panel.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">exbisector</span> takes three arguments:<br>
- <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>, three points (which can also be given as a list).
-</li><li class="li-itemize"><span style="font-family:monospace">exbisector(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span><span style="font-family:monospace">)</span> returns and draws the bisector 
-of the exterior angle of the triangle determined by <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span> and <span style="font-style:italic">c</span>;
-<span style="font-style:italic">a</span> is the vertex of the angle, the opposite of the ray through
-<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> determine one side of the angle and <span style="font-style:italic">a</span> and <span style="font-style:italic">c</span> determine the second side.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">exbisector(0,1,i)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en186.png">
-</div>
+<span style="font-family:monospace">switch_axes</span> takes one optional argument:<br>
+ <span style="font-style:italic">n</span>, either 0 or 1.
+</li><li class="li-itemize"><span style="font-family:monospace">switch_axes()</span> toggles whether or not the coordinate
+axes are show in subsequent graphics screens.
+</li><li class="li-itemize"><span style="font-family:monospace">switch_axes(0)</span> causes all later graphic screens to omit the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">switch_axes(1)</span> causes all later graphic screens to
+have the axes.
+</li></ul><p>When the axes are visible, they have tick marks whose separation is
+determined by the X-tick and Y-tick values on the graphic
+configuration screen. Setting these values to 0 also removes the axes.</p>
 <hr>
 <a href="cascmd_en773.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

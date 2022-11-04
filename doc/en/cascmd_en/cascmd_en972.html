@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hann-Poisson window function: hann_poisson_window
+<title>Centered cubes: centered_cube
 </title>
 </head>
 <body >
@@ -12,69 +12,40 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en973.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1281" class="subsection">15.2.20  Hann-Poisson window function: <span style="font-family:monospace">hann_poisson_window</span>
-<a id="hevea_default1709"></a></h3>
-<p>The <span style="font-family:monospace">hann_poisson_window</span> command finds a Hann-Poisson window of
-a sequence.
+<h3 id="sec2446" class="subsection">14.17.2  Centered cubes: <span style="font-family:monospace">centered_cube</span>
+<a id="hevea_default1679"></a></h3>
+<p>The <span style="font-family:monospace">centered_cube</span> command draws a cube.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">hann_poisson_window</span> takes one mandatory argument
-and two optional arguments:
+<span style="font-family:monospace">centered_cube</span> takes three arguments:<br>
+ <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
+</li><li class="li-itemize"><span style="font-family:monospace">centered_cube(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the cube
+centered at <span style="font-style:italic">A</span> with a vertex at <span style="font-style:italic">B</span> and plane of symmetry <span style="font-style:italic">ABC</span>.
+This plane of symmetry has an edge of the cube containing <span style="font-style:italic">B</span>, the
+other endpoint of this edge is on the same side of line <span style="font-style:italic">AB</span> as <span style="font-style:italic">C</span>.
+</li></ul><h4 id="sec2447" class="subsubsection">Examples.</h4>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">v</span>, a real vector with length <span style="font-style:italic">n</span>.
-</li><li class="li-itemize">Optionally, α, a real number (by default 1).
-</li><li class="li-itemize">Optionally, an interval <span style="font-style:italic">n</span><sub>0</sub>..<span style="font-style:italic">n</span><sub>1</sub> (by default 0..(<span style="font-style:italic">n</span>−1)).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">hann_poisson_window(</span><span style="font-style:italic">v</span> ⟨,α,<span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>⟩<span style="font-family:monospace">)</span>
-returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>1</sub></sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>2</sub></sub>]
-and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span><sub>2</sub>−<span style="font-style:italic">n</span><sub>1</sub>+1 defined by 
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1−cos</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">k</span> π</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell"> exp</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">α |<span style="font-style:italic">N</span>−1−2 <span style="font-style:italic">k</span>|</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table>
-for <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L0:=randvector(1000,0..1):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L0);</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en397.png">
-</div><p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L:=hann_poisson_window(L0,2):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L);</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en398.png">
+<div class="center">
+<span style="font-family:monospace">centered_cube([0,0,0],[3,3,3],[0,1,0])</span>
 </div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en368.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">centered_cube([0,0,0],[3,3,3],[0,-1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en369.png">
+</div>
+</li></ul><p>Note that there are two cubes centered at <span style="font-style:italic">A</span> with a vertex at
+<span style="font-style:italic">B</span> and with a plane of symmetry <span style="font-style:italic">ABC</span>. Each cube has
+an edge containing <span style="font-style:italic">B</span> that’s contained in plane of symmetry,
+these edges are on opposite sides of the line <span style="font-style:italic">AB</span>. The cube
+that <span style="font-family:monospace">cube(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns is the cube whose edge is on the
+same side of <span style="font-style:italic">AB</span> as the point <span style="font-style:italic">C</span>.</p>
 <hr>
 <a href="cascmd_en971.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

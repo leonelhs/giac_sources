@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if an object in the plane is an isosceles triangle: is_isosceles
+<title>The ellipse in the plane: ellipse
 </title>
 </head>
 <body >
@@ -12,90 +12,56 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en834.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dcheckisosceles" class="subsection">13.16.6  Checking if an object in the plane is an isosceles triangle: <span style="font-family:monospace">is_isosceles</span>
-<a id="hevea_default1560"></a></h3>
-<p>See Section <a href="cascmd_en907.html#ssec%3A3dcheckisosceles">14.13.10</a> for checking for isosceles
-triangles in three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_isosceles</span> command determines whether or not a
-geometric object is an isoceles triangle.
+<h3 id="ssec:2dellipse" class="subsection">13.12.1  The ellipse in the plane: <span style="font-family:monospace">ellipse</span>
+<a id="hevea_default1524"></a></h3>
+<p>See Section <a href="cascmd_en923.html#ssec%3A3dellipse">14.11.1</a> for ellipses in space.</p><p>The <span style="font-family:monospace">ellipse</span> command draws ellipses and other conic sections.</p><p><span style="font-family:monospace">ellipse</span> can take parameters in different forms.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_isosceles</span> takes one argument:<br>
- <span style="font-style:italic">G</span>, a geometric object or a sequence of three points assumed to be
-the vertices of a triangle.
-</li><li class="li-itemize"><span style="font-family:monospace">is_isosceles(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1,2 or 3 if the object
-is an isoceles triangle (the number indicates which vertex is on two
-equal sides), returns 4 if the object is an equilateral triangle,
-and returns 0 otherwise.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ellipse</span> can take one parameter:<br>
+ <span style="font-style:italic">eqn</span>, a second degree equation in the variables <span style="font-family:monospace">x</span>
+and <span style="font-family:monospace">y</span> (or an expression which will be set to zero).
+</li><li class="li-itemize"><span style="font-family:monospace">ellipse(</span><span style="font-style:italic">eqn</span><span style="font-family:monospace">)</span> returns and draws
+the conic section given by <span style="font-style:italic">eqn</span>.
+</li></ul><h4 id="sec2125" class="subsubsection">Example.</h4>
+<p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">ellipse(x^2 + 2*y^2 - 1)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><div class="center">
+<img src="cascmd_en229.png">
+</div></li><li class="li-itemize"><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ellipse</span> can take three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>, two points.
+</li><li class="li-itemize"><span style="font-style:italic">C</span>, a point or a real number.
+</li></ul>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">ellipse(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the ellipse with
+foci <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> and passing through <span style="font-style:italic">C</span> (if <span style="font-style:italic">C</span> is a point) or 
+whose semi-major axis has length <span style="font-style:italic">C</span> (if <span style="font-style:italic">C</span> is a real number).
+</li></ul><p>
+Note that if the third argument is a point on the real axis, the
+real affix of the point won’t work, it needs to be specified with
+the <span style="font-family:monospace">point</span> command.</p><h4 id="sec2126" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">is_isosceles(0, 1+i,i)</span>
+<span style="font-family:monospace">ellipse(-i,i,i+1)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
-</td></tr>
-</table>
+<div class="center">
+<img src="cascmd_en230.png">
+</div>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">T:= isosceles_triangle(0,1,pi/4)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_isosceles(T)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">ellipse(-i,i,sqrt(5) - 1)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">T:= isosceles_triangle(0,1,pi/4,C)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_isosceles(T[0])</span>
-</td></tr>
-</table>
+<img src="cascmd_en231.png">
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-Note that <span style="font-family:monospace">T[0]</span> is a triangle since <span style="font-family:monospace">T</span> is a list made
-of a triangle and the vertex <span style="font-family:monospace">C</span>.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">affix(C)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">i</span>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_isosceles(1+i, -1+i, -i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_isosceles(0,2,1+i*sqrt(3))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4
-</td></tr>
-</table>
 </li></ul>
 <hr>
 <a href="cascmd_en832.html"><img src="previous_motif.gif" alt="Previous"></a>

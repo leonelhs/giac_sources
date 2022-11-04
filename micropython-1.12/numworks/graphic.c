@@ -1,4 +1,7 @@
 /* -*- mode:C -*- */
+#if defined EMCC && !defined NO_QSTR
+#include <emscripten.h>
+#endif
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -18,6 +21,7 @@
 #include "lexer.h"
 #include "parse.h"
 #include "compile.h"
+void py_ck_ctrl_c();
 extern const struct _mp_obj_module_t mp_module_graphic;
 // basic
 #ifdef NUMWORKS
@@ -30,10 +34,10 @@ void strcat_double(char * s,double d){
 int numworks_get_pixel(int x,int y);
 inline int os_get_pixel(int x,int y){ return numworks_get_pixel(x,y);}
 void sync_screen(){}
-#else
+#else // NUMWORKS
 int os_get_pixel(int x,int y);
 void sync_screen();
-#endif
+#endif // NUMWORKS
 void c_set_pixel(int x,int y,int c); // c_ prefixed functions run freeze=true
 void c_fill_rect(int x,int y,int w,int h,int c);
 int os_draw_string_small(int x,int y,int c,int bg,const char * s,bool fake);
@@ -50,6 +54,17 @@ void c_draw_polygon(int * x,int *y ,int n,int color);
 void c_draw_filled_polygon(int * x,int *y, int n,int xmin,int xmax,int ymin,int ymax,int color);
 void c_draw_arc(int xc,int yc,int rx,int ry,int color,double theta1, double theta2);
 void c_draw_filled_arc(int x,int y,int rx,int ry,int theta1_deg,int theta2_deg,int color,int xmin,int xmax,int ymin,int ymax,bool segment);
+void c_turtle_forward(double d);
+void c_turtle_left(double d);
+void c_turtle_up(int i);
+void c_turtle_goto(double x,double y);
+void c_turtle_cap(double x);
+void c_turtle_crayon(int i);
+void c_turtle_rond(int x,int y,int z);
+void c_turtle_disque(int x,int y,int z,int centre);
+void c_turtle_fill(int i);
+void c_turtle_fillcolor(double r,double g,double b,int entier);
+void c_turtle_getposition(double * x,double * y);
 //const double M_PI=3.1415926535897932;
 #define LCD_WIDTH 320
 #define LCD_HEIGHT 222
@@ -836,9 +851,11 @@ static mp_obj_t cas_caseval(size_t n_args, const mp_obj_t *args) {
     }
     buf[strlen(buf)-1]=')';
     const char * val=caseval(buf);
+    py_ck_ctrl_c();
     return mp_obj_new_str(val,strlen(val));
   }
   const char * val=caseval(text);
+  py_ck_ctrl_c();
   return mp_obj_new_str(val,strlen(val));
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(cas_caseval_obj, 1, 8, cas_caseval);
@@ -2041,6 +2058,7 @@ const mp_obj_module_t mp_module_linalg = {
 void turtle_freeze();
 
 mp_obj_t turtle_ret(const char * val){
+  py_ck_ctrl_c();
   if (strncmp(val,"\"Done",5)==0)
     return mp_const_none;
   return mp_obj_new_str(val,strlen(val));  
@@ -2048,13 +2066,15 @@ mp_obj_t turtle_ret(const char * val){
 
 static mp_obj_t turtle_forward(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=10;
+  double i=10;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
   if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
+  c_turtle_forward(i);
+  return mp_const_none;
   char buf[256];
-  sprintf(buf,"avance(%i):;",i);
+  sprintf(buf,"avance(%.4g):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
 }
@@ -2062,13 +2082,15 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_forward_obj, 0, 1, turtle_forward);
 
 static mp_obj_t turtle_backward(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=10;
+  double i=10;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
   if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
+  c_turtle_forward(-i);
+  return mp_const_none;
   char buf[256];
-  sprintf(buf,"recule(%i):;",i);
+  sprintf(buf,"recule(%.4g):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2083,13 +2105,8 @@ static mp_obj_t turtle_left(size_t n_args, const mp_obj_t *args) {
   else if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
   else if (n_args==1) i=0;  
-  char buf[256]="tourne_gauche(";
-  strcat_double(buf,i);
-  strcat(buf,"):;");
-  // sprintf(buf,"tourne_gauche(%.4g):;",i);
-  const char * val=caseval(buf);
-  return turtle_ret(val);
-  return mp_obj_new_str(val,strlen(val));
+  c_turtle_left(i);
+  return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_left_obj, 0, 1, turtle_left);
 
@@ -2104,6 +2121,9 @@ static mp_obj_t turtle_pensize(size_t n_args, const mp_obj_t *args) {
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
   if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
+  if (i<1) i=1;
+  c_turtle_crayon(-i);
+  return mp_const_none;
   char buf[256];
   sprintf(buf,"crayon -%i:;",i);
   const char * val=caseval(buf);
@@ -2120,13 +2140,8 @@ static mp_obj_t turtle_right(size_t n_args, const mp_obj_t *args) {
   else if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
   else if (n_args==1) i=0;
-  char buf[256]="tourne_droite(";
-  strcat_double(buf,i);
-  strcat(buf,"):;");
-  // sprintf(buf,"tourne_droite(%.4g):;",i);
-  const char * val=caseval(buf);
-  return turtle_ret(val);
-  return mp_obj_new_str(val,strlen(val));
+  c_turtle_left(-i);
+  return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_right_obj, 0, 1, turtle_right);
 
@@ -2170,6 +2185,8 @@ static mp_obj_t turtle_circle(size_t n_args, const mp_obj_t *args) {
       y=0;
     }
   }
+  c_turtle_rond(x,y,z);
+  return mp_const_none;
   char buf[256];
   sprintf(buf,"rond(%i,%i,%i):;",x,y,z);
   const char * val=caseval(buf);
@@ -2194,6 +2211,8 @@ static mp_obj_t do_turtle_disque(size_t n_args, const mp_obj_t *args,bool center
       y=0;
     }
   }
+  c_turtle_disque(x,y,z,centered);
+  return mp_const_none;
   char buf[256];
   sprintf(buf,centered?"disque_centre(%i,%i,%i):;":"disque(%i,%i,%i):;",x/2,y,z);
   const char * val=caseval(buf);
@@ -2260,6 +2279,8 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_hideturtle_obj, 0, 0, turtle_hideturt
 
 static mp_obj_t turtle_down(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
+  c_turtle_up(0);
+  return mp_const_none;
   const char * val=caseval("baisse_crayon():;");
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2268,6 +2289,8 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_down_obj, 0, 0, turtle_down);
 
 static mp_obj_t turtle_up(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
+  c_turtle_up(1);
+  return mp_const_none;
   const char * val=caseval("leve_crayon():;");
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2332,6 +2355,8 @@ static mp_obj_t turtle_setheading(size_t n_args, const mp_obj_t *args) {
     if (!mp_int_float(args[0],&i))
       mp_raise_TypeError("int/float expected");
   }
+  c_turtle_cap(i);
+  return mp_const_none;
 #ifndef NUMWORKS
   char buf[256];
   sprintf(buf,"cap(%.4f):;",i);
@@ -2348,6 +2373,12 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_setheading_obj, 0, 1, turtle_setheadi
 
 static mp_obj_t turtle_setposition(size_t n_args, const mp_obj_t *args) {
   if (n_args<2){
+    double x,y;
+    c_turtle_getposition(&x,&y);
+    mp_obj_t res = mp_obj_new_list(0, NULL);
+    mp_obj_list_append(res,mp_obj_new_int(x));
+    mp_obj_list_append(res,mp_obj_new_int(y));
+    return res;
     char buf[]="position();";
     const char * val=caseval(buf);
     int l=strlen(val);
@@ -2357,13 +2388,21 @@ static mp_obj_t turtle_setposition(size_t n_args, const mp_obj_t *args) {
     return str2list2int(val,2);
   }
   turtle_freeze();
-  int x=0,y=0;
-  if (MP_OBJ_IS_SMALL_INT(args[0])) 
-    x=MP_OBJ_SMALL_INT_VALUE(args[0]);
-  if (MP_OBJ_IS_SMALL_INT(args[1])) 
-    y=MP_OBJ_SMALL_INT_VALUE(args[1]);
+  double x=0,y=0;
+  if (!mp_int_float(args[0],&x) || !mp_int_float(args[1],&y))
+    mp_raise_TypeError("x,y expected");    
+  c_turtle_goto(x,y);
+  return mp_const_none;
+#ifndef NUMWORKS
   char buf[256];
-  sprintf(buf,"position(%i,%i):;",x,y);
+  sprintf(buf,"position(%.4f,%.4f):;",x,y);
+#else
+  char buf[256]="position(";
+  strcat_double(buf,x);
+  strcat(buf,",");
+  strcat_double(buf,y);
+  strcat(buf,"):;");
+#endif
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2372,11 +2411,17 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_setposition_obj, 0, 2, turtle_setposi
 
 static mp_obj_t turtle_setx(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=0;
-  if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
-    i=MP_OBJ_SMALL_INT_VALUE(args[0]);
+  double i=0;
+  if (n_args==1)
+    mp_int_float(args[0],&i);
+#ifndef NUMWORKS
   char buf[256];
-  sprintf(buf,"position(%i,position()[1]):;",i);
+  sprintf(buf,"position(%.4f,position()[1]):;",i);
+#else
+  char buf[256]="position(";
+  strcat_double(buf,i);
+  strcat(buf,"position()[1]):;");
+#endif
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2385,11 +2430,17 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_setx_obj, 0, 1, turtle_setx);
 
 static mp_obj_t turtle_sety(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=0;
-  if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
-    i=MP_OBJ_SMALL_INT_VALUE(args[0]);
+  double i=0;
+  if (n_args==1)
+    mp_int_float(args[0],&i);
+#ifndef NUMWORKS
   char buf[256];
-  sprintf(buf,"position(position()[0],%i):;",i);
+  sprintf(buf,"position(position()[0],%.4f):;",i);
+#else
+  char buf[256]="position(position()[0],";
+  strcat_double(buf,i);
+  strcat(buf,"):;");
+#endif
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2427,6 +2478,8 @@ static mp_obj_t turtle_fillcolor(size_t n_args, const mp_obj_t *args) {
       size_t n=0; mp_obj_t * tab=0;
       mp_obj_get_array(args[0],&n,&tab);
       if (n==3 &&  mp_obj_is_float(tab[0]) && mp_obj_is_float(tab[1]) && mp_obj_is_float(tab[2])){
+	c_turtle_fillcolor(mp_obj_get_float(tab[0]),mp_obj_get_float(tab[1]),mp_obj_get_float(tab[2]),0);
+	return mp_const_none;
 #ifdef NUMWORKS
 	strcpy(buf,"polygone_rempli(");
 	for (int i=0;i<3;++i){
@@ -2440,6 +2493,8 @@ static mp_obj_t turtle_fillcolor(size_t n_args, const mp_obj_t *args) {
 #endif
       }
       if (n==3 &&  MP_OBJ_IS_SMALL_INT(tab[0]) && MP_OBJ_IS_SMALL_INT(tab[1]) && MP_OBJ_IS_SMALL_INT(tab[2])){
+	c_turtle_fillcolor((int)MP_OBJ_SMALL_INT_VALUE(tab[0]),(int)MP_OBJ_SMALL_INT_VALUE(tab[1]),(int)MP_OBJ_SMALL_INT_VALUE(tab[2]),1);
+	return mp_const_none;
 	sprintf(buf,"polygone_rempli(%i,%i,%i):;",(int)MP_OBJ_SMALL_INT_VALUE(tab[0]),(int)MP_OBJ_SMALL_INT_VALUE(tab[1]),(int)MP_OBJ_SMALL_INT_VALUE(tab[2]));
       }
     }
@@ -2468,6 +2523,8 @@ static mp_obj_t turtle_fillcolor(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_fillcolor_obj, 0, 3, turtle_fillcolor);
 
 static mp_obj_t turtle_begin_fill(size_t n_args, const mp_obj_t *args) {
+  c_turtle_fill(1);
+  return mp_const_none;
   const char * val=caseval("polygone_rempli([]):;");
   return turtle_ret(val);
 }
@@ -2475,6 +2532,8 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_begin_fill_obj, 0, 0, turtle_begin_fi
 
 static mp_obj_t turtle_end_fill(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
+  c_turtle_fill(0);
+  return mp_const_none;
   const char * val=caseval("polygone_rempli():;");
   return turtle_ret(val);
 }
@@ -2530,7 +2589,7 @@ static mp_obj_t turtle_pencolor(size_t n_args, const mp_obj_t *args) {
   }
   if (n_args==2 ){
     int f=mp_get_color(args[0]),b=mp_get_color(args[1]);
-    sprintf(buf,"crayon(%i):;polygone_rempli(%i):;",f,b);
+    sprintf(buf,"crayon(%i),polygone_rempli(%i):;",f,b);
   }
   //printf(buf);
   const char * val=caseval(buf);
@@ -2702,6 +2761,7 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_rond), (mp_obj_t) &turtle_circle_obj },
 	{ MP_ROM_QSTR(MP_QSTR_efface), (mp_obj_t) &turtle_reset_obj },
 	{ MP_ROM_QSTR(MP_QSTR_cap), (mp_obj_t) &turtle_setheading_obj },
+	{ MP_ROM_QSTR(MP_QSTR_heading), (mp_obj_t) &turtle_setheading_obj },
 	{ MP_ROM_QSTR(MP_QSTR_position), (mp_obj_t) &turtle_setposition_obj },
 	{ MP_ROM_QSTR(MP_QSTR_pos), (mp_obj_t) &turtle_setposition_obj },
 	{ MP_ROM_QSTR(MP_QSTR_ecris), (mp_obj_t) &turtle_write_obj },
@@ -2733,6 +2793,12 @@ const mp_obj_module_t mp_module_turtle = {
 /* MATPLOTL */
 static mp_obj_t matplotl_show(size_t n_args, const mp_obj_t *args) {
   const char * val=caseval("show()");
+#if defined EMCC && !defined NO_QSTR
+  EM_ASM_ARGS({
+      var msg = UTF8ToString($0);
+      UI.python_output += msg;
+    },val);
+#endif
   return mp_obj_new_str(val,strlen(val));
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(matplotl_show_obj, 0, 0, matplotl_show);

@@ -1,28 +1,71 @@
 \documentclass{article}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
-\usepackage{stmaryrd}
-\usepackage{makeidx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage[francais]{babel}
 \usepackage{times}
-\usepackage{mathptmx}
-%Uncomment next line for pdflatex and use includegraphics with eps file
-% for latex2html don't use the option [width=\textwidth]
-% check that xfig files are exported magnif 100%
+\usepackage{xspace}
+\usepackage{makeidx}
 \usepackage{ifpdf}
+\usepackage{a4wide}
+\usepackage{graphicx}
 \ifpdf
  \usepackage[colorlinks,pdftex]{hyperref}
 \else
-%\usepackage[ps2pdf,breaklinks=true,colorlinks=true,linkcolor=red,citecolor=green]{hyperref}
+ \usepackage[ps2pdf,breaklinks=true,colorlinks=true,linkcolor=red,citecolor=green]{hyperref}
 \fi
-\usepackage[francais]{babel}
-\usepackage[T1]{fontenc}
-%\DeclareGraphicsExtensions{.pdf, .png, .mps, .eps}
+\newenvironment{preuve}{{\bf Preuve~:}}{}
+
+%\newcommand{\bs}{\symbol{92}}
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}[prop]{Th\'{e}or\`{e}me}
+\newtheorem{lem}[prop]{Lemme}
+\newtheorem{coro}[prop]{Corollaire}
+\newtheorem{remarque}[prop]{Remarque}
+
+
+%\theoremstyle{definition}
+
+\newtheorem{defn}[prop]{D\'{e}finition}
+\newtheorem{ex}[prop]{Exemple}
+\newtheorem{exs}[prop]{Exemples}
+\newtheorem{exe}[prop]{Exercice}
+\newtheorem{rem}[prop]{Remarque}
+\newtheorem{rems}[prop]{Remarques}
+\newcommand{\trick}{\begin{flushleft}
+\medskip
+\end{flushleft}}
+\makeindex
+
+% \renewcommand{\cuttingunit}{subsection} (add HEVEA after % for hacha)
+\input{giacfr.tex}
+\ifhevea
+\(
 \newcommand{\R}{{\mathbb{R}}}
+\newcommand{\mathbb{R}}{{\mathbb{R}}}
 \newcommand{\C}{{\mathbb{C}}}
+\newcommand{\mathbb{C}}{{\mathbb{C}}}
 \newcommand{\Z}{{\mathbb{Z}}}
 \newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\tr}{\mbox{tr\,}}
+\newcommand{\M}{\mathrm{M}}
+\newcommand{\Mat}{\mathrm{Mat}}
+\newcommand{\ds}{\displaystyle}
+\)
+\else
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\rr}{{\mathbb{R}}}
+\newcommand{\C}{{\mathbb{C}}}
+\newcommand{\cc}{{\mathbb{C}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\tr}{\mbox{tr\,}}
+\newcommand{\M}{\mathrm{M}}
+\newcommand{\Mat}{\mathrm{Mat}}
+\newcommand{\ds}{\displaystyle}
+\fi
 \newcommand{\faux}{$\square\;$}
 \newcommand{\vrai}{$\boxtimes\;$}
 \newcommand{\itemf}{\item\faux}
@@ -30,26 +73,32 @@
 
 %---------------------------------------------
 \newtheorem{exo}{Exercice}[section]
-\makeindex
+
 %---------------------------------------------
+%HEVEA\htmlfoot{Retour \`a la page principale de \ahref{http://www-fourier.ujf-grenoble.fr/\home{parisse}/giac_fr.html}{Giac/Xcas}.}
+\giacmathjax
+%HEVEA\renewcommand{\footertext}{}
+
 \begin{document}
-\vspace*{1cm}
-\begin{center}
-{\Huge D\'emarrer en calcul formel}\\[6ex]
-{\Large R. De Graeve, B. Parisse, B. Ycart}\\[3ex]
-{\large Universit\'e Joseph Fourier, Grenoble}
-\end{center}
+\title{D\'emarrer en calcul formel}
+\author{R. De Graeve, B. Parisse, B. Ycart\\
+Universit\'e Grenoble}
+\date{Derni\`ere r\'evision par B. Parisse, juin 2022}
+
+\begin{giacjshere}
+
+\maketitle
+
 
 {\tt Xcas} est un logiciel libre de calcul formel.
 Il est t\'el\'echargeable \`a partir de :
-{\small
-\begin{verbatim}
-http://www-fourier.ujf-grenoble.fr/~parisse/giac_fr.html
-\end{verbatim}
-}
-C'est un \'equivalent de Maple et Mupad, avec lesquels il est
+\ahref{https://xcas.univ-grenoble-alpes.fr}{xcas.univ-grenoble-alpes.fr}
+ou utilisable directement en ligne depuis
+\ahref{https://xcas.univ-grenoble-alpes.fr/nw/xcasfr.html}{xcas.univ-grenoble-alpes.fr/nw/xcasfr.html}
+
+C'est un \'equivalent de Maple, avec lesquel il est
 largement compatible. Il est possible de param\'etrer {\tt Xcas} pour qu'il
-accepte les syntaxes de Maple, Mupad ou des calculatrices TI (89, Voyage 200, Nspire CAS).
+accepte les syntaxes de Python, Maple, ou des calculatrices TI (89, Voyage 200, Nspire CAS).
 Nous nous limiterons \`a la syntaxe propre \`a \verb|Xcas|. 
 
 Ce cours d'introduction est destin\'e \`a faciliter la prise en main
@@ -65,16 +114,22 @@ documents disponibles \`a partir de la page d'accueil du logiciel.
    
 Le but de ce qui suit est d'aider le d\'ebutant en introduisant quelques unes 
 des commandes les plus courantes. 
-Il est conseill\'e de lire ce document apr\`es avoir lanc\'e {\tt Xcas} (sous 
-Windows, cliquer sur le raccourci {\tt xcasfr.bat}, sous linux Gnome, cliquer 
+Il est conseill\'e de lire ce document apr\`es avoir lanc\'e {\tt
+  Xcas} (depuis un onglet du navigateur pour la version sans installation, ou sous 
+Windows, cliquer sur le raccourci {\tt xcasfr.bat}, sous linux, cliquer 
 sur Xcas dans le menu Education ou en tapant depuis un Terminal {\tt xcas \&}
  puis la touche {\tt enter}, sur Mac en cliquant sur xcas dans le menu 
 Applications), 
-en ex\'ecutant les commandes propos\'ees une par une pour en 
+et d'ex\'ecuter les commandes propos\'ees une par une pour en 
 comprendre l'effet. 
 
-La table des mati\`eres et l'index sont \`a la fin de ce document,
-cf. l'appendice \ref{sec:appendice}
+
+\tableofcontents
+
+\printindex
+
+
+
 
 \section{Pour commencer}
 
@@ -133,25 +188,25 @@ modifications pour les utilisations futures (menu \verb|Cfg|).
 Vous n'avez pour l'instant qu'\`a
 entrer des commandes dans les lignes de commandes successives. 
 Si vous utilisez la
-version html de ce cours, vous pouvez copier-coller les commandes
-propos\'ees depuis votre navigateur. 
+version html de ce cours, vous pouvez ex\'ecuter les commandes
+propos\'ees en tapant sur le bouton exe. 
 Chaque ligne de commande saisie est ex\'ecut\'ee par la
 touche "Entr\'ee". Essayez par exemple d'ex\'ecuter les
 commandes suivantes :
-\begin{verbatim}
-1/3+1/4
-sqrt(2)^5
-solve(a*x^2+b*x+c,x)
-50!
-\end{verbatim}
+\giacinputmath{
+1/3+1/4;
+sqrt(2)^5;
+solve(a*x^2+b*x+c,x);
+50!;
+}
 Toutes les commandes sont gard\'ees en m\'emoire.
 Vous pouvez donc remonter dans l'historique de votre session pour faire 
 afficher \`a nouveau des commandes ant\'erieures avec {\tt Ctrl+$\uparrow$}
 pour par exemple les modifier. Essayez, par exemple, en modifiant les 
 commandes pr\'ec\'edentes d'ex\'ecuter aussi~:
 \begin{verbatim}
-1/3+3/4
-solve(a*x+b*x+c,x)
+1/3+3/4;
+solve(a*x+b*x+c,x);
 \end{verbatim}
 On obtient alors 
 
@@ -170,24 +225,26 @@ ajouter des commentaires ou fusionner des niveaux en un seul niveau.
 \subsection{Les commandes et l'aide en ligne}
 %
 Les commandes sont regroup\'ees par th\`emes dans les
-menus du bandeau sup\'erieur~: \verb|CAS|, \verb|Expression|,\verb|Cmds|,
-\verb|Prg|, \verb|Graphic|,
+menus du bandeau sup\'erieur~: \verb|Outils|, \verb|Expression|,\verb|Cmds|,
+\verb|Prg|, \verb|Graphe|,
 \verb|Geo|, \verb|Tableur|,  \verb|Phys|, \verb|Scolaire|, \verb|Tortue|. 
-Certains menus sont des menus dit menus "Assistant" parce que les commandes 
-sont class\'ees par th\`eme et sont explicit\'ees (menu {\tt CAS}) ou parce 
+Certains menus sont des menus dit menus "Assistant" parce qu'ils
+contiennent
+une s\'election des commandes  les plus utiles,
+class\'ees par th\`eme et explicit\'ees (menu {\tt Outils}) ou parce 
 qu'une boite de dialogue vous demande de 
 pr\'eciser les param\`etres de la commande choisie (menu 
 {\tt Tableur$\blacktriangleright$Maths} ou menu {\tt Graphic}).\\
 Les autres menus contiennent les noms des commandes : 
-le menu {\tt Cmds} contient toutes les commandes de calcul formel, 
-le menu {\tt Prg} contient toutes les commandes que l'on utilise en  
+le menu {\tt Cmds} contient les commandes de calcul formel, 
+le menu {\tt Prg} contient les commandes que l'on utilise en  
 programmation,
-le menu {\tt Geo} contient toutes les commandes de g\'eom\'etrie...
+le menu {\tt Geo} contient les commandes de g\'eom\'etrie...
 Lorsqu'on s\'electionne une commande dans un menu, 
 \begin{itemize}
 \item soit une boite de dialogue s'ouvre vous permettant de sp\'ecifier
 les arguments de la commande (par exemple pour tracer une courbe
-depuis le menu \verb|Graphic| ou pour faire des statistiques depuis le menu 
+depuis le menu \verb|Graphe| ou pour faire des statistiques depuis le menu 
 {\tt Tableur$\blacktriangleright$Maths},
 \item soit la commande est recopi\'ee dans la ligne de commande. Pour connaitre
 la syntaxe de cette commande, appuyez sur le bouton \verb|?| en haut \`a 
@@ -295,9 +352,9 @@ la multiplication). Par exemple~:
 \item
 \verb|a/2*b| retourne $\displaystyle \frac{a\cdot b}{2}$\\
 \item
-\verb|a/2/b| retourne $\displaystyle \frac{a}{\displaystyle \frac{2}{b}}$
-\item
-\verb|normal(a/2/b)| retourne $\displaystyle \frac{a}{2\cdot b}$
+\verb|a/2/b| retourne $\displaystyle \frac{a}{2b}$
+%\item
+%\verb|normal(a/2/b)| retourne $\displaystyle \frac{a}{2\cdot b}$
 \item
 \verb|a^2*b| retourne $a^2\cdot b$
 \end{itemize}
@@ -308,7 +365,8 @@ Les commandes sont num\'erot\'ees, ainsi que les r\'eponses,
 mais, si vous avez modifi\'e une ligne de commande, celle-ci
 garde le num\'ero qu'elle avait. On peut rappeler par \verb|ans()| (answer) la 
 r\'eponse pr\'ec\'edente c'est \`a dire la r\'eponse de la derni\`ere commande
-\'evalu\'ee.
+\'evalu\'ee (attention, il s'agit bien de la derni\`ere commande
+ex\'ecut\'ee, qui peut ne pas \^etre celle du niveau juste au-dessus).
 \index{ans@{\verb+ans+}}
 %
 \section{Les objets du calcul formel}
@@ -345,52 +403,50 @@ interviennent sont exacts. Ils sont effectu\'es en mode approch\'e si
 un des nombres est approch\'e. Ainsi
 \verb|1.5+1| renvoie un nombre approch\'e alors que \verb|3/2+1| 
 renvoie un nombre exact.
-\begin{verbatim}
-sqrt(2)
-evalf(sqrt(2))
-sqrt(2)-evalf(sqrt(2))
-exact(evalf(sqrt(2)))*10^9
-exact(evalf(sqrt(2)*10^9))
-\end{verbatim} 
+\giacinputmath{
+sqrt(2);
+evalf(sqrt(2));
+sqrt(2)-evalf(sqrt(2));
+exact(evalf(sqrt(2)))*10^9;
+exact(evalf(sqrt(2)*10^9));
+} 
 \index{sqrt@{\verb+sqrt+}}
 \index{precision@pr\'ecision}
 Pour les nombres r\'eels approch\'es, la pr\'ecision par d\'efaut est
-proche de 14 chiffres significatifs (la pr\'ecision relative est de 53
-ou 45 bits pour les r\'eels flottants normalis\'es selon les versions de Xcas). 
+proche de 14 chiffres significatifs (la pr\'ecision relative est de 48
+bits pour les r\'eels flottants normalis\'es). 
 Elle peut \^etre augment\'ee, en
 donnant le nombre de d\'ecimales d\'esir\'e
 comme second argument de \verb|evalf|.
-\begin{verbatim}
-evalf(sqrt(2),50)
-evalf(pi,100)
-\end{verbatim}
+\giacinputmath{
+evalf(sqrt(2),50);
+evalf(pi,100);
+}
 On peut aussi changer la pr\'ecision par d\'efaut pour tous les
 calculs en modifiant
 \index{digits@{\verb+Digits+}}
 la variable \verb|Digits|.
-\begin{verbatim}
-Digits:=50
-evalf(pi)
-evalf(exp(pi*sqrt(163)))
-\end{verbatim}
+\giacinputmath{
+Digits:=50;
+evalf(pi);
+evalf(exp(pi*sqrt(163)));
+}
 
 \index{i@{\verb+i+}}
 La lettre \verb|i| est r\'eserv\'ee \`a $\sqrt{-1}$ et ne peut \^etre
 r\'eaffect\'ee~; en particulier on ne peut pas l'utiliser comme indice
 de boucle.
-\begin{verbatim}
-(1+2*i)^2
-(1+2*i)/(1-2*i)
-e^(i*pi/3)
-\end{verbatim}
+\giacinputmath{
+(1+2*i)^2;
+(1+2*i)/(1-2*i);
+e^(i*pi/3);
+}
 \index{nombre!complexe}
 \index{infinity@{\verb+infinity+}}
 {\tt Xcas} distingue l'infini non sign\'e \verb|infinity| ($\infty$), de
 \verb|+infinity| ou \verb|inf| ($+\infty$) et de \verb|-infinity|  
 ou \verb|-inf|($-\infty$).
-\begin{verbatim}
-1/0; (1/0)^2; -(1/0)^2 
-\end{verbatim}
+\giacinputmath{1/0; (1/0)^2; -(1/0)^2 }
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -415,20 +471,21 @@ ou \verb|-inf|($-\infty$).
 \index{cha\^{i}ne}
 Une cha\^{i}ne est parenth\'es\'ee par des guillemets ({\tt "}).
 Un caract\`ere est une cha\^{i}ne ayant un seul \'el\'ement.
-\begin{verbatim}
-s:="azertyuiop"
-size(s)
-s[0]+s[3]+s[size(s)-1]
-concat(s[0],concat(s[3],s[size(s)-1]))
-head(s)
-tail(s)
-mid(s,3,2)
-l:=asc(s)
-ss:=char(l)
-string(123)
-expr(123)
-expr(0123)
-\end{verbatim}
+
+\giacinput{
+s:="azertyuiop";
+size(s);
+s[0]+s[3]+s[size(s)-1];
+concat(s[0],concat(s[3],s[size(s)-1]));
+head(s);
+tail(s);
+mid(s,3,2);
+l:=asc(s);
+ss:=char(l);
+string(123);
+expr(123);
+expr(0123);
+}
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -477,13 +534,14 @@ qui veut dire Vrai et 0 pour false qui veut dire Faux)
 \end{itemize}
 \index{egalite@\'egalit\'e}
 \index{equation@\'equation}
-\begin{verbatim}
-a==b
-a:=b
-a==b
-solve(a=b,a)
-solve(2*a=b+1,a)
-\end{verbatim}
+\giacinputmath{
+a==b;
+a:=b;
+a==b;
+purge(a);
+solve(a=b,a);
+solve(2*a=b+1,a);
+}
 \index{assume@{\verb+assume+}}
 \index{hypoth\`ese}
 On peut faire certains types d'hypoth\`eses sur une variable avec
@@ -493,30 +551,32 @@ une \'eventuelle valeur pr\'ec\'edemment affect\'ee \`a la variable.
 Lors d'un calcul, la variable n'est pas remplac\'ee mais
 l'hypoth\`ese sera utilis\'ee dans la mesure du possible, par exemple
 \verb|abs(a)| renverra \verb|a| si on fait l'hypoth\`ese \verb|a>2|.
-\begin{verbatim}
-sqrt(a^2)
-assume(a<0)
-sqrt(a^2)
-assume(n,integer)
-sin(n*pi)
-\end{verbatim}
+\giacinputmath{
+sqrt(a^2);
+assume(0>a);
+sqrt(a^2);
+assume(n,integer);
+sin(n*pi);
+}
 \index{subst@{\verb+subst+}}
 La fonction \verb|subst| permet de remplacer une variable dans une
 expression par un nombre ou une autre expression, 
 sans affecter cette variable.
-\begin{verbatim}
-subst(a^2+1,a=1)
-subst(a^2+1,a=sqrt(b-1))
-a^2+1
-\end{verbatim} 
+\giacinputmath{
+subst(a^2+1,a=1);
+subst(a^2+1,a=sqrt(b-1));
+a^2+1;
+} 
 
-{\bf Remarque}~: pour stocker une valeur dans une variable par r\'ef\'erence,
+{\bf Remarque avanc\'ee}~: pour stocker une valeur dans une variable par r\'ef\'erence,
 par exemple pour modifier une valeur dans une liste (un vecteur, une
 matrice), sans recr\'eer une nouvelle liste mais en modifiant
 en place la liste existante, on utilise l'instruction \verb|=<|
 au lieu de \verb|:=|.
 Cette instruction est plus rapide que l'instruction \verb|:=|, car
-elle \'economise le temps de copie de la liste.
+elle \'economise le temps de copie de la liste, mais peut avoir des
+effets de bord inattendus si on ne comprend pas ce qu'est un passage
+par r\'ef\'erence.
 %
 \subsection{Les expressions}
 %
@@ -528,11 +588,12 @@ reli\'es entre eux par des op\'erations~: par exemple
 Lorsqu'on valide une commande, {\tt Xcas}
 remplace les variables par leur valeur si elles en ont une,
 et ex\'ecute les op\'erations. 
-\begin{verbatim}
-(a-2)*x^2+a*x+1
-a:=2
-(a-2)*x^2+a*x+1
-\end{verbatim}
+\giacinputmath{
+(a-2)*x^2+a*x+1;
+a:=2;
+(a-2)*x^2+a*x+1;
+purge(a);
+}
 \index{simplifications automatiques}
 Certaines op\'erations de simplification sont ex\'ecut\'ees
 automatiquement lors d'une \'evaluation~:
@@ -602,26 +663,27 @@ ensuite.
 Dans le menu \verb|Expression| du bandeau sup\'erieur, les sous-menus sont
 des menus de r\'e\'ecriture et contiennent d'autres fonctions, pour des 
 transformations plus ou moins sp\'ecialis\'ees.  
-\begin{verbatim}
-b:=sqrt(1-a^2)/sqrt(1-a)
-ratnormal(b)
-normal(b)
-tsimplify(b)
-simplify(b)
-simplify(simplify(b))
-assume(a<1)
-simplify(b)   
-simplify(simplify(b))
-\end{verbatim}
+\giacinputmath{
+b:=sqrt(1-a^2)/sqrt(1-a);
+ratnormal(b);
+normal(b);
+tsimplify(b);
+simplify(b);
+simplify(simplify(b));
+assume(1>a);
+simplify(b);
+simplify(simplify(b));
+purge(b);
+}
 \index{convert@{\verb+convert+}}
 La fonction \verb|convert| permet de passer d'une expression \`a une
 autre \'equivalente, sous un format qui est sp\'ecifi\'e par le
 deuxi\`eme argument. 
-\begin{verbatim}
-convert(exp(i*x),sincos)
-convert(1/(x^4-1),partfrac)
-convert(series(sin(x),x=0,6),polynom)
-\end{verbatim}
+\giacinputmath{
+convert(exp(i*x),sincos);
+convert(1/(x^4-1),partfrac);
+convert(series(sin(x),x=0,6),polynom);
+}
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -783,13 +845,16 @@ Par exemple l'expression $x^2-1$ est
 d\'efinie par \verb|x^2-1|. Pour la transformer en la fonction $f$ qui
 \`a $x$ associe $x^2-1$, trois possibilit\'es existent~:
 \begin{verbatim}
-f(x):= x^2-1
-f:=x->x^2-1
-f:=unapply(x^2-1,x)
+f(x):= x^2-1;
+f:=x->x^2-1;
+f:=unapply(x^2-1,x);
+\end{verbatim}
 
+\giacinputmath{
+f(x):= x^2-1;
 f(2); 
 f(a^2);
-\end{verbatim}
+}
 \index{fonction!d\'efinition d'une}
 \index{fonction}
 \index{expression}
@@ -815,22 +880,22 @@ On peut ajouter et multiplier des fonctions,
 par exemple \verb|f:=sin*exp|. Pour composer des fonctions, on utilise 
 l'op\'erateur \verb|@| et pour composer plusieurs fois une fonction 
 avec elle-m\^eme, on utilise l'op\'erateur \verb|@@|.
-\begin{verbatim}
+\giacinputmath{
 f:=x->x^2-1;
 (f@f)(2);
 (f@sqrt)(a);
-f1:=f@sin
-f2:=f@f
-f3:=f@@3
-f1(a)
-f2(a)
-f3(a)
-\end{verbatim} 
+f1:=f@sin;
+f2:=f@f;
+f3:=f@@3;
+f1(a);
+f2(a);
+f3(a);
+} 
 %
 On peut d\'efinir des fonctions de plusieurs variables \`a valeurs dans 
-$\mathbb R$ comme :\\
+$\mathbb{R}$ comme :\\
 \verb|f(x,y):=x+2*y| \\
-et des fonctions de plusieurs variables \`a valeurs dans $\mathbb R^p$
+et des fonctions de plusieurs variables \`a valeurs dans $\mathbb{R}^p$
 par exemple :\\
 \verb|f(x,y):=(x+2*y,x-y)| 
 
@@ -852,11 +917,11 @@ s\'epar\'es par des virgules~:
 \item  les s\'equences (entre parenth\`eses) 
 \item  les ensembles (entre pourcentage-accolades)
 \end{itemize}
-\begin{verbatim}
-liste:=[1,2,4,2]
-sequence:=(1,2,4,2)
-ensemble:=%{1,2,4,2%}
-\end{verbatim}
+\giacinputmath{
+liste:=[1,2,4,2];
+sequence:=(1,2,4,2);
+ensemble:=set[1,2,4,2];
+}
 Les listes peuvent contenir des listes (c'est le cas des matrices), 
 alors que les s\'equences sont plates (un \'el\'ement d'une s\'equence
 ne peut pas \^etre une s\'equence). Dans un ensemble,
@@ -876,16 +941,16 @@ Le nombre d'\'el\'ements d'une liste est donn\'e par \verb|size|
 \index{nops@{\verb+nops+}}
 \index{size@{\verb+size+}}
 \index{nombre!d'\'el\'ements}
-\begin{verbatim}
-se:=(1,2,4,2)
-li:=[se]
-op(li)
-nop(se)
-nops(se)
-%{se%}
-size([se])
-size(%{se%})
-\end{verbatim}
+\giacinputmath{
+se:=(1,2,4,2);
+li:=[se];
+op(li);
+nop(se);
+nops(se);
+set[se];
+size([se]);
+size(set[se]);
+}
 \index{it\'eration}
 \index{seq@{\verb+seq+}}
 \index{makelist@{\verb+makelist+}}
@@ -894,18 +959,16 @@ d'it\'eration comme \verb|$| %$
 ou \verb|seq| (qui it\`erent une
 expression) ou \verb|makelist| (qui d\'efinit une liste \`a l'aide d'une 
 fonction).  
-\begin{verbatim}
-1$5
-k^2 $ (k=-2..2)
-seq(k^2,k=-2..2)
-seq(k^2,k,-2..2)
-[k^2$(k=-2..2)]
-seq(k^2,k,-2,2)
-seq(k^2,k,-2,2,2)
-makelist(x->x^2,-2,2)
-seq(k^2,k,-2,2,2)
-makelist(x->x^2,-2,2,2)
-\end{verbatim}
+\verb|1$5;k^2 $ (k=-2..2);[k^2$(k=-2..2)]|
+\giacinputmath{
+seq(k^2,k=-2..2);
+seq(k^2,k,-2,2);
+seq(k^2,k,-2,2,2);
+makelist(x->x^2,-2,2);
+[x^2 for x in range(-2,3)];
+seq(k^2,k,-2,2,2);
+makelist(x->x^2,-2,2,2);
+}
 \index{NULL@{\verb+NULL+}}
 \index{liste!vide}
 \index{sequence@s\'equence!vide}
@@ -928,7 +991,7 @@ Les polyn\^omes sont souvent d\'efinis par une expression, mais
 ils peuvent aussi \^etre repr\'esent\'es 
 par la liste de leurs coefficients par ordre
 de degr\'e d\'ecroissant, avec comme d\'elimiteurs \verb|poly1[| et \verb|]|.
-Il existe aussi une repr\'esentation
+Il existe aussi une repr\'esentation non symbolique
 pour les polyn\^omes \`a plusieurs variables. Les fonctions
 \verb|symb2poly| et \verb|poly2symb| permettent
 de passer de la repr\'esentation expression \`a la repr\'esentation
@@ -981,7 +1044,7 @@ Le principal probl\`eme du calcul formel est la complexit\'e des
 calculs interm\'ediaires. Elle se traduit \`a la fois par le temps
 n\'ecessaire \`a l'ex\'ecution des commandes et par la place m\'emoire
 requise. Les algorithmes impl\'ement\'es dans les fonctions
-de {\tt Xcas} sont performants, mais ils ne
+de {\tt Xcas} sont en principe performants, mais ils ne
 \index{time@{\verb+time+}}
 \index{temps de calcul}
 peuvent pas \^etre optimaux dans tous les cas. La fonction \verb|time| 
@@ -1009,11 +1072,11 @@ d\'eriver une fonction $f$,
 on peut appliquer \verb|diff| \`a l'expression $f(x)$, mais alors le
 r\'esultat est une expression. Si on souhaite d\'efinir la fonction
 d\'eriv\'ee, il faut utiliser \verb|function_diff|.
-\begin{verbatim}
+\giacinputmath{
 E:=x^2-1; diff(E);
 f:=unapply(E,x); diff(f(x));
 f1:=function_diff(f);f1(x);
-\end{verbatim}
+}
 Il ne {\bf faut pas} d\'efinir la fonction d\'eriv\'ee par
 \verb|f1(x):=diff(f(x))|, car dans cette d\'efinition, \verb|x| aurait 
 deux sens incompatibles~: c'est d'une part la
@@ -1030,14 +1093,14 @@ La fonction \verb|diff| s'applique \`a n'importe quelle combinaison de
 variables, et permet de calculer des d\'eriv\'ees partielles
 successives.
 \index{derivee@d\'eriv\'ee!partielle}
-\begin{verbatim}
-E:=sin(x*y)
-diff(E,x)
-diff(E,y)
-diff(E,x,y)-diff(E,y,x)
-simplify(ans())
-diff(E,x$2,y$3)
-\end{verbatim}
+\giacinputmath{
+E:=sin(x*y);
+diff(E,x);
+diff(E,y);
+diff(E,x,y)-diff(E,y,x);
+simplify(ans());
+diff(E,x,2)
+}
 Si le deuxi\`eme argument de \verb|diff| est une liste, une
 liste de d\'eriv\'ees est retourn\'ee. Par exemple pour calculer
 le gradient de $\sin(xy)$~:
@@ -1084,14 +1147,14 @@ faites, avec la fonction {\tt assume}, sur ce param\`etre.
 \index{limite}
 \index{limite!\`a droite}
 \index{limite!\`a gauche}
-\begin{verbatim}
-limit(1/x,x,0)
-limit(1/x,x,0,1)
-limit(1/x,x,0,-1)
-limit(a/x,x,0,1)
-assume(a>0)
-limit(a/x,x,0,1)
-\end{verbatim}
+\giacinputmath{
+limit(1/x,x,0);
+limit(1/x,x,0,1);
+limit(1/x,x,0,-1);
+limit(a/x,x,0,1);
+assume(a>0);
+limit(a/x,x,0,1);
+}
 Pour les d\'eveloppements limit\'es,
 deux fonctions sont disponibles, \verb|series| et \verb|taylor|. La
 diff\'erence est que l'ordre du d\'eveloppement doit \^etre
@@ -1106,24 +1169,26 @@ L'ordre du d\'eveloppement limit\'e demand\'e est utilis\'e par
 simplifications, l'ordre du d\'eveloppement obtenu pourra \^etre inf\'erieur, 
 il faudra alors recommencer le calcul avec un ordre plus grand. L'expression
 retourn\'ee est constitu\'ee du polyn\^ome de Taylor, plus un reste
-dans lequel appara\^\i t une fonction \verb|order_size| qui est telle que
+dans lequel appara\^\i t une fonction \verb|order_size| qui est
+presque toujours un $O$ (i.e. une fonction born\'ee, plus pr\'ecis\'ement si
+la fonction \verb|order_size| tend vers l'infini, elle le fait lentement, en v\'erifiant
 pour tout $a>0$, $x^a$\verb|order_size|($x$) tend vers $0$
-quand $x$ tend vers $0$. Pour supprimer le reste et ne garder
+quand $x$ tend vers $0$). Pour supprimer le reste et ne garder
 que le polyn\^ome de Taylor, on peut utiliser \verb|convert| avec l'option 
 {\tt polynom}.
-\begin{verbatim}
-taylor(1/(x^2+1),0)
-taylor(1/(x^2+a^2),x=0)
-series(1/(x^2+1),0,11)
-series(1/(x^2+1),+infinity,11)
-series(tan(x),pi/4,3)
-series(sin(x)^3/((1-cos(x))*tan(x)),0,4)
-series(sin(x)^3/((1-cos(x))*tan(x)),0,6)
-series(tan(sin(x))-sin(tan(x)),0,13)
-convert(ans(),polynom)
-series(f(x),0,3)
-g:=f@f; series(g(x),0,2)
-\end{verbatim}
+\giacinputmath{
+taylor(1/(x^2+1),0);
+taylor(1/(x^2+a^2),x=0);
+series(1/(x^2+1),0,11);
+series(1/(x^2+1),+infinity,11);
+series(tan(x),pi/4,3);
+series(sin(x)^3/((1-cos(x))*tan(x)),0,4);
+series(sin(x)^3/((1-cos(x))*tan(x)),0,6);
+series(tan(sin(x))-sin(tan(x)),0,13);
+convert(ans(),polynom);
+series(f(x),0,3);
+g:=f@f; series(g(x),0,2);
+}
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -1142,11 +1207,11 @@ g:=f@f; series(g(x),0,2)
 %
 \subsection{Primitives et int\'egrales}
 %
-\index{int@{\verb+int+}}
+\index{integrate@{\verb+integrate+}}
 \index{primitive}
 \index{fonction!primitive d'une}
 \index{integrale@int\'egrale}
-La fonction \verb|int| calcule une primitive d'une expressionpar rapport \`a 
+La fonction \verb|integrate| calcule une primitive d'une expressionpar rapport \`a 
 $x$ ou par rapport \`a la variable donn\'ee en argument. Si
 l'expression comporte plusieurs variables, il vaut pr\'eciser la
 variable d'int\'egration. Si on ajoute deux arguments $a$ et $b$ 
@@ -1154,13 +1219,13 @@ apr\`es la variable d'int\'egration, on calcule l'int\'egrale sur
 l'intervalle $[a,b]$. Eventuellement les
 bornes de l'int\'egrale peuvent \^etre des expressions, ce qui permet
 de calculer des int\'egrales multiples.
-\begin{verbatim}
-int(x^2-1)
-int(x^2-1,x,-1,1)
-int(x*y,x)
-int(x*y,y,0,x)
-int(int(x*y,y,0,x),x,0,1)
-\end{verbatim}
+\giacinputmath{
+integrate(x^2-1);
+integrate(x^2-1,x,-1,1);
+integrate(x*y,x);
+integrate(x*y,y,0,x);
+integrate(integrate(x*y,y,0,x),x,0,1);
+}
 Pour calculer une int\'egrale, un logiciel de calcul formel recherche 
 une primitive puis l'\'evalue entre les bornes, afin d'obtenir
 une valeur exacte. Dans certains cas, il est inutile de calculer
@@ -1173,23 +1238,23 @@ Dans ce cas, on demande une valeur approch\'ee en utilisant
 \verb|evalf|, ou bien on utilise directement 
 la fonction \verb|romberg|, qui est
 appel\'ee par \verb|evalf|.
-\index{romberg@{\verb+romberg+}}
-\begin{verbatim}
-int(exp(-x^2))
-int(exp(-x^2),x,0,10)
-evalf(int(exp(-x^2),x,0,10))
-romberg(exp(-x^2),x,0,10)
-ans()/sqrt(pi))
-\end{verbatim}
+\index{gaussquad@{\verb+gaussquad+}}
+\giacinputmath{
+integrate(exp(-x^2));
+integrate(exp(-x^2),x,0,10);
+evalf(integrate(exp(-x^2),x,0,10));
+gaussquad(exp(-x^2),x,0,10);
+evalf(sqrt(pi));
+}
 
 \begin{center}
 \begin{tabular}{|ll|}
 \hline
 \multicolumn{2}{|c|}{\bf Int\'egrales}\\
 \hline\hline
-\verb|int(E)| &primitive d'une expression\\
-\verb|int(E,x,a,b)| & int\'egrale exacte\\
-\verb|romberg(E,x,a,b)| & int\'egrale approch\'ee\\
+\verb|integrate(E)| &primitive d'une expression\\
+\verb|integrate(E,x,a,b)| & int\'egrale exacte\\
+\verb|gaussquad(E,x,a,b)| & int\'egrale approch\'ee\\
 \hline
 \end{tabular}
 \end{center}
@@ -1219,11 +1284,11 @@ Pour les obtenir, il faut cocher \verb|Complexe| dans la configuration du CAS
 Ex\'ecutez les commandes suivantes
 avant et apr\`es avoir activ\'e l'option \verb|Complex|. 
 \index{solve@{\verb+solve+}}
-\begin{verbatim}
-solve(x^2-a*x+2,x)
-solve(x^2+2,x)
-solve(x^3=1,x)
-\end{verbatim}
+\giacinputmath{
+solve(x^2-a*x+2,x);
+solve(x^2+2,x);
+solve(x^3=1,x);
+}
 Les racines exactes sont calcul\'ees pour les polyn\^omes de
 degr\'e 1 et 2 (les formules de Cardan et Ferrari pour les degr\'es
 3 et 4 ne sont pas utilis\'ees, car les solutions obtenues
@@ -1235,18 +1300,16 @@ Pour les \'equations trigonom\'etriques, les solutions principales
 sont renvoy\'ees. Pour obtenir toutes les solutions, il faut activer
 l'option \verb|All_trig_sol|. Comparer les commandes suivantes avec et
 sans cette option.
-\begin{verbatim}
-solve(cos(x),x)
-solve(cos(x)+sin(x),x)
-\end{verbatim}
+\giacinput{
+solve(cos(x),x);
+solve(cos(x)+sin(x),x);
+}
 
 La fonction \verb|solve| peut aussi r\'esoudre des syst\`emes
 d'\'equations. Le premier argument est la liste des \'equations, le
 second est la liste des variables.
 \index{syst\`eme!d'\'equations}
-\begin{verbatim}
-solve([x^2+y-2,x+y^2-2],[x,y])
-\end{verbatim}
+\giacinputmath{solve([x^2+y-2,x+y^2-2],[x,y])}
 
 \index{fsolve@{\verb+fsolve+}}
 La fonction de r\'esolution approch\'ee est \verb|fsolve|. Elle
@@ -1258,12 +1321,12 @@ g\'en\'eral de tous ces algorithmes est de calculer les termes
 successifs d'une suite qui converge vers une solution de l'\'equation
 ou du syst\`eme propos\'e. Il faut pour cela choisir selon les cas
 un point de d\'epart, ou un intervalle de recherche.
-\begin{verbatim}
-fsolve((x^5+2*x+1)=0,x,1,newton_solver)
-newton(x^5+2*x+1,x,1.0)
-newton(x^5+2*x+1,x,1+i)
-newton(x^5+2*x+1,x,-1+i)
-\end{verbatim}
+\giacinputmath{
+fsolve((x^5+2*x+1)=0,x,1,newton_solver);
+newton(x^5+2*x+1,x,1.0);
+newton(x^5+2*x+1,x,1+i);
+newton(x^5+2*x+1,x,-1+i);
+}
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -1294,31 +1357,29 @@ Les d\'eriv\'ees de la fonction inconnue $y$ peuvent s'\'ecrire $y'$,
 $y''$, qui sont traduits en \verb|diff(y)|, \verb|diff(diff(y))|.
 Si on ne sp\'ecifie pas de condition initiale, le r\'esultat est donn\'e
 en fonction de constantes arbitraires.
-\begin{verbatim}
-desolve(y'=y,y)
-desolve(y''+2*y'+y=0,y)
-desolve((x^2-1)*y'+2*y=0,y)
-\end{verbatim}
+\giacinputmath{
+desolve(y'=y,y);
+desolve(y''+2*y'+y=0,y);
+desolve((x^2-1)*y'+2*y=0,y);
+}
 Les conditions initiales sont vues comme des \'equations
 suppl\'ementaires, qui forment une liste avec l'\'equation 
 diff\'erentielle.
-\begin{verbatim}
-desolve([y'=y,y(0)=1],y)
-desolve([y"+2*y'+y=0,y(0)=1],y)
-desolve([y"+2*y'+y=0,y(0)=1,y'(0)=1],y)
-desolve([y"+2*y'+y=0,y(0)=1,y(1)=0],y)
-desolve([(x^2-1)*y'+2*y=0,y(0)=1],y)
-desolve((t^2-1)*diff(y(t),t)+2*y(t)=0,y(t))
-\end{verbatim}
+\giacinputmath{
+desolve([y'=y,y(0)=1],y);
+desolve([y''+2*y'+y=0,y(0)=1],y);
+desolve([y''+2*y'+y=0,y(0)=1,y'(0)=1],y);
+desolve([y''+2*y'+y=0,y(0)=1,y(1)=0],y);
+desolve([(x^2-1)*y'+2*y=0,y(0)=1],y);
+desolve((t^2-1)*diff(y(t),t)+2*y(t)=0,y(t));
+}
 \index{desolve@{\verb+desolve+}}
 \index{odesolve@{\verb+odesolve+}}
 
 La fonction \verb|odesolve| permet de r\'esoudre par des m\'ethodes
 num\'eriques une \'equation diff\'erentielle $y'=f(x,y)$ passant par
 un point $(x_0,y_0)$. Par exemple
-\begin{verbatim}
-odesolve(sin(x*y),[x,y],[0,1],2)
-\end{verbatim}
+\giacinputmath{odesolve(sin(x*y),[x,y],[0,1],2)}
 permet de calculer $y(2)$ o\`u $y(x)$ est la solution de $y'(x)=\sin(xy)$,
 telle que $y(0)=1$.
 La fonction \verb|plotode| repr\'esente graphiquement
@@ -1328,9 +1389,11 @@ des tangentes. La fonction
 \verb|interactive_odeplot| repr\'esente le champ
 des tangentes et permet de cliquer sur le graphique pour tracer
 les solutions passant par les points cliqu\'es.
+\giacinput{
+plotfield(sin(x*y),[x,y]);
+plotode(sin(x*y),[x,y],[0,1]);
+}
 \begin{verbatim}
-plotfield(sin(x*y),[x,y])
-plotode(sin(x*y),[x,y],[0,1])
 erase()
 interactive_plotode(sin(x*y),[x,y])
 \end{verbatim}
@@ -1367,12 +1430,12 @@ $\Z/p\Z$~: \verb|a*2| renvoie \verb|1%5| (6 modulo 5),
 \verb|1/a| renvoie \verb|2%5|, \ldots~
 Pour calculer efficacement les puissances modulo $p$, on peut utiliser ce qui
 pr\'ec\`ede, ou la fonction \verb|powermod| ou \verb|powmod|. 
-\begin{verbatim}
-a:=3%5
-a+12
-a^4
-powermod(3,4,5)
-\end{verbatim}
+\giacinput{
+a:=3 mod 5;
+a+12;
+a^4;
+powermod(3,4,5);
+}
 \index{powermod@{\verb+powermod+}}
 
 \begin{center}
@@ -1446,21 +1509,23 @@ ou dans un corps
 fini (d\'efini par la commande \verb|GF|). Ex\'ecutez les
 commandes suivantes avant et apr\`es avoir activ\'e l'option
 \verb|Complexe|.
-\begin{verbatim}
-P:=x^4-1
-factor(P)
-gcd(P,x^3-1)
-divis(P)
-propfrac(x^4/P)
-partfrac(4/P)
-Q:=(x^4+1)%3
-factor(Q)
-G:=GF(2,8,['a','G'])
-factor(G(a^3)*x^2+1)
-genpoly(5,3,x)
-genpoly(2,3,x)
-genpoly(2*y+5,3,x)
-\end{verbatim}
+\giacinputmath{
+P:=x^4-1;
+factor(P);
+gcd(P,x^3-1);
+divis(P);
+propfrac(x^4/P);
+partfrac(4/P);
+Q:=(x^4+1) mod 3;
+factor(Q);
+purge(g);
+GF(2,8); // corps fini a 2^8 elements
+factor(g^3*x^2+1);
+genpoly(5,3,x);
+genpoly(2,3,x);
+genpoly(2*y+5,3,x);
+}
+
 
 \index{normal@{\verb+normal+}}
 \index{expand@{\verb+expand+}}
@@ -1525,7 +1590,7 @@ genpoly(2*y+5,3,x)
 \hline
 \verb|randpoly| & polyn\^ome al\'eatoire\\
 \verb|cyclotomic| & polyn\^omes cyclotomiques\\
-\verb|lagrange| & polyn\^omes de Lagrange\\
+\verb|lagrange| & interpolation de Lagrange\\
 \verb|hermite| & polyn\^omes de Hermite\\
 \verb|laguerre| & polyn\^omes de Laguerre\\
 \verb|tchebyshev1| & polyn\^omes de Tchebyshev\\
@@ -1580,23 +1645,23 @@ formules d'Euler ({\tt trig2exp}), transformation des exponentielles en fonction
 \item 
 \verb|Expression->Trigo inv|~: transformation des fonctions inverses
 \end{itemize}
-\begin{verbatim}
-exp2pow(exp(3*ln(x)))
-exp2trig(exp(i*x))
-trig2exp(cos(x))
-E:=sin(x)^4+sin(x)^3
-El:=tlin(E)
-texpand(El)
-tsimplify(E)
-tsimplify(El)
-tsimplify(E-El)
-halftan(E)
-trig2exp(El)
-Et:=trigtan(E)
-tan2sincos(Et)
-tan2sincos2(Et)
-tan2cossin2(Et)
-\end{verbatim}
+\giacinputmath{
+exp2pow(exp(3*ln(x)));
+exp2trig(exp(i*x));
+trig2exp(cos(x));
+E:=sin(x)^4+sin(x)^3;
+El:=tlin(E);
+texpand(El);
+tsimplify(E);
+tsimplify(El);
+tsimplify(E-El);
+halftan(E);
+trig2exp(El);
+Et:=trigtan(E);
+tan2sincos(Et);
+tan2sincos2(Et);
+tan2cossin2(Et);
+}
 \index{halftan@{\verb+halftan+}}
 \index{trigtan@{\verb+trigtan+}}
 \index{tan2sincos@{\verb+tan2sincos+}}
@@ -1634,36 +1699,36 @@ si c'\'etait une colonne. En particulier, si \verb|v| et \verb|w|
 sont deux vecteurs de m\^eme taille, \verb|v*w| retourne leur produit
 scalaire. 
 \index{produit!matriciel}
-\begin{verbatim}
-A:=[[1,2,3],[4,5,6],[7,8,9]]
-v:=[1,1,1]
-v*v
-A*v
-v*A
-B:=[[1,1,1],[2,2,2]]
-A*B
-B*A
-A*tran(B)
-\end{verbatim}
-A partir d'une fonction qui \`a deux indices $(j,k)$ associe un r\'eel
+\giacinputmath{
+A:=[[1,2,3],[4,5,6],[7,8,9]];
+v:=[1,1,1];
+v*v;
+A*v;
+v*A;
+B:=[[1,1,1],[2,2,2]];
+// A*B; // erreur
+B*A;
+A*tran(B);
+}
+\`A partir d'une fonction qui \`a deux indices $(j,k)$ associe un r\'eel
 $a(j,k)$, on peut constituer une matrice avec \verb|makemat| ou
 \verb|matrix|. Pour \verb|makemat| les indices commencent \`a 0, pour
 \verb|matrix| il commencent \` a 1.
 \index{makemat@{\verb+makemat+}}
 \index{matrix@{\verb+matrix+}}
-\begin{verbatim}
-makemat((j,k)->j+2*k,3,2)
-matrix(3,2,(j,k)->j+2*k)
-\end{verbatim}
+\giacinputmath{
+makemat((j,k)->j+2*k,3,2);
+matrix(3,2,(j,k)->j+2*k);
+}
 On peut aussi cr\'eer des matrices par blocs avec la commande
 \verb|blockmatrix|.
 \index{blockmatrix@{\verb+blockmatrix+}}
-\begin{verbatim}
-A:=makemat((j,k)->j+2*k,3,2)
-B:=idn(3)
-blockmatrix(1,2,[A,B])
-blockmatrix(2,2,[A,B,B,A])
-\end{verbatim}
+\giacinputmath{
+A:=makemat((j,k)->j+2*k,3,2);
+B:=idn(3);
+blockmatrix(1,2,[A,B]);
+blockmatrix(2,2,[A,B,B,A]);
+}
 On acc\`ede \`a un \'el\'ement d'une matrice gr\^ace \`a deux indices 
 s\'epar\'es par une virgule et mis entre 
 crochets. Le premier indice est l'indice de la ligne et le deuxi\`eme 
@@ -1749,34 +1814,41 @@ $$
 $$
 Il a une solution unique pour $a\neq 1$ et  $a\neq -2$, il est impossible pour
 $a=1$ et il est ind\'etermin\'e pour $a=-2$.
-\begin{verbatim}
-linsolve([x+y+a*z=1,x+a*y+z=1,x+a*y+z=-2],[x,y,z])
-a:=1
-linsolve([x+y+a*z=1,x+a*y+z=1,x+a*y+z=-2],[x,y,z])
-a:=-2
-linsolve([x+y+a*z=1,x+a*y+z=1,x+a*y+z=-2],[x,y,z])
-purge(a)
-A:=[[1,1,a],[1,a,1],[a,1,1]]
-solve(det(A),a)
-A1:=subst(A,a=1)
-rank(A1)
-image(A1)
-ker(A1)
-A2:=subst(A,a=-2)
-rank(A2)
-image(A2)
-ker(A2)
-b:= [1,1,-2]
-B:=tran(b)
-simult(A,B)
-simult(A1,B)
-simult(A2,B)
-M:=blockmatrix(1,2,[A,B])
-rref(M)
-rref(border(A,b))
-rref(border(A1,b))
-rref(border(A2,b))
-\end{verbatim}
+\giacinputmath{
+a:='a';
+linsolve([x+y+a*z=1,x+a*y+z=1,a*x+y+z=-2],[x,y,z]);
+a:=1;
+linsolve([x+y+a*z=1,x+a*y+z=1,a*x+y+z=-2],[x,y,z]);
+a:=-2;
+linsolve([x+y+a*z=1,x+a*y+z=1,a*x+y+z=-2],[x,y,z]);
+purge(a);
+}
+
+\giacinputmath{
+A:=[[1,1,a],[1,a,1],[a,1,1]];
+solve(det(A),a);
+A1:=subst(A,a=1);
+rank(A1);
+image(A1);
+ker(A1);
+A2:=subst(A,a=-2);
+rank(A2);
+image(A2);
+ker(A2);
+}
+
+\giacinputmath{
+b:= [1,1,-2];
+B:=tran(b);
+simult(A,B);
+//simult(A1,B); // erreur
+//simult(A2,B); // erreur
+M:=blockmatrix(1,2,[A,B]);
+rref(M);
+rref(border(A,b));
+rref(border(A1,b));
+rref(border(A2,b));
+}
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -1810,27 +1882,30 @@ d'\'echouer en cas de valeurs propres multiples ou tr\`es proches.
 La matrice $A$ de l'exemple qui suit a pour valeurs propres doubles 1
 et 2. Elle est diagonalisable pour
 $a=0$, non diagonalisable pour $a\neq 0$.
-\begin{verbatim}
-A:=[[1,1,-1,0],[0,1,0,a],[0,-1,2,0],[1,0,1,2]
-factor(poly2symb(simplify(pcar(A))))
-jordan(A)
-eigenvals(A)
-eigenvects(A)
-jordan(subs(A,a=0))
-eigenvects(subs(A,a=1))
-jordan(evalf(subs(A,a=0)))
-jordan(evalf(subs(A,a=1)))
-\end{verbatim}
+\giacinputmath{
+purge(a);
+A:=[[1,1,-1,0],[0,1,0,a],[0,-1,2,0],[1,0,1,2]];
+factor(poly2symb(simplify(pcar(A))));
+jordan(A);
+eigenvals(A);
+// eigenvects(A);
+}
+\giacinputmath{
+jordan(subs(A,a=0));
+jordan(subs(A,a=1));
+jordan(evalf(subs(A,a=0)));
+jordan(evalf(subs(A,a=1)));
+}
 Certaines fonctions, d\'efinies par des s\'eries
 enti\`eres, s'\'etendent aux matrices d\`es lors que l'on sait calculer
 leur forme de Jordan. La plus utile est l'exponentielle.
-\begin{verbatim}
-A:=[[0,1,0],[0,0,1],[-2,1,2]]
-jordan(A)
-exp(A)
-ln(A)
-sin(A)
-\end{verbatim}
+\giacinputmath{
+A:=[[0,1,0],[0,0,1],[-2,1,2]];
+jordan(A);
+exp(A);
+ln(A);
+sin(A);
+}
  
 \begin{center}
 \begin{tabular}{|ll|}
@@ -1899,7 +1974,7 @@ fen\^etre \verb|DispG| par la commande \verb|ClrGraph|.
 \subsection{Trac\'es de courbes}
 %
 Pour cr\'eer rapidement des trac\'es de courbes simples, 
-il est conseill\'e d'utiliser le menu \verb|Graphic|.
+il est conseill\'e d'utiliser le menu \verb|Graphe|.
 
 L'instruction de trac\'e d'une courbe repr\'esentative de fonction est \verb|plot| avec en
 param\`etres une expression ou une liste d'expressions dont on
@@ -1917,16 +1992,21 @@ La fonction \verb|tangent| permet d'obtenir la tangente \`a une courbe en un
 point.
 \index{couleur@{\verb+couleur+}}
 \index{tangente@{\verb+tangente+}}
-\begin{verbatim}
-E:=(2*x+1)/(x^2+1);plot(E)
-plot(E,x=-2..2,color=red)
-couleur(vert);plot(E,couleur=rouge);tangent(plot(E),0)
-DispG()
-plot([sin(x),x,x-x^3/6],x=-2..2,couleur=[rouge,bleu,vert])
-erase
-li:=[(x+k*0.5)^2$(k=-5..5)]:;
-plot(li,x=-8..8,couleur=[k$(k=0..10)])
-\end{verbatim}
+\giacinput{E:=(2*x+1)/(x^2+1);plot(E)}
+\giacinput{plot(E,x=-2..2,color=red)}
+\giacinput{
+couleur(vert);
+plot(E,couleur=rouge);
+tangent(plot(E),0)
+}
+\giacinput{
+plot([sin(x),x,x-x^3/6],
+x=-2..2,couleur=[rouge,bleu,vert])
+}
+\giacinput{
+li:=[(x+k*0.5)^2 for k in range(-5,6)]:;
+plot(li,x=-8..8,couleur=range(11))
+}
 
 La fonction \verb|plotparam| permet d'effectuer le
 trac\'e de $(x(t),y(t))$. Il faut d\'efinir les deux coordonn\'ees 
@@ -1935,13 +2015,14 @@ et $y(t)$ la partie imaginaire. La fonction \verb|plotpolar|
 trace les courbes en coordonn\'ees polaires. La commande
 \verb|plotimplicit(f(x,y),x,y)| trace l'ensemble des solutions de
 $f(x,y)=0$.
-\begin{verbatim}
-plotparam(sin(t)^3+i*cos(t)^3,t,0,2*pi)
-plotparam(t^2+i*t^3,t,-1,1)
-plotpolar(1/(1-2sin(t/2)),t,0,4*pi)
-plotpolar(tan(t)+tan(t/2),t,0,2*pi)
-plotimplicit(x^2+4*y^2-4,x,y)
-\end{verbatim}
+\giacinput{plotparam(sin(t)^3+i*cos(t)^3,t,0,2*pi)}
+\giacinput{plotparam(t^2+i*t^3,t,-1,1)}
+\giacinput{plotpolar(1/(1-2sin(t/2)),t,0,4*pi)}
+\giacinput{
+gl_x=-7..7; gl_y=-7..7;
+plotpolar(tan(t)+tan(t/2),t,0,2*pi,tstep=0.02)
+}
+\giacinput{plotimplicit(x^2+4*y^2-4,x,y)}
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -1980,14 +2061,13 @@ La commande \verb|legende| permet de placer un texte \`a un endroit,
 lui aussi sp\'ecifi\'e par un nombre complexe. Les fonctions
 \verb|polygonplot| et \verb|scatterplot| prennent en entr\'ee une
 liste d'abscisses et une liste d'ordonn\'ees.
-\begin{verbatim}
-lx:=[k$(k=1..10)]
-ly:=apply(sin,lx)
-polygonplot(lx,ly)
-erase
-scatterplot(lx,ly)
-polygone_ouvert(lx+i*ly)
-\end{verbatim}
+\giacinput{
+lx:=range(1,11);
+ly:=apply(sin,lx);
+polygonplot(lx,ly);
+}
+\giacinput{scatterplot(lx,ly)}
+\giacinput{polygone_ouvert(lx+i*ly)}
 %$
 
 \begin{center}
@@ -2031,11 +2111,11 @@ polygone_ouvert(lx+i*ly)
 $z=f(x,y)$, on utilise la commande \verb|plotfunc|, avec
 en arguments l'\'equation de la surface et la liste des deux variables.
 On peut aussi indiquer la plage de variable, et la discr\'etisation.
-\begin{verbatim}
-plotfunc(x^2-y^2,[x,y])
-plotfunc(x+y^2,[x=-5..5,y=-2..2],xstep=0.5,ystep=0.1,
-affichage=vert+rempli)
-\end{verbatim}
+\giacinput{plotfunc(x^2-y^2,[x,y])}
+\giacinput{
+plotfunc(x+y^2,[x=-5..5,y=-2..2],
+xstep=0.5,ystep=0.1,affichage=vert+rempli)
+}
 On obtient une surface en dimension 3.
 Pour modifier le point de vue, utilisez la souris en-dehors du cube de visualisation
 ou cliquez dans la figure 3-d, puis
@@ -2049,24 +2129,20 @@ en param\`etre dans \verb|plotfunc|)
 avec \verb|plotparam| dont le premier
 argument est une liste de taille 3 contenant les coordonn\'ees du point
 et les 2 arguments suivants les param\`etres~:
-\begin{verbatim}
-plotparam([u,v,u+v],u=-1..1,v=-2..2)
-\end{verbatim}
+\giacinput{plotparam([u,v,u+v],u=-1..1,v=-2..2)}
 \item Pour tracer des courbes param\'etr\'ees dans l'espace, on utilise
 aussi la commande \verb|plotparam| mais avec un seul param\`etre~:
-\begin{verbatim}
-plotparam([u,u^2,u^3],u=-1..1)
-\end{verbatim}
+\giacinput{plotparam([u,u^2,u^3],u=-1..1)}
 \item On peut aussi tracer des objets g\'eom\'etriques 3D dans une figure 3-d que l'on 
 obtient avec {\tt Alt+h}, puis en utilisant des commandes du menu \verb|Geo|, par exemple~:
 point, droite ,plan, polygone, sphere\ldots
-\begin{verbatim}
+\giacinput{
 plan(z=x+y);
 droite(x=y,z=y);
 A:=point(1,2,3); B:=point(2,-1,1); C:=point(1,0,0);
 plan(A,B,C,couleur=cyan);
 droite(A,B,affichage=line_width_3)
-\end{verbatim}
+}
 \end{itemize}
 
 
@@ -2104,9 +2180,38 @@ droite(A,B,affichage=line_width_3)
 \index{inter@{\verb+inter+}}
 
 \section{Programmation}
+\subsection{Syntaxe compatible avec Python}
+Comme Python est impos\'e dans l'enseignement secondaire,
+Xcas permet maintenant l'\'ecriture de programmes 
+avec une syntaxe largement compatible avec Python, ce qui
+\'evite d'avoir \`a apprendre un autre langage.
+
+V\'erifiez dans la configuration du CAS (menu Cfg ou directement
+affichage dans la barre d'\'etat) que vous \^etes en mode
+Xcas Python. Il est conseill\'e de conserver \verb|^| comme
+\'equivalent du signe puissance (\verb|^==**|).
+Voici par exemple un programme calculant le PGCD de 2 entiers
+\'ecrit en syntaxe Python~:
+\begin{giacprog}
+def pgcdi(a,b):
+  while b!=0:
+    r=irem(a,b)
+    a=b
+    b=r
+  return a
+\end{giacprog}
+\giacinput{pgcdi(15,25)}
+On a utilis\'e ici l'instruction \verb|irem(a,b)| pour calculer
+le reste de la division de $a$ par $b$ plut\^ot que \verb|a % b|
+car dans certains modes de Xcas, \verb|a % b| renvoie la classe
+de $a$ dans $\mathbb{Z}/b\mathbb{Z}$.
 %
-\subsection{Le langage}
+\subsection{Syntaxe en fran\c{c}ais ou compatible C/Javascript}
 %
+Cette section s'adresse aux personnes qui ne connaissent pas Python ou
+ne souhaitent pas utiliser la syntaxe compatible Python.
+
+\subsubsection{Le langage}
 {\tt Xcas} permet d'\'ecrire des  programmes, comme n'importe quel 
 langage de programmation. Voici ses
 principales caract\'eristiques.
@@ -2162,7 +2267,7 @@ local var_loc1, var_loc2,... ;
 }
 \end{verbatim}
 La syntaxe  est soit avec des mots clef en 
-fran\c{c}ais soit celle du langage C++.
+fran\c{c}ais soit comme en langage C/Javascript, soit en syntaxe compatible Python
 
 \begin{center}
 \begin{tabular}{|ll|}
@@ -2191,7 +2296,7 @@ boucle faire& \verb| faire <inst1> si <condition> break;<inst2>|\\
 \begin{center}
 \begin{tabular}{|ll|}
 \hline
-\multicolumn{2}{|c|}{\bf Instructions comme en C++}\\
+\multicolumn{2}{|c|}{\bf Instructions comme en C/JS}\\
 \hline\hline
 affectation& \verb| a:=2;|\\
 entr\'ee expression& \verb| input("a=",a);| \\
@@ -2263,7 +2368,7 @@ catch(erreur)
 {print("l'erreur est "+erreur)}
 \end{verbatim}
 %
-\subsection{Quelques exemples}
+\subsubsection{Quelques exemples}
 %
 Pour \'ecrire un programme, il est conseill\'e d'ouvrir
 un \'editeur de programme avec le menu \verb|Prg->Nouveau programme|. Le menu
@@ -2272,40 +2377,8 @@ de programmation. On peut ensuite sauvegarder le texte du programme
 ind\'ependamment de la session de travail pour l'utiliser ensuite
 dans une autre session de travail.
 
-Voici un programme qui donne le quotient et le 
-reste de la division euclidienne de 2 entiers en utilisant les fonctions 
-\verb|iquo| qui renvoie le quotient et \verb|irem| 
-qui renvoie le reste (c'est la fonction \verb|iquorem| de {\tt Xcas}).
 
-\begin{center}
-\begin{tabular}{|l|l|}
-\hline
-\multicolumn{2}{|c|}{\bf idiv2}\\
-\hline\hline
-\verb+idiv2(a,b):={+ &\verb+idiv2(a,b):={+\\
-\verb+ local q,r;+&\verb+  local q,r;+\\
-\verb+  if (b!=0) {+&\verb+  si b!=0 alors+\\
-\verb+    q:=iquo(a,b);+&\verb+     q:=iquo(a,b);+\\
-\verb+    r:=irem(a,b);}+&\verb+     r:=irem(a,b);+\\
-\verb+  else {+&\verb+  sinon+\\
-\verb+    q:=0;+&\verb+     q:=0;+\\
-\verb+    r:=a;+&\verb+     r:=a;+\\
-\verb+  }+&\verb+  fsi+\\
-\verb+  return [q,r];+&\verb+  retourne [q,r];+\\
-\verb+}+&\verb+}+\\
- \hline
-\end{tabular}
-\end{center}
-Saisissez cette fonction {\tt idiv2} dans un \'editeur de programme, testez-la
-(bouton \verb|OK|) puis sauvegardez par exemple sous le nom
-\verb|idiv2.cxx|. Vous pouvez utiliser cette fonction 
-dans une ligne de commande, en tapant par exemple \verb|idiv2(25,15)|.
-Vous pourrez utiliser cette fonction dans une autre session {\tt Xcas}, 
-en utilisant la commande
-\verb|read("idiv2.cxx")| ou en l'ouvrant depuis un
-\'editeur de programme (et en le validant par OK).
-
-Voici maintenant deux versions du calcul du PGCD de deux entiers, une
+Voici deux versions du calcul du PGCD de deux entiers, une
 version it\'erative, puis une version r\'ecursive.
 \index{iteratif}
 
@@ -2342,8 +2415,19 @@ version it\'erative, puis une version r\'ecursive.
 \end{tabular}
 \end{center}
 
-%
+Vous pouvez saisir une fonction, par exemple {\tt pgcdi},
+ dans un niveau \'editeur de programme de Xcas 
+(\verb|Prg->Nouveau programme|). Vous pouvez tester la syntaxe
+(bouton \verb|OK|). Vous pouvez ensuite utiliser cette fonction 
+dans une ligne de commande, en tapant par exemple \verb|pgcdi(25,15)|.
+Pour utiliser cette fonction dans une autre session {\tt Xcas}, 
+vous pouvez  la sauvegarder par exemple sous le nom
+\verb|pgcdi.cxx|, en utilisant la commande
+\verb|read("idiv2.cxx")| ou en l'ouvrant depuis un
+\'editeur de programme (et en le validant par OK).
 
+%
+\subsection{Mise au point d'un programme}
 Il arrive parfois qu'un programme ne fonctionne pas du premier coup 
 comme pr\'evu (!)  
 Il est alors possible de l'ex\'ecuter en mode pas-\`a-pas pour le mettre 
@@ -2352,11 +2436,13 @@ au point, avec la
 commande \verb|debug|. Pour plus de d\'etails consulter le menu
 \verb|Aide->Interface|. Par exemple, pour le programme \verb|idiv2|,
 on lance la mise au point en tapant :\\
-\verb|debug(idiv2(25,15))|\\
+\verb|debug(pgcdi(25,15))|\\
 Le d\'ebuggueur affiche automatiquement la valeur des param\`etres \verb|a,b| puis
-des variables locales \verb|q,r| lors de l'ex\'ecution instruction par 
+des variables locales (ici \verb|r|) lors de l'ex\'ecution instruction par 
 instruction avec le bouton \verb|sst|.
 %
+
+
 \subsection{Style de programmation}
 %
 \index{langage!interpr\'et\'e}
@@ -2367,15 +2453,13 @@ En r\`egle g\'en\'erale, il est plus rapide de cr\'eer des listes
 ou des s\'equences que de programmer des boucles. 
 Voici quelques mani\`eres de calculer
 $5000!$~: comparez leurs temps d'ex\'ecution.
-\begin{verbatim}
-5000!
-product([n$(n=1..5000)])
-product(cumSum([1$5000]))
-f:=1; (f:=f*n)$(n=2..5000):;f
-f:=1; for(n:=1;n<=5000;n++) {f:=f*n}
-f:=1;n:=1; while(n<5000) {n:=n+1; f:=f*n}
-f:=1; (f:=f*n)$(n=2..5000)
-\end{verbatim}
+\giacinput{5000!:;}
+\giacinput{product(range(1,5001)):;}
+\giacinput{product(cumSum(seq(1,5000))):;}
+\giacinput{f:=1; (f:=f*n)$(n=2..5000):;}
+\verb|f:=1; for(n:=1;n <= 5000;n++) {f:=f*n}|\\
+\verb|f:=1;n:=1; while(n < 5000) {n:=n+1; f:=f*n}|\\
+\verb|f:=1; (f:=f*n)$(n=2..5000):;|
 %$
 La rapidit\'e d'ex\'ecution est parfois contradictoire avec la
 clart\'e du programme, et on doit accepter des compromis. Dans une
@@ -2393,7 +2477,7 @@ langages compil\'es comme C++ (en utilisant par exemple la librarie
 \subsection{Fonction et repr\'esentation graphique (niveau terminale S)}
 
 \subsubsection{Exercice 1}
-On consid\`ere la fonction $f$ de $\mathbb R$-\{3\} dans $\mathbb R$ 
+On consid\`ere la fonction $f$ de $\mathbb{R}$-\{3\} dans $\mathbb{R}$ 
 d\'efinie par :
 $$f(x)=(x+1)\ln|x-3|$$
 \begin{enumerate}
@@ -2402,7 +2486,7 @@ En d\'eduire les variations de $f'$.
 \item Calculer les limites de $f'$ en $-\infty$ et en 3 \`a gauche.
 \item Montrer que $f'$ s'annule une seule fois en $\alpha$ sur $]-\infty;3[$.
 Donner un encadrement de $\alpha$ d'amplitude 0.1.
-\item  \'Etudier le signe de $f'(x)$ sur $\mathbb R$-\{3\} et en d\'eduire les 
+\item  \'Etudier le signe de $f'(x)$ sur $\mathbb{R}$-\{3\} et en d\'eduire les 
 variations de $f$.
 \item  Tracer la courbe $C$ de $f$ dans un rep\`ere orthonorm\'e (unit\'e 1$cm$).
 \item  Calculer l'aire en $cm^2$ de la r\'egion comprise entre $C$, l'axe des
@@ -2655,10 +2739,10 @@ Donc l'aire cherch\'ee vaut  $(8*\ln(4)-33/4) cm^2$;
 \end{enumerate}
 
 \subsubsection{Exercice 2}
-On consid\`ere la fonction $f$ de $\mathbb R$ dans $\mathbb R$ d\'efinie par :
+On consid\`ere la fonction $f$ de $\mathbb{R}$ dans $\mathbb{R}$ d\'efinie par :
 $$f(x)=\frac{\exp(x)^2-\exp(x)+1}{\exp(x)^3+\exp(x)}$$
 \begin{enumerate}
-\item  Montrer que pour tout $x \in \mathbb R$, $P(x)=x^4-2x^3+2x^2+1 \geq 1$
+\item  Montrer que pour tout $x \in \mathbb{R}$, $P(x)=x^4-2x^3+2x^2+1 \geq 1$
 \item  \'Etudier les variations de $f$ et tracer son graphe.
 \item  Trouver l'\'equation de la tangente au graphe au point d'abscisse $x=0$
 \item  Calculer $\displaystyle \int_0^x f(t)dt \ $ puis,
@@ -2684,8 +2768,8 @@ On obtient :
 \begin{center}
 \verb| (x-1)^2+1|
 \end{center}
-Donc pour tout $x \in \mathbb R$, $x^4-2x^3+2x^2=x^2*(x-1)^2+x^2 \geq 0$ \\
-donc pour tout $x \in \mathbb R$, $P(x)=x^4-2x^3+2x^2+1 \geq 1$
+Donc pour tout $x \in \mathbb{R}$, $x^4-2x^3+2x^2=x^2*(x-1)^2+x^2 \geq 0$ \\
+donc pour tout $x \in \mathbb{R}$, $P(x)=x^4-2x^3+2x^2+1 \geq 1$
 
 \item 
 On tape pour calculer la valeur de la d\'eriv\'ee de $f$ en un point :
@@ -2794,7 +2878,7 @@ On obtient :
 \end{center}
 Puis on int\`egre chaque terme s\'epar\'ement...
 
-\item D\'ecomposer, sur $\mathbb R$, en \'el\'ements simples :
+\item D\'ecomposer, sur $\mathbb{R}$, en \'el\'ements simples :
 $\displaystyle \frac{t^2}{1-t^4}$.\\
 Calculer $\displaystyle \int \frac{t^2}{1-t^4}dt\ $ et $\displaystyle\int \frac{\sin(x)^2}{\cos(2x)}dx$\\
 {\bf R\'eponse}~:\\
@@ -2917,8 +3001,8 @@ On obtient :
 \begin{center}
 \verb|1/-2*x^2+1/2*x^3+1/6*x^4+x^5*order\_size(x)|
 \end{center}
-La fonction $order\_size$ est telle que, pour tout $\alpha>0$, 
-$x^\alpha order\_size(x)$ tend vers 0 quand $x$ tend vers 0 
+La fonction \verb|order_size| est telle que, pour tout $\alpha>0$, 
+$x^\alpha$\verb|order_size|$(x)$ tend vers 0 quand $x$ tend vers 0 
 \end{enumerate}
 
 \subsection{\'Equations diff\'erentielles}
@@ -4266,15 +4350,9 @@ et v\'erifier que $I_1=I_2$.
 %plotparam(a/(2)+i/(1+a),a=0..1);plotparam(1/(1+b)+i*b/(2),b=0..1);
 %normal(int(int((1+x+y)^3/(1+x)^3/(1+y)^3,y,0,1),x,0,1)
 %normal(2*int(int((1+z)*(1+t),t,z,1/(1+2*z)),z,0,1/2)
-\newpage
-\appendix
-
-\section{Table des mati\`eres et index} \label{sec:appendice}
-
-\tableofcontents
-
 %\newpage
+%\appendix
 
-\printindex
 
+\end{giacjshere}
 \end{document}

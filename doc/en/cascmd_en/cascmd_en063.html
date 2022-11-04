@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Working directories: pwd cd
-
+<title>The CST variable
 
 </title>
 </head>
@@ -14,50 +13,51 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en064.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:wdir" class="subsection">5.6.1  Working directories: <span style="font-family:monospace">pwd</span> <span style="font-family:monospace">cd</span>
-<a id="hevea_default102"></a>
-<a id="hevea_default103"></a>
+<h3 id="ssec:CST" class="subsection">4.4.10  The <span style="font-family:monospace">CST</span> variable
+<a id="hevea_default97"></a>
 </h3>
-<p><span style="font-family:monospace">Xcas</span> has a working directory where it stores files that it
-creates; typically this is the user’s home directory. The <span style="font-family:monospace">pwd</span>
-command will tell you what the current working directory is, and and
-the <span style="font-family:monospace">cd</span> command lets you change it.</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">pwd</span> takes no arguments.
-</li><li class="li-itemize"><span style="font-family:monospace">pwd()</span> returns the name of the current working directory.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<p>The menu available with the <span style="font-family:monospace">cust</span> button in the bandeau on the
+onscreen keyboard (see Section <a href="index.html#sec%3Aswin">2.2</a>, item <a href="index.html#enum%3Akbd">2.2</a>) is
+defined with the <span style="font-family:monospace">CST</span> variable. It is a list where each list
+item determines a menu item; a list item is either a builtin command
+name or a list itself consisting of a string to be displayed in the
+menu and the input to be entered when the item is selected.</p><p>For example, to create a custom defined menu with the builtin function
+<span style="font-family:monospace">diff</span>, a user defined function <span style="font-family:monospace">foo</span>, and a menu item
+to insert the number 22/7, you can:<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">pwd()</span>
-</div><p>
-<span style="font-style:italic">Output:</span> might be something like:
-</p><div class="center">
-<span style="font-family:monospace">/home/username</span>
-</div><p><br>
-</p><ul class="itemize"><li class="li-itemize">
-The <span style="font-family:monospace">cd</span> command takes one argument:<br>
-<span style="font-style:italic">dirname</span>, the name of a directory (a string).
-</li><li class="li-itemize"><span style="font-family:monospace">cd(</span><span style="font-style:italic">dirname</span><span style="font-family:monospace">)</span> changes the working directory to
-<span style="font-style:italic">dirname</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-If you enter:<br>
+<span style="font-family:monospace">CST:= [diff,["foo",foo],["My pi approx",22/7]]</span>
+</div><p>Note that if the input to be entered is a variable and the variable
+has a value when <span style="font-family:monospace">CST</span> is defined, then <span style="font-family:monospace">CST</span> will
+contain the value of the variable. For example,<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">cd("foo")</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">app:= 22/7</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">CST:= [diff,["foo",foo],["My pi approx",app]]</span>
+</td></tr>
+</table>
 </div><p>
-or (on a Unix system):<br>
+will be equivalent to the previous definition of <span style="font-family:monospace">CST</span>.
+However, if the variable does not have a value when <span style="font-family:monospace">CST</span> is
+defined, for example:<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">cd("/home/username/foo")</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">CST:= [diff,["foo",foo],["My pi approx",app]]</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">app:= 22/7</span>
+</td></tr>
+</table>
 </div><p>
-then the working directory will change to the directory <span style="font-family:monospace">foo</span>,
-if it exists. Afterwards, any files that you save from <span style="font-family:monospace">Xcas</span>
-will be in that directory.</p><p><br>
-</p><p>To load or read a file, it will need to be in the working directory.
-Note that if you have the same file name in different directories,
-then loading the file name will load the file in the current
-directory.</p>
+then <span style="font-family:monospace">CST</span> will behave as the previous values to begin with,
+but in this case if the variable <span style="font-family:monospace">app</span> is changed, the
+the result of pressing the <span style="font-family:monospace">My pi approx</span> button will change
+also.</p><p>Since <span style="font-family:monospace">CST</span> is a list, a function can be added to the
+<span style="font-family:monospace">cust</span> menu with the <span style="font-family:monospace">concat</span> command (see
+Section <a href="cascmd_en433.html#ssec%3Aconcat">5.40.13</a>);<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">CST:= concat(CST,evalc)</span>
+</div><p>
+will add the <span style="font-family:monospace">evalc</span> command to the <span style="font-family:monospace">cust</span> menu.</p>
 <hr>
 <a href="cascmd_en062.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

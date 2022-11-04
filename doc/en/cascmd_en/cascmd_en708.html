@@ -4,11 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Input: input Input InputStr textinput output Output
-
-
-
-
+<title>Approximating solutions of y’=f(t,y): odesolve
 
 </title>
 </head>
@@ -17,98 +13,171 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en709.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec965" class="subsection">12.2.2  Input: <span style="font-family:monospace">input</span> <span style="font-family:monospace">Input</span> <span style="font-family:monospace">InputStr</span> <span style="font-family:monospace">textinput</span> <span style="font-family:monospace">output</span> <span style="font-family:monospace">Output</span>
-<a id="hevea_default1330"></a>
-<a id="hevea_default1331"></a>
-<a id="hevea_default1332"></a>
-<a id="hevea_default1333"></a>
-<a id="hevea_default1334"></a>
-<a id="hevea_default1335"></a></h3>
-<p>The <span style="font-family:monospace">input</span> command prompts the user for the value of a variable.<br>
-<span style="font-family:monospace">Input</span> is a synonym for <span style="font-family:monospace">input</span>.
+<h3 id="ssec:odesolve" class="subsection">10.3.5  Approximating solutions of y’=f(t,y): <span style="font-family:monospace">odesolve</span>
+<a id="hevea_default1293"></a>
+<a id="hevea_default1294"></a></h3>
+<p>The <span style="font-family:monospace">odesolve</span> command can solve first order differential
+equations or first order systems. This section covers equations,
+systems will be discussed in the next section.</p><p><span style="font-family:monospace">odesolve</span> finds values of the solution of a
+differential equation of the form <span style="font-style:italic">y</span>′=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>); specifically, it will
+approximate <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span><sub>1</sub>) for a specified <span style="font-style:italic">t</span><sub>1</sub>.</p><p><span style="font-family:monospace">odesolve</span> can takes its arguments in various ways.
+Letting <span style="font-style:italic">t</span> and <span style="font-style:italic">y</span> be the independent and dependent variables,
+<span style="font-style:italic">t</span><sub>0</sub> and <span style="font-style:italic">y</span><sub>0</sub> be the initial values, 
+<span style="font-style:italic">t</span><sub>1</sub> the place where you want the value of <span style="font-style:italic">y</span>, <span style="font-style:italic">f</span> be the function
+in the differential equation, <span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>) be an expression which
+determines the function <span style="font-style:italic">f</span> (see Section <a href="cascmd_en209.html#ssec%3Afnexpr">5.15.1</a> for the
+difference between a function and an expression):
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">input</span> takes an unspecified number of commands:<br>
- <span style="font-style:italic">vars</span>, a sequence of variable names, each one optionally
-preceded by a string.
-</li><li class="li-itemize"><span style="font-family:monospace">input(</span><span style="font-style:italic">vars</span><span style="font-family:monospace">)</span> brings up a box where
-the user can enter a value for each variable.<br>
- If a variable is preceded with a string, then that string will be
-the prompt for the variable, otherwise the variable name will be the
-prompt.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">input(a)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en129.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">input("Set a to the value: ",a)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en130.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">input(a,bee,c)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en131.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">input("Set a to the value: ",a,bee,"Set c to this value: ",c)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en132.png">
-</div>
-</li></ul><p><br>
-</p><p>If the value that you enter for <span style="font-family:monospace">input</span> is a string, it should
-be between quotes. If you want the user to enter a string without
-having to use the quotes, you can use the <span style="font-family:monospace">InputStr</span> command,
-which is just like <span style="font-family:monospace">input</span> except that it will assume any input
-is a string and so the user won’t need to use quotes.<br>
-<span style="font-family:monospace">textinput</span> is a synonym for <span style="font-family:monospace">InputStr</span>.</p><p><br>
-</p><p>The <span style="font-family:monospace">output</span> command creates message windows:<br>
-<span style="font-family:monospace">Output</span> is a synonym for <span style="font-family:monospace">output</span>.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">output</span> takes one argument:<br>
- <span style="font-family:monospace">strs</span>, a sequence of strings or variables which represent
-strings.
-</li><li class="li-itemize"><span style="font-family:monospace">output(</span><span style="font-style:italic">strs</span><span style="font-family:monospace">)</span> creates a message
-window displaying the concatentation of the strings.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">s := "message"</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">output("This is a ",s)</span>
+<span style="font-family:monospace">odesolve</span> takes three or four mandatory arguments and
+two optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">mandatory</span>, mandatory arguments given by one of the following
+sequences:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>),[<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>],[<span style="font-style:italic">t</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>],<span style="font-style:italic">t</span><sub>1</sub>)
+</li><li class="li-itemize"><span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>),<span style="font-style:italic">t</span>=<span style="font-style:italic">t</span><sub>0</sub>..<span style="font-style:italic">t</span><sub>1</sub>,<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span><sub>0</sub>
+</li><li class="li-itemize"><span style="font-style:italic">t</span><sub>0</sub>..<span style="font-style:italic">t</span><sub>1</sub>,<span style="font-style:italic">f</span>,<span style="font-style:italic">y</span><sub>0</sub>
+</li><li class="li-itemize"><span style="font-style:italic">t</span><sub>0</sub>..<span style="font-style:italic">t</span><sub>1</sub>,(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>)<span style="font-family:monospace">-&gt;</span><span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>),<span style="font-style:italic">y</span><sub>0</sub>
+</li></ul>
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span>, to set the initial tstep
+value to the numeric solver from the GSL (Gnu Scientific Library).
+It may be modified by the solver. It is also used to control the
+number of iterations of the solver by 2(<span style="font-style:italic">t</span><sub>1</sub>−<span style="font-style:italic">t</span><sub>0</sub>)/<span style="font-style:italic">n</span> (if the number
+of iterations exceeds this value, the solver will stops at a time <span style="font-style:italic">t</span>&lt;<span style="font-style:italic">t</span><sub>1</sub>).
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">curve</span>, the symbol.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">odesolve(</span><span style="font-style:italic">mandatory</span> ⟨,<span style="font-family:monospace">
+tstep=</span><span style="font-style:italic">n</span><span style="font-family:monospace">, curve </span>⟩<span style="font-family:monospace">)</span>
+returns an approximate value of <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span><sub>1</sub>) where <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>) is the
+solution of:
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>)=<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>,<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)),     <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span><sub>0</sub>)=<span style="font-style:italic">y</span><sub>0</sub> 
 </td></tr>
 </table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en133.png">
-</div><p><br>
-</p><p>You can use <span style="font-family:monospace">output</span> to add
-information to the input window.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+With an optional argument of <span style="font-family:monospace">curve</span>, the list of all the
+[<span style="font-style:italic">t</span>,[<span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)]] values that were computed are returned.
+</li></ul><h4 id="sec1829" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">input(output("Calculate p(a)"),"polynomial",p,"value",a)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en134.png">
+<div class="center">
+<span style="font-family:monospace">odesolve(sin(t*y),[t,y],[0,1],2)</span>
 </div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">odesolve(0..2,(t,y)-&gt;sin(t*y),1)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f(t,y):=sin(t*y)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">odesolve(0..2,f,1)</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.82241255674</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">odesolve(0..2,f,1,tstep=0.3)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.82241255675</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1,tstep=0.5)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.82241255674</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">odesolve(sin(t*y),t=0..2,y,1,tstep=0.5,curve)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >  0.0</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.0</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  0.0238917513909</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.00028543504</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  0.065808814858</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.00216696089</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  0.108895370376</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.00594077449</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  ⋮</td><td style="text-align:center;white-space:nowrap" >⋮</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  1.96462490594</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.8389834135</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  1.97769352646</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.83297839039</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  1.9908403154</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.82679805346</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  2.0</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.82241255674</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en707.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

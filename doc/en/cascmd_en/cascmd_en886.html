@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Ellipses in space: ellipse
+<title>The polar reciprocal: reciprocation
 </title>
 </head>
 <body >
@@ -12,23 +12,27 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en887.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dellipse" class="subsection">14.11.1  Ellipses in space: <span style="font-family:monospace">ellipse</span>
-<a id="hevea_default1619"></a></h3>
-<p>See Section <a href="cascmd_en797.html#ssec%3A2dellipse">13.12.1</a> for ellipses in the plane.</p><p>The <span style="font-family:monospace">ellipse</span> command creates ellipses in space.
+<h3 id="sec2242" class="subsection">13.17.6  The polar reciprocal: <span style="font-family:monospace">reciprocation</span>
+<a id="hevea_default1588"></a></h3>
+<p>The <span style="font-family:monospace">reciprocation</span> command finds poles and polars.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">ellipse</span> takes three arguments:<br>
- <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span> three non-collinear points.
-</li><li class="li-itemize"><span style="font-family:monospace">ellipse(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the ellipse with
-foci <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> passing through <span style="font-style:italic">C</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">reciprocation</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">C</span>, a circle.
+</li><li class="li-itemize"><span style="font-style:italic">L</span>, a list of points and lines.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">reciprocation(</span><span style="font-style:italic">C</span>,<span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the list formed by
+replaced each point or line in <span style="font-style:italic">L</span> by its polar or pole with respect
+to the circle <span style="font-style:italic">C</span>.
+</li></ul><h4 id="sec2243" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">ellipse(point(-1,0,0),point(1,0,0),point(1,1,1))</span>
+<span style="font-family:monospace">reciprocation(circle(0,1),[point((1+i)/2),line(1,-1+i)])</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
 </p><div class="center">
-<img src="cascmd_en332.png">
+<img src="cascmd_en278.png">
 </div>
 <hr>
 <a href="cascmd_en885.html"><img src="previous_motif.gif" alt="Previous"></a>

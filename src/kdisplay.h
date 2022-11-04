@@ -30,6 +30,7 @@ extern char* fmenu_cfg;
 
 #ifdef MICROPY_LIB
 extern "C" {
+  void py_ck_ctrl_c();
   int do_file(const char *file);
   char * micropy_init(int stack_size,int heap_size);
   int micropy_eval(const char * line);
@@ -85,13 +86,24 @@ extern "C" {
   bool c_proot(c_complex * x,int n); // poly root
   bool c_pcoeff(c_complex * x,int n); // root->coeffs
   bool c_fft(c_complex * x,int n,bool inverse); // FFT
-  void turtle_freeze();
   void console_freeze();
   void c_sprint_double(char * s,double d);
   extern int python_stack_size,python_heap_size;
   extern int xcas_python_eval;
   extern char * python_heap;
   int python_init(int stack_size,int heap_size);
+  void turtle_freeze();
+  void c_turtle_forward(double d);
+  void c_turtle_left(double d);
+  void c_turtle_up(int i);
+  void c_turtle_goto(double x,double y);
+  void c_turtle_cap(double x);
+  void c_turtle_crayon(int i);
+  void c_turtle_rond(int x,int y,int z);
+  void c_turtle_disque(int x,int y,int z,int centered);
+  void c_turtle_fill(int i);
+  void c_turtle_fillcolor(double r,double g,double b,int entier);
+  void c_turtle_getposition(double * x,double * y);
 }
 extern int lang;
 extern short int nspirelua;
@@ -211,17 +223,20 @@ namespace xcas {
     // only 12 used, last line [0,0,0,1], usual matrices, not transposed
     int display_mode,show_axes,show_edges,show_names,labelsize,lcdz,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor;
     short int precision,diffusionz,diffusionz_limit;
-    bool is3d,doprecise,hide2nd,interval;
+    bool is3d,doprecise,hide2nd,interval,solid3d;
     double Ai,Aj,Bi,Bj,Ci,Cj,Di,Dj,Ei,Ej,Fi,Fj,Gi,Gj,Hi,Hj; // visualization cube coordinates
     std::vector< std::vector< std::vector<float3d> > > surfacev;
     std::vector<double3> plan_pointv; // point in plan 
     std::vector<double3> plan_abcv; // plan equation z=a*x+b*y+c
+    std::vector<bool> plan_filled;
     std::vector<double3> sphere_centerv;
     std::vector<double> sphere_radiusv;
     giac::vecteur sphere_quadraticv; // matrix of the transformed quad. form
+    std::vector<bool> sphere_isclipped;
     std::vector< std::vector<double3> > polyedrev;
     std::vector<double3> polyedre_abcv;
     std::vector<double> polyedre_xyminmax;
+    std::vector<bool> polyedre_faceisclipped,polyedre_filled;
     std::vector<double3> linev; // 2 double3 per object
     std::vector<short> linetypev;
     std::vector<const char *> lines; // legende
@@ -478,6 +493,8 @@ namespace giac {
   // exec=0 or MENU_RETURN_SELECTION, KEY_CHAR_ANS or KEY_CTRL_EXE
   std::string help_insert(const char * cmdline,int & back,int exec,const giac::context *,bool warn=true);
   void copy_clipboard(const std::string & s,bool status);
+  int chartab();
+
 #define TEXT_MODE_NORMAL 0
 #define TEXT_MODE_INVERT 1
 #define MENUITEM_NORMAL 0

@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if four points form a harmonic division: is_harmonic
+<title>The Cartesian equation of a geometric object in the plane: equation
+
 </title>
 </head>
 <body >
@@ -12,35 +13,30 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en843.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1126" class="subsection">13.16.15  Checking if four points form a harmonic division: <span style="font-family:monospace">is_harmonic</span>
-<a id="hevea_default1569"></a></h3>
-<p>The <span style="font-family:monospace">is_harmonic</span> command determines whether or not four
-points form a harmonic division.
+<h3 id="ssec:2dcarteq" class="subsection">13.13.7  The Cartesian equation of a geometric object in the plane: <span style="font-family:monospace">equation</span>
+
+<a id="hevea_default1533"></a></h3>
+<p>See Section <a href="cascmd_en930.html#ssec%3A3dcarteq">14.12.5</a> for Cartesian equations of
+three-dimensional objects.</p><p>The <span style="font-family:monospace">equation</span> command finds the Cartesian equation for a
+geometric object.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_harmonic</span> takes four arguments:<br>
- <span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span>,<span style="font-style:italic">S</span>, four points.
-</li><li class="li-itemize"><span style="font-family:monospace">is_harmonic(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span>,<span style="font-style:italic">S</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>,<span style="font-style:italic">R</span> and <span style="font-style:italic">S</span> form a
-harmonic range and returns 0 otherwise.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">equation</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object.
+</li><li class="li-itemize"><span style="font-family:monospace">equation(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns the Cartesian equation in the
+variables <span style="font-family:monospace">x</span> and <span style="font-family:monospace">y</span> for <span style="font-style:italic">G</span>.
+</li></ul><p> 
+Note that <span style="font-family:monospace">x</span> and <span style="font-family:monospace">y</span> must be formal variables, you
+might need to purge them with with <span style="font-family:monospace">purge(x)</span> and
+<span style="font-family:monospace">purge(y)</span>, see Section <a href="cascmd_en061.html#ssec%3Aabout">4.4.8</a>.</p><h4 id="sec2148" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_harmonic(0,2,3/2,3)</span>
-</div>
+</p><div class="center">
+<span style="font-family:monospace">equation(line(-1,i))</span>
+</div><p>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span>=<span style="font-style:italic">x</span>+1
 </td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_harmonic(0,1+i,1,i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
-</td></tr>
-</table>
-</li></ul>
 <hr>
 <a href="cascmd_en841.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

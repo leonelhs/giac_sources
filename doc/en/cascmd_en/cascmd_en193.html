@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Substituting a variable by a value: ()
+<title>Automatic simplification: autosimplify
 </title>
 </head>
 <body >
@@ -12,41 +12,77 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en194.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec236" class="subsection">6.12.19  Substituting a variable by a value: <span style="font-family:monospace">()</span>
-<a id="hevea_default324"></a></h3>
-<p>Another way to substitute a variable by a value, besides with the
-<span style="font-family:monospace">|</span> operator or the <span style="font-family:monospace">subst</span> command, is with something
-akin to functional notation. You can follow an expression or
-expression name with equalities of the form <span style="font-style:italic">variable</span> =
-<span style="font-style:italic">value</span>.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+<h3 id="sec400" class="subsection">5.12.15  Automatic simplification: <span style="font-family:monospace">autosimplify</span>
+<a id="hevea_default322"></a></h3>
+<p>The <span style="font-family:monospace">autosimplify</span> command determines how much simplification
+<span style="font-family:monospace">Xcas</span> will do automatically when you enter an expression. Note
+that <span style="font-family:monospace">autosimplify</span> only works with <span style="font-family:monospace">Xcas</span>, it doesn’t
+work with <span style="font-family:monospace">icas</span> or any other frontend.</p><p>By default, <span style="font-family:monospace">Xcas</span> will apply the <span style="font-family:monospace">regroup</span> command (see
+Section <a href="cascmd_en190.html#ssec%3Aregroup">5.12.12</a>) to your input, but the <span style="font-family:monospace">autosimplify</span>
+command can change this to applying another rewriting command to your
+input, such as <span style="font-family:monospace">simplify</span> (see Section <a href="cascmd_en192.html#ssec%3Asimplify">5.12.14</a>),
+<span style="font-family:monospace">factor</span> (see Section <a href="cascmd_en188.html#ssec%3Afactore">5.12.10</a>), or even <span style="font-family:monospace">nop</span> for
+no simplification. With no arguments, <span style="font-family:monospace">autosimplify</span> will
+return the current rewriting command. Otherwise:
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">autosimplify</span> command takes one argument:<br>
+ <span style="font-style:italic">cmd</span>, a command that will be used to rewrite the results in
+<span style="font-family:monospace">Xcas</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">autosimplify(</span><span style="font-style:italic">cmd</span><span style="font-family:monospace">)</span> will
+tell <span style="font-family:monospace">Xcas</span> to apply <span style="font-style:italic">cmd</span> to subsequent inputs.
+To change the simplification mode during a session, the
+<span style="font-family:monospace">autosimplify</span> command should be on its own line.
+</li></ul><h4 id="sec401" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">Expr:= x + 2*y + 3*z</span>
+<span style="font-family:monospace">autosimplify(nop)</span>
 </div>
 <span style="font-style:italic">then:</span>
 <div class="center">
-<span style="font-family:monospace">subst(Expr,[x=1,y=2])</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">Expr | x=1, y=2</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">Expr(x=1,y=2)</span>
+<span style="font-family:monospace">1 + x^2 - 2</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  5+3 <span style="font-style:italic">z</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1 + <span style="font-style:italic">x</span><sup>2</sup> − 2
 </td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">(h*k*t^2+h^3*t^3)(t=2)</span>
+<span style="font-family:monospace">autosimplify(simplify)</span>
+</div>
+<span style="font-style:italic">then:</span>
+<div class="center">
+<span style="font-family:monospace">1 + x^2 - 2</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  4 <span style="font-style:italic">h</span> <span style="font-style:italic">k</span>+8 <span style="font-style:italic">h</span><sup>3</sup>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span><sup>2</sup>−1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">autosimplify(factor)</span>
+</div>
+<span style="font-style:italic">then:</span>
+<div class="center">
+<span style="font-family:monospace">1 + x^2 - 2</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span>−1</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span>+1</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">autosimplify(regroup)</span>
+</div>
+<span style="font-style:italic">then:</span>
+<div class="center">
+<span style="font-family:monospace">1 + x^2 - 2</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span><sup>2</sup>−1
 </td></tr>
 </table>
 </li></ul>

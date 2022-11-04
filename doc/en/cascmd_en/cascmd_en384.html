@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Factoring in ℤ/pℤ[x]: Factor
+<title>Row reduction to echelon form in ℤ/pℤ: rref
+
 </title>
 </head>
 <body >
@@ -12,76 +13,79 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en385.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec466" class="subsection">6.35.4  Factoring in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>]: <span style="font-family:monospace">Factor</span>
-<a id="hevea_default652"></a></h3>
-<p>In <span style="font-family:monospace">Xcas</span> mode, <span style="font-family:monospace">Factor</span> is simply the inert form of
-<span style="font-family:monospace">factor</span>; namely, it factors a polynomial without evaluation.
-(See section Section <a href="cascmd_en184.html#ssec%3Afactore">6.12.10</a>.)
-In <span style="font-family:monospace">Maple</span> mode, the <span style="font-family:monospace">Factor</span> command
-can additionally be used in conjunction with <span style="font-family:monospace">mod</span> to
-factor a polynomials with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ,
-where <span style="font-style:italic">p</span> must be prime.
+<h3 id="ssec:rrefm" class="subsection">5.34.17  Row reduction to echelon form in ℤ/<span style="font-style:italic">p</span>ℤ: <span style="font-family:monospace">rref</span>
+
+<a id="hevea_default646"></a></h3>
+<p>The <span style="font-family:monospace">rref</span> command can find the reduced row echelon form of
+a matrix with elements in ℤ/<span style="font-style:italic">p</span>ℤ.
+(See <a href="cascmd_en571.html#ssec%3Arref">5.56.3</a>):
 </p><ul class="itemize"><li class="li-itemize">
-(In <span style="font-family:monospace">Maple</span> mode.)<br>
- <span style="font-family:monospace">Factor</span> takes one argument:<br>
- <span style="font-style:italic">P</span>, a polynomial with coefficients
-in ℤ/<span style="font-style:italic">p</span>ℤ for prime <span style="font-style:italic">p</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">Factor(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns the factored
-form of <span style="font-style:italic">P</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Xcas</span></span><span style="font-style:italic"> mode):</span>
-</p><div class="center">
-<span style="font-family:monospace">Factor((-3*x^3+5*x^2-5*x+4)%13)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">factor</span></td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−3</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">5%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−5</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">x</span>+4%13</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table><p>
-To get the actual factorization:<br>
+<span style="font-family:monospace">rref</span> takes one argument:<br>
+ <span style="font-style:italic">A</span>, a matrix in ℤ/<span style="font-style:italic">p</span>ℤ.
+</li><li class="li-itemize"><span style="font-family:monospace">rref(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the echelon form of <span style="font-style:italic">A</span>.
+</li></ul><h4 id="sec887" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">eval(ans())</span>
+<span style="font-family:monospace">rref([[0, 2, 9]%15,[1,10,1]%15,[2,3,4]%15])</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−3</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">1%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−6</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">1%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>+6%13</td><td class="dcell">⎞<br>
-⎠</td></tr>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1%15</td><td style="text-align:center;white-space:nowrap" >0%15</td><td style="text-align:center;white-space:nowrap" >0%15</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0%15</td><td style="text-align:center;white-space:nowrap" >1%15</td><td style="text-align:center;white-space:nowrap" >0%15</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0%15</td><td style="text-align:center;white-space:nowrap" >0%15</td><td style="text-align:center;white-space:nowrap" >1%15</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table><p>This can be used to solve a linear system of equations with
+coefficients in ℤ/<span style="font-style:italic">p</span>ℤ by rewriting it in matrix
+form
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> <span style="font-style:italic">A</span>· <span style="font-style:italic">X</span> = <span style="font-style:italic">B</span>
+</td></tr>
 </table><p>
-<span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Maple</span></span><span style="font-style:italic"> mode):</span>
+<span style="font-family:monospace">rref</span> can then take as argument the augmented matrix
+of the system (the matrix obtained by augmenting matrix <span style="font-style:italic">A</span> to the
+right with the column vector <span style="font-style:italic">B</span>).<br>
+<span style="font-family:monospace">rref</span> will returns a matrix [<span style="font-style:italic">A</span><sub>1</sub>,<span style="font-style:italic">B</span><sub>1</sub>] where <span style="font-style:italic">A</span><sub>1</sub> has
+1s on its principal diagonal and zeros outside. The 
+solutions in ℤ/<span style="font-style:italic">p</span>ℤ of:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">A</span><sub>1</sub>· <span style="font-style:italic">X</span> = <span style="font-style:italic">B</span><sub>1</sub>
+</td></tr>
+</table><p>
+are the same as the solutions of:
+</p><div class="center"><span style="font-family:monospace">A*X=B</span></div><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> <span style="font-style:italic">A</span>· <span style="font-style:italic">X</span> = <span style="font-style:italic">B</span>
+</td></tr>
+</table><h4 id="sec888" class="subsubsection">Example.</h4>
+<p>
+Solve in ℤ/13ℤ
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >            <span style="font-style:italic">x</span> +   2 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >9 </td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >         3 · <span style="font-style:italic">x</span> +10 · <span style="font-style:italic">y</span></td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:right;white-space:nowrap" >0
+</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">Factor(-3*x^3+5*x^2-5*x+4) mod 13</span>
+<span style="font-family:monospace">rref([[1, 2, 9]%13,[3,10,0]%13])</span>
+</div><p>
+<span style="font-style:italic">or:</span>
+</p><div class="center">
+<span style="font-family:monospace">rref([[1, 2, 9],[3,10,0]])%13</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  −3 </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span>−6</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>+6</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1%13</td><td style="text-align:center;white-space:nowrap" >0%13</td><td style="text-align:center;white-space:nowrap" >3%13</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0%13</td><td style="text-align:center;white-space:nowrap" >1%13</td><td style="text-align:center;white-space:nowrap" >3%13</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table><p>
+hence <span style="font-style:italic">x</span>=3%13 and <span style="font-style:italic">y</span>=3%13.</p>
 <hr>
 <a href="cascmd_en383.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

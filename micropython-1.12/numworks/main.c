@@ -549,6 +549,10 @@ int micropy_eval(const char * str){
   return 0;
 }
 
+void raisememerr(){
+  nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "Memory error"));
+}
+
 #ifndef MICROPY_LIB
 int main(int argc, char **argv) {
     #if MICROPY_PY_THREAD

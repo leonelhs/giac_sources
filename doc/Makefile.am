@@ -1,6 +1,6 @@
 SUBDIRS = 	en es fr el local pt zh de
 DIST_SUBDIRS = 	en es fr el local pt zh de 
-XCASHTML = xcasfr.html xcasen.html *.css *.js giacwasm.wasm logo.png giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html algolycee.html graphtheory-user_manual.pdf *.sty simple.html *tableau* magnets html2canvas.js jspdf.umd.min.js khicasnw.html epsilon.dfu apps.tar recovery nws*.html nws.js numworks.js shakeys khi*.bin bootloader.bin
+XCASHTML = xcasfr.html xcasen.html *.css *.js giacwasm.wasm logo.png giac.tex giacfr.tex test.tex testfr.tex test.html testfr.html algolycee.html graphtheory-user_manual.pdf *.sty simple.html *tableau* magnets html2canvas.js logo.png w3.css jspdf.umd.min.js khicasnw.html epsilon.dfu apps.tar recovery nws*.html nws.js numworks.js shakeys khi*.bin bootloader.bin
 EXTRA_DIST = aide_cas README index.html $(XCASHTML) dxcas/* pari/* castex.tex tortue.tex 50-numworks-calculator.rules  # private nwscert.cc -> shakeys
 
 dist_pkgdata_DATA = aide_cas

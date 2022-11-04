@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Evaluating booleans: evalb
+<title>Transforming a boolean expression to a list: exp2list
 </title>
 </head>
 <body >
@@ -12,44 +12,48 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en073.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec104" class="subsection">6.1.7  Evaluating booleans: <span style="font-family:monospace">evalb</span>
-<a id="hevea_default139"></a></h3>
-<p>The Maple command <span style="font-family:monospace">evalb</span> evaluates a boolean expression (see
-Section <a href="index.html#sec%3Aboolean">6.1</a>). Since <span style="font-family:monospace">Xcas</span> evaluates booleans
-automatically, it includes a <span style="font-family:monospace">evalb</span> command only here for
-compatibility and is equivalent to <span style="font-family:monospace">eval</span> (see
-Section <a href="cascmd_en175.html#ssec%3Aeval">6.12.1</a>).
+<h3 id="sec125" class="subsection">5.1.5  Transforming a boolean expression to a list: <span style="font-family:monospace">exp2list</span>
+<a id="hevea_default137"></a></h3>
+<p>The <span style="font-family:monospace">exp2list</span> command can transform certain booleans into a
+list.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">evalb</span> takes one argument:<br>
- <span style="font-style:italic">bool</span>, a boolean expression.
-</li><li class="li-itemize"><span style="font-family:monospace">evalb()</span><span style="font-style:italic">bool</span><span style="font-family:monospace">)</span> returns 1 if
-<span style="font-style:italic">bool</span> is true and returns 0 otherwise.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">exp2list</span> takes one argument:
+<span style="font-style:italic">eqseq</span>, a sequence of equalities (or inequalities)
+connected with <span style="font-family:monospace">or</span>s, such as
+<span style="font-family:monospace">(</span><span style="font-style:italic">x</span>=<span style="font-style:italic">a</span><sub>1</sub><span style="font-family:monospace">) or …or (</span><span style="font-style:italic">x</span>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">)</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">exp2list(</span><span style="font-style:italic">eqseq</span><span style="font-family:monospace">)</span> returns the list
+<span style="font-family:monospace">[</span><span style="font-style:italic">a</span><sub>1</sub>,…,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">]</span> of
+right-hand sides of the (in)equalities.
+</li></ul><p>The <span style="font-family:monospace">exp2list</span> command is useful in TI mode for easier processing
+of the answer to a <span style="font-family:monospace">solve</span> command.</p><h4 id="sec126" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">evalb(sqrt(2)&gt;1.41)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">sqrt(2)&gt;1.41</span>
+<span style="font-family:monospace">exp2list((x=2) or (x=0))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">2,0</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">evalb(sqrt(2)&gt;1.42)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">sqrt(2)&gt;1.42</span>
+<span style="font-family:monospace">exp2list((x&gt;0) or (x&lt;2))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">0,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize">In TI mode<br>
+ <span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">exp2list(solve((x-1)*(x-2)))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
 </li></ul>
 <hr>

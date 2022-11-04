@@ -21,12 +21,14 @@ extern "C" {
 typedef unsigned char BYTE;             // 8-bit byte
 typedef unsigned int  WORD;             // 32-bit word, change to "long" for 16-bit machines
 
+#ifndef _GIAC_GLOBAL_H
 typedef struct {
 	BYTE data[64];
 	WORD datalen;
 	unsigned long long bitlen;
 	WORD state[8];
 } SHA256_CTX;
+#endif
 
 /*********************** FUNCTION DECLARATIONS **********************/
 void sha256_init(SHA256_CTX *ctx);

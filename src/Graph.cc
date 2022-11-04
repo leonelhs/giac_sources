@@ -257,7 +257,13 @@ namespace xcas {
     return true;
   }
 
+#ifndef USE_OBJET_BIDON // change by L. Marohnić
+  extern void localisation(){
+#else
+  objet_bidon mon_objet_bidon;
+  // objet_bidon * mon_objet_bidon_ptr=new objet_bidon;
   objet_bidon::objet_bidon(){
+#endif
     // localization code and pointer to RGB image reader
     if (!giac::readrgb_ptr){
       giac::readrgb_ptr=readrgb;
@@ -280,14 +286,12 @@ namespace xcas {
 #endif
 #endif
     }
-  };
+  }
 
   std::string & xcas_locale(){
     static string * ans = new string;
     return * ans;
   }
-  objet_bidon mon_objet_bidon;
-  // objet_bidon * mon_objet_bidon_ptr=new objet_bidon;
 
   // New buttons/menus: 
   // row1: z+   up_y  up_z
@@ -863,13 +867,18 @@ namespace xcas {
     }
   }
 
+  static void cb_Graph2d3d_opengl(Fl_Menu_* m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (Graph3d * gr3 = dynamic_cast<Graph3d *>(gr)){
+      gr3->reset_view();
+      gr3->redraw();
+    }
+  }
+
   static void cb_Graph2d3d_startview(Fl_Menu_* m , void*) {
     Graph2d3d * gr = find_graph2d3d(m);
     if (Graph3d * gr3 = dynamic_cast<Graph3d *>(gr)){
-      gr3->theta_x=-13;
-      gr3->theta_y=-95;
-      gr3->theta_z=-110; 
-      gr3->q=euler_deg_to_quaternion_double(gr3->theta_z,gr3->theta_x,gr3->theta_y);
+      gr3->reset_view();
       gr3->redraw();
     }
   }
@@ -1197,6 +1206,7 @@ namespace xcas {
     {gettext("Rotate animation"), 0,  (Fl_Callback*)cb_Graph2d3d_rotate, 0, 0, 0, 0, 14, 56},
     {gettext("Hide below depth"), 0,  (Fl_Callback*)cb_Graph2d3d_hide, 0, 0, 0, 0, 14, 56},
     {gettext("Show below depth"), 0,  (Fl_Callback*)cb_Graph2d3d_show, 0, 0, 0, 0, 14, 56},
+    {gettext("OpenGL switch"), 0,  (Fl_Callback*)cb_Graph2d3d_opengl, 0, 0, 0, 0, 14, 56},
     {0}, // end 3-d
     {gettext("Export Print"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("EPS PNG and preview"), 0,  (Fl_Callback*)cb_Graph2d3d_Preview, 0, 0, 0, 0, 14, 56},
@@ -1627,7 +1637,7 @@ namespace xcas {
     static Fl_Button * button4 =0; // autoscale
     static Fl_Button * button5 =0; // round
     static Fl_Button * l0=0,*l1=0,*l2=0,*l3=0,*l4=0,*l5=0,*l6=0,*l7=0; // lights
-    static Fl_Check_Button* c1=0,*c2=0,*c3=0,*ct=0,*landscape=0,*notperspective=0,*lights=0,*shade=0,*blend=0,*fbox=0,*triedre=0,*logx=0,*logy=0;
+    static Fl_Check_Button* c1=0,*c2=0,*c3=0,*ct=0,*landscape=0,*notperspective=0,*lights=0,*opgl=0,*shade=0,*blend=0,*fbox=0,*triedre=0,*logx=0,*logy=0;
     static Fl_Multiline_Output * currentcfg = 0; // display
     if (dy<240)
       dy=240;
@@ -1737,25 +1747,28 @@ namespace xcas {
       ylegendesize->minimum(1);
       ylegendesize->maximum(200);
       y_ += dh;
-      l0=new Fl_Button(2,y_,dx/10-4,dh-4,"L0");
+      l0=new Fl_Button(2,y_,dx/11-4,dh-4,"L0");
       l0->tooltip(gettext("Configure light"));
-      l1=new Fl_Button(dx/10+2,y_,dx/10-4,dh-4,"L1");
+      l1=new Fl_Button(dx/11+2,y_,dx/11-4,dh-4,"L1");
       l1->tooltip(gettext("Configure light"));
-      l2=new Fl_Button(dx/5+2,y_,dx/10-4,dh-4,"L2");
+      l2=new Fl_Button(2*dx/11+2,y_,dx/11-4,dh-4,"L2");
       l2->tooltip(gettext("Configure light"));
-      l3=new Fl_Button(3*dx/10+2,y_,dx/10-4,dh-4,"L3");
+      l3=new Fl_Button(3*dx/11+2,y_,dx/11-4,dh-4,"L3");
       l3->tooltip(gettext("Configure light"));
-      l4=new Fl_Button(2*dx/5+2,y_,dx/10-4,dh-4,"L4");
+      l4=new Fl_Button(4*dx/11+2,y_,dx/11-4,dh-4,"L4");
       l4->tooltip(gettext("Configure light"));
-      l5=new Fl_Button(dx/2+2,y_,dx/10-4,dh-4,"L5");
+      l5=new Fl_Button(5*dx/11+2,y_,dx/11-4,dh-4,"L5");
       l5->tooltip(gettext("Configure light"));
-      l6=new Fl_Button(3*dx/5+2,y_,dx/10-4,dh-4,"L6");
+      l6=new Fl_Button(6*dx/11+2,y_,dx/11-4,dh-4,"L6");
       l6->tooltip(gettext("Configure light"));
-      l7=new Fl_Button(7*dx/10+2,y_,dx/10-4,dh-4,"L7");
+      l7=new Fl_Button(7*dx/11+2,y_,dx/11-4,dh-4,"L7");
       l7->tooltip(gettext("Configure light"));
-      lights=new Fl_Check_Button(8*dx/10,y_,dx/5-2,dh-4,"Lights");
+      lights=new Fl_Check_Button(8*dx/11,y_,1.5*dx/11-2,dh-4,"Lights");
       lights->tooltip(gettext("Show scene with lights"));
       lights->value(0);
+      opgl=new Fl_Check_Button(9.5*dx/11,y_,1.5*dx/11-2,dh-4,"OpenGL");
+      opgl->tooltip(gettext("Show scene with OpenGL"));
+      opgl->value(0);
       y_ += dh;
       c1=new Fl_Check_Button(0,y_,dx/8,dh-4,gettext("Show names"));
       c1->tooltip(gettext("Show/Hide names of geometric objects"));
@@ -1890,6 +1903,8 @@ namespace xcas {
       notperspective->value(display_mode & 0x4);
       lights->show();
       lights->value(display_mode & 0x8);
+      opgl->show();
+      opgl->value(gr3d->opengl);
       l0->show();
       l1->show();
       l2->show();
@@ -1956,6 +1971,7 @@ namespace xcas {
       logx->value(display_mode & (1<<10));
       logy->value(display_mode & (1<<11));
       lights->hide();
+      opgl->hide();
       l0->hide();
       l1->hide();
       l2->hide();
@@ -2019,6 +2035,10 @@ namespace xcas {
 	  display_mode &= (0xffff ^ 0x8);
 	  if (lights->value())
 	    display_mode |= 0x8;
+	  redraw();
+	}
+	if (gr3d && o==opgl){
+	  gr3d->switch_renderer();
 	  redraw();
 	}
 	if (o==shade){
@@ -2690,7 +2710,7 @@ namespace xcas {
 
   string printsemi(GIAC_CONTEXT){
     if (xcas_mode(contextptr)==3)
-      return "�";
+      return "§";
     else
       return ";";
   }
@@ -5200,6 +5220,48 @@ namespace xcas {
     if (g.type==_STRNG)
       return *g._STRNGptr;
     return g.print(contextptr);
+  }
+
+  void Graph2d3d::os_set_pixel(int x_,int y_,int c) const {
+    xcas_color(c);
+    fl_point(x()+x_,y()+y_);
+  }
+  int Graph2d3d::os_draw_string(int x_,int y_,int c,int bg,const char * s,bool fake) const {
+    fl_font(FL_HELVETICA,18);
+    if (!fake){
+      xcas_color(c);
+      fl_draw(s,x()+x_,y()+y_+18);
+    }
+    return x_+fl_width(s);
+  }
+
+  int Graph2d3d::os_draw_string_small(int x_,int y_,int c,int bg,const char * s,bool fake) const {
+    fl_font(FL_HELVETICA,14);
+    if (!fake){
+      xcas_color(c);
+      fl_draw(s,x()+x_,y()+y_+14);
+    }
+    return x_+fl_width(s);
+  }
+
+  void Graph2d3d::drawLine(int x1,int y1,int x2,int y2,int c) const {
+    int width = (c & 0x00070000) >> 16; // 3 bits
+    int type_line = (c & 0x01c00000) >> 22; // 3 bits
+    if (type_line>4)
+      type_line=(type_line-4)<<8;
+    c &= 0xffff;
+    xcas_color(c);
+    fl_line_style(type_line,width+1,0); 
+    fl_line(x()+x1,y()+y1,x()+x2,y()+y2);
+    fl_line_style(0,1); 
+  }
+
+  void Graph2d3d::drawRectangle(int x_,int y_,int w_,int h_,int c) const {
+    xcas_color(c);
+    fl_rectf(x()+x_,y()+y_,w_,h_);
+  }
+
+  void Graph2d3d::update_rotation(){ // virtual method defined for 3d rendering
   }
 
   void Graph2d3d::find_title_plot(gen & title_tmp,gen & plot_tmp,GIAC_CONTEXT){

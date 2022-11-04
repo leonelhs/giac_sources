@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Evaluating a real at a given precision: evalf Digits DIGITS
-
+<title>Continued fraction representation of a real: dfc
 
 
 </title>
@@ -15,103 +14,208 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en133.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:evalf" class="subsection">6.8.1  Evaluating a real at a given precision: <span style="font-family:monospace">evalf</span> <span style="font-family:monospace">Digits</span> <span style="font-family:monospace">DIGITS</span>
-<a id="hevea_default237"></a>
-<a id="hevea_default238"></a>
-<a id="hevea_default239"></a>
+<h3 id="ssec:convertdfc" class="subsection">5.7.7  Continued fraction representation of a real: <span style="font-family:monospace">dfc</span>
+<a id="hevea_default234"></a>
+<a id="hevea_default235"></a>
 </h3>
-<p>A real number is an exact number and its numeric evaluation at a given
-precision is a floating number represented in base 2. The precision of
-a floating number is the number of bits of its mantissa, which is at
-least 53 (hardware float numbers, also known as <span style="font-family:monospace">double</span>).</p><p>Floating numbers are displayed in base 10 with a number of digits
-controlled by the user either by assigning the <span style="font-family:monospace">Digits</span>
-variable or by modifying the Cas configuration (see
-Section <a href="cascmd_en027.html#ssec%3Aconfcomp">3.5.7</a>, item <a href="cascmd_en027.html#enum%3Adigs">8</a>). By default
-<span style="font-family:monospace">Digits</span> is equal to 12.</p><p>The number of digits displayed controls the number of bits of the
-mantissa; if <span style="font-family:monospace">Digits</span> is less than 15, 53 bits are used, if
-<span style="font-family:monospace">Digits</span> is strictly greater than 15, the number of bits is a
-roundoff of <span style="font-family:monospace">Digits</span> times log<sub>2</sub>(10).</p><p>An expression can be coerced into a floating number with the
-<span style="font-family:monospace">evalf</span> command (see Section <a href="#ssec%3Aevalf">6.8.1</a>). The <span style="font-family:monospace">evalf</span>
-command may have an optional second argument which will specify the
-precision to use.</p><p>Note that if an expression contains a floating number, evaluation will
-try to convert other arguments to floating point numbers in order to
-coerce the whole expression to a single floating number.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+<p>Any real number <span style="font-style:italic">a</span> can be written as a continued fraction: </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span> =
+<span style="font-style:italic">a</span><sub>0</sub> + </td><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell" >1</td></tr>
+<tr><td class="dcell" ><hr class="hbar"></td></tr>
+<tr><td class="dcell" ><table class="display"><tr style="vertical-align:top"><td class="dcell"><span style="font-style:italic">a</span><sub>1</sub> + </td><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell" >1</td></tr>
+<tr><td class="dcell" ><hr class="hbar"></td></tr>
+<tr><td class="dcell" ><table class="display"><tr style="vertical-align:top"><td class="dcell"><span style="font-style:italic">a</span><sub>2</sub> + </td><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell" >1</td></tr>
+<tr><td class="dcell" ><hr class="hbar"></td></tr>
+<tr><td class="dcell" ><span style="font-style:italic">a</span><sub>3</sub> +
+⋯</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell"> </td></tr>
+</table><p>, which is often abbreviated
+[<span style="font-style:italic">a</span><sub>0</sub>;<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>,<span style="font-style:italic">a</span><sub>3</sub>,…]. The <span style="font-family:monospace">dfc</span> command writes a
+real number as a continued fraction.
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">dfc</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span> an integer or <span style="font-style:italic">epsilon</span>, a positive
+real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">dfc(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns the list of the continued fraction
+representation of <span style="font-family:monospace">a</span> with precision <span style="font-family:monospace">epsilon</span>, which is
+given by Section <a href="cascmd_en027.html#ssec%3Aconfcomp">2.5.7</a>, item <a href="cascmd_en027.html#enum%3Aeps">9</a>.
+</li><li class="li-itemize"><span style="font-family:monospace">dfc(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">epsilon</span><span style="font-family:monospace">)</span> returns the list of the
+continued fraction representation which approximates <span style="font-family:monospace">a</span> or
+<span style="font-family:monospace">evalf(a)</span> with the specified precision <span style="font-family:monospace">epsilon</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">dfc(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the list of the continued fraction
+representation of <span style="font-family:monospace">a</span> of order <span style="font-family:monospace">n</span>.
+</li></ul><p><br>
+</p><p><span style="font-weight:bold">Remarks.</span>
+</p><ul class="itemize"><li class="li-itemize">
+The <span style="font-family:monospace">convert</span> command with the option <span style="font-family:monospace">confrac</span>
+(see Section <a href="cascmd_en273.html#ssec%3Aconvert">5.23.26</a>) has a similar functionality: in that case the
+value of <span style="font-family:monospace">epsilon</span> is the value defined in the <span style="font-family:monospace">cas</span>
+configuration and the answer may be stored in an optional third
+argument.
+</li><li class="li-itemize">If the last element of the result is a list, the representation is
+ultimately periodic, and the last element is the period. It means
+that the real is a root of an equation of order 2 with integer
+coefficients. So If <span style="font-family:monospace">dfc(a)=[a0,a1,a2,[b0,b1]]</span> then:
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>=<span style="font-style:italic">a</span>0+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>2+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">b</span>0+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">b</span>1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">b</span>0+…</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize">if the last element of the result is not an integer, it
+represents a remainder <span style="font-style:italic">r</span> (<span style="font-style:italic">a</span>=<span style="font-style:italic">a</span>0+1/…+1/<span style="font-style:italic">an</span>+1/<span style="font-style:italic">r</span>).
+So if <span style="font-family:monospace">dfc(a)=[a0,a1,a2,r]</span> then:
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>=<span style="font-style:italic">a</span>0+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>2+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">r</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell"> </td></tr>
+</table>
+Be aware that this remainder has lost most of its accuracy.
+</li></ul><h4 id="sec271" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">1+1/2</span>
+<span style="font-family:monospace">dfc(sqrt(2),5)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,2,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">2</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">dfc(evalf(sqrt(2)),1e-9)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">dfc(sqrt(2),1e-9)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,2,2,2,2,2,2,2,2,2,2,2,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">convert(sqrt(2),confrac,’dev’)</span>
+</div>
+<span style="font-style:italic">Output (if in the </span><span style="font-style:italic"><span style="font-family:monospace">cas</span></span><span style="font-style:italic"> configuration </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-9</span></span><span style="font-style:italic">):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">   </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,2,2,2,2,2,2,2,2,2,2,2,2</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+and <span style="font-family:monospace">[1,2,2,2,2,2,2,2,2,2,2,2,2]</span> is stored in <span style="font-family:monospace">dev</span>.
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">dfc(9976/6961,5)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">1,2,3,4,5,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">43</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="dcell" style="text-align:center">7</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+<span style="font-style:italic">Input (to verify):</span>
+<div class="center">
+<span style="font-family:monospace">1+1/(2+1/(3+1/(4+1/(5+7/43))))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">9976</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6961</td></tr>
 </table></td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">1.0+1/2</span>
+<span style="font-family:monospace">convert(9976/6961,confrac,’l’)</span>
+</div>
+<span style="font-style:italic">Output (if in the </span><span style="font-style:italic"><span style="font-family:monospace">cas</span></span><span style="font-style:italic"> configuration </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-9</span></span><span style="font-style:italic">):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,2,3,4,5,6,7</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+and <span style="font-family:monospace">[1,2,3,4,5,6,7]</span> is stored in <span style="font-family:monospace">l</span>.
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">dfc(pi,5)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1.5
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">3,7,15,1,292,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−113 π +355</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">33102 π −103993</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">exp(pi*sqrt(20))</span>
+<span style="font-family:monospace">dfc(evalf(pi),5)</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2 π  </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="dcell">&nbsp;</td></tr>
-</table></td></tr>
-</table>
-<span style="font-style:italic">With </span><span style="font-style:italic"><span style="font-family:monospace">evalf</span></span><span style="font-style:italic">, input:</span>
-<div class="center">
-<span style="font-family:monospace">evalf(exp(pi*2*sqrt(5)))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1263794.75367
-</td></tr>
+<span style="font-style:italic">Output (if floats are hardware floats, e.g. for Digits=12):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">3,7,15,1,292,1.57581843574</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">1.1^20</span>
+<span style="font-family:monospace">dfc(evalf(pi),1e-9)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">dfc(pi,1e-9)</span>
+</div>
+<span style="font-style:italic">or (if in the </span><span style="font-style:italic"><span style="font-family:monospace">cas</span></span><span style="font-style:italic"> configuration </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-9</span></span><span style="font-style:italic">):</span>
+<div class="center">
+<span style="font-family:monospace">convert(pi,confrac,’ll’)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  6.72749994932
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">3,7,15,1,292</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">sqrt(2)^21</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">· 2<sup>10</sup>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input (for a result with 30 digits):</span>
-<div class="center">
-<span style="font-family:monospace">Digits:=30</span>
-</div>
-<span style="font-style:italic">Input (for the numeric value of </span><span style="font-style:italic">e</span><sup>π√<span style="text-decoration:overline">163</span></sup><span style="font-style:italic">):</span>
-<div class="center">
-<span style="font-family:monospace">evalf(exp(pi*sqrt(163)))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0.262537412640768743999999999985×10<sup>8</sup>
-</td></tr>
-</table>
-Note that <span style="font-family:monospace">Digits</span> is now set to 30. If you didn’t want to change
-the value of <span style="font-family:monospace">Digits</span>, you could have entered:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">evalf(exp(pi*sqrt(163)),30)</span>
-</div>
+and <span style="font-family:monospace">[3,7,15,1,292]</span> is stored in <span style="font-family:monospace">ll</span>.
 </li></ul>
 <hr>
 <a href="cascmd_en131.html"><img src="previous_motif.gif" alt="Previous"></a>

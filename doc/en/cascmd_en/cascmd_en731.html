@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Converting an expression to a string: string
+<title>Factoring a unit: ufactor
 </title>
 </head>
 <body >
@@ -12,38 +12,37 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en732.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec993" class="subsection">12.4.7  Converting an expression to a string: <span style="font-family:monospace">string</span>
-<a id="hevea_default1409"></a></h3>
-<p>The <span style="font-family:monospace">string</span> command converts an expression to a
-string.
+<h3 id="sec1878" class="subsection">11.1.6  Factoring a unit: <span style="font-family:monospace">ufactor</span>
+<a id="hevea_default1322"></a></h3>
+<p>The <span style="font-family:monospace">ufactor</span> command factors units in unit objects.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">string</span> takes one argument:<br>
- <span style="font-style:italic">expr</span>, an expression.
-</li><li class="li-itemize"><span style="font-family:monospace">string(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> evaluates
-<span style="font-style:italic">expr</span> then converts it to a string.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">ufactor</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">unitobj</span>, a unit object.
+</li><li class="li-itemize"><span style="font-style:italic">u</span>, the unit to factor.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">ufactor(</span><span style="font-style:italic">unitobj,</span><span style="font-style:italic">u</span><span style="font-family:monospace">)</span>
+returns a unit object multiplied by the remaining
+<span style="font-family:monospace">MKSA</span> units.
+</li></ul><h4 id="sec1879" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">string(ifactor(6))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">"2 * 3"</span>
-</div><p>
-This is the same thing as adding the empty string to the expression:
-</p><div class="center">
-<span style="font-family:monospace">ifactor(6) + ""</span>
-</div><p><br>
-</p><p>If you want to convert an unevaluated expression to a string, you can
-quote the expression (see Section <a href="cascmd_en178.html#ssec%3Aqt">6.12.4</a>).</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">string(quote(ifactor(6)))</span>
-</div><div class="center">
-<span style="font-family:monospace">"ifactor(6)"</span>
+<div class="center">
+<span style="font-family:monospace">ufactor(3_J,_W)</span>
 </div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3.0 <span style="font-style:italic">W</span> <span style="font-style:italic">s</span>
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">ufactor(3_W,_J)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3.0 <span style="font-style:italic">J</span> <span style="font-style:italic">s</span><sup>−1</sup>
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en730.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -2,24 +2,24 @@ TEX_LOCAL = castor.tex casrouge.tex cascmd_fr.tex casgeo.tex casexo.tex \
 	    cascas.tex cassim.tex permutation.tex tutoriel.tex \
 	    casinter.tex algo.tex fltkcol.tex
 
-PDF_LOCAL = algo.pdf troussesurvie_fr.pdf # casrouge.pdf castor.pdf cascmd_fr.pdf casgeo.pdf tutoriel.pdf casinter.pdf cascas.pdf casexo.pdf cassim.pdf 
+PDF_LOCAL = tutoriel.pdf algo.pdf troussesurvie_fr.pdf # casrouge.pdf castor.pdf cascmd_fr.pdf casgeo.pdf tutoriel.pdf casinter.pdf cascas.pdf casexo.pdf cassim.pdf 
 
 PS_LOCAL = casrouge.ps castor.ps cascmd_fr.ps casgeo.ps cassim.ps \
-	   tutoriel.ps casinter.ps casexo.ps cascas.ps
+	   casinter.ps casexo.ps cascas.ps
 
 DVI_LOCAL = casrouge.dvi castor.dvi cascmd_fr.dvi casgeo.dvi cassim.dvi \
-	    tutoriel.dvi casinter.dvi casexo.dvi cascas.dvi
+	    casinter.dvi casexo.dvi cascas.dvi
 
-HTML_DIRS_LOCAL = casrouge castor cascmd_fr casgeo cassim tutoriel \
+HTML_DIRS_LOCAL = casrouge castor cascmd_fr casgeo cassim \
 		  casinter casexo cascas
 
 HTML_STAMPS = casrouge.stamp castor.stamp cascmd_fr.stamp casgeo.stamp \
-	      cassim.stamp tutoriel.stamp casinter.stamp casexo.stamp \
+	      cassim.stamp casinter.stamp casexo.stamp \
 	      cascas.stamp
 
-HTML_LOCAL = algo.html algo*png
+HTML_LOCAL = algo.html algo*png tutoriel.html tutoriel*png
 
-FIGURES = figure1 figure2 figure3 figure4 figure5 th1968* windowinter* undemix* cesaro* baton* camembert* plotlist*  nuage* nuee* quadrill* etoile*  inscrit* sphere* nico* suite* trialea* factalea* codrot* codage* pasde2.* carr.* exoparam.* dessincomb.*  fougere* tirage* xex02* xexyey* triequi* Newtonimpl* chouchou* chouxfleur* demarr1* diffsuite* graph* triangl*.* carre*.* spiral*.* morley*.* pantalon.* airemax*.* trajetmin*.* napo*.* pytha*.* conj*.* moustache.* pain*.* parsim.* expole*.* mini*.* hexag*.* logoxas.* dragon.* sphinx*.* bouquet.* arbre*.* fleur.* sapin*.* gosper*.* hilbert*.* poly*.* floc*.* carrt.* peano*.* tor*eps tor*png ecran2* mobius* parabole* fibon* uniforme* cartexcas.* cube.* trio* goutte* biscuit* cercle* baceinst* exo*d* exomean* sierpinsk* newsq* newlog* bac?or* trace* casjohn* cassym* casetoi* deca* vasa* pa2b2* alga2b2* ellipse* conicfd* tangent* writergb* siglece* ciss* trisect* *folium* approx* visu* lohseg* tort* poletoil* chat* point* bezout* rect* fichgraph* tablefonc* pyramide* buffon* simul* hexagone* pont3* peauce* desolve* picarre* sinusoide* lunules* penta1* ujf* pli* doderhomb* patron* triacon* cyclohex* gluc* illusion* damier* trap* rota* simi* syracuse* trisbatab* ecartype* ecartbi* tetra* pavage* airearc* bassin* equagraph* systgraph* mondrian* delaunay* trois* castrois* factorise* algo*png stat* pappus* pussle* mab* bissect* quasi* csarre* puzzle* minamb* courbure* image* lieu* equi* barycentre* partager*
+FIGURES = figure1 figure2 figure3 figure4 figure5 th1968* windowinter* undemix* cesaro* baton* camembert* plotlist*  nuage* nuee* quadrill* etoile*  inscrit* sphere* nico* suite* trialea* factalea* codrot* codage* pasde2.* carr.* exoparam.* dessincomb.*  fougere* tirage* xex02* xexyey* triequi* Newtonimpl* chouchou* chouxfleur* demarr1* diffsuite* graph* triangl*.* carre*.* spiral*.* morley*.* pantalon.* airemax*.* trajetmin*.* napo*.* pytha*.* conj*.* moustache.* pain*.* parsim.* expole*.* mini*.* hexag*.* logoxas.* dragon.* sphinx*.* bouquet.* arbre*.* fleur.* sapin*.* gosper*.* hilbert*.* poly*.* floc*.* carrt.* peano*.* tor*eps tor*png ecran2* mobius* parabole* fibon* uniforme* cartexcas.* cube.* trio* goutte* biscuit* cercle* baceinst* exo*d* exomean* sierpinsk* newsq* newlog* bac?or* trace* casjohn* cassym* casetoi* deca* vasa* pa2b2* alga2b2* ellipse* conicfd* tangent* writergb* siglece* ciss* trisect* *folium* approx* visu* lohseg* tort* poletoil* chat* point* bezout* rect* fichgraph* tablefonc* pyramide* buffon* simul* hexagone* pont3* peauce* desolve* picarre* sinusoide* lunules* penta1* ujf* pli* doderhomb* patron* triacon* cyclohex* gluc* illusion* damier* trap* rota* simi* syracuse* trisbatab* ecartype* ecartbi* tetra* pavage* airearc* bassin* equagraph* systgraph* mondrian* delaunay* trois* castrois* factorise* algo*png tutoriel*png stat* pappus* pussle* mab* bissect* quasi* csarre* puzzle* minamb* courbure* image* lieu* equi* barycentre* partager*
 
 EXTRA_DIST = aide_cas $(TEX_LOCAL) $(HTML_LOCAL) $(HTML_STAMPS) \
 	     $(HTML_DIRS_LOCAL)/* cutting.hva cutting.sty $(FIGURES) \
@@ -50,7 +50,7 @@ $(srcdir)/castor: castor.stamp
 $(srcdir)/cascmd_fr: cascmd_fr.stamp
 $(srcdir)/casgeo: casgeo.stamp
 $(srcdir)/cassim: cassim.stamp
-$(srcdir)/tutoriel: tutoriel.stamp
+# $(srcdir)/tutoriel: tutoriel.stamp
 $(srcdir)/casinter: casinter.stamp
 $(srcdir)/casexo: casexo.stamp
 $(srcdir)/cascas: cascas.stamp

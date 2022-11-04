@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Moment generating functions for probability distributions: mgf
+<title>Producing random numbers with the χ2 distribution: randchisquare
+
 </title>
 </head>
 <body >
@@ -12,46 +13,27 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en657.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec899" class="subsection">9.4.19  Moment generating functions for probability distributions: <span style="font-family:monospace">mgf</span>
-<a id="hevea_default1263"></a></h3>
-<p>The <span style="font-family:monospace">mgf</span> command finds the moment generating function
-for a probability distribution (such as normal, binomial, poisson,
-beta, gamma).
+<h3 id="ssec:randchisquare" class="subsection">8.3.8  Producing random numbers with the χ<sup>2</sup> distribution: <span style="font-family:monospace">randchisquare</span>
+<a id="hevea_default1186"></a>
+</h3>
+<p>The <span style="font-family:monospace">randchisquare</span> command finds random numbers chosen
+according to the χ<sup>2</sup> distribution (see
+Section <a href="cascmd_en673.html#ssec%3Achisquare">8.4.9</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">mgf</span> takes one or more mandatory arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">distd</span>, the name of the function that finds the
-distribution’s density function.
-</li><li class="li-itemize"><span style="font-style:italic">parameters</span>, any parameters that would normally be passed
-to <span style="font-style:italic">distd</span>.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">mgf(</span><span style="font-style:italic">distd,parameters</span><span style="font-family:monospace">)</span> returns an
-expression for the moment generating function for <span style="font-style:italic">distd</span>
-with parameters <span style="font-style:italic">parameters</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-Find the moment generating function for
-the standard normal distribution.<br>
+<span style="font-family:monospace">randchisquare</span> takes one argument:<br>
+ <span style="font-style:italic">n</span>, an integer (the degrees of freedom).
+</li><li class="li-itemize"><span style="font-family:monospace">randchisquare(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a number chosen randomly
+according to the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span> degrees of freedom.
+</li></ul><h4 id="sec1643" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">mgf(normald,1,0)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">e</span><sup><span style="font-style:italic">t</span></sup>
+</p><div class="center">
+<span style="font-family:monospace">randchisquare(5)</span>
+</div><p>
+<span style="font-style:italic">Output (for example):</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4.53970828547
 </td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">mgf(binomial,n,p)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">1−<span style="font-style:italic">p</span>+<span style="font-style:italic">p</span> <span style="font-style:italic">e</span><sup><span style="font-style:italic">t</span></sup></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><sup><span style="font-style:italic">n</span></sup>
-</td></tr>
-</table>
-</li></ul>
 <hr>
 <a href="cascmd_en655.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

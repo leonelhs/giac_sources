@@ -4,10 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Interval arithmetic: + - * /
-
-
-
+<title>Padé expansion: pade
 </title>
 </head>
 <body >
@@ -15,115 +12,112 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en399.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec483" class="subsection">6.38.3  Interval arithmetic: <span style="font-family:monospace">+ - * /</span>
-<a id="hevea_default669"></a>
-<a id="hevea_default670"></a>
-<a id="hevea_default671"></a>
-<a id="hevea_default672"></a></h3>
-<p>You can apply the usual arithmetic operators, such as <span style="font-family:monospace">+</span>,
-<span style="font-family:monospace">-</span>, <span style="font-family:monospace">*</span> and <span style="font-family:monospace">/</span>, to intervals.</p><p>The result of adding two intervals is the interval whose endpoints are
-the sums of the left end points and the right end points.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">i[1,4] + i[2,3]</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[3.00000000000000..7.00000000000000]
-</td></tr>
-</table><p><br>
-</p><p>The negative of an interval is the result of taking the negative of the
-end points of the interval. The new end points will have to be
-switched.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">-i[2,3]</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−3.00000000000000..−2.00000000000000]
-</td></tr>
-</table><p><br>
-</p><p>The product of two intervals is the interval whose endpoints are the
-product the left endpoints of the two intervals and the product of the
-right endpoints of the two intervals. The smallest
-product will be the left end point of the product interval, and the
-largest product will be the right end point of the product interval.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+<h3 id="sec919" class="subsection">5.36.5  Padé expansion: <span style="font-family:monospace">pade</span>
+<a id="hevea_default664"></a></h3>
+<p>The <span style="font-family:monospace">pade</span> command finds a rational expression which agrees
+with a function up to a given order.
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">pade</span> takes 4 arguments
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, the variable name.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, an integer or <span style="font-style:italic">R</span>, a polynomial.
+</li><li class="li-itemize"><span style="font-style:italic">p</span>, an integer.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">pade(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span>,<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span> or 
+<span style="font-family:monospace">pade(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span>,<span style="font-style:italic">P</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span>
+returns a rational function <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span> such that 
+degree(<span style="font-style:italic">P</span>)&lt;<span style="font-style:italic">p</span> and <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span>=<span style="font-style:italic">expr</span> (mod <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span>+1</sup> ) 
+(meaning that <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span> and <span style="font-style:italic">f</span> have the same
+Taylor expansion at 0 up to order <span style="font-style:italic">n</span>) or
+<span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span>=<span style="font-style:italic">exprf</span> (mod <span style="font-style:italic">R</span> ), respecively.
+</li></ul><h4 id="sec920" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">i[1,4]*i[2,3]</span>
+<span style="font-family:monospace">pade(exp(x),x,5,3)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">pade(exp(x),x,x^6,3)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[2.00000000000000..0.120000000000000<span style="font-style:italic">e</span>2]
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−3 <span style="font-style:italic">x</span><sup>2</sup>−24 <span style="font-style:italic">x</span>−60</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>3</sup>−9 <span style="font-style:italic">x</span><sup>2</sup>+36 <span style="font-style:italic">x</span>−60</td></tr>
+</table></td></tr>
+</table>
+To verify:<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">taylor((3*x^2+24*x+60)/(-x^3+9*x^2-36*x+60))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1+<span style="font-style:italic">x</span>+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>3</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>4</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">24</td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>5</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">120</td></tr>
+</table></td><td class="dcell">+<span style="font-style:italic">x</span><sup>6</sup> <span style="font-style:italic">order</span>_<span style="font-style:italic">size</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table>
+which is the 5th-order series expansion of <span style="font-family:monospace">exp(x)</span> at <span style="font-style:italic">x</span>=0.
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">pade((x^15+x+1)/(x^12+1),x,12,3)</span>
+</div>
+<span style="font-style:italic">or:</span>
+<div class="center">
+<span style="font-family:monospace">pade((x^15+x+1)/(x^12+1),x,x^13,3)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+1
 </td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">i[-2,4]*i[3,5]</span>
+<span style="font-family:monospace">pade((x^15+x+1)/(x^12+1),x,14,4)</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−0.100000000000000<span style="font-style:italic">e</span>2..0.200000000000000<span style="font-style:italic">e</span>2]
-</td></tr>
-</table>
-</li></ul><p>The reciprocal of an interval is the interval determined by the
-reciprocals of the end points.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-textitInput:
+<span style="font-style:italic">or:</span>
 <div class="center">
-<span style="font-family:monospace">1/i[2,3]</span>
+<span style="font-family:monospace">pade((x^15+x+1)/(x^12+1),x,x^15,4)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[0.333333333333333..0.500000000000000]
-</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">x</span><sup>3</sup>+1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>11</sup>−<span style="font-style:italic">x</span><sup>10</sup>+<span style="font-style:italic">x</span><sup>9</sup>−<span style="font-style:italic">x</span><sup>8</sup>+<span style="font-style:italic">x</span><sup>7</sup>−<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>5</sup>−<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+1</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">1/i[-6,-3]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−0.333333333333333..−0.166666666666667]
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p>If the original interval has zero as an end point, then the reciprocal
-interval will have plus or minus infinity as one of the end
-points. If one end point is positive and the other is negative, then the
-reciprocal will simply be the interval from -infinity to infinity.</p><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+To verify:<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">1/i[0,2]</span>
+<span style="font-family:monospace">series(ans(),x=0,15)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0.500000000000000..+∞</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1+<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sup>12</sup>−<span style="font-style:italic">x</span><sup>13</sup>+2 <span style="font-style:italic">x</span><sup>15</sup>+<span style="font-style:italic">x</span><sup>16</sup> <span style="font-style:italic">order</span>_<span style="font-style:italic">size</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">1/i[-1,0]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−∞..−1.00000000000000</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
+Then:<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">1/i[-2,3]</span>
+<span style="font-family:monospace">series((x^15+x+1)/(x^12+1),x=0,15)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−∞..+∞</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1+<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sup>12</sup>−<span style="font-style:italic">x</span><sup>13</sup>+<span style="font-style:italic">x</span><sup>15</sup>+<span style="font-style:italic">x</span><sup>16</sup> <span style="font-style:italic">order</span>_<span style="font-style:italic">size</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
 </table>
-</li></ul><p><br>
-</p><p>You can also, if you want, do the usual operations such as subtraction,
-division, powers and roots.</p>
+These two expressions have the same 14th-order series expansion at <span style="font-style:italic">x</span>=0.
+</li></ul>
 <hr>
 <a href="cascmd_en397.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

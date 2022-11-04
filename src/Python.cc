@@ -424,4 +424,80 @@ void c_sprint_double(char * s,double d){
   giac::sprint_double(s,d);
 }
 
+void c_turtle_forward(double d){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  //const context * contextptr=caseval_context();
+  giac::_avance(d,cascontextptr);
+}
+
+void c_turtle_left(double d){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_tourne_gauche(d,cascontextptr);
+}
+
+void c_turtle_up(int i){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  if (i)
+    giac::_leve_crayon(0,cascontextptr);
+  else
+    giac::_baisse_crayon(0,cascontextptr);
+}
+
+void c_turtle_goto(double x,double y){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_position(makesequence(x,y),cascontextptr);
+}
+
+void c_turtle_cap(double x){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_cap(x,cascontextptr);
+}
+
+void c_turtle_crayon(int i){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_crayon(i,cascontextptr);
+}
+
+void c_turtle_rond(int x,int y,int z){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_rond(makesequence(x,y,z),cascontextptr);
+}
+
+void c_turtle_disque(int x,int y,int z,int centre){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  if (centre)
+    giac::_disque_centre(makesequence(x,y,z),cascontextptr);
+  else
+    giac::_disque(makesequence(x,y,z),cascontextptr);
+}
+
+void c_turtle_fill(int i){
+  gen arg(vecteur(0));
+  if (i==0) 
+    arg.subtype=_SEQ__VECT;
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_polygone_rempli(arg,cascontextptr);
+}
+
+void c_turtle_fillcolor(double r,double g,double b,int entier){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  if (entier)
+    giac::_polygone_rempli(makesequence(int(r),int(g),int(b)),cascontextptr);
+  else
+    giac::_polygone_rempli(makesequence(r,g,b),cascontextptr);
+}
+
+void c_turtle_getposition(double * x,double * y){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  gen arg(vecteur(0)); arg.subtype=_SEQ__VECT;
+  giac::gen g=giac::_position(arg,cascontextptr);
+  if (g.type==_VECT && g._VECTptr->size()==2){
+    gen a=g._VECTptr->front(),b=g._VECTptr->back();
+    a=evalf_double(a,1,cascontextptr);
+    b=evalf_double(b,1,cascontextptr);
+    *x=a._DOUBLE_val;
+    *y=b._DOUBLE_val;
+  }
+}
+
 #endif // HAVE_LIBMICROPYTHON

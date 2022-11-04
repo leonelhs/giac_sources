@@ -33,6 +33,8 @@
 #define is_cx2 false
 #endif
 
+
+
 #ifdef KHICAS
 
 #ifdef NUMWORKS
@@ -65,6 +67,14 @@ const int xwaspy_shift=33; // must be between 32 and 63, reflect in xcas.js and 
 #include <ctype.h>
 #include "input_lexer.h"
 #include "input_parser.h"
+#if defined NUMWORKS && defined DEVICE
+  void py_ck_ctrl_c(){
+    if (giac::ctrl_c || giac::interrupted)
+      raisememerr();
+  }
+#else
+  void py_ck_ctrl_c(){}
+#endif
 //giac::context * contextptr=0;
 int clip_ymin=0;
 int lang=1;
@@ -146,6 +156,10 @@ int khicas_addins_menu(GIAC_CONTEXT); // in kadd.cc
 #ifdef MICROPY_LIB
 extern "C" const char * const * mp_vars();
 #endif
+#if defined NUMWORKS && defined DEVICE
+extern "C" void extapp_clipboardStore(const char *text);
+extern "C" const char * extapp_clipboardText();
+#endif
 
 // Numworks Logo commands
 #ifndef NO_NAMESPACE_GIAC
@@ -189,6 +203,46 @@ namespace giac {
     lock_alpha();
   }
 
+  int chartab(){
+    static int row=0,col=0;
+    for (;;){
+      col &= 0xf;
+      if (row<0) row=5; else if (row>5) row=0;
+      // display table
+      drawRectangle(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,_WHITE);
+      os_draw_string(0,0,_BLACK,_WHITE,lang==1?"Selectionner caractere":"Select char");
+      for (int r=0;r<6;++r){
+	for (int c=0;c<16;++c){
+	  char buf[2]={char(32+16*r+c),0}; 
+	  os_draw_string(20*c,20+20*r,_BLACK,(r==row && c==col?color_gris:_WHITE),buf);
+	}
+      }
+      string s("Current ");
+      int cur=32+16*row+col;
+      s += char(cur);
+      s += " ";
+      s += print_INT_(cur);
+      s += " ";
+      s += hexa_print_INT_(cur);
+      os_draw_string(0,160,_BLACK,_WHITE,s.c_str());
+      os_draw_string(0,180,_BLACK,_WHITE,lang==1?"EXE: copier caractere":"EXE: copy char");
+      // interaction
+      int key=getkey(1);
+      if (key==KEY_CTRL_EXIT)
+	return -1;
+      if (key==KEY_CTRL_OK || key==KEY_CTRL_EXE)
+	return cur;
+      if (key==KEY_CTRL_LEFT)
+	--col;
+      if (key==KEY_CTRL_RIGHT)
+	++col;
+      if (key==KEY_CTRL_UP)
+	--row;
+      if (key==KEY_CTRL_DOWN)
+	++row;
+    }
+  }
+
   void delete_clipboard(){}
 
   bool clip_pasted=true;
@@ -201,10 +255,14 @@ namespace giac {
   }
   
   void copy_clipboard(const string & s,bool status){
+#if defined NUMWORKS && defined DEVICE
+    extapp_clipboardStore(s.c_str());
+#else
     if (1 || clip_pasted) // adding to clipboard is sometimes annoying
       *clipboard()=s;
     else
       *clipboard()+=s;
+#endif
     clip_pasted=false;
     if (status){
       DefineStatusMessage((char*)((lang==1)?"Selection copiee vers presse-papiers.":"Selection copied to clipboard"), 1, 0, 0);
@@ -214,6 +272,9 @@ namespace giac {
   
   const char * paste_clipboard(){
     clip_pasted=true;
+#if defined NUMWORKS && defined DEVICE
+    return extapp_clipboardText();
+#endif
     return clipboard()->c_str();
   }
   
@@ -918,10 +979,11 @@ namespace giac {
     {"covariance(l1,l2)", 0, "Covariance listes l1 et l2", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"cpartfrac(p,x)", 0, "Decomposition en elements simples sur C.", "1/(x^4-1)", 0, CAT_CATEGORY_ALGEBRA | (CAT_CATEGORY_COMPLEXNUM << 8) | XCAS_ONLY},
     {"crayon ", "crayon ", "Couleur de trace de la tortue", "#crayon rouge", 0, CAT_CATEGORY_LOGO},
-    {"cross(u,v)", 0, "Produit vectoriel de u et v.","[1,2,3],[0,1,3]", 0, CAT_CATEGORY_LINALG},
+    {"cross(u,v)", 0, "Produit vectoriel de u et v.","[1,2,3],[0,1,3]", 0, CAT_CATEGORY_LINALG | (CAT_CATEGORY_2D << 8)},
     {"csolve(equation,x)", 0, "Resolution exacte dans C d'une equation en x (ou d'un systeme polynomial).","x^2+x+1=0", 0, CAT_CATEGORY_SOLVE | (CAT_CATEGORY_COMPLEXNUM << 8) | XCAS_ONLY},
     {"cube(A,B,C)", 0, "Cube d'arete AB avec une face dans le plan ABC", "[0,0,0],[1,0,0],[0,1,0]","[0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]", CAT_CATEGORY_3D},
     {"curl(u,vars)", 0, "Rotationnel du vecteur u.", "[2*x*y,x*z,y*z],[x,y,z]", 0, CAT_CATEGORY_LINALG | XCAS_ONLY},
+    {"curvature([x(t),y(t)],t,t0)", 0, "Courbure de la courbe parametree [x(t),y(t)] en t0", "[t,t^2],t,1", "[t,t^2],t", CAT_CATEGORY_CALCULUS | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"cyan", "cyan", "Option d'affichage", "#display=cyan", 0, CAT_CATEGORY_PROGCMD},
     {"cylinder(A,v,r,[h])", 0, "Cylindre d'axe A,v de rayon r et de hauteur optionnelle h", "[0,0,0],[0,1,0],2", "[0,0,0],[0,1,0],2,3", CAT_CATEGORY_3D},
     {"debug(f(args))", 0, "Execute la fonction f en mode pas a pas.", 0, 0, CAT_CATEGORY_PROG | XCAS_ONLY},
@@ -932,7 +994,8 @@ namespace giac {
     {"diff(f,var,[n])", 0, "Derivee de l'expression f par rapport a var (a l'ordre n, n=1 par defaut), par exemple diff(sin(x),x) ou diff(x^3,x,2). Pour deriver f par rapport a x, utiliser f' (raccourci F3). Pour le gradient de f, var est la liste des variables.", "sin(x),x", "sin(x^2),x,3", CAT_CATEGORY_CALCULUS | XCAS_ONLY},
     {"display", "display", "Option d'affichage", "#display=red", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
     {"disque n", "disque ", "Cercle rempli tangent a la tortue, de rayon n. Utiliser disque n,theta pour remplir un morceau de camembert ou disque n,theta,segment pour remplir un segment de disque", "#disque 30", "#disque(30,90)", CAT_CATEGORY_LOGO},
-    {"dot(a,b)", 0, "Produit scalaire de 2 vecteurs. Raccourci: *", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_LINALG},
+  {"distance(A,B)", 0, "Distance de 2 objets geometriques", "point(1,2,3),point(4,1,2)", 0, CAT_CATEGORY_3D | (CAT_CATEGORY_2D << 8) },
+    {"dot(a,b)", 0, "Produit scalaire de 2 vecteurs. Raccourci: *", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_LINALG | (CAT_CATEGORY_2D << 8)},
     {"dodecahedron(A,B,C)", 0, "Dodecaedre d'arete AB avec une face dans le plan ABC", "[0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]", 0, CAT_CATEGORY_3D},
     {"draw_arc(x1,y1,rx,ry,theta1,theta2,c)", 0, "Arc d'ellipse pixelise.", "100,100,60,80,0,pi,magenta", 0, CAT_CATEGORY_PROGCMD},
     {"draw_circle(x1,y1,r,c)", 0, "Cercle pixelise. Option filled pour le remplir.", "100,100,60,cyan+filled", 0, CAT_CATEGORY_PROGCMD},
@@ -967,6 +1030,7 @@ namespace giac {
     {"float(x)", 0, "Convertit x en nombre approche (flottant).", "pi", 0, CAT_CATEGORY_REAL},
     {"floor(x)", 0, "Partie entiere de x", "pi", 0, CAT_CATEGORY_REAL},
     {"fonction f(x)", "fonction", "Definition de fonction (Xcas). Par exemple\nfonction f(x)\n local y;\ny:=x*x;\nreturn y;\nffonction", 0, 0, CAT_CATEGORY_PROG | XCAS_ONLY},
+    {"frenet([x(t),y(t)],t,t0)", 0, "Courbure, centre de courbure et repere de Frenet de la courbe parametree [x(t),y(t)] en t0", "[t,t^2],t,1", "[t,t^2],t", CAT_CATEGORY_CALCULUS | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"from arit import *", "from arit import *", "Instruction pour utiliser les fonctions d'arithmetique entiere en Python", "#from arit import *", "#import arit", CAT_CATEGORY_ARIT},
     {"from cas import *", "from cas import *", "Permet d'utiliser le calcul formel depuis Python", "#from cas import *", "#import cas", CAT_CATEGORY_ALGEBRA|(CAT_CATEGORY_CALCULUS<<8)},
     {"from cmath import *", "from cmath import *", "Instruction pour utiliser les fonctions de maths sur les complexes (trigo, exponentielle, log, ...) en Python", "#from cmath import *;i=1j", "#import cmath", CAT_CATEGORY_COMPLEXNUM},
@@ -1048,6 +1112,7 @@ namespace giac {
     {"numer(x)", 0, "Numerateur de x.", "3/4", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"octahedron(A,B,C)", 0, "Octaedre d'arete AB avec une face dans le plan ABC", "[0,0,0],[3,0,0],[0,1,0]", 0, CAT_CATEGORY_3D},
     {"odesolve(f(t,y),[t,y],[t0,y0],t1)", 0, "Solution approchee d'equation differentielle y'=f(t,y) et y(t0)=y0, valeur en t1 (ajouter curve pour les valeurs intermediaires de y)", "sin(t*y),[t,y],[0,1],2", "0..pi,(t,v)->{[-v[1],v[0]]},[0,1]", CAT_CATEGORY_SOLVE | XCAS_ONLY},
+    {"osculating_circle([x(t),y(t)],t,t0)", 0, "Cercle osculateur de la courbe parametree [x(t),y(t)] en t0", "[t,t^2],t,1", "[t,t^2],t", CAT_CATEGORY_CALCULUS | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"parabole(F,A)", 0, "Parabole donnee par foyer et sommet", "-2-i,2+i", 0, CAT_CATEGORY_2D},
     {"parameq(objet)", 0, "Equations parametriques. Utiliser equation pour une equation cartesienne", "circle(0,1)", "ellipse(-1,1,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"partfrac(p,x)", 0, "Decomposition en elements simples. Raccourci p=>+", "1/(x^4-1)", 0, CAT_CATEGORY_ALGEBRA | XCAS_ONLY},
@@ -1065,7 +1130,7 @@ namespace giac {
     {"plotpolar(r,theta)", 0, "Graphe en polaire.","cos(3*x),x,0,pi", "1/(1+cos(x)),x=0..pi,xstep=0.05", CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plotseq(f(x),x=[u0,m,M],n)", 0, "Trace f(x) sur [m,M] et n termes de la suite recurrente u_{n+1}=f(u_n) de 1er terme u0.","sqrt(2+x),x=[6,0,7],5", 0, CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plus_point", "plus_point", "Option d'affichage", "#display=blue+plus_point", 0, CAT_CATEGORY_PROGCMD  | XCAS_ONLY},
-    {"point(x,y[,z])", 0, "Point", "1,2", "1,2,3", CAT_CATEGORY_PLOT | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
+    {"point(x,y[,z])", 0, "Point", "1,2", "1,2,3", CAT_CATEGORY_PLOT | (CAT_CATEGORY_2D << 8) |  (CAT_CATEGORY_3D << 16) | XCAS_ONLY},
     {"polygone(list)", 0, "Polygone ferme donne par la liste de ses sommets.", "1-i,2+i,3,3-2i", 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"polygonscatterplot(Xlist,Ylist)", 0, "Nuage de points relies.", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"polyhedron(A,B,C,D,...)", 0, "Polyedre convexe dont les sommets sont parmi A,B,C,D,...", "[0,0,0],[0,5,0],[0,0,5],[1,2,6]", 0, CAT_CATEGORY_3D},
@@ -1163,6 +1228,8 @@ namespace giac {
     {"v est_divise_par n", " est_divise_par ", "La variable v est divisee par n", "#v:=3; v est_divise_par 2", 0, CAT_CATEGORY_SOFUS | XCAS_ONLY},
     {"v est_eleve_puissance n", " est_eleve_puissance ", "La variable v est eleveee a la puissance n", "#v:=3; v est_eleve_puissance 2", 0, CAT_CATEGORY_SOFUS | XCAS_ONLY},
     {"v est_multiplie_par n", " est_multiplie_par ", "La variable v est multipliee par n", "#v:=3; v est_multiplie_par 2", 0, CAT_CATEGORY_SOFUS | XCAS_ONLY},
+  {"vector(A,B)", 0, "vecteur AB", 0, 0, CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8)},
+  {"volume(P)", 0, "volume d'un polyedre ou d'une sphere", 0, 0, (CAT_CATEGORY_3D )},
 				     //{"version", "version()", "Khicas 1.5.0, (c) B. Parisse et al. www-fourier.ujf-grenoble.fr/~parisse. License GPL version 2. Interface adaptee d'Eigenmath pour Casio, G. Maia, http://gbl08ma.com", 0, 0, CAT_CATEGORY_PROGCMD},
     {"write(\"filename\",var)", "write(\"", "Sauvegarde une ou plusieurs variables dans un fichier. Par exemple f(x):=x^2; write(\"func_f\",f).",  0, 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
     {"yellow", "yellow", "Option d'affichage", "#display=yellow", 0, CAT_CATEGORY_PROGCMD},
@@ -2307,7 +2374,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
     smallmenu.scrollbar=1;
     smallmenu.scrollout=1;
     string vars="Variables";
-#ifdef NUMWORKS
+#if defined NUMWORKS && defined DEVICE
     vars += ", free >= ";
     vars += print_INT_(_heap_size-((int)_heap_ptr-(int)_heap_base));
 #endif
@@ -2490,6 +2557,17 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
     return stringtodouble(s1,d);
   }
   
+  bool inputdouble(const char * msg1,double & d,int ypos,GIAC_CONTEXT){
+    int di=d;
+    string s1;
+    if (di==d)
+      s1=print_INT_(di);
+    else
+      s1=print_DOUBLE_(d,3);
+    inputline(msg1,((lang==1)?"Nouvelle valeur? ":"New value? "),s1,false,ypos,contextptr);
+    return stringtodouble(s1,d);
+  }
+  
   int inputline(const char * msg1,const char * msg2,string & s,bool numeric,int ypos,GIAC_CONTEXT){
     //s=msg2;
     int pos=s.size(),beg=0;
@@ -2639,6 +2717,24 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
     return status;
   }
 
+#if defined NUMWORKS && defined DEVICE
+  bool ck_turtle_size(){
+    vector<logo_turtle> & v=turtle_stack();
+    if (v.size()<v.capacity())
+      return true;
+    int l=2*v.size();
+    if (1024+l*sizeof(logo_turtle)<_heap_size-((int)_heap_ptr-(int)_heap_base))
+      return true;
+    ctrl_c=interrupted=true;
+    return false;
+  }
+
+#else
+  int ck_turtle_size(){
+      return 1;
+  }
+#endif
+
   bool set_turtle_state(const vecteur & v,GIAC_CONTEXT){
     if (v.size()>=2 && v[0].type==_DOUBLE_ && v[1].type==_DOUBLE_){
       vecteur w(v);
@@ -2651,6 +2747,8 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
 	w.push_back(0);
       if (w[2].type==_DOUBLE_ && w[3].type==_INT_ && w[4].type==_INT_){
 	(*turtleptr)=vecteur2turtle(w);
+	if (!ck_turtle_size())
+	  return false;
 #ifdef TURTLETAB
 	turtle_stack_push_back(*turtleptr);
 #else
@@ -2671,6 +2769,14 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   }
 
   static gen update_turtle_state(bool clrstring,GIAC_CONTEXT){
+#if defined NUMWORKS && defined DEVICE
+    if (!ck_turtle_size()){
+      if (ctrl_c || interrupted)
+	return undef;
+      ctrl_c=true; interrupted=true;
+      return gensizeerr("Not enough memory");
+    }
+#else
 #ifdef TURTLETAB
     if (turtle_stack_size>=MAX_LOGO)
       return gensizeerr("Not enough memory");
@@ -2680,14 +2786,28 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
       return gensizeerr("Not enough memory");
     }
 #endif
+#endif
     if (clrstring)
       (*turtleptr).s=-1;
     (*turtleptr).theta = (*turtleptr).theta - floor((*turtleptr).theta/360)*360;
+    bool push=true;
+    if (push){
 #ifdef TURTLETAB
-    turtle_stack_push_back((*turtleptr));
+      turtle_stack_push_back((*turtleptr));
 #else
-    turtle_stack().push_back((*turtleptr));
+      if (!turtle_stack().empty()){
+	logo_turtle & t=turtle_stack().back();
+	if (t.equal_except_nomark(*turtleptr)){
+	  t.theta=turtleptr->theta;
+	  t.mark=turtleptr->mark;
+	  t.visible=turtleptr->visible;
+	  t.color=turtleptr->color;
+	  push=false;
+	}
+      }
+      turtle_stack().push_back((*turtleptr));
 #endif
+    }
     gen res=turtle_state(contextptr);
 #if defined EMCC || defined (EMCC2) // should directly interact with canvas
     return gen(turtlevect2vecteur(turtle_stack()),_LOGO__VECT);
@@ -3281,7 +3401,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
       turtle_fill_color= g.val;
       return g;
     }
-    if (is_zero(g)){ // 0.0
+    if (g.type!=_VECT && is_zero(g)){ // 0.0
       turtle_fill_begin=turtle_stack().size();
       return 1;
     }
@@ -3301,6 +3421,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
       turtleptr->radius=-absint(n);
       gen res=update_turtle_state(true,contextptr);
       if (turtle_fill_color>=0){
+	turtleptr->radius=0;
 	_crayon(c,contextptr);
       }
       return res;
@@ -5153,6 +5274,94 @@ namespace xcas {
     return rgb888to565((r<<16)|(g<<8)|b);
   }
   
+  void glinter1(double z,double dz,
+		double *zmin,double *zmax,double ZMIN,double ZMAX,
+		int ih,int lcdz,
+		int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+		){
+    if (ZMIN<z && z<ZMAX)
+      return;
+    // lcdz tests below: avoid marking too large regions
+    if (*zmax<*zmin || z<*zmin-lcdz || z>*zmax+lcdz)
+      *zmax=*zmin=z;
+    bool diffus=diffusionz<diffusionz_limit;
+    double deltaz;
+    if (interval){
+      bool intervalonly=false;
+      if (z<0) {
+	// return;
+	z=0; intervalonly=true;
+      }
+      if (z>=LCD_HEIGHT_PX) {
+	// return;
+	z=LCD_HEIGHT_PX-1; intervalonly=true;
+      }
+      deltaz=diffus?1:diffusionz;
+      if (z>*zmax+deltaz){
+	if (diffus){
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
+	  if (!intervalonly)
+	    os_set_pixel(ih,z,downcolor);
+	}
+	else {
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),_BLACK);
+	  // draw interval
+	  int nstep=int(z-*zmax)/diffusionz;
+	  double zstep=(z-*zmax)/nstep;
+	  for (double zz=*zmax+zstep;zz<=z;zz+=zstep)
+	    os_set_pixel(ih,zz,downcolor);
+	}
+	*zmax=z;
+	return;
+      }
+      else if (z<*zmin-deltaz){
+	if (diffus){
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
+	  if (!intervalonly)
+	    os_set_pixel(ih,z,upcolor);
+	}
+	else {
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),_BLACK);
+	  // draw interval
+	  int nstep=int(*zmin-z)/diffusionz;
+	  double zstep=(z-*zmin)/nstep; // zstep<0
+	  for (double zz=*zmin+zstep;zz>=z;zz+=zstep)
+	    os_set_pixel(ih,zz,upcolor);
+	}
+	*zmin=z;
+	return;
+      }
+    } // end if interval
+    if (z>=0 &&  z<=LCD_HEIGHT_PX){
+      int color=-1;
+      if (diffus){
+	if (z<=*zmin){
+	  // mark all points with diffuse color from upcolor
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,std::min(double(diffusionz),std::max(-dz,1.0))));
+	  color=upcolor;
+	  *zmin=z;
+	}
+	if (z>=*zmax){
+	  // mark all points with diffuse color from downcolor
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,std::min(double(diffusionz),std::max(dz,1.0))));
+	  *zmax=z;
+	}
+	return;
+      }
+      if (z>*zmax){ // mark only 1 point
+	color=downcolor;
+	drawRectangle(ih,*zmax+1,1,z-*zmax-1,_BLACK);
+	*zmax=z;
+      }
+      if (z<*zmin){ // mark 1 point
+	color=upcolor;
+	// drawRectangle(ih,z+1,1,*zmin-z-1,_BLACK);
+	*zmin=z;
+      }
+      if (color>=0) os_set_pixel(ih,z,color);
+    }
+  }
+  
   void glinter(double a,double b,double c,
 	       double xscale,double xc,double yscale,double yc,
 	       double *zmin,double *zmax,double ZMIN,double ZMAX,
@@ -5175,6 +5384,7 @@ namespace xcas {
       if (ZMIN<z && z<ZMAX)
 	return;
       bool intervalonly=false;
+      // lcdz tests below: avoid marking too large regions
       if (*zmax<*zmin || z<*zmin-lcdz || z>*zmax+lcdz)
 	*zmax=*zmin=z;
       if (0 && (*zmax<50 || *zmin<50 || z<50))
@@ -5192,75 +5402,67 @@ namespace xcas {
 	}
 	deltaz=diffus?1:diffusionz;
 	if (z>*zmax+deltaz){
-	  if (//0
-	      diffus
-	      )	  
+	  if (diffus){
 	    drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
+	    if (!intervalonly)
+	      os_set_pixel(ih,z,downcolor);
+	  }
 	  else {
+	    drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),_BLACK);
 	    // draw interval
 	    int nstep=int(z-*zmax)/diffusionz;
 	    double zstep=(z-*zmax)/nstep;
 	    for (double zz=*zmax+zstep;zz<=z;zz+=zstep)
 	      os_set_pixel(ih,zz,downcolor);
 	  }
-	  if (intervalonly){
-	    *zmax=z;
-	    return;
-	  }
+	  *zmax=z;
+	  return;
 	}
-	if (z<*zmin-deltaz){
-	  if (//0
-	      diffus
-	      )
+	else if (z<*zmin-deltaz){
+	  if (diffus){
 	    drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
+	    if (!intervalonly)
+	      os_set_pixel(ih,z,upcolor);
+	  }
 	  else {
+	    drawRectangle(ih,z,1,std::ceil(*zmin-z),_BLACK);
 	    // draw interval
 	    int nstep=int(*zmin-z)/diffusionz;
 	    double zstep=(z-*zmin)/nstep; // zstep<0
 	    for (double zz=*zmin+zstep;zz>=z;zz+=zstep)
 	      os_set_pixel(ih,zz,upcolor);
 	  }
-	  if (intervalonly){
-	    *zmin=z;
-	    return;
-	  }
+	  *zmin=z;
+	  return;
 	}
       } // end if interval
       if (z>=0 &&  z<=LCD_HEIGHT_PX){
 	int color=-1;
-	if ( diffus && dz>0 && z>=*zmax){
-	  // mark all points with downcolor
-	  color=downcolor;
-	  deltaz=z-*zmax;
-	  *zmax=z;
-	}
-	if ( diffus && dz<0 && z<=*zmin){
-	  // mark all points with upcolor
-	  color=upcolor;
-	  deltaz=*zmin-z;
-	  *zmin=z;	  
-	}
-	if (color>=0){
-	  if (dz>0)
-	    drawRectangle(ih,z-std::ceil(deltaz),1,std::ceil(deltaz),diffuse(color,std::min(double(diffusionz),std::max(dz,1.0))));
-	  else {
-	    if (0 && deltaz>1)
-	      cout << ih << " " << z << " " << std::ceil(deltaz) << "\n";
-	    drawRectangle(ih,z,1,std::ceil(deltaz),diffuse(color,std::min(double(diffusionz),std::max(-dz,1.0))));
+	if (diffus){
+	  if (z<=*zmin){
+	    // mark all points with diffuse color from upcolor
+	    drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,std::min(double(diffusionz),std::max(-dz,1.0))));
+	    color=upcolor;
+	    *zmin=z;
+	  }
+	  if (z>=*zmax){
+	    // mark all points with diffuse color from downcolor
+	    drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,std::min(double(diffusionz),std::max(dz,1.0))));
+	    *zmax=z;
 	  }
 	  return;
 	}
 	if (z>=*zmax){ // mark only 1 point
-	  *zmax=z;
 	  color=downcolor;
+	  drawRectangle(ih,*zmax+1,1,z-*zmax-1,_BLACK);
+	  *zmax=z;
 	}
 	if (z<=*zmin){ // mark 1 point
-	  *zmin=z;
 	  color=upcolor;
+	// drawRectangle(ih,z+1,1,*zmin-z-1,_BLACK);
+	  *zmin=z;
 	}
-	if (color>=0){
-	  os_set_pixel(ih,z,color);
-	}
+	if (color>=0) os_set_pixel(ih,z,color);
       }
       return; // end h==1 and w==1
     }
@@ -5294,6 +5496,7 @@ namespace xcas {
 	    )	  
 	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
 	else {
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),_BLACK);
 	  // draw interval
 	  int nstep=int(z-*zmax)/diffusionz;
 	  double zstep=(z-*zmax)/nstep;
@@ -5311,6 +5514,7 @@ namespace xcas {
 	    )
 	  drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
 	else {
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),_BLACK);
 	  // draw interval
 	  int nstep=int(*zmin-z)/diffusionz;
 	  double zstep=(z-*zmin)/nstep; // zstep<0
@@ -5331,6 +5535,7 @@ namespace xcas {
 	  *zmax=z+(h-1)*dz;
 	  color=downcolor;
 	  if (diffusionz>=diffusionz_limit && dz>diffusionz){
+	    drawRectangle(ih,z,1,std::ceil(*zmax-z),_BLACK);
 	    // draw interval
 	    int nstep=int(std::ceil((*zmax-z)/diffusionz));
 	    double zstep=(*zmax-z)/nstep;
@@ -5344,6 +5549,7 @@ namespace xcas {
 	  *zmin=z+(h-1)*dz;
 	  color=upcolor;
 	  if (diffusionz>=diffusionz_limit && dz<-diffusionz){
+	    drawRectangle(ih,z,1,std::ceil(z-*zmin),_BLACK);
 	    // draw interval
 	    int nstep=int(std::ceil((z-*zmin)/diffusionz));
 	    double zstep=(*zmin-z)/nstep;
@@ -5360,6 +5566,8 @@ namespace xcas {
 	      drawRectangle(ih,z-std::ceil(-h*dz),1,std::ceil(-h*dz),diffuse(color,std::min(double(diffusionz),std::max(-dz,1.0))));
 	    continue;
 	  }
+	  if (dz>1)
+	    drawRectangle(ih,z,1,std::ceil(h*dz),_BLACK);
 	  os_set_pixel(ih,z,color);
 	  if (h==1) continue;
 	  z += dz;
@@ -5405,10 +5613,12 @@ namespace xcas {
 	     ;++J,z+=dz,x-=yscale,y-=yscale){
 	int color=-1;
 	if (z>*zmax){
+	  drawRectangle(i,*zmax,1,z-*zmax,_BLACK);
 	  *zmax=z;
 	  color=downcolor;
 	}
 	if (z<*zmin){
+	  drawRectangle(i,z,1,*zmin-z,_BLACK);
 	  *zmin=z;
 	  color=upcolor;
 	}
@@ -5497,30 +5707,21 @@ namespace xcas {
 		double & cura1,double & curb1,double & curc1,double & curz1,
 		double & cura2,double & curb2,double & curc2,double & curz2,
 		int & u,int & d,int & du,int & dd){
-    if (found){
-      if (z<curz1){
-	// no need to update cur, perhaps cur2?
-	if (found2 && curz2<z)
-	  return;
+    if (!found || z>curz1){
+      if (found){ // update cur2
 	found2=true;
-	cura2=a; curb2=b; curc2=c; curz2=z;
-	du=downupcolor; dd=downdowncolor;
-	return;
+	cura2=cura1; curb2=curb1; curc2=curc1; curz2=curz1;
       }
-      else { // need to update cur, and perhaps cur2
-	if (!found2 || curz1<curz2){
-	  found2=true;
-	  cura2=cura1; curb2=curb1; curc2=curc1; curz2=curz1;
-	  du=downupcolor; dd=downdowncolor;
-	}
-	cura1=a; curb1=b; curc1=c; curz1=z;
-	u=upcolor; d=downcolor;
-	return;
-      }
+      found=true;
+      cura1=a; curb1=b; curc1=c; curz1=z;
+      u=upcolor; d=downcolor;
+      return;
     }
-    found=true;
-    cura1=a; curb1=b; curc1=c; curz1=z;
-    u=upcolor; d=downcolor;
+    if (z>curz2){
+      found2=true;
+      cura2=a; curb2=b; curc2=c; curz2=z;
+      du=downupcolor; dd=downdowncolor;
+    }
   }
 	      
   
@@ -5588,7 +5789,8 @@ namespace xcas {
     return (-xy+m.y-m.x)/(v.x-v.y);
   }
 
-  void get_colors(gen attr,int & upcolor,int & downcolor,int & downupcolor,int & downdowncolor){
+  // returns true if filled, false otherwise
+  bool get_colors(gen attr,int & upcolor,int & downcolor,int & downupcolor,int & downdowncolor){
     if (attr.is_symb_of_sommet(at_pnt)){
       attr=attr[1];
     }
@@ -5606,6 +5808,9 @@ namespace xcas {
       g >>= 2;
       downdowncolor=rgb888to565((r<<16)|(g<<8)|b);
     }
+    if (attr.type==_INT_)
+      return attr.val & 0x40000000;
+    return false;
   }
 
 #define ABC3D
@@ -5618,12 +5823,142 @@ namespace xcas {
     gr.XYZ2ij(double3(x,y,z),i,j);
   }    
   
+  struct hypertriangle_t {
+    int4 * colorptr; // hypersurface color 
+    double xmin,xmax,ymin,ymax; // minmax values intersection with plane y-x=Cte
+    double a,b,c; // plane equation of triangle
+    double zG; // altitude for gravity center 
+  }  ; // data struct for hypesurface triangulation cache
+
+#define HYPERQUAD
+#ifdef HYPERQUAD
+  
+  void compute(double yx,double3 * cur,hypertriangle_t & res){
+    double xmin=1e307,xmax=-1e307,ymin=1e307,ymax=-1e307;
+    for (int l=0;l<4;++l){
+      int prev=l==0?3:l-1;
+      double3 & d3=cur[prev];
+      double x0=d3.x,y0=d3.y,x1=cur[l].x,y1=cur[l].y;
+      double yx0=y0-x0,yx1=y1-x1,m=yx1-yx0;
+      if (m==0){
+	if (yx==yx1){
+	  if (x0>xmax) xmax=x0; if (x0<xmin) xmin=x0;
+	  if (x1>xmax) xmax=x1; if (x1<xmin) xmin=x1;
+	  if (y0>ymax) ymax=y0; if (y0<ymin) ymin=y0;
+	  if (y1>ymax) ymax=y1; if (y1<ymin) ymin=y1;
+	}
+	continue;
+      }
+      double t=(yx-yx0)/m;
+      if (t>=0 && t<=1){
+	double X=x0+t*(x1-x0),Y=y0+t*(y1-y0);
+	if (X>xmax) xmax=X; if (X<xmin) xmin=X;
+	if (Y>ymax) ymax=Y; if (Y<ymin) ymin=Y;
+      }
+    }
+    res.zG=(cur[0].z+cur[1].z+cur[2].z+cur[3].z)/4;
+    res.xmin=xmin; res.xmax=xmax; res.ymin=ymin; res.ymax=ymax;
+    find_abc(cur[0].x,cur[1].x,cur[2].x,
+	     cur[0].y,cur[1].y,cur[2].y,
+	     cur[0].z,cur[1].z,cur[2].z,
+	     res.a,res.b,res.c);
+  }
+
+  
+#else
+  void compute(double yx,double3 * cur,hypertriangle_t & res){
+    res.zG=(cur[0].z+cur[1].z+cur[2].z)/3;
+    double xmin=1e307,xmax=-1e307,ymin=1e307,ymax=-1e307;
+    for (int l=0;l<3;++l){
+      double3 & d3=cur[l?l-1:2];
+      double x0=d3.x,y0=d3.y,x1=cur[l].x,y1=cur[l].y;
+      double yx0=y0-x0,yx1=y1-x1,m=yx1-yx0;
+      if (m==0){
+	if (yx==yx1){
+	  if (x0>xmax) xmax=x0; if (x0<xmin) xmin=x0;
+	  if (x1>xmax) xmax=x1; if (x1<xmin) xmin=x1;
+	  if (y0>ymax) ymax=y0; if (y0<ymin) ymin=y0;
+	  if (y1>ymax) ymax=y1; if (y1<ymin) ymin=y1;
+	}
+	continue;
+      }
+      double t=(yx-yx0)/m;
+      if (t>=0 && t<=1){
+	double X=x0+t*(x1-x0),Y=y0+t*(y1-y0);
+	if (X>xmax) xmax=X; if (X<xmin) xmin=X;
+	if (Y>ymax) ymax=Y; if (Y<ymin) ymin=Y;
+      }
+    }
+    res.xmin=xmin; res.xmax=xmax; res.ymin=ymin; res.ymax=ymax;
+    find_abc(cur[0].x,cur[1].x,cur[2].x,
+	     cur[0].y,cur[1].y,cur[2].y,
+	     cur[0].z,cur[1].z,cur[2].z,
+	     res.a,res.b,res.c);
+  }
+#endif
+  
+  void update_hypertri(const vector<hypertriangle_t> & hypertriangles,double x,double y,
+		       bool & found,bool &found2,
+		       double3 & curabc1,double & curz1,
+		       double3 & curabc2,double & curz2,
+		       int & upcolor,int & downcolor,int & downupcolor,int & downdowncolor){
+    vector<hypertriangle_t>::const_iterator it=hypertriangles.begin(),itend=hypertriangles.end();
+    for (;it!=itend;++it){
+      if (x<it->xmin){
+	++it;
+	if (it==itend) break;
+	if (x<it->xmin){
+	  ++it;
+	  if (it==itend) break;
+	  if (x<it->xmin){
+	    ++it;
+	    if (it==itend) break;
+	  }
+	}
+      }
+      else if (x>it->xmax){
+	++it;
+	if (it==itend) break;
+	if (x>it->xmax){
+	  ++it;
+	  if (it==itend) break;
+	  if (x>it->xmax){
+	    ++it;
+	    if (it==itend) break;
+	  }
+	}
+      }
+      const hypertriangle_t & cur=*it;
+      if (x<cur.xmin || x>cur.xmax || y<cur.ymin || y>cur.ymax)
+	continue;
+      if (!found || cur.zG>curz1){
+	if (found){
+	  found2=true;
+	  curabc2=curabc1;
+	  curz2=curz1;
+	}
+	found=true;
+	curabc1.x=cur.a; curabc1.y=cur.b; curabc1.z=cur.c;
+	curz1=cur.zG;
+	upcolor=cur.colorptr->u; downcolor=cur.colorptr->d;
+	continue;
+      }
+      if (cur.zG>curz2){
+	found2=true;
+	curabc2.x=cur.a; curabc2.y=cur.b; curabc2.z=cur.c;
+	curz2=cur.zG;
+	downupcolor=cur.colorptr->du; downdowncolor=cur.colorptr->dd;
+	continue;
+      }
+    } // end loop on k
+  }
+  
   // hpersurface encoded as a matrix
   // with lines containing 3 coordinates per point
   bool Graph2d::glsurface(int w,int h,int lcdz,GIAC_CONTEXT,
 			  int upcolor_,int downcolor_,int downupcolor_,int downdowncolor_)  {
-    if (w>9) w=9;
-    if (h>9) h=9;
+    if (w>9) w=9; if (w<1) w=1;
+    if (h>9) h=9; if (h<1) h=1;
     // save zmin/zmax on the stack (4K required)
     const int jmintabsize=512;
     short int *jmintab=(short int *)alloca(jmintabsize*sizeof(short int)), * jmaxtab=(short int *)alloca(jmintabsize*sizeof(short int)); // assumes LCD_WIDTH_PX<=jmintabsize
@@ -5634,12 +5969,12 @@ namespace xcas {
     vecteur attrv(gen2vecteur(g));
     std::vector< std::vector< vector<float3d> >::const_iterator > hypv; // 3 iterateurs per hypersurface
     int upcolor,downcolor,downupcolor,downdowncolor;
-    for (int i=0;i<attrv.size();++i){
+    for (int i=0;i<int(attrv.size());++i){
       gen attr=attrv[i];
       upcolor=upcolor_;downcolor=downcolor_;downupcolor=downupcolor_;downdowncolor=downdowncolor_;
       get_colors(attrv[i],upcolor,downcolor,downupcolor,downdowncolor);
     }
-    for (int i=0;i<surfacev.size();++i){
+    for (int i=0;i<int(surfacev.size());++i){
       hypv.push_back(surfacev[i].begin());
       hypv.push_back(surfacev[i].end());
     }
@@ -5663,6 +5998,11 @@ namespace xcas {
     drawRectangle(imax,0,LCD_WIDTH_PX-imax,LCD_HEIGHT_PX,COLOR_BLACK); // clear
     sync_screen();
     int count=0;
+    vector<int> polyedrei; polyedrei.reserve(polyedrev.size()); // cache for polyedres polygons edges
+    vector<double> polyedrexmin,polyedrexmax,polyedreymin,polyedreymax;
+    polyedrexmin.reserve(polyedrev.size());polyedrexmax.reserve(polyedrev.size());
+    polyedreymin.reserve(polyedrev.size());polyedreymax.reserve(polyedrev.size());
+    vector<hypertriangle_t> hypertriangles;
     for (int i=imin-horiz;i<imax-horiz;i+=w,++count){
     //for (int i=-horiz;i<horiz;i+=w){
 #ifdef NSPIRE_NEWLIB
@@ -5700,301 +6040,398 @@ namespace xcas {
       if (jmax>LCD_HEIGHT_PX) jmax=LCD_HEIGHT_PX;
       jmin -= LCD_HEIGHT_PX/2;
       jmax -= LCD_HEIGHT_PX/2;      
+      double yx=2*xscale*(i+(w-1)/2.0)+yc-xc;
+      // poledrev indices for yx, and xmin/xmax/ymin/ymax values
+      // (xmin/xmax should be enough, except limit cases)
+      polyedrei.clear(); polyedrexmin.clear(); polyedrexmax.clear(); polyedreymin.clear(); polyedreymax.clear();
+      for (int k=0;k<int(polyedrev.size());++k){
+	double facemin=polyedre_xyminmax[2*k],facemax=polyedre_xyminmax[2*k+1];
+	if (yx<facemin || yx>facemax)
+	  continue;
+	polyedrei.push_back(k);
+	vector<double3> & cur=polyedrev[k];
+	double xmin=1e307,xmax=-1e307,ymin=1e307,ymax=-1e307;
+	for (int l=0;l<int(cur.size());++l){
+	  double3 & d3=cur[l?l-1:cur.size()-1];
+	  double x0=d3.x,y0=d3.y,x1=cur[l].x,y1=cur[l].y;
+	  double yx0=y0-x0,yx1=y1-x1,m=yx1-yx0;
+	  if (m==0){
+	    if (yx==yx1){
+	      if (x0>xmax) xmax=x0; if (x0<xmin) xmin=x0;
+	      if (x1>xmax) xmax=x1; if (x1<xmin) xmin=x1;
+	      if (y0>ymax) ymax=y0; if (y0<ymin) ymin=y0;
+	      if (y1>ymax) ymax=y1; if (y1<ymin) ymin=y1;
+	    }
+	    continue;
+	  }
+	  double t=(yx-yx0)/m;
+	  if (t>=0 && t<=1){
+	    double X=x0+t*(x1-x0),Y=y0+t*(y1-y0);
+	    if (X>xmax) xmax=X; if (X<xmin) xmin=X;
+	    if (Y>ymax) ymax=Y; if (Y<ymin) ymin=Y;
+	  }
+	}
+	polyedrexmin.push_back(xmin);
+	polyedrexmax.push_back(xmax);
+	polyedreymin.push_back(ymin);
+	polyedreymax.push_back(ymax);
+      }
+      // hypersurfaces: find triangles
+      hypertriangles.clear();
+      double hyperxymax=-1e307,hyperxymin=1e307;
+      double3 tri[4]; 
+      for (int k=0;k<int(hypv.size());k+=2){
+	vector< vector<float3d> >::const_iterator sbeg=hypv[k],send=hypv[k+1],sprec,scur;
+	vector<float3d>::const_iterator itprec,itcur,itprecend;
+	for (sprec=sbeg,scur=sprec+1;scur<send;++sprec,++scur){
+	  itprec=sprec->begin(); 
+	  itprecend=sprec->end();
+	  itcur=scur->begin();
+	  double yx1,yx2=*(itprec+1)-*itprec,yx3,yx4=*(itcur+1)-*itcur;
+	  for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
+	    yx1=yx2;
+	    yx2=*(itprec+1)-*itprec;
+	    yx3=yx4;
+	    yx4=*(itcur+1)-*itcur;
+	    if (yx<yx1 && yx<yx2 && yx<yx3 && yx<yx4){
+	      for (;;){
+		// per iteration: 2 incr, 1 test, 2 read, 2 comp, && , test
+		itprec+=3;itcur+=3;
+		if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+		  itprec+=3;itcur+=3;
+		  if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+		    itprec+=3;itcur+=3;
+		    if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+		      itprec+=3;itcur+=3;
+		      if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+			continue;
+		      }
+		    }
+		  }
+		}
+		break;
+	      }
+	      if (yx<yx2 && yx<yx4) continue;
+	    } // end yx<yxk
+	    else if (yx>yx1 && yx>yx2 && yx>yx3 && yx>yx4){
+	      for (;;){
+		// per iteration: 2 incr, 1 test, 2 read, 2 comp, && , test
+		itprec+=3;itcur+=3;
+		if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+		  itprec+=3;itcur+=3;
+		  if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+		    itprec+=3;itcur+=3;
+		    if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+		      itprec+=3;itcur+=3;
+		      if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+			continue;
+		      }
+		    }
+		  }
+		}
+		break;
+	      }
+	      if (yx>yx2 && yx>yx4) continue;
+	    }
+	    // found one quad intersecting plane
+	    double x1=*(itprec-3),x2=*(itprec),x3=*(itcur-3),x4=*(itcur);
+	    double y1=*(itprec-2),y2=*(itprec+1),y3=*(itcur-2),y4=*(itcur+1);
+	    double z1=*(itprec-1),z2=*(itprec+2),z3=*(itcur-1),z4=*(itcur+2);
+	    yx1=y1-x1; yx2=y2-x2; yx3=y3-x3; yx4=y4-x4;
+#ifdef HYPERQUAD
+	    tri[0]=double3(x1,y1,z1);
+	    tri[1]=double3(x2,y2,z2);
+	    tri[2]=double3(x4,y4,z4);
+	    tri[3]=double3(x3,y3,z3);
+	    double x123=(x1+x2+x3+x4)/4,y123=(y1+y2+y3+y4)/4,z123=(z1+z2+z3+z4)/4,X,Y,Z;
+	    double xy123=x123+y123;
+	    if (xy123<hyperxymin) hyperxymin=xy123;
+	    if (xy123>hyperxymax) hyperxymax=xy123;
+	    do_transform(invtransform,x123,y123,z123,X,Y,Z);
+	    if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax ){
+	      hypertriangle_t res; res.colorptr=&hyp_color[k];
+	      compute(yx,tri,res);
+	      hypertriangles.push_back(res);
+	    }
+#else // HYPERQUAD
+	    tri[1]=double3(x2,y2,z2);
+	    tri[2]=double3(x3,y3,z3);
+	    if ( (yx>yx1 && yx>yx2 && yx>yx3) ||
+		 (yx<yx1 && yx<yx2 && yx<yx3) )
+	      ; // not intersecting
+	    else {
+	      double x123=(x1+x2+x3)/3,y123=(y1+y2+y3)/3,z123=(z1+z2+z3)/3,X,Y,Z;
+	      double xy123=x123+y123;
+	      if (xy123<hyperxymin) hyperxymin=xy123;
+	      if (xy123>hyperxymax) hyperxymax=xy123;
+	      do_transform(invtransform,x123,y123,z123,X,Y,Z);
+	      if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax ){
+		tri[0]=double3(x1,y1,z1);
+		hypertriangle_t res; res.colorptr=&hyp_color[k];
+		compute(yx,tri,res);
+		hypertriangles.push_back(res);
+	      }
+	    }
+	    if ( (yx>yx4 && yx>yx2 && yx>yx3) ||
+		 (yx<yx4 && yx<yx2 && yx<yx3) )
+	      ; // not intersecting
+	    else {
+	      double x423=(x4+x2+x3)/3,y423=(y4+y2+y3)/3,z423=(z4+z2+z3)/3,X,Y,Z;
+	      double xy423=x423+y423;
+	      if (xy423<hyperxymin) hyperxymin=xy423;
+	      if (xy423>hyperxymax) hyperxymax=xy423;
+	      do_transform(invtransform,x423,y423,z423,X,Y,Z);
+	      if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax ){
+		tri[0]=double3(x4,y4,z4);
+		hypertriangle_t res; res.colorptr=&hyp_color[k];
+		compute(yx,tri,res);
+		hypertriangles.push_back(res);
+	      }
+	    }
+#endif // HYPERQUAD
+	  }
+	}
+      }
+      vector<int> spheres(sphere_centerv.size()); // is plane y-x=yx intersecting sphere, vector<bool> does not work with Keil
+      for (int k=0;k<int(sphere_centerv.size());++k){
+	const double3 & c=sphere_centerv[k];
+	double xc=c.x,yc=c.y;
+	double r=sphere_radiusv[k];
+	const matrice & m=*sphere_quadraticv[k]._VECTptr;
+	const vecteur & m0=*m[0]._VECTptr;
+	const vecteur & m1=*m[1]._VECTptr;
+	const vecteur & m2=*m[2]._VECTptr;
+	double m00=m0[0]._DOUBLE_val,m01=m0[1]._DOUBLE_val,m02=m0[2]._DOUBLE_val,m11=m1[1]._DOUBLE_val,m12=m1[2]._DOUBLE_val,m22=m2[2]._DOUBLE_val;
+	/* q0:=m00*x^2+2*m01*x*y+2*m02*x*z+m11*y^2+2*m12*y*z+m22*z^2; q:=subst(q0,[x,y],[x-xc,y-yc]);
+	   a,b,c:=coeffs(q(y=yx+x)-r^2,x);
+	   delta:=b^2-4*a*c; 
+	   // if delta<0 for all z, there is no intersection
+	   // delta is a second order polynomial in z, check discriminant
+	   A,B,C:=coeffs(delta,z);
+	   D:=B^2-4*A*C;  // if D<0 no intersection
+	*/
+	double A=4*m02*m02+4*m12*m12-4*m00*m22-8*m01*m22+8*m02*m12-4*m11*m22,
+	  B=-8*m00*m12*xc+8*m00*m12*yc-8*m00*m12*yx+8*m01*m02*xc-8*m01*m02*yc+8*m01*m02*yx-8*m01*m12*xc+8*m01*m12*yc-8*m01*m12*yx+8*m02*m11*xc-8*m02*m11*yc+8*m02*m11*yx,
+	  C=4*m01*m01*xc*xc+4*m01*m01*yc*yc+4*m01*m01*yx*yx-4*m00*m11*xc*xc-4*m00*m11*yc*yc-4*m00*m11*yx*yx-8*m01*m01*xc*yc+8*m01*m01*xc*yx-8*m01*m01*yc*yx+8*m00*m11*xc*yc-8*m00*m11*xc*yx+8*m00*m11*yc*yx+4*m00*r*r+8*m01*r*r+4*m11*r*r,
+	  D=B*B-4*A*C;
+	spheres[k]=D>=0;
+      }
       double zmin[10]={220.220,220,220,220,220,220,220,220,220},
 	zmax[10]={0,0,0,0,0,0,0,0,0,0},
 	zmin2[10]={220.220,220,220,220,220,220,220,220,220},
 	zmax2[10]={0,0,0,0,0,0,0,0,0,0}	; // initialize for these vertical lines
 #ifdef ABC3D
-      double cura1,cura2,curb1,curb2,curc1,curc2,curz1=-1e306,curz2=1e306;
+      double3 curabc1,curabc2; 
+      double curz1=-1e306,curz2=1e306;
 #else
       double curx1,curx2,curx3,cury1,cury2,cury3,curz1=-1e306,curz2=-1e306,curz3=-1e306;
       double cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1=-1e306,cur2z2=-1e306,cur2z3=-1e306;
 #endif
       int u,d,du,dd;
-      // for (int j=vert;j>-vert;j-=h){
-      for (int j=jmax;j>=jmin;j-=h){
-	if (0 && i==-35 && j==-44)
-	  u=0; // debug
-	x = yscale*(j-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
-	y = yscale*(j-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
-	bool found=false,found2=false;
-	// Oxy clipping for surfaces
-	if (1 
-	    //x>=xmin && x<=xmax && y>=ymin && y<=ymax
-	    ){
-	  for (int k=0;k<hypv.size();k+=2){
-	    vector< vector<float3d> >::const_iterator sbeg=hypv[k],send=hypv[k+1],sprec,scur;
-	    vector<float3d>::const_iterator itprec,itcur,itprecend;
-	    int4 color=hyp_color[k]; 
-	    u=color.u; d=color.d; du=color.du; dd=color.dd;
-	    // find zxy intersections of vertical line (x,y,...) with surface
-	    // found will mark 1st intersection from above, found2 2nd
-	    for (sprec=sbeg,scur=sprec+1;scur<send;++sprec,++scur){
-	      itprec=sprec->begin(); 
-	      itprecend=sprec->end();
-	      itcur=scur->begin();
-	      double x1,x2=*itprec,x3,x4=*itcur;
-	      for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
-		x1=x2;
-		x2=*itprec;
-		x3=x4;
-		x4=*itcur;
-		if (x<x1 && x<x2 && x<x3 && x<x4){
-		  // per iteration: 2 incr, 1 test, 2 equal, 2 read, 2 comp, && , test
-		  for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x>=x2 || x>=x4 )
-		      break;
-		    itprec+=3;itcur+=3;
-		    if (itprec>=itprecend)
-		      break;
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x>=x2 || x>=x4 )
-		      break;
-		    itprec+=3;itcur+=3;
-		    if (itprec>=itprecend)
-		      break;
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x>=x2 || x>=x4 )
-		      break;
-		    itprec+=3;itcur+=3;
-		    if (itprec>=itprecend)
-		      break;
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x>=x2 || x>=x4 )
-		      break;
-		  }
-		  if (x<x2 && x<x4) continue;
-		}
-		else if (x>x1 && x>x2 && x>x3 && x>x4){
-		  for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x<=x2 || x<=x4 )
-		      break;
-		    itprec+=3;itcur+=3;
-		    if (itprec>=itprecend)
-		      break;
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x<=x2 || x<=x4 )
-		      break;
-		    itprec+=3;itcur+=3;
-		    if (itprec>=itprecend)
-		      break;
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x<=x2 || x<=x4 )
-		      break;
-		    itprec+=3;itcur+=3;
-		    if (itprec>=itprecend)
-		      break;
-		    x1=x2;
-		    x2=*itprec;
-		    x3=x4;
-		    x4=*itcur;
-		    if (x<=x2 || x<=x4 )
-		      break;
-		  }
-		  if (x>x2 && x>x4) continue;
-		}
-		double y1=*(itprec-2),y2=*(itprec+1),y3=*(itcur-2),y4=*(itcur+1);
-		bool not123=(y<y1 && y<y2 && y<y3) || (y>y1 && y>y2 && y>y3);
-		bool not234=(y<y4 && y<y2 && y<y3) || (y>y4 && y>y2 && y>y3);
-		//std::cout << "check " << i << " " << j << " " << x << " " << y << "\n";
-		// if (i==65) ;//cout << 65 << "\n";
-		if (not123 && not234)
-		  continue;
-		// now find intersections with quad (cut in two triangles)
-		double z1=*(itprec-1),z2=*(itprec+2),z3=*(itcur-1),z4=*(itcur+2);
-		if (!not123){
-		  double x123=(x1+x2+x3)/3,y123=(y1+y2+y3)/3,z123=(z1+z2+z3)/3,X,Y,Z;
-		  do_transform(invtransform,x123,y123,z123,X,Y,Z);
-		  if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax &&  inside(x1,x2,x3,y1,y2,y3,x,y)){
-#ifdef ABC3D
-		    double a,b,c;
-		    find_abc(x1,x2,x3,y1,y2,y3,z1,z2,z3,a,b,c);
-		    update12(found,found2,
-			     a,b,c,z123,
-			     u,d,du,dd,
-			     cura1,curb1,curc1,curz1,
-			     cura2,curb2,curc2,curz2,
-			     upcolor,downcolor,downupcolor,downdowncolor);
+      // loop earlier if there are only hypersurfaces
+      bool only_hypertri=true;
+      for (int ki=0;ki<int(polyedrei.size());++ki){
+	if (polyedrexmin[ki]<=polyedrexmax[ki]){ only_hypertri=false; break; }
+      }
+      for (int k=0;k<int(sphere_centerv.size());++k){
+	if (spheres[k]){ only_hypertri=false; break; }
+      }
+      for (int k=0;k<int(plan_abcv.size());++k){
+	if (plan_filled[k]){ only_hypertri=false; break; }
+      }
+      if (only_hypertri){
+	if (hypertriangles.empty()) goto suite3d;
+	int effjmax=(hyperxymax-xc-yc)/yscale/2.0,effjmin=(hyperxymin-xc-yc)/yscale/2.0;
+	if (effjmax+1<jmax)
+	  jmax=effjmax+1;
+	if (effjmin-1>jmin)
+	  jmin=effjmin-1;
+	x = yscale*(jmax-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
+	y = yscale*(jmax-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
+	for (int j=jmax;j>=jmin;j-=h,x-=yscale*h,y-=yscale*h){
+	  bool found=false,found2=false;
+	  update_hypertri(hypertriangles,x,y,found,found2,curabc1,curz1,curabc2,curz2,upcolor,downcolor,downupcolor,downdowncolor);
+	  if (!found) continue;
+	  if (h==1 && w==1){
+	    if (found2 && !hide2nd){
+	      double dz=lcdz*(curabc2.x+curabc2.y)*yscale-1;
+	      // if (y<ymin) continue;
+	      double z = (curabc2.x*x+curabc2.y*y+curabc2.z);
+	      z=LCD_HEIGHT_PX/2+j-lcdz*z;
+	      glinter1(z,dz,
+		       zmin2,zmax2,zmin[0],zmax[0],
+		       ih,lcdz,
+		       downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	    }
+	    double dz=lcdz*(curabc1.x+curabc1.y)*yscale-1;
+	    // if (y<ymin) continue;
+	    double z = (curabc1.x*x+curabc1.y*y+curabc1.z);
+	    z=LCD_HEIGHT_PX/2+j-lcdz*z;
+
+	    glinter1(z,dz,
+		     zmin,zmax,1e307,-1e307,
+		     ih,lcdz,
+		     upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	  }
+	  else {
+	    if (found2 && !hide2nd)
+	    glinter(curabc2.x,curabc2.y,curabc2.z,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	    glinter(curabc1.x,curabc1.y,curabc1.z,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	  }
+	}
+      }
+      else {
+	x = yscale*(jmax-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
+	y = yscale*(jmax-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
+	for (int j=jmax;j>=jmin;j-=h,x-=yscale*h,y-=yscale*h){
+	  if (0 && i==-35 && j==-44)
+	    u=0; // debug
+	  // x = yscale*(j-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
+	  // y = yscale*(j-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
+	  bool found=false,found2=false;
+	  if (x+y>=hyperxymin && x+y<=hyperxymax)
+	    update_hypertri(hypertriangles,x,y,found,found2,curabc1,curz1,curabc2,curz2,upcolor,downcolor,downupcolor,downdowncolor);
+	  for (int ki=0;ki<int(polyedrei.size());++ki){
+	    int k=polyedrei[ki];
+	    vector<double3> & cur=polyedrev[k];
+	    if (
+#if 1
+		x>=polyedrexmin[ki] && x<=polyedrexmax[ki] && y>=polyedreymin[ki] && y<=polyedreymax[ki]
 #else
-		    update12(found,found2,
-			     x1,x2,x3,y1,y2,y3,z1,z2,z3,
-			     u,d,du,dd,
-			     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
-			     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
-			     upcolor,downcolor,downupcolor,downdowncolor);
+		inside(cur,x,y)
 #endif
-		    continue;
-		  } // end inside123
-		} // end if !not123
-		if (!not234){
-		  double x234=(x2+x3+x4)/3,y234=(y2+y3+y4)/3,z234=(z2+z3+z4)/3,X,Y,Z;
-		  do_transform(invtransform,x234,y234,z234,X,Y,Z);
-		  if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax &&  inside(x2,x3,x4,y2,y3,y4,x,y)){
+		){
+	      const double3 & abc=polyedre_abcv[k];
+	      const int4 & color=polyedre_color[k];
+	      // std::cout << k << " " << x << " " << y << " " << color.u << "\n";
+	      double a=abc.x,b=abc.y,c=abc.z;
+	      z=a*x+b*y+c;
+	      bool is_clipped=polyedre_faceisclipped[k];
+	      if (!is_clipped){
+		double X,Y,Z;
+		do_transform(invtransform,x,y,z,X,Y,Z);
+		is_clipped=X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax;
+	      }
+	      if (is_clipped){
 #ifdef ABC3D
-		    double a,b,c;
-		    find_abc(x2,x3,x4,y2,y3,y4,z2,z3,z4,a,b,c);
-		    update12(found,found2,
-			     a,b,c,z234,
-			     u,d,du,dd,
-			     cura1,curb1,curc1,curz1,
-			     cura2,curb2,curc2,curz2,
-			     upcolor,downcolor,downupcolor,downdowncolor);
+		update12(found,found2,
+			 a,b,c,z,
+			 color.u,color.d,color.du,color.dd,
+			 curabc1.x,curabc1.y,curabc1.z,curz1,
+			 curabc2.x,curabc2.y,curabc2.z,curz2,
+			 upcolor,downcolor,downupcolor,downdowncolor);
 #else
-		    update12(found,found2,
-			     x2,x3,x4,y2,y3,y4,z2,z3,z4,u,d,du,dd,
-			     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
-			     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
-			     upcolor,downcolor,downupcolor,downdowncolor);
+		update12(found,found2,
+			 x-.5,x-.5,x+1,y+0.866,y-0.866,y,z-.5*a+.866*b,z-.5*a-.866*b,z+a,color.u,color.d,color.du,color.dd,
+			 curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+			 cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+			 upcolor,downcolor,downupcolor,downdowncolor);
 #endif
-		  } // end if inside 234
-		} // end !not234
-	      } // end surface iterator in line loop
-	    } // end loop in surface
-	  } // end hypersurface loop
-	} // end if x,y in after transform clipping (disabled)
-	for (int k=0;k<polyedrev.size();++k){
-	  double facemin=polyedre_xyminmax[2*k],facemax=polyedre_xyminmax[2*k+1];
-	  if (y-x<facemin || y-x>facemax)
-	    continue;
-	  vector<double3> & cur=polyedrev[k];
-	  if (inside(cur,x,y)){
-	    double3 abc=polyedre_abcv[k];
-	    int4 color=polyedre_color[k];
-	    // std::cout << k << " " << x << " " << y << " " << color.u << "\n";
-	    double a=abc.x,b=abc.y,c=abc.z;
-	    z=a*x+b*y+c;
-	    double X,Y,Z;
-	    do_transform(invtransform,x,y,z,X,Y,Z);
-	    if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax){
+	      }
+	    } // end if inside(cur,x,y)
+	  }
+	  for (int k=0;k<int(sphere_centerv.size());++k){
+	    if (!spheres[k]) continue;
+	    const double3 & c=sphere_centerv[k];
+	    double R=sphere_radiusv[k];
+	    const matrice & m=*sphere_quadraticv[k]._VECTptr;
+	    const vecteur & m0=*m[0]._VECTptr;
+	    const vecteur & m1=*m[1]._VECTptr;
+	    const vecteur & m2=*m[2]._VECTptr;
+	    double v0=x-c.x,v1=y-c.y;
+	    double a=m2[2]._DOUBLE_val,b=2*(m0[2]._DOUBLE_val*v0+m1[2]._DOUBLE_val*v1),C=(m0[0]._DOUBLE_val*v0+2*m0[1]._DOUBLE_val*v1)*v0+m1[1]._DOUBLE_val*v1*v1-R*R;
+	    double delta=b*b-4*a*C;
+	    if (delta<0)
+	      continue;
+	    const int4 & color=sphere_color[k];
+	    delta=std::sqrt(delta);
+	    double sol1,sol2;
+	    if (b>0){
+	      sol1=(-b-delta)/2/a;
+	      sol2=2*C/(-b-delta); // (-b+delta)/2/a;
+	    }
+	    else {
+	      sol1=2*C/(-b+delta);//(-b-delta)/2/a;
+	      sol2=(-b+delta)/2/a;
+	    }
+	    double v2=sol1;
+	    z=v2+c.z;
+	    bool is_clipped=sphere_isclipped[k];
+	    if (!is_clipped){
+	      double X,Y,Z;
+	      do_transform(invtransform,x,y,z,X,Y,Z);
+	      is_clipped=X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax;
+	    }
+	    if (is_clipped){
+	      double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
+	      double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
+	      double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
 #ifdef ABC3D
+	      double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
 	      update12(found,found2,
 		       a,b,c,z,
 		       color.u,color.d,color.du,color.dd,
-		       cura1,curb1,curc1,curz1,
-		       cura2,curb2,curc2,curz2,
+		       curabc1.x,curabc1.y,curabc1.z,curz1,
+		       curabc2.x,curabc2.y,curabc2.z,curz2,
 		       upcolor,downcolor,downupcolor,downdowncolor);
 #else
 	      update12(found,found2,
-		       x-.5,x-.5,x+1,y+0.866,y-0.866,y,z-.5*a+.866*b,z-.5*a-.866*b,z+a,color.u,color.d,color.du,color.dd,
+		       //x-w2,x,x,y,y,y-w2,z+w0,z,z+w1,
+		       x-0.5,x-.5,x+1,y+.866,y-.866,y,z+.5*w0/w2-.866*w1/w2,z+.5*w0/w2+.866*w1/w2,z-w0/w2,
+		       color.u,color.d,color.du,color.dd,
 		       curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
 		       cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
 		       upcolor,downcolor,downupcolor,downdowncolor);
 #endif
 	    }
-	  } // end if inside(cur,x,y)
-	}
-	for (int k=0;k<sphere_centerv.size();++k){
-	  double3 c=sphere_centerv[k];
-	  double R=sphere_radiusv[k];
-	  matrice & m=*sphere_quadraticv[k]._VECTptr;
-	  int4 color=sphere_color[k];
-	  vecteur & m0=*m[0]._VECTptr;
-	  vecteur & m1=*m[1]._VECTptr;
-	  vecteur & m2=*m[2]._VECTptr;
-	  double v0=x-c.x,v1=y-c.y,v2=0;
-	  double a=m2[2]._DOUBLE_val,b=2*m0[2]._DOUBLE_val*v0+2*m1[2]._DOUBLE_val*v1,C=m0[0]._DOUBLE_val*v0*v0+2*m0[1]._DOUBLE_val*v0*v1+m1[1]._DOUBLE_val*v1*v1-R*R;
-	  double delta=b*b-4*a*C;
-	  if (delta<0)
-	    continue;
-	  delta=std::sqrt(delta);
-	  double sol1,sol2;
-	  if (b>0){
-	    sol1=(-b-delta)/2/a;
-	    sol2=2*C/(-b-delta); // (-b+delta)/2/a;
-	  }
-	  else {
-	    sol1=2*C/(-b+delta);//(-b-delta)/2/a;
-	    sol2=(-b+delta)/2/a;
-	  }
-	  v2=sol1;
-	  z=v2+c.z;
-	  double X,Y,Z;
-	  do_transform(invtransform,x,y,z,X,Y,Z);
-	  if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax){
-	    double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
-	    double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
-	    double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
+	    if (delta<=0) continue; // delta==0, twice the same point
+	    v2=sol2;
+	    z=v2+c.z;
+	    is_clipped=sphere_isclipped[k];
+	    if (!is_clipped){
+	      double X,Y,Z;
+	      do_transform(invtransform,x,y,z,X,Y,Z);
+	      is_clipped=X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax;
+	    }
+	    if (is_clipped){
+	      double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
+	      double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
+	      double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
 #ifdef ABC3D
-	    double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
-	    update12(found,found2,
-		     a,b,c,z,
-		     color.u,color.d,color.du,color.dd,
-		     cura1,curb1,curc1,curz1,
-		     cura2,curb2,curc2,curz2,
-		     upcolor,downcolor,downupcolor,downdowncolor);
+	      double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
+	      update12(found,found2,
+		       a,b,c,z,
+		       color.u,color.d,color.du,color.dd,
+		       curabc1.x,curabc1.y,curabc1.z,curz1,
+		       curabc2.x,curabc2.y,curabc2.z,curz2,
+		       upcolor,downcolor,downupcolor,downdowncolor);
 #else
-	    update12(found,found2,
-		     //x-w2,x,x,y,y,y-w2,z+w0,z,z+w1,
-		     x-0.5,x-.5,x+1,y+.866,y-.866,y,z+.5*w0/w2-.866*w1/w2,z+.5*w0/w2+.866*w1/w2,z-w0/w2,
-		     color.u,color.d,color.du,color.dd,
-		     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
-		     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
-		     upcolor,downcolor,downupcolor,downdowncolor);
+	      update12(found,found2,
+		       //x-w2,x,x,y,y,y-w2,z+w0,z,z+w1,
+		       x-0.5,x-.5,x+1,y+.866,y-.866,y,z+.5*w0/w2-.866*w1/w2,z+.5*w0/w2+.866*w1/w2,z-w0/w2,
+		       color.u,color.d,color.du,color.dd,
+		       curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+		       cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+		       upcolor,downcolor,downupcolor,downdowncolor);
 #endif
-	  }
-	  v2=sol2;
-	  z=v2+c.z;
-	  do_transform(invtransform,x,y,z,X,Y,Z);
-	  if (delta>0 && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax){
-	    double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
-	    double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
-	    double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
+	    }
+	  } // end hypersphere loop
+	  for (int k=0;k<int(plan_abcv.size());++k){
+	    if (!plan_filled[k])
+	      continue;
+	    double3 abc=plan_abcv[k];
+	    int4 color=plan_color[k];
+	    // z=a*x+b*y+c
+	    double z=abc.x*x+abc.y*y+abc.z,X,Y,Z;
+	    do_transform(invtransform,x,y,z,X,Y,Z);
+	    if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax)
 #ifdef ABC3D
-	    double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
-	    update12(found,found2,
-		     a,b,c,z,
-		     color.u,color.d,color.du,color.dd,
-		     cura1,curb1,curc1,curz1,
-		     cura2,curb2,curc2,curz2,
-		     upcolor,downcolor,downupcolor,downdowncolor);
-#else
-	    update12(found,found2,
-		     //x-w2,x,x,y,y,y-w2,z+w0,z,z+w1,
-		     x-0.5,x-.5,x+1,y+.866,y-.866,y,z+.5*w0/w2-.866*w1/w2,z+.5*w0/w2+.866*w1/w2,z-w0/w2,
-		     color.u,color.d,color.du,color.dd,
-		     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
-		     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
-		     upcolor,downcolor,downupcolor,downdowncolor);
-#endif
-	  }
-	} // end hypersphere loop
-	for (int k=0;k<plan_abcv.size();++k){
-	  double3 abc=plan_abcv[k];
-	  int4 color=plan_color[k];
-	  // z=a*x+b*y+c
-	  double z=abc.x*x+abc.y*y+abc.z,X,Y,Z;
-	  do_transform(invtransform,x,y,z,X,Y,Z);
-	  if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax)
-#ifdef ABC3D
-	    update12(found,found2,
-		     abc.x,abc.y,abc.z,z,
-		     color.u,color.d,color.du,color.dd,
-		     cura1,curb1,curc1,curz1,
-		     cura2,curb2,curc2,curz2,
-		     upcolor,downcolor,downupcolor,downdowncolor);
+	      update12(found,found2,
+		       abc.x,abc.y,abc.z,z,
+		       color.u,color.d,color.du,color.dd,
+		       curabc1.x,curabc1.y,curabc1.z,curz1,
+		       curabc2.x,curabc2.y,curabc2.z,curz2,
+		       upcolor,downcolor,downupcolor,downdowncolor);
 #else
 	    update12(found,found2,
 		     x-1,x,x,y,y,y+1,z-abc.x,z,z+abc.y,color.u,color.d,color.du,color.dd,
@@ -6002,30 +6439,32 @@ namespace xcas {
 		     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
 		     upcolor,downcolor,downupcolor,downdowncolor);
 #endif
-	} // end hyperplan loop
-	if (found){
+	  } // end hyperplan loop
+	  if (found){
 #ifdef ABC3D
-	  if (found2){
-	    if (!hide2nd)
-	      glinter(cura2,curb2,curc2,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
-	    glinter(cura1,curb1,curc1,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
-	  }
-	  else
-	    glinter(cura1,curb1,curc1,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	    if (found2){
+	      if (!hide2nd)
+		glinter(curabc2.x,curabc2.y,curabc2.z,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	      glinter(curabc1.x,curabc1.y,curabc1.z,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	    }
+	    else
+	      glinter(curabc1.x,curabc1.y,curabc1.z,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
 #else
-	  if (found2){
-	    if (!hide2nd)
-	      glinter(cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
-	    glinter(curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
-	  }
-	  else
-	    glinter(curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	    if (found2){
+	      if (!hide2nd)
+		glinter(cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	      glinter(curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	    }
+	    else
+	      glinter(curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
 #endif
-	}
-	else {
-	  //std::cout << "not inside " << i << " " << j << " " << x << " " << y << "\n";	      
-	}
-      } // end pixel vertical loop on j
+	  }
+	  else {
+	    //std::cout << "not inside " << i << " " << j << " " << x << " " << y << "\n";	      
+	  }
+	} // end pixel vertical loop on j
+      } // end else only_hypertri
+    suite3d:
       // update jmintab/jmaxtab
       if (i+horiz+w<jmintabsize){
 	for (int I=0;I<w;++I){
@@ -6035,7 +6474,7 @@ namespace xcas {
       }
       // now render line/segments/curves: find intersection with plane
       // y-x=yc-xc+xscale*(2*i+I), 0<=I<w
-      for (int j=0;j<curvev.size();++j){
+      for (int j=0;j<int(curvev.size());++j){
 	vector<double3> & cur=curvev[j];
 	int s=cur.size();
 	if (s<2) continue;
@@ -6133,28 +6572,30 @@ namespace xcas {
       } // end lines rendering
 #endif
       // points rendering
-      for (int j=0;j<pointv.size();++j){
-	double3 m=pointv[j];
-	int4 c=point_color[j];
+      for (int j=0;j<int(pointv.size());++j){
+	const double3 & m=pointv[j];
 	if (m.x<i+horiz || m.x>=i+horiz+w)
 	  continue;
+	const int4 & c=point_color[j];
 	int k=m.x-i-horiz,color=-1;
 	double mz=LCD_HEIGHT_PX/2-lcdz*m.z;
-	if (mz>=zmax[k])
+	double dz=(zmax[k]-zmin[k])*1e-3;
+	if (mz>=zmax[k]-dz)
 	  color=c.u;
-	else if (mz<=zmin[k])
-	  color=c.d;
+	else if (mz<=zmin[k]+dz)
+	  color=c.u; // c.d?
 	else color=c.du;
 	drawRectangle(m.x,m.y,3,3,color);
 	if (points[j]){
-	  int dx=os_draw_string(0,0,color,0,points[j],true); // fake print
-	  os_draw_string(m.x-dx,m.y,c.u,0,points[j]);
+	  // int dx=RAND_MAX+os_draw_string(-RAND_MAX,0,color,0,points[j],false); // fake print
+	  int dx=os_draw_string_small(0,0,color,0,points[j],true); // fake print
+	  os_draw_string_small(m.x-dx,m.y,color,0,points[j],false); 
 	}
       } // end points rendering
     } // end pixel horizontal loop on i
 #ifndef OLD_LINE_RENDERING
     // new line rendering
-    for (int j=0;j<linetypev.size();j++){
+    for (int j=0;j<int(linetypev.size());j++){
       double mx,my,mz,vx,vy,vz;
       double3 m=linev[2*j];
       do_transform(invtransform,m.x,m.y,m.z,mx,my,mz);
@@ -6206,7 +6647,8 @@ namespace xcas {
       bool usetmax=v.x+v.y==0?v.z>=0:v.x+v.y>0; 
       double tmin_=usetmax?tmin:tmax,
 	tmax_=usetmax?tmin:tmax;
-      for (int k=0;k<plan_abcv.size();++k){
+      for (int k=0;k<int(plan_abcv.size());++k){
+	if (!plan_filled[k]) continue;
 	// z >= z_plan=a*x+b*y+c where (x,y,z)=m+t*v
 	// m.z+t*v.z >= a*m.x+t*a*v.x+b*m.y+t*b*v.y+c
 	// t*(v.z-a*v.x-b.v.y) >= a*m.x+b*m.y+c-m.z
@@ -6221,7 +6663,7 @@ namespace xcas {
 	if (tmin_>t)
 	  tmin_=t;
       }
-      for (int k=0;k<sphere_centerv.size();++k){
+      for (int k=0;k<int(sphere_centerv.size());++k){
 	// sphere interesect line 
 	double3 c=sphere_centerv[k];
 	double R=sphere_radiusv[k];
@@ -6250,7 +6692,8 @@ namespace xcas {
 	}
       }
       vector<double> interpoly;
-      for (int k=0;k<polyedre_abcv.size();++k){
+      for (int k=0;k<int(polyedre_abcv.size());++k){
+	if (!polyedre_filled[k]) continue;
 	double3 abc=polyedre_abcv[k];
 	double a=abc.x,b=abc.y,c=abc.z;
 	// intersect z=a*x+b*y+c with line m+t*v
@@ -6274,7 +6717,7 @@ namespace xcas {
 	  tmax_=t;
       }
       vecteur sv(gen2vecteur(g));
-      for (int k=0;k<sv.size();++k){
+      for (int k=0;k<int(sv.size());++k){
 	gen surf=remove_at_pnt(sv[k]);
 	if (surf.is_symb_of_sommet(at_hypersurface)){
 	  const vecteur & hyp=*surf._SYMBptr->feuille._VECTptr;
@@ -6390,7 +6833,7 @@ namespace xcas {
     return true;
   }
 
-  Graph2d::Graph2d(const giac::gen & g_,const giac::context * cptr):window_xmin(gnuplot_xmin),window_xmax(gnuplot_xmax),window_ymin(gnuplot_ymin),window_ymax(gnuplot_ymax),window_zmin(gnuplot_zmin),window_zmax(gnuplot_zmax),g(g_),display_mode(0x45),show_axes(1),show_edges(1),show_names(1),labelsize(16),precision(3),contextptr(cptr) {
+  Graph2d::Graph2d(const giac::gen & g_,const giac::context * cptr):window_xmin(gnuplot_xmin),window_xmax(gnuplot_xmax),window_ymin(gnuplot_ymin),window_ymax(gnuplot_ymax),window_zmin(gnuplot_zmin),window_zmax(gnuplot_zmax),g(g_),display_mode(0x45),show_axes(1),show_edges(1),show_names(1),labelsize(16),precision(1),contextptr(cptr) {
     diffusionz=5; diffusionz_limit=5; hide2nd=false; interval=false;
     default_upcolor=giac3d_default_upcolor;
     default_downcolor=giac3d_default_downcolor;
@@ -6407,7 +6850,7 @@ namespace xcas {
       update_rotation();
       if (surfacev.empty()){
 	// no hypersurface inside, 2 for polyhedron
-	precision=2;
+	precision=1;
       }
     }
   }
@@ -6479,7 +6922,7 @@ namespace xcas {
     int s;
     bool ortho=autoscaleg(g,vx,vy,vz,contextptr);
     autoscaleminmax(vx,window_xmin,window_xmax,fullview);
-    double zf=1+1e-14;
+    double zf=is3d?1.03:1+1e-14;
     zoomx(zf,false,false);
     autoscaleminmax(vy,window_ymin,window_ymax,fullview);
     zoomy(zf,false,false);
@@ -6503,8 +6946,10 @@ namespace xcas {
       double h=LCD_HEIGHT_PX-STATUS_AREA_PX;
       double window_w=window_xmax-window_xmin,window_h=window_ymax-window_ymin;
       double tst=h/w*window_w/window_h;
-      if (tst>0.7 && tst<1.4)
+      double tst2=(window_xmax-window_zmin)/window_h;
+      if (tst>0.7 && tst<1.4 && (!is3d || (tst2>0.7 && tst2<1.4))){
 	do_ortho=true;
+      }
     }
     if (do_ortho )
       orthonormalize(false);
@@ -6620,6 +7065,7 @@ namespace xcas {
   }
 
   void Graph2d::update_rotation(){
+    solid3d=false;
     double rx,ry,rz,theta;
     get_axis_angle_deg(q,rx,ry,rz,theta);
     // rx=-0.51; ry=-.197; rz=-.835; theta=327.88;
@@ -6646,23 +7092,25 @@ namespace xcas {
       transform[i]=mat[i];
     inv4(transform,invtransform);
     surfacev.clear();
-    polyedrev.clear(); polyedre_xyminmax.clear(); polyedre_abcv.clear();// polyedre_normalv.clear();
-    plan_pointv.clear(); plan_abcv.clear();
+    polyedrev.clear(); polyedre_xyminmax.clear(); polyedre_abcv.clear(); polyedre_faceisclipped.clear(); polyedre_filled.clear();
+    plan_pointv.clear(); plan_abcv.clear(); plan_filled.clear();
     sphere_centerv.clear(); sphere_radiusv.clear(); sphere_quadraticv.clear();
     linev.clear(); linetypev.clear(); curvev.clear();
     pointv.clear(); points.clear();
-    plan_color.clear();sphere_color.clear();polyedre_color.clear();line_color.clear();curve_color.clear(); hyp_color.clear(); point_color.clear();
+    plan_color.clear();sphere_color.clear();polyedre_color.clear();polyedre_faceisclipped.clear();line_color.clear();curve_color.clear(); hyp_color.clear(); point_color.clear();
     // rotate+translate+scale g
     vecteur v;
     aplatir(gen2vecteur(g),v);
     for (int i=0;i<v.size();++i){
       int u=default_upcolor,d=default_downcolor,du=default_downupcolor,dd=default_downdowncolor;
       const char * ptr=0;
+      bool fill_polyedre=false;
       if (v[i].is_symb_of_sommet(at_pnt)){
 	vecteur & attrv=*v[i]._SYMBptr->feuille._VECTptr;
 	if (attrv.size()>1){
 	  gen attr=attrv[1];
-	  get_colors(attr,u,d,du,dd);
+	  fill_polyedre=get_colors(attr,u,d,du,dd);
+	  if (fill_polyedre) solid3d=true;
 	  if (attrv.size()>2){
 	    attr=attrv[2];
 	    if (attr.type==_STRNG)
@@ -6740,13 +7188,15 @@ namespace xcas {
 	continue;
       }
       if (G.is_symb_of_sommet(at_hypersphere)){
+	solid3d=true;
 	vecteur hyp=*G._SYMBptr->feuille._VECTptr;
 	gen c=evalf_double(hyp[0],1,contextptr);
-	double X,Y,Z;
-	do_transform(transform,c[0]._DOUBLE_val,c[1]._DOUBLE_val,c[2]._DOUBLE_val,X,Y,Z);
+	double x=c[0]._DOUBLE_val,y=c[1]._DOUBLE_val,z=c[2]._DOUBLE_val,X,Y,Z;
+	do_transform(transform,x,y,z,X,Y,Z);
 	sphere_centerv.push_back(double3(X,Y,Z));
 	gen R=evalf(hyp[1],1,contextptr);
-	sphere_radiusv.push_back(R._DOUBLE_val);
+	double r=R._DOUBLE_val;
+	sphere_radiusv.push_back(r);
 	double * mat=invtransform;
 	matrice qmat(makevecteur(
 				 makevecteur(mat[0],mat[4],mat[8]),
@@ -6756,9 +7206,13 @@ namespace xcas {
 	qmat=mmult(mtran(qmat),qmat);
 	sphere_quadraticv.push_back(qmat);
 	sphere_color.push_back(int4(u,d,du,dd));
+	bool isclipped=x>=window_xmin+r && x<=window_xmax-r && y>=window_ymin+r && y<=window_ymax-r && z>=window_zmin+r && z<=window_zmax-r;
+	// check if distance of center to window_x/y/xmin/max is <=R
+	sphere_isclipped.push_back(isclipped);
 	continue;
       }
       if (G.is_symb_of_sommet(at_hyperplan)){
+	plan_filled.push_back(fill_polyedre);
 	vecteur hyp=*G._SYMBptr->feuille._VECTptr;
 	gen hyp1=evalf_double(hyp[1],1,contextptr);
 	vecteur & hyp1v=*hyp1._VECTptr;
@@ -6784,6 +7238,7 @@ namespace xcas {
 	continue;
       }
       if (G.is_symb_of_sommet(at_hypersurface)){
+	solid3d=true;
 	const vecteur & hyp=*G._SYMBptr->feuille._VECTptr;
 	gen hyp0=hyp[0];
 	const vecteur & hyp0v=*hyp0._VECTptr;
@@ -6797,14 +7252,14 @@ namespace xcas {
 	  S.reserve(V.size());
 	  for (int j=0;j<V.size();++j){
 	    gen Vj=V[j];
-	    vecteur vj=*Vj._VECTptr;
+	    const vecteur & vj=*Vj._VECTptr;
 	    S.push_back(vector<float3d>(0));
 	    vector<float3d> &S_=S.back();
 	    S_.reserve(vj.size());
 	    for (int k=0;k<vj.size();k+=3){
 	      double X,Y,Z;
 	      do_transform(mat,vj[k]._DOUBLE_val,vj[k+1]._DOUBLE_val,vj[k+2]._DOUBLE_val,X,Y,Z);
-	      vj[k]=X; vj[k+1]=Y; vj[k+2]=Z;
+	      // vj[k]=X; vj[k+1]=Y; vj[k+2]=Z;
 	      S_.push_back(X); S_.push_back(Y); S_.push_back(Z);
 	    }
 	  }
@@ -6821,6 +7276,7 @@ namespace xcas {
 	polyedre_color.reserve(polyedre_color.size()+p.size());
 	polyedre_xyminmax.reserve(polyedre_xyminmax.size()+2*p.size());
 	for (int j=0;j<p.size();++j){
+	  bool is_clipped=false;
 	  gen g=p[j];
 	  if (g.type==_VECT){
 	    vector<double3> cur;
@@ -6829,8 +7285,11 @@ namespace xcas {
 	    for (int k=0;k<w.size();++k){
 	      gen P=evalf_double(w[k],1,contextptr);
 	      if (P.type==_VECT && P._VECTptr->size()==3){
+		double x=P[0]._DOUBLE_val,y=P[1]._DOUBLE_val,z=P[2]._DOUBLE_val;
+		if (is_clipped && (x<window_xmin || x>window_xmax || y<window_ymin || y>window_ymax || z<window_zmin || z>window_zmax) )
+		  is_clipped=false;
 		double X,Y,Z;
-		do_transform(transform,P[0]._DOUBLE_val,P[1]._DOUBLE_val,P[2]._DOUBLE_val,X,Y,Z);
+		do_transform(transform,x,y,z,X,Y,Z);
 		cur.push_back(double3(X,Y,Z));
 	      }
 	    }
@@ -6860,19 +7319,23 @@ namespace xcas {
 		continue;
 	      cur.push_back(cur.front());
 	      double facemin=1e306,facemax=-1e306;
-	      for (int l=1;l<cur.size();++l){
-		double xy=cur[l].y-cur[l].x;
-		if (xy<facemin)
-		  facemin=xy;
-		if (xy>facemax)
-		  facemax=xy;
-		// replace unused z coordinate by slope
-		// cur[l].z=(cur[l].y-cur[l-1].y)/(cur[l].x-cur[l-1].x);
+	      if (fill_polyedre){
+		for (int l=1;l<cur.size();++l){
+		  double xy=cur[l].y-cur[l].x;
+		  if (xy<facemin)
+		    facemin=xy;
+		  if (xy>facemax)
+		    facemax=xy;
+		  // replace unused z coordinate by slope
+		  // cur[l].z=(cur[l].y-cur[l-1].y)/(cur[l].x-cur[l-1].x);
+		}
 	      }
 	      polyedrev.push_back(vector<double3>(0)); polyedrev.back().swap(cur); // polyedrev.push_back(cur);
 	      polyedre_color.push_back(int4(u,d,du,dd));
 	      polyedre_xyminmax.push_back(facemin);
 	      polyedre_xyminmax.push_back(facemax);
+	      polyedre_faceisclipped.push_back(is_clipped);
+	      polyedre_filled.push_back(fill_polyedre);
 	    } // end cur.size()>=3
 	  } // end g.type==_VECT
 	}
@@ -7466,66 +7929,113 @@ namespace xcas {
       clear_abort();
       if (show_edges){
 	// polyhedrons
-	for (int k=0;k<polyedrev.size();++k){
+	for (int k=0;k<int(polyedrev.size());++k){
 	  const vector<double3> & cur=polyedrev[k]; // current face
-	  int4 col=polyedre_color[k];
-	  for (int l=1;l<cur.size();++l){
-	    const double3 & p=cur[l-1];
+	  const int4 & col=polyedre_color[k];
+	  for (int l=1;l<int(cur.size());++l){
+	    const double3 & p=cur[l?l-1:cur.size()-1];
 	    const double3 & c=cur[l];
-#if 1
 	    // is edge visible?
 	    double3 m(p.x/2+c.x/2,p.y/2+c.y/2,p.z/2+c.z/2);
 	    double xy=m.x+m.y;
 	    int mi,mj;
 	    XYZ2ij(m,mi,mj);
-	    int kk;
-	    for (kk=0;kk<polyedrev.size();++kk){
+	    int kk,jmin=RAND_MAX,jmax=-RAND_MAX;
+	    for (kk=0;kk<int(polyedrev.size());++kk){
 	      if (k==kk)
 		continue;
 	      const vector<double3> & Cur=polyedrev[kk];
-	      int ll; int jmin=RAND_MAX,jmax=-RAND_MAX; 
-	      for (ll=1;ll<Cur.size();++ll){
-		const double3 & P=Cur[ll-1];
+	      int ll;
+	      // first check if point is in face
+	      for (ll=1;ll<int(Cur.size());++ll){
+		const double3 & P=Cur[ll?ll-1:Cur.size()-1];
 		const double3 & C=Cur[ll];
 		double3 M(P.x/2+C.x/2,P.y/2+C.y/2,P.z/2+C.z/2);
 		if (M.x==m.x && M.y==m.y && M.z==m.z){
-		  ll=Cur.size()-1;
-		  continue; // edge PC has same midpoint, ignore face
+		  break; // edge PC has same midpoint, will ignore face
 		}
-		if (M.x+M.y<xy){
-		  ll=Cur.size()-1;
-		  continue;
-		}
+	      }
+	      if (ll<int(Cur.size())) // point is in face, ignore face
+		continue;
+	      double3 M0; bool found1st=false;
+	      for (ll=1;ll<int(Cur.size());++ll){
+		const double3 & P=Cur[ll?ll-1:Cur.size()-1];
+		const double3 & C=Cur[ll];
 		// intersect plane y-x=m.y-m.x with PC edge P+t*PC
 		double PCx=C.x-P.x,PCy=C.y-P.y,dPC=PCy-PCx;
 		// P.y-P.x + t*dPC=m.y-m.x
-		if (dPC==0)
+		if (dPC==0) // edge is parallel
 		  continue;
 		double t=((m.y-m.x)+(P.x-P.y))/dPC;
-		if (t<=0 || t>=1)
+		if (t<0 || t>1)
 		  continue;
 		double x=P.x+t*PCx;
 		double y=P.y+t*PCy;
 		double z=P.z+t*(C.z-P.z);
-		int i,j;
-		XYZ2ij(double3(x,y,z),i,j);
-		if (j<jmin) jmin=j;
-		if (j>jmax) jmax=j;
-		if (mj>jmin && mj<jmax)
+		if (!found1st){
+		  M0=double3(x,y,z);
+		  found1st=true;
+		  continue;
+		}
+		if (x==M0.x && y==M0.y && z==M0.z)
+		  continue;
+		// segment([x,y,z],M0) has same y-x as m,
+		// find segment position for same y+x as m [x,y,z]+t*(M0-[x,y,z])
+		// yx=x+y+t*(M0.x-x+M0.y-y)
+		double M0xy=M0.x-x+M0.y-y;
+		int i1,j1,i2,j2; // N.B. i1,i2 should be the same as mi
+		if (std::abs(M0xy)<1e-14)
+		  t=-1;
+		else
+		  t=(xy-x-y)/M0xy;
+		if (t<=0 || t>=1){
+		  if (x+y<=xy) // segment is behind midpoint m
+		    continue;
+		  XYZ2ij(M0,i1,j1); 
+		  XYZ2ij(double3(x,y,z),i2,j2);
+		  if (j1>j2) swapint(j1,j2);
+		  if (jmin>j1) jmin=j1;
+		  if (jmax<j2) jmax=j2;
+		  if (jmin<mj && mj<jmax){
+		    break;
+		  }
+		  continue;
+		}
+		// find segment part that might mask midpoint m
+		double X = x+t*(M0.x-x);
+		double Y = y+t*(M0.y-y);
+		double Z = z+t*(M0.z-z);
+		XYZ2ij(double3(X,Y,Z),i1,j1);
+		if (x+y<=xy)
+		  XYZ2ij(M0,i2,j2);
+		else
+		  XYZ2ij(double3(x,y,z),i2,j2);
+		if (j1>j2) swapint(j1,j2);
+		if (jmin>j1) jmin=j1;
+		if (jmax<j2) jmax=j2;
+		if (jmin<mj && mj<jmax){
 		  break;
-	      }
-	      if (ll<Cur.size()) // means edge is not visible
+		}
+	      } // end for
+	      if (ll<int(Cur.size())){
+		// means edge is not visible
 		break;
+	      }
 	    }
-	    if (kk<polyedrev.size())
+	    // polyedre attribute: filled/not filled
+	    bool filled=polyedre_filled[k];
+	    bool hidden=kk<int(polyedrev.size());
+	    if (filled && hidden)
 	      continue;
-#endif
 	    int i1,j1,i2,j2;
 	    XYZ2ij(p,i1,j1);
 	    XYZ2ij(c,i2,j2);
+	    if (i1>i2 || (i1==i2 && j1>j2)){
+	      swapint(i1,i2); swapint(j1,j2);
+	    }
 	    drawLine(i1,j1,i2,j2,
 		     // col.d | 0x400000
-		     col.u | 0x400000
+		     col.u | ((hidden || filled)?0x400000:0)
 		     );
 	  }
 	}
@@ -7642,10 +8152,12 @@ namespace xcas {
 	      vi[1]=p[k].j;
 	      P.push_back(vi);
 	    }
-	    draw_polygon(P,upcolor | 0x400000,contextptr);
+	    draw_polygon(P,upcolor 
+			 // | 0x400000
+			 ,contextptr);
 	    if (nameptr){
-	      int x=os_draw_string(0,0,0,upcolor,nameptr,true);
-	      os_draw_string(P[0][0]-x,P[0][1],upcolor,0,nameptr);
+	      int x=os_draw_string_small(0,0,0,upcolor,nameptr,true);
+	      os_draw_string_small(P[0][0]-x,P[0][1],upcolor,0,nameptr);
 	    }
 	  }
 	}
@@ -8130,131 +8642,142 @@ namespace xcas {
     gr.precision += 2; // fast draw first
     gr.draw();
     gr.precision=saveprecision;    
+    bool redraw=true;
     for (;;){
       int saveprec=gr.precision;
       if (gr.doprecise){
 	gr.doprecise=false;
 	gr.precision=1;//gr.precision-=2;
       }
-      gr.draw();
+      if (redraw)
+	gr.draw();
+      redraw=true;
       gr.precision=saveprec;
       DisplayStatusArea();
-      // int x=0,y=LCD_HEIGHT_PX-STATUS_AREA_PX-17;
-      // PrintMini(&x,&y,(unsigned char *)"menu",0x04,0xffffffff,0,0,COLOR_BLACK,COLOR_WHITE,1,0);
+#ifdef NUMWORKS
+      os_draw_string(0,LCD_HEIGHT_PX-STATUS_AREA_PX-17,COLOR_BLACK,COLOR_WHITE,"toolbox: cfg");
+#else
+      os_draw_string(0,LCD_HEIGHT_PX-STATUS_AREA_PX-17,COLOR_BLACK,COLOR_WHITE,"menu: cfg");
+#endif
       int key=-1;
       GetKey(&key);
       if (key==KEY_SHUTDOWN)
 	return key;
 #if 1
-      if (key==KEY_CTRL_CATALOG || key==KEY_BOOK){
+      if (key==KEY_CTRL_CATALOG || key==KEY_BOOK ){
 	char menu_xmin[32],menu_xmax[32],menu_ymin[32],menu_ymax[32],menu_zmin[32],menu_zmax[32];
-	string s;
-	s="xmin "+print_DOUBLE_(gr.window_xmin,contextptr);
-	strcpy(menu_xmin,s.c_str());
-	s="xmax "+print_DOUBLE_(gr.window_xmax,contextptr);
-	strcpy(menu_xmax,s.c_str());
-	s="ymin "+print_DOUBLE_(gr.window_ymin,contextptr);
-	strcpy(menu_ymin,s.c_str());
-	s="ymax "+print_DOUBLE_(gr.window_ymax,contextptr);
-	strcpy(menu_ymax,s.c_str());
-	s="zmin "+print_DOUBLE_(gr.window_zmin,contextptr);
-	strcpy(menu_zmin,s.c_str());
-	s="zmax "+print_DOUBLE_(gr.window_zmax,contextptr);
-	strcpy(menu_zmax,s.c_str());
-	Menu smallmenu;
-	smallmenu.numitems=15;
-	MenuItem smallmenuitems[smallmenu.numitems];
-	smallmenu.items=smallmenuitems;
-	smallmenu.height=12;
-	//smallmenu.title = "KhiCAS";
-	smallmenuitems[0].text = (char *) menu_xmin;
-	smallmenuitems[1].text = (char *) menu_xmax;
-	smallmenuitems[2].text = (char *) menu_ymin;
-	smallmenuitems[3].text = (char *) menu_ymax;
-	smallmenuitems[4].text = (char *) menu_zmin;
-	smallmenuitems[5].text = (char *) menu_zmax;
-	smallmenuitems[6].text = (char*) "Orthonormalize /";
-	smallmenuitems[7].text = (char*) "Autoscale *";
-	smallmenuitems[8].text = (char *) ("Zoom in +");
-	smallmenuitems[9].text = (char *) ("Zoom out -");
-	smallmenuitems[10].text = (char *) ("Y-Zoom out (-)");
-	smallmenuitems[11].text = (char *) ((lang==1)?"raccourcis clavier":"3d shortcuts");
-	smallmenuitems[12].text = (char*) ((lang==1)?"Voir axes":"Show axes");
-	smallmenuitems[13].text = (char*) ((lang==1)?"Cacher axes":"Hide axes");
-	smallmenuitems[14].text = (char*)((lang==1)?"Quitter":"Quit");
-	int sres = doMenu(&smallmenu);
-	if(sres == MENU_RETURN_SELECTION || sres==KEY_CTRL_EXE) {
-	  const char * ptr=0;
-	  string s1; double d;
-	  if (smallmenu.selection==1){
-	    d=gr.window_xmin;
-	    if (inputdouble(menu_xmin,d,contextptr)){
-	      gr.window_xmin=d;
-	      gr.update();
-	    }
-	  }
-	  if (smallmenu.selection==2){
-	    d=gr.window_xmax;
-	    if (inputdouble(menu_xmax,d,contextptr)){
-	      gr.window_xmax=d;
-	      gr.update();
-	    }
-	  }
-	  if (smallmenu.selection==3){
-	    d=gr.window_ymin;
-	    if (inputdouble(menu_ymin,d,contextptr)){
-	      gr.window_ymin=d;
-	      gr.update();
-	    }
-	  }
-	  if (smallmenu.selection==4){
-	    d=gr.window_ymax;
-	    if (inputdouble(menu_ymax,d,contextptr)){
-	      gr.window_ymax=d;
-	      gr.update();
-	    }
-	  }
-	  if (smallmenu.selection==5){
-	    d=gr.window_zmin;
-	    if (inputdouble(menu_zmin,d,contextptr)){
-	      gr.window_zmin=d;
-	      gr.update();
-	    }
-	  }
-	  if (smallmenu.selection==6){
-	    d=gr.window_zmax;
-	    if (inputdouble(menu_zmax,d,contextptr)){
-	      gr.window_zmax=d;
-	      gr.update();
-	    }
-	  }
-	  if (smallmenu.selection==7)
-	    gr.orthonormalize();
-	  if (smallmenu.selection==8)
-	    gr.autoscale();	
-	  if (smallmenu.selection==9)
-	    gr.zoom(0.7);	
-	  if (smallmenu.selection==10)
-	    gr.zoom(1/0.7);	
-	  if (smallmenu.selection==11)
-	    gr.zoomy(1/0.7);
-	  if (smallmenu.selection==12){
-	    xcas::textArea text;
-	    text.editable=false;
-	    text.clipline=-1;
-	    text.title = (char*)((lang==1)?"Raccourcis clavier 3d":"3d Keyboard shortcuts");
-	    text.allowF1=false;
-	    text.python=false;
-	    add(&text,lang==1?"haut/bas/droit/gauche: change point de vue\ny^x ou e^x: trace precis\nON/Back: interrompt le trace en cours\n( et ): modifie le rendu des surfaces raides\n0: surfaces cachees ON/OFF\n.: remplissage surface raide ON/OFF\n5 reset view\n7,8,9,1,2,3: deplacement":"up/down/right/left: modify viewpoint\nON/Back: interrupt\ny^x or e^x: precise\n( and ): modify stiff surfaces rendering\n0: hidden surfaces ON/OFF\n.: fill stiff surfacesON/OFF\n5 reset view\n7,8,9,1,2,3: move view");
-	    int exec=doTextArea(&text,contextptr);
-	    // gr.q=quaternion_double(0,0,0); gr.update();
-	  }
-	  if (smallmenu.selection==13)
-	    gr.show_axes=true;	
-	  if (smallmenu.selection==14)
-	    gr.show_axes=false;	
-	  if (smallmenu.selection==15)
+	for (;;){
+	  string s;
+	  s="xmin "+print_DOUBLE_(gr.window_xmin,contextptr);
+	  strcpy(menu_xmin,s.c_str());
+	  s="xmax "+print_DOUBLE_(gr.window_xmax,contextptr);
+	  strcpy(menu_xmax,s.c_str());
+	  s="ymin "+print_DOUBLE_(gr.window_ymin,contextptr);
+	  strcpy(menu_ymin,s.c_str());
+	  s="ymax "+print_DOUBLE_(gr.window_ymax,contextptr);
+	  strcpy(menu_ymax,s.c_str());
+	  s="zmin "+print_DOUBLE_(gr.window_zmin,contextptr);
+	  strcpy(menu_zmin,s.c_str());
+	  s="zmax "+print_DOUBLE_(gr.window_zmax,contextptr);
+	  strcpy(menu_zmax,s.c_str());
+	  Menu smallmenu;
+	  smallmenu.numitems=15;
+	  MenuItem smallmenuitems[smallmenu.numitems];
+	  smallmenu.items=smallmenuitems;
+	  smallmenu.height=12;
+	  //smallmenu.title = "KhiCAS";
+	  smallmenuitems[0].text = (char *) menu_xmin;
+	  smallmenuitems[1].text = (char *) menu_xmax;
+	  smallmenuitems[2].text = (char *) menu_ymin;
+	  smallmenuitems[3].text = (char *) menu_ymax;
+	  smallmenuitems[4].text = (char *) menu_zmin;
+	  smallmenuitems[5].text = (char *) menu_zmax;
+	  smallmenuitems[6].text = (char*) "Orthonormalize /";
+	  smallmenuitems[7].text = (char*) "Autoscale *";
+	  smallmenuitems[8].text = (char *) ("Zoom in +");
+	  smallmenuitems[9].text = (char *) ("Zoom out -");
+	  smallmenuitems[10].text = (char *) ("Y-Zoom out (-)");
+	  smallmenuitems[11].text = (char *) ((lang==1)?"raccourcis clavier":"3d shortcuts");
+	  smallmenuitems[12].text = (char*) ((lang==1)?"Voir axes":"Show axes");
+	  smallmenuitems[13].text = (char*) ((lang==1)?"Cacher axes":"Hide axes");
+	  smallmenuitems[14].text = (char*)((lang==1)?"Quitter":"Quit");
+	  drawRectangle(0,180,LCD_WIDTH_PX,60,_BLACK);
+	  int sres = doMenu(&smallmenu);
+	  if (sres == MENU_RETURN_EXIT)
 	    break;
+	  if (sres == MENU_RETURN_SELECTION || sres==KEY_CTRL_EXE) {
+	    const char * ptr=0;
+	    string s1; double d;
+	    if (smallmenu.selection==1){
+	      d=gr.window_xmin;
+	      if (inputdouble(menu_xmin,d,200,contextptr)){
+		gr.window_xmin=d;
+		gr.update();
+	      }
+	    }
+	    if (smallmenu.selection==2){
+	      d=gr.window_xmax;
+	      if (inputdouble(menu_xmax,d,200,contextptr)){
+		gr.window_xmax=d;
+		gr.update();
+	      }
+	    }
+	    if (smallmenu.selection==3){
+	      d=gr.window_ymin;
+	      if (inputdouble(menu_ymin,d,200,contextptr)){
+		gr.window_ymin=d;
+		gr.update();
+	      }
+	    }
+	    if (smallmenu.selection==4){
+	      d=gr.window_ymax;
+	      if (inputdouble(menu_ymax,d,200,contextptr)){
+		gr.window_ymax=d;
+		gr.update();
+	      }
+	    }
+	    if (smallmenu.selection==5){
+	      d=gr.window_zmin;
+	      if (inputdouble(menu_zmin,d,200,contextptr)){
+		gr.window_zmin=d;
+		gr.update();
+	      }
+	    }
+	    if (smallmenu.selection==6){
+	      d=gr.window_zmax;
+	      if (inputdouble(menu_zmax,d,200,contextptr)){
+		gr.window_zmax=d;
+		gr.update();
+	      }
+	    }
+	    if (smallmenu.selection==7)
+	      gr.orthonormalize();
+	    if (smallmenu.selection==8)
+	      gr.autoscale();	
+	    if (smallmenu.selection==9)
+	      gr.zoom(0.7);	
+	    if (smallmenu.selection==10)
+	      gr.zoom(1/0.7);	
+	    if (smallmenu.selection==11)
+	      gr.zoomy(1/0.7);
+	    if (smallmenu.selection==12){
+	      xcas::textArea text;
+	      text.editable=false;
+	      text.clipline=-1;
+	      text.title = (char*)((lang==1)?"Raccourcis clavier 3d":"3d Keyboard shortcuts");
+	      text.allowF1=false;
+	      text.python=false;
+	      add(&text,lang==1?"haut/bas/droit/gauche: change point de vue\ny^x ou e^x: trace precis\nON/Back: interrompt le trace en cours\n( et ): modifie le rendu des surfaces raides\n0: surfaces cachees ON/OFF\n.: remplissage surface raide ON/OFF\n5 reset view\n7,8,9,1,2,3: deplacement":"up/down/right/left: modify viewpoint\nON/Back: interrupt\ny^x or e^x: precise\n( and ): modify stiff surfaces rendering\n0: hidden surfaces ON/OFF\n.: fill stiff surfacesON/OFF\n5 reset view\n7,8,9,1,2,3: move view");
+	      int exec=doTextArea(&text,contextptr);
+	      // gr.q=quaternion_double(0,0,0); gr.update();
+	    }
+	    if (smallmenu.selection==13)
+	      gr.show_axes=true;	
+	    if (smallmenu.selection==14)
+	      gr.show_axes=false;	
+	    if (smallmenu.selection==15)
+	      break;
+	  }
 	}
       }
 #endif
@@ -8263,15 +8786,15 @@ namespace xcas {
 	break;
       }
       if (key==KEY_CHAR_NORMAL || key=='>'){ // shift-+
-	if (is3d && gr.precision<9)
+	if (gr.is3d && gr.precision<9)
 	  gr.precision++;
       }
       if (key=='\\' || key=='<'){ // shift--
-	if (is3d && gr.precision>1)
+	if (gr.is3d && gr.precision>1)
 	 gr.precision--;
       }
       if (key==KEY_CTRL_UP){
-	if (is3d){
+	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -8284,6 +8807,7 @@ namespace xcas {
 	    gr.q=rotation_2_quaternion_double(0.707,0.707,0,15)*gr.q;// quaternion_double(15,0,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
+	    redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_UP))
 	      break;
@@ -8300,7 +8824,7 @@ namespace xcas {
 	gr.up((gr.window_ymax-gr.window_ymin)/2);
       }
       if (key==KEY_CTRL_DOWN) {
-	if (is3d){
+	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -8313,6 +8837,7 @@ namespace xcas {
 	    gr.q=rotation_2_quaternion_double(0.707,0.707,0,-15)*gr.q; // quaternion_double(-15,0,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
+	    redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_DOWN))
 	      break;
@@ -8329,7 +8854,7 @@ namespace xcas {
 	gr.down((gr.window_ymax-gr.window_ymin)/2);
       }
       if (key==KEY_CTRL_LEFT) {
-	if (is3d){
+	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -8337,6 +8862,7 @@ namespace xcas {
 	    gr.q=quaternion_double(0,15,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
+	    redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_LEFT))
 	      break;
@@ -8351,7 +8877,7 @@ namespace xcas {
       }
       if (key==KEY_SHIFT_LEFT) { gr.left((gr.window_xmax-gr.window_xmin)/2); }
       if (key==KEY_CTRL_RIGHT) {
-	if (is3d){
+	if (gr.is3d){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -8359,6 +8885,7 @@ namespace xcas {
 	    gr.q=quaternion_double(0,-15,0)*gr.q;
 	    gr.update_rotation();
 	    gr.draw();
+	    redraw=gr.solid3d;
 #ifndef SIMU
 	    if (!iskeydown(KEY_CTRL_RIGHT))
 	      break;
@@ -8387,7 +8914,7 @@ namespace xcas {
       if (key==KEY_CHAR_DIV) {
 	gr.orthonormalize();
       }
-      if (is3d){
+      if (gr.is3d){
 	if (key==KEY_CHAR_0){
 	  gr.hide2nd=!gr.hide2nd;
 	}
@@ -9617,9 +10144,8 @@ namespace xcas {
 #endif
 #endif
 
-#ifdef NUMWORKS
-
-  BYTE bootloader_hash[]={182,79,185,173,200,33,200,89,80,52,199,156,232,114,246,116,224,144,59,169,52,22,48,232,66,192,12,12,65,184,95,144,};// {240,149,147,17,99,67,219,190,128,31,188,225,88,191,154,94,142,45,3,248,242,148,116,155,222,153,80,91,251,190,158,224,};//{140,62,252,137,128,165,8,243,135,8,134,222,255,97,235,199,193,22,6,141,85,189,34,181,5,49,41,224,103,124,135,12,};
+#if defined NUMWORKS && defined DEVICE
+  BYTE bootloader_hash[]={116,198,71,80,107,25,110,250,180,171,154,127,1,174,88,153,108,172,2,218,82,101,93,157,148,76,37,33,102,53,12,136,};
   const int bootloader_size=65480;
   // check bootloade code, skipping exam mode buffer sector
   bool bootloader_sha256_check(size_t addr){
@@ -12153,102 +12679,244 @@ namespace xcas {
    code is dual-licensed for use in Epsilon and here
  */
 // write exam mode mode to flash at offset pos/8
-void write_exammode(unsigned char * ptr,int pos,int mode,int modulo){
-  int curmode=pos%modulo;
-  if (curmode == mode)
-    return;
-  int delta=(mode+modulo-curmode)%modulo; // 0<delta<modulo, number of bits that we will set to 0
-  unsigned char * target = ptr + pos/8;
-  int pos8=pos % 8; // number of bits already set to 0 at target
-  pos8 += delta; // 0<pos8<modulo+7
-  unsigned char postab[]={0b11111111,0b1111111,0b111111,0b11111,0b1111,0b111,0b11,0b1,0}; // postab[i] is a byte with i bits set to 0 
-  unsigned char tab[2];
-  bool writenext=pos8>8;
-  tab[0]=postab[writenext?8:pos8];
-  tab[1]=postab[writenext?pos8-8:0];
+  void write_exammode(unsigned char * ptr,int pos,int mode,int modulo){
+    int curmode=pos%modulo;
+    if (curmode == mode)
+      return;
+    int delta=(mode+modulo-curmode)%modulo; // 0<delta<modulo, number of bits that we will set to 0
+    unsigned char * target = ptr + pos/8;
+    int pos8=pos % 8; // number of bits already set to 0 at target
+    pos8 += delta; // 0<pos8<modulo+7
+    unsigned char postab[]={0b11111111,0b1111111,0b111111,0b11111,0b1111,0b111,0b11,0b1,0}; // postab[i] is a byte with i bits set to 0 
+    unsigned char tab[2];
+    bool writenext=pos8>8;
+    tab[0]=postab[writenext?8:pos8];
+    tab[1]=postab[writenext?pos8-8:0];
 #if 1 // KHICAS
-  WriteMemory((char *)target, (const char *)tab, writenext?2:1);
+    WriteMemory((char *)target, (const char *)tab, writenext?2:1);
 #else
-  target[0]=tab[0];
-  if (writenext) target[1]=tab[1];
+    target[0]=tab[0];
+    if (writenext) target[1]=tab[1];
 #endif
-}
+  }
 
-// check that region is split in two parts: bits set to 0 followed by bits set to 1, returns position of the first 1 bit or -1
-int pos_01(unsigned * start,int l){
-  unsigned *ptr=start,* end=start+l/sizeof(unsigned);
-  for (;ptr<end;++ptr){
-    if (*ptr)
-      break;
-  }
-  if (ptr==end)
-    return -1;
-  int pos=(ptr-start)*32;
-  unsigned char * ptr8=(unsigned char *) ptr;
-  if (*ptr8==0){
-    pos+=8; ++ptr8;
-  }
-  if (*ptr8==0){
-    pos+=8; ++ptr8;
-  }
-  if (*ptr8==0){
-    pos+=8; ++ptr8;
-  }
-  switch (*ptr8){
-  case 0b1: pos+=7; break; // 7 bits are already set to 0
-  case 0b11: pos+=6; break;
-  case 0b111: pos+=5; break;
-  case 0b1111: pos+=4; break;
-  case 0b11111: pos+=3; break;
-  case 0b111111: pos+=2; break;
-  case 0b1111111: pos+=1; break;
-  case 0b11111111: break;
-  default: return -1;
-  }
-  ++ptr;
-  for (;ptr<end;++ptr){
-    if (*ptr!=0xffffffff)
+  // check that region is split in two parts: bits set to 0 followed by bits set to 1, returns position of the first 1 bit or -1
+  int pos_01(unsigned * start,int l){
+    unsigned *ptr=start,* end=start+l/sizeof(unsigned);
+    for (;ptr<end;++ptr){
+      if (*ptr)
+	break;
+    }
+    if (ptr==end)
       return -1;
+    int pos=(ptr-start)*32;
+    unsigned char * ptr8=(unsigned char *) ptr;
+    if (*ptr8==0){
+      pos+=8; ++ptr8;
+    }
+    if (*ptr8==0){
+      pos+=8; ++ptr8;
+    }
+    if (*ptr8==0){
+      pos+=8; ++ptr8;
+    }
+    switch (*ptr8){
+    case 0b1: pos+=7; break; // 7 bits are already set to 0
+    case 0b11: pos+=6; break;
+    case 0b111: pos+=5; break;
+    case 0b1111: pos+=4; break;
+    case 0b11111: pos+=3; break;
+    case 0b111111: pos+=2; break;
+    case 0b1111111: pos+=1; break;
+    case 0b11111111: break;
+    default: return -1;
+    }
+    ++ptr;
+    for (;ptr<end;++ptr){
+      if (*ptr!=0xffffffff)
+	return -1;
+    }
+    return pos;
   }
-  return pos;
-}
 
-char print_hex(int val){
-  val &= 0xf;
-  if (val>=0 && val<=9)
-    return '0'+val;
-  return 'A'+(val-10);
-}
-
-void print_hex(unsigned val,char * ptr){
-  for (int i=0;i<8;++i){
-    ptr[i]=print_hex(val>>(28-4*i));
+  char print_hex(int val){
+    val &= 0xf;
+    if (val>=0 && val<=9)
+      return '0'+val;
+    return 'A'+(val-10);
   }
-}
 
-void set_exammode(int mode,int modulo){
-  if (mode<0 || mode>=modulo)
-    return;
-  // scan external flash every dflash bytes
-  unsigned * flashptr=(unsigned *) 0x90000000;
-  unsigned dflash=0x10000,ntests=8*1024*1024/dflash/sizeof(unsigned);
-  for (unsigned i=0;i<ntests;++i){
-    unsigned * ptr=flashptr+i*dflash;
-    // kernel header?
-    if (*ptr!=0xffffffff || *(ptr+1)!=0xffffffff || *(ptr+2)!= 0xdec00df0 /* f0 0d c0 de*/)
-      continue;
-    ptr += 0x1000/sizeof(unsigned); // exam mode buffer?
+  void print_hex(unsigned val,char * ptr){
+    for (int i=0;i<8;++i){
+      ptr[i]=print_hex(val>>(28-4*i));
+    }
+  }
+
+  void set_exammode(int mode,int modulo){
+    if (mode<0 || mode>=modulo)
+      return;
+    // scan external flash every dflash bytes
+    unsigned * flashptr=(unsigned *) 0x90000000;
+    unsigned dflash=0x10000,ntests=8*1024*1024/dflash/sizeof(unsigned);
+    for (unsigned i=0;i<ntests;++i){
+      unsigned * ptr=flashptr+i*dflash;
+      // kernel header?
+      if (*ptr!=0xffffffff || *(ptr+1)!=0xffffffff || *(ptr+2)!= 0xdec00df0 /* f0 0d c0 de*/)
+	continue;
+      ptr += 0x1000/sizeof(unsigned); // exam mode buffer?
+      int pos=pos_01(ptr,0x1000);
+      if (pos==-1)
+	continue;
+      if (pos>=0x1000-8){
+	erase_sector((const char *)ptr);
+	pos=0;
+      }
+      write_exammode((unsigned char *)ptr,pos,mode,modulo);
+    }
+  }
+
+  const size_t baseaddr[]={0x90000000,0x90180000,0x90400000};
+  void boot_firmware(int slot){
+    const int taille=int(sizeof(baseaddr)/sizeof(size_t));
+    if (slot<0 || slot>taille)
+      slot=taille;
+    unsigned * ptr=(unsigned *) 0x08004000;
     int pos=pos_01(ptr,0x1000);
     if (pos==-1)
-      continue;
-    if (pos>=0x1000-8){
+      return;
+    if (pos>=0x8000-8){
       erase_sector((const char *)ptr);
       pos=0;
     }
-    write_exammode((unsigned char *)ptr,pos,mode,modulo);
+    write_exammode((unsigned char *)ptr,pos,slot,4);
+    wait_1ms(10); // Ion::Timing::msleep(10);
+    erase_sector(0); // Ion::Device::Reset::core();
   }
-}
-/* end section (c) B. Parisse, */
+
+  const size_t kernelheader=0xdec00df0;
+  const size_t userheader=0xDEC0EDFE;
+  const size_t omegaheader=0xEFBEADDE;
+  const size_t upsilonheader=0x55707369;
+
+  // return 0 if invalid, 1 for Khi, 2 for Omega, 3 for Upsilon, 4 for Epsilon<=18.2.3
+  int is_valid(int slot){ 
+    if (slot<0 || slot>=int(sizeof(baseaddr)/sizeof(size_t)))
+      return 0;
+    // kernel header
+    size_t * addr=(size_t *) baseaddr[slot];
+    if (addr[0]!=0xffffffff || addr[1]!=0xffffffff || addr[2]!=kernelheader || addr[7]!=kernelheader)
+      return 0;
+    // userland header
+    addr=(size_t *) (baseaddr[slot]+0x10000);
+    if (addr[0]!=userheader || addr[9]!=userheader)
+      return 0;
+    if (addr[10]==omegaheader){
+      char * version=(char *)&addr[11];
+      if (version[1]=='.')
+	return 2; // Omega
+      return 1; // Khi
+    }
+    if (addr[10]==upsilonheader)
+      return 3;
+    // epsilon version
+    char * version=(char *)&addr[1];
+    if (strcmp(version,"18.2.3")>0)
+      return 0;
+    return 4;
+  }
+
+  size_t find_storage(){
+    // find storage
+    int slot=0;
+    size_t addr[]={0x90000000,0x90180000,0x90400000};
+    for (;slot<sizeof(addr)/sizeof(size_t);++slot){
+      unsigned char * r=(unsigned char *) addr[slot];
+      bool externalinfo=r[8]==0xf0 && r[9]==0x0d && r[10]==0xc0 && r[11]==0xde;
+      if (!externalinfo)
+	continue;
+      r += 0x10000;
+      if (r[15]!=0x20) // ram is at 0x20000000 (+256K)
+	continue;
+      size_t start=((r[15]*256U+r[14])*256+r[13])*256+r[12];
+      r=(unsigned char *)start;
+      if (r[0]==0xba && r[1]==0xdd && r[2]==0x0b && r[3]==0xee){ // ba dd 0b ee begin of scriptstore
+	return start;
+      }
+    }
+    return 0;
+  }    
+
+  bool save_backup(int no){
+    if (no!=1 && no!=0)
+      return false;
+    int L=32*1024;
+    size_t backupaddr=0x90800000-2*L;
+    size_t storageaddr=find_storage();
+    //confirm("Storage @",hexa_print_INT_(storageaddr).c_str());
+    if (storageaddr){
+      char * sptr=(char *)storageaddr;
+      int L=32*1024;
+      if (no==0){
+	// check if sector is already formatted
+	unsigned * ptr=(unsigned *) (backupaddr);
+	for (int i=0;i<L/2;++i){
+	  if (ptr[i]!=0xffffffff){ // it's not, format
+	    erase_sector((const char *)backupaddr);
+	    break;
+	  }
+	}
+	if (sptr[4]==0 && sptr[5]==0){
+	  return false; // nothing to save 
+	}
+	WriteMemory((char *)backupaddr,(const char *)storageaddr,L);
+	return true;
+      }
+      if (no==1){
+	if (sptr[4]==0 && sptr[5]==0){
+	  return false; // nothing to save 
+	}
+	// check if sector is already formatted
+	unsigned * ptr=(unsigned *) (backupaddr+L);
+	for (int i=0;i<L/4;++i){
+	  if (ptr[i]!=0xffffffff){ // it's not, format
+	    char * buf=(char *)malloc(L);
+	    memcpy(buf,(char *)backupaddr,L);
+	    erase_sector((const char *)backupaddr);
+	    WriteMemory((char *)backupaddr,buf,L);
+	    free(buf);
+	    break;
+	  }
+	}
+	WriteMemory((char *)(backupaddr+L),(const char *)storageaddr,L);
+	return true;
+      } 
+      return true; // never reached
+    }
+    return false;
+  }
+
+  // 0 or 1 restore, 2 or 3 check if there is something to restore
+  bool restore_backup(int no){
+    if (no<0)
+      return false;
+    int L=32*1024;
+    size_t backupaddr=0x90800000-2*L;
+    size_t storageaddr=find_storage();
+    //confirm("Storage @",hexa_print_INT_(storageaddr).c_str());
+    if (!storageaddr)
+      return false;
+    char * sptr=(char *)(backupaddr+(no & 1)*L);
+    // ba dd 0b ee
+    if (sptr[0]!=0xba || sptr[1]!=0xdd || sptr[2]!=0x0b || sptr[3]!=0xee )
+      return false;
+    if (sptr[4]==0 && sptr[5]==0)
+      return false; // nothing to restore
+    if (no>=2)
+      return true;
+    memcpy((char *)storageaddr,sptr,L);
+    return true;
+  }
+  /* end section (c) B. Parisse, */
 #endif
   
   void menu_setup(GIAC_CONTEXT){
@@ -12262,8 +12930,10 @@ void set_exammode(int mode,int modulo){
     smallmenu.title = (char *)"Config";
   
 #ifdef NUMWORKS
+#ifdef DEVICE
     string titles="Config (Memory "+print_INT_(_heap_size)+")";
     smallmenu.title = (char*) titles.c_str();
+#endif
     smallmenuitems[0].type = MENUITEM_CHECKBOX;
     smallmenuitems[0].text = (char*)"x,n,t -> t";
 #endif
@@ -12278,8 +12948,8 @@ void set_exammode(int mode,int modulo){
     smallmenuitems[7].text = (char*)"Greek&English";
     smallmenuitems[8].text = (char*)"Deutsch&English";
     smallmenuitems[9].text = (char *) ((lang==1)?"Raccourcis clavier (0)":"Shortcuts (0)");
-#if 0 // def NUMWORKS
-    smallmenuitems[10].text = (char*) ((lang==1)?"Backup examen (e^x)":"Exam backup (e^x)");
+#ifdef NUMWORKS
+    smallmenuitems[10].text = (char*) ((lang==1)?"Backup, mode examen (e^x)":"Backup, exam mode (e^x)");
 #else
     smallmenuitems[10].text = (char*) ((lang==1)?"Mode examen (e^x)":"Exam mode (e^x)");
 #endif
@@ -12447,48 +13117,41 @@ void set_exammode(int mode,int modulo){
 #endif // NSPIRE_NEWLIB
 #ifdef NUMWORKS
 #ifdef DEVICE
-	  if (inexammode()){
-	    do_confirm(lang==1?"Connectez la calculatrice!":"Connect calculator!");
-	    break;
-	  }
-	  const char * tab[]={lang==1?"Restaurer le backup?":"Restore last backup",lang==1?"Backup, puis mode examen":"Backup then exam mode",lang==1?"Mode examen sans backup":"Exam mode without backup",0};
+	  const char * tab[]={lang==1?"Sauvegarde multi-firmwares":"Backup for multi-firmware",lang==1?"Restauration multifirmwares":"Restore multi-firmware backup",lang==1?"Lancer le mode examen":"Run exam mode",lang==1?"Backup du mode examen":"Restore exam mode backup",0};
 	  int choix=select_item(tab,"Mode examen",true);
-	  if (choix<0 || choix>2)
+	  if (choix<0 || choix>4)
 	    break;
 	  if (choix==0){
-	    if (extapp_restorebackup(-1))
-	      do_confirm(lang==1?"Restauration du backup reussie!":"Backup restore success!");
-	    else
-	      do_confirm(lang==1?"Pas de backup trouve!":"No backup found!");
+	    if (!save_backup(1))
+	      confirm(lang==1?"Rien a sauvegarder":"Nothing to save","OK?");
+	    break;
 	  }
-	  else {
-	    if (choix==1){
-	      int L=32*1024,slot=0;
-	      size_t backupaddr=0x90800000-64*1024,storageaddr=0;
-	      size_t addr[]={0x90000000,0x90180000,0x90400000};
-	      for (;slot<sizeof(addr)/sizeof(size_t);++slot){
-		unsigned char * r=(unsigned char *) addr[slot];
-		bool externalinfo=r[8]==0xf0 && r[9]==0x0d && r[10]==0xc0 && r[11]==0xde;
-		if (!externalinfo)
-		  continue;
-		r += 0x10000;
-		if (r[15]!=0x20) // ram is at 0x20000000 (+256K)
-		  continue;
-		size_t start=((r[15]*256U+r[14])*256+r[13])*256+r[12];
-		r=(unsigned char *)start;
-		if (r[0]==0xba && r[1]==0xdd && r[2]==0x0b && r[3]==0xee){ // ba dd 0b ee begin of scriptstore
-		  storageaddr=start;
-		  break;
-		}
+	  if (choix==1){
+	    if (restore_backup(3)){
+	      if (confirm(lang==1?"Les donnees actuelles vont etre effacees":"Current data will be erased!","OK/Back?")==KEY_CTRL_F1){
+		confirm(restore_backup(1)?"Success!":"Failure!","OK?");
 	      }
-	      //confirm("Storage @",hexa_print_INT_(storageaddr).c_str());
-	      if (storageaddr){
-		erase_sector((const char *)backupaddr);
-		WriteMemory((char *)backupaddr,(const char *)storageaddr,L);
-	      }
-	    } // if (choix==1)
-	    set_exammode(1,4);
-	    erase_sector(0); // reset
+	    }
+	    else
+	      confirm(lang==1?"Pas de donnees":"No data.","OK/Back?");	      
+	    break;
+	  }
+	  if (choix==2){
+	    if (confirm(lang==1?"Sauvegarde, effacement puis mode examen":"Backup, clear then exam mode","OK/Back?")==KEY_CTRL_F1){
+	      if (!save_backup(0))
+		confirm(lang==1?"Rien a sauvegarder":"Nothing to save","OK?");
+	      // save to exam mode backup sector and format reset backup sector
+	      set_exammode(1,4);
+	      erase_sector(0); // means reset
+	    }
+	  }
+	  if (choix==3){
+	    if (inexammode()){ 
+	      confirm(lang==1?"Sortez d'abord du mode examen!":"Leave exam mode first!",lang==1?"(Connectez la calculatrice)":"(Connect calculator)");
+	      break;
+	    }
+	    confirm(restore_backup(0)?"Success!":"Failure!","OK?");
+	    break;
 	  }
 #endif
 	  // if (do_confirm(lang==1?"Le mode examen se lance depuis Parametres":"Enter Exam mode from Settings")) shutdown_state=1;
@@ -13844,12 +14507,12 @@ void set_exammode(int mode,int modulo){
     edptr->pos=0;
     return 2;
   }
-#ifdef NUMWORKS
+#if defined NUMWORKS && defined DEVICE
   void numworks_certify_internal(){
     // check internal flash sha256 signature
     size_t internal_flash_start=0x08000000;
     if (bootloader_sha256_check(internal_flash_start)){
-      confirm(lang==1?"Amorcage calculatrice certifie!":"Boot sector certified!",lang==1?"Acces amorcage par reset+4":"Access boot with reset+4");
+      confirm(lang==1?"Amorcage calculatrice certifie!":"Boot sector certified!",lang==1?"Acces amorcage par Power ln":"Access boot with Power ln");
       Bdisp_AllClr_VRAM();
       return;
     }
@@ -13872,14 +14535,14 @@ void set_exammode(int mode,int modulo){
       int key; GetKey(&key);
     }
     else {
-      if (confirm(lang==1?"Mise a jour de l'amorcage ?":"Update bootsector?","OK/Annul.")){
+      if (confirm(lang==1?"Mise a jour de l'amorcage ?":"Update bootsector?","OK/Annul.")==KEY_CTRL_F1){
 	// sector size=16K -> erase 4 sector for 64K
 	erase_sector((const char *) internal_flash_start);
 	erase_sector((const char *) (internal_flash_start+16*1024));
 	erase_sector((const char *) (internal_flash_start+32*1024));
 	erase_sector((const char *) (internal_flash_start+48*1024));
 	WriteMemory((char *)internal_flash_start,(const char *) romaddr,bootloader_size);
-	confirm(lang==1?"Mise a jour faite":"Update done",lang==1?"Acces amorcage par reset+4":"Access boot with reset+4");
+	confirm(lang==1?"Mise a jour faite":"Update done",lang==1?"Acces amorcage par Power ln":"Access boot with Power ln");
       }
     }
     Bdisp_AllClr_VRAM();
@@ -14466,7 +15129,11 @@ void set_exammode(int mode,int modulo){
       if (key==KEY_CTRL_MENU){
 #if 1
 	Menu smallmenu;
+#if defined NUMWORKS && defined DEVICE
+	smallmenu.numitems=20;
+#else
 	smallmenu.numitems=17;
+#endif
 	MenuItem smallmenuitems[smallmenu.numitems];
       
 	smallmenu.items=smallmenuitems;
@@ -14503,6 +15170,12 @@ void set_exammode(int mode,int modulo){
 #else
 	  smallmenuitems[16].text = (char*) ((lang==1)?"Quitter (HOME)":"Quit");
 #endif
+#if defined NUMWORKS && defined DEVICE
+	  smallmenuitems[16].text = (char*) ((lang==1)?"Reboot autre firmware":"Reboot alt. firmware");
+	  smallmenuitems[17].text = (char*) ((lang==1)?"Sauvegarde multi-firmware":"Backup multi-firmware");
+	  smallmenuitems[18].text = (char*) ((lang==1)?"Restauration multi-firmware":"Restore multi-firmware");
+	  smallmenuitems[19].text = (char*) ((lang==1)?"Quitter (HOME)":"Quit");
+#endif
 	  if (exam_mode)
 	    smallmenuitems[16].text = (char*)((lang==1)?"Quitter le mode examen":"Quit exam mode");
 	  if (nspire_exam_mode==2)
@@ -14511,6 +15184,34 @@ void set_exammode(int mode,int modulo){
 	    return KEY_SHUTDOWN;
 	  int sres = doMenu(&smallmenu);
 	  if(sres == MENU_RETURN_SELECTION || sres==KEY_CTRL_EXE) {
+#if defined NUMWORKS && defined DEVICE
+	    if (smallmenu.selection==17){
+	      int b1=is_valid(0),b2=is_valid(1),b3=is_valid(2);
+	      const char * boot_tab[]={b1?"Slot 1":"Invalid slot 1",b2?"Slot 2":"Invalid slot 2",b3?"Slot 3":"Invalid slot 3","Bootloader","Cancel/Annuler",0};
+	      int choix=select_item(boot_tab,"Reboot firmware",true);
+	      if (choix>=0 && choix<=2 && !is_valid(choix)){
+		break;
+	      }
+	      if (choix>=0 && choix<=3){
+		if (confirm(lang==1?"Les donnees seront perdues!":"Data will be lost!",lang==1?"OK/Back?":"OK/Back?")==KEY_CTRL_F1)
+		  boot_firmware(choix);
+	      }
+	      break;
+	    }
+	    if (smallmenu.selection==18){
+	      if (!save_backup(1))
+		confirm(lang==1?"Rien a sauvegarder":"Nothing to save","OK?");
+	      break;
+	    }
+	    if (smallmenu.selection==19){
+	      if (restore_backup(3)){
+		if (confirm(lang==1?"Les donnees actuelles vont etre effacees":"Current data will be erased!","OK/Back?")==KEY_CTRL_F1){
+		  confirm(restore_backup(1)?"Success!":"Failure!","OK?");
+		}
+	      }
+	      break;
+	    }
+#endif
 	    if (smallmenu.selection==smallmenu.numitems){
 	      if (nspire_exam_mode==2)
 		check_nspire_exam_mode(contextptr);
@@ -15675,6 +16376,11 @@ void set_exammode(int mode,int modulo){
       vecteur & v=*g._VECTptr;
       for (int j=0;j<t.ncols;++j){
 	gen vj=v[j];
+	if (vj.type==_VECT && vj._VECTptr->size()==3){
+	  vecteur vjv=*vj._VECTptr;
+	  vjv[1]=0;
+	  vj=gen(vjv,vj.subtype);
+	}
 	printcell_current_col(contextptr)=j;
 	s += vj.print(contextptr);
 	if (j==t.ncols-1)
@@ -15714,7 +16420,7 @@ void set_exammode(int mode,int modulo){
 #endif // NUMWORKS
 
   int console_main(GIAC_CONTEXT,const char * sessionname){
-#ifdef NUMWORKS
+#if defined NUMWORKS && defined DEVICE
     // insure value not too high (_heap_size depends on launcher firmware)
     if (pythonjs_heap_size>_heap_size-52*1024)
       pythonjs_heap_size=_heap_size-52*1024;
@@ -16542,6 +17248,92 @@ c_complex c_det(c_complex *x,int n){
 
 void c_sprint_double(char * s,double d){
   giac::sprint_double(s,d);
+}
+
+void c_turtle_forward(double d){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  //const context * contextptr=caseval_context();
+  giac::_avance(d,cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_left(double d){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_tourne_gauche(d,cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_up(int i){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  if (i)
+    giac::_leve_crayon(0,cascontextptr);
+  else
+    giac::_baisse_crayon(0,cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_goto(double x,double y){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_position(makesequence(x,y),cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_cap(double x){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_cap(x,cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_crayon(int i){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_crayon(i,cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_rond(int x,int y,int z){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_rond(makesequence(x,y,z),cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_disque(int x,int y,int z,int centre){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  if (centre)
+    giac::_disque_centre(makesequence(x,y,z),cascontextptr);
+  else
+    giac::_disque(makesequence(x,y,z),cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_fill(int i){
+  gen arg(vecteur(0));
+  if (i==0) 
+    arg.subtype=_SEQ__VECT;
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  giac::_polygone_rempli(arg,cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_fillcolor(double r,double g,double b,int entier){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  if (entier)
+    giac::_polygone_rempli(makesequence(int(r),int(g),int(b)),cascontextptr);
+  else
+    giac::_polygone_rempli(makesequence(r,g,b),cascontextptr);
+  py_ck_ctrl_c();
+}
+
+void c_turtle_getposition(double * x,double * y){
+  context * cascontextptr=(context *)caseval("caseval contextptr");
+  gen arg(vecteur(0)); arg.subtype=_SEQ__VECT;
+  giac::gen g=giac::_position(arg,cascontextptr);
+  if (g.type==_VECT && g._VECTptr->size()==2){
+    gen a=g._VECTptr->front(),b=g._VECTptr->back();
+    a=evalf_double(a,1,cascontextptr);
+    b=evalf_double(b,1,cascontextptr);
+    *x=a._DOUBLE_val;
+    *y=b._DOUBLE_val;
+  }
 }
 
 // auto-shutdown

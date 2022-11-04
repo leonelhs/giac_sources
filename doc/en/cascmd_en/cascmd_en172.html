@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Barycenter of complex numbers: barycenter
+<title>The modulus and argument of a complex number: abs arg
+
 
 </title>
 </head>
@@ -13,51 +14,63 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en173.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:baryc" class="subsection">6.10.8  Barycenter of complex numbers: <span style="font-family:monospace">barycenter</span>
-<a id="hevea_default298"></a>
+<h3 id="ssec:absarg" class="subsection">5.10.4  The modulus and argument of a complex number: <span style="font-family:monospace">abs</span> <span style="font-family:monospace">arg</span>
+<a id="hevea_default294"></a>
+<a id="hevea_default295"></a>
 </h3>
-<p>The <em>barycenter</em>, or center of mass, of a set of points <span style="font-style:italic">A</span><sub>1</sub>,
-<span style="font-style:italic">A</span><sub>2</sub>,…,<span style="font-style:italic">A</span><sub><span style="font-style:italic">n</span></sub> with masses
-α<sub>1</sub>,α<sub>2</sub>,…,α<sub><span style="font-style:italic">n</span></sub> is </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">α<sub>1</sub><span style="font-style:italic">A</span><sub>1</sub>+⋯ + α<sub><span style="font-style:italic">n</span></sub><span style="font-style:italic">A</span><sub><span style="font-style:italic">n</span></sub></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">α<sub>1</sub>+⋯ +
-α<sub><span style="font-style:italic">n</span></sub></td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table><p> This formula makes sense even if the α<sub><span style="font-style:italic">j</span></sub> are
-not positive real numbers, and is still called the barycenter of the
-weighted points.</p><p>The <span style="font-family:monospace">barycenter</span> command computes the barycenter of a set of
-weighted points.
+<p>A complex number <span style="font-style:italic">z</span> can be written in polar form <span style="font-style:italic">re</span><sup><span style="font-style:italic">i</span>θ</sup>,
+where <span style="font-style:italic">r</span> is the modulus and θ is the argument. The angle
+θ is only determined up to a multiple of 2π; there will be
+a unique value in the interval (−π,π], the value in this
+interval is called the <em>principal value</em> of the argument.</p><p>The <span style="font-family:monospace">abs</span> and <span style="font-family:monospace">arg</span> commands find the modulus and
+argument of a complex number.</p><p>The <span style="font-family:monospace">abs</span> command finds the modulus of a complex number (see also
+Section <a href="cascmd_en213.html#ssec%3Astandardfns">5.16.2</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">barycenter</span> takes an unspecified number of arguments:<br>
- each argument is a list <span style="font-style:italic">l</span><sub><span style="font-style:italic">j</span></sub>=[<span style="font-style:italic">A</span><sub><span style="font-style:italic">j</span></sub>,α<sub><span style="font-style:italic">j</span></sub>] containing a point <span style="font-style:italic">A</span><sub><span style="font-style:italic">j</span></sub> (or the
-affix of a point) and a weight α<sub><span style="font-style:italic">j</span></sub> for the point. The sum of
-the weights needs to be non-zero.<br>
- These lists can also be given as
-two columns of a matrix.
-</li><li class="li-itemize"><span style="font-family:monospace">barycenter(</span><span style="font-style:italic">l</span><sub>1</sub>,<span style="font-style:italic">l</span><sub>2</sub>,…,<span style="font-style:italic">l</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">)</span> returns the
-barycenter of the points <span style="font-style:italic">A</span><sub><span style="font-style:italic">j</span></sub> weighted by the real coefficients
-α<sub><span style="font-style:italic">j</span></sub>. If ∑α<sub><span style="font-style:italic">j</span></sub> = 0, <span style="font-family:monospace">barycenter</span> returns an
-error.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Warning.</span><br>
-The barycenter command returns a point, not a complex number. To have
-a complex number in the output, the input must be
-<span style="font-family:monospace">affix(barycenter(</span><span style="font-style:italic">l</span><sub>1</sub>,<span style="font-style:italic">l</span><sub>2</sub><span style="font-family:monospace">))</span> (see Section <a href="cascmd_en800.html#ssec%3Aaffix">13.13.1</a>).</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">abs</span> takes one argument:<br>
+ <span style="font-style:italic">z</span>, a complex number.
+</li><li class="li-itemize"><span style="font-family:monospace">abs(</span><span style="font-style:italic">z</span><span style="font-family:monospace">)</span> returns the modulus |<span style="font-style:italic">z</span>|.
+</li></ul><h4 id="sec359" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">affix(barycenter([1+i,2],[1-i,1]))</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">affix(barycenter([[1+i,2],[1-i,1]]))</span>
+<span style="font-family:monospace">abs(3+4*i)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3+<span style="font-style:italic">i</span></td></tr>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">5
+</td></tr>
+</table><p><br>
+</p><p>The <span style="font-family:monospace">arg</span> command finds the argument of a complex number.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">arg</span> takes one argument:<br>
+ <span style="font-style:italic">z</span>, a complex number.
+</li><li class="li-itemize"><span style="font-family:monospace">arg(</span><span style="font-style:italic">z</span><span style="font-family:monospace">)</span> returns the principal value of the argument of <span style="font-style:italic">z</span>.
+</li></ul><h4 id="sec360" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">arg(3+4*i)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  arctan</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td></tr>
 </table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">arg(3.0+4.0*i)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0.927295218002
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en171.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

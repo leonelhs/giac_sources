@@ -567,6 +567,7 @@ namespace giac {
   }
 #endif
 
+  bool gnuplot_opengl=false;
 #ifdef WITH_GNUPLOT
   vecteur plot_instructions;
 
@@ -1101,11 +1102,6 @@ namespace giac {
     if (k>=105 && k<126){
       r=251; g=251-(k-105)*12; b=0;
     } 
-  }
-
-  int rgb888to565(int c){
-    int r=(c>>16)&0xff,g=(c>>8)&0xff,b=c&0xff;
-    return (((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
   }
 
   static const int arc_en_ciel_colors=15;
@@ -1650,7 +1646,7 @@ namespace giac {
 	nu=int(std::sqrt(double(nstep)));
 	nv=int(std::sqrt(double(nstep)));
       }
-#ifdef KHICAS
+#if defined KHICAS || defined GIAC_HAS_STO_38
       if (nu*nv>900 && densityplot!=2){
 #if 1 // def DEVICE
 	nu=nv=30;
@@ -1770,7 +1766,7 @@ namespace giac {
 	    if (fval._DOUBLE_val>fmax)
 	      fmax=fval._DOUBLE_val;
 	  }
-#ifdef KHICAS // FIXME format is not translatable, etc.
+#if defined KHICAS || defined GIAC_HAS_STO_38 // || defined HYPERSURFACE3 FIXME format is not translatable, etc.
 	  if (!densityplot){
 	    tmp.push_back(x); tmp.push_back(y); tmp.push_back(fval);
 	  } 
@@ -5610,7 +5606,7 @@ namespace giac {
 	  else
 	    sol=solve(eq,v[1],0,contextptr);
 	}
-	if (calc_mode(contextptr)==1 && sol.empty())
+	if (calc_mode(contextptr)==2 && sol.empty())
 	  return undef;
 	sol.push_back(v[3]);
 	// find smallest 
@@ -5720,7 +5716,7 @@ namespace giac {
     if (e.type!=_VECT || e._VECTptr->size()<2)
       return undef;
     vecteur v(*e._VECTptr);
-    int c=calc_mode(contextptr); calc_mode(0,contextptr);
+    int c=calc_mode(contextptr); calc_mode(2,contextptr); // was set to 0 for distance(point(3,4), y=sin(x)) but then distance(point(a,b),y=x^2); return abs(a-b^2), see if (calc_mode(contextptr)==2 && sol.empty()) return undef in projection
     gen p=projection(ee,f,contextptr);
     calc_mode(c,contextptr);
     gen projete=subst(v[0],v[1],p,false,contextptr);
@@ -5930,7 +5926,7 @@ namespace giac {
 	  }
 	}
       }
-      e2=plotimplicit(e2,x__IDNT_e,y__IDNT_e,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,20*gnuplot_pixels_per_eval,0,epsilon(contextptr),vecteur(1,default_color(contextptr)),false,false,contextptr,1);
+      e2=plotimplicit(equal2diff(e2),x__IDNT_e,y__IDNT_e,gnuplot_xmin,gnuplot_xmax,gnuplot_ymin,gnuplot_ymax,20*gnuplot_pixels_per_eval,0,epsilon(contextptr),vecteur(1,default_color(contextptr)),false,true /* cklinear */ ,contextptr,3);
       if (e2.type==_VECT && !e2._VECTptr->empty())
 	e2=e2._VECTptr->front();
     }
@@ -6066,10 +6062,22 @@ namespace giac {
   gen _aire(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     if (args.type==_VECT && !args._VECTptr->empty() && args._VECTptr->front().is_symb_of_sommet(at_pnt) && args._VECTptr->back().is_symb_of_sommet(at_pnt)){
-      gen res=0;
-      for (unsigned i=0;i<args._VECTptr->size();++i)
-	res += _aire((*args._VECTptr)[i],contextptr);
-      return res;
+      gen res=remove_at_pnt(args._VECTptr->front());
+      bool loop=true;
+      if (res.type==_VECT && res.subtype==_POINT__VECT)
+	loop=false;
+      else if (res.type<_IDNT)
+	loop=false;
+      else if (res.type==_SYMB && has_i(res))
+	loop=false;
+      if (res.is_symb_of_sommet(at_curve))
+	loop=true; /* workaround for ggb area([circle(x^(2)+4y^(2)=1)]) */
+      if (loop){
+	res=0;
+	for (unsigned i=0;i<args._VECTptr->size();++i)
+	  res += _aire((*args._VECTptr)[i],contextptr);
+	return res;
+      }
     }
     gen g=args;
     if (g.is_symb_of_sommet(at_equal)){
@@ -6175,7 +6183,7 @@ namespace giac {
     }
     gen res;
     for (int i=3;i<s;++i){
-      gen cote1(v[i-2]-v[0]),cote2(v[i-1]-v[0]);
+      gen cote1(remove_at_pnt(v[i-2])-v[0]),cote2(remove_at_pnt(v[i-1])-v[0]);
       if (cote1.type==_VECT && cote2.type==_VECT)
 	res += l2norm(cross(*cote1._VECTptr,*cote2._VECTptr,contextptr),contextptr);
       else
@@ -8951,6 +8959,26 @@ namespace giac {
     if (g.type==_VECT){
       v=*g._VECTptr;
       int s=int(v.size()),nd=0,nargs=0;
+      if (s){
+	vecteur attributs(1,default_color(contextptr));
+	int a=read_attributs(v,attributs,contextptr);
+	if (a==s-1 && attributs!=vecteur(1,default_color(contextptr))){
+	  gen res=_plot(a==1?v.front():gen(vecteur(v.begin(),v.begin()+a)),contextptr);
+	  if (res.type==_VECT){
+	    vecteur w=*res._VECTptr;
+	    for (int i=0;i<w.size();++i){
+	      if (w[i].is_symb_of_sommet(at_pnt)){
+		// FIXME keep filled attribute
+		w[i]=pnt_attrib(remove_at_pnt(w[i]),attributs,contextptr);
+	      }
+	    }
+	    res=gen(w,res.subtype);
+	    return res;
+	  } 
+	  res=remove_at_pnt(res);
+	  return pnt_attrib(res,attributs,contextptr);
+	}
+      }
       if (s && v[0].type==_FUNC && (nd=is_distribution(v[0])) && 1+(nargs=distrib_nargs(nd))<=s){
 	if (is_discrete_distribution(nd))
 	  return _histogram(g,contextptr);
@@ -9017,8 +9045,11 @@ namespace giac {
     }
     if (s<1)
       return _plotfunc(g,contextptr);
-    if (g.type==_VECT && g.subtype!=_SEQ__VECT)
+    if (g.type==_VECT && g.subtype!=_SEQ__VECT){
+      if (v.size()==2 && v.back().type!=_VECT)
+	return _plotparam(g,contextptr);
       return plotpoints(v,attributs,contextptr);
+    }
     double xmin=gnuplot_xmin,xmax=gnuplot_xmax,ymin=gnuplot_ymin,ymax=gnuplot_ymax,zmin=gnuplot_zmin,zmax=gnuplot_zmax;
     gen xvar=vx_var,yvar=y__IDNT_e;
     int nstep=gnuplot_pixels_per_eval;
@@ -12190,8 +12221,9 @@ namespace giac {
       g=_floor(g,0);
       if (g.type!=_INT_)
 	return false; // setsizeerr(contextptr);
-#ifdef WITH_GNUPLOT
       int i=g.val;
+      gnuplot_opengl=(i/4) %2;
+#ifdef WITH_GNUPLOT
       gnuplot_hidden3d=(i %2)!=0;
       i =i/2;
       gnuplot_pm3d=(i%2)!=0;
@@ -12243,7 +12275,7 @@ namespace giac {
     v.push_back(axes);
     v.push_back(class_min);
     v.push_back(class_size);
-    v.push_back(int(gnuplot_hidden3d+2*gnuplot_pm3d));
+    v.push_back(int(gnuplot_hidden3d+2*gnuplot_pm3d+4*gnuplot_opengl));
     return symbolic(at_xyztrange,v);
   }
   gen _xyztrange(const gen & args,GIAC_CONTEXT){
@@ -14115,7 +14147,7 @@ int find_plotseq_args(const gen & args,gen & expr,gen & x,double & x0d,double & 
   }
 
 #if !defined KHICAS // in kdisplay.cc
-#if defined RTOS_THREADX || defined NSPIRE || defined FXCG
+#if defined NSPIRE || defined FXCG
   logo_turtle vecteur2turtle(const vecteur & v){
     return logo_turtle();
   }
@@ -14485,11 +14517,32 @@ gen _vers(const gen & g,GIAC_CONTEXT){
     return turtle2gen(turtle(contextptr));
   }
 
+  int ck_turtle_size(GIAC_CONTEXT){
+    vector<logo_turtle> & v=turtle_stack(contextptr);
+    if (v.size()<v.capacity())
+      return 1;
+    return 2;
+  }
+
   static gen update_turtle_state(bool clrstring,GIAC_CONTEXT){
+    int x=ck_turtle_size(contextptr);
     if (clrstring)
       turtle(contextptr).s="";
     turtle(contextptr).theta = turtle(contextptr).theta - floor(turtle(contextptr).theta/360)*360;
-    turtle_stack(contextptr).push_back(turtle(contextptr));
+    bool push=true;
+    if (!turtle_stack(contextptr).empty()){
+      logo_turtle & t=turtle_stack(contextptr).back();
+      if (t.equal_except_nomark(turtle(contextptr))){
+	logo_turtle & src=turtle(contextptr);
+	t.theta=src.theta;
+	t.mark=src.mark;
+	t.visible=src.visible;
+	t.color=src.color;
+	push=false;
+      }
+    }
+    if (push)
+      turtle_stack(contextptr).push_back(turtle(contextptr));
     gen res=turtle_state(contextptr);
 #if defined(EMCC) || defined(EMCC2) // should directly interact with canvas
     return gen(turtlevect2vecteur(turtle_stack(contextptr)),_LOGO__VECT);
@@ -14505,6 +14558,11 @@ gen _vers(const gen & g,GIAC_CONTEXT){
 
   gen _avance(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+    /* os_draw_string_small(50,50,0x0,0xffffff,"avance tortue",false);
+       Sleep(1000);
+       int k=getkey(true);
+       os_draw_string_small(50,50,0x0,0xffffff,print_INT_(k).c_str(),false);
+       Sleep(1000); */
     // logo instruction
     double i;
     if (g.type!=_INT_){
@@ -15080,7 +15138,7 @@ gen _vers(const gen & g,GIAC_CONTEXT){
       turtle_fill_color= g.val;
       return g;
     }
-    if (is_zero(g)){ // will only work with 0.0
+    if (g.type!=_VECT && is_zero(g)){ // will only work with 0.0
       turtle_fill_begin=turtle_stack(contextptr).size();
       return 1;
     }
@@ -15106,6 +15164,7 @@ gen _vers(const gen & g,GIAC_CONTEXT){
       gen res=update_turtle_state(true,contextptr);
       if (turtle_fill_color>=0){
 	turtle(contextptr).color=c;
+	turtle(contextptr).radius=0;
 	res=update_turtle_state(true,contextptr);
       }
       return res;

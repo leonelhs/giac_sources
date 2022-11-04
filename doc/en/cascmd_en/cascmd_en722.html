@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Breaking out a loop: break
+<title>fsolve with the option newtonj_solver
 </title>
 </head>
 <body >
@@ -12,40 +12,19 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en723.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec983" class="subsection">12.3.6  Breaking out a loop: <span style="font-family:monospace">break</span>
-<a id="hevea_default1397"></a></h3>
-<p>The <span style="font-family:monospace">break</span> command exits a loop without finishing it.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">break</span> takes no arguments or parentheses.
-</li><li class="li-itemize"><span style="font-family:monospace">break</span> exits the current loop.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-Define a program:
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">testbreak(a,b):= {</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">local r;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">while (true) {</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  if (b == 0) {break;}</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  r:= irem(a,b);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  a:= b;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  b:= r;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">return a;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
-</td></tr>
-</table> 
-</div><p>
-Then:<br>
+<h3 id="sec1856" class="subsection">10.5.4  <span style="font-family:monospace">fsolve</span> with the option <span style="font-family:monospace">newtonj_solver</span>
+<a id="hevea_default1312"></a></h3>
+<h4 id="sec1857" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">testbreak(4,0)</span>
+<span style="font-family:monospace">fsolve([x^2+y-2,x+y^2-2],[x,y],[0,0],newtonj_solver)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">4</span>
-</div><p>
-since the <span style="font-family:monospace">while</span> loop is interrupted when <span style="font-family:monospace">b</span> is 0 and
-<span style="font-family:monospace">a</span> is 4.</p>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1.0,1.0</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
 <hr>
 <a href="cascmd_en721.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

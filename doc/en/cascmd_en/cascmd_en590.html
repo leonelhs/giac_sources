@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Intersection of a 2D graph with the axis
+<title>Rational approximation: float2rational exact
+
 </title>
 </head>
 <body >
@@ -12,39 +13,73 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en591.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec765" class="subsection">8.7.7  Intersection of a 2D graph with the axis
-<a id="hevea_default1077"></a><a id="hevea_default1078"></a></h3>
-<p>You can find the intersection of the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) of a function with
-the axes using the commands covered so far.
+<h3 id="sec1471" class="subsection">5.59.7  Rational approximation: <span style="font-family:monospace">float2rational</span> <span style="font-family:monospace">exact</span>
+<a id="hevea_default995"></a>
+<a id="hevea_default996"></a></h3>
+<p>Floating point numbers are considered approximations, while integers
+and rational numbers are considered exact. The
+<span style="font-family:monospace">float2rational</span> command finds a rational approximation to 
+a floating point number.<br>
+<span style="font-family:monospace">exact</span> is a synonym for <span style="font-family:monospace">float2rational</span>.
 </p><ul class="itemize"><li class="li-itemize">
-Finding the intersection of the graph with the
-<span style="font-style:italic">y</span>-axis is simply evaluating
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(0),
+<span style="font-family:monospace">float2rational</span> takes one argument:<br>
+ <span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-family:monospace">float2rational(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns 
+<span style="font-style:italic">expr</span> with all the floating point numbers in <span style="font-style:italic">expr</span>
+replaced by rational numbers; any floating point number <span style="font-style:italic">x</span> is
+replaced by a rational <span style="font-style:italic">r</span> with |<span style="font-style:italic">r</span>−<span style="font-style:italic">x</span>|&lt;є, where є
+is given by <span style="font-family:monospace">epsilon</span> in the <span style="font-family:monospace">cas</span> configuration
+(see Section <a href="cascmd_en027.html#ssec%3Aconfcomp">2.5.7</a>, item <a href="cascmd_en027.html#enum%3Aeps">9</a>).
+</li></ul><h4 id="sec1472" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">float2rational(1.5)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">float2rational(1.414)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">707</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">500</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">float2rational(0.156381102937*2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5144</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16447</td></tr>
+</table></td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">float2rational(1.41421356237)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">114243</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">80782</td></tr>
+</table></td></tr>
+</table>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">float2rational(1.41421356237^2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
 </td></tr>
 </table>
-indeed the point with coordinates (0,<span style="font-style:italic">f</span>(0)) is the intersection point
-of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">y</span>-axis.
-</li><li class="li-itemize">Finding the intersection of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">x</span>-axis
-requires solving the equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=0.
-<ul class="itemize"><li class="li-itemize">
-If <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) is polynomial-like, then you can find the 
-the exact values of the abscissa of these points with 
-<span style="font-family:monospace">solve</span> (see Section <a href="cascmd_en556.html#ssec%3Asolve">6.55.6</a>).<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">solve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>
-</div>
-returns the solution.
-</li><li class="li-itemize">Otherwise, you can find numeric approximations of these
-abscissa. First, look at the graph for an initial guess <span style="font-style:italic">x</span><sub>0</sub> or a 
-range with an intersection and then refine it with
-<span style="font-family:monospace">fsolve</span> (see Section <a href="index.html#sec%3Afsolve">10.4</a>).<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">fsolve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">method</span><span style="font-family:monospace">)</span>
-</div>
-returns a numeric approximation of a solution.
-</li></ul>
 </li></ul>
 <hr>
 <a href="cascmd_en589.html"><img src="previous_motif.gif" alt="Previous"></a>

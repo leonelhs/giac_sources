@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Laplace transform and inverse Laplace transform: laplace ilaplace invlaplace
-
+<title>Solving equation(s): solve cSolve
 
 
 </title>
@@ -15,170 +14,329 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en569.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:lap" class="subsection">6.57.2  Laplace transform and inverse Laplace transform: <span style="font-family:monospace">laplace</span> <span style="font-family:monospace">ilaplace</span> <span style="font-family:monospace">invlaplace</span>
-<a id="hevea_default974"></a>
-<a id="hevea_default975"></a>
-<a id="hevea_default976"></a>
-<a id="ssec:laplace"></a></h3>
-<p>Denoting by <span style="color:red"><span style="font-style:italic">L</span></span> the Laplace transform,
-you get the following:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span> <span style="font-style:italic">u</span></sup><span style="font-style:italic">y</span>(<span style="font-style:italic">u</span>)<span style="font-style:italic">du</span> </td></tr>
-</table></td></tr>
-<tr><td style="text-align:right;white-space:nowrap" ><span style="color:red"><span style="font-style:italic">L</span></span><sup>−1</sup>(<span style="font-style:italic">g</span>)(<span style="font-style:italic">x</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<span style="font-style:italic">i</span>π</td></tr>
-</table></td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">C</span></td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">e</span><sup><span style="font-style:italic">z</span> <span style="font-style:italic">x</span></sup><span style="font-style:italic">g</span>(<span style="font-style:italic">z</span>)<span style="font-style:italic">dz</span>
-</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table><p>
-where <span style="font-style:italic">C</span> is a closed contour enclosing the poles of <span style="font-family:monospace">g</span>.</p><p>The <span style="font-family:monospace">laplace</span> command finds the Laplace transform of a function.
+<h3 id="ssec:solve" class="subsection">5.55.6  Solving equation(s): <span style="font-family:monospace">solve</span> <span style="font-family:monospace">cSolve</span>
+<a id="hevea_default964"></a>
+<a id="hevea_default965"></a>
+</h3>
+<p>The <span style="font-family:monospace">solve</span> command solves an equation or a system of
+polynomial equations. In real mode, <span style="font-family:monospace">solve</span> returns only real
+solutions; to have <span style="font-family:monospace">solve</span> return the complex solutions, switch
+to complex mode (e.g.by checking <span style="font-family:monospace">Complex</span> in the cas
+configuration, see Section <a href="cascmd_en025.html#ssec%3Acomplex">2.5.5</a>).</p><p>The <span style="font-family:monospace">cSolve</span> command is identical to <span style="font-family:monospace">solve</span>, except it
+returns the complex solutions whether in real mode or complex mode.</p><p>To solve an equation:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">laplace</span> takes one mandatory argument and two optional
-arguments:
+<span style="font-family:monospace">solve</span> takes one mandatory argument and one optional
+argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving a variable.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, the variable name (by default <span style="font-family:monospace">x</span>).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">s</span>, a variable for the output (by default <span style="font-style:italic">x</span>).
+<span style="font-style:italic">eqn</span>, an equation or expression assumed to be zero.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable (by default, <span style="font-style:italic">x</span><span style="font-family:monospace">=x</span>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">laplace(</span><span style="font-style:italic">expr</span> ⟨ <span style="font-style:italic">x</span>, ⟩<span style="font-family:monospace">)</span>
-returns the Laplace transform of <span style="font-style:italic">expr</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+</li><li class="li-itemize"><span style="font-family:monospace">solve(</span><span style="font-style:italic">eqn</span><span style="font-family:monospace">,</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the solution
+to the equation.
+</li></ul><p>
+For trigonometric equations, <span style="font-family:monospace">solve</span> returns by default the principal
+solutions. To have all the solutions check <span style="font-family:monospace">All_trig_sol</span> in the cas
+configuration (see Section <a href="cascmd_en027.html#ssec%3Aconfcomp">2.5.7</a>, item <a href="cascmd_en027.html#enum%3Atrig">19</a>).</p><p><span style="font-weight:bold">Examples</span>:
 </p><ul class="itemize"><li class="li-itemize">
+Solve <span style="font-style:italic">x</span><sup>4</sup>−1=3<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">laplace(sin(x))</span>
+<span style="font-family:monospace">solve(x^4-1=3)</span>
+</div>
+<span style="font-style:italic">Output (in real mode):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table>
+<span style="font-style:italic">Output (in complex mode):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,<span style="font-style:italic">i</span></td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,−<span style="font-style:italic">i</span></td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table>
+Also:<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">cSolve(x^4-1=3)</span>
+</div>
+<span style="font-style:italic">Output (in any mode):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">i</span>,</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">i</span></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize">Solve exp(<span style="font-style:italic">x</span>)=2<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve(exp(x)=2)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">ln</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize">Solve cos(2*<span style="font-style:italic">x</span>)=1/2<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve(cos(2*x)=1/2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π </td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>+1</td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π </td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+<span style="font-style:italic">Output (with </span><span style="font-style:italic"><span style="font-family:monospace">All_trig_sol</span></span><span style="font-style:italic"> checked):</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">6π <span style="font-style:italic">n</span><sub>0</sub> + π</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">6π <span style="font-style:italic">n</span><sub>0</sub> − π </td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li></ul><p><br>
+</p><p>To solve a system of polynomial equations:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">solve</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">eqns</span>, a list of polynomial equations.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of variables.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">solve(</span><span style="font-style:italic">eqns,vars</span><span style="font-family:monospace">)</span> returns the
+solutions to the system of equations.
+</li></ul><h4 id="sec1420" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
+Find <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span> such that <span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>=1,<span style="font-style:italic">x</span>−<span style="font-style:italic">y</span>=0<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve([x+y=1,x-y],[x,y])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize">Find <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span> such that <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">y</span>=2,<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span><sup>2</sup>=2<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve([x^2+y=2,x+y^2=2],[x,y])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,1</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−2,−2</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
 </table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">+2</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
+</table></td><td class="dcell">+1</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell">+2</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
+</table>
+<div class="center"><span style="font-family:monospace">[(sqrt(5)+1)/2,(1-sqrt(5))/2]]</span></div>
+</li><li class="li-itemize">Find <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span> such that <span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">y</span><sup>2</sup>=0,<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">z</span><sup>2</sup>=0<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve([x^2-y^2=0,x^2-z^2=0],[x,y,z])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span></td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span>,−<span style="font-style:italic">x</span>,−<span style="font-style:italic">x</span></td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span>,<span style="font-style:italic">x</span>,−<span style="font-style:italic">x</span></td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">x</span>,−<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span></td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize">Find the intersection of a straight line
+(given by a list of equations) and a plane.<br>
+For example, let <span style="font-style:italic">D</span> be the straight line with cartesian equations
+[<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>=0,<span style="font-style:italic">z</span>−<span style="font-style:italic">x</span>=0] and let <span style="font-style:italic">P</span> the plane with equation <span style="font-style:italic">x</span>−1+<span style="font-style:italic">y</span>+<span style="font-style:italic">z</span>=0.
+Find the intersection of <span style="font-style:italic">D</span> and <span style="font-style:italic">P</span>.<br>
+<span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve([[y-z=0,z-x=0],x-1+y+z=0],[x,y,z])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">laplace(sin(t),t)</span>
+<span style="font-family:monospace">cSolve([-x^2+y=2,x^2+y],[x,y])</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">t</span><sup>2</sup>+1</td></tr>
-</table></td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">−<span style="font-style:italic">i</span>,1</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell"><span style="font-style:italic">i</span>,1</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">laplace(sin(t),t,s)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">s</span><sup>2</sup>+1</td></tr>
-</table></td></tr>
-</table>
-</li></ul><p>The <span style="font-family:monospace">ilaplace</span> command finds the Laplace transform of a
-function.<br>
-<span style="font-family:monospace">invlaplace</span> is a synonym for <span style="font-family:monospace">ilaplace</span>.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">ilaplace</span> takes one mandatory argument and two optional
-arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving a variable.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, the variable name (by default <span style="font-family:monospace">x</span>).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">s</span>, a variable for the output (by default <span style="font-style:italic">x</span>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">ilaplace(</span><span style="font-style:italic">expr</span> ⟨ <span style="font-style:italic">x</span>, ⟩<span style="font-family:monospace">)</span>
-returns the inverse Laplace transform of <span style="font-style:italic">expr</span>.
-</li></ul><p><br>
-</p><p>The Laplace transform has the following properties:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>′)(<span style="font-style:italic">x</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >−<span style="font-style:italic">y</span>(0)+<span style="font-style:italic">x</span><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>)</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" ><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>″)(<span style="font-style:italic">x</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >−<span style="font-style:italic">y</span>′(0)+<span style="font-style:italic">x</span><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>′)(<span style="font-style:italic">x</span>)</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >−<span style="font-style:italic">y</span>′(0)−<span style="font-style:italic">xy</span>(0)+<span style="font-style:italic">x</span><sup>2</sup><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>)
-</td></tr>
-</table></td></tr>
-</table><p>
-These properties make the Laplace transform and inverse Laplace
-transform useful for solving linear differential equations
-with constant coefficients. For example, suppose you have
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">y</span><sup>′′</sup> +<span style="font-style:italic">p</span> <span style="font-style:italic">y</span><sup>′</sup> +<span style="font-style:italic">q</span> <span style="font-style:italic">y</span> = <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">y</span>(0)=<span style="font-style:italic">a</span>,  <span style="font-style:italic">y</span>′(0)=<span style="font-style:italic">b</span>
-</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-then
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">f</span>)(<span style="font-style:italic">x</span>)</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" ><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>″+<span style="font-style:italic">py</span>′+<span style="font-style:italic">qy</span>)(<span style="font-style:italic">x</span>) </td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >−<span style="font-style:italic">y</span>′(0)−<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>(0)+<span style="font-style:italic">x</span><sup>2</sup> <span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>)−<span style="font-style:italic">p</span> <span style="font-style:italic">y</span>(0)+<span style="font-style:italic">p</span> <span style="font-style:italic">x</span> <span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>))+<span style="font-style:italic">q</span> <span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>) </td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >=</td><td style="text-align:left;white-space:nowrap" >(<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">p</span> <span style="font-style:italic">x</span>+<span style="font-style:italic">q</span>) <span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>)−<span style="font-style:italic">y</span>′(0)−(<span style="font-style:italic">x</span>+<span style="font-style:italic">p</span>) <span style="font-style:italic">y</span>(0)
-</td></tr>
-</table></td></tr>
-</table><p>
-Therefore, if <span style="font-style:italic">a</span>=<span style="font-style:italic">y</span>(0) and <span style="font-style:italic">b</span>=<span style="font-style:italic">y</span>′(0), you get
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">f</span>)(<span style="font-style:italic">x</span>)=(<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">p</span> <span style="font-style:italic">x</span>+<span style="font-style:italic">q</span>)<span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">y</span>)(<span style="font-style:italic">x</span>)−(<span style="font-style:italic">x</span>+<span style="font-style:italic">p</span>) <span style="font-style:italic">a</span>−<span style="font-style:italic">b</span>
-</td></tr>
-</table><p>
-and the solution of the differential equation is:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>)= <span style="color:red"><span style="font-style:italic">L</span></span><sup>−1</sup>((<span style="color:red"><span style="font-style:italic">L</span></span>(<span style="font-style:italic">f</span>)(<span style="font-style:italic">x</span>)+(<span style="font-style:italic">x</span>+<span style="font-style:italic">p</span>) <span style="font-style:italic">a</span> +<span style="font-style:italic">b</span>)/(<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">p</span> <span style="font-style:italic">x</span>+<span style="font-style:italic">q</span>))
-</td></tr>
-</table><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-Solve:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">y</span><sup>′′</sup> −6 <span style="font-style:italic">y</span><sup>′</sup>+9 <span style="font-style:italic">y</span>  = <span style="font-style:italic">x</span> <span style="font-style:italic">e</span><sup>3 <span style="font-style:italic">x</span></sup>,
-    <span style="font-style:italic">y</span>(0)=<span style="font-style:italic">c</span>_0,    <span style="font-style:italic">y</span><sup>′</sup>(0)=<span style="font-style:italic">c</span>_1
-</td></tr>
-</table><p>
-Here, <span style="font-style:italic">p</span>=−6, <span style="font-style:italic">q</span>=9.<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">laplace(x*exp(3*x))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>−6 <span style="font-style:italic">x</span>+9</td></tr>
-</table></td></tr>
-</table><p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">ilaplace((1/(x^2-6*x+9)+(x-6)*c_0+c_1)/(x^2-6*x+9))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span><sup>3</sup>−18 <span style="font-style:italic">x</span> <span style="font-style:italic">c</span><sub>0</sub>+6 <span style="font-style:italic">x</span> <span style="font-style:italic">c</span><sub>1</sub>+6 <span style="font-style:italic">c</span><sub>0</sub></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">e</span><sup>3 <span style="font-style:italic">x</span></sup>
-</td></tr>
-</table><p>
-Note that this equation could be solved directly.<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">desolve(y’’-6*y’+9*y=x*exp(3*x),y)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">e</span><sup>3 <span style="font-style:italic">x</span></sup> </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">c</span><sub>0</sub> <span style="font-style:italic">x</span>+<span style="font-style:italic">c</span><sub>1</sub></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">x</span><sup>3</sup> <span style="font-style:italic">e</span><sup>3 <span style="font-style:italic">x</span></sup>
-</td></tr>
-</table><p><br>
-</p><p>You also can use the <span style="font-family:monospace">addtable</span> command 
-Laplacians of unspecified functions (see Section <a href="cascmd_en281.html#ssec%3Acfourier">6.26.2</a>).</p>
 <hr>
 <a href="cascmd_en567.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

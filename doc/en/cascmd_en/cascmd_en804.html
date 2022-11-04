@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The rectangular coordinates of a point: rectangular_coordinates
+<title>Perpendicular lines in the plane: perpendicular
 </title>
 </head>
 <body >
@@ -12,45 +12,34 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en805.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1085" class="subsection">13.13.5  The rectangular coordinates of a point: <span style="font-family:monospace">rectangular_coordinates</span>
-<a id="hevea_default1521"></a></h3>
-<p>The <span style="font-family:monospace">rectangular_coordinates</span> command finds the rectangular
-coordinates of a point given its polar coordinates.
+<h3 id="ssec:2dperp" class="subsection">13.7.6  Perpendicular lines in the plane: <span style="font-family:monospace">perpendicular</span>
+<a id="hevea_default1495"></a></h3>
+<p>See Section <a href="cascmd_en903.html#ssec%3A3dperp">14.5.6</a> for perpendicular lines in space.</p><p>The <span style="font-family:monospace">perpendicular</span> command finds a line perpendicular to a
+given line.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rectangular_coordinates</span> takes two arguments:<br>
- <span style="font-style:italic">r</span>, θ, two real numbers.
-</li><li class="li-itemize"><span style="font-family:monospace">rectangular_coordinates(</span><span style="font-style:italic">r</span>,θ<span style="font-family:monospace">)</span> 
-returns a list of the rectangular coordinates of the point with
-polar coordinates <span style="font-style:italic">r</span> and θ.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">perpendicular</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">p</span>, a point.
+</li><li class="li-itemize">ℓ, a line. The line can also be specified by giving a
+sequence of two points on it.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">perpendicular(</span><span style="font-style:italic">p</span>,ℓ<span style="font-family:monospace">)</span>
+returns and draws the line perpendicular to ℓ passing through
+<span style="font-style:italic">p</span>.
+</li></ul><h4 id="sec2057" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">rectangular_coordinates(2, pi/4)</span>
+<span style="font-family:monospace">perpendicular(0,line(1,i))</span>
 </div><p>
 <span style="font-style:italic">or:</span>
 </p><div class="center">
-<span style="font-family:monospace">rectangular_coordinates(polar_point(2, pi/4))</span>
+<span style="font-family:monospace">perpendicular(0,1,i)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
+</p><div class="center">
+<img src="cascmd_en181.png">
+</div>
 <hr>
 <a href="cascmd_en803.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -11,7 +11,9 @@
 #endif
 static char ** xcas_argv; 
 static int xcas_argc,xcas_user_level,update_xcas=0; 
+#ifdef USE_OBJET_BIDON
 static xcas::objet_bidon mon_objet_bidon; 
+#endif
 static giac::vecteur rpn_menu; 
 static giac::vecteur rpn_description; 
 static unsigned rpn_menu_page; 
@@ -863,7 +865,7 @@ void load_autorecover_data() {
        n=fl_ask("%s",gettext("Launch tutorial in browser?"));
        if (n==1){
          if (giac::language(giac::context0)==1)
-           giac::system_browser_command(doc_prefix+"tutoriel/index.html");
+           giac::system_browser_command(doc_prefix+"tutoriel.html");
          else
            giac::system_browser_command(doc_prefix+"casinter/index.html");
        }
@@ -1203,14 +1205,14 @@ static void cb_Xcas_nw_rescue(Fl_Menu_*, void*) {
 
 static void cb_Xcas_nw_certify(Fl_Menu_*, void*) {
   bool b=giac::nws_certify_firmware(false,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\nVérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\nVérifiez que la calculatrice est bien connectée!");
 }
 
 static void cb_Xcas_nw_certify_overwrite(Fl_Menu_*, void*) {
   int i=fl_ask("Ce test necessite l'accord du proprietaire de la calculatrice et dure environ 1 minute. Effectuer?");
             if (i==0) return;
 	    bool b=giac::nws_certify_firmware(true,Xcas_get_context());
-            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.ujf-grenoble.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\nVérifiez que la calculatrice est bien connectée!");
+            fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\nVérifiez que la calculatrice est bien connectée!");
 }
 
 static void cb_Xcas_Export_nws(Fl_Menu_*, void*) {
@@ -1921,10 +1923,10 @@ static void cb_Xcas_help_load(Fl_Menu_*, void*) {
 
 static void cb_Xcas_help_tutorial(Fl_Menu_*, void*) {
   if (xcas::use_external_browser)
-           giac::system_browser_command(doc_prefix+"tutoriel/index.html");
+           giac::system_browser_command(doc_prefix+"tutoriel.html");
         else {
          if (xcas::Xcas_help_window){
-           xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"tutoriel/index.html").c_str());
+           xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"tutoriel.html").c_str());
            xcas::Xcas_help_window->show();
           }
          };
@@ -5727,6 +5729,10 @@ int main(int argc,char ** argv) {
   #if defined WIN32 && !defined __MINGW_H
   Xcas_Numworks_menu->deactivate();
   #endif
+  #ifndef USE_OBJET_BIDON
+     xcas::localisation(); // added by L. Marohnić
+  #endif
+  
   #if defined WIN32 || defined __APPLE__
   static std::string arg0;
   if (!getenv("XCAS_ROOT")){

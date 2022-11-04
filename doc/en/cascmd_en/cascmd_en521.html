@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>QR decomposition (for TI compatibility): QR
+<title>Minimal polynomial: pmin
 </title>
 </head>
 <body >
@@ -12,72 +12,62 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en522.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec651" class="subsection">6.49.3  QR decomposition (for TI compatibility): <span style="font-family:monospace">QR</span>
-<a id="hevea_default907"></a></h3>
-<p>The <span style="font-family:monospace">QR</span> command finds the QR decomposition of a matrix.
+<h3 id="sec1284" class="subsection">5.48.9  Minimal polynomial: <span style="font-family:monospace">pmin</span>
+<a id="hevea_default901"></a></h3>
+<p>The minimal polynomial of a square matrix <span style="font-style:italic">A</span> is the polynomial <span style="font-style:italic">P</span>
+having minimal degree such that <span style="font-style:italic">P</span>(<span style="font-style:italic">A</span>)=0.
+The <span style="font-family:monospace">pmin</span> command finds the minimal polynomial of a
+matrix.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">QR</span> takes three arguments:
+<span style="font-family:monospace">pmin</span> takes one mandatory argument and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">A</span>, a square matrix.
-</li><li class="li-itemize"><span style="font-style:italic">q</span> and <span style="font-style:italic">r</span>, two variable names.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable name.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">QR(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">q</span>,<span style="font-style:italic">r</span><span style="font-family:monospace">)</span> returns the matrix <span style="font-style:italic">R</span> from the QR
-decomposition of <span style="font-style:italic">A</span>, and assigns the matrices <span style="font-style:italic">Q</span> and <span style="font-style:italic">R</span> to the
-variables <span style="font-style:italic">q</span> and <span style="font-style:italic">r</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+</li><li class="li-itemize"><span style="font-family:monospace">pmin(</span><span style="font-style:italic">A</span> ⟨ <span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns the minimal
+polynomial <span style="font-style:italic">A</span>. It is written as the list of its coefficients if no
+variable name was provided or written as an expression with respect to
+<span style="font-style:italic">x</span> if there is a second argument.
+</li></ul><h4 id="sec1285" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">QR([[3,5],[4,5]],Q,R)</span>
-</div><p>
-<span style="font-style:italic">Output (the matrix </span><span style="font-style:italic"><span style="font-family:monospace">R</span></span><span style="font-style:italic">):</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >5</td><td style="text-align:center;white-space:nowrap" >7</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
+<div class="center">
+<span style="font-family:monospace">pmin([[1,0],[0,1]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,−1</td><td class="dcell">⎤<br>
 ⎦</td></tr>
-</table><p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">Q</span>
-</div><p>
-<span style="font-style:italic">Output (the matrix </span><span style="font-style:italic"><span style="font-family:monospace">Q</span></span><span style="font-style:italic">):</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
 </table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">pmin([[1,0],[0,1]],x)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>−1
+</td></tr>
+</table>
+Hence the minimal polynomial of [[1,0],[0,1]] is <span style="font-style:italic">x</span>−1.
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">pmin([[2,1,0],[0,2,0],[0,0,2]])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">1,−4,4</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">pmin([[2,1,0],[0,2,0],[0,0,2]],x)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>−4 <span style="font-style:italic">x</span>+4
+</td></tr>
+</table>
+Hence, the minimal polynomial of [[2,1,0],[0,2,0],[0,0,2]] is <span style="font-style:italic">x</span><sup>2</sup>−4<span style="font-style:italic">x</span>+4.
+</li></ul>
 <hr>
 <a href="cascmd_en520.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

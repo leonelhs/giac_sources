@@ -4,69 +4,121 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>2-d graph</title>
+<title>The Z-transform of a sequence: ztrans
+</title>
 </head>
 <body >
 <a href="cascmd_en581.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en583.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:plotfunc" class="subsection">8.4.1  2-d graph</h3>
-<p>The <span style="font-family:monospace">plotfunc</span> command draws the graph of a function.<br>
-<span style="font-family:monospace">funcplot</span> is a synonym for <span style="font-family:monospace">plotfunc</span>.</p><p><span style="font-family:monospace">plotfunc</span> can draw the graph of a one-variable function or a
-two-variable function; this section will discuss one-variable
-functions and the next section will discuss two-variable functions.</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plotfunc</span> takes one mandatory argument and two
-optional arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression defining a function.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span>, the variable name (by default
-<span style="font-family:monospace">x</span>) possibly with bounds. If the variable is given as
-<span style="font-style:italic">var=a..b</span>, the graph will be drawn from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>,
-otherwise it will be graphed over the default interval 
-(see Section <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, which can be
-<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
-step or <span style="font-family:monospace">nstep=</span><span style="font-style:italic">n</span> to specify the number of points used to
-graph.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">plotfunc(</span><span style="font-style:italic">expr,var</span> ⟨<span style="font-style:italic">opt</span>⟩<span style="font-family:monospace">)</span>
-draws the graph.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+<h3 id="sec1454" class="subsection">5.58.1  The Z-transform of a sequence: <span style="font-family:monospace">ztrans</span>
+<a id="hevea_default985"></a></h3>
+<p>The Z-transform of a sequence <span style="font-style:italic">a</span><sub>0</sub>, <span style="font-style:italic">a</span><sub>1</sub>, …, <span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>, … is the
+function 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>) = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup></td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+For example, the Z-transform of the sequence 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0, 1, 2, 3, …
+</td></tr>
+</table><p> 
+is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>) = 0 + 1/<span style="font-style:italic">z</span> + 2/<span style="font-style:italic">z</span><sup>2</sup> + 3/<span style="font-style:italic">z</span><sup>3</sup> + …
+</td></tr>
+</table><p> 
+which has closed form 
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">z</span>) = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span>−1)<sup>2</sup>.
+</td></tr>
+</table><p> 
+The <span style="font-family:monospace">ztrans</span> command finds the Z-transform of a sequence.
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ztrans</span> takes one mandatory and two optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span><sub><span style="font-style:italic">x</span></sub>, a formula with a variable for the general
+term of a sequence.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, the variable (by default <span style="font-family:monospace">x</span>).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">z</span>, a variable to be used by the resulting
+function.
+</li></ul>
+<span style="font-family:monospace">ztrans(</span><span style="font-style:italic">a</span><sub><span style="font-style:italic">x</span></sub> ⟨ <span style="font-style:italic">x</span>,<span style="font-style:italic">z</span>⟩&gt;<span style="font-family:monospace">)</span> returns the
+Z-transform of the sequence. 
+</li></ul><h4 id="sec1455" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">plotfunc(x^2-2)</span>
+<span style="font-family:monospace">ztrans(x)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en025.png">
-</div>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>/(<span style="font-style:italic">x</span><sup>2</sup>−2*<span style="font-style:italic">x</span>+1)
+</td></tr>
+</table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">plotfunc(a^2-2,a=-1..2)</span>
+<span style="font-family:monospace">ztrans(n,n,z)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en026.png">
-</div>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span><sup>2</sup>−2 <span style="font-style:italic">z</span>+1</td></tr>
+</table></td></tr>
+</table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">plotfunc(x^2-2,x,xstep=5)</span>
+<span style="font-family:monospace">ztrans(1)</span>
 </div>
 <span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−1</td></tr>
+</table></td></tr>
+</table>
+since
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> 1/<span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup> = 1/(1−1/<span style="font-style:italic">x</span>) = <span style="font-style:italic">x</span>/(<span style="font-style:italic">x</span>−1).
+</td></tr>
+</table>
+You also have<br>
+<span style="font-style:italic">Input:</span>
 <div class="center">
-<img src="cascmd_en027.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">plotfunc(x^2-2,x=-2..3,nstep=30)</span>
+<span style="font-family:monospace">ztrans(1,n,z)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en028.png">
-</div>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">z</span>−1</td></tr>
+</table></td></tr>
+</table>
+Note that differentiating both sides of
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> 1/<span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup> = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span>−1)
+</td></tr>
+</table>
+gives you
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">n</span>/<span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span>−1</sup> = 1/(<span style="font-style:italic">z</span>−1)<sup>2</sup>
+</td></tr>
+</table>
+and so, multiplying both sides by <span style="font-style:italic">z</span>,
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">n</span>/<span style="font-style:italic">z</span><sup><span style="font-style:italic">n</span></sup> = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span>−1)<sup>2</sup> = <span style="font-style:italic">z</span>/(<span style="font-style:italic">z</span><sup>2</sup> − 2<span style="font-style:italic">z</span> + 1)
+</td></tr>
+</table>
+as indicated above.
 </li></ul>
 <hr>
 <a href="cascmd_en581.html"><img src="previous_motif.gif" alt="Previous"></a>

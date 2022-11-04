@@ -1909,7 +1909,7 @@ namespace xcas {
     if (!chs)
       return false;
     _saving = true;
-    FILE * f(fopen(filename,"w"));
+    FILE * f(fopen(filename,"wb"));
     if (!f){ 
       string message=string(gettext("Unable to open file "))+filename;
       if (warn_user)

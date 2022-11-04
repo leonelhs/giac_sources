@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Increasing the phase by π/2 in a trigonometric expression: shift_phase
+<title>Jacobi equation: jacobi_equation
 </title>
 </head>
 <body >
@@ -12,113 +12,78 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en246.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec305" class="subsection">6.23.3  Increasing the phase by π/2 in a trigonometric expression: <span style="font-family:monospace">shift_phase</span>
-<a id="hevea_default445"></a></h3>
-<p>The <span style="font-family:monospace">shift_phase</span> command increases the phase of a
-trigonometric expression by π/2.
+<h3 id="sec576" class="subsection">5.22.4  Jacobi equation: <span style="font-family:monospace">jacobi_equation</span>
+<a id="hevea_default443"></a></h3>
+<p>To determine whether a solution <span style="font-style:italic">y</span><sub>0</sub> to the Euler-Lagrange
+equations is an extrema, checking the convexity of the Lagrangian <span style="font-style:italic">f</span>
+doesn’t always work. Another approach is to look at the Jacobi
+equation, which is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:jacobi-equation"></a>
+−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>) <span style="font-style:italic">h</span>′</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">+</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span> <span style="font-style:italic">y</span></sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>)−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span> <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>)</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"> <span style="font-style:italic">h</span>=0.
+    (3)</td></tr>
+</table><p>
+for unknown function <span style="font-style:italic">h</span>. 
+If the Jacobi equation has a solution such that <span style="font-style:italic">h</span>(<span style="font-style:italic">a</span>)=0, <span style="font-style:italic">h</span>(<span style="font-style:italic">c</span>)=0 for
+some <span style="font-style:italic">c</span>∈(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] (the interval given in the variational problem) and
+<span style="font-style:italic">h</span> not identically zero on [<span style="font-style:italic">a</span>,<span style="font-style:italic">c</span>], then <span style="font-style:italic">c</span> is called a
+<em>conjugate</em> to <span style="font-style:italic">a</span>. If a conjugate exists, then
+<span style="font-style:italic">y</span><sub>0</sub> does not minimize the functional <span style="font-style:italic">F</span>.
+But the function <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> if
+<span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">x</span>)&gt;0 for all <span style="font-style:italic">x</span>∈[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] and there are no points
+conjugate to <span style="font-style:italic">a</span> in (<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>].</p><p>The <span style="font-family:monospace">jacobi_equation</span> command computes the Jacobi equation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">shift_phase</span> takes one argument:<br>
- <span style="font-style:italic">expr</span>, a trigonometric expression.
-</li><li class="li-itemize"><span style="font-family:monospace">shift_phase(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns
-<span style="font-style:italic">expr</span> with the phase increased by π/2 (after
-automatic simplification).
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">shift_phase(x + sin(x))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>−cos</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π +2 <span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">shift_phase(x + cos(x))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>+sin</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π +2 <span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">shift_phase(x + tan(x))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">tan</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π +2 <span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table>
-</li></ul><p>Quoting the argument will prevent the automatic simplification.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">jacobi_equation</span> takes five or six arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>), an expression involving an independent
+variable, a dependent variable, and the dependent variable prime.
+</li><li class="li-itemize"><span style="font-style:italic">depvar</span>, the independent variable.
+</li><li class="li-itemize"><span style="font-style:italic">indvar</span>, the dependent variable. This argument and
+the previous one can be combined to a single argument
+<span style="font-style:italic">depvar(indvar)</span>, which case the call has five arguments.
+</li><li class="li-itemize">expression <span style="font-style:italic">y</span><sub>0</sub> representing a function in <span style="font-style:italic">C</span><sup>1</sup>[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] which
+is stationary for the functional
+<span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup> <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>.
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a symbol for the unknown function in the Jacobi equation.
+</li><li class="li-itemize"><span style="font-style:italic">a</span>, a real number which is the lower bound for <span style="font-style:italic">x</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">jacobi_equation(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns
+the Jacobi equation and possibly the solution.
+</li></ul><p>
+If the Jacobi equation can be solved by <span style="font-family:monospace">dsolve</span> (see
+Section <a href="cascmd_en579.html#ssec%3Adsolve">5.57.1</a>), a sequence containing the
+equation (<a href="#eq%3Ajacobi-equation">3</a>) and its solution is
+returned. Otherwise, if (<a href="#eq%3Ajacobi-equation">3</a>) cannot be solved
+immediately, only the Jacobi equation is returned.</p><h4 id="sec577" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">shift_phase(’sin(x + pi/2)’)</span>
+<span style="font-family:monospace">jacobi_equation(-1/2*y’(t)^2+y(t)^2/2,t,y,sin(t),h,0)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−cos</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">π +2 <span style="font-style:italic">x</span>+2 </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π</td></tr>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><sup>2</sup></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p>
-With an unquoted sine, you get:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">shift_phase(sin(x + pi/2))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">sin</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π +2 <span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><p>
-since <span style="font-family:monospace">sin(x+pi/2)</span> is evaluated (in this case simplified)
-before <span style="font-family:monospace">shift_phase</span> is called, and
-<span style="font-family:monospace">shift_phase(cos(x))</span> returns <span style="font-family:monospace">sin((pi+2*x)/2)</span>.</p>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">t</span><sup>2</sup></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">h</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">t</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">−<span style="font-style:italic">h</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">t</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">=0,<span style="font-style:italic">c</span><sub>0</sub> sin<span style="font-style:italic">t</span>
+</td></tr>
+</table>
 <hr>
 <a href="cascmd_en244.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -476,10 +476,10 @@ namespace giac {
   };
 
   enum color_values {
-#ifdef KHICAS
+#if defined KHICAS || defined GIAC_HAS_STO_38
     _BLACK=0,
     _RED=0xf800,
-    _GREEN=0x0400,
+    _GREEN=0x07e0,
     _YELLOW=0xffe0,
     _BLUE=0x001f,
     _MAGENTA=0xf81f,
@@ -488,18 +488,21 @@ namespace giac {
 #else // KHICAS
 #ifdef GIAC_HAS_STO_38
     _WHITE=0,
+    _RED=0xff0000,
+    _GREEN=0xff00,
+    _YELLOW=0xffff00,
+    _BLUE=0xff,
+    _MAGENTA=0xff00ff,
+    _CYAN=0xffff,
+    _BLACK=7,
 #else
     _BLACK=0,
-#endif
     _RED=1,
     _GREEN=2,
     _YELLOW=3,
     _BLUE=4,
     _MAGENTA=5,
     _CYAN=6,
-#ifdef GIAC_HAS_STO_38
-    _BLACK=7,
-#else
     _WHITE=7,
 #endif
 #endif // KHICAS
@@ -618,6 +621,9 @@ namespace giac {
     _GT_ACYCLIC = 159,             // acyclic
     _KDE_BANDWIDTH = 160,          // bandwidth
     _KDE_BINS = 161,               // bins
+    _NLP_METHOD = 162,
+    _NLP_TOLERANCE = 163,
+    _NLP_VERBOSE = 164,
   };
 
   enum mupad_operator {

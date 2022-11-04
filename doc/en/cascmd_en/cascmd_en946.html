@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Changing the sampling rate: resample
-
+<title>Checking if an object in space is a square: is_square
 </title>
 </head>
 <body >
@@ -13,46 +12,47 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en947.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:resample" class="subsection">15.1.8  Changing the sampling rate: <span style="font-family:monospace">resample</span>
-<a id="hevea_default1683"></a>
-</h3>
-<p>The <span style="font-family:monospace">resample</span> command resamples a clip to a desired rate.
+<h3 id="ssec:3dchecksquare" class="subsection">14.13.12  Checking if an object in space is a square: <span style="font-family:monospace">is_square</span>
+<a id="hevea_default1652"></a></h3>
+<p>See Section <a href="cascmd_en871.html#ssec%3A2dchecksquare">13.16.8</a> for checking for squares in
+two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_square</span> command determines whether or not a
+geometric object is a square.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">resample</span> takes one mandatory argument and two
-optional arguments:
+<span style="font-family:monospace">is_square</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of four points assumed to be
+the vertices of a quadrilateral.
+</li><li class="li-itemize"><span style="font-family:monospace">is_square(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1 if the object
+is a square and returns 0 otherwise.
+</li></ul><h4 id="sec2397" class="subsubsection">Examples.</h4>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, an audio clip.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">r</span>, the target sample rate in Hz (by default
-44100).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span>, an integer specifying the quality level,
-from 0 (poor) to 4 (best) (by default, 2).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">resample(</span><span style="font-style:italic">A</span> ⟨ <span style="font-style:italic">r</span>,<span style="font-style:italic">n</span>⟩<span style="font-family:monospace">)</span> 
-returns the audio clip <span style="font-style:italic">A</span> resampled to rate <span style="font-style:italic">r</span>.
-</li></ul><p>
-<span style="font-family:monospace">giac</span> does resampling by using the <span style="font-family:monospace">libsamplerate</span> library
-<a href="http://www.mega-nerd.com/libsamplerate/"><span style="font-family:monospace">http://www.mega-nerd.com/libsamplerate/</span></a>
-written by Erik de Castro Lopo. For more information see the
-library documentation.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-Assuming that the directory <span style="font-family:monospace">sounds</span> contains <span style="font-family:monospace">example.wav</span>, a 
-<span style="font-family:monospace">wav</span> file with a sample rate of 44100:<br>
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">clip:=readwav("/path/to/sounds/example.wav"):; samplerate(clip)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">44100</span>
-</div><p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">res:=resample(clip,48000):; samplerate(res)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">48000</span>
+<div class="center">
+<span style="font-family:monospace">is_square([2,2,0],[-2,2,0],[-2,-2,0],[2,-2,0])</span>
 </div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">S:= square([0,0,0],[2,0,0],[0,0,1])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_square(S)</span>
+</td></tr>
+</table>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_square([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en945.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

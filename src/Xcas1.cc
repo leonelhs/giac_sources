@@ -1173,10 +1173,10 @@ namespace xcas {
     // cerr << "eval lock" << '\n';
     int locked=pthread_mutex_trylock(&interactive_mutex);
     if (locked){
-      usleep(1000);
+      usleep(100); // was usleep(1000)
       locked=pthread_mutex_trylock(&interactive_mutex);
       if (locked){
-	cerr << "locked " << evaled_g << '\n' ;
+	//cerr << "locked " << evaled_g << '\n' ;
 	return ;
       }
     }
@@ -1661,7 +1661,7 @@ namespace xcas {
 	res += "-";
       res +=print_DOUBLE_(i->animation_dt)+','+print_INT_(i->show_mouse_on_object)+','+print_INT_(i->display_mode);
       res += ",[";
-      if (dynamic_cast<const Graph3d *>(i)){
+      if (const Graph3d* gr3d=dynamic_cast<const Graph3d *>(i)){
 	for (int j=0;;){
 	  res += "["+ print_DOUBLE_(i->light_x[j]);
 	  res += ","+ print_DOUBLE_(i->light_y[j]);
@@ -1687,7 +1687,12 @@ namespace xcas {
 	  res += ","+ print_DOUBLE_(i->light_spot_cutoff[j]);
 	  res += ","+ print_DOUBLE_(i->light_0[j]);
 	  res += ","+ print_DOUBLE_(i->light_1[j]);
-	  res += ","+ print_DOUBLE_(i->light_2[j])+","+print_INT_(i->light_on[j])+"]";
+	  res += ","+ print_DOUBLE_(i->light_2[j])+",";
+	  if (!gr3d->opengl)
+	    res += (i->light_on[j]?"3":"2");
+	  else
+	    res += (i->light_on[j]?"1":"0");
+	  res +="]";
 	  ++j;
 	  if (j==8)
 	    break;
@@ -1744,6 +1749,12 @@ namespace xcas {
   void next_line(const string & s,int L,string & line,int & i){
     line="";
     for (;i<L;++i){
+      if (0 && i<L-1 && s[i]==0xd && s[i+1]==0xa){ 
+	// windows CR should not happen anymore
+	line += '\n';
+	i+=2;
+	break;
+      }
       line += ( (s[i]==char(0x7f) || s[i]==char(0243))?'\n':s[i]);
       if (s[i]=='\n'){
 	++i;
@@ -1881,8 +1892,15 @@ namespace xcas {
 	    res->light_0[j]=w[22]._DOUBLE_val;
 	    res->light_1[j]=w[23]._DOUBLE_val;
 	    res->light_2[j]=w[24]._DOUBLE_val;
-	    if (tmp._VECTptr->size()>=26)
-	      res->light_on[j]=int(w[25]._DOUBLE_val);
+	    if (tmp._VECTptr->size()>=26){
+	      int i=int(w[25]._DOUBLE_val);
+	      if (i==1 || i==3)
+		res->light_on[j]=i;
+	      if (i==2 || i==3) {
+		if (Graph3d* gr3d=dynamic_cast<Graph3d*>(res))
+		  gr3d->opengl=false;
+	      }
+	    }
 	  }
 	}
       }
@@ -2465,8 +2483,10 @@ namespace xcas {
       pos= tmp.find("Graph3d");
       if (pos>0 && pos<tmps){ 
 	Graph3d * res = new Graph3d(x,y,w,h,"",0);
+	res->opengl=true;
 	res->labelfont(police);
 	graphic_load(res,s,L,line,i);
+	res->autoscale(false);
 	return res;
       }
       pos= tmp.find("Geo3d");
@@ -2837,10 +2857,10 @@ namespace xcas {
     // cerr << "xcas lock" << g << '\n';
     int locked=pthread_mutex_trylock(&interactive_mutex);
     if (locked){
-      usleep(1000);
+      usleep(100); // was usleep(1000)
       locked=pthread_mutex_trylock(&interactive_mutex);
       if (locked){
-	cerr << "locked " << g << '\n' ;
+	// cerr << "locked " << g << '\n' ;
 	return 0;
       }
     }

@@ -5,5 +5,6 @@ char * micropy_init();
 int micropy_eval(const char * line);
 void  mp_deinit();
 void  mp_stack_ctrl_init();
+void raisememerr();
 
 #endif

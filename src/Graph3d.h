@@ -51,6 +51,49 @@ namespace xcas {
   // quaternion for the rotation of axis (x,y,z) angle theta
   quaternion_double rotation_2_quaternion_double(double x, double y, double z,double theta);
 
+  // native 3d rendering types/defs
+  typedef double float3d;
+  // typedef float float3d;
+  struct double3 {
+    float3d x,y,z;
+    double3(double x_,double y_,double z_):x(x_),y(y_),z(z_){};
+    double3():x(0),y(0),z(0){};
+  };
+
+  struct int4 {
+    int u,d,du,dd;
+    int4(int u_,int d_,int du_,int dd_):u(u_),d(d_),du(du_),dd(dd_) {}
+  };
+  
+  struct int2 {
+    int i,j;
+    int2(int i_,int j_):i(i_),j(j_) {}
+    int2(): i(0),j(0) {}
+  };
+  inline bool operator < (const int2 & a,const int2 & b){ if (a.i!=b.i) return a.i<b.i; return a.j<b.j;}
+  inline bool operator == (const int2 & a,const int2 & b){ return a.i==b.i && a.j==b.j;}
+
+  struct int2_double2 {
+    int i,j;
+    double arg,norm;
+  };
+  inline bool operator < (const int2_double2 & a,const int2_double2 & b){ if (a.arg!=b.arg) return a.arg<b.arg; return a.norm<b.norm;}
+
+#define giac3d_default_upcolor 65535
+#define giac3d_default_downcolor 12345
+#define giac3d_default_downupcolor 18432 // 12297
+#define giac3d_default_downdowncolor 22539
+#define COLOR_GREEN _GREEN
+#define COLOR_RED _RED
+#define COLOR_BLUE _BLUE
+#define COLOR_CYAN _CYAN
+#define COLOR_BLACK _BLACK
+#define COLOR_YELLOW _YELLOW
+#define COLOR_MAGENTA _MAGENTA
+#define COLOR_WHITE _WHITE
+
+  // end native 3d rendering types/defs
+
   class Graph3d : public Graph2d3d {
   public:
     Graph3d(int x,int y,int width, int height, const char* title,History_Pack * hp_);
@@ -64,8 +107,8 @@ namespace xcas {
     double proj[16],model[16],proj_inv[16],model_inv[16]; 
     double view[4];
     int dragi,dragj;
-    bool push_in_area;
     double depth;
+    bool push_in_area;
     bool below_depth_hidden;
     unsigned char * screenbuf;
     virtual void resize(int X,int Y,int W,int H);
@@ -88,6 +131,63 @@ namespace xcas {
     void normal2plan(double & a,double &b,double &c);
     virtual void geometry_round(double x,double y,double z,double eps,giac::gen & tmp,const giac::context *) ;
     int opengl2png(const std::string & filename);
+    /* 
+       build-in 3d rendering
+    */
+    void switch_renderer();
+    void reset_view();
+    virtual void update_rotation();
+    void glinter1(double z,double dz,
+		  double *zmin,double *zmax,double ZMIN,double ZMAX,
+		  int ih,int lcdz,
+		  int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+			 ) const;
+    void glinter(double a,double b,double c,
+		 double xscale,double xc,double yscale,double yc,
+		 double *zmin,double *zmax,double ZMIN,double ZMAX,
+		 int i,int horiz,int j,int w,int h,int lcdz,
+		 int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+		 ) const;
+  void glinter(double x1,double x2,double x3,
+	       double y1,double y2,double y3,
+	       double z1,double z2,double z3,
+	       double xscale,double xc,double yscale,double yc,
+	       double *zmin,double *zmax,double ZMIN,double ZMAX,
+	       int i,int horiz,int j,int w,int h,int lcdz,
+	       int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+	       ) const;
+
+    bool indraw3d(int w,int h,int lcdz,const giac::context*,int upcolor,int downcolor,int downupcolor,int downdowncolor) ;
+    void xyz2ij(const double3 & d,int &i,int &j) const; // d not transformed
+    void xyz2ij(const double3 & d,double &i,double &j) const; // d not transformed
+    void XYZ2ij(const double3 & d,int &i,int &j) const; // d is transformed
+    void draw3d(const giac::context *); // 3d rendering engine if opengl is false (e.g. for mac os)
+    void addpolyg(vector<int2> & polyg,double x,double y,double z,int2 & IJmin) const ;
+    double transform3d[16],invtransform3d[16];
+    int show_edges,lcdz,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor,LCD_WIDTH_PX,LCD_HEIGHT_PX;
+    short int precision,diffusionz,diffusionz_limit;
+    bool opengl,doprecise,hide2nd,interval,solid3d,displayhint;
+    double Ai,Aj,Bi,Bj,Ci,Cj,Di,Dj,Ei,Ej,Fi,Fj,Gi,Gj,Hi,Hj; // visualization cube coordinates
+    std::vector< std::vector< std::vector<float3d> > > surfacev;
+    std::vector<double3> plan_pointv; // point in plan 
+    std::vector<double3> plan_abcv; // plan equation z=a*x+b*y+c
+    std::vector<bool> plan_filled;
+    std::vector<double3> sphere_centerv;
+    std::vector<double> sphere_radiusv;
+    giac::vecteur sphere_quadraticv; // matrix of the transformed quad. form
+    std::vector<bool> sphere_isclipped;
+    std::vector< std::vector<double3> > polyedrev;
+    std::vector<double3> polyedre_abcv;
+    std::vector<double> polyedre_xyminmax;
+    std::vector<bool> polyedre_faceisclipped,polyedre_filled;
+    std::vector<double3> linev; // 2 double3 per object
+    std::vector<short> linetypev;
+    std::vector<const char *> lines; // legende
+    std::vector< std::vector<double3> > curvev;
+    std::vector<double3> pointv; 
+    std::vector<const char *> points; // legende
+    std::vector<int4> hyp_color,plan_color,sphere_color,polyedre_color,line_color,curve_color,point_color;
+
   };
 
   class Geo3d : public Graph3d {

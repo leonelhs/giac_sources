@@ -77,8 +77,11 @@ decl {char ** xcas_argv;} {private local
 decl {int xcas_argc,xcas_user_level,update_xcas=0;} {private local
 } 
 
-decl {xcas::objet_bidon mon_objet_bidon;} {private local
-} 
+declblock {\#ifdef USE_OBJET_BIDON } {open after {\#endif}
+} { 
+  decl {xcas::objet_bidon mon_objet_bidon;} {private local
+  }
+}
 
 decl {giac::vecteur rpn_menu;} {private local
 } 
@@ -960,7 +963,7 @@ Function {load_autorecover_data()} {open
      n=fl_ask("%s",gettext("Launch tutorial in browser?"));
      if (n==1){
        if (giac::language(giac::context0)==1)
-         giac::system_browser_command(doc_prefix+"tutoriel/index.html");
+         giac::system_browser_command(doc_prefix+"tutoriel.html");
        else
          giac::system_browser_command(doc_prefix+"casinter/index.html");
      }
@@ -2291,10 +2294,10 @@ if (xcas::use_external_browser)
           MenuItem Xcas_help_tutorial {
             label Tutorial
             callback {if (xcas::use_external_browser)
-           giac::system_browser_command(doc_prefix+"tutoriel/index.html");
+           giac::system_browser_command(doc_prefix+"tutoriel.html");
         else {
          if (xcas::Xcas_help_window){
-           xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"tutoriel/index.html").c_str());
+           xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"tutoriel.html").c_str());
            xcas::Xcas_help_window->show();
           }
          }}
@@ -4766,6 +4769,10 @@ if (getenv("XCAS_AUTOSAVE_FOLDER")){
 \#if defined WIN32 && !defined __MINGW_H
 Xcas_Numworks_menu->deactivate();
 \#endif
+\#ifndef USE_OBJET_BIDON
+   xcas::localisation(); // added by L. Marohnić
+\#endif
+
 \#if defined WIN32 || defined __APPLE__
 static std::string arg0;
 if (!getenv("XCAS_ROOT")){

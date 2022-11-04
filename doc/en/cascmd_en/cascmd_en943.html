@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Averaging channel data: stereo2mono
-
+<title>Checking if an object in space is an equilateral triangle: is_equilateral
 </title>
 </head>
 <body >
@@ -13,32 +12,47 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en944.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:stereo2mono" class="subsection">15.1.5  Averaging channel data: <span style="font-family:monospace">stereo2mono</span>
-<a id="hevea_default1677"></a>
-</h3>
-<p>The <span style="font-family:monospace">stereo2mono</span> command converts a multichannel audio clip to
-a single channel audio clip.
+<h3 id="ssec:3dcheckequilateral" class="subsection">14.13.9  Checking if an object in space is an equilateral triangle: <span style="font-family:monospace">is_equilateral</span>
+<a id="hevea_default1649"></a></h3>
+<p>See Section <a href="cascmd_en868.html#ssec%3A2dcheckequilateral">13.16.5</a> for checking for equilateral
+triangles in two-dimensional geometry.</p><p>The <span style="font-family:monospace">is_equilateral</span> command determines whether or not a
+geometric object is an equilateral triangle.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">stereo2mono</span> takes one argument:<br>
- <span style="font-style:italic">A</span>, a multichannel audio clip.
-</li><li class="li-itemize"><span style="font-family:monospace">stereo2mono(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns an audio clip with the input
-channels in <span style="font-style:italic">A</span> mixed down to a single channel.<br>
- Every sample in the output is the arithmetic mean of the samples at
-the same position in the input channels.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">is_equilateral</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object or a sequence of three points assumed to be
+the vertices of a triangle.
+</li><li class="li-itemize"><span style="font-family:monospace">is_equilateral(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if the object
+is an equilateral triangle and returns <span style="font-family:monospace">0</span> otherwise.
+</li></ul><h4 id="sec2391" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">t:=soundsec(3):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L,R:=sin(2*pi*440*t),sin(2*pi*445*t):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">s:=stereo2mono(createwav([L,R])):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">playsnd(s)</span>
+<div class="center">
+<span style="font-family:monospace">is_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
 </td></tr>
 </table>
-</div><p>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">T:= triangle_equilateral([2,0,0],[0,0,0],[1,sqrt(3),0])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">is_equilateral(T)</span>
+</td></tr>
+</table>
+</div>
 <span style="font-style:italic">Output:</span>
-The sound of the single channel of the combination of <span style="font-style:italic">L</span> and <span style="font-style:italic">R</span> is
-played.</p>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_equilateral([2,0,0],[0,2,0],[1,1,0])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+</li></ul>
 <hr>
 <a href="cascmd_en942.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

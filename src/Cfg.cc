@@ -38,6 +38,7 @@
 #include "History.h"
 #include "Xcas1.h"
 #include "Cfg.h"
+#include "plot.h"
 
 using namespace std;
 using namespace giac;
@@ -589,6 +590,8 @@ or default eval level)"));
 
   Fl_Check_Button *Xcas_autoscale=(Fl_Check_Button *)0;
 
+  Fl_Check_Button *Xcas_opengl=(Fl_Check_Button *)0;
+
   Fl_Return_Button *Xcas_Plot_Setup_OK=(Fl_Return_Button *)0;
 
   Fl_Button *Xcas_Plot_Setup_OKSave=(Fl_Button *)0;
@@ -633,6 +636,7 @@ or default eval level)"));
     giac::global_window_ymax=xcas::Xcas_config.window_ymax=Xcas_WYmax->value();
     xcas::Xcas_config.ortho=Xcas_orthonormal->value();
     xcas::Xcas_config.autoscale=Xcas_autoscale->value();
+    giac::gnuplot_opengl=Xcas_opengl->value();
     giac::class_minimum=Xcas_Class_min->value();
     giac::class_size=Xcas_Class_size->value();
     Xcas_Plot_Setup_OK->window()->hide();
@@ -783,6 +787,13 @@ or default eval level)"));
     o->selection_color(FL_FOREGROUND_COLOR);
     o->align(68|FL_ALIGN_INSIDE);
     }
+    { Fl_Check_Button* o = Xcas_opengl = new Fl_Check_Button(210, 80, 75, 25, gettext("opengl"));
+    o->tooltip(gettext("3d graphs rendered with Opengl"));
+    o->down_box(FL_DOWN_BOX);
+    o->value(0);
+    o->selection_color(FL_FOREGROUND_COLOR);
+    o->align(68|FL_ALIGN_INSIDE);
+    }
     { Fl_Return_Button* o = Xcas_Plot_Setup_OK = new Fl_Return_Button(10, 195, 90, 25, gettext("Apply"));
     o->callback((Fl_Callback*)cb_Xcas_Plot_Setup_OK);
     o->align(FL_ALIGN_CLIP);
@@ -877,6 +888,7 @@ or default eval level)"));
     Xcas_WYmax->value(xcas::Xcas_config.window_ymax);
     Xcas_Class_min->value(giac::class_minimum);
     Xcas_Class_size->value(giac::class_size);
+    Xcas_opengl->value(giac::gnuplot_opengl);
     Fl_Widget * foc = Fl::focus();
     if (foc && (foc=foc->window())){
       xcas::change_group_fontsize(Xcas_Plot_Setup,foc->labelsize());

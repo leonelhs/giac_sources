@@ -42,11 +42,15 @@ namespace xcas {
   // Locales initialization, should be done before history.o is loaded
 
   std::string & xcas_locale();
+#ifndef USE_OBJET_BIDON // change by L. Marohnić
+  void localisation();
+#else  
   class objet_bidon{
   public:
     objet_bidon();
   };
-  // extern objet_bidon * mon_objet_bidon_ptr;
+  extern objet_bidon mon_objet_bidon;
+#endif
 
   void xcas_color(int color,bool dim3=false);
 
@@ -150,7 +154,7 @@ namespace xcas {
     std::string title,x_axis_name,x_axis_unit,y_axis_name,y_axis_unit,z_axis_name,z_axis_unit,fcnfield,fcnvars;
     int npixels; // max # of pixels distance for click
     int show_axes,show_names;
-    giac::vecteur plot_instructions,animation_instructions,trace_instructions ;
+    giac::vecteur plot_instructions,animation_instructions,trace_instructions,native_renderer_instructions ;
     double animation_dt; // rate for animated plot
     bool paused;
     struct timeval animation_last; // clock value at last display
@@ -226,6 +230,13 @@ namespace xcas {
     void set_mode(const giac::gen & f_tmp,const giac::gen & f_final,int m);
     virtual void find_xyz(double i,double j,double depth,double & x,double & y,double & z);
     void find_title_plot(giac::gen & title_tmp,giac::gen & plot_tmp,const giac::context * contextptr);
+    int os_draw_string(int x_,int y_,int c,int bg,const char * s,bool fake=false) const;
+    int os_draw_string_small(int x_,int y_,int c,int bg,const char * s,bool fake=false) const ;
+    void os_set_pixel(int x,int y,int c) const;
+    void drawLine(int x1,int y1,int x2,int y2,int c) const;
+    void drawRectangle(int x_,int y_,int w_,int h_,int c) const ;
+    inline void os_fill_rect(int x_,int y_,int w_,int h_,int c) const {drawRectangle(x_,y_,w_,h_,c);}
+    virtual void update_rotation();
     void change_attributs();
     void change_attributs(int hp_pos);
     void resize_mouse_param_group(int W);

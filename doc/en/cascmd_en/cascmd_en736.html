@@ -4,109 +4,67 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Starting the debugger: debug sst in sst_in cont kill break breakpoint halt rmbrk rmbreakpoint watch rmwtch
-
-
-
-
-
-
-
-
-
-
-
-
-</title>
+<title>Local variables</title>
 </head>
 <body >
 <a href="cascmd_en735.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en737.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec999" class="subsection">12.5.1  Starting the debugger: <span style="font-family:monospace">debug</span> <span style="font-family:monospace">sst</span> <span style="font-family:monospace">in</span> <span style="font-family:monospace">sst_in</span> <span style="font-family:monospace">cont</span> <span style="font-family:monospace">kill</span> <span style="font-family:monospace">break</span> <span style="font-family:monospace">breakpoint</span> <span style="font-family:monospace">halt</span> <span style="font-family:monospace">rmbrk</span> <span style="font-family:monospace">rmbreakpoint</span> <span style="font-family:monospace">watch</span> <span style="font-family:monospace">rmwtch</span>
-<a id="hevea_default1422"></a>
-<a id="hevea_default1423"></a>
-<a id="hevea_default1424"></a>
-<a id="hevea_default1425"></a>
-<a id="hevea_default1426"></a>
-<a id="hevea_default1427"></a>
-<a id="hevea_default1428"></a>
-<a id="hevea_default1429"></a>
-<a id="hevea_default1430"></a>
-<a id="hevea_default1431"></a>
-<a id="hevea_default1432"></a>
-<a id="hevea_default1433"></a>
-<a id="hevea_default1434"></a></h3>
-<p>The <span style="font-family:monospace">debug</span> command starts the <span style="font-family:monospace">Xcas</span> debugger.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">debug</span> takes one argument:<br>
- <span style="font-style:italic">fn(arg)</span>, a function and its argument.
-</li><li class="li-itemize"><span style="font-family:monospace">debug(</span><span style="font-style:italic">fn(arg)</span><span style="font-family:monospace">)</span>
-brings up a debug window which contains a pane with the program with
-the current line highlighted, an <span style="font-family:monospace">eval</span> entry box,
-a pane with the program including the breakpoints, a row of buttons,
-and a pane keeping track of the values of variables.
-</li></ul><p>
-By default, the
-value of all variables in the program are in this pane. The buttons
-are shortcuts for entering commands in the <span style="font-family:monospace">eval</span> box, but you
-can enter other commands in the <span style="font-family:monospace">eval</span> box to change the values
-of variables or to run a command in the context of the program.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-With the <span style="font-family:monospace">sumprod</span> program:
+<h3 id="sec1889" class="subsection">12.1.3  Local variables</h3>
+<p>Local variables in a function definition can be given initial values
+in the line they are declared in by putting their initialization in
+parentheses; for example,
 </p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">sumprod(a,b):= {</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">local s, p;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">s:= a + b;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">p:= a*b;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">return [s,p];</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>local a,b;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>a:= 1;</code>
 </td></tr>
 </table>
 </div><p>
-<span style="font-style:italic">Input:</span>
+is the same as
 </p><div class="center">
-<span style="font-family:monospace">debug(sumprod(2,3))</span>
+<code>local (a:= 1), b;</code>
+</div><p>Local variables should be given values within the function definition.
+If you want to use a local variable as a symbolic variable, then you
+can indicate that with the <span style="font-family:monospace">assume</span><a id="hevea_default1330"></a> command
+(see Section <a href="cascmd_en061.html#ssec%3Aabout">4.4.8</a>). For
+example, if you define a function <span style="font-family:monospace">myroots</span> by
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>myroots (a):= {</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>local x;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>return solve(x^2=a,x);</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>}</code>
+</td></tr>
+</table>
 </div><p>
-<span style="font-style:italic">Output:</span>
+then calling
 </p><div class="center">
-<img src="cascmd_en135.png">
-</div><p><br>
-</p><p>The debug window has the following buttons:
-</p><dl class="description"><dt class="dt-description">
-<span style="font-weight:bold">sst</span></dt><dd class="dd-description"> This button will run the
-<span style="font-family:monospace">sst</span> command, which takes no arguments and runs the
-highlighted line in the program before moving to the next line.</dd><dt class="dt-description"><span style="font-weight:bold">in</span></dt><dd class="dd-description">
-This button will run the
-<span style="font-family:monospace">sst_in</span> command, which takes no argument and runs one step in
-the program or a user defined function used in the program.</dd><dt class="dt-description"><span style="font-weight:bold">cont</span></dt><dd class="dd-description"> This button will run the
-<span style="font-family:monospace">cont</span> command, which takes no arguments and runs the commands
-from the highlighted line to a breakpoint.</dd><dt class="dt-description"><span style="font-weight:bold">kill</span></dt><dd class="dd-description"> This button will run the
-<span style="font-family:monospace">kill</span> command, which exits the debugger.</dd><dt class="dt-description"><span style="font-weight:bold">break</span></dt><dd class="dd-description"> This button will put the command
-<span style="font-family:monospace">breakpoint</span> in the <span style="font-family:monospace">eval</span> box, with default arguments
-of the current program and the current line. It sets a breakpoint at
-the given line of the given program. Alternatively, if you click on a
-line in the program in the top pane, you will get the
-<span style="font-family:monospace">breakpoint</span> command with that program and the line you clicked
-on.<p>You can set a breakpoint when you write a program with the
-<span style="font-family:monospace">halt()</span> command. When a program has a <span style="font-family:monospace">halt</span> command,
-then running the program will bring up the debugger. If you want to
-debug the program, though, it is still better to use the debug
-command. Also, you should remove any <span style="font-family:monospace">halt</span> commands when you
-are done debugging.</p></dd><dt class="dt-description"><span style="font-weight:bold">rmbrk</span></dt><dd class="dd-description"> This button will put the command
-<span style="font-family:monospace">rmbreakpoint</span> in the <span style="font-family:monospace">eval</span> box , with default
-arguments of the current program and the current line. It removes a
-breakpoint at the given line of the given program. Alternatively, you
-can click on the line in the program in the top pane with the bookmark
-you want to remove.</dd><dt class="dt-description"><span style="font-weight:bold">watch</span></dt><dd class="dd-description"> This button will put the command
-<span style="font-family:monospace">watch</span> in the <span style="font-family:monospace">eval</span> box, without the arguments filled
-in. It takes a list of variables as arguments, and will keep track of
-the values of these variables in the variable pane.</dd><dt class="dt-description"><span style="font-weight:bold">rmwtch</span></dt><dd class="dd-description"> This button will put the
-command <span style="font-family:monospace">rmwatch</span><a id="hevea_default1435"></a> in the <span style="font-family:monospace">eval</span> box
-without the arguments filled in. The arguments are the variables you
-want to remove from the watch list.
-</dd></dl>
+<span style="font-family:monospace">myroots(4)</span>
+</div><p>
+will simply return the empty list. You could leave <span style="font-family:monospace">x</span>
+undeclared, but that would make <span style="font-family:monospace">x</span> a global variable and could
+interact with other functions in unexpected ways. You can get the
+behavior you probably expected by explicitly assuming <span style="font-family:monospace">x</span> to be a
+symbol<a id="hevea_default1331"></a>;
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>myroots (a):= {</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>local x;</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>assume(x,symbol);</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>return solve(x^2=a,x);</code></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><code>}</code>
+</td></tr>
+</table>
+</div><p>
+(Alternatively, you could use <span style="font-family:monospace">purge(x)</span><a id="hevea_default1332"></a> instead
+of <span style="font-family:monospace">assume(x,symbol)</span>.) Now if you enter
+</p><div class="center">
+<span style="font-family:monospace">myroots(4)</span>
+</div><p>
+you will get
+</p><div class="center">
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[−2,2]</td></tr>
+</table>
+</div>
 <hr>
 <a href="cascmd_en735.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

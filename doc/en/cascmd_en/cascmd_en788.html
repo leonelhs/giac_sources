@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Convex hulls: convexhull
+<title>Points in polar coordinates: polar_point point_polar
+
 </title>
 </head>
 <body >
@@ -12,36 +13,43 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en789.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1066" class="subsection">13.10.5  Convex hulls: <span style="font-family:monospace">convexhull</span>
-<a id="hevea_default1505"></a></h3>
-<p>The <span style="font-family:monospace">convexhull</span> command uses the Graham scanning algorithm to
-find the convex hull of a set of points.
+<h3 id="sec2024" class="subsection">13.6.5  Points in polar coordinates: <span style="font-family:monospace">polar_point</span> <span style="font-family:monospace">point_polar</span>
+<a id="hevea_default1474"></a>
+<a id="hevea_default1475"></a></h3>
+<p>You can use the <span style="font-family:monospace">point</span> command to specify a point in polar
+coordinates by using the polar representation of complex numbers.</p><h4 id="sec2025" class="subsubsection">Example.</h4>
+<p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">point(2*exp(i*pi/4))</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><div class="center">
+<img src="cascmd_en162.png">
+</div><p>
+which is the point with polar coordinates <span style="font-style:italic">r</span>=2, θ = π/4.</p><p><br>
+</p><p>The <span style="font-family:monospace">polar_point</span> command is an easier way to specify a point
+in polar coordinates.<br>
+<span style="font-family:monospace">point_polar</span> is a synonym for <span style="font-family:monospace">polar_point</span>.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">convexhull</span> takes an unspecified number of arguments:<br>
- <span style="font-style:italic">points</span>, a sequence or list of points.
-</li><li class="li-itemize"><span style="font-family:monospace">convexhull(</span><span style="font-style:italic">points</span><span style="font-family:monospace">)</span> 
-returns the vertices of the convex hull of the points.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">polar_point</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">r</span>, a number.
+</li><li class="li-itemize">θ, a number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">polar_plot(</span><span style="font-style:italic">r</span>,θ<span style="font-family:monospace">)</span> returns and draws the point
+with polar coordinates <span style="font-style:italic">r</span>,θ.
+</li></ul><h4 id="sec2026" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">convexhull(0,1,1+i,1+2i,-1-i,1-3i,-2+i)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1−3 <span style="font-style:italic">i</span>,1+2 <span style="font-style:italic">i</span>,−2+<span style="font-style:italic">i</span>,−1−<span style="font-style:italic">i</span>
-</td></tr>
-</table><p><br>
-</p><p>To draw the hull, you can use the <span style="font-family:monospace">polygon</span> command with the
-output of <span style="font-family:monospace">convexhull</span> (see Section <a href="cascmd_en786.html#ssec%3A2dgenpolygon">13.10.3</a>).</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">polygon(convexhull(0,1,1+i,1+2i,-1-i,1-3i,-2+i))</span>
+<span style="font-family:monospace">polar_point(2,pi/4)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
 </p><div class="center">
-<img src="cascmd_en214.png">
-</div>
+<img src="cascmd_en163.png">
+</div><p>
+which is the same point as before.</p>
 <hr>
 <a href="cascmd_en787.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

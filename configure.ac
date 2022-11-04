@@ -2,7 +2,7 @@ dnl Run autoreconf -iv to produce the configure script and associated files.
 
 dnl Giac version number
 m4_define([giac_major_version], [1])
-m4_define([giac_minor_version], [7])
+m4_define([giac_minor_version], [9])
 m4_define([giac_micro_version], [0])
 m4_define([giac_version], [giac_major_version.giac_minor_version.giac_micro_version])
 

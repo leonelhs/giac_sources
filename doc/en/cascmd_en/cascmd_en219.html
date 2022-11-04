@@ -4,10 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Derivatives and partial derivatives
-
-
-
+<title>Table of variations of a function: tabvar
 </title>
 </head>
 <body >
@@ -15,161 +12,166 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en220.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:diff" class="subsection">6.19.4  Derivatives and partial derivatives
-<a id="hevea_default414"></a>
-<a id="hevea_default415"></a>
-<a id="hevea_default416"></a>
-</h3>
-<p>The <span style="font-family:monospace">diff</span> command computes derivatives
-and partial derivatives of expressions.<br>
-<span style="font-family:monospace">derive</span> is a synonym for <span style="font-family:monospace">diff</span>.</p><p><br>
-</p><p>To compute first order derivatives:
+<h3 id="sec504" class="subsection">5.17.2  Table of variations of a function: <span style="font-family:monospace">tabvar</span>
+<a id="hevea_default410"></a></h3>
+<p>The table of variations of a function consists of
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">diff</span> takes one mandatory
-argument and one optional argument:
+The first row, for the variable, which gives the endpoints of
+subintervals of the domain, as well as any critical points and
+inflection points.
+</li><li class="li-itemize">The second row, for the derivative, which gives the values of the
+derivative at the values in the first row (or limits as the variable
+approaches one of the values) and between them the sign (+ or −)
+of the derivative in the corresponding subinterval.
+</li><li class="li-itemize">The third row, for the function, which gives the values of the
+function at the values in the first row, and between them whether
+the function is increasing or decreasing in the corresponding
+subinterval.
+</li><li class="li-itemize">The fourth row, for the second derivative, which
+gives the values of the second derivative at the values in the
+first row, and between them whether the second derivative is
+positive or negative (and hence whether the graph is concave up or
+concave down) in the subinterval.
+</li></ul><p>The <span style="font-family:monospace">tabvar</span> command finds the table of variations of a
+function.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">tabvar</span> takes one mandatory argument and one
+optional argument.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression or a list of expressions.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable (resp. a list of
-variable names, see several variable functions in
-<a href="index.html#sec%3Aplusvar">6.21</a>). If the only variable is <span style="font-family:monospace">x</span>, this
-second argument can be omitted.
+<span style="font-style:italic">expr</span>, an expression of a single variable.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, the variable (by default, <span style="font-style:italic">x</span>=<span style="font-family:monospace">x</span>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">diff(</span><span style="font-style:italic">expr</span> ⟨ ,<span style="font-style:italic">x</span> ⟩<span style="font-family:monospace">)</span>
-returns the derivative (resp. a vector of derivatives) of the
-expression <span style="font-style:italic">expr</span> (or list of expressions) with respect to the
-variable <span style="font-style:italic">x</span> (resp. with respect to each variable in the list
-<span style="font-style:italic">x</span>).
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-Compute:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ (<span style="font-style:italic">x</span> <span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span> <span style="font-style:italic">y</span> <span style="font-style:italic">z</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">z</span></td></tr>
-</table></td></tr>
-</table>
+</li><li class="li-itemize"><span style="font-family:monospace">tabvar(</span><span style="font-style:italic">expr</span> ⟨ ,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns the
+table of variations of the function <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) =  <span style="font-style:italic">expr</span> and
+draws the graph on the <span style="font-family:monospace">DispG</span> screen, accessible 
+with the menu
+<span style="font-family:monospace">Cfg</span>▸<span style="font-family:monospace">Show</span>▸<span style="font-family:monospace">DispG</span>.
+</li></ul><h4 id="sec505" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">diff(x*y^2*z^3+x*y*z,z)</span>
+<span style="font-family:monospace">tabvar(x^2 - x - 2,x)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span><sup>2</sup>+<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Function plot x^2-x-2, variable x</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Domain x</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Vertical parabolic asymptote at -infinity</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Vertical parabolic asymptote at +infinity</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Variations x^2-x-2</span>
 </td></tr>
 </table>
-</li><li class="li-itemize">Compute the 3 first order partial derivatives of <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span><sup>2</sup>*<span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>*<span style="font-style:italic">z</span>.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">diff(x*y^2*z^3+x*y,[x,y,z])</span>
 </div>
-<span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">y</span>,2 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span> <span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>,3 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span><sup>2</sup></td><td class="dcell">⎤<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >  <span style="font-style:italic">x</span></td><td style="text-align:center;white-space:nowrap" >−∞</td><td style="text-align:center;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >+∞ </td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  <span style="font-style:italic">y</span>′=2 <span style="font-style:italic">x</span>−1</td><td style="text-align:center;white-space:nowrap" >−∞</td><td style="text-align:center;white-space:nowrap" >−</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >+</td><td style="text-align:center;white-space:nowrap" >+∞ </td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  <span style="font-style:italic">y</span>=<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>−2</td><td style="text-align:center;white-space:nowrap" >+∞</td><td style="text-align:center;white-space:nowrap" >↓</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">9</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" >↑</td><td style="text-align:center;white-space:nowrap" >+∞ </td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  <span style="font-style:italic">y</span>″</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >+ (⋃)</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >+ (⋃)</td><td style="text-align:center;white-space:nowrap" >2
+</td></tr>
+</table></td><td class="dcell">
+</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
 ⎦</td></tr>
 </table>
-</li><li class="li-itemize">Compute:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup>3</sup> (<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span><sup>2</sup>.<span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span>.<span style="font-style:italic">y</span>.<span style="font-style:italic">z</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">y</span>∂<sup>2</sup> <span style="font-style:italic">z</span></td></tr>
-</table></td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">diff(x*y ^2*z^3+x*y*z,y,z$2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">12 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span> <span style="font-style:italic">z</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">plotfunc(x^2-x-2,x=((-0.6681472) .. 1.7222552))</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Inside Xcas you can see the function with Cfg&gt;Show&gt;DispG.</span>
 </td></tr>
 </table>
-</li></ul><p><br>
-</p><p>To compute higher order derivatives:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">diff</span> takes more than two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression.
-</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub><span style="font-style:italic">…</span>, the names of the
-derivation variables. Note that for repeated variables, you can
-use the <span style="font-family:monospace">$</span> operator (see Section <a href="cascmd_en406.html#ssec%3Amakeseq">6.39.2</a>) followed by
-the number of derivations with respect to the variable; for
-example, instead of writing <span style="font-style:italic">x</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span> you could write <span style="font-style:italic">x</span>$3.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">diff(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…<span style="font-family:monospace">)</span> returns the
-partial derivative of <span style="font-style:italic">expr</span> with respect to the variables
-<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">…</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-Compute:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup>2</sup> (<span style="font-style:italic">x</span> <span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span> <span style="font-style:italic">y</span> <span style="font-style:italic">z</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span>∂ <span style="font-style:italic">z</span></td></tr>
-</table></td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">diff(x*y^2*z^3+x*y*z,x,z)</span>
+<span style="font-family:monospace">tabvar((2*t-1)/(t-1),t)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3 <span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span><sup>2</sup>+<span style="font-style:italic">y</span>
+<div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Function plot (2*t-1)/(t-1), variable t</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Domain t&lt;&gt;1</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Vertical asymptote x=1</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Horizontal asymptote y=2</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Horizontal asymptote y=2</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Variations (2*t-1)/(t-1)</span>
 </td></tr>
 </table>
-</li><li class="li-itemize">Compute:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂<sup>3</sup> (<span style="font-style:italic">x</span> <span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span><sup>3</sup>+<span style="font-style:italic">x</span> <span style="font-style:italic">y</span> <span style="font-style:italic">z</span>)</td></tr>
+</div>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >  <span style="font-style:italic">t</span></td><td style="text-align:center;white-space:nowrap" >−∞</td><td style="text-align:center;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >&nbsp;</td><td style="text-align:center;white-space:nowrap" >+∞ </td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">y</span>′=−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span>∂<sup>2</sup> <span style="font-style:italic">z</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">t</span>−1</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><sup>2</sup></td></tr>
 </table></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >−</td><td style="text-align:center;white-space:nowrap" >||</td><td style="text-align:center;white-space:nowrap" >||</td><td style="text-align:center;white-space:nowrap" >−</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">y</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">t</span>−1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">t</span>−1</td></tr>
+</table></td></tr>
+</table></td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >↓</td><td style="text-align:center;white-space:nowrap" >−∞</td><td style="text-align:center;white-space:nowrap" >+∞</td><td style="text-align:center;white-space:nowrap" >↓</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >  <span style="font-style:italic">y</span>″</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >− (⋂ )</td><td style="text-align:center;white-space:nowrap" >||</td><td style="text-align:center;white-space:nowrap" >||</td><td style="text-align:center;white-space:nowrap" >+
+(⋃ )</td><td style="text-align:center;white-space:nowrap" >0
+</td></tr>
+</table></td><td class="dcell">
+</td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</td></tr>
 </table>
-<span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">diff(x*y^2*z^3+x*y*z,x,z,z)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">diff(x*y^2*z^3+x*y*z,x,z$2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">6 <span style="font-style:italic">y</span><sup>2</sup> <span style="font-style:italic">z</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">plotfunc((2*t-1)/(t-1),t=((-0.1681472) .. 2.2222552))</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">Inside Xcas you can see the function with Cfg&gt;Show&gt;DispG.</span>
 </td></tr>
 </table>
-</li><li class="li-itemize">Compute the third derivative of:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>+2</td></tr>
-</table></td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">normal(diff((1)/(x^2+2),x,x,x))</span>
 </div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">normal(diff((1)/(x^2+2),x$3))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−24 <span style="font-style:italic">x</span><sup>3</sup>+48 <span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>8</sup>+8 <span style="font-style:italic">x</span><sup>6</sup>+24 <span style="font-style:italic">x</span><sup>4</sup>+32 <span style="font-style:italic">x</span><sup>2</sup>+16</td></tr>
-</table></td></tr>
-</table>
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Remark.</span>
-</p><ul class="itemize"><li class="li-itemize">
-Note the difference between <span style="font-family:monospace">diff(</span><span style="font-style:italic">f</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> and
-<span style="font-family:monospace">diff(</span><span style="font-style:italic">f</span><span style="font-family:monospace">,[</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">])</span>:<br>
-<span style="font-family:monospace">diff(</span><span style="font-style:italic">f</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns 
-∂<sup>2</sup>(<span style="font-style:italic">f</span>)/∂ <span style="font-style:italic">x</span>∂ <span style="font-style:italic">y</span> and
-<span style="font-family:monospace">diff(</span><span style="font-style:italic">f</span>,[<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>]<span style="font-family:monospace">)</span> returns
-[∂(<span style="font-style:italic">f</span>)/∂ <span style="font-style:italic">x</span>,
-∂ (<span style="font-style:italic">f</span>)/∂ <span style="font-style:italic">y</span>]
-</li><li class="li-itemize">Never define a derivative function with
-<span style="font-family:monospace">f1(x):=diff(f(x),x)</span>.
-Indeed, <span style="font-family:monospace">x</span> would mean two different things Xcas is unable to
-deal with: on the left hand side, <span style="font-family:monospace">x</span> is the variable name to
-define the <span style="font-style:italic">f</span><sub>1</sub> function, and on the right hand side, <span style="font-family:monospace">x</span> is
-the differentiation variable. The right way to define a derivative is
-either with <span style="font-family:monospace">function_diff</span> or:
-<div class="center">
-<span style="font-family:monospace">f1:=unapply(diff(f(x),x),x)</span>
-</div>
+Note that in this case, the value 1 appears twice in the first row, so
+that both one-sided limits of <span style="font-family:monospace">y</span> can be displayed at the
+vertical asymptote <span style="font-style:italic">t</span>=1. The values of 2 for <span style="font-family:monospace">y</span> at −∞
+and ∞ indicate a horizontal asymptote of <span style="font-style:italic">y</span>=2.
 </li></ul>
 <hr>
 <a href="cascmd_en218.html"><img src="previous_motif.gif" alt="Previous"></a>

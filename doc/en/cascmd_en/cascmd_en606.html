@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Classes: classes
-
+<title>Intersection of a 2D graph with the axis
 </title>
 </head>
 <body >
@@ -13,102 +12,39 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en607.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:classes" class="subsection">9.1.9  Classes: <span style="font-family:monospace">classes</span>
-<a id="hevea_default1132"></a>
-</h3>
-<p>The <span style="font-family:monospace">classes</span> command groups a collection of
-numbers into intervals.
+<h3 id="sec1518" class="subsection">7.7.7  Intersection of a 2D graph with the axis
+<a id="hevea_default1084"></a><a id="hevea_default1085"></a></h3>
+<p>You can find the intersection of the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) of a function with
+the axes using the commands covered so far.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">classes</span> takes two or three arguments:
+Finding the intersection of the graph with the
+<span style="font-style:italic">y</span>-axis is simply evaluating
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(0),
+</td></tr>
+</table>
+indeed the point with coordinates (0,<span style="font-style:italic">f</span>(0)) is the intersection point
+of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">y</span>-axis.
+</li><li class="li-itemize">Finding the intersection of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">x</span>-axis
+requires solving the equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=0.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list or matrix of numbers.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, numbers. (By default, these will be 
-<span style="font-family:monospace">class_min</span> and <span style="font-family:monospace">class_size</span> from the graphics
-configuration, see Section <a href="cascmd_en028.html#ssec%3Aconfgraph">3.5.8</a>, which themselves
-default to 0 and 1.)<br>
- <span style="font-weight:bold">or:</span>
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">M</span>, where <span style="font-style:italic">a</span> is the start of the
-beginning interval and <span style="font-style:italic">M</span> consists of the midpoints of the
-intervals.<br>
- <span style="font-weight:bold">or:</span>
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">I</span>, a list of intervals to use.
+If <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) is polynomial-like, then you can find the 
+the exact values of the abscissa of these points with 
+<span style="font-family:monospace">solve</span> (see Section <a href="cascmd_en568.html#ssec%3Asolve">5.55.6</a>).<br>
+ <span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">solve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>
+</div>
+returns the solution.
+</li><li class="li-itemize">Otherwise, you can find numeric approximations of these
+abscissa. First, look at the graph for an initial guess <span style="font-style:italic">x</span><sub>0</sub> or a 
+range with an intersection and then refine it with
+<span style="font-family:monospace">fsolve</span> (see Section <a href="index.html#sec%3Afsolve">10.4</a>).<br>
+ <span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">fsolve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">method</span><span style="font-family:monospace">)</span>
+</div>
+returns a numeric approximation of a solution.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">classes(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns the list
-<span style="font-family:monospace">[[</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">],[</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+2<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">],…]</span>
-where each number in <span style="font-style:italic">L</span> is in one of the intervals [<span style="font-style:italic">a</span>+<span style="font-style:italic">kb</span>,
-<span style="font-style:italic">a</span>+(<span style="font-style:italic">k</span>+1)<span style="font-style:italic">b</span>) and <span style="font-style:italic">n</span><sub><span style="font-style:italic">k</span></sub> is how many numbers from <span style="font-style:italic">L</span> are in the
-corresponding interval.
-</li><li class="li-itemize"><span style="font-family:monospace">classes(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span> returns a similar list, but instead
-of <span style="font-family:monospace">[[</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">],[</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+2<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">],…]</span>, the
-intervals are determined by <span style="font-style:italic">a</span> and the list of midpoints <span style="font-style:italic">M</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">classes(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">I</span><span style="font-family:monospace">)</span> returns a similar list, but instead of 
-<span style="font-family:monospace">[[</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">],[</span><span style="font-style:italic">a</span>+<span style="font-style:italic">b</span><span style="font-family:monospace">..</span><span style="font-style:italic">a</span>+2<span style="font-style:italic">b</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">],…]</span>,
-the intervals are given by <span style="font-style:italic">I</span>. In this case, not every element of
-<span style="font-style:italic">L</span> is necessarily in an interval.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],0,2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >0.0… 2.0</td><td style="text-align:center;white-space:nowrap" >4</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2.0… 4.0</td><td style="text-align:center;white-space:nowrap" >4</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >4.0… 6.0</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],-1,2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−1.0… 1.0</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1.0… 3.0</td><td style="text-align:center;white-space:nowrap" >4</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3.0… 5.0</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],1,[1,3,5])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >0.0… 2.0</td><td style="text-align:center;white-space:nowrap" >4</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2.0… 4.0</td><td style="text-align:center;white-space:nowrap" >4</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >4.0… 6.0</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">classes([0,0.5,1,1.5,2,2.5,3,3.5,4],[1..3,3..6])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1… 3</td><td style="text-align:center;white-space:nowrap" >4</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3… 6</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td></tr>
-</table>
 </li></ul>
 <hr>
 <a href="cascmd_en605.html"><img src="previous_motif.gif" alt="Previous"></a>

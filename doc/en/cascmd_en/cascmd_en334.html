@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Exact bounds for real roots of a polynomial: realroot
+<title>Solving au+bv=c over polynomials: abcuv
 </title>
 </head>
 <body >
@@ -12,74 +12,96 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en335.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec410" class="subsection">6.29.1  Exact bounds for real roots of a polynomial: <span style="font-family:monospace">realroot</span>
-<a id="hevea_default588"></a></h3>
-<p>The <span style="font-family:monospace">realroot</span> command finds bounds for the real roots of
-a polynomial.
+<h3 id="sec777" class="subsection">5.28.10  Solving au+bv=c over polynomials: <span style="font-family:monospace">abcuv</span>
+<a id="hevea_default582"></a></h3>
+<p>A consequence of Bézout’s identity is that given polynomials
+<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>), <span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>) and <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>), there exist polynomials <span style="font-style:italic">U</span>(<span style="font-style:italic">x</span>) and <span style="font-style:italic">V</span>(<span style="font-style:italic">x</span>)
+such that
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">U</span>(<span style="font-style:italic">x</span>)· <span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">V</span>(<span style="font-style:italic">x</span>)· <span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>) 
+</td></tr>
+</table><p>
+exactly when <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>) is a multiple of the greatest common divisor of
+<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>) and <span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>). The <span style="font-family:monospace">abcuv</span> command solves this polynomial
+equation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">realroot</span> takes two mandatory arguments and two
-optional arguments:
+<span style="font-family:monospace">abcuv</span> takes three mandatory and one optional
+argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a polynomial.
-</li><li class="li-itemize">є, a postive real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span>, <span style="font-style:italic">b</span>, two complex numbers.
+<span style="font-style:italic">A</span>, <span style="font-style:italic">B</span> and <span style="font-style:italic">C</span>, three polynomials given as expressions or
+lists of coefficients in decreasing order, where <span style="font-style:italic">C</span> is a multiple
+of the greatest common divisor of <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span>.
+</li><li class="li-itemize">Optionally if the polynomials are expressions, <span style="font-style:italic">x</span>, the
+variable (which defaults to <span style="font-family:monospace">x</span>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">realroot(</span><span style="font-style:italic">P</span>,є<span style="font-family:monospace">)</span>
-returns a list of vectors, where the elements of each vector are a
-list containing one of:
+</li><li class="li-itemize"><span style="font-family:monospace">abcuv(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>  ⟨ ,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns a list of two expressions 
+<span style="font-family:monospace">[</span><span style="font-style:italic">U</span>,<span style="font-style:italic">V</span><span style="font-family:monospace">]</span> such that <span style="font-style:italic">C</span> = <span style="font-style:italic">U</span>· <span style="font-style:italic">A</span> + <span style="font-style:italic">V</span>· <span style="font-style:italic">B</span>.
+</li></ul><h4 id="sec778" class="subsubsection">Examples.</h4>
 <ul class="itemize"><li class="li-itemize">
-an interval of length less than є containing a real
-root of the polynomial and the multiplicity of this root.
-</li><li class="li-itemize">the value of an exact real root of the polynomial and the
-multiplicity of this root.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">realroot(</span><span style="font-style:italic">P</span>,є,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> 
-returns a list of vectors as above, but only for the roots lying in
-the interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>].
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
-Find the real roots of <span style="font-style:italic">x</span><sup>3</sup>+1.<br>
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">realroot(x^3+1, 0.1)</span>
+<span style="font-family:monospace">abcuv(x^2+2*x+1 ,x^2-1,x+1)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−1</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize">Find the real roots of <span style="font-style:italic">x</span><sup>3</sup>−<span style="font-style:italic">x</span><sup>2</sup>−2<span style="font-style:italic">x</span>+2.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">realroot(x^3-x^2-2*x+2, 0.1)</span>
-</div>
-Output:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
 ⎢<br>
 ⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−[1.40624999999999..1.50000000000001]</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >[1.37499999999999..1.43750000000001]</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
 </table></td><td class="dcell">⎤<br>
 ⎥<br>
 ⎥<br>
 ⎦</td></tr>
 </table>
-</li><li class="li-itemize">Find the real roots of <span style="font-style:italic">x</span><sup>3</sup>−<span style="font-style:italic">x</span><sup>2</sup>−2<span style="font-style:italic">x</span>+2 in the interval [0;2].<br>
-<span style="font-style:italic">Input:</span>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">realroot(x^3-x^2-2*x+2, 0.1,0,2)</span>
+<span style="font-family:monospace">abcuv(x^2+2*x+1 ,x^2-1,x^3+1)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
 ⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >[1.37499999999999..1.43750000000001]</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-</table></td><td class="dcell">⎤<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−<span style="font-style:italic">x</span>+2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">x</span></td><td class="dcell">⎤<br>
+⎥<br>
 ⎥<br>
 ⎦</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">abcuv([1,2,1],[1,0,-1],[1,0,0,1])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[▯ </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> ▯,
+▯ −</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">,−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">
+▯]
+</td></tr>
 </table>
 </li></ul>
 <hr>

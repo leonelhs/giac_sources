@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The vertices of a polygon in the plane, closed: vertices_abca
+<title>Writing variable values to a file: write
 </title>
 </head>
 <body >
@@ -12,16 +12,60 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en762.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1035" class="subsection">13.6.14  The vertices of a polygon in the plane, closed: <span style="font-family:monospace">vertices_abca</span>
-<a id="hevea_default1476"></a></h3>
-<p>The <span style="font-family:monospace">vertices_abca</span> command finds the “closed” list of vertices (it
-repeats the beginning vertex).
+<h3 id="sec1947" class="subsection">12.4.3  Writing variable values to a file: <span style="font-family:monospace">write</span>
+<a id="hevea_default1411"></a></h3>
+<p>The <span style="font-family:monospace">write</span> command saves variable values to a file, to be read
+later.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">vertices_abca</span> takes one argument:<br>
- <span style="font-style:italic">P</span>, a polygon.
-</li><li class="li-itemize"><span style="font-family:monospace">vertices_abca(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns a closed list of the
-vertices of <span style="font-style:italic">P</span> and draws them.
+<span style="font-family:monospace">write</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">filename</span>, a string.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a sequence of variables.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">write(</span><span style="font-style:italic">filename,vars</span><span style="font-family:monospace">)</span>
+writes the variables in <span style="font-style:italic">vars</span> assigned to their values in a
+file named <span style="font-style:italic">filename</span>.
+</li></ul><h4 id="sec1948" class="subsubsection">Example.</h4>
+<p>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">a:=3.14</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">b:=7</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">write("foo",a,b)</span>
+</td></tr>
+</table>
+</div><p>
+creates a file named “foo” containing:
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">a:=(3.14);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">b:=7;</span>
+</td></tr>
+</table>
+</div><p>
+If you wanted to store the first million digits of π to a file,
+you could set it equal to a variable and store it in a file:
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">pidec:= evalf(pi,10^6):;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">write("pi1million",pidec)</span>
+</td></tr>
+</table>
+</div><p><br>
+</p><p>The file is written so that it can be loaded with the <span style="font-family:monospace">read</span>
+command (Section <a href="cascmd_en066.html#ssec%3Aread">4.6.2</a>), which simply takes a file name as a
+string. This allows you to restore the values of variables saved
+this way, for example in a different session or if you have purged the
+variables.</p><h4 id="sec1949" class="subsubsection">Example.</h4>
+<p>
+If, in a different session, you want to use the
+values of <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> above, you can enter:<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">read("foo")</span>
+</div><p>
+This will reassign the values <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">7</span> to
+<span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span>. Be careful, this will silently overwrite
+any values that <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> might have had.</p>
 <hr>
 <a href="cascmd_en760.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,7 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Using strings as commands: expr
+<title>Converting between Celsius and Fahrenheit: Celsius2Fahrenheit Fahrenheit2Celsius
+
 </title>
 </head>
 <body >
@@ -12,123 +13,56 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en731.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec992" class="subsection">12.4.6  Using strings as commands: <span style="font-family:monospace">expr</span>
-<a id="hevea_default1408"></a></h3>
-<p>The <span style="font-family:monospace">expr</span> command lets you use a string as a command.
+<h3 id="sec1875" class="subsection">11.1.5  Converting between Celsius and Fahrenheit: <span style="font-family:monospace">Celsius2Fahrenheit</span> <span style="font-family:monospace">Fahrenheit2Celsius</span>
+<a id="hevea_default1320"></a>
+<a id="hevea_default1321"></a></h3>
+<p>The <span style="font-family:monospace">Celsius2Fahrenheit</span> command converts a temperature in
+degrees Celsius to the equivalent temperature in Fahrenheit.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">expr</span> takes one argument:<br>
- <span style="font-family:monospace">str</span>, a string which expresses a valid command.
-</li><li class="li-itemize"><span style="font-family:monospace">expr(</span><span style="font-style:italic">str</span><span style="font-family:monospace">)</span> converts <span style="font-style:italic">str</span> to
-the command and evaluates it.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Celsius2Fahrenheit</span> takes one argument:<br>
+ <span style="font-style:italic">T</span>, a number representing representing a temperature in degrees Celsius.
+</li><li class="li-itemize"><span style="font-family:monospace">Celsius2Fahrenheit(</span><span style="font-style:italic">T</span><span style="font-family:monospace">)</span> returns the number representing the
+temperature in Fahrenheit.
+</li></ul><h4 id="sec1876" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">expr("c:= 1")</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">c</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">Celsius2Fahrenheit(a)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">9</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">5</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">a</span>+32
 </td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">a:= "ifactor(54)"</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">expr(a)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">Celsius2Fahrenheit(0)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2· 3<sup>3</sup>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">32
 </td></tr>
 </table>
-which is the same thing as entering <span style="font-family:monospace">ifactor(54)</span> directly.
 </li></ul><p><br>
-</p><p>You can also use <span style="font-family:monospace">expr</span> to convert a string to a number. If a
-string is simply a number enclosed by quotation marks, then
-<span style="font-family:monospace">expr</span> will return the number.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">expr("123")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">123
-</td></tr>
-</table><p><br>
-</p><p>In particular, the following strings will be converted to the
-appropriate number.
+</p><p>The <span style="font-family:monospace">Fahrenheit2Celsius</span> command converts Fahrenheit
+temperatures to Celsius.
 </p><ul class="itemize"><li class="li-itemize">
-A string consisting of the digits 0 through 9 which doesn’t start
-with 0 will be converted to an integer.<p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
- <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">expr("2133")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    2133
-</td></tr>
-</table></li><li class="li-itemize">A string consisting of the digits 0 through 9 which contains a
-single decimal point will be converted to a decimal.<p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-style:italic">Fahrenheit2Celcius</span> takes one argument:<br>
+ <span style="font-style:italic">T</span>, a number representing representing a temperature in degrees
+Fahrenheit.
+</li><li class="li-itemize"><span style="font-family:monospace">Fahrenheit2Celcius(</span><span style="font-style:italic">T</span><span style="font-family:monospace">)</span> returns the number representing the
+temperature in Celcius.
+</li></ul><h4 id="sec1877" class="subsubsection">Example.</h4>
+<p>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">expr("123.4")</span>
+<span style="font-family:monospace">Fahrenheit2Celsius(212)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">123.4
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">100
 </td></tr>
-</table></li><li class="li-itemize">A string consisting of the digits 0 through 9, possibly containing a
-single decimal point, followed by <span style="font-family:monospace">e</span> and then more digits 0
-through 9, will be read as a decimal in exponential notation.<p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">expr("1.23e4")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">12300.0
-</td></tr>
-</table></li><li class="li-itemize">A string consisting of the digits 0 through 7 which starts
-with 0 will be read as an integer base 8.<p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
- <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">expr("0176")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  126
-</td></tr>
-</table><p>
-since 176 base 8 equals 126 base 10.</p></li><li class="li-itemize">A string starting with <span style="font-family:monospace">0x</span> followed by digits 0 through 9
-and letters <span style="font-family:monospace">a</span> through <span style="font-family:monospace">f</span> will be read as an integer
-base 16.<p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
- <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">expr("0x2a3f")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  10815
-</td></tr>
-</table><p>
-since <span style="font-family:monospace">2a3f</span> base 16 equals 10815 base 10.</p></li><li class="li-itemize">A string starting with <span style="font-family:monospace">0b</span> followed by digits 0 and 1 will
-be read as a binary integer.<p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
- <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">expr("0b1101")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  13
-</td></tr>
-</table><p>
-since 1101 base 2 equals 13 base 10.
-</p></li></ul>
+</table>
 <hr>
 <a href="cascmd_en729.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

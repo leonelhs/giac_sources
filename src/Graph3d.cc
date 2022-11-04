@@ -43,6 +43,7 @@
 #include "Equation.h"
 #include "Editeur.h"
 #include "Xcas1.h"
+#include "Cfg.h"
 #include "Print.h"
 #include "gl2ps.h"
 
@@ -74,6 +75,10 @@ namespace xcas {
   std::map<std::string,Fl_Image *> texture_cache;
 
   int Graph3d::opengl2png(const std::string & filename){
+    if (!opengl){
+      fl_alert(gettext("Supports only OpenGL rendering"));
+      return -1;
+    }
 #ifdef HAVE_LIBPNG
     if (!screenbuf)
       return -1;
@@ -127,19 +132,44 @@ namespace xcas {
     Graph2d3d(x,y,width, height, title,hp_),
     theta_z(-110),theta_x(-13),theta_y(-95),
     delta_theta(5),draw_mode(GL_QUADS),printing(0),glcontext(0),dragi(0),dragj(0),push_in_area(false),depth(0),below_depth_hidden(false),screenbuf(0) {
+    displayhint=true;
+#if 1 // ndef WIN32 // def HYPERSURFACE3
+    if (gnuplot_opengl)
+      opengl=true;
+    else {
+      opengl=false;
+      theta_z=theta_x=theta_y=0;
+    }
+#else
+    opengl=true;
+#endif
+    q=euler_deg_to_quaternion_double(theta_z,theta_x,theta_y);
     // end();
     // mode=0;
     display_mode |= 0x80;
     display_mode |= 0x200;
     box(FL_FLAT_BOX);
     couleur=_POINT_WIDTH_5;
-    q=euler_deg_to_quaternion_double(theta_z,theta_x,theta_y);
     legende_size=max(min(legende_size,width/4),width/6);
     resize(x,y,width-legende_size,height);
     add_mouse_param_group(x,y,width,height);
     // 8 light initialization
     for (int i=0;i<8;++i)
       reset_light(i);
+    if (!opengl){
+      diffusionz=5; diffusionz_limit=5; hide2nd=false; interval=false;
+      default_upcolor=giac3d_default_upcolor;
+      default_downcolor=giac3d_default_downcolor;
+      default_downupcolor=giac3d_default_downupcolor;
+      default_downdowncolor=giac3d_default_downdowncolor;
+      doprecise=false;
+      lcdz= h()/4;
+      autoscale(false);
+      update_rotation();
+      // update_scales();
+      precision=1;
+    }
+
   }
 
   // t angle in radians -> r,g,b
@@ -1751,7 +1781,7 @@ namespace xcas {
 
   void Graph3d::current_normal(double & a,double & b,double & c) {
     double res1[4]={0,0,1,1},vect[4];
-    mult4(model_inv,res1,vect);
+    mult4(opengl?model_inv:invtransform3d,res1,vect);
     a=vect[0]/vect[3]-(window_xmax+window_xmin)/2;
     b=vect[1]/vect[3]-(window_ymax+window_ymin)/2;
     c=vect[2]/vect[3]-(window_zmax+window_zmin)/2;
@@ -2240,8 +2270,10 @@ namespace xcas {
       // cerr << tmps << '\n';
       draw_string(tmps); // +" Z="+giac::print_DOUBLE_(-depth,3));
     }
-    glRasterPos3d(-0.98,-0.99,depth-0.001);
-    draw_string(gettext("click k: kill 3d view"));
+    if (displayhint){
+      glRasterPos3d(-0.98,-0.99,depth-0.001);
+      draw_string(gettext("click k: kill 3d view, o: native rendering"));
+    }
     if (below_depth_hidden){
       /* current mouse position
 	double i=Fl::event_x();
@@ -2304,6 +2336,2081 @@ namespace xcas {
     return true;
   }
 
+  /*  
+      native 3d rendering
+   */
+  void do_transform(const double mat[16],double x,double y,double z,double & X,double & Y,double &Z){
+    X=mat[0]*x+mat[1]*y+mat[2]*z+mat[3];
+    Y=mat[4]*x+mat[5]*y+mat[6]*z+mat[7];
+    Z=mat[8]*x+mat[9]*y+mat[10]*z+mat[11];
+    // double t=mat[12]*x+mat[13]*y+mat[14]*z+mat[15];
+    // X/=t; Y/=t; Z/=t;
+  }
+  void Graph3d::xyz2ij(const double3 &d,int &i,int &j) const {
+    double X,Y,Z;
+    do_transform(transform3d,d.x,d.y,d.z,X,Y,Z);
+    i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
+  }
+  
+  void Graph3d::xyz2ij(const double3 &d,double &i,double &j) const {
+    double X,Y,Z;
+    do_transform(transform3d,d.x,d.y,d.z,X,Y,Z);
+    i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
+  }
+  
+  void Graph3d::XYZ2ij(const double3 &d,int &i,int &j) const {
+    double X=d.x,Y=d.y,Z=d.z;
+    i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
+  }
+
+  // returns true if filled, false otherwise
+  bool get_colors(gen attr,int & upcolor,int & downcolor,int & downupcolor,int & downdowncolor){
+    if (attr.is_symb_of_sommet(at_pnt)){
+      attr=attr[1];
+    }
+    if (attr.type==_INT_ && (attr.val & 0xffff)!=56){
+      upcolor=attr.val &0xffff;
+      int color=rgb565to888(upcolor);
+      int r=(color&0xff0000)>>16,g=(color & 0xff00)>>8,b=192;
+      r >>= 2;
+      g >>= 2;
+      downcolor=rgb888to565((r<<16)|(g<<8)|b);
+      r >>= 1;
+      g >>= 1;
+      downupcolor=rgb888to565((r<<16)|(g<<8)|b);
+      r >>= 2;
+      g >>= 2;
+      downdowncolor=rgb888to565((r<<16)|(g<<8)|b);
+    }
+    if (attr.type==_INT_)
+      return attr.val & 0x40000000;
+    return false;
+  }
+
+  void Graph3d::update_rotation(){
+    context * contextptr=hp?hp->contextptr:get_context(this);
+    solid3d=false;
+    double rx,ry,rz,theta;
+    get_axis_angle_deg( (dragi || dragj)?(rotation_2_quaternion_double(0,0,1,dragi*180/h())*rotation_2_quaternion_double(0,1,0,dragj*180/w())*q):q,rx,ry,rz,theta);
+    // get_axis_angle_deg( (dragi || dragj)?(quaternion_double(dragi*180/h(),0,0)*rotation_2_quaternion_double(1,0,0,dragj*180/w())*q):q,rx,ry,rz,theta);
+    // rx=-0.51; ry=-.197; rz=-.835; theta=327.88;
+    // rx=0;ry=1;rz=0; //theta=60;
+    // cout << rx << " " << ry << " " << rz << " " << theta << "\n";
+    // rx=0;ry=0;rz=1;
+    // theta=10;
+    theta *= M_PI/180;
+    double r2=rx*rx+ry*ry+rz*rz,invr2=1/r2;
+    double r=std::sqrt(r2);
+    double c=std::cos(theta),s=std::sin(theta);
+    // mkisom([[rx,ry,rz],theta],1)
+    // 1/r2*[[rx*rx+ry*ry*c+rz*rz*c,rx*ry-rx*ry*c-rz*s*r,rx*rz-rx*rz*c+ry*s*r],[rx*ry-rx*ry*c+rz*s*r,ry*ry+rx*rx*c+rz*rz*c,ry*rz-rx*s*r-ry*rz*c],[rx*rz-rx*rz*c-ry*s*r,ry*rz+rx*s*r-ry*rz*c,rz*rz+rx*rx*c+ry*ry*c]]
+    double a11=invr2*(rx*rx+ry*ry*c+rz*rz*c),a12=invr2*(rx*ry-rx*ry*c-rz*s*r),a13=invr2*(rx*rz-rx*rz*c+ry*s*r);
+    double a21=invr2*(rx*ry-rx*ry*c+rz*s*r),a22=invr2*(ry*ry+rx*rx*c+rz*rz*c),a23=invr2*(ry*rz-rx*s*r-ry*rz*c);
+    double a31=invr2*(rx*rz-rx*rz*c-ry*s*r),a32=invr2*(ry*rz+rx*s*r-ry*rz*c),a33=invr2*(rz*rz+rx*rx*c+ry*ry*c);
+    double xt=(window_xmin+window_xmax)/2,xs=2.0/(window_xmax-window_xmin),yt=(window_ymin+window_ymax)/2,ys=2.0/(window_ymax-window_ymin),zt=(window_zmin+window_zmax)/2,zs=2.0/(window_zmax-window_zmin);
+    double mat[16]={a11*xs,a12*ys,a13*zs,-a11*xt*xs-a12*yt*ys-a13*zt*zs,
+		    a21*xs,a22*ys,a23*zs,-a21*xt*xs-a22*yt*ys-a23*zt*zs,
+		    a31*xs,a32*ys,a33*zs,-a31*xt*xs-a32*yt*ys-a33*zt*zs,
+		    0,0,0,1
+    };
+    for (int i=0;i<sizeof(mat)/sizeof(double);++i)
+      transform3d[i]=mat[i];
+    inv4(transform3d,invtransform3d);
+    surfacev.clear();
+    polyedrev.clear(); polyedre_xyminmax.clear(); polyedre_abcv.clear(); polyedre_faceisclipped.clear(); polyedre_filled.clear();
+    plan_pointv.clear(); plan_abcv.clear(); plan_filled.clear();
+    sphere_centerv.clear(); sphere_radiusv.clear(); sphere_quadraticv.clear();
+    linev.clear(); linetypev.clear(); curvev.clear();
+    pointv.clear(); points.clear();
+    plan_color.clear();sphere_color.clear();polyedre_color.clear();polyedre_faceisclipped.clear();line_color.clear();curve_color.clear(); hyp_color.clear(); point_color.clear();
+    // rotate+translate+scale g
+    vecteur v;
+    aplatir(native_renderer_instructions,v);
+    for (int i=0;i<v.size();++i){
+      int u=default_upcolor,d=default_downcolor,du=default_downupcolor,dd=default_downdowncolor;
+      const char * ptr=0;
+      bool fill_polyedre=false;
+      if (v[i].is_symb_of_sommet(at_pnt)){
+	vecteur & attrv=*v[i]._SYMBptr->feuille._VECTptr;
+	if (attrv.size()>1){
+	  gen attr=attrv[1];
+	  fill_polyedre=get_colors(attr,u,d,du,dd);
+	  if (fill_polyedre) solid3d=true;
+	  if (attrv.size()>2){
+	    attr=attrv[2];
+	    if (attr.type==_STRNG)
+	      ptr=attr._STRNGptr->c_str();
+	    if (attr.type==_IDNT)
+	      ptr=attr._IDNTptr->id_name;
+	  }
+	}
+      }
+      gen G=remove_at_pnt(v[i]);
+      if (G.is_symb_of_sommet(at_curve)){
+	gen f=G._SYMBptr->feuille;
+	f=f[0];
+	f=f[4];
+	if (ckmatrix(f)){
+	  vecteur v=*f._VECTptr;
+	  int n=v.size();
+	  curvev.push_back(vector<double3>(n));
+	  curve_color.push_back(int4(u,d,du,dd));
+	  vector<double3> & cur=curvev.back();
+	  for (int k=0;k<n;++k){
+	    gen P=v[k];
+	    if (P.type==_VECT && P._VECTptr->size()==3){
+	      double X,Y,Z;
+	      do_transform(transform3d,P[0]._DOUBLE_val,P[1]._DOUBLE_val,P[2]._DOUBLE_val,X,Y,Z);
+	      cur[k]=double3(X,Y,Z);
+	    }
+	  }
+	}
+	continue;
+      }
+      if (G.type==_VECT && G.subtype==_POINT__VECT){
+	gen m=evalf_double(G,1,contextptr);
+	if (m.type==_VECT && m._VECTptr->size()==3){
+	  vecteur & A=*m._VECTptr;
+	  if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ ){
+	    double X,Y,Z; int I,J;
+	    do_transform(transform3d,A[0]._DOUBLE_val,A[1]._DOUBLE_val,A[2]._DOUBLE_val,X,Y,Z);
+	    xyz2ij(double3(A[0]._DOUBLE_val,A[1]._DOUBLE_val,A[2]._DOUBLE_val),I,J);
+	    pointv.push_back(double3(I,J,Z));
+	    points.push_back(ptr);
+	    point_color.push_back(int4(u,d,du,dd));
+	  }
+	}
+	continue;
+      }
+      bool line=G.subtype==_LINE__VECT,halfline=G.subtype==_HALFLINE__VECT,segment= G.subtype==_GROUP__VECT;
+      if (G.type==_VECT && G._VECTptr->size()==2 && (line || halfline || segment)){
+	gen a=evalf_double(G._VECTptr->front(),1,contextptr),b=evalf_double(G._VECTptr->back(),1,contextptr);
+	if (a.type==_VECT && b.type==_VECT && a._VECTptr->size()==3 && b._VECTptr->size()==3){
+	  vecteur & A=*a._VECTptr;
+	  vecteur & B=*b._VECTptr;
+	  if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ && B[0].type==_DOUBLE_ && B[1].type==_DOUBLE_ && B[2].type==_DOUBLE_ ){
+	    lines.push_back(ptr);
+	    double x=A[0]._DOUBLE_val,y=A[1]._DOUBLE_val,z=A[2]._DOUBLE_val;
+#if 0 // ndef OLD_LINE_RENDERING
+	    double3 prev(x,y,z);
+	    linev.push_back(prev);
+#endif
+	    double X,Y,Z;
+	    do_transform(transform3d,x,y,z,X,Y,Z);
+	    double3 M(X,Y,Z);
+	    x=B[0]._DOUBLE_val;y=B[1]._DOUBLE_val;z=B[2]._DOUBLE_val;
+#if 0 // ndef OLD_LINE_RENDERING
+	    linev.push_back(double3(x-prev.x,y-prev.y,z-prev.z));
+#endif
+	    do_transform(transform3d,x,y,z,X,Y,Z);
+	    double3 N(X,Y,Z);
+	    double3 v(N.x-M.x,N.y-M.y,N.z-M.z);
+	    linev.push_back(M); linev.push_back(v);
+	    linetypev.push_back(G.subtype);
+	    line_color.push_back(int4(u,d,du,dd));
+	  }
+	}
+	continue;
+      }
+      if (G.is_symb_of_sommet(at_hypersphere)){
+	solid3d=true;
+	vecteur hyp=*G._SYMBptr->feuille._VECTptr;
+	gen c=evalf_double(hyp[0],1,contextptr);
+	double x=c[0]._DOUBLE_val,y=c[1]._DOUBLE_val,z=c[2]._DOUBLE_val,X,Y,Z;
+	do_transform(transform3d,x,y,z,X,Y,Z);
+	sphere_centerv.push_back(double3(X,Y,Z));
+	gen R=evalf(hyp[1],1,contextptr);
+	double r=R._DOUBLE_val;
+	sphere_radiusv.push_back(r);
+	double * mat=invtransform3d;
+	matrice qmat(makevecteur(
+				 makevecteur(mat[0],mat[4],mat[8]),
+				 makevecteur(mat[1],mat[5],mat[9]),
+				 makevecteur(mat[2],mat[6],mat[10])
+				 ));
+	qmat=mmult(mtran(qmat),qmat);
+	sphere_quadraticv.push_back(qmat);
+	sphere_color.push_back(int4(u,d,du,dd));
+	bool isclipped=x>=window_xmin+r && x<=window_xmax-r && y>=window_ymin+r && y<=window_ymax-r && z>=window_zmin+r && z<=window_zmax-r;
+	// check if distance of center to window_x/y/xmin/max is <=R
+	sphere_isclipped.push_back(isclipped);
+	continue;
+      }
+      if (G.is_symb_of_sommet(at_hyperplan)){
+	plan_filled.push_back(fill_polyedre);
+	vecteur hyp=*G._SYMBptr->feuille._VECTptr;
+	gen hyp1=evalf_double(hyp[1],1,contextptr);
+	vecteur & hyp1v=*hyp1._VECTptr;
+	double A,B,C,x,y,z,X,Y,Z;
+	A=hyp1v[0]._DOUBLE_val;B=hyp1v[1]._DOUBLE_val;C=hyp1v[2]._DOUBLE_val;
+	do_transform(transform3d,A,B,C,X,Y,Z);
+	gen hyp0=evalf_double(hyp[0],1,contextptr);
+	vecteur & hyp0v=*hyp0._VECTptr;
+	x=hyp0v[0]._DOUBLE_val;y=hyp0v[1]._DOUBLE_val;z=hyp0v[2]._DOUBLE_val;
+	double * mat=invtransform3d;
+	A=mat[0]*x+mat[4]*y+mat[8]*z;
+	B=mat[1]*x+mat[5]*y+mat[9]*z;
+	C=mat[2]*x+mat[6]*y+mat[10]*z;
+	double AB=std::abs(A)+std::abs(B);
+	if (std::abs(C)<1e-2*AB){
+	  // almost vertical plane, equation A*(x-X)+B*(y-Y)=0
+	  continue;
+	}
+	A/=C; B/=C;
+	plan_pointv.push_back(double3(X,Y,Z));	
+	plan_abcv.push_back(double3(-A,-B,Z+A*X+B*Y));
+	plan_color.push_back(int4(u,d,du,dd));
+	continue;
+      }
+      if (G.is_symb_of_sommet(at_hypersurface)){
+	solid3d=true;
+	const vecteur & hyp=*G._SYMBptr->feuille._VECTptr;
+	gen hyp0=hyp[0];
+	const vecteur & hyp0v=*hyp0._VECTptr;
+	gen h=hyp0v[4];
+	if (h.type==_VECT && h.subtype==_POLYEDRE__VECT)
+	  G=h;
+	else if (ckmatrix(h,true)){
+	  surfacev.push_back(vector< vector<float3d> >(0));
+	  vector< vector<float3d> > & S=surfacev.back();
+	  const vecteur & V=*h._VECTptr;
+	  S.reserve(V.size());
+	  for (int j=0;j<V.size();++j){
+	    gen Vj=V[j];
+	    const vecteur & vj=*Vj._VECTptr;
+	    S.push_back(vector<float3d>(0));
+	    if (vj.empty())
+	      continue;
+	    vector<float3d> &S_=S.back();
+	    if (vj[0].type==_VECT && vj[0]._VECTptr->size()==3){
+	      S_.reserve(3*vj.size());
+	      for (int k=0;k<vj.size();++k){
+		if (vj[k].type!=_VECT || vj[k]._VECTptr->size()!=3)
+		  continue;
+		const vecteur & cur=*vj[k]._VECTptr;
+		double X,Y,Z;
+		do_transform(mat,cur[0]._DOUBLE_val,cur[1]._DOUBLE_val,cur[2]._DOUBLE_val,X,Y,Z);
+		S_.push_back(X); S_.push_back(Y); S_.push_back(Z);
+	      }
+	    }
+	    else {
+	      S_.reserve(vj.size());
+	      for (int k=0;k<vj.size();k+=3){
+		double X,Y,Z;
+		do_transform(mat,vj[k]._DOUBLE_val,vj[k+1]._DOUBLE_val,vj[k+2]._DOUBLE_val,X,Y,Z);
+		//vj[k]=X; vj[k+1]=Y; vj[k+2]=Z;
+		S_.push_back(X); S_.push_back(Y); S_.push_back(Z);
+	      }
+	    }
+	  }
+	  hyp_color.push_back(int4(u,d,du,dd));
+	  continue;
+	} // end quad hypersurface
+      } // end hypersurface
+      if (G.type==_VECT && G.subtype==_GROUP__VECT){
+	G=gen(makevecteur(G),_POLYEDRE__VECT);
+      }
+      if (G.type==_VECT && G.subtype==_POLYEDRE__VECT){
+	vecteur p=*G._VECTptr;
+	polyedrev.reserve(polyedrev.size()+p.size());
+	polyedre_color.reserve(polyedre_color.size()+p.size());
+	polyedre_xyminmax.reserve(polyedre_xyminmax.size()+2*p.size());
+	for (int j=0;j<p.size();++j){
+	  bool is_clipped=false;
+	  gen g=p[j];
+	  if (g.type==_VECT){
+	    vector<double3> cur;
+	    vecteur w=*g._VECTptr;
+	    cur.reserve(w.size()+1);
+	    for (int k=0;k<w.size();++k){
+	      gen P=evalf_double(w[k],1,contextptr);
+	      if (P.type==_VECT && P._VECTptr->size()==3){
+		double x=P[0]._DOUBLE_val,y=P[1]._DOUBLE_val,z=P[2]._DOUBLE_val;
+		if (is_clipped && (x<window_xmin || x>window_xmax || y<window_ymin || y>window_ymax || z<window_zmin || z>window_zmax) )
+		  is_clipped=false;
+		double X,Y,Z;
+		do_transform(transform3d,x,y,z,X,Y,Z);
+		cur.push_back(double3(X,Y,Z));
+	      }
+	    }
+	    if (cur.size()>=3){
+	      double Z3;int l=0;
+	      for (;l<cur.size()-2;++l){
+		double x0=cur[l].x,y0=cur[l].y,z0=cur[l].z;
+		double x1=cur[l+1].x,y1=cur[l+1].y,z1=cur[l+1].z;
+		double x2=cur[l+2].x,y2=cur[l+2].y,z2=cur[l+2].z;
+		double X1=x1-x0,Y1=y1-y0,Z1=z1-z0;
+		double X2=x2-x0,Y2=y2-y0,Z2=z2-z0;
+		double X3=Y1*Z2-Y2*Z1,Y3=X2*Z1-X1*Z2;Z3=X1*Y2-X2*Y1;
+		double prec=1e-3;
+#if 1
+		if ( (X3!=0 || Y3!=0) && std::abs(Z3)<prec*(std::abs(X3)+std::abs(Y3))){
+		  Z3=1.0001*prec*(std::abs(X3)+std::abs(Y3));
+		}
+#endif
+		if (std::abs(Z3)>prec*(std::abs(X3)+std::abs(Y3))){
+		  // X3*(x-x0)+Y3*(y-y0)+Z3*(z-z0)=0
+		  X3/=Z3; Y3/=Z3;
+		  polyedre_abcv.push_back(double3(-X3,-Y3,z0+X3*x0+Y3*y0));
+		  break;
+		}
+	      }
+	      if (l==cur.size()-2)
+		continue;
+	      cur.push_back(cur.front());
+	      double facemin=1e306,facemax=-1e306;
+	      if (fill_polyedre){
+		for (int l=1;l<cur.size();++l){
+		  double xy=cur[l].y-cur[l].x;
+		  if (xy<facemin)
+		    facemin=xy;
+		  if (xy>facemax)
+		    facemax=xy;
+		  // replace unused z coordinate by slope
+		  // cur[l].z=(cur[l].y-cur[l-1].y)/(cur[l].x-cur[l-1].x);
+		}
+	      }
+	      polyedrev.push_back(vector<double3>(0)); polyedrev.back().swap(cur); // polyedrev.push_back(cur);
+	      polyedre_color.push_back(int4(u,d,du,dd));
+	      polyedre_xyminmax.push_back(facemin);
+	      polyedre_xyminmax.push_back(facemax);
+	      polyedre_faceisclipped.push_back(is_clipped);
+	      polyedre_filled.push_back(fill_polyedre);
+	    } // end cur.size()>=3
+	  } // end g.type==_VECT
+	}
+	continue;
+      }      
+    }
+  }
+
+  void Graph3d::addpolyg(vector<int2> & polyg,double x,double y,double z,int2 & IJmin) const {
+    int I,J;
+    xyz2ij(double3(x,y,z),I,J);
+    int2 IJ(I,J);
+    polyg.push_back(IJ);
+    if (IJ<IJmin)
+      IJmin=IJ;
+  }
+
+  void normalize(double & x, double & y){
+    double fx=fabs(x),fy=fabs(y);
+    if (fx>fy){
+      y/=fx;
+      x/=fx;
+    }
+    else {
+      x/=fy;
+      y/=fy;
+    }
+    double n=std::sqrt(x*x+y*y);
+    x/=n; y/=n;
+  }
+
+  int diffuse(int color_orig,double diffusionz){
+    if (diffusionz<1.1)
+      return color_orig;
+    int color=rgb565to888(color_orig);
+    int r=(color&0xff0000)>>16,g=(color & 0xff00)>>8,b=192;
+    double attenuate=(.3*(diffusionz-1));
+    attenuate=1.0/(1+attenuate*attenuate);
+    r*=attenuate; g*=attenuate; b*=attenuate;
+    return rgb888to565((r<<16)|(g<<8)|b);
+  }
+  
+  void Graph3d::glinter1(double z,double dz,
+		double *zmin,double *zmax,double ZMIN,double ZMAX,
+		int ih,int lcdz,
+		int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+		) const {
+    if (ZMIN<z && z<ZMAX)
+      return;
+    // lcdz tests below: avoid marking too large regions
+    if (*zmax<*zmin || z<*zmin-lcdz || z>*zmax+lcdz)
+      *zmax=*zmin=z;
+    bool diffus=diffusionz<diffusionz_limit;
+    double deltaz;
+    if (interval){
+      bool intervalonly=false;
+      if (z<0) {
+	// return;
+	z=0; intervalonly=true;
+      }
+      if (z>=LCD_HEIGHT_PX) {
+	// return;
+	z=LCD_HEIGHT_PX-1; intervalonly=true;
+      }
+      deltaz=diffus?1:diffusionz;
+      if (z>*zmax+deltaz){
+	if (diffus){
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
+	  if (!intervalonly)
+	    os_set_pixel(ih,z,downcolor);
+	}
+	else {
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),_BLACK);
+	  // draw interval
+	  int nstep=int(z-*zmax)/diffusionz;
+	  double zstep=(z-*zmax)/nstep;
+	  for (double zz=*zmax+zstep;zz<=z;zz+=zstep)
+	    os_set_pixel(ih,zz,downcolor);
+	}
+	*zmax=z;
+	return;
+      }
+      else if (z<*zmin-deltaz){
+	if (diffus){
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
+	  if (!intervalonly)
+	    os_set_pixel(ih,z,upcolor);
+	}
+	else {
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),_BLACK);
+	  // draw interval
+	  int nstep=int(*zmin-z)/diffusionz;
+	  double zstep=(z-*zmin)/nstep; // zstep<0
+	  for (double zz=*zmin+zstep;zz>=z;zz+=zstep)
+	    os_set_pixel(ih,zz,upcolor);
+	}
+	*zmin=z;
+	return;
+      }
+    } // end if interval
+    if (z>=0 &&  z<=LCD_HEIGHT_PX){
+      int color=-1;
+      if (diffus){
+	if (z<=*zmin){
+	  // mark all points with diffuse color from upcolor
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,std::min(double(diffusionz),std::max(-dz,1.0))));
+	  color=upcolor;
+	  *zmin=z;
+	}
+	if (z>=*zmax){
+	  // mark all points with diffuse color from downcolor
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,std::min(double(diffusionz),std::max(dz,1.0))));
+	  *zmax=z;
+	}
+	return;
+      }
+      if (z>*zmax){ // mark only 1 point
+	color=downcolor;
+	drawRectangle(ih,*zmax+1,1,z-*zmax-1,_BLACK);
+	*zmax=z;
+      }
+      if (z<*zmin){ // mark 1 point
+	color=upcolor;
+	// drawRectangle(ih,z+1,1,*zmin-z-1,_BLACK);
+	*zmin=z;
+      }
+      if (color>=0) os_set_pixel(ih,z,color);
+    }
+  }
+  
+  void Graph3d::glinter(double a,double b,double c,
+	       double xscale,double xc,double yscale,double yc,
+	       double *zmin,double *zmax,double ZMIN,double ZMAX,
+	       int i,int horiz,int j,int w,int h,int lcdz,
+	       int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+	       ) const {
+    double dz=lcdz*(a+b)*yscale-1;
+    //if (dz<-10 || dz>10) cout << "dz=" << dz << "\n";
+    // plane equation solved
+    if (//0
+	h==1 && w==1
+	){
+      int ih=i+horiz;
+      double x = yscale*j-xscale*i + xc;
+      // if (x<xmin) continue;
+      double y = yscale*j+xscale*i + yc;
+      // if (y<ymin) continue;
+      double z = (a*x+b*y+c);
+      z=LCD_HEIGHT_PX/2+j-lcdz*z;
+      if (ZMIN<z && z<ZMAX)
+	return;
+      bool intervalonly=false;
+      // lcdz tests below: avoid marking too large regions
+      if (*zmax<*zmin || z<*zmin-lcdz || z>*zmax+lcdz)
+	*zmax=*zmin=z;
+      if (0 && (*zmax<50 || *zmin<50 || z<50))
+	cout << *zmax << " "; // debug
+      bool diffus=diffusionz<diffusionz_limit;
+      double deltaz;
+      if (interval){
+	if (z<0) {
+	  // return;
+	  z=0; intervalonly=true;
+	}
+	if (z>=LCD_HEIGHT_PX) {
+	  // return;
+	  z=LCD_HEIGHT_PX-1; intervalonly=true;
+	}
+	deltaz=diffus?1:diffusionz;
+	if (z>*zmax+deltaz){
+	  if (diffus){
+	    drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
+	    if (!intervalonly)
+	      os_set_pixel(ih,z,downcolor);
+	  }
+	  else {
+	    drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),_BLACK);
+	    // draw interval
+	    int nstep=int(z-*zmax)/diffusionz;
+	    double zstep=(z-*zmax)/nstep;
+	    for (double zz=*zmax+zstep;zz<=z;zz+=zstep)
+	      os_set_pixel(ih,zz,downcolor);
+	  }
+	  *zmax=z;
+	  return;
+	}
+	else if (z<*zmin-deltaz){
+	  if (diffus){
+	    drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
+	    if (!intervalonly)
+	      os_set_pixel(ih,z,upcolor);
+	  }
+	  else {
+	    drawRectangle(ih,z,1,std::ceil(*zmin-z),_BLACK);
+	    // draw interval
+	    int nstep=int(*zmin-z)/diffusionz;
+	    double zstep=(z-*zmin)/nstep; // zstep<0
+	    for (double zz=*zmin+zstep;zz>=z;zz+=zstep)
+	      os_set_pixel(ih,zz,upcolor);
+	  }
+	  *zmin=z;
+	  return;
+	}
+      } // end if interval
+      if (z>=0 &&  z<=LCD_HEIGHT_PX){
+	int color=-1;
+	if (diffus){
+	  if (z<=*zmin){
+	    // mark all points with diffuse color from upcolor
+	    drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,std::min(double(diffusionz),std::max(-dz,1.0))));
+	    color=upcolor;
+	    *zmin=z;
+	  }
+	  if (z>=*zmax){
+	    // mark all points with diffuse color from downcolor
+	    drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,std::min(double(diffusionz),std::max(dz,1.0))));
+	    *zmax=z;
+	  }
+	  return;
+	}
+	if (z>=*zmax){ // mark only 1 point
+	  color=downcolor;
+	  drawRectangle(ih,*zmax+1,1,z-*zmax-1,_BLACK);
+	  *zmax=z;
+	}
+	if (z<=*zmin){ // mark 1 point
+	  color=upcolor;
+	// drawRectangle(ih,z+1,1,*zmin-z-1,_BLACK);
+	  *zmin=z;
+	}
+	if (color>=0) os_set_pixel(ih,z,color);
+      }
+      return; // end h==1 and w==1
+    }
+    for (int I=i;I<i+w;++I,++zmax,++zmin){
+      int ih=I+horiz;
+      double x = yscale*j-xscale*I + xc;
+      // if (x<xmin) continue;
+      double y = yscale*j+xscale*I + yc;
+      // if (y<ymin) continue;
+      double z = (a*x+b*y+c);
+      bool intervalonly=false;
+      z=LCD_HEIGHT_PX/2+j-lcdz*z;
+      if (ZMIN<z && z<ZMAX)
+	return;
+      if (interval){
+	if (z<0) {
+	  z=0; intervalonly=true;
+	}
+	if (z>=LCD_HEIGHT_PX) {
+	  z=LCD_HEIGHT_PX-1; intervalonly=true;
+	}
+      }
+      if (i==0)
+	; // cout << "i=" << i << " j=" << j << ", zmin=" << *zmin << " z=" << z << " zmax=" << *zmax << " dz=" << dz << ", a=" << a << " b=" << b << " c=" << c <<"\n";
+      if (*zmax<*zmin || z<*zmin-lcdz || z>*zmax+lcdz)
+	*zmax=*zmin=z;
+      int deltaz=(diffusionz<diffusionz_limit?1:diffusionz);
+      if (interval && z>*zmax+deltaz){
+	if (//0
+	    diffusionz<diffusionz_limit
+	    )	  
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
+	else {
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),_BLACK);
+	  // draw interval
+	  int nstep=int(z-*zmax)/diffusionz;
+	  double zstep=(z-*zmax)/nstep;
+	  for (double zz=*zmax+zstep;zz<=z;zz+=zstep)
+	    os_set_pixel(ih,zz,downcolor);
+	}
+	if (intervalonly){
+	  *zmax=z;
+	  continue;
+	}
+      }
+      if (interval && z<*zmin-deltaz){
+	if (//0
+	    diffusionz<diffusionz_limit
+	    )
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
+	else {
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),_BLACK);
+	  // draw interval
+	  int nstep=int(*zmin-z)/diffusionz;
+	  double zstep=(z-*zmin)/nstep; // zstep<0
+	  for (double zz=*zmin+zstep;zz>=z;zz+=zstep)
+	    os_set_pixel(ih,zz,upcolor);
+	}
+	if (intervalonly){
+	  *zmin=z;
+	  continue;
+	}
+      }
+      if (//x-(h-1)*yscale>xmin && y-(h-1)*yscale>ymin &&
+	  z>=0 && z+(h-1)*dz>=0 && z<=LCD_HEIGHT_PX && z+(h-1)*dz<=LCD_HEIGHT_PX
+	  ){
+	int color=-1;
+	if ( (h>1 || diffusionz<diffusionz_limit) && dz>0 && z>=*zmax){
+	  // mark all points with downcolor
+	  *zmax=z+(h-1)*dz;
+	  color=downcolor;
+	  if (diffusionz>=diffusionz_limit && dz>diffusionz){
+	    drawRectangle(ih,z,1,std::ceil(*zmax-z),_BLACK);
+	    // draw interval
+	    int nstep=int(std::ceil((*zmax-z)/diffusionz));
+	    double zstep=(*zmax-z)/nstep;
+	    for (int i=0;i<=nstep;++i)
+	      os_set_pixel(ih,z+i*zstep,color);		    
+	    continue;
+	  }
+	}
+	if ( (h>1 || diffusionz<diffusionz_limit) && dz<0 && z<=*zmin){
+	  // mark all points with upcolor
+	  *zmin=z+(h-1)*dz;
+	  color=upcolor;
+	  if (diffusionz>=diffusionz_limit && dz<-diffusionz){
+	    drawRectangle(ih,z,1,std::ceil(z-*zmin),_BLACK);
+	    // draw interval
+	    int nstep=int(std::ceil((z-*zmin)/diffusionz));
+	    double zstep=(*zmin-z)/nstep;
+	    for (int i=0;i<=nstep;++i)
+	      os_set_pixel(ih,z+i*zstep,color);
+	    continue;
+	  }
+	}
+	if (color>=0){
+	  if (diffusionz<diffusionz_limit){
+	    if (dz>0)
+	      drawRectangle(ih,z,1,std::ceil(h*dz),diffuse(color,std::min(double(diffusionz),std::max(dz,1.0))));
+	    else
+	      drawRectangle(ih,z-std::ceil(-h*dz),1,std::ceil(-h*dz),diffuse(color,std::min(double(diffusionz),std::max(-dz,1.0))));
+	    continue;
+	  }
+	  if (dz>1)
+	    drawRectangle(ih,z,1,std::ceil(h*dz),_BLACK);
+	  os_set_pixel(ih,z,color);
+	  if (h==1) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==2) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==3) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==4) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==5) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==6) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==7) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==8) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  continue;
+	}
+	if (dz<=0 && z>=*zmax && z+(h-1)*dz>=*zmin){ // mark only 1 point
+	  *zmax=z;
+	  color=downcolor;
+	}
+	if (dz>=0 && z<=*zmin && z+(h-1)*dz<=*zmax){ // mark 1 point
+	  *zmin=z;
+	  color=upcolor;
+	}
+	if (color>=0){
+	  os_set_pixel(ih,z,color);
+	  continue;
+	}
+      }
+      for (int J=0;J<h
+	     // && x>=xmin && y>=ymin
+	     ;++J,z+=dz,x-=yscale,y-=yscale){
+	int color=-1;
+	if (z>*zmax){
+	  drawRectangle(i,*zmax,1,z-*zmax,_BLACK);
+	  *zmax=z;
+	  color=downcolor;
+	}
+	if (z<*zmin){
+	  drawRectangle(i,z,1,*zmin-z,_BLACK);
+	  *zmin=z;
+	  color=upcolor;
+	}
+	if (z<=-0.5 || z>=LCD_HEIGHT_PX)
+	  continue;
+	if (color>=0)
+	  os_set_pixel(ih,z,color); // drawRectangle(i,z,w,h,color);
+      }
+    }
+  }
+
+  void find_abc(double x1,double x2,double x3,
+		double y1,double y2,double y3,
+		double z1,double z2,double z3,
+		double &a,double &b,double &c){
+    // solve([a*x1+b*y1+c=z1,a*x2+b*y2+c=z2,a*x3+b*y3+c=z3],[a,b,c])
+    // double d=(x1*y2-x1*y3-x2*y1+x2*y3+x3*y1-x3*y2);
+    double d=(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2));
+    if (d==0) return;
+    d=1/d;
+    double z12=z2-z1,z23=z3-z2,z31=z1-z3;
+    //double a=(-y1*z2+y1*z3+y2*z1-y2*z3-y3*z1+y3*z2)/d;
+    a=d*(y1*z23+y2*z31+y3*z12);
+    // double b=(x1*z2-x1*z3-x2*z1+x2*z3+x3*z1-x3*z2)/d;
+    b=-d*(x1*z23+x2*z31+x3*z12);
+    //double c=(x1*y2*z3-x1*y3*z2-x2*y1*z3+x2*y3*z1+x3*y1*z2-x3*y2*z1)/d;
+    c=d*(x1*(y2*z3-y3*z2)+x2*(y3*z1-y1*z3)+x3*(y1*z2-y2*z1));
+  }
+
+  void Graph3d::glinter(double x1,double x2,double x3,
+	       double y1,double y2,double y3,
+	       double z1,double z2,double z3,
+	       double xscale,double xc,double yscale,double yc,
+	       double *zmin,double *zmax,double ZMIN,double ZMAX,
+	       int i,int horiz,int j,int w,int h,int lcdz,
+	       int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+	       ) const{
+    double a,b,c;
+    find_abc(x1,x2,x3,y1,y2,y3,z1,z2,z3,a,b,c);
+    glinter(a,b,c,xscale,xc,yscale,yc,zmin,zmax,ZMIN,ZMAX,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+  }
+  
+  void update12(bool & found,bool &found2,
+		double x1,double x2,double x3,double y1,double y2,double y3,double z1,double z2,double z3,
+		int upcolor,int downcolor,int downupcolor,int downdowncolor,
+		double & curx1, double &curx2, double &curx3, double &cury1, double &cury2, double &cury3, double &curz1, double &curz2, double &curz3, 
+		double &cur2x1, double &cur2x2, double &cur2x3, double &cur2y1, double &cur2y2, double &cur2y3, double &cur2z1, double &cur2z2, double &cur2z3,
+		int & u,int & d,int & du,int & dd){
+    if (found){
+      if (z1+z2+z3<curz1+curz2+curz3){
+	// no need to update cur, perhaps cur2?
+	if (found2 && cur2z1+cur2z2+cur2z3<z1+z2+z3)
+	  return;
+	found2=true;
+	cur2x1=x1; cur2x2=x2; cur2x3=x3;
+	cur2y1=y1; cur2y2=y2; cur2y3=y3;
+	cur2z1=z1; cur2z2=z2; cur2z3=z3;
+	du=downupcolor; dd=downdowncolor;
+	return;
+      }
+      else { // need to update cur, and perhaps cur2
+	if (!found2 || curz1+curz2+curz3<cur2z1+cur2z2+cur2z3){
+	  found2=true;
+	  cur2x1=curx1; cur2x2=curx2; cur2x3=curx3;
+	  cur2y1=cury1; cur2y2=cury2; cur2y3=cury3;
+	  cur2z1=curz1; cur2z2=curz2; cur2z3=curz3;
+	  du=downupcolor; dd=downdowncolor;
+	}
+	curx1=x1; curx2=x2; curx3=x3;
+	cury1=y1; cury2=y2; cury3=y3;
+	curz1=z1; curz2=z2; curz3=z3;
+	u=upcolor; d=downcolor;
+	return;
+      }
+    }
+    found=true;
+    curx1=x1; curx2=x2; curx3=x3;
+    cury1=y1; cury2=y2; cury3=y3;
+    curz1=z1; curz2=z2; curz3=z3;
+    u=upcolor; d=downcolor;
+  }
+	      
+  void update12(bool & found,bool &found2,
+		double a,double b,double c,double z,
+		int upcolor,int downcolor,int downupcolor,int downdowncolor,
+		double & cura1,double & curb1,double & curc1,double & curz1,
+		double & cura2,double & curb2,double & curc2,double & curz2,
+		int & u,int & d,int & du,int & dd){
+    if (!found || z>curz1){
+      if (found){ // update cur2
+	found2=true;
+	cura2=cura1; curb2=curb1; curc2=curc1; curz2=curz1;
+      }
+      found=true;
+      cura1=a; curb1=b; curc1=c; curz1=z;
+      u=upcolor; d=downcolor;
+      return;
+    }
+    if (z>curz2){
+      found2=true;
+      cura2=a; curb2=b; curc2=c; curz2=z;
+      du=downupcolor; dd=downdowncolor;
+    }
+  }
+	        
+  // intersect plane x-y=xy with line m+t*v
+  // m.x+t*v.x-m.y-t*v.y=-xy
+  double intersect(const double3 & m,const double3 & v,double xy){
+    return (-xy+m.y-m.x)/(v.x-v.y);
+  }
+
+  // 2d coordinates of m+t*v
+  void grmtv2ij(const Graph3d & gr,const double3 & m,const double3 & v,double t,int & i,int & j){
+    double x=m.x+t*v.x;
+    double y=m.y+t*v.y;
+    double z=m.z+t*v.z;
+    gr.XYZ2ij(double3(x,y,z),i,j);
+  }    
+  
+  struct hypertriangle_t {
+    int4 * colorptr; // hypersurface color 
+    double xmin,xmax,ymin,ymax; // minmax values intersection with plane y-x=Cte
+    double a,b,c; // plane equation of triangle
+    double zG; // altitude for gravity center 
+  }  ; // data struct for hypesurface triangulation cache
+
+  void compute(double yx,double3 * cur,hypertriangle_t & res){
+    double xmin=1e307,xmax=-1e307,ymin=1e307,ymax=-1e307;
+    for (int l=0;l<4;++l){
+      int prev=l==0?3:l-1;
+      double3 & d3=cur[prev];
+      double x0=d3.x,y0=d3.y,x1=cur[l].x,y1=cur[l].y;
+      double yx0=y0-x0,yx1=y1-x1,m=yx1-yx0;
+      if (m==0){
+	if (yx==yx1){
+	  if (x0>xmax) xmax=x0; if (x0<xmin) xmin=x0;
+	  if (x1>xmax) xmax=x1; if (x1<xmin) xmin=x1;
+	  if (y0>ymax) ymax=y0; if (y0<ymin) ymin=y0;
+	  if (y1>ymax) ymax=y1; if (y1<ymin) ymin=y1;
+	}
+	continue;
+      }
+      double t=(yx-yx0)/m;
+      if (t>=0 && t<=1){
+	double X=x0+t*(x1-x0),Y=y0+t*(y1-y0);
+	if (X>xmax) xmax=X; if (X<xmin) xmin=X;
+	if (Y>ymax) ymax=Y; if (Y<ymin) ymin=Y;
+      }
+    }
+    res.zG=(cur[0].z+cur[1].z+cur[2].z+cur[3].z)/4;
+    res.xmin=xmin; res.xmax=xmax; res.ymin=ymin; res.ymax=ymax;
+    find_abc(cur[0].x,cur[1].x,cur[2].x,
+	     cur[0].y,cur[1].y,cur[2].y,
+	     cur[0].z,cur[1].z,cur[2].z,
+	     res.a,res.b,res.c);
+  }
+
+  
+  
+  void update_hypertri(const vector<hypertriangle_t> & hypertriangles,double x,double y,
+		       bool & found,bool &found2,
+		       double3 & curabc1,double & curz1,
+		       double3 & curabc2,double & curz2,
+		       int & upcolor,int & downcolor,int & downupcolor,int & downdowncolor){
+    vector<hypertriangle_t>::const_iterator it=hypertriangles.begin(),itend=hypertriangles.end();
+    for (;it!=itend;++it){
+      if (x<it->xmin){
+	++it;
+	if (it==itend) break;
+	if (x<it->xmin){
+	  ++it;
+	  if (it==itend) break;
+	  if (x<it->xmin){
+	    ++it;
+	    if (it==itend) break;
+	  }
+	}
+      }
+      else if (x>it->xmax){
+	++it;
+	if (it==itend) break;
+	if (x>it->xmax){
+	  ++it;
+	  if (it==itend) break;
+	  if (x>it->xmax){
+	    ++it;
+	    if (it==itend) break;
+	  }
+	}
+      }
+      const hypertriangle_t & cur=*it;
+      if (x<cur.xmin || x>cur.xmax || y<cur.ymin || y>cur.ymax)
+	continue;
+      if (!found || cur.zG>curz1){
+	if (found){
+	  found2=true;
+	  curabc2=curabc1;
+	  curz2=curz1;
+	}
+	found=true;
+	curabc1.x=cur.a; curabc1.y=cur.b; curabc1.z=cur.c;
+	curz1=cur.zG;
+	upcolor=cur.colorptr->u; downcolor=cur.colorptr->d;
+	continue;
+      }
+      if (cur.zG>curz2){
+	found2=true;
+	curabc2.x=cur.a; curabc2.y=cur.b; curabc2.z=cur.c;
+	curz2=cur.zG;
+	downupcolor=cur.colorptr->du; downdowncolor=cur.colorptr->dd;
+	continue;
+      }
+    } // end loop on k
+  }
+  
+  bool is_inside(const vector<double3> & v,double x,double y){
+    int n=0;
+    for (int i=1;i<v.size();++i){
+      const double3 & prev=v[i-1];
+      const double3 & cur=v[i];
+      double prevx=prev.x,prevy=prev.y,curx=cur.x,cury=cur.y,m=cur.z;
+      if (prevx==curx){
+	if (x==curx && (y-prevy)*(cury-y)>0) // on vertical edge
+	  return false;
+	continue;
+      }
+      if (x==prevx) 
+	continue;
+      if ((x-prevx)*(curx-x)<0)
+	continue;
+      //double Y=cury+m*(x-curx);
+      double Y=cury+(cur.y-prev.y)/(cur.x-prev.x)*(x-curx);
+      if (Y>=y)
+	++n; 
+    }
+    if (n%2)
+      return true;
+    return false;
+  }
+  
+  // hpersurface encoded as a matrix
+  // with lines containing 3 coordinates per point
+  bool Graph3d::indraw3d(int w,int h,int lcdz,GIAC_CONTEXT,
+			  int upcolor_,int downcolor_,int downupcolor_,int downdowncolor_)  {
+    if (w>9) w=9; if (w<1) w=1;
+    if (h>9) h=9; if (h<1) h=1;
+    // save zmin/zmax on the stack (4K required)
+    const int jmintabsize=2048;
+    short int *jmintab=(short int *)alloca(jmintabsize*sizeof(short int)), * jmaxtab=(short int *)alloca(jmintabsize*sizeof(short int)); // assumes LCD_WIDTH_PX<=jmintabsize
+    for (int i=0;i<jmintabsize;++i){
+      jmintab[i]=LCD_HEIGHT_PX;
+      jmaxtab[i]=0;
+    }
+    vecteur attrv(native_renderer_instructions);
+    std::vector< std::vector< vector<float3d> >::const_iterator > hypv; // 3 iterateurs per hypersurface
+    int upcolor,downcolor,downupcolor,downdowncolor;
+    for (int i=0;i<int(attrv.size());++i){
+      gen attr=attrv[i];
+      upcolor=upcolor_;downcolor=downcolor_;downupcolor=downupcolor_;downdowncolor=downdowncolor_;
+      get_colors(attrv[i],upcolor,downcolor,downupcolor,downdowncolor);
+    }
+    for (int i=0;i<int(surfacev.size());++i){
+      hypv.push_back(surfacev[i].begin());
+      hypv.push_back(surfacev[i].end());
+    }
+    int horiz=LCD_WIDTH_PX/2,vert=horiz/2;//LCD_HEIGHT_PX/2;
+    int imin=Ai,imax=Ai,itmp;
+    // 12 segments from cube visualization
+    double segments_x1[12]={Ai,Bi,Ei,Fi,Ai,Bi,Ci,Di,Ai,Ci,Ei,Gi};
+    double segments_x2[12]={Ci,Di,Gi,Hi,Ei,Fi,Gi,Hi,Bi,Di,Fi,Hi};
+    double segments_y1[12]={Aj,Bj,Ej,Fj,Aj,Bj,Cj,Dj,Aj,Cj,Ej,Gj};
+    double segments_y2[12]={Cj,Dj,Gj,Hj,Ej,Fj,Gj,Hj,Bj,Dj,Fj,Hj};
+    double segments_m[12];
+    for (int i=0;i<12;++i){
+      segments_m[i]=(segments_y2[i]-segments_y1[i])/(segments_x2[i]-segments_x1[i]);
+      itmp=segments_x1[i];
+      if (itmp<imin) imin=itmp; if (itmp>imax) imax=itmp;
+      itmp=segments_x2[i];
+      if (itmp<imin) imin=itmp; if (itmp>imax) imax=itmp;      
+    }
+    double xmin=-1,ymin=-1,xmax=1,ymax=1,xscale=0.6*(xmax-xmin)/horiz,yscale=0.6*(ymax-ymin)/vert,x,y,z,xc=(xmin+xmax)/2,yc=(ymin+ymax)/2;
+    drawRectangle(0,0,imin,LCD_HEIGHT_PX,COLOR_BLACK); // clear    
+    drawRectangle(imax,0,LCD_WIDTH_PX-imax,LCD_HEIGHT_PX,COLOR_BLACK); // clear
+    sync_screen();
+    int count=0;
+    vector<int> polyedrei; polyedrei.reserve(polyedrev.size()); // cache for polyedres polygons edges
+    vector<double> polyedrexmin,polyedrexmax,polyedreymin,polyedreymax;
+    polyedrexmin.reserve(polyedrev.size());polyedrexmax.reserve(polyedrev.size());
+    polyedreymin.reserve(polyedrev.size());polyedreymax.reserve(polyedrev.size());
+    vector<hypertriangle_t> hypertriangles;
+    for (int i=imin-horiz;i<imax-horiz;i+=w,++count){
+    //for (int i=-horiz;i<horiz;i+=w){
+      drawRectangle(i+horiz,0,w,LCD_HEIGHT_PX,COLOR_BLACK); // clear
+      // find min and max values for j using vertical intersections of line x=i
+      // with segments
+      int ih=i+horiz+w/2,jmin=RAND_MAX,jmax=-RAND_MAX;
+      for (int k=0;k<12;++k){
+	if ( !is_inf(segments_m[k]) && (ih-segments_x1[k])*(segments_x2[k]-ih)>=0 ){
+	  double y=segments_y1[k]+segments_m[k]*(ih-segments_x1[k]);
+	  if (y<=jmin)
+	    jmin=std::floor(y);
+	  if (y>=jmax)
+	    jmax=std::ceil(y);
+	}
+      }
+      if (jmin>jmax) continue;
+      if (jmin<0) jmin=0;
+      if (jmax>LCD_HEIGHT_PX) jmax=LCD_HEIGHT_PX;
+      jmin -= LCD_HEIGHT_PX/2;
+      jmax -= LCD_HEIGHT_PX/2;      
+      double yx=2*xscale*(i+(w-1)/2.0)+yc-xc;
+      // poledrev indices for yx, and xmin/xmax/ymin/ymax values
+      // (xmin/xmax should be enough, except limit cases)
+      polyedrei.clear(); polyedrexmin.clear(); polyedrexmax.clear(); polyedreymin.clear(); polyedreymax.clear();
+      for (int k=0;k<int(polyedrev.size());++k){
+	double facemin=polyedre_xyminmax[2*k],facemax=polyedre_xyminmax[2*k+1];
+	if (yx<facemin || yx>facemax)
+	  continue;
+	polyedrei.push_back(k);
+	vector<double3> & cur=polyedrev[k];
+	double xmin=1e307,xmax=-1e307,ymin=1e307,ymax=-1e307;
+	for (int l=0;l<int(cur.size());++l){
+	  double3 & d3=cur[l?l-1:cur.size()-1];
+	  double x0=d3.x,y0=d3.y,x1=cur[l].x,y1=cur[l].y;
+	  double yx0=y0-x0,yx1=y1-x1,m=yx1-yx0;
+	  if (m==0){
+	    if (yx==yx1){
+	      if (x0>xmax) xmax=x0; if (x0<xmin) xmin=x0;
+	      if (x1>xmax) xmax=x1; if (x1<xmin) xmin=x1;
+	      if (y0>ymax) ymax=y0; if (y0<ymin) ymin=y0;
+	      if (y1>ymax) ymax=y1; if (y1<ymin) ymin=y1;
+	    }
+	    continue;
+	  }
+	  double t=(yx-yx0)/m;
+	  if (t>=0 && t<=1){
+	    double X=x0+t*(x1-x0),Y=y0+t*(y1-y0);
+	    if (X>xmax) xmax=X; if (X<xmin) xmin=X;
+	    if (Y>ymax) ymax=Y; if (Y<ymin) ymin=Y;
+	  }
+	}
+	polyedrexmin.push_back(xmin);
+	polyedrexmax.push_back(xmax);
+	polyedreymin.push_back(ymin);
+	polyedreymax.push_back(ymax);
+      }
+      // hypersurfaces: find triangles
+      hypertriangles.clear();
+      double hyperxymax=-1e307,hyperxymin=1e307;
+      double3 tri[4]; 
+      for (int k=0;k<int(hypv.size());k+=2){
+	vector< vector<float3d> >::const_iterator sbeg=hypv[k],send=hypv[k+1],sprec,scur;
+	vector<float3d>::const_iterator itprec,itcur,itprecend;
+	for (sprec=sbeg,scur=sprec+1;scur<send;++sprec,++scur){
+	  itprec=sprec->begin(); 
+	  itprecend=sprec->end();
+	  itcur=scur->begin();
+	  double yx1,yx2=*(itprec+1)-*itprec,yx3,yx4=*(itcur+1)-*itcur;
+	  for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
+	    yx1=yx2;
+	    yx2=*(itprec+1)-*itprec;
+	    yx3=yx4;
+	    yx4=*(itcur+1)-*itcur;
+	    if (yx<yx1 && yx<yx2 && yx<yx3 && yx<yx4){
+	      for (;;){
+		// per iteration: 2 incr, 1 test, 2 read, 2 comp, && , test
+		itprec+=3;itcur+=3;
+		if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+		  itprec+=3;itcur+=3;
+		  if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+		    itprec+=3;itcur+=3;
+		    if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+		      itprec+=3;itcur+=3;
+		      if (itprec<itprecend && yx<(yx2=*(itprec+1)-*itprec) && yx<(yx4=*(itcur+1)-*itcur)){
+			continue;
+		      }
+		    }
+		  }
+		}
+		break;
+	      }
+	      if (yx<yx2 && yx<yx4) continue;
+	    } // end yx<yxk
+	    else if (yx>yx1 && yx>yx2 && yx>yx3 && yx>yx4){
+	      for (;;){
+		// per iteration: 2 incr, 1 test, 2 read, 2 comp, && , test
+		itprec+=3;itcur+=3;
+		if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+		  itprec+=3;itcur+=3;
+		  if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+		    itprec+=3;itcur+=3;
+		    if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+		      itprec+=3;itcur+=3;
+		      if (itprec<itprecend && yx>(yx2=*(itprec+1)-*itprec) && yx>(yx4=*(itcur+1)-*itcur)){
+			continue;
+		      }
+		    }
+		  }
+		}
+		break;
+	      }
+	      if (yx>yx2 && yx>yx4) continue;
+	    }
+	    // found one quad intersecting plane
+	    double x1=*(itprec-3),x2=*(itprec),x3=*(itcur-3),x4=*(itcur);
+	    double y1=*(itprec-2),y2=*(itprec+1),y3=*(itcur-2),y4=*(itcur+1);
+	    double z1=*(itprec-1),z2=*(itprec+2),z3=*(itcur-1),z4=*(itcur+2);
+	    yx1=y1-x1; yx2=y2-x2; yx3=y3-x3; yx4=y4-x4;
+	    tri[0]=double3(x1,y1,z1);
+	    tri[1]=double3(x2,y2,z2);
+	    tri[2]=double3(x4,y4,z4);
+	    tri[3]=double3(x3,y3,z3);
+	    double x123=(x1+x2+x3+x4)/4,y123=(y1+y2+y3+y4)/4,z123=(z1+z2+z3+z4)/4,X,Y,Z;
+	    double xy123=x123+y123;
+	    if (xy123<hyperxymin) hyperxymin=xy123;
+	    if (xy123>hyperxymax) hyperxymax=xy123;
+	    do_transform(invtransform3d,x123,y123,z123,X,Y,Z);
+	    if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax ){
+	      hypertriangle_t res; res.colorptr=&hyp_color[k];
+	      compute(yx,tri,res);
+	      hypertriangles.push_back(res);
+	    }
+	  }
+	}
+      }
+      vector<int> spheres(sphere_centerv.size()); // is plane y-x=yx intersecting sphere, vector<bool> does not work with Keil
+      for (int k=0;k<int(sphere_centerv.size());++k){
+	const double3 & c=sphere_centerv[k];
+	double xc=c.x,yc=c.y;
+	double r=sphere_radiusv[k];
+	const matrice & m=*sphere_quadraticv[k]._VECTptr;
+	const vecteur & m0=*m[0]._VECTptr;
+	const vecteur & m1=*m[1]._VECTptr;
+	const vecteur & m2=*m[2]._VECTptr;
+	double m00=m0[0]._DOUBLE_val,m01=m0[1]._DOUBLE_val,m02=m0[2]._DOUBLE_val,m11=m1[1]._DOUBLE_val,m12=m1[2]._DOUBLE_val,m22=m2[2]._DOUBLE_val;
+	/* q0:=m00*x^2+2*m01*x*y+2*m02*x*z+m11*y^2+2*m12*y*z+m22*z^2; q:=subst(q0,[x,y],[x-xc,y-yc]);
+	   a,b,c:=coeffs(q(y=yx+x)-r^2,x);
+	   delta:=b^2-4*a*c; 
+	   // if delta<0 for all z, there is no intersection
+	   // delta is a second order polynomial in z, check discriminant
+	   A,B,C:=coeffs(delta,z);
+	   D:=B^2-4*A*C;  // if D<0 no intersection
+	*/
+	double A=4*m02*m02+4*m12*m12-4*m00*m22-8*m01*m22+8*m02*m12-4*m11*m22,
+	  B=-8*m00*m12*xc+8*m00*m12*yc-8*m00*m12*yx+8*m01*m02*xc-8*m01*m02*yc+8*m01*m02*yx-8*m01*m12*xc+8*m01*m12*yc-8*m01*m12*yx+8*m02*m11*xc-8*m02*m11*yc+8*m02*m11*yx,
+	  C=4*m01*m01*xc*xc+4*m01*m01*yc*yc+4*m01*m01*yx*yx-4*m00*m11*xc*xc-4*m00*m11*yc*yc-4*m00*m11*yx*yx-8*m01*m01*xc*yc+8*m01*m01*xc*yx-8*m01*m01*yc*yx+8*m00*m11*xc*yc-8*m00*m11*xc*yx+8*m00*m11*yc*yx+4*m00*r*r+8*m01*r*r+4*m11*r*r,
+	  D=B*B-4*A*C;
+	spheres[k]=D>=0;
+      }
+      double zmin[10]={220.220,220,220,220,220,220,220,220,220},
+	zmax[10]={0,0,0,0,0,0,0,0,0,0},
+	zmin2[10]={220.220,220,220,220,220,220,220,220,220},
+	zmax2[10]={0,0,0,0,0,0,0,0,0,0}	; // initialize for these vertical lines
+      double3 curabc1,curabc2; 
+      double curz1=-1e306,curz2=1e306;
+      int u,d,du,dd;
+      // loop earlier if there are only hypersurfaces
+      bool only_hypertri=true;
+      for (int ki=0;ki<int(polyedrei.size());++ki){
+	if (polyedrexmin[ki]<=polyedrexmax[ki]){ only_hypertri=false; break; }
+      }
+      for (int k=0;k<int(sphere_centerv.size());++k){
+	if (spheres[k]){ only_hypertri=false; break; }
+      }
+      for (int k=0;k<int(plan_abcv.size());++k){
+	if (plan_filled[k]){ only_hypertri=false; break; }
+      }
+      if (only_hypertri){
+	if (hypertriangles.empty()) 
+	  goto suite3d;
+	int effjmax=(hyperxymax-xc-yc)/yscale/2.0,effjmin=(hyperxymin-xc-yc)/yscale/2.0;
+	if (effjmax+1<jmax)
+	  jmax=effjmax+1;
+	if (effjmin-1>jmin)
+	  jmin=effjmin-1;
+	x = yscale*(jmax-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
+	y = yscale*(jmax-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
+	for (int j=jmax;j>=jmin;j-=h,x-=yscale*h,y-=yscale*h){
+	  bool found=false,found2=false;
+	  update_hypertri(hypertriangles,x,y,found,found2,curabc1,curz1,curabc2,curz2,upcolor,downcolor,downupcolor,downdowncolor);
+	  if (!found) continue;
+	  if (h==1 && w==1){
+	    if (found2 && !hide2nd){
+	      double dz=lcdz*(curabc2.x+curabc2.y)*yscale-1;
+	      // if (y<ymin) continue;
+	      double z = (curabc2.x*x+curabc2.y*y+curabc2.z);
+	      z=LCD_HEIGHT_PX/2+j-lcdz*z;
+	      glinter1(z,dz,
+		       zmin2,zmax2,zmin[0],zmax[0],
+		       ih,lcdz,
+		       downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	    }
+	    double dz=lcdz*(curabc1.x+curabc1.y)*yscale-1;
+	    // if (y<ymin) continue;
+	    double z = (curabc1.x*x+curabc1.y*y+curabc1.z);
+	    z=LCD_HEIGHT_PX/2+j-lcdz*z;
+
+	    glinter1(z,dz,
+		     zmin,zmax,1e307,-1e307,
+		     ih,lcdz,
+		     upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	  }
+	  else {
+	    if (found2 && !hide2nd)
+	    glinter(curabc2.x,curabc2.y,curabc2.z,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	    glinter(curabc1.x,curabc1.y,curabc1.z,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	  }
+	}
+      }
+      else {
+	x = yscale*(jmax-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
+	y = yscale*(jmax-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
+	for (int j=jmax;j>=jmin;j-=h,x-=yscale*h,y-=yscale*h){
+	  if (0 && i==-35 && j==-44)
+	    u=0; // debug
+	  // x = yscale*(j-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
+	  // y = yscale*(j-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
+	  bool found=false,found2=false;
+	  if (x+y>=hyperxymin && x+y<=hyperxymax)
+	    update_hypertri(hypertriangles,x,y,found,found2,curabc1,curz1,curabc2,curz2,upcolor,downcolor,downupcolor,downdowncolor);
+	  for (int ki=0;ki<int(polyedrei.size());++ki){
+	    int k=polyedrei[ki];
+	    vector<double3> & cur=polyedrev[k];
+	    if (
+#if 1
+		x>=polyedrexmin[ki] && x<=polyedrexmax[ki] && y>=polyedreymin[ki] && y<=polyedreymax[ki]
+#else
+		inside(cur,x,y)
+#endif
+		){
+	      const double3 & abc=polyedre_abcv[k];
+	      const int4 & color=polyedre_color[k];
+	      // std::cout << k << " " << x << " " << y << " " << color.u << "\n";
+	      double a=abc.x,b=abc.y,c=abc.z;
+	      z=a*x+b*y+c;
+	      bool is_clipped=polyedre_faceisclipped[k];
+	      if (!is_clipped){
+		double X,Y,Z;
+		do_transform(invtransform3d,x,y,z,X,Y,Z);
+		is_clipped=X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax;
+	      }
+	      if (is_clipped){
+		update12(found,found2,
+			 a,b,c,z,
+			 color.u,color.d,color.du,color.dd,
+			 curabc1.x,curabc1.y,curabc1.z,curz1,
+			 curabc2.x,curabc2.y,curabc2.z,curz2,
+			 upcolor,downcolor,downupcolor,downdowncolor);
+	      }
+	    } // end if inside(cur,x,y)
+	  }
+	  for (int k=0;k<int(sphere_centerv.size());++k){
+	    if (!spheres[k]) continue;
+	    const double3 & c=sphere_centerv[k];
+	    double R=sphere_radiusv[k];
+	    const matrice & m=*sphere_quadraticv[k]._VECTptr;
+	    const vecteur & m0=*m[0]._VECTptr;
+	    const vecteur & m1=*m[1]._VECTptr;
+	    const vecteur & m2=*m[2]._VECTptr;
+	    double v0=x-c.x,v1=y-c.y;
+	    double a=m2[2]._DOUBLE_val,b=2*(m0[2]._DOUBLE_val*v0+m1[2]._DOUBLE_val*v1),C=(m0[0]._DOUBLE_val*v0+2*m0[1]._DOUBLE_val*v1)*v0+m1[1]._DOUBLE_val*v1*v1-R*R;
+	    double delta=b*b-4*a*C;
+	    if (delta<0)
+	      continue;
+	    const int4 & color=sphere_color[k];
+	    delta=std::sqrt(delta);
+	    double sol1,sol2;
+	    if (b>0){
+	      sol1=(-b-delta)/2/a;
+	      sol2=2*C/(-b-delta); // (-b+delta)/2/a;
+	    }
+	    else {
+	      sol1=2*C/(-b+delta);//(-b-delta)/2/a;
+	      sol2=(-b+delta)/2/a;
+	    }
+	    double v2=sol1;
+	    z=v2+c.z;
+	    bool is_clipped=sphere_isclipped[k];
+	    if (!is_clipped){
+	      double X,Y,Z;
+	      do_transform(invtransform3d,x,y,z,X,Y,Z);
+	      is_clipped=X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax;
+	    }
+	    if (is_clipped){
+	      double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
+	      double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
+	      double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
+	      double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
+	      update12(found,found2,
+		       a,b,c,z,
+		       color.u,color.d,color.du,color.dd,
+		       curabc1.x,curabc1.y,curabc1.z,curz1,
+		       curabc2.x,curabc2.y,curabc2.z,curz2,
+		       upcolor,downcolor,downupcolor,downdowncolor);
+	    }
+	    if (delta<=0) continue; // delta==0, twice the same point
+	    v2=sol2;
+	    z=v2+c.z;
+	    is_clipped=sphere_isclipped[k];
+	    if (!is_clipped){
+	      double X,Y,Z;
+	      do_transform(invtransform3d,x,y,z,X,Y,Z);
+	      is_clipped=X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax;
+	    }
+	    if (is_clipped){
+	      double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
+	      double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
+	      double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
+	      double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
+	      update12(found,found2,
+		       a,b,c,z,
+		       color.u,color.d,color.du,color.dd,
+		       curabc1.x,curabc1.y,curabc1.z,curz1,
+		       curabc2.x,curabc2.y,curabc2.z,curz2,
+		       upcolor,downcolor,downupcolor,downdowncolor);
+	    }
+	  } // end hypersphere loop
+	  for (int k=0;k<int(plan_abcv.size());++k){
+	    if (!plan_filled[k])
+	      continue;
+	    double3 abc=plan_abcv[k];
+	    int4 color=plan_color[k];
+	    // z=a*x+b*y+c
+	    double z=abc.x*x+abc.y*y+abc.z,X,Y,Z;
+	    do_transform(invtransform3d,x,y,z,X,Y,Z);
+	    if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax)
+	      update12(found,found2,
+		       abc.x,abc.y,abc.z,z,
+		       color.u,color.d,color.du,color.dd,
+		       curabc1.x,curabc1.y,curabc1.z,curz1,
+		       curabc2.x,curabc2.y,curabc2.z,curz2,
+		       upcolor,downcolor,downupcolor,downdowncolor);
+	  } // end hyperplan loop
+	  if (found){
+	    if (found2){
+	      if (!hide2nd)
+		glinter(curabc2.x,curabc2.y,curabc2.z,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	      glinter(curabc1.x,curabc1.y,curabc1.z,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	    }
+	    else
+	      glinter(curabc1.x,curabc1.y,curabc1.z,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	  }
+	  else {
+	    //std::cout << "not inside " << i << " " << j << " " << x << " " << y << "\n";	      
+	  }
+	} // end pixel vertical loop on j
+      } // end else only_hypertri
+    suite3d:
+      // update jmintab/jmaxtab
+      if (i+horiz+w<jmintabsize){
+	for (int I=0;I<w;++I){
+	  jmintab[i+horiz+I]=zmin[I];
+	  jmaxtab[i+horiz+I]=zmax[I];
+	}
+      }
+      // now render line/segments/curves: find intersection with plane
+      // y-x=yc-xc+xscale*(2*i+I), 0<=I<w
+      for (int j=0;j<int(curvev.size());++j){
+	vector<double3> & cur=curvev[j];
+	int s=cur.size();
+	if (s<2) continue;
+	int4 color=curve_color[j];
+	double xy=yc-xc+xscale*2*i;
+	for (int l=0;l<s-1;++l){
+	  double3 m=cur[l];
+	  double3 n=cur[l+1];
+	  double3 v(n.x-m.x,n.y-m.y,n.z-m.z);
+	  if (std::abs(v.y-v.x)<1e-4*(std::abs(v.y)+std::abs(v.x))){
+	    v.y=v.x+1e-4*(std::abs(v.y)+std::abs(v.x));
+	  }
+	  double t1=intersect(m,v,xy);
+	  if (t1<0 || t1>1)
+	    continue;
+	  double dt=2*xscale/(v.y-v.x); // di==1
+	  double x1=m.x+t1*v.x;
+	  double y1=m.y+t1*v.y;
+	  double z1=m.z+t1*v.z;
+	  double X1,Y1,Z1;
+	  do_transform(invtransform3d,x1,y1,z1,X1,Y1,Z1);
+	  if (X1<window_xmin || X1>window_xmax || Y1<window_ymin || Y1>window_ymax || Z1<window_zmin || Z1>window_zmax)
+	    continue;
+	  z1=LCD_HEIGHT_PX/2-lcdz*z1+(x1+y1)/2/yscale;
+	  double dz=-dt*v.z*lcdz+dt*(v.x+v.y)/2/yscale;
+	  int horiz=LCD_WIDTH_PX/2;
+	  for (int k=0;k<w;++k){
+	    double Z1=z1,Z2=z1+dz;
+	    z1=Z2;
+	    if (Z1>Z2) std::swap(Z1,Z2);
+	    // line [ (i+k,Z1), (i+k,Z2) ]
+	    if (Z2<zmin[k]){
+	      drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.u);
+	      continue;
+	    }
+	    if (Z1>zmax[k]){
+	      drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.d);
+	      continue;
+	    }
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.du);
+	    if (Z1<zmin[k])
+	      drawRectangle(i+horiz+k,Z1,1,std::ceil(zmin[k]-Z1),color.u);
+	    if (Z2>zmax[k])
+	      drawRectangle(i+horiz+k,zmax[k],1,std::ceil(Z2-zmax[k]),color.d);
+	  }
+	} // end l loop on curve discretization
+      } // end loop on curves
+#ifdef OLD_LINE_RENDERING
+      for (int j=0;j<linetypev.size();j++){
+	double3 m=linev[2*j];
+	double3 v=linev[2*j+1];
+	int4 color=line_color[j];
+	if (std::abs(v.y-v.x)<1e-4*(std::abs(v.y)+std::abs(v.x))){
+	  v.y=v.x+1e-6*(std::abs(v.y)+std::abs(v.x));
+	}
+	double xy=yc-xc+xscale*2*i;
+	double t1=intersect(m,v,xy);
+	// for halfline, t1 must be >=0, for segments between 0 and 1
+	if (linetypev[j]==_HALFLINE__VECT && t1<0)
+	  continue;
+	if (linetypev[j]==_GROUP__VECT && (t1<0 || t1>1))
+	  continue;
+	double dt=2*xscale/(v.y-v.x); // di==1
+	double x1=m.x+t1*v.x;
+	double y1=m.y+t1*v.y;
+	double z1=m.z+t1*v.z;
+	double X1,Y1,Z1;
+	do_transform(invtransform3d,x1,y1,z1,X1,Y1,Z1);
+	// int dbgi,dbgj; xyz2ij(double3(x1,y1,z1),dbgi,dbgj);
+	/// double x2=x1+dt*v.x,y2=y1+dt*v.y,z2=z1+dt*v.z;
+	if (X1<window_xmin || X1>window_xmax || Y1<window_ymin || Y1>window_ymax || Z1<window_zmin || Z1>window_zmax)
+	  continue;
+	z1=LCD_HEIGHT_PX/2-lcdz*z1+(x1+y1)/2/yscale;
+	double dz=-dt*v.z*lcdz+dt*(v.x+v.y)/2/yscale;
+	int horiz=LCD_WIDTH_PX/2;
+	for (int k=0;k<w;++k){
+	  double Z1=z1,Z2=z1+dz;
+	  z1=Z2;
+	  if (Z1>Z2) std::swap(Z1,Z2);
+	  // line [ (i+k,Z1), (i+k,Z2) ]
+	  if (Z2<zmin[k]){
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.u);
+	    continue;
+	  }
+	  if (Z1>zmax[k]){
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.d);
+	    continue;
+	  }
+	  drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.du);
+	  if (Z1<zmin[k])
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(zmin[k]-Z1),color.u);
+	  if (Z2>zmax[k])
+	    drawRectangle(i+horiz+k,zmax[k],1,std::ceil(Z2-zmax[k]),color.d);	    
+	}
+      } // end lines rendering
+#endif
+      // points rendering
+      for (int j=0;j<int(pointv.size());++j){
+	const double3 & m=pointv[j];
+	if (m.x<i+horiz || m.x>=i+horiz+w)
+	  continue;
+	const int4 & c=point_color[j];
+	int k=m.x-i-horiz,color=-1;
+	double mz=LCD_HEIGHT_PX/2-lcdz*m.z;
+	double dz=(zmax[k]-zmin[k])*1e-3;
+	if (mz>=zmax[k]-dz)
+	  color=c.u;
+	else if (mz<=zmin[k]+dz)
+	  color=c.u; // c.d?
+	else color=c.du;
+	drawRectangle(m.x,m.y,3,3,color);
+	if (points[j]){
+	  // int dx=RAND_MAX+os_draw_string(-RAND_MAX,0,color,0,points[j],false); // fake print
+	  int dx=os_draw_string_small(0,0,color,0,points[j],true); // fake print
+	  os_draw_string_small(m.x-dx,m.y,color,0,points[j],false); 
+	}
+      } // end points rendering
+    } // end pixel horizontal loop on i
+#ifndef OLD_LINE_RENDERING
+    // new line rendering
+    for (int j=0;j<int(linetypev.size());j++){
+      double mx,my,mz,vx,vy,vz;
+      double3 m=linev[2*j];
+      do_transform(invtransform3d,m.x,m.y,m.z,mx,my,mz);
+      double3 v=linev[2*j+1];
+      do_transform(invtransform3d,m.x+v.x,m.y+v.y,m.z+v.z,vx,vy,vz);
+      vx -= mx; vy -= my; vz -= mz;
+      int4 color=line_color[j];
+      // find min/max parameter value for hidden/visible
+      double tmax=1e306,tmin=-1e306;
+      if (linetypev[j]==_HALFLINE__VECT){
+	tmin=0;
+      }
+      if (linetypev[j]==_GROUP__VECT){
+	tmin=0;
+	tmax=1;
+      }
+      if (vx!=0){ // intersect with x=window_xmin and x=window_xmax
+	// m.x+v.x*t=window_xmin/max
+	double t1=(window_xmin-mx)/vx;
+	double t2=(window_xmax-mx)/vx;
+	if (t1>t2)
+	  std::swap<double>(t1,t2);
+	if (t1>tmin)
+	  tmin=t1;
+	if (t2<tmax)
+	  tmax=t2;
+      }
+      if (vy!=0){ // intersect with y=window_ymin and y=window_ymax
+	double t1=(window_ymin-my)/vy;
+	double t2=(window_ymax-my)/vy;
+	if (t1>t2)
+	  std::swap<double>(t1,t2);
+	if (t1>tmin)
+	  tmin=t1;
+	if (t2<tmax)
+	  tmax=t2;
+      }
+      if (vz!=0){ // intersect with z=window_zmin and z=window_zmax
+	double t1=(window_zmin-mz)/vz;
+	double t2=(window_zmax-mz)/vz;
+	if (t1>t2)
+	  std::swap<double>(t1,t2);
+	if (t1>tmin)
+	  tmin=t1;
+	if (t2<tmax)
+	  tmax=t2;
+      }
+      // find which intersection we want
+      bool usetmax=v.x+v.y==0?v.z>=0:v.x+v.y>0; 
+      double tmin_=usetmax?tmin:tmax,
+	tmax_=usetmax?tmin:tmax;
+      for (int k=0;k<int(plan_abcv.size());++k){
+	if (!plan_filled[k]) continue;
+	// z >= z_plan=a*x+b*y+c where (x,y,z)=m+t*v
+	// m.z+t*v.z >= a*m.x+t*a*v.x+b*m.y+t*b*v.y+c
+	// t*(v.z-a*v.x-b.v.y) >= a*m.x+b*m.y+c-m.z
+	double3 abc=plan_abcv[k];
+	double A=v.z-abc.x*v.x-abc.y*v.y,B=abc.x*m.x+abc.y*m.y+abc.z-m.z;
+	if (A==0) continue;
+	double t=B/A;
+	if (t<=tmin || t>=tmax)
+	  continue;
+	if (tmax_<t)
+	  tmax_=t;
+	if (tmin_>t)
+	  tmin_=t;
+      }
+      for (int k=0;k<int(sphere_centerv.size());++k){
+	// sphere interesect line 
+	double3 c=sphere_centerv[k];
+	double R=sphere_radiusv[k];
+	int4 color=sphere_color[k];
+	double cx,cy,cz;
+	do_transform(invtransform3d,c.x,c.y,c.z,cx,cy,cz);
+	// (mx+t*vx-cx)^2+(my+t*vy-cy)^2+(mz+t*vz-cz)^2=R^2
+	double a=vx*vx+vy*vy+vz*vz,b=(vx*(mx-cx)+vy*(my-cy)+vz*(mz-cz)),C=(mx-cx)*(mx-cx)+(my-cy)*(my-cy)+(mz-cz)*(mz-cz)-R*R;
+	double deltaprime=b*b-a*C;
+	if (deltaprime>0){
+	  deltaprime=std::sqrt(deltaprime);
+	  double t1=(-b-deltaprime)/a,t2=(-b+deltaprime)/a;
+	  if (t1>t2)
+	    std::swap(t1,t2);
+	  if (t1<tmin || t1>tmax)
+	    t1=t2;
+	  if (t2<tmin || t2>tmax)
+	    t2=t1;
+	  double t=usetmax?t2:t1;
+	  if (t<=tmin || t>=tmax)
+	    continue;
+	  if (tmin_>t)
+	    tmin_=t;
+	  if (tmax_<t)
+	    tmax_=t;	  
+	}
+      }
+      vector<double> interpoly;
+      for (int k=0;k<int(polyedre_abcv.size());++k){
+	if (!polyedre_filled[k]) continue;
+	double3 abc=polyedre_abcv[k];
+	double a=abc.x,b=abc.y,c=abc.z;
+	// intersect z=a*x+b*y+c with line m+t*v
+	// m.z+t*v.z=a*(m.x+t*v.x)+b*(m.y+t*v.y)+c
+	double A=v.z-a*v.x-b*v.y,B=a*m.x+b*m.y+c-m.z;
+	if (A!=0){
+	  double t=B/A;
+	  double x=m.x+t*v.x;
+	  double y=m.y+t*v.y;
+	  if (t>tmin && t<tmax && is_inside(polyedrev[k],x,y)){
+	    interpoly.push_back(t);
+	  }
+	}
+      }
+      if (interpoly.size()>=1){
+	sort(interpoly.begin(),interpoly.end());
+	double t=usetmax?interpoly.back():interpoly.front();
+	if (tmin_>t)
+	  tmin_=t;
+	if (tmax_<t)
+	  tmax_=t;
+      }
+      vecteur sv(native_renderer_instructions);
+      for (int k=0;k<int(sv.size());++k){
+	gen surf=remove_at_pnt(sv[k]);
+	if (surf.is_symb_of_sommet(at_hypersurface)){
+	  const vecteur & hyp=*surf._SYMBptr->feuille._VECTptr;
+	  if (hyp.size()>2 && !is_undef(hyp[1])){
+	    gen eq=hyp[1],vars=hyp[2];
+	    if (_is_polynomial(makesequence(eq,vars[0]),contextptr)==1 && _is_polynomial(makesequence(eq,vars[1]),contextptr)==1 && _is_polynomial(makesequence(eq,vars[2]),contextptr)==1){
+	      vecteur V(makevecteur(mx+vx*t__IDNT_e,my+vy*t__IDNT_e,mz+vz*t__IDNT_e));
+	      gen eqt=subst(eq,vars,V,false,contextptr);
+	      gen gradeq=subst(derive(eq,vars,contextptr),vars,V,false,contextptr); // not used
+	      vecteur tval_=gen2vecteur(_sort(solve(eqt,t__IDNT_e,0,contextptr),contextptr));
+	      int s=tval_.size();
+	      vector<double> tval;
+	      for (int l=0;l<s;++l){
+		gen tg=evalf_double(tval_[l],1,contextptr);
+		if (tg.type==_DOUBLE_){
+		  double t=tg._DOUBLE_val;
+		  if (t>=tmin && t<=tmax){
+		    if (tval.size()>1)
+		      tval.back()=t;
+		    else
+		      tval.push_back(t);
+		  }
+		}
+	      }
+#if 1
+	      if (!tval.empty()){
+		double t=usetmax?tval.back():tval.front();
+		if (tmin_>t)
+		  tmin_=t;
+		if (tmax_<t)
+		  tmax_=t;
+	      }
+#else
+	      if (tval.size()==1){
+		// grad of eq dot [vx,vy.vz] is positive if entering surface
+		gen gradt=subst(gradeq,t__IDNT_e,tval[0],false,contextptr);
+		gen dotp=dotvecteur(gen2vecteur(gradt),makevecteur(vx,vy,vz));
+		if (is_positive(dotp,contextptr)){
+		  if (tmin_>tval[0])
+		    tmin_=tval[0];
+		  tmax_=tmax;
+		}
+		else {
+		  if (tmax_<tval[0])
+		    tmax_=tval[0];
+		  tmin_=tmin;
+		}
+	      }
+	      else if (tval.size()==2){
+		if (tmin_>tval[0])
+		  tmin_=tval[0];
+		if (tmax_<tval[1])
+		  tmax_=tval[1];
+	      }
+#endif
+	    } // end polynomial hypersurface
+	  }
+	} // end hypersurface	
+      }
+      int i1,j1,i2,j2;
+      grmtv2ij(*this,m,v,tmin,i1,j1);
+      grmtv2ij(*this,m,v,tmax,i2,j2);
+      if (tmin==tmin_ && tmax==tmax_){
+	int curcolor=color.u;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1>=jmaxtab[i1] )
+	    curcolor=color.d;
+	}
+	drawLine(i1,j1,i2,j2,curcolor);
+      }
+      else {
+	int curcolor=color.d;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1<jmintab[i1])
+	    curcolor=color.u;
+	}
+	drawLine(i1,j1,i2,j2,curcolor | 0x400000);
+      }
+      bool name=show_names && lines[j];
+      if (tmin<tmin_){
+	grmtv2ij(*this,m,v,tmin,i1,j1);
+	grmtv2ij(*this,m,v,tmin_,i2,j2);
+	int curcolor=color.u;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1>=jmaxtab[i1] )
+	    curcolor=color.d;
+	}
+	drawLine(i1,j1,i2,j2,curcolor);
+	if (name){
+	  os_draw_string(i1,j1,color.u,0,lines[j]);
+	  name=false;
+	}
+	if (tmin_!=tmax) os_fill_rect(i2-2,j2-2,4,4,curcolor);
+      }
+      if (tmax>tmax_){
+	grmtv2ij(*this,m,v,tmax_,i1,j1);
+	grmtv2ij(*this,m,v,tmax,i2,j2);
+	int curcolor=color.u;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1>=jmaxtab[i1] )
+	    curcolor=color.d;
+	}
+	drawLine(i1,j1,i2,j2,curcolor);
+	if (name){
+	  os_draw_string(i2,j2,color.u,0,lines[j]);
+	  name=false;
+	}
+	if (tmax_!=tmin) os_fill_rect(i1-2,j1-2,4,4,curcolor);
+      }
+    }
+#endif // OLD_LINE_RENDERING
+    sync_screen();
+    return true;
+  }
+  
+  void vpush(vecteur & w,const gen & g){
+    vecteur v(gen2vecteur(g));
+    w.reserve(w.size()+v.size());
+    for (int i=0;i<v.size();++i)
+      w.push_back(v[i]);
+  }
+
+  void Graph3d::draw3d(GIAC_CONTEXT){
+    native_renderer_instructions.clear();
+    if ( (display_mode & 2) && !animation_instructions.empty()){
+      vpush(native_renderer_instructions,animation_instructions[animation_instructions_pos % animation_instructions.size()]);
+    }
+    if ( display_mode & 0x40 ){
+      vpush(native_renderer_instructions,trace_instructions);
+    }
+    if (display_mode & 1)
+      vpush(native_renderer_instructions,plot_instructions);
+    gen plot_tmp,title_tmp;
+    find_title_plot(title_tmp,plot_tmp,contextptr);
+    vpush(native_renderer_instructions,plot_tmp);
+    update_rotation();
+    LCD_WIDTH_PX=w();
+    LCD_HEIGHT_PX=h();
+    double3 A(window_xmin,window_ymin,window_zmin),
+      B(window_xmin,window_ymin,window_zmax),
+      C(window_xmax,window_ymin,window_zmin),
+      D(window_xmax,window_ymin,window_zmax),
+      E(window_xmin,window_ymax,window_zmin),
+      F(window_xmin,window_ymax,window_zmax),
+      G(window_xmax,window_ymax,window_zmin),
+      H(window_xmax,window_ymax,window_zmax);
+    xyz2ij(A,Ai,Aj);
+    xyz2ij(B,Bi,Bj);
+    xyz2ij(C,Ci,Cj);
+    xyz2ij(D,Di,Dj);
+    xyz2ij(E,Ei,Ej);
+    xyz2ij(F,Fi,Fj);
+    xyz2ij(G,Gi,Gj);
+    xyz2ij(H,Hi,Hj);
+    indraw3d(precision,precision,lcdz,contextptr,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor);
+    if (show_edges){
+      // polyhedrons
+      for (int k=0;k<int(polyedrev.size());++k){
+	const vector<double3> & cur=polyedrev[k]; // current face
+	const int4 & col=polyedre_color[k];
+	for (int l=1;l<int(cur.size());++l){
+	  const double3 & p=cur[l?l-1:cur.size()-1];
+	  const double3 & c=cur[l];
+	  // is edge visible?
+	  double3 m(p.x/2+c.x/2,p.y/2+c.y/2,p.z/2+c.z/2);
+	  double xy=m.x+m.y;
+	  int mi,mj;
+	  XYZ2ij(m,mi,mj);
+	  int kk,jmin=RAND_MAX,jmax=-RAND_MAX;
+	  for (kk=0;kk<int(polyedrev.size());++kk){
+	    if (k==kk)
+	      continue;
+	    const vector<double3> & Cur=polyedrev[kk];
+	    int ll;
+	    // first check if point is in face
+	    for (ll=1;ll<int(Cur.size());++ll){
+	      const double3 & P=Cur[ll?ll-1:Cur.size()-1];
+	      const double3 & C=Cur[ll];
+	      double3 M(P.x/2+C.x/2,P.y/2+C.y/2,P.z/2+C.z/2);
+	      if (M.x==m.x && M.y==m.y && M.z==m.z){
+		break; // edge PC has same midpoint, will ignore face
+	      }
+	    }
+	    if (ll<int(Cur.size())) // point is in face, ignore face
+	      continue;
+	    double3 M0; bool found1st=false;
+	    for (ll=1;ll<int(Cur.size());++ll){
+	      const double3 & P=Cur[ll?ll-1:Cur.size()-1];
+	      const double3 & C=Cur[ll];
+	      // intersect plane y-x=m.y-m.x with PC edge P+t*PC
+	      double PCx=C.x-P.x,PCy=C.y-P.y,dPC=PCy-PCx;
+	      // P.y-P.x + t*dPC=m.y-m.x
+	      if (dPC==0) // edge is parallel
+		continue;
+	      double t=((m.y-m.x)+(P.x-P.y))/dPC;
+	      if (t<0 || t>1)
+		continue;
+	      double x=P.x+t*PCx;
+	      double y=P.y+t*PCy;
+	      double z=P.z+t*(C.z-P.z);
+	      if (!found1st){
+		M0=double3(x,y,z);
+		found1st=true;
+		continue;
+	      }
+	      if (x==M0.x && y==M0.y && z==M0.z)
+		continue;
+	      // segment([x,y,z],M0) has same y-x as m,
+	      // find segment position for same y+x as m [x,y,z]+t*(M0-[x,y,z])
+	      // yx=x+y+t*(M0.x-x+M0.y-y)
+	      double M0xy=M0.x-x+M0.y-y;
+	      int i1,j1,i2,j2; // N.B. i1,i2 should be the same as mi
+	      if (std::abs(M0xy)<1e-14)
+		t=-1;
+	      else
+		t=(xy-x-y)/M0xy;
+	      if (t<=0 || t>=1){
+		if (x+y<=xy) // segment is behind midpoint m
+		  continue;
+		XYZ2ij(M0,i1,j1); 
+		XYZ2ij(double3(x,y,z),i2,j2);
+		if (j1>j2) swapint(j1,j2);
+		if (jmin>j1) jmin=j1;
+		if (jmax<j2) jmax=j2;
+		if (jmin<mj && mj<jmax){
+		  break;
+		}
+		continue;
+	      }
+	      // find segment part that might mask midpoint m
+	      double X = x+t*(M0.x-x);
+	      double Y = y+t*(M0.y-y);
+	      double Z = z+t*(M0.z-z);
+	      XYZ2ij(double3(X,Y,Z),i1,j1);
+	      if (x+y<=xy)
+		XYZ2ij(M0,i2,j2);
+	      else
+		XYZ2ij(double3(x,y,z),i2,j2);
+	      if (j1>j2) swapint(j1,j2);
+	      if (jmin>j1) jmin=j1;
+	      if (jmax<j2) jmax=j2;
+	      if (jmin<mj && mj<jmax){
+		break;
+	      }
+	    } // end for
+	    if (ll<int(Cur.size())){
+	      // means edge is not visible
+	      break;
+	    }
+	  }
+	  // polyedre attribute: filled/not filled
+	  bool filled=polyedre_filled[k];
+	  bool hidden=kk<int(polyedrev.size());
+	  if (filled && hidden)
+	    continue;
+	  int i1,j1,i2,j2;
+	  XYZ2ij(p,i1,j1);
+	  XYZ2ij(c,i2,j2);
+	  if (i1>i2 || (i1==i2 && j1>j2)){
+	    swapint(i1,i2); swapint(j1,j2);
+	  }
+	  drawLine(i1,j1,i2,j2,
+		   // col.d | 0x400000
+		   col.u | ((hidden || filled)?0x400000:0x20000)
+		   );
+	}
+      }
+    }
+    if (show_axes){
+      // cube A,B,C,D,E,F,G,H
+      // X
+      drawLine(Ai,Aj,Ci,Cj,COLOR_RED | 0x800000);
+      drawLine(Bi,Bj,Di,Dj,COLOR_RED | 0x800000);
+      drawLine(Ei,Ej,Gi,Gj,COLOR_RED | 0x800000);
+      drawLine(Fi,Fj,Hi,Hj,COLOR_RED | 0x800000);
+      // Y
+      drawLine(Ai,Aj,Ei,Ej,COLOR_GREEN | 0x800000);
+      drawLine(Bi,Bj,Fi,Fj,COLOR_GREEN | 0x800000);
+      drawLine(Ci,Cj,Gi,Gj,COLOR_GREEN | 0x800000);
+      drawLine(Di,Dj,Hi,Hj,COLOR_GREEN | 0x800000);
+      // Z
+      drawLine(Ai,Aj,Bi,Bj,COLOR_BLUE | 0x800000);
+      drawLine(Ci,Cj,Di,Dj,COLOR_BLUE | 0x800000);
+      drawLine(Ei,Ej,Fi,Fj,COLOR_BLUE | 0x800000);
+      drawLine(Gi,Gj,Hi,Hj,COLOR_BLUE | 0x800000);
+      // planes
+      vecteur attrv(native_renderer_instructions);
+      for (int i=0;i<attrv.size();++i){
+	gen attr=attrv[i];
+	gen cur=remove_at_pnt(attr);
+	int upcolor=44444;
+	const char * nameptr=0;
+	if (attr.is_symb_of_sommet(at_pnt)){
+	  if (show_names && attr._SYMBptr->feuille.type==_VECT && attr._SYMBptr->feuille._VECTptr->size()==3){
+	    gen name=attr._SYMBptr->feuille._VECTptr->back();
+	    if (name.type==_IDNT)
+	      nameptr=name._IDNTptr->id_name;
+	    if (name.type==_STRNG)
+	      nameptr=name._STRNGptr->c_str();
+	  }
+	  attr=attr._SYMBptr->feuille[1];
+	  if (attr.type==_INT_ && (attr.val & 0xffff)!=56){
+	    upcolor=attr.val &0xffff;
+	  }
+	}
+	if (cur.is_symb_of_sommet(at_hyperplan)){
+	  vecteur & w=*cur._SYMBptr->feuille._VECTptr;
+	  gen m=evalf_double(w[1],1,contextptr),n=evalf_double(w[0],1,contextptr);
+	  double a=n[0]._DOUBLE_val,b=n[1]._DOUBLE_val,c=n[2]._DOUBLE_val;
+	  double x0=m[0]._DOUBLE_val,y0=m[1]._DOUBLE_val,z0=m[2]._DOUBLE_val;
+	  // a*(x-x0)+b*(y-y0)+c*(z-z0)=0
+	  // replace 2 coordinates of M with window_xyzminmax and find last coord
+	  vector<int2> polyg; int2 IJmin(RAND_MAX,RAND_MAX);
+	  // x
+	  if (a!=0){
+	    double x=x0-1/a*(b*(window_ymin-y0)+c*(window_zmin-z0));
+	    if (x>=window_xmin && x<=window_xmax)
+	      addpolyg(polyg,x,window_ymin,window_zmin,IJmin);
+	    x=x0-1/a*(b*(window_ymin-y0)+c*(window_zmax-z0));
+	    if (x>=window_xmin && x<=window_xmax)
+	      addpolyg(polyg,x,window_ymin,window_zmax,IJmin);
+	    x=x0-1/a*(b*(window_ymax-y0)+c*(window_zmin-z0));
+	    if (x>=window_xmin && x<=window_xmax)
+	      addpolyg(polyg,x,window_ymax,window_zmin,IJmin);
+	    x=x0-1/a*(b*(window_ymax-y0)+c*(window_zmax-z0));
+	    if (x>=window_xmin && x<=window_xmax)
+	      addpolyg(polyg,x,window_ymax,window_zmax,IJmin);
+	  }
+	  // y
+	  if (b!=0){
+	    double y=y0-1/b*(a*(window_xmin-x0)+c*(window_zmin-z0));
+	    if (y>=window_ymin && y<=window_ymax)
+	      addpolyg(polyg,window_xmin,y,window_zmin,IJmin);
+	    y=y0-1/b*(a*(window_xmin-x0)+c*(window_zmax-z0));
+	    if (y>=window_ymin && y<=window_ymax)
+	      addpolyg(polyg,window_xmin,y,window_zmax,IJmin);
+	    y=y0-1/b*(a*(window_xmax-x0)+c*(window_zmin-z0));
+	    if (y>=window_ymin && y<=window_ymax)
+	      addpolyg(polyg,window_xmax,y,window_zmin,IJmin);
+	    y=y0-1/b*(a*(window_xmax-x0)+c*(window_zmax-z0));
+	    if (y>=window_ymin && y<=window_ymax)
+	      addpolyg(polyg,window_xmax,y,window_zmax,IJmin);
+	  }
+	  // z
+	  if (c!=0){
+	    double z=z0-1/c*(a*(window_xmin-x0)+b*(window_ymin-y0));
+	    if (z>=window_zmin && z<=window_zmax)
+	      addpolyg(polyg,window_xmin,window_ymin,z,IJmin);
+	    z=z0-1/c*(a*(window_xmin-x0)+b*(window_ymax-y0));
+	    if (z>=window_zmin && z<=window_zmax)
+	      addpolyg(polyg,window_xmin,window_ymax,z,IJmin);
+	    z=z0-1/c*(a*(window_xmax-x0)+b*(window_ymin-y0));
+	    if (z>=window_zmin && z<=window_zmax)
+	      addpolyg(polyg,window_xmax,window_ymin,z,IJmin);
+	    z=z0-1/c*(a*(window_xmax-x0)+b*(window_ymax-y0));
+	    if (z>=window_zmin && z<=window_zmax)
+	      addpolyg(polyg,window_xmax,window_ymax,z,IJmin);
+	  }
+	  // sort list of arguments
+	  vector<int2_double2> p;
+	  for (int k=0;k<polyg.size();++k){
+	    int2 & cur=polyg[k];
+	    if (cur==IJmin){
+	      int2_double2 id={cur.i,cur.j,0,0};
+	      p.push_back(id);
+	    } else {
+	      double di=cur.i-IJmin.i,dj=cur.j-IJmin.j;
+	      int2_double2 id={cur.i,cur.j,atan2(di,dj),di*di+dj*dj};
+	      p.push_back(id);
+	    }
+	  }
+	  sort(p.begin(),p.end());
+	  // draw polygon
+	  vector< vector<int> > P;
+	  int ps=p.size();
+	  drawLine(p[ps-1].i,p[ps-1].j,p[0].i,p[0].j,upcolor);	  
+	  for (int k=1;k<ps;++k){
+	    drawLine(p[k-1].i,p[k-1].j,p[k].i,p[k].j,upcolor);
+	  }
+	  if (nameptr){
+	    int x=os_draw_string_small(0,0,0,upcolor,nameptr,true);
+	    os_draw_string_small(p[0].i-x,p[0].j,upcolor,0,nameptr);
+	  }
+	}
+      }
+      // frame
+      double xi=Ci-Ai,xj=Cj-Aj;
+      normalize(xi,xj);
+      drawLine(20,20,20+20*xi,20+20*xj,COLOR_RED);
+      os_draw_string_small(20+20*xi,20+20*xj,COLOR_RED,COLOR_BLACK,"x");
+      double yi=Ei-Ai,yj=Ej-Aj;
+      normalize(yi,yj);
+      drawLine(20,20,20+20*yi,20+20*yj,COLOR_GREEN);
+      os_draw_string_small(20+20*yi,20+20*yj,COLOR_GREEN,COLOR_BLACK,"y");
+      double zi=Bi-Ai,zj=Bj-Aj;
+      normalize(zi,zj);
+      drawLine(20,20,20+20*zi,20+20*zj,COLOR_BLUE);
+      os_draw_string_small(20+20*zi,20+20*zj,COLOR_BLUE,COLOR_BLACK,"z");
+    } // end show_axes
+      // now handle legend([x,y],string)
+    const vecteur & V=native_renderer_instructions;
+    for (int i=0;i<V.size();++i){
+      gen attr=V[i];
+      if (attr.is_symb_of_sommet(at_pnt)){
+	attr=attr._SYMBptr->feuille;
+	if (attr.type==_VECT && attr._VECTptr->size()>1){
+	  int color=65535;
+	  gen attr0=attr._VECTptr->front();
+	  attr=attr[1];
+	  if (attr.type==_INT_ && (attr.val & 0xffff)!=0){
+	    color=attr.val &0xffff;
+	  }
+	  if (attr0.is_symb_of_sommet(at_legende)){
+	    gen leg=attr0._SYMBptr->feuille;
+	    if (leg.type==_VECT && leg._VECTptr->size()>=2){
+	      gen pos=leg._VECTptr->front();
+	      leg=leg[1];
+	      if (pos.type==_VECT && pos._VECTptr->size()==2 && leg.type==_STRNG){
+		gen x=pos._VECTptr->front(),y=pos._VECTptr->back();
+		if (x.type==_INT_ && y.type==_INT_)
+		  os_draw_string(x.val,y.val,color,0,leg._STRNGptr->c_str());
+	      }
+	    }
+	  }
+	}
+      }
+    }
+    if (mode==1 && pushed && push_in_area && in_area){
+      // draw segment between push and current
+      double x,y,z;
+      find_xyz(push_i,push_j,push_depth,x,y,z);
+#if 0 // FIXME 3d geometry
+      gl_color(FL_RED);
+      glBegin(GL_LINES);
+      glVertex3d(x,y,z);
+      find_xyz(current_i,current_j,current_depth,x,y,z);
+      glVertex3d(x,y,z);
+      glEnd();
+#endif
+    }
+    if (displayhint)
+      os_draw_string_small(0,h()-16,COLOR_WHITE,COLOR_BLACK,gettext("click o: OpenGL"));
+  }  
+
   // if printing is true, we call gl2ps to make an eps file
   void Graph3d::draw(){
     // cerr << "graph3d" << '\n';
@@ -2313,7 +4420,7 @@ namespace xcas {
 #endif
       fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
     // cerr << clip_x << " " << clip_y<< " " << clip_w<< " " << clip_h << '\n';
-    if (printing){
+    if (opengl && printing){
       fprintf(printing,"%s","\nGS\n\nCR\nCS\n% avant eps -> BeginDocument\n/b4_Inc_state save def\n%save state for cleanup\n/dict_count countdictstack def\n/op_count count 1 sub def\n%count objects on op stack\nuserdict begin\n%make userdict current dict\n/showpage { } def\n%redefine showpage to be null\n0 setgray 0 setlinecap\n1 setlinewidth 0 setlinejoin\n10 setmiterlimit [] 0 setdash newpath\n/languagelevel where\n%if not equal to 1 then\n{pop languagelevel                %set strokeadjust and\n1 ne\n%overprint to their defaults\n{false setstrokeadjust false setoverprint\n} if\n} if\n");
       // Translate by previous widget h()
       fprintf(printing,"[1 0 0 -1 0 0] concat\n%d %d translate\n",x(),-h()-y());
@@ -2339,62 +4446,69 @@ namespace xcas {
       block=block_signal;
       block_signal=true;
     }
+    if (opengl){
 #if defined __APPLE__ && !defined GRAPH_WINDOW
-    GLContext context;
-    if (!glcontext){ // create context
-      GLContext shared_ctx = 0;
-      context = fl_create_gl_context(Fl_Window::current(), gl_choice);//aglCreateContext( gl_choice->pixelformat, shared_ctx);
-      if (!context){ 
-	if (!locked){
-	  block_signal=block;
-	  io_graph(contextptr)=b;
+      GLContext context;
+      if (!glcontext){ // create context
+	GLContext shared_ctx = 0;
+	context = fl_create_gl_context(Fl_Window::current(), gl_choice);//aglCreateContext( gl_choice->pixelformat, shared_ctx);
+	if (!context){ 
+	  if (!locked){
+	    block_signal=block;
+	    io_graph(contextptr)=b;
 #ifdef HAVE_LIBPTHREAD
-	  pthread_mutex_unlock(&interactive_mutex);
+	    pthread_mutex_unlock(&interactive_mutex);
 #endif
+	  }
+	  return ;
 	}
-	return ;
+	glcontext = (void *) context;
       }
-      glcontext = (void *) context;
-    }
-    else
-      context = (GLContext) glcontext;
-    fl_set_gl_context(Fl_Window::current(), context);
-  
-    //aglSetCurrentContext(context);
-    //GLint rect[] = { clip_x, win->h()-clip_y-clip_h, clip_w, clip_h};
-    //aglSetInteger( (GLContext)context, AGL_BUFFER_RECT, rect );
-    //aglEnable( (GLContext)context, AGL_BUFFER_RECT );
-    //OpaqueWindowPtr * winid=(OpaqueWindowPtr*) win->window_ref();
-    //aglSetWindowRef( context, winid );
-    glEnable(GL_DEPTH_TEST);
-    glLoadIdentity();
-    glEnable(GL_SCISSOR_TEST);
-    glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    //glViewport(0,0,w(),h());
-    // glDrawBuffer(GL_FRONT);
-    gl_font(FL_HELVETICA,labelsize());
-    // GLint viewport[4];
-    // glGetIntergerv(GL_VIEWPORT,viewport);
-    //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
-    display();
+      else
+	context = (GLContext) glcontext;
+      fl_set_gl_context(Fl_Window::current(), context);
+      
+      //aglSetCurrentContext(context);
+      //GLint rect[] = { clip_x, win->h()-clip_y-clip_h, clip_w, clip_h};
+      //aglSetInteger( (GLContext)context, AGL_BUFFER_RECT, rect );
+      //aglEnable( (GLContext)context, AGL_BUFFER_RECT );
+      //OpaqueWindowPtr * winid=(OpaqueWindowPtr*) win->window_ref();
+      //aglSetWindowRef( context, winid );
+      glEnable(GL_DEPTH_TEST);
+      glLoadIdentity();
+      glEnable(GL_SCISSOR_TEST);
+      glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+      glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+      //glViewport(0,0,w(),h());
+      // glDrawBuffer(GL_FRONT);
+      gl_font(FL_HELVETICA,labelsize());
+      // GLint viewport[4];
+      // glGetIntergerv(GL_VIEWPORT,viewport);
+      //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
+      display();
 #else
-    gl_start();
-    glEnable(GL_SCISSOR_TEST);
-    // glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+      gl_start();
+      glEnable(GL_SCISSOR_TEST);
+      // glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
 #ifdef GRAPH_WINDOW
-    glViewport(0,0, w(), h()); // lower left
+      glViewport(0,0, w(), h()); // lower left
 #else
-    glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
-    glViewport(x(),win->h()-y()-h(), w(), h()); // lower left
+      glScissor(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
+      glViewport(x(),win->h()-y()-h(), w(), h()); // lower left
 #endif
-    gl_font(FL_HELVETICA,labelsize());
-    // GLint viewport[4];
-    // glGetIntergerv(GL_VIEWPORT,viewport);
-    //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
-    display();
-    gl_finish();
+      gl_font(FL_HELVETICA,labelsize());
+      // GLint viewport[4];
+      // glGetIntergerv(GL_VIEWPORT,viewport);
+      //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
+      display();
+      gl_finish();
 #endif
+    }
+    else {
+      fl_push_clip(clip_x,clip_y,clip_w,clip_h);
+      draw3d(contextptr);
+      fl_pop_clip();
+    }
     struct timezone tz;
     gettimeofday(&animation_last,&tz);
     if (!paused)
@@ -2462,6 +4576,26 @@ namespace xcas {
       //aglDestroyContext((GLContext)glcontext);
     }
 #endif
+  }
+
+  void Graph3d::reset_view() {
+    if (opengl){
+      theta_x=-13;
+      theta_y=-95;
+      theta_z=-110; 
+    }
+    else 
+      theta_x=theta_y=theta_z=0;
+    q=euler_deg_to_quaternion_double(theta_z,theta_x,theta_y);
+  }
+
+  void Graph3d::switch_renderer() {
+#if 0 // def WIN32
+    fl_alert(gettext("Not supported under Windows. Sticking to OpenGL."));
+    return;
+#endif
+    opengl=!opengl;
+    reset_view();
   }
 
   int Graph3d::in_handle(int event){
@@ -2541,7 +4675,15 @@ namespace xcas {
 	  //delete this;
 	  return 1;	
 	}
-      }
+      case 'o': case 'O':
+	switch_renderer();
+	redraw();
+	return 1;
+      case 'p': case 'P': // switch display hint, useful for printing
+	displayhint=!displayhint;
+	redraw();
+	return 1;
+      }      
     }
     current_i=Fl::event_x();
     current_j=Fl::event_y();
@@ -2621,8 +4763,12 @@ namespace xcas {
       dragj=current_j-push_j;
       if (paused && absint(dragi)<4 && absint(dragj)<4)
 	++animation_instructions_pos;
-      else
-	q=quaternion_double(dragi*180/h(),0,0)*rotation_2_quaternion_double(1,0,0,dragj*180/w())*q;
+      else {
+	if (opengl)
+	  q=quaternion_double(dragi*180/h(),0,0)*rotation_2_quaternion_double(1,0,0,dragj*180/w())*q;
+	else
+	  q=rotation_2_quaternion_double(0,0,1,dragi*180/h())*rotation_2_quaternion_double(0,1,0,dragj*180/w())*q;
+      }
       dragi=dragj=0;
       redraw();
       return 1;

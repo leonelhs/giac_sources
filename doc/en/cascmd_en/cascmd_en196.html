@@ -4,99 +4,134 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Eliminating one or more variables from a list of equations: eliminate
-</title>
+<title>Substituting a variable by a value: subst</title>
 </head>
 <body >
 <a href="cascmd_en195.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en197.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec239" class="subsection">6.12.22  Eliminating one or more variables from a list of equations: <span style="font-family:monospace">eliminate</span>
-<a id="hevea_default327"></a></h3>
-<p>The <span style="font-family:monospace">eliminate</span> command eliminates variables from a list of
-equations.
+<h3 id="ssec:subst" class="subsection">5.12.18  Substituting a variable by a value: <span style="font-family:monospace">subst</span><a id="hevea_default325"></a></h3>
+<p>The <span style="font-family:monospace">subst</span> command replaces specified variables in an
+expression by specified values. Unlike the <span style="font-family:monospace">|</span> operator, the
+<span style="font-family:monospace">subst</span> command evaluates the expression before replacing the
+variables. Since <span style="font-family:monospace">subst</span> does not quote its argument, in a
+normal evaluation process the substitution variable should be purged
+(see Section <a href="cascmd_en061.html#ssec%3Aabout">4.4.8</a>), otherwise it will be replaced by its
+assigned value before substitution is done.</p><p>The <span style="font-family:monospace">subst</span> command can specify the values of variables in two
+different ways.</p><p>The first way:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">eliminate</span> takes two arguments:
+<span style="font-family:monospace">subst</span> takes two arguments.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">eqns</span>, a list of equations.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, the variable or list of variables to eliminate.
-The equations can be given as expressions, in which case they will be
-assumed to be 0.
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">eqs</span>, an equation of the form
+<span style="font-style:italic">x</span>=<span style="font-style:italic">a</span>, or a list of such equalities.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">eliminate(</span><span style="font-style:italic">eqns</span><span style="font-family:monospace">,</span><span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
-returns the equations with the variables <span style="font-style:italic">vars</span> eliminated or
-an indication that <span style="font-family:monospace">Xcas</span> can’t eliminate them.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span><br>
-Assuming the variables used haven’t been set to any values:
+</li><li class="li-itemize"><span style="font-family:monospace">subst(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">,</span><span style="font-style:italic">eqs</span>)
+returns the expression with the variables replaced by their values.
+</li></ul><h4 id="sec407" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input (if the variable </span><span style="font-style:italic"><span style="font-family:monospace">a</span></span><span style="font-style:italic"> is purged, otherwise first enter </span><span style="font-style:italic"><span style="font-family:monospace">purge(a)</span></span><span style="font-style:italic">):</span>
+<div class="center">
+<span style="font-family:monospace">subst(a^2+1,a=2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  5
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input (if the variables </span><span style="font-style:italic"><span style="font-family:monospace">a</span></span><span style="font-style:italic"> and </span><span style="font-style:italic"><span style="font-family:monospace">b</span></span><span style="font-style:italic"> are purged,
+otherwise first enter </span><span style="font-style:italic"><span style="font-family:monospace">purge(a,b)</span></span><span style="font-style:italic">):</span>
+<div class="center">
+<span style="font-family:monospace">subst(a^2+b,[a=2,b=1])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  5
+</td></tr>
+</table>
+</li></ul><p>The second way:
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">subst</span> takes three arguments.
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a variable or a list of variables.
+</li><li class="li-itemize"><span style="font-style:italic">vals</span>, a value or a list of values for substitution.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">subst(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">,</span><span style="font-style:italic">vars</span><span style="font-family:monospace">,</span><span style="font-style:italic">vals</span><span style="font-family:monospace">)</span>
+returns the expression with the variables replaced by their values.
+</li></ul><h4 id="sec408" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">Input (if the variable </span><span style="font-style:italic"><span style="font-family:monospace">a</span></span><span style="font-style:italic"> is purged, otherwise first enter </span><span style="font-style:italic"><span style="font-family:monospace">purge(a)</span></span><span style="font-style:italic">):</span>
+<div class="center">
+<span style="font-family:monospace">subst(a^2+1,a,2)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  5
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input (if the variables </span><span style="font-style:italic"><span style="font-family:monospace">a</span></span><span style="font-style:italic"> and </span><span style="font-style:italic"><span style="font-family:monospace">b</span></span><span style="font-style:italic"> are purged,
+otherwise first enter </span><span style="font-style:italic"><span style="font-family:monospace">purge(a,b)</span></span><span style="font-style:italic">):</span>
+<div class="center">
+<span style="font-family:monospace">subst(a^2+b,[a,b],[2,1])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  5
+</td></tr>
+</table>
+</li></ul><p><span style="font-family:monospace">subst</span> may also be used to make a change of variable in an
+integral. In this case the <span style="font-family:monospace">integrate</span> command (see
+Section <a href="cascmd_en227.html#ssec%3Aintegrate">5.20.1</a>) should be quoted (see Section <a href="cascmd_en182.html#ssec%3Aqt">5.12.4</a>,
+otherwise, the integral would be computed before substitution) or the
+inert form <span style="font-family:monospace">Int</span> should be used. In both cases, the name of the
+integration variable must be given as an argument of <span style="font-family:monospace">Int</span> or
+<span style="font-family:monospace">integrate</span> even you are integrating with respect to
+<span style="font-family:monospace">x</span>.</p><h4 id="sec409" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">eliminate([x = v0*t, y = y0-g*t^2], t)</span>
+<span style="font-family:monospace">subst(’integrate(sin(x^2)*x,x,0,pi/2)’,x=sqrt(t))</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">g</span> <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">y</span> <span style="font-style:italic">v</span><sub>0</sub><sup>2</sup>−<span style="font-style:italic">v</span><sub>0</sub><sup>2</sup> <span style="font-style:italic">y</span><sub>0</sub></td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<span style="font-style:italic">or:</span>
 <div class="center">
-<span style="font-family:monospace">eliminate([x+y+z+t-2,x*y*t=1,x^2+t^2=z^2],[x,z])</span>
+<span style="font-family:monospace">subst(Int(sin(x^2)*x,x,0,pi/2),x=sqrt(t))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2 <span style="font-style:italic">t</span><sup>2</sup> <span style="font-style:italic">y</span><sup>2</sup>−4 <span style="font-style:italic">t</span><sup>2</sup> <span style="font-style:italic">y</span>+<span style="font-style:italic">t</span> <span style="font-style:italic">y</span><sup>3</sup>−4 <span style="font-style:italic">t</span> <span style="font-style:italic">y</span><sup>2</sup>+4 <span style="font-style:italic">t</span> <span style="font-style:italic">y</span>+2 <span style="font-style:italic">t</span>+2 <span style="font-style:italic">y</span>−4</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><table class="display"><tr><td class="dcell" style="text-align:center">π <sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> sin<span style="font-style:italic">t</span>· </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"><sup>−1</sup> <span style="font-style:italic">d</span><span style="font-style:italic">t</span>
+</td></tr>
 </table>
-</li></ul><p>If the variable(s) can’t be eliminated, then <span style="font-family:monospace">eliminate</span>
-returns <span style="font-family:monospace">[1]</span> or <span style="font-family:monospace">[-1]</span>. If <span style="font-family:monospace">eliminate</span> returns
-<span style="font-family:monospace">[]</span>, that means the equations determine the values of the
-variables to be eliminated.</p><p><br>
-</p><p><span style="font-family:monospace">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">x:=2;y:=-5</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">eliminate([x=2*t,y=1-10*t^2],t)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">subst(’integrate(sin(x^2)*x,x)’,x=sqrt(t))</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-since <span style="font-family:monospace">t</span> cannot be eliminated from both equations.
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<span style="font-style:italic">or:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">x:=2;y:=-9</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">eliminate([x=2*t,y=1-10*t^2],t)</span>
-</td></tr>
-</table>
+<span style="font-family:monospace">subst(Int(sin(x^2)*x,x),x=sqrt(t))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-since the first equation gives <span style="font-family:monospace">t</span>=1, which satisfies the
-second equation.
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">x:= 2; y:= -9</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">eliminate([x = 2*t, y = 1-10*t^2, z = x + y - t], t)</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> sin<span style="font-style:italic">t</span>· </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"><sup>−1</sup> <span style="font-style:italic">d</span><span style="font-style:italic">t</span>
 </td></tr>
 </table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,<span style="font-style:italic">z</span>+8</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-since the first equation gives <span style="font-family:monospace">t</span>=1, which satisfies the
-second equation, and so that leaves <span style="font-family:monospace">z = 2 - 9 - 1 = -8</span>, or
-<span style="font-family:monospace">z + 8 = 0</span>.
 </li></ul>
 <hr>
 <a href="cascmd_en195.html"><img src="previous_motif.gif" alt="Previous"></a>

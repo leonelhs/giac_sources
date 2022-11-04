@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Equilateral triangles in space: equilateral_triangle
+<title>Checking if two circles in the plane are orthogonal: is_orthogonal
 </title>
 </head>
 <body >
@@ -12,74 +12,49 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en877.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dequi" class="subsection">14.7.4  Equilateral triangles in space: <span style="font-family:monospace">equilateral_triangle</span>
-<a id="hevea_default1608"></a></h3>
-<p>See Section <a href="cascmd_en778.html#ssec%3A2dequi">13.8.4</a> for equilateral triangles in the plane.</p><p>The <span style="font-family:monospace">equilateral_triangle</span> command returns and draws
-equilateral triangles.
+<h3 id="ssec:2dcheckorth" class="subsection">13.16.13  Checking if two circles in the plane are orthogonal: <span style="font-family:monospace">is_orthogonal</span>
+<a id="hevea_default1577"></a></h3>
+<p>See Section <a href="cascmd_en939.html#ssec%3A3dcheckorth">14.13.5</a> for checking for orthogonality in
+three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_orthogonal</span> command determines whether or not two
+lines or circles are orthogonal.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">equilateral_triangle</span> takes three mandatory arguments
-and one optional argument:
+<span style="font-family:monospace">is_orthogonal</span> takes two arguments:<br>
+ <span style="font-style:italic">C</span><sub>1</sub>,<span style="font-style:italic">C</span><sub>2</sub>, two objects, both lines or both circles.
+</li><li class="li-itemize"><span style="font-family:monospace">is_orthogonal(</span><span style="font-style:italic">C</span><sub>1</sub>,<span style="font-style:italic">C</span><sub>2</sub><span style="font-family:monospace">)</span> returns 1 if
+<span style="font-style:italic">C</span><sub>1</sub> and <span style="font-style:italic">C</span><sub>2</sub> are orthogonal and returns 0 otherwise.
+</li></ul><h4 id="sec2220" class="subsubsection">Examples.</h4>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">P</span>, three points.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span>, a variable name.
-</li></ul>
-</li><li class="li-itemize"><em>equilateral_triangle(</em><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">P</span> ⟨,<span style="font-style:italic">var</span>⟩<span style="font-family:monospace">)</span>
-returns and draws equilateral triangle <span style="font-style:italic">ABC</span>, where <span style="font-style:italic">C</span> and <span style="font-style:italic">P</span> are on the
-same side of line <span style="font-style:italic">AB</span> in plane <span style="font-style:italic">ABP</span>.<br>
- If the argument <span style="font-style:italic">var</span> is given, it will be assigned the value
-of <span style="font-style:italic">C</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
-</p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">A:= point(0,0,0);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">B:= point(3,3,3);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">P:= point(0,0,3)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">equilateral_triangle(A,B,P)</span>
-</td></tr>
-</table> 
+<span style="font-family:monospace">is_orthogonal(line(0,1+i),line(i,1))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en317.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">A:= point(0,0,0);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">B:= point(3,3,3);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">P:= point(0,0,3)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">equilateral_triangle(A,B,P,C)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">simplify(coordinates(C))</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
 </td></tr>
 </table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_orthogonal(line(2,i),line(0,1+i))</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−3 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell">+6</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">4</td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−3 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell">+6</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">4</td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">3 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell">+3</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_orthogonal(circle(0,1+i),circle(2,1+i))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+</td></tr>
+</table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">is_orthogonal(circle(0,1),circle(2,1))</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
+</td></tr>
 </table>
 </li></ul>
 <hr>

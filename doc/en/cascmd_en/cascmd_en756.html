@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Finding the midpoint of a segment in the plane: midpoint
+<title>Breaking out a loop: break
 </title>
 </head>
 <body >
@@ -12,16 +12,40 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en757.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dmidpt" class="subsection">13.6.9  Finding the midpoint of a segment in the plane: <span style="font-family:monospace">midpoint</span>
-<a id="hevea_default1470"></a></h3>
-<p>See Section <a href="cascmd_en859.html#ssec%3A3dmidpt">14.4.5</a> for midpoints in space.</p><p>The <span style="font-family:monospace">midpoint</span> command finds the midpoint of two points.
+<h3 id="sec1937" class="subsection">12.3.6  Breaking out a loop: <span style="font-family:monospace">break</span>
+<a id="hevea_default1406"></a></h3>
+<p>The <span style="font-family:monospace">break</span> command exits a loop without finishing it.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">midpoint</span> takes two arguments:<br>
- <span style="font-style:italic">P</span>, <span style="font-style:italic">Q</span>, two points (which can also be given as a list).
-</li><li class="li-itemize"><span style="font-family:monospace">midpoint(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span>
-draws and returns the midpoint of the segment determined
-by these points.
-</li></ul>
+<span style="font-family:monospace">break</span> takes no arguments or parentheses.
+</li><li class="li-itemize"><span style="font-family:monospace">break</span> exits the current loop.
+</li></ul><h4 id="sec1938" class="subsubsection">Example.</h4>
+<p>
+Define a program:
+</p><div class="center">
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">testbreak(a,b):= {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">local r;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">while (true) {</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  if (b == 0) {break;}</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  r:= irem(a,b);</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  a:= b;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  b:= r;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">return a;</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
+</td></tr>
+</table> 
+</div><p>
+Then:<br>
+<span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">testbreak(4,0)</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><div class="center">
+<span style="font-family:monospace">4</span>
+</div><p>
+since the <span style="font-family:monospace">while</span> loop is interrupted when <span style="font-family:monospace">b</span> is 0 and
+<span style="font-family:monospace">a</span> is 4.</p>
 <hr>
 <a href="cascmd_en755.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

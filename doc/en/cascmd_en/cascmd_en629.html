@@ -4,8 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Producing random numbers with the χ2 distribution: randchisquare
-
+<title>The median: median
 </title>
 </head>
 <body >
@@ -13,27 +12,47 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en630.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:randchisquare" class="subsection">9.3.8  Producing random numbers with the χ<sup>2</sup> distribution: <span style="font-family:monospace">randchisquare</span>
-<a id="hevea_default1179"></a>
-</h3>
-<p>The <span style="font-family:monospace">randchisquare</span> command finds random numbers chosen
-according to the χ<sup>2</sup> distribution (see
-Section <a href="cascmd_en646.html#ssec%3Achisquare">9.4.9</a>).
+<h3 id="sec1570" class="subsection">8.1.5  The median: <span style="font-family:monospace">median</span>
+<a id="hevea_default1132"></a></h3>
+<p>Although the average of a list of numbers typically means the mean,
+there are other notions of “average”. Another such notion is the
+median; the median of a list of numbers is the middle number when they are
+listed in numeric order. For example, the median of the list
+[1,2,5,7,20] is simply 5. If the length of a list of numbers is
+even, so there isn’t a middle number, the median is then the mean of
+the two middle numbers; for example, the median of [1,2,5,7,20,21]
+is (5+7)/2 = 6.</p><p>The <span style="font-family:monospace">median</span> function finds the median of a list.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">randchisquare</span> takes one argument:<br>
- <span style="font-style:italic">n</span>, an integer (the degrees of freedom).
-</li><li class="li-itemize"><span style="font-family:monospace">randchisquare(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a number chosen randomly
-according to the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span> degrees of freedom.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<span style="font-family:monospace">median</span> takes one mandatory argument and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list of numbers.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">W</span>, a list of positive integers for weights,
+where the weight of number represents how many times it is counted in
+a list.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">median(</span><span style="font-style:italic">L</span> ⟨ <span style="font-style:italic">W</span>⟩<span style="font-family:monospace">)</span> returns the median of
+the list.
+</li></ul><h4 id="sec1571" class="subsubsection">Examples.</h4>
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">randchisquare(5)</span>
-</div><p>
-<span style="font-style:italic">Output (for example):</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4.53970828547
+<div class="center">
+<span style="font-family:monospace">median([1,2,5,7,20])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">5
 </td></tr>
 </table>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">median([1,2,5,7,20],[5,3,2,1,2])</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
+</td></tr>
+</table>
+since the median of 1,1,1,1,1,2,2,2,5,5,7,20,20 is 2.
+</li></ul>
 <hr>
 <a href="cascmd_en628.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
