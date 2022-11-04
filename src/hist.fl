@@ -601,6 +601,8 @@ Function {Xcas_widget_size(const giac::gen & g,const giac::context * cptr)} {ret
 \#endif
         }
       }
+      if (s>15 && v[15].type==giac::_INT_)
+        xcas::autosave_time=v[15].val;
     }
     else {
       if (g.type!=giac::_INT_)
@@ -1039,6 +1041,7 @@ Function {Xcas_load_general_setup()} {return_type void
 } {
   code {// xcas::file_save_context has been removed for xcas 1.1.3
 int ste=giac::step_infolevel(Xcas_get_context());
+Xcas_autosave_time->value(xcas::autosave_time);
 Xcas_stepbystep->value(ste);
 Xcas_html_browser->value(Xcas_browser_name().c_str());
 static std::string proxy;
@@ -1094,6 +1097,7 @@ std::ofstream of((giac::home_directory()+giac::xcasrc()).c_str());
    else
      of << "," << '"' << '"' ;
    of << "," << '"' << Xcas_Page_Format_Output->value() << '"';
+   of << "," << xcas::autosave_time ;
    of << ");" << std::endl;
    of << giac::cas_setup_string(contextptr) << ";" << std::endl;
    of << giac::geo_setup_string() << ";" << std::endl;
@@ -4128,10 +4132,6 @@ Xcas_level_output->value("Tortue");}
       label Size
       xywh {170 40 130 25} labeltype NO_LABEL align 68
     }
-    Fl_Check_Button Xcas_automatic_help_browser {
-      label {Auto HTML help}
-      tooltip {Selecting a menu item displays fulls help in browser} xywh {10 105 160 25} down_box DOWN_BOX align 84
-    }
     Fl_Input Xcas_html_browser {
       label browser
       callback {const char * ch =Xcas_html_browser->value();
@@ -4142,6 +4142,20 @@ Xcas_level_output->value("Tortue");}
                    xcas::use_external_browser=true;
                   }}
       xywh {100 75 195 25} align 68 when 8
+    }
+    Fl_Check_Button Xcas_automatic_help_browser {
+      label {Auto HTML help}
+      tooltip {Selecting a menu item displays fulls help in browser} xywh {10 100 160 25} down_box DOWN_BOX align 84
+    }
+    Fl_Check_Button Xcas_automatic_completion_browser {
+      label {Auto index help}
+      callback {xcas::do_helpon=Xcas_automatic_completion_browser->value();}
+      tooltip {Selecting a menu item displays short index help} xywh {180 100 125 25} down_box DOWN_BOX align 84
+    }
+    Fl_Value_Input Xcas_autosave_time {
+      label autosave
+      callback {xcas::autosave_time=int(Xcas_autosave_time->value());}
+      tooltip {Time before autosave happens. If set to 0, no autosave} xywh {245 125 55 25} align 68 maximum 1000 step 1 value 60
     }
     Fl_Value_Input Xcas_default_rows {
       label rows
@@ -4244,11 +4258,6 @@ Xcas_Page_Format_Output->value("8");}
       callback {cb_Xcas_change_fontsize(0,0);}
       xywh {15 15 110 25}
     }
-    Fl_Check_Button Xcas_automatic_completion_browser {
-      label {Auto index help}
-      callback {xcas::do_helpon=Xcas_automatic_completion_browser->value();}
-      tooltip {Selecting a menu item displays short index help} xywh {180 105 125 25} down_box DOWN_BOX align 84
-    }
     Fl_Check_Button Xcas_stepbystep {
       label {Step by step}
       callback {giac::step_infolevel(Xcas_get_context())=Xcas_stepbystep->value();}
@@ -4257,7 +4266,7 @@ Xcas_Page_Format_Output->value("8");}
     Fl_Check_Button Xcas_tooltip_disabled {
       label {Disable tooltips}
       callback {Fl_Tooltip::enable(!Xcas_tooltip_disabled->value());}
-      tooltip {Check box to disable tooltips} xywh {180 145 125 25} down_box DOWN_BOX align 84
+      tooltip {Check box to disable tooltips} xywh {180 147 125 25} down_box DOWN_BOX align 84
     }
     Fl_Check_Button Xcas_disable_try_parse_test_i {
       label {Disable test i}

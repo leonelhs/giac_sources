@@ -142,17 +142,39 @@ struct fileinfo_t {
   size_t header_offset;
   int mode;
 };
+size_t tar_totalsize(const char * buffer,size_t byteLength);
 std::vector<fileinfo_t> tar_fileinfo(const char * buffer,size_t byteLength);
 // tar file format: operations on a malloc-ed char * buffer of size buffersize
 // (malloc is assumed if buffer needs to be resized by tar_adddata)
-extern int numworks_maxtarsize; // max size on the Numworks
+extern char * buf64k; // a 64k buffer in RAM for flash sector copy
+extern int numworks_maxtarsize; // max tar size on the Numworks
 extern size_t tar_first_modified_offset; // will be used to truncate the file sent to  the Numworks
+int flash_adddata(const char * buffer_,const char * filename,const char * data,size_t datasize,int exec);
 int tar_adddata(char * & buffer,size_t * buffersizeptr,const char * filename,const char * data,size_t datasize,int exec=0); // filename is only used to fill the header
+int flash_addfile(const char * buffer,const char * filename);
 int tar_addfile(char * & buffer,const char * filename,size_t * buffersizeptr);
+const char * tar_loadfile(const char * buffer,const char * filename,size_t * len);
+int tar_filebrowser(const char * buf,const char ** filenames,int maxrecords,const char * extension);
+// by default removefile will mark the file as deleted (this requires 1 sector write)
+// if mark_only==2, this will undelete the file
+// int flash_removefile(const char * buffer,const char * filename,size_t * tar_first_modif_offsetptr,int mark_only=1);
+// write all changes made in records (filename and readable attribut)
+// returns 0 if there is a mismatch between buffer and finfo
+int flash_synchronize(const char * buffer,const std::vector<fileinfo_t> & finfo,size_t * tar_first_modif_offsetptr);
+ulonglong fromstring8(const char * ptr);
+std::string toString8(longlong chksum);
+
+// empty trash: files marked as non readable are really removed
+// this will do 1 sector write from first sector where a file is marked to be removed to the end 
+int flash_emptytrash(const char * buffer,size_t * tar_first_modif_offsetptr);
+int flash_emptytrash(const char * buffer,const std::vector<fileinfo_t> & finfo,size_t * tar_first_modif_offsetptr);
+
 int tar_removefile(char * buffer,const char * filename,size_t * tar_first_modif_offsetptr);
 int tar_savefile(char * buffer,const char * filename);
 std::vector<fileinfo_t> tar_fileinfo(const char * buffer,size_t byteLength);
 char * file_gettar(const char * filename);
+// same as file_gettar but returns an aligned pointer and sets freeptr to the address to be free-ed
+char * file_gettar_aligned(const char * filename,char * & freeptr);
 int file_savetar(const char * filename,char * buffer,size_t buffersize);
 #if !defined KHICAS && !defined USE_GMP_REPLACEMENTS && !defined GIAC_HAS_STO_38// 
 // numworks_gettar return 0 or a buffer of size numworks_maxtarsize

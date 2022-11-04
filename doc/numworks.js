@@ -925,7 +925,7 @@ class Storage {
                 var name = this.__readString(dv, offset + 2, size - 2);
                 
                 var data = blob.slice(offset + 2 + name.size, offset + size);
-                
+              //console.log(name,data);
                 var record = {
                     name: name.content.split(/\.(?=[^\.]+$)/)[0], // eslint-disable-line no-useless-escape
                     type: name.content.split(/\.(?=[^\.]+$)/)[1], // eslint-disable-line no-useless-escape
@@ -970,7 +970,7 @@ class Storage {
         record.autoImport = dv.getUint8(0) !== 0;
         record.code = this.__readString(dv, 1, record.data.size - 1).content;
         
-        delete record.data;
+        //delete record.data;
         
         return record;
     }

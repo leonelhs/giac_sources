@@ -596,7 +596,7 @@ namespace xcas {
       idle_function();
     /* autosave */
     time_t current=time(0);
-    if (!autosave_disabled && autosave_function && double(current-last_save)>autosave_time){
+    if (autosave_time>0 && !autosave_disabled && autosave_function && double(current-last_save)>autosave_time){
       if (autosave_function(false))
 	last_save=current;
       else

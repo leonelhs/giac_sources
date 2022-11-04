@@ -1413,7 +1413,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   classlist2evaluator:function(l){
     if (l===undefined) return '';
-    let evals=['cas','micropy','js'];
+    let evals=['cas','xcas','micropy','js'];
     for (let i=0;i<evals.length;++i){
       if (l.contains(evals[i]))
 	return evals[i];
@@ -1423,9 +1423,14 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   set_micropy:function(field,alert=0){
     //console.log('set_micropy',field.classList);
     if (field.classList.contains('cas')) {
+      UI.micropy=0; UI.python_mode=1;
+      if (alert)
+	console.log('set_micropy 0 python 1');
+    }
+    if (field.classList.contains('xcas')) {
       UI.micropy=0; UI.python_mode=0;
       if (alert)
-	console.log('set_micropy 0');
+	console.log('set_micropy 0 python 0');
     }
     if (field.classList.contains('micropy')) {
       UI.micropy=1; UI.python_mode=4;
@@ -1688,6 +1693,22 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     }
     return [s,''];
   },
+  new_levelclass:function(field,evalclass){
+    if (!field) return;
+    field = field.parentNode;
+    if (field && field.parentNode)
+      field = field.parentNode;
+    field=field.firstChild;
+    UI.new_evalclass(field,evalclass);
+    //console.log(field);    
+  },
+  new_evalclass:function(field,evalclass){
+    let evals=['cas','xcas','micropy','js'];
+    for (let i=0;i<evals.length;++i)
+      field.classList.remove(evals[i]);
+    field.classList.add(evalclass);
+    UI.set_micropy(field);
+  },
   restoresession: function (chaine, hist, asked, doexec) {
     if (!UI.ready) {
       window.setTimeout(UI.restoresession, 100, chaine, hist, asked, doexec);
@@ -1749,7 +1770,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         continue;
       }
       var p = UI.split(s,'=');
-      if (p[0]=='cas' || p[0]=='micropy' || p[0]=='py' || p[0]=='js' || p[0]=='comment' || p[0]=='handwriting' || p[0]=='svg' || p[0]=='img'){
+      if (p[0]=='cas' || p[0]=='xcas' || p[0]=='micropy' || p[0]=='py' || p[0]=='js' || p[0]=='comment' || p[0]=='handwriting' || p[0]=='svg' || p[0]=='img' || p[0]=='xw'){
 	// console.log(p[1]);
 	let ms=p[1]; // let ms = decodeURIComponent(p[1]); // already decoded!
 	if (ms.length && ms[0]==',')
@@ -1784,7 +1805,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	let my=UI.parse_int(ms.substr(0,pos));
 	ms=ms.substr(pos+1,ms.length-pos-1);
 	let doit=false;
-	if (p[0]=='cas'){ doit=true; UI.micropy=0; }
+	if (p[0]=='xw'){ UI.do_load(ms);}
+	if (p[0]=='cas'){ doit=true; UI.micropy=0; UI.python_mode=1; }
+	if (p[0]=='xcas'){ doit=true; UI.micropy=0; UI.python_mode=0; }
 	if (p[0]=='micropy' || p[0]=='py'){ doit=true; UI.micropy=1;}
 	if (p[0]=='js'){ doit=true; UI.micropy=-1; }
 	if (p[0]=='comment'){ doit=true; ms='///'+ms;}
@@ -2487,6 +2510,10 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     if (test==1) $id('loadfileinput').accept=".xw";
     if (test==2) $id('loadfileinput').accept=".py";
     if (test==3) $id('loadfileinput').accept=".tns";
+    if (UI.calc==2)
+      $id('exportbutton').innerHTML='→Numworks';
+    else
+      $id('exportbutton').innerHTML='Export';
   },
   set_config: function (setcm_mode) { // b==true if we set cmentree
     var form = $id('config');
@@ -2576,16 +2603,17 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   nws_connect:function(){
     if (navigator.usb){
-      //console.log('nws_connect 0');
-      if (UI.calculator!=0)
-	return;
-      //console.log('nws_connect 1');
+      console.log('nws_connect 0');
+      UI.calculator=0;
+      UI.calculator_connected=false;
+      console.log('nws_connect 1');
       function autoConnectHandler(e) {
 	UI.calculator.stopAutoConnect();
 	console.log('connected');
 	UI.calculator_connected=true;
       }
       UI.calculator= new Numworks();
+      console.log('nws_connect new Numworks',UI.calculator);
       navigator.usb.addEventListener("disconnect", function(e) {
 	if (UI.calculator==0) return;
 	UI.calculator.onUnexpectedDisconnect(e, function() {
@@ -2595,11 +2623,13 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       });
       //console.log('nws_connect 2');
       UI.calculator.autoConnect(autoConnectHandler);
+      return UI.calculator;
       //console.log('nws_connect 3');
     }
   },
   numworks_load:function(){
     UI.calc=2;
+    UI.calculator=0;
     UI.nws_connect();
     window.setTimeout(UI.numworks_load_,100);
   },
@@ -2696,12 +2726,14 @@ int main(int argc,const char ** argv){
   },
   numworks_certify:function(sigfile,rwcheck=false){
     UI.calc=2;
+    UI.calculator=0;
     UI.nws_connect();
     window.setTimeout(UI.numworks_certify_,100,sigfile,rwcheck);
   },
   numworks_certify_:async function(sigfile,rwcheck){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      UI.nws_detect(UI.numworks_retry,UI.nws_detect_failure);
       return -1;
     }
     if (rwcheck)
@@ -2745,7 +2777,8 @@ int main(int argc,const char ** argv){
   numworks_load_: async function(){
     console.log(UI.calculator,UI.calculator_connected);
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez que la calculatrice Numworks est connectee':'Check that the Numworks calculator is connected');
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      UI.nws_detect(UI.numworks_retry,UI.nws_detect_failure);
       return;
     }
     $id('progbuttons').style.display='block'; 
@@ -2778,12 +2811,17 @@ int main(int argc,const char ** argv){
     UI.do_load(s);
   },
   numworks_save:function(filename,S,newbuf,pos){
+    UI.calculator=0;
     UI.nws_connect();
     window.setTimeout(UI.numworks_save_,100,filename,S,newbuf,pos);
   },
+  numworks_retry:function(){
+    alert(UI.langue==-1?'Calculatrice detectee. Reessayez!':'Calculator detected! Try again');
+  },
   numworks_save_script:async function(filename,S){
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?'Verifiez la connection de la calculatrice':'Check calculator connection');
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      UI.nws_detect(UI.numworks_retry,UI.nws_detect_failure);
       return;
     }
     let storage = await UI.calculator.backupStorage();
@@ -2800,7 +2838,8 @@ int main(int argc,const char ** argv){
       rec.push({"name": filename, "type":"py", "autoImport": false, "code": S});
     await UI.calculator.installStorage(storage, function() {
       // Do stuff after writing to the storage is done
-      console.log(filename+'_xw.py saved to Numworks');
+      alert(filename+'.py saved to Numworks');
+      // console.log(filename+'_xw.py saved to Numworks');
     });
   },    
   numworks_save_:function(filename,S,newbuf,pos){
@@ -2818,7 +2857,23 @@ int main(int argc,const char ** argv){
       saveAs(blob, filename);
       return;
     }
-    UI.numworks_save_script(filename+"_xw",S);
+    UI.numworks_save_script(filename+"_xw",S+String.fromCharCode(0));
+    // UI.numworks_save_script(filename+"_xw",S);
+  },
+  nws_detect_success:function(){
+    alert('Success');
+  },
+  nws_detect_failure:function(error){
+    console.log(error);
+    alert(UI.langue==-1?'Verifiez la connexion de la calculatrice et reessayez':'Check calculator connection and try again');
+  },
+  nws_detect:async function(success,failure){
+    if (navigator.usb){
+      UI.calculator= new Numworks();
+      UI.calculator.detect(success,failure);
+    }
+    else
+      alert('Ce navigateur est incompatible.');
   },
   savesession: function (i) {
     let s='';
@@ -2873,12 +2928,15 @@ int main(int argc,const char ** argv){
             continue;
           s += '"""' + fs + '"""\n';
 	} // end for
-	UI.nws_connect();
-	window.setTimeout(UI.numworks_save_script,100,filename,s);
-	console.log(s);
-	return;
-      } // ext=='.py'
-      s=UI.makelink(-1);
+	if (UI.calc==2){ // export button = send to Numworks
+	  UI.nws_connect();
+	  window.setTimeout(UI.numworks_save_script,100,filename,s);
+	  console.log(s);
+	  return;
+	}
+      } // end if ext=='.py'
+      else
+	s=UI.makelink(-1);
       if (s[1].length==0)
 	s[1]='\n';
       var l=4+s[0].length+4+s[1].length;
@@ -2963,7 +3021,7 @@ int main(int argc,const char ** argv){
       // create Blob([Int8Array_varname]) or Blob([Int8Array_varname],{type: "application/octet-stream"}))
       s = $id("fulldocument").innerHTML;
       s = '<html id="fulldocument" manifest="xcas.appcache">' + s + '</html>';
-    }
+    } // end i==1 (argument of savesession)
     else {
       s = $id("mathoutput").innerHTML;
     }
@@ -3046,7 +3104,7 @@ int main(int argc,const char ** argv){
   do_load:function(s){
     if (s.length>11 && (s.substr(3,7)=='<tbody>' || s.substr(3,8)=='#xwaspy\n') )
       s=s.substr(3,s.length-3);
-    //console.log(s.substr(0,7));
+    console.log(s.substr(0,7));
     if (s.length>8 && s.substr(0,8)=='#xwaspy\n'){
       s=UI.decode_fakepy(s);
     }
@@ -4120,6 +4178,7 @@ int main(int argc,const char ** argv){
   },
   reeval: function (field, postcmd, focusnextsibling) {
     var field_ = field;
+    // let ev=UI.classlist2evaluator(field.classList);
     // field=field.previousSibling;
     UI.set_config_width();
     if (field.type != 'textarea') {
@@ -4129,7 +4188,7 @@ int main(int argc,const char ** argv){
     }
     UI.set_editline(field, false);
     var s = field.value;
-    //console.log(s);
+    //console.log(field.classList,s);
     var par = field.parentNode;
     par = par.parentNode;
     if (s.length && postcmd.length && postcmd[0] == ';') {
@@ -4332,8 +4391,12 @@ int main(int argc,const char ** argv){
       s += '<textarea class="historyinput';
       if (UI.micropy>0)
 	s += ' micropy';
-      if (UI.micropy==0)
-	s += ' cas';
+      if (UI.micropy==0){
+	if (UI.python_mode)
+	  s += ' cas';
+	else
+	  s += ' xcas';
+      }
       if (UI.micropy==-1)
 	s += ' js';
       s += ' "';
@@ -4347,6 +4410,10 @@ int main(int argc,const char ** argv){
       s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,true)" title="';
       s += UI.langue == -1 ? 'R&eacute;evaluer le niveau (Ctrl-Enter)' : 'Reeval level (Ctrl-Enter)';
       s += '">&nbsp;Ok&nbsp;&nbsp;</button>';
+      s += '<button class="bouton xcas" onclick="UI.new_levelclass(this,\'xcas\');UI.evallevel(this,true)">Xcas</button>';
+      s += '<button class="bouton cas" onclick="UI.new_levelclass(this,\'cas\');UI.evallevel(this,true)">Cas</button>';
+      s += '<button class="bouton micropy" onclick="UI.new_levelclass(this,\'micropy\');UI.evallevel(this,true)">Py</button>';
+      s += '<button class="bouton js" onclick="UI.new_levelclass(this,\'js\');UI.evallevel(this,true)">JS</button>';
       s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.search(this,-1);" title="';
       s += UI.langue == -1 ? 'Donne une aide courte et quelques exemples d\'utilisation d\'une commande.' : 'Short help and examples on a command';
       s += '">&nbsp;?&nbsp;</button>';
@@ -5457,6 +5524,7 @@ int main(int argc,const char ** argv){
     }
     w = (w + 1) * scale;
     h = (h + 1) * scale;
+    if (h>800) h=800;
     canvas.width = w;
     canvas.height = h;
     //console.log(h,w);

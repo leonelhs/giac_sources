@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="keywords" content="xcas, firefox, navigateur, calcul, formel, en, ligne, programmation, algorithmique">
   <title>
-    xcas ou python
+    Xcas web
   </title>
   <style>
     html {
@@ -143,6 +143,9 @@
     }
     .cas {
       border-color: cyan;
+    }
+    .xcas {
+      border-color: magenta;
     }
   </style>
   <script>
@@ -475,7 +478,7 @@
 <span id="history1" style="display:none">
         <button class="bouton" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick="if ($id('loadbutton_file').style.display=='none') UI.savesession(2); else UI.savesession(0);">&#x1f4be;</button>
         <textarea cols="7" id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
-        <button id="exportbutton" class="bouton" title="Cliquer ici pour exporter pour calculatrices (Casio Graph 35eii&90, Numworks ou TI Nspire CX, &agrave; configurer dans les pr&eacute;f&eacute;rences) avec le nom de fichier du champ texte qui pr&eacute;c&egrave;de" onclick='UI.savesession(1);'>Export</button>
+        <button id="exportbutton" class="bouton" title="Cliquer ici pour exporter pour calculatrices (Casio Graph 35eii&90, Numworks ou TI Nspire CX, &agrave; configurer dans les pr&eacute;f&eacute;rences) avec le nom de fichier du champ texte qui pr&eacute;c&egrave;de. Utilisez .py comme extension pour concatener tous les niveaux en un unique script." onclick='UI.savesession(1);'>Export</button>
   </span>
   <button id="numworks_load" class="bouton" title="Cliquer ici pour charger un script depuis une calculatrice Numworks" onclick="UI.numworks_load()">Numworks→</button>
 <button id="loadbutton_cookie" class="bouton" title="Cliquer ici pour charger une session sauvegard&eacute;e" onclick="$id('loadfile_cookie').innerHTML=UI.listCookies();">Charge</button>
@@ -624,11 +627,14 @@
 	      &eacute;changer facilement des scripts avec une
 	      calculatrice Numworks. 
 	      <br>
+	      V&eacute;rifiez dans la configuration (bouton en haut
+	      &agrave; gauche) que l'export est configur&eacute; vers la
+	      calculatrice Numworks.
 	      Pour r&eacute;cup&eacute;rer un script depuis la
 	      calculatrice, cliquer sur le bouton Numworks→. Pour
 	      renvoyer un script vers la Numworks, cliquer sur le
-	      bouton Export. Le nom du script apparait &agrave; gauche
-	      du bouton Export. S'il se termine par <tt>xw</tt>, il
+	      bouton →Numworks. Le nom du script apparait &agrave; gauche
+	      du bouton →Numworks. S'il se termine par <tt>xw</tt>, il
 	      d&eacute;signera une session KhiCAS Numworks, s'il se
 	      termine par <tt>.py</tt> un script Python. Vous pouvez
 	      ensuite facilement partager vos scripts par email ou sur
@@ -638,15 +644,12 @@
 	      <a href="nws.html"
                     target="_blank">s'installe </a> sur les
 	      Numworks N0110 qui ont une version du syst&egrave;me
-	      inf&eacute;rieure ou &eacute;gale &agrave; 15. Vous pouvez certifier
+	      inf&eacute;rieure ou &eacute;gale &agrave; 15.
+	      Sur cette page vous pouvez certifier
 	      qu'une calculatrice Numworks contient le firmware
-	      KhiCAS en cliquant sur le bouton
-	      <button
-                    onclick="UI.numworks_certify(nws_sig,false);">Certification</button> ou
-	      <button
-                    onclick="UI.numworks_certify(nws_sig,true);">Certification
-            avec test d'&eacute;criture</button> (avec l'accord du
-            propri&eacute;taire de la calculatrice).
+	      KhiCAS d'origine, conforme &agrave; la
+	      r&eacute;glementation
+	      des examens en France.
 	      <b>Attention, ne mettez pas &agrave; jour votre calculatrice
 	      sur le site officiel de Numworks, les mises
 	      &agrave; jour versions 16 ou plus sont
@@ -3700,7 +3703,11 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
                       rows=1 onclick="UI.focused=this;" onkeypress="UI.focused=this; if (event.keyCode==13 && event.shiftKey){UI.insert(this,'\n'); UI.indentline(this); return false;} if (event.keyCode!=13 || event.shiftKey) return true;UI.eval_cmdline1(value,true); return false;"></textarea>
   <span>
             <button class="bouton" style="color:green" id="button_ok" onclick="if (UI.assistant_ok()) return; if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'',false);}" title="Evaluer la ligne de commande">
-            <strong>&nbsp;&nbsp;Ok&nbsp;&nbsp;</strong></button>
+  <strong>&nbsp;&nbsp;Ok&nbsp;&nbsp;</strong></button>
+  <button class="bouton xcas" onclick="UI.micropy=0; UI.python_mode=0;$id('button_ok').click();">Xcas</button>
+  <button class="bouton cas" onclick="UI.micropy=0; UI.python_mode=1;$id('button_ok').click();">Cas</button>
+  <button class="bouton micropy" onclick="UI.micropy=1; UI.python_mode=4;$id('button_ok').click();">Py</button>
+  <button class="bouton js" onclick="UI.micropy=-1; UI.python_mode=0;$id('button_ok').click();">JS</button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">&nbsp;?&nbsp;</button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)" title="Deplace vers la gauche le curseur">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">&nbsp;↑&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             onClick="UI.indentline(UI.focused)"

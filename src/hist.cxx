@@ -510,6 +510,8 @@ giac::gen Xcas_widget_size(const giac::gen & g,const giac::context * cptr) {
   #endif
           }
         }
+        if (s>15 && v[15].type==giac::_INT_)
+          xcas::autosave_time=v[15].val;
       }
       else {
         if (g.type!=giac::_INT_)
@@ -940,6 +942,7 @@ std::string Xcas_browser_name() {
 void Xcas_load_general_setup() {
   // xcas::file_save_context has been removed for xcas 1.1.3
   int ste=giac::step_infolevel(Xcas_get_context());
+  Xcas_autosave_time->value(xcas::autosave_time);
   Xcas_stepbystep->value(ste);
   Xcas_html_browser->value(Xcas_browser_name().c_str());
   static std::string proxy;
@@ -993,6 +996,7 @@ void Xcas_save_config(const giac::context * contextptr) {
      else
        of << "," << '"' << '"' ;
      of << "," << '"' << Xcas_Page_Format_Output->value() << '"';
+     of << "," << xcas::autosave_time ;
      of << ");" << std::endl;
      of << giac::cas_setup_string(contextptr) << ";" << std::endl;
      of << giac::geo_setup_string() << ";" << std::endl;
@@ -3247,8 +3251,6 @@ Fl_Menu_Item menu_Xcas_Level[] = {
 
 Fl_Output *Xcas_level_output=(Fl_Output *)0;
 
-Fl_Check_Button *Xcas_automatic_help_browser=(Fl_Check_Button *)0;
-
 Fl_Input *Xcas_html_browser=(Fl_Input *)0;
 
 static void cb_Xcas_html_browser(Fl_Input*, void*) {
@@ -3259,6 +3261,20 @@ static void cb_Xcas_html_browser(Fl_Input*, void*) {
                    setenv("BROWSER",ch,1);
                    xcas::use_external_browser=true;
                   };
+}
+
+Fl_Check_Button *Xcas_automatic_help_browser=(Fl_Check_Button *)0;
+
+Fl_Check_Button *Xcas_automatic_completion_browser=(Fl_Check_Button *)0;
+
+static void cb_Xcas_automatic_completion_browser(Fl_Check_Button*, void*) {
+  xcas::do_helpon=Xcas_automatic_completion_browser->value();
+}
+
+Fl_Value_Input *Xcas_autosave_time=(Fl_Value_Input *)0;
+
+static void cb_Xcas_autosave_time(Fl_Value_Input*, void*) {
+  xcas::autosave_time=int(Xcas_autosave_time->value());
 }
 
 Fl_Value_Input *Xcas_default_rows=(Fl_Value_Input *)0;
@@ -3366,12 +3382,6 @@ Fl_Button *Xcas_All_Fonts=(Fl_Button *)0;
 
 static void cb_Xcas_All_Fonts(Fl_Button*, void*) {
   cb_Xcas_change_fontsize(0,0);
-}
-
-Fl_Check_Button *Xcas_automatic_completion_browser=(Fl_Check_Button *)0;
-
-static void cb_Xcas_automatic_completion_browser(Fl_Check_Button*, void*) {
-  xcas::do_helpon=Xcas_automatic_completion_browser->value();
 }
 
 Fl_Check_Button *Xcas_stepbystep=(Fl_Check_Button *)0;
@@ -5121,16 +5131,30 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
       Xcas_level_output->labeltype(FL_NO_LABEL);
       Xcas_level_output->align(Fl_Align(68));
     } // Fl_Output* Xcas_level_output
-    { Xcas_automatic_help_browser = new Fl_Check_Button(10, 105, 160, 25, gettext("Auto HTML help"));
-      Xcas_automatic_help_browser->tooltip(gettext("Selecting a menu item displays fulls help in browser"));
-      Xcas_automatic_help_browser->down_box(FL_DOWN_BOX);
-      Xcas_automatic_help_browser->align(Fl_Align(68|FL_ALIGN_INSIDE));
-    } // Fl_Check_Button* Xcas_automatic_help_browser
     { Xcas_html_browser = new Fl_Input(100, 75, 195, 25, gettext("browser"));
       Xcas_html_browser->callback((Fl_Callback*)cb_Xcas_html_browser);
       Xcas_html_browser->align(Fl_Align(68));
       Xcas_html_browser->when(FL_WHEN_ENTER_KEY);
     } // Fl_Input* Xcas_html_browser
+    { Xcas_automatic_help_browser = new Fl_Check_Button(10, 100, 160, 25, gettext("Auto HTML help"));
+      Xcas_automatic_help_browser->tooltip(gettext("Selecting a menu item displays fulls help in browser"));
+      Xcas_automatic_help_browser->down_box(FL_DOWN_BOX);
+      Xcas_automatic_help_browser->align(Fl_Align(68|FL_ALIGN_INSIDE));
+    } // Fl_Check_Button* Xcas_automatic_help_browser
+    { Xcas_automatic_completion_browser = new Fl_Check_Button(180, 100, 125, 25, gettext("Auto index help"));
+      Xcas_automatic_completion_browser->tooltip(gettext("Selecting a menu item displays short index help"));
+      Xcas_automatic_completion_browser->down_box(FL_DOWN_BOX);
+      Xcas_automatic_completion_browser->callback((Fl_Callback*)cb_Xcas_automatic_completion_browser);
+      Xcas_automatic_completion_browser->align(Fl_Align(68|FL_ALIGN_INSIDE));
+    } // Fl_Check_Button* Xcas_automatic_completion_browser
+    { Xcas_autosave_time = new Fl_Value_Input(245, 125, 55, 25, gettext("autosave"));
+      Xcas_autosave_time->tooltip(gettext("Time before autosave happens. If set to 0, no autosave"));
+      Xcas_autosave_time->maximum(1000);
+      Xcas_autosave_time->step(1);
+      Xcas_autosave_time->value(60);
+      Xcas_autosave_time->callback((Fl_Callback*)cb_Xcas_autosave_time);
+      Xcas_autosave_time->align(Fl_Align(68));
+    } // Fl_Value_Input* Xcas_autosave_time
     { Xcas_default_rows = new Fl_Value_Input(245, 175, 55, 30, gettext("rows"));
       Xcas_default_rows->tooltip(gettext("Number of rows for new->spreadsheet"));
       Xcas_default_rows->maximum(1000);
@@ -5199,19 +5223,13 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_All_Fonts = new Fl_Button(15, 15, 110, 25, gettext("Font"));
       Xcas_All_Fonts->callback((Fl_Callback*)cb_Xcas_All_Fonts);
     } // Fl_Button* Xcas_All_Fonts
-    { Xcas_automatic_completion_browser = new Fl_Check_Button(180, 105, 125, 25, gettext("Auto index help"));
-      Xcas_automatic_completion_browser->tooltip(gettext("Selecting a menu item displays short index help"));
-      Xcas_automatic_completion_browser->down_box(FL_DOWN_BOX);
-      Xcas_automatic_completion_browser->callback((Fl_Callback*)cb_Xcas_automatic_completion_browser);
-      Xcas_automatic_completion_browser->align(Fl_Align(68|FL_ALIGN_INSIDE));
-    } // Fl_Check_Button* Xcas_automatic_completion_browser
     { Xcas_stepbystep = new Fl_Check_Button(180, 245, 125, 25, gettext("Step by step"));
       Xcas_stepbystep->tooltip(gettext("If not checked, save context information, incompatible with Xcas < 0.8.1"));
       Xcas_stepbystep->down_box(FL_DOWN_BOX);
       Xcas_stepbystep->callback((Fl_Callback*)cb_Xcas_stepbystep);
       Xcas_stepbystep->align(Fl_Align(68|FL_ALIGN_INSIDE));
     } // Fl_Check_Button* Xcas_stepbystep
-    { Xcas_tooltip_disabled = new Fl_Check_Button(180, 145, 125, 25, gettext("Disable tooltips"));
+    { Xcas_tooltip_disabled = new Fl_Check_Button(180, 147, 125, 25, gettext("Disable tooltips"));
       Xcas_tooltip_disabled->tooltip(gettext("Check box to disable tooltips"));
       Xcas_tooltip_disabled->down_box(FL_DOWN_BOX);
       Xcas_tooltip_disabled->callback((Fl_Callback*)cb_Xcas_tooltip_disabled);

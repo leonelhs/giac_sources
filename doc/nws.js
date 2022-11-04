@@ -2,6 +2,8 @@ function $id(id) { return document.getElementById(id); }
 var UI = {
   chkmsgfr:'Verifiez que la calculatrice Numworks est connectee.\nCliquez sur le bouton Detecter puis reessayez.',
   chkmsgen:'Check that the Numworks calculator is connected.\nClick on the detect button and try again.',
+  xcasfrmsg:"Les liens Test ci-dessus chargent vos scripts dans MicroPython de Xcas. Vous pouvez ensuite les &eacute;diter, les envoyer par email, les poster sur des forums (par exemple <a href=\"https://xcas.univ-grenoble-alpes.fr/forum/\">le forum de Xcas</a>) ou les renvoyer vers la Numworks (icones enveloppe, boutons F et Numworks→ en haut). Pour visualiser un graphique Kandinsky, matplotlib ou tortue validez ; ou , ou . dans une ligne de commande vide.",
+  xcasenmsg:"The Test link above will load your scripts into Xcas's Micropython. From there you can edit, execute, send them by mail, post them on a forum (for eaemple <a href=\"https://xcas.univ-grenoble-alpes.fr/forum/\">Xcas forum</a>) and send them back to the Numworks (from the toolbar at the top, mail icon, F and  Numworks→ buttons). If you want to see a Kandinsky, matplotlib or turtle graph, enter ; or , or . on an empty commandline and hit Enter",
   nws_progress:0,
   nws_progresslegend:0,
   Datestart:Date.now(),
@@ -43,7 +45,7 @@ var UI = {
   },
   nws_detect_failure:function(error){
     console.log(error);
-    alert('Failure');
+    alert(UI.langue==-1?'Verifiez la connexion de la calculatrice et reessayez':'Check calculator connection and try again');
   },
   nws_detect:async function(success,failure){
     UI.calculator= new Numworks();
@@ -107,11 +109,59 @@ var UI = {
     UI.nws_connect();
     window.setTimeout(UI.numworks_load_,100,backup);
   },
+  backup_load:function(file){
+    let reader = new FileReader();
+    reader.onerror = function (evt) { }
+    reader.readAsArrayBuffer(file);
+    reader.onload = function (evt) {
+      //UI.backup2rec(evt.target.result);
+      UI.storage_records=UI.backup2rec(evt.target.result);
+      UI.store2html(UI.storage_records,'storelist');
+    }
+  },
+  backup2rec:function(buf){
+    let pos=4,nwstoresize=32768;
+    let view=new Uint8Array(buf);
+    let rec=[];
+    for (;pos<nwstoresize;){
+      let L=view[pos+1]*256+view[pos];
+      pos += 2;
+      if (L==0) break;
+      L -= 2;
+      let name='',type='',point=false,i;
+      for (i=0;i<L;++i){
+	let ch=view[pos+i];
+	if (ch==0) break;
+	if (String.fromCharCode(ch)=='.'){
+	  point=true;
+	  continue;
+	}
+	if (point)
+	  type += String.fromCharCode(ch);
+	else
+	  name += String.fromCharCode(ch);
+      }
+      let len=L-i-2;
+      let data=new Uint8Array(buf,pos+i+1,len);
+      let code="";
+      if (type=="py")
+	code=new TextDecoder().decode(new Uint8Array(buf,pos+i+2,len-1));
+      let b=new Blob([data], {type: 'application/octet-binary'});
+      let record={"name":name, "type":type,  "autoImport": false, "data": b,"code":code,"size": len}
+      //console.log(record);
+      rec.push(record)
+      pos += L;
+    }
+    return rec;
+  },
+  numworks_retry:function(){
+    alert(UI.langue==-1?'Calculatrice detectee. Reessayez!':'Calculator detected! Try again');
+  },
   numworks_load_: async function(backup){
     console.log(UI.calculator,UI.calculator_connected);
     if (UI.calculator==0 || !UI.calculator_connected){
-      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       if (UI.calculator) UI.calculator.stopAutoConnect();
+      UI.nws_detect(UI.numworks_retry,UI.nws_detect_failure);
       return;
     }
     if (backup){
@@ -124,7 +174,7 @@ var UI = {
     }
     let storage = await UI.calculator.backupStorage();
     let rec=UI.storage_records=storage.records;
-    console.log(UI.store2html(rec,'storelist'));
+    let ht=UI.store2html(rec,'storelist'); //console.log(ht);
     return;
     let j=0,s='Choisissez un numero parmi ';
     for (;j<rec.length;++j){
@@ -160,7 +210,8 @@ var UI = {
   numworks_save:function(filename,S){
     //console.log(filename,S); return;
     UI.nws_connect();
-    window.setTimeout(UI.numworks_save_,100,filename,S);
+    //window.setTimeout(UI.numworks_save_,100,filename,S);
+    window.setTimeout(UI.numworks_save_,100,filename,S+String.fromCharCode(0));
   },
   numworks_save_:async function(filename,S){
     if (UI.calculator==0 || !UI.calculator_connected){
@@ -175,7 +226,7 @@ var UI = {
       let res=await UI.calculator.device.do_download(UI.calculator.transferSize, S, false);
       return res;
     }
-    if (filename.length>3 && filename.substr(filename.length-3,3)==".py")
+    if (UI.is_py(filename))
       filename=filename.substr(0,filename.length-3);
     let storage = await UI.calculator.backupStorage();
     let rec=storage.records,j=0;
@@ -444,20 +495,34 @@ var UI = {
       offset += UI.tar_filesize(file_size);
     }
     //console.log('fileinfo',offset,dohtml);
-    if (dohtml) UI.fileinfo2html(fileInfo,'listtarfiles');
+    if (dohtml) UI.fileinfo2html(buffer,fileInfo,'listtarfiles');
     return fileInfo;
   },
-  fileinfo2html:function(finfo,fieldname){
-    let l=finfo.length,s="<ul>";
+  is_py:function(name,ext='.py'){
+    return name.length>3 && name.substr(name.length-3,3)==ext;
+  },
+  fileinfo2html:function(buffer,finfo,fieldname){
+    let l=finfo.length,s="<ul style='max-height:300px;overflow:auto'>";
     for (let i=0;i<l;++i){
       let cur=finfo[i];
       let S="<li>";
-      S += cur.name;
+      let name=cur.name;
+      S += name;
       S += " (";
       S += cur.size;
       S += "): ";
+      let is_py=UI.is_py(name),is_xw=UI.is_py(name,'.xw');
+      if (is_py || is_xw){
+	let view='';
+	let offset=cur.header_offset+512;
+	let buf=new Uint8Array(buffer);
+	for (let j=0;j<cur.size;++j)
+	  view += String.fromCharCode(buf[offset+j]);
+	S += '<a href="xcas'+(UI.langue==-1?'fr':'en')+'.html#exec&python=4&'+(is_py?'py':'xw')+'=0,0,'+encodeURIComponent(view)+'" target="_blank">Test</a>, ';
+      }
       S += "<button onclick='UI.tar_removefile(UI.numworks_buffer,";
       S += '"'+cur.name+'"';
+      S += i<11?',2':',1';
       S +=");' title='Cliquer ici pour effacer ce fichier'>X</button>";
       S += "<button onclick='UI.tar_savefile(";
       S += '"'+cur.name+'"';
@@ -465,10 +530,15 @@ var UI = {
       s+=S;
     }
     s += "</ul>";
+    if (UI.langue==-1)
+      s += UI.xcasfrmsg;
+    else
+      s += UI.xcasenmsg;
     //console.log(s);
     // put it the list of tarfiles
     if (fieldname){
       let field=$id(fieldname);
+      console.log(field);
       field.innerHTML=s;
       field.style.display='inline';
       field=field.parentNode.style.display='inline';
@@ -481,23 +551,28 @@ var UI = {
     let rec,j=0;
     for (j=0;j<UI.storage_records.length;++j){
       rec=UI.storage_records[j];
+      // console.log(filename,rec.name);
       if (rec.name==filename) break;
     }
     if (j==UI.storage_records.length) return;
-    let blob = new Blob([rec.code], {type: "text/plain;charset=utf-8"});
-    if (filename.length<=3 || filename.substr(filename.length-3,3)!=".py")
-      filename +=  ".py";
-    saveAs(blob, filename);
+    //console.log(filename,rec);
+    if (rec.type=="py")
+      saveAs( new Blob([rec.code], {type: "text/plain;charset=utf-8"}), rec.name+"."+rec.type);
+    else {
+      saveAs(rec.data, rec.name+"."+rec.type);
+    }
   },
   store2html:function(finfo,fieldname){
-    let l=finfo.length,s="<ul>";
+    let l=finfo.length,s="<ul style='max-height:300px;overflow:auto'>";
     for (let i=0;i<l;++i){
       let cur=finfo[i];
       let S="<li>";
-      S += cur.name;
+      S += cur.name+"."+cur.type;
       S += " (";
-      S += cur.size;
+      S += (cur.type=="py")?(cur.data.size-1):cur.data.size;
       S += "): ";
+      if (cur.type=="py")
+	S += '<a href="xcas'+(UI.langue==-1?'fr':'en')+'.html#exec&python=4&py=0,0,'+encodeURIComponent(cur.code)+'" target="_blank">Test</a>, ';
       //S += "<button onclick='UI.store_removefile(UI.numworks_buffer,";
       //S += '"'+cur.name+'"';
       //S +=");' title='Cliquer ici pour effacer ce fichier'>X</button>";
@@ -507,10 +582,14 @@ var UI = {
       s+=S;
     }
     s += "</ul>";
+    if (UI.langue==-1)
+      s += UI.xcasfrmsg;
+    else
+      s += UI.xcasenmsg;
     //console.log(s);
     // put it the list of tarfiles
     if (fieldname){
-      s += '<button onclick="$id(\''+fieldname+'\').style.display=\'none\'">Fermer</button>';
+      s += '<button onclick="$id(\''+fieldname+'\').style.display=\'none\'">X</button>';
       let field=$id(fieldname);
       field.innerHTML=s;
       field.style.display='inline';
@@ -605,8 +684,14 @@ var UI = {
     if (s==0) return 0;
     let i = finfo.findIndex(info => info.name == filename);
     if (i<0 || i>=s) return 0;
-    if (really && !confirm(UI.langue==-1?'Etes-vous sur?':'Are you sure?'))
-      return 0;
+    if (really){
+      msg = (UI.langue==-1?'Effacer ':'Erase ')+filename+'. ';
+      msg += UI.langue==-1?'Etes-vous sur?':'Are you sure?';
+      if (really==2)
+	msg += (UI.langue==-1?'\nSi vous confirmez, votre firmware ne pourra plus etre certifie!':'If you confirm, your firmware can not be certified!');
+      if (!confirm(msg))
+	return 0;
+    }
     let info = finfo[i];
     let view = new Uint8Array(buffer);
     // move info.header_offset+info.size+512 to info.header_offset

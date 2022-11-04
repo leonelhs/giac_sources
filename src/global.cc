@@ -18,6 +18,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+#ifdef KHICAS
+  extern "C" double millis(); //extern int time_shift;
+#endif
 
 using namespace std;
 #ifdef HAVE_SSTREAM
@@ -163,6 +166,12 @@ extern "C" int KeyPressed( void );
 #include <libndls.h>
 #endif
 
+#if defined NUMWORKS  && defined DEVICE
+extern "C" const char * extapp_fileRead(const char * filename, size_t *len, int storage);
+extern "C"  bool extapp_erasesector(void *);
+extern "C"  bool extapp_writememory(unsigned char * dest,const unsigned char * data,size_t length);
+#endif
+
 #ifdef NUMWORKS
 size_t pythonjs_stack_size=30*1024,pythonjs_heap_size=40*1024;
 #else
@@ -206,6 +215,72 @@ const char * console_prompt(const char * s){
   return S.c_str();
 }
 
+// support for tar archive in flash on the numworks
+char * buf64k=0; // we only have 64k of RAM buffer on the Numworks
+const size_t buflen=(1<<16);
+int numworks_maxtarsize=0x600000-0x10000;
+size_t tar_first_modified_offset=0; // set to non 0 if tar data comes from Numworks
+
+
+// erase sector containing address if required
+// returns true if erased, false otherwise 
+// if false is returned, it means that [address..end of sector] contains 0xff
+// i.e. the remaining part of this sector is ready to write without erasing
+void erase_sector(const char * buf){
+#if defined NUMWORKS && defined DEVICE
+  extapp_erasesector((void *)buf);
+#else
+  char * nxt=(char *) ((((size_t) buf)/buflen +1)*buflen);
+  char * start=nxt-buflen;
+  for (int i=0;i<buflen;++i)
+    start[i]=0xff;
+#endif
+}
+
+#if defined NUMWORKS && defined DEVICE
+void WriteMemory(char * target,const char * src,size_t length){
+  extapp_writememory((unsigned char *)target,(unsigned char*)src,length);
+}
+
+#else
+void WriteMemory(char * target,const char * src,size_t length){
+  memcpy(target,src,length);
+}
+#endif
+
+
+#if 0
+bool write_memory(char * target,const char * src,size_t length_){
+  //if (length % 256) return false;
+  size_t length=((255+length_)/256)*256;
+  char * nxt=(char *) ((((size_t) target)/buflen +1)*buflen);
+  size_t delta=length;
+  if (delta>nxt-target)
+    delta=nxt-target;
+  // first copy current sector in buf64k before erasing
+  char * prev=(char *)nxt-buflen;
+  memcpy(buf64k,prev,buflen);
+  memcpy(buf64k+(target-prev),src,delta);
+  erase_sector(target);
+  WriteMemory(prev,buf64k,buflen);
+  length -= delta;
+  src += delta;
+  target += delta;
+  while (length>0){
+    memcpy(buf64k,target,buflen);
+    delta=length;
+    if (delta>buflen) 
+      delta=buflen;
+    memcpy(buf64k,src,delta);
+    erase_sector(target);
+    WriteMemory(target,buf64k,buflen);
+    length -= delta;
+    src += delta;
+    target += delta;      
+  }
+}
+#endif
+
 // TAR: tar file format support
 int tar_filesize(int s){
   int h=(s/512+1)*512;
@@ -219,8 +294,8 @@ string giac_readString(const char * buffer,size_t str_offset, size_t size) {
   int i = 0;
   string rtnStr = "";
   while(i<size) {
-    char ch=buffer[str_offset+i];
-    if (ch<32) break;
+    unsigned char ch=buffer[str_offset+i];
+    if (ch<32 || ch>=128) break;
     rtnStr += ch;
     i++;
   }
@@ -257,7 +332,10 @@ int giac_readMode(const char * buffer,size_t header_offset) {
   int res=0;
   for (int i = 0; i < 7; i++) {
     char tmp=szView[i];
-    if (tmp<'0' || tmp>'9') return -1; // invalid file size
+    if (tmp==' ')
+      return res;
+    if (tmp<'0' || tmp>'9') 
+      return -1; // invalid file size
     res *= 10;
     res += (tmp-'0');
   }
@@ -329,6 +407,19 @@ std::string toString8(longlong chksum){
   return res;
 }
 
+ulonglong fromstring8(const char * ptr){
+  ulonglong res=0; char ch;
+  for (;ch=*ptr;++ptr){
+    if (ch==' ')
+      return res;
+    if (ch<'0' || ch>'8')
+      return -1;
+    res *= 8;
+    res += ch-'0';
+  }
+  return res;
+}
+
 void tar_writechecksum(char * buffer,size_t header_offset) {
   // offset: 148
   tar_writestring(buffer,"        ", header_offset+148, 8); // first fill with spaces
@@ -350,12 +441,15 @@ void tar_fillheader(char * buffer,size_t offset,int exec=0){
   gettimeofday(&t, NULL);
   longlong mtime=t.tv_sec;
 #else
-  longlong mtime=2021*24*365*3600;;
+  longlong mtime=(2021LL-1970)*24*365.2425*3600;
+#ifdef KHICAS
+  mtime = millis()/1000;
+#endif
 #endif
   string user = "user";
   string group = "group";
 
-  tar_writestring(buffer,leftpad(mode,6)+" ", offset+100, 8);  
+  tar_writestring(buffer,leftpad(mode,7)+" ", offset+100, 8);  
   tar_writestring(buffer,leftpad(toString8(uid),6)+" ",offset+108,8);
   tar_writestring(buffer,leftpad(toString8(gid),6)+" ",offset+116,8);
   tar_writestring(buffer,leftpad(toString8(mtime),11)+" ",offset+136,12);
@@ -371,9 +465,59 @@ void tar_fillheader(char * buffer,size_t offset,int exec=0){
   tar_writechecksum(buffer,offset);
 }
 
-int numworks_maxtarsize=0x600000-0x10000;
-size_t tar_first_modified_offset=0; // set to non 0 if tar data comes from Numworks
+// flash version
+int flash_adddata(const char * buffer_,const char * filename,const char * data,size_t datasize,int exec){
+  vector<fileinfo_t> finfo=tar_fileinfo(buffer_,numworks_maxtarsize);
+  size_t s=finfo.size();
+  if (s==0) return 0;
+  fileinfo_t last=finfo[s-1];
+  size_t offset=last.header_offset;
+  offset += tar_filesize(last.size);
+  if (offset+1024+datasize>numworks_maxtarsize) return 0;
+  buffer_ += offset;
+  char * nxt=(char *) ((((size_t) buffer_)/buflen +1)*buflen);
+  char * prev=nxt-buflen;
+  size_t pos=buffer_-prev;
+  for (int i=0;i<buflen;++i)
+    buf64k[i]=0xff;
+  memcpy(buf64k,prev,pos);
+  char * buffer=buf64k+pos; // point to header
+  // fill with 0
+  for (int i=0;i<512;++i)
+    buffer[i]=0;
+  tar_writestring(buffer,filename,0,100); // filename
+  tar_writestring(buffer,leftpad(toString8(datasize),11)+" ",124,12);  // filesize
+  tar_writestring(buffer,"0",156,1); // file type
+  tar_fillheader(buffer,0,exec);
+  // add data
+  buffer += 512;
+  pos += 512;
+  size_t length=datasize;
+  if (length>buflen-pos)
+    length=buflen-pos;
+  memcpy(buffer,data,length);
+  buffer += length;
+  for (;(size_t) buffer % 512;++buffer)
+    *buffer=0;
+  erase_sector(prev);
+  WriteMemory(prev,buf64k,buflen);
+  datasize -= length;
+  data += length;
+  prev += buflen;
+  while (datasize>0){
+    // copy remaining data
+    length=datasize<buflen?datasize:buflen;
+    memcpy(buf64k,data,length);
+    for (int i=length;i<buflen;++i)
+      buf64k[i]=0xff;
+    erase_sector(prev);
+    WriteMemory(prev,buf64k,buflen);
+    datasize -= length;
+  }
+  return 1;
+}
 
+// RAM version
 int tar_adddata(char * & buffer,size_t * buffersizeptr,const char * filename,const char * data,size_t datasize,int exec){
   size_t buffersize=buffersizeptr?*buffersizeptr:0;
   vector<fileinfo_t> finfo=tar_fileinfo(buffer,buffersize);
@@ -412,6 +556,37 @@ int tar_adddata(char * & buffer,size_t * buffersizeptr,const char * filename,con
   return 1;
 }
 
+// flash version
+int flash_addfile(const char * buffer,const char * filename){
+#if defined NUMWORKS  && defined DEVICE
+  size_t len;
+  const char * ch=extapp_fileRead(filename,&len,1); // read file in ram
+  return flash_adddata(buffer,filename,ch,len,0); // copy in flash
+#else
+  vector<char> data;
+  FILE * f = fopen(filename,"rb");
+  while (1){
+    char ch=fgetc(f);
+    if (feof(f))
+      break;
+    data.push_back(ch);
+  }
+  fclose(f);
+  int exec=1;
+  for (int i=0;filename[i];++i){
+    if (filename[i]=='.')
+      exec=0;
+  }
+  string fname=filename;
+  for (int i=0;filename[i];++i){
+    if (filename[i]=='/')
+      fname=filename+i+1;
+  }
+  return flash_adddata(buffer,fname.c_str(),&data.front(),data.size(),exec);
+#endif
+}
+
+// RAM version
 int tar_addfile(char * & buffer,const char * filename,size_t * buffersizeptr){
   FILE * f = fopen(filename,"rb");
   vector<char> data;
@@ -451,6 +626,96 @@ int tar_savefile(char * buffer,const char * filename){
   return 1;
 }
 
+#if 0
+// flash version
+// mark_only==1 mark for erase, ==2 undelete
+// use mark_only==0 if and only if you need some space in flash
+// otherwise it's safer to empty the trash from a PC
+int flash_removefile(const char * buffer,const char * filename,size_t * tar_first_modif_offsetptr,int mark_only){
+  vector<fileinfo_t> finfo=tar_fileinfo(buffer,0);
+  int s=finfo.size();
+  if (s==0) return 0;
+  fileinfo_t info;
+  for (int i=0;i<s;++i){
+    info=finfo[i];
+    if (info.filename==filename)
+      break;
+  }
+  if (info.filename!=filename) return 0;
+  // new code, mark file as non readable
+  size_t target=info.header_offset;
+  if (tar_first_modif_offsetptr && target<*tar_first_modif_offsetptr)
+    *tar_first_modif_offsetptr=target;
+  // mark the file as non readable
+  if (mark_only){
+    char headbuf[512];
+    memcpy(headbuf,buffer+target,512);
+    if (mark_only==1)
+      headbuf[104] = '0'+((headbuf[104]-'0') &3);
+    else
+      headbuf[104] = '0'+((headbuf[104]-'0') |4);
+    tar_writechecksum(headbuf,0);
+    // recompute chksum
+    write_memory((char *)buffer+target,headbuf,512);
+    return 1;
+  }
+  // really erase, move info.header_offset+info.size+512 to info.header_offset
+  size_t src=target+tar_filesize(info.size);
+  fileinfo_t infoend=finfo[s-1];
+  size_t end=infoend.header_offset+tar_filesize(infoend.size);
+  write_memory((char *)buffer+target,buffer+src,end-src);
+  // clear space after new end
+  // for (;target<end;++target)  buffer[target]=0;
+  return 1;
+}
+#endif
+
+const char * tar_loadfile(const char * buffer,const char * filename,size_t * len){
+  vector<fileinfo_t> finfo=tar_fileinfo(buffer,0);
+  int s=finfo.size();
+  for (int i=0;i<s;++i){
+    const fileinfo_t & f=finfo[i];
+    if (f.filename==filename){
+      if (len)
+	*len=f.size;
+      return buffer+f.header_offset+512;
+    }
+  }
+  return 0;
+}
+
+bool match(const char * filename,const char * extension){
+  if (!extension)
+    return true;
+  int el=strlen(extension);
+  int fl=strlen(filename);
+  if (el>=fl) return false;
+  int i=fl-el,j=0;
+  for (;j<el;++i,++j){
+    if (filename[i]!=extension[j])
+      return false;
+  }
+  return true;
+}
+
+int tar_filebrowser(const char * buf,const char ** filenames,int maxrecords,const char * extension){
+  vector<fileinfo_t> finfo=tar_fileinfo(buf,0);
+  int s=finfo.size();
+  if (s==0) return 0;
+  int j=0;
+  for (int i=0;i<s;++i){
+    const fileinfo_t & f=finfo[i];
+    if (match(f.filename.c_str(),extension)){
+      filenames[j]=f.filename.c_str();
+      ++j;
+      if (j==maxrecords)
+	return j;
+    }
+  }
+  return j;
+}
+
+// RAM version
 int tar_removefile(char * buffer,const char * filename,size_t * tar_first_modif_offsetptr){
   vector<fileinfo_t> finfo=tar_fileinfo(buffer,0);
   int s=finfo.size();
@@ -470,11 +735,148 @@ int tar_removefile(char * buffer,const char * filename,size_t * tar_first_modif_
   fileinfo_t infoend=finfo[s-1];
   size_t end=infoend.header_offset+tar_filesize(infoend.size);
   // memcpy would be faster, but I'm unsure it is safe here
-  for (src;src<end;++src,++target) 
+  for (;src<end;++src,++target) 
     buffer[target]=buffer[src];
   for (;target<end;++target) // clear space after new end
     buffer[target]=0;
   return 1;
+}
+
+bool tar_nxt_readable(const vector<fileinfo_t> & finfo,int cur,fileinfo_t & f){
+  int s=finfo.size();
+  for (int i=cur;i<s;++i){
+    f=finfo[i];
+    int droit=f.mode/100 ;
+    if ( (droit & 4)==4)
+      return true;
+  }
+  return false;
+}
+
+bool same_offset_size (const fileinfo_t & a,const fileinfo_t &b){
+  return a.header_offset==b.header_offset && a.size==b.size;
+}
+
+int flash_synchronize(const char * buffer,const vector<fileinfo_t> & finfo,size_t * tar_first_modif_offsetptr){
+  vector<fileinfo_t> oinfo=tar_fileinfo(buffer,0);
+  int s=finfo.size();
+  if (oinfo.size()!=finfo.size())
+    return 0;
+  for (int i=0;i<s;++i){
+    fileinfo_t f=finfo[i],o=oinfo[i];
+    if (!same_offset_size(f,o))
+      return 0;
+    if (f.mode==o.mode && f.filename==o.filename)
+      continue;
+    if (tar_first_modif_offsetptr && *tar_first_modif_offsetptr>f.header_offset)
+      *tar_first_modif_offsetptr=f.header_offset;
+    // copy current sector 
+    size_t sector_begin=(f.header_offset/buflen)*buflen,sector_end=sector_begin+buflen;
+    memcpy(buf64k,buffer+sector_begin,buflen);
+    // modify all records in this sector
+    for (;i<s;++i){
+      f=finfo[i];
+      size_t sector_pos=f.header_offset-sector_begin;
+      if (sector_pos>=buflen){
+	break;
+      }
+      char * headbuf=buf64k+sector_pos;
+      strcpy(headbuf,f.filename.c_str());
+      if ( (f.mode/100 & 4) ==0)
+	headbuf[104] = '0'+((headbuf[104]-'0') &3);
+      else
+	headbuf[104] = '0'+((headbuf[104]-'0') |4);
+      tar_writechecksum(headbuf,0);
+    }
+    erase_sector(buffer+sector_begin);
+    WriteMemory((char *)buffer+sector_begin,buf64k,buflen);
+  } 
+  return 1;
+}
+
+int flash_emptytrash(const char * buffer,const vector<fileinfo_t> & finfo,size_t * tar_first_modif_offsetptr){
+  size_t flash_end=0x90800000LL-buflen,flash_begin=0x90200000LL;
+  int s=finfo.size();
+  if (s==0) return 0;
+  // find 1st offset marked non readable
+  int i; // record position
+  fileinfo_t f,fnxt;
+  for (i=0;i<s;++i){
+    f=finfo[i];
+    int droit=f.mode/100 ;
+    if ( (droit & 4)==0){
+      break;
+    }
+  }
+  if (i==s) return 0;
+  // if (!tar_nxt_readable(finfo,i,fnxt)) return 0;
+  if (tar_first_modif_offsetptr && *tar_first_modif_offsetptr>f.header_offset)
+    *tar_first_modif_offsetptr=f.header_offset;
+  // find current sector
+  size_t sector_begin=(f.header_offset/buflen)*buflen,sector_end=sector_begin+buflen;
+  memcpy(buf64k,buffer+sector_begin,buflen);
+  size_t sector_pos=f.header_offset-sector_begin; // in [0,buflen[
+  int nwrite=0;
+  for (;i<s;++nwrite){
+    // buf64k[0..sector_pos[ is ok
+    int nxti=i;
+    for (++nxti;nxti<s;++nxti){
+      fnxt=finfo[nxti];
+      int droit=fnxt.mode /100;
+      if ( (droit & 4)==4){
+	break;
+      }
+    }
+    if (nxti==s) break;
+    size_t src=fnxt.header_offset;
+    // find nxt offset marked as non readable
+    for (++nxti;nxti<s;++nxti){
+      f=finfo[nxti];
+      int droit=f.mode /100;
+      if ( (droit & 4)==0){
+	break;
+      }
+    }
+    size_t length = f.header_offset-src; 
+    if (nxti==s)
+      length += tar_filesize(f.size);
+    // total number of bytes to be copied 
+    while (length>0){
+      size_t nbytes=length;
+      if (length>buflen-sector_pos)
+	nbytes=buflen-sector_pos;
+      memcpy(buf64k+sector_pos,buffer+src,nbytes);
+      sector_pos += nbytes;
+      for (int j=sector_pos;j<buflen;++j)
+	buf64k[j]=0xff;
+      src += nbytes;
+      length -= nbytes; 
+      if (sector_pos==buflen){
+	// erase sector, transfert buf64k, copy next sector in buf64k
+	erase_sector((char *)buffer+sector_begin);
+	WriteMemory((char *)buffer+sector_begin,buf64k,buflen);
+	sector_begin += buflen;
+	if (sector_begin>flash_end-flash_begin)
+	  return 1;
+	sector_end += buflen;
+	sector_pos = 0;
+	memcpy(buf64k,buffer+sector_begin,buflen);
+      }
+    }
+    i=nxti;
+  }
+  if (sector_pos>0){
+    erase_sector((char *)buffer+sector_begin);
+    for (int j=sector_pos;j<buflen;++j)
+      buf64k[j]=0xff;
+    WriteMemory((char *)buffer+sector_begin,buf64k,buflen);
+  }
+  return nwrite;
+}
+
+int flash_emptytrash(const char * buffer,size_t * tar_first_modif_offsetptr){
+  vector<fileinfo_t> finfo=tar_fileinfo(buffer,0);
+  return flash_emptytrash(buffer,finfo,tar_first_modif_offsetptr);
 }
 
 char * file_gettar(const char * filename){
@@ -494,6 +896,35 @@ char * file_gettar(const char * filename){
   memcpy(buffer,&res.front(),size);
   return buffer;
 }
+
+char * file_gettar_aligned(const char * filename,char * & freeptr){
+  size_t size=numworks_maxtarsize;
+  size_t bufsize=buflen*((size+(buflen-1))/buflen);
+  char * buffer=(char *)malloc(bufsize+2*buflen);
+  freeptr=buffer;
+  // align buffer
+  buffer=(char *) ((((size_t) buffer)/buflen +1)*buflen);
+  FILE * f=fopen(filename,"rb");
+  if (!f){
+    for (size_t i=0;i<size;++i)
+      buffer[i]=0;
+    return buffer;
+  }
+  vector<char> res;
+  while (1){
+    char ch=fgetc(f);
+    if (feof(f))
+      break;
+    res.push_back(ch);
+  }
+  fclose(f);
+  size=res.size();
+  if (size<numworks_maxtarsize)
+    size=numworks_maxtarsize;
+  memcpy(buffer,&res.front(),size);
+  return buffer;
+}
+
 
 int file_savetar(const char * filename,char * buffer,size_t buffersize){
   size_t l=tar_totalsize(buffer,buffersize);
@@ -764,6 +1195,7 @@ namespace giac {
       }
       return makevecteur(res1,res2,res3,res4);
     }
+#if !defined KHICAS && !defined USE_GMP_REPLACEMENTS && !defined GIAC_HAS_STO_38
     if (g.type==_INT_){
       if (g.val==1){
 	char * buf= numworks_gettar(tar_first_modified_offset);
@@ -771,6 +1203,7 @@ namespace giac {
 	return gen((void *)buf,_BUFFER_POINTER);
       }
     }
+#endif
     if (g.type==_VECT){
       vecteur & v=*g._VECTptr; 
       int s=v.size();
@@ -779,10 +1212,12 @@ namespace giac {
 	if (!buf) return 0;
 	if (s==2 && v[1].type==_STRNG)
 	  return file_savetar(v[1]._STRNGptr->c_str(),buf,0);
+#if !defined KHICAS && !defined USE_GMP_REPLACEMENTS && !defined GIAC_HAS_STO_38
 	if (s==2 && v[1].type==_INT_){
 	  if (v[1].val==1)
 	    return numworks_sendtar(buf,0,tar_first_modified_offset);
 	}
+#endif
 	if (s==3 && v[1].type==_INT_ && v[2].type==_STRNG){
 	  int val=v[1].val;
 	  if (val==0)
@@ -7433,7 +7868,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
       pythonmode=true;
       pythoncompat=true;
     }
-    if (s_orig[first]=='#' || (s_orig[first]=='_' && !isalpha(s_orig[first+1])) || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import "){
+    if (s_orig[first]=='#' || (s_orig[first]=='_' && !isalpha(s_orig[first+1])) || s_orig.substr(first,4)=="from" || s_orig.substr(first,7)=="import " || s_orig.substr(first,4)=="def "){
       pythonmode=true;
       pythoncompat=true;
     }
@@ -7819,6 +8254,12 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 	      cur += " fi";
 	    p=0;
 #endif
+	  }
+	  progpos=cur.find("def");
+	  if (p>progpos && progpos>=0 && progpos<cs && instruction_at(cur,progpos,3)){
+	    pythonmode=true;
+	    res = cur.substr(0,p)+":\n"+string(progpos+4,' ')+cur.substr(p+1,pos-p)+'\n'+res;
+	    continue;
 	  }
 	  progpos=cur.find("else");
 	  if (p>progpos && progpos>=0 && progpos<cs && instruction_at(cur,progpos,4)){

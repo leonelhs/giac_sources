@@ -208,11 +208,13 @@ extern Fl_Double_Window *Xcas_General_Setup;
 extern Fl_Menu_Button *Xcas_Level;
 #include <FL/Fl_Output.H>
 extern Fl_Output *Xcas_level_output;
-#include <FL/Fl_Check_Button.H>
-extern Fl_Check_Button *Xcas_automatic_help_browser;
 #include <FL/Fl_Input.H>
 extern Fl_Input *Xcas_html_browser;
+#include <FL/Fl_Check_Button.H>
+extern Fl_Check_Button *Xcas_automatic_help_browser;
+extern Fl_Check_Button *Xcas_automatic_completion_browser;
 #include <FL/Fl_Value_Input.H>
+extern Fl_Value_Input *Xcas_autosave_time;
 extern Fl_Value_Input *Xcas_default_rows;
 extern Fl_Value_Input *Xcas_default_cols;
 #include <FL/Fl_Return_Button.H>
@@ -226,7 +228,6 @@ extern Fl_Check_Button *Xcas_Printer_landscape;
 extern Fl_Input *Xcas_ps_preview;
 extern Fl_Input *Xcas_proxy;
 extern Fl_Button *Xcas_All_Fonts;
-extern Fl_Check_Button *Xcas_automatic_completion_browser;
 extern Fl_Check_Button *Xcas_stepbystep;
 extern Fl_Check_Button *Xcas_tooltip_disabled;
 extern Fl_Check_Button *Xcas_disable_try_parse_test_i;
