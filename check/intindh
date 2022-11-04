@@ -244,15 +244,15 @@ lst:=[
 
 // Examples quoted by Joel Moses
 [1/sqrt(-alpha^2+2*h*r^2),r,2,arctanh(r*sqrt(2)*sqrt(h)/sqrt(-alpha^2+2*h*r^2))/(sqrt(2)*sqrt(h))],
-[1/(r*sqrt(-alpha^2-epsilon^2+2*h*r^2)),r,3,arctan(sqrt(-alpha^2-epsilon^2+2*h*r^2)/sqrt(alpha^2+epsilon^2))/sqrt(alpha^2+epsilon^2)],
+[1/(r*sqrt(-alpha^2-eps^2+2*h*r^2)),r,3,arctan(sqrt(-alpha^2-eps^2+2*h*r^2)/sqrt(alpha^2+eps^2))/sqrt(alpha^2+eps^2)],
 [1/(r*sqrt(-alpha^2-2*k*r+2*h*r^2)),r,2,-arctan((alpha^2+k*r)/(alpha*sqrt(-alpha^2-2*k*r+2*h*r^2)))/alpha],
-[1/(r*sqrt(-alpha^2-epsilon^2-2*k*r+2*h*r^2)),r,2,-arctan((alpha^2+epsilon^2+k*r)/(sqrt(alpha^2+epsilon^2)*sqrt(-alpha^2-epsilon^2-2*k*r+2*h*r^2)))/sqrt(alpha^2+epsilon^2)],
+[1/(r*sqrt(-alpha^2-eps^2-2*k*r+2*h*r^2)),r,2,-arctan((alpha^2+eps^2+k*r)/(sqrt(alpha^2+eps^2)*sqrt(-alpha^2-eps^2-2*k*r+2*h*r^2)))/sqrt(alpha^2+eps^2)],
 [r/sqrt(-alpha^2+2*e*r^2),r,1,1/2*sqrt(-alpha^2+2*e*r^2)/e],
-[r/sqrt(-alpha^2-epsilon^2+2*e*r^2),r,1,1/2*sqrt(-alpha^2-epsilon^2+2*e*r^2)/e],
+[r/sqrt(-alpha^2-eps^2+2*e*r^2),r,1,1/2*sqrt(-alpha^2-eps^2+2*e*r^2)/e],
 [r/sqrt(-alpha^2+2*e*r^2-2*k*r^4),r,3,-1/2*arctan((e-2*k*r^2)/(sqrt(2)*sqrt(k)*sqrt(-alpha^2+2*e*r^2-2*k*r^4)))/(sqrt(2)*sqrt(k))],
 [r/sqrt(-alpha^2-2*k*r+2*e*r^2),r,3,-1/2*k*arctanh((k-2*e*r)/(sqrt(2)*sqrt(e)*sqrt(-alpha^2-2*k*r+2*e*r^2)))/(e^(3/2)*sqrt(2))+1/2*sqrt(-alpha^2-2*k*r+2*e*r^2)/e],
 [1/(r*sqrt(-alpha^2+2*h*r^2-2*k*r^4)),r,3,-1/2*arctan((alpha^2-h*r^2)/(alpha*sqrt(-alpha^2+2*h*r^2-2*k*r^4)))/alpha],
-[1/(r*sqrt(-alpha^2-epsilon^2+2*h*r^2-2*k*r^4)),r,3,-1/2*arctan((alpha^2+epsilon^2-h*r^2)/(sqrt(alpha^2+epsilon^2)*sqrt(-alpha^2-epsilon^2+2*h*r^2-2*k*r^4)))/sqrt(alpha^2+epsilon^2)],
+[1/(r*sqrt(-alpha^2-eps^2+2*h*r^2-2*k*r^4)),r,3,-1/2*arctan((alpha^2+eps^2-h*r^2)/(sqrt(alpha^2+eps^2)*sqrt(-alpha^2-eps^2+2*h*r^2-2*k*r^4)))/sqrt(alpha^2+eps^2)],
 
 // Examples from Novosibirsk
 
@@ -365,7 +365,7 @@ lst:=[
 [(3+3*x-4*x^2-4*x^3-7*x^6+4*x^7+10*x^8+7*x^13)/(1+2*x-x^2-4*x^3-2*x^4-2*x^7-2*x^8+x^14),x,-5,1/2*(-log(-1+x^7+x*(-1+sqrt(2))+x^2*sqrt(2))*(-1+sqrt(2))+log(1+x-x^7+x*sqrt(2)+x^2*sqrt(2))*(1+sqrt(2)))]
 ]:;
 
-auto_assume(1); 
+auto_assume(1); threads:=1;
 res:=[]:;
 S:=182; S:=size(lst);
 failint:=[]; failsimp:=[]; nock:=[]; ass:=[];
@@ -380,17 +380,17 @@ for j from 0 to S-1 do
   print(j+1,f,v,hyp,about(unquote(v)));
   try { g:=integrate(f,unquote(v)); } catch(err){ g:="integrate(err)"; }
   s:=""+eval(g,1);
-  h:=false;
+  H:=false;
   fail:=size(s.find("integrate("))>0;
   if (fail) failint.append(j+1);
   if (hyp=="nock") nock.append(j+1);
   if (hyp.type==string && size(hyp.find("assume("))>0) ass.append(j+1);
-  if (hyp!="nock" && !fail)  h:=simplify(diff(g,unquote(v))-f); else print("nock");
+  if (hyp!="nock" && !fail)  H:=simplify(diff(g,unquote(v))-f); else print("nock");
   purge(unquote(assumptions));
-  fgh:=""+eval([j+1,f,g,h],1);
-  if (eval(h,1)!=0) failsimp.append(j+1);
+  fgh:=""+eval([j+1,f,g,H],1);
+  if (eval(H,1)!=0) failsimp.append(j+1);
   print(fgh);
-  //res.append([f,g,h]); print(res[size(res)-1]);
+  //res.append([f,g,H]); print(res[size(res)-1]);
   fprint(file,"",fgh);
 od:;
 fprint(file,"","Time:",time()-T0,", tests: ",S,", integration failures: ",size(failint),failint,", simplification failures: ",size(failsimp),failsimp,", not cheked: ",size(nock),nock,", assumptions: ",size(ass),ass);
