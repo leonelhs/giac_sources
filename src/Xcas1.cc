@@ -523,7 +523,13 @@ namespace xcas {
 
   void Xcas_idle_function(void * dontcheck){
     static int initialized=-1;
-    static time_t last_save=time(0);
+    static int last_save;
+    struct timeval cur;
+    struct timezone tz;
+    if (initialized==-1){
+      gettimeofday(&cur,&tz);
+      last_save=cur.tv_sec;
+    }
     int cs=context_list().size(),ci=0,status=0;
     context * cptr=0;
     for (;ci<cs;++ci){
@@ -595,16 +601,13 @@ namespace xcas {
 	)
       idle_function();
     /* autosave */
-    time_t current=time(0);
-    if (autosave_time>0 && !autosave_disabled && autosave_function && double(current-last_save)>autosave_time){
-      if (autosave_function(false))
-	last_save=current;
-      else
-	last_save=current-autosave_time/2;
-    }
-    struct timeval cur;
-    struct timezone tz;
     gettimeofday(&cur,&tz);
+    if (autosave_time>0 && !autosave_disabled && autosave_function && double(cur.tv_sec-last_save)>autosave_time){
+      if (autosave_function(false))
+	last_save=cur.tv_sec;
+      else
+	last_save=cur.tv_sec-autosave_time/2;
+    }
     vector<Graph2d3d *>::const_iterator it=animations.begin(),itend=animations.end();
     for (;it!=itend;++it){
       Graph2d3d * gr = *it;

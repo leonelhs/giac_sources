@@ -96,14 +96,15 @@
 <div id="body" class="w3-container w3-section w3-padding-large w3-light-gray" style="margin:30px;">
   <h4 class="w3-margin">
     <a class="w3-bar-item interface" onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)">Detect</a>
-    the Numworks. Click it if the buttons below do not work.
+  the Numworks.
+  </h4>
+  Click here if the buttons below do not work.
   If your N0110 calculator screen is off, click on the Rescue button
   instead.
   If your N0110 is locked, follow instructions <a href="https://phi.getomega.dev/">here</a> then install <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(1,2);">Khi slot 1</a>.
       
-  </h4>
   <div class="w3-border-bottom"></div>
-  <h3 class="w3-margin">Python scripts</h3>
+  <h3 id="giac" class="w3-margin">Python scripts</h3>
   <div class="w3-margin w3-row">
     <ul><a name=python>
       <li>
@@ -131,12 +132,12 @@
 
     <div class="w3-border-bottom"></div>
     <h3 class="w3-margin" id="install">Install, upgrade on your N0110 calculator</h3>
-    <ul>
+    <ul id="main">
       <li> 
         Install :
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(0,4)">multi-boot</a>,
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta();">
-          Khi+KhiCAS (19.0.7, 22/04/2022)</a> : <a class="w3-link"
+          Khi+KhiCAS (19.0.13, 03/07/2022)</a> : <a class="w3-link"
           href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documents</a>,
           <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec45">Licences</a>,
           <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec47">Source</a>.
@@ -148,7 +149,7 @@
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(1,1);">Khi slot 1</a>,
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(0,5)">Khi slot 2</a>
       </li>
-      <li> Press reset+1 or reset+2 in order to boot from slot 1 or 2.
+      <li> Press reset-1 or 2 or Power ln OK Back 1 or 2 in order to boot from slot 1 or 2.
         Run KhiCAS from slot 2 if you need more memory.
       </li>
       <li>
@@ -192,18 +193,23 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     </ul>
 
     <div class="w3-border-bottom"></div>
-    <h3 class="w3-margin">Install or certification log <font size='4'><a class="w3-bar-item interface" onclick="$id('output').innerHTML=''">Clear</a></font></h3>
+    <h3 id="report" class="w3-margin">Install or certification log <font size='4'><a class="w3-bar-item interface" onclick="$id('output').innerHTML=''">Clear</a></font></h3>
     <div class="w3-border-bottom"></div>
     <br>
     <div class="w3-border-bottom"></div>
+    <span id="ploglegend"></span>
+    <progress id="plog" value=0 style="display:none"></progress>
+    <div id="output" style="max-height: 200px; overflow:auto"></div>
     <h3 class="w3-margin"><strong>Exam mode :</strong></h3>
     <div class="w3-col-x">
         If you want to certify that a N0110 calculator firmware  is
-        a genuine version of Khi+KhiCAS, click on one of the two buttons.
+        a genuine version of Khi+KhiCAS, click here
         <a class="w3-bar-item interface" onclick="UI.numworks_certify(nws_sig,false);">Certification</a><br>
-        <a class="w3-bar-item interface" onclick="UI.numworks_certify(nws_sig,true);">Certification + R/W test</a><br>
-        he first test takes about 30 secondes, the second one is more secure
-        but it takes about 1 minute and it writes data on the calc.
+        <!-- <a class="w3-bar-item interface"
+    onclick="UI.numworks_certify(nws_sig,true);">Certification + R/W
+    test</a><br> -->
+        This test takes about 30 secondes<!--, the second one is more secure
+        but it takes about 1 minute and it writes data on the calc.-->
         These tests may be done by a proctor during an exam with a
         smartphone from this
         <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/nws.html">ce
@@ -288,7 +294,7 @@ from the directory where you have unzipped
 
 </div>
 <footer class="w3-container w3-deep-purple">
-  <p>Last modified: Fri Apr 22 20:29:21 CEST 2022</p>
+  <p>July 2022</p>
 </footer> 
 </body>
 

@@ -180,7 +180,7 @@ namespace xcas {
     bool save(const char * ch=0); // use *url as filename
     bool save_all(); // save all History_Fold inside this history_pack
     bool save_as(const char * ch); // ask for a filename
-    bool save_as(const char * filename,const char * ch,bool autosave_rm,bool warn_user,bool file_save_context) ;
+    bool save_as(const char * filename,const char * ch,bool autosave_rm,bool warn_user,bool file_save_context,bool ignorefocus=false) ;
     // bool save_as(const char * filename,const char * ch,bool autosave_rm=true,bool warn_user=true,bool save_context=true) ;
     bool close(const char * ch); 
     bool insert_before(int before_position,bool newurl=false,int mws=0); 

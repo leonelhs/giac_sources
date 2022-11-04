@@ -3179,6 +3179,7 @@ int main(int argc,const char ** argv){
 	  UI.caseval(edits);
 	UI.python_mode=py;
 	UI.micropy=py==4;
+	let form = $id('config');
 	form.python_xor.checked=UI.micropy>0;
 	UI.set_settings();
 	editpos=4+editl;

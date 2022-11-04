@@ -103,14 +103,16 @@
 <!-- CORPS DE LA PAGE -->
 <div id="body" class="w3-container w3-section w3-padding-large w3-light-gray" style="margin:30px;">
   <h4 class="w3-margin">
-    <a class="w3-bar-item interface" onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)"> D&eacute;tecter</a>
-    la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
+    <a class="w3-bar-item interface"
+  onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)">
+  D&eacute;tecter</a> la Numworks.
+  </h4>
+  A faire si les boutons ci-dessous ne fonctionnent pas. Si
       l'&eacute;cran de votre Numworks N0110 est &eacute;teint, cliquez sur
       le bouton R&eacute;cup&eacute;ration. Si votre calculatrice est
       verrouill&eacute;ee, rendez-vous <a href="https://phi.getomega.dev/">ici</a> pour la
       d&eacute;verrouiller, puis installez <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(1,2);">Khi slot 1</a>.
       
-  </h4>
   <div class="w3-border-bottom"></div>
   <h3 class="w3-margin" id="giac">Scripts Python et Backups</h3>
   <div class="w3-margin w3-row">
@@ -140,12 +142,12 @@
 
     <div class="w3-border-bottom"></div>
     <h3 class="w3-margin" id="install">Installation, mise &agrave; jour, ... pour Numworks N0110.</h3>
-    <ul>
+    <ul id="main">
       <li> 
         Installation :
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(0,4)">multi-boot</a>,
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta();">
-          Khi+KhiCAS (19.0.7, 22/04/2022)</a> : <a class="w3-link"
+          Khi+KhiCAS (19.0.13, 03/07/2022)</a> : <a class="w3-link"
           href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>,
           <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec45">Licences</a>,
           <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec47">Source</a>.
@@ -157,8 +159,9 @@
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(1,1);">Khi slot 1</a>,
         <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(0,5)">Khi slot 2</a>
       </li>
-      <li> Pour passer du slot 1 au slot 2 faire reset+1 ou reset+2. Le
-        slot 2 permet de lancer KhiCAS avec plus de m&eacute;moire.
+      <li> Pour passer du slot 1 au slot 2 faire reset-1 ou 2 ou
+      Power ln OK Back 1 ou 2. Le
+        slot 2 lance KhiCAS avec plus de m&eacute;moire.
       </li>
       <li>
         <a class="w3-bar-item interface" onclick="UI.numworks_getarchive('nwsflash.tar',0)">Archiver la
@@ -203,8 +206,11 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     </ul>
 
     <div class="w3-border-bottom"></div>
-    <h3 class="w3-margin">Rapport sur l'installation ou la certification <font size='4'><a class="w3-bar-item interface" onclick="$id('output').innerHTML=''">Effacer</a></font></h3>
+    <h3 class="w3-margin" id="report">Rapport sur l'installation ou la certification <font size='4'><a class="w3-bar-item interface" onclick="$id('output').innerHTML=''">Effacer</a></font></h3>
     <div class="w3-border-bottom"></div>
+    <span id="ploglegend"></span>
+    <progress id="plog" value=0 style="display:none"></progress>
+    <div id="output" style="max-height: 200px; overflow:auto"></div>
     <br>
     <div class="w3-border-bottom"></div>
     <h3 class="w3-margin"><strong>Mode examen :</strong></h3>
@@ -264,7 +270,6 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     </div>
 
     <div class="w3-border-bottom"></div>
-    <br><b>
     Cette page fonctionne uniquement avec un navigateur compatible webusb,
     par exemple Chromium ou Chrome ou Edge et depuis un serveur web. Firefox n'a pas de
     support pour webusb pour des raisons de s&eacute;curit&eacute;, si
@@ -298,7 +303,7 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
 
 </div>
 <footer class="w3-container w3-deep-purple">
-  <p>Last modified: Fri Apr 22 20:29:24 CEST 2022</p>
+  <p>Juillet 2022</p>
 </footer> 
 
 </body>

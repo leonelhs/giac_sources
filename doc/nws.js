@@ -348,6 +348,10 @@ var UI = {
       alert('Error writing Khi');
       return 2;
     }
+    UI.calculator.device.startAddress = 0x90180000;
+    UI.calculator.device.logProgress(0,'khi slot 2');
+    data=await UI.loadfile('khi.B.bin');
+    res=await UI.calculator.device.do_download(UI.calculator.transferSize, data, false);
     if (installboot){
       UI.print('Khi external OK, erase/write internal');
       UI.calculator.device.startAddress = 0x08000000;

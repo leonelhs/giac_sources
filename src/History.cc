@@ -1757,7 +1757,7 @@ namespace xcas {
       return false;
     if (debug_infolevel)
       cerr << "Autosaving " << autosave_filename << '\n';
-    bool res=pack->save_as(autosave_filename.c_str(),0,false,warn_user,false);
+    bool res=pack->save_as(autosave_filename.c_str(),0,false,warn_user,false,true);
     pack->modified(false);
     return res;
   }
@@ -1898,7 +1898,7 @@ namespace xcas {
     return save_as(s.c_str(),ch,true,true,file_save_context);
   }
 
-  bool History_Pack::save_as(const char * filename,const char * ch,bool autosave_rm,bool warn_user,bool savecontext){
+  bool History_Pack::save_as(const char * filename,const char * ch,bool autosave_rm,bool warn_user,bool savecontext,bool ignorefocus){
     if (!filename || !_select || _saving)
       return false;
     static string html5;
@@ -1931,7 +1931,7 @@ namespace xcas {
     Fl_Scroll * scroller = dynamic_cast<Fl_Scroll *>(parent());
     if (scroller)
       yscrollerpos=scroller->yposition();
-    pos=focus(Xcas_input_focus);
+    pos=ignorefocus?-1:focus(Xcas_input_focus);
     if (pos==-1)
       pos=_sel_begin;
     bool usepos=false,dbg=false;
@@ -1962,12 +1962,12 @@ namespace xcas {
 	hf->autosave_rm();
     }
     if (!usepos && Xcas_input_focus){
-      Fl::focus(Xcas_input_focus);
+      if (!ignorefocus) Fl::focus(Xcas_input_focus);
       if (Fl_Input_ * ptr=dynamic_cast<Fl_Input_*>(Xcas_input_focus))
 	ptr->position(ptr->position(),ptr->position());
     }
     else {
-      focus(pos,true);
+      if (!ignorefocus) focus(pos,true);
       if (Fl_Input_ * ptr=dynamic_cast<Fl_Input_*>(Fl::focus()))
 	ptr->position(ptr->position(),ptr->position());
     }

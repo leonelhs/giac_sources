@@ -311,7 +311,7 @@ DFU.Device = class {
     //console.log('logprogress',UI.nws_progress,done,total);
     if (typeof UI!=='undefined' && typeof UI.nws_progress!=='undefined'){
       UI.nws_progress.style.display='inline';
-      let mainview=document.getElementById('main');
+      let mainview=document.getElementById('report');
       if (typeof mainview!=='undefined') mainview.scrollIntoView();
       if (typeof total !== 'undefined'){
 	if (typeof total=='string')
@@ -321,6 +321,8 @@ DFU.Device = class {
 	  if (done>=total){
 	    UI.nws_progress.style.display='none';
 	    UI.nws_progresslegend.innerHTML='';
+	    mainview=document.getElementById('giac');
+	    if (typeof mainview!=='undefined') mainview.scrollIntoView();	    
 	  }
 	}
       }
