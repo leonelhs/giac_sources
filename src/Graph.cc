@@ -46,6 +46,7 @@
 #endif
 #include "path.h"
 #include "plot.h"
+#include "signalprocessing.h"
 #include "Equation.h"
 #include "Editeur.h"
 #include "Xcas1.h"
@@ -257,6 +258,35 @@ namespace xcas {
     return true;
   }
 
+  // Additions by L. Marohnić: loading and resizing images
+  rgba_image fltk2image(Fl_Image *img,GIAC_CONTEXT) {
+    int d=img->d(),w=img->w(),h=img->h();
+    rgba_image ret(d,w,h,contextptr);
+    unsigned i,j,k,l=0;
+    const char *data = img->data()[0];
+    for (i=0;i<h;++i)
+      for (j=0;j<w;++j)
+        for (k=0;k<d;++k,++l)
+          ret.set_pixel(k,j,i,static_cast<uchar>(data[l] & 0xff));
+    return ret;
+  }
+  gen load_image(const char *fname,GIAC_CONTEXT) {
+    Fl_Shared_Image *image=Fl_Shared_Image::get(fname);
+    if (!image || image->count()!=1 || image->d()<1)
+      return gensizeerr(gettext("Image loading failed or unsupported format"));
+    rgba_image ret=fltk2image(image,contextptr);
+    ret.set_file_name(fname);
+    image->release();
+    return ret;
+  }
+  gen resize_image(const rgba_image &img,int w,int h,GIAC_CONTEXT) {
+    Fl_RGB_Image rgb_img(img.data_array(),img.width(),img.height(),img.depth());
+    Fl_Image *fl_img=rgb_img.copy(w,h);
+    rgba_image ret=fltk2image(fl_img,contextptr);
+    delete fl_img;
+    return ret;
+  }
+
 #ifndef USE_OBJET_BIDON // change by L. Marohnić
   extern void localisation(){
 #else
@@ -265,8 +295,10 @@ namespace xcas {
   objet_bidon::objet_bidon(){
 #endif
     // localization code and pointer to RGB image reader
-    if (!giac::readrgb_ptr){
+    if (!giac::readrgb_ptr && !giac::load_image_ptr && !giac::resize_image_ptr){
       giac::readrgb_ptr=readrgb;
+      giac::load_image_ptr=load_image;
+      giac::resize_image_ptr=resize_image;
 #if defined(HAVE_LC_MESSAGES)  || defined(__MINGW_H)
 #ifdef __MINGW_H
       xcas_locale()=getenv("XCAS_LOCALE")?getenv("XCAS_LOCALE"):"c:/xcaswin/locale";	
@@ -374,10 +406,12 @@ namespace xcas {
   }
 
   void Graph2d3d::update_infos(const gen & g,GIAC_CONTEXT){
+#if 0
     if (g.type==_VECT && g.subtype==_GRAPH__VECT){
       show_axes=false;
       orthonormalize();
     }
+#endif
     if (g.is_symb_of_sommet(at_equal)){
       // detect a title or a x/y-axis name
       gen & f = g._SYMBptr->feuille;
@@ -2493,7 +2527,7 @@ namespace xcas {
     char * filename=file_chooser(gettext("LaTeX filaneme"), "*.tex", "session.tex");
     if (!filename)
       return 0;
-    string s=remove_extension(filename)+".tex";
+    static string s=remove_extension(filename)+".tex";
     if (is_file_available(s.c_str())){
       int i=fl_ask("%s",("File "+s+" exists. Overwrite?").c_str());
       if ( !i )

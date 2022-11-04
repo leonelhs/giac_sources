@@ -2,187 +2,124 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The exponential integral function: Ei
-</title>
+<title>Products</title>
 </head>
 <body >
-<a href="cascmd_en139.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en141.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en139.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en141.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec287" class="subsection">5.8.5  The exponential integral function: <span style="font-family:monospace">Ei</span>
-<a id="hevea_default249"></a></h3>
-<p>The exponential integral Ei is defined for non-zero real numbers <span style="font-style:italic">x</span>
-by </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">Ei(<span style="font-style:italic">x</span>) = </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">t</span>=−∞</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">exp(<span style="font-style:italic">t</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">t</span></td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">dt</span>. </td></tr>
-</table><p>
-For <span style="font-style:italic">x</span>&gt;0, this integral is improper but the principal value exists.
-This function satisfies Ei(0) = −∞, <span style="font-style:italic">Ei</span>(−∞) = 0.</p><p>Since </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">exp(<span style="font-style:italic">x</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-</table></td><td class="dcell"> = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-</table></td><td class="dcell"> + 1 + </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2!</td></tr>
-</table></td><td class="dcell"> +
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3!</td></tr>
-</table></td><td class="dcell"> + …, </td></tr>
-</table><p> the Ei function can be extended to
-ℂ − {0} (with a branch cut on the positive real axis) by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">Ei(<span style="font-style:italic">z</span>) = ln(<span style="font-style:italic">z</span>) + γ + <span style="font-style:italic">x</span> + </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2· 2!</td></tr>
-</table></td><td class="dcell"> +
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>3</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3· 3!</td></tr>
-</table></td><td class="dcell"> + …</td></tr>
-</table><p> where γ = 0.57721566490… is
-Euler’s constant.</p><p>The <span style="font-family:monospace">Ei</span> command takes one or two arguments.</p><p>With one argument, the <span style="font-family:monospace">Ei</span> command computes the exponential
-integral.
+<h3 id="ssec:productmul" class="subsection">5.3.27  Products</h3>
+<p>The <span style="font-family:monospace">product</span><a id="hevea_default236"></a> command can
+find the products of elements of an
+expression (see Section <a href="#sssec%3Aproduct0">5.3.27</a>), the elements of a
+list (see Section <a href="#sssec%3Aproduct">5.3.27</a>), the elements of the
+columns of a matrix (see Section <a href="cascmd_en496.html#ssec%3Aproduct1">13.3.6</a>), and the term-by-term
+(Hadamard) product of two matrices (see Section <a href="cascmd_en498.html#ssec%3Aproduct2">13.3.8</a>).</p>
+<h5 id="sssec:product0" class="paragraph">Product of values of an expression.</h5>
+<p>
+The <span style="font-family:monospace">product</span><a id="hevea_default237"></a> or
+<span style="font-family:monospace">mul</span><a id="hevea_default238"></a> command can
+find the product of the values of an expression as the variable changes.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">Ei</span> takes one argument:<br>
- <span style="font-style:italic">z</span>, a complex number.
-</li><li class="li-itemize"><span style="font-family:monospace">Ei(</span><span style="font-style:italic">z</span><span style="font-family:monospace">)</span> returns the value of the exponential integral at <span style="font-style:italic">z</span>.
-</li></ul><h4 id="sec288" class="subsubsection">Examples</h4>
+<span style="font-family:monospace">product</span> takes four mandatory arguments and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">Ei(1.0)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1.89511781636
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">Ei(-1.0)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  −0.219383934396
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">Ei(1.)-Ei(-1.)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  2.11450175075
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">int((exp(x)-1)/x,x=-1..1.)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  2.11450175075
-</td></tr>
-</table>
-</li><li class="li-itemize">The input:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">evalf(Ei(-1)-sum((-1)^n/n/n!,n=1..100))</span>
-</div>
-approximates the Euler’s constant γ<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0.577215664902
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p>Another type of exponential integral is 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">E</span><sub>1</sub>(<span style="font-style:italic">x</span>) = </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span></td></tr>
-</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">exp(−<span style="font-style:italic">t</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">t</span></td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">dt</span> 
-= </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">1</td></tr>
-</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">exp(−<span style="font-style:italic">tx</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">t</span></td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">dt</span> 
-</td></tr>
-</table><p> 
-which satisfies 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">E</span><sub>1</sub>(<span style="font-style:italic">x</span>) = −Ei(−<span style="font-style:italic">x</span>) 
-</td></tr>
-</table><p> 
-This can be generalized to 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">E</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">x</span>) = </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">1</td></tr>
-</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">exp(−<span style="font-style:italic">tx</span>)<sup><span style="font-style:italic">n</span></sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">t</span></td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">dt</span> 
-</td></tr>
-</table><p> 
-These functions satisfy
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, the name of a variable.
+</li><li class="li-itemize"><span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers.
+</li><li class="li-itemize">Optionally <span style="font-style:italic">p</span>, a real number representing a step size. (By
+default <span style="font-style:italic">p</span>=1).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">product(</span><span style="font-style:italic">expr</span><span style="font-style:italic">x</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>⟨
+<span style="font-style:italic">p</span> ⟩<span style="font-family:monospace">)</span> returns the product of the values of
+<span style="font-style:italic">expr</span> as <span style="font-style:italic">x</span> goes from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span> in steps of <span style="font-style:italic">p</span>.<p>This syntax is for compatibility with <span style="font-variant:small-caps">Maple</span>.
+</p></li></ul><h4 id="sec269" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">product</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,4)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mul</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">E</span><sub>1</sub>(<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >= −Ei(<span style="font-style:italic">x</span>)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">E</span><sub>2</sub>(<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >= <span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup>+ <span style="font-style:italic">x</span>Ei(−<span style="font-style:italic">x</span>) = <span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup> − <span style="font-style:italic">x</span>*<span style="font-style:italic">E</span><sub>1</sub>(<span style="font-style:italic">x</span>)
-</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1700
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-and, for <span style="font-style:italic">n</span> ≥ 2,
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">E</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">x</span>)= (<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span></sup>−<span style="font-style:italic">x</span> <span style="font-style:italic">E</span><sub><span style="font-style:italic">n</span>−1</sub>(<span style="font-style:italic">x</span>))/(<span style="font-style:italic">n</span>−1)
-</td></tr>
-</table><p>With two arguments, the <span style="font-family:monospace">Ei</span> command computes this version of
-the exponential integral.
+Indeed, (1<sup>2</sup>+1)(2<sup>2</sup>+1)(3<sup>2</sup>+1)(4<sup>2</sup>+1)=1700.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">product</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,5,2)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mul</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,5,2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+520
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Indeed, (1<sup>2</sup>+1)(3<sup>2</sup>+1)(5<sup>2</sup>+1)=520.</p>
+<h5 id="sssec:product" class="paragraph">Product of elements of a list.</h5>
+<p>
+The <span style="font-family:monospace">product</span><a id="hevea_default239"></a> or
+<span style="font-family:monospace">mul</span><a id="hevea_default240"></a> command can
+find the products of elements of a list.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">Ei</span> takes two arguments:
+<span style="font-family:monospace">product</span> takes one mandatory and one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">z</span>, a complex number.
-</li><li class="li-itemize"><span style="font-style:italic">n</span>, a positive integer.
+<span style="font-style:italic">L</span>, a list of numbers.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">L</span><sub>2</sub>, another list of numbers the same length
+as <span style="font-style:italic">L</span>.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">Ei(</span><span style="font-style:italic">z</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the value of <span style="font-style:italic">E</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">z</span>).
-</li></ul><h4 id="sec289" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">Ei(1.0,1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0.219383934396
-</td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">product(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the product of the elements of
+<span style="font-style:italic">L</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">product(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">L</span><sub>2</sub><span style="font-family:monospace">)</span> returns the term by term product
+of the elements of <span style="font-style:italic">L</span> and <span style="font-style:italic">L</span><sub>2</sub>.
+</li></ul><p>
+(See also Section <a href="cascmd_en498.html#ssec%3Aproduct2">13.3.8</a>.)</p><h4 id="sec271" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">product</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,3,4])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mul</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,3,4])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+24
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">product</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[2,3,4],[5,6,7]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">10,18,28</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">product</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,3,4],[5,6,7])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mul</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,3,4],[5,6,7])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">10,18,28</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">Ei(3.0,2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0.0106419250853
-</td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en139.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en141.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en139.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en141.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

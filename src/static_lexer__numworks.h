@@ -705,6 +705,7 @@
  & at_getType,
  & at_getKey,
  & at_get_pixel,
+ & at_getKey,
  & at_ggb_ang,
  & at_ggbalt,
  & at_ggbsort,

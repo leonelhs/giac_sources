@@ -2,71 +2,127 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hermite polynomial: hermite
-</title>
+<title>Natural splines</title>
 </head>
 <body >
-<a href="cascmd_en347.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en349.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en347.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en349.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec808" class="subsection">5.30.2  Hermite polynomial: <span style="font-family:monospace">hermite</span>
-<a id="hevea_default599"></a></h3>
-<p>The Hermite polynomials <span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) satisfy the recurrence relation:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">H</span>(0,<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >=1</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">H</span>(1,<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >=2<span style="font-style:italic">x</span></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)=2<span style="font-style:italic">xH</span>(<span style="font-style:italic">n</span>−1,<span style="font-style:italic">x</span>)−2(<span style="font-style:italic">n</span>−1)<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>−2,<span style="font-style:italic">x</span>)
-</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p> 
-These polynomials are orthogonal for the scalar product: 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">&lt;<span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>&gt;=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
+<h3 id="sec781" class="subsection">10.2.2  Natural splines</h3>
+<h5 id="sec782" class="paragraph">Definition.</h5>
+<p>
+Let σ<sub><span style="font-style:italic">n</span></sub> be a subdivision of a real interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">a</span>=<span style="font-style:italic">x</span><sub>0</sub>,   <span style="font-style:italic">x</span><sub>1</sub>,  …,   <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">b</span>.
 </td></tr>
-<tr><td class="dcell" style="text-align:left">−∞</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span><sup>2</sup></sup><span style="font-style:italic">dx</span> 
-</td></tr>
-</table><p>The <span style="font-family:monospace">hermite</span> command finds the Hermite polynomials.
+</table><p>
+The function <span style="font-style:italic">s</span> is a <em>spline</em> function of
+degree <span style="font-style:italic">l</span> if <span style="font-style:italic">s</span> is a function from [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] to ℝ such
+that:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">hermite</span> takes one mandatory argument and one
-optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable name (by default
-<span style="font-family:monospace">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">hermite(</span><span style="font-style:italic">n</span>  ⟨ ,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span>
-returns the Hermite polynomial of degree <span style="font-style:italic">n</span>.
-</li></ul><h4 id="sec809" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">hermite(6)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">64 <span style="font-style:italic">x</span><sup>6</sup>−480 <span style="font-style:italic">x</span><sup>4</sup>+720 <span style="font-style:italic">x</span><sup>2</sup>−120
+<span style="font-style:italic">s</span> has continuous derivatives up to the order <span style="font-style:italic">l</span>−1,
+</li><li class="li-itemize">on each interval of the subdivision σ<sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">s</span>
+is a polynomial of degree less or equal than <span style="font-style:italic">l</span>.
+</li></ul><div class="theorem"><span style="font-weight:bold">Theorem 4</span>  <em>
+The set of spline functions of degree </em><span style="font-style:italic">l</span><em> on </em>σ<sub><span style="font-style:italic">n</span></sub><em> is an
+</em>ℝ<em>-vector space of dimension </em><span style="font-style:italic">n</span>+<span style="font-style:italic">l</span><em>.
+</em></div><p><span style="font-weight:bold">Proof.</span>
+Let <span style="font-style:italic">s</span> be a spline function of degree <span style="font-style:italic">l</span> on σ<sub><span style="font-style:italic">n</span></sub>.</p><p>On [<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">A</span> of degree less or equal to <span style="font-style:italic">l</span>,
+hence on [<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup> and <span style="font-style:italic">A</span> is a
+linear combination of 1,<span style="font-style:italic">x</span>,…,<span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.</p><p>On [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">B</span> of degree
+less or equal to <span style="font-style:italic">l</span>, hence on [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">b</span><sub>0</sub>+<span style="font-style:italic">b</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">b</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.
+Since <span style="font-style:italic">s</span> has continuous derivatives up to order <span style="font-style:italic">l</span>−1,
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ∀ 0 ≤ <span style="font-style:italic">j</span> ≤ <span style="font-style:italic">l</span>−1,    <span style="font-style:italic">B</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>1</sub>)−<span style="font-style:italic">A</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>1</sub>)=0,
 </td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">hermite(6,y)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">64 <span style="font-style:italic">y</span><sup>6</sup>−480 <span style="font-style:italic">y</span><sup>4</sup>+720 <span style="font-style:italic">y</span><sup>2</sup>−120
+</table><p>
+therefore <span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=α<sub>1</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup>, i.e.
+<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)+α<sub>1</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup>, for some α<sub>1</sub>.
+Define the function:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)=
+</td><td class="dcell">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >      0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>] </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >      (<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">b</span>]</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >    </td></tr>
+</table></td><td class="dcell">
 </td></tr>
-</table>
+</table><p>
+so:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>2</sub>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+α<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>).
+</td></tr>
+</table><p>On [<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">x</span><sub>3</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">C</span> of degree less or equal than
+<span style="font-style:italic">l</span>, hence on [<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">x</span><sub>3</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">c</span><sub>0</sub>+<span style="font-style:italic">c</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">c</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.</p><p>Since <span style="font-style:italic">s</span> has continuous derivatives up to order <span style="font-style:italic">l</span>−1:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ∀ 0 ≤ <span style="font-style:italic">j</span> ≤ <span style="font-style:italic">l</span>−1,     <span style="font-style:italic">C</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>2</sub>)−<span style="font-style:italic">B</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>2</sub>)=0,
+</td></tr>
+</table><p>
+therefore <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=α<sub>2</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">n</span></sup> or <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)+α<sub>2</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">n</span></sup>.</p><p>Define the function:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">q</span><sub>2</sub>(<span style="font-style:italic">x</span>)=
+</td><td class="dcell">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >      0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>2</sub>] </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >      (<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">b</span>]</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >    </td></tr>
+</table></td><td class="dcell">
+</td></tr>
+</table><p>
+Hence:
+<span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>3</sub>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+α<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)+α<sub>2</sub><span style="font-style:italic">q</span><sub>2</sub>(<span style="font-style:italic">x</span>)<br>
+
+Continuing, define the functions
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ∀ 1 ≤ <span style="font-style:italic">j</span> ≤ <span style="font-style:italic">n</span>−1, <span style="font-style:italic">q</span><sub><span style="font-style:italic">j</span></sub>(<span style="font-style:italic">x</span>)=
+</td><td class="dcell">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >      0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>] </td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >      (<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>,<span style="font-style:italic">b</span>]</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >    </td></tr>
+</table></td><td class="dcell">
+</td></tr>
+</table><p>
+Then
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+α<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)+⋯+α<sub><span style="font-style:italic">n</span>−1</sub><span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span>−1</sub>(<span style="font-style:italic">x</span>)
+</td></tr>
+</table><p>
+and so <span style="font-style:italic">s</span> is a linear combination of <span style="font-style:italic">n</span>+<span style="font-style:italic">l</span> independent functions
+1,<span style="font-style:italic">x</span>,…,<span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>,<span style="font-style:italic">q</span><sub>1</sub>,…,<span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span>−1</sub>.</p><p>It follows that the set of all possible <span style="font-style:italic">s</span> is a real vector space of
+dimension <span style="font-style:italic">n</span>+<span style="font-style:italic">l</span>.
+</p><p><br>
+</p>
+<h5 id="sec783" class="paragraph">Types of spline functions.</h5>
+<p>
+If you want to interpolate a function <span style="font-style:italic">f</span> on σ<sub><span style="font-style:italic">n</span></sub> by a spline
+function <span style="font-style:italic">s</span> of degree <span style="font-style:italic">l</span>, then <span style="font-style:italic">s</span> must satisfy <span style="font-style:italic">s</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)
+for all 0≤ <span style="font-style:italic">k</span>≤ <span style="font-style:italic">n</span>. This gives <span style="font-style:italic">n</span>+1 conditions, leaving <span style="font-style:italic">l</span>−1
+degrees of freedom. You can therefore add <span style="font-style:italic">l</span>−1 conditions, these
+conditions are on the derivatives of <span style="font-style:italic">s</span> at <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.</p><p>Hermite interpolation, natural interpolation and periodic
+interpolation are three kinds of interpolation obtained by specifying
+three kinds of constraints. The uniqueness of the solution of the
+interpolation problem can be proved for each kind of constraints.</p><p>If <span style="font-style:italic">l</span> is odd (<span style="font-style:italic">l</span>=2<span style="font-style:italic">m</span>−1), there are 2<span style="font-style:italic">m</span>−2 degrees of freedom. The
+constraints are defined as follows.
+</p><ul class="itemize"><li class="li-itemize">
+Hermite interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>) and <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>), 1≤ <span style="font-style:italic">j</span>≤ <span style="font-style:italic">m</span>−1.
+</li><li class="li-itemize">Natural interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=0, <span style="font-style:italic">m</span> ≤ <span style="font-style:italic">j</span> ≤ 2<span style="font-style:italic">m</span>−2.
+</li><li class="li-itemize">Periodic interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>), 1≤ <span style="font-style:italic">j</span>≤ 2<span style="font-style:italic">m</span>−2.
+</li></ul><p>If <span style="font-style:italic">l</span> is even (<span style="font-style:italic">l</span>=2<span style="font-style:italic">m</span>), there are 2<span style="font-style:italic">m</span>−1 degrees of freedom. The
+constraints are defined as follows.
+</p><ul class="itemize"><li class="li-itemize">
+Hermite interpolation:
+<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>), <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>) and <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">m</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">m</span>)</sup>(<span style="font-style:italic">a</span>),
+1≤ <span style="font-style:italic">j</span>≤ <span style="font-style:italic">m</span>−1.
+</li><li class="li-itemize">Natural interpolation:
+<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=0 and <span style="font-style:italic">s</span><sup>(2<span style="font-style:italic">m</span>−1)</sup>(<span style="font-style:italic">a</span>)=0, <span style="font-style:italic">m</span> ≤ <span style="font-style:italic">j</span> ≤ 2<span style="font-style:italic">m</span>−2.
+</li><li class="li-itemize">Periodic interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>), 1≤ <span style="font-style:italic">j</span>≤ 2<span style="font-style:italic">m</span>−1.
 </li></ul>
 <hr>
-<a href="cascmd_en347.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en349.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en347.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en349.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

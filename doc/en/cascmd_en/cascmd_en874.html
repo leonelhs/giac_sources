@@ -2,81 +2,45 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if an object in the plane is a square: is_square
-</title>
+<title>Homothety in the plane</title>
 </head>
 <body >
-<a href="cascmd_en873.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en875.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en873.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en875.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dchecksquare" class="subsection">13.16.8  Checking if an object in the plane is a square: <span style="font-family:monospace">is_square</span>
-<a id="hevea_default1575"></a></h3>
-<p>See Section <a href="cascmd_en949.html#ssec%3A3dchecksquare">14.13.12</a> for checking for squares in
-three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_square</span> command determines whether or not a
-geometric object is a square.
+<h3 id="ssec:2dhomothety" class="subsection">24.14.5  Homothety in the plane</h3>
+<p>See Section <a href="cascmd_en969.html#ssec%3A3dhomothety">25.12.5</a> for homotheties in space.</p><p>A homothety is a dilation about a given point.
+The <span style="font-family:monospace">homothety</span><a id="hevea_default1782"></a>
+command creates a homothety.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_square</span> takes one argument:<br>
- <span style="font-style:italic">G</span>, a geometric object or a sequence of four points assumed to be
-the vertices of a quadrilateral.
-</li><li class="li-itemize"><span style="font-family:monospace">is_square(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1 if the object
-is a square and returns 0 otherwise.
-</li></ul><h4 id="sec2217" class="subsubsection">Examples</h4>
+<span style="font-family:monospace">homothety</span> takes two mandatory arguments and
+one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_square(1+i, -1+i, -1-i, 1-i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">K:= square(1+i, -1+i)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_square(K)</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">K:= square(1+i, -1+i, C, D)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_square(K[0])</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-Note that <span style="font-family:monospace">K[0]</span> is a square since <span style="font-family:monospace">K</span> is a list made
-of a square and vertices <span style="font-family:monospace">C</span> and <span style="font-family:monospace">D</span>.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">affix(C,D)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−1−<span style="font-style:italic">i</span>,1−<span style="font-style:italic">i</span>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_square(i, -1+i, -1-i, 1-i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
-</td></tr>
-</table>
+<span style="font-style:italic">P</span>, a point (the center of the homothety).
+</li><li class="li-itemize"><span style="font-style:italic">r</span>, a number (the scaling ratio).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">homothety(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">r</span><span style="font-family:monospace">)</span> returns a new command which
+dilates about <span style="font-style:italic">P</span> by a factor of <span style="font-style:italic">r</span>. If <span style="font-style:italic">r</span> is complex, this will
+rotate as well as scale.
+</li><li class="li-itemize"><span style="font-family:monospace">homothety(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">r</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the
+dilation of <span style="font-style:italic">G</span> about <span style="font-style:italic">P</span> by a factor or <span style="font-style:italic">r</span>.
+</li></ul><h4 id="sec2184" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">homothety</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2); </span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">square</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">homothety</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">square</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en273.png">
+
+</div>
 <hr>
-<a href="cascmd_en873.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en875.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en873.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en875.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

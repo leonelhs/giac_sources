@@ -2,110 +2,59 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Modifying the elements of a list: subsop
-
-</title>
+<title>Previous and next permutation</title>
 </head>
 <body >
-<a href="cascmd_en426.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en428.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en426.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en428.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:subsoplist" class="subsection">5.40.7  Modifying the elements of a list: <span style="font-family:monospace">subsop</span>
-<a id="hevea_default711"></a>
-</h3>
-<p>The <span style="font-family:monospace">subsop</span> command can be used to
-modify elements in a list.
+<h3 id="sec962" class="subsection">11.2.2  Previous and next permutation</h3>
+<p>The set of <span style="font-style:italic">n</span>-tuples of an ordered set can be put in
+<em>lexicographic order</em>, where the tuple
+(<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>,…,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>) comes before (<span style="font-style:italic">b</span><sub>1</sub>,<span style="font-style:italic">b</span><sub>2</sub>,…,<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub>)
+exactly when for some <span style="font-style:italic">k</span> (possibly <span style="font-style:italic">k</span>=0), <span style="font-style:italic">a</span><sub><span style="font-style:italic">i</span></sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">i</span></sub> for
+<span style="font-style:italic">i</span>=1,…,<span style="font-style:italic">k</span>−1 and <span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>&lt;<span style="font-style:italic">b</span><sub><span style="font-style:italic">k</span></sub>. For example, the list of all
+permutations of size 3 in lexicographic order is:
+(0,1,2), (0,2,1), (1,0,2), (1,2,0), (2,0,1), (2,1,0).</p><p>The <span style="font-family:monospace">prevperm</span><a id="hevea_default710"></a> and
+<span style="font-family:monospace">nextperm</span><a id="hevea_default711"></a> commands find the
+preceding and succeeding permutation.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">subsop</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list.
-</li><li class="li-itemize"><span style="font-style:italic">i</span><span style="font-style:italic">=value</span>, an index and a new value.
-</li></ul>
-</li><li class="li-itemize">(In all but <span style="font-family:monospace">Maple</span> mode).<br>
- <span style="font-family:monospace">subsop(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">i</span><span style="font-family:monospace">=</span><span style="font-style:italic">value</span><span style="font-family:monospace">)</span> returns the list <span style="font-style:italic">L</span>
-with the value at index <span style="font-style:italic">i</span> replaced by <span style="font-style:italic">value</span>.
-</li><li class="li-itemize">(In <span style="font-family:monospace">Maple</span> mode; the only difference is the order of
-the arguments).<br>
- <span style="font-family:monospace">subsop(</span><span style="font-style:italic">i</span><span style="font-family:monospace">=</span><span style="font-style:italic">value,</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the list <span style="font-style:italic">L</span>
-with the value at index <span style="font-style:italic">i</span> replaced by <span style="font-style:italic">value</span>. 
-</li></ul><p>
-<span style="font-weight:bold">Remark:</span> If the second argument is <span style="font-style:italic">i</span><span style="font-family:monospace">=NULL</span>, then
-the element at index <span style="font-style:italic">i</span> is removed from <span style="font-style:italic">L</span>.</p><p><br>
-</p><p>You can also redefine elements (or define new elements, but not remove
-elements) with <span style="font-family:monospace">:=</span>.</p><h4 id="sec995" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Xcas</span></span><span style="font-style:italic"> mode, the index of the first element is 0):</span>
-<div class="center">
-<span style="font-family:monospace">subsop([0,1,2],1=5)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[0,1,2];L[1]:=5</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,5,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<span style="font-family:monospace">prevperm</span> takes
+<span style="font-style:italic">p</span>, a permutation.
+</li><li class="li-itemize"><span style="font-family:monospace">prevperm(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns the previous permutation in lexicographic
+order, or <span style="font-family:monospace">undef</span> if there is no previous permutation.
+</li><li class="li-itemize"><span style="font-family:monospace">nextperm</span> takes
+<span style="font-style:italic">p</span>, a permutation.
+</li><li class="li-itemize"><span style="font-family:monospace">nextperm(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns the next permutation in lexicographic
+order, or <span style="font-family:monospace">undef</span> if there is no next permutation.
+</li></ul><h4 id="sec963" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">prevperm</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,3,1,2])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,2,3,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nextperm</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,2,3,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0,3,1,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Xcas</span></span><span style="font-style:italic"> mode, the index of the first element is 0):</span>
-<div class="center">
-<span style="font-family:monospace">subsop([0,1,2],’1=NULL’)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input (in </span><span style="font-style:italic"><span style="font-family:monospace">Mupad TI</span></span><span style="font-style:italic"> mode, the index of the first element is 1):</span>
-<div class="center">
-<span style="font-family:monospace">subsop([0,1,2],2=5)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,5,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize">When using <span style="font-family:monospace">:=</span> to insert an element in a list, the list will
-be padded with 0s if necessary.<br>
-<span style="font-family:monospace">Input:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[]</span>
-</div>
-<span style="font-style:italic">then:</span>
-<div class="center">
-<span style="font-family:monospace">L[3]:=5</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,0,0,5</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize">In <span style="font-family:monospace">Maple</span> mode the arguments are permuted and the index of
-the first element is 1.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">subsop(2=5,[0,1,2])</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">L:=[0,1,2];L[2]:=5</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,5,2 </td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en426.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en428.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en426.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en428.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

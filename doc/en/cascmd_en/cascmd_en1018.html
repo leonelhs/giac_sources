@@ -2,142 +2,43 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Tukey window function: tukey_window
-</title>
+<title>Normalizing audio</title>
 </head>
 <body >
-<a href="cascmd_en1017.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en1019.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en1017.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en1019.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec2541" class="subsection">15.2.26  Tukey window function: <span style="font-family:monospace">tukey_window</span>
-<a id="hevea_default1728"></a></h3>
-<p>The <span style="font-family:monospace">tukey_window</span> command finds a Tukey window of
-a sequence.
+<h3 id="ssec:normalize-audio" class="subsection">26.2.13  Normalizing audio</h3>
+<p>The <span style="font-family:monospace">normalize</span><a id="hevea_default1928"></a>
+command scales the amplitude of an audio clip.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">tukey_window</span> takes one mandatory argument
-and two optional arguments:
+<span style="font-family:monospace">normalize</span> takes two mandatory arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">v</span>, a real vector with length <span style="font-style:italic">n</span>.
-</li><li class="li-itemize">Optionally, α, a real number in [0,1]
-(by default 0.5).
-</li><li class="li-itemize">Optionally, an interval <span style="font-style:italic">n</span><sub>0</sub>..<span style="font-style:italic">n</span><sub>1</sub> (by default 0..(<span style="font-style:italic">n</span>−1)).
+<span style="font-style:italic">A</span>, an audio clip.
+</li><li class="li-itemize"><span style="font-style:italic">level</span>, a negative real number specifying the
+maximum audio level in decibels (setting a positive value
+would result in clipping, i.e. audio distortion).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">tukey_window(</span><span style="font-style:italic">v</span> ⟨,α,<span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>⟩<span style="font-family:monospace">)</span>
-returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>1</sub></sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span><sub>2</sub></sub>]
-and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span><sub>2</sub>−<span style="font-style:italic">n</span><sub>1</sub>+1 defined by 
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎨<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎪<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1+cos</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">π </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">β</td></tr>
-</table></td><td class="dcell">−1</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">,</td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">k</span>&lt;β,</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >  1,</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">β≤ <span style="font-style:italic">k</span>≤(<span style="font-style:italic">N</span>−1) </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">α</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">,</td></tr>
-</table></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1+cos</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">π </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">β</td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">α</td></tr>
-</table></td><td class="dcell">+1</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">,</td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >otherwise,
-</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table>
-where β=α (<span style="font-style:italic">N</span>−1)/2, for <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1.
-</li></ul><h4 id="sec2542" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L0:=randvector(1000,0..1):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L0);</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en416.png">
-</div><p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">L:=tukey_window(L0,0.4):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">scatterplot(L);</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en417.png">
-</div>
+</li><li class="li-itemize"><span style="font-family:monospace">normalize</span> returns the copy of <span style="font-style:italic">A</span> normalized to the desired <span style="font-style:italic">level</span>.
+</li></ul><h4 id="sec2479" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">soundsec</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">*440*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">*445*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">normalize</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">createwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">]),-6):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">about</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Bit depth: 16<br>
+ Channels: 2 (stereo)<br>
+ Sample rate: 44100<br>
+ Length: 132300 samples<br>
+ Duration: 3 seconds<br>
+ Level: -6.00048 dB
+</span></span></span></p>
 <hr>
-<a href="cascmd_en1017.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en1019.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en1017.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en1019.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

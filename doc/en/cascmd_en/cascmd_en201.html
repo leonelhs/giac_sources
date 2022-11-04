@@ -2,46 +2,56 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Evaluating a primitive at boundaries: preval
-</title>
+<title>Bernoulli numbers</title>
 </head>
 <body >
-<a href="cascmd_en200.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en202.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en200.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en202.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec419" class="subsection">5.12.23  Evaluating a primitive at boundaries: <span style="font-family:monospace">preval</span>
-<a id="hevea_default330"></a></h3>
-<p>The <span style="font-family:monospace">preval</span> command evaluates an expression from one value to
-another, such as in done when evaluating a definite integral using the
-Fundamental Theorem of Calculus.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">preval</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">F</span>, an expression depending on the variable <span style="font-family:monospace">x</span>.
-</li><li class="li-itemize"><span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, two expressions.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">preval(</span><span style="font-style:italic">F</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">F</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">b</span></sub>−<span style="font-style:italic">F</span><sub>|<span style="font-style:italic">x</span>=<span style="font-style:italic">a</span></sub>.
-</li></ul><p>
-<span style="font-family:monospace">preval</span> is used to compute a definite
-integral when the primitive <span style="font-style:italic">F</span> of the integrand <span style="font-style:italic">f</span> is known. Assume,
-for example, that <span style="font-family:monospace">F:=int(f,x)</span>, then <span style="font-family:monospace">preval(F,a,b)</span> is
-equivalent to <span style="font-family:monospace">int(f,x,a,b)</span>, but does not require you to recompute
-<span style="font-family:monospace">F</span> from <span style="font-family:monospace">f</span> if you change the values of <span style="font-style:italic">a</span> or <span style="font-style:italic">b</span>.</p><h4 id="sec420" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">preval(x^2+x,2,3)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">6
+<h3 id="sec413" class="subsection">6.2.9  Bernoulli numbers</h3>
+<p>The Bernoulli polynomial <span style="font-style:italic">B</span><sub><span style="font-style:italic">n</span></sub> is defined by: </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">B</span><sub>0</sub>=1,   
+<span style="font-style:italic">B</span><sub><span style="font-style:italic">n</span></sub>′(<span style="font-style:italic">x</span>)=<span style="font-style:italic">n</span> <span style="font-style:italic">B</span><sub><span style="font-style:italic">n</span>−1</sub>(<span style="font-style:italic">x</span>),    </td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">1</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
 </td></tr>
+<tr><td class="dcell" style="text-align:left">0</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">B</span><sub><span style="font-style:italic">n</span></sub>(<span style="font-style:italic">x</span>) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>=0 </td></tr>
+</table><p> The <span style="font-style:italic">n</span>th Bernoulli
+number is <span style="font-style:italic">B</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">B</span><sub><span style="font-style:italic">n</span></sub>(0), and is also given by the formula: </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">t</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">e</span><sup><span style="font-style:italic">t</span></sup>−1</td></tr>
+</table></td><td class="dcell">=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">B</span>(<span style="font-style:italic">n</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>!</td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">t</span><sup><span style="font-style:italic">n</span></sup>. </td></tr>
+</table><p>The <span style="font-family:monospace">bernoulli</span><a id="hevea_default332"></a> command
+computes the Bernoulli numbers.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">bernoulli</span> takes
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize"><span style="font-family:monospace">bernoulli(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the <span style="font-style:italic">n</span>th Bernoulli number, <span style="font-style:italic">B</span><sub><span style="font-style:italic">n</span></sub>.
+</li></ul><h4 id="sec414" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">bernoulli</span></span><span style="font-weight:bold"><span style="color:#BF0000">(6)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">42</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en200.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en202.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en200.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en202.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

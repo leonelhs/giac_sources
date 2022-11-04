@@ -2,45 +2,41 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Signature of a permutation: signature
-</title>
+<title>Converting box constraints from matrix to interval form</title>
 </head>
 <body >
-<a href="cascmd_en163.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en165.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en163.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en165.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec341" class="subsection">5.9.10  Signature of a permutation: <span style="font-family:monospace">signature</span>
-<a id="hevea_default279"></a></h3>
-<p>Every permutation can be decomposed into a product of transpositions
-(cycles with only two elements). The number of transpositions is not
-unique, but for any permutation the number will be either odd or even.
-The signature of a permutation is equal to:
+<h3 id="ssec:boxconstr" class="subsection">5.6.9  Converting box constraints from matrix to interval form</h3>
+<p>The <span style="font-family:monospace">box_constraints</span> command
+can convert bounds of given variables from the matrix form to interval form.
 </p><ul class="itemize"><li class="li-itemize">
-1 if the permutation is equal to an even product of transpositions,
-</li><li class="li-itemize">-1 if the permutation is equal to an odd product of transpositions.
-</li></ul><p>
-The signature of a cycle of size <span style="font-style:italic">k</span> is: (−1)<sup><span style="font-style:italic">k</span>+1</sup>.</p><p>The <span style="font-family:monospace">signature</span> command computes the signature of a
-permutation.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">signature</span> takes one argument:<br>
- <span style="font-style:italic">p</span>, a permutation.
-</li><li class="li-itemize"><span style="font-family:monospace">signature(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns the signature of the permutation <span style="font-style:italic">p</span>.
-</li></ul><h4 id="sec342" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">signature([3,4,5,2,0,1])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−1
-</td></tr>
+<span style="font-family:monospace">box_constraints</span><a id="hevea_default274"></a>
+takes two mandatory arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">vars</span>, a list of variables [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>].
+</li><li class="li-itemize"><span style="font-style:italic">bnds</span>, a matrix with <span style="font-style:italic">n</span> rows and two columns in which the <span style="font-style:italic">k</span>th row contains the lower and upper bound <span style="font-style:italic">l</span><sub><span style="font-style:italic">k</span></sub> and <span style="font-style:italic">u</span><sub><span style="font-style:italic">k</span></sub> of <span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>, respectively.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">box_constraints(</span><span style="font-style:italic">vars</span>,<span style="font-style:italic">bnds</span><span style="font-family:monospace">)</span> returns
+(<span style="font-style:italic">x</span><sub>1</sub><span style="font-family:monospace">=</span><span style="font-style:italic">l</span><sub>1</sub><span style="font-family:monospace">..</span><span style="font-style:italic">u</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub><span style="font-family:monospace">=</span><span style="font-style:italic">l</span><sub>2</sub><span style="font-family:monospace">..</span><span style="font-style:italic">u</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">=</span><span style="font-style:italic">l</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">..</span><span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>),
+i.e. the variables and their ranges contained in a single sequence.
+</li></ul><h4 id="sec327" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">box_constraints</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[[-2,2],[-5,5]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">=−2 .. 2,</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">=−5 .. 5
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en163.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en165.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en163.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en165.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

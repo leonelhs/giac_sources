@@ -2,73 +2,51 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hadamard product: hadamard product .*
-
-
-
-</title>
+<title>Scalar product</title>
 </head>
 <body >
-<a href="cascmd_en482.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en484.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en482.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en484.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:product2" class="subsection">5.45.8  Hadamard product: <span style="font-family:monospace">hadamard</span> <span style="font-family:monospace">product</span> <span style="font-family:monospace">.*</span>
-
-<a id="hevea_default826"></a>
-<a id="hevea_default827"></a>
-<a id="hevea_default828"></a></h3>
-<p>The <span style="font-family:monospace">hadamard</span> command can find the Hadamard product of two
-matrices; namely, the term-by-term product of the two matrices.<br>
-The <span style="font-family:monospace">product</span> command can do the same thing (see also
-Section <a href="cascmd_en448.html#ssec%3Aproductmul">5.40.28</a> for other uses of <span style="font-family:monospace">product</span>).
+<h3 id="sec1093" class="subsection">13.1.7  Scalar product</h3>
+<p>The <span style="font-family:monospace">dot</span><a id="hevea_default787"></a> command finds the dot product of two vectors.</p><p><span style="font-family:monospace">dotP</span><a id="hevea_default788"></a>, <span style="font-family:monospace">dotprod</span><a id="hevea_default789"></a>,
+<span style="font-family:monospace">scalar_product</span><a id="hevea_default790"></a>, and
+<span style="font-family:monospace">scalarProduct</span><a id="hevea_default791"></a> are synonyms for <span style="font-family:monospace">dot</span>.
+The infixed operator <span style="font-family:monospace">*</span><a id="hevea_default792"></a> and its prefixed form
+<span style="font-family:monospace">’*’</span><a id="hevea_default793"></a> will also find dot products.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">hadamard</span> takes two arguments:<br>
- <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span>, two matrices of the same size.
-</li><li class="li-itemize"><span style="font-family:monospace">hadamard(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span><span style="font-family:monospace">)</span> returns the matrix where each element
-is the product of the corresponding elements of <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span>.
-</li></ul><p>
-The infixed operator <span style="font-family:monospace">.*</span> also finds the Hadamard product, and
-also works on lists.
-</p><h4 id="sec1186" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">hadamard([[1, 2],[3,4]],[[5, 6],[7, 8]])</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">hadamard([[1, 2],[3,4]],[[5, 6],[7, 8]])</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">[[1, 2],[3,4]] .* [[5, 6],[7, 8]]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >5</td><td style="text-align:center;white-space:nowrap" >12</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >21</td><td style="text-align:center;white-space:nowrap" >32</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
+<span style="font-family:monospace">dot</span> takes two arguments:
+<span style="font-style:italic">V</span><sub>1</sub> and <span style="font-style:italic">V</span><sub>2</sub>, two lists (vectors) of the same size.
+</li><li class="li-itemize"><span style="font-family:monospace">dot(</span><span style="font-style:italic">V</span><sub>1</sub>,<span style="font-style:italic">V</span><sub>2</sub><span style="font-family:monospace">)</span> returns the dot product of <span style="font-style:italic">V</span><sub>1</sub>
+and <span style="font-style:italic">V</span><sub>2</sub>.
+</li></ul><h4 id="sec1094" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">dot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3],[4,3,5])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">scalar_product</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3],[4,3,5])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3]*[4,3,5]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'*'([1,2,3],[4,3,5])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+25
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">[1,2,3,4] .* [5,6,7,8]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">5,12,21,32</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul>
+</table><p>
+Indeed, 25=1· 4+2· 3+3·5.</p><p>Note that <span style="font-family:monospace">*</span> may be used to find the product of two
+polynomials represented as list of their coefficients, but to avoid
+ambiguity, the polynomial lists must be <span style="font-family:monospace">poly1[</span>…<span style="font-family:monospace">]</span>.</p>
 <hr>
-<a href="cascmd_en482.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en484.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en482.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en484.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

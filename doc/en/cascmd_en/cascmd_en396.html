@@ -2,69 +2,48 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The inverse of a series: revert
-</title>
+<title>Expanding and reducing</title>
 </head>
 <body >
-<a href="cascmd_en395.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en397.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en395.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en397.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec915" class="subsection">5.36.3  The inverse of a series: <span style="font-family:monospace">revert</span>
-<a id="hevea_default662"></a></h3>
-<p>The <span style="font-family:monospace">revert</span> command finds the beginning of the power series of
-a function given the beginning of the series of the function.
+<h3 id="sec893" class="subsection">10.9.1  Expanding and reducing</h3>
+<p>The <span style="font-family:monospace">normal</span><a id="hevea_default666"></a> command expands and
+reduces expressions in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].
+(See also Section <a href="cascmd_en278.html#ssec%3Anormal">9.1.2</a>.)
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">revert</span> takes one mandatory and one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">series</span>, the beginning of a power series centered at
-0 for a function <span style="font-style:italic">f</span>.
-</li><li class="li-itemize">Optionally <span style="font-style:italic">x</span>, the name of the variable (by default <span style="font-style:italic">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">revert(</span><span style="font-style:italic">series</span> ⟨,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span>
-returns the beginning of the power series for the
-inverse of <span style="font-style:italic">f</span>; namely the beginning of the power series for
-<span style="font-style:italic">g</span>(<span style="font-style:italic">f</span>(0)+<span style="font-style:italic">x</span>) where the function <span style="font-style:italic">g</span> satisfies <span style="font-style:italic">g</span>(<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>))=<span style="font-style:italic">x</span>.
-</li></ul><h4 id="sec916" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">revert (x + x^2 + x^4)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sup>2</sup>+2 <span style="font-style:italic">x</span><sup>3</sup>−6 <span style="font-style:italic">x</span><sup>4</sup>
-</td></tr>
-</table>
-Note that if the power series of a function <span style="font-style:italic">f</span> begins with
-<span style="font-style:italic">x</span> + <span style="font-style:italic">x</span><sup>2</sup> + <span style="font-style:italic">x</span><sup>4</sup>, then <span style="font-style:italic">f</span>(0)=0, <span style="font-style:italic">f</span>′(0)=1, <span style="font-style:italic">f</span>″(0)=2, <span style="font-style:italic">f</span>‴(0)=0 and
-<span style="font-style:italic">f</span><sup>(4)</sup>(0) = 24. The function <span style="font-style:italic">g</span> with <span style="font-style:italic">g</span>(<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>))=<span style="font-style:italic">x</span> will then satisfy
-<span style="font-style:italic">g</span>(0)=0, <span style="font-style:italic">g</span>′(0)=1/<span style="font-style:italic">f</span>′(0) = 1, <span style="font-style:italic">g</span>″(0) = −2, <span style="font-style:italic">g</span>‴(0) = 12 and
-<span style="font-style:italic">g</span><sup>(4)</sup>(0) = −144. The power series for <span style="font-style:italic">g</span> will then begin
-<span style="font-style:italic">x</span> − <span style="font-style:italic">x</span><sup>2</sup> + 2<span style="font-style:italic">x</span><sup>3</sup> − 6<span style="font-style:italic">x</span><sup>4</sup>.</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">revert(1 + x + x^2/2 + x^3/6 + x^4/24)</span>
-</div>
-Note that the argument is the beginning of the power series for
-exp(<span style="font-style:italic">x</span>), so the output is the beginning of the power series for
-ln(1+<span style="font-style:italic">x</span>).
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>3</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">3</td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>4</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">4</td></tr>
+<span style="font-family:monospace">normal</span> takes
+<span style="font-style:italic">expr</span>, a modular expression.
+</li><li class="li-itemize"><span style="font-family:monospace">normal(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the expanded
+irreducible representation of <span style="font-style:italic">expr</span>.
+</li></ul><h4 id="sec894" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">(((2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+12)*(5*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-4))%13)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">−3</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">%13</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">5%13</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">−5</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">%13</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+4%13
+</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-</li></ul>
 <hr>
-<a href="cascmd_en395.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en397.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en395.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en397.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

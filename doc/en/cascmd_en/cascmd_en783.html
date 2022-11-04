@@ -2,25 +2,95 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Graphic features</title>
+<title>Starting the debugger</title>
 </head>
 <body >
-<a href="cascmd_en782.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en784.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en782.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en784.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec2009" class="subsection">13.3.1  Graphic features</h3>
-<p>Graphic objects and graphic screens can have features, such as labels
-and colors, that are only included when requested, and other features,
-such as line width, which are configurable. Some features will be
-global, meaning that they will apply to the entire graphic screen, and
-some will be local, meaning that they will only apply to individual
-objects.</p>
+<h3 id="sec1989" class="subsection">23.6.1  Starting the debugger</h3>
+<p>The <span style="font-family:monospace">debug</span><a id="hevea_default1597"></a>
+command starts the <span style="font-variant:small-caps">Xcas</span> debugger<a id="hevea_default1598"></a>.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">debug</span> takes
+<span style="font-style:italic">fn(arg)</span>, a function and its argument.
+</li><li class="li-itemize"><span style="font-family:monospace">debug(</span><span style="font-style:italic">fn(arg)</span><span style="font-family:monospace">)</span>
+brings up a debug window which contains a pane with the program with
+the current line highlighted, an <span style="font-family:monospace">eval</span> entry box,
+a pane with the program including the breakpoints, a row of buttons,
+and a pane keeping track of the values of variables.
+</li></ul><p>
+By default, the
+value of all variables in the program are in this pane. The buttons
+are shortcuts for entering commands in the <span style="font-family:monospace">eval</span> box, but you
+can enter other commands in the <span style="font-family:monospace">eval</span> box to change the values
+of variables or to run a command in the context of the program.</p><h4 id="sec1990" class="subsubsection">Example</h4>
+<p>
+With the <span style="font-family:monospace">sumprod</span> program:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> sumprod(a,b):={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> s,p;
+   s:=a+b;
+   p:=a*b;
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> [s,p];
+ }</td></tr>
+</table><p>input:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">debug</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sumprod</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3))</span></span></td></tr>
+</table><p>which opens the debug window shown in Figure <a href="#fig%3Adebugwindow">23.2</a>.
+</p><blockquote class="figure"><div class="center"><div class="center"><hr style="width:80%;height:2"></div><img src="cascmd_en163.png">
+
+<div class="caption"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="vertical-align:top;text-align:left;" >Figure 23.2: <a id="fig:debugwindow"></a>The debug window in <span style="font-variant:small-caps">Xcas</span></td></tr>
+</table></div>
+<div class="center"><hr style="width:80%;height:2"></div></div></blockquote><p>
+It has the following buttons:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">sst</span></span></span> runs the
+<span style="font-family:monospace">sst</span><a id="hevea_default1599"></a>
+command, which takes no arguments and runs the
+highlighted line in the program before moving to the next line.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">in</span></span></span> runs the
+<span style="font-family:monospace">sst_in</span><a id="hevea_default1600"></a>
+command, which takes no argument and runs one step in
+the program or a user defined function used in the program.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">cont</span></span></span> runs the
+<span style="font-family:monospace">cont</span><a id="hevea_default1601"></a> command,
+which takes no arguments and runs the commands
+from the highlighted line to a breakpoint.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">kill</span></span></span> runs the
+<span style="font-family:monospace">kill</span><a id="hevea_default1602"></a> command,
+which exits the debugger.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">break</span></span></span> puts the command
+<span style="font-family:monospace">breakpoint</span><a id="hevea_default1603"></a>
+in the <span style="font-family:monospace">eval</span> box, with default arguments
+of the current program and the current line. It sets a breakpoint at
+the given line of the given program. Alternatively, if you click on a
+line in the program in the top pane, you will get the
+<span style="font-family:monospace">breakpoint</span> command with that program and the line you clicked
+on.<p>You can set a breakpoint when you write a program with the
+<span style="font-family:monospace">halt</span><a id="hevea_default1604"></a> command.
+A <span style="font-family:monospace">halt()</span> line in the program will bring up the debugger
+during runtime. If you want to
+debug the program, though, it is still better to use the debug
+command. Also, you should remove any <span style="font-family:monospace">halt</span> commands when you
+are done debugging.</p></li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">rmbrk</span></span></span> puts the command
+<span style="font-family:monospace">rmbreakpoint</span><a id="hevea_default1605"></a>
+in the <span style="font-family:monospace">eval</span> box, with default
+arguments of the current program and the current line. It removes a
+breakpoint at the given line of the given program. Alternatively, you
+can click on the line in the program in the top pane with the bookmark
+you want to remove.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">watch</span></span></span> puts the command
+<span style="font-family:monospace">watch</span><a id="hevea_default1606"></a>
+in the <span style="font-family:monospace">eval</span> box, without the arguments filled
+in. It takes a list of variables as arguments, and will keep track of
+the values of these variables in the variable pane.</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">rmwtch</span></span></span> puts the
+command <span style="font-family:monospace">rmwatch</span><a id="hevea_default1607"></a>
+in the <span style="font-family:monospace">eval</span> box
+without the arguments filled in. The arguments are the variables you
+want to remove from the watch list.
+</li></ul>
 <hr>
-<a href="cascmd_en782.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en784.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en782.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en784.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

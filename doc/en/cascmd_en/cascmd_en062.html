@@ -2,120 +2,103 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Unassigning variables: VARS purge DelVar del restart rm_a_z rm_all_vars
-
-
-
-
-
-
-
+<title>Assigning values to variables
 </title>
 </head>
 <body >
-<a href="cascmd_en061.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en063.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en061.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en063.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:VARS" class="subsection">4.4.9  Unassigning variables: <span style="font-family:monospace">VARS</span> <span style="font-family:monospace">purge</span> <span style="font-family:monospace">DelVar</span> <span style="font-family:monospace">del</span> <span style="font-family:monospace">restart</span> <span style="font-family:monospace">rm_a_z</span> <span style="font-family:monospace">rm_all_vars</span>
-<a id="hevea_default90"></a>
-<a id="hevea_default91"></a>
-<a id="hevea_default92"></a>
-<a id="hevea_default93"></a>
-<a id="hevea_default94"></a>
-<a id="hevea_default95"></a>
-<a id="hevea_default96"></a>
+<h3 id="ssec:assign" class="subsection">3.3.2  Assigning values to variables
 </h3>
-<p><span style="font-family:monospace">Xcas</span> has commands that help you keep track of what variables
-you are using and resetting them if desired. The <span style="font-family:monospace">VARS</span>
-command will list all the variables that you are using, the
-<span style="font-family:monospace">purge</span>, <span style="font-family:monospace">DelVar</span> and <span style="font-family:monospace">del</span> commands will delete
-selected variables, and the <span style="font-family:monospace">rm_a_z</span> and
-<span style="font-family:monospace">rm_all_vars</span> commands will remove classes of variables.</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">VARS</span> takes no arguments.
-</li><li class="li-itemize"><span style="font-family:monospace">VARS()</span> returns a list of the variables that you have assigned
-values or made assumptions on.
-</li></ul><h4 id="sec100" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">a:= 1</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">anothervar:= 2</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">then:</span>
-</p><div class="center">
-<span style="font-family:monospace">VARS()</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">a</span>,<span style="font-style:italic">anothervar</span></td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p><br>
-</p><p>The <span style="font-family:monospace">purge</span> command will clear the values and assumptions you
-make on variables (see Section <a href="cascmd_en061.html#ssec%3Aabout">4.4.8</a>). For <span style="font-family:monospace">TI</span>
-compatibility there is also <span style="font-family:monospace">DelVar</span>, and for Python
-compatibility there is <span style="font-family:monospace">del</span>.
-</p><ul class="itemize"><li class="li-itemize">
-The <span style="font-family:monospace">purge</span> command takes one argument:<br>
-<span style="font-style:italic">var</span>, the name of a variable.
-</li><li class="li-itemize"><span style="font-family:monospace">purge(</span><span style="font-style:italic">var</span><span style="font-family:monospace">)</span> clears the variable <span style="font-style:italic">var</span>
-of all values and assumptions.
-</li></ul><ul class="itemize"><li class="li-itemize">
-The <span style="font-family:monospace">DelVar</span> (and <span style="font-family:monospace">del</span>) commands take one argument:<br>
-<span style="font-style:italic">var</span>, the name of a variable.
-</li><li class="li-itemize"><span style="font-family:monospace">Delvar</span> <span style="font-style:italic">var</span> (or <span style="font-family:monospace">del</span> <span style="font-style:italic">var</span>)
-removes the values attached to <span style="font-style:italic">var</span>. (Note that
-they do not take their argument in parentheses.
-</li></ul><h4 id="sec101" class="subsubsection">Example</h4>
-<p>
-To clear the variable <span style="font-family:monospace">a</span>:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">purge(a)</span>
-</div><p>
-<span style="font-style:italic">or (for </span><span style="font-style:italic"><span style="font-family:monospace">TI</span></span><span style="font-style:italic"> compatibility):</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">DelVar a</span>
-</div><p>
-<span style="font-style:italic">or (for Python compatibility):</span><br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">del a</span>
-</div><p><br>
-</p><p>The <span style="font-family:monospace">rm_all_vars</span> and <span style="font-family:monospace">restart</span> commands clear the
-values and assumptions you have made on all variables you can use.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rm_all_vars</span> takes no arguments.
-</li><li class="li-itemize"><span style="font-family:monospace">rm_all_vars()</span> removes all the values that you have
-attached to variables.
-</li></ul><p><br>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">restart</span> takes no arguments.
-</li><li class="li-itemize"><span style="font-family:monospace">restart</span> removes all the values that you have
-attached to variables. (Note that it does not use parentheses.)
-</li></ul><p><br>
-</p><p>The <span style="font-family:monospace">rm_a_z</span> command clears the values and assumptions on all
-variables with single lowercase letter names.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rm_a_z</span> takes no arguments.
-</li><li class="li-itemize"><span style="font-family:monospace">rm_a_z()</span> purges all variables whose names are one letter
-and lowercase.
-</li></ul><h4 id="sec102" class="subsubsection">Example</h4>
-<p>
-If you have variables names <span style="font-family:monospace">A,B,a,b,myvar</span>, then after:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">rm_a_z()</span>
-</div><p>
-you will only have the variables named <span style="font-family:monospace">A,B,myvar</span>.</p>
+<p>You can assign a value to a variable with the
+<span style="font-family:monospace">:=</span><a id="hevea_default72"></a> operator.
+For example, to give the variable <span style="font-family:monospace">a</span> the value of <span style="font-family:monospace">4</span>,
+enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=4</span></span></td></tr>
+</table><p>Alternatively, use the
+<span style="font-family:monospace">=&gt;</span><a id="hevea_default73"></a> operator; when
+you use this operator, the value comes before the variable:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">4=&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span></td></tr>
+</table><p>The function <span style="font-family:monospace">sto</span><a id="hevea_default74"></a>
+(or <span style="font-family:monospace">Store</span><a id="hevea_default75"></a>)
+can also be used; again, the value comes before the variable
+(the value is stored into the variable):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sto</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>After any one of these commands, whenever you use the variable
+<span style="font-family:monospace">a</span> in an expression, it will be replaced by <span style="font-family:monospace">4</span>.</p><p>use sequences or lists to make multiple assignments at the
+same time. For example,
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=(1,2,3)</span></span></td></tr>
+</table><p>will assign <span style="font-family:monospace">a</span> the value <span style="font-family:monospace">1</span>, <span style="font-family:monospace">b</span> the value
+<span style="font-family:monospace">2</span> and <span style="font-family:monospace">c</span> the value <span style="font-family:monospace">3</span>. Note that this can
+be used to swap the values of two variables; with <span style="font-family:monospace">a</span> and
+<span style="font-family:monospace">b</span> as above, the command
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=(</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>will set <span style="font-family:monospace">a</span> equal to <span style="font-family:monospace">b</span>’s original value, namely
+<span style="font-family:monospace">2</span>, and will set <span style="font-family:monospace">b</span> equal to <span style="font-family:monospace">a</span>’s original
+value, namely <span style="font-family:monospace">1</span>.</p><p>Another way to assign values to variables, useful in <span style="font-variant:small-caps">Maple</span> mode, is
+with the <span style="font-family:monospace">assign</span><a id="hevea_default76"></a> command. If you enter
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">assign</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,3)</span></span></td></tr>
+</table><p>or<a id="hevea_default77"></a>
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">assign</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=3)</span></span></td></tr>
+</table><p>then <span style="font-family:monospace">a</span> will have the value <span style="font-family:monospace">3</span>. You can assign
+multiple values at once; if you enter
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">assign</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2])</span></span></td></tr>
+</table><p>then <span style="font-family:monospace">a</span> will have the value <span style="font-family:monospace">1</span> and <span style="font-family:monospace">b</span> will
+have the value <span style="font-family:monospace">2</span>. This command can be useful in <span style="font-variant:small-caps">Maple</span> mode,
+where solutions of equations are returned as equations. For example,
+if you enter (in <span style="font-variant:small-caps">Maple</span> mode):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sol</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">solve</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><p>(see Section <a href="cascmd_en269.html#ssec%3Asolve">8.2.6</a>), you will get
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">=−1,</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">=2]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+If you then enter
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">assign</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sol</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>the variable <span style="font-family:monospace">x</span> will have value <span style="font-family:monospace">-1</span> and <span style="font-family:monospace">y</span>
+will have the value <span style="font-family:monospace">2</span>. This same effect can be achieved in
+standard <span style="font-variant:small-caps">Xcas</span> mode, where
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sol</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">solve</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><p>will return
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−1,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+In this case, the command
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">]:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sol</span></span><span style="font-weight:bold"><span style="color:#BF0000">[0]</span></span></td></tr>
+</table><p>will assign <span style="font-family:monospace">x</span> the value <span style="font-family:monospace">-1</span> and <span style="font-family:monospace">y</span> the value
+<span style="font-family:monospace">2</span>.</p>
 <hr>
-<a href="cascmd_en061.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en063.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en061.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en063.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

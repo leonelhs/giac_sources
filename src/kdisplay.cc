@@ -32,8 +32,10 @@
 #ifndef is_cx2
 #define is_cx2 false
 #endif
-
-
+int osok=1;
+// pour le mode examen cx2, il y a 2 endroits ou is_cx2 est utilise dans smallmenu.selection==1
+// soit par extinction des leds (marche avec OS 5.2)
+// soit comme sur la CX si l'ecriture en flash NAND marche un jour
 
 #ifdef KHICAS
 
@@ -7114,6 +7116,7 @@ namespace xcas {
   }
 
   Graph2d::Graph2d(const giac::gen & g_,const giac::context * cptr):window_xmin(gnuplot_xmin),window_xmax(gnuplot_xmax),window_ymin(gnuplot_ymin),window_ymax(gnuplot_ymax),window_zmin(gnuplot_zmin),window_zmax(gnuplot_zmax),g(g_),display_mode(0x45),show_axes(1),show_edges(1),show_names(1),labelsize(16),precision(1),contextptr(cptr),hp(0),npixels(5),couleur(0),nparams(0) {
+    tracemode=0; tracemode_n=0; tracemode_i=0;
     current_i=LCD_WIDTH_PX/3;
     current_j=LCD_HEIGHT_PX/3;
     push_depth=current_depth=0;
@@ -7266,7 +7269,7 @@ namespace xcas {
 	double window_xcenter=(window_xmin+window_xmax)/2;
 	double window_wsize=w/h*window_h;
 	window_xmin=window_xcenter-window_wsize/2;
-      window_xmax=window_xcenter+window_wsize/2;
+	window_xmax=window_xcenter+window_wsize/2;
       }
       if (window_h < window_hsize*0.99) { // enlarge vertically
 	double window_ycenter=(window_ymin+window_ymax)/2;
@@ -8418,7 +8421,7 @@ namespace xcas {
 	      find_xy(i,j,x,y);
 	      // round to maximum pixel range
 	      round_xy(x,y);
-	      sprintf(s+pos," %.3g,%.3g",x,y);
+	      sprintf(s+pos," x=%.3g,y=%.3g",x,y);
 	    }
 	    pos=strlen(s);
 	  }
@@ -8434,7 +8437,16 @@ namespace xcas {
 	}
       }
       s[pos]=0;
-      os_draw_string_small_(LCD_WIDTH_PX-fl_width(s),LCD_HEIGHT_PX-14,s);
+      if (tracemode){
+	if (tracemode_add.size())
+	  os_draw_string_small_(0,0,tracemode_add.c_str());
+	else
+	  os_draw_string_small_(LCD_WIDTH_PX-fl_width(s),0,s);	  
+	if (!tracemode_disp.empty())
+	  fltk_draw(*this,tracemode_disp,x_scale,y_scale,0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,contextptr);
+      }
+      else
+	os_draw_string_small_(LCD_WIDTH_PX-fl_width(s),LCD_HEIGHT_PX-14,s);
     }
     if (mode && title.size()<100 && (!title.empty() || !is_zero(title_tmp))){
       std::string mytitle;
@@ -8453,8 +8465,8 @@ namespace xcas {
 	os_draw_string_small_((LCD_WIDTH_PX-dt)/2,LCD_HEIGHT_PX-14,mytitle.c_str());
       }
     }
-    if (hp){ // draw cursor at current_i,current_j
-      int taille=mode==255?2:5;
+    if (hp || tracemode){ // draw cursor at current_i,current_j
+      int taille=(mode==255 && !tracemode) ?2:5;
       fl_line(current_i-taille,current_j,current_i+taille,current_j,is3d?_CYAN:_BLUE);
       fl_line(current_i,current_j-taille,current_i,current_j+taille,is3d?_CYAN:_BLUE);
       if (cursor_point_type==6){
@@ -8846,12 +8858,12 @@ namespace xcas {
 	}
       }      
 #ifdef NSPIRE_NEWLIB
-      DefineStatusMessage((char*)"+-: zoom, pad: move, esc: quit", 1, 0, 0);
+      DefineStatusMessage((char*)"shift-1: help, menu: menu, esc: quit", 1, 0, 0);
 #else
-      DefineStatusMessage((char*)"+-: zoom, pad: move, EXIT: quit", 1, 0, 0);
+      DefineStatusMessage((char*)"shift-1: help, home: menu, back: quit", 1, 0, 0);
 #endif
       DisplayStatusArea();
-      if (hp)
+      if (hp || tracemode)
 	draw_decorations(title_tmp);
       return;
     }
@@ -8949,7 +8961,7 @@ namespace xcas {
     // draw
     fltk_draw(*this,g,x_scale,y_scale,clip_x,clip_y,clip_w,clip_h,contextptr);
     clip_ymin=save_clip_ymin;
-    if (hp)
+    if (hp || tracemode)
       draw_decorations(title_tmp);
   }
   
@@ -9237,6 +9249,9 @@ namespace xcas {
     xcas::Graph2d gr(ge,contextptr);
     if (gs!=0) gr.symbolic_instructions=gen2vecteur(gs);
     gr.show_axes=global_show_axes;
+    gr.init_tracemode();
+    if (gr.tracemode & 4)
+      gr.orthonormalize(true);
     // initial setting for x and y
     if (ge.type==_VECT){
       const_iterateur it=ge._VECTptr->begin(),itend=ge._VECTptr->end();
@@ -9534,6 +9549,348 @@ namespace xcas {
     if (hp){
       set_gen_value(hp_pos,g,true);
     }
+  }
+
+void Graph2d::tracemode_set(int operation){
+    if (plot_instructions.empty())
+      plot_instructions=gen2vecteur(g);
+    if (is_zero(plot_instructions.back())) // workaround for 0 at end in geometry (?)
+      plot_instructions.pop_back();
+    gen sol(undef);
+    if (operation==1 || operation==8){
+      double d=tracemode_mark;
+      if (!inputdouble(lang==1?"Valeur du parametre?":"Parameter value",d,contextptr))
+	return;
+      if (operation==8)
+	tracemode_mark=d;
+      sol=d;
+    }
+    // handle curves with more than one connected component
+    vecteur tracemode_v;
+    for (int i=0;i<plot_instructions.size();++i){
+      gen g=plot_instructions[i];
+      if (g.type==_VECT && !g._VECTptr->empty() && g._VECTptr->front().is_symb_of_sommet(at_curve)){
+	vecteur & v=*g._VECTptr;
+	for (int j=0;j<v.size();++j)
+	  tracemode_v.push_back(v[j]);
+      }
+      else
+	tracemode_v.push_back(g);
+    }
+    gen G;
+    if (tracemode_n<0)
+      tracemode_n=tracemode_v.size()-1;
+    bool retry=tracemode_n>0;
+    for (;tracemode_n<tracemode_v.size();++tracemode_n){
+      G=tracemode_v[tracemode_n];
+      if (G.is_symb_of_sommet(at_pnt))
+	break;
+    }
+    if (tracemode_n>=tracemode_v.size()){
+      // retry
+      if (retry){
+	for (tracemode_n=0;tracemode_n<tracemode_v.size();++tracemode_n){
+	  G=tracemode_v[tracemode_n];
+	  if (G.is_symb_of_sommet(at_pnt))
+	    break;
+	}
+      }
+      if (tracemode_n>=tracemode_v.size()){
+	tracemode=false;
+	return;
+      }
+    }
+    int p=python_compat(contextptr);
+    python_compat(0,contextptr);
+    gen G_orig(G);
+    G=remove_at_pnt(G);
+    tracemode_disp.clear();
+    string curve_infos1,curve_infos2;
+    gen parameq,x,y,t,tmin,tmax,tstep;
+    // extract position at tracemode_i
+    if (G.is_symb_of_sommet(at_curve)){
+      gen c=G._SYMBptr->feuille[0];
+      parameq=c[0];
+      // simple expand for i*ln(x)
+      bool b=do_lnabs(contextptr);
+      do_lnabs(false,contextptr);
+      reim(parameq,x,y,contextptr);
+      do_lnabs(b,contextptr);
+      t=c[1];
+      gen x1=derive(x,t,contextptr);
+      gen x2=derive(x1,t,contextptr);
+      gen y1=derive(y,t,contextptr);
+      gen y2=derive(y1,t,contextptr);
+      sto(x,gen("x0",contextptr),contextptr);
+      sto(x1,gen("x1",contextptr),contextptr);
+      sto(x2,gen("x2",contextptr),contextptr);
+      sto(y,gen("y0",contextptr),contextptr);
+      sto(y1,gen("y1",contextptr),contextptr);
+      sto(y2,gen("y2",contextptr),contextptr);
+      tmin=c[2];
+      tmax=c[3];
+      tmin=evalf_double(tmin,1,contextptr);
+      tmax=evalf_double(tmax,1,contextptr);
+      if (tmin._DOUBLE_val>tracemode_mark)
+	tracemode_mark=tmin._DOUBLE_val;
+      if (tmax._DOUBLE_val<tracemode_mark)
+	tracemode_mark=tmax._DOUBLE_val;
+      G=G._SYMBptr->feuille[1];
+      if (G.type==_VECT){
+	vecteur &Gv=*G._VECTptr;
+	tstep=(tmax-tmin)/(Gv.size()-1);
+      }
+      double eps=1e-6; // epsilon(contextptr)
+      double curt=(tmin+tracemode_i*tstep)._DOUBLE_val;
+      if (abs(curt-tracemode_mark)<tstep._DOUBLE_val)
+	curt=tracemode_mark;
+      if (operation==-1){
+	gen A,B,C,R; // detect ellipse/hyperbola
+	if (
+	    ( x!=t && c.type==_VECT && c._VECTptr->size()>7 && centre_rayon(G_orig,C,R,false,contextptr,true) ) ||
+	    is_quadratic_wrt(parameq,t,A,B,C,contextptr)
+	    ){
+	  if (C.type!=_VECT){ // x+i*y=A*t^2+B*t+C
+	    curve_infos1="Parabola";
+	    curve_infos2=_equation(G_orig,contextptr).print(contextptr);
+	  }
+	  else {
+	    vecteur V(*C._VECTptr);
+	    curve_infos1=V[0].print(contextptr);
+	    curve_infos1=curve_infos1.substr(1,curve_infos1.size()-2);
+	    curve_infos1+=" O=";
+	    curve_infos1+=V[1].print(contextptr);
+	    curve_infos1+=", F=";
+	    curve_infos1+=V[2].print(contextptr);
+	    // curve_infos1=change_subtype(C,_SEQ__VECT).print(contextptr);
+	    curve_infos2=change_subtype(R,_SEQ__VECT).print(contextptr);
+	  }
+	}
+	else {
+	  if (x==t) curve_infos1="Function "+y.print(contextptr); else curve_infos1="Parametric "+x.print(contextptr)+","+y.print(contextptr);
+	  curve_infos2 = t.print(contextptr)+"="+tmin.print(contextptr)+".."+tmax.print(contextptr)+',';
+	  curve_infos2 += (x==t?"xstep=":"tstep=")+tstep.print(contextptr);
+	}
+      }
+      if (operation==1)
+	curt=sol._DOUBLE_val;
+      if (operation==7)
+	sol=tracemode_mark=curt;
+      if (operation==2){ // root near curt
+	sol=newton(y,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	if (sol.type==_DOUBLE_){
+	  confirm(lang==1?"Racine en":"Root at",sol.print(contextptr).c_str());
+	  sto(sol,gen("Zero",contextptr),contextptr);
+	}
+      }
+      if (operation==4){ // horizontal tangent near curt
+	sol=newton(y1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	if (sol.type==_DOUBLE_){
+	  confirm(lang==1?"y'=0, extremum/pt singulier en":"y'=0, extremum/singular pt at",sol.print(contextptr).c_str());
+	  sto(sol,gen("Extremum",contextptr),contextptr);
+	}
+      }
+      if (operation==5){ // vertical tangent near curt
+	if (x1==1)
+	  do_confirm(lang==1?"Outil pour courbes parametriques!":"Tool for parametric curves!");
+	else {
+	  sol=newton(x1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	  if (sol.type==_DOUBLE_){
+	    confirm("x'=0, vertical or singular",sol.print(contextptr).c_str());
+	    sto(sol,gen("Vertical",contextptr),contextptr);
+	  }
+	}
+      }
+      if (operation==6){ // inflexion
+	sol=newton(x1*y2-x2*y1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	if (sol.type==_DOUBLE_){
+	  confirm("x'*y''-x''*y'=0",sol.print(contextptr).c_str());
+	  sto(sol,gen("Inflexion",contextptr),contextptr);
+	}
+      }
+      gen M(put_attributs(_point(subst(parameq,t,tracemode_mark,false,contextptr),contextptr),vecteur(1,_POINT_WIDTH_4 | _BLUE),contextptr));
+      tracemode_disp.push_back(M);      
+      gen f;
+      if (operation==9)
+	f=y*derive(x,t,contextptr);
+      if (operation==10){
+	f=sqrt(pow(x1,2,contextptr)+pow(y1,2,contextptr),contextptr);
+      }
+      if (operation==9 || operation==10){
+	double a=tracemode_mark,b=curt;
+	if (a>b)
+	  swapdouble(a,b);
+	gen res=symbolic( (operation==9 && x==t?at_plotarea:at_integrate),
+			  makesequence(f,symb_equal(t,symb_interval(a,b))));
+	if (operation==9)
+	  tracemode_disp.push_back(giac::eval(res,1,contextptr));
+	string ss=res.print(contextptr);
+	if (!tegral(f,t,a,b,1e-6,1<<10,res,false,contextptr))
+	  confirm("Numerical Integration Error",ss.c_str());
+	else {
+	  confirm(ss.c_str(),res.print(contextptr).c_str());
+	  sto(res,gen((operation==9?"Area":"Arclength"),contextptr),contextptr);	  
+	}
+      }
+      if (operation>=1 && operation<=8 && sol.type==_DOUBLE_ && !is_zero(tstep)){
+	tracemode_i=(sol._DOUBLE_val-tmin._DOUBLE_val)/tstep._DOUBLE_val;
+	G=subst(parameq,t,sol._DOUBLE_val,false,contextptr);
+      }
+    }
+    if (G.is_symb_of_sommet(at_cercle)){
+      if (operation==-1){
+	gen c,r;
+	centre_rayon(G,c,r,true,contextptr);
+	curve_infos1="Circle radius "+r.print(contextptr);
+	curve_infos2="Center "+_coordonnees(c,contextptr).print(contextptr);
+      }
+      G=G._SYMBptr->feuille[0];
+    }
+    if (G.type==_VECT){
+      vecteur & v=*G._VECTptr;
+      if (operation==-1 && curve_infos1.size()==0){
+	if (v.size()==2)
+	  curve_infos1=_equation(G_orig,contextptr).print(contextptr);
+	else if (v.size()==4)
+	  curve_infos1="Triangle";
+	else curve_infos1="Polygon";
+	curve_infos2=G.print(contextptr);
+      }
+      int i=std::floor(tracemode_i);
+      double id=tracemode_i-i;
+      if (i>=int(v.size()-1)){
+	tracemode_i=i=v.size()-1;
+	id=0;
+      }
+      if (i<0){
+	tracemode_i=i=0;
+	id=0;
+      }
+      G=v[i];
+      if (!is_zero(tstep) && id>0)
+	G=v[i]+id*tstep*(v[i+1]-v[i]);
+    }
+    G=evalf(G,1,contextptr);
+    if (operation==3){ // intersect this curve with all other curves
+      vecteur V;
+      for (int j=0;j<tracemode_v.size();++j){
+	if (j==tracemode_n)
+	  continue;
+	gen H=tracemode_v[j];
+	gen I=_inter(makesequence(G_orig,H),contextptr);
+	if (I.type==_VECT)
+	  V=mergevecteur(V,*I._VECTptr);
+      }
+      sto(V,gen("Intersect",contextptr),contextptr);
+      tracemode_disp.clear();
+      tracemode_disp.push_back(put_attributs(V,vecteur(1,_POINT_WIDTH_6 | _RED),contextptr));
+      if (!V.empty()){
+	gen I1(undef),I2(undef),d1(plus_inf),d2(plus_inf);
+	for (int i=0;i<V.size();++i){
+	  gen cur=evalf_double(V[i],1,contextptr);
+	  if (i==0){
+	    I1=cur; d1=distance2pp(I1,G,contextptr);
+	    continue;
+	  }
+	  if (i==1){
+	    I2=cur; d2=distance2pp(I2,G,contextptr);
+	    if (is_strictly_greater(d1,d2,contextptr)){
+	      swapgen(I1,I2); swapgen(d1,d2);
+	    }
+	    continue;
+	  }
+	  gen d=distance2pp(cur,G,contextptr);
+	  if (is_strictly_greater(d1,d,contextptr)){
+	    I2=I1; d2=d1;
+	    I1=cur; d1=d;
+	    continue;
+	  }
+	  if (is_strictly_greater(d2,d,contextptr)){
+	    I2=cur; d2=d;
+	  }
+	} // end for loop in V
+	G=remove_at_pnt(I2);
+	I1=put_attributs(I1,vecteur(1,_POINT_WIDTH_6 | _BLUE),contextptr);
+	tracemode_disp.push_back(I1);      
+	if (is_undef(I2)) I2=I1;
+	I2=put_attributs(I2,vecteur(1,_POINT_WIDTH_6 | _BLUE),contextptr);
+	tracemode_disp.push_back(I2);      
+	// function curve: set nearest intersection as mark/position
+	if (t==x && !is_zero(tstep)){
+	  gen Ix,Iy;
+	  reim(remove_at_pnt(I1),Ix,Iy,contextptr);
+	  tracemode_mark=Ix._DOUBLE_val;
+	  reim(remove_at_pnt(I2),Ix,Iy,contextptr);
+	  tracemode_i=((Ix-tmin)/tstep)._DOUBLE_val;
+	}
+      }
+    } // end intersect
+    gen Gx,Gy; reim(G,Gx,Gy,contextptr);
+    Gx=evalf_double(Gx,1,contextptr);
+    Gy=evalf_double(Gy,1,contextptr);
+    if (operation==-1){
+      if (curve_infos1.size()==0)
+	curve_infos1="Position "+Gx.print(contextptr)+","+Gy.print(contextptr);
+      if (G_orig.is_symb_of_sommet(at_pnt)){
+	gen f=G_orig._SYMBptr->feuille;
+	if (f.type==_VECT && f._VECTptr->size()==3){
+	  f=f._VECTptr->back();
+	  curve_infos1 = f.print(contextptr)+": "+curve_infos1;
+	}
+      }
+      confirm(curve_infos1.c_str(),curve_infos2.c_str());
+    }
+    tracemode_add="";
+    if (Gx.type==_DOUBLE_ && Gy.type==_DOUBLE_){
+      tracemode_add += "x="+print_DOUBLE_(Gx._DOUBLE_val,3)+",y="+print_DOUBLE_(Gy._DOUBLE_val,3);
+      if (tstep!=0){
+	gen curt=tmin+tracemode_i*tstep;
+	if (curt.type==_DOUBLE_){
+	  if (t!=x)
+	    tracemode_add += ", t="+print_DOUBLE_(curt._DOUBLE_val,3);
+	  if (tracemode & 2){
+	    gen G1=derive(parameq,t,contextptr);
+	    gen G1t=subst(G1,t,curt,false,contextptr);
+	    gen G1x,G1y; reim(G1t,G1x,G1y,contextptr);
+	    gen m=evalf_double(G1y/G1x,1,contextptr);
+	    if (m.type==_DOUBLE_)
+	      tracemode_add += ", m="+print_DOUBLE_(m._DOUBLE_val,3);
+	    gen T(_vector(makesequence(_point(G,contextptr),_point(G+G1t,contextptr)),contextptr));
+	    tracemode_disp.push_back(T);
+	    gen G2(derive(G1,t,contextptr));
+	    gen G2t=subst(G2,t,curt,false,contextptr);
+	    gen G2x,G2y; reim(G2t,G2x,G2y,contextptr);
+	    gen det(G1x*G2y-G2x*G1y);
+	    gen Tn=sqrt(G1x*G1x+G1y*G1y,contextptr);
+	    gen R=evalf_double(Tn*Tn*Tn/det,1,contextptr);
+	    gen centre=G+R*(-G1y+cst_i*G1x)/Tn;
+	    if (tracemode & 4){
+	      gen N(_vector(makesequence(_point(G,contextptr),_point(centre,contextptr)),contextptr));
+	      tracemode_disp.push_back(N);
+	    }
+	    if (tracemode & 8){
+	      if (R.type==_DOUBLE_)
+		tracemode_add += ", R="+print_DOUBLE_(R._DOUBLE_val,3);
+	      tracemode_disp.push_back(_cercle(makesequence(centre,R),contextptr));
+	    }
+	  }
+	}
+      }
+    }
+    double x_scale=LCD_WIDTH_PX/(window_xmax-window_xmin);
+    double y_scale=LCD_HEIGHT_PX/(window_ymax-window_ymin);
+    double i,j;
+    findij(G,x_scale,y_scale,i,j,contextptr);
+    current_i=int(i+.5);
+    current_j=int(j+.5);
+    python_compat(p,contextptr);
+  }
+
+  void Graph2d::invert_tracemode(){
+    if (!tracemode)
+      init_tracemode();
+    else
+      tracemode=0;
   }
 
   void Graph2d::set_mode(const giac::gen & f_tmp,const giac::gen & f_final,int m,const string & help){
@@ -10165,8 +10522,8 @@ namespace xcas {
     text.allowF1=false;
     text.python=false;
     add(&text,lang==1?
-	"haut/bas/droit/gauche: change point de vue\ny^x ou e^x: trace 3d precis\nEsc/Back: quitte ou interrompt le trace 3d en cours\n( et ): modifie le rendu des surfaces raides 3d\n0: surfaces cachees 3d ON/OFF\n.: remplissage surface 3d raide ON/OFF\n5 reset 3d view\n7,8,9,1,2,3: deplacement 3d\n\nGeometrie\nF4: change le mode\nLe mode repere (shift 7) permet de changer le point de vue\nLe mode pointeur (shift 8) permet de bouger un objet et les objets dependants avec enter/OK et les touches de deplacement\nLes autres modes permettent de creer des objets\nEsc/Back: permet de passer en vue symbolique et de creer/modifier des objets par des commandes, taper enter/OK pour revenir en vue graphique\n4,6: modifie la profondeur du clic":
-	"up/down/right/left: modify viewpoint\nEsc/Back: leave or interrupt 3d rendering\ny^x or e^x: precise 3d\n( and ): modify stiff surfaces 3d rendering\n0: hidden 3d surfaces ON/OFF\n.: fill stiff 3d surfacesON/OFF\n5 reset 3d view\n7,8,9,1,2,3: move 3d view\n\nGeometry\nF4: change geometry mode\nFrame mode (shift F1): modify viewpoint\nPointer mode (shift F2): select an object and move it with enter/OK and cursor keys\nOther modes: create an object\nEsc/Back: go to symbolic view where you can create/modify objects with commands, press enter/OK to go back to graphic view");
+	"x,n,t ou tab: etude courbe\nshift-2: info courbe\nshift-3: tangente, pente\nshift-4: normale\nshift-5: cercle osculateur\nshift-7: infos courbe on/off\nhaut/bas/droit/gauche: deplace pointeur ou change point de vue\nalpha-haut/bas/droit/gauche: modifie fenetre\ny^x ou e^x: trace 3d precis\nEsc/Back: quitte ou interrompt le trace 3d en cours\n( et ): modifie le rendu des surfaces raides 3d\n0: surfaces cachees 3d ON/OFF\n.: remplissage surface 3d raide ON/OFF\n5 reset 3d view\n7,8,9,1,2,3: deplacement 3d\n\nGeometrie\nF4: change le mode\nLe mode repere (shift 7) permet de changer le point de vue\nLe mode pointeur (shift 8) permet de bouger un objet et les objets dependants avec enter/OK et les touches de deplacement\nLes autres modes permettent de creer des objets\nEsc/Back: permet de passer en vue symbolique et de creer/modifier des objets par des commandes, taper enter/OK pour revenir en vue graphique\n4,6: modifie la profondeur du clic":
+	"x,n,t or tab: curve study\nshift-2: curve info\nshift-3: tangent, slope\nshift-4: normal\nshift-5: osculating circle\nshift-7: curve infos on/off\nup/down/right/left: move pointer or modify viewpoint\nalpha-up/down/right/left: move window\nEsc/Back: leave or interrupt 3d rendering\ny^x or e^x: precise 3d\n( and ): modify stiff surfaces 3d rendering\n0: hidden 3d surfaces ON/OFF\n.: fill stiff 3d surfacesON/OFF\n5 reset 3d view\n7,8,9,1,2,3: move 3d view\n\nGeometry\nF4: change geometry mode\nFrame mode (shift F1): modify viewpoint\nPointer mode (shift F2): select an object and move it with enter/OK and cursor keys\nOther modes: create an object\nEsc/Back: go to symbolic view where you can create/modify objects with commands, press enter/OK to go back to graphic view");
     int exec=doTextArea(&text,contextptr);
   }
 
@@ -10264,7 +10621,53 @@ namespace xcas {
       }
     } else s="";
     return s;
-  }  
+  }
+
+  void Graph2d::init_tracemode(){
+    if (is3d){
+      tracemode=0;
+      return;
+    }
+    tracemode_mark=0.0;
+    double w=LCD_WIDTH_PX;
+    double h=LCD_HEIGHT_PX-STATUS_AREA_PX;
+    double window_w=window_xmax-window_xmin,window_h=window_ymax-window_ymin;
+    double r=h/w*window_w/window_h;
+    tracemode=(r>0.7 && r<1.4)?7:3;
+    tracemode_set();
+  }
+
+  void Graph2d::curve_infos(){
+    if (!tracemode)
+      init_tracemode();
+    const char *
+      tab[]={
+	     lang==1?"Infos objet (shift-2)":"Object infos (shift-2)",  // 0
+#ifdef NUMWORKS
+	     lang==1?"Quitte mode etude (x,n,t)":"Quit study mode (x,n,t)",
+#else
+	     lang==1?"Quitte mode etude (tab)":"Quit study mode (tab)",
+#endif
+	     lang==1?"Entrer t ou x":"Set t or x", // 1
+	     lang==1?"y=0, racine":"y=0, root",
+	     "Intersection", // 3
+	     "y'=0, extremum",
+	     lang==1?"x'=0 (parametriques)":"x'=0 (parametric)", // 5
+	     "Inflexion",
+	     lang==1?"Marquer la position":"Mark position",
+	     lang==1?"Entrer t ou x, marquer":"Set t or x, mark", // 8
+	     lang==1?"Aire":"Area",
+	     lang==1?"Longueur d'arc":"Arc length", // 10
+	     0};
+    const int s=sizeof(tab)/sizeof(char *);
+    int choix=select_item(tab,lang==1?"Etude courbes":"Curve study",true);
+    if (choix<0 || choix>s)
+      return;
+    if (choix==1)
+      tracemode=0;
+    else 
+      tracemode_set(choix-1);
+  }
 
   int Graph2d::ui(){
     Graph2d & gr=*this;
@@ -10274,14 +10677,13 @@ namespace xcas {
     gr.draw();
     gr.precision=saveprecision;    
     gr.must_redraw=true;
-#ifdef NSPIRE_NEWLIB
-    const char * msg="+-: zoom, pad: move, esc: quit";
-#else
-    const char * msg="+-: zoom, pad: move, EXIT: quit";
-#endif
-    DefineStatusMessage((char *)msg,1,0,0);
-    DisplayStatusArea();
     for (;;){
+#ifdef NSPIRE_NEWLIB
+      DefineStatusMessage((char*)"shift-1: help, menu: menu, esc: quit", 1, 0, 0);
+#else
+      DefineStatusMessage((char*)"shift-1: help, home: menu, back: quit", 1, 0, 0);
+#endif
+      DisplayStatusArea();
       int saveprec=gr.precision;
       if (gr.doprecise){
 	gr.doprecise=false;
@@ -10301,7 +10703,7 @@ namespace xcas {
       }
       gr.must_redraw=true;
       gr.precision=saveprec;
-      if (!hp){
+      if (0 && !hp){
 #ifdef NUMWORKS
 	os_draw_string(0,LCD_HEIGHT_PX-STATUS_AREA_PX-17,COLOR_BLACK,COLOR_WHITE,"home: cfg");
 #else
@@ -10310,15 +10712,56 @@ namespace xcas {
       }
       int key=-1;
       GetKey(&key);
+      bool alph=alphawasactive(&key);
       if (key==KEY_SHUTDOWN)
 	return key;
       if (key==KEY_CTRL_F1){
 	geohelp(contextptr);
 	continue;
       }
+      if (key==KEY_CTRL_F2){
+	tracemode_set(-1); // object info
+	continue;
+      }
+      if (key==KEY_CTRL_F3){
+	if (tracemode & 2)
+	  tracemode &= ~2;
+	else
+	  tracemode |= 2;
+	tracemode_set();
+	continue;
+      }
+      if (key==KEY_CTRL_F4){
+	if (tracemode & 4)
+	  tracemode &= ~4;
+	else
+	  tracemode |= 4;
+	tracemode_set();
+	continue;
+      }
+      if (key==KEY_CTRL_F5){
+	if (tracemode & 8)
+	  tracemode &= ~8;
+	else {
+	  tracemode |= 8;
+	  orthonormalize(true);
+	}
+	tracemode_set();
+	continue;
+      }
+      if (key==KEY_CTRL_XTT || key=='\t'){
+	curve_infos();
+	continue;
+      }
+      if (!hp && key==KEY_CTRL_F7)
+	invert_tracemode();
       if (hp){
-	if (key==KEY_CTRL_F7 )
-	  set_mode(0,0,255,"");
+	if (key==KEY_CTRL_F7 ){
+	  if (mode==255)
+	    invert_tracemode();
+	  else
+	    set_mode(0,0,255,"");
+	}
 	if (key==KEY_CTRL_F8 )
 	  set_mode(0,0,0,"");
 	if (key==KEY_CTRL_F9 )
@@ -10390,6 +10833,7 @@ namespace xcas {
 	}
       }
       if (hp && (key==KEY_CTRL_CATALOG || key==KEY_BOOK )){
+	tracemode=0;
 	const char *
 	  tab[]={
 		 lang==1?"Mode repere":"Frame mode", // 0
@@ -10681,7 +11125,8 @@ namespace xcas {
 	continue;
       }      
 
-      if (key==KEY_CTRL_MENU || key==KEY_CTRL_F6){
+      if (key==KEY_CTRL_MENU || key==KEY_CTRL_F6 ||
+	  (!hp && (key==KEY_CTRL_CATALOG || key==KEY_BOOK))){
 	char menu_xmin[32],menu_xmax[32],menu_ymin[32],menu_ymax[32],menu_zmin[32],menu_zmax[32],menu_depth[32];
 	for (;;){
 	  string s;
@@ -10705,25 +11150,31 @@ namespace xcas {
 	  smallmenu.items=smallmenuitems;
 	  smallmenu.height=12;
 	  //smallmenu.title = "KhiCAS";
-	  smallmenuitems[0].text = (char *) menu_xmin;
-	  smallmenuitems[1].text = (char *) menu_xmax;
-	  smallmenuitems[2].text = (char *) menu_ymin;
-	  smallmenuitems[3].text = (char *) menu_ymax;
-	  smallmenuitems[4].text = (char *) menu_zmin;
-	  smallmenuitems[5].text = (char *) menu_zmax;
-	  smallmenuitems[6].text = (char *) menu_depth;
-	  smallmenuitems[7].text = (char *) ((lang==1)?"Aide":"Help");
-	  smallmenuitems[8].text = (char*) (lang==1?"Sauvegarder figure":"Save figure");
-	  smallmenuitems[9].text = (char*) (lang==1?"Sauvegarder comme":"Save as");
-	  smallmenuitems[10].text = (char*)((lang==1)?"Quitter":"Quit");
-	  smallmenuitems[11].text = (char*) "Orthonormalize /";
-	  smallmenuitems[12].text = (char*) "Autoscale *";
-	  smallmenuitems[13].text = (char *) ("Zoom in +");
-	  smallmenuitems[14].text = (char *) ("Zoom out -");
-	  smallmenuitems[15].text = (char *) ("Y-Zoom out (-)");
-	  smallmenuitems[16].text = (char*) ((lang==1)?"Voir axes":"Show axes");
-	  smallmenuitems[17].text = (char*) ((lang==1)?"Cacher axes":"Hide axes");
-	  smallmenuitems[18].text = (char*) ((lang==1)?"Effacer trace":"Clear trace");
+	  smallmenuitems[0].text = (char *) ((lang==1)?"Aide":"Help");
+#ifdef NUMWORKS
+	  smallmenuitems[1].text = (char*) ((lang==1)?"Etude courbe (x,n,t)":"Curve study (x,n,t)");
+#else
+	  smallmenuitems[1].text = (char*) ((lang==1)?"Etude courbe (tab)":"Curve study (tab)");
+#endif
+	  smallmenuitems[2].text = (char *) menu_xmin;
+	  smallmenuitems[3].text = (char *) menu_xmax;
+	  smallmenuitems[4].text = (char *) menu_ymin;
+	  smallmenuitems[5].text = (char *) menu_ymax;
+	  smallmenuitems[6].text = (char *) menu_zmin;
+	  smallmenuitems[7].text = (char *) menu_zmax;
+	  smallmenuitems[8].text = (char *) menu_depth;
+	  smallmenuitems[9].text = (char*) (lang==1?"Sauvegarder figure":"Save figure");
+	  smallmenuitems[10].text = (char*) (lang==1?"Sauvegarder comme":"Save as");
+	  smallmenuitems[11].text = (char*)((lang==1)?"Quitter":"Quit");
+	  smallmenuitems[12].text = (char*) "Orthonormalize /";
+	  smallmenuitems[13].text = (char*) "Autoscale *";
+	  smallmenuitems[14].text = (char *) ("Zoom in +");
+	  smallmenuitems[15].text = (char *) ("Zoom out -");
+	  smallmenuitems[16].text = (char *) ("Y-Zoom out (-)");
+	  smallmenuitems[17].text = (char*) ((lang==1)?"Voir axes":"Show axes");
+	  smallmenuitems[17].type = MENUITEM_CHECKBOX;
+	  smallmenuitems[17].value = gr.show_axes;
+	  smallmenuitems[18].text = (char*) ((lang==1)?"Effacer traces geometrie":"Clear geometry traces");
 	  drawRectangle(0,180,LCD_WIDTH_PX,60,_BLACK);
 	  int sres = doMenu(&smallmenu);
 	  if (sres == MENU_RETURN_EXIT)
@@ -10732,48 +11183,54 @@ namespace xcas {
 	    const char * ptr=0;
 	    string s1; double d;
 	    if (smallmenu.selection==1){
+	      geohelp(contextptr); continue;
+	      // gr.q=quaternion_double(0,0,0); gr.update();
+	    }
+	    if (smallmenu.selection==2)
+	      gr.curve_infos();
+	    if (smallmenu.selection==3){
 	      d=gr.window_xmin;
 	      if (inputdouble(menu_xmin,d,200,contextptr)){
 		gr.window_xmin=d;
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==2){
+	    if (smallmenu.selection==4){
 	      d=gr.window_xmax;
 	      if (inputdouble(menu_xmax,d,200,contextptr)){
 		gr.window_xmax=d;
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==3){
+	    if (smallmenu.selection==5){
 	      d=gr.window_ymin;
 	      if (inputdouble(menu_ymin,d,200,contextptr)){
 		gr.window_ymin=d;
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==4){
+	    if (smallmenu.selection==6){
 	      d=gr.window_ymax;
 	      if (inputdouble(menu_ymax,d,200,contextptr)){
 		gr.window_ymax=d;
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==5){
+	    if (smallmenu.selection==7){
 	      d=gr.window_zmin;
 	      if (inputdouble(menu_zmin,d,200,contextptr)){
 		gr.window_zmin=d;
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==6){
+	    if (smallmenu.selection==8){
 	      d=gr.window_zmax;
 	      if (inputdouble(menu_zmax,d,200,contextptr)){
 		gr.window_zmax=d;
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==7){
+	    if (smallmenu.selection==9){
 	      d=gr.current_depth;
 	      if (inputdouble(menu_depth,d,200,contextptr)){
 		if (d<-1) d=-1;
@@ -10782,16 +11239,12 @@ namespace xcas {
 		gr.update();
 	      }
 	    }
-	    if (smallmenu.selection==8){
-	      geohelp(contextptr); continue;
-	      // gr.q=quaternion_double(0,0,0); gr.update();
-	    }
-	    if (hp && smallmenu.selection==9){
+	    if (hp && smallmenu.selection==10){
 	      // save
 	      geosave(hp,contextptr);
 	      continue;
 	    }
-	    if (smallmenu.selection==9 || smallmenu.selection==10){
+	    if (smallmenu.selection==10 || smallmenu.selection==11){
 	      // save as
 	      char filename[MAX_FILENAME_SIZE+1];
 	      if (get_filename(filename,".py") && newgeo(contextptr)==0){
@@ -10807,22 +11260,20 @@ namespace xcas {
 		}
 	      }
 	    }
-	    if (smallmenu.selection==11)
-	      return -4;
 	    if (smallmenu.selection==12)
-	      gr.orthonormalize();
+	      return -4;
 	    if (smallmenu.selection==13)
-	      gr.autoscale();	
+	      gr.orthonormalize();
 	    if (smallmenu.selection==14)
-	      gr.zoom(0.7);	
+	      gr.autoscale();	
 	    if (smallmenu.selection==15)
-	      gr.zoom(1/0.7);	
+	      gr.zoom(0.7);	
 	    if (smallmenu.selection==16)
-	      gr.zoomy(1/0.7);
+	      gr.zoom(1/0.7);	
 	    if (smallmenu.selection==17)
-	      gr.show_axes=true;	
+	      gr.zoomy(1/0.7);
 	    if (smallmenu.selection==18)
-	      gr.show_axes=false;	
+	      gr.show_axes=!gr.show_axes;	
 	    if (smallmenu.selection==19){
 	      gr.trace_instructions.clear();
 	      update_g();
@@ -10882,7 +11333,12 @@ namespace xcas {
 	 gr.precision--;
       }
       if (key==KEY_CTRL_UP){
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  --tracemode_n;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  --current_j;
 	  if (current_j<0){
 	    gr.up((gr.window_ymax-gr.window_ymin)/5);
@@ -10892,7 +11348,7 @@ namespace xcas {
 	  update_g();
 	  continue;
 	}
-	if (gr.is3d){
+	if (gr.is3d && !alph){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -10919,7 +11375,12 @@ namespace xcas {
 	gr.up((gr.window_ymax-gr.window_ymin)/16);
       }
       if (key==KEY_CTRL_PAGEUP) {
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  tracemode_n-=2;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  current_j-=LCD_HEIGHT_PX/5;;
 	  if (current_j<0){
 	    gr.up((gr.window_ymax-gr.window_ymin)/2);
@@ -10932,7 +11393,12 @@ namespace xcas {
 	gr.up((gr.window_ymax-gr.window_ymin)/4);
       }
       if (key==KEY_CTRL_DOWN) {
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  ++tracemode_n;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  ++current_j;
 	  if (current_j>=LCD_HEIGHT_PX-24){
 	    gr.down((gr.window_ymax-gr.window_ymin)/5);
@@ -10942,7 +11408,7 @@ namespace xcas {
 	  update_g();
 	  continue;
 	}
-	if (gr.is3d){
+	if (gr.is3d && !alph){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -10969,7 +11435,12 @@ namespace xcas {
 	gr.down((gr.window_ymax-gr.window_ymin)/16);
       }
       if (key==KEY_CTRL_PAGEDOWN) {
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  tracemode_n+=2;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  current_j += LCD_HEIGHT_PX/5;
 	  if (current_j>=LCD_HEIGHT_PX-24){
 	    gr.down((gr.window_ymax-gr.window_ymin)/2);
@@ -10982,7 +11453,15 @@ namespace xcas {
 	gr.down((gr.window_ymax-gr.window_ymin)/4);
       }
       if (key==KEY_CTRL_LEFT) {
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  if (tracemode_i!=int(tracemode_i))
+	    tracemode_i=std::floor(tracemode_i);
+	  else
+	    --tracemode_i;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  --current_i;
 	  if (current_i<0){
 	    gr.left((gr.window_xmax-gr.window_xmin)/5);
@@ -10992,7 +11471,7 @@ namespace xcas {
 	  update_g();
 	  continue;
 	}
-	if (gr.is3d){
+	if (gr.is3d && !alph){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -11014,7 +11493,12 @@ namespace xcas {
 	gr.left((gr.window_xmax-gr.window_xmin)/16);
       }
       if (key==KEY_SHIFT_LEFT) {
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  tracemode_i-=5;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  current_i -= LCD_WIDTH_PX/5;
 	  if (current_i<0){
 	    gr.left((gr.window_xmax-gr.window_xmin)/2);
@@ -11027,7 +11511,15 @@ namespace xcas {
 	gr.left((gr.window_xmax-gr.window_xmin)/4);
       }
       if (key==KEY_CTRL_RIGHT) {
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  if (int(tracemode_i)!=tracemode_i)
+	    tracemode_i=std::ceil(tracemode_i);
+	  else
+	    ++tracemode_i;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  ++current_i;
 	  if (current_i>=LCD_WIDTH_PX){
 	    gr.right((gr.window_xmax-gr.window_xmin)/5);
@@ -11037,7 +11529,7 @@ namespace xcas {
 	  update_g();
 	  continue;
 	}
-	if (gr.is3d){
+	if (gr.is3d && !alph){
 	  int curprec=gr.precision;
 	  gr.precision += 2;
 	  if (gr.precision>9) gr.precision=9;
@@ -11059,7 +11551,12 @@ namespace xcas {
 	gr.right((gr.window_xmax-gr.window_xmin)/16);
       }
       if (key==KEY_SHIFT_RIGHT) {
-	if (hp && mode!=255){
+	if (tracemode && !alph){
+	  tracemode_i+=5;
+	  tracemode_set();
+	  continue;
+	}
+	if (hp && mode!=255 && !alph){
 	  current_i += LCD_WIDTH_PX/5;
 	  if (current_i>=LCD_WIDTH_PX){
 	    gr.right((gr.window_xmax-gr.window_xmin)/2);
@@ -12684,6 +13181,21 @@ namespace xcas {
     for (size_t i=1;i<edptr->elements.size();++i){
       edptr->elements[i].newLine=1;
     }
+  for (size_t i=0;i<edptr->elements.size();++i){
+    string S=edptr->elements[i].s;
+    const int cut=160;
+    if (S.size()>cut){
+      // string too long, cut it
+      int j;
+      for (j=(4*cut)/5;j>=(2*cut)/5;--j){
+	if (!giac::isalphanum(S[j]))
+	  break;
+      }
+      textElement elem; elem.newLine=1; elem.s=S.substr(j,S.size()-j);
+      edptr->elements[i].s=S.substr(0,j);
+      edptr->elements.insert(edptr->elements.begin()+i+1,elem);
+    }
+  }
   }
 
   void fix_mini(textArea * edptr){
@@ -13466,6 +13978,8 @@ namespace xcas {
 	waitforvblank();
       int textX=text->x,saveY=textY;
       if(v[cur].newLine) {
+	if (v[cur].lineSpacing>4) // avoid large skip
+	  v[cur].lineSpacing=4;
 	textY=textY+text->lineHeight+v[cur].lineSpacing;
       }
       if (!isFirstDraw && clipline==-1){
@@ -15199,6 +15713,10 @@ namespace xcas {
     smallmenuitems[10].text = (char*) ((lang==1)?"Backup, mode examen (e^x)":"Backup, exam mode (e^x)");
 #else
     smallmenuitems[10].text = (char*) ((lang==1)?"Mode examen (e^x)":"Exam mode (e^x)");
+    if (osok==0)
+      smallmenuitems[10].text = (char*) ((lang==1)?"Incompatible mode examen":"Exam mode incompatible");
+    if (osok==-1)
+      smallmenuitems[10].text = (char*) ((lang==1)?"Avertissement mode examen":"Exam mode warning");
 #endif
     smallmenuitems[11].text = (char*) ((lang==1)?"A propos":"About");
     smallmenuitems[14].text = (char*) "Quit";
@@ -15304,12 +15822,20 @@ namespace xcas {
 	  giac::language(lang,contextptr);
 	  break;
 	}
-	if (smallmenu.selection == 11){
+	if (smallmenu.selection==11 && osok==-1){
+	  confirm(lang==1?"Activez une fois le mode examen TI":"Activate one time TI exam mode",lang==1?"pour utiliser ensuite celui de KhiCAS":"to enable KhiCAS exam mode");
+	  continue;
+	}
+	if (smallmenu.selection==11 && osok==0){
+	  confirm(lang==1?"Ce modele n'est pas compatible":"This model is not compatible",lang==1?"avec le mode examen de KhiCAS":"with KhiCAS exam mode");
+	  continue;
+	}
+	if (smallmenu.selection == 11 && osok>0){
 #ifdef NSPIRE_NEWLIB
 	  if (nspire_exam_mode==1
-	      && !is_cx2
+	      // && !is_cx2
 	      ){
-	    if (confirm((lang==1?"Quitter Xcas pour relancer le mode examen":"Leave Xcas to re-enter exam mode"),(lang==1?"!enter OK, esc annul":"enter OK, esc cancel."))!=KEY_CTRL_F1)
+	    if (confirm((lang==1?"Pour relancer le mode examen, il faudra":"To re-enter exam mode, you'll have"),(lang==1?"quitter Xcas. enter OK, esc annul":"to quit Xcas. enter OK, esc cancel."))!=KEY_CTRL_F1)
 	      break;
 	    do_restart(contextptr);
 	    clear_turtle_history(contextptr);
@@ -15326,7 +15852,7 @@ namespace xcas {
 	    break;
 	  }
 	  else {
-	    if (//1 ||
+	    if (osok>0 ||
 		!is_cx2){
 	      if (do_confirm((lang==1)?"Lancer le mode examen avec CAS ?":"Run exam mode with CAS?")){
 		*logptr(contextptr) << (lang==1?"Patientez environ 2 minutes\n":"Please wait about 2 minutes\n");
@@ -18748,6 +19274,36 @@ namespace xcas {
     sheetptr=0;
     shutdown=do_shutdown;
 #ifdef NSPIRE_NEWLIB
+    unsigned osid=0,osidcx52noncasnont=0;
+    osid=* (unsigned *) 0x10000020;
+    // values
+    // OS 5.2 cxcas 1040f3b0
+    // OS 5.2 cx2 ?
+    // OS 5.2 cx2t ?
+    // OS 5.3 cx2cas 10417da0
+    // OS 5.3 cx2 10416cc0
+    // OS 5.3 cx2t 10417460
+    osok=osid!=osidcx52noncasnont?1:0;
+    if ((osid & 0xffff0000)==0x10410000){
+      confirm("KhiCAS exammode is incompatible with OS 5.3","Downgrade to 5.2 with backSpire");
+    }
+    if (osok && is_cx2){
+      int N=0x800;
+      long int nand_offset = 5*64*N;
+      long int nand_size = 64*N;
+      char flashdata[N];
+      const char erased_char=(char) 255;
+      int i; 
+      for(i=0; i<nand_size; i+=N) {
+	read_nand(flashdata, N, nand_offset+i, 0, 0, NULL);
+	if (flashdata[0]==erased_char && flashdata[1]==erased_char && flashdata[2]==erased_char && flashdata[3]==erased_char && flashdata[4]==erased_char && flashdata[5]==erased_char && flashdata[6]==erased_char && flashdata[7]==erased_char)
+	  break;
+      }
+      if (i==nand_size){
+	confirm(lang==1?"Activez une fois le mode examen TI":"Activate one time TI exam mode",lang==1?"pour utiliser ensuite celui de KhiCAS":"to enable KhiCAS exam mode");
+	osok=-1;
+      }
+    }
     // detect if leds are blinking
     unsigned green=*(unsigned *) 0x90110b04;
     unsigned red=*(unsigned *) 0x90110b0c;

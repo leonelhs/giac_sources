@@ -2,65 +2,127 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The multinomial probability function: multinomial
-
-</title>
+<title>Cauchy distribution</title>
 </head>
 <body >
-<a href="cascmd_en669.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en671.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en669.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en671.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:multinomial" class="subsection">8.4.5  The multinomial probability function: <span style="font-family:monospace">multinomial</span>
-<a id="hevea_default1211"></a>
-</h3>
-<p>If <span style="font-style:italic">X</span> follows a multinomial probability distribution with <span style="font-style:italic">P</span> =
-[<span style="font-style:italic">p</span><sub>0</sub>,<span style="font-style:italic">p</span><sub>1</sub>,…,<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub>] (where <span style="font-style:italic">p</span><sub>0</sub> + … + <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> = 1), then for
-<span style="font-style:italic">K</span>=[<span style="font-style:italic">k</span><sub>0</sub>,…,<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>] with <span style="font-style:italic">k</span><sub>0</sub> + … + <span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub> = <span style="font-style:italic">n</span>, the probability that
-<span style="font-style:italic">X</span>=<span style="font-style:italic">K</span> is given by 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:multinomial"></a>
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>!</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sub>0</sub>!<span style="font-style:italic">k</span><sub>1</sub>!… <span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>!</td></tr>
-</table></td><td class="dcell">(<span style="font-style:italic">p</span><sub>0</sub><sup><span style="font-style:italic">k</span><sub>0</sub></sup><span style="font-style:italic">p</span><sub>1</sub><sup><span style="font-style:italic">k</span><sub>1</sub></sup>… <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub><sup><span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub></sup>.
-    (3)</td></tr>
-</table><p>
-The <span style="font-family:monospace">multinomial</span> command computes the density function for the
-multinomial distribution.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">multinomial</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize"><span style="font-style:italic">P</span> = [<span style="font-style:italic">p</span><sub>0</sub>,<span style="font-style:italic">p</span><sub>1</sub>,…,<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub>], a probability vector 
-(i.e., <span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub>≥ 0 for all <span style="font-style:italic">k</span> and <span style="font-style:italic">p</span><sub>0</sub> + … + <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> = 1).
-</li><li class="li-itemize"><span style="font-style:italic">K</span>=[<span style="font-style:italic">k</span><sub>0</sub>,…,<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>], a list of integers with <span style="font-style:italic">k</span><sub>0</sub> +
-… + <span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub> = <span style="font-style:italic">n</span>.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">multinomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)</span> returns the probability that
-<span style="font-style:italic">X</span>=<span style="font-style:italic">K</span>, given in (<a href="#eq%3Amultinomial">3</a>).
-</li></ul><p>
-You will get an error if
-<span style="font-style:italic">k</span><sub>0</sub> + … + <span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub> is not equal to <span style="font-style:italic">n</span>, although you won’t get one if
-<span style="font-style:italic">p</span><sub>0</sub> + … + <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> is not equal to 1.</p><h4 id="sec1687" class="subsubsection">Example</h4>
+<h3 id="ssec:cauchy" class="subsection">18.4.14  Cauchy distribution</h3>
+<h5 id="sec1694" class="paragraph">The probability density function for the Cauchy distribution.</h5>
 <p>
-Suppose you make 10 choices, where each choice is one of
-three items; the first has a 0.2 probability of being chosen, the
-second a 0.3 probability and the third a 0.5 probability.
-The probability that you end up with 3 of the first item, 2 of the 
-second and 5 of the third will be:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">multinomial(10,[0.2,0.3,0.5],[3,2,5])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.0567
-</td></tr>
+The <span style="font-family:monospace">cauchy</span><a id="hevea_default1339"></a>
+(or <span style="font-family:monospace">cauchyd</span><a id="hevea_default1340"></a>) command computes the
+probability density function for the Cauchy distribution (sometimes
+called the Lorentz distribution).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">cauchy</span> takes two optional arguments and one
+mandatory argument:
+<ul class="itemize"><li class="li-itemize">
+Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers (the parameters; by
+default <span style="font-style:italic">a</span>=0 and <span style="font-style:italic">b</span>=1).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">cauchy(</span>⟨ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,⟩ <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+the value of the density function at <span style="font-style:italic">x</span>, namely
+ <span style="font-style:italic">b</span>/π/(<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)<sup>2</sup>+<span style="font-style:italic">b</span><sup>2</sup>.
+</li></ul><h4 id="sec1695" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.8)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.113412073462
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0.3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.292027418517
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1696" class="paragraph">The cumulative distribution function for the Cauchy distribution.</h5>
+<p>
+The <span style="font-family:monospace">cauchy_cdf</span><a id="hevea_default1341"></a>
+(or <span style="font-family:monospace">cauchyd_cdf</span><a id="hevea_default1342"></a>)
+command computes the cumulative distribution function for the Cauchy distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">cauchy_cdf</span> (or <span style="font-family:monospace">cauchyd_cdf</span>) takes three
+optional arguments and one mandatory argument:
+<ul class="itemize"><li class="li-itemize">
+Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, the parameters
+(by default, <span style="font-style:italic">a</span>=0 and <span style="font-style:italic">b</span>=1).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">cauchy_cdf(</span>⟨ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,⟩ <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the Cauchy distribution with parameters
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">cauchy_cdf(</span>⟨ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,⟩ <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>).
+</li></ul><p>
+It turns out that <span style="font-family:monospace">cauchy_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)=1/2+1/πarctan<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>/<span style="font-style:italic">b</span>.</p><h4 id="sec1697" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,1.4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.437167041811
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.802568456711
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,-1.9,1.4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.228452641651
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1698" class="paragraph">The inverse distribution function for the Cauchy distribution.</h5>
+<p>
+The <span style="font-family:monospace">cauchy_icdf</span><a id="hevea_default1343"></a>
+(or <span style="font-family:monospace">cauchyd_icdf</span><a id="hevea_default1344"></a>)
+command computes the inverse distribution for the Cauchy distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">cauchy_icdf</span> (or <span style="font-family:monospace">cauchyd_icdf</span>) takes two
+optional arguments and one mandatory argument:
+<ul class="itemize"><li class="li-itemize">
+Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, parameters
+(by default, <span style="font-style:italic">a</span>=0 and <span style="font-style:italic">b</span>=1).
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">cauchy_icdf([</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">,] </span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
+distribution for the Cauchy distribution with parameters <span style="font-style:italic">a</span> and
+<span style="font-style:italic">b</span>; namely, the value of <span style="font-style:italic">x</span> for which
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-style:italic">h</span>.
+</li></ul><h4 id="sec1699" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0.23)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+−1.40283204777
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en669.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en671.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en669.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en671.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

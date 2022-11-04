@@ -2,53 +2,63 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Factoring over ℤ/pℤ[x]: factor factoriser
-
-</title>
+<title>Gröbner reduction</title>
 </head>
 <body >
-<a href="cascmd_en380.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en382.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en380.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en382.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec880" class="subsection">5.34.14  Factoring over ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>]: <span style="font-family:monospace">factor</span> <span style="font-family:monospace">factoriser</span>
-<a id="hevea_default641"></a>
-<a id="hevea_default642"></a></h3>
-<p>The <span style="font-family:monospace">factor</span> command factors polynomials with coefficients in 
-ℤ/<span style="font-style:italic">p</span>ℤ. (See also Section <a href="cascmd_en188.html#ssec%3Afactore">5.12.10</a>.)
+<h3 id="sec858" class="subsection">10.6.2  Gröbner reduction</h3>
+<p>The <span style="font-family:monospace">greduce</span><a id="hevea_default647"></a> command
+finds a polynomial modulo <span style="font-style:italic">I</span>, where <span style="font-style:italic">I</span> is an ideal as
+in Section <a href="cascmd_en380.html#ssec%3Agbasis">10.6.1</a>.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">factor</span> takes one argument:<br>
- <span style="font-style:italic">P</span>, a polynomial with coefficients in
-ℤ/<span style="font-style:italic">p</span>ℤ (<span style="font-style:italic">p</span> must be prime).
-</li><li class="li-itemize"><span style="font-family:monospace">factor(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">P</span> in factored form.
-</li></ul><h4 id="sec881" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">factor((-3*x^3+5*x^2-5*x+4)%13)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−3</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">1%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−6</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">1%13</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell"><span style="font-style:italic">x</span><sup>2</sup>+6%13</td><td class="dcell">⎞<br>
-⎠</td></tr>
+<span style="font-family:monospace">greduce</span> takes three arguments mandatory arguments and
+three optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a multivariate polynomial.
+</li><li class="li-itemize"><span style="font-style:italic">gbasis</span>, a vector made of polynomials which is
+supposed to be a Gröbner basis.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, and a vector of variable names.
+</li><li class="li-itemize">Optionally, the same ordering options and <span style="font-variant:small-caps">CoCoA</span> options
+as <span style="font-family:monospace">gbasis</span> (see Section <a href="cascmd_en380.html#ssec%3Agbasis">10.6.1</a>).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">greduce(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">gbasis</span>,<span style="font-style:italic">vars</span> ⟨,<span style="font-style:italic">options</span> ⟩<span style="font-family:monospace">)</span>
+returns the reduction of <span style="font-style:italic">P</span> with respect to the Gröbner basis
+<span style="font-style:italic">gbasis</span>. It is 0 if and only if the polynomial belongs to the ideal.
+</li></ul><h4 id="sec859" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">greduce</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">y</span><sup>2</sup>−1
+</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+that is to say <span style="font-style:italic">xy</span>−1≡ 1/2<span style="font-style:italic">y</span><sup>2</sup>−1(mod <span style="font-style:italic">I</span> ) where <span style="font-style:italic">I</span> is the ideal
+generated by the Gröbner basis [<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">y</span><sup>2</sup>,2<span style="font-style:italic">xy</span>−<span style="font-style:italic">y</span><sup>2</sup>,<span style="font-style:italic">y</span><sup>3</sup>], because
+1/2<span style="font-style:italic">y</span><sup>2</sup>−1 is the Euclidean division remainder of <span style="font-style:italic">xy</span>−1 by <span style="font-style:italic">G</span><sub>2</sub>=2<span style="font-style:italic">x</span> <span style="font-style:italic">y</span>−<span style="font-style:italic">y</span><sup>2</sup>.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">greduce</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3-1,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">],</span></span><span style="font-weight:bold"><span style="color:#BF0000">tdeg</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">2</span></sub><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en380.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en382.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en380.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en382.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

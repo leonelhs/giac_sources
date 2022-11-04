@@ -1107,11 +1107,13 @@ namespace xcas {
      *   VECTORS   *
      ***************/
     if ( (g.type==_VECT) && !g._VECTptr->empty() ){
+#if 0
       if (g.subtype==_GRAPH__VECT){  
 	string s;
 	if (is_graphe(g,s,contextptr))
 	  return Equation_compute_size(string2gen(s,false),a,windowhsize,contextptr);
       }
+#endif
       if (g.subtype==_SPREAD__VECT)
 	return Equation_compute_size(string2gen("spreadsheet",false),a,windowhsize,contextptr);
       vecteur v;

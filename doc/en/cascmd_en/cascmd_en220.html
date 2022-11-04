@@ -2,127 +2,60 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title></title>
+<title>ζ function</title>
 </head>
 <body >
-<a href="cascmd_en219.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en221.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en219.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en221.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h4 id="sec507" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">limit(1/x,x,0,-1)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">limit(1/x,x=0,-1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−∞
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">limit(1/x,x,0,1)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">limit(1/x,x=0,1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">+∞
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">limit(1/x,x,0,0)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">limit(1/x,x,0)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">limit(1/x,x=0)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">∞
-</td></tr>
-</table>
-(Note that ∞ or <span style="font-style:italic">infinity</span> without an explicit
-<span style="font-family:monospace">+</span> or <span style="font-style:italic">-</span> represents unsigned infinity.)
-Hence, <span style="font-family:monospace">abs(1/x)</span> approaches +∞ when <span style="font-style:italic">x</span> approaches 0.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Exercises.</span>
+<h3 id="sec457" class="subsection">6.3.18  ζ function</h3>
+<p>The ζ function is defined by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ζ(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">+∞</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>=1</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span><sup><span style="font-style:italic">x</span></sup></td></tr>
+</table></td></tr>
+</table><p>
+for <span style="font-style:italic">x</span>&gt;1, and by its meromorphic continuation for
+<span style="font-style:italic">x</span>&lt;1.</p><p>The <span style="font-family:monospace">Zeta</span><a id="hevea_default356"></a> command computes
+the ζ function.
 </p><ul class="itemize"><li class="li-itemize">
-Find, for <span style="font-style:italic">n</span>&gt;2, the limit as <span style="font-style:italic">x</span> approaches 0 of:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>tan(<span style="font-style:italic">x</span>)−tan(<span style="font-style:italic">nx</span>)</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">sin(<span style="font-style:italic">nx</span>)−<span style="font-style:italic">n</span>sin(<span style="font-style:italic">x</span>)</td></tr>
+<span style="font-family:monospace">Zeta</span> takes
+<span style="font-style:italic">x</span>, a real number.
+</li><li class="li-itemize"><span style="font-family:monospace">Zeta(</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the ζ function
+ζ(<span style="font-style:italic">x</span>).
+</li></ul><h4 id="sec458" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Zeta</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">π</span><sup><span style="color:#0000CC">2</span></sup></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">6</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Zeta</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">π</span><sup><span style="color:#0000CC">4</span></sup></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">90</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
-</td></tr>
-</table>
-</li><li class="li-itemize">Find the limit as <span style="font-style:italic">x</span> approaches +∞ of
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:4em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:0em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:0;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">x</span></td></tr>
-</table></td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize">Find the limit as <span style="font-style:italic">x</span> approaches 0 of
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>/2</td></tr>
-</table></td><td class="dcell">−exp(<span style="font-style:italic">x</span>/2)</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">(1−cos(<span style="font-style:italic">x</span>))sin(<span style="font-style:italic">x</span>)</td></tr>
-</table></td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">limit((sqrt(1+x+x^2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6</td></tr>
-</table></td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en219.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en221.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en219.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en221.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

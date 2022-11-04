@@ -204,7 +204,7 @@ static mp_obj_t graphic_draw_line(size_t n_args, const mp_obj_t *args) {
     x2 = mp_obj_get_int(args[2]), y2 = mp_obj_get_int(args[3]),
     color=0;
   if (n_args==5)    
-    color = mp_obj_get_int(args[4]);
+    color = mp_get_color(args[4]);
   c_draw_line(x1,y1,x2,y2,color);
   return mp_const_none;
 }
@@ -254,7 +254,7 @@ static mp_obj_t graphic_draw_polygon_(size_t n_args, const mp_obj_t *args,bool f
     ++tab;
   }
   if (n_args==2)    
-    color = mp_obj_get_int(args[1]);
+    color = mp_get_color(args[1]);
   if (filled)
     c_draw_filled_polygon(x,y,n,0,LCD_WIDTH,0,LCD_HEIGHT,color);
   else

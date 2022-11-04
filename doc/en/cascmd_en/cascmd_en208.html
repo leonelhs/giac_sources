@@ -2,159 +2,45 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Defining an operator: user_operator
-
-
-
-
-
-</title>
+<title>Logarithmic integral function</title>
 </head>
 <body >
-<a href="cascmd_en207.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en209.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en207.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en209.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec434" class="subsection">5.14.2  Defining an operator: <span style="font-family:monospace">user_operator</span>
-<a id="hevea_default340"></a>
-<a id="hevea_default341"></a>
-<a id="hevea_default342"></a>
-<a id="hevea_default343"></a>
-<a id="hevea_default344"></a>
-<a id="hevea_default345"></a></h3>
-<p>The <span style="font-family:monospace">user_operator</span> command lets you define an operator or
-delete an operator you previously defined. When you use an operator
-you defined, you have to make sure that you leave spaces around the
-operator.</p><p>To define an operator:
+<h3 id="sec431" class="subsection">6.3.6  Logarithmic integral function</h3>
+<p>The logarithmic integral function is defined by </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">Li(<span style="font-style:italic">x</span>)=
+Ei(ln(<span style="font-style:italic">x</span>))=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"> <span style="font-style:italic">e</span><sup><span style="font-style:italic">x</span></sup></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">t</span>=0</td></tr>
+</table></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">ln(<span style="font-style:italic">t</span>)</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">d</span><span style="font-style:italic">t</span> </td></tr>
+</table><p>The <span style="font-family:monospace">Li</span><a id="hevea_default344"></a> command computes the logarithmic integral.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">user_operator</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">name</span>, a string which is the name of the operator.
-</li><li class="li-itemize"><span style="font-style:italic">fn</span>, a function of one or two variables with values
-in ℝ or in <span style="font-family:monospace">true</span>, <span style="font-family:monospace">false</span>.
-</li><li class="li-itemize"><span style="font-style:italic">type</span>, to specify what kind of an operator you are
-defining. The possible values are:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">Binary</span>, to define an infixed operator. In this
-case, <span style="font-family:monospace">fn</span> must be a function of two variables.
-</li><li class="li-itemize"><span style="font-family:monospace">Prefix</span> (or <span style="font-family:monospace">Unary</span>), to define a prefixed
-operator. In this case, <span style="font-style:italic">fn</span> must be a function of one variable.
-</li><li class="li-itemize"><span style="font-family:monospace">Postfix</span>, to define a postfixed operator. In this
-case <span style="font-style:italic">fn</span> must be a function of one variable.
-</li></ul>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">user_operator(</span><span style="font-style:italic">name,fn,type</span><span style="font-family:monospace">)</span>
-returns 1 if the definition was successful and
-otherwise returns 0.
-</li></ul><h4 id="sec435" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-weight:bold">Example 1.</span><br>
- Let <span style="font-style:italic">R</span> be defined on
-ℝ×ℝ by <span style="font-style:italic">x</span> <span style="font-style:italic">R</span>  <span style="font-style:italic">y</span>= <span style="font-style:italic">x</span>*<span style="font-style:italic">y</span>+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>.<br>
- To define <span style="font-style:italic">R</span>:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">user_operator("R",(x,y)-&gt;x*y+x+y,Binary)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
+<span style="font-family:monospace">Li</span> takes
+<span style="font-style:italic">z</span>, a complex number.
+</li><li class="li-itemize"><span style="font-family:monospace">Li(</span><span style="font-style:italic">z</span><span style="font-family:monospace">)</span> returns the value of the logarithmic integral
+Li(<span style="font-style:italic">z</span>).
+</li></ul><h4 id="sec432" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Li</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.0)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1.04516378012
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">5 R 7</span>
-</div>
-(Do not forget to put spaces around <span style="font-family:monospace">R</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  47
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-weight:bold">Example 2.</span><br>
- Let <span style="font-style:italic">S</span> be defined on ℕ by:<br>
- for <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> integers, <span style="font-style:italic">x</span> <span style="font-style:italic">S</span>  <span style="font-style:italic">y</span> means that <span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> are <em>not</em> coprime.<br>
- To define <span style="font-style:italic">S</span>:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">user_operator("S",(x,y)-&gt;(gcd(x,y))!=1,Binary)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">5 S 7</span>
-</div>
-(Do not forget to put spaces around <span style="font-family:monospace">S</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">false</span>
-</td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">8 S 12</span>
-</div>
-Do not forget to put spaces around <span style="font-family:monospace">S</span>.<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">true</span>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-weight:bold">Example 3.</span><br>
- Let <span style="font-style:italic">T</span> be defined on ℝ by <span style="font-style:italic">T</span> <span style="font-style:italic">x</span> = <span style="font-style:italic">x</span><sup>2</sup>.<br>
- To define <span style="font-style:italic">T</span>:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">user_operator("T",x-&gt;x^2,Prefix)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">T 4</span>
-</div>
-(Do not forget to put a space before <span style="font-family:monospace">T</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  16
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-weight:bold">Example 4.</span><br>
- Let <span style="font-style:italic">U</span> be defined on ℝ by <span style="font-style:italic">x</span> <span style="font-style:italic">U</span> = 5<span style="font-style:italic">x</span>.<br>
- To define <span style="font-style:italic">U</span>:<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">user_operator("U",x-&gt;5*x,Postfix)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">3 U</span>
-</div>
-(Do not forget to put a space before <span style="font-family:monospace">T</span>.)<br>
- <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  15
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p>To delete an operator:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">user_operator</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">name</span>, a string which is the name of the operator.
-</li><li class="li-itemize"><span style="font-family:monospace">Delete</span>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">user_operator(</span><span style="font-style:italic">name</span><span style="font-family:monospace">,Delete)</span> deletes
-the operator.
-</li></ul>
 <hr>
-<a href="cascmd_en207.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en209.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en207.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en209.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

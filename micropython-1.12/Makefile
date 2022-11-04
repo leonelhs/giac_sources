@@ -310,7 +310,7 @@ top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
 SUBDIRS = xcas  
-DIST_SUBDIRS = xcas  nspire numworks docs drivers examples extmod lib logo ports py tests tools unix ulab
+DIST_SUBDIRS = xcas  nspire numworks fxcg docs drivers examples extmod lib logo ports py tests tools unix ulab
 EXTRA_DIST = LICENSE *.md ACKNOWLEDGEMENTS
 all: all-recursive
 

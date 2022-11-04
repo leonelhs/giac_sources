@@ -2,83 +2,93 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inverse of a matrix with coefficients in ℤ/pℤ: inv inverse
-
-</title>
+<title>Building a polynomial from its evaluation</title>
 </head>
 <body >
-<a href="cascmd_en382.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en384.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en382.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en384.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec884" class="subsection">5.34.16  Inverse of a matrix with coefficients in ℤ/<span style="font-style:italic">p</span>ℤ: <span style="font-family:monospace">inv</span> <span style="font-family:monospace">inverse</span>
-<a id="hevea_default644"></a>
-<a id="hevea_default645"></a></h3>
-<p>The <span style="font-family:monospace">inv</span> command can find the inverse of
-a matrix with elements in ℤ/<span style="font-style:italic">p</span>ℤ.
-(See also Section <a href="cascmd_en498.html#ssec%3Ainv">5.47.2</a>.)<br>
-<span style="font-family:monospace">inverse</span> is a synonym for <span style="font-family:monospace">inv</span>.
+<h3 id="sec862" class="subsection">10.6.4  Building a polynomial from its evaluation</h3>
+<p>The <span style="font-family:monospace">genpoly</span><a id="hevea_default651"></a> command
+finds a polynomial which evaluates to a given polynomial.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">inv</span> takes one argument:<br>
- <span style="font-style:italic">A</span>, a matrix in ℤ/<span style="font-style:italic">p</span>ℤ.
-</li><li class="li-itemize"><span style="font-family:monospace">inv(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the
-inverse of the matrix <span style="font-style:italic">A</span>.
-</li></ul><h4 id="sec885" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">inv([[1,2,9]%13,[3,10,0]%13,[3,11,1]%13])</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">inverse([[1,2,9]%13,[3,10,0]%13,[3,11,1]%13])</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">inv([[1,2,9],[3,10,0],[3,11,1]]%13)</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">inverse([[1,2,9],[3,10,0],[3,11,1]]%13)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2%13</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−4</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−5</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td></tr>
+<span style="font-family:monospace">genpoly</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span>, a polynomial with <span style="font-style:italic">n</span>−1 variables.
+</li><li class="li-itemize"><span style="font-style:italic">b</span>, an integer.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, the name of a variable.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">genpoly(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>
+returns the polynomial <span style="font-style:italic">Q</span> with <span style="font-style:italic">n</span> variables (the <span style="font-style:italic">n</span>−1 variables in
+<span style="font-style:italic">P</span> and the variable <span style="font-style:italic">x</span>) such that the
+coefficients of <span style="font-style:italic">Q</span> are in the interval (−<span style="font-style:italic">b</span>/2,<span style="font-style:italic">b</span>/2] and <span style="font-style:italic">Q</span>|<sub><span style="font-style:italic">x</span>=<span style="font-style:italic">b</span></sub>=
+<span style="font-style:italic">P</span>.
+In other words, <span style="font-style:italic">P</span> is written in base <span style="font-style:italic">b</span> but using the
+convention that the Euclidean remainder belongs to (−<span style="font-style:italic">b</span>/2,<span style="font-style:italic">b</span>/2]
+(this convention is also known as s-mod representation).
+</li></ul><h4 id="sec863" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">genpoly</span></span><span style="font-weight:bold"><span style="color:#BF0000">(61,6,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2%13</td><td style="text-align:center;white-space:nowrap" >0%13</td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−5</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td></tr>
+</table><p>
+Indeed 61 divided by 6 is 10 with remainder 1, then 10 divided by 6 is 2
+with remainder −2 (instead of the usual quotient 1 and remainder 4 out of bounds),
+61=2· 6<sup>2</sup>−2· 6+1.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">genpoly</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,6,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−2</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−1</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">%13</td></tr>
-</table></td><td style="text-align:center;white-space:nowrap" >6%13</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
+</table><p>
+Indeed, 5=6−1.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">genpoly</span></span><span style="font-weight:bold"><span style="color:#BF0000">(7,6,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Indeed, 7=6+1.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">genpoly</span></span><span style="font-weight:bold"><span style="color:#BF0000">(7*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5,6,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">−1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Indeed, <span style="font-style:italic">xy</span>+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span>−1=<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>+1)+(<span style="font-style:italic">x</span>−1).
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">genpoly</span></span><span style="font-weight:bold"><span style="color:#BF0000">(7*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5*</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,6,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">z</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">z</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Indeed, <span style="font-style:italic">xy</span>+<span style="font-style:italic">xz</span>+<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>=<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>+1)+<span style="font-style:italic">z</span>(<span style="font-style:italic">x</span>−1).</p>
 <hr>
-<a href="cascmd_en382.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en384.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en382.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en384.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

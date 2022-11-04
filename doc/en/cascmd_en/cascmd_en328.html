@@ -2,55 +2,57 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Quotient and remainder: quorem divide
-</title>
+<title>Leading coefficient of a polynomial</title>
 </head>
 <body >
-<a href="cascmd_en327.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en329.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en327.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en329.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:quorem" class="subsection">5.28.4  Quotient and remainder: <span style="font-family:monospace">quorem</span> <span style="font-family:monospace">divide</span>
-<a id="hevea_default570"></a><a id="hevea_default571"></a></h3>
-<p>The <span style="font-family:monospace">quorem</span> command finds the quotient
-and remainder of the Euclidean division of two polynomials.<br>
-<span style="font-family:monospace">divide</span> is a synonym for <span style="font-family:monospace">quorem</span>.
+<h3 id="sec738" class="subsection">10.1.10  Leading coefficient of a polynomial</h3>
+<p>The <span style="font-family:monospace">lcoeff</span><a id="hevea_default575"></a> command finds the
+leading coefficient of a polynomial; that is, the coefficient of
+the monomial of highest degree.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">quorem</span> takes two mandatory arguments and one optional
+<span style="font-family:monospace">lcoeff</span> takes one mandatory argument and one optional
 argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span>, two polynomials.
-</li><li class="li-itemize">Optionally <span style="font-style:italic">x</span>, the variable (by default
-<span style="font-family:monospace">x</span>), if <span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span> are given as expressions.
+<span style="font-style:italic">P</span>, a polynomial given by a symbolic expression or by its
+list of coefficients.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable name (by default <span style="font-family:monospace">x</span>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">quorem(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>  ⟨ ,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span>
-returns a list consisting of the Euclidean quotient and the
-Euclidean remainder of <span style="font-style:italic">P</span> divided by <span style="font-style:italic">Q</span>.
-</li></ul><h4 id="sec766" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">quorem([1,2,4],[1,1,2])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  [▯ 1 ▯, ▯ 1,2 ▯]
-</td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">lcoeff(</span><span style="font-style:italic">P</span> ⟨,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns the leading coefficient of <span style="font-style:italic">P</span>.
+</li></ul><h4 id="sec739" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">lcoeff</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,1,-1,0])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">lcoeff</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+5*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+3
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">lcoeff</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+5*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+5 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">quorem(x^3-1,x^2-1,x)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">x</span>,<span style="font-style:italic">x</span>−1</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en327.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en329.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en327.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en329.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

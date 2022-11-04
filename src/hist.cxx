@@ -1532,7 +1532,7 @@ static void cb_Xcas_index_English(Fl_Menu_*, void*) {
 // doc_prefix=giac::set_language(2,giac::context0);
 doc_prefix=giac::set_language(2,contextptr);
 giac::language(2,giac::context0);
-giac::html_help_init("aide_cas",1);
+giac::html_help_init("aide_cas",2);
 }
 
 static void cb_Xcas_index_Espanol(Fl_Menu_*, void*) {
@@ -1540,7 +1540,7 @@ static void cb_Xcas_index_Espanol(Fl_Menu_*, void*) {
 // doc_prefix=giac::set_language(3,giac::context0);
 doc_prefix=giac::set_language(3,contextptr);
 giac::language(3,giac::context0);
-giac::html_help_init("aide_cas",1);
+giac::html_help_init("aide_cas",2);
 }
 
 static void cb_Xcas_index_Greek(Fl_Menu_*, void*) {
@@ -1548,7 +1548,7 @@ static void cb_Xcas_index_Greek(Fl_Menu_*, void*) {
 // doc_prefix=giac::set_language(4,giac::context0);
 doc_prefix=giac::set_language(4,contextptr);
 giac::language(4,giac::context0);
-giac::html_help_init("aide_cas",1);
+giac::html_help_init("aide_cas",4);
 }
 
 static void cb_Xcas_index_Chinese(Fl_Menu_*, void*) {
@@ -1556,7 +1556,7 @@ static void cb_Xcas_index_Chinese(Fl_Menu_*, void*) {
 // doc_prefix=giac::set_language(4,giac::context0);
 doc_prefix=giac::set_language(8,contextptr);
 giac::language(8,giac::context0);
-giac::html_help_init("aide_cas",1);
+giac::html_help_init("aide_cas",2);
 }
 
 static void cb_Xcas_index_German(Fl_Menu_*, void*) {
@@ -1564,7 +1564,7 @@ static void cb_Xcas_index_German(Fl_Menu_*, void*) {
 // doc_prefix=giac::set_language(3,giac::context0);
 doc_prefix=giac::set_language(5,contextptr);
 giac::language(5,giac::context0);
-giac::html_help_init("aide_cas",1);
+giac::html_help_init("aide_cas",2);
 }
 
 static void cb_Xcas_background_color_item(Fl_Menu_*, void*) {

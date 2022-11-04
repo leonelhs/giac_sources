@@ -2,44 +2,94 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Flattening a list: flatten
-
-</title>
+<title>Product of two permutations</title>
 </head>
 <body >
-<a href="cascmd_en433.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en435.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en433.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en435.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:flatten" class="subsection">5.40.14  Flattening a list: <span style="font-family:monospace">flatten</span>
-<a id="hevea_default719"></a>
-</h3>
-<p>The <span style="font-family:monospace">flatten</span> command replaces any sublists of a list by their
-elements.
+<h3 id="sec976" class="subsection">11.2.9  Product of two permutations</h3>
+<p>Permutations are functions, and so can be composed. Since cycles can
+be represented differently than other permutations, there are commands
+for composing permutations of different types.</p><p>The <span style="font-family:monospace">p1op2</span><a id="hevea_default718"></a> command composes two permutations.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">flatten</span> takes one argument:<br>
- <span style="font-style:italic">L</span>, a list.
-</li><li class="li-itemize"><span style="font-family:monospace">flatten(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns a list which is the result of
-recursively replacing any elements that are lists by the elements,
-resulting in a list with no lists as elements.
-</li></ul><h4 id="sec1009" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">flatten([[1,[2,3],4],[5,6]])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,3,4,5,6</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p><br>
-</p><p>If the original list is a matrix, you can also use the <span style="font-family:monospace">mat2list</span>
-command for this (see Section <a href="cascmd_en454.html#ssec%3Amat2list">5.40.34</a>).</p>
+<span style="font-family:monospace">p1op2</span> takes two arguments:
+<span style="font-style:italic">p</span><sub>1</sub> and <span style="font-style:italic">p</span><sub>2</sub>, permutations.
+</li><li class="li-itemize"><span style="font-family:monospace">p1op2(</span><span style="font-style:italic">p</span><sub>1</sub>,<span style="font-style:italic">p</span><sub>2</sub><span style="font-family:monospace">)</span> returns the permutation <span style="font-style:italic">p</span><sub>1</sub>∘ <span style="font-style:italic">p</span><sub>2</sub>
+obtained by composition. Note that this is the standard mathematical notation;
+that is, the rightmost permutation is applied first.
+</li></ul><p>The <span style="font-family:monospace">c1op2</span><a id="hevea_default719"></a> command composes a cycle and a permutation.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">c1op2</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">c</span><sub>1</sub>, a cycle.
+</li><li class="li-itemize"><span style="font-style:italic">p</span><sub>2</sub>, a permutation.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">c1op2(</span><span style="font-style:italic">c</span><sub>1</sub>,<span style="font-style:italic">p</span><sub>2</sub><span style="font-family:monospace">)</span> returns the permutation <span style="font-style:italic">c</span><sub>1</sub>∘ <span style="font-style:italic">p</span><sub>2</sub>
+obtained by composition.
+</li></ul><p>The <span style="font-family:monospace">p1oc2</span><a id="hevea_default720"></a> command composes a permutation and a cycle.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">p1oc2</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">p</span><sub>1</sub>, a permutation.
+</li><li class="li-itemize"><span style="font-style:italic">c</span><sub>2</sub>, a cycle.
+</li></ul>
+<span style="font-family:monospace">p1oc2(</span><span style="font-style:italic">p</span><sub>1</sub>,<span style="font-style:italic">c</span><sub>2</sub><span style="font-family:monospace">)</span> returns the permutation
+<span style="font-style:italic">p</span><sub>1</sub>∘ <span style="font-style:italic">c</span><sub>2</sub> obtained by composition.
+</li></ul><p>The <span style="font-family:monospace">c1oc2</span><a id="hevea_default721"></a> command composes two cycles.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">c1oc2</span> takes two arguments:
+<span style="font-style:italic">c</span><sub>1</sub> and <span style="font-style:italic">c</span><sub>2</sub>, cycles.
+</li><li class="li-itemize"><span style="font-family:monospace">c1oc2(</span><span style="font-style:italic">c</span><sub>1</sub>,<span style="font-style:italic">c</span><sub>2</sub><span style="font-family:monospace">)</span> returns the permutation <span style="font-style:italic">c</span><sub>1</sub>∘ <span style="font-style:italic">c</span><sub>2</sub>
+obtained by composition.
+</li></ul><h4 id="sec977" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">p1op2</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,5,2,0,1],[2,0,1,4,3,5])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">5,3,4,0,2,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">c1op2</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,5],[2,0,1,4,3,5])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2,0,1,5,4,3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">p1oc2</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,5,2,0,1],[2,0,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">4,5,3,2,0,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">c1oc2</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,5],[2,0,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,2,0,4,5,3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en433.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en435.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en433.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en435.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

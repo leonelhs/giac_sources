@@ -1890,12 +1890,12 @@ namespace giac {
 	// tmp=a*tmplv[0]+c*tmplv[1]+d
 	if (tmplv[0]._SYMBptr->sommet==at_sin && tmplv[1]._SYMBptr->sommet==at_cos){
 	  // a*sin(x)+c*cos(x)=C*sin(x+phi) where exp(i*phi)=a+i*c;
-	  gen phi=arg(halftan(a+cst_i*c,contextptr),contextptr);
+	  gen phi=is_zero(d)?atan(halftan(c/a,contextptr),contextptr):arg(halftan(a+cst_i*c,contextptr),contextptr);
 	  tmp=sqrt(a*a+c*c,contextptr)*sin(tmplv[0]._SYMBptr->feuille+phi,contextptr)+d;
 	}
 	if (tmplv[0]._SYMBptr->sommet==at_cos && tmplv[1]._SYMBptr->sommet==at_sin){
 	  // a*cos(x)+c*sin(x)=C*sin(x+phi) where exp(i*phi)=c+i*a;
-	  gen phi=arg(halftan(c+cst_i*a,contextptr),contextptr);
+	  gen phi=is_zero(d)?atan(halftan(a/c,contextptr),contextptr):arg(halftan(c+cst_i*a,contextptr),contextptr);
 	  tmp=sqrt(a*a+c*c,contextptr)*sin(tmplv[0]._SYMBptr->feuille+phi,contextptr)+d;
 	}
       }
@@ -1904,12 +1904,12 @@ namespace giac {
 	  // tmp=a*tmplv[0]+c*tmplv[1]+d
 	  if (tmplv[1]._SYMBptr->sommet==at_sin && tmplv[0]._SYMBptr->sommet==at_cos){
 	    // a*sin(x)+c*cos(x)=C*sin(x+phi) where exp(i*phi)=a+i*c;
-	    gen phi=arg(halftan(a+cst_i*c,contextptr),contextptr);
+	    gen phi=is_zero(d)?atan(halftan(c/a,contextptr),contextptr):arg(halftan(a+cst_i*c,contextptr),contextptr);
 	    tmp=sqrt(a*a+c*c,contextptr)*sin(tmplv[1]._SYMBptr->feuille+phi,contextptr)+d;
 	  }
 	  if (tmplv[1]._SYMBptr->sommet==at_cos && tmplv[0]._SYMBptr->sommet==at_sin){
 	    // a*cos(x)+c*sin(x)=C*sin(x+phi) where exp(i*phi)=c+i*a;
-	    gen phi=arg(halftan(c+cst_i*a,contextptr),contextptr);
+	    gen phi=is_zero(d)?atan(halftan(a/c,contextptr),contextptr):arg(halftan(c+cst_i*a,contextptr),contextptr);
 	    tmp=sqrt(a*a+c*c,contextptr)*sin(tmplv[1]._SYMBptr->feuille+phi,contextptr)+d;
 	  }
 	}
@@ -2847,10 +2847,13 @@ namespace giac {
 	      if (!is_zero(res2))
 		res2=_simplify(_solve(makesequence(symb_equal(res2,0),var2),contextptr),contextptr);
 	      gen res3=derive(eq2,var2,contextptr);
-	      if (!is_zero(res3))
-		res3=_simplify(subst(eq2,var1,v1val,false,contextptr),contextptr);
 	      if (!is_zero(res3)){
-		res3=_simplify(_solve(makesequence(symb_equal(res3,0),var2),contextptr),contextptr);
+		res3 = subst(eq2,var1,v1val,false,contextptr);
+		res3=_simplify(res3,contextptr);
+	      }
+	      if (!is_zero(res3)){
+		res3=_solve(makesequence(symb_equal(res3,0),var2),contextptr);
+		res3=_simplify(res3,contextptr);
 		if (is_zero(res2))
 		  res2=res3;
 		else
@@ -2906,6 +2909,12 @@ namespace giac {
 	      gen res1=_solve(makesequence(symb_equal(a12,0),v.back()),contextptr);
 	      gen res2=_solve(makesequence(symb_equal(ratnormal(a1/a12,contextptr),ratnormal(a2/a12,contextptr)),v.back()),contextptr);
 	      return gen(mergevecteur(gen2vecteur(res1),gen2vecteur(res2)),res1.subtype);
+	    }
+	    if (w.size()>=3){
+	      gen tst=tsimplify(_lin(a1/a2,contextptr),contextptr);
+	      w=lvarx(tst,v.back());
+	      if (w.size()==1)
+		return _solve(makesequence(tst-1,v.back()),contextptr);
 	    }
 	    gen a1arg,a2arg; 
 	    bool a1log=is_log10(a1,a1arg),a2log=is_log10(a2,a2arg);
@@ -3000,6 +3009,14 @@ namespace giac {
   }
   gen _solve(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
+    if (is_equal(args) && args._SYMBptr->feuille[1]==0 && args._SYMBptr->feuille[0].type==_INT_){
+      int v=args._SYMBptr->feuille[0].val;
+      if (v==16 || v==10 || v==8 || v==2){
+	*logptr(contextptr) << "Integer format set to " << v << '\n';
+	integer_format(v,contextptr);
+	return vecteur(0);
+      }
+    }
     gen res=_solve_uncompressed(args,contextptr);
     if (res.type==_VECT){
       vecteur v=*res._VECTptr;
@@ -7095,7 +7112,7 @@ namespace giac {
 	  const_iterateur xt=xsol.begin(),xtend=xsol.end();
 	  for (;xt!=xtend;++xt){
 	    // current[xpos]=*xt;
-	    if (is_inequation(*xt)){ // FIXME is_inequation
+	    if (is_inequation(*xt) || xt->is_symb_of_sommet(at_and) || xt->is_symb_of_sommet(at_ou)){ // FIXME is_inequation
 	      gen id=lidnt(*xt);
 	      if (id.type==_VECT && id._VECTptr->size()==1){
 		id=id._VECTptr->front();

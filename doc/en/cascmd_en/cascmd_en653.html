@@ -2,22 +2,46 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Producing random numbers with a multinomial distribution: randmultinomial
-
-</title>
+<title>Sampling from probability distributions</title>
 </head>
 <body >
-<a href="cascmd_en652.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en654.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en652.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en654.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:randmultinomial" class="subsection">8.3.4  Producing random numbers with a multinomial distribution: <span style="font-family:monospace">randmultinomial</span>
-<a id="hevea_default1182"></a>
-</h3>
-<p>The <span style="font-family:monospace">randmultinomial</span> command finds random numbers chosen
-according to a multinomial distribution (see Section <a href="cascmd_en670.html#ssec%3Amultinomial">8.4.5</a>).
+<h3 id="sec1575" class="subsection">18.3.3  Sampling from probability distributions</h3>
+<h5 id="ssec:randbinomial" class="paragraph">Generating random numbers from binomial distribution.</h5>
+<p>
+The <span style="font-family:monospace">randbinomial</span><a id="hevea_default1272"></a>
+command finds random numbers chosen
+according to the binomial distribution (see Section <a href="cascmd_en659.html#ssec%3Abinomial">18.4.3</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randbinomial</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize"><span style="font-style:italic">p</span>, a probability (a number between 0 and 1).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">randbinomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns an integer from 0 to <span style="font-style:italic">n</span> chosen
+randomly according to the binomial distribution with parameters <span style="font-style:italic">n</span>
+and <span style="font-style:italic">p</span>; i.e., the number of successes you might get if you did an
+experiment <span style="font-style:italic">n</span> times, where the probability of success each time is <span style="font-style:italic">p</span>.
+</li></ul><h4 id="sec1577" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randbinomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">(100,0.4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+42
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randmultinomial" class="paragraph">Generating random numbers from multinomial distribution.</h5>
+<p>
+The <span style="font-family:monospace">randmultinomial</span><a id="hevea_default1273"></a>
+command finds random numbers chosen
+according to a multinomial distribution (see Section <a href="cascmd_en661.html#ssec%3Amultinomial">18.4.5</a>).
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-family:monospace">randmultinomial</span> takes one mandatory and one optional argument:
 <ul class="itemize"><li class="li-itemize">
@@ -30,28 +54,220 @@ mutually exclusive events occurs).
 according to the corresponding multinomial distribution.
 </li><li class="li-itemize"><span style="font-family:monospace">randmultinomial(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)</span> returns an element of <span style="font-style:italic">K</span>
 whose index is chosen randomly.
-</li></ul><h4 id="sec1637" class="subsubsection">Examples</h4>
+</li></ul><h4 id="sec1579" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmultinomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1/2, 1/3, 1/6])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmultinomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1/2, 1/3, 1/6],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"R"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"V"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"B"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">“R”</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randpoisson" class="paragraph">Generating random numbers from Poisson distribution.</h5>
+<p>
+Recall that given a number λ&gt;0, the corresponding Poisson
+distribution <span style="font-style:italic">P</span>(λ) satisfies
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">k</span>)=<span style="font-style:italic">e</span><sup>−λ</sup></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">λ<sup><span style="font-style:italic">k</span></sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>!</td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+It will have mean λ and standard deviation √<span style="text-decoration:overline">λ</span>.
+(See also Section <a href="cascmd_en662.html#ssec%3Apoisson">18.4.6</a>.)</p><p>The <span style="font-family:monospace">randpoisson</span><a id="hevea_default1274"></a>
+command finds a random integer according to
+a Poisson distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randpoisson</span> takes
+λ, a positive number.
+</li><li class="li-itemize"><span style="font-family:monospace">randpoisson(</span>λ<span style="font-family:monospace">)</span> returns an integer chosen
+randomly according to the Poisson distribution with paramter λ.
+</li></ul><h4 id="sec1581" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randpoisson</span></span><span style="font-weight:bold"><span style="color:#BF0000">(10.6)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+16
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randnorm" class="paragraph">Generating random numbers from normal distribution.</h5>
+<p>
+The <span style="font-family:monospace">randnorm</span><a id="hevea_default1275"></a>
+or <span style="font-family:monospace">randNorm</span><a id="hevea_default1276"></a>
+command chooses a random number according to a normal distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randnorm</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmultinomial([1/2, 1/3, 1/6])</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmultinomial([1/2, 1/3, 1/6],["R","V","B"])</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">"R"
-</td></tr>
-</table>
+µ, a real number (the mean).
+</li><li class="li-itemize">σ, a positive real number (the standard deviation).
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">randnorm(</span>µ,σ<span style="font-family:monospace">)</span> returns a number chosen
+randomly according the normal distribution with mean µ and standard
+deviation σ.
+</li></ul><h4 id="sec1583" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randnorm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+3.39283224858
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randstudent" class="paragraph">Generating random numbers from Student’s distribution.</h5>
+<p>
+The <span style="font-family:monospace">randstudent</span><a id="hevea_default1277"></a>
+command finds random numbers chosen according to Student’s distribution (see
+Section <a href="cascmd_en664.html#ssec%3Astudent">18.4.8</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randstudent</span> takes
+<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
+</li><li class="li-itemize"><span style="font-family:monospace">randstudent(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a number chosen randomly
+according to Student’s distribution with <span style="font-style:italic">n</span> degrees of freedom.
+</li></ul><h4 id="sec1585" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randstudent</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.268225314184
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randchisquare" class="paragraph">Generating random numbers from χ<sup>2</sup> distribution.</h5>
+<p>
+The <span style="font-family:monospace">randchisquare</span><a id="hevea_default1278"></a>
+command finds random numbers chosen according to the χ<sup>2</sup> distribution (see
+Section <a href="cascmd_en665.html#ssec%3Achisquare">18.4.9</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randchisquare</span> takes
+<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
+</li><li class="li-itemize"><span style="font-family:monospace">randchisquare(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a number chosen randomly
+according to the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span> degrees of freedom.
+</li></ul><h4 id="sec1587" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randchisquare</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+4.53970828547
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randfisher" class="paragraph">Generating random numbers from Fisher-Snédécor distribution.</h5>
+<p>
+The <span style="font-family:monospace">randfisher</span><a id="hevea_default1279"></a> command
+finds random numbers chosen according to the Fisher-Snédécor distribution (see
+Section <a href="cascmd_en666.html#ssec%3Afishersnedecor">18.4.10</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randfisher</span> takes two arguments:
+<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, integers (degrees of freedom).
+</li><li class="li-itemize"><span style="font-family:monospace">randfisher(</span><span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> returns a number chosen randomly
+according to the Fisher-Snédécor distribution with
+<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub> degrees of freedom.
+</li></ul><h4 id="sec1589" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randfisher</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2.33137725333
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randgammad" class="paragraph">Generating random numbers from gamma distribution.</h5>
+<p>
+The <span style="font-family:monospace">randgammad</span><a id="hevea_default1280"></a>
+command finds random numbers chosen according to the gamma distribution (see
+Section <a href="cascmd_en667.html#ssec%3Agammad">18.4.11</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randgammad</span> takes two arguments:
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, positive real numbers (the parameters).
+</li><li class="li-itemize"><span style="font-family:monospace">randgammad(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns a number chosen randomly
+according to the gamma distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.
+</li></ul><h4 id="sec1591" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randgammad</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+4.91461463472
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randbetad" class="paragraph">Generating random numbers from beta distribution.</h5>
+<p>
+The <span style="font-family:monospace">randbetad</span><a id="hevea_default1281"></a>
+command finds random numbers chosen according to the beta distribution (see
+Section <a href="cascmd_en668.html#ssec%3Abetad">18.4.12</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randbetad</span> takes two arguments:
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, positive real numbers (the parameters).
+</li><li class="li-itemize"><span style="font-family:monospace">randbetad(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns a number chosen randomly
+according to the beta distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.
+</li></ul><h4 id="sec1593" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randbetad</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.524453873081
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randgeometric" class="paragraph">Generating random numbers from geometric distribution.</h5>
+<p>
+The <span style="font-family:monospace">randgeometric</span><a id="hevea_default1282"></a>
+command finds random numbers chosen according to the geometric distribution (see
+Section <a href="cascmd_en669.html#ssec%3Ageometric">18.4.13</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randgeometric</span> takes
+<span style="font-style:italic">p</span>, a probability (a number between 0 and 1).
+</li><li class="li-itemize"><span style="font-family:monospace">randgeometric(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns a number chosen randomly
+according to the geometric distribution with probability <span style="font-style:italic">p</span>.
+</li></ul><h4 id="sec1595" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randgeometric</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0.2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+11
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="ssec:randexp" class="paragraph">Generating random numbers from exponential distribution.</h5>
+<p>
+The <span style="font-family:monospace">randexp</span><a id="hevea_default1283"></a> command finds random numbers chosen
+according to the exponential distribution (see Section <a href="cascmd_en671.html#ssec%3Aexponentiald">18.4.15</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">randexp</span> takes
+λ, a positive real number (the parameter).
+</li><li class="li-itemize"><span style="font-family:monospace">randexp(</span>λ<span style="font-family:monospace">)</span> returns a number chosen randomly
+according to the exponential distribution with parameter λ.
+</li></ul><h4 id="sec1597" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randexp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.0288626239833
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en652.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en654.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en652.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en654.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

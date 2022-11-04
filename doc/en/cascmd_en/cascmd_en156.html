@@ -2,72 +2,69 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Previous and next permutation: prevperm nextperm
-
-</title>
+<title>Defining intervals</title>
 </head>
 <body >
-<a href="cascmd_en155.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en157.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en155.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en157.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec321" class="subsection">5.9.2  Previous and next permutation: <span style="font-family:monospace">prevperm</span> <span style="font-family:monospace">nextperm</span>
-<a id="hevea_default267"></a>
-<a id="hevea_default268"></a></h3>
-<p>The set of <span style="font-style:italic">n</span>-tuples of an ordered set can be put in
-<em>lexicographic order</em>, where the tuple
-(<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>,…,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>) comes before (<span style="font-style:italic">b</span><sub>1</sub>,<span style="font-style:italic">b</span><sub>2</sub>,…,<span style="font-style:italic">b</span><sub><span style="font-style:italic">n</span></sub>)
-exactly when for some <span style="font-style:italic">k</span> (possibly <span style="font-style:italic">k</span>=0), <span style="font-style:italic">a</span><sub><span style="font-style:italic">i</span></sub>=<span style="font-style:italic">b</span><sub><span style="font-style:italic">i</span></sub> for
-<span style="font-style:italic">i</span>=1,…,<span style="font-style:italic">k</span>−1 and <span style="font-style:italic">a</span><sub><span style="font-style:italic">k</span></sub>&lt;<span style="font-style:italic">b</span><sub><span style="font-style:italic">k</span></sub>. For example, the set of
-permutations of size 3 in lexicographic order is
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >(0,1,2)</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >(0,2,1)</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >(1,0,2)</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >(1,2,0)</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >(2,0,1)</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >(2,1,0)
-</td></tr>
-</table>
-</div><p>The <span style="font-family:monospace">prevperm</span> and <span style="font-family:monospace">nextperm</span> commands find the
-preceding and succeeding permutation.
+<h3 id="sec311" class="subsection">5.6.1  Defining intervals</h3>
+<p>An interval is a range of real numbers, whose end points will be
+floats with at least 15 significant digits. 
+The <span style="font-style:italic">i</span> command creates intervals, with the arguments in square
+brackets.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">prevperm</span> takes one argument:<br>
- <span style="font-style:italic">p</span>, a permutation.
-</li><li class="li-itemize"><span style="font-family:monospace">prevperm(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns the previous permutation in lexicographic
-order, or <span style="font-family:monospace">undef</span> if there is no previous permutation.
-</li></ul><h4 id="sec322" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">prevperm([0,3,1,2])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,2,3,1</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p><br>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">nextperm</span> takes one argument:<br>
- <span style="font-style:italic">p</span>, a permutation.
-</li><li class="li-itemize"><span style="font-family:monospace">nextperm(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns the next permutation in lexicographic
-order, or <span style="font-family:monospace">undef</span> if there is no next permutation.
-</li></ul><h4 id="sec323" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">nextperm([0,2,3,1])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,3,1,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<span style="font-family:monospace">i</span><a id="hevea_default262"></a> takes two arguments:
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, two real numbers.
+</li><li class="li-itemize"><span style="font-family:monospace">i[</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">]</span> returns the interval between <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.<p>If <span style="font-style:italic">a</span> &gt; <span style="font-style:italic">b</span>, then <span style="font-family:monospace">i[</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">]</span> returns
+<span style="font-family:monospace">i[evalf(</span><span style="font-style:italic">b</span><span style="font-family:monospace">,15)-epsilon,evalf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,15)+epsilon]</span> (see
+Section <a href="cascmd_en030.html#ssec%3Aconfcomp">2.5.7</a>, item <a href="cascmd_en030.html#enum%3Aeps">2.5.7</a>).
+</p></li></ul><p>Intervals can also be created by following a decimal number with a
+question mark. If the decimal number contains <span style="font-style:italic">n</span> digits, the
+interval will be centered at <span style="font-style:italic">a</span> and have width 2· 10<sup>−<span style="font-style:italic">n</span></sup>.</p><h4 id="sec312" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,13/11]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[1.00000000000000..1.18181818181819]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">[</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[1.73205080756886..3.14159265358980]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">0.123?</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0.121999999999999..0.124000000000000</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">789.123456?</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">0.789123454999990</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span><span style="color:#0000CC">3..0.789123456999998</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span><span style="color:#0000CC">3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en155.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en157.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en155.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en157.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

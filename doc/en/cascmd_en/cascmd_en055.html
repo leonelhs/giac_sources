@@ -2,113 +2,118 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Assigning values: := =&gt; = assign sto Store
-
-
-
-
-
-
-</title>
+<title>Numbers</title>
 </head>
 <body >
-<a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en056.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en054.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en056.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:assign" class="subsection">4.4.2  Assigning values: <span style="font-family:monospace">:=</span> <span style="font-family:monospace">=&gt;</span> <span style="font-family:monospace">=</span> <span style="font-family:monospace">assign</span> <span style="font-family:monospace">sto</span> <span style="font-family:monospace">Store</span>
-<a id="hevea_default64"></a>
-<a id="hevea_default65"></a>
-<a id="hevea_default66"></a>
-<a id="hevea_default67"></a>
-<a id="hevea_default68"></a>
-<a id="hevea_default69"></a>
-</h3>
-<p>You can assign a value to a variable with the <span style="font-family:monospace">:=</span> operator.
-For example, to give the variable <span style="font-family:monospace">a</span> the value of <span style="font-family:monospace">4</span>,
-you can enter
-</p><div class="center">
-<span style="font-family:monospace">a:= 4</span>
-</div><p>
-Alternatively, you can use the <span style="font-family:monospace">=&gt;</span> operator; when
-you use this operator, the value comes before the variable;
-</p><div class="center">
-<span style="font-family:monospace">4 =&gt; a</span>
-</div><p>
-The function <span style="font-family:monospace">sto</span> (or <span style="font-family:monospace">Store</span>)
-can also be used; again, the value comes before the variable
-(the value is stored into the variable);
-</p><div class="center">
-<span style="font-family:monospace">sto(4,a)</span>
-</div><p>
-After any one of these commands, whenever you use the variable
-<span style="font-family:monospace">a</span> in an expression, it will be replaced by <span style="font-family:monospace">4</span>.</p><p>You can use sequences or lists to make multiple assignments at the
-same time. For example,
-</p><div class="center">
-<span style="font-family:monospace">(a,b,c):= (1,2,3)</span>
-</div><p>
-will assign <span style="font-family:monospace">a</span> the value <span style="font-family:monospace">1</span>, <span style="font-family:monospace">b</span> the value
-<span style="font-family:monospace">2</span> and <span style="font-family:monospace">c</span> the value <span style="font-family:monospace">3</span>. Note that this can
-be used to switch the values of two variables; with <span style="font-family:monospace">a</span> and
-<span style="font-family:monospace">b</span> as above, the command
-</p><div class="center">
-<span style="font-family:monospace">(a,b):= (b,a)</span>
-</div><p>
-will set <span style="font-family:monospace">a</span> equal to <span style="font-family:monospace">b</span>’s original value, namely
-<span style="font-family:monospace">2</span>, and will set <span style="font-family:monospace">b</span> equal to <span style="font-family:monospace">a</span>’s original
-value, namely <span style="font-family:monospace">1</span>.</p><p>Another way to assign values to variables, useful in Maple mode, is
-with the <span style="font-family:monospace">assign</span> command. If you enter
-</p><div class="center">
-<span style="font-family:monospace">assign(a,3)</span>
-</div><p>
-or
-</p><div class="center">
-<span style="font-family:monospace">assign(a = 3)</span>
-</div><p>
-then <span style="font-family:monospace">a</span> will have the value <span style="font-family:monospace">3</span>. You can assign
-multiple values at once; if you enter
-</p><div class="center">
-<span style="font-family:monospace">assign([a = 1, b = 2])</span>
-</div><p>
-then <span style="font-family:monospace">a</span> will have the value <span style="font-family:monospace">1</span> and <span style="font-family:monospace">b</span> will
-have the value <span style="font-family:monospace">2</span>. This command can be useful in Maple mode,
-where solutions of equations are returned as equations. For example,
-if you enter (in Maple mode)
-</p><div class="center">
-<span style="font-family:monospace">sol:= solve([x + y = 1, y = 2],[x,y])</span>
-</div><p>
-(see Section <a href="cascmd_en569.html#ssec%3Asolve">5.55.6</a>) you will get
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">[<span style="font-style:italic">x</span>=−1,<span style="font-style:italic">y</span>=2]
-</td></tr>
+<h3 id="sec:numbs" class="subsection">3.1.1  Numbers</h3>
+<p><span style="font-variant:small-caps">Xcas</span> works with both real and complex numbers. The real
+numbers can be integers, rational numbers, floating point numbers or
+symbolic constants.</p><p>You can enter an integer by simply typing the digits.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1234321</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1234321
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table><p>
-If you then enter
-</p><div class="center">
-<span style="font-family:monospace">assign(sol)</span>
-</div><p>
-the variable <span style="font-family:monospace">x</span> will have value <span style="font-family:monospace">-1</span> and <span style="font-family:monospace">y</span>
-will have the value <span style="font-family:monospace">2</span>. This same effect can be achieved in
-standard <span style="font-family:monospace">Xcas</span> mode, where
-</p><div class="center">
-<span style="font-family:monospace">sol:= solve([x + y = 1, y = 2],[x,y])</span>
-</div><p>
-will return
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−1,2</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
+Alternatively, you can enter an integer in binary (base 2) by
+prefixing the digits (0 through 1) with <span style="font-family:monospace">0b</span>, in octal (base 8)
+by prefixing the digits (0 through 7) with <span style="font-family:monospace">0</span> or <span style="font-family:monospace">0o</span>,
+and in hexadecimal (base 16) by prefixing the digits (0 through 9 and
+a through f) with <span style="font-family:monospace">0x</span>. (See Section <a href="cascmd_en099.html#ssec%3Abinocthex">4.4.1</a>.)
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">0</span></span><span style="font-weight:bold"><span style="color:#BF0000">xab12</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+43794
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>You can enter a rational number as the ratio of two integers.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">123/45</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">41</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">15</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table><p>
-In this case, the command
-</p><div class="center">
-<span style="font-family:monospace">[x,y]:= sol[0]</span>
-</div><p>
-will assign <span style="font-family:monospace">x</span> the value <span style="font-family:monospace">-1</span> and <span style="font-family:monospace">y</span> the value
-<span style="font-family:monospace">2</span>.</p>
+The result will be put in lowest terms. If the top is a multiple of
+the bottom, the result will be an integer.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">123/3</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+41
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>A floating point number is regarded as an approximation to a real
+number. You can enter a floating point number by writing it out with
+a decimal point.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">123.45</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+123.45
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+You can also enter a floating point number by
+entering a sequence of digits, with an optional decimal point,
+followed by <span style="font-family:monospace">e</span> and then an integer, where the <span style="font-family:monospace">e</span>
+represents “times 10 to the following power.”
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1234</span></span><span style="font-weight:bold"><span style="color:#BF0000">e3</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1234000.0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Floating point numbers with a large number of digits will be printed with
+<span style="font-family:monospace">e</span> notation; you can control how other floats are displayed
+(see Section <a href="cascmd_en030.html#ssec%3Aconfcomp">2.5.7</a>, item <a href="cascmd_en030.html#enum%3Afloat">2.5.7</a>).
+An integer or rational number can be converted to a floating point
+number with <span style="font-family:monospace">evalf</span> (see Section <a href="cascmd_en203.html#ssec%3Aevalf">6.3.1</a>).</p><p>A complex number is a number of the form <span style="font-style:italic">a</span><span style="font-family:monospace">+</span><span style="font-style:italic">b</span><span style="font-family:monospace">i</span>, where <span style="font-style:italic">a</span>
+and <span style="font-style:italic">b</span> are real numbers. The numbers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> will be the same
+type of real number; one type will be converted to the other type if
+necessary (an integer can be converted to a rational number or a
+floating point number, and a rational number can be converted to a
+floating point number).
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">3+1.1</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+3+1.1</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en054.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en056.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en054.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en056.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

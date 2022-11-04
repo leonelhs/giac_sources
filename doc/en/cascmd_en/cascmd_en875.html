@@ -2,86 +2,47 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking if an object in the plane is a rhombus: is_rhombus
-</title>
+<title>Similarity in the plane</title>
 </head>
 <body >
-<a href="cascmd_en874.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en876.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en874.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en876.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dcheckrhombus" class="subsection">13.16.9  Checking if an object in the plane is a rhombus: <span style="font-family:monospace">is_rhombus</span>
-<a id="hevea_default1576"></a></h3>
-<p>See Section <a href="cascmd_en950.html#ssec%3A3dcheckrhombus">14.13.13</a> for checking for rhombuses in
-three-dimensional geometry.</p><p>The <span style="font-family:monospace">is_rhombus</span> command determines whether or not a
-geometric object is a rhombus.
+<h3 id="ssec:2dsimilarity" class="subsection">24.14.6  Similarity in the plane</h3>
+<p>See Section <a href="cascmd_en970.html#ssec%3A3dsimilarity">25.12.6</a> for similarities in space.</p><p>The <span style="font-family:monospace">similarity</span><a id="hevea_default1783"></a>
+command creates a command to rotate and scale about a given point.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_rhombus</span> takes one argument:<br>
- <span style="font-style:italic">G</span>, a geometric object or a sequence of four points assumed to be
-the vertices of a quadrilateral.
-</li><li class="li-itemize"><span style="font-family:monospace">is_square(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns 1 if <span style="font-style:italic">G</span>
-is a rhombus but not a square, returns 2 if <span style="font-style:italic">G</span> is a square and
-returns 0 otherwise. 
-</li></ul><h4 id="sec2219" class="subsubsection">Examples</h4>
+<span style="font-family:monospace">similarity</span> takes three mandatory arguments and
+one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_rhombus(1+i, -1+i, -1-i, 1-i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">K:= rhombus(1+i, -1+i, pi/4)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_rhombus(K)</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">K:= rhombus(1+i, -1+i, pi/4, C, D)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">is_rhombus(K[0])</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
-</td></tr>
-</table>
-Note that <span style="font-family:monospace">K[0]</span> is a rhombus since <span style="font-family:monospace">K</span> is a list made
-of a rhombus and vertices <span style="font-family:monospace">C</span> and <span style="font-family:monospace">D</span>.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">affix(C,D)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">−<span style="font-style:italic">i</span>, −</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">+<span style="font-style:italic">i</span>
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_rhombus(i, -1+i, -1-i, 1-i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0
-</td></tr>
-</table>
+<span style="font-style:italic">P</span>, a point (the center of the rotation).
+</li><li class="li-itemize"><span style="font-style:italic">r</span>, a real number (the scaling ratio).
+</li><li class="li-itemize">θ, a real number (the angle of rotation).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">similarity(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">r</span>,θ<span style="font-family:monospace">)</span> returns a new command which
+rotates about <span style="font-style:italic">P</span> through an angle of θ and scales about <span style="font-style:italic">P</span>
+by a factor of <span style="font-style:italic">r</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">similarity(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">r</span>,θ,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the
+transformation of <span style="font-style:italic">G</span>.
+</li></ul><h4 id="sec2186" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">similarity</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/3); </span></span><span style="font-weight:bold"><span style="color:#BF0000">S1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">square</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">S2</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S1</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">S1</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">square</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">S2</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">similarity</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">S1</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en274.png">
+
+</div><p>Note that for a point <span style="font-style:italic">P</span> and real numbers <span style="font-style:italic">r</span> and θ,
+the command <span style="font-family:monospace">similarity(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">r</span>,θ<span style="font-family:monospace">)</span> is the same as
+<span style="font-family:monospace">homothety(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">k</span><span style="font-family:monospace">*exp(i*</span><span style="font-style:italic">a</span><span style="font-family:monospace">))</span>.</p>
 <hr>
-<a href="cascmd_en874.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en876.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en874.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en876.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

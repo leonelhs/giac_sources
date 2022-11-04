@@ -2,327 +2,90 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Getting the parts of a matrix</title>
+<title>Jacobi equation</title>
 </head>
 <body >
-<a href="cascmd_en473.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en475.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en473.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en475.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1132" class="subsection">5.44.5  Getting the parts of a matrix</h3>
-<h4 id="sec1133" class="subsubsection">Accessing parts of a matrix: <span style="font-family:monospace">[]</span> <span style="font-family:monospace">at</span>
-<a id="hevea_default800"></a></h4>
-<p>The rows of a matrix are the elements of a list, and can be accessed
-with indices using the postfix <span style="font-family:monospace">[…]</span> or the prefix
-<span style="font-family:monospace">at</span> (see Section <a href="cascmd_en416.html#ssec%3Agetels">5.39.6</a>).</p><h4 id="sec1134" class="subsubsection">Example</h4>
-<p> 
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">A:= [[1,2,6], [3,4,8], [1,0,1]]</span>
-</div><p>
-<span style="font-style:italic">then:</span>
-</p><div class="center">
-<span style="font-family:monospace">A[0]</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">at(A,0)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,6</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p><br>
-</p><p>To extract a column of a matrix, you can first turn the columns into
-rows with <span style="font-family:monospace">transpose</span> (see Section <a href="cascmd_en497.html#ssec%3Atranspose">5.47.1</a>), then
-extract the row as above.<br>
+<h3 id="sec1073" class="subsection">12.8.4  Jacobi equation</h3>
+<p>When determining whether a solution <span style="font-style:italic">y</span><sub>0</sub> to the Euler-Lagrange
+equations is an extremum, checking the convexity of the Lagrangian <span style="font-style:italic">f</span>
+does not always work. In such cases you may use the Jacobi equation:
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:jacobi-equation"></a>
+−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>) <span style="font-style:italic">h</span>′</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">+</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span> <span style="font-style:italic">y</span></sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>)−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">d</span><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span> <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">t</span>)</td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"> <span style="font-style:italic">h</span>=0.
+    (4)</td></tr>
+</table><p>
+for an unknown function <span style="font-style:italic">h</span>. 
+If the Jacobi equation has a solution such that <span style="font-style:italic">h</span>(<span style="font-style:italic">a</span>)=0, <span style="font-style:italic">h</span>(<span style="font-style:italic">c</span>)=0 for
+some <span style="font-style:italic">c</span>∈(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] (the interval given in the variational problem) and
+<span style="font-style:italic">h</span> not identically zero on [<span style="font-style:italic">a</span>,<span style="font-style:italic">c</span>], then <span style="font-style:italic">c</span> is called a
+<em>conjugate</em> to <span style="font-style:italic">a</span>. If a conjugate exists, then
+<span style="font-style:italic">y</span><sub>0</sub> does not minimize <span style="font-style:italic">F</span>.
+But the function <span style="font-style:italic">y</span><sub>0</sub> minimizes <span style="font-style:italic">F</span> if
+<span style="font-style:italic">f</span><sub><span style="font-style:italic">y</span>′ <span style="font-style:italic">y</span>′</sub>(<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>′,<span style="font-style:italic">x</span>)&gt;0 for all <span style="font-style:italic">x</span>∈[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] and there are no points
+conjugate to <span style="font-style:italic">a</span> in (<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>].</p><p>The <span style="font-family:monospace">jacobi_equation</span><a id="hevea_default771"></a>
+command computes the Jacobi equation.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">jacobi_equation</span> takes five or six arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>), an expression involving an independent
+variable, a dependent variable, and the dependent variable derivative.
+</li><li class="li-itemize"><span style="font-style:italic">depvar</span>, the independent variable.
+</li><li class="li-itemize"><span style="font-style:italic">indvar</span>, the dependent variable. This argument and
+the previous one can be combined to a single argument
+<span style="font-style:italic">depvar(indvar)</span>, which case the call has five arguments.
+</li><li class="li-itemize">expression <span style="font-style:italic">y</span><sub>0</sub> representing a function in <span style="font-style:italic">C</span><sup>1</sup>[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] which
+is stationary for the functional
+<span style="font-style:italic">F</span>(<span style="font-style:italic">y</span>)=∫<sub><span style="font-style:italic">a</span></sub><sup><span style="font-style:italic">b</span></sup> <span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>) <span style="font-style:italic">d</span><span style="font-style:italic">x</span>.
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a symbol for the unknown function in the Jacobi equation.
+</li><li class="li-itemize"><span style="font-style:italic">a</span>, a real number which is the lower bound for <span style="font-style:italic">x</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">jacobi_equation(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span><sub>0</sub>,<span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns
+the Jacobi equation and possibly the solution.
+</li></ul><p>
+If the Jacobi equation can be solved by <span style="font-family:monospace">dsolve</span> (see
+Section <a href="cascmd_en453.html#ssec%3Adsolve">12.4.1</a>), a sequence containing the
+equation (<a href="#eq%3Ajacobi-equation">4</a>) and its solution is
+returned. Otherwise, if (<a href="#eq%3Ajacobi-equation">4</a>) cannot be solved
+immediately, only the Jacobi equation is returned.</p><h4 id="sec1074" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">jacobi_equation</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1/2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">'(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2/2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><h4 id="sec1135" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">tran(A)[1]</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">at(tran(A),1)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,4,0</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p><br>
-</p><p>Individual elements are simply elements of the rows.</p><h4 id="sec1136" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">A[0][1]</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">d</span></span><sup><span style="color:#0000CC">2</span></sup></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">d</span></span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">h</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">t</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">−<span style="font-style:italic">h</span></td><td class="dcell">⎛<br>
+⎝</td><td class="dcell"><span style="font-style:italic">t</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">=0,<span style="font-style:italic">c</span><sub>0</sub> sin<span style="font-style:italic">t</span>
 </td></tr>
-</table><p>
-This can be abbreviated by listing the row and column separated by a
-comma.<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">A[0,1]</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">at(A,[0,1])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
-</td></tr>
-</table><p>
-The indexing begins with 0; you can have the indices start with 1
-by enclosing them in double brackets.<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">A[[1,2]]</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">2
-</td></tr>
-</table><p><br>
-</p><p>You can use a range (see Section <a href="cascmd_en399.html#ssec%3Arange">5.37.1</a>) of indices to get submatrices.</p><h4 id="sec1137" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">A[1,0..2]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">3,4,8</td><td class="dcell">⎤<br>
-⎦</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">A[0..2,1]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,4,0</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">A[0..2,1..2]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >6</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >8</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">A[0..1,1..2]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >6</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >8</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize">This gives you another way to extract a full column, by specifying all the rows
-as an index interval.
-<div class="center">
-<span style="font-family:monospace">A[0..2,1]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,4,0</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul><p><br>
-</p><p>Recall that An index of -1 returns the last element of a list, an
-index of -2 the second to last element, etc.</p><h4 id="sec1138" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">A[-1]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,0,1</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">A[1,-1]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">8
-</td></tr>
-</table>
-</li></ul>
-<h4 id="sec1139" class="subsubsection">Extracting rows or columns of a matrix (Maple compatibility): <span style="font-family:monospace">row</span> <span style="font-family:monospace">col</span>
-<a id="hevea_default801"></a>
-<a id="hevea_default802"></a></h4>
-<p>The <span style="font-family:monospace">row</span> (respectively <span style="font-family:monospace">col</span>) command extracts one or several
-rows (respectively columns) of a matrix.</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">row</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, a matrix.
-</li><li class="li-itemize"><span style="font-style:italic">r</span>, a row index or a range <span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">row(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">r</span><span style="font-family:monospace">)</span> returns the row or sequence of rows given
-by <span style="font-style:italic">r</span>.
-</li></ul><h4 id="sec1140" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">row([[1,2,3],[4,5,6],[7,8,9]],1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,5,6</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">row([[1,2,3],[4,5,6],[7,8,9]],0..1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,3</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4,5,6</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul><p><br>
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">col</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, a matrix.
-</li><li class="li-itemize"><span style="font-style:italic">c</span>, a column index or a range <span style="font-style:italic">n</span><sub>1</sub>..<span style="font-style:italic">n</span><sub>2</sub>.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">row(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">c</span><span style="font-family:monospace">)</span> returns the column or sequence of columns given
-by <span style="font-style:italic">c</span>.
-</li></ul><h4 id="sec1141" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">col([[1,2,3],[4,5,6],[7,8,9]],1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,5,8</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">col([[1,2,3],[4,5,6],[7,8,9]],0..1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,4,7</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,5,8</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul>
-<h4 id="sec1142" class="subsubsection">Extracting a sub-matrix of a matrix (TI compatibility): <span style="font-family:monospace">subMat</span>
-<a id="hevea_default803"></a></h4>
-<p>The <span style="font-family:monospace">subMat</span> command finds submatrices of a matrix.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">subMat</span> takes one mandatory argument and four optional arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, a matrix.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">r</span><sub>1</sub>, an integer, the row index for the
-beginning of the submatrix (by default, <span style="font-style:italic">r</span><sub>1</sub>=0).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">c</span><sub>1</sub>, an integer, the column index for the
-beginning of the submatrix (by default, <span style="font-style:italic">c</span><sub>1</sub>=0).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">r</span><sub>2</sub>, an integer, the row index for the
-end of the submatrix (by default, <span style="font-style:italic">r</span><sub>2</sub> equals one less than the
-number of rows of <span style="font-style:italic">A</span>).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">c</span><sub>2</sub>, an integer, the column index for the
-end of the submatrix (by default, <span style="font-style:italic">c</span><sub>1</sub> equals one less than the
-number of columns of <span style="font-style:italic">A</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">subMat(</span><span style="font-style:italic">A</span> ⟨,<span style="font-style:italic">r</span><sub>1</sub>,<span style="font-style:italic">c</span><sub>1</sub>,<span style="font-style:italic">r</span><sub>2</sub>,<span style="font-style:italic">c</span><sub>2</sub>⟩<span style="font-family:monospace">)</span>
-returns the sub-matrix of <span style="font-style:italic">A</span> from position (<span style="font-style:italic">r</span><sub>1</sub>,<span style="font-style:italic">c</span><sub>1</sub>) to (<span style="font-style:italic">r</span><sub>2</sub>,<span style="font-style:italic">c</span><sub>2</sub>).
-</li></ul><h4 id="sec1143" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">A:=[[3,4,5],[1,2,6]]</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >5</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td></tr>
-</table><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">subMat(A,0,1,1,2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >5</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">subMat(A,0,1,1,1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >4</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td></tr>
-</table>
-<div class="center"><span style="font-family:monospace">[[4],[2]]</span></div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">subMat(A,1)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">subMat(A,1,0)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">subMat(A,1,0,1)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">subMat(A,1,0,1,2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >6</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en473.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en475.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en473.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en475.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

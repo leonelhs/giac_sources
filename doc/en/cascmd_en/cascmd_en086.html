@@ -2,51 +2,39 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Finding a character in a string: inString
-</title>
+<title>Concatenation of a sequence of words</title>
 </head>
 <body >
-<a href="cascmd_en085.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en087.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en085.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en087.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec158" class="subsection">5.3.10  Finding a character in a string: <span style="font-family:monospace">inString</span>
-<a id="hevea_default158"></a></h3>
-<p>The <span style="font-family:monospace">inString</span> command tests to see if a string contains a
-character.
+<h3 id="sec139" class="subsection">4.2.5  Concatenation of a sequence of words</h3>
+<p>The <span style="font-family:monospace">cumSum</span><a id="hevea_default155"></a>
+command works on strings like it does on expressions by doing partial
+concatenation (see Section <a href="cascmd_en139.html#ssec%3Acumsum">5.3.26</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">inString</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">str</span>, a string.
-</li><li class="li-itemize"><span style="font-style:italic">c</span>, a character.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">inString(</span><span style="font-style:italic">str</span>,<span style="font-style:italic">c</span><span style="font-family:monospace">)</span> returns
-the index of its first occurrence of the character <span style="font-style:italic">c</span> in the string
-<span style="font-style:italic">str</span>, or <span style="font-family:monospace">-1</span> if <span style="font-style:italic">c</span> does not occur in <span style="font-style:italic">str</span>.
-</li></ul><h4 id="sec159" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">inString("abcded","d")</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  3
-</td></tr>
+<span style="font-family:monospace">cumSum</span> takes
+<span style="font-style:italic">L</span>, a list of strings.
+</li><li class="li-itemize"><span style="font-family:monospace">cumSum(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns a sequence of strings where the element
+of index <span style="font-style:italic">k</span> is the concatenation of the strings in <span style="font-style:italic">L</span> with indices 0
+to <span style="font-style:italic">k</span>.
+</li></ul><h4 id="sec140" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cumSum</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Hello, "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"is "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"that "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"you?"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">“Hello, ”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“Hello, is ”</span><span style="color:#0000CC">,
+</span><span style="color:#0000CC">“Hello, is that ”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“Hello, is that you?”</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">inString("abcd","e")</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  −1
-</td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en085.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en087.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en085.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en087.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

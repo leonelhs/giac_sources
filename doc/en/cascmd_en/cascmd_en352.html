@@ -2,107 +2,235 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Gröbner basis: gbasis
-</title>
+<title>Trigonometric interpolation</title>
 </head>
 <body >
-<a href="cascmd_en351.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en353.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en351.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en353.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:gbasis" class="subsection">5.31.1  Gröbner basis: <span style="font-family:monospace">gbasis</span>
-<a id="hevea_default603"></a></h3>
-<p>A set of polynomials {<span style="font-style:italic">F</span><sub>1</sub>,…,<span style="font-style:italic">F</span><sub><span style="font-style:italic">N</span></sub>} generate an <em>ideal</em>
-<span style="font-style:italic">I</span>; namely, <span style="font-style:italic">I</span> is the set of all linear combinations of the <span style="font-style:italic">F</span><sub><span style="font-style:italic">j</span></sub>.
-Given such an ideal, a Gröbner basis for <span style="font-style:italic">I</span> is a subset
-<span style="font-style:italic">G</span>={<span style="font-style:italic">G</span><sub>1</sub>,…,<span style="font-style:italic">G</span><sub><span style="font-style:italic">n</span></sub>} of <span style="font-style:italic">I</span> such that for any <span style="font-style:italic">F</span> in <span style="font-style:italic">I</span>, there
-is a <span style="font-style:italic">G</span><sub><span style="font-style:italic">k</span></sub> in <span style="font-style:italic">G</span> such that the leading monomial of <span style="font-style:italic">G</span><sub><span style="font-style:italic">k</span></sub> divides
-the leading monomial of <span style="font-style:italic">F</span>. (Note that the leading monomial depends
-on a fixed ordering of the monomials.)</p><p>If <span style="font-style:italic">G</span> is a Gröbner basis for such an ideal <span style="font-style:italic">I</span>, then for any
-nonzero <span style="font-style:italic">F</span> in <span style="font-style:italic">I</span>, if you do a Euclidean division of <span style="font-style:italic">F</span> by the
-corresponding <span style="font-style:italic">G</span><sub><span style="font-style:italic">k</span></sub>, take the remainder of this division, do again the
-same and so on, at some point you get a remainder of zero.</p><h4 id="sec818" class="subsubsection">Example</h4>
+<h3 id="ssec:triginterp" class="subsection">10.2.6  Trigonometric interpolation</h3>
+<p>The <span style="font-family:monospace">triginterp</span><a id="hevea_default604"></a>
+command computes a trigonometric polynomial which interpolates given data.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">triginterp</span> takes four arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list of numbers.
+</li><li class="li-itemize"><span style="font-style:italic">a</span>, a number (the beginning of an interval).
+</li><li class="li-itemize"><span style="font-style:italic">b</span>, a number (the end of the interval).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, the name of a variable.
+</li></ul>
+The last three arguments can also be given as <span style="font-style:italic">x</span><span style="font-family:monospace">=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">triginterp(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> or
+<span style="font-family:monospace">triginterp(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span>
+returns the trigonometric polynomial that interpolates data given in the list
+<span style="font-style:italic">L</span>. It is assumed that the list <span style="font-style:italic">L</span> contains
+ordinate components of the points with equidistant abscissa components
+between <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> such that the first element of <span style="font-style:italic">L</span>
+corresponds to <span style="font-style:italic">a</span> and the last element to <span style="font-style:italic">b</span>.
+</li></ul><h4 id="sec791" class="subsubsection">Example</h4>
 <p>
-Let <span style="font-style:italic">I</span> be the ideal generated by {<span style="font-style:italic">x</span><sup>3</sup>−2<span style="font-style:italic">xy</span>, <span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span>−2<span style="font-style:italic">y</span><sup>2</sup>+<span style="font-style:italic">x</span>}
-with the standard lexicographic order on the monomials. One Gröbner
-basis for <span style="font-style:italic">I</span> is
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">G</span> = {<span style="font-style:italic">g</span><sub>1</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) = <span style="font-style:italic">x</span><sup>2</sup>,<span style="font-style:italic">g</span><sub>2</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)= <span style="font-style:italic">x</span> <span style="font-style:italic">y</span>,<span style="font-style:italic">g</span><sub>3</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)=2 <span style="font-style:italic">y</span><sup>2</sup>−<span style="font-style:italic">x</span>}
+The data <span style="font-style:italic">L</span> may be a list of experimental measurements
+of some quantity taken at regular intervals, with the first
+observation at time <span style="font-style:italic">t</span>=<span style="font-style:italic">a</span> and the last observation at time
+<span style="font-style:italic">t</span>=<span style="font-style:italic">b</span>. The resulting trigonometric polynomial has period
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">T</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span> (<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>)</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td><td class="dcell">,
 </td></tr>
 </table><p>
-Consider the element <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) = 2<span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span> − 3<span style="font-style:italic">x</span><sup>2</sup> + 6<span style="font-style:italic">xy</span> − 4<span style="font-style:italic">y</span><sup>2</sup>+2<span style="font-style:italic">x</span> of
-<span style="font-style:italic">I</span>. The leading monomial <span style="font-style:italic">x</span><sup>2</sup><span style="font-style:italic">y</span> of <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) is divisible by the
-leading monomial <span style="font-style:italic">x</span><sup>2</sup> of <span style="font-style:italic">g</span><sub>1</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>). Dividing <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) by
-<span style="font-style:italic">g</span><sub>1</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) leaves a remainder of <span style="font-style:italic">R</span><sub>1</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) = 6<span style="font-style:italic">xy</span>−4<span style="font-style:italic">y</span><sup>2</sup>+2<span style="font-style:italic">x</span>. The
-leading monomial of <span style="font-style:italic">R</span><sub>1</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>), which is <span style="font-style:italic">xy</span>, is divisible by the
-leading monomial of <span style="font-style:italic">g</span><sub>2</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>), which is <span style="font-style:italic">xy</span>. Dividing
-<span style="font-style:italic">R</span><sub>1</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) by <span style="font-style:italic">g</span><sub>2</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) leaves a remainder of
-<span style="font-style:italic">R</span><sub>2</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>)=−4<span style="font-style:italic">y</span><sup>2</sup>+2<span style="font-style:italic">x</span>. Finally, the leading monomial of
-<span style="font-style:italic">R</span><sub>2</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>), which is <span style="font-style:italic">y</span><sup>2</sup>, is divisible by the leading monomial
-of <span style="font-style:italic">g</span><sub>3</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>), which is <span style="font-style:italic">y</span><sup>2</sup>. Dividing <span style="font-style:italic">R</span><sub>2</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) by
-<span style="font-style:italic">g</span><sub>3</sub>(<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) leaves a remainder of 0.</p><p>The <span style="font-family:monospace">gbasis</span> command computes Gröbner bases.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">gbasis</span> takes two mandatory arguments and three
-optional arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">polys</span>, a list of polynomials.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variable names.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">order</span>, which can be one of:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plex</span>, to order the monomials lexicographically
-(this is the default).
-</li><li class="li-itemize"><span style="font-family:monospace">tdeg</span>, to order the monomials first by total
-degree then by lexicographic order.
-</li><li class="li-itemize"><span style="font-family:monospace">revlex</span>, to order the monomials reverse
-lexicographically.
-</li></ul>
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">with_cocoa=</span><span style="font-style:italic">boolean</span>, where
-<span style="font-style:italic">boolean</span> can be <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>. A value
-of <span style="font-family:monospace">true</span> means to use the <span style="font-family:monospace">CoCoA</span> library to compute the
-Gröbner basis, a value of <span style="font-family:monospace">false</span> means not to use it.<br>
- A value of <span style="font-family:monospace">true</span> is recommended, but requires that
-<span style="font-family:monospace">CoCoA</span> support be compiled into <span style="font-family:monospace">Xcas</span>.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">with_f5=</span><span style="font-style:italic">boolean</span>, where
-<span style="font-style:italic">boolean</span> can be <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>. A value
-of <span style="font-family:monospace">true</span> means to use the F5 algorithm of the
-<span style="font-family:monospace">CoCoA</span> library, a value of <span style="font-family:monospace">false</span> means not to use it.
-If this is <span style="font-family:monospace">true</span>, then the polynomials are homogenized and
-so the specified order is not used.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">gbasis(</span><span style="font-style:italic">polys,vars </span> ⟨<span style="font-style:italic"> ,order,</span><span style="font-family:monospace">with_cocoa=</span><span style="font-style:italic">boolean</span>,
-<span style="font-family:monospace">with_f5=</span><span style="font-style:italic">boolean</span>⟩<span style="font-family:monospace">)</span> returns a Gröbner
-basis of the ideal spanned by polynomials in <span style="font-style:italic">polys</span>.
-</li></ul><p>
-Note that the lexicographic order depends on the order the variables
-are given in <span style="font-style:italic">vars</span>. For example, if
-<span style="font-style:italic">vars</span><span style="font-family:monospace">=[x,y,z]</span>, then <span style="font-family:monospace">x^2*y^4*z^3</span>
-comes before <span style="font-family:monospace">x^2*y^3*z^4</span>, but if 
-<span style="font-style:italic">vars</span><span style="font-family:monospace">=[x,z,y]</span>, then <span style="font-family:monospace">x^2*y^4*z^3</span>
-comes after <span style="font-family:monospace">x^2*y^3*z^4</span>.</p><h4 id="sec819" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">gbasis([2*x*y-y^2,x^2-2*x*y],[x,y])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">y</span><sup>3</sup>,<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">y</span><sup>2</sup>,2 <span style="font-style:italic">x</span> <span style="font-style:italic">y</span>−<span style="font-style:italic">y</span><sup>2</sup></td><td class="dcell">⎤<br>
-⎦</td></tr>
+where <span style="font-style:italic">n</span>=<span style="font-family:monospace">size(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> is the number of observations.
+For a concrete example, assume that the following data is obtained by
+measuring the temperature every three hours:
+</p><div class="center">
+<table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-weight:bold">Hour of the day</span></td><td style="text-align:center;border:solid 1px;white-space:nowrap" >0</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >3</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >6</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >9</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >12</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >15</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >18</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >21</td></tr>
+<tr><td style="text-align:left;border:solid 1px;white-space:nowrap" ><span style="font-weight:bold">Temperature</span> (<sup>∘</sup>C)</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >11</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >10</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >17</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >24</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >32</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >26</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >23</td><td style="text-align:center;border:solid 1px;white-space:nowrap" >19</td></tr>
 </table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">gbasis([x1+x2+x3,x1*x2+x1*x3+x2*x3,x1*x2*x3-1], [x1,x2,x3],tdeg,with_cocoa=false)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">x</span><sub>3</sub><sup>3</sup>−1,−<span style="font-style:italic">x</span><sub>2</sub><sup>2</sup>−<span style="font-style:italic">x</span><sub>2</sub> <span style="font-style:italic">x</span><sub>3</sub>−<span style="font-style:italic">x</span><sub>3</sub><sup>2</sup>,<span style="font-style:italic">x</span><sub>1</sub>+<span style="font-style:italic">x</span><sub>2</sub>+<span style="font-style:italic">x</span><sub>3</sub></td><td class="dcell">⎤<br>
-⎦</td></tr>
+</div><p>
+Furthermore, assume that an estimate of the temperature at 13:45 is
+required. To obtain a trigonometric interpolation of the data:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tp</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">triginterp</span></span><span style="font-weight:bold"><span style="color:#BF0000">([11,10,17,24,32,26,23,19],</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..21)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">81</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell">−21 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">−42</td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td><td class="dcell">cos</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">12</td></tr>
+</table></td><td class="dcell">
+π  <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell">−11 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">−12</td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td><td class="dcell">sin</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">12</td></tr>
+</table></td><td class="dcell">
+π  <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell"> cos</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell"> π  <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">−</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"> </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">7</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell"> sin</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">6</td></tr>
+</table></td><td class="dcell"> π  <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell">21 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">−42</td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td><td class="dcell">cos</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell">
+π  <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell">−11 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">+12</td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td><td class="dcell">sin</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">4</td></tr>
+</table></td><td class="dcell">
+π  <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell">+
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">cos</td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell"> π  <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Now a temperature at 13:45 hrs can be approximated with the value of
+<span style="font-family:monospace">tp</span> for <span style="font-style:italic">x</span>=13.75.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tp</span></span><span style="font-weight:bold"><span style="color:#BF0000"> | </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=13.75</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+29.4863181684
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+If one of the input parameters is inexact, the result will also be inexact.
+For example:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Digits</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=3:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">triginterp</span></span><span style="font-weight:bold"><span style="color:#BF0000">([11,10,17,24,32,26,23,19],</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..21.0)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">20.2−8.96 cos</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.262 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">−3.44 sin</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.262 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">+
+0.75 cos</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.524 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">−</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">1.75 sin</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.524 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">−1.54 cos</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.785 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">−
+0.445 sin</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.785 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">+
+0.5 cos</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">1.05 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li></ul>
 <hr>
-<a href="cascmd_en351.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en353.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en351.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en353.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

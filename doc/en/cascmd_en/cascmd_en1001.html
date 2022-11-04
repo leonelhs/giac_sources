@@ -2,47 +2,50 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Low-pass filtering: lowpass
-</title>
+<title>New audio clips from existing ones</title>
 </head>
 <body >
-<a href="cascmd_en1000.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en1002.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en1000.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en1002.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec2507" class="subsection">15.2.9  Low-pass filtering: <span style="font-family:monospace">lowpass</span>
-<a id="hevea_default1711"></a></h3>
-<p>The <span style="font-family:monospace">lowpass</span> command applies a simple first-order lowpass RC
-filter to an audio clip.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">lowpass</span> takes two mandatory arguments and one
-optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, an audio clip or a real vector representing the sampled
-signal.
-</li><li class="li-itemize"><span style="font-style:italic">c</span>, a real number specifying the cutoff frequency.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">r</span>, a samplerate (by default 44100).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">lowpass(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">c</span> ⟨ <span style="font-style:italic">r</span>⟩<span style="font-family:monospace">)</span>
-returns the input data after applying a simple first-order lowpass RC filter.
-</li></ul><h4 id="sec2508" class="subsubsection">Example</h4>
+<h3 id="ssec:audio-clips-from-old" class="subsection">26.2.2  New audio clips from existing ones</h3>
+<p>You can create audio clips from existing ones by using some standard operators.</p>
+<h5 id="sec2467" class="paragraph">Slicing.</h5>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f:=unapply(periodic(sign(x),x,-1/880,1/880),x);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">s:=apply(f,soundsec(3)):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">playsnd(lowpass(createwav(s),1000))</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span><br>
-The sound of the periodic signal after a simple first-order lowpass RC
-filter has been applied.</p>
+Audio clips can be obtained from existing clips by slicing. To extract a portion
+of length <span style="font-style:italic">n</span> samples starting at <span style="font-style:italic">k</span>th sample in an audio clip <span style="font-family:monospace">clip</span>,
+use the <span style="font-family:monospace">()</span><a id="hevea_default1922"></a> operator like this:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subclip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>The second argument may be omitted, in which case <span style="font-style:italic">n</span>=<span style="font-style:italic">L</span>−<span style="font-style:italic">k</span> is used, where <span style="font-style:italic">L</span> is the length
+of <span style="font-family:monospace">clip</span> in samples. You can also use
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subclip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t1</span></span><span style="font-weight:bold"><span style="color:#BF0000">..</span></span><span style="font-weight:bold"><span style="color:#BF0000">t2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>to extract the portion between timestamps <span style="font-style:italic">t</span><sub>1</sub> and <span style="font-style:italic">t</span><sub>2</sub> (in seconds).</p>
+<h5 id="sec2468" class="paragraph">Concatenation.</h5>
+<p>
+Existing audio clips can be concatenated together by
+using the <span style="font-family:monospace">+</span> operator. Note that clips to be concatenated
+must have the same number of channels, bit depth and sample rate. For example, to
+concatenate two audio clips <span style="font-family:monospace">clip1</span> and <span style="font-family:monospace">clip2</span>, input:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip2</span></span></td></tr>
+</table><p>This is useful for e.g. padding audio with zeros (silence).</p>
+<h5 id="sec2469" class="paragraph">Inverting and reversing.</h5>
+<p>
+Audio clips can be inverted (which is equivalent to multiplying sample
+data with −1 for each channel) by using the unary sign operator
+<span style="font-family:monospace">-</span><a id="hevea_default1923"></a>
+or the <span style="font-family:monospace">inv</span><a id="hevea_default1924"></a>
+command which takes an audio clip as its only argument.</p><p>To reverse an audio clip in the time domain, use the
+<span style="font-family:monospace">reverse</span><a id="hevea_default1925"></a>
+command which takes an audio clip as its only argument.</p>
 <hr>
-<a href="cascmd_en1000.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en1002.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en1000.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en1002.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

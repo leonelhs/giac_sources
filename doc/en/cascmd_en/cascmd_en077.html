@@ -2,68 +2,166 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Characters and strings: "</title>
+<title>Defining functions with boolean tests
+</title>
 </head>
 <body >
-<a href="cascmd_en076.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en078.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en076.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en078.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec137" class="subsection">5.3.1  Characters and strings: <span style="font-family:monospace">"</span><a id="hevea_default144"></a></h3>
-<p>Strings are delimited with quotation marks, <span style="font-family:monospace">"</span>. A character
-is a string of length one.<br>
-Do not confuse <span style="font-family:monospace">"</span> with <span style="font-family:monospace">’</span> (or
-<span style="font-family:monospace">quote</span><a id="hevea_default145"></a>) which is used to prevent evaluation
-of an expression (see Section <a href="cascmd_en182.html#ssec%3Aqt">5.12.4</a>). For example, <span style="font-family:monospace">"a"</span>
-returns a string with one character but <span style="font-family:monospace">’a’</span> or
-<span style="font-family:monospace">quote(a)</span> returns the variable <span style="font-family:monospace">a</span> unevaluated.</p><p>When a string is entered on a command line, it is evaluated to itself,
-hence the output is the same string. You can use <span style="font-family:monospace">+</span> to
-concatenate two strings or a string and another object (where the
-other object will be converted to a string, see
-Section <a href="cascmd_en088.html#ssec%3Aplusconcat">5.3.12</a>).</p><h4 id="sec138" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">"Hello"</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<span style="font-family:monospace">"Hello"</span>
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">"Hello"+", how are you?"</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<span style="font-family:monospace">"Hello, how are you?"</span>
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">"Hello"+ 123</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<span style="font-family:monospace">"Hello123"</span>
-</div>
-</li></ul><p><br>
-</p><p>You can refer to a particular character of a string using index
-notation, like for lists (see Section <a href="index.html#sec%3Alists">5.40</a>). Indices begin at 0
-in <span style="font-family:monospace">Xcas</span> mode, 1 in other modes.</p><h4 id="sec139" class="subsubsection">Example</h4>
+<h3 id="ssec:piecewise" class="subsection">4.1.3  Defining functions with boolean tests
+</h3>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">"Hello"[1]</span>
+<a id="hevea_default130"></a></p><p>use boolean tests to define functions not given by a single
+simple formula. Notably, use the <span style="font-family:monospace">ifte</span> command or the
+<span style="font-family:monospace">?:</span> operator to define piecewise-defined functions.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ifte</span><a id="hevea_default131"></a> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">condition</span>, a boolean condition.
+</li><li class="li-itemize"><span style="font-style:italic">restrue</span>, the result to return if
+<span style="font-style:italic">condition</span> is true.
+</li><li class="li-itemize"><span style="font-style:italic">resfalse</span>, the result to return if
+<span style="font-style:italic">condition</span> is false.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">ifte(</span><span style="font-style:italic">condition</span>,<span style="font-style:italic">restrue</span>,<span style="font-style:italic">resfalse</span><span style="font-family:monospace">)</span>
+returns <span style="font-style:italic">restrue</span> if
+<span style="font-style:italic">condition</span> holds and <span style="font-style:italic">resfalse</span> otherwise.
+</li></ul><h4 id="sec118" class="subsubsection">Example</h4>
+<p>
+You can define your own absolute value function with:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myabs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">ifte</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>Hence:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myabs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+4
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+However, <span style="font-family:monospace">myabs</span> will return an error if it cannot evaluate the
+condition.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myabs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">Ifte: Unable to check test Error: Bad Argument Value</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>The <span style="font-family:monospace">?:</span><a id="hevea_default132"></a> construct behaves
+similarly to <span style="font-family:monospace">ifte</span>, but is structured differently and
+does not return an error if the condition cannot be evaluated.
+</p><ul class="itemize"><li class="li-itemize">
+The <span style="font-family:monospace">?:</span> construct takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">condition</span>, a boolean condition.
+</li><li class="li-itemize"><span style="font-style:italic">restrue</span>, the result to return if
+<span style="font-style:italic">condition</span> is true.
+</li><li class="li-itemize"><span style="font-style:italic">resfalse</span>, the result to return if
+<span style="font-style:italic">condition</span> is false.
+</li></ul>
+</li><li class="li-itemize"><span style="font-style:italic">condition</span><span style="font-family:monospace">?</span><span style="font-style:italic">restrue</span><span style="font-family:monospace">:</span><span style="font-style:italic">resfalse</span>
+returns <span style="font-style:italic">restrue</span> if <span style="font-style:italic">condition</span> holds and
+<span style="font-style:italic">resfalse</span> otherwise.
+</li></ul><h4 id="sec119" class="subsubsection">Example</h4>
+<p>
+You can define your absolute value function with
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myabs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=0)?</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span></td></tr>
+</table><p>If you enter
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myabs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-4)</span></span></td></tr>
+</table><p>you will again get
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+4
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+but now if the conditional cannot be evaluated, you won’t get an error.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">myabs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">≥ 0 ? </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> : −</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>The <span style="font-family:monospace">when</span><a id="hevea_default133"></a> and
+<span style="font-family:monospace">IFTE</span><a id="hevea_default134"></a> commands
+are prefixed synonyms for the <span style="font-family:monospace">?:</span> construct.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">when</span> (and <span style="font-family:monospace">IFTE</span>) take three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">condition</span>, a boolean condition.
+</li><li class="li-itemize"><span style="font-style:italic">restrue</span>, the result to return if
+<span style="font-style:italic">condition</span> is true.
+</li><li class="li-itemize"><span style="font-style:italic">resfalse</span>, the result to return if
+<span style="font-style:italic">condition</span> is false.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">when(</span><span style="font-style:italic">condition</span>,<span style="font-style:italic">restrue</span>,<span style="font-style:italic">resfalse</span><span style="font-family:monospace">)</span> and
+<span style="font-family:monospace">IFTE(</span><span style="font-style:italic">condition</span>,<span style="font-style:italic">restrue</span>,<span style="font-style:italic">resfalse</span><span style="font-family:monospace">)</span> both
+return <span style="font-style:italic">restrue</span> if <span style="font-style:italic">condition</span> holds and <span style="font-style:italic">resfalse</span> otherwise.
+</li></ul><div class="center">
+<span style="font-family:monospace">(</span><span style="font-style:italic">condition</span><span style="font-family:monospace">)</span> <span style="font-family:monospace">?</span> <span style="font-style:italic">restrue</span> <span style="font-family:monospace">:</span> <span style="font-style:italic">resfalse</span>
+</div><div class="center">
+<span style="font-family:monospace">when(</span><span style="font-style:italic">condition</span>,<span style="font-style:italic">restrue</span>,<span style="font-style:italic">resfalse</span><span style="font-family:monospace">)</span>
 </div><p>
-<span style="font-style:italic">Output:</span>
+and
 </p><div class="center">
-<span style="font-family:monospace">"e"</span>
-</div>
+<span style="font-family:monospace">IFTE(</span><span style="font-style:italic">condition</span>,<span style="font-style:italic">restrue</span>,<span style="font-style:italic">resfalse</span><span style="font-family:monospace">)</span>
+</div><p>
+all represent the same expression.</p><p>If you want to define a function with several pieces, it may be
+simpler to use the <span style="font-family:monospace">piecewise</span><a id="hevea_default135"></a> function.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">piecewise</span> takes an odd number of
+arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">cond</span><sub>1</sub><span style="font-style:italic">, return</span><sub>1</sub><span style="font-style:italic">,
+cond</span><sub>2</sub><span style="font-style:italic">, return</span><sub>2</sub><span style="font-style:italic">, …, cond</span><sub><span style="font-style:italic">n</span></sub><span style="font-style:italic">,
+return</span><sub><span style="font-style:italic">n</span></sub>, an arbitrary number of pairs
+of conditions and corresponding return values.
+</li><li class="li-itemize"><span style="font-style:italic">default</span>, a result to return if none of the
+conditions are true.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">piecewise(</span><span style="font-style:italic">cond</span><sub>1</sub>,<span style="font-style:italic">return</span><sub>1</sub>,…,<span style="font-style:italic">cond</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">return</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">default</span><span style="font-family:monospace">)</span>
+returns <span style="font-style:italic">return</span><sub><span style="font-style:italic">k</span></sub> if <span style="font-style:italic">cond</span><sub><span style="font-style:italic">k</span></sub> is the first true condition,
+or <span style="font-style:italic">default</span> if none of the conditions are true.
+</li></ul><h4 id="sec120" class="subsubsection">Example</h4>
+<p>
+To define
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=
+</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >    −2</td><td style="text-align:left;white-space:nowrap" >if  <span style="font-style:italic">x</span> &lt; −2</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >    3<span style="font-style:italic">x</span>+4</td><td style="text-align:left;white-space:nowrap" >if  −2 ≤ <span style="font-style:italic">x</span> &lt; −1</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >    1</td><td style="text-align:left;white-space:nowrap" >if  −1 ≤ <span style="font-style:italic">x</span> &lt; 0</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >    <span style="font-style:italic">x</span>+1</td><td style="text-align:left;white-space:nowrap" >if  <span style="font-style:italic">x</span> ≥ 0
+</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table><p>
+enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">piecewise</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;-2,-2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;-1,3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+4,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;0,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)</span></span></td></tr>
+</table><p>To verify, plot <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) for e.g. −3≤ <span style="font-style:italic">x</span>≤ 1.</p>
 <hr>
-<a href="cascmd_en076.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en078.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en076.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en078.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

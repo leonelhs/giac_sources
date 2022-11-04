@@ -2,88 +2,94 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Roots and poles of a rational function: froot
-</title>
+<title>Cyclotomic polynomial</title>
 </head>
 <body >
-<a href="cascmd_en364.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en366.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en364.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en366.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec846" class="subsection">5.33.1  Roots and poles of a rational function: <span style="font-family:monospace">froot</span>
-<a id="hevea_default618"></a></h3>
-<p>The <span style="font-family:monospace">froot</span> command finds roots and poles of a rational function.
+<h3 id="sec820" class="subsection">10.3.11  Cyclotomic polynomial</h3>
+<p>For a positive integer <span style="font-style:italic">n</span>, <em>cyclotomic polynomial</em> of index <span style="font-style:italic">n</span> is
+the monic polynomial whose roots are exactly the primitive <span style="font-style:italic">n</span>th roots
+of unity (an <span style="font-style:italic">n</span>th root of unity is primitive if the set of
+its powers is the set of all the <span style="font-style:italic">n</span>th roots of unity). Note that
+this will divide <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>−1, whose roots are all the <span style="font-style:italic">n</span>th roots of
+unity.</p><p>The <span style="font-family:monospace">cyclotomic</span><a id="hevea_default625"></a>
+command computes cyclotomic polynomials.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">froot</span> takes one argument:<br>
- <span style="font-style:italic">rat</span>, a rational function.
-</li><li class="li-itemize"><span style="font-family:monospace">froot(</span><span style="font-style:italic">rat</span><span style="font-family:monospace">)</span> returns a vector whose
-components are the roots and the poles of <span style="font-style:italic">rat</span>, each one
-followed by its multiplicity.<br>
- If <span style="font-family:monospace">Xcas</span> can not find the exact values of the
-roots or poles, it tries to find approximate values if <span style="font-style:italic">rat</span> has
-numeric coefficients.
-</li></ul><h4 id="sec847" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">froot((x^5-2*x^4+x^3)/(x-2))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,0,3,2,−1</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-Hence, for  <span style="font-style:italic">F</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">x</span><sup>5</sup>−2<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>/<span style="font-style:italic">x</span>−2:
-<ul class="itemize"><li class="li-itemize">
-1 is a root of multiplicity 2,
-</li><li class="li-itemize">0 is a root of multiplicity 3,
-</li><li class="li-itemize">2 is a pole of order 1.
-</li></ul>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">froot((x^3-2*x^2+1)/(x-2))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell">1,1,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">,1,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td><td class="dcell">+1</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">,1,2,−1</td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Remark.</span><br>
-To find the complex roots and poles, put <span style="font-family:monospace">Xcas</span> in complex mode
-(check <span style="font-family:monospace">Complex</span> in the <span style="font-family:monospace">cas</span> configuration, red button
-giving the state line; see Section <a href="cascmd_en025.html#ssec%3Acomplex">2.5.5</a>).</p><h4 id="sec848" class="subsubsection">Example</h4>
+<span style="font-family:monospace">cyclotomic</span> takes
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize"><span style="font-family:monospace">cyclotomic(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the list of the coefficients
+of the cyclotomic polynomial of index <span style="font-style:italic">n</span>.
+</li></ul><h4 id="sec821" class="subsubsection">Examples</h4>
 <p>
-<span style="font-style:italic">Input (in complex mode):</span>
-</p><div class="center">
-<span style="font-family:monospace">froot((x^2+1)/(x-2))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−<span style="font-style:italic">i</span>,1,<span style="font-style:italic">i</span>,1,2,−1</td><td class="dcell">⎤<br>
-⎦</td></tr>
+Let <span style="font-style:italic">n</span>=4; the fourth roots of unity are: {1,<span style="font-style:italic">i</span>,−1,−<span style="font-style:italic">i</span>} and
+the primitive roots are: {<span style="font-style:italic">i</span>,−<span style="font-style:italic">i</span>}. Hence, the cyclotomic polynomial
+of index 4 is (<span style="font-style:italic">x</span>−<span style="font-style:italic">i</span>)(<span style="font-style:italic">x</span>+<span style="font-style:italic">i</span>)=<span style="font-style:italic">x</span><sup>2</sup>+1.</p><p>Input for verification:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,0,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Obtain cyclotomic poylnomial of index 5:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,1,1,1,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Hence, the cyclotomic polynomial of index 5 is <span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1,
+which divides <span style="font-style:italic">x</span><sup>5</sup>−1 since (<span style="font-style:italic">x</span>−1)(<span style="font-style:italic">x</span><sup>4</sup>+<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1)=<span style="font-style:italic">x</span><sup>5</sup>−1.</p><p>Obtain the cyclotomic polynomial of index 10:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(10)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,−1,1,−1,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Hence, the cyclotomic polynomial of index 10 is <span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+1 and
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  (<span style="font-style:italic">x</span><sup>5</sup>−1)(<span style="font-style:italic">x</span>+1)(<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>3</sup>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span>+1)=<span style="font-style:italic">x</span><sup>10</sup>−1.
+</td></tr>
+</table><p>Obtain the cyclotomic polynomial of index 20:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cyclotomic</span></span><span style="font-weight:bold"><span style="color:#BF0000">(20)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,0,−1,0,1,0,−1,0,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Hence, the cyclotomic polynomial of index 20 is <span style="font-style:italic">x</span><sup>8</sup>−<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>2</sup>+1 and
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  (<span style="font-style:italic">x</span><sup>10</sup>−1)(<span style="font-style:italic">x</span><sup>2</sup>+1)(<span style="font-style:italic">x</span><sup>8</sup>−<span style="font-style:italic">x</span><sup>6</sup>+<span style="font-style:italic">x</span><sup>4</sup>−<span style="font-style:italic">x</span><sup>2</sup>+1)=<span style="font-style:italic">x</span><sup>20</sup>−1.
+</td></tr>
 </table>
 <hr>
-<a href="cascmd_en364.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en366.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en364.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en366.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

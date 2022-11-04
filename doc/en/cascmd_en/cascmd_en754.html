@@ -2,172 +2,88 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>if statements: if then else end elif
-
-
-
-
-</title>
+<title>Input</title>
 </head>
 <body >
-<a href="cascmd_en753.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en755.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en753.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en755.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1928" class="subsection">12.3.1  <span style="font-family:monospace">if</span> statements: <span style="font-family:monospace">if</span> <span style="font-family:monospace">then</span> <span style="font-family:monospace">else</span> <span style="font-family:monospace">end</span> <span style="font-family:monospace">elif</span>
-<a id="hevea_default1390"></a>
-<a id="hevea_default1391"></a>
-<a id="hevea_default1392"></a>
-<a id="hevea_default1393"></a>
-<a id="hevea_default1394"></a></h3>
-<p>The <span style="font-family:monospace">Xcas</span> language has different ways of writing
-<span style="font-family:monospace">if…then</span> statements (see Section <a href="cascmd_en070.html#ssec%3Apiecewise">5.1.3</a>). The
-standard version of the <span style="font-family:monospace">if…then</span> statement consists of
-the <span style="font-family:monospace">if</span> keyword, followed by a boolean expression (see
-Section <a href="index.html#sec%3Aboolean">5.1</a>) in parentheses, followed by a statement block
-(see Section <a href="cascmd_en743.html#ssec%3Acodeblocks">12.1.7</a>) which will be executed if the boolean
-is true. You can optionally add an <span style="font-family:monospace">else</span> keyword followed by
-a statement block which will be executed if the boolean is false:
-</p><div class="center">
-<span style="font-family:monospace">if (</span><span style="font-style:italic">boolean</span><span style="font-family:monospace">)
-</span><span style="font-style:italic">true-block</span>
- ⟨<span style="font-family:monospace">else </span><span style="font-style:italic">false-block</span>⟩
+<h3 id="sec1905" class="subsection">23.2.2  Input</h3>
+<h5 id="sec1906" class="paragraph">Creating input windows.</h5>
+<p>
+The <span style="font-family:monospace">input</span><a id="hevea_default1497"></a>
+or <span style="font-family:monospace">Input</span><a id="hevea_default1498"></a>
+command prompts the user for the value of a variable.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">input</span> takes an arbitrary number of commands:<p><span style="font-style:italic">vars</span>, a sequence of variable names, each one optionally
+preceded by a string.
+</p></li><li class="li-itemize"><span style="font-family:monospace">input(</span><span style="font-style:italic">vars</span><span style="font-family:monospace">)</span> brings up a box where
+the user can enter a value for each variable.<p>If a variable is preceded with a string, then that string will be
+the prompt for the variable, otherwise the variable name will be the
+prompt.
+</p></li></ul><h4 id="sec1907" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">input</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en157.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">input</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Set a to the value: "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en158.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">input</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">bee</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en159.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">input</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Set a to the value: "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">bee</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Set c to this value: "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en160.png">
+
+</div><p>If the value that you enter for <span style="font-family:monospace">input</span> is a string, it should
+be between quotes. If you want the user to enter a string without
+having to use the quotes, use the
+<span style="font-family:monospace">InputStr</span><a id="hevea_default1499"></a> 
+or <span style="font-family:monospace">textinput</span><a id="hevea_default1500"></a> command,
+which is just like <span style="font-family:monospace">input</span> except that it will assume any input
+is a string and so the user won’t need to use quotes.</p>
+<h5 id="sec1908" class="paragraph">Creating output windows.</h5>
+<p>
+The <span style="font-family:monospace">output</span><a id="hevea_default1501"></a>
+or textttOutput<a id="hevea_default1502"></a>
+command creates message windows.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">output</span> takes
+<span style="font-family:monospace">strs</span>, a sequence of strings or variables which represent
+strings.
+</li><li class="li-itemize"><span style="font-family:monospace">output(</span><span style="font-style:italic">strs</span><span style="font-family:monospace">)</span> creates a message
+window displaying the concatentation of the strings.
+</li></ul><h4 id="sec1909" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"message"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">output</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"This is a "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en161.png">
+
 </div><p>
-(where recall the blocks need to be delimited by braces or by
-begin and <span style="font-family:monospace">end</span>).</p><h4 id="sec1929" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">a:=3; b:=2:;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">if (a &gt; b) { a:= a + 5; b:= a - b;}:;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">a,b</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">8,6
-</td></tr>
-</table>
-since <span style="font-family:monospace">a &gt; b</span> will evaluate to true, and so the variable
-<span style="font-family:monospace">a</span> will be reset to <span style="font-family:monospace">8</span> and <span style="font-family:monospace">b</span> will be reset
-to the value <span style="font-family:monospace">6</span>.
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">a:=3; b:=2:;</span>
-<span style="font-family:monospace">if (a &lt; b) { a:= a + 5; b:= a - b;} else { a:=a - 5; b:= a + b;}:;</span>
-<span style="font-family:monospace">a,b</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−2,0
-</td></tr>
-</table>
-since <span style="font-family:monospace">a &gt; b</span> will evaluate to false, and so the variable
-<span style="font-family:monospace">a</span> will be reset to <span style="font-family:monospace">-2</span> and <span style="font-family:monospace">b</span> will be reset
-to the value <span style="font-family:monospace">0</span>.
-</li></ul><p><br>
-</p><p>An alternate way to write an <span style="font-family:monospace">if</span> statement is to enclose the
-code block in <span style="font-family:monospace">then</span> and <span style="font-family:monospace">end</span> instead of braces:
-</p><div class="center">
-<span style="font-family:monospace">if (</span><span style="font-style:italic">boolean</span><span style="font-family:monospace">) then </span><span style="font-style:italic">true-block </span>⟨<span style="font-family:monospace">else
-</span><span style="font-style:italic">false-block</span>⟩<span style="font-family:monospace"> end</span>
-</div><h4 id="sec1930" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">a := 3</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">if (a &gt; 1) then a:= a + 5; end</span>
-</td></tr>
-</table>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">8
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">a:=8</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">if (a &gt; 10) then a:= a + 10; else a:= a - 5; end</span>
-</td></tr>
-</table> 
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3
-</td></tr>
-</table>
-This input can also be written:
-<div class="center">
-<span style="font-family:monospace">si (a &gt; 10) alors a:= a + 10; sinon a:= a - 5; fsi</span>
-</div>
-</li></ul><p><br>
-</p><p>Several <span style="font-family:monospace">if</span> statements can be nested; for example, the
-statement
-</p><div class="center">
-<span style="font-family:monospace">if (a &gt; 1) then a:= 1; else if (a &lt; 0) then a:= 0; else a:=
-0.5; end; end</span>
-</div><p>
-A simpler way is to replace the <span style="font-family:monospace">else if</span> by <span style="font-family:monospace">elif</span> and
-combine the <span style="font-family:monospace">end</span>s; the above statement can be written
-</p><div class="center">
-<span style="font-family:monospace">if (a &gt; 1) then a:= 1; elif (a &lt; 0) then a:= 0; else a:= 0.5; end</span>
-</div><p>
-In general, such a combination can be written
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">if (</span><span style="font-style:italic">boolean 1</span><span style="font-family:monospace">) then</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-style:italic">block 1;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">elif (</span><span style="font-style:italic">boolean 2</span><span style="font-family:monospace">) then</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-style:italic">block 2;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > …</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">elif (</span><span style="font-style:italic">boolean n</span><span style="font-family:monospace">) then</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-style:italic">block n;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">else</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-style:italic">last block;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">end</span>
-</td></tr>
-</table>
-</div><p>
-(where the last <span style="font-family:monospace">else</span> is optional.)
-For example, if you want to define a function <span style="font-style:italic">f</span> by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) =
-</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
-⎪<br>
-⎪<br>
-⎨<br>
-⎪<br>
-⎪<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" >   8</td><td style="text-align:left;white-space:nowrap" >if  <span style="font-style:italic">x</span> &gt; 8</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >   4</td><td style="text-align:left;white-space:nowrap" >if  4 &lt; <span style="font-style:italic">x</span> ≤ 8</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >   2</td><td style="text-align:left;white-space:nowrap" >if  2 &lt; <span style="font-style:italic">x</span> ≤ 4</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >   1</td><td style="text-align:left;white-space:nowrap" >if  0 &lt; <span style="font-style:italic">x</span> ≤ 2</td></tr>
-<tr><td style="text-align:left;white-space:nowrap" >   0</td><td style="text-align:left;white-space:nowrap" >if  <span style="font-style:italic">x</span> ≤ 0
-</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table><p>
-you can enter
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f(x):= {</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">if (x &gt; 8) then</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  return 8;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">elif (x &gt; 4) then</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  return 4;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">elif (x &gt; 2) then</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  return 2;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">elif (x &gt; 0) then</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  return 1;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">else</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">  return 0;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">end;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">}</span>
-</td></tr>
-</table>
+
+Use <span style="font-family:monospace">output</span> to add
+information to the input window:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">input</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">output</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Calculate p(a)"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"polynomial"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">p</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"value"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en162.png">
+
 </div>
 <hr>
-<a href="cascmd_en753.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en755.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en753.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en755.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

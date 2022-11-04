@@ -2,47 +2,37 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rewriting tan(x) in terms of cos(2x) and sin(2x): tan2cossin2
-</title>
+<title>Transforming an equation into a difference</title>
 </head>
 <body >
-<a href="cascmd_en264.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en266.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en264.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en266.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec616" class="subsection">5.23.18  Rewriting tan(x) in terms of cos(2x) and sin(2x): <span style="font-family:monospace">tan2cossin2</span>
-<a id="hevea_default464"></a></h3>
-<p>The <span style="font-family:monospace">tan2cossin2</span> command replaces tan(<span style="font-style:italic">x</span>) by 
-1−cos(2<span style="font-style:italic">x</span>)/sin(2<span style="font-style:italic">x</span>) in an expression.
+<h3 id="sec601" class="subsection">8.2.2  Transforming an equation into a difference</h3>
+<p>The <span style="font-family:monospace">equal2diff</span><a id="hevea_default476"></a>
+command turns an equation into the difference
+of the two sides, resulting in an expression assumed to be equal to 0.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">tan2cossin2</span> takes one argument:<br>
- <span style="font-style:italic">expr</span>, an expression containing trigonometric functions.
-</li><li class="li-itemize"><span style="font-family:monospace">tan2cossin2(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns
-<span style="font-style:italic">expr</span> with anything of the form tan(<span style="font-style:italic">x</span>) replaced by 
-1−cos(2<span style="font-style:italic">x</span>)/sin(2<span style="font-style:italic">x</span>).
-</li></ul><h4 id="sec617" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">tan2cossin2(tan(x))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1−cos</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">2 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">sin</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">2 <span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table></td></tr>
+<span style="font-family:monospace">equal2diff</span> takes
+<span style="font-style:italic">lhs</span><span style="font-family:monospace">=</span><span style="font-style:italic">rhs</span>, an equation.
+</li><li class="li-itemize"><span style="font-family:monospace">equal2diff(</span><span style="font-style:italic">lhs</span><span style="font-family:monospace">=</span><span style="font-style:italic">rhs</span><span style="font-family:monospace">)</span> returns the
+difference <span style="font-style:italic">lhs</span>−<span style="font-style:italic">rhs</span>.
+</li></ul><h4 id="sec602" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">equal2diff</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1=3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−1−3
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en264.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en266.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en264.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en266.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

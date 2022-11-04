@@ -2,134 +2,141 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>LU decomposition: lu
-
-</title>
+<title>Jordan form of a matrix</title>
 </head>
 <body >
-<a href="cascmd_en531.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en533.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en531.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en533.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:lu" class="subsection">5.49.5  LU decomposition: <span style="font-family:monospace">lu</span>
-<a id="hevea_default913"></a>
-</h3>
-<p>The LU decomposition of a square matrix <span style="font-style:italic">A</span> is <span style="font-style:italic">P</span> <span style="font-style:italic">A</span>= <span style="font-style:italic">L</span> <span style="font-style:italic">U</span>, where <span style="font-style:italic">P</span> is a
-permutation matrix, <span style="font-style:italic">L</span> is lower triangular with 1s on the diagonal,
-and <span style="font-style:italic">U</span> is upper triangular. 
-The <span style="font-family:monospace">lu</span> command finds the LU decomposition of a matrix.
+<h3 id="ssec:jordan" class="subsection">14.2.5  Jordan form of a matrix</h3>
+<p>The <span style="font-family:monospace">jordan</span><a id="hevea_default928"></a> command
+finds the Jordan form of a matrix.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">lu</span> takes one argument:<br>
- <span style="font-style:italic">A</span>, a square matrix.
-</li><li class="li-itemize"><span style="font-family:monospace">lu(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns a list [<span style="font-style:italic">p</span>,<span style="font-style:italic">L</span>,<span style="font-style:italic">U</span>] where <span style="font-style:italic">p</span> is a
-permutation that determines <span style="font-style:italic">P</span>, and <span style="font-style:italic">P</span>, <span style="font-style:italic">L</span> and <span style="font-style:italic">U</span> are the LU
-decomposition of <span style="font-style:italic">A</span>.
-</li></ul><p>
-The permutation matrix <span style="font-style:italic">P</span> is defined from <span style="font-style:italic">p</span> by:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span><sub><span style="font-style:italic">i</span>,<span style="font-style:italic">p</span>(<span style="font-style:italic">i</span>)</sub>=1,    <span style="font-style:italic">P</span><sub><span style="font-style:italic">i</span>,<span style="font-style:italic">j</span></sub>=0  if  <span style="font-style:italic">j</span>  ≠ <span style="font-style:italic">p</span>(<span style="font-style:italic">i</span>)
+<span style="font-family:monospace">jordan</span> takes one mandatory and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">A</span>, a square matrix.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span>, a variable name.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> (in all modes but <span style="font-variant:small-caps">Maple</span>) returns
+a sequence [<span style="font-style:italic">P</span>,<span style="font-style:italic">J</span>] of two matrices, where the columns of <span style="font-style:italic">P</span> are the
+eigenvectors of <span style="font-style:italic">A</span>, <span style="font-style:italic">J</span> is the Jordan form of <span style="font-style:italic">A</span>, and
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">J</span>=<span style="font-style:italic">P</span><sup>−1</sup><span style="font-style:italic">AP</span>
 </td></tr>
-</table><p>
-In other words, it is the identity matrix where the rows are permuted
-according to the permutation <span style="font-style:italic">p</span>. You can get the permutation matrix
-from <span style="font-style:italic">p</span> by <span style="font-style:italic">P</span><span style="font-family:monospace">:=permu2mat(</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> (see Section <a href="cascmd_en160.html#ssec%3Apermu2mat">5.9.6</a>).</p><h4 id="sec1310" class="subsubsection">Example</h4>
+</table><p><span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span>, in <span style="font-variant:small-caps">Maple</span> mode, only returns the
+matrix <span style="font-style:italic">J</span>.
+</p></li><li class="li-itemize"><span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span> ⟨,<span style="font-style:italic">var</span> ⟩<span style="font-family:monospace">)</span>
+returns the matrix <span style="font-style:italic">J</span>, as above, and assigns the matrix <span style="font-style:italic">P</span> to the
+variable <span style="font-style:italic">var</span>.
+</li></ul><h4 id="sec1249" class="subsubsection">Examples</h4>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">A := [[3.,5.],[4.,5.]]:;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">(p,L,U):=lu(A)</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+Input not in <span style="font-variant:small-caps">Maple</span> mode:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">jordan</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[4,1,1],[1,4,1],[1,1,4]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
 ⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0.75</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−1</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >6</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
 </table></td><td class="dcell">⎤<br>
 ⎥<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >4.0</td><td style="text-align:center;white-space:nowrap" >5.0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >1.25</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td></tr>
-</table><p>
-Here <span style="font-style:italic">n</span>=2, hence:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">P</span>[0,<span style="font-style:italic">p</span>(0)]=<span style="font-style:italic">P</span><sub>2</sub>[0,1]=1,     <span style="font-style:italic">P</span>[1,<span style="font-style:italic">p</span>(1)]=<span style="font-style:italic">P</span><sub>2</sub>[1,0]=1,    <span style="font-style:italic">P</span>=[[0,1],[1,0]] 
-</td></tr>
-</table><p>
-Verification:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">permu2mat(p)*A; L*U</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >4.0</td><td style="text-align:center;white-space:nowrap" >5.0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3.0</td><td style="text-align:center;white-space:nowrap" >5.0</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >4.0</td><td style="text-align:center;white-space:nowrap" >5.0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3.0</td><td style="text-align:center;white-space:nowrap" >5.0</td></tr>
-</table></td><td class="dcell">⎤<br>
 ⎥<br>
 ⎦</td></tr>
-</table><p><br>
-</p><p>Note that the permutation is different for exact input (the choice of
-pivot is the simplest instead of the largest in absolute value).<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">lu([[1,2],[3,4]])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0,1</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">jordan</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[4,1,1],[1,4,1],[1,1,4]],</span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
 ⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">6</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−1</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>If <span style="font-style:italic">A</span> is symmetric and has eigenvalues with multiple orders,
+the matrix <span style="font-style:italic">P</span> returned by <span style="font-family:monospace">jordan(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> will contain
+orthogonal eigenvectors (not always of norm equal to 1); that is,
+<span style="font-style:italic">P</span><sup><span style="font-style:italic">T</span></sup><span style="font-style:italic">P</span> will be a diagonal matrix where the diagonal is
+the square norm of the eigenvectors.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">jordan</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[4,1,1],[1,4,1],[1,1,4]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−1</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >6</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >3</td></tr>
 </table></td><td class="dcell">⎤<br>
 ⎥<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >2</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >−2</td></tr>
-</table></td><td class="dcell">⎤<br>
 ⎥<br>
 ⎦</td></tr>
-</table><p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">lu([[1.0,2],[3,4]])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,0</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >1</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0.333333333333</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎢<br>
-⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >3.0</td><td style="text-align:center;white-space:nowrap" >4.0</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0</td><td style="text-align:center;white-space:nowrap" >0.666666666667</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎦</td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en531.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en533.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en531.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en533.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

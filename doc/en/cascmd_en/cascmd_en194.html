@@ -2,60 +2,63 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Normal form for rational functions: ratnormal
-
-</title>
+<title>Integral and fractional part of a rational number</title>
 </head>
 <body >
-<a href="cascmd_en193.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en195.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en193.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en195.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:ratnormal" class="subsection">5.12.16  Normal form for rational functions: <span style="font-family:monospace">ratnormal</span>
-<a id="hevea_default323"></a>
-</h3>
-<p>The <span style="font-family:monospace">ratnormal</span> command rewrites an expression using its
-irreducible representation. The expression is viewed as a multivariate
-rational function with coefficients in ℚ (or
-ℚ[<span style="font-style:italic">i</span>]). The variables are generalized identifiers which are
-assumed to be algebraically independent. Unlike with <span style="font-family:monospace">normal</span>,
-an algebraic extension is considered as a generalized identifier.
-Therefore <span style="font-family:monospace">ratnormal</span> is faster but might miss some
-simplifications if the expression contains radicals or algebraically
-dependent transcendental functions.
+<h3 id="sec:ipropfrac" class="subsection">6.2.2  Integral and fractional part of a rational number</h3>
+<p>Rational numbers are often broken up into integer and fractional
+parts, where the fractional part has absolute value less than 1; i.e.,
+the absolute value of the top integer is smaller than that of the
+bottom integer. Such a fraction is called a <em>proper</em> fraction.
+The <span style="font-family:monospace">propfrac</span><a id="hevea_default319"></a>
+or <span style="font-family:monospace">propFrac</span><a id="hevea_default320"></a> command
+writes a fraction as an integer plus a proper fraction.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">ratnormal</span> takes one argument:<br>
- <span style="font-style:italic">expr</span>, an expression.
-</li><li class="li-itemize"><span style="font-family:monospace">ratnormal(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns the irreducible
-representation of <span style="font-style:italic">expr</span>.
-</li></ul><h4 id="sec403" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">ratnormal((x^3-1)/(x^2-1))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+1</td></tr>
+<span style="font-family:monospace">propfrac</span> takes
+<span style="font-style:italic">r</span>, a rational number.
+</li><li class="li-itemize"><span style="font-family:monospace">propfrac(</span><span style="font-style:italic">r</span><span style="font-family:monospace">)</span> returns
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">q</span>+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">r</span></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>+1</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">b</span></td></tr>
+</table></td><td class="dcell">  with   0≤ <span style="font-style:italic">r</span>&lt;<span style="font-style:italic">b</span>
+</td></tr>
+</table>
+where  <span style="font-style:italic">r</span>=<span style="font-style:italic">a</span>/<span style="font-style:italic">b</span> is in lowest terms and
+and <span style="font-style:italic">a</span>=<span style="font-style:italic">b</span> <span style="font-style:italic">q</span>+<span style="font-style:italic">r</span>.
+</li></ul><p>
+(For rational expressions, see Section <a href="cascmd_en391.html#ssec%3Apropfrac">10.7.8</a>.)</p><h4 id="sec399" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">propfrac</span></span><span style="font-weight:bold"><span style="color:#BF0000">(42/15)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+2+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">4</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">5</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">propfrac</span></span><span style="font-weight:bold"><span style="color:#BF0000">(43/12)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+3+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">7</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">12</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">ratnormal((-2x^3+3x^2+5x-6)/(x^2-2x+1))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−2 <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+6</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−1</td></tr>
-</table></td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en193.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en195.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en193.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en195.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

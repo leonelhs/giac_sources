@@ -2,53 +2,39 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>More configuration</title>
+<title>Complex variables</title>
 </head>
 <body >
-<a href="cascmd_en028.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en030.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en028.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en030.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec:mconf" class="subsection">2.5.9  More configuration</h3>
-<p>You can configure other aspects of <span style="font-family:monospace">Xcas</span> (besides the
-computational aspects and graphics) using the the menu item
-<span style="font-family:monospace">Cfg</span>▸<span style="font-family:monospace">General configuration</span>. You will then
-be given a window in which you can change the following options:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">Font</span><br>
- This lets you choose a session font, the same as choosing the menu
-item <span style="font-family:monospace">Cfg</span>▸<span style="font-family:monospace">Session font</span>.</li><li class="li-itemize"><span style="font-family:monospace">Level</span><br>
- This determines what type of level should be open when you start
-a new session.</li><li class="li-itemize"><span style="font-family:monospace">browser</span><br>
- This determines what browser <span style="font-family:monospace">Xcas</span> will use when it
-requires one, for example when displaying help. If this is empty,
-<span style="font-family:monospace">Xcas</span> will use its built-in browser.</li><li class="li-itemize"><span style="font-family:monospace">Auto HTML help</span><br>
- If this box is checked, then whenever you choose a function from a menu,
-a help page for that function will appear in your browser.
-Regardless of whether this box is checked or not, the help page will
-also appear in your browser if you enter <span style="font-family:monospace">?</span><span style="font-style:italic">function</span>
-from a command box.</li><li class="li-itemize"><span style="font-family:monospace">Auto index help</span>
-If this box is checked, then whenever you choose a command from a
-menu, the help index page for that function will appear. This is
-the same page you get when you choose the command from the help
-index. (See Section <a href="cascmd_en006.html#sssec%3Ahelpind">2.3</a>.)</li><li class="li-itemize"><span style="font-family:monospace">Print format</span><br>
- This determines the paper size for printing and saving files.
-There is also a button you can use to have the printing done in
-landscape mode; if this button is not checked, the printing will be
-done in portrait.</li><li class="li-itemize"><span style="font-family:monospace">Disable Tool tips</span><br>
- If this box is checked, <span style="font-family:monospace">Xcas</span> will stop displaying tool tips
-(see Section <a href="cascmd_en006.html#ssec%3Attips">2.3</a>).</li><li class="li-itemize"><span style="font-family:monospace">rows</span> and <span style="font-family:monospace">columns</span><br>
- These determine the default number of rows and columns for the
-matrix editor and spreadsheet (see Section <a href="index.html#sec%3Aspreadsheet">3.5</a>).</li><li class="li-itemize"><span style="font-family:monospace">PS view</span><br>
- This determines what program is used to preview Postscript files.</li><li class="li-itemize"><span style="font-family:monospace">Step by step</span><br>
- If this is checked, then <span style="font-family:monospace">Xcas</span> will not save context
-information.</li><li class="li-itemize"><span style="font-family:monospace">Proxy</span><br>
- This sets a proxy server for updates.</li></ul>
+<h3 id="ssec:cvars" class="subsection">2.5.6  Complex variables</h3>
+<p>By default, new variables are assumed to be real; functions which work
+with the real and imaginary parts of variables will assume that a
+variable is real. For example, <span style="font-family:monospace">re</span> returns the real part of
+its argument and <span style="font-family:monospace">im</span> returns the imaginary part (see
+Section <a href="cascmd_en223.html#ssec%3Areim">6.4.2</a>), and so
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">re</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>returns <span style="font-style:italic">z</span> and
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">im</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>returns 0.</p><p>If you want variables to be complex by default, you can have
+<span style="font-variant:small-caps">Xcas</span> use complex variable mode. You can set this from the
+CAS configuration screen (see Section <a href="cascmd_en030.html#ssec%3Aconfcomp">2.5.7</a>). Your choice
+will be stored in the variable
+<span style="font-family:monospace">complex_variables</span><a id="hevea_default18"></a>,
+where a value of 0 means that <span style="font-variant:small-caps">Xcas</span> will assume that variables are
+real and and a value of 1 means that <span style="font-variant:small-caps">Xcas</span> will assume that
+variables are complex. Your choice will be stored in the
+configuration file (see Section <a href="cascmd_en033.html#ssec%3Aconffile">2.5.10</a>), and so can also be
+set there.</p>
 <hr>
-<a href="cascmd_en028.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en030.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en028.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en030.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

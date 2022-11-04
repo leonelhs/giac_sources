@@ -2,73 +2,61 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Factorial: factorial !
-
-</title>
+<title>Inserting an element into a list or a string</title>
 </head>
 <body >
-<a href="cascmd_en121.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en123.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en121.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en123.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:factorial" class="subsection">5.6.1  Factorial: <span style="font-family:monospace">factorial</span> <span style="font-family:monospace">!</span>
-<a id="hevea_default213"></a>
-<a id="hevea_default214"></a></h3>
-<p>The <span style="font-family:monospace">factorial</span> command computes the factorial of a number.<br>
-The postfix operator <span style="font-family:monospace">!</span> is equivalent.
+<h3 id="sec230" class="subsection">5.3.9  Inserting an element into a list or a string</h3>
+<p>The <span style="font-family:monospace">insert</span><a id="hevea_default216"></a> command
+inserts elements into a list or string.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">factorial</span> takes one
-argument:<br>
- <span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize"><span style="font-family:monospace">factorial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">n</span>!.
-</li></ul><h4 id="sec248" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">factorial(10)</span>
-</div><p>
-<span style="font-style:italic">or:</span>
-</p><div class="center">
-<span style="font-family:monospace">10!</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3628800
-</td></tr>
-</table><p><br>
-</p><p>The Γ function (see Section <a href="cascmd_en148.html#ssec%3Agamma">5.8.13</a>) can be used to extend
-the factorial function to complex numbers. The Γ function is
-defined for all complex numbers except for zero and the negative
-integers, and it satisfies Γ(<span style="font-style:italic">n</span>+1)=<span style="font-style:italic">n</span>! for all non-negative
-integers <span style="font-style:italic">n</span>. So the factorial can be extended to all complex numbers
-except the negative integers by <span style="font-style:italic">n</span>!=Γ(<span style="font-style:italic">n</span>+1).</p><h4 id="sec249" class="subsubsection">Examples</h4>
+<span style="font-family:monospace">insert</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">factorial(1/2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >π </td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">factorial(i)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0.5−0.2 <span style="font-style:italic">i</span>
-</td></tr>
-</table>
+<span style="font-style:italic">L</span>, a list or a string.
+</li><li class="li-itemize"><span style="font-style:italic">i</span>, an integer (the index).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, an object.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">insert(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">i</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">L</span> with <span style="font-style:italic">x</span> inserted at
+index <span style="font-style:italic">i</span> and the necessary elements shifted to the right.
+</li></ul><h4 id="sec231" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">insert</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,2],2,5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">3,4,5,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">insert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"342"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"5"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">“3452”</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+<span style="font-family:monospace">insert</span> returns an error if the index is too large.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">insert</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,2],4,5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >insert([3,4,2],4,5)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >Error: Invalid dimension
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en121.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en123.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en121.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en123.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

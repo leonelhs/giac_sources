@@ -2,60 +2,46 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inversion in space: inversion
-</title>
+<title>Checking whether points in space are cospherical</title>
 </head>
 <body >
-<a href="cascmd_en957.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en959.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en957.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en959.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dinversion" class="subsection">14.14.7  Inversion in space: <span style="font-family:monospace">inversion</span>
-<a id="hevea_default1664"></a></h3>
-<p>See Section <a href="cascmd_en865.html#ssec%3A2dinversion">13.15.7</a> for inversions in the plane.</p><p>Given a point <span style="font-style:italic">P</span> and a real number <span style="font-style:italic">k</span>, the corresponding
-<em>inversion</em> of a point <span style="font-style:italic">A</span> is the point <span style="font-style:italic">A</span>′ on the ray
-<span style="font-style:italic">PA</span> satisfying <span style="text-decoration:overline"><span style="font-style:italic">PA</span></span>·<span style="text-decoration:overline"><span style="font-style:italic">PA</span></span><span style="text-decoration:overline">′</span> =
-<span style="font-style:italic">k</span><sup>2</sup>. The <span style="font-family:monospace">inversion</span> command creates inversions.
+<h3 id="sec2370" class="subsection">25.11.8  Checking whether points in space are cospherical</h3>
+<p>The <span style="font-family:monospace">is_cospherical</span><a id="hevea_default1873"></a>
+command determines whether or not points are cospherical, i.e. whether they all
+lie on the same sphere.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">inversion</span> takes two mandatory and one optional
-argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">k</span>, the inversion ratio.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">G</span>, a geometric object.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">inversion(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">k</span><span style="font-family:monospace">)</span> returns a new command which
-does an inversion about <span style="font-style:italic">P</span> with a ratio <span style="font-style:italic">k</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">inversion(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">k</span>,<span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns and draws the inversion of
-<span style="font-style:italic">G</span>.
-</li></ul><h4 id="sec2422" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">S := sphere([0,1,0],0.5)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">inver:= inversion(point(0,0,0), 2)</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">color(S,blue),inver(S)</span>
-</td></tr>
+<span style="font-family:monospace">is_cospherical</span> takes
+<span style="font-style:italic">L</span>, a list or sequence of points.
+</li><li class="li-itemize"><span style="font-family:monospace">is_cospherical(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if the points
+in <span style="font-style:italic">L</span> all lie on the same sphere, and returns <span style="font-family:monospace">0</span> otherwise.
+</li></ul><h4 id="sec2371" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_cospherical</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,0,0],[0,2,0],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2),0],</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">               [0,0,2],[2/</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3),2/</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3),2/</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_cospherical</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,0,0],[0,2,0],[1,1,0],[0,0,2],[1,1,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en352.png">
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">inversion(point(0,0,0),2,S)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en353.png">
-</div>
-</li></ul>
 <hr>
-<a href="cascmd_en957.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en959.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en957.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en959.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

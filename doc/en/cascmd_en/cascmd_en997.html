@@ -2,62 +2,54 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Root mean square: rms</title>
+<title>New images from existing ones</title>
 </head>
 <body >
-<a href="cascmd_en996.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en998.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en996.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en998.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec2498" class="subsection">15.2.5  Root mean square: <span style="font-family:monospace">rms</span><a id="hevea_default1707"></a></h3>
-<p>The <span style="font-family:monospace">rms</span> command finds the room mean square of a list of
-numbers <span style="font-style:italic">X</span>=[<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>], which is defined by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">RMS(<span style="font-style:italic">X</span>)=</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
-<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
-</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
-</table></td><td class="dcell">|<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>|<sup>2</sup></td></tr>
+<h3 id="sec2454" class="subsection">26.1.6  New images from existing ones</h3>
+<p>The <span style="font-family:monospace">()</span><a id="hevea_default1913"></a> operator can be used to create image objects
+from an existing one. With an image object <span style="font-family:monospace">img</span>:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">img</span><span style="font-family:monospace">(grey)</span> returns a copy of <span style="font-family:monospace">img</span> converted to grayscale.
+</li><li class="li-itemize"><span style="font-family:monospace">img</span><span style="font-family:monospace">(</span>α<span style="font-family:monospace">)</span>, where α is
+a positive real number, returns a copy <span style="font-family:monospace">img</span> with size scaled to α <span style="font-style:italic">w</span>× α <span style="font-style:italic">h</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">img</span><span style="font-family:monospace">(</span><span style="font-style:italic">w</span>,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns a copy of <span style="font-family:monospace">img</span> resized to <span style="font-style:italic">w</span>× <span style="font-style:italic">h</span>
+(possibly changing the aspect ratio).
+</li><li class="li-itemize"><span style="font-family:monospace">img</span><span style="font-family:monospace">(</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">w</span>,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns a new image corresponding to the portion
+of <span style="font-family:monospace">img</span> with dimensions <span style="font-style:italic">w</span>× <span style="font-style:italic">h</span> and the upper left corner at (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>).
+</li></ul><p>
+Note that <span style="font-family:monospace">img</span> is unaffected by the above operations.</p><h4 id="sec2455" class="subsubsection">Examples</h4>
+<p>
+Assume that the image <span style="font-family:monospace">terre.jpg</span> (see Section <a href="cascmd_en995.html#ssec%3Aviewing-images">26.1.4</a>) is loaded
+to the variable <span style="font-family:monospace">img</span>. Then:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cropped</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">(220,20,100,100)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">an image of size 100×100 (RGB)</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">. 
-</td></tr>
-</table><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rms</span> takes one argument:<br>
- <span style="font-style:italic">X</span>, a list of real or complex numbers [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>].
-</li><li class="li-itemize"><span style="font-family:monospace">rms(</span><span style="font-style:italic">X</span><span style="font-family:monospace">)</span> returns the root mean square of <span style="font-style:italic">X</span>.
-</li></ul><h4 id="sec2499" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">rms([1,2,5,8,3,6,7,9,-1])</span>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">cropped</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0); </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">cropped</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">grey</span></span><span style="font-weight:bold"><span style="color:#BF0000">),120)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en392.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">title</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"resized from 512 x 256 to 102 x 51"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">; </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0.2))</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en393.png">
+
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >30</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">rms([1,1-i,2+3i,5-2i])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en996.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en998.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en996.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en998.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

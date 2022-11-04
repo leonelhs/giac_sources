@@ -85,10 +85,6 @@ enum distribution_type {
 // GRAPH THEORY GIAC COMMANDS
 
 bool is_graphe(const gen &g);
- inline bool is_graphe(const giac::gen &g,std::string &disp_out,GIAC_CONTEXT){
-   disp_out=""; return is_graphe(g); 
-   // disp_out="No more support for graphe"; return false;
- }
 
 gen _graph(const gen &g,GIAC_CONTEXT);
 gen _digraph(const gen &g,GIAC_CONTEXT);

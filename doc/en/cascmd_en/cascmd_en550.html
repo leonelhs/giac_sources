@@ -2,98 +2,99 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Univariate global minimization on a segment: find_minimum</title>
+<title>Singular value decomposition</title>
 </head>
 <body >
-<a href="cascmd_en549.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en551.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en549.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en551.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1379" class="subsection">5.53.1  Univariate global minimization on a segment: <span style="font-family:monospace">find_minimum</span></h3>
-<p>
-<a id="hevea_default941"></a></p><p>The <span style="font-family:monospace">find_minimum</span> command is used for global minimization of a continuous
-function on a segment.</p><p><span style="font-family:monospace">find_minimum</span> takes between three and five arguments:
+<h3 id="sec1288" class="subsection">14.3.8  Singular value decomposition</h3>
+<p>The <em>singular value decomposition</em> of a matrix <span style="font-style:italic">A</span> is a
+factorization <span style="font-style:italic">A</span>=<span style="font-style:italic">USQ</span><sup><span style="font-style:italic">T</span></sup>, where <span style="font-style:italic">U</span> and <span style="font-style:italic">Q</span> are orthogonal and <span style="font-style:italic">S</span> is
+a diagonal matrix. The <span style="font-family:monospace">svd</span><a id="hevea_default949"></a>
+command finds the singular value decomposition of a matrix.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">f</span>, a continuous univariate function or expression.
-</li><li class="li-itemize"><span style="font-style:italic">a</span>, a real number.
-</li><li class="li-itemize"><span style="font-style:italic">b</span>, a real number such that <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">b</span>.
-</li><li class="li-itemize">Optionally, a sequence of one or two numbers being either:
-<ul class="itemize"><li class="li-itemize">
-ε∈⟨ 0,1⟩, the optimality tolerance (by default, ε=ε<sub>0</sub><sup>2/3</sup>, where ε<sub>0</sub> is the number returned by
-the command <span style="font-family:monospace">epsilon</span>), or
-</li><li class="li-itemize"><span style="font-style:italic">n</span>∈ℤ, the maximum number of iterations (<span style="font-style:italic">n</span>≥ 1 is required)
-for Brent’s method subroutine (by default, <span style="font-style:italic">n</span>=100).
-</li></ul>
-</li></ul><p><span style="font-family:monospace">find_minimum</span> applies a modification of Brent’s algorithm which usually finds a global
-minimum, even when <span style="font-style:italic">f</span> has many local extrema.
-The original Brent’s method is used as a subroutine which is applied recursively by
-partitioning the search interval. Each instance is allowed the maximum of <span style="font-style:italic">n</span> iterations.</p><h4 id="sec1380" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-We minimize a function which has several local extrema, one of which is global.<br>
- <span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f(x):=Airy_Ai(x+sin(x))+cos(x^2):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">x0:=find_minimum(f(x),-5,5)</span>
-</td></tr>
+<span style="font-family:monospace">svd</span> takes
+<span style="font-style:italic">A</span>, a numeric square matrix.
+</li><li class="li-itemize"><span style="font-family:monospace">svd(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns a list [<span style="font-style:italic">U</span>,<span style="font-style:italic">s</span>,<span style="font-style:italic">Q</span>] where <span style="font-style:italic">U</span> and <span style="font-style:italic">Q</span>
+are the orthogonal matrices of the singular value decomposition and
+<span style="font-style:italic">s</span> is the diagonal of the matrix <span style="font-style:italic">S</span>.
+</li></ul><p>
+You can get the diagonal matrix <span style="font-style:italic">S</span> from <span style="font-style:italic">s</span> with <span style="font-style:italic">S</span><span style="font-family:monospace">=diag(</span><span style="font-style:italic">s</span><span style="font-family:monospace">)</span>
+(see Section <a href="cascmd_en486.html#ssec%3Adiag">13.2.2</a>).</p><h4 id="sec1289" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">svd</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,2],[3,4]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−0.404553584834</td><td style="text-align:center;white-space:nowrap" >−0.914514295677</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >−0.914514295677</td><td style="text-align:center;white-space:nowrap" >0.404553584834</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">5.46498570422,0.365966190626</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−0.576048436766</td><td style="text-align:center;white-space:nowrap" >0.81741556047</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >−0.81741556047</td><td style="text-align:center;white-space:nowrap" >−0.576048436766</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">U</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">Q</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">svd</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[3,5],[4,5]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−0.672988041811</td><td style="text-align:center;white-space:nowrap" >−0.739653361771</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >−0.739653361771</td><td style="text-align:center;white-space:nowrap" >0.672988041811</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">8.6409011028,0.578643354497</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎢<br>
+⎣</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >−0.576048436766</td><td style="text-align:center;white-space:nowrap" >0.81741556047</td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >−0.81741556047</td><td style="text-align:center;white-space:nowrap" >−0.576048436766</td></tr>
+</table></td><td class="dcell">⎤<br>
+⎥<br>
+⎦</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Verification:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">U</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">diag</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)*</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Q</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5.0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5.0</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−3.96344565209 </td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">plot(f(x),x=-5..5); point(x0,f(x0),display=point_width_3+point_point+red)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en015.png">
-</div>
-</li><li class="li-itemize">The objective function in the example below is unimodal,
-with a single local minimum which is also the global minimum.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f(x):=besselJ(x,2)/Gamma(x+1)+(x+1)^sin(x):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">x0:=find_minimum(f(x),0,10)</span>
-</td></tr>
-</table>
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">4.82843934915 </td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">plot(f(x),x=0..10); point(x0,f(x0),display=point_width_3+point_point+red)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en016.png">
-</div>
-</li><li class="li-itemize">The following function is continuous but not differentiable.
-It has three local and only one global minimum at <span style="font-style:italic">x</span><sub>0</sub>=−1. Note that we are passing the function
-itself as the first argument. Also, the parameters ε and <span style="font-style:italic">n</span> are set to 10<sup>−5</sup>
-and 30, respectively.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">f(x):=(min(sqrt(abs(x+4))-1,sqrt(abs(x+1))-1005/1000,sqrt(abs(x-3))+1/2):;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">x0:=find_minimum(f,-5,5,1e-5,30)</span>
-</td></tr>
-</table></div>
-</li><li class="li-itemize"><span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">−0.999998230068 </td></tr>
-</table>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">plot(f(x),x=-5..5,xstep=5e-4); point(x0,f(x0),display=point_width_3+point_point+red)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en017.png">
-</div>
-</li></ul>
 <hr>
-<a href="cascmd_en549.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en551.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en549.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en551.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

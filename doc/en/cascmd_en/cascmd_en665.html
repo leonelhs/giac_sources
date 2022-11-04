@@ -2,150 +2,164 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Producing random matrices: randmatrix ranm randMat
-
-
-
-</title>
+<title>χ2 distribution</title>
 </head>
 <body >
-<a href="cascmd_en664.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en666.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en664.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en666.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:randmatrix" class="subsection">8.3.16  Producing random matrices: <span style="font-family:monospace">randmatrix</span> <span style="font-family:monospace">ranm</span> <span style="font-family:monospace">randMat</span>
-<a id="hevea_default1196"></a>
-<a id="hevea_default1197"></a>
-<a id="hevea_default1198"></a>
-</h3>
-<p>The <span style="font-family:monospace">randmatrix</span> command produces random vectors and matrices.
-(See also Section <a href="cascmd_en316.html#ssec%3Aranm1">5.27.28</a> and Section <a href="cascmd_en664.html#ssec%3Arandvector">8.3.15</a>.)<br>
-<span style="font-family:monospace">ranm</span> and <span style="font-family:monospace">randMat</span> are synonyms for <span style="font-family:monospace">randmatrix</span>.
+<h3 id="ssec:chisquare" class="subsection">18.4.9  χ<sup>2</sup> distribution</h3>
+<h5 id="sec1655" class="paragraph">The probability density function for the χ<sup>2</sup> distribution.</h5>
+<p>
+The χ<sup>2</sup> distribution with <span style="font-style:italic">n</span> degrees of freedom has density
+function given by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:chisq"></a>
+χ<sup>2</sup>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span>/2−1</sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span>/2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2<sup><span style="font-style:italic">n</span>/2</sup>Γ(<span style="font-style:italic">n</span>/2)</td></tr>
+</table></td><td class="dcell">.
+    (6)</td></tr>
+</table><p>
+The <span style="font-family:monospace">chisquare</span><a id="hevea_default1318"></a>
+command computes this density function.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">randmatrix</span> takes one mandatory argument and three
-optional arguments:
+<span style="font-family:monospace">chisquare</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">p</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span>..<span style="font-style:italic">b</span>, a range.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">distr</span>, a distribution, which can be one
-of:
+<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">chisquare(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the χ<sup>2</sup>
+density function with <span style="font-style:italic">n</span> degrees of freedom, given in (<a href="#eq%3Achisq">6</a>).
+</li></ul><h4 id="sec1656" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquare</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">2 </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">e</span></span><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎜<br>
+⎜<br>
+⎝</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">4</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">π </span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">· 2</span><sup><span style="color:#0000CC">2</span></sup></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎟<br>
+⎟<br>
+⎠</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+which can be numerically approximated by:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquare</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,2))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.138369165807
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1657" class="paragraph">The cumulative distribution function for the χ<sup>2</sup> distribution.</h5>
+<p>
+The <span style="font-family:monospace">chisquare_cdf</span><a id="hevea_default1319"></a>
+command computes the cumulative distribution function for the χ<sup>2</sup> distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">chisquare_cdf</span> takes two mandatory arguments and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span> (see Section <a href="cascmd_en650.html#ssec%3Arand">8.3.1</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">’</span>
-or <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>, for a binomial distribution
-(see Section <a href="cascmd_en668.html#ssec%3Abinomial">8.4.3</a> and Section <a href="cascmd_en652.html#ssec%3Arandbinomial">8.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">’</span> or
-<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,</span><span style="font-style:italic">K</span><span style="font-family:monospace">)’</span> for a multinomial distribution
-(see Section <a href="cascmd_en670.html#ssec%3Amultinomial">8.4.5</a> and Section <a href="cascmd_en653.html#ssec%3Arandmultinomial">8.3.4</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson,
-</span>λ<span style="font-family:monospace">’</span> or <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span> for a Poisson
-distribution (see Section <a href="cascmd_en671.html#ssec%3Apoisson">8.4.6</a> and
-Section <a href="cascmd_en654.html#ssec%3Arandpoisson">8.3.5</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’normald(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’normald,</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">’</span> or <span style="font-family:monospace">’randnorm(</span>µ<span style="font-family:monospace">,</span>σ<span style="font-family:monospace">)’</span>
-for a normal distribution (see Section <a href="cascmd_en672.html#ssec%3Anormald">8.4.7</a> and
-Section <a href="cascmd_en655.html#ssec%3Arandnorm">8.3.6</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span> or
-<span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span> for an exponential distribution (see
-Section <a href="cascmd_en680.html#ssec%3Aexponentiald">8.4.15</a> and Section <a href="cascmd_en662.html#ssec%3Arandexp">8.3.13</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">m</span><span style="font-family:monospace">’</span> or
-’randfisher(<span style="font-style:italic">n</span>,<span style="font-style:italic">m</span>)’ for a Fisher-Snédécor
-distribution (see Section <a href="cascmd_en675.html#ssec%3Afishersnedecor">8.4.10</a> and
-Section <a href="cascmd_en658.html#ssec%3Arandfisher">8.3.9</a>).
+<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number. 
 </li></ul>
-Note that <span style="font-style:italic">distr</span> is in quotes.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a vector of
-length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
-[−99,−98,…,98,99] with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix
-whose elements are integers chosen randomly from [−99,99] with
-equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix
-whose elements are integers chosen randomly from [0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0]
-is <span style="font-style:italic">a</span> is negative) with equal probability. 
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">a</span>..<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span>
-matrix whose elements are real numbers chosen randomly from 
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">distr</span><span style="font-family:monospace">)</span>
-returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
-randomly according to distribution <span style="font-style:italic">distr</span>.
-</li></ul><h4 id="sec1662" class="subsubsection">Examples</h4>
+</li><li class="li-itemize"><span style="font-family:monospace">chisquare_cdf(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span>
+degrees of freedom.
+</li><li class="li-itemize"><span style="font-family:monospace">chisquare_cdf(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> &lt; <span style="font-style:italic">y</span>).
+</li></ul><h4 id="sec1658" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquare_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,11)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.948620016517
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquare_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,1,2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.22884525243
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1659" class="paragraph">The inverse distribution function for the χ<sup>2</sup> distribution.</h5>
+<p>
+The <span style="font-family:monospace">chisquare_icdf</span><a id="hevea_default1320"></a>
+command computes the inverse distribution for the χ<sup>2</sup> distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">chisquare_icdf</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmatrix(5)</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−48,54,28,−51,63</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3)</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >40</td><td style="text-align:center;white-space:nowrap" >−74</td><td style="text-align:center;white-space:nowrap" >−87</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >40</td><td style="text-align:center;white-space:nowrap" >−19</td><td style="text-align:center;white-space:nowrap" >20</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3,10)</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >2</td><td style="text-align:center;white-space:nowrap" >1</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >4</td><td style="text-align:center;white-space:nowrap" >0</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3,0..1)</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >0.384355471935</td><td style="text-align:center;white-space:nowrap" >0.655490326229</td><td style="text-align:center;white-space:nowrap" >0.924850208685</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >0.159429819323</td><td style="text-align:center;white-space:nowrap" >0.952957109548</td><td style="text-align:center;white-space:nowrap" >0.220945354551</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">randmatrix(2,3,’randnorm(2,1)’)</span>
-</div>
-<span style="font-style:italic">Output (for example):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" >2.17670501195</td><td style="text-align:center;white-space:nowrap" >0.653882567048</td><td style="text-align:center;white-space:nowrap" >2.94543112983</td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2.46150672679</td><td style="text-align:center;white-space:nowrap" >2.19251320854</td><td style="text-align:center;white-space:nowrap" >2.44211638655</td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-</table>
+<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">chisquare_icdf(</span><span style="font-style:italic">n</span>, <span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
+distribution for the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span> degrees of
+freedom; namely, the value of <span style="font-style:italic">x</span> for which
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-style:italic">h</span>.
+</li></ul><h4 id="sec1660" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquare_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,0.95)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+11.0704976935
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1661" class="paragraph">The upper tail cumulative function for the χ<sup>2</sup> distribution.</h5>
+<p>
+The <span style="font-family:monospace">UTPC</span><a id="hevea_default1321"></a>
+(the Upper Tail Probability-Chi-square distribution)
+computes Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>) for the χ<sup>2</sup> distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">UTPC</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">UTPC(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>) for the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span>
+degrees of freedom.
+</li></ul><h4 id="sec1662" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">UTPC</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,11)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.0513799834831
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en664.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en666.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en664.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en666.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

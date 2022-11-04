@@ -2,53 +2,49 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Breaking out a loop: break
-</title>
+<title>Displaying exponents</title>
 </head>
 <body >
-<a href="cascmd_en758.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en760.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en758.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en760.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1944" class="subsection">12.3.6  Breaking out a loop: <span style="font-family:monospace">break</span>
-<a id="hevea_default1409"></a></h3>
-<p>The <span style="font-family:monospace">break</span> command exits a loop without finishing it.
+<h3 id="sec1922" class="subsection">23.2.7  Displaying exponents</h3>
+<p>The <span style="font-family:monospace">printpow</span><a id="hevea_default1541"></a>
+command determines how the <span style="font-family:monospace">print</span>
+command will print exponents in the special pane above the output line.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">break</span> takes no arguments or parentheses.
-</li><li class="li-itemize"><span style="font-family:monospace">break</span> exits the current loop.
-</li></ul><h4 id="sec1945" class="subsubsection">Example</h4>
-<p>
-Define a program:
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">testbreak(a,b):= {</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">local r;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">while (true) {</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  if (b == 0) {break;}</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  r:= irem(a,b);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  a:= b;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">  b:= r;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">return a;</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><span style="font-family:monospace">}</span>
-</td></tr>
-</table> 
-</div><p>
-Then:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">testbreak(4,0)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">4</span>
-</div><p>
-since the <span style="font-family:monospace">while</span> loop is interrupted when <span style="font-family:monospace">b</span> is 0 and
-<span style="font-family:monospace">a</span> is 4.</p>
+<span style="font-family:monospace">printpow</span> takes
+<span style="font-style:italic">n</span>, which is either −1, 0 or 1 (by default 1).
+</li><li class="li-itemize"><span style="font-family:monospace">printpow(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> sets the style for printing exponents
+with the <span style="font-family:monospace">print</span> command.
+<ul class="itemize"><li class="li-itemize">
+If <span style="font-style:italic">n</span>=−1, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-style:italic">a</span><span style="font-family:monospace">**</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span>.
+</li><li class="li-itemize">If <span style="font-style:italic">n</span>=0, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-family:monospace">pow(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span>.
+</li><li class="li-itemize">If <span style="font-style:italic">n</span>=1, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span>.
+</li></ul>
+</li></ul><h4 id="sec1923" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x</span></span></span><code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">^</span></span></span></code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">3
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x**3
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+pow(x,3)
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x</span></span></span><code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">^</span></span></span></code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">3
+</span></span></span></p>
 <hr>
-<a href="cascmd_en758.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en760.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en758.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en760.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

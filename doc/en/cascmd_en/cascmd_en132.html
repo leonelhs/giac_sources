@@ -2,224 +2,57 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Continued fraction representation of a real: dfc
-
-
-</title>
+<title>Sorting a list by decreasing order</title>
 </head>
 <body >
-<a href="cascmd_en131.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en133.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en131.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en133.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:convertdfc" class="subsection">5.7.7  Continued fraction representation of a real: <span style="font-family:monospace">dfc</span>
-<a id="hevea_default234"></a>
-<a id="hevea_default235"></a>
-</h3>
-<p>Any real number <span style="font-style:italic">a</span> can be written as a continued fraction: </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span> =
-<span style="font-style:italic">a</span><sub>0</sub> + </td><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell" >1</td></tr>
-<tr><td class="dcell" ><hr class="hbar"></td></tr>
-<tr><td class="dcell" ><table class="display"><tr style="vertical-align:top"><td class="dcell"><span style="font-style:italic">a</span><sub>1</sub> + </td><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell" >1</td></tr>
-<tr><td class="dcell" ><hr class="hbar"></td></tr>
-<tr><td class="dcell" ><table class="display"><tr style="vertical-align:top"><td class="dcell"><span style="font-style:italic">a</span><sub>2</sub> + </td><td class="dcell"><table class="display" style="width:100%;"><tr><td class="dcell" >1</td></tr>
-<tr><td class="dcell" ><hr class="hbar"></td></tr>
-<tr><td class="dcell" ><span style="font-style:italic">a</span><sub>3</sub> +
-⋯</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table><p>, which is often abbreviated
-[<span style="font-style:italic">a</span><sub>0</sub>;<span style="font-style:italic">a</span><sub>1</sub>,<span style="font-style:italic">a</span><sub>2</sub>,<span style="font-style:italic">a</span><sub>3</sub>,…]. The <span style="font-family:monospace">dfc</span> command writes a
-real number as a continued fraction.
+<h3 id="sec251" class="subsection">5.3.19  Sorting a list by decreasing order</h3>
+<p>The <span style="font-family:monospace">SortD</span><a id="hevea_default227"></a> command
+sorts a list or a matrix in decreasing order.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">dfc</span> takes one mandatory argument and one optional
-argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">a</span>, a real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span> an integer or <span style="font-style:italic">epsilon</span>, a positive
-real number.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">dfc(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns the list of the continued fraction
-representation of <span style="font-family:monospace">a</span> with precision <span style="font-family:monospace">epsilon</span>, which is
-given by Section <a href="cascmd_en027.html#ssec%3Aconfcomp">2.5.7</a>, item <a href="cascmd_en027.html#enum%3Aeps">9</a>.
-</li><li class="li-itemize"><span style="font-family:monospace">dfc(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">epsilon</span><span style="font-family:monospace">)</span> returns the list of the
-continued fraction representation which approximates <span style="font-family:monospace">a</span> or
-<span style="font-family:monospace">evalf(a)</span> with the specified precision <span style="font-family:monospace">epsilon</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">dfc(</span><span style="font-style:italic">a</span><span style="font-family:monospace">,</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns the list of the continued fraction
-representation of <span style="font-family:monospace">a</span> of order <span style="font-family:monospace">n</span>.
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Remarks.</span>
-</p><ul class="itemize"><li class="li-itemize">
-The <span style="font-family:monospace">convert</span> command with the option <span style="font-family:monospace">confrac</span>
-(see Section <a href="cascmd_en273.html#ssec%3Aconvert">5.23.26</a>) has a similar functionality: in that case the
-value of <span style="font-family:monospace">epsilon</span> is the value defined in the <span style="font-family:monospace">cas</span>
-configuration and the answer may be stored in an optional third
-argument.
-</li><li class="li-itemize">If the last element of the result is a list, the representation is
-ultimately periodic, and the last element is the period. It means
-that the real is a root of an equation of order 2 with integer
-coefficients. So If <span style="font-family:monospace">dfc(a)=[a0,a1,a2,[b0,b1]]</span> then:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>=<span style="font-style:italic">a</span>0+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>2+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">b</span>0+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">b</span>1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">b</span>0+…</td></tr>
+<span style="font-family:monospace">SortD</span> takes
+<span style="font-style:italic">L</span>, a list.
+</li><li class="li-itemize">If <span style="font-style:italic">L</span> is not a matrix,
+then <span style="font-family:monospace">SortA(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns a copy of <span style="font-style:italic">L</span> with the elements in
+decreasing order.
+</li><li class="li-itemize">If <span style="font-style:italic">L</span> is a matrix, then
+<span style="font-family:monospace">SortA(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns a copy of <span style="font-style:italic">L</span> with columns sorted
+according to decreasing order in the first row.
+</li></ul><h4 id="sec252" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">SortD</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,4,2])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">4,3,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize">if the last element of the result is not an integer, it
-represents a remainder <span style="font-style:italic">r</span> (<span style="font-style:italic">a</span>=<span style="font-style:italic">a</span>0+1/…+1/<span style="font-style:italic">an</span>+1/<span style="font-style:italic">r</span>).
-So if <span style="font-family:monospace">dfc(a)=[a0,a1,a2,r]</span> then:
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>=<span style="font-style:italic">a</span>0+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span>2+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">r</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"> </td></tr>
-</table>
-Be aware that this remainder has lost most of its accuracy.
-</li></ul><h4 id="sec271" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(sqrt(2),5)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(evalf(sqrt(2)),1e-9)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(sqrt(2),1e-9)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,2,2,2,2,2,2,2,2,2,2,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">convert(sqrt(2),confrac,’dev’)</span>
-</div>
-<span style="font-style:italic">Output (if in the </span><span style="font-style:italic"><span style="font-family:monospace">cas</span></span><span style="font-style:italic"> configuration </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-9</span></span><span style="font-style:italic">):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">   </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,2,2,2,2,2,2,2,2,2,2,2</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-and <span style="font-family:monospace">[1,2,2,2,2,2,2,2,2,2,2,2,2]</span> is stored in <span style="font-family:monospace">dev</span>.
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(9976/6961,5)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">SortD</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[3,4,2],[6,4,5]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
 ⎢<br>
-⎢<br>
-⎣</td><td class="dcell">1,2,3,4,5,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">43</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">7</td></tr>
-</table></td><td class="dcell">⎤<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">6</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-<span style="font-style:italic">Input (to verify):</span>
-<div class="center">
-<span style="font-family:monospace">1+1/(2+1/(3+1/(4+1/(5+7/43))))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">9976</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">6961</td></tr>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">convert(9976/6961,confrac,’l’)</span>
-</div>
-<span style="font-style:italic">Output (if in the </span><span style="font-style:italic"><span style="font-family:monospace">cas</span></span><span style="font-style:italic"> configuration </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-9</span></span><span style="font-style:italic">):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,2,3,4,5,6,7</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-and <span style="font-family:monospace">[1,2,3,4,5,6,7]</span> is stored in <span style="font-family:monospace">l</span>.
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(pi,5)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell">3,7,15,1,292,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−113 π +355</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">33102 π −103993</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(evalf(pi),5)</span>
-</div>
-<span style="font-style:italic">Output (if floats are hardware floats, e.g. for Digits=12):</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">3,7,15,1,292,1.57581843574</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(evalf(pi),1e-9)</span>
-</div>
-<span style="font-style:italic">or:</span>
-<div class="center">
-<span style="font-family:monospace">dfc(pi,1e-9)</span>
-</div>
-<span style="font-style:italic">or (if in the </span><span style="font-style:italic"><span style="font-family:monospace">cas</span></span><span style="font-style:italic"> configuration </span><span style="font-style:italic"><span style="font-family:monospace">epsilon=1e-9</span></span><span style="font-style:italic">):</span>
-<div class="center">
-<span style="font-family:monospace">convert(pi,confrac,’ll’)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">3,7,15,1,292</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-and <span style="font-family:monospace">[3,7,15,1,292]</span> is stored in <span style="font-family:monospace">ll</span>.
-</li></ul>
 <hr>
-<a href="cascmd_en131.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en133.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en131.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en133.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

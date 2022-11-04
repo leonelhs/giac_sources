@@ -2,46 +2,53 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Repeated function composition: @@
-</title>
+<title>Upper incomplete γ function</title>
 </head>
 <body >
-<a href="cascmd_en215.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en217.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en215.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en217.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec496" class="subsection">5.16.5  Repeated function composition: <span style="font-family:monospace">@@</span>
-<a id="hevea_default407"></a></h3>
-<p>With <span style="font-family:monospace">Xcas</span>, the repeated composition of a function with itself
-<span style="font-style:italic">n</span> ∈ ℕ times is done with the infixed operator
-<span style="font-family:monospace">@@</span> (see Section <a href="cascmd_en207.html#ssec%3Axcasops">5.14.1</a>).</p><h4 id="sec497" class="subsubsection">Examples</h4>
+<h3 id="sec449" class="subsection">6.3.14  Upper incomplete γ function</h3>
+<p>The upper incomplete γ function is defined by </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">Γ(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>)=
+</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">b</span></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span></sup> <span style="font-style:italic">t</span><sup><span style="font-style:italic">a</span>−1</sup> <span style="font-style:italic">d</span><span style="font-style:italic">t</span>. </td></tr>
+</table><p>The <span style="font-family:monospace">ugamma</span><a id="hevea_default352"></a> command computes
+the upper incomplete γ function.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">ugamma</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">(sin@@3)(x)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  sin</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">sin</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">sin<span style="font-style:italic">x</span></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">(sin@@2)(pi/2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  sin</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">1</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table>
+<span style="font-style:italic">a</span>, a number.
+</li><li class="li-itemize"><span style="font-style:italic">b</span>, a positive real number.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">ugamma(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns the value of Γ(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>).
+</li></ul><h4 id="sec450" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ugamma</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3.0,2.0)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1.35335283237
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ugamma</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1.3,2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.0142127568837
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en215.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en217.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en215.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en217.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

@@ -2,29 +2,237 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Finding the midpoint of a segment in the plane: midpoint
-</title>
+<title>Parameters for changing features</title>
 </head>
 <body >
-<a href="cascmd_en794.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en796.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en794.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en796.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dmidpt" class="subsection">13.6.9  Finding the midpoint of a segment in the plane: <span style="font-family:monospace">midpoint</span>
-<a id="hevea_default1483"></a></h3>
-<p>See Section <a href="cascmd_en898.html#ssec%3A3dmidpt">14.4.5</a> for midpoints in space.</p><p>The <span style="font-family:monospace">midpoint</span> command finds the midpoint of two points.
+<h3 id="sec2012" class="subsection">24.3.2  Parameters for changing features</h3>
+<p>Graphical features are changed by giving appropriate values to certain
+parameters. Several values can be given at once with an expression of
+the form <span style="font-style:italic">feature</span><span style="font-family:monospace">=value1+value2+…+valueN</span>. Some
+values can be set using optional arguments to graphic commands, which
+will set the feature locally; namely, it will only apply to that
+particular graphic object. Some values can be specified at the
+beginning of a line, which will set the feature globally; it will
+apply to all the graphic objects created on that line. For some
+features, both options are available.</p>
+<h4 id="sssec:localfeatures" class="subsubsection">Parameters for local features</h4>
+<p>Commands which create graphic objects, such as <span style="font-family:monospace">triangle</span>, can
+have optional arguments to change a features of the object. For
+example, the argument <span style="font-family:monospace">color=red</span> will make an object red.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1/2+2</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en170.png">
+
+</div><p>The features and their possible values are:
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">midpoint</span> takes two arguments:<br>
- <span style="font-style:italic">P</span>, <span style="font-style:italic">Q</span>, two points (which can also be given as a list).
-</li><li class="li-itemize"><span style="font-family:monospace">midpoint(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span>
-draws and returns the midpoint of the segment determined
-by these points.
+<span style="font-family:monospace">display</span> or <span style="font-family:monospace">color</span> — These two parameter names
+have the same effect. They control the following features.
+<dl class="description"><dt class="dt-description">
+<span style="font-weight:bold">Color</span></dt><dd class="dd-description"> — The following values will change the color:
+<ul class="itemize"><li class="li-itemize">
+An integer from <span style="font-family:monospace">0</span> to <span style="font-family:monospace">381</span>.<p>Integers from 0 to 255 correspond to the color palette, integers from
+256 to 381 will be the spectrum of colors. The program below will
+demonstrate the colors and their numbers.
+</p></li><li class="li-itemize">The names
+<span style="font-family:monospace">black</span><a id="hevea_default1617"></a>,
+<span style="font-family:monospace">white</span><a id="hevea_default1618"></a>,
+<span style="font-family:monospace">red</span><a id="hevea_default1619"></a>,
+<span style="font-family:monospace">blue</span><a id="hevea_default1620"></a>,
+<span style="font-family:monospace">green</span><a id="hevea_default1621"></a>,
+<span style="font-family:monospace">magenta</span><a id="hevea_default1622"></a>,
+<span style="font-family:monospace">cyan</span><a id="hevea_default1623"></a>,
+<span style="font-family:monospace">yellow</span><a id="hevea_default1624"></a>,
+<span style="font-family:monospace">brown</span><a id="hevea_default1625"></a>,
+<span style="font-family:monospace">purple</span><a id="hevea_default1626"></a>,
+<span style="font-family:monospace">orange</span><a id="hevea_default1627"></a>, or
+<span style="font-family:monospace">grey</span><a id="hevea_default1628"></a>.
+</li></ul>
+</dd><dt class="dt-description"><span style="font-weight:bold">Fill</span></dt><dd class="dd-description"> — The <span style="font-family:monospace">filled</span> value creates a solid object.
+<a id="hevea_default1629"></a>
+</dd><dt class="dt-description"><span style="font-weight:bold">Point markers</span></dt><dd class="dd-description"> — By default, points are drawn
+with a small cross. The following (self-explanatory) values
+change the marker:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">rhombus_point</span><a id="hevea_default1630"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">square_point</span><a id="hevea_default1631"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">cross_point</span><a id="hevea_default1632"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">star_point</span><a id="hevea_default1633"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">plus_point</span><a id="hevea_default1634"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">point_point</span><a id="hevea_default1635"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">triangle_point</span><a id="hevea_default1636"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">invisible_point</span><a id="hevea_default1637"></a>
+</li></ul>
+</dd><dt class="dt-description"><span style="font-weight:bold">Point width</span></dt><dd class="dd-description"> — The values
+<span style="font-family:monospace">point_width_1</span>, …, <span style="font-family:monospace">point_width_7</span>
+change the thickness of the lines in the point markers.</dd><dt class="dt-description"><span style="font-weight:bold">Line style</span></dt><dd class="dd-description"> — The following (self-explanatory) values change
+the style of lines:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">solid_line</span><a id="hevea_default1638"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">dash_line</span><a id="hevea_default1639"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">dashdot_line</span><a id="hevea_default1640"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">dashdotdot_line</span><a id="hevea_default1641"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">cap_flat_line</span><a id="hevea_default1642"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">cap_round_line</span><a id="hevea_default1643"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">cap_square_line</span><a id="hevea_default1644"></a>
+</li></ul>
+</dd><dt class="dt-description"><span style="font-weight:bold">Line widths</span></dt><dd class="dd-description"> — The values
+<span style="font-family:monospace">line_width_1</span>, …, <span style="font-family:monospace">line_width_7</span>
+change the thickness of the lines.
+<a id="hevea_default1645"></a>
+<a id="hevea_default1646"></a>
+<a id="hevea_default1647"></a>
+<a id="hevea_default1648"></a>
+<a id="hevea_default1649"></a>
+<a id="hevea_default1650"></a>
+<a id="hevea_default1651"></a>
+</dd></dl></li><li class="li-itemize"><span style="font-family:monospace">thickness</span> — This controls line thickness, it can be
+an integer from 1 to 7.<a id="hevea_default1652"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">nstep</span> — The number of sampling points
+for three-dimensional objects.
+<a id="hevea_default1653"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">tstep</span> — The step size of the
+parameter when drawing a one parameter parametric plot.
+<a id="hevea_default1654"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">ustep</span> — The step size of the
+first parameter when drawing a two-parameter parametric plot.
+<a id="hevea_default1655"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">vstep</span> — The step size of the
+second parameter when drawing a two-parameter parametric plot.
+<a id="hevea_default1656"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">xstep</span> — The step size of the
+<span style="font-style:italic">x</span> variable.<a id="hevea_default1657"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">ystep</span> — The step size of the
+<span style="font-style:italic">y</span> variable.<a id="hevea_default1658"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">zstep</span> — The step size of the
+<span style="font-style:italic">z</span> variable.<a id="hevea_default1659"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">frames</span> — The number of
+graphs computed when an animated graph is created with the
+<span style="font-family:monospace">animate</span> or <span style="font-family:monospace">animate3d</span> command.<a id="hevea_default1660"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">legend</span> — This adds a legend to a graphic object and
+should be a string. It is probably most useful when
+that object is a point or a polygon. If the object is a polygon,
+the legend will be placed in the middle of the last side.
+Other parameters for the graphic object will specify the color or
+position of the legend.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_texture</span><a id="hevea_default1661"></a> —
+This sets an image file to be put on the graphic object; it should be the name
+of the file.
+</li></ul><h4 id="sec2014" class="subsubsection">Examples (of the <span style="font-family:monospace">filled</span> option)</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1/2+2</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">filled</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en171.png">
+
+</div><p>
+
+To see the colors the numbers can represent, you can enter and compile the program:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> rainbow():={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> j,C;
+   C:=[];
+   <span style="color:#0000CC"><span style="font-weight:bold">for</span></span> (j:=256;j&lt;382;j++) {
+     C:=append(C,square(j,j+1,color=j+filled));
+   }
+ }</td></tr>
+</table><p>followed by
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">axes</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0; </span></span><span style="font-weight:bold"><span style="color:#BF0000">rainbow</span></span><span style="font-weight:bold"><span style="color:#BF0000">();</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en172.png">
+
+</div><p>
+
+The number of a color is its <span style="font-style:italic">x</span>-coordinate. To see just
+one color, say the color corresponding to <span style="font-style:italic">n</span> for 256 ≤ <span style="font-style:italic">n</span> ≤ 381,
+enter: <span style="font-family:monospace">rainbow()[</span><span style="font-style:italic">n</span><span style="font-family:monospace">-256]</span>.</p>
+<h4 id="sec:globpar" class="subsubsection">Parameters for global features</h4>
+<p>Parameters set at the beginning of a line change features on the
+entire graphic screen. It only takes effect when the line ends with a
+graphic command. For example, starting the line with
+<span style="font-family:monospace">title=</span><span style="font-style:italic">titlestring</span> will give the graphic screen a
+title.</p><h4 id="sec2016" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">title</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Some triangles"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">; </span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/5,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/5,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">); </span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/5,3+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/5,3+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en173.png">
+
+</div><p>The parameters for global features and their possible values are:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">axes</span><a id="hevea_default1662"></a> —
+This determines whether axes are shown or hidden; a value of
+<span style="font-family:monospace">0</span> or <span style="font-family:monospace">false</span> hides the axes, a value of
+<span style="font-family:monospace">1</span> or <span style="font-family:monospace">true</span> shows the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">labels</span> — This sets labels for the axes, it should be
+a list of two strings [“x axis label”,“y axis label”].
+</li><li class="li-itemize"><span style="font-family:monospace">label</span> —
+This puts labels on the graphic screen in the following ways.
+<ul class="itemize"><li class="li-itemize">
+To set the units on the axes, it can be a list of two or three strings,
+[“x units”,“y units”] or
+[“x units”,“y units”,“z units”].
+</li><li class="li-itemize">To place a string at a particular point, it can
+be a list of two integers followed by a
+string. The integers determine the point,
+starting from (0,0) in the top left of the
+screen.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">title</span> — This sets the title for the graphic window,
+it should be a string.<a id="hevea_default1663"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">gl_texture</span><a id="hevea_default1664"></a> —
+This sets the wallpaper of the graphic
+window to be an image file, it should be the name of the file.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_x_axis_name</span><a id="hevea_default1665"></a>,
+<span style="font-family:monospace">gl_y_axis_name</span><a id="hevea_default1666"></a>,
+<span style="font-family:monospace">gl_z_axis_name</span><a id="hevea_default1667"></a> —
+These set the names of the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_x_axis_unit</span><a id="hevea_default1668"></a>,
+<span style="font-family:monospace">gl_y_axis_unit</span>,<a id="hevea_default1669"></a>
+<span style="font-family:monospace">gl_z_axis_unit</span><a id="hevea_default1670"></a> —
+These set the units of the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_x_axis_color</span><a id="hevea_default1671"></a>,
+<span style="font-family:monospace">gl_y_axis_color</span><a id="hevea_default1672"></a>,
+<span style="font-family:monospace">gl_z_axis_color</span><a id="hevea_default1673"></a> —
+These set the colors of the axes
+labels; they take the same color options as the local parameter
+<span style="font-family:monospace">color</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_ortho</span><a id="hevea_default1674"></a> —
+This ensures that the graph is
+orthonormal when it is set to <span style="font-family:monospace">1</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_x</span><a id="hevea_default1675"></a>,
+<span style="font-family:monospace">gl_y</span><a id="hevea_default1676"></a>,
+<span style="font-family:monospace">gl_z</span><a id="hevea_default1677"></a> —
+These define the framing of the graph; they should be ranges
+<span style="font-style:italic">min</span><span style="font-family:monospace">..</span><span style="font-style:italic">max</span>. (They are not compatible with
+interactive graphs.)
+</li><li class="li-itemize"><span style="font-family:monospace">gl_xtick</span><a id="hevea_default1678"></a>,
+<span style="font-family:monospace">gl_ytick</span><a id="hevea_default1679"></a>,
+<span style="font-family:monospace">gl_ztick</span><a id="hevea_default1680"></a> —
+These determine the spacing of the ticks on the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_shownames</span><a id="hevea_default1681"></a> —
+This shows or hides object names, it
+can be <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_rotation</span><a id="hevea_default1682"></a> —
+This sets the axis of rotation for
+three-dimensional scene animations; it should be a direction vector
+[<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>].
+</li><li class="li-itemize"><span style="font-family:monospace">gl_quaternion</span><a id="hevea_default1683"></a> —
+This sets the quaternion for viewing
+three-dimensional scenes; it should be a fourtuple
+[<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>,<span style="font-style:italic">t</span>]. (This is not compatible with
+interactive graphs.)
 </li></ul>
 <hr>
-<a href="cascmd_en794.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en796.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en794.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en796.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

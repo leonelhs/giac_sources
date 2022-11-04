@@ -64,7 +64,7 @@ using namespace std;
 #include "csturm.h"
 #include "sparse.h"
 #if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
-inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
+inline bool is_graphe(const giac::gen &g){ return false; }
 #else
 #include "graphtheory.h"
 #endif
@@ -3384,6 +3384,8 @@ namespace giac {
       return makemod(_MODptr->conj(contextptr),*(_MODptr+1));
     case _EXT:
       return algebraic_EXTension(_EXTptr->conj(contextptr),*(_EXTptr+1));
+    case _POLY:
+      return apply(*_POLYptr,contextptr,giac_conj);
     default: 
       return gentypeerr(gettext("Conj"));
     }
@@ -9723,9 +9725,9 @@ namespace giac {
 	return _SYMBptr->sommet(f(i,contextptr),contextptr);
       vecteur lid(lidnt(*this));
       if (lid.size()==1 && !has_algebraic_program(*this)){
-	if (lid.front()==vx_var)
+	if (lid.front()==vx_var || lid.front()==t__IDNT_e || lid.front()==x__IDNT_e)
 	// suspect something like P:=x^3+1 then P(2)
-	  *logptr(contextptr) << "Warning, evaluating univariate expression of x(value) like if expression was a function.\nYou should write subst(" << *this << "," << lid.front() << "," << i << ")" << '\n';
+	  *logptr(contextptr) << "Warning, evaluating univariate expression like if expression was a function.\nYou should write subst(" << *this << "," << lid.front() << "," << i << ")" << '\n';
 	else
 	  return gensizeerr("Expression used like a function "+this->print(contextptr)+"\nYou should write subst("+this->print(contextptr)+","+lid.front().print(contextptr)+","+i.print(contextptr)+")");
 	return subst(*this,lid.front(),i,false,contextptr);
@@ -14448,7 +14450,7 @@ void sprint_double(char * s,double d){
     case _VECT:
       if (subtype==_GRAPH__VECT){
 	string s;
-	if (is_graphe(*this,s,contextptr))
+	if (is_graphe(*this))
 	  return '"'+s+'"';
       }
       return print_VECT(*_VECTptr,subtype,contextptr);

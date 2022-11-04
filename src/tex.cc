@@ -36,11 +36,6 @@ using namespace std;
 #include "rpn.h"
 #include "plot.h"
 #include "giacintl.h"
-#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
-inline bool is_graphe(const giac::gen &g,std::string &disp_out,const giac::context *){ return false; }
-#else
-#include "graphtheory.h"
-#endif
 
 #if !defined NSPIRE && !defined FXCG && !defined GIAC_HAS_STO_38 && !defined KHICAS && !defined NSPIRE_NEWLIB
 #include <fstream>
@@ -1231,10 +1226,15 @@ namespace giac {
       sort(v.begin(),v.end());
       m=v[s/10];
       M=v[9*s/10];
-      if (fullview || 1.75*(M-m)>(v[s-1]-v[0]) || (M-m)<0.01*(v[s-1]-v[0])){
-	M=v[s-1];
-	m=v[0];
-	zoom(m,M,1.1);
+      bool b=(M-m)<0.01*(v[s-1]-v[0]);
+      if (fullview || 1.75*(M-m)>(v[s-1]-v[0]) || b){
+	if (b)
+	  zoom(m,M,3);
+	else {
+	  M=v[s-1];
+	  m=v[0];
+	  zoom(m,M,1.1);
+	}
       }
       else
 	zoom(m,M,1/0.8);
@@ -1408,11 +1408,6 @@ namespace giac {
     case _VECT:
       if (e.subtype==_SPREAD__VECT)
 	return spread2tex(*e._VECTptr,1,contextptr);
-      if (e.subtype==_GRAPH__VECT){
-	string s;
-	if (is_graphe(e,s,contextptr))
-	  return "\\mbox{"+s+'}';
-      }
       if (!e._VECTptr->empty() && e._VECTptr->back().is_symb_of_sommet(at_pnt) && !is3d(e._VECTptr->back()) )
 	return vectpnt2tex(e,contextptr);
       if (ckmatrix(*e._VECTptr))

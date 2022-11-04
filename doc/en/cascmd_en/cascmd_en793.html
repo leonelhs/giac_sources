@@ -2,66 +2,45 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Finding the points of intersection of two geometric objects in the plane: inter
-</title>
+<title>Drawing triangular paper</title>
 </head>
 <body >
-<a href="cascmd_en792.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en794.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en792.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en794.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dintersection" class="subsection">13.6.7  Finding the points of intersection of two geometric objects in the plane: <span style="font-family:monospace">inter</span>
-<a id="hevea_default1481"></a></h3>
-<p>See Section <a href="cascmd_en897.html#ssec%3A3dintersection">14.4.4</a> for points of intersection of objects
-in space.</p><p>The <span style="font-family:monospace">inter</span> command finds the intersection of two geometric
-objects in the plane.
+<h3 id="sec2008" class="subsection">24.2.5  Drawing triangular paper</h3>
+<p>The <span style="font-family:monospace">triangle_paper</span><a id="hevea_default1616"></a>
+command draws triangular paper.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">inter</span> takes two mandatory arguments and one
-optional argument.
+<span style="font-family:monospace">triangle_paper</span> takes three mandatory arguments and two optional arguments.
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">obj</span><sub>1</sub>, <span style="font-style:italic">obj</span><sub>2</sub>, two geometric objects.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">P</span>, a point.
+<span style="font-style:italic">xspacing</span>, the spacing in the <span style="font-style:italic">x</span> direction.
+</li><li class="li-itemize">θ, the angle from the horizontal.
+</li><li class="li-itemize"><span style="font-style:italic">yspacing</span>, the spacing in the <span style="font-style:italic">y</span> direction.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">x=</span><span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub><span style="font-family:monospace">..</span><span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>, to determine how
+far the grid extends in the <span style="font-style:italic">x</span> direction (by default, the
+distances given in the graphic configuration page accessible from
+the main menu).
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">y=</span><span style="font-style:italic">y</span><sub><span style="font-style:italic">min</span></sub><span style="font-family:monospace">..</span><span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub>, to determine how
+far the grid extends in the <span style="font-style:italic">y</span> direction (by default, the
+distances given in the graphic configuration page accessible from
+the main menu).
 </li></ul>
-<span style="font-family:monospace">inter(</span><span style="font-style:italic">obj</span><sub>1</sub><span style="font-style:italic">,obj</span><sub>2</sub> ⟨ <span style="font-style:italic">P</span>⟩<span style="font-family:monospace">)</span>
-returns a list of points of intersection of <span style="font-style:italic">obj</span><sub>1</sub> and <span style="font-style:italic">obj</span><sub>2</sub>.<br>
- With the argument <span style="font-style:italic">P</span>, the command returns the point
-of intersection closest to <span style="font-style:italic">P</span>.
-</li></ul><h4 id="sec2037" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">inter(circle(0,1),line(1,i))</span>
+</li><li class="li-itemize"><span style="font-family:monospace">triangle_paper(</span><span style="font-style:italic">xspacing</span>,θ,<span style="font-style:italic">yspacing</span> ⟨,<span style="font-family:monospace">x=</span><span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub><span style="font-family:monospace">..</span><span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-family:monospace">y=</span><span style="font-style:italic">y</span><sub><span style="font-style:italic">min</span></sub><span style="font-family:monospace">..</span><span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub> ⟩<span style="font-family:monospace">)</span>
+draws triangle paper.
+</li></ul><h4 id="sec2009" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">axes</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0; </span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle_paper</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">grey</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en169.png">
+
 </div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en171.png">
-</div>
-which are the points at (1,0) and (0,1).
-To get just one of the points, use the usual list indices.<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">inter(circle(0,1),line(1,i))[0]</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en172.png">
-</div>
-just one of the points.
-To get the point closest to (0,1/2):<br>
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">inter(circle(0,1),line(1,i),i/2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<img src="cascmd_en173.png">
-</div>
-</li></ul>
 <hr>
-<a href="cascmd_en792.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en794.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en792.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en794.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

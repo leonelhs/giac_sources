@@ -2,45 +2,36 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Changing the order of variables: reorder
-</title>
+<title>Rewriting exp(n ln(x)) as a power</title>
 </head>
 <body >
-<a href="cascmd_en314.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en316.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en314.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en316.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec732" class="subsection">5.27.27  Changing the order of variables: <span style="font-family:monospace">reorder</span>
-<a id="hevea_default555"></a></h3>
-<p>The <span style="font-family:monospace">reorder</span> command rewrites an expression, based on the
-priority of variables.
+<h3 id="sec711" class="subsection">9.3.8  Rewriting exp(<span style="font-style:italic">n</span> ln(<span style="font-style:italic">x</span>)) as a power</h3>
+<p>The <span style="font-family:monospace">exp2pow</span><a id="hevea_default557"></a> command is the
+inverse of <span style="font-family:monospace">pow2exp</span> (see Section <a href="cascmd_en314.html#ssec%3Apow2exp">9.3.7</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">reorder</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">exp2pow</span> takes
 <span style="font-style:italic">expr</span>, an expression.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a vector of variable names.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">reorder(</span><span style="font-style:italic">expr,vars</span><span style="font-family:monospace">)</span> expands
-<span style="font-style:italic">expr</span> according to the order of variables given in
-<span style="font-style:italic">vars</span>.
-</li></ul><h4 id="sec733" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">reorder(x^2+2*x*a+a^2+z^2-x*z,[a,x,z])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">a</span><sup>2</sup>+2 <span style="font-style:italic">a</span> <span style="font-style:italic">x</span>+<span style="font-style:italic">x</span><sup>2</sup>−<span style="font-style:italic">x</span> <span style="font-style:italic">z</span>+<span style="font-style:italic">z</span><sup>2</sup>
-</td></tr>
-</table><p><br>
-</p><p><span style="font-weight:bold">Warning.</span><br>
-The variables must be symbolic (if not, purge them (see
-Section <a href="cascmd_en061.html#ssec%3Aabout">4.4.8</a>) before calling <span style="font-family:monospace">reorder</span>.</p>
+</li><li class="li-itemize"><span style="font-family:monospace">exp2pow(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> rewrites any
+subexpressions of <span style="font-family:monospace">expr</span> of the form  <span style="font-style:italic">e</span><sup><span style="font-style:italic">n</span>ln(<span style="font-style:italic">x</span>)</sup> as <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup>.
+</li></ul><h4 id="sec712" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">exp2pow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">ln</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC"><span style="font-style:italic">n</span></span></sup><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en314.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en316.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en314.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en316.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

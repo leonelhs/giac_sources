@@ -2,52 +2,69 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Incrementing variables: += -= *= /=
-
-
-
-</title>
+<title>Sets</title>
 </head>
 <body >
-<a href="cascmd_en057.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en059.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en057.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en059.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec93" class="subsection">4.4.5  Incrementing variables: <span style="font-family:monospace">+=</span> <span style="font-family:monospace">-=</span> <span style="font-family:monospace">*=</span> <span style="font-family:monospace">/=</span>
-<a id="hevea_default72"></a>
-<a id="hevea_default73"></a>
-<a id="hevea_default74"></a>
-<a id="hevea_default75"></a></h3>
-<p>You can increase the value of a variable <span style="font-family:monospace">a</span> by <span style="font-family:monospace">4</span>, for
-example, with
-</p><div class="center">
-<span style="font-family:monospace">a:= a + 4</span>
-</div><p>
-If beforehand <span style="font-family:monospace">a</span> were equal to <span style="font-family:monospace">4</span>, it would now be
-equal to <span style="font-family:monospace">8</span>. A shorthand way of doing this is with the
-<span style="font-family:monospace">+=</span><a id="hevea_default76"></a> operator;
-</p><div class="center">
-<span style="font-family:monospace">a += 4</span>
-</div><p>
-will also increase the value of <span style="font-family:monospace">a</span> by <span style="font-family:monospace">4</span>.</p><p>Similar shorthands exist for subtraction, multiplication and division.
-If <span style="font-family:monospace">a</span> is equal to <span style="font-family:monospace">8</span> and you enter
-</p><div class="center">
-<span style="font-family:monospace">a -= 2</span>
-</div><p>
-then <span style="font-family:monospace">a</span> will be equal to <span style="font-family:monospace">6</span>. If you follow this with
-</p><div class="center">
-<span style="font-family:monospace">a *= 3</span>
-</div><p>
-then <span style="font-family:monospace">a</span> will be equal to <span style="font-family:monospace">18</span>, and finally
-</p><div class="center">
-<span style="font-family:monospace">a /= 9</span>
-</div><p>
-will end with <span style="font-family:monospace">a</span> equal to <span style="font-family:monospace">2</span>.</p>
+<h3 id="ssec:sets" class="subsection">3.2.2  Sets</h3>
+<p>To define a set of elements, put the elements separated by commas,
+with delimiters <span style="font-family:monospace">%{</span> and
+<span style="font-family:monospace">%}</span><a id="hevea_default67"></a>
+or <span style="font-family:monospace">set[</span> and <span style="font-family:monospace">]</span><a id="hevea_default68"></a>.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">set</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3,4]</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"></span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+⟦ 1,2,3,4⟧
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+In the <span style="font-variant:small-caps">Xcas</span> output, the set delimiters are displayed
+as ⟦ and ⟧ in order
+not to confuse sets with lists (see Section <a href="cascmd_en059.html#ssec%3Alstbasics">3.2.3</a>).
+For example, ⟦1,2,3 ⟧is the set <span style="font-family:monospace">%{1,2,3%}</span>,
+unlike [1,2,3] (normal brackets) which is the list <span style="font-family:monospace">[1,2,3]</span>.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=%{1,2,3,4%}</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">set</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1,2,3,4]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+⟦ 1,2,3,4⟧
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=%{5,5,6,3,4%}</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">set</span></span><span style="font-weight:bold"><span style="color:#BF0000">[5,5,6,3,4]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+⟦ 5,6,3,4 ⟧
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><h5 id="sec85" class="paragraph">Remark.</h5>
+<p>
+The order in a set is not significant and the elements in a set are
+all distinct. If you input <span style="font-family:monospace">B:=%{5,5,6,3,4%}</span> and
+<span style="font-family:monospace">C:=%{3,4,5,3,6%}</span>, then <span style="font-family:monospace">B==C</span> will return <span style="font-family:monospace">true</span>.</p><p>See Section <a href="index.html#sec%3Asetops">5.4</a> for operations on sets.</p>
 <hr>
-<a href="cascmd_en057.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en059.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en057.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en059.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

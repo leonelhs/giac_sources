@@ -2,75 +2,57 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transforming a list into a boolean expression: list2exp
+<title>Reading files
 </title>
 </head>
 <body >
-<a href="cascmd_en072.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en074.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en072.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en074.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec127" class="subsection">5.1.6  Transforming a list into a boolean expression: <span style="font-family:monospace">list2exp</span>
-<a id="hevea_default138"></a></h3>
-<p>The <span style="font-family:monospace">list2exp</span> command is the inverse of <span style="font-family:monospace">exp2list</span>; it
-takes lists and tranforms them into boolean expressions. It can do
-this in two ways.</p><p>The first way:
+<h3 id="ssec:read" class="subsection">3.5.2  Reading files
+</h3>
+<p>Information for <span style="font-variant:small-caps">Xcas</span> can be stored in a file; this
+information can be read with the
+<span style="font-family:monospace">read</span><a id="hevea_default111"></a> or
+<span style="font-family:monospace">load</span><a id="hevea_default112"></a>
+command, depending on the type of information.</p><p><br>
+</p><p>The <span style="font-family:monospace">read</span> command reads a file containing <span style="font-variant:small-caps">Xcas</span>
+information, such as a program that you saved (see
+Section <a href="cascmd_en036.html#ssec%3Aprogsave">2.6.3</a>) or simply commands that you typed into a file
+with a text editor. The file should have the suffix <span style="font-family:monospace">.cxx</span>.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">list2exp</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list of values of
-the form <span style="font-family:monospace">[</span><span style="font-style:italic">a</span><sub>1</sub>,…,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">]</span>
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a variable name.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">list2exp(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-the boolean expression <span style="font-family:monospace">((</span><span style="font-style:italic">x</span>=<span style="font-style:italic">a</span><sub>1</sub>)<span style="font-family:monospace"> or …(</span><span style="font-style:italic">x</span>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub><span style="font-family:monospace">))</span>.
-</li></ul><h4 id="sec128" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">list2exp([0,1,2],a)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">a</span>=0∨ <span style="font-style:italic">a</span>=1∨ <span style="font-style:italic">a</span>=2
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">list2exp(solve(x^2-1=0,x),x)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">x</span>=−1∨ <span style="font-style:italic">x</span>=1
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p>Alternatively:
+<span style="font-family:monospace">read</span> takes
+<span style="font-style:italic">filename</span>, the name of a file (a string) containing a saved program (see
+Section <a href="cascmd_en036.html#ssec%3Aprogsave">2.6.3</a>) or other commands.
+</li><li class="li-itemize"><span style="font-family:monospace">read(</span><span style="font-style:italic">filename</span><span style="font-family:monospace">)</span> reads the content of
+the file.
+</li></ul><p>The <span style="font-family:monospace">load</span> command reads in a saved session (see
+Section <a href="cascmd_en034.html#ssec%3Asesssave">2.6.1</a>), which will end in <span style="font-family:monospace">.xws</span>.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">list2exp</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list where each element of <span style="font-style:italic">L</span> it itself a list
-of <span style="font-style:italic">n</span> values of the form [<span style="font-style:italic">a</span><sub>1</sub>,…,<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>].
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list [<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>] of <span style="font-style:italic">n</span> variable names.
-</li></ul>
-In this case:
-</li><li class="li-itemize"><span style="font-family:monospace">list2exp(</span><span style="font-style:italic">L</span><span style="font-family:monospace">,</span><span style="font-style:italic">vars</span><span style="font-family:monospace">)</span> returns a
-boolean expression of the form
-((<span style="font-style:italic">x</span><sub>1</sub>=<span style="font-style:italic">a</span><sub>1</sub>)<span style="font-family:monospace"> and …and </span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">a</span><sub><span style="font-style:italic">n</span></sub>) for each
-list of <span style="font-style:italic">n</span> values in the first argument, combined with <span style="font-family:monospace">or</span>s. 
-</li></ul><h4 id="sec129" class="subsubsection">Example</h4>
+<span style="font-family:monospace">load</span> takes
+<span style="font-style:italic">filename</span>, the name of a file (a string) containing a saved session.
+</li><li class="li-itemize"><span style="font-family:monospace">load(</span><span style="font-style:italic">filename</span><span style="font-family:monospace">)</span> loads the session stored in
+<span style="font-style:italic">filename</span>.
+</li></ul><h4 id="sec110" class="subsubsection">Examples</h4>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">list2exp([[3,9], [-1,1]], [x, y])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">x</span>=3∧ <span style="font-style:italic">y</span>=9∨ <span style="font-style:italic">x</span>=−1∧ <span style="font-style:italic">y</span>=1
-</td></tr>
-</table>
+If you have a file named <span style="font-family:monospace">myfunction.cxx</span>,
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">read</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"myfunction.cxx"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>will read in the file, as long as the directory is in the current working
+directory. If the file is in a different directory, you can still
+read it by giving the path to the file,
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">read</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/path/to/file/myfunction.cxx"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>If you have a session saved in the file <span style="font-family:monospace">mysession.xws</span>,
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">load</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"mysession.xws"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>loads <span style="font-family:monospace">mysession.xws</span>.</p>
 <hr>
-<a href="cascmd_en072.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en074.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en072.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en074.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

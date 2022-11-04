@@ -2,45 +2,75 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Cross product: cross crossP crossproduct
-
-
-</title>
+<title>Rotational</title>
 </head>
 <body >
-<a href="cascmd_en466.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en468.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en466.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en468.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1090" class="subsection">5.42.8  Cross product: <span style="font-family:monospace">cross</span> <span style="font-family:monospace">crossP</span> <span style="font-family:monospace">crossproduct</span>
-<a id="hevea_default773"></a>
-<a id="hevea_default774"></a>
-<a id="hevea_default775"></a></h3>
-<p>The <span style="font-family:monospace">cross</span> command finds the cross product of two vectors.<br>
-<span style="font-family:monospace">crossP</span> and <span style="font-family:monospace">crossproduct</span> are synonyms for
-<span style="font-family:monospace">cross</span>.
+<h3 id="sec1060" class="subsection">12.7.5  Rotational</h3>
+<p>The curl of a three-dimensional vector field
+<span style="font-weight:bold"><span style="font-style:italic">F</span></span>=[<span style="font-style:italic">F</span><sub>1</sub>,<span style="font-style:italic">F</span><sub>2</sub>,<span style="font-style:italic">F</span><sub>3</sub>] with variables [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">x</span><sub>3</sub>]
+is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  curl <span style="font-weight:bold"><span style="font-style:italic">F</span></span>=</td><td class="dcell">⎡<br>
+⎢<br>
+⎢<br>
+⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span><sub>3</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂
+<span style="font-style:italic">x</span><sub>2</sub></td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span><sub>2</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span><sub>3</sub></td></tr>
+</table></td><td class="dcell">, </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂
+<span style="font-style:italic">F</span><sub>1</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span><sub>3</sub></td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span><sub>3</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span><sub>1</sub></td></tr>
+</table></td><td class="dcell">,
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span><sub>2</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">x</span><sub>1</sub></td></tr>
+</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∂ <span style="font-style:italic">F</span><sub>1</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">∂
+<span style="font-style:italic">x</span><sub>2</sub></td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎤<br>
+⎥<br>
+⎥<br>
+⎦</td><td class="dcell">.
+</td></tr>
+</table><p>The <span style="font-family:monospace">curl</span><a id="hevea_default766"></a> command computes the
+curl of a three dimensional vector field (note that it must be three dimensional).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">cross</span> takes two arguments:<br>
- <span style="font-style:italic">V</span><sub>1</sub> and <span style="font-style:italic">V</span><sub>2</sub>, two vectors of length 3.
-</li><li class="li-itemize"><span style="font-family:monospace">cross(</span><span style="font-style:italic">V</span><sub>1</sub>,<span style="font-style:italic">V</span><sub>2</sub><span style="font-family:monospace">)</span> returns the cross product of
-<span style="font-style:italic">V</span><sub>1</sub> and <span style="font-style:italic">V</span><sub>2</sub>.
-</li></ul><h4 id="sec1091" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">cross([1,2,3],[4,3,2])</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−5,10,−5</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table><p>
-Indeed, −5=2*2−3*3,  10=−1*2+4*3,  −5=1*3−2*4.</p>
+<span style="font-family:monospace">curl</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">F</span>, a three-dimensional vector field, given as a list of
+three expressions depending on three variables.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the three variable names.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">curl(</span><span style="font-style:italic">F</span>,<span style="font-style:italic">vars</span><span style="font-family:monospace">)</span> returns the curl of
+the vector field.
+</li></ul><h4 id="sec1061" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">curl</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2 </span><span style="color:#0000CC">ln</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">· </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC"><span style="font-style:italic">y</span></span></sup><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">−1</span></sup><span style="color:#0000CC">,0</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en466.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en468.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en466.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en468.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

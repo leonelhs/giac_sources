@@ -2,97 +2,41 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Bézout’s Identity: egcd gcdex
-
-</title>
+<title>Factoring xn in a polynomial</title>
 </head>
 <body >
-<a href="cascmd_en332.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en334.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en332.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en334.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec775" class="subsection">5.28.9  Bézout’s Identity: <span style="font-family:monospace">egcd</span> <span style="font-family:monospace">gcdex</span>
-<a id="hevea_default580"></a>
-<a id="hevea_default581"></a></h3>
-<p>Bézout’s Identity (also known as Extended Greatest Common Divisor)
-states that for two polynomials <span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>) with greatest common
-divisor <span style="font-style:italic">D</span>(<span style="font-style:italic">x</span>), there exist polynomials <span style="font-style:italic">U</span>(<span style="font-style:italic">x</span>) and <span style="font-style:italic">V</span>(<span style="font-style:italic">x</span>) such that
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">U</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)+<span style="font-style:italic">V</span>(<span style="font-style:italic">x</span>)*<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">D</span>(<span style="font-style:italic">x</span>)
-</td></tr>
-</table><p> 
-The <span style="font-family:monospace">egcd</span> computes the greatest common
-divisor of two polynomials as well as the polynomials <span style="font-style:italic">U</span>(<span style="font-style:italic">x</span>) and
-<span style="font-style:italic">V</span>(<span style="font-style:italic">x</span>) in the above identity.<br>
-<span style="font-family:monospace">gcdex</span> is a synonym for <span style="font-family:monospace">egcd</span>.
+<h3 id="sec748" class="subsection">10.1.15  Factoring <span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span></sup> in a polynomial</h3>
+<p>The <span style="font-family:monospace">factor_xn</span><a id="hevea_default581"></a>
+command factors the largest power of the variable out of a polynomial,
+writing it as the product of a monomial of largest degree and a
+rational function having a non-zero finite limit at infinity.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">egcd</span> takes two mandatory
-arguments and one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span> and <span style="font-style:italic">B</span>, polynomials given as expressions or lists of
-coefficients in decreasing order.
-</li><li class="li-itemize">Optionally, if the polynomials are expressions, <span style="font-style:italic">x</span>, the
-variable (which defaults to <span style="font-family:monospace">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">egcd(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>  ⟨ ,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span>
-returns a list [<span style="font-style:italic">U</span>,<span style="font-style:italic">V</span>,<span style="font-style:italic">D</span>], where <span style="font-style:italic">D</span> is the greatest common divisor
-of <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span>, and <span style="font-style:italic">U</span> and <span style="font-style:italic">V</span> are the polynomials from
-Bézout’s identity.
-</li></ul><h4 id="sec776" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">egcd(x^2+2*x+1,x^2-1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,−1,2 <span style="font-style:italic">x</span>+2</td><td class="dcell">⎤<br>
-⎦</td></tr>
+<span style="font-family:monospace">factor_xn</span> takes
+<span style="font-style:italic">P</span>, a polynomial.
+</li><li class="li-itemize"><span style="font-family:monospace">factor_xn(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">P</span>
+written as the product of its monomial of largest degree
+with a rational function having a non-zero finite limit at infinity.
+</li></ul><h4 id="sec749" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">factor_xn</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^4+3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">4</span></sup><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">−1+3 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">−4</span></sup></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">egcd([1,2,1],[1,0,-1])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−1</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,2</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">egcd(y^2-2*y+1,y^2-y+2,y)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell"><span style="font-style:italic">y</span>−2,−<span style="font-style:italic">y</span>+3,4</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">egcd([1,-2,1],[1,-1,2])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">1,−2</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">−1,3</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
-⎣</td><td class="dcell">4</td><td class="dcell">⎤<br>
-⎦</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul>
 <hr>
-<a href="cascmd_en332.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en334.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en332.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en334.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

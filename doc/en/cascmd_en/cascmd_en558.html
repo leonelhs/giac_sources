@@ -2,76 +2,40 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The conjugate gradient algorithm: conjugate_gradient
-</title>
+<title>Matrix column norm</title>
 </head>
 <body >
-<a href="cascmd_en557.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en559.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en557.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en559.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1396" class="subsection">5.54.4  The conjugate gradient algorithm: <span style="font-family:monospace">conjugate_gradient</span>
-<a id="hevea_default950"></a></h3>
-<p>The <span style="font-family:monospace">conjugate_gradient</span> command uses the conjugate gradient
-algorithm to solve a linear system of equations.
+<h3 id="ssec:colnorm" class="subsection">14.4.5  Matrix column norm</h3>
+<p>The column norm of a matrix <span style="font-style:italic">A</span> is max<sub><span style="font-style:italic">j</span></sub>(∑<sub><span style="font-style:italic">k</span></sub> |<span style="font-style:italic">a</span><sub><span style="font-style:italic">j</span>,<span style="font-style:italic">k</span></sub>|). 
+(This is also an operator norm; see Section <a href="cascmd_en559.html#ssec%3Amatrixopnorm">14.4.6</a>.)
+The <span style="font-family:monospace">colnorm</span><a id="hevea_default960"></a> or
+<span style="font-family:monospace">colNorm</span><a id="hevea_default961"></a> command
+finds the column norm of a matrix. For matrices,
+<span style="font-family:monospace">l1norm</span><a id="hevea_default962"></a> is also a synonym.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">conjugate_gradient</span> takes two mandatory arguments
-and two optional arguments.
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, an <span style="font-style:italic">n</span>× <span style="font-style:italic">n</span> positive definite symmetric matrix.
-</li><li class="li-itemize"><span style="font-style:italic">y</span>, a vector of length <span style="font-style:italic">n</span>.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span><sub>0</sub>, a vector of length <span style="font-style:italic">n</span>, an initial
-approximation.
-</li><li class="li-itemize">є, a positive number (by default <span style="font-family:monospace">epsilon</span>,
-see Section <a href="cascmd_en027.html#ssec%3Aconfcomp">2.5.7</a>, item <a href="cascmd_en027.html#enum%3Aeps">9</a>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">conjugate_gradient(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">y</span> ⟨ <span style="font-style:italic">x</span><sub>0</sub>,є⟩<span style="font-family:monospace">)</span>
-returns the solution to <span style="font-style:italic">Ax</span> = <span style="font-style:italic">y</span> to within є.
-</li></ul><h4 id="sec1397" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0])</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎢<br>
-⎢<br>
-⎣</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">5</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">9</td></tr>
-</table></td><td class="dcell">,−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">9</td></tr>
-</table></td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0.555,−0.11</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">conjugate_gradient([[2,1],[1,5]],[1,0],[0.55,-0.11],1e-10)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">0.555555555556,−0.111111111111</td><td class="dcell">⎤<br>
-⎦</td></tr>
-</table>
-</li></ul>
+<span style="font-family:monospace">colnorm</span> takes
+<span style="font-style:italic">A</span>, a matrix
+</li><li class="li-itemize"><span style="font-family:monospace">colnorm(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the column norm of <span style="font-style:italic">A</span>.
+</li></ul><h4 id="sec1306" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">colnorm</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,2],[3,-4]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+6
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Indeed, max{1+3,2+4}=6.</p>
 <hr>
-<a href="cascmd_en557.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en559.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en557.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en559.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

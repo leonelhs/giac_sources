@@ -2,73 +2,100 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Test of pseudo-primality: is_pseudoprime
-</title>
+<title>Finding a subsequence or a sublist</title>
 </head>
 <body >
-<a href="cascmd_en106.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en108.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en106.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en108.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec213" class="subsection">5.5.13  Test of pseudo-primality: <span style="font-family:monospace">is_pseudoprime</span>
-<a id="hevea_default193"></a></h3>
-<p>A <span style="font-style:italic">pseudo-prime</span> is a number with a large probability of being
-prime (cf. Rabin’s Algorithm and Miller-Rabin’s Algorithm in the
-Algorithmic part (menu
-<span style="font-family:monospace">Help</span>▸<span style="font-family:monospace">Manuals</span>▸<span style="font-family:monospace">Programming</span>)).
-For numbers less than 10<sup>14</sup>, pseudo-prime and prime are
-equivalent.</p><p>The <span style="font-family:monospace">is_pseudoprime</span> command is a test for a pseudo-prime.
+<h3 id="sec196" class="subsection">5.1.7  Finding a subsequence or a sublist</h3>
+<p>The bracket notation used to find elements of sequences and lists can
+also be used to extract a range of elements.
+If <span style="font-style:italic">S</span> is a sequence or list of size <span style="font-style:italic">n</span>, then
+<span style="font-style:italic">S</span><span style="font-family:monospace">[</span><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">..</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">]</span> returns the subsequence or sublist
+of <span style="font-style:italic">S</span> consisting of the elements with indices from <span style="font-style:italic">n</span><sub>1</sub> to
+<span style="font-style:italic">n</span><sub>2</sub>, where 0 ≤ <span style="font-style:italic">n</span><sub>1</sub>≤ <span style="font-style:italic">n</span><sub>2</sub> &lt; <span style="font-style:italic">s</span> (in <span style="font-variant:small-caps">Xcas</span> syntax mode) or 0 &lt;
+<span style="font-style:italic">n</span><sub>1</sub>≤ <span style="font-style:italic">n</span><sub>2</sub> ≤ <span style="font-style:italic">s</span> in other syntax modes.</p><p>For lists, the <span style="font-family:monospace">at</span><a id="hevea_default192"></a>
+command can also be used to get a sublist.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_pseudoprime</span> takes one argument:<br>
- <span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize"><span style="font-family:monospace">is_pseudoprime(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">0</span>, <span style="font-family:monospace">1</span> or
-<span style="font-family:monospace">2</span>.
+<span style="font-family:monospace">at</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-If it returns 0, then <span style="font-style:italic">n</span> is not prime. <br>
- </li><li class="li-itemize">If it returns <span style="font-family:monospace">1</span>, then <span style="font-style:italic">n</span> is a prime.<br>
- </li><li class="li-itemize">If it returns <span style="font-family:monospace">2</span>, then <span style="font-style:italic">n</span> is pseudo-prime (most
-probably prime).
+<span style="font-style:italic">L</span>, a list.
+</li><li class="li-itemize"><span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">..</span><span style="font-style:italic">n</span><sub>2</sub>, a range of integers.
 </li></ul>
-</li></ul><h4 id="sec214" class="subsubsection">Examples</h4>
+</li><li class="li-itemize"><span style="font-family:monospace">at(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">n</span><sub>1</sub><span style="font-family:monospace">..</span><span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> returns the sublist
+of <span style="font-style:italic">L</span> consisting of the elements with indices from <span style="font-style:italic">n</span><sub>1</sub> to
+<span style="font-style:italic">n</span><sub>2</sub>.
+</li></ul><p>
+Again, <span style="font-family:monospace">at</span> cannot be used for sequences.</p><p>An alternative to using <span style="font-family:monospace">at</span> for finding a sublist is the
+<span style="font-family:monospace">mid</span><a id="hevea_default193"></a> command,
+which again cannot be used for sequences.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">mid</span> takes two mandatory and one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_pseudoprime(100003)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_pseudoprime(9856989898997)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  2
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_pseudoprime(14)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  0
-</td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">is_pseudoprime(9856989898997789789)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  1
-</td></tr>
-</table>
+<span style="font-style:italic">L</span>, a list.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, the index of the beginning of the sublist.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">l</span>, the length of the sublist.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">mid(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">n</span>  ⟨,<span style="font-style:italic">l</span>⟩<span style="font-family:monospace">)</span> returns the sublist of <span style="font-style:italic">L</span> with index
+beginning at <span style="font-style:italic">n</span>. With the option <span style="font-style:italic">l</span>, the length of the sublist
+will be <span style="font-style:italic">l</span>, otherwise it will go to the end of the list <span style="font-style:italic">L</span>.
+</li></ul><h4 id="sec197" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[0,1,2,3,4][1..3]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1,2,3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">E</span></span><span style="font-weight:bold"><span style="color:#BF0000">)[1..3]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">B</span></span><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">C</span></span><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">D</span></span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">at</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4,5],2..4</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">3,4,5</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mid</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2,3,4,5],2,3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2,3,4</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mid</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2,3,4,5],2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2,3,4,5</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en106.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en108.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en106.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en108.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

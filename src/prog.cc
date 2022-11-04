@@ -8539,6 +8539,19 @@ namespace giac {
   static define_unary_function_eval (__read32,&_read32,_read32_s);
   define_unary_function_ptr5( at_read32 ,alias_at_read32 ,&__read32,0,true);
 
+  gen _addr(const gen & g,GIAC_CONTEXT){
+    if (g.type==_VECT && g.subtype==_SEQ__VECT && g._VECTptr->size()==2){
+      gen & obj=g._VECTptr->front();
+      vecteur & ptr=*obj._VECTptr;
+      return makevecteur((longlong) (&ptr),(int) taille(obj,RAND_MAX),tailles(obj));
+    }
+    vecteur & ptr=*g._VECTptr;
+    return (longlong) (&ptr);
+  }
+  static const char _addr_s []="addr";
+  static define_unary_function_eval (__addr,&_addr,_addr_s);
+  define_unary_function_ptr5( at_addr ,alias_at_addr,&__addr,0,true);
+
 #ifdef NSPIRE_NEWLIB
   gen _read_nand(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG &&  args.subtype==-1)
@@ -8548,7 +8561,7 @@ namespace giac {
       int n=args._VECTptr->back().val;
       if (n<=0 || !is_address(args._VECTptr->front(),addr)) 
 	return undef;
-      // void read_nandd(void* dest, int size, int nand_offset, int unknown, int percent_max, void* progress_cb); // terminer par (...,0,0,NULL)
+      // void read_nand(void* dest, int size, int nand_offset, int unknown, int percent_max, void* progress_cb); // terminer par (...,0,0,NULL)
       char * dest=(char *)malloc(4*n);
       read_nand(dest,4*n,addr,0,0,NULL);
       char buf[5]="aaaa";
@@ -8658,9 +8671,10 @@ namespace giac {
       return _read32(args,contextptr);
     if (args.type==_VECT){
       vecteur v=*args._VECTptr;
+      if (v.empty()) return gensizeerr(contextptr);
+      gen vf=v.front(),vb=v.back();
       size_t addr;
-      if (v.size()==2 && is_address(v.front(),addr)){
-	gen vb=v.back();
+      if (v.size()==2 && is_address(vf,addr)){
 	unsigned * ptr =(unsigned *) addr;
 	if (vb.type==_INT_){
 	  *ptr=vb.val;

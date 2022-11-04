@@ -2,84 +2,86 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Testing the mean with the T test: studentt
-</title>
+<title>Cross-correlation of two signals</title>
 </head>
 <body >
-<a href="cascmd_en692.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en694.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en692.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en694.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1801" class="subsection">8.5.3  Testing the mean with the T test: <span style="font-family:monospace">studentt</span>
-<a id="hevea_default1280"></a></h3>
-<p>The <span style="font-family:monospace">studentt</span> command examines whether data conforms to
-Student’s distribution. For small sample sizes, the <span style="font-family:monospace">studentt</span>
-test is preferable to <span style="font-family:monospace">normalt</span>.
+<h3 id="ssec:crosscorr" class="subsection">19.2.2  Cross-correlation of two signals</h3>
+<p>The cross correlation of two complex vectors
+<span style="font-style:italic">v</span>=[<span style="font-style:italic">v</span><sub>1</sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>] and <span style="font-style:italic">w</span>=[<span style="font-style:italic">w</span><sub>1</sub>,…,<span style="font-style:italic">w</span><sub><span style="font-style:italic">m</span></sub>] is the complex vector
+<span style="font-style:italic">z</span>=<span style="font-style:italic">v</span>⋆ <span style="font-style:italic">w</span> (note the difference between ⋆ and the convolution operation ∗,
+see Section <a href="cascmd_en695.html#ssec%3Aconvolution">19.2.4</a>)
+of length <span style="font-style:italic">n</span>+<span style="font-style:italic">m</span>−1 given by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">z</span><sub><span style="font-style:italic">k</span></sub>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">i</span>=<span style="font-style:italic">k</span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">v</span><sub><span style="font-style:italic">i</span>−<span style="font-style:italic">k</span></sub><sup>∗</sup></td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">w</span><sub><span style="font-style:italic">i</span></sub><sup>∗</sup>,  
+<span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1,
+</td></tr>
+</table><p>
+where
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">v</span><sup>∗</sup>=[<span style="font-style:italic">v</span><sub>0</sub>,<span style="font-style:italic">v</span><sub>1</sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span>−1</sub>,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display" style="width:100%;"><tr><td class="dcell"  colspan="5" style="text-align:center"> </td></tr>
+<tr><td class="dcell"  colspan="5" style="text-align:center">0,0,…,0</td></tr>
+<tr><td class="dcell"   style="width:5%;text-align:center">◥</td><td class="dcell"   style="width:40%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:10%;text-align:center">▼</td><td class="dcell"   style="width:40%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:5%;text-align:center">◤</td></tr>
+</table></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">m</span>−1</td></tr>
+</table></td><td class="dcell">]  and  
+<span style="font-style:italic">w</span><sup>∗</sup>=[</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">&nbsp;</td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display" style="width:100%;"><tr><td class="dcell"  colspan="5" style="text-align:center"> </td></tr>
+<tr><td class="dcell"  colspan="5" style="text-align:center">0,0,…,0</td></tr>
+<tr><td class="dcell"   style="width:5%;text-align:center">◥</td><td class="dcell"   style="width:40%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:10%;text-align:center">▼</td><td class="dcell"   style="width:40%;text-align:center"><hr class="hbar"></td><td class="dcell"   style="width:5%;text-align:center">◤</td></tr>
+</table></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td><td class="dcell">,<span style="font-style:italic">w</span><sub>0</sub>,<span style="font-style:italic">w</span><sub>1</sub>,…,<span style="font-style:italic">w</span><sub><span style="font-style:italic">m</span>−1</sub>].
+</td></tr>
+</table><p>
+Cross-correlation is typically used for measuring similarity between
+signals.</p><p>The <span style="font-family:monospace">cross_correlation</span><a id="hevea_default1380"></a>
+command computes the cross correlation of two vectors.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">studentt</span> command takes four mandatory arguments and
-one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list, which can be one of:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>=[<span style="font-style:italic">n</span><sub><span style="font-style:italic">s</span></sub>,<span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub>] for the sample data information, where
-<span style="font-style:italic">n</span><sub><span style="font-style:italic">s</span></sub> is the the number of successes and <span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub> is the number of trials
-<span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub>.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>=[<span style="font-style:italic">m</span>,<span style="font-style:italic">t</span>], where <span style="font-style:italic">m</span> is the mean and <span style="font-style:italic">t</span> is the sample size.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>, a data list from a control sample.
-</li></ul>
-</li><li class="li-itemize">µ, the mean of the population to or a data list from a control sample.
-</li><li class="li-itemize">σ, the standard deviation of the population. If the
-data list from a control sample is provided, then this argument is unnecessary.
-</li><li class="li-itemize"><span style="font-style:italic">test</span>, the type of test, one of <span style="font-family:monospace">!=</span>,<span style="font-family:monospace">&lt;</span>
-or <span style="font-family:monospace">&gt;</span>.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">c</span>, the confidence level (by default 0.05).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">studentt(</span><span style="font-style:italic">L</span>,σ,<span style="font-style:italic">test</span> ⟨, <span style="font-style:italic">c</span>
-⟩<span style="font-family:monospace">)</span> returns the result of a T test. It
-will return 0 if the test fails, 1 if the test succeeds, and it will
-display a summary of the test.
-</li></ul><h4 id="sec1802" class="subsubsection">Examples:</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">studentt([10,20], 0.5, 0.02, ’!=’, 0.1)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>*** TEST RESULT 0 ***</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Summary T-Test null hypothesis H0 mu1=mu2, alt. hyp. H1 mu1!=mu2.</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Test returns 0 if probability to observe data is less than 0.1</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>(null hyp. mu1=mu2 rejected with less than alpha probability error)</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Test returns 1 otherwise (can not reject null hypothesis)</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Data mean mu1=10, population mean mu2=0.5, degrees of freedom 20</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>alpha level 0.1, multiplier*stddev/sqrt(sample size)= 1.32534*0.02/4.47214</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>0</code>
-</td></tr>
-</table>
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">studentt([0.48,20],0.5,0.1,’&lt;’)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><code>*** TEST RESULT 1 ***</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Summary T-Test null hypothesis H0 mu1=mu2, alt. hyp. H1 mu1&lt;mu2.</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Test returns 0 if probability to observe data is less than 0.05</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>(null hyp. mu1=mu2 rejected with less than alpha probability error)</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Test returns 1 otherwise (can not reject null hypothesis)</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>Data mean mu1=0.48, population mean mu2=0.5, degrees of freedom 20</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>alpha level 0.05, multiplier*stddev/sqrt(sample size)= 1.72472*0.1/4.47214</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" ><code>1</code>
-</td></tr>
-</table>
-</div>
-</li></ul>
+<span style="font-family:monospace">cross_correlation</span> takes two arguments:
+<span style="font-style:italic">v</span>,<span style="font-style:italic">w</span>, two vectors (not necessarily the same length).
+</li><li class="li-itemize"><span style="font-family:monospace">cross_correlation(</span><span style="font-style:italic">v</span>,<span style="font-style:italic">w</span><span style="font-family:monospace">)</span> returns the cross
+correlation <span style="font-style:italic">v</span>⋆ <span style="font-style:italic">w</span>.
+</li></ul><h4 id="sec1761" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cross_correlation</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2],[3,4,5])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">6.0,11.0,14.0,5.0</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[2,1,3,2]:; </span></span><span style="font-weight:bold"><span style="color:#BF0000">w</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[1,-1,1,2,2,1,3,2,1]:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">round</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">cross_correlation</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">v</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">w</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2,1,0,8,9,12,15,18,13,11,5,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Observe that the cross-correlation of <span style="font-family:monospace">v</span> and <span style="font-family:monospace">w</span> is
+peaking at position 8 with the value 18, indicating that the two
+signals are best correlated when the last sample in <span style="font-family:monospace">v</span> is
+aligned with the eighth sample in <span style="font-family:monospace">w</span>. Indeed, there is an
+occurrence of <span style="font-family:monospace">v</span> in <span style="font-family:monospace">w</span> precisely at that point.</p>
 <hr>
-<a href="cascmd_en692.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en694.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en692.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en694.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

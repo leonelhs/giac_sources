@@ -2,95 +2,56 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The distance between objects in the plane: distance
-</title>
+<title>Hyperbola in the plane</title>
 </head>
 <body >
-<a href="cascmd_en847.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en849.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en847.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en849.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:2ddist" class="subsection">13.14.2  The distance between objects in the plane: <span style="font-family:monospace">distance</span>
-<a id="hevea_default1549"></a></h3>
-<p>See Section <a href="cascmd_en935.html#ssec%3A3ddist">14.12.7</a> for distances in three-dimensional geometry.</p><p>The <span style="font-family:monospace">distance</span> command finds the distance between two geometric
-objects (a point is considered a geometric object).
+<h3 id="ssec:2dhyperbola" class="subsection">24.11.2  Hyperbola in the plane</h3>
+<p>For hyperbolas in space, see Section <a href="cascmd_en940.html#ssec%3A3dhyperbola">25.9.3</a>.</p><p>The <span style="font-family:monospace">hyperbola</span><a id="hevea_default1744"></a>
+command draws hyperbolas and other conic sections.
+<span style="font-family:monospace">hyperbola</span> can take parameters in two different ways.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">distance</span> two arguments:<br>
- <span style="font-style:italic">G</span><sub>1</sub>,<span style="font-style:italic">G</span><sub>2</sub>, two geometric objects.
-</li><li class="li-itemize"><span style="font-family:monospace">distance(</span><span style="font-style:italic">G</span><sub>1</sub>,<span style="font-style:italic">G</span><sub>2</sub><span style="font-family:monospace">)</span> returns the distance between 
-<span style="font-style:italic">G</span><sub>1</sub> and <span style="font-style:italic">G</span><sub>2</sub>.
-</li></ul><h4 id="sec2163" class="subsubsection">Examples</h4>
+<span style="font-family:monospace">hyperbola</span> can take one argument:
+<span style="font-style:italic">eqn</span>, a second degree equation in the
+variables <span style="font-family:monospace">x</span> and <span style="font-family:monospace">y</span> (or an expression which will be set to zero).
+</li><li class="li-itemize"><span style="font-family:monospace">hyperbola(</span><span style="font-style:italic">eqn</span><span style="font-family:monospace">)</span> returns and draws
+the conic section given by the equation <span style="font-style:italic">eqn</span>.
+</li><li class="li-itemize">Alternatively, <span style="font-family:monospace">hyperbola</span> can take three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">distance(-1, 1+i)</span>
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>, two points.
+</li><li class="li-itemize"><span style="font-style:italic">C</span>, a point or a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">hyperbola(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the hyperbola
+with foci <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> and passing through <span style="font-style:italic">C</span> (if <span style="font-style:italic">C</span> is a point) or
+whose semi-major axis has length <span style="font-style:italic">C</span> (if <span style="font-style:italic">C</span> is a real number).
+</li><li class="li-itemize">Note that if the third argument is a point on the real axis, the
+real affix of the point won’t work, it needs to be specified with
+the <span style="font-family:monospace">point</span> command.
+</li></ul><h4 id="sec2128" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hyperbola</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en252.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hyperbola</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en253.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hyperbola</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1/2)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en254.png">
+
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">distance(0, line(-1,1+i))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >5</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">5</td></tr>
-</table></td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">distance(circle(0,1),line(-2,1+3*i))</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">−1
-</td></tr>
-</table>
-</li></ul><p><br>
-</p><p>Note that when the distance calculation uses parameters, <span style="font-family:monospace">Xcas</span>
-must be in real mode.</p><h4 id="sec2164" class="subsubsection">Example</h4>
-<p>
-In real mode:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">assumes(a=[4,0,5,0.1]); A:= point(0); B:= point(a);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">simplify(distance(A,B)); simplify(distance(B,A))</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎪<br>
-⎪</td><td class="dcell"><span style="font-style:italic">a</span></td><td class="dcell">⎪<br>
-⎪</td><td class="dcell">,</td><td class="dcell">⎪<br>
-⎪</td><td class="dcell"><span style="font-style:italic">a</span></td><td class="dcell">⎪<br>
-⎪</td></tr>
-</table><p>
-In complex mode:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">assumes(a=[4,0,5,0.1]); A:= point(0); B:= point(a);</span></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">simplify(distance(A,B)); simplify(distance(B,A))</span>
-</td></tr>
-</table>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"> −<span style="font-style:italic">a</span>, <span style="font-style:italic">a</span>
-</td></tr>
-</table><p><br>
-</p><p>The <span style="font-family:monospace">distance</span> command has <span style="font-family:monospace">distanceat</span> and
-<span style="font-family:monospace">distanceatraw</span> versions (see Section <a href="cascmd_en847.html#sec%3Ameasdisplay">13.14.1</a>).</p>
 <hr>
-<a href="cascmd_en847.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en849.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en847.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en849.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

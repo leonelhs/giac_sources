@@ -2,78 +2,53 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>First character, middle and end of a string: head mid tail
-
-
-</title>
+<title>Evaluating booleans</title>
 </head>
 <body >
-<a href="cascmd_en080.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en082.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en080.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en082.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec147" class="subsection">5.3.5  First character, middle and end of a string: <span style="font-family:monospace">head</span> <span style="font-family:monospace">mid</span> <span style="font-family:monospace">tail</span>
-<a id="hevea_default151"></a>
-<a id="hevea_default152"></a>
-<a id="hevea_default153"></a></h3>
-<p>The <span style="font-family:monospace">head</span> command finds the first character of a string.
+<h3 id="sec127" class="subsection">4.1.7  Evaluating booleans</h3>
+<p>The <span style="font-variant:small-caps">Maple</span> command <span style="font-family:monospace">evalb</span><a id="hevea_default144"></a>
+evaluates a boolean expression (see Section <a href="index.html#sec%3Aboolean">4.1</a>).
+Since <span style="font-variant:small-caps">Xcas</span> evaluates booleans automatically, it
+includes a <span style="font-family:monospace">evalb</span> command only here for compatibility
+and is equivalent to <span style="font-family:monospace">eval</span> (see Section <a href="cascmd_en245.html#ssec%3Aeval">8.1.1</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">head</span> takes one argument:<br>
-<span style="font-style:italic">str</span>, a string.
-</li><li class="li-itemize"><span style="font-family:monospace">head(</span><span style="font-style:italic">str</span><span style="font-family:monospace">)</span> returns the first
-character of the string <span style="font-style:italic">str</span>.
-</li></ul><h4 id="sec148" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">head("Hello")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">"H"</span>
-</div><p><br>
-</p><p>The <span style="font-family:monospace">mid</span> command finds a selected part from the middle of a
-string.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">mid</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">str</span>, a string.
-</li><li class="li-itemize"><span style="font-style:italic">p</span>, an integer for the starting index of the result.
-</li><li class="li-itemize"><span style="font-style:italic">q</span>, an integer <span style="font-style:italic">q</span> for the length of the string.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">mid(</span><span style="font-style:italic">str</span><span style="font-family:monospace">,</span><span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">q</span><span style="font-family:monospace">)</span> returns the part of
-the string <span style="font-style:italic">str</span> starting with the character at index <span style="font-style:italic">p</span> with length
-<span style="font-style:italic">q</span>. (Remember that the first index is 0 in <span style="font-family:monospace">Xcas</span> mode.)
-</li></ul><h4 id="sec149" class="subsubsection">Example</h4>
-<p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">mid("Hello",1,3)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">"ell"</span>
-</div><p><br>
-</p><p>The <span style="font-family:monospace">tail</span> command removes the first character of a string.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">tail</span> takes one argument:<br>
-<span style="font-style:italic">str</span>, a string.
-</li><li class="li-itemize"><span style="font-family:monospace">tail(</span><span style="font-style:italic">str</span><span style="font-family:monospace">)</span> returns the string
-<span style="font-style:italic">str</span> without its first character.
-</li></ul><p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">tail("Hello")</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<span style="font-family:monospace">"ello"</span>
-</div>
+<span style="font-family:monospace">evalb</span> takes
+<span style="font-style:italic">bool</span>, a boolean expression.
+</li><li class="li-itemize"><span style="font-family:monospace">evalb(</span><span style="font-style:italic">bool</span><span style="font-family:monospace">)</span> returns 1 if
+<span style="font-style:italic">bool</span> is true and returns 0 otherwise.
+</li></ul><h4 id="sec128" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)&gt;1.41)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)&gt;1.41</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)&gt;1.42)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)&gt;1.42</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en080.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en082.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en080.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en082.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

@@ -2,36 +2,58 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hamming distance between sequences: hamdist</title>
+<title>Adding an object to a string</title>
 </head>
 <body >
-<a href="cascmd_en091.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en093.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en091.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en093.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec171" class="subsection">5.3.16  Hamming distance between sequences: <span style="font-family:monospace">hamdist</span></h3>
-<p>
-<a id="hevea_default165"></a></p><p>The <span style="font-family:monospace">hamdist</span> command computes the Hamming distance between two sequences of equal lengths,
-which is defined to be the number of elements at same positions which do not match.</p><p><span style="font-family:monospace">hamdist</span> takes two arguments:
+<h3 id="ssec:plusconcat" class="subsection">4.2.11  Adding an object to a string</h3>
+<p>The <span style="font-family:monospace">’+’</span><a id="hevea_default161"></a>
+command can be used like <span style="font-family:monospace">cat</span> (see
+Section <a href="cascmd_en091.html#ssec%3Acatobj">4.2.10</a>), and the <span style="font-family:monospace">+</span><a id="hevea_default162"></a>
+operator is the infixed version.
+(See Section <a href="cascmd_en238.html#sssec%3Acontextplus">7.3.1</a> for other uses of <span style="font-family:monospace">+</span> and <span style="font-family:monospace">’+’</span>.)
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">s</span><sub>1</sub>, a vector or string.
-</li><li class="li-itemize"><span style="font-style:italic">s</span><sub>2</sub>, a vector or string.
-</li></ul><p><span style="font-family:monospace">hamdist</span> returns the number <span style="font-style:italic">n</span> of characters in <span style="font-style:italic">s</span><sub>1</sub> that are different
-than the corresponding characters in <span style="font-style:italic">s</span><sub>2</sub>.</p><h4 id="sec172" class="subsubsection">Example</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">hamdist("cats","dogs")</span>
-</div>
-</li><li class="li-itemize"><span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">3 </td></tr>
+<span style="font-family:monospace">’+’</span> takes
+<span style="font-style:italic">seq</span>, a sequence of objects, at least one of which is a string.
+</li><li class="li-itemize"><span style="font-family:monospace">’+’(</span><span style="font-style:italic">seq</span><span style="font-family:monospace">)</span> returns the concatenation of the string
+representations of the objects in <span style="font-style:italic">seq</span>.
+</li></ul><h5 id="sec152" class="paragraph">Remark.</h5>
+<p>
+Note that <span style="font-family:monospace">+</span> is infixed and <span style="font-family:monospace">’+’</span> is prefixed.</p><h4 id="sec153" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abcd"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,3,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"d"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abcd"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">+3+</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"d"</span></span></span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">“abcd3d”</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=5</span></span></td></tr>
+</table><p>then:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abcd"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"d"</span></span></span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">'+'(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abcd"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">c</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"d"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">“abcd5d”</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li></ul>
 <hr>
-<a href="cascmd_en091.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en093.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en091.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en093.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

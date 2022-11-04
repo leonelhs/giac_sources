@@ -2,77 +2,110 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Transforming arctan into arccos: atan2acos
-</title>
+<title>Substituting a variable by a value (Maple and MuPAD compatibility)</title>
 </head>
 <body >
-<a href="cascmd_en258.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en260.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en258.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en260.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec604" class="subsection">5.23.12  Transforming arctan into arccos: <span style="font-family:monospace">atan2acos</span>
-<a id="hevea_default457"></a></h3>
-<p>The <span style="font-family:monospace">atan2acos</span> command transforms any <span style="font-family:monospace">atan</span>s in an
-expression to <span style="font-family:monospace">acos</span>s, using the identity 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">arctan(<span style="font-style:italic">x</span>) = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell"> − arcsin</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">atan2acos</span> takes one argument:<br>
- <span style="font-family:monospace">expr</span>, an expression containing inverse trigonometric functions.
-</li><li class="li-itemize"><span style="font-family:monospace">atan2acos(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns
-<span style="font-style:italic">expr</span> with any <span style="font-family:monospace">atan</span>s replaced by the appropriate
-<span style="font-family:monospace">acos</span>s.
-</li></ul><h4 id="sec605" class="subsubsection">Example</h4>
+<h3 id="sec587" class="subsection">8.1.15  Substituting a variable by a value (<span style="font-variant:small-caps">Maple</span> and <span style="font-variant:small-caps">MuPAD</span> compatibility)</h3>
+<p>In <span style="font-variant:small-caps">Maple</span> and in <span style="font-variant:small-caps">MuPAD</span>, you would use the
+<span style="font-family:monospace">subs</span><a id="hevea_default470"></a> command to substitute a variable
+by a value in an expression. But the order of the arguments differ between
+<span style="font-variant:small-caps">Maple</span> and <span style="font-variant:small-caps">MuPAD</span>. Therefore, to achieve
+compatibility, in <span style="font-variant:small-caps">Xcas</span>, the <span style="font-family:monospace">subs</span> command arguments
+order depends on the mode (see Section <a href="cascmd_en025.html#ssec%3Alang">2.5.2</a>).</p><ul class="itemize"><li class="li-itemize">
+In <span style="font-variant:small-caps">Maple</span> mode, <span style="font-family:monospace">subs</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">eq</span>, an equality or list of equalities of the form
+<span style="font-style:italic">var</span><span style="font-family:monospace">=</span><span style="font-style:italic">value</span>.
+</li><li class="li-itemize"><span style="font-style:italic">expr</span>, an expression.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">subs(</span><span style="font-style:italic">eq</span>,<span style="font-style:italic">expr</span><span style="font-family:monospace">)</span>
+returns the expression with the variables replaced by their given
+values.
+</li></ul><h4 id="sec588" class="subsubsection">Examples</h4>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">atan2acos(atan(x))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">π </td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">−arccos</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >1+<span style="font-style:italic">x</span><sup>2</sup></td></tr>
+Input in <span style="font-variant:small-caps">Maple</span> mode (if the variable <span style="font-family:monospace">a</span> is purged,
+otherwise first enter <span style="font-family:monospace">purge(a)</span>):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+5
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
+</table><p>
+Input in <span style="font-variant:small-caps">Maple</span> mode (if the variables <span style="font-family:monospace">a</span> and
+<span style="font-family:monospace">b</span> are purged, otherwise first enter <span style="font-family:monospace">purge(a,b)</span>):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subs</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1],</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+5
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table>
+</table><p>In <span style="font-variant:small-caps">MuPAD</span> or <span style="font-variant:small-caps">Xcas</span> or <span style="font-variant:small-caps">TI</span> modes, <span style="font-family:monospace">subs</span>
+behaves like <span style="font-family:monospace">subst</span> (see Section <a href="cascmd_en257.html#ssec%3Asubst">8.1.13</a>).
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">subst</span> takes two or three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression.
+</li><li class="li-itemize"><span style="font-style:italic">eqs</span>, an equality of the form <span style="font-style:italic">var</span><span style="font-family:monospace">=</span><span style="font-style:italic">value</span>
+or a list of such equalities, or
+<span style="font-style:italic">vars</span>,<span style="font-style:italic">vals</span>, a variable or list of variables followed by a
+value or a list of values for substitution.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">subs(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">eqs</span><span style="font-family:monospace">)</span> or
+<span style="font-family:monospace">subs(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">vars</span>,<span style="font-style:italic">vals</span><span style="font-family:monospace">)</span>
+returns the expression with the variables replaced by their given
+values.
+</li></ul><h4 id="sec589" class="subsubsection">Examples</h4>
+<p>
+Input in <span style="font-variant:small-caps">MuPAD</span> or <span style="font-variant:small-caps">Xcas</span> or <span style="font-variant:small-caps">TI</span> modes (if the
+variable <span style="font-family:monospace">a</span> is purged, otherwise first enter <span style="font-family:monospace">purge(a)</span>):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+5
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Input in <span style="font-variant:small-caps">MuPAD</span> or <span style="font-variant:small-caps">Xcas</span> or <span style="font-variant:small-caps">TI</span> modes (if the
+variables <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> are purged, otherwise first enter
+<span style="font-family:monospace">purge(a,b)</span> first):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[2,1])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+5
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Note that <span style="font-family:monospace">subs</span> does not quote its argument, hence in a normal
+evaluation process, the substitution variable should be purged
+otherwise it will be replaced by its assigned value before
+substitution is done.</p>
 <hr>
-<a href="cascmd_en258.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en260.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en258.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en260.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>

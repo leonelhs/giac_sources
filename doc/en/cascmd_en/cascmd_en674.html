@@ -2,163 +2,215 @@
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="generator" content="hevea 2.29+5 of 2017-05-18">
+<meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>The χ2 distribution
-</title>
+<title>Wilcoxon or Mann-Whitney distribution</title>
 </head>
 <body >
-<a href="cascmd_en673.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en675.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en673.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en675.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:chisquare" class="subsection">8.4.9  The χ<sup>2</sup> distribution
-</h3>
-<h4 id="sec1714" class="subsubsection">The probability density function for the χ<sup>2</sup> distribution: <span style="font-family:monospace">chisquare</span>
-<a id="hevea_default1227"></a></h4>
-<p>The χ<sup>2</sup> distribution with <span style="font-style:italic">n</span> degrees of freedom has density
-function given by 
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:chisq"></a>
-χ<sup>2</sup>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) = </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup><span style="font-style:italic">n</span>/2−1</sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span>/2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup><span style="font-style:italic">n</span>/2</sup>Γ(<span style="font-style:italic">n</span>/2)</td></tr>
-</table></td><td class="dcell">
-    (6)</td></tr>
-</table><p>
-The <span style="font-family:monospace">chisquare</span> command computes this density function.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">chisquare</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">chisquare(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the χ<sup>2</sup>
-density function with <span style="font-style:italic">n</span> degrees of freedom, given in (<a href="#eq%3Achisq">6</a>).
-</li></ul><h4 id="sec1715" class="subsubsection">Example</h4>
+<h3 id="ssec:wilcoxon" class="subsection">18.4.18  Wilcoxon or Mann-Whitney distribution</h3>
+<h5 id="sec1717" class="paragraph">The Wilcoxon test polynomial.</h5>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">chisquare(5,2)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">2 </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">e</span> </td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">4</td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >π </td></tr>
-</table></td><td class="dcell"> </td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
-</table></td><td class="dcell">· 2<sup>2</sup></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table><p>
-which can be numerically approximated by:<br>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">evalf(chisquare(5,2))</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.138369165807
-</td></tr>
-</table>
-<h4 id="sec1716" class="subsubsection">The cumulative distribution function for the χ<sup>2</sup> distribution: <span style="font-family:monospace">chisquare_cdf</span>
-<a id="hevea_default1228"></a></h4>
-<p>The <span style="font-family:monospace">chisquare_cdf</span> command computes
-the cumulative distribution function for the χ<sup>2</sup> distribution.
+The <span style="font-family:monospace">wilcoxonp</span><a id="hevea_default1358"></a>
+command computes the polynomial for the Wilcoxon or Mann-Whitney test.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">chisquare_cdf</span> takes two mandatory arguments and one
+<span style="font-family:monospace">wilcoxonp</span> takes one mandatory argument and one
 optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number. 
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">k</span> an integer.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">chisquare_cdf(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns 
-Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span>
-degrees of freedom.
-</li><li class="li-itemize"><span style="font-family:monospace">chisquare_cdf(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns 
-Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> &lt; <span style="font-style:italic">y</span>).
-</li></ul><h4 id="sec1717" class="subsubsection">Examples</h4>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">chisquare_cdf(5,11)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.948620016517
+</li><li class="li-itemize"><span style="font-family:monospace">wilcoxonp(</span><span style="font-style:italic">n</span> ⟨,<span style="font-style:italic">k</span>⟩<span style="font-family:monospace">)</span> returns the polynomial for the
+Wilcoxon test.
+</li></ul><h4 id="sec1718" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">wilcoxonp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+▯ </span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">16</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16</td></tr>
+</table></td><td class="dcell">,
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">8</td></tr>
+</table></td><td class="dcell">,
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">16</td></tr>
+</table></td><td class="dcell">▯
 </td></tr>
-</table>
-</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
-<div class="center">
-<span style="font-family:monospace">chisquare_cdf(3,1,2)</span>
-</div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.22884525243
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">wilcoxonp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4,3)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+▯
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">35</span></td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">7</td></tr>
+</table></td><td class="dcell">, </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">4</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">35</td></tr>
+</table></td><td class="dcell">
+▯
 </td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
-</li></ul>
-<h4 id="sec1718" class="subsubsection">The inverse distribution function for the χ<sup>2</sup> distribution: <span style="font-family:monospace">chisquare_icdf</span>
-<a id="hevea_default1229"></a></h4>
-<p>The <span style="font-family:monospace">chisquare_icdf</span> command computes
-the inverse distribution for the χ<sup>2</sup> distribution.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">chisquare_icdf</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
-</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">chisquare_icdf(</span><span style="font-style:italic">n</span>, <span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
-distribution for the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span> degrees of
-freedom; namely, the value of <span style="font-style:italic">x</span> for which 
-Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) = <span style="font-style:italic">h</span>.
-</li></ul><h4 id="sec1719" class="subsubsection">Example</h4>
+<h5 id="sec1719" class="paragraph">The Wilcoxon/Mann-Whitney statistic.</h5>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">chisquare_icdf(5,0.95)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">11.0704976935
-</td></tr>
-</table>
-<h4 id="sec1720" class="subsubsection">The upper tail cumulative function for the χ<sup>2</sup> distribution: <span style="font-family:monospace">UTPC</span>
-<a id="hevea_default1230"></a></h4>
-<p>The <span style="font-family:monospace">UTPC</span> (the Upper Tail Probability - Chi-square
-distribution)
-computes Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>) for the χ<sup>2</sup> distribution.
+The <span style="font-family:monospace">wilcoxons</span><a id="hevea_default1359"></a>
+command computes the Wilcoxon or Mann-Whitney statistic.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">UTPC</span> takes two arguments:
+<span style="font-family:monospace">wilcoxons</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer (the degrees of freedom).
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+<span style="font-style:italic">L</span>, a list.
+</li><li class="li-itemize"><span style="font-style:italic">M</span>, either a list or a real number (a median).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">UTPC(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>) for the χ<sup>2</sup> distribution with <span style="font-style:italic">n</span>
-degrees of freedom.
-</li></ul><h4 id="sec1721" class="subsubsection">Example</h4>
+</li><li class="li-itemize"><span style="font-family:monospace">wilcoxons(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span> returns the Wilcoxon statistic.
+</li></ul><h4 id="sec1720" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">wilcoxons</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,3,4,5,7,8,8,12,15,17],10)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+18
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">wilcoxons</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+128.5
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1721" class="paragraph">The Wilcoxon or Mann-Whitney test.</h5>
 <p>
-<span style="font-style:italic">Input:</span>
-</p><div class="center">
-<span style="font-family:monospace">UTPC(5,11)</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">0.0513799834831
-</td></tr>
+The <span style="font-family:monospace">wilcoxont</span><a id="hevea_default1360"></a>
+command will perform the Wilcoxon or Mann-Whitney test.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">wilcoxont</span> takes two mandatory arguments and two
+optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a sample (list).
+</li><li class="li-itemize"><span style="font-style:italic">M</span>, either another sample or a number (a median).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">f</span>, a function.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">wilcoxont(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">M</span>  ⟨,<span style="font-style:italic">f</span>,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns the results of the
+Wilcoxon test.
+</li></ul><h4 id="sec1722" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">wilcoxont</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20])</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Mann-Whitney 2-sample test, H0 same Median, H1 &lt;&gt;<br>
+ ranksum 93.0, shifted ranksum 27.0<br>
+ u1=83, u2=27, u=min(u1,u2)=27<br>
+ Limit value to reject H0 26<br>
+ P-value 9055/176358 (0.0513444244094), alpha=0.05 H0 not rejected
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">wilcoxont</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,3,4,5,7,8,8,12,15,17],[2,6,10,11,13,14,15,18,19,20],0.3)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Mann-Whitney 2-sample test, H0 same Median, H1 &lt;&gt;<br>
+ ranksum 81.5, shifted ranksum 26.5<br>
+ u1=73.5, u2=26.5, u=min(u1,u2)=26.5<br>
+ Limit value to reject H0 35<br>
+ P-value 316/4199 (0.0752560133365), alpha=0.3 H0 rejected
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">wilcoxont</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,3,4,5,7,8,8,12,15,17],10,`&gt;`,0.05)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Wilcoxon 1-sample test, H0 Median=10, H1 M&lt;&gt;10<br>
+ Wilcoxon statistic: 18, p-value: 0.375, confidence level: 0.05
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
 </table>
 <hr>
-<a href="cascmd_en673.html"><img src="previous_motif.gif" alt="Previous"></a>
-<a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
-<a href="cascmd_en675.html"><img src="next_motif.gif" alt="Next"></a>
+<a href="cascmd_en673.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
+<a href="cascmd_en675.html"><img src="next_motif.svg" alt="Next"></a>
 </body>
 </html>
