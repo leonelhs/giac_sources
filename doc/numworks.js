@@ -1664,9 +1664,9 @@ DFUse.Device = class extends DFU.Device {
         if (!this.memoryInfo || ! this.memoryInfo.segments) {
             throw new Error("No memory map information available");
         }
-
         for (let segment of this.memoryInfo.segments) {
             if (segment.start <= addr && addr < segment.end) {
+	  console.log('getSegment',segment,addr);
                 return segment;
             }
         }
@@ -1687,7 +1687,8 @@ DFUse.Device = class extends DFU.Device {
         return segment.start + sectorIndex * segment.sectorSize;
     }
 
-    getSectorEnd(addr, segment) {
+  getSectorEnd(addr, segment) {
+    //console.log(addr,segment);console.trace();
         if (typeof segment === 'undefined') {
             segment = this.getSegment(addr);
         }
@@ -1741,8 +1742,9 @@ DFUse.Device = class extends DFU.Device {
         return numBytes;
     };
 
-    async erase(startAddr, length) {
+  async erase(startAddr, length) {
         let segment = this.getSegment(startAddr);
+    // console.log('erase',startAddr,length,segment);
         let addr = this.getSectorStart(startAddr, segment);
         const endAddr = this.getSectorEnd(startAddr + length - 1);
 

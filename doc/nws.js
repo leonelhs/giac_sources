@@ -198,20 +198,26 @@ var UI = {
   loadFile:function(file){
     let reader = new FileReader();
     reader.onerror = function (evt) { }
-    if (file.name.length>4 && file.name.substr(file.name.length-4,4)==".nws"){
+    let backup=file.name.length>4 && file.name.substr(file.name.length-4,4)==".nws";
+    if (backup){
       if (!confirm(UI.langue==-1?'Remplacer tous les scripts de la calculatrice?':'Overwrite all calculator scripts?'))
 	return;
       reader.readAsArrayBuffer(file);
     }
     else
       reader.readAsText(file, "UTF-8");
-    reader.onload = function (evt) { UI.numworks_save(file.name,evt.target.result);}
+    reader.onload = function (evt) {
+      let data=evt.target.result;
+      if (!backup)
+	data+=String.fromCharCode(0);
+      UI.numworks_save(file.name,data);
+    }
   },
   numworks_save:function(filename,S){
     //console.log(filename,S); return;
     UI.nws_connect();
     //window.setTimeout(UI.numworks_save_,100,filename,S);
-    window.setTimeout(UI.numworks_save_,100,filename,S+String.fromCharCode(0));
+    window.setTimeout(UI.numworks_save_,100,filename,S);
   },
   numworks_save_:async function(filename,S){
     if (UI.calculator==0 || !UI.calculator_connected){
@@ -222,7 +228,7 @@ var UI = {
     if (filename.length>4 && filename.substr(filename.length-4,4)==".nws"){
       let pinfo = await UI.calculator.getPlatformInfo();
       UI.calculator.device.startAddress = pinfo["storage"]["address"];
-      // console.log(UI.calculator.device.startAddress,S); // return;
+      //console.log(UI.calculator.device.startAddress,S); return;
       let res=await UI.calculator.device.do_download(UI.calculator.transferSize, S, false);
       return res;
     }
@@ -644,22 +650,25 @@ var UI = {
     UI.tar_writestring(buffer,"000000 ",offset+337,7); //devmajor
     UI.tar_writechecksum(buffer,offset);
   },
-  tar_adddata:function(buffer,filename,data,exec=0){
-    console.log('tar_adddata',exec);
+  tar_adddata:function(buffer,filename,data,exec=0,updatehtml=1){
+    console.log('tar_adddata',exec,UI.tar_first_modif_offset);
     let finfo=UI.tar_fileinfo(buffer,0);
-    let s=finfo.length;
-    if (s==0) return 0;
-    let last=finfo[s-1];
-    let offset=last.header_offset;
-    offset += UI.tar_filesize(last.size);
+    let s=finfo.length,offset=0;
+    if (s!=0){
+      let last=finfo[s-1];
+      offset=last.header_offset;
+      offset += UI.tar_filesize(last.size);
+    }
     let newsize=offset+1024+data.byteLength;
     newsize=10240*Math.ceil(newsize/10240);
     if (newsize>UI.numworks_maxtarsize) return 0;
     // console.log(buffer.byteLength,newsize);
     // resize buffer
-    if (buffer.byteLength<newsize)
-      buffer=UI.numworks_buffer=UI.arrayBufferTransfer(buffer,newsize);
-    // console.log(buffer.byteLength,newsize);
+    if (buffer.byteLength<newsize){
+      buffer=UI.arrayBufferTransfer(buffer,newsize);
+      if (updatehtml) UI.numworks_buffer=buffer;
+    }
+    console.log(buffer.byteLength,newsize);
     let view = new Uint8Array(buffer);    
     // add header
     // fill header with 0
@@ -675,8 +684,9 @@ var UI = {
     let srcview = new Uint8Array(data, 0, data.byteLength);    
     for (let i=0;i<data.byteLength;++i)
       view[offset+512+i]=srcview[i];
-    let F=UI.tar_fileinfo(buffer,1); //console.log(F);
-    return 1;
+    let F=UI.tar_fileinfo(buffer,updatehtml);
+    // console.log('tar_adddata',F);
+    return buffer;
   },
   tar_removefile:function(buffer,filename,really=1){
     let finfo=UI.tar_fileinfo(buffer,0);
@@ -715,6 +725,28 @@ var UI = {
     reader.readAsArrayBuffer(file);
     reader.onload = function(evt){
       let fname=file.name,exec=1;
+      if (fname.length>4 && fname.substr(fname.length-4,4)==".tar"){
+	let reader = new FileReader();
+	reader.onerror = function (evt) { }
+	reader.readAsArrayBuffer(file);
+	reader.onload = function(evt){
+	  let buffer=evt.target.result;
+	  let finfo=UI.tar_fileinfo(buffer,1),l=finfo.length;
+	  for (let i=0;i<l;++i){ 
+	    let cur=finfo[i];
+	    let name=cur.name;
+	    // check if name should be archived (not archived if it is in apps)
+	    let size=cur.size;
+	    let offset=cur.header_offset+512;
+	    let data=new Uint8Array(buffer,offset,size);
+	    if (UI.tar_adddata(UI.numworks_buffer,name,data,0,1)==0){
+	      alert(UI.langue==-1?'Pas d\'espace en memoire flash':'No space left in flash');
+	      return;
+	    }
+	  }
+	}
+	return;
+      }
       if (fname.length>4 && fname.substr(fname.length-4,4)==".zip"){
 	let zip=new JSZip();
 	zip.loadAsync(evt.target.result).then(
@@ -805,7 +837,7 @@ var UI = {
     }
   },
   numworks_gettar:function(calc){
-    if (calc==0){
+    if (calc<=0){
       UI.numworks_gettar_(calc);
       return;
     }
@@ -815,7 +847,7 @@ var UI = {
   },
   numworks_gettar_:async function(calc){
     console.log(calc,UI.calculator);
-    if (calc && (UI.calculator==0 || !UI.calculator_connected)){
+    if (calc>0 && (UI.calculator==0 || !UI.calculator_connected)){
       alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
       if (UI.calculator) UI.calculator.stopAutoConnect();
       return;
@@ -827,13 +859,75 @@ var UI = {
     UI.tar_first_modif_offset=0;
     if (calc==0)
       UI.numworks_buffer=await UI.loadfile('apps.tar');
+    else if (calc==-1)
+      UI.numworks_buffer=await UI.loadfile('appsalpha.tar');
     else
       UI.numworks_buffer=await UI.calculator.get_apps();
     let finfo=UI.tar_fileinfo(UI.numworks_buffer,1),s=finfo.length;
-    if (calc && s>0)
+    if (calc>0 && s>0)
       UI.tar_first_modif_offset=finfo[s-1].header_offset+UI.tar_filesize(finfo[s-1].size);
     // window.setTimeout(UI.tar_fileinfo,1000,UI.numworks_buffer);
     //UI.print("Archive flash:\n"+UI.numworks_tarinfo(UI.numworks_buffer));
+  },
+  numworks_getarchive:function(filename,appendapps=1){
+    // filename=string filename to archive or 0 or 1 for calculator upgrade
+    UI.calc=2;
+    UI.nws_connect();
+    window.setTimeout(UI.numworks_getarchive_,100,filename,appendapps);
+  },
+  numworks_getarchive_:async function(filename,appendapps=1){
+    let sendcalc= !(typeof filename=="string");
+    if (sendcalc) appendapps=1;
+    console.log(sendcalc,UI.calculator);
+    if (UI.calculator==0 || !UI.calculator_connected){
+      alert(UI.langue==-1?UI.chkmsgfr:chkmsgen);
+      if (UI.calculator) UI.calculator.stopAutoConnect();
+      return;
+    }
+    let buffer=await UI.calculator.get_apps();
+    let appsbuffer;
+    if (filename==1)
+      appsbuffer=await UI.loadfile('appsalpha.tar');
+    else
+      appsbuffer=await UI.loadfile('apps.tar');
+    let appsfinfo=UI.tar_fileinfo(appsbuffer);
+    console.log('appsfinfo',appsfinfo);
+    let resbuffer;
+    if (appendapps)
+      resbuffer=appsbuffer;
+    else
+      resbuffer=new Uint8Array().buffer;
+    let finfo=UI.tar_fileinfo(buffer,0),l=finfo.length,L=appsfinfo.length;
+    for (let i=0;i<l;++i){ 
+      let cur=finfo[i];
+      let name=cur.name,j;
+      // check if name should be archived (not archived if it is in apps)
+      for (j=0;j<L;++j){
+	if (name==appsfinfo[j].name)
+	  break;
+      }
+      console.log(name,j,L);
+      if (j<L)
+	continue;
+      let size=cur.size;
+      let offset=cur.header_offset+512;
+      let data=new Uint8Array(buffer,offset,size);
+      //console.log(data);
+      resbuffer=UI.tar_adddata(resbuffer,name,data,0,0);
+      // console.log('getarchive',i,UI.tar_fileinfo(resbuffer,0));
+    }
+    finfo=UI.tar_fileinfo(resbuffer,0);
+    console.log(filename,finfo);
+    //return;
+    if (sendcalc){
+      UI.calculator.device.startAddress = 0x90200000;
+      UI.calculator.device.logProgress(0,'apps');
+      let res=await UI.calculator.device.do_download(UI.calculator.transferSize, resbuffer, false);
+      alert(UI.langue==-1?'Installation terminee. Appuyer sur RESET a l\'arriere de la calculatrice':'Install success. Press RESET on the calculator back.');
+      return res;
+    }
+    else
+      UI.file_savetar(resbuffer,filename);
   },
   numworks_sendtar:function(){
     UI.calc=2;

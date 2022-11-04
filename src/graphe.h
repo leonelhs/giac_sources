@@ -21,6 +21,7 @@
 #define __GRAPHE_H
 #include <time.h>
 #include <stdarg.h>
+#include <math.h>
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -29,6 +30,7 @@
 #include "unary.h"
 #include "moyal.h"
 #include "optimization.h"
+#include "signalprocessing.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -559,7 +561,7 @@ public:
             std::vector<tree_node*> children;
         } tree_node;
         struct kspaths_comparator {
-            bool operator()(const std::pair<gen,tree_node*> &a,const std::pair<gen,tree_node*> &b) {
+            bool operator()(const std::pair<gen,tree_node*> &a,const std::pair<gen,tree_node*> &b) const {
                 if (is_zero(a.first-b.first))
                     return a.second<b.second;
                 return is_strictly_greater(b.first,a.first,context0);
@@ -632,14 +634,14 @@ public:
     
     struct edges_comparator { // for sorting edges by their weight
         graphe *G;
-        bool operator()(const ipair &a,const ipair &b) {
+        bool operator()(const ipair &a,const ipair &b) const {
             return is_strictly_greater(G->weight(b),G->weight(a),G->giac_context());
         }
         edges_comparator(graphe *gr) { G=gr; }
     };
 
     struct ivectors_comparator { // for sorting ivectors by their length
-        bool operator()(const ivector &a,const ivector &b) {
+        bool operator()(const ivector &a,const ivector &b) const {
             return a.size()<b.size();
         }
     };
@@ -647,7 +649,7 @@ public:
     struct degree_comparator { // for sorting vertices by their degrees
         graphe *G;
         bool asc;
-        bool operator()(int v,int w) {
+        bool operator()(int v,int w) const {
             return (asc && G->degree(v)<G->degree(w)) ||
                     (!asc && G->degree(v)>G->degree(w));
         }
@@ -656,7 +658,7 @@ public:
 
     struct ivectors_degree_comparator { // for sorting sets of vertices by ascending total degree
         graphe *G;
-        bool operator()(const ivector &a,const ivector &b) {
+        bool operator()(const ivector &a,const ivector &b) const {
             int deg_a=0,deg_b=0;
             for (ivector_iter it=a.begin();it!=a.end();++it) {
                 deg_a+=G->degree(*it);
@@ -936,7 +938,6 @@ public:
     double rand_uniform() const;
     double rand_normal() const { return giac::randNorm(ctx); }
     ivector rand_permu(int n) const;
-    static bool is_real_number(const gen &g,GIAC_CONTEXT);
     static gen to_binary(int number,int chars);
     const context *giac_context() const { return ctx; }
     static gen make_idnt(const char* name,int index=-1,bool intern=true);
@@ -1288,7 +1289,6 @@ public:
     void identify_from_sequences(vecteur &spec,int haar_limit=25);
 
     // static methods
-    static double to_double(const gen &g,GIAC_CONTEXT);
     static gen customize_display(int options);
     static gen customize_layout(int options);
     static rectangle layout_bounding_rect(layout &ly,double padding=0,int coord_offset=0);

@@ -106,7 +106,7 @@ extern "C" void glcontext(int);
 #define CLOCK_T clock_t
 #else // EMCC
 #define CERR std::cerr
-#if defined(MS_SMART) || defined(NO_CLOCK)
+#if defined(MS_SMART) || defined(NO_CLOCK) || defined __MINGW_H
 #define CLOCK() 0
 #define CLOCK_T int
 #else
@@ -266,6 +266,7 @@ int my_sprintf(char * s, const char * format, ...);
 #endif
 
 #ifdef __VISUALC__ 
+#define _ITERATOR_DEBUG_LEVEL 0
 #define GIAC_GENERIC_CONSTANTS
 // Visual C++ is compiling
 #define VISUALC

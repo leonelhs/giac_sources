@@ -15,7 +15,7 @@ Look at the prerequisites section for download addresses and instructions.
 3/ Run ldconfig as root to insure the newly installed library are recognized
 on your system
 4/ Go in the giac directory 
-If you want a quick compilation, type respectively for tcsh or bash
+If you want a quick compilation with debug support, type respectively for tcsh or bash
   $ setenv CXXFLAGS -g
   $ export CXXFLAGS=-g
 then
@@ -65,6 +65,10 @@ for faster blaslib http://www.netlib.org/lapack/)
 9. ECM: elliptic curve method http://ecm.gforge.inria.fr/ (requires GMP)
 10.GLPK (https://www.gnu.org/software/glpk/
    samplerate, curl, cliquer, nauty (https://pallini.di.uniroma1.it/) 
+11. vectorclass: by Agner Fog https://github.com/vectorclass
+run 
+  export CXXFLAGS='-O2 -g -mfma -mavx2 -fabi-version=0'
+before configure
 
 INSTALLATION (UNIX)
 ===================

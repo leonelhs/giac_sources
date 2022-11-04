@@ -580,13 +580,23 @@ micropython-1.12/examples/Makefile
 micropython-1.12/extmod/Makefile
 micropython-1.12/lib/Makefile
 micropython-1.12/logo/Makefile
-micropython-1.12/nspire/Makefile
-micropython-1.12/numworks/Makefile
 micropython-1.12/ports/Makefile
 micropython-1.12/py/Makefile
 micropython-1.12/tests/Makefile
 micropython-1.12/tools/Makefile
 micropython-1.12/unix/Makefile
+micropython-1.12/ulab/Makefile
+micropython-1.12/ulab/numpy/Makefile
+micropython-1.12/ulab/numpy/fft/Makefile
+micropython-1.12/ulab/numpy/ndarray/Makefile
+micropython-1.12/ulab/numpy/linalg/Makefile
+micropython-1.12/ulab/scipy/Makefile
+micropython-1.12/ulab/scipy/linalg/Makefile
+micropython-1.12/ulab/scipy/optimize/Makefile
+micropython-1.12/ulab/scipy/signal/Makefile
+micropython-1.12/ulab/scipy/special/Makefile
+micropython-1.12/ulab/user/Makefile
+micropython-1.12/ulab/utils/Makefile
 ])
 
 echo "Adding link . to giac in src"

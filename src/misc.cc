@@ -7287,7 +7287,7 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
       return gensizeerr(contextptr);
     if (v.size()==1)
       v.push_back(ggb_var(args));
-    gen tmp=apply(v,equal2diff);
+    gen tmp=giac::apply(v,equal2diff);
     vecteur lv=lvarxwithinvsqrt(tmp,v[1],contextptr);
     gen res=lv.size()<2?1:0;
     res.subtype=_INT_BOOLEAN;
@@ -7357,6 +7357,22 @@ static define_unary_function_eval (__os_version,&_os_version,_os_version_s);
   static const char _find_s []="find";
   static define_unary_function_eval (__find,&_find,_find_s);
   define_unary_function_ptr5( at_find ,alias_at_find,&__find,0,true);
+
+  gen _max_index(const gen & args,GIAC_CONTEXT){
+    if (args.type!=_VECT || args._VECTptr->empty()) return gensizeerr(contextptr);
+    const vecteur & v=*args._VECTptr;
+    int s=v.size(),pos=0; gen val=v[0];
+    for (int i=1;i<s;++i){
+      if (ck_is_strictly_greater(v[i],val,contextptr)){
+	pos=i;
+	val=v[i];
+      }
+    }
+    return makevecteur(val,pos);
+  }
+  static const char _max_index_s []="max_index";
+  static define_unary_function_eval (__max_index,&_max_index,_max_index_s);
+  define_unary_function_ptr5( at_max_index ,alias_at_max_index,&__max_index,0,true);
 
   gen _dayofweek(const gen & args,GIAC_CONTEXT){
     if (args.type!=_VECT || args._VECTptr->size()!=3)
@@ -9414,6 +9430,30 @@ void sync_screen(){}
   void draw_line(int x1, int y1, int x2, int y2, int color,GIAC_CONTEXT) {
     int w =(color & 0x00070000) >> 16;
     ++w;
+    int type_line =(color & 0x01c00000) >> 22,mask=0xffff; // 3 bits
+    switch (type_line){
+    case 1:
+      mask=0xff00;
+      break;
+    case 2:
+      mask=0xf0f0;
+      break;
+    case 3:
+      mask=0xcccc;
+      break;
+    case 4:
+      mask=0xaaaa;
+      break;
+    case 5:
+      mask=0xfff0;
+      break;
+    case 6:
+      mask=0xf000;
+      break;
+    case 7:
+      mask=0xc0c0;
+      break;
+    }
     color &= 0xffff;
     signed char ix; 
     signed char iy; 
@@ -9421,7 +9461,7 @@ void sync_screen(){}
     // if x1 == x2 or y1 == y2, then it does not matter what we set here 
     int delta_x = (x2 > x1?(ix = 1, x2 - x1):(ix = -1, x1 - x2)) << 1; 
     int delta_y = (y2 > y1?(iy = 1, y2 - y1):(iy = -1, y1 - y2)) << 1; 
-    
+    int count=0;
     set_pixel(x1, y1, color,contextptr);  
     if (delta_x >= delta_y) { 
       int error = delta_y - (delta_x >> 1);        // error may go below zero 
@@ -9434,13 +9474,16 @@ void sync_screen(){}
 	}                              // else do nothing 
 	x1 += ix; 
 	error += delta_y;
+	++count;
+	if (mask & (1 << (count%16)) ){
 #if 1
-	int y__=y1+(w+1)/2;
-	for (int y_=y1-w/2;y_<y__;++y_)
-	  set_pixel(x1, y_, color,contextptr);
+	  int y__=y1+(w+1)/2;
+	  for (int y_=y1-w/2;y_<y__;++y_)
+	    set_pixel(x1, y_, color,contextptr);
 #else
-	set_pixel(x1, y1, color,contextptr);
+	  set_pixel(x1, y1, color,contextptr);
 #endif
+	}
       } 
     } else { 
       int error = delta_x - (delta_y >> 1);      // error may go below zero 
@@ -9453,13 +9496,16 @@ void sync_screen(){}
 	}                              // else do nothing 
 	y1 += iy; 
 	error += delta_x;
+	++count;
+	if (mask & (1 << (count%16)) ){
 #if 1
-	int x__=x1+(w+1)/2;
-	for (int x_=x1-w/2;x_<x__;++x_)
-	  set_pixel(x_, y1, color,contextptr);
+	  int x__=x1+(w+1)/2;
+	  for (int x_=x1-w/2;x_<x__;++x_)
+	    set_pixel(x_, y1, color,contextptr);
 #else
-	set_pixel(x1, y1, color,contextptr);
+	  set_pixel(x1, y1, color,contextptr);
 #endif
+	}
       } 
     }
   }

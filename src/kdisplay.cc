@@ -724,8 +724,8 @@ namespace giac {
 	break;
       case KEY_CHAR_LPAR:
       case KEY_CHAR_RPAR:
-	if(menu->numitems>=(key-21)) {
-	  menu->selection = (key-21);
+	if(menu->numitems>=(key-17)) {
+	  menu->selection = (key-17);
 	  if (menu->type != MENUTYPE_FKEYS)  return MENU_RETURN_SELECTION;
 	}
 	break;
@@ -755,7 +755,9 @@ namespace giac {
 #define CAT_CATEGORY_SOFUS 18
 #define CAT_CATEGORY_PHYS 19
 #define CAT_CATEGORY_UNIT 20
-#define CAT_CATEGORY_LOGO 21 // should be the last one
+#define CAT_CATEGORY_2D 21
+#define CAT_CATEGORY_3D 22
+#define CAT_CATEGORY_LOGO 23 // should be the last one
 #define XCAS_ONLY 0x80000000
   void init_locale(){
     lang=1;
@@ -874,6 +876,7 @@ namespace giac {
     {"add(u,v)", 0, "En Python, additionne des listes ou listes de listes u et v comme des vecteurs ou matrices.","[1,2,3],[0,1,3]", "[[1,2]],[[3,4]]", CAT_CATEGORY_LINALG},
     {"append", 0, "Ajoute un element en fin de liste l","#l.append(x)", 0, CAT_CATEGORY_LIST},
     {"approx(x)", 0, "Valeur approchee de x. Raccourci S-D", "pi", 0, CAT_CATEGORY_REAL| XCAS_ONLY},
+    {"aire(objet)", 0, "Aire algebrique", "cercle(0,1)", "triangle(-1,1+i,3)", CAT_CATEGORY_2D  },
     {"arg(z)", 0, "Argument du complexe z.", "1+i", 0, CAT_CATEGORY_COMPLEXNUM | XCAS_ONLY},
     {"asc(string)", 0, "Liste des codes ASCII d'une chaine", "\"Bonjour\"", 0, CAT_CATEGORY_ARIT},
     {"assume(hyp)", 0, "Hypothese sur une variable.", "x>1", "x>-1 and x<1", CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_SOFUS<<8) | XCAS_ONLY},
@@ -881,7 +884,9 @@ namespace giac {
     {"axes", "axes", "Axes visibles ou non axes=1 ou 0", "#axes=0", "#axes=1", CAT_CATEGORY_PROGCMD << 8|XCAS_ONLY},
     {"baisse_crayon ", "baisse_crayon ", "La tortue se deplace en marquant son passage.", 0, 0, CAT_CATEGORY_LOGO},
     {"barplot(list)", 0, "Diagramme en batons d'une serie statistique 1d.", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS | (CAT_CATEGORY_PLOT<<8)},
+    {"barycentre([pnt,coeff],...)", 0, "Barycentre d'une sequnence de [points,coefficients]. Utiliser isobarycenter si tous les coefficients sont egaux.", "[1,1],[i,1],[2,3]", 0, CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"binomial(n,p,k)", 0, "binomial(n,p,k) probabilite de k succes avec n essais ou p est la proba de succes d'un essai. binomial_cdf(n,p,k) est la probabilite d'obtenir au plus k succes avec n essais. binomial_icdf(n,p,t) renvoie le plus petit k tel que binomial_cdf(n,p,k)>=t", "10,.5,4", 0, CAT_CATEGORY_PROBA | XCAS_ONLY},
+    {"bissectrice(A,B,C)", 0, "Bissectrice de l'angle AB,AC", "1,i,2+i", 0,CAT_CATEGORY_2D},
     {"bitxor", "bitxor", "Ou exclusif", "#bitxor(1,2)", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
     {"black", "black", "Option d'affichage", "#display=black", 0, CAT_CATEGORY_PROGCMD},
     {"blue", "blue", "Option d'affichage", "#display=blue", 0, CAT_CATEGORY_PROGCMD},
@@ -889,7 +894,9 @@ namespace giac {
     {"cache_tortue ", "cache_tortue ", "Cache la tortue apres avoir trace le dessin.", 0, 0, CAT_CATEGORY_LOGO},
     {"camembert(list)", 0, "Diagramme en camembert d'une serie statistique 1d.", "[[\"France\",6],[\"Allemagne\",12],[\"Suisse\",5]]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"ceil(x)", 0, "Partie entiere superieure", "1.2", 0, CAT_CATEGORY_REAL},
-    {"cercle(centre,rayon)", 0, "Cercle donne par centre et rayon ou par un diametre", "2+i,3", "1-i,1+i", CAT_CATEGORY_PROGCMD | XCAS_ONLY},
+    {"centre(objet)", 0, "Centre d'un cercle ou d'une sphere. Pour une conique a centre, renvoie le centre, un foyer et un point de la conique. Pour une parabole, renvoie le foyer et le sommet.", "cercle(0,1)", "sphere([0,0,0],[1,1,1])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
+    {"cercle(centre,rayon)", 0, "Cercle donne par centre et rayon ou par un diametre", "2+i,3", "1-i,1+i", CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
+    {"circonscrit(A,B,C)", 0, "Cercle circonscrit", "-1,2+i,3", 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"cfactor(p)", 0, "Factorisation sur C.", "x^4-1", 0, CAT_CATEGORY_ALGEBRA | (CAT_CATEGORY_COMPLEXNUM << 8) | XCAS_ONLY},
     {"char(liste)", 0, "Chaine donnee par une liste de code ASCII", "[97,98,99]", 0, CAT_CATEGORY_ARIT},
     {"charpoly(M,x)", 0, "Polynome caracteristique de la matrice M en la variable x.", "[[1,2],[3,4]],x", 0, CAT_CATEGORY_MATRIX | XCAS_ONLY},
@@ -897,6 +904,9 @@ namespace giac {
     {"coeff(p,x,n)", 0, "Coefficient de x^n dans le polynome p.", "(1+x)^6,x,3", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"comb(n,k)", 0, "Renvoie k parmi n.", "10,4", 0, CAT_CATEGORY_PROBA | XCAS_ONLY},
     {"cond(A,[1,2,inf])", 0, "Nombre de condition d'une matrice par rapport a la norme specifiee (par defaut 1)", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX | XCAS_ONLY},
+    {"cone(A,v,theta,[h])", 0, "Cone de sommet A, axe v, angle theta, hauteur h optionnelle", "[0,0,0],[0,0,1],pi/6", "[0,0,0],[0,0,1],pi/6,4", CAT_CATEGORY_3D},
+    {"conique(expression)", 0, "Conique donnee par une equation polynomiale de degre 2 ou passant par 5 points", "x^2+x*y+y^2=5", "1,i,2+i,3-i,4+2i", CAT_CATEGORY_2D},
+    {"coordonnees(object)", 0, "Coordonnees (cartesiennes)", "point(1,2)", "point(1,2,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"conj(z)", 0, "Conjugue complexe de z.", "1+i", 0, CAT_CATEGORY_COMPLEXNUM},
     {"correlation(l1,l2)", 0, "Correlation listes l1 et l2", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"covariance(l1,l2)", 0, "Covariance listes l1 et l2", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
@@ -904,8 +914,10 @@ namespace giac {
     {"crayon ", "crayon ", "Couleur de trace de la tortue", "#crayon rouge", 0, CAT_CATEGORY_LOGO},
     {"cross(u,v)", 0, "Produit vectoriel de u et v.","[1,2,3],[0,1,3]", 0, CAT_CATEGORY_LINALG},
     {"csolve(equation,x)", 0, "Resolution exacte dans C d'une equation en x (ou d'un systeme polynomial).","x^2+x+1=0", 0, CAT_CATEGORY_SOLVE | (CAT_CATEGORY_COMPLEXNUM << 8) | XCAS_ONLY},
+    {"cube(A,B,C)", 0, "Cube d'arete AB avec une face dans le plan ABC", "[0,0,0],[1,0,0],[0,1,0]","[0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]", CAT_CATEGORY_3D},
     {"curl(u,vars)", 0, "Rotationnel du vecteur u.", "[2*x*y,x*z,y*z],[x,y,z]", 0, CAT_CATEGORY_LINALG | XCAS_ONLY},
     {"cyan", "cyan", "Option d'affichage", "#display=cyan", 0, CAT_CATEGORY_PROGCMD},
+    {"cylinder(A,v,r,[h])", 0, "Cylindre d'axe A,v de rayon r et de hauteur optionnelle h", "[0,0,0],[0,1,0],2", "[0,0,0],[0,1,0],2,3", CAT_CATEGORY_3D},
     {"debug(f(args))", 0, "Execute la fonction f en mode pas a pas.", 0, 0, CAT_CATEGORY_PROG | XCAS_ONLY},
     {"degree(p,x)", 0, "Degre du polynome p en x.", "x^4-1", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"denom(x)", 0, "Denominateur de l'expression x.", "3/4", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
@@ -915,6 +927,7 @@ namespace giac {
     {"display", "display", "Option d'affichage", "#display=red", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
     {"disque n", "disque ", "Cercle rempli tangent a la tortue, de rayon n. Utiliser disque n,theta pour remplir un morceau de camembert ou disque n,theta,segment pour remplir un segment de disque", "#disque 30", "#disque(30,90)", CAT_CATEGORY_LOGO},
     {"dot(a,b)", 0, "Produit scalaire de 2 vecteurs. Raccourci: *", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_LINALG},
+    {"dodecahedron(A,B,C)", 0, "Dodecaedre d'arete AB avec une face dans le plan ABC", "[0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]", 0, CAT_CATEGORY_3D},
     {"draw_arc(x1,y1,rx,ry,theta1,theta2,c)", 0, "Arc d'ellipse pixelise.", "100,100,60,80,0,pi,magenta", 0, CAT_CATEGORY_PROGCMD},
     {"draw_circle(x1,y1,r,c)", 0, "Cercle pixelise. Option filled pour le remplir.", "100,100,60,cyan+filled", 0, CAT_CATEGORY_PROGCMD},
     {"draw_line(x1,y1,x2,y2,c)", 0, "Droite pixelisee.", "100,50,300,200,blue", 0, CAT_CATEGORY_PROGCMD},
@@ -922,7 +935,7 @@ namespace giac {
     {"draw_polygon([[x1,y1],...],c)", 0, "Polygone pixelise.", "[[100,50],[30,20],[60,70]],red+filled", 0, CAT_CATEGORY_PROGCMD},
     {"draw_rectangle(x,y,w,h,c)", 0, "Rectangle pixelise.", "100,50,30,20,red+filled", 0, CAT_CATEGORY_PROGCMD},
     {"draw_string(s,x,y,c)", 0, "Affiche la chaine s en x,y", "\"Bonjour\",80,60", 0, CAT_CATEGORY_PROGCMD},
-    {"droite(equation)", 0, "Droite donnee par une equation ou 2 points", "y=2x+1", "1+i,2-i", CAT_CATEGORY_PROGCMD | XCAS_ONLY},
+    {"droite(equation)", 0, "Droite donnee par une equation ou 2 points", "y=2x+1", "1+i,2-i", CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | (CAT_CATEGORY_2D << 16) | XCAS_ONLY},
     {"ecris ", "ecris ", "Ecrire a la position de la tortue", "#ecris \"coucou\"", 0, CAT_CATEGORY_LOGO},
     {"efface", "efface", "Remise a zero de la tortue", 0, 0, CAT_CATEGORY_LOGO | XCAS_ONLY},
     {"egcd(A,B)", 0, "Cherche des polynomes U,V,D tels que A*U+B*V=D=gcd(A,B)","x^2+3x+1,x^2-5x-1", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
@@ -930,6 +943,8 @@ namespace giac {
     {"eigenvects(A)", 0, "Vecteurs propres de la matrice A.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
     {"elif (test)", "elif", "Tests en cascade", 0, 0, CAT_CATEGORY_PROG | XCAS_ONLY},
 				     //{"end", "end", "Fin de bloc", 0, 0, CAT_CATEGORY_PROG},
+    {"ellipse(F1,F2,M)", 0, "Ellipse donnee par les 2 foyers et un point", "-1,1,2", 0, CAT_CATEGORY_2D},
+    {"equation(objet)", 0, "Equation cartesienne. Utiliser parameq pour parametrique.", "circle(0,1)", "ellipse(-1,1,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"erf(x)", 0, "Fonction erreur en x.", "1.2", 0, CAT_CATEGORY_PROBA},
     {"erfc(x)", 0, "Fonction erreur complementaire en x.", "1.2", 0, CAT_CATEGORY_PROBA},
     {"euler(n)",0,"Indicatrice d'Euler: nombre d'entiers < n premiers avec n","25",0,CAT_CATEGORY_ARIT},
@@ -962,21 +977,28 @@ namespace giac {
     {"gl_y", "gl_y", "Reglage graphique Y gl_y=ymin..ymax", "#gl_y=-1..1", 0, CAT_CATEGORY_PROGCMD << 8 | XCAS_ONLY},
     {"green", "green", "Option d'affichage", "#display=green", 0, CAT_CATEGORY_PROGCMD},
     {"halftan(expr)", 0, "Exprime cos, sin, tan avec tan(angle/2).","cos(x)", 0, CAT_CATEGORY_TRIG | XCAS_ONLY},
+    {"hauteur(A,B,C)", 0, "Hauteur du triangle ABC issue de A", "1,i,2+i", 0,CAT_CATEGORY_2D},
     {"hermite(n)", 0, "n-ieme polynome de Hermite", "10", "10,t", CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"hilbert(n)", 0, "Matrice de Hilbert de taille n.", "4", 0, CAT_CATEGORY_MATRIX | XCAS_ONLY},
     {"histogram(list,min,size)", 0, "Histogramme d'une liste de donneees, classes commencant a min de taille size.","ranv(100,uniformd,0,1),0,0.1", 0, CAT_CATEGORY_STATS | (CAT_CATEGORY_PLOT<<8)},
+    {"homothetie(centre,rapport,objet)", 0, "Image de l'objet par homothetie de rapport", "0,2,circle(1,1)", 0, CAT_CATEGORY_2D },
+    {"hyperbole(F1,F2,M)", 0, "Hyperbole donnee par 2 foyers et un point", "-2-i,2+i,1", 0, CAT_CATEGORY_2D},
     {"iabcuv(a,b,c)", 0, "Cherche 2 entiers u,v tels que a*u+b*v=c","23,13,15", 0, CAT_CATEGORY_ARIT | XCAS_ONLY},
     {"ichinrem([a,m],[b,n])", 0,"Restes chinois entiers de a mod m et b mod n.", "[3,13],[2,7]", 0, CAT_CATEGORY_ARIT | XCAS_ONLY},
+    {"icosahedron(A,B,C)", 0, "Icosaedre de centre A, de sommet B où le plan ABC contient le sommet le plus proche (parmi les 5) de B", "[0,0,0],[sqrt(5),0,0],[1,2,0]", 0, CAT_CATEGORY_3D},
     {"idivis(n)", 0, "Liste des diviseurs d'un entier n.", "10", 0, CAT_CATEGORY_ARIT},
     {"idn(n)", 0, "matrice identite n * n", "4", 0, CAT_CATEGORY_MATRIX},
     {"iegcd(a,b)", 0, "Determine les entiers u,v,d tels que a*u+b*v=d=gcd(a,b)","23,13", 0, CAT_CATEGORY_ARIT},
     {"ifactor(n)", 0, "Factorisation d'un entier (pas trop grand!). Raccourci n=>*", "1234", 0, CAT_CATEGORY_ARIT},
     {"ilaplace(f,s,x)", 0, "Transformee inverse de Laplace de f", "s/(s^2+1),s,x", 0, CAT_CATEGORY_CALCULUS | XCAS_ONLY},
     {"im(z)", 0, "Partie imaginaire (z.im en Python)", "1+i", 0, CAT_CATEGORY_COMPLEXNUM},
+    {"inscrit(A,B,C)", 0, "Cercle inscrit", "-1,2+i,3", 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"inf", "inf", "Plus l'infini. Utiliser -inf pour moins l'infini ou infinity pour l'infini complexe. Raccourci shift INS.", "-inf", "infinity", CAT_CATEGORY_CALCULUS | XCAS_ONLY},
     {"input()", "input()", "Lire une chaine au clavier", "\"Valeur ?\"", 0, CAT_CATEGORY_PROG},
     {"integrate(f,x,[,a,b])", 0, "Primitive de f par rapport a la variable x, par ex. integrate(x*sin(x),x). Pour calculer une integrale definie, entrer les arguments optionnels a et b, par ex. integrate(x*sin(x),x,0,pi). Raccourci SHIFT F3.", "x*sin(x),x", "cos(x)/(1+x^4),x,0,inf", CAT_CATEGORY_CALCULUS | XCAS_ONLY},
     {"interp(X,Y[,interp])", 0, "Interpolation de Lagrange aux points (xi,yi) avec X la liste des xi et Y des yi. Renvoie la liste des differences divisees si interp est passe en parametre.", "[1,2,3,4,5],[0,1,3,4,4]", "[1,2,3,4,5],[0,1,3,4,4],interp", CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
+    {"inter(A,B)", 0, "Liste des intersections. Utiliser single_inter si l'intersection est unique.", "line(y=x),circle(0,1)", 0, CAT_CATEGORY_3D | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
+    {"inter_unique(A,B)", 0, "Premiere intersection. Utiliser inter pour une liste d'intersections.", "line(y=x),line(x+y=3)", 0, CAT_CATEGORY_3D | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"inv(A)", 0, "Inverse de A.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX|(CAT_CATEGORY_LINALG<<8)},
     {"inverser(v)", "inverser ", "La variable v est remplacee par son inverse", "#v:=3; inverser v", 0, CAT_CATEGORY_SOFUS | XCAS_ONLY},
     {"iquo(a,b)", 0, "Quotient euclidien de deux entiers.", "23,13", 0, CAT_CATEGORY_ARIT | XCAS_ONLY},
@@ -993,6 +1015,7 @@ namespace giac {
 #endif
     {"leve_crayon ", "leve_crayon ", "La tortue se deplace sans marquer son passage", 0, 0, CAT_CATEGORY_LOGO},
     {"limit(f,x=a)", 0, "Limite de f en x = a. Ajouter 1 ou -1 pour une limite a droite ou a gauche, limit(sin(x)/x,x=0) ou limit(abs(x)/x,x=0,1). Raccourci: SHIFT MIXEDFRAC", "sin(x)/x,x=0", "exp(-1/x),x=0,1", CAT_CATEGORY_CALCULUS | XCAS_ONLY},
+    {"droite(A,B)", 0, "Droite donnee par equation ou 2 points", "y=x-1", "[0,0,0],[1,-2,3]", CAT_CATEGORY_2D | XCAS_ONLY},
     {"line_width_", "line_width_", "Prefixe d'epaisseur (2 a 8)", 0, 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
     {"linear_regression(Xlist,Ylist)", 0, "Regression lineaire.", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"linear_regression_plot(Xlist,Ylist)", 0, "Graphe d'une regression lineaire.", "#X,Y:=[1,2,3,4,5],[0,1,3,4,4];linear_regression_plot(X,Y);", 0, CAT_CATEGORY_STATS | (CAT_CATEGORY_PLOT<<8)},
@@ -1007,6 +1030,9 @@ namespace giac {
     {"matrix(l,c,func)", 0, "Matrice de terme general donne.", "2,3,(j,k)->j^k", 0, CAT_CATEGORY_MATRIX},
     {"mean(l)", 0, "Moyenne arithmetique liste l", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"median(l)", 0, "Mediane", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
+    {"mediane(A,B,C)", 0, "Mediane du triangle ABC issue de A", "1,i,2+i", 0,CAT_CATEGORY_2D},
+    {"mediatrice(A,B)", 0, "Mediatrice du segment AB", "1,i", 0,CAT_CATEGORY_2D},
+    {"milieu(A,B)", 0, "Milieu de AB", "1,i", 0,CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8)},
     {"montre_tortue ", "montre_tortue ", "Affiche la tortue", 0, 0, CAT_CATEGORY_LOGO},
     {"mul(A,B)", 0, "En Python, multiplie des listes de listes u et v comme des matrices.","[[1,2],[3,4]],[5,6]", "[[1,2],[3,4]].[[5,6],[7,8]]", CAT_CATEGORY_LINALG},
     {"mult_c_conjugate", 0, "Multiplier par le conjugue complexe.", "1+2*i", 0,  (CAT_CATEGORY_COMPLEXNUM << 8) | XCAS_ONLY},
@@ -1014,23 +1040,29 @@ namespace giac {
     {"normald([mu,sigma],x)", 0, "Loi normale, par defaut mu=0 et sigma=1. normald_cdf([mu,sigma],x) probabilite que \"loi normale <=x\" par ex. normald_cdf(1.96). normald_icdf([mu,sigma],t) renvoie x tel que \"loi normale <=x\" vaut t, par ex. normald_icdf(0.975) ", "1.2", 0, CAT_CATEGORY_PROBA | XCAS_ONLY},
     {"not(x)", 0, "Non logique.", 0, 0, CAT_CATEGORY_PROGCMD},
     {"numer(x)", 0, "Numerateur de x.", "3/4", 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
+    {"octahedron(A,B,C)", 0, "Octaedre d'arete AB avec une face dans le plan ABC", "[0,0,0],[3,0,0],[0,1,0]", 0, CAT_CATEGORY_3D},
     {"odesolve(f(t,y),[t,y],[t0,y0],t1)", 0, "Solution approchee d'equation differentielle y'=f(t,y) et y(t0)=y0, valeur en t1 (ajouter curve pour les valeurs intermediaires de y)", "sin(t*y),[t,y],[0,1],2", "0..pi,(t,v)->{[-v[1],v[0]]},[0,1]", CAT_CATEGORY_SOLVE | XCAS_ONLY},
+    {"parabole(F,A)", 0, "Parabole donnee par foyer et sommet", "-2-i,2+i", 0, CAT_CATEGORY_2D},
+    {"parameq(objet)", 0, "Equations parametriques. Utiliser equation pour une equation cartesienne", "circle(0,1)", "ellipse(-1,1,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"partfrac(p,x)", 0, "Decomposition en elements simples. Raccourci p=>+", "1/(x^4-1)", 0, CAT_CATEGORY_ALGEBRA | XCAS_ONLY},
     {"pas_de_cote n", "pas_de_cote ", "Saut lateral de la tortue, par defaut n=10", "#pas_de_cote 30", 0, CAT_CATEGORY_LOGO},
-    {"plot(expr,x)", 0, "Xcas: graphe de fonction, par exemple plot(sin(x)), plot(ln(x),x.0,5). Python et Xcas: plot(Xlist,Ylist) ligne polygonale", "[1,2,3,4,5,6],[2,3,5,2,1,4]","ln(x),x=0..5,xstep=0.1", CAT_CATEGORY_PLOT},
+    {"plan(equation)", 0, "Plan donne par equation ou 3 points", "z=x+y-1", "[0,0,0],[1,0,0],[0,1,0]", CAT_CATEGORY_3D | XCAS_ONLY},
+    {"plot(expr,x)", 0, "Xcas: graphe de fonction, par exemple plot(sin(x)), plot(ln(x),x.0,5), plot(x^2-y^2), plot(x^2-y^2<1), plot(x^2-y^2=1). Python et Xcas: plot(Xlist,Ylist) ligne polygonale", "[1,2,3,4,5,6],[2,3,5,2,1,4]","ln(x),x=0..5,xstep=0.1", CAT_CATEGORY_PLOT },
+    {"plotfunc(expr,[x,y])", 0, "Xcas: graphe de fonction 3d", "x^2-y^2,[x,y]","x^2-y^2,[x=-2..2,y=-2..2],nstep=700", CAT_CATEGORY_PLOT | (CAT_CATEGORY_3D << 8) | XCAS_ONLY },
     {"plotarea(expr,x=a..b,[n,meth])", 0, "Aire sous la courbe selon une methode d'integration.", "1/x,x=1..5,4,rectangle_gauche", 0, CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plotcontour(expr,[x=xm..xM,y=ym..yM],niveaux)", 0, "Lignes de niveau de expr.", "x^2+2y^2, [x=-2..2,y=-2..2],[1,2]", 0, CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plotdensity(expr,[x=xm..xM,y=ym..yM])", 0, "Representation en niveaux de couleurs d'une expression de 2 variables.", "x^2-y^2,[x=-3..3,y=-2..2]", 0, CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plotfield(f(t,y), [t=tmin..tmax,y=ymin..ymax])", 0, "Champ des tangentes de y'=f(t,y), optionnellement graphe avec plotode=[t0,y0]", "sin(t*y), [t=-3..3,y=-3..3],plotode=[0,1]", "5*[-y,x], [x=-1..1,y=-1..1]", CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plotlist(list)", 0, "Graphe d'une liste", "[3/2,2,1,1/2,3,2,3/2]", "[1,13],[2,10],[3,15],[4,16]", CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plotode(f(t,y), [t=tmin..tmax,y],[t0,y0])", 0, "Graphe de solution d'equation differentielle y'=f(t,y), y(t0)=y0.", "sin(t*y),[t=-3..3,y],[0,1]", 0, CAT_CATEGORY_PLOT | XCAS_ONLY},
-    {"plotparam([x,y],t)", 0, "Graphe en parametriques. Par exemple plotparam([sin(3t),cos(2t)],t,0,pi) ou plotparam(exp(i*t),t,0,pi)", "[sin(3t),cos(2t)],t,0,pi", "[t^2,t^3],t=-1..1,tstep=0.1", CAT_CATEGORY_PLOT | XCAS_ONLY},
+    {"plotparam([x,y],t)", 0, "Graphe en parametriques. Par exemple plotparam([sin(3t),cos(2t)],t,0,pi) ou plotparam(exp(i*t),t,0,pi)", "[sin(3t),cos(2t)],t,0,pi", "[t^2,t^3],t=-1..1,tstep=0.1", CAT_CATEGORY_PLOT | (CAT_CATEGORY_3D << 8) | XCAS_ONLY},
     {"plotpolar(r,theta)", 0, "Graphe en polaire.","cos(3*x),x,0,pi", "1/(1+cos(x)),x=0..pi,xstep=0.05", CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plotseq(f(x),x=[u0,m,M],n)", 0, "Trace f(x) sur [m,M] et n termes de la suite recurrente u_{n+1}=f(u_n) de 1er terme u0.","sqrt(2+x),x=[6,0,7],5", 0, CAT_CATEGORY_PLOT | XCAS_ONLY},
     {"plus_point", "plus_point", "Option d'affichage", "#display=blue+plus_point", 0, CAT_CATEGORY_PROGCMD  | XCAS_ONLY},
-    {"point(x,y)", 0, "Point", "1,2", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
-    {"polygon(list)", 0, "Polygone ferme.", "1-i,2+i,3", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
+    {"point(x,y[,z])", 0, "Point", "1,2", "1,2,3", CAT_CATEGORY_PLOT | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
+    {"polygone(list)", 0, "Polygone ferme donne par la liste de ses sommets.", "1-i,2+i,3,3-2i", 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"polygonscatterplot(Xlist,Ylist)", 0, "Nuage de points relies.", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
+    {"polyhedron(A,B,C,D,...)", 0, "Polyedre convexe dont les sommets sont parmi A,B,C,D,...", "[0,0,0],[0,5,0],[0,0,5],[1,2,6]", 0, CAT_CATEGORY_3D},
     {"polynomial_regression(Xlist,Ylist,n)", 0, "Regression polynomiale de degre <= n.", "[1,2,3,4,5],[0,1,3,4,4],2", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"polynomial_regression_plot(Xlist,Ylist,n)", 0, "Graphe d'une regression polynomiale de degre <= n.", "#X,Y:=[1,2,3,4,5],[0,1,3,4,4];polynomial_regression_plot(X,Y,2);scatterplot(X,Y);", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"pour (boucle Xcas)", "pour  de  to  faire  fpour;", "Boucle definie.","#pour j de 1 to 10 faire print(j,j^2); fpour;", 0, CAT_CATEGORY_PROG | XCAS_ONLY},
@@ -1039,17 +1071,21 @@ namespace giac {
     {"pow(a,n,p)", 0, "Renvoie a^n mod p","123,456,789", 0, CAT_CATEGORY_ARIT},
     {"powmod(a,n,p[,P,x])", 0, "Renvoie a^n mod p, ou a^n mod un entier p et un polynome P en x.","123,456,789", "x+1,452,19,x^4+x+1,x", CAT_CATEGORY_ARIT | XCAS_ONLY},
     {"print(expr)", 0, "Afficher dans la console", 0, 0, CAT_CATEGORY_PROG},
+    {"projection(obj1,obj2)", 0, "Projection sur obj1 de obj2", "line(y=x),point(2,3)", 0, CAT_CATEGORY_2D },
     {"pcoeff(p)", 0, "Polynome unitaire dont on donne la liste des racines (fonction reciproque de proot)", "[1,2,3]", 0, CAT_CATEGORY_POLYNOMIAL},
     {"peval(p,x)", 0, "Valeur d'un polynome en un point", "[1,2,3],4", 0, CAT_CATEGORY_POLYNOMIAL},
     {"proot(p)", 0, "Racines reelles et complexes approchees d'un polynome. Exemple proot([1,2.1,3,4.2]) ou proot(x^3+2.1*x^2+3x+4.2)", "[1.,2.1,3,4.2]","x^3+2.1*x^2+3x+4.2", CAT_CATEGORY_POLYNOMIAL|(CAT_CATEGORY_SOLVE<<8)},
     {"purge(x)", 0, "Purge le contenu de la variable x. Raccourci SHIFT-FORMAT", 0, 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_SOFUS<<8) | XCAS_ONLY},
+    {"pyramid(A,B,C)", 0, "Tetraedre d'arete AB avec une face dans le plan ABC", "[0,0,0],[3,0,0],[0,1,0]", "[0,0,0],[3,0,0],[0,3,0],[0,0,4]", CAT_CATEGORY_3D},
     {"python(f)", 0, "Affiche la fonction f en syntaxe Python.", 0, 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
     {"python_compat(0|1|2|4)", 0, "python_compat(0) syntaxe Xcas, python_compat(1) syntaxe Python avec ^ interprete comme puissance, python_compat(2) ^ interprete comme ou exclusif bit a bit", "0", "1", CAT_CATEGORY_PROG | XCAS_ONLY},
     {"qr(A)", 0, "Factorisation A=Q*R avec Q orthogonale et R triangulaire superieure", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX | XCAS_ONLY},
+    {"quadric(equation)", 0, "Quadrique donnee par une equation (ou 9 points)", "x^2-y^2+z^2", "x^2+x*y+y^2+z^2-3", CAT_CATEGORY_3D},
     {"quartile1(l)", 0, "1er quartile", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"quartile3(l)", 0, "3eme quartile", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"quo(p,q,x)", 0, "Quotient de division euclidienne polynomiale en x.", 0, 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"quote(x)", 0, "Renvoie l'expression x non evaluee.", 0, 0, CAT_CATEGORY_ALGEBRA | XCAS_ONLY},
+    {"rayon(objet)", 0, "Rayon d'un cercle ou d'une sphere", "circle(0,1)", "sphere([0,0,0],[1,1,1])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"rand()", "rand()", "Reel aleatoire entre 0 et 1", 0, 0, CAT_CATEGORY_PROBA},
     {"randint(a,b)", 0, "Entier aleatoire entre a et b. En Xcas, avec un seul argument n, entier entre 1 et n.", "5,20", "6", CAT_CATEGORY_PROBA},
     {"ranm(n,m,[loi,parametres])", 0, "Matrice aleatoire a coefficients entiers ou selon une loi de probabilites (ranv pour un vecteur). Exemples ranm(2,3), ranm(3,2,binomial,20,.3), ranm(4,2,normald,0,1)", "3,3","4,2,normald,0,1",  CAT_CATEGORY_MATRIX},
@@ -1060,6 +1096,7 @@ namespace giac {
     {"rectangle_plein a,b", "rectangle_plein ", "Rectangle direct rempli depuis la tortue de cotes a et b (si b est omis, la tortue remplit un carre)", "#rectangle_plein 30", "#rectangle_plein(20,40)", CAT_CATEGORY_LOGO | XCAS_ONLY},
     {"recule n", "recule ", "La tortue recule de n pas, par defaut n=10", "#recule 30", 0, CAT_CATEGORY_LOGO},
     {"red", "red", "Option d'affichage", "#display=red", 0, CAT_CATEGORY_PROGCMD},
+    {"reflection(obj1,obj2)", 0, "Symetrique de obj2", "line(y=x),cercle(1,1)", 0, CAT_CATEGORY_2D },
     {"rem(p,q,x)", 0, "Reste de division euclidienne polynomiale en x", 0, 0, CAT_CATEGORY_POLYNOMIAL | XCAS_ONLY},
     {"repete(n,...)", "repete( ", "Repete plusieurs fois les instructions", "#repete(4,avance,tourne_gauche)", 0, CAT_CATEGORY_LOGO | XCAS_ONLY},
 #ifdef RELEASE
@@ -1070,19 +1107,23 @@ namespace giac {
     {"rgb(r,g,b)", 0, "couleur definie par niveau de rouge, vert, bleu entre 0 et 255", "255,0,255", 0, CAT_CATEGORY_PROGCMD},
     {"rhombus_point", "rhombus_point", "Option d'affichage", "#display=magenta+rhombus_point", 0, CAT_CATEGORY_PROGCMD  | XCAS_ONLY},
     {"rond n", "rond ", "Cercle tangent a la tortue de rayon n. Utiliser rond n,theta pour un arc de cercle.", "#rond 30", "#rond(30,90)", CAT_CATEGORY_LOGO},
+    {"rotation(centre,angle,objet)", 0, "Image de l'objet par la rotation de centre et angle donnes en argyment", "2-i,pi/2,circle(0,1)", "sphere([0,0,0],[1,1,1])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"rref(M)","rref","Reduction d'une matrice par le pivot de Gauss.","[[1,2,3],[4,5,6]]",0,CAT_CATEGORY_MATRIX|(CAT_CATEGORY_LINALG<<8)},
     {"rsolve(equation,u(n),[init])", 0, "Expression d'une suite donnee par une recurrence.","u(n+1)=2*u(n)+3,u(n),u(0)=1", "([u(n+1)=3*v(n)+u(n),v(n+1)=v(n)+u(n)],[u(n),v(n)],[u(0)=1,v(0)=2]", CAT_CATEGORY_SOLVE | XCAS_ONLY},
     {"saute n", "saute ", "La tortue fait un saut de n pas, par defaut n=10", "#saute 30", 0, CAT_CATEGORY_LOGO},
     {"scatterplot(Xlist,Ylist)", 0, "Nuage de points (scatter en Python)", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS| (CAT_CATEGORY_PLOT<<8)},
-    {"segment(A,B)", 0, "Segment", "1,2+i", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
+    {"segment(A,B)", 0, "Segment", "1,2+i", "[1,2,1],[-1,3,2]", CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
     {"seq(expr,var,a,b[,pas])", 0, "Liste de terme general donne.","j^2,j,1,10", "j^2,j,1,10,2", CAT_CATEGORY_LIST | XCAS_ONLY},
     {"si (test Xcas)", "si  alors  sinon  fsi;", "Test.", "#f(x):=si x>0 alors x; sinon -x; fsi;", 0, CAT_CATEGORY_PROG | XCAS_ONLY},
     {"sign(x)", 0, "Renvoie -1 si x est negatif, 0 si x est nul et 1 si x est positif.", 0, 0, CAT_CATEGORY_REAL | XCAS_ONLY},
+    {"similitude(centre,rapport,angle,objet)", 0, "Image de l'objet par similitude", "0,2,pi/2,circle(1,1)", 0, CAT_CATEGORY_2D },
     {"simplify(expr)", 0, "Renvoie en general expr sous forme simplifiee. Raccourci expr=>/", "sin(3x)/sin(x)", "ln(4)-ln(2)", CAT_CATEGORY_ALGEBRA | XCAS_ONLY},
     {"sin_regression(Xlist,Ylist)", 0, "Regression trigonometrique.", "[1,2,3,4,5,6,7,8,9,10,11,12,13,14],[0.1,0.5,0.8,1,0.7,0.5,0.05,-.5,-.75,-1,-.7,-.4,0.1,.5]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
     {"sin_regression_plot(Xlist,Ylist)", 0, "Graphe d'une regression trigonometrique.", "#X,Y:=[1,2,3,4,5,6,7,8,9,10,11,12,13,14],[0.1,0.5,0.8,1,0.7,0.5,0.05,-.5,-.75,-1,-.7,-.4,0.1,.5];sin_regression_plot(X,Y);", 0, CAT_CATEGORY_STATS  | XCAS_ONLY},
     {"solve()", 0, "Xcas: solve(equation,x) resolution exacte d'une equation en x (ou d'un systeme polynomial). Utiliser csolve pour les solutions complexes, linsolve pour un systeme lineaire. Python et Xcas: solve(A,b) resolution d'un systeme de Cramer A*x=b", "x^2-x-1=0,x", "[x^2-y^2=0,x^2-z^2=0],[x,y,z]", CAT_CATEGORY_SOLVE},
+    {"sommets(objet)", 0, "Liste des sommets d'un polygone ou polyedre", "triangle(1,i,2)", "cube([0,0,0],[1,0,0],[0,1,0])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
     {"sorted(l)", 0, "Trie une liste.","[3/2,2,1,1/2,3,2,3/2]", "[[1,2],[2,3],[4,3]],(x,y)->when(x[1]==y[1],x[0]>y[0],x[1]>y[1]", CAT_CATEGORY_LIST},
+    {"sphere(A,r)", 0, "Sphere de centre A et rayon r ou de diametre AB", "[0,0,0],1", "[0,0,0],[1,1,1]", CAT_CATEGORY_3D},
     {"square_point", "square_point", "Option d'affichage", "#display=cyan+square_point", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY },
     {"star_point", "star_point", "Option d'affichage", "#display=magenta+star_point", 0, CAT_CATEGORY_PROGCMD  | XCAS_ONLY},
     {"stddev(l)", 0, "Ecart-type d'une liste l", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS | XCAS_ONLY},
@@ -1103,6 +1144,8 @@ namespace giac {
     {"tourne_gauche n", "tourne_gauche ", "La tortue tourne de n degres, par defaut n=90", "#tourne_gauche 45", 0, CAT_CATEGORY_LOGO},
     {"trace(A)", 0, "Trace de la matrice A.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
     {"transpose(A)", 0, "Transposee de la matrice A. Pour la transconjuguee utiliser trn(A) ou A^*.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
+    {"translation(vect,obj)", 0, "Translation par vect de obj", "[1,2],cercle(0,1)", 0, CAT_CATEGORY_2D },
+    {"triangle(A,B,C)", 0, "Triangle donne par 3 sommets", "1+i,1-i,-1", "A,B,C", CAT_CATEGORY_2D},
     {"triangle_point", "triangle_point", "Option d'affichage", "#display=yellow+triangle_point", 0, CAT_CATEGORY_PROGCMD | XCAS_ONLY},
     {"trig2exp(expr)", 0, "Convertit les fonctions trigonometriques en exponentielles.","cos(x)^3", 0, CAT_CATEGORY_TRIG | XCAS_ONLY},
     {"trigcos(expr)", 0, "Exprime sin^2 et tan^2 avec cos^2.","sin(x)^4", 0, CAT_CATEGORY_TRIG | XCAS_ONLY},
@@ -1225,8 +1268,10 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"a or b", " or ", "Logical or", 0, 0, CAT_CATEGORY_PROGCMD},
   {"abcuv(a,b,c)", 0, "Find 2 polynomial u,v such that a*u+b*v=c","x+1,x^2-2,x", 0, CAT_CATEGORY_POLYNOMIAL},
   {"abs(x)", 0, "Absolute value or norm of x x", "-3", "[1,2,3]", CAT_CATEGORY_COMPLEXNUM | (CAT_CATEGORY_REAL<<8)},
+  {"altitude(A,B,C)", 0, "Altitude in triangle ABC from A", "1,i,2+i", 0,CAT_CATEGORY_2D},
   {"append", 0, "Adds an element at the end of a list","#l.append(x)", 0, CAT_CATEGORY_LIST},
   {"approx(x)", 0, "Approx. value x. Shortcut S-D", "pi", 0, CAT_CATEGORY_REAL},
+  {"area(objet)", 0, "Algebric area", "circle(0,1)", "triangle(-1,1+i,3)", CAT_CATEGORY_2D  },
   {"arg(z)", 0, "Angle of complex z.", "1+i", 0, CAT_CATEGORY_COMPLEXNUM},
   {"asc(string)", 0, "List of ASCII codes os a string", "\"Hello\"", 0, CAT_CATEGORY_ARIT},
   {"assume(hyp)", 0, "Assumption on variable.", "x>1", "x>-1 and x<1", CAT_CATEGORY_PROGCMD|(CAT_CATEGORY_SOFUS<<8)},
@@ -1234,21 +1279,28 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"axes", "axes", "Axes visible or not axes=1 or 0", "#axes=0", 0, CAT_CATEGORY_PROGCMD << 8|XCAS_ONLY},
   {"baisse_crayon ", "baisse_crayon ", "Turtle moves with the pen writing.", 0, 0, CAT_CATEGORY_LOGO},
   {"barplot(list)", 0, "Bar plot of 1-d statistic series data in list.", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS},
+  {"barycenter([pnt,coeff],...)", 0, "Barycenter of a sequence of [point,coefficient]. Run isobarycenter if all coefficients are equal", "[1,1],[i,1],[2,3]", 0, CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   {"binomial(n,p,k)", 0, "binomial(n,p,k) probability to get k success with n trials where p is the probability of success of 1 trial. binomial_cdf(n,p,k) is the probability to get at most k successes. binomial_icdf(n,p,t) returns the smallest k such that binomial_cdf(n,p,k)>=t", "10,.5,4", 0, CAT_CATEGORY_PROBA},
+    {"bisector(A,B,C)", 0, "Bisector of angle AB,AC", "1,i,2+i", 0,CAT_CATEGORY_2D},
   {"bitxor", "bitxor", "Exclusive or", "#bitxor(1,2)", 0, CAT_CATEGORY_PROGCMD},
   {"black", "black", "Display option", "#display=black", 0, CAT_CATEGORY_PROGCMD},
   {"blue", "blue", "Display option", "#display=blue", 0, CAT_CATEGORY_PROGCMD},
   {"camembert(list)", 0, "Camembert pie-chart of a 1-d statistical series.", "[[\"France\",6],[\"Germany\",12],[\"Switzerland\",5]]", 0, CAT_CATEGORY_STATS},
   {"cache_tortue ", "cache_tortue ", "Hide turtle (once the picture has been drawn).", 0, 0, CAT_CATEGORY_LOGO},
   {"ceil(x)", 0, "Smallest integer not less than x", "1.2", 0, CAT_CATEGORY_REAL},
+  {"center(objet)", 0, "Circle or sphere center. For ellipse or hyperbola, returns center, one focus and a point on the conic. For a parabola, returns focus and vertex.", "circle(0,1)", "sphere([0,0,0],[1,1,1])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   {"cfactor(p)", 0, "Factorization over C.", "x^4-1", 0, CAT_CATEGORY_ALGEBRA | (CAT_CATEGORY_COMPLEXNUM << 8)},
   {"char(liste)", 0, "Converts a list of ASCII codes to a string.", "[97,98,99]", 0, CAT_CATEGORY_ARIT},
   {"charpoly(M,x)", 0, "Characteristic polynomial of matrix M in variable x.", "[[1,2],[3,4]],x", 0, CAT_CATEGORY_MATRIX},
-  {"circle(center,radius)", 0, "Circle", "2+i,3", "1-i,1+i", CAT_CATEGORY_PROGCMD},
+  {"circle(center,radius)", 0, "Circle", "2+i,3", "1-i,1+i", CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8)},
+  {"circumcircle(A,B,C)", 0, "Circumcircle", "-1,2+i,3", 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
   {"clearscreen()", "clearscreen()", "Clear screen.", 0, 0, CAT_CATEGORY_PROGCMD|XCAS_ONLY},
   {"coeff(p,x,n)", 0, "Coefficient of x^n in polynomial p.", 0, 0, CAT_CATEGORY_POLYNOMIAL},
   {"comb(n,k)", 0, "Returns nCk", "10,4", 0, CAT_CATEGORY_PROBA},
   {"cond(A,[1,2,inf])", 0, "Nombre de condition d'une matrice par rapport a la norme specifiee (par defaut 1)", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
+  {"cone(A,v,theta,[h])", 0, " cone with vertex A, direction v, and with half_angle t [and with altitudes h and -h]", "[0,0,0],[0,0,1],pi/6", "[0,0,0],[0,0,1],pi/6,4", CAT_CATEGORY_3D},
+  {"conic(expression)", 0, "Conic given by a polynomial equation of degree 2 or by 5 vertices", "x^2+x*y+y^2=5", "1,i,2+i,3-i,4+2i", CAT_CATEGORY_2D},
+  {"coordinates(object)", 0, "Coordonnees (cartesian))", "point(1,2)", "point(1,2,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   {"conj(z)", 0, "Complex conjugate of z.", "1+i", 0, CAT_CATEGORY_COMPLEXNUM},
   {"correlation(l1,l2)", 0, "Correlation of lists l1 and l2", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS},
   {"covariance(l1,l2)", 0, "Covariance of lists l1 and l2", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS},
@@ -1256,8 +1308,10 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"crayon ", "crayon ", "Turtle drawing color", "#crayon red", 0, CAT_CATEGORY_LOGO},
   {"cross(u,v)", 0, "Cross product of vectors u and v.","[1,2,3],[0,1,3]", 0, CAT_CATEGORY_LINALG},
   {"csolve(equation,x)", 0, "Solve equation (or polynomial system) in exact mode over the complex numbers.","x^2+x+1=0", 0, CAT_CATEGORY_SOLVE| (CAT_CATEGORY_COMPLEXNUM << 8)},
+  {"cube(A,B,C)", 0, "Cube of edge AB with one face in plane ABC", "[0,0,0],[1,0,0],[0,1,0]","[0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]", CAT_CATEGORY_3D},
   {"curl(u,vars)", 0, "Curl of vector u.", "[2*x*y,x*z,y*z],[x,y,z]", 0, CAT_CATEGORY_LINALG},
   {"cyan", "cyan", "Display option", "#display=cyan", 0, CAT_CATEGORY_PROGCMD},
+  {"cylinder(A,v,r,[h])", 0, "Cylinder of axis A,v and radius r [and optional altitude h]", "[0,0,0],[0,1,0],2", "[0,0,0],[0,1,0],2,3", CAT_CATEGORY_3D},
   {"debug(f(args))", 0, "Runs user function f in step by step mode.", 0, 0, CAT_CATEGORY_PROG},
   {"degree(p,x)", 0, "Degre of polynomial p in x.", "x^4-1", 0, CAT_CATEGORY_POLYNOMIAL},
   {"denom(x)", 0, "Denominator of expression x.", "3/4", 0, CAT_CATEGORY_POLYNOMIAL},
@@ -1266,6 +1320,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"diff(f,var,[n])", 0, "Derivative of expression f with respect to var (order n, n=1 by default), for example diff(sin(x),x) or diff(x^3,x,2). For derivation with respect to x, run f' (shortcut F3). For the gradient of f, var is the list of variables.", "sin(x),x", "sin(x^2),x,3", CAT_CATEGORY_CALCULUS},
   {"display", "display", "Display option", "#display=red", 0, CAT_CATEGORY_PROGCMD},
   {"disque n", "disque ", "Filled circle tangent to the turtle, radius n. Run disque n,theta for a filled arc of circle, theta in degrees, or disque n,theta,segment for a segment of circle.", "#disque 30", "#disque(30,90)", CAT_CATEGORY_LOGO},
+  {"dodecahedron(A,B,C)", 0, "Dodecahedron of edge AB with one face in plane ABC", "[0,0,0],[0,2,sqrt(5)/2+3/2],[0,0,1]", 0, CAT_CATEGORY_3D},
   {"dot(a,b)", 0, "Dot product of 2 vectors. Shortcut: *", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_LINALG},
   {"draw_arc(x1,y1,rx,ry,theta1,theta2,c)", 0, "Pixelised arc of ellipse.", "100,100,60,80,0,pi,magenta", 0, CAT_CATEGORY_PROGCMD},
   {"draw_circle(x1,y1,r,c)", 0, "Pixelised circle. Option: filled", "100,100,60,cyan+filled", 0, CAT_CATEGORY_PROGCMD},
@@ -1280,8 +1335,10 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"efface", "efface", "Reset turtle", 0, 0, CAT_CATEGORY_LOGO},
   {"egcd(A,B)", 0, "Find polynomials U,V,D such that A*U+B*V=D=gcd(A,B)","x^2+3x+1,x^2-5x-1", 0, CAT_CATEGORY_POLYNOMIAL},
   {"elif test", "elif ", "Test cascade", 0, 0, CAT_CATEGORY_PROG},
+  {"ellipse(F1,F2,M)", 0, "Ellipse given by 2 focus and one point", "-1,1,2", 0, CAT_CATEGORY_2D},
   {"eigenvals(A)", 0, "Eigenvalues of matrix  A.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX |XCAS_ONLY},
   {"eigenvects(A)", 0, "Eigenvectors of matrix A.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
+  {"equation(object)", 0, "Cartesian equation. Run parameq for parametric equation", "circle(0,1)", "ellipse(-1,1,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   {"erf(x)", 0, "Error function of x.", "1.2", 0, CAT_CATEGORY_PROBA},
   {"erfc(x)", 0, "Complementary error function of x.", "1.2", 0, CAT_CATEGORY_PROBA},
   {"euler(n)",0,"Euler indicatrix: number of integers < n coprime with n","25",0,CAT_CATEGORY_ARIT},
@@ -1313,18 +1370,23 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"hermite(n)", 0, "n-th Hermite polynomial", "10", 0, CAT_CATEGORY_POLYNOMIAL},
   {"hilbert(n)", 0, "Hilbert matrix of order n.", "4", 0, CAT_CATEGORY_MATRIX},
   {"histogram(list,min,size)", 0, "Histogram of data in list, classes begin at min of size size.","ranv(100,uniformd,0,1),0,0.1", 0, CAT_CATEGORY_STATS},
+  {"homothety(center,ratio,object)", 0, "Image of object by homothety of ratio", "0,2,circle(1,1)", 0, CAT_CATEGORY_2D },
+  {"hyperbola(F1,F2,M)", 0, "Hyperbola given by 2 focus and one point", "-2-i,2+i,1", 0, CAT_CATEGORY_2D},
   {"iabcuv(a,b,c)", 0, "Find 2 integers u,v such that a*u+b*v=c","23,13,15", 0, CAT_CATEGORY_ARIT},
   {"ichinrem([a,m],[b,n])", 0,"Integer chinese remainder of a mod m and b mod n.", "[3,13],[2,7]", 0, CAT_CATEGORY_ARIT},
-  {"idivis(n)", 0, "Returns the list of divisors of an integer n.", "10", 0, CAT_CATEGORY_ARIT},
+  {"icosahedron(A,B,C)", 0, "Icosahedron with center A, vertex B and such that the plane ABC contains one vertex among the 5 nearest vertices from B ", "[0,0,0],[sqrt(5),0,0],[1,2,0]", 0, CAT_CATEGORY_3D},
+   {"idivis(n)", 0, "Returns the list of divisors of an integer n.", "10", 0, CAT_CATEGORY_ARIT},
   {"idn(n)", 0, "Identity matrix of order n", "4", 0, CAT_CATEGORY_MATRIX},
   {"iegcd(a,b)", 0, "Find integers u,v,d such that a*u+b*v=d=gcd(a,b)","23,13", 0, CAT_CATEGORY_ARIT},
   {"ifactor(n)", 0, "Factorization of an integer (not too large!). Shortcut n=>*", 0, 0, CAT_CATEGORY_ARIT},
   {"ilaplace(f,s,x)", 0, "Inverse Laplace transform of f", "s/(s^2+1),s,x", 0, CAT_CATEGORY_CALCULUS},
   {"im(z)", 0, "Imaginary part.", "1+i", 0, CAT_CATEGORY_COMPLEXNUM},
+  {"incircle(A,B,C)", 0, "Incircle", "-1,2+i,3", 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
   {"inf", "inf", "Plus infinity. -inf for minus infinity and infinity for unsigned/complex infinity. Shortcut shift INS.", "oo", 0, CAT_CATEGORY_CALCULUS},
   {"input()", "input()", "Read a string from keyboard", 0, 0, CAT_CATEGORY_PROG},
   {"integrate(f,x,[a,b])", 0, "Antiderivative of f with respect to x, like integrate(x*sin(x),x). For definite integral enter optional arguments a and b, like integrate(x*sin(x),x,0,pi). Shortcut SHIFT F3.", "x*sin(x),x", "cos(x)/(1+x^4),x,0,inf", CAT_CATEGORY_CALCULUS},
   {"interp(X,Y)", 0, "Lagrange interpolation at points (xi,yi) where X is the list of xi and Y of yi. If interp is passed as 3rd argument, returns the divided differences list.", "[1,2,3,4,5],[0,1,3,4,4]", "[1,2,3,4,5],[0,1,3,4,4],interp", CAT_CATEGORY_POLYNOMIAL},
+  {"inter(A,B)", 0, "Intersections list. Run single_inter if intersection is unique.", "line(y=x),circle(0,1)", 0, CAT_CATEGORY_3D | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
   {"inv(A)", 0, "Inverse of A.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
   {"iquo(a,b)", 0, "Integer quotient of a and b.", "23,13", 0, CAT_CATEGORY_ARIT},
   {"irem(a,b)", 0,"Integer remainder of a and b.", "23,13", 0, CAT_CATEGORY_ARIT},
@@ -1340,7 +1402,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
 #endif
   {"leve_crayon ", "leve_crayon ", "Turtle moves without trace.", 0, 0, CAT_CATEGORY_LOGO},
   {"limit(f,x=a)", 0, "Limit of f at x = a. Add 1 or -1 for unidirectional limits, e.g. limit(sin(x)/x,x=0) or limit(abs(x)/x,x=0,1). Shortcut: SHIFT MIXEDFRAC", "sin(x)/x,x=0", "exp(-1/x),x=0,1", CAT_CATEGORY_CALCULUS},
-  {"line(equation)", 0, "Line of equation", "y=2x+1", 0, CAT_CATEGORY_PROGCMD},
+  {"line(equation)", 0, "Line of equation", "y=2x+1", "[0,0,0],[1,-2,3]", CAT_CATEGORY_PROGCMD |(CAT_CATEGORY_2D << 8)|(CAT_CATEGORY_2D << 16)},
   {"line_width_", "line_width_", "Width prefix (2 to 8)", 0, 0, CAT_CATEGORY_PROGCMD},
   {"linear_regression(Xlist,Ylist)", 0, "Linear regression.", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS},
   {"linear_regression_plot(Xlist,Ylist)", 0, "Linear regression plot.", "#X,Y:=[1,2,3,4,5],[0,1,3,4,4];linear_regression_plot(X,Y);scatterplot(X,Y)", 0, CAT_CATEGORY_STATS},
@@ -1355,30 +1417,39 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"matrix(r,c,func)", 0, "Matrix from a defining function.", "2,3,(j,k)->j^k", 0, CAT_CATEGORY_MATRIX},
   {"mean(l)", 0, "Arithmetic mean of list l", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS},
   {"median(l)", 0, "Median", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS},
+  {"median_line(A,B,C)", 0, "Median line of triangle ABC from vertex A", "1,i,2+i", 0,CAT_CATEGORY_2D},
+  {"midpoint(A,B)", 0, "Midpoint of segment AB", "1,i", 0,CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8)},
   {"montre_tortue ", "montre_tortue ", "Displays the turtle", 0, 0, CAT_CATEGORY_LOGO},
   {"mult_c_conjugate", 0, "Multiplier par le conjugue complexe.", "1+2*i", 0,  (CAT_CATEGORY_COMPLEXNUM << 8)},
   {"mult_conjugate", 0, "Multiplier par le conjugue (sqrt).", "sqrt(2)-sqrt(3)", 0, CAT_CATEGORY_ALGEBRA},
   {"normald([mu,sigma],x)", 0, "Normal distribution probability density, by default mu=0 and sigma=1. normald_cdf([mu,sigma],x) probability that \"normal distribution <=x\" e.g. normald_cdf(1.96). normald_icdf([mu,sigma],t) returns x such that \"normal distribution <=x\" has probability t, e.g. normald_icdf(0.975) ", "1.2", 0, CAT_CATEGORY_PROBA},
   {"not(x)", 0, "Logical not.", 0, 0, CAT_CATEGORY_PROGCMD},
   {"numer(x)", 0, "Numerator of x.", "3/4", 0, CAT_CATEGORY_POLYNOMIAL},
+  {"octahedron(A,B,C)", 0, "Octahedron of edge AB with one face in plane ABC", "[0,0,0],[3,0,0],[0,1,0]", 0, CAT_CATEGORY_3D},
   {"odesolve(f(t,y),[t,y],[t0,y0],t1)", 0, "Approx. solution of differential equation y'=f(t,y) and y(t0)=y0, value for t=t1 (add curve to get intermediate values of y)", "sin(t*y),[t,y],[0,1],2", "0..pi,(t,v)->{[-v[1],v[0]]},[0,1]", CAT_CATEGORY_SOLVE},
+  {"parabola(F,A)", 0, "Parabola given by focus and vertex", "-2-i,2+i", 0, CAT_CATEGORY_2D},
+  {"parameq(object)", 0, "Parametric equations. Run equation for cartesian equation", "circle(0,1)", "ellipse(-1,1,3)", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   {"partfrac(p,x)", 0, "Partial fraction expansion. Shortcut p=>+", "1/(x^4-1)", 0, CAT_CATEGORY_ALGEBRA},
   {"pas_de_cote n", "pas_de_cote ", "Turtle side jump from n steps, by default n=10", "#pas_de_cote 30", 0, CAT_CATEGORY_LOGO},
-  {"plot(expr,x)", 0, "Plot an expression. For example plot(sin(x)), plot(ln(x),x.0,5)", "ln(x),x,0,5", "1/x,x=1..5,xstep=1", CAT_CATEGORY_PLOT},
+  {"perpen_bisector(A,B)", 0, "Perpendicular bisector of segment AB", "1,i", 0,CAT_CATEGORY_2D},
+  {"plane(equation)", 0, "Plane given by equation or by 3 points", "z=x+y-1", "[0,0,0],[1,0,0],[0,1,0]", CAT_CATEGORY_3D | XCAS_ONLY},
+  {"plot(expr,x)", 0, "Plot an expression. For example plot(sin(x)), plot(ln(x),x.0,5), plot(x^2-y^2), plot(x^2-y^2<1), plot(x^2-y^2=1)", "ln(x),x,0,5", "1/x,x=1..5,xstep=1", (CAT_CATEGORY_PLOT << 8) | (CAT_CATEGORY_3D)},
 #ifdef RELEASE
   {"plotarea(expr,x=a..b,[n,meth])", 0, "Area under curve with specified quadrature.", "1/x,x=1..3,2,trapezoid", 0, CAT_CATEGORY_PLOT},
 #endif
   {"plotcontour(expr,[x=xm..xM,y=ym..yM],levels)", 0, "Levels of expr.", "x^2+2y^2,[x=-2..2,y=-2..2],[1,2]", 0, CAT_CATEGORY_PLOT},
   {"plotfield(f(t,y),[t=tmin..tmax,y=ymin..ymax])", 0, "Plot field of differential equation y'=f(t,y), an optionally one solution by adding plotode=[t0,y0]", "sin(t*y),[t=-3..3,y=-3..3],plotode=[0,1]", 0, CAT_CATEGORY_PLOT},
+  {"plotfunc(expr,[x,y])", 0, "Xcas: graph of a 3d function", "x^2-y^2,[x,y]","x^2-y^2,[x=-2..2,y=-2..2],nstep=700", CAT_CATEGORY_PLOT | (CAT_CATEGORY_3D << 8) | XCAS_ONLY },
   {"plotlist(list)", 0, "Plot a list", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_PLOT},
   {"plotode(f(t,y),[t=tmin..tmax,y],[t0,y0])", 0, "Plot solution of differential equation y'=f(t,y), y(t0)=y0.", "sin(t*y),[t=-3..3,y],[0,1]", 0, CAT_CATEGORY_PLOT},
   {"plotparam([x,y],t)", 0, "Parametric plot. For example plotparam([sin(3t),cos(2t)],t,0,pi) or plotparam(exp(i*t),t,0,pi)", "[sin(3t),cos(2t)],t,0,pi", "[t^2,t^3],t=-1..1,tstep=0.1", CAT_CATEGORY_PLOT},
   {"plotpolar(r,theta)", 0, "Polar plot.","cos(3*x),x,0,pi", "1/(1+cos(x)),x=0..pi,xstep=0.05", CAT_CATEGORY_PLOT},
   {"plotseq(f(x),x=[u0,m,M],n)", 0, "Plot f(x) on [m,M] and n terms of the sequence defined by u_{n+1}=f(u_n) and u0.","sqrt(2+x),x=[6,0,7],5", 0, CAT_CATEGORY_PLOT},
   {"plus_point", "plus_point", "Display option", "#display=blue+plus_point", 0, CAT_CATEGORY_PROGCMD},
-  {"point(x,y)", 0, "Point", "1,2", 0, CAT_CATEGORY_PLOT},
-  {"polygon(list)", 0, "Closed polygon.", "1-i,2+i,3", 0, CAT_CATEGORY_PROGCMD},
+  {"point(x,y[,z])", 0, "Point", "1,2", "1,2,3", CAT_CATEGORY_PLOT | (CAT_CATEGORY_2D << 8)},
+  {"polygon(list)", 0, "Closed polygon given by a list of vertices.", "1-i,2+i,3,3-2i", 0, CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) },
   {"polygonscatterplot(Xlist,Ylist)", 0, "Plot points and polygonal line.", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS},
+  {"polyhedron(A,B,C,D,...)", 0, "Convex polyhedron of vertices in A,B,C,D,...", "[0,0,0],[0,5,0],[0,0,5],[1,2,6]", 0, CAT_CATEGORY_3D},
   {"polynomial_regression(Xlist,Ylist,n)", 0, "Polynomial regression, degree <= n.", "[1,2,3,4,5],[0,1,3,4,4],2", 0, CAT_CATEGORY_STATS},
   {"polynomial_regression_plot(Xlist,Ylist,n)", 0, "Polynomial regression plot, degree <= n.", "#X,Y:=[1,2,3,4,5],[0,1,3,4,4];polynomial_regression_plot(X,Y,2);scatterplot(X,Y)", 0, CAT_CATEGORY_STATS},
   //{"pour", "pour j de 1 jusque  faire  fpour;", "For loop.","#pour j de 1 jusque 10 faire print(j,j^2); fpour;", 0, CAT_CATEGORY_PROG},
@@ -1386,15 +1457,18 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"power_regression_plot(Xlist,Ylist,n)", 0, "Power regression graph", "#X,Y:=[1,2,3,4,5],[0,1,3,4,4];power_regression_plot(X,Y);scatterplot(X,Y)", 0, CAT_CATEGORY_STATS},
   {"powmod(a,n,p)", 0, "Returns a^n mod p.","123,456,789", 0, CAT_CATEGORY_ARIT},
   {"print(expr)", 0, "Print expr in console", 0, 0, CAT_CATEGORY_PROG},
+  {"projection(obj1,obj2)", 0, "Projection on obj1 of obj2", "line(y=x),point(2,3)", 0, CAT_CATEGORY_2D },
   {"proot(p)", 0, "Returns real and complex roots, of polynomial p. Exemple proot([1,2.1,3,4.2]) or proot(x^3+2.1*x^2+3x+4.2)", "x^3+2.1*x^2+3x+4.2", 0, CAT_CATEGORY_POLYNOMIAL},
   {"purge(x)", 0, "Clear assigned variable x. Shortcut SHIFT-FORMAT", 0, 0, CAT_CATEGORY_PROGCMD|(CAT_CATEGORY_SOFUS<<8)},
   {"python(f)", 0, "Displays f in Python syntax.", 0, 0, CAT_CATEGORY_PROGCMD},
   {"python_compat(0|1|2)", 0, "python_compat(0) Xcas syntax, python_compat(1) Python syntax with ^ interpreted as power, python_compat(2) ^ as bit xor", "0", "1", CAT_CATEGORY_PROG},
   {"qr(A)", 0, "A=Q*R factorization with Q orthogonal and R upper triangular", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
+  {"quadric(equation)", 0, "Quadric given by equation (or 9 points)", "x^2-y^2+z^2", "x^2+x*y+y^2+z^2-3", CAT_CATEGORY_3D},
   {"quartile1(l)", 0, "1st quartile", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS},
   {"quartile3(l)", 0, "3rd quartile", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS},
   {"quo(p,q,x)", 0, "Quotient of synthetic division of polynomials p and q (variable x).", 0, 0, CAT_CATEGORY_POLYNOMIAL},
   {"quote(x)", 0, "Returns expression x unevaluated.", 0, 0, CAT_CATEGORY_ALGEBRA},
+  {"radius(objet)", 0, "Radius of a circle or sphere", "circle(0,1)", "sphere([0,0,0],[1,1,1])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   {"rand()", "rand()", "Random real between 0 and 1", 0, 0, CAT_CATEGORY_PROBA},
   {"randint(a,b)", 0, "Random integer between a and b. With 1 argument in Xcas, random integer between 1 and n.", "5,25", "6", CAT_CATEGORY_PROBA},
   {"ranm(n,m,[loi,parametres])", 0, "Random matrix with integer coefficients or according to a probability law (ranv for a vector). Examples ranm(2,3), ranm(3,2,binomial,20,.3), ranm(4,2,normald,0,1)", "3,3","4,2,normald,0,1",  CAT_CATEGORY_MATRIX},
@@ -1405,6 +1479,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"rectangle_plein a,b", "rectangle_plein ", "Direct filled rectangle from turtle position, if b is omitted b==a", "#rectangle_plein 30","#rectangle_plein 20,40", CAT_CATEGORY_LOGO},
   {"recule n", "recule ", "Turtle backward n steps, n=10 by default", "#recule 30", 0, CAT_CATEGORY_LOGO},
   {"red", "red", "Display option", "#display=red", 0, CAT_CATEGORY_PROGCMD},
+  {"reflection(obj1,obj2)", 0, "Reflection or symmetrical of obj2", "line(y=x),cercle(1,1)", 0, CAT_CATEGORY_2D },
   {"rem(p,q,x)", 0, "Remainder of synthetic division of polynomials p and q (variable x)", 0, 0, CAT_CATEGORY_POLYNOMIAL},
 #ifdef RELEASE
   {"residue(f(z),z,z0)", 0, "Residue of an expression at z0.", "1/(x^2+1),x,i", 0, CAT_CATEGORY_COMPLEXNUM},
@@ -1414,16 +1489,20 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"rgb(r,g,b)", 0, "color defined from red, green, blue from 0 to 255", "255,0,255", 0, CAT_CATEGORY_PROGCMD},
   {"rhombus_point", "rhombus_point", "Display option", "#display=magenta+rhombus_point", 0, CAT_CATEGORY_PROGCMD},
   {"rond n", "rond ", "Circle tangent to the turtle, radius n. Run rond n,theta for an arc of circle of theta degrees", 0, 0, CAT_CATEGORY_LOGO},
+  {"rotation(center,angle,objcet)", 0, "Image of object by rotation", "2-i,pi/2,circle(0,1)", "sphere([0,0,0],[1,1,1])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   {"rsolve(equation,u(n),[init])", 0, "Solve a recurrence relation.","u(n+1)=2*u(n)+3,u(n),u(0)=1", "([u(n+1)=3*v(n)+u(n),v(n+1)=v(n)+u(n)],[u(n),v(n)],[u(0)=1,v(0)=2]", CAT_CATEGORY_SOLVE},
   {"saute n", "saute ", "Turtle jumps n steps, by default n=10", "#saute 30", 0, CAT_CATEGORY_LOGO},
   {"scatterplot(Xlist,Ylist)", 0, "Draws points", "[1,2,3,4,5],[0,1,3,4,4]", 0, CAT_CATEGORY_STATS},
-  {"segment(A,B)", 0, "Segment", "1,2+i", 0, CAT_CATEGORY_PROGCMD},
+  {"segment(A,B)", 0, "Segment", "1,2+i", "[1,2,1],[-1,3,2]", CAT_CATEGORY_PROGCMD | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
   {"seq(expr,var,a,b)", 0, "Generates a list from an expression.","j^2,j,1,10", 0, CAT_CATEGORY_PROGCMD},
   //{"si", "si  alors  sinon  fsi;", "Test.", "#f(x):=si x>0 alors x; sinon -x; fsi;// valeur absolue", 0, CAT_CATEGORY_PROG},
   {"sign(x)", 0, "Returns -1 if x is negative, 0 if x is zero and 1 if x is positive.", 0, 0, CAT_CATEGORY_REAL|XCAS_ONLY},
+  {"similarity(center,ratio,angle,object)", 0, "Image of object by similarity", "0,2,pi/2,circle(1,1)", 0, CAT_CATEGORY_2D },
   {"simplify(expr)", 0, "Returns x in a simpler form. Shortcut expr=>/", "sin(3x)/sin(x)", 0, CAT_CATEGORY_ALGEBRA},
+  {"single_inter(A,B)", 0, "First intersection. Run inter for a list of intersections.", "line(y=x),line(x+y=3)", 0, CAT_CATEGORY_3D | (CAT_CATEGORY_2D << 8) | XCAS_ONLY},
   {"solve(equation,x)", 0, "Exact solving of equation w.r.t. x (or of a polynomial system). Run csolve for complex solutions, linsolve for a linear system. Shortcut SHIFT XthetaT", "x^2-x-1=0,x", "[x^2-y^2=0,x^2-z^2=0],[x,y,z]", CAT_CATEGORY_SOLVE},
   {"sorted(l)", 0, "Sorts a list.","[3/2,2,1,1/2,3,2,3/2]", "[[1,2],[2,3],[4,3]],(x,y)->when(x[1]==y[1],x[0]>y[0],x[1]>y[1]", CAT_CATEGORY_LIST},
+  {"sphere(A,r)", 0, "Sphere of center A and radius r or diameter AB", "[0,0,0],1", "[0,0,0],[1,1,1]", CAT_CATEGORY_3D},
   {"square_point", "square_point", "Display option", "#display=cyan+square_point", 0, CAT_CATEGORY_PROGCMD},
   {"star_point", "star_point", "Display option", "#display=magenta+star_point", 0, CAT_CATEGORY_PROGCMD},
   {"stddev(l)", 0, "Standard deviation of list l", "[3/2,2,1,1/2,3,2,3/2]", 0, CAT_CATEGORY_STATS},
@@ -1443,12 +1522,15 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   {"tourne_gauche n", "tourne_gauche ", "Turtle turns left n degrees, n=90 by default", 0, 0, CAT_CATEGORY_LOGO},
   {"trace(A)", 0, "Trace of the matrix A.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
   {"transpose(A)", 0, "Transposes matrix A. Transconjugate command is trn(A) or A^*.", "[[1,2],[3,4]]", 0, CAT_CATEGORY_MATRIX},
+  {"translation(vect,obj)", 0, "Translate by vect obj", "[1,2],cercle(0,1)", 0, CAT_CATEGORY_2D },
+  {"triangle(A,B,C)", 0, "Triangle given by 3 vertices", "1+i,1-i,-1", "A,B,C", CAT_CATEGORY_2D},
   {"triangle_point", "triangle_point", "Display option", "#display=yellow+triangle_point", 0, CAT_CATEGORY_PROGCMD},
   {"trig2exp(expr)", 0, "Convert complex exponentials to trigonometric functions","cos(x)^3", 0, CAT_CATEGORY_TRIG},
   {"trigcos(expr)", 0, "Convert sin^2 and tan^2 to cos^2.","sin(x)^4", 0, CAT_CATEGORY_TRIG},
   {"trigsin(expr)", 0, "Convert cos^2 and tan^2 to sin^2.","cos(x)^4", 0, CAT_CATEGORY_TRIG},
   {"trigtan(expr)", 0, "Convert cos^2 and sin^2 to tan^2.","cos(x)^4", 0, CAT_CATEGORY_TRIG},
   {"uniformd(a,b,x)", "uniformd", "uniform law on [a,b] of density 1/(b-a)", 0, 0, CAT_CATEGORY_PROBA},
+  {"vertices(objet)", 0, "List of vertices of a polygon or polyhedra", "triangle(1,i,2)", "cube([0,0,0],[1,0,0],[0,1,0])", CAT_CATEGORY_2D | (CAT_CATEGORY_3D << 8) },
   //{"version", "version()", "Khicas 1.5.0, (c) B. Parisse et al. www-fourier.ujf-grenoble.fr/~parisse\nLicense GPL version 2. Interface adapted from Eigenmath for Casio, G. Maia, http://gbl08ma.com. Do not use if CAS calculators are forbidden.", 0, 0, CAT_CATEGORY_PROGCMD},
   {"write(\"filename\",var)", "write(\"", "Save 1 or more variables in a file. For example f(x):=x^2; write(\"func_f\",f).",  0, 0, CAT_CATEGORY_PROGCMD},
   {"yellow", "yellow", "Display option", "#display=yellow", 0, CAT_CATEGORY_PROGCMD},
@@ -1533,7 +1615,9 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
     menuitems[CAT_CATEGORY_SOFUS].text = (char*)((lang==1)?"Modifier variables (tan)":"Change variables (tan)");
     menuitems[CAT_CATEGORY_PHYS].text = (char*)((lang==1)?"Constantes physique (pi)":"Physics constants (pi)");
     menuitems[CAT_CATEGORY_UNIT].text = (char*)((lang==1)?"Unites physiques (sqrt)":"Units (sqrt)");
-    menuitems[CAT_CATEGORY_LOGO].text = (char*)((lang==1)?"Tortue (x^2)":"Turtle (x^2)");
+    menuitems[CAT_CATEGORY_2D].text = (char*)((lang==1)?"Geometrie (x^2)":"Geometry (x^2)");
+    menuitems[CAT_CATEGORY_3D].text = (char*)((lang==1)?"3D (()":"3D (()");
+    menuitems[CAT_CATEGORY_LOGO].text = (char*)((lang==1)?"Tortue ())":"Turtle ())");
   
     Menu menu;
     menu.items=menuitems;
@@ -1917,7 +2001,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
       while(1) {
 	drawRectangle(0,200,LCD_WIDTH_PX,22,giac::_WHITE);
 #ifdef NSPIRE_NEWLIB
-	PrintMini(0,200,(category==CAT_CATEGORY_ALL?"doc: help | tab: ex1 | enter: ex2":"doc: help | enter ex1 | tab ex2"),4,33333,giac::_WHITE);
+	PrintMini(0,200,(category==CAT_CATEGORY_ALL?"menu: help | ret: ex1 | tab: ex2":"menu: help | ret ex1 | tab ex2"),4,33333,giac::_WHITE);
 #else
 	PrintMini(0,200,(category==CAT_CATEGORY_ALL?"Toolbox help | Ans ex1 | EXE  ex2":"Toolbox help | EXE ex1 | Ans ex2"),4,33333,giac::_WHITE);
 #endif
@@ -1996,7 +2080,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
 	    }
 	  }
 #ifdef NSPIRE_NEWLIB
-	  std::string ex("enter: ");
+	  std::string ex("ret: ");
 #else
 	  std::string ex("EXE: ");
 #endif
@@ -2486,7 +2570,7 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
   }
 
 #ifdef NSPIRE_NEWLIB
-  const int MAX_LOGO=4096; 
+  const int MAX_LOGO=8192; 
 #else
   const int MAX_LOGO=368; // 512?
 #endif
@@ -2913,8 +2997,11 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
       res.subtype=_INT_COLOR;
       return res;
     }
-    if (g.val<0)
+    if (g.val<0){
+      if (g.val<-64)
+	return (*turtleptr).turtle_width;
       (*turtleptr).turtle_width=-g.val;
+    }
     else
       (*turtleptr).color=g.val;
     (*turtleptr).radius = 0;
@@ -3146,6 +3233,44 @@ const catalogFunc completeCaten[] = { // list of all functions (including some n
 
   gen _polygone_rempli(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+    static int turtle_fill_begin=-1,turtle_fill_color=-1;
+    if (g.type==_VECT && g._VECTptr->size()==3){
+      turtle_fill_color=_rgb(g,contextptr).val;
+      return change_subtype(turtle_fill_color,_INT_COLOR);
+    }
+    if (g.type==_VECT && !g._VECTptr->empty() && g._VECTptr->front().type==_INT_){
+      if (g._VECTptr->front().val>=0)
+	turtle_fill_color= g._VECTptr->front().val;
+      return change_subtype(turtle_fill_color,_INT_COLOR);
+    }
+    if (g.type==_INT_ && g.subtype==_INT_COLOR){
+      turtle_fill_color= g.val;
+      return g;
+    }
+    if (g.type==_VECT && g._VECTptr->empty()){
+      if (turtle_fill_begin<0){
+	if (g.subtype==0)
+	  turtle_fill_begin=turtle_stack().size();
+	else
+	  return gensizeerr();
+	return 1;
+      }
+      int c=turtleptr->color;
+      if (turtle_fill_color>=0)
+	_crayon(turtle_fill_color,contextptr);
+      int n=turtle_stack().size()- turtle_fill_begin;
+      turtle_fill_begin=-1;
+      turtleptr->radius=-absint(n);
+      gen res=update_turtle_state(true,contextptr);
+      if (turtle_fill_color>=0){
+	_crayon(c,contextptr);
+      }
+      return res;
+    }
+    if (is_zero(g)){
+      turtle_fill_begin=turtle_stack().size();
+      return 1;
+    }
     if (g.type==_INT_){
       (*turtleptr).radius=-absint(g.val);
       if ((*turtleptr).radius<-1)
@@ -4850,12 +4975,1417 @@ namespace xcas {
     return d;
   }
 
-  Graph2d::Graph2d(const giac::gen & g_,const giac::context * cptr):window_xmin(gnuplot_xmin),window_xmax(gnuplot_xmax),window_ymin(gnuplot_ymin),window_ymax(gnuplot_ymax),g(g_),display_mode(0x45),show_axes(1),show_names(1),labelsize(16),contextptr(cptr) {
-    update();
-    autoscale();
+  // check if point is inside triangle
+  inline bool inside(double x0,double x1,double x2,
+		     double y0,double y1,double y2,
+		     double x,double y){
+#if 1
+    double y02=y2-y0,y10=y0-y1;
+    double invarea = x0*(y1-y2) + x1*y02 + x2*y10;
+    if (invarea==0) return false;
+    invarea=1/invarea;
+    double yy0=y0-y, s=invarea*(x*y02 + x2*yy0 + x0*(y-y2));
+    if (s<-1e-12) return false;
+    double t = invarea*(x*y10 + x0*(y1-y) - x1*yy0);
+    return t>=-1e-12 && s+t<=1+1e-12;
+#else
+    double as_x = x-x0;
+    double as_y = y-y0;
+    bool s_01 = (x1-x0)*as_y-(y1-y0)*as_x>0; // dot product P0P1.P0P>0
+    if ( (x2-x0)*as_y-(y2-y0)*as_x>0 == s_01)
+      return false;
+    if ((x2-x1)*(y-y1)-(y2-y1)*(x-x1) > 0 != s_01)
+      return false;
+    return true;
+#endif
+  }
+
+  /* 3d rotation handling */
+  void normalize(double & a,double &b,double &c){
+    double n=std::sqrt(a*a+b*b+c*c);
+    a /= n;
+    b /= n;
+    c /= n;
+  }
+
+  inline int Min(int i,int j) {return i>j?j:i;}
+
+  inline int Max(int i,int j) {return i>j?i:j;}
+
+  quaternion_double::quaternion_double(double theta_x,double theta_y,double theta_z) { 
+    *this=euler_deg_to_quaternion_double(theta_x,theta_y,theta_z); 
+  }
+
+  quaternion_double euler_deg_to_quaternion_double(double a,double b,double c){
+    double phi=a*M_PI/180, theta=b*M_PI/180, psi=c*M_PI/180;
+    double c1 = std::cos(phi/2);
+    double s1 = std::sin(phi/2);
+    double c2 = std::cos(theta/2);
+    double s2 = std::sin(theta/2);
+    double c3 = std::cos(psi/2);
+    double s3 = std::sin(psi/2);
+    double c1c2 = c1*c2;
+    double s1s2 = s1*s2;
+    double w =c1c2*c3 - s1s2*s3;
+    double x =c1c2*s3 + s1s2*c3;
+    double y =s1*c2*c3 + c1*s2*s3;
+    double z =c1*s2*c3 - s1*c2*s3;
+    return quaternion_double(w,x,y,z);
+  }
+
+  void quaternion_double_to_euler_deg(const quaternion_double & q,double & phi,double & theta, double & psi){
+    double test = q.x*q.y + q.z*q.w;
+    if (test > 0.499) { // singularity at north pole
+      phi = 2 * atan2(q.x,q.w) * 180/M_PI;
+      theta = 90; 
+      psi = 0;
+      return;
+    }
+    if (test < -0.499) { // singularity at south pole
+      phi = -2 * atan2(q.x,q.w) * 180/M_PI;
+      theta = - 90;
+      psi = 0;
+      return;
+    }
+    double sqx = q.x*q.x;
+    double sqy = q.y*q.y;
+    double sqz = q.z*q.z;
+    phi = atan2(2*q.y*q.w-2*q.x*q.z , 1 - 2*sqy - 2*sqz) * 180/M_PI;
+    theta = asin(2*test) * 180/M_PI;
+    psi = atan2(2*q.x*q.w-2*q.y*q.z , 1 - 2*sqx - 2*sqz) * 180/M_PI;
+  }
+
+  quaternion_double operator * (const quaternion_double & q1,const quaternion_double & q2){ 
+    double z=q1.w*q2.z+q2.w*q1.z+q1.x*q2.y-q2.x*q1.y;
+    double x=q1.w*q2.x+q2.w*q1.x+q1.y*q2.z-q2.y*q1.z;
+    double y=q1.w*q2.y+q2.w*q1.y+q1.z*q2.x-q2.z*q1.x;
+    double w=q1.w*q2.w-q1.x*q2.x-q1.y*q2.y-q1.z*q2.z;
+    return quaternion_double(w,x,y,z);
+  }
+
+  // q must be a unit
+  void get_axis_angle_deg(const quaternion_double & q,double &x,double &y,double & z, double &theta){
+    double scale=1-q.w*q.w;
+    if (scale>1e-6){
+      scale=std::sqrt(scale);
+      theta=2*std::acos(q.w)*180/M_PI;
+      x=q.x/scale;
+      y=q.y/scale;
+      z=q.z/scale;
+    }
+    else {
+      x=0; y=0; z=1;
+      theta=0;
+    }
+  }
+
+  quaternion_double rotation_2_quaternion_double(double x, double y, double z,double theta){
+    double t=theta*M_PI/180;
+    double qx,qy,qz,qw,s=std::sin(t/2),c=std::cos(t/2);
+    qx=x*s;
+    qy=y*s;
+    qz=z*s;
+    qw=c;
+    double n=std::sqrt(qx*qx+qy*qy+qz*qz+qw*qw);
+    return quaternion_double(qw/n,qx/n,qy/n,qz/n);
+  }
+
+  // image of (x,y,z) by rotation around axis r(rx,ry,rz) of angle theta
+  void rotate(double rx,double ry,double rz,double theta,double x,double y,double z,double & X,double & Y,double & Z){
+    /*
+    quaternion_double q=rotation_2_quaternion_double(rx,ry,rz,theta);
+    quaternion_double qx(x,y,z,0);
+    quaternion_double qX=conj(q)*qx*q;
+    */
+    // r(rx,ry,rz) the axis, v(x,y,z) projects on w=a*r with a such that
+    // w.r=a*r.r=v.r
+    double r2=rx*rx+ry*ry+rz*rz;
+    double r=std::sqrt(r2);
+    double a=(rx*x+ry*y+rz*z)/r2;
+    // v=w+V, w remains stable, V=v-w=v-a*r rotates
+    // Rv=w+RV, where RV=cos(theta)*V+sin(theta)*(r cross V)/sqrt(r2)
+    double Vx=x-a*rx,Vy=y-a*ry,Vz=z-a*rz;
+    // cross product of k with V
+    double kVx=ry*Vz-rz*Vy, kVy=rz*Vx-rx*Vz,kVz=rx*Vy-ry*Vx;
+    double c=std::cos(theta),s=std::sin(theta);
+    X=a*rx+c*Vx+s*kVx/r;
+    Y=a*ry+c*Vy+s*kVy/r;
+    Z=a*rz+c*Vz+s*kVz/r;
+  }
+
+  int diffuse(int color_orig,double diffusionz){
+    if (diffusionz<1.1)
+      return color_orig;
+    int color=rgb565to888(color_orig);
+    int r=(color&0xff0000)>>16,g=(color & 0xff00)>>8,b=192;
+    double attenuate=(.3*(diffusionz-1));
+    attenuate=1.0/(1+attenuate*attenuate);
+    r*=attenuate; g*=attenuate; b*=attenuate;
+    return rgb888to565((r<<16)|(g<<8)|b);
   }
   
-  void Graph2d::zoomx(double d,bool round){
+  void glinter(double a,double b,double c,
+	       double xscale,double xc,double yscale,double yc,
+	       double *zmin,double *zmax,double ZMIN,double ZMAX,
+	       int i,int horiz,int j,int w,int h,int lcdz,
+	       int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+	       ){
+    double dz=lcdz*(a+b)*yscale-1;
+    //if (dz<-10 || dz>10) cout << "dz=" << dz << "\n";
+    // plane equation solved
+    if (//0
+	h==1 && w==1
+	){
+      int ih=i+horiz;
+      double x = yscale*j-xscale*i + xc;
+      // if (x<xmin) continue;
+      double y = yscale*j+xscale*i + yc;
+      // if (y<ymin) continue;
+      double z = (a*x+b*y+c);
+      z=LCD_HEIGHT_PX/2+j-lcdz*z;
+      if (ZMIN<z && z<ZMAX)
+	return;
+      bool intervalonly=false;
+      if (*zmax<*zmin || z<*zmin-lcdz || z>*zmax+lcdz)
+	*zmax=*zmin=z;
+      if (0 && (*zmax<50 || *zmin<50 || z<50))
+	cout << *zmax << " "; // debug
+      bool diffus=diffusionz<diffusionz_limit;
+      double deltaz;
+      if (interval){
+	if (z<0) {
+	  // return;
+	  z=0; intervalonly=true;
+	}
+	if (z>=LCD_HEIGHT_PX) {
+	  // return;
+	  z=LCD_HEIGHT_PX-1; intervalonly=true;
+	}
+	deltaz=diffus?1:diffusionz;
+	if (z>*zmax+deltaz){
+	  if (//0
+	      diffus
+	      )	  
+	    drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
+	  else {
+	    // draw interval
+	    int nstep=int(z-*zmax)/diffusionz;
+	    double zstep=(z-*zmax)/nstep;
+	    for (double zz=*zmax+zstep;zz<=z;zz+=zstep)
+	      os_set_pixel(ih,zz,downcolor);
+	  }
+	  if (intervalonly){
+	    *zmax=z;
+	    return;
+	  }
+	}
+	if (z<*zmin-deltaz){
+	  if (//0
+	      diffus
+	      )
+	    drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
+	  else {
+	    // draw interval
+	    int nstep=int(*zmin-z)/diffusionz;
+	    double zstep=(z-*zmin)/nstep; // zstep<0
+	    for (double zz=*zmin+zstep;zz>=z;zz+=zstep)
+	      os_set_pixel(ih,zz,upcolor);
+	  }
+	  if (intervalonly){
+	    *zmin=z;
+	    return;
+	  }
+	}
+      } // end if interval
+      if (z>=0 &&  z<=LCD_HEIGHT_PX){
+	int color=-1;
+	if ( diffus && dz>0 && z>=*zmax){
+	  // mark all points with downcolor
+	  color=downcolor;
+	  deltaz=z-*zmax;
+	  *zmax=z;
+	}
+	if ( diffus && dz<0 && z<=*zmin){
+	  // mark all points with upcolor
+	  color=upcolor;
+	  deltaz=*zmin-z;
+	  *zmin=z;	  
+	}
+	if (color>=0){
+	  if (dz>0)
+	    drawRectangle(ih,z-std::ceil(deltaz),1,std::ceil(deltaz),diffuse(color,std::min(double(diffusionz),std::max(dz,1.0))));
+	  else {
+	    if (0 && deltaz>1)
+	      cout << ih << " " << z << " " << std::ceil(deltaz) << "\n";
+	    drawRectangle(ih,z,1,std::ceil(deltaz),diffuse(color,std::min(double(diffusionz),std::max(-dz,1.0))));
+	  }
+	  return;
+	}
+	if (z>=*zmax){ // mark only 1 point
+	  *zmax=z;
+	  color=downcolor;
+	}
+	if (z<=*zmin){ // mark 1 point
+	  *zmin=z;
+	  color=upcolor;
+	}
+	if (color>=0){
+	  os_set_pixel(ih,z,color);
+	}
+      }
+      return; // end h==1 and w==1
+    }
+    for (int I=i;I<i+w;++I,++zmax,++zmin){
+      int ih=I+horiz;
+      double x = yscale*j-xscale*I + xc;
+      // if (x<xmin) continue;
+      double y = yscale*j+xscale*I + yc;
+      // if (y<ymin) continue;
+      double z = (a*x+b*y+c);
+      bool intervalonly=false;
+      z=LCD_HEIGHT_PX/2+j-lcdz*z;
+      if (ZMIN<z && z<ZMAX)
+	return;
+      if (interval){
+	if (z<0) {
+	  z=0; intervalonly=true;
+	}
+	if (z>=LCD_HEIGHT_PX) {
+	  z=LCD_HEIGHT_PX-1; intervalonly=true;
+	}
+      }
+      if (i==0)
+	; // cout << "i=" << i << " j=" << j << ", zmin=" << *zmin << " z=" << z << " zmax=" << *zmax << " dz=" << dz << ", a=" << a << " b=" << b << " c=" << c <<"\n";
+      if (*zmax<*zmin || z<*zmin-lcdz || z>*zmax+lcdz)
+	*zmax=*zmin=z;
+      int deltaz=(diffusionz<diffusionz_limit?1:diffusionz);
+      if (interval && z>*zmax+deltaz){
+	if (//0
+	    diffusionz<diffusionz_limit
+	    )	  
+	  drawRectangle(ih,*zmax,1,std::ceil(z-*zmax),diffuse(downcolor,diffusionz));
+	else {
+	  // draw interval
+	  int nstep=int(z-*zmax)/diffusionz;
+	  double zstep=(z-*zmax)/nstep;
+	  for (double zz=*zmax+zstep;zz<=z;zz+=zstep)
+	    os_set_pixel(ih,zz,downcolor);
+	}
+	if (intervalonly){
+	  *zmax=z;
+	  continue;
+	}
+      }
+      if (interval && z<*zmin-deltaz){
+	if (//0
+	    diffusionz<diffusionz_limit
+	    )
+	  drawRectangle(ih,z,1,std::ceil(*zmin-z),diffuse(upcolor,diffusionz));
+	else {
+	  // draw interval
+	  int nstep=int(*zmin-z)/diffusionz;
+	  double zstep=(z-*zmin)/nstep; // zstep<0
+	  for (double zz=*zmin+zstep;zz>=z;zz+=zstep)
+	    os_set_pixel(ih,zz,upcolor);
+	}
+	if (intervalonly){
+	  *zmin=z;
+	  continue;
+	}
+      }
+      if (//x-(h-1)*yscale>xmin && y-(h-1)*yscale>ymin &&
+	  z>=0 && z+(h-1)*dz>=0 && z<=LCD_HEIGHT_PX && z+(h-1)*dz<=LCD_HEIGHT_PX
+	  ){
+	int color=-1;
+	if ( (h>1 || diffusionz<diffusionz_limit) && dz>0 && z>=*zmax){
+	  // mark all points with downcolor
+	  *zmax=z+(h-1)*dz;
+	  color=downcolor;
+	  if (diffusionz>=diffusionz_limit && dz>diffusionz){
+	    // draw interval
+	    int nstep=int(std::ceil((*zmax-z)/diffusionz));
+	    double zstep=(*zmax-z)/nstep;
+	    for (int i=0;i<=nstep;++i)
+	      os_set_pixel(ih,z+i*zstep,color);		    
+	    continue;
+	  }
+	}
+	if ( (h>1 || diffusionz<diffusionz_limit) && dz<0 && z<=*zmin){
+	  // mark all points with upcolor
+	  *zmin=z+(h-1)*dz;
+	  color=upcolor;
+	  if (diffusionz>=diffusionz_limit && dz<-diffusionz){
+	    // draw interval
+	    int nstep=int(std::ceil((z-*zmin)/diffusionz));
+	    double zstep=(*zmin-z)/nstep;
+	    for (int i=0;i<=nstep;++i)
+	      os_set_pixel(ih,z+i*zstep,color);
+	    continue;
+	  }
+	}
+	if (color>=0){
+	  if (diffusionz<diffusionz_limit){
+	    if (dz>0)
+	      drawRectangle(ih,z,1,std::ceil(h*dz),diffuse(color,std::min(double(diffusionz),std::max(dz,1.0))));
+	    else
+	      drawRectangle(ih,z-std::ceil(-h*dz),1,std::ceil(-h*dz),diffuse(color,std::min(double(diffusionz),std::max(-dz,1.0))));
+	    continue;
+	  }
+	  os_set_pixel(ih,z,color);
+	  if (h==1) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==2) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==3) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==4) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==5) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==6) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==7) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  if (h==8) continue;
+	  z += dz;
+	  os_set_pixel(ih,z,color);
+	  continue;
+	}
+	if (dz<=0 && z>=*zmax && z+(h-1)*dz>=*zmin){ // mark only 1 point
+	  *zmax=z;
+	  color=downcolor;
+	}
+	if (dz>=0 && z<=*zmin && z+(h-1)*dz<=*zmax){ // mark 1 point
+	  *zmin=z;
+	  color=upcolor;
+	}
+	if (color>=0){
+	  os_set_pixel(ih,z,color);
+	  continue;
+	}
+      }
+      for (int J=0;J<h
+	     // && x>=xmin && y>=ymin
+	     ;++J,z+=dz,x-=yscale,y-=yscale){
+	int color=-1;
+	if (z>*zmax){
+	  *zmax=z;
+	  color=downcolor;
+	}
+	if (z<*zmin){
+	  *zmin=z;
+	  color=upcolor;
+	}
+	if (z<=-0.5 || z>=LCD_HEIGHT_PX)
+	  continue;
+	if (color>=0)
+	  os_set_pixel(ih,z,color); // drawRectangle(i,z,w,h,color);
+      }
+    }
+  }
+
+  void find_abc(double x1,double x2,double x3,
+		double y1,double y2,double y3,
+		double z1,double z2,double z3,
+		double &a,double &b,double &c){
+    // solve([a*x1+b*y1+c=z1,a*x2+b*y2+c=z2,a*x3+b*y3+c=z3],[a,b,c])
+    // double d=(x1*y2-x1*y3-x2*y1+x2*y3+x3*y1-x3*y2);
+    double d=(x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2));
+    if (d==0) return;
+    d=1/d;
+    double z12=z2-z1,z23=z3-z2,z31=z1-z3;
+    //double a=(-y1*z2+y1*z3+y2*z1-y2*z3-y3*z1+y3*z2)/d;
+    a=d*(y1*z23+y2*z31+y3*z12);
+    // double b=(x1*z2-x1*z3-x2*z1+x2*z3+x3*z1-x3*z2)/d;
+    b=-d*(x1*z23+x2*z31+x3*z12);
+    //double c=(x1*y2*z3-x1*y3*z2-x2*y1*z3+x2*y3*z1+x3*y1*z2-x3*y2*z1)/d;
+    c=d*(x1*(y2*z3-y3*z2)+x2*(y3*z1-y1*z3)+x3*(y1*z2-y2*z1));
+  }
+
+  void glinter(double x1,double x2,double x3,
+	       double y1,double y2,double y3,
+	       double z1,double z2,double z3,
+	       double xscale,double xc,double yscale,double yc,
+	       double *zmin,double *zmax,double ZMIN,double ZMAX,
+	       int i,int horiz,int j,int w,int h,int lcdz,
+	       int upcolor,int downcolor,int diffusionz,int diffusionz_limit,bool interval
+	       ){
+    double a,b,c;
+    find_abc(x1,x2,x3,y1,y2,y3,z1,z2,z3,a,b,c);
+    glinter(a,b,c,xscale,xc,yscale,yc,zmin,zmax,ZMIN,ZMAX,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+  }
+  
+  void update12(bool & found,bool &found2,
+		double x1,double x2,double x3,double y1,double y2,double y3,double z1,double z2,double z3,
+		int upcolor,int downcolor,int downupcolor,int downdowncolor,
+		double & curx1, double &curx2, double &curx3, double &cury1, double &cury2, double &cury3, double &curz1, double &curz2, double &curz3, 
+		double &cur2x1, double &cur2x2, double &cur2x3, double &cur2y1, double &cur2y2, double &cur2y3, double &cur2z1, double &cur2z2, double &cur2z3,
+		int & u,int & d,int & du,int & dd){
+    if (found){
+      if (z1+z2+z3<curz1+curz2+curz3){
+	// no need to update cur, perhaps cur2?
+	if (found2 && cur2z1+cur2z2+cur2z3<z1+z2+z3)
+	  return;
+	found2=true;
+	cur2x1=x1; cur2x2=x2; cur2x3=x3;
+	cur2y1=y1; cur2y2=y2; cur2y3=y3;
+	cur2z1=z1; cur2z2=z2; cur2z3=z3;
+	du=downupcolor; dd=downdowncolor;
+	return;
+      }
+      else { // need to update cur, and perhaps cur2
+	if (!found2 || curz1+curz2+curz3<cur2z1+cur2z2+cur2z3){
+	  found2=true;
+	  cur2x1=curx1; cur2x2=curx2; cur2x3=curx3;
+	  cur2y1=cury1; cur2y2=cury2; cur2y3=cury3;
+	  cur2z1=curz1; cur2z2=curz2; cur2z3=curz3;
+	  du=downupcolor; dd=downdowncolor;
+	}
+	curx1=x1; curx2=x2; curx3=x3;
+	cury1=y1; cury2=y2; cury3=y3;
+	curz1=z1; curz2=z2; curz3=z3;
+	u=upcolor; d=downcolor;
+	return;
+      }
+    }
+    found=true;
+    curx1=x1; curx2=x2; curx3=x3;
+    cury1=y1; cury2=y2; cury3=y3;
+    curz1=z1; curz2=z2; curz3=z3;
+    u=upcolor; d=downcolor;
+  }
+	      
+  void update12(bool & found,bool &found2,
+		double a,double b,double c,double z,
+		int upcolor,int downcolor,int downupcolor,int downdowncolor,
+		double & cura1,double & curb1,double & curc1,double & curz1,
+		double & cura2,double & curb2,double & curc2,double & curz2,
+		int & u,int & d,int & du,int & dd){
+    if (found){
+      if (z<curz1){
+	// no need to update cur, perhaps cur2?
+	if (found2 && curz2<z)
+	  return;
+	found2=true;
+	cura2=a; curb2=b; curc2=c; curz2=z;
+	du=downupcolor; dd=downdowncolor;
+	return;
+      }
+      else { // need to update cur, and perhaps cur2
+	if (!found2 || curz1<curz2){
+	  found2=true;
+	  cura2=cura1; curb2=curb1; curc2=curc1; curz2=curz1;
+	  du=downupcolor; dd=downdowncolor;
+	}
+	cura1=a; curb1=b; curc1=c; curz1=z;
+	u=upcolor; d=downcolor;
+	return;
+      }
+    }
+    found=true;
+    cura1=a; curb1=b; curc1=c; curz1=z;
+    u=upcolor; d=downcolor;
+  }
+	      
+  
+  // 3d demo prototype
+  void do_transform(const double mat[16],double x,double y,double z,double & X,double & Y,double &Z){
+    X=mat[0]*x+mat[1]*y+mat[2]*z+mat[3];
+    Y=mat[4]*x+mat[5]*y+mat[6]*z+mat[7];
+    Z=mat[8]*x+mat[9]*y+mat[10]*z+mat[11];
+    // double t=mat[12]*x+mat[13]*y+mat[14]*z+mat[15];
+    // X/=t; Y/=t; Z/=t;
+  }
+
+#if 1
+  bool inside(const vector<double3> & v,double x,double y){
+    int n=0;
+    for (int i=1;i<v.size();++i){
+      const double3 & prev=v[i-1];
+      const double3 & cur=v[i];
+      double prevx=prev.x,prevy=prev.y,curx=cur.x,cury=cur.y,m=cur.z;
+      if (prevx==curx){
+	if (x==curx && (y-prevy)*(cury-y)>0) // on vertical edge
+	  return false;
+	continue;
+      }
+      if (x==prevx) 
+	continue;
+      if ((x-prevx)*(curx-x)<0)
+	continue;
+      //double Y=cury+m*(x-curx);
+      double Y=cury+(cur.y-prev.y)/(cur.x-prev.x)*(x-curx);
+      if (Y>=y)
+	++n; 
+    }
+    if (n%2)
+      return true;
+    return false;
+  }
+#else
+  bool inside(const vector<double3> & v,double x,double y){
+    int n=0;
+    for (int i=1;i<v.size();++i){
+      double3 prev=v[i-1],cur=v[i];
+      double prevx=prev.x,prevy=prev.y,curx=cur.x,cury=cur.y,m=cur.z;
+      if (prevx==curx){
+	if (prevx!=x) continue;
+	if (y==cury || (y-prevy)*(cury-y)>0)
+	  ++n;
+	continue;
+      }
+      if (x==prevx || (x-prevx)*(curx-x)<0)
+	continue;
+      double Y=cury+m*(x-curx);
+      if (Y>=y)
+	++n; 
+    }
+    if (n%2)
+      return true;
+    return false;
+  }
+#endif
+  
+  // intersect plane x-y=xy with line m+t*v
+  // m.x+t*v.x-m.y-t*v.y=-xy
+  double intersect(const double3 & m,const double3 & v,double xy){
+    return (-xy+m.y-m.x)/(v.x-v.y);
+  }
+
+  void get_colors(gen attr,int & upcolor,int & downcolor,int & downupcolor,int & downdowncolor){
+    if (attr.is_symb_of_sommet(at_pnt)){
+      attr=attr[1];
+    }
+    if (attr.type==_INT_ && (attr.val & 0xffff)!=0){
+      upcolor=attr.val &0xffff;
+      int color=rgb565to888(upcolor);
+      int r=(color&0xff0000)>>16,g=(color & 0xff00)>>8,b=192;
+      r >>= 2;
+      g >>= 2;
+      downcolor=rgb888to565((r<<16)|(g<<8)|b);
+      r >>= 1;
+      g >>= 1;
+      downupcolor=rgb888to565((r<<16)|(g<<8)|b);
+      r >>= 2;
+      g >>= 2;
+      downdowncolor=rgb888to565((r<<16)|(g<<8)|b);
+    }
+  }
+
+#define ABC3D
+
+  // 2d coordinates of m+t*v
+  void grmtv2ij(const Graph2d & gr,const double3 & m,const double3 & v,double t,int & i,int & j){
+    double x=m.x+t*v.x;
+    double y=m.y+t*v.y;
+    double z=m.z+t*v.z;
+    gr.XYZ2ij(double3(x,y,z),i,j);
+  }    
+  
+  // hpersurface encoded as a matrix
+  // with lines containing 3 coordinates per point
+  bool Graph2d::glsurface(int w,int h,int lcdz,GIAC_CONTEXT,
+			  int upcolor_,int downcolor_,int downupcolor_,int downdowncolor_)  {
+    if (w>9) w=9;
+    if (h>9) h=9;
+    // save zmin/zmax on the stack (4K required)
+    const int jmintabsize=512;
+    short int *jmintab=(short int *)alloca(jmintabsize*sizeof(short int)), * jmaxtab=(short int *)alloca(jmintabsize*sizeof(short int)); // assumes LCD_WIDTH_PX<=jmintabsize
+    for (int i=0;i<jmintabsize;++i){
+      jmintab[i]=LCD_HEIGHT_PX;
+      jmaxtab[i]=0;
+    }
+    vecteur attrv(gen2vecteur(g));
+    std::vector< std::vector< vector<float3d> >::const_iterator > hypv; // 3 iterateurs per hypersurface
+    int upcolor,downcolor,downupcolor,downdowncolor;
+    for (int i=0;i<attrv.size();++i){
+      gen attr=attrv[i];
+      upcolor=upcolor_;downcolor=downcolor_;downupcolor=downupcolor_;downdowncolor=downdowncolor_;
+      get_colors(attrv[i],upcolor,downcolor,downupcolor,downdowncolor);
+    }
+    for (int i=0;i<surfacev.size();++i){
+      hypv.push_back(surfacev[i].begin());
+      hypv.push_back(surfacev[i].end());
+    }
+    int horiz=LCD_WIDTH_PX/2,vert=horiz/2;//LCD_HEIGHT_PX/2;
+    int imin=Ai,imax=Ai,itmp;
+    // 12 segments from cube visualization
+    double segments_x1[12]={Ai,Bi,Ei,Fi,Ai,Bi,Ci,Di,Ai,Ci,Ei,Gi};
+    double segments_x2[12]={Ci,Di,Gi,Hi,Ei,Fi,Gi,Hi,Bi,Di,Fi,Hi};
+    double segments_y1[12]={Aj,Bj,Ej,Fj,Aj,Bj,Cj,Dj,Aj,Cj,Ej,Gj};
+    double segments_y2[12]={Cj,Dj,Gj,Hj,Ej,Fj,Gj,Hj,Bj,Dj,Fj,Hj};
+    double segments_m[12];
+    for (int i=0;i<12;++i){
+      segments_m[i]=(segments_y2[i]-segments_y1[i])/(segments_x2[i]-segments_x1[i]);
+      itmp=segments_x1[i];
+      if (itmp<imin) imin=itmp; if (itmp>imax) imax=itmp;
+      itmp=segments_x2[i];
+      if (itmp<imin) imin=itmp; if (itmp>imax) imax=itmp;      
+    }
+    double xmin=-1,ymin=-1,xmax=1,ymax=1,xscale=0.6*(xmax-xmin)/horiz,yscale=0.6*(ymax-ymin)/vert,x,y,z,xc=(xmin+xmax)/2,yc=(ymin+ymax)/2;
+    drawRectangle(0,0,imin,LCD_HEIGHT_PX,COLOR_BLACK); // clear    
+    drawRectangle(imax,0,LCD_WIDTH_PX-imax,LCD_HEIGHT_PX,COLOR_BLACK); // clear
+    sync_screen();
+    int count=0;
+    for (int i=imin-horiz;i<imax-horiz;i+=w,++count){
+    //for (int i=-horiz;i<horiz;i+=w){
+#ifdef NSPIRE_NEWLIB
+      if (count%16==15)
+	sync_screen();
+      control_c();
+      if (ctrl_c || interrupted){
+	// w+=2; h+=2;
+	ctrl_c=interrupted=false;
+	return true;
+      }
+#endif
+#if defined NUMWORKS && defined DEVICE
+      if (iskeydown(KEY_CTRL_EXIT))
+	return true;
+      if (iskeydown(KEY_CTRL_OK)){
+	w++; h++;
+      }
+#endif
+      drawRectangle(i+horiz,0,w,LCD_HEIGHT_PX,COLOR_BLACK); // clear
+      // find min and max values for j using vertical intersections of line x=i
+      // with segments
+      int ih=i+horiz+w/2,jmin=RAND_MAX,jmax=-RAND_MAX;
+      for (int k=0;k<12;++k){
+	if ( !is_inf(segments_m[k]) && (ih-segments_x1[k])*(segments_x2[k]-ih)>=0 ){
+	  double y=segments_y1[k]+segments_m[k]*(ih-segments_x1[k]);
+	  if (y<=jmin)
+	    jmin=std::floor(y);
+	  if (y>=jmax)
+	    jmax=std::ceil(y);
+	}
+      }
+      if (jmin>jmax) continue;
+      if (jmin<0) jmin=0;
+      if (jmax>LCD_HEIGHT_PX) jmax=LCD_HEIGHT_PX;
+      jmin -= LCD_HEIGHT_PX/2;
+      jmax -= LCD_HEIGHT_PX/2;      
+      double zmin[10]={220.220,220,220,220,220,220,220,220,220},
+	zmax[10]={0,0,0,0,0,0,0,0,0,0},
+	zmin2[10]={220.220,220,220,220,220,220,220,220,220},
+	zmax2[10]={0,0,0,0,0,0,0,0,0,0}	; // initialize for these vertical lines
+#ifdef ABC3D
+      double cura1,cura2,curb1,curb2,curc1,curc2,curz1=-1e306,curz2=1e306;
+#else
+      double curx1,curx2,curx3,cury1,cury2,cury3,curz1=-1e306,curz2=-1e306,curz3=-1e306;
+      double cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1=-1e306,cur2z2=-1e306,cur2z3=-1e306;
+#endif
+      int u,d,du,dd;
+      // for (int j=vert;j>-vert;j-=h){
+      for (int j=jmax;j>=jmin;j-=h){
+	if (0 && i==-35 && j==-44)
+	  u=0; // debug
+	x = yscale*(j-(h-1)/2.0)-xscale*(i+(w-1)/2.0) + xc;
+	y = yscale*(j-(h-1)/2.0)+xscale*(i+(w-1)/2.0) + yc;
+	bool found=false,found2=false;
+	// Oxy clipping for surfaces
+	if (1 
+	    //x>=xmin && x<=xmax && y>=ymin && y<=ymax
+	    ){
+	  for (int k=0;k<hypv.size();k+=2){
+	    vector< vector<float3d> >::const_iterator sbeg=hypv[k],send=hypv[k+1],sprec,scur;
+	    vector<float3d>::const_iterator itprec,itcur,itprecend;
+	    int4 color=hyp_color[k]; 
+	    u=color.u; d=color.d; du=color.du; dd=color.dd;
+	    // find zxy intersections of vertical line (x,y,...) with surface
+	    // found will mark 1st intersection from above, found2 2nd
+	    for (sprec=sbeg,scur=sprec+1;scur<send;++sprec,++scur){
+	      itprec=sprec->begin(); 
+	      itprecend=sprec->end();
+	      itcur=scur->begin();
+	      double x1,x2=*itprec,x3,x4=*itcur;
+	      for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
+		x1=x2;
+		x2=*itprec;
+		x3=x4;
+		x4=*itcur;
+		if (x<x1 && x<x2 && x<x3 && x<x4){
+		  // per iteration: 2 incr, 1 test, 2 equal, 2 read, 2 comp, && , test
+		  for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x>=x2 || x>=x4 )
+		      break;
+		    itprec+=3;itcur+=3;
+		    if (itprec>=itprecend)
+		      break;
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x>=x2 || x>=x4 )
+		      break;
+		    itprec+=3;itcur+=3;
+		    if (itprec>=itprecend)
+		      break;
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x>=x2 || x>=x4 )
+		      break;
+		    itprec+=3;itcur+=3;
+		    if (itprec>=itprecend)
+		      break;
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x>=x2 || x>=x4 )
+		      break;
+		  }
+		  if (x<x2 && x<x4) continue;
+		}
+		else if (x>x1 && x>x2 && x>x3 && x>x4){
+		  for (itprec+=3,itcur+=3;itprec<itprecend;itprec+=3,itcur+=3){
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x<=x2 || x<=x4 )
+		      break;
+		    itprec+=3;itcur+=3;
+		    if (itprec>=itprecend)
+		      break;
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x<=x2 || x<=x4 )
+		      break;
+		    itprec+=3;itcur+=3;
+		    if (itprec>=itprecend)
+		      break;
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x<=x2 || x<=x4 )
+		      break;
+		    itprec+=3;itcur+=3;
+		    if (itprec>=itprecend)
+		      break;
+		    x1=x2;
+		    x2=*itprec;
+		    x3=x4;
+		    x4=*itcur;
+		    if (x<=x2 || x<=x4 )
+		      break;
+		  }
+		  if (x>x2 && x>x4) continue;
+		}
+		double y1=*(itprec-2),y2=*(itprec+1),y3=*(itcur-2),y4=*(itcur+1);
+		bool not123=(y<y1 && y<y2 && y<y3) || (y>y1 && y>y2 && y>y3);
+		bool not234=(y<y4 && y<y2 && y<y3) || (y>y4 && y>y2 && y>y3);
+		//std::cout << "check " << i << " " << j << " " << x << " " << y << "\n";
+		// if (i==65) ;//cout << 65 << "\n";
+		if (not123 && not234)
+		  continue;
+		// now find intersections with quad (cut in two triangles)
+		double z1=*(itprec-1),z2=*(itprec+2),z3=*(itcur-1),z4=*(itcur+2);
+		if (!not123){
+		  double x123=(x1+x2+x3)/3,y123=(y1+y2+y3)/3,z123=(z1+z2+z3)/3,X,Y,Z;
+		  do_transform(invtransform,x123,y123,z123,X,Y,Z);
+		  if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax &&  inside(x1,x2,x3,y1,y2,y3,x,y)){
+#ifdef ABC3D
+		    double a,b,c;
+		    find_abc(x1,x2,x3,y1,y2,y3,z1,z2,z3,a,b,c);
+		    update12(found,found2,
+			     a,b,c,z123,
+			     u,d,du,dd,
+			     cura1,curb1,curc1,curz1,
+			     cura2,curb2,curc2,curz2,
+			     upcolor,downcolor,downupcolor,downdowncolor);
+#else
+		    update12(found,found2,
+			     x1,x2,x3,y1,y2,y3,z1,z2,z3,
+			     u,d,du,dd,
+			     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+			     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+			     upcolor,downcolor,downupcolor,downdowncolor);
+#endif
+		    continue;
+		  } // end inside123
+		} // end if !not123
+		if (!not234){
+		  double x234=(x2+x3+x4)/3,y234=(y2+y3+y4)/3,z234=(z2+z3+z4)/3,X,Y,Z;
+		  do_transform(invtransform,x234,y234,z234,X,Y,Z);
+		  if (Z>=window_zmin && Z<=window_zmax && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax &&  inside(x2,x3,x4,y2,y3,y4,x,y)){
+#ifdef ABC3D
+		    double a,b,c;
+		    find_abc(x2,x3,x4,y2,y3,y4,z2,z3,z4,a,b,c);
+		    update12(found,found2,
+			     a,b,c,z234,
+			     u,d,du,dd,
+			     cura1,curb1,curc1,curz1,
+			     cura2,curb2,curc2,curz2,
+			     upcolor,downcolor,downupcolor,downdowncolor);
+#else
+		    update12(found,found2,
+			     x2,x3,x4,y2,y3,y4,z2,z3,z4,u,d,du,dd,
+			     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+			     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+			     upcolor,downcolor,downupcolor,downdowncolor);
+#endif
+		  } // end if inside 234
+		} // end !not234
+	      } // end surface iterator in line loop
+	    } // end loop in surface
+	  } // end hypersurface loop
+	} // end if x,y in after transform clipping (disabled)
+	for (int k=0;k<polyedrev.size();++k){
+	  double facemin=polyedre_xyminmax[2*k],facemax=polyedre_xyminmax[2*k+1];
+	  if (y-x<facemin || y-x>facemax)
+	    continue;
+	  vector<double3> & cur=polyedrev[k];
+	  if (inside(cur,x,y)){
+	    double3 abc=polyedre_abcv[k];
+	    int4 color=polyedre_color[k];
+	    // std::cout << k << " " << x << " " << y << " " << color.u << "\n";
+	    double a=abc.x,b=abc.y,c=abc.z;
+	    z=a*x+b*y+c;
+	    double X,Y,Z;
+	    do_transform(invtransform,x,y,z,X,Y,Z);
+	    if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax){
+#ifdef ABC3D
+	      update12(found,found2,
+		       a,b,c,z,
+		       color.u,color.d,color.du,color.dd,
+		       cura1,curb1,curc1,curz1,
+		       cura2,curb2,curc2,curz2,
+		       upcolor,downcolor,downupcolor,downdowncolor);
+#else
+	      update12(found,found2,
+		       x-.5,x-.5,x+1,y+0.866,y-0.866,y,z-.5*a+.866*b,z-.5*a-.866*b,z+a,color.u,color.d,color.du,color.dd,
+		       curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+		       cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+		       upcolor,downcolor,downupcolor,downdowncolor);
+#endif
+	    }
+	  } // end if inside(cur,x,y)
+	}
+	for (int k=0;k<sphere_centerv.size();++k){
+	  double3 c=sphere_centerv[k];
+	  double R=sphere_radiusv[k];
+	  matrice & m=*sphere_quadraticv[k]._VECTptr;
+	  int4 color=sphere_color[k];
+	  vecteur & m0=*m[0]._VECTptr;
+	  vecteur & m1=*m[1]._VECTptr;
+	  vecteur & m2=*m[2]._VECTptr;
+	  double v0=x-c.x,v1=y-c.y,v2=0;
+	  double a=m2[2]._DOUBLE_val,b=2*m0[2]._DOUBLE_val*v0+2*m1[2]._DOUBLE_val*v1,C=m0[0]._DOUBLE_val*v0*v0+2*m0[1]._DOUBLE_val*v0*v1+m1[1]._DOUBLE_val*v1*v1-R*R;
+	  double delta=b*b-4*a*C;
+	  if (delta<0)
+	    continue;
+	  delta=std::sqrt(delta);
+	  double sol1,sol2;
+	  if (b>0){
+	    sol1=(-b-delta)/2/a;
+	    sol2=2*C/(-b-delta); // (-b+delta)/2/a;
+	  }
+	  else {
+	    sol1=2*C/(-b+delta);//(-b-delta)/2/a;
+	    sol2=(-b+delta)/2/a;
+	  }
+	  v2=sol1;
+	  z=v2+c.z;
+	  double X,Y,Z;
+	  do_transform(invtransform,x,y,z,X,Y,Z);
+	  if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax){
+	    double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
+	    double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
+	    double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
+#ifdef ABC3D
+	    double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
+	    update12(found,found2,
+		     a,b,c,z,
+		     color.u,color.d,color.du,color.dd,
+		     cura1,curb1,curc1,curz1,
+		     cura2,curb2,curc2,curz2,
+		     upcolor,downcolor,downupcolor,downdowncolor);
+#else
+	    update12(found,found2,
+		     //x-w2,x,x,y,y,y-w2,z+w0,z,z+w1,
+		     x-0.5,x-.5,x+1,y+.866,y-.866,y,z+.5*w0/w2-.866*w1/w2,z+.5*w0/w2+.866*w1/w2,z-w0/w2,
+		     color.u,color.d,color.du,color.dd,
+		     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+		     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+		     upcolor,downcolor,downupcolor,downdowncolor);
+#endif
+	  }
+	  v2=sol2;
+	  z=v2+c.z;
+	  do_transform(invtransform,x,y,z,X,Y,Z);
+	  if (delta>0 && X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax){
+	    double w0=v0*m0[0]._DOUBLE_val+v1*m1[0]._DOUBLE_val+v2*m2[0]._DOUBLE_val;
+	    double w1=v0*m0[1]._DOUBLE_val+v1*m1[1]._DOUBLE_val+v2*m2[1]._DOUBLE_val;
+	    double w2=v0*m0[2]._DOUBLE_val+v1*m1[2]._DOUBLE_val+v2*m2[2]._DOUBLE_val;
+#ifdef ABC3D
+	    double a=-w0/w2,b=-w1/w2,c=z-(a*x+b*y);
+	    update12(found,found2,
+		     a,b,c,z,
+		     color.u,color.d,color.du,color.dd,
+		     cura1,curb1,curc1,curz1,
+		     cura2,curb2,curc2,curz2,
+		     upcolor,downcolor,downupcolor,downdowncolor);
+#else
+	    update12(found,found2,
+		     //x-w2,x,x,y,y,y-w2,z+w0,z,z+w1,
+		     x-0.5,x-.5,x+1,y+.866,y-.866,y,z+.5*w0/w2-.866*w1/w2,z+.5*w0/w2+.866*w1/w2,z-w0/w2,
+		     color.u,color.d,color.du,color.dd,
+		     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+		     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+		     upcolor,downcolor,downupcolor,downdowncolor);
+#endif
+	  }
+	} // end hypersphere loop
+	for (int k=0;k<plan_abcv.size();++k){
+	  double3 abc=plan_abcv[k];
+	  int4 color=plan_color[k];
+	  // z=a*x+b*y+c
+	  double z=abc.x*x+abc.y*y+abc.z,X,Y,Z;
+	  do_transform(invtransform,x,y,z,X,Y,Z);
+	  if (X>=window_xmin && X<=window_xmax && Y>=window_ymin && Y<=window_ymax && Z>=window_zmin && Z<=window_zmax)
+#ifdef ABC3D
+	    update12(found,found2,
+		     abc.x,abc.y,abc.z,z,
+		     color.u,color.d,color.du,color.dd,
+		     cura1,curb1,curc1,curz1,
+		     cura2,curb2,curc2,curz2,
+		     upcolor,downcolor,downupcolor,downdowncolor);
+#else
+	    update12(found,found2,
+		     x-1,x,x,y,y,y+1,z-abc.x,z,z+abc.y,color.u,color.d,color.du,color.dd,
+		     curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,
+		     cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,
+		     upcolor,downcolor,downupcolor,downdowncolor);
+#endif
+	} // end hyperplan loop
+	if (found){
+#ifdef ABC3D
+	  if (found2){
+	    if (!hide2nd)
+	      glinter(cura2,curb2,curc2,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	    glinter(cura1,curb1,curc1,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	  }
+	  else
+	    glinter(cura1,curb1,curc1,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+#else
+	  if (found2){
+	    if (!hide2nd)
+	      glinter(cur2x1,cur2x2,cur2x3,cur2y1,cur2y2,cur2y3,cur2z1,cur2z2,cur2z3,xscale,xc,yscale,yc,zmin2,zmax2,zmin[0],zmax[0],i,horiz,j,w,h,lcdz,downupcolor,downdowncolor,diffusionz,diffusionz_limit,interval);
+	    glinter(curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+	  }
+	  else
+	    glinter(curx1,curx2,curx3,cury1,cury2,cury3,curz1,curz2,curz3,xscale,xc,yscale,yc,zmin,zmax,1e307,-1e307,i,horiz,j,w,h,lcdz,upcolor,downcolor,diffusionz,diffusionz_limit,interval);
+#endif
+	}
+	else {
+	  //std::cout << "not inside " << i << " " << j << " " << x << " " << y << "\n";	      
+	}
+      } // end pixel vertical loop on j
+      // update jmintab/jmaxtab
+      if (i+horiz+w<jmintabsize){
+	for (int I=0;I<w;++I){
+	  jmintab[i+horiz+I]=zmin[I];
+	  jmaxtab[i+horiz+I]=zmax[I];
+	}
+      }
+      // now render line/segments/curves: find intersection with plane
+      // y-x=yc-xc+xscale*(2*i+I), 0<=I<w
+      for (int j=0;j<curvev.size();++j){
+	vector<double3> & cur=curvev[j];
+	int s=cur.size();
+	if (s<2) continue;
+	int4 color=curve_color[j];
+	double xy=yc-xc+xscale*2*i;
+	for (int l=0;l<s-1;++l){
+	  double3 m=cur[l];
+	  double3 n=cur[l+1];
+	  double3 v(n.x-m.x,n.y-m.y,n.z-m.z);
+	  if (std::abs(v.y-v.x)<1e-4*(std::abs(v.y)+std::abs(v.x))){
+	    v.y=v.x+1e-4*(std::abs(v.y)+std::abs(v.x));
+	  }
+	  double t1=intersect(m,v,xy);
+	  if (t1<0 || t1>1)
+	    continue;
+	  double dt=2*xscale/(v.y-v.x); // di==1
+	  double x1=m.x+t1*v.x;
+	  double y1=m.y+t1*v.y;
+	  double z1=m.z+t1*v.z;
+	  double X1,Y1,Z1;
+	  do_transform(invtransform,x1,y1,z1,X1,Y1,Z1);
+	  if (X1<window_xmin || X1>window_xmax || Y1<window_ymin || Y1>window_ymax || Z1<window_zmin || Z1>window_zmax)
+	    continue;
+	  z1=LCD_HEIGHT_PX/2-lcdz*z1+(x1+y1)/2/yscale;
+	  double dz=-dt*v.z*lcdz+dt*(v.x+v.y)/2/yscale;
+	  int horiz=LCD_WIDTH_PX/2;
+	  for (int k=0;k<w;++k){
+	    double Z1=z1,Z2=z1+dz;
+	    z1=Z2;
+	    if (Z1>Z2) std::swap(Z1,Z2);
+	    // line [ (i+k,Z1), (i+k,Z2) ]
+	    if (Z2<zmin[k]){
+	      drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.u);
+	      continue;
+	    }
+	    if (Z1>zmax[k]){
+	      drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.d);
+	      continue;
+	    }
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.du);
+	    if (Z1<zmin[k])
+	      drawRectangle(i+horiz+k,Z1,1,std::ceil(zmin[k]-Z1),color.u);
+	    if (Z2>zmax[k])
+	      drawRectangle(i+horiz+k,zmax[k],1,std::ceil(Z2-zmax[k]),color.d);
+	  }
+	} // end l loop on curve discretization
+      } // end loop on curves
+#ifdef OLD_LINE_RENDERING
+      for (int j=0;j<linetypev.size();j++){
+	double3 m=linev[2*j];
+	double3 v=linev[2*j+1];
+	int4 color=line_color[j];
+	if (std::abs(v.y-v.x)<1e-4*(std::abs(v.y)+std::abs(v.x))){
+	  v.y=v.x+1e-6*(std::abs(v.y)+std::abs(v.x));
+	}
+	double xy=yc-xc+xscale*2*i;
+	double t1=intersect(m,v,xy);
+	// for halfline, t1 must be >=0, for segments between 0 and 1
+	if (linetypev[j]==_HALFLINE__VECT && t1<0)
+	  continue;
+	if (linetypev[j]==_GROUP__VECT && (t1<0 || t1>1))
+	  continue;
+	double dt=2*xscale/(v.y-v.x); // di==1
+	double x1=m.x+t1*v.x;
+	double y1=m.y+t1*v.y;
+	double z1=m.z+t1*v.z;
+	double X1,Y1,Z1;
+	do_transform(invtransform,x1,y1,z1,X1,Y1,Z1);
+	// int dbgi,dbgj; xyz2ij(double3(x1,y1,z1),dbgi,dbgj);
+	/// double x2=x1+dt*v.x,y2=y1+dt*v.y,z2=z1+dt*v.z;
+	if (X1<window_xmin || X1>window_xmax || Y1<window_ymin || Y1>window_ymax || Z1<window_zmin || Z1>window_zmax)
+	  continue;
+	z1=LCD_HEIGHT_PX/2-lcdz*z1+(x1+y1)/2/yscale;
+	double dz=-dt*v.z*lcdz+dt*(v.x+v.y)/2/yscale;
+	int horiz=LCD_WIDTH_PX/2;
+	for (int k=0;k<w;++k){
+	  double Z1=z1,Z2=z1+dz;
+	  z1=Z2;
+	  if (Z1>Z2) std::swap(Z1,Z2);
+	  // line [ (i+k,Z1), (i+k,Z2) ]
+	  if (Z2<zmin[k]){
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.u);
+	    continue;
+	  }
+	  if (Z1>zmax[k]){
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.d);
+	    continue;
+	  }
+	  drawRectangle(i+horiz+k,Z1,1,std::ceil(Z2-Z1),color.du);
+	  if (Z1<zmin[k])
+	    drawRectangle(i+horiz+k,Z1,1,std::ceil(zmin[k]-Z1),color.u);
+	  if (Z2>zmax[k])
+	    drawRectangle(i+horiz+k,zmax[k],1,std::ceil(Z2-zmax[k]),color.d);	    
+	}
+      } // end lines rendering
+#endif
+      // points rendering
+      for (int j=0;j<pointv.size();++j){
+	double3 m=pointv[j];
+	int4 c=point_color[j];
+	if (m.x<i+horiz || m.x>=i+horiz+w)
+	  continue;
+	int k=m.x-i-horiz,color=-1;
+	double mz=LCD_HEIGHT_PX/2-lcdz*m.z;
+	if (mz>=zmax[k])
+	  color=c.u;
+	else if (mz<=zmin[k])
+	  color=c.d;
+	else color=c.du;
+	drawRectangle(m.x,m.y,3,3,color);
+	if (points[j]){
+	  int dx=os_draw_string(0,0,color,0,points[j],true); // fake print
+	  os_draw_string(m.x-dx,m.y,c.u,0,points[j]);
+	}
+      } // end points rendering
+    } // end pixel horizontal loop on i
+#ifndef OLD_LINE_RENDERING
+    // new line rendering
+    for (int j=0;j<linetypev.size();j++){
+      double mx,my,mz,vx,vy,vz;
+      double3 m=linev[2*j];
+      do_transform(invtransform,m.x,m.y,m.z,mx,my,mz);
+      double3 v=linev[2*j+1];
+      do_transform(invtransform,m.x+v.x,m.y+v.y,m.z+v.z,vx,vy,vz);
+      vx -= mx; vy -= my; vz -= mz;
+      int4 color=line_color[j];
+      // find min/max parameter value for hidden/visible
+      double tmax=1e306,tmin=-1e306;
+      if (linetypev[j]==_HALFLINE__VECT){
+	tmin=0;
+      }
+      if (linetypev[j]==_GROUP__VECT){
+	tmin=0;
+	tmax=1;
+      }
+      if (vx!=0){ // intersect with x=window_xmin and x=window_xmax
+	// m.x+v.x*t=window_xmin/max
+	double t1=(window_xmin-mx)/vx;
+	double t2=(window_xmax-mx)/vx;
+	if (t1>t2)
+	  std::swap<double>(t1,t2);
+	if (t1>tmin)
+	  tmin=t1;
+	if (t2<tmax)
+	  tmax=t2;
+      }
+      if (vy!=0){ // intersect with y=window_ymin and y=window_ymax
+	double t1=(window_ymin-my)/vy;
+	double t2=(window_ymax-my)/vy;
+	if (t1>t2)
+	  std::swap<double>(t1,t2);
+	if (t1>tmin)
+	  tmin=t1;
+	if (t2<tmax)
+	  tmax=t2;
+      }
+      if (vz!=0){ // intersect with z=window_zmin and z=window_zmax
+	double t1=(window_zmin-mz)/vz;
+	double t2=(window_zmax-mz)/vz;
+	if (t1>t2)
+	  std::swap<double>(t1,t2);
+	if (t1>tmin)
+	  tmin=t1;
+	if (t2<tmax)
+	  tmax=t2;
+      }
+      // find which intersection we want
+      bool usetmax=v.x+v.y==0?v.z>=0:v.x+v.y>0; 
+      double tmin_=usetmax?tmin:tmax,
+	tmax_=usetmax?tmin:tmax;
+      for (int k=0;k<plan_abcv.size();++k){
+	// z >= z_plan=a*x+b*y+c where (x,y,z)=m+t*v
+	// m.z+t*v.z >= a*m.x+t*a*v.x+b*m.y+t*b*v.y+c
+	// t*(v.z-a*v.x-b.v.y) >= a*m.x+b*m.y+c-m.z
+	double3 abc=plan_abcv[k];
+	double A=v.z-abc.x*v.x-abc.y*v.y,B=abc.x*m.x+abc.y*m.y+abc.z-m.z;
+	if (A==0) continue;
+	double t=B/A;
+	if (t<=tmin || t>=tmax)
+	  continue;
+	if (tmax_<t)
+	  tmax_=t;
+	if (tmin_>t)
+	  tmin_=t;
+      }
+      for (int k=0;k<sphere_centerv.size();++k){
+	// sphere interesect line 
+	double3 c=sphere_centerv[k];
+	double R=sphere_radiusv[k];
+	int4 color=sphere_color[k];
+	double cx,cy,cz;
+	do_transform(invtransform,c.x,c.y,c.z,cx,cy,cz);
+	// (mx+t*vx-cx)^2+(my+t*vy-cy)^2+(mz+t*vz-cz)^2=R^2
+	double a=vx*vx+vy*vy+vz*vz,b=(vx*(mx-cx)+vy*(my-cy)+vz*(mz-cz)),C=(mx-cx)*(mx-cx)+(my-cy)*(my-cy)+(mz-cz)*(mz-cz)-R*R;
+	double deltaprime=b*b-a*C;
+	if (deltaprime>0){
+	  deltaprime=std::sqrt(deltaprime);
+	  double t1=(-b-deltaprime)/a,t2=(-b+deltaprime)/a;
+	  if (t1>t2)
+	    std::swap(t1,t2);
+	  if (t1<tmin || t1>tmax)
+	    t1=t2;
+	  if (t2<tmin || t2>tmax)
+	    t2=t1;
+	  double t=usetmax?t2:t1;
+	  if (t<=tmin || t>=tmax)
+	    continue;
+	  if (tmin_>t)
+	    tmin_=t;
+	  if (tmax_<t)
+	    tmax_=t;	  
+	}
+      }
+      vector<double> interpoly;
+      for (int k=0;k<polyedre_abcv.size();++k){
+	double3 abc=polyedre_abcv[k];
+	double a=abc.x,b=abc.y,c=abc.z;
+	// intersect z=a*x+b*y+c with line m+t*v
+	// m.z+t*v.z=a*(m.x+t*v.x)+b*(m.y+t*v.y)+c
+	double A=v.z-a*v.x-b*v.y,B=a*m.x+b*m.y+c-m.z;
+	if (A!=0){
+	  double t=B/A;
+	  double x=m.x+t*v.x;
+	  double y=m.y+t*v.y;
+	  if (t>tmin && t<tmax && inside(polyedrev[k],x,y)){
+	    interpoly.push_back(t);
+	  }
+	}
+      }
+      if (interpoly.size()>=1){
+	sort(interpoly.begin(),interpoly.end());
+	double t=usetmax?interpoly.back():interpoly.front();
+	if (tmin_>t)
+	  tmin_=t;
+	if (tmax_<t)
+	  tmax_=t;
+      }
+      vecteur sv(gen2vecteur(g));
+      for (int k=0;k<sv.size();++k){
+	gen surf=remove_at_pnt(sv[k]);
+	if (surf.is_symb_of_sommet(at_hypersurface)){
+	  const vecteur & hyp=*surf._SYMBptr->feuille._VECTptr;
+	  if (hyp.size()>2 && !is_undef(hyp[1])){
+	    gen eq=hyp[1],vars=hyp[2];
+	    if (_is_polynomial(makesequence(eq,vars[0]),contextptr)==1 && _is_polynomial(makesequence(eq,vars[1]),contextptr)==1 && _is_polynomial(makesequence(eq,vars[2]),contextptr)==1){
+	      vecteur V(makevecteur(mx+vx*t__IDNT_e,my+vy*t__IDNT_e,mz+vz*t__IDNT_e));
+	      gen eqt=subst(eq,vars,V,false,contextptr);
+	      gen gradeq=subst(derive(eq,vars,contextptr),vars,V,false,contextptr); // not used
+	      vecteur tval_=gen2vecteur(_sort(solve(eqt,t__IDNT_e,0,contextptr),contextptr));
+	      int s=tval_.size();
+	      vector<double> tval;
+	      for (int l=0;l<s;++l){
+		gen tg=evalf_double(tval_[l],1,contextptr);
+		if (tg.type==_DOUBLE_){
+		  double t=tg._DOUBLE_val;
+		  if (t>=tmin && t<=tmax){
+		    if (tval.size()>1)
+		      tval.back()=t;
+		    else
+		      tval.push_back(t);
+		  }
+		}
+	      }
+#if 1
+	      if (!tval.empty()){
+		double t=usetmax?tval.back():tval.front();
+		if (tmin_>t)
+		  tmin_=t;
+		if (tmax_<t)
+		  tmax_=t;
+	      }
+#else
+	      if (tval.size()==1){
+		// grad of eq dot [vx,vy.vz] is positive if entering surface
+		gen gradt=subst(gradeq,t__IDNT_e,tval[0],false,contextptr);
+		gen dotp=dotvecteur(gen2vecteur(gradt),makevecteur(vx,vy,vz));
+		if (is_positive(dotp,contextptr)){
+		  if (tmin_>tval[0])
+		    tmin_=tval[0];
+		  tmax_=tmax;
+		}
+		else {
+		  if (tmax_<tval[0])
+		    tmax_=tval[0];
+		  tmin_=tmin;
+		}
+	      }
+	      else if (tval.size()==2){
+		if (tmin_>tval[0])
+		  tmin_=tval[0];
+		if (tmax_<tval[1])
+		  tmax_=tval[1];
+	      }
+#endif
+	    } // end polynomial hypersurface
+	  }
+	} // end hypersurface	
+      }
+      int i1,j1,i2,j2;
+      grmtv2ij(*this,m,v,tmin,i1,j1);
+      grmtv2ij(*this,m,v,tmax,i2,j2);
+      if (tmin==tmin_ && tmax==tmax_){
+	int curcolor=color.u;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1>=jmaxtab[i1] )
+	    curcolor=color.d;
+	}
+	drawLine(i1,j1,i2,j2,curcolor);
+      }
+      else {
+	int curcolor=color.d;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1<jmintab[i1])
+	    curcolor=color.u;
+	}
+	drawLine(i1,j1,i2,j2,curcolor | 0x400000);
+      }
+      bool name=show_names && lines[j];
+      if (tmin<tmin_){
+	grmtv2ij(*this,m,v,tmin,i1,j1);
+	grmtv2ij(*this,m,v,tmin_,i2,j2);
+	int curcolor=color.u;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1>=jmaxtab[i1] )
+	    curcolor=color.d;
+	}
+	drawLine(i1,j1,i2,j2,curcolor);
+	if (name){
+	  os_draw_string(i1,j1,color.u,0,lines[j]);
+	  name=false;
+	}
+	if (tmin_!=tmax) os_fill_rect(i2-2,j2-2,4,4,curcolor);
+      }
+      if (tmax>tmax_){
+	grmtv2ij(*this,m,v,tmax_,i1,j1);
+	grmtv2ij(*this,m,v,tmax,i2,j2);
+	int curcolor=color.u;
+	if (0 && i1<jmintabsize){
+	  if (jmaxtab[i1]>=jmintab[i1] && j1>=jmaxtab[i1] )
+	    curcolor=color.d;
+	}
+	drawLine(i1,j1,i2,j2,curcolor);
+	if (name){
+	  os_draw_string(i2,j2,color.u,0,lines[j]);
+	  name=false;
+	}
+	if (tmax_!=tmin) os_fill_rect(i1-2,j1-2,4,4,curcolor);
+      }
+    }
+#endif // OLD_LINE_RENDERING
+    sync_screen();
+    return true;
+  }
+
+  Graph2d::Graph2d(const giac::gen & g_,const giac::context * cptr):window_xmin(gnuplot_xmin),window_xmax(gnuplot_xmax),window_ymin(gnuplot_ymin),window_ymax(gnuplot_ymax),window_zmin(gnuplot_zmin),window_zmax(gnuplot_zmax),g(g_),display_mode(0x45),show_axes(1),show_edges(1),show_names(1),labelsize(16),precision(3),contextptr(cptr) {
+    diffusionz=5; diffusionz_limit=5; hide2nd=false; interval=false;
+    default_upcolor=giac3d_default_upcolor;
+    default_downcolor=giac3d_default_downcolor;
+    default_downupcolor=giac3d_default_downupcolor;
+    default_downdowncolor=giac3d_default_downdowncolor;
+    doprecise=false;
+    lcdz= LCD_HEIGHT_PX/4;
+    is3d=giac::is3d(g);
+    //theta_x=theta_y=theta_z=0;
+    q=quaternion_double(0,0,0);//rotation_2_quaternion_double(0.707,0.707,0,1); 
+    update_scales();
+    autoscale(false,!is3d);
+    if (is3d){
+      update_rotation();
+      if (surfacev.empty()){
+	// no hypersurface inside, 2 for polyhedron
+	precision=2;
+      }
+    }
+  }
+
+  // q=quaternion_double(dragi*180/h(),0,0)*rotation_2_quaternion_double(1,0,0,dragj*180/w())*q;
+  
+  void Graph2d::zoomx(double d,bool round,bool doupdate){
     double x_center=(window_xmin+window_xmax)/2;
     double dx=(window_xmax-window_xmin);
     if (dx==0)
@@ -4868,10 +6398,11 @@ namespace xcas {
     window_xmax = x_center + dx;
     if (round)
       window_xmax=int( window_xmax/x_tick +1)*x_tick;
-    update();
+    if (doupdate)
+      update();
   }
 
-  void Graph2d::zoomy(double d,bool round){
+  void Graph2d::zoomy(double d,bool round,bool doupdate){
     double y_center=(window_ymin+window_ymax)/2;
     double dy=(window_ymax-window_ymin);
     if (dy==0)
@@ -4884,23 +6415,47 @@ namespace xcas {
     window_ymax = y_center + dy;
     if (round)
       window_ymax=int( window_ymax/y_tick +1)*y_tick;
-    update();
+    if (doupdate)
+      update();
   }
 
-  void Graph2d::zoom(double d){ 
-    zoomx(d);
-    zoomy(d);
+  void Graph2d::zoomz(double d,bool round,bool doupdate){
+    double z_center=(window_zmin+window_zmax)/2;
+    double dz=(window_zmax-window_zmin);
+    if (dz==0)
+      dz=gnuplot_zmax-gnuplot_zmin;
+    dz *= d/2;
+    z_tick = find_tick(dz);
+    window_zmin = z_center - dz;
+    if (round) 
+      window_zmin=int( window_zmin/z_tick -1)*z_tick;
+    window_zmax = z_center + dz;
+    if (round)
+      window_zmax=int( window_zmax/z_tick +1)*z_tick;
+    if (doupdate)
+      update();
   }
 
-  void Graph2d::autoscale(bool fullview){
+  void Graph2d::zoom(double d,bool doupdate){ 
+    zoomx(d,false,false);
+    zoomy(d,false,false);
+    zoomz(d,false,false);
+    if (doupdate)
+      update();
+  }
+
+  void Graph2d::autoscale(bool fullview,bool doupdate){
     // Find the largest and lowest x/y/z in objects (except lines/plans)
     vector<double> vx,vy,vz;
     int s;
     bool ortho=autoscaleg(g,vx,vy,vz,contextptr);
     autoscaleminmax(vx,window_xmin,window_xmax,fullview);
-    zoomx(1.0);
+    double zf=1+1e-14;
+    zoomx(zf,false,false);
     autoscaleminmax(vy,window_ymin,window_ymax,fullview);
-    zoomy(1.0);
+    zoomy(zf,false,false);
+    autoscaleminmax(vz,window_zmin,window_zmax,fullview);
+    zoomz(zf,false,false);
     if (window_xmax-window_xmin<1e-100){
       window_xmax=gnuplot_xmax;
       window_xmin=gnuplot_xmin;
@@ -4908,6 +6463,10 @@ namespace xcas {
     if (window_ymax-window_ymin<1e-100){
       window_ymax=gnuplot_ymax;
       window_ymin=gnuplot_ymin;
+    }
+    if (window_zmax-window_zmin<1e-100){
+      window_zmax=gnuplot_zmax;
+      window_zmin=gnuplot_zmin;
     }
     bool do_ortho=ortho;
     if (!do_ortho){
@@ -4919,36 +6478,378 @@ namespace xcas {
 	do_ortho=true;
     }
     if (do_ortho )
-      orthonormalize();
+      orthonormalize(false);
     y_tick=find_tick(window_ymax-window_ymin);
-    update();
+    if (doupdate)
+      update();
   }
 
-  void Graph2d::orthonormalize(){ 
+  void Graph2d::orthonormalize(bool doupdate){
     // Center of the directions, orthonormalize
     double w=LCD_WIDTH_PX;
     double h=LCD_HEIGHT_PX-STATUS_AREA_PX;
     double window_w=window_xmax-window_xmin,window_h=window_ymax-window_ymin;
-    double window_hsize=h/w*window_w;
-    if (window_h > window_hsize*1.01){ // enlarge horizontally
+    if (is3d){
       double window_xcenter=(window_xmin+window_xmax)/2;
-      double window_wsize=w/h*window_h;
-      window_xmin=window_xcenter-window_wsize/2;
-      window_xmax=window_xcenter+window_wsize/2;
-    }
-    if (window_h < window_hsize*0.99) { // enlarge vertically
       double window_ycenter=(window_ymin+window_ymax)/2;
-      window_ymin=window_ycenter-window_hsize/2;
-      window_ymax=window_ycenter+window_hsize/2;
+      double window_zcenter=(window_zmin+window_zmax)/2;
+      double window_z=window_zmax-window_zmin;
+      double wmax=std::max(window_w,std::max(window_h,window_z));
+      window_xmin=window_xcenter-wmax/2;
+      window_xmax=window_xcenter+wmax/2;
+      window_ymin=window_ycenter-wmax/2;
+      window_ymax=window_ycenter+wmax/2;
+      window_zmin=window_zcenter-wmax/2;
+      window_zmax=window_zcenter+wmax/2;
+      z_tick=find_tick(window_zmax-window_zmin);
+    }
+    else {
+      double window_hsize=h/w*window_w;
+      if (window_h > window_hsize*1.01){ // enlarge horizontally
+	double window_xcenter=(window_xmin+window_xmax)/2;
+	double window_wsize=w/h*window_h;
+	window_xmin=window_xcenter-window_wsize/2;
+      window_xmax=window_xcenter+window_wsize/2;
+      }
+      if (window_h < window_hsize*0.99) { // enlarge vertically
+	double window_ycenter=(window_ymin+window_ymax)/2;
+	window_ymin=window_ycenter-window_hsize/2;
+	window_ymax=window_ycenter+window_hsize/2;
+      }
     }
     x_tick=find_tick(window_xmax-window_xmin);
     y_tick=find_tick(window_ymax-window_ymin);
-    update();
+    if (doupdate)
+      update();
+  }
+
+  void Graph2d::update_scales(){
+    if (is3d){
+      x_scale=1.414*(LCD_HEIGHT_PX-STATUS_AREA_PX)/(window_xmax-window_xmin);    
+      y_scale=1.414*(LCD_HEIGHT_PX-STATUS_AREA_PX)/(window_ymax-window_ymin);    
+      z_scale=(LCD_HEIGHT_PX-STATUS_AREA_PX)/(window_zmax-window_zmin);    
+    }
+    else {
+      x_scale=LCD_WIDTH_PX/(window_xmax-window_xmin);    
+      y_scale=(LCD_HEIGHT_PX-STATUS_AREA_PX)/(window_ymax-window_ymin);    
+    }
   }
 
   void Graph2d::update(){
-    x_scale=LCD_WIDTH_PX/(window_xmax-window_xmin);    
-    y_scale=(LCD_HEIGHT_PX-STATUS_AREA_PX)/(window_ymax-window_ymin);    
+    update_scales();
+    if (is3d) update_rotation();
+  }
+  
+  void mult4(double * c,double k,double * res){
+    for (int i=0;i<16;i++)
+      res[i]=k*c[i];
+  }
+  
+  double det4(double * c){
+    return c[0]*c[5]*c[10]*c[15]-c[0]*c[5]*c[14]*c[11]-c[0]*c[9]*c[6]*c[15]+c[0]*c[9]*c[14]*c[7]+c[0]*c[13]*c[6]*c[11]-c[0]*c[13]*c[10]*c[7]-c[4]*c[1]*c[10]*c[15]+c[4]*c[1]*c[14]*c[11]+c[4]*c[9]*c[2]*c[15]-c[4]*c[9]*c[14]*c[3]-c[4]*c[13]*c[2]*c[11]+c[4]*c[13]*c[10]*c[3]+c[8]*c[1]*c[6]*c[15]-c[8]*c[1]*c[14]*c[7]-c[8]*c[5]*c[2]*c[15]+c[8]*c[5]*c[14]*c[3]+c[8]*c[13]*c[2]*c[7]-c[8]*c[13]*c[6]*c[3]-c[12]*c[1]*c[6]*c[11]+c[12]*c[1]*c[10]*c[7]+c[12]*c[5]*c[2]*c[11]-c[12]*c[5]*c[10]*c[3]-c[12]*c[9]*c[2]*c[7]+c[12]*c[9]*c[6]*c[3];
+  }
+
+  void inv4(double * c,double * res){
+    res[0]=c[5]*c[10]*c[15]-c[5]*c[14]*c[11]-c[10]*c[7]*c[13]-c[15]*c[9]*c[6]+c[14]*c[9]*c[7]+c[11]*c[6]*c[13];
+    res[1]=-c[1]*c[10]*c[15]+c[1]*c[14]*c[11]+c[10]*c[3]*c[13]+c[15]*c[9]*c[2]-c[14]*c[9]*c[3]-c[11]*c[2]*c[13];
+    res[2]=c[1]*c[6]*c[15]-c[1]*c[14]*c[7]-c[6]*c[3]*c[13]-c[15]*c[5]*c[2]+c[14]*c[5]*c[3]+c[7]*c[2]*c[13];
+    res[3]=-c[1]*c[6]*c[11]+c[1]*c[10]*c[7]+c[6]*c[3]*c[9]+c[11]*c[5]*c[2]-c[10]*c[5]*c[3]-c[7]*c[2]*c[9];
+    res[4]=-c[4]*c[10]*c[15]+c[4]*c[14]*c[11]+c[10]*c[7]*c[12]+c[15]*c[8]*c[6]-c[14]*c[8]*c[7]-c[11]*c[6]*c[12];
+    res[5]=c[0]*c[10]*c[15]-c[0]*c[14]*c[11]-c[10]*c[3]*c[12]-c[15]*c[8]*c[2]+c[14]*c[8]*c[3]+c[11]*c[2]*c[12];
+    res[6]=-c[0]*c[6]*c[15]+c[0]*c[14]*c[7]+c[6]*c[3]*c[12]+c[15]*c[4]*c[2]-c[14]*c[4]*c[3]-c[7]*c[2]*c[12];
+    res[7]=c[0]*c[6]*c[11]-c[0]*c[10]*c[7]-c[6]*c[3]*c[8]-c[11]*c[4]*c[2]+c[10]*c[4]*c[3]+c[7]*c[2]*c[8];
+    res[8]=c[4]*c[9]*c[15]-c[4]*c[13]*c[11]-c[9]*c[7]*c[12]-c[15]*c[8]*c[5]+c[13]*c[8]*c[7]+c[11]*c[5]*c[12];
+    res[9]=-c[0]*c[9]*c[15]+c[0]*c[13]*c[11]+c[9]*c[3]*c[12]+c[15]*c[8]*c[1]-c[13]*c[8]*c[3]-c[11]*c[1]*c[12];
+    res[10]=c[0]*c[5]*c[15]-c[0]*c[13]*c[7]-c[5]*c[3]*c[12]-c[15]*c[4]*c[1]+c[13]*c[4]*c[3]+c[7]*c[1]*c[12];
+    res[11]=-c[0]*c[5]*c[11]+c[0]*c[9]*c[7]+c[5]*c[3]*c[8]+c[11]*c[4]*c[1]-c[9]*c[4]*c[3]-c[7]*c[1]*c[8];
+    res[12]=-c[4]*c[9]*c[14]+c[4]*c[13]*c[10]+c[9]*c[6]*c[12]+c[14]*c[8]*c[5]-c[13]*c[8]*c[6]-c[10]*c[5]*c[12];
+    res[13]=c[0]*c[9]*c[14]-c[0]*c[13]*c[10]-c[9]*c[2]*c[12]-c[14]*c[8]*c[1]+c[13]*c[8]*c[2]+c[10]*c[1]*c[12];
+    res[14]=-c[0]*c[5]*c[14]+c[0]*c[13]*c[6]+c[5]*c[2]*c[12]+c[14]*c[4]*c[1]-c[13]*c[4]*c[2]-c[6]*c[1]*c[12];
+    res[15]=c[0]*c[5]*c[10]-c[0]*c[9]*c[6]-c[5]*c[2]*c[8]-c[10]*c[4]*c[1]+c[9]*c[4]*c[2]+c[6]*c[1]*c[8];
+    double det=det4(c);
+    mult4(res,1/det,res);
+  }
+  
+  void Graph2d::xyz2ij(const double3 &d,int &i,int &j) const {
+    double X,Y,Z;
+    do_transform(transform,d.x,d.y,d.z,X,Y,Z);
+    i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
+  }
+  
+  void Graph2d::xyz2ij(const double3 &d,double &i,double &j) const {
+    double X,Y,Z;
+    do_transform(transform,d.x,d.y,d.z,X,Y,Z);
+    i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
+  }
+  
+  void Graph2d::XYZ2ij(const double3 &d,int &i,int &j) const {
+    double X=d.x,Y=d.y,Z=d.z;
+    i=LCD_WIDTH_PX/2+(Y-X)/4.8*LCD_WIDTH_PX;
+    j=LCD_HEIGHT_PX/2-Z*lcdz+(Y+X)/9.6*LCD_WIDTH_PX;    
+  }
+
+  void Graph2d::update_rotation(){
+    double rx,ry,rz,theta;
+    get_axis_angle_deg(q,rx,ry,rz,theta);
+    // rx=-0.51; ry=-.197; rz=-.835; theta=327.88;
+    // rx=0;ry=1;rz=0; //theta=60;
+    // cout << rx << " " << ry << " " << rz << " " << theta << "\n";
+    // rx=0;ry=0;rz=1;
+    // theta=10;
+    theta *= M_PI/180;
+    double r2=rx*rx+ry*ry+rz*rz,invr2=1/r2;
+    double r=std::sqrt(r2);
+    double c=std::cos(theta),s=std::sin(theta);
+    // mkisom([[rx,ry,rz],theta],1)
+    // 1/r2*[[rx*rx+ry*ry*c+rz*rz*c,rx*ry-rx*ry*c-rz*s*r,rx*rz-rx*rz*c+ry*s*r],[rx*ry-rx*ry*c+rz*s*r,ry*ry+rx*rx*c+rz*rz*c,ry*rz-rx*s*r-ry*rz*c],[rx*rz-rx*rz*c-ry*s*r,ry*rz+rx*s*r-ry*rz*c,rz*rz+rx*rx*c+ry*ry*c]]
+    double a11=invr2*(rx*rx+ry*ry*c+rz*rz*c),a12=invr2*(rx*ry-rx*ry*c-rz*s*r),a13=invr2*(rx*rz-rx*rz*c+ry*s*r);
+    double a21=invr2*(rx*ry-rx*ry*c+rz*s*r),a22=invr2*(ry*ry+rx*rx*c+rz*rz*c),a23=invr2*(ry*rz-rx*s*r-ry*rz*c);
+    double a31=invr2*(rx*rz-rx*rz*c-ry*s*r),a32=invr2*(ry*rz+rx*s*r-ry*rz*c),a33=invr2*(rz*rz+rx*rx*c+ry*ry*c);
+    double xt=(window_xmin+window_xmax)/2,xs=2.0/(window_xmax-window_xmin),yt=(window_ymin+window_ymax)/2,ys=2.0/(window_ymax-window_ymin),zt=(window_zmin+window_zmax)/2,zs=2.0/(window_zmax-window_zmin);
+    double mat[16]={a11*xs,a12*ys,a13*zs,-a11*xt*xs-a12*yt*ys-a13*zt*zs,
+		    a21*xs,a22*ys,a23*zs,-a21*xt*xs-a22*yt*ys-a23*zt*zs,
+		    a31*xs,a32*ys,a33*zs,-a31*xt*xs-a32*yt*ys-a33*zt*zs,
+		    0,0,0,1
+    };
+    for (int i=0;i<sizeof(mat)/sizeof(double);++i)
+      transform[i]=mat[i];
+    inv4(transform,invtransform);
+    surfacev.clear();
+    polyedrev.clear(); polyedre_xyminmax.clear(); polyedre_abcv.clear();// polyedre_normalv.clear();
+    plan_pointv.clear(); plan_abcv.clear();
+    sphere_centerv.clear(); sphere_radiusv.clear(); sphere_quadraticv.clear();
+    linev.clear(); linetypev.clear(); curvev.clear();
+    pointv.clear(); points.clear();
+    plan_color.clear();sphere_color.clear();polyedre_color.clear();line_color.clear();curve_color.clear(); hyp_color.clear(); point_color.clear();
+    // rotate+translate+scale g
+    vecteur v;
+    aplatir(gen2vecteur(g),v);
+    for (int i=0;i<v.size();++i){
+      int u=default_upcolor,d=default_downcolor,du=default_downupcolor,dd=default_downdowncolor;
+      const char * ptr=0;
+      if (v[i].is_symb_of_sommet(at_pnt)){
+	vecteur & attrv=*v[i]._SYMBptr->feuille._VECTptr;
+	if (attrv.size()>1){
+	  gen attr=attrv[1];
+	  get_colors(attr,u,d,du,dd);
+	  if (attrv.size()>2){
+	    attr=attrv[2];
+	    if (attr.type==_STRNG)
+	      ptr=attr._STRNGptr->c_str();
+	    if (attr.type==_IDNT)
+	      ptr=attr._IDNTptr->id_name;
+	  }
+	}
+      }
+      gen G=remove_at_pnt(v[i]);
+      if (G.is_symb_of_sommet(at_curve)){
+	gen f=G._SYMBptr->feuille;
+	f=f[0];
+	f=f[4];
+	if (ckmatrix(f)){
+	  vecteur v=*f._VECTptr;
+	  int n=v.size();
+	  curvev.push_back(vector<double3>(n));
+	  curve_color.push_back(int4(u,d,du,dd));
+	  vector<double3> & cur=curvev.back();
+	  for (int k=0;k<n;++k){
+	    gen P=v[k];
+	    if (P.type==_VECT && P._VECTptr->size()==3){
+	      double X,Y,Z;
+	      do_transform(transform,P[0]._DOUBLE_val,P[1]._DOUBLE_val,P[2]._DOUBLE_val,X,Y,Z);
+	      cur[k]=double3(X,Y,Z);
+	    }
+	  }
+	}
+	continue;
+      }
+      if (G.type==_VECT && G.subtype==_POINT__VECT){
+	gen m=evalf_double(G,1,contextptr);
+	if (m.type==_VECT && m._VECTptr->size()==3){
+	  vecteur & A=*m._VECTptr;
+	  if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ ){
+	    double X,Y,Z; int I,J;
+	    do_transform(transform,A[0]._DOUBLE_val,A[1]._DOUBLE_val,A[2]._DOUBLE_val,X,Y,Z);
+	    xyz2ij(double3(A[0]._DOUBLE_val,A[1]._DOUBLE_val,A[2]._DOUBLE_val),I,J);
+	    pointv.push_back(double3(I,J,Z));
+	    points.push_back(ptr);
+	    point_color.push_back(int4(u,d,du,dd));
+	  }
+	}
+	continue;
+      }
+      bool line=G.subtype==_LINE__VECT,halfline=G.subtype==_HALFLINE__VECT,segment= G.subtype==_GROUP__VECT;
+      if (G.type==_VECT && G._VECTptr->size()==2 && (line || halfline || segment)){
+	gen a=evalf_double(G._VECTptr->front(),1,contextptr),b=evalf_double(G._VECTptr->back(),1,contextptr);
+	if (a.type==_VECT && b.type==_VECT && a._VECTptr->size()==3 && b._VECTptr->size()==3){
+	  vecteur & A=*a._VECTptr;
+	  vecteur & B=*b._VECTptr;
+	  if (A[0].type==_DOUBLE_ && A[1].type==_DOUBLE_ && A[2].type==_DOUBLE_ && B[0].type==_DOUBLE_ && B[1].type==_DOUBLE_ && B[2].type==_DOUBLE_ ){
+	    lines.push_back(ptr);
+	    double x=A[0]._DOUBLE_val,y=A[1]._DOUBLE_val,z=A[2]._DOUBLE_val;
+#if 0 // ndef OLD_LINE_RENDERING
+	    double3 prev(x,y,z);
+	    linev.push_back(prev);
+#endif
+	    double X,Y,Z;
+	    do_transform(transform,x,y,z,X,Y,Z);
+	    double3 M(X,Y,Z);
+	    x=B[0]._DOUBLE_val;y=B[1]._DOUBLE_val;z=B[2]._DOUBLE_val;
+#if 0 // ndef OLD_LINE_RENDERING
+	    linev.push_back(double3(x-prev.x,y-prev.y,z-prev.z));
+#endif
+	    do_transform(transform,x,y,z,X,Y,Z);
+	    double3 N(X,Y,Z);
+	    double3 v(N.x-M.x,N.y-M.y,N.z-M.z);
+	    linev.push_back(M); linev.push_back(v);
+	    linetypev.push_back(G.subtype);
+	    line_color.push_back(int4(u,d,du,dd));
+	  }
+	}
+	continue;
+      }
+      if (G.is_symb_of_sommet(at_hypersphere)){
+	vecteur hyp=*G._SYMBptr->feuille._VECTptr;
+	gen c=evalf_double(hyp[0],1,contextptr);
+	double X,Y,Z;
+	do_transform(transform,c[0]._DOUBLE_val,c[1]._DOUBLE_val,c[2]._DOUBLE_val,X,Y,Z);
+	sphere_centerv.push_back(double3(X,Y,Z));
+	gen R=evalf(hyp[1],1,contextptr);
+	sphere_radiusv.push_back(R._DOUBLE_val);
+	double * mat=invtransform;
+	matrice qmat(makevecteur(
+				 makevecteur(mat[0],mat[4],mat[8]),
+				 makevecteur(mat[1],mat[5],mat[9]),
+				 makevecteur(mat[2],mat[6],mat[10])
+				 ));
+	qmat=mmult(mtran(qmat),qmat);
+	sphere_quadraticv.push_back(qmat);
+	sphere_color.push_back(int4(u,d,du,dd));
+	continue;
+      }
+      if (G.is_symb_of_sommet(at_hyperplan)){
+	vecteur hyp=*G._SYMBptr->feuille._VECTptr;
+	gen hyp1=evalf_double(hyp[1],1,contextptr);
+	vecteur & hyp1v=*hyp1._VECTptr;
+	double A,B,C,x,y,z,X,Y,Z;
+	A=hyp1v[0]._DOUBLE_val;B=hyp1v[1]._DOUBLE_val;C=hyp1v[2]._DOUBLE_val;
+	do_transform(transform,A,B,C,X,Y,Z);
+	gen hyp0=evalf_double(hyp[0],1,contextptr);
+	vecteur & hyp0v=*hyp0._VECTptr;
+	x=hyp0v[0]._DOUBLE_val;y=hyp0v[1]._DOUBLE_val;z=hyp0v[2]._DOUBLE_val;
+	double * mat=invtransform;
+	A=mat[0]*x+mat[4]*y+mat[8]*z;
+	B=mat[1]*x+mat[5]*y+mat[9]*z;
+	C=mat[2]*x+mat[6]*y+mat[10]*z;
+	double AB=std::abs(A)+std::abs(B);
+	if (std::abs(C)<1e-2*AB){
+	  // almost vertical plane, equation A*(x-X)+B*(y-Y)=0
+	  continue;
+	}
+	A/=C; B/=C;
+	plan_pointv.push_back(double3(X,Y,Z));	
+	plan_abcv.push_back(double3(-A,-B,Z+A*X+B*Y));
+	plan_color.push_back(int4(u,d,du,dd));
+	continue;
+      }
+      if (G.is_symb_of_sommet(at_hypersurface)){
+	const vecteur & hyp=*G._SYMBptr->feuille._VECTptr;
+	gen hyp0=hyp[0];
+	const vecteur & hyp0v=*hyp0._VECTptr;
+	gen h=hyp0v[4];
+	if (h.type==_VECT && h.subtype==_POLYEDRE__VECT)
+	  G=h;
+	else if (ckmatrix(h,true)){
+	  surfacev.push_back(vector< vector<float3d> >(0));
+	  vector< vector<float3d> > & S=surfacev.back();
+	  const vecteur & V=*h._VECTptr;
+	  S.reserve(V.size());
+	  for (int j=0;j<V.size();++j){
+	    gen Vj=V[j];
+	    vecteur vj=*Vj._VECTptr;
+	    S.push_back(vector<float3d>(0));
+	    vector<float3d> &S_=S.back();
+	    S_.reserve(vj.size());
+	    for (int k=0;k<vj.size();k+=3){
+	      double X,Y,Z;
+	      do_transform(mat,vj[k]._DOUBLE_val,vj[k+1]._DOUBLE_val,vj[k+2]._DOUBLE_val,X,Y,Z);
+	      vj[k]=X; vj[k+1]=Y; vj[k+2]=Z;
+	      S_.push_back(X); S_.push_back(Y); S_.push_back(Z);
+	    }
+	  }
+	  hyp_color.push_back(int4(u,d,du,dd));
+	  continue;
+	} // end quad hypersurface
+      } // end hypersurface
+      if (G.type==_VECT && G.subtype==_GROUP__VECT){
+	G=gen(makevecteur(G),_POLYEDRE__VECT);
+      }
+      if (G.type==_VECT && G.subtype==_POLYEDRE__VECT){
+	vecteur p=*G._VECTptr;
+	polyedrev.reserve(polyedrev.size()+p.size());
+	polyedre_color.reserve(polyedre_color.size()+p.size());
+	polyedre_xyminmax.reserve(polyedre_xyminmax.size()+2*p.size());
+	for (int j=0;j<p.size();++j){
+	  gen g=p[j];
+	  if (g.type==_VECT){
+	    vector<double3> cur;
+	    vecteur w=*g._VECTptr;
+	    cur.reserve(w.size()+1);
+	    for (int k=0;k<w.size();++k){
+	      gen P=evalf_double(w[k],1,contextptr);
+	      if (P.type==_VECT && P._VECTptr->size()==3){
+		double X,Y,Z;
+		do_transform(transform,P[0]._DOUBLE_val,P[1]._DOUBLE_val,P[2]._DOUBLE_val,X,Y,Z);
+		cur.push_back(double3(X,Y,Z));
+	      }
+	    }
+	    if (cur.size()>=3){
+	      double Z3;int l=0;
+	      for (;l<cur.size()-2;++l){
+		double x0=cur[l].x,y0=cur[l].y,z0=cur[l].z;
+		double x1=cur[l+1].x,y1=cur[l+1].y,z1=cur[l+1].z;
+		double x2=cur[l+2].x,y2=cur[l+2].y,z2=cur[l+2].z;
+		double X1=x1-x0,Y1=y1-y0,Z1=z1-z0;
+		double X2=x2-x0,Y2=y2-y0,Z2=z2-z0;
+		double X3=Y1*Z2-Y2*Z1,Y3=X2*Z1-X1*Z2;Z3=X1*Y2-X2*Y1;
+		double prec=1e-3;
+#if 1
+		if ( (X3!=0 || Y3!=0) && std::abs(Z3)<prec*(std::abs(X3)+std::abs(Y3))){
+		  Z3=1.0001*prec*(std::abs(X3)+std::abs(Y3));
+		}
+#endif
+		if (std::abs(Z3)>prec*(std::abs(X3)+std::abs(Y3))){
+		  // X3*(x-x0)+Y3*(y-y0)+Z3*(z-z0)=0
+		  X3/=Z3; Y3/=Z3;
+		  polyedre_abcv.push_back(double3(-X3,-Y3,z0+X3*x0+Y3*y0));
+		  break;
+		}
+	      }
+	      if (l==cur.size()-2)
+		continue;
+	      cur.push_back(cur.front());
+	      double facemin=1e306,facemax=-1e306;
+	      for (int l=1;l<cur.size();++l){
+		double xy=cur[l].y-cur[l].x;
+		if (xy<facemin)
+		  facemin=xy;
+		if (xy>facemax)
+		  facemax=xy;
+		// replace unused z coordinate by slope
+		// cur[l].z=(cur[l].y-cur[l-1].y)/(cur[l].x-cur[l-1].x);
+	      }
+	      polyedrev.push_back(vector<double3>(0)); polyedrev.back().swap(cur); // polyedrev.push_back(cur);
+	      polyedre_color.push_back(int4(u,d,du,dd));
+	      polyedre_xyminmax.push_back(facemin);
+	      polyedre_xyminmax.push_back(facemax);
+	    } // end cur.size()>=3
+	  } // end g.type==_VECT
+	}
+	continue;
+      }      
+    }
   }
 
   bool Graph2d::findij(const gen & e0,double x_scale,double y_scale,double & i0,double & j0,GIAC_CONTEXT) const {
@@ -5486,7 +7387,288 @@ namespace xcas {
     return res;
   }
 
+  void normalize(double & x, double & y){
+    double fx=fabs(x),fy=fabs(y);
+    if (fx>fy){
+      y/=fx;
+      x/=fx;
+    }
+    else {
+      x/=fy;
+      y/=fy;
+    }
+    double n=std::sqrt(x*x+y*y);
+    x/=n; y/=n;
+  }
+
+  void Graph2d::addpolyg(vector<int2> & polyg,double x,double y,double z,int2 & IJmin) const {
+    int I,J;
+    xyz2ij(double3(x,y,z),I,J);
+    int2 IJ(I,J);
+    polyg.push_back(IJ);
+    if (IJ<IJmin)
+      IJmin=IJ;
+  }
+
   void Graph2d::draw(){
+    if (is3d){
+      if (lang==1)
+	statuslinemsg("Toolbox: aide");
+      else
+	statuslinemsg("Toolbox: help");
+      double3 A(window_xmin,window_ymin,window_zmin),
+	B(window_xmin,window_ymin,window_zmax),
+	C(window_xmax,window_ymin,window_zmin),
+	D(window_xmax,window_ymin,window_zmax),
+	E(window_xmin,window_ymax,window_zmin),
+	F(window_xmin,window_ymax,window_zmax),
+	G(window_xmax,window_ymax,window_zmin),
+	H(window_xmax,window_ymax,window_zmax);
+      xyz2ij(A,Ai,Aj);
+      xyz2ij(B,Bi,Bj);
+      xyz2ij(C,Ci,Cj);
+      xyz2ij(D,Di,Dj);
+      xyz2ij(E,Ei,Ej);
+      xyz2ij(F,Fi,Fj);
+      xyz2ij(G,Gi,Gj);
+      xyz2ij(H,Hi,Hj);
+      set_abort();
+      glsurface(precision,precision,lcdz,contextptr,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor);
+      clear_abort();
+      if (show_edges){
+	// polyhedrons
+	for (int k=0;k<polyedrev.size();++k){
+	  const vector<double3> & cur=polyedrev[k]; // current face
+	  int4 col=polyedre_color[k];
+	  for (int l=1;l<cur.size();++l){
+	    const double3 & p=cur[l-1];
+	    const double3 & c=cur[l];
+#if 1
+	    // is edge visible?
+	    double3 m(p.x/2+c.x/2,p.y/2+c.y/2,p.z/2+c.z/2);
+	    double xy=m.x+m.y;
+	    int mi,mj;
+	    XYZ2ij(m,mi,mj);
+	    int kk;
+	    for (kk=0;kk<polyedrev.size();++kk){
+	      if (k==kk)
+		continue;
+	      const vector<double3> & Cur=polyedrev[kk];
+	      int ll; int jmin=RAND_MAX,jmax=-RAND_MAX; 
+	      for (ll=1;ll<Cur.size();++ll){
+		const double3 & P=Cur[ll-1];
+		const double3 & C=Cur[ll];
+		double3 M(P.x/2+C.x/2,P.y/2+C.y/2,P.z/2+C.z/2);
+		if (M.x==m.x && M.y==m.y && M.z==m.z){
+		  ll=Cur.size()-1;
+		  continue; // edge PC has same midpoint, ignore face
+		}
+		if (M.x+M.y<xy){
+		  ll=Cur.size()-1;
+		  continue;
+		}
+		// intersect plane y-x=m.y-m.x with PC edge P+t*PC
+		double PCx=C.x-P.x,PCy=C.y-P.y,dPC=PCy-PCx;
+		// P.y-P.x + t*dPC=m.y-m.x
+		if (dPC==0)
+		  continue;
+		double t=((m.y-m.x)+(P.x-P.y))/dPC;
+		if (t<=0 || t>=1)
+		  continue;
+		double x=P.x+t*PCx;
+		double y=P.y+t*PCy;
+		double z=P.z+t*(C.z-P.z);
+		int i,j;
+		XYZ2ij(double3(x,y,z),i,j);
+		if (j<jmin) jmin=j;
+		if (j>jmax) jmax=j;
+		if (mj>jmin && mj<jmax)
+		  break;
+	      }
+	      if (ll<Cur.size()) // means edge is not visible
+		break;
+	    }
+	    if (kk<polyedrev.size())
+	      continue;
+#endif
+	    int i1,j1,i2,j2;
+	    XYZ2ij(p,i1,j1);
+	    XYZ2ij(c,i2,j2);
+	    drawLine(i1,j1,i2,j2,
+		     // col.d | 0x400000
+		     col.u | 0x400000
+		     );
+	  }
+	}
+      }
+      if (show_axes){
+	// cube A,B,C,D,E,F,G,H
+	// X
+	drawLine(Ai,Aj,Ci,Cj,COLOR_RED | 0x800000);
+	drawLine(Bi,Bj,Di,Dj,COLOR_RED | 0x800000);
+	drawLine(Ei,Ej,Gi,Gj,COLOR_RED | 0x800000);
+	drawLine(Fi,Fj,Hi,Hj,COLOR_RED | 0x800000);
+	// Y
+	drawLine(Ai,Aj,Ei,Ej,COLOR_GREEN | 0x800000);
+	drawLine(Bi,Bj,Fi,Fj,COLOR_GREEN | 0x800000);
+	drawLine(Ci,Cj,Gi,Gj,COLOR_GREEN | 0x800000);
+	drawLine(Di,Dj,Hi,Hj,COLOR_GREEN | 0x800000);
+	// Z
+	drawLine(Ai,Aj,Bi,Bj,12345 | 0x800000);
+	drawLine(Ci,Cj,Di,Dj,12345 | 0x800000);
+	drawLine(Ei,Ej,Fi,Fj,12345 | 0x800000);
+	drawLine(Gi,Gj,Hi,Hj,12345 | 0x800000);
+	// planes
+	vecteur attrv(gen2vecteur(g));
+	for (int i=0;i<attrv.size();++i){
+	  gen attr=attrv[i];
+	  gen cur=remove_at_pnt(attr);
+	  int upcolor=44444;
+	  const char * nameptr=0;
+	  if (attr.is_symb_of_sommet(at_pnt)){
+	    if (show_names && attr._SYMBptr->feuille.type==_VECT && attr._SYMBptr->feuille._VECTptr->size()==3){
+	      gen name=attr._SYMBptr->feuille._VECTptr->back();
+	      if (name.type==_IDNT)
+		nameptr=name._IDNTptr->id_name;
+	      if (name.type==_STRNG)
+		nameptr=name._STRNGptr->c_str();
+	    }
+	    attr=attr._SYMBptr->feuille[1];
+	    if (attr.type==_INT_ && (attr.val & 0xffff)!=0){
+	      upcolor=attr.val &0xffff;
+	    }
+	  }
+	  if (cur.is_symb_of_sommet(at_hyperplan)){
+	    vecteur & w=*cur._SYMBptr->feuille._VECTptr;
+	    gen m=evalf_double(w[1],1,contextptr),n=evalf_double(w[0],1,contextptr);
+	    double a=n[0]._DOUBLE_val,b=n[1]._DOUBLE_val,c=n[2]._DOUBLE_val;
+	    double x0=m[0]._DOUBLE_val,y0=m[1]._DOUBLE_val,z0=m[2]._DOUBLE_val;
+	    // a*(x-x0)+b*(y-y0)+c*(z-z0)=0
+	    // replace 2 coordinates of M with window_xyzminmax and find last coord
+	    vector<int2> polyg; int2 IJmin={RAND_MAX,RAND_MAX};
+	    // x
+	    if (a!=0){
+	      double x=x0-1/a*(b*(window_ymin-y0)+c*(window_zmin-z0));
+	      if (x>=window_xmin && x<=window_xmax)
+		addpolyg(polyg,x,window_ymin,window_zmin,IJmin);
+	      x=x0-1/a*(b*(window_ymin-y0)+c*(window_zmax-z0));
+	      if (x>=window_xmin && x<=window_xmax)
+		addpolyg(polyg,x,window_ymin,window_zmax,IJmin);
+	      x=x0-1/a*(b*(window_ymax-y0)+c*(window_zmin-z0));
+	      if (x>=window_xmin && x<=window_xmax)
+		addpolyg(polyg,x,window_ymax,window_zmin,IJmin);
+	      x=x0-1/a*(b*(window_ymax-y0)+c*(window_zmax-z0));
+	      if (x>=window_xmin && x<=window_xmax)
+		addpolyg(polyg,x,window_ymax,window_zmax,IJmin);
+	    }
+	    // y
+	    if (b!=0){
+	      double y=y0-1/b*(a*(window_xmin-x0)+c*(window_zmin-z0));
+	      if (y>=window_ymin && y<=window_ymax)
+		addpolyg(polyg,window_xmin,y,window_zmin,IJmin);
+	      y=y0-1/b*(a*(window_xmin-x0)+c*(window_zmax-z0));
+	      if (y>=window_ymin && y<=window_ymax)
+		addpolyg(polyg,window_xmin,y,window_zmax,IJmin);
+	      y=y0-1/b*(a*(window_xmax-x0)+c*(window_zmin-z0));
+	      if (y>=window_ymin && y<=window_ymax)
+		addpolyg(polyg,window_xmax,y,window_zmin,IJmin);
+	      y=y0-1/b*(a*(window_xmax-x0)+c*(window_zmax-z0));
+	      if (y>=window_ymin && y<=window_ymax)
+		addpolyg(polyg,window_xmax,y,window_zmax,IJmin);
+	    }
+	    // z
+	    if (c!=0){
+	      double z=z0-1/c*(a*(window_xmin-x0)+b*(window_ymin-y0));
+	      if (z>=window_zmin && z<=window_zmax)
+		addpolyg(polyg,window_xmin,window_ymin,z,IJmin);
+	      z=z0-1/c*(a*(window_xmin-x0)+b*(window_ymax-y0));
+	      if (z>=window_zmin && z<=window_zmax)
+		addpolyg(polyg,window_xmin,window_ymax,z,IJmin);
+	      z=z0-1/c*(a*(window_xmax-x0)+b*(window_ymin-y0));
+	      if (z>=window_zmin && z<=window_zmax)
+		addpolyg(polyg,window_xmax,window_ymin,z,IJmin);
+	      z=z0-1/c*(a*(window_xmax-x0)+b*(window_ymax-y0));
+	      if (z>=window_zmin && z<=window_zmax)
+		addpolyg(polyg,window_xmax,window_ymax,z,IJmin);
+	    }
+	    // sort list of arguments
+	    vector<int2_double2> p;
+	    for (int k=0;k<polyg.size();++k){
+	      int2 & cur=polyg[k];
+	      if (cur==IJmin){
+		int2_double2 id={cur.i,cur.j,0,0};
+		p.push_back(id);
+	      } else {
+		double di=cur.i-IJmin.i,dj=cur.j-IJmin.j;
+		int2_double2 id={cur.i,cur.j,atan2(di,dj),di*di+dj*dj};
+		p.push_back(id);
+	      }
+	    }
+	    sort(p.begin(),p.end());
+	    // draw polygon
+	    vector< vector<int> > P;
+	    for (int k=0;k<p.size();++k){
+	      vector<int> vi(2);
+	      vi[0]=p[k].i;
+	      vi[1]=p[k].j;
+	      P.push_back(vi);
+	    }
+	    draw_polygon(P,upcolor | 0x400000,contextptr);
+	    if (nameptr){
+	      int x=os_draw_string(0,0,0,upcolor,nameptr,true);
+	      os_draw_string(P[0][0]-x,P[0][1],upcolor,0,nameptr);
+	    }
+	  }
+	}
+	// frame
+	double xi=Ci-Ai,xj=Cj-Aj;
+	normalize(xi,xj);
+	drawLine(20,20,20+20*xi,20+20*xj,COLOR_RED);
+	os_draw_string_small(20+20*xi,20+20*xj,COLOR_RED,COLOR_BLACK,"x");
+	double yi=Ei-Ai,yj=Ej-Aj;
+	normalize(yi,yj);
+	drawLine(20,22,20+20*yi,20+20*yj,COLOR_GREEN);
+	os_draw_string_small(20+20*yi,20+20*yj,COLOR_GREEN,COLOR_BLACK,"y");
+	double zi=Bi-Ai,zj=Bj-Aj;
+	normalize(zi,zj);
+	drawLine(20,20,20+20*zi,20+20*zj,12345);
+	os_draw_string_small(20+20*zi,20+20*zj,12345,COLOR_BLACK,"z");
+      } // end show_axes
+      // now handle legend([x,y],string)
+      vecteur V(gen2vecteur(g));
+      for (int i=0;i<V.size();++i){
+	gen attr=V[i];
+	if (attr.is_symb_of_sommet(at_pnt)){
+	  attr=attr._SYMBptr->feuille;
+	  if (attr.type==_VECT && attr._VECTptr->size()>1){
+	    int color=65535;
+	    gen attr0=attr._VECTptr->front();
+	    attr=attr[1];
+	    if (attr.type==_INT_ && (attr.val & 0xffff)!=0){
+	      color=attr.val &0xffff;
+	    }
+	    if (attr0.is_symb_of_sommet(at_legende)){
+	      gen leg=attr0._SYMBptr->feuille;
+	      if (leg.type==_VECT && leg._VECTptr->size()>=2){
+		gen pos=leg._VECTptr->front();
+		leg=leg[1];
+		if (pos.type==_VECT && pos._VECTptr->size()==2 && leg.type==_STRNG){
+		  gen x=pos._VECTptr->front(),y=pos._VECTptr->back();
+		  if (x.type==_INT_ && y.type==_INT_)
+		    os_draw_string(x.val,y.val,color,0,leg._STRNGptr->c_str());
+		}
+	      }
+	    }
+	  }
+	}
+      }      
+#ifdef NSPIRE_NEWLIB
+    DefineStatusMessage((char*)"+-: zoom, pad: move, esc: quit", 1, 0, 0);
+#else
+    DefineStatusMessage((char*)"+-: zoom, pad: move, EXIT: quit", 1, 0, 0);
+#endif
+      return;
+    }
     int save_clip_ymin=clip_ymin;
     clip_ymin=STATUS_AREA_PX;
     int horizontal_pixels=LCD_WIDTH_PX,vertical_pixels=LCD_HEIGHT_PX-STATUS_AREA_PX,deltax=0,deltay=STATUS_AREA_PX,clip_x=0,clip_y=0,clip_w=horizontal_pixels,clip_h=vertical_pixels;
@@ -5601,6 +7783,16 @@ namespace xcas {
   void Graph2d::down(double d){ 
     window_ymin -= d;
     window_ymax -= d;
+  }
+
+  void Graph2d::z_up(double d){ 
+    window_zmin += d;
+    window_zmax += d;
+  }
+
+  void Graph2d::z_down(double d){ 
+    window_zmin -= d;
+    window_zmax -= d;
   }
 
   void Turtle::draw(){
@@ -5862,6 +8054,11 @@ namespace xcas {
 		  gr.window_ymax=b._DOUBLE_val;
 		  gr.update();
 		  break;
+		case _GL_Z:
+		  gr.window_zmin=a._DOUBLE_val;
+		  gr.window_zmax=b._DOUBLE_val;
+		  gr.update();
+		  break;
 		}
 	      }
 	    }
@@ -5876,8 +8073,18 @@ namespace xcas {
     DefineStatusMessage((char*)"+-: zoom, pad: move, EXIT: quit", 1, 0, 0);
 #endif
     // EnableStatusArea(2);
+    int saveprecision=gr.precision;
+    gr.precision += 2; // fast draw first
+    gr.draw();
+    gr.precision=saveprecision;    
     for (;;){
+      int saveprec=gr.precision;
+      if (gr.doprecise){
+	gr.doprecise=false;
+	gr.precision=1;//gr.precision-=2;
+      }
       gr.draw();
+      gr.precision=saveprec;
       DisplayStatusArea();
       // int x=0,y=LCD_HEIGHT_PX-STATUS_AREA_PX-17;
       // PrintMini(&x,&y,(unsigned char *)"menu",0x04,0xffffffff,0,0,COLOR_BLACK,COLOR_WHITE,1,0);
@@ -5887,7 +8094,7 @@ namespace xcas {
 	return key;
 #if 1
       if (key==KEY_CTRL_CATALOG || key==KEY_BOOK){
-	char menu_xmin[32],menu_xmax[32],menu_ymin[32],menu_ymax[32];
+	char menu_xmin[32],menu_xmax[32],menu_ymin[32],menu_ymax[32],menu_zmin[32],menu_zmax[32];
 	string s;
 	s="xmin "+print_DOUBLE_(gr.window_xmin,contextptr);
 	strcpy(menu_xmin,s.c_str());
@@ -5897,8 +8104,12 @@ namespace xcas {
 	strcpy(menu_ymin,s.c_str());
 	s="ymax "+print_DOUBLE_(gr.window_ymax,contextptr);
 	strcpy(menu_ymax,s.c_str());
+	s="zmin "+print_DOUBLE_(gr.window_zmin,contextptr);
+	strcpy(menu_zmin,s.c_str());
+	s="zmax "+print_DOUBLE_(gr.window_zmax,contextptr);
+	strcpy(menu_zmax,s.c_str());
 	Menu smallmenu;
-	smallmenu.numitems=12;
+	smallmenu.numitems=15;
 	MenuItem smallmenuitems[smallmenu.numitems];
 	smallmenu.items=smallmenuitems;
 	smallmenu.height=12;
@@ -5907,57 +8118,89 @@ namespace xcas {
 	smallmenuitems[1].text = (char *) menu_xmax;
 	smallmenuitems[2].text = (char *) menu_ymin;
 	smallmenuitems[3].text = (char *) menu_ymax;
-	smallmenuitems[4].text = (char*) "Orthonormalize /";
-	smallmenuitems[5].text = (char*) "Autoscale *";
-	smallmenuitems[6].text = (char *) ("Zoom in +");
-	smallmenuitems[7].text = (char *) ("Zoom out -");
-	smallmenuitems[8].text = (char *) ("Y-Zoom out (-)");
-	smallmenuitems[9].text = (char*) ((lang==1)?"Voir axes":"Show axes");
-	smallmenuitems[10].text = (char*) ((lang==1)?"Cacher axes":"Hide axes");
-	smallmenuitems[11].text = (char*)((lang==1)?"Quitter":"Quit");
+	smallmenuitems[4].text = (char *) menu_zmin;
+	smallmenuitems[5].text = (char *) menu_zmax;
+	smallmenuitems[6].text = (char*) "Orthonormalize /";
+	smallmenuitems[7].text = (char*) "Autoscale *";
+	smallmenuitems[8].text = (char *) ("Zoom in +");
+	smallmenuitems[9].text = (char *) ("Zoom out -");
+	smallmenuitems[10].text = (char *) ("Y-Zoom out (-)");
+	smallmenuitems[11].text = (char *) ((lang==1)?"raccourcis clavier":"3d shortcuts");
+	smallmenuitems[12].text = (char*) ((lang==1)?"Voir axes":"Show axes");
+	smallmenuitems[13].text = (char*) ((lang==1)?"Cacher axes":"Hide axes");
+	smallmenuitems[14].text = (char*)((lang==1)?"Quitter":"Quit");
 	int sres = doMenu(&smallmenu);
 	if(sres == MENU_RETURN_SELECTION || sres==KEY_CTRL_EXE) {
 	  const char * ptr=0;
 	  string s1; double d;
 	  if (smallmenu.selection==1){
+	    d=gr.window_xmin;
 	    if (inputdouble(menu_xmin,d,contextptr)){
 	      gr.window_xmin=d;
 	      gr.update();
 	    }
 	  }
 	  if (smallmenu.selection==2){
+	    d=gr.window_xmax;
 	    if (inputdouble(menu_xmax,d,contextptr)){
 	      gr.window_xmax=d;
 	      gr.update();
 	    }
 	  }
 	  if (smallmenu.selection==3){
+	    d=gr.window_ymin;
 	    if (inputdouble(menu_ymin,d,contextptr)){
 	      gr.window_ymin=d;
 	      gr.update();
 	    }
 	  }
 	  if (smallmenu.selection==4){
+	    d=gr.window_ymax;
 	    if (inputdouble(menu_ymax,d,contextptr)){
 	      gr.window_ymax=d;
 	      gr.update();
 	    }
 	  }
-	  if (smallmenu.selection==5)
-	    gr.orthonormalize();
-	  if (smallmenu.selection==6)
-	    gr.autoscale();	
+	  if (smallmenu.selection==5){
+	    d=gr.window_zmin;
+	    if (inputdouble(menu_zmin,d,contextptr)){
+	      gr.window_zmin=d;
+	      gr.update();
+	    }
+	  }
+	  if (smallmenu.selection==6){
+	    d=gr.window_zmax;
+	    if (inputdouble(menu_zmax,d,contextptr)){
+	      gr.window_zmax=d;
+	      gr.update();
+	    }
+	  }
 	  if (smallmenu.selection==7)
-	    gr.zoom(0.7);	
+	    gr.orthonormalize();
 	  if (smallmenu.selection==8)
-	    gr.zoom(1/0.7);	
+	    gr.autoscale();	
 	  if (smallmenu.selection==9)
-	    gr.zoomy(1/0.7);
+	    gr.zoom(0.7);	
 	  if (smallmenu.selection==10)
-	    gr.show_axes=true;	
+	    gr.zoom(1/0.7);	
 	  if (smallmenu.selection==11)
+	    gr.zoomy(1/0.7);
+	  if (smallmenu.selection==12){
+	    xcas::textArea text;
+	    text.editable=false;
+	    text.clipline=-1;
+	    text.title = (char*)((lang==1)?"Raccourcis clavier 3d":"3d Keyboard shortcuts");
+	    text.allowF1=false;
+	    text.python=false;
+	    add(&text,lang==1?"haut/bas/droit/gauche: change point de vue\ny^x ou e^x: trace precis\nON/Back: interrompt le trace en cours\n( et ): modifie le rendu des surfaces raides\n0: surfaces cachees ON/OFF\n.: remplissage surface raide ON/OFF\n5 reset view\n7,8,9,1,2,3: deplacement":"up/down/right/left: modify viewpoint\nON/Back: interrupt\ny^x or e^x: precise\n( and ): modify stiff surfaces rendering\n0: hidden surfaces ON/OFF\n.: fill stiff surfacesON/OFF\n5 reset view\n7,8,9,1,2,3: move view");
+	    int exec=doTextArea(&text,contextptr);
+	    // gr.q=quaternion_double(0,0,0); gr.update();
+	  }
+	  if (smallmenu.selection==13)
+	    gr.show_axes=true;	
+	  if (smallmenu.selection==14)
 	    gr.show_axes=false;	
-	  if (smallmenu.selection==12)
+	  if (smallmenu.selection==15)
 	    break;
 	}
       }
@@ -5966,13 +8209,115 @@ namespace xcas {
 	os_hide_graph();
 	break;
       }
-      if (key==KEY_CTRL_UP){ gr.up((gr.window_ymax-gr.window_ymin)/5); }
-      if (key==KEY_CTRL_PAGEUP) { gr.up((gr.window_ymax-gr.window_ymin)/2); }
-      if (key==KEY_CTRL_DOWN) { gr.down((gr.window_ymax-gr.window_ymin)/5); }
-      if (key==KEY_CTRL_PAGEDOWN) { gr.down((gr.window_ymax-gr.window_ymin)/2);}
-      if (key==KEY_CTRL_LEFT) { gr.left((gr.window_xmax-gr.window_xmin)/5); }
+      if (key==KEY_CHAR_NORMAL || key=='>'){ // shift-+
+	if (is3d && gr.precision<9)
+	  gr.precision++;
+      }
+      if (key=='\\' || key=='<'){ // shift--
+	if (is3d && gr.precision>1)
+	 gr.precision--;
+      }
+      if (key==KEY_CTRL_UP){
+	if (is3d){
+	  int curprec=gr.precision;
+	  gr.precision += 2;
+	  if (gr.precision>9) gr.precision=9;
+	  while (1){
+	    //double X,Y,Z;
+	    //do_transform(gr.invtransform,0.707,0.707,0,X,Y,Z);
+	    //normalize(X,Y,Z);
+	    //gr.q=rotation_2_quaternion_double(X,Y,Z,15)*gr.q;
+	    //gr.q=quaternion_double(15,0,15)*gr.q;
+	    gr.q=rotation_2_quaternion_double(0.707,0.707,0,15)*gr.q;// quaternion_double(15,0,0)*gr.q;
+	    gr.update_rotation();
+	    gr.draw();
+#ifndef SIMU
+	    if (!iskeydown(KEY_CTRL_UP))
+	      break;
+#else
+	    getkey(key); break;
+#endif
+	  }
+	  gr.precision=curprec;
+	  continue;
+	}
+	gr.up((gr.window_ymax-gr.window_ymin)/5);
+      }
+      if (key==KEY_CTRL_PAGEUP) {
+	gr.up((gr.window_ymax-gr.window_ymin)/2);
+      }
+      if (key==KEY_CTRL_DOWN) {
+	if (is3d){
+	  int curprec=gr.precision;
+	  gr.precision += 2;
+	  if (gr.precision>9) gr.precision=9;
+	  while (1){
+	    //double X,Y,Z;
+	    //do_transform(gr.invtransform,0.707,0.707,0,X,Y,Z);
+	    //normalize(X,Y,Z);
+	    //gr.q=rotation_2_quaternion_double(X,Y,Z,-15)*gr.q;
+	    // gr.q=quaternion_double(-15,0,-15)*gr.q;
+	    gr.q=rotation_2_quaternion_double(0.707,0.707,0,-15)*gr.q; // quaternion_double(-15,0,0)*gr.q;
+	    gr.update_rotation();
+	    gr.draw();
+#ifndef SIMU
+	    if (!iskeydown(KEY_CTRL_DOWN))
+	      break;
+#else
+	    getkey(key); break;
+#endif
+	  }
+	  gr.precision=curprec;
+	  continue;
+	}
+	gr.down((gr.window_ymax-gr.window_ymin)/5);
+      }
+      if (key==KEY_CTRL_PAGEDOWN) {
+	gr.down((gr.window_ymax-gr.window_ymin)/2);
+      }
+      if (key==KEY_CTRL_LEFT) {
+	if (is3d){
+	  int curprec=gr.precision;
+	  gr.precision += 2;
+	  if (gr.precision>9) gr.precision=9;
+	  while (1){
+	    gr.q=quaternion_double(0,15,0)*gr.q;
+	    gr.update_rotation();
+	    gr.draw();
+#ifndef SIMU
+	    if (!iskeydown(KEY_CTRL_LEFT))
+	      break;
+#else
+	    getkey(key); break;
+#endif
+	  }
+	  gr.precision=curprec;
+	  continue;
+	}
+	gr.left((gr.window_xmax-gr.window_xmin)/5);
+      }
       if (key==KEY_SHIFT_LEFT) { gr.left((gr.window_xmax-gr.window_xmin)/2); }
-      if (key==KEY_CTRL_RIGHT) { gr.right((gr.window_xmax-gr.window_xmin)/5); }
+      if (key==KEY_CTRL_RIGHT) {
+	if (is3d){
+	  int curprec=gr.precision;
+	  gr.precision += 2;
+	  if (gr.precision>9) gr.precision=9;
+	  while (1){
+	    gr.q=quaternion_double(0,-15,0)*gr.q;
+	    gr.update_rotation();
+	    gr.draw();
+#ifndef SIMU
+	    if (!iskeydown(KEY_CTRL_RIGHT))
+	      break;
+#else
+	    getkey(key); break;
+#endif
+	  }
+	  gr.precision=curprec;
+	  continue;
+	}
+	gr.right((gr.window_xmax-gr.window_xmin)/5);
+      }
       if (key==KEY_SHIFT_RIGHT) { gr.right((gr.window_xmax-gr.window_xmin)/5); }
       if (key==KEY_CHAR_PLUS) {
 	gr.zoom(0.7);
@@ -5988,6 +8333,51 @@ namespace xcas {
       }
       if (key==KEY_CHAR_DIV) {
 	gr.orthonormalize();
+      }
+      if (is3d){
+	if (key==KEY_CHAR_0){
+	  gr.hide2nd=!gr.hide2nd;
+	}
+	if (key==KEY_CHAR_DP){
+	  gr.interval=!gr.interval;
+	}
+	if (key==KEY_CHAR_ANS){
+	  gr.show_edges=!gr.show_edges;
+	}
+	if (key==KEY_CHAR_5){
+	  gr.q=quaternion_double(0,0,0);
+	  gr.update();
+	}	  
+	if (key==KEY_CHAR_8){
+	  gr.z_up((gr.window_zmax-gr.window_zmin)/5);
+	  gr.update_rotation();
+	}
+	if (key==KEY_CHAR_2){
+	  gr.z_down((gr.window_zmax-gr.window_zmin)/5);
+	  gr.update_rotation();
+	}
+	if (key==KEY_CHAR_1){
+	  gr.right((gr.window_xmax-gr.window_xmin)/5);
+	  gr.update_rotation();
+	}
+	if (key==KEY_CHAR_9){
+	  gr.left((gr.window_xmax-gr.window_xmin)/5);
+	  gr.update_rotation();
+	}
+	if (key==KEY_CHAR_3){
+	  gr.up((gr.window_ymax-gr.window_ymin)/5);
+	  gr.update_rotation();
+	}
+	if (key==KEY_CHAR_7){
+	  gr.down((gr.window_ymax-gr.window_ymin)/5);
+	  gr.update_rotation();
+	}
+	if (key==KEY_CHAR_POW || key==KEY_CHAR_EXPN)
+	  gr.doprecise=true;
+	if (key==KEY_CHAR_LPAR && gr.diffusionz<64)
+	  gr.diffusionz++;
+	if (key==KEY_CHAR_RPAR && gr.diffusionz>2)
+	  gr.diffusionz--;
       }
       if (key==KEY_CTRL_VARS) {
 	gr.show_axes=!gr.show_axes;
@@ -7154,6 +9544,12 @@ namespace xcas {
     mpz_out_str(f,10,*key._ZINTptr);
     fclose(f);
     // main_ptt(1,0);
+#ifdef MICROPY_LIB
+    python_free();
+#endif   
+#ifdef QUICKJS
+    js_end(global_js_context);
+#endif
     int res=nl_exec(exec,2,args);
     //*logptr(contextptr) << "exam mode " << res << '\n';
     //int res=nl_exec(exec,1,0);
@@ -7182,7 +9578,7 @@ namespace xcas {
     duration=h+m/100.0;
     return ch;
   }
-  const char conf_standard[] = "F1 algb\nsimplify(\nfactor(\npartfrac(\ntcollect(\ntexpand(\nsum(\noo\nproduct(\nF2 calc\n'\ndiff(\nintegrate(\nlimit(\nseries(\nsolve(\ndesolve(\nrsolve(\nF5  2d \nreserved\nF4 menu\nreserved\nF6 reg\nlinear_regression_plot(\nlogarithmic_regression_plot(\nexponential_regression_plot(\npower_regression_plot(\npolynomial_regression_plot(\nsin_regression_plot(\nscatterplot(\nmatrix(\nF< poly\nproot(\npcoeff(\nquo(\nrem(\ngcd(\negcd(\nresultant(\nGF(\nF9 arit\n mod \nirem(\nifactor(\ngcd(\nisprime(\nnextprime(\npowmod(\niegcd(\nF7 lin\nmatrix(\ndet(\nmatpow(\nranm(\nrref(\ntran(\negvl(\negv(\nF= list\nmakelist(\nrange(\nseq(\nlen(\nappend(\nranv(\nsort(\napply(\nF3 plot\nplot(\nplotseq(\nplotlist(\nplotparam(\nplotpolar(\nplotfield(\nhistogram(\nbarplot(\nF; real\nexact(\napprox(\nfloor(\nceil(\nround(\nsign(\nmax(\nmin(\nF> prog\n:\n&\n#\nhexprint(\nbinprint(\nf(x):=\ndebug(\npython(\nF8 cplx\nabs(\narg(\nre(\nim(\nconj(\ncsolve(\ncfactor(\ncpartfrac(\nF: misc\n!\nrand(\nbinomial(\nnormald(\nexponentiald(\n and \n or \nperiodic_table\n";
+  const char conf_standard[] = "F1 algb\nsimplify(\nfactor(\npartfrac(\ntcollect(\ntexpand(\nsum(\noo\nproduct(\nF2 calc\n'\ndiff(\nintegrate(\nlimit(\nseries(\nsolve(\ndesolve(\nrsolve(\nF5  2d \nreserved\nF4 menu\nreserved\nF6 reg\nlinear_regression_plot(\nlogarithmic_regression_plot(\nexponential_regression_plot(\npower_regression_plot(\npolynomial_regression_plot(\nsin_regression_plot(\nscatterplot(\nmatrix(\nF< poly\nproot(\npcoeff(\nquo(\nrem(\ngcd(\negcd(\nresultant(\nGF(\nF9 arit\n mod \nirem(\nifactor(\ngcd(\nisprime(\nnextprime(\npowmod(\niegcd(\nF7 lin\nmatrix(\ndet(\nmatpow(\nranm(\nrref(\ntran(\negvl(\negv(\nF= list\nmakelist(\nrange(\nseq(\nlen(\nappend(\nranv(\nsort(\napply(\nF3 plot\nplot(\nplotseq(\nplotlist(\nplotparam(\nplotpolar(\nplotfield(\nhistogram(\nbarplot(\nF; real\nexact(\napprox(\nfloor(\nceil(\nround(\nsign(\nmax(\nmin(\nF> prog\n:\n&\n#\nhexprint(\nbinprint(\nf(x):=\ndebug(\npython(\nF8 cplx\nabs(\narg(\nre(\nim(\nconj(\ncsolve(\ncfactor(\ncpartfrac(\nF: misc\n!\nrand(\nbinomial(\nnormald(\nexponentiald(\n and \n or \nperiodic_table\nF? geo\npoint(\nline(\ncircle(\nplane(\nF@ color\ncolor=\nred\ncyan\ngreen\nblue\nmagenta\nyellow\n";
 
   const char python_conf_standard[] = "F1 misc\nprint(\ninput(\n;\n:\n[]\ndef f(x): return \ntime()\nfrom time import *\nF2 math\nfloor(\nceil(\nround(\nmin(\nmax(\nabs(\nsqrt(\nfrom math import *\nF3 c&rand\nrandint(\nrandom()\nchoice(\nfrom random import *\n.real\n.imag\nphase(\nfrom cmath import *;i=1j\nF4 menu\nreserved\nF5  2d\nreserved\nF6 tortue\nforward(\nbackward(\nleft(\nright(\npencolor(\ncircle(\nreset()\nfrom turtle import *\nF7 linalg\nmatrix(\nadd(\nsub(\nmul(\ninv(\nrref(\ntranspose(\nfrom linalg import *;i=1j\nF8 numpy\narray(\nreshape(\narange(\nlinspace(\nsolve(\neig(\ninv(\nfrom numpy import *;i=1j\nF9 arit\npow(\nisprime(\nnextprime(\nifactor(\ngcd(\nlcm(\niegcd(\nfrom arit import *\nF< color\nred\nblue\ngreen\ncyan\nyellow\nmagenta\nblack\nwhite\nF; draw\nclear_screen();\nshow_screen();\nset_pixel(\ndraw_line(\ndraw_rectangle(\n\ndraw_circle(\ndraw_string(\nfrom graphic import *\nF: plot\nclf()\nplot(\ntext(\narrow(\nscatter(\nbar(\nshow()\nfrom matplotl import *\nF= list\nlist(\nrange(\nlen(\nappend(\nzip(\nsorted(\nmap(\nreversed(\nF> prog\n|\n&\n#\nhex(\nbin(\ndebug(\nfrom cas import *\ncaseval(\"\")\n";
   
@@ -8930,7 +11326,11 @@ namespace xcas {
       }
 #endif
       if (key!=KEY_CTRL_PRGM && key!=KEY_CHAR_FRAC)
-	translate_fkey(key);    
+	translate_fkey(key);
+      if (key==KEY_CHAR_NORMAL)
+	key=KEY_CTRL_F15;
+      if (key==KEY_CHAR_FACTOR)
+	key=KEY_CTRL_F16;
       //char keylog[32];sprint_int(keylog,key); puts(keylog);
       show_status(text,search,replace);
       int & clipline=text->clipline;
@@ -9061,7 +11461,7 @@ namespace xcas {
 	  const char * adds;
 #if 1
 	  if ( (key>=KEY_CTRL_F1 && key<=KEY_CTRL_F4) ||
-	       (key >= KEY_CTRL_F6 && key <= KEY_CTRL_F14)
+	       (key >= KEY_CTRL_F6 && key <= KEY_CTRL_F16)
 	       ){
 	    string le_menu;
 	    if (xcas_python_eval==1)//text->python?
@@ -9069,7 +11469,7 @@ namespace xcas {
 	    if (xcas_python_eval<=0)
 	      le_menu="F1 test\nif \nelse \n<\n>\n==\n!=\nand\nor\nF2 loop\nfor \nfor in\nrange(\nwhile \nbreak\nf(x):=\nreturn \nvar\nF4 misc\n;\n:\n_\n!\n%\n&\nprint(\ninput(\nF6 tortue\navance\nrecule\ntourne_gauche\ntourne_droite\nrond\ndisque\nrepete\nefface\nF7 lin\nmatrix(\ndet(\nmatpow(\nranm(\nrref(\ntran(\negvl(\negv(\nF9 arit\n mod \nirem(\nifactor(\ngcd(\nisprime(\nnextprime(\npowmod(\niegcd(\nF< plot\nplot(\nplotseq(\nplotlist(\nplotparam(\nplotpolar(\nplotfield(\nhistogram(\nbarplot(\nF: misc\n<\n>\n_\n!\n % \nrand(\nbinomial(\nnormald(\nF8 cplx\nabs(\narg(\nre(\nim(\nconj(\ncsolve(\ncfactor(\ncpartfrac(\n";
 	    if (xcas_python_eval>=0)
-	      le_menu += "F= list\nmakelist(\nrange(\nseq(\nlen(\nappend(\nranv(\nsort(\napply(\nF; real\nexact(\napprox(\nfloor(\nceil(\nround(\nsign(\nmax(\nmin(\nF> prog\n;\n:\n\\\n&\n?\n!\ndebug(\npython(\n";
+	      le_menu += "F= list\nmakelist(\nrange(\nseq(\nlen(\nappend(\nranv(\nsort(\napply(\nF; real\nexact(\napprox(\nfloor(\nceil(\nround(\nsign(\nmax(\nmin(\nF> prog\n;\n:\n\\\n&\n?\n!\ndebug(\npython(\nF? geo\npoint(\nline(\nsegment(\ncircle(\ntriangle(\nplane(\nsphere(\nsingle_inter(\nF@ color\ncolor=\nred\ncyan\ngreen\nblue\nmagenta\nyellow\nlegend(";
 	    const char * ptr=console_menu(key,(char*)(le_menu.c_str()),2);
 	    if (!ptr){
 	      show_status(text,search,replace);
@@ -10785,8 +13185,14 @@ namespace xcas {
 	  if (Line[Current_Line].start_col > 0){
 	    if (Cursor.x > 1)
 	      Cursor.x--;
-	    else
-	      Line[Current_Line].start_col--;
+	    else {
+	      int dx=COL_DISP_MAX/3;
+	      if (Line[Current_Line].start_col>=dx){
+		Line[Current_Line].start_col-=dx;
+		Cursor.x += dx-1;
+	      } else
+		Line[Current_Line].start_col--;
+	    }
 	    break;
 	  }
 	  if (Cursor.x > 0){
@@ -10811,8 +13217,13 @@ namespace xcas {
 	  if (Line[Current_Line].disp_len - Line[Current_Line].start_col > COL_DISP_MAX){
 	    if (Cursor.x < COL_DISP_MAX - 1)
 	      Cursor.x++;
-	    else
-	      Line[Current_Line].start_col++;
+	    else {
+	      int dx=COL_DISP_MAX/3;
+	      if (dx>Cursor.x)
+		dx=Cursor.x;
+	      Line[Current_Line].start_col+=dx;
+	      Cursor.x -= (dx-1);
+	    }
 	    break;	  
 	  }
 	  if (Cursor.x < Line[Current_Line].disp_len - Line[Current_Line].start_col){
@@ -11873,7 +14284,7 @@ namespace xcas {
 	      break;
 	    }
 	    if (smallmenu.selection==5) {
-#if SIMU
+#if 0 // SIMU
 	      // simulator debug load calc.nws into scriptstore
 	      void * ptr=ion_storage();
 	      FILE * f=fopen("calc.nws","r");
@@ -12406,7 +14817,7 @@ namespace xcas {
       
       if ( active_app==0 &&
 	   ((input_key >= KEY_CTRL_F1 && input_key <= KEY_CTRL_F6) ||
-	    (input_key >= KEY_CTRL_F7 && input_key <= KEY_CTRL_F12) )
+	    (input_key >= KEY_CTRL_F7 && input_key <= KEY_CTRL_F16) )
 	   ){
 	Console_Disp(1,0);
 	key=input_key;
@@ -13045,6 +15456,9 @@ namespace xcas {
       }
     }
     restore_session(sessionname,contextptr);
+#ifdef SIMU
+    giac::set_language(lang,contextptr);
+#endif
     giac::angle_radian(os_get_angle_unit()==0,contextptr);
     //GetKey(&key);
     Console_Disp(1,contextptr);

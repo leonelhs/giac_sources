@@ -2686,6 +2686,10 @@ namespace giac {
     unary_function_ptr u=e._SYMBptr->sommet;
     gen f=e._SYMBptr->feuille,a,b;
     // particular case for ^, _FUNCnd arg must be constant
+    if ( ((intmode & 4)==0) && u==at_pow && f[0].is_symb_of_sommet(at_pow)){
+      e=symbolic(at_pow,makesequence(f[0]._SYMBptr->feuille[0],f[0]._SYMBptr->feuille[1]*f[1]));
+      return integrate_id_rem(e,gen_x,remains_to_integrate,contextptr,intmode);
+    }
     if ( (u==at_pow) && is_constant_wrt(f._VECTptr->back(),gen_x,contextptr) && is_linear_wrt(f._VECTptr->front(),gen_x,a,b,contextptr) ){
       if ( (intmode & 2)==0)
 	gprintf(step_linear,gettext("Integrate %gen, a linear expression u=%gen to a constant power n=%gen,\nIf n=-1 then ln(u)/a else u^(n+1)/((n+1)*%gen)"),makevecteur(e,a*gen_x+b,f._VECTptr->back(),a),contextptr);
@@ -2715,7 +2719,7 @@ namespace giac {
       vecteur subst1,subst2;
       surd2pow(e,subst1,subst2,contextptr);
       gen g=subst(e,subst1,subst2,false,contextptr);
-      g=integrate_id_rem(g,gen_x,remains_to_integrate,contextptr,intmode);
+      g=integrate_id_rem(g,gen_x,remains_to_integrate,contextptr,intmode | 4);
       remains_to_integrate=subst(remains_to_integrate,subst2,subst1,false,contextptr);
       g=subst(g,subst2,subst1,false,contextptr);
       return g;
@@ -6542,11 +6546,11 @@ namespace giac {
       }
       // accept or reject current step and compute dt
       double err=rk_error(y_final4,y_final5,yt,contextptr);
-      gen hopt=.9*tstep*pow(tolerance/err,.2,contextptr);
-      if (err==0 || is_undef(hopt))
+      gen hopt=err==0?tstep:.9*tstep*pow(tolerance/err,.2,contextptr);
+      if (is_undef(hopt))
 	break;
       if (debug_infolevel>5)
-	CERR << nstep << ":" << t_e << ",y5=" << y_final5 << ",y4=" << y_final4 << " " << tstep << " hopt=" << hopt << " err=" << err << '\n';
+	CERR << nstep << ":" << t_e << ",y5=" << y_final5 << ",y4=" << y_final4 << " " << tstep << " tstep (optimal)=" << hopt << " err=" << err << '\n';
       if (is_strictly_greater(err,tolerance,contextptr)){
 	// reject step
 	tstep=hopt._DOUBLE_val;

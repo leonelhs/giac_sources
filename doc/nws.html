@@ -87,7 +87,9 @@ overflow:auto
 <h1>Kit de connection Numworks non verrouill&eacute;e</h1>
 <a href="nws_en.html">English version</a><br>
 <b>Attention, ne faites pas de mise &agrave; jour depuis le site de Numworks!</b> <button
-onclick="let field=$id('update'); if (field.style.display=='block') field.style.display='none'; else field.style.display='block'">+ d'infos</button>
+onclick="let field=$id('update'); if (field.style.display=='block')
+field.style.display='none'; else field.style.display='block'">+
+d'infos</button>
 <div id='update' style="display:none">
   Attention, toute mise &agrave; jour sur le site de Numworks verrouillera
 votre calculatrice et la rendra 
@@ -114,7 +116,12 @@ vous arretez les maths, vous pourrez revendre votre calculatrice CAS
 sur le march&eacute; d'occasion &agrave; un prix plus &eacute;lev&eacute;!
 </div>
 <hr>
-
+Si cette page ne fonctionne pas normalement,
+<a
+    href="https://fr.wikipedia.org/wiki/Aide:Purge_du_cache_du_navigateur"
+    target="_blank">videz le cache du
+navigateur</a> et r&eacute;essayez.
+<hr>
 <ul id="main" class="b">
   <li> <button class="bouton" onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)">D&eacute;tecter</button>
 la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
@@ -140,14 +147,20 @@ la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
   : envoie un script (extension <tt>.py</tt>) ou restaure un backup
   (<tt>.nws</tt>) vers la calculatrice.
   <li> 
-  <button
-  onclick="UI.numworks_install_delta();">Installation
-  KhiCAS (17/10/2021)</button>: sur votre calculatrice Numworks
+  Installation <button
+  onclick="UI.numworks_install_delta();">
+  Khi+KhiCAS (1/12/2021)</button>: sur votre calculatrice Numworks
   N0110. <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html">Documentation</a>,
   <a href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec45">Licences</a>,
   <a
   href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/numworks/khicasnw.html#sec47">Source</a>.
+  <li> Mise &agrave; jour :
+  <button onclick="UI.numworks_getarchive(0);">KhiCAS stable</button>,
+  <button onclick="UI.numworks_getarchive(1);">KhiCAS alpha</button>,
+  <button onclick="UI.numworks_install_delta(1,1);">Khi</button>
+  <li> <button onclick="UI.numworks_getarchive('nwsflash.tar',0)">Archiver la
+  flash </button>de la Numworks 
   <li> <button
   onclick="if (confirm(UI.langue==-1?'Veuillez confirmer que l\'installation de cette archive personnalisee est sous votre responsabilite.':'Please confirm that installing a custom archive is under your responsability.')) $id('persoinit').style.display='inline'">Flash
   personnalis&eacute;e</button> (<button
@@ -158,6 +171,8 @@ la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
     <button onclick="UI.numworks_gettar(1)">calculatrice→</button>
     ou
     <button onclick="UI.numworks_gettar(0)">KhiCAS</button>
+    ou
+    <button onclick="UI.numworks_gettar(-1)">KhiCAS alpha</button>
     ou
   <input id="loadtarinput" accept=".tar" type="file"
   title="Cliquer ici pour charger un fichier archive (.tar)"
@@ -291,7 +306,7 @@ MIT). Cette page utilise aussi
 
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Sun Oct 17 17:30:21 CEST 2021 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Wed Dec  1 20:31:20 CET 2021 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
     if (window.location.href.substr(0, 4) == "http") {

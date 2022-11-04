@@ -645,7 +645,7 @@ namespace giac {
     // Pls do not use this constructor unless you know exactly what you do!!
     gen(ref_mpz_t * mptr);
 #ifdef DOUBLEVAL
-    gen(double d): type(_DOUBLE_),_DOUBLE_val(d) {};
+    inline gen(double d): type(_DOUBLE_),_DOUBLE_val(d) {};
 #else
     // may not work on ia64 with -O2
     gen(double d);

@@ -2404,7 +2404,7 @@ namespace xcas {
 	}
 	else {
 	  if (inside){
-	    in=apply(in,interval2deuxpoints);
+	    in=giac::apply(in,interval2deuxpoints);
 	    tmp=logisreg?in:symbolic(at_matrix,makevecteur(r2-r1,vc.size(),in));
 	  }
 	  else {

@@ -26,6 +26,7 @@
 
 // options to control how Micro Python is built
 
+// #define MP_ERROR_TEXT(x) (x)
 #define MICROPY_ALLOC_PATH_MAX      (128)
 #define MICROPY_EMIT_ARM            (1)
 #define MICROPY_ENABLE_GC           (1)
@@ -111,6 +112,7 @@ extern const struct _mp_obj_module_t mp_module_turtle;
 extern const struct _mp_obj_module_t mp_module_matplotl;
 extern const struct _mp_obj_module_t mp_module_linalg;
 extern const struct _mp_obj_module_t mp_module_time;
+extern const struct _mp_obj_module_t ulab_user_cmodule;
 
 #define MICROPY_PORT_BUILTIN_MODULES \
 	{ MP_ROM_QSTR(MP_QSTR__os), (mp_obj_t) &mp_module_os }, \
@@ -126,7 +128,8 @@ extern const struct _mp_obj_module_t mp_module_time;
 	{ MP_ROM_QSTR(MP_QSTR_casioplot), (mp_obj_t) &mp_module_graphic }, \
 	{ MP_ROM_QSTR(MP_QSTR_kandinsky), (mp_obj_t) &mp_module_graphic }, \
 	{ MP_ROM_QSTR(MP_QSTR_graphic), (mp_obj_t) &mp_module_graphic }, \
-        { MP_ROM_QSTR(MP_QSTR_time), (mp_obj_t) &mp_module_time },
+        { MP_ROM_QSTR(MP_QSTR_time), (mp_obj_t) &mp_module_time }, \
+        { MP_ROM_QSTR(MP_QSTR_ulab), (mp_obj_t) &ulab_user_cmodule },
 
 #ifdef __x86_64__
 typedef long mp_int_t;

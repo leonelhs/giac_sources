@@ -1218,7 +1218,9 @@ that presents tableaunoir (in french)</a>
   
   <h2>Lecture seule</h2>
 <button id="readonly_yes" onclick="UI.set_readonly(true); Menu.hide();">Oui</button>
-  <button id="readonly_no" onclick="UI.set_readonly(false) ; Menu.hide();">Non</button>
+  <button onclick="UI.set_readonly(true); BoardManager.cancel(0); Menu.hide();">Pr&eacute;sentation</button>
+  <button id="readonly_no" onclick="UI.set_readonly(false) ; BoardManager.redo(0); Menu.hide();">Non</button>
+
 
   <h2>Export</h2>
   <button id="png_export" onclick="UI.png_export($id('export_filename').value+'.png')">PNG</button>
@@ -1550,6 +1552,18 @@ Port&eacute;e musicale</button>
     <tt>giactableau.js</tt>, vous pouvez le modifier pour utiliser un
     autre serveur.
   </ul>
+
+  <h2>Mode lecture seule et pr&eacute;sentation</h2>
+  Lorsque vous ouvrez un tableau existant, le mode lecture seule est
+  actif pour &eacute;viter une modification accidentelle. Si vous
+  voulez compl&eacute;ter un tableau existant, vous pouvez passer
+  en mode normal en tapant w (pour write) ou depuis Menu, sous-menu
+  Tableau. Vous pouvez aussi
+  depuis Menu/Tableau cliquer sur Pr&eacute;sentation, ce qui efface
+  toutes les &eacute;critures manuscrites, vous pouvez alors les faire
+  apparaitre progressivement en tapant sur y ou Ctrl-Y (une par une)
+  ou la touche d'espace (5 par 5). La touche z ou Ctrl-Z
+  permet de revenir en arri&egrave;re.
   
   <h2>Comment obtenir de l'aide sur une commande Xcas?</h2>
   Lorsque vous &eacute;ditez un magnet Xcas, placez le curseur apr&egrave;s

@@ -462,7 +462,9 @@ namespace giac {
 #ifdef GIAC_HAS_STO_38
     usleep(10);
 #else
+#ifndef _MINGW_H
     usleep(1000);
+#endif
 #endif
 #endif
 #if !defined NO_STDEXCEPT && !defined EMCC
@@ -2358,7 +2360,11 @@ namespace giac {
   // double(int) does not seem to work under GNUWINCE
   double int2double(int i){
     if (i<0){
+#if defined WIN32 && !defined __CYGWIN__ // INT_MAX not defined with cygwin
+      if (i<-INT_MAX) return -1.0-INT_MAX;
+#else
       if (i<-RAND_MAX) return -1.0-RAND_MAX;
+#endif
       return -_int2double(-i);
     }
     else
@@ -14306,6 +14312,7 @@ void sprint_double(char * s,double d){
   const char * gen::dbgprint() const { return "Done";}
 #else
 #if defined(VISUALC) && !defined(MS_SMART)
+#include <atlbase.h>
   const char * gen::dbgprint() const { ATLTRACE2("%s\r\n", this->print(0).c_str()); return "Done";}
 #else
   const char * gen::dbgprint() const{    

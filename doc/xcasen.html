@@ -144,6 +144,9 @@
     .cas {
       border-color: cyan;
     }
+    .xcas {
+      border-color: magenta;
+    }
   </style>
   <script>
       // Redirect to HTTPS page if not testing locally
@@ -3506,6 +3509,10 @@ If you want to see informations while a computation is running, run first
   <span>
             <button class="bouton" style="color:green" id="button_ok" onclick="if (UI.assistant_ok()) return; if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'',false);}" title="Eval commandline">
             <strong>&nbsp;&nbsp;&#x2705;&nbsp;&nbsp;</strong></button>
+  <button class="bouton xcas" title="Xcas evaluation" onclick="UI.micropy=0; UI.python_mode=0;$id('button_ok').click();">x</button>
+  <button class="bouton cas" title="Xcas Python mode evaluation" onclick="UI.micropy=0; UI.python_mode=1;$id('button_ok').click();">Cas</button>
+  <button class="bouton micropy" title="MicroPython evaluation"  onclick="UI.micropy=1; UI.python_mode=4;$id('button_ok').click();">Py</button>
+  <button class="bouton js" title="Javascript evaluation" onclick="UI.micropy=-1; UI.python_mode=0;$id('button_ok').click();">JS</button>
             <button class="bouton" onmousedown="event.preventDefault()"
                     onClick="UI.completion(cmentree)" title="Short help on a command">&nbsp;?&nbsp;</button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)" title="Cursor left">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Cursor right"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Cursor up">&nbsp;↑&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Cursor down">&nbsp;&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.indentline(UI.focused)" title="Indent">→|</button>

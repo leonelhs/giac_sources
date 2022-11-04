@@ -4,57 +4,63 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Drawing unit vectors: Ox_3d_unit_vector Oy_3d_unit_vector Oz_3d_unit_vector frame_3d
-
-
-
-</title>
+<title>The trace of a geometric object: trace</title>
 </head>
 <body >
 <a href="cascmd_en852.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en854.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1143" class="subsection">14.3.1  Drawing unit vectors: <span style="font-family:monospace">Ox_3d_unit_vector</span> <span style="font-family:monospace">Oy_3d_unit_vector</span> <span style="font-family:monospace">Oz_3d_unit_vector</span> <span style="font-family:monospace">frame_3d</span>
-<a id="hevea_default1581"></a>
-<a id="hevea_default1582"></a>
-<a id="hevea_default1583"></a>
-<a id="hevea_default1584"></a></h3>
-<p>The <span style="font-family:monospace">Ox_3d_unit_vector</span> command takes no arguments and draws
-the unit vector in the <span style="font-style:italic">x</span>-direction on a three-dimensional graphic screen.</p><p><br>
+<h3 id="sec1141" class="subsection">13.18.3  The trace of a geometric object: <span style="font-family:monospace">trace</span></h3>
+<p>
+<a id="hevea_default1581"></a></p><p>The <span style="font-family:monospace">trace</span> command draws the trace of an object.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">trace</span> takes one argument:<br>
+ <span style="font-style:italic">G</span>, a geometric object which depends on a parameter.
+</li><li class="li-itemize"><span style="font-family:monospace">trace(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> draws the trace of <span style="font-style:italic">G</span> as the parameter is
+changed or the object is moved in <span style="font-family:monospace">Pointer</span> mode.
+</li></ul><p><br>
 </p><p><span style="font-weight:bold">Example.</span><br>
+For example, to find the locus of points equidistant from a line
+<span style="font-family:monospace">D</span> and a point <span style="font-family:monospace">F</span>, you can create a point <span style="font-family:monospace">H</span> on 
+the line <span style="font-family:monospace">D</span>. To do this, open a graphic
+window (<span style="font-family:monospace">Alt-G</span>) and type in the following commands, one per
+line.</p><p>First, create a line <span style="font-family:monospace">D</span> (using sample points) and a
+sample point <span style="font-family:monospace">F</span>.<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">Ox_3d_unit_vector()</span>
-</div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en285.png">
-</div><p><br>
-</p><p>Similarly, the <span style="font-family:monospace">Oy_3d_unit_vector</span> and
-<span style="font-family:monospace">Oz_3d_unit_vector</span> commands draw the unit vector in the <span style="font-style:italic">y</span>
-and <span style="font-style:italic">z</span> directions, respectively.</p><p>These commands have no parameters, but can be decorated with the
-<span style="font-family:monospace">legend</span> command.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">A:= point(-3-i)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">B:= point(1/2 + 2*i)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">D:= line(A,B,color=0)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">F:= point(4/3,1/2,color=0)</span>
+</td></tr>
+</table>
+</div><p>Then create a point <span style="font-family:monospace">H</span> on the line <span style="font-family:monospace">D</span> which you can move
+around.<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">Ox_3d_unit_vector(), legend(point([1,0,0]),"unit x vector",blue)</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">assume(a=[0.7,-5,5,0.1])</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">H:= element(D,a)</span>
+</td></tr>
+</table>
 </div><p>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en286.png">
-</div><p><br>
-</p><p>The <span style="font-family:monospace">frame_3d</span> command draws all three vectors simultaneously.</p><p><br>
-</p><p><span style="font-weight:bold">Example.</span><br>
+To find a point equidistant from <span style="font-family:monospace">D</span> and <span style="font-family:monospace">F</span>, find the
+point <span style="font-family:monospace">M</span> where the perpendicular to <span style="font-family:monospace">D</span> (at <span style="font-family:monospace">H</span>)
+intersects the perpendicular bisector to <span style="font-family:monospace">HF</span>, and trace that
+point.<br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">frame_3d()</span>
+<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">T:= perpendicular(H,D)</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">M:= single_inter(perpen_bisector(H,F),T))</span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" > <span style="font-family:monospace">trace(M)</span>
+</td></tr>
+</table>
 </div><p>
-<span style="font-style:italic">Output:</span>
-<span style="font-style:italic">Output:</span>
-</p><div class="center">
-<img src="cascmd_en287.png">
-</div>
+Then as the point <span style="font-family:monospace">H</span> on the line moves (by changing the value
+of <span style="font-family:monospace">a</span> with the slider), you will get the trace of <span style="font-family:monospace">M</span>.</p><p><br>
+</p><p>To erase traces, add traces, activate or deactivate them, use the
+<span style="font-family:monospace">Trace</span> menu of the <span style="font-family:monospace">M</span> button located on the right side
+of the geometry screen.</p>
 <hr>
 <a href="cascmd_en852.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

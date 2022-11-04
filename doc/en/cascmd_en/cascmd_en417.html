@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Selecting elements of a list: select
+<title>Making a list with zeros: newList
 </title>
 </head>
 <body >
@@ -12,27 +12,22 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en418.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec502" class="subsection">6.40.5  Selecting elements of a list: <span style="font-family:monospace">select</span>
+<h3 id="sec504" class="subsection">6.40.3  Making a list with zeros: <span style="font-family:monospace">newList</span>
 <a id="hevea_default704"></a></h3>
-<p>The <span style="font-family:monospace">select</span> command selects elements of a list meeting given
-conditions.
+<p>The <span style="font-family:monospace">newList</span> makes a list of all zeros.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">select</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">f</span>, a boolean function.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>, a list.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">select(</span><span style="font-style:italic">f</span>,<span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns the sublist of <span style="font-style:italic">L</span> consisting
-of the elements <span style="font-style:italic">c</span> such that <span style="font-style:italic">f</span>(<span style="font-style:italic">c</span>)<span style="font-family:monospace">==true</span>.
+<span style="font-family:monospace">newList</span> takes one argument:<br>
+ <span style="font-style:italic">n</span>, a positive integer.
+</li><li class="li-itemize"><span style="font-family:monospace">newList(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a list of <span style="font-style:italic">n</span> zeros.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Example.</span><br>
 <span style="font-style:italic">Input:</span>
 </p><div class="center">
-<span style="font-family:monospace">select(x-&gt;(x&gt;=2),[0,1,2,3,1,5])</span>
+<span style="font-family:monospace">newList(3)</span>
 </div><p>
 <span style="font-style:italic">Output:</span>
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
-⎣</td><td class="dcell">2,3,5</td><td class="dcell">⎤<br>
+⎣</td><td class="dcell">0,0,0</td><td class="dcell">⎤<br>
 ⎦</td></tr>
 </table>
 <hr>

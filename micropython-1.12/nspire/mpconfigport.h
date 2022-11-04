@@ -107,6 +107,7 @@ extern const struct _mp_obj_module_t mp_module_turtle;
 extern const struct _mp_obj_module_t mp_module_matplotl;
 extern const struct _mp_obj_module_t mp_module_linalg;
 extern const struct _mp_obj_module_t mp_module_arit;
+extern const struct _mp_obj_module_t ulab_user_cmodule;
 
 #define MICROPY_PORT_BUILTIN_MODULES \
 	{ MP_OBJ_NEW_QSTR(MP_QSTR__os), (mp_obj_t) &mp_module_os }, \
@@ -123,7 +124,8 @@ extern const struct _mp_obj_module_t mp_module_arit;
 	{ MP_OBJ_NEW_QSTR(MP_QSTR_turtle), (mp_obj_t) &mp_module_turtle }, \
 	{ MP_OBJ_NEW_QSTR(MP_QSTR_casioplot), (mp_obj_t) &mp_module_graphic }, \
 	{ MP_OBJ_NEW_QSTR(MP_QSTR_kandinsky), (mp_obj_t) &mp_module_graphic }, \
-	{ MP_OBJ_NEW_QSTR(MP_QSTR_graphic), (mp_obj_t) &mp_module_graphic }
+	{ MP_OBJ_NEW_QSTR(MP_QSTR_graphic), (mp_obj_t) &mp_module_graphic },\
+        { MP_ROM_QSTR(MP_QSTR_ulab), (mp_obj_t) &ulab_user_cmodule },
 
 typedef int mp_int_t;
 typedef unsigned int mp_uint_t;

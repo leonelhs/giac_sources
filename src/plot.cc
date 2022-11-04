@@ -1060,6 +1060,14 @@ namespace giac {
     char s[256];
 #ifdef KHICAS
     sprint_double(s,d);
+    // search for a decimal point in s
+    int l=strlen(s),i;
+    for (i=0;i<l;++i){
+      if (s[i]=='.')
+	break;
+    }
+    if (i+ndigits+1<l)
+      s[i+ndigits+1]=0;
 #else
     ndigits=ndigits<2?2:ndigits;
     ndigits=ndigits>15?15:ndigits;
@@ -1334,6 +1342,25 @@ namespace giac {
 
   double max_nstep=2e4;
 
+  // convert surface "folded" new format to old format
+  bool gl3dunfold(const gen & g,vecteur & v){
+    v.clear();
+    if (g.type!=_VECT) return false;
+    const vecteur & w=*g._VECTptr;
+    int s=w.size();
+    if (!s) return true;
+    if (w[0].type==_VECT && w[0]._VECTptr->size()==3){
+      v=w;
+      return true;
+    }
+    if (s%3) return false;
+    v.reserve(s/3);
+    for (int i=0;i<s;i+=3){
+      v.push_back(gen(makevecteur(w[i],w[i+1],w[i+2]),_POINT__VECT));
+    }
+    return true;
+  }
+
   gen plotfunc(const gen & f_,const gen & vars,const vecteur & attributs,int densityplot,double function_xmin,double function_xmax,double function_ymin,double function_ymax,double function_zmin, double function_zmax,int nstep,int jstep,bool showeq,const context * contextptr){
     vecteur L=andor2list(f_,contextptr);
     if (densityplot==0 && are_inequations(L)){
@@ -1577,6 +1604,8 @@ namespace giac {
       return res; // e;
     } // end 1-var function plot
 #endif
+    if (nstep==gnuplot_pixels_per_eval)
+      nstep *= 1.69;
     ck_parameter_x(contextptr);
     ck_parameter_y(contextptr);
     int s=0;
@@ -1621,8 +1650,10 @@ namespace giac {
 	nv=int(std::sqrt(double(nstep)));
       }
 #ifdef KHICAS
-      if (nu*nv>25 && densityplot!=2){
-	nu=nv=5;
+      if (nu*nv>900 && densityplot!=2){
+#if 1 // def DEVICE
+	nu=nv=30;
+#endif
       }
 #endif
       double dx=(function_xmax-function_xmin)/nu;
@@ -1738,7 +1769,13 @@ namespace giac {
 	    if (fval._DOUBLE_val>fmax)
 	      fmax=fval._DOUBLE_val;
 	  }
-	  tmp.push_back(gen(makevecteur(x,y,fval),_POINT__VECT));
+#ifdef KHICAS // FIXME format is not translatable, etc.
+	  if (!densityplot){
+	    tmp.push_back(x); tmp.push_back(y); tmp.push_back(fval);
+	  } 
+	  else
+#endif
+	    tmp.push_back(gen(makevecteur(x,y,fval),_POINT__VECT));
 	} // end j loop
 	values.push_back(gen(tmp,_GROUP__VECT));
       }
@@ -2222,6 +2259,11 @@ namespace giac {
       zmin=zmax; // if z-range is not given, then fmin/fmax will be used 
     int nstep=gnuplot_pixels_per_eval,jstep=0;
     gen attribut=default_color(contextptr);
+    if (densityplot==0 && args.type!=_VECT){
+      vecteur lname(lidnt(args));
+      if (equalposcomp(lname,vx_var) && equalposcomp(lname,y__IDNT_e))
+	return funcplotfunc(makesequence(args,makevecteur(vx_var,y__IDNT_e)),densityplot,contextptr);
+    }
     vecteur vargs(plotpreprocess(args,contextptr));
     if (is_undef(vargs))
       return vargs;
@@ -3505,7 +3547,7 @@ namespace giac {
   static define_unary_function_eval2_index (24,__pnt,&_pnt,_pnt_s,&printaspnt);
   define_unary_function_ptr5( at_pnt ,alias_at_pnt,&__pnt,0,true);
 
-  bool centre_rayon(const gen & cercle,gen & centre,gen & rayon,bool absrayon,GIAC_CONTEXT){
+  bool centre_rayon(const gen & cercle,gen & centre,gen & rayon,bool absrayon,GIAC_CONTEXT,bool detect_conic){
     gen c=remove_at_pnt(cercle);
     if (c.is_symb_of_sommet(at_hypersphere)){
       gen & f=c._SYMBptr->feuille;
@@ -3515,8 +3557,64 @@ namespace giac {
       rayon=f._VECTptr->back();
       return true;
     }
-    if ( (c.type!=_SYMB) || (c._SYMBptr->sommet!=at_cercle))
+    if ( (c.type!=_SYMB) || (c._SYMBptr->sommet!=at_cercle)){
+      if (detect_conic && c.is_symb_of_sommet(at_curve)){
+	gen & f=c._SYMBptr->feuille;
+	if (f.type!=_VECT || f._VECTptr->size()<2)
+	  return false;
+	vecteur & v=*f._VECTptr;
+	gen crat=v[0];
+	if (crat.type!=_VECT || crat._VECTptr->size()<8)
+	  return false;
+	vecteur & w=*crat._VECTptr;
+	gen eq=w[5];
+	if (is_undef(eq))
+	  return false;
+	gen x0,y0,propre,equation_reduite,ratparam,a,b,c;
+	vecteur V0,V1,param_curves;
+	int ctype=conique_reduite(eq,undef,makevecteur(x__IDNT_e,y__IDNT_e),x0,y0,V0,V1,propre,equation_reduite,param_curves,ratparam,true,contextptr,&a,&b);
+	if (ctype<2)
+	  return false;
+	a=inv(a,contextptr); b=inv(b,contextptr);
+	if (ctype==3){
+	  c=a-b;
+	  a=sqrt(a,contextptr);
+	  b=sqrt(b,contextptr);
+	  c=sqrt(c,contextptr);
+	  gen M(x0,y0);
+	  gen v0=gen(V0[0],V0[1]);
+	  centre=makevecteur(at_ellipse,M,M+c*v0,M+a*v0);
+	  rayon=makevecteur(symb_equal(a__IDNT_e,a),symb_equal(b__IDNT_e,b),symb_equal(c__IDNT_e,c),symb_equal(e__IDNT_e,c/a));
+	  return true;
+	}
+	if (ctype==4){
+	  if (is_positive(-a,contextptr)){
+	    a=-a;
+	    c=a+b;
+	    a=sqrt(a,contextptr);
+	    b=sqrt(b,contextptr);
+	    c=sqrt(c,contextptr);
+	    gen M(x0,y0);
+	    gen v1=gen(V1[0],V1[1]);
+	    centre=makevecteur(at_hyperbole,M,M+c*v1,M+b*v1);
+	    rayon=makevecteur(symb_equal(a__IDNT_e,b),symb_equal(b__IDNT_e,a),symb_equal(c__IDNT_e,c),symb_equal(e__IDNT_e,c/b));
+	    return true;
+	  }
+	  return false;
+	}
+	if (ctype==2){
+	  gen M(x0,y0); // sommet
+	  // equation_reduite y^2=-b/a*x (a and b were inverted)
+	  // 
+	  gen p=-b/a/2;
+	  gen v0=gen(V0[0],V0[1]);
+	  centre=makevecteur(at_parabole,M+p/2*v0,M);
+	  rayon=makevecteur(symb_equal(p__IDNT_e,p));
+	  return true;
+	}
+      }
       return false;
+    }
     gen diam=remove_at_pnt(c._SYMBptr->feuille._VECTptr->front());
     if (diam.type!=_VECT)
       return false;
@@ -4048,11 +4146,20 @@ namespace giac {
     if (a.type==_VECT && a.subtype==_SEQ__VECT && a._VECTptr->size()==1)
       a=a._VECTptr->front();
     a=remove_at_pnt(a);
+    if (a.type==_VECT && a._VECTptr->size()==2)
+      a=a._VECTptr->front(); // for hyperbola (2 branchs)
     gen centre,rayon;
-    if (!centre_rayon(a,centre,rayon,false,contextptr))
+    if (!centre_rayon(a,centre,rayon,false,contextptr,true))
       return gensizeerr(contextptr);
     vecteur attributs(1,default_color(contextptr));
     read_attributs(gen2vecteur(args),attributs,contextptr);
+    if (centre.type==_VECT){ 
+      // conic: return center, 1 focus, 1 point
+      vecteur w=*centre._VECTptr;
+      for (int i=1;i<w.size();++i)
+      w[i]=pnt_attrib(w[i],attributs,contextptr);
+      return w;
+    }
     return pnt_attrib(centre,attributs,contextptr);
   }
   static const char _centre_s []="center";
@@ -4068,8 +4175,10 @@ namespace giac {
 	a=a._VECTptr->front();
     }
     a=remove_at_pnt(a);
+    if (a.type==_VECT && a._VECTptr->size()==2)
+      a=a._VECTptr->front(); // for hyperbola (2 branchs)
     gen centre,rayon;
-    if (!centre_rayon(a,centre,rayon,true,contextptr))
+    if (!centre_rayon(a,centre,rayon,true,contextptr,true))
       return false;
     return rayon;
   }
@@ -6787,7 +6896,7 @@ namespace giac {
       // conique
       gen x0,y0,propre,equation_reduite,ratparam;
       vecteur V0,V1,param_curves;
-      if (!conique_reduite(eq,pointon,makevecteur(x__IDNT_e,y__IDNT_e),x0,y0,V0,V1,propre,equation_reduite,param_curves,ratparam,true,contextptr))
+      if (conique_reduite(eq,pointon,makevecteur(x__IDNT_e,y__IDNT_e),x0,y0,V0,V1,propre,equation_reduite,param_curves,ratparam,true,contextptr)<=0)
 	return false;
       vecteur res;
       int n=int(param_curves.size());
@@ -9041,7 +9150,7 @@ namespace giac {
       // supposed to be a cartesian equation in x/y
       gen x0,y0,propre,equation_reduite,ratparam;
       vecteur V0,V1,param_curves;
-      if (conique_reduite(args,undef,makevecteur(vx_var,y__IDNT_e),x0,y0,V0,V1,propre,equation_reduite,param_curves,ratparam,false,contextptr))
+      if (conique_reduite(args,undef,makevecteur(vx_var,y__IDNT_e),x0,y0,V0,V1,propre,equation_reduite,param_curves,ratparam,false,contextptr)>1)
 	return ratparam;
       return gensizeerr(contextptr);
     }
@@ -10478,25 +10587,29 @@ namespace giac {
 #if 0 // def GIAC_HAS_STO_38
     gen theta=vx_var;
 #else
-    gen theta=identificateur("t"); // t__IDNT_e;
+    gen eq,theta=identificateur("t"); // t__IDNT_e;
 #endif
     if (eitheta.type==_VECT){
       res=O+(F-O)/(4*c*abs_norm(F-O,contextptr))*pow(theta,2)+eitheta*theta;
+      gen r,i;
+      reim(res,r,i,contextptr);
+      eq=_resultant(makesequence(r-x__IDNT_e,i-y__IDNT_e,theta),contextptr);
     }
     else {
       res=O+eitheta*theta*(1+cst_i*theta/4/c);
       gen r,i;
       reim(res,r,i,contextptr);
       res=makevecteur(r,i);
+      eq=_resultant(makesequence(r-x__IDNT_e,i-y__IDNT_e,theta),contextptr);
     }
     gen ustep=_USTEP;
     ustep.subtype=_INT_PLOT;
     gen nstep=_NSTEP;
     nstep.subtype=_INT_PLOT;
 #if 0 // def GIAC_HAS_STO_38
-    res= _paramplot(gen(makevecteur(res,symb_equal(vx_var,symb_interval(-12,12)),symb_equal(nstep,60),symb_equal(ustep,0.15),symbolic(at_equal,makesequence(at_display,attributs[0]))),_SEQ__VECT),contextptr);
+    res= _paramplot(gen(makevecteur(res,symb_equal(vx_var,symb_interval(-12,12)),symb_equal(nstep,60),symb_equal(ustep,0.15),symbolic(at_equal,makesequence(at_display,attributs[0])),eq),_SEQ__VECT),contextptr);
 #else
-    res= _paramplot(gen(makevecteur(res,symb_equal(theta,symb_interval(-12,12)),symb_equal(nstep,60),symb_equal(ustep,0.15),symbolic(at_equal,makesequence(at_display,attributs[0]))),_SEQ__VECT),contextptr);
+    res= _paramplot(gen(makevecteur(res,symb_equal(theta,symb_interval(-12,12)),symb_equal(nstep,60),symb_equal(ustep,0.15),symbolic(at_equal,makesequence(at_display,attributs[0])),eq),_SEQ__VECT),contextptr);
 #endif
     return res;
   }
@@ -14631,8 +14744,11 @@ gen _vers(const gen & g,GIAC_CONTEXT){
       res.subtype=_INT_COLOR;
       return res;
     }
-    if (g.val<0)
+    if (g.val<0){
+      if (g.val<-64)
+	return turtle(contextptr).turtle_width;
       turtle(contextptr).turtle_width=-g.val;
+    }
     else
       turtle(contextptr).color=g.val;
     turtle(contextptr).radius = 0;
@@ -14837,6 +14953,45 @@ gen _vers(const gen & g,GIAC_CONTEXT){
 
   gen _polygone_rempli(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+    static int turtle_fill_begin=-1,turtle_fill_color=-1;
+    if (g.type==_VECT && g._VECTptr->size()==3){
+      turtle_fill_color=_rgb(g,contextptr).val;
+      return change_subtype(turtle_fill_color,_INT_COLOR);
+    }
+    if (g.type==_INT_ && g.subtype==_INT_COLOR){
+      turtle_fill_color= g.val;
+      return g;
+    }
+    if (g.type==_VECT && !g._VECTptr->empty() && g._VECTptr->front().type==_INT_){
+      if (g._VECTptr->front().val>=0)
+	turtle_fill_color= g._VECTptr->front().val;
+      return change_subtype(turtle_fill_color,_INT_COLOR);
+    }
+    if (g.type==_VECT && g._VECTptr->empty()){
+      if (turtle_fill_begin<0){
+	if (g.subtype==0)
+	  turtle_fill_begin=turtle_stack(contextptr).size();
+	else
+	  return gensizeerr();
+	return 1;
+      }
+      int c=turtle(contextptr).color;
+      if (turtle_fill_color>=0)
+	_crayon(turtle_fill_color,contextptr);
+      int n=turtle_stack(contextptr).size()- turtle_fill_begin;     
+      turtle_fill_begin=-1;
+      turtle(contextptr).radius=-absint(n);
+      gen res=update_turtle_state(true,contextptr);
+      if (turtle_fill_color>=0){
+	turtle(contextptr).color=c;
+	res=update_turtle_state(true,contextptr);
+      }
+      return res;
+    }
+    if (is_zero(g)){
+      turtle_fill_begin=turtle_stack(contextptr).size();
+      return 1;
+    }
     if (g.type==_INT_){
       turtle(contextptr).radius=-absint(g.val);
       if (turtle(contextptr).radius<-1)

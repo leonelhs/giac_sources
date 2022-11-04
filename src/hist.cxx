@@ -1156,6 +1156,36 @@ static void cb_Xcas_nw_install(Fl_Menu_*, void*) {
              };
 }
 
+static void cb_Xcas_nw_update(Fl_Menu_*, void*) {
+  char fname[]="backup.nws";
+             if (!dfu_get_scriptstore(fname))
+               fl_alert("%s",gettext("Unable to backup calculator"));
+	     else {
+              std::string prefix=giac::giac_aide_dir()+"doc/";
+              if (!dfu_update_khicas((prefix+"apps.tar").c_str()))
+                fl_alert("%s",gettext("Unable to update KhiCAS"));
+              else {
+                fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
+		dfu_send_scriptstore(fname);
+              }
+             };
+}
+
+static void cb_Xcas_nw_alpha(Fl_Menu_*, void*) {
+  char fname[]="backup.nws";
+             if (!dfu_get_scriptstore(fname))
+               fl_alert("%s",gettext("Unable to backup calculator"));
+	     else {
+              std::string prefix=giac::giac_aide_dir()+"doc/";
+              if (!dfu_update_khicas((prefix+"appsalpha.tar").c_str()))
+                fl_alert("%s",gettext("Unable to update KhiCAS"));
+              else {
+                fl_alert(gettext("Install success. Reset the calculator, then connect to restore backup %s"),fname);
+		dfu_send_scriptstore(fname);
+              }
+             };
+}
+
 static void cb_Xcas_nw_rescue(Fl_Menu_*, void*) {
   int i=fl_ask(gettext("Connect the calculator,\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\nThe screen should be down and the led should be red")); if (!i) return;
              std::string prefix=giac::giac_aide_dir()+"doc/";
@@ -2144,7 +2174,9 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Backup Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_backup, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Restore Numworks from backup", 0,  (Fl_Callback*)cb_Xcas_nw_restore, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Customize flash", 0,  (Fl_Callback*)cb_Xcas_Handle_nws_flash, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
- {"Install KhiCAS on Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_install, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Install Khi and KhiCAS on Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_install, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Update KhiCAS on Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_update, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+ {"Test KhiCAS Alpha on Numworks calculator", 0,  (Fl_Callback*)cb_Xcas_nw_alpha, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Rescue mode (calculator assistance)", 0,  (Fl_Callback*)cb_Xcas_nw_rescue, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Certification du firmware Numworks N0110", 0,  (Fl_Callback*)cb_Xcas_nw_certify, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
  {"Certification N0110 avec test R/W", 0,  (Fl_Callback*)cb_Xcas_nw_certify_overwrite, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
@@ -3463,7 +3495,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<365; i++)
+        for ( ; i<367; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

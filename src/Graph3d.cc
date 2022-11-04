@@ -452,7 +452,7 @@ namespace xcas {
     }
     return true;
   }
-
+  
   void glsurface(const gen & surfaceg,int draw_mode,Fl_Image * texture,GIAC_CONTEXT){
     if (!ckmatrix(surfaceg,true))
       return;

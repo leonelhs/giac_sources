@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Equilateral triangles in the plane: equilateral_triangle
+<title>Right triangles in the plane: right_triangle
 </title>
 </head>
 <body >
@@ -12,53 +12,58 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en778.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dequi" class="subsection">13.8.4  Equilateral triangles in the plane: <span style="font-family:monospace">equilateral_triangle</span>
+<h3 id="ssec:2dright" class="subsection">13.8.3  Right triangles in the plane: <span style="font-family:monospace">right_triangle</span>
 <a id="hevea_default1494"></a></h3>
-<p>See Section <a href="cascmd_en875.html#ssec%3A3dequi">14.7.4</a> for equilateral triangles in space.</p><p>The <span style="font-family:monospace">equilateral_triangle</span> command creates equilateral
-triangles.
+<p>See Section <a href="cascmd_en875.html#ssec%3A3dright">14.7.3</a> for right triangles in space.</p><p>The <span style="font-family:monospace">right_triangle</span> command creates right triangles.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">equilateral_triangle</span> takes two mandatory arguments
-and one optional argument:
+<span style="font-family:monospace">right_triangle</span> takes three mandatory arguments and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>, two points.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">var</span>, a variable name.
+</li><li class="li-itemize"><span style="font-style:italic">k</span>, a nonzero real number.
+</li><li class="li-itemize">Optionally <span style="font-style:italic">var</span>, a variable name.
 </li></ul>
-</li><li class="li-itemize"><span style="font-style:italic">equilateral_triangle(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span> ⟨<span style="font-style:italic">var</span>⟩<span style="font-family:monospace">)</span>
-returns and draws the equilateral <span style="font-style:italic">ABC</span>, where <span style="font-style:italic">AB</span> to <span style="font-style:italic">AC</span> is
-counterclockwise.<br>
- With the argument <span style="font-style:italic">var</span>, <span style="font-style:italic">C</span> will be assigned to
+</li><li class="li-itemize"><span style="font-style:italic">right_triangle(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">k</span> ⟨<span style="font-style:italic">var</span>⟩<span style="font-family:monospace">)</span>
+returns and draws the right triangle <span style="font-style:italic">ABC</span>, with the right angle
+at <span style="font-style:italic">A</span> and with length(<span style="font-style:italic">AC</span>)=|<span style="font-style:italic">k</span>|·length(<span style="font-style:italic">AB</span>).
+If <span style="font-style:italic">k</span> &gt; 0, then <span style="font-style:italic">AB</span> to <span style="font-style:italic">AC</span> is counterclockwise; if <span style="font-style:italic">k</span> &lt; 0 then
+<span style="font-style:italic">AB</span> to <span style="font-style:italic">AC</span> is clockwise.<br>
+ With the argument <span style="font-style:italic">var</span>, <span style="font-style:italic">c</span> will be assigned to
 <span style="font-style:italic">var</span>.
 </li></ul><p><br>
 </p><p><span style="font-weight:bold">Examples.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">equilateral_triangle(0,2)</span>
+<span style="font-family:monospace">right_triangle(i,-i,2)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <div class="center">
-<img src="cascmd_en193.png">
+<img src="cascmd_en190.png">
 </div>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">equilateral_triangle(0, 2, C)</span>
+<span style="font-family:monospace">right_triangle(i,-i,-2)</span>
 </div>
 <span style="font-style:italic">Output:</span>
 <div class="center">
-<img src="cascmd_en194.png">
+<img src="cascmd_en191.png">
+</div>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">right_triangle(i, -i, 2, C)</span>
+</div>
+<span style="font-style:italic">Output:</span>
+<div class="center">
+<img src="cascmd_en192.png">
 </div>
 <span style="font-style:italic">Input:</span>
 <div class="center">
 <span style="font-family:monospace">affix(C)</span>
 </div>
 <span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
-⎜<br>
-⎝</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
-</table></td><td class="dcell"> <span style="font-style:italic">i</span>+1</td><td class="dcell">⎞<br>
-⎟<br>
-⎠</td></tr>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  4 + <span style="font-style:italic">i</span>
+</td></tr>
 </table>
 </li></ul>
 <hr>

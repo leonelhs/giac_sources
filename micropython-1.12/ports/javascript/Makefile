@@ -49,6 +49,40 @@ SRC_C = \
 	modutime.c \
 	graphic.c file.c \
 
+USERMODULES_DIR := ulab
+
+CFLAGS_USERMOD += -I$(USERMODULES_DIR)
+
+override CFLAGS_EXTRA += -DMODULE_ULAB_ENABLED=1
+
+SRC_C += $(USERMODULES_DIR)/scipy/linalg/linalg.c
+SRC_C += $(USERMODULES_DIR)/scipy/optimize/optimize.c
+SRC_C += $(USERMODULES_DIR)/scipy/signal/signal.c
+SRC_C += $(USERMODULES_DIR)/scipy/special/special.c
+SRC_C += $(USERMODULES_DIR)/ndarray_operators.c
+SRC_C += $(USERMODULES_DIR)/ulab_tools.c
+SRC_C += $(USERMODULES_DIR)/ndarray.c
+SRC_C += $(USERMODULES_DIR)/numpy/ndarray/ndarray_iter.c
+SRC_C += $(USERMODULES_DIR)/ndarray_properties.c
+SRC_C += $(USERMODULES_DIR)/numpy/approx.c
+SRC_C += $(USERMODULES_DIR)/numpy/compare.c
+SRC_C += $(USERMODULES_DIR)/ulab_create.c
+SRC_C += $(USERMODULES_DIR)/numpy/fft/fft.c
+SRC_C += $(USERMODULES_DIR)/numpy/fft/fft_tools.c
+SRC_C += $(USERMODULES_DIR)/numpy/filter.c
+SRC_C += $(USERMODULES_DIR)/numpy/linalg/linalg.c
+SRC_C += $(USERMODULES_DIR)/numpy/linalg/linalg_tools.c
+SRC_C += $(USERMODULES_DIR)/numpy/numerical.c
+SRC_C += $(USERMODULES_DIR)/numpy/poly.c
+SRC_C += $(USERMODULES_DIR)/numpy/stats.c
+SRC_C += $(USERMODULES_DIR)/numpy/transform.c
+SRC_C += $(USERMODULES_DIR)/numpy/vector.c
+SRC_C += $(USERMODULES_DIR)/numpy/numpy.c
+SRC_C += $(USERMODULES_DIR)/scipy/scipy.c
+SRC_C += $(USERMODULES_DIR)/user/user.c
+SRC_C += $(USERMODULES_DIR)/utils/utils.c
+SRC_C += $(USERMODULES_DIR)/ulab.c
+
 SRC_QSTR += $(SRC_C)
 
 OBJ = 
@@ -64,6 +98,9 @@ $(BUILD)/micropython.js: $(OBJ) library.js wrapper.js
 	$(ECHO) "LINK $(BUILD)/firmware.js"
 	$(Q)emcc $(LDFLAGS) -o $(BUILD)/firmware.js $(OBJ) $(JSFLAGS)
 	cat wrapper.js $(BUILD)/firmware.js > $@
+
+distdir:
+	/bin/cp *.c *.h *.mk Makefile mklib $(distdir)
 
 min: $(BUILD)/micropython.js
 	uglifyjs $< -c -o $(BUILD)/micropython.min.js

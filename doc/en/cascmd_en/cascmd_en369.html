@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Computing an mod p: powmod powermod
+<title>Division in ℤ/pℤ or in ℤ/pℤ[x]: /
 </title>
 </head>
 <body >
@@ -12,36 +12,70 @@
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en370.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:powmod" class="subsection">6.34.10  Computing <span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup> mod <span style="font-style:italic">p</span>: <span style="font-family:monospace">powmod powermod</span>
-<a id="hevea_default630"></a><a id="hevea_default631"></a></h3>
-<p>For integers <span style="font-style:italic">a</span>,<span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, the <span style="font-family:monospace">powmod</span>
-finds <span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup> mod<span style="font-style:italic">p</span>.<br>
-<span style="font-family:monospace">powermod</span> is a synonym for <span style="font-family:monospace">powmod</span>.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">powmod</span> takes three arguments:<br>
- <span style="font-style:italic">a</span>,<span style="font-style:italic">n</span> and <span style="font-style:italic">p</span>, integers.
-</li><li class="li-itemize"><span style="font-family:monospace">powmod(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span>
-returns <span style="font-style:italic">a</span><sup><span style="font-style:italic">n</span></sup> mod <span style="font-style:italic">p</span> in [0,<span style="font-style:italic">p</span>−1].
-</li></ul><p><br>
-</p><p><span style="font-weight:bold">Examples.</span>
+<h3 id="sec450" class="subsection">6.34.8  Division in ℤ/<span style="font-style:italic">p</span>ℤ or in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>]: <span style="font-family:monospace">/</span>
+<a id="hevea_default629"></a></h3>
+<p>The <span style="font-family:monospace">/</span> operator divides two integers in ℤ/<span style="font-style:italic">p</span>ℤ
+or two polynomials <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].
+(See also Section <a href="cascmd_en133.html#ssec%3Ausualinfix">6.8.2</a>.)
+Since ℤ/<span style="font-style:italic">p</span>ℤ is only a field if <span style="font-style:italic">p</span> is prime, the
+quotient is only guaranteed to exist if <span style="font-style:italic">p</span> is prime (unless the
+denominator is 0 (mod <span style="font-style:italic">p</span> )).</p><ul class="itemize"><li class="li-itemize">
+For integers in ℤ/<span style="font-style:italic">p</span>ℤ:<p><br>
+</p><p><span style="font-weight:bold">Example.</span>
 </p><ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">powmod(5,2,13)</span>
+<span style="font-family:monospace">5%13/2% 13</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">12
+Since 13 is prime, you get:<br>
+ <span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−4</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">%13
 </td></tr>
 </table>
 </li><li class="li-itemize"><span style="font-style:italic">Input:</span>
 <div class="center">
-<span style="font-family:monospace">powmod(5,2,12)</span>
+<span style="font-family:monospace">5%14/3% 14</span>
 </div>
-<span style="font-style:italic">Output:</span>
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">1
+Since 3(mod 1 )4 is invertible in <span style="font-style:italic">Z</span>/14ℤ, you get:<br>
+ <span style="font-style:italic">Output:</span>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−3</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">%14
 </td></tr>
 </table>
-</li></ul>
+</li><li class="li-itemize"><span style="font-style:italic">Input:</span>
+<div class="center">
+<span style="font-family:monospace">5%14/7% 14</span>
+</div>
+Since 7(mod 1 )4 is not invertible in <span style="font-style:italic">Z</span>/14ℤ, you will
+get an error:
+<span style="font-style:italic">Output:</span>
+<div class="center">
+Not invertible Error: Bad Argument Value 
+</div>
+</li></ul></li><li class="li-itemize">For polynomials, the result of <span style="font-style:italic">P</span>/<span style="font-style:italic">Q</span> is its irreducible
+representation in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">x</span>].<p><br>
+</p><p><span style="font-weight:bold">Example.</span><br>
+ <span style="font-style:italic">Input:</span>
+</p><div class="center">
+<span style="font-family:monospace">(2*x^2+5)%13/(5*x^2+2*x-3)%13</span>
+</div><p>
+<span style="font-style:italic">Output:</span>
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎝</td><td class="dcell">6%13</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><span style="font-style:italic">x</span>+1%13</td></tr>
+</table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2%13</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell"><span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">2%13</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">%13</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></li></ul>
 <hr>
 <a href="cascmd_en368.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

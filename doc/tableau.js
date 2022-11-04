@@ -855,6 +855,20 @@ function load() {
       if (col=='LimeGreen') user.setCurrentColor("Crimson");
       // previousColor();
     }
+    if (UI.readonly){
+      if (evt.key=="y"){
+	BoardManager.redo();
+	evt.preventDefault();      
+      }
+      if (evt.key==" "){
+	BoardManager.redo(5);
+	evt.preventDefault();      
+      }
+      if (evt.key=="z"){
+	BoardManager.cancel();
+	evt.preventDefault();      
+      }
+    }
     if ((evt.ctrlKey && evt.shiftKey && evt.key == "Z") || (evt.ctrlKey && evt.key == "y")) { //ctrl + shift + z OR Ctrl + Y = redo
       BoardManager.redo();
       evt.preventDefault();
@@ -1886,16 +1900,20 @@ class CancelStack {
   }
 
 
-  back() {
-    if (this.currentIndex > 0)
-      this.currentIndex--;
+  back(steps=1) {
+    if (steps>0 && this.currentIndex>=steps)
+      this.currentIndex -= steps;
+    else
+      this.currentIndex = 0;
     //console.log('back',this.stack.slice(0,this.currentIndex));
     return this.stack.slice(0,this.currentIndex);
   }
 
-  forward() {
-    if (this.currentIndex < this.n)
-      this.currentIndex++;
+  forward(steps=1) {
+    if (steps>0 && this.currentIndex+steps<=this.n)
+      this.currentIndex += steps;
+    else 
+      this.currentIndex = this.n;     
     return this.stack.slice(0,this.currentIndex);
   }
 
@@ -2239,9 +2257,9 @@ class BoardManager {
   /**
    * 
    */
-  static cancel() {
+  static cancel(steps=1) {
     if (!Share.isShared())
-      BoardManager._loadCurrentCancellationStackData(BoardManager.cancelStack.back());
+      BoardManager._loadCurrentCancellationStackData(BoardManager.cancelStack.back(steps));
   }
 
 
@@ -2249,9 +2267,9 @@ class BoardManager {
   /**
    * 
    */
-  static redo() {
+  static redo(steps=1) {
     if (!Share.isShared())
-      BoardManager._loadCurrentCancellationStackData(BoardManager.cancelStack.forward());
+      BoardManager._loadCurrentCancellationStackData(BoardManager.cancelStack.forward(steps));
   }
 }
 

@@ -900,6 +900,31 @@ mp_obj_t str2int(const char * s){
   return mp_obj_new_int_from_str_len(&s,strlen(s),neg,10);
 }
 
+static mp_obj_t str2list2int(const char * val){
+  char buf[strlen(val)+1];
+  strcpy(buf,val);
+  char * buf1=buf;
+  mp_obj_t res = mp_obj_new_list(0, NULL);
+  for (;*buf1;++buf1){
+    if (*buf1=='[')
+      break;
+  }
+  if (*buf1){
+    ++buf1;
+    for (int i=0;i<3;++i){
+      char * buf2=buf1;
+      for (;*buf2;++buf2){
+	if (*buf2==',')
+	  break;
+      }
+      *buf2=0;
+      mp_obj_list_append(res,str2int(buf1));
+      buf1=buf2+1;
+    }
+  }
+  return res;
+}
+
 static mp_obj_t arit(const mp_obj_t *args,int nargs,int cmd) {
   if (
       !MP_OBJ_IS_INT(args[0])
@@ -973,28 +998,7 @@ static mp_obj_t arit(const mp_obj_t *args,int nargs,int cmd) {
     return str2int(val);
   }
   if (cmd==6){
-    char buf[strlen(val)+1];
-    strcpy(buf,val);
-    char * buf1=buf;
-    mp_obj_t res = mp_obj_new_list(0, NULL);
-    for (;*buf1;++buf1){
-      if (*buf1=='[')
-	break;
-    }
-    if (*buf1){
-      ++buf1;
-      for (int i=0;i<3;++i){
-	char * buf2=buf1;
-	for (;*buf2;++buf2){
-	  if (*buf2==',')
-	    break;
-	}
-	*buf2=0;
-	mp_obj_list_append(res,str2int(buf1));
-	buf1=buf2+1;
-      }
-    }
-    return res;
+    return str2list2int(val);
   }
   return mp_obj_new_str(val,strlen(val));
 }
@@ -1532,7 +1536,7 @@ static mp_obj_t linalg_eig(size_t n_args, const mp_obj_t *args) {
   }
   nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "Wrong type of 1st argument."));
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(linalg_eig_obj, 1, 1, linalg_eig);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(giac_linalg_eig_obj, 1, 1, linalg_eig);
 
 static mp_obj_t linalg_inv(size_t n_args, const mp_obj_t *args) {
   c_complex *x;
@@ -1552,7 +1556,7 @@ static mp_obj_t linalg_inv(size_t n_args, const mp_obj_t *args) {
   }
   nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "Wrong type of 1st argument."));
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(linalg_inv_obj, 1, 1, linalg_inv);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(giac_linalg_inv_obj, 1, 1, linalg_inv);
 
 static mp_obj_t linalg_re(size_t n_args, const mp_obj_t *args) {
   if (MP_OBJ_IS_INT(args[0]) || mp_obj_is_float(args[0]))
@@ -1836,7 +1840,7 @@ static mp_obj_t linalg_det(size_t n_args, const mp_obj_t *args) {
   }
   nlr_raise(mp_obj_new_exception_msg(&mp_type_ValueError, "Wrong type of 1st argument."));
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(linalg_det_obj, 1, 1, linalg_det);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(giac_linalg_det_obj, 1, 1, linalg_det);
 
 static mp_obj_t linalg_zerosones(size_t n_args, const mp_obj_t *args,int v0,int v1) {
   size_t n1=0,m1=0;
@@ -1927,8 +1931,8 @@ static const mp_rom_map_elem_t linalg_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_rref), (mp_obj_t) &linalg_rref_obj },
     { MP_ROM_QSTR(MP_QSTR_egv), (mp_obj_t) &linalg_egv_obj },
     { MP_ROM_QSTR(MP_QSTR_eigenvects), (mp_obj_t) &linalg_egv_obj },
-    { MP_ROM_QSTR(MP_QSTR_eig), (mp_obj_t) &linalg_eig_obj },
-    { MP_ROM_QSTR(MP_QSTR_det), (mp_obj_t) &linalg_det_obj },
+    { MP_ROM_QSTR(MP_QSTR_eig), (mp_obj_t) &giac_linalg_eig_obj },
+    { MP_ROM_QSTR(MP_QSTR_det), (mp_obj_t) &giac_linalg_det_obj },
     { MP_ROM_QSTR(MP_QSTR_zeros), (mp_obj_t) &linalg_zeros_obj },
     { MP_ROM_QSTR(MP_QSTR_ones), (mp_obj_t) &linalg_ones_obj },
     { MP_ROM_QSTR(MP_QSTR_eye), (mp_obj_t) &linalg_eye_obj },
@@ -1939,7 +1943,7 @@ static const mp_rom_map_elem_t linalg_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_ranm), (mp_obj_t) &linalg_rand_obj },
     { MP_ROM_QSTR(MP_QSTR_shape), (mp_obj_t) &linalg_shape_obj },
     { MP_ROM_QSTR(MP_QSTR_size), (mp_obj_t) &linalg_size_obj },
-    { MP_ROM_QSTR(MP_QSTR_inv), (mp_obj_t) &linalg_inv_obj },
+    { MP_ROM_QSTR(MP_QSTR_inv), (mp_obj_t) &giac_linalg_inv_obj },
     { MP_ROM_QSTR(MP_QSTR_re), (mp_obj_t) &linalg_re_obj },
     { MP_ROM_QSTR(MP_QSTR_proot), (mp_obj_t) &linalg_proot_obj },
     { MP_ROM_QSTR(MP_QSTR_pcoeff), (mp_obj_t) &linalg_pcoeff_obj },
@@ -1982,8 +1986,8 @@ STATIC const mp_rom_map_elem_t mp_module_linalg_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_rref), (mp_obj_t) &linalg_rref_obj },
     { MP_ROM_QSTR(MP_QSTR_egv), (mp_obj_t) &linalg_egv_obj },
     { MP_ROM_QSTR(MP_QSTR_eigenvects), (mp_obj_t) &linalg_egv_obj },
-    { MP_ROM_QSTR(MP_QSTR_eig), (mp_obj_t) &linalg_eig_obj },
-    { MP_ROM_QSTR(MP_QSTR_det), (mp_obj_t) &linalg_det_obj },
+    { MP_ROM_QSTR(MP_QSTR_eig), (mp_obj_t) &giac_linalg_eig_obj },
+    { MP_ROM_QSTR(MP_QSTR_det), (mp_obj_t) &giac_linalg_det_obj },
     { MP_ROM_QSTR(MP_QSTR_zeros), (mp_obj_t) &linalg_zeros_obj },
     { MP_ROM_QSTR(MP_QSTR_ones), (mp_obj_t) &linalg_ones_obj },
     { MP_ROM_QSTR(MP_QSTR_eye), (mp_obj_t) &linalg_eye_obj },
@@ -1994,7 +1998,7 @@ STATIC const mp_rom_map_elem_t mp_module_linalg_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_ranm), (mp_obj_t) &linalg_rand_obj },
     { MP_ROM_QSTR(MP_QSTR_shape), (mp_obj_t) &linalg_shape_obj },
     { MP_ROM_QSTR(MP_QSTR_size), (mp_obj_t) &linalg_size_obj },
-    { MP_ROM_QSTR(MP_QSTR_inv), (mp_obj_t) &linalg_inv_obj },
+    { MP_ROM_QSTR(MP_QSTR_inv), (mp_obj_t) &giac_linalg_inv_obj },
     { MP_ROM_QSTR(MP_QSTR_re), (mp_obj_t) &linalg_re_obj },
     { MP_ROM_QSTR(MP_QSTR_proot), (mp_obj_t) &linalg_proot_obj },
     { MP_ROM_QSTR(MP_QSTR_pcoeff), (mp_obj_t) &linalg_pcoeff_obj },
@@ -2071,8 +2075,9 @@ static mp_obj_t turtle_left(size_t n_args, const mp_obj_t *args) {
   int i=90;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
-  if (n_args==1 && mp_obj_is_float(args[0])) 
+  else if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
+  else if (n_args==1) i=0;
   char buf[256];
   sprintf(buf,"tourne_gauche(%i):;",i);
   const char * val=caseval(buf);
@@ -2082,6 +2087,10 @@ static mp_obj_t turtle_left(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_left_obj, 0, 1, turtle_left);
 
 static mp_obj_t turtle_pensize(size_t n_args, const mp_obj_t *args) {
+  if (n_args==0){
+    const char * val=caseval("crayon -128;");
+    return str2int(val);
+  }
   turtle_freeze();
   int i=1;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
@@ -2101,8 +2110,9 @@ static mp_obj_t turtle_right(size_t n_args, const mp_obj_t *args) {
   int i=90;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
-  if (n_args==1 && mp_obj_is_float(args[0])) 
+  else if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
+  else if (n_args==1) i=0;
   char buf[256];
   sprintf(buf,"tourne_droite(%i):;",i);
   const char * val=caseval(buf);
@@ -2151,10 +2161,10 @@ static mp_obj_t turtle_circle(size_t n_args, const mp_obj_t *args) {
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_circle_obj, 1, 3, turtle_circle);
 
-static mp_obj_t turtle_disque(size_t n_args, const mp_obj_t *args) {
+static mp_obj_t do_turtle_disque(size_t n_args, const mp_obj_t *args,bool centered) {
   turtle_freeze();
-  int x=0,y=0,z=360;
-  if (MP_OBJ_IS_SMALL_INT(args[0])) 
+  int x=5,y=0,z=360;
+  if (n_args>=1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     x=MP_OBJ_SMALL_INT_VALUE(args[0]);
   if (n_args>=2 && MP_OBJ_IS_SMALL_INT(args[1])) 
     y=MP_OBJ_SMALL_INT_VALUE(args[1]);
@@ -2168,12 +2178,20 @@ static mp_obj_t turtle_disque(size_t n_args, const mp_obj_t *args) {
     }
   }
   char buf[256];
-  sprintf(buf,"disque(%i,%i,%i):;",x,y,z);
+  sprintf(buf,centered?"disque_centre(%i,%i,%i):;":"disque(%i,%i,%i):;",x,y,z);
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_disque_obj, 1, 3, turtle_disque);
+static mp_obj_t turtle_disque(size_t n_args, const mp_obj_t *args) {
+  return do_turtle_disque(n_args,args,false);
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_disque_obj, 0, 3, turtle_disque);
+
+static mp_obj_t turtle_dot(size_t n_args, const mp_obj_t *args) {
+  return do_turtle_disque(n_args,args,true);
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_dot_obj, 0, 3, turtle_dot);
 
 static mp_obj_t turtle_rectangle_plein(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
@@ -2266,6 +2284,11 @@ static mp_obj_t turtle_pas_de_cote(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_pas_de_cote_obj, 1, 1, turtle_pas_de_cote);
 
 static mp_obj_t turtle_setheading(size_t n_args, const mp_obj_t *args) {
+  if (n_args==0){
+    char buf[]="cap()";
+    const char * val=caseval(buf);
+    return str2int(val);
+  }
   turtle_freeze();
   int i=0;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
@@ -2279,6 +2302,15 @@ static mp_obj_t turtle_setheading(size_t n_args, const mp_obj_t *args) {
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_setheading_obj, 0, 1, turtle_setheading);
 
 static mp_obj_t turtle_setposition(size_t n_args, const mp_obj_t *args) {
+  if (n_args<2){
+    char buf[]="position();";
+    const char * val=caseval(buf);
+    int l=strlen(val);
+    if (l<5 || val[0]!='[' || val[l-1]!=']')
+      return mp_obj_new_str(val,l);
+    // parse 2 integers separated by a comma
+    return str2list2int(val);
+  }
   turtle_freeze();
   int x=0,y=0;
   if (MP_OBJ_IS_SMALL_INT(args[0])) 
@@ -2291,7 +2323,7 @@ static mp_obj_t turtle_setposition(size_t n_args, const mp_obj_t *args) {
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
 }
-MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_setposition_obj, 2, 2, turtle_setposition);
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_setposition_obj, 0, 2, turtle_setposition);
 
 static mp_obj_t turtle_setx(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
@@ -2335,6 +2367,73 @@ static mp_obj_t turtle_colormode(size_t n_args, const mp_obj_t *args) {
   return turtle_ret("");
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_colormode_obj, 0, 1, turtle_colormode);
+
+static mp_obj_t turtle_fillcolor(size_t n_args, const mp_obj_t *args) {
+  int i=0;
+  char buf[256]="polygone_rempli()";
+  if (n_args==1){
+    if (MP_OBJ_IS_STR(args[0]))
+      sprintf(buf,"polygone_rempli(%s):;",mp_obj_str_get_str(args[0]));
+    if (MP_OBJ_IS_SMALL_INT(args[0])) {
+      i=MP_OBJ_SMALL_INT_VALUE(args[0]);
+      sprintf(buf,"polygone_rempli([%i]):;",i);
+    }
+    if (strlen(buf)==17){
+      size_t n=0; mp_obj_t * tab=0;
+      mp_obj_get_array(args[0],&n,&tab);
+      if (n==3 &&  mp_obj_is_float(tab[0]) && mp_obj_is_float(tab[1]) && mp_obj_is_float(tab[2])){
+#ifdef NUMWORKS
+	strcpy(buf,"polygone_rempli(");
+	for (int i=0;i<3;++i){
+	  strcat_double(buf,mp_obj_get_float(tab[i]));
+	  if (i<2)
+	    strcat(buf,",");
+	}
+	strcat(buf,"):;");
+#else
+	sprintf(buf,"polygone_rempli(%.3f,%.3f,%.3f):;",mp_obj_get_float(tab[0]),mp_obj_get_float(tab[1]),mp_obj_get_float(tab[2]));
+#endif
+      }
+      if (n==3 &&  MP_OBJ_IS_SMALL_INT(tab[0]) && MP_OBJ_IS_SMALL_INT(tab[1]) && MP_OBJ_IS_SMALL_INT(tab[2])){
+	sprintf(buf,"polygone_rempli(%i,%i,%i):;",(int)MP_OBJ_SMALL_INT_VALUE(tab[0]),(int)MP_OBJ_SMALL_INT_VALUE(tab[1]),(int)MP_OBJ_SMALL_INT_VALUE(tab[2]));
+      }
+    }
+  }
+  if (n_args==3 &&  MP_OBJ_IS_SMALL_INT(args[0]) && MP_OBJ_IS_SMALL_INT(args[1]) && MP_OBJ_IS_SMALL_INT(args[2])){
+    sprintf(buf,"polygone_rempli(%i,%i,%i):;",(int)MP_OBJ_SMALL_INT_VALUE(args[0]),(int)MP_OBJ_SMALL_INT_VALUE(args[1]),(int)MP_OBJ_SMALL_INT_VALUE(args[2]));
+  }
+  if (n_args==3 && mp_obj_is_float(args[0]) && mp_obj_is_float(args[1]) && mp_obj_is_float(args[2]) ){
+#ifdef NUMWORKS
+	strcpy(buf,"polygone_rempli(");
+	for (int i=0;i<3;++i){
+	  strcat_double(buf,mp_obj_get_float(args[i]));
+	  if (i<2)
+	    strcat(buf,",");
+	}
+	strcat(buf,"):;");
+#else
+    sprintf(buf,"polygone_rempli(%.3f,%.3f,%.3f):;",mp_obj_get_float(args[0]),mp_obj_get_float(args[1]),mp_obj_get_float(args[2]));
+#endif
+  }
+  //printf(buf);
+  const char * val=caseval(buf);
+  if (n_args==0) return mp_obj_new_str(val,strlen(val));
+  return turtle_ret(val);
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_fillcolor_obj, 0, 3, turtle_fillcolor);
+
+static mp_obj_t turtle_begin_fill(size_t n_args, const mp_obj_t *args) {
+  const char * val=caseval("polygone_rempli([]):;");
+  return turtle_ret(val);
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_begin_fill_obj, 0, 0, turtle_begin_fill);
+
+static mp_obj_t turtle_end_fill(size_t n_args, const mp_obj_t *args) {
+  turtle_freeze();
+  const char * val=caseval("polygone_rempli():;");
+  return turtle_ret(val);
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_end_fill_obj, 0, 0, turtle_end_fill);
 
 static mp_obj_t turtle_pencolor(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
@@ -2415,6 +2514,7 @@ static const mp_map_elem_t turtle_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_rt), (mp_obj_t) &turtle_right_obj },
 	{ MP_ROM_QSTR(MP_QSTR_circle), (mp_obj_t) &turtle_circle_obj },
 	{ MP_ROM_QSTR(MP_QSTR_disque), (mp_obj_t) &turtle_disque_obj },
+	{ MP_ROM_QSTR(MP_QSTR_dot), (mp_obj_t) &turtle_dot_obj },
 	{ MP_ROM_QSTR(MP_QSTR_rectangle_plein), (mp_obj_t) &turtle_rectangle_plein_obj },
 	{ MP_ROM_QSTR(MP_QSTR_triangle_plein), (mp_obj_t) &turtle_triangle_plein_obj },
 	{ MP_ROM_QSTR(MP_QSTR_reset), (mp_obj_t) &turtle_reset_obj },
@@ -2428,6 +2528,9 @@ static const mp_map_elem_t turtle_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_sety), (mp_obj_t) &turtle_sety_obj },
 	{ MP_ROM_QSTR(MP_QSTR_write), (mp_obj_t) &turtle_write_obj },
 	{ MP_ROM_QSTR(MP_QSTR_speed), (mp_obj_t) &turtle_speed_obj },
+	{ MP_ROM_QSTR(MP_QSTR_fillcolor), (mp_obj_t) &turtle_fillcolor_obj },
+	{ MP_ROM_QSTR(MP_QSTR_end_fill), (mp_obj_t) &turtle_end_fill_obj },
+	{ MP_ROM_QSTR(MP_QSTR_begin_fill), (mp_obj_t) &turtle_begin_fill_obj },
 	{ MP_ROM_QSTR(MP_QSTR_showturtle), (mp_obj_t) &turtle_showturtle_obj },
 	{ MP_ROM_QSTR(MP_QSTR_st), (mp_obj_t) &turtle_showturtle_obj },
 	{ MP_ROM_QSTR(MP_QSTR_hideturtle), (mp_obj_t) &turtle_hideturtle_obj },
@@ -2465,6 +2568,7 @@ static const mp_map_elem_t turtle_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_baisse_crayon), (mp_obj_t) &turtle_down_obj },
 	{ MP_ROM_QSTR(MP_QSTR_leve_crayon), (mp_obj_t) &turtle_up_obj },
 	{ MP_ROM_QSTR(MP_QSTR_pensize), (mp_obj_t) &turtle_pensize_obj },
+	{ MP_ROM_QSTR(MP_QSTR_width), (mp_obj_t) &turtle_pensize_obj },
 	/* { MP_ROM_QSTR(MP_QSTR_time), (mp_obj_t) &turtle_up_obj },
 	{ MP_ROM_QSTR(MP_QSTR_sleep), (mp_obj_t) &turtle_up_obj },
 	{ MP_ROM_QSTR(MP_QSTR_monotonic), (mp_obj_t) &turtle_up_obj },
@@ -2502,6 +2606,7 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_dessine_tortue), (mp_obj_t) &turtle_dessine_tortue_obj },
     { MP_ROM_QSTR(MP_QSTR_circle), (mp_obj_t) &turtle_circle_obj },
     { MP_ROM_QSTR(MP_QSTR_disque), (mp_obj_t) &turtle_disque_obj },
+    { MP_ROM_QSTR(MP_QSTR_dot), (mp_obj_t) &turtle_dot_obj },
     { MP_ROM_QSTR(MP_QSTR_rectangle_plein), (mp_obj_t) &turtle_rectangle_plein_obj },
     { MP_ROM_QSTR(MP_QSTR_triangle_plein), (mp_obj_t) &turtle_triangle_plein_obj },
     { MP_ROM_QSTR(MP_QSTR_setheading), (mp_obj_t) &turtle_setheading_obj },
@@ -2513,6 +2618,9 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_sety), (mp_obj_t) &turtle_sety_obj },
     { MP_ROM_QSTR(MP_QSTR_write), (mp_obj_t) &turtle_write_obj },
     { MP_ROM_QSTR(MP_QSTR_speed), (mp_obj_t) &turtle_speed_obj },
+    { MP_ROM_QSTR(MP_QSTR_fillcolor), (mp_obj_t) &turtle_fillcolor_obj },
+    { MP_ROM_QSTR(MP_QSTR_end_fill), (mp_obj_t) &turtle_end_fill_obj },
+    { MP_ROM_QSTR(MP_QSTR_begin_fill), (mp_obj_t) &turtle_begin_fill_obj },
     { MP_ROM_QSTR(MP_QSTR_showturtle), (mp_obj_t) &turtle_showturtle_obj },
     { MP_ROM_QSTR(MP_QSTR_st), (mp_obj_t) &turtle_showturtle_obj },
     { MP_ROM_QSTR(MP_QSTR_hideturtle), (mp_obj_t) &turtle_hideturtle_obj },
@@ -2540,6 +2648,7 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_rond), (mp_obj_t) &turtle_circle_obj },
 	{ MP_ROM_QSTR(MP_QSTR_efface), (mp_obj_t) &turtle_reset_obj },
 	{ MP_ROM_QSTR(MP_QSTR_cap), (mp_obj_t) &turtle_setheading_obj },
+	{ MP_ROM_QSTR(MP_QSTR_heading), (mp_obj_t) &turtle_setheading_obj },
 	{ MP_ROM_QSTR(MP_QSTR_position), (mp_obj_t) &turtle_setposition_obj },
 	{ MP_ROM_QSTR(MP_QSTR_ecris), (mp_obj_t) &turtle_write_obj },
 	{ MP_ROM_QSTR(MP_QSTR_vitesse_tortue), (mp_obj_t) &turtle_speed_obj },
@@ -2548,6 +2657,7 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_baisse_crayon), (mp_obj_t) &turtle_down_obj },
 	{ MP_ROM_QSTR(MP_QSTR_leve_crayon), (mp_obj_t) &turtle_up_obj },
 	{ MP_ROM_QSTR(MP_QSTR_pensize), (mp_obj_t) &turtle_pensize_obj },
+	{ MP_ROM_QSTR(MP_QSTR_width), (mp_obj_t) &turtle_pensize_obj },
 };
 
 STATIC const mp_obj_dict_t mp_module_turtle_globals = {

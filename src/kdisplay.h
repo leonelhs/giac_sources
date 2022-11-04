@@ -152,25 +152,107 @@ namespace xcas {
   void replace_selection(Equation & eq,const giac::gen & tmp,giac::gen * gsel,const std::vector<int> * gotoptr,const giac::context *);
   int eqw_select_leftright(xcas::Equation & g,bool left,int exchange,const giac::context *);
 
+  typedef double float3d;
+  // typedef float float3d;
+  struct double3 {
+    float3d x,y,z;
+    double3(double x_,double y_,double z_):x(x_),y(y_),z(z_){};
+    double3():x(0),y(0),z(0){};
+  };
+
+  struct int4 {
+    int u,d,du,dd;
+    int4(int u_,int d_,int du_,int dd_):u(u_),d(d_),du(du_),dd(dd_) {}
+  };
+  
+  // quaternion struct for more intuitive rotations
+  struct quaternion_double {
+    double w,x,y,z;
+    quaternion_double():w(1),x(0),y(0),z(0) {};
+    quaternion_double(double theta_x,double theta_y,double theta_z);
+    quaternion_double(double _w,double _x,double _y,double _z):w(_w),x(_x),y(_y),z(_z) {};
+    double norm2() const { return w*w+x*x+y*y+z*z;}
+  };
+
+  quaternion_double operator * (const quaternion_double & q,const quaternion_double & q2);
+
+  void get_axis_angle_deg(const quaternion_double & q,double &x,double &y,double & z, double &theta); // q must be a quaternion of unit norm, theta is in deg
+
+  // Euler angle are given in degrees
+  quaternion_double euler_deg_to_quaternion_double(double a,double b,double c);
+  void quaternion_double_to_euler_deg(const quaternion_double & q,double & phi,double & theta, double & psi);
+
+  struct int2 {
+    int i,j;
+    int2(int i_,int j_):i(i_),j(j_) {}
+    int2(): i(0),j(0) {}
+  };
+  inline bool operator < (const int2 & a,const int2 & b){ if (a.i!=b.i) return a.i<b.i; return a.j<b.j;}
+  inline bool operator == (const int2 & a,const int2 & b){ return a.i==b.i && a.j==b.j;}
+
+  struct int2_double2 {
+    int i,j;
+    double arg,norm;
+  };
+  inline bool operator < (const int2_double2 & a,const int2_double2 & b){ if (a.arg!=b.arg) return a.arg<b.arg; return a.norm<b.norm;}
+
+#define giac3d_default_upcolor 65535
+#define giac3d_default_downcolor 12345
+#define giac3d_default_downupcolor 18432 // 12297
+#define giac3d_default_downdowncolor 22539
+  
   class Graph2d{
   public:
-    double window_xmin,window_xmax,window_ymin,window_ymax,
-      x_scale,y_scale,x_tick,y_tick;
-    int display_mode,show_axes,show_names,labelsize;
+    double window_xmin,window_xmax,window_ymin,window_ymax,window_zmin,window_zmax,
+      x_scale,y_scale,z_scale,x_tick,y_tick,z_tick;
+    //double theta_x,theta_y,theta_z;
+    quaternion_double q;
+    double transform[16],invtransform[16];
+    // only 12 used, last line [0,0,0,1], usual matrices, not transposed
+    int display_mode,show_axes,show_edges,show_names,labelsize,lcdz,default_upcolor,default_downcolor,default_downupcolor,default_downdowncolor;
+    short int precision,diffusionz,diffusionz_limit;
+    bool is3d,doprecise,hide2nd,interval;
+    double Ai,Aj,Bi,Bj,Ci,Cj,Di,Dj,Ei,Ej,Fi,Fj,Gi,Gj,Hi,Hj; // visualization cube coordinates
+    std::vector< std::vector< std::vector<float3d> > > surfacev;
+    std::vector<double3> plan_pointv; // point in plan 
+    std::vector<double3> plan_abcv; // plan equation z=a*x+b*y+c
+    std::vector<double3> sphere_centerv;
+    std::vector<double> sphere_radiusv;
+    giac::vecteur sphere_quadraticv; // matrix of the transformed quad. form
+    std::vector< std::vector<double3> > polyedrev;
+    std::vector<double3> polyedre_abcv;
+    std::vector<double> polyedre_xyminmax;
+    std::vector<double3> linev; // 2 double3 per object
+    std::vector<short> linetypev;
+    std::vector<const char *> lines; // legende
+    std::vector< std::vector<double3> > curvev;
+    std::vector<double3> pointv; 
+    std::vector<const char *> points; // legende
+    std::vector<int4> hyp_color,plan_color,sphere_color,polyedre_color,line_color,curve_color,point_color;
     giac::gen g;
     const giac::context * contextptr;
     bool findij(const giac::gen & e0,double x_scale,double y_scale,double & i0,double & j0,const giac::context * ) const;
+    void xyz2ij(const double3 & d,int &i,int &j) const; // d not transformed
+    void xyz2ij(const double3 & d,double &i,double &j) const; // d not transformed
+    void XYZ2ij(const double3 & d,int &i,int &j) const; // d is transformed
+    void addpolyg(vector<int2> & polyg,double x,double y,double z,int2 & IJmin) const ;
+    void update_scales();
     void update();
-    void zoomx(double d,bool round=false);
-    void zoomy(double d,bool round=false);
-    void zoom(double);
+    void update_rotation(); // update grot
+    void zoomx(double d,bool round=false,bool doupdate=true);
+    void zoomy(double d,bool round=false,bool doupdate=true);
+    void zoomz(double d,bool round=false,bool doupdate=true);
+    void zoom(double d,bool doupdate=true);
     void left(double d);
     void right(double d);
     void up(double d);
     void down(double d);
-    void autoscale(bool fullview=false);
-    void orthonormalize();
+    void z_up(double d);
+    void z_down(double d);
+    void autoscale(bool fullview=false,bool doupdate=true);
+    void orthonormalize(bool doupdate=true);
     void draw();
+    bool glsurface(int w,int h,int lcdz,const giac::context*,int upcolor,int downcolor,int downupcolor,int downdowncolor) ;
     Graph2d(const giac::gen & g_,const giac::context * );
   };
 

@@ -1542,7 +1542,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     try {
       s = docaseval(value);
     } catch (err) {
-      console.log(err);
+      console.log(err,'evaluating',value);
     }
     // Module.print(text+ ' '+s);
     return s;
@@ -1692,6 +1692,27 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	return [s.substr(0,i),s.substr(i+1,s.length-1)];
     }
     return [s,''];
+  },
+  get_levelcontent:function(field){
+    if (!field) return;
+    field = field.parentNode;
+    if (field && field.parentNode)
+      field = field.parentNode;
+    field=field.firstChild;
+    if (field){
+      if (field.nextSibling.CodeMirror)
+	return field.nextSibling.CodeMirror.getValue();
+      return field.value;
+    }
+  },
+  get_levelevaluator:function(field){
+    if (!field) return '';
+    field = field.parentNode;
+    if (field && field.parentNode)
+      field = field.parentNode;
+    field=field.firstChild;
+    if (field)
+      return UI.classlist2evaluator(field.classList);
   },
   new_levelclass:function(field,evalclass){
     if (!field) return;
@@ -1940,6 +1961,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     } // end for (i=...)
     UI.set_settings();
     if (doexec) {
+      UI.addinput_n=0;
       UI.exec(hist, 0);
     }
     if (clearcmd && cmentree && cmentree.setValue) cmentree.setValue('');
@@ -2301,9 +2323,9 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
   },
   python_mode_str: function(i,j){
     if (j==-1) return 'JS';
-    if (i==0) return 'xcas';
-    if (i==1) return 'pyth **';
-    if (i==2) return 'pyth xor';
+    if (i==0) return 'Xcas';
+    if (i==1) return 'Caspy **';
+    if (i==2) return 'Caspy xor';
     if (i & 4) return 'Python';
     return '?';
   },
@@ -2824,6 +2846,8 @@ int main(int argc,const char ** argv){
       UI.nws_detect(UI.numworks_retry,UI.nws_detect_failure);
       return;
     }
+    if (filename.length>3 && filename.substr(filename.length-3,3)==".py")
+      filename=filename.substr(0,filename.length-3);
     let storage = await UI.calculator.backupStorage();
     let rec=storage.records,j=0;
     for (;j<rec.length;++j){
@@ -2873,7 +2897,23 @@ int main(int argc,const char ** argv){
       UI.calculator.detect(success,failure);
     }
     else
-      alert('Ce navigateur est incompatible.');
+      alert(UI.langue==-1?'Ce navigateur est incompatible avec webusb.\nEssayez avec Chromium, Chrome ou Edge.':'This browser is not compatible with webusb.\nTry with Chromium, Chrome or Edge.');
+  },
+  export:function(s,filename,evaluator){
+    if (UI.calc==2 && navigator.usb){ // export button = send to Numworks
+      UI.nws_connect();
+      window.setTimeout(UI.numworks_save_script,100,filename,s);
+      console.log(s);
+      return;
+    }
+    if (evaluator=='micropy')
+      filename += '.py';
+    if (evaluator=='cas' || evaluator=='xcas')
+      filename += '.cas';
+    if (evaluator=='js')
+      filename += '.js';
+    let blob = new Blob([s]);
+    saveAs(blob, filename);
   },
   savesession: function (i) {
     let s='';
@@ -3009,7 +3049,7 @@ int main(int argc,const char ** argv){
 	UI.numworks_save(filename,S,newbuf,pos);
 	return;
       }
-      var blob = new Blob([buf]);
+      let blob = new Blob([buf]);
       if (UI.calc==2)
 	filename += "_xw.py";
       else
@@ -4037,7 +4077,8 @@ int main(int argc,const char ** argv){
     if (out==null){
       console.log('eval null',text,out);
       console.trace();
-      return;
+      // return;
+      out='"error in evaluation: '+text+'"';
     }
     //console.log('UI.eval',text,out);
     var s = ' ';
@@ -4235,6 +4276,7 @@ int main(int argc,const char ** argv){
     }
   },
   eval_level: function (field) {
+    // console.log('eval_level',field);
     // ? use cur.nodeType instead of search?
     var s = field.innerHTML;
     var pos = s.search("<textarea");
@@ -4366,7 +4408,9 @@ int main(int argc,const char ** argv){
     }
     return r;
   },
+  addinput_n:0,
   addinput: function (textin, textout, mathmlout) {
+    ++UI.addinput_n; // console.log(UI.addinput_n);console.trace();
     //console.log('addinput in',textin,'out',textout,'mathml',mathmlout);
     $id('startup_restore').style.display = 'none'
     //console.log(textin,textout,mathmlout);
@@ -4400,6 +4444,7 @@ int main(int argc,const char ** argv){
       if (UI.micropy==-1)
 	s += ' js';
       s += ' "';
+      s += ' id="input'+UI.addinput_n+'" ';
       if (is_svg && UI.qa)
         s += 'rows=8 style="font-size:large"';
       else
@@ -4410,10 +4455,14 @@ int main(int argc,const char ** argv){
       s += '<button class="bouton" onmousedown="event.preventDefault()" onclick="UI.evallevel(this,true)" title="';
       s += UI.langue == -1 ? 'R&eacute;evaluer le niveau (Ctrl-Enter)' : 'Reeval level (Ctrl-Enter)';
       s += '">&nbsp;Ok&nbsp;&nbsp;</button>';
-      s += '<button class="bouton xcas" onclick="UI.new_levelclass(this,\'xcas\');UI.evallevel(this,true)">Xcas</button>';
-      s += '<button class="bouton cas" onclick="UI.new_levelclass(this,\'cas\');UI.evallevel(this,true)">Cas</button>';
-      s += '<button class="bouton micropy" onclick="UI.new_levelclass(this,\'micropy\');UI.evallevel(this,true)">Py</button>';
-      s += '<button class="bouton js" onclick="UI.new_levelclass(this,\'js\');UI.evallevel(this,true)">JS</button>';
+      s += '<button class="bouton xcas" title="Xcas evaluation" onclick="UI.new_levelclass(this,\'xcas\');UI.evallevel(this,true)">x</button>';
+      s += '<button class="bouton cas" title="Xcas Python mode evaluation" onclick="UI.new_levelclass(this,\'cas\');UI.evallevel(this,true)">Cas</button>';
+      s += '<button class="bouton micropy" title="MicroPython evaluation" onclick="UI.new_levelclass(this,\'micropy\');UI.evallevel(this,true)">Py</button>';
+      s += '<button class="bouton js" title="Javascript evaluation" onclick="UI.new_levelclass(this,\'js\');UI.evallevel(this,true)">JS</button>';
+      s += '<button class="bouton" title="'
+      s += UI.langue==-1?'Envoyer vers la calculatrice Numworks ou sauvegarder':'Send to Numworks calculator or save';
+      s += '" onclick="UI.export(UI.get_levelcontent(this),this.nextSibling.value,UI.get_levelevaluator(this));">save</button>';
+      s += '<textarea title="Filename" rows=1 cols=8>prog'+UI.addinput_n+'</textarea>';
       s += '<button class="bouton" onmousedown="event.preventDefault()" onClick="UI.search(this,-1);" title="';
       s += UI.langue == -1 ? 'Donne une aide courte et quelques exemples d\'utilisation d\'une commande.' : 'Short help and examples on a command';
       s += '">&nbsp;?&nbsp;</button>';
