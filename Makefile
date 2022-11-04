@@ -198,6 +198,7 @@ ECM_LIBS =
 EGREP = /usr/bin/grep -E
 EXEEXT = 
 FGREP = /usr/bin/grep -F
+FLTK_LIBS = -lfltk_images -ljpeg -lpng -lz -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  
 GENCAT = gencat
 GINSH_LIBS = -lreadline -lncurses -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp 
 GLIBC2 = yes
@@ -207,7 +208,6 @@ GMPXX_LIBS = -lgmpxx
 GMSGFMT = /usr/bin/msgfmt
 GREP = /usr/bin/grep
 GSL_LIBS = -lgsl -lgslcblas
-GUI_LIBS = -lfltk_images -ljpeg -lpng -lz -lfltk -lfltk_gl -lXext -lXft -lfontconfig -lXinerama -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  
 HAVE_ASPRINTF = 1
 HAVE_POSIX_PRINTF = 1
 HAVE_SNPRINTF = 1
@@ -336,7 +336,7 @@ top_srcdir = .
 MICROPY_DIR = micropython-1.12
 SUBDIRS = $(MICROPY_DIR) src check intl po debianold debian doc examples
 DIST_SUBDIRS = micropython-1.12 src check intl po debianold debian doc examples
-EXTRA_DIST = path.h.in setup inst TROUBLES Init.scm compte INSTALACION LEAME.WIN LEAME.ipaq giac.specs giac.specs32 fltk.1.1.changes README.MACOSX pariinl.h changeversion mkosx mkosx10 mkosx3 mkdebian mkdebian32 mkdebian2 win2unix.cc addu.cc xcas*.nsi xcas.desktop xcas.metainfo.xml xcas.xpm xcas.applications README.visualcpp java.README config.h.win config.h.win64 win win64 mkiphone build_for_iphoneos path.iphone simupath.iphone config.h.iphone config.h.64 config.h.mingw path.mingw configure.mingw README.mingw archive.mingw compile.android mkrpm LISEZMOI.numworks icons/* README.hevea2mml README.itex2MML
+EXTRA_DIST = giac_fltk_changes fltk-1.3.8-source.tar.bz2 path.h.in setup inst TROUBLES Init.scm compte INSTALACION LEAME.WIN LEAME.ipaq giac.specs giac.specs32 fltk.1.1.changes README.MACOSX pariinl.h changeversion mkosx mkosx10 mkosx3 mkdebian mkdebian32 mkdebian2 win2unix.cc addu.cc xcas*.nsi xcas.desktop xcas.metainfo.xml xcas.xpm xcas.applications README.visualcpp java.README config.h.win config.h.win64 win win64 mkiphone build_for_iphoneos path.iphone simupath.iphone config.h.iphone config.h.64 config.h.mingw path.mingw configure.mingw README.mingw archive.mingw compile.android mkrpm LISEZMOI.numworks icons/* README.hevea2mml README.itex2MML
 ACLOCAL_AMFLAGS = -I m4
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive

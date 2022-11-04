@@ -839,6 +839,8 @@ namespace xcas {
       if ( (f=dynamic_cast<History_Fold *>(w)) )
 	break;
     }
+    if (f==0 && wid!=Xcas_input_focus)
+      f=get_history_fold(Xcas_input_focus);
     return f;
   }
 
@@ -2357,8 +2359,11 @@ namespace xcas {
       newfile = load_file_chooser("Load worksheet", "*.xws", "session.xws",0,false);
     }
     // check filename
-    if ( !newfile )
+    if ( !newfile ){
+      History_Fold * hf=get_history_fold(this);
+      if (hf) hf->update_status(true);
       return false;
+    }
     if (!is_file_available(newfile)){
       fl_message("%s",("File "+string(newfile)+" does not exist.").c_str());
       return false;
@@ -4835,23 +4840,33 @@ namespace xcas {
       current_status->callback((Fl_Callback*) History_cb_current_status);
       current_status->tooltip(gettext("Current CAS status. Click to modify"));
       stop_button = new No_Focus_Button(current_status->x()+current_status->w(),current_status->y(),3*L,L-2);
-      stop_button->label("STOP");
-      stop_button->callback((Fl_Callback*) History_cb_stop_button);
-      stop_button->labelcolor(FL_RED);
-      stop_button->tooltip(gettext("Interrupt current computation"));
+      if (showmenu!=-1){
+	stop_button->label("STOP");
+	stop_button->callback((Fl_Callback*) History_cb_stop_button);
+	stop_button->labelcolor(FL_RED);
+	stop_button->tooltip(gettext("Interrupt current computation"));
+	xcas::Xcas_Cancel=stop_button; // FIXME when history fold destroyed
+      }
       stop_button->deactivate();
-      xcas::Xcas_Cancel=stop_button; // FIXME when history fold destroyed
       keyboard_button = new No_Focus_Button(stop_button->x()+stop_button->w(),Y+1,3*L,L-2,gettext("Kbd"));
-      keyboard_button->callback((Fl_Callback*) History_cb_keyboard_button);
-      keyboard_button->tooltip(gettext("Switch keyboard on or off"));
+      if (showmenu==-1)
+	keyboard_button->deactivate();
+      else {
+	keyboard_button->callback((Fl_Callback*) History_cb_keyboard_button);
+	keyboard_button->tooltip(gettext("Switch keyboard on or off"));
+      }
       // msg_button = new No_Focus_Button(keyboard_button->x()+keyboard_button->w(),Y+1,2*L,L-2,"Msg");
       // msg_button->callback((Fl_Callback*) History_cb_msg_button);
       // msg_button->tooltip("Show messages line");
       // close_button = new Fl_Button(msg_button->x()+msg_button->w(),stop_button->y(),L,L-2);
       close_button = new Fl_Button(keyboard_button->x()+keyboard_button->w()+L,stop_button->y(),L,L-2);
-      close_button->label("X");
-      close_button->callback((Fl_Callback*) hf_Kill);
-      close_button->tooltip(gettext("Close current session"));
+      if (showmenu==-1)
+	close_button->deactivate();
+      else {
+	close_button->label("X");
+	close_button->callback((Fl_Callback*) hf_Kill);
+	close_button->tooltip(gettext("Close current session"));
+      }
       group->end();
       group->resizable(current_status);
       Fl_Group::add(group);

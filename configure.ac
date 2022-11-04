@@ -50,7 +50,6 @@ if test "x$ac_cv_c_bigendian" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -DDOUBLEVAL"
 fi
 
-
 dnl Check for GMP
 CONFIG_GMPXX="yes"
 CONFIG_TOMMATH="no"
@@ -383,11 +382,17 @@ GINAC_READLINE
 dnl Ugh...
 CONFIG_GUI="yes"
 AC_ARG_ENABLE([gui],
-	[AS_HELP_STRING([--enable-gui], [enable GUI [[default=yes]]])],
+	[AS_HELP_STRING([--enable-gui], [The disable-gui option has no more effect because FLTK 1.3.8 is now included in Giac/Xcas. If FLTK compilation fails or if your local FLTK install is incompatible, you should configure with --disable-fltk])],
 	[ if test "x$enableval" = "xno"; then CONFIG_GUI="no"; fi], [])
+
+CONFIG_FLTK="yes"
+AC_ARG_ENABLE([fltk],
+	[AS_HELP_STRING([--enable-fltk], [enable FLTK [[default=yes]]])],
+	[ if test "x$enableval" = "xno"; then CONFIG_FLTK="no"; fi], [])
 	
 save_LIBS="$LIBS"
-if test "$CONFIG_GUI" = "yes"; then 
+if test "$CONFIG_FLTK" = "yes"; then 
+
 dnl Check for X11 anf fltk or cygwin and fltk...
 	case $host_os in
 		*cygwin*)
@@ -435,12 +440,15 @@ dnl		AC_CHECK_LIB(GLU, main)
 dnl		AC_CHECK_LIB(GLU, main)
 		;;
 	esac
+	dnl force FLTK static compilation if FLTK not present
+	AC_CHECK_HEADERS(FL/Fl.H,[],[tar xfj fltk-1.3.8-source.tar.bz2 ; cd fltk-1.3.8 && ./configure --disable-shared && make && cd .. && CXXFLAGS="$CXXFLAGS -I../fltk-1.3.8" && LDFLAGS="$LDFLAGS -L../fltk-1.3.8/lib"] ) 
 	dnl X11, check for opengl, fltk
 	AC_CHECK_LIB(X11,main)
 	AC_CHECK_LIB(Xinerama, main)
 	AC_CHECK_LIB(fontconfig, main)
 	AC_CHECK_LIB(Xft, main)
 	AC_CHECK_LIB(Xext, main)
+	AC_CHECK_LIB(Xrender, main)
 	AC_CHECK_LIB(fltk_gl, main)
 	AC_CHECK_LIB(fltk, main)
 	if test "$HAVE_LIBFLTK" = "1"; then
@@ -450,8 +458,8 @@ dnl		AC_CHECK_LIB(GLU, main)
 	AC_CHECK_HEADERS(png.h, AC_CHECK_LIB(png,main))
 	AC_CHECK_LIB(jpeg, main)
 	AC_CHECK_LIB(fltk_images, main)
-	GUI_LIBS="$LIBS $X_LIBS"
-	AC_SUBST(GUI_LIBS)
+	FLTK_LIBS="$LIBS $X_LIBS"
+	AC_SUBST(FLTK_LIBS)
   fi
 LIBS="$save_LIBS"
 

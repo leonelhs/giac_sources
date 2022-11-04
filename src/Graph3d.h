@@ -62,7 +62,7 @@ namespace xcas {
 
   struct int4 {
     int u,d,du,dd;
-    int4(int u_,int d_,int du_,int dd_):u(u_),d(d_),du(du_),dd(dd_) {}
+    //int4(int u_,int d_,int du_,int dd_):u(u_),d(d_),du(du_),dd(dd_) {}
   };
   
   struct int2 {

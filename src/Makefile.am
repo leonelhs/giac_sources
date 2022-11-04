@@ -35,7 +35,7 @@ libbf.h list.h cutils.h qjsgiac.h \
 quickjs.h js.h quickjs-atom.h quickjs-libc.h quickjs-opcode.h bf2gmp.h
 
 noinst_LTLIBRARIES = libxcas.la
-libxcas_la_LIBADD = libgiac.la $(GUI_LIBS)
+libxcas_la_LIBADD = libgiac.la $(FLTK_LIBS)
 
 libxcas_la_SOURCES = History.cc Input.cc Xcas1.cc Equation.cc Print.cc \
 	Tableur.cc Editeur.cc Graph.cc Graph3d.cc Help1.cc Cfg.cc \

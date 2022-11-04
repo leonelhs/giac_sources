@@ -1424,6 +1424,10 @@ int main(int ARGC, char *ARGV[]){
   bool intexmacs=((ARGC>=2) && std::string(ARGV[1])=="--texmacs");
   if (intexmacs) suspend_stderr(); // suppress stderr output when in texmacs (L. Marohnić)
 #ifdef HAVE_LIBFLTK
+#if !defined(__APPLE__) && !defined(WIN32)
+  if (getenv("DISPLAY"))
+#endif    
+    xcas::fonts_available=Fl::set_fonts(0);
 #ifndef USE_OBJET_BIDON
   xcas::localisation(); // change by L. Marohnić
 #endif
@@ -1979,6 +1983,11 @@ int main(int ARGC, char *ARGV[]){
 #ifdef HAVE_SIGNAL_H_OLD
       giac::messages_to_print="";
 #endif
+      if (buffer=="xcas"){
+	giac::gen ge; std::string filename;
+	xcas::fltk_view(0,ge,"session.xws",filename,5,contextptr);
+	continue;
+      }
       giac::gen g(buffer,contextptr),gg;
 #ifdef HAVE_SIGNAL_H_OLD
       printf("%s\n",giac::messages_to_print.c_str());
@@ -2120,8 +2129,13 @@ int main(int ARGC, char *ARGV[]){
 	continue;
       }
       if (s=="xcas"){
+	giac::gen ge; std::string filename;
+	xcas::fltk_view(0,ge,"session.xws",filename,5,contextptr);
+	continue;
+      }
+      if (s=="giac"){
 	python_compat(python_compat(contextptr)&3,contextptr);
-	printf("%s (from the same directory as %s)\n","Switching to giac interpreter. Run !xcas to launch xcas",ARGV[0]);
+	printf("%s\n","Switching to giac interpreter");
 	continue;
       }
       if (s=="js"){

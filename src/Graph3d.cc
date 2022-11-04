@@ -2494,7 +2494,8 @@ namespace xcas {
 	  vecteur v=*f._VECTptr;
 	  int n=v.size();
 	  curvev.push_back(vector<double3>(n));
-	  curve_color.push_back(int4(u,d,du,dd));
+	  int4 I4={u,d,du,dd};
+	  curve_color.push_back(I4);
 	  vector<double3> & cur=curvev.back();
 	  for (int k=0;k<n;++k){
 	    gen P=v[k];
@@ -2517,7 +2518,8 @@ namespace xcas {
 	    xyz2ij(double3(A[0]._DOUBLE_val,A[1]._DOUBLE_val,A[2]._DOUBLE_val),I,J);
 	    pointv.push_back(double3(I,J,Z));
 	    points.push_back(ptr);
-	    point_color.push_back(int4(u,d,du,dd));
+	    int4 I4={u,d,du,dd};
+	    point_color.push_back(I4);
 	  }
 	}
 	continue;
@@ -2548,7 +2550,8 @@ namespace xcas {
 	      double3 v(N.x-M.x,N.y-M.y,N.z-M.z);
 	      linev.push_back(M); linev.push_back(v);
 	      linetypev.push_back(G.subtype);
-	      line_color.push_back(int4(u,d,du,dd));
+	      int4 I4={u,d,du,dd};
+	      line_color.push_back(I4);
 	    }
 	  }
 	}
@@ -2572,7 +2575,8 @@ namespace xcas {
 				 ));
 	qmat=mmult(mtran(qmat),qmat);
 	sphere_quadraticv.push_back(qmat);
-	sphere_color.push_back(int4(u,d,du,dd));
+	int4 I4={u,d,du,dd};
+	sphere_color.push_back(I4);
 	bool isclipped=x>=window_xmin+r && x<=window_xmax-r && y>=window_ymin+r && y<=window_ymax-r && z>=window_zmin+r && z<=window_zmax-r;
 	// check if distance of center to window_x/y/xmin/max is <=R
 	sphere_isclipped.push_back(isclipped);
@@ -2601,7 +2605,8 @@ namespace xcas {
 	A/=C; B/=C;
 	plan_pointv.push_back(double3(X,Y,Z));	
 	plan_abcv.push_back(double3(-A,-B,Z+A*X+B*Y));
-	plan_color.push_back(int4(u,d,du,dd));
+	int4 I4={u,d,du,dd};
+	plan_color.push_back(I4);
 	continue;
       }
       if (G.is_symb_of_sommet(at_hypersurface)){
@@ -2658,7 +2663,8 @@ namespace xcas {
 	      }
 	    }
 	  }
-	  hyp_color.push_back(cplx?int4(0,0,0,0):int4(u,d,du,dd));
+	  int4 I41={0,0,0,0},I42={u,d,du,dd};
+	  hyp_color.push_back(cplx?I41:I42);
 	  continue;
 	} // end quad hypersurface
       } // end hypersurface
@@ -2726,7 +2732,8 @@ namespace xcas {
 		}
 	      }
 	      polyedrev.push_back(vector<double3>(0)); polyedrev.back().swap(cur); // polyedrev.push_back(cur);
-	      polyedre_color.push_back(int4(u,d,du,dd));
+	      int4 I4={u,d,du,dd};
+	      polyedre_color.push_back(I4);
 	      polyedre_xyminmax.push_back(facemin);
 	      polyedre_xyminmax.push_back(facemax);
 	      polyedre_faceisclipped.push_back(is_clipped);

@@ -82,6 +82,9 @@
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
 
+/* Define to 1 if you have the <FL/Fl.H> header file. */
+#define HAVE_FL_FL_H 1
+
 /* Define to 1 if you have the `fwprintf' function. */
 #define HAVE_FWPRINTF 1
 
@@ -271,6 +274,9 @@
 
 /* Define to 1 if you have the `Xinerama' library (-lXinerama). */
 #define HAVE_LIBXINERAMA 1
+
+/* Define to 1 if you have the `Xrender' library (-lXrender). */
+#define HAVE_LIBXRENDER 1
 
 /* Define to 1 if you have the `z' library (-lz). */
 #define HAVE_LIBZ 1

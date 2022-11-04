@@ -1251,7 +1251,7 @@ namespace xcas {
 	logo->redraw();
       }
       // show DispG?
-      if (hp->pretty_output && !Xcas_DispG_Window->visible()){
+      if (hp->pretty_output && Xcas_DispG_Window && !Xcas_DispG_Window->visible()){
 	int entries=Xcas_DispG->plot_instructions.size();
 	if (entries>xcas_dispg_entries){
 	  if (resgraph){
@@ -3642,7 +3642,52 @@ namespace xcas {
   
   static void cb_Kill(Fl_Button * m , void*) {
     // FIXME user_data()
-    giac::kill_thread(true,context0);
+    History_Pack * hp=xcas::get_history_pack(xcas::Xcas_input_focus);
+    try {
+      giac::kill_thread(true,hp?hp->contextptr:context0);
+    } catch (...){
+    }
+  }
+
+  static void cb_save(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      hf->pack->save();
+  }
+
+  static void cb_save_as(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      hf->pack->save_as(0);
+  }
+
+  static void cb_insert(Fl_Button * m , void*) {
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      hf->pack->insert_before(hf->pack->_sel_begin);
+  }
+
+  static void cb_exec(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      hf->eval();
+  }
+
+  static void cb_add_entry(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Pack * hp=xcas::get_history_pack(xcas::Xcas_input_focus);
+    if (hp)
+      hp->add_entry(-1);
+  }
+
+  static void cb_add_program(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      xcas::History_cb_New_Program(hf,0);
   }
 
   bool has_graph3d(Fl_Widget * widget){
@@ -3677,6 +3722,87 @@ namespace xcas {
 #endif
   }
 
+  void Menu_Insert_ItemName(Fl_Widget * w , void*) {
+    static std::string menu_buffer;
+    if (xcas::fl_handle_lock)
+      return ;
+    Fl_Menu_ * m =dynamic_cast<Fl_Menu_ *>(w);
+    if (!m)
+      return ;
+    menu_buffer = m->text();
+    int pos=menu_buffer.find(':');
+    if (pos>0 && pos<menu_buffer.size()) menu_buffer=menu_buffer.substr(0,pos);
+    int pos2=menu_buffer.find(' ');
+    Fl_Widget * f = xcas::Xcas_input_focus;
+    if (!f) return;
+    static std::string ans;
+    if (pos2>=0 && pos2<menu_buffer.size()){
+      ans=menu_buffer;
+      Fl::focus(f);
+      if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(f)){
+	in->buffer()->insert(in->insert_position(),ans.c_str());
+	in->insert_position(in->insert_position()+ans.size());
+	return;
+      }
+    }
+    const giac::context * contextptr = xcas::get_context(f);
+    giac::gen tmp(menu_buffer,contextptr);
+    if (1)
+      xcas::browser_help(tmp,giac::language(contextptr));
+    else
+      xcas::help_output(menu_buffer,giac::language(contextptr));
+    if (tmp.type==giac::_FUNC){
+      if (xcas::Equation * eqwptr = dynamic_cast<xcas::Equation *>(f)){
+  	eqwptr->parse_desactivate();
+  	if (eqwptr->output_equation)
+  	  eqwptr->eval_function(tmp);
+  	else 
+  	  eqwptr->replace_selection(giac::symbolic(*tmp._FUNCptr,eqwptr->get_selection()));
+  	return;
+      }
+      if (0) // !Xcas_automatic_completion_browser->value())
+	menu_buffer += '(';
+    }
+    ans=menu_buffer;
+    int remove;
+    Fl_Widget * wid=f->window();
+    if (!wid) wid=f;
+    pos=menu_buffer.find('('); // detect a composite unit
+    if (menu_buffer.size()>1 && menu_buffer!="%0" && !(pos>0 && pos<menu_buffer.size()) && 1 /* Xcas_automatic_completion_browser->value()*/){
+      if (!xcas::handle_tab(menu_buffer,(*giac::vector_completions_ptr()),2*wid->w()/3,2*wid->h()/3,remove,ans))
+	return;
+    }
+    Fl::focus(f);
+    if (xcas::Xcas_Text_Editor * in =dynamic_cast<xcas::Xcas_Text_Editor *>(f)){
+      in->buffer()->insert(in->insert_position(),ans.c_str());
+      in->insert_position(in->insert_position()+ans.size());
+      return;
+    }
+    if (Fl_Input * in = dynamic_cast<Fl_Input *>(f))
+      in->insert(ans.c_str());
+    else {
+      Fl::e_text = (char * ) ans.c_str();
+      Fl::e_length = ans.size();
+      // Fl::e_keysym = '\n';
+      xcas::fl_handle(f);
+    }
+  }
+
+  Fl_Menu_Item icas_xcas_menu[] = {
+    {"File", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Save", 0x80073,  (Fl_Callback*)cb_save, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Save as", 0x80073,  (Fl_Callback*)cb_save_as, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Insert", 0,  (Fl_Callback*)cb_insert, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Quit", 0,  (Fl_Callback*)cb_Close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {0,0,0,0,0,0,0,0,0},    
+    {"Edit", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New entry", 0x8006e,  (Fl_Callback*)cb_add_entry, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New program", 0x80070,  (Fl_Callback*)cb_add_program, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Execute worksheet", 0x4ffc6,  (Fl_Callback*)cb_exec, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {0,0,0,0,0,0,0,0,0},    
+    {0,0,0,0,0,0,0,0,0},    
+  }; 
+
   // open a FLTK window, that will be printed to filename when closed
   // return false if FLTK not avail 
   bool fltk_view(const giac::gen & g,giac::gen & ge,const std::string & filename,std::string & figure_filename,int file_type,const giac::context *contextptr){
@@ -3697,6 +3823,7 @@ namespace xcas {
     Fl_Window * w=0;
     Fl_Return_Button * button0 = 0 ;
     Fl_Button * button1 =0,*button2=0;
+    Fl_Menu_Bar * menu=0;
     if (!w){
       int dx=800,dy=geometry?500:360;
       Fl_Group::current(0);
@@ -3709,6 +3836,10 @@ namespace xcas {
       button1->shortcut(0xff1b);
       button1->label(gettext("Cancel"));
       button1->callback( (Fl_Callback *) cb_Cancel);
+      menu=new Fl_Menu_Bar(0,dy-25,2*dx/3,20);
+      menu->menu(icas_xcas_menu);
+      string doc_prefix=giac::read_env(giac::context0);
+      xcas::add_user_menu(menu,"xcasmenu",doc_prefix,Menu_Insert_ItemName); 
       button2 = new Fl_Button(2*dx/3+2,dy-25,dx/3-4,20);
       button2->shortcut(0xff1b);
       button2->label(gettext("STOP"));
@@ -3716,6 +3847,7 @@ namespace xcas {
       w->end();
       w->resizable(w);
     }
+    button0->show(); button1->show(); menu->hide();
     // xcas::initialize_function=load_autorecover_data;
     if (file_type==-1){
       quit_idle_function(0);
@@ -3724,7 +3856,7 @@ namespace xcas {
     else
       Fl::add_idle(xcas::Xcas_idle_function,0);
     // xcas::idle_function=Xcas_update_mode;
-    Fl_Group::current(w);
+    Fl_Group::current(w); xcas::Xcas_input_focus=w;
     int dx=w->w(),dy=w->h();
     Fl_Tile * this_graph_tile=new Fl_Tile(0,0,dx,dy-25);
     Fl_Widget * wid =0,*print_wid=0;
@@ -3751,6 +3883,25 @@ namespace xcas {
 	if (wid)
 	  print_wid=((xcas::Figure *)wid)->geo;
       }
+    }
+    else if (file_type==5){
+      button0->hide(); button1->hide(); menu->show();
+      xcas::History_Fold * w =new xcas::History_Fold(0,0,dx,dy-25,-1);
+      w->labelfont(FL_HELVETICA);
+      w->pack->labelfont(FL_HELVETICA);
+      w->end();
+      w->pack->contextptr = (giac::context *) contextptr;
+      w->pack->labelsize(18);
+      w->pack->eval=xcas::Xcas_eval;
+      w->pack->_insert=xcas::Xcas_pack_insert;
+      w->pack->_select=xcas::Xcas_pack_select;  
+      Fl::remove_idle(xcas::Xcas_idle_function,w);
+      w->pack->insert_before(-1,true,0);
+      Fl::add_idle(xcas::Xcas_idle_function,0);
+      w->pack->add_entry(w->pack->children());
+      w->pack->clear_modified();
+      w->pack->focus(w->pack->children()-1,true);
+      print_wid=wid=w;
     }
     else {
       int t=graph_output_type(ge);
@@ -3819,7 +3970,14 @@ namespace xcas {
     else
       Fl::remove_idle(xcas::Xcas_idle_function,0);
     w->show();
-    if (!fltk_return_value){
+    if (!fltk_return_value || file_type==5){
+      if (xcas::History_Fold * hf=dynamic_cast<xcas::History_Fold *>(wid)){
+	if (hf->pack->_modified){
+	  int i=fl_ask("History modified. Save?");
+	  if (i)
+	    hf->pack->save(0);
+	}
+      }
       if (xcas::Figure * fig=dynamic_cast<xcas::Figure *>(wid)){
 	if (fig->geo->hp->_modified && !figure_filename.empty()){
 	  int i=fl_ask("Figure modified. Save?");
