@@ -652,7 +652,7 @@ namespace giac {
 	      // A*exp(a*x+b)+C*x+D=0, t=a*x+b
 	      // A*exp(t)+C*(t-b)/a+D=0 -> A*exp(t)+C/a*t+D-C*b/a=0
 	      gen a_(A),b_(C/a),c_(D-C*b/a);
-	      gen delta=a_/b_*exp(-c_/b_,contextptr);
+	      gen delta=ratnormal(a_/b_*exp(-c_/b_,contextptr),contextptr);
 	      if (is_strictly_greater(m1,delta,contextptr))
 		return; // no solution
 	      gen sol=-_LambertW(delta,contextptr)-c_/b_;
@@ -1963,7 +1963,10 @@ namespace giac {
       if (real && has_i(tmp))
 	continue;
 #ifdef HAVE_LIBMPFR
-      tmp=_evalf(makesequence(tmp,100),contextptr);
+      if (has_op(sol[i],*at_LambertW)) // workaround for solve([(a)*(k)=1, (a)*(exp((3)*(k)))=(3)*(e)],[a, k]);, eval with 100 digits in moyal.cc takes too much time
+	tmp=_evalf(makesequence(tmp,30),contextptr);
+      else
+	tmp=_evalf(makesequence(tmp,100),contextptr);
 #endif
       tmp=evalf_double(tmp,1,contextptr);
       if (real && tmp.type==_CPLX)
@@ -2014,8 +2017,20 @@ namespace giac {
     }
     if (expr.is_symb_of_sommet(at_neg))
       expr=expr._SYMBptr->feuille;
-    if (expr.is_symb_of_sommet(at_inv))
+    if (expr.is_symb_of_sommet(at_inv)){
+      // if expr has tan inside, subst tan by 1/x then x->0 if it's 0 we have additional solutions if arg of tan=pi/2
+      vecteur lv(lvarx(expr,x));
+      if (lv.size()==1 && lv[0].is_symb_of_sommet(at_tan)){
+	gen chk=subst(expr,lv[0],inv(x,contextptr),false,contextptr);
+	chk=limit(chk,x,0,0,contextptr);
+	if (chk==0){
+	  chk=cos(lv[0]._SYMBptr->feuille,contextptr);
+	  vecteur v1(solve_cleaned(chk,e_check,x,isolate_mode,contextptr));
+	  return v1;
+	}
+      }
       return vecteur(0);
+    }
     if (expr.is_symb_of_sommet(at_prod)){
       vecteur v=gen2vecteur(expr._SYMBptr->feuille),res;
       for (unsigned i=0;i<v.size();++i){
@@ -6639,47 +6654,78 @@ namespace giac {
 	return vecteur(1,gensizeerr(gen(l).print(contextptr)+gettext(" is not rational w.r.t. ")+it->print(contextptr)));
       }
     }
+    // if one equation factors recurse with each factor
+    for (size_t i=0;i<eq.size();++i){
+      vecteur vi=factors(eq[i],var[0],contextptr);
+      if (vi.size()/2==0) continue;
+      if (is_cinteger(vi[vi.size()-2])){
+	vi.pop_back();
+	vi.pop_back();
+      }
+      if (vi.size()>2){
+	vecteur res;
+	for (size_t j=0;j<vi.size();j+=2){
+	  if (is_strictly_positive(vi[j+1],contextptr)){
+	    eq[i]=vi[j];
+	    vecteur sol=gsolve(eq,var,complexmode,evalf_after,contextptr);
+	    res=mergevecteur(res,sol);
+	  }
+	}
+	return res;
+      }
+    }
+    // end recurse if one equation factors
     int varsize=int(var.size());
 #if 1 // trying with rational univariate rep., assuming radical ideal of dim 0
-    if (varsize<=GROEBNER_VARS && varsize==int(eq.size())){
-      double eps=epsilon(contextptr);
-      if (varsize==2){ // try by resultant
-	//eq=*eqs._VECTptr;
-	gen r=_resultant(makesequence(eq[0],eq[1],var[0]),contextptr);
-	if (!is_zero(r)){
-	  // solve r w.r.t. var[1]
-	  vecteur S,res;
-	  if (convertapprox){
-	    gen p=_symb2poly(makesequence(r,var[1]),contextptr);
-	    p=evalf(p,1,contextptr);
-	    p=_proot(p,contextptr);
-	    if (p.type!=_VECT) return vecteur(1,gensizeerr(contextptr));
-	    S=*p._VECTptr;
-	  }
-	  else
-	    S=solve(r,var[1],complexmode,contextptr);
-	  for (int i=0;i<int(S.size());++i){
-	    gen y=S[i];
-	    if (has_num_coeff(y)){
-	      vecteur T=solve(subst(eq[0],var[1],y,false,contextptr),var[0],complexmode,contextptr);
+    double eps=epsilon(contextptr);
+    if (varsize==2 && eq.size()>=2){ // try by resultant
+      //eq=*eqs._VECTptr;
+      gen r=0;
+      for (size_t i=1;i<eq.size();++i)
+	r=gcd(r,_resultant(makesequence(eq[0],eq[i],var[0]),contextptr),contextptr);
+      if (!is_zero(r)){
+	// solve r w.r.t. var[1]
+	vecteur S,res;
+	if (convertapprox){
+	  gen p=_symb2poly(makesequence(r,var[1]),contextptr);
+	  p=evalf(p,1,contextptr);
+	  p=_proot(p,contextptr);
+	  if (p.type!=_VECT) return vecteur(1,gensizeerr(contextptr));
+	  S=*p._VECTptr;
+	}
+	else
+	  S=solve(r,var[1],complexmode,contextptr);
+	for (int i=0;i<int(S.size());++i){
+	  gen y=S[i];
+	  if (has_num_coeff(y)){
+	    vecteur T=solve(subst(eq[0],var[1],y,false,contextptr),var[0],complexmode,contextptr);
+	    for (size_t k=1;k<eq.size();++k){
+	      vecteur newT;
 	      for (int j=0;j<int(T.size());++j){
 		gen x=T[j];
-		gen tst=subst(subst(eq[1],var[1],y,false,contextptr),var[0],x,false,contextptr);
+		gen tst=subst(subst(eq[k],var[1],y,false,contextptr),var[0],x,false,contextptr);
 		if (is_greater(1e-6,abs(tst,contextptr),contextptr))
-		  res.push_back(makevecteur(x,y));
+		  newT.push_back(x);
 	      }	    
+	      newT.swap(T);
 	    }
-	    else {
-	      gen G=gcd(subst(eq[0],var[1],y,false,contextptr),subst(eq[1],var[1],y,false,contextptr));
-	      vecteur T=solve(G,var[0],complexmode,contextptr);
-	      for (int j=0;j<int(T.size());++j){
-		res.push_back(makevecteur(T[j],y));
-	      }
+	    for (int k=0;k<T.size();++k)
+	      res.push_back(makevecteur(T[k],y));
+	  }
+	  else {
+	    gen G=subst(eq[0],var[1],y,false,contextptr);
+	    for (size_t j=1;j<eq.size();++j)
+	      G=gcd(G,subst(eq[j],var[1],y,false,contextptr),contextptr);
+	    vecteur T=solve(G,var[0],complexmode,contextptr);
+	    for (int j=0;j<int(T.size());++j){
+	      res.push_back(makevecteur(T[j],y));
 	    }
 	  }
-	  return res;
-	} // end resultant not 0
-      } // end #var=2
+	}
+	return res;
+      } // end resultant not 0
+    } // end #var=2
+    if (varsize<=GROEBNER_VARS && varsize<=int(eq.size())){
       gen G=_gbasis(makesequence(eq,var,change_subtype(_RUR_REVLEX,_INT_GROEBNER)),contextptr);
       if (G.type==_VECT && G._VECTptr->size()==1){
 	if (!is_zero(G._VECTptr->front()))

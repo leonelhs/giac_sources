@@ -6,7 +6,6 @@
   <meta name=viewport content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="keywords" content="xcas Numworks">
-  <title>Outils Numworks</title>
   <link rel="stylesheet" href="w3.css">
   <style type="text/css">
     body, h1, h2, h3, h4, h5, h6 {
@@ -27,44 +26,73 @@
 
     .btn { margin-bottom: 16px;  }
     .btn2 { margin-left: 16px; margin-right: 16px; }
+.fixed {
+          position:fixed;
+          top: 0;
+          width: 100%;
+ }
+ .p-10{
+            padding: 0 10px;
+  }
+ .after-menu {
+            margin-left: 16px; 
+            max-height:700px; 
+            overflow:auto; 
+            padding-top: 40px
+  }
   </style>
 
-  
-</head>
 <script src="numworks.js"></script>
 <script src="nws_sig.js"></script>
 <script src="nws.js"></script>
 <script src="FileSaver.js"></script>
 <script src="jszip.min.js"></script>
+</head>
+  <title>Outils Numworks</title>
 
 <body>
-<header class="w3-container w3-light-gray">
-  <div class="w3-col w3-right-align w3-padding-16 s3 m4 l5">
-    <img src="logo.png" height="60px">
-  </div>
-  <div class="w3-col w3-padding-16 s9 m8 l7">
-    <div class="w3-margin-left">
-        <b class="w3-xlarge">KhiCAS/XCAS</b>
-        <br>
-        <i class="w3-large">Kit de connection Numworks non verrouillée</i>
-        
-    </div>
-</div>
-</header>
+
+<header class="w3-container w3-light-gray fixed">
 
 <div class="w3-bar w3-deep-purple" style="padding: 0 10px;">
   <a class="w3-bar-item w3-button w3-hide-small" href="nws_en.html">English</a>
-  <a class="w3-bar-item w3-button w3-hide-small" href="#python" >Python</a>
-  <a class="w3-bar-item w3-button w3-hide-small" href="#install" >Install</a>
+  <a class="w3-bar-item w3-button"
+  onclick="document.getElementById('top').scrollIntoView()">↑</a>
+  <a class="w3-bar-item w3-button" href="#python" >Python</a>
+  <a class="w3-bar-item w3-button" href="#install" >Install</a>
+  <a class="w3-bar-item w3-button w3-hide-small" href="#report" >Rapport</a>
+  <a class="w3-bar-item w3-button" href="#exam" >Examen</a>
   <a class="w3-bar-item w3-button w3-hide-small" href="#rescue" >Rescue</a>
+  <a class="w3-bar-item w3-button w3-hide-small" href="https://xcas.univ-grenoble-alpes.fr/index.html" >Xcas</a>
 </div>
+<hr style="border-top: 1px dashed red; margin: 4px 4px;">
+    <span id="ploglegend"></span>
+<progress id="plog" value=0 style="display:none"></progress>
+<hr style="border-top: 1px dashed red; margin: 4px 4px;">
+</header>
 
+
+
+<!-- CORPS DE LA PAGE -->
+<div id="body" class="after-menu">
+<div id="top" class="w3-col w3-right-align w3-padding-16 s3 m4 l5">
+  <img src="logo.png" height="60px">
+</div>
+<div class="w3-col w3-padding-16 s9 m8 l7">
+<div class="w3-margin-left">
+  <b class="w3-xlarge">KhiCAS/XCAS</b>
+  <br>
+  <i class="w3-large">Kit de connection Numworks non verrouillée</i>
+  
+</div>
+</div>
+<br>
+<div id="divcontent" class="w3-container w3-section w3-padding-large w3-light-gray" style="margin:30px;">
 <div class="w3-panel w3-margin w3-lime" uk-alert>
-  <p><b>Attention, ne faites pas de mise &agrave; jour depuis le site de
-    Numworks! </b><a class="w3-bar-item interface" onclick="let field=$id('update'); if (field.style.display=='block')
+  <em>Attention, ne faites pas de mise &agrave; jour depuis le site de
+    Numworks! </em><a class="w3-bar-item interface" onclick="let field=$id('update'); if (field.style.display=='block')
     field.style.display='none'; else field.style.display='block'">+
     d'infos</a>
-  </p>
   <div id='update' style="display:none">
     Toute mise &agrave; jour sur le site de Numworks verrouille
     votre calculatrice et la rend incompatible avec Xcas.
@@ -92,31 +120,28 @@
     calculatrice.
     
   </div>
-  <div><br><b>Si cette page ne fonctionne pas normalement,
+  <div><b>Si cette page ne fonctionne pas normalement,
     <a class="w3-link" href="https://fr.wikipedia.org/wiki/Aide:Purge_du_cache_du_navigateur" target="_blank">videz le cache du
       navigateur</a> et r&eacute;essayez.</b></div>
   
 </div>
 
-
-
-<!-- CORPS DE LA PAGE -->
-<div id="body" class="w3-container w3-section w3-padding-large w3-light-gray" style="margin:30px;">
   <h4 class="w3-margin">
     <a class="w3-bar-item interface"
   onclick="UI.nws_detect(UI.nws_detect_success,UI.nws_detect_failure)">
   D&eacute;tecter</a> la Numworks.
   </h4>
   A faire si les boutons ci-dessous ne fonctionnent pas. Si
-      l'&eacute;cran de votre Numworks N0110 est &eacute;teint, cliquez sur
-      le bouton R&eacute;cup&eacute;ration. Si votre calculatrice est
+      l'&eacute;cran de votre Numworks N0110 est &eacute;teint,
+consultez la section <a href="#rescue">R&eacute;cup&eacute;ration</a>.
+Si votre calculatrice est
       verrouill&eacute;ee, rendez-vous <a href="https://phi.getomega.dev/">ici</a> pour la
       d&eacute;verrouiller, puis installez <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(1,2);">Khi slot 1</a>.
       
   <div class="w3-border-bottom"></div>
-  <h3 class="w3-margin" id="giac">Scripts Python et Backups</h3>
+  <h3 class="w3-margin" id="giac"><a name=python> Scripts Python et Backups</a></h3>
   <div class="w3-margin w3-row">
-    <ul><a name=python>
+    <ul>
       <li>
         <a class="w3-bar-item interface" id="numworks_load" onclick="UI.numworks_load(false)">Numworks→</a>
         ou
@@ -141,7 +166,7 @@
   
 
     <div class="w3-border-bottom"></div>
-    <h3 class="w3-margin" id="install">Installation, mise &agrave; jour, ... pour Numworks N0110.</h3>
+    <h3 class="w3-margin" id="install"><a name=install> Installation, mise &agrave; jour, ... pour Numworks N0110.</a></h3>
     <ul id="main">
       <li> 
         Installation :
@@ -208,12 +233,10 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     <div class="w3-border-bottom"></div>
     <h3 class="w3-margin" id="report">Rapport sur l'installation ou la certification <font size='4'><a class="w3-bar-item interface" onclick="$id('output').innerHTML=''">Effacer</a></font></h3>
     <div class="w3-border-bottom"></div>
-    <span id="ploglegend"></span>
-    <progress id="plog" value=0 style="display:none"></progress>
     <div id="output" style="max-height: 200px; overflow:auto"></div>
     <br>
     <div class="w3-border-bottom"></div>
-    <h3 class="w3-margin"><strong>Mode examen :</strong></h3>
+    <h3 id="exam" class="w3-margin">Mode examen :</h3>
     <div class="w3-col-x">
       Pour certifier que le firmware d'une calculatrice Numworks N0110 est
         une version non modifi&eacute;e de Khi+KhiCAS, compatible avec la
@@ -235,7 +258,9 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
           calculatrice, enfoncez un stylo dans le bouton RESET au dos
           en laissant la touche 6 appuy&eacute;e,
           relachez la touche 6, l'&eacute;cran doit etre &eacute;teint et la
-          diode rouge allum&eacute;e.
+          diode rouge allum&eacute;e. Sinon, la calculatrice est
+      probablement verrouill&eacute;e, cf.
+      <a class="w3-link" href="https://phi.getomega.dev/">ici</a>.
           <br>
           -Si le message <tt>http://... tente de se connecter</tt> apparait, cliquez
           sur <tt>STM32 BOOTLOADER associ&eacute;</tt> puis sur le bouton
@@ -270,8 +295,10 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     </div>
 
     <div class="w3-border-bottom"></div>
-    Cette page fonctionne uniquement avec un navigateur compatible webusb,
-    par exemple Chromium ou Chrome ou Edge et depuis un serveur web. Firefox n'a pas de
+    <b>Cette page fonctionne uniquement avec un navigateur compatible webusb,
+    par exemple Chromium ou Chrome ou Edge et depuis un serveur
+    web.</b>
+    Firefox n'a pas de
     support pour webusb pour des raisons de s&eacute;curit&eacute;, si
     vous avez des craintes &agrave; ce sujet, vous pouvez connecter votre
     calculatrice Numworks avec
@@ -296,16 +323,13 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     <a class="w3-link" href="https://stuk.github.io/jszip/">JSZip</a> pour lire
     des fichiers zip et <a class="w3-link" href="https://github.com/eligrey/FileSaver.js/blob/master/src/FileSaver.js">FileSaver.js</a>
     pour sauvegarder des fichiers.
-    <br> Remerciements &agrave; Elio Poletti pour le style de la page</b>
+    <br> Remerciements &agrave; Zexi Ru et Elio Poletti pour le style de la page</b>
   </div>
   
 
 
 </div>
-<footer class="w3-container w3-deep-purple">
-  <p>Juillet 2022</p>
-</footer> 
-
+</div>
 </body>
 
 </html>

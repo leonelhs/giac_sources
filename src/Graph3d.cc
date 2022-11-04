@@ -4810,10 +4810,11 @@ namespace xcas {
 
   // set evryone to x
   void Graph3d::orthonormalize(){ 
-    window_ymax=window_xmax;
-    window_ymin=window_xmin;
-    window_zmax=window_xmax;
-    window_zmin=window_xmin;
+    double dx=window_xmax-window_xmin,dy=window_ymax-window_ymin,dz=window_zmax-window_zmin;
+    double d=giac_max(dx,giac_max(dy,dz));
+    zoomx(d/dx);
+    zoomy(d/dy);
+    zoomz(d/dz);
     redraw();
   }
 

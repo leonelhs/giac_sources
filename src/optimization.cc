@@ -5154,7 +5154,7 @@ bool nlp_problem::ipt_solver::IC(const matrice &mat) {
             return false;
         
 #else
-        copy_matrice(mat_orig,factorization);
+        copy_matrice(mat,factorization);
         for (i=0;i<nvars;++i) factorization[i]._VECTptr->at(i)+=delta_w;
         for (i=0;i<ncons;++i) factorization[i+nvars]._VECTptr->at(i+nvars)-=delta_c;
         if (!solve_indef(factorization,NULL,ldl_perm,&n_pos,&n_neg,&n_zero,ctx))

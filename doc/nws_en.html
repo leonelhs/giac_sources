@@ -27,19 +27,53 @@
 
     .btn { margin-bottom: 16px;  }
     .btn2 { margin-left: 16px; margin-right: 16px; }
+.fixed {
+          position:fixed;
+          top: 0;
+          width: 100%;
+ }
+ .p-10{
+            padding: 0 10px;
+  }
+ .after-menu {
+            margin-left: 16px; 
+            max-height:700px; 
+            overflow:auto; 
+            padding-top: 40px
+  }
   </style>
 
-  
-</head>
 <script src="numworks.js"></script>
 <script src="nws_sig.js"></script>
 <script src="nws.js"></script>
 <script src="FileSaver.js"></script>
 <script src="jszip.min.js"></script>
+  
+</head>
+
 
 <body>
-<header class="w3-container w3-light-gray">
-  <div class="w3-col w3-right-align w3-padding-16 s3 m4 l5">
+<header class="w3-container w3-light-gray fixed">
+
+<div class="w3-bar w3-deep-purple" style="padding: 0 10px;">
+  <a class="w3-bar-item w3-button w3-hide-small" href="nws.html">Version francaise</a>
+  <a class="w3-bar-item w3-button"
+  onclick="document.getElementById('top').scrollIntoView()">↑</a>
+  <a class="w3-bar-item w3-button" href="#giac" >Python</a>
+  <a class="w3-bar-item w3-button" href="#install" >Install</a>
+  <a class="w3-bar-item w3-button w3-hide-small" href="#report" >Log</a>
+  <a class="w3-bar-item w3-button w3-hide-small" href="#exam" >Exam</a>
+  <a class="w3-bar-item w3-button w3-hide-small" href="#rescue" >Rescue</a>
+  <a class="w3-bar-item w3-button w3-hide-small" href="https://xcas.univ-grenoble-alpes.fr/en.html" >Xcas</a>
+</div>
+<hr style="border-top: 1px dashed red; margin: 4px 4px;">
+    <span id="ploglegend"></span>
+<progress id="plog" value=0 style="display:none"></progress>
+<hr style="border-top: 1px dashed red; margin: 4px 4px;">
+</header>
+
+<div id="body" class="after-menu">
+  <div id="top" class="w3-col w3-right-align w3-padding-16 s3 m4 l5">
     <img src="logo.png" height="60px">
   </div>
   <div class="w3-col w3-padding-16 s9 m8 l7">
@@ -50,25 +84,17 @@
         
     </div>
 </div>
-</header>
-
-<div class="w3-bar w3-deep-purple" style="padding: 0 10px;">
-  <a class="w3-bar-item w3-button w3-hide-small" href="./nws.html">Version francaise</a>
-  <a class="w3-bar-item w3-button w3-hide-small" href="#python" >Python</a>
-  <a class="w3-bar-item w3-button w3-hide-small" href="#install" >Install</a>
-  <a class="w3-bar-item w3-button w3-hide-small" href="#rescue" >Rescue</a>
-</div>
 
 <div class="w3-panel w3-margin w3-lime" uk-alert>
-  <p><b>Beware, don't upgrade from Numworks site!</b><a class="w3-bar-item interface" onclick="let field=$id('update'); if (field.style.display=='block')
+  <em>Beware, don't upgrade from Numworks site!</em><a class="w3-bar-item interface" onclick="let field=$id('update'); if (field.style.display=='block')
     field.style.display='none'; else field.style.display='block'">+
     More info</a>
-  </p>
+
   <div id='update' style="display:none">
     If you have upgraded from Numworks site, your calculator is locked
   and therefore incompatible with KhiCAS. Thanks to M4x1m3,
   there is temporarily a
-  workaround to unlock your Numworks, follow instructions <a class="w3-link" href="https://phi.getomega.dev/">ici</a>.
+  workaround to unlock your Numworks, follow instructions <a class="w3-link" href="https://phi.getomega.dev/">here</a>.
   If the workaround fails (if you made an update from Numworks site
   after 22/03/28), the locking process is (almost) irreversible,
   the only known workaround is explained 
@@ -84,8 +110,10 @@
     end up with a locked calculator.
     
   </div>
-  <div><br><b>If this page does not function normally,
-    <a class="w3-link" href="https://fr.wikipedia.org/wiki/Aide:Purge_du_cache_du_navigateur" target="_blank">clear browser cache</a> and retry</b>
+  <div> <b>If this page does not work,
+    <a class="w3-link"
+  href="https://fr.wikipedia.org/wiki/Aide:Purge_du_cache_du_navigateur"
+  target="_blank">clear the browser cache</a> and retry</b>
   </div>
   
 </div>
@@ -99,14 +127,14 @@
   the Numworks.
   </h4>
   Click here if the buttons below do not work.
-  If your N0110 calculator screen is off, click on the Rescue button
-  instead.
+  If your N0110 calculator screen is off, go to the <a
+  href="#rescue">rescue</a> section.
   If your N0110 is locked, follow instructions <a href="https://phi.getomega.dev/">here</a> then install <a class="w3-bar-item interface" onclick="UI.numworks_install_delta(1,2);">Khi slot 1</a>.
       
   <div class="w3-border-bottom"></div>
   <h3 id="giac" class="w3-margin">Python scripts</h3>
   <div class="w3-margin w3-row">
-    <ul><a name=python>
+    <ul>
       <li>
         <a class="w3-bar-item interface" id="numworks_load" onclick="UI.numworks_load(false)">Numworks→</a>
         ou
@@ -197,10 +225,8 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     <div class="w3-border-bottom"></div>
     <br>
     <div class="w3-border-bottom"></div>
-    <span id="ploglegend"></span>
-    <progress id="plog" value=0 style="display:none"></progress>
     <div id="output" style="max-height: 200px; overflow:auto"></div>
-    <h3 class="w3-margin"><strong>Exam mode :</strong></h3>
+    <h3 class="w3-margin" id="exam">Exam mode :</h3>
     <div class="w3-col-x">
         If you want to certify that a N0110 calculator firmware  is
         a genuine version of Khi+KhiCAS, click here
@@ -212,8 +238,7 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
         but it takes about 1 minute and it writes data on the calc.-->
         These tests may be done by a proctor during an exam with a
         smartphone from this
-        <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/nws.html">ce
-          link</a>
+        <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/nws.html">link</a>
           using a
         <a class="w3-link" href="https://tiplanet.org/forum/viewtopic.php?f=99&t=25091">
           smartphone-Numworks link</a>.
@@ -226,7 +251,9 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
       Connect the calculator, press the 6 key, enter a pin in the RESET
       button
       on the back (keeping 6 pressed), release the 6 key. The screen
-      should remain black, while the red led is visible.
+      should remain black, while the red led is visible. Otherwise
+      your calculator is probably locked,
+      click <a class="w3-link" href="https://phi.getomega.dev/">here</a>. 
           <br>
           -If you see <tt>http://... tries to connect</tt>, click on
           <tt>STM32 BOOTLOADER</tt> then click on
@@ -264,7 +291,7 @@ onclick="UI.tar_addfile(($id('addtarinput').files)[0]);">Ajouter</button> -->
     <div class="w3-border-bottom"></div>
     <br><b>
         This kit works only with a webusb compatible browser, like Chromium,
-        Chrome or Edge and from a web server. Firefox does not have support
+        Chrome or Edge and from a web server.</b> Firefox does not have support
         for webusb for security reasons. If you don't want to run a webusb
         compatible browser, you can connect your Numworks with
     <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr">Xcas</a>
@@ -275,7 +302,7 @@ activate a local webserver, for example by running from a Terminal
 the following command <br><tt>python3 -m http.server</tt><br>
 from the directory where you have unzipped 
     <a class="w3-link" href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/xcashtml.zip">xcashtml.zip</a>, then click on
-    <a class="w3-link" href="localhost:8000/nws.html">this link</a>.</b>
+    <a class="w3-link" href="localhost:8000/nws.html">this link</a>.
 
 
     <div class="w3-border-bottom"></div>
@@ -287,15 +314,13 @@ from the directory where you have unzipped
     <a class="w3-link" href="https://stuk.github.io/jszip/">JSZip</a> to read
     zip files and <a class="w3-link" href="https://github.com/eligrey/FileSaver.js/blob/master/src/FileSaver.js">FileSaver.js</a>
     to save files.
-    <br>Thanks to Elio Poletti for the page style.</b>
+    <br>Thanks to Zexi Ru and Elio Poletti for the initial page style.</b>
   </div>
   
 
 
-</div>
-<footer class="w3-container w3-deep-purple">
-  <p>July 2022</p>
-</footer> 
+  </div>
+  </div>
 </body>
 
 </html>
