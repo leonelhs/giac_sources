@@ -43,6 +43,8 @@ AC_C_BIGENDIAN
 dnl Check for standard C+headers
 GINAC_STD_CXX_HEADERS
 
+CXXFLAGS="$CXXFLAGS -std=c++0x"
+
 dnl Define DOUBLEVAL if bigendian
 if test "x$ac_cv_c_bigendian" = "xyes"; then
 	CXXFLAGS="$CXXFLAGS -DDOUBLEVAL"

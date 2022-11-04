@@ -80,6 +80,7 @@ extern size_t stackptr;
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
+  size_t freeslotmem(); // non 0 if ALLOCSMALL is defined
   int sprint_int(char * s,int r);
   void sprint_double(char * s,double d);
 

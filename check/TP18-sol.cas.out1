@@ -105,7 +105,7 @@ end;,
 proc(E,n) 
   local ltmp; 
   if n=0 then ltmp:=copy([[]]); else  
-    ltmp:=copy(NULL); 
+    ltmp:=copy([]); 
     for i from 0 to nops(E)^n-1 do ltmp:=copy([op(ltmp),[seq(E[j+1],j=(convert(i,base,nops(E))+[0$n]))]]); 
      od; 
   fi ;  

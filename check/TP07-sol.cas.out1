@@ -62,7 +62,7 @@ proc(A)
     d:=gcdex(m,dp(u),x,'s','t'); 
     invdp:=t/d; 
     u:=rem(u-p(u)*invdp,m,x); 
-   od;;  
+   od;  
   horner(u,A);  
  
 end;,

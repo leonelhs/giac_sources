@@ -84,7 +84,7 @@ proc(a,n)
       C:=C/2; 
       B:=B*B 
     fi ; 
-   od;;  
+   od;  
   A;  
  
 end;,

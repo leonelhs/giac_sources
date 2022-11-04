@@ -14,7 +14,7 @@ GF(3,k^20-k^19-k^18-k^17-k^16+k^12-k^11-k^10+k^9+k^8+k^7-k^6+k-1,[k,L,b],undef),
 { },
 proc(n) 
   local a,i,j,k,l,o,liste; 
-  liste:=copy(NULL);  
+  liste:=copy([]);  
   if irem(n,3)=0 then print("Erreur: 3 divise",n); else  
     l:=copy({seq(i,i=(0 .. (n-1)))}); 
     j:=1; 
@@ -25,7 +25,7 @@ proc(n)
       while a<>i do  
         o:=o union {a}; 
         a:=irem(3*a,n); 
-       od;; 
+       od; 
       l:=l minus o; 
       liste:=copy([op(liste),o]); 
      od; 
@@ -57,7 +57,7 @@ proc(g,n)
       v:=irem(Rem(v*v,P),3); 
       n:=(n-1)/2 
     fi ; 
-   od;;  
+   od;  
   irem(Rem(u*v,P),3);  
  
 end;,
@@ -120,8 +120,8 @@ proc(x,n)
   while y<>1 do  
     y:=powmod(y,l[i,1],n); 
     m:=m*l[i,1]; 
-   od;; 
-   od;;  
+   od; 
+   od;  
   m;  
  
 end;,

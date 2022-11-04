@@ -3,7 +3,7 @@
 # run ./configure
 # with export CXXFLAGS="-L/usr/X11R6/lib -L/usr/local/lib -I/usr/local/include"
 # then make -f Makefilenew.win xcasdll / icasdll
-CXXFLAGS = -g -D__MINGW_H -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DHAVE_LIBMICROPYTHON -DQUICKJS -D_GNU_SOURCE -DQUICKJS -DCONFIG_BIGNUM -DCONFIG_VERSION=\"2020-11-08\" -fpermissive -I. -I.. 
+CXXFLAGS = -std=c++0x -g -DWIN32 -D__MINGW_H -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DHAVE_LIBMICROPYTHON -DQUICKJS -D_GNU_SOURCE -DQUICKJS -DCONFIG_BIGNUM -DCONFIG_VERSION=\"2020-11-08\" -fpermissive -I. -I.. 
 CFLAGS = -g -D__MINGW_H -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DHAVE_LIBMICROPYTHON -DQUICKJS -D_GNU_SOURCE -DQUICKJS -DCONFIG_BIGNUM -DCONFIG_VERSION=\"2020-11-08\" -fpermissive -I. -I.. 
 CXX=g++
 OBJS = History.o Input.o Xcas1.o Equation.o Print.o Tableur.o Editeur.o Graph.o Graph3d.o Help1.o Cfg.o Flv_CStyle.o Flve_Check_Button.o Flve_Input.o Flv_Style.o Flv_Data_Source.o Flve_Combo.o Flv_List.o Flv_Table.o gl2ps.o Python.o

@@ -311,6 +311,8 @@ namespace xcas {
 	std::map<std::string,std::string>::const_iterator it=giac::lexer_localization_map().find(s),itend=giac::lexer_localization_map().end();
 	if (it!=itend)
 	  s=it->second;
+	if (giac::html_mtt.empty())
+	  giac::html_help_init("aide_cas",2,true,true);
 	vector<string> v=giac::html_help(giac::html_mtt,s);
 	if (!v.empty()){
 	  if (use_external_browser)

@@ -24,8 +24,8 @@ proc(A)
     u:=i; 
     v:=j 
   fi ; 
-   od;; 
-   od;;  
+   od; 
+   od;  
   u,v;  
  
 end;,
@@ -43,10 +43,10 @@ proc(A,i,j)
   U:=identity(n);  
   V:=identity(n);  
   for l from 1 to n do V[l,i]:=-(iquo(A[l,j],A[i,j])); 
-   od;;  
+   od;  
   V[i,i]:=1;  
   for l from 1 to n do U[j,l]:=-(iquo(A[i,l],A[i,j])); 
-   od;;  
+   od;  
   U[j,j]:=1;  
   V*A*U;  
  
@@ -68,7 +68,7 @@ proc(A)
       B:=delrows(B,i .. i) 
     fi ; 
     i,j:=minval(B); 
-   od;;  
+   od;  
   diag([seq(l[k],k=(1 .. (n-1))),B[1,1]]);  
  
 end;,
@@ -91,7 +91,7 @@ proc(A,i,j)
   n:=(dim(A))[1];  
   U:=identity(n);  
   for l from 1 to n do U[j,l]:=-(iquo(A[i,l],A[i,j])); 
-   od;;  
+   od;  
   U[j,j]:=1;  
   A*U;  
  
@@ -111,20 +111,20 @@ proc(A)
       B:=delrows(B,i .. i) 
     fi ; 
     i,j:=minval(B); 
-   od;;  
+   od;  
   diag([seq(l[k],k=(1 .. (n-1))),B[1,1]]);  
  
 end;,
 proc(A) 
   n:=(dim(A))[1];  
   d:=Zequiv(A);  
-  L:=copy(NULL);  
+  L:=copy([]);  
   for i from 1 to n-1 do  
   T:=matrix(n+1-i,n+1-i,f); 
   d:=ZequivC(T*d); 
   L:=copy([op(L),d[1,1]]); 
   d:=delrows(delcols(d,1 .. 1),1 .. 1); 
-   od;;  
+   od;  
   [op(L),d[1,1]];  
  
 end;,

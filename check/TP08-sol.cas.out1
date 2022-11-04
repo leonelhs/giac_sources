@@ -69,7 +69,7 @@ proc(a,b,c,P,n)
       X:=plus(a,b,c,X,X); 
       m:=m/2 
     fi ; 
-   od;;  
+   od;  
   Y;  
  
 end;,
@@ -104,7 +104,7 @@ proc(a,b,c,P,n,N)
     fi ; 
     Y:=mods(Y,N); 
     X:=mods(X,N); 
-   od;;  
+   od;  
   egalomega(Y,N);  
  
 end;,

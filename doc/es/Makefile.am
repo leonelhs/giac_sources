@@ -10,7 +10,7 @@ EXTRA_DIST = cas_es.tex $(PDF_LOCAL) $(PS_LOCAL) $(DVI_LOCAL) # $(HTML_LOCAL) $(
 
 the_LANG = es
 thelangdocdir = $(docdir)/$(the_LANG)
-dist_thelangdoc_DATA = html_mall html_mtt html_vall xcasmenu xcasex keywords 
+dist_thelangdoc_DATA = xcasmenu xcasex keywords 
 
 pdf-local: $(PDF_LOCAL)
 dvi-local: $(DVI_LOCAL)
