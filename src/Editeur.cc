@@ -1676,7 +1676,7 @@ namespace xcas {
 
   void cb_Editeur_Extend(Fl_Widget * m , void*) {
     Editeur * e=dynamic_cast<Editeur *>(m->parent());
-    if (e->h()<=e->window()->h()-100){
+    if (e && e->h()<=e->window()->h()-100){
       increase_size(e->editor,100);
       e->editor->redraw();
     }
@@ -1684,7 +1684,7 @@ namespace xcas {
 
   void cb_Editeur_Shrink(Fl_Widget * m , void*) {
     Editeur * e=dynamic_cast<Editeur *>(m->parent());
-    if (e->h()>200){
+    if (e && e->h()>200){
       increase_size(e->editor,-100);
       e->editor->redraw();
     }

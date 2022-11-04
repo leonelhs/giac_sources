@@ -1106,7 +1106,8 @@ namespace xcas {
 	    if (Xcas_config.ortho)
 	      res->orthonormalize();
 	  }
-	res->add(evaled_g);
+	res->add(evaled_g); 
+	res->init_tracemode(); res->tracemode_set();
 	if (anim)
 	  res->animation_dt=1./5;
 	if (Xcas_config.autoscale)
@@ -1302,7 +1303,10 @@ namespace xcas {
 	    }
 	  }
 	}
-	hp->focus(hp_pos+1,false);
+	if (resgraph) 
+	  Fl::focus(resgraph);
+	else
+	  hp->focus(hp_pos+1,false);
       }
     } // if (res)
     else { // res==0 no output
@@ -3791,7 +3795,7 @@ namespace xcas {
   Fl_Menu_Item icas_xcas_menu[] = {
     {"File", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
     {"Save", 0x80073,  (Fl_Callback*)cb_save, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
-    {"Save as", 0x80073,  (Fl_Callback*)cb_save_as, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Save as", 0,  (Fl_Callback*)cb_save_as, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {"Insert", 0,  (Fl_Callback*)cb_insert, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {"Quit", 0,  (Fl_Callback*)cb_Close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {0,0,0,0,0,0,0,0,0},    
@@ -3825,22 +3829,22 @@ namespace xcas {
     Fl_Button * button1 =0,*button2=0;
     Fl_Menu_Bar * menu=0;
     if (!w){
-      int dx=800,dy=geometry?500:360;
+      int dx=800,dy=(geometry || file_type==5)?500:360;
       Fl_Group::current(0);
       w=new Fl_Window(dx,dy);
-      button0 = new Fl_Return_Button(2,dy-25,dx/3-4,20);
+      button0 = new Fl_Return_Button(2,2,dx/3-4,20);
       button0->shortcut(0xff0d);
       button0->label(gettext("OK"));
       button0->callback( (Fl_Callback *) cb_Close);
-      button1 = new Fl_Button(dx/3+2,dy-25,dx/3-4,20);
+      button1 = new Fl_Button(dx/3+2,2,dx/3-4,20);
       button1->shortcut(0xff1b);
       button1->label(gettext("Cancel"));
       button1->callback( (Fl_Callback *) cb_Cancel);
-      menu=new Fl_Menu_Bar(0,dy-25,2*dx/3,20);
+      menu=new Fl_Menu_Bar(0,2,2*dx/3,20);
       menu->menu(icas_xcas_menu);
       string doc_prefix=giac::read_env(giac::context0);
       xcas::add_user_menu(menu,"xcasmenu",doc_prefix,Menu_Insert_ItemName); 
-      button2 = new Fl_Button(2*dx/3+2,dy-25,dx/3-4,20);
+      button2 = new Fl_Button(2*dx/3+2,2,dx/3-4,20);
       button2->shortcut(0xff1b);
       button2->label(gettext("STOP"));
       button2->callback( (Fl_Callback *) cb_Kill);
@@ -3858,11 +3862,11 @@ namespace xcas {
     // xcas::idle_function=Xcas_update_mode;
     Fl_Group::current(w); xcas::Xcas_input_focus=w;
     int dx=w->w(),dy=w->h();
-    Fl_Tile * this_graph_tile=new Fl_Tile(0,0,dx,dy-25);
+    Fl_Tile * this_graph_tile=new Fl_Tile(0,25,dx,dy-25);
     Fl_Widget * wid =0,*print_wid=0;
     if (geometry){
       if (file_type==4 || (giac::ckmatrix(ge,true) && ge.subtype==giac::_SPREAD__VECT)){
-	xcas::Tableur_Group * t=new xcas::Tableur_Group(0,0,dx,dy-25,20,2);
+	xcas::Tableur_Group * t=new xcas::Tableur_Group(0,25,dx,dy-25,20,2);
 	wid=t;
 	giac::gen tmp=giac::gen(giac::remove_path(giac::remove_extension(figure_filename)),contextptr);
 	if (tmp.type==giac::_IDNT)
@@ -3879,14 +3883,15 @@ namespace xcas {
 	t->table->update_status();
       }
       else {
-	wid=new xcas::Figure(0,0,dx,dy-25,20,(is3d(ge)||file_type==3));
+	wid=new xcas::Figure(0,25,dx,dy-25,20,(is3d(ge)||file_type==3));
 	if (wid)
 	  print_wid=((xcas::Figure *)wid)->geo;
       }
     }
     else if (file_type==5){
       button0->hide(); button1->hide(); menu->show();
-      xcas::History_Fold * w =new xcas::History_Fold(0,0,dx,dy-25,-1);
+      xcas::History_Fold * w =new xcas::History_Fold(0,25,dx,dy-25,-1);
+      w->label("");
       w->labelfont(FL_HELVETICA);
       w->pack->labelfont(FL_HELVETICA);
       w->end();
@@ -3906,21 +3911,21 @@ namespace xcas {
     else {
       int t=graph_output_type(ge);
       if (t==4 || file_type==4){
-	xcas::Turtle * tu=new xcas::Turtle(0,0,dx,dy-25);
+	xcas::Turtle * tu=new xcas::Turtle(0,25,dx,dy-25);
 	tu->turtleptr=&turtle_stack(contextptr);
 	print_wid=wid=tu;
       }
       else {
 	if (t==3||file_type==3){
 #ifdef HAVE_LIBFLTK_GL
-	  print_wid=wid=new xcas::Graph3d(0,0,dx,dy-25,"",0);
+	  print_wid=wid=new xcas::Graph3d(0,25,dx,dy-25,"",0);
 #endif
 	}
 	else {
 	  if (t==2 || file_type==2)
-	    print_wid=wid=new xcas::Graph2d(0,0,dx,dy-25);
+	    print_wid=wid=new xcas::Graph2d(0,25,dx,dy-25);
 	  else {
-	    print_wid=wid=new Fl_Output(0,0,dx,dy-25);
+	    print_wid=wid=new Fl_Output(0,25,dx,dy-25);
 	    ((Fl_Output *) (wid))->value("No suitable widget");
 	  }
 	}

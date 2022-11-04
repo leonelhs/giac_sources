@@ -183,6 +183,12 @@ namespace xcas {
     int ntheta,nphi; // default discretization params for sphere drawing
     std::pair<Fl_Image *,Fl_Image *> * background_image; // 2-d only
     int x_axis_color,y_axis_color,z_axis_color;
+    int tracemode;
+    int tracemode_n; double tracemode_i; string tracemode_add; giac::vecteur tracemode_disp; double tracemode_mark;    
+    void init_tracemode();
+    void invert_tracemode();
+    void tracemode_set(int operation=0); // operation==1 if user is setting the value of t on a parametric curve, operation==2 for root, operation==3 for extremum, operation==4 mark current position, operation=5 for area
+    void draw_decorations();
     Graph2d3d(int x,int y,int w,int h,const char * l,double xmin,double xmax,double ymin,double ymax,double zmin,double zmax,double ortho,History_Pack * hp_);
     Graph2d3d(int x,int y,int w,int h,const char * l=0,History_Pack * hp_=0);
     double find_eps(); // find value of a small real wrt the current graph

@@ -1192,6 +1192,114 @@ namespace xcas {
     }
   }
 
+  static void cb_Graph_curve_infos(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(-1);
+    }
+  }
+  static void cb_Graph_switch_tangent(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      if (gr->tracemode & 2)
+	gr->tracemode &= ~2;
+      else
+	gr->tracemode |= 2;
+      gr->tracemode_set();
+    }
+  }
+  static void cb_Graph_switch_normal(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      if (gr->tracemode & 4)
+	gr->tracemode &= ~4;
+      else {
+	gr->tracemode |= 4;
+	gr->autoscale(false);
+      }
+      gr->tracemode_set();
+    }
+  }
+  static void cb_Graph_switch_circle(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      if (gr->tracemode & 8)
+	gr->tracemode &= ~8;
+      else {
+	gr->tracemode |= 8;
+	gr->autoscale(false);
+      }
+      gr->tracemode_set();
+    }
+  }
+  static void cb_Graph_clear_infos(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode=0;
+      gr->redraw();
+    }
+  }
+  static void cb_Graph_set(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(1);
+    }
+  }
+  static void cb_Graph_root(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(2);
+    }
+  }
+  static void cb_Graph_intersect(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(3);
+    }
+  }
+  static void cb_Graph_extremum(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(4);
+    }
+  }
+  static void cb_Graph_vertical(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(5);
+    }
+  }
+  static void cb_Graph_inflexion(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(6);
+    }
+  }
+  static void cb_Graph_mark(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(7);
+    }
+  }
+  static void cb_Graph_set_mark(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(8);
+    }
+  }
+  static void cb_Graph_area(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(9);
+    }
+  }
+  static void cb_Graph_arclength(Fl_Widget * m , void*) {
+    Graph2d3d * gr = find_graph2d3d(m);
+    if (gr){
+      gr->tracemode_set(10);
+    }
+  }
+
   Fl_Menu_Item Autoscale_menu[] = {
     {gettext("auto"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("Autoscale"), 0,  (Fl_Callback*)cb_Graph2d3d_Autoscale, 0, 0, 0, 0, 14, 56},
@@ -1213,6 +1321,23 @@ namespace xcas {
     {gettext("Previous"), 0,  (Fl_Callback*)cb_Graph2d3d_Previous, 0, 0, 0, 0, 14, 56},
     {gettext("Next"), 0,  (Fl_Callback*)cb_Graph2d3d_Next, 0, 0, 0, 0, 14, 56},
     {gettext("Config"), 0,  (Fl_Callback*)cb_Graph2d3d_Config, 0, 0, 0, 0, 14, 56},
+    {0},
+    {gettext("Curves"), 0,  0, 0, 64, 0, 0, 14, 56},
+    {gettext("Info current curve (F2)"), 0,  (Fl_Callback *) cb_Graph_curve_infos, 0, 0, 0, 0, 14, 56},
+    {gettext("Switch tangent (F3)"), 0,  (Fl_Callback *) cb_Graph_switch_tangent, 0, 0, 0, 0, 14, 56},
+    {gettext("Switch normal (F4)"), 0,  (Fl_Callback *) cb_Graph_switch_normal, 0, 0, 0, 0, 14, 56},
+    {gettext("Switch circle (F5)"), 0,  (Fl_Callback *) cb_Graph_switch_circle, 0, 0, 0, 0, 14, 56},
+    {gettext("No info"), 0,  (Fl_Callback *) cb_Graph_clear_infos, 0, 0, 0, 0, 14, 56},
+    {gettext("Set t or x"), 0,  (Fl_Callback *) cb_Graph_set, 0, 0, 0, 0, 14, 56},
+    {gettext("y=0, root"), 0,  (Fl_Callback *) cb_Graph_root, 0, 0, 0, 0, 14, 56},
+    {gettext("Intersections"), 0,  (Fl_Callback *) cb_Graph_intersect, 0, 0, 0, 0, 14, 56},
+    {gettext("y'=0, extremum"), 0,  (Fl_Callback *) cb_Graph_extremum, 0, 0, 0, 0, 14, 56},
+    {gettext("x'=0, vertical tangent"), 0,  (Fl_Callback *) cb_Graph_vertical, 0, 0, 0, 0, 14, 56},
+    {gettext("Inflexion"), 0,  (Fl_Callback *) cb_Graph_inflexion, 0, 0, 0, 0, 14, 56},
+    {gettext("Mark position"), 0,  (Fl_Callback *) cb_Graph_mark, 0, 0, 0, 0, 14, 56},
+    {gettext("Set t or x, mark position"), 0,  (Fl_Callback *) cb_Graph_set_mark, 0, 0, 0, 0, 14, 56},
+    {gettext("Area"), 0,  (Fl_Callback *) cb_Graph_area, 0, 0, 0, 0, 14, 56},
+    {gettext("Arc length"), 0,  (Fl_Callback *) cb_Graph_arclength, 0, 0, 0, 0, 14, 56},
     {0},
     {gettext("Trace"), 0,  0, 0, 64, 0, 0, 14, 56},
     {gettext("Trace clear"), 0,  (Fl_Callback *) cb_Graph_Traceclear, 0, 0, 0, 0, 14, 56},
@@ -1359,6 +1484,8 @@ namespace xcas {
     rotanim_type(256),rotanim_danim(0),rotanim_nstep(100),rotanim_tstep(0.03),
     rotanim_rx(0),rotanim_ry(0),rotanim_rz(1),
     last_event(0),x_tick(1.0),y_tick(1.0),couleur(0),approx(true),hp_pos(-1),moving(false),moving_frame(false),ntheta(24),nphi(18),background_image(0) {
+    tracemode=0; tracemode_n=0; tracemode_i=0;
+    init_tracemode();
     animations.push_back(this);
     push_cfg();
     struct timezone tz;
@@ -1390,6 +1517,8 @@ namespace xcas {
     rotanim_type(256),rotanim_danim(0),rotanim_nstep(100),rotanim_tstep(0.1),
     rotanim_rx(0),rotanim_ry(0),rotanim_rz(1),
     last_event(0),x_tick(1.0),y_tick(1.0),couleur(0),approx(true),hp_pos(-1),moving(false),moving_frame(false),ntheta(24),nphi(18),background_image(0) { 
+    tracemode=0; tracemode_n=0; tracemode_i=0;
+    init_tracemode();
     legende_size=giac::LEGENDE_SIZE;
     animations.push_back(this);
     struct timezone tz;
@@ -3998,8 +4127,17 @@ namespace xcas {
   int Graph2d3d::handle_keyboard(int event){
     if (event==FL_KEYBOARD){
       // Should bring this event to the current input in the parent() group
-      switch (Fl::event_key()){
-      case FL_Escape: case FL_BackSpace: case FL_Tab: case FL_Enter: 
+      int ek=Fl::event_key();
+      switch (ek){
+      case FL_Escape: {
+	History_Pack * hp=get_history_pack(this);
+	if (hp){
+	  int pos=hp->focus(this);
+	  hp->focus(pos+1,true);
+	  return 1;
+	}
+      }
+      case FL_BackSpace: case FL_Tab: case FL_Enter: 
       case FL_Print: case FL_Scroll_Lock: case FL_Pause: case FL_Insert: 
       case FL_Home: case FL_Delete: case FL_End: 
       case FL_Shift_L: case FL_Shift_R: case FL_Control_L: 
@@ -4008,15 +4146,41 @@ namespace xcas {
       case FL_KP_Enter:	
 	return 1;
       case FL_Left:
+	if (tracemode && !Fl::event_state(FL_SHIFT |FL_CTRL | FL_ALT)){
+	  if (tracemode_i!=int(tracemode_i))
+	    tracemode_i=std::floor(tracemode_i);
+	  else
+	    --tracemode_i;
+	  tracemode_set();
+	  return 1;
+	}
 	left((window_xmax-window_xmin)/10);
 	return 1;
       case FL_Up:
+	if (tracemode && !Fl::event_state(FL_SHIFT |FL_CTRL | FL_ALT)){
+	  --tracemode_n;
+	  tracemode_set();
+	  return 1;
+	}
 	up((window_ymax-window_ymin)/10);
 	return 1;
       case FL_Right: 
+	if (tracemode && !Fl::event_state(FL_SHIFT |FL_CTRL | FL_ALT)){
+	  if (tracemode_i!=int(tracemode_i))
+	    tracemode_i=std::ceil(tracemode_i);
+	  else
+	    ++tracemode_i;
+	  tracemode_set();
+	  return 1;
+	}
 	right((window_xmax-window_xmin)/10);
 	return 1;
       case FL_Down: 
+	if (tracemode && !Fl::event_state(FL_SHIFT |FL_CTRL | FL_ALT)){
+	  ++tracemode_n;
+	  tracemode_set();
+	  return 1;
+	}
 	down((window_ymax-window_ymin)/10);
 	return 1;
       case FL_Page_Up:
@@ -4025,6 +4189,37 @@ namespace xcas {
       case FL_Page_Down:
 	down_z((window_zmax-window_zmin)/10);
 	return 1;	
+      case 65471: // FL_F2:
+	tracemode_set(-1); // object info
+	return 1;
+      case 65472: // FL_F3:
+	if (!tracemode) tracemode=1;
+	if (tracemode & 2)
+	  tracemode &= ~2;
+	else
+	  tracemode |= 2;
+	tracemode_set();
+	return 1;
+      case 65473: //FL_F4:
+	if (!tracemode) tracemode=1;
+	if (tracemode & 4)
+	  tracemode &= ~4;
+	else {
+	  tracemode |= 4;
+	  orthonormalize();
+	}
+	tracemode_set();
+	return 1;
+      case 65474: // FL_F5:
+	if (!tracemode) tracemode=1;
+	if (tracemode & 8)
+	    tracemode &= ~8;
+	else {
+	  tracemode |= 8;
+	  orthonormalize();
+	}
+	tracemode_set();
+	return 1;
       default:
 	char ch=Fl::event_text()?Fl::event_text()[0]:0;
 	switch (ch){
@@ -5388,6 +5583,400 @@ namespace xcas {
 	title_tmp=args_tmp;
     }
   }
+
+  void Graph2d3d::init_tracemode(){
+    if (dynamic_cast<Graph3d *>(this)){
+      tracemode=0;
+      return;
+    }
+    tracemode_mark=0.0;
+    double window_w=window_xmax-window_xmin,window_h=window_ymax-window_ymin;
+    double r=h()/w()*window_w/window_h;
+    tracemode=(r>0.7 && r<1.4)?7:3;
+    tracemode_set();
+  }
+
+  bool inputdouble(const char * msg,double & d,GIAC_CONTEXT){
+    const char * ch=fl_input(msg,print_DOUBLE_(d).c_str());
+    if (!ch) return false;
+    gen g(ch,contextptr);
+    g=evalf_double(g,1,contextptr);
+    if (g.type!=_DOUBLE_)
+      return false;
+    d=g._DOUBLE_val;
+    return true;
+  }
+
+  void Graph2d3d::tracemode_set(int operation){
+    redraw();
+    context * contextptr=hp?hp->contextptr:get_context(this);
+    //if (plot_instructions.empty()) plot_instructions=gen2vecteur(g);
+    if (is_zero(plot_instructions.back())) // workaround for 0 at end in geometry (?)
+      plot_instructions.pop_back();
+    gen sol(undef);
+    if (operation==1 || operation==8){
+      double d=tracemode_mark;
+      if (!inputdouble(gettext("Parameter value"),d,contextptr))
+	return;
+      if (operation==8)
+	tracemode_mark=d;
+      sol=d;
+    }
+    // handle curves with more than one connected component
+    vecteur tracemode_v;
+    for (int i=0;i<plot_instructions.size();++i){
+      gen g=plot_instructions[i];
+      if (g.type==_VECT && !g._VECTptr->empty() && g._VECTptr->front().is_symb_of_sommet(at_curve)){
+	vecteur & v=*g._VECTptr;
+	for (int j=0;j<v.size();++j)
+	  tracemode_v.push_back(v[j]);
+      }
+      else
+	tracemode_v.push_back(g);
+    }
+    gen G;
+    if (tracemode_n<0)
+      tracemode_n=tracemode_v.size()-1;
+    bool retry=tracemode_n>0;
+    for (;tracemode_n<tracemode_v.size();++tracemode_n){
+      G=tracemode_v[tracemode_n];
+      if (G.is_symb_of_sommet(at_pnt))
+	break;
+    }
+    if (tracemode_n>=tracemode_v.size()){
+      // retry
+      if (retry){
+	for (tracemode_n=0;tracemode_n<tracemode_v.size();++tracemode_n){
+	  G=tracemode_v[tracemode_n];
+	  if (G.is_symb_of_sommet(at_pnt))
+	    break;
+	}
+      }
+      if (tracemode_n>=tracemode_v.size()){
+	tracemode=0;
+	return;
+      }
+    }
+    int p=python_compat(contextptr);
+    python_compat(0,contextptr);
+    gen G_orig(G);
+    G=remove_at_pnt(G);
+    tracemode_disp.clear();
+    string curve_infos1,curve_infos2;
+    gen parameq,x,y,t,tmin,tmax,tstep;
+    // extract position at tracemode_i
+    if (G.is_symb_of_sommet(at_curve)){
+      gen c=G._SYMBptr->feuille[0];
+      parameq=c[0];
+      // simple expand for i*ln(x)
+      bool b=do_lnabs(contextptr);
+      do_lnabs(false,contextptr);
+      reim(parameq,x,y,contextptr);
+      do_lnabs(b,contextptr);
+      t=c[1];
+      gen x1=derive(x,t,contextptr);
+      gen x2=derive(x1,t,contextptr);
+      gen y1=derive(y,t,contextptr);
+      gen y2=derive(y1,t,contextptr);
+      sto(x,gen("x0",contextptr),contextptr);
+      sto(x1,gen("x1",contextptr),contextptr);
+      sto(x2,gen("x2",contextptr),contextptr);
+      sto(y,gen("y0",contextptr),contextptr);
+      sto(y1,gen("y1",contextptr),contextptr);
+      sto(y2,gen("y2",contextptr),contextptr);
+      tmin=c[2];
+      tmax=c[3];
+      tmin=evalf_double(tmin,1,contextptr);
+      tmax=evalf_double(tmax,1,contextptr);
+      if (tmin._DOUBLE_val>tracemode_mark)
+	tracemode_mark=tmin._DOUBLE_val;
+      if (tmax._DOUBLE_val<tracemode_mark)
+	tracemode_mark=tmax._DOUBLE_val;
+      G=G._SYMBptr->feuille[1];
+      if (G.type==_VECT){
+	vecteur &Gv=*G._VECTptr;
+	tstep=(tmax-tmin)/(Gv.size()-1);
+      }
+      double eps=1e-6; // epsilon(contextptr)
+      double curt=(tmin+tracemode_i*tstep)._DOUBLE_val;
+      if (abs(curt-tracemode_mark)<tstep._DOUBLE_val)
+	curt=tracemode_mark;
+      if (operation==-1){
+	gen A,B,C,R; // detect ellipse/hyperbola
+	if (
+	    ( x!=t && c.type==_VECT && c._VECTptr->size()>7 && centre_rayon(G_orig,C,R,false,contextptr,true) ) ||
+	    is_quadratic_wrt(parameq,t,A,B,C,contextptr)
+	    ){
+	  if (C.type!=_VECT){ // x+i*y=A*t^2+B*t+C
+	    curve_infos1="Parabola";
+	    curve_infos2=_equation(G_orig,contextptr).print(contextptr);
+	  }
+	  else {
+	    vecteur V(*C._VECTptr);
+	    curve_infos1=V[0].print(contextptr);
+	    curve_infos1=curve_infos1.substr(1,curve_infos1.size()-2);
+	    curve_infos1+=" O=";
+	    curve_infos1+=V[1].print(contextptr);
+	    curve_infos1+=", F=";
+	    curve_infos1+=V[2].print(contextptr);
+	    // curve_infos1=change_subtype(C,_SEQ__VECT).print(contextptr);
+	    curve_infos2=change_subtype(R,_SEQ__VECT).print(contextptr);
+	  }
+	}
+	else {
+	  if (x==t) curve_infos1="Function "+y.print(contextptr); else curve_infos1="Parametric "+x.print(contextptr)+","+y.print(contextptr);
+	  curve_infos2 = t.print(contextptr)+"="+tmin.print(contextptr)+".."+tmax.print(contextptr)+',';
+	  curve_infos2 += (x==t?"xstep=":"tstep=")+tstep.print(contextptr);
+	}
+      }
+      if (operation==1)
+	curt=sol._DOUBLE_val;
+      if (operation==7)
+	sol=tracemode_mark=curt;
+      if (operation==2){ // root near curt
+	sol=newton(y,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	if (sol.type==_DOUBLE_){
+	  fl_alert((gettext("Root at ")+sol.print(contextptr)).c_str());
+	  sto(sol,gen("Zero",contextptr),contextptr);
+	}
+      }
+      if (operation==4){ // horizontal tangent near curt
+	sol=newton(y1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	if (sol.type==_DOUBLE_){
+	  fl_alert((gettext("y'=0, extremum/singular pt at ")+sol.print(contextptr)).c_str());
+	  sto(sol,gen("Extremum",contextptr),contextptr);
+	}
+      }
+      if (operation==5){ // vertical tangent near curt
+	if (x1==1)
+	  fl_alert(gettext("Tool for parametric curves!"));
+	else {
+	  sol=newton(x1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	  if (sol.type==_DOUBLE_){
+	    fl_alert((gettext("x'=0, vertical or singular: ")+sol.print(contextptr)).c_str());
+	    sto(sol,gen("Vertical",contextptr),contextptr);
+	  }
+	}
+      }
+      if (operation==6){ // inflexion
+	sol=newton(x1*y2-x2*y1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
+	if (sol.type==_DOUBLE_){
+	  fl_alert(("x'*y''-x''*y'=0: "+sol.print(contextptr)).c_str());
+	  sto(sol,gen("Inflexion",contextptr),contextptr);
+	}
+      }
+      gen M(put_attributs(_point(subst(parameq,t,tracemode_mark,false,contextptr),contextptr),vecteur(1,_POINT_WIDTH_4 | _BLUE),contextptr));
+      tracemode_disp.push_back(M);      
+      gen f;
+      if (operation==9)
+	f=y*derive(x,t,contextptr);
+      if (operation==10){
+	f=sqrt(pow(x1,2,contextptr)+pow(y1,2,contextptr),contextptr);
+      }
+      if (operation==9 || operation==10){
+	double a=tracemode_mark,b=curt;
+	if (a>b)
+	  swapdouble(a,b);
+	gen res=symbolic( (operation==9 && x==t?at_plotarea:at_integrate),
+			  makesequence(f,symb_equal(t,symb_interval(a,b))));
+	if (operation==9)
+	  tracemode_disp.push_back(giac::eval(res,1,contextptr));
+	string ss=res.print(contextptr);
+	if (!tegral(f,t,a,b,1e-6,1<<10,res,false,contextptr))
+	  fl_alert((gettext("Numerical Integration Error: ")+ss).c_str());
+	else {
+	  fl_alert((ss+": "+res.print(contextptr)).c_str());
+	  sto(res,gen((operation==9?"Area":"Arclength"),contextptr),contextptr);	  
+	}
+      }
+      if (operation>=1 && operation<=8 && sol.type==_DOUBLE_ && !is_zero(tstep)){
+	tracemode_i=(sol._DOUBLE_val-tmin._DOUBLE_val)/tstep._DOUBLE_val;
+	G=subst(parameq,t,sol._DOUBLE_val,false,contextptr);
+      }
+    }
+    if (G.is_symb_of_sommet(at_cercle)){
+      if (operation==-1){
+	gen c,r;
+	centre_rayon(G,c,r,true,contextptr);
+	curve_infos1="Circle radius "+r.print(contextptr);
+	curve_infos2="Center "+_coordonnees(c,contextptr).print(contextptr);
+      }
+      G=G._SYMBptr->feuille[0];
+    }
+    if (G.type==_VECT){
+      vecteur & v=*G._VECTptr;
+      if (operation==-1 && curve_infos1.size()==0){
+	if (v.size()==2)
+	  curve_infos1=_equation(G_orig,contextptr).print(contextptr);
+	else if (v.size()==4)
+	  curve_infos1="Triangle";
+	else curve_infos1="Polygon";
+	curve_infos2=G.print(contextptr);
+      }
+      int i=std::floor(tracemode_i);
+      double id=tracemode_i-i;
+      if (i>=int(v.size()-1)){
+	tracemode_i=i=v.size()-1;
+	id=0;
+      }
+      if (i<0){
+	tracemode_i=i=0;
+	id=0;
+      }
+      G=v[i];
+      if (!is_zero(tstep) && id>0)
+	G=v[i]+id*tstep*(v[i+1]-v[i]);
+    }
+    G=evalf(G,1,contextptr);
+    if (operation==3){ // intersect this curve with all other curves
+      vecteur V;
+      for (int j=0;j<tracemode_v.size();++j){
+	if (j==tracemode_n)
+	  continue;
+	gen H=tracemode_v[j];
+	gen I=_inter(makesequence(G_orig,H),contextptr);
+	if (I.type==_VECT)
+	  V=mergevecteur(V,*I._VECTptr);
+      }
+      sto(V,gen("Intersect",contextptr),contextptr);
+      tracemode_disp.clear();
+      tracemode_disp.push_back(put_attributs(V,vecteur(1,_POINT_WIDTH_6 | _RED),contextptr));
+      if (!V.empty()){
+	gen I1(undef),I2(undef),d1(plus_inf),d2(plus_inf);
+	for (int i=0;i<V.size();++i){
+	  gen cur=evalf_double(V[i],1,contextptr);
+	  if (i==0){
+	    I1=cur; d1=distance2pp(I1,G,contextptr);
+	    continue;
+	  }
+	  if (i==1){
+	    I2=cur; d2=distance2pp(I2,G,contextptr);
+	    if (is_strictly_greater(d1,d2,contextptr)){
+	      swapgen(I1,I2); swapgen(d1,d2);
+	    }
+	    continue;
+	  }
+	  gen d=distance2pp(cur,G,contextptr);
+	  if (is_strictly_greater(d1,d,contextptr)){
+	    I2=I1; d2=d1;
+	    I1=cur; d1=d;
+	    continue;
+	  }
+	  if (is_strictly_greater(d2,d,contextptr)){
+	    I2=cur; d2=d;
+	  }
+	} // end for loop in V
+	G=remove_at_pnt(I2);
+	I1=put_attributs(I1,vecteur(1,_POINT_WIDTH_6 | _BLUE),contextptr);
+	tracemode_disp.push_back(I1);      
+	if (is_undef(I2)) I2=I1;
+	I2=put_attributs(I2,vecteur(1,_POINT_WIDTH_6 | _BLUE),contextptr);
+	tracemode_disp.push_back(I2);      
+	// function curve: set nearest intersection as mark/position
+	if (t==x && !is_zero(tstep)){
+	  gen Ix,Iy;
+	  reim(remove_at_pnt(I1),Ix,Iy,contextptr);
+	  tracemode_mark=Ix._DOUBLE_val;
+	  reim(remove_at_pnt(I2),Ix,Iy,contextptr);
+	  tracemode_i=((Ix-tmin)/tstep)._DOUBLE_val;
+	}
+      }
+    } // end intersect
+    gen Gx,Gy; reim(G,Gx,Gy,contextptr);
+    Gx=evalf_double(Gx,1,contextptr);
+    Gy=evalf_double(Gy,1,contextptr);
+    if (operation==-1){
+      if (curve_infos1.size()==0)
+	curve_infos1="Position "+Gx.print(contextptr)+","+Gy.print(contextptr);
+      if (G_orig.is_symb_of_sommet(at_pnt)){
+	gen f=G_orig._SYMBptr->feuille;
+	if (f.type==_VECT && f._VECTptr->size()==3){
+	  f=f._VECTptr->back();
+	  curve_infos1 = f.print(contextptr)+": "+curve_infos1;
+	}
+      }
+      fl_alert((curve_infos1+'\n'+curve_infos2).c_str());
+    }
+    tracemode_add="";
+    if (Gx.type==_DOUBLE_ && Gy.type==_DOUBLE_){
+      tracemode_add += "x="+giac::print_DOUBLE_(Gx._DOUBLE_val,3)+",y="+giac::print_DOUBLE_(Gy._DOUBLE_val,3);
+      if (tstep!=0){
+	gen curt=tmin+tracemode_i*tstep;
+	if (curt.type==_DOUBLE_){
+	  if (t!=x)
+	    tracemode_add += ", t="+giac::print_DOUBLE_(curt._DOUBLE_val,3);
+	  if (tracemode & 2){
+	    gen G1=derive(parameq,t,contextptr);
+	    gen G1t=subst(G1,t,curt,false,contextptr);
+	    gen G1x,G1y; reim(G1t,G1x,G1y,contextptr);
+	    gen m=evalf_double(G1y/G1x,1,contextptr);
+	    if (m.type==_DOUBLE_)
+	      tracemode_add += ", m="+giac::print_DOUBLE_(m._DOUBLE_val,3);
+	    gen T(_vector(makesequence(_point(G,contextptr),_point(G+G1t,contextptr)),contextptr));
+	    tracemode_disp.push_back(T);
+	    gen G2(derive(G1,t,contextptr));
+	    gen G2t=subst(G2,t,curt,false,contextptr);
+	    gen G2x,G2y; reim(G2t,G2x,G2y,contextptr);
+	    gen det(G1x*G2y-G2x*G1y);
+	    gen Tn=sqrt(G1x*G1x+G1y*G1y,contextptr);
+	    gen R=evalf_double(Tn*Tn*Tn/det,1,contextptr);
+	    gen centre=G+R*(-G1y+cst_i*G1x)/Tn;
+	    if (tracemode & 4){
+	      gen N(_vector(makesequence(_point(G,contextptr),_point(centre,contextptr)),contextptr));
+	      tracemode_disp.push_back(N);
+	    }
+	    if (tracemode & 8){
+	      if (R.type==_DOUBLE_)
+		tracemode_add += ", R="+giac::print_DOUBLE_(R._DOUBLE_val,3);
+	      tracemode_disp.push_back(_cercle(makesequence(centre,R),contextptr));
+	    }
+	  }
+	}
+      }
+    }
+    Graph2d * gr2d=dynamic_cast<Graph2d *>(this);
+    if (gr2d){
+      double x_scale=(w()-ylegende*((show_axes)?labelsize():0))/(window_xmax-window_xmin);
+      double y_scale=(h()-((show_axes)?((title.empty()?1:2)*labelsize()):0))/(window_ymax-window_ymin);
+      double i,j;
+      gr2d->findij(G,x_scale,y_scale,i,j,contextptr);
+      current_i=int(i+.5);
+      current_j=int(j+.5);
+      python_compat(p,contextptr);
+    }
+  }
+
+  void Graph2d3d::invert_tracemode(){
+    if (!tracemode)
+      init_tracemode();
+    else
+      tracemode=0;
+  }
+
+  void Graph2d3d::draw_decorations(){
+    Graph2d * gr2d=dynamic_cast<Graph2d *>(this);
+    if (gr2d && tracemode){
+      if (tracemode_add.size())
+	fl_draw(tracemode_add.c_str(),x(),y()+h()-22);
+      double x_scale=(w()-ylegende*((show_axes)?labelsize():0))/(window_xmax-window_xmin);
+      double y_scale=(h()-((show_axes)?((title.empty()?1:2)*labelsize()):0))/(window_ymax-window_ymin);
+      if (!tracemode_disp.empty())
+	fltk_draw(*gr2d,-1,tracemode_disp,x_scale,y_scale,0,0,w(),h());
+      int taille=5;
+      fl_color(FL_BLUE);
+      int ci=x()+current_i,cj=y()+current_j;
+      fl_line(ci-taille,cj,ci+taille,cj);
+      fl_line(ci,cj-taille,ci,cj+taille);
+      if (cursor_point_type==6){
+	fl_color(FL_RED);
+	fl_line(ci-2,cj+2,ci+2,cj+2);
+	fl_line(ci-2,cj+2,ci+2,cj+2);
+	fl_line(ci-2,cj-2,ci-2,cj+2);
+	fl_line(ci+2,cj-2,ci+2,cj+2);
+      }
+      fl_color(FL_BLACK);
+    }
+  }
   
   void Graph2d::in_draw(int clip_x,int clip_y,int clip_w,int clip_h,int & vertical_pixels){
     if (window_xmax-window_xmin<1e-100){
@@ -5804,6 +6393,7 @@ namespace xcas {
       }
     }
 #endif
+    draw_decorations();
   }
 
   void Graph2d::draw(){
