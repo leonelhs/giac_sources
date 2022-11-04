@@ -902,7 +902,7 @@ mp_obj_t str2int(const char * s){
   return mp_obj_new_int_from_str_len(&s,strlen(s),neg,10);
 }
 
-static mp_obj_t str2list2int(const char * val){
+static mp_obj_t str2list2int(const char * val,int N){
   char buf[strlen(val)+1];
   strcpy(buf,val);
   char * buf1=buf;
@@ -913,7 +913,7 @@ static mp_obj_t str2list2int(const char * val){
   }
   if (*buf1){
     ++buf1;
-    for (int i=0;i<3;++i){
+    for (int i=0;i<N;++i){
       char * buf2=buf1;
       for (;*buf2;++buf2){
 	if (*buf2==',')
@@ -1000,7 +1000,7 @@ static mp_obj_t arit(const mp_obj_t *args,int nargs,int cmd) {
     return str2int(val);
   }
   if (cmd==6){
-    return str2list2int(val);
+    return str2list2int(val,3);
   }
   return mp_obj_new_str(val,strlen(val));
 }
@@ -2074,14 +2074,16 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_backward_obj, 0, 1, turtle_backward);
 
 static mp_obj_t turtle_left(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=90;
+  double i=90;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
   else if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
   else if (n_args==1) i=0;  
-  char buf[256];
-  sprintf(buf,"tourne_gauche(%i):;",i);
+  char buf[256]="tourne_gauche(";
+  strcat_double(buf,i);
+  strcat(buf,"):;");
+  // sprintf(buf,"tourne_gauche(%.4g):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2109,14 +2111,16 @@ MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_pensize_obj, 0, 1, turtle_pensize);
 
 static mp_obj_t turtle_right(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
-  int i=90;
+  double i=90;
   if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
     i=MP_OBJ_SMALL_INT_VALUE(args[0]);
   else if (n_args==1 && mp_obj_is_float(args[0])) 
     i=mp_obj_get_float(args[0]);
   else if (n_args==1) i=0;
-  char buf[256];
-  sprintf(buf,"tourne_droite(%i):;",i);
+  char buf[256]="tourne_droite(";
+  strcat_double(buf,i);
+  strcat(buf,"):;");
+  // sprintf(buf,"tourne_droite(%.4g):;",i);
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2130,6 +2134,14 @@ static mp_obj_t turtle_reset(size_t n_args, const mp_obj_t *args) {
   return mp_obj_new_str(val,strlen(val));
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_reset_obj, 0, 0, turtle_reset);
+
+static mp_obj_t turtle_clear(size_t n_args, const mp_obj_t *args) {
+  turtle_freeze();
+  const char * val=caseval("efface(op(position())):;");
+  return turtle_ret(val);
+  return mp_obj_new_str(val,strlen(val));
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_clear_obj, 0, 0, turtle_clear);
 
 static mp_obj_t turtle_dessine_tortue(size_t n_args, const mp_obj_t *args) {
   turtle_freeze();
@@ -2180,7 +2192,7 @@ static mp_obj_t do_turtle_disque(size_t n_args, const mp_obj_t *args,bool center
     }
   }
   char buf[256];
-  sprintf(buf,centered?"disque_centre(%i,%i,%i):;":"disque(%i,%i,%i):;",x,y,z);
+  sprintf(buf,centered?"disque_centre(%i,%i,%i):;":"disque(%i,%i,%i):;",x/2,y,z);
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2285,6 +2297,26 @@ static mp_obj_t turtle_pas_de_cote(size_t n_args, const mp_obj_t *args) {
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_pas_de_cote_obj, 1, 1, turtle_pas_de_cote);
 
+static mp_obj_t turtle_towards(size_t n_args, const mp_obj_t *args) {
+  double x,y;
+  if (n_args!=2 || !mp_int_float(args[0],&x) || !mp_int_float(args[1],&y))
+    mp_raise_TypeError("x,y expected");
+#ifndef NUMWORKS
+  char buf[256];
+  sprintf(buf,"towards(%.4f,%.4f);",x,y);
+#else
+  char buf[256]="towards(";
+  strcat_double(buf,x);
+  strcat(buf,",");
+  strcat_double(buf,y);
+  strcat(buf,");");
+#endif
+  const char * val=caseval(buf);
+  x=atof(val);
+  return mp_obj_new_float(x);
+}
+MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(turtle_towards_obj, 2, 2, turtle_towards);
+
 static mp_obj_t turtle_setheading(size_t n_args, const mp_obj_t *args) {
   if (n_args==0){
     char buf[]="cap()";
@@ -2292,11 +2324,19 @@ static mp_obj_t turtle_setheading(size_t n_args, const mp_obj_t *args) {
     return str2int(val);
   }
   turtle_freeze();
-  int i=0;
-  if (n_args==1 && MP_OBJ_IS_SMALL_INT(args[0])) 
-    i=MP_OBJ_SMALL_INT_VALUE(args[0]);
+  double i=0;
+  if (n_args==1){
+    if (!mp_int_float(args[0],&i))
+      mp_raise_TypeError("int/float expected");
+  }
+#ifndef NUMWORKS
   char buf[256];
-  sprintf(buf,"cap(%i):;",i);
+  sprintf(buf,"cap(%.4f):;",i);
+#else
+  char buf[256]="cap(";
+  strcat_double(buf,i);
+  strcat(buf,"):;");
+#endif
   const char * val=caseval(buf);
   return turtle_ret(val);
   return mp_obj_new_str(val,strlen(val));
@@ -2311,7 +2351,7 @@ static mp_obj_t turtle_setposition(size_t n_args, const mp_obj_t *args) {
     if (l<5 || val[0]!='[' || val[l-1]!=']')
       return mp_obj_new_str(val,l);
     // parse 2 integers separated by a comma
-    return str2list2int(val);
+    return str2list2int(val,2);
   }
   turtle_freeze();
   int x=0,y=0;
@@ -2485,6 +2525,10 @@ static mp_obj_t turtle_pencolor(size_t n_args, const mp_obj_t *args) {
     sprintf(buf,"crayon(%.3f,%.3f,%.3f):;",mp_obj_get_float(args[0]),mp_obj_get_float(args[1]),mp_obj_get_float(args[2]));
 #endif
   }
+  if (n_args==2 ){
+    int f=mp_get_color(args[0]),b=mp_get_color(args[1]);
+    sprintf(buf,"crayon(%i):;polygone_rempli(%i):;",f,b);
+  }
   //printf(buf);
   const char * val=caseval(buf);
   return turtle_ret(val);
@@ -2521,10 +2565,12 @@ static const mp_map_elem_t turtle_locals_dict_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_rectangle_plein), (mp_obj_t) &turtle_rectangle_plein_obj },
 	{ MP_ROM_QSTR(MP_QSTR_triangle_plein), (mp_obj_t) &turtle_triangle_plein_obj },
 	{ MP_ROM_QSTR(MP_QSTR_reset), (mp_obj_t) &turtle_reset_obj },
+	{ MP_ROM_QSTR(MP_QSTR_clear), (mp_obj_t) &turtle_clear_obj },
 	{ MP_ROM_QSTR(MP_QSTR_dessine_tortue), (mp_obj_t) &turtle_dessine_tortue_obj },
 	{ MP_ROM_QSTR(MP_QSTR_setheading), (mp_obj_t) &turtle_setheading_obj },
 	{ MP_ROM_QSTR(MP_QSTR_seth), (mp_obj_t) &turtle_setheading_obj },
 	{ MP_ROM_QSTR(MP_QSTR_setposition), (mp_obj_t) &turtle_setposition_obj },
+	{ MP_ROM_QSTR(MP_QSTR_towards), (mp_obj_t) &turtle_towards_obj },
 	{ MP_ROM_QSTR(MP_QSTR_goto), (mp_obj_t) &turtle_setposition_obj },
 	{ MP_ROM_QSTR(MP_QSTR_setpos), (mp_obj_t) &turtle_setposition_obj },
 	{ MP_ROM_QSTR(MP_QSTR_setx), (mp_obj_t) &turtle_setx_obj },
@@ -2606,6 +2652,7 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_right), (mp_obj_t) &turtle_right_obj },
     { MP_ROM_QSTR(MP_QSTR_rt), (mp_obj_t) &turtle_right_obj },
     { MP_ROM_QSTR(MP_QSTR_reset), (mp_obj_t) &turtle_reset_obj },
+    { MP_ROM_QSTR(MP_QSTR_clear), (mp_obj_t) &turtle_clear_obj },
     { MP_ROM_QSTR(MP_QSTR_dessine_tortue), (mp_obj_t) &turtle_dessine_tortue_obj },
     { MP_ROM_QSTR(MP_QSTR_circle), (mp_obj_t) &turtle_circle_obj },
     { MP_ROM_QSTR(MP_QSTR_disque), (mp_obj_t) &turtle_disque_obj },
@@ -2616,6 +2663,7 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_goto), (mp_obj_t) &turtle_setposition_obj },
     { MP_ROM_QSTR(MP_QSTR_seth), (mp_obj_t) &turtle_setheading_obj },
     { MP_ROM_QSTR(MP_QSTR_setposition), (mp_obj_t) &turtle_setposition_obj },
+    { MP_ROM_QSTR(MP_QSTR_towards), (mp_obj_t) &turtle_towards_obj },
     { MP_ROM_QSTR(MP_QSTR_setpos), (mp_obj_t) &turtle_setposition_obj },
     { MP_ROM_QSTR(MP_QSTR_setx), (mp_obj_t) &turtle_setx_obj },
     { MP_ROM_QSTR(MP_QSTR_sety), (mp_obj_t) &turtle_sety_obj },
@@ -2652,6 +2700,7 @@ STATIC const mp_map_elem_t mp_module_turtle_globals_table[] = {
 	{ MP_ROM_QSTR(MP_QSTR_efface), (mp_obj_t) &turtle_reset_obj },
 	{ MP_ROM_QSTR(MP_QSTR_cap), (mp_obj_t) &turtle_setheading_obj },
 	{ MP_ROM_QSTR(MP_QSTR_position), (mp_obj_t) &turtle_setposition_obj },
+	{ MP_ROM_QSTR(MP_QSTR_pos), (mp_obj_t) &turtle_setposition_obj },
 	{ MP_ROM_QSTR(MP_QSTR_ecris), (mp_obj_t) &turtle_write_obj },
 	{ MP_ROM_QSTR(MP_QSTR_vitesse_tortue), (mp_obj_t) &turtle_speed_obj },
 	{ MP_ROM_QSTR(MP_QSTR_montre_tortue), (mp_obj_t) &turtle_showturtle_obj },

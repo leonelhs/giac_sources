@@ -90,6 +90,7 @@ namespace xcas {
     void insert_replace(const std::string & chaine,bool selected);
     int mark() const;
     void check_scrollbarsize(); // insure there is enough room for horizontal scrollbar
+    void style_reparse();
   };
   
   void

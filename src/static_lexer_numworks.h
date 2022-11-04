@@ -1466,6 +1466,7 @@
 {"total_degree",13,9,0,0},
 {"tourne_droite",13,126,0,0},
 {"tourne_gauche",13,126,0,0},
+{"towards",13,126,0,0},
 {"trace",13,9,0,0},
 {"tran",13,9,0,0},
 {"translation",13,9,0,0},

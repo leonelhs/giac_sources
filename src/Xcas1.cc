@@ -2417,7 +2417,9 @@ namespace xcas {
 	// read size
 	int taille,mode=python_compat(contextptr); string filename;
 	read_size_mode(line,taille,mode,filename);
-	string tmp=localize(s.substr(i,taille),language(contextptr));
+	string tmp=s.substr(i,taille);
+	if (mode==0)
+	  tmp=localize(tmp,language(contextptr));
 	xcas_text_editor_load(res,tmp,x,y,w,h);
 	res->pythonjs=mode;
 	i += taille ;

@@ -7480,6 +7480,25 @@ namespace xcas {
 	      }
 	      fl_vertex(deltax+turtlezoom*(current.x-turtlex),deltay+h()+turtlezoom*(turtley-current.y));
 	      fl_end_complex_polygon();
+	      for (int i=0;i>=current.radius;--i){
+		logo_turtle & t=(*turtleptr)[k+i];
+		if (t.radius>0){
+		  int r=t.radius & 0x1ff; // bit 0-8
+		  int x,y,R;
+		  R=int(2*turtlezoom*r+.5);
+		  double angle = M_PI/180*(current.theta-90); // t.theta?
+		  if (t.direct){
+		    x=int(turtlezoom*(t.x-turtlex-r*std::cos(angle) - r)+.5);
+		    y=int(turtlezoom*(t.y-turtley-r*std::sin(angle) + r)+.5);
+		  }
+		  else {
+		    x=int(turtlezoom*(t.x-turtlex+r*std::cos(angle) -r)+.5);
+		    y=int(turtlezoom*(t.y-turtley+r*std::sin(angle) +r)+.5);
+		  }
+		  xcas_color(current.color);
+		  fl_pie_seg(deltax+x,deltay+h()-y,R,R,0,360,false);
+		}
+	      }
 	    }
 	  } // end else (non-string turtle record)
 	  prec=current;

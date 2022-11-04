@@ -85,7 +85,9 @@ overflow:auto
 
 <body>
 <h1>Kit de connection Numworks non verrouill&eacute;e</h1>
-<a href="nws_en.html">English version</a><br>
+<a href="nws_en.html">English</a>,
+<a href="#python">Python</a>, <a href="#install">Install, <a href="#rescue">Rescue</a>
+<br>
 <b>Attention, ne faites pas de mise &agrave; jour depuis le site de Numworks!</b> <button
 onclick="let field=$id('update'); if (field.style.display=='block')
 field.style.display='none'; else field.style.display='block'">+
@@ -127,26 +129,32 @@ navigateur</a> et r&eacute;essayez.
 la Numworks. A faire si les boutons ci-dessous ne fonctionnent pas. Si
   l'&eacute;cran de votre Numworks N0110 est &eacute;teint, cliquez sur
   le bouton R&eacute;cup&eacute;ration.
-  <li> 
-<button id="numworks_load" class="bouton"
-  onclick="UI.numworks_load(false)">Numworks→</button> ou
-  <input id="loadbackupinput" accept=".nws" type="file"
-  title="Cliquer ici pour charger un backup (.nws)"
-  onchange="UI.backup_load((this.files)[0]);">
-<button onclick="UI.backup_load(($id('loadbackupinput').files)[0]);">Backup→</button>
-  : scripts Python de la calculatrice ou d'un backup.
-  <span id='storelist'></span>
-  <li><button id="numworks_load" class="bouton"
-  onclick="UI.numworks_load(true)">Backup</button> :
-  sauvegarde tous les scripts de la calculatrice.
-  <li>
-  <input id="loadfileinput" accept=".py,.nws" type="file"
-  title="Cliquer ici pour charger un fichier Python (.py) ou un backup (.nws)"
-  onchange="UI.loadFile((this.files)[0]);">
-  <button onclick="UI.loadFile(($id('loadfileinput').files)[0]);">→Numworks</button>
-  : envoie un script (extension <tt>.py</tt>) ou restaure un backup
-  (<tt>.nws</tt>) vers la calculatrice.
-  <li> 
+  <li> <b>Scripts Python et Backups</b>
+  <ul> <a name=python>
+    <li>
+    <button id="numworks_load" class="bouton"
+    onclick="UI.numworks_load(false)">Numworks→</button> ou
+    <input id="loadbackupinput" accept=".nws" type="file"
+    title="Cliquer ici pour charger un backup (.nws)"
+    onchange="UI.backup_load((this.files)[0]);">
+    <button onclick="UI.backup_load(($id('loadbackupinput').files)[0]);">Backup→</button>
+    : liste des scripts Python de la calculatrice ou d'un fichier backup sur PC.
+    <span id='storelist'></span>
+    <li><button id="numworks_load" class="bouton"
+    onclick="UI.numworks_load(true)">→Backup</button> :
+    sauvegarde tous les scripts de la calculatrice sur le PC.
+    <li>
+    <input id="loadfileinput" accept=".py,.nws" type="file"
+    title="Cliquer ici pour charger un fichier Python (.py) ou un backup (.nws)"
+    onchange="UI.loadFile((this.files)[0]);">
+    <button onclick="UI.loadFile(($id('loadfileinput').files)[0]);">→Numworks</button>
+    : envoie un script (extension <tt>.py</tt>) ou restaure un backup du PC
+    (<tt>.nws</tt>) vers la calculatrice.
+    </ul>
+    <li> <a name=install>
+    <b>Installation, mise &agrave; jour, ...</b>
+      <ul>
+	<li>
   Installation <button
   onclick="UI.numworks_install_delta();">
   Khi+KhiCAS (1/12/2021)</button>: sur votre calculatrice Numworks
@@ -196,7 +204,8 @@ ou <button onclick="UI.tar_clear(UI.numworks_buffer)">Effacer</button>
     <button onclick="UI.file_savetar(UI.numworks_buffer,'myapps.tar')">sauvegarder</button> la personnalisation.
     
   </span>
-  </span>
+    </span>
+    </ul>
   <li> Progression de l'installation ou de la certification<hr>
   <span id="ploglegend"></span>
   <progress id="plog" value=0 style="display:none"></progress>
@@ -220,10 +229,10 @@ href="https://www-fourier.univ-grenoble-alpes.fr/~parisse/nws.html">ce
 lien</a>
 avec un
 <a href="https://tiplanet.org/forum/viewtopic.php?f=99&t=25091">cable smartphone-Numworks</a>.
-  <li>
+  <li> <a name=rescue>
+  <b> Calculatrice bloqu&eacute;e</b>
   <button
   onclick="UI.numworks_rescue();">R&eacute;cup&eacute;ration</button> :
-  Assistance si votre calculatrice N0110 est bloqu&eacute;e.<br>
   Connectez la calculatrice, appuyez sur la touche 6 de la
   calculatrice, enfoncez un stylo dans le bouton RESET au dos
   en laissant la touche 6 appuy&eacute;e,
@@ -306,7 +315,7 @@ MIT). Cette page utilise aussi
 
 <hr>
 <address></address>
-<!-- hhmts start -->Last modified: Wed Dec  1 20:31:20 CET 2021 <!-- hhmts end -->
+<!-- hhmts start -->Last modified: Sat Jan 15 13:28:13 CET 2022 <!-- hhmts end -->
 </body> </html>
 <script language="javascript">
     if (window.location.href.substr(0, 4) == "http") {

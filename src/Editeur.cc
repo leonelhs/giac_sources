@@ -215,7 +215,7 @@ namespace xcas {
 // 'style_parse()' - Parse text and produce style data.
 //
 
-  void style_parse(const char *text,char *style,int length,int mode) {
+  void style_parse(const char *text,char *style,int length,int mode,int pythoncompat) {
     char current;
     int	col;
     int	last;
@@ -226,10 +226,10 @@ namespace xcas {
       if (current == 'B' || current>='E') current = 'A';
       if (current == 'A') {
 	// Check for directives, comments, strings, and keywords...
-	if (col == 0 && *text == '#' && !python_color) {
+	if (col == 0 && *text == '#' && pythoncompat<=0) {
 	  // Set style to directive
 	  current = 'E';
-	} else if (strncmp(text, "//", 2) == 0 || (python_color &&strncmp(text,"#",1)==0)) {
+	} else if ( (pythoncompat<=0 && strncmp(text, "//", 2)==0) || (pythoncompat>0 &&strncmp(text,"#",1)==0)) {
 	  current = 'B';
 	  for (; length > 0 && *text != '\n'; length --, text ++) *style++ = 'B';
 	  
@@ -418,7 +418,7 @@ namespace xcas {
     context * contextptr=get_context((Xcas_Text_Editor *) cbArg);
     int pyc=python_compat(contextptr);
     int mode=pyc<0?pyc:pyc & 4;
-    style_parse(text, style, end - start,mode);
+    style_parse(text, style, end - start,mode,pyc);
     
     //  printf("new style = \"%s\"...\n", style);
     
@@ -435,7 +435,7 @@ namespace xcas {
       text  = textbuf->text_range(start, end);
       style = stylebuf->text_range(start, end);
       
-      style_parse(text, style, end - start,mode);
+      style_parse(text, style, end - start,mode,pyc);
       
       stylebuf->replace(start, end, style);
       ((Fl_Text_Editor *)cbArg)->redisplay_range(start, end);
@@ -2903,7 +2903,7 @@ namespace xcas {
     context * contextptr=get_context(this);
     pythonjs = python_compat(contextptr);
     int mode=pythonjs<0?pythonjs:pythonjs & 4;
-    style_parse(text, style, buffer()->length(),mode);
+    style_parse(text, style, buffer()->length(),mode,pythonjs);
     
     stylebuf->text(style);
     delete[] style;
@@ -3569,6 +3569,20 @@ namespace xcas {
     }
   }
 
+  void Xcas_Text_Editor::style_reparse(){    
+    Fl_Text_Buffer * textbuf=buffer();
+    int start = 0;
+    int end   = textbuf->length();
+    char * text  = textbuf->text_range(start, end);
+    char * style = stylebuf->text_range(start, end);
+    char last  = start==end?0:style[end - start - 1];
+    int & pyc=pythonjs;
+    int mode=pyc<0?pyc:pyc & 4;
+    style_parse(text, style, end - start,mode,pyc);
+    stylebuf->replace(start, end, style);
+    redisplay_range(start, end);
+  }
+
   int Xcas_Text_Editor::handle(int event){    
     if (locked) 
       return 0;
@@ -3701,6 +3715,29 @@ namespace xcas {
 	}
       } // end if (...) tabulation test
       int key=Fl::event_key();
+      if (Fl::event_state(FL_ALT) ){
+ 	bool gopy=key=='P' || key=='m' || key=='M';
+ 	bool gojs=key=='j' || key=='J';
+ 	bool goxcas=key=='x' || key=='X';
+ 	bool gocas=key=='c' || key=='C';
+	if (History_Pack * hp=get_history_pack(this)){
+	  if (gopy)
+	    pythonjs=4;
+	  if (gojs)
+	    pythonjs=-1;
+	  if (goxcas)
+	    pythonjs=0;
+	  if (gocas)
+	    pythonjs=1;
+	  if (gopy || gojs || goxcas || gocas){
+	    python_compat(pythonjs,hp->contextptr);
+	    style_reparse();
+	    // style_update(0,0,0,buffer()->length(),0,this);
+	    hp->redraw();
+	    return 1;
+	  }
+	}
+      }
       if (!tableur && buffer()->line_start(insert_position())==0 && 
 	  ((key==FL_Up && !Fl::event_state(FL_SHIFT |FL_CTRL | FL_ALT)) 
 	   || key==FL_Page_Up)

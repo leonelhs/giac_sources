@@ -44,17 +44,6 @@ if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
 \loadgiacscript[""]
 \loadgiacscriptend
 } 
-\newenvironment{giacparijs}[1]["max-height: 500px; overflow:auto"]
-{\loadgiacmain{#1}
-}
-{
-\loadgiaccontrol
-\loadgiacscriptstart
-\@print{
-<script src="file:///usr/share/giac/doc/giacpari.js" async></script> 
-}
-\loadgiacscriptend
-} 
 \newenvironment{giacjsonline}[1]["max-height: 500px; overflow:auto"]
 {\loadgiacmain{#1}
 }
@@ -62,17 +51,6 @@ if ((old_ie > -1) || (new_ie > -1) || Boolean(window.chrome)){
 \loadgiaccontrol
 \loadgiacscriptstart
 \loadgiacscript["https://www-fourier.univ-grenoble-alpes.fr/~parisse/"]
-\loadgiacscriptend
-} 
-\newenvironment{giacparijsonline}[1]["max-height: 500px; overflow:auto"]
-{\loadgiacmain{#1}
-}
-{
-\loadgiaccontrol
-\loadgiacscriptstart
-\@print{
-<script src="https://www-fourier.univ-grenoble-alpes.fr/~parisse/giacpari.js" async></script> 
-}
 \loadgiacscriptend
 } 
 \else
