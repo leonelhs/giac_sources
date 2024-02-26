@@ -4,68 +4,114 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Testing the mean with the Z test</title>
+<title>Testing a distribution with the χ2 distribution</title>
 </head>
 <body >
 <a href="cascmd_en697.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en699.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:normalt" class="subsection">19.5.2  Testing the mean with the Z test</h3>
-<p>The <span style="font-family:monospace">normalt</span><a id="hevea_default1409"></a>
-command uses the Z test to test the mean of data.
+<h3 id="sec1800" class="subsection">20.5.4  Testing a distribution with the χ<sup>2</sup> distribution</h3>
+<p>The <span style="font-family:monospace">chisquaret</span><a id="hevea_default1413"></a>
+command will use the χ<sup>2</sup> test to compare
+sample data to a specified distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">normalt</span> takes three mandatory arguments and one
-optional argument:
+<span style="font-family:monospace">chisquaret</span> takes one mandatory argument and a
+sequence of optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list, which can be one of:
+<span style="font-style:italic">L</span>, a list of sample data.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">distr</span>. This can be one of
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>=[<span style="font-style:italic">n</span><sub><span style="font-style:italic">s</span></sub>,<span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub>] for the sample data information, where
-<span style="font-style:italic">n</span><sub><span style="font-style:italic">s</span></sub> is the the number of successes and <span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub> is the number of trials
-<span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub>.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>=[<span style="font-style:italic">m</span>,<span style="font-style:italic">t</span>], where <span style="font-style:italic">m</span> is the mean and <span style="font-style:italic">t</span> is the sample size.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>, a data list from a control sample.
+The name of a distribution (see Section <a href="cascmd_en667.html#ssec%3Arandvar">20.3.4</a>
+for a list of distributions and their parameters).
+</li><li class="li-itemize">Another list of sample data.
 </li></ul>
-</li><li class="li-itemize">σ, the standard deviation of the population. If the
-data list from a control sample is provided, then this argument is unnecessary.
-</li><li class="li-itemize"><span style="font-style:italic">test</span>, the type of test, one of <span style="font-family:monospace">!=</span>, <span style="font-family:monospace">&lt;</span> or <span style="font-family:monospace">&gt;</span>.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">c</span>, the confidence level (by default 0.05).
+By default this will be the <span style="font-family:monospace">uniform</span> distribution.
+</li><li class="li-itemize"><span style="font-style:italic">params</span>, the parameters of the distribution
+<span style="font-style:italic">distr</span> or the symbol <span style="font-family:monospace">classes</span> and
+optionally <span style="font-style:italic">c</span><sub><span style="font-style:italic">min</span></sub> and <span style="font-style:italic">c</span><sub><span style="font-style:italic">dim</span></sub>, the minimum size and default
+size of a statistics class (by default, <span style="font-family:monospace">class_min</span> and
+<span style="font-family:monospace">class_size</span>, which themselves default to 0 and 1; see
+Section <a href="cascmd_en031.html#ssec%3Aconfgraph">2.5.8</a>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">normalt(</span><span style="font-style:italic">L</span>,σ,<span style="font-style:italic">test</span> ⟨,<span style="font-style:italic">c</span> ⟩<span style="font-family:monospace">)</span> returns the result of a Z test. It
-will return 0 if the test fails, 1 if the test succeeds, and it will
-display a summary of the test.
-</li></ul><h4 id="sec1791" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normalt</span></span><span style="font-weight:bold"><span style="color:#BF0000">([10,30],0.5,0.02,'!=',0.1)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">chisquaret(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">distr</span> ⟩<span style="font-family:monospace">)</span>
+returns the result of the χ<sup>2</sup> test between sample data and
+the named distribution or two sample data lists.
+</li></ul><h4 id="sec1801" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">([57,54])</span></span></td></tr>
 </table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-*** TEST RESULT 0 ***<br>
- Summary Z-Test null hypothesis H0 mu1=mu2, alt. hyp. H1 mu1!=mu2.</span></span></span></p><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">Test returns 0 if probability to observe data is less than 0.1<br>
- (null hyp. mu1=mu2 rejected with less than alpha probability error)<br>
- Test returns 1 otherwise (cannot reject null hypothesis)<br>
- Data mean mu1=10, population mean mu2=0.5<br>
- alpha level 0.1, multiplier*stddev/sqrt(sample size)=1.64485*0.02/5.47723
+Guessing data is the list of number of elements in each class, adequation to uniform distribution<br>
+ Sample adequation to a finite discrete probability distribution<br>
+ Chi2 test result 0.0810810810811,<br>
+ reject adequation if superior to chisquare_icdf(1,0.95)=3.84145882069 or chisquare_icdf(1,1-alpha) if alpha!=5%
 </span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0
+0.0810810810811
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normalt</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0.48,50],0.5,0.1,'&lt;')</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,1,1,1,1,0,0,1,0,1,1],[.4,.6])</span></span></td></tr>
 </table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-*** TEST RESULT 1 ***<br>
- Summary Z-Test null hypothesis H0 mu1=mu2, alt. hyp. H1 mu1&lt;mu2.</span></span></span></p><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">Test returns 0 if probability to observe data is less than 0.05<br>
- (null hyp. mu1=mu2 rejected with less than alpha probability error)<br>
- Test returns 1 otherwise (cannot reject null hypothesis)<br>
- Data mean mu1=0.48, population mean mu2=0.5<br>
- alpha level 0.05, multiplier*stddev/sqrt(sample size)=1.64485*0.1/7.07107
+Sample adequation to a finite discrete probability distribution<br>
+ Chi2 test result 0.742424242424,<br>
+ reject adequation if superior to chisquare_icdf(1,0.95)=3.84145882069 or chisquare_icdf(1,1-alpha) if alpha!=5%
 </span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
+0.742424242424
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ranv</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10,.5),</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Binomial: estimating n and p from data 10 0.5055<br>
+ Sample adequation to binomial(10,0.5055,.), Chi2 test result 7.77825189838,<br>
+ reject adequation if superior to chisquare_icdf(7,0.95)=14.0671404493 or chisquare_icdf(7,1-alpha) if alpha!=5%
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+7.77825189838
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ranv</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10,.5),</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">,11,.5)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Sample adequation to binomial(11,0.5,.), Chi2 test result 125.617374161,<br>
+ reject adequation if superior to chisquare_icdf(10,0.95)=18.3070380533 or chisquare_icdf(10,1-alpha) if alpha!=5%
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+125.617374161
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+As an example using <span style="font-family:monospace">class_min</span> and <span style="font-family:monospace">class_size</span>:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">ranv</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0,.2):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">classes</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-2,.25)</span></span></td></tr>
+</table><p>or (setting <span style="font-family:monospace">class_min</span> to −2 and <span style="font-family:monospace">class_size</span> to −0.25 in the graphical configuration):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">classes</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Normal density, estimating mean and stddev from data -0.00345919752912 0.201708100832<br>
+ Sample adequation to normald_cdf(-0.00345919752912,0.201708100832,.), Chi2 test result 2.11405080381,<br>
+ reject adequation if superior to chisquare_icdf(4,0.95)=9.48772903678 or chisquare_icdf(4,1-alpha) if alpha!=5%
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2.11405080381
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+In this last case, you are given the value of <span style="font-style:italic">d</span><sup>2</sup> of the statistic
+<span style="font-style:italic">D</span><sup>2</sup>=∑<sub><span style="font-style:italic">j</span>=1</sub><sup><span style="font-style:italic">k</span></sup> (<span style="font-style:italic">n</span><sub><span style="font-style:italic">j</span></sub>−<span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub>)/<span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub>, where <span style="font-style:italic">k</span> is the number of
+sample classes for <span style="font-family:monospace">classes(L,-2,0.25)</span> (or
+<span style="font-family:monospace">classes(L)</span>), <span style="font-style:italic">n</span><sub><span style="font-style:italic">j</span></sub> is the size of the <span style="font-style:italic">j</span>th class, and <span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub>=
+<span style="font-style:italic">n</span> <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> where <span style="font-style:italic">n</span> is the size of <span style="font-family:monospace">L</span> and <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> is the
+probability of the <span style="font-style:italic">j</span>th class interval assuming a normal distribution
+with the mean and population standard deviation of <span style="font-family:monospace">L</span>.</p>
 <hr>
 <a href="cascmd_en697.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

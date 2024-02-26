@@ -4,78 +4,27 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Parallel lines and planes in space</title>
+<title>Common perpendiculars to lines in space</title>
 </head>
 <body >
 <a href="cascmd_en936.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en938.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dparallel" class="subsection">26.4.5  Parallel lines and planes in space</h3>
-<p>See Section <a href="cascmd_en836.html#ssec%3A2dparallel">25.6.5</a> for parallel lines in the plane.</p><p>The <span style="font-family:monospace">parallel</span><a id="hevea_default1844"></a>
-command can take its arguments in different
-ways. It returns and draws a line or plane
-depending on the arguments.
-</p><ol class="enumerate" type=1><li class="li-enumerate">
-<span style="font-weight:bold">With a point and a line.</span>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">parallel</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>, a line.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">parallel(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">L</span><span style="font-family:monospace">)</span>returns and draws the line through <span style="font-style:italic">P</span>
-parallel to <span style="font-style:italic">L</span>.
-</li></ul>
-</li><li class="li-enumerate"><span style="font-weight:bold">With two non-parallel lines.</span>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">parallel</span> takes two arguments:
-<span style="font-style:italic">L</span>,<span style="font-style:italic">M</span>, two lines which aren’t parallel.
-</li><li class="li-itemize"><span style="font-family:monospace">parallel(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span>returns and draws the plane containing
-<span style="font-style:italic">L</span> which is parallel to <span style="font-style:italic">M</span>.
-</li></ul>
-</li><li class="li-enumerate"><span style="font-weight:bold">With a point and a plane.</span>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">parallel</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">PL</span>, a plane.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">parallel(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">PL</span><span style="font-family:monospace">)</span> returns and draws the plane through
-<span style="font-style:italic">P</span> that is parallel to <span style="font-style:italic">PL</span>.
-</li></ul>
-</li><li class="li-enumerate"><span style="font-weight:bold">With a point and two non-parallel lines.</span>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">parallel</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-style:italic">L</span>,<span style="font-style:italic">M</span>, two non-parallel lines.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">parallel(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">L</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span>
-returns and draws the plane through <span style="font-style:italic">P</span> that is parallel to <span style="font-style:italic">L</span> and
-<span style="font-style:italic">M</span>.
-</li></ul>
-</li></ol><h4 id="sec2356" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">parallel</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,1)))</span></span></td></tr>
+<h3 id="sec2367" class="subsection">27.4.8  Common perpendiculars to lines in space</h3>
+<p>The <span style="font-family:monospace">common_perpendicular</span><a id="hevea_default1849"></a>
+command finds the common perpendicular to two lines.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">common_perpendicular</span> takes two arguments:
+<span style="font-style:italic">L</span>,<span style="font-style:italic">M</span>, two lines.
+</li><li class="li-itemize"><span style="font-family:monospace">common_perpendicular(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span> returns and draws the
+common perpendicular to <span style="font-style:italic">L</span> and <span style="font-style:italic">M</span>.
+</li></ul><h4 id="sec2368" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">L1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">L2</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,1)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,-1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,-1,1)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">common_perpendicular</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">L2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en352.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">parallel</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,0)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,1)))</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en353.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">parallel</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">plane</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,1)))</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en354.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">parallel</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,1)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,0)))</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en355.png">
+<img src="cascmd_en372.png">
 
 </div>
 <hr>

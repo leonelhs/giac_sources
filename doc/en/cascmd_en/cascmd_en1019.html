@@ -4,58 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Trimming image margins</title>
+<title>New audio clips from existing ones</title>
 </head>
 <body >
 <a href="cascmd_en1018.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en1020.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:trim-image" class="subsection">27.1.9  Trimming image margins</h3>
-<p>Margins of an image, consisting of “empty” pixels with value 0 in all color
-channels, can be found and removed by using the <span style="font-family:monospace">trim</span><a id="hevea_default1934"></a>
-command (see Section <a href="cascmd_en090.html#ssec%3Atrim-string">5.2.5</a>, Section <a href="cascmd_en708.html#ssec%3Atrim-vector">20.2.2</a>
-and Section <a href="cascmd_en1022.html#ssec%3Aaudio-clips-from-old">27.2.2</a> for other usages of <span style="font-family:monospace">trim</span>).
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">trim</span> takes one mandatory argument and one or two optional arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">img</span>, an image object.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">inv</span>, the symbol.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">index</span>, the symbol.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">trim(</span><span style="font-style:italic">img</span> ⟨,<span style="font-family:monospace">inv</span> ⟩ ⟨,<span style="font-family:monospace">index</span> ⟩<span style="font-family:monospace">)</span>
-finds largest zero-pixel margins in <span style="font-style:italic">img</span> or its inversion if <span style="font-family:monospace">inv</span> is given.
-If <span style="font-family:monospace">index</span> is given, then the trimmed slice location (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) and dimensions (<span style="font-style:italic">w</span>,<span style="font-style:italic">h</span>) are
-returned as a sequence (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">w</span>,<span style="font-style:italic">h</span>). Otherwise, a trimmed version of <span style="font-style:italic">img</span> is returned.
-</li><li class="li-itemize">To remove white margins, include the option <span style="font-family:monospace">inv</span> when calling <span style="font-family:monospace">trim</span>.
-</li></ul><h4 id="sec2537" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">image</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/mnist_png/training/1/552.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<h3 id="ssec:audio-clips-from-old" class="subsection">28.2.2  New audio clips from existing ones</h3>
+<p>You can create audio clips from existing ones by using some standard operators.</p>
+<h5 id="sec2550" class="paragraph">Slicing.</h5>
+<p>
+Audio clips can be obtained from existing clips by slicing. To extract a portion
+of length <span style="font-style:italic">n</span> samples starting at <span style="font-style:italic">k</span>th sample in an audio clip <span style="font-family:monospace">clip</span>,
+use the <span style="font-family:monospace">()</span><a id="hevea_default1939"></a> operator like this:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">an image of size 28×28 (grayscale)</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subclip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>The second argument may be omitted, in which case <span style="font-style:italic">n</span>=<span style="font-style:italic">L</span>−<span style="font-style:italic">k</span> is used, where <span style="font-style:italic">L</span> is the length
+of <span style="font-family:monospace">clip</span> in samples. You can also use
 
-<img src="cascmd_en440.png">
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">subclip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t1</span></span><span style="font-weight:bold"><span style="color:#BF0000">..</span></span><span style="font-weight:bold"><span style="color:#BF0000">t2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>to extract the portion between timestamps <span style="font-style:italic">t</span><sub>1</sub> and <span style="font-style:italic">t</span><sub>2</sub> (in seconds).</p>
+<h5 id="sec2551" class="paragraph">Concatenation.</h5>
+<p>
+Existing audio clips can be concatenated together by using the
+<span style="font-family:monospace">+</span><a id="hevea_default1940"></a> operator. Note that clips to be concatenated
+must have the same number of channels, bit depth and sample rate. For example, to
+concatenate two audio clips <span style="font-family:monospace">clip1</span> and <span style="font-family:monospace">clip2</span>, input:
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">trim</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en441.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">trim</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">index</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-7,3,11,20
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip2</span></span></td></tr>
+</table><p>This is useful for e.g. padding audio with zeros (silence).</p>
+<h5 id="sec2552" class="paragraph">Inverting and reversing.</h5>
+<p>
+Audio clips can be inverted (which is equivalent to multiplying sample
+data with −1 for each channel) by using the unary sign operator
+<span style="font-family:monospace">-</span><a id="hevea_default1941"></a>
+or the <span style="font-family:monospace">inv</span><a id="hevea_default1942"></a>
+command which takes an audio clip as its only argument.</p><p>To reverse an audio clip in the time domain, use the
+<span style="font-family:monospace">reverse</span><a id="hevea_default1943"></a>
+command which takes an audio clip as its only argument.</p>
 <hr>
 <a href="cascmd_en1018.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

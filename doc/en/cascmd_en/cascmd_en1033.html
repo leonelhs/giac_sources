@@ -4,82 +4,66 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Visualizing power spectra</title>
+<title>Loudness estimation</title>
 </head>
 <body >
 <a href="cascmd_en1032.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en1034.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:plotspectrum" class="subsection">27.2.13  Visualizing power spectra</h3>
-<p>The <span style="font-family:monospace">plotspectrum</span><a id="hevea_default1957"></a>
-command displays the power spectrum of an audio clip.
+<h3 id="ssec:rms2" class="subsection">28.2.16  Loudness estimation</h3>
+<p>The <span style="font-family:monospace">rms</span><a id="hevea_default1962"></a>
+command computes the RMS (root mean square) of the audio data
+(see Section <a href="cascmd_en705.html#ssec%3Arms">21.2.1</a> for other uses of <span style="font-family:monospace">rms</span>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plotspectrum</span> takes one mandatory argument and a sequence of optional arguments:
+<span style="font-family:monospace">rms</span> command takes one mandatory argument and two optional arguments:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">A</span>, an audio clip.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">opts</span>, a sequence of options each of which is one of:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">span</span>, which is either a list
-<span style="font-family:monospace">[</span><span style="font-style:italic">fmin</span>,<span style="font-style:italic">fmax</span><span style="font-family:monospace">]</span> or
-<span style="font-family:monospace">frequencies=</span><span style="font-style:italic">fmin</span><span style="font-family:monospace">..</span><span style="font-style:italic">fmax</span>, specifying the
-frequency band in Hertz (by default, <span style="font-style:italic">fmin</span>=0 and
-<span style="font-style:italic">fmax</span>=<span style="font-family:monospace">samplerate(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span>/2).
-</li><li class="li-itemize"><span style="font-family:monospace">bins=</span><span style="font-style:italic">n</span>, where <span style="font-style:italic">n</span>&gt;2 is a positive integer which must be
-a power of two and specifies the number of bins for the frequency range
-[0,<span style="font-family:monospace">samplerate(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span>/2] (by default, <span style="font-style:italic">n</span>=512).
-</li><li class="li-itemize"><span style="font-family:monospace">color=</span><span style="font-style:italic">disp</span>, where <span style="font-style:italic">disp</span> is a sum of
-plot attributes (e.g. an <span style="font-variant:small-caps">Xcas</span> color). By default, the spectrum is
-drawn in blue.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">offset</span>, a nonnegative integer (by default, <span style="font-style:italic">offset</span>=0).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">len</span>, a positive integer
+(by default, <span style="font-style:italic">len</span>=<span style="font-style:italic">L</span>−<span style="font-style:italic">offset</span>,
+where <span style="font-style:italic">L</span> is the length of <span style="font-style:italic">A</span>).
 </li></ul>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">plotspectrum(</span><span style="font-style:italic">A</span> ⟨,<span style="font-style:italic">opts</span> ⟩<span style="font-family:monospace">)</span>
-displays the power spectrum of <span style="font-style:italic">A</span> in the frequency range [<span style="font-style:italic">fmin</span>,<span style="font-style:italic">fmax</span>].
-</li><li class="li-itemize">If the audio clip has more than one channel, the channels are mixed down
-into a single channel before computing the spectrum.
-</li></ul><h4 id="sec2567" class="subsubsection">Examples</h4>
-<p>
-With the file <span style="font-family:monospace">flute-C5.wav</span> donwloaded from
-<a href="https://www.ee.columbia.edu/~dpwe/sounds/instruments/">here</a>:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">flute</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/flute-C5.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotspectrum</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">flute</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en451.png">
-
-</div><p>
-
-The audio file <span style="font-family:monospace">flute-C5</span> consists of a single C5 tone played
-by a flute. In the graph above, the fundamental of that tone is
-clearly visible at the corresponding frequency of about 523 Hz.
-You can also see its first overtone at about 1046 Hz
-(the next two overtones are barely visible).</p><p>With the file <span style="font-family:monospace">gettysburg10.wav</span> downloaded from
+</li><li class="li-itemize"><span style="font-family:monospace">rms(</span><span style="font-style:italic">A</span> ⟨,<span style="font-style:italic">offset</span>,<span style="font-style:italic">len</span> ⟩<span style="font-family:monospace">)</span>
+computes RMS for each channel (optionally restricted to the
+portion of length <span style="font-style:italic">len</span> starting at <span style="font-style:italic">offset</span>) and returns the result
+as √<span style="text-decoration:overline">∑</span><sub><span style="text-decoration:overline"><span style="font-style:italic">c</span></span></sub><span style="text-decoration:overline"><span style="font-style:italic">RMS</span></span><sub><span style="text-decoration:overline"><span style="font-style:italic">c</span></span></sub><sup><span style="text-decoration:overline">2</span></sup>, where <span style="font-style:italic">RMS</span><sub><span style="font-style:italic">c</span></sub> is the RMS of channel <span style="font-style:italic">c</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">rms</span> operates with sample values mapped to [−1,1], hence the result is
+in [0,1]. To convert the result to decibels, use the formula
+<span style="font-style:italic">RMS</span><sub><span style="font-style:italic">dB</span></sub>=20log<sub>10</sub>(<span style="font-style:italic">RMS</span>).
+</li><li class="li-itemize">RMS is a measure of the average loudness of the audio.
+</li></ul><h4 id="sec2578" class="subsubsection">Example</h4>
+<p>With the file <span style="font-family:monospace">CantinaBand3.wav</span> downloaded from
 <a href="https://www2.cs.uic.edu/~i101/SoundFiles/">here</a>:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/gettysburg10.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotspectrum</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[0,2000],</span></span><span style="font-weight:bold"><span style="color:#BF0000">bins</span></span><span style="font-weight:bold"><span style="color:#BF0000">=4096,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">purple</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">normalize</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/CantinaBand3.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">),0)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en452.png">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">a sound clip with 66150 samples at 22050 Hz (16 bit, mono)</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">r</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">rms</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</div><p>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.152788493422
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Average loudness in dB:
 
-With the file <span style="font-family:monospace">sf1_n0H.wav</span> downloaded from
-<a href="https://www.ee.columbia.edu/~dpwe/sounds/sents/">here</a>:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">20*</span></span><span style="font-weight:bold"><span style="color:#BF0000">log10</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">r</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/sf1_n0H.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotspectrum</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">frequencies</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..5000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">bins</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1024)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en453.png">
-
-</div><p>
-
-In the above graph you can see the two components of the stationary noise
-contained in ranges 0-440 Hz and 2500-3000 Hz. The rest of the spectrum
-belongs to the female speaker. Use the <span style="font-family:monospace">playsnd</span> command to
-hear the audio (see Section <a href="cascmd_en1034.html#ssec%3Aplaysnd">27.2.14</a>).</p>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+−16.3181870293
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en1032.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

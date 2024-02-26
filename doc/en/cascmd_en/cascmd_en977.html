@@ -4,38 +4,45 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking whether points in space are cospherical</title>
+<title>Checking whether an object in space is a right triangle or a rectangle</title>
 </head>
 <body >
 <a href="cascmd_en976.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en978.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2442" class="subsection">26.11.8  Checking whether points in space are cospherical</h3>
-<p>The <span style="font-family:monospace">is_cospherical</span><a id="hevea_default1886"></a>
-command determines whether or not points are cospherical, i.e. whether they all
-lie on the same sphere.
+<h3 id="ssec:3dcheckrect" class="subsection">27.11.11  Checking whether an object in space is a right triangle or a rectangle</h3>
+<p>See Section <a href="cascmd_en900.html#ssec%3A2dcheckrect">26.15.7</a> for checking for right triangles and
+rectangles in 2D geometry.</p><p>The <span style="font-family:monospace">is_rectangle</span><a id="hevea_default1891"></a>
+command determines whether or not a geometric object is an rectangle or a right triangle.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">is_cospherical</span> takes
-<span style="font-style:italic">L</span>, a list or sequence of points.
-</li><li class="li-itemize"><span style="font-family:monospace">is_cospherical(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns <span style="font-family:monospace">1</span> if the points
-in <span style="font-style:italic">L</span> all lie on the same sphere, and returns <span style="font-family:monospace">0</span> otherwise.
-</li></ul><h4 id="sec2443" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_cospherical</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,0,0],[0,2,0],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2),0],</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">               [0,0,2],[2/</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3),2/</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3),2/</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)])</span></span></td></tr>
+<span style="font-family:monospace">is_rectangle</span> takes
+<span style="font-style:italic">G</span>, a geometric object or a sequence of three or four points
+assumed to be the vertices of a triangle or a quadrilateral.
+</li><li class="li-itemize"><span style="font-family:monospace">is_rectangle(</span><span style="font-style:italic">G</span><span style="font-family:monospace">)</span> returns:
+<ul class="itemize"><li class="li-itemize">
+(for triangle <span style="font-style:italic">G</span>) 1,2 or 3 if <span style="font-style:italic">G</span> is a right
+triangle (the number indicates which vertex is has the right angle).
+</li><li class="li-itemize">(for quadrilaterals <span style="font-style:italic">G</span>) 1 if <span style="font-style:italic">G</span> is a rectangle but not a
+square.
+</li><li class="li-itemize">(for quadrilaterals <span style="font-style:italic">G</span>) 2 if <span style="font-style:italic">G</span> is square.
+</li><li class="li-itemize">0 otherwise.
+</li></ul>
+</li></ul><h4 id="sec2455" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,0,0],[2,2,0],[0,2,0])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,2,0],[-2,2,0],[-2,-1,0],[2,-1,0])</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
 1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">is_cospherical</span></span><span style="font-weight:bold"><span style="color:#BF0000">([2,0,0],[0,2,0],[1,1,0],[0,0,2],[1,1,1])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>

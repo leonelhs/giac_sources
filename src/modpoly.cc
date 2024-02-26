@@ -3975,14 +3975,15 @@ namespace giac {
     double invp=find_invp(p);
     longlong q1=-q[0],q0=-q[1];
     ur.clear(); ur.push_back((q1*ub.front())%p);
-    const int * it=&ub[0],*itend=it-1+ub.size(),*itmid=it+ub.size()-ua.size(),*jt=&ua[0];
+    const int * it=&ub[0],*itend=it-1+ub.size(),*itmid=it+ub.size()-ua.size();
     if (ua.empty()){
       for (;it!=itend;++it){
-	ur.push_back(amodp(q0*it[0]+q1*it[1],p,invp));
+        ur.push_back(amodp(q0*it[0]+q1*it[1],p,invp));
       }
       ur.push_back(amodp(q0*it[0],p,invp));
     }
     else {
+      const int *jt=&ua[0];      
 #if 1
       itmid-=4;
       int i0=it[0],i1;

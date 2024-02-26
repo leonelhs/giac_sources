@@ -4,55 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>3D geometry graphics screen</title>
+<title>Defining a point in three-dimensions
+</title>
 </head>
 <body >
 <a href="cascmd_en922.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en924.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2324" class="subsection">26.1.1  3D geometry graphics screen</h3>
-<p>The <span style="font-family:sans-serif">Alt+H</span> command brings up a display screen for
-three-dimensional graphics (see Figure <a href="#fig%3A3dscreen">26.1</a>).
-This screen has its own menu and command
-lines. This screen also automatically appears whenever there is a three-dimensional
-graphic command.
-</p><blockquote class="figure"><div class="center"><div class="center"><hr style="width:80%;height:2"></div>
-<img src="cascmd_en338.png">
-
-<div class="caption"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="vertical-align:top;text-align:left;" >Figure 26.1: <a id="fig:3dscreen"></a>A 3D-geometry screen in <span style="font-variant:small-caps">Xcas</span></td></tr>
-</table></div>
-<div class="center"><hr style="width:80%;height:2"></div></div></blockquote><p>The plane of vision for a three-dimensional graphic screen is
-perpendicular to the observer’s line of vision. The plane of vision
-is also indicated by dotted lines showing its intersection with the
-parallelepiped. The axis of vision for a three-dimensional graphic
-screen is</p><p>The three-dimensional graphic screen starts with the image of a
-parallelepiped bounding the graphics and vectors in the <span style="font-style:italic">x</span>, <span style="font-style:italic">y</span> and
-<span style="font-style:italic">z</span> directions. At the top of the screen is the equation of the plane
-of vision, which is a plane perpendicular to the observer’s line of
-vision. The plane of vision is shown graphically with dotted lines
-indicating where it intersects the plane of vision.</p><p>Clicking in the graphic screen outside of the parallelepiped and
-dragging the mouse moves the <span style="font-style:italic">x</span>, <span style="font-style:italic">y</span> and <span style="font-style:italic">z</span> directions relative to
-the observer; these directions are also changed with the <span style="font-family:monospace">x</span>,
-<span style="font-family:monospace">X</span>, <span style="font-family:monospace">y</span>, <span style="font-family:monospace">Y</span>, <span style="font-family:monospace">z</span> and <span style="font-family:monospace">Z</span> keys.
-Scrolling the mouse wheel moves the plane of vision along the line of
-vision. The <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">in</span></span></span> and <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">out</span></span></span> buttons
-on the graphic screen menu zoom in and out of the picture.</p><p>The graphical features available for two-dimensional graphics (see
-Section <a href="index.html#sec%3Adispfeat">25.3</a>) are also available for three-dimensional
-graphics, but to see the points the markers must be squares with width
-(<span style="font-family:monospace">point_width</span>) at least 3.</p><p>The graphic screen menu has a <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">cfg</span></span></span>
-button which brings up a configuration screen. Among other things, this screen has
+<h3 id="ssec:3dpoint" class="subsection">27.3.1  Defining a point in three-dimensions
+</h3>
+<p>See Section <a href="cascmd_en815.html#ssec%3A2dpoint">26.5.2</a> for points in the plane.</p><p>With the 3D geometry screen in point mode, clicking on a point with
+the left mouse button will choose that point. Points chosen this way
+are automatically named, first with <span style="font-family:monospace">A</span>, then <span style="font-family:monospace">B</span>, etc.</p><p>Alternatively, the <span style="font-family:monospace">point</span><a id="hevea_default1834"></a>
+command chooses a point.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">Ortho proj</span></span></span> button, which determines whether the
-drawing uses orthogonal projection or perspective
-projection.
-</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">Lights</span></span></span> button, which determines whether the objects
-are lit or not; the locations of eight points for lighting are
-set using the buttons <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">L1</span></span></span>, …, <span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">L7</span></span></span>,
-which specify the points with homogeneous coordinates.
-</li><li class="li-itemize"><span style="background-color:#E5E5E5;border:solid #BFBFBF"><span style="font-family:sans-serif"><span style="font-size:small">Show axis</span></span></span> button, which determines whether or not
-the outlining parallelepiped is visible.
+<span style="font-family:monospace">point</span> takes one or three arguments:
+<span style="font-style:italic">coords</span>, where <span style="font-style:italic">coords</span> can be one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>, a sequence of three coordinates.
+</li><li class="li-itemize">[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>], a list of three coordinates.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">point(</span><span style="font-style:italic">coords</span><span style="font-family:monospace">)</span> returns and draws the point
+with the given coordinates.
+</li></ul><p>
+Many commands which takes points as arguments can either take them as
+<span style="font-family:monospace">point(a,b,c)</span> or the list of coordinates <span style="font-family:monospace">[a,b,c]</span>.</p><h4 id="sec2339" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,2,5)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,5])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en354.png">
+
+</div><p>
+
+(The marker used to indicate the point can be changed;
+see Section <a href="cascmd_en811.html#sssec%3Alocalfeatures">26.3.2</a>.)</p>
 <hr>
 <a href="cascmd_en922.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -52,7 +52,6 @@ using namespace std;
 #include "quater.h"
 #include "sparse.h"
 #include "giacintl.h"
-#include "signalprocessing.h"
 #if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
 inline bool is_graphe(const giac::gen &g){ return false; }
 inline giac::gen _graph_charpoly(const giac::gen &g,const giac::context *){ return g;}
@@ -3176,11 +3175,15 @@ namespace giac {
     if ( g_orig.type==_STRNG && g_orig.subtype==-1) return  g_orig;
     vecteur attributs(1,default_color(contextptr));
     gen g(g_orig);
-    bool horizontal=true;
+    bool horizontal=true,myaxes=true;
     double ymin=global_window_ymin;
     double ymax=global_window_ymax;
     if (g.type==_VECT && g.subtype==_SEQ__VECT){
       vecteur v(*g._VECTptr);
+      if (!v.empty() && v.back().is_integer() && v.back().subtype==_INT_PLOT && v.back().val==_AXES) {
+        myaxes=false;
+        v.pop_back();
+      }
       int s=read_attributs(v,attributs,contextptr);
       if (s>1){
 	gen tmp=v[s-1];
@@ -3225,7 +3228,7 @@ namespace giac {
     vecteur affichages(gen2vecteur(attributs[0]));
     int as=int(affichages.size()),attrn=attr.size();
     if (horizontal){
-      res.push_back(symb_equal(change_subtype(_AXES,_INT_PLOT),4));
+      if (myaxes) res.push_back(symb_equal(change_subtype(_AXES,_INT_PLOT),4));
       double y_scale=(ymax-ymin)/(4*s);
       for (int i=0;i<s;++i){
 	double y_up=ymax-(4*i+1)*y_scale;
@@ -3249,7 +3252,7 @@ namespace giac {
           res.push_back(_legende(makesequence(current[4]+y_middle*cst_i,legendes[i]),contextptr));
       }
     } else { // vertical picture
-      res.push_back(symb_equal(change_subtype(_AXES,_INT_PLOT),2));
+      if (myaxes) res.push_back(symb_equal(change_subtype(_AXES,_INT_PLOT),2));
       swapdouble(xmin,ymin);
       swapdouble(xmax,ymax);
       double x_scale=(xmax-xmin)/(4*s);
@@ -5369,9 +5372,14 @@ static define_unary_function_eval (__batons,&_batons,_batons_s);
     gen g(g_);
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     vecteur vals,names,attributs,res;
-    double largeur=.8;
+    double largeur=.75; // changed by L.Marohnić
+    bool myaxes=true;
     if (g.type==_VECT && g.subtype==_SEQ__VECT){
       vecteur v=*g._VECTptr;
+      if (!v.empty() && v.back().is_integer() && v.back().subtype==_INT_PLOT && v.back().val==_AXES) {
+        myaxes=false;
+        v.pop_back();
+      }
       if (v.size()>1 && v.front().type==_VECT && v.back().type!=_VECT){
 	gen l=evalf_double(v.back(),1,contextptr);
 	if (l.type==_DOUBLE_){
@@ -5411,7 +5419,7 @@ static define_unary_function_eval (__batons,&_batons,_batons_s);
       c=attr[0].val;
     }
     gen namesf=evalf(names,1,contextptr);
-    if (namesf.type==_VECT && !is_numericv(*namesf._VECTptr))
+    if (myaxes && namesf.type==_VECT && !is_numericv(*namesf._VECTptr))
       res.push_back(symb_equal(change_subtype(gen(_AXES),_INT_PLOT),2));
 #if defined HAVE_LIBFLTK && defined GIAC_LMCHANGES // changes by L. Marohnić
     vecteur allvals(0);
@@ -5917,6 +5925,11 @@ static define_unary_function_eval (__simplex_reduce,&_simplex_reduce,_simplex_re
     if (g.type!=_VECT || g._VECTptr->size()<2)
       return gensizeerr(contextptr);
     vecteur w(*g._VECTptr);
+    bool pcw=false; // addition by L.Marohnić for piecewise output
+    if (w.back()==at_piecewise) {
+      pcw=true;
+      w.pop_back();
+    }
     if (w.size()<3)
       w.push_back(vx_var);
     if (w.size()<4)
@@ -5966,11 +5979,48 @@ static define_unary_function_eval (__simplex_reduce,&_simplex_reduce,_simplex_re
     if (is_undef(zf)) return zf;
     pol.pop_back();
     pol=*ratnormal(subst(pol,inconnu,zf,false,contextptr),contextptr)._VECTptr;
-    for (int i=0;i<n;++i){
-      if (pol[i].type==_VECT)
-	pol[i]=symb_horner(*pol[i]._VECTptr,xvar-x[i]);
+    // changes by L.Marohnić: different output options
+    if (xvar.type==_IDNT) { 
+      for (int i=0;i<n;++i){
+        if (pol[i].type==_VECT)
+          pol[i]=symb_horner(*pol[i]._VECTptr,xvar-x[i]);
+      }
+      if (pcw) { // return piecewise expression
+        vecteur pargs;
+        for (int i=1;i<=n;++i) {
+          pargs.push_back(i==1?symb_and(symb_superieur_egal(xvar,x[0]),symb_inferieur_strict(xvar,x[1]))
+                              :(i==n?symb_inferieur_egal(xvar,x[i]):symb_inferieur_strict(xvar,x[i])));
+          pargs.push_back(pol[i-1]);
+        }
+        return _piecewise(pargs,contextptr);
+      }
+      return pol; // return the list of spline pieces (the default)
     }
-    return pol;
+    if (xvar.type==_VECT) { // compute spline values for a list of points
+      vecteur res;
+      res.reserve(xvar._VECTptr->size());
+      const_iterateur it=xvar._VECTptr->begin(),itend=xvar._VECTptr->end();
+      for (;it!=itend;++it) {
+        int i=1;
+        for (;i<=n;++i) {
+          if (is_greater(*it,x[i-1],contextptr) && is_greater(x[i],*it,contextptr)) {
+            res.push_back(pol[i-1].type==_VECT?symb_horner(*pol[i-1]._VECTptr,*it-x[i-1]):pol[i-1]);
+            break;
+          }
+        }
+        if (i>n) res.push_back(undef);
+      }
+      return ratnormal(res,contextptr);
+    }
+    // compute the spline value at a point xvar
+    for (int i=0;i<n;++i){
+      if (!is_greater(xvar,x[i],contextptr) || !is_greater(x[i+1],xvar,contextptr))
+        continue;
+      if (pol[i].type==_VECT)
+        pol[i]=symb_horner(*pol[i]._VECTptr,xvar-x[i]);
+      return ratnormal(pol[i],contextptr);
+    }
+    return undef;
   }
   static const char _spline_s []="spline";
 static define_unary_function_eval (__spline,&_spline,_spline_s);
@@ -10420,6 +10470,8 @@ void sync_screen(){}
   static define_unary_function_eval (__rgb,&_rgb,_rgb_s);
   define_unary_function_ptr5(at_rgb,alias_at_rgb,&__rgb,0,true);
 
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
+#else
   gen _hsv(const gen & args,GIAC_CONTEXT) {
     if (args.type==_STRNG && args.subtype==-1) return args;
     if (args.is_integer() && args.subtype==_INT_COLOR) {
@@ -10453,6 +10505,7 @@ void sync_screen(){}
   static const char _hsv_s []="hsv";
   static define_unary_function_eval (__hsv,&_hsv,_hsv_s);
   define_unary_function_ptr5(at_hsv,alias_at_hsv,&__hsv,0,true);
+#endif
   
   gen prediction(const gen & args,int type,GIAC_CONTEXT){
     if (args.type!=_VECT || args._VECTptr->size()!=2)

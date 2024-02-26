@@ -387,8 +387,17 @@ namespace giac {
       gen a=eval(g._VECTptr->front(),1,contextptr);
       gen b=eval(g._VECTptr->back(),1,contextptr);
       if (is_integral(a) && is_integral(b))
-	return _matrix(makesequence(a,b,0.0),contextptr);
+        return _matrix(makesequence(a,b,0.0),contextptr);
     }
+#if 0
+    int c=calc_mode(contextptr);
+    calc_mode(0,contextptr);
+    gen res=_solve(g.type==_SYMB?symb_equal(g,0):g,contextptr);
+    calc_mode(c,contextptr);
+    if (c==1 && res.type==_VECT && res.subtype==_LIST__VECT)
+      res.subtype=0;
+    return res;
+#endif
     return zeros(g,complex_mode(contextptr),contextptr);
   }
   static const char _zeros_s[]="zeros";

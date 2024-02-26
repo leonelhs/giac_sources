@@ -4,119 +4,155 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Cauchy distribution</title>
+<title>Weibull distribution</title>
 </head>
 <body >
 <a href="cascmd_en684.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en686.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:cauchy" class="subsection">19.4.14  Cauchy distribution</h3>
-<h5 id="sec1745" class="paragraph">The probability density function for the Cauchy distribution.</h5>
+<h3 id="ssec:weibull" class="subsection">20.4.16  Weibull distribution</h3>
+<h5 id="sec1765" class="paragraph">The probability density function for the Weibull distribution.</h5>
 <p>
-The <span style="font-family:monospace">cauchy</span><a id="hevea_default1377"></a>
-(or <span style="font-family:monospace">cauchyd</span><a id="hevea_default1378"></a>) command computes the
-probability density function for the Cauchy distribution (sometimes
-called the Lorentz distribution).
+The Weibull distribution depends on three parameters; <span style="font-style:italic">k</span>&gt;0, λ
+&gt; 0 and a real number θ. The probability density at <span style="font-style:italic">x</span> is
+given by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:weibulld"></a>
+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">λ</td></tr>
+</table></td><td class="dcell">⎛<br>
+⎜<br>
+⎜<br>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span>−θ</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">λ</td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">2</td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">e</span><sup>−(<span style="font-style:italic">x</span>−θ)<sup>2</sup>λ<sup>2</sup></sup>.
+    (11)</td></tr>
+</table><p>
+The <span style="font-family:monospace">weibull</span><a id="hevea_default1391"></a>
+or <span style="font-family:monospace">weibulld</span><a id="hevea_default1392"></a>
+command compute this density function.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">cauchy</span> takes two optional arguments and one
-mandatory argument:
+<span style="font-family:monospace">weibull</span> takes three mandatory and one optional
+argument:
 <ul class="itemize"><li class="li-itemize">
-Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers (the parameters; by
-default <span style="font-style:italic">a</span>=0 and <span style="font-style:italic">b</span>=1).
+<span style="font-style:italic">k</span>, a positive integer.
+</li><li class="li-itemize">λ, a positive real number.
+</li><li class="li-itemize">Optionally θ, a real number (by default 0).
 </li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">cauchy(</span>⟨ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,⟩ <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-the value of the density function at <span style="font-style:italic">x</span>, namely
- <span style="font-style:italic">b</span>/π/(<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)<sup>2</sup>+<span style="font-style:italic">b</span><sup>2</sup>.
-</li></ul><h4 id="sec1746" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.8)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">weibull(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩, <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value
+of the Weibull density function, given in (<a href="#eq%3Aweibulld">11</a>).
+</li></ul><h4 id="sec1766" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1,3)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1,0,3)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.113412073462
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">6</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">e</span></span><sup><span style="color:#0000CC">9</span></sup></td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0.3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.292027418517
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-<h5 id="sec1747" class="paragraph">The cumulative distribution function for the Cauchy distribution.</h5>
+<h5 id="sec1767" class="paragraph">The cumulative distribution function for the Weibull distribution.</h5>
 <p>
-The <span style="font-family:monospace">cauchy_cdf</span><a id="hevea_default1379"></a>
-(or <span style="font-family:monospace">cauchyd_cdf</span><a id="hevea_default1380"></a>)
-command computes the cumulative distribution function for the Cauchy distribution.
+The <span style="font-family:monospace">weibull_cdf</span><a id="hevea_default1393"></a>
+(or <span style="font-family:monospace">weibulld_cdf</span><a id="hevea_default1394"></a>)
+command computes the cumulative distribution function for the Weibull distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">cauchy_cdf</span> (or <span style="font-family:monospace">cauchyd_cdf</span>) takes three
-optional arguments and one mandatory argument:
+<span style="font-family:monospace">weibull_cdf</span> (or <span style="font-family:monospace">weibulld_cdf</span>) takes three
+mandatory arguments and two optional arguments:
 <ul class="itemize"><li class="li-itemize">
-Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, the parameters
-(by default, <span style="font-style:italic">a</span>=0 and <span style="font-style:italic">b</span>=1).
+<span style="font-style:italic">k</span>, a positive integer.
+</li><li class="li-itemize">λ, a positive real number.
+</li><li class="li-itemize">Optionally θ, a real number (by default 0).
 </li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number. If this optional argument
+is included, then θ must also be included.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">cauchy_cdf(</span>⟨ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,⟩ <span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the Cauchy distribution with parameters
-<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">cauchy_cdf(</span>⟨ <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,⟩ <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
+</li><li class="li-itemize"><span style="font-family:monospace">weibull_cdf(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the Weibull distribution with parameters
+<span style="font-style:italic">k</span>, λ and θ.
+</li><li class="li-itemize"><span style="font-family:monospace">weibull_cdf(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
 Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>).
 </li></ul><p>
-It turns out that <span style="font-family:monospace">cauchy_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)=1/2+1/πarctan<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>/<span style="font-style:italic">b</span>.</p><h4 id="sec1748" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,1.4)</span></span></td></tr>
+In this case, the Weibull cumulative distribution function is
+given by the formula
+<span style="font-family:monospace">weibull_cdf</span>(<span style="font-style:italic">k</span>,λ,θ,<span style="font-style:italic">x</span>)= 1−<span style="font-style:italic">e</span><sup>−(<span style="font-style:italic">x</span>−θ)<sup>2</sup>λ<sup>2</sup></sup>.</p><h4 id="sec1768" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,5)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0,5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+1−</span><span style="color:#0000CC"><span style="font-style:italic">e</span></span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">25</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">9</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="dcell"><span style="color:#0000CC">&nbsp;</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.4,1.9)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.437167041811
+0.632120558829
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.4)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.4,1.2,1.9)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.802568456711
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,-1.9,1.4)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.228452641651
+0.410267239944
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-<h5 id="sec1749" class="paragraph">The inverse distribution function for the Cauchy distribution.</h5>
+<h5 id="sec1769" class="paragraph">The inverse distribution function for the Weibull distribution.</h5>
 <p>
-The <span style="font-family:monospace">cauchy_icdf</span><a id="hevea_default1381"></a>
-(or <span style="font-family:monospace">cauchyd_icdf</span><a id="hevea_default1382"></a>)
-command computes the inverse distribution for the Cauchy distribution.
+The <span style="font-family:monospace">weibull_icdf</span><a id="hevea_default1395"></a>
+(or <span style="font-family:monospace">weibulld_icdf</span><a id="hevea_default1396"></a>)
+command computes the inverse distribution for the Weibull distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">cauchy_icdf</span> (or <span style="font-family:monospace">cauchyd_icdf</span>) takes two
-optional arguments and one mandatory argument:
+<span style="font-family:monospace">weibull_icdf</span> (or <span style="font-family:monospace">weibulld_icdf</span>) takes
+three mandatory arguments and one optional argument:
 <ul class="itemize"><li class="li-itemize">
-Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, parameters
-(by default, <span style="font-style:italic">a</span>=0 and <span style="font-style:italic">b</span>=1).
+<span style="font-style:italic">k</span>, a positive integer.
+</li><li class="li-itemize">λ, a positive real number.
+</li><li class="li-itemize">Optionally θ, a real number (by default 0).
 </li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">cauchy_icdf([</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">,] </span><span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
-distribution for the Cauchy distribution with parameters <span style="font-style:italic">a</span> and
-<span style="font-style:italic">b</span>; namely, the value of <span style="font-style:italic">x</span> for which
+</li><li class="li-itemize"><span style="font-family:monospace">weibull_icdf(</span><span style="font-style:italic">k</span>,λ ⟨,θ ⟩,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
+distribution for the Weibull distribution with parameters
+<span style="font-style:italic">k</span>, λ and θ; namely, the value of <span style="font-style:italic">x</span> for which
 Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-style:italic">h</span>.
-</li></ul><h4 id="sec1750" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0.23)</span></span></td></tr>
+</li></ul><h4 id="sec1770" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,1.5,0.4,0.632)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-−1.40283204777
+1.89977657604
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>

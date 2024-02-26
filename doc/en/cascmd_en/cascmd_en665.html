@@ -4,123 +4,170 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Logistic regression</title>
+<title>Generating uniformly distributed random numbers</title>
 </head>
 <body >
 <a href="cascmd_en664.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en666.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1615" class="subsection">19.2.9  Logistic regression</h3>
-<p>Differential equations of the form <span style="font-style:italic">y</span>′=<span style="font-style:italic">y</span>(<span style="font-style:italic">a</span> <span style="font-style:italic">y</span>+<span style="font-style:italic">b</span>) come up often,
-particularly when studying bounded population growth. With the
-initial condition <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0)=<span style="font-style:italic">y</span>0, the solution is the logistic equation
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">y</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−<span style="font-style:italic">b</span> <span style="font-style:italic">y</span><sub>0</sub></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span> <span style="font-style:italic">y</span><sub>0</sub>−(<span style="font-style:italic">a</span> <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">b</span>) <span style="font-style:italic">e</span><sup><span style="font-style:italic">b</span>(<span style="font-style:italic">x</span><sub>0</sub>−<span style="font-style:italic">x</span>)</sup></td></tr>
-</table></td><td class="dcell">.
-</td></tr>
-</table><p>
-However, you often do not know the values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>. 
-You can approximate these values given (<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>) and
-[<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>),<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+1),…,<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>−1)] by taking the initial value
-<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>)=<span style="font-style:italic">y</span><sub>0</sub> and the approximation <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>+1) ≈ <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)+<span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>) to
-get the approximations
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+<h3 id="ssec:rand" class="subsection">20.3.2  Generating uniformly distributed random numbers</h3>
+<p>The <span style="font-family:monospace">rand</span><a id="hevea_default1307"></a> or
+<span style="font-family:monospace">random</span><a id="hevea_default1308"></a> or
+<span style="font-family:monospace">hasard</span><a id="hevea_default1309"></a> command produces random
+numbers, chooses random elements from a list, or creates functions
+that produce random numbers.</p><p>To produce random real numbers:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">rand</span> takes two optional arguments.
+<ul class="itemize"><li class="li-itemize">
+Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, two real numbers. By default,
+<span style="font-style:italic">a</span>=0 and <span style="font-style:italic">b</span>=1.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">rand([a,b])</span> returns a number in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) randomly and
+with equal probability.
+</li></ul><p>To produce random integers:
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">rand</span> takes
+<span style="font-style:italic">n</span>, an integer.
+</li><li class="li-itemize"><span style="font-family:monospace">rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a random integer in [0,<span style="font-style:italic">n</span>) (or (<span style="font-style:italic">n</span>,0] if
+<span style="font-style:italic">n</span> is negative).
+</li></ul><h4 id="sec1627" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">()</span></span></td></tr>
+</table><p>(to produce a random number in [0,1)).</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+1)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+2)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>)+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+1)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-⋮</td><td style="text-align:left;white-space:nowrap" > </td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>) +⋯+ <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>−1)
-</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.528489416465
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>
-Since <span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span>=<span style="font-style:italic">a</span>+<span style="font-style:italic">by</span>, you can take the
-approximate values of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>)/<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>) and use linear interpolation
-to get the best fit values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, and then solve the
-differential equation.</p><p>The <span style="font-family:monospace">logistic_regression</span><a id="hevea_default1300"></a>
-command uses this approach to find the best fit logistic equation for given data.
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1.5)</span></span></td></tr>
+</table><p>(to produce a random number in [1,1.5)).</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1.0012010464
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+3
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>You can then use <span style="font-family:monospace">rand</span> to find a random integer in a specified
+interval; if you want an random integer between 6 and 10, inclusive,
+for example, enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">6+</span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(11-6)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+7
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Another way to get a random integer in a specified interval is with
+the <span style="font-family:monospace">randint</span><a id="hevea_default1310"></a> command.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">logistic_regression</span> takes three arguments:
+<span style="font-family:monospace">randint</span> takes two arguments:
+<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, two integers.
+</li><li class="li-itemize"><span style="font-family:monospace">randint(</span><span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> returns a random
+integer between <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, inclusive.
+</li></ul><h4 id="sec1628" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randint</span></span><span style="font-weight:bold"><span style="color:#BF0000">(6,10)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+8
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><ul class="itemize"><li class="li-itemize">
+To make a function which produces random numbers, <span style="font-family:monospace">rand</span> takes
+<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, a range with real numbers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">rand(</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns a function
+which will generate a random number in the interval from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>.
+</li></ul><h4 id="sec1629" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">r</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.0..2.5):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">r</span></span><span style="font-weight:bold"><span style="color:#BF0000">()</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1.68151313369
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><ul class="itemize"><li class="li-itemize">
+To choose elements without replacement,
+<span style="font-family:monospace">rand</span> takes two or three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list representing [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>],
-where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">j</span>).
-</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, the initial <span style="font-style:italic">x</span> value.
-</li><li class="li-itemize"><span style="font-style:italic">y</span><sub>0</sub>, the initial <span style="font-style:italic">y</span> value.
+<span style="font-style:italic">p</span>, a positive integer.
+</li><li class="li-itemize">Either: <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, two integers.
+</li><li class="li-itemize">or: <span style="font-style:italic">L</span>, a list.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">logistic_regression(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub><span style="font-family:monospace">)</span>
-returns a list [<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">C</span>,<span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">R</span>,<span style="font-style:italic">Y</span>] where
-<span style="font-style:italic">y</span> is the logistic function, <span style="font-style:italic">y</span>′ is the derivative,
-<span style="font-style:italic">C</span>=−<span style="font-style:italic">b</span>/<span style="font-style:italic">a</span>, <span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub> is the maximum value of <span style="font-style:italic">y</span>′,
-<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub> is where <span style="font-style:italic">y</span>′ has its maximum, <span style="font-style:italic">R</span> is linear
-correlation coefficient <span style="font-style:italic">R</span> of <span style="font-style:italic">Y</span>=<span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span> as a function of <span style="font-style:italic">y</span> with <span style="font-style:italic">Y</span>=<span style="font-style:italic">a</span> <span style="font-style:italic">y</span>+<span style="font-style:italic">b</span>.
-</li></ul><h4 id="sec1616" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">logistic_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0.0,1.0,2.5],0,1)</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-Pinstant=0.132478632479*Pcumul+0.0206552706553<br>
- Correlation 0.780548607383, Estimated total P=-0.155913978495<br>
- Returning estimated Pcumul, Pinstant, Ptotal, Pinstantmax, tmax, R
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</li><li class="li-itemize"><span style="font-family:monospace">rand(</span><span style="font-style:italic">p</span>,<span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub><span style="font-family:monospace">)</span> returns a list of <span style="font-style:italic">p</span> distinct
+random integers from <span style="font-style:italic">n</span><sub>1</sub> to <span style="font-style:italic">n</span><sub>2</sub>.
+</li><li class="li-itemize"><span style="font-family:monospace">rand(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">p</span> elements without replacement from the list <span style="font-style:italic">L</span>.
+</li></ul><h4 id="sec1630" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1,10)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎢<br>
-⎣</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">0.155913978495</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1+<span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−0.0554152581707 <span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">0.140088513344+3.14159265359 <span style="font-style:italic">i</span></td><td class="dcell">⎞<br>
-⎠</td></tr>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2,9</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-<tr><td class="dcell">&nbsp;</td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"b"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"c"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"d"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"e"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"f"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"g"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"h"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">“e”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“g”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“a”</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
+</table><p>
+The list can have repeated elements.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4,[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">“r”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“v”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“v”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“r”</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table></td><td class="dcell">,</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">0.00161022271237</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1+cos</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−<span style="font-style:italic">i</span> </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−0.0554152581707 <span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">0.140088513344+3.14159265359 <span style="font-style:italic">i</span></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">,</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >−0.155913978495,−0.000805111356186,2.52797727501+56.6918346552 <span style="font-style:italic">i</span>,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">0.780548607383</td><td class="dcell">⎤<br>
-⎥<br>
-⎥<br>
-⎦</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>The <span style="font-family:monospace">logistic_regression_plot</span><a id="hevea_default1301"></a>
-command draws the best fit logistic equation.
+</table><p>The <span style="font-family:monospace">sample</span><a id="hevea_default1311"></a>
+command will also randomly select items from a list without replacement.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">logistic_regression_plot</span> takes three arguments:
+<span style="font-family:monospace">sample</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list representing [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>],
-where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">j</span>).
-</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, the initial <span style="font-style:italic">x</span> value.
-</li><li class="li-itemize"><span style="font-style:italic">y</span><sub>0</sub>, the initial <span style="font-style:italic">y</span> value.
+<span style="font-style:italic">L</span>, a list.
+</li><li class="li-itemize"><span style="font-style:italic">p</span>, an integer.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">logistic_regression_plot(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub><span style="font-family:monospace">)</span>
-draws the best fit logistic equation.
-</li></ul><h4 id="sec1617" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">logistic_regression_plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,4,6,8,7,5],0,2.0)</span></span></td></tr>
-</table><div class="center">
+</li><li class="li-itemize"><span style="font-family:monospace">sample(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns a list of <span style="font-style:italic">p</span> items chosen
+randomly from <span style="font-style:italic">L</span>, without replacement.
+</li></ul><p>
+Note that with the <span style="font-family:monospace">sample</span> command, the list
+comes first and then the integer.</p><h4 id="sec1631" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sample</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">],4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en149.png">
-
-</div>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">“v”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“v”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“v”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“r”</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en664.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

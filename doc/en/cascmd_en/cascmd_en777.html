@@ -4,47 +4,44 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Checking required conditions</title>
+<title>Displaying exponents</title>
 </head>
 <body >
 <a href="cascmd_en776.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en778.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1987" class="subsection">24.2.4  Checking required conditions</h3>
-<p>The <span style="font-family:monospace">assert</span><a id="hevea_default1555"></a>
-command breaks out of a function with an error.
+<h3 id="sec2004" class="subsection">25.2.7  Displaying exponents</h3>
+<p>The <span style="font-family:monospace">printpow</span><a id="hevea_default1594"></a>
+command determines how the <span style="font-family:monospace">print</span>
+command will print exponents in the special pane above the output line.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">assert</span> takes
-<span style="font-style:italic">bool</span>, a boolean.
-</li><li class="li-itemize"><span style="font-family:monospace">assert(</span><span style="font-style:italic">bool</span><span style="font-family:monospace">)</span> does nothing if
-<span style="font-style:italic">bool</span> is true, it returns from the function with an error if
-<span style="font-style:italic">bool</span> is false.
-</li></ul><h4 id="sec1988" class="subsubsection">Example</h4>
-<p>
-Define the function:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sqofpos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):={ </span></span><span style="font-weight:bold"><span style="color:#BF0000">assert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;0); </span></span><span style="font-weight:bold"><span style="color:#0000CC">return</span></span><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2; }</span></span></td></tr>
-</table><p>then:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sqofpos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-16
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sqofpos</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-4)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">“assert failure: x&gt;0 Error: Bad Argument Value”</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-since −4&gt;0 is false.</p>
+<span style="font-family:monospace">printpow</span> takes
+<span style="font-style:italic">n</span>, which is either −1, 0 or 1 (by default 1).
+</li><li class="li-itemize"><span style="font-family:monospace">printpow(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> sets the style for printing exponents
+with the <span style="font-family:monospace">print</span> command.
+<ul class="itemize"><li class="li-itemize">
+If <span style="font-style:italic">n</span>=−1, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-style:italic">a</span><span style="font-family:monospace">**</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span>.
+</li><li class="li-itemize">If <span style="font-style:italic">n</span>=0, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-family:monospace">pow(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span><span style="font-family:monospace">)</span>.
+</li><li class="li-itemize">If <span style="font-style:italic">n</span>=1, <span style="font-family:monospace">print(</span><span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> will subsequently print
+<span style="font-style:italic">a</span><span style="font-family:monospace">^</span><span style="font-style:italic">b</span>.
+</li></ul>
+</li></ul><h4 id="sec2005" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x</span></span></span><code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">^</span></span></span></code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">3
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x**3
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+pow(x,3)
+</span></span></span></p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">printpow</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+x</span></span></span><code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">^</span></span></span></code><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">3
+</span></span></span></p>
 <hr>
 <a href="cascmd_en776.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

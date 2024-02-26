@@ -4,122 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Exporting images</title>
+<title>Extracting data from images</title>
 </head>
 <body >
 <a href="cascmd_en1014.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en1016.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:writergb" class="subsection">27.1.5  Exporting images</h3>
-<p>The <span style="font-family:monospace">writergb</span><a id="hevea_default1925"></a>
-command writes images to PNG files. The
-image can be either an image object or given by the
-full <span style="font-variant:small-caps">Xcas</span> legacy image structure
-(see Section <a href="cascmd_en1011.html#sec%3Aimagestruct">27.1.1</a>, this is what is read in with
-<span style="font-family:monospace">readrgb</span>) or a simplified version of this structure.</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">writergb</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">filename</span>, a file name.
-</li><li class="li-itemize"><span style="font-style:italic">image</span>, an image in <span style="font-variant:small-caps">Xcas</span> format (either the new or legacy one).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">writergb(</span><span style="font-style:italic">filename</span>,<span style="font-style:italic">image</span><span style="font-family:monospace">)</span> writes the
-image <span style="font-style:italic">image</span> to the file <span style="font-style:italic">filename</span>. If <span style="font-style:italic">image</span> is an image
-object, <span style="font-family:monospace">writergb</span> returns 1 if the export was successful, otherwise it
-returns 0. If <span style="font-style:italic">image</span> is the image structure (either full or simplified),
-then <span style="font-family:monospace">writergb</span> returns its graphical representation.
-</li></ul><h4 id="sec2521" class="subsubsection">Examples</h4>
-<h5 id="sec2522" class="paragraph">With image objects.</h5>
+<h3 id="ssec:imageprops" class="subsection">28.1.8  Extracting data from images</h3>
+<h5 id="sec2538" class="paragraph">Printing out information about an image.</h5>
 <p>
-Assuming that the <span style="font-family:monospace">img</span> variable contains an image object created with the
-<span style="font-family:monospace">image</span> command (see Section <a href="cascmd_en1012.html#ssec%3Acreating-images">27.1.2</a>), input:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">writergb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"image.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><h5 id="sec2523" class="paragraph">With the legacy format.</h5>
+The <span style="font-family:monospace">about</span> command can be used to print out a brief description
+of an image object, which it takes as its only argument.</p>
+<h5 id="sec2539" class="paragraph">Obtaining the size of an image.</h5>
 <p>
-Assume that the variable <span style="font-family:monospace">a</span> represents a legacy image
-structure loaded from the file <span style="font-family:monospace">image1234.jpg</span> by using
-<span style="font-family:monospace">readrgb</span> (see the
-example in Section <a href="cascmd_en1013.html#ssec%3Areadrgb">27.1.3</a>). Then:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">writergb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"image2134.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">[0],</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">[2],</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">[1],</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">[3],</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">[4]])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en433.png">
-
-</div><p>
-
-The image file <span style="font-family:monospace">image2134.png</span> is thus created.
-This image is simply the <span style="font-family:monospace">image1234.png</span> image
-with the green and red colors switched.</p><p>In simpler cases, you can type the <span style="font-variant:small-caps">Xcas</span> image format in by hand.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">writergb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"image1.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,[[4,2,2],[[255,0],[0,0]],[[0,255],[0,0]],</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">                      [[255,125],[255,255]],[[0,0],[255,0]]])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en434.png">
-
-</div><p>
-
-The transparency value of <span style="font-family:monospace">125</span> for the upper right point makes
-it partially transparent and mutes the color.
-Observe that individual pixels are shown as rectangles due to the
-automatic scaling.</p><p>For larger images, in some cases the matrix operations of
-<span style="font-variant:small-caps">Xcas</span> can be used to create the channels. The following
-command line creates the file <span style="font-family:monospace">image2.png</span> containing
-the image shown below (the view is orthonormalized).
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">writergb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"image2.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,[[4,30,30],</span></span><span style="font-weight:bold"><span style="color:#BF0000">makemat</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,30,30),</span></span><span style="font-weight:bold"><span style="color:#BF0000">makemat</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,30,30),</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">  </span></span><span style="font-weight:bold"><span style="color:#BF0000">makemat</span></span><span style="font-weight:bold"><span style="color:#BF0000">(255,30,30),</span></span><span style="font-weight:bold"><span style="color:#BF0000">makemat</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,30,30)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">idn</span></span><span style="font-weight:bold"><span style="color:#BF0000">(30)*255])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en435.png">
-
-</div>
-<h5 id="sec2524" class="paragraph">Writing images with simplified image description.</h5>
+The size of an image can be obtained by using the
+<span style="font-family:monospace">size</span><a id="hevea_default1932"></a> command.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">size</span> takes <span style="font-style:italic">img</span>, an image object.
+</li><li class="li-itemize"><span style="font-family:monospace">size(</span><span style="font-style:italic">img</span><span style="font-family:monospace">)</span> returns a list of two integers
+representing the width and the height of <span style="font-style:italic">img</span> (in that order).
+</li></ul>
+<h5 id="sec2540" class="paragraph">Obtaining pixel data.</h5>
 <p>
-The simplified version of the <span style="font-variant:small-caps">Xcas</span> image description does not
-involve stating the number of channels, the size of the image, or the
-transparency. There is a full color version of this simplified form
-and a grayscale version.</p><ul class="itemize"><li class="li-itemize">
-To create a full color image using the simple description,
-<span style="font-family:monospace">writergb</span> takes four arguments:
+Channel data can be extracted from image objects to matrices by using
+the <span style="font-family:monospace">[]</span><a id="hevea_default1933"></a> operator or the
+<span style="font-family:monospace">channel_data</span><a id="hevea_default1934"></a> command.
+</p><ul class="itemize"><li class="li-itemize">
+Let <span style="font-style:italic">img</span> be an image object.
+</li><li class="li-itemize">The command <span style="font-style:italic">img</span><span style="font-family:monospace">[</span><span style="font-style:italic">chn</span> ⟨,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span> ⟨,<span style="font-style:italic">w</span>,<span style="font-style:italic">h</span> ⟩⟩<span style="font-family:monospace">]</span>,
+where
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">filename</span>, the name of the file to store the image.
-</li><li class="li-itemize"><span style="font-style:italic">R</span>, a matrix for the red channel.
-</li><li class="li-itemize"><span style="font-style:italic">G</span>, a matrix for the green channel.
-</li><li class="li-itemize"><span style="font-style:italic">B</span>, a matrix for the blue channel. 
+<span style="font-style:italic">chn</span> is a channel index, which should be either a
+nonnegative integer or <span style="font-family:monospace">red</span> for the red channel, <span style="font-family:monospace">green</span> for the
+green channel, <span style="font-family:monospace">blue</span> for the blue channel, <span style="font-family:monospace">grey</span> for the
+grayscale channel resp. <span style="font-family:monospace">tran</span> for the transparency channel,
+</li><li class="li-itemize">(optionally) <span style="font-style:italic">x</span>, <span style="font-style:italic">y</span> are integers and
+</li><li class="li-itemize">(optionally) <span style="font-style:italic">w</span>, <span style="font-style:italic">h</span> are positive integers (if these are given, then
+<span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> must also be given),
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">writergb(</span><span style="font-style:italic">filename</span>,<span style="font-style:italic">R</span>,<span style="font-style:italic">G</span>,<span style="font-style:italic">B</span><span style="font-family:monospace">)</span>
-draws the image given by the matrices to the file <span style="font-family:monospace">filename</span>.
-</li><li class="li-itemize">To create a grayscale image using the simple description,
-<span style="font-family:monospace">writergb</span> takes two arguments:
+returns
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">filename</span>, the name of the file to store the image.
-</li><li class="li-itemize"><span style="font-style:italic">M</span>, a matrix representing how dark each point is (where
-<span style="font-family:monospace">0</span> is black and <span style="font-family:monospace">255</span> is white).
+the full matrix of the channel <span style="font-style:italic">chn</span> if no optional arguments are given,
+</li><li class="li-itemize">the <span style="font-style:italic">chn</span> component of the pixel (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) if <span style="font-style:italic">w</span> and <span style="font-style:italic">h</span> are not given,
+</li><li class="li-itemize">the matrix of pixel data for the channel <span style="font-style:italic">chn</span> in the
+rectangle with upper left corner (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) and lower right corner (<span style="font-style:italic">x</span>+<span style="font-style:italic">w</span>−1,<span style="font-style:italic">y</span>+<span style="font-style:italic">h</span>−1)
+if <span style="font-style:italic">x</span>, <span style="font-style:italic">y</span>, <span style="font-style:italic">w</span> and <span style="font-style:italic">h</span> are given.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">writergb(</span><span style="font-style:italic">filename</span>,<span style="font-style:italic">M</span><span style="font-family:monospace">)</span>
-draws the image given by <span style="font-style:italic">M</span> to the file <span style="font-family:monospace">filename</span>.
-</li></ul><h4 id="sec2525" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">writergb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"image3.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,[[255,250],[0,120]],[[0,255],[0,0]],[[0,0],[255,100]])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en436.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">writergb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"image4.png"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,[[65,125],[185,200]])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en437.png">
-
-</div>
+</li><li class="li-itemize">If <span style="font-style:italic">chn</span>=<span style="font-family:monospace">grey</span> and <span style="font-style:italic">img</span> is a color image, then the returned
+pixel value(s) are obtained by averaging the color channels.
+</li><li class="li-itemize">The <span style="font-family:monospace">channel_data</span> command extracts a channel (sub)matrix. Precisely,
+<span style="font-family:monospace">channel_data(</span><span style="font-style:italic">img</span>,<span style="font-style:italic">args</span><span style="font-style:italic">)</span> is equivalent to
+<span style="font-style:italic">img</span><span style="font-family:monospace">[</span><span style="font-style:italic">args</span><span style="font-family:monospace">]</span>, where <span style="font-style:italic">img</span> is an image object
+and <span style="font-style:italic">args</span> is a sequence of arguments as described above.
+</li></ul>
+<h5 id="sec2541" class="paragraph">Flattening images.</h5>
+<p>
+The <span style="font-family:monospace">flatten</span><a id="hevea_default1935"></a> command returns a list
+representation of an image, which is suitable for e.g. passing the image to a neural
+network. It accepts a single argument, an image object <span style="font-style:italic">img</span>, and returns the
+list in which the pixel data is stored row by row, with individual channel values for
+the same pixel occupying consecutive entries in the list. (See the MNIST example
+in Section <a href="cascmd_en743.html#ssec%3Atrain">22.2.2</a>.)</p>
 <hr>
 <a href="cascmd_en1014.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

@@ -4,47 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>2D graph of a surface with colors</title>
+<title>3D implicit surface</title>
 </head>
 <body >
 <a href="cascmd_en627.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en629.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:plotdensity" class="subsection">18.5.2  2D graph of a surface with colors</h3>
-<p>The <span style="font-family:monospace">plotdensity</span><a id="hevea_default1209"></a>
-or <span style="font-family:monospace">densityplot</span><a id="hevea_default1210"></a>
-command draws the graph of a function of two
-variables in the plane where the values of <span style="font-style:italic">z</span> are represented by the
-rainbow colors.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">plotdensity</span> takes two mandatory arguments and three
-optional arguments:
+<h3 id="ssec:implicitplot3" class="subsection">19.6.2  3D implicit surface</h3>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression of two variables.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variables and their ranges.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">z=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, the range of <span style="font-style:italic">z</span> to
-correspond to the full rainbow (by default, it is deduced from the
-minimum and maximum value of <span style="font-style:italic">expr</span> on the discretization.
+For an implicit plot in ℝ<sup>3</sup>,
+<span style="font-family:monospace">plotimplicit</span> takes four mandatory arguments and
+three optional arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">expr</span>, an expression of three variables implicitly
+defining a curve by <span style="font-style:italic">expr=0</span>.
+</li><li class="li-itemize"><span style="font-style:italic">xvar</span>, <span style="font-style:italic">yvar</span> and <span style="font-style:italic">zvar</span>, the first,
+second and third variables,optionally with
+their ranges <span style="font-style:italic">var</span><span style="font-family:monospace">=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
 </li><li class="li-itemize">Optionally, <span style="font-style:italic">xstep</span>, which can be
 <span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
 step in the <span style="font-style:italic">x</span> direction.
 </li><li class="li-itemize">Optionally, <span style="font-style:italic">ystep</span>, which can be
 <span style="font-family:monospace">ystep=</span><span style="font-style:italic">m</span> to specify the discretization
-step in the <span style="font-style:italic">y</span> direction.<p>Instead of <span style="font-style:italic">xstep</span> and <span style="font-family:monospace">ystep</span>, you could use
-the option <span style="font-family:monospace">nstep=</span><span style="font-style:italic">n</span> to specify the number of points used to
-graph.
-</p></li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">plotdensity(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">vars</span> ⟨,<span style="font-family:monospace">z=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>,<span style="font-style:italic">xstep</span>,<span style="font-style:italic">ystep</span> ⟩<span style="font-family:monospace">)</span>
-draws the graph of <span style="font-style:italic">expr</span> in the plane where the values of
-<span style="font-style:italic">z</span> are represented by the rainbow colors.
-</li></ul><h5 id="sec1521" class="paragraph">Remark.</h5>
-<p> A rectangle representing the scale of colors will be
-displayed below the graph.</p><h4 id="sec1522" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotdensity</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2],</span></span><span style="font-weight:bold"><span style="color:#BF0000">xstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">ystep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.1)</span></span></td></tr>
+step in the <span style="font-style:italic">y</span> direction.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">zstep</span>, which can be
+<span style="font-family:monospace">zstep=</span><span style="font-style:italic">p</span> to specify the discretization
+step in the <span style="font-style:italic">y</span> direction.<a id="hevea_default1216"></a>
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">unfactored</span>.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">plotimplicit(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">xvar</span>,<span style="font-style:italic">yvar</span>,<span style="font-style:italic">zvar</span> ⟨,<span style="font-style:italic">xstep</span>,<span style="font-style:italic">ystep</span>,<span style="font-style:italic">zstep</span>,<span style="font-family:monospace">unfactored</span> ⟩<span style="font-family:monospace">)</span>
+draws the graphic representation of the surface defined by the implicit equation
+<span style="font-style:italic">expr=0</span> over the given ranges of the variables.
+</li></ul><h4 id="sec1533" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotimplicit</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">xstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">ystep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">zstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.3)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotimplicit</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">xstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">ystep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">zstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">unfactored</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en090.png">
+<img src="cascmd_en103.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotimplicit</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-1..1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-1..1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-1..1)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en104.png">
 
 </div>
 <hr>

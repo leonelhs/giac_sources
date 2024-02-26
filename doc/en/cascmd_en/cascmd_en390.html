@@ -4,61 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Hermite polynomial</title>
+<title>Numerator after simplification</title>
 </head>
 <body >
 <a href="cascmd_en389.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en391.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec876" class="subsection">11.5.2  Hermite polynomial</h3>
-<p>The Hermite polynomials <span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>) satisfy the recurrence relation:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">H</span>(0,<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >=1</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">H</span>(1,<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >=2<span style="font-style:italic">x</span></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>)</td><td style="text-align:left;white-space:nowrap" >=2<span style="font-style:italic">xH</span>(<span style="font-style:italic">n</span>−1,<span style="font-style:italic">x</span>)−2(<span style="font-style:italic">n</span>−1)<span style="font-style:italic">H</span>(<span style="font-style:italic">n</span>−2,<span style="font-style:italic">x</span>)
-</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p> 
-These polynomials are orthogonal for the scalar product:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ⟨ <span style="font-style:italic">f</span>,<span style="font-style:italic">g</span>⟩=</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left">+∞</td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">−∞</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">g</span>(<span style="font-style:italic">x</span>)<span style="font-style:italic">e</span><sup>−<span style="font-style:italic">x</span><sup>2</sup></sup> <span style="font-style:italic">d</span><span style="font-style:italic">x</span>.
-</td></tr>
-</table><p>The <span style="font-family:monospace">hermite</span><a id="hevea_default658"></a>
-command finds the Hermite polynomials.
+<h3 id="sec:numer" class="subsection">11.6.2  Numerator after simplification</h3>
+<p>The <span style="font-family:monospace">numer</span><a id="hevea_default664"></a>
+command finds the numerator of a rational function,
+after it has been reduced. (See also Section <a href="cascmd_en201.html#sec%3Ainumer">7.2.3</a>.)
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">hermite</span> takes one mandatory argument and one
-optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable name (by default
-<span style="font-family:monospace">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">hermite(</span><span style="font-style:italic">n</span>  ⟨,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span>
-returns the Hermite polynomial of degree <span style="font-style:italic">n</span>.
-</li></ul><h4 id="sec877" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hermite</span></span><span style="font-weight:bold"><span style="color:#BF0000">(6)</span></span></td></tr>
+<span style="font-family:monospace">numer</span> takes
+<span style="font-style:italic">rat</span>, a rational function.
+</li><li class="li-itemize"><span style="font-family:monospace">numer(</span><span style="font-style:italic">rat</span><span style="font-family:monospace">)</span> returns
+the numerator of the irreducible representation of <span style="font-style:italic">rat</span>.
+</li></ul><h4 id="sec873" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">numer</span></span><span style="font-weight:bold"><span style="color:#BF0000">((</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1)/(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1))</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-64 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">6</span></sup><span style="color:#0000CC">−480 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">4</span></sup><span style="color:#0000CC">+720 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−120
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hermite</span></span><span style="font-weight:bold"><span style="color:#BF0000">(6,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">numer</span></span><span style="font-weight:bold"><span style="color:#BF0000">((</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)/(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1))</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-64 </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><sup><span style="color:#0000CC">6</span></sup><span style="color:#0000CC">−480 </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><sup><span style="color:#0000CC">4</span></sup><span style="color:#0000CC">+720 </span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−120
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>

@@ -4,61 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Lines and directed lines in space</title>
+<title>Vectors in space</title>
 </head>
 <body >
 <a href="cascmd_en932.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en934.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:3dlines" class="subsection">26.4.1  Lines and directed lines in space</h3>
-<p>See Section <a href="cascmd_en832.html#ssec%3A2dlines">25.6.1</a> for lines in the plane.</p><p>The <span style="font-family:monospace">line</span><a id="hevea_default1840"></a>
-command returns and draws a directed line. It can
-take its arguments in three different ways.
+<h3 id="ssec:3dvectors" class="subsection">27.4.4  Vectors in space</h3>
+<p>See Section <a href="cascmd_en832.html#ssec%3A2dvectors">26.6.4</a> for vectors in the plane.</p><p>The <span style="font-family:monospace">vector</span><a id="hevea_default1845"></a>
+command returns and draws vectors. It can take
+its arguments in two different ways.
 </p><ol class="enumerate" type=1><li class="li-enumerate">
-<span style="font-weight:bold">Two points.</span>
+<span style="font-weight:bold">The coordinates of the vector.</span>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">line</span> takes two arguments:
-<span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>, two points (which can also be given as a list).
-</li><li class="li-itemize"><span style="font-family:monospace">line(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> returns and draws the line whose
-direction is from the <span style="font-style:italic">P</span> to <span style="font-style:italic">Q</span>.
+<span style="font-family:monospace">vector</span> takes
+<span style="font-style:italic">L</span>, a list of the coordinates of the vector.
+</li><li class="li-itemize"><span style="font-family:monospace">vector(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns and draws the vector with the
+given coordinates, starting from the origin.
 </li></ul>
-</li><li class="li-enumerate"><span style="font-weight:bold">A point and a direction vector.</span>
+</li><li class="li-enumerate"><span style="font-weight:bold">Two points or a point and a vector.</span>
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">line</span> takes two arguments:
+<span style="font-family:monospace">vector</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize">[<span style="font-style:italic">u</span><sub>1</sub>,<span style="font-style:italic">u</span><sub>2</sub>,<span style="font-style:italic">u</span><sub>3</sub>], a direction vector.
+</li><li class="li-itemize"><span style="font-style:italic">Q</span>, a point or a vector.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">line(</span><span style="font-style:italic">P</span><span style="font-family:monospace">,[</span><span style="font-style:italic">u</span><sub>1</sub>,<span style="font-style:italic">u</span><sub>2</sub>,<span style="font-style:italic">u</span><sub>3</sub><span style="font-family:monospace">])</span> returns and draws the line
-through the given point with the direction given by the direction vector.
+</li><li class="li-itemize"><span style="font-family:monospace">vector(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span><span style="font-family:monospace">)</span> returns and draws the
+corresponding vector. If the arguments are two points, the vector
+goes from <span style="font-style:italic">P</span> to <span style="font-style:italic">Q</span>. If the arguments are a point and a
+vector, then the vector starts at <span style="font-style:italic">P</span>.
 </li></ul>
-</li><li class="li-enumerate"><span style="font-weight:bold">Two planes.</span>
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">line</span> takes two arguments:
-<span style="font-style:italic">eqn</span><sub>1</sub>,<span style="font-style:italic">eqn</span><sub>2</sub>, the equations of two planes.
-</li><li class="li-itemize"><span style="font-family:monospace">line(</span><span style="font-style:italic">eqn</span><sub>1</sub>,<span style="font-style:italic">eqn</span><sub>2</sub><span style="font-family:monospace">)</span> returns and
-draws the line which is the intersection of the planes.
-</li><li class="li-itemize">The direction of this line is given by the cross-product of the
-normals for the planes. For example, the intersection of the planes
-<span style="font-style:italic">x</span>=<span style="font-style:italic">y</span> (normal (1,−1,0)) and <span style="font-style:italic">y</span>=<span style="font-style:italic">z</span> (normal (0,1,−1)) will be
-(1,−1,0)× (0,1,−1)=(1,1,1).
-</li></ul>
-</li></ol><h4 id="sec2348" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,3,0],</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,0,3))</span></span></td></tr>
+</li></ol><h4 id="sec2360" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en344.png">
+<img src="cascmd_en361.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,3,0],[3,0,3])</span></span></td></tr>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,2))</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,0,0],[0,1,2])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en345.png">
+<img src="cascmd_en362.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">V</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-1,0,0],[0,1,2]);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,2,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">V</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en346.png">
+<img src="cascmd_en363.png">
 
 </div>
 <hr>

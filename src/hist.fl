@@ -181,8 +181,10 @@ Function {Xcas_save_all(Fl_Group * wid)} {return_type bool
 	  int j=xcas::confirm_close((name+gettext(" has changed. Save?")).c_str());
 	  if (j==0)
 	    return false;
-	  if (j!=2)
-	    f->pack->save(name.c_str());
+	  if (j!=2){
+	    if (!f->pack->save(name.c_str()))
+              return false;
+          }
 	  else
 	    f->pack->clear_modified();
 	  f->autosave_rm();

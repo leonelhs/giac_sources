@@ -4,75 +4,78 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rectangles in the plane</title>
+<title>Regular hexagons in the plane</title>
 </head>
 <body >
 <a href="cascmd_en849.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en851.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:2drect" class="subsection">25.8.3  Rectangles in the plane</h3>
-<p>See Section <a href="cascmd_en950.html#ssec%3A3drect">26.7.3</a> for rectangles in space.</p><p>The <span style="font-family:monospace">rectangle</span><a id="hevea_default1738"></a>
-creates rectangles.
+<h3 id="ssec:2dhex" class="subsection">26.9.1  Regular hexagons in the plane</h3>
+<p>See Section <a href="cascmd_en950.html#ssec%3A3dhex">27.8.1</a> for hexagons in space.</p><p>The <span style="font-family:monospace">hexagon</span><a id="hevea_default1743"></a> command creates hexagons.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rectangle</span> takes three mandatory arguments and two
+<span style="font-family:monospace">hexagon</span> takes two mandatory arguments and four
 optional arguments:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>, two points.
-</li><li class="li-itemize"><span style="font-style:italic">k</span>, a nonzero real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">varc</span>, <span style="font-style:italic">vard</span>, two variable names.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">varc</span>, <span style="font-family:monospace">vard</span>,
+<span style="font-family:monospace">vare</span>, <span style="font-style:italic">varf</span>, variable names. 
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">rectangle(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">k</span> ⟨,<span style="font-style:italic">varc</span>,<span style="font-style:italic">vard</span> ⟩<span style="font-family:monospace">)</span>
-returns and draws the rectangle <span style="font-style:italic">ABCD</span>, where <span style="font-style:italic">AD</span>=|<span style="font-style:italic">k</span>|· <span style="font-style:italic">AB</span> and the angle from
-<span style="font-style:italic">AB</span> to <span style="font-style:italic">AD</span> is counterclockwise if <span style="font-style:italic">k</span> &gt; 0, clockwise if <span style="font-style:italic">k</span>&lt;0.<p>If the arguments <span style="font-style:italic">varc</span> and <span style="font-style:italic">vard</span> are given, then
-<span style="font-style:italic">C</span> and <span style="font-style:italic">D</span> will be assigned to them.
-</p></li></ul><h4 id="sec2162" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1/2)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">hexagon(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span> ⟨,<span style="font-style:italic">varc</span>,<span style="font-style:italic">vard</span>,<span style="font-style:italic">vare</span> ⟩<span style="font-family:monospace">)</span>
+returns and draws the regular hexagon <span style="font-style:italic">ABCDEF</span>, where the vertices
+are counterclockwise.<p>If the arguments <span style="font-style:italic">varc</span>, <span style="font-style:italic">vard</span>, <span style="font-style:italic">vare</span>, <span style="font-style:italic">varf</span> are given, then
+the points <span style="font-style:italic">C</span>,<span style="font-style:italic">D</span>,<span style="font-style:italic">E</span> and <span style="font-style:italic">F</span> will be assigned to them.
+</p></li></ul><h4 id="sec2176" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hexagon</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en268.png">
+<img src="cascmd_en286.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-1/2)</span></span></td></tr>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hexagon</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">E</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">F</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en269.png">
+<img src="cascmd_en287.png">
 
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-1/2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en270.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">), </span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">D</span></span><span style="font-weight:bold"><span style="color:#BF0000">), </span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">E</span></span><span style="font-weight:bold"><span style="color:#BF0000">), </span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">F</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">+1</span></td></tr>
+</table></td></tr>
 <tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">i</span></td></tr>
+</table></td><td class="dcell">+1,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">3</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">i</span>+1</td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td><td class="dcell">,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">i</span></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">i</span>+1</td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td><td class="dcell">−1,</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >3</td></tr>
+</table></td><td class="dcell"> <span style="font-style:italic">i</span>+1</td></tr>
 </table></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell">−1
+</td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>Given <span style="font-family:monospace">rectangle(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">k</span><span style="font-family:monospace">)</span>, <span style="font-variant:small-caps">Xcas</span> computes <span style="font-style:italic">D</span> by
-<span style="font-family:monospace">affix</span>(<span style="font-style:italic">D</span>)=<span style="font-family:monospace">affix</span>(<span style="font-style:italic">A</span>) +
-<span style="font-style:italic">k</span> <span style="font-style:italic">e</span><sup><span style="font-style:italic">i</span>π/2</sup>(<span style="font-family:monospace">affix</span>(<span style="font-style:italic">B</span>)−<span style="font-family:monospace">affix</span>(<span style="font-style:italic">A</span>)). If
-<span style="font-style:italic">k</span> is complex, then <span style="font-family:monospace">rectangle</span> draws a
-parallelogram.</p><h4 id="sec2163" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en271.png">
-
-</div>
+</table>
 <hr>
 <a href="cascmd_en849.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

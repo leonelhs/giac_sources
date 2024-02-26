@@ -4,40 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Cross ratio of four collinear points</title>
+<title>Pole and polar</title>
 </head>
 <body >
 <a href="cascmd_en914.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en916.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2301" class="subsection">25.16.2  Cross ratio of four collinear points</h3>
-<p>The cross ratio of four numbers <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span> is
-[(<span style="font-style:italic">c</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">c</span>−<span style="font-style:italic">b</span>)]/[(<span style="font-style:italic">d</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">d</span>−<span style="font-style:italic">b</span>)].</p><p>The <span style="font-family:monospace">cross_ratio</span><a id="hevea_default1817"></a>
-command finds the cross ratio.
+<h3 id="sec2313" class="subsection">26.16.5  Pole and polar</h3>
+<p>Given a circle centered at <span style="font-style:italic">O</span>, a point <span style="font-style:italic">A</span> is a pole and a line <span style="font-style:italic">L</span>
+is the corresponding polar if <span style="font-style:italic">L</span> is the line passing through the
+inversion of <span style="font-style:italic">A</span> with respect to the circle (see
+Section <a href="cascmd_en892.html#ssec%3A2dinversion">26.14.7</a>) passing through the line
+<span style="font-style:italic">OA</span>.</p><p>The <span style="font-family:monospace">polar</span><a id="hevea_default1822"></a>
+command finds the polar of a point.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">cross_ratio</span> takes four arguments:
-<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span>, complex numbers.
-</li><li class="li-itemize"><span style="font-family:monospace">cross_ratio(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>,<span style="font-style:italic">d</span><span style="font-family:monospace">)</span> returns the cross ratio,
-[(<span style="font-style:italic">c</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">c</span>−<span style="font-style:italic">b</span>)]/[(<span style="font-style:italic">d</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">d</span>−<span style="font-style:italic">b</span>)].
-</li></ul><h4 id="sec2302" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cross_ratio</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,2,3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<span style="font-family:monospace">polar</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">C</span>, a circle.
+</li><li class="li-itemize"><span style="font-style:italic">A</span>, a point.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">polar(</span><span style="font-style:italic">C</span>,<span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns and draws the polar of the point
+<span style="font-style:italic">A</span> with respect to <span style="font-style:italic">C</span>.
+</li></ul><h4 id="sec2314" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1); </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">((</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)/2); </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">polar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">4</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cross_ratio</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,3/2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">, 3+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+<img src="cascmd_en341.png">
+
+</div><p>The <span style="font-family:monospace">pole</span><a id="hevea_default1823"></a>
+command finds the pole of a line.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">pole</span> takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">C</span>, a circle.
+</li><li class="li-itemize"><span style="font-style:italic">L</span>, a line
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">pole(</span><span style="font-style:italic">C</span>,<span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns and draws the pole of the line
+<span style="font-style:italic">L</span> with respect to <span style="font-style:italic">C</span>.
+</li></ul><h4 id="sec2315" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1); </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1); </span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">pole</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en342.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">affix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">P</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-−1
+1+</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC">
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>

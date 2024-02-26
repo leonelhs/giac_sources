@@ -107,7 +107,6 @@ clock_t times (struct tms *__buffer) {
 #include "derive.h"
 #include "ti89.h"
 #include "giacintl.h"
-#include "signalprocessing.h"
 #ifdef HAVE_LIBGSL
 #include <gsl/gsl_errno.h>
 #include <gsl/gsl_fft_complex.h>
@@ -286,6 +285,8 @@ namespace giac {
 
   gen _about(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
+#else
     /* Displaying audio/image properties, addition by L. Marohnić */
     audio_clip *clip=audio_clip::from_gen(g);
     rgba_image *img=rgba_image::from_gen(g);
@@ -318,6 +319,7 @@ namespace giac {
         *logptr(contextptr) << gettext("Associated with file") << " '" << img->file_name() << "'\n";
     }
     /* end display audio/image properties */
+#endif
     if (g.type==_VECT)
       return apply(g,contextptr,_about);
     if (g.type==_IDNT)
@@ -1657,8 +1659,12 @@ namespace giac {
       case 1: T=gsl_interp_cspline_periodic; break;
       case 2: T=gsl_interp_akima; break;
       case 3: T=gsl_interp_akima_periodic; break;
-#if GSL_MAJOR_VERSION>=1 && GSL_MINOR_VERSION>15
-    case 4: T=gsl_interp_steffen; break;
+    case 4: 
+#if GSL_MAJOR_VERSION>=2 && GSL_MINOR_VERSION>=2
+        T=gsl_interp_steffen;
+        break;
+#else
+        return gensizeerr(gettext("GSL version 2.2 or later is required for Steffen interpolation"));
 #endif
       default: assert(false);
     }
@@ -1766,6 +1772,9 @@ namespace giac {
     const vecteur &args=*g._VECTptr;
     if (args.size()<2)
       return gendimerr(contextptr);
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS
+    return _lagrange(g,contextptr);
+#else
     const gen &a=args[0],&b=args[1];
     if (b.type==_IDNT || (args.size()>2 && args[2].type==_IDNT))
       return _lagrange(g,contextptr);
@@ -1829,6 +1838,7 @@ namespace giac {
     }
     // lagrange interpolation fallback
     return _lagrange(g,contextptr);
+#endif
   }
 // end additions by LM
   static const char _interp_s []="interp";
@@ -2179,7 +2189,7 @@ namespace giac {
     }
   }
 
-#ifdef KHICAS
+#if 1 // def KHICAS
   bool read_audio(vecteur & v,int & channels,int & sample_rate,int & bits_per_sample,unsigned int & data_size){
     convert_double_int(v);
     if (v.size()>1 && v[1].type!=_VECT)

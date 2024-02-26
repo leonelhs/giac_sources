@@ -782,7 +782,7 @@ namespace giac {
     return res;
   }  
 
-#if 0  // moved to signalprocessing.cc
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS // moved to signalprocessing.cc
   gen _hilbert(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     int n,p;

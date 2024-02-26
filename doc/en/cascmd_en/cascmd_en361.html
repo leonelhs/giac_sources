@@ -4,122 +4,115 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Natural splines</title>
+<title>Euclidean quotient</title>
 </head>
 <body >
 <a href="cascmd_en360.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en362.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec808" class="subsection">11.2.2  Natural splines</h3>
-<h5 id="sec809" class="paragraph">Definition.</h5>
-<p>
-Let σ<sub><span style="font-style:italic">n</span></sub> be a subdivision of a real interval [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">a</span>=<span style="font-style:italic">x</span><sub>0</sub>,   <span style="font-style:italic">x</span><sub>1</sub>,  …,   <span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">b</span>.
-</td></tr>
-</table><p>
-The function <span style="font-style:italic">s</span> is a <em>spline</em> function of
-degree <span style="font-style:italic">l</span> if <span style="font-style:italic">s</span> is a function from [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] to ℝ such
-that:
+<h3 id="ssec:quo" class="subsection">11.2.2  Euclidean quotient</h3>
+<p>The <span style="font-family:monospace">quo</span><a id="hevea_default619"></a> command finds the quotient
+of the Euclidean division of two polynomials.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">s</span> has continuous derivatives up to the order <span style="font-style:italic">l</span>−1,
-</li><li class="li-itemize">on each interval of the subdivision σ<sub><span style="font-style:italic">n</span></sub>, <span style="font-style:italic">s</span>
-is a polynomial of degree less or equal than <span style="font-style:italic">l</span>.
-</li></ul><div class="theorem"><span style="font-weight:bold">Theorem 4</span>  <em>
-The set of spline functions of degree </em><span style="font-style:italic">l</span><em> on </em>σ<sub><span style="font-style:italic">n</span></sub><em> is an
-</em>ℝ<em>-vector space of dimension </em><span style="font-style:italic">n</span>+<span style="font-style:italic">l</span><em>.
-</em></div><p><span style="font-weight:bold">Proof.</span>
-Let <span style="font-style:italic">s</span> be a spline function of degree <span style="font-style:italic">l</span> on σ<sub><span style="font-style:italic">n</span></sub>.</p><p>On [<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">A</span> of degree less or equal to <span style="font-style:italic">l</span>,
-hence on [<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup> and <span style="font-style:italic">A</span> is a
-linear combination of 1,<span style="font-style:italic">x</span>,…,<span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.</p><p>On [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">B</span> of degree
-less or equal to <span style="font-style:italic">l</span>, hence on [<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">b</span><sub>0</sub>+<span style="font-style:italic">b</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">b</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.
-Since <span style="font-style:italic">s</span> has continuous derivatives up to order <span style="font-style:italic">l</span>−1,
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ∀ 0 ≤ <span style="font-style:italic">j</span> ≤ <span style="font-style:italic">l</span>−1,    <span style="font-style:italic">B</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>1</sub>)−<span style="font-style:italic">A</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>1</sub>)=0,
-</td></tr>
-</table><p>
-therefore <span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)=α<sub>1</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup>, i.e.
-<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">A</span>(<span style="font-style:italic">x</span>)+α<sub>1</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup>, for some α<sub>1</sub>.
-Define the function:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)=
-</td><td class="dcell">⎧<br>
-⎪<br>
-⎨<br>
-⎪<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >      0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>1</sub>] </td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >      (<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>1</sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">b</span>]</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >    </td></tr>
-</table></td><td class="dcell">
-</td></tr>
-</table><p>
-so:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>2</sub>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+α<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>).
-</td></tr>
-</table><p>On [<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">x</span><sub>3</sub>], <span style="font-style:italic">s</span> is a polynomial <span style="font-style:italic">C</span> of degree less or equal than
-<span style="font-style:italic">l</span>, hence on [<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">x</span><sub>3</sub>], <span style="font-style:italic">s</span>=<span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">c</span><sub>0</sub>+<span style="font-style:italic">c</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">c</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>.</p><p>Since <span style="font-style:italic">s</span> has continuous derivatives up to order <span style="font-style:italic">l</span>−1:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ∀ 0 ≤ <span style="font-style:italic">j</span> ≤ <span style="font-style:italic">l</span>−1,     <span style="font-style:italic">C</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>2</sub>)−<span style="font-style:italic">B</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">x</span><sub>2</sub>)=0,
-</td></tr>
-</table><p>
-therefore <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)−<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)=α<sub>2</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">n</span></sup> or <span style="font-style:italic">C</span>(<span style="font-style:italic">x</span>)=<span style="font-style:italic">B</span>(<span style="font-style:italic">x</span>)+α<sub>2</sub>(<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">n</span></sup>.</p><p>Define the function:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">q</span><sub>2</sub>(<span style="font-style:italic">x</span>)=
-</td><td class="dcell">⎧<br>
-⎪<br>
-⎨<br>
-⎪<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >      0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>2</sub>] </td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >      (<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub>2</sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub>2</sub>,<span style="font-style:italic">b</span>]</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >    </td></tr>
-</table></td><td class="dcell">
-</td></tr>
-</table><p>
-Hence:
-<span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>3</sub>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+α<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)+α<sub>2</sub><span style="font-style:italic">q</span><sub>2</sub>(<span style="font-style:italic">x</span>)<br>
-
-Continuing, define the functions
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  ∀ 1 ≤ <span style="font-style:italic">j</span> ≤ <span style="font-style:italic">n</span>−1, <span style="font-style:italic">q</span><sub><span style="font-style:italic">j</span></sub>(<span style="font-style:italic">x</span>)=
-</td><td class="dcell">⎧<br>
-⎪<br>
-⎨<br>
-⎪<br>
-⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >      0</td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>] </td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >      (<span style="font-style:italic">x</span>−<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>)<sup><span style="font-style:italic">l</span></sup></td><td style="text-align:center;white-space:nowrap" >on</td><td style="text-align:left;white-space:nowrap" >[<span style="font-style:italic">x</span><sub><span style="font-style:italic">j</span></sub>,<span style="font-style:italic">b</span>]</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >    </td></tr>
-</table></td><td class="dcell">
-</td></tr>
-</table><p>
-Then
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">s</span>|<sub>[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]</sub>=<span style="font-style:italic">a</span><sub>0</sub>+<span style="font-style:italic">a</span><sub>1</sub><span style="font-style:italic">x</span>+⋯+<span style="font-style:italic">a</span><sub><span style="font-style:italic">l</span></sub><span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>+α<sub>1</sub><span style="font-style:italic">q</span><sub>1</sub>(<span style="font-style:italic">x</span>)+⋯+α<sub><span style="font-style:italic">n</span>−1</sub><span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span>−1</sub>(<span style="font-style:italic">x</span>)
-</td></tr>
-</table><p>
-and so <span style="font-style:italic">s</span> is a linear combination of <span style="font-style:italic">n</span>+<span style="font-style:italic">l</span> independent functions
-1,<span style="font-style:italic">x</span>,…,<span style="font-style:italic">x</span><sup><span style="font-style:italic">l</span></sup>,<span style="font-style:italic">q</span><sub>1</sub>,…,<span style="font-style:italic">q</span><sub><span style="font-style:italic">n</span>−1</sub>.</p><p>It follows that the set of all possible <span style="font-style:italic">s</span> is a real vector space of
-dimension <span style="font-style:italic">n</span>+<span style="font-style:italic">l</span>.
-</p><p><br>
-</p>
-<h5 id="sec810" class="paragraph">Types of spline functions.</h5>
-<p>
-If you want to interpolate a function <span style="font-style:italic">f</span> on σ<sub><span style="font-style:italic">n</span></sub> by a spline
-function <span style="font-style:italic">s</span> of degree <span style="font-style:italic">l</span>, then <span style="font-style:italic">s</span> must satisfy <span style="font-style:italic">s</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)=<span style="font-style:italic">y</span><sub><span style="font-style:italic">k</span></sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub><span style="font-style:italic">k</span></sub>)
-for all 0≤ <span style="font-style:italic">k</span>≤ <span style="font-style:italic">n</span>. This gives <span style="font-style:italic">n</span>+1 conditions, leaving <span style="font-style:italic">l</span>−1
-degrees of freedom. You can therefore add <span style="font-style:italic">l</span>−1 conditions, these
-conditions are on the derivatives of <span style="font-style:italic">s</span> at <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.</p><p>Hermite interpolation, natural interpolation and periodic
-interpolation are three kinds of interpolation obtained by specifying
-three kinds of constraints. The uniqueness of the solution of the
-interpolation problem can be proved for each kind of constraints.</p><p>If <span style="font-style:italic">l</span> is odd (<span style="font-style:italic">l</span>=2<span style="font-style:italic">m</span>−1), there are 2<span style="font-style:italic">m</span>−2 degrees of freedom. The
-constraints are defined as follows.
-</p><ul class="itemize"><li class="li-itemize">
-Hermite interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>) and <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>), 1≤ <span style="font-style:italic">j</span>≤ <span style="font-style:italic">m</span>−1.
-</li><li class="li-itemize">Natural interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=0, <span style="font-style:italic">m</span> ≤ <span style="font-style:italic">j</span> ≤ 2<span style="font-style:italic">m</span>−2.
-</li><li class="li-itemize">Periodic interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>), 1≤ <span style="font-style:italic">j</span>≤ 2<span style="font-style:italic">m</span>−2.
-</li></ul><p>If <span style="font-style:italic">l</span> is even (<span style="font-style:italic">l</span>=2<span style="font-style:italic">m</span>), there are 2<span style="font-style:italic">m</span>−1 degrees of freedom. The
-constraints are defined as follows.
-</p><ul class="itemize"><li class="li-itemize">
-Hermite interpolation:
-<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>), <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>) and <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">m</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">f</span><sup>(<span style="font-style:italic">m</span>)</sup>(<span style="font-style:italic">a</span>),
-1≤ <span style="font-style:italic">j</span>≤ <span style="font-style:italic">m</span>−1.
-</li><li class="li-itemize">Natural interpolation:
-<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>)=0 and <span style="font-style:italic">s</span><sup>(2<span style="font-style:italic">m</span>−1)</sup>(<span style="font-style:italic">a</span>)=0, <span style="font-style:italic">m</span> ≤ <span style="font-style:italic">j</span> ≤ 2<span style="font-style:italic">m</span>−2.
-</li><li class="li-itemize">Periodic interpolation: <span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">a</span>)=<span style="font-style:italic">s</span><sup>(<span style="font-style:italic">j</span>)</sup>(<span style="font-style:italic">b</span>), 1≤ <span style="font-style:italic">j</span>≤ 2<span style="font-style:italic">m</span>−1.
+<span style="font-family:monospace">quo</span> takes two mandatory arguments and one optional
+argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span>, two polynomials.
+</li><li class="li-itemize">Optionally <span style="font-style:italic">x</span>, the variable (by default
+<span style="font-family:monospace">x</span>), if <span style="font-style:italic">P</span> and <span style="font-style:italic">Q</span> are given as expressions.
 </li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">quo(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">Q</span>  ⟨,<span style="font-style:italic">x</span>⟩<span style="font-family:monospace">)</span> returns
+the Euclidean quotient of <span style="font-style:italic">P</span> divided by <span style="font-style:italic">Q</span>.
+</li></ul><p>
+<span style="font-family:monospace">Quo</span><a id="hevea_default620"></a> is the inert form of
+<span style="font-family:monospace">quo</span>; namely, it evaluates to
+<span style="font-family:monospace">quo</span> for later evaluation. It is used when <span style="font-variant:small-caps">Xcas</span> is in
+<span style="font-variant:small-caps">Maple</span> mode (see Section <a href="cascmd_en025.html#ssec%3Alang">2.5.2</a>) to compute the euclidean quotient
+of the division of two polynomials with coefficients in
+ℤ/<span style="font-style:italic">p</span>ℤ using <span style="font-variant:small-caps">Maple</span>-like syntax.</p><h4 id="sec808" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+2
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">+2
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+In list representation, to get the quotient of <span style="font-style:italic">x</span><sup>2</sup>+2<span style="font-style:italic">x</span>+4 by <span style="font-style:italic">x</span><sup>2</sup>+<span style="font-style:italic">x</span>+2
+you can also input:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,4],[1,1,2])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+that is to say, the polynomial <span style="font-family:monospace">1</span>.</p><p>Input in <span style="font-variant:small-caps">Xcas</span> mode:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">quo</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Input in <span style="font-variant:small-caps">Maple</span> mode:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3+3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+6*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5) </span></span><span style="font-weight:bold"><span style="color:#BF0000">mod</span></span><span style="font-weight:bold"><span style="color:#BF0000"> 5</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+−2</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+This division was done using modular arithmetic, unlike with the
+following command, where the division is done in ℤ[<span style="font-style:italic">X</span>]
+and reduction afterwards:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3+3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+6*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5) </span></span><span style="font-weight:bold"><span style="color:#BF0000">mod</span></span><span style="font-weight:bold"><span style="color:#BF0000"> 5</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+3</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+6
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>If <span style="font-variant:small-caps">Xcas</span> is not in <span style="font-variant:small-caps">Maple</span> mode, polynomial division
+in ℤ/<span style="font-style:italic">p</span>ℤ[<span style="font-style:italic">X</span>] is done e.g. by:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">quo</span></span><span style="font-weight:bold"><span style="color:#BF0000">((</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3+3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)%5,(2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+6</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5)%5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">mod</span></span><span style="color:#0000CC"> 5
+</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en360.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

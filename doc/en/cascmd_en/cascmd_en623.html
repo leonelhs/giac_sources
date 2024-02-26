@@ -4,42 +4,80 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Intersection of a 2D graph with the axis</title>
+<title>Computing the area under a curve</title>
 </head>
 <body >
 <a href="cascmd_en622.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en624.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1509" class="subsection">18.3.7  Intersection of a 2D graph with the axis</h3>
-<p>You can find the intersection of the graph <span style="font-style:italic">y</span>=<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) of a function with
-the axes using the commands covered so far.
+<h3 id="sec1519" class="subsection">19.4.2  Computing the area under a curve</h3>
+<p>The <span style="font-family:monospace">area</span><a id="hevea_default1189"></a>
+command approximates the area under a graph.
 </p><ul class="itemize"><li class="li-itemize">
-Finding the intersection of the graph with the
-<span style="font-style:italic">y</span>-axis is simply evaluating
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">f</span>(0),
-</td></tr>
-</table>
-indeed the point with coordinates (0,<span style="font-style:italic">f</span>(0)) is the intersection point
-of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">y</span>-axis.
-</li><li class="li-itemize">Finding the intersection of the graph of <span style="font-style:italic">f</span> with the <span style="font-style:italic">x</span>-axis
-requires solving the equation <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=0.
+<span style="font-family:monospace">area</span> takes four arguments:
 <ul class="itemize"><li class="li-itemize">
-If <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) is polynomial-like, then you can find the
-the exact values of the abscissa of these points with
-<span style="font-family:monospace">solve</span> (see Section <a href="cascmd_en277.html#ssec%3Asolve">9.3.6</a>).
-
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">solve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table>returns the solution.
-<a id="hevea_default1183"></a>
-<a id="hevea_default1184"></a>
-</li><li class="li-itemize">Otherwise, you can find numeric approximations of these
-abscissa. First, look at the graph for an initial guess <span style="font-style:italic">x</span><sub>0</sub> or a
-range with an intersection and then refine it with
-<span style="font-family:monospace">fsolve</span> (see Section <a href="cascmd_en753.html#sec%3Afsolve">22.3.2</a>).<p><span style="font-family:monospace">fsolve(</span><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>),<span style="font-style:italic">x</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">method</span><span style="font-family:monospace">)</span>
-returns a numeric approximation of a solution.
-</p></li></ul>
+<span style="font-style:italic">expr</span>, an expression <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>).
+</li><li class="li-itemize"><span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, the variable with a range.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, a positive integer.
+</li><li class="li-itemize"><span style="font-style:italic">method</span>, the approximation method to use, which can
+be one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">trapezoid</span><a id="hevea_default1190"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">left_rectangle</span><a id="hevea_default1191"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">right_rectangle</span><a id="hevea_default1192"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">middle_point</span><a id="hevea_default1193"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">simpson</span><a id="hevea_default1194"></a>
+</li><li class="li-itemize"><span style="font-family:monospace">rombergt</span><a id="hevea_default1195"></a>
+(Romberg with the trapezoid method)
+</li><li class="li-itemize"><span style="font-family:monospace">rombergm</span><a id="hevea_default1196"></a>
+(Romberg with the midpoint method)
+</li><li class="li-itemize"><span style="font-family:monospace">gauss15</span><a id="hevea_default1197"></a>
+(The 15 point Gaussian quadrature)
 </li></ul>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">area(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>,<span style="font-style:italic">n</span>,<span style="font-style:italic">method</span><span style="font-family:monospace">)</span>
+returns an approximation to the area under the graph over the given
+interval, using the specified method with <span style="font-style:italic">n</span> subdivisions (or 2<sup><span style="font-style:italic">n</span></sup>
+subdivisions for <span style="font-family:monospace">rombergt</span>, <span style="font-family:monospace">rombergm</span> and
+<span style="font-family:monospace">gauss15</span>).
+</li></ul><h4 id="sec1520" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">area</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..1,8,</span></span><span style="font-weight:bold"><span style="color:#BF0000">trapezoid</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.3359375
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">area</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..1,8,</span></span><span style="font-weight:bold"><span style="color:#BF0000">rombergm</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.333333333333
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">area</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..1,3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">gauss15</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.333333333333
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">area</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en622.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

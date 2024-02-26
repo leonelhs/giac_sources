@@ -4,103 +4,71 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Distribution fitting by maximum likelihood</title>
+<title>Generating a random walks</title>
 </head>
 <body >
 <a href="cascmd_en693.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en695.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1782" class="subsection">19.4.23  Distribution fitting by maximum likelihood</h3>
-<p>The <span style="font-family:monospace">fitdistr</span><a id="hevea_default1406"></a>
-command finds the parameters for a distribution
-of a specified type that best fits a set of samples.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">fitdistr</span> takes two arguments:
+<h3 id="sec1792" class="subsection">20.4.25  Generating a random walks</h3>
+<p>The <span style="font-family:monospace">randmarkov</span><a id="hevea_default1410"></a>
+command generates random walks or creates stochastic matrices.</p><ul class="itemize"><li class="li-itemize">
+To generate a random walk, <span style="font-family:monospace">randmarkov</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list of presumably independent and identically
-distributed samples.
-</li><li class="li-itemize"><span style="font-style:italic">distr</span>, a distribution type, which can be one of:
+<span style="font-style:italic">M</span>, a transition matrix for a Markov chain.
+</li><li class="li-itemize"><span style="font-style:italic">i</span><sub>0</sub>, an initial state.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, a positive integer.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">randmarkov(</span><span style="font-style:italic">M</span>,<span style="font-style:italic">i</span><sub>0</sub>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a
+a random walk (given as a vector) starting at <span style="font-style:italic">i</span><sub>0</sub> and
+taking <span style="font-style:italic">n</span> random steps, where each step is a transition with
+probabilities given by <span style="font-style:italic">M</span>.
+</li><li class="li-itemize">To create a stochastic matrix, <span style="font-family:monospace">randmarkov</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">normal</span> or <span style="font-family:monospace">normald</span>, for a normal distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">exp</span>, <span style="font-family:monospace">exponential</span> of
-<span style="font-family:monospace">exponentiald</span>, for an exponential distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">poisson</span>, for a Poisson distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">geometric</span>, for a geometric distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">gammad</span>, for a gamma distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">betad</span>, for a beta distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">cauchy</span> or <span style="font-family:monospace">cauchyd</span>, for a Cauchy
-distribution.
-</li><li class="li-itemize"><span style="font-family:monospace">weibull</span> or <span style="font-family:monospace">weibulld</span> for a Weibull
-distribution.
+<span style="font-style:italic">v</span>, a vector of length <span style="font-style:italic">p</span>.
+</li><li class="li-itemize"><span style="font-style:italic">i</span><sub>0</sub>, the number of transient states.
 </li></ul>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">fitdistr(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">distr</span><span style="font-family:monospace">)</span>
-returns the name of the specified type of distribution with
-parameters that fit <span style="font-style:italic">L</span> most closely according to the method of maximum
-likelihood.
-</li></ul><h4 id="sec1783" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fitdistr</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">weibulld</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1/2,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">weibulld</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">0.517079036032,1.05683817484</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">stddev</span></span><span style="font-weight:bold"><span style="color:#BF0000">=9.5):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">stddev</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1.5):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sample</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">eval</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">/</span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0),1000):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">Z</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fitdistr</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">cauchyd</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">0.347058460176,6.55905486387</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">select</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;-100 </span></span><span style="font-weight:bold"><span style="color:#BF0000">and</span></span><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;100),</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">));</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Z</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-100..100,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">line_width_2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en154.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">kolmogorovt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">Z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">v</span>,<span style="font-style:italic">i</span><sub>0</sub><span style="font-family:monospace">)</span> returns a stochastic matrix with
+<span style="font-style:italic">p</span> recurrent loops (given by <span style="font-style:italic">v</span>) and <span style="font-style:italic">i</span><sub>0</sub> transient states.
+</li></ul><h4 id="sec1793" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmarkov</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[0,1/2,0,1/2],[0,1,0,0],[1/4,1/4,1/4,1/4],[0,0,1/2,1/2]],2,10)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">“D=”</span><span style="color:#0000CC">,0.0161467485236,</span><span style="color:#0000CC">“K=”</span><span style="color:#0000CC">,0.510605021406,</span><span style="color:#0000CC">“1-kolmogorovd(K)=”</span><span style="color:#0000CC">,0.956753826255</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2,3,2,0,3,2,2,0,3,2,0</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>
-The Kolmogorov-Smirnov test indicates that the samples from <span style="font-style:italic">S</span> are drawn from <span style="font-style:italic">Z</span> with high probability.</p><p>You can fit a lognormal distribution to samples <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> by
-fitting a normal distribution to the sample logarithms log
-<span style="font-style:italic">x</span><sub>1</sub>,log<span style="font-style:italic">x</span><sub>2</sub>,…,log<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> because log-likelihood functions are the
-same. For example, generate some samples according to the lognormal
-rule with parameters µ=5 and σ<sup>2</sup>=2:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">mean</span></span><span style="font-weight:bold"><span style="color:#BF0000">=5,</span></span><span style="font-weight:bold"><span style="color:#BF0000">variance</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sample</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">eval</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">),0),1000):;</span></span></td></tr>
-</table><p>Then fit the normal distribution to log<span style="font-style:italic">S</span>:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fitdistr</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">log</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmarkov</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2],2)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">normald</span><span style="color:#0000CC">(5.04754808715,1.42751619912)
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.289031975209</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.710968024791</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.46230383289</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.53769616711</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.259262238137</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.149948861946</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.143448150524</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.242132758802</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.205207990592</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.231568633749</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.145429586345</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.155664673778</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.282556511895</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.184780594232</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
 </table></td></tr>
-</table><p>
-The mean of <span style="font-style:italic">Y</span> is about 5.05 and the variance is about 2.04. Now
-the variable <span style="font-style:italic">Z</span>=<span style="font-style:italic">e</span><sup><span style="font-style:italic">Y</span></sup> has the sought lognormal distribution.</p>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en693.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

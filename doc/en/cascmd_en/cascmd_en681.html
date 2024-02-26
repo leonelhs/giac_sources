@@ -4,166 +4,104 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Fisher-Snédécor distribution</title>
+<title>Beta distribution</title>
 </head>
 <body >
 <a href="cascmd_en680.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en682.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:fishersnedecor" class="subsection">19.4.10  Fisher-Snédécor distribution</h3>
-<h5 id="sec1715" class="paragraph">The probability density function for the Fisher-Snédécor distribution.</h5>
+<h3 id="ssec:betad" class="subsection">20.4.12  Beta distribution</h3>
+<h5 id="sec1737" class="paragraph">The probability density function for the beta distribution.</h5>
 <p>
-The Fisher-Snédécor distribution (also called the
-F-distribution) with <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub> degrees of freedom has density
-function given by, for <span style="font-style:italic">x</span> ≥ 0,
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:fisher"></a>
-<span style="font-family:monospace">fisher</span>(<span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span>)=
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">n</span><sub>1</sub>/<span style="font-style:italic">n</span><sub>2</sub>)<sup><span style="font-style:italic">n</span><sub>1</sub>/2</sup>Γ((<span style="font-style:italic">n</span><sub>1</sub>+<span style="font-style:italic">n</span><sub>2</sub>)/2)</td></tr>
+The beta distribution depends on two parameters, <span style="font-style:italic">a</span>&gt;0 and <span style="font-style:italic">b</span>&gt;0; the
+value of the density function at <span style="font-style:italic">x</span> in [0,1] is (see Section <a href="cascmd_en221.html#ssec%3Agamma">7.3.13</a>):
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:betad"></a>
+<span style="font-family:monospace">betad</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">Γ(<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)<span style="font-style:italic">x</span><sup><span style="font-style:italic">a</span>−1</sup>(1−<span style="font-style:italic">x</span>)<sup><span style="font-style:italic">b</span>−1</sup></td></tr>
 <tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">Γ(<span style="font-style:italic">n</span><sub>1</sub>/2)Γ(<span style="font-style:italic">n</span><sub>2</sub>/2)</td></tr>
-</table></td><td class="dcell">·
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>(<span style="font-style:italic">n</span><sub>1</sub>−2)/2</sup></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">(1+(<span style="font-style:italic">n</span><sub>1</sub>/<span style="font-style:italic">n</span><sub>2</sub>)<span style="font-style:italic">x</span>)<sup>(<span style="font-style:italic">n</span><sub>1</sub>+<span style="font-style:italic">n</span><sub>2</sub>)/2</sup></td></tr>
+<tr><td class="dcell" style="text-align:center">Γ(<span style="font-style:italic">a</span>)Γ(<span style="font-style:italic">b</span>)</td></tr>
 </table></td><td class="dcell">.
-    (7)</td></tr>
-</table><p>
-The <span style="font-family:monospace">fisher</span><a id="hevea_default1360"></a>
-or <span style="font-family:monospace">fisherd</span><a id="hevea_default1361"></a>
-or <span style="font-family:monospace">snedecor</span><a id="hevea_default1362"></a>
-command computes this density function.
+    (9)</td></tr>
+</table><p>The <span style="font-family:monospace">betad</span><a id="hevea_default1373"></a>
+command computes the density function for the beta distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">fisher</span> takes three arguments:
+<span style="font-family:monospace">betad</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, integers (the degrees of freedom).
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a non-negative real number.
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, positive numbers, the parameters.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">fisher(</span><span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the
-Fisher-Snédécor density function with <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>
-degrees of freedom, given in (<a href="#eq%3Afisher">7</a>).
-</li></ul><h4 id="sec1716" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fisher</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,3,2.5)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">betad(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the density
+function for the beta distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>,
+given in (<a href="#eq%3Abetad">9</a>).
+</li></ul><h4 id="sec1738" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">betad</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1,0.3)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.10131184472
+0.6
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-<h5 id="sec1717" class="paragraph">The cumulative distribution function for the Fisher-Snédécor distribution.</h5>
+<h5 id="sec1739" class="paragraph">The cumulative distribution function for the beta distribution.</h5>
 <p>
-The <span style="font-family:monospace">fisher_cdf</span><a id="hevea_default1363"></a>
-(or <span style="font-family:monospace">snedecor_cdf</span><a id="hevea_default1364"></a>)
-command computes the cumulative distribution function for the
-Fisher-Snédécor distribution.
+The <span style="font-family:monospace">betad_cdf</span><a id="hevea_default1374"></a> command computes
+the cumulative distribution function for the beta distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">fisher_cdf</span> takes three mandatory arguments and one
+<span style="font-family:monospace">beta_cdf</span> takes three mandatory arguments and one
 optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, integers (the degrees of freedom).
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers (the parameters).
 </li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">y</span>, a real number. 
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">fisher_cdf(</span><span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the
-Fisher-Snédécor distribution with <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>
-degrees of freedom
-</li><li class="li-itemize"><span style="font-family:monospace">fisher_cdf(</span><span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
-Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> &lt; <span style="font-style:italic">y</span>).
-</li></ul><h4 id="sec1718" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fisher_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,3,9)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-β</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎜<br>
-⎜<br>
-⎝</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">5</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">,</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">15</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">16</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">,1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎟<br>
-⎟<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-(See Section <a href="cascmd_en224.html#ssec%3Abeta">7.3.16</a>.) This can be numerically approximated with:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">fisher_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,3,9))</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">betad_cdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the beta distribution with parameters
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">beta_cdf(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>).
+</li></ul><p>
+It turns out that
+<span style="font-family:monospace">betad_cdf</span>(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)=β(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)Γ(<span style="font-style:italic">a</span>+<span style="font-style:italic">b</span>)/Γ(<span style="font-style:italic">a</span>)Γ(<span style="font-style:italic">b</span>),
+where β(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>)=∫<sub>0</sub><sup><span style="font-style:italic">x</span></sup> <span style="font-style:italic">t</span><sup><span style="font-style:italic">a</span>−1</sup>(1−<span style="font-style:italic">t</span>)<sup><span style="font-style:italic">b</span>−1</sup> <span style="font-style:italic">d</span><span style="font-style:italic">t</span> (see
+Section <a href="cascmd_en224.html#ssec%3Abeta">7.3.16</a>).</p><h4 id="sec1740" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">betad_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0.2)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.949898927032
+0.1808
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">fisher_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,3,9,10))</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">betad_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0.25,0.5)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.0066824173023
+0.42578125
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
-<h5 id="sec1719" class="paragraph">The inverse distribution function for the Fisher-Snédécor distribution.</h5>
+<h5 id="sec1741" class="paragraph">The inverse distribution function for the beta distribution.</h5>
 <p>
-The <span style="font-family:monospace">fisher_icdf</span><a id="hevea_default1365"></a>
-(or <span style="font-family:monospace">snedecor_icdf</span><a id="hevea_default1366"></a>)
-command computes the inverse distribution for the Fisher-Snédécor
-distribution.
+The <span style="font-family:monospace">betad_icdf</span><a id="hevea_default1375"></a>
+command computes the inverse distribution for the beta distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">fisher_icdf</span> takes three arguments:
+<span style="font-family:monospace">beta_icdf</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, integers (the degrees of freedom).
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers (the parameters).
 </li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">fisher_icdf(</span><span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
-distribution for the Fisher-Snédécor distribution with
-<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub> degrees of freedom; namely, the value of <span style="font-style:italic">x</span> for
-which Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-style:italic">h</span>.
-</li></ul><h4 id="sec1720" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fisher_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,3,0.95)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">beta_icdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
+distribution for the beta distribution with parameters <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>;
+namely, the value of <span style="font-style:italic">x</span> for which Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-style:italic">h</span>.
+</li></ul><h4 id="sec1742" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">betad_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0.2)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-9.01345516752
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
-<h5 id="sec1721" class="paragraph">The upper tail cumulative function for the Fisher-Snédécor distribution.</h5>
-<p>
-The <span style="font-family:monospace">UTPF</span><a id="hevea_default1367"></a>
-(the Upper Tail Probability-Fisher-Snédécor distribution)
-computes Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>) for the Fisher-Snédécor
-distribution.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">UTPF</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub>, integers (the degrees of freedom).
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">UTPF(</span><span style="font-style:italic">n</span><sub>1</sub>,<span style="font-style:italic">n</span><sub>2</sub>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
-Prob(<span style="font-style:italic">X</span> &gt; <span style="font-style:italic">x</span>) for the Fisher-Snédécor
-distribution with <span style="font-style:italic">n</span><sub>1</sub> and <span style="font-style:italic">n</span><sub>2</sub> degrees of freedom.
-</li></ul><h4 id="sec1722" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">UTPF</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,3,9)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.050101072968
+0.212317128278
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>

@@ -4,25 +4,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Polyhedra</title>
+<title>Edges</title>
 </head>
 <body >
 <a href="cascmd_en1001.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en1003.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec2494" class="subsection">26.14.5  Polyhedra</h3>
-<p>The <span style="font-family:monospace">polyhedron</span><a id="hevea_default1912"></a>
-command takes as argument a sequence of points.</p><p><span style="font-family:monospace">polyhedron</span> returns and draws the convex polygon whose
-vertices are from the list of points such that the remaining points
-are inside or on the surface of the polyhedron. For example:
+<h3 id="sec2503" class="subsection">27.14.8  Edges</h3>
+<p>The <span style="font-family:monospace">line_segments</span><a id="hevea_default1917"></a>
+command takes as argument a polyhedron.</p><p><span style="font-family:monospace">line_segments</span> returns and draws the list of the edges of a
+polyhedron. For example:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polyhedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2])</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line_segments</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">polyhedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))</span></span></td></tr>
 </table><div class="center">
+<img src="cascmd_en430.png">
 
-<img src="cascmd_en417.png">
+</div><p>
+Individual line segments can be obtained by using the <span style="font-family:monospace">[]</span> operator.
+For example, the command line
 
-</div>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line_segments</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">polyhedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[-2,0,0],[2,0,0],[0,2,0],[0,0,2]))[1]</span></span></td></tr>
+</table><p>returns the second segment.</p>
 <hr>
 <a href="cascmd_en1001.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

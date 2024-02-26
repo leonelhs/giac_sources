@@ -538,7 +538,7 @@ int finance(int mode,GIAC_CONTEXT){ // mode==-1 pret, 1 placement
   smallmenu.height=MENUHEIGHT-1;
   smallmenu.scrollbar=1;
   smallmenu.scrollout=1;
-  smallmenu.title = (char *) lang==1?(mode==-1?"Pret bancaire":"Epargne"):(mode==-1?"Mortgage":"Savings");
+  smallmenu.title = (char *) (lang==1?(mode==-1?"Pret bancaire":"Epargne"):(mode==-1?"Mortgage":"Savings"));
   smallmenu.type = MENUTYPE_NO_NUMBER;
   while(1) {
     drawRectangle(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,_WHITE);

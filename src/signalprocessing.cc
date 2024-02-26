@@ -50,6 +50,10 @@ namespace giac {
 #define MIDI_NOTE_0 8.17579891564
 #define GREY_COLOR 47
 
+double mylog2(double x) {
+    return std::log(x)/M_LN2;
+}
+
 string n2hexstr(char c) {
     static const char* digits="0123456789ABCDEF";
     std::string hex(2,'0');
@@ -57,10 +61,6 @@ string n2hexstr(char c) {
         hex[i]=digits[(c>>j) & 0x0f];
     return hex;
 }
-
-  double mylog2(double x){
-    return std::log(x)/M_LN2;
-  }
 
 int nextpow2(int n) {
     return 1<<int(std::ceil(mylog2(n)));
@@ -1175,9 +1175,9 @@ bool audio_clip::mix(const audio_clip &other,int offset,double gain,double pan,i
     for (int i=0;i<len;++i) {
         r=ratio;
         if (i<fade_in)
-            r*=double(i)/double(fade_in);
+            r*=std::pow(std::cos(M_PI_2*(1.0-double(i)/double(fade_in))),2);
         if (i>=len-fade_out)
-            r*=double(len-i-1)/double(fade_out);
+            r*=std::pow(std::cos(M_PI_2*(1.0-double(len-i-1)/double(fade_out))),2);
         for (int c=0;c<_nc;++c) {
             s1=decode(get_sample(c,i+offset));
             s2=(c==0?pl:pr)*r*other.decode(other.get_sample(std::min(onc-1,c),i));
@@ -1316,10 +1316,10 @@ void audio_clip::read(FILE *f,int offset,int len) {
 bool audio_clip::write(FILE *f) const {
     return false;
 }
-gen _readwav(const gen &g,GIAC_CONTEXT){
+gen _read_wav(const gen &g,GIAC_CONTEXT){
     return generr(gettext("Loading wave files is not supported"));
 }
-gen _writewav(const gen &g,GIAC_CONTEXT){
+gen _write_wav(const gen &g,GIAC_CONTEXT){
     return 0;
 }
 #else
@@ -1435,7 +1435,7 @@ bool audio_clip::write(FILE *f) const {
     return true;
 }
 
-gen _readwav(const gen &g,GIAC_CONTEXT) {
+gen _read_wav(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     const gen &fname=(g.type==_VECT && !g._VECTptr->empty())?g._VECTptr->front():g;
     if (fname.type!=_STRNG)
@@ -1474,7 +1474,7 @@ gen _readwav(const gen &g,GIAC_CONTEXT) {
     }
 }
 
-gen _writewav(const gen &g,GIAC_CONTEXT) {
+gen _write_wav(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
         return gentypeerr(contextptr);
@@ -1491,13 +1491,13 @@ gen _writewav(const gen &g,GIAC_CONTEXT) {
 }
 #endif
 
-static const char _readwav_s []="readwav";
-static define_unary_function_eval (__readwav,&_readwav,_readwav_s);
-define_unary_function_ptr5( at_readwav,alias_at_readwav,&__readwav,0,true);
+static const char _read_wav_s []="read_wav";
+static define_unary_function_eval (__read_wav,&_read_wav,_read_wav_s);
+define_unary_function_ptr5( at_read_wav,alias_at_read_wav,&__read_wav,0,true);
 
-static const char _writewav_s []="writewav";
-static define_unary_function_eval (__writewav,&_writewav,_writewav_s);
-define_unary_function_ptr5( at_writewav,alias_at_writewav,&__writewav,0,true);
+static const char _write_wav_s []="write_wav";
+static define_unary_function_eval (__write_wav,&_write_wav,_write_wav_s);
+define_unary_function_ptr5( at_write_wav,alias_at_write_wav,&__write_wav,0,true);
 
 bool audio_clip::write_wav(const char *fname) const {
     FILE *f=fopen(fname,"w");
@@ -1659,7 +1659,7 @@ int audio_clip::play(int pos,int len,int repeats) const {
 #endif
 #endif // HAVE_LIBAO
 
-gen _playsnd(const gen &g,GIAC_CONTEXT) {
+gen _playsound(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     audio_clip *clip=audio_clip::from_gen((g.type==_VECT && !g._VECTptr->empty())?g._VECTptr->front():g);
     if (clip==NULL)
@@ -1719,9 +1719,9 @@ gen _playsnd(const gen &g,GIAC_CONTEXT) {
     }
     return (int)(res==0);
 }
-static const char _playsnd_s[]="playsnd";
-static define_unary_function_eval (__playsnd,&_playsnd,_playsnd_s);
-define_unary_function_ptr5(at_playsnd,alias_at_playsnd,&__playsnd,0,true);
+static const char _playsound_s[]="playsound";
+static define_unary_function_eval (__playsound,&_playsound,_playsound_s);
+define_unary_function_ptr5(at_playsound,alias_at_playsound,&__playsound,0,true);
 
 /* Splice two audio clips. */
 gen _splice(const gen &g,GIAC_CONTEXT) {
@@ -2052,6 +2052,7 @@ bool audio_clip::get_chunk_span(int c,int offset,int len,double &fu_max,double &
     return true;
 }
 
+#if 0
 // Usage: nseconds [,rate]
 gen _soundsec(const gen & g,GIAC_CONTEXT){
     gen n,rate=44100;
@@ -2077,6 +2078,7 @@ gen _soundsec(const gen & g,GIAC_CONTEXT){
 static const char _soundsec_s[]="soundsec";
 static define_unary_function_eval (__soundsec,&_soundsec,_soundsec_s);
 define_unary_function_ptr5( at_soundsec ,alias_at_soundsec,&__soundsec,0,true);
+#endif
 
 gen _createwav(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
@@ -2671,7 +2673,7 @@ define_unary_function_ptr5(at_cross_correlation,alias_at_cross_correlation,&__cr
 gen _auto_correlation(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG) {
         if (g.subtype==-1) return g;
-        return _auto_correlation(_readwav(g,contextptr),contextptr);
+        return _auto_correlation(_read_wav(g,contextptr),contextptr);
     }
     return _cross_correlation(makesequence(g,g),contextptr);
 }
@@ -3017,13 +3019,19 @@ gen eval_for_x_in_ab_recursion(const gen &g,const identificateur &x,const gen &a
     gen c,d;
     if ((g.is_symb_of_sommet(at_abs) || g.is_symb_of_sommet(at_Heaviside) || g.is_symb_of_sommet(at_sign))
             && is_linear_wrt(f,x,c,d,contextptr) && !is_zero(c)) {
-        gen z=-d/c;
-        changed=true;
-        if (is_greater(a,z,contextptr))
-            return g.is_symb_of_sommet(at_abs)?f:gen(1);
-        if (is_greater(z,b,contextptr))
-            return g.is_symb_of_sommet(at_abs)?-f:(g.is_symb_of_sommet(at_sign)?gen(-1):gen(0));
-        changed=false;
+        gen z=-d/c,s=_sign(c,contextptr);
+        if (s.is_integer()) {
+            bool l=is_greater(a,z,contextptr),r=is_greater(z,b,contextptr);
+            if (!changed)
+                changed=l||r;
+            if (g.is_symb_of_sommet(at_Heaviside)) {
+                if (l) return is_one(s)?1:0;
+                if (r) return is_one(s)?0:1;
+            } else {
+                if (l) return s*(g.is_symb_of_sommet(at_abs)?f:gen(1));
+                if (r) return s*(g.is_symb_of_sommet(at_abs)?-f:gen(-1));
+            }
+        }
     }
     return symbolic(g._SYMBptr->sommet,eval_for_x_in_ab_recursion(f,x,a,b,changed,contextptr));
 }
@@ -5105,7 +5113,7 @@ bool ilaplace2(const gen &g,const gen &s,const gen &x,gen &orig,GIAC_CONTEXT) {
     return true;
 }
 
-#if defined HAVE_LIBGSL && GSL_MAJOR_VERSION>=1 && GSL_MINOR_VERSION>15
+#ifdef HAVE_LIBGSL
 /* Empirical Mode Decomposition (to max IMAX imf components + residual).
  * Adapted from Matlab code written by Ivan Magrin-Chagnolleau <ivan@ieee.org>.
  * IMAX is the maximum number of IMFs to be generated.
@@ -5169,7 +5177,9 @@ void emd(const vecteur &data,matrice &imf,vecteur &residue,int imax,int emin,dou
             for (i=0;i<n;++i) gsl_vector_set(envl,i,gsl_spline_eval(sp,i,acc));
             gsl_spline_free(sp);
             gsl_interp_accel_free(acc);
-            gsl_vector_axpby(0.5,envu,0.5,envl); // compute the mean of envelopes, store it in envl
+            gsl_vector_scale(envu,0.5);
+            gsl_vector_scale(envl,0.5);
+            gsl_vector_add(envl,envu); // compute the mean of envelopes, store it in envl
             var=0;
             for (i=0;i<n;++i) {
                 var+=std::pow(gsl_vector_get(envl,i),2)/(std::pow(gsl_vector_get(h,i),2)+1e-7);
@@ -5201,13 +5211,13 @@ void emd(const vecteur &data,matrice &imf,vecteur &residue,int imax,int emin,dou
 
 gen _emd(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
-#if defined HAVE_LIBGSL && GSL_MAJOR_VERSION>=1 && GSL_MINOR_VERSION>15
+#ifdef HAVE_LIBGSL
     if (g.type!=_VECT)
         return gentypeerr(contextptr);
     if (g._VECTptr->empty())
         return gendimerr(contextptr);
     double var_tol=0.1;
-    int imf_limit=INT_MAX,min_extrema=2;
+    int imf_limit=RAND_MAX,min_extrema=2;
     bool out_residue=true;
     if (g.subtype==_SEQ__VECT) { // has options
         const vecteur &args=*g._VECTptr;
@@ -5294,7 +5304,7 @@ gen _imfplot(const gen &g,GIAC_CONTEXT) {
         return generr(gettext("Expected a matrix of real numbers"));
     int n=imfs.size(),len=mcols(imfs),m=n;
     const vecteur *res=NULL,*orig=NULL;
-    gen disp=symb_equal(at_couleur,change_subtype(_BLUE,_INT_COLOR)); // default IMF color
+    gen ev,rev,disp=symb_equal(at_couleur,change_subtype(_BLUE,_INT_COLOR)); // default IMF color
     set<int> ind;
     if (hasopt) {
         if (g._VECTptr->size()==2 && g._VECTptr->back().is_integer()) {
@@ -5307,9 +5317,9 @@ gen _imfplot(const gen &g,GIAC_CONTEXT) {
             const gen &p=it->_SYMBptr->feuille._VECTptr->front();
             const gen &v=it->_SYMBptr->feuille._VECTptr->back();
             if (p==at_residue) {
-                if (v.type!=_VECT || (int)v._VECTptr->size()!=len || !is_numericv(*v._VECTptr,mask))
+                rev=_evalf(v,contextptr);
+                if (rev.type!=_VECT || (int)rev._VECTptr->size()!=len || !is_numericv(*(res=rev._VECTptr),mask))
                     return generr(gettext("Invalid residue specification"));
-                res=v._VECTptr;
             } else if (p==at_max) {
                 if (!v.is_integer() || v.subtype!=_INT_BOOLEAN)
                     return gensizeerr("Expected a boolean value");
@@ -5318,9 +5328,9 @@ gen _imfplot(const gen &g,GIAC_CONTEXT) {
                 if (!v.is_integer() || (m=v.val)<1)
                     return generr(gettext("Expected a positive integer"));
             } else if (p==at_input) {
-                if (v.type!=_VECT || (int)v._VECTptr->size()!=len || !is_numericv(*v._VECTptr,mask))
+                ev=_evalf(v,contextptr);
+                if (ev.type!=_VECT || (int)ev._VECTptr->size()!=len || !is_numericv(*(orig=ev._VECTptr),mask))
                     return generr(gettext("Invalid original signal specification"));
-                orig=v._VECTptr;
             } else if (p==at_display || p==at_couleur) {
                 disp=*it;
             } else if (p==at_index) {
@@ -5743,8 +5753,8 @@ gen _hht(const gen &g,GIAC_CONTEXT) {
     bool data_is_imf=ckmatrix(data);
     n=data_is_imf?mcols(data):data.size();
     if (!data_is_imf) {
-#if defined HAVE_LIBGSL && GSL_MAJOR_VERSION>=1 && GSL_MINOR_VERSION>15
-        emd(data,imf,residue,INT_MAX,2,0.1,contextptr);
+#ifdef HAVE_LIBGSL
+        emd(data,imf,residue,RAND_MAX,2,0.1,contextptr);
         if (imf.empty())
             return generr(gettext("No IMF found"));
 #else

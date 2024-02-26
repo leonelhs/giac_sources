@@ -4,372 +4,228 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Analytic representation of a real signal</title>
+<title>Hilbert-Huang transform</title>
 </head>
 <body >
 <a href="cascmd_en721.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en723.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:analytic-signal" class="subsection">20.4.7  Analytic representation of a real signal</h3>
-<p>Hilbert transform is the key component of the <em>analytic representation</em> of a real signal
-(see <a href="https://en.wikipedia.org/wiki/Analytic_signal">here</a> for details).
-Briefly, given a real signal <span style="font-style:italic">u</span>(<span style="font-style:italic">t</span>), its analytic representation is
-<span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>(<span style="font-style:italic">t</span>)=<span style="font-style:italic">u</span>(<span style="font-style:italic">t</span>)+<span style="font-style:italic">i</span><span style="color:red"><span style="font-style:italic">H</span></span>{<span style="font-style:italic">u</span>}(<span style="font-style:italic">t</span>), the main property of which is that its imaginary
-part is the Hilbert transform of the real part, the latter being exactly the original signal.
-As a consequence, the spectrum of <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub> does not contain negative frequency components.</p><p>The <span style="font-family:monospace">hilbert</span><a id="hevea_default1443"></a>
-command can find analytic representation <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub> of a discrete real signal <span style="font-style:italic">u</span>
-by using the algorithm of Marple (1999) which uses FFT as a subroutine.
-See Section <a href="cascmd_en500.html#ssec%3Aspecial-matrix">14.2.2</a> and Section <a href="cascmd_en721.html#ssec%3Ahtrans">20.4.6</a> for other uses of <span style="font-family:monospace">hilbert</span>.
-<a id="hevea_default1444"></a>
+<h3 id="ssec:hht" class="subsection">21.4.9  Hilbert-Huang transform</h3>
+<p>The <span style="font-family:monospace">hht</span><a id="hevea_default1452"></a> command finds Hilbert spectra by applying
+the <em>Hilbert-Huang transform</em> (HHT) which obtains instantaneous frequency
+data from intrinsic mode functions (IMFs) extracted from nonstationary and/or
+nonlinear signal data. The Hilbert spectrum of a signal reveals its
+time-dependent features.
 </p><ul class="itemize"><li class="li-itemize">
-To find <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>, <span style="font-family:monospace">hilbert</span> takes <span style="font-style:italic">u</span>, a list [<span style="font-style:italic">u</span><sub>1</sub>,<span style="font-style:italic">u</span><sub>2</sub>,…,<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>] of real numbers.
-</li><li class="li-itemize"><span style="font-family:monospace">hilbert(</span><span style="font-style:italic">u</span><span style="font-family:monospace">)</span> returns the analytic representation <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub> of <span style="font-style:italic">u</span> as
-a list of complex numbers <span style="font-style:italic">z</span><sub><span style="font-style:italic">i</span></sub>=<span style="font-style:italic">u</span><sub><span style="font-style:italic">i</span></sub>+<span style="font-style:italic">i</span><span style="font-style:italic">v</span><sub><span style="font-style:italic">i</span></sub> for <span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">n</span>, where
-<span style="font-style:italic">v</span>=[<span style="font-style:italic">v</span><sub>1</sub>,<span style="font-style:italic">v</span><sub>2</sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">n</span></sub>] is the Hilbert transform of <span style="font-style:italic">u</span>.
-</li><li class="li-itemize">Note that, in order to obtain a well-behaved Hilbert transform of the input signal,
-the latter should have the mean zero (or close to it). Namely, since <span style="color:red"><span style="font-style:italic">H</span></span>{<span style="font-style:italic">c</span>}=0
-for <span style="font-style:italic">c</span>∈ℝ, the inverse transform is unable to restore the original signal if the
-latter is shifted by a nonzero amount.
-</li></ul><h4 id="sec1856" class="subsubsection">Examples</h4>
-<p>
-Given a signal defined by:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[0.7,0.2,-0.5,-0.6,-0.2,0.3,0.5,-0.1,-0.3]:;</span></span></td></tr>
-</table><p>you get its analytic representation with
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">hilbert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
-</table><p>which is valid since
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">mean</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1.97372982156×10</span><sup><span style="color:#0000CC">−16</span></sup><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-Indeed:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">re</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>and
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">im</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">hilbert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">im</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">)))</span></span></td></tr>
-</table><p>both return
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">0.7,0.2,−0.5,−0.6,−0.2,0.3,0.5,−0.1,−0.3</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-To visualize the input signal and its Hilbert transform together, enter:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"f"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">im</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"H(f)"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en163.png">
-
-</div><p>
-
-The above image illustrates the fundamental property of the Hilbert transform:
-it shifts the phase of the input signal by ± 90<sup>∘</sup>.</p><h4 id="sec1857" class="subsubsection">Instantaneous amplitude, frequency and phase</h4>
-<p>You can get instantaneous amplitude and frequency of the original signal
-from its analytic representation. Since <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>(<span style="font-style:italic">t</span>)=<span style="font-style:italic">A</span>(<span style="font-style:italic">t</span>)<span style="font-style:italic">e</span><sup><span style="font-style:italic">i</span>ϕ(<span style="font-style:italic">t</span>)</sup> for
-some <span style="font-style:italic">A</span> and ϕ, the instantaneous amplitude is <span style="font-style:italic">A</span>(<span style="font-style:italic">t</span>) and
-the instantaneous (angular) frequency is given by
-ω(<span style="font-style:italic">t</span>)=<span style="font-style:italic">d</span>ϕ/<span style="font-style:italic">d</span><span style="font-style:italic">t</span>. Indeed, this applies to the
-original signal because <span style="font-style:italic">u</span>(<span style="font-style:italic">t</span>)=ℜ(<span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>(<span style="font-style:italic">t</span>))=<span style="font-style:italic">A</span>(<span style="font-style:italic">t</span>)cos(ϕ(<span style="font-style:italic">t</span>)) by Euler’s formula.
-For sampled signals, ω(<span style="font-style:italic">t</span>) is obtained in radians per sample and, assuming that <span style="font-style:italic">r</span>
-is the sample rate of <span style="font-style:italic">u</span>, the instantaneous frequency in Hertz is thus given by
-<span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>)=<span style="font-style:italic">r</span>/2πω(<span style="font-style:italic">t</span>). Since <span style="font-style:italic">f</span>(<span style="font-style:italic">t</span>)≤<span style="font-style:italic">r</span>/2 by Nyquist theorem and
-ω(<span style="font-style:italic">t</span>)≥ 0, it follows that 0≤ω(<span style="font-style:italic">t</span>)≤π.</p><p>For a continuous, differentiable signal <span style="font-style:italic">u</span>, the instantaneous frequency can
-be obtained as
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:instfreq"></a>
-ω(<span style="font-style:italic">t</span>)=−<span style="font-style:italic">i</span><span style="font-style:italic">N</span><sup>∗</sup>(<span style="font-style:italic">t</span>) <span style="font-style:italic">N</span>′(<span style="font-style:italic">t</span>)=ℑ</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">N</span><sup>∗</sup>(<span style="font-style:italic">t</span>) <span style="font-style:italic">N</span>′(<span style="font-style:italic">t</span>)</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">,
-    (3)</td></tr>
-</table><p>
-where <span style="font-style:italic">N</span><sup>∗</sup>(<span style="font-style:italic">t</span>) denotes the complex conjugate of the normalized analytic signal
-<span style="font-style:italic">N</span>(<span style="font-style:italic">t</span>)=<span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>(<span style="font-style:italic">t</span>)/<span style="font-style:italic">A</span>(<span style="font-style:italic">t</span>) and <span style="font-style:italic">N</span>′ the time derivative of <span style="font-style:italic">N</span> (Vesnaver, 2017).</p><p>The phase ϕ(<span style="font-style:italic">t</span>) is “wrapped” to [−π,π] because of the periodicity of
-<span style="font-style:italic">e</span><sup><span style="font-style:italic">i</span>ϕ(<span style="font-style:italic">t</span>)</sup>. Therefore it may contain an arbitrary number of
-first-order discontinuities when defined by ϕ(<span style="font-style:italic">t</span>)=arg(<span style="font-style:italic">N</span>(<span style="font-style:italic">t</span>)).
-One way of defining the “unwrapped phase” for a causal signal <span style="font-style:italic">u</span> is:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:instphase"></a>
-ϕ(<span style="font-style:italic">t</span>)=ϕ<sub>0</sub>+</td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">t</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell">ω(τ)<span style="font-style:italic">d</span>τ,   <span style="font-style:italic">t</span>≥ 0,
-    (4)</td></tr>
-</table><p>
-where ϕ<sub>0</sub>=arg(<span style="font-style:italic">N</span>(0)) and ω is computed from (<a href="#eq%3Ainstfreq">3</a>).
-Indeed, ϕ in (<a href="#eq%3Ainstphase">4</a>) is non-decreasing because ω(<span style="font-style:italic">t</span>)≥ 0.
-Note that unwrapping the phase introduces uncertainties and requires user-defined
-parameters; in the above definition, ϕ<sub>0</sub> can have infinitely many values.</p><p>The instantaneous amplitude of <span style="font-style:italic">u</span> is obtained simply by calling the <span style="font-family:monospace">abs</span>
-command with <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub> as its argument. The vector of squared amplitudes is called the
-<em>energy</em> of <span style="font-style:italic">u</span>.</p><p>The <span style="font-family:monospace">instfreq</span><a id="hevea_default1445"></a> command finds instantaneous
-frequency of a discrete signal <span style="font-style:italic">u</span> given its analytic representation <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">instfreq</span> takes one mandatory argument and one optional argument:
+<span style="font-family:monospace">hht</span> takes one mandatory argument and a sequence of optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>, the analytic representation of a real signal <span style="font-style:italic">u</span>,
-which may be a vector (as returned by <span style="font-family:monospace">hilbert</span>) or a symbolic expression.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable (by default <span style="font-family:monospace">x</span>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">instfreq(</span><span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub> ⟨,<span style="font-style:italic">x</span> ⟩<span style="font-family:monospace">)</span>
-returns ω as a vector of phase advancements of <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub> in the
-discrete case and the expression (<a href="#eq%3Ainstfreq">3</a>) in the continuous case.
-Precisely, if <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>=[<span style="font-style:italic">z</span><sub>1</sub>,<span style="font-style:italic">z</span><sub>2</sub>,…,<span style="font-style:italic">z</span><sub><span style="font-style:italic">n</span></sub>], then ω is a vector of length <span style="font-style:italic">n</span>−1 with
-components
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">ω<sub><span style="font-style:italic">i</span></sub>=arg</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">z</span><sub><span style="font-style:italic">i</span></sub><sup>∗</sup><span style="font-style:italic">z</span><sub><span style="font-style:italic">i</span>+1</sub></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">∈[0,π],   <span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">n</span>−1. </td></tr>
-</table>
-The above formula handles phase wrapping.
-</li><li class="li-itemize">In the discrete case, ω<sub><span style="font-style:italic">i</span></sub> is the angular frequency of <span style="font-style:italic">u</span> at offset <span style="font-style:italic">i</span>+1,
-where <span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">n</span>−1.
-</li></ul><p>The <span style="font-family:monospace">instphase</span><a id="hevea_default1446"></a> command finds instantaneous
-phase of a discrete signal <span style="font-style:italic">u</span> given its analytic representation <span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>, without wrapping.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">instphase</span> takes one mandatory argument and one optional argument:
+<span style="font-style:italic">data</span>, a list of real numbers (representing the signal) or a matrix
+in which each row corresponds to an IMF as obtained by empirical mode decomposition
+(see Section <a href="cascmd_en721.html#ssec%3Aemd">21.4.8</a>).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">opts</span>, a sequence of optional arguments each of which
+is one of:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub>, the analytic representation of a real signal <span style="font-style:italic">u</span>,
-which may be a vector (as returned by <span style="font-family:monospace">hilbert</span>) or a symbolic expression.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">x</span>, a variable (by default <span style="font-family:monospace">x</span>).
+<span style="font-family:monospace">frequencies=</span><span style="font-style:italic">frng</span>, where <span style="font-style:italic">frng</span> is either a list
+<span style="font-family:monospace">[</span><span style="font-style:italic">fmin</span>,<span style="font-style:italic">fmax</span><span style="font-family:monospace">]</span> or
+an interval <span style="font-style:italic">fmin</span><span style="font-family:monospace">..</span><span style="font-style:italic">fmax</span>, where <span style="font-style:italic">fmin</span> and <span style="font-style:italic">fmax</span>
+specify the desired frequency range. The values are in Hertz if sample-rate is provided,
+otherwise in radians per sample. If <span style="font-style:italic">frng</span> is a list, then <span style="font-style:italic">fmin</span> and
+<span style="font-style:italic">fmax</span> can also be strings specifying MIDI notes such as e.g. <span style="font-family:monospace">"C4"</span> and
+<span style="font-family:monospace">"D#5"</span>. By default, <span style="font-style:italic">fmin</span> corresponds to the zero frequency and
+<span style="font-style:italic">fmax</span> to the Nyquist frequency.
+</li><li class="li-itemize"><span style="font-family:monospace">range=</span><span style="font-style:italic">trng</span>, where <span style="font-style:italic">trng</span> is either a list
+<span style="font-family:monospace">[</span><span style="font-style:italic">tmin</span>,<span style="font-style:italic">tmax</span><span style="font-family:monospace">]</span> or
+an interval <span style="font-style:italic">tmin</span><span style="font-family:monospace">..</span><span style="font-style:italic">tmax</span>, where <span style="font-style:italic">tmin</span> and <span style="font-style:italic">tmax</span>
+specify the desired time range. If sample-rate is provided, then the unit is one
+second, otherwise the unit is one sample. By default, the entire signal is analyzed.
+</li><li class="li-itemize"><span style="font-family:monospace">samplerate=</span><span style="font-style:italic">sr</span>, where <span style="font-style:italic">sr</span> is a positive integer representing
+the sample-rate of the (decomposed) signal (by default, unset).
+</li><li class="li-itemize"><span style="font-family:monospace">output=</span><span style="font-style:italic">out</span>, where <span style="font-style:italic">out</span> is one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">image</span> (the default), which displays the spectrum as an image.
+</li><li class="li-itemize"><span style="font-family:monospace">plot</span>, which draws the spectrum with <span style="font-variant:small-caps">Xcas</span> graphic commands
+(in lower resolution).
+</li><li class="li-itemize"><span style="font-family:monospace">matrix</span>, which outputs the spectrum as a matrix in which rows correspond
+to frequency bins and columns to spectra at individual samples.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">instphase</span> returns ϕ as a cummulative-sum vector of
-<span style="font-family:monospace">instfreq(</span><span style="font-style:italic">u</span><sub><span style="font-style:italic">a</span></sub><span style="font-family:monospace">)</span> (adjusted so that the first element matches the
-initial phase) in the discrete case and the expression (<a href="#eq%3Ainstphase">4</a>)
-in the continuous case.
-</li><li class="li-itemize">In the discrete case, ϕ<sub><span style="font-style:italic">i</span></sub> is the phase of <span style="font-style:italic">u</span> at offset <span style="font-style:italic">i</span>, where <span style="font-style:italic">i</span>=1,2,…,<span style="font-style:italic">n</span>.
-</li></ul><h4 id="sec1858" class="subsubsection">Examples</h4>
+</li><li class="li-itemize"><span style="font-family:monospace">bins=</span><span style="font-style:italic">m</span>, where <span style="font-style:italic">m</span> is a positive integer specifying the desired number
+of bins for the frequency range discretization. By default, <span style="font-style:italic">m</span>=200 for the image
+output and <span style="font-style:italic">m</span>=100 for the plot and matrix outputs.
+</li><li class="li-itemize"><span style="font-family:monospace">log=</span><span style="font-style:italic">islog</span>, where <span style="font-style:italic">islog</span> is a boolean value specifying
+whether the frequency axis is logarithmic or not (by default, the scale is linear).
+If <span style="font-style:italic">islog</span>=<span style="font-family:monospace">true</span>, then the frequency-axis unit is one semitone,
+with zero corresponding to the MIDI note 0. Instead of <span style="font-family:monospace">log=true</span>, you can
+simply enter <span style="font-family:monospace">log</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">legend=</span><span style="font-style:italic">haslegend</span>, where <span style="font-style:italic">haslegend</span> is a boolean value
+specifying whether to show the colormap or not (by default, the colormap is shown
+on the right of the spectrum).
+</li><li class="li-itemize"><span style="font-family:monospace">tran=</span><span style="font-style:italic">hasalpha</span>, where <span style="font-style:italic">hasalpha</span> is a boolean value
+specifying whether to use the alpha channel in the image output (this value
+is ignored for other outputs). When used, the alpha channel values are smaller for
+smaller amplitudes, making the lower-amplitude components less visible. By
+default, <span style="font-family:monospace">tran=true</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">color=</span><span style="font-style:italic">cmap</span>, where <span style="font-style:italic">cmap</span> is the colormap index
+(nonnegative integer) as returned by the <span style="font-family:monospace">colormap</span> command
+(see Section <a href="cascmd_en609.html#ssec%3Acolormap">19.1.3</a>). <span style="font-style:italic">cmap</span> can also be a boolean value,
+with <span style="font-family:monospace">true</span> corresponding to the default rainbow colormap and <span style="font-family:monospace">false</span>
+corresponding to the grey ramp with 24 colors from the <span style="font-variant:small-caps">FLTK</span> colormap.
+A suitable choice of colormap can help detecting important signal features in the
+graphic output. By default, <span style="font-family:monospace">color=true</span>.
+</li></ul>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">hht(</span><span style="font-style:italic">data</span> ⟨,<span style="font-style:italic">opts</span> ⟩<span style="font-family:monospace">)</span> returns
+(the selected part of) the Hilbert spectrum associated with <span style="font-style:italic">data</span> in the specified
+form. If graphic output is selected, then the colormap is used to color-encode amplitude
+data. The axis units are seconds/samples resp. Hertz/radians per second/semitones, depending
+on the values of <span style="font-family:monospace">samplerate</span> and <span style="font-family:monospace">log</span> options.
+</li><li class="li-itemize">With matrix output, you can use <span style="font-family:monospace">hht</span> to compute the signal energy as
+a function of time. The element at position (<span style="font-style:italic">i</span>,<span style="font-style:italic">j</span>) in the resulting matrix, when squared,
+represents the energy of the <span style="font-style:italic">i</span>th frequency bin at the <span style="font-style:italic">j</span>th sample. The total energy at
+time <span style="font-style:italic">j</span> is the sum of squares of elements in the <span style="font-style:italic">j</span>th column of the matrix.
+</li></ul><h4 id="sec1869" class="subsubsection">Examples</h4>
+<h5 id="sec1870" class="paragraph">Synthetic signal.</h5>
+<p> To see the spectrum of the <span style="font-family:monospace">synth</span> signal
+defined in Section <a href="cascmd_en721.html#ssec%3Aemd">21.4.8</a> with the <span style="font-variant:small-caps">FLTK</span> grayscale ramp, enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hht</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">synth</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#0000CC">false</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">frequencies</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.1..2.0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">output</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en186.png">
+
+</div><p>
+
+You may also pass the list of already computed IMFs as the first argument.</p><h5 id="sec1871" class="paragraph">Whale song.</h5>
 <p>
-Sample the function <span style="font-style:italic">x</span>(<span style="font-style:italic">t</span>)=sin(20πsin(<span style="font-style:italic">t</span>))
-in the segment [0,π/2] and apply the Hamming window:
+The file <span style="font-family:monospace">nepblue24s10x.wav</span> downloaded from
+<a href="https://www.pmel.noaa.gov/acoustics/whales/sounds/sounds_whales_blue.html">here</a>
+contains sounds produced by a blue whale in the northeast Pacific. Since the
+frequency of moans is very low (below 20 Hz, which is inaudible for humans),
+the file is played back at 10x speed. To load and show the audio, enter:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">linspace</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2,1000)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">hamming_window</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">apply</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(20*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)):;</span></span></td></tr>
-</table><p>Compute the analytic representation of <span style="font-style:italic">y</span> and the relative error (in percentages)
-made by reconstructing the original signal from <span style="font-style:italic">h</span>:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">whale</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/nepblue24s10x.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">whale</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">hilbert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">norm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">im</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">hilbert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">im</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">))))/</span></span><span style="font-weight:bold"><span style="color:#BF0000">norm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)*100</span></span></td></tr>
+<img src="cascmd_en187.png">
+
+</div><p>
+
+You can hear the whale song by entering (see Section <a href="cascmd_en1031.html#ssec%3Aplaysnd">28.2.14</a>):
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">playsnd</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">whale</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>To perform the empirical mode decomposition (see Section <a href="cascmd_en721.html#ssec%3Aemd">21.4.8</a>), enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">imf</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">emd</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">channel_data</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">whale</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">residue</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#0000CC">false</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Evaluation time: 10.01
+</span></span></span></p><p>
+(Note that the residue is discarded since it is not relevant for the spectrum.)
+To display the Hilbert spectrum of the whale song, enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">whale</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">hht</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">imf</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">frequencies</span></span><span style="font-weight:bold"><span style="color:#BF0000">=10..500,</span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">colormap</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"viridis"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en188.png">
+
+</div><p>
+
+Whale moans occur at about 5, 10, 15 and 20 seconds from the beginning
+of the recording (in reality, these intervals are ten times larger).
+Also, the spectrum reveals that moans have the same frequency,
+about 160 Hz in the recording and 16 Hz in reality.
+The magnitude of the first moan is smaller, as suggested by both
+the waveform and spectrum.</p><p>To obtain the Hilbert spectrum as a matrix, enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hs</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">hht</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">imf</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">frequencies</span></span><span style="font-weight:bold"><span style="color:#BF0000">=10..500,</span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">output</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">matrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
+</table><p>To plot the energy of the whale song, sum the columns of the Hilbert
+spectrum matrix in which every element is squared.
+Energy data can be smoothed out by applying a moving-average filter.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">moving_average</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sum</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">hs</span></span><span style="font-weight:bold"><span style="color:#BF0000">.^2),4000):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">linspace</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">duration</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">whale</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">length</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">labels</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"time [sec]"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"energy"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">];</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">]))</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en189.png">
+
+</div><h5 id="sec1872" class="paragraph">Spectral analysis of music.</h5>
+<p>
+With the file <span style="font-family:monospace">CantinaBand3.wav</span> downloaded from
+<a href="https://www2.cs.uic.edu/~i101/SoundFiles/">here</a>:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">music</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/CantinaBand3.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-2.08546075156
+</span><span style="color:#0000CC">a sound clip with 66150 samples at 22050 Hz (16 bit, mono)</span><span style="color:#0000CC">
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-The error is relatively small (about 2%), hence <span style="font-style:italic">y</span> is
-applicable for further analysis (its analytic representation is
-well-behaved).</p><p>The instantaneous amplitude is obtained by:
+To obtain instrinsic mode functions, enter (residue is discarded):
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
-</table><p>and the instantaneous frequency by
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">imf</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">emd</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">channel_data</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">music</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">residue</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#0000CC">false</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
+</table><p>To display the Hilbert spectrum of <span style="font-family:monospace">music</span>, enter:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">instfreq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">h</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
-</table><p>To plot <span style="font-style:italic">y</span>, <span style="font-style:italic">a</span> and <span style="font-style:italic">f</span> together, you can enter (<span style="font-style:italic">f</span> is scaled
-arbitrarily to be visible in the amplitude axis):
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">green</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">line_width_2</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(10*</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">hht</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">imf</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">=22050,</span></span><span style="font-weight:bold"><span style="color:#BF0000">log</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">colormap</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"spectral"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">tran</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#0000CC">false</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en164.png">
+<img src="cascmd_en190.png">
 
 </div><p>
 
-As you can see in the image above, the instantaneous amplitude (shown
-in green) forms an envelope of the original signal (shown in black), while
-the instantaneous frequency (shown in blue) drops as the oscillations in the
-original signal are slowing down (note that its values are nonnegative).</p><h5 id="sec1859" class="paragraph">Continuous analytic signal.</h5>
-<p>
-To obtain the instantaneous frequency of a continuous signal you can
-use (<a href="#eq%3Ainstfreq">3</a>) or the <span style="font-family:monospace">instfreq</span> command. For example:
+In the upper part of the spectrum you can see individual beats of the song,
+and in the lower part you can see six bass notes appearing every 2 beats.
+The first and fifth notes are stressed more than the others, suggesting
+the 4/4 time signature. The percussive pickup measure is also clearly visible.
+The first beat of the first measure starts after about 0.65 seconds.
+In the example in Section <a href="cascmd_en718.html#ssec%3Astft">21.4.5</a> it is explained how to extract
+the rhythmic section by cutting out the middle band of the spectrum.</p><p>As another example, download the files <span style="font-family:monospace">violin-C4.wav</span> and
+<span style="font-family:monospace">flute-G6.wav</span> from
+<a href="https://www.ee.columbia.edu/~dpwe/sounds/instruments/">here</a>
+and load them:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">-3+(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2)^2)/(1+(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2)^4)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">violin</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/violin-C4.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">flute</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/home/luka/Downloads/flute-G6.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">−2</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">−3</span></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">−2</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><sup><span style="color:#0000CC">4</span></sup><span style="color:#0000CC">+1</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en165.png">
-
-</div><p>
-
-To compute <span style="font-style:italic">y</span>=<span style="color:red"><span style="font-style:italic">H</span></span>{<span style="font-style:italic">x</span>}, enter:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">hilbert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−6 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">+7</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">4</span></sup><span style="color:#0000CC">−</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎜<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">8 </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎟<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+24 </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎜<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">32 </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎟<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">+17 </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >a sound clip with 38500 samples at 11025 Hz (16 bit, mono),</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >a sound clip with 40250 samples at 11025 Hz (16 bit, mono)
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-The analytic representation of <span style="font-style:italic">x</span> and its normalization are obtained by:
+Mix the two audio clips with one-second delay for the flute
+(see Section <a href="cascmd_en1035.html#ssec%3Amixdown">28.2.18</a>):
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:;</span></span></td></tr>
-</table><p>To animate unfolding of <span style="font-style:italic">z</span>(<span style="font-style:italic">t</span>) in the complex plane for 0≤ <span style="font-style:italic">t</span>≤ 10, enter:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">animation</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">seq</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">plotparam</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">/5),</span></span><span style="font-weight:bold"><span style="color:#BF0000">vector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">subs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">/5),</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">)],</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1..50))</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en166.png">
-
-</div><p>
-
-To plot the instantaneous amplitude <span style="font-style:italic">A</span>(<span style="font-style:italic">t</span>) against <span style="font-style:italic">x</span>(<span style="font-style:italic">t</span>), enter:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotfunc</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)],</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">blue</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">black</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en167.png">
-
-</div><p>
-
-The instantaneous frequency of <span style="font-style:italic">x</span> is obtained by entering:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifreq</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">instfreq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">−4 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">+5 </span></td><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">4</span></sup><span style="color:#0000CC">−8 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+24 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−32 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC">+17</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifreq</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=0</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">snd</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">mixdown</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">violin</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[],</span></span><span style="font-weight:bold"><span style="color:#BF0000">flute</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[1.0])</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"><span style="font-style:italic">true</span></span><span style="color:#0000CC">
+</span><span style="color:#0000CC">a sound clip with 51275 samples at 11025 Hz (16 bit, mono)</span><span style="color:#0000CC">
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ifreq</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en168.png">
-
-</div><p>
-
-The unwrapped phase, according to the definition (<a href="#eq%3Ainstphase">4</a>),
-is now obtained by entering:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">iphas</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">instphase</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">iphas</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en169.png">
-
-</div><p>
-
-The wrapped phase, on the other hand, suffers from a discontinuity at <span style="font-style:italic">t</span>=3−√<span style="text-decoration:overline">2</span>:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">arg</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en170.png">
-
-</div><p>As another example, show that the function <span style="font-style:italic">u</span>(<span style="font-style:italic">t</span>)=<span style="font-style:italic">a</span>/<span style="font-style:italic">a</span><sup>2</sup>+<span style="font-style:italic">t</span><sup>2</sup>
-for <span style="font-style:italic">a</span>&gt;0 is itself its instantaneous frequency and, in case <span style="font-style:italic">a</span>=1, also
-its energy. To verify, first compute the (normalized) analytic
-representation by entering:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">purge</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">assume</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;0):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">/(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">hilbert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">N</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">simplify</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">/</span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup></td></tr>
-</table></td></tr>
-</table></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
 </table><p>
-Then compute the instantaneous frequency and energy of <span style="font-style:italic">u</span>, respectively,
-by entering:
+You can hear the result by using the <span style="font-family:monospace">playsnd</span> command
+(see Section <a href="cascmd_en1031.html#ssec%3Aplaysnd">28.2.14</a>). To display the Hilbert spectrum, enter
+(in this case, EMD is computed automatically by <span style="font-family:monospace">hht</span>):
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">instfreq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">simplify</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">data</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">channel_data</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">snd</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">snd</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">hht</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">data</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">log</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sr</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">colormap</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"jet"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">inv</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">reverse</span></span><span style="font-weight:bold"><span style="color:#BF0000">));</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">a</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">a</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup></td></tr>
-</table></td><td class="dcell">, </td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span><sup>2</sup>+<span style="font-style:italic">t</span><sup>2</sup></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+<img src="cascmd_en191.png">
+
+</div><p>
+
+The specified colormap helps you to see two individual tones at
+60 resp. 91 semitones from the MIDI note 0, corresponding to C4 resp. G6,
+as expected. The flute part of the spectrum (yellow-reddish) is much
+more concentrated than the violin part due to the inherent
+sinusoidal quality of the flute sound.</p>
 <hr>
 <a href="cascmd_en721.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

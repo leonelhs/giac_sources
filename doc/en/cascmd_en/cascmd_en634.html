@@ -4,47 +4,38 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Curves in polar coordinates</title>
+<title>Graphing recurrent sequences</title>
 </head>
 <body >
 <a href="cascmd_en633.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en635.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1537" class="subsection">18.8.2  Curves in polar coordinates</h3>
-<p>The <span style="font-family:monospace">plotpolar</span><a id="hevea_default1221"></a> or
-<span style="font-family:monospace">polarplot</span><a id="hevea_default1222"></a> or
-<span style="font-family:monospace">DrawPol</span><a id="hevea_default1223"></a> or
-<span style="font-family:monospace">courbe_polaire</span><a id="hevea_default1224"></a>
-command draws a curve given in polar coordinates.
+<h3 id="sec:plotseq" class="subsection">19.8.4  Graphing recurrent sequences</h3>
+<p>The <span style="font-family:monospace">plotseq</span><a id="hevea_default1230"></a>
+or <span style="font-family:monospace">seqplot</span><a id="hevea_default1231"></a>
+or <span style="font-family:monospace">graphe_suite</span><a id="hevea_default1232"></a>
+command draws the process of finding the terms of a recurrent sequence.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">polarplot</span> takes two arguments:
+<span style="font-family:monospace">plotseq</span> takes:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving a variable (which
-will represent the angle).
-</li><li class="li-itemize"><span style="font-family:monospace">var</span>, the variable. This can optionally include the
-range <span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span> to specify the discretization.
-<a id="hevea_default1225"></a>
+<span style="font-style:italic">expr</span>, an expression depending on a variable.
+</li><li class="li-itemize"><span style="font-style:italic">var=a</span>, the variable and a beginning value. (If
+<span style="font-style:italic">var=</span><span style="font-family:monospace">x</span>, then the variable name can be omitted.)
+The <span style="font-style:italic">a</span> value can be replaced by a list of three elements,
+[<span style="font-style:italic">a</span>,<span style="font-style:italic">x</span><sub>−</sub>,<span style="font-style:italic">x</span><sub>+</sub>] where <span style="font-style:italic">x</span><sub>−</sub><span style="font-family:monospace">..</span><span style="font-style:italic">x</span><sub>+</sub> will be passed as the range of the
+variable for the graph computation.
+</li><li class="li-itemize"><span style="font-style:italic">n</span>, the ending value of the variable.
 </li></ul>
-<span style="font-family:monospace">polarplot(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">var</span> ⟨,<span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span> ⟩<span style="font-family:monospace">)</span>
-draws the
-curve defined by ρ=<span style="font-style:italic">expr</span> for θ=<span style="font-style:italic">var</span>; in
-Cartesian coordinates that is the curve
-(<span style="font-style:italic">expr</span>·cos(<span style="font-style:italic">var</span>),<span style="font-style:italic">expr</span>·sin(<span style="font-style:italic">var</span>)).
-</li></ul><h4 id="sec1538" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">plotseq(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">var</span><span style="font-family:monospace">=</span><span style="font-style:italic">a</span>,<span style="font-style:italic">n</span><span style="font-family:monospace">)</span>
+draws the line <span style="font-style:italic">y</span>=<span style="font-style:italic">x</span>, the graph of <span style="font-style:italic">y</span>=<span style="font-style:italic">expr</span>, and the <span style="font-style:italic">n</span>
+first terms of the recurrent sequence defined by: <span style="font-style:italic">u</span><sub>0</sub>=<span style="font-style:italic">a</span>,
+<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span></sub>=<span style="font-style:italic">f</span>(<span style="font-style:italic">u</span><sub><span style="font-style:italic">n</span>−1</sub>) where <span style="font-style:italic">f</span> is the function determined by <span style="font-style:italic">expr</span>.
+</li></ul><h4 id="sec1548" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotseq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[3,0,5],5)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en102.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en103.png">
+<img src="cascmd_en118.png">
 
 </div>
 <hr>

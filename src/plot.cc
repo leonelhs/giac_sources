@@ -101,7 +101,10 @@ extern "C" {
 #include "lin.h"
 #include "quater.h"
 #include "giacintl.h"
+#if defined GIAC_HAS_STO_38 || defined NSPIRE || defined NSPIRE_NEWLIB || defined FXCG || defined GIAC_GGB || defined USE_GMP_REPLACEMENTS || defined KHICAS 
+#else
 #include "signalprocessing.h"
+#endif
 #ifdef USE_GMP_REPLACEMENTS
 #undef HAVE_GMPXX_H
 #undef HAVE_LIBMPFR
@@ -1126,21 +1129,27 @@ namespace giac {
   }
 
   static const int arc_en_ciel_colors=15;
-  int density(double z,double fmin,double fmax){
+  int density(double z,double fmin,double fmax,int pal){
     // z -> 256+arc_en_ciel_colors*(z-fmin)/(fmax-fmin)
     if (z<fmin)
       return 0;
     if (z>fmax)
       return 0;
     double d=(z-fmin)/(fmax-fmin);
-    int r,g,b;
-    arc_en_ciel(126.0/d,r,g,b);
-    return (((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
+    int c,r,g,b;
+    if (pal>=0 && is_colormap_index(pal) && colormap_color_rgb(pal,d,c,r,g,b))
+      ;
+    else
+      arc_en_ciel(126.0/d,r,g,b);
+    c=(((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
+    if (c>=0 && c<512)
+      c += (1<<11);
+    return c;
   }
 
 #else
   static const int arc_en_ciel_colors=105;
-  inline int density(double z,double fmin,double fmax){
+  int density(double z,double fmin,double fmax,int pal){
     // z -> 256+arc_en_ciel_colors*(z-fmin)/(fmax-fmin)
     if (z<fmin)
       return 256;
@@ -1152,7 +1161,7 @@ namespace giac {
 #endif
 
   // horizontal scale for colors
-  static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,double fmin, double fmax,int n,GIAC_CONTEXT){
+static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,double fmin, double fmax,int n,int pal,GIAC_CONTEXT){
     vecteur res;
     if (n<10)
       n=10;
@@ -1167,27 +1176,39 @@ namespace giac {
       gen C(x,ymax);
       gen D(x,ymin);
       int rgb;
+      int r,g,b,c;
 #ifdef KHICAS
-      int r,g,b;
       arc_en_ciel(i*double(126.0)/n,r,g,b);
       rgb=(((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
       vecteur attrib(1,rgb+_FILL_POLYGON+(i?_QUADRANT4:_QUADRANT3));
-#else
-      rgb=256+int(i*double(arc_en_ciel_colors)/n);
-      vecteur attrib(1,rgb+_FILL_POLYGON+(i?_QUADRANT4:_QUADRANT2));
-#endif
-#ifdef KHICAS
       if (!i)
-	attrib.push_back(string2gen(print_DOUBLE_(fmin,contextptr),false));
+        attrib.push_back(string2gen(print_DOUBLE_(fmin,contextptr),false));
       if (i==n-1)
-	attrib.push_back(string2gen(print_DOUBLE_(fmax,contextptr),false));
-#else
-      if (!i)
-	attrib.push_back(string2gen(print_DOUBLE_(fmin,4),false));
-      if (i==n-1)
-	attrib.push_back(string2gen(print_DOUBLE_(fmax,4),false));
-#endif
+        attrib.push_back(string2gen(print_DOUBLE_(fmax,contextptr),false));
       res.push_back(pnt_attrib(gen((i?makevecteur(D,A,B,C,D):makevecteur(B,C,D,A,B)),_GROUP__VECT),attrib,contextptr));
+#else
+      if (pal>=0 && is_colormap_index(pal) && colormap_color_rgb(pal,i/(n-1.0),c,r,g,b)){
+        rgb=(((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
+        if (rgb>=0 && rgb<512)
+          rgb+=(1<<11);
+      }
+      else
+        rgb=256+int(i*double(arc_en_ciel_colors)/n);
+      vecteur attrib(1,rgb+_FILL_POLYGON);
+      res.push_back(pnt_attrib(gen(makevecteur(D,A,B,C,D),_GROUP__VECT),attrib,contextptr));
+      if (i==0){
+        attrib[0]=_POINT_POINT+_QUADRANT2;
+        attrib.push_back(string2gen(print_DOUBLE_(fmin,4),false));
+        gen M(x-dx,(ymin+ymax)/2);
+        res.push_back(pnt_attrib(M,attrib,contextptr));
+      }
+      if (i==n-1){
+        attrib[0]=_POINT_POINT+_QUADRANT1;
+        attrib.push_back(string2gen(print_DOUBLE_(fmax,4),false));
+        gen M(x,(ymin+ymax)/2);
+        res.push_back(pnt_attrib(M,attrib,contextptr));
+      }
+#endif
     }
     return res;
   }
@@ -1222,7 +1243,7 @@ namespace giac {
   // return a sequence of filled polygons with a color mapped from fmin..fmax
   // to 256..256+125 from a matrix of points
   // if regular is true, m is assumed to be equidistributed in x and y
-  static vecteur density(const matrice & m,double fmin,double fmax,bool regular,GIAC_CONTEXT){
+  static vecteur density(const matrice & m,double fmin,double fmax,bool regular,int pal,GIAC_CONTEXT){
 #ifdef RTOS_THREADX
     return vecteur(1,undef);
 #else
@@ -1286,23 +1307,38 @@ namespace giac {
       lz.resize(arc_en_ciel_colors);
       double df=(fmax-fmin)/arc_en_ciel_colors;
       for (int i=0;i<arc_en_ciel_colors;++i)
-	lz[i]=fmin+i*df;
+        lz[i]=fmin+i*df;
       vecteur attr(arc_en_ciel_colors);
-      for (int i=0;i<arc_en_ciel_colors;++i){
+      if (pal>=0 && is_colormap_index(pal)){
+        int r,g,b,c;
+        for (int i=0;i<arc_en_ciel_colors;++i){
+          if (colormap_color_rgb(pal,i/(arc_en_ciel_colors-1.0),c,r,g,b,contextptr)){
+            int col=(((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
+            if (col>=0 && col<512)
+              col += (1<<11);
+            attr[i]=_FILL_POLYGON + col;
+          }
+          else
+            attr[i]=_FILL_POLYGON+257+i;
+        }
+      }
+      else {
+        for (int i=0;i<arc_en_ciel_colors;++i){
 #ifdef KHICAS
-	int r,g,b;
-	arc_en_ciel(126.0/(arc_en_ciel_colors-1)*i,r,g,b);
-	attr[i]=_FILL_POLYGON + (((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
+          int r,g,b;
+          arc_en_ciel(126.0/(arc_en_ciel_colors-1)*i,r,g,b);
+          attr[i]=_FILL_POLYGON + (((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
 #else
-	attr[i]=_FILL_POLYGON+257+i;
+          attr[i]=_FILL_POLYGON+257+i;
 #endif
+        }
       }
       gen rect=pnt_attrib(gen(makevecteur(gen(xmin,ymin),gen(xmax,ymin),gen(xmax,ymax),gen(xmin,ymax),gen(xmin,ymin)),_GROUP__VECT),vecteur(1,_FILL_POLYGON+256),contextptr);
       vecteur niveaux=ticks(fmin,fmax,false);
       lz=mergevecteur(lz,niveaux);
       attr=mergevecteur(attr,vecteur(niveaux.size(),default_color(contextptr)));
       vecteur legendes=mergevecteur(vecteur(arc_en_ciel_colors,string2gen("",false)),niveaux);
-      gen res=plot_array(fij,r,c,xmin,xmax,dx,ymin,ymax,dy,lz,makevecteur(attr,legendes),true,contextptr);
+      gen res=plot_array(fij,r,c,xmin,xmax,dx,ymin,ymax,dy,lz,makevecteur(attr,legendes),true,pal,contextptr);
       if (res.type==_VECT){
 	vecteur v = *res._VECTptr;
 	v.insert(v.begin(),rect);
@@ -1332,7 +1368,7 @@ namespace giac {
 	    gen B=x1+cst_i*y2;
 	    gen C=x2+cst_i*y2;
 	    gen D=x2+cst_i*y1;
-	    int e=density(m[2]._DOUBLE_val,fmin,fmax);
+	    int e=density(m[2]._DOUBLE_val,fmin,fmax,pal);
 	    res.push_back(pnt_attrib(gen(makevecteur(A,B,C,D,A),_GROUP__VECT),vecteur(1,e+_FILL_POLYGON),contextptr));
 	  }
 	}
@@ -1380,6 +1416,12 @@ namespace giac {
   }
 
   gen plotfunc(const gen & f_,const gen & vars,const vecteur & attributs,int densityplot,double function_xmin,double function_xmax,double function_ymin,double function_ymax,double function_zmin, double function_zmax,int nstep,int jstep,bool showeq,const context * contextptr){
+    int pal=-1;
+    if (!attributs.empty() && attributs[0].type==_INT_){
+      int p=attributs[0].val & 0xffff;
+      if (is_colormap_index(p))
+        pal=p;
+    }
     vecteur L=andor2list(f_,contextptr);
     if (densityplot==0 && are_inequations(L)){
       vecteur res;
@@ -1805,7 +1847,7 @@ namespace giac {
 	}
 	dy=(function_ymax-function_ymin)/10;
 	dx=(function_xmax-function_xmin)/10;
-	r=mergevecteur(density(values,function_zmin,function_zmax,true,contextptr),densityscale(function_xmin+dx,function_xmax-dx,function_ymin-dy,function_ymin-2*dy,function_zmin,function_zmax,20,contextptr));
+	r=mergevecteur(density(values,function_zmin,function_zmax,true,pal,contextptr),densityscale(function_xmin+dx,function_xmax-dx,function_ymin-dy,function_ymin-2*dy,function_zmin,function_zmax,20,pal,contextptr));
       }
       else
 	r=pnt_attrib(hypersurface(gen(makevecteur(makevecteur(var1,var2,f),makevecteur(var1,var2),makevecteur(function_xmin,function_ymin),makevecteur(function_xmax,function_ymax),gen(values,_GROUP__VECT)),_PNT__VECT),z__IDNT_e-f,makevecteur(var1,var2,z__IDNT_e)),attributs.empty()?color:attributs,contextptr);
@@ -2290,7 +2332,8 @@ namespace giac {
     if (ckmatrix(vargs[0])){
       matrice m=*vargs[0]._VECTptr;
       reverse(m.begin(),m.end());
-      return density(mtran(m),0,0,true,contextptr);
+      int pal=-1;
+      return density(mtran(m),0,0,true,pal,contextptr);
     }
     for (int i=0;i<s;++i){
       if (vargs[i]==at_equation){
@@ -11247,7 +11290,7 @@ namespace giac {
       // 565 color
       int d=(((b.val*32)/256)<<11) | ((((*a._VECTptr)[1].val*64)/256)<<5) | ((c.val*32)/256);
       if (d>0 && d<512){
-	d += (1<<11);
+        d += (1<<11);
       }
       return d;
     }
@@ -13388,7 +13431,7 @@ int find_plotseq_args(const gen & args,gen & expr,gen & x,double & x0d,double & 
     }
   }
 
-  gen plot_array(const vector< vector< double> > & fij,int imax,int jmax,double xmin,double xmax,double dx,double ymin,double ymax,double dy,const vecteur & lz,const vecteur & attributs,bool contour,GIAC_CONTEXT){
+  gen plot_array(const vector< vector< double> > & fij,int imax,int jmax,double xmin,double xmax,double dx,double ymin,double ymax,double dy,const vecteur & lz,const vecteur & attributs,bool contour,int pal,GIAC_CONTEXT){
     // do linear interpolation between points for levels
     // with a marching rectangle
     // if all 4 vertices values are > or < nothing added
@@ -13740,7 +13783,8 @@ int find_plotseq_args(const gen & args,gen & expr,gen & x,double & x0d,double & 
       }
       fij.push_back(fi);
     }
-    return plot_array(fij,imax,jmax,xmin,xmax,dx,ymin,ymax,dy,lz,attributs,contour,contextptr);
+    int pal=-1;
+    return plot_array(fij,imax,jmax,xmin,xmax,dx,ymin,ymax,dy,lz,attributs,contour,pal,contextptr);
   }
 #endif
   gen _plotcontour(const gen & f0,GIAC_CONTEXT){
@@ -17010,6 +17054,16 @@ bool is_colormap_index(int pal) {
   int p=(pal>>2)-COLORMAP_OFFSET;
   return p>=0 && p<COLORMAP_COUNT;
 }
+#ifdef NO_STDEXCEPT
+bool rgb2index(unsigned char r,unsigned char g,unsigned char b,int &col,GIAC_CONTEXT) {
+  gen c;
+  c=_rgb(makesequence(r,g,b),contextptr);
+  if (!c.is_integer() || c.val<0)
+    return false;
+  col=c.val;
+  return true;
+}
+#else
 bool rgb2index(unsigned char r,unsigned char g,unsigned char b,int &col,GIAC_CONTEXT) {
   gen c;
   try {
@@ -17024,6 +17078,7 @@ bool rgb2index(unsigned char r,unsigned char g,unsigned char b,int &col,GIAC_CON
   col=c.val;
   return true;
 }
+#endif
 /* default (cyclic) rainbow colormap */
 int fltk_rainbow(double t,bool cyclic=false) {
   return 256+int((cyclic?125:105)*t);
@@ -17064,13 +17119,13 @@ gen _rgb2xyz(const gen &args,GIAC_CONTEXT) {
       b=rgb[2].val/255.;
     } else {
       if (!is_numericv(rgb))
-        return generr(gettext("Expected a list of three real numbers in [0,1]"));
+        return gensizeerr(gettext("Expected a list of three real numbers in [0,1]"));
       r=evalf_double(rgb[0],1,contextptr).DOUBLE_val();
       g=evalf_double(rgb[1],1,contextptr).DOUBLE_val();
       b=evalf_double(rgb[2],1,contextptr).DOUBLE_val();
     }
     if (std::min(r,std::min(g,b))<0.0 || std::max(r,std::max(g,b))>1.0)
-      return generr(gettext("Invalid RGB value(s)"));
+      return gensizeerr(gettext("Invalid RGB value(s)"));
     double x,y,z;
     rgb2xyz(r,g,b,x,y,z);
     // conversion from reference white D65 to E
@@ -17080,7 +17135,7 @@ gen _rgb2xyz(const gen &args,GIAC_CONTEXT) {
   }
   if (args.is_integer() && args.subtype==_INT_COLOR)
     return _rgb2xyz(_rgb(args,contextptr),contextptr);
-  return generr(gettext("Invalid argument"));
+  return gensizeerr(gettext("Invalid argument"));
 }
 static const char _rgb2xyz_s[]="rgb2xyz";
 static define_unary_function_eval (__rgb2xyz,&_rgb2xyz,_rgb2xyz_s);
@@ -17094,13 +17149,13 @@ gen _xyz2rgb(const gen &args,GIAC_CONTEXT) {
   if (xyz.size()!=3)
     return gendimerr(contextptr);
   if (!is_numericv(xyz))
-    return generr(gettext("Expected a list of three real numbers in [0,1]"));
+    return gensizeerr(gettext("Expected a list of three real numbers in [0,1]"));
   double x,y,z;
   x=evalf_double(xyz[0],1,contextptr).DOUBLE_val();
   y=evalf_double(xyz[1],1,contextptr).DOUBLE_val();
   z=evalf_double(xyz[2],1,contextptr).DOUBLE_val();
   if (std::min(x,std::min(y,z))<0.0 || std::max(x,std::max(y,z))>1.0)
-    return generr(gettext("Invalid XYZ value(s)"));
+    return gensizeerr(gettext("Invalid XYZ value(s)"));
   double r,g,b;
   xyz2rgb(x*0.9531874-y*0.0265906+z*0.0238731,
          -x*0.0382467+y*1.0288406+z*0.0094060,
@@ -17120,13 +17175,13 @@ void blend(double r1,double g1,double b1,double r2,double g2,double b2,double t,
   t=std::max(0.,std::min(1.,t));
   xyz2rgb((1.-t)*x1+t*x2,(1.-t)*y1+t*y2,(1.-t)*z1+t*z2,r,g,b);
 }
-void blend(uchar r1,uchar g1,uchar b1,uchar r2,uchar g2,uchar b2,double t,uchar &r,uchar &g,uchar &b) {
+void blend(unsigned char r1,unsigned char g1,unsigned char b1,unsigned char r2,unsigned char g2,unsigned char b2,double t,unsigned char &r,unsigned char &g,unsigned char &b) {
   double R,G,B;
   t=std::max(0.,std::min(1.,t));
   blend(r1/255.,g1/255.,b1/255.,r2/255.,g2/255.,b2/255.,t,R,G,B);
-  r=static_cast<uchar>(std::max(0,std::min(255,(int)std::floor(R*255+.5))));
-  g=static_cast<uchar>(std::max(0,std::min(255,(int)std::floor(G*255+.5))));
-  b=static_cast<uchar>(std::max(0,std::min(255,(int)std::floor(B*255+.5))));
+  r=static_cast<unsigned char>(std::max(0,std::min(255,(int)std::floor(R*255+.5))));
+  g=static_cast<unsigned char>(std::max(0,std::min(255,(int)std::floor(G*255+.5))));
+  b=static_cast<unsigned char>(std::max(0,std::min(255,(int)std::floor(B*255+.5))));
 }
 int hex2chn(int pal,int col,int chn) {
   return (builtin_colormaps[(pal-COLORMAP_OFFSET)*COLORMAP_SIZE+col]>>(16-chn*8))&255;
@@ -17154,7 +17209,7 @@ bool colormap_color_rgb(int pal,double t,int &c,int &r,int &g,int &b,GIAC_CONTEX
     t=1.0-t;
   if (cmap==1) { // FLTK gray ramp
     c=(int)std::floor(32*t+55*(1-t)+.5);
-    uchar R,G,B;
+    unsigned char R,G,B;
     if (index2rgb(c,R,G,B)) {
       r=R; g=G; b=B;
       return true;

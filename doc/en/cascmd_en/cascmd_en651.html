@@ -4,60 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Histograms</title>
+<title>Frequencies
+</title>
 </head>
 <body >
 <a href="cascmd_en650.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en652.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="sec1576" class="subsection">19.1.10  Histograms</h3>
-<p>Given a list of intervals and a number of points in each interval,
-such as is given by the output of the <span style="font-family:monospace">classes</span> command
-(see Section <a href="cascmd_en650.html#ssec%3Aclasses">19.1.9</a>), a histogram is a graph consisting of a
-box over each interval, where the height of each box is proportional
-to the number of points and the total area of the boxes is 1.
-The <span style="font-family:monospace">histogram</span><a id="hevea_default1269"></a>
-or <span style="font-family:monospace">histogramme</span><a id="hevea_default1270"></a>
-command draws histograms. Data does not have to be sorted.</p><p>With sorted data:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">histogram</span> takes one mandatory argument and one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list whose elements are lists of a range <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>
-and a positive integer.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">color=</span><span style="font-style:italic">col</span>, where <span style="font-style:italic">col</span> is a color object
-(see Section <a href="cascmd_en611.html#ssec%3Acolors">18.1.3</a>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">histogram(</span><span style="font-style:italic">L</span> ⟨,<span style="font-family:monospace">color=</span><span style="font-style:italic">col</span> ⟩<span style="font-family:monospace">)</span>
-draws a histogram for the data. If <span style="font-style:italic">col</span> is provided,
-then the fill color is changed from grey to <span style="font-style:italic">col</span>.
-</li></ul><h4 id="sec1577" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[0,1],[1,4],[2,3],[3,2],[4,1]])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en129.png">
-
-</div><p>With unsorted data:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">histogram</span> takes one mandatory argument and two
-optional arguments.
-<ul class="itemize"><li class="li-itemize">
+<h3 id="ssec:frequencies" class="subsection">20.1.12  Frequencies
+</h3>
+<p>The frequency of a number in a list is the fraction of the list equal
+to the number. The <span style="font-family:monospace">frequencies</span><a id="hevea_default1274"></a>
+or <span style="font-family:monospace">frequences</span><a id="hevea_default1275"></a>
+command finds the frequencies of the numbers in a list.</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">frequencies</span> takes
 <span style="font-style:italic">L</span>, a list of numbers.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, numbers.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">color=</span><span style="font-style:italic">col</span>, where <span style="font-style:italic">col</span>
-is a color object (see Section <a href="cascmd_en611.html#ssec%3Acolors">18.1.3</a>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">histogram(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>⟩ ⟨,<span style="font-family:monospace">color=</span><span style="font-style:italic">col</span> ⟩<span style="font-family:monospace">)</span>
-returns the histogram for <span style="font-family:monospace">classes(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>⟩<span style="font-family:monospace">)</span> (see
-Section <a href="cascmd_en650.html#ssec%3Aclasses">19.1.9</a>). If <span style="font-style:italic">col</span> is given, then the fill color
-is changed from grey to <span style="font-style:italic">col</span>.
-</li></ul><h4 id="sec1578" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,2.5,2.5,3],0.5,0.75,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">brown</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
+</li><li class="li-itemize"><span style="font-family:monospace">frequencies(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> returns a list whose elements are
+the numbers in the list and their frequencies.
+</li></ul><h4 id="sec1588" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">frequencies</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,1,1,2,1,2,4,3,3])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en130.png">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.4</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.3</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.1</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+You can use this, for example, to simulate flipping a fair coin and
+seeing how many times each side appears; to flip a coin 1000 times,
+for example:
 
-</div>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">frequencies</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)</span></span><span style="font-weight:bold"><span style="color:#BF0000">$</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">k</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1..1000)])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.484</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.516</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+(See Section <a href="cascmd_en665.html#ssec%3Arand">20.3.2</a> for information on <span style="font-family:monospace">rand</span>.)</p>
 <hr>
 <a href="cascmd_en650.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>

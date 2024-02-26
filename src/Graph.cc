@@ -5747,7 +5747,7 @@ namespace xcas {
     redraw();
     context * contextptr=hp?hp->contextptr:get_context(this);
     //if (plot_instructions.empty()) plot_instructions=gen2vecteur(g);
-    if (is_zero(plot_instructions.back())) // workaround for 0 at end in geometry (?)
+    if (!plot_instructions.empty() && is_zero(plot_instructions.back())) // workaround for 0 at end in geometry (?)
       plot_instructions.pop_back();
     gen sol(undef);
     if (operation==1 || operation==8){

@@ -4,141 +4,103 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.29+5 of 2017-05-18">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Generating random matrices</title>
+<title>Uniform distribution
+</title>
 </head>
 <body >
 <a href="cascmd_en670.html"><img src="previous_motif.gif" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.gif" alt="Up"></a>
 <a href="cascmd_en672.html"><img src="next_motif.gif" alt="Next"></a>
 <hr>
-<h3 id="ssec:randmatrix" class="subsection">19.3.6  Generating random matrices</h3>
-<p>The <span style="font-family:monospace">randmatrix</span><a id="hevea_default1325"></a>
-or <span style="font-family:monospace">ranm</span><a id="hevea_default1326"></a>
-or <span style="font-family:monospace">randMat</span><a id="hevea_default1327"></a>
-command produces random vectors and matrices.
-(See also Section <a href="cascmd_en359.html#ssec%3Aranm1">11.1.28</a> and Section <a href="cascmd_en670.html#ssec%3Arandvector">19.3.5</a>.)
+<h3 id="ssec:uniform" class="subsection">20.4.2  Uniform distribution
+</h3>
+<h5 id="sec1664" class="paragraph">The probability density function for the uniform distribution.</h5>
+<p>
+Given two values <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span> with <span style="font-style:italic">a</span> &lt; <span style="font-style:italic">b</span>, the uniform distribution on
+[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] has density function 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>) for <span style="font-style:italic">x</span> in [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>]. The
+<span style="font-family:monospace">uniform</span><a id="hevea_default1330"></a>
+(or <span style="font-family:monospace">uniformd</span><a id="hevea_default1331"></a>) command
+computes this density function.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">randmatrix</span> takes one mandatory argument and three
-optional arguments:
+<span style="font-family:monospace">uniform</span> (or <span style="font-family:monospace">uniformd</span>) takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">p</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, a range.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">distr</span>, a distribution, which can be one
-of:
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers with <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">uniform(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> (or <span style="font-family:monospace">uniformd(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span>)
+returns the value of the probability density function for the
+uniform distribution from <span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>, namely 1/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
+</li></ul><h4 id="sec1665" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.2,3.5,2.8)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.769230769231
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1666" class="paragraph">The cumulative distribution function for the uniform distribution.</h5>
+<p>
+The <span style="font-family:monospace">uniform_cdf</span><a id="hevea_default1332"></a>
+or <span style="font-family:monospace">uniformd_cdf</span><a id="hevea_default1333"></a>
+command finds the cumulative distribution
+function for the uniform distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">uniform_cdf</span> takes three mandatory arguments and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span> (see Section <a href="cascmd_en667.html#ssec%3Arand">19.3.2</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">’</span>
-or <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>, for a binomial distribution
-(see Section <a href="cascmd_en674.html#ssec%3Abinomial">19.4.3</a> and Section <a href="cascmd_en668.html#ssec%3Arandbinomial">19.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">’</span> or
-<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)’</span> for a multinomial distribution
-(see Section <a href="cascmd_en676.html#ssec%3Amultinomial">19.4.5</a> and Section <a href="cascmd_en668.html#ssec%3Arandmultinomial">19.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson,
-</span>λ<span style="font-family:monospace">’</span> or <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span> for a Poisson
-distribution (see Section <a href="cascmd_en677.html#ssec%3Apoisson">19.4.6</a> and
-Section <a href="cascmd_en668.html#ssec%3Arandpoisson">19.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’normald(</span>µ,σ<span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’normald,</span>µ,σ<span style="font-family:monospace">’</span> or <span style="font-family:monospace">’randnorm(</span>µ,σ<span style="font-family:monospace">)’</span>
-for a normal distribution (see Section <a href="cascmd_en678.html#ssec%3Anormald">19.4.7</a> and
-Section <a href="cascmd_en668.html#ssec%3Arandnorm">19.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span> or
-<span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span> for an exponential distribution (see
-Section <a href="cascmd_en686.html#ssec%3Aexponentiald">19.4.15</a> and Section <a href="cascmd_en668.html#ssec%3Arandexp">19.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span>,<span style="font-style:italic">m</span><span style="font-family:monospace">’</span> or
-<span style="font-family:monospace">’randfisher(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">m</span><span style="font-family:monospace">)’</span> for a Fisher-Snédécor
-distribution (see Section <a href="cascmd_en681.html#ssec%3Afishersnedecor">19.4.10</a> and
-Section <a href="cascmd_en668.html#ssec%3Arandfisher">19.3.3</a>).
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers with <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a real number.
+</li><li class="li-itemize">Optionally <span style="font-style:italic">y</span>, a real number. 
 </li></ul>
-Note that <span style="font-style:italic">distr</span> is in quotes.
+</li><li class="li-itemize"><span style="font-family:monospace">uniform_cdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the
+cumulative distribution function for the uniform distribution from
+<span style="font-style:italic">a</span> to <span style="font-style:italic">b</span>, which in this case will be (<span style="font-style:italic">x</span>−<span style="font-style:italic">a</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
+</li><li class="li-itemize"><span style="font-family:monospace">uniform_cdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
+<span style="font-family:monospace">Prob</span>(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>), which in this case will be
+(<span style="font-style:italic">y</span>−<span style="font-style:italic">x</span>)/(<span style="font-style:italic">b</span>−<span style="font-style:italic">a</span>).
+</li></ul><h4 id="sec1667" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,4,3.2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.6
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,4,3,3.2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1668" class="paragraph">The inverse distribution function for the uniform distribution.</h5>
+<p>
+The <span style="font-family:monospace">uniform_icdf</span><a id="hevea_default1334"></a>
+or <span style="font-family:monospace">uniformd_icdf</span><a id="hevea_default1335"></a>
+command computes the inverse distribution
+for the uniform distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">uniform_icdf</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, real numbers with <span style="font-style:italic">a</span>&lt;<span style="font-style:italic">b</span>.
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a real number between 0 and 1.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a vector of
-length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
-{−99,−98,…,98,99} with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix
-whose elements are integers chosen randomly from {−99,…,99} with
-equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>,<span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix
-whose elements are integers chosen randomly from [0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0]
-is <span style="font-style:italic">a</span> is negative) with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>,<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span>
-matrix whose elements are real numbers chosen randomly from
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">distr</span><span style="font-family:monospace">)</span>
-returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
-randomly according to distribution <span style="font-style:italic">distr</span>.
-</li></ul><h4 id="sec1654" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">uniform_icdf(</span><span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the value of the
+inverse distribution function to the uniform distribution from <span style="font-style:italic">a</span>
+to <span style="font-style:italic">b</span>; namely the value of <span style="font-style:italic">x</span> for which <span style="font-style:italic">h</span>=Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span><sub>)</sub>.
+</li></ul><h4 id="sec1669" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">uniform_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,.6)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">−48,54,28,−51,63</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">40</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−74</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−87</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">40</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−19</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">20</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,10)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0..1)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.384355471935</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.655490326229</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.924850208685</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.159429819323</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.952957109548</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.220945354551</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,'</span></span><span style="font-weight:bold"><span style="color:#BF0000">randnorm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1)')</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.17670501195</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.653882567048</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.94543112983</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.46150672679</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.19251320854</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.44211638655</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+2.6
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>
