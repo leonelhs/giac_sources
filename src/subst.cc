@@ -502,7 +502,7 @@ namespace giac {
 	return true;
       }
       if (has_subst(e._SYMBptr->feuille,i,newi,newe,quotesubst,contextptr)){
-	if (quotesubst || e._SYMBptr->sommet.quoted())
+	if (quotesubst || e._SYMBptr->sommet.quoted())// || e._SYMBptr->sommet==at_abs) // avoid eval of abs because it calls sturmsign/limit/subst?
 	  newe=symbolic(e._SYMBptr->sommet,newe);
 	else
 	  newe=e._SYMBptr->sommet(newe,contextptr); 
@@ -1047,7 +1047,7 @@ namespace giac {
   }
 
   gen hyp2exp(const gen & e,GIAC_CONTEXT){
-    return subst(e,sinhcoshtanh_tab,hyp2exp_tab,false,contextptr);
+    return subst(e,sinhcoshtanh_tab,hyp2exp_tab,true,contextptr);
   }
   gen _hyp2exp(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;

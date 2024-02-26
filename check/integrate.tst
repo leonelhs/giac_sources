@@ -1,4 +1,4 @@
-0,0,0,1,0,[1e-10,1e-17],12,[1,50,0,25],0,0,0,"Warning: some commands like subs might change arguments order",
+0,0,0,1,0,[1e-10,1e-17],12,[1,50,0,25],0,0,0,"Attention: certaines commandes comme subs ont l'ordre des arguments inverse",
 -15646785/134217728*ln(abs(x-1))+15646785/134217728*ln(abs(x+1))+15646785/67108864*atan(x)-(46940355*x^33-402345900*x^29+1521599040*x^25-3324596364*x^21+4608419886*x^17-4177677924*x^13+2449584536*x^9-874703844*x^5+161168823*x)/(301989888*(x^4-1)^9),
 1/3*x^3-x^2+7*x-3/(x+1)-6*ln(abs(x+1)),
 1/4*ln(abs(x-1))-1/4*ln(abs(x+1))-2*1/4/(x+1),

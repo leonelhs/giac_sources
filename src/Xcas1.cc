@@ -1493,7 +1493,24 @@ namespace xcas {
       return '+'+res+'&';
     }
     if (const Figure * f = dynamic_cast<const Figure *>(o)){
+#if 1
+      History_Pack * hp=f->geo->hp;
+      string s;
+      for (int i=0;i<hp->children();++i){
+        s += unlocalize(hp->value(i));
+        if (!s.empty() && s[s.size()-1]!=';' && i!=hp->children()-1)
+          s += ";";
+        s += '\n';
+      }
+      res = replace_html5(s);
+      int xpos=(pos%2)*400;
+      int ypos=(pos/2)*400;
+      ++pos;
+      string spos=print_INT_(xpos)+","+print_INT_(ypos)+",";
+      return "cas="+spos+res+'&';
+#else
       res = widget_html5(f->geo->hp,pos);
+#endif
       return res;
     }
     if (const Logo * l=dynamic_cast<const Logo *>(o)){

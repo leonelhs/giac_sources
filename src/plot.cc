@@ -196,7 +196,7 @@ namespace giac {
       return abs(g,contextptr);
   }
 
-  gen abs_norm(const gen & a,const gen & b,GIAC_CONTEXT){
+  gen abs_norm(const gen & a,const gen & b,bool ratnorm,GIAC_CONTEXT){
     if (a.type==_VECT)
       return abs_norm(b-a,contextptr);
     gen ax,ay,bx,by;
@@ -4235,7 +4235,7 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
   static define_unary_function_eval (__centre,&_centre,_centre_s);
   define_unary_function_ptr5( at_centre ,alias_at_centre,&__centre,0,true);
 
-  gen _rayon(const gen & args,GIAC_CONTEXT){
+  gen rayon(const gen & args,bool square,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
     gen a(args);
     if (a.is_symb_of_sommet(at_equal)){
@@ -4247,13 +4247,28 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     if (a.type==_VECT && a._VECTptr->size()==2)
       a=a._VECTptr->front(); // for hyperbola (2 branchs)
     gen centre,rayon;
-    if (!centre_rayon(a,centre,rayon,true,contextptr,true))
+    if (!centre_rayon(a,centre,rayon,!square,contextptr,true))
       return false;
+    if (square){
+      gen r,i;
+      reim(rayon,r,i,contextptr);
+      return pow(r,2,contextptr)+pow(i,2,contextptr);
+    }
     return rayon;
+  }
+  gen _rayon(const gen & args,GIAC_CONTEXT){
+    return rayon(args,false,contextptr);
   }
   static const char _rayon_s []="radius";
   static define_unary_function_eval (__rayon,&_rayon,_rayon_s);
   define_unary_function_ptr5( at_rayon ,alias_at_rayon,&__rayon,0,true);
+
+  gen _radius2(const gen & args,GIAC_CONTEXT){
+    return rayon(args,true,contextptr);
+  }
+  static const char _radius2_s []="radius2";
+  static define_unary_function_eval (__radius2,&_radius2,_radius2_s);
+  define_unary_function_ptr5( at_radius2 ,alias_at_radius2,&__radius2,0,true);
 
   gen _milieu(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
@@ -4834,10 +4849,13 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
       return gensizeerr(contextptr);  
     //grad
     int mode=get_mode_set_radian(contextptr);
+    gen theta= cst_pi/n;
+    if (mode)
+      theta=evalf(theta,1,contextptr);
     if (n>0){
       context tmp;
       gen c;
-      c=(e+f)/2+nd/(2*tan(cst_pi/n,&tmp));
+      c=(e+f)/2+nd/(2*tan(theta,&tmp));
       f=e;
       e=c;
       ef=f-e;
@@ -4854,7 +4872,7 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     vecteur w;
     w.push_back(f);
     for (int i=1;i<n;++i){
-      w.push_back(e+ef*cos(2*i*cst_pi/n,contextptr)+nd*sin(2*i*cst_pi/n,contextptr));
+      w.push_back(e+ef*cos(2*i*theta,contextptr)+nd*sin(2*i*theta,contextptr));
     }
     w.push_back(f);
     //grad
@@ -5054,7 +5072,8 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     if (e==f || e==g)
       return gensizeerr(contextptr);
     // direction (f-e)+(g-e)*||f-e||/||g-e||
-    E=f+(g-e)*rdiv(abs_norm(f,e,contextptr),abs_norm(g,e,contextptr),contextptr);
+#if 0
+    E=f+(g-e)*rdiv(abs_norm(f,e,false,contextptr),abs_norm(g,e,false,contextptr),contextptr);
     if (E==e){
       if (interieur)
 	E=e+cst_i*(f-e);
@@ -5066,6 +5085,10 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
 	E=e+cst_i*(E-e);
     }
     return symb_segment(e,E,attributs,_LINE__VECT,contextptr);
+#else
+    E=(f-e)*abs_norm(g,e,true,contextptr)+(interieur?(g-e):(e-g))*abs_norm(f,e,true,contextptr);
+    return symb_segment(e,e+E,attributs,_LINE__VECT,contextptr);    
+#endif
   }
 
   gen _bissectrice(const gen & args,GIAC_CONTEXT){
@@ -5200,7 +5223,7 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     return args;
   }
 
-  gen _circonscrit(const gen & arg_orig,GIAC_CONTEXT){
+  gen circonscrit(const gen & arg_orig,bool centeronly,GIAC_CONTEXT){
     if ( arg_orig.type==_STRNG && arg_orig.subtype==-1) return  arg_orig;
     vecteur attributs(1,default_color(contextptr));
     gen args(inscrit_circonscrit(arg_orig,attributs,contextptr));
@@ -5223,12 +5246,24 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     if (w.empty())
       return gensizeerr(contextptr);
     h=remove_at_pnt(w.front());
+    if (centeronly)
+      return pnt_attrib(h,attributs,contextptr);
     return pnt_attrib(symbolic(at_cercle,gen(makevecteur(makevecteur(e,2*h-e),0,2*cst_pi),_PNT__VECT)),attributs,contextptr); 
     // was return _cercle(makevecteur(h,e-remove_at_pnt(h)),contextptr);
+  }
+  gen _circonscrit(const gen & arg_orig,GIAC_CONTEXT){
+    return circonscrit(arg_orig,false,contextptr);
   }
   static const char _circonscrit_s []="circumcircle";
   static define_unary_function_eval (__circonscrit,&_circonscrit,_circonscrit_s);
   define_unary_function_ptr5( at_circonscrit ,alias_at_circonscrit,&__circonscrit,0,true);
+
+  gen _circumcenter(const gen & arg_orig,GIAC_CONTEXT){
+    return circonscrit(arg_orig,true,contextptr);
+  }
+  static const char _circumcenter_s []="circumcenter";
+  static define_unary_function_eval (__circumcenter,&_circumcenter,_circumcenter_s);
+  define_unary_function_ptr5( at_circumcenter ,alias_at_circumcenter,&__circumcenter,0,true);
 
   gen _orthocentre(const gen & arg_orig,GIAC_CONTEXT){
     if ( arg_orig.type==_STRNG && arg_orig.subtype==-1) return  arg_orig;
@@ -5277,7 +5312,7 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     return true;
   }
 
-  static gen inscrit(const gen & args,const vecteur & attributs,bool exinscrit,GIAC_CONTEXT){
+  static gen inscrit(const gen & args,const vecteur & attributs,bool exinscrit,bool centeronly,GIAC_CONTEXT){
     vecteur v(*args._VECTptr),w;
     // /* new code using barycentre A,a B,c C,c 
     gen A,B,C;
@@ -5295,6 +5330,8 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     gen c=sqrt(c2,contextptr);
     gen I=(a*A+b*B+c*C)/(a+b+c);
     I=normal(I,contextptr);
+    if (centeronly)
+      return pnt_attrib(I,attributs,contextptr);
     gen AB(B-A), AC(C-A);
     gen surface=re(AB,contextptr)*im(AC,contextptr)-im(AB,contextptr)*re(AC,contextptr);
     gen r=normal(surface/(a+b+c),contextptr);
@@ -5370,11 +5407,23 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     gen args=inscrit_circonscrit(arg_orig,attributs,contextptr);
     if (is_undef(args) || args.type!=_VECT || args._VECTptr->size()<3)
       return args;
-    return inscrit(args,attributs,false,contextptr);
+    return inscrit(args,attributs,false,false,contextptr);
   }
   static const char _inscrit_s []="incircle";
   static define_unary_function_eval (__inscrit,&_inscrit,_inscrit_s);
   define_unary_function_ptr5( at_inscrit ,alias_at_inscrit,&__inscrit,0,true);
+
+  gen _incenter(const gen & arg_orig,GIAC_CONTEXT){
+    if ( arg_orig.type==_STRNG && arg_orig.subtype==-1) return  arg_orig;
+    vecteur attributs(1,default_color(contextptr));
+    gen args=inscrit_circonscrit(arg_orig,attributs,contextptr);
+    if (is_undef(args) || args.type!=_VECT || args._VECTptr->size()<3)
+      return args;
+    return inscrit(args,attributs,false,true,contextptr);
+  }
+  static const char _incenter_s []="incenter";
+  static define_unary_function_eval (__incenter,&_incenter,_incenter_s);
+  define_unary_function_ptr5( at_incenter ,alias_at_incenter,&__incenter,0,true);
 
   gen _exinscrit(const gen & arg_orig,GIAC_CONTEXT){
     if ( arg_orig.type==_STRNG && arg_orig.subtype==-1) return  arg_orig;
@@ -5382,11 +5431,23 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
     gen args=inscrit_circonscrit(arg_orig,attributs,contextptr);
     if (is_undef(args) || args.type!=_VECT || args._VECTptr->size()<3)
       return args;
-    return inscrit(args,attributs,true,contextptr);
+    return inscrit(args,attributs,true,false,contextptr);
   }
   static const char _exinscrit_s []="excircle";
   static define_unary_function_eval (__exinscrit,&_exinscrit,_exinscrit_s);
   define_unary_function_ptr5( at_exinscrit ,alias_at_exinscrit,&__exinscrit,0,true);
+
+  gen _excenter(const gen & arg_orig,GIAC_CONTEXT){
+    if ( arg_orig.type==_STRNG && arg_orig.subtype==-1) return  arg_orig;
+    vecteur attributs(1,default_color(contextptr));
+    gen args=inscrit_circonscrit(arg_orig,attributs,contextptr);
+    if (is_undef(args) || args.type!=_VECT || args._VECTptr->size()<3)
+      return args;
+    return inscrit(args,attributs,true,true,contextptr);
+  }
+  static const char _excenter_s []="excenter";
+  static define_unary_function_eval (__excenter,&_excenter,_excenter_s);
+  define_unary_function_ptr5( at_excenter ,alias_at_excenter,&__excenter,0,true);
 
   gen _isobarycentre(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
@@ -6133,22 +6194,31 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
 
   gen _aire(const gen & args,GIAC_CONTEXT){
     if ( args.type==_STRNG && args.subtype==-1) return  args;
-    if (args.type==_VECT && !args._VECTptr->empty() && args._VECTptr->front().is_symb_of_sommet(at_pnt) && args._VECTptr->back().is_symb_of_sommet(at_pnt)){
-      gen res=remove_at_pnt(args._VECTptr->front());
-      bool loop=true;
-      if (res.type==_VECT && res.subtype==_POINT__VECT)
-	loop=false;
-      else if (res.type<_IDNT)
-	loop=false;
-      else if (res.type==_SYMB && has_i(res))
-	loop=false;
-      if (res.is_symb_of_sommet(at_curve))
-	loop=true; /* workaround for ggb area([circle(x^(2)+4y^(2)=1)]) */
-      if (loop){
-	res=0;
-	for (unsigned i=0;i<args._VECTptr->size();++i)
-	  res += _aire((*args._VECTptr)[i],contextptr);
-	return res;
+    if (args.type==_VECT && !args._VECTptr->empty()){
+      if (args._VECTptr->front().is_symb_of_sommet(at_pnt) && args._VECTptr->back().is_symb_of_sommet(at_pnt)){
+        gen res=remove_at_pnt(args._VECTptr->front());
+        bool loop=true;
+        if (res.type==_VECT && res.subtype==_POINT__VECT)
+          loop=false;
+        else if (res.type<_IDNT)
+          loop=false;
+        else if (res.type==_SYMB && has_i(res))
+          loop=false;
+        if (res.is_symb_of_sommet(at_curve))
+          loop=true; /* workaround for ggb area([circle(x^(2)+4y^(2)=1)]) */
+        if (loop){
+          res=0;
+          for (unsigned i=0;i<args._VECTptr->size();++i)
+            res += _aire((*args._VECTptr)[i],contextptr);
+          return res;
+        }
+      }
+      // plotinequation answer
+      if (args._VECTptr->front().is_symb_of_sommet(at_equal) && args._VECTptr->size()>=3){
+        gen res=0;
+        for (unsigned i=2;i<args._VECTptr->size();++i)
+          res += abs(_aire((*args._VECTptr)[2],contextptr),contextptr);
+        return res;
       }
     }
     gen g=args;
@@ -16853,13 +16923,26 @@ gen _vers(const gen & g,GIAC_CONTEXT){
       int ws=int(w.size());
       a=w[0];
       gen c=v[2];
-      gen d=distance2pp(a,c,contextptr);
-      for (int i=1;i<ws;++i){
-	gen dcur=distance2pp(w[i],c,contextptr);
-	if (is_strictly_greater(d,dcur,contextptr)){
-	  d=dcur;
-	  a=w[i];
-	}
+      if (c.type==_VECT){ // intersection not in list
+        vecteur v=*c._VECTptr;
+        for (int i=0;i<v.size();++i)
+          v[i]=normal(remove_at_pnt(v[i]),contextptr);
+        for (int i=0;i<ws;++i){
+          if (!equalposcomp(v,remove_at_pnt(w[i]))){
+            a=w[i];
+            break;
+          }
+        }
+      }
+      else { // intersection near point
+        gen d=distance2pp(a,c,contextptr);
+        for (int i=1;i<ws;++i){
+          gen dcur=distance2pp(w[i],c,contextptr);
+          if (is_strictly_greater(d,dcur,contextptr)){
+            d=dcur;
+            a=w[i];
+          }
+        }
       }
     }
     else

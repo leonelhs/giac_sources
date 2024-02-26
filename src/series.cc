@@ -226,7 +226,7 @@ namespace giac {
 
 
   bool ptruncate(sparse_poly1 & p,const gen & ordre,GIAC_CONTEXT){
-    if ( (series_flags(contextptr) & 0x2) || p.empty() ){
+    if ( (series_flags(contextptr) & 0x2) && !p.empty() ){
       sparse_poly1::iterator it=p.begin(),itend=p.end();
       gen first=it->exponent;
       for (;it!=itend;++it){
@@ -243,7 +243,7 @@ namespace giac {
   }
 
   void poly_truncate(sparse_poly1 & p,int ordre,GIAC_CONTEXT){
-    if ( (series_flags(contextptr) & 0x2) || p.empty() ){
+    if ( (series_flags(contextptr) & 0x2) && !p.empty() ){
       sparse_poly1::iterator it=p.begin(),itend=p.end();
       for (;it!=itend;++it){
 	if (is_undef(it->coeff))
@@ -3035,7 +3035,7 @@ namespace giac {
     }
     // subst in original expression and make the asymptotic expansion
     double ordre=begin_ordre;
-    f=subst(ecopy,faster_var,faster_var_subst,false,contextptr);
+    f=subst(ecopy,faster_var,faster_var_subst,true,contextptr);
     if (!dont_invert)
       f=subst(f,w,inv(w,contextptr),false,contextptr);
     if (faster_var.front().is_symb_of_sommet(at_exp)){

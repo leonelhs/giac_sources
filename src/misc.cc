@@ -1135,21 +1135,43 @@ namespace giac {
   static gen sqrfree(const gen & g,const vecteur & l,GIAC_CONTEXT){
     if (g.type!=_POLY)
       return r2sym(g,l,contextptr);
+    polynome p=*g._POLYptr;
+    gen res(plus_one);
+    if (l.size()>1){ // recursive call on content
+      polynome c=lgcd(p);
+      p=p/c;
+      res=sqrfree(c.trunc1(),vecteur(l.begin()+1,l.end()),contextptr);
+    }
+    if (l.size()==1 && l[0].type==_VECT && l[0]._VECTptr->size()>1){ // recursive call on content
+      polynome c=lgcd(p);
+      p=p/c;
+      res=sqrfree(c.trunc1(),vecteur(1,vecteur(l[0]._VECTptr->begin()+1,l[0]._VECTptr->end())),contextptr);
+    }
     factorization f(sqff(*g._POLYptr));
     factorization::const_iterator it=f.begin(),itend=f.end();
-    gen res(plus_one);
     for (;it!=itend;++it)
       res=res*pow(r2e(it->fact,l,contextptr),it->mult);
     return res;
   }
-  static vecteur sqrfree(const gen & g,const vecteur & l,int mult,GIAC_CONTEXT){
+  vecteur sqrfree(const gen & g,const vecteur & l,int mult,GIAC_CONTEXT){
     vecteur res;
     if (g.type!=_POLY){
       if (is_one(g))
 	return res;
       return vecteur(1,makevecteur(r2sym(g,l,contextptr),mult));
     }
-    factorization f(sqff(*g._POLYptr));
+    polynome p=*g._POLYptr;
+    if (l.size()>1){ // recursive call on content
+      polynome c=lgcd(p);
+      p=p/c;
+      res=sqrfree(c.trunc1(),vecteur(l.begin()+1,l.end()),mult,contextptr);
+    }
+    if (l.size()==1 && l[0].type==_VECT && l[0]._VECTptr->size()>1){ // recursive call on content
+      polynome c=lgcd(p);
+      p=p/c;
+      res=sqrfree(c.trunc1(),vecteur(1,vecteur(l[0]._VECTptr->begin()+1,l[0]._VECTptr->end())),mult,contextptr);
+    }
+    factorization f(sqff(p));
     factorization::const_iterator it=f.begin(),itend=f.end();
     for (;it!=itend;++it){
       const polynome & p=it->fact;
@@ -2045,7 +2067,22 @@ namespace giac {
   static define_unary_function_eval (__order,&_order,_order_s);
   define_unary_function_ptr5( at_order ,alias_at_order,&__order,0,true);
 
-  // a faire: vpotential, signtab
+  // a faire: signtab
+  bool is_potential(const vecteur & fv,const vecteur & xv,gen & res,GIAC_CONTEXT){
+    int s=int(fv.size());
+    if (s!=xv.size())
+      return false;
+    for (int i=0;i<s;++i){
+      for (int j=i+1;j<s;++j){
+	if (!is_zero(simplify(derive(fv[i],xv[j],contextptr)-derive(fv[j],xv[i],contextptr),contextptr)))
+	  return false;
+      }
+    }
+    for (int i=0;i<s;++i){
+      res=res+integrate_gen(simplify(fv[i]-derive(res,xv[i],contextptr),contextptr),xv[i],contextptr);
+    }
+    return true;
+  }
   gen _potential(const gen & g,GIAC_CONTEXT){
     if ( g.type==_STRNG && g.subtype==-1) return  g;
     if ( (g.type!=_VECT) || (g._VECTptr->size()!=2) )
@@ -2059,20 +2096,12 @@ namespace giac {
       return gensizeerr(contextptr);
     vecteur & fv=*f._VECTptr;
     vecteur & xv=*x._VECTptr;
-    int s=int(fv.size());
-    if (unsigned(s)!=xv.size())
+    if (fv.size()!=xv.size())
       return gendimerr(contextptr);
-    for (int i=0;i<s;++i){
-      for (int j=i+1;j<s;++j){
-	if (!is_zero(simplify(derive(fv[i],xv[j],contextptr)-derive(fv[j],xv[i],contextptr),contextptr)))
-	  return gensizeerr(gettext("Not a potential"));
-      }
-    }
     gen res;
-    for (int i=0;i<s;++i){
-      res=res+integrate_gen(simplify(fv[i]-derive(res,xv[i],contextptr),contextptr),xv[i],contextptr);
-    }
-    return res;
+    if (is_potential(fv,xv,res,contextptr))
+      return res;
+    return gensizeerr(gettext("Not a potential"));
   }
   static const char _potential_s []="potential";
   static define_unary_function_eval_quoted (__potential,&_potential,_potential_s);

@@ -1,4 +1,4 @@
-0,0,0,1,0,[1e-10,1e-17],12,[1,50,0,25],0,0,0,"Warning: some commands like subs might change arguments order",
+0,0,0,1,0,[1e-10,1e-17],12,[1,50,0,25],0,0,0,"Attention: certaines commandes comme subs ont l'ordre des arguments inverse",
 -10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-10.0,10.0,-1.4,1.1,1,0.0,1.0,1,
 "Done",
 parameter([Ax,-10.0,10.0,-1,0]),

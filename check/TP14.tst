@@ -1,4 +1,4 @@
-"Warning: some commands like subs might change arguments order",
+"Attention: certaines commandes comme subs ont l'ordre des arguments inverse",
 18*x^(n+1)/(x-1)-18/(x-1),
  (n)->poly2symb([1,seq(rand(20),i=(0 .. (n-1)))],x),
 x^18+44*x^17+754*x^16+6506*x^15+32322*x^14+111634*x^13+294264*x^12+528677*x^11+814432*x^10+1268982*x^9+1923475*x^8+2342663*x^7+2417573*x^6+2346906*x^5+2068053*x^4+1398676*x^3+750922*x^2+345988*x+24480,

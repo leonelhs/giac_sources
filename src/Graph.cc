@@ -7172,6 +7172,125 @@ namespace xcas {
     }
   }
 
+  static void cb_Figure_ABC(Fl_Widget * m , void*) {
+    Fl_Widget * wid=Fl::focus();
+    Figure * f=find_figure(m);
+    if (f){
+      if (!f->geo->hp)
+	return;
+      History_Pack * hp=f->geo->hp;
+      int pos;
+      if (hp!=get_history_pack(wid,pos))
+        pos=hp->children()-1;
+      hp->add_entry(pos);
+      hp->set_value(pos,"A:=point(0)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"B:=point(1)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"assume(a=[0.3,-2,2,0.1])",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"assume(b=[0.6,-2,2,0.1])",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"C:=point(a,b)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"triangle(A,B,C)",true);
+    }
+  }
+
+
+  static void cb_Figure_inscrit(Fl_Widget * m , void*) {
+    Fl_Widget * wid=Fl::focus();
+    Figure * f=find_figure(m);
+    if (f){
+      if (!f->geo->hp)
+	return;
+      History_Pack * hp=f->geo->hp;
+      int pos;
+      if (hp!=get_history_pack(wid,pos))
+        pos=hp->children()-1;
+      hp->add_entry(pos);
+      hp->set_value(pos,"pointc(x):=(1+i*x)/(1-i*x)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"assume(a=[0.3,0,2,0.1])",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"assume(b=[-0.6,-2,0,0.1])",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"P1:=point(-1,display=hidden_name)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"P2:=point(pointc(a),display=hidden_name)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"P3:=point(pointc(b),display=hidden_name)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"L1:=perpendicular(P1,line(0,P1)):;",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"L2:=perpendicular(P2,line(0,P2)):;",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"L3:=perpendicular(P3,line(0,P3)):;",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"A:=single_inter(L1,L2);",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"B:=single_inter(L2,L3);",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"C:=single_inter(L3,L1);",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"triangle(A,B,C);circle(0,1)",true);
+    }
+  }
+
+
+  static void cb_Figure_circonscrit(Fl_Widget * m , void*) {
+    Fl_Widget * wid=Fl::focus();
+    Figure * f=find_figure(m);
+    if (f){
+      if (!f->geo->hp)
+	return;
+      History_Pack * hp=f->geo->hp;
+      int pos;
+      if (hp!=get_history_pack(wid,pos))
+        pos=hp->children()-1;
+      hp->add_entry(pos);
+      hp->set_value(pos,"pointc(x):=(1+i*x)/(1-i*x)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"inter_c(A,D):=reflection(projection(line(A,D),0),A); // intersection of line AD with circumcircle(A,B,C)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"assume(b=[0.3,0,2,0.1])",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"assume(c=[-0.6,-2,0,0.1])",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"A:=point(-1)",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"B:=point(pointc(b))",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"C:=point(pointc(c))",true);
+      ++pos;
+      hp->add_entry(pos);
+      hp->set_value(pos,"triangle(A,B,C);circle(0,1)",true);
+    }
+  }
+
 
   // modeplot==0 (paramplot2d), 1 (paramplot3d), 2 (plotfield), 3 (implicit), -1 (polarplot)
   int plotparam_dialog(Fl_Widget * spread_ptr,std::string & arg,int modeplot){
@@ -8089,6 +8208,9 @@ namespace xcas {
     {gettext("Add numerical value"), 0,  (Fl_Callback *) cb_NumericalEdit, 0, 0, 0, 0, 14, 56},
     {gettext("Add new entry"), 0x8006e,  (Fl_Callback *) cb_New_Input, 0, 0, 0, 0, 14, 56},
     {gettext("Add an object trace"), 0,  (Fl_Callback *) cb_Graph_Traceobject, 0, 0, 0, 0, 14, 56},
+    {gettext("Add triangle ABC"), 0,  (Fl_Callback *) cb_Figure_ABC, 0, 0, 0, 0, 14, 56},
+    {gettext("Add triangle+incircle"), 0,  (Fl_Callback *) cb_Figure_inscrit, 0, 0, 0, 0, 14, 56},
+    {gettext("Add triangle+circumcircle"), 0,  (Fl_Callback *) cb_Figure_circonscrit, 0, 0, 0, 0, 14, 56},
     {gettext("Change selection attribut"), 0,  (Fl_Callback *) cb_Figure_Change_Attributs, 0, 0, 0, 0, 14, 56},
     {gettext("Paste"), 0,  (Fl_Callback *) cb_Paste, 0, 0, 0, 0, 14, 56},
     {gettext("Delete selected levels"), 0,  (Fl_Callback *) cb_Delete, 0, 0, 0, 0, 14, 56},
