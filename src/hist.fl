@@ -904,7 +904,7 @@ Function {load_autorecover_data()} {open
     std::string configname=giac::home_directory()+giac::xcasrc();
 \#endif //
    if (!giac::is_file_available(configname.c_str())){
-    Xcas_widget_size(giac::makevecteur(14,40,90,900,550,0,0,1),0);
+    Xcas_widget_size(giac::makevecteur(18,40,90,900,550,0,0,1),0);
     FILE * f =fopen(configname.c_str(),"w");
     if (f){
       fclose(f);
@@ -932,7 +932,7 @@ Function {load_autorecover_data()} {open
 \#ifdef IPAQ // default with bandeau
      std::string configs="widget_size(12,1,1,300,240,1,2,1,";
 \#else // ifndef IPAQ, 
-     std::string configs="widget_size(14,40,90,900,550,"+giac::print_INT_(n!=0)+",2,0,";
+     std::string configs="widget_size(18,40,90,900,550,"+giac::print_INT_(n!=0)+",2,0,";
 \#endif // IPAQ
      configs += '7';
      configs += ','; 

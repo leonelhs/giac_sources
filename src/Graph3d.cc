@@ -2606,8 +2606,8 @@ namespace xcas {
 	vecteur & attrv=*v[i]._SYMBptr->feuille._VECTptr;
 	if (attrv.size()>1){
 	  gen attr=attrv[1];
-    if (attr.type==_INT_ && attr.val!=default_color(contextptr) && is_colormap_index(attr.val)){
-      pal=attr.val;
+    if (attr.type==_INT_ && attr.val!=default_color(contextptr) && is_colormap_index(attr.val & 0xffff)){
+      pal=attr.val & 0xffff;
       int N=sizeof(tabcolorcplx)/sizeof(int4);
       tabcolormap.clear(); tabcolormap.reserve(N);
       for (int i=0;i<N;++i){

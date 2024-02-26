@@ -2189,7 +2189,7 @@ namespace giac {
     }
   }
 
-#if 1 // def KHICAS
+#ifdef KHICAS
   bool read_audio(vecteur & v,int & channels,int & sample_rate,int & bits_per_sample,unsigned int & data_size){
     convert_double_int(v);
     if (v.size()>1 && v[1].type!=_VECT)

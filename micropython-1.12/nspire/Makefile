@@ -35,8 +35,8 @@ COPT = -Os -g #-fomit-frame-pointer -flto
 endif
 
 # compiler settings
-CWARN = -Wall -Werror -Wno-error=cpp -Wno-error=format
-CFLAGS = -DMICROPY_LIB $(INC) $(CWARN) -ansi -std=gnu99 $(CFLAGS_MOD) $(COPT) $(CFLAGS_EXTRA)
+CWARN = -Wall -Werror -Wno-error=cpp -Wno-error=format -Wno-error=implicit-function-declaration
+CFLAGS = -DMICROPY_LIB -mthumb-interwork  $(INC) $(CWARN) -ansi -std=gnu99 $(CFLAGS_MOD) $(COPT) $(CFLAGS_EXTRA)
 
 LDFLAGS = $(LDFLAGS_MOD) -lm $(LDFLAGS_EXTRA) -Wl,--nspireio
 

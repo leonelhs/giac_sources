@@ -1316,10 +1316,10 @@ void audio_clip::read(FILE *f,int offset,int len) {
 bool audio_clip::write(FILE *f) const {
     return false;
 }
-gen _read_wav(const gen &g,GIAC_CONTEXT){
+gen _readwav(const gen &g,GIAC_CONTEXT){
     return generr(gettext("Loading wave files is not supported"));
 }
-gen _write_wav(const gen &g,GIAC_CONTEXT){
+gen _writewav(const gen &g,GIAC_CONTEXT){
     return 0;
 }
 #else
@@ -1435,7 +1435,7 @@ bool audio_clip::write(FILE *f) const {
     return true;
 }
 
-gen _read_wav(const gen &g,GIAC_CONTEXT) {
+gen _readwav(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     const gen &fname=(g.type==_VECT && !g._VECTptr->empty())?g._VECTptr->front():g;
     if (fname.type!=_STRNG)
@@ -1474,7 +1474,7 @@ gen _read_wav(const gen &g,GIAC_CONTEXT) {
     }
 }
 
-gen _write_wav(const gen &g,GIAC_CONTEXT) {
+gen _writewav(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
     if (g.type!=_VECT || g.subtype!=_SEQ__VECT)
         return gentypeerr(contextptr);
@@ -1484,20 +1484,24 @@ gen _write_wav(const gen &g,GIAC_CONTEXT) {
     if (gv.front().type!=_STRNG)
         return generrtype(gettext("Expected a file name"));
     audio_clip *clip=audio_clip::from_gen(gv.back());
-    if (clip==NULL)
+    if (clip==NULL) try {
+        gen ad=_createwav(gv.back(),contextptr);
+        return _writewav(makesequence(gv.front(),ad),contextptr);
+    } catch (const gen &e) {
         return generrtype(_SP_BAD_SOUND_DATA);
+    }
     bool res=clip->write_wav(gv.front()._STRNGptr->c_str());
     return (int)res;
 }
 #endif
 
-static const char _read_wav_s []="read_wav";
-static define_unary_function_eval (__read_wav,&_read_wav,_read_wav_s);
-define_unary_function_ptr5( at_read_wav,alias_at_read_wav,&__read_wav,0,true);
+static const char _readwav_s []="readwav";
+static define_unary_function_eval (__readwav,&_readwav,_readwav_s);
+define_unary_function_ptr5( at_readwav,alias_at_readwav,&__readwav,0,true);
 
-static const char _write_wav_s []="write_wav";
-static define_unary_function_eval (__write_wav,&_write_wav,_write_wav_s);
-define_unary_function_ptr5( at_write_wav,alias_at_write_wav,&__write_wav,0,true);
+static const char _writewav_s []="writewav";
+static define_unary_function_eval (__writewav,&_writewav,_writewav_s);
+define_unary_function_ptr5( at_writewav,alias_at_writewav,&__writewav,0,true);
 
 bool audio_clip::write_wav(const char *fname) const {
     FILE *f=fopen(fname,"w");
@@ -1659,11 +1663,18 @@ int audio_clip::play(int pos,int len,int repeats) const {
 #endif
 #endif // HAVE_LIBAO
 
-gen _playsound(const gen &g,GIAC_CONTEXT) {
-    if (g.type==_STRNG && g.subtype==-1) return g;
+gen _playsnd(const gen &g,GIAC_CONTEXT) {
+    if (g.type==_STRNG){
+      if (g.subtype==-1) return g;
+      return _playsnd(_readwav(g,contextptr),contextptr);
+    }
     audio_clip *clip=audio_clip::from_gen((g.type==_VECT && !g._VECTptr->empty())?g._VECTptr->front():g);
-    if (clip==NULL)
+    if (clip==NULL) try {
+        gen ad=_createwav(g,contextptr);
+        return _playsnd(ad,contextptr);
+    } catch (const gen &e) {
         return generrtype(_SP_BAD_SOUND_DATA);
+    }
     int offset=0,len=rand_max2,sr=clip->sample_rate(),repeats=1;
     if (g.type==_VECT) {
         if (g.subtype!=_SEQ__VECT)
@@ -1719,9 +1730,9 @@ gen _playsound(const gen &g,GIAC_CONTEXT) {
     }
     return (int)(res==0);
 }
-static const char _playsound_s[]="playsound";
-static define_unary_function_eval (__playsound,&_playsound,_playsound_s);
-define_unary_function_ptr5(at_playsound,alias_at_playsound,&__playsound,0,true);
+static const char _playsnd_s[]="playsnd";
+static define_unary_function_eval (__playsnd,&_playsnd,_playsnd_s);
+define_unary_function_ptr5(at_playsnd,alias_at_playsnd,&__playsnd,0,true);
 
 /* Splice two audio clips. */
 gen _splice(const gen &g,GIAC_CONTEXT) {
@@ -2052,7 +2063,6 @@ bool audio_clip::get_chunk_span(int c,int offset,int len,double &fu_max,double &
     return true;
 }
 
-#if 0
 // Usage: nseconds [,rate]
 gen _soundsec(const gen & g,GIAC_CONTEXT){
     gen n,rate=44100;
@@ -2078,7 +2088,6 @@ gen _soundsec(const gen & g,GIAC_CONTEXT){
 static const char _soundsec_s[]="soundsec";
 static define_unary_function_eval (__soundsec,&_soundsec,_soundsec_s);
 define_unary_function_ptr5( at_soundsec ,alias_at_soundsec,&__soundsec,0,true);
-#endif
 
 gen _createwav(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG && g.subtype==-1) return g;
@@ -2673,7 +2682,7 @@ define_unary_function_ptr5(at_cross_correlation,alias_at_cross_correlation,&__cr
 gen _auto_correlation(const gen &g,GIAC_CONTEXT) {
     if (g.type==_STRNG) {
         if (g.subtype==-1) return g;
-        return _auto_correlation(_read_wav(g,contextptr),contextptr);
+        return _auto_correlation(_readwav(g,contextptr),contextptr);
     }
     return _cross_correlation(makesequence(g,g),contextptr);
 }

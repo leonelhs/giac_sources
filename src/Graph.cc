@@ -5745,6 +5745,9 @@ namespace xcas {
 
   void Graph2d3d::tracemode_set(int operation){
     redraw();
+#ifndef NO_STDEXCEPT
+    try {
+#endif
     context * contextptr=hp?hp->contextptr:get_context(this);
     //if (plot_instructions.empty()) plot_instructions=gen2vecteur(g);
     if (!plot_instructions.empty() && is_zero(plot_instructions.back())) // workaround for 0 at end in geometry (?)
@@ -6080,6 +6083,10 @@ namespace xcas {
       current_j=int(j+.5);
       python_compat(p,contextptr);
     }
+#ifndef NO_STDEXCEPT
+    } catch (std::runtime_error & e) { }
+#endif
+    
   }
 
   void Graph2d3d::invert_tracemode(){

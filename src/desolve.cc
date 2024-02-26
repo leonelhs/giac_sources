@@ -1301,7 +1301,8 @@ namespace giac {
 	  vecteur prv=lop(lvarx(pr,y),at_ln);
 	  gen pra,prb;
 	  if (!prv.empty() && prv[0].is_symb_of_sommet(at_ln) && is_linear_wrt(pr,prv[0],pra,prb,contextptr)){
-	    pr=_lncollect(pra*(symbolic(at_ln,parameters.back()*prv[0]._SYMBptr->feuille))+prb,contextptr);
+      pr=pra*(symbolic(at_ln,parameters.back()*prv[0]._SYMBptr->feuille))+prb;
+	    pr=_lncollect(factorcollect(pr,false,contextptr),contextptr);
 	  }
 	  else
 	    pr=parameters.back()+pr;
@@ -1555,7 +1556,7 @@ namespace giac {
   static gen point2vecteur(const gen & g_,GIAC_CONTEXT){
     if (!g_.is_symb_of_sommet(at_point))
       return g_;
-    gen g=g_._SYMBptr->feuille;
+    gen g=eval(g_._SYMBptr->feuille,1,contextptr);
     gen x,y;
     if (g.type==_VECT){
       if (g._VECTptr->size()!=2)

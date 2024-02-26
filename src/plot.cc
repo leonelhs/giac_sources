@@ -1474,7 +1474,7 @@ static vecteur densityscale(double xmin,double xmax,double ymin,double ymax,doub
 #ifndef GNUWINCE
     if (vars.type==_IDNT){ // function plot
       gen a,b;
-      if (taille(f,100)<=100 && is_linear_wrt(f,vars,a,b,contextptr))	
+      if (taille(f,100)<=100 && lop(f,at_floor).empty() && is_linear_wrt(f,vars,a,b,contextptr))	
 	return put_attributs(_segment(makesequence(function_xmin+cst_i*(a*gen(function_xmin)+b),function_xmax+cst_i*(a*gen(function_xmax)+b)),contextptr),attributs,contextptr); // replace segment by droite so that legend=... works?
       vecteur lpiece(lop(f,at_piecewise));
       if (!lpiece.empty()) lpiece=lvarx(lpiece,vars);
