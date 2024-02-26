@@ -267,7 +267,7 @@ namespace xcas {
     for (i=0;i<h;++i)
       for (j=0;j<w;++j)
         for (k=0;k<d;++k,++l)
-          ret.set_pixel(k,j,i,static_cast<uchar>(data[l] & 0xff));
+          ret.set_pixel(k,j,i,static_cast<unsigned char>(data[l] & 0xff));
     return ret;
   }
   gen load_image(const char *fname,GIAC_CONTEXT) {
