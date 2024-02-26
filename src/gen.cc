@@ -9787,7 +9787,7 @@ namespace giac {
       if (has_inf_or_undef(i))
 	return undef;
       if (*this==x__IDNT_e || *this==t__IDNT_e)
-	return i;
+	return i; // avoid warning for expressions used as function if var is x or t
       return symb_of(*this,i);
     }
   }
@@ -16952,14 +16952,14 @@ void sprint_double(char * s,double d){
   }
 
   gen nws_ans=0;
-  gen replace_ans(const gen & g){
+  gen replace_ans(const gen & g,GIAC_CONTEXT){
     if (g==at_ans)
       return nws_ans;
     if (g.type==_VECT)
-      return apply(*g._VECTptr,replace_ans);
+      return apply(*g._VECTptr,replace_ans,contextptr);
     if (g.type!=_SYMB)
       return g;
-    return symbolic(g._SYMBptr->sommet,replace_ans(g._SYMBptr->feuille));
+    return symbolic(g._SYMBptr->sommet,replace_ans(g._SYMBptr->feuille,contextptr));
   }
   
 const char * nws_caseval(const char * s){
@@ -16999,7 +16999,7 @@ const char * nws_caseval(const char * s){
     else
       g=gen(v,g.subtype);
   }
-  g=replace_ans(g);
+  g=replace_ans(g,contextptr);
 #if 0 // def EMCC
   EM_ASM({
       var value = UTF8ToString($0);

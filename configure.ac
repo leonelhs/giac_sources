@@ -42,8 +42,12 @@ AC_C_BIGENDIAN
 
 dnl Check for standard C+headers
 GINAC_STD_CXX_HEADERS
+AC_CHECK_HEADERS(regex)
+AC_CHECK_FUNCS(tgammaf)
 
 dnl CXXFLAGS="$CXXFLAGS -std=c++0x"
+dnl avoid "security" checks for vectors
+CXXFLAGS="$CXXFLAGS -U_GLIBCXX_ASSERTIONS"
 
 dnl Define DOUBLEVAL if bigendian
 if test "x$ac_cv_c_bigendian" = "xyes"; then
@@ -451,7 +455,7 @@ dnl		AC_CHECK_LIB(GLU, main)
 	AC_CHECK_LIB(fontconfig, main)
 	AC_CHECK_LIB(Xft, main,[HAVE_LIBXFT=1]) dnl  ,[], [AC_MSG_ERROR(exiting, as libXft cannot be found. Hint: you can run ./configure --disable-fltk to compile without GUI)])
         if test "$HAVE_LIBXFT" = "1" ; then
-	   AC_CHECK_LIB(Xft, main)
+           AC_CHECK_LIB(Xft, main)
 	   AC_CHECK_LIB(Xext, main)
 	   AC_CHECK_LIB(Xrender, main)
 	   AC_CHECK_LIB(fltk_gl, main)
@@ -481,7 +485,7 @@ AC_CHECK_HEADERS(vcl1/vectorclass.h)
   
 AC_CHECK_LIB(pthread,main)
 AC_CHECK_HEADERS(pthread.h)
-AC_CHECK_HEADERS(malloc.h)
+AC_CHECK_HEADERS(malloc.h,AC_CHECK_FUNCS(mallinfo))
 AC_CHECK_FUNCS(sysconf)
 AC_CHECK_LIB(rt,clock_gettime)
   

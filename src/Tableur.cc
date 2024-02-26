@@ -1773,7 +1773,7 @@ namespace xcas {
       int lignes=5;
       Fl_Group::current(0);
       w=new Fl_Window(dx,dy);
-      ltres = new Line_Type(2,2,dx/15,dy/lignes-4,_MAGENTA+_FILL_POLYGON);
+      ltres = new Line_Type(2,2,dx/15,dy/lignes-4,_MAGENTA);//+_FILL_POLYGON);
       ltres->show_pnt(true);
       ltres->show_poly(true);
       ltres->tooltip(gettext("Plot style (select a point type or width for dotted plot)"));
@@ -1828,6 +1828,11 @@ namespace xcas {
       w->end();
       change_group_fontsize(w,spread_ptr?spread_ptr->labelsize():14);
       w->resizable(w);
+    }
+    if (type==0){
+      double st=(xmax->value()-xmin->value())/50;
+      if (st<xstep->value())
+        xstep->value(st);
     }
     w->label(title.c_str());
     Flv_Table_Gen * tbl=dynamic_cast<Flv_Table_Gen *>(spread_ptr);

@@ -302,6 +302,9 @@
 /* Define if you have the 'long long' type. */
 #define HAVE_LONG_LONG 1
 
+/* Define to 1 if you have the `mallinfo' function. */
+#define HAVE_MALLINFO 1
+
 /* Define to 1 if you have the <malloc.h> header file. */
 #define HAVE_MALLOC_H 1
 
@@ -380,6 +383,9 @@
 /* Define to 1 if you have the <readline/readline.h> header file. */
 #define HAVE_READLINE_READLINE_H 1
 
+/* Define to 1 if you have the <regex> header file. */
+#define HAVE_REGEX 1
+
 /* Define to 1 if you have the `setenv' function. */
 #define HAVE_SETENV 1
 
@@ -452,6 +458,9 @@
 
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
+
+/* Define to 1 if you have the `tgammaf' function. */
+#define HAVE_TGAMMAF 1
 
 /* Define to 1 if you have the `tgetent' function. */
 /* #undef HAVE_TGETENT */

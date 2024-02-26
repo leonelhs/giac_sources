@@ -4759,7 +4759,7 @@ namespace xcas {
       // mode_s += "Time: ";
       // double t=double(clock());
       // mode_s += xcas::print_DOUBLE_(t/CLOCKS_PER_SEC);
-#if defined(HAVE_MALLOC_H) && !defined(__MINGW_H)
+#if defined(HAVE_MALLINFO) && !defined(__MINGW_H)
       struct mallinfo mem=mallinfo();
       double memd=mem.arena+mem.hblkhd;
       mode_s +=xcas::print_DOUBLE_(memd/1048576);

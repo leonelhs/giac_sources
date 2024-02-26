@@ -45,6 +45,9 @@ using namespace std;
 #include <sys/time.h>
 #endif
 //#include <unistd.h> // For reading arguments from file
+#ifdef HAVE_REGEX
+#include <regex>
+#endif
 #include <fcntl.h>
 #include <cstdlib>
 #include "gen.h"
@@ -1544,6 +1547,13 @@ int main(int ARGC, char *ARGV[]){
       *logptr(contextptr) << "Setting minimal probabilistic answer time delat to " << t << '\n';
     }
   }
+  ofstream * filestream=0;
+  if (getenv("GIAC_LOG_FILE")){
+    filestream = new ofstream(getenv("GIAC_LOG_FILE"));
+    *logptr(contextptr) << "Some logs will be redirected to " << getenv("GIAC_LOG_FILE") << "\n";
+    logptr(filestream,contextptr);
+    *logptr(contextptr) << "// Redirection of giac logs\n";
+  }
   if (savedbg)
     giac::debug_infolevel=savedbg;
   if (ARGC>=2){
@@ -2080,6 +2090,8 @@ int main(int ARGC, char *ARGV[]){
       python_console()="";
       micropy_ck_eval(ARGV[1]);
       cout << python_console() ;
+      if (filestream)
+        filestream->close();
       giac::release_globals();
       return 0;
     }
@@ -2098,8 +2110,8 @@ int main(int ARGC, char *ARGV[]){
     using_history();
     giac::html_help_init("aide_cas",giac::language(contextptr));
     cout << gettext("Welcome to giac readline interface, version ") << GIAC_VERSION << '\n';
-    cout << "(c) 2002,2022 B. Parisse & others" << '\n';
-    cout << "Homepage http://www-fourier.ujf-grenoble.fr/~parisse/giac.html" << '\n';
+    cout << "(c) 2002,2023 B. Parisse & others" << '\n';
+    cout << "Homepage http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac.html" << '\n';
     cout << "Released under the GPL license 3.0 or above" << '\n';
     cout << "See http://www.gnu.org for license details" << '\n';
     cout << "May contain BSD licensed software parts (lapack, atlas, tinymt)" << '\n';
@@ -2152,6 +2164,20 @@ int main(int ARGC, char *ARGV[]){
 #endif
 	continue;
       }
+      // changes suggested by V. Ledda
+      // empty string
+      if (s=="")
+        continue;
+      // comment string
+      if ( (s.size()>=2 && s.substr(0,2)=="//")
+#ifdef HAVE_REGEX           
+           || std::regex_match (s, std::regex("\\s*/\\*.*\\*/.*|\\s*//.*") )
+#endif
+        ){
+        printf("%s\n",s.c_str());
+        continue;
+      }
+      // end
       if (micropyjs_evaled(s,contextptr))
 	continue;
       if (insage && bs && s[bs-1]==63){
@@ -2414,6 +2440,8 @@ int main(int ARGC, char *ARGV[]){
 #ifdef WITH_GNUPLOT
   giac::kill_gnuplot();
 #endif
+  if (filestream)
+    filestream->close();
   if (getenv("GIAC_RELEASE")) // for valgrind
     giac::release_globals();
   return resultat;
