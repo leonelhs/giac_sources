@@ -486,7 +486,7 @@ namespace giac {
   // if GIAC_SHORTSHIFTTYPE is defined, sparse matrix is using shift index
   // coded on 2 bytes -> FIXME segfault for cyclic9
 
-#define GIAC_SHORTSHIFTTYPE 16
+  #define GIAC_SHORTSHIFTTYPE 16
   //#define GIAC_GBASIS_DELAYPAIRS
 
   void swap_indices(short * tab){
@@ -6251,7 +6251,8 @@ namespace giac {
     register modint2 y=x-c*d;
     //x=y%env;
     //if (y<0) x = y+env2; else x=y;// if y is negative make it positive by adding env^2
-    x = y - (y>>63)*env2; 
+    // x = y - (y>>63)*env2;
+    x = y + ((y>>63)&env2); 
   }
 
   inline void special_mod(double & x,double c,modint d,modint env,double env2){
@@ -6356,7 +6357,65 @@ namespace giac {
 
   void f4_innerloop_special_mod(modint2 * wt,const modint * jt,const modint * jtend,modint C,const shifttype* it,modint env){
     modint2 env2=modint2(env)*env;
+    if (jtend-jt>3 && ((ulonglong) it &0x2)){ // align it address
+      // should be always true (since we have already read one time)
+      wt += *it; ++it;
+      special_mod(*wt,C,*jt,env,env2); ++jt;
+      if (0 && (ulonglong) it &0x4){
+	wt += *it; ++it;
+	special_mod(*wt,C,*jt,env,env2); ++jt;
+	wt += *it; ++it;
+	special_mod(*wt,C,*jt,env,env2); ++jt;
+      }
+    }
     jtend -= 16;
+#ifndef BIDGENDIAN  // it address is 32 bits aligned
+    for (;jt<=jtend;){
+      unsigned B;
+      unsigned * IT=(unsigned *) it;
+      B=*IT; 
+      wt += (B&0xffff); 
+      special_mod(*wt,C,*jt,env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[1],env,env2); 
+      B=IT[1];
+      wt += (B&0xffff); 
+      special_mod(*wt,C,jt[2],env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[3],env,env2); 
+      B=IT[2];
+      wt += (B&0xffff); 
+      special_mod(*wt,C,jt[4],env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[5],env,env2); 
+      B=IT[3];
+      wt += (B&0xffff); 
+      special_mod(*wt,C,jt[6],env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[7],env,env2); 
+      B=IT[4];
+      wt += (B&0xffff); 
+      special_mod(*wt,C,jt[8],env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[9],env,env2); 
+      B=IT[5];
+      wt += (B&0xffff); 
+      special_mod(*wt,C,jt[10],env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[11],env,env2); 
+      B=IT[6];
+      wt += (B&0xffff); 
+      special_mod(*wt,C,jt[12],env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[13],env,env2); 
+      B=IT[7];
+      wt += (B&0xffff); 
+      special_mod(*wt,C,jt[14],env,env2);
+      wt += (B>>16);;
+      special_mod(*wt,C,jt[15],env,env2); 
+      it += 16; jt+=16;
+    }
+#else
     for (;jt<=jtend;){
       wt += it[0]; int b=it[1];
       special_mod(*wt,C,*jt,env,env2); 
@@ -6385,6 +6444,7 @@ namespace giac {
       wt += b;
       it += 16; jt+=16;
     }
+#endif
     jtend += 16;
     for (;jt!=jtend;++jt){
       wt += *it; ++it;
@@ -9312,6 +9372,14 @@ namespace giac {
   bool chinrem(poly8<tdeg_t> &P,const gen & pmod,const polymod<tdeg_t> & Q,int qmodval,poly8<tdeg_t> & tmp,int nthreads=1){
     if (pmod.type!=_ZINT)
       nthreads=1;
+    if (pmod.type!=_ZINT)
+      nthreads=1;
+    else {
+      double work=P.coord.size();
+      work=work*sizeinbase2(pmod)/256/29; // correction of number of monomials by a factor corresponding to 256 primes of size 29 bits
+      if (work/nthreads<128)
+        nthreads=giacmin(nthreads,giacmax(1,work/128));
+    }
     if (nthreads>MAXNTHREADS)
       nthreads=MAXNTHREADS;
     gen u,v,d,pqmod(qmodval*pmod);
@@ -9344,7 +9412,7 @@ namespace giac {
           size_t N2=(1ULL << N);
           gen N3=pow(2,N2+31);
           if (is_greater(N3,pqmod,context0)){
-            if (debug_infolevel)
+            if (debug_infolevel>1)
               CERR << CLOCK()*1e-6 << " parallel chinrem realloc bits=" << 2*N2 << "\n";
             for (it=P.coord.begin();it!=itend;++it){
               if (it->g.type!=_ZINT) continue;
@@ -14665,9 +14733,12 @@ void G_idn(vector<unsigned> & G,size_t s){
 		return true;
 	      } // end D.size()==1
 	      else {
-		m.clear(); 
-		if (D.back()==0 && D[D.size()-2]==0)
-		  return true; 
+		if (1 && D.back()==0 && D[D.size()-2]==0){
+                  DivRem(m,D,&env,unused,U);m=unused;//m.clear();
+		  return true;
+                }
+                else
+                  m.clear();
 	      }
 	    } // end B.front()!=0
 	  } // end B.size()==S+1
@@ -15496,6 +15567,7 @@ void G_idn(vector<unsigned> & G,size_t s){
     int nthreads=1,th,parallel=1;
 #endif
     bool rur_gbasis=rur_do_gbasis>=0 || gbasis_par.gbasis;
+    bool chk_initial_generator=true;
     // for more than 2 threads, real time is currently better without
     // reason might be that the gbasis is large, reduction mod p for
     // all threads has bad cache performances?
@@ -15699,8 +15771,8 @@ void G_idn(vector<unsigned> & G,size_t s){
       else {
 	if (time2ndrun<0){
 	  time2ndrun=(t_1-t_0)/(th+1); // we are computing th+1 primes
-	  if (debug_infolevel)
-	    CERR << "2nd run " << time2ndrun << " 1st run " << time1strun << '\n';
+	  if (time1strun>=1 || debug_infolevel)
+	    CERR << "// Timing for 2nd run " << time2ndrun << " 1st run " << time1strun << " speed ratio " << time2ndrun/time1strun << " [current reconstructed ratio for reinjection=" <<  gbasis_reinject_ratio << " speed_ratio for reinjection=" << gbasis_reinject_speed_ratio << " modifiable by gbasis_reinject(reconstructed_ratio,speed_ratio) command]" << '\n';
 	  if (time2ndrun<time1strun*gbasis_reinject_speed_ratio 
 	      || gbasis_par.reinject_for_calc>0
 	      //|| time2ndrun<0.5
@@ -16351,7 +16423,7 @@ void G_idn(vector<unsigned> & G,size_t s){
             goto cleanup;
           }
 	  // first verify that the initial generators reduce to 0
-	  if (!eliminate_flag && !check_initial_generators(res,W[i],G,eps))
+	  if (!eliminate_flag && chk_initial_generator && !check_initial_generators(res,W[i],G,eps))
 	    continue;
 	  if (int(W[i].size())<=GBASIS_DETERMINISTIC)
 	    eps=0;
@@ -16362,6 +16434,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	  if (eps2>0 && eps2<1){
 	    if (debug_infolevel)
 	      CERR << CLOCK()*1e-6 << " Final check successful, running another prime to increase confidence." << '\n';
+            chk_initial_generator=false;
 	    continue;
 	  }
 	  if (eps>0){

@@ -5907,6 +5907,10 @@ int main(int argc,char ** argv) {
   #if defined WIN32 && !defined __MINGW_H
   Xcas_Numworks_menu->deactivate();
   #endif
+  #if defined WIN32 && defined __MINGW_H
+  #undef chdir
+  chdir(giac::remove_filename(argv[0]).c_str());
+  #endif
   #ifndef USE_OBJET_BIDON
      xcas::localisation(); // added by L. Marohnić
   #endif
