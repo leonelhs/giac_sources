@@ -1,102 +1,102 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0300 
-i18n_type 1 
-i18n_include "giac/giacintl.h" 
-i18n_function gettext 
-header_name {.h} 
+version 1.0305
+i18n_type 1
+i18n_include "giac/giacintl.h"
+i18n_function gettext
+header_name {.h}
 code_name {.cxx}
 decl {\#include <algorithm>} {public local
-} 
+}
 
 decl {\#include "Xcas1.h"} {public local
-} 
+}
 
 decl {\#include "Help1.h"} {public local
-} 
+}
 
 decl {\#include <FL/fl_ask.H>} {public local
-} 
+}
 
 decl {\#include <FL/Fl_Tooltip.H>} {public local
-} 
+}
 
 decl {\#include <FL/Fl_Bitmap.H>} {public local
-} 
+}
 
 decl {\#include <FL/fl_show_colormap.H>} {public local
-} 
+}
 
 decl {\#include <FL/gl.h>} {public local
-} 
+}
 
 decl {\#include "Input.h"} {public local
-} 
+}
 
 decl {\#include "Editeur.h"} {public local
-} 
+}
 
 decl {\#include "Equation.h"} {public local
-} 
+}
 
 decl {\#include "History.h"} {public local
-} 
+}
 
 decl {\#include "Tableur.h"} {public local
-} 
+}
 
 decl {\#include "Cfg.h"} {public local
-} 
+}
 
 decl {\#include "Python.h"} {public local
-} 
+}
 
 decl {\#include <giac/giac.h>} {public local
-} 
+}
 
 decl {\#include <giac/misc.h>} {public local
-} 
+}
 
 declblock {\#ifdef FL_DEVICE} {open after {\#endif}
 } {
   decl {\#include <FL/Fl_Printer.H>} {private local
   }
-} 
+}
 
 decl {/* */ namespace xcas { extern int printer_format; extern bool printer_landscape; void widget_ps_print(Fl_Widget * widget,const std::string & fname,bool eps,int pngpdf,bool preview,bool,bool ); void widget_print(Fl_Widget * widget);}} {private local
-} 
+}
 
 declblock {\#ifdef HAVE_MALLOC_H} {open after {\#endif}
 } {
   decl {\#include <malloc.h>} {private local
   }
-} 
+}
 
 decl {char ** xcas_argv;} {private local
-} 
+}
 
 decl {int xcas_argc,xcas_user_level,update_xcas=0;} {private local
-} 
+}
 
 declblock {\#ifdef USE_OBJET_BIDON} {open after {\#endif}
 } {
   decl {xcas::objet_bidon mon_objet_bidon;} {private local
   }
-} 
+}
 
 decl {giac::vecteur rpn_menu;} {private local
-} 
+}
 
 decl {giac::vecteur rpn_description;} {private local
-} 
+}
 
 decl {unsigned rpn_menu_page;} {private local
-} 
+}
 
 decl {std::string rpn_menu_string[6],rpnn_menu_string[5],doc_prefix("doc/fr/"); bool rpn_menu_is_directory[6];} {private local
-} 
+}
 
 decl {giac::vecteur home_menu, rpnn_menu[5];} {private local
-} 
+}
 
 Function {Xcas_alt_ctrl_cb(int i)} {return_type void
 } {
@@ -104,7 +104,7 @@ Function {Xcas_alt_ctrl_cb(int i)} {return_type void
   Xcas_Alpha_Keyboard->hide();
   Xcas_Scientific_Keyboard->show();
 }} {}
-} 
+}
 
 Function {Xcas_current_session()} {return_type {Fl_Widget *}
 } {
@@ -112,7 +112,7 @@ Function {Xcas_current_session()} {return_type {Fl_Widget *}
   if (xcas::History_Fold * hf=dynamic_cast<xcas::History_Fold *>(wid))
     wid=hf->pack;
   return wid;} {}
-} 
+}
 
 Function {Xcas_get_context()} {return_type {const giac::context *}
 } {
@@ -120,7 +120,7 @@ Function {Xcas_get_context()} {return_type {const giac::context *}
   if (xcas::History_Fold * hf=dynamic_cast<xcas::History_Fold *>(wid))
     wid=hf->pack;
   return xcas::get_context(wid);} {}
-} 
+}
 
 Function {Xcas_Keyboard_Switch(unsigned u)} {return_type void
 } {
@@ -155,17 +155,17 @@ Function {Xcas_Keyboard_Switch(unsigned u)} {return_type void
      }
    }
    Xcas_resize_mainwindow();} {}
-} 
+}
 
 Function {hist_max(int i,int j)} {return_type int
 } {
   code {return i>j?i:j;} {}
-} 
+}
 
 Function {hist_min(int i,int j)} {return_type int
 } {
   code {return i>j?j:i;} {}
-} 
+}
 
 Function {Xcas_save_all(Fl_Group * wid)} {return_type bool
 } {
@@ -192,14 +192,14 @@ Function {Xcas_save_all(Fl_Group * wid)} {return_type bool
       } // end if dynamic...
     } // end for
     return true;} {}
-} 
+}
 
 Function {latex_save_DispG(const char * filename)} {return_type void
 } {
   code {double xunit=giac::horiz_latex/(Xcas_DispG_->window_xmax-Xcas_DispG_->window_xmin);
   double yunit=giac::vert_latex/(Xcas_DispG_->window_ymax-Xcas_DispG_->window_ymin);
   graph2tex(filename,Xcas_DispG_->plot_instructions,Xcas_DispG_->window_xmin,Xcas_DispG_->window_xmax,Xcas_DispG_->window_ymin,Xcas_DispG_->window_ymax,xunit,yunit,false,giac::context0);} {}
-} 
+}
 
 Function {a_propos()} {return_type void
 } {
@@ -214,6 +214,8 @@ Function {a_propos()} {return_type void
   s += "Math ML and SVG support initially written by Jean-Pierre Branchard\\n";
   s += "OpenOffice interface: Christophe Devalland, Serge Moutou\\n";
   s += "Qcas interface: Loic Le Coq, Frederic Han\\n";
+  s += "R interface: Stéphane Laurent\\n";
+  s += "Julia interface: Harald Hofstätter\\n";
   s += "Androcas interface: Thomas Luka\\n";
   s += "SmartCAS interface: Nicolas Pujol\\n";
   s += "English user guide translation maintained by Jay Belanger\\n";
@@ -276,7 +278,7 @@ Function {a_propos()} {return_type void
   s += "\\n\\n\\n\\n\\n\\n";
   Xcas_parse_error_output->value(s.c_str());
   Fl::focus(Xcas_parse_error_output);} {}
-} 
+}
 
 Function {rpn_button(xcas::No_Focus_Button * wid,int i)} {return_type void
 } {
@@ -333,7 +335,7 @@ Function {rpn_button(xcas::No_Focus_Button * wid,int i)} {return_type void
   std::string s=e.print();
   if (!s.empty())
     xcas::in_Xcas_input_char(xcas::Xcas_input_focus,s.c_str(),s[0]);} {}
-} 
+}
 
 Function {show_rpn_menu(unsigned i)} {return_type void
 } {
@@ -391,7 +393,7 @@ Function {show_rpn_menu(unsigned i)} {return_type void
   Xcas_PREV_Key->color(xcas::Xcas_background_color);    
   Xcas_NXT_Key->color(xcas::Xcas_background_color);    
   Xcas_Bandeau_Keys->redraw();} {}
-} 
+}
 
 Function {Xcas_resize_mainwindow()} {return_type void
 } {
@@ -414,7 +416,7 @@ Function {Xcas_resize_mainwindow()} {return_type void
     Xcas_Messages->resize(0,h-bottom,w_,bs);
     Xcas_Messages->redraw();
     Xcas_Main_Window_->init_sizes();} {}
-} 
+}
 
 Function {Xcas_change_labelsize(int i)} {return_type void
 } {
@@ -437,7 +439,7 @@ Function {Xcas_change_labelsize(int i)} {return_type void
       menu->labelfont(Xcas_Main_Window_->labelfont());
     xcas::change_group_fontsize(menu,i);
 //Xcas_History_font_output->value(giac::print_INT_(i).c_str());} {}
-} 
+}
 
 Function {Xcas_widget_size(const giac::gen & g,const giac::context * cptr)} {return_type {giac::gen}
 } {
@@ -624,7 +626,7 @@ Function {Xcas_widget_size(const giac::gen & g,const giac::context * cptr)} {ret
     Xcas_Main_Window_->resize(x,y,w,h);
     Xcas_resize_mainwindow(); 	
     return giac::plus_one;} {}
-} 
+}
 
 Function {make_history()} {open
 } {
@@ -680,7 +682,7 @@ Xcas_Main_Tab->add(w);
 Xcas_Main_Tab->value(Xcas_Main_Tab->child(Xcas_Main_Tab->children()-1));
 Xcas_resize_mainwindow();
 Xcas_Main_Tab->redraw();} {}
-} 
+}
 
 Function {load_history(int mws)} {open
 } {
@@ -708,7 +710,7 @@ Xcas_Main_Tab->add(w);
 Xcas_Main_Tab->value(Xcas_Main_Tab->child(Xcas_Main_Tab->children()-1));
 Xcas_resize_mainwindow();
 Xcas_Main_Tab->redraw();} {}
-} 
+}
 
 Function {load_filename(const char * filename,bool modified)} {open
 } {
@@ -719,7 +721,7 @@ Function {load_filename(const char * filename,bool modified)} {open
         Xcas_Main_Tab->value(Xcas_Main_Tab->child(Xcas_Main_Tab->children()-1));
         Xcas_resize_mainwindow();
         s->redraw();} {}
-} 
+}
 
 Function {cb_Insert_Example(Fl_Widget * w , void*)} {} {
   code {static std::string menu_buffer;
@@ -784,7 +786,7 @@ Function {cb_Insert_Example(Fl_Widget * w , void*)} {} {
       }
     }
     load_filename((thepath+filename).c_str(),false);} {}
-} 
+}
 
 Function {cb_Insert_ItemName(Fl_Widget * w , void*)} {} {
   code {static std::string menu_buffer;
@@ -850,7 +852,7 @@ Function {cb_Insert_ItemName(Fl_Widget * w , void*)} {} {
      // Fl::e_keysym = '\\n';
      xcas::fl_handle(f);
     }} {}
-} 
+}
 
 Function {cb_Assistant_ItemName(Fl_Widget * wid , void* ptr)} {} {
   code {static std::string menu_buffer;
@@ -894,7 +896,7 @@ Function {cb_Assistant_ItemName(Fl_Widget * wid , void* ptr)} {} {
       }
     }
     else { if (w) w->redraw(); }} {}
-} 
+}
 
 Function {load_autorecover_data()} {open
 } {
@@ -998,7 +1000,7 @@ Function {load_autorecover_data()} {open
       }
       fl_message("%s",gettext("Autorecover files have been loaded. Geometry and spreadsheet were not reevaled"));
     }} {}
-} 
+}
 
 Function {gnuplot_setview()} {return_type void
 } {
@@ -1010,7 +1012,7 @@ Function {gnuplot_setview()} {return_type void
   fflush(stream);
   giac::gnuplot_wait(out_handle,gnuplot_out_readstream,2);  
 \#endif //} {}
-} 
+}
 
 Function {Xcas_browser_name()} {return_type {std::string}
 } {
@@ -1041,7 +1043,7 @@ if (giac::is_file_available(tmp.c_str()))
   return "'/cygdrive/c/Program Files/Internet Explorer/IEXPLORE.EXE'";
 \#endif // 
 return "";} {}
-} 
+}
 
 Function {Xcas_load_general_setup()} {return_type void
 } {
@@ -1058,14 +1060,14 @@ if (getenv("http_proxy")){
 xcas::change_group_fontsize(Xcas_General_Setup,Xcas_Main_Window_->labelsize());
 Xcas_General_Setup->resize(20,20,3*Xcas_Main_Window_->w()/4,3*Xcas_Main_Window_->h()/4);
   Xcas_General_Setup->show();} {}
-} 
+}
 
 Function {Xcas_update_mode()} {return_type void
 } {
   code {Fl_Widget * wid = Xcas_current_session();
   xcas::History_Fold * hf=xcas::get_history_fold(wid);
   if (hf) hf->update_status();} {}
-} 
+}
 
 Function {Xcas_save_config(const giac::context * contextptr)} {return_type void
 } {
@@ -1112,13 +1114,13 @@ std::ofstream of((giac::home_directory()+giac::xcasrc()).c_str());
    giac::const_iterateur it=vv.begin(),itend=vv.end();
    for (;it!=itend;++it)
      of << "insmod(" << it->print(contextptr) << ");" << std::endl;} {}
-} 
+}
 
 Function {Xcas_run(int argc,char ** argv)} {open
 } {
   Fl_Window Xcas_Main_Window_ {
     label {Xcas New Interface} open
-    xywh {95 113 865 520} type Single resizable visible
+    xywh {315 131 865 520} type Single resizable visible
   } {
     Fl_Menu_Bar Xcas_main_menu {open
       xywh {0 0 775 25}
@@ -1356,7 +1358,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
           }
           MenuItem Xcas_nw_rescue {
             label {Rescue mode (calculator assistance)}
-            callback {int i=fl_ask(gettext("Connect the calculator,\\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\\nThe screen should be down and the led should be red")); if (!i) return;
+            callback {int i=fl_ask(gettext("Connect the calculator,\\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\\nThe screen should be down and the led should be red\\nOn windows, please install a driver for STM32-BOOTLOADER from https://zadig.akeo.ie/")); if (!i) return;
              std::string prefix=giac::giac_aide_dir()+"doc/";
              if (!dfu_send_rescue((prefix+"recovery").c_str()))
                fl_alert("%s",gettext("Unable to send rescue RAM image to the Numworks calculator."));
@@ -1391,25 +1393,25 @@ Function {Xcas_run(int argc,char ** argv)} {open
           label {Export as}
           xywh {0 0 100 20}
         } {
-          MenuItem Xcas_Export_nws {
-            label {Numworks Archive}
-            callback {xcas::History_cb_Save_as_numworks_archive(Xcas_current_session(),0);}
-            xywh {15 15 100 20}
+          MenuItem Xcas_Export_Khicas_Casio {
+            label {HP Prime, Casio}
+            callback {xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);}
+            xywh {65 65 100 20}
           }
           MenuItem Xcas_Export_Khicas_Numworks {
             label {KhiCas Numworks}
             callback {xcas::History_cb_Save_as_xcas_numworks(Xcas_current_session(),0);}
             xywh {65 65 100 20}
           }
-          MenuItem Xcas_Export_Khicas_Casio {
-            label {KhiCas Casio}
-            callback {xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);}
-            xywh {65 65 100 20}
-          }
           MenuItem Xcas_Export_Khicas_Nspire {
             label {KhiCas TI Nspire CX}
             callback {xcas::History_cb_Save_as_xcas_nspire(Xcas_current_session(),0);}
             xywh {65 65 100 20}
+          }
+          MenuItem Xcas_Export_nws {
+            label {Numworks Archive}
+            callback {xcas::History_cb_Save_as_numworks_archive(Xcas_current_session(),0);}
+            xywh {15 15 100 20}
           }
           MenuItem Xcas_Export_Xcas {
             label {Xcas text}
@@ -1984,7 +1986,7 @@ else
         }
       }
       Submenu Xcas_help_menu {
-        label Help open
+        label Help
         xywh {0 0 100 20}
       } {
         MenuItem Xcas_help_index {
@@ -2338,7 +2340,7 @@ giac::html_help_init("aide_cas",language(contextptr),true,true);}
         }
         MenuItem Xcas_Add_Comment {
           label {New comment}
-          callback {xcas::History_cb_New_Comment_Input(Xcas_current_session(),0);} selected
+          callback {xcas::History_cb_New_Comment_Input(Xcas_current_session(),0);}
           xywh {40 40 100 20} shortcut 0x80071
         }
         Submenu Xcas_help_equations {
@@ -3521,7 +3523,7 @@ Xcas_Alpha_Keyboard->redraw();}
           class {xcas::No_Focus_Button}
         }
       }
-      Fl_Group Xcas_Scientific_Keyboard {open
+      Fl_Group Xcas_Scientific_Keyboard {
         xywh {0 415 310 100}
       } {
         Fl_Group Lettre_keyboard {open
@@ -3908,7 +3910,7 @@ Fl::e_length=8; xcas::fl_handle(xcas::Xcas_input_focus);}
           class {xcas::No_Focus_Button}
         }
       }
-      Fl_Group Kbd_control {open
+      Fl_Group Kbd_control {
         xywh {385 415 70 100}
       } {
         Fl_Button Xcas_Echap {
@@ -3999,7 +4001,7 @@ else {
         }
       }
     }
-    Fl_Group Xcas_Bandeau_Keys {open
+    Fl_Group Xcas_Bandeau_Keys {open selected
       xywh {0 515 455 30}
     } {
       Fl_Group Xcas_Bandeau_Keys_Group {
@@ -4685,7 +4687,11 @@ Xcas_Script_Window->add(t);
 Xcas_Script_Window->hide();
 Xcas_update_mode();
 //Xcas_parse_error_output->resize(Xcas_parse_error_output->x(),Xcas_parse_error_output->y(),Xcas_parse_error_output->w(),10*Xcas_parse_error_output->textsize());
-xcas::initialize_function=load_autorecover_data;
+if (argc==1) 
+  xcas::initialize_function=load_autorecover_data;
+else {
+  Xcas_Messages->hide(); Xcas_Bandeau_Keys->hide(); 
+}
 xcas::alt_ctrl_cb=Xcas_alt_ctrl_cb;
 Fl::add_idle(xcas::Xcas_idle_function,0);
 xcas::idle_function=Xcas_update_mode;
@@ -4737,12 +4743,11 @@ else make_history();
     if (running) Xcas_Main_Window_->show();
   }
   return 0;} {}
-} 
+}
 
 Function {main(int argc,char ** argv)} {open return_type int
 } {
-  code {
-//stack_check_init(256*1024);
+  code {//stack_check_init(256*1024);
 \#ifdef HAVE_LIBMICROPYTHON
     python_heap=micropy_init(pythonjs_stack_size,pythonjs_heap_size);
 \#endif
@@ -4828,4 +4833,4 @@ else {
 \#endif // __APPLE__
 \#endif // __WIN32__
 }} {}
-} 
+}

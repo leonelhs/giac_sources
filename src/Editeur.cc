@@ -3302,7 +3302,7 @@ namespace xcas {
     string mot;
     mot += *ch;
     for(char * ch1=ch+1;*ch1;++ch1){
-      if (!isalpha(*ch1))
+      if (!my_isalpha(*ch1))
 	break;
       mot += *ch1;
     }

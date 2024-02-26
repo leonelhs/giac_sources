@@ -141,8 +141,6 @@ void dealloc(struct Tgraph *graph);
 }
 #endif // HAVE_EQASCII
 
-#include "Xcas1.h"
-#include "Cfg.h"
 
 /* TeXmacs interface 
    See /usr/share/TeXmacs examples/plugins and progs for ex. of scheme commands
@@ -186,6 +184,8 @@ namespace xcas {
 }
 
 #else
+#include "Xcas1.h"
+#include "Cfg.h"
 void ctrl_c_signal_handler(int signum){
   giac::ctrl_c=true;
   cerr << "icas/giac process " << getpid() << ", Ctrl-C pressed, interruption requested" << '\n';
@@ -466,6 +466,9 @@ static const string silent_err(" 2>/dev/null");
 #endif
 
 bool texmacs_graph_lr_margins(const string &fname,int &val,bool init=true,int width=0) {
+#ifdef VISUALC
+  return false;
+#else
   char buffer[1024];
   int left,w;
   FILE *pipe=popen(((init?"pdfcrop --verbose ":"pdfinfo ")+giac::to_unix_path(fname)+silent_err).c_str(),"r");
@@ -507,11 +510,12 @@ bool texmacs_graph_lr_margins(const string &fname,int &val,bool init=true,int wi
     val=(left+right)/2;
   }
   return true;
+#endif
 }
 
 bool system_status_ok(int status) {
   return status!=-1
-#ifndef __MINGW_H
+#if !defined __MINGW_H && !defined VISUALC
     && WEXITSTATUS(status)==0
 #endif
     ;
@@ -521,6 +525,7 @@ std::string texmacs_image_file;
 int texmacs_image_files_count;
 
 void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfilename,int file_type,const giac::context * contextptr){
+#ifdef HAVE_LIBFLTK 
 #if 1 // changes by L. Marohnić
   string fcrop=texmacs_image_file+"-crop.pdf";
   string fclean=texmacs_image_file+"-clean.eps";
@@ -628,6 +633,7 @@ void texmacs_graph_output(const giac::gen & g,giac::gen & gg,std::string & figfi
     // ofstream log("log");
     // log << g << '\n';
   }
+#endif
 #endif
 }
 
@@ -1824,6 +1830,7 @@ int main(int ARGC, char *ARGV[]){
 
 	  int reading_file=0;
 	  std::string filename;
+#ifdef HAVE_LIBFLTK
 	  xcas::icas_eval(g,gg,reading_file,filename,contextptr);
 	  if (reading_file>=1 || graph_output_type(gg))
 	    printf(xcas::fltk_view(g,gg,"",filename,reading_file,contextptr)?"Done\n":"Plot cancelled or unable to plot\n");
@@ -1832,6 +1839,12 @@ int main(int ARGC, char *ARGV[]){
 	    giac::history_out(contextptr).push_back(gg);
 	    printf("%s\n",gg.print(contextptr).c_str());
 	  }
+#else
+          gg=eval(g,1,contextptr);
+          giac::history_in(contextptr).push_back(g);
+          giac::history_out(contextptr).push_back(gg);
+          printf("%s\n",gg.print(contextptr).c_str());
+#endif
 	  putchar(EMACS_DATA_END);
 	}
       } // end normal command
@@ -1994,11 +2007,13 @@ int main(int ARGC, char *ARGV[]){
 #ifdef HAVE_SIGNAL_H_OLD
       giac::messages_to_print="";
 #endif
+#ifdef HAVE_LIBFLTK
       if (buffer=="xcas"){
 	giac::gen ge; std::string filename;
 	xcas::fltk_view(0,ge,"session.xws",filename,5,contextptr);
 	continue;
       }
+#endif
       giac::gen g(buffer,contextptr),gg;
 #ifdef HAVE_SIGNAL_H_OLD
       printf("%s\n",giac::messages_to_print.c_str());
@@ -2027,7 +2042,11 @@ int main(int ARGC, char *ARGV[]){
       // END GEO SETUP
       int reading_file=0;
       std::string filename;
+#ifdef HAVE_LIBFLTK
       xcas::icas_eval(g,gg,reading_file,filename,contextptr);
+#else
+      gg=eval(g,1,contextptr);
+#endif
       bool done=false;
       if (reading_file){ 
         if (reading_file>=2 || (giac::ckmatrix(gg,true)&&gg.subtype==giac::_SPREAD__VECT) ){
@@ -2369,7 +2388,11 @@ int main(int ARGC, char *ARGV[]){
 #ifdef __APPLE__
       startc=clock();
 #endif
+#ifdef HAVE_LIBFLTK
       xcas::icas_eval(gq,e,reading_file,filename,contextptr);
+#else
+      e=eval(gq,1,contextptr);
+#endif
 #ifdef __APPLE__
       startc=clock()-startc;
 #endif
@@ -2387,7 +2410,11 @@ int main(int ARGC, char *ARGV[]){
 #ifdef __APPLE__
       startc=clock();
 #endif
+#ifdef HAVE_LIBFLTK
       xcas::icas_eval(gq,e,reading_file,filename,contextptr);
+#else
+      e=eval(gq,1,contextptr);
+#endif
 #ifdef __APPLE__
       startc=clock()-startc;
 #endif

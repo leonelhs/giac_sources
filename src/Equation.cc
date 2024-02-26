@@ -111,7 +111,7 @@ namespace xcas {
       } else if (mm && s1[i]=='*' && i>0 && i<n-1 &&
           (is_pow_last || s1[i-1]==')' || isalphan(s1[i-1])) && (s1[i+1]=='(' || isalphan(s1[i+1]))) {
         s0+="⋅";
-      } else if (mm && s1[i]=='@' && i<n-1 && isalpha(s1[i+1])) {
+      } else if (mm && s1[i]=='@' && i<n-1 && my_isalpha(s1[i+1])) {
         switch (s1[i+1]) {
         // lowercase letters
         case 'a': s0+="𝑎"; break; case 'b': s0+="𝑏"; break; case 'c': s0+="𝑐"; break;
@@ -188,13 +188,13 @@ namespace xcas {
     s0="";
     int n=s1.size();
     for (int i=0;i<n;++i){
-      if (!isalpha(s1[i])){
+      if (!my_isalpha(s1[i])){
 	s0 += s1[i];
 	continue;
       }
       string s;
       for (;i<n;++i){
-	if (!isalpha(s1[i])){
+	if (!my_isalpha(s1[i])){
 	  --i;
 	  break;
 	}
@@ -376,7 +376,7 @@ namespace xcas {
   Fl_Font cst_greek_translate(string & s0,bool islabel){
     int n=s0.size(),j;
     for (j=n-1;j>=2;--j){
-      if (isalpha(s0[j]))
+      if (my_isalpha(s0[j]))
 	break;
     }
     string s=s0.substr(0,j+1),sadd;
@@ -781,7 +781,7 @@ namespace xcas {
     fl_font(cst_greek_translate(us),a.fontsize);
     int ls=int(fl_width(us.c_str()));
     fl_font(FL_HELVETICA,a.fontsize);
-    if (isalpha(u.ptr()->s[0]))
+    if (my_isalpha(u.ptr()->s[0]))
       ls += 2;
     if (u==at_abs)
       ls = 2;

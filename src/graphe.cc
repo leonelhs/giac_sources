@@ -2168,7 +2168,7 @@ int dot_read_token(ifstream &dotfile,string &token) {
                 dot_comment_type=2;
             continue;
         }
-        if (token.empty() && (isalpha(c) || c=='_')) {
+        if (token.empty() && (my_isalpha(c) || c=='_')) {
             dot_token_type=_GT_DOT_TOKEN_TYPE_IDENTIFIER;
             token.push_back(c);
             continue;

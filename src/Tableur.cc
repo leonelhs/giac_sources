@@ -1010,7 +1010,9 @@ namespace xcas {
       // search for an empty cell
       for (int j=c2+1;j<maxc;++j){
 	for (int i=0;i<maxr;++i){
-	  gen tmp=ptr->m[i][j][0];
+	  gen tmp=ptr->m[i][j];
+          if (tmp.type==_VECT && !tmp._VECTptr->empty())
+            tmp=tmp[0];
 	  if (is_zero(tmp,contextptr)|| (tmp.type==_STRNG && tmp._STRNGptr->empty())){
 	    int pr1=printcell_current_row(contextptr),pc1=printcell_current_col(contextptr);
 	    printcell_current_row(contextptr)=printcell_current_col(contextptr)=0;

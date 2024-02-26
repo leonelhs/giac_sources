@@ -2137,7 +2137,7 @@ namespace xcas {
       if (line[i]!=' ') break;
     }
     for (;i<n;++i){
-      if (isalpha(line[i]) || line[i]=='.')
+      if (my_isalpha(line[i]) || line[i]=='.')
 	filename += line[i];
     }
   }

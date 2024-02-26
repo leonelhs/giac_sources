@@ -268,7 +268,7 @@ namespace giac {
     }
     vecteur uv(makevecteur(u__IDNT_e,v__IDNT_e));
     gen res= plotparam3d(M,uv,xmin,xmax,ymin,ymax,zmin,zmax,cone_complet?-uscale:0,uscale,0,2*M_PI,false,false,attributs,uscale/jstep,2*M_PI/kstep,eq,xyz,contextptr);
-    if (!cercles)
+    // if (!cercles)
       return res;
     theta=evalf_double(theta,1,contextptr);
     if (theta.type!=_DOUBLE_)
@@ -1047,7 +1047,7 @@ namespace giac {
       double dx=ustep;
       double dy=vstep;
       int nu=int((function_umax-function_umin)/ustep+.5),nv=int((function_vmax-function_vmin)/vstep+.5);
-#if defined KHICAS || defined GIAC_HAS_STO_38
+#if defined KHICAS || defined GIAC_HAS_STO_38 || defined FXCG
       if (nu*nv>=900){
 	nu=30;
 	nv=30;
@@ -1062,7 +1062,7 @@ namespace giac {
 	for (int j=0;j<=nv;++j,y+=dy){
 	  vals[1]=y;
 	  gen tmppnt=evalf_double(subst(f,vars,vals,false,contextptr),1,contextptr);
-#if defined KHICAS || defined GIAC_HAS_STO_38 // defined HYPERSURFACE3 
+#if defined KHICAS || defined GIAC_HAS_STO_38 || defined FXCG // defined HYPERSURFACE3 
 	  tmp.push_back(tmppnt[0]);
 	  tmp.push_back(tmppnt[1]);
 	  tmp.push_back(tmppnt[2]);

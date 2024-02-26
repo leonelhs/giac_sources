@@ -14,11 +14,20 @@
    a given entry is in the file.
 
    Leave the following blank line there!!  Autoheader needs it.  */
-
+
 #ifndef WIN32
-#define WIN32
+#	define WIN32
 #endif
+
+/* 
+#ifndef WIN64
+#	define WIN64
+#   define _LONG_LONG_LIMB  1 
+#   define GMP_LIMB_BITS   64 
+#endif
+*/
 #define __VISUALC__
+#define VISUALC
 
 /* Define if on AIX 3.
    System headers sometimes define this.
@@ -316,7 +325,6 @@
 /* Define if lex declares yytext as a char * by default, not a char[].  */
 /* #undef YYTEXT_POINTER */
 
-
 /* Leave that blank line there!!  Autoheader needs it.
    If you're adding to this file, keep in mind:
    The entries are in sort -df order: alphabetical, case insensitive,
@@ -428,7 +436,7 @@
 #define HAVE_LIBM 1
 
 /* Define to 1 if you have the `mpfr' library (-lmpfr). */
-#define HAVE_LIBMPFR 1 
+#define HAVE_LIBMPFR 1
 
 /* Define to 1 if you have the `ntl' library (-lntl). */
 /* #define HAVE_LIBNTL 1 */
@@ -581,22 +589,29 @@
 #define PACKAGE_BUGREPORT ""
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME ""
+#define PACKAGE_NAME "giac"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING ""
+#define PACKAGE_STRING "giac 1.7.0"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME ""
+#define PACKAGE_TARNAME "giac"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION ""
+#define PACKAGE_VERSION "1.7.0"
+
+/* Define if you have the 'unsigned long long' type. */
+#define HAVE_UNSIGNED_LONG_LONG 1
 
 /* The size of a `int', as computed by sizeof. */
 #define SIZEOF_INT 4
 
-/* The size of a `long long', as computed by sizeof. */
+/* The size of `long', as computed by sizeof. */
+#define SIZEOF_LONG 8
+
+/* The size of `long long', as computed by sizeof. */
 #define SIZEOF_LONG_LONG 8
+#define SIZEOF_VOID_P 8
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be

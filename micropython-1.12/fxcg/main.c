@@ -639,10 +639,14 @@ char * micropy_init(int stack_size,int heap_size){
   gc_init(heap, heap + heap_size - 1);
 #endif
   mp_init_py();
+  mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_path), 0);
+  mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_argv), 0);
 
   return heap;
 #endif
   mp_init_py();
+  mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_path), 0);
+  mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_argv), 0);
   printf("mp_init stack=%d nogc\n", stack_size);
   return (char *) 1;
 

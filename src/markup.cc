@@ -165,7 +165,7 @@ bool is_greek_letter(const string &s) {
 }
 
 bool is_double_letter(const string &s) {
-  return s.length()==2 && isalpha(s.at(0)) && s.at(0)==s.at(1);
+  return s.length()==2 && my_isalpha(s.at(0)) && s.at(0)==s.at(1);
 }
 
 bool is_digits(const string &s) {
@@ -1216,7 +1216,7 @@ string func2markup(const gen &g,int typ,int idc=0) {
         ret=idnt2markup(g._SYMBptr->sommet.ptr()->s,typ,false,idc,isname);
       has_id=true;
     }
-    if (tex && ret.length()>1 && isalpha(ret.at(0)))
+    if (tex && ret.length()>1 && my_isalpha(ret.at(0)))
       ret="\\operatorname{"+ret+"}";
   }
   if (!tex && !scm && !has_id)
@@ -3423,7 +3423,7 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
         for (const_iterateur it=idx.begin();it!=idx.end();++it) {
           if ((!it->is_integer() || it->val<1 || it->val>9) &&
               (it->type!=_IDNT ||
-                (((str=it->print(contextptr)).length()!=1 || !isalpha(str[0])) &&
+                (((str=it->print(contextptr)).length()!=1 || !my_isalpha(str[0])) &&
                  !is_greek_letter(str)))) {
             sep="<mo>,</mo>";
             sept=seps=",";
@@ -3473,7 +3473,7 @@ MarkupBlock gen2markup(const gen &g,int flags_orig,int &idc,GIAC_CONTEXT) {
       string op(g._SYMBptr->sommet.ptr()->s),opt,ops;
       if (mml_content)
         ml.content=mml_tag("apply",mml_tag("ci",op)+left.content+right.content,++idc);
-      if (op.length()==1 && !isalpha(op[0]) && op[0]!='_') {
+      if (op.length()==1 && !my_isalpha(op[0]) && op[0]!='_') {
         op="<mo>"+op+"</mo>";
         opt="\\mathbin{"+op+"}";
         ops=scm_quote(op);

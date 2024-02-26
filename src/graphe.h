@@ -518,7 +518,7 @@ public:
         std::map<int,int> max_weight,level_weight;
         std::map<int,ivector> levels;
         ipairs positions;
-        int nearest_pow2(double a) { return std::floor(0.5+std::log(a)/M_LN2); }
+      int nearest_pow2(double a) { return std::floor(0.5+std::log(a)/std::log(2)); }
     public:
         bucketsampler(const ivector &W,GIAC_CONTEXT);
         int generate();

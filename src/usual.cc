@@ -77,6 +77,21 @@ using namespace std;
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef GIAC_HAS_STO_38
+#define sprintf256 sprintf
+#endif
+
+#if defined HAVE_TGAMMAF || defined __APPLE__ || defined EMCC || defined EMCC2 || defined NO_BSD 
+inline float fgamma(float f1){ return tgammaf(f1); }
+#else
+#if defined(__MINGW_H) || defined(VISUALC) || defined(FXCG)// FIXME gamma, not used
+inline float fgamma(float f1){ return f1; }
+#else
+#if !defined GIAC_HAS_STO_38 && !defined FREERTOS
+inline float fgamma(float f1){ return gammaf(f1); } // or tgammaf(f1) on some versions of emscripten
+#endif
+#endif
+#endif
 
 #ifndef NO_NAMESPACE_GIAC
 namespace giac {
@@ -3193,7 +3208,7 @@ namespace giac {
   // check value type for storing value in s using 38 compatibility mode
   bool check_sto_38(gen & value,const char * s){
     int ss=int(strlen(s));
-    if (ss>2 || (ss==2 && s[1]>32 && isalpha(s[1])) ){
+    if (ss>2 || (ss==2 && s[1]>32 && my_isalpha(s[1])) ){
       if (s[0]=='G')
 	return true;
       for (int i=0;i<ss;++i){
@@ -6732,7 +6747,7 @@ namespace giac {
 	lnew[i]=evalf(l[i],1,contextptr);
 #ifdef HAVE_LIBMPFR
 	if (lnew[i].type==_DOUBLE_)
-	  lnew[i]=accurate_evalf(lnew[i],100);
+	  lnew[i]=accurate_evalf(eval(l[i],1,contextptr),100);
 #endif
       }
     }

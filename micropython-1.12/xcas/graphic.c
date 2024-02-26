@@ -1119,6 +1119,8 @@ int mrtest(int N,const mp_obj_t p){
   // p-1==2^t*s
   mp_obj_t un=mp_obj_new_int(1),deux=mp_obj_new_int(2);
   mp_obj_t pm1=sub(p,un);
+  if (is_one(pm1))
+    return 1;
   int t=1;
   mp_obj_t s=quo(pm1,deux);
   while (is_zero(rem(s,deux))){

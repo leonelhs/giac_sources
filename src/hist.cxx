@@ -127,6 +127,8 @@ void a_propos() {
     s += "Math ML and SVG support initially written by Jean-Pierre Branchard\n";
     s += "OpenOffice interface: Christophe Devalland, Serge Moutou\n";
     s += "Qcas interface: Loic Le Coq, Frederic Han\n";
+    s += "R interface: Stéphane Laurent\n";
+    s += "Julia interface: Harald Hofstätter\n";
     s += "Androcas interface: Thomas Luka\n";
     s += "SmartCAS interface: Nicolas Pujol\n";
     s += "English user guide translation maintained by Jay Belanger\n";
@@ -1189,7 +1191,7 @@ static void cb_Xcas_nw_alpha(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_nw_rescue(Fl_Menu_*, void*) {
-  int i=fl_ask(gettext("Connect the calculator,\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\nThe screen should be down and the led should be red")); if (!i) return;
+  int i=fl_ask(gettext("Connect the calculator,\nPress the 6 key on the calculator, press the RESET button on the back keeping the 6 key pressed, release the 6 key,\nThe screen should be down and the led should be red\nOn windows, please install a driver for STM32-BOOTLOADER from https://zadig.akeo.ie/")); if (!i) return;
              std::string prefix=giac::giac_aide_dir()+"doc/";
              if (!dfu_send_rescue((prefix+"recovery").c_str()))
                fl_alert("%s",gettext("Unable to send rescue RAM image to the Numworks calculator."));
@@ -1217,20 +1219,20 @@ static void cb_Xcas_nw_certify_overwrite(Fl_Menu_*, void*) {
             fl_message(b?"Firmware signé par le logiciel Xcas, conforme à la réglementation\n(assurez-vous d'avoir téléchargé Xcas sur www-fourier.univ-grenoble-alpes.fr/~parisse/install_fr.html)":"Le firmware n'est pas certifié par le logiciel Xcas.\nVérifiez que la calculatrice est bien connectée!");
 }
 
-static void cb_Xcas_Export_nws(Fl_Menu_*, void*) {
-  xcas::History_cb_Save_as_numworks_archive(Xcas_current_session(),0);
+static void cb_Xcas_Export_Khicas_Casio(Fl_Menu_*, void*) {
+  xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);
 }
 
 static void cb_Xcas_Export_Khicas_Numworks(Fl_Menu_*, void*) {
   xcas::History_cb_Save_as_xcas_numworks(Xcas_current_session(),0);
 }
 
-static void cb_Xcas_Export_Khicas_Casio(Fl_Menu_*, void*) {
-  xcas::History_cb_Save_as_xcas_casio(Xcas_current_session(),0);
-}
-
 static void cb_Xcas_Export_Khicas_Nspire(Fl_Menu_*, void*) {
   xcas::History_cb_Save_as_xcas_nspire(Xcas_current_session(),0);
+}
+
+static void cb_Xcas_Export_nws(Fl_Menu_*, void*) {
+  xcas::History_cb_Save_as_numworks_archive(Xcas_current_session(),0);
 }
 
 static void cb_Xcas_Export_Xcas(Fl_Menu_*, void*) {
@@ -2186,10 +2188,10 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Certification N0110 avec test R/W", 0,  (Fl_Callback*)cb_Xcas_nw_certify_overwrite, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Export as", 0,  0, 0, 64, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
- {"Numworks Archive", 0,  (Fl_Callback*)cb_Xcas_Export_nws, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"HP Prime, Casio", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Casio, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"KhiCas Numworks", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Numworks, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
- {"KhiCas Casio", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Casio, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"KhiCas TI Nspire CX", 0,  (Fl_Callback*)cb_Xcas_Export_Khicas_Nspire, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Numworks Archive", 0,  (Fl_Callback*)cb_Xcas_Export_nws, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Xcas text", 0,  (Fl_Callback*)cb_Xcas_Export_Xcas, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Xcas-Python text", 0,  (Fl_Callback*)cb_Xcas_Export_XcasPy, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Maple text", 0,  (Fl_Callback*)cb_Xcas_Export_Maple, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
@@ -5662,7 +5664,11 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   Xcas_Script_Window->hide();
   Xcas_update_mode();
   //Xcas_parse_error_output->resize(Xcas_parse_error_output->x(),Xcas_parse_error_output->y(),Xcas_parse_error_output->w(),10*Xcas_parse_error_output->textsize());
-  xcas::initialize_function=load_autorecover_data;
+  if (argc==1) 
+    xcas::initialize_function=load_autorecover_data;
+  else {
+    Xcas_Messages->hide(); Xcas_Bandeau_Keys->hide(); 
+  }
   xcas::alt_ctrl_cb=Xcas_alt_ctrl_cb;
   Fl::add_idle(xcas::Xcas_idle_function,0);
   xcas::idle_function=Xcas_update_mode;

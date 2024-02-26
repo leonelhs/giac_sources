@@ -110,6 +110,13 @@ Section "Xcas" SecXcas
   WriteRegStr HKCR "Xcas.Worksheet\shell" "" "open"
   WriteRegStr HKCR "Xcas.Worksheet\shell\open\command" "" "$\"$INSTDIR\$(BAT_FILE)$\" $\"%1$\""
   
+  WriteRegStr HKCR ".xw" "" "Khicas.Worksheet"
+  WriteRegStr HKCR ".xw" "Content Type" "application/x-khicas"
+  WriteRegStr HKCR "Khicas.Worksheet" "" "$(MIMETYPE)"
+  WriteRegStr HKCR "Khicas.Worksheet\DefaultIcon" "" "$INSTDIR\x-xcas.ico"
+  WriteRegStr HKCR "Khicas.Worksheet\shell" "" "open"
+  WriteRegStr HKCR "Khicas.Worksheet\shell\open\command" "" "$\"$INSTDIR\$(BAT_FILE)$\" $\"%1$\""
+  
   ;Store installation folder
   WriteRegStr HKCU "Software\${APPNAME}" "" $INSTDIR
   

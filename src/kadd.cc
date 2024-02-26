@@ -299,7 +299,7 @@ complex<double> horner_newton(const vector<double> & p,const std::complex<double
 int do_fractale(GIAC_CONTEXT){
   freeze=true;
   int X=LCD_WIDTH_PX,
-#ifdef HP39
+#if 1 // def HP39
     Y=LCD_HEIGHT_PX,
 #else
     Y=LCD_HEIGHT_PX-18,
@@ -749,6 +749,7 @@ int khicas_addins_menu(GIAC_CONTEXT){
 	  ptr=strcpy(ptr,electroneg+4)+strlen(ptr);
 	}
 	copy_clipboard(console_buf,true);
+        return KEY_CTRL_PASTE;        
 	// return Console_Input(console_buf);
       }
       if (smallmenu.selection==4){
@@ -764,6 +765,7 @@ int khicas_addins_menu(GIAC_CONTEXT){
 	if (c>=0){
 	  char buf[2]={c,0};
 	  copy_clipboard(buf,true);
+          return KEY_CTRL_PASTE;
 	}
 	break;
       }
@@ -847,7 +849,7 @@ void flash_info(const char * buf,std::vector<fileinfo_t> &v,size_t & first_modif
     }
     if (modif && sres == KEY_CTRL_CATALOG || sres==KEY_BOOK) { // rename
       string s=v[i].filename,msg1=(lang==1?"Renommer ":"Rename ")+s;
-      int j=inputline(msg1.c_str(),"",s,false);
+      int j=inputline(msg1.c_str(),"",s,false,65,0);
       if (j){
 	v[i].filename=s;
 	vs[i]=v[i].filename.c_str();

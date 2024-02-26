@@ -570,6 +570,8 @@ char * micropy_init(int stack_size,int heap_size){
     gc_init(heap, heap + heap_size - 1);
 #endif
     mp_init();
+    mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_path), 0);
+    mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_argv), 0);
     return (char *) 1;
   }
   return 0;

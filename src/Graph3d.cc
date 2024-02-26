@@ -178,7 +178,7 @@ namespace xcas {
     arc_en_ciel(k,r,g,b);
   }
 
-  bool get_glvertex(const vecteur & v,double & d1,double & d2,double & d3,double realiscmplx,double zmin,GIAC_CONTEXT){
+  bool get_glvertex(const vecteur & v,double & d1,double & d2,double & d3,double realiscmplx,double zmin,GIAC_CONTEXT,int pal){
     if (v.size()==3){
       gen tmp;
       tmp=evalf_double(v[0],2,contextptr);
@@ -214,9 +214,13 @@ namespace xcas {
 	  }
 	} // end realiscmplx>0
 	// set color corresponding to argument
-  // FIXME palette
-	int r,g,b;
-	arc_en_ciel2(arg,r,g,b);
+        // FIXME palette
+	int c,r,g,b;
+        double d=(arg+M_PI)/2/M_PI;
+        if (pal>=0 && is_colormap_index(pal) && colormap_color_rgb(pal,d,c,r,g,b))
+          ;
+        else
+          arc_en_ciel2(arg,r,g,b);
 	glColor3f(r/255.,g/255.,b/255.);
 	// glColor4i(r,g,b,int(std::log(d3+1)));
       } // end if (realiscmplx)
@@ -229,15 +233,15 @@ namespace xcas {
     return false;
   }
 
-  bool get_glvertex(const gen & g,double & d1,double & d2,double & d3,double realiscmplx,double zmin,GIAC_CONTEXT){
+  bool get_glvertex(const gen & g,double & d1,double & d2,double & d3,double realiscmplx,double zmin,GIAC_CONTEXT,int pal){
     if (g.type!=_VECT)
       return false;
-    return get_glvertex(*g._VECTptr,d1,d2,d3,realiscmplx,zmin,contextptr);
+    return get_glvertex(*g._VECTptr,d1,d2,d3,realiscmplx,zmin,contextptr,pal);
   }
 
   bool glvertex(const vecteur & v,double realiscmplx,double zmin,GIAC_CONTEXT){
     double d1,d2,d3;
-    if (get_glvertex(v,d1,d2,d3,realiscmplx,zmin,contextptr)){
+    if (get_glvertex(v,d1,d2,d3,realiscmplx,zmin,contextptr,-1)){
       glVertex3d(d1,d2,d3);
       return true;
     }
@@ -499,7 +503,7 @@ namespace xcas {
     return n;
   }
 
-  void glsurface(const gen & surfaceg,int draw_mode,Fl_Image * texture,GIAC_CONTEXT){
+  void glsurface(const gen & surfaceg,int draw_mode,Fl_Image * texture,GIAC_CONTEXT,int pal){
     if (!ckmatrix(surfaceg,true))
       return;
     test_enable_texture(texture);
@@ -518,9 +522,9 @@ namespace xcas {
 	  vecteur & v=*surface[i]._VECTptr;
 	  const_iterateur it=v.begin();
 	  double d1,d2,d3,e1,e2,e3,f1,f2,f3;
-	  if (get_glvertex(*it,d1,d2,d3,realiscmplx,zmin,contextptr) &&
-	      get_glvertex(*(it+1),e1,e2,e3,realiscmplx,zmin,contextptr) &&
-	      get_glvertex(*(it+2),f1,f2,f3,realiscmplx,zmin,contextptr)){
+	  if (get_glvertex(*it,d1,d2,d3,realiscmplx,zmin,contextptr,pal) &&
+	      get_glvertex(*(it+1),e1,e2,e3,realiscmplx,zmin,contextptr,pal) &&
+	      get_glvertex(*(it+2),f1,f2,f3,realiscmplx,zmin,contextptr,pal)){
 	    glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);
 	    glVertex3d(d1,d2,d3);
 	    glVertex3d(e1,e2,e3);
@@ -535,9 +539,9 @@ namespace xcas {
 	  vecteur & v=*surface[i]._VECTptr;
 	  const_iterateur it=v.begin();
 	  double d1,d2,d3,e1,e2,e3,f1,f2,f3;
-	  if (get_glvertex(*it,d1,d2,d3,realiscmplx,zmin,contextptr) &&
-	      get_glvertex(*(it+1),e1,e2,e3,realiscmplx,zmin,contextptr) &&
-	      get_glvertex(*(it+2),f1,f2,f3,realiscmplx,zmin,contextptr)){
+	  if (get_glvertex(*it,d1,d2,d3,realiscmplx,zmin,contextptr,pal) &&
+	      get_glvertex(*(it+1),e1,e2,e3,realiscmplx,zmin,contextptr,pal) &&
+	      get_glvertex(*(it+2),f1,f2,f3,realiscmplx,zmin,contextptr,pal)){
 	    glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);
 	    glVertex3d(d1,d2,d3);
 	    glVertex3d(e1,e2,e3);
@@ -567,11 +571,11 @@ namespace xcas {
       double a1,a2,a3,b1,b2,b3,c1,c2,c3,d1,d2,d3;
       /*
       if (draw_mode==GL_QUADS){
-	get_glvertex(b,b1,b2,b3,realiscmplx,zmin,contextptr);
+	get_glvertex(b,b1,b2,b3,realiscmplx,zmin,contextptr,pal);
 	glBegin(GL_QUAD_STRIP);
 	for (;it!=itend;yt+=dyt){
 	  a=*itprec;
-	  get_glvertex(a,a1,a2,a3,realiscmplx,zmin,contextptr);
+	  get_glvertex(a,a1,a2,a3,realiscmplx,zmin,contextptr,pal);
 	  ++it; ++itprec;
 	  if (it==itend){
 	    if (texture)
@@ -581,7 +585,7 @@ namespace xcas {
 	    break;
 	  }
 	  b=*it;
-	  get_glvertex(b,c1,c2,c3,realiscmplx,zmin,contextptr);
+	  get_glvertex(b,c1,c2,c3,realiscmplx,zmin,contextptr,pal);
 	  if (texture)
 	    glTexCoord2f(xt,yt);
 	  glnormal(a1,a2,a3,b1,b2,b3,c1,c2,c3);
@@ -594,14 +598,14 @@ namespace xcas {
       else 
       */
       {
-	get_glvertex(a,a1,a2,a3,realiscmplx,zmin,contextptr);
-	get_glvertex(b,b1,b2,b3,realiscmplx,zmin,contextptr);
+	get_glvertex(a,a1,a2,a3,realiscmplx,zmin,contextptr,pal);
+	get_glvertex(b,b1,b2,b3,realiscmplx,zmin,contextptr,pal);
 	++it; ++itprec;
 	for (;it!=itend;++it,++itprec,yt+=dyt){
 	  c = *itprec;
 	  d = *it;
-	  get_glvertex(c,c1,c2,c3,realiscmplx,zmin,contextptr);
-	  get_glvertex(d,d1,d2,d3,realiscmplx,zmin,contextptr);
+	  get_glvertex(c,c1,c2,c3,realiscmplx,zmin,contextptr,pal);
+	  get_glvertex(d,d1,d2,d3,realiscmplx,zmin,contextptr,pal);
 	  glBegin(draw_mode);
 	  if (texture)
 	    glTexCoord2f(xt,yt);
@@ -949,6 +953,9 @@ namespace xcas {
     }
     bool hidden_line = fill_polygon && (width==7 || (display_mode & 0x8) || texture );
     xcas_color(couleur,true);
+    int pal=-1;
+    if (is_colormap_index(couleur))
+      pal=couleur;
     if (debug_infolevel){
       cerr << "opengl displaying " << g << '\n';
       GLint b;
@@ -1280,13 +1287,13 @@ namespace xcas {
 	return;
       if (tmp._VECTptr->size()>4){
 	if (!fill_polygon)
-	  glsurface((*tmp._VECTptr)[4],GL_LINE_LOOP,texture,contextptr);
+	  glsurface((*tmp._VECTptr)[4],GL_LINE_LOOP,texture,contextptr,pal);
 	else {
-	  glsurface((*tmp._VECTptr)[4],GL_QUADS,texture,contextptr);
+	  glsurface((*tmp._VECTptr)[4],GL_QUADS,texture,contextptr,pal);
 	  // glLineWidth(width+2);
 	  if (!hidden_line){
 	    glColor3d(0,0,0);
-	    glsurface((*tmp._VECTptr)[4],GL_LINE_LOOP,texture,contextptr);
+	    glsurface((*tmp._VECTptr)[4],GL_LINE_LOOP,texture,contextptr,pal);
 	    xcas_color(couleur,true);
 	  }
 	}
@@ -1428,9 +1435,9 @@ namespace xcas {
 	    if (s<3)
 	      continue;
 	    double d1,d2,d3,e1,e2,e3,f1,f2,f3;	    
-	    if (get_glvertex(w[0],d1,d2,d3,0,0,contextptr) &&
-		get_glvertex(w[1],e1,e2,e3,0,0,contextptr) &&
-		get_glvertex(w[2],f1,f2,f3,0,0,contextptr) ){
+	    if (get_glvertex(w[0],d1,d2,d3,0,0,contextptr,-1) &&
+		get_glvertex(w[1],e1,e2,e3,0,0,contextptr,-1) &&
+		get_glvertex(w[2],f1,f2,f3,0,0,contextptr,-1) ){
 	      glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);
 	      if (fill_polygon){
 		glBegin(GL_POLYGON);
@@ -1471,9 +1478,9 @@ namespace xcas {
 	    if (s<3)
 	      continue;
 	    double d1,d2,d3,e1,e2,e3,f1,f2,f3;	    
-	    if (get_glvertex(w[0],d1,d2,d3,0,0,contextptr) &&
-		get_glvertex(w[1],e1,e2,e3,0,0,contextptr) &&
-		get_glvertex(w[2],f1,f2,f3,0,0,contextptr) ){
+	    if (get_glvertex(w[0],d1,d2,d3,0,0,contextptr,-1) &&
+		get_glvertex(w[1],e1,e2,e3,0,0,contextptr,-1) &&
+		get_glvertex(w[2],f1,f2,f3,0,0,contextptr,-1) ){
 	      glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);
 	      if (!hidden_line){
 		glColor3d(0,0,0);
@@ -1578,9 +1585,9 @@ namespace xcas {
       if (s>2){ // polygon
 	bool closed=vv0.front()==vv0.back();
 	double d1,d2,d3,e1,e2,e3,f1,f2,f3;	    
-	if (get_glvertex(vv0[0],d1,d2,d3,0,0,contextptr) &&
-	    get_glvertex(vv0[1],e1,e2,e3,0,0,contextptr) &&
-	    get_glvertex(vv0[2],f1,f2,f3,0,0,contextptr) ){
+	if (get_glvertex(vv0[0],d1,d2,d3,0,0,contextptr,-1) &&
+	    get_glvertex(vv0[1],e1,e2,e3,0,0,contextptr,-1) &&
+	    get_glvertex(vv0[2],f1,f2,f3,0,0,contextptr,-1) ){
 	  if (test_enable_texture(texture) && s<=5 && closed){
 	    glBegin(GL_QUADS);
 	    glnormal(d1,d2,d3,e1,e2,e3,f1,f2,f3);

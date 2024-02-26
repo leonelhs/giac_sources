@@ -2,6 +2,7 @@
 // Thanks to Zoltan Kovacs for motivating this work, in order to improve geogebra theorem proving
 // Special thanks to Anna M. Bigatti from CoCoA team for insightfull discussions on how to choose an order for elimination
 #include "giacPCH.h"
+#define MAXNTHREADS 64
 
 #ifndef WIN32
 #define COCOA9950
@@ -62,6 +63,7 @@
 using namespace std;
 
 #include <iostream>
+//#include <fstream>
 #if !defined FXCG && !defined KHICAS
 #include <iomanip>
 #endif
@@ -466,7 +468,7 @@ namespace giac {
 
 #if !defined CAS38_DISABLED && !defined FXCG && !defined KHICAS
   //#define GBASIS_SELECT_TOTAL_DEGREE
-#if GROEBNER_VARS!=15 && !defined BIGENDIAN // double revlex ordering is not compatible with indices swapping
+#if GROEBNER_VARS!=15 && !defined BIGENDIAN // double revlex ordering is not compatible with indices swapping for tdeg_t64
 #define GBASIS_SWAP 
 #endif
   // minimal numbers of pair to reduce simultaneously with f4buchberger
@@ -1939,7 +1941,8 @@ namespace giac {
       z=tdeg_t64();
       z.tdeg=1;
       z.order_=x.order_;
-      z.ui=(longlong *)malloc((1+(x.order_.dim+degratiom1)/degratio)*sizeof(longlong));
+      int nbytes=(1+(x.order_.dim+degratiom1)/degratio)*sizeof(longlong);
+      z.ui=(longlong *)malloc(nbytes);
       z.ui[0]=1;
       const degtype * xptr=(degtype *)(x.ui+1),*xend=xptr+degratio*((x.order_.dim+degratiom1)/degratio),*yptr=(degtype *)(y.ui+1);
       degtype * resptr=(degtype *)(z.ui+1);
@@ -3559,7 +3562,7 @@ namespace giac {
     bool operator ()(const T_unsigned<gen,tdeg_t> & a,const T_unsigned<gen,tdeg_t> & b) const {return !tdeg_t_greater(b.u,a.u,order);}
   };
   template<class tdeg_t>
-  void convert(const poly8<tdeg_t> & p,polymod<tdeg_t> &q,modint env){
+  void convert(const poly8<tdeg_t> & p,polymod<tdeg_t> &q,modint env,bool unitarize=true){
 #if 0
     q.coord.reserve(p.coord.size());
     q.dim=p.dim;
@@ -3593,7 +3596,7 @@ namespace giac {
       q.coord[i].u=p.coord[i].u;
     }
 #endif
-    if (env && !q.coord.empty()){
+    if (env && unitarize && !q.coord.empty()){
       q.sugar=q.coord.front().u.total_degree(p.order);
       if (q.coord.front().g!=1)
 	smallmultmod(invmod(q.coord.front().g,env),q,env);
@@ -3792,13 +3795,13 @@ namespace giac {
   }
 
   template<class tdeg_t>
-  void convert(const vectpoly8<tdeg_t> & v,vectpolymod<tdeg_t> & w,modint env,int n=0){
+  void convert(const vectpoly8<tdeg_t> & v,vectpolymod<tdeg_t> & w,modint env,int n=0,bool unitarize=true){
     if (n==0)
       n=v.size();
     if (w.size()<n)
       w.resize(n);
     for (unsigned i=0;i<n;++i){
-      convert(v[i],w[i],env);
+      convert(v[i],w[i],env,unitarize);
     }
   }
 
@@ -4082,6 +4085,7 @@ namespace giac {
     tdeg_t v=shift+shift; // new memory slot
     int dim=p.dim;
     for (;jt!=jtend;++jt){
+      //CERR << "dbg " << jt->u << " " << shift << "\n";
       add(jt->u,shift,v,dim);
       for (;it!=itend && tdeg_t_strictly_greater(it->u,v,p.order);++it){
 	r.coord.push_back(*it);
@@ -4222,14 +4226,14 @@ namespace giac {
 #endif
 
   template<class tdeg_t>
-  void spolymod(const polymod<tdeg_t> & p,const polymod<tdeg_t> & q,polymod<tdeg_t> & res,polymod<tdeg_t> & TMP1,modint env){
+  modint spolymod(const polymod<tdeg_t> & p,const polymod<tdeg_t> & q,polymod<tdeg_t> & res,polymod<tdeg_t> & TMP1,modint env){
     if (p.coord.empty()){
       res=q;
-      return ;
+      return 1;
     }
     if (q.coord.empty()){
       res= p;
-      return;
+      return 1;
     }
     const tdeg_t & pi = p.coord.front().u;
     const tdeg_t & qi = q.coord.front().u;
@@ -4242,8 +4246,9 @@ namespace giac {
     modint a=p.coord.front().g,b=q.coord.front().g;
     tdeg_t pshift=lcm-pi;
     unsigned sugarshift=pshift.total_degree(p.order);
-    // adjust sugar for res
+    // adjust sugar/logz for res
     res.sugar=p.sugar+sugarshift;
+    res.logz=p.logz+q.logz;
     // CERR << "spoly mod " << res.sugar << " " << pi << qi << '\n';
     if (p.order.o==_PLEX_ORDER || sugarshift!=0)
       smallshift(TMP1.coord,pshift,TMP1.coord);
@@ -4252,12 +4257,15 @@ namespace giac {
       smallmultsubmod(TMP1,smod(modint2(a)*invmod(b,env),env),TMP2,res,env);
     else
       smallmultsubmodshift(TMP1,0,smod(modint2(a)*invmod(b,env),env),TMP2,lcm-qi,res,env);
+    modint d=1;
     if (!res.coord.empty() && res.coord.front().g!=1){
-      smallmultmod(invmod(res.coord.front().g,env),res,env);
+      d=invmod(res.coord.front().g,env);
+      smallmultmod(d,res,env);
       res.coord.front().g=1;
     }
     if (debug_infolevel>2)
       CERR << "spolymod " << res << '\n';
+    return d;
   }
 
   template<class tdeg_t>
@@ -4343,8 +4351,81 @@ namespace giac {
     return false;
   }
 
+  // rewrite sum(A[i]*F[i]) mod env. By decreasing degree of A[i]*F[i]
+  // if a monomial of A[i] is divisible by the leading monomial of F[j]
+  // and A[j]*F[j] has a monomial of same degree
+  // replace A[i] by A[i]-quotient*F[j] and A[j] by A[j]+quotient*F[i]
+  // this will modify only monomials with smaller degree
   template<class tdeg_t>
-  void reducesmallmod(polymod<tdeg_t> & rem,const vectpolymod<tdeg_t> & res,const vector<unsigned> & G,unsigned excluded,modint env,polymod<tdeg_t> & TMP1,bool normalize,int start_index=0,bool topreduceonly=false){
+  void reduceAF(vectpolymod<tdeg_t> & A,const vectpolymod<tdeg_t> & F,modint env,order_t order){
+    return; // no visible effect
+    polymod<tdeg_t> tmp;
+    int s=F.size();
+    vector <tdeg_t> lF;
+    for (unsigned i=0;i<s;++i)
+      lF.push_back(F[i].coord.front().u);
+    vector<int> startpos(s);
+    while (1){
+      tdeg_t aifideg;
+      bool prev=false;
+      vector<int> pos;
+      // find degree
+      for (int i=0;i<s;++i){
+        if (startpos[i]<A[i].coord.size()){
+          tdeg_t curdeg=A[i].coord[startpos[i]].u+lF[i];
+          if (prev){
+            if (curdeg==aifideg){
+              pos.push_back(i);
+              continue;
+            }
+            if (tdeg_t_greater(curdeg,aifideg,order)){
+              pos.clear(); pos.push_back(i);
+              aifideg=curdeg;
+            }
+          }
+          else {
+            pos.push_back(i);
+            aifideg=curdeg;
+            prev=true;
+          }
+        }
+      }
+      if (pos.empty()) // nothing left
+        break;
+      bool found=false;
+      // check for divisibility
+      for (int i=0;!found && i<pos.size()-1;++i){
+        int posi=pos[i];
+        aifideg=A[posi].coord[startpos[posi]].u;
+        for (int j=i+1;j<pos.size();++j){
+          int posj=pos[j];
+          if (tdeg_t_all_greater(aifideg,lF[posj],order)){
+            found=true;
+            modint a=A[posi].coord[startpos[posi]].g;
+            modint b=F[posj].coord[0].g;
+            modint q=smod(modint2(a)*invmod(b,env),env);
+            tdeg_t du=aifideg-lF[posj];
+            // replace A[posi] by A[posi]-quotient*F[posj]
+            // and A[posj]] by A[posj]+quotient*F[posi]
+            smallmultsubmodshift(A[posi],0,q,F[posj],du,tmp,env);
+            A[posi].coord.swap(tmp.coord);
+            smallmultsubmodshift(A[posj],0,-q,F[posi],du,tmp,env);
+            A[posj].coord.swap(tmp.coord);
+            break;
+          }
+        }
+      }
+      if (!found){
+        // increase positions
+        for (int i=0;i<pos.size();++i){
+          ++startpos[pos[i]];
+        }
+      }
+    }
+  }
+
+  template<class tdeg_t>
+  void reducesmallmod(polymod<tdeg_t> & rem,const vectpolymod<tdeg_t> & res,const vector<unsigned> & G,unsigned excluded,modint env,polymod<tdeg_t> & TMP1,bool normalize,int start_index=0,bool topreduceonly=false,vectpolymod<tdeg_t>*remcoeffsptr=0,vector< vectpolymod<tdeg_t> > * coeffsmodptr=0){
     if (debug_infolevel>1000){
       rem.dbgprint();
       if (!rem.coord.empty()) rem.coord.front().u.dbgprint();
@@ -4455,18 +4536,35 @@ namespace giac {
 #else
       int Gi=G[i];
 #endif
-      modint a(pt->g),b(res[Gi].coord.front().g);
-      smallmultsubmodshift(rem,0,smod(a*modint2(invmod(b,env)),env),res[Gi],pt->u-res[Gi].coord.front().u,TMP1,env);
+      modint a(pt->g),b(res[Gi].coord.front().g),c(smod(a*modint2(invmod(b,env)),env));
+      tdeg_t du(pt->u-res[Gi].coord.front().u);
+      smallmultsubmodshift(rem,0,c,res[Gi],du,TMP1,env);
       // smallmultsub(rem,rempos,smod(a*invmod(b,env->modulo),env->modulo).val,res[G[i]],pt->u-res[G[i]].coord.front().u,TMP2,env->modulo.val);
       // rempos=0; // since we have removed the beginning of rem (copied in TMP1)
       swap(rem.coord,TMP1.coord);
+      if (remcoeffsptr){
+	// reflect linear combination on remcoeffs
+	vectpolymod<tdeg_t> & remcoeffs=*remcoeffsptr;
+	for (size_t k=0;k<remcoeffs.size();++k){
+	  smallmultsubmodshift(remcoeffs[k],0,c,(*coeffsmodptr)[Gi][k],du,TMP1,env);
+	  swap(remcoeffs[k].coord,TMP1.coord);
+	}
+      }
       continue;
     }
     if (normalize && !rem.coord.empty() && rem.coord.front().g!=1){
       // smallmult does %, smallmultmod also make the result positive
       // smallmult(invmod(rem.coord.front().g,env),rem.coord,rem.coord,env);
-      smallmultmod(invmod(rem.coord.front().g,env),rem,env,false);
+      modint a(invmod(rem.coord.front().g,env));
+      smallmultmod(a,rem,env,false);
       rem.coord.front().g=1;
+      if (remcoeffsptr){
+	// reflect on remcoeffs
+	vectpolymod<tdeg_t> & remcoeffs=*remcoeffsptr;
+	for (size_t k=0;k<remcoeffs.size();++k){
+	  smallmultmod(a,remcoeffs[k],env,false);
+	}
+      }
     }
 #ifndef GIAC_GBASIS_PERMUTATION2
     free(resGi);
@@ -9031,7 +9129,7 @@ namespace giac {
     return b;
   }
 
-  // set P mod p*q to be chinese remainder of P mod p and Q mod q
+  // set P mod p*q to be chinese remainder of P mod p and Q mod q 
   template<class tdeg_t>
   bool chinrem(poly8<tdeg_t> &P,const gen & pmod,poly8<tdeg_t> & Q,const gen & qmod,poly8<tdeg_t> & tmp){
     gen u,v,d,pqmod(pmod*qmod);
@@ -9166,10 +9264,56 @@ namespace giac {
     return 1;
   }
 
+  // parallel chinrem
+  
+  template<class tdeg_t>
+  struct chinrem_t {
+    poly8<tdeg_t> * Pptr;
+    const polymod<tdeg_t> * Qptr;
+    size_t start,end;
+    int U,qmodval;
+    mpz_t * pmodptr,*tmpzptr;
+  };
+
+  template<class tdeg_t>
+  void * thread_chinrem(void * _ptr){
+    chinrem_t<tdeg_t> * ptr=(chinrem_t<tdeg_t> *) _ptr;
+    poly8<tdeg_t> & P=*ptr->Pptr;
+    const polymod<tdeg_t> & Q=*ptr->Qptr;
+    size_t start=ptr->start,end=ptr->end;
+    if (end>P.coord.size())
+      end=P.coord.size();
+    int U=ptr->U,qmodval=ptr->qmodval;
+    mpz_t * pmodptr=ptr->pmodptr,*tmpzptr=ptr->tmpzptr;
+    typename vector< T_unsigned<gen,tdeg_t> >::iterator it=P.coord.begin()+start,itend=P.coord.begin()+end;
+    typename vector< T_unsigned<modint,tdeg_t> >::const_iterator jt=Q.coord.begin()+start;
+    for (;it!=itend;++it,++jt){
+      if (it->g.type==_ZINT){
+        int amodq=modulo(*it->g._ZINTptr,qmodval);
+        if (amodq==jt->g)
+          continue;
+        mpz_mul_si(*tmpzptr,*pmodptr,(U*(jt->g-longlong(amodq)))%qmodval);
+        mpz_add(*it->g._ZINTptr,*it->g._ZINTptr,*tmpzptr);
+      }
+      else {
+        mpz_mul_si(*tmpzptr,*pmodptr,(U*(longlong(jt->g)-it->g.val))%qmodval);
+        if (it->g.val>=0)
+          mpz_add_ui(*tmpzptr,*tmpzptr,it->g.val);
+        else
+          mpz_sub_ui(*tmpzptr,*tmpzptr,-it->g.val);
+        it->g=*tmpzptr;
+      }
+    }
+    return ptr;
+  }
 
   // set P mod p*q to be chinese remainder of P mod p and Q mod q
   template<class tdeg_t>
-  bool chinrem(poly8<tdeg_t> &P,const gen & pmod,const polymod<tdeg_t> & Q,int qmodval,poly8<tdeg_t> & tmp){
+  bool chinrem(poly8<tdeg_t> &P,const gen & pmod,const polymod<tdeg_t> & Q,int qmodval,poly8<tdeg_t> & tmp,int nthreads=1){
+    if (pmod.type!=_ZINT)
+      nthreads=1;
+    if (nthreads>MAXNTHREADS)
+      nthreads=MAXNTHREADS;
     gen u,v,d,pqmod(qmodval*pmod);
     egcd(pmod,qmodval,u,v,d);
     if (u.type==_ZINT)
@@ -9189,6 +9333,49 @@ namespace giac {
 	  break;
       }
       if (it==itend){
+#if !defined USE_GMP_REPLACEMENTS && defined HAVE_LIBPTHREAD
+        if (//0 &&
+            nthreads>1 
+            // && P.coord.size()>=64*nthreads
+            ){
+          // realloc mpz_t inside P ?
+          size_t cur=sizeinbase2(pqmod);
+          int N=sizeinbase2(cur)-1;
+          size_t N2=(1ULL << N);
+          gen N3=pow(2,N2+31);
+          if (is_greater(N3,pqmod,context0)){
+            if (debug_infolevel)
+              CERR << CLOCK()*1e-6 << " parallel chinrem realloc bits=" << 2*N2 << "\n";
+            for (it=P.coord.begin();it!=itend;++it){
+              if (it->g.type!=_ZINT) continue;
+              mpz_t & z=*it->g._ZINTptr;
+              size_t taille=mpz_size(z)*sizeof(mp_limb_t)*8;
+              if (taille<2*N2)
+                mpz_realloc2(z,2*N2);
+            }
+          }
+          // parallel chinese remaindering 
+          chinrem_t<tdeg_t> chinrem_param[MAXNTHREADS]; mpz_t tmptab[MAXNTHREADS];
+          pthread_t tab[MAXNTHREADS];
+          for (int j=0;j<nthreads;++j){
+            chinrem_t<tdeg_t> tmp={&P,&Q,j*P.coord.size()/nthreads,(j+1)*P.coord.size()/nthreads,U,qmodval,pmod._ZINTptr,&tmptab[j]};
+            chinrem_param[j]=tmp;
+            mpz_init2(tmptab[j],cur);
+            bool res=true;
+            if (j<nthreads-1)
+              res=pthread_create(&tab[j],(pthread_attr_t *) NULL,thread_chinrem<tdeg_t>,(void *) &chinrem_param[j]);
+            if (res)
+              thread_chinrem<tdeg_t>((void *)&chinrem_param[j]);
+          } // end creating threads
+          for (unsigned j=0;j<nthreads;++j){
+            void * ptr_=(void *)&nthreads; // non-zero initialisation
+            if (j<nthreads-1) pthread_join(tab[j],&ptr_);
+            mpz_clear(tmptab[j]); 
+          }
+          mpz_clear(tmpz);
+          return true;
+        }
+#endif
 	for (it=P.coord.begin(),jt=Q.coord.begin();it!=itend;++jt,++it){
 	  if (pmod.type!=_ZINT){
 	    it->g=it->g+u*(jt->g-it->g)*pmod;
@@ -9287,7 +9474,7 @@ namespace giac {
   // P and Q must have same leading monomials,
   // otherwise returns 0 and leaves P unchanged
   template<class tdeg_t>
-  int chinrem(vectpoly8<tdeg_t> &P,const gen & pmod,const vectpolymod<tdeg_t> & Q,int qmod,poly8<tdeg_t> & tmp,int start=0){
+  int chinrem(vectpoly8<tdeg_t> &P,const gen & pmod,const vectpolymod<tdeg_t> & Q,int qmod,poly8<tdeg_t> & tmp,int start=0,int nthreads=1){
     if (P.size()!=Q.size())
       return 0;
     for (unsigned i=start;i<P.size();++i){
@@ -9302,7 +9489,7 @@ namespace giac {
     }
     // LP(P)==LP(Q), proceed to chinese remaindering
     for (unsigned i=start;i<P.size();++i){
-      if (!chinrem(P[i],pmod,Q[i],qmod,tmp))
+      if (!chinrem(P[i],pmod,Q[i],qmod,tmp,nthreads))
 	return -1;
     }
     return 1;
@@ -9364,10 +9551,107 @@ namespace giac {
     return true;
   }
 
+  bool chk_equal_mod(const gen & a,const vector<int> & p,int m){
+    if (a.type!=_VECT || a._VECTptr->size()!=p.size())
+      return false;
+    const_iterateur it=a._VECTptr->begin(),itend=a._VECTptr->end();
+    vector<int>::const_iterator jt=p.begin();
+    for (;it!=itend;++jt,++it){
+      if (it->type==_INT_ && it->val==*jt) continue;
+      if (!chk_equal_mod(*it,*jt,m))
+	return false;
+    }
+    return true;
+  }
+
+  bool chk_equal_mod(const vecteur & v,const vector< vector<int> >& p,int m){
+    if (v.size()!=p.size())
+      return false;
+    for (unsigned i=0;i<p.size();++i){
+      if (!chk_equal_mod(v[i],p[i],m))
+	return false;
+    }
+    return true;
+  }
+
   template<class tdeg_t>
-  bool fracmod(const poly8<tdeg_t> &P,const gen & p,
+  bool chk_equal_mod(const poly8<tdeg_t> & v,const polymod<tdeg_t> & p,int m){
+    // sizes may differ if a coeff of v is 0 mod m
+    if (v.coord.size()<p.coord.size())
+      return false;
+    if (v.coord.empty())
+      return true;
+    unsigned s = unsigned(v.coord.size());
+    int lc=smod(v.coord[0].g,m).val;
+    int lcp=p.coord.empty()?1:p.coord[0].g;
+    if (s==p.coord.size()){
+      if (lcp!=1){
+	for (unsigned i=0;i<s;++i){
+	  if (!chk_equal_mod(lcp*v.coord[i].g,(longlong(lc)*p.coord[i].g)%m,m))
+	    return false;
+	}
+      }
+      else {
+	for (unsigned i=0;i<s;++i){
+	  if (!chk_equal_mod(v.coord[i].g,(longlong(lc)*p.coord[i].g)%m,m))
+	    return false;
+	}
+      }
+      return true;
+    }
+    unsigned j=0; // position in p
+    for (unsigned i=0;i<s;++i){
+      if (v.coord[i].u==p.coord[j].u){
+	if (!chk_equal_mod(lcp*v.coord[i].g,(longlong(lc)*p.coord[j].g)%m,m))
+	  return false;
+	++j;
+      }
+      if (!chk_equal_mod(lcp*v.coord[i].g,0,m))
+	return false;
+    }
+    return true;
+  }
+
+  template<class tdeg_t>
+  bool chk_equal_mod(const vectpoly8<tdeg_t> & v,const vectpolymod<tdeg_t> & p,const vector<unsigned> & G,int m){
+    if (v.size()!=G.size())
+      return false;
+    for (unsigned i=0;i<G.size();++i){
+      if (!chk_equal_mod(v[i],p[G[i]],m))
+	return false;
+    }
+    return true;
+  }
+
+  template<class tdeg_t>
+  bool chk_equal_mod(const poly8<tdeg_t> & v,const poly8<tdeg_t> & p,int m){
+    if (v.coord.size()!=p.coord.size())
+      return false;
+    unsigned s=unsigned(p.coord.size());
+    int lc=smod(v.coord[0].g,m).val;
+    for (unsigned i=0;i<s;++i){
+      if (!chk_equal_mod(v.coord[i].g,(longlong(lc)*p.coord[i].g.val)%m,m))
+	return false;
+    }
+    return true;
+  }
+
+  template<class tdeg_t>
+  bool chk_equal_mod(const vectpoly8<tdeg_t> & v,const vectpoly8<tdeg_t> & p,const vector<unsigned> & G,int m){
+    if (v.size()!=G.size())
+      return false;
+    for (unsigned i=0;i<G.size();++i){
+      if (!chk_equal_mod(v[i],p[G[i]],m))
+	return false;
+    }
+    return true;
+  }
+
+  template<class tdeg_t>
+  int fracmod(const poly8<tdeg_t> &P,const gen & p,
 	       mpz_t & d,mpz_t & d1,mpz_t & absd1,mpz_t &u,mpz_t & u1,mpz_t & ur,mpz_t & q,mpz_t & r,mpz_t &sqrtm,mpz_t & tmp,
-	       poly8<tdeg_t> & Q){
+	       poly8<tdeg_t> & Q,
+               polymod<tdeg_t> * chkptr=0,int chkp=0){
     Q.coord.clear();
     Q.coord.reserve(P.coord.size());
     Q.dim=P.dim;
@@ -9381,7 +9665,7 @@ namespace giac {
 	g.uncoerce();
       if ( (g.type!=_ZINT) || (p.type!=_ZINT) ){
 	CERR << "bad type"<<'\n';
-	return false;
+	return 0;
       }
       if (tryL && L.type==_ZINT){
 	num=smod(L*g,p);
@@ -9392,7 +9676,7 @@ namespace giac {
 	}
       }
       if (!in_fracmod(p,g,d,d1,absd1,u,u1,ur,q,r,sqrtm,tmp,num,den))
-	return false;
+	return 0;
       if (num.type==_ZINT && mpz_sizeinbase(*num._ZINTptr,2)<=30)
 	num=int(mpz_get_si(*num._ZINTptr));
       if (den.type==_ZINT && mpz_sizeinbase(*den._ZINTptr,2)<=30)
@@ -9407,8 +9691,13 @@ namespace giac {
 	tryL=is_greater(p,L*L,context0);
       }
       Q.coord.push_back(T_unsigned<gen,tdeg_t>(g,P.coord[i].u));
+      if (chkptr && !chk_equal_mod(g,chkptr->coord[i].g,chkp)){
+        if (debug_infolevel)
+          CERR << CLOCK()*1e-6 << " early fracmod chk failure position " << i << " (" << P.coord.size() << ")\n";
+        return 2;
+      }
     }
-    return true;
+    return 1;
   }
 
   template<class tdeg_t>
@@ -9806,102 +10095,6 @@ namespace giac {
 	B=b;
     }
     return B;
-  }
-
-  bool chk_equal_mod(const gen & a,const vector<int> & p,int m){
-    if (a.type!=_VECT || a._VECTptr->size()!=p.size())
-      return false;
-    const_iterateur it=a._VECTptr->begin(),itend=a._VECTptr->end();
-    vector<int>::const_iterator jt=p.begin();
-    for (;it!=itend;++jt,++it){
-      if (it->type==_INT_ && it->val==*jt) continue;
-      if (!chk_equal_mod(*it,*jt,m))
-	return false;
-    }
-    return true;
-  }
-
-  bool chk_equal_mod(const vecteur & v,const vector< vector<int> >& p,int m){
-    if (v.size()!=p.size())
-      return false;
-    for (unsigned i=0;i<p.size();++i){
-      if (!chk_equal_mod(v[i],p[i],m))
-	return false;
-    }
-    return true;
-  }
-
-  template<class tdeg_t>
-  bool chk_equal_mod(const poly8<tdeg_t> & v,const polymod<tdeg_t> & p,int m){
-    // sizes may differ if a coeff of v is 0 mod m
-    if (v.coord.size()<p.coord.size())
-      return false;
-    if (v.coord.empty())
-      return true;
-    unsigned s = unsigned(v.coord.size());
-    int lc=smod(v.coord[0].g,m).val;
-    int lcp=p.coord.empty()?1:p.coord[0].g;
-    if (s==p.coord.size()){
-      if (lcp!=1){
-	for (unsigned i=0;i<s;++i){
-	  if (!chk_equal_mod(lcp*v.coord[i].g,(longlong(lc)*p.coord[i].g)%m,m))
-	    return false;
-	}
-      }
-      else {
-	for (unsigned i=0;i<s;++i){
-	  if (!chk_equal_mod(v.coord[i].g,(longlong(lc)*p.coord[i].g)%m,m))
-	    return false;
-	}
-      }
-      return true;
-    }
-    unsigned j=0; // position in p
-    for (unsigned i=0;i<s;++i){
-      if (v.coord[i].u==p.coord[j].u){
-	if (!chk_equal_mod(lcp*v.coord[i].g,(longlong(lc)*p.coord[j].g)%m,m))
-	  return false;
-	++j;
-      }
-      if (!chk_equal_mod(lcp*v.coord[i].g,0,m))
-	return false;
-    }
-    return true;
-  }
-
-  template<class tdeg_t>
-  bool chk_equal_mod(const vectpoly8<tdeg_t> & v,const vectpolymod<tdeg_t> & p,const vector<unsigned> & G,int m){
-    if (v.size()!=G.size())
-      return false;
-    for (unsigned i=0;i<G.size();++i){
-      if (!chk_equal_mod(v[i],p[G[i]],m))
-	return false;
-    }
-    return true;
-  }
-
-  template<class tdeg_t>
-  bool chk_equal_mod(const poly8<tdeg_t> & v,const poly8<tdeg_t> & p,int m){
-    if (v.coord.size()!=p.coord.size())
-      return false;
-    unsigned s=unsigned(p.coord.size());
-    int lc=smod(v.coord[0].g,m).val;
-    for (unsigned i=0;i<s;++i){
-      if (!chk_equal_mod(v.coord[i].g,(longlong(lc)*p.coord[i].g.val)%m,m))
-	return false;
-    }
-    return true;
-  }
-
-  template<class tdeg_t>
-  bool chk_equal_mod(const vectpoly8<tdeg_t> & v,const vectpoly8<tdeg_t> & p,const vector<unsigned> & G,int m){
-    if (v.size()!=G.size())
-      return false;
-    for (unsigned i=0;i<G.size();++i){
-      if (!chk_equal_mod(v[i],p[G[i]],m))
-	return false;
-    }
-    return true;
   }
 
   // excluded==-1 and G==identity in calls
@@ -10619,8 +10812,10 @@ namespace giac {
       }
       // push_back &current into heap so that pop_heap will bubble out the
       // modified root node (initialization will exchange two identical pointers)
-      if (current.polymodpos<resvpos.coord.size())
+      if (current.polymodpos<resvpos.coord.size()){
 	H.push_back(heap_tt_ptr<tdeg_t>(&current));
+        std::push_heap(H.begin(),H.end(),key); // ?clang
+      }
       std::pop_heap(H.begin(),H.end(),key);
       H.pop_back();
     }
@@ -10721,7 +10916,8 @@ namespace giac {
 	}
 	if (current.gj<gcurrent.coord.size()){
 	  H.push_back(H.front());
-	  std::pop_heap(H.begin(),H.end(),key);
+          std::push_heap(H.begin(),H.end(),key); // ?clang
+          std::pop_heap(H.begin(),H.end(),key);
 	  H.pop_back();
 	}
 	else {
@@ -11349,6 +11545,7 @@ template<class modint_t,class modint_u>
       // push_back &current into heap so that pop_heap will bubble out the
       // modified root node (initialization will exchange two identical pointers)
       H.push_back(heap_tt_ptr<tdeg_t>(&current));
+      std::push_heap(H.begin(),H.end(),key); //?clang
       std::pop_heap(H.begin(),H.end(),key);
       H.pop_back();
     }
@@ -11590,7 +11787,7 @@ template<class modint_t,class modint_u>
     if (info_ptr && !learning)
       Ksizes=giacmin(info_ptr->Ksizes+3,Kcols);
     bool Kdone=false;
-    int th=parallel-1; // giacmin(threads,64)-1;
+    int th=giacmin(parallel,MAXNTHREADS)-1; // giacmin(threads,64)-1;
 #ifdef GIAC_CACHE2ND
     vector<modint2> subcoeff2;
 #else
@@ -11654,8 +11851,8 @@ template<class modint_t,class modint_u>
 	else
 	  positions.back()=Bs;
       } // end else interreduce 
-      pthread_t tab[64];
-      thread_buchberger_t<tdeg_t> buchberger_param[64];
+      pthread_t tab[MAXNTHREADS];
+      thread_buchberger_t<tdeg_t> buchberger_param[MAXNTHREADS];
       int colonnes=N;
       for (int j=0;j<=th;++j){
 	thread_buchberger_t<tdeg_t> tmp={&res,&K,&G,&B,&permuB,&leftshift,&rightshift,&R,Rhashptr,&Rdegpos,env,positions[j],positions[j+1],int(N),int(Kcols),&firstpos,&Mindex,&Mcoeff,&coeffindex,&indexes,&used,bitmap,j==th && debug_infolevel>1,learning,(short int)interreduce,pairs_reducing_to_zero,learned_parallel[j]};
@@ -12357,7 +12554,7 @@ template<class modint_t,class modint_u>
       }
       swap(K1,K);
     }
-    int th=parallel-1; // giacmin(threads,64)-1;
+    int th=giacmin(parallel,MAXNTHREADS)-1; // giacmin(threads,64)-1;
     if (interreduce){ // interreduce==true means final interreduction
       ;
     }
@@ -12525,7 +12722,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
   // otherwise we might miss some new pairs to be added
   // f:=(1387482169552326*s*t1*t2^2-25694114250969*s*t1*t2+240071563017*s*t1+579168836143704*t1*t2^2-10725348817476*t1*t2+100212766488*t1):;fb:=(-7035747399*s*t1^2*t2^2+118865637*s*t1^2*t2-793881*s*t1^2+118865637*s*t1*t2^2-1167858*s*t1*t2+1944*s*t1-1089126*s*t2^2+1944*s*t2+18*s-2936742966*t1^2*t2^2+49601160*t1^2*t2-328050*t1^2+49601160*t1*t2^2-485514*t1*t2+972*t1-446148*t2^2+972*t2+36):;rmp:=s^2+10*s+4:;gbasis([f,fb,rmp],[s,t1,t2],revlex);
   template<class tdeg_t>
-  void zgbasis_updatemod(vector<unsigned> & G,vector< paire > & B,vectzpolymod<tdeg_t> & res,unsigned pos,vector<unsigned> & oldG,bool multimodular){
+  void zgbasis_updatemod(vector<unsigned> & G,vector< paire > & B,const vectzpolymod<tdeg_t> & res,unsigned pos,const vector<unsigned> & oldG,bool multimodular){
     if (debug_infolevel>2)
       CERR << CLOCK()*1e-6 << " zmod begin gbasis update " << G.size() << '\n';
     if (debug_infolevel>3)
@@ -12878,12 +13075,21 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 #endif
 
   template<class tdeg_t>
-  bool in_zgbasis(vectpolymod<tdeg_t> &resmod,unsigned ressize,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< zinfo_t<tdeg_t> > & f4buchberger_info,bool recomputeR,bool eliminate_flag,bool multimodular,int parallel,bool interred){
+  bool in_zgbasis(vectpolymod<tdeg_t> &resmod,unsigned ressize,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< zinfo_t<tdeg_t> > & f4buchberger_info,bool recomputeR,bool eliminate_flag,bool multimodular,int parallel,bool interred,vector< vectpolymod<tdeg_t> > * coeffsmodptr){
+    vectpolymod<tdeg_t> resmodorig(resmod); resmodorig.resize(ressize);
     unsigned generators=ressize;
     bool seldeg=true; int sel1=0;
     ulonglong cleared=0;
     unsigned learned_position=0,f4buchberger_info_position=0;
-    bool learning=f4buchberger_info.empty();
+    bool learning=(coeffsmodptr && pairs_reducing_to_zero)?pairs_reducing_to_zero->empty():f4buchberger_info.empty();
+    if (0 && learning && coeffsmodptr){ 
+      // do a learning run with F4? 
+      // requires pairs_reducing_to_zero to be the same (permutation...)
+      // and comment multimodular after zf4mod call below
+      vectpolymod<tdeg_t> resmodcopy(resmod); vector<unsigned> Gcopy(G);
+      in_zgbasis(resmodcopy,ressize,Gcopy,env,totdeg,pairs_reducing_to_zero,f4buchberger_info,recomputeR,eliminate_flag,multimodular,parallel,interred, (vector< vectpolymod<tdeg_t> > *) 0);
+      learning=false;
+    }
     unsigned capa = unsigned(f4buchberger_info.capacity());
     order_t order=resmod.front().order;
     short dim=resmod.front().dim;
@@ -12899,11 +13105,46 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
     vector<unsigned> oldG(G);
     if (debug_infolevel>1)
       CERR << CLOCK()*1e-6 << " initial reduction: " << ressize << " memory " << memory_usage()*1e-6 << '\n';
+    if (coeffsmodptr){ // initialize to "identity"
+      coeffsmodptr->clear();
+      coeffsmodptr->resize(ressize);
+      tdeg_t dg(index_t(dim),order);
+      TMP2.coord.push_back(T_unsigned<modint,tdeg_t>(1,dg));
+      for (unsigned l=0;l<ressize;++l){
+	(*coeffsmodptr)[l].resize(ressize);
+        for (unsigned m=0;m<ressize;++m){
+          (*coeffsmodptr)[l][m].order=order;
+          (*coeffsmodptr)[l][m].dim=dim;
+        }
+	(*coeffsmodptr)[l][l]=TMP2;
+      }
+      TMP2.coord.clear();
+    }
     for (unsigned l=0;l<ressize;++l){
 #ifdef GIAC_REDUCEMODULO
-      reducesmallmod(resmod[l],resmod,G,-1,env,TMP2,env!=0);
+      reducesmallmod(resmod[l],resmod,G,-1,env,TMP2,env!=0,0,false,coeffsmodptr?&(*coeffsmodptr)[l]:0,coeffsmodptr);
+      if (coeffsmodptr)
+        reduceAF((*coeffsmodptr)[l],resmodorig,env,order);
 #endif
-      gbasis_updatemod(G,B,resmod,l,TMP2,env,true,oldG);
+      gbasis_updatemod(G,B,resmod,l,TMP2,env,coeffsmodptr?false:true,oldG);
+    }
+    for (unsigned l=0;l<ressize;++l){
+      // debug
+      if (0 && coeffsmodptr){ // check resmodorig=resmod at function begin
+        polymod<tdeg_t> _TMP1=resmod[l],_TMP2(order,dim);
+        vector< vectpolymod<tdeg_t> > & v = *coeffsmodptr;
+        int s=v.front().size();
+        vectpolymod<tdeg_t> & newcoeffs=v[l];
+        for (size_t k=0;k<s;k++){ // - sum(newcoeffs[k]*resmodorig[k])
+          for (size_t l=0;l<newcoeffs[k].coord.size();++l){
+            smallmultsubmodshift(_TMP1,0,newcoeffs[k].coord[l].g,resmodorig[k],newcoeffs[k].coord[l].u,_TMP2,env);
+            _TMP1.coord.swap(_TMP2.coord);
+          }
+        }
+        // should be 0
+        if (_TMP1.coord.size())
+          CERR << "zgbasis reduce coeff error " << _TMP1 << "\n";
+      }
     }
     if (debug_infolevel>1)
       CERR << CLOCK()*1e-6 << " initial collect, pairs " << B.size() << '\n';
@@ -12960,11 +13201,12 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
       }
       vector<tdeg_t> Blcm(B.size());
-      vector<int> Blcmdeg(B.size());
+      vector<int> Blcmdeg(B.size()),Blogz(B.size());
       vector<unsigned> nterms(B.size());
       for (unsigned i=0;i<B.size();++i){
 	clean[B[i].first]=false;
 	clean[B[i].second]=false;
+        Blogz[i]=resmod[B[i].first].logz+resmod[B[i].second].logz;
 	index_lcm(res[B[i].first].ldeg,res[B[i].second].ldeg,Blcm[i],order);
 	if (!totdeg)
 	  Blcmdeg[i]=giacmax(res[B[i].first].maxtdeg+(Blcm[i]-res[B[i].first].ldeg).total_degree(order),res[B[i].second].maxtdeg+(Blcm[i]-res[B[i].second].ldeg).total_degree(order));
@@ -13055,7 +13297,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       }
       if (debug_infolevel>3)
 	CERR << "pairs reduced " << B << " indices " << smallposv << '\n';
-      if (order.o!=_REVLEX_ORDER && smallposv.size()<=GBASISF4_BUCHBERGER){
+      if (// 1 ||  // FIXME comment 1 || 
+	  coeffsmodptr || (order.o!=_REVLEX_ORDER && smallposv.size()<=GBASISF4_BUCHBERGER)){ 
 	// pairs not handled by f4
 	int modsize=int(resmod.size());
 	if (modsize<res.size())
@@ -13067,8 +13310,26 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	polymod<tdeg_t> TMP1(order,dim),TMP2(order,dim);
 	zpolymod<tdeg_t> TMP;
-	paire bk=B[smallposv.back()];
-	B.erase(B.begin()+smallposv.back());
+	paire bk;
+        if (coeffsmodptr){
+#if 0
+          // find smallest logz
+          int logzpos=0,logz=Blogz[smallposv.front()];
+          for (int i=1;i<smallposv.size();++i){
+            if (Blogz[smallposv[i]]<logz){
+              logzpos=i;
+              logz=Blogz[smallposv[i]];
+            }
+          }
+          bk=B[smallposv[logzpos]]; B.erase(B.begin()+smallposv[logzpos]);
+#else
+          bk=B[smallposv.front()]; B.erase(B.begin()+smallposv.front());
+#endif
+        }
+        else {
+          bk=B[smallposv.back()];
+          B.erase(B.begin()+smallposv.back());
+        }
 	if (!learning && pairs_reducing_to_zero && learned_position<pairs_reducing_to_zero->size() && bk==(*pairs_reducing_to_zero)[learned_position]){
 	  if (debug_infolevel>2)
 	    CERR << bk << " learned " << learned_position << '\n';
@@ -13081,12 +13342,55 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  convert(res[bk.first],resmod[bk.first]);
 	if (resmod[bk.second].coord.empty())
 	  convert(res[bk.second],resmod[bk.second]);
-	spolymod<tdeg_t>(resmod[bk.first],resmod[bk.second],TMP1,TMP2,env);
+	modint d=spolymod<tdeg_t>(resmod[bk.first],resmod[bk.second],TMP1,TMP2,env);
+	vectpolymod<tdeg_t> newcoeffs;
+	if (coeffsmodptr){
+	  vector< vectpolymod<tdeg_t> > & v = *coeffsmodptr;
+	  int s=v.front().size();
+	  newcoeffs.resize(s);
+	  int i1=bk.first,i2=bk.second;
+	  const polymod<tdeg_t> &p=resmod[i1];
+	  const polymod<tdeg_t> &q=resmod[i2];
+	  if (p.coord.empty() || q.coord.empty())
+	    return false;
+	  modint a=p.coord.front().g,b=q.coord.front().g;
+	  modint c=smod(modint2(a)*invmod(b,env),env);
+	  const tdeg_t & pi = p.coord.front().u;
+	  const tdeg_t & qi = q.coord.front().u;
+	  tdeg_t lcm;
+	  index_lcm(pi,qi,lcm,p.order);
+	  tdeg_t pshift=lcm-pi;
+	  tdeg_t qshift=lcm-qi;
+	  polymod<tdeg_t> _TMP1(order,dim),_TMP2(order,dim),_TMP3(order,dim);
+          vectpolymod<tdeg_t> & curfirst=v[i1];
+          vectpolymod<tdeg_t> & cursecond=v[i2];
+	  for (size_t k=0;k<s;k++){
+	    _TMP1=curfirst[k];
+	    _TMP2=cursecond[k];
+	    smallshift(_TMP1.coord,pshift,_TMP1.coord);
+	    smallmultsubmodshift(_TMP1,0,c,_TMP2,qshift,_TMP3,env);
+	    smallmultmod(d,_TMP3,env);
+	    newcoeffs[k]=_TMP3;
+	  }
+          // debug
+          if (0){ // check resmodorig=resmod at function begin
+            _TMP1=TMP1; 
+            for (size_t k=0;k<s;k++){ // - sum(newcoeffs[k]*resmodorig[k])
+              for (size_t l=0;l<newcoeffs[k].coord.size();++l){
+                smallmultsubmodshift(_TMP1,0,newcoeffs[k].coord[l].g,resmodorig[k],newcoeffs[k].coord[l].u,_TMP2,env);
+                _TMP1.coord.swap(_TMP2.coord);
+              }
+            }
+            // should be 0
+            if (_TMP1.coord.size())
+              CERR << "zgbasis spoly coeff error " << _TMP1 << "\n";
+          }
+	}
 	if (debug_infolevel>1){
 	  CERR << CLOCK()*1e-6 << " mod reduce begin, pair " << bk << " spoly size " << TMP1.coord.size() << " totdeg deg " << TMP1.coord.front().u.total_degree(order) << " degree " << TMP1.coord.front().u << ", pair degree " << resmod[bk.first].coord.front().u << resmod[bk.second].coord.front().u << '\n';
 	}
 #if 1
-	reducesmallmod(TMP1,resmod,G,-1,env,TMP2,true,0,true);
+	reducesmallmod(TMP1,resmod,G,-1,env,TMP2,true,0,true,&newcoeffs,coeffsmodptr);
 	// insure that new basis element has positive coord, required by zf4mod
 	typename vector< T_unsigned<modint,tdeg_t> >::iterator it=TMP1.coord.begin(),itend=TMP1.coord.end();
 	for (;it!=itend;++it){
@@ -13094,7 +13398,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	    it->g += env;
 	}
 	// reducemod(TMP1,resmod,G,-1,TMP1,env,true);
-#else
+#else // should be adapted if coeffsmodptr is true
 	polymod<tdeg_t> TMP3(TMP1);
 	reducemod(TMP1,resmod,G,-1,TMP1,env,true);
 	reducesmallmod(TMP3,resmod,G,-1,env,TMP2,true,0,true);
@@ -13113,6 +13417,11 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	if (!TMP1.coord.empty()){
 	  resmod.push_back(TMP1);
+          reduceAF(newcoeffs,resmodorig,env,order);
+	  if (coeffsmodptr){
+	    coeffsmodptr->push_back(newcoeffs);
+	    // if coeffsmodptr, we need TMP and res only to run zgbasis_updatemod, maybe we could run gbasis_updatemod without zpolymod with reduce=false argument
+	  }
 	  Rbuchberger.push_back(vector<tdeg_t>(TMP1.coord.size()));
 	  vector<tdeg_t> & R0=Rbuchberger.back();
 	  for (unsigned l=0;l<unsigned(TMP1.coord.size());++l)
@@ -13183,7 +13492,8 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       }
       // update gbasis and learning
       // requires that Gauss pivoting does the same permutation for other primes
-      if (multimodular && learning && pairs_reducing_to_zero){
+      if (multimodular && 
+	  learning && pairs_reducing_to_zero){
 	for (unsigned i=0;i<f4buchbergerv.size();++i){
 	  if (f4buchbergerv[i].coord.empty()){
 	    if (debug_infolevel>2)
@@ -13285,7 +13595,7 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	reducesmallmod(resmod[j],resmod,G,j,env,TMP1,true);
       }
     }
-    else {
+    else{
       if (debug_infolevel>1)
 	CERR << CLOCK()*1e-6 << " zfinal interreduction begin " << G.size() << '\n';
       resmod.resize(res.size());
@@ -13293,9 +13603,10 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	resmod[l].coord.clear();
       }
       int val=-1;
-      if (1//generators<100
+      if (!coeffsmodptr
+          //generators<100
 	  //parallel>1 && threads_allowed && G.size()>=200
-	  ){
+	  ){ // FIXME interreduce with coeffsmodptr
 	val=zinterreduce_convert(res,G,env,learning,learned_position,pairs_reducing_to_zero,f4buchberger_info,f4buchberger_info_position,recomputeR,-1/* age*/,multimodular,parallel,resmod,interred);
 	if (debug_infolevel && val<0)
 	  CERR << "zinterreduce failure" << '\n';
@@ -13307,7 +13618,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	}
 	res.clear();
       }
-      if (val<0){
+      if (val<0 && interred
+          //&& !coeffsmodptr // gbasis coeffs with interreduce? for cyclic6, we have Partial number of monoms 2628059 without and 4762976 with
+          ){
 	// final interreduce step2
 	// by construction resmod[G[j]] is already interreduced by resmod[G[k]] for k<j
 	polymod<tdeg_t> TMP1(order,dim);
@@ -13319,9 +13632,9 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
 	  if (!start_index_v.empty() && G[j]<start_index_v.back())
 	    start_index_v.pop_back();
 	  if (0 && order.o==_REVLEX_ORDER) // this optimization did not work for cyclic10mod (at least when max_pairs=4096) 
-	    reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,start_index_v.empty()?0:start_index_v.back());
+	    reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,start_index_v.empty()?0:start_index_v.back(),false,coeffsmodptr?&(*coeffsmodptr)[G[j]]:0,coeffsmodptr);
 	  else // full interreduction since Buchberger steps do not interreduce
-	    reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,0);
+	    reducesmallmod(resmod[G[j]],resmod,G,j,env,TMP1,true,0,false,coeffsmodptr?&(*coeffsmodptr)[G[j]]:0,coeffsmodptr);
 	}
       }
       if (debug_infolevel>1)
@@ -13333,8 +13646,16 @@ Let {f1, ..., fr} be a set of polynomials. The Gebauer-Moller Criteria are as fo
       unsigned t=0;
       for (unsigned i=0;i<resmod.size();++i)
 	t += unsigned(resmod[i].coord.size());
-      CERR << CLOCK()*1e-6 << " total number of monomials in res " << t << " basis size " << G.size() << '\n';
+      CERR << CLOCK()*1e-6 << " total number of monomials in gbasis " << t << " basis size " << G.size() << '\n';
       CERR << "Number of monomials cleared " << cleared << '\n';
+      if (coeffsmodptr){
+        for (unsigned i=0;i<G.size();++i){
+          const vector<polymod<tdeg_t> > & v=(*coeffsmodptr)[G[i]];
+          for (unsigned j=0;j<v.size();++j)
+            t += v[j].coord.size();
+        }
+        CERR << "Number of monomials in gbasis and coeffs " << t << '\n';
+      }
     }
     smod(resmod,env);
     return true;
@@ -13360,7 +13681,7 @@ void G_idn(vector<unsigned> & G,size_t s){
   }
 
   template<class tdeg_t>
-  bool zgbasisrur(vectpoly8<tdeg_t> & res8,vectpolymod<tdeg_t> &resmod,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< zinfo_t<tdeg_t> > & f4buchberger_info,bool recomputeR,bool convertpoly8,bool eliminate_flag,bool multimodular,int parallel,bool interred,int & rurinzgbasis,vectpolymod<tdeg_t> &rurv,polymod<tdeg_t> & rurs,polymod<tdeg_t> & rurlm,polymod<tdeg_t> &rurlmmodradical,polymod<tdeg_t> * rurgblmptr=0,polymod<tdeg_t> * rurlmptr=0){
+  bool zgbasisrur(vectpoly8<tdeg_t> & res8,vectpolymod<tdeg_t> &resmod,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< zinfo_t<tdeg_t> > & f4buchberger_info,bool recomputeR,bool convertpoly8,bool eliminate_flag,bool multimodular,int parallel,bool interred,int & rurinzgbasis,vectpolymod<tdeg_t> &rurv,polymod<tdeg_t> & rurs,polymod<tdeg_t> & rurlm,polymod<tdeg_t> &rurlmmodradical,polymod<tdeg_t> * rurgblmptr,polymod<tdeg_t> * rurlmptr,vector< vectpolymod<tdeg_t> > * coeffsmodptr){
     if (1 || 
 	rurinzgbasis>=0){
       for (unsigned i=0;i<resmod.size();++i)
@@ -13369,10 +13690,10 @@ void G_idn(vector<unsigned> & G,size_t s){
       // already computed with previous primes, we do not have to compute
       // the basis again, we just need to reduce the Q gbasis that is inside
       // res8[0..rurinzgbasis-1] 
-      convert(res8,resmod,env,rurinzgbasis<0?-rurinzgbasis:0);
+      convert(res8,resmod,env,rurinzgbasis<0?-rurinzgbasis:0,!coeffsmodptr/* unitarize*/);
     }
     unsigned ressize = unsigned(res8.size());
-    bool b=rurinzgbasis<0?true:in_zgbasis(resmod,ressize,G,env,totdeg,pairs_reducing_to_zero,f4buchberger_info,recomputeR,eliminate_flag,multimodular,parallel,interred);
+    bool b=rurinzgbasis<0?true:in_zgbasis(resmod,ressize,G,env,totdeg,pairs_reducing_to_zero,f4buchberger_info,recomputeR,eliminate_flag,multimodular,parallel,interred,coeffsmodptr);
     if (rurinzgbasis==1 || rurinzgbasis<0){
       vectpolymod<tdeg_t> gbmod; 
       if (rurinzgbasis==1){
@@ -13399,11 +13720,12 @@ void G_idn(vector<unsigned> & G,size_t s){
   }
 
   template<class tdeg_t>
-  bool zgbasis(vectpoly8<tdeg_t> & res8,vectpolymod<tdeg_t> &resmod,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< zinfo_t<tdeg_t> > & f4buchberger_info,bool recomputeR,bool convertpoly8,bool eliminate_flag,bool multimodular,int parallel,bool interred){
+  bool zgbasis(vectpoly8<tdeg_t> & res8,vectpolymod<tdeg_t> &resmod,vector<unsigned> & G,modint env,bool totdeg,vector< paire > * pairs_reducing_to_zero,vector< zinfo_t<tdeg_t> > & f4buchberger_info,bool recomputeR,bool convertpoly8,bool eliminate_flag,bool multimodular,int parallel,bool interred,vector< vectpolymod<tdeg_t> > * coeffsmodptr=0){
     vectpolymod<tdeg_t> rurv; 
     polymod<tdeg_t> rurs,rurlm,rurlmmodradical;
     int rurinzgbasis=0;
-    return zgbasisrur(res8,resmod,G,env,totdeg,pairs_reducing_to_zero,f4buchberger_info,recomputeR,convertpoly8,eliminate_flag,multimodular,parallel,interred,rurinzgbasis,rurv,rurlm,rurlmmodradical,rurs);
+    polymod<tdeg_t> * Nullptr=0;
+    return zgbasisrur(res8,resmod,G,env,totdeg,pairs_reducing_to_zero,f4buchberger_info,recomputeR,convertpoly8,eliminate_flag,multimodular,parallel,interred,rurinzgbasis,rurv,rurs,rurlm,rurlmmodradical,Nullptr,Nullptr,coeffsmodptr);
   }
 #endif // GIAC_SHORTSHIFTTYPE==16
   /* *************
@@ -14764,6 +15086,7 @@ void G_idn(vector<unsigned> & G,size_t s){
     vectpoly8<tdeg_t> * currentptr;
     vectpolymod<tdeg_t> resmod,rurv;
     polymod<tdeg_t> rurlm,rurs,rurlmmodradical,*rurgblmptr,*rurlmptr;
+    vector< vectpolymod<tdeg_t> > * coeffsmodptr;
     vector<unsigned> G;
     int p;
     vector< paire > * reduceto0;
@@ -14783,7 +15106,7 @@ void G_idn(vector<unsigned> & G,size_t s){
     if (ptr->zdata){
       if (!zgbasisrur(*ptr->currentptr,ptr->resmod,ptr->G,ptr->p,true,
 		   ptr->reduceto0,*ptr->zf4buchberger_info,false,false,ptr->eliminate_flag,true,ptr->parallel,ptr->interred,
-		      ptr->rurinzgbasis,ptr->rurv,ptr->rurs,ptr->rurlm,ptr->rurlmmodradical,ptr->rurgblmptr,ptr->rurlmptr))
+		      ptr->rurinzgbasis,ptr->rurv,ptr->rurs,ptr->rurlm,ptr->rurlmmodradical,ptr->rurgblmptr,ptr->rurlmptr,ptr->coeffsmodptr))
 	return 0;
     }
     else {
@@ -14982,11 +15305,11 @@ void G_idn(vector<unsigned> & G,size_t s){
       lcmdeno(v[i],vden[i],context0);
     }
 #ifdef HAVE_LIBPTHREAD
-    int nthreads=threads_allowed?threads:1;
+    int nthreads=threads_allowed?giacmin(threads,MAXNTHREADS):1;
     if (nthreads>1){
       if (nthreads>rur_certify_maxthreads) nthreads=rur_certify_maxthreads; // don't use too much memory
       *logptr(contextptr) << "rur_certify: multi-thread check, info displayed on may miss some threads info. Threads in use: " << nthreads << "\n";
-      pthread_t tab[64];
+      pthread_t tab[MAXNTHREADS];
       vector< rur_certify_t<tdeg_t> > rur_certify_param; rur_certify_param.reserve(nthreads);
       for (int j=0;j<nthreads;++j){
 	vector<int> chk_index;
@@ -15001,7 +15324,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	  thread_rur_certify<tdeg_t>((void *)&rur_certify_param[j]);
       }
       bool ans=true;
-      void * threadretval[64];
+      void * threadretval[MAXNTHREADS];
       for (int j=0;j<nthreads;++j){
 	threadretval[j]=&threadretval; // non-0 initialization
 	if (j<nthreads-1)
@@ -15056,11 +15379,15 @@ void G_idn(vector<unsigned> & G,size_t s){
 
   // return 0 (failure), 1 (success), -1: parts of the gbasis reconstructed
   template<class tdeg_t>
-  int in_mod_gbasis(vectpoly8<tdeg_t> & res,bool modularcheck,bool zdata,int & rur,GIAC_CONTEXT,gbasis_param_t gbasis_par,int gbasis_logz_age){
+  int in_mod_gbasis(vectpoly8<tdeg_t> & res,bool modularcheck,bool zdata,int & rur,GIAC_CONTEXT,gbasis_param_t gbasis_par,int gbasis_logz_age,vector< vectpoly8<tdeg_t> > * coeffsmodptr=0){
     if (debug_infolevel)
       CERR << CLOCK()*1e-6 << " modular gbasis algorithm start, mem " << memory_usage() << '\n';
+    if (coeffsmodptr && !zdata)
+      return 0;
     bool & eliminate_flag=gbasis_par.eliminate_flag;
     bool interred=gbasis_logz_age==0; // final interreduce
+    if (interred)
+      interred=gbasis_par.interred;
     unsigned initial=unsigned(res.size());
     double eps=proba_epsilon(contextptr); int rechecked=0;
     order_t order={0,0};
@@ -15130,9 +15457,9 @@ void G_idn(vector<unsigned> & G,size_t s){
     mpz_init(ztmp);
     bool ok=true;
 #ifdef HAVE_LIBPTHREAD
-    int nthreads=(threads_allowed && multithread_enabled)?threads:1,th,parallel=1;
-    pthread_t tab[64];
-    thread_gbasis_t<tdeg_t> gbasis_param[64];
+    int nthreads=(threads_allowed && multithread_enabled)?giacmin(threads,MAXNTHREADS):1,th,parallel=1;
+    pthread_t tab[MAXNTHREADS];
+    thread_gbasis_t<tdeg_t> gbasis_param[MAXNTHREADS];
 #else
     int nthreads=1,th,parallel=1;
 #endif
@@ -15143,6 +15470,7 @@ void G_idn(vector<unsigned> & G,size_t s){
     // IMPROVE 1: compute resmod for all threads simult in main thread
     // IMPROVE 2: check whether the rur stabilizes before the gbasis!
     int pend=p.val,p0;
+    int initgensize=0; // number of initial generators (if computing coeffs)
     ulonglong nmonoms; // number of monoms in gbasis
     int recon_n2=-1,recon_n1=-1,recon_n0=-1,recon_added=0,recon_count=0,gbasis_size=-1,jpos_start=-1; // reconstr. gbasis element number history
     double augmentgbasis=gbasis_reinject_ratio,prevreconpart=1.0,time1strun=-1.0,time2ndrun=-1.0; current_orig=res; current_gbasis=res;
@@ -15161,7 +15489,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	if (count>=simult_primes_seuil3)
 	  sp=simult_primes3;
 	th=giacmin(nthreads-1,sp-1); // no more than simult_primes 
-	th=giacmin(th,63);
+	th=giacmin(th,MAXNTHREADS-1);
 	parallel=nthreads/(th+1);
       }
 #if !defined(EMCC) && !defined(EMCC2)
@@ -15181,6 +15509,7 @@ void G_idn(vector<unsigned> & G,size_t s){
       if (th==0) rurinzgbasis=0;
       mainthrurinzgbasis=lmmodradical.coord.empty()?0:rur;
       mainthrurlmmodradical=lmmodradical;
+      vector< vector< vectpolymod<tdeg_t> > > gbasiscoeffv(th+1);
 #ifdef HAVE_LIBPTHREAD
       vector<int> pthread_p(th+1); vector< vector<polymod<tdeg_t> > *> pthread_mod(th+1);
       for (unsigned j=0;j<th;++j){
@@ -15199,6 +15528,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	gbasis_param[j].rurs=s;
 	gbasis_param[j].rurgblmptr=&mainthrurgblm;
 	gbasis_param[j].rurlmptr=&mainthrurlmsave;
+	gbasis_param[j].coeffsmodptr=coeffsmodptr?&gbasiscoeffv[j]:0;
 	if (count==1)
 	  gbasis_param[j].resmod.reserve(resmod.size());
 	pthread_p[j]=p.val; pthread_mod[j]=&gbasis_param[j].resmod;
@@ -15270,14 +15600,14 @@ void G_idn(vector<unsigned> & G,size_t s){
       // CERR << "write " << th << " " << p << '\n';
 #ifdef GBASISF4_BUCHBERGER 
       if (zdata){
-	if (!zgbasisrur(current_gbasis,resmod,G,p.val,true,&reduceto0,zf4buchberger_info,false,false,eliminate_flag,true,parallel,interred,mainthrurinzgbasis,mainthrurv,s,mainthrurlm,mainthrurlmmodradical,&mainthrurgblm,&mainthrurlmsave)){
+	if (!zgbasisrur(current_gbasis,resmod,G,p.val,true,&reduceto0,zf4buchberger_info,false,false,eliminate_flag,true,parallel,interred,mainthrurinzgbasis,mainthrurv,s,mainthrurlm,mainthrurlmmodradical,&mainthrurgblm,&mainthrurlmsave,coeffsmodptr?&gbasiscoeffv[th]:0)){
 	  if (augmentgbasis>0) 
 	    augmentgbasis=2;
 	  reduceto0.clear();
 	  zf4buchberger_info.clear();
 	  zf4buchberger_info.reserve(4*zf4buchberger_info.capacity());
 	  G.clear();
-	  if (!zgbasisrur(current_gbasis,resmod,G,p.val,true/*totaldeg*/,&reduceto0,zf4buchberger_info,false,false,eliminate_flag,true,parallel,interred,mainthrurinzgbasis,mainthrurv,s,mainthrurlm,mainthrurlmmodradical,&mainthrurgblm,&mainthrurlmsave)){
+	  if (!zgbasisrur(current_gbasis,resmod,G,p.val,true/*totaldeg*/,&reduceto0,zf4buchberger_info,false,false,eliminate_flag,true,parallel,interred,mainthrurinzgbasis,mainthrurv,s,mainthrurlm,mainthrurlmmodradical,&mainthrurgblm,&mainthrurlmsave,coeffsmodptr?&gbasiscoeffv[th]:0)){
 	    ok=false;
 	    break;
 	  }
@@ -15315,7 +15645,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 #endif
 #ifdef HAVE_LIBPTHREAD
       // finish threads before chinese remaindering
-      void * threadretval[64];
+      void * threadretval[MAXNTHREADS];
       for (int t=0;t<th;++t){
 	threadretval[t]=&threadretval; // non-0 initialization
 	pthread_join(tab[t],&threadretval[t]);
@@ -15363,10 +15693,35 @@ void G_idn(vector<unsigned> & G,size_t s){
 	    rurv.swap(mainthrurv);
 	  }
 	  // extract from current
-	  if (rur || gbmod.size()<G.size())
-	    gbmod.resize(G.size());
-	  for (i=0;i<G.size();++i){
-	    gbmod[i]=resmod[G[i]];
+          if (coeffsmodptr){
+            initgensize=gbasiscoeffv[th].front().size();
+            gbmod.resize(G.size()*(1+initgensize));
+            int pos=0;
+            for (i=0;i<G.size();++i){
+              gbmod[pos]=resmod[G[i]];
+              ++pos;
+              for (int j=0;j<initgensize;++j){
+                gbmod[pos]=gbasiscoeffv[th][G[i]][j];
+                ++pos;
+              }
+            }
+#if 0
+            if (0){
+              ofstream l((string("log")+p.print()).c_str());
+              for (int i=0;i<gbmod.size();++i){
+                l << i/(1+initgensize) << "," << i%(1+initgensize) << ":" << gbmod[i] << "\n";
+              }
+              l.close();
+              if (th) exit(0);
+            }
+#endif
+          }
+          else {
+            if (rur || gbmod.size()<G.size())
+              gbmod.resize(G.size());
+            for (i=0;i<G.size();++i){
+              gbmod[i]=resmod[G[i]];
+            }
 	  }
 	  p=pend;
 	  // CERR << "read " << t << " " << p << '\n';
@@ -15384,11 +15739,34 @@ void G_idn(vector<unsigned> & G,size_t s){
 	    zlmmodradical=ptr->rurlmmodradical;
 	    rurv.swap(ptr->rurv);
 	  }
-	  if (rur || gbmod.size()<ptr->G.size())
-	    gbmod.resize(ptr->G.size());
-	  for (i=0;i<ptr->G.size();++i)
-	    gbmod[i]=ptr->resmod[ptr->G[i]];
-	  p=ptr->p;
+          if (coeffsmodptr){
+            initgensize=gbasiscoeffv[th].front().size();
+            gbmod.resize(ptr->G.size()*(1+initgensize));
+            int pos=0;
+            for (i=0;i<ptr->G.size();++i){
+              gbmod[pos]=ptr->resmod[ptr->G[i]];
+              ++pos;
+              for (int j=0;j<initgensize;++j){
+                gbmod[pos]=gbasiscoeffv[t][ptr->G[i]][j];
+                ++pos;
+              }
+            }
+#if 0
+            if (0){
+              ofstream l((string("log_")+print_INT_(gbasis_param[t].p)).c_str());
+              for (int i=0;i<gbmod.size();++i)
+                l << i/(1+initgensize) << "," << i%(1+initgensize) << ":" << gbmod[i] << "\n";
+              l.close();
+            }
+#endif
+          }
+          else {
+            if (rur || gbmod.size()<ptr->G.size())
+              gbmod.resize(ptr->G.size());
+            for (i=0;i<ptr->G.size();++i)
+              gbmod[i]=ptr->resmod[ptr->G[i]];
+          }
+          p=ptr->p;
 	  // CERR << "read " << t << " " << p << '\n';
 	  ++count;
 	  ++recon_count;
@@ -15396,11 +15774,13 @@ void G_idn(vector<unsigned> & G,size_t s){
 #endif
 	if (!ok)
 	  continue;
-	// remove 0 from gbmod
-	remove_zero(gbmod);
-	// if augmentgbasis>0 (at least) gbmod must be sorted
-	//if (augmentgbasis>0)
-	sort(gbmod.begin(),gbmod.end(),tripolymod_tri<polymod<tdeg_t> >(gbasis_logz_age));
+        if (!coeffsmodptr){
+          // remove 0 from gbmod
+          remove_zero(gbmod);
+          // if augmentgbasis>0 (at least) gbmod must be sorted
+          //if (augmentgbasis>0)
+          sort(gbmod.begin(),gbmod.end(),tripolymod_tri<polymod<tdeg_t> >(gbasis_logz_age));
+        }
 	rur_gblm(gbmod,cur_gblm);
 	if (prev_gblm.coord.empty())
 	  prev_gblm=cur_gblm;
@@ -15676,7 +16056,8 @@ void G_idn(vector<unsigned> & G,size_t s){
 	    } // end if !rur ...
 	    break; // find another prime
 	  }
-	  if (debug_infolevel) CERR << CLOCK()*1e-6 << " checking\n";
+	  if (debug_infolevel && (rur || t==th))
+            CERR << CLOCK()*1e-6 << " checking\n";
 	  for (;jpos<V[i].size();++jpos){
 	    unsigned Vijs=unsigned(V[i][jpos].coord.size());
 	    if (Vijs!=gbmod[jpos].coord.size()){
@@ -15690,6 +16071,11 @@ void G_idn(vector<unsigned> & G,size_t s){
 	    int chks[]={int(.1*Vijs),int(Vijs/2), int(.9*Vijs)};
 	    //int chks[]={Vijs/2, int(.9*Vijs)};
 	    for (int chk=0;chk<sizeof(chks)/sizeof(int);++chk){
+              if (!rur && t<th){
+                // check only for the last prime of parallel threads
+                dobrk=true;
+                break;
+              }
 	      Vijs=chks[chk];
 	      if (Vijs && V[i][jpos].coord[Vijs].g.type==_ZINT){
 		if (!in_fracmod(P[i],V[i][jpos].coord[Vijs].g,
@@ -15716,9 +16102,10 @@ void G_idn(vector<unsigned> & G,size_t s){
 	      }
 	      break;
 	    }
-	    if (!fracmod(V[i][jpos],P[i],
-			 zd,zd1,zabsd1,zu,zu1,zur,zq,zr,zsqrtm,ztmp,
-			 poly8tmp)){
+            int chkfrac=fracmod(V[i][jpos],P[i],
+                                zd,zd1,zabsd1,zu,zu1,zur,zq,zr,zsqrtm,ztmp,
+                                poly8tmp,&gbmod[jpos],p.val);
+	    if (chkfrac==0){
 	      rechecked=0;
 	      CERR << CLOCK()*1e-6 << " reconstruction failure at position " << jpos << '\n';
 	      break;
@@ -15730,7 +16117,9 @@ void G_idn(vector<unsigned> & G,size_t s){
 	      }
 	      break;
 	    }
-	    if (!chk_equal_mod(poly8tmp,gbmod[jpos],p.val)){
+	    if (chkfrac==2 || !chk_equal_mod(poly8tmp,gbmod[jpos],p.val)){
+              if (chkfrac==2 && debug_infolevel)
+                CERR << CLOCK()*1e-6 << " unstable modular check at position " << jpos << "\n";
 	      rechecked=0;
 	      if (rur_gbasis && rur>0 && jpos<gbasis_size){ // go try to reconstruct the rur part
 		jpos=gbasis_size-1; continue;
@@ -15749,8 +16138,12 @@ void G_idn(vector<unsigned> & G,size_t s){
 	      Wlast[i].back().coord.swap(poly8tmp.coord);
 	    }
 	  }
-	  if (debug_infolevel>0)
-	    CERR << CLOCK()*1e-6 << " unstable mod " << p << " from " << gbasis_size << " reconstructed " << Wlast[i].size() << " (#" << i << ")" << '\n';
+	  if (debug_infolevel>0){
+	    CERR << CLOCK()*1e-6 << " unstable mod " << p << " from " << gbasis_size ;
+            if (coeffsmodptr)
+              CERR << "*(1+" << initgensize << ")";
+            CERR << " reconstructed " << Wlast[i].size() << " (#" << i << ")" << '\n';
+          }
 	  // possible improvement: if t==th and i==0 and Wlast.size()/V[i].size() 
 	  // has increased significantly
 	  // it might be a good idea to add it's component 
@@ -15768,7 +16161,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	      cleardeno(current_gbasis);
 	    }
 	    double reconpart=recon_n2/double(V[i].size());
-	    if (!rur &&
+	    if (!rur && !coeffsmodptr &&
 		recon_n0/double(V[i].size())<0.95 && 
 		(reconpart-prevreconpart>augmentgbasis 
 		 // || (reconpart>prevreconpart && recon_count>=giacmax(128,th*4))
@@ -15858,7 +16251,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	if (jpos<gbmod.size()){
 	  if (debug_infolevel)
 	    CERR << CLOCK()*1e-6 << " i=" << i << " begin chinese remaindering " << p << " (" << count+(t==th) << ")" << '\n';
-	  int r=chinrem(V[i],P[i],gbmod,p.val,poly8tmp,recon_added);// was jpos_start); but fails for cyclic7 // IMPROVE: maybe start at jpos in V[i]? at least start at recon_added
+	  int r=chinrem(V[i],P[i],gbmod,p.val,poly8tmp,recon_added,nthreads);// was jpos_start); but fails for cyclic7 // IMPROVE: maybe start at jpos in V[i]? at least start at recon_added
 	  if (debug_infolevel)
 	    CERR << CLOCK()*1e-6 << " end chinese remaindering" << '\n';
 	  if (r==-1){
@@ -15870,10 +16263,10 @@ void G_idn(vector<unsigned> & G,size_t s){
 	}
 	else if (Wrur.size()<dim+2) { // final check
 	  W[i]=Wlast[i];
-	  if (!rur){
+	  if (!rur && !coeffsmodptr){
 	    if (debug_infolevel)
 	      CERR << CLOCK()*1e-6 << " stable, clearing denominators " << '\n';
-	    cleardeno(W[i]); // clear denominators
+            cleardeno(W[i]); // clear denominators
 	  }
 	  ++rechecked;
 	  if (debug_infolevel)
@@ -15883,6 +16276,7 @@ void G_idn(vector<unsigned> & G,size_t s){
 	    swap(res,W[i]);
 	    if (rur_gbasis)
 	      res.erase(res.begin(),res.begin()+gbasis_size);
+          cleanup:
 	    mpz_clear(zd);
 	    mpz_clear(zu);
 	    mpz_clear(zu1);
@@ -15896,6 +16290,22 @@ void G_idn(vector<unsigned> & G,size_t s){
 	    *logptr(contextptr) << "#Primes " << count <<'\n';	    
 	    return 1;
 	  }
+          if (coeffsmodptr){
+	    vectpoly8<tdeg_t> & cur=W[i];
+            res.clear();
+            int pos=0;
+            coeffsmodptr->resize(G.size());
+            for (int i=0;i<G.size();++i){
+              res.push_back(cur[pos]);
+              ++pos;
+              (*coeffsmodptr)[i].resize(initgensize);
+              for (int j=0;j<initgensize;++j){
+                (*coeffsmodptr)[i][j]=cur[pos];
+                ++pos;
+              }
+            }
+            goto cleanup;
+          }
 	  // first verify that the initial generators reduce to 0
 	  if (!eliminate_flag && !check_initial_generators(res,W[i],G,eps))
 	    continue;
@@ -16138,10 +16548,10 @@ void G_idn(vector<unsigned> & G,size_t s){
   }
   
   template<class tdeg_t>
-  bool mod_gbasis(vectpoly8<tdeg_t> & res,bool modularcheck,bool zdata,int & rur,GIAC_CONTEXT,gbasis_param_t gbasis_param){
+  bool mod_gbasis(vectpoly8<tdeg_t> & res,bool modularcheck,bool zdata,int & rur,GIAC_CONTEXT,gbasis_param_t gbasis_param,vector< vectpoly8<tdeg_t> > * coeffsmodptr=0){
     int gbasis_logz_age=gbasis_logz_age_sort;
     for (;;){
-      int tmp=in_mod_gbasis(res,modularcheck,zdata,rur,contextptr,gbasis_param,gbasis_logz_age);
+      int tmp=in_mod_gbasis(res,modularcheck,zdata,rur,contextptr,gbasis_param,gbasis_logz_age,coeffsmodptr);
       if (tmp!=-1) // -1 means part of the gbasis has been reconstructed
 	return tmp;
       if (gbasis_logz_age)
@@ -16416,7 +16826,8 @@ void G_idn(vector<unsigned> & G,size_t s){
 
   inline int tdeg_t_greater(const tdeg_t14 & x,const tdeg_t14 & y,order_t order){
     short X=x.tab[0];
-    if (X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
+    if (//order.o!=_PLEX_ORDER &&
+        X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
     if (order.o==_REVLEX_ORDER)
       return tdeg_t14_revlex_greater(x,y);
     return tdeg_t14_lex_greater(x,y);
@@ -16779,7 +17190,8 @@ void G_idn(vector<unsigned> & G,size_t s){
 
   inline int tdeg_t_greater(const tdeg_t11 & x,const tdeg_t11 & y,order_t order){
     short X=x.tab[0];
-    if (X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
+    if (//order.o!=_PLEX_ORDER &&
+        X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
     if (order.o==_REVLEX_ORDER)
       return tdeg_t11_revlex_greater(x,y);
     return tdeg_t11_lex_greater(x,y);
@@ -17456,7 +17868,8 @@ void G_idn(vector<unsigned> & G,size_t s){
 
   inline int tdeg_t_greater(const tdeg_t15 & x,const tdeg_t15 & y,order_t order){
     short X=x.tab[0];
-    if (X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
+    if (//order.o!=_PLEX_ORDER &&
+        X!=y.tab[0]) return X>y.tab[0]?1:0; // since tdeg is tab[0] for plex
     if (order.o==_REVLEX_ORDER)
       return tdeg_t15_revlex_greater(x,y);
 #if GROEBNER_VARS==15
@@ -17774,7 +18187,25 @@ void G_idn(vector<unsigned> & G,size_t s){
   }
 
   template<class tdeg_t>
-  static void get_newres_ckrur(const vectpolymod<tdeg_t> & resmod,vectpoly & newres,const vectpoly & v,const vector<unsigned> & G,modint env,int & rur){
+  static void get_newres(const vectpoly8<tdeg_t> & resmod,vectpoly & newres,const vectpoly & v,vector< vectpoly8<tdeg_t> > * coeffsmodptr,vector<vectpoly>  * coeffsptr){
+    newres=vectpoly(resmod.size(),polynome(v.front().dim,v.front()));
+    for (unsigned i=0;i<resmod.size();++i)
+      resmod[i].get_polynome(newres[i]);
+    if (coeffsmodptr && coeffsptr){
+      coeffsptr->clear();
+      coeffsptr->resize(resmod.size());
+      for (unsigned i=0;i<resmod.size();++i){
+        const vectpoly8<tdeg_t> & src = (*coeffsmodptr)[i];
+        vectpoly & target = (*coeffsptr)[i];
+	target.resize(src.size());
+        for (unsigned j=0;j<src.size();++j)
+          src[j].get_polynome(target[j]);
+      }
+    }
+  }
+
+  template<class tdeg_t>
+  static void get_newres_ckrur(const vectpolymod<tdeg_t> & resmod,vectpoly & newres,const vectpoly & v,const vector<unsigned> & G,modint env,int & rur,vector< vectpolymod<tdeg_t> > * coeffsmodptr,vector<vectpoly>  * coeffsptr){
     if (rur && !resmod.empty()){
       vectpolymod<tdeg_t> gbmod; gbmod.reserve(G.size());
       for (int i=0;i<int(G.size());++i)
@@ -17816,17 +18247,22 @@ void G_idn(vector<unsigned> & G,size_t s){
     newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
     for (unsigned i=0;i<G.size();++i)
       resmod[G[i]].get_polynome(newres[i]);
+    if (coeffsmodptr && coeffsptr){
+      coeffsptr->clear();
+      coeffsptr->resize(G.size());
+      for (unsigned i=0;i<G.size();++i){
+        const vectpolymod<tdeg_t> & src = (*coeffsmodptr)[G[i]];
+        vectpoly & target = (*coeffsptr)[i];
+	target.resize(src.size());
+        for (unsigned j=0;j<src.size();++j)
+          src[j].get_polynome(target[j]);
+      }
+    }
   }
 
-  template<class T>
-  static void get_newres(const T & resmod,vectpoly & newres,const vectpoly & v){
-    newres=vectpoly(resmod.size(),polynome(v.front().dim,v.front()));
-    for (unsigned i=0;i<resmod.size();++i)
-      resmod[i].get_polynome(newres[i]);
-  }
-
-  bool gbasis8(const vectpoly & v,order_t & order,vectpoly & newres,environment * env,bool modularalgo,bool modularcheck,int & rur,GIAC_CONTEXT,gbasis_param_t gbasis_param){
+bool gbasis8(const vectpoly & v,order_t & order,vectpoly & newres,environment * env,bool modularalgo,bool modularcheck,int & rur,GIAC_CONTEXT,gbasis_param_t gbasis_param,vector<vectpoly> * coeffsptr){
     bool & eliminate_flag=gbasis_param.eliminate_flag;
+    bool interred=gbasis_param.interred;
     int parallel=1;
 #ifdef HAVE_LIBPTHREAD
     if (threads_allowed && threads>1)
@@ -17849,29 +18285,32 @@ void G_idn(vector<unsigned> & G,size_t s){
 	}
 	CLOCK_T c=CLOCK();
 	if (modularalgo && (!env || env->modulo==0 || env->moduloon==false)){
+          std::vector<giac::vectpoly8<tdeg_t14> > gbasis_coeffs;
 	  if (mod_gbasis(res,modularcheck,
 			 //order.o==_REVLEX_ORDER /* zdata*/,
 			 1 || !rur /* zdata*/,
-			 rur,contextptr,gbasis_param)){
+			 rur,contextptr,gbasis_param,coeffsptr?&gbasis_coeffs:0)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 << " Memory " << memory_usage()*1e-6 << 'M'<<'\n';
-	    get_newres(res,newres,v);
+	    get_newres(res,newres,v,&gbasis_coeffs,coeffsptr);
 	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
 	if (env && env->moduloon && env->modulo.type==_INT_){
 	  if (!res.empty() && (res.front().order.o==_REVLEX_ORDER || res.front().order.o==_3VAR_ORDER || res.front().order.o==_7VAR_ORDER || res.front().order.o==_11VAR_ORDER)){
 	    vector<zinfo_t<tdeg_t14> > f4buchberger_info;
+	    vector< vectpolymod<tdeg_t14> > gbasiscoeff;
+	    vector< paire > pairs_reducing_to_zero;
 	    f4buchberger_info.reserve(GBASISF4_MAXITER);
-	    if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */,parallel,true)){
+	    if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,&pairs_reducing_to_zero,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */,parallel,interred,coeffsptr?&gbasiscoeff:0)){
 	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" <<'\n';
-	      get_newres_ckrur(resmod,newres,v,G,env->modulo.val,rur);
+	      get_newres_ckrur<tdeg_t14>(resmod,newres,v,G,env->modulo.val,rur,&gbasiscoeff,coeffsptr);
 	      debug_infolevel=save_debuginfo; return true;
 	    }
 	  }
 	  else {
 	    if (in_gbasisf4buchbergermod<tdeg_t14>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false)){
 	      *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" <<'\n';
-	      get_newres_ckrur(resmod,newres,v,G,env->modulo.val,rur);
+	      get_newres_ckrur<tdeg_t14>(resmod,newres,v,G,env->modulo.val,rur,0,0);
 	      debug_infolevel=save_debuginfo; return true;
 	    }
 	  }
@@ -17907,29 +18346,32 @@ void G_idn(vector<unsigned> & G,size_t s){
       }
       CLOCK_T c=CLOCK();
       if (modularalgo && (!env || env->modulo==0 || env->moduloon==false)){
+        std::vector<giac::vectpoly8<tdeg_t11> > gbasis_coeffs;
 	if (mod_gbasis(res,modularcheck,
 		       //order.o==_REVLEX_ORDER /* zdata*/,
 		       1 || !rur /* zdata*/,
-		       rur,contextptr,gbasis_param)){
+		       rur,contextptr,gbasis_param,coeffsptr?&gbasis_coeffs:0)){
 	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << '\n';
-	  get_newres(res,newres,v);
+	  get_newres(res,newres,v,&gbasis_coeffs,coeffsptr);
 	  debug_infolevel=save_debuginfo; return true;
 	}
       }
       if (env && env->moduloon && env->modulo.type==_INT_){
 	if (!res.empty() && (res.front().order.o==_REVLEX_ORDER || res.front().order.o==_3VAR_ORDER || res.front().order.o==_7VAR_ORDER || res.front().order.o==_11VAR_ORDER)){
 	  vector<zinfo_t<tdeg_t11> > f4buchberger_info;
+	  vector< vectpolymod<tdeg_t11> > gbasiscoeff;
+	  vector< paire > pairs_reducing_to_zero;
 	  f4buchberger_info.reserve(GBASISF4_MAXITER);
-	  if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */,parallel,true)){
+	  if (zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,&pairs_reducing_to_zero,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false /* 1 mod only */,parallel,interred,coeffsptr?&gbasiscoeff:0)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << '\n';
-	    get_newres_ckrur(resmod,newres,v,G,env->modulo.val,rur);
+	    get_newres_ckrur<tdeg_t11>(resmod,newres,v,G,env->modulo.val,rur,&gbasiscoeff,coeffsptr);
 	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
 	else {
 	  if (in_gbasisf4buchbergermod<tdeg_t11>(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,0,false)){
 	    *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << '\n';
-	    get_newres_ckrur(resmod,newres,v,G,env->modulo.val,rur);
+	    get_newres_ckrur<tdeg_t11>(resmod,newres,v,G,env->modulo.val,rur,0,0);
 	    debug_infolevel=save_debuginfo; return true;
 	  }
 	}
@@ -17963,10 +18405,11 @@ void G_idn(vector<unsigned> & G,size_t s){
       }
       CLOCK_T c=CLOCK();
       if (modularalgo && (!env || env->modulo==0 || env->moduloon==false)){
+        std::vector<giac::vectpoly8<tdeg_t15> > gbasis_coeffs;
 	if (mod_gbasis(res,modularcheck,
 		       //order.o==_REVLEX_ORDER /* zdata*/,
 		       1 || !rur /* zdata*/,
-		       rur,contextptr,gbasis_param)){
+		       rur,contextptr,gbasis_param,coeffsptr?&gbasis_coeffs:0)){
 	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << '\n';
 	  newres=vectpoly(res.size(),polynome(v.front().dim,v.front()));
 	  for (unsigned i=0;i<res.size();++i)
@@ -17978,12 +18421,14 @@ void G_idn(vector<unsigned> & G,size_t s){
 #ifdef GBASISF4_BUCHBERGER
 	if (!res.empty() && (res.front().order.o==_REVLEX_ORDER || res.front().order.o==_3VAR_ORDER || res.front().order.o==_7VAR_ORDER || res.front().order.o==_11VAR_ORDER)){
 	  vector<zinfo_t<tdeg_t15> > f4buchberger_info;
+	  vector< vectpolymod<tdeg_t15> > gbasiscoeff;
+	  vector< paire > pairs_reducing_to_zero;
 	  f4buchberger_info.reserve(GBASISF4_MAXITER);
-	  if (!zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false/* 1 mod only*/,parallel,true))
+	  if (!zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,&pairs_reducing_to_zero,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false/* 1 mod only*/,parallel,interred,coeffsptr?&gbasiscoeff:0))
 	    return false;
 	  *logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << '\n';
 #if 1
-	  get_newres_ckrur(resmod,newres,v,G,env->modulo.val,rur);
+	  get_newres_ckrur<tdeg_t15>(resmod,newres,v,G,env->modulo.val,rur,&gbasiscoeff,coeffsptr);
 #else
 	  newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
 	  for (unsigned i=0;i<G.size();++i)
@@ -18024,14 +18469,13 @@ void G_idn(vector<unsigned> & G,size_t s){
     }
     CLOCK_T c=CLOCK();
     if (modularalgo && (!env || env->modulo==0 || env->moduloon==false)){
+      std::vector<giac::vectpoly8<tdeg_t64> > gbasis_coeffs;
       if (mod_gbasis(res,modularcheck,
 		     //order.o==_REVLEX_ORDER /* zdata*/,
-		     !rur /* zdata*/,
-		     rur,contextptr,gbasis_param)){
+		     1 || !rur /* zdata*/,
+		     rur,contextptr,gbasis_param,coeffsptr?&gbasis_coeffs:0)){
 	*logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << '\n';
-	newres=vectpoly(res.size(),polynome(v.front().dim,v.front()));
-	for (unsigned i=0;i<res.size();++i)
-	  res[i].get_polynome(newres[i]);
+        get_newres(res,newres,v,&gbasis_coeffs,coeffsptr);
 	debug_infolevel=save_debuginfo; return true;
       }
     }
@@ -18039,11 +18483,13 @@ void G_idn(vector<unsigned> & G,size_t s){
 #ifdef GBASISF4_BUCHBERGER
       if (!res.empty() && (res.front().order.o==_REVLEX_ORDER || res.front().order.o==_3VAR_ORDER || res.front().order.o==_7VAR_ORDER || res.front().order.o==_11VAR_ORDER)){
 	vector<zinfo_t<tdeg_t64> > f4buchberger_info;
+	vector< vectpolymod<tdeg_t64> > gbasiscoeff;
+	vector< paire > pairs_reducing_to_zero;
 	f4buchberger_info.reserve(GBASISF4_MAXITER);
-	zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,0,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false/* 1 mod only*/,parallel,true);	
+	zgbasis(res,resmod,G,env->modulo.val,true/*totaldeg*/,&pairs_reducing_to_zero,f4buchberger_info,false/* recomputeR*/,false /* don't compute res8*/,eliminate_flag,false/* 1 mod only*/,parallel,interred,coeffsptr?&gbasiscoeff:0);	
 	*logptr(contextptr) << "// Groebner basis computation time " << (CLOCK()-c)*1e-6 <<  " Memory " << memory_usage()*1e-6 << "M" << '\n';
 #if 1
-	get_newres_ckrur(resmod,newres,v,G,env->modulo.val,rur);
+	get_newres_ckrur<tdeg_t64>(resmod,newres,v,G,env->modulo.val,rur,&gbasiscoeff,coeffsptr);
 #else
 	newres=vectpoly(G.size(),polynome(v.front().dim,v.front()));
 	for (unsigned i=0;i<G.size();++i)

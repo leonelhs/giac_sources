@@ -1192,7 +1192,7 @@ namespace giac {
 	if (ss>2 && s[0]=='\'' && s[ss-1]=='\'')
 	  s=s.substr(1,ss-2);
 	for (unsigned i=0;i<s.size();++i){
-	  if (!isalpha(s[i]))
+	  if (!my_isalpha(s[i]))
 	    s[i]='_';
 	}
 	lock_syms_mutex();  
@@ -4020,7 +4020,7 @@ namespace giac {
     for (int i=0;i<n-1;++i){
       // j ← random integer such that i ≤ j < n
       // exchange a[i] and a[j]
-      int j=int(i+(giac_rand(contextptr)/double(rand_max2))*(n-i));
+      int j=int(i+(giac_rand(contextptr)/double(rand_max2+1.0))*(n-i));
       std::swap(temp[i],temp[j]);
     }
   }
@@ -4034,7 +4034,7 @@ namespace giac {
       for (int essai=20;essai>=0;--essai){
 	int i;
 	for (i=0;i<k;++i)
-	  ts[i]=t[i]=int(giac_rand(contextptr)/double(rand_max2)*n);
+	  ts[i]=t[i]=int(giac_rand(contextptr)/double(rand_max2+1.0)*n);
 	sort(ts.begin(),ts.end());
 	for (i=1;i<k;++i){
 	  if (ts[i]==ts[i-1])
@@ -4048,7 +4048,7 @@ namespace giac {
       vector<int> t; t.reserve(k);
       // (algorithm suggested by O. Garet)
       while (n>0){
-	int r=int(giac_rand(contextptr)/double(rand_max2)*n);
+	int r=int(giac_rand(contextptr)/double(rand_max2+1.0)*n);
 	if (r<n-k) // (n-k)/n=proba that the current n is not in the list
 	  --n;
 	else {
@@ -4068,7 +4068,7 @@ namespace giac {
     for (int j=0;j<k;++j){
       int r=-1;
       for (;;){
-	r=int(giac_rand(contextptr)/double(rand_max2)*n);
+	r=int(giac_rand(contextptr)/double(rand_max2+1.0)*n);
 	if (tab[r]){ tab[r]=false;  break; }
       }
       v[j]=r;
@@ -12123,7 +12123,8 @@ namespace giac {
   const mksa_unit __l_unit={0.001,3,0,0,0,0,0,0,0};
   const mksa_unit __lam_unit={3183.09886184,-2,0,0,0,0,0,1,0};
   const mksa_unit __lb_unit={0.45359237,0,1,0,0,0,0,0,0};
-  const mksa_unit __lbf_unit={4.44922161526,1,1,-2,0,0,0,0,0};
+  const mksa_unit __lbf_unit={4.44822161526,1,1,-2,0,0,0,0,0};
+  //const mksa_unit __lbf_unit={4.44922161526,1,1,-2,0,0,0,0,0};
   const mksa_unit __lbmol_unit={453.59237,0,0,0,0,0,1,0,0};
   const mksa_unit __lbt_unit={0.3732417216,0,1,0,0,0,0,0,0};
   const mksa_unit __lep_unit={0.857*41.76e6,2,1,-2,0,0,0,0,0};

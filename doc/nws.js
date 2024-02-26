@@ -761,9 +761,12 @@ var UI = {
     //let tmp=new Uint8Array(buffer,offset); console.log(tmp);
     //console.log(data.byteLength);
     // copy data 
-    let srcview = new Uint8Array(data, 0, data.byteLength);    
-    for (let i=0;i<data.byteLength;++i)
+    let srcview = new Uint8Array(data, 0, data.byteLength);
+    let i=0;  
+    for (;i<data.byteLength;++i)
       view[offset+512+i]=srcview[i];
+    for (;i<((data.byteLength+511)/512)*512;++i)
+      view[offset+512+i]=0;
     let F=UI.tar_fileinfo(buffer,updatehtml);
     // console.log('tar_adddata',F);
     return buffer;

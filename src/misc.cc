@@ -663,11 +663,11 @@ namespace giac {
     V.swap(W);
   }
 
-#if defined GIAC_HAS_STO_38 || defined FXCG || defined NSPIRE
+#if defined FXCG || defined NSPIRE
   const int pixel_lines=1; // 320; // calculator screen 307K
   const int pixel_cols=1; // 240;
 #else
-#ifdef KHICAS
+#if defined GIAC_HAS_STO_38 || defined KHICAS
   const int pixel_lines=320;
   const int pixel_cols=240;
 #else
@@ -675,7 +675,7 @@ namespace giac {
   const int pixel_cols=768;
 #endif
 #endif
-#ifdef KHICAS
+#if defined GIAC_HAS_STO_38 || defined KHICAS
   void clear_pixel_buffer(){
   }
   vecteur get_pixel_v(){
@@ -728,8 +728,8 @@ namespace giac {
       _of(makesequence(RECT_P,args),contextptr);
 #else
       clear_pixel_buffer();
-#endif // else HP
       pixel_v_clear();
+#endif // else HP
       history_plot(contextptr).clear();
 #endif // else KHICAS
       return 1;
@@ -9475,7 +9475,7 @@ void sync_screen(){}
     gen a(a_);
     if (a.type==_STRNG && a.subtype==-1) return  a;
     if (a.type==_VECT && a._VECTptr->empty()){
-#ifdef KHICAS
+#if defined GIAC_HAS_STO_38 || defined KHICAS
       sync_screen();
 #else 
       cleanup_pixel_v();
@@ -9516,7 +9516,9 @@ void sync_screen(){}
 #ifdef KHICAS
 	os_set_pixel(x.val,y.val,vs==2?0:remove_at_display(v[2],contextptr).val);
 #else
-	aspen_set_pixel(x.val,y.val,vs==2?0:remove_at_display(v[2],contextptr).val);
+        int c=vs==2?0:remove_at_display(v[2],contextptr).val;
+        c=rgb565to888(c);        
+	aspen_set_pixel(x.val,y.val,c);
 #endif // KHICAS
 	return 1;
       }

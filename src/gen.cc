@@ -9125,6 +9125,8 @@ namespace giac {
       return my_isinf(e._DOUBLE_val);
     case _FLOAT_:
       return fis_inf(e._FLOAT_val);
+    case _CPLX:
+      return is_inf(*e._CPLXptr) || is_inf(*(e._CPLXptr+1));
     default:
       return false;
     }
@@ -14388,7 +14390,8 @@ void sprint_double(char * s,double d){
       return (_CPLXptr->print(contextptr) + string("+") + (_CPLXptr+1)->print(contextptr) + "*")+printi(contextptr);
     case _IDNT:
       if (calc_mode(contextptr)==1 && (is_inf(*this) ||
-                                       is_undef(*this)))
+                                       is_undef(*this) ||
+                                       strcmp(_IDNTptr->id_name,"undefined")==0))
 	return "?";
       return _IDNTptr->print(contextptr);
     case _SYMB: 
@@ -14509,7 +14512,7 @@ void sprint_double(char * s,double d){
 #ifdef ConnectivityKit
   const char * gen::dbgprint() const { return "Done";}
 #else
-#if defined(VISUALC) && !defined(MS_SMART)
+#if defined(VISUALC) && defined GIAC_HAS_STO_38 && !defined(MS_SMART)
 #include <atlbase.h>
   const char * gen::dbgprint() const { ATLTRACE2("%s\r\n", this->print(0).c_str()); return "Done";}
 #else
