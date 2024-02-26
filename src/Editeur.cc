@@ -211,6 +211,21 @@ namespace xcas {
     return S1< S2;
   }
   
+  bool isalphan_editeur(char ch){
+    return isalphan(ch);
+    if (ch>='0' && ch<='9')
+      return true;
+    if (ch>='a' && ch<='z')
+      return true;
+    if (ch>='A' && ch<='Z')
+      return true;
+    if (unsigned(ch)>128)
+      return true;
+    if (ch=='_' || ch=='~')
+      return true;
+    return false;
+  }
+
 //
 // 'style_parse()' - Parse text and produce style data.
 //
@@ -246,16 +261,17 @@ namespace xcas {
 	  continue;
 	} else if (*text == '\"') {
 	  current = 'D';
-	} else if (!last && isalphan(*text)) {
+	} else if (!last && isalphan_editeur(*text)) {
 	  // Might be a keyword...
 	  for (temp = text, bufptr = buf;
-	       isalphan(*temp) && bufptr < (buf + sizeof(buf) - 1);
+	       isalphan_editeur(*temp) && bufptr < (buf + sizeof(buf) - 1);
 	       *bufptr++ = *temp++);
 	  
-	  if (!isalphan(*temp)) {
+	  if (!isalphan_editeur(*temp)) {
 	    *bufptr = '\0';
 	    
 	    bufptr = buf;
+            //COUT << bufptr << "\n"; 
 	    bool test=false;
 #ifdef QUICKJS
 	    if (mode<0)
@@ -338,7 +354,7 @@ namespace xcas {
 	  current = 'A';
 	  continue;
 	}
-      } else if ( (current=='F' || current=='G') && !isalphan(*text)){
+      } else if ( (current=='F' || current=='G') && !isalphan_editeur(*text)){
 	current='A';
       }
       // Copy style info...
@@ -346,7 +362,7 @@ namespace xcas {
       else *style++ = current;
       col ++;
       
-      last = isalphan(*text) || *text == '.';
+      last = isalphan_editeur(*text) && *text != '.'; // changed from || =='.' in order to color e.g. l.append(...)
       
       if (*text == '\n') {
 	// Reset column and possibly reset the style
@@ -3463,7 +3479,7 @@ namespace xcas {
       car=buffer()->char_at(pos);
 #endif
     } 
-    if (1 || isalphan(car)){
+    if (1 || isalphan_editeur(car)){
       int wbeg=buffer()->word_start(pos);
       int wend=buffer()->word_end(pos);
       if (remove1) ++wend;

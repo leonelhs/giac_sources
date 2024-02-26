@@ -4622,8 +4622,12 @@ extern "C" void Sleep(unsigned int miliSecond);
       return "/Applications/usr/share/giac/";
     return "/Applications/usr/share/giac/";
 #endif
-#if defined WIN32 && !defined MINGW
+#if defined WIN32
+#ifdef MINGW
+    return "c:\\xcaswin\\";
+#else
     return "/cygdrive/c/xcas/";
+#endif
 #endif
     string s(giac_aide_location); // ".../aide_cas"
     // test if aide_cas is there, if not test at xcasroot() return ""
