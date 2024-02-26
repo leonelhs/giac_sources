@@ -3158,6 +3158,19 @@ namespace xcas {
     ptr[1]=c;
   }
 
+  void fix_semi(string & s,GIAC_CONTEXT){
+    if (xcas_mode(contextptr)==0 && python_compat(contextptr)==0){
+      for (int i=s.size()-1;i>=0;--i){
+        if (s[i]==';')
+          return;
+        if (s[i]!=' '){
+          s=s.substr(0,i+1)+';';
+          return;
+        }
+      }
+    }
+  }    
+
   void save_as_text(ostream & of,int mode,History_Pack * pack){
 #if 0
     //dbg
@@ -3301,6 +3314,7 @@ namespace xcas {
 	  if (g.is_symb_of_sommet(at_sto) && python_compat(contextptr))
 	    g=g._SYMBptr->feuille[0];
 	  string s(unlocalize(g.print(contextptr)));
+          fix_semi(s,contextptr);
 	  of << s << '\n';
 	  xcas_mode(contextptr)=save_maple_mode;
 	}
@@ -3322,8 +3336,10 @@ namespace xcas {
 	    else casiosave.push_back("");
 	  }
 	}
-	else if (!nws)
+	else if (!nws){
+          fix_semi(s,contextptr);
 	  of << s << '\n';
+        }
 	xcas_mode(contextptr)=save_maple_mode;
       }
       if (Figure * fig=dynamic_cast<Figure *>(g)){
@@ -3337,6 +3353,7 @@ namespace xcas {
 	      wid=gr->child(0);
 	      if (Xcas_Text_Editor * xed=dynamic_cast<Xcas_Text_Editor *>(wid)){
 		string s(unlocalize(xed->value()));
+                fix_semi(s,contextptr);
 		S += s+'\n';
 	      }
 	    }
@@ -3349,10 +3366,9 @@ namespace xcas {
 	  g=gen("figure"+print_INT_(figcount),contextptr);
 	}
 	sto(makevecteur(at_pnt,string2gen(S,false)),g,contextptr);
-#else
+#endif
 	if (!casio)
 	  save_as_text(of,mode,fig->geo->hp);
-#endif
 	continue;
       }
       if (Comment_Multiline_Input * co=dynamic_cast<Comment_Multiline_Input *>(wid)){

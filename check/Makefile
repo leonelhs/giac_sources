@@ -379,7 +379,7 @@ CURL_LIBS =
 CXX = /usr/bin/g++
 CXXCPP = /usr/bin/g++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -g -O2 -U_GLIBCXX_ASSERTIONS -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DTIMEOUT -DHAVE_LIBMICROPYTHON -fpermissive -DQUICKJS
+CXXFLAGS = -g -O2 -U_GLIBCXX_ASSERTIONS -DUSE_OBJET_BIDON -fno-strict-aliasing -DGIAC_GENERIC_CONSTANTS -DTIMEOUT -DHAVE_LIBMICROPYTHON -fpermissive -DQUICKJS
 CYGPATH_W = echo
 DATADIRNAME = share
 DEFS = -DHAVE_CONFIG_H
@@ -542,7 +542,7 @@ TESTS = chk_integrate  \
 EXTRA_DIST = chk_integrate chk_intinda chk_intindbo chk_intindbr \
 		chk_intindc chk_intindj chk_intindm \
 		chk_intindh chk_intinds chk_intindt chk_intindw \
-		chk_factor chk_normalize chk_partfrac \
+		chk_factor chk_normalize chk_partfrac chk_oim \
 		chk_limit chk_cas chk_geo chk_fhan* chk_morley_demo chk_xavier \
 		testintegrate intinda intindbo intindbr \
 		intindc intindj intindm \
@@ -551,7 +551,7 @@ EXTRA_DIST = chk_integrate chk_intinda chk_intindbo chk_intindbr \
 		testlimit testcas testgeo testother chk_other \
 		integrate.out intinda.out intindbo.out intindbr.out \
 		intindc.out intindj.out intindm.out \
-		intindh.out intinds.out intindt.out \
+		intindh.out intinds.out intindt.out intindw.out \
 		factor.out normalize.out partfrac.out \
 		limit.out cas.out geo.out flanex \
 		TP*sol.cas TP*sol.cas.out* morley_demo.* xavier.* \

@@ -37,6 +37,7 @@ namespace xcas {
 #define FL_VERT_PALE 167
 #define FL_ROUGE_PALE 211
 
+  void fix_semi(string & s,const giac::context *);
   int confirm_close(const std::string & message);
   std::string unix_path(const std::string & winpath);
   extern std::string autosave_folder;

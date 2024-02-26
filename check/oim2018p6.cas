@@ -1,12 +1,12 @@
 X:=point(0);
 A:=point(-1);
-supposons(a=[-0.886503642879,0,5,0.1]);
-supposons(b=[1.5,0,5,0.1]);
+assume(a=[-0.886503642879,0,5,0.1]);
+assume(b=[1.5,0,5,0.1]);
 B:=A+b*(1-i*a);
-supposons(f=[0.4,-5,5,0.1]);
-supposons(c=[0.7,0,5,0.1]);
+assume(f=[0.4,-5,5,0.1]);
+assume(c=[0.7,0,5,0.1]);
 C:=point(c*(1+i*f));
-supposons(d=[0.75,-5,5,0.01]);
+assume(d=[0.75,-5,5,0.01]);
 D:=C+d*(X-C)*(1-i*a);
 evalf(eq1,eq2,eq3);
 evalf(angle(A,X,B),angle(C,X,D), angle(B,X,C),angle(D,X,A));

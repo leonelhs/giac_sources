@@ -596,6 +596,7 @@ namespace xcas {
     Fl::get_color((Fl_Color)c,r,g,b);
   }
 
+  // -DUSE_OBJET_BIDON is added in configure.ac because xcas::localisation() does not load locales correctly for object files loaded before main() is executed  
 #ifndef USE_OBJET_BIDON // change by L. Marohnić
   extern void localisation(){
 #else
@@ -6928,6 +6929,7 @@ namespace xcas {
   void Figure::save_figure_as(const string & s_orig){
     if (!geo->hp)
       return;
+    giac::context * contextptr=geo->hp->contextptr;
     string s(s_orig);
     if (s.empty()){
       // Get filename
@@ -6962,8 +6964,11 @@ namespace xcas {
 	  }
 	  if (Xcas_Text_Editor * m=dynamic_cast<Xcas_Text_Editor *>(w)){
 	    string s=m->value();
-	    if (!s.empty())
-	      of << replace(s,'\n',' ')+";" << '\n';
+	    if (!s.empty()){
+              s=replace(s,'\n',' ');
+              fix_semi(s,contextptr);
+	      of << s << '\n';
+            }
 	  }
 	}
       }

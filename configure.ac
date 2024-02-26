@@ -47,7 +47,8 @@ AC_CHECK_FUNCS(tgammaf)
 
 dnl CXXFLAGS="$CXXFLAGS -std=c++0x"
 dnl avoid "security" checks for vectors
-CXXFLAGS="$CXXFLAGS -U_GLIBCXX_ASSERTIONS"
+dnl -DUSE_OBJET_BIDON added because xcas::localisation() does not load locales correctly for modules loaded before main() is executed
+CXXFLAGS="$CXXFLAGS -U_GLIBCXX_ASSERTIONS -DUSE_OBJET_BIDON"
 
 dnl Define DOUBLEVAL if bigendian
 if test "x$ac_cv_c_bigendian" = "xyes"; then

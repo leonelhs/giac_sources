@@ -1899,7 +1899,11 @@ static void cb_Xcas_help_cheval(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_help_han(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://www.math.jussieu.fr/~han/xcas");
+  giac::system_browser_command("https://www.imj-prg.fr/~frederic.han/xcas");
+}
+
+static void cb_Xcas_help_oim(Fl_Menu_*, void*) {
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/irem/alphageo.html");
 }
 
 static void cb_Xcas_help_capes(Fl_Menu_*, void*) {
@@ -2339,6 +2343,7 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"Site Lycee de L. Briel", 0,  (Fl_Callback*)cb_Xcas_help_alb, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Calcul formel au lycee, par D. Chevallier", 0,  (Fl_Callback*)cb_Xcas_help_cheval, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Site de F. Han", 0,  (Fl_Callback*)cb_Xcas_help_han, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Olympiades maths 2000-23", 0,  (Fl_Callback*)cb_Xcas_help_oim, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Ressources Capes", 0,  (Fl_Callback*)cb_Xcas_help_capes, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Ressources Agregation externe", 0,  (Fl_Callback*)cb_Xcas_help_agreg, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Ressources Agregation interne", 0,  (Fl_Callback*)cb_Xcas_help_agregint, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
@@ -3585,7 +3590,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<369; i++)
+        for ( ; i<370; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;
