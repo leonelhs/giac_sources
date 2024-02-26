@@ -14,7 +14,7 @@ libgiac_la_SOURCES = input_lexer.ll sym2poly.cc gausspol.cc threaded.cc \
   help.cc  lpsolve.cc optimization.cc signalprocessing.cc \
   graphe.cc graphtheory.cc nautywrapper.c markup.cc kdisplay.cc kadd.cc \
   caseval.c cutils.c graphic.c libbf.c libregexp.c libunicode.c \
-  qjsgiac.c quickjs.c quickjs-libc.c js.c
+  qjsgiac.c quickjs.c quickjs-libc.c js.c qrcodegen.c qrcodegen.h
 
 libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS) 
 

@@ -123,7 +123,7 @@ void a_propos() {
     s += "Software licensed under the GPL, General Public License version 3.0 or later\nSee the file COPYING in this package for more details\nOr browse http://www.gnu.org\n";
     s += "French documentation (c) Renee de Graeve\n";
     s += "This documentation is freely redistribuable for non commercial purpose\n";
-    s += "Python giacpy module: Frederic Han\n";
+    s += "Python giacpy module: Frederic Han, online help contribution Maxens Pupin\n";
     s += "Math ML and SVG support initially written by Jean-Pierre Branchard\n";
     s += "OpenOffice interface: Christophe Devalland, Serge Moutou\n";
     s += "Qcas interface: Loic Le Coq, Frederic Han\n";
@@ -136,7 +136,8 @@ void a_propos() {
     s += "Spanish localization, Xavier Vidaux, J. Manrique Lopez, compsystems\n";
     s += "German short help localization, Philipp Rösch\n";
     s += "Tutorial (dxcas) with B. Ycart\n";
-    s += "Debian package: Julien Puydt (current maintainer), Carlos Enrique Carleos Artime (first package)\n";
+    s += "Debian package: Ileana Dumitrescu (current maintainer), Julien Puydt (previous maintainer), Carlos Enrique Carleos Artime (first package)\n";
+    // s += "Fedora package: Antonio T. sagitter (???)\n";
     s += "Mac OS X port thanks to Jean-Yves Avenard and IREM Grenoble\n";
     s += "Tablor by Guillaume Connan, Pgiac by Jean-Michel Sarlat\n";
     s += "FreeBSD port, sage interface and agreg tests by Frederic Han\n";
@@ -159,6 +160,7 @@ void a_propos() {
   #ifdef HAVE_LIBCOCOA
     s += "Alternative Groebner Basis code by CoCoA, J. Abbott & al. \n";
   #endif
+    s += "QRcode https://www.nayuki.io/page/qr-code-generator-library\n";
     s += "Interface using FLTK (c) Bill Spitzak et al\n";
     s += "FLVW code (c)Larry Charlton and others\n";
     s += "OpenGL / Mesa (c) 1999-2005  Brian Paul\n";
@@ -1057,6 +1059,14 @@ static void cb_Xcas_open_ti89(Fl_Menu_*, void*) {
 
 static void cb_Xcas_open_v200(Fl_Menu_*, void*) {
   load_history(7);
+}
+
+static void cb_Xcas_QRcode1(Fl_Menu_*, void*) {
+  int pos=0;std::string html5="https://xcas.univ-grenoble-alpes.fr/xcasjs/#"+xcas::widget_html5(Xcas_current_session(),pos); if (!xcas::QRdisp(html5.c_str())) fl_alert(gettext("Unable to convert to a QR code."));
+}
+
+static void cb_Xcas_QRcode2(Fl_Menu_*, void*) {
+  int pos=0;std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos); if (!xcas::QRdisp(html5.c_str())) fl_alert(gettext("Unable to convert to a QR code."));
 }
 
 static void cb_Xcas_CloneOffline(Fl_Menu_*, void*) {
@@ -2157,6 +2167,8 @@ Fl_Menu_Item menu_Xcas_main_menu[] = {
  {"V200 program", 0,  (Fl_Callback*)cb_Xcas_open_v200, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
  {"Clone", 0,  0, 0, 64, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"QRcode1", 0,  (Fl_Callback*)cb_Xcas_QRcode1, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"QRcode2", 0,  (Fl_Callback*)cb_Xcas_QRcode2, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Offline", 0,  (Fl_Callback*)cb_Xcas_CloneOffline, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"Online", 0,  (Fl_Callback*)cb_Xcas_CloneOnline, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0},
@@ -3501,7 +3513,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     { Xcas_main_menu = new Fl_Menu_Bar(0, 0, 775, 25);
       if (!menu_Xcas_main_menu_i18n_done) {
         int i=0;
-        for ( ; i<367; i++)
+        for ( ; i<369; i++)
           if (menu_Xcas_main_menu[i].label())
             menu_Xcas_main_menu[i].label(gettext(menu_Xcas_main_menu[i].label()));
         menu_Xcas_main_menu_i18n_done = 1;

@@ -38,6 +38,7 @@ namespace xcas {
 #endif // ndef NO_NAMESPACE_XCAS
 
 #ifdef HAVE_LIBFLTK
+  bool QRdisp(const char * text);
 
   // Locales initialization, should be done before history.o is loaded
 

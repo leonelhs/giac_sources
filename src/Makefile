@@ -168,7 +168,8 @@ am_libgiac_la_OBJECTS = input_lexer.lo sym2poly.lo gausspol.lo \
 	lpsolve.lo optimization.lo signalprocessing.lo graphe.lo \
 	graphtheory.lo nautywrapper.lo markup.lo kdisplay.lo kadd.lo \
 	caseval.lo cutils.lo graphic.lo libbf.lo libregexp.lo \
-	libunicode.lo qjsgiac.lo quickjs.lo quickjs-libc.lo js.lo
+	libunicode.lo qjsgiac.lo quickjs.lo quickjs-libc.lo js.lo \
+	qrcodegen.lo
 libgiac_la_OBJECTS = $(am_libgiac_la_OBJECTS)
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
@@ -249,17 +250,17 @@ am__depfiles_remade = ./$(DEPDIR)/Cfg.Plo ./$(DEPDIR)/Editeur.Plo \
 	./$(DEPDIR)/pari.Plo ./$(DEPDIR)/permu.Plo \
 	./$(DEPDIR)/plot.Plo ./$(DEPDIR)/plot3d.Plo \
 	./$(DEPDIR)/prog.Plo ./$(DEPDIR)/qjsgiac.Plo \
-	./$(DEPDIR)/quater.Plo ./$(DEPDIR)/quickjs-libc.Plo \
-	./$(DEPDIR)/quickjs.Plo ./$(DEPDIR)/risch.Plo \
-	./$(DEPDIR)/rpn.Plo ./$(DEPDIR)/series.Plo \
-	./$(DEPDIR)/signalprocessing.Plo ./$(DEPDIR)/solve.Plo \
-	./$(DEPDIR)/sparse.Plo ./$(DEPDIR)/subst.Plo \
-	./$(DEPDIR)/sym2poly.Plo ./$(DEPDIR)/symbolic.Plo \
-	./$(DEPDIR)/tex.Plo ./$(DEPDIR)/threaded.Plo \
-	./$(DEPDIR)/ti89.Plo ./$(DEPDIR)/tinymt32.Plo \
-	./$(DEPDIR)/unary.Plo ./$(DEPDIR)/usual.Plo \
-	./$(DEPDIR)/vecteur.Plo ./$(DEPDIR)/xcas.Po \
-	./$(DEPDIR)/y_tab.Po
+	./$(DEPDIR)/qrcodegen.Plo ./$(DEPDIR)/quater.Plo \
+	./$(DEPDIR)/quickjs-libc.Plo ./$(DEPDIR)/quickjs.Plo \
+	./$(DEPDIR)/risch.Plo ./$(DEPDIR)/rpn.Plo \
+	./$(DEPDIR)/series.Plo ./$(DEPDIR)/signalprocessing.Plo \
+	./$(DEPDIR)/solve.Plo ./$(DEPDIR)/sparse.Plo \
+	./$(DEPDIR)/subst.Plo ./$(DEPDIR)/sym2poly.Plo \
+	./$(DEPDIR)/symbolic.Plo ./$(DEPDIR)/tex.Plo \
+	./$(DEPDIR)/threaded.Plo ./$(DEPDIR)/ti89.Plo \
+	./$(DEPDIR)/tinymt32.Plo ./$(DEPDIR)/unary.Plo \
+	./$(DEPDIR)/usual.Plo ./$(DEPDIR)/vecteur.Plo \
+	./$(DEPDIR)/xcas.Po ./$(DEPDIR)/y_tab.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -551,7 +552,7 @@ libgiac_la_SOURCES = input_lexer.ll sym2poly.cc gausspol.cc threaded.cc \
   help.cc  lpsolve.cc optimization.cc signalprocessing.cc \
   graphe.cc graphtheory.cc nautywrapper.c markup.cc kdisplay.cc kadd.cc \
   caseval.c cutils.c graphic.c libbf.c libregexp.c libunicode.c \
-  qjsgiac.c quickjs.c quickjs-libc.c js.c
+  qjsgiac.c quickjs.c quickjs-libc.c js.c qrcodegen.c qrcodegen.h
 
 libgiac_la_LIBADD = $(NTL_LIBS) $(COCOA_LIBS) $(PARI_LIBS) $(GSL_LIBS) 
 giacincludedir = $(includedir)/giac
@@ -896,6 +897,7 @@ include ./$(DEPDIR)/plot.Plo # am--include-marker
 include ./$(DEPDIR)/plot3d.Plo # am--include-marker
 include ./$(DEPDIR)/prog.Plo # am--include-marker
 include ./$(DEPDIR)/qjsgiac.Plo # am--include-marker
+include ./$(DEPDIR)/qrcodegen.Plo # am--include-marker
 include ./$(DEPDIR)/quater.Plo # am--include-marker
 include ./$(DEPDIR)/quickjs-libc.Plo # am--include-marker
 include ./$(DEPDIR)/quickjs.Plo # am--include-marker
@@ -1249,6 +1251,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/plot3d.Plo
 	-rm -f ./$(DEPDIR)/prog.Plo
 	-rm -f ./$(DEPDIR)/qjsgiac.Plo
+	-rm -f ./$(DEPDIR)/qrcodegen.Plo
 	-rm -f ./$(DEPDIR)/quater.Plo
 	-rm -f ./$(DEPDIR)/quickjs-libc.Plo
 	-rm -f ./$(DEPDIR)/quickjs.Plo
@@ -1392,6 +1395,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/plot3d.Plo
 	-rm -f ./$(DEPDIR)/prog.Plo
 	-rm -f ./$(DEPDIR)/qjsgiac.Plo
+	-rm -f ./$(DEPDIR)/qrcodegen.Plo
 	-rm -f ./$(DEPDIR)/quater.Plo
 	-rm -f ./$(DEPDIR)/quickjs-libc.Plo
 	-rm -f ./$(DEPDIR)/quickjs.Plo

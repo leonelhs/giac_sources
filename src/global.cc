@@ -213,7 +213,11 @@ int my_sprintf(char * s, const char * format, ...){
 #if defined(FIR) && !defined(FIR_LINUX)
   z = firvsprintf(s, format, ap);
 #else
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   z = vsprintf(s, format, ap);
+  // z = vsnprintf(s, RAND_MAX,format, ap);
+#pragma clang diagnostic pop  
 #endif
   va_end(ap);
   return z;
