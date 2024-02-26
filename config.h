@@ -83,7 +83,7 @@
 #define HAVE_DLFCN_H 1
 
 /* Define to 1 if you have the <FL/Fl.H> header file. */
-/* #undef HAVE_FL_FL_H */
+#define HAVE_FL_FL_H 1
 
 /* Define to 1 if you have the `fwprintf' function. */
 #define HAVE_FWPRINTF 1
@@ -162,7 +162,7 @@
 /* #undef HAVE_LIBCOCOA */
 
 /* Define to 1 if you have the `curl' library (-lcurl). */
-#define HAVE_LIBCURL 1
+/* #undef HAVE_LIBCURL */
 
 /* Define to 1 if you have the `dfu' library (-ldfu). */
 /* #undef HAVE_LIBDFU */
@@ -192,7 +192,7 @@
 /* #undef HAVE_LIBGC */
 
 /* Define to 1 if you have the `gfortran' library (-lgfortran). */
-#define HAVE_LIBGFORTRAN 1
+/* #undef HAVE_LIBGFORTRAN */
 
 /* Define to 1 if you have the `GL' library (-lGL). */
 #define HAVE_LIBGL 1
@@ -258,19 +258,19 @@
 #define HAVE_LIBRT 1
 
 /* Define to 1 if you have the `samplerate' library (-lsamplerate). */
-#define HAVE_LIBSAMPLERATE 1
+/* #undef HAVE_LIBSAMPLERATE */
 
 /* Define to 1 if you have the `tommath' library (-ltommath). */
 /* #undef HAVE_LIBTOMMATH */
 
 /* Define to 1 if you have the `usb-1.0' library (-lusb-1.0). */
-#define HAVE_LIBUSB_1_0 1
+/* #undef HAVE_LIBUSB_1_0 */
 
 /* Define to 1 if you have the `X11' library (-lX11). */
 #define HAVE_LIBX11 1
 
 /* Define to 1 if you have the `Xcursor' library (-lXcursor). */
-#define HAVE_LIBXCURSOR 1
+/* #undef HAVE_LIBXCURSOR */
 
 /* Define to 1 if you have the `Xext' library (-lXext). */
 #define HAVE_LIBXEXT 1

@@ -37,6 +37,15 @@ Fl_Widget * Xcas_current_session() {
     return wid;
 }
 
+std::string Xcas_current_session_name() {
+  Fl_Widget * wid=Xcas_Main_Tab->value();
+    if (xcas::History_Fold * hf=dynamic_cast<xcas::History_Fold *>(wid)){
+      if (hf->pack->url)
+        return giac::remove_extension(giac::remove_path(*hf->pack->url));
+    }
+    return "session";
+}
+
 const giac::context * Xcas_get_context() {
   Fl_Widget * wid=Xcas_Main_Tab->value();
     if (xcas::History_Fold * hf=dynamic_cast<xcas::History_Fold *>(wid))
@@ -121,7 +130,7 @@ void latex_save_DispG(const char * filename) {
 void a_propos() {
   std::string s("xcas "); s+=GIAC_VERSION; s+=" (c) 2000-18, Bernard Parisse, Renee De Graeve\n";
     s += "Optimization, signalprocessing, graph theory code and manuals: Luka Marohnić\n";
-    s += "http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac.html\n";
+    s += "https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac.html\n";
     s += "If you like Xcas, please link your webpage to the above link to help other find it\n";
     s += "Software licensed under the GPL, General Public License version 3.0 or later\nSee the file COPYING in this package for more details\nOr browse http://www.gnu.org\n";
     s += "French documentation (c) Renee de Graeve\n";
@@ -932,6 +941,7 @@ std::string Xcas_browser_name() {
     return "cygstart.exe";
   #endif // win32
   std::string tmp;
+  //tmp="/usr/bin/xdg-open"; if (giac::is_file_available(tmp.c_str())) return tmp;
   tmp="/usr/bin/firefox";
   if (giac::is_file_available(tmp.c_str()))
      return tmp;
@@ -1065,19 +1075,19 @@ static void cb_Xcas_open_v200(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_QRcode1(Fl_Menu_*, void*) {
-  int pos=0;std::string html5="https://xcas.univ-grenoble-alpes.fr/xcasjs/#"+xcas::widget_html5(Xcas_current_session(),pos); if (!xcas::QRdisp(html5.c_str())) fl_alert(gettext("Unable to convert to a QR code."));
+  int pos=0;std::string html5="https://xcas.univ-grenoble-alpes.fr/xcasjs/#filename="+Xcas_current_session_name()+"&"+xcas::widget_html5(Xcas_current_session(),pos); if (!xcas::QRdisp(html5.c_str())) fl_alert(gettext("Unable to convert to a QR code."));
 }
 
 static void cb_Xcas_QRcode2(Fl_Menu_*, void*) {
-  int pos=0;std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos); if (!xcas::QRdisp(html5.c_str())) fl_alert(gettext("Unable to convert to a QR code."));
+  int pos=0;std::string html5="https://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#filename="+Xcas_current_session_name()+"&"+xcas::widget_html5(Xcas_current_session(),pos); if (!xcas::QRdisp(html5.c_str())) fl_alert(gettext("Unable to convert to a QR code."));
 }
 
 static void cb_Xcas_CloneOffline(Fl_Menu_*, void*) {
-  int pos=0;std::string html5=giac::browser_command("doc/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos)); std::cout << html5 << std::endl; system(html5.c_str());
+  int pos=0;std::string html5=giac::browser_command("doc/xcasfr.html#filename="+Xcas_current_session_name()+"&"+xcas::widget_html5(Xcas_current_session(),pos)); std::cout << html5 << std::endl; system(html5.c_str());
 }
 
 static void cb_Xcas_CloneOnline(Fl_Menu_*, void*) {
-  int pos=0;std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos); std::cout << html5 << std::endl; giac::system_browser_command(html5);
+  int pos=0;std::string html5="https://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#filename="+Xcas_current_session_name()+"&"+xcas::widget_html5(Xcas_current_session(),pos); std::cout << html5 << std::endl; giac::system_browser_command(html5);
 }
 
 static void cb_Xcas_Insert_Session(Fl_Menu_*, void*) {
@@ -1865,15 +1875,15 @@ static void cb_Xcas_help_forum(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_help_lycee_card(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/irem/placlycee.pdf");
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/irem/placlycee.pdf");
 }
 
 static void cb_Xcas_help_lycee(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/irem.html");
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/irem.html");
 }
 
 static void cb_Xcas_help_algo_lycee(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/algoxcas.html");
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/algoxcas.html");
 }
 
 static void cb_Xcas_help_connan(Fl_Menu_*, void*) {
@@ -1893,15 +1903,15 @@ static void cb_Xcas_help_han(Fl_Menu_*, void*) {
 }
 
 static void cb_Xcas_help_capes(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/capes.html");
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/capes.html");
 }
 
 static void cb_Xcas_help_agreg(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/agreg.html");
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/agreg.html");
 }
 
 static void cb_Xcas_help_agregint(Fl_Menu_*, void*) {
-  giac::system_browser_command("http://www-fourier.univ-grenoble-alpes.fr/~parisse/agregint.html");
+  giac::system_browser_command("https://www-fourier.univ-grenoble-alpes.fr/~parisse/agregint.html");
 }
 
 static void cb_Xcas_help_pavages(Fl_Menu_*, void*) {
@@ -1936,7 +1946,7 @@ static void cb_Xcas_help_load(Fl_Menu_*, void*) {
  i=fl_ask("%s",("Check that you can write over "+path+",\ncheck that your Internet connection is ready\nand check that wget, tar and gzip are installed.\nProceed?").c_str());
   if (i){
     fl_message("%s",("Executing: mkdir /tmp ; cd /tmp && wget https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giacshare.tgz && cd "+path+" && tar xvfz /tmp/giacshare.tgz").c_str());
-    system(("mkdir /tmp ; cd /tmp && wget http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giacshare.tgz && cd "+path+" && tar xvfz /tmp/giacshare.tgz").c_str());
+    system(("mkdir /tmp ; cd /tmp && wget https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giacshare.tgz && cd "+path+" && tar xvfz /tmp/giacshare.tgz").c_str());
   };
 }
 
@@ -5842,7 +5852,7 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
     for (int i=argstart;i<argc;++i){
       load_filename(argv[i],false);
       if (link){
-        int pos=0;std::string html5="http://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos); std::cout << html5 << std::endl; giac::system_browser_command(html5);
+        int pos=0;std::string html5="https://www-fourier.univ-grenoble-alpes.fr/~parisse/xcasfr.html#"+xcas::widget_html5(Xcas_current_session(),pos); std::cout << html5 << std::endl; giac::system_browser_command(html5);
       }
     }
     if (link){
@@ -5944,21 +5954,21 @@ int main(int argc,char ** argv) {
   fl_message("%s",gettext("Please close this window and run update.bat in the Xcas installation directory"));
   #else
   #ifdef __APPLE__
-  system("cd ~ && rm -f ~/Desktop/xcas_osx6.dmg.gz && open http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/xcas_osx6.dmg.gz &");
+  system("cd ~ && rm -f ~/Desktop/xcas_osx6.dmg.gz && open https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/xcas_osx6.dmg.gz &");
   #else
   if (giac::is_file_available("/usr/bin/xcas")){
     if (giac::is_file_available("/usr/bin/apt-get"))
       system("xterm -e 'sudo apt-get update ; sudo apt-get install giac'");
     else
   #ifdef __x86_64__ 
-      system("xterm -e 'rm -f giac64.rpm && wget http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac64.rpm && sudo rpm -e giac && sudo rpm -U gia64c.rpm'");    
+      system("xterm -e 'rm -f giac64.rpm && wget https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac64.rpm && sudo rpm -e giac && sudo rpm -U gia64c.rpm'");    
   #else
-      system("xterm -e 'rm -f giac32.rpm && wget http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac32.rpm && sudo rpm -e giac && sudo rpm -U giac32.rpm'");    
+      system("xterm -e 'rm -f giac32.rpm && wget https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/giac32.rpm && sudo rpm -e giac && sudo rpm -U giac32.rpm'");    
   #endif
   }
   else {
     if (giac::is_file_available("/usr/local/bin/xcas")){
-      system("cd /tmp && wget http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/xcas.tgz && cd /usr/local && xterm -e 'sudo tar xvfz tmp/xcas.tgz' &");
+      system("cd /tmp && wget https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac/xcas.tgz && cd /usr/local && xterm -e 'sudo tar xvfz tmp/xcas.tgz' &");
     }
     else
       fl_alert("%s","Update implemented only for debian/rpm packages");

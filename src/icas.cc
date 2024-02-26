@@ -2132,7 +2132,7 @@ int main(int ARGC, char *ARGV[]){
     giac::html_help_init("aide_cas",giac::language(contextptr));
     cout << gettext("Welcome to giac readline interface, version ") << GIAC_VERSION << '\n';
     cout << "(c) 2002,2023 B. Parisse & others" << '\n';
-    cout << "Homepage http://www-fourier.univ-grenoble-alpes.fr/~parisse/giac.html" << '\n';
+    cout << "Homepage https://www-fourier.univ-grenoble-alpes.fr/~parisse/giac.html" << '\n';
     cout << "Released under the GPL license 3.0 or above" << '\n';
     cout << "See http://www.gnu.org for license details" << '\n';
     cout << "May contain BSD licensed software parts (lapack, atlas, tinymt)" << '\n';

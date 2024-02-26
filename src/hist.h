@@ -21,6 +21,7 @@
 #include <giac/misc.h>
 void Xcas_alt_ctrl_cb(int i);
 Fl_Widget * Xcas_current_session();
+std::string Xcas_current_session_name();
 const giac::context * Xcas_get_context();
 void Xcas_Keyboard_Switch(unsigned u);
 int hist_max(int i,int j);

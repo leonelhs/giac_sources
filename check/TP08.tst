@@ -1,4 +1,4 @@
-"Attention: certaines commandes comme subs ont l'ordre des arguments inverse",
+"Warning: some commands like subs might change arguments order",
  (t)-> 
 begin 
   'nop';  

@@ -7220,7 +7220,7 @@ namespace xcas {
       hp->set_value(pos,"assume(a=[0.3,0,2,0.1])",true);
       ++pos;
       hp->add_entry(pos);
-      hp->set_value(pos,"assume(b=[-0.6,-2,0,0.1])",true);
+      hp->set_value(pos,"assume(b=[0.6,0,2,0.1])",true);
       ++pos;
       hp->add_entry(pos);
       hp->set_value(pos,"P1:=point(-1,display=hidden_name)",true);
@@ -7229,7 +7229,7 @@ namespace xcas {
       hp->set_value(pos,"P2:=point(pointc(a),display=hidden_name)",true);
       ++pos;
       hp->add_entry(pos);
-      hp->set_value(pos,"P3:=point(pointc(b),display=hidden_name)",true);
+      hp->set_value(pos,"P3:=point(pointc(-b),display=hidden_name)",true);
       ++pos;
       hp->add_entry(pos);
       hp->set_value(pos,"L1:=perpendicular(P1,line(0,P1)):;",true);
@@ -7269,7 +7269,7 @@ namespace xcas {
       hp->set_value(pos,"pointc(x):=(1+i*x)/(1-i*x)",true);
       ++pos;
       hp->add_entry(pos);
-      hp->set_value(pos,"inter_c(A,D):=reflection(projection(line(A,D),0),A); // intersection of line AD with circumcircle(A,B,C)",true);
+      hp->set_value(pos,"inter_c(A,D):=reflection(projection(line(A,D),0),A);",true);
       ++pos;
       hp->add_entry(pos);
       hp->set_value(pos,"assume(b=[0.3,0,2,0.1])",true);

@@ -48,7 +48,7 @@ AR = ar
 CC = /usr/bin/gcc
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 RANLIB = x86_64-linux-gnu-ranlib
-YACC = : -y -d
+YACC = bison -y -d
 YFLAGS = --name-prefix=__gettext
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" -DLOCALE_ALIAS_PATH=\"$(aliaspath)\" \
@@ -59,8 +59,8 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" -DLOCALE_ALIAS_PATH=\"$(aliaspath)\" \
 -DDEPENDS_ON_LIBICONV=1 -DHAVE_CONFIG_H
 CPPFLAGS = 
 CFLAGS = -g -O2 -D_GNU_SOURCE -DQUICKJS -DCONFIG_BIGNUM -DCONFIG_VERSION=\"2020-11-08\"
-LDFLAGS =  -Lfltk-1.3.8/lib  -L. -L.. -lmicropython
-LIBS = -lrt -lpthread -lnauty -lcliquer -lusb-1.0 -lcurl -lsamplerate -lglpk -lao -llapack -lblas -lgfortran -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp 
+LDFLAGS =  -L. -L.. -lmicropython
+LIBS = -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp 
 
 COMPILE = $(CC) -c $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) $(XCFLAGS)
 

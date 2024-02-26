@@ -2607,7 +2607,7 @@ namespace xcas {
   int editor_hsize(Fl_Widget * w){
     if (!w)
       return 0;
-    return w->labelsize()+12;
+    return w->labelsize()+14;
     Fl_Group * wd = w->parent();
     while (wd && wd->parent())
       wd=wd->parent();

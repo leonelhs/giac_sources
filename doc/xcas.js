@@ -1990,11 +1990,12 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       else
         smail = UI.base_url + "xcasen.html#exec&";
       var filename = $id("outputfilename").value;
+      let fname=filename;
       var pos = filename.search('@');
       if (pos < 0 || pos >= filename.length)
         filename = UI.from + '@' + filename;
       if (pos == 0)
-        filename = filename.substr(1, filename.length - 1);
+          filename = filename.substr(1, filename.length - 1);
       filename = 'filename=' + encodeURIComponent(filename) + '&';
       if (UI.from.length)
         filename += 'from=' + encodeURIComponent(UI.from) + '&';
@@ -2019,8 +2020,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
 	stableau = '<a href="'+ stableau+'" target="_blank">tableau</a>';
       //s=encodeURIComponent(s); // does not work innerHTML will add a prefix
       //var sforum=encodeURIComponent('[url]'+s+'[/url]');
-      sforum = '[url=' + sforum + ']session Xcas[/url]';
-      //console.log(sforum);
+      sforum = '[url=' + sforum + ']'+fname+'[/url]';
+        //console.log(sforum);
       $id('theforumlink').innerHTML = sforum;
       var copy = "<button title=";
       copy += UI.langue == -1 ? "'Partager cette session sur le forum'" : "'Share this session on the forum'";
@@ -2068,7 +2069,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
     return res;
   },
   makelink: function (start) { // start=-1 Casio save
-    //console.log('makelink',start);
+    filename = $id("outputfilename").value;
+    console.log('makelink ',filename);
     var s = 'python=';
     if (UI.python_mode) s += (UI.python_mode+'&'); else s += '0&';
     let radian_mode=($id('config').angle_mode.checked?1:0);
