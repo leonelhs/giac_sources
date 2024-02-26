@@ -4,89 +4,56 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rational interpolation</title>
+<title>Converting a series expansion into a polynomial</title>
 </head>
 <body >
 <a href="cascmd_en349.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en351.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec786" class="subsection">10.2.4  Rational interpolation</h3>
-<p>The <span style="font-family:monospace">thiele</span><a id="hevea_default602"></a>
-command finds the rational interpolation.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">thiele</span> takes two arguments:
+<h3 id="ssec:convertpoly" class="subsection">10.1.25  Converting a series expansion into a polynomial</h3>
+<p>The <span style="font-family:monospace">convert</span><a id="hevea_default599"></a> command
+(see Section <a href="cascmd_en289.html#ssec%3Aconvert">9.1.10</a>)<a id="hevea_default600"></a>,
+with the option <span style="font-style:italic">polynom</span>, converts
+a series (see Section <a href="cascmd_en464.html#ssec%3Ataylor">12.5.2</a>) into a
+polynomial. It should be used for operations
+like drawing the graph of the Taylor series of a function near a
+point.</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">convert</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">data</span>, a matrix with two columns. The first column
-contains the <span style="font-style:italic">x</span> coordinates and the second column contains the
-corresponding <span style="font-style:italic">y</span> coordinates.<p>Instead of a single matrix, the data can be given as a vector of
-<span style="font-style:italic">x</span> coordinates and a vector of <span style="font-style:italic">y</span> coordinates (in which casethe call to <span style="font-family:monospace">thiele</span> has three arguments).
-</p></li><li class="li-itemize"><span style="font-style:italic">v</span>, an identifier, number or symbolic
-expression (default: <span style="font-style:italic">x</span>).
+<span style="font-style:italic">series</span>, a series.
+</li><li class="li-itemize"><span style="font-family:monospace">polynom</span><a id="hevea_default601"></a>, the option.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">thiele(</span><span style="font-style:italic">data</span>,<span style="font-style:italic">v</span><span style="font-family:monospace">)</span> returns
-<span style="font-style:italic">R</span>(<span style="font-style:italic">v</span>) where <span style="font-style:italic">R</span> is the rational interpolant.
-</li></ul><p>
-Instead of a single matrix <span style="font-family:monospace">data</span>, two vectors
-<span style="font-weight:bold"><span style="font-style:italic">x</span></span>=(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>) and
-<span style="font-weight:bold"><span style="font-style:italic">y</span></span>=(<span style="font-style:italic">y</span><sub>1</sub>,<span style="font-style:italic">y</span><sub>2</sub>,…,<span style="font-style:italic">y</span><sub><span style="font-style:italic">n</span></sub>)
-This method computes Thiele interpolated continued function based on
-the concept of reciprocal differences.</p><p>It is not guaranteed that <span style="font-style:italic">R</span> is continuous, i.e. it may have
-singularities in the shortest segment which contains all components of
-the <span style="font-style:italic">x</span> coordinates.</p><h4 id="sec787" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">thiele</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,3],[2,4],[4,5],[5,8]],</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">convert(</span><span style="font-style:italic">series</span>,<span style="font-family:monospace">polynom</span><span style="font-family:monospace">)</span> returns
+<span style="font-style:italic">series</span> with the <span style="font-family:monospace">order_size</span> term replaced by 0.
+</li></ul><h4 id="sec778" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">taylor</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">polynom</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">19 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">−45 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−154</span></td></tr>
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup></td></tr>
 <tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">18 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−78</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">6</span></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>5</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">120</td></tr>
 </table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">thiele</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">],[3,4,5],3)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">series</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0,6),</span></span><span style="font-weight:bold"><span style="color:#BF0000">polynom</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">13 </span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">−29</span></td></tr>
+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup></td></tr>
 <tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3 </span><span style="color:#0000CC"><span style="font-style:italic">a</span></span><span style="color:#0000CC">−7</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">6</span></td></tr>
+</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">x</span><sup>5</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">120</td></tr>
 </table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-In the following example, data is obtained by sampling the function
-<span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=(1−<span style="font-style:italic">x</span><sup>4</sup>) <span style="font-style:italic">e</span><sup>1−<span style="font-style:italic">x</span><sup>3</sup></sup>.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">data_x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[-1,-0.75,-0.5,-0.25,0,0.25,0.5,0.75,1,1.25,1.5,1.75,2]:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">data_y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[0.0,2.83341735599,2.88770329586,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">2.75030303645,2.71828182846,2.66568510781,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">2.24894558809,1.21863761951,0.0,-0.555711613283,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">-0.377871362418,-0.107135851128,-0.0136782294833]:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">thiele</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">data_x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">data_y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC">−</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >1.55286115659 <span style="font-style:italic">x</span><sup>6</sup>+5.87298387514 <span style="font-style:italic">x</span><sup>5</sup>−5.4439152812
-<span style="font-style:italic">x</span><sup>4</sup>+1.68655817708 <span style="font-style:italic">x</span><sup>3</sup></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-−</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">2.40784868317 <span style="font-style:italic">x</span><sup>2</sup>−7.55954205222 <span style="font-style:italic">x</span>+9.40462512097</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">/</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">
-</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell"><span style="font-style:italic">x</span><sup>6</sup>−</td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >1.24295718965 <span style="font-style:italic">x</span><sup>5</sup>−1.33526268624 <span style="font-style:italic">x</span><sup>4</sup>+4.03629272425
-<span style="font-style:italic">x</span><sup>3</sup></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-−</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">0.885419321 <span style="font-style:italic">x</span><sup>2</sup>−2.77913222418 <span style="font-style:italic">x</span>+3.45976823393</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>

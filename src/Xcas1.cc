@@ -40,6 +40,7 @@
 #include "Tableur.h"
 #include "Editeur.h"
 #include "Print.h"
+#include "Help1.h"
 #include <iostream>
 #include <fstream>
 #ifdef HAVE_SSTREAM
@@ -3740,6 +3741,171 @@ namespace xcas {
       xcas::History_cb_New_Equation(hf,0);
   }
 
+  static string doc_prefix("doc/fr/");
+
+  static void cb_help_index(Fl_Menu_*, void*) {
+    static std::string ans; 
+    int remove,ii;
+    Fl_Widget * w=xcas::Xcas_input_focus;
+    if (
+	(ii=xcas::handle_tab("",(*giac::vector_completions_ptr()),600,400,remove,ans)) ){ 
+      if (ii==1)
+	ans = ans +"()";
+      Fl::e_text = (char * ) ans.c_str();
+      Fl::e_length = ans.size();
+      if (w){
+	xcas::fl_handle(w);
+	if (Fl_Input * in =dynamic_cast<Fl_Input *>(w)){
+	  if (ii==1) in->position(in->position()-1);
+	}
+      }
+    };
+  }
+
+  static void cb_help_find(Fl_Menu_*, void*) {
+    xcas::help_fltk("");
+  }
+
+  static void cb_help_casinter(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"casinter/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"casinter/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  const giac::context * Xcas_get_context() {
+    return xcas::get_context(Xcas_input_focus);
+  }
+
+  static void cb_help_CAS(Fl_Menu_*, void*) {
+    const giac::context * contextptr=Xcas_get_context();
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"cascmd_"+giac::find_lang_prefix(giac::language(contextptr))+"index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"cascmd_"+giac::find_lang_prefix(giac::language(contextptr))+"index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_graphtheory(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command("doc/graphtheory-user_manual.pdf");
+    else {
+      if (xcas::Xcas_help_window){ //disabled because it crashes with builin browser
+	fl_message("%s",("Open with your browser "+giac::giac_aide_dir()+"doc/graphtheory-user_manual.pdf").c_str());
+	// xcas::Xcas_help_window->load((giac::giac_aide_dir()+"algo.html").c_str());
+	// xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_algo(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"algo.html");
+    else {
+      if (xcas::Xcas_help_window){ //disabled because it crashes with builin browser
+	fl_message("%s",("Open with your browser "+giac::giac_aide_dir()+doc_prefix+"algo.html").c_str());
+	// xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"algo.html").c_str());
+	// xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_algo_pdf(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"algo.pdf");
+    else {
+      if (xcas::Xcas_help_window){
+	fl_message("%s",("Open "+giac::giac_aide_dir()+doc_prefix+"algo.pdf").c_str());
+	// xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"algo.pdf").c_str());
+	// xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_Geo(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"casgeo/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"casgeo/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_Prog(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"casrouge/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"casrouge/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_Tableur(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"cassim/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"cassim/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_Tortue(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"castor/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"castor/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_Exercices(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"casexo/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"casexo/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_Amusement(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(doc_prefix+"cascas/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+doc_prefix+"cascas/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
+  static void cb_help_PARI(Fl_Menu_*, void*) {
+    if (xcas::use_external_browser)
+      giac::system_browser_command(giac::giac_aide_dir()+"doc/pari/index.html");
+    else {
+      if (xcas::Xcas_help_window){
+	xcas::Xcas_help_window->load((giac::giac_aide_dir()+"doc/pari/index.html").c_str());
+	xcas::Xcas_help_window->show();
+      }
+    };
+  }
+
   bool has_graph3d(Fl_Widget * widget){
     Fl_Group * g=dynamic_cast<Fl_Group *>(widget);
     if (!g)
@@ -3851,12 +4017,30 @@ namespace xcas {
     {"New entry", 0x8006e,  (Fl_Callback*)cb_add_entry, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {"New program", 0x80070,  (Fl_Callback*)cb_add_program, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {"New comment", 0x8006e,  (Fl_Callback*)cb_add_comment, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
-    {"New figure 2d", 0x80070,  (Fl_Callback*)cb_add_figure, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
-    {"New figure 3d", 0x80070,  (Fl_Callback*)cb_add_figure3d, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
-    {"New spreadsheet", 0x80070,  (Fl_Callback*)cb_add_tableur, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
-    {"New equation", 0x80070,  (Fl_Callback*)cb_add_equation, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
-    {"New logo turtle", 0x80070,  (Fl_Callback*)cb_add_logo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New figure 2d", 0x80067,  (Fl_Callback*)cb_add_figure, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New figure 3d", 0x80068,  (Fl_Callback*)cb_add_figure3d, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New spreadsheet", 0x80074,  (Fl_Callback*)cb_add_tableur, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New expression", 0x80065,  (Fl_Callback*)cb_add_equation, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New logo turtle", 0x8006c,  (Fl_Callback*)cb_add_logo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {0,0,0,0,0,0,0,0,0},    
+    {"Help", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Index", 0,  (Fl_Callback*)cb_help_index, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Find word in HTML help", 0xffc9,  (Fl_Callback*)cb_help_find, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Interface", 0,  (Fl_Callback*)cb_help_casinter, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Manuals", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+    {"CAS reference", 0,  (Fl_Callback*)cb_help_CAS, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Graph theory", 0,  (Fl_Callback*)cb_help_graphtheory, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Algorithmes (HTML)", 0,  (Fl_Callback*)cb_help_algo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Algorithmes (PDF)", 0,  (Fl_Callback*)cb_help_algo_pdf, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Geometry", 0,  (Fl_Callback*)cb_help_Geo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Programmation", 0,  (Fl_Callback*)cb_help_Prog, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Simulation", 0,  (Fl_Callback*)cb_help_Tableur, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Turtle", 0,  (Fl_Callback*)cb_help_Tortue, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Exercices", 0,  (Fl_Callback*)cb_help_Exercices, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Amusement", 0,  (Fl_Callback*)cb_help_Amusement, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"PARI-GP", 0,  (Fl_Callback*)cb_help_PARI, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0},    
   }; 
 #endif

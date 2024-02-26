@@ -4,64 +4,43 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Extracting data from images</title>
+<title>Loading images to the legacy format</title>
 </head>
 <body >
 <a href="cascmd_en998.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en1000.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec2459" class="subsection">26.1.8  Extracting data from images</h3>
-<h5 id="sec2460" class="paragraph">Obtaining the size of an image.</h5>
-<p>
-The size of an image can be obtained by using the
-<span style="font-family:monospace">size</span><a id="hevea_default1917"></a> command.
+<h3 id="ssec:readrgb" class="subsection">26.1.3  Loading images to the legacy format</h3>
+<p>The <span style="font-family:monospace">readrgb</span><a id="hevea_default1917"></a>
+command reads an <span style="font-variant:small-caps">Xcas</span> image structure (see Section <a href="cascmd_en997.html#sec%3Aimagestruct">26.1.1</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">size</span> takes <span style="font-style:italic">img</span>, an image object.
-</li><li class="li-itemize"><span style="font-family:monospace">size(</span><span style="font-style:italic">img</span><span style="font-family:monospace">)</span> returns a list of two integers
-representing the width and the height of <span style="font-style:italic">img</span> (in that order).
-</li></ul>
-<h5 id="sec2461" class="paragraph">Obtaining pixel data.</h5>
+<span style="font-family:monospace">readrgb</span> command takes
+<span style="font-style:italic">filename</span>, the name of an image file in JPEG, PNG or GIF format.
+</li><li class="li-itemize"><span style="font-family:monospace">readrgb(</span><span style="font-style:italic">filename</span><span style="font-family:monospace">)</span> returns the
+legacy <span style="font-variant:small-caps">Xcas</span> image structure for the image in <span style="font-style:italic">filename</span>.
+</li></ul><h4 id="sec2458" class="subsubsection">Example</h4>
 <p>
-Channel data can be extracted from image objects to matrices by using
-the <span style="font-family:monospace">[]</span><a id="hevea_default1918"></a> operator or the
-<span style="font-family:monospace">channel_data</span><a id="hevea_default1919"></a> command.
+Assume the the image shown in Figure <a href="#fig%3Afourcolorimage">26.1</a>
+is stored in file <span style="font-family:monospace">image1234.jpg</span>.
+</p><blockquote class="figure"><div class="center"><div class="center"><hr style="width:80%;height:2"></div>
+<img src="cascmd_en387.png">
+
+<div class="caption"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="vertical-align:top;text-align:left;" >Figure 26.1: <a id="fig:fourcolorimage"></a>An image of size 250× 500 with colors</td></tr>
+</table></div>
+<div class="center"><hr style="width:80%;height:2"></div></div></blockquote><p>
+After reading it into a variable name with <span style="font-family:monospace">readrgb</span> using the legacy <span style="font-variant:small-caps">Xcas</span> format:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readrgb</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"image1234.jpg"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>the variable <span style="font-family:monospace">a</span> will contain a list.
 </p><ul class="itemize"><li class="li-itemize">
-Let <span style="font-style:italic">img</span> be an image object.
-</li><li class="li-itemize">The command <span style="font-style:italic">img</span><span style="font-family:monospace">[</span><span style="font-style:italic">chn</span> ⟨,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span> ⟨,<span style="font-style:italic">w</span>,<span style="font-style:italic">h</span> ⟩⟩<span style="font-family:monospace">]</span>,
-where
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">chn</span> is a channel index, which should be either a
-nonnegative integer or <span style="font-family:monospace">red</span> for the red channel, <span style="font-family:monospace">green</span> for the
-green channel, <span style="font-family:monospace">blue</span> for the blue channel, <span style="font-family:monospace">grey</span> for the
-grayscale channel resp. <span style="font-family:monospace">tran</span> for the transparency channel,
-</li><li class="li-itemize">(optionally) <span style="font-style:italic">x</span>, <span style="font-style:italic">y</span> are integers and
-</li><li class="li-itemize">(optionally) <span style="font-style:italic">w</span>, <span style="font-style:italic">h</span> are positive integers (if these are given, then
-<span style="font-style:italic">x</span> and <span style="font-style:italic">y</span> must also be given),
+<span style="font-family:monospace">a[0]</span> will be <span style="font-family:monospace">[4,250,500]</span>, the number of
+channels, the height and the width of the image.
+</li><li class="li-itemize"><span style="font-family:monospace">a[1]</span>, the red channel,
+</li><li class="li-itemize"><span style="font-family:monospace">a[2]</span>, the green channel,
+</li><li class="li-itemize"><span style="font-family:monospace">a[3]</span>, the transparency channel,
+</li><li class="li-itemize"><span style="font-family:monospace">a[4]</span>, the blue channel.
 </li></ul>
-returns
-<ul class="itemize"><li class="li-itemize">
-the full matrix of the channel <span style="font-style:italic">chn</span> if no optional arguments are given,
-</li><li class="li-itemize">the <span style="font-style:italic">chn</span> component of the pixel (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) if <span style="font-style:italic">w</span> and <span style="font-style:italic">h</span> are not given,
-</li><li class="li-itemize">the matrix of pixel data for the channel <span style="font-style:italic">chn</span> in the
-rectangle with upper left corner (<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>) and lower right corner (<span style="font-style:italic">x</span>+<span style="font-style:italic">w</span>−1,<span style="font-style:italic">y</span>+<span style="font-style:italic">h</span>−1)
-if <span style="font-style:italic">x</span>, <span style="font-style:italic">y</span>, <span style="font-style:italic">w</span> and <span style="font-style:italic">h</span> are given.
-</li></ul>
-</li><li class="li-itemize">If <span style="font-style:italic">chn</span>=<span style="font-family:monospace">grey</span> and <span style="font-style:italic">img</span> is a color image, then the returned
-pixel value(s) are obtained by averaging the color channels.
-</li><li class="li-itemize">The <span style="font-family:monospace">channel_data</span> command extracts a channel (sub)matrix. Precisely,
-<span style="font-family:monospace">channel_data(</span><span style="font-style:italic">img</span>,<span style="font-style:italic">args</span><span style="font-style:italic">)</span> is equivalent to
-<span style="font-style:italic">img</span><span style="font-family:monospace">[</span><span style="font-style:italic">args</span><span style="font-family:monospace">]</span>, where <span style="font-style:italic">img</span> is an image object
-and <span style="font-style:italic">args</span> is a sequence of arguments as described above.
-</li></ul>
-<h5 id="sec2462" class="paragraph">Flattening images.</h5>
-<p>
-The <span style="font-family:monospace">flatten</span><a id="hevea_default1920"></a> command returns a list
-representation of an image, which is suitable for e.g. passing the image to a neural
-network. It accepts a single argument, an image object <span style="font-style:italic">img</span>, and returns the
-list in which the pixel data is stored row by row, with individual channel values for
-the same pixel occupying consecutive entries in the list. (See the MNIST example
-in Section <a href="cascmd_en724.html#ssec%3Atrain">20.2.2</a>.)</p>
 <hr>
 <a href="cascmd_en998.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

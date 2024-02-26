@@ -143,7 +143,7 @@
 % HEVEA \newcommand{\xcaskey}[1]{{\ttfamily\bfseries\color{xcasoutputcolor}#1}}
 \lstdefinelanguage{Xcas}{
   sensitive=true, 
-  morekeywords={function,endfunction,local,return,begin,end,if,fi,then,else,elif,switch,case,default,for,from,to,step,do,od,end_for,in,repeat,until,break,continue,while,goto,label,try,catch,throw,proc,si,alors,sinon,fsi,repeter,jusqua,tantque,ftantque,pour,fpour,jusque,faire,pas},
+  morekeywords={function,endfunction,local,return,begin,end,if,fi,then,else,elif,switch,case,default,for,from,to,step,do,od,end_for,in,repeat,until,break,continue,while,goto,label,try,catch,throw,proc,si,alors,sinon,fsi,repeter,jusqua,tantque,ftantque,pour,fpour,jusque,faire,pas,true,false},
   keywordstyle=\color{xcasoutputcolor}\ttfamily\bfseries,
   % ndkeywords={int, \char{}  },
   % ndkeywordstyle=\color{blue}\bfseries,
@@ -726,7 +726,7 @@ some of which are mentioned below.
 If you hover the mouse cursor over certain parts of the \xcas{}
 window, a temporary window will appear with information about the
 part.  For example, if you move the mouse cursor over the status line,
-you will get a message saying \texttt{Current CAS status.~Click to
+you will get a message saying \textsf{Current CAS status. Click to
   modify}.
 
 If you type a function name in the \xcas{} command line, a
@@ -742,7 +742,7 @@ window with the menu entry \textsf{Help\menusep{}Find word
 
 The \HTML{} help window has a search area; if you type a string in that
 area you will be given a list of help topics that contain that string.
-If you choose a topic and click \texttt{View}, your web browser will
+If you choose a topic and click \textsf{View}, your web browser will
 show the appropriate page of the manual.
 
 
@@ -1070,7 +1070,7 @@ following entries:
   \xcas{}.  The card will be displayed in your browser.
 
 \item[Manuals] ---
-  This allows you to choose from a variety of manuals for \textsc{Xcas},
+  This allows you to choose from a variety of manuals for \xcas{},
   which will appear in your browser.
   \begin{description}
   \item[CAS reference] ---
@@ -1200,7 +1200,7 @@ operators into the session.  This menu includes the following entries:
   This inserts a new comment level.
 \end{description}
 The other entries let you insert mathematical operations into
-the current level. If \texttt{Auto index help} is chosen
+the current level. If \textsf{Auto index help} is chosen
 (see \secref{sec:mconf}), then the help index will open
 help index (see \secref{sssec:helpind})
 with the chosen command selected.
@@ -1217,7 +1217,7 @@ various transformations.
 \subsection{\textsf{Cmds} menu}
 
 The \textsf{Cmds} menu contains various \giac{} functions and
-constants separated into categories.  If \texttt{Auto index help} is
+constants separated into categories.  If \textsf{Auto index help} is
 chosen (see \secref{sec:mconf}), then when you select a function or
 constant, the help index (see \secref{sssec:helpind}) opens with the
 function or constant selected, which can be used to insert the entry
@@ -1389,7 +1389,7 @@ simply returns
   x^{2}+2
 \end{xcasoutput}
 but if an expression already involves complex numbers then
-\xcas{} uses them;
+\xcas{} uses them:
 \begin{xcasinput}
 factor(i*x^2+2*i)
 \end{xcasinput}
@@ -1410,7 +1410,7 @@ cfactor(x^2+2)
 \end{xcasoutput}
 
 If you want \xcas{} to use complex numbers by default, you can
-turn on complex mode.  In complex mode,
+turn on complex mode.  In complex mode, the command line
 \begin{xcasinput}
 factor(x^2+2)
 \end{xcasinput}
@@ -1485,7 +1485,7 @@ the status line.  This will open a window with the following options:
 \item[debug] (default: 0) ---
   Here you can input a 0 or 1.  If this is 1, then
   \xcas{} will display intermediate information on the
-  algorithms used by \giac{}.  If this is 0, then no such
+  algorithms used by \xcas{}.  If this is 0, then no such
   information is displayed.
 
 \item[maxiter]\label{enum:maxiter}  (default: 20) ---
@@ -1522,9 +1522,9 @@ the status line.  This will open a window with the following options:
 \item[proba]  (default: $10^{-15}$) ---
   Here you can input a floating point number.
   If this number is greater than zero, then in some cases
-  \giac{} can use probabilistic algorithms and give a result
+  \xcas{} can use probabilistic algorithms and give a result
   with probability of being false less than this value.  (One such
-  example of a probabilistic algorithm that \giac{} can use is
+  example of a probabilistic algorithm that \xcas{} can use is
   the algorithm to compute the determinant of a large matrix with
   integer coefficients.)
 
@@ -1554,7 +1554,7 @@ the status line.  This will open a window with the following options:
   will be measured in degrees.
 
 \item[Complex]  (default: unchecked) ---
-  If checked, then \giac{} will work in complex mode, meaning, for example, that
+  If checked, then \xcas{} will work in complex mode, meaning, for example, that
   polynomials will be factored with complex numbers if necessary.
 
 \item[Cmplx\_var]  (default: unchecked) ---
@@ -1793,10 +1793,14 @@ performed.
   \item[Increasing power.]  This is 0 to display polynomials
     in increasing power, and 1 to display polynomials in decreasing powers.
   \end{description}
-\item The \texttt{xcas\_mode} command sets the computer language used by
+\end{itemize}
+
+The \texttt{xcas\_mode} command sets the computer language used by
   \xcas{} (see \secref{ssec:lang}).
-\item The \texttt{xyztrange} command sets or returns the values of the
+
+The \texttt{xyztrange} command sets or returns the values of the
   graphics configuration.
+\begin{itemize}
 \item
   To set the values, \texttt{xyztrange} takes 15 arguments:
   \begin{itemize}
@@ -1940,6 +1944,10 @@ translates expressions to \LaTeX{}\index{LaTeX}.
   \textit{expr}, an expression.
 \item \texttt{latex(}\textit{expr}\texttt{)} returns the result of
   evaluating \textit{expr} written in the \LaTeX{} typesetting language.
+  Note that the returned value is a string which typesets properly when
+  inserted in a (displayed) math environment.
+  \item When copying the \texttt{latex} command output manually from
+  a \giac{} interface to a \LaTeX{} document, be sure to remove the double quotes.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -2261,7 +2269,7 @@ The command
 \begin{xcasinput}
 markup_cfg(simplify=[product,apply],mathml=display)
 \end{xcasinput}
-enables only implicit multiplication and function application; additionally, it disables
+enables only implicit multiplication and function application; additionally, it prevents
 content \MathML{} from appearing in the output of \texttt{export\_mathml}.
 
 \subsection{Translating a \Maple{} file to \xcas{}\label{ssec:maple2xcas}}
@@ -2271,26 +2279,33 @@ translates a file of \Maple{}\index{Maple} commands to the \xcas{} language.
 \begin{itemize}
 \item \texttt{maple2xcas} takes two arguments:
   \begin{itemize}
-  \item \textit{Maplefile}, the name of the \Maple{} input file.
-  \item \textit{XcasFile}, the file where you want to save the \xcas{}
+  \item \textit{maplefile}, the name of the \Maple{} input file.
+  \item \textit{xcasfile}, the file where you want to save the \xcas{}
     commands.
   \end{itemize}
 \item
-  \texttt{maple2xcas("}\textit{MapleFile}\texttt{","}\textit{XcasFile}\texttt{")}
-  results in an \xcas{} file named \textit{XcasFile} with the
-  \Maple{} commands in \textit{MapleFile} translated to the \xcas{} language.
+  \texttt{maple2xcas("}\textit{maplefile}\texttt{","}\textit{xcasfile}\texttt{")}
+  results in an \xcas{} file named \textit{xcasfile} with the
+  \Maple{} commands from \textit{maplefile} translated to the \xcas{} language.
 \end{itemize}
 
 \section{Entry in \xcas{}}
 
-If you enter a command into \xcas{}, the result will appear in
-the output box below the input, colored in blue. For example:
+If you enter a command into \xcas{} and press \textsf{Enter},
+the result will appear in the output box below the input,
+colored in blue. Any messages generated during the computation will be shown
+in the box between the input and output, colored in green (the height of
+the message box will be zero if there are no messages to print). For example:
 \begin{xcasinput}
-a:=2+2
+integrate(1/(x+a)^2,x=0..inf)
 \end{xcasinput}
+\begin{xcasmsg}
+  No checks were made for singular points of antiderivative -1/(x+a) for definite integration in [0,+infinity]
+\end{xcasmsg}
 \begin{xcasoutput}
-  4
+  \frac{1}{a}
 \end{xcasoutput}
+Note that line breaks in a command entry can be entered by pressing \textsf{Shift+Enter}.
 
 \subsection{Suppressing output}
 
@@ -2327,7 +2342,9 @@ and \texttt{b} will be set to \texttt{6}.
 You can annotate an \xcas{} session by adding comments. You can
 enter a comment on the current line at any time by typing
 \textsf{Alt+C}.  The line will appear in green text and conclude when
-you type \texttt{Enter}.  Comments are not evaluated and so have no
+you type \textsf{Enter}.
+(To force a new line, press \textsf{Shift+Enter}.)
+Comments are not evaluated and so have no
 output.  If you have started entering a command when you begin a
 comment, the command line with the start of the command will be pushed
 down so that you can finish it when you complete the comment.
@@ -2444,7 +2461,7 @@ $x^2-4$ on the bottom, begin
 by typing \texttt{x}.  Selecting this \texttt{x} and typing
 \texttt{\^{}2} will put on the superscript.  Finally, selecting the
 $\texttt{x}^{\texttt{2}}$ and typing \texttt{- 4} will finish the
-bottom.  If you then hit \texttt{Enter}, the expression will be
+bottom.  If you then hit \textsf{Enter}, the expression will be
 evaluated and will appear on the output line.
 
 \subsection{Subexpressions\label{ssec:subexps}}
@@ -2895,7 +2912,7 @@ In \xcas{} output:
 \subsection{Accessing elements\label{ssec:els}}
 
 The elements of sequences and lists are indexed starting from 0 in
-Xcas syntax mode and from 1 in all other syntax modes (see
+\xcas{} syntax mode and from 1 in all other syntax modes (see
 \secref{ssec:lang}).  To access an element of a list or a sequence,
 follow the list with the index between square brackets\index{[]@\texttt{[]}}.
 
@@ -3229,30 +3246,24 @@ The \texttt{assume}\index{assume@\texttt{assume}}
 (or \texttt{supposons}\index{supposons@\texttt{supposons}})
 command lets you tell \xcas{} some properties of a variable
 without giving the variable a specific value.
-The \texttt{additionally}\index{additionally@\texttt{additionally}}
-command can be used to add assumptions to a variable.
-The \texttt{about}\index{about@\texttt{about}} command
-will display the current assumptions about a variable, and the
-\texttt{purge}\index{purge@\texttt{purge}} command will remove all
-values and assumptions about a variable.
-
-
-\noindent
-\texttt{assume} (or \texttt{supposons}) takes one mandatory
-argument and one optional argument:
 \begin{itemize}
-\item \textit{assumptions}, statements about a variable (such as
-  equalities and inequalities, possibly combined with \texttt{and} and
-  \texttt{or}, and domains).
-\item Optionally, \texttt{additionally}, which indicates that the
-  assumptions are to be added to previous assumptions, as opposed to
-  replace them.
+\item \texttt{assume} (or \texttt{supposons}) takes one mandatory
+  argument and one optional argument:
+  \begin{itemize}
+  \item \textit{assumptions}, statements about a variable (such as
+    equalities and inequalities, possibly combined with \texttt{and} and
+    \texttt{or}, and domains).
+  \item Optionally, \texttt{additionally}, which indicates that the
+    assumptions are to be added to previous assumptions, as opposed to
+    replace them.
+  \end{itemize}
+\item \texttt{assume(}$\textit{assumptions}\,\langle,\texttt{additionally}\,\rangle$\texttt{)}
+  places the assumptions on the variable.  With no second argument,
+  it will remove any previous assumptions.
 \end{itemize}
-\texttt{assume(}$\textit{assumptions}\,\langle,\texttt{additionally}\,\rangle$\texttt{)}
-places the assumptions on the variable.  With no second argument,
-it will remove any previous assumptions.
 
-
+The \texttt{additionally}\index{additionally@\texttt{additionally}}
+command can be used to place additional assumptions on a variable.
 \begin{itemize}
 \item
   \texttt{additionally} takes
@@ -3262,7 +3273,10 @@ it will remove any previous assumptions.
   assumptions to a variable without removing assumptions.
 \end{itemize}
 
-
+The \texttt{about}\index{about@\texttt{about}} command
+will display the current assumptions about a variable.
+(See~\secref{ssec:imageprops} and~\secref{ssec:audioclipprops} for
+other uses of \texttt{about}.)
 \begin{itemize}
 \item
   \texttt{about} takes
@@ -3272,7 +3286,8 @@ it will remove any previous assumptions.
   on the variable.
 \end{itemize}
 
-
+The \texttt{purge}\index{purge@\texttt{purge}} command will remove all
+values and assumptions about a variable.
 \begin{itemize}
 \item
   \texttt{purge} takes
@@ -3924,24 +3939,32 @@ all represent the same expression.
 
 If you want to define a function with several pieces, it may be
 simpler to use the \texttt{piecewise\index{piecewise@\texttt{piecewise}}} function.
+The latter can also be used for finding piecewise representations of expressions.
 \begin{itemize}
-\item \texttt{piecewise} takes an odd number of
-  arguments:
+\item \texttt{piecewise} can take an even number of
+  arguments, followed by a single optional argument:
   \begin{itemize}
   \item \textit{cond$_{1}$, return$_{1}$,
       cond$_{2}$, return$_{2}$, \ldots, cond$_{n}$,
       return$_{n}$}, an arbitrary number of pairs
     of conditions and corresponding return values.
-  \item \textit{default}, a result to return if none of the
-    conditions are true.
+  \item Optionally, \textit{expr}, an expression.
   \end{itemize}
-\item
-  \texttt{piecewise(}$\textit{cond}_{1},\textit{return}_{1},\dots,\textit{cond}_{n},\textit{return}_{n},\textit{default}$\texttt{)}
-  returns \textit{return$_{k}$} if \textit{cond$_{k}$} is the first true condition,
-  or \textit{default} if none of the conditions are true.
+  Alternatively, \texttt{piecewise} can take one argument, an expression \textit{expr}, optionally
+  followed by a second argument $x$, an identifier.
+  \item With conditional arguments,
+  \texttt{piecewise(}$\textit{cond}_{1},\textit{return}_{1},\dots,\textit{cond}_{n},\textit{return}_{n}\,\langle,\textit{expr}\,\rangle$\texttt{)}
+  returns an expression which evaluates to \textit{return$_{k}$} if \textit{cond$_{k}$}
+  is the first true condition, or to \textit{expr} if none of the conditions are true.
+  If \textit{expr} is not given, then the default value is \texttt{undef}.
+  \item With a single argument, \texttt{piecewise(}\textit{expr}\texttt{)}
+  returns a piecewise representation of \textit{expr}. This is useful if \textit{expr} involves
+  Heaviside/signum/absolute value functions, since \texttt{piecewise} attempts to remove them;
+  if it fails, then \textit{expr} is returned. The optional second argument
+  may be given, specifying the relevant variable (otherwise it is guessed).
 \end{itemize}
 
-\subsubsection*{Example}
+\subsubsection*{Examples}
 To define
 \[
   f(x)=
@@ -3957,6 +3980,32 @@ enter:
 f(x):=piecewise(x<-2,-2,x<-1,3*x+4,x<0,1,x+1)
 \end{xcasinput}
 To verify, plot $f(x)$ for e.g.~$-3\leq x\leq 1$.
+
+To convert the expression
+$x \operatorname{\theta}\left(x+1\right)-x^{2} \operatorname{\theta}\left(x-1\right)+x^{3} \mathrm{sign}\left(x\right)$ to a piecewise expression, enter:
+\begin{xcasinput}
+f:=x*Heaviside(x+1)-x^2*Heaviside(x-1)+x^3*sign(x):;
+\end{xcasinput}
+and then
+\begin{xcasinput}
+piecewise(f)
+\end{xcasinput}
+or:
+\begin{xcasinput}
+piecewise(f,x)
+\end{xcasinput}
+\begin{xcasoutput}
+  \begin{cases}-x^{3},&-1>x\\-x^{3}+x,&0>x\\x^{3}+x,&1>x\\x^{3}-x^{2}+x,&\text{otherwise}\end{cases}
+\end{xcasoutput}
+
+\texttt{piecewise} can be used for ``flattening'' expressions containing piecewise
+defined subexpressions. For example:
+\begin{xcasinput}
+piecewise(1+piecewise(x<0,-x,x<1,x,1)*when(x<1/2,4x^2,2-2x),x)
+\end{xcasinput}
+\begin{xcasoutput}
+  \begin{cases}-4 x^{3}+1,&0>x\\4 x^{3}+1,&\frac{1}{2}>x\\-2 x^{2}+2 x+1,&1>x\\-2 x+3,&\text{otherwise}\end{cases}
+\end{xcasoutput}
 
 \subsection{Logical operators\label{ssec:bool}}
 
@@ -4853,7 +4902,7 @@ Since $512$ in base 8 is the same as $2\cdot 1+1\cdot 8+5\cdot
 \begin{xcasoutput}
   330
 \end{xcasoutput}
-since 2F3 in base 16 is the same as $3\cdot 1+15\cdot 16+2\cdot
+Since 2F3 in base 16 is the same as $3\cdot 1+15\cdot 16+2\cdot
 16^{2}=755$ in decimal:
 \begin{xcasinput}
 0x2F3
@@ -6195,30 +6244,32 @@ remove(x->(x>=2),[0,1,2,3,1,5])
   \left[0,1,1\right]
 \end{xcasoutput}
 
-\paragraph*{Remark.} Use \texttt{remove} to remove characters from
-a string.  For example, to remove all the \texttt{"a"}s of a string
-(see \secref{ssec:funcs} for writing functions):
-\begin{xcasinput}
-orda:=ord("a"):;
-\end{xcasinput}
-Then (in a program editor level):
+You can use \texttt{remove} to remove
+characters from a string.  For example, to remove all instances of
+a given letter from a string, enter the following code in a program
+editor level (see \secref{ssec:funcs} for writing functions):
 \begin{lstlisting}
-f(chn):={
-  local l:=length(chn)-1;
-  return remove(x->(ord(x)==orda),seq(chn[k],k,0,l));
+f(s,c):={
+  local ordc,l,r,x,k;
+  ordc:=ord(c);
+  l:=length(s)-1;
+  purge(x,k);
+  r:=remove(x->(ord(x)==ordc),seq(s[k],k,0,l));
+  return char(ord(r));
 }
 \end{lstlisting}
-Now:
+Here \texttt{s} is the input string an \texttt{c} is the letter
+to be removed. Now, for example:
 \begin{xcasinput}
-f("abracadabra")
+f("abracadabra","a")
 \end{xcasinput}
-\begin{xcasoutput}
-  \left[\text{``b''},\text{``r''},\text{``c''},\text{``d''},\text{``b''},\text{``r''}\right]
-\end{xcasoutput}
-To get a string:
-\begin{xcasinput}
-char(ord(["b","r","c","d","b","r"]))
-\end{xcasinput}
+% \begin{xcasoutput}
+%   \left[\text{``b''},\text{``r''},\text{``c''},\text{``d''},\text{``b''},\text{``r''}\right]
+% \end{xcasoutput}
+% To get a string, input:
+% \begin{xcasinput}
+% char(ord(ans()))
+% \end{xcasinput}
 \begin{xcasoutput}
   \text{``brcdbr''}
 \end{xcasoutput}
@@ -7343,8 +7394,7 @@ or:
 To define an $n$-tuple (rather than a list of $n$ objects), you
 can put the elements, separated by commas, inside the delimiters
 \texttt{tuple[}\index{tuple@\texttt{tuple}} and \texttt{]}.
-
-\subsubsection*{Example}
+For example:
 \begin{xcasinput}
 set[tuple[1,3,4],tuple[1,3,5],tuple[2,3,4]]
 \end{xcasinput}
@@ -7356,8 +7406,7 @@ set[tuple[1,3,4],tuple[1,3,5],tuple[2,3,4]]
 \paragraph{The Cartesian product of two sets.}
 You can compute the Cartesian product of two sets with the infixed
 \texttt{*}\index{*@\texttt{*}} operator.
-
-\subsubsection*{Examples}
+For example:
 \begin{xcasinput}
 set[1,2]*set[3,4]
 \end{xcasinput}
@@ -7411,24 +7460,24 @@ endpoints of a range (see \secref{ssec:lrstring}, \secref{ssec:op},
 \secref{ssec:lrinterval}, \secref{ssec:lrlist}, \secref{ssec:lhs} and
 \secref{ssec:rhs} for other uses of \texttt{left} and \texttt{right}.)
 For example:
+% \begin{xcasinput}
+% R:=2..5
+% \end{xcasinput}
+% Then:
+% \begin{xcasinput}
+% sommet(2..5)
+% \end{xcasinput}
+% \begin{xcasoutput}
+%   \mathrm{ .. }
+% \end{xcasoutput}
 \begin{xcasinput}
-R:=2..5
-\end{xcasinput}
-Then:
-\begin{xcasinput}
-sommet(R)
-\end{xcasinput}
-\begin{xcasoutput}
-  \mathrm{ .. }
-\end{xcasoutput}
-\begin{xcasinput}
-left(R)
+left(2..5)
 \end{xcasinput}
 \begin{xcasoutput}
   2
 \end{xcasoutput}
 \begin{xcasinput}
-right(R)
+right(2..5)
 \end{xcasinput}
 \begin{xcasoutput}
   5
@@ -7551,7 +7600,7 @@ find the left and right endpoints of an interval.
 \secref{ssec:range}, \secref{ssec:lhs} and \secref{ssec:rhs} for
 other uses of \texttt{left} and \texttt{right}.)
 \begin{itemize}
-\item \textit{left}\index{left@\texttt{left}} and
+\item \texttt{left}\index{left@\texttt{left}} and
   \texttt{right}\index{right@\texttt{right}} take one argument:
   $I$, an interval.
 \item \texttt{left($I$)} returns the left endpoint of the interval
@@ -7679,7 +7728,6 @@ midpoint(i[2,3])
 }
 
 In \xcas{}, the union of two intervals is their convex hull.
-
 The \texttt{union\index{union@\texttt{union}}} operator is a
 binary infixed operator that finds the union of two intervals.
 
@@ -7723,9 +7771,9 @@ The \texttt{contains} command determines if an object is in an interval.
   \item \textit{obj}, an object.
   \end{itemize}
 \item \texttt{contains(}$I,\textit{obj}$\texttt{)} returns 1 if
-  \textit{obj} is in $I$; i.e., either \textit{obj} is a number which
-  is contained in $I$ or \texttt{obj} is an interval which is
-  a subset of $I$.  It returns 0 otherwise.
+  \textit{obj} is in $I$, meaning that either \textit{obj} is a
+  number which is contained in $I$ or \texttt{obj} is an interval
+  which is a subset of $I$.  It returns 0 otherwise.
 \end{itemize}
 
 \subsubsection*{Examples}
@@ -7957,8 +8005,8 @@ lgcd([18,15,21,36])
   3
 \end{xcasoutput}
 
-\paragraph*{Remark.}
-\texttt{lgcd} does not accept two lists as arguments (even if they have the same size).
+% \paragraph*{Remark.}
+% \texttt{lgcd} does not accept two lists as arguments (even if they have the same size).
 
 \subsection{Least common multiple%: \texttt{lcm}
 }
@@ -8106,7 +8154,7 @@ ifactors([36,52])
 }
 
 The \texttt{maple\_ifactors}\index{maple\_ifactors@\texttt{maple\_ifactors}}
-command decomposes an integer into prime factors,
+command decomposes an integer into prime factors
 and returns the result in \Maple{} syntax.
 \begin{itemize}
 \item \texttt{maple\_ifactors} takes
@@ -8691,7 +8739,7 @@ ichrem(3%5,9%13)
 \begin{xcasoutput}
   \left(-17\right)\mathbin{\%}65
 \end{xcasoutput}
-(note that $48\equiv -17 \pmod{65}$).
+Note that $48\equiv -17 \pmod{65}$.
 
 Recalling that \texttt{chrem} takes its arguments in a different form,
 you can also enter:
@@ -8722,7 +8770,8 @@ ichinrem([3%5,4%7,1%9])
 \begin{xcasoutput}
   \left(-17\right)\mathbin{\%}315
 \end{xcasoutput}
-(note that $298\equiv -17 \pmod{315}$.)\\
+Note that $298\equiv -17 \pmod{315}$.
+
 Again, with the arguments in a different form, you can also enter:
 \begin{xcasinput}
 chrem([3,4,1],[5,7,9])
@@ -8768,7 +8817,7 @@ chrem([3x+1,4x+2,x+3],[5,7,9])
 \begin{xcasoutput}
   \left[298 x+156,315\right]
 \end{xcasoutput}
-(note that $298\equiv -17 \pmod{315}$).
+Note that $298\equiv -17 \pmod{315}$.
 
 \subsection{Solving $au+bv=c$ in $\mathbb{Z}$%: \texttt{iabcuv}
 }
@@ -8965,12 +9014,12 @@ powmod(5,12,21)
 \begin{xcasoutput}
   1
 \end{xcasoutput}
-(see \secref{ssec:powmod}.)
+(See \secref{ssec:powmod}.)
 
 \subsection{Legendre symbol%: \texttt{legendre\_symbol}
 }
 
-If $n$ is prime, the Legendre symbol of $a$ is written
+If $n$ is prime, the Legendre symbol of $a\in\mathbb{Z}$ is written
 $\left(\frac{a}{n}\right)$ and defined by:
 \[
   \left(\frac{a}{n}\right)=\left\{
@@ -8985,14 +9034,14 @@ The Legendre symbol satisfies the following properties.
 \begin{itemize}
 \item
   If $n$ is prime, then
-  $\displaystyle a^{\frac{n-1}{2}}\equiv \left(\frac{a}{n}\right) \pmod{n} $.
+  $ a^{\frac{n-1}{2}}\equiv \left(\frac{a}{n}\right) \pmod{n} $.
 \item The following holds for odd and positive numbers $p$ and $k$:
-  \begin{align*}
+  \[
     \left(\frac{p}{q}\right).\left(\frac{q}{p}\right)
-    &=(-1)^{\frac{p-1}{2}}.(-1)^{\frac{q-1}{2}},\\
-    \left(\frac{2}{p}\right)&=(-1)^{\frac{p^2-1}{8}},\\
-    \left(\frac{-1}{p}\right)&=(-1)^{\frac{p-1}{2}}.
-  \end{align*}
+    =(-1)^{\frac{p-1}{2}}.(-1)^{\frac{q-1}{2}},\quad
+    \left(\frac{2}{p}\right)=(-1)^{\frac{p^2-1}{8}},\quad
+    \left(\frac{-1}{p}\right)=(-1)^{\frac{p-1}{2}}.
+  \]
 \end{itemize}
 The \texttt{legendre\_symbol}\index{legendre\_symbol@\texttt{legendre\_symbol}}
 command computes the Legendre symbol.
@@ -9083,16 +9132,14 @@ compositions of an integer with a given number of elements.
   \begin{itemize}
   \item $n$, a positive integer.
   \item $k$, a positive integer not larger than $n$.
-  \item Optionally, either \texttt{zeros=true} or \texttt{zeros=false}.
+  \item Optionally, either \texttt{zeros=true} (which is the default) or
+    \texttt{zeros=false}.
   \end{itemize}
 \item
-  \texttt{icomp($n,k\,\langle,$zeros=}\textit{bool}$\,\rangle$\texttt{)}
+  \texttt{icomp(}$n,k\,\langle,\texttt{zeros=}\textit{bool}\,\rangle$\texttt{)}
   returns the list of all compositions of $n$ into $k$ parts, where a part can be
-  0.  This is equivalent to the optional argument with
-  \textit{bool} equal to \texttt{true}.  With \textit{bool} equal to
-  \texttt{false},  \texttt{icomp(}$n,k,\texttt{zeros=false}$\texttt{)} returns the
-  list of all compositions of $n$ into $k$ parts, where each part is
-  nonzero (positive).
+  0 if $\textit{bool}=\texttt{true}$ (the default),
+  or where each part is greater than 0 if $\textit{bool}=\texttt{false}$.
 \end{itemize}
 
 \paragraph*{Remark.}
@@ -9109,12 +9156,10 @@ icomp(4,2)
   \end{bmatrix}
 \end{xcasoutput}
 \begin{xcasinput}
-icomp(6,3,zeros=false)
+icomp(5,3,zeros=false)
 \end{xcasinput}
 \begin{xcasoutput}
-  \begin{bmatrix}
-    4&1&1\\3&2&1\\2&3&1\\1&4&1\\3&1&2\\2&2&2\\1&3&2\\2&1&3\\1&2&3\\1&1&4
-  \end{bmatrix}
+  \begin{bmatrix}3&1&1\\2&2&1\\1&3&1\\2&1&2\\1&2&2\\1&1&3\end{bmatrix}
 \end{xcasoutput}
 
 \subsection{Day of the week%: \texttt{dayofweek}
@@ -9130,8 +9175,8 @@ command finds the day of the week for any date after 15 October 1582.
   \item $y$, an integer representing the year.
   \end{itemize}
   The date represented should be after 15 October 1582.
-\item \texttt{dayofweek($d,m,y$)} returns an integer from 0 to 6;
-  0 representing Sunday, 1 representing Monday, etc.
+\item \texttt{dayofweek($d,m,y$)} returns an integer from 0 to 6
+  ($0=\text{Sunday}$, $1=\text{Monday}$, \ldots).
 \end{itemize}
 
 \subsubsection*{Examples}
@@ -9238,7 +9283,7 @@ writes a fraction as an integer plus a proper fraction.
   \[
     q+\frac{r}{b}\ \mbox{ with } \ 0\leq r<b
   \]
-  where $\displaystyle r=\frac{a}{b}$ is in lowest terms and
+  where $ r=\frac{a}{b}$ is in lowest terms and
   and $a=b\,q+r$.
 \end{itemize}
 (For rational expressions, see \secref{ssec:propfrac}.)
@@ -9854,14 +9899,14 @@ root(3,sqrt(2))
 }
 
 The exponential integral Ei is defined for non-zero real numbers $x$
-by \[ \textrm{Ei}(x)=\int_{t=-\infty}^{x} \frac{ \mathrm{e}^{t}}{t}\,\mathrm{d}t. \]
+by \[ \operatorname{Ei}(x)=\int_{-\infty}^{x} \frac{ \mathrm{e}^{t}}{t}\,\mathrm{d}t. \]
 For $x>0$, this integral is improper but the principal value exists.
-Also, $\textrm{Ei}(0)=-\infty$, $\mathrm{Ei}(-\infty)=0$.
+Also, $\operatorname{Ei}(0)=-\infty$, $\mathrm{Ei}(-\infty)=0$.
 
 Since $\frac{ \mathrm{e}^{x}}{x}=\frac{1}{x}+1+\frac{x}{2!} +
 \frac{x^2}{3!}+\cdots$, the Ei function can be extended to
 $\mathbb{C}\setminus\{0\}$ (with a branch cut on the positive real axis) by
-\[ \textrm{Ei}(z)=\ln(z)+\gamma+x+\frac{x^2}{2\cdot 2!} +
+\[ \operatorname{Ei}(z)=\ln(z)+\gamma+x+\frac{x^2}{2\cdot 2!} +
   \frac{x^3}{3\cdot 3!}+\cdots\] where $\gamma=0.57721566490\dots$ is the
 Euler-Mascheroni constant.
 
@@ -9913,15 +9958,15 @@ Another type of exponential integral is
   E_{1}(x)=\int_{x}^{+\infty}\frac{ \mathrm{e}^{-t}}{t}\,\mathrm{d}t
   =\int_{1}^{+\infty}\frac{ \mathrm{e}^{-tx}}{t}\,\mathrm{d}t
 \]
-which satisfies $E_{1}(x)=-\textrm{Ei}(-x)$.
+which satisfies $E_{1}(x)=-\operatorname{Ei}(-x)$.
 This can be generalized to
 \[
   E_{n}(x)=\int_{1}^{+\infty}\frac{ \mathrm{e}^{-ntx}}{t}\,\mathrm{d}t.
 \]
 These functions satisfy
 \begin{align*}
-  E_{1}(x) &=-\textrm{Ei}(x),\\
-  E_{2}(x) &=\mathrm{e}^{-x}+ x\,\textrm{Ei}(-x)=\mathrm{e}^{-x}-x\,E_{1}(x),
+  E_{1}(x) &=-\operatorname{Ei}(x),\\
+  E_{2}(x) &=\mathrm{e}^{-x}+ x\,\operatorname{Ei}(-x)=\mathrm{e}^{-x}-x\,E_{1}(x),
 \end{align*}
 and, for  $n \ge 2$,
 \[
@@ -9956,15 +10001,15 @@ Ei(3.0,2)
 \subsection{Logarithmic integral function%: \texttt{Li}
 }
 
-The logarithmic integral function is defined by \[ \textrm{Li}(x)=
-  \textrm{Ei}(\ln(x))=\int_{t=0}^{ \mathrm{e}^{x}}\frac{1}{\ln(t)}\,\mathrm{d}t \]
+The logarithmic integral function is defined by \[ \operatorname{Li}(x)=
+  \operatorname{Ei}(\ln(x))=\int_{t=0}^{ \mathrm{e}^{x}}\frac{1}{\ln(t)}\,\mathrm{d}t \]
 
 The \texttt{Li}\index{Li@\texttt{Li}} command computes the logarithmic integral.
 \begin{itemize}
 \item \texttt{Li} takes
   $z$, a complex number.
 \item \texttt{Li($z$)} returns the value of the logarithmic integral
-  $\textrm{Li}(z)$.
+  $\operatorname{Li}(z)$.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -9980,18 +10025,18 @@ Li(2.0)
 
 The cosine integral function is defined by
 \[
-  \textrm{Ci}(x)=\int_{+\infty}^{x} \frac{\cos(t)}{t}\,\mathrm{d}t
-                =\ln(t)+\gamma+\int_{t=0}^{x} \frac{\cos(t)-1}{t}\,\mathrm{d}t.
+  \operatorname{Ci}(x)=\int_{+\infty}^{x} \frac{\cos(t)}{t}\,\mathrm{d}t
+                =\ln(t)+\gamma+\int_{0}^{x} \frac{\cos(t)-1}{t}\,\mathrm{d}t.
 \]
-It can be shown that $\textrm{Ci}(0)=-\infty, \textrm{Ci}(-\infty)=\mathrm{i}\pi$ and
-$\textrm{Ci}(+\infty)=0$.
+It can be shown that $\operatorname{Ci}(0)=-\infty$, $\operatorname{Ci}(-\infty)=\mathrm{i}\pi$ and
+$\operatorname{Ci}(+\infty)=0$.
 
 The \texttt{Ci}\index{Ci@\texttt{Ci}} command computes the cosine integral function.
 \begin{itemize}
 \item \texttt{Ci} takes
   $z$, a complex number.
 \item \texttt{Ci($z$)} returns the value of the cosine integral function
-  $\textrm{Ci}(z)$.
+  $\operatorname{Ci}(z)$.
 \end{itemize}
 
 \subsubsection*{Examples}
@@ -10017,9 +10062,11 @@ Ci(1.0)-Ci(-1.0)
 \subsection{Sine integral function%: \texttt{Si}
 }
 
-The sine integral function is defined by \[ \textrm{Si}(x)=
-  \int_{0}^{x} \frac{\sin(t)}{t}\,\mathrm{d}t \] and $\textrm{Si}(0)=0,
-\textrm{Si}(-\infty)=-\frac{\pi}{2}$ and $\textrm{Si}(+\infty)=\frac{\pi}{2}$.
+The sine integral function is defined by
+\[ \operatorname{Si}(x)=
+   \int_{0}^{x} \frac{\sin(t)}{t}\,\mathrm{d}t. \]
+It can be shown that $\operatorname{Si}(0)=0$, $\operatorname{Si}(-\infty)=-\frac{\pi}{2}$
+and $\operatorname{Si}(+\infty)=\frac{\pi}{2}$.
 Note that $\mathrm{Si}$ is an odd function.
 
 The \texttt{Si}\index{Si@\texttt{Si}} command computes the sine integral function.
@@ -10027,7 +10074,7 @@ The \texttt{Si}\index{Si@\texttt{Si}} command computes the sine integral functio
 \item \texttt{Si} command takes
   $z$, a complex number.
 \item \texttt{Si($z$)} returns the value of the sine integral function
-  $\textrm{Si}(z)$.
+  $\operatorname{Si}(z)$.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -10078,7 +10125,7 @@ Heaviside(-4)
 \end{xcasoutput}
 
 \subsection{Dirac distribution%: \texttt{Dirac}
-}
+  \label{ssec:dirac}}
 
 The Dirac $\delta$ distribution is the distributional derivative of
 the Heaviside function.  This means that
@@ -10096,35 +10143,40 @@ The defining property of the Dirac distribution is that
 \[
   \int_{-\infty}^{+\infty} \delta(x) f(x)\,\mathrm{d}x=f(0)
 \]
-and consequently
+and consequently, for $c\in[a,b]$,
 \[
-  \int_{a}^{b} \delta(x-c)f(x)\,\mathrm{d}x=f(c)
+  \int_{a}^{b} \delta(x-c)f(x)\,\mathrm{d}x=f(c).
 \]
-as long as $c$ is in $[a,b]$.
 
 The \texttt{Dirac}\index{Dirac@\texttt{Dirac}} command
 represents the Dirac distribution.
 
 %If you have {Dirac} compute a value:
 \begin{itemize}
-\item \texttt{Dirac} it takes
-  $x$, a real number.
-\item \texttt{Dirac($x$)} returns $\infty$ if $x=0$, it returns
-  $0$ otherwise.
+\item \texttt{Dirac} takes one mandatory argument and one optional argument:
+\begin{itemize}
+  \item $x$, a symbol or an expression.
+  \item Optionally, $n$, a nonnegative integer.
 \end{itemize}
+\item \texttt{Dirac($x\,\langle,n\,\rangle$)} returns $\delta^{(n)}(x)$,
+where $\delta^{(n)}$ is the $n$th derivative of $\delta$.
+\end{itemize}
+Note that $x$ can be a real number, for which \texttt{Dirac} returns $0$ if $x\neq 0$
+and $\infty$ otherwise. However, since $\delta$ is a distribution, not a function,
+computing its value at a point makes little sense.
 
 \subsubsection*{Examples}
-\begin{xcasinput}
-int(Dirac(x)*sin(x),x,-1,2)
-\end{xcasinput}
-\begin{xcasoutput}
-  \sin \left(0\right)
-\end{xcasoutput}
 \begin{xcasinput}
 int(Dirac(x-1)*sin(x),x,-1,2)
 \end{xcasinput}
 \begin{xcasoutput}
   \sin \left(1\right)
+\end{xcasoutput}
+\begin{xcasinput}
+int(Dirac(x-1,1)*sin(x),x,-inf,inf)
+\end{xcasinput}
+\begin{xcasoutput}
+  -\cos \left(1\right)
 \end{xcasoutput}
 
 \subsection{Error function%: \texttt{erf}
@@ -10176,20 +10228,17 @@ The relation between \texttt{erf} and \texttt{normal\_cdf} (see
   \operatorname{\texttt{normal\_cdf}}(x)=\frac{1}{2}+\frac{1}{2}\operatorname{erf}\left(\frac{x}{\sqrt{2}}\right)
 \]
 Indeed, making the change of variable $t=u\sqrt{2}$ in
-\[
-  \operatorname{\texttt{normal\_cdf}}(x)=\frac{1}{2}+\frac{1}{\sqrt{2\pi}}\int_0^{x}\mathrm{e}^{-t^2/2}\mathrm{d}t
-\]
-gives:
+$\operatorname{\texttt{normal\_cdf}}(x)=\frac{1}{2}+\frac{1}{\sqrt{2\pi}}\int_0^{x}\mathrm{e}^{-t^2/2}\mathrm{d}t$ yields:
 \[
   \operatorname{\texttt{normal\_cdf}}(x)=\frac{1}{2}+\frac{1}{\sqrt{\pi}}\int_0^{\frac{x}{\sqrt{2}}}\mathrm{e}^{-u^2}\mathrm{d}u=\frac{1}{2}+\frac{1}{2}\operatorname{erf}\left(\frac{x}{\sqrt{2}}\right).
 \]
-To verify:
-\begin{xcasinput}
-normal_cdf(1.0)
-\end{xcasinput}
-\begin{xcasoutput}
-  0.841344746069
-\end{xcasoutput}
+% To verify:
+% \begin{xcasinput}
+% normal_cdf(1.0)
+% \end{xcasinput}
+% \begin{xcasoutput}
+%   0.841344746069
+% \end{xcasoutput}
 
 \subsection{Complementary error function%: \texttt{erfc}
 }
@@ -10232,13 +10281,13 @@ The relation between \texttt{erfc} and \texttt{normal\_cdf} (see
   \operatorname{\texttt{normal\_cdf}}(x)
   =1-\frac{1}{2}\operatorname{erfc}\left(\frac{x}{\sqrt{2}}\right).
 \]
-To verify:
-\begin{xcasinput}
-normal_cdf(1.0)
-\end{xcasinput}
-\begin{xcasoutput}
-  0.841344746069
-\end{xcasoutput}
+% To verify:
+% \begin{xcasinput}
+% normal_cdf(1.0)
+% \end{xcasinput}
+% \begin{xcasoutput}
+%   0.841344746069
+% \end{xcasoutput}
 
 \subsection{$\Gamma$ function%: \texttt{Gamma}
   \label{ssec:gamma}}
@@ -10288,6 +10337,36 @@ Gamma(-1.3)
   3.32834700679
 \end{xcasoutput}
 Indeed, $\Gamma(0.7)=-0.3\cdot\Gamma(-0.3)=-0.3\cdot(-1.3)\cdot\Gamma(-1.3)$.
+
+If $a=\frac{n}{d}\in\mathbb{Q}\setminus\mathbb{Z}$ where $d>0$,
+then the exact value $\Gamma(a)$ is computed from $\Gamma\left(\frac{m}{d}\right)$,
+where $0<2m<d$ and either $m-n$ or $m+n$ is divisible by $d$. (If $d=2$, then the value
+$\Gamma(a)$ does not involve another Gamma value.) In particular, this
+leads to simplification of certain products of Gamma values.
+\begin{xcasinput}
+Gamma(1/2)
+\end{xcasinput}
+\begin{xcasoutput}
+  \sqrt{\pi }
+\end{xcasoutput}
+\begin{xcasinput}
+Gamma(-15/8)
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{64 \Gamma\left(\frac{1}{8}\right)}{105}
+\end{xcasoutput}
+\begin{xcasinput}
+normal(Gamma(-13/4)/Gamma(3/4))
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{256}{585}
+\end{xcasoutput}
+\begin{xcasinput}
+normal(Gamma(1/4)*Gamma(3/4))
+\end{xcasinput}
+\begin{xcasoutput}
+  \pi  \sqrt{2}
+\end{xcasoutput}
 
 \subsection{Upper incomplete $\gamma$ function%: \texttt{ugamma}
 }
@@ -11039,7 +11118,7 @@ you leave spaces around the operator.
 \item To delete an operator, \texttt{user\_operator} takes two arguments:
   \begin{itemize}
   \item \textit{name}, a string which is the name of the operator.
-  \item \texttt{Delete}\index{Delete@\texttt{Delete}}
+  \item \texttt{Delete}\index{Delete@\texttt{Delete}}, the symbol.
   \end{itemize}
 \item \texttt{user\_operator(}$\textit{name},\texttt{Delete}$\texttt{)} deletes
   the operator.
@@ -13199,14 +13278,14 @@ Input in complex mode:
 zeros(x^2+4)
 \end{xcasinput}
 \begin{xcasoutput}
-  \left[-2\textrm{i},2\textrm{i}\right]
+  \left[-2\mathrm{i},2\mathrm{i}\right]
 \end{xcasoutput}
 Input in real or complex mode:
 \begin{xcasinput}
 cZeros(x^2+4)
 \end{xcasinput}
 \begin{xcasoutput}
-  \left[-2\textrm{i},2\textrm{i}\right]
+  \left[-2\mathrm{i},2\mathrm{i}\right]
 \end{xcasoutput}
 Input in real mode:
 \begin{xcasinput}
@@ -13616,11 +13695,11 @@ preval(x^2+x,2,3)
   6
 \end{xcasoutput}
 
-\subsection{Finding subexpressions in an expression%: \texttt{part}
+\subsection{Extracting subexpressions%: \texttt{part}
 }
 
-The \texttt{part}\index{part@\texttt{part}} command finds subexpressions
-of an expression.  (See \secref{ssec:subexps}.)
+The \texttt{part}\index{part@\texttt{part}} command extracts subexpressions
+from an expression.  (See \secref{ssec:subexps}.)
 \begin{itemize}
 \item \texttt{part} takes two arguments:
   \begin{itemize}
@@ -13651,6 +13730,143 @@ part((x+1)*(y-2)/2,2)
   y-2
 \end{xcasoutput}
 
+\section{Periodic functions}
+
+\subsection{Defining periodic expressions\label{ssec:periodic}}
+The \texttt{periodic}\index{periodic@\texttt{periodic}} command creates
+periodic expressions.
+\begin{itemize}
+  \item \texttt{periodic} takes two or four arguments:
+  \begin{itemize}
+    \item \textit{expr}, an expression $f(x)$ where $x\in[a,b\rangle$ for $a<b$.
+    \item \textit{x}, a real variable.
+    \item \textit{a}, a real number specifying the lower bound for $x$.
+    \item \textit{b}, a real number specifying the upper bound for $x$.
+  \end{itemize}
+  The last three arguments can be passed as a single argument $x\texttt{=}a\texttt{..}b$.
+  \item \texttt{periodic(}$\textit{expr},x,a,b$\texttt{)} or
+  \texttt{periodic(}$\textit{expr},x\texttt{=}a\texttt{..}b$\texttt{)}
+  returns a periodic expression
+  \[ g(x)=f\left(x-(b-a)\left\lfloor\frac{x-a}{b-a}\right\rfloor\right),\quad x\in\mathbb{R}, \]
+  with period $T=b-a$, satisfying the property $g(x+T)=g(x)$ for all $x\in\mathbb{R}$.
+\end{itemize}
+
+% To prove that $x_r=x-(b-a)\left\lfloor\frac{x-a}{b-a}\right\rfloor\in[a,b\rangle$ for all $x\in\mathbb{R}$,
+% note that:
+% \begin{enumerate}
+%   \item The general rule $\lfloor y\rfloor\leq y$ implies $x_r\geq a$.
+%   \item General rules $\lfloor y\rfloor\geq \lceil y-1\rceil$ and $\lceil y\rceil\geq y$ imply $x_r\leq b$.
+%   In the first rule, equality holds only for $y\in\mathbb{Z}$, which provides $x_r\neq b$.
+% \end{enumerate}
+
+\subsubsection*{Example}
+To define the periodic function $f(x)=1-x^2$ for $-1\leq x<1$ with period $T=2$, input:
+\begin{xcasinput}
+f:=periodic(1-x^2,x,-1,1)
+\end{xcasinput}
+or:
+\begin{xcasinput}
+f:=periodic(1-x^2,x=-1..1)
+\end{xcasinput}
+\begin{xcasoutput}
+  -\left(-2 \left\lfloor \frac{x+1}{2}\right\rfloor +x\right)^{2}+1
+\end{xcasoutput}
+Indeed:
+\begin{xcasinput}
+plot(f,x=-5..5)
+\end{xcasinput}
+\begin{xcasimage}
+  \includeimage{xcas-periodic.png}
+\end{xcasimage}
+
+\subsection{Finding a period of an expression\label{ssec:period}}
+
+The \texttt{period}\index{period@\texttt{period}} command finds a period of
+a given periodic expression.
+\begin{itemize}
+  \item \texttt{period} takes one mandatory argument and one optional argument:
+  \begin{itemize}
+    \item \textit{expr}, an expression $f(x)$ where $x\in\mathbb{R}$.
+    \item Optionally, $x$, a real variable (by default \texttt{x}).
+  \end{itemize}
+  \item \texttt{period(}$\textit{expr}\,\langle,x\,\rangle$\texttt{)}
+  returns a (not necessarily the smallest) period of $f$ or
+  $+\infty$ if $f$ is not periodic.
+  Note that $+\infty$ is also returned if \texttt{period} is unable to find a period.
+  For periodic functions with arbitrary small periods, such as constant functions,
+  zero is returned.
+  \item \texttt{period} is able to detect periodicity of functions built from
+  the basic periodic functions $g_a(x)=\mathrm{e}^{\mathrm{i}ax}$ (which covers for the
+  standard trigonometric functions by Euler's formula) and/or functions
+  returned by the \texttt{periodic} command (see~\secref{ssec:periodic}).
+\end{itemize}
+
+\paragraph*{Remark.}
+If \texttt{periodic} returns zero for an expression $f(x)$, it does not always mean that
+$f$ is constant. For example, $f(x)=\lfloor x-\lfloor x-1\rfloor\rfloor$ is always
+equal to 1 because $1\leq x-\lfloor x-1\rfloor<2$, but
+$g(x)=\lceil x-\lfloor x-1\rfloor\rceil$ is not constant by the same argument
+(for $x\in\mathbb{Z}$, $g(x)$ is equal to 1, and for $x\notin\mathbb{Z}$ its value is 2).
+However, \texttt{periodic} returns zero for both functions, as it is unable to
+detect changes in isolated points.
+
+\subsubsection*{Examples}
+
+To define and display a square wave, you can enter:
+\begin{xcasinput}
+sw:=sign(sin(pi*x)):;
+plot(sw,x)
+\end{xcasinput}
+\begin{xcasimage}
+  \includeimage{xcas-squarewave.png}
+\end{xcasimage}
+You observe that the period is equal to 2. Indeed:
+\begin{xcasinput}
+period(sw)
+\end{xcasinput}
+\begin{xcasoutput}
+  2
+\end{xcasoutput}
+
+Any rational function with periodic variables is periodic if
+the variable periods are commeasurable (i.e.~if the quotient of any two periods
+is a rational number). Also, if $f$ is periodic, then $g\circ f$ is periodic for
+any function $g$. For example, define two periodic functions $f$ and $g$ with periods 2 and 3,
+respectively, and then the function $h(x)=\frac{f(x)g(x)}{\ln\left(1+f(x)^2+g(x)^4\right)}$:
+\begin{xcasinput}
+f:=periodic(x^2,x=0..1):;
+g:=periodic(x^3,x=-1..1):;
+h:=f*g/ln(1+f^2+g^4):;
+plot(h)
+\end{xcasinput}
+\begin{xcasimage}
+  \includeimage{xcas-periodic2.png}
+\end{xcasimage}
+The above graph indicates that $h$ is possibly periodic; indeed, its period is equal to 6, which
+is the least common multiple of the periods of $f$ and $g$.
+\begin{xcasinput}
+period(h)
+\end{xcasinput}
+\begin{xcasoutput}
+  6
+\end{xcasoutput}
+A function built from periodic functions with periods which are not commeasurable is not
+periodic. For example, $f(x)=\sin(x)+\sin(\pi x)$ is not periodic:
+\begin{xcasinput}
+period(sin(x)+sin(pi*x),x)
+\end{xcasinput}
+\begin{xcasoutput}
+  +\infty 
+\end{xcasoutput}
+Often (but generally not), the smallest period is returned,
+such as for the function $f(x)=\sin^2 x$, for instance.
+\begin{xcasinput}
+period(sin(x)^2,x)
+\end{xcasinput}
+\begin{xcasoutput}
+  \pi 
+\end{xcasoutput}
+
 \section{Equations}
 
 \subsection{Defining an equation%: \texttt{equal}
@@ -13669,10 +13885,13 @@ command creates equations; it is the infixed version of \texttt{=}.
 \begin{xcasinput}
 equal(2x-1,3)
 \end{xcasinput}
+or:
+\begin{xcasinput}
+2*x-1=3
+\end{xcasinput}
 \begin{xcasoutput}
   2 x-1=3
 \end{xcasoutput}
-You can also directly write \texttt{(2*x-1)=3}.
 
 \subsection{Transforming an equation into a difference%: \texttt{equal2diff}
 }
@@ -14167,7 +14386,7 @@ float2rational(1.41421356237^2)
 
 \chapter{Rewriting algebraic expressions}
 
-\section{Simplification}
+\section{General rewriting and simplification routines}
 
 \subsection{Regrouping expressions%: \texttt{regroup}
   \label{ssec:regroup}}
@@ -14372,6 +14591,277 @@ ratnormal((-2x^3+3x^2+5x-6)/(x^2-2x+1))
 \end{xcasinput}
 \begin{xcasoutput}
   \frac{-2 x^{2}+x+6}{x-1}
+\end{xcasoutput}
+
+\subsection{Simplification of expressions involving Dirac delta distribution
+  \label{ssec:simpd}}
+
+The \texttt{simplifyDirac}\index{simplifyDirac@\texttt{simplifyDirac}} command
+simplifies expressions involving Dirac delta distribution (see~\secref{ssec:dirac}).
+\begin{itemize}
+  \item \texttt{simplifyDirac} takes one mandatory argument and a sequence of optional arguments:
+  \begin{itemize}
+    \item \textit{expr}, an expression.
+    \item Optionally, \textit{x}, a variable with respect to which the simplification
+    is done (by default, $\textit{x}=\texttt{x}$).
+  \end{itemize}
+  \item \texttt{simplifyDirac(}$\textit{expr}\,\langle,x\,\rangle$\texttt{)}
+  returns a simplified form of \textit{expr} as a linear combination of Dirac delta and
+  its derivatives, with coefficients being simplified by using \texttt{simplify}.
+\end{itemize}
+
+\subsubsection*{Examples}
+Since $\delta(x)=-x\delta\Prime(x)$:
+\begin{xcasinput}
+simplifyDirac(Dirac(x,1)*x)
+\end{xcasinput}
+\begin{xcasoutput}
+  -\operatorname{\delta}\left(x\right)
+\end{xcasoutput}
+$(x-2)^3\delta^{(3)}\left(1-\frac{x}{2}\right)$ simplifies to:
+\begin{xcasinput}
+simplifyDirac((x-2)^3*Dirac(1-x/2,3))
+\end{xcasinput}
+\begin{xcasoutput}
+  12 \operatorname{\delta}\left(x-2\right)
+\end{xcasoutput}
+If $f(x)=\frac{p(x)}{q(x)}$ is rational with $p(x)=(x-x_1)(x-x_2)\cdots(x-x_n)$, $x_i\neq x_j$
+for $i\neq j$, and $q(x)\neq 0\ \forall x\in\mathbb{R}$, then $\delta\left(f(x)\right)$
+expands to $\sum_{k=1}^n\frac{\delta(x-x_k)}{f'(x_k)}$. For example:
+\begin{xcasinput}
+simplifyDirac(Dirac(x^2-x-6))
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{\operatorname{\delta}\left(x+2\right)}{5}+\frac{\operatorname{\delta}\left(x-3\right)}{5}
+\end{xcasoutput}
+
+\subsection{Replacing signum with Heaviside step function and vice versa\label{ssec:signH}}
+
+The \texttt{sign2Heaviside}\index{sign2Heaviside@\texttt{sign2Heaviside}} command
+rewrites signum function (see~\secref{ssec:standardfns}) to Heaviside step function
+(see~\secref{ssec:standardfns}) in an expression by using the
+identity $\operatorname{\mathrm{sign}}(x)=2\operatorname{\theta}(x)-1$.
+\begin{itemize}
+  \item \texttt{sign2Heaviside} takes \textit{expr}, an expression.
+  \item \texttt{sign2Heaviside(}\textit{expr}\texttt{)} returns \textit{expr} with all
+  instances of signum function replaced according to the above formula.
+\end{itemize}
+
+The \texttt{Heaviside2sign}\index{Heaviside2sign@\texttt{Heaviside2sign}} command
+has the same syntax but does the opposite of \texttt{sign2Heaviside}, i.e.~it
+replaces all instances of Heaviside function by signum according to the
+identity $\operatorname{\theta}(x)=\frac{\operatorname{\mathrm{sign}}(x)+1}{2}$.
+
+\subsection{Rewriting with Heaviside function\label{ssec:linstep}}
+
+The \texttt{linstep}\index{linstep@\texttt{linstep}} command rewrites piecewise defined
+expressions, as well as expressions involving step functions (signum and Heaviside)
+and/or absolute values, as a linear combination of Heaviside functions of linear arguments
+(see~\secref{ssec:standardfns}).
+\begin{itemize}
+  \item \texttt{linstep} takes one mandatory argument and one optional argument:
+  \begin{itemize}
+    \item \textit{expr}, an expression.
+    \item Optionally, $x$, a variable (by default, $x=\texttt{x}$).
+  \end{itemize}
+  \item \texttt{linstep(}$\textit{expr}\,\langle,x\,\rangle$\texttt{)} returns \textit{expr}
+  written as a sum of terms in form $f(x)\operatorname{\theta}(x-a)$, where
+  $\theta$ denotes Heaviside function.
+\end{itemize}
+
+\subsection*{Examples}
+\begin{xcasinput}
+linstep(Heaviside(x-2)*Heaviside(3-x),x)
+\end{xcasinput}
+\begin{xcasoutput}
+  \operatorname{\theta}\left(x-2\right)-\operatorname{\theta}\left(x-3\right)
+\end{xcasoutput}
+\begin{xcasinput}
+linstep(abs(x-1),x)
+\end{xcasinput}
+\begin{xcasoutput}
+  \operatorname{\theta}\left(x-1\right) \left(2 x-2\right)-x+1
+\end{xcasoutput}
+\begin{xcasinput}
+linstep(piecewise(x<0,piecewise(x<-1,1,-1),x)*(abs(x-1)+sign(x)),x)
+\end{xcasinput}
+\begin{xcasoutput}
+  2 x \operatorname{\theta}\left(x+1\right)+\operatorname{\theta}\left(x\right) \left(-x^{2}+x\right)+\operatorname{\theta}\left(x-1\right) \left(2 x^{2}-2 x\right)-x
+\end{xcasoutput}
+
+\subsection{Rewriting with absolute values\label{ssec:linabs}}
+
+The \texttt{linabs}\index{linabs@\texttt{linabs}} command attempts rewriting
+piecewise defined expressions, as well as expressions involving step functions (signum
+and Heaviside) and/or absolute values, as a linear combination of absolute values of
+linear arguments (see~\secref{ssec:standardfns}).
+\begin{itemize}
+  \item \texttt{linabs} takes one mandatory argument and one optional argument:
+  \begin{itemize}
+    \item \textit{expr}, an expression.
+    \item Optionally, $x$, a variable (by default, $x=\texttt{x}$).
+  \end{itemize}
+  \item \texttt{linabs(}$\textit{expr}\,\langle,x\,\rangle$\texttt{)} returns \textit{expr}
+  written as an expression depending on parameters of form $|x-a|$ instead on
+  step/piecewise expressions.
+  \item \texttt{linabs} tries to find a simplest representation by nesting the parameters $|x-a|$.
+\end{itemize}
+
+\subsubsection*{Examples}
+\begin{xcasinput}
+linabs(sin(x)*Heaviside(x)-sin(x)*Heaviside(-x))
+\end{xcasinput}
+\begin{xcasoutput}
+  \sin \left|x\right|
+\end{xcasoutput}
+\begin{xcasinput}
+f:=piecewise(x<-1,x+5/2,x<2,2-x^2/2,x-2):;
+linabs(f,x)
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{\left(x+4\right) \left|x-2\right|}{4}+\frac{\left(-x-1\right) \left|x+1\right|}{4}+x+\frac{1}{4}
+\end{xcasoutput}
+\texttt{linabs} is useful for expanding expressions with nested absolute values. For example:
+\begin{xcasinput}
+linabs(abs(abs(x-2)+x*abs(x+1)+1))
+\end{xcasinput}
+\begin{xcasoutput}
+  x^{2}+x \left|x+1\right|+\left(-x+1\right) \left|x+3\right|+\left|x-2\right|+2 x-2
+\end{xcasoutput}
+
+\subsection{Rewriting an expression with different options%: \texttt{convert} \texttt{convertir} \texttt{=>}
+  \label{ssec:convert}}
+
+\xcas{} has many commands to convert expressions into different
+forms; the \texttt{convert}\index{convert@\texttt{convert}} command
+(or its infixed version \texttt{=>}\index{=>@\texttt{=>}}) is
+a different way to call most of these functions.\index{convertir@\texttt{convertir}}
+\begin{itemize}
+\item \texttt{convert} takes two or more arguments:
+  \begin{itemize}
+  \item \textit{expr}, an expression.
+  \item \textit{option}, an option specifying which rewrite rules to
+    use.  A third argument might be necessary for some options.
+    Possible values of \textit{option} are:
+    \begin{itemize}
+    \item
+      \texttt{sin}\index{sin@\texttt{sin}},
+      to convert an expression like \texttt{trigsin}
+      (see \secref{ssec:trigsin}).
+    \item
+      \texttt{cos}\index{cos@\texttt{cos}},
+      to convert an expression like \texttt{trigcos}
+      (see \secref{ssec:trigcos}).
+    \item
+      \texttt{sincos}\index{sincos@\textit{sincos}},
+      to convert an expression like \texttt{sincos}
+      (see \secref{ssec:sincos}).
+    \item
+      \texttt{trig}, to convert an expression like \texttt{sincos}
+      (see \secref{ssec:sincos}).
+    \item
+      \texttt{tan}\index{tan@\texttt{tan}},
+      to convert an expression like \texttt{halftan}
+      (see \secref{ssec:halftan}).
+    \item
+      \texttt{exp}\index{exp@\texttt{exp}},
+      to convert an expression like \texttt{trig2exp}
+      (see \secref{ssec:trig2exp}).
+    \item
+      \texttt{ln}\index{ln@\texttt{ln}},
+      to convert an expression like \texttt{trig2exp}
+      (see \secref{ssec:trig2exp}).
+    \item
+      \texttt{expln}\index{expln@\textit{expln}},
+      to convert an expression like \texttt{trig2exp}
+      (see \secref{ssec:trig2exp}).
+    \item
+      \texttt{string}\index{string@\texttt{string}},
+      to convert a expression into a string.
+    \item
+      \texttt{matrix}\index{matrix@\texttt{matrix}},
+      to convert a list of lists into a matrix.
+    \item
+      \texttt{array}\index{array@\textit{array}},
+      to turn a table into an array (see
+      \secref{ssec:spmatrices}).
+    \item
+      \texttt{polynom}\index{polynom@\textit{polynom}},
+      to convert a series (see \secref{ssec:taylor})
+      into a polynomial
+      by removing the remainder (see \secref{ssec:convertpoly}) or
+      to convert a list representing a polynomial into a polynomial
+      in internal sparse multivariate form (see
+      \secref{ssec:multipoly} and \secref{ssec:polytrans}).
+    \item
+      \texttt{parfrac}\index{parfrac@\textit{parfrac}}
+      (or \texttt{partfrac}\index{partfrac@\texttt{partfrac}} or
+      \texttt{fullparfrac}\index{fullparfrac@\textit{fullparfrac}}),
+      to convert a rational function into its partial fraction decomposition (see
+      \secref{ssec:convertparf}).
+    \item
+      \texttt{interval}\index{interval@\textit{interval}},
+      to convert an expression which evaluates to a
+      number into an interval (see \secref{ssec:numb2intvl}).
+    \item
+      \texttt{list}\index{list@\textit{list}} (or no argument),
+      to convert a polynomial in internal sparse multivariate format
+      (see \secref{ssec:multipoly}) into a list.
+    \item
+      \textit{unit}, a unit, to convert a unit object to a new
+      compatible unit (see \secref{sec:convertunit}).
+    \end{itemize}
+    The values of \textit{option} that require a third argument:
+    \begin{itemize}
+    \item
+      \texttt{contfrac}\index{contfrac@\texttt{contfrac}},
+      to convert a number into a continued
+      fraction.  (See \secref{ssec:convertdfc}.)  The third argument
+      will be the name of a variable to store the continued fraction
+      into (which must be quoted the variable was assigned).
+    \item
+      \texttt{base}\index{base@\textit{base}},
+      to convert a number into a different base
+      (beginning with the units digit).  If \texttt{expr} is a number,
+      then the third argument will be base to convert to (see
+      \secref{sec:convertbase}), if \textit{expr} is a list of
+      numbers, then the third argument will be the base to convert
+      from (and \textit{expr} will be a list of the digits in this
+      base, starting with the units digit).
+    \end{itemize}
+    Finally, if \textit{expr} is an expression with units (see
+    \secref{ssec:units}), then \textit{option} can be new units to convert to
+    (see \secref{sec:convertunit}).
+  \end{itemize}
+\item \texttt{convert(}$\textit{expr},\textit{option}\,\langle,$\textit{extraop}$\,\rangle$\texttt{)}
+  returns the expression with the requested conversions done.
+\end{itemize}
+
+\subsubsection*{Examples}
+\begin{xcasinput}
+convert(1.2,confrac,'fc')
+\end{xcasinput}
+\begin{xcasoutput}
+  \left[1,5\right]
+\end{xcasoutput}
+and \texttt{fc} contains the continued fraction equal to 1.2.
+\begin{xcasinput}
+convert(123,base,10)
+\end{xcasinput}
+\begin{xcasoutput}
+  \left[3,2,1\right]
+\end{xcasoutput}
+\begin{xcasinput}
+convert([3,2,1],base,10)
+\end{xcasinput}
+\begin{xcasoutput}
+  123
+\end{xcasoutput}
+\begin{xcasinput}
+convert(1000_g,_kg)
+\end{xcasinput}
+\begin{xcasoutput}
+  1.0\;\mathrm{kg}
 \end{xcasoutput}
 
 \section{Trigonometry}
@@ -14579,13 +15069,13 @@ trigsimplify(1-1/4*sin(2a)^2-sin(b)^2-cos(a)^4)
 }
 
 The \texttt{acos2asin}\index{acos2asin@\texttt{acos2asin}} command
-transforms any \texttt{acos}s in an expression to \texttt{asin}s,
-using the identity $\arccos(x)=\pi/2-\arcsin(x)$.
+transforms arc cosines in an expression to arc sines by
+using the identity \[ \arccos(x)=\frac{\pi}{2}-\arcsin(x). \] 
 \begin{itemize}
 \item \texttt{acos2asin} takes
   \texttt{expr},  an expression containing inverse trigonometric functions.
 \item \texttt{acos2asin(}\textit{expr}\texttt{)} returns
-  \textit{expr} with any \texttt{acos}s replaced by the appropriate \texttt{asin}s.
+  \textit{expr} with all instances of \texttt{acos} replaced according to the above formula.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -14601,14 +15091,13 @@ Output (after simplification):
 }
 
 The \texttt{acos2atan}\index{acos2atan@\texttt{acos2atan}} command
-transforms any \texttt{acos}s in an
-expression to \texttt{atan}s, using the identity \[ \arccos(x)=
-  \frac{\pi}{2}-\arctan\left(\frac{x}{\sqrt{1-x^{2}}}\right). \]
+transforms arc cosines in an expression to arc tangents by using the identity
+\[ \arccos(x)=\frac{\pi}{2}-\arctan\left(\frac{x}{\sqrt{1-x^{2}}}\right). \]
 \begin{itemize}
 \item \texttt{acos2atan} takes
   \texttt{expr},  an expression containing inverse trigonometric functions.
 \item \texttt{acos2atan(}\textit{expr}\texttt{)} returns
-  \textit{expr} with any \texttt{acos}s replaced by the appropriate \texttt{atan}s.
+  \textit{expr} with all instances of \texttt{acos} replaced according to the above formula.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -14623,13 +15112,13 @@ acos2atan(acos(x))
 }
 
 The \texttt{asin2acos}\index{asin2acos@\texttt{asin2acos}} command
-transforms any \texttt{asin}s in an expression to \texttt{acos}s,
-using the identity $\arcsin(x)=\pi/2-\arccos(x)$.
+transforms any arc sines in an expression to arc cosines by
+using the identity \[ \arcsin(x)=\frac{\pi}{2}-\arccos(x). \]
 \begin{itemize}
 \item \texttt{asin2acos} takes
   \texttt{expr},  an expression containing inverse trigonometric functions.
 \item \texttt{asin2acos(}\textit{expr}\texttt{)} returns
-  \textit{expr} with any \texttt{asin}s replaced by the appropriate \texttt{acos}s.
+  \textit{expr} with all instances of \texttt{asin} replaced according to the above formula.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -14645,13 +15134,13 @@ Output (after simplification):
 }
 
 The \texttt{asin2atan}\index{asin2atan@\texttt{asin2atan}} command
-transforms any \texttt{asin}s in an expression to \texttt{atan}s,
+transforms arc sines in an expression to arc tangents by
 using the identity \[ \arcsin(x)=\arctan\left(\frac{x}{\sqrt{1-x^{2}}}\right). \]
 \begin{itemize}
 \item \texttt{asin2atan} takes
   \texttt{expr},  an expression containing inverse trigonometric functions.
 \item \texttt{asin2atan(}\textit{expr}\texttt{)} returns
-  \textit{expr} with any \texttt{asin}s replaced by the appropriate \texttt{atan}s.
+  \textit{expr} with all instances of \texttt{asin} replaced according to the above formula.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -14666,14 +15155,13 @@ asin2atan(asin(x))
 }
 
 The \texttt{atan2asin}\index{atan2asin@\texttt{atan2asin}} command
-transforms any \texttt{atan}s in an expression to \texttt{asin}s, using the identity
+transforms any arc tangents in an expression to arc sines by using the identity
 \[ \arctan(x)=\arcsin\left(\frac{x}{\sqrt{1+x^{2}}}\right). \]
 \begin{itemize}
 \item \texttt{atan2asin} takes
   \texttt{expr},  an expression containing inverse trigonometric functions.
 \item \texttt{atan2asin(}\textit{expr}\texttt{)} returns
-  \textit{expr} with any \texttt{atan}s replaced by the appropriate
-  \texttt{asin}s.
+  \textit{expr} with all instances of \texttt{atan} replaced according to the above formula.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -14688,14 +15176,13 @@ atan2asin(atan(x))
 }
 
 The \texttt{atan2acos}\index{atan2acos@\texttt{atan2acos}} command
-transforms any \texttt{atan}s in an expression to \texttt{acos}s, using the identity
+transforms any arc tangents in an expression to arc cosines by using the identity
 \[ \arctan(x)=\frac{\pi}{2}-\arcsin\left(\frac{x}{\sqrt{1+x^{2}}}\right). \]
 \begin{itemize}
 \item \texttt{atan2acos} takes
   \texttt{expr},  an expression containing inverse trigonometric functions.
 \item \texttt{atan2acos(}\textit{expr}\texttt{)} returns
-  \textit{expr} with any \texttt{atan}s replaced by the appropriate
-  \texttt{acos}s.
+  \textit{expr} with all instances of \texttt{atan} replaced according to the above formula.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -14711,9 +15198,7 @@ atan2acos(atan(x))
 
 The \texttt{sincos}\index{sincos@\texttt{sincos}} or
 \texttt{exp2trig}\index{exp2trig@\texttt{exp2trig}} command uses the identity
-\[
-  \mathrm{e}^{\mathrm{i} x}=\cos(x)+\mathrm{i}\sin(x)
-\]
+$\mathrm{e}^{\mathrm{i} x}=\cos(x)+\mathrm{i}\sin(x)$
 to rewrite complex exponentials in terms of sine and cosine.
 \begin{itemize}
 \item \texttt{sincos} takes
@@ -14750,13 +15235,12 @@ simplify(exp2trig(((i)*(exp((i)*x))^2-i)/(2*exp((i)*x))))
 }
 
 The \texttt{tan2sincos}\index{tan2sincos@\texttt{tan2sincos}}
-command replaces $\tan(x)$ by $\displaystyle
-\frac{\sin(x)}{\cos(x)}$ in an expression.
+command replaces $\tan(x)$ by $\frac{\sin(x)}{\cos(x)}$ in an expression.
 \begin{itemize}
 \item \texttt{tan2sincos} takes
   \textit{expr}, an expression containing trigonometric functions.
 \item \texttt{tan2sincos(}\textit{expr}\texttt{)} returns
-  \textit{expr} with anything of the form $\tan(x)$ replaced by $\displaystyle
+  \textit{expr} with anything of the form $\tan(x)$ replaced by $
   \frac{\sin(x)}{\cos(x)}$.
 \end{itemize}
 
@@ -14768,7 +15252,7 @@ tan2sincos(tan(2*x))
   \frac{\sin \left(2 x\right)}{\cos \left(2 x\right)}
 \end{xcasoutput}
 
-\subsection{Transforming $\sin(x)$ into $\cos(x)\cdot\tan(x)$%: \texttt{sin2costan}
+\subsection{Transforming $\sin(x)$ into $\cos(x)\tan(x)$%: \texttt{sin2costan}
 }
 
 The \texttt{sin2costan}\index{sin2costan@\texttt{sin2costan}} command
@@ -14793,13 +15277,12 @@ sin2costan(sin(2*x))
 }
 
 The \texttt{cos2sintan}\index{cos2sintan@\texttt{cos2sintan}}
-command replaces $\cos(x)$ by $\displaystyle
-\frac{\sin(x)}{\tan(x)}$ in an expression.
+command replaces $\cos(x)$ by $\frac{\sin(x)}{\tan(x)}$ in an expression.
 \begin{itemize}
 \item \texttt{cos2sintan} takes
   \textit{expr}, an expression containing trigonometric functions.
 \item \texttt{cos2sintan(}\textit{expr}\texttt{)} returns
-  \textit{expr} with anything of the form $\cos(x)$ replaced by $\displaystyle
+  \textit{expr} with anything of the form $\cos(x)$ replaced by $
   \frac{\sin(x)}{\tan(x)}$.
 \end{itemize}
 
@@ -14815,13 +15298,12 @@ cos2sintan(cos(2*x))
 }
 
 The \texttt{tan2sincos2}\index{tan2sincos2@\texttt{tan2sincos2}}
-command replaces $\tan(x)$ by $\displaystyle
-\frac{\sin(2x)}{1+\cos(2x)}$ in an expression.
+command replaces $\tan(x)$ by $\frac{\sin(2x)}{1+\cos(2x)}$ in an expression.
 \begin{itemize}
 \item \texttt{tan2sincos2} takes
   \textit{expr}, an expression containing trigonometric functions.
 \item \texttt{tan2sincos2(}\textit{expr}\texttt{)} returns
-  \textit{expr} with anything of the form $\tan(x)$ replaced by $\displaystyle
+  \textit{expr} with anything of the form $\tan(x)$ replaced by $
   \frac{\sin(2x)}{1+\cos(2x)}$.
 \end{itemize}
 
@@ -14837,13 +15319,12 @@ tan2sincos2(tan(x))
 }
 
 The \texttt{tan2cossin2}\index{tan2cossin2@\texttt{tan2cossin2}}
-command replaces $\tan(x)$ by $\displaystyle
-\frac{1-\cos(2x)}{\sin(2x)}$ in an expression.
+command replaces $\tan(x)$ by $\frac{1-\cos(2x)}{\sin(2x)}$ in an expression.
 \begin{itemize}
 \item \texttt{tan2cossin2} takes
   \textit{expr}, an expression containing trigonometric functions.
 \item \texttt{tan2cossin2(}\textit{expr}\texttt{)} returns
-  \textit{expr} with anything of the form $\tan(x)$ replaced by $\displaystyle
+  \textit{expr} with anything of the form $\tan(x)$ replaced by $
   \frac{1-\cos(2x)}{\sin(2x)}$.
 \end{itemize}
 
@@ -14955,8 +15436,7 @@ replaces trigonometric functions by their complex exponential form.
   \textit{expr}, an expression containing trigonometric functions.
 \item \texttt{trig2exp(}\textit{expr}\texttt{)} returns
   \textit{expr} with the trigonometric functions replaced by the
-  appropriate complex exponentials (\textsc{without}
-  linearization).
+  appropriate complex exponentials (without linearization).
 \end{itemize}
 
 \subsubsection*{Examples}
@@ -14999,17 +15479,17 @@ atrig2ln(asin(x))
 \subsection{Simplifying and expressing preferentially with sines%: \texttt{trigsin}
   \label{ssec:trigsin}}
 
-Any trigonometric function can be written in terms of $\sin$s and
-$\cos$s, and with the identity $\sin(x)^2+\cos(x)^2=1$, the even
-powers of $\cos$ can be turned into powers of $\sin$.  The
+Any trigonometric function can be written in terms of sines and
+cosines, and even powers of cosines can be turned into powers of sines by
+using the identity $\sin(x)^2+\cos(x)^2=1$.  The
 \texttt{trigsin}\index{trigsin@\texttt{trigsin}} command performs
 these substitutions.
 \begin{itemize}
 \item \texttt{trigsin} takes
   \textit{expr},  an expression containing trigonometric functions.
 \item \texttt{trigsin(}\textit{expr}\texttt{)} returns \textit{expr}
-  with the trigonometric functions rewritten in terms  of $\sin$ and
-  $\cos$, with as many $\cos$s as possible transformed to $\sin$s.
+  with the trigonometric functions rewritten in terms  of sines and
+  cosines, with as many cosines as possible transformed to sines.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -15023,16 +15503,16 @@ trigsin(sin(x)^4+cos(x)^2+1)
 \subsection{Simplifying and expressing preferentially with cosines%: \texttt{trigcos}
   \label{ssec:trigcos}}
 
-Any trigonometric function can be written in terms of $\sin$s and
-$\cos$s, and with the identity $\sin(x)^2+\cos(x)^2=1$, the even
-powers of $\sin$ can be turned into powers of $\cos$.  The
+Any trigonometric function can be written in terms of sines and
+cosines, and even powers of sines can be turned into powers of cosines by
+using the identity $\sin(x)^2+\cos(x)^2=1$.  The
 \texttt{trigcos}\index{trigcos@\texttt{trigcos}} command performs these substitutions.
 \begin{itemize}
 \item \texttt{trigcos} takes
   \textit{expr},  an expression containing trigonometric functions.
 \item \texttt{trigsin(}\textit{expr}\texttt{)} returns \textit{expr}
-  with the trigonometric functions rewritten in terms  of $\sin$ and
-  $\cos$, with as many $\sin$s as possible transformed to $\cos$s.
+  with the trigonometric functions rewritten in terms of sines and
+  cosines, with as many sines as possible transformed to cosines.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -15049,8 +15529,7 @@ trigcos(sin(x)^4+cos(x)^2+1)
 The \texttt{trigtan}\index{trigtan@\texttt{trigtan}} command rewrites
 trigonometric expressions into expressions where as many trigonometric
 functions as possible are written in terms of tangents, using the identities
-$\sin(x)^2+\cos(x)^2=1$, $\displaystyle
-\tan(x)=\frac{\sin(x)}{\cos(x)}$.
+$\sin(x)^2+\cos(x)^2=1$, $\tan(x)=\frac{\sin(x)}{\cos(x)}$.
 \begin{itemize}
 \item \texttt{trigtan} takes
   \textit{expr}, an expression containing trigonometric functions.
@@ -15067,142 +15546,7 @@ trigtan(sin(x)^4+cos(x)^2+1)
   \frac{2 \tan ^{4}x+3 \tan ^{2}x+2}{\tan ^{4}x+2 \tan ^{2}x+1}
 \end{xcasoutput}
 
-\subsection{Rewriting an expression with different options%: \texttt{convert} \texttt{convertir} \texttt{=>}
-  \label{ssec:convert}}
-
-\xcas{} has many commands to convert expressions into different
-forms; the \texttt{convert}\index{convert@\texttt{convert}} command
-(or its infixed version \texttt{=>}\index{=>@\texttt{=>}}) is
-a different way to call most of these functions.\index{convertir@\texttt{convertir}}
-\begin{itemize}
-\item \texttt{convert} takes two or more arguments:
-  \begin{itemize}
-  \item \textit{expr}, an expression.
-  \item \textit{option}, an option specifying which rewrite rules to
-    use.  A third argument might be necessary for some options.
-    Possible values of \textit{option} are:
-    \begin{itemize}
-    \item
-      \texttt{sin}\index{sin@\texttt{sin}},
-      to convert an expression like \texttt{trigsin}
-      (see \secref{ssec:trigsin}).
-    \item
-      \texttt{cos}\index{cos@\texttt{cos}},
-      to convert an expression like \texttt{trigcos}
-      (see \secref{ssec:trigcos}).
-    \item
-      \texttt{sincos}\index{sincos@\textit{sincos}},
-      to convert an expression like \texttt{sincos}
-      (see \secref{ssec:sincos}).
-    \item
-      \texttt{trig}, to convert an expression like \texttt{sincos}
-      (see \secref{ssec:sincos}).
-    \item
-      \texttt{tan}\index{tan@\texttt{tan}},
-      to convert an expression like \texttt{halftan}
-      (see \secref{ssec:halftan}).
-    \item
-      \texttt{exp}\index{exp@\texttt{exp}},
-      to convert an expression like \texttt{trig2exp}
-      (see \secref{ssec:trig2exp}).
-    \item
-      \texttt{ln}\index{ln@\texttt{ln}},
-      to convert an expression like \texttt{trig2exp}
-      (see \secref{ssec:trig2exp}).
-    \item
-      \texttt{expln}\index{expln@\textit{expln}},
-      to convert an expression like \texttt{trig2exp}
-      (see \secref{ssec:trig2exp}).
-    \item
-      \texttt{string}\index{string@\texttt{string}},
-      to convert a expression into a string.
-    \item
-      \texttt{matrix}\index{matrix@\texttt{matrix}},
-      to convert a list of lists into a matrix.
-    \item
-      \texttt{array}\index{array@\textit{array}},
-      to turn a table into an array (see
-      \secref{ssec:spmatrices}).
-    \item
-      \texttt{polynom}\index{polynom@\textit{polynom}},
-      to convert a series (see \secref{ssec:taylor})
-      into a polynomial
-      by removing the remainder (see \secref{ssec:convertpoly}) or
-      to convert a list representing a polynomial into a polynomial
-      in internal sparse multivariate form (see
-      \secref{ssec:multipoly} and \secref{ssec:polytrans}).
-    \item
-      \texttt{parfrac}\index{parfrac@\textit{parfrac}}
-      (or \texttt{partfrac}\index{partfrac@\texttt{partfrac}} or
-      \texttt{fullparfrac}\index{fullparfrac@\textit{fullparfrac}}),
-      to convert a rational function into its partial fraction decomposition (see
-      \secref{ssec:convertparf}).
-    \item
-      \texttt{interval}\index{interval@\textit{interval}},
-      to convert an expression which evaluates to a
-      number into an interval (see \secref{ssec:numb2intvl}).
-    \item
-      \texttt{list}\index{list@\textit{list}} (or no argument),
-      to convert a polynomial in internal sparse multivariate format
-      (see \secref{ssec:multipoly}) into a list.
-    \item
-      \textit{unit}, a unit, to convert a unit object to a new
-      compatible unit (see \secref{sec:convertunit}).
-    \end{itemize}
-    The values of \textit{option} that require a third argument:
-    \begin{itemize}
-    \item
-      \texttt{contfrac}\index{contfrac@\texttt{contfrac}},
-      to convert a number into a continued
-      fraction.  (See \secref{ssec:convertdfc}.)  The third argument
-      will be the name of a variable to store the continued fraction
-      into (which must be quoted the variable was assigned).
-    \item
-      \texttt{base}\index{base@\textit{base}},
-      to convert a number into a different base
-      (beginning with the units digit).  If \texttt{expr} is a number,
-      then the third argument will be base to convert to (see
-      \secref{sec:convertbase}), if \textit{expr} is a list of
-      numbers, then the third argument will be the base to convert
-      from (and \textit{expr} will be a list of the digits in this
-      base, starting with the units digit).
-    \end{itemize}
-    Finally, if \textit{expr} is an expression with units (see
-    \secref{ssec:units}), then \textit{option} can be new units to convert to
-    (see \secref{sec:convertunit}).
-  \end{itemize}
-\item \texttt{convert(}$\textit{expr},\textit{option}\,\langle,$\textit{extraop}$\,\rangle$\texttt{)}
-  returns the expression with the requested conversions done.
-\end{itemize}
-
-\subsubsection*{Examples}
-\begin{xcasinput}
-convert(1.2,confrac,'fc')
-\end{xcasinput}
-\begin{xcasoutput}
-  \left[1,5\right]
-\end{xcasoutput}
-and \texttt{fc} contains the continued fraction equal to 1.2.
-\begin{xcasinput}
-convert(123,base,10)
-\end{xcasinput}
-\begin{xcasoutput}
-  \left[3,2,1\right]
-\end{xcasoutput}
-\begin{xcasinput}
-convert([3,2,1],base,10)
-\end{xcasinput}
-\begin{xcasoutput}
-  123
-\end{xcasoutput}
-\begin{xcasinput}
-convert(1000_g,_kg)
-\end{xcasinput}
-\begin{xcasoutput}
-  1.0\;\mathrm{kg}
-\end{xcasoutput}
-
-\section{Exponentials and Logarithms}
+\section{Exponentials and logarithms}
 
 \subsection{Rewriting hyperbolic functions as exponentials%: \texttt{hyp2exp}
 }
@@ -15215,7 +15559,7 @@ converts hyperbolic functions into their exponential forms.
   \textit{expr}, an expression.
 \item \texttt{hyp2exp(}\textit{expr}\texttt{)} rewrites each
   hyperbolic function in \textit{expr} with exponentials (as a
-  rational function of one exponential, i.e.~\emph{without} linearization).
+  rational function of one exponential, i.e.~without linearization).
 \end{itemize}
 
 \subsubsection*{Example}
@@ -15387,7 +15731,7 @@ pow2exp(a^(x+y))
   \mathrm{e}^{\left(x+y\right) \ln a}
 \end{xcasoutput}
 
-\subsection{Rewriting $\exp(n\,\ln(x))$ as a power%: \texttt{exp2pow}
+\subsection{Rewriting $\exp(n\ln(x))$ as a power%: \texttt{exp2pow}
 }
 
 The \texttt{exp2pow}\index{exp2pow@\texttt{exp2pow}} command is the
@@ -15441,9 +15785,9 @@ tsimplify((sin(7*x)+sin(3*x))/sin(5*x))
   \frac{\left(\mathrm{e}^{\mathrm{i} x}\right)^{4}+1}{\left(\mathrm{e}^{\mathrm{i} x}\right)^{2}}
 \end{xcasoutput}
 
-\section{Rewriting transcendental and trigonometric expressions}
+\section{Rewriting transcendental expressions}
 
-\subsection{Expanding transcendental and trigonometric expressions%: \texttt{texpand} \texttt{tExpand}
+\subsection{Expanding transcendental expressions%: \texttt{texpand} \texttt{tExpand}
   \label{ssec:texpand}}
 
 The \texttt{texpand}\index{texpand@\texttt{texpand}} or
@@ -15476,7 +15820,7 @@ texpand(cos(3*x))
 \begin{xcasoutput}
   4 \cos ^{3}x-3 \cos x
 \end{xcasoutput}
-Expand $\displaystyle \frac{\sin(3x)+\sin(7x)}{\sin(5x)}$.
+Expand $ \frac{\sin(3x)+\sin(7x)}{\sin(5x)}$.
 \begin{xcasinput}
 texpand((sin(3*x)+sin(7*x))/sin(5*x))
 \end{xcasinput}
@@ -15514,7 +15858,7 @@ texpand(ln(x^n))
 \begin{xcasoutput}
   n \ln x
 \end{xcasoutput}
-Expand $\ln\left((\mathrm{e}^{2})+\mathrm{e}^{2\ln(2)}+\mathrm{e}^{\ln(3)+\ln(2)}\right)$.
+Expand $\ln\left(\mathrm{e}^{2}+\mathrm{e}^{2\ln(2)}+\mathrm{e}^{\ln(3)+\ln(2)}\right)$.
 \begin{xcasinput}
 texpand(log(e^2)+exp(2*log(2))+exp(log(3)+log(2)))
 \end{xcasinput}
@@ -17333,14 +17677,16 @@ Quo(x^3+3*x,2*x^2+6*x+5) mod 5
 \begin{xcasoutput}
   -2x+1
 \end{xcasoutput}
-This division was done using modular arithmetic, unlike with:
+This division was done using modular arithmetic, unlike with the
+following command, where the division is done in $\mathbb{Z}[X]$
+and reduction afterwards:
 \begin{xcasinput}
 quo(x^3+3*x,2*x^2+6*x+5) mod 5
 \end{xcasinput}
-where the division is done in $\mathbb{Z}[X]$ and reduced after to:
 \begin{xcasoutput}
   3x+6
 \end{xcasoutput}
+
 If \xcas{} is not in \Maple{} mode, polynomial division
 in $\mathbb{Z}/p\mathbb{Z}[X]$ is done e.g.~by:
 \begin{xcasinput}
@@ -17404,11 +17750,11 @@ Rem(x^3+3*x,2*x^2+6*x+5) mod 5
   2x 
 \end{xcasoutput}
 This division was done using modular arithmetic, unlike with the
-following command, where the division is done in $\mathbb{Z}[X]$ and reduced afterwards:
+following command, where the division is done in $\mathbb{Z}[X]$
+and reduction afterwards:
 \begin{xcasinput}
 rem(x^3+3*x,2*x^2+6*x+5) mod 5
 \end{xcasinput}
- after to:
 \begin{xcasoutput}
   12x
 \end{xcasoutput}
@@ -17787,7 +18133,7 @@ chinrem([x,x^2+1],[x-1,x^2-1])
 \begin{xcasoutput}
   \left[-\frac{x^{2}}{2}+x-\frac1{2},x^{4}-1\right]
 \end{xcasoutput}
-hence $\displaystyle P(x)\equiv -\frac{x^2-2x+1}{2} \pmod{x^4-1}$.
+hence $ P(x)\equiv -\frac{x^2-2x+1}{2} \pmod{x^4-1}$.
 \begin{xcasinput}
 chinrem([[1,2],[1,0,1]],[[1,1],[1,1,1]])
 \end{xcasinput}
@@ -18429,13 +18775,13 @@ posubLMQ(x^3-x^2-2*x+2)
 \subsection{A lower bound for the positive real roots of a polynomial%: \texttt{poslbdLMQ}
 }
 
-The \texttt{poslbLMQ}\index{poslbdLMQ@\texttt{poslbdLMQ}} command uses
+The \texttt{poslbdLMQ}\index{poslbdLMQ@\texttt{poslbdLMQ}} command uses
 the Local Max Quadratic (LMQ) Akritas-Strzebonski-Vigklas algorithm to
 find lower bounds for the positive real roots of polynomials.
 \begin{itemize}
-\item \texttt{poslbLMQ} takes
+\item \texttt{poslbdLMQ} takes
   $P$, a polynomial.
-\item \texttt{poslbLMQ($P$)} returns a
+\item \texttt{poslbdLMQ($P$)} returns a
   (non-optimal) lower bound for the positive real roots of $P$.
 \end{itemize}
 
@@ -18538,9 +18884,9 @@ command finds bounds for the complex roots of a polynomial.
     parallel to the axis and containing a complex root of the polynomial) and the
     multiplicity of this root.
 
-    Suppose the interval is $[a_1+ib_1,a_2+ib_2]$ then $|a_1-a_2|<\varepsilon$,
-    $|b_1-b_2|<\varepsilon$ and the root $a+ib$ satisfies
-    $a_1\leq a \leq a_2$ and  $b_1\leq b \leq b_2$.
+    Suppose the interval is $[a_1+\mathrm{i}b_1,a_2+\mathrm{i}b_2]$
+    then $|a_1-a_2|<\varepsilon$, $|b_1-b_2|<\varepsilon$ and the root $a+\mathrm{i}b$
+    satisfies $a_1\leq a \leq a_2$ and  $b_1\leq b \leq b_2$.
   \item the value of an exact complex root of the polynomial and the
     multiplicity of this root.
   \end{itemize}
@@ -19134,7 +19480,7 @@ The \texttt{numer}\index{numer@\texttt{numer}}
 command finds the numerator of a rational function,
 after it has been reduced. (See also \secref{sec:inumer}.)
 \begin{itemize}
-\item \noindent\texttt{numer} takes
+\item \texttt{numer} takes
   \textit{rat}, a rational function.
 \item \texttt{numer(}\textit{rat}\texttt{)} returns
   the numerator of the irreducible representation of \textit{rat}.
@@ -19190,7 +19536,7 @@ The \texttt{denom}\index{denom@\texttt{denom}} command
 finds the denominator of a rational function after it has been reduced.
 (See also \secref{sec:idenom}.)
 \begin{itemize}
-\item \noindent\texttt{denom} takes
+\item \texttt{denom} takes
   \textit{rat}, a rational function.
 \item \texttt{denom(}\textit{rat}\texttt{)} returns
   the denominator of the irreducible representation of \textit{rat}.
@@ -19217,7 +19563,7 @@ The \texttt{f2nd}\index{f2nd@\texttt{f2nd}} or
 \texttt{fxnd}\index{fxnd@\texttt{fxnd}} command finds
 the numerator and denominator of rational function after simplification.
 \begin{itemize}
-\item \noindent\texttt{f2nd} takes
+\item \texttt{f2nd} takes
   \textit{rat}, a rational function.
 \item \texttt{f2nd(}\textit{rat}\texttt{)} returns
   the list of the numerator and the denominator of
@@ -19333,7 +19679,7 @@ find the partial fraction expansion of a rational function.
 
 \subsubsection*{Example}
 Find the partial fraction expansion of
-$\displaystyle\frac{x^5-2x^3+1}{x^4-2x^3+2x^2-2x+1}$
+$\frac{x^5-2x^3+1}{x^4-2x^3+2x^2-2x+1}$
 over the real numbers.
 
 Input in real mode:
@@ -19385,7 +19731,7 @@ froot((x^5-2*x^4+x^3)/(x-2))
 \begin{xcasoutput}
   \left[1,2,0,3,2,-1\right]
 \end{xcasoutput}
-Hence, for $\displaystyle F(x)=\frac{x^5-2x^4+x^3}{x-2}$:
+Hence, for $ F(x)=\frac{x^5-2x^4+x^3}{x-2}$:
 \begin{itemize}
 \item $1$ is a root of multiplicity 2,
 \item $0$ is a root of multiplicity 3,
@@ -20239,7 +20585,7 @@ univariate polynomials with coefficients in a Galois field.
 \end{itemize}
 
 \subsubsection*{Example}
-The command \noindent\texttt{factor} can factorize a univariate polynomial
+The command \texttt{factor} can factorize a univariate polynomial
 with coefficients in a Galois field. For example, to have $G=\mathbb F_4$,
 input:
 \begin{xcasinput}
@@ -21254,15 +21600,17 @@ both at numbers and infinities, and in the real case it can compute one-sided li
   \item Optionally, \textit{side} (either $0$, $-1$ or $1$), to specify
     which side to take a one-sided limit (by default $\text{\textit{side}}=0$).
   \end{itemize}
+  Alternatively, one-sided limits may be specified by using symbols
+  \texttt{left} and \texttt{right} instead of $-1$ and $1$.
 \item \texttt{limit(}$\textit{expr},x,a\,\langle,\textit{side}\,\rangle$\texttt{)}
   returns the limit of \textit{expr} as $x$ approaches $a$.
   \begin{itemize}
   \item If $\textit{side}=0$ (the default), then the ordinary limit
     is returned.
-  \item If $\textit{side}=-1$, then the limit from the left
-    ($x<a$) is returned.
-  \item If $\textit{side}=1$, then the limit from the right
-    ($x>a$) is returned.
+  \item If $\textit{side}=-1$ or $\textit{side}=\texttt{left}$,
+    then the limit from the left ($x<a$) is returned.
+  \item If $\textit{side}=1$ or $\textit{side}=\texttt{right}$,
+    then the limit from the right ($x>a$) is returned.
   \end{itemize}
 \item
   It is also possible to put \texttt{x=a} as argument instead of
@@ -21313,7 +21661,7 @@ Note that $\infty$ or \textit{infinity} without an explicit
 \texttt{+} or \textit{-} represents unsigned infinity.
 
 Find, for $n>2$, the limit of
-$\displaystyle\frac{n\tan(x)-\tan(nx)}{\sin(nx)-n\sin(x)}$
+$\frac{n\tan(x)-\tan(nx)}{\sin(nx)-n\sin(x)}$
 as $x$ approaches $0$.
 \begin{xcasinput}
 limit((n*tan(x)-tan(n*x))/(sin(n*x)-n*sin(x)),x=0)
@@ -21335,7 +21683,7 @@ limit(sqrt(x+sqrt(x+sqrt(x)))-sqrt(x),x=+infinity)
 \end{xcasoutput}
 
 Find the limit of
-$\displaystyle\frac{\sqrt{1+x+x^2/2}- \mathrm{e}^{x/2}}{(1-\cos(x))\sin(x)}$
+$\frac{\sqrt{1+x+x^2/2}- \mathrm{e}^{x/2}}{(1-\cos(x))\sin(x)}$
 as $x$ approaches 0.
 \begin{xcasinput}
 limit((sqrt(1+x+x^2/2)-exp(x/2))/((1-cos(x))*sin(x)),x,0)
@@ -21383,7 +21731,7 @@ computes derivatives and partial derivatives of expressions.
 \end{itemize}
 
 \subsubsection*{Examples}
-Compute $\displaystyle\frac {\partial}{\partial z}(x y^2 z^3+x y z)$.
+Compute $\frac {\partial}{\partial z}(x y^2 z^3+x y z)$.
 \begin{xcasinput}
 diff(x*y^2*z^3+x*y*z,z)
 \end{xcasinput}
@@ -21397,21 +21745,21 @@ diff(x*y^2*z^3+x*y,[x,y,z])
 \begin{xcasoutput}
   \left[y^{2} z^{3}+y,2 x y z^{3}+x,3 x y^{2} z^{2}\right]
 \end{xcasoutput}
-Compute $\displaystyle\frac {\partial^3}{\partial y\,\partial^2 z}(x y^2 z^3+x y z)$.
+Compute $\frac {\partial^3}{\partial y\,\partial^2 z}(x y^2 z^3+x y z)$.
 \begin{xcasinput}
 diff(x*y ^2*z^3+x*y*z,y,z$2)
 \end{xcasinput}
 \begin{xcasoutput}
   12 x y z
 \end{xcasoutput}
-Compute $\displaystyle\frac {\partial^2}{\partial x\partial z}(x y^2 z^3+x y z)$.
+Compute $\frac {\partial^2}{\partial x\partial z}(x y^2 z^3+x y z)$.
 \begin{xcasinput}
 diff(x*y^2*z^3+x*y*z,x,z)
 \end{xcasinput}
 \begin{xcasoutput}
   3 y^{2} z^{2}+y
 \end{xcasoutput}
-Compute $\displaystyle\frac {\partial^3}{\partial x\partial^2 z}(x y^2 z^3+x y z)$.
+Compute $\frac {\partial^3}{\partial x\partial^2 z}(x y^2 z^3+x y z)$.
 \begin{xcasinput}
 diff(x*y^2*z^3+x*y*z,x,z,z)
 \end{xcasinput}
@@ -21422,7 +21770,7 @@ diff(x*y^2*z^3+x*y*z,x,z$2)
 \begin{xcasoutput}
   6 y^{2} z
 \end{xcasoutput}
-Compute the third derivative of $\displaystyle\frac{1}{x^2+2}$.
+Compute the third derivative of $\frac{1}{x^2+2}$.
 \begin{xcasinput}
 normal(diff((1)/(x^2+2),x,x,x))
 \end{xcasinput}
@@ -21468,7 +21816,7 @@ $f$, a function.
 function_diff(sin)
 \end{xcasinput}
 \begin{xcasoutput}
-  x\mapsto \cos s
+  x\mapsto \cos x
 \end{xcasoutput}
 \begin{xcasinput}
 function_diff(sin)(x)
@@ -21844,7 +22192,7 @@ evalf(int(exp(x^2),x,0,1))
 \begin{xcasoutput}
   1.46265174591
 \end{xcasoutput}
-Let $\displaystyle f(x)=\frac{x}{x^2-1}+\ln\left(\frac{x+1}{x-1}\right)$.
+Let $ f(x)=\frac{x}{x^2-1}+\ln\left(\frac{x+1}{x-1}\right)$.
 Find a primitive of $f$.
 \begin{xcasinput}
 int(x/(x^2-1)+ln((x+1)/(x-1)))
@@ -21857,14 +22205,14 @@ int(f(x))
 \begin{xcasoutput}
   x \ln \left(\frac{x+1}{x-1}\right)+\frac{2}{2} \ln \left|x^{2}-1\right|+\frac{\ln \left|x^{2}-1\right|}{2}
 \end{xcasoutput}
-Compute $\displaystyle \int \frac {2}{x^6+2x^4+x^2} \,\mathrm{d}x$.
+Compute $ \int \frac {2}{x^6+2x^4+x^2} \,\mathrm{d}x$.
 \begin{xcasinput}
 int(2/(x^6+2*x^4+x^2))
 \end{xcasinput}
 \begin{xcasoutput}
   2 \left(\frac{-3 x^{2}-2}{2 \left(x^{3}+x\right)}-\frac{3}{2} \arctan x\right)
 \end{xcasoutput}
-Compute $\displaystyle\int \frac{1}{\sin(x)+\sin(2 x)} \,\mathrm{d}x$.
+Compute $\int \frac{1}{\sin(x)+\sin(2 x)} \,\mathrm{d}x$.
 \begin{xcasinput}
 integrate(1/(sin(x)+sin(2*x)))
 \end{xcasinput}
@@ -22053,7 +22401,7 @@ command determines if a sum is such a Riemann sum, and if it is, evaluates the i
 \end{itemize}
 
 \subsubsection*{Examples}
-Let $\displaystyle S_n=\sum_{k=1}^n \frac{k^2}{n^3}$.
+Let $ S_n=\sum_{k=1}^n \frac{k^2}{n^3}$.
 Compute the limit of $(S_n)_{n\in\mathbb{N}}$.
 \begin{xcasinput}
 sum_riemann(k^2/n^3,[n,k])
@@ -22061,7 +22409,7 @@ sum_riemann(k^2/n^3,[n,k])
 \begin{xcasoutput}
   \frac{1}{3}
 \end{xcasoutput}
-Let $\displaystyle S_n=\sum_{k=1}^n \frac{k^3}{n^4}$.
+Let $ S_n=\sum_{k=1}^n \frac{k^3}{n^4}$.
 Compute the limit of $(S_n)_{n\in\mathbb{N}}$.
 \begin{xcasinput}
 sum_riemann(k^3/n^4,[n,k])
@@ -22069,7 +22417,7 @@ sum_riemann(k^3/n^4,[n,k])
 \begin{xcasoutput}
   \frac{1}{4}
 \end{xcasoutput}
-Compute $\displaystyle\lim_{n \rightarrow +\infty}\left(\frac{1}{n+1}+
+Compute $\lim_{n \rightarrow +\infty}\left(\frac{1}{n+1}+
   \frac{1}{n+2}+\cdots+\frac{1}{2n}\right)$.
 \begin{xcasinput}
 sum_riemann(1/(n+k),[n,k])
@@ -22077,7 +22425,7 @@ sum_riemann(1/(n+k),[n,k])
 \begin{xcasoutput}
   \ln \left(2\right)
 \end{xcasoutput}
-Let $\displaystyle S_n=\sum_{k=1}^n \frac{32n^3}{16n^4-k^4}$.
+Let $ S_n=\sum_{k=1}^n \frac{32n^3}{16n^4-k^4}$.
 Compute the limit of $(S_n)_{n\in\mathbb{N}}$.
 \begin{xcasinput}
 sum_riemann(32*n^3/(16*n^4-k^4),[n,k])
@@ -22217,7 +22565,7 @@ When the first argument of \texttt{ibpdv} is a list of two elements,
 the integrated term to the first element of this list. (therefore it
 is possible to do several \texttt{ibpdv}s successively).
 
-For example, to evaluate $\displaystyle\int\ln(x)^{2}\,\mathrm{d}x$, input:
+For example, to evaluate $\int\ln(x)^{2}\,\mathrm{d}x$, input:
 \begin{xcasinput}
 ibpdv((ln(x))^2,x)
 \end{xcasinput}
@@ -22270,7 +22618,7 @@ integrated term to the first element of this list. Therefore it is
 possible to do several \texttt{ibpu}s successively, similarly to how
 you can do several \texttt{ibpdv}s successively.
 
-For example, to evaluate $\displaystyle\int\ln(x)^{2}\,\mathrm{d}x$, input:
+For example, to evaluate $\int\ln(x)^{2}\,\mathrm{d}x$, input:
 \begin{xcasinput}
 ibpu((ln(x))^2,(ln(x))^2)
 \end{xcasinput}
@@ -22898,13 +23246,70 @@ ilaplace((1/(x^2-6*x+9)+(x-6)*c_0+c_1)/(x^2-6*x+9))
 \begin{xcasoutput}
   \frac{1}{6} \left(x^{3}-18 x c_{0}+6 x c_{1}+6 c_{0}\right) \mathrm{e}^{3 x}
 \end{xcasoutput}
-Note that this equation could be solved directly.
+Note that this equation could be solved directly:
 \begin{xcasinput}
 desolve(y''-6*y'+9*y=x*exp(3*x),y)
 \end{xcasinput}
 \begin{xcasoutput}
   \mathrm{e}^{3 x} \left(c_{0} x+c_{1}\right)+\frac{1}{6} x^{3} \mathrm{e}^{3 x}
 \end{xcasoutput}
+
+\subsubsection*{Applications}
+
+Laplace transform is useful in analysis of eletric circuits.
+A simple RL circuit is shown in Figure~\ref{fig:circuit}.
+Given the input voltage $V_{in}$, the problem is to find the current $I(t)$.
+From Kirchhoff laws:
+\[ V_L+V_R=LI'(t)+RI(t)=V_{in}. \]
+By transforming both sides of the above equation and assuming $I(0)=0$, you get
+\[ Ls\mathcal{L}(I)(s)+R\mathcal{L}(I)(s)=\mathcal{L}(V_{in})(s), \]
+from which follows
+\[ I(t)=\mathcal{L}^{-1}\left(\frac{\mathcal{L}(V_{in})(s)}{Ls+R}\right). \]
+\begin{figure}
+  \centering
+  \includeimage[0.75]{series-RL.png}
+  \caption{\label{fig:circuit}RL circuit (\href{https://en.wikipedia.org/wiki/RL_circuit\#/media/File:Series-RL.png}{source})}
+\end{figure}
+
+Let $V_{in}(t)=V_0\sin(\omega t)$. You find $I(t)$ by entering:
+\begin{xcasinput}
+assume(omega>0):;
+I:=ilaplace(laplace(V0*sin(omega*t),t,s)/(L*s+R),s,t):;
+factor(I)
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{\left(-\omega L \cos \left(\omega t\right)+\omega L \mathrm{e}^{-\frac{R t}{L}}+R \sin \left(\omega t\right)\right) V_{0}}{R^{2}+L^{2} \omega^{2}}
+\end{xcasoutput}
+
+Let now $V_{in}$ be a single rectangular pulse
+$V_{in}=\begin{cases}V_0,&0\leq t\leq 1,\\0,&t>1.\end{cases}$.
+It is easily defined by using the \texttt{boxcar} command (see~\secref{ssec:boxcar}):
+\begin{xcasinput}
+Vin:=V0*boxcar(0,1,t):;
+I:=ilaplace(laplace(Vin,t,s)/(L*s+R),s,t):;
+normal(piecewise(I))
+\end{xcasinput}
+\begin{xcasoutput}
+  \begin{cases}\frac{-V_{0} \mathrm{e}^{-\frac{R t}{L}}+V_{0}}{R},&1>t\\\frac{-V_{0} \mathrm{e}^{-\frac{R t}{L}}+V_{0} \mathrm{e}^{-\frac{R t-R}{L}}}{R},&\text{otherwise}\end{cases}
+\end{xcasoutput}
+
+Laplace transform can be used with arbitrary periodic functions. For example,
+Let $V_{in}=V_0\left(1-(t-1)^2\right)$ for $t\in[0,2]$ define a periodic function with
+period $T=2$.
+\begin{xcasinput}
+Vin:=V0*periodic(1-(t-1)^2,t=0..2):;
+I:=ilaplace(laplace(Vin,t,s)/(L*s+R),s,t)
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{\left(2 L \left(R+L\right) \mathrm{e}^{-\frac{R \left(t-2 \left\lfloor \frac{t}{2}\right\rfloor \right)}{L}}+4 R^{2} \left\lfloor \frac{t}{2}\right\rfloor  \left(t-\left\lfloor \frac{t}{2}\right\rfloor -1\right)-t \left(t-2\right) R^{2}-4 R \left\lfloor \frac{t}{2}\right\rfloor  L+2 L \left(R t-R-L\right)\right) V_{0}}{R^{3}}
+\end{xcasoutput}
+Subexpressions in the above result are factored manually for a more readable presentation.
+\xcas{} computes this result by using symbolic periodic summation.
+
+Applying the above technique to more complex circuits involving resistors, capacitors and
+inductors is straightforward; contour analysis by Kirchhoff laws produces a system of linear
+differential equations which is transformed to a system of linear equations by Laplace transform.
+From there, it is easy to find transforms of contour currents.
 
 \subsection{Solving linear homogeneous second-order ODE with rational coefficients%: \texttt{kovacicsols}
   \label{ssec:kovacicsols}}
@@ -22956,7 +23361,7 @@ variable.   \texttt{kovacicsols} uses Kovacic's algorithm.
 \end{itemize}
 
 \subsubsection*{Examples}
-Find the general solution to $\displaystyle y\dPrime=\left(\frac{1}{x}-\frac{3}{16\,x^2}\right)\,y$.
+Find the general solution to $ y\dPrime=\left(\frac{1}{x}-\frac{3}{16\,x^2}\right)\,y$.
 \begin{xcasinput}
 kovacicsols(y''=y*(1/x-3/16x^2))
 \end{xcasinput}
@@ -22966,7 +23371,7 @@ kovacicsols(y''=y*(1/x-3/16x^2))
 Therefore, the general solution is
 $y=C_1\,x^{1/4}\,\mathrm{e}^{2\,\sqrt{x}}+C_2\,x^{1/4}\,\mathrm{e}^{-2\,\sqrt{x}}$.
 
-Solve $\displaystyle x\Prime(t)+\frac{3\,(t^2-t+1)}{16\,(t-1)^2\,t^2}\,x(t)=0$.
+Solve $ x\Prime(t)+\frac{3\,(t^2-t+1)}{16\,(t-1)^2\,t^2}\,x(t)=0$.
 \begin{xcasinput}
 kovacicsols(x''+3*(t^2-t+1)/(16*(t-1)^2*t^2)*x,t,x)
 \end{xcasinput}
@@ -22982,7 +23387,7 @@ so the general solution is, for $C_1,C_2\in\mathbb{R}$,
 \]
 
 Find a particular solution to
-$\displaystyle y\dPrime=\frac{4\,x^6-8\,x^5+12\,x^4+4\,x^3+7\,x^2-20\,x+4}{4\,x^4}\,y$.
+$ y\dPrime=\frac{4\,x^6-8\,x^5+12\,x^4+4\,x^3+7\,x^2-20\,x+4}{4\,x^4}\,y$.
 \begin{xcasinput}
 r:=(4x^6-8x^5+12x^4+4x^3+7x^2-20x+4)/(4x^4);
 kovacicsols(y''=r*y)
@@ -22993,7 +23398,7 @@ kovacicsols(y''=r*y)
 Hence $y=(x^2-1)\,x^{-3/2}\,\mathrm{e}^{\frac{x^3-2\,x^2-2}{2\,x}}$ is
 a solution to the given equation.
 
-Solve $\displaystyle y\dPrime+y\Prime=\frac{6\,y}{x^2}$.
+Solve $ y\dPrime+y\Prime=\frac{6\,y}{x^2}$.
 \begin{xcasinput}
 kovacicsols(y''+y'=6y/x^2)
 \end{xcasinput}
@@ -23029,10 +23434,10 @@ $y=C_1\,\frac{x^2-1}{\sqrt{x^2+1}}+C_2\,\frac{x}{\sqrt{x^2+1}}$,
 where $C_1,C_2\in\mathbb{R}$.
 
 Find the general solution of the
-non-homogeneous equation $\displaystyle y\dPrime-\frac{27\,y}{36\,(x-1)^2}=x+4$.
+non-homogeneous equation $ y\dPrime-\frac{27\,y}{36\,(x-1)^2}=x+4$.
 First you need to find the general solution to the corresponding
 homogeneous equation
-$\displaystyle y_h\dPrime-\frac{27\,y_h}{36\,(x-1)^2}=0$.
+$ y_h\dPrime-\frac{27\,y_h}{36\,(x-1)^2}=0$.
 \begin{xcasinput}
 sols:=kovacicsols(y''-y*27/(36*(x-1)^2),x,y)
 \end{xcasinput}
@@ -23079,7 +23484,7 @@ normal(diff(ysol,x,2)-27/(36*(x-1)^2)*ysol)==f
   \text{true}
 \end{xcasoutput}
 Solve the equation
-$\displaystyle y\dPrime=\left(\frac{3}{16\,x\,(x-1)}-\frac{2}{9\,(x-1)^2}-\frac{3}{16\,x^2}\right)y$
+$ y\dPrime=\left(\frac{3}{16\,x\,(x-1)}-\frac{2}{9\,(x-1)^2}-\frac{3}{16\,x^2}\right)y$
 from the original Kovacic's paper.
 \begin{xcasinput}
 r:=-3/(16x^2)-2/(9*(x-1)^2)+3/(16x*(x-1)):;
@@ -23233,7 +23638,7 @@ series(atan(x),x=+infinity,5)
 \end{xcasoutput}
 Note that the expansion variable and the argument of the
 \texttt{order\_size} function is
-$\displaystyle h=\frac{1}{x} \rightarrow 0 $ as $x\rightarrow+\infty$.
+$ h=\frac{1}{x} \rightarrow 0 $ as $x\rightarrow+\infty$.
 
 Find a 2\textsuperscript{nd}-order expansion of $(2x-1)\mathrm{e}^{\frac{1}{x-1}}$ in the vicinity of
 $x=+\infty$.
@@ -24055,12 +24460,12 @@ command finds the Euler-Lagrange equations for a Lagrangian $f$.
   returns the system of differential Euler-Lagrange equations.
 
   For $n=1$, a single equation is returned:
-  $\displaystyle
+  $
     \frac{\partial f}{\partial y}=\frac{\mathrm{d}}{\mathrm{d}x}\,\frac{\partial f}{\partial y\Prime}
   $.
  
   In general, $n$ equations are returned:
-  $\displaystyle\frac{\partial f}{\partial y_k}=\frac{\mathrm{d}}{\mathrm{d}x}\,\frac{\partial f}{\partial y_k\Prime}$,
+  $\frac{\partial f}{\partial y_k}=\frac{\mathrm{d}}{\mathrm{d}x}\,\frac{\partial f}{\partial y_k\Prime}$,
   $k=1,2,\dots,n$.
 \end{itemize}
 The degrees of these differential equations are kept as low as
@@ -24423,7 +24828,7 @@ subs(y0,[c_0,c_1],c[0])
   \frac{1}{4} \pi  \sin x-\frac{x}{2}
 \end{xcasoutput}
 
-\subsection{An example: Finding the surface of revolution with minimal area}
+\subsection{An example: finding the surface of revolution with minimal area}
 
 In this section, you will find the function 
 $y_0\in D=\{y\in C^1[0,1]:y(0)=1,y(1)=2/3\}$ for which the area of the
@@ -27105,7 +27510,7 @@ or \texttt{kernel}\index{kernel@\texttt{kernel}}
 or \texttt{nullspace}\index{nullspace@\texttt{nullspace}}
 command finds a basis for the kernel of a linear function.
 \begin{itemize}
-\item \noindent\texttt{ker} takes
+\item \texttt{ker} takes
   $A$, a matrix representing a linear function with respect to the
   standard basis.
 \item \texttt{ker($A$)} returns a list of vectors that is a basis of
@@ -28970,7 +29375,7 @@ command uses the conjugate gradient algorithm to solve a linear system of equati
 \end{itemize}
 
 \subsubsection*{Examples}
-We can solve the system $\displaystyle\begin{cases}2x+y=1\\x+5y=0\end{cases}$
+We can solve the system $\begin{cases}2x+y=1\\x+5y=0\end{cases}$
 by entering one of the following commandlines.
 \begin{xcasinput}
 conjugate_gradient([[2,1],[1,5]],[1,0])
@@ -29023,7 +29428,7 @@ normal(gramschmidt([[1,1,1],[0,0,1],[0,1,0]],dot))
 \end{xcasoutput}
 Define a scalar product on the vector space of
 polynomials by
-$\displaystyle P\cdot Q=\int_{-1}^1P(x) Q(x)\,\mathrm{d}x$.
+$ P\cdot Q=\int_{-1}^1P(x) Q(x)\,\mathrm{d}x$.
 Then:
 \begin{xcasinput}
 p_scal(p,q):=integrate(p*q,x,-1,1):;
@@ -29244,17 +29649,17 @@ After the change of origin to $[11/27,(-26)/27,(-29)/54]$,
 the matrix of basis change is:
 \[
   \begin{bmatrix}
-    \displaystyle \frac{\sqrt 6}{3} & \displaystyle\frac{\sqrt 5}{5} & \displaystyle-\frac{\sqrt{30}}{15}\\
-    \displaystyle \frac{\sqrt 6}{6} & 0 & \displaystyle \frac{\sqrt{30}}{6}\\
-    \displaystyle -\frac{\sqrt 6}{6} & \displaystyle \frac{2\sqrt{5}}{5} & \displaystyle \frac{\sqrt{30}}{30}\\
+     \frac{\sqrt 6}{3} & \frac{\sqrt 5}{5} & -\frac{\sqrt{30}}{15}\\
+     \frac{\sqrt 6}{6} & 0 &  \frac{\sqrt{30}}{6}\\
+     -\frac{\sqrt 6}{6} &  \frac{2\sqrt{5}}{5} &  \frac{\sqrt{30}}{30}\\
   \end{bmatrix}.
 \]
 Its parametric equation is:
 \[
   \begin{cases}
-    x=\displaystyle \frac{\sqrt 6\sqrt{\frac{602}{243}}\sin(u)\cos(v)}{3}+\frac{\sqrt 5\sqrt{\frac{602}{81}}\sin(u)\sin(v)}{5}-\frac{\sqrt{30}\sqrt{\frac{602}{81}}\cos(u)}{15}+\frac{11}{27},\\
-    y=\displaystyle \frac{\sqrt 6\sqrt{\frac{602}{243}}\sin(u)\cos(v)}{6}+\frac{\sqrt{30}\sqrt{\frac{602}{81}}\cos(u))}{6}-\frac{26}{27},\\
-    z=\displaystyle \frac{-\sqrt 6\sqrt{\frac{602}{243}}\sin(u)\cos(v)}{6}+\frac{2\sqrt 5\sqrt{\frac{602}{81}}\sin(u)\sin(v)}{5}+\frac{\sqrt{30}\sqrt{\frac{602}{81}}\cos(u)}{30}-\frac{29}{54}.
+    x= \frac{\sqrt 6\sqrt{\frac{602}{243}}\sin(u)\cos(v)}{3}+\frac{\sqrt 5\sqrt{\frac{602}{81}}\sin(u)\sin(v)}{5}-\frac{\sqrt{30}\sqrt{\frac{602}{81}}\cos(u)}{15}+\frac{11}{27},\\
+    y= \frac{\sqrt 6\sqrt{\frac{602}{243}}\sin(u)\cos(v)}{6}+\frac{\sqrt{30}\sqrt{\frac{602}{81}}\cos(u))}{6}-\frac{26}{27},\\
+    z= \frac{-\sqrt 6\sqrt{\frac{602}{243}}\sin(u)\cos(v)}{6}+\frac{2\sqrt 5\sqrt{\frac{602}{81}}\sin(u)\sin(v)}{5}+\frac{\sqrt{30}\sqrt{\frac{602}{81}}\cos(u)}{30}-\frac{29}{54}.
   \end{cases}
 \]
 
@@ -30761,9 +31166,13 @@ lpsolve(1.06x1+0.56x2+3x3,
 
 \subsubsection{Loading problems from files}
 
-Linear (integer) programming problems can be loaded from MPS\footnote{\url{http://web.mit.edu/lpsolve/doc/mps-format.htm}} or CPLEX
-LP\footnote{\url{http://web.mit.edu/lpsolve/doc/CPLEX-format.htm}} format files. The file name should be a string passed as
-the \textit{obj} parameter. If the file name has extension \texttt{.lp}, then CPLEX LP format is assumed. If the extension is \texttt{.mps} resp.~\texttt{.gz}, then MPS resp.~gzipped MPS format is assumed.
+Linear (integer) programming problems can be loaded from
+\href{http://web.mit.edu/lpsolve/doc/mps-format.htm}{MPS} or
+\href{http://web.mit.edu/lpsolve/doc/CPLEX-format.htm}{CPLEX LP} format files.
+The file name should be a string passed as
+the \textit{obj} parameter. If the file name has extension \texttt{.lp}, then
+CPLEX LP format is assumed. If the extension is \texttt{.mps} resp.~\texttt{.gz},
+then MPS resp.~gzipped MPS format is assumed.
 
 For example, assume that the file \texttt{somefile.lp} is stored in
 the working directory and that it contains the following lines of text:
@@ -31509,8 +31918,8 @@ to equality and/or inequality constraints with continuous and/or integer variabl
   written in the AMPL modeling language (such files commonly have the extension \texttt{.mod}).
   \texttt{nlpsolve} contains a very basic parser for such files and is able to read
   problem variables, objective and constraints. For example, problems from
-  \url{https://www.minlplib.org/instances.html} can be loaded this way. Solver parameters
-  can be specified in \textit{opt}.
+  \href{https://www.minlplib.org/instances.html}{MINLPLib} can be loaded this way.
+  Solver parameters can be specified in \textit{opt}.
 \item[Automatic selection of the optimization method.]
   If objective and constraints are twice differentiable, then interior-point method is used.
   If no initial point is provided and there are only box constraints, then differential evolution
@@ -31725,7 +32134,8 @@ a real-valued cost function is minimized, by using the method of simulated annea
 \end{itemize}
 
 \subsubsection*{Examples}
-(The following examples are adapted from GSL documentation, see \url{https://www.gnu.org/software/gsl/doc/html/siman.html}.)
+(The following examples are adapted from GSL documentation, see
+\href{https://www.gnu.org/software/gsl/doc/html/siman.html}{here}.)
 In the first example we find the global minimum of a damped sine wave function%\footnote{Adapted from \url{https://www.gnu.org/software/gsl/doc/html/siman.html\#trivial-example}}
 $f(x)=\mathrm{e}^{-(x-1)^2}\sin(8x)$.
 This function has many local minima but only a single global minimum in the interval $[1.0,1.5]$.
@@ -36137,7 +36547,7 @@ command produces random vectors and matrices.
       \texttt{'randexp($a$)'} for an exponential distribution (see
       \secref{ssec:exponentiald} and \secref{ssec:randexp}).
     \item \texttt{'fisher($n,m$)'}, \texttt{'fisher,$n,m$'} or
-      \textrm{'randfisher($n,m$)'} for a Fisher-Sn\'{e}d\'{e}cor
+      \texttt{'randfisher($n,m$)'} for a Fisher-Sn\'{e}d\'{e}cor
       distribution (see \secref{ssec:fishersnedecor} and
       \secref{ssec:randfisher}).
     \end{itemize}
@@ -36589,7 +36999,7 @@ command gives the density function for the Poisson distribution.
   \end{itemize}
 \item \texttt{poisson($\lambda,k$)} returns the value of the Poisson
   probability density function with parameter $\lambda$ at $x$, namely
-  $\displaystyle\mathrm{e}^{-\lambda}\frac{\lambda^k}{k!}$.
+  $\mathrm{e}^{-\lambda}\frac{\lambda^k}{k!}$.
 \end{itemize}
 
 \subsubsection*{Example}
@@ -37309,8 +37719,8 @@ the cumulative distribution function for the beta distribution.
   $\operatorname{Prob}(x \le X \le y)$.
 \end{itemize}
 It turns out that
-$\texttt{betad\_cdf}(a,b,x)=\displaystyle\frac{\beta(a,b,x)\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$,
-where $\beta(a,b,x)=\displaystyle\int_0^x t^{a-1}(1-t)^{b-1}\,\mathrm{d}t$ (see
+$\texttt{betad\_cdf}(a,b,x)=\frac{\beta(a,b,x)\Gamma(a+b)}{\Gamma(a)\Gamma(b)}$,
+where $\beta(a,b,x)=\int_0^x t^{a-1}(1-t)^{b-1}\,\mathrm{d}t$ (see
 \secref{ssec:beta}).
 
 \subsubsection*{Examples}
@@ -37453,7 +37863,7 @@ called the Lorentz distribution).
   \end{itemize}
 \item \texttt{cauchy(}$\langle a,b,\rangle x$\texttt{)} returns
   the value of the density function at $x$, namely
-  $\displaystyle \frac{b/\pi}{(x-a)^2+b^2}$.
+  $ \frac{b/\pi}{(x-a)^2+b^2}$.
 \end{itemize}
 
 \subsubsection*{Examples}
@@ -37489,7 +37899,7 @@ command computes the cumulative distribution function for the Cauchy distributio
 \item \texttt{cauchy\_cdf(}$\langle a,b,\rangle x,y$\texttt{)} returns
   $\operatorname{Prob}(x \le X \le y)$.
 \end{itemize}
-It turns out that $\texttt{cauchy\_cdf}(a,b,x)=\displaystyle\frac12+\frac1{\pi}\arctan\frac{x-a}{b}$.
+It turns out that $\texttt{cauchy\_cdf}(a,b,x)=\frac12+\frac1{\pi}\arctan\frac{x-a}{b}$.
 
 
 \subsubsection*{Examples}
@@ -37683,7 +38093,7 @@ command computes the cumulative distribution function for the Weibull distributi
 \end{itemize}
 In this case, the Weibull cumulative distribution function is
 given by the formula
-$\texttt{weibull\_cdf}(k,\lambda,\theta,x)=\displaystyle 1-\mathrm{e}^{-(x-\theta)^2\lambda^2}$.
+$\texttt{weibull\_cdf}(k,\lambda,\theta,x)= 1-\mathrm{e}^{-(x-\theta)^2\lambda^2}$.
 
 \subsubsection*{Examples}
 \begin{xcasinput}
@@ -38517,7 +38927,7 @@ chisquaret(L,normald,classes)
 \begin{xcasoutput}
   2.11405080381
 \end{xcasoutput}
-\noindent In this last case, you are given the value of $d^2$ of the statistic
+In this last case, you are given the value of $d^2$ of the statistic
 $D^2=\sum_{j=1}^{k} (n_j-e_j)/e_j$, where $k$ is the number of
 sample classes for \texttt{classes(L,-2,0.25)} (or
 \texttt{classes(L)}), $n_j$ is the size of the $j$th class, and $e_j=
@@ -38578,7 +38988,7 @@ kolmogorovt(randvector(100,normald,0,1),student(2))
 \section{Basic functions}
 
 \subsection{Boxcar function%: \texttt{boxcar}
-  \label{sec:boxcar}}
+  \label{ssec:boxcar}}
 
 The \texttt{boxcar}\index{boxcar@\texttt{boxcar}}
 command creates a function which has the value 1
@@ -38625,7 +39035,7 @@ where it is 1; namely,
 $\Pi(x)=\operatorname{\theta}(x+1/2)-\operatorname{\theta}(x-1/2)$
 where $\operatorname{\theta}$ is the 
 Heaviside function. The rectangle function is a special case of boxcar function
-(see \secref{sec:boxcar}) for $a=-\frac{1}{2}$ and $b=\frac{1}{2}$.
+(see \secref{ssec:boxcar}) for $a=-\frac{1}{2}$ and $b=\frac{1}{2}$.
 
 The \texttt{rect}\index{rect@\texttt{rect}}
 command computes the rectangle function.
@@ -39043,7 +39453,7 @@ plotwav(createwav(fdata),range=[1000,1500])
 \end{xcasimage}
 
 \subsection{Performing thresholding operations on an array%: \texttt{threshold}
-}
+  \label{ssec:threshold}}
 
 The \texttt{threshold}\index{threshold@\texttt{threshold}}
 command changes data in an array by raising (or lowering)
@@ -39204,8 +39614,7 @@ commands compute these coefficients.
   \item $n$, a non-negative integer.
   \item Optionally, $a$, a real number (by default $a=0$).
   \end{itemize}
-\item \
-  \texttt{fourier\_an(}$\textit{expr},x,T,n\,\langle,a\rangle$\texttt{)} returns the
+\item \texttt{fourier\_an(}$\textit{expr},x,T,n\,\langle,a\rangle$\texttt{)} returns the
   Fourier coefficient $a_n$ of a function $f$ of variable $x$ defined on
   $[a,a+T)$ by $f(x)=\textit{expr}$ and such that $f$ is
   periodic with period $T$:
@@ -39220,7 +39629,7 @@ commands compute these coefficients.
   \item $n$, an integer.
   \item Optionally, $a$, a real number (by default $a=0$).
   \end{itemize}
-\item \
+\item
   \texttt{fourier\_bn(}\textit{expr}\texttt{$,x,T,n\,\langle,a\rangle$)} returns the
   Fourier coefficient $b_n$ of a function $f$ of variable $x$ defined on
   $[a,a+T)$ by $f(x)=\textit{expr}$ and such that $f$ is
@@ -39236,8 +39645,7 @@ commands compute these coefficients.
   \item $n$, an integer.
   \item Optionally, $a$, a real number (by default $a=0$).
   \end{itemize}
-\item \
-  \texttt{fourier\_cn(}$\textit{expr},x,T,n\,\langle,a\rangle$\texttt{)} returns the
+\item \texttt{fourier\_cn(}$\textit{expr},x,T,n\,\langle,a\rangle$\texttt{)} returns the
   Fourier coefficient $c_n$ of a function $f$ of variable $x$ defined on
   $[a,a+T)$ by $f(x)=\textit{expr}$ and such that $f$ is
   periodic with period $T$:
@@ -39354,112 +39762,140 @@ fourier_cn(x^2,x,2*pi,0)
   \label{ssec:cfourier}}
 
 The Fourier transform of a function $f$ is defined by
-\begin{equation}\label{eq:fourier-def}
-  F(s)=\int_{-\infty}^{+\infty}\mathrm{e}^{-\mathrm{i}\,s\,x}\,f(x)\,\mathrm{d}x,\quad s\in\mathbb{R}.
-\end{equation}
-The \texttt{fourier}\index{fourier@\texttt{fourier}}
-command computes the Fourier transform.
+\[
+  F(\omega)=\int_{-\infty}^{+\infty}\mathrm{e}^{-\mathrm{i}\,\omega\,t}\,f(t)\,\mathrm{d}t
+  =\mathcal{F}\left\{f(t)\right\}(\omega),
+\]
+where $\omega\in\mathbb{R}$. The \texttt{fourier}\index{fourier@\texttt{fourier}}
+command computes the Fourier transform by table lookup and application of transform properties.
 \begin{itemize}
-\item \texttt{fourier} takes one mandatory argument and two optional
+\item \texttt{fourier} takes one mandatory argument and several optional
   arguments:
   \begin{itemize}
   \item \textit{expr}, an expression which defines a function
-    $f(x)=\textit{expr}$.
-  \item Optionally, $x$, the variable for $f$ (by default
-    \texttt{x}).
-  \item Optionally, $s$, the variable for the Fourier
-    transform (by default $x$).
+    $f(t)=\textit{expr}$.
+  \item Optionally, $t$, the variable for $f$ (by default
+    \texttt{t}).
+  \item Optionally, $\omega$, the variable for the Fourier
+    transform (by default \texttt{omega}).
+  \item Optionally, a sequence of arguments in form \texttt{opt=}\textit{bool}, where
+  \textit{bool} is a boolean value and \texttt{opt} is one of the following:
+    \begin{itemize}
+      \item \texttt{int} or \texttt{integrate} or \texttt{Int} or \texttt{Integrate},
+      for specifying whether symbolic integration should be attempted for unknown
+      transform pairs (by default, this is disabled).
+      \item \texttt{diff} or \texttt{derive}, for specifying whether to attempt transforming
+      the derivatives of unknown transform pairs (by default, this is disabled).
+    \end{itemize}
   \end{itemize}
-\item \texttt{fourier(}$\textit{expr}\,\langle,x,s\,\rangle$\texttt{)} returns
-  the Fourier transform $F(s)$.  If $s$
-  is not given, then $x$ will be used.
+\item \texttt{fourier(}$\textit{expr}\,\langle,t,\omega\,\rangle$\texttt{)} returns
+  the Fourier transform $F(\omega)$ of $f(t)$.
 \end{itemize}
 
 The inverse Fourier transform, as its name implies, takes a Fourier
-transform $F(x)$ and returns the original function $f(x)$.  It is
+transform $F(\omega)$ and returns the original function $f(t)$.  It is
 given by:
-\begin{equation}\label{eq:ifourier-def}
-  f(x)=\frac{1}{2\,\pi}\,\int_{-\infty}^{+\infty}\mathrm{e}^{\mathrm{i}\,s\,x}\,F(s)\,\mathrm{d}s.
-\end{equation}
+\[
+  f(t)=\frac{1}{2\,\pi}\,\int_{-\infty}^{+\infty}\mathrm{e}^{\mathrm{i}\,\omega\,t}\,F(\omega)\,
+  \mathrm{d}\omega=\mathcal{F}^{-1}\left\{F(\omega)\right\}(t)=
+  \frac{1}{2\pi}\mathcal{F}\left\{F(\omega)\right\}(-t).
+\]
 The \texttt{ifourier}\index{ifourier@\texttt{ifourier}}
-command computes the inverse Fourier transform.
+command computes the inverse Fourier transform by using the above identity.
 \begin{itemize}
-\item \texttt{ifourier} takes one mandatory argument and two optional
+\item \texttt{ifourier} takes one mandatory argument and several optional
   arguments:
   \begin{itemize}
   \item \textit{expr}, an expression which defines a function
-    $F(x)=\textit{expr}$.
-  \item Optionally, $x$, the variable for $F$ (by default
-    \texttt{x}).
-  \item Optionally, $X$, the variable for the original
-    function $f$ (by default $x$).
+    $F(\omega)=\textit{expr}$.
+  \item Optionally, $\omega$, the variable for $F$ (by default
+    \texttt{omega}).
+  \item Optionally, $t$, the variable for the original
+    function $f$ (by default \texttt{t}).
+  \item Optionally, a sequence of arguments in form \texttt{opt=}\textit{bool}, where
+  \textit{bool} is a boolean value and \texttt{opt} is one of the following:
+    \begin{itemize}
+      \item \texttt{int} or \texttt{integrate} or \texttt{Int} or \texttt{Integrate},
+      for specifying whether symbolic integration should be attempted for unknown
+      transform pairs (by default, this is disabled).
+      \item \texttt{diff} or \texttt{derive}, for specifying whether to attempt finding
+      unknown transform pairs by transforming the derivative of the original
+      (by default, this is disabled).
+    \end{itemize}
   \end{itemize}
-\item \texttt{ifourier(}$\textit{expr}\,\langle,x,X\,\rangle$\texttt{)} returns
-  the inverse Fourier transform $f(X)$.  If $X$
-  is not given, then $x$ will be used.
+\item \texttt{ifourier(}$\textit{expr}\,\langle,\omega,t\,\rangle$\texttt{)} returns
+  the inverse Fourier transform $f(t)$ of $F(\omega)$.
 \end{itemize}
 
-Note the similarity between the definitions of the Fourier
-transform~\eqref{eq:fourier-def} and its inverse~\eqref{eq:ifourier-def}.
-To compute the inverse transformation of
-$F(s)$, it is enough to compute the Fourier transform with function
-$\frac{F(s)}{2\pi}$ and using the variables $s$ and $x$ instead of $x$
-and $s$, and replacing $x$ with $-x$ in the result.
+The \texttt{Fourier}\index{Fourier@\texttt{Fourier}} command is the inert form of
+\texttt{fourier}. It is used by \texttt{fourier} and \texttt{ifourier} when
+returning unknown transforms.
 
 \paragraph*{Transforming rational functions.}
 An arbitrary rational function can be transformed as long as
 its full partial fraction decomposition can be found.
 
 \subsubsection*{Examples}
-Find the Fourier transform of $f(x)=\frac{x}{x^3-19\,x+30}$.
+Find the Fourier transform of $f(t)=\frac{t}{t^3-19\,t+30}$.
 \begin{xcasinput}
-F:=fourier(x/(x^3-19x+30),x,s)
+F:=fourier(t/(t^3-19t+30))
 \end{xcasinput}
 \begin{xcasoutput}
-  \frac{1}{56} \pi  \mathrm{sign}\left(s\right) \left(16 \mathrm{i} \mathrm{e}^{-2 \mathrm{i} s}
-    -21 \mathrm{i} \mathrm{e}^{-3 \mathrm{i} s}
-    +5 \mathrm{i} \mathrm{e}^{5 \mathrm{i} s}\right)
+  \frac{\pi  \left(5 \mathrm{i} \mathrm{e}^{5 \mathrm{i} \omega}-21 \mathrm{i} \mathrm{e}^{-3 \mathrm{i} \omega}+16 \mathrm{i} \mathrm{e}^{-2 \mathrm{i} \omega}\right) \mathrm{sign}\left(\omega\right)}{56}
 \end{xcasoutput}
+Indeed:
 \begin{xcasinput}
-ifourier(F,s,x)
+ifourier(F)
 \end{xcasinput}
 \begin{xcasoutput}
-  \frac{x}{x^{3}-19 x+30}
+  \frac{t}{t^{3}-19 t+30}
 \end{xcasoutput}
-
-Find the transform of $ f(x)=\frac{x^2+1}{x^2-1}$.
+Find the transform of $ f(t)=\frac{t^2+1}{t^2-1}$.
 \begin{xcasinput}
-F:=fourier((x^2+1)/(x^2-1),x,s)
+F:=fourier((t^2+1)/(t^2-1))
 \end{xcasinput}
 \begin{xcasoutput}
-  2 \pi  \left(\operatorname{\delta}\left(s\right)-\mathrm{sign}\left(s\right) \sin s\right)
+  2 \pi  \left(\operatorname{\delta}\left(\omega\right)-\mathrm{sign}\left(\omega\right) \sin \omega\right)
 \end{xcasoutput}
+Indeed:
 \begin{xcasinput}
-ifourier(F,s,x)
+ifourier(F)
 \end{xcasinput}
 \begin{xcasoutput}
-  \frac{x^{2}+1}{x^{2}-1}
+  \frac{t^{2}+1}{t^{2}-1}
 \end{xcasoutput}
-
-\paragraph*{Transforming general functions.}
-A range of other (generalized) functions and distributions can be
-transformed, as demonstrated in the following examples. If
-\texttt{fourier} does not know how to transform a function, it returns
-the unevaluated integral~\eqref{eq:fourier-def}. In these cases you
-may try to evaluate the result using \texttt{eval}.
-
-\subsubsection*{Examples}
+Find the transform of $f(t)=\frac{2}{1+4t^4}$.
+\begin{xcasinput}
+F:=fourier(2/(1+4t^4))
+\end{xcasinput}
+\begin{xcasoutput}
+  \pi  \left(\sin \left(\frac{\left|\omega\right|}{2}\right)+\cos \left(\frac{\left|\omega\right|}{2}\right)\right) \mathrm{e}^{-\frac{\left|\omega\right|}{2}}
+\end{xcasoutput}
+Indeed:
+\begin{xcasinput}
+ifourier(F)
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{2}{4 t^{4}+1}
+\end{xcasoutput}
+As a special case, you can transform all poylnomials. For example:
 \begin{xcasinput}
 fourier(3x^2+2x+1,x,s)
 \end{xcasinput}
 \begin{xcasoutput}
   2 \pi  \left(\operatorname{\delta}\left(s\right)+2 \mathrm{i} \operatorname{\delta}\left(s,1\right)-3 \operatorname{\delta}\left(s,2\right)\right)
 \end{xcasoutput}
+
+\paragraph*{Transforming general functions.}
+A range of other (generalized) functions and distributions can be
+transformed, as demonstrated in the following examples.
+
+\subsubsection*{Examples}
 \begin{xcasinput}
-fourier(Dirac(x-1)+Dirac(x+1),x,s)
+fourier(Dirac(x-1)+Dirac(x+1),x)
 \end{xcasinput}
 \begin{xcasoutput}
-  2 \cos s
+  2 \cos \omega
 \end{xcasoutput}
 \begin{xcasinput}
 fourier(exp(-2*abs(x-1)),x,s)
@@ -39467,12 +39903,12 @@ fourier(exp(-2*abs(x-1)),x,s)
 \begin{xcasoutput}
   \frac{4 \mathrm{e}^{-\mathrm{i} s}}{s^{2}+4}
 \end{xcasoutput}
-\begin{xcasinput}
-fourier(atan(1/(2x^2)),x,s)
-\end{xcasinput}
-\begin{xcasoutput}
-  \frac{2 \pi  \mathrm{e}^{-\frac{\left|s\right|}{2}} \sin \left(\frac{s}{2}\right)}{s}
-\end{xcasoutput}
+% \begin{xcasinput}
+% fourier(atan(1/(2x^2)),x,s)
+% \end{xcasinput}
+% \begin{xcasoutput}
+%   \frac{2 \pi  \mathrm{e}^{-\frac{\left|s\right|}{2}} \sin \left(\frac{s}{2}\right)}{s}
+% \end{xcasoutput}
 \begin{xcasinput}
 fourier(BesselJ(3,x),x,s)
 \end{xcasinput}
@@ -39495,7 +39931,19 @@ ifourier(F,s,x)
 fourier(log(abs(x)),x,s)
 \end{xcasinput}
 \begin{xcasoutput}
-  -\frac{\pi  \left(2 \gamma  \operatorname{\delta}\left(s\right) \left|s\right|+1\right)}{\left|s\right|}
+  -\frac{\pi }{\left|s\right|}-2 \pi  \gamma  \operatorname{\delta}\left(s\right)
+\end{xcasoutput}
+\begin{xcasinput}
+F:=fourier(abs(2t-3)^(-3/4))
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{\Gamma\left(\frac{1}{4}\right) \sqrt{\sqrt{2}+2} \left(\left|\omega\right|^{\frac{1}{4}}\right)^{3} \mathrm{e}^{-\frac{3 \mathrm{i} \omega}{2}}}{\left(2^{\frac{1}{4}}\right)^{3} \left|\omega\right|}
+\end{xcasoutput}
+\begin{xcasinput}
+ifourier(F)
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{1}{\left(\left|-2 t+3\right|^{\frac{1}{4}}\right)^{3}}
 \end{xcasoutput}
 \begin{xcasinput}
 fourier(rect(x),x,s)
@@ -39528,12 +39976,6 @@ ifourier(F,s,x)
   \frac{2}{\mathrm{e}^{-2 x}+\mathrm{e}^{2 x}}
 \end{xcasoutput}
 \begin{xcasinput}
-fourier(Airy_Ai(x/2),x,s)
-\end{xcasinput}
-\begin{xcasoutput}
-  2 \mathrm{e}^{\frac{8}{3} \mathrm{i} s^{3}}
-\end{xcasoutput}
-\begin{xcasinput}
 F:=fourier(Gamma(1+i*x/3),x,s)
 \end{xcasinput}
 \begin{xcasoutput}
@@ -39546,19 +39988,19 @@ ifourier(F,s,x)
   \Gamma\left(\frac{1}{3} \mathrm{i} x+1\right)
 \end{xcasoutput}
 \begin{xcasinput}
-F:=fourier(atan(x/4)/x,x,s)
+fourier(atan(x/4)/x,x,s)
 \end{xcasinput}
 \begin{xcasoutput}
   \pi  \mathrm{ugamma}\left(0,4 \left|s\right|\right)
 \end{xcasoutput}
+% \begin{xcasinput}
+% ifourier(F,s,x)
+% \end{xcasinput}
+% \begin{xcasoutput}
+%   \frac{\arctan \left(\frac{x}{4}\right)}{x}
+% \end{xcasoutput}
 \begin{xcasinput}
-ifourier(F,s,x)
-\end{xcasinput}
-\begin{xcasoutput}
-  \frac{\arctan \left(\frac{x}{4}\right)}{x}
-\end{xcasoutput}
-\begin{xcasinput}
-assume(a>0);
+assume(a>0):;
 fourier(exp(-a*x^2+b),x,s)
 \end{xcasinput}
 \begin{xcasoutput}
@@ -39567,70 +40009,89 @@ fourier(exp(-a*x^2+b),x,s)
 
 Piecewise functions can be transformed if defined as
 \begin{center}
-  \texttt{piecewise(}$x<a_{1},f_{1},x<a_{2},f_{2},\dots,x<a_{n},f_{n},f_{0}$\texttt{)}
+  \texttt{piecewise(}$t<a_{1},f_{1},x<a_{2},f_{2},\dots,t<a_{n},f_{n},f_{0}$\texttt{)}
 \end{center}
 where $f_{0},\dots,f_{n}$ are expressions
 and $a_1,a_2,\dots,a_n $ are real numbers such that
 $a_1<a_2<\cdots<a_n $. Inequalities may be strict or non-strict.
 For example:
 \begin{xcasinput}
-f:=piecewise(x<=-1,exp(x+1),x<=1,1,exp(2-2x)):;
-F:=fourier(f,x,s)
+f:=piecewise(t<-1,exp(t+1),t<1,1,exp(2-2t)):;
+F:=fourier(f)
 \end{xcasinput}
 \begin{xcasoutput}
-  \frac{3 s \cos s-\mathrm{i} s \sin s+4 \sin s}{s \left(s-2 \mathrm{i}\right) \left(s+\mathrm{i}\right)}
+  \frac{-\mathrm{i} \omega \sin \omega+3 \omega \cos \omega+4 \sin \omega}{\omega \left(\omega-2 \mathrm{i}\right) \left(\omega+\mathrm{i}\right)}
 \end{xcasoutput}
-You can obtain the original function $f$ from the above result by
-using \texttt{ifourier}.
+%You can obtain the original function $f$ from the above result by using \texttt{ifourier}.
 \begin{xcasinput}
-ifourier(F,s,x)
+ifourier(F)
 \end{xcasinput}
 \begin{xcasoutput}
-  \operatorname{\theta}\left(-x-1\right) \mathrm{e}^{x+1}+\operatorname{\theta}\left(x+1\right)+\operatorname{\theta}\left(x-1\right) \mathrm{e}^{-2 x+2}-\operatorname{\theta}\left(x-1\right)
+  \operatorname{\theta}\left(-t+1\right)-\operatorname{\theta}\left(-t-1\right)+\operatorname{\theta}\left(t-1\right) \mathrm{e}^{-2 t+2}+\operatorname{\theta}\left(-t-1\right) \mathrm{e}^{t+1}
 \end{xcasoutput}
-You can verify that the above expression is equal to $f(x)$ by
-plotting them.
+You can verify that the above expression coincides with $f(t)$ by plotting
+them together with the \texttt{plot} command. Alternatively, you can apply \texttt{piecewise}
+to the result (see~\secref{ssec:piecewise}):
+\begin{xcasinput}
+piecewise(ans())
+\end{xcasinput}
+\begin{xcasoutput}
+  \begin{cases}\mathrm{e}^{t+1},&t<-1\\1,&t<1\\\mathrm{e}^{-\left(2 t-2\right)},&\text{otherwise}\end{cases}
+\end{xcasoutput}
 
 \paragraph{Convolution Theorem and applications.}
 The Fourier transform behaves nicely when applied to convolutions.
 Recall that the \emph{convolution} $f\ast g$ (see \secref{ssec:convolution})
 of two functions $f$ and $g$ is defined by
 \[
-  (f\ast g)(x)=\int_{-\infty}^{+\infty}f(t)\,g(x-t)\,\mathrm{d}t.
+  (f\ast g)(t)=\int_{-\infty}^{+\infty}f(u)\,g(t-u)\,\mathrm{d}u.
 \]
-The Convolution Theorem states that
-\[
-  \mathcal{F}(f\ast g)=\mathcal{F}(f)\cdot\mathcal{F}(g).
-\]
+The Convolution Theorem states that $\mathcal{F}(f\ast g)=\mathcal{F}(f)\cdot\mathcal{F}(g)$.
+
 As an example, we use this result for computing the
-convolution of $f(x)=\mathrm{e}^{-|x|} $ with itself.
+convolution of $f(t)=\mathrm{e}^{-|t|} $ with itself. Note that
+\xcas{} is unable to compute $f\ast f$ from the definition:
 \begin{xcasinput}
-F:=fourier(exp(-abs(x)),x,s)
+f(t):=exp(-abs(t)):;
+int(f(u)*f(t-u),u=-inf..inf)
+\end{xcasinput}
+% \begin{xcasmsg}
+% Warning, integration of abs or sign assumes constant sign by intervals (correct if the argument is real):\\
+% Check [abs(t),abs(x-t)]\\
+% Discontinuities at zeroes of x-t were not checked\\
+% No checks were made for singular points of antiderivative -exp(-x*sign(x))/(1-1)*sign(t)+(exp(-t*sign(t)+t*sign(-t+x)-x*sign(-t+x)))/(-sign(t)+sign(-t+x)) for definite integration in [-Inf,Inf]
+% \end{xcasmsg}
+\begin{xcasoutput}
+  \mathrm{undef}
+\end{xcasoutput}
+Using Fourier transform:
+\begin{xcasinput}
+F:=fourier(f(t))
 \end{xcasinput}
 \begin{xcasoutput}
-  \frac{2}{s^{2}+1}
+  \frac{2}{\omega^{2}+1}
 \end{xcasoutput}
 \begin{xcasinput}
-ifourier(F^2,s,x)
+collect(ifourier(F^2))
 \end{xcasinput}
 \begin{xcasoutput}
-  -x \operatorname{\theta}\left(-x\right) \mathrm{e}^{x}+x \operatorname{\theta}\left(x\right) \mathrm{e}^{-x}+\mathrm{e}^{-\left|x\right|}
+  \left(\left|t\right|+1\right) \mathrm{e}^{-\left|t\right|}
 \end{xcasoutput}
 The above result is the desired convolution
-$(f\ast f)(x)=\int_{-\infty}^{+\infty}f(t)\,f(x-t)\,\mathrm{d}t$.
+$(f\ast f)(t)=\int_{-\infty}^{+\infty}f(u)\,f(t-u)\,\mathrm{d}u$.
 
 \subsection{Defining symbolic transform pairs%: \texttt{addtable}
   \label{ssec:addtable}}
 
-Some algebraic transformations of a function behave predictably under
+Some algebraic transformations behave predictably under
 the Fourier or Laplace transform.  For example, if $g(x)=f(x-a)$, then
-$\mathcal{F}(g)(s)=\mathrm{e}^{-2\pi i a s}\mathcal{F}(f)(s)$.  The
+$\mathcal{F}\{g\}(s)=\mathrm{e}^{-2\pi \mathrm{i} a s}\mathcal{F}\{f\}(s)$.  The
 \texttt{addtable}\index{addtable@\texttt{addtable}}
 command lets you assign a function name to the
 Fourier (see \secref{ssec:cfourier}) or Laplace\index{laplace@\texttt{laplace}}
 (see \secref{ssec:laplace}) transform of another function name, without specifying the either
 function.  This allows you to alter the original function and see the
-effect on the Fourier (or Laplace) transform.
+effect on the transform.
 \begin{itemize}
 \item \texttt{addtable}\index{addtable@\texttt{addtable}} takes five arguments:
   \begin{itemize}
@@ -39659,16 +40120,28 @@ addtable(fourier,y(x),Y(s),x,s)
   1
 \end{xcasoutput}
 \begin{xcasinput}
-fourier(y(a*x+b),x,s)
+F:=fourier(y(a*x+b),x,s)
 \end{xcasinput}
 \begin{xcasoutput}
   \frac{\mathrm{e}^{\frac{\mathrm{i} b s}{a}} Y\left(\frac{s}{a}\right)}{\left|a\right|}
+\end{xcasoutput}
+\begin{xcasinput}
+ifourier(F,s,x)
+\end{xcasinput}
+\begin{xcasoutput}
+  y\left(a x+b\right)
 \end{xcasoutput}
 \begin{xcasinput}
 fourier(Y(x),x,s)
 \end{xcasinput}
 \begin{xcasoutput}
   2 \pi  y\left(-s\right)
+\end{xcasoutput}
+\begin{xcasinput}
+fourier(y(x)+Int(y(t),t=x..inf),x,s)
+\end{xcasinput}
+\begin{xcasoutput}
+  \frac{Y\left(s\right) \left(\pi  s \operatorname{\delta}\left(s\right)+s+\mathrm{i}\right)}{s}
 \end{xcasoutput}
 \begin{xcasinput}
 addtable(fourier,g(x,t),G(s,t),x,s)
@@ -39684,20 +40157,22 @@ fourier(g(x/2,3*t),x,s)
 \end{xcasoutput}
 
 \paragraph*{ODE solving with Fourier transforms.}
-Fourier transforms can be used for solving linear differential
-equations with constant coefficients. For example, to obtain a
-particular solution to the equation
+Fourier transforms can be used for solving (partial) differential
+equations. For example, to obtain a particular solution to the equation
 \[
-  y(x)+4\,y^{(4)}(x)=\delta(x),
+  y(x)+y\dPrime(x)=x^2\operatorname{\theta}(x),
 \]
-where $ \delta $ is the Dirac delta function, you can first
-transform both sides of the above equation.
+where $ \theta $ is the Heaviside function, you can first
+transform both sides of the above equation. Assuming that the
+symbolic transform pair $\mathcal{F}\{y(x)\}=Y(s)$ has been
+defined by using \texttt{addtable} as above, then:
 \begin{xcasinput}
-L:=fourier(y(x)+4*diff(y(x),x,4),x,s);
-R:=fourier(Dirac(x),x,s)
+L:=fourier(y(x)+diff(y(x),x,2),x,s);
+R:=fourier(x^2*Heaviside(x),x,s)
 \end{xcasinput}
 \begin{xcasoutput}
-  4 s^{4} Y\left(s\right)+Y\left(s\right),1
+  -Y\left(s\right) \left(s+1\right) \left(s-1\right),
+  -\pi  \operatorname{\delta}\left(s,2\right)+\frac{2 \mathrm{i}}{s^{3}}
 \end{xcasoutput}
 Then you can solve the equation $L=R$ for $Y(s)$. Generally, you should
 apply \texttt{csolve} instead of \texttt{solve}.
@@ -39705,17 +40180,43 @@ apply \texttt{csolve} instead of \texttt{solve}.
 sol:=csolve(L=R,Y(s))[0]
 \end{xcasinput}
 \begin{xcasoutput}
-  \frac1{4 s^{4}+1}
+  \frac{\pi  s^{3} \operatorname{\delta}\left(s,2\right)-2 \mathrm{i}}{s^{3} \left(s+1\right) \left(s-1\right)}
 \end{xcasoutput}
 Finally, you can apply \texttt{ifourier} to obtain $y(x)$.
 \begin{xcasinput}
-ifourier(sol,s,x)
+expand(ifourier(sol,s,x))
 \end{xcasinput}
 \begin{xcasoutput}
-  \frac{1}{4} \mathrm{e}^{-\frac{\left|x\right|}{2}} \left(\cos \left(\frac{\left|x\right|}{2}\right)+\sin \left(\frac{\left|x\right|}{2}\right)\right)
+  \frac{x^{2}+x^{2} \mathrm{sign}\left(x\right)+2 \mathrm{sign}\left(x\right) \cos x-2 \mathrm{sign}\left(x\right)-2}{2}
 \end{xcasoutput}
 The above solution can be combined with solutions of the corresponding
 homogeneous equation to obtain the general solution.
+
+For an another example, solve the Airy equation $y\dPrime-x y=0$.
+Its Fourier transform is a first-order linear differential equation in $Y$:
+\begin{xcasinput}
+eq:=fourier(diff(y(x),x,2)-x*y(x),x,s)=0
+\end{xcasinput}
+\begin{xcasoutput}
+  -\mathrm{i} \frac{\mathrm{d}}{\mathrm{d}s}Y\left(s\right)-s^{2} Y\left(s\right)=0
+\end{xcasoutput}
+This equation can be solved by using \texttt{dsolve}:
+\begin{xcasinput}
+dsolve(eq,s,Y)
+\end{xcasinput}
+\begin{xcasoutput}
+  c_{0} \mathrm{e}^{\frac{1}{3} \mathrm{i} s^{3}}
+\end{xcasoutput}
+The above result is the Fourier transform of $y$,
+i.e.~$y(x)=c_0\mathcal{F}^{-1}\left\{\mathrm{e}^{\frac{1}{3} \mathrm{i} s^{3}}\right\}(x)$.
+For $c_0=1$ this is the Airy function of the first kind.
+Indeed:
+\begin{xcasinput}
+fourier(Airy_Ai(x),x,s)
+\end{xcasinput}
+\begin{xcasoutput}
+  \mathrm{e}^{\frac{1}{3} \mathrm{i} s^{3}}
+\end{xcasoutput}
 
 \subsection{Discrete Fourier Transform and Fast Fourier Transform%: \texttt{fft} \texttt{ifft}
   \label{ssec:fft}}
@@ -39764,7 +40265,6 @@ The \texttt{ifft}\index{ifft@\texttt{ifft}} command computes the inverse discret
 
   If $x$ has length which is a power of $2$, then $F_{N}^{-1}(x)$ is
   computed with the Fast Fourier Transform.
-
 \end{itemize}
 
 \subsubsection*{Examples}
@@ -39781,22 +40281,22 @@ ifft([2,-1-i,0,-1+i])
   \left[0.0,1.0,1.0,0.0\right]
 \end{xcasoutput}
 
-\subsubsection{Properties}
+% \subsubsection{Properties}
+%
+% Let $x$ and $y$ be two periodic sequences of period $N$.
+% \begin{itemize}
+% \item The Hadamard product (notation $\odot$) is defined by
+% $ {(x\odot y)}_k=x_k y_k$.
+% \item The convolution product (notation $\ast$) is defined by
+% $ {(x\ast y)}_k=\sum_{j=0}^{N-1}x_jy_{k-j}$.
+% \end{itemize}
+% The following statements hold:
+% \begin{align*}
+%   F_N(x\odot y)&=\left(\frac{1}{N}\right) F_N(x)\ast F_N(y),\\
+%   F_N(x\ast y)&=F_N(x)\odot F_N(y).
+% \end{align*}
 
-Let $x$ and $y$ be two periodic sequences of period $N$.
-\begin{itemize}
-\item The Hadamard product (notation $\odot$) is defined by
-$\displaystyle {(x\odot y)}_k=x_k y_k$.
-\item The convolution product (notation $\ast$) is defined by
-$\displaystyle {(x\ast y)}_k=\sum_{j=0}^{N-1}x_jy_{k-j}$.
-\end{itemize}
-The following statements hold:
-\begin{align*}
-  F_N(x\odot y)&=\left(\frac{1}{N}\right) F_N(x)\ast F_N(y),\\
-  F_N(x\ast y)&=F_N(x)\odot F_N(y).
-\end{align*}
-
-\subsubsection{Applications}
+\subsubsection*{Applications}
 
 \paragraph{Value of a polynomial.}
 Define a polynomial $P(x)=\sum_{j=0}^{N-1}c_jx^j$ by the vector of its
@@ -40061,8 +40561,8 @@ $b=[b_0,b_1,\dots,b_{m-1},0,\dots,0]$, then:
 \[
   P(x)Q(x)=\sum_{j=0}^{n+m-1}(a\ast b)_jx^j.
 \]
-If you know $F_N(a)$ and $F_N(b)$, then $a\ast b=F_N^{-1}(F_N(a)\odot F_N(b))$
-(see above).
+If you know $F_N(a)$ and $F_N(b)$, then $a\ast b=F_N^{-1}(F_N(a)\odot F_N(b))$,
+where $\odot$ denotes the Hadamard (elementwise) product.
 
 \paragraph{Noise removal with spectral subtraction.}
 We use \xcas{} to implement a simple algorithm for static
@@ -40217,10 +40717,11 @@ the GSL library.
 \end{itemize}
 
 \subsubsection*{Examples}
+\paragraph{Signal compression.}
 In the first example (adapted from the GSL documentation,
-see \url{https://www.gnu.org/software/gsl/doc/html/dwt.html}),
+see \href{https://www.gnu.org/software/gsl/doc/html/dwt.html}{here}),
 we load a sample of size 256 from the
-MIT-BIH Arrhythmia Database (see \url{https://physionet.org/content/mitdb/1.0.0/})
+MIT-BIH Arrhythmia Database (see \href{https://physionet.org/content/mitdb/1.0.0/}{here})
 and attempt to remove the noisy information.
 \begin{xcasinput}
 data:=mid(col(csv2gen("/home/luka/Documents/MIT-BIH.csv","\t"),2),300,256):;
@@ -40242,6 +40743,7 @@ listplot(res)
   \includeimage{mit-bih-2.png}
 \end{xcasimage}
 
+\paragraph{Noise reduction in images.}
 In the second example, we attempt to reduce the noise in a noisy image.
 \begin{xcasinput}
 img:=image("/home/luka/Pictures/noisy.jpg")(grey)
@@ -40254,13 +40756,14 @@ We transform the image matrix and replace each component smaller than 55
 it back to obtain a noise-reduced image. (The threshold value was obtained by
 trial and error.) Note that \texttt{dwt} enlarges the input matrix to the size
 $512\times 512$, so we crop the output of \texttt{idwt} back to $300\times 300$.
-We also make sure that no component gets below zero or above 255.
+We also make sure that no component gets below zero or above 255, for which
+we use the \texttt{threshold} command (see~\secref{ssec:threshold}).
 \begin{xcasinput}
 tdata:=dwt(img[0],image):;
 sdata:=threshold(w,55.0=0,'<=',abs=true):;
 nr:=image(1,threshold(round(subMat(idwt(sdata,image),0,0,299,299)),[0,255])):;
 \end{xcasinput}
-Finally, we display the original image and the processed image next to each other for comparison.
+We display the original image and the processed image next to each other for comparison.
 \begin{xcasinput}
 display(img,0); display(nr,320);
 legend(-20i,"original"); legend(320-20i,"denoised")
@@ -40760,8 +41263,8 @@ listplot(welch_window([1$1000]))
 
 \section{Clustering}
 
-Clustering is a form of unsupervised machine learning. \giac{} can perform hierarchical
-clustering and $k$-means clustering.
+Clustering is a form of unsupervised machine learning.
+\xcas{} can perform hierarchical clustering and $k$-means clustering.
 
 \subsection{Hierarchical clustering%: \texttt{cluster}
   \label{sec:hclust}}
@@ -40827,7 +41330,7 @@ taxicab:=(p1,p2)->l1norm(p1-p2)
 
 \subsubsection*{Examples}
 We apply \texttt{cluster} command to an ``aggregation''
-shape dataset\footnote{Source: \url{http://cs.joensuu.fi/sipu/datasets/}}.
+shape dataset (see \href{http://cs.joensuu.fi/sipu/datasets/}{here}).
 The dataset is loaded from file in a table cell in \xcas{} and associated with
 the variable \texttt{data}. We use the \texttt{average} linkage method and \texttt{silhouette}
 index (which is used by default if \texttt{index=true}). By setting \texttt{output} parameter
@@ -40893,8 +41396,8 @@ for clustering numerical multidimensional data.
       \texttt{log-det}, \texttt{log-ss}, \texttt{pbm}, \texttt{ratkowsky-lance},
       \texttt{ray-turi}, \texttt{scott-symons}, \texttt{trace-W}, \texttt{trace-WiB} and \texttt{all}
       (note that you must surround these names by double-quotes).
-      For details, see Desgraupes (2017)\footnote{
-        \url{https://cran.r-project.org/web/packages/clusterCrit/vignettes/clusterCrit.pdf}}.
+      For details, see Desgraupes (2017)
+      (\href{https://cran.r-project.org/web/packages/clusterCrit/vignettes/clusterCrit.pdf}{PDF}).
       \textit{str} may also take a boolean value, in which case either no index is used
       (\textit{str}\texttt{=false}) or the Calinski-Harabasz index is used (\textit{str}\texttt{=true}).
       By default, Hartigan's criterion is used to determine the optimal number of clusters if $k$
@@ -40945,7 +41448,7 @@ kmeans(data,index="calinski-harabasz",output=plot)
 
 \section{Artificial neural networks}
 
-This section explains how to create and train feed-forward neural networks in \giac{}.
+This section explains how to create and train feed-forward neural networks in \xcas{}.
 
 A feed-forward network, more precisely a \textbf{multilayer perceptron}, is comprised of a sequence of at least
 three neuron layers. The first layer is called the \textbf{input layer} and the last layer is
@@ -41174,9 +41677,7 @@ netcopy[block_size]
 
 The command \texttt{train}\index{train@\texttt{train}}
 is used for training neural networks created by the command
-\texttt{neural\_network} (see \secref{sec:nnet1}). Neural networks
-are capable of learning almost any nonlinear function
-if provided with enough training data.
+\texttt{neural\_network} (see \secref{sec:nnet1}).
 \begin{itemize}
 \item \texttt{train} takes three mandatory arguments and one optional argument:
   \begin{itemize}
@@ -41205,6 +41706,8 @@ if provided with enough training data.
 \end{itemize}
 
 \subsubsection*{Examples}
+
+\paragraph{Predicting values of a nonlinear function.}
 In the first example, we demonstrate learning a nonlinear function. Let
 \[ f(x_1,x_2)=x_1\sin(3x_2)\cos(2x_1x_2). \]
 We create a neural network with three hidden layers and train it to predict the value $f(x_1,x_2)$
@@ -41237,8 +41740,8 @@ test_data:=ranm(100,2,uniformd(-1,1)):; test_res:=apply(f,test_data):;
 Next we train the network using 2500 epochs. We test the accuracy in intervals of 250 epochs.
 \begin{xcasinput}
 for epoch from 1 to 2500 do
- net:=train(net,data,res);
- if irem(epoch,250)==0 then print(mean(net(test_data,test_res))); fi;
+  net:=train(net,data,res);
+  if irem(epoch,250)==0 then print(mean(net(test_data,test_res))); fi;
 od:;
 \end{xcasinput}
 \begin{xcasmsg}
@@ -41274,6 +41777,7 @@ To plot the learned surface, use the command:
 plot3d(quote(net([x1,x2])),x1=-1..1,x2=-1..1)
 \end{xcasinput}
 
+\paragraph{Nonlinear separation of data.}
 In the second example we demonstrate learning a simple nonlinear separation of data.
 Let \[f(t)=\frac25+\frac32\left(t-\frac12\right)^2,\] which defines a parabola that splits
 the unit square $S=[0,1]^2$ into two regions. We generate 1024 random points in $S$ and
@@ -41288,7 +41792,7 @@ lab:=apply(g,pts):;
 Next we create a neural network with four hidden layers which we train to label random points in $S$.
 The error function used by default is the log-loss function since we have a binary classifier.
 \begin{xcasinput}
-params:=seq[momentum=adaptive,weight_decay=1e-3,block_size=128]:;
+params:=seq[momentum=adaptive,weight_decay=1e-4,block_size=128]:;
 net:=neural_network([2,10$4,1],classes=["below","above"],params)
 \end{xcasinput}
 \begin{xcasoutput}
@@ -41299,7 +41803,7 @@ Before starting each epoch, the training data is shuffled (thus avoiding symmetr
 \begin{xcasinput}
 for epoch from 1 to 500 do
   p:=randperm(size(pts));
-  net:=train(net,sortperm(pts,p),sortperm(res,p),128);
+  net:=train(net,sortperm(pts,p),sortperm(lab,p),128);
 od:;
 \end{xcasinput}
 Now we test the accuracy of the classifier by using 1000 random test samples which we store in \texttt{tst}.
@@ -41313,17 +41817,26 @@ tst:=ranm(1000,2,uniformd(0,1)):;
   99.8
 \end{xcasoutput}
 
+\paragraph{Computer vision with the MNIST database.}
 In the third example, we train a neural network on the MNIST dataset in PNG format, which can be
-obtained here: \url{https://github.com/myleott/mnist_png}. This dataset contains 60000 training
-grayscale images of handwritten digits in $28\times 28$ resolution, anlogside 10000 testing images.
+obtained \href{https://github.com/myleott/mnist_png}{here}. This dataset contains 60000 training
+grayscale images of handwritten digits in $28\times 28$ resolution, anlogside 10000 testing images
+(see Figure~\ref{fig:mnist}).
+\begin{figure}
+  \centering
+  \includeimage[0.6]{mnist.png}
+  \caption{\label{fig:mnist}Handwritten digits from the MNIST dataset}
+\end{figure}
 Let us assume that the contents of
-\texttt{mnist\_png.tar.gz} is unpacked in the \texttt{Downloads} folder. Now put the files
-\texttt{mnist\_training.csv} and \texttt{mnist\_testing.csv}, which can be obtained here:
-\url{https://github.com/marohnicluka/giac/tree/master/data},
+\texttt{mnist\_png.tar.gz} are unpacked in the \texttt{Downloads} folder. Now put the files
+\texttt{mnist\_training.csv} and \texttt{mnist\_testing.csv}, which can be obtained
+\href{https://github.com/marohnicluka/giac/tree/master/data}{here},
 into the subfolders \texttt{training} and \texttt{testing}, respectively. These CSV files contain
-image paths and labels. We use these files to load and encode training and testing data in \giac{}.
+image paths and labels. We use these files to load and encode training and testing data in \xcas{}.
 
-First we load the training data:
+First we load the training data, which takes several minutes.
+Note that we flatten and normalize the images, so that
+the training vectors contain numbers strictly in $[0,1]$ (see~\secref{sec:images}).
 \begin{xcasinput}
 train_path:="/home/luka/Downloads/mnist_png/training/":;
 train_csv:=csv2gen(train_path+"mnist_training.csv",","):;
@@ -41333,8 +41846,6 @@ for k from 1 to size(train_csv) do
   train_data[k-1]=<flatten(image(train_path+train_csv[k-1,0]))/255.0;
 od:;
 \end{xcasinput}
-Loading images takes several minutes. Note that we flatten and normalize the images, so that
-the training vectors contain numbers strictly in $[0,1]$.
 
 We load the testing images in a similar manner and store the data in \texttt{test\_data} and
 \texttt{test\_lab}.
@@ -41352,7 +41863,8 @@ Note that we use ReLU activation in hidden layers (by default, tanh is used for 
 He normal initialization for weights.
 
 We train the network with batch size 100 by iterating over 5 epochs.
-Training data is shuffled before each epoch and the mean error on testing data is printed after each epoch.
+Training data is shuffled before each epoch and the mean error on testing data
+is printed after each epoch. The training takes about a minute.
 \begin{xcasinput}
 for epoch from 1 to 5 do
   p:=randperm(size(train_data));
@@ -41360,8 +41872,6 @@ for epoch from 1 to 5 do
   print(mean(net(test_data,test_lab)));
 od:;
 \end{xcasinput}
-(The training takes about a minute.)\\
-Output in the message window:
 \begin{xcasmsg}
   0.110725006182\\
   0.104843072908\\
@@ -41369,17 +41879,17 @@ Output in the message window:
   0.0675629083633\\
   0.0626279369745
 \end{xcasmsg}
-The obtained error values are computed using the cross-entropy function, which is
+The printed error values are computed using the cross-entropy function, which is
 used by default in multiclass classifiers.
-To test the accuracy of the network, we use the following command.
+To test the accuracy of the network, use the following command.
 \begin{xcasinput}
 (1-hamdist(net(test_data),test_lab)/size(test_data))*100.0
 \end{xcasinput}
 \begin{xcasoutput}
   97.88
 \end{xcasoutput}
-Therefore, our network recognizes the correct digit upon ``seeing'' an image
-of it in about 98\% of cases.
+Therefore, the network ``reads'' the digit from an image
+correctly in about 98\% of cases.
 
 \chapter{Numerical computations\label{chap:numeric}}
 
@@ -41395,7 +41905,7 @@ optionally followed by the letter \texttt{e} and an integer \emph{exponent}.
 Note that, for example, the real number $10^{-4}$ is an exact number
 but 1e--4 is an approximate representation of this number.
 
-\section{Floating point representation.}
+\section{Floating point representation}
 
 This section discusses how real numbers are represented.
 
@@ -41433,7 +41943,7 @@ point number, otherwise $d$ is denormalized ($\alpha=1-2^{10}$). The
 special exponent $2^{10}$ is used to represent plus or minus infinity
 and NaN (Not a Number). A hardware float is made of 64 bits:
 \begin{itemize}
-\item  the first bit is for the sign of $d$ (0 for $+$ and 1 for $-$)
+\item  the first bit is for the sign of $d$ (0 for $+$ and 1 for $-$),
 \item  the 11 following bits represents the exponent, more precisely
   if $\alpha$ denotes the integer given by the 11 bits,
   the exponent is $\alpha+2^{10}-1$,
@@ -41454,88 +41964,80 @@ Examples of representations of the exponent:
 \item $\alpha=2^{10}$ is coded by 111 1111 1111
 \item $\alpha=2^{-10}-1$ is coded by 000 0000 000
 \end{itemize}
-\paragraph*{Remark.} $2^{-52}=0.2220446049250313$e--15
+\paragraph*{Remark.} $2^{-52}=0.2220446049250313\mathrm{e}{-15}$.
 
 \subsubsection*{Examples of representations of normalized floats}
-\begin{itemize}
-\item Representation of 3.1:
+\paragraph{Representation of 3.1.}
+We have
+\begin{align*}
+  3.1&=2\cdot\left(1+\frac{1}{2}+\frac{1}{2^5}+\frac{1}{2^6}+
+       \frac{1}{2^9}+\frac{1}{2^{10}}+\cdots\right)\\
+     &=2\cdot\left(1+\frac{1}{2}+\sum_{k=1}^\infty\left(\frac{1}{2^{4k+1}}+\frac{1}{2^{4k+2}}\right)\right),
+\end{align*}
+hence $\alpha=1$ and
+$m=\frac{1}{2}+\sum_{k=1}^\infty(\frac{1}{2^{4k+1}}+\frac{1}{2^{4k+2}})$.
+Hence the hexadecimal and binary representation of 3.1 is:
+\begin{center}
+  \begin{tabular}{l}
+    \verb|40 (01000000),  8 (00001000), cc (11001100), cc (11001100),|\\
+    \verb|cc (11001100), cc (11001100), cc (11001100), cd (11001101),|
+  \end{tabular}
+\end{center}
+the last octet is 1101, the last bit is 1, because the
+following digit is 1 (upper rounding).
 
-  We have
-  \begin{align*}
-    3.1&=2\cdot\left(1+\frac{1}{2}+\frac{1}{2^5}+\frac{1}{2^6}+
-         \frac{1}{2^9}+\frac{1}{2^{10}}+\cdots\right)\\
-       &=2\cdot\left(1+\frac{1}{2}+\sum_{k=1}^\infty\left(\frac{1}{2^{4k+1}}+\frac{1}{2^{4k+2}}\right)\right),
-  \end{align*}
-  hence $\alpha=1$ and
-  $m=\frac{1}{2}+\sum_{k=1}^\infty(\frac{1}{2^{4k+1}}+\frac{1}{2^{4k+2}})$.
-  Hence the hexadecimal and binary representation of 3.1 is:
-  \begin{center}
-    \begin{tabular}{l}
-      \verb|40 (01000000),  8 (00001000), cc (11001100), cc (11001100),|\\
-      \verb|cc (11001100), cc (11001100), cc (11001100), cd (11001101),|
-    \end{tabular}
-  \end{center}
-  the last octet is 1101, the last bit is 1, because the
-  following digit is 1 (upper rounding).
-\item  Representation of 3.0:
+\paragraph{Representation of 3.0.}
+We have $3=2\cdot (1+1/2)$.
+Hence the hexadecimal and binary representation of 3 is:
+\begin{center}
+  \begin{tabular}{l}
+    \verb|40 (01000000), 8 (00001000), 0 (00000000), 0 (00000000),|\\
+    \verb|0  (00000000), 0 (00000000), 0 (00000000), 0 (00000000)|
+  \end{tabular}
+\end{center}
+\paragraph{The difference between representations of $3.1-3.0$ and $0.1$.}
+For the representation of 0.1:
+\begin{align*}
+  0.1&=2^{-4}\cdot\left(1+\frac{1}{2}+\frac{1}{2^4}+\frac{1}{2^5}+
+       \frac{1}{2^8}+\frac{1}{2^9}+\cdots\right)\\
+     &=2^{-4}\cdot\sum_{k=0}^\infty\left(\frac{1}{2^{4k}}+\frac{1}{2^{4k+1}}\right),
+\end{align*}
+hence $\alpha=1$ and
+\[
+  m=\frac{1}{2}+\sum_{k=1}^\infty\left(\frac{1}{2^{4k}}+\frac{1}{2^{4k+1}}\right),
+\]
+therefore the representation of 0.1 is
+\begin{center}
+  \begin{tabular}{l}
+    \verb|3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),|\\
+    \verb|99 (10011001), 99 (10011001), 99 (10011001), 9a (10011010),|
+  \end{tabular}
+\end{center}
+the last octet is 1010, indeed the 2 last bits
+01 became 10  because the following digit is 1 (upper rounding).
 
-  We have $3=2\cdot (1+1/2)$.
-  Hence the hexadecimal and binary representation of 3 is:
-  \begin{center}
-    \begin{tabular}{l}
-      \verb|40 (01000000), 8 (00001000), 0 (00000000), 0 (00000000),|\\
-      \verb|0  (00000000), 0 (00000000), 0 (00000000), 0 (00000000)|
-    \end{tabular}
-  \end{center}
-\item
-  Now let us discuss the difference between the representation
-  of $3.1-3.0$ and of $0.1$.
+For the representation of $a=3.1-3$:
+computing $a$ is done by adjusting exponents (here nothing
+to do), then subtracting the mantissa and adjusting the
+exponent of the result to have a normalized float.
+The exponent is $\alpha=-4$ (that corresponds at $2\cdot2^{-5}$)
+and the bits corresponding to the mantissa begin at $1/2=2\cdot2^{-6}$:
+the bits of the mantissa are shifted to the left 5 positions
+and you get:
+\begin{center}
+  \begin{tabular}{l}
+    \verb|3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),|\\
+    \verb|99 (10011001), 99 (10011001), 99 (10011001), a0 (10100000),|
+  \end{tabular}
+\end{center}
+Therefore, $a>0.1$ and  $a-0.1=1/2^{50}+1/2^{51}$
+(since $100000-11010=110$).
 
-  For the representation of 0.1:
-  \begin{align*}
-    0.1&=2^{-4}\cdot\left(1+\frac{1}{2}+\frac{1}{2^4}+\frac{1}{2^5}+
-         \frac{1}{2^8}+\frac{1}{2^9}+\cdots\right)\\
-       &=2^{-4}\cdot\sum_{k=0}^\infty\left(\frac{1}{2^{4*k}}+\frac{1}{2^{4*k+1}}\right),
-  \end{align*}
-  hence $\alpha=1$ and
-  \[
-    m=\frac{1}{2}+\sum_{k=1}^\infty\left(\frac{1}{2^{4*k}}+\frac{1}{2^{4*k+1}}\right),
-  \]
-  therefore the representation of 0.1 is
-  \begin{center}
-    \begin{tabular}{l}
-      \verb|3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),|\\
-      \verb|99 (10011001), 99 (10011001), 99 (10011001), 9a (10011010),|
-    \end{tabular}
-  \end{center}
-  the last octet is 1010, indeed the 2 last bits
-  01 became 10  because the following digit is 1 (upper rounding).
-
-  For the representation of $a=3.1-3$:
- 
-  Computing $a$ is done by adjusting exponents (here nothing
-  to do), then subtracting the mantissa and adjusting the
-  exponent of the result to have a normalized float.
-  The exponent is $\alpha=-4$ (that corresponds at $2\cdot2^{-5}$)
-  and the bits corresponding to the mantissa begin at $1/2=2\cdot2^{-6}$:
-  the bits of the mantissa are shifted to the left 5 positions
-  and you get:
-  \begin{center}
-    \begin{tabular}{l}
-      \verb|3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),|\\
-      \verb|99 (10011001), 99 (10011001), 99 (10011001), a0 (10100000),|
-    \end{tabular}
-  \end{center}
-  Therefore, $a>0.1$ and  $a-0.1=1/2^{50}+1/2^{51}$
-  (since $100000-11010=110$).
-
-  \paragraph*{Remark.}
-  This is the reason why.
+This is the reason why:
 \begin{xcasinput}
 floor(1/(3.1-3))
 \end{xcasinput}
-  returns \texttt{9} and not \texttt{10} when \texttt{Digits:=14}.
-\end{itemize}
+returns \texttt{9} and not \texttt{10} when \texttt{Digits:=14}.
 
 \subsection{Approximate evaluation%: \texttt{evalf} \texttt{approx} \texttt{Digits}
 }
@@ -41664,14 +42166,6 @@ command finds approximate values of integrals using the Romberg method.
   even powers of the step of the trapezoid rule).
 \end{itemize}
 
-\subsubsection*{Example}
-\begin{xcasinput}
-romberg(exp(x^2),x,0,1)
-\end{xcasinput}
-\begin{xcasoutput}
-  1.46265174591
-\end{xcasoutput}
-
 The \texttt{gaussquad}\index{gaussquad@\texttt{gaussquad}}
 command finds an approximate value of an
 integral, calculated by an adaptive method by Ernst Hairer
@@ -41689,7 +42183,13 @@ which uses a 15-point Gaussian quadrature.
   $\int_a^b\textit{expr}\cdot\mathrm{d}\textit{var}$.
 \end{itemize}
 
-\subsubsection*{Examples}
+\subsubsection*{Example}
+\begin{xcasinput}
+romberg(exp(x^2),x,0,1)
+\end{xcasinput}
+\begin{xcasoutput}
+  1.46265174591
+\end{xcasoutput}
 \begin{xcasinput}
 gaussquad(exp(x^2),x,0,1)
 \end{xcasinput}
@@ -44939,13 +45439,13 @@ A vector from one point $(a_{1},b_{1})$ to another $(a_{2},b_{2})$ has
 associated ordered pair $(a_{2}-a_{1},b_{2}-b_{1})$; so the abscissa
 is $a_{2}-a_{1}$ and the ordinate is $b_{2}-b_{1}$.
 
-A complex number $a+bi$ can be associated with the point $(a,b)$ in
+A complex number $a+\mathrm{i}b$ can be associated with the point $(a,b)$ in
 the Cartesian plane.  The complex number is called the \emph{affix} of
 the point.
 
 A point in \xcas{} is specified with the \texttt{point} command
 (see \secref{ssec:2dpoint}), which takes as argument either two real
-numbers $a,b$ or a complex number $a+bi$. In this chapter, when a
+numbers $a,b$ or a complex number $a+\mathrm{i}b$. In this chapter, when a
 command take a point as an argument, the point can either be the
 result of the \texttt{point} command or simply a complex number.
 
@@ -45695,7 +46195,7 @@ one with affix \texttt{2i}.
 }
 
 Let $A$ and $B$ be two points in the plane, with affixes
-$a_1+i a_2$ and $b_1+ib_2$ respectively.
+$a_1+\mathrm{i}a_2$ and $b_1+\mathrm{i}b_2$ respectively.
 \begin{xcasinput}
 A:=point(1+2*i):; B:=point(3+4*i):;
 \end{xcasinput}
@@ -52904,7 +53404,7 @@ icosahedron([0,0,0],[0,0,sqrt(5)],[2,1,0])
 
 \chapter{Multimedia}
 
-\section{Images}
+\section{Images\label{sec:images}}
 
 \subsection{Image structure in \xcas{}\label{sec:imagestruct}}
 
@@ -53301,7 +53801,11 @@ To produce a negative of an image, i.e.~to apply the function $p\mapsto 255-p$ t
 entries, use the unary operator \texttt{-}\index{-@\texttt{-}} or the command
 \texttt{inv}\index{inv@\texttt{inv}}.
 
-\subsection{Extracting data from images}
+\subsection{Extracting data from images\label{ssec:imageprops}}
+
+\paragraph{Printing out information about an image.}
+The \texttt{about} command can be used to print out a brief description
+of an image object, which it takes as its only argument.
 
 \paragraph{Obtaining the size of an image.}
 The size of an image can be obtained by using the
@@ -53611,7 +54115,7 @@ The sound of the single channel of the combination of $L$ and $R$ is
 played.
 
 \subsection{Audio clip properties%: \texttt{about} \texttt{channels} \texttt{bit\_depth} \texttt{samplerate} \texttt{duration}
-\label{ssec:audioclipprops}}
+  \label{ssec:audioclipprops}}
 
 The \texttt{about}\index{about@\texttt{about}},
 \texttt{channels}\index{channels@\texttt{channels}},
@@ -53822,8 +54326,8 @@ command resamples a clip to a desired rate.
   \end{itemize}
 \item \texttt{resample($A\,\langle,r,n\rangle$)}
   returns the audio clip $A$ resampled to rate $r$.
-\item \giac{} does resampling by using the \texttt{libsamplerate}
-  library\footnote{\url{http://www.mega-nerd.com/libsamplerate/}}.
+\item \xcas{} does resampling by using the
+  \href{http://www.mega-nerd.com/libsamplerate/}{\texttt{libsamplerate}} library.
   For more information see the library documentation.
 \end{itemize}
 
@@ -54022,7 +54526,7 @@ command joins two audio clips together with an overlap and optionally a crossfad
   \item $A$, an audio clip.
   \item $B$, an audio clip with the same number of channels,
     bit depth and sample rate as $A$.
-  \item Optionally, \textit{len}, a positive real number defining the overlap size
+  \item Optionally, \textit{len}, a positive integer defining the overlap size
     (by default, \textit{len} is the minimum of $0.5\cdot s$, $L_A/2$, and $L_B/2$, where
     $L_A$ and $L_B$ are the lengths of $A$ and $B$ in samples and $s$ is the sample rate).
   \item Optionally, $p$, a real number defining the crossfade curve
@@ -54041,7 +54545,8 @@ command joins two audio clips together with an overlap and optionally a crossfad
 \end{itemize}
 
 \subsubsection*{Example}
-We load an audio file containing a speech\footnote{Source: \url{https://www2.cs.uic.edu/~i101/SoundFiles/}}
+We load an audio file containing a speech
+(see \href{https://www2.cs.uic.edu/~i101/SoundFiles/}{here})
 and normalize it.
 \begin{xcasinput}
 clip:=normalize(readwav("/home/luka/Downloads/gettysburg.wav"),-1)

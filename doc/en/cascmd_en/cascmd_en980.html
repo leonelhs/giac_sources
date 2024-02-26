@@ -4,47 +4,31 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Tetrahedrons</title>
+<title>Cylinders</title>
 </head>
 <body >
 <a href="cascmd_en979.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en981.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec2416" class="subsection">25.14.2  Tetrahedrons</h3>
-<p>The <span style="font-family:monospace">tetrahedron</span><a id="hevea_default1895"></a>
-or <span style="font-family:monospace">pyramid</span><a id="hevea_default1896"></a>
-command creates tetrahedra.
+<h3 id="sec2420" class="subsection">25.13.3  Cylinders</h3>
+<p>The <span style="font-family:monospace">cylinder</span><a id="hevea_default1897"></a>
+command creates cylinders.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">tetrahedron</span> command takes three or four arguments:
+<span style="font-family:monospace">cylinder</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
-</li><li class="li-itemize">Optionally <span style="font-style:italic">D</span>, another point.
+<span style="font-style:italic">A</span>, a point.
+</li><li class="li-itemize"><span style="font-style:italic">v</span>, a direction vector.
+</li><li class="li-itemize"><span style="font-style:italic">r</span>, a real number.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">tetrahedron(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the regular
-tetrahedron given by:
-<ul class="itemize"><li class="li-itemize">
-One edge is <span style="font-style:italic">AB</span>.
-</li><li class="li-itemize">One face is in the plane <span style="font-style:italic">ABC</span>, on the same side of
-line <span style="font-style:italic">AB</span> as is <span style="font-style:italic">C</span>.
-</li><li class="li-itemize">The tetrahedron is on the side of plane <span style="font-style:italic">ABC</span> that makes the
-points <span style="font-style:italic">A</span>, <span style="font-style:italic">B</span> and <span style="font-style:italic">C</span> counterclockwise.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">tetrahedron(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>,<span style="font-style:italic">D</span><span style="font-family:monospace">)</span> returns and draws the
-tetrahedron <span style="font-style:italic">ABCD</span>.
-</li></ul><h4 id="sec2417" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tetrahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-2,0,0],[2,0,0],[0,2,0])</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">pyramid</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-2,0,0],[2,0,0],[0,2,0])</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">cylinder(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">v</span>,<span style="font-style:italic">r</span><span style="font-family:monospace">)</span> returns and draws the cylinder
+with axis through <span style="font-style:italic">A</span> in the direction <span style="font-style:italic">v</span> with a radius of <span style="font-style:italic">r</span>.
+2θ.
+</li></ul><h4 id="sec2421" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cylinder</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,0],[0,0,1],3)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en366.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tetrahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([-2,0,0],[2,0,0],[0,2,0],[0,0,2])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en367.png">
+<img src="cascmd_en362.png">
 
 </div>
 <hr>

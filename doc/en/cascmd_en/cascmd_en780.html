@@ -4,58 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Converting real numbers to strings</title>
+<title>Writing variable values to a file</title>
 </head>
 <body >
 <a href="cascmd_en779.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en781.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1980" class="subsection">23.5.8  Converting real numbers to strings</h3>
-<p>The <span style="font-family:monospace">format</span><a id="hevea_default1590"></a>
-command converts a real number to a string.
+<h3 id="ssec:write" class="subsection">23.5.3  Writing variable values to a file</h3>
+<p>The <span style="font-family:monospace">write</span><a id="hevea_default1589"></a>
+command saves variable values to a file, to be read later.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">format</span> takes two arguments:
+<span style="font-family:monospace">write</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">r</span>, a real number.
-</li><li class="li-itemize"><span style="font-style:italic">str</span>, a string used for formatting.
+<span style="font-style:italic">filename</span>, a string.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a sequence of variables.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">format(</span><span style="font-style:italic">str</span><span style="font-family:monospace">)</span> returns <span style="font-style:italic">r</span>
-as a string with the requested formatting.
-</li></ul><p>
-The formatting string can be one of the following:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">f</span> (for <em>floating-point</em> format) followed by the number
-of digits to put after the decimal point.</li><li class="li-itemize"><span style="font-family:monospace">s</span> (for <em>scientific</em> format) followed by the
-number of significant digits.</li><li class="li-itemize"><span style="font-family:monospace">e</span> (for <em>engineering</em> format) followed by the
-number of digits to put after the decimal point, with one digit
-before the decimal points.
-</li></ul><h4 id="sec1981" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">format</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)*10^10,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"f13"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</li><li class="li-itemize"><span style="font-family:monospace">write(</span><span style="font-style:italic">filename</span>,<span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
+writes the variables in <span style="font-style:italic">vars</span> assigned to their values in a
+file named <span style="font-style:italic">filename</span>.
+</li></ul><h4 id="sec1980" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=3.14</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=7</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">write</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>creates a file named “foo” containing:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">“14142135623.7308959960938”</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">format</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)*10^10,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"s13"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> a:=(3.14);
+ b:=7;</td></tr>
+</table><p>If you wanted to store the first million digits of π to a file,
+you could set it equal to a variable and store it in a file:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">“14142135623.73”</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">format</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)*10^10,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"e13"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">pidec</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10^6):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">write</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"pi1million"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pidec</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>The file is written so that it can be loaded with the <span style="font-family:monospace">read</span>
+command (Section <a href="cascmd_en073.html#ssec%3Aread">3.5.2</a>), which simply takes a file name as a
+string. This allows you to restore the values of variables saved
+this way, for example in a different session or if you have purged the
+variables.</p><h4 id="sec1981" class="subsubsection">Example</h4>
+<p>
+If, in a different session, you want to use the
+values of <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> above, enter:
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">“1.4142135623731e+10”</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">read</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>This will reassign the values <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">7</span> to
+<span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span>. Be careful, this will silently overwrite
+any values that <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> might have had.</p>
 <hr>
 <a href="cascmd_en779.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

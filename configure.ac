@@ -441,9 +441,11 @@ dnl		AC_CHECK_LIB(GLU, main)
 		;;
 	esac
 	dnl force FLTK static compilation if FLTK not present
-	AC_CHECK_HEADERS(FL/Fl.H,[],[tar xfj fltk-1.3.8-source.tar.bz2 ; cd fltk-1.3.8 && ./configure --disable-shared && make && cd .. && CXXFLAGS="$CXXFLAGS -I../fltk-1.3.8" && LDFLAGS="$LDFLAGS -L../fltk-1.3.8/lib"] ) 
+	AC_CHECK_HEADERS(FL/Fl.H,[],[tar xfj fltk-1.3.8-source.tar.bz2 ; cd fltk-1.3.8 && ./configure --disable-shared && make && cd .. && CXXFLAGS="$CXXFLAGS -I../fltk-1.3.8 -I./fltk-1.3.8" && LDFLAGS="$LDFLAGS -L../fltk-1.3.8/lib -L./fltk-1.3.8/lib"] ) 
 	dnl X11, check for opengl, fltk
 	AC_CHECK_LIB(X11,main)
+	AC_CHECK_LIB(Xcursor,main)
+	AC_CHECK_LIB(Xfixes,main)
 	AC_CHECK_LIB(Xinerama, main)
 	AC_CHECK_LIB(fontconfig, main)
 	AC_CHECK_LIB(Xft, main)

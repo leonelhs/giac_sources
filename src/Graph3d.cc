@@ -76,7 +76,7 @@ namespace xcas {
 
   int Graph3d::opengl2png(const std::string & filename){
     if (!opengl){
-      fl_alert(gettext("Supports only OpenGL rendering"));
+      fl_alert("%s",gettext("Supports only OpenGL rendering"));
       return -1;
     }
 #ifdef HAVE_LIBPNG
@@ -4978,7 +4978,7 @@ int main(){
 
   void Graph3d::switch_renderer() {
 #if 0 // def WIN32
-    fl_alert(gettext("Not supported under Windows. Sticking to OpenGL."));
+    fl_alert("%s",gettext("Not supported under Windows. Sticking to OpenGL."));
     return;
 #endif
     opengl=!opengl;

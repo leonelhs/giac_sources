@@ -4,55 +4,51 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Ordinate of a point or vector in the plane</title>
+<title>Ellipse in the plane</title>
 </head>
 <body >
 <a href="cascmd_en851.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en853.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:2dordinate" class="subsection">24.12.3  Ordinate of a point or vector in the plane</h3>
-<p>See Section <a href="cascmd_en943.html#ssec%3A3dordinate">25.10.2</a> for ordinates in three-dimensional
-geometry.</p><p>The <span style="font-family:monospace">ordinate</span><a id="hevea_default1748"></a>
-command finds the ordinate (<span style="font-style:italic">y</span> coordinate) of a point.
+<h3 id="ssec:2dellipse" class="subsection">24.11.1  Ellipse in the plane</h3>
+<p>For ellipses in space, see Section <a href="cascmd_en944.html#ssec%3A3dellipse">25.9.2</a>.</p><p>The <span style="font-family:monospace">ellipse</span><a id="hevea_default1751"></a>
+command draws ellipses and other conic sections.
+<span style="font-family:monospace">ellipse</span> can take parameters in two different ways.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">ordinate</span> takes
-<span style="font-style:italic">P</span>, a point.
-</li><li class="li-itemize"><span style="font-family:monospace">ordinate(</span><span style="font-style:italic">P</span><span style="font-family:monospace">)</span> returns the ordinate of <span style="font-style:italic">P</span>.
-</li></ul><h4 id="sec2137" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ordinate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<span style="font-family:monospace">ellipse</span> can take one argument:
+<span style="font-style:italic">eqn</span>, a second degree equation in the variables <span style="font-family:monospace">x</span>
+and <span style="font-family:monospace">y</span> (or an expression which will be set to zero).
+</li><li class="li-itemize"><span style="font-family:monospace">ellipse(</span><span style="font-style:italic">eqn</span><span style="font-family:monospace">)</span> returns and draws
+the conic section given by <span style="font-style:italic">eqn</span>.
+</li><li class="li-itemize">Alternatively, <span style="font-family:monospace">ellipse</span> can take three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>, two points.
+</li><li class="li-itemize"><span style="font-style:italic">C</span>, a point or a real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">ellipse(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the ellipse with
+foci <span style="font-style:italic">A</span> and <span style="font-style:italic">B</span> and passing through <span style="font-style:italic">C</span> (if <span style="font-style:italic">C</span> is a point) or
+whose semi-major axis has length <span style="font-style:italic">C</span> (if <span style="font-style:italic">C</span> is a real number).
+</li><li class="li-itemize">Note that if the third argument is a point on the real axis, the
+real affix of the point won’t work, it needs to be specified with
+the <span style="font-family:monospace">point</span> command.
+</li></ul><h4 id="sec2141" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ellipse</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-1)</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ordinate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)-</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en254.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-−1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ordinate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ellipse</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ordinate</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2])</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en255.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">ellipse</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)-1)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en256.png">
+
+</div>
 <hr>
 <a href="cascmd_en851.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

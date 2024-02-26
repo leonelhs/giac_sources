@@ -125,21 +125,30 @@ and
 </div><p>
 all represent the same expression.</p><p>If you want to define a function with several pieces, it may be
 simpler to use the <span style="font-family:monospace">piecewise</span><a id="hevea_default135"></a> function.
+The latter can also be used for finding piecewise representations of expressions.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">piecewise</span> takes an odd number of
-arguments:
+<span style="font-family:monospace">piecewise</span> can take an even number of
+arguments, followed by a single optional argument:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">cond</span><sub>1</sub><span style="font-style:italic">, return</span><sub>1</sub><span style="font-style:italic">,
 cond</span><sub>2</sub><span style="font-style:italic">, return</span><sub>2</sub><span style="font-style:italic">, …, cond</span><sub><span style="font-style:italic">n</span></sub><span style="font-style:italic">,
 return</span><sub><span style="font-style:italic">n</span></sub>, an arbitrary number of pairs
 of conditions and corresponding return values.
-</li><li class="li-itemize"><span style="font-style:italic">default</span>, a result to return if none of the
-conditions are true.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">expr</span>, an expression.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">piecewise(</span><span style="font-style:italic">cond</span><sub>1</sub>,<span style="font-style:italic">return</span><sub>1</sub>,…,<span style="font-style:italic">cond</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">return</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">default</span><span style="font-family:monospace">)</span>
-returns <span style="font-style:italic">return</span><sub><span style="font-style:italic">k</span></sub> if <span style="font-style:italic">cond</span><sub><span style="font-style:italic">k</span></sub> is the first true condition,
-or <span style="font-style:italic">default</span> if none of the conditions are true.
-</li></ul><h4 id="sec120" class="subsubsection">Example</h4>
+Alternatively, <span style="font-family:monospace">piecewise</span> can take one argument, an expression <span style="font-style:italic">expr</span>, optionally
+followed by a second argument <span style="font-style:italic">x</span>, an identifier.
+</li><li class="li-itemize">With conditional arguments,
+<span style="font-family:monospace">piecewise(</span><span style="font-style:italic">cond</span><sub>1</sub>,<span style="font-style:italic">return</span><sub>1</sub>,…,<span style="font-style:italic">cond</span><sub><span style="font-style:italic">n</span></sub>,<span style="font-style:italic">return</span><sub><span style="font-style:italic">n</span></sub> ⟨,<span style="font-style:italic">expr</span> ⟩<span style="font-family:monospace">)</span>
+returns an expression which evaluates to <span style="font-style:italic">return</span><sub><span style="font-style:italic">k</span></sub> if <span style="font-style:italic">cond</span><sub><span style="font-style:italic">k</span></sub>
+is the first true condition, or to <span style="font-style:italic">expr</span> if none of the conditions are true.
+If <span style="font-style:italic">expr</span> is not given, then the default value is <span style="font-family:monospace">undef</span>.
+</li><li class="li-itemize">With a single argument, <span style="font-family:monospace">piecewise(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span>
+returns a piecewise representation of <span style="font-style:italic">expr</span>. This is useful if <span style="font-style:italic">expr</span> involves
+Heaviside/signum/absolute value functions, since <span style="font-family:monospace">piecewise</span> attempts to remove them;
+if it fails, then <span style="font-style:italic">expr</span> is returned. The optional second argument
+may be given, specifying the relevant variable (otherwise it is guessed).
+</li></ul><h4 id="sec120" class="subsubsection">Examples</h4>
 <p>
 To define
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=
@@ -158,7 +167,61 @@ To define
 enter:
 
 </p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):=</span></span><span style="font-weight:bold"><span style="color:#BF0000">piecewise</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;-2,-2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;-1,3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+4,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;0,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)</span></span></td></tr>
-</table><p>To verify, plot <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) for e.g. −3≤ <span style="font-style:italic">x</span>≤ 1.</p>
+</table><p>To verify, plot <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>) for e.g. −3≤ <span style="font-style:italic">x</span>≤ 1.</p><p>To convert the expression
+<span style="font-style:italic">x</span> θ(<span style="font-style:italic">x</span>+1)−<span style="font-style:italic">x</span><sup>2</sup> θ(<span style="font-style:italic">x</span>−1)+<span style="font-style:italic">x</span><sup>3</sup> <span style="font-style:italic">sign</span>(<span style="font-style:italic">x</span>) to a piecewise expression, enter:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">Heaviside</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">Heaviside</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^3*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sign</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
+</table><p>and then
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">piecewise</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">piecewise</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎧<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎩</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">,</span></td><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">−1&gt;</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">,</span></td><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">0&gt;</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">,</span></td><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">1&gt;</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">−</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">,</span></td><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">otherwise</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p><span style="font-family:monospace">piecewise</span> can be used for “flattening” expressions containing piecewise
+defined subexpressions. For example:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">piecewise</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">piecewise</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;0,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1)*</span></span><span style="font-weight:bold"><span style="color:#BF0000">when</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;1/2,4</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,2-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎧<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎩</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">−4 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+1,</span></td><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">0&gt;</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">4 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+1,</span></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">&gt;</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+</table></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">+2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1,</span></td><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">1&gt;</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
+<tr><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">−2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+3,</span></td><td style="text-align:left;white-space:nowrap" ><span style="color:#0000CC">otherwise</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en076.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

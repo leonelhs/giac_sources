@@ -4,123 +4,106 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Logistic regression</title>
+<title>Polygonal paths</title>
 </head>
 <body >
 <a href="cascmd_en649.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en651.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1564" class="subsection">18.2.9  Logistic regression</h3>
-<p>Differential equations of the form <span style="font-style:italic">y</span>′=<span style="font-style:italic">y</span>(<span style="font-style:italic">a</span> <span style="font-style:italic">y</span>+<span style="font-style:italic">b</span>) come up often,
-particularly when studying bounded population growth. With the
-initial condition <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0)=<span style="font-style:italic">y</span>0, the solution is the logistic equation
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">y</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−<span style="font-style:italic">b</span> <span style="font-style:italic">y</span><sub>0</sub></td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span> <span style="font-style:italic">y</span><sub>0</sub>−(<span style="font-style:italic">a</span> <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">b</span>) <span style="font-style:italic">e</span><sup><span style="font-style:italic">b</span>(<span style="font-style:italic">x</span><sub>0</sub>−<span style="font-style:italic">x</span>)</sup></td></tr>
-</table></td><td class="dcell">.
-</td></tr>
-</table><p>
-However, you often do not know the values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>. 
-You can approximate these values given (<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>) and
-[<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>),<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+1),…,<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>−1)] by taking the initial value
-<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>)=<span style="font-style:italic">y</span><sub>0</sub> and the approximation <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>+1) ≈ <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)+<span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>) to
-get the approximations
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+1)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+2)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>)+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+1)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-⋮</td><td style="text-align:left;white-space:nowrap" > </td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >
-<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>) +⋯+ <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>−1)
-</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-Since <span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span>=<span style="font-style:italic">a</span>+<span style="font-style:italic">by</span>, you can take the
-approximate values of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>)/<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>) and use linear interpolation
-to get the best fit values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, and then solve the
-differential equation.</p><p>The <span style="font-family:monospace">logistic_regression</span><a id="hevea_default1262"></a>
-command uses this approach to find the best fit logistic equation for given data.
+<h3 id="sec1555" class="subsection">18.2.3  Polygonal paths</h3>
+<p>The <span style="font-family:monospace">polygonplot</span><a id="hevea_default1254"></a>
+or <span style="font-family:monospace">ligne_polygonale</span><a id="hevea_default1255"></a>
+command draws a polygonal path through given points.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">logistic_regression</span> takes three arguments:
+<span style="font-family:monospace">polygonplot</span> takes one mandatory argument and one optional argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list representing [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>],
-where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">j</span>).
-</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, the initial <span style="font-style:italic">x</span> value.
-</li><li class="li-itemize"><span style="font-style:italic">y</span><sub>0</sub>, the initial <span style="font-style:italic">y</span> value.
+Optionally, <span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
+By default, the <span style="font-style:italic">x</span>-coordinates will be a list of integers
+starting at 0.
+</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">logistic_regression(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub><span style="font-family:monospace">)</span>
-returns a list [<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">C</span>,<span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">R</span>,<span style="font-style:italic">Y</span>] where
-<span style="font-style:italic">y</span> is the logistic function, <span style="font-style:italic">y</span>′ is the derivative,
-<span style="font-style:italic">C</span>=−<span style="font-style:italic">b</span>/<span style="font-style:italic">a</span>, <span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub> is the maximum value of <span style="font-style:italic">y</span>′,
-<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub> is where <span style="font-style:italic">y</span>′ has its maximum, <span style="font-style:italic">R</span> is linear
-correlation coefficient <span style="font-style:italic">R</span> of <span style="font-style:italic">Y</span>=<span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span> as a function of <span style="font-style:italic">y</span> with <span style="font-style:italic">Y</span>=<span style="font-style:italic">a</span> <span style="font-style:italic">y</span>+<span style="font-style:italic">b</span>.
-</li></ul><h4 id="sec1565" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">logistic_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0.0,1.0,2.5],0,1)</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-Pinstant=0.132478632479*Pcumul+0.0206552706553<br>
- Correlation 0.780548607383, Estimated total P=-0.155913978495<br>
- Returning estimated Pcumul, Pinstant, Ptotal, Pinstantmax, tmax, R
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+You can combine two arguments into a matrix with two columns (each
+list becomes a column of the matrix).
+</li><li class="li-itemize"><span style="font-family:monospace">polygonplot(</span>⟨<span style="font-style:italic">xcoords</span>,⟩<span style="font-style:italic">ycoords</span><span style="font-family:monospace">)</span>
+draws the polygonal path through the given points, from left to right
+(so the points are automatically ordered by increasing <span style="font-style:italic">x</span>-coordinate).
+</li></ul><h4 id="sec1556" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polygonplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,4,9,16])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polygonplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,2,3,4],[0,1,4,9,16])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polygonplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[0,0],[1,1],[2,4],[3,9],[4,16]])</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polygonplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[2,4],[0,0],[3,9],[1,1],[4,16]])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en117.png">
+
+</div><p>The <span style="font-family:monospace">listplot</span><a id="hevea_default1256"></a>
+or <span style="font-family:monospace">plotlist</span><a id="hevea_default1257"></a>
+draws a polygonal path, but in an order determined by you.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">plotlist</span> takes
+<span style="font-style:italic">L</span>, a list of points or a list of numbers (which will be taken as
+<span style="font-style:italic">y</span>-coordinates, with the <span style="font-style:italic">x</span>-coordinates being the integers
+starting at 0).
+</li><li class="li-itemize"><span style="font-family:monospace">plotlist(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> draws a polygonal path through the
+points in the order given by the list.
+</li></ul><p>
+Unlike <span style="font-family:monospace">polygonplot</span>, the <span style="font-family:monospace">listplot</span> command
+cannot be given two lists of numbers as arguments.</p><h4 id="sec1557" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[2,4],[0,0],[3,9],[1,1],[4,16]])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en118.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,4,9,16])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en119.png">
+
+</div><p>If you want to get coordinates on the polygonal path, use the
+The <span style="font-family:monospace">linear_interpolate</span><a id="hevea_default1258"></a>
+command will find coordinates on the
+polygonal path.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">linear_interpolate</span> takes four arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">M</span>, a two-row matrix consisting of the <span style="font-style:italic">x</span>-coordinates and the
+<span style="font-style:italic">y</span>-coordinates.
+</li><li class="li-itemize"><span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>, the minimum value of <span style="font-style:italic">x</span> that you are
+interested in.
+</li><li class="li-itemize"><span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>, the maximum value of <span style="font-style:italic">x</span>.
+</li><li class="li-itemize"><span style="font-style:italic">x</span><sub><span style="font-style:italic">step</span></sub>, the step size that you want.
+</li></ul>
+The values of <span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub> and <span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub> must
+be between the smallest and largest <span style="font-style:italic">x</span>-coordinates of the points.
+</li><li class="li-itemize"><span style="font-family:monospace">linear_interpolate(</span><span style="font-style:italic">M</span>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">step</span></sub><span style="font-family:monospace">)</span>
+returns a matrix with two rows, the first row will be
+[<span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>+<span style="font-style:italic">x</span><sub><span style="font-style:italic">step</span></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub>+2<span style="font-style:italic">x</span><sub><span style="font-style:italic">step</span></sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>]
+and the second row will be the corresponding <span style="font-style:italic">y</span>-coordinates of the
+points on the polygonal path.
+</li></ul><h4 id="sec1558" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">linear_interpolate</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,2,6,9],[3,4,6,12]],2,7,1)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
 ⎢<br>
-⎢<br>
-⎣</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">0.155913978495</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1+<span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−0.0554152581707 <span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">0.140088513344+3.14159265359 <span style="font-style:italic">i</span></td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table></td></tr>
-<tr><td class="dcell">&nbsp;</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell">,</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">0.00161022271237</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1+cos</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−<span style="font-style:italic">i</span> </td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">−0.0554152581707 <span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
-⎝</td><td class="dcell">0.140088513344+3.14159265359 <span style="font-style:italic">i</span></td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎞<br>
-⎠</td><td class="dcell">⎞<br>
-⎠</td></tr>
-</table></td></tr>
-</table></td><td class="dcell">,</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >−0.155913978495,−0.000805111356186,2.52797727501+56.6918346552 <span style="font-style:italic">i</span>,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">0.780548607383</td><td class="dcell">⎤<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">6.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">7.0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4.5</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5.5</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">6.0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">8.0</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
 ⎥<br>
-⎥<br>
-⎦</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+⎦</span></td></tr>
 </table></td></tr>
-</table><p>The <span style="font-family:monospace">logistic_regression_plot</span><a id="hevea_default1263"></a>
-command draws the best fit logistic equation.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">logistic_regression_plot</span> takes three arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list representing [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>],
-where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">j</span>).
-</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, the initial <span style="font-style:italic">x</span> value.
-</li><li class="li-itemize"><span style="font-style:italic">y</span><sub>0</sub>, the initial <span style="font-style:italic">y</span> value.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">logistic_regression_plot(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub><span style="font-family:monospace">)</span>
-draws the best fit logistic equation.
-</li></ul><h4 id="sec1566" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">logistic_regression_plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,4,6,8,7,5],0,2.0)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en121.png">
-
-</div>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en649.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

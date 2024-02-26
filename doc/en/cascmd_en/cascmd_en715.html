@@ -4,18 +4,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Poisson window function</title>
+<title>Cosine window function</title>
 </head>
 <body >
 <a href="cascmd_en714.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en716.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1820" class="subsection">19.5.11  Poisson window function</h3>
-<p>The <span style="font-family:monospace">poisson_window</span><a id="hevea_default1412"></a>
-command applies the Poisson window function to a sequence or its segment.
+<h3 id="sec1819" class="subsection">19.5.5  Cosine window function</h3>
+<p>The <span style="font-family:monospace">cosine_window</span><a id="hevea_default1414"></a>
+command applies the cosine window function to a sequence or its segment.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">poisson_window</span> takes one mandatory argument
+<span style="font-family:monospace">cosine_window</span> takes one mandatory argument
 and one to three optional arguments:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-weight:bold"><span style="font-style:italic">v</span></span>, a real vector with length <span style="font-style:italic">n</span>.
@@ -26,33 +26,27 @@ and one to three optional arguments:
 and optionally a real number α (by default, <span style="font-style:italic">m</span>=0 and <span style="font-style:italic">N</span>=<span style="font-style:italic">n</span>).
 </li></ul>
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">poisson_window</span>
+</li><li class="li-itemize"><span style="font-family:monospace">cosine_window</span>
 returns the elementwise product of [<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span></sub>,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+1</sub>,…,<span style="font-style:italic">v</span><sub><span style="font-style:italic">m</span>+<span style="font-style:italic">N</span>−1</sub>]
 and the vector <span style="font-style:italic">w</span> of length <span style="font-style:italic">N</span> defined by
-<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=exp</td><td class="dcell">⎛<br>
+<table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">w</span><sub><span style="font-style:italic">k</span></sub>=sin<sup>α</sup></td><td class="dcell">⎛<br>
 ⎜<br>
 ⎜<br>
-⎝</td><td class="dcell">−α </td><td class="dcell">⎪<br>
-⎪<br>
-⎪<br>
-⎪</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2 <span style="font-style:italic">k</span></td></tr>
+⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span> π</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center"><span style="font-style:italic">N</span>−1</td></tr>
-</table></td><td class="dcell">−1</td><td class="dcell">⎪<br>
-⎪<br>
-⎪<br>
-⎪</td><td class="dcell">⎞<br>
+</table></td><td class="dcell">⎞<br>
 ⎟<br>
 ⎟<br>
 ⎠</td><td class="dcell">,
    <span style="font-style:italic">k</span>=0,1,…,<span style="font-style:italic">N</span>−1.
 </td></tr>
 </table>
-</li></ul><h4 id="sec1821" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">poisson_window</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1</span></span><span style="font-weight:bold"><span style="color:#BF0000">$1000</span></span><span style="font-weight:bold"><span style="color:#BF0000">],2))</span></span></td></tr>
+</li></ul><h4 id="sec1820" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">listplot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">cosine_window</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1</span></span><span style="font-weight:bold"><span style="color:#BF0000">$1000</span></span><span style="font-weight:bold"><span style="color:#BF0000">],1.5))</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en149.png">
+<img src="cascmd_en147.png">
 
 </div>
 <hr>

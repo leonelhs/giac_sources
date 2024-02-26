@@ -4,143 +4,123 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Generating random matrices</title>
+<title>Logistic regression</title>
 </head>
 <body >
 <a href="cascmd_en655.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en657.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:randmatrix" class="subsection">18.3.6  Generating random matrices</h3>
-<p>The <span style="font-family:monospace">randmatrix</span><a id="hevea_default1287"></a>
-or <span style="font-family:monospace">ranm</span><a id="hevea_default1288"></a>
-or <span style="font-family:monospace">randMat</span><a id="hevea_default1289"></a>
-command produces random vectors and matrices.
-(See also Section <a href="cascmd_en346.html#ssec%3Aranm1">10.1.28</a> and Section <a href="cascmd_en655.html#ssec%3Arandvector">18.3.5</a>.)
+<h3 id="sec1574" class="subsection">18.2.9  Logistic regression</h3>
+<p>Differential equations of the form <span style="font-style:italic">y</span>′=<span style="font-style:italic">y</span>(<span style="font-style:italic">a</span> <span style="font-style:italic">y</span>+<span style="font-style:italic">b</span>) come up often,
+particularly when studying bounded population growth. With the
+initial condition <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0)=<span style="font-style:italic">y</span>0, the solution is the logistic equation
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">y</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">−<span style="font-style:italic">b</span> <span style="font-style:italic">y</span><sub>0</sub></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">a</span> <span style="font-style:italic">y</span><sub>0</sub>−(<span style="font-style:italic">a</span> <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">b</span>) <span style="font-style:italic">e</span><sup><span style="font-style:italic">b</span>(<span style="font-style:italic">x</span><sub>0</sub>−<span style="font-style:italic">x</span>)</sup></td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+However, you often do not know the values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>. 
+You can approximate these values given (<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub>) and
+[<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>),<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+1),…,<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>−1)] by taking the initial value
+<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>)=<span style="font-style:italic">y</span><sub>0</sub> and the approximation <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>+1) ≈ <span style="font-style:italic">y</span>(<span style="font-style:italic">t</span>)+<span style="font-style:italic">y</span>′(<span style="font-style:italic">t</span>) to
+get the approximations
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+1)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+2)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>)+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+1)</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+⋮</td><td style="text-align:left;white-space:nowrap" > </td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>)</td><td style="text-align:left;white-space:nowrap" > ≈ <span style="font-style:italic">y</span><sub>0</sub>+<span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>) +⋯+ <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">n</span>−1)
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Since <span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span>=<span style="font-style:italic">a</span>+<span style="font-style:italic">by</span>, you can take the
+approximate values of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>)/<span style="font-style:italic">y</span>(<span style="font-style:italic">x</span>0+<span style="font-style:italic">j</span>) and use linear interpolation
+to get the best fit values of <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, and then solve the
+differential equation.</p><p>The <span style="font-family:monospace">logistic_regression</span><a id="hevea_default1269"></a>
+command uses this approach to find the best fit logistic equation for given data.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">randmatrix</span> takes one mandatory argument and three
-optional arguments:
+<span style="font-family:monospace">logistic_regression</span> takes three arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">p</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span>, an integer.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, a range.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">distr</span>, a distribution, which can be one
-of:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">’rand(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)’</span> (see Section <a href="cascmd_en652.html#ssec%3Arand">18.3.2</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’binomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’binomial,</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">’</span>
-or <span style="font-family:monospace">’randbinomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)’</span>, for a binomial distribution
-(see Section <a href="cascmd_en659.html#ssec%3Abinomial">18.4.3</a> and Section <a href="cascmd_en653.html#ssec%3Arandbinomial">18.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’multinomial(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’multinomial,</span><span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">’</span> or
-<span style="font-family:monospace">’randmultinomial(</span><span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)’</span> for a multinomial distribution
-(see Section <a href="cascmd_en661.html#ssec%3Amultinomial">18.4.5</a> and Section <a href="cascmd_en653.html#ssec%3Arandmultinomial">18.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’poisson(</span>λ<span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’poisson,
-</span>λ<span style="font-family:monospace">’</span> or <span style="font-family:monospace">’randpoisson(</span>λ<span style="font-family:monospace">)’</span> for a Poisson
-distribution (see Section <a href="cascmd_en662.html#ssec%3Apoisson">18.4.6</a> and
-Section <a href="cascmd_en653.html#ssec%3Arandpoisson">18.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’normald(</span>µ,σ<span style="font-family:monospace">)’</span>,
-<span style="font-family:monospace">’normald,</span>µ,σ<span style="font-family:monospace">’</span> or <span style="font-family:monospace">’randnorm(</span>µ,σ<span style="font-family:monospace">)’</span>
-for a normal distribution (see Section <a href="cascmd_en663.html#ssec%3Anormald">18.4.7</a> and
-Section <a href="cascmd_en653.html#ssec%3Arandnorm">18.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’exp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’exp,</span><span style="font-style:italic">a</span><span style="font-family:monospace">’</span> or
-<span style="font-family:monospace">’randexp(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)’</span> for an exponential distribution (see
-Section <a href="cascmd_en671.html#ssec%3Aexponentiald">18.4.15</a> and Section <a href="cascmd_en653.html#ssec%3Arandexp">18.3.3</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">’fisher(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">m</span><span style="font-family:monospace">)’</span>, <span style="font-family:monospace">’fisher,</span><span style="font-style:italic">n</span>,<span style="font-style:italic">m</span><span style="font-family:monospace">’</span> or
-’randfisher(<span style="font-style:italic">n</span>,<span style="font-style:italic">m</span>)’ for a Fisher-Snédécor
-distribution (see Section <a href="cascmd_en666.html#ssec%3Afishersnedecor">18.4.10</a> and
-Section <a href="cascmd_en653.html#ssec%3Arandfisher">18.3.3</a>).
+<span style="font-style:italic">L</span>, a list representing [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>],
+where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">j</span>).
+</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, the initial <span style="font-style:italic">x</span> value.
+</li><li class="li-itemize"><span style="font-style:italic">y</span><sub>0</sub>, the initial <span style="font-style:italic">y</span> value.
 </li></ul>
-Note that <span style="font-style:italic">distr</span> is in quotes.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span><span style="font-family:monospace">)</span> returns a vector of
-length <span style="font-style:italic">n</span> whose elements are integers chosen randomly from
-{−99,−98,…,98,99} with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix
-whose elements are integers chosen randomly from {−99,…,99} with
-equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>,<span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix
-whose elements are integers chosen randomly from [0,<span style="font-style:italic">a</span>) (or (<span style="font-style:italic">a</span>,0]
-is <span style="font-style:italic">a</span> is negative) with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span>,<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span><span style="font-family:monospace">)</span> returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span>
-matrix whose elements are real numbers chosen randomly from
-[<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) with equal probability.
-</li><li class="li-itemize"><span style="font-family:monospace">randmatrix(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">p</span><span style="font-family:monospace">,</span><span style="font-style:italic">distr</span><span style="font-family:monospace">)</span>
-returns an <span style="font-style:italic">n</span>× <span style="font-style:italic">p</span> matrix whose elements are numbers chosen
-randomly according to distribution <span style="font-style:italic">distr</span>.
-</li></ul><h4 id="sec1603" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</li><li class="li-itemize"><span style="font-family:monospace">logistic_regression(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub><span style="font-family:monospace">)</span>
+returns a list [<span style="font-style:italic">y</span>,<span style="font-style:italic">y</span>′,<span style="font-style:italic">C</span>,<span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">R</span>,<span style="font-style:italic">Y</span>] where
+<span style="font-style:italic">y</span> is the logistic function, <span style="font-style:italic">y</span>′ is the derivative,
+<span style="font-style:italic">C</span>=−<span style="font-style:italic">b</span>/<span style="font-style:italic">a</span>, <span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub> is the maximum value of <span style="font-style:italic">y</span>′,
+<span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub> is where <span style="font-style:italic">y</span>′ has its maximum, <span style="font-style:italic">R</span> is linear
+correlation coefficient <span style="font-style:italic">R</span> of <span style="font-style:italic">Y</span>=<span style="font-style:italic">y</span>′/<span style="font-style:italic">y</span> as a function of <span style="font-style:italic">y</span> with <span style="font-style:italic">Y</span>=<span style="font-style:italic">a</span> <span style="font-style:italic">y</span>+<span style="font-style:italic">b</span>.
+</li></ul><h4 id="sec1575" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">logistic_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0.0,1.0,2.5],0,1)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+Pinstant=0.132478632479*Pcumul+0.0206552706553<br>
+ Correlation 0.780548607383, Estimated total P=-0.155913978495<br>
+ Returning estimated Pcumul, Pinstant, Ptotal, Pinstantmax, tmax, R
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
 </span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">−48,54,28,−51,63</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
 ⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">40</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−74</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−87</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">40</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">−19</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">20</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,10)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
 ⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎣</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">0.155913978495</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1+<span style="font-style:italic">e</span></td><td class="dcell"><table class="display"><tr><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">−0.0554152581707 <span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.140088513344+3.14159265359 <span style="font-style:italic">i</span></td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+<tr><td class="dcell">&nbsp;</td></tr>
+</table></td></tr>
+</table></td></tr>
+</table></td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">0.00161022271237</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell">1+cos</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−<span style="font-style:italic">i</span> </td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">−0.0554152581707 <span style="font-style:italic">x</span>+</td><td class="dcell">⎛<br>
+⎝</td><td class="dcell">0.140088513344+3.14159265359 <span style="font-style:italic">i</span></td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">⎞<br>
+⎠</td><td class="dcell">⎞<br>
+⎠</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >−0.155913978495,−0.000805111356186,2.52797727501+56.6918346552 <span style="font-style:italic">i</span>,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">0.780548607383</td><td class="dcell">⎤<br>
 ⎥<br>
-⎦</span></td></tr>
+⎥<br>
+⎦</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,0..1)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+</table><p>The <span style="font-family:monospace">logistic_regression_plot</span><a id="hevea_default1270"></a>
+command draws the best fit logistic equation.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">logistic_regression_plot</span> takes three arguments:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list representing [<span style="font-style:italic">y</span><sub>10</sub>,<span style="font-style:italic">y</span><sub>11</sub>,…,<span style="font-style:italic">y</span><sub>1(<span style="font-style:italic">n</span>−1)</sub>],
+where <span style="font-style:italic">y</span><sub>1<span style="font-style:italic">j</span></sub> represents the value of <span style="font-style:italic">y</span>′(<span style="font-style:italic">x</span><sub>0</sub>+<span style="font-style:italic">j</span>).
+</li><li class="li-itemize"><span style="font-style:italic">x</span><sub>0</sub>, the initial <span style="font-style:italic">x</span> value.
+</li><li class="li-itemize"><span style="font-style:italic">y</span><sub>0</sub>, the initial <span style="font-style:italic">y</span> value.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">logistic_regression_plot(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span><sub>0</sub><span style="font-family:monospace">)</span>
+draws the best fit logistic equation.
+</li></ul><h4 id="sec1576" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">logistic_regression_plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,4,6,8,7,5],0,2.0)</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.384355471935</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.655490326229</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.924850208685</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.159429819323</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.952957109548</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.220945354551</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randmatrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,3,'</span></span><span style="font-weight:bold"><span style="color:#BF0000">randnorm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2,1)')</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<img src="cascmd_en125.png">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.17670501195</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0.653882567048</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.94543112983</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.46150672679</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.19251320854</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2.44211638655</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎦</span></td></tr>
-</table></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+</div>
 <hr>
 <a href="cascmd_en655.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

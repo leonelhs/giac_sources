@@ -4,46 +4,91 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Animation of a 2D graph</title>
+<title>Bezier curves</title>
 </head>
 <body >
 <a href="cascmd_en623.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en625.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1497" class="subsection">17.10.1  Animation of a 2D graph</h3>
-<p>The <span style="font-family:monospace">animate</span><a id="hevea_default1199"></a>
-command creates two-dimensional animations using graphs of
-functions depending on a parameter. (See also Section <a href="cascmd_en600.html#sec%3Aplot2d">17.2.3</a>.)
+<h3 id="sec1492" class="subsection">17.8.1  Bezier curves</h3>
+<p>The Bezier curve with the control points <span style="font-style:italic">P</span><sub>0</sub>,<span style="font-style:italic">P</span><sub>1</sub>,…,<span style="font-style:italic">P</span><sub><span style="font-style:italic">n</span></sub> is the curve
+parameterized by </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">j</span>=0</td></tr>
+</table></td><td class="dcell"> </td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎛<br>
+⎜<br>
+⎝</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">n</span>,<span style="font-style:italic">j</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">t</span></td></tr>
+</table></td><td class="dcell">⎞<br>
+⎟<br>
+⎠</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">j</span></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left">&nbsp;</td></tr>
+</table></td></tr>
+</table></td><td class="dcell"> (1−<span style="font-style:italic">t</span>)<sup><span style="font-style:italic">n</span>−<span style="font-style:italic">j</span></sup> <span style="font-style:italic">P</span><sub><span style="font-style:italic">j</span></sub>.</td></tr>
+</table><p>
+The <span style="font-family:monospace">bezier</span><a id="hevea_default1191"></a>
+command plots Bezier curves.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">animate</span> takes three mandatory arguments and two optional
-arguments:
+<span style="font-family:monospace">bezier</span> takes a sequence of arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving two
-variables, one of which will be regarded as the parameter.
-</li><li class="li-itemize"><span style="font-style:italic">var</span> the name of the (non-parameter)
-variable in the expression, which can also specify a range of
-values <span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
-</li><li class="li-itemize"><span style="font-style:italic">param</span> the name of the parameter, which can also
-specify a range of values.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span>, where <span style="font-style:italic">n</span> is an integer specifying the
-number of frames.<a id="hevea_default1200"></a>
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, which can be
-<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span><a id="hevea_default1201"></a> to specify the discretization
-step or <span style="font-family:monospace">nstep=</span><span style="font-style:italic">n</span> to specify the number of points used to
-graph.<a id="hevea_default1202"></a>
+<span style="font-style:italic">controls</span>, a sequence of control points.
+</li><li class="li-itemize"><span style="font-family:monospace">plot</span>, the symbol.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">animate(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">var</span>,<span style="font-style:italic">param</span>,<span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span> ⟨,<span style="font-style:italic">opt</span> ⟩<span style="font-family:monospace">)</span>
-draws an animation consisting of graph of the function as the
-parameter varies. 
-</li></ul><h4 id="sec1498" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">animate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">..</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">frames</span></span><span style="font-weight:bold"><span style="color:#BF0000">=10,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>The output is an animation beginning with:
-</p><div class="center">
+</li><li class="li-itemize"><span style="font-family:monospace">bezier(</span><span style="font-style:italic">controls</span>,<span style="font-family:monospace">plot</span><span style="font-family:monospace">)</span>
+plots the Bezier curve with the
+given control points.
+</li></ul><h4 id="sec1493" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">bezier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,3-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
 
-<img src="cascmd_en086.png">
+<img src="cascmd_en079.png">
 
-</div>
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">bezier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,0,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1,0),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en080.png">
+
+</div><p>To get the parameterization of the curve, use
+the <span style="font-family:monospace">parameq</span> command (see Section <a href="cascmd_en862.html#ssec%3A2dparam">24.12.8</a>).</p><h4 id="sec1494" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">parameq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">bezier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,3-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1−</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC">+3 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1−</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1+</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">+3 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1−</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">2+</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">3</span></sup><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">3−</span><span style="color:#0000CC"><span style="font-style:italic">i</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">parameq</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">bezier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,1,0]),</span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,1,1])))</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1−</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">,2 </span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><span style="color:#0000CC"> </span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1−</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td><td class="dcell"><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup><span style="color:#0000CC">,</span><span style="color:#0000CC"><span style="font-style:italic">t</span></span><sup><span style="color:#0000CC">2</span></sup></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en623.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

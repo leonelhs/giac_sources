@@ -64,6 +64,17 @@ void py_ck_ctrl_c(){
   // if (ctrl_c_py) raisememerr();
 }
 
+int gc_ramfree(){
+#if MICROPY_ENABLE_GC
+  gc_collect();
+  gc_info_t i;
+  gc_info(&i);
+  return i.free;
+#else
+  return -1;
+#endif
+}
+
 void console_output(const char *,int);
 const char * read_file(const char * filename);
 bool file_exists(const char * filename);

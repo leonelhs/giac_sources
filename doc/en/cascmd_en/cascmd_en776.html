@@ -4,75 +4,134 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Writing output to a file</title>
+<title>Handling errors</title>
 </head>
 <body >
 <a href="cascmd_en775.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en777.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1967" class="subsection">23.5.4  Writing output to a file</h3>
-<p><span style="font-variant:small-caps">Xcas</span> has a basic file I/O support in form of three commands:
-<span style="font-family:monospace">fopen</span>, <span style="font-family:monospace">fprint</span> and <span style="font-family:monospace">fclose</span>. Note that
-reading from files is not supported.</p><p>The <span style="font-family:monospace">fopen</span><a id="hevea_default1582"></a>
-command creates and opens a file to write into.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">fopen</span> takes
-<span style="font-style:italic">filename</span>, a string.
-</li><li class="li-itemize"><span style="font-family:monospace">fopen(</span><span style="font-style:italic">filename</span><span style="font-family:monospace">)</span> creates a file
-named <span style="font-style:italic">filename</span> (and erases it if it already exists).
-</li></ul><p>
-To use this, you need to associate it with a variable
-<span style="font-style:italic">var</span><span style="font-family:monospace">:=fopen(</span><span style="font-style:italic">filename</span><span style="font-family:monospace">)</span>
-which use to refer to the file when printing to it.</p><p>The <span style="font-family:monospace">fprint</span><a id="hevea_default1583"></a>
-command writes to a file.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">fprint</span> takes two mandatory arguments and one optional
-argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">var</span>, a variable name associated with a file through
-<span style="font-family:monospace">fopen</span>.
-</li><li class="li-itemize">Optionally,
-<span style="font-family:monospace">Unquoted</span><a id="hevea_default1584"></a>, the symbol.
-</li><li class="li-itemize"><span style="font-style:italic">info</span>, a list of what you want to write to the file.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">fprint(</span><span style="font-style:italic">var</span> ⟨,<span style="font-family:monospace">Unquote</span> ⟩,<span style="font-style:italic">info</span><span style="font-family:monospace">)</span> writes
-<span style="font-style:italic">info</span> into the file given by <span style="font-style:italic">var</span>. 
-By default, strings in <span style="font-style:italic">info</span> are written with their
-quotation marks, with the option <span style="font-family:monospace">Unquoted</span>, <span style="font-family:monospace">fprint</span>
-will print them with the quotation marks.
-</li></ul><p>The <span style="font-family:monospace">fclose</span><a id="hevea_default1585"></a>
-command closes a previously opened file.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">fclose</span> takes
-<span style="font-style:italic">var</span>, a variable assigned to a file with <span style="font-family:monospace">fopen</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">fclose(</span><span style="font-style:italic">var</span><span style="font-family:monospace">)</span> closes the file given
-by <span style="font-style:italic">var</span> to further writing.
-</li></ul><h4 id="sec1968" class="subsubsection">Example</h4>
+<h3 id="sec1971" class="subsection">23.4.1  Handling errors</h3>
+<p>Some commands produce errors, and if your program tries to run such a
+command it will halt with an error. 
+The <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">try</span></span></span><a id="hevea_default1582"></a> and
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">catch</span></span></span><a id="hevea_default1583"></a>
+commands can help you to avoid halting the program;
+put potentially problematic statements in a block
+following <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">try</span></span></span>, and immediately after the block put
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">catch</span></span></span> with an argument of an unused symbol, and follow that
+with a block of statements that can handle the error.
+</p><div class="center">
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">try</span></span></span> <span style="font-style:italic">tryblock</span> <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">catch</span></span></span> (<span style="font-style:italic">symbol</span>) <span style="font-style:italic">catchblock</span>
+</div><p>
+If <span style="font-style:italic">tryblock</span> does not produce an error,
+then the code
+</p><div class="center">
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">catch</span></span></span> (<span style="font-style:italic">symbol</span>) <span style="font-style:italic">catchblock</span>
+</div><p>
+is not reached. Otherwise,
+if <span style="font-style:italic">tryblock</span> does produce an error, then a
+string describing the error is assigned to <span style="font-style:italic">symbol</span>,
+and <span style="font-style:italic">catchblock</span> is evaluated.</p><h4 id="sec1972" class="subsubsection">Examples</h4>
 <p>
-To write contents to a file, you first need to open the file and
-associate it with a variable.
+The command below produces an error:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fopen</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"bar"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>This creates a file named “bar” (and so erase it if it already
-exists). To write to the file:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">[[1,1]]*[[2,2]]</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=9:; </span></span><span style="font-weight:bold"><span style="color:#BF0000">fprint</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"x+1 is "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)</span></span></td></tr>
-</table><p>This puts
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+</span><span style="color:#0000CC">Error: Invalid dimension</span><span style="color:#0000CC">
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+However, the following command does not produce an error:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> <span style="color:#006600">"x+1 is "</span>10</td></tr>
-</table><p>in the file. Note that the quotation marks are not inserted if you use the
-<span style="font-family:monospace">Unquoted</span> argument:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#0000CC">try</span></span><span style="font-weight:bold"><span style="color:#BF0000"> { [[1,1]]*[[2,2]] } </span></span><span style="font-weight:bold"><span style="color:#0000CC">catch</span></span><span style="font-weight:bold"><span style="color:#BF0000"> (</span></span><span style="font-weight:bold"><span style="color:#BF0000">err</span></span><span style="font-weight:bold"><span style="color:#BF0000">) { </span></span><span style="font-weight:bold"><span style="color:#BF0000">print</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"The error is --- "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">err</span></span><span style="font-weight:bold"><span style="color:#BF0000">) }</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+The error is — Error: Invalid dimension
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=9:; </span></span><span style="font-weight:bold"><span style="color:#BF0000">fprint</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">Unquoted</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"x+1 is "</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)</span></span></td></tr>
-</table><p>This puts
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>With the following program:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> x+1 is 10</td></tr>
-</table><p>in the file. Finally, after you have finished writing what you want
-into the file, you close the file with the <span style="font-family:monospace">fclose</span> command:
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> test(x):={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> y,str,err;
+   <span style="color:#0000CC"><span style="font-weight:bold">try</span></span> {
+     y:=[[1,1]]*x;
+     str:=<span style="color:#006600">"This produced a product."</span>;
+   } <span style="color:#0000CC"><span style="font-weight:bold">catch</span></span> (err) {
+     y:=x;
+     str:=<span style="color:#006600">"This produced an error "</span>+err+<span style="color:#006600">" The input is returned."</span>;
+   }
+   print(str);
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> y;
+ }</td></tr>
+</table><p>input:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fclose</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>This returns <span style="font-family:monospace">1</span> on success and <span style="font-family:monospace">0</span> on failure.</p>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">test</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[2],[2]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >“This produced a product.”</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">4</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+with the text in the pane above the output line.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">test</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[2,2]])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >“This produced an error Error: Invalid dimension The input is returned.”</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">2,2</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">⎤<br>
+⎦</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+with the text in the pane above the output line.</p><p>You can catch this error in other programs. Consider the program:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> g(x):={
+   <span style="color:#0000CC"><span style="font-weight:bold">try</span></span> {
+     <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> f(x);
+   } <span style="color:#0000CC"><span style="font-weight:bold">catch</span></span> (err) {
+     x:=0;
+   }
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> x;
+ }</td></tr>
+</table><p>then:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">(12)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+12
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+since 12 is an integer. With a non-integer input, <span style="font-family:monospace">f(x)</span> gives an error and so
+<span style="font-family:monospace">g(x)</span> returns 0:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">g</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en775.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

@@ -5779,24 +5779,24 @@ namespace xcas {
       if (operation==2){ // root near curt
 	sol=newton(y,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
 	if (sol.type==_DOUBLE_){
-	  fl_alert((gettext("Root at ")+sol.print(contextptr)).c_str());
+	  fl_alert("%s",(gettext("Root at ")+sol.print(contextptr)).c_str());
 	  sto(sol,gen("Zero",contextptr),contextptr);
 	}
       }
       if (operation==4){ // horizontal tangent near curt
 	sol=newton(y1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
 	if (sol.type==_DOUBLE_){
-	  fl_alert((gettext("y'=0, extremum/singular pt at ")+sol.print(contextptr)).c_str());
+	  fl_alert("%s",(gettext("y'=0, extremum/singular pt at ")+sol.print(contextptr)).c_str());
 	  sto(sol,gen("Extremum",contextptr),contextptr);
 	}
       }
       if (operation==5){ // vertical tangent near curt
 	if (x1==1)
-	  fl_alert(gettext("Tool for parametric curves!"));
+	  fl_alert("%s",gettext("Tool for parametric curves!"));
 	else {
 	  sol=newton(x1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
 	  if (sol.type==_DOUBLE_){
-	    fl_alert((gettext("x'=0, vertical or singular: ")+sol.print(contextptr)).c_str());
+	    fl_alert("%s",(gettext("x'=0, vertical or singular: ")+sol.print(contextptr)).c_str());
 	    sto(sol,gen("Vertical",contextptr),contextptr);
 	  }
 	}
@@ -5804,7 +5804,7 @@ namespace xcas {
       if (operation==6){ // inflexion
 	sol=newton(x1*y2-x2*y1,t,curt,NEWTON_DEFAULT_ITERATION,eps,1e-12,true,tmin._DOUBLE_val,tmax._DOUBLE_val,1,0,1,contextptr);
 	if (sol.type==_DOUBLE_){
-	  fl_alert(("x'*y''-x''*y'=0: "+sol.print(contextptr)).c_str());
+	  fl_alert("%s",("x'*y''-x''*y'=0: "+sol.print(contextptr)).c_str());
 	  sto(sol,gen("Inflexion",contextptr),contextptr);
 	}
       }
@@ -5826,9 +5826,9 @@ namespace xcas {
 	  tracemode_disp.push_back(giac::eval(res,1,contextptr));
 	string ss=res.print(contextptr);
 	if (!tegral(f,t,a,b,1e-6,1<<10,res,false,contextptr))
-	  fl_alert((gettext("Numerical Integration Error: ")+ss).c_str());
+	  fl_alert("%s",(gettext("Numerical Integration Error: ")+ss).c_str());
 	else {
-	  fl_alert((ss+": "+res.print(contextptr)).c_str());
+	  fl_alert("%s",(ss+": "+res.print(contextptr)).c_str());
 	  sto(res,gen((operation==9?"Area":"Arclength"),contextptr),contextptr);	  
 	}
       }
@@ -5938,7 +5938,7 @@ namespace xcas {
 	  curve_infos1 = f.print(contextptr)+": "+curve_infos1;
 	}
       }
-      fl_alert((curve_infos1+'\n'+curve_infos2).c_str());
+      fl_alert("%s",(curve_infos1+'\n'+curve_infos2).c_str());
     }
     tracemode_add="";
     if (Gx.type==_DOUBLE_ && Gy.type==_DOUBLE_){
@@ -6791,8 +6791,16 @@ namespace xcas {
 	tstep=wstep->value();
 	if (wsymb->value())
 	  tmp="assume("+string(wname->value())+"=["+print_DOUBLE_(tcurrent)+","+print_DOUBLE_(tmin)+","+print_DOUBLE_(tmax)+","+print_DOUBLE_(tstep)+"])";
-	else
-	  tmp=string(wname->value())+" := element("+print_DOUBLE_(tmin)+".."+print_DOUBLE_(tmax)+","+print_DOUBLE_(tcurrent)+","+print_DOUBLE_(tstep)+")";
+	else {
+    tmp=string(wname->value())+" := element(";
+    bool noint=false;
+    if (Figure * fig=find_figure(f))
+      noint=fig->geo->approx;
+    if (noint || tcurrent!=int(tcurrent))
+      tmp += print_DOUBLE_(tmin)+".."+print_DOUBLE_(tmax)+","+print_DOUBLE_(tcurrent)+","+print_DOUBLE_(tstep)+")";
+    else
+      tmp += print_DOUBLE_(tmin)+".."+print_DOUBLE_(tmax)+","+print_INT_(int(tcurrent))+","+print_DOUBLE_(tstep)+")";      
+  }
 	return 1;
       }
     } // end if (f)
@@ -8891,12 +8899,12 @@ namespace xcas {
     if (pos==-2){
       hp=dynamic_cast<History_Pack *>(g);
       if (hp){
-	for (int i=0;i<hp->children();i++){
-	  if (hp->child(i)==parent()){
-	    position=i;
-	    break;
-	  }
-	}
+        for (int i=0;i<hp->children();i++){
+          if (hp->child(i)==parent()){
+            position=i;
+            break;
+          }
+        }
       }
     }
     else {
@@ -8927,7 +8935,11 @@ namespace xcas {
 	    if (ff.type==_VECT && !ff._VECTptr->empty())
 	      ff = ff._VECTptr->front();
 	    // Change gt value with parameter
-	    ff = symbolic(at_element,gen(makevecteur(ff,value(),Fl_Valuator::step()),_SEQ__VECT));
+      double v=value();
+      bool noint=false;
+      if (Figure * fig=find_figure(g))
+        noint=fig->geo->approx;
+	    ff = symbolic(at_element,gen(makevecteur(ff,(noint || v!=int(v))?gen(v):gen(int(v)),Fl_Valuator::step()),_SEQ__VECT));
 	    gt=symbolic(at_sto,makevecteur(ff,gt._SYMBptr->feuille._VECTptr->back()));
 	    do_cb=true;
 	  }

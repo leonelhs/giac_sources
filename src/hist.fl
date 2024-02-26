@@ -4739,7 +4739,9 @@ else make_history();
 
 Function {main(int argc,char ** argv)} {open return_type int
 } {
-  code {\#ifdef HAVE_LIBMICROPYTHON
+  code {
+//stack_check_init(256*1024);
+\#ifdef HAVE_LIBMICROPYTHON
     python_heap=micropy_init(pythonjs_stack_size,pythonjs_heap_size);
 \#endif
 if (argc==2 && strlen(argv[1])==0)

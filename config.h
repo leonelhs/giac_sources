@@ -266,8 +266,14 @@
 /* Define to 1 if you have the `X11' library (-lX11). */
 #define HAVE_LIBX11 1
 
+/* Define to 1 if you have the `Xcursor' library (-lXcursor). */
+/* #undef HAVE_LIBXCURSOR */
+
 /* Define to 1 if you have the `Xext' library (-lXext). */
 #define HAVE_LIBXEXT 1
+
+/* Define to 1 if you have the `Xfixes' library (-lXfixes). */
+#define HAVE_LIBXFIXES 1
 
 /* Define to 1 if you have the `Xft' library (-lXft). */
 #define HAVE_LIBXFT 1

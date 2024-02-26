@@ -4,63 +4,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Logarithmic regression</title>
+<title>Pie charts</title>
 </head>
 <body >
 <a href="cascmd_en646.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en648.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1555" class="subsection">18.2.6  Logarithmic regression</h3>
-<p>You might expect a set of points to lie on a logarithmic curve
-<span style="font-style:italic">y</span>=<span style="font-style:italic">m</span> ln(<span style="font-style:italic">x</span>)+<span style="font-style:italic">b</span>.
-The <span style="font-family:monospace">logarithmic_regression</span><a id="hevea_default1256"></a>
-command finds the logarithmic curve of best fit.
+<h3 id="sec1545" class="subsection">18.1.15  Pie charts</h3>
+<p>You can draw pie charts using the same structure as bar plots.</p><p>The <span style="font-family:monospace">camembert</span><a id="hevea_default1247"></a>
+command draws pie charts.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">logarithmic_regression</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
-</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
-</li></ul>
-You can combine two arguments into a matrix with two columns (each
-list becomes a column of the matrix).
-</li><li class="li-itemize"><span style="font-family:monospace">logarithmic_regression(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span><span style="font-family:monospace">)</span>
-returns a sequence <span style="font-style:italic">m</span>,<span style="font-style:italic">b</span> of the numbers in the best fit logarithmic
-curve <span style="font-style:italic">y</span>=<span style="font-style:italic">m</span> ln(<span style="font-style:italic">x</span>)+<span style="font-style:italic">b</span>.
-</li></ul><h4 id="sec1556" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">logarithmic_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,1],[2,4],[3,9],[4,16]]))</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">logarithmic_regression</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4],[1,4,9,16]))</span></span></td></tr>
-</table><p>(where the <span style="font-family:monospace">evalf</span> is used to get a numeric approximation to an
-exact expression):
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-10.1506450002,−0.564824055818
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-so the best fit logarithmic curve will be
-<span style="font-style:italic">y</span>=10.1506450002 ln(<span style="font-style:italic">x</span>) −0.564824055818.</p><p>The <span style="font-family:monospace">logarithmic_regression_plot</span><a id="hevea_default1257"></a>
-command draws the best fit logarithmic curve.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">logarithmic_regression_plot</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">xcoords</span>, a list of <span style="font-style:italic">x</span>-coordinates.
-</li><li class="li-itemize"><span style="font-style:italic">ycoords</span>, a list of <span style="font-style:italic">y</span>-coordinates.
-</li></ul>
-You can combine two arguments into a matrix with two columns (each
-list becomes a column of the matrix).
-</li><li class="li-itemize"><span style="font-family:monospace">logarithmic_regression_plot(</span><span style="font-style:italic">xcoords</span>,<span style="font-style:italic">ycoords</span><span style="font-family:monospace">)</span>
-draws the best fit logarithmic curve, and puts the equation and <span style="font-style:italic">R</span><sup>2</sup>
-value above the graph.
-</li></ul><h4 id="sec1557" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">logarithmic_regression_plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4],[1,4,9,16])</span></span></td></tr>
+<span style="font-family:monospace">camembert</span> takes
+<span style="font-style:italic">M</span>, a matrix, where each row consists of a label followed by one or
+more values. If the labels are followed by more than one value,
+then the first row needs to be identifiers.
+</li><li class="li-itemize"><span style="font-family:monospace">camembert(</span><span style="font-style:italic">M</span><span style="font-family:monospace">)</span> draws a pie chart with a sector for each
+label, whose size is determined by the corresponding value. If the
+matrix has more than two columns, then there will be a pie chart for
+each column of values.
+</li></ul><h4 id="sec1546" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">camembert</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"France"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,6],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Germany"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,12],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Switzerland"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,5]])</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en118.png">
+<img src="cascmd_en113.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">camembert</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[2,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"xyz"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abc"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"A"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,2,5],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"B"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,5,6],[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"C"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,6,6]])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en114.png">
 
 </div>
 <hr>

@@ -4,57 +4,79 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Multinomial distribution</title>
+<title>Generating random vectors and lists</title>
 </head>
 <body >
 <a href="cascmd_en660.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en662.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:multinomial" class="subsection">18.4.5  Multinomial distribution</h3>
-<p>If <span style="font-style:italic">X</span> follows a multinomial probability distribution with <span style="font-style:italic">P</span>=
-[<span style="font-style:italic">p</span><sub>0</sub>,<span style="font-style:italic">p</span><sub>1</sub>,…,<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub>] (where <span style="font-style:italic">p</span><sub>0</sub>+⋯+<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub>=1), then for
-<span style="font-style:italic">K</span>=[<span style="font-style:italic">k</span><sub>0</sub>,…,<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>] with <span style="font-style:italic">k</span><sub>0</sub>+⋯+<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>=<span style="font-style:italic">n</span>, the probability that
-<span style="font-style:italic">X</span>=<span style="font-style:italic">K</span> is given by
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><a id="eq:multinomial"></a>
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>!</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span><sub>0</sub>!<span style="font-style:italic">k</span><sub>1</sub>!⋯ <span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>!</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">p</span><sub>0</sub><sup><span style="font-style:italic">k</span><sub>0</sub></sup><span style="font-style:italic">p</span><sub>1</sub><sup><span style="font-style:italic">k</span><sub>1</sub></sup>… <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub><sup><span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub></sup>.
-    (3)</td></tr>
-</table><p>
-The <span style="font-family:monospace">multinomial</span><a id="hevea_default1302"></a>
-command computes the density function for the
-multinomial distribution.
+<h3 id="ssec:randvector" class="subsection">18.3.5  Generating random vectors and lists</h3>
+<p>The <span style="font-family:monospace">randvector</span><a id="hevea_default1293"></a>
+command creates random vectors (see also Section <a href="cascmd_en353.html#ssec%3Aranm1">10.1.28</a>).
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">multinomial</span> takes three arguments:
+<span style="font-family:monospace">randvector</span> takes one mandatory argument and one
+optional argument:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">n</span>, an integer.
-</li><li class="li-itemize"><span style="font-style:italic">P</span>=[<span style="font-style:italic">p</span><sub>0</sub>,<span style="font-style:italic">p</span><sub>1</sub>,…,<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub>], a probability vector
-(i.e., <span style="font-style:italic">p</span><sub><span style="font-style:italic">k</span></sub>≥ 0 for all <span style="font-style:italic">k</span> and <span style="font-style:italic">p</span><sub>0</sub>+⋯+<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub>=1).
-</li><li class="li-itemize"><span style="font-style:italic">K</span>=[<span style="font-style:italic">k</span><sub>0</sub>,…,<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>], a list of integers with <span style="font-style:italic">k</span><sub>0</sub> +
-…+<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub>=<span style="font-style:italic">n</span>.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">X</span>, which can be an integer or a random
+variable. In place of a random variable, the specifications for a
+distribution can be used. (See Section <a href="cascmd_en660.html#ssec%3Arandvar">18.3.4</a> for random
+variables and their specifications.)
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">multinomial(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">P</span>,<span style="font-style:italic">K</span><span style="font-family:monospace">)</span> returns the probability that
-<span style="font-style:italic">X</span>=<span style="font-style:italic">K</span>, given in (<a href="#eq%3Amultinomial">3</a>).
-</li></ul><p>
-You will get an error if
-<span style="font-style:italic">k</span><sub>0</sub>+⋯+<span style="font-style:italic">k</span><sub><span style="font-style:italic">j</span></sub> is not equal to <span style="font-style:italic">n</span>, although you won’t get one if
-<span style="font-style:italic">p</span><sub>0</sub>+⋯+<span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> is not equal to 1.</p><h4 id="sec1628" class="subsubsection">Example</h4>
-<p>
-Suppose you make 10 choices, where each choice is one of
-three items; the first has a 0.2 probability of being chosen, the
-second a 0.3 probability and the third a 0.5 probability.
-The probability that you end up with 3 of the first item, 2 of the
-second and 5 of the third will be:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">multinomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">(10,[0.2,0.3,0.5],[3,2,5])</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">randvector(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">X</span><span style="font-family:monospace">)</span> returns a vector of size <span style="font-style:italic">n</span>
+containing random integers:
+<ul class="itemize"><li class="li-itemize">
+with no second argument, distributed uniformly between
+−99 and +99.
+</li><li class="li-itemize">with a second argument of <span style="font-style:italic">X</span>, distributed uniformly
+between 0 and <span style="font-style:italic">k</span>−1.
+</li><li class="li-itemize">with a second argument the specification of a distribution,
+distributed according to this distribution.
+</li></ul>
+</li></ul><h4 id="sec1611" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.0567
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−64,−30,70</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,5)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,'</span></span><span style="font-weight:bold"><span style="color:#BF0000">rand</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)')</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">2,4,2</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,'</span></span><span style="font-weight:bold"><span style="color:#BF0000">randnorm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1)')</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−0.361127118455,−0.018325111754,1.11875485898</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3,2..4)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">3.18034843914,2.48592940345,2.57507958449</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>

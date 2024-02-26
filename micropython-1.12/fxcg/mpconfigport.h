@@ -40,7 +40,7 @@ int micropython_port_vm_hook_loop() ;
 #define MICROPY_PY_GC               (1) 
 #define MICROPY_ENABLE_FINALISER    (0)
 #define MICROPY_MEM_STATS           (0)
-#define MICROPY_DEBUG_PRINTERS      (1)
+#define MICROPY_DEBUG_PRINTERS      (0)
 #define MICROPY_HELPER_REPL         (1)
 #define MICROPY_HELPER_LEXER_UNIX   (1)
 #define MICROPY_ENABLE_SOURCE_LINE  (1)
@@ -110,7 +110,7 @@ int micropython_port_vm_hook_loop();
 #define MICROPY_VM_HOOK_LOOP micropython_port_vm_hook_loop();
 #define MICROPY_KBD_EXCEPTION (1)
 
-extern const struct _mp_obj_module_t mp_module_nsp;
+extern const struct _mp_obj_module_t mp_module_ion;
 extern const struct _mp_obj_module_t mp_module_graphic;
 extern const struct _mp_obj_module_t mp_module_cas;
 extern const struct _mp_obj_module_t mp_module_arit;
@@ -120,13 +120,12 @@ extern const struct _mp_obj_module_t mp_module_linalg;
 extern const struct _mp_obj_module_t ulab_user_cmodule;
 
 #define MICROPY_PORT_BUILTIN_MODULES \
-	{ MP_ROM_QSTR(MP_QSTR_nsp), (mp_obj_t) &mp_module_nsp }, \
-	{ MP_ROM_QSTR(MP_QSTR_time), (mp_obj_t) &mp_module_nsp }, \
+	{ MP_ROM_QSTR(MP_QSTR_ion), (mp_obj_t) &mp_module_ion }, \
+	{ MP_ROM_QSTR(MP_QSTR_time), (mp_obj_t) &mp_module_ion }, \
 	{ MP_ROM_QSTR(MP_QSTR_cas), (mp_obj_t) &mp_module_cas }, \
 	{ MP_ROM_QSTR(MP_QSTR_xcas), (mp_obj_t) &mp_module_cas }, \
 	{ MP_ROM_QSTR(MP_QSTR_arit), (mp_obj_t) &mp_module_arit }, \
 	{ MP_ROM_QSTR(MP_QSTR_linalg), (mp_obj_t) &mp_module_linalg }, \
-	{ MP_ROM_QSTR(MP_QSTR_matplotl), (mp_obj_t) &mp_module_matplotl }, \
 	{ MP_ROM_QSTR(MP_QSTR_matplotlib), (mp_obj_t) &mp_module_matplotl }, \
 	{ MP_ROM_QSTR(MP_QSTR_pylab), (mp_obj_t) &mp_module_matplotl }, \
 	{ MP_ROM_QSTR(MP_QSTR_pyplot), (mp_obj_t) &mp_module_matplotl }, \

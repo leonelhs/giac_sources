@@ -4,51 +4,110 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Histograms</title>
+<title>Population standard deviation</title>
 </head>
 <body >
 <a href="cascmd_en635.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en637.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1524" class="subsection">18.1.10  Histograms</h3>
-<p>Given a list of intervals and a number of points in each interval,
-such as is given by the output of the <span style="font-family:monospace">classes</span> command
-(see Section <a href="cascmd_en635.html#ssec%3Aclasses">18.1.9</a>), a histogram is a graph consisting of a
-box over each interval, where the height of each box is proportional
-to the number of points and the total area of the boxes is 1.
-The <span style="font-family:monospace">histogram</span><a id="hevea_default1232"></a>
-or <span style="font-family:monospace">histogramme</span><a id="hevea_default1233"></a>
-command draws histograms. The data can be sorted or unsorted.</p><p>With sorted data:
+<h3 id="sec1522" class="subsection">18.1.4  Population standard deviation</h3>
+<p>
+<a id="hevea_default1223"></a></p><p>Given a large population, rather than collecting all of the numbers it
+might be more feasible to get a smaller collection of numbers and try
+to extrapolate from that. For example, to get information about the
+ages of a large population, you might get the ages of a sample of 100
+of the people and work with that.</p><p>If a list of numbers is a sample of data from a larger population,
+then the mean of the sample
+can be used to estimate the mean of the population. The
+standard deviation uses the mean to find the standard deviation of the
+sample, but since the mean of the sample is only an approximation to
+the mean of the entire population, the standard deviation of the
+sample does not provide an optimal estimate of the standard deviation
+of the population. An unbiased estimate of the standard deviation of
+the entire population is given by the population standard deviation;
+given a list <span style="font-style:italic">L</span>=[<span style="font-style:italic">x</span><sub>1</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>] with
+mean µ, the population standard deviation is
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">s</span>=
+</td><td class="dcell"><table style="border-spacing:0" class="cellpadding0"><tr><td ALIGN="right"><div CLASS="vbar" STYLE="height:2em;"></div></td></tr>
+<tr><td><span style="font-size:xx-large"><span style="font-size:150%">√</span></span></td></tr>
+</table></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><table class="display"><tr><td class="dcell" style="text-align:center">(<span style="font-style:italic">x</span><sub>1</sub>−µ)<sup>2</sup>+⋯+(<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub>−µ)<sup>2</sup></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table><p>
+Note that
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">s</span><sup>2</sup>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span></td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">n</span>−1</td></tr>
+</table></td><td class="dcell"> σ<sup>2</sup>.
+</td></tr>
+</table><p>
+where σ is the standard deviation of the sample.</p><p>The <span style="font-family:monospace">stddevp</span><a id="hevea_default1224"></a>
+command finds the standard deviation.</p><p><span style="font-family:monospace">stdDev</span><a id="hevea_default1225"></a> is a synonym for <span style="font-family:monospace">stddevp</span>, for <span style="font-variant:small-caps">TI</span>
+compatibility. There is no population variance function; if needed,
+it can be computed by squaring the <span style="font-family:monospace">stddevp</span> function.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">histogram</span> takes
-<span style="font-style:italic">L</span>, a list whose elements lists of a range <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span> and a positive
-integer.
-</li><li class="li-itemize"><span style="font-family:monospace">histogram(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> draws a histogram for the data.
-</li></ul><h4 id="sec1525" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1.5..1.65,50],[1.65..1.7,20],[1.7..1.8,30]])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en102.png">
-
-</div><p>With unsorted data:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">histogram</span> takes one mandatory argument and two
-optional arguments.
+<span style="font-family:monospace">stddevp</span> takes one mandatory argument and one optional
+argument:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list of numbers.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>, numbers.
+<span style="font-style:italic">L</span>, a list or matrix of numbers.
+</li><li class="li-itemize"><span style="font-style:italic">W</span>, a list or matrix of weights, the same size as <span style="font-style:italic">L</span>.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">histogram(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>⟩<span style="font-family:monospace">)</span> returns the
-histogram for <span style="font-family:monospace">classes(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>⟩<span style="font-family:monospace">)</span> (see
-Section <a href="cascmd_en635.html#ssec%3Aclasses">18.1.9</a>).
-</li></ul><h4 id="sec1526" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,2.5,2.5,3],0.5,0.75)</span></span></td></tr>
-</table><div class="center">
+</li><li class="li-itemize"><span style="font-family:monospace">stddevp(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">W</span>⟩<span style="font-family:monospace">)</span> returns the population
+standard deviation of the list or a list with the population
+standard deviations of the columns of the matrix.
+</li></ul><h4 id="sec1523" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">stddev</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
 
-<img src="cascmd_en103.png">
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+while:
 
-</div>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">stddevp</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,2,3,4])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">15</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[0,1,2,3,4,5,6,7,8,9,10,11]:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">stddevp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC"><span style="font-size:x-large">√</span></span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">66</span></td></tr>
+</table></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">3</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
 <a href="cascmd_en635.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

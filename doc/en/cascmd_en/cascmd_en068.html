@@ -18,34 +18,39 @@
 (or <span style="font-family:monospace">supposons</span><a id="hevea_default88"></a>)
 command lets you tell <span style="font-variant:small-caps">Xcas</span> some properties of a variable
 without giving the variable a specific value.
-The <span style="font-family:monospace">additionally</span><a id="hevea_default89"></a>
-command can be used to add assumptions to a variable.
-The <span style="font-family:monospace">about</span><a id="hevea_default90"></a> command
-will display the current assumptions about a variable, and the
-<span style="font-family:monospace">purge</span><a id="hevea_default91"></a> command will remove all
-values and assumptions about a variable.</p><p><span style="font-family:monospace">assume</span> (or <span style="font-family:monospace">supposons</span>) takes one mandatory
-argument and one optional argument:
 </p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">assume</span> (or <span style="font-family:monospace">supposons</span>) takes one mandatory
+argument and one optional argument:
+<ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">assumptions</span>, statements about a variable (such as
 equalities and inequalities, possibly combined with <span style="font-family:monospace">and</span> and
 <span style="font-family:monospace">or</span>, and domains).
 </li><li class="li-itemize">Optionally, <span style="font-family:monospace">additionally</span>, which indicates that the
 assumptions are to be added to previous assumptions, as opposed to
 replace them.
-</li></ul><p>
-<span style="font-family:monospace">assume(</span><span style="font-style:italic">assumptions</span> ⟨,<span style="font-family:monospace">additionally</span> ⟩<span style="font-family:monospace">)</span>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">assume(</span><span style="font-style:italic">assumptions</span> ⟨,<span style="font-family:monospace">additionally</span> ⟩<span style="font-family:monospace">)</span>
 places the assumptions on the variable. With no second argument,
-it will remove any previous assumptions.</p><ul class="itemize"><li class="li-itemize">
+it will remove any previous assumptions.
+</li></ul><p>The <span style="font-family:monospace">additionally</span><a id="hevea_default89"></a>
+command can be used to place additional assumptions on a variable.
+</p><ul class="itemize"><li class="li-itemize">
 <span style="font-family:monospace">additionally</span> takes
 <span style="font-style:italic">assumptions</span> as above.
 </li><li class="li-itemize"><span style="font-family:monospace">additionally(</span><span style="font-style:italic">assumptions</span><span style="font-family:monospace">)</span> adds the
 assumptions to a variable without removing assumptions.
-</li></ul><ul class="itemize"><li class="li-itemize">
+</li></ul><p>The <span style="font-family:monospace">about</span><a id="hevea_default90"></a> command
+will display the current assumptions about a variable.
+(See Section <a href="cascmd_en1004.html#ssec%3Aimageprops">26.1.8</a> and Section <a href="cascmd_en1010.html#ssec%3Aaudioclipprops">26.2.6</a> for
+other uses of <span style="font-family:monospace">about</span>.)
+</p><ul class="itemize"><li class="li-itemize">
 <span style="font-family:monospace">about</span> takes
 <span style="font-style:italic">var</span>, the name of a variable.
 </li><li class="li-itemize"><span style="font-family:monospace">about(</span><span style="font-style:italic">var</span><span style="font-family:monospace">)</span> returns the current assumptions
 on the variable.
-</li></ul><ul class="itemize"><li class="li-itemize">
+</li></ul><p>The <span style="font-family:monospace">purge</span><a id="hevea_default91"></a> command will remove all
+values and assumptions about a variable.
+</p><ul class="itemize"><li class="li-itemize">
 <span style="font-family:monospace">purge</span> takes
 <span style="font-style:italic">var</span>, a variable name or a sequence of variable names.
 </li><li class="li-itemize"><span style="font-family:monospace">purge(</span><span style="font-style:italic">var</span><span style="font-family:monospace">)</span> removes any assumptions you have
@@ -99,7 +104,7 @@ condition
 </p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">additionally</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;0)</span></span></td></tr>
 </table><p>You can also assume a variable is in one of the domains
 <span style="font-family:monospace">real</span>, <span style="font-family:monospace">integer</span>, <span style="font-family:monospace">complex</span> or
-<span style="font-family:monospace">rational</span> (see Section <a href="cascmd_en757.html#ssec%3Atype">23.2.5</a>).</p><p>You can check the assumptions on a variable with the <span style="font-family:monospace">about</span>
+<span style="font-family:monospace">rational</span> (see Section <a href="cascmd_en762.html#ssec%3Atype">23.2.5</a>).</p><p>You can check the assumptions on a variable with the <span style="font-family:monospace">about</span>
 command. For the above positive integer <span style="font-family:monospace">n</span>,
 
 </p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">about</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">n</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>

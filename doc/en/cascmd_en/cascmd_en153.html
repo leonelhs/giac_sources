@@ -14,14 +14,14 @@
 <h3 id="ssec:range" class="subsection">5.5.1  Definition of a range of values</h3>
 <p>The <span style="font-family:monospace">..</span><a id="hevea_default259"></a> is an infixed operator
 which sets a range of values; given two real numbers <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>,
-the range of values between them is denoted <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.</p><h5 id="sec303" class="paragraph">Remark.</h5>
+the range of values between them is denoted <span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.</p><h5 id="sec300" class="paragraph">Remark.</h5>
 <p>
 Note that the order of the boundaries of the range
 is significant. For example, if you input
 
 </p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">B</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2..3; </span></span><span style="font-weight:bold"><span style="color:#BF0000">C</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=3..2</span></span></td></tr>
 </table><p>then <span style="font-family:monospace">B</span> and <span style="font-family:monospace">C</span> are not equal; <span style="font-family:monospace">B==C</span> returns
-<span style="font-family:monospace">0</span>.</p><h4 id="sec304" class="subsubsection">Examples</h4>
+<span style="font-family:monospace">0</span>.</p><h4 id="sec301" class="subsubsection">Examples</h4>
 <table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">1..4</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
@@ -40,28 +40,17 @@ is significant. For example, if you input
 </table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><h5 id="sec305" class="paragraph">Remark.</h5>
+</table><h5 id="sec302" class="paragraph">Remark.</h5>
 <p>
 Since <span style="font-family:monospace">..</span> is an operator, the parts of an expression can be
 picked out of it (see Section <a href="cascmd_en237.html#ssec%3Aop">7.2.3</a>). In particular, the
 <span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span> commands find the left and right
 endpoints of a range (see Section <a href="cascmd_en085.html#ssec%3Alrstring">4.2.4</a>, Section <a href="cascmd_en237.html#ssec%3Aop">7.2.3</a>,
-Section <a href="cascmd_en157.html#ssec%3Alrinterval">5.6.2</a>, Section <a href="cascmd_en119.html#ssec%3Alrlist">5.3.6</a>, Section <a href="cascmd_en267.html#ssec%3Alhs">8.2.4</a> and
-Section <a href="cascmd_en268.html#ssec%3Arhs">8.2.5</a> for other uses of <span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span>.)
+Section <a href="cascmd_en157.html#ssec%3Alrinterval">5.6.2</a>, Section <a href="cascmd_en119.html#ssec%3Alrlist">5.3.6</a>, Section <a href="cascmd_en269.html#ssec%3Alhs">8.3.4</a> and
+Section <a href="cascmd_en270.html#ssec%3Arhs">8.3.5</a> for other uses of <span style="font-family:monospace">left</span> and <span style="font-family:monospace">right</span>.)
 For example:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=2..5</span></span></td></tr>
-</table><p>Then:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sommet</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC"> .. </span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">left</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">left</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2..5)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
@@ -69,7 +58,7 @@ For example:
 2
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">right</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">right</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2..5)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 

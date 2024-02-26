@@ -4,84 +4,90 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Determinant of a matrix</title>
+<title>Defining sparse matrices
+</title>
 </head>
 <body >
 <a href="cascmd_en516.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en518.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:det" class="subsection">14.1.4  Determinant of a matrix</h3>
-<p>The <span style="font-family:monospace">det</span><a id="hevea_default900"></a> and
-<span style="font-family:monospace">det_minor</span> commands compute the determinant of a matrix.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">det</span> takes one mandatory argument and one optional
-argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, a matrix.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">method</span>, which determines how the
-determinant will be computed and can be one of:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">lagrange</span><a id="hevea_default901"></a>
-When the matrix elements are polynomials or
-rational functions, this method computes the determinant by
-evaluating the elements and using Lagrange interpolation.
-</li><li class="li-itemize"><span style="font-family:monospace">rational_det</span><a id="hevea_default902"></a>
-This method uses Gaussian elimination
-without converting to to the internal format for fractions.
-</li><li class="li-itemize"><span style="font-family:monospace">bareiss</span><a id="hevea_default903"></a>
-This uses the Gauss-Bareiss algorithm.
-</li><li class="li-itemize"><span style="font-family:monospace">linsolve</span> This uses the <span style="font-style:italic">p</span>-adic algorithm for
-matrices with integer coefficients.
-</li><li class="li-itemize"><span style="font-family:monospace">minor_det</span><a id="hevea_default904"></a>
-This uses expansion by minor determinants,
-which requires 2<sup><span style="font-style:italic">n</span></sup> operations, but can still be faster for average
-sized matrices (up to about <span style="font-style:italic">n</span>=20).
-</li></ul>
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">det(</span><span style="font-style:italic">A</span> ⟨,<span style="font-style:italic">method</span> ⟩<span style="font-family:monospace">)</span>
-returns the determinant det(<span style="font-style:italic">A</span>) of the matrix <span style="font-style:italic">A</span>.
-</li></ul><h4 id="sec1214" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">det</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,2],[3,4]])</span></span></td></tr>
+<h3 id="ssec:spmatrices" class="subsection">13.4.2  Defining sparse matrices
+</h3>
+<p>A matrix is <em>sparse</em> if most of its elements are 0. To specify a
+sparse matrix, it is easier to define the non-zero elements.
+This can be done with a table (see Section <a href="cascmd_en516.html#ssec%3Atable">13.4.1</a>).
+The <span style="font-family:monospace">matrix</span> command (see Section <a href="cascmd_en495.html#ssec%3Amatrixcommand">13.2.4</a>) or the
+<span style="font-family:monospace">convert</span> command (see Section <a href="cascmd_en289.html#ssec%3Aconvert">9.1.10</a>) can then
+turn the table into a matrix.</p><h4 id="sec1207" class="subsubsection">Example</h4>
+<p>
+First, define the non-zero elements.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">table</span></span><span style="font-weight:bold"><span style="color:#BF0000">((0,0)=1,(1,1)=2,(2,2)=3,(3,3)=4,(4,4)=5)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">purge</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">[0..4,0..4]:=[1,2,3,4,5]</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-−2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table border=1  style="border-spacing:0;" class="cellpadding1"><tr><td style="text-align:center;border:solid 1px;white-space:nowrap" ><span style="color:#0000CC"><span style="font-weight:bold"><span style="font-style:italic">Key</span></span></span></td><td style="text-align:center;border:solid 1px;white-space:nowrap" ><span style="color:#0000CC"><span style="font-weight:bold"><span style="font-style:italic">Value</span></span></span></td></tr>
+<tr><td style="text-align:center;border:solid 1px;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">0,0</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:center;border:solid 1px;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
+<tr><td style="text-align:center;border:solid 1px;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">1,1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:center;border:solid 1px;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;border:solid 1px;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">2,2</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:center;border:solid 1px;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
+<tr><td style="text-align:center;border:solid 1px;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">3,3</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:center;border:solid 1px;white-space:nowrap" ><span style="color:#0000CC">4</span></td></tr>
+<tr><td style="text-align:center;border:solid 1px;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">4,4</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:center;border:solid 1px;white-space:nowrap" ><span style="color:#0000CC">5</span></td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">det</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">idn</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>The <span style="font-family:monospace">det_minor</span><a id="hevea_default905"></a>
-command finds the determinant of a matrix by
-expanding the determinant using Laplace’s algorithm.
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">det_minor</span> takes
-<span style="font-style:italic">A</span>, a matrix.
-</li><li class="li-itemize"><span style="font-family:monospace">det_minor(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns the determinant det(<span style="font-style:italic">A</span>) of the matrix
-<span style="font-style:italic">A</span>.
-</li></ul><h4 id="sec1215" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">det_minor</span></span><span style="font-weight:bold"><span style="color:#BF0000">([[1,2],[3,4]])</span></span></td></tr>
+</table><p>
+This table can be converted to a matrix with either the
+<span style="font-family:monospace">convert</span> command or the <span style="font-family:monospace">matrix</span> command.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">array</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">matrix</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">A</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-−2
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">0</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">5</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎥<br>
+⎦</span></td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">det_minor</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">idn</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3))</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>

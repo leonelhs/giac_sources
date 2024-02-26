@@ -4,70 +4,222 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Drawing a line</title>
+<title>Graph and geometric objects attributes</title>
 </head>
 <body >
 <a href="cascmd_en601.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en603.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:doite" class="subsection">17.3.1  Drawing a line</h3>
-<p>The <span style="font-family:monospace">line</span><a id="hevea_default1141"></a>
-command draws and finds lines in ℝ<sup>2</sup> and ℝ<sup>3</sup>.</p><ul class="itemize"><li class="li-itemize">
-For a line in ℝ<sup>2</sup>, <span style="font-family:monospace">line</span> takes
-<span style="font-style:italic">eqn</span>, a linear equation in the variables <span style="font-family:monospace">x</span> and
-<span style="font-family:monospace">y</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">line(</span><span style="font-style:italic">eqn</span><span style="font-family:monospace">)</span> draws and returns the
-line given by the equation.
-</li><li class="li-itemize">For a line in ℝ<sup>3</sup>, <span style="font-family:monospace">line</span> takes two arguments:
-<span style="font-style:italic">eqn1</span> and <span style="font-style:italic">eqn2</span>, two linear equations in the
-variables <span style="font-family:monospace">x</span>, <span style="font-family:monospace">y</span> and <span style="font-family:monospace">z</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">line(</span><span style="font-style:italic">eqn1</span>,<span style="font-style:italic">eqn2</span><span style="font-family:monospace">)</span> draws and returns
-the line which is the intersection of the planes given by the
-equations.
-</li></ul><h4 id="sec1445" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1=0)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en047.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en048.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en049.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1=0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">z</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en050.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en051.png">
-
-</div><h5 id="sec1446" class="paragraph">Remark.</h5>
+<h3 id="ssec:indattr" class="subsection">17.1.2  Graph and geometric objects attributes</h3>
+<p>There are two kinds of attributes for graphs and geometric objects:
+global attributes of a graphic scene and individual attributes for
+the specific geometric objects in the scene.</p>
+<h4 id="sec1435" class="subsubsection">Individual attributes</h4>
 <p>
-<span style="font-family:monospace">line</span> defines an oriented line:
+<a id="hevea_default1066"></a>
+<a id="hevea_default1067"></a>
+<a id="hevea_default1068"></a>
+<a id="hevea_default1069"></a>
+<a id="hevea_default1070"></a>
+<a id="hevea_default1071"></a>
+<a id="hevea_default1072"></a>
+<a id="hevea_default1073"></a>
+<a id="hevea_default1074"></a>
+<a id="hevea_default1075"></a>
+<a id="hevea_default1076"></a>
+<a id="hevea_default1077"></a>
+<a id="hevea_default1078"></a>
+<a id="hevea_default1079"></a>
+<a id="hevea_default1080"></a>
+<a id="hevea_default1081"></a>
+<a id="hevea_default1082"></a>
+<a id="hevea_default1083"></a>
+<a id="hevea_default1084"></a>
+<a id="hevea_default1085"></a>
+<a id="hevea_default1086"></a>
+<a id="hevea_default1087"></a>
+<a id="hevea_default1088"></a>
+<a id="hevea_default1089"></a>
+<a id="hevea_default1090"></a>
+<a id="hevea_default1091"></a>
+<a id="hevea_default1092"></a>
+<a id="hevea_default1093"></a>
+<a id="hevea_default1094"></a>
+<a id="hevea_default1095"></a>
+<a id="hevea_default1096"></a>
+<a id="hevea_default1097"></a>
+<a id="hevea_default1098"></a>
+<a id="hevea_default1099"></a>
+<a id="hevea_default1100"></a>
+<a id="hevea_default1101"></a>
+<a id="hevea_default1102"></a>
+<a id="hevea_default1103"></a>
+<a id="hevea_default1104"></a>
+<a id="hevea_default1105"></a>
+<a id="hevea_default1106"></a>
+<a id="hevea_default1107"></a>
+<a id="hevea_default1108"></a>
+<a id="hevea_default1109"></a>
+<a id="hevea_default1110"></a>
+<a id="hevea_default1111"></a>
+<a id="hevea_default1112"></a>
+<a id="hevea_default1113"></a>
+<a id="hevea_default1114"></a>
+<a id="hevea_default1115"></a>
+<a id="hevea_default1116"></a>
+<a id="hevea_default1117"></a></p><p>Graphic attributes are optional arguments of the form
+<span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>. They must be given as the last
+argument of a graphic instruction. Attributes are ordered in several
+categories: color, point shape, point width, line style, line
+thickness, legend value, position and presence. In addition, surfaces
+may be filled or not, 3D surfaces may be filled with a texture, 3D
+objects may also have properties with respect to the light.
+Attributes of different categories may be combined with <span style="font-family:monospace">+</span>, e.g. in:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotfunc</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">],</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">line_width_3</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">filled</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>The graphic attributes are:
+</p><dl class="description"><dt class="dt-description">
+<span style="font-weight:bold">Color</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span> or
+<span style="font-family:monospace">color=</span><span style="font-style:italic">value</span>. The values can be:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">black</span>, <span style="font-family:monospace">white</span>, <span style="font-family:monospace">red</span>, <span style="font-family:monospace">blue</span>, <span style="font-family:monospace">green</span>,
+<span style="font-family:monospace">magenta</span>, <span style="font-family:monospace">cyan</span>, <span style="font-family:monospace">yellow</span>,
+<span style="font-family:monospace">brown</span>, <span style="font-family:monospace">purple</span>, <span style="font-family:monospace">orange</span>, or <span style="font-family:monospace">grey</span>.
+</li><li class="li-itemize">a numeric value between 0 and 255,
+</li><li class="li-itemize">a numeric value between 256 and 256+7· 16+14 for a color of the
+rainbow,
+</li><li class="li-itemize">any other numeric value smaller than 65535 (the rendering
+is however not guaranteed to be portable).
+</li></ul>
+</dd><dt class="dt-description"><span style="font-weight:bold">Point shape</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>, where
+<span style="font-style:italic">value</span> can be one of:
+<span style="font-family:monospace">rhombus_point</span>, <span style="font-family:monospace">plus_point</span>,
+<span style="font-family:monospace">square_point</span>, <span style="font-family:monospace">cross_point</span>,
+<span style="font-family:monospace">triangle_point</span>, <span style="font-family:monospace">star_point</span>,
+<span style="font-family:monospace">point_point</span> or <span style="font-family:monospace">invisible_point</span>.
+</dd><dt class="dt-description"><span style="font-weight:bold">Point width</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>.
+The values can be:<p><span style="font-family:monospace">point_width_</span><span style="font-style:italic">n</span> where <span style="font-style:italic">n</span> is an
+integer between 1 and 7.
+</p></dd><dt class="dt-description"><span style="font-weight:bold">Line thickness</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">thickness=</span><span style="font-style:italic">n</span>
+or <span style="font-family:monospace">display=line_width_</span><span style="font-style:italic">n</span> where <span style="font-style:italic">n</span> is an
+integer between 1 and 7.
+</dd><dt class="dt-description"><span style="font-weight:bold">Line shape</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>,
+where <span style="font-style:italic">value</span> can be one of:
+<span style="font-family:monospace">dash_line</span>, <span style="font-family:monospace">solid_line</span>,
+<span style="font-family:monospace">dashdot_line</span>, <span style="font-family:monospace">dashdotdot_line</span>,
+<span style="font-family:monospace">cap_flat_line</span>, <span style="font-family:monospace">cap_square_line</span> or
+<span style="font-family:monospace">cap_round_line</span>.
+</dd><dt class="dt-description"><span style="font-weight:bold">Legend</span></dt><dd class="dd-description"> where the text is set with
+<span style="font-family:monospace">legend="</span><span style="font-style:italic">legendname</span><span style="font-family:monospace">"</span> and
+the position is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>,
+where <span style="font-style:italic">value</span> is <span style="font-family:monospace">quadrant</span><span style="font-style:italic">n</span> for some
+<span style="font-style:italic">n</span>∈{1,2,3,4}.
+These values correspond to the position of the legend of the object
+(using the trigonometric plane conventions).
+The legend is not displayed if the attribute
+<span style="font-family:monospace">display=hidden_name</span> is added.
+</dd><dt class="dt-description"><span style="font-weight:bold">Filling</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=filled</span>.
+</dd><dt class="dt-description"><span style="font-weight:bold">Image texture</span></dt><dd class="dd-description">
+which is set <span style="font-family:monospace">gl_texture="</span><span style="font-style:italic">picture_filename</span><span style="font-family:monospace">"</span> and
+fills a surface with a texture. See the interface manual for a more
+complete description and for <span style="font-family:monospace">gl_material</span><a id="hevea_default1118"></a>
+options.
+</dd></dl><h4 id="sec1436" class="subsubsection">Examples</h4>
+<p>
+(See Section <a href="cascmd_en841.html#ssec%3A2dgenpolygon">24.9.3</a>, Section <a href="cascmd_en804.html#ssec%3A2dpoint">24.5.2</a>,
+Section <a href="cascmd_en801.html#sssec%3Adisplay">24.3.3</a> and Section <a href="cascmd_en820.html#ssec%3A2dsegments">24.6.3</a> for information on
+the commands used.)
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polygon</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"P"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en028.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"hello"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en029.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">segment</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en030.png">
+
+</div><p>
+
+By entering
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">segment</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>we get the same result as above.</p>
+<h4 id="sec1437" class="subsubsection">Global attributes</h4>
+<p>
+<a id="hevea_default1119"></a>
+<a id="hevea_default1120"></a>
+<a id="hevea_default1121"></a>
+<a id="hevea_default1122"></a>
+<a id="hevea_default1123"></a>
+<a id="hevea_default1124"></a>
+<a id="hevea_default1125"></a>
+<a id="hevea_default1126"></a>
+<a id="hevea_default1127"></a>
+<a id="hevea_default1128"></a>
+<a id="hevea_default1129"></a>
+<a id="hevea_default1130"></a>
+<a id="hevea_default1131"></a>
+<a id="hevea_default1132"></a>
+<a id="hevea_default1133"></a>
+<a id="hevea_default1134"></a>
+<a id="hevea_default1135"></a>
+<a id="hevea_default1136"></a>
+<a id="hevea_default1137"></a>
+<a id="hevea_default1138"></a></p><p>The following attributes are shared by all objects of the same scene:
 </p><ul class="itemize"><li class="li-itemize">
-When a 2D line is given by an equation, it is rewritten
-as <span style="font-style:italic">lhs</span>−<span style="font-style:italic">rhs</span>=<span style="font-style:italic">ax</span>+<span style="font-style:italic">by</span>+<span style="font-style:italic">c</span>=0, this determines
-its normal vector [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>] and the orientation is given by the vector
-[<span style="font-style:italic">b</span>,−<span style="font-style:italic">a</span>].
-</li><li class="li-itemize">When a 3D line is given by two plane equations, its
-direction is defined by the cross product of the normals to the planes.<p>When the plane equation is rewritten as
-<span style="font-style:italic">lhs</span>−<span style="font-style:italic">rhs</span>=<span style="font-style:italic">ax</span>+<span style="font-style:italic">by</span>+<span style="font-style:italic">cz</span>+<span style="font-style:italic">d</span>=0, then
-the normal is [<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>,<span style="font-style:italic">c</span>].
-For example, <span style="font-family:monospace">line(x=y,y=z)</span> draws the line <span style="font-style:italic">x</span>−<span style="font-style:italic">y</span>=0,<span style="font-style:italic">y</span>−<span style="font-style:italic">z</span>=0 and its
-direction is:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    [1,−1,0]× [0,1,−1]=[1,1,1]
-</td></tr>
-</table></li></ul>
+<span style="font-family:monospace">title="</span><span style="font-style:italic">titlename</span><span style="font-family:monospace">"</span> sets the title.
+</li><li class="li-itemize"><span style="font-family:monospace">labels=["</span><span style="font-style:italic">xname</span><span style="font-family:monospace">","</span><span style="font-style:italic">yname</span><span style="font-family:monospace">","</span><span style="font-style:italic">zname</span><span style="font-family:monospace">"]</span> sets
+names of the <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span> axes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_x_axis_name="</span><span style="font-style:italic">xname</span><span style="font-family:monospace">"</span>,
+<span style="font-family:monospace">gl_y_axis_name="</span><span style="font-style:italic">yname</span><span style="font-family:monospace">"</span>,
+<span style="font-family:monospace">gl_z_axis_name="</span><span style="font-style:italic">zname</span><span style="font-family:monospace">"</span> sets the names of the axes
+individually.
+</li><li class="li-itemize"><span style="font-family:monospace">legend=["</span><span style="font-style:italic">xunit</span><span style="font-family:monospace">","</span><span style="font-style:italic">yunit</span><span style="font-family:monospace">","</span><span style="font-style:italic">zunit</span><span style="font-family:monospace">"]</span> sets
+units for the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_x_axis_unit="</span><span style="font-style:italic">xunit</span><span style="font-family:monospace">"</span>,
+<span style="font-family:monospace">gl_y_axis_unit="</span><span style="font-style:italic">yunit</span><span style="font-family:monospace">"</span>,
+<span style="font-family:monospace">gl_z_axis_unit="</span><span style="font-style:italic">zunit</span><span style="font-family:monospace">"</span> sets units for the axes
+individually.
+</li><li class="li-itemize"><span style="font-family:monospace">axes=true</span> or <span style="font-family:monospace">axes=false</span> (or <span style="font-family:monospace">axes=0</span>) shows or hides the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_texture="</span><span style="font-style:italic">filename</span><span style="font-family:monospace">"</span> sets the background
+image to <span style="font-style:italic">filename</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_x=</span><span style="font-style:italic">xmin</span><span style="font-family:monospace">..</span><span style="font-style:italic">xmax</span>,
+<span style="font-family:monospace">gl_y=</span><span style="font-style:italic">ymin</span><span style="font-family:monospace">..</span><span style="font-style:italic">ymax</span>,
+<span style="font-family:monospace">gl_z=</span><span style="font-style:italic">zmin</span><span style="font-family:monospace">..</span><span style="font-style:italic">zmax</span> sets the graphic configuration
+(do not use for interactive scenes)
+</li><li class="li-itemize"><span style="font-family:monospace">gl_xtick=</span><span style="font-style:italic">xmark</span>,
+<span style="font-family:monospace">gl_ytick=</span><span style="font-style:italic">ymark</span>, <span style="font-family:monospace">gl_ztick=</span><span style="font-style:italic">zmark</span>
+sets the tick marks for the axes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_shownames=true</span> or <span style="font-family:monospace">gl_shownames=false</span>
+shows or hides objects names
+</li><li class="li-itemize"><span style="font-family:monospace">gl_rotation=[</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span><span style="font-family:monospace">]</span> defines the rotation axis
+for the animation rotation of 3D scenes.
+</li><li class="li-itemize"><span style="font-family:monospace">gl_quaternion=[</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>,<span style="font-style:italic">t</span><span style="font-family:monospace">]</span> defines the quaternion
+for the visualization in 3D scenes (do not use for interactive
+scenes).
+</li><li class="li-itemize">a few other <span style="font-variant:small-caps">OpenGL</span> light configuration options are
+available but not described here.
+</li></ul><h4 id="sec1438" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">title</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"median_line"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">;</span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">median_line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">median_line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">median_line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en031.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">labels</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"u"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">];</span></span><span style="font-weight:bold"><span style="color:#BF0000">plotfunc</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en032.png">
+
+</div>
 <hr>
 <a href="cascmd_en601.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

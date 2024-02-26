@@ -4,138 +4,39 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rewriting an expression with different options</title>
+<title>Rewriting tan(x) in terms of cos(2x) and sin(2x)</title>
 </head>
 <body >
 <a href="cascmd_en306.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en308.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:convert" class="subsection">9.2.26  Rewriting an expression with different options</h3>
-<p><span style="font-variant:small-caps">Xcas</span> has many commands to convert expressions into different
-forms; the <span style="font-family:monospace">convert</span><a id="hevea_default528"></a> command
-(or its infixed version <span style="font-family:monospace">=&gt;</span><a id="hevea_default529"></a>) is
-a different way to call most of these functions.<a id="hevea_default530"></a>
+<h3 id="sec688" class="subsection">9.2.18  Rewriting tan(<span style="font-style:italic">x</span>) in terms of cos(2<span style="font-style:italic">x</span>) and sin(2<span style="font-style:italic">x</span>)</h3>
+<p>The <span style="font-family:monospace">tan2cossin2</span><a id="hevea_default548"></a>
+command replaces tan(<span style="font-style:italic">x</span>) by 1−cos(2<span style="font-style:italic">x</span>)/sin(2<span style="font-style:italic">x</span>) in an expression.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">convert</span> takes two or more arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression.
-</li><li class="li-itemize"><span style="font-style:italic">option</span>, an option specifying which rewrite rules to
-use. A third argument might be necessary for some options.
-Possible values of <span style="font-style:italic">option</span> are:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">sin</span><a id="hevea_default531"></a>,
-to convert an expression like <span style="font-family:monospace">trigsin</span>
-(see Section <a href="cascmd_en304.html#ssec%3Atrigsin">9.2.23</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">cos</span><a id="hevea_default532"></a>,
-to convert an expression like <span style="font-family:monospace">trigcos</span>
-(see Section <a href="cascmd_en305.html#ssec%3Atrigcos">9.2.24</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">sincos</span><a id="hevea_default533"></a>,
-to convert an expression like <span style="font-family:monospace">sincos</span>
-(see Section <a href="cascmd_en294.html#ssec%3Asincos">9.2.13</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">trig</span>, to convert an expression like <span style="font-family:monospace">sincos</span>
-(see Section <a href="cascmd_en294.html#ssec%3Asincos">9.2.13</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">tan</span><a id="hevea_default534"></a>,
-to convert an expression like <span style="font-family:monospace">halftan</span>
-(see Section <a href="cascmd_en300.html#ssec%3Ahalftan">9.2.19</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">exp</span><a id="hevea_default535"></a>,
-to convert an expression like <span style="font-family:monospace">trig2exp</span>
-(see Section <a href="cascmd_en302.html#ssec%3Atrig2exp">9.2.21</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">ln</span><a id="hevea_default536"></a>,
-to convert an expression like <span style="font-family:monospace">trig2exp</span>
-(see Section <a href="cascmd_en302.html#ssec%3Atrig2exp">9.2.21</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">expln</span><a id="hevea_default537"></a>,
-to convert an expression like <span style="font-family:monospace">trig2exp</span>
-(see Section <a href="cascmd_en302.html#ssec%3Atrig2exp">9.2.21</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">string</span><a id="hevea_default538"></a>,
-to convert a expression into a string.
-</li><li class="li-itemize"><span style="font-family:monospace">matrix</span><a id="hevea_default539"></a>,
-to convert a list of lists into a matrix.
-</li><li class="li-itemize"><span style="font-family:monospace">array</span><a id="hevea_default540"></a>,
-to turn a table into an array (see
-Section <a href="cascmd_en510.html#ssec%3Aspmatrices">13.4.2</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">polynom</span><a id="hevea_default541"></a>,
-to convert a series (see Section <a href="cascmd_en457.html#ssec%3Ataylor">12.5.2</a>)
-into a polynomial
-by removing the remainder (see Section <a href="cascmd_en343.html#ssec%3Aconvertpoly">10.1.25</a>) or
-to convert a list representing a polynomial into a polynomial
-in internal sparse multivariate form (see
-Section <a href="cascmd_en320.html#ssec%3Amultipoly">10.1.2</a> and Section <a href="cascmd_en324.html#ssec%3Apolytrans">10.1.6</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">parfrac</span><a id="hevea_default542"></a>
-(or <span style="font-family:monospace">partfrac</span><a id="hevea_default543"></a> or
-<span style="font-family:monospace">fullparfrac</span><a id="hevea_default544"></a>),
-to convert a rational function into its partial fraction decomposition (see
-Section <a href="cascmd_en392.html#ssec%3Aconvertparf">10.7.9</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">interval</span><a id="hevea_default545"></a>,
-to convert an expression which evaluates to a
-number into an interval (see Section <a href="cascmd_en163.html#ssec%3Anumb2intvl">5.6.8</a>).
-</li><li class="li-itemize"><span style="font-family:monospace">list</span><a id="hevea_default546"></a> (or no argument),
-to convert a polynomial in internal sparse multivariate format
-(see Section <a href="cascmd_en320.html#ssec%3Amultipoly">10.1.2</a>) into a list.
-</li><li class="li-itemize"><span style="font-style:italic">unit</span>, a unit, to convert a unit object to a new
-compatible unit (see Section <a href="cascmd_en741.html#sec%3Aconvertunit">22.1.4</a>).
-</li></ul>
-The values of <span style="font-style:italic">option</span> that require a third argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">contfrac</span><a id="hevea_default547"></a>,
-to convert a number into a continued
-fraction. (See Section <a href="cascmd_en199.html#ssec%3Aconvertdfc">6.2.7</a>.) The third argument
-will be the name of a variable to store the continued fraction
-into (which must be quoted the variable was assigned).
-</li><li class="li-itemize"><span style="font-family:monospace">base</span><a id="hevea_default548"></a>,
-to convert a number into a different base
-(beginning with the units digit). If <span style="font-family:monospace">expr</span> is a number,
-then the third argument will be base to convert to (see
-Section <a href="cascmd_en100.html#sec%3Aconvertbase">4.4.2</a>), if <span style="font-style:italic">expr</span> is a list of
-numbers, then the third argument will be the base to convert
-from (and <span style="font-style:italic">expr</span> will be a list of the digits in this
-base, starting with the units digit).
-</li></ul>
-Finally, if <span style="font-style:italic">expr</span> is an expression with units (see
-Section <a href="cascmd_en738.html#ssec%3Aunits">22.1.1</a>), then <span style="font-style:italic">option</span> can be new units to convert to
-(see Section <a href="cascmd_en741.html#sec%3Aconvertunit">22.1.4</a>).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">convert(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">option</span> ⟨,<span style="font-style:italic">extraop</span> ⟩<span style="font-family:monospace">)</span>
-returns the expression with the requested conversions done.
-</li></ul><h4 id="sec694" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">confrac</span></span><span style="font-weight:bold"><span style="color:#BF0000">,'</span></span><span style="font-weight:bold"><span style="color:#BF0000">fc</span></span><span style="font-weight:bold"><span style="color:#BF0000">')</span></span></td></tr>
+<span style="font-family:monospace">tan2cossin2</span> takes
+<span style="font-style:italic">expr</span>, an expression containing trigonometric functions.
+</li><li class="li-itemize"><span style="font-family:monospace">tan2cossin2(</span><span style="font-style:italic">expr</span><span style="font-family:monospace">)</span> returns
+<span style="font-style:italic">expr</span> with anything of the form tan(<span style="font-style:italic">x</span>) replaced by 
+1−cos(2<span style="font-style:italic">x</span>)/sin(2<span style="font-style:italic">x</span>).
+</li></ul><h4 id="sec689" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">tan2cossin2</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">tan</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">1,5</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">1−</span><span style="color:#0000CC">cos</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td></tr>
+<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
+<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">sin</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td></tr>
+</table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-and <span style="font-family:monospace">fc</span> contains the continued fraction equal to 1.2.
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(123,</span></span><span style="font-weight:bold"><span style="color:#BF0000">base</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">3,2,1</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">([3,2,1],</span></span><span style="font-weight:bold"><span style="color:#BF0000">base</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-123
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">convert</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000</span></span><span style="font-weight:bold"><span style="color:#BF0000">_g</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">_kg</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-1.0 </span><span style="color:#0000CC"><span style="font-style:italic">kg</span></span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>
 <hr>

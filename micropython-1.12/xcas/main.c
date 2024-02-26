@@ -231,14 +231,14 @@ def shape(x):
 def dot(a,b):
     return a*b
 
-def transpose(a):
+def transpose(x):
     if type(x)==array:
         return array(linalg.transpose(x.a))
 
-def trn(a):
+def trn(x):
     if type(x)==array:
         return array(linalg.conj(linalg.transpose(x.a)))
-    return linalg.conj(linalg.transpose(x.a))
+    return linalg.conj(x)
 
 def zeros(n,m=0):
     return array(linalg.zeros(n,m))

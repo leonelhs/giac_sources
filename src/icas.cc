@@ -1418,7 +1418,8 @@ int micropyjs_evaled(string & s,const giac::context * contextptr){
   return 0;
 }
 
-int main(int ARGC, char *ARGV[]){    
+int main(int ARGC, char *ARGV[]){
+  //giac::stack_check_init(512*1024);  
   bool inemacs=((ARGC>=2) && std::string(ARGV[1])=="--emacs");
   bool insage=((ARGC>=2) && std::string(ARGV[1])=="--sage");
   bool intexmacs=((ARGC>=2) && std::string(ARGV[1])=="--texmacs");

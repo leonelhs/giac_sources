@@ -4,76 +4,34 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Viewing images</title>
+<title>Dodecahedra</title>
 </head>
 <body >
 <a href="cascmd_en994.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en996.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:viewing-images" class="subsection">26.1.4  Viewing images</h3>
-<p>Starting from <span style="font-variant:small-caps">Xcas</span> version 1.9.0, image objects are viewed by using
-the <span style="font-family:monospace">display</span><a id="hevea_default1910"></a>
-command. The legacy <span style="font-variant:small-caps">Xcas</span> image structure can be visualized by exporting
-it to a file by using the <span style="font-family:monospace">writergb</span> command (see Section <a href="cascmd_en996.html#ssec%3Awritergb">26.1.5</a>).
+<h3 id="sec2448" class="subsection">25.15.4  Dodecahedra</h3>
+<p>The <span style="font-family:monospace">dodecahedron</span><a id="hevea_default1914"></a>
+command creates a regular dodecahedron.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">display</span> takes one mandatory arguments and one optional argument:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">img</span>, an image object.
-</li><li class="li-itemize">Optionally, either <span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>, a pair of real numbers, or <span style="font-style:italic">a</span>+<span style="font-style:italic">i</span><span style="font-style:italic">b</span>,
-a complex number (by default, <span style="font-style:italic">a</span>=<span style="font-style:italic">b</span>=0).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">display(</span><span style="font-style:italic">img</span> ⟨,<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span> ⟩<span style="font-style:italic">)</span>
-or <span style="font-family:monospace">display(</span><span style="font-style:italic">img</span> ⟨,<span style="font-style:italic">a</span>+<span style="font-style:italic">i</span><span style="font-style:italic">b</span> ⟩<span style="font-style:italic">)</span>
-returns a graphic object showing <span style="font-style:italic">img</span> at location
-(<span style="font-style:italic">a</span>,<span style="font-style:italic">b</span>) (the upper-left corner). The axes will be automatically hidden and
-the view orthonormalized in order to preserve the original aspect ratio of the image.
-</li></ul><p>In the examples that follow, we assume that the current directory in <span style="font-variant:small-caps">Xcas</span>
-is changed (by using the <span style="font-family:monospace">cd</span> command, see Section <a href="cascmd_en072.html#ssec%3Awdir">3.5.1</a>)
-to <span style="font-family:monospace">/usr/local/share/giac/examples</span>.</p><h4 id="sec2445" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">image</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Exemples/demo/terre.jpg"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<span style="font-family:monospace">dodecahedron</span> takes three arguments:
+<span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span>, three points.
+</li><li class="li-itemize"><span style="font-family:monospace">dodecahedron(</span><span style="font-style:italic">A</span>,<span style="font-style:italic">B</span>,<span style="font-style:italic">C</span><span style="font-family:monospace">)</span> returns and draws the
+dodecahedron centered at <span style="font-style:italic">A</span> with a vertex at <span style="font-style:italic">B</span> and with an axis
+of symmetry in the plane <span style="font-style:italic">ABC</span>. (Note that each face is a pentagon,
+but will be drawn with one of its diagonals and so will show up as a
+trapezoid and a triangle.)
+</li></ul><h4 id="sec2449" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">dodecahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[0,0,5],[0,1,0])</span></span></td></tr>
+</table><div class="center">
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-</span><span style="color:#0000CC">an image of size 512×256 (RGB)</span><span style="color:#0000CC">
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+<img src="cascmd_en382.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">dodecahedron</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],[0,2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5)/2+3/2],[0,0,1])</span></span></td></tr>
 </table><div class="center">
 
 <img src="cascmd_en383.png">
-
-</div><p>Multiple images can be shown together by calling <span style="font-family:monospace">display</span> several times
-within a single command line (delimited by <span style="font-family:monospace">;</span>) and adjusting <span style="font-style:italic">a</span> and <span style="font-style:italic">b</span>
-to appropriate values in each call. If desired, individual image captions can be
-inserted by using the <span style="font-family:monospace">legend</span> command
-(See Section <a href="cascmd_en704.html#ssec%3Adwt">19.4.5</a> for an example.) There is also a possibility
-of combining images with other graphical objects.</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">img</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(100+100</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,200+100</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">green</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">line_width_3</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">(285+125</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Here is Africa"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">white</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en384.png">
-
-</div>
-<h5 id="sec2446" class="paragraph">Viewing images as textures.</h5>
-<p>
-<span style="font-variant:small-caps">Xcas</span> can also display image files in rectangles in
-2D or on surfaces in 3D with the
-<span style="font-family:monospace">gl_texture</span><a id="hevea_default1911"></a>
-property of the object (see Section <a href="cascmd_en596.html#ssec%3Aindattr">17.1.2</a>). This
-procedure does not use image objects, but reads images
-from disk.</p><h4 id="sec2447" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rectangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,200,1/2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">gl_texture</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Exemples/demo/terre.jpg"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en385.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">sphere</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0,0,0],1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">gl_material</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">gl_texture</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"Exemples/demo/terre.jpg"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en386.png">
 
 </div>
 <hr>

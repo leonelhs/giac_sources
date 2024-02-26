@@ -4,114 +4,103 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Testing a distribution with the χ2 distribution</title>
+<title>Distribution fitting by maximum likelihood</title>
 </head>
 <body >
 <a href="cascmd_en684.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en686.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1743" class="subsection">18.5.4  Testing a distribution with the χ<sup>2</sup> distribution</h3>
-<p>The <span style="font-family:monospace">chisquaret</span><a id="hevea_default1373"></a>
-command will use the χ<sup>2</sup> test to compare
-sample data to a specified distribution.
+<h3 id="sec1741" class="subsection">18.4.23  Distribution fitting by maximum likelihood</h3>
+<p>The <span style="font-family:monospace">fitdistr</span><a id="hevea_default1375"></a>
+command finds the parameters for a distribution
+of a specified type that best fits a set of samples.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">chisquaret</span> takes one mandatory argument and a
-sequence of optional arguments:
+<span style="font-family:monospace">fitdistr</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">L</span>, a list of sample data.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">distr</span>. This can be one of
+<span style="font-style:italic">L</span>, a list of presumably independent and identically
+distributed samples.
+</li><li class="li-itemize"><span style="font-style:italic">distr</span>, a distribution type, which can be one of:
 <ul class="itemize"><li class="li-itemize">
-The name of a distribution (see Section <a href="cascmd_en654.html#ssec%3Arandvar">18.3.4</a>
-for a list of distributions and their parameters).
-</li><li class="li-itemize">Another list of sample data.
+<span style="font-family:monospace">normal</span> or <span style="font-family:monospace">normald</span>, for a normal distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">exp</span>, <span style="font-family:monospace">exponential</span> of
+<span style="font-family:monospace">exponentiald</span>, for an exponential distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">poisson</span>, for a Poisson distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">geometric</span>, for a geometric distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">gammad</span>, for a gamma distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">betad</span>, for a beta distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">cauchy</span> or <span style="font-family:monospace">cauchyd</span>, for a Cauchy
+distribution.
+</li><li class="li-itemize"><span style="font-family:monospace">weibull</span> or <span style="font-family:monospace">weibulld</span> for a Weibull
+distribution.
 </li></ul>
-By default this will be the <span style="font-family:monospace">uniform</span> distribution.
-</li><li class="li-itemize"><span style="font-style:italic">params</span>, the parameters of the distribution
-<span style="font-style:italic">distr</span> or the symbol <span style="font-family:monospace">classes</span> and
-optionally <span style="font-style:italic">c</span><sub><span style="font-style:italic">min</span></sub> and <span style="font-style:italic">c</span><sub><span style="font-style:italic">dim</span></sub>, the minimum size and default
-size of a statistics class (by default, <span style="font-family:monospace">class_min</span> and
-<span style="font-family:monospace">class_size</span>, which themselves default to 0 and 1; see
-Section <a href="cascmd_en031.html#ssec%3Aconfgraph">2.5.8</a>).
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">chisquaret(</span><span style="font-style:italic">L</span> ⟨,<span style="font-style:italic">distr</span> ⟩<span style="font-family:monospace">)</span>
-returns the result of the χ<sup>2</sup> test between the sample data and
-the named distribution or the two sample data.
-</li></ul><h4 id="sec1744" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">([57,54])</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-Guessing data is the list of number of elements in each class, adequation to uniform distribution<br>
- Sample adequation to a finite discrete probability distribution<br>
- Chi2 test result 0.0810810810811,<br>
- reject adequation if superior to chisquare_icdf(1,0.95)=3.84145882069 or chisquare_icdf(1,1-alpha) if alpha!=5%
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</li><li class="li-itemize"><span style="font-family:monospace">fitdistr(</span><span style="font-style:italic">L</span>,<span style="font-style:italic">distr</span><span style="font-family:monospace">)</span>
+returns the name of the specified type of distribution with
+parameters that fit <span style="font-style:italic">L</span> most closely according to the method of maximum
+likelihood.
+</li></ul><h4 id="sec1742" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">fitdistr</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvector</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">weibulld</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1/2,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">weibull</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.0810810810811
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">weibulld</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">0.517079036032,1.05683817484</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">([1,1,1,1,1,0,0,1,0,1,1],[.4,.6])</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-Sample adequation to a finite discrete probability distribution<br>
- Chi2 test result 0.742424242424,<br>
- reject adequation if superior to chisquare_icdf(1,0.95)=3.84145882069 or chisquare_icdf(1,1-alpha) if alpha!=5%
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">stddev</span></span><span style="font-weight:bold"><span style="color:#BF0000">=9.5):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">stddev</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1.5):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sample</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">eval</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">/</span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0),1000):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">Z</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fitdistr</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">cauchy</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.742424242424
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span><span style="color:#0000CC"><span style="font-style:italic">cauchyd</span></span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
+⎝</span></td><td class="dcell"><span style="color:#0000CC">0.347058460176,6.55905486387</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
+⎠</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ranv</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10,.5),</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-Binomial: estimating n and p from data 10 0.5055<br>
- Sample adequation to binomial(10,0.5055,.), Chi2 test result 7.77825189838,<br>
- reject adequation if superior to chisquare_icdf(7,0.95)=14.0671404493 or chisquare_icdf(7,1-alpha) if alpha!=5%
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">histogram</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">select</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-&gt;(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;-100 </span></span><span style="font-weight:bold"><span style="color:#BF0000">and</span></span><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;100),</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">));</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">plot</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">Z</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-100..100,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">line_width_2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en131.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">kolmogorovt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">Z</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-7.77825189838
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">“D=”</span><span style="color:#0000CC">,0.0161467485236,</span><span style="color:#0000CC">“K=”</span><span style="color:#0000CC">,0.510605021406,</span><span style="color:#0000CC">“1-kolmogorovd(K)=”</span><span style="color:#0000CC">,0.956753826255</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ranv</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10,.5),</span></span><span style="font-weight:bold"><span style="color:#BF0000">binomial</span></span><span style="font-weight:bold"><span style="color:#BF0000">,11,.5)</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-Sample adequation to binomial(11,0.5,.), Chi2 test result 125.617374161,<br>
- reject adequation if superior to chisquare_icdf(10,0.95)=18.3070380533 or chisquare_icdf(10,1-alpha) if alpha!=5%
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</table><p>
+The Kolmogorov-Smirnov test indicates that the samples from <span style="font-style:italic">S</span> are drawn from <span style="font-style:italic">Z</span> with high probability.</p><p>You can fit a lognormal distribution to samples <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>,…,<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> by
+fitting a normal distribution to the sample logarithms log
+<span style="font-style:italic">x</span><sub>1</sub>,log<span style="font-style:italic">x</span><sub>2</sub>,…,log<span style="font-style:italic">x</span><sub><span style="font-style:italic">n</span></sub> because log-likelihood functions are the
+same. For example, generate some samples according to the lognormal
+rule with parameters µ=5 and σ<sup>2</sup>=2:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">randvar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">mean</span></span><span style="font-weight:bold"><span style="color:#BF0000">=5,</span></span><span style="font-weight:bold"><span style="color:#BF0000">variance</span></span><span style="font-weight:bold"><span style="color:#BF0000">=2):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sample</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">eval</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">X</span></span><span style="font-weight:bold"><span style="color:#BF0000">),0),1000):;</span></span></td></tr>
+</table><p>Then fit the normal distribution to log<span style="font-style:italic">S</span>:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">Y</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fitdistr</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">log</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">S</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">normal</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-125.617374161
+</span><span style="color:#0000CC">normald</span><span style="color:#0000CC">(5.04754808715,1.42751619912)
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table><p>
-As an example using <span style="font-family:monospace">class_min</span> and <span style="font-family:monospace">class_size</span>:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">ranv</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1000,</span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0,.2):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">classes</span></span><span style="font-weight:bold"><span style="color:#BF0000">,-2,.25)</span></span></td></tr>
-</table><p>or (setting <span style="font-family:monospace">class_min</span> to −2 and <span style="font-family:monospace">class_size</span> to −0.25 in the graphical configuration):
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">chisquaret</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">classes</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
-Normal density, estimating mean and stddev from data -0.00345919752912 0.201708100832<br>
- Sample adequation to normald_cdf(-0.00345919752912,0.201708100832,.), Chi2 test result 2.11405080381,<br>
- reject adequation if superior to chisquare_icdf(4,0.95)=9.48772903678 or chisquare_icdf(4,1-alpha) if alpha!=5%
-</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-2.11405080381
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-In this last case, you are given the value of <span style="font-style:italic">d</span><sup>2</sup> of the statistic
-<span style="font-style:italic">D</span><sup>2</sup>=∑<sub><span style="font-style:italic">j</span>=1</sub><sup><span style="font-style:italic">k</span></sup> (<span style="font-style:italic">n</span><sub><span style="font-style:italic">j</span></sub>−<span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub>)/<span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub>, where <span style="font-style:italic">k</span> is the number of
-sample classes for <span style="font-family:monospace">classes(L,-2,0.25)</span> (or
-<span style="font-family:monospace">classes(L)</span>), <span style="font-style:italic">n</span><sub><span style="font-style:italic">j</span></sub> is the size of the <span style="font-style:italic">j</span>th class, and <span style="font-style:italic">e</span><sub><span style="font-style:italic">j</span></sub>=
-<span style="font-style:italic">n</span> <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> where <span style="font-style:italic">n</span> is the size of <span style="font-family:monospace">L</span> and <span style="font-style:italic">p</span><sub><span style="font-style:italic">j</span></sub> is the
-probability of the <span style="font-style:italic">j</span>th class interval assuming a normal distribution
-with the mean and population standard deviation of <span style="font-family:monospace">L</span>.</p>
+The mean of <span style="font-style:italic">Y</span> is about 5.05 and the variance is about 2.04. Now
+the variable <span style="font-style:italic">Z</span>=<span style="font-style:italic">e</span><sup><span style="font-style:italic">Y</span></sup> has the sought lognormal distribution.</p>
 <hr>
 <a href="cascmd_en684.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

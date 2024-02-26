@@ -11,7 +11,7 @@
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en192.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec389" class="subsection">6.1.27  Listing all compositions of an integer into <span style="font-style:italic">k</span> parts</h3>
+<h3 id="sec385" class="subsection">6.1.27  Listing all compositions of an integer into <span style="font-style:italic">k</span> parts</h3>
 <p>A composition of a positive integer <span style="font-style:italic">n</span> is an ordered set of
 non-negative integers which sum to <span style="font-style:italic">n</span>. For example, three
 compositions of 4 are
@@ -35,19 +35,17 @@ argument:
 <ul class="itemize"><li class="li-itemize">
 <span style="font-style:italic">n</span>, a positive integer.
 </li><li class="li-itemize"><span style="font-style:italic">k</span>, a positive integer not larger than <span style="font-style:italic">n</span>.
-</li><li class="li-itemize">Optionally, either <span style="font-family:monospace">zeros=true</span> or <span style="font-family:monospace">zeros=false</span>.
+</li><li class="li-itemize">Optionally, either <span style="font-family:monospace">zeros=true</span> (which is the default) or
+<span style="font-family:monospace">zeros=false</span>.
 </li></ul>
 </li><li class="li-itemize"><span style="font-family:monospace">icomp(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">k</span> ⟨,<span style="font-family:monospace">zeros=</span><span style="font-style:italic">bool</span> ⟩<span style="font-family:monospace">)</span>
 returns the list of all compositions of <span style="font-style:italic">n</span> into <span style="font-style:italic">k</span> parts, where a part can be
-0. This is equivalent to the optional argument with
-<span style="font-style:italic">bool</span> equal to <span style="font-family:monospace">true</span>. With <span style="font-style:italic">bool</span> equal to
-<span style="font-family:monospace">false</span>, <span style="font-family:monospace">icomp(</span><span style="font-style:italic">n</span>,<span style="font-style:italic">k</span>,<span style="font-family:monospace">zeros=false</span><span style="font-family:monospace">)</span> returns the
-list of all compositions of <span style="font-style:italic">n</span> into <span style="font-style:italic">k</span> parts, where each part is
-nonzero (positive).
-</li></ul><h5 id="sec390" class="paragraph">Remark.</h5>
+0 if <span style="font-style:italic">bool</span>=<span style="font-family:monospace">true</span> (the default),
+or where each part is greater than 0 if <span style="font-style:italic">bool</span>=<span style="font-family:monospace">false</span>.
+</li></ul><h5 id="sec386" class="paragraph">Remark.</h5>
 <p>
 Using <span style="font-family:monospace">icomp</span> with too large values of <span style="font-style:italic">n</span> can easily clutter your working memory
-because the number of compositions rises exponentially.</p><h4 id="sec391" class="subsubsection">Examples</h4>
+because the number of compositions rises exponentially.</p><h4 id="sec387" class="subsubsection">Examples</h4>
 <table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">icomp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(4,2)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
@@ -75,7 +73,7 @@ because the number of compositions rises exponentially.</p><h4 id="sec391" class
 </table></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">icomp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(6,3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">zeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">false</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">icomp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5,3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">zeros</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#0000CC">false</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
@@ -87,28 +85,13 @@ because the number of compositions rises exponentially.</p><h4 id="sec391" class
 ⎢<br>
 ⎢<br>
 ⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎢<br>
-⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">4
-</span></td></tr>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">2</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">1</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">3</span></td></tr>
 </table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
-⎥<br>
 ⎥<br>
 ⎥<br>
 ⎥<br>

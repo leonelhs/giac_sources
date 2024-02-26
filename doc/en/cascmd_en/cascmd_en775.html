@@ -4,51 +4,48 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Writing variable values to a file</title>
+<title>Changing the order of execution</title>
 </head>
 <body >
 <a href="cascmd_en774.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en776.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:write" class="subsection">23.5.3  Writing variable values to a file</h3>
-<p>The <span style="font-family:monospace">write</span><a id="hevea_default1581"></a>
-command saves variable values to a file, to be read later.
+<h3 id="sec1968" class="subsection">23.3.8  Changing the order of execution</h3>
+<p>The <span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">goto</span></span></span><a id="hevea_default1580"></a>
+command will tell a program to jump to a different
+spot in a program, where the spot needs to have been marked with
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">label</span></span></span><a id="hevea_default1581"></a>.
+They both must have the same argument, which is
+simply a sequence of characters.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">write</span> takes two arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">filename</span>, a string.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a sequence of variables.
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">write(</span><span style="font-style:italic">filename</span>,<span style="font-style:italic">vars</span><span style="font-family:monospace">)</span>
-writes the variables in <span style="font-style:italic">vars</span> assigned to their values in a
-file named <span style="font-style:italic">filename</span>.
-</li></ul><h4 id="sec1965" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=3.14</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=7</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">write</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">b</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>creates a file named “foo” containing:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> a:=(3.14);
- b:=7;</td></tr>
-</table><p>If you wanted to store the first million digits of π to a file,
-you could set it equal to a variable and store it in a file:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">pidec</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">evalf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">,10^6):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">write</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"pi1million"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">pidec</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>The file is written so that it can be loaded with the <span style="font-family:monospace">read</span>
-command (Section <a href="cascmd_en073.html#ssec%3Aread">3.5.2</a>), which simply takes a file name as a
-string. This allows you to restore the values of variables saved
-this way, for example in a different session or if you have purged the
-variables.</p><h4 id="sec1966" class="subsubsection">Example</h4>
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">label</span></span></span> takes
+<span style="font-style:italic">mark</span>, a sequence of characters.
+</li><li class="li-itemize"><span style="font-family:monospace">label(</span><span style="font-style:italic">mark</span><span style="font-family:monospace">)</span> labels the position in
+the program with <span style="font-style:italic">mark</span>.
+</li></ul><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace"><span style="font-weight:bold"><span style="color:#0000CC">goto</span></span></span> takes
+<span style="font-style:italic">mark</span>, a sequence of characters.
+</li><li class="li-itemize"><span style="font-family:monospace">goto(</span><span style="font-family:monospace">mark</span><span style="font-family:monospace">)</span> goes to the part of the
+program labeled with <span style="font-style:italic">mark</span>.
+</li></ul><h4 id="sec1969" class="subsubsection">Example</h4>
 <p>
-If, in a different session, you want to use the
-values of <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> above, enter:
+The following program
+will add the terms of the harmonic series until the term is less than
+some specified value <span style="font-family:monospace">eps</span> and print the result.
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">read</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"foo"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>This will reassign the values <span style="font-family:monospace">3.14</span> and <span style="font-family:monospace">7</span> to
-<span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span>. Be careful, this will silently overwrite
-any values that <span style="font-family:monospace">a</span> and <span style="font-family:monospace">b</span> might have had.</p>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> harmsum(eps):={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> S,j;
+   S:=0;
+   j:=0;
+   <span style="color:#0000CC"><span style="font-weight:bold">label</span></span>(spot);
+   j:=j+1;
+   S:=S+1/j;
+   <span style="color:#0000CC"><span style="font-weight:bold">if</span></span> (1/j&gt;=eps) <span style="color:#0000CC"><span style="font-weight:bold">goto</span></span> (spot);
+   print(S);
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> 0;
+ }</td></tr>
+</table>
 <hr>
 <a href="cascmd_en774.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

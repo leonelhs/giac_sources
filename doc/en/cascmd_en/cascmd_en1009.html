@@ -4,53 +4,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Changing the sampling rate of an audio clip</title>
+<title>Averaging channel data</title>
 </head>
 <body >
 <a href="cascmd_en1008.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en1010.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:resample" class="subsection">26.2.10  Changing the sampling rate of an audio clip</h3>
-<p>The <span style="font-family:monospace">resample</span><a id="hevea_default1938"></a>
-command resamples a clip to a desired rate.
+<h3 id="ssec:stereo2mono" class="subsection">26.2.5  Averaging channel data</h3>
+<p>The <span style="font-family:monospace">stereo2mono</span><a id="hevea_default1936"></a>
+command converts a multichannel audio clip to a single channel audio clip.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">resample</span> takes one mandatory argument and two
-optional arguments:
-<ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">A</span>, an audio clip.
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">r</span>, the target sample rate in Hz (by default
-<span style="font-style:italic">r</span>=44100).
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">n</span>, an integer specifying the quality level,
-from 0 (poor) to 4 (best) (by default, <span style="font-style:italic">n</span>=2).
-</li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">resample(</span><span style="font-style:italic">A</span> ⟨,<span style="font-style:italic">r</span>,<span style="font-style:italic">n</span>⟩<span style="font-family:monospace">)</span>
-returns the audio clip <span style="font-style:italic">A</span> resampled to rate <span style="font-style:italic">r</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">giac</span> does resampling by using the <span style="font-family:monospace">libsamplerate</span>
-library<sup><a id="text14" href="cascmd_en1017.html#note14">1</a></sup>.
-For more information see the library documentation.
-</li></ul><h4 id="sec2484" class="subsubsection">Example</h4>
-<p>
-Assuming that the directory <span style="font-family:monospace">sounds</span> contains <span style="font-family:monospace">example.wav</span>, a
-<span style="font-family:monospace">wav</span> file with a sample rate of 44100:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">readwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"/path/to/sounds/example.wav"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-44100
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">res</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">resample</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">clip</span></span><span style="font-weight:bold"><span style="color:#BF0000">,48000):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">samplerate</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">res</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-48000
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table>
+<span style="font-family:monospace">stereo2mono</span> takes
+<span style="font-style:italic">A</span>, a multichannel audio clip.
+</li><li class="li-itemize"><span style="font-family:monospace">stereo2mono(</span><span style="font-style:italic">A</span><span style="font-family:monospace">)</span> returns an audio clip with the input
+channels in <span style="font-style:italic">A</span> mixed down to a single channel.<p>Every sample in the output is the arithmetic mean of the samples at
+the same position in the input channels.
+</p></li></ul><h4 id="sec2491" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">soundsec</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">*440*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">pi</span></span><span style="font-weight:bold"><span style="color:#BF0000">*445*</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">stereo2mono</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">createwav</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#BF0000">L</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">])):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">playsnd</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><p>Output:
+The sound of the single channel of the combination of <span style="font-style:italic">L</span> and <span style="font-style:italic">R</span> is
+played.</p>
 <hr>
 <a href="cascmd_en1008.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

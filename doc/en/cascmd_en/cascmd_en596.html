@@ -4,220 +4,421 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Graph and geometric objects attributes</title>
+<title>Solving general nonlinear programming problems</title>
 </head>
 <body >
 <a href="cascmd_en595.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en597.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:indattr" class="subsection">17.1.2  Graph and geometric objects attributes</h3>
-<p>There are two kinds of attributes for graphs and geometric objects:
-global attributes of a graphic scene and individual attributes for
-the specific geometric objects in the scene.</p>
-<h4 id="sec1425" class="subsubsection">Individual attributes</h4>
-<p>
-<a id="hevea_default1059"></a>
-<a id="hevea_default1060"></a>
-<a id="hevea_default1061"></a>
-<a id="hevea_default1062"></a>
-<a id="hevea_default1063"></a>
-<a id="hevea_default1064"></a>
-<a id="hevea_default1065"></a>
-<a id="hevea_default1066"></a>
-<a id="hevea_default1067"></a>
-<a id="hevea_default1068"></a>
-<a id="hevea_default1069"></a>
-<a id="hevea_default1070"></a>
-<a id="hevea_default1071"></a>
-<a id="hevea_default1072"></a>
-<a id="hevea_default1073"></a>
-<a id="hevea_default1074"></a>
-<a id="hevea_default1075"></a>
-<a id="hevea_default1076"></a>
-<a id="hevea_default1077"></a>
-<a id="hevea_default1078"></a>
-<a id="hevea_default1079"></a>
-<a id="hevea_default1080"></a>
-<a id="hevea_default1081"></a>
-<a id="hevea_default1082"></a>
-<a id="hevea_default1083"></a>
-<a id="hevea_default1084"></a>
-<a id="hevea_default1085"></a>
-<a id="hevea_default1086"></a>
-<a id="hevea_default1087"></a>
-<a id="hevea_default1088"></a>
-<a id="hevea_default1089"></a>
-<a id="hevea_default1090"></a>
-<a id="hevea_default1091"></a>
-<a id="hevea_default1092"></a>
-<a id="hevea_default1093"></a>
-<a id="hevea_default1094"></a>
-<a id="hevea_default1095"></a>
-<a id="hevea_default1096"></a>
-<a id="hevea_default1097"></a>
-<a id="hevea_default1098"></a>
-<a id="hevea_default1099"></a>
-<a id="hevea_default1100"></a>
-<a id="hevea_default1101"></a>
-<a id="hevea_default1102"></a>
-<a id="hevea_default1103"></a>
-<a id="hevea_default1104"></a>
-<a id="hevea_default1105"></a>
-<a id="hevea_default1106"></a>
-<a id="hevea_default1107"></a>
-<a id="hevea_default1108"></a>
-<a id="hevea_default1109"></a>
-<a id="hevea_default1110"></a></p><p>Graphic attributes are optional arguments of the form
-<span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>. They must be given as the last
-argument of a graphic instruction. Attributes are ordered in several
-categories: color, point shape, point width, line style, line
-thickness, legend value, position and presence. In addition, surfaces
-may be filled or not, 3D surfaces may be filled with a texture, 3D
-objects may also have properties with respect to the light.
-Attributes of different categories may be combined with <span style="font-family:monospace">+</span>, e.g. in:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotfunc</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">],</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">line_width_3</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">filled</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>The graphic attributes are:
+<h3 id="sec1418" class="subsection">15.3.3  Solving general nonlinear programming problems</h3>
+<p>The <span style="font-family:monospace">nlpsolve</span><a id="hevea_default1045"></a>
+command computes the optimum of a multivariate objective function subject
+to equality and/or inequality constraints with continuous and/or integer variables.
 </p><dl class="description"><dt class="dt-description">
-<span style="font-weight:bold">Color</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span> or
-<span style="font-family:monospace">color=</span><span style="font-style:italic">value</span>. The values can be:
+<span style="font-weight:bold">Input syntax.</span></dt><dd class="dd-description"> <span style="font-family:monospace">nlpsolve</span> takes the following arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">black</span>, <span style="font-family:monospace">white</span>, <span style="font-family:monospace">red</span>, <span style="font-family:monospace">blue</span>, <span style="font-family:monospace">green</span>,
-<span style="font-family:monospace">magenta</span>, <span style="font-family:monospace">cyan</span>, <span style="font-family:monospace">yellow</span>,
-<span style="font-family:monospace">brown</span>, <span style="font-family:monospace">purple</span>, <span style="font-family:monospace">orange</span>, or <span style="font-family:monospace">grey</span>.
-</li><li class="li-itemize">a numeric value between 0 and 255,
-</li><li class="li-itemize">a numeric value between 256 and 256+7· 16+14 for a color of the
-rainbow,
-</li><li class="li-itemize">any other numeric value smaller than 65535 (the rendering
-is however not guaranteed to be portable).
+<span style="font-style:italic">obj</span> or <span style="font-style:italic">fname</span>, an expression to optimize or
+a string containing the path to a problem file.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">constr</span>, a list of equality and
+inequality constraints. Double-bounded constraints in form
+<span style="font-style:italic">a</span>≤ <span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)≤ <span style="font-style:italic">b</span> can be entered as <span style="font-family:monospace">f(x)=a..b</span> instead
+of two inequalities.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">bd</span>, a sequence of variable boundaries
+<span style="font-family:monospace">x=a..b</span> where <span style="font-style:italic">a</span>∈ℝ∪{−∞} and
+<span style="font-style:italic">b</span>∈ℝ∪{+∞}, <span style="font-style:italic">b</span>≥ <span style="font-style:italic">a</span>.
+If several variables have the same upper and lower
+bounds, one can enter <span style="font-family:monospace">[x,y,...]=a..b</span>. If the
+bounds are stored in a two-column matrix, consider using the conversion
+routine <span style="font-family:monospace">box_constraints</span> (see Section <a href="cascmd_en164.html#ssec%3Aboxconstr">5.6.9</a>).
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, a sequence of options in which each
+option may be one of:
+<ul class="itemize"><li class="li-itemize">
+<a id="hevea_default1046"></a>
+<span style="font-family:monospace">maximize=</span><span style="font-style:italic">bool</span> or
+<span style="font-family:monospace">nlp_maximize=</span><span style="font-style:italic">bool</span>,
+where <span style="font-style:italic">bool</span> can be <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>.
+Just <span style="font-family:monospace">maximize</span> or <span style="font-family:monospace">nlp_maximize</span>
+is equivalent to <span style="font-family:monospace">maximize=true</span>. (By default,
+<span style="font-family:monospace">maximize=false</span>, i.e. the objective is minimized.)
+</li><li class="li-itemize"><a id="hevea_default1047"></a>
+<span style="font-family:monospace">nlp_initialpoint=</span><span style="font-style:italic">pt</span>, where <span style="font-style:italic">pt</span>
+is a starting point for the solver or a list of starting points,
+each of which is given in the form [<span style="font-style:italic">x</span>=<span style="font-style:italic">x</span><sub>0</sub>,<span style="font-style:italic">y</span>=<span style="font-style:italic">y</span><sub>0</sub>,…]. 
+Alternatively, <span style="font-style:italic">pt</span> may be an initial search rectangle specified by
+[<span style="font-style:italic">x</span>=<span style="font-style:italic">x</span><sub><span style="font-style:italic">min</span></sub><span style="font-family:monospace">..</span><span style="font-style:italic">x</span><sub><span style="font-style:italic">max</span></sub>,<span style="font-style:italic">y</span>=<span style="font-style:italic">y</span><sub><span style="font-style:italic">min</span></sub><span style="font-family:monospace">..</span><span style="font-style:italic">y</span><sub><span style="font-style:italic">max</span></sub>,…]
+which serves as a frame for automatic generation of starting points.
+</li><li class="li-itemize"><a id="hevea_default1048"></a>
+<span style="font-family:monospace">nlp_method=</span><span style="font-style:italic">meth</span>, which is a string or a list specifying the method
+of optimization. Available methods are:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">nelder-mead</span> or <span style="font-family:monospace">nm</span>, the simplex method of Nelder and Mead,
+modified so that it can handle variable bounds and (in)equality constraints;
+see Luersen, Riche, and Guyon (2003).
+</li><li class="li-itemize"><span style="font-family:monospace">differential-evolution</span> or <span style="font-family:monospace">de</span>, the method of differential evolution,
+modified so it can handle bounds, (in)equalities and integrality constraints;
+see Lampinen and Zelinka (2000).
+</li><li class="li-itemize"><span style="font-family:monospace">interior-point</span> or <span style="font-family:monospace">ipt</span>, the interior-point method which requires
+the objective and constraint derivatives, and can handle (mixed) integer nonlinear problems.
+If GSL routines are available, then unconstrained problems are solved by
+BGFS method which is faster.
+</li><li class="li-itemize"><span style="font-family:monospace">cobyla</span> or <span style="font-family:monospace">cbl</span>, the (derivative-free) COBYLA algorithm.
 </li></ul>
-</dd><dt class="dt-description"><span style="font-weight:bold">Point shape</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>, where
-<span style="font-style:italic">value</span> can be one of:
-<span style="font-family:monospace">rhombus_point</span>, <span style="font-family:monospace">plus_point</span>,
-<span style="font-family:monospace">square_point</span>, <span style="font-family:monospace">cross_point</span>,
-<span style="font-family:monospace">triangle_point</span>, <span style="font-family:monospace">star_point</span>,
-<span style="font-family:monospace">point_point</span> or <span style="font-family:monospace">invisible_point</span>.
-</dd><dt class="dt-description"><span style="font-weight:bold">Point width</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>.
-The values can be:<p><span style="font-family:monospace">point_width_</span><span style="font-style:italic">n</span> where <span style="font-style:italic">n</span> is an
-integer between 1 and 7.
-</p></dd><dt class="dt-description"><span style="font-weight:bold">Line thickness</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">thickness=</span><span style="font-style:italic">n</span>
-or <span style="font-family:monospace">display=line_width_</span><span style="font-style:italic">n</span> where <span style="font-style:italic">n</span> is an
-integer between 1 and 7.
-</dd><dt class="dt-description"><span style="font-weight:bold">Line shape</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>,
-where <span style="font-style:italic">value</span> can be one of:
-<span style="font-family:monospace">dash_line</span>, <span style="font-family:monospace">solid_line</span>,
-<span style="font-family:monospace">dashdot_line</span>, <span style="font-family:monospace">dashdotdot_line</span>,
-<span style="font-family:monospace">cap_flat_line</span>, <span style="font-family:monospace">cap_square_line</span> or
-<span style="font-family:monospace">cap_round_line</span>.
-</dd><dt class="dt-description"><span style="font-weight:bold">Legend</span></dt><dd class="dd-description"> where the text is set with
-<span style="font-family:monospace">legend="</span><span style="font-style:italic">legendname</span><span style="font-family:monospace">"</span> and
-the position is set with <span style="font-family:monospace">display=</span><span style="font-style:italic">value</span>,
-where <span style="font-style:italic">value</span> is <span style="font-family:monospace">quadrant</span><span style="font-style:italic">n</span> for some
-<span style="font-style:italic">n</span>∈{1,2,3,4}.
-These values correspond to the position of the legend of the object
-(using the trigonometric plane conventions).
-The legend is not displayed if the attribute
-<span style="font-family:monospace">display=hidden_name</span> is added.
-</dd><dt class="dt-description"><span style="font-weight:bold">Filling</span></dt><dd class="dd-description"> which is set with <span style="font-family:monospace">display=filled</span>.
-</dd><dt class="dt-description"><span style="font-weight:bold">Image texture</span></dt><dd class="dd-description">
-which is set <span style="font-family:monospace">gl_texture="</span><span style="font-style:italic">picture_filename</span><span style="font-family:monospace">"</span> and
-fills a surface with a texture. See the interface manual for a more
-complete description and for <span style="font-family:monospace">gl_material</span><a id="hevea_default1111"></a>
-options.
-</dd></dl><h4 id="sec1426" class="subsubsection">Examples</h4>
+Note that these names must be entered with double quotes, i.e. as strings. Some parameters
+can be set for individual methods; to do so, <span style="font-style:italic">meth</span> should be a list in which the
+leading element is the method specification, followed by one or more entries of the form
+"<span style="font-style:italic">param</span>"<span style="font-family:monospace">=</span><span style="font-style:italic">value</span>, where <span style="font-style:italic">param</span> can be one of the following
+(see below for detailed explanations on values):
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">cross-probability</span>, which specifies the probability of mutation in differential
+evolution, where <span style="font-style:italic">value</span>=<span style="font-style:italic">p</span>∈⟨ 0,1⟩ (by default, <span style="font-style:italic">p</span>=0.5).
+</li><li class="li-itemize"><span style="font-family:monospace">scale</span>, which specifies the scaling factor for differential evolution (by default,
+it is computed automatically from <span style="font-family:monospace">cross-probability</span> by using the formula of Zaharie (2002)).
+</li><li class="li-itemize"><span style="font-family:monospace">reflect-ratio</span>, which specifies the simplex reflection factor in Nelder-Mead
+method (by default 1).
+</li><li class="li-itemize"><span style="font-family:monospace">expand-ratio</span>, which specifies the simplex expansion factor in Nelder-Mead
+method (by default 2).
+</li><li class="li-itemize"><span style="font-family:monospace">contract-ratio</span>, which specifies the simplex contraction factor in Nelder-Mead
+method (by default 0.5).
+</li><li class="li-itemize"><span style="font-family:monospace">shrink-ratio</span>, which specifies the simplex shrinking factor in Nelder-Mead
+method (by default 0.5).
+</li><li class="li-itemize"><span style="font-family:monospace">size</span>, which specifies the initial simplex size for Nelder-Mead method (by default, it is computed automatically by using the variable bounds).
+</li><li class="li-itemize"><span style="font-family:monospace">step</span>, which specifies initial step for BGFS method or adaptive penalty step for
+Nelder-Mead method (by default, it is set to 1 for BGFS and to 0.01 for Nelder &amp; Mead).
+</li><li class="li-itemize"><span style="font-family:monospace">search-points</span>, which specifies the number of agents in differential evolution
+(by default 10<span style="font-style:italic">n</span>, where <span style="font-style:italic">n</span> is the number of variables) or the number of points for determining
+PDH clusters (by default 1000√<span style="text-decoration:overline"><span style="font-style:italic">n</span></span>).
+</li><li class="li-itemize"><span style="font-family:monospace">postprocess</span>, which specifies whether the result obtained by differential evolution or
+Nelder-Mead method should be refined by a local method, where <span style="font-style:italic">value</span> is a boolean value
+(by default, <span style="font-style:italic">value</span>=<span style="font-family:monospace">true</span>).
+</li></ul>
+The optimization method is determined automatically if <span style="font-style:italic">meth</span> is not set (see below).
+</li><li class="li-itemize"><a id="hevea_default1049"></a>
+<span style="font-family:monospace">nlp_precision=</span>ε for some ε&gt;0, which
+sets the optimality tolerance for the solver (by default, ε=<span style="font-family:monospace">epsilon()</span><sup>2/3</sup>).
+</li><li class="li-itemize"><a id="hevea_default1050"></a>
+<span style="font-family:monospace">nlp_tolerance=</span>δ for some δ&gt;0,
+which sets the feasibility tolerance for the solver (by default, δ=10<sup>−5</sup>).
+</li><li class="li-itemize"><a id="hevea_default1051"></a>
+<span style="font-family:monospace">nlp_presolve=</span><span style="font-style:italic">bool</span>, where <span style="font-style:italic">bool</span> can be
+either <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>. This option enables/disables the
+preprocessing step which attempts to reduce the number of decision
+variables by solving subsets of equality constraints which are all linear
+in certain subsets of variables, substituting the results, and
+repeating the process until no further reduction can be made.
+(In particular, fixed variables are removed.)
+After solving the presolved problem, the removed variables
+are substituted back to the solution.
+(By default, <span style="font-family:monospace">nlp_presolve=true</span>.)
+</li><li class="li-itemize"><span style="font-family:monospace">border=</span><span style="font-style:italic">bool</span>, where <span style="font-style:italic">bool</span> is a boolean value.
+This enables or disables finding variable bounds automatically. (By default,
+<span style="font-family:monospace">border=true</span>.)
+</li><li class="li-itemize"><a id="hevea_default1052"></a>
+<span style="font-family:monospace">nlp_integervariables=</span><span style="font-style:italic">lst</span>, where <span style="font-style:italic">lst</span>
+is a list of problem variables that are supposed to take integral values (empty by default).
+</li><li class="li-itemize"><a id="hevea_default1053"></a>
+<span style="font-family:monospace">nlp_binaryvariables=</span><span style="font-style:italic">lst</span>, where <span style="font-style:italic">lst</span>
+is a list of problem variables that are supposed to take binary (0-1)
+values (empty by default).
+</li><li class="li-itemize"><a id="hevea_default1054"></a>
+<span style="font-family:monospace">nlp_iterationlimit=</span><span style="font-style:italic">N</span> for a positive integer <span style="font-style:italic">N</span>, which sets the
+maximum number of iterations allowed for the solver (by default, <span style="font-style:italic">N</span>=250).
+</li><li class="li-itemize"><a id="hevea_default1055"></a>
+<span style="font-family:monospace">nlp_verbose=</span><span style="font-style:italic">v</span>, where <span style="font-style:italic">v</span> is an integer specifying the verbosity level:
+0 – no messages, 1 – only errors, 2 – errors and warnings, 3 – all messages (by default, <span style="font-style:italic">v</span>=1).
+</li><li class="li-itemize"><span style="font-family:monospace">cluster=</span><span style="font-style:italic">k</span> or <span style="font-style:italic">bool</span>, where <span style="font-style:italic">k</span>≥ 2 is an integer and <span style="font-style:italic">bool</span> is
+either <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>, which specifies
+whether the initial points should be determined by k-means clustering a large number of random points
+at which the objective Hessian is positive definite (this works only if the interior-point
+method is used), called PDH (Positive Definite Hessian) points.
+The number of generated points can be specified by setting the
+<span style="font-family:monospace">search-points</span> parameter. If <span style="font-family:monospace">cluster=true</span>, the number of clusters is determined
+automatically using the Hartigan criterion. If <span style="font-style:italic">k</span> is set, then <span style="font-style:italic">k</span> clusters are generated.
+Cluster centers are subsequently used as the initial points. (By default, <span style="font-family:monospace">cluster=false</span>.)
+</li><li class="li-itemize"><span style="font-family:monospace">convex</span> or <span style="font-family:monospace">convex=</span><span style="font-style:italic">bool</span>,
+where <span style="font-style:italic">bool</span> can be either <span style="font-family:monospace">true</span> or <span style="font-family:monospace">false</span>.
+This specifies whether the input problem should be treated as being convex.
+If this option is set, then the convexity check is not performed, speeding up the execution.
+(By default, convexity of the problem is determined automatically only if it is relevant for
+choosing a suitable optimization method.)
+</li><li class="li-itemize"><span style="font-family:monospace">assume=</span><span style="font-style:italic">asmp</span>, where <span style="font-style:italic">asmp</span> may be one
+of the following:
+<ul class="itemize"><li class="li-itemize">
+<a id="hevea_default1056"></a>
+<span style="font-family:monospace">nlp_nonnegative</span>, which restricts all variables to
+nonnegative values (existing positive lower bounds are kept, however),
+</li><li class="li-itemize"><a id="hevea_default1057"></a>
+<a id="hevea_default1058"></a>
+<span style="font-family:monospace">nlp_nonnegint</span> or <span style="font-family:monospace">nonnegint</span>, which forces
+all variables to take nonnegative integer values,
+</li><li class="li-itemize"><a id="hevea_default1059"></a>
+<a id="hevea_default1060"></a>
+<span style="font-family:monospace">nlp_integer</span> or <span style="font-family:monospace">integer</span>, which forces
+all variables to take integer values,
+</li><li class="li-itemize"><a id="hevea_default1061"></a>
+<span style="font-family:monospace">nlp_binary</span>, which forces all variables to take
+0-1 values.
+</li></ul>
+</li></ul>
+</li></ul>
+</dd><dt class="dt-description"><span style="font-weight:bold">Entering problems directly.</span></dt><dd class="dd-description">
+<span style="font-family:monospace">nlpsolve(</span><span style="font-style:italic">obj</span> ⟨,<span style="font-style:italic">constr</span>,<span style="font-style:italic">bd</span>,<span style="font-style:italic">opt</span> ⟩<span style="font-family:monospace">)</span>
+returns a list [<span style="font-style:italic">optobj,optdec</span>], where <span style="font-style:italic">optobj</span>
+is the optimal value of <span style="font-style:italic">obj</span> and <span style="font-style:italic">optdec</span>
+is a list of of optimal values of the decision variables. If the optimization
+fails, then <span style="font-style:italic">optobj</span> is the error message and <span style="font-style:italic">optdec</span> is
+the last point on the path the solver takes in attempt to find the
+optimal objective value. If the problem is infeasible or if the solver fails
+to find a feasible point, then an error is returned.
+</dd><dt class="dt-description"><span style="font-weight:bold">Loading problems from files.</span></dt><dd class="dd-description">
+<span style="font-family:monospace">nlpsolve(</span><span style="font-style:italic">fname</span> ⟨,<span style="font-style:italic">opt</span> ⟩<span style="font-family:monospace">)</span>
+solves the problem written in the file pointed to by <span style="font-style:italic">fname</span>, which must be
+written in the AMPL modeling language (such files commonly have the extension <span style="font-family:monospace">.mod</span>).
+<span style="font-family:monospace">nlpsolve</span> contains a very basic parser for such files and is able to read
+problem variables, objective and constraints. For example, problems from
+<a href="https://www.minlplib.org/instances.html">MINLPLib</a> can be loaded this way.
+Solver parameters can be specified in <span style="font-style:italic">opt</span>.
+</dd><dt class="dt-description"><span style="font-weight:bold">Automatic selection of the optimization method.</span></dt><dd class="dd-description">
+If objective and constraints are twice differentiable, then interior-point method is used.
+If no initial point is provided and there are only box constraints, then differential evolution
+is applied first to find a good starting point. In the non-differentiable case, <span style="font-family:monospace">nlpsolve</span>
+applies the Nelder-Mead method and switches to differential evolution in the case of failure.
+In case of integrality constraints, as well as in the case of a box-constrained problem without
+additional constraints and initial point(s), differential evolution is selected.
+Linear problems are solved by calling the <span style="font-family:monospace">lpsolve</span> command,
+while univariate optimization on a segment is performed by using Brent’s algorithm.
+</dd><dt class="dt-description"><span style="font-weight:bold">Local vs. global optimization.</span></dt><dd class="dd-description">
+When an initial point is provided, <span style="font-family:monospace">nlpsolve</span> acts like a local optimizer.
+Without initial point(s), it uses a multistart technique in attempt to
+find the global minimum: starting points are automatically generated by using
+the probabilistic restart technique described by Luersen, Riche, and Guyon (2003) until the
+maximum number of iterations is reached. This technique avoids previously generated points
+and also the points of convergence, while keeping relatively close to them; thus, the search
+space is examined in a probabilistic but systematic way. An exception is the method of
+differential evolution, which is a “global” method by design, however not a true one;
+the initial population is generated uniformly if the search space is compact.
+</dd><dt class="dt-description"><span style="font-weight:bold">Automatic detection of variable bounds.</span></dt><dd class="dd-description">
+If the constraint derivatives are available, <span style="font-family:monospace">nlpsolve</span> determines rough bounds
+of the decision variables, and is thus able to detect whether the search domain is compact.
+In particular, this information is used by the probabilistic restart technique.
+</dd><dt class="dt-description"><span style="font-weight:bold">(Mixed) integer optimization.</span></dt><dd class="dd-description">
+When integrality constraints are provided, <span style="font-family:monospace">nlpsolve</span> applies a suitable method for finding
+integer-feasible solutions. For differentiable input, the branch&amp;bound method is used, unless
+the problem is convex, in which case the outer-approximation method is used. In the non-differentiable
+case, differential evolution is applied.
+</dd></dl><h4 id="sec1419" class="subsubsection">Examples</h4>
 <p>
-(See Section <a href="cascmd_en836.html#ssec%3A2dgenpolygon">24.9.3</a>, Section <a href="cascmd_en799.html#ssec%3A2dpoint">24.5.2</a>,
-Section <a href="cascmd_en796.html#sssec%3Adisplay">24.3.3</a> and Section <a href="cascmd_en815.html#ssec%3A2dsegments">24.6.3</a> for information on
-the commands used.)
+The continuous function <span style="font-style:italic">f</span> defined by
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span>)=min</td><td class="dcell">⎧<br>
+⎨<br>
+⎩</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >|<span style="font-style:italic">x</span>+4|</td></tr>
+</table></td><td class="dcell">−1,</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >|<span style="font-style:italic">x</span>+1|</td></tr>
+</table></td><td class="dcell">−1.005,</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >|<span style="font-style:italic">x</span>−3|</td></tr>
+</table></td><td class="dcell">+0.5</td><td class="dcell">⎫<br>
+⎬<br>
+⎭</td><td class="dcell">, </td></tr>
+</table><p>
+has a unique global minimum in [−5,5] at <span style="font-style:italic">x</span>=−1, with <span style="font-style:italic">f</span>(−1)=1.005.
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">polygon</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"P"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">min</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+4))-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1))-1.005,</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">abs</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">-3))+0.5):;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-5..5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[−1.0049992998,[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">=−1.0]]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Minimize <span style="font-style:italic">z</span>=<span style="font-style:italic">x</span><sub>1</sub> <span style="font-style:italic">x</span><sub>4</sub> (<span style="font-style:italic">x</span><sub>1</sub>+<span style="font-style:italic">x</span><sub>2</sub>+<span style="font-style:italic">x</span><sub>3</sub>)+<span style="font-style:italic">x</span><sub>3</sub> subject to
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">x</span><sub>1</sub> <span style="font-style:italic">x</span><sub>2</sub> <span style="font-style:italic">x</span><sub>3</sub> <span style="font-style:italic">x</span><sub>4</sub></td><td style="text-align:left;white-space:nowrap" >≥ 25,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" > <span style="font-style:italic">x</span><sub>1</sub><sup>2</sup>+<span style="font-style:italic">x</span><sub>2</sub><sup>2</sup>+<span style="font-style:italic">x</span><sub>3</sub><sup>2</sup></td><td style="text-align:left;white-space:nowrap" >=40,
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+where 1≤ <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>≤ 5, <span style="font-style:italic">i</span>=1,2,3,4.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">*(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">)+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">  [</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">-25&gt;=0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-40=0],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">]=1..5)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[17.0140172892,[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">1</span></sub><span style="color:#0000CC">=1.0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">2</span></sub><span style="color:#0000CC">=4.74299973362,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">3</span></sub><span style="color:#0000CC">=3.82114985829,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">4</span></sub><span style="color:#0000CC">=1.3794083106]]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Minimize <span style="font-style:italic">z</span>=(<span style="font-style:italic">x</span><sub>1</sub>−1)<sup>2</sup>+(<span style="font-style:italic">x</span><sub>1</sub>−<span style="font-style:italic">x</span><sub>2</sub>)<sup>2</sup>+(<span style="font-style:italic">x</span><sub>3</sub>−1)<sup>2</sup>+(<span style="font-style:italic">x</span><sub>4</sub>−1)<sup>4</sup>+(<span style="font-style:italic">x</span><sub>5</sub>−1)<sup>6</sup> subject to
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">x</span><sub>1</sub><sup>2</sup> <span style="font-style:italic">x</span><sub>4</sub>+sin(<span style="font-style:italic">x</span><sub>4</sub>−<span style="font-style:italic">x</span><sub>5</sub>)</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">=2</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" ><span style="font-style:italic">x</span><sub>2</sub>+<span style="font-style:italic">x</span><sub>3</sub><sup>4</sup> <span style="font-style:italic">x</span><sub>4</sub><sup>2</sup></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">=8+</td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" >2</td></tr>
+</table></td><td class="dcell">.
+</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">((</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1)^2+(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)^2+(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1)^2+(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1)^4+(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">-1)^6,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">  [</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">sin</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">)=2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">^4*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2=8+</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2)])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[0.241505128809,[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">1</span></sub></td><td style="text-align:left;white-space:nowrap" >=1.16617119669,<span style="font-style:italic">x</span><sub>2</sub>=1.18211040318,<span style="font-style:italic">x</span><sub>3</sub>=1.3802572722,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">x</span><sub>4</sub></td><td style="text-align:left;white-space:nowrap" >=1.50603586392,<span style="font-style:italic">x</span><sub>5</sub>=0.610913318325]]
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Maximize <span style="font-style:italic">z</span>=3<span style="font-style:italic">x</span><sub>1</sub> <span style="font-style:italic">x</span><sub>2</sub>−<span style="font-style:italic">x</span><sub>1</sub>+6<span style="font-style:italic">x</span><sub>2</sub> subject to 5<span style="font-style:italic">x</span><sub>1</sub> <span style="font-style:italic">x</span><sub>2</sub>−4<span style="font-style:italic">x</span><sub>1</sub>−4.5<span style="font-style:italic">x</span><sub>2</sub>≤ 32, where 1≤ <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>≤ 5 are integers.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(3</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+6</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[5</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">-4</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">-4.5</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;=32],[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">]=1..5,</span></span><span style="font-weight:bold"><span style="color:#BF0000">assume</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">integer</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">maximize</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[58.0,[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">1</span></sub><span style="color:#0000CC">=2.0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">2</span></sub><span style="color:#0000CC">=5.0]]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Maximize <span style="font-style:italic">z</span>=2<span style="font-style:italic">x</span><sub>1</sub>+3<span style="font-style:italic">x</span><sub>2</sub>+6<span style="font-style:italic">x</span><sub>3</sub>−2<span style="font-style:italic">x</span><sub>1</sub> <span style="font-style:italic">x</span><sub>2</sub>−<span style="font-style:italic">x</span><sub>1</sub> <span style="font-style:italic">x</span><sub>3</sub>−4<span style="font-style:italic">x</span><sub>2</sub> <span style="font-style:italic">x</span><sub>3</sub> where all variables
+are binary.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+3</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+6</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">-4</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">assume</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">nlp_binary</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">maximize</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[7.0,[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">1</span></sub><span style="color:#0000CC">=1.0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">2</span></sub><span style="color:#0000CC">=0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">3</span></sub><span style="color:#0000CC">=1.0]]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Minimize <span style="font-style:italic">z</span>=5<span style="font-style:italic">y</span>−2ln(<span style="font-style:italic">x</span>+1) subject to
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">e</span><sup><span style="font-style:italic">x</span>/2</sup>−</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
+<tr><td class="hbar"></td></tr>
+<tr><td class="dcell" style="text-align:center">2</td></tr>
+</table></td><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="font-style:italic">y</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >≤ 1,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+−2ln(<span style="font-style:italic">x</span>+1)−<span style="font-style:italic">y</span>+2.5</td><td style="text-align:left;white-space:nowrap" >≤ 0,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">x</span>+<span style="font-style:italic">y</span></td><td style="text-align:left;white-space:nowrap" >≤ 4,
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+where <span style="font-style:italic">x</span>∈[0,2] and <span style="font-style:italic">y</span>∈[1,3] is integer.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(5</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">ln</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1),[</span></span><span style="font-weight:bold"><span style="color:#BF0000">exp</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2)-</span></span><span style="font-weight:bold"><span style="color:#BF0000">sqrt</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">)/2-1&lt;=0,-2*</span></span><span style="font-weight:bold"><span style="color:#BF0000">ln</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1)-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2.5&lt;=0,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">-4&lt;=0],</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">  </span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1..3,</span></span><span style="font-weight:bold"><span style="color:#BF0000">nlp_integervariables</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">])</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[8.54528930252,[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">=1.06959999348,</span><span style="color:#0000CC"><span style="font-style:italic">y</span></span><span style="color:#0000CC">=2.0]]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Minimize <span style="font-style:italic">z</span>=<span style="font-style:italic">x</span><sub>1</sub><sup>2</sup>+<span style="font-style:italic">x</span><sub>2</sub><sup>2</sup>+3<span style="font-style:italic">x</span><sub>3</sub><sup>2</sup>+4<span style="font-style:italic">x</span><sub>4</sub><sup>2</sup>+2<span style="font-style:italic">x</span><sub>5</sub><sup>2</sup>−8<span style="font-style:italic">x</span><sub>1</sub>−2<span style="font-style:italic">x</span><sub>2</sub>−3<span style="font-style:italic">x</span><sub>3</sub>−<span style="font-style:italic">x</span><sub>4</sub>−2<span style="font-style:italic">x</span><sub>5</sub>
+subject to
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >  <span style="font-style:italic">x</span><sub>1</sub>+<span style="font-style:italic">x</span><sub>2</sub>+<span style="font-style:italic">x</span><sub>3</sub>+<span style="font-style:italic">x</span><sub>4</sub>+<span style="font-style:italic">x</span><sub>5</sub></td><td style="text-align:left;white-space:nowrap" >≤ 400,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">x</span><sub>1</sub>+2<span style="font-style:italic">x</span><sub>2</sub>+2<span style="font-style:italic">x</span><sub>3</sub>+<span style="font-style:italic">x</span><sub>4</sub>+6<span style="font-style:italic">x</span><sub>5</sub></td><td style="text-align:left;white-space:nowrap" >≤ 800,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+2<span style="font-style:italic">x</span><sub>1</sub>+<span style="font-style:italic">x</span><sub>2</sub>+6<span style="font-style:italic">x</span><sub>3</sub></td><td style="text-align:left;white-space:nowrap" >≤ 200,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">x</span><sub>3</sub>+<span style="font-style:italic">x</span><sub>4</sub>+5<span style="font-style:italic">x</span><sub>5</sub></td><td style="text-align:left;white-space:nowrap" >≤ 200,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">x</span><sub>1</sub>+<span style="font-style:italic">x</span><sub>2</sub>+<span style="font-style:italic">x</span><sub>3</sub>+<span style="font-style:italic">x</span><sub>4</sub>+<span style="font-style:italic">x</span><sub>5</sub></td><td style="text-align:left;white-space:nowrap" >≥ 55,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">x</span><sub>1</sub>+<span style="font-style:italic">x</span><sub>2</sub>+<span style="font-style:italic">x</span><sub>3</sub>+<span style="font-style:italic">x</span><sub>4</sub></td><td style="text-align:left;white-space:nowrap" >≥ 48,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+<span style="font-style:italic">x</span><sub>2</sub>+<span style="font-style:italic">x</span><sub>4</sub>+<span style="font-style:italic">x</span><sub>5</sub></td><td style="text-align:left;white-space:nowrap" >≥ 34,</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >
+6<span style="font-style:italic">x</span><sub>1</sub>+7<span style="font-style:italic">x</span><sub>5</sub></td><td style="text-align:left;white-space:nowrap" >≥ 104,
+</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+where 0≤ <span style="font-style:italic">x</span><sub><span style="font-style:italic">i</span></sub>≤ 99 are integers for <span style="font-style:italic">i</span>=1,…,5.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">obj</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+3</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+4</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-8</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">-3</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">-2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">constr</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;=400,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">+6</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;=800,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">         2</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+6</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;=200,    </span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">+5</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">&lt;=200,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">         </span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=55, </span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=48,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">         </span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=34,       6</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">+7</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">&gt;=104];</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">obj</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">constr</span></span><span style="font-weight:bold"><span style="color:#BF0000">,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x3</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x4</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x5</span></span><span style="font-weight:bold"><span style="color:#BF0000">]=0..99,</span></span><span style="font-weight:bold"><span style="color:#BF0000">assume</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">integer</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[807.0,[</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">1</span></sub><span style="color:#0000CC">=16.0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">2</span></sub><span style="color:#0000CC">=22.0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">3</span></sub><span style="color:#0000CC">=5.0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">4</span></sub><span style="color:#0000CC">=5.0,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">5</span></sub><span style="color:#0000CC">=7.0]]
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>Minimize the function
+</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell"><span style="font-style:italic">f</span>(<span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>)=</td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎧<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎨<br>
+⎪<br>
+⎪<br>
+⎪<br>
+⎩</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span><sub>2</sub></td></tr>
+<tr><td class="dcell" style="text-align:left"><br>
+<br>
+</td></tr>
+<tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span><sub>1</sub></td></tr>
+</table></td><td class="dcell"><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span></sup><span style="font-style:italic">t</span><sup><span style="font-style:italic">a</span></sup>sin(<span style="font-style:italic">t</span>+<span style="font-style:italic">x</span><sub>1</sub>)cos(2<span style="font-style:italic">t</span>−<span style="font-style:italic">x</span><sub>2</sub>)<span style="font-style:italic">d</span><span style="font-style:italic">t</span>,</td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">x</span><sub>1</sub>&lt;<span style="font-style:italic">x</span><sub>2</sub>,</td></tr>
+<tr><td style="text-align:left;white-space:nowrap" >0,</td><td style="text-align:left;white-space:nowrap" ><span style="font-style:italic">x</span><sub>1</sub>≥ <span style="font-style:italic">x</span><sub>2</sub></td></tr>
+</table></td></tr>
+</table></td></tr>
+</table><p>
+for 0≤ <span style="font-style:italic">x</span><sub>1</sub>,<span style="font-style:italic">x</span><sub>2</sub>≤ 10 and <span style="font-style:italic">a</span>=2.</p><p>With the following program compiled in <span style="font-variant:small-caps">Xcas</span>:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> f:=<span style="color:#0000CC"><span style="font-weight:bold">proc</span></span>(x1,x2,a)
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> t;
+   purge(t);
+   <span style="color:#0000CC"><span style="font-weight:bold">if</span></span> x1&lt;x2 <span style="color:#0000CC"><span style="font-weight:bold">then</span></span>
+     <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> approx(int(exp(-t)*t^a*sin(t+x1)*cos(2t-x2),t=x1..x2));
+   <span style="color:#0000CC"><span style="font-weight:bold">else</span></span> <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> 0; <span style="color:#0000CC"><span style="font-weight:bold">fi</span></span>;
+ <span style="color:#0000CC"><span style="font-weight:bold">end</span></span>:;</td></tr>
+</table><p>input:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">nlpsolve</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">quote</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2)),[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">]=0..10)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC">−0.445124159544,</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎣</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">1</span></sub><span style="color:#0000CC">=2.15550857079,</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><sub><span style="color:#0000CC">2</span></sub><span style="color:#0000CC">=5.66106529292</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎦</span></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>
+Since <span style="font-family:monospace">f</span> is programmatic, it cannot be differentiated symbolically in <span style="font-variant:small-caps">Xcas</span>,
+hence differential evolution is selected for minimization (note that the problem is box-constrained and
+we provided no initial points). Also, observe that our procedure <span style="font-family:monospace">f</span> has three input arguments,
+so we have to quote the first argument in <span style="font-family:monospace">nlpsolve</span> in order to fix the parameter <span style="font-style:italic">a</span> to 2.
+(This technique should be used for “black box” objectives possibly requiring parameter specifications.)</p><p>Additionally, to visualize the surface <span style="font-style:italic">f</span>, you can input:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plot3d</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">quote</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">,2)),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x1</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..5,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x2</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">filled</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">yellow</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en024.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">point</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">legend</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"hello"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en025.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">segment</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en026.png">
-
-</div><p>
-
-By entering
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">segment</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">color</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>we get the same result as above.</p>
-<h4 id="sec1427" class="subsubsection">Global attributes</h4>
-<p>
-<a id="hevea_default1112"></a>
-<a id="hevea_default1113"></a>
-<a id="hevea_default1114"></a>
-<a id="hevea_default1115"></a>
-<a id="hevea_default1116"></a>
-<a id="hevea_default1117"></a>
-<a id="hevea_default1118"></a>
-<a id="hevea_default1119"></a>
-<a id="hevea_default1120"></a>
-<a id="hevea_default1121"></a>
-<a id="hevea_default1122"></a>
-<a id="hevea_default1123"></a>
-<a id="hevea_default1124"></a>
-<a id="hevea_default1125"></a>
-<a id="hevea_default1126"></a>
-<a id="hevea_default1127"></a>
-<a id="hevea_default1128"></a>
-<a id="hevea_default1129"></a>
-<a id="hevea_default1130"></a>
-<a id="hevea_default1131"></a></p><p>The following attributes are shared by all objects of the same scene:
-</p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">title="</span><span style="font-style:italic">titlename</span><span style="font-family:monospace">"</span> sets the title.
-</li><li class="li-itemize"><span style="font-family:monospace">labels=["</span><span style="font-style:italic">xname</span><span style="font-family:monospace">","</span><span style="font-style:italic">yname</span><span style="font-family:monospace">","</span><span style="font-style:italic">zname</span><span style="font-family:monospace">"]</span> sets
-names of the <span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span> axes.
-</li><li class="li-itemize"><span style="font-family:monospace">gl_x_axis_name="</span><span style="font-style:italic">xname</span><span style="font-family:monospace">"</span>,
-<span style="font-family:monospace">gl_y_axis_name="</span><span style="font-style:italic">yname</span><span style="font-family:monospace">"</span>,
-<span style="font-family:monospace">gl_z_axis_name="</span><span style="font-style:italic">zname</span><span style="font-family:monospace">"</span> sets the names of the axes
-individually.
-</li><li class="li-itemize"><span style="font-family:monospace">legend=["</span><span style="font-style:italic">xunit</span><span style="font-family:monospace">","</span><span style="font-style:italic">yunit</span><span style="font-family:monospace">","</span><span style="font-style:italic">zunit</span><span style="font-family:monospace">"]</span> sets
-units for the axes.
-</li><li class="li-itemize"><span style="font-family:monospace">gl_x_axis_unit="</span><span style="font-style:italic">xunit</span><span style="font-family:monospace">"</span>,
-<span style="font-family:monospace">gl_y_axis_unit="</span><span style="font-style:italic">yunit</span><span style="font-family:monospace">"</span>,
-<span style="font-family:monospace">gl_z_axis_unit="</span><span style="font-style:italic">zunit</span><span style="font-family:monospace">"</span> sets units for the axes
-individually.
-</li><li class="li-itemize"><span style="font-family:monospace">axes=true</span> or <span style="font-family:monospace">axes=false</span> (or <span style="font-family:monospace">axes=0</span>) shows or hides the axes.
-</li><li class="li-itemize"><span style="font-family:monospace">gl_texture="</span><span style="font-style:italic">filename</span><span style="font-family:monospace">"</span> sets the background
-image to <span style="font-style:italic">filename</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">gl_x=</span><span style="font-style:italic">xmin</span><span style="font-family:monospace">..</span><span style="font-style:italic">xmax</span>,
-<span style="font-family:monospace">gl_y=</span><span style="font-style:italic">ymin</span><span style="font-family:monospace">..</span><span style="font-style:italic">ymax</span>,
-<span style="font-family:monospace">gl_z=</span><span style="font-style:italic">zmin</span><span style="font-family:monospace">..</span><span style="font-style:italic">zmax</span> sets the graphic configuration
-(do not use for interactive scenes)
-</li><li class="li-itemize"><span style="font-family:monospace">gl_xtick=</span><span style="font-style:italic">xmark</span>,
-<span style="font-family:monospace">gl_ytick=</span><span style="font-style:italic">ymark</span>, <span style="font-family:monospace">gl_ztick=</span><span style="font-style:italic">zmark</span>
-sets the tick marks for the axes.
-</li><li class="li-itemize"><span style="font-family:monospace">gl_shownames=true</span> or <span style="font-family:monospace">gl_shownames=false</span>
-shows or hides objects names
-</li><li class="li-itemize"><span style="font-family:monospace">gl_rotation=[</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span><span style="font-family:monospace">]</span> defines the rotation axis
-for the animation rotation of 3D scenes.
-</li><li class="li-itemize"><span style="font-family:monospace">gl_quaternion=[</span><span style="font-style:italic">x</span>,<span style="font-style:italic">y</span>,<span style="font-style:italic">z</span>,<span style="font-style:italic">t</span><span style="font-family:monospace">]</span> defines the quaternion
-for the visualization in 3D scenes (do not use for interactive
-scenes).
-</li><li class="li-itemize">a few other <span style="font-variant:small-caps">OpenGL</span> light configuration options are
-available but not described here.
-</li></ul><h4 id="sec1428" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">title</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"median_line"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">;</span></span><span style="font-weight:bold"><span style="color:#BF0000">triangle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">median_line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">
- </span></span><span style="font-weight:bold"><span style="color:#BF0000">median_line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1,-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">);</span></span><span style="font-weight:bold"><span style="color:#BF0000">median_line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1+</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">,1,-1-</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en027.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">labels</span></span><span style="font-weight:bold"><span style="color:#BF0000">=[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"u"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"v"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">];</span></span><span style="font-weight:bold"><span style="color:#BF0000">plotfunc</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">+1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">u</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en028.png">
+<img src="cascmd_en023.png">
 
 </div>
 <hr>

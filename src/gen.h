@@ -80,7 +80,27 @@ extern size_t stackptr;
 namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
+  struct eight_int {
+    int i1,i2,i3,i4,i5,i6,i7,i8;
+  };
+  
+  struct twelve_int {
+    int i1,i2,i3,i4,i5,i6,i7,i8,i9,i10,i11,i12;
+  };
+  
+  struct six_int {
+    int i1,i2,i3,i4,i5,i6;
+  };
+  
+  struct four_int {
+    int i1,i2,i3,i4;
+  };
+
+  extern twelve_int * tab48;
+  extern four_int * tab16;
+  extern six_int * tab24;
   size_t freeslotmem(); // non 0 if ALLOCSMALL is defined
+
   int sprint_int(char * s,int r);
   void sprint_double(char * s,double d);
 
@@ -1722,6 +1742,8 @@ namespace giac {
   void sprintfdouble(char *,const char *,double d);
 
   extern "C" const char * caseval(const char *);
+  extern "C" void stack_check_init(size_t max_stack_size);
+  bool stack_check(GIAC_CONTEXT);
 
 // Alloca proposal by Cyrille to make it work on every compiler.
 #ifndef ALLOCA

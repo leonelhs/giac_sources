@@ -74,6 +74,8 @@ extern "C" {
   double r_det(double *,int);
   struct double_pair {
     double r,i;
+    double_pair operator +=(const double_pair &);
+    double_pair operator -=(const double_pair &);
   } ;
   typedef struct double_pair c_complex;
   bool matrice2c_complexptr(const giac::matrice &M,c_complex *x);
@@ -98,18 +100,32 @@ extern "C" {
   void c_turtle_up(int i);
   void c_turtle_goto(double x,double y);
   void c_turtle_cap(double x);
-  void c_turtle_crayon(int i);
+  int c_turtle_crayon(int i);
   void c_turtle_rond(int x,int y,int z);
   void c_turtle_disque(int x,int y,int z,int centered);
   void c_turtle_fill(int i);
   void c_turtle_fillcolor(double r,double g,double b,int entier);
   void c_turtle_getposition(double * x,double * y);
+  void c_turtle_clear(int clrpos);
+  void c_turtle_show(int visible);
+  int c_turtle_getcap();
+  void c_turtle_towards(double x,double y);
+  int c_turtle_getcolor();
+  void c_turtle_color(int);
+  void c_turtle_fillcolor1(int c);
+  extern int shell_x,shell_y,shell_fontw,shell_fonth; 
+  
 }
 extern int lang;
 extern short int nspirelua;
 extern bool warn_nr;
+
 int select_interpreter(); // 0 Xcas, 1|2 Xcas python_compat(1|2), 3 MicroPython, 4 QuickJS 
 const char * gettext(const char * s) ;
+#ifdef HP39
+int kcas_main(int isAppli, unsigned short OptionNum);
+extern giac::context * contextptr; 
+#endif
 
 #ifndef NO_NAMESPACE_XCAS
 namespace xcas {
@@ -138,6 +154,7 @@ namespace xcas {
   void Equation_select(giac::gen & eql,bool select);
   int eqw_select_down(giac::gen & g);
   int eqw_select_up(giac::gen & g);
+  giac::gen Equation_copy(const giac::gen & g);
 
   giac::gen Equation_compute_size(const giac::gen & g,const giac::attributs & a,int windowhsize,const giac::context * contextptr);
   giac::eqwdata Equation_total_size(const giac::gen & g);  
@@ -168,7 +185,7 @@ namespace xcas {
   typedef struct
   {
     std::string s;
-    color_t color=giac::_BLACK;
+    color_t color=::giac::_BLACK;
     short int newLine=0; // if 1, new line will be drawn before the text
     short int spaceAtEnd=0;
     short int lineSpacing=0;
@@ -424,7 +441,7 @@ namespace xcas {
 
   void save_session(const giac::context * );
 #if 1
-#define MAX_FILENAME_SIZE 63
+#define MAX_FILENAME_SIZE 270
   void save_console_state_smem(const char * filename,bool xwaspy,const giac::context *);
   bool load_console_state_smem(const char * filename,const giac::context *);
 
@@ -435,7 +452,6 @@ namespace xcas {
     int     bottom;
     unsigned char mode;
   } ;
-
 
   enum CONSOLE_RETURN_VAL {
 			   CONSOLE_NEW_LINE_SET = 1,
@@ -466,16 +482,25 @@ namespace xcas {
 		    UPPER_CASE
   };
 
-  enum CONSOLE_SCREEN_SPEC {
+  enum CONSOLE_SCREEN_SPEC
+    {			    
 #ifdef NSPIRE_NEWLIB
-			    _LINE_MAX = 128,
-			    COL_DISP_MAX = 32,
+     _LINE_MAX = 128,
+     COL_DISP_MAX = 32,
 #else
-			    _LINE_MAX = 48,
-			    COL_DISP_MAX = 30,//32
+     _LINE_MAX = 48,
+#ifdef NUMWORKS
+     COL_DISP_MAX = 30,//32
+#else // HP39
+     COL_DISP_MAX = 35,//21  //!!!!!!! 21     
 #endif
-			    LINE_DISP_MAX = 11,
-			    EDIT_LINE_MAX = 2048
+#endif
+#ifdef HP39
+     LINE_DISP_MAX = 7,      //!!!!!!!  7
+#else     
+     LINE_DISP_MAX = 11,
+#endif
+     EDIT_LINE_MAX = 2048,
   };
   
   struct console_line {
@@ -498,8 +523,12 @@ namespace xcas {
   };
 
 #define MAX_FMENU_ITEMS 8
+#ifdef HP39
+#define FMENU_TITLE_LENGHT 8
+#else
 #define FMENU_TITLE_LENGHT 4
-
+#endif
+  
 #define is_wchar(c) ((c == 0x7F) || (c == 0xF7) || (c == 0xF9) || (c == 0xE5) || (c == 0xE6) || (c == 0xE7))
 #define printf(s) Console_Output((const char *)s);
 
@@ -596,12 +625,12 @@ namespace giac {
     int value:4=MENUITEM_VALUE_NONE; // value of the menu item. For example, if type is MENUITEM_CHECKBOX and the checkbox is checked, the value of this var will be MENUITEM_VALUE_CHECKED
     int isselected:4=0; // for file browsers and other multi-select screens, this will show an arrow before the item
     short int isfolder=0; // for file browsers, this will signal the item is a folder
-    signed char color=giac::_BLACK; // color of the menu item (use TEXT_COLOR_* to define)
+    signed char color=::giac::_BLACK; // color of the menu item (use TEXT_COLOR_* to define)
     // The following two settings require the menu type to be set to MENUTYPE_MULTISELECT
 #if 0
     signed char icon=-1; //for file browsers, to show a file icon. -1 shows no icon (default)
 #endif
-    MenuItem():token(0),type(MENUITEM_NORMAL),value(MENUITEM_VALUE_NONE),isselected(0),isfolder(0),color(giac::_BLACK) {}
+    MenuItem():token(0),type(MENUITEM_NORMAL),value(MENUITEM_VALUE_NONE),isselected(0),isfolder(0),color(::giac::_BLACK) {}
   } ;
 
   typedef struct
@@ -619,12 +648,16 @@ namespace giac {
     char* statusText = NULL; // text to be shown on the status bar, may be empty
     char* title = NULL; // title to be shown on the first line if not null
     char* subtitle = NULL;
-    int titleColor=giac::_BLUE; //color of the title
+    int titleColor=::giac::_BLUE; //color of the title
     char* nodatamsg; // message to show when there are no menu items to display
     int startX=1; //X where to start drawing the menu. NOTE this is not absolute pixel coordinates but rather character coordinates
     int startY=0; //Y where to start drawing the menu. NOTE this is not absolute pixel coordinates but rather character coordinates
     int width=30; // NOTE this is not absolute pixel coordinates but rather character coordinates
+#ifdef HP39
+    int height=8;
+#else
     int height=12; // NOTE this is not absolute pixel coordinates but rather character coordinates
+#endif
     int scrollbar=1; // 1 to show scrollbar, 0 to not show it.
     int scrollout=0; // whether the scrollbar goes out of the menu area (1) or it overlaps some of the menu area (0)
     int numitems; // number of items in menu
@@ -686,26 +719,32 @@ namespace giac {
 } // namespace giac
 #endif // ndef NO_NAMESPACE_XCAS
 
-
-#define COLOR_BLACK giac::_BLACK
-#define COLOR_RED giac::_RED
-#define COLOR_GREEN giac::_GREEN
-#define COLOR_CYAN giac::_CYAN
-#define COLOR_BLUE giac::_BLUE
-#define COLOR_YELLOW giac::_YELLOW
-#define COLOR_MAGENTA giac::_MAGENTA
-#define COLOR_WHITE giac::_WHITE
+#ifdef HP39
+#define COLOR_CYAN   90
+#define COLOR_RED    68
+#define COLOR_GREEN  68
+#define COLOR_WHITE  255
+#define COLOR_BLACK  0
+#else
+#define COLOR_BLACK ::giac::_BLACK
+#define COLOR_RED ::giac::_RED
+#define COLOR_GREEN ::giac::_GREEN
+#define COLOR_CYAN ::giac::_CYAN
+#define COLOR_WHITE ::giac::_WHITE
+#endif
+#define COLOR_BLUE ::giac::_BLUE
+#define COLOR_YELLOW ::giac::_YELLOW
+#define COLOR_MAGENTA ::giac::_MAGENTA
 #define COLOR_YELLOWDARK 64934
 #define COLOR_BROWN 65000
-#define TEXT_COLOR_BLACK giac::_BLACK
-#define TEXT_COLOR_RED giac::_RED
-#define TEXT_COLOR_GREEN giac::_GREEN
-#define TEXT_COLOR_CYAN giac::_CYAN
-#define TEXT_COLOR_BLUE giac::_BLUE
-#define TEXT_COLOR_YELLOW giac::_YELLOW
-#define TEXT_COLOR_WHITE giac::_WHITE
-#define TEXT_COLOR_MAGENTA giac::_MAGENTA
-
+#define TEXT_COLOR_BLACK ::giac::_BLACK
+#define TEXT_COLOR_RED ::giac::_RED
+#define TEXT_COLOR_GREEN ::giac::_GREEN
+#define TEXT_COLOR_CYAN ::giac::_CYAN
+#define TEXT_COLOR_BLUE ::giac::_BLUE
+#define TEXT_COLOR_YELLOW ::giac::_YELLOW
+#define TEXT_COLOR_WHITE ::giac::_WHITE
+#define TEXT_COLOR_MAGENTA ::giac::_MAGENTA
 
 #endif // _KDISPLAY_H
 #endif

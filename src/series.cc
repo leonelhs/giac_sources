@@ -2526,7 +2526,7 @@ namespace giac {
       essai=coeff;
     }
     gen s=0;
-    if (calc_mode(contextptr)!=1 || !has_i(p)) // should do it only up to order 0 terms
+    if (calc_mode(contextptr)!=1 || !has_i(p[0].coeff)) // should do it only up to order 0 terms
       s=sign(essai,contextptr); 
     if (s==plus_one)
       return plus_inf;
@@ -2656,7 +2656,7 @@ namespace giac {
 	return first_try;
       if (!is_undef(first_try) && !is_undef(numtry)){
 	// if (!direction) return first_try;
-	if (first_try!=unsigned_inf && numtry!=unsigned_inf)
+	if (first_try!=unsigned_inf && numtry!=unsigned_inf && is_strictly_greater(epsilon(contextptr),abs(numtry-first_try,contextptr),contextptr))
 	  return first_try;
       }
     } // end if vsign.empty()
@@ -3157,9 +3157,10 @@ namespace giac {
   }
 
   static int convert_to_direction(const gen & l){
-    if (is_one(l) || l==at_plus)
+    // addition by L.Marohnić: enable using left/right symbols for specifying a direction
+    if (is_one(l) || l==at_plus || l==at_right)
       return 1;
-    if (is_minus_one(l) || l==at_binary_minus || l==at_neg)
+    if (is_minus_one(l) || l==at_binary_minus || l==at_neg || l==at_left)
       return -1;
     if (is_zero(l))
       return 0;
@@ -3236,13 +3237,15 @@ namespace giac {
       if (e.type==_IDNT)
 	return quotedlimit(G,*e._IDNTptr,arg3,0,contextptr);
       if (e.type!=_SYMB){
-	if (is_one(arg3)||is_minus_one(arg3))
-	  return quotedlimit(G,*ggb_var(G)._IDNTptr,e,int(evalf_double(arg3,1,contextptr)._DOUBLE_val),contextptr);
+  int dir=convert_to_direction(arg3);
+	if (dir!=-2)
+	  return quotedlimit(G,*ggb_var(G)._IDNTptr,e,dir,contextptr);
 	return gentypeerr(contextptr);
       }
       if (!is_equal(e)){
-	if (is_one(arg3)||is_minus_one(arg3))
-	  return quotedlimit(G,*ggb_var(G)._IDNTptr,e,int(evalf_double(arg3,1,contextptr)._DOUBLE_val),contextptr);
+  int dir=convert_to_direction(arg3);
+	if (dir!=-2)
+	  return quotedlimit(G,*ggb_var(G)._IDNTptr,e,dir,contextptr);
 	return gensizeerr(contextptr);
       }
       gen x=(*(e._SYMBptr->feuille._VECTptr))[0];

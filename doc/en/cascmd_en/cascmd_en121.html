@@ -53,34 +53,23 @@ elements <span style="font-style:italic">c</span> such that <span style="font-st
 ⎦</span></td></tr>
 </table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><h5 id="sec229" class="paragraph">Remark.</h5>
-<p> Use <span style="font-family:monospace">remove</span> to remove characters from
-a string. For example, to remove all the <span style="font-family:monospace">"a"</span>s of a string
-(see Section <a href="cascmd_en747.html#ssec%3Afuncs">23.1.2</a> for writing functions):
+</table><p>You can use <span style="font-family:monospace">remove</span> to remove
+characters from a string. For example, to remove all instances of
+a given letter from a string, enter the following code in a program
+editor level (see Section <a href="cascmd_en752.html#ssec%3Afuncs">23.1.2</a> for writing functions):
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">orda</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">ord</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">):;</span></span></td></tr>
-</table><p>Then (in a program editor level):
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> f(chn):={
-   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> l:=length(chn)-1;
-   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> remove(x-&gt;(ord(x)==orda),seq(chn[k],k,0,l));
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"> f(s,c):={
+   <span style="color:#0000CC"><span style="font-weight:bold">local</span></span> ordc,l,r,x,k;
+   ordc:=ord(c);
+   l:=length(s)-1;
+   purge(x,k);
+   r:=remove(x-&gt;(ord(x)==ordc),seq(s[k],k,0,l));
+   <span style="color:#0000CC"><span style="font-weight:bold">return</span></span> char(ord(r));
  }</td></tr>
-</table><p>Now:
+</table><p>Here <span style="font-family:monospace">s</span> is the input string an <span style="font-family:monospace">c</span> is the letter
+to be removed. Now, for example:
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abracadabra"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span></td><td class="dcell"><span style="color:#0000CC">⎡<br>
-⎣</span></td><td class="dcell"><span style="color:#0000CC">“b”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“r”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“c”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“d”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“b”</span><span style="color:#0000CC">,</span><span style="color:#0000CC">“r”</span></td><td class="dcell"><span style="color:#0000CC">⎤<br>
-⎦</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-To get a string:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">char</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">ord</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"b"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"c"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"d"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"b"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"r"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">]))</span></span></td></tr>
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">f</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"abracadabra"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"a"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 

@@ -4,47 +4,47 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Curves in polar coordinates</title>
+<title>2D graph of a surface with colors</title>
 </head>
 <body >
 <a href="cascmd_en618.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en620.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1485" class="subsection">17.8.2  Curves in polar coordinates</h3>
-<p>The <span style="font-family:monospace">plotpolar</span><a id="hevea_default1185"></a> or
-<span style="font-family:monospace">polarplot</span><a id="hevea_default1186"></a> or
-<span style="font-family:monospace">DrawPol</span><a id="hevea_default1187"></a> or
-<span style="font-family:monospace">courbe_polaire</span><a id="hevea_default1188"></a>
-command draws a curve given in polar coordinates.
+<h3 id="sec1478" class="subsection">17.5.2  2D graph of a surface with colors</h3>
+<p>The <span style="font-family:monospace">plotdensity</span><a id="hevea_default1180"></a>
+or <span style="font-family:monospace">densityplot</span><a id="hevea_default1181"></a>
+command draws the graph of a function of two
+variables in the plane where the values of <span style="font-style:italic">z</span> are represented by the
+rainbow colors.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">polarplot</span> takes two arguments:
+<span style="font-family:monospace">plotdensity</span> takes two mandatory arguments and three
+optional arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving a variable (which
-will represent the angle).
-</li><li class="li-itemize"><span style="font-family:monospace">var</span>, the variable. This can optionally include the
-range <span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span> to specify the discretization.
-<a id="hevea_default1189"></a>
-</li></ul>
-<span style="font-family:monospace">polarplot(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">var</span> ⟨,<span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span> ⟩<span style="font-family:monospace">)</span>
-draws the
-curve defined by ρ=<span style="font-style:italic">expr</span> for θ=<span style="font-style:italic">var</span>; in
-Cartesian coordinates that is the curve
-(<span style="font-style:italic">expr</span>·cos(<span style="font-style:italic">var</span>),<span style="font-style:italic">expr</span>·sin(<span style="font-style:italic">var</span>)).
-</li></ul><h4 id="sec1486" class="subsubsection">Examples</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+<span style="font-style:italic">expr</span>, an expression of two variables.
+</li><li class="li-itemize"><span style="font-style:italic">vars</span>, a list of the variables and their ranges.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">z=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>, the range of <span style="font-style:italic">z</span> to
+correspond to the full rainbow (by default, it is deduced from the
+minimum and maximum value of <span style="font-style:italic">expr</span> on the discretization.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">xstep</span>, which can be
+<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
+step in the <span style="font-style:italic">x</span> direction.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">ystep</span>, which can be
+<span style="font-family:monospace">ystep=</span><span style="font-style:italic">m</span> to specify the discretization
+step in the <span style="font-style:italic">y</span> direction.<p>Instead of <span style="font-style:italic">xstep</span> and <span style="font-family:monospace">ystep</span>, you could use
+the option <span style="font-family:monospace">nstep=</span><span style="font-style:italic">n</span> to specify the number of points used to
+graph.
+</p></li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">plotdensity(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">vars</span> ⟨,<span style="font-family:monospace">z=</span><span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>,<span style="font-style:italic">xstep</span>,<span style="font-style:italic">ystep</span> ⟩<span style="font-family:monospace">)</span>
+draws the graph of <span style="font-style:italic">expr</span> in the plane where the values of
+<span style="font-style:italic">z</span> are represented by the rainbow colors.
+</li></ul><h5 id="sec1479" class="paragraph">Remark.</h5>
+<p> A rectangle representing the scale of colors will be
+displayed below the graph.</p><h4 id="sec1480" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotdensity</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2-</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2],</span></span><span style="font-weight:bold"><span style="color:#BF0000">xstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">ystep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0.1)</span></span></td></tr>
 </table><div class="center">
 
-<img src="cascmd_en077.png">
-
-</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
-</table><p>or:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
-</table><div class="center">
-
-<img src="cascmd_en078.png">
+<img src="cascmd_en069.png">
 
 </div>
 <hr>

@@ -4,223 +4,130 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Representation by hardware floats</title>
+<title>Hierarchical clustering</title>
 </head>
 <body >
-<a href="cascmd_en726.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="cascmd_en725.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en728.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1845" class="subsection">21.1.2  Representation by hardware floats</h3>
-<p>A real is represented by a floating number <span style="font-style:italic">d</span>, that is
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-style:italic">d</span>=2<sup>α</sup> (1+<span style="font-style:italic">m</span>),    0&lt;<span style="font-style:italic">m</span>&lt;1,   −2<sup>10</sup> &lt; α &lt; 2<sup>10</sup>.
-</td></tr>
-</table><p>
-If α&gt;1−2<sup>10</sup>, then <span style="font-style:italic">m</span> ≥ 1/2, and <span style="font-style:italic">d</span> is a normalized floating
-point number, otherwise <span style="font-style:italic">d</span> is denormalized (α=1−2<sup>10</sup>). The
-special exponent 2<sup>10</sup> is used to represent plus or minus infinity
-and NaN (Not a Number). A hardware float is made of 64 bits:
-</p><ul class="itemize"><li class="li-itemize">
-the first bit is for the sign of <span style="font-style:italic">d</span> (0 for + and 1 for −)
-</li><li class="li-itemize">the 11 following bits represents the exponent, more precisely
-if α denotes the integer given by the 11 bits,
-the exponent is α+2<sup>10</sup>−1,
-</li><li class="li-itemize">the 52 last bits codes the mantissa <span style="font-style:italic">m</span>, more precisely if
-<span style="font-style:italic">M</span> denotes the integer given by the 52 bits, then
-<span style="font-style:italic">m</span>=1/2+<span style="font-style:italic">M</span>/2<sup>53</sup> for normalized floats and <span style="font-style:italic">m</span>=<span style="font-style:italic">M</span>/2<sup>53</sup> for
-denormalized floats.
-</li></ul><p>
-Examples of representations of the exponent:
-</p><ul class="itemize"><li class="li-itemize">
-α=0 is coded by 011 1111 1111
-</li><li class="li-itemize">α=1 is coded by 100 0000 0000
-</li><li class="li-itemize">α=4 is coded by 100 0000 0011
-</li><li class="li-itemize">α=5 is coded by 100 0000 0100
-</li><li class="li-itemize">α=−1 is coded by 011 1111 1110
-</li><li class="li-itemize">α=−4 is coded by 011 1111 1011
-</li><li class="li-itemize">α=−5 is coded by 011 1111 1010
-</li><li class="li-itemize">α=2<sup>10</sup> is coded by 111 1111 1111
-</li><li class="li-itemize">α=2<sup>−10</sup>−1 is coded by 000 0000 000
-</li></ul><h5 id="sec1846" class="paragraph">Remark.</h5>
-<p> 2<sup>−52</sup>=0.2220446049250313e–15</p><h4 id="sec1847" class="subsubsection">Examples of representations of normalized floats</h4>
+<h3 id="sec:hclust" class="subsection">20.1.1  Hierarchical clustering</h3>
+<p>The <span style="font-family:monospace">cluster</span><a id="hevea_default1425"></a>
+command is used for hierarchical agglomerative clustering
+of custom data by using a custom distance function.</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">cluster</span> takes one or more arguments:
 <ul class="itemize"><li class="li-itemize">
-Representation of 3.1:<p>We have
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
+<span style="font-style:italic">data</span>, a list of data points.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">opt</span>, a sequence of options which may contain the following:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">k</span> or <span style="font-family:monospace">count=</span><span style="font-style:italic">k</span>, where <span style="font-style:italic">k</span> is a positive integer
+specifying the number of clusters (unset by default).
+</li><li class="li-itemize"><span style="font-family:monospace">count_inf=</span><span style="font-style:italic">k</span><sub><span style="font-style:italic">l</span></sub>, where <span style="font-style:italic">k</span><sub><span style="font-style:italic">l</span></sub> is a positive integer specifying the
+minimal number of clusters (unset by default).
+</li><li class="li-itemize"><span style="font-family:monospace">count_sup=</span><span style="font-style:italic">k</span><sub><span style="font-style:italic">u</span></sub>, where <span style="font-style:italic">k</span><sub><span style="font-style:italic">u</span></sub> is a positive integer specifying the
+maximal number of clusters (by default, <span style="font-style:italic">k</span><sub><span style="font-style:italic">u</span></sub>=16).
+</li><li class="li-itemize"><span style="font-family:monospace">type=</span><span style="font-style:italic">linkage</span>, where <span style="font-style:italic">linkage</span> is a string specifying
+the linkage method. Avaliable methods are:
+<span style="font-family:monospace">single</span> (the default), <span style="font-family:monospace">complete</span>, <span style="font-family:monospace">average</span>, <span style="font-family:monospace">weighted</span>,
+and <span style="font-family:monospace">ward</span>.
+</li><li class="li-itemize"><span style="font-family:monospace">distance=</span><span style="font-style:italic">dist</span>, where <span style="font-style:italic">dist</span> is a distance function. By default,
+the squared Euclidean distance function <span style="font-family:monospace">distance2</span> is used unless <span style="font-style:italic">data</span>
+is a list of strings, in which case Levenshtein distance is used.
+For example, the taxicab distance function could be defined by typing:<a id="hevea_default1426"></a>
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >    3.1</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">=2·</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>5</sup></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>6</sup></td></tr>
-</table></td><td class="dcell">+
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>9</sup></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>10</sup></td></tr>
-</table></td><td class="dcell">+⋯</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">=2·</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
-</table></td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>4<span style="font-style:italic">k</span>+1</sup></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>4<span style="font-style:italic">k</span>+2</sup></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">,
-</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-hence α=1 and
-<span style="font-style:italic">m</span>=1/2+∑<sub><span style="font-style:italic">k</span>=1</sub><sup>∞</sup>(1/2<sup>4<span style="font-style:italic">k</span>+1</sup>+1/2<sup>4<span style="font-style:italic">k</span>+2</sup>).
-Hence the hexadecimal and binary representation of 3.1 is:
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <code>40 (01000000),  8 (00001000), cc (11001100), cc (11001100),</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <code>cc (11001100), cc (11001100), cc (11001100), cd (11001101),</code>
-</td></tr>
-</table>
-</div><p>
-the last octet is 1101, the last bit is 1, because the
-following digit is 1 (upper rounding).
-</p></li><li class="li-itemize">Representation of 3.0:<p>We have 3=2· (1+1/2).
-Hence the hexadecimal and binary representation of 3 is:
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <code>40 (01000000), 8 (00001000), 0 (00000000), 0 (00000000),</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <code>0  (00000000), 0 (00000000), 0 (00000000), 0 (00000000)</code>
-</td></tr>
-</table>
-</div></li><li class="li-itemize">Now let us discuss the difference between the representation
-of 3.1−3.0 and of 0.1.<p>For the representation of 0.1:
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" >    0.1</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">=2<sup>−4</sup>·</td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell">1+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>4</sup></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>5</sup></td></tr>
-</table></td><td class="dcell">+
-</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>8</sup></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>9</sup></td></tr>
-</table></td><td class="dcell">+⋯</td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">=2<sup>−4</sup>·</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=0</td></tr>
-</table></td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span></sup></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span>+1</sup></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">,
-</td></tr>
-</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
-</table><p>
-hence α=1 and
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">    <span style="font-style:italic">m</span>=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">∞</td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-size:xx-large">∑</span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="font-style:italic">k</span>=1</td></tr>
-</table></td><td class="dcell">⎛<br>
-⎜<br>
-⎜<br>
-⎝</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span></sup></td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2<sup>4*<span style="font-style:italic">k</span>+1</sup></td></tr>
-</table></td><td class="dcell">⎞<br>
-⎟<br>
-⎟<br>
-⎠</td><td class="dcell">,
-</td></tr>
-</table><p>
-therefore the representation of 0.1 is
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <code>3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <code>99 (10011001), 99 (10011001), 99 (10011001), 9a (10011010),</code>
-</td></tr>
-</table>
-</div><p>
-the last octet is 1010, indeed the 2 last bits
-01 became 10 because the following digit is 1 (upper rounding).</p><p>For the representation of <span style="font-style:italic">a</span>=3.1−3:</p><p>Computing <span style="font-style:italic">a</span> is done by adjusting exponents (here nothing
-to do), then subtracting the mantissa and adjusting the
-exponent of the result to have a normalized float.
-The exponent is α=−4 (that corresponds at 2·2<sup>−5</sup>)
-and the bits corresponding to the mantissa begin at 1/2=2·2<sup>−6</sup>:
-the bits of the mantissa are shifted to the left 5 positions
-and you get:
-</p><div class="center">
-<table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:left;white-space:nowrap" > <code>3f (00111111), b9 (10111001), 99 (10011001), 99 (10011001),</code></td></tr>
-<tr><td style="text-align:left;white-space:nowrap" > <code>99 (10011001), 99 (10011001), 99 (10011001), a0 (10100000),</code>
-</td></tr>
-</table>
-</div><p>
-Therefore, <span style="font-style:italic">a</span>&gt;0.1 and <span style="font-style:italic">a</span>−0.1=1/2<sup>50</sup>+1/2<sup>51</sup>
-(since 100000−11010=110).</p><h5 id="sec1848" class="paragraph">Remark.</h5>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">taxicab</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=(</span></span><span style="font-weight:bold"><span style="color:#BF0000">p1</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">p2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)-&gt;</span></span><span style="font-weight:bold"><span style="color:#BF0000">l1norm</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">p1</span></span><span style="font-weight:bold"><span style="color:#BF0000">-</span></span><span style="font-weight:bold"><span style="color:#BF0000">p2</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table></li><li class="li-itemize"><span style="font-family:monospace">index=</span><span style="font-style:italic">ind</span>, where <span style="font-style:italic">ind</span> is a string or a list of strings
+specifying the index function(s) used for selecting the optimal number of clusters (unset by default).
+Available index functions are:
+<span style="font-family:monospace">silhouette</span>, <span style="font-family:monospace">mcclain-rao</span>, <span style="font-family:monospace">dunn</span>, and <span style="font-family:monospace">all</span>.
+<span style="font-style:italic">ind</span> may also take a boolean value, in which case no index is used
+(<span style="font-style:italic">ind</span><span style="font-family:monospace">=false</span>) or the silhouette index is used (<span style="font-style:italic">ind</span><span style="font-family:monospace">=true</span>).
+</li><li class="li-itemize"><span style="font-family:monospace">output=</span><span style="font-style:italic">out</span>, where <span style="font-style:italic">out</span> is one of the following:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">part</span>, for outputting the partition of data into clusters.
+</li><li class="li-itemize"><span style="font-family:monospace">list</span>, for outputting the list of cluster indices for data points (the default).
+</li><li class="li-itemize"><span style="font-family:monospace">plot</span>, for outputting a colored visualization of data points with additional
+specifications given in <span style="font-family:monospace">display</span> option (see below). Note that this is possible only with
+two- and three-dimensional numerical data.
+</li><li class="li-itemize"><span style="font-family:monospace">count</span>, for outputting only the number of clusters.
+</li><li class="li-itemize"><span style="font-family:monospace">index</span>, for outputting the list of values of the (first) used index.
+</li><li class="li-itemize"><span style="font-family:monospace">tree</span>, for outputting a dendrogram drawing which visualizes the linking process.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">display=</span><span style="font-style:italic">disp</span>, where <span style="font-style:italic">disp</span> is a configuration for plot output
+(by default, points are drawn as dots of width 2).
+</li><li class="li-itemize"><span style="font-family:monospace">labels=</span><span style="font-style:italic">lab</span>, where <span style="font-style:italic">lab</span> is a boolean value which specifies
+whether the data points are shown in the dendrogram.
+</li></ul>
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">cluster(</span><span style="font-style:italic">data</span> ⟨,<span style="font-style:italic">opt</span> ⟩<span style="font-family:monospace">)</span> returns
+the result as specified by the <span style="font-family:monospace">output</span> argument (see above).
+</li><li class="li-itemize">Hierarchical clustering is slower than the <span style="font-style:italic">k</span>-means algorithm (see Section <a href="cascmd_en728.html#sec%3Akmeans">20.1.2</a>)
+but may produce a better classification of the data. Hierarchical clustering is also a method of
+choice for custom data types and distance functions.
+</li><li class="li-itemize">If more than one index is computed in a clustering process, then the optimal number of clusters
+is decided by voting: the number which was selected by most indices is used.
+</li></ul><h4 id="sec1844" class="subsubsection">Examples</h4>
 <p>
-This is the reason why.
+We apply <span style="font-family:monospace">cluster</span> command to an “aggregation”
+shape dataset (see <a href="http://cs.joensuu.fi/sipu/datasets/">here</a>).
+The dataset is loaded from file in a table cell in <span style="font-variant:small-caps">Xcas</span> and associated with
+the variable <span style="font-family:monospace">data</span>. We use the <span style="font-family:monospace">average</span> linkage method and <span style="font-family:monospace">silhouette</span>
+index (which is used by default if <span style="font-family:monospace">index=true</span>). By setting <span style="font-family:monospace">output</span> parameter
+to <span style="font-family:monospace">plot</span>, we obtain a visualization of colored clusters as shown in Figure <a href="#fig%3Ahclust">20.1</a>.
+</p><blockquote class="figure"><div class="center"><div class="center"><hr style="width:80%;height:2"></div>
+<img src="cascmd_en158.png">
 
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">floor</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1/(3.1-3))</span></span></td></tr>
-</table><p>returns <span style="font-family:monospace">9</span> and not <span style="font-family:monospace">10</span> when <span style="font-family:monospace">Digits:=14</span>.
-</p></li></ul>
+<div class="caption"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="vertical-align:top;text-align:left;" >Figure 20.1: <a id="fig:hclust"></a>Clustering in <span style="font-variant:small-caps">Xcas</span></td></tr>
+</table></div>
+<div class="center"><hr style="width:80%;height:2"></div></div></blockquote><p>For string data, Levenshtein distance is used by default (see Section <a href="cascmd_en095.html#sec%3Alevensthein">4.2.14</a>).
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">cluster</span></span><span style="font-weight:bold"><span style="color:#BF0000">([</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"cat"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"mouse"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"rat"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"spouse"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"house"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"cut"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">],</span></span><span style="font-weight:bold"><span style="color:#BF0000">output</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">part</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
+</span></td><td class="dcell"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">⎡<br>
+⎢<br>
+⎣</span></td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    </span><span style="color:#0000CC">“cat”</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">“rat”</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">“cut”</span></td></tr>
+<tr><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">    </span><span style="color:#0000CC">“mouse”</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">“spouse”</span></td><td style="text-align:center;white-space:nowrap" ><span style="color:#0000CC">“house”</span><span style="color:#0000CC">
+</span></td></tr>
+</table></td><td class="dcell"><span style="color:#0000CC">⎤<br>
+⎥<br>
+⎦</span></td></tr>
+</table></td></tr>
+</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><p>In the following example we cluster genomic sequences into five clusters by using
+<span style="font-family:monospace">average</span> linkage and Hamming distance function.
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">data</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=[</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"GTCTT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"AAGCT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"GGTAA"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"AGGCT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"GTCAT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"CGGCC"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"GGGAG"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"GTTAT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"GTCAT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"AGGCT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"GTCAG"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"AGGAT"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">]:;</span></span><span style="font-weight:bold"><span style="color:#BF0000">
+ </span></span><span style="font-weight:bold"><span style="color:#BF0000">cluster</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">data</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">type</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#006600"><span style="font-weight:bold"><span style="color:#BF0000">"average"</span></span></span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">count</span></span><span style="font-weight:bold"><span style="color:#BF0000">=5,</span></span><span style="font-weight:bold"><span style="color:#BF0000">distance</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">hamdist</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">output</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">part</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+[</span></td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">“GTCTT”,“GTCAT”,“GTTAT”,“GTCAT”,“GTCAG”</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">“AAGCT”,“AGGCT”,“AGGCT”,“AGGAT”</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+<tr><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell">⎡<br>
+⎣</td><td class="dcell">“GGTAA”</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">“CGGCC”</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">,</td><td class="dcell">⎡<br>
+⎣</td><td class="dcell">“GGGAG”</td><td class="dcell">⎤<br>
+⎦</td><td class="dcell">]
+</td></tr>
+</table></td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
 <hr>
-<a href="cascmd_en726.html"><img src="previous_motif.svg" alt="Previous"></a>
+<a href="cascmd_en725.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en728.html"><img src="next_motif.svg" alt="Next"></a>
 </body>

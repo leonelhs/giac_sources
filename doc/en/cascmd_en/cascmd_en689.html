@@ -4,82 +4,68 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Rectangle function</title>
+<title>Testing the mean with the Z test</title>
 </head>
 <body >
 <a href="cascmd_en688.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en690.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec:rect" class="subsection">19.1.2  Rectangle function</h3>
-<p>The rectangle function Π is 0 everywhere except on [−1/2,1/2],
-where it is 1; namely,
-Π(<span style="font-style:italic">x</span>)=θ(<span style="font-style:italic">x</span>+1/2)−θ(<span style="font-style:italic">x</span>−1/2)
-where θ is the 
-Heaviside function. The rectangle function is a special case of boxcar function
-(see Section <a href="cascmd_en688.html#sec%3Aboxcar">19.1.1</a>) for <span style="font-style:italic">a</span>=−1/2 and <span style="font-style:italic">b</span>=1/2.</p><p>The <span style="font-family:monospace">rect</span><a id="hevea_default1376"></a>
-command computes the rectangle function.
+<h3 id="ssec:normalt" class="subsection">18.5.2  Testing the mean with the Z test</h3>
+<p>The <span style="font-family:monospace">normalt</span><a id="hevea_default1378"></a>
+command uses the Z test to test the mean of data.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">rect</span> takes
-<span style="font-style:italic">x</span>, an identifier or an expression.
-</li><li class="li-itemize"><span style="font-family:monospace">rect(</span><span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the rectangle function
-at <span style="font-style:italic">x</span>.
-</li></ul><h4 id="sec1752" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">rect</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+<span style="font-family:monospace">normalt</span> takes three mandatory arguments and one
+optional argument:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>, a list, which can be one of:
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">L</span>=[<span style="font-style:italic">n</span><sub><span style="font-style:italic">s</span></sub>,<span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub>] for the sample data information, where
+<span style="font-style:italic">n</span><sub><span style="font-style:italic">s</span></sub> is the the number of successes and <span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub> is the number of trials
+<span style="font-style:italic">n</span><sub><span style="font-style:italic">e</span></sub>.
+</li><li class="li-itemize"><span style="font-style:italic">L</span>=[<span style="font-style:italic">m</span>,<span style="font-style:italic">t</span>], where <span style="font-style:italic">m</span> is the mean and <span style="font-style:italic">t</span> is the sample size.
+</li><li class="li-itemize"><span style="font-style:italic">L</span>, a data list from a control sample.
+</li></ul>
+</li><li class="li-itemize">σ, the standard deviation of the population. If the
+data list from a control sample is provided, then this argument is unnecessary.
+</li><li class="li-itemize"><span style="font-style:italic">test</span>, the type of test, one of <span style="font-family:monospace">!=</span>, <span style="font-family:monospace">&lt;</span> or <span style="font-family:monospace">&gt;</span>.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">c</span>, the confidence level (by default 0.05).
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">normalt(</span><span style="font-style:italic">L</span>,σ,<span style="font-style:italic">test</span> ⟨,<span style="font-style:italic">c</span> ⟩<span style="font-family:monospace">)</span> returns the result of a Z test. It
+will return 0 if the test fails, 1 if the test succeeds, and it will
+display a summary of the test.
+</li></ul><h4 id="sec1750" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normalt</span></span><span style="font-weight:bold"><span style="color:#BF0000">([10,30],0.5,0.02,'!=',0.1)</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+*** TEST RESULT 0 ***<br>
+ Summary Z-Test null hypothesis H0 mu1=mu2, alt. hyp. H1 mu1!=mu2.</span></span></span></p><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">Test returns 0 if probability to observe data is less than 0.1<br>
+ (null hyp. mu1=mu2 rejected with less than alpha probability error)<br>
+ Test returns 1 otherwise (cannot reject null hypothesis)<br>
+ Data mean mu1=10, population mean mu2=0.5<br>
+ alpha level 0.1, multiplier*stddev/sqrt(sample size)=1.64485*0.02/5.47723
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-</span><span style="color:#0000CC">θ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎜<br>
-⎜<br>
-⎝</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">+</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎟<br>
-⎟<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">−</span><span style="color:#0000CC">θ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎜<br>
-⎜<br>
-⎝</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">−</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">1</span></td></tr>
-<tr><td class="hbar"><span style="color:#0000CC"></span></td></tr>
-<tr><td class="dcell" style="text-align:center"><span style="color:#0000CC">2</span></td></tr>
-</table></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎟<br>
-⎟<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>To compute the convolution of the rectangle function with itself, you
-can use the Convolution Theorem (see Section <a href="cascmd_en701.html#ssec%3Acfourier">19.4.2</a>).
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">:=</span></span><span style="font-weight:bold"><span style="color:#BF0000">fourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">rect</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">):; </span></span><span style="font-weight:bold"><span style="color:#BF0000">ifourier</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">R</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">s</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normalt</span></span><span style="font-weight:bold"><span style="color:#BF0000">([0.48,50],0.5,0.1,'&lt;')</span></span></td></tr>
+</table><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">
+*** TEST RESULT 1 ***<br>
+ Summary Z-Test null hypothesis H0 mu1=mu2, alt. hyp. H1 mu1&lt;mu2.</span></span></span></p><p><span style="font-family:sans-serif"><span style="font-size:small"><span style="color:#006600">Test returns 0 if probability to observe data is less than 0.05<br>
+ (null hyp. mu1=mu2 rejected with less than alpha probability error)<br>
+ Test returns 1 otherwise (cannot reject null hypothesis)<br>
+ Data mean mu1=0.48, population mean mu2=0.5<br>
+ alpha level 0.05, multiplier*stddev/sqrt(sample size)=1.64485*0.1/7.07107
+</span></span></span></p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="color:#0000CC">
-−2 </span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC">θ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC">θ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">+</span><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC"> </span><span style="color:#0000CC">θ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">+</span><span style="color:#0000CC">θ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">+1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td><td class="dcell"><span style="color:#0000CC">−</span><span style="color:#0000CC">θ</span></td><td class="dcell"><span style="color:#0000CC">⎛<br>
-⎝</span></td><td class="dcell"><span style="color:#0000CC"><span style="font-style:italic">x</span></span><span style="color:#0000CC">−1</span></td><td class="dcell"><span style="color:#0000CC">⎞<br>
-⎠</span></td></tr>
-</table></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+1
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><p>
-This result is the triangle function  <span style="font-style:italic">tri</span>(<span style="font-style:italic">x</span>)  (see section <a href="cascmd_en690.html#ssec%3Atri">19.1.3</a>).</p>
+</table>
 <hr>
 <a href="cascmd_en688.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

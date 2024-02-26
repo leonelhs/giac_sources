@@ -11,7 +11,7 @@
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en214.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec441" class="subsection">6.3.11  Error function</h3>
+<h3 id="sec437" class="subsection">6.3.11  Error function</h3>
 <p>The error function erf is defined by:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  erf(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">2</td></tr>
 <tr><td class="hbar"></td></tr>
@@ -49,7 +49,7 @@ computes the error function.
 <span style="font-family:monospace">erf</span> takes
 <span style="font-style:italic">a</span>, a number.
 </li><li class="li-itemize"><span style="font-family:monospace">erf(</span><span style="font-style:italic">a</span><span style="font-family:monospace">)</span> returns the value of erf(<span style="font-style:italic">a</span>).
-</li></ul><h4 id="sec442" class="subsubsection">Examples</h4>
+</li></ul><h4 id="sec438" class="subsubsection">Examples</h4>
 <table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">erf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
@@ -76,10 +76,10 @@ computes the error function.
 0.841344746069
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
-</table><h5 id="sec443" class="paragraph">Remark.</h5>
+</table><h5 id="sec439" class="paragraph">Remark.</h5>
 <p>
 The relation between <span style="font-family:monospace">erf</span> and <span style="font-family:monospace">normal_cdf</span> (see
-Section <a href="cascmd_en663.html#sssec%3Anormalcdf">18.4.7</a>) is:
+Section <a href="cascmd_en669.html#sssec%3Anormalcdf">18.4.7</a>) is:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-family:monospace">normal_cdf</span>(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">2</td></tr>
@@ -105,24 +105,7 @@ Section <a href="cascmd_en663.html#sssec%3Anormalcdf">18.4.7</a>) is:
 ⎠</td></tr>
 </table><p>
 Indeed, making the change of variable <span style="font-style:italic">t</span>=<span style="font-style:italic">u</span>√<span style="text-decoration:overline">2</span> in
-</p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-family:monospace">normal_cdf</span>(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center">2</td></tr>
-</table></td><td class="dcell">+</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
-<tr><td class="hbar"></td></tr>
-<tr><td class="dcell" style="text-align:center"><table class="display"><tr style="vertical-align:middle"><td class="dcell"><span style="font-size:x-large">√</span></td><td class="dcell"><table style="border:0;border-spacing:1;border-collapse:separate;" class="cellpadding0"><tr><td class="hbar"></td></tr>
-<tr><td style="text-align:center;white-space:nowrap" >2π</td></tr>
-</table></td></tr>
-</table></td></tr>
-</table></td><td class="dcell"><span style="font-size:xx-large">∫</span></td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:left"><span style="font-style:italic">x</span></td></tr>
-<tr><td class="dcell" style="text-align:left"><br>
-<br>
-</td></tr>
-<tr><td class="dcell" style="text-align:left">0</td></tr>
-</table></td><td class="dcell"><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span><sup>2</sup>/2</sup><span style="font-style:italic">d</span><span style="font-style:italic">t</span>
-</td></tr>
-</table><p>
-gives:
+<span style="font-family:monospace">normal_cdf</span>(<span style="font-style:italic">x</span>)=1/2+1/√<span style="text-decoration:overline">2π</span>∫<sub>0</sub><sup><span style="font-style:italic">x</span></sup><span style="font-style:italic">e</span><sup>−<span style="font-style:italic">t</span><sup>2</sup>/2</sup><span style="font-style:italic">d</span><span style="font-style:italic">t</span> yields:
 </p><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">  <span style="font-family:monospace">normal_cdf</span>(<span style="font-style:italic">x</span>)=</td><td class="dcell"><table class="display"><tr><td class="dcell" style="text-align:center">1</td></tr>
 <tr><td class="hbar"></td></tr>
 <tr><td class="dcell" style="text-align:center">2</td></tr>
@@ -167,17 +150,6 @@ gives:
 ⎟<br>
 ⎠</td><td class="dcell">.
 </td></tr>
-</table><p>
-To verify:
-
-</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">normal_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(1.0)</span></span></td></tr>
-</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
-     
-
-</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.841344746069
-</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
-</table></td></tr>
 </table>
 <hr>
 <a href="cascmd_en212.html"><img src="previous_motif.svg" alt="Previous"></a>

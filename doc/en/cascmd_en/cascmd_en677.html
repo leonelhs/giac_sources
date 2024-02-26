@@ -4,39 +4,99 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Inverse distribution functions</title>
+<title>Exponential distribution</title>
 </head>
 <body >
 <a href="cascmd_en676.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en678.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1727" class="subsection">18.4.21  Inverse distribution functions</h3>
-<p>The <span style="font-family:monospace">icdf</span><a id="hevea_default1363"></a>
-command finds the inverse cumulative distribution function
-for a probability distribution.
+<h3 id="ssec:exponentiald" class="subsection">18.4.15  Exponential distribution</h3>
+<h5 id="sec1711" class="paragraph">The probability density function for the exponential distribution.</h5>
+<p>
+The exponential distribution depends on one parameters, λ&gt;0;
+the value of the density function at <span style="font-style:italic">x</span> ≥ 0 is
+<span style="font-family:monospace">exponential</span>(λ,<span style="font-style:italic">x</span>)=λ <span style="font-style:italic">e</span><sup>−λ <span style="font-style:italic">x</span></sup>.
+The <span style="font-family:monospace">exponential</span><a id="hevea_default1352"></a>
+or <span style="font-family:monospace">exponentiald</span><a id="hevea_default1353"></a>
+command computes the exponential distribution.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">cdf</span> takes one or more mandatory arguments and one
-optional argument.
+<span style="font-family:monospace">exponential</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">distd</span>, the name of the function that finds the
-distribution’s density function.
-</li><li class="li-itemize"><span style="font-style:italic">params</span>, any parameters that would normally be passed
-to <span style="font-style:italic">distd</span>.
-</li><li class="li-itemize"><span style="font-style:italic">x</span>, a number.
+λ, a positive number (the parameter).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a positive number.
 </li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">icdf(</span><span style="font-style:italic">distd</span>,<span style="font-style:italic">params</span><span style="font-family:monospace">)</span> returns an
-expression for the inverse cumulative distribution function for
-<span style="font-style:italic">distd</span> with parameters <span style="font-style:italic">params</span>.
-</li><li class="li-itemize"><span style="font-family:monospace">icdf(</span><span style="font-style:italic">distd</span>,<span style="font-style:italic">params</span>,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the
-value of the inverse cumulative distribution function at <span style="font-style:italic">x</span>.
-</li></ul><h4 id="sec1728" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">normald</span></span><span style="font-weight:bold"><span style="color:#BF0000">,0,0.5,0.975)</span></span></td></tr>
+</li><li class="li-itemize"><span style="font-family:monospace">exponential(</span>λ,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns the value of the
+exponential density function with parameter λ at <span style="font-style:italic">x</span>; namely,
+<span style="font-family:monospace">exponential</span>(λ,<span style="font-style:italic">x</span>)=λ <span style="font-style:italic">e</span><sup>−λ <span style="font-style:italic">x</span></sup>. 
+</li></ul><h4 id="sec1712" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">exponential</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.1,3.5)</span></span></td></tr>
 </table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
      
 
 </td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
-0.97998199227
+0.00134944395675
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1713" class="paragraph">The cumulative distribution function for the exponential distribution.</h5>
+<p>
+The <span style="font-family:monospace">exponential_cdf</span><a id="hevea_default1354"></a>
+(or <span style="font-family:monospace">exponentiald_cdf</span><a id="hevea_default1355"></a>)
+command computes the cumulative distribution function for the exponential distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">exponential_cdf</span> (or <span style="font-family:monospace">exponentiald_cdf</span>)
+takes two arguments:
+<ul class="itemize"><li class="li-itemize">
+λ, a positive number (the parameter).
+</li><li class="li-itemize"><span style="font-style:italic">x</span>, a positive number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">exponential_cdf(</span>λ,<span style="font-style:italic">x</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>) for the exponential distribution with
+parameter λ.
+</li><li class="li-itemize"><span style="font-family:monospace">exponential_cdf(</span>λ,<span style="font-style:italic">x</span>,<span style="font-style:italic">y</span><span style="font-family:monospace">)</span> returns
+Prob(<span style="font-style:italic">x</span> ≤ <span style="font-style:italic">X</span> ≤ <span style="font-style:italic">y</span>).
+</li></ul><h4 id="sec1714" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">exponential_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.3,3.2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.99936380154
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">exponential_cdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.3,0.9,3.2)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.125549583246
+</span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
+</table></td></tr>
+</table>
+<h5 id="sec1715" class="paragraph">The inverse distribution function for the exponential distribution.</h5>
+<p>
+The <span style="font-family:monospace">exponential_icdf</span><a id="hevea_default1356"></a>
+(or <span style="font-family:monospace">exponentiald_icdf</span><a id="hevea_default1357"></a>)
+command computes the inverse distribution for the exponential distribution.
+</p><ul class="itemize"><li class="li-itemize">
+<span style="font-family:monospace">exponential_icdf</span> (or <span style="font-family:monospace">exponentiald_icdf</span>) takes two
+arguments:
+<ul class="itemize"><li class="li-itemize">
+λ, a positive number (the parameter).
+</li><li class="li-itemize"><span style="font-style:italic">h</span>, a positive real number.
+</li></ul>
+</li><li class="li-itemize"><span style="font-family:monospace">exponential_icdf(</span>λ,<span style="font-style:italic">h</span><span style="font-family:monospace">)</span> returns the inverse
+distribution for the exponential distribution with parameter
+λ; namely, the value of <span style="font-style:italic">x</span> for which
+Prob(<span style="font-style:italic">X</span> ≤ <span style="font-style:italic">x</span>)=<span style="font-style:italic">h</span>.
+</li></ul><h4 id="sec1716" class="subsubsection">Example</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">exponential_icdf</span></span><span style="font-weight:bold"><span style="color:#BF0000">(2.3,0.87)</span></span></td></tr>
+</table><table class="display dcenter"><tr style="vertical-align:middle"><td class="dcell">
+     
+
+</td><td class="dcell"><table style="border-spacing:6px;border-collapse:separate;" class="cellpading0"><tr><td style="text-align:right;white-space:nowrap" ><span style="color:#0000CC">
+0.887052534142
 </span></td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td><td style="text-align:left;white-space:nowrap" >&nbsp;</td><td style="text-align:right;white-space:nowrap" >&nbsp;</td></tr>
 </table></td></tr>
 </table>

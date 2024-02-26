@@ -4,48 +4,47 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Animation of a 3D graph</title>
+<title>Curves in polar coordinates</title>
 </head>
 <body >
 <a href="cascmd_en624.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en626.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="sec1499" class="subsection">17.10.2  Animation of a 3D graph</h3>
-<p>The <span style="font-family:monospace">animate3d</span><a id="hevea_default1203"></a>
-command creates three-dimensional animations using graphs of
-functions depending on a parameter. (See also Section <a href="cascmd_en599.html#ssec%3Aplotfunc3">17.2.2</a>.)
+<h3 id="sec1495" class="subsection">17.8.2  Curves in polar coordinates</h3>
+<p>The <span style="font-family:monospace">plotpolar</span><a id="hevea_default1192"></a> or
+<span style="font-family:monospace">polarplot</span><a id="hevea_default1193"></a> or
+<span style="font-family:monospace">DrawPol</span><a id="hevea_default1194"></a> or
+<span style="font-family:monospace">courbe_polaire</span><a id="hevea_default1195"></a>
+command draws a curve given in polar coordinates.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">animate</span> takes three mandatory arguments and two optional
-arguments:
+<span style="font-family:monospace">polarplot</span> takes two arguments:
 <ul class="itemize"><li class="li-itemize">
-<span style="font-style:italic">expr</span>, an expression involving three
-variables, one of which will be regarded as the parameter.
-</li><li class="li-itemize"><span style="font-style:italic">vars</span> a list of the the (non-parameter)
-variables in the expression, which can also specify ranges of
-values <span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
-</li><li class="li-itemize"><span style="font-style:italic">param</span> the name of the parameter, which can also
-specify a range of values.
-</li><li class="li-itemize">Optionally, <span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span>, where <span style="font-style:italic">n</span> is an integer specifying the
-number of frames.<a id="hevea_default1204"></a>
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">xstep</span>, which can be
-<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span> to specify the discretization
-step in the <span style="font-style:italic">x</span> direction.<a id="hevea_default1205"></a>
-</li><li class="li-itemize">Optionally, <span style="font-style:italic">ystep</span>, which can be
-<span style="font-family:monospace">ystep=</span><span style="font-style:italic">m</span> to specify the discretization
-step in the <span style="font-style:italic">y</span> direction.<a id="hevea_default1206"></a><p>Instead of <span style="font-style:italic">xstep</span> and <span style="font-family:monospace">ystep</span>, you could use
-the option <span style="font-family:monospace">nstep=</span><span style="font-style:italic">n</span> to specify the number of points used to
-graph.<a id="hevea_default1207"></a>
-</p></li></ul>
-</li><li class="li-itemize"><span style="font-family:monospace">animate3d(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">vars</span>,<span style="font-style:italic">param</span>,<span style="font-family:monospace">frames=</span><span style="font-style:italic">n</span> ⟨,<span style="font-style:italic">opt</span>,<span style="font-family:monospace">xstep=</span><span style="font-style:italic">n</span>,<span style="font-family:monospace">ystep=</span><span style="font-style:italic">m</span> ⟩<span style="font-family:monospace">)</span>
-draws an animation consisting of graph of the function as the
-parameter varies. 
-</li></ul><h4 id="sec1500" class="subsubsection">Example</h4>
-<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">animate3d</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2+</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">*</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">^2,[</span></span><span style="font-weight:bold"><span style="color:#BF0000">x</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">y</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2],</span></span><span style="font-weight:bold"><span style="color:#BF0000">a</span></span><span style="font-weight:bold"><span style="color:#BF0000">=-2..2,</span></span><span style="font-weight:bold"><span style="color:#BF0000">frames</span></span><span style="font-weight:bold"><span style="color:#BF0000">=10,</span></span><span style="font-weight:bold"><span style="color:#BF0000">display</span></span><span style="font-weight:bold"><span style="color:#BF0000">=</span></span><span style="font-weight:bold"><span style="color:#BF0000">red</span></span><span style="font-weight:bold"><span style="color:#BF0000">+</span></span><span style="font-weight:bold"><span style="color:#BF0000">filled</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
-</table><p>The output is an animation beginning with:
-</p><div class="center">
+<span style="font-style:italic">expr</span>, an expression involving a variable (which
+will represent the angle).
+</li><li class="li-itemize"><span style="font-family:monospace">var</span>, the variable. This can optionally include the
+range <span style="font-style:italic">var</span>=<span style="font-style:italic">a</span><span style="font-family:monospace">..</span><span style="font-style:italic">b</span>.
+</li><li class="li-itemize">Optionally, <span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span> to specify the discretization.
+<a id="hevea_default1196"></a>
+</li></ul>
+<span style="font-family:monospace">polarplot(</span><span style="font-style:italic">expr</span>,<span style="font-style:italic">var</span> ⟨,<span style="font-family:monospace">tstep=</span><span style="font-style:italic">n</span> ⟩<span style="font-family:monospace">)</span>
+draws the
+curve defined by ρ=<span style="font-style:italic">expr</span> for θ=<span style="font-style:italic">var</span>; in
+Cartesian coordinates that is the curve
+(<span style="font-style:italic">expr</span>·cos(<span style="font-style:italic">var</span>),<span style="font-style:italic">expr</span>·sin(<span style="font-style:italic">var</span>)).
+</li></ul><h4 id="sec1496" class="subsubsection">Examples</h4>
+<table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">)</span></span></td></tr>
+</table><div class="center">
 
-<img src="cascmd_en087.png">
+<img src="cascmd_en081.png">
+
+</div><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
+</table><p>or:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">plotpolar</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">,</span></span><span style="font-weight:bold"><span style="color:#BF0000">t</span></span><span style="font-weight:bold"><span style="color:#BF0000">=0..10,</span></span><span style="font-weight:bold"><span style="color:#BF0000">tstep</span></span><span style="font-weight:bold"><span style="color:#BF0000">=1)</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en082.png">
 
 </div>
 <hr>

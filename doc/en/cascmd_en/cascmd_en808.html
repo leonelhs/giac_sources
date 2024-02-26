@@ -4,25 +4,57 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="generator" content="hevea 2.34">
 <link rel="stylesheet" type="text/css" href="cascmd_en.css">
-<title>Isobarycenter of n points in the plane</title>
+<title>Finding a point of intersection of two objects in the plane</title>
 </head>
 <body >
 <a href="cascmd_en807.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>
 <a href="cascmd_en809.html"><img src="next_motif.svg" alt="Next"></a>
 <hr>
-<h3 id="ssec:2disobarycenter" class="subsection">24.5.11  Isobarycenter of <span style="font-style:italic">n</span> points in the plane</h3>
-<p>See Section <a href="cascmd_en913.html#ssec%3A3disobarycenter">25.3.7</a> for isobarycenters of objects in
-space.</p><p>The <span style="font-family:monospace">isobarycenter</span><a id="hevea_default1701"></a>
-command finds the isobarycenter of a list
-of points; the isobarycenter is the barycenter when all points are
-equally weighted.
+<h3 id="ssec:single2dintersection" class="subsection">24.5.6  Finding a point of intersection of two objects in the plane</h3>
+<p>See Section <a href="cascmd_en914.html#ssec%3A3dsingleintersection">25.3.3</a> for single points of
+intersection of objects in space.</p><p>The <span style="font-family:monospace">single_inter</span><a id="hevea_default1703"></a>
+or <span style="font-family:monospace">line_inter</span><a id="hevea_default1704"></a>
+command finds an intersection point of two geometric objects.
 </p><ul class="itemize"><li class="li-itemize">
-<span style="font-family:monospace">isobarycenter</span> takes
-<span style="font-style:italic">L</span>, a list of points. (The points can also be given by a sequence).
-</li><li class="li-itemize"><span style="font-family:monospace">isobarycenter(</span><span style="font-style:italic">L</span><span style="font-family:monospace">)</span> draws and returns the
-isobarycenter of the points.
+<span style="font-family:monospace">single_inter</span> takes two mandatory arguments and one
+optional argument.
+<ul class="itemize"><li class="li-itemize">
+<span style="font-style:italic">obj</span><sub>1</sub>, <span style="font-style:italic">obj</span><sub>2</sub>, two geometric objects.
+</li><li class="li-itemize">Optionally, <span style="font-style:italic">pt</span>, a point or list of points.
 </li></ul>
+<span style="font-family:monospace">line_inter(</span><span style="font-style:italic">obj</span><sub>1</sub>,<span style="font-style:italic">obj</span><sub>2</sub> ⟨,<span style="font-style:italic">pt</span> ⟩<span style="font-family:monospace">)</span>
+returns one of the points of
+intersection of <span style="font-style:italic">obj</span><sub>1</sub> and <span style="font-style:italic">obj</span><sub>2</sub>.<p>If <span style="font-style:italic">pt</span> is a single point, then the command returns the point
+of intersection closest to <span style="font-style:italic">pt</span>.</p><p>If <span style="font-style:italic">pt</span> is a list of points, then the command tries to return
+a point not in <span style="font-style:italic">pt</span>.
+</p></li></ul><h4 id="sec2051" class="subsubsection">Example</h4>
+<p>
+The command <span style="font-family:monospace">circle(0,1)</span> creates the unit circle and
+<span style="font-family:monospace">line(-1,i)</span> creates a line, these two objects intersect at the
+points (−1,0) and (0,1).
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">))</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en194.png">
+
+</div><p>
+
+which is the point (−1,0).
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),[-1])</span></span></td></tr>
+</table><div class="center">
+
+<img src="cascmd_en195.png">
+
+</div><p>
+
+which is the point (0,1). Similarly, since this second
+point of intersection is closest to (0,1/2), entering:
+
+</p><table class="lstframe" style="padding:1ex;border-style:none;"><tr><td class="lstlisting"><span style="font-weight:bold"><span style="color:#BF0000"> </span></span><span style="font-weight:bold"><span style="color:#BF0000">single_inter</span></span><span style="font-weight:bold"><span style="color:#BF0000">(</span></span><span style="font-weight:bold"><span style="color:#BF0000">circle</span></span><span style="font-weight:bold"><span style="color:#BF0000">(0,1),</span></span><span style="font-weight:bold"><span style="color:#BF0000">line</span></span><span style="font-weight:bold"><span style="color:#BF0000">(-1,</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">),</span></span><span style="font-weight:bold"><span style="color:#BF0000">i</span></span><span style="font-weight:bold"><span style="color:#BF0000">/2)</span></span></td></tr>
+</table><p>also draws the second point.</p>
 <hr>
 <a href="cascmd_en807.html"><img src="previous_motif.svg" alt="Previous"></a>
 <a href="index.html"><img src="contents_motif.svg" alt="Up"></a>

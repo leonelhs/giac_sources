@@ -18556,7 +18556,7 @@ if test "x$ac_cv_header_FL_Fl_H" = xyes; then :
 _ACEOF
 
 else
-  tar xfj fltk-1.3.8-source.tar.bz2 ; cd fltk-1.3.8 && ./configure --disable-shared && make && cd .. && CXXFLAGS="$CXXFLAGS -I../fltk-1.3.8" && LDFLAGS="$LDFLAGS -L../fltk-1.3.8/lib"
+  tar xfj fltk-1.3.8-source.tar.bz2 ; cd fltk-1.3.8 && ./configure --disable-shared && make && cd .. && CXXFLAGS="$CXXFLAGS -I../fltk-1.3.8 -I./fltk-1.3.8" && LDFLAGS="$LDFLAGS -L../fltk-1.3.8/lib -L./fltk-1.3.8/lib"
 fi
 
 done
@@ -18597,6 +18597,84 @@ if test "x$ac_cv_lib_X11_main" = xyes; then :
 _ACEOF
 
   LIBS="-lX11 $LIBS"
+
+fi
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lXcursor" >&5
+$as_echo_n "checking for main in -lXcursor... " >&6; }
+if ${ac_cv_lib_Xcursor_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lXcursor  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_Xcursor_main=yes
+else
+  ac_cv_lib_Xcursor_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_Xcursor_main" >&5
+$as_echo "$ac_cv_lib_Xcursor_main" >&6; }
+if test "x$ac_cv_lib_Xcursor_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBXCURSOR 1
+_ACEOF
+
+  LIBS="-lXcursor $LIBS"
+
+fi
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lXfixes" >&5
+$as_echo_n "checking for main in -lXfixes... " >&6; }
+if ${ac_cv_lib_Xfixes_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lXfixes  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_Xfixes_main=yes
+else
+  ac_cv_lib_Xfixes_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_Xfixes_main" >&5
+$as_echo "$ac_cv_lib_Xfixes_main" >&6; }
+if test "x$ac_cv_lib_Xfixes_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBXFIXES 1
+_ACEOF
+
+  LIBS="-lXfixes $LIBS"
 
 fi
 
