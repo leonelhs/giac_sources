@@ -3460,7 +3460,11 @@ namespace xcas {
 	  f << target;
 	}
 	else {
-	  ofstream of(newfile);
+	  ofstream of;
+	  if (mode==-1)
+	    of.open(newfile,ios::binary);
+	  else
+	    of.open(newfile);
 	  save_as_text(of,mode,o->pack);
 	}
       }

@@ -21,7 +21,7 @@ purge(x,y);
  d2:=implicitplot(C2,x=-7..7,y=-8..8,color=blue+line_width_2,xstep=0.01,ystep=0.01):
  eqx:=resultant(C1,C2,y); #On elimine y
 /* Astuce: pour ne pas passer en flottants via le menu deroulant, on lui donne une£extention de corps sous forme d'un flottant.*/
-evalf(factor(eqx,1.1),10); # on obtient 5 points reels.
+proot(eqx); # on obtient 5 points reels.
 /* c'est de degre 5 car le centre de projection (0,1,0) est solution.*/
 /*   on parametre la droite passant par les points [1,1] et [0,y] grace au vecteur£  directeur (-1,y-1): */
  M:=[1,1]+t*[-1,y-1]; 

@@ -15807,6 +15807,56 @@ fi
 
 done
 
+  for ac_header in mps/mps.h
+do :
+  ac_fn_cxx_check_header_mongrel "$LINENO" "mps/mps.h" "ac_cv_header_mps_mps_h" "$ac_includes_default"
+if test "x$ac_cv_header_mps_mps_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_MPS_MPS_H 1
+_ACEOF
+ { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lmps" >&5
+$as_echo_n "checking for main in -lmps... " >&6; }
+if ${ac_cv_lib_mps_main+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lmps  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+
+int
+main ()
+{
+return main ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_cxx_try_link "$LINENO"; then :
+  ac_cv_lib_mps_main=yes
+else
+  ac_cv_lib_mps_main=no
+fi
+rm -f core conftest.err conftest.$ac_objext \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_mps_main" >&5
+$as_echo "$ac_cv_lib_mps_main" >&6; }
+if test "x$ac_cv_lib_mps_main" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_LIBMPS 1
+_ACEOF
+
+  LIBS="-lmps $LIBS"
+
+fi
+
+fi
+
+done
+
   # Check whether --enable-gmpxx was given.
 if test "${enable_gmpxx+set}" = set; then :
   enableval=$enable_gmpxx; if test "$enableval" = "no"; then CONFIG_GMPXX="no"; fi

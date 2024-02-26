@@ -3631,6 +3631,8 @@ extern "C" void Sleep(unsigned int miliSecond);
   unsigned short int GIAC_PADIC=50;
   const char cas_suffixe[]=".cas";
   int MAX_PROD_EXPAND_SIZE=4096;
+  int ABERTH_NMAX=25;
+  int ABERTH_NBITSMAX=8192;
 #if defined RTOS_THREADX || defined BESTA_OS || defined(KHICAS)
 #ifdef BESTA_OS
   int LIST_SIZE_LIMIT = 100000 ;

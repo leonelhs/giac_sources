@@ -233,6 +233,9 @@
 /* Define to 1 if you have the `mpfr' library (-lmpfr). */
 #define HAVE_LIBMPFR 1
 
+/* Define to 1 if you have the `mps' library (-lmps). */
+/* #undef HAVE_LIBMPS */
+
 /* Define to 1 if you have the `nauty' library (-lnauty). */
 #define HAVE_LIBNAUTY 1
 
@@ -319,6 +322,9 @@
 
 /* Define to 1 if you have the `mpfr_set_str_raw' function. */
 /* #undef HAVE_MPFR_SET_STR_RAW */
+
+/* Define to 1 if you have the <mps/mps.h> header file. */
+/* #undef HAVE_MPS_MPS_H */
 
 /* Define to 1 if you have the `munmap' function. */
 #define HAVE_MUNMAP 1

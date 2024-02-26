@@ -75,6 +75,7 @@ else
   AC_CHECK_FUNCS(mpfr_set_str_raw)
   dnl Check for MPFI
   AC_CHECK_HEADERS(mpfi.h,AC_CHECK_LIB(mpfi,main))
+  AC_CHECK_HEADERS(mps/mps.h,AC_CHECK_LIB(mps,main))
   AC_ARG_ENABLE([gmpxx],
 	[AS_HELP_STRING([--enable-gmpxx], [Use GMP C+wrappers [[default=yes]]])],
 	[if test "$enableval" = "no"; then CONFIG_GMPXX="no"; fi], [])

@@ -2462,7 +2462,7 @@ namespace giac {
     if (g.type==_VECT)
       return gen(accurate_evalf(*g._VECTptr,nbits),g.subtype);
     gen r,i;reim(g,r,i,context0); // only called for numeric values
-    if (is_zero(i,context0))
+    if (is_exactly_zero(i))
       return set_precision(r,nbits);
     else
       return gen(set_precision(r,nbits),set_precision(i,nbits));
@@ -4407,7 +4407,7 @@ namespace giac {
     if (a.type==_REAL){
       if (real_interval * ptr=dynamic_cast<real_interval *>(a._REALptr)){
 	mpfi_t interv;
-	mpfi_init(interv);
+	mpfi_init2(interv,mpfi_get_prec(ptr->infsup));
         mpfi_sqr(interv,ptr->infsup);
         gen res=gen(real_interval(interv));
 	mpfi_clear(interv);
@@ -13428,7 +13428,11 @@ void sprint_double(char * s,double d){
 #ifdef KHICAS
     if (python_compat(contextptr)<0)
       return "I";
+#ifdef NSPIRE_NEWLIB
+    return "i";
+#else
     return os_shell?"i":"𝐢";
+#endif
 #endif
     if (calc_mode(contextptr)==1)
       return "ί";

@@ -57,6 +57,9 @@ using namespace std;
 #include <gsl/gsl_eigen.h>
 #include <gsl/gsl_poly.h>
 #endif
+#ifdef HAVE_LIBMPS
+#include <mps/mps.h>
+#endif
 
 // vector class version 1 by Agner Fog https://github.com/vectorclass
 // this might be faster for CPU with AVX512DQ instruction set
@@ -1973,6 +1976,7 @@ namespace giac {
 #endif // HAVE_LIBGSL
   }
 
+  
   static bool in_proot(const vecteur & w,double & eps,int & rprec,vecteur & res,bool isolaterealroot,GIAC_CONTEXT){
 #ifdef EMCC
     if (eps<1e-300)
@@ -2288,7 +2292,7 @@ namespace giac {
 	  gen vi=vv[i];
 	  vi=_e2r(makevecteur(vi,vx_var),context0);
 	  if (vi.type==_VECT && vv[i+1].type==_INT_){
-#if 1 // ndef HAVE_LIBPARI
+#if 0 // not useful with new proot implementation
 	    gen norme=linfnorm(vi,context0);
 	    if (norme.type==_ZINT){
 	      rprec=giacmax(rprec,mpz_sizeinbase(*norme._ZINTptr,2));
@@ -2358,6 +2362,11 @@ namespace giac {
     if (cache)
       return crystalball;
     cache=true;
+    vecteur rayon;
+    if (0 && mps_solve(v,res,rayon,eps,contextptr)==0) // wait until mpsolve fixed
+      return res;
+    if (aberth(v,res,rayon,ABERTH_NMAX,eps,true/* isolate*/,false/* exact*/,contextptr))
+      return res;
     // call pari if degree is large
     if (
 	0 && v.size()>=64 && 
@@ -2847,27 +2856,19 @@ namespace giac {
   static define_unary_function_eval (__proot,&_proot,_proot_s);
   define_unary_function_ptr5( at_proot ,alias_at_proot,&__proot,0,true);
 
-  vecteur pcoeff(const vecteur & v){
-    vecteur w(1,plus_one),new_w,somme;
-    gen a,b;
-    const_iterateur it=v.begin(),itend=v.end();
-    for (;it!=itend;++it){
-      if (it->type==_CPLX && it+1!=itend && is_zero(*it-conj(*(it+1),context0))){
-	a=re(*it,context0);
-	b=im(*it,context0);
-	b=a*a+b*b;
-	a=-2*a;
-	w=w*makevecteur(1,a,b);
-	++it;
-	continue;
+  vecteur pcoeff(const vecteur & R){
+    vecteur P;
+    P.reserve(R.size()+1);
+    P.push_back(gen(1));
+    for (size_t i=0;i<R.size();++i){
+      gen z=R[i];
+      // P*(x-z)
+      P.push_back(-z*P.back());
+      for (size_t j=P.size()-2;j>=1;--j){
+        P[j] -= z*P[j-1];
       }
-      new_w=w;
-      new_w.push_back(zero); // new_w=w*x
-      mulmodpoly(w,-(*it),w); // w = -w*root
-      addmodpoly(new_w,w,somme);
-      w=somme;
     }
-    return w;
+    return P;
   }
   gen _pcoeff(const gen & v,GIAC_CONTEXT){
     if ( v.type==_STRNG && v.subtype==-1) return  v;

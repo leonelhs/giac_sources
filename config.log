@@ -7904,7 +7904,7 @@ configure:11878: $? = 0
 configure:11887: result: yes
 configure:11904: checking for mpfr_set_str_raw
 configure:11904: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lmpfr -lgmp  >&5
-/usr/bin/ld: /tmp/ccDcTrcj.o: in function `main':
+/usr/bin/ld: /tmp/ccvoY115.o: in function `main':
 /home/parisse/giac-1.9.0/conftest.cpp:61: undefined reference to `mpfr_set_str_raw'
 collect2: error: ld returned 1 exit status
 configure:11904: $? = 1
@@ -7988,41 +7988,152 @@ configure:11920: checking for main in -lmpfi
 configure:11939: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lmpfi  -lmpfr -lgmp  >&5
 configure:11939: $? = 0
 configure:11948: result: yes
-configure:11971: checking gmpxx.h usability
-configure:11971: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:11971: $? = 0
-configure:11971: result: yes
-configure:11971: checking gmpxx.h presence
-configure:11971: /usr/bin/g++ -E  conftest.cpp
-configure:11971: $? = 0
-configure:11971: result: yes
-configure:11971: checking for gmpxx.h
-configure:11971: result: yes
-configure:11986: checking for main in -lgmpxx
-configure:12005: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgmpxx  -lmpfi -lmpfr -lgmp  >&5
-configure:12005: $? = 0
-configure:12014: result: yes
-configure:12044: checking ecm.h usability
-configure:12044: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:12044: $? = 0
-configure:12044: result: yes
-configure:12044: checking ecm.h presence
-configure:12044: /usr/bin/g++ -E  conftest.cpp
-configure:12044: $? = 0
-configure:12044: result: yes
-configure:12044: checking for ecm.h
-configure:12044: result: yes
-configure:12054: checking for main in -lecm
-configure:12073: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lecm  -lmpfi -lmpfr -lgmp  >&5
-configure:12073: $? = 0
-configure:12082: result: yes
-configure:12107: checking bern_rat.h usability
-configure:12107: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:11965: checking mps/mps.h usability
+configure:11965: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+conftest.cpp:62:10: fatal error: mps/mps.h: No such file or directory
+ #include <mps/mps.h>
+          ^~~~~~~~~~~
+compilation terminated.
+configure:11965: $? = 1
+configure: failed program was:
+| /* confdefs.h */
+| #define PACKAGE_NAME "giac"
+| #define PACKAGE_TARNAME "giac"
+| #define PACKAGE_VERSION "1.9.0"
+| #define PACKAGE_STRING "giac 1.9.0"
+| #define PACKAGE_BUGREPORT ""
+| #define PACKAGE_URL ""
+| #define PACKAGE "giac"
+| #define VERSION "1.9.0"
+| #define STDC_HEADERS 1
+| #define HAVE_SYS_TYPES_H 1
+| #define HAVE_SYS_STAT_H 1
+| #define HAVE_STDLIB_H 1
+| #define HAVE_STRING_H 1
+| #define HAVE_MEMORY_H 1
+| #define HAVE_STRINGS_H 1
+| #define HAVE_INTTYPES_H 1
+| #define HAVE_STDINT_H 1
+| #define HAVE_UNISTD_H 1
+| #define HAVE_DLFCN_H 1
+| #define LT_OBJDIR ".libs/"
+| #define HAVE_GMP_H 1
+| #define HAVE_LIBGMP 1
+| #define HAVE_MPFR_H 1
+| #define HAVE_LIBMPFR 1
+| #define HAVE_MPFI_H 1
+| #define HAVE_LIBMPFI 1
+| /* end confdefs.h.  */
+| #include <stdio.h>
+| #ifdef HAVE_SYS_TYPES_H
+| # include <sys/types.h>
+| #endif
+| #ifdef HAVE_SYS_STAT_H
+| # include <sys/stat.h>
+| #endif
+| #ifdef STDC_HEADERS
+| # include <stdlib.h>
+| # include <stddef.h>
+| #else
+| # ifdef HAVE_STDLIB_H
+| #  include <stdlib.h>
+| # endif
+| #endif
+| #ifdef HAVE_STRING_H
+| # if !defined STDC_HEADERS && defined HAVE_MEMORY_H
+| #  include <memory.h>
+| # endif
+| # include <string.h>
+| #endif
+| #ifdef HAVE_STRINGS_H
+| # include <strings.h>
+| #endif
+| #ifdef HAVE_INTTYPES_H
+| # include <inttypes.h>
+| #endif
+| #ifdef HAVE_STDINT_H
+| # include <stdint.h>
+| #endif
+| #ifdef HAVE_UNISTD_H
+| # include <unistd.h>
+| #endif
+| #include <mps/mps.h>
+configure:11965: result: no
+configure:11965: checking mps/mps.h presence
+configure:11965: /usr/bin/g++ -E  conftest.cpp
+conftest.cpp:29:10: fatal error: mps/mps.h: No such file or directory
+ #include <mps/mps.h>
+          ^~~~~~~~~~~
+compilation terminated.
+configure:11965: $? = 1
+configure: failed program was:
+| /* confdefs.h */
+| #define PACKAGE_NAME "giac"
+| #define PACKAGE_TARNAME "giac"
+| #define PACKAGE_VERSION "1.9.0"
+| #define PACKAGE_STRING "giac 1.9.0"
+| #define PACKAGE_BUGREPORT ""
+| #define PACKAGE_URL ""
+| #define PACKAGE "giac"
+| #define VERSION "1.9.0"
+| #define STDC_HEADERS 1
+| #define HAVE_SYS_TYPES_H 1
+| #define HAVE_SYS_STAT_H 1
+| #define HAVE_STDLIB_H 1
+| #define HAVE_STRING_H 1
+| #define HAVE_MEMORY_H 1
+| #define HAVE_STRINGS_H 1
+| #define HAVE_INTTYPES_H 1
+| #define HAVE_STDINT_H 1
+| #define HAVE_UNISTD_H 1
+| #define HAVE_DLFCN_H 1
+| #define LT_OBJDIR ".libs/"
+| #define HAVE_GMP_H 1
+| #define HAVE_LIBGMP 1
+| #define HAVE_MPFR_H 1
+| #define HAVE_LIBMPFR 1
+| #define HAVE_MPFI_H 1
+| #define HAVE_LIBMPFI 1
+| /* end confdefs.h.  */
+| #include <mps/mps.h>
+configure:11965: result: no
+configure:11965: checking for mps/mps.h
+configure:11965: result: no
+configure:12021: checking gmpxx.h usability
+configure:12021: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12021: $? = 0
+configure:12021: result: yes
+configure:12021: checking gmpxx.h presence
+configure:12021: /usr/bin/g++ -E  conftest.cpp
+configure:12021: $? = 0
+configure:12021: result: yes
+configure:12021: checking for gmpxx.h
+configure:12021: result: yes
+configure:12036: checking for main in -lgmpxx
+configure:12055: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgmpxx  -lmpfi -lmpfr -lgmp  >&5
+configure:12055: $? = 0
+configure:12064: result: yes
+configure:12094: checking ecm.h usability
+configure:12094: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12094: $? = 0
+configure:12094: result: yes
+configure:12094: checking ecm.h presence
+configure:12094: /usr/bin/g++ -E  conftest.cpp
+configure:12094: $? = 0
+configure:12094: result: yes
+configure:12094: checking for ecm.h
+configure:12094: result: yes
+configure:12104: checking for main in -lecm
+configure:12123: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lecm  -lmpfi -lmpfr -lgmp  >&5
+configure:12123: $? = 0
+configure:12132: result: yes
+configure:12157: checking bern_rat.h usability
+configure:12157: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp:65:10: fatal error: bern_rat.h: No such file or directory
  #include <bern_rat.h>
           ^~~~~~~~~~~~
 compilation terminated.
-configure:12107: $? = 1
+configure:12157: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8089,14 +8200,14 @@ configure: failed program was:
 | # include <unistd.h>
 | #endif
 | #include <bern_rat.h>
-configure:12107: result: no
-configure:12107: checking bern_rat.h presence
-configure:12107: /usr/bin/g++ -E  conftest.cpp
+configure:12157: result: no
+configure:12157: checking bern_rat.h presence
+configure:12157: /usr/bin/g++ -E  conftest.cpp
 conftest.cpp:32:10: fatal error: bern_rat.h: No such file or directory
  #include <bern_rat.h>
           ^~~~~~~~~~~~
 compilation terminated.
-configure:12107: $? = 1
+configure:12157: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8130,57 +8241,57 @@ configure: failed program was:
 | #define HAVE_LIBECM 1
 | /* end confdefs.h.  */
 | #include <bern_rat.h>
-configure:12107: result: no
-configure:12107: checking for bern_rat.h
-configure:12107: result: no
-configure:12170: checking NTL/ZZ.h usability
-configure:12170: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:12170: $? = 0
-configure:12170: result: yes
-configure:12170: checking NTL/ZZ.h presence
-configure:12170: /usr/bin/g++ -E  conftest.cpp
-configure:12170: $? = 0
-configure:12170: result: yes
-configure:12170: checking for NTL/ZZ.h
-configure:12170: result: yes
-configure:12181: checking for main in -lntl
-configure:12200: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lntl  -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12200: $? = 0
-configure:12209: result: yes
-configure:12241: checking pari/pari.h usability
-configure:12241: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:12241: $? = 0
-configure:12241: result: yes
-configure:12241: checking pari/pari.h presence
-configure:12241: /usr/bin/g++ -E  conftest.cpp
-configure:12241: $? = 0
-configure:12241: result: yes
-configure:12241: checking for pari/pari.h
-configure:12241: result: yes
-configure:12256: checking for main in -lpari
-configure:12275: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpari  -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12275: $? = 0
-configure:12284: result: yes
-configure:12416: checking for main in -lm
-configure:12435: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lm  -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12435: $? = 0
-configure:12444: result: yes
-configure:12466: checking png.h usability
-configure:12466: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:12466: $? = 0
-configure:12466: result: yes
-configure:12466: checking png.h presence
-configure:12466: /usr/bin/g++ -E  conftest.cpp
-configure:12466: $? = 0
-configure:12466: result: yes
-configure:12466: checking for png.h
-configure:12466: result: yes
-configure:12471: checking for library containing png_sig_cmp
-configure:12502: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-/usr/bin/ld: /tmp/ccYHDt5k.o: in function `main':
+configure:12157: result: no
+configure:12157: checking for bern_rat.h
+configure:12157: result: no
+configure:12220: checking NTL/ZZ.h usability
+configure:12220: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12220: $? = 0
+configure:12220: result: yes
+configure:12220: checking NTL/ZZ.h presence
+configure:12220: /usr/bin/g++ -E  conftest.cpp
+configure:12220: $? = 0
+configure:12220: result: yes
+configure:12220: checking for NTL/ZZ.h
+configure:12220: result: yes
+configure:12231: checking for main in -lntl
+configure:12250: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lntl  -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12250: $? = 0
+configure:12259: result: yes
+configure:12291: checking pari/pari.h usability
+configure:12291: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12291: $? = 0
+configure:12291: result: yes
+configure:12291: checking pari/pari.h presence
+configure:12291: /usr/bin/g++ -E  conftest.cpp
+configure:12291: $? = 0
+configure:12291: result: yes
+configure:12291: checking for pari/pari.h
+configure:12291: result: yes
+configure:12306: checking for main in -lpari
+configure:12325: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpari  -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12325: $? = 0
+configure:12334: result: yes
+configure:12466: checking for main in -lm
+configure:12485: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lm  -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12485: $? = 0
+configure:12494: result: yes
+configure:12516: checking png.h usability
+configure:12516: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12516: $? = 0
+configure:12516: result: yes
+configure:12516: checking png.h presence
+configure:12516: /usr/bin/g++ -E  conftest.cpp
+configure:12516: $? = 0
+configure:12516: result: yes
+configure:12516: checking for png.h
+configure:12516: result: yes
+configure:12521: checking for library containing png_sig_cmp
+configure:12552: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+/usr/bin/ld: /tmp/ccYP6MLc.o: in function `main':
 /home/parisse/giac-1.9.0/conftest.cpp:49: undefined reference to `png_sig_cmp'
 collect2: error: ld returned 1 exit status
-configure:12502: $? = 1
+configure:12552: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8234,70 +8345,70 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:12502: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpng16  -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12502: $? = 0
-configure:12519: result: -lpng16
-configure:12543: checking for dlopen in -ldl
-configure:12568: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl  -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12568: $? = 0
-configure:12577: result: yes
-configure:12594: checking size of void *
-configure:12599: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12599: $? = 0
-configure:12599: ./conftest
-configure:12599: $? = 0
-configure:12613: result: 8
-configure:12627: checking size of int
-configure:12632: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12632: $? = 0
-configure:12632: ./conftest
-configure:12632: $? = 0
-configure:12646: result: 4
-configure:12660: checking size of long
-configure:12665: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12665: $? = 0
-configure:12665: ./conftest
-configure:12665: $? = 0
-configure:12679: result: 8
-configure:12693: checking size of long long
-configure:12698: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12698: $? = 0
-configure:12698: ./conftest
-configure:12698: $? = 0
-configure:12712: result: 8
-configure:12733: checking gsl/gsl_blas.h usability
-configure:12733: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:12733: $? = 0
-configure:12733: result: yes
-configure:12733: checking gsl/gsl_blas.h presence
-configure:12733: /usr/bin/g++ -E  conftest.cpp
-configure:12733: $? = 0
-configure:12733: result: yes
-configure:12733: checking for gsl/gsl_blas.h
-configure:12733: result: yes
-configure:12745: checking gsl/gsl_eigen.h usability
-configure:12745: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:12745: $? = 0
-configure:12745: result: yes
-configure:12745: checking gsl/gsl_eigen.h presence
-configure:12745: /usr/bin/g++ -E  conftest.cpp
-configure:12745: $? = 0
-configure:12745: result: yes
-configure:12745: checking for gsl/gsl_eigen.h
-configure:12745: result: yes
-configure:12761: checking for main in -lgslcblas
-configure:12780: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgslcblas  -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12780: $? = 0
-configure:12789: result: yes
-configure:12802: checking for gsl_sf_gamma in -lgsl
-configure:12827: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgsl  -lgslcblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12827: $? = 0
-configure:12836: result: yes
-configure:12877: checking for main in -lgfortran
-configure:12896: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgfortran  -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12552: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpng16  -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12552: $? = 0
+configure:12569: result: -lpng16
+configure:12593: checking for dlopen in -ldl
+configure:12618: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl  -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12618: $? = 0
+configure:12627: result: yes
+configure:12644: checking size of void *
+configure:12649: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12649: $? = 0
+configure:12649: ./conftest
+configure:12649: $? = 0
+configure:12663: result: 8
+configure:12677: checking size of int
+configure:12682: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12682: $? = 0
+configure:12682: ./conftest
+configure:12682: $? = 0
+configure:12696: result: 4
+configure:12710: checking size of long
+configure:12715: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12715: $? = 0
+configure:12715: ./conftest
+configure:12715: $? = 0
+configure:12729: result: 8
+configure:12743: checking size of long long
+configure:12748: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12748: $? = 0
+configure:12748: ./conftest
+configure:12748: $? = 0
+configure:12762: result: 8
+configure:12783: checking gsl/gsl_blas.h usability
+configure:12783: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12783: $? = 0
+configure:12783: result: yes
+configure:12783: checking gsl/gsl_blas.h presence
+configure:12783: /usr/bin/g++ -E  conftest.cpp
+configure:12783: $? = 0
+configure:12783: result: yes
+configure:12783: checking for gsl/gsl_blas.h
+configure:12783: result: yes
+configure:12795: checking gsl/gsl_eigen.h usability
+configure:12795: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12795: $? = 0
+configure:12795: result: yes
+configure:12795: checking gsl/gsl_eigen.h presence
+configure:12795: /usr/bin/g++ -E  conftest.cpp
+configure:12795: $? = 0
+configure:12795: result: yes
+configure:12795: checking for gsl/gsl_eigen.h
+configure:12795: result: yes
+configure:12811: checking for main in -lgslcblas
+configure:12830: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgslcblas  -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12830: $? = 0
+configure:12839: result: yes
+configure:12852: checking for gsl_sf_gamma in -lgsl
+configure:12877: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgsl  -lgslcblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12877: $? = 0
+configure:12886: result: yes
+configure:12927: checking for main in -lgfortran
+configure:12946: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lgfortran  -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 /usr/bin/ld: cannot find -lgfortran
 collect2: error: ld returned 1 exit status
-configure:12896: $? = 1
+configure:12946: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8354,22 +8465,22 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:12905: result: no
-configure:12916: checking for main in -lblas
-configure:12935: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lblas  -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12935: $? = 0
-configure:12944: result: yes
-configure:12955: checking for main in -llapack
-configure:12974: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -llapack  -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:12974: $? = 0
-configure:12983: result: yes
-configure:13026: checking CoCoA/io.H usability
-configure:13026: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:12955: result: no
+configure:12966: checking for main in -lblas
+configure:12985: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lblas  -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:12985: $? = 0
+configure:12994: result: yes
+configure:13005: checking for main in -llapack
+configure:13024: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -llapack  -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:13024: $? = 0
+configure:13033: result: yes
+configure:13076: checking CoCoA/io.H usability
+configure:13076: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp:82:10: fatal error: CoCoA/io.H: No such file or directory
  #include <CoCoA/io.H>
           ^~~~~~~~~~~~
 compilation terminated.
-configure:13026: $? = 1
+configure:13076: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8453,14 +8564,14 @@ configure: failed program was:
 | # include <unistd.h>
 | #endif
 | #include <CoCoA/io.H>
-configure:13026: result: no
-configure:13026: checking CoCoA/io.H presence
-configure:13026: /usr/bin/g++ -E  conftest.cpp
+configure:13076: result: no
+configure:13076: checking CoCoA/io.H presence
+configure:13076: /usr/bin/g++ -E  conftest.cpp
 conftest.cpp:49:10: fatal error: CoCoA/io.H: No such file or directory
  #include <CoCoA/io.H>
           ^~~~~~~~~~~~
 compilation terminated.
-configure:13026: $? = 1
+configure:13076: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8511,44 +8622,44 @@ configure: failed program was:
 | #define HAVE_LIBLAPACK 1
 | /* end confdefs.h.  */
 | #include <CoCoA/io.H>
-configure:13026: result: no
-configure:13026: checking for CoCoA/io.H
-configure:13026: result: no
-configure:13103: checking ao/ao.h usability
-configure:13103: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:13103: $? = 0
-configure:13103: result: yes
-configure:13103: checking ao/ao.h presence
-configure:13103: /usr/bin/g++ -E  conftest.cpp
-configure:13103: $? = 0
-configure:13103: result: yes
-configure:13103: checking for ao/ao.h
-configure:13103: result: yes
-configure:13113: checking for main in -lao
-configure:13132: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lao  -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:13132: $? = 0
-configure:13141: result: yes
-configure:13174: checking glpk.h usability
-configure:13174: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:13174: $? = 0
-configure:13174: result: yes
-configure:13174: checking glpk.h presence
-configure:13174: /usr/bin/g++ -E  conftest.cpp
-configure:13174: $? = 0
-configure:13174: result: yes
-configure:13174: checking for glpk.h
-configure:13174: result: yes
-configure:13184: checking for main in -lglpk
-configure:13203: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk  -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:13203: $? = 0
-configure:13212: result: yes
-configure:13245: checking samplerate.h usability
-configure:13245: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:13076: result: no
+configure:13076: checking for CoCoA/io.H
+configure:13076: result: no
+configure:13153: checking ao/ao.h usability
+configure:13153: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:13153: $? = 0
+configure:13153: result: yes
+configure:13153: checking ao/ao.h presence
+configure:13153: /usr/bin/g++ -E  conftest.cpp
+configure:13153: $? = 0
+configure:13153: result: yes
+configure:13153: checking for ao/ao.h
+configure:13153: result: yes
+configure:13163: checking for main in -lao
+configure:13182: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lao  -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:13182: $? = 0
+configure:13191: result: yes
+configure:13224: checking glpk.h usability
+configure:13224: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:13224: $? = 0
+configure:13224: result: yes
+configure:13224: checking glpk.h presence
+configure:13224: /usr/bin/g++ -E  conftest.cpp
+configure:13224: $? = 0
+configure:13224: result: yes
+configure:13224: checking for glpk.h
+configure:13224: result: yes
+configure:13234: checking for main in -lglpk
+configure:13253: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk  -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:13253: $? = 0
+configure:13262: result: yes
+configure:13295: checking samplerate.h usability
+configure:13295: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp:84:10: fatal error: samplerate.h: No such file or directory
  #include <samplerate.h>
           ^~~~~~~~~~~~~~
 compilation terminated.
-configure:13245: $? = 1
+configure:13295: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8634,14 +8745,14 @@ configure: failed program was:
 | # include <unistd.h>
 | #endif
 | #include <samplerate.h>
-configure:13245: result: no
-configure:13245: checking samplerate.h presence
-configure:13245: /usr/bin/g++ -E  conftest.cpp
+configure:13295: result: no
+configure:13295: checking samplerate.h presence
+configure:13295: /usr/bin/g++ -E  conftest.cpp
 conftest.cpp:51:10: fatal error: samplerate.h: No such file or directory
  #include <samplerate.h>
           ^~~~~~~~~~~~~~
 compilation terminated.
-configure:13245: $? = 1
+configure:13295: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8694,16 +8805,16 @@ configure: failed program was:
 | #define HAVE_LIBGLPK 1
 | /* end confdefs.h.  */
 | #include <samplerate.h>
-configure:13245: result: no
-configure:13245: checking for samplerate.h
-configure:13245: result: no
-configure:13316: checking curl/curl.h usability
-configure:13316: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:13295: result: no
+configure:13295: checking for samplerate.h
+configure:13295: result: no
+configure:13366: checking curl/curl.h usability
+configure:13366: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp:84:10: fatal error: curl/curl.h: No such file or directory
  #include <curl/curl.h>
           ^~~~~~~~~~~~~
 compilation terminated.
-configure:13316: $? = 1
+configure:13366: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8789,14 +8900,14 @@ configure: failed program was:
 | # include <unistd.h>
 | #endif
 | #include <curl/curl.h>
-configure:13316: result: no
-configure:13316: checking curl/curl.h presence
-configure:13316: /usr/bin/g++ -E  conftest.cpp
+configure:13366: result: no
+configure:13366: checking curl/curl.h presence
+configure:13366: /usr/bin/g++ -E  conftest.cpp
 conftest.cpp:51:10: fatal error: curl/curl.h: No such file or directory
  #include <curl/curl.h>
           ^~~~~~~~~~~~~
 compilation terminated.
-configure:13316: $? = 1
+configure:13366: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8849,15 +8960,15 @@ configure: failed program was:
 | #define HAVE_LIBGLPK 1
 | /* end confdefs.h.  */
 | #include <curl/curl.h>
-configure:13316: result: no
-configure:13316: checking for curl/curl.h
-configure:13316: result: no
-configure:13389: checking for tgetent
-configure:13389: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-/usr/bin/ld: /tmp/ccTfIeKM.o: in function `main':
+configure:13366: result: no
+configure:13366: checking for curl/curl.h
+configure:13366: result: no
+configure:13439: checking for tgetent
+configure:13439: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+/usr/bin/ld: /tmp/cc2QaoLj.o: in function `main':
 /home/parisse/giac-1.9.0/conftest.cpp:85: undefined reference to `tgetent'
 collect2: error: ld returned 1 exit status
-configure:13389: $? = 1
+configure:13439: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -8947,90 +9058,90 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:13389: result: no
-configure:13401: checking for tgetent in -lncurses
-configure:13426: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lncurses  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:13426: $? = 0
-configure:13435: result: yes
-configure:13494: checking readline/readline.h usability
-configure:13494: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:13494: $? = 0
-configure:13494: result: yes
-configure:13494: checking readline/readline.h presence
-configure:13494: /usr/bin/g++ -E  conftest.cpp
-configure:13494: $? = 0
-configure:13494: result: yes
-configure:13494: checking for readline/readline.h
-configure:13494: result: yes
-configure:13494: checking readline/history.h usability
-configure:13494: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:13494: $? = 0
-configure:13494: result: yes
-configure:13494: checking readline/history.h presence
-configure:13494: /usr/bin/g++ -E  conftest.cpp
-configure:13494: $? = 0
-configure:13494: result: yes
-configure:13494: checking for readline/history.h
-configure:13494: result: yes
-configure:13508: checking for version of libreadline
-configure:13531: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:13531: $? = 0
-configure:13536: result: yes
-configure:13544: checking for readline in -lreadline
-configure:13569: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lreadline  -lncurses -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:13569: $? = 0
-configure:13578: result: yes
-configure:14155: checking for X
-configure:14263: /usr/bin/g++ -E  conftest.cpp
-configure:14263: $? = 0
-configure:14294: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lX11 -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14294: $? = 0
-configure:14344: result: libraries , headers 
-configure:14443: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp   -lX11 >&5
-configure:14443: $? = 0
-configure:14541: checking for gethostbyname
-configure:14541: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14541: $? = 0
-configure:14541: result: yes
-configure:14638: checking for connect
-configure:14638: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14638: $? = 0
-configure:14638: result: yes
-configure:14687: checking for remove
-configure:14687: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14687: $? = 0
-configure:14687: result: yes
-configure:14736: checking for shmat
-configure:14736: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14736: $? = 0
-configure:14736: result: yes
-configure:14794: checking for IceConnectionNumber in -lICE
-configure:14819: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lICE  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14819: $? = 0
-configure:14828: result: yes
-configure:14838: checking for main in -lGL
-configure:14857: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lGL  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14857: $? = 0
-configure:14866: result: yes
-configure:14881: checking FL/Fl.H usability
-configure:14881: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:14881: $? = 0
-configure:14881: result: yes
-configure:14881: checking FL/Fl.H presence
-configure:14881: /usr/bin/g++ -E  conftest.cpp
-configure:14881: $? = 0
-configure:14881: result: yes
-configure:14881: checking for FL/Fl.H
-configure:14881: result: yes
-configure:14893: checking for main in -lX11
-configure:14912: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lX11  -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14912: $? = 0
-configure:14921: result: yes
-configure:14932: checking for main in -lXcursor
-configure:14951: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXcursor  -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:13439: result: no
+configure:13451: checking for tgetent in -lncurses
+configure:13476: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lncurses  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:13476: $? = 0
+configure:13485: result: yes
+configure:13544: checking readline/readline.h usability
+configure:13544: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:13544: $? = 0
+configure:13544: result: yes
+configure:13544: checking readline/readline.h presence
+configure:13544: /usr/bin/g++ -E  conftest.cpp
+configure:13544: $? = 0
+configure:13544: result: yes
+configure:13544: checking for readline/readline.h
+configure:13544: result: yes
+configure:13544: checking readline/history.h usability
+configure:13544: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:13544: $? = 0
+configure:13544: result: yes
+configure:13544: checking readline/history.h presence
+configure:13544: /usr/bin/g++ -E  conftest.cpp
+configure:13544: $? = 0
+configure:13544: result: yes
+configure:13544: checking for readline/history.h
+configure:13544: result: yes
+configure:13558: checking for version of libreadline
+configure:13581: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:13581: $? = 0
+configure:13586: result: yes
+configure:13594: checking for readline in -lreadline
+configure:13619: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lreadline  -lncurses -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:13619: $? = 0
+configure:13628: result: yes
+configure:14205: checking for X
+configure:14313: /usr/bin/g++ -E  conftest.cpp
+configure:14313: $? = 0
+configure:14344: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lX11 -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14344: $? = 0
+configure:14394: result: libraries , headers 
+configure:14493: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp   -lX11 >&5
+configure:14493: $? = 0
+configure:14591: checking for gethostbyname
+configure:14591: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14591: $? = 0
+configure:14591: result: yes
+configure:14688: checking for connect
+configure:14688: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14688: $? = 0
+configure:14688: result: yes
+configure:14737: checking for remove
+configure:14737: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14737: $? = 0
+configure:14737: result: yes
+configure:14786: checking for shmat
+configure:14786: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14786: $? = 0
+configure:14786: result: yes
+configure:14844: checking for IceConnectionNumber in -lICE
+configure:14869: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lICE  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14869: $? = 0
+configure:14878: result: yes
+configure:14888: checking for main in -lGL
+configure:14907: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lGL  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14907: $? = 0
+configure:14916: result: yes
+configure:14931: checking FL/Fl.H usability
+configure:14931: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:14931: $? = 0
+configure:14931: result: yes
+configure:14931: checking FL/Fl.H presence
+configure:14931: /usr/bin/g++ -E  conftest.cpp
+configure:14931: $? = 0
+configure:14931: result: yes
+configure:14931: checking for FL/Fl.H
+configure:14931: result: yes
+configure:14943: checking for main in -lX11
+configure:14962: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lX11  -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:14962: $? = 0
+configure:14971: result: yes
+configure:14982: checking for main in -lXcursor
+configure:15001: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXcursor  -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 /usr/bin/ld: cannot find -lXcursor
 collect2: error: ld returned 1 exit status
-configure:14951: $? = 1
+configure:15001: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -9097,64 +9208,64 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:14960: result: no
-configure:14971: checking for main in -lXfixes
-configure:14990: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXfixes  -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:14990: $? = 0
-configure:14999: result: yes
-configure:15010: checking for main in -lXinerama
-configure:15029: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXinerama  -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15029: $? = 0
-configure:15038: result: yes
-configure:15049: checking for main in -lfontconfig
-configure:15068: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfontconfig  -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15068: $? = 0
-configure:15077: result: yes
-configure:15088: checking for main in -lXft
-configure:15107: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXft  -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15107: $? = 0
-configure:15116: result: yes
-configure:15127: checking for main in -lXext
-configure:15146: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXext  -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15146: $? = 0
-configure:15155: result: yes
-configure:15166: checking for main in -lXrender
-configure:15185: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXrender  -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15185: $? = 0
-configure:15194: result: yes
-configure:15205: checking for main in -lfltk_gl
-configure:15224: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfltk_gl  -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15224: $? = 0
-configure:15233: result: yes
-configure:15244: checking for main in -lfltk
-configure:15263: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfltk  -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15263: $? = 0
-configure:15272: result: yes
-configure:15288: checking for main in -lz
-configure:15307: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lz  -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15307: $? = 0
-configure:15316: result: yes
-configure:15329: checking for png.h
-configure:15329: result: yes
-configure:15334: checking for main in -lpng
-configure:15353: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpng  -lz -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15353: $? = 0
-configure:15362: result: yes
-configure:15377: checking for main in -ljpeg
-configure:15396: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ljpeg  -lpng -lz -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15396: $? = 0
-configure:15405: result: yes
-configure:15416: checking for main in -lfltk_images
-configure:15435: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfltk_images  -ljpeg -lpng -lz -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15435: $? = 0
-configure:15444: result: yes
-configure:15463: checking dfu_lib.h usability
-configure:15463: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15010: result: no
+configure:15021: checking for main in -lXfixes
+configure:15040: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXfixes  -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15040: $? = 0
+configure:15049: result: yes
+configure:15060: checking for main in -lXinerama
+configure:15079: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXinerama  -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15079: $? = 0
+configure:15088: result: yes
+configure:15099: checking for main in -lfontconfig
+configure:15118: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfontconfig  -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15118: $? = 0
+configure:15127: result: yes
+configure:15138: checking for main in -lXft
+configure:15157: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXft  -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15157: $? = 0
+configure:15166: result: yes
+configure:15177: checking for main in -lXext
+configure:15196: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXext  -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15196: $? = 0
+configure:15205: result: yes
+configure:15216: checking for main in -lXrender
+configure:15235: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lXrender  -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15235: $? = 0
+configure:15244: result: yes
+configure:15255: checking for main in -lfltk_gl
+configure:15274: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfltk_gl  -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15274: $? = 0
+configure:15283: result: yes
+configure:15294: checking for main in -lfltk
+configure:15313: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfltk  -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15313: $? = 0
+configure:15322: result: yes
+configure:15338: checking for main in -lz
+configure:15357: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lz  -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15357: $? = 0
+configure:15366: result: yes
+configure:15379: checking for png.h
+configure:15379: result: yes
+configure:15384: checking for main in -lpng
+configure:15403: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpng  -lz -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15403: $? = 0
+configure:15412: result: yes
+configure:15427: checking for main in -ljpeg
+configure:15446: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ljpeg  -lpng -lz -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15446: $? = 0
+configure:15455: result: yes
+configure:15466: checking for main in -lfltk_images
+configure:15485: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lfltk_images  -ljpeg -lpng -lz -lfltk -lfltk_gl -lXrender -lXext -lXft -lfontconfig -lXinerama -lXfixes -lX11 -lGL -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15485: $? = 0
+configure:15494: result: yes
+configure:15513: checking dfu_lib.h usability
+configure:15513: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp:103:10: fatal error: dfu_lib.h: No such file or directory
  #include <dfu_lib.h>
           ^~~~~~~~~~~
 compilation terminated.
-configure:15463: $? = 1
+configure:15513: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -9259,14 +9370,14 @@ configure: failed program was:
 | # include <unistd.h>
 | #endif
 | #include <dfu_lib.h>
-configure:15463: result: no
-configure:15463: checking dfu_lib.h presence
-configure:15463: /usr/bin/g++ -E  conftest.cpp
+configure:15513: result: no
+configure:15513: checking dfu_lib.h presence
+configure:15513: /usr/bin/g++ -E  conftest.cpp
 conftest.cpp:70:10: fatal error: dfu_lib.h: No such file or directory
  #include <dfu_lib.h>
           ^~~~~~~~~~~
 compilation terminated.
-configure:15463: $? = 1
+configure:15513: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -9338,14 +9449,14 @@ configure: failed program was:
 | #define HAVE_LIBFLTK_IMAGES 1
 | /* end confdefs.h.  */
 | #include <dfu_lib.h>
-configure:15463: result: no
-configure:15463: checking for dfu_lib.h
-configure:15463: result: no
-configure:15473: checking for main in -lusb-1.0
-configure:15492: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lusb-1.0  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15513: result: no
+configure:15513: checking for dfu_lib.h
+configure:15513: result: no
+configure:15523: checking for main in -lusb-1.0
+configure:15542: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lusb-1.0  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 /usr/bin/ld: cannot find -lusb-1.0
 collect2: error: ld returned 1 exit status
-configure:15492: $? = 1
+configure:15542: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -9425,12 +9536,12 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:15501: result: no
-configure:15512: checking for dfu_main in -ldfu
-configure:15537: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldfu  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15551: result: no
+configure:15562: checking for dfu_main in -ldfu
+configure:15587: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -ldfu  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 /usr/bin/ld: cannot find -ldfu
 collect2: error: ld returned 1 exit status
-configure:15537: $? = 1
+configure:15587: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -9516,32 +9627,32 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:15546: result: no
-configure:15557: checking for main in -lcliquer
-configure:15576: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lcliquer  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15576: $? = 0
-configure:15585: result: yes
-configure:15596: checking for main in -lnauty
-configure:15615: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lnauty  -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15615: $? = 0
-configure:15624: result: yes
-configure:15637: checking nauty/naututil.h usability
-configure:15637: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15637: $? = 0
-configure:15637: result: yes
-configure:15637: checking nauty/naututil.h presence
-configure:15637: /usr/bin/g++ -E  conftest.cpp
-configure:15637: $? = 0
-configure:15637: result: yes
-configure:15637: checking for nauty/naututil.h
-configure:15637: result: yes
-configure:15649: checking vcl1/vectorclass.h usability
-configure:15649: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15596: result: no
+configure:15607: checking for main in -lcliquer
+configure:15626: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lcliquer  -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15626: $? = 0
+configure:15635: result: yes
+configure:15646: checking for main in -lnauty
+configure:15665: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lnauty  -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15665: $? = 0
+configure:15674: result: yes
+configure:15687: checking nauty/naututil.h usability
+configure:15687: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15687: $? = 0
+configure:15687: result: yes
+configure:15687: checking nauty/naututil.h presence
+configure:15687: /usr/bin/g++ -E  conftest.cpp
+configure:15687: $? = 0
+configure:15687: result: yes
+configure:15687: checking for nauty/naututil.h
+configure:15687: result: yes
+configure:15699: checking vcl1/vectorclass.h usability
+configure:15699: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp:106:10: fatal error: vcl1/vectorclass.h: No such file or directory
  #include <vcl1/vectorclass.h>
           ^~~~~~~~~~~~~~~~~~~~
 compilation terminated.
-configure:15649: $? = 1
+configure:15699: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -9649,14 +9760,14 @@ configure: failed program was:
 | # include <unistd.h>
 | #endif
 | #include <vcl1/vectorclass.h>
-configure:15649: result: no
-configure:15649: checking vcl1/vectorclass.h presence
-configure:15649: /usr/bin/g++ -E  conftest.cpp
+configure:15699: result: no
+configure:15699: checking vcl1/vectorclass.h presence
+configure:15699: /usr/bin/g++ -E  conftest.cpp
 conftest.cpp:73:10: fatal error: vcl1/vectorclass.h: No such file or directory
  #include <vcl1/vectorclass.h>
           ^~~~~~~~~~~~~~~~~~~~
 compilation terminated.
-configure:15649: $? = 1
+configure:15699: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -9731,205 +9842,205 @@ configure: failed program was:
 | #define HAVE_NAUTY_NAUTUTIL_H 1
 | /* end confdefs.h.  */
 | #include <vcl1/vectorclass.h>
-configure:15649: result: no
-configure:15649: checking for vcl1/vectorclass.h
-configure:15649: result: no
-configure:15660: checking for main in -lpthread
-configure:15679: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpthread  -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15679: $? = 0
-configure:15688: result: yes
-configure:15701: checking pthread.h usability
-configure:15701: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15701: $? = 0
-configure:15701: result: yes
-configure:15701: checking pthread.h presence
-configure:15701: /usr/bin/g++ -E  conftest.cpp
-configure:15701: $? = 0
-configure:15701: result: yes
-configure:15701: checking for pthread.h
-configure:15701: result: yes
-configure:15713: checking malloc.h usability
-configure:15713: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15713: $? = 0
-configure:15713: result: yes
-configure:15713: checking malloc.h presence
-configure:15713: /usr/bin/g++ -E  conftest.cpp
-configure:15713: $? = 0
-configure:15713: result: yes
-configure:15713: checking for malloc.h
-configure:15713: result: yes
-configure:15725: checking for sysconf
-configure:15725: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15725: $? = 0
-configure:15725: result: yes
-configure:15734: checking for clock_gettime in -lrt
-configure:15759: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt  -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15759: $? = 0
-configure:15768: result: yes
-configure:15780: checking unordered_map usability
-configure:15780: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15780: $? = 0
-configure:15780: result: yes
-configure:15780: checking unordered_map presence
-configure:15780: /usr/bin/g++ -E  conftest.cpp
-configure:15780: $? = 0
-configure:15780: result: yes
-configure:15780: checking for unordered_map
-configure:15780: result: yes
-configure:15788: checking ext/hash_map usability
-configure:15788: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15699: result: no
+configure:15699: checking for vcl1/vectorclass.h
+configure:15699: result: no
+configure:15710: checking for main in -lpthread
+configure:15729: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpthread  -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15729: $? = 0
+configure:15738: result: yes
+configure:15751: checking pthread.h usability
+configure:15751: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15751: $? = 0
+configure:15751: result: yes
+configure:15751: checking pthread.h presence
+configure:15751: /usr/bin/g++ -E  conftest.cpp
+configure:15751: $? = 0
+configure:15751: result: yes
+configure:15751: checking for pthread.h
+configure:15751: result: yes
+configure:15763: checking malloc.h usability
+configure:15763: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15763: $? = 0
+configure:15763: result: yes
+configure:15763: checking malloc.h presence
+configure:15763: /usr/bin/g++ -E  conftest.cpp
+configure:15763: $? = 0
+configure:15763: result: yes
+configure:15763: checking for malloc.h
+configure:15763: result: yes
+configure:15775: checking for sysconf
+configure:15775: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15775: $? = 0
+configure:15775: result: yes
+configure:15784: checking for clock_gettime in -lrt
+configure:15809: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt  -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15809: $? = 0
+configure:15818: result: yes
+configure:15830: checking unordered_map usability
+configure:15830: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15830: $? = 0
+configure:15830: result: yes
+configure:15830: checking unordered_map presence
+configure:15830: /usr/bin/g++ -E  conftest.cpp
+configure:15830: $? = 0
+configure:15830: result: yes
+configure:15830: checking for unordered_map
+configure:15830: result: yes
+configure:15838: checking ext/hash_map usability
+configure:15838: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 In file included from /usr/include/c++/8/ext/hash_map:60,
                  from conftest.cpp:112:
 /usr/include/c++/8/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
  #warning \
   ^~~~~~~
-configure:15788: $? = 0
-configure:15788: result: yes
-configure:15788: checking ext/hash_map presence
-configure:15788: /usr/bin/g++ -E  conftest.cpp
+configure:15838: $? = 0
+configure:15838: result: yes
+configure:15838: checking ext/hash_map presence
+configure:15838: /usr/bin/g++ -E  conftest.cpp
 In file included from /usr/include/c++/8/ext/hash_map:60,
                  from conftest.cpp:79:
 /usr/include/c++/8/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
  #warning \
   ^~~~~~~
-configure:15788: $? = 0
-configure:15788: result: yes
-configure:15788: checking for ext/hash_map
-configure:15788: result: yes
-configure:15796: checking tr1/unordered_map usability
-configure:15796: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15796: $? = 0
-configure:15796: result: yes
-configure:15796: checking tr1/unordered_map presence
-configure:15796: /usr/bin/g++ -E  conftest.cpp
-configure:15796: $? = 0
-configure:15796: result: yes
-configure:15796: checking for tr1/unordered_map
-configure:15796: result: yes
-configure:15804: checking hash_map usability
-configure:15804: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15838: $? = 0
+configure:15838: result: yes
+configure:15838: checking for ext/hash_map
+configure:15838: result: yes
+configure:15846: checking tr1/unordered_map usability
+configure:15846: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15846: $? = 0
+configure:15846: result: yes
+configure:15846: checking tr1/unordered_map presence
+configure:15846: /usr/bin/g++ -E  conftest.cpp
+configure:15846: $? = 0
+configure:15846: result: yes
+configure:15846: checking for tr1/unordered_map
+configure:15846: result: yes
+configure:15854: checking hash_map usability
+configure:15854: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 In file included from /usr/include/c++/8/backward/hash_map:60,
                  from conftest.cpp:114:
 /usr/include/c++/8/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
  #warning \
   ^~~~~~~
-configure:15804: $? = 0
-configure:15804: result: yes
-configure:15804: checking hash_map presence
-configure:15804: /usr/bin/g++ -E  conftest.cpp
+configure:15854: $? = 0
+configure:15854: result: yes
+configure:15854: checking hash_map presence
+configure:15854: /usr/bin/g++ -E  conftest.cpp
 In file included from /usr/include/c++/8/backward/hash_map:60,
                  from conftest.cpp:81:
 /usr/include/c++/8/backward/backward_warning.h:32:2: warning: #warning This file includes at least one deprecated or antiquated header which may be removed without further notice at a future date. Please use a non-deprecated interface with equivalent functionality instead. For a listing of replacement headers and interfaces, consult the file backward_warning.h. To disable this warning use -Wno-deprecated. [-Wcpp]
  #warning \
   ^~~~~~~
-configure:15804: $? = 0
-configure:15804: result: yes
-configure:15804: checking for hash_map
-configure:15804: result: yes
-configure:15814: checking pwd.h usability
-configure:15814: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15814: $? = 0
-configure:15814: result: yes
-configure:15814: checking pwd.h presence
-configure:15814: /usr/bin/g++ -E  conftest.cpp
-configure:15814: $? = 0
-configure:15814: result: yes
-configure:15814: checking for pwd.h
-configure:15814: result: yes
-configure:15830: checking locale.h usability
-configure:15830: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15830: $? = 0
-configure:15830: result: yes
-configure:15830: checking locale.h presence
-configure:15830: /usr/bin/g++ -E  conftest.cpp
-configure:15830: $? = 0
-configure:15830: result: yes
-configure:15830: checking for locale.h
-configure:15830: result: yes
-configure:15842: checking for unistd.h
-configure:15842: result: yes
-configure:15854: checking sys/time.h usability
-configure:15854: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 configure:15854: $? = 0
 configure:15854: result: yes
-configure:15854: checking sys/time.h presence
-configure:15854: /usr/bin/g++ -E  conftest.cpp
-configure:15854: $? = 0
+configure:15854: checking for hash_map
 configure:15854: result: yes
-configure:15854: checking for sys/time.h
-configure:15854: result: yes
-configure:15866: checking sys/times.h usability
-configure:15866: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15866: $? = 0
-configure:15866: result: yes
-configure:15866: checking sys/times.h presence
-configure:15866: /usr/bin/g++ -E  conftest.cpp
-configure:15866: $? = 0
-configure:15866: result: yes
-configure:15866: checking for sys/times.h
-configure:15866: result: yes
-configure:15882: checking sys/resource.h usability
-configure:15882: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15882: $? = 0
-configure:15882: result: yes
-configure:15882: checking sys/resource.h presence
-configure:15882: /usr/bin/g++ -E  conftest.cpp
-configure:15882: $? = 0
-configure:15882: result: yes
-configure:15882: checking for sys/resource.h
-configure:15882: result: yes
-configure:15898: checking for sys/types.h
-configure:15898: result: yes
-configure:15910: checking signal.h usability
-configure:15910: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:15910: $? = 0
-configure:15910: result: yes
-configure:15910: checking signal.h presence
-configure:15910: /usr/bin/g++ -E  conftest.cpp
-configure:15910: $? = 0
-configure:15910: result: yes
-configure:15910: checking for signal.h
-configure:15910: result: yes
-configure:15922: checking for getpid
-configure:15922: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15922: $? = 0
-configure:15922: result: yes
-configure:15937: checking for getcwd
-configure:15937: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15937: $? = 0
-configure:15937: result: yes
-configure:15952: checking for getpwuid
-configure:15952: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15952: $? = 0
-configure:15952: result: yes
-configure:15967: checking for system
-configure:15967: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:15967: $? = 0
-configure:15967: result: yes
-configure:15997: checking whether NLS is requested
-configure:16006: result: yes
-configure:16044: checking for msgfmt
+configure:15864: checking pwd.h usability
+configure:15864: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15864: $? = 0
+configure:15864: result: yes
+configure:15864: checking pwd.h presence
+configure:15864: /usr/bin/g++ -E  conftest.cpp
+configure:15864: $? = 0
+configure:15864: result: yes
+configure:15864: checking for pwd.h
+configure:15864: result: yes
+configure:15880: checking locale.h usability
+configure:15880: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15880: $? = 0
+configure:15880: result: yes
+configure:15880: checking locale.h presence
+configure:15880: /usr/bin/g++ -E  conftest.cpp
+configure:15880: $? = 0
+configure:15880: result: yes
+configure:15880: checking for locale.h
+configure:15880: result: yes
+configure:15892: checking for unistd.h
+configure:15892: result: yes
+configure:15904: checking sys/time.h usability
+configure:15904: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15904: $? = 0
+configure:15904: result: yes
+configure:15904: checking sys/time.h presence
+configure:15904: /usr/bin/g++ -E  conftest.cpp
+configure:15904: $? = 0
+configure:15904: result: yes
+configure:15904: checking for sys/time.h
+configure:15904: result: yes
+configure:15916: checking sys/times.h usability
+configure:15916: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15916: $? = 0
+configure:15916: result: yes
+configure:15916: checking sys/times.h presence
+configure:15916: /usr/bin/g++ -E  conftest.cpp
+configure:15916: $? = 0
+configure:15916: result: yes
+configure:15916: checking for sys/times.h
+configure:15916: result: yes
+configure:15932: checking sys/resource.h usability
+configure:15932: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15932: $? = 0
+configure:15932: result: yes
+configure:15932: checking sys/resource.h presence
+configure:15932: /usr/bin/g++ -E  conftest.cpp
+configure:15932: $? = 0
+configure:15932: result: yes
+configure:15932: checking for sys/resource.h
+configure:15932: result: yes
+configure:15948: checking for sys/types.h
+configure:15948: result: yes
+configure:15960: checking signal.h usability
+configure:15960: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:15960: $? = 0
+configure:15960: result: yes
+configure:15960: checking signal.h presence
+configure:15960: /usr/bin/g++ -E  conftest.cpp
+configure:15960: $? = 0
+configure:15960: result: yes
+configure:15960: checking for signal.h
+configure:15960: result: yes
+configure:15972: checking for getpid
+configure:15972: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15972: $? = 0
+configure:15972: result: yes
+configure:15987: checking for getcwd
+configure:15987: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:15987: $? = 0
+configure:15987: result: yes
+configure:16002: checking for getpwuid
+configure:16002: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:16002: $? = 0
+configure:16002: result: yes
+configure:16017: checking for system
+configure:16017: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:16017: $? = 0
+configure:16017: result: yes
+configure:16047: checking whether NLS is requested
+configure:16056: result: yes
+configure:16094: checking for msgfmt
 configure: trying /usr/bin/msgfmt...
 0 translated messages.
-configure:16076: result: /usr/bin/msgfmt
-configure:16085: checking for gmsgfmt
-configure:16116: result: /usr/bin/msgfmt
-configure:16156: checking for xgettext
+configure:16126: result: /usr/bin/msgfmt
+configure:16135: checking for gmsgfmt
+configure:16166: result: /usr/bin/msgfmt
+configure:16206: checking for xgettext
 configure: trying /usr/bin/xgettext...
 /usr/bin/xgettext: warning: file '/dev/null' extension '' is unknown; will try C
-configure:16188: result: /usr/bin/xgettext
-configure:16228: checking for msgmerge
+configure:16238: result: /usr/bin/xgettext
+configure:16278: checking for msgmerge
 configure: trying /usr/bin/msgmerge...
-configure:16259: result: /usr/bin/msgmerge
-configure:16295: checking whether we are using the GNU C Library 2 or newer
-configure:16322: result: yes
-configure:16331: checking for x86_64-linux-gnu-ranlib
-configure:16358: result: x86_64-linux-gnu-ranlib
-configure:16421: checking for strerror in -lcposix
-configure:16446: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lcposix  -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:16309: result: /usr/bin/msgmerge
+configure:16345: checking whether we are using the GNU C Library 2 or newer
+configure:16372: result: yes
+configure:16381: checking for x86_64-linux-gnu-ranlib
+configure:16408: result: x86_64-linux-gnu-ranlib
+configure:16471: checking for strerror in -lcposix
+configure:16496: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lcposix  -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 /usr/bin/ld: cannot find -lcposix
 collect2: error: ld returned 1 exit status
-configure:16446: $? = 1
+configure:16496: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -10039,28 +10150,28 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:16455: result: no
-configure:16463: checking for an ANSI C-conforming const
-configure:16529: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16529: $? = 0
-configure:16536: result: yes
-configure:16545: checking for signed
-configure:16561: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16561: $? = 0
-configure:16568: result: yes
-configure:16576: checking for inline
-configure:16592: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16592: $? = 0
-configure:16600: result: inline
-configure:16618: checking for off_t
-configure:16618: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16618: $? = 0
-configure:16618: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16505: result: no
+configure:16513: checking for an ANSI C-conforming const
+configure:16579: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16579: $? = 0
+configure:16586: result: yes
+configure:16595: checking for signed
+configure:16611: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16611: $? = 0
+configure:16618: result: yes
+configure:16626: checking for inline
+configure:16642: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16642: $? = 0
+configure:16650: result: inline
+configure:16668: checking for off_t
+configure:16668: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16668: $? = 0
+configure:16668: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp: In function 'int main()':
 conftest.cpp:130:19: error: expected primary-expression before ')' token
  if (sizeof ((off_t)))
                    ^
-configure:16618: $? = 1
+configure:16668: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -10196,16 +10307,16 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:16618: result: yes
-configure:16629: checking for size_t
-configure:16629: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16629: $? = 0
-configure:16629: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16668: result: yes
+configure:16679: checking for size_t
+configure:16679: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16679: $? = 0
+configure:16679: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp: In function 'int main()':
 conftest.cpp:130:20: error: expected primary-expression before ')' token
  if (sizeof ((size_t)))
                     ^
-configure:16629: $? = 1
+configure:16679: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -10341,99 +10452,99 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:16629: result: yes
-configure:16641: checking for long long
-configure:16658: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:16658: $? = 0
-configure:16666: result: yes
-configure:16675: checking for long double
-configure:16707: result: yes
-configure:16716: checking for wchar_t
-configure:16733: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16733: $? = 0
-configure:16740: result: yes
-configure:16749: checking for wint_t
-configure:16766: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16766: $? = 0
-configure:16773: result: yes
-configure:16782: checking for inttypes.h
-configure:16799: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16799: $? = 0
-configure:16806: result: yes
-configure:16817: checking for stdint.h
-configure:16834: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16834: $? = 0
-configure:16841: result: yes
-configure:16854: checking for intmax_t
-configure:16879: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:16879: $? = 0
-configure:16886: result: yes
-configure:16896: checking whether printf() supports POSIX/XSI format strings
-configure:16937: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:16937: $? = 0
-configure:16937: ./conftest
-configure:16937: $? = 0
-configure:16948: result: yes
-configure:16960: checking for working alloca.h
-configure:16977: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:16977: $? = 0
-configure:16985: result: yes
-configure:16993: checking for alloca
-configure:17030: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:17030: $? = 0
-configure:17038: result: yes
-configure:17150: checking for stdlib.h
-configure:17150: result: yes
-configure:17150: checking for unistd.h
-configure:17150: result: yes
-configure:17150: checking for sys/param.h
-configure:17150: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:17150: $? = 0
-configure:17150: result: yes
-configure:17170: checking for getpagesize
-configure:17170: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:17170: $? = 0
-configure:17170: result: yes
-configure:17179: checking for working mmap
-configure:17328: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:17328: $? = 0
-configure:17328: ./conftest
-configure:17328: $? = 0
-configure:17338: result: yes
-configure:17348: checking whether we are using the GNU C Library 2.1 or newer
-configure:17375: result: yes
-configure:17383: checking whether integer division by zero raises SIGFPE
-configure:17440: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:16679: result: yes
+configure:16691: checking for long long
+configure:16708: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:16708: $? = 0
+configure:16716: result: yes
+configure:16725: checking for long double
+configure:16757: result: yes
+configure:16766: checking for wchar_t
+configure:16783: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16783: $? = 0
+configure:16790: result: yes
+configure:16799: checking for wint_t
+configure:16816: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16816: $? = 0
+configure:16823: result: yes
+configure:16832: checking for inttypes.h
+configure:16849: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16849: $? = 0
+configure:16856: result: yes
+configure:16867: checking for stdint.h
+configure:16884: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16884: $? = 0
+configure:16891: result: yes
+configure:16904: checking for intmax_t
+configure:16929: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:16929: $? = 0
+configure:16936: result: yes
+configure:16946: checking whether printf() supports POSIX/XSI format strings
+configure:16987: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:16987: $? = 0
+configure:16987: ./conftest
+configure:16987: $? = 0
+configure:16998: result: yes
+configure:17010: checking for working alloca.h
+configure:17027: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:17027: $? = 0
+configure:17035: result: yes
+configure:17043: checking for alloca
+configure:17080: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:17080: $? = 0
+configure:17088: result: yes
+configure:17200: checking for stdlib.h
+configure:17200: result: yes
+configure:17200: checking for unistd.h
+configure:17200: result: yes
+configure:17200: checking for sys/param.h
+configure:17200: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:17200: $? = 0
+configure:17200: result: yes
+configure:17220: checking for getpagesize
+configure:17220: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:17220: $? = 0
+configure:17220: result: yes
+configure:17229: checking for working mmap
+configure:17378: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:17378: $? = 0
+configure:17378: ./conftest
+configure:17378: $? = 0
+configure:17388: result: yes
+configure:17398: checking whether we are using the GNU C Library 2.1 or newer
+configure:17425: result: yes
+configure:17433: checking whether integer division by zero raises SIGFPE
+configure:17490: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 conftest.cpp:127:5: warning: built-in function 'nan' declared as non-function [-Wbuiltin-declaration-mismatch]
  int nan;
      ^~~
-configure:17440: $? = 0
-configure:17440: ./conftest
-configure:17440: $? = 0
-configure:17451: result: yes
-configure:17464: checking for unsigned long long
-configure:17481: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:17481: $? = 0
-configure:17489: result: yes
-configure:17517: checking for inttypes.h
-configure:17535: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:17535: $? = 0
-configure:17543: result: yes
-configure:17556: checking whether the inttypes.h PRIxNN macros are broken
-configure:17577: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:17577: $? = 0
-configure:17585: result: no
-configure:17599: checking for stdint.h
-configure:17599: result: yes
-configure:17609: checking for SIZE_MAX
-configure:17682: result: yes
-configure:17697: checking for stdint.h
-configure:17697: result: yes
-configure:17709: checking for CFPreferencesCopyAppValue
-configure:17729: /usr/bin/g++ -o conftest -g -O2  -I/System/Library/Frameworks/CoreFoundation.framework/Headers  conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  -framework CoreFoundation >&5
+configure:17490: $? = 0
+configure:17490: ./conftest
+configure:17490: $? = 0
+configure:17501: result: yes
+configure:17514: checking for unsigned long long
+configure:17531: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:17531: $? = 0
+configure:17539: result: yes
+configure:17567: checking for inttypes.h
+configure:17585: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:17585: $? = 0
+configure:17593: result: yes
+configure:17606: checking whether the inttypes.h PRIxNN macros are broken
+configure:17627: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:17627: $? = 0
+configure:17635: result: no
+configure:17649: checking for stdint.h
+configure:17649: result: yes
+configure:17659: checking for SIZE_MAX
+configure:17732: result: yes
+configure:17747: checking for stdint.h
+configure:17747: result: yes
+configure:17759: checking for CFPreferencesCopyAppValue
+configure:17779: /usr/bin/g++ -o conftest -g -O2  -I/System/Library/Frameworks/CoreFoundation.framework/Headers  conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  -framework CoreFoundation >&5
 g++: error: CoreFoundation: No such file or directory
 g++: error: unrecognized command line option '-framework'
-configure:17729: $? = 1
+configure:17779: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -10557,12 +10668,12 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:17739: result: no
-configure:17746: checking for CFLocaleCopyCurrent
-configure:17766: /usr/bin/g++ -o conftest -g -O2  -I/System/Library/Frameworks/CoreFoundation.framework/Headers  conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  -framework CoreFoundation >&5
+configure:17789: result: no
+configure:17796: checking for CFLocaleCopyCurrent
+configure:17816: /usr/bin/g++ -o conftest -g -O2  -I/System/Library/Frameworks/CoreFoundation.framework/Headers  conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  -framework CoreFoundation >&5
 g++: error: CoreFoundation: No such file or directory
 g++: error: unrecognized command line option '-framework'
-configure:17766: $? = 1
+configure:17816: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -10686,22 +10797,22 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:17776: result: no
-configure:17829: checking for ld used by GCC
-configure:17893: result: /usr/bin/ld -m elf_x86_64
-configure:17900: checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld
-configure:17913: result: yes
-configure:17920: checking for shared library run path origin
-configure:17933: result: done
-configure:18339: checking for ptrdiff_t
-configure:18339: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18339: $? = 0
-configure:18339: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:17826: result: no
+configure:17879: checking for ld used by GCC
+configure:17943: result: /usr/bin/ld -m elf_x86_64
+configure:17950: checking if the linker (/usr/bin/ld -m elf_x86_64) is GNU ld
+configure:17963: result: yes
+configure:17970: checking for shared library run path origin
+configure:17983: result: done
+configure:18389: checking for ptrdiff_t
+configure:18389: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18389: $? = 0
+configure:18389: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp: In function 'int main()':
 conftest.cpp:151:23: error: expected primary-expression before ')' token
  if (sizeof ((ptrdiff_t)))
                        ^
-configure:18339: $? = 1
+configure:18389: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -10858,166 +10969,166 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:18339: result: yes
-configure:18353: checking argz.h usability
-configure:18353: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking argz.h presence
-configure:18353: /usr/bin/g++ -E  conftest.cpp
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking for argz.h
-configure:18353: result: yes
-configure:18353: checking limits.h usability
-configure:18353: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking limits.h presence
-configure:18353: /usr/bin/g++ -E  conftest.cpp
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking for limits.h
-configure:18353: result: yes
-configure:18353: checking for locale.h
-configure:18353: result: yes
-configure:18353: checking nl_types.h usability
-configure:18353: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking nl_types.h presence
-configure:18353: /usr/bin/g++ -E  conftest.cpp
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking for nl_types.h
-configure:18353: result: yes
-configure:18353: checking for malloc.h
-configure:18353: result: yes
-configure:18353: checking stddef.h usability
-configure:18353: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking stddef.h presence
-configure:18353: /usr/bin/g++ -E  conftest.cpp
-configure:18353: $? = 0
-configure:18353: result: yes
-configure:18353: checking for stddef.h
-configure:18353: result: yes
-configure:18353: checking for stdlib.h
-configure:18353: result: yes
-configure:18353: checking for string.h
-configure:18353: result: yes
-configure:18353: checking for unistd.h
-configure:18353: result: yes
-configure:18353: checking for sys/param.h
-configure:18353: result: yes
-configure:18369: checking for asprintf
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for fwprintf
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for getcwd
-configure:18369: result: yes
-configure:18369: checking for getegid
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for geteuid
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for getgid
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for getuid
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for mempcpy
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18389: result: yes
+configure:18403: checking argz.h usability
+configure:18403: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking argz.h presence
+configure:18403: /usr/bin/g++ -E  conftest.cpp
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking for argz.h
+configure:18403: result: yes
+configure:18403: checking limits.h usability
+configure:18403: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking limits.h presence
+configure:18403: /usr/bin/g++ -E  conftest.cpp
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking for limits.h
+configure:18403: result: yes
+configure:18403: checking for locale.h
+configure:18403: result: yes
+configure:18403: checking nl_types.h usability
+configure:18403: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking nl_types.h presence
+configure:18403: /usr/bin/g++ -E  conftest.cpp
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking for nl_types.h
+configure:18403: result: yes
+configure:18403: checking for malloc.h
+configure:18403: result: yes
+configure:18403: checking stddef.h usability
+configure:18403: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking stddef.h presence
+configure:18403: /usr/bin/g++ -E  conftest.cpp
+configure:18403: $? = 0
+configure:18403: result: yes
+configure:18403: checking for stddef.h
+configure:18403: result: yes
+configure:18403: checking for stdlib.h
+configure:18403: result: yes
+configure:18403: checking for string.h
+configure:18403: result: yes
+configure:18403: checking for unistd.h
+configure:18403: result: yes
+configure:18403: checking for sys/param.h
+configure:18403: result: yes
+configure:18419: checking for asprintf
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for fwprintf
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for getcwd
+configure:18419: result: yes
+configure:18419: checking for getegid
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for geteuid
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for getgid
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for getuid
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for mempcpy
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 conftest.cpp:155:6: warning: declaration of 'char mempcpy()' conflicts with built-in declaration 'void* mempcpy(void*, const void*, long unsigned int)' [-Wbuiltin-declaration-mismatch]
  char mempcpy ();
       ^~~~~~~
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for munmap
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for putenv
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for setenv
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for setlocale
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for snprintf
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for munmap
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for putenv
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for setenv
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for setlocale
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for snprintf
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 conftest.cpp:160:6: warning: declaration of 'char snprintf()' conflicts with built-in declaration 'int snprintf(char*, long unsigned int, const char*, ...)' [-Wbuiltin-declaration-mismatch]
  char snprintf ();
       ^~~~~~~~
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for stpcpy
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for stpcpy
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 conftest.cpp:161:6: warning: declaration of 'char stpcpy()' conflicts with built-in declaration 'char* stpcpy(char*, const char*)' [-Wbuiltin-declaration-mismatch]
  char stpcpy ();
       ^~~~~~
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for strcasecmp
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for strcasecmp
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 conftest.cpp:162:6: warning: declaration of 'char strcasecmp()' conflicts with built-in declaration 'int strcasecmp(const char*, const char*)' [-Wbuiltin-declaration-mismatch]
  char strcasecmp ();
       ^~~~~~~~~~
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for strdup
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for strdup
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
 conftest.cpp:163:6: warning: declaration of 'char strdup()' conflicts with built-in declaration 'char* strdup(const char*)' [-Wbuiltin-declaration-mismatch]
  char strdup ();
       ^~~~~~
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for strtoul
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for tsearch
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for wcslen
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for __argz_count
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for __argz_stringify
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for __argz_next
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18369: checking for __fsetlocking
-configure:18369: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18369: $? = 0
-configure:18369: result: yes
-configure:18380: checking whether _snprintf is declared
-configure:18400: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for strtoul
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for tsearch
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for wcslen
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for __argz_count
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for __argz_stringify
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for __argz_next
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18419: checking for __fsetlocking
+configure:18419: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18419: $? = 0
+configure:18419: result: yes
+configure:18430: checking whether _snprintf is declared
+configure:18450: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp: In function 'int main()':
 conftest.cpp:154:22: error: '_snprintf' was not declared in this scope
    char *p = (char *) _snprintf;
@@ -11026,7 +11137,7 @@ conftest.cpp:154:22: note: suggested alternative: 'vsnprintf'
    char *p = (char *) _snprintf;
                       ^~~~~~~~~
                       vsnprintf
-configure:18400: $? = 1
+configure:18450: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -11187,9 +11298,9 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:18407: result: no
-configure:18421: checking whether _snwprintf is declared
-configure:18441: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18457: result: no
+configure:18471: checking whether _snwprintf is declared
+configure:18491: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
 conftest.cpp: In function 'int main()':
 conftest.cpp:155:22: error: '_snwprintf' was not declared in this scope
    char *p = (char *) _snwprintf;
@@ -11198,7 +11309,7 @@ conftest.cpp:155:22: note: suggested alternative: 'vsnprintf'
    char *p = (char *) _snwprintf;
                       ^~~~~~~~~~
                       vsnprintf
-configure:18441: $? = 1
+configure:18491: $? = 1
 configure: failed program was:
 | /* confdefs.h */
 | #define PACKAGE_NAME "giac"
@@ -11360,82 +11471,82 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:18448: result: no
-configure:18463: checking whether feof_unlocked is declared
-configure:18483: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18483: $? = 0
-configure:18490: result: yes
-configure:18504: checking whether fgets_unlocked is declared
-configure:18524: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18524: $? = 0
-configure:18531: result: yes
-configure:18545: checking whether getc_unlocked is declared
-configure:18565: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18565: $? = 0
-configure:18572: result: yes
-configure:18640: checking for iconv
-configure:18662: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18662: $? = 0
-configure:18694: result: yes
-configure:18715: checking for iconv declaration
-configure:18744: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:18744: $? = 0
-configure:18755: result: 
+configure:18498: result: no
+configure:18513: checking whether feof_unlocked is declared
+configure:18533: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18533: $? = 0
+configure:18540: result: yes
+configure:18554: checking whether fgets_unlocked is declared
+configure:18574: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18574: $? = 0
+configure:18581: result: yes
+configure:18595: checking whether getc_unlocked is declared
+configure:18615: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18615: $? = 0
+configure:18622: result: yes
+configure:18690: checking for iconv
+configure:18712: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18712: $? = 0
+configure:18744: result: yes
+configure:18765: checking for iconv declaration
+configure:18794: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:18794: $? = 0
+configure:18805: result: 
          extern size_t iconv (iconv_t cd, char * *inbuf, size_t *inbytesleft, char * *outbuf, size_t *outbytesleft);
-configure:18766: checking for nl_langinfo and CODESET
-configure:18782: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18782: $? = 0
-configure:18791: result: yes
-configure:18801: checking for LC_MESSAGES
-configure:18817: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:18817: $? = 0
-configure:18825: result: yes
-configure:18843: checking for bison
-configure:18859: found /usr/bin/bison
-configure:18870: result: bison
-configure:18884: checking version of bison
-configure:18893: result: 3.3.2, ok
-configure:18915: checking for CFPreferencesCopyAppValue
-configure:18945: result: no
-configure:18952: checking for CFLocaleCopyCurrent
-configure:18982: result: no
-configure:18997: checking whether NLS is requested
-configure:19006: result: yes
-configure:19022: checking whether included gettext is requested
+configure:18816: checking for nl_langinfo and CODESET
+configure:18832: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18832: $? = 0
+configure:18841: result: yes
+configure:18851: checking for LC_MESSAGES
+configure:18867: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:18867: $? = 0
+configure:18875: result: yes
+configure:18893: checking for bison
+configure:18909: found /usr/bin/bison
+configure:18920: result: bison
+configure:18934: checking version of bison
+configure:18943: result: 3.3.2, ok
+configure:18965: checking for CFPreferencesCopyAppValue
+configure:18995: result: no
+configure:19002: checking for CFLocaleCopyCurrent
 configure:19032: result: no
-configure:19043: checking for GNU gettext in libc
-configure:19062: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
-configure:19062: $? = 0
-configure:19070: result: yes
-configure:19573: checking whether to use NLS
-configure:19575: result: yes
-configure:19578: checking where the gettext function comes from
-configure:19589: result: libc
-configure:19677: checking for egrep
-configure:19739: result: /usr/bin/grep -E
-configure:19747: checking for latex
-configure:19781: result: no
-configure:19791: checking for makeindex
-configure:19809: found /usr/bin/makeindex
-configure:19822: result: /usr/bin/makeindex
-configure:19836: checking for pdflatex
-configure:19870: result: no
-configure:19880: checking for dvips
-configure:19898: found /usr/bin/dvips
-configure:19911: result: /usr/bin/dvips
-configure:19933: checking sstream usability
-configure:19933: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
-configure:19933: $? = 0
-configure:19933: result: yes
-configure:19933: checking sstream presence
-configure:19933: /usr/bin/g++ -E  conftest.cpp
-configure:19933: $? = 0
-configure:19933: result: yes
-configure:19933: checking for sstream
-configure:19933: result: yes
-configure:20091: checking that generated files are newer than configure
-configure:20097: result: done
-configure:20185: creating ./config.status
+configure:19047: checking whether NLS is requested
+configure:19056: result: yes
+configure:19072: checking whether included gettext is requested
+configure:19082: result: no
+configure:19093: checking for GNU gettext in libc
+configure:19112: /usr/bin/g++ -o conftest -g -O2   conftest.cpp -lrt -lpthread -lnauty -lcliquer -lglpk -lao -llapack -lblas -ldl -lpng16 -lm -lecm -lmpfi -lmpfr -lgmp  >&5
+configure:19112: $? = 0
+configure:19120: result: yes
+configure:19623: checking whether to use NLS
+configure:19625: result: yes
+configure:19628: checking where the gettext function comes from
+configure:19639: result: libc
+configure:19727: checking for egrep
+configure:19789: result: /usr/bin/grep -E
+configure:19797: checking for latex
+configure:19831: result: no
+configure:19841: checking for makeindex
+configure:19859: found /usr/bin/makeindex
+configure:19872: result: /usr/bin/makeindex
+configure:19886: checking for pdflatex
+configure:19920: result: no
+configure:19930: checking for dvips
+configure:19948: found /usr/bin/dvips
+configure:19961: result: /usr/bin/dvips
+configure:19983: checking sstream usability
+configure:19983: /usr/bin/g++ -c -g -O2  conftest.cpp >&5
+configure:19983: $? = 0
+configure:19983: result: yes
+configure:19983: checking sstream presence
+configure:19983: /usr/bin/g++ -E  conftest.cpp
+configure:19983: $? = 0
+configure:19983: result: yes
+configure:19983: checking for sstream
+configure:19983: result: yes
+configure:20141: checking that generated files are newer than configure
+configure:20147: result: done
+configure:20235: creating ./config.status
 
 ## ---------------------- ##
 ## Running config.status. ##
@@ -11618,6 +11729,7 @@ ac_cv_header_malloc_h=yes
 ac_cv_header_memory_h=yes
 ac_cv_header_mpfi_h=yes
 ac_cv_header_mpfr_h=yes
+ac_cv_header_mps_mps_h=no
 ac_cv_header_nauty_naututil_h=yes
 ac_cv_header_nl_types_h=yes
 ac_cv_header_pari_pari_h=yes
