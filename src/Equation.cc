@@ -777,7 +777,7 @@ namespace xcas {
     int llp=int(fl_width("("));
     int lrp=int(fl_width(")"));
     int lc=int(fl_width(","));
-    string us=u.ptr()->s;
+    string us=u.ptr()->s; if (us=="%") us=" mod ";
     fl_font(cst_greek_translate(us),a.fontsize);
     int ls=int(fl_width(us.c_str()));
     fl_font(FL_HELVETICA,a.fontsize);

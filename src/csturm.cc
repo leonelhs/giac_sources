@@ -40,6 +40,7 @@ using namespace std;
 #include "modfactor.h"
 #include"giacintl.h"
 #include <fstream>
+#define MPFI_CERT
 #ifdef HAVE_LIBMPS
 #include <mps/mps.h>
 #include <stdlib.h>
@@ -1150,26 +1151,59 @@ namespace giac {
     return true;
   }
 
+#ifdef HAVE_LIBMPFR
+  void round1downup(const gen & a,const gen & r,gen & ad,gen & au){
+    if (a.type==_REAL && r.type==_REAL){
+      int n=mpfr_get_prec(a._REALptr->inf);
+      ad=real_object(a._REALptr->inf);
+      au=real_object(a._REALptr->inf);
+      mpfr_set_prec(ad._REALptr->inf,n+1);
+      mpfr_set_prec(au._REALptr->inf,n+1);
+      mpfr_set(ad._REALptr->inf,a._REALptr->inf,MPFR_RNDD);
+      mpfr_sub(ad._REALptr->inf,ad._REALptr->inf,r._REALptr->inf,MPFR_RNDD);
+      mpfr_set(au._REALptr->inf,a._REALptr->inf,MPFR_RNDU);
+      mpfr_add(au._REALptr->inf,au._REALptr->inf,r._REALptr->inf,MPFR_RNDU);
+    }
+    else {
+      ad=a-r;
+      au=a+r;
+    }
+  }
+#endif
+
   // find roots of polynomial P at precision eps using proot or 
   // complex Sturm sequences
   // P must have numeric coefficients, in Q[i] and should be squarefree
   vecteur complex_roots(const modpoly & P,const gen & a0,const gen & b0,const gen & a1,const gen & b1,bool complexe,double eps,bool use_proot){
     if (P.empty())
       return P;
+    bool mps=eps<0;
     eps=absdouble(eps);
     if (eps>1e-6)
       eps=1e-6;
     {
       vecteur v,res,vradius;
-      if (aberth(P,v,vradius,ABERTH_NMAX,eps,true/* isolate*/,false/* exact*/,context0)){
+      bool b;
+      if (mps)
+        b=mps_solve(P,v,vradius,-eps,1/* isolate*/,true/*secular algo*/,context0)==0;
+      else
+        b=aberth(P,v,vradius,ABERTH_NMAX,eps,3/* isolate*/,false/* exact*/,context0);      
+      if (b){
         for (unsigned j=0;j<v.size();++j){
           gen a,b;
           reim(v[j],a,b,context0);
           if (is_greater(a,a0,context0) && is_greater(a1,a,context0) && is_greater(b,b0,context0) && is_greater(b1,b,context0)){
             if (is_strictly_positive(-vradius[j],context0))
               res.push_back(makevecteur(v[j],1));
-            else
-              res.push_back(makevecteur(eval(change_subtype(makevecteur(a-vradius[j],a+vradius[j]),_INTERVAL__VECT),1,context0)+cst_i*eval(change_subtype(makevecteur(b-vradius[j],b+vradius[j]),_INTERVAL__VECT),1,context0),1));
+            else {
+              gen ad,au;
+              round1downup(a,vradius[j],ad,au);
+              a=eval(change_subtype(makevecteur(ad,au),_INTERVAL__VECT),1,context0);
+              gen bd,bu;
+              round1downup(b,vradius[j],bd,bu);
+              b=eval(change_subtype(makevecteur(bd,bu),_INTERVAL__VECT),1,context0);
+              res.push_back(makevecteur(gen(a,b),1));
+            }
           }
         }
         return res;
@@ -1187,7 +1221,7 @@ namespace giac {
 	double cureps=std::pow(2.0,-n);
 	if (debug_infolevel)
 	  CERR << CLOCK() << " proot at precision " << cureps << '\n';
-	vecteur v=proot(P,cureps,n);
+	vecteur v=proot(P,cureps,n,context0);
 	if (debug_infolevel)
 	  CERR << CLOCK() << " proot end at precision " << cureps << '\n';
 	vecteur vradius(v.size());
@@ -1319,12 +1353,8 @@ namespace giac {
     double eps=prec._DOUBLE_val;
     if (eps>=1.0)
       eps=std::pow(10.,-eps);
-    if (eps<=0)
-      eps=epsilon(contextptr);
-    if (eps<=0)
-      eps=1e-12;
     if (v[0].type==_VECT && has_num_coeff(v[0])){
-      v=proot(*v[0]._VECTptr,eps);
+      v=proot(*v[0]._VECTptr,eps,contextptr);
       vecteur w;
       for (unsigned i=0;i<v.size();++i){
 	if (is_zero(im(v[i],contextptr)))
@@ -2050,6 +2080,8 @@ namespace giac {
   // isolate and find real roots of P at precision eps between a and b
   // returns a list of intervals or of rationals
   bool vas(const modpoly & P,const gen & a0,const gen &b0,double eps,vecteur & vasres,bool with_mult,GIAC_CONTEXT){
+    if (eps<=0)
+      eps=1e-12;
     if (P.size()<=3){
       if (P.size()<2)
 	return true;
@@ -2510,172 +2542,218 @@ numerical root localization
     }
   }
 
-  bool aberth_singleprec(const vfdbl & P0,int N,double eps,vfdbl & R,int cluster_start,int cluster_afterend,vector<short int> & zi_done,int afteriter,GIAC_CONTEXT){
-    int deg=P0.size()-1;
-    bool doing_cluster=cluster_start>0 || cluster_afterend<deg;
-    vfdbl P(P0);
-    // init R if not already done
-    fdbl dr(0);
-    fdbl l(1);
-    if (R.size()!=deg){
-      dr=-find_shift(P);
-      P=shift(P,dr);
-      l=1; // find_scale(P);
-      rescale(P,l);
-      double res=init_R(P,R);
-      if (res==0 || isinf(res)){
-        R.clear();
-        return false;
-      }
+  void clear_zi_done(vector<short int> & zi_done){
+    for (int i=0;i<zi_done.size();++i){
+      if (zi_done[i]!=5)
+        zi_done[i]=0;
     }
-    vfdbl Prev(P);
-    reverse(Prev.begin(),Prev.end());
-    vfdbl newR(deg);
-    int ok=0; double delta;
-    for (int k=0;k<N;++k){
-      delta=0;
-      if (doing_cluster){
-        int K=cluster_start;
-        for (;K<cluster_afterend;++K){
-          if (!zi_done[K])
-            break;
-        }
-        if (K==cluster_afterend)
-          ok=1;
+  }
+
+bool aberth_singleprec(const vfdbl & P0,int N,double eps,vfdbl & R,int cluster_start,int cluster_afterend,vector<short int> & zi_done,int afteriter,GIAC_CONTEXT){
+  int deg=P0.size()-1;
+  bool doing_cluster=cluster_start>0 || cluster_afterend<deg;
+  vfdbl P(P0);
+  // init R if not already done
+  fdbl dr(0);
+  fdbl l(1);
+  if (R.size()!=deg){
+    dr=-find_shift(P);
+    P=shift(P,dr);
+    l=1;//find_scale(P);
+    rescale(P,l);
+    double res=init_R(P,R);
+    if (res==0 || isinf(res)){
+      R.clear();
+      return false;
+    }
+  }
+  vfdbl Prev(P);
+  reverse(Prev.begin(),Prev.end());
+  vfdbl newR(deg);
+  int ok=0; double delta;
+  for (int k=0;k<N;++k){
+    delta=0;
+    if (doing_cluster){
+      int K=cluster_start;
+      for (;K<cluster_afterend;++K){
+        if (!zi_done[K])
+          break;
       }
-      for (int i=cluster_start;i<cluster_afterend;++i){
-        if (!ok && zi_done[i]){ // always do the last iteration for accuracy
-          newR[i]=R[i];
-          continue;
-        }
-        fdbl & zi=R[i];
-        fdbl d,d1;
-        if (absdbl(zi)>1){
-          fdbl gamma(inv(zi));
-          horner2(Prev,gamma,d,d1);
-          if (!is_exactly_zero(d)){
-            d=gamma*(fdbl(deg)-gamma*d1/d);
-            if (is_exactly_zero(d)){
-              translate_shift(R,l,dr);
-              return false;
-            }
-            d=inv(d);
-          }
-        }
-        else {
-          horner2(P,zi,d,d1);
-          if (is_exactly_zero(d1)){
-            translate_shift(R,l,dr);
-            return false;
-          }
-          d=d/d1;
-        }
-        fdbl p(0); bool binv=true;
-        for (int j=0;j<deg;++j){
-          if (j==i) continue;
-          fdbl dz=(zi-R[j]);
-          if (is_exactly_zero(dz)){
-            binv=false;
-            break; // return false;
-          }
-          p += inv(dz);
-        }
-        double dd=absdbl(d),pp=absdbl(p);
-        double abszi=absdbl(zi);
-        if (debug_infolevel>2)
-          *logptr(contextptr) << "cluster? i=" << i << ", delta=" << dd << ", cluster_step=" << cluster_step << ", p=" << pp << ", d*p=" << dd*pp << " " << cluster_dp << "\n";
-        if (!ok && k>N/2 && !doing_cluster && dd<=cluster_step*abszi && dd*pp>=cluster_dp){
-          // if (ok) continue;
-          // cluster of roots, find all roots in this cluster
-          int cend=i+1;
-          fdbl sumR=zi;
-          for (int k=cend;k<deg;++k){
-            if (abs(zi-R[k])<deg/pp){
-              swap(R[cend],R[k]);
-              swap(zi_done[cend],zi_done[k]);
-              sumR+=R[cend];
-              ++cend;
-            }
-          }
-          if (cend-i>1){
-            // cluster is from i to cend-1 included
-            fdbl z=sumR/fdbl(cend-i); // center of gravity of cluster
-            // shift P and reverse (roots become inverse of roots)
-            vfdbl Pcluster(shift(P,z)),Rcluster(deg),initR(deg);
-            reverse(Pcluster.begin(),Pcluster.end());
-            fdbl D=fdbl(cend-i)/d; // d=sum P/P' = 1/sum 1/(z-zj) = approx (root-z)/multiplicity of root
-            int count=deg-1;
-            for (int k=0;k<deg;++k){
-              if (k>=i && k<cend){
-                Rcluster[k]=initR[count];
-                --count;
-                //dbl a(0.0,0.7+(k-i)*2*M_PI/(cend-i));
-                //Rcluster[k]=D*exp(a);
-              }
-              else
-                Rcluster[k]=inv(R[k]-z);
-            }
-            vector<short int> old(zi_done);        
-            if (debug_infolevel)
-              *logptr(contextptr) << "aberth single cluster=" << i << "," << cend << "\n";
-            // recursive call of aberth
-            bool b=aberth_singleprec(Pcluster,N,eps,Rcluster,i,cend,zi_done,2 /* afteriter */,contextptr);
-            for (int k=i;k<cend;++k){
-              R[k]=l*(inv(Rcluster[k])+z)+dr;
-            }
-            if (b)
-              continue;
-            translate_shift(R,l,dr);
-            return false;
-          }
-        }
-        double absdz=abszi==0?absdbl(d):absdbl(d)/abszi;
-        if (binv)
-          d=d/(fdbl(1)-d*p);
-        else
-          d=d/(fdbl(1-rand()/2.0/RAND_MAX));
-        if (absdz<eps/deg){
-          if (debug_infolevel>1 && !zi_done[i])
-            *logptr(contextptr) << "New root found " << zi-d << "\n";
-          zi_done[i]=1;
-        }
-        delta += absdz;
-        newR[i]=zi-d;
-        R[i]=newR[i]; // comment to avoid immediate update
-      }
-      newR.swap(R);
-      int count=0;
-      for (int k=0;k<deg;k++){
-        if (zi_done[k])
-          ++count;
-      }
-      if (debug_infolevel>0){
-        *logptr(contextptr) << "Aberth single prec iter " << k <<  " found=" << count << " cluster_search_start=" << cluster_start << ".." << cluster_afterend << " delta=" << delta << " time " << clock()*1e-6 << "\n";
-        if (debug_infolevel>2){
-          *logptr(contextptr) << "Current approx roots " << R << "\n";
-        }
-      }
-      if (doing_cluster){
-        if (ok)
-          return true;
+      if (K==cluster_afterend)
+        ++ok;
+    }
+    for (int i=cluster_start;i<cluster_afterend;++i){
+      if (!ok && zi_done[i]){ // always do the last iteration for accuracy
+        newR[i]=R[i];
         continue;
       }
-      if (//count==deg
-          delta<=eps*(ok?deg:deg-count) || count==deg
-          )
-        ++ok;
+      fdbl & zi=R[i];
+      fdbl d,d1;
+      if (absdbl(zi)>1){
+        fdbl gamma(inv(zi));
+        horner2(Prev,gamma,d,d1);
+        if (!is_exactly_zero(d)){
+          d=gamma*(fdbl(deg)-gamma*d1/d);
+          if (is_exactly_zero(d)){
+            translate_shift(R,l,dr);
+            if (debug_infolevel)
+              *logptr(contextptr) << "Aberth_single precision |z|>1 trying to invert 0\n";
+            return false;
+          }
+          d=inv(d);
+        }
+      }
+      else {
+        horner2(P,zi,d,d1);
+        if (is_exactly_zero(d1)){
+          translate_shift(R,l,dr);
+          if (debug_infolevel)
+            *logptr(contextptr) << "Aberth_single precision |z|<=1 trying to invert 0\n";
+          return false;
+        }
+        d=d/d1;
+      }
+      fdbl p(0); bool binv=true;
+      for (int j=0;j<deg;++j){
+	if (j==i) continue;
+        fdbl dz=(zi-R[j]);
+        if (is_exactly_zero(dz)){
+          binv=false;
+          break; // return false;
+        }
+	p += inv(dz);
+      }
+      double dd=absdbl(d),pp=absdbl(p);
+      double abszi=absdbl(zi);
+      if (debug_infolevel>2)
+        *logptr(contextptr) << "cluster? i=" << i << ", delta=" << dd << ", cluster_step=" << cluster_step << ", p=" << pp << ", d*p=" << dd*pp << " " << cluster_dp << "\n";
+      if (!ok
+          && k>8
+          && !doing_cluster && dd<=cluster_step*abszi && dd*pp>=cluster_dp){
+        // if (ok) continue;
+        // cluster of roots, find all roots in this cluster
+        int cend=i+1;
+        fdbl sumR=zi;
+        for (int k=cend;k<deg;++k){
+          if (abs(zi-R[k])<2*deg/pp){
+            swap(R[cend],R[k]);
+            swap(zi_done[cend],zi_done[k]);
+            sumR+=R[cend];
+            ++cend;
+          }
+        }
+        if (cend-i>1){
+          int Nc=cend-i;
+          // cluster is from i to cend-1 included
+          fdbl z=sumR/fdbl(Nc); // center of gravity of cluster
+          vfdbl Pdiff;
+          --Nc;
+          for (int l=0;l<=deg-Nc;++l){
+            fdbl h=P[l];
+#ifdef LDBL80
+            for (int k=deg-l;k>deg-l-Nc;--k){
+              h=((long double) k)*h;
+            }
+#else
+            for (int k=deg-l;k>deg-l-Nc;--k){
+              h=((double) k)*h;
+            }
+#endif
+            Pdiff.push_back(h);
+          }
+          fdbl z1,z2;
+          horner2(Pdiff,z,z1,z2);
+          if (!is_exactly_zero(z2)){
+            fdbl delta=z1/z2;
+            z=z-delta;
+            for (;0;){ // disabled
+              horner2(P,z,z1,z2);
+              if (!is_exactly_zero(z1))
+                break;
+              z += fdbl(1-1e-17)*z;
+            }
+          }
+          // shift P and reverse (roots become inverse of roots)
+          vfdbl Pcluster(shift(P,z)),Rcluster(deg),initR(deg);
+          reverse(Pcluster.begin(),Pcluster.end());
+          if (is_exactly_zero(Pcluster[0])){
+            Pcluster[0]=z/pow(fdbl(2),64);
+          }
+          init_R(Pcluster,initR);
+          int count=deg-1;
+          for (int k=0;k<deg;++k){
+            if (k>=i && k<cend){
+              Rcluster[k]=initR[count];
+              --count;
+              //dbl a(0.0,0.7+(k-i)*2*M_PI/(cend-i));
+              //Rcluster[k]=D*exp(a);
+            }
+            else
+              Rcluster[k]=inv(R[k]-z);
+          }
+          vector<short int> old(zi_done);        
+          if (debug_infolevel)
+            *logptr(contextptr) << "aberth single cluster=" << i << "," << cend << "\n";
+          // recursive call of aberth
+          bool b=aberth_singleprec(Pcluster,N,eps,Rcluster,i,cend,zi_done, 2/* afteriter*/,contextptr);
+          for (int k=i;k<cend;++k){
+            R[k]=newR[k]=inv(Rcluster[k])+z;
+          }
+          if (b)
+            continue;
+          translate_shift(R,l,dr);
+          if (debug_infolevel)
+            *logptr(contextptr) << "Aberth_single precision cluster split failure\n";
+          return false;
+        }
+      }
+      double absdz=abszi==0?absdbl(d):absdbl(d)/abszi;
+      if (binv)
+        d=d/(fdbl(1)-d*p);
       else
-        ok=0;
-      if (ok>=afteriter){
-        translate_shift(R,l,dr);
-        sort(R.begin(),R.end(),fdbl_less);
-        return true;
+        d=d/(fdbl(1-rand()/2.0/RAND_MAX));
+      if (absdz<eps/deg){
+        if (debug_infolevel>1 && !zi_done[i])
+          *logptr(contextptr) << "New root found " << zi-d << "\n";
+        zi_done[i]=1;
+      }
+      delta += absdz;
+      newR[i]=zi-d;
+      R[i]=newR[i]; // comment to avoid immediate update
+    }
+    newR.swap(R);
+    int count=0;
+    for (int k=0;k<deg;k++){
+      if (zi_done[k])
+        ++count;
+    }
+    if (debug_infolevel>0){
+      *logptr(contextptr) << "Aberth single prec iter " << k <<  " found=" << count << " cluster_search_start=" << cluster_start << ".." << cluster_afterend << " delta=" << delta << " time " << clock()*1e-6 << "\n";
+      if (debug_infolevel>2){
+        *logptr(contextptr) << "Current approx roots " << R << "\n";
       }
     }
-    if (debug_infolevel)
-      *logptr(contextptr) << "Aberth single precision: too many iterations " << N << " delta " << delta << "\n";
-    return false;  
+    if (doing_cluster){
+      if (ok>=afteriter)
+        return true;
+      continue;
+    }
+    if (//count==deg
+        delta<=eps*(ok?deg:deg-count) || count==deg
+        )
+      ++ok;
+    else
+      ok=0;
+    if (ok>=afteriter){
+      translate_shift(R,l,dr);
+      sort(R.begin(),R.end(),fdbl_less);
+      return true;
+    }
   }
+  if (debug_infolevel)
+    *logptr(contextptr) << "Aberth single precision: too many iterations " << N << " delta " << delta << "\n";
+  return false;  
+}
 
   bool read_poly(const string & filename,vfdbl & P){
     P.clear();
@@ -2936,38 +3014,52 @@ numerical root localization
     r=r*x+P[s];
   }
 
-  // returns an estimate of the number of bits of precision lost
-  long add(mpfr_t & rr,mpfr_t & ri,const gen & Pi){
-    long rr0,rr1;
-    mpfr_get_d_2exp(&rr0,rr,MPFR_RNDN);
-    if (Pi.type==_REAL){
-      mpfr_t & inf=Pi._REALptr->inf;
-      if (mpfr_zero_p(inf))
-        return 0;
-      mpfr_get_d_2exp(&rr1,inf,MPFR_RNDN);
-      if (rr1>rr0)
-        rr0=rr1;
-      mpfr_add(rr,rr,Pi._REALptr->inf,MPFR_RNDN);
+#ifdef HAVE_LIBMPFR
+// computes an estimate of the number of bits of precision lost
+void add(mpfr_t & rr,mpfr_t & ri,const gen & Pi,int nbits,long & loss,long & size){
+  long rr0,rr1,delta=0;
+  mpfr_get_d_2exp(&rr0,rr,MPFR_RNDN);
+  if (Pi.type==_REAL){
+    mpfr_t & inf=Pi._REALptr->inf;
+    if (mpfr_zero_p(inf))
+      return ;
+    mpfr_get_d_2exp(&rr1,inf,MPFR_RNDN);
+    if (rr1>rr0){
+      if (rr1>size)
+        size=rr1;
+      delta=rr1-rr0;
+      rr0=rr1;
     }
-    else if (Pi.type==_CPLX){
-      mpfr_t & rinf=Pi._CPLXptr->_REALptr->inf;
-      mpfr_get_d_2exp(&rr1,rinf,MPFR_RNDN);
-      if (rr1>rr0)
-        rr0=rr1;
-      mpfr_add(rr,rr,rinf,MPFR_RNDN);
-      mpfr_add(ri,ri,(Pi._CPLXptr+1)->_REALptr->inf,MPFR_RNDN);
-    }
-    else if (Pi.type==_INT_){
-      mpfr_add_si(rr,rr,Pi.val,MPFR_RNDN);
-      return 0;
-    }
-    else
-      gensizeerr("add mpfr");
-    mpfr_get_d_2exp(&rr1,rr,MPFR_RNDN);
-    if (rr1<rr0)
-      return rr0-rr1;
-    return 0;
+    mpfr_add(rr,rr,Pi._REALptr->inf,MPFR_RNDN);
   }
+  else if (Pi.type==_CPLX){
+    mpfr_t & rinf=Pi._CPLXptr->_REALptr->inf;
+    mpfr_get_d_2exp(&rr1,rinf,MPFR_RNDN);
+    if (rr1>rr0){
+      if (rr1>size)
+        size=rr1;
+      delta=rr1-rr0;
+      rr0=rr1;
+    }
+    mpfr_add(rr,rr,rinf,MPFR_RNDN);
+    mpfr_add(ri,ri,(Pi._CPLXptr+1)->_REALptr->inf,MPFR_RNDN);
+  }
+  else if (Pi.type==_INT_){
+    mpfr_add_si(rr,rr,Pi.val,MPFR_RNDN);
+    return ;
+  }
+  else exit(1);
+  mpfr_get_d_2exp(&rr1,rr,MPFR_RNDN);
+  if (delta>nbits)
+    delta=nbits;
+  if (loss>delta)
+    loss -= delta;
+  else
+    loss = 0;
+  if (rr1<rr0){
+    loss += rr0-rr1;
+  }
+}
 
   void mult(mpfr_t & rr,mpfr_t & ri,const gen & x,mpfr_t & tmp,mpfr_t & tmp1, mpfr_t & tmp2){
     if (x.type==_REAL){
@@ -3014,46 +3106,50 @@ numerical root localization
     gensizeerr("mult mpfr");
   }
 
-  // find r=P(x) and r1=diff(P)(x)
-  // if |x|>1 this may overflow
-  // returns -1 if error, or an estimate of the number of bits of precision loss
-  long horner2_mpfr(const vdbl & P,dbl x,dbl & r,dbl & r1,int nbits){
-    if (P.empty())
-      return -1;
-    long loss=0;
-    size_t s=P.size()-1;
-    mpfr_t rr,ri,r1r,r1i,tmp,tmp1,tmp2;
-    mpfr_init2(rr,nbits); mpfr_set_si(rr,0,MPFR_RNDN);
-    mpfr_init2(ri,nbits); mpfr_set_si(ri,0,MPFR_RNDN);
-    mpfr_init2(r1r,nbits); mpfr_set_si(r1r,0,MPFR_RNDN);
-    mpfr_init2(r1i,nbits); mpfr_set_si(r1i,0,MPFR_RNDN);
-    mpfr_init2(tmp,nbits);
-    mpfr_init2(tmp1,nbits);
-    mpfr_init2(tmp2,nbits);
-    for (size_t i=0;i<s;++i){
-      // r=r*x+P[i];
-      mult(rr,ri,x,tmp,tmp1,tmp2);
-      loss += add(rr,ri,P[i]);
+// find r=P(x) and r1=diff(P)(x)
+// returns largest number of bits of mantissa in intermediate computations
+long horner2_mpfr(const vdbl & P,dbl x,dbl & r,dbl & r1,int nbits,long & size,bool pdiff){
+  if (P.empty())
+    return 0;
+  long loss=0;
+  size=-RAND_MAX;
+  size_t s=P.size()-1;
+  mpfr_t rr,ri,r1r,r1i,tmp,tmp1,tmp2;
+  mpfr_init2(rr,nbits); mpfr_set_si(rr,0,MPFR_RNDN);
+  mpfr_init2(ri,nbits); mpfr_set_si(ri,0,MPFR_RNDN);
+  mpfr_init2(r1r,nbits); mpfr_set_si(r1r,0,MPFR_RNDN);
+  mpfr_init2(r1i,nbits); mpfr_set_si(r1i,0,MPFR_RNDN);
+  mpfr_init2(tmp,nbits);
+  mpfr_init2(tmp1,nbits);
+  mpfr_init2(tmp2,nbits);
+  for (size_t i=0;i<s;++i){
+    // r=r*x+P[i];
+    mult(rr,ri,x,tmp,tmp1,tmp2);
+    add(rr,ri,P[i],nbits,loss,size);
+    if (pdiff){
       // r1=r1*x+r;
       mult(r1r,r1i,x,tmp,tmp1,tmp2);
       mpfr_add(r1r,r1r,rr,MPFR_RNDN);
       mpfr_add(r1i,r1i,ri,MPFR_RNDN);
     }
-    // r=r*x+P[s];
-    mult(rr,ri,x,tmp,tmp1,tmp2);
-    loss += add(rr,ri,P[s]);
-    // end
-    r=gen(real_object(rr),real_object(ri));
-    r1=gen(real_object(r1r),real_object(r1i));
-    mpfr_clear(rr);
-    mpfr_clear(ri);
-    mpfr_clear(r1r);
-    mpfr_clear(r1i);
-    mpfr_clear(tmp);
-    mpfr_clear(tmp1);
-    mpfr_clear(tmp2);
-    return loss;
   }
+  // r=r*x+P[s];
+  mult(rr,ri,x,tmp,tmp1,tmp2);
+  add(rr,ri,P[s],nbits,loss,size);
+  // end
+  r=gen(real_object(rr),real_object(ri));
+  if (pdiff)
+    r1=gen(real_object(r1r),real_object(r1i));
+  mpfr_clear(rr);
+  mpfr_clear(ri);
+  mpfr_clear(r1r);
+  mpfr_clear(r1i);
+  mpfr_clear(tmp);
+  mpfr_clear(tmp1);
+  mpfr_clear(tmp2);
+  return loss;
+}
+#endif
 
 #if defined HAVE_LIBMPFI && !defined NO_RTTI
   bool maybe_zero(const dbl & g){
@@ -3101,7 +3197,7 @@ numerical root localization
 
   // find r=P(x) and r1=diff(P)(x)
   // if |x|>1 this may overflow
-  bool horner2_mpfi(const vdbl & P,dbl x,dbl & r,dbl & r1,int nbits){
+  bool horner2_mpfi(const vdbl & P,dbl x,dbl & r,dbl & r1,int nbits,bool pdiff=true){
     if (P.empty())
       return false;
     size_t s=P.size()-1;
@@ -3117,10 +3213,12 @@ numerical root localization
       // r=r*x+P[i];
       mult(rr,ri,x,tmp,tmp1,tmp2);
       add(rr,ri,P[i]);
-      // r1=r1*x+r;
-      mult(r1r,r1i,x,tmp,tmp1,tmp2);
-      mpfi_add(r1r,r1r,rr);
-      mpfi_add(r1i,r1i,ri);
+      if (pdiff){
+        // r1=r1*x+r;
+        mult(r1r,r1i,x,tmp,tmp1,tmp2);
+        mpfi_add(r1r,r1r,rr);
+        mpfi_add(r1i,r1i,ri);
+      }
     }
     // r=r*x+P[s];
     mult(rr,ri,x,tmp,tmp1,tmp2);
@@ -3137,6 +3235,42 @@ numerical root localization
     mpfi_clear(tmp2);
     return true;
   }
+// find r=P(x) and r1=diff(P)(x)
+bool horner2_mpfi(const vdbl & P,const vdbl & Pdiff,dbl x,dbl & r,dbl & r1,int nbits){
+  if (P.empty())
+    return false;
+  size_t s=P.size()-1;
+  mpfi_t rr,ri,r1r,r1i,tmp,tmp1,tmp2;
+  mpfi_init2(rr,nbits); mpfi_set_si(rr,0);
+  mpfi_init2(ri,nbits); mpfi_set_si(ri,0);
+  mpfi_init2(r1r,nbits); mpfi_set_si(r1r,0);
+  mpfi_init2(r1i,nbits); mpfi_set_si(r1i,0);
+  mpfi_init2(tmp,nbits);
+  mpfi_init2(tmp1,nbits);
+  mpfi_init2(tmp2,nbits);
+  for (size_t i=0;i<s;++i){
+    // r=r*x+P[i];
+    mult(rr,ri,x,tmp,tmp1,tmp2);
+    add(rr,ri,P[i]);
+    // r1=r1*x+Pdiff[i];
+    mult(r1r,r1i,x,tmp,tmp1,tmp2);
+    add(r1r,r1i,Pdiff[i]);
+  }
+  // r=r*x+P[s];
+  mult(rr,ri,x,tmp,tmp1,tmp2);
+  add(rr,ri,P[s]);
+  // end
+  r=gen(real_interval(rr),real_interval(ri));
+  r1=gen(real_interval(r1r),real_interval(r1i));
+  mpfi_clear(rr);
+  mpfi_clear(ri);
+  mpfi_clear(r1r);
+  mpfi_clear(r1i);
+  mpfi_clear(tmp);
+  mpfi_clear(tmp1);
+  mpfi_clear(tmp2);
+  return true;
+}
 #else
   bool maybe_zero(const dbl & g){
     return is_exactly_zero(g);
@@ -3154,8 +3288,12 @@ numerical root localization
       z=g._DOUBLE_val;
       return true;
     }
-    if (g.type==_REAL){    
+    if (g.type==_REAL){
+#ifdef HAVE_LIBMPFR
       z=mpfr_get_ld(g._REALptr->inf,MPFR_RNDN);
+#else
+      z=mpf_get_d(g._REALptr->inf,MPFR_RNDN);
+#endif
       return true;
     }
     if (g.type==_FRAC){
@@ -3220,8 +3358,8 @@ numerical root localization
     int s=fP.size();
     P.clear(); P.reserve(s);
     for (int i=0;i<s;++i){
-      dbl re,im;
 #if defined HAVE_LIBMPFR && defined LDBL80
+      dbl re,im;
       re=accurate_evalf(re,64); im=accurate_evalf(im,64);
       mpfr_set_ld(re._REALptr->inf,fP[i].real(),MPFR_RNDN);
       mpfr_set_ld(im._REALptr->inf,fP[i].imag(),MPFR_RNDN);
@@ -3354,6 +3492,7 @@ numerical root localization
     return true;
   }
 
+#ifdef HAVE_LIBMPFR  
   void sub(mpfr_t & rr,mpfr_t & ri,const gen & Pi){
     if (Pi.type==_CPLX){
       mpfr_sub(rr,rr,Pi._CPLXptr->_REALptr->inf,MPFR_RNDN);
@@ -3443,318 +3582,445 @@ numerical root localization
     mpfr_clear(tmp2);  
     return true;
   }
+#endif
 
-  // check that roots are isolated, set zi_done[i] to 2 or 0
-  bool chk_isol(vdbl & z,bool realpoly,const vdbl & rz,vector<short int> & zi_done,GIAC_CONTEXT){
-    if (debug_infolevel)
-      *logptr(contextptr) << "Certifying roots begin " << CLOCK()*1e-6 << "\n";
-    int deg=z.size();
-    for (int i=0;i<deg;++i){
-      dbl & zi=z[i];
-      const dbl & rzi=rz[i];
-      if (realpoly && zi.type==_CPLX){ // clean up real roots
-        if (is_greater(rzi,abs(*(zi._CPLXptr+1),contextptr),contextptr))
+// check that roots are isolated or have precision eps, set zi_done[i] to 2 or 0
+bool chk_isol(vdbl & z,bool realpoly,int isolate,const vdbl & rz,double eps,vector<short int> & zi_done,GIAC_CONTEXT){
+  int deg=z.size();
+  if (debug_infolevel && isolate)
+    *logptr(contextptr) << "Certifying roots begin " << CLOCK()*1e-6 << "\n";
+  dbl big(1LL<<62); // take care of almost complete cancellation in -
+  for (int i=0;i<deg;++i){
+    dbl & zi=z[i];
+    // dbl err=abs(zi)/big;
+    const dbl & rzi=rz[i]; // +err
+    if (1 || zi_done[i]){
+      zi_done[i]=2;
+      for (int j=i+1;j<deg;++j){
+        dbl zij=sqrt((z[j]-zi).squarenorm(contextptr),contextptr);
+        if (is_greater(rzi+rz[j],zij,contextptr))
+          zi_done[i]=zi_done[j]=0;
+      }
+    }
+    if (zi_done[i] && realpoly && zi.type==_CPLX){
+      dbl I=*(zi._CPLXptr+1);
+      dbl c=conj(zi,contextptr);
+      bool maybereal=is_positive(rzi-I,contextptr);
+      int nconj=0; // 0 after loop if root is real
+      bool unique=true;
+      for (int j=i+1;j<deg;++j){
+        dbl zij=(z[j]-c);
+        // Note that zij may be = to abs(c)*2^-63*sqrt(2) if we loose all precision
+        zij=rzi+rz[j]-abs(zij,contextptr);
+        if (is_positive(zij,contextptr)){
+          zi_done[i]=4; // potential conjugate
+          if (nconj==0)
+            nconj=j;
+          else
+            unique=false; // more than one potential conjugate
+        }
+      }
+      if (nconj==0){
+        if (maybereal) // clean it
           zi=*zi._CPLXptr;
       }
+      else {
+        swap(z[i+1],z[nconj]);
+        swap(zi_done[i+1],zi_done[nconj]);
+        zi_done[i]=4;
+        if (unique){
+          zi_done[i+1]=5;
+          z[i+1]=c;
+        }
+        ++i;
+      }
     }
+  }
+  // isolate==1 if goal is isolation only
+  if (isolate!=1){ 
+    bool approx=true;
     for (int i=0;i<deg;++i){
-      const dbl & zi=z[i];
-      const dbl & rzi=rz[i];
-      if (zi_done[i]){
-        zi_done[i]=2;
-        for (int j=i+1;j<deg;++j){
-          dbl zij=sqrt((z[j]-zi).squarenorm(contextptr),contextptr);
-          if (is_greater(rzi+rz[j],zij,contextptr))
-            zi_done[i]=zi_done[j]=0;
+      dbl & zi=z[i];
+      // dbl err=abs(zi)/big;
+      const dbl & rzi=rz[i]; // +err
+      if (zi_done[i]!=5){
+        gen chk=is_exactly_zero(zi)?eps:eps*abs(zi,contextptr);
+        if (is_greater(rzi,chk,contextptr)){
+          zi_done[i]=0;
+          approx=false;
         }
       }
     }
-    if (debug_infolevel)
-      *logptr(contextptr) << "Certifying roots end " << CLOCK()*1e-6 << "\n";
-    for (int i=0;i<deg;++i){
-      if (!zi_done[i])
-        return false;
-    }
-    return true;
+    if (!isolate)
+      return approx;
   }
+  for (int i=0;i<deg;++i){
+    if (!zi_done[i]){
+      if (debug_infolevel)
+        *logptr(contextptr) << "Failure certifying roots " << CLOCK()*1e-6 << "\n";
+      return false;
+    }
+  }
+  if (debug_infolevel)
+    *logptr(contextptr) << "Certifying roots end " << CLOCK()*1e-6 << "\n";
+  return true;
+}
 
-  // 2 if certified roots, 1 if ok, 0 otherwise
-  int aberth_mpfr(const vdbl & P0,bool realpoly,int & nbits,int N,double eps,vdbl & R,vdbl & rayon,int cluster_start,int cluster_afterend,vector<short int> & zi_done,bool certify_lastiter,GIAC_CONTEXT){
-    int deg=P0.size()-1;
-    bool doing_cluster=cluster_start>0 || cluster_afterend<deg;
-    vdbl P(P0);
-    dbl dr(0);
-    dbl l(1);
-    if (R.size()!=deg){
-      dr=-find_shift(P,contextptr);
-      P=shift(P,dr);
-      //l=find_scale(P);
-      //rescale(P,l);
-      // init R if not already done, using single precision Aberth
-      vfdbl fP,fR;
-      if (convert(P,fP,contextptr)){
-        double eps2=1e-4;
-        bool ok=aberth_singleprec(fP,2*N,eps2,fR,0,deg,zi_done,4,contextptr);
-        convert(fR,R);
-        if (!doing_cluster && ok){
-          vdbl P_cert(P);
-          int nbits=64;
-          accurate_evalf(P_cert,nbits);	  
-#if defined HAVE_LIBMPFI && !defined NO_RTTI
-          P_cert=*convert_interval(P_cert,nbits,contextptr)._VECTptr;
-#else
+#ifdef HAVE_LIBMPFR
+// returns 0 on failure (e.g. division by maybe 0), -1 too many iterations, 1 ok, 2 isolated
+int aberth_mpfr(const vdbl & P0,bool realpoly,int & nbits,int N,double eps,vdbl & R,vdbl & rayon,int cluster_start,int cluster_afterend,vector<short int> & zi_done,bool certify_lastiter,int isolate,GIAC_CONTEXT){
+  int afteriter=2;
+  int deg=P0.size()-1,prevcount=0;
+  bool doing_cluster=cluster_start>0 || cluster_afterend<deg;
+  vdbl P(P0);
+  dbl dr(0);
+  dbl l(1);
+  if (R.size()!=deg){
+    dr=-find_shift(P,contextptr);
+    P=shift(P,dr);
+    //l=find_scale(P);
+    //rescale(P,l);
+    // init R if not already done, using single precision Aberth
+    vfdbl fP,fR;
+    if (convert(P,fP,contextptr)){
+      double eps2=1e-4;
+      bool ok=aberth_singleprec(fP,2*N,eps2,fR,0,deg,zi_done,4,contextptr);
+      convert(fR,R);
+      if (ok &&
+	  !doing_cluster){
+        vdbl P_cert(P);
+        int nbits=64;
+        accurate_evalf(P_cert,nbits);
+#if defined MPFI_CERT && defined HAVE_LIBMPFI && !defined NO_RTTI
+        P_cert=*convert_interval(P_cert,nbits,contextptr)._VECTptr;
 #endif
-          // find rayon with exact computation or MPFI
-          int bits=nbits;
-          vdbl P1(P);
-          accurate_evalf(P1,bits);
-          for (int i=0;ok && i<deg;++i){
+        // find rayon with exact computation or MPFI
+        int bits=nbits;
+        vdbl P1(P);
+        accurate_evalf(P1,bits);
+        for (int i=0;ok && i<deg;++i){
 #if 1 // def HAVE_LIBMPFR
-            gen z=accurate_evalf(R[i],nbits),d,d1;
-#if defined HAVE_LIBMPFI && !defined NO_RTTI
-            z=convert_interval(z,nbits,contextptr);
-            horner2_mpfi(P_cert,convert_interval(z,nbits,contextptr),d,d1,nbits);
-            if (maybe_zero(d1))
-              ok=false;
-            else {
-              d=d/d1;
-              rayon[i]=deg*abs(d,contextptr);
-              if (rayon[i].type==_REAL)
-                rayon[i]=_right(rayon[i],contextptr);
-            }
+          gen z=accurate_evalf(R[i],nbits),d,d1;
+#if defined MPFI_CERT && defined HAVE_LIBMPFI && !defined NO_RTTI
+          z=convert_interval(z,nbits,contextptr);
+          horner2_mpfi(P_cert,convert_interval(z,nbits,contextptr),d,d1,nbits);
+          if (maybe_zero(d1)){
+            ok=false;
+          }
+          else {
+            d=d/d1;
+            rayon[i]=deg*abs(d,contextptr);
+            if (rayon[i].type==_REAL)
+              rayon[i]=_right(rayon[i],contextptr);
+          }
 #else // MPFI
-            for (;;){
-              int loss=horner2_mpfr(P1,z,d,d1,bits);
-              if (loss<bits-16){
-                rayon[i]=abs(accurate_evalf(d/d1,nbits),contextptr);
-                break;
+          for (;;){
+            long size; int loss=horner2_mpfr(P1,z,d,d1,bits,size,true);
+            if (loss<bits-16){
+              rayon[i]=abs(accurate_evalf(d/d1,nbits),contextptr);
+              break;
             }
-              bits*=2;
-              z=accurate_evalf(R[i],bits);
-              accurate_evalf(P1,bits);
-            }
+            bits*=2;
+            z=accurate_evalf(R[i],bits);
+            P1=P;
+            accurate_evalf(P1,bits);
+          }
 #endif // MPFI
 #else // MPFR
-            gen z=exact(R[i],contextptr),d,d1;
-            horner2(P,z,d,d1);
-            rayon[i]=abs(evalf_double(d/d1,1,contextptr));
+          gen z=exact(R[i],contextptr),d,d1;
+          horner2(P,z,d,d1);
+          rayon[i]=abs(evalf_double(d/d1,1,contextptr));
 #endif
-            if (is_greater(rayon[i],eps,contextptr))
-              ok=false;
-          }
-          // early termination in single precision?
-          if (ok &&
-              (!certify_lastiter || chk_isol(R,realpoly,rayon,zi_done,contextptr))
-              ){
-            for (size_t j=0;j<R.size();++j){
-              R[j] += dr;
-            }
-            return 2;
-          }
-          vector<short int> zzi(deg,0);
-          zi_done.swap(zzi);
+          if (is_greater(rayon[i],eps*abs(R[i],contextptr),contextptr))
+            ok=false;
         }
-      }
-      if (R.empty())
-        init_R(P,R);
-    }
-    accurate_evalf(P,nbits);
-    vdbl P_cert;
-    int nbitscert=nbits;
-    if (certify_lastiter){
-#if defined HAVE_LIBMPFI && !defined NO_RTTI
-      P_cert=*convert_interval(P,nbits,contextptr)._VECTptr;
-#else
-      P_cert=P;
-      nbitscert=nbits;
-#endif
-    }
-    accurate_evalf(R,nbits);
-    vdbl Prev(P),Prev_cert(P_cert);
-    reverse(Prev.begin(),Prev.end());
-    reverse(Prev_cert.begin(),Prev_cert.end());
-    vdbl newR(deg);
-    int ok=0; double delta; bool isol; 
-    for (int k=0;k<N;++k){
-      delta=0; isol=true;
-      long maxloss=0;
-      if (doing_cluster){
-        int K=cluster_start;
-        for (;K<cluster_afterend;++K){
-          if (!zi_done[K])
-            break;
-        }
-        if (K==cluster_afterend)
-          ok=1;
-      }
-      for (int i=cluster_start;i<cluster_afterend;++i){
-        if (zi_done[i]==2 ||
-            (!ok && zi_done[i])
+        // early termination in single precision?
+        if (ok &&
+            chk_isol(R,realpoly,isolate,rayon,eps,zi_done,contextptr)
             ){
-          // if root is not isolated, do the last iteration
-          newR[i]=R[i];
-          continue;
-        }
-        dbl zi=R[i];
-        if (debug_infolevel>2)
-          *logptr(contextptr) << CLOCK()*1e-6 << " computing d\n"; 
-        dbl d,d1;
-        long loss=0;
-        if (ok && certify_lastiter){
-#if defined HAVE_LIBMPFI && !defined NO_RTTI
-          horner2_mpfi(P_cert,convert_interval(zi,nbits,contextptr),d,d1,nbits);
-          if (maybe_zero(d1))
-            return 0;
-#else
-          loss=horner2_mpfr(P_cert,accurate_evalf(zi,nbitscert),d,d1,nbitscert);
-          while (loss>nbitscert-16){
-            nbitscert*=2;
-            accurate_evalf(P_cert,nbitscert);
-            loss=horner2_mpfr(P_cert,accurate_evalf(zi,nbitscert),d,d1,nbitscert);
+          for (size_t j=0;j<R.size();++j){
+            R[j] += dr;
           }
-          if (is_exactly_zero(d1))
-            return 0;
+          return 2;
+        }
+      }
+    }
+    if (R.empty())
+      init_R(P,R);
+  }
+  accurate_evalf(P,nbits);
+  clear_zi_done(zi_done);
+  vdbl P_cert; int nbitscert=nbits;
+  if (certify_lastiter){
+#if defined MPFI_CERT && defined HAVE_LIBMPFI && !defined NO_RTTI
+    P_cert=*convert_interval(P,nbitscert,contextptr)._VECTptr;
+#else
+    P_cert=P;
 #endif
-        }          
-        else {
-          loss=horner2_mpfr(P,zi,d,d1,nbits);
-          if (is_exactly_zero(d1))
-            return 0;
+  }
+  accurate_evalf(R,nbits);
+  vdbl P2(P0); int nbitsP2=2*nbits+64; 
+  accurate_evalf(P2,nbitsP2);
+#if 0
+  vdbl P_cert_diff(derivative(P0)); 
+  if (certify_lastiter){
+#if 0 // defined MPFI_CERT && defined HAVE_LIBMPFI && !defined NO_RTTI
+    P_cert_diff=*convert_interval(P_cert_diff,nbits,contextptr)._VECTptr;
+#else
+    accurate_evalf(P_cert_diff,nbits);
+#endif
+  }
+#endif
+  vdbl newR(R); // init with R is required in clusters
+  int ok=0; long size; double delta; bool isol; 
+  for (int k=0;k<N;++k){
+    if (debug_infolevel>0)
+      *logptr(contextptr) << clock()*1e-6 << " Aberth bits=" << nbits << " iter="<<  k << " ";
+    delta=0; isol=true;
+    long maxloss=0,minloss=0;
+    if (doing_cluster){
+      int K=cluster_start;
+      for (;K<cluster_afterend;++K){
+        if (!zi_done[K])
+          break;
+      }
+      if (K==cluster_afterend)
+        ok=1;
+    }
+    for (int i=cluster_start;i<cluster_afterend;++i){
+      if (i && zi_done[i]==5){
+        newR[i]=R[i]=conj(R[i-1],contextptr);
+        rayon[i]=rayon[i-1];
+        continue;
+      }
+      if (zi_done[i]>=2 ||
+          (!ok && zi_done[i])
+          ){
+        // if root is not isolated, do the last iteration
+        newR[i]=R[i];
+        continue;
+      }
+      dbl zi=R[i];
+      if (debug_infolevel>2)
+        *logptr(contextptr) << CLOCK()*1e-6 << " computing d\n"; 
+      dbl d,d1;
+      long loss=0;
+      if (ok && certify_lastiter){
+#if defined MPFI_CERT && defined HAVE_LIBMPFI && !defined NO_RTTI
+        int loss2=RAND_MAX;
+        if (isolate==0)
+          loss2=horner2_mpfr(P2,accurate_evalf(zi,nbitsP2),d,d1,2*nbits,size,true);
+        if (loss2>=nbitsP2-16){
+          gen zicert=convert_interval(zi,nbits,contextptr),dd,dd1;        
+          horner2_mpfi(P_cert,zicert,d,d1,nbits);
+          if (maybe_zero(d1)){
+            if (debug_infolevel)
+              *logptr(contextptr) << "MPFI unable to certify radius, root " << i << zi << "\n";
+            return -1;
+          }
         }
-        d=d/d1;
-        if (maxloss<loss)
-          maxloss=loss;
-        rayon[i]=deg*abs(d,contextptr);
-#if defined HAVE_LIBMPFI && !defined NO_RTTI        
-        if (ok && certify_lastiter && rayon[i].type==_REAL){
-          rayon[i]=_right(rayon[i],contextptr);
-          d=gen(_milieu(re(d,contextptr),contextptr),_milieu(im(d,contextptr),contextptr));
+#else
+        loss=horner2_mpfr(P_cert,accurate_evalf(zi,nbitscert),d,d1,nbitscert,size,true);
+        while (loss>nbitscert-16){
+          nbitscert*=2;
+          P_cert=P0;
+          accurate_evalf(P_cert,nbitscert);
+          loss=horner2_mpfr(P_cert,accurate_evalf(zi,nbitscert),d,d1,nbitscert,size,true);
         }
+        if (is_exactly_zero(d1))
+          return -1;
+#endif
+      }          
+      else {
+        loss=horner2_mpfr(P,zi,d,d1,nbits,size,true);
+        if (is_exactly_zero(d1))
+          return -1;
+      }
+      d=d/d1;
+      rayon[i]=deg*abs(d,contextptr);
+      if (ok && certify_lastiter && rayon[i].type==_REAL){
+#if defined MPFI_CERT && defined HAVE_LIBMPFI && !defined NO_RTTI        
+        rayon[i]=_right(rayon[i],contextptr);
+        d=gen(_milieu(re(d,contextptr),contextptr),_milieu(im(d,contextptr),contextptr));
 #else
         rayon[i]=accurate_evalf(rayon[i],nbits);
 #endif
-        dbl p(0);
-        if (debug_infolevel>2)
-          *logptr(contextptr) << CLOCK()*1e-6 << " computing p\n"; 
-        bool binv=mpfr_sum_inv_diff(zi,R,i,p,nbits,contextptr);
-        if (debug_infolevel>2)
-          *logptr(contextptr) << CLOCK()*1e-6 << " end computing p\n"; 
-        if (!binv && doing_cluster)
-          return 0;
+      }
+      dbl p(0);
+      if (debug_infolevel>2)
+        *logptr(contextptr) << CLOCK()*1e-6 << " computing p\n"; 
+      bool binv=mpfr_sum_inv_diff(zi,R,i,p,nbits,contextptr);
+      if (debug_infolevel>2)
+        *logptr(contextptr) << CLOCK()*1e-6 << " end computing p\n"; 
+      if (!binv && doing_cluster){
+        *logptr(contextptr) << "Root estimates collision \n"; return 0; }
 #if 0
-        dbl pc(0); sum_inv_diff(zi,R,i,pc);
-        if (p!=pc)
-          *logptr(contextptr) << "err\n";
+      dbl pc(0); sum_inv_diff(zi,R,i,pc);
+      if (p!=pc)
+        *logptr(contextptr) << "err\n";
 #endif
-        double dd=absdbl(d),pp=absdbl(p);
-        double abszi=absdbl(zi);
-        if (debug_infolevel>2)
-          *logptr(contextptr) << CLOCK()*1e-6 << " cluster? i=" << i << ", delta=" << dd << ", cluster_step=" << cluster_step << ", p=" << pp << ", d*p=" << dd*pp << " " << cluster_dp << "\n";
-        if (!binv ||
-            (!ok && k>N/2 && !doing_cluster && dd<=cluster_step*abszi && dd*pp>cluster_dp)){
-          isol=false;
-          // cluster of roots, find all roots in this cluster
-          int cend=i+1;
-          dbl sumR=zi;
-          for (int k=cend;k<deg;++k){
-            if (absdbl(zi-R[k])<deg/pp){
-              swap(R[cend],R[k]);
-              swap(zi_done[cend],zi_done[k]);
-              sumR+=R[cend];
-              ++cend;
-            }
-          }
-          if (cend-i>1){
-            // cluster is from i to cend-1 included
-            dbl z=sumR/dbl(cend-i); // center of gravity of cluster
-            // shift P and reverse (roots become inverse of roots)
-            vdbl Pcluster(shift(P,z,false)),Rcluster(deg),initR(deg);
-            reverse(Pcluster.begin(),Pcluster.end());
-            init_R(Pcluster,initR);
-            // dbl D(dbl(cend-i)/d);
-            int count=deg-1;
-            for (int k=0;k<deg;++k){
-              if (k>=i && k<cend){
-                Rcluster[k]=initR[count];
-                --count;
-                //dbl a(0.0,0.7+(k-i)*2*M_PI/(cend-i));
-                //Rcluster[k]=D*exp(a);
-              }
-              else
-                Rcluster[k]=inv(R[k]-z);
-            }
-            vector<short int> old(zi_done);
-            // recursive call of aberth
-            if (debug_infolevel)
-              *logptr(contextptr) << "aberth mpfr cluster=" << i << "," << cend << "\n";
-            bool b=aberth_mpfr(Pcluster,false,nbits,N,eps,Rcluster,rayon,i,cend,zi_done,false,contextptr);
-            for (int k=i;k<cend;++k){
-              R[k]=l*(inv(Rcluster[k])+z)+dr;
-            }
-            if (b)
-              continue;
-            return 0;
+      double dd=absdbl(d),pp=absdbl(p);
+      double abszi=absdbl(zi);
+      if (debug_infolevel>2)
+        *logptr(contextptr) << CLOCK()*1e-6 << " cluster? i=" << i << ", delta=" << dd << ", cluster_step=" << cluster_step << ", p=" << pp << ", d*p=" << dd*pp << " " << cluster_dp << "\n";
+      if (!binv ||
+          (!ok && k>N/2 && !doing_cluster && dd<=cluster_step*abszi && dd*pp>=cluster_dp)){
+        isol=false;
+        // cluster of roots, find all roots in this cluster
+        int cend=i+1;
+        dbl sumR=zi;
+        for (int k=cend;k<deg;++k){
+          if (absdbl(zi-R[k])<2*deg/pp){
+            swap(R[cend],R[k]);
+            swap(zi_done[cend],zi_done[k]);
+            sumR+=R[cend];
+            ++cend;
+            if (k<deg-1 && zi_done[k+1]==5)
+              zi_done[k+1]=0;
           }
         }
-        double absdz=abszi==0?absdbl(d):absdbl(d)/abszi;
-        if (binv){
-          d=d/(dbl(1)-d*p);
+        if (cend-i==deg){
+          if (debug_infolevel)
+            *logptr(contextptr) << "All estimates are close together\n";
         }
-        else {
-          isol=false;
-          if (ok)
-            return 0;
-          d=d/(1-rand()/2.0/RAND_MAX);
-        }
-        delta += absdz;
-        newR[i]=zi-d;
-        R[i]=newR[i]; // comment to avoid immediate update of the root
-        if (absdz<eps/deg){
-          if (debug_infolevel>1 && !zi_done[i])
-            *logptr(contextptr) << "New root found " << newR[i] << "\n";
-          zi_done[i]=1;
+        if (cend-i>1){
+          int nbits2=2*nbits,Nc=cend-i;
+          // cluster is from i to cend-1 included
+          dbl z=sumR/dbl(Nc); // center of gravity of cluster
+          // improve z with a Newton iteration on the derivative of order size of cluster -1
+          vdbl Pdiff;
+          --Nc;
+          for (int l=0;l<=deg-Nc;++l){
+            gen h=1;
+            for (int k=deg-l;k>deg-l-Nc;--k){
+              h=k*h;
+            }
+            Pdiff.push_back(h*P[l]);
+          }
+          gen z1,z2;
+          horner2_mpfr(Pdiff,z,z1,z2,nbits,size,true);
+          if (!is_exactly_zero(z2))
+            z=z-z1/z2; 
+          // shift P and reverse (roots become inverse of roots)
+          vdbl Pcluster(P),Rcluster(deg),initR(deg);
+          accurate_evalf(Pcluster,nbits2);
+          z=accurate_evalf(z,nbits2);
+          Pcluster=shift(Pcluster,z,false);
+          reverse(Pcluster.begin(),Pcluster.end());
+          if (is_exactly_zero(Pcluster[0])){
+            Pcluster[0]=z/pow(2,nbits2,contextptr);
+          }
+          init_R(Pcluster,initR);
+          // dbl D(dbl(cend-i)/d);
+          int count=deg-1;
+          for (int k=0;k<deg;++k){
+            if (k>=i && k<cend){
+              Rcluster[k]=initR[count];
+              --count;
+              //dbl a(0.0,0.7+(k-i)*2*M_PI/(cend-i));
+              //Rcluster[k]=D*exp(a);
+            }
+            else
+              Rcluster[k]=inv(R[k]-z);
+          }
+          vector<short int> old(zi_done);
+          // recursive call of aberth
+          if (debug_infolevel)
+            *logptr(contextptr) << "aberth mpfr cluster=" << i << "," << cend << "\n";
+          int b=aberth_mpfr(Pcluster,false,nbits2,N,eps,Rcluster,rayon,i,cend,zi_done,false,false,contextptr);
+          for (int k=i;k<cend;++k){
+            R[k]=newR[k]=accurate_evalf(inv(Rcluster[k])+z,nbits);
+          }
+          if (b){
+            i=cend-1;
+            //++afteriter;
+            continue;
+          }
+          return -1;
         }
       }
-      newR.swap(R);
-      int count=0;
-      for (int k=0;k<deg;++k){
-        if (zi_done[k])
-          ++count;
+      double absdz=abszi==0?absdbl(d):absdbl(d)/abszi;
+      if (binv){
+        d=d/(dbl(1)-d*p);
       }
-      if (debug_infolevel>0){
-        *logptr(contextptr) << "Aberth bits="<< nbits << " iter="<<  k  << " found=" << count << " delta=" << delta <<   " precision loss " << double(maxloss)/nbits << " (" <<  maxloss << "/" << nbits << "), cluster_search=" << cluster_start <<  ".." <<cluster_afterend << " time " << clock()*1e-6 << "\n";
-        if (debug_infolevel>2){
-          vdbl RR(R);
-          accurate_evalf(RR,45);
-          *logptr(contextptr) << "Current approx roots " << RR << "\n";
-        }
-      }
-      if (doing_cluster){
+      else {
+        isol=false;
         if (ok)
-          return 1;
-        continue;
+          return 0;
+        d=d/(1-rand()/2.0/RAND_MAX);
       }
-      if (
-          delta<=eps*(ok?deg:deg-count) || count==deg
-          ){
-        if (debug_infolevel)
-          *logptr(contextptr) << "Aberth all roots found " << delta << "\n";      
-        ++ok;
-      }
-      // else ok=0;
-      if (ok==2){
-        // rescale and translate
-        for (size_t j=0;j<R.size();++j){
-          R[j] = l*R[j] + dr;
+      delta += absdz;
+      newR[i]=zi-d;
+      R[i]=newR[i]; // comment to avoid immediate update of the root
+      if (absdz<eps/deg){
+        if (!zi_done[i]){
+          if (debug_infolevel>1)
+            *logptr(contextptr) << "New root found " << newR[i] << "\n";
+          if (debug_infolevel)
+            *logptr(contextptr) << "[" << i << "] ";
         }
-        return 1;
+        zi_done[i]=1;
+      }
+      else {
+        if (loss<nbits){
+          if (debug_infolevel)
+            *logptr(contextptr) << i << " ";
+        }
+        else if (!doing_cluster)
+          zi_done[i]=-1;
+        if (maxloss<loss)
+          maxloss=loss;
+        if (minloss==0)
+          minloss=loss;
+        if (minloss>loss)
+          minloss=loss;
+      }        
+    }
+    newR.swap(R);
+    int count=0,skipped=0;
+    for (int k=0;k<deg;++k){
+      if (zi_done[k]>0)
+        ++count;
+      else if (zi_done[k]==-1)
+        ++skipped;      
+    }
+    if (debug_infolevel>0){
+      *logptr(contextptr) << " found=" << count << " skipped " << skipped << " delta=" << delta <<   " precision loss " << double(minloss)/nbits << " (" <<  minloss << "/" << nbits << "), cluster_search=" << cluster_start <<  ".." <<cluster_afterend << " time=" << CLOCK()*1e-6 << "\n";
+      if (debug_infolevel>2){
+        vdbl RR(R);
+        accurate_evalf(RR,45);
+        *logptr(contextptr) << "Current approx roots " << RR << "\n";
       }
     }
-    if (debug_infolevel)
-      *logptr(contextptr) << "Aberth mpfr: too many iterations " << N << " delta " << delta << "\n";
-    return 0;  
+    if (doing_cluster){
+      if (ok)
+        return 1;
+      continue;
+    }
+    if (
+        delta<=eps*(ok?deg:deg-count) || count==deg
+        ){
+      if (debug_infolevel)
+        *logptr(contextptr) << CLOCK()*1e-6 << " Aberth all roots found " << delta << "\n";      
+      ++ok;
+    }
+    // else ok=0;
+    if (ok==afteriter){
+      // rescale and translate
+      for (size_t j=0;j<R.size();++j){
+        R[j] = l*R[j] + dr;
+      }
+      return 1;
+    }
+    if (minloss>nbits && count==prevcount)
+      return -1;
+    prevcount=count;
   }
-
+  if (debug_infolevel)
+    *logptr(contextptr) << "Aberth mpfr: too many iterations " << N << " delta " << delta << "\n";
+  return -1;  
+}
+#endif
 
   dbl round(const dbl & z,const gen & pow2,int nbits){
     dbl res(z);
@@ -3791,7 +4057,7 @@ numerical root localization
     R=*exact(R,contextptr)._VECTptr;
     vdbl Prev(P);
     reverse(Prev.begin(),Prev.end());
-    vdbl newR(deg);
+    vdbl newR(R);
     int ok=0; double delta;
     for (int k=0;k<N;++k){
       delta=0;
@@ -3804,8 +4070,8 @@ numerical root localization
         if (K==cluster_afterend)
           ok=1;
       }
-      for (int i=0;i<deg;++i){
-        if (zi_done[i]==2 || (!ok && zi_done[i])){
+      for (int i=cluster_start;i<cluster_afterend;++i){
+        if (zi_done[i]>=2 || (!ok && zi_done[i])){
           // do the last iteration if root is not already isolated
           newR[i]=R[i];
           continue;
@@ -3856,7 +4122,7 @@ numerical root localization
           int cend=i+1;
           dbl sumR=zi;
           for (int k=cend;k<deg;++k){
-            if (absdbl(zi-R[k])<deg/pp){
+            if (absdbl(zi-R[k])<2*deg/pp){
               swap(R[cend],R[k]);
               swap(zi_done[cend],zi_done[k]);
               sumR+=R[cend];
@@ -3886,9 +4152,8 @@ numerical root localization
             if (debug_infolevel)
               *logptr(contextptr) << "aberth exact cluster=" << i << "," << cend << "\n";
             bool b=aberth_z(Pcluster,nbits,N,eps,Rcluster,i,cend,zi_done,contextptr);
-            for (int k=0;k<deg;++k){
-              if (!old[k])
-                R[k]=l*(inv(Rcluster[k])+z)+dr;
+            for (int k=i;k<cend;++k){
+              R[k]=newR[k]=inv(Rcluster[k])+z;
             }
             if (b)
               continue;
@@ -3945,65 +4210,72 @@ numerical root localization
     return false;  
   }
 
-  bool aberth(const vdbl & P0,vdbl & R,vdbl & rayon,int N,double eps,bool isolate,bool do_exact,GIAC_CONTEXT){
-    if (P0.size()==2){
-      R.clear();
-      R.push_back(-P0[1]/P0[0]);
-      rayon.clear();
-      rayon.push_back(-1);
-      return true;
-    }
-    vdbl P(P0);
-    int deg=P.size()-1;
-    bool realpoly=true;
-    for (int i=0;realpoly && i<deg;++i){
-      if (!is_exactly_zero(im(P0[i],contextptr)))
-        realpoly=false;
-    }
-    dbl dr=-find_shift(P,contextptr);
-    P=shift(P,dr);
-    int bits=128;
+// returns 0 on failure (e.g. division by maybe 0), -1 too many iterations, 1 ok, 2 isolated
+  bool aberth(const vdbl & P0,vdbl & R,vdbl & rayon,int N,double eps,int isolate,bool do_exact,GIAC_CONTEXT){
+  if (P0.size()==2){
     R.clear();
-    int aberth_Nmax=N;
-    rayon.resize(P.size()-1);
-    vector<short int> zi_done(P.size()-1,0);
-    int bit2=0,N2=0,eps2=0;
-    while (bits<=ABERTH_NBITSMAX){
-      //zi_done=vector<short int>(deg,0);
-      int b=do_exact?aberth_z(P,bits,aberth_Nmax,eps,R,0,deg,zi_done,contextptr):aberth_mpfr(P,realpoly,bits,aberth_Nmax,eps,R,rayon,0,P.size()-1,zi_done,isolate,contextptr);
-      if (b){
-        // if isolate is true, chk_isol will set zi_done[i] to 2 (root i is isolated) or 0
-        if (b==2 || !isolate || chk_isol(R,realpoly,rayon,zi_done,contextptr)){
-          for (size_t j=0;j<R.size();++j){
-            R[j] += dr;
-          }
-          return true;
+    R.push_back(-P0[1]/P0[0]);
+    rayon.clear();
+    rayon.push_back(-1);
+    return true;
+  }
+  vdbl P(P0);
+  int deg=P.size()-1;
+  dbl dr=-find_shift(P,contextptr);
+  P=shift(P,dr);
+  bool realpoly=true;
+  for (int i=0;realpoly && i<deg;++i){
+    if (!is_exactly_zero(im(P[i],contextptr)))
+      realpoly=false;
+  }
+  int bits=128; // nbits_start; // 512;
+  R.clear();
+  int Nmax=N;
+  rayon.resize(P.size()-1);
+  vector<short int> zi_done(P.size()-1,0);
+  int bit2=0,N2=0,eps2=0;
+  double eps0=eps;
+  while (bits<=ABERTH_NBITSMAX){
+    //zi_done=vector<short int>(deg,0);
+#ifdef HAVE_LIBMPFR    
+    int b=do_exact?aberth_z(P,bits,Nmax,eps,R,0,deg,zi_done,contextptr):aberth_mpfr(P,realpoly,bits,Nmax,eps,R,rayon,0,P.size()-1,zi_done,true,isolate,contextptr);
+#else
+    int b=aberth_z(P,bits,Nmax,eps,R,0,deg,zi_done,contextptr);
+#endif
+    bool bisol=b==2 || chk_isol(R,realpoly,isolate,rayon,eps0,zi_done,contextptr);
+    if (b>0){
+      // if isolate is true, chk_isol will set zi_done[i] to 2 (root i is isolated) or 0
+      if (b==2 || bisol){
+        for (size_t j=0;j<R.size();++j){
+          R[j] += dr;
         }
-        if (isolate){
-          ++eps2;
-          if (eps>1e-4)
-            eps=1e-8;
-          else if (eps<=1e-307)
-            return false;
-          else if (eps<1e-153)
-            eps=1e-307;
-          else
-            eps=eps*eps;
-          *logptr(contextptr) << "Root isolation: setting epsilon to " << eps << "\n";
-          if (eps2>bit2){
-            ++bit2;
-            bits *=2;
-          }
-          continue;
-        }
+        return true;
       }
-      else
-        zi_done=vector<short int>(deg,0);
-      ++bit2;
-      bits *= 2;
-      ++N2; aberth_Nmax*=1.2;
+      if (isolate){
+        ++eps2;
+        if (eps>1e-4)
+          eps=1e-8;
+        else if (eps>1e-40)
+          eps=eps*eps;
+        else if (eps<=1e-280)
+          return false;
+        else
+          eps=eps*1e-40;
+        *logptr(contextptr) << "Root isolation: setting epsilon to " << eps << "\n";
+        if (eps2>bit2){
+          ++bit2;
+          bits *=2;
+          clear_zi_done(zi_done);
+        }
+        continue;
+      }
     }
-    return false;
+    ++bit2;
+    bits *= 2;
+    clear_zi_done(zi_done);
+    ++N2; Nmax*=1.2;
+  }
+  return false;
   }
 
   bool read_poly(const string & s,vdbl & P,GIAC_CONTEXT){
@@ -4074,154 +4346,155 @@ numerical root localization
     return d;
   }
 
-#ifdef HAVE_LIBMPS
-  // time mpsolve -au -o30 -Ga mand255.pol (Aberth)
-  // time mpsolve -as -o30 -Ga mand255.pol (secular)
+#if defined HAVE_LIBMPS && defined HAVE_LIBMPFR
+// time mpsolve -au -o30 -Ga mand255.pol (Aberth)
+// time mpsolve -as -o30 -Ga mand255.pol (secular)
 
-  bool gen2mpq(const gen & R,mpq_t & rq){
-    if (R.type==_INT_){
-      mpq_set_si(rq,R.val,1);
-      return true;
-    }
-    if (R.type==_DOUBLE_){
-      mpq_set_d(rq,R._DOUBLE_val);
-      return true;
-    }
-    if (R.type==_ZINT){
-      mpq_set_z(rq,*R._ZINTptr);
-      return true;
-    }
-    if (R.type==_FRAC){
-      gen num=R._FRACptr->num,den=R._FRACptr->den;
-      num.uncoerce(); den.uncoerce();
-      mpq_set_num(rq,*num._ZINTptr);
-      mpq_set_den(rq,*den._ZINTptr);
-      return true;
-    }
-    return false;
+bool gen2mpq(const gen & R,mpq_t & rq){
+  if (R.type==_INT_){
+    mpq_set_si(rq,R.val,1);
+    return true;
   }
+  if (R.type==_DOUBLE_){
+    mpq_set_d(rq,R._DOUBLE_val);
+    return true;
+  }
+  if (R.type==_ZINT){
+    mpq_set_z(rq,*R._ZINTptr);
+    return true;
+  }
+  if (R.type==_FRAC){
+    gen num=R._FRACptr->num,den=R._FRACptr->den;
+    num.uncoerce(); den.uncoerce();
+    mpq_set_num(rq,*num._ZINTptr);
+    mpq_set_den(rq,*den._ZINTptr);
+    return true;
+  }
+  return false;
+}
 
-  int mps_solve(const vdbl & P,vdbl & R,vdbl & rayon,double eps,GIAC_CONTEXT){
-    int n=P.size()-1,nmps=53; R.clear(); rayon.clear();
-    mps_context *s;
-    s = mps_context_new ();
-    //mps_context_select_algorithm(s, MPS_ALGORITHM_STANDARD_MPSOLVE);
-    mps_context_select_algorithm(s, MPS_ALGORITHM_SECULAR_GA);
-    if (eps<=0)
-      mps_context_set_output_goal (s, MPS_OUTPUT_GOAL_ISOLATE);
-    else {
-      mps_context_set_output_goal (s, MPS_OUTPUT_GOAL_APPROXIMATE);
-      nmps=int(ceil(-log2(eps)));
-    }
-    *logptr(contextptr) << "MPS output bits=" << nmps << "\n";
-    mps_context_set_output_prec (s, nmps);
-    //mps_context_set_input_prec(s,0);
-    int I;
-    /*
-      for (I=0;I<=n;++I){
-      if (!is_cinteger(P[I]))
+  int mps_solve(const vdbl & P,vdbl & R,vdbl & rayon,double eps,int isolate,bool secular,GIAC_CONTEXT){
+  int n=P.size()-1,nmps=53; R.clear(); rayon.clear();
+  mps_context *s;
+  s = mps_context_new ();
+  mps_context_select_algorithm(s, secular?MPS_ALGORITHM_SECULAR_GA:MPS_ALGORITHM_STANDARD_MPSOLVE);
+  nmps=eps==0?giac::ABERTH_NBITSMAX:int(ceil(-log2(std::abs(eps))));;
+  if (isolate){
+    mps_context_set_output_goal (s, MPS_OUTPUT_GOAL_ISOLATE);
+    *logptr(contextptr) << "MPS " << (secular?"secular":"Aberth") << " goal isolate, output bits=" << nmps << "\n";
+  }
+  else { 
+    mps_context_set_output_goal (s, MPS_OUTPUT_GOAL_APPROXIMATE);
+    *logptr(contextptr) << "MPS " << (secular?"secular":"Aberth") << " goal approximate, output bits=" << nmps << "\n";
+  }
+  mps_context_set_output_prec (s, nmps);
+  //mps_context_set_input_prec(s,0);
+  int I;
+  /*
+  for (I=0;I<=n;++I){
+    if (!is_cinteger(P[I]))
       break;
-      }
-    */
-    mps_monomial_poly *p=0;
-    if (0 && I<=n){
-      string S=symb_horner(P,vx_var).print(contextptr);
-      p = MPS_MONOMIAL_POLY (mps_parse_inline_poly_from_string (s,S.c_str()));
-    }
-    else {
-      p = mps_monomial_poly_new (s, n);
-      mpq_t rq,iq;
-      mpq_init(rq); mpq_init(iq);
-      for (int i=0;i<=n;++i){
-        dbl R,I;
-        reim( P[n-i],R,I,contextptr);
-        if (R.type==_DOUBLE_ || I.type==_DOUBLE_ || R.type==_REAL || I.type==_REAL){
-          R=evalf_double(R,1,contextptr);
-          I=evalf_double(I,1,contextptr);
-          mps_monomial_poly_set_coefficient_d (s, p, i,R._DOUBLE_val,I._DOUBLE_val);
-          continue;
-        }
-        if (!gen2mpq(R,rq))
-          return -1;
-        if (!gen2mpq(I,iq))
-          return -1;
-        mps_monomial_poly_set_coefficient_q (s, p, i,rq,iq);
-      }
-      mpq_clear(rq); mpq_clear(iq);
-      /* 
-       
-         mps_monomial_poly_set_coefficient_q (s, p, 0, m_one, zero); 
-         mps_monomial_poly_set_coefficient_q (s, p, n, one, zero);  
-       
-         for (int i=0;i<=n;++i){
-         dbl R,I;
-         reim( evalf_double(P[n-i],1,contextptr),R,I,contextptr);
-         mps_monomial_poly_set_coefficient_d (s, p, i,R._DOUBLE_val, I._DOUBLE_val); 
-         }
-      */
-    }
-    /* Set the input polynomial */
-    mps_context_set_input_poly (s, MPS_POLYNOMIAL (p));
-  
-    /* Actually solve the polynomial */
-    double t1=CLOCK()*1e-6;
-    mps_mpsolve (s);
-    double t2=CLOCK()*1e-6;
-    *logptr(contextptr) << "MPS solve time " << t2-t1 << "\n";
-  
-    R.clear();
-    rdpe_t * drad = rdpe_valloc (n); // disk radius
-    mpc_t * mroot = mpc_valloc (n);
-    mpc_vinit2 (mroot, n, nmps);   
-    mps_context_get_roots_m (s, &mroot, &drad);
-    mpfr_t tmp; mpfr_init2(tmp,64);
-    for (int i=0;i<n;++i){
-      mpfr_t mr,mi; dbl gr,gi;
-      double d1=rdpe_log(drad[i]);
-      rayon.push_back(exp(d1));
-      mpfr_set_f(tmp,mpc_Re(mroot[i]),MPFR_RNDN);
-      gr=gen(real_object(tmp));
-      if (!is_exactly_zero(gr)){
-        double d2=logabsdbl(gr);
-        double d=d2-d1;
-        if (d<0)
-          gr=0;
-        else {
-          int prec=d/M_LN2; // mpf_get_prec(mpc_Re(mroot[i]));
-          mpfr_init2(mr,prec); 
-          mpfr_set_f(mr,mpc_Re(mroot[i]),MPFR_RNDN);
-          gr=gen(real_object(mr));
-          mpfr_clear(mr);
-        }
-      }
-      mpfr_set_f(tmp,mpc_Im(mroot[i]),MPFR_RNDN);
-      gi=gen(real_object(tmp));
-      if (!is_exactly_zero(gi)){
-        // cout << i << " " << gi << "\n";
-        double d2=logabsdbl(gi);
-        double d=d2-d1;
-        if (d<0)
-          gi=0;
-        else {
-          int prec=d/M_LN2; // mpf_get_prec(mpc_Im(mroot[i]));
-          mpfr_init2(mi,prec);
-          mpfr_set_f(mi,mpc_Im(mroot[i]),MPFR_RNDN);
-          gi=gen(real_object(mi));
-          mpfr_clear(mi);
-        }
-      }
-      R.push_back(gen(gr,gi));
-    }
-    mpfr_clear(tmp);
-    mpc_vclear (mroot, n);
-    free (mroot);
-    free (drad);
-    // mps_monomial_poly_free(s,p); // expects a mps_polynomial * ??
-    mps_context_free(s);
-    return 0;
   }
+  */
+  mps_monomial_poly *p=0;
+  if (0 && I<=n){
+    string S=symb_horner(P,vx_var).print(contextptr);
+    p = MPS_MONOMIAL_POLY (mps_parse_inline_poly_from_string (s,S.c_str()));
+  }
+  else {
+    p = mps_monomial_poly_new (s, n);
+    mpq_t rq,iq;
+    mpq_init(rq); mpq_init(iq);
+    for (int i=0;i<=n;++i){
+      dbl R,I;
+      reim( P[n-i],R,I,contextptr);
+      if (R.type==_DOUBLE_ || I.type==_DOUBLE_ || R.type==_REAL || I.type==_REAL){
+        R=evalf_double(R,1,contextptr);
+        I=evalf_double(I,1,contextptr);
+        mps_monomial_poly_set_coefficient_d (s, p, i,R._DOUBLE_val,I._DOUBLE_val);
+        continue;
+      }
+      if (!gen2mpq(R,rq))
+        return -1;
+      if (!gen2mpq(I,iq))
+        return -1;
+      mps_monomial_poly_set_coefficient_q (s, p, i,rq,iq);
+    }
+    mpq_clear(rq); mpq_clear(iq);
+    /* 
+       
+       mps_monomial_poly_set_coefficient_q (s, p, 0, m_one, zero); 
+       mps_monomial_poly_set_coefficient_q (s, p, n, one, zero);  
+       
+       for (int i=0;i<=n;++i){
+       dbl R,I;
+       reim( evalf_double(P[n-i],1,contextptr),R,I,contextptr);
+       mps_monomial_poly_set_coefficient_d (s, p, i,R._DOUBLE_val, I._DOUBLE_val); 
+       }
+    */
+  }
+  /* Set the input polynomial */
+  mps_context_set_input_poly (s, MPS_POLYNOMIAL (p));
+  
+  /* Actually solve the polynomial */
+  double t1=CLOCK()*1e-6;
+  mps_mpsolve (s);
+  double t2=CLOCK()*1e-6;
+  *logptr(contextptr) << "MPS solve time " << t2-t1 << "\n";
+  
+  R.clear();
+  rdpe_t * drad = rdpe_valloc (n); // disk radius
+  mpc_t * mroot = mpc_valloc (n);
+  mpc_vinit2 (mroot, n, nmps);   
+  mps_context_get_roots_m (s, &mroot, &drad);
+  mpfr_t tmp; mpfr_init2(tmp,64);
+  for (int i=0;i<n;++i){
+    mpfr_t mr,mi; dbl gr,gi;
+    double d1=rdpe_log(drad[i]);
+    rayon.push_back(exp(d1));
+    mpfr_set_f(tmp,mpc_Re(mroot[i]),MPFR_RNDN);
+    gr=gen(real_object(tmp));
+    if (!is_exactly_zero(gr)){
+      double d2=logabsdbl(gr);
+      double d=d2-d1;
+      if (d<0)
+        gr=0;
+      else {
+        int prec=d/M_LN2; // mpf_get_prec(mpc_Re(mroot[i]));
+        mpfr_init2(mr,prec); 
+        mpfr_set_f(mr,mpc_Re(mroot[i]),MPFR_RNDN);
+        gr=gen(real_object(mr));
+        mpfr_clear(mr);
+      }
+    }
+    mpfr_set_f(tmp,mpc_Im(mroot[i]),MPFR_RNDN);
+    gi=gen(real_object(tmp));
+    if (!is_exactly_zero(gi)){
+      // cout << i << " " << gi << "\n";
+      double d2=logabsdbl(gi);
+      double d=d2-d1;
+      if (d<0)
+        gi=0;
+      else {
+        int prec=d/M_LN2; // mpf_get_prec(mpc_Im(mroot[i]));
+        mpfr_init2(mi,prec);
+        mpfr_set_f(mi,mpc_Im(mroot[i]),MPFR_RNDN);
+        gi=gen(real_object(mi));
+        mpfr_clear(mi);
+      }
+    }
+    R.push_back(gen(gr,gi));
+  }
+  mpfr_clear(tmp);
+  mpc_vclear (mroot, n);
+  free (mroot);
+  free (drad);
+  // mps_monomial_poly_free(s,p); // expects a mps_polynomial * ??
+  mps_context_free(s);
+  return 0;
+}
 #else
-  int mps_solve(const vdbl & P,vdbl & R,vdbl & rayon,double eps,GIAC_CONTEXT){
+  int mps_solve(const vdbl & P,vdbl & R,vdbl & rayon,double eps,int isolate,bool secular,GIAC_CONTEXT){
     return -1;
   }
 #endif

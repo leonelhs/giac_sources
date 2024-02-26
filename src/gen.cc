@@ -4387,10 +4387,12 @@ namespace giac {
 
   gen gen::squarenorm(GIAC_CONTEXT) const {
     switch (type ) {
-    case _INT_: case _DOUBLE_: case _FLOAT_: case _ZINT: case _REAL:
+    case _INT_: case _DOUBLE_: case _FLOAT_: case _ZINT: 
       return (*this) * (*this);
+    case _REAL:
+      return sq(*this);
     case _CPLX:
-      return ( (*_CPLXptr)*(*_CPLXptr)+(*(_CPLXptr+1)*(*(_CPLXptr+1))) );   
+      return sq(*_CPLXptr)+sq(*(_CPLXptr+1));   
     case _FRAC:
       return fraction(_FRACptr->num.squarenorm(contextptr),_FRACptr->den.squarenorm(contextptr));
     default: 
