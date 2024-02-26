@@ -2643,7 +2643,7 @@ namespace giac {
     if (g.type==_EXT){
       gen a,b;
       if (has_evalf(*g._EXTptr,a,level,contextptr) && has_evalf(*(g._EXTptr+1),b,level,contextptr)){
-	a=alg_evalf(a,b,contextptr);
+	a=alg_evalf(a,b,*(g._EXTptr+2),contextptr);
 	return a.type==_EXT?false:has_evalf(a,res,level,contextptr);
       }
       return false;
@@ -2752,7 +2752,10 @@ namespace giac {
 	return true;
       }
       if (_SYMBptr->sommet==at_rootof){
-	evaled=approx_rootof(_SYMBptr->feuille.evalf(level,contextptr),contextptr);
+        gen f=_SYMBptr->feuille;
+        if (f.type==_VECT && f._VECTptr->size()>2 && f[1].type!=_VECT)
+          f=makevecteur(makevecteur(1,0),f);
+	evaled=approx_rootof(f.evalf(level,contextptr),contextptr);
 	return true;
       }
       if (_SYMBptr->sommet==at_cell)
@@ -2786,7 +2789,7 @@ namespace giac {
     case _MOD: case _ROOT:
       return false; // replace in RPN mode
     case _EXT:
-      evaled=alg_evalf(_EXTptr->eval(level,contextptr),(_EXTptr+1)->eval(level,contextptr),contextptr);
+      evaled=alg_evalf(_EXTptr->eval(level,contextptr),(_EXTptr+1)->eval(level,contextptr),*(_EXTptr+2),contextptr);
       return true;
     case _POLY:
       evaled=apply(*_POLYptr,no_context_evalf);
@@ -4263,10 +4266,12 @@ namespace giac {
   }
 
   // workaround for intervals
-  static bool is_zero_or_contains(const gen & g,GIAC_CONTEXT){
+  bool is_zero_or_contains(const gen & g,GIAC_CONTEXT){
 #ifdef NO_RTTI
     return is_zero(g,contextptr);
 #else
+    if (g.type==_CPLX)
+      return is_zero_or_contains(*g._CPLXptr,contextptr) && is_zero_or_contains(*(g._CPLXptr+1),contextptr);
     if (is_zero(g,contextptr))
       return true;
     if (g.type!=_REAL)
@@ -8757,7 +8762,9 @@ namespace giac {
 	return true;
       if (a.subtype!=b.subtype){
 	if ( (a.subtype==_MATRIX__VECT && b.subtype==0) ||
-	     (b.subtype==_MATRIX__VECT && a.subtype==0) )
+	     (b.subtype==_MATRIX__VECT && a.subtype==0) ||
+             (a.subtype==_SORTED__VECT && b.subtype==_SEQ__VECT) ||
+             (a.subtype==_SEQ__VECT && b.subtype==_SORTED__VECT))
 	  ; // don't consider them different
 	else
 	  return false;
@@ -9800,8 +9807,12 @@ namespace giac {
     else {
       if (has_inf_or_undef(i))
 	return undef;
-      if (*this==x__IDNT_e || *this==t__IDNT_e)
-	return i; // avoid warning for expressions used as function if var is x or t
+      if (*this==x__IDNT_e || *this==t__IDNT_e){
+        if (i.type==_IDNT && i._IDNTptr->quoted)
+          ; // for e.g. desolve(t*x'+x=0), we don't want x(t) to be evaled to t
+        else
+          return i; // avoid warning for expressions used as function if var is x or t
+      }
       return symb_of(*this,i);
     }
   }
@@ -9845,6 +9856,7 @@ namespace giac {
     case _CPLX: 
       {
 	gen a1=abs(*this,context0),a2=abs(other,context0);
+	//gen a1=squarenorm(context0),a2=other.squarenorm(context0);
 	if (a1!=a2)
 	  return is_strictly_greater(a1,a2,context0);
 	a1=re(context0);
@@ -11156,7 +11168,7 @@ namespace giac {
     case _INT___CPLX: case _ZINT__CPLX: case _CPLX__CPLX:   
       return(a-b*iquo(a,b));
     case _VECT__VECT:
-      return (*a._VECTptr)%(*b._VECTptr);
+      return gen((*a._VECTptr)%(*b._VECTptr),_POLY1__VECT);
     default:
       return gentypeerr(gettext("%"));
     }

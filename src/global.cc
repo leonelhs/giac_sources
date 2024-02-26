@@ -3665,6 +3665,8 @@ extern "C" void Sleep(unsigned int miliSecond);
   int MAX_PROD_EXPAND_SIZE=4096;
   int ABERTH_NMAX=25;
   int ABERTH_NBITSMAX=8192;
+  int LAZY_ALG_EXT=0;
+  int ALG_EXT_DIGITS=180;
 #if defined RTOS_THREADX || defined BESTA_OS || defined(KHICAS)
 #ifdef BESTA_OS
   int LIST_SIZE_LIMIT = 100000 ;
@@ -3701,6 +3703,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   int GBASIS_DETERMINISTIC=20;
   int GBASISF4_MAX_TOTALDEG=1024;
   int GBASISF4_MAXITER=256;
+  int RUR_PARAM_MAX_DEG=128;
   // int GBASISF4_BUCHBERGER=5;
   const int BUFFER_SIZE=512;
 #else
@@ -3753,6 +3756,7 @@ extern "C" void Sleep(unsigned int miliSecond);
   int GBASIS_DETERMINISTIC=50;
   int GBASISF4_MAX_TOTALDEG=16384;
   int GBASISF4_MAXITER=1024;
+  int RUR_PARAM_MAX_DEG=128;
   // int GBASISF4_BUCHBERGER=5;
   const int BUFFER_SIZE=16384;
 #endif
@@ -4618,8 +4622,12 @@ extern "C" void Sleep(unsigned int miliSecond);
       s=giac_aide_location;
       s=s.substr(0,s.size()-8);
 #endif
-      if (s.size())
-	read_config(s+"/xcas.rc",contextptr,verbose);
+      if (s.size()){
+        if (s[s.size()-1]=='/')
+          read_config(s+"xcas.rc",contextptr,verbose);
+        else
+          read_config(s+"/xcas.rc",contextptr,verbose);
+      }
       s=home_directory();
       if (s.size()<2)
 	s="";

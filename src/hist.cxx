@@ -5798,14 +5798,19 @@ Fl_Window* Xcas_run(int argc,char ** argv) {
   //fl_widget_texprint_function=&fltk_fl_widget_texprint_function;
   //fl_widget_updatepict_function=&fltk_fl_widget_updatepict_function;
   Xcas_Page_Format_Output->value("A4");
-  giac::protected_read_config(giac::context0); // read xcas.rc
+  int nargs=0;
+  int argstart=Fl::args(argc,argv,nargs);
+  if (argc>argstart && strncmp(argv[argstart],"config=",7)==0){
+    giac::read_config(string(argv[argstart]).substr(7,strlen(argv[argstart])-7),giac::context0,true);
+    ++argstart;
+  }
+  else
+    giac::protected_read_config(giac::context0); // read xcas.rc
   xcas::read_recent_filenames(Xcas_main_menu); 
   xcas::Xcas_load_filename=load_filename;
   giac::secure_run=false;
   xcas::interrupt_button=true;
   xcas::Keyboard_Switch=Xcas_Keyboard_Switch;
-  int nargs=0;
-  int argstart=Fl::args(argc,argv,nargs);
   Xcas_Main_Window_->show(argc,argv);
   Fl_Group::current(Xcas_Script_Window);
   xcas::Editeur * t = new xcas::Editeur(0,0,Xcas_Script_Window->w(),Xcas_Script_Window->h());

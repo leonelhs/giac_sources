@@ -33,6 +33,11 @@ namespace giac {
 #endif // ndef NO_NAMESPACE_GIAC
 
   struct unary_function_ptr;
+  struct ext_param_t {
+    int chkext;
+    int digits;
+    int max_digits;
+  };
   // helper for symbolic functions working on expressions
   // if the user enters a function instead of an expression
   // Example of use in _factor
@@ -48,6 +53,9 @@ namespace giac {
   gen ratnormal(const gen & e,GIAC_CONTEXT0);
   gen recursive_ratnormal(const gen & e,GIAC_CONTEXT);
   bool algnum_normal(gen & e,GIAC_CONTEXT); // simplification of expression inside a real algebraic extension of Q, requires gbasis/rur implementation
+  // redtype=0 (rref+fullreduction), 1 (rref upper), 2 (det), 3 (lu)
+  bool algnum_rref(const matrice & a, matrice & res, vecteur & pivots, gen & det,int redtype,GIAC_CONTEXT);
+  
   // gen normal(const gen & e); // rational simplifications
   gen normal(const gen & e,GIAC_CONTEXT); // rational simplifications
   gen normal(const gen & e,bool distribute_div,GIAC_CONTEXT);

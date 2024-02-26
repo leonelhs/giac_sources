@@ -396,6 +396,9 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   // Should be lower for larger coeff
   extern int MAX_ALG_EXT_ORDER_SIZE; // x^1/d extension not algebraic if d>
   extern int MAX_COMMON_ALG_EXT_ORDER_SIZE;
+  extern int LAZY_ALG_EXT;
+  extern int ALG_EXT_DIGITS;
+  // 0 use a unique algebraic extension, >0: don't search a unique alg ext if degree is >
   extern int TRY_FU_UPRIME;
   extern int SOLVER_MAX_ITERATE;
   extern int MAX_PRINTABLE_ZINT;
@@ -403,6 +406,7 @@ Boolean isLegalUTF8Sequence(const UTF8 *source, const UTF8 *sourceEnd);
   extern int GBASIS_DETERMINISTIC;
   extern int GBASISF4_MAX_TOTALDEG;
   extern int GBASISF4_MAXITER;
+  extern int RUR_PARAM_MAX_DEG;
   // extern int GBASISF4_BUCHBERGER;
   extern unsigned max_pairs_by_iteration; 
   extern unsigned simult_primes,simult_primes2,simult_primes_seuil2,simult_primes3,simult_primes_seuil3; 

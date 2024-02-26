@@ -411,8 +411,13 @@ static mp_obj_t graphic_draw_string(size_t n_args, const mp_obj_t *args) {
   const char * text = mp_obj_str_get_str(args[2]);
   if (n_args>=4)
     c = mp_get_color(args[3]);
-  if (n_args>=5)
-    bg = mp_get_color(args[4]);
+  if (n_args>=5){
+    int c=mp_get_color(args[4]);
+    if (c==-1)
+      font=mp_obj_str_get_str(args[4]);
+    else
+      bg =c;
+  }
   const char * font = 0;
   if (n_args>=6)
     font=mp_obj_str_get_str(args[5]);
