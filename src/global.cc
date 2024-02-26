@@ -4622,13 +4622,17 @@ extern "C" void Sleep(unsigned int miliSecond);
       return "/Applications/usr/share/giac/";
     return "/Applications/usr/share/giac/";
 #endif
-#if defined WIN32
+#if defined WIN32 // check for default install path
 #ifdef MINGW
-    return "c:\\xcaswin\\";
+    string ns("c:\\xcaswin\\");
 #else
-    return "/cygdrive/c/xcas/";
+    string ns("/cygdrive/c/xcas/");
 #endif
-#endif
+    if (!access((ns+"aide_cas").c_str(),R_OK)){
+      CERR << "// Giac share root-directory:" << ns << '\n';
+      return ns;
+    }
+#endif // WIN32
     string s(giac_aide_location); // ".../aide_cas"
     // test if aide_cas is there, if not test at xcasroot() return ""
     if (!access(s.c_str(),R_OK)){

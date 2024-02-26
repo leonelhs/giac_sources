@@ -5201,6 +5201,9 @@ namespace giac {
       env.moduloon=true;
       env.modulo=m;
     }
+    gen coeff; int tt=coefftype(B,coeff);
+    if (tt==_USER)
+      env.coeff=coeff;
     // if (!B.empty() && !is_zero(m)) mulmodpoly(B,invmod(B.front(),m),&env,B);
     modpoly res=powmod(A,n,B,&env);
     polynome R;

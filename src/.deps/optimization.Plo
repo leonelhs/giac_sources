@@ -1,4 +1,4 @@
-optimization.lo: optimization.cc /usr/include/stdc-predef.h giacPCH.h \
+optimization.lo: optimization.cc /usr/include/stdc-predef.h gen.h \
  config.h first.h /usr/include/c++/8/cstddef \
  /usr/include/x86_64-linux-gnu/c++/8/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/8/bits/os_defines.h \
@@ -79,46 +79,51 @@ optimization.lo: optimization.cc /usr/include/stdc-predef.h giacPCH.h \
  /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h \
  /usr/include/alloca.h \
  /usr/include/x86_64-linux-gnu/bits/stdlib-bsearch.h \
- /usr/include/x86_64-linux-gnu/bits/stdlib-float.h index.h vector.h \
- /usr/include/string.h /usr/include/strings.h /usr/include/c++/8/vector \
+ /usr/include/x86_64-linux-gnu/bits/stdlib-float.h /usr/include/mpfr.h \
+ /usr/include/gmpxx.h /usr/include/c++/8/cstring /usr/include/string.h \
+ /usr/include/strings.h /usr/include/c++/8/limits \
+ /usr/include/c++/8/utility /usr/include/c++/8/bits/stl_relops.h \
+ /usr/include/c++/8/bits/stl_pair.h /usr/include/c++/8/bits/move.h \
+ /usr/include/c++/8/bits/concept_check.h /usr/include/c++/8/type_traits \
+ /usr/include/c++/8/initializer_list /usr/include/c++/8/algorithm \
  /usr/include/c++/8/bits/stl_algobase.h \
  /usr/include/c++/8/bits/functexcept.h \
  /usr/include/c++/8/bits/exception_defines.h \
  /usr/include/c++/8/ext/numeric_traits.h \
- /usr/include/c++/8/bits/stl_pair.h /usr/include/c++/8/bits/move.h \
- /usr/include/c++/8/bits/concept_check.h /usr/include/c++/8/type_traits \
  /usr/include/c++/8/bits/stl_iterator_base_types.h \
  /usr/include/c++/8/bits/stl_iterator_base_funcs.h \
  /usr/include/c++/8/debug/assertions.h \
  /usr/include/c++/8/bits/stl_iterator.h \
  /usr/include/c++/8/bits/ptr_traits.h /usr/include/c++/8/debug/debug.h \
  /usr/include/c++/8/bits/predefined_ops.h \
- /usr/include/c++/8/bits/allocator.h \
- /usr/include/x86_64-linux-gnu/c++/8/bits/c++allocator.h \
- /usr/include/c++/8/ext/new_allocator.h /usr/include/c++/8/new \
+ /usr/include/c++/8/bits/stl_algo.h /usr/include/c++/8/cstdlib \
+ /usr/include/c++/8/bits/algorithmfwd.h \
+ /usr/include/c++/8/bits/stl_heap.h /usr/include/c++/8/bits/stl_tempbuf.h \
+ /usr/include/c++/8/bits/stl_construct.h /usr/include/c++/8/new \
  /usr/include/c++/8/exception /usr/include/c++/8/bits/exception.h \
  /usr/include/c++/8/bits/exception_ptr.h \
  /usr/include/c++/8/bits/cxxabi_init_exception.h \
  /usr/include/c++/8/typeinfo /usr/include/c++/8/bits/hash_bytes.h \
  /usr/include/c++/8/bits/nested_exception.h \
- /usr/include/c++/8/bits/stl_construct.h \
  /usr/include/c++/8/ext/alloc_traits.h \
  /usr/include/c++/8/bits/alloc_traits.h \
- /usr/include/c++/8/bits/stl_uninitialized.h \
- /usr/include/c++/8/bits/stl_vector.h /usr/include/c++/8/initializer_list \
- /usr/include/c++/8/bits/stl_bvector.h \
- /usr/include/c++/8/bits/functional_hash.h \
- /usr/include/c++/8/bits/range_access.h \
- /usr/include/c++/8/bits/vector.tcc /usr/include/c++/8/iostream \
- /usr/include/c++/8/ostream /usr/include/c++/8/ios \
+ /usr/include/c++/8/bits/uniform_int_dist.h /usr/include/c++/8/string \
  /usr/include/c++/8/bits/char_traits.h /usr/include/c++/8/cstdint \
  /usr/lib/gcc/x86_64-linux-gnu/8/include/stdint.h /usr/include/stdint.h \
  /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
+ /usr/include/c++/8/bits/allocator.h \
+ /usr/include/x86_64-linux-gnu/c++/8/bits/c++allocator.h \
+ /usr/include/c++/8/ext/new_allocator.h \
  /usr/include/c++/8/bits/localefwd.h \
  /usr/include/x86_64-linux-gnu/c++/8/bits/c++locale.h \
  /usr/include/c++/8/clocale /usr/include/locale.h \
  /usr/include/x86_64-linux-gnu/bits/locale.h /usr/include/c++/8/cctype \
- /usr/include/ctype.h /usr/include/c++/8/bits/ios_base.h \
+ /usr/include/ctype.h /usr/include/c++/8/bits/ostream_insert.h \
+ /usr/include/c++/8/bits/cxxabi_forced.h \
+ /usr/include/c++/8/bits/stl_function.h \
+ /usr/include/c++/8/backward/binders.h \
+ /usr/include/c++/8/bits/range_access.h \
+ /usr/include/c++/8/bits/basic_string.h \
  /usr/include/c++/8/ext/atomicity.h \
  /usr/include/x86_64-linux-gnu/c++/8/bits/gthr.h \
  /usr/include/x86_64-linux-gnu/c++/8/bits/gthr-default.h \
@@ -132,24 +137,22 @@ optimization.lo: optimization.cc /usr/include/stdc-predef.h giacPCH.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
  /usr/include/x86_64-linux-gnu/c++/8/bits/atomic_word.h \
- /usr/include/c++/8/bits/locale_classes.h /usr/include/c++/8/string \
- /usr/include/c++/8/bits/ostream_insert.h \
- /usr/include/c++/8/bits/cxxabi_forced.h \
- /usr/include/c++/8/bits/stl_function.h \
- /usr/include/c++/8/backward/binders.h \
- /usr/include/c++/8/bits/basic_string.h \
- /usr/include/c++/8/ext/string_conversions.h /usr/include/c++/8/cstdlib \
- /usr/include/c++/8/cerrno /usr/include/errno.h \
- /usr/include/x86_64-linux-gnu/bits/errno.h /usr/include/linux/errno.h \
- /usr/include/x86_64-linux-gnu/asm/errno.h \
+ /usr/include/c++/8/ext/string_conversions.h /usr/include/c++/8/cerrno \
+ /usr/include/errno.h /usr/include/x86_64-linux-gnu/bits/errno.h \
+ /usr/include/linux/errno.h /usr/include/x86_64-linux-gnu/asm/errno.h \
  /usr/include/asm-generic/errno.h /usr/include/asm-generic/errno-base.h \
  /usr/include/x86_64-linux-gnu/bits/types/error_t.h \
- /usr/include/c++/8/bits/basic_string.tcc \
+ /usr/include/c++/8/bits/functional_hash.h \
+ /usr/include/c++/8/bits/basic_string.tcc /usr/include/c++/8/stdexcept \
+ /usr/include/c++/8/cfloat \
+ /usr/lib/gcc/x86_64-linux-gnu/8/include/float.h /usr/include/mpfi.h \
+ /usr/include/c++/8/iostream /usr/include/c++/8/ostream \
+ /usr/include/c++/8/ios /usr/include/c++/8/bits/ios_base.h \
+ /usr/include/c++/8/bits/locale_classes.h \
  /usr/include/c++/8/bits/locale_classes.tcc \
  /usr/include/c++/8/system_error \
  /usr/include/x86_64-linux-gnu/c++/8/bits/error_constants.h \
- /usr/include/c++/8/stdexcept /usr/include/c++/8/streambuf \
- /usr/include/c++/8/bits/streambuf.tcc \
+ /usr/include/c++/8/streambuf /usr/include/c++/8/bits/streambuf.tcc \
  /usr/include/c++/8/bits/basic_ios.h \
  /usr/include/c++/8/bits/locale_facets.h /usr/include/c++/8/cwctype \
  /usr/include/wctype.h /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
@@ -159,22 +162,15 @@ optimization.lo: optimization.cc /usr/include/stdc-predef.h giacPCH.h \
  /usr/include/c++/8/bits/locale_facets.tcc \
  /usr/include/c++/8/bits/basic_ios.tcc \
  /usr/include/c++/8/bits/ostream.tcc /usr/include/c++/8/istream \
- /usr/include/c++/8/bits/istream.tcc /usr/include/c++/8/unordered_map \
- /usr/include/c++/8/ext/aligned_buffer.h \
- /usr/include/c++/8/bits/hashtable.h \
- /usr/include/c++/8/bits/hashtable_policy.h /usr/include/c++/8/tuple \
- /usr/include/c++/8/utility /usr/include/c++/8/bits/stl_relops.h \
- /usr/include/c++/8/array /usr/include/c++/8/bits/uses_allocator.h \
- /usr/include/c++/8/bits/invoke.h /usr/include/c++/8/bits/unordered_map.h \
+ /usr/include/c++/8/bits/istream.tcc vector.h /usr/include/c++/8/vector \
+ /usr/include/c++/8/bits/stl_uninitialized.h \
+ /usr/include/c++/8/bits/stl_vector.h \
+ /usr/include/c++/8/bits/stl_bvector.h /usr/include/c++/8/bits/vector.tcc \
  /usr/include/c++/8/map /usr/include/c++/8/bits/stl_tree.h \
- /usr/include/c++/8/bits/stl_map.h /usr/include/c++/8/bits/stl_multimap.h \
- gen.h /usr/include/mpfr.h /usr/include/gmpxx.h \
- /usr/include/c++/8/cstring /usr/include/c++/8/limits \
- /usr/include/c++/8/algorithm /usr/include/c++/8/bits/stl_algo.h \
- /usr/include/c++/8/bits/algorithmfwd.h \
- /usr/include/c++/8/bits/stl_heap.h /usr/include/c++/8/bits/stl_tempbuf.h \
- /usr/include/c++/8/bits/uniform_int_dist.h /usr/include/c++/8/cfloat \
- /usr/lib/gcc/x86_64-linux-gnu/8/include/float.h /usr/include/mpfi.h \
+ /usr/include/c++/8/ext/aligned_buffer.h \
+ /usr/include/c++/8/bits/stl_map.h /usr/include/c++/8/tuple \
+ /usr/include/c++/8/array /usr/include/c++/8/bits/uses_allocator.h \
+ /usr/include/c++/8/bits/invoke.h /usr/include/c++/8/bits/stl_multimap.h \
  dispatch.h global.h /usr/include/unistd.h \
  /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
@@ -202,7 +198,10 @@ optimization.lo: optimization.cc /usr/include/stdc-predef.h giacPCH.h \
  /usr/include/x86_64-linux-gnu/bits/ss_flags.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sigstack.h \
  /usr/include/x86_64-linux-gnu/bits/sigthread.h help.h tinymt32.h \
- /usr/include/inttypes.h vecteur.h /usr/include/c++/8/complex \
+ /usr/include/inttypes.h vecteur.h index.h \
+ /usr/include/c++/8/unordered_map /usr/include/c++/8/bits/hashtable.h \
+ /usr/include/c++/8/bits/hashtable_policy.h \
+ /usr/include/c++/8/bits/unordered_map.h /usr/include/c++/8/complex \
  /usr/include/c++/8/sstream /usr/include/c++/8/bits/sstream.tcc \
  /usr/include/gsl/gsl_vector.h \
  /usr/include/gsl/gsl_vector_complex_long_double.h \
@@ -240,9 +239,9 @@ optimization.lo: optimization.cc /usr/include/stdc-predef.h giacPCH.h \
  /usr/include/gsl/gsl_permutation.h fraction.h poly.h monomial.h \
  /usr/include/c++/8/functional /usr/include/c++/8/bits/refwrap.h \
  /usr/include/c++/8/bits/std_function.h threaded.h giacintl.h \
- /usr/include/libintl.h identificateur.h symbolic.h unary.h usual.h \
- series.h sym2poly.h gausspol.h static.h moyal.h subst.h ifactor.h prog.h \
- rpn.h plot.h plot3d.h /usr/include/FL/Enumerations.H \
+ /usr/include/libintl.h giacPCH.h identificateur.h symbolic.h unary.h \
+ usual.h series.h sym2poly.h gausspol.h static.h moyal.h subst.h \
+ ifactor.h prog.h rpn.h plot.h plot3d.h /usr/include/FL/Enumerations.H \
  /usr/include/FL/abi-version.h /usr/include/FL/Fl_Export.H \
  /usr/include/FL/fl_types.h pari.h tex.h intg.h ti89.h solve.h alg_ext.h \
  lin.h derive.h misc.h /usr/include/x86_64-linux-gnu/sys/time.h desolve.h \
@@ -307,7 +306,7 @@ optimization.lo: optimization.cc /usr/include/stdc-predef.h giacPCH.h \
 
 /usr/include/stdc-predef.h:
 
-giacPCH.h:
+gen.h:
 
 config.h:
 
@@ -497,23 +496,21 @@ first.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
-index.h:
+/usr/include/mpfr.h:
 
-vector.h:
+/usr/include/gmpxx.h:
+
+/usr/include/c++/8/cstring:
 
 /usr/include/string.h:
 
 /usr/include/strings.h:
 
-/usr/include/c++/8/vector:
+/usr/include/c++/8/limits:
 
-/usr/include/c++/8/bits/stl_algobase.h:
+/usr/include/c++/8/utility:
 
-/usr/include/c++/8/bits/functexcept.h:
-
-/usr/include/c++/8/bits/exception_defines.h:
-
-/usr/include/c++/8/ext/numeric_traits.h:
+/usr/include/c++/8/bits/stl_relops.h:
 
 /usr/include/c++/8/bits/stl_pair.h:
 
@@ -522,6 +519,18 @@ vector.h:
 /usr/include/c++/8/bits/concept_check.h:
 
 /usr/include/c++/8/type_traits:
+
+/usr/include/c++/8/initializer_list:
+
+/usr/include/c++/8/algorithm:
+
+/usr/include/c++/8/bits/stl_algobase.h:
+
+/usr/include/c++/8/bits/functexcept.h:
+
+/usr/include/c++/8/bits/exception_defines.h:
+
+/usr/include/c++/8/ext/numeric_traits.h:
 
 /usr/include/c++/8/bits/stl_iterator_base_types.h:
 
@@ -537,11 +546,17 @@ vector.h:
 
 /usr/include/c++/8/bits/predefined_ops.h:
 
-/usr/include/c++/8/bits/allocator.h:
+/usr/include/c++/8/bits/stl_algo.h:
 
-/usr/include/x86_64-linux-gnu/c++/8/bits/c++allocator.h:
+/usr/include/c++/8/cstdlib:
 
-/usr/include/c++/8/ext/new_allocator.h:
+/usr/include/c++/8/bits/algorithmfwd.h:
+
+/usr/include/c++/8/bits/stl_heap.h:
+
+/usr/include/c++/8/bits/stl_tempbuf.h:
+
+/usr/include/c++/8/bits/stl_construct.h:
 
 /usr/include/c++/8/new:
 
@@ -559,31 +574,13 @@ vector.h:
 
 /usr/include/c++/8/bits/nested_exception.h:
 
-/usr/include/c++/8/bits/stl_construct.h:
-
 /usr/include/c++/8/ext/alloc_traits.h:
 
 /usr/include/c++/8/bits/alloc_traits.h:
 
-/usr/include/c++/8/bits/stl_uninitialized.h:
+/usr/include/c++/8/bits/uniform_int_dist.h:
 
-/usr/include/c++/8/bits/stl_vector.h:
-
-/usr/include/c++/8/initializer_list:
-
-/usr/include/c++/8/bits/stl_bvector.h:
-
-/usr/include/c++/8/bits/functional_hash.h:
-
-/usr/include/c++/8/bits/range_access.h:
-
-/usr/include/c++/8/bits/vector.tcc:
-
-/usr/include/c++/8/iostream:
-
-/usr/include/c++/8/ostream:
-
-/usr/include/c++/8/ios:
+/usr/include/c++/8/string:
 
 /usr/include/c++/8/bits/char_traits.h:
 
@@ -594,6 +591,12 @@ vector.h:
 /usr/include/stdint.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h:
+
+/usr/include/c++/8/bits/allocator.h:
+
+/usr/include/x86_64-linux-gnu/c++/8/bits/c++allocator.h:
+
+/usr/include/c++/8/ext/new_allocator.h:
 
 /usr/include/c++/8/bits/localefwd.h:
 
@@ -609,7 +612,17 @@ vector.h:
 
 /usr/include/ctype.h:
 
-/usr/include/c++/8/bits/ios_base.h:
+/usr/include/c++/8/bits/ostream_insert.h:
+
+/usr/include/c++/8/bits/cxxabi_forced.h:
+
+/usr/include/c++/8/bits/stl_function.h:
+
+/usr/include/c++/8/backward/binders.h:
+
+/usr/include/c++/8/bits/range_access.h:
+
+/usr/include/c++/8/bits/basic_string.h:
 
 /usr/include/c++/8/ext/atomicity.h:
 
@@ -641,23 +654,7 @@ vector.h:
 
 /usr/include/x86_64-linux-gnu/c++/8/bits/atomic_word.h:
 
-/usr/include/c++/8/bits/locale_classes.h:
-
-/usr/include/c++/8/string:
-
-/usr/include/c++/8/bits/ostream_insert.h:
-
-/usr/include/c++/8/bits/cxxabi_forced.h:
-
-/usr/include/c++/8/bits/stl_function.h:
-
-/usr/include/c++/8/backward/binders.h:
-
-/usr/include/c++/8/bits/basic_string.h:
-
 /usr/include/c++/8/ext/string_conversions.h:
-
-/usr/include/c++/8/cstdlib:
 
 /usr/include/c++/8/cerrno:
 
@@ -675,15 +672,33 @@ vector.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/error_t.h:
 
+/usr/include/c++/8/bits/functional_hash.h:
+
 /usr/include/c++/8/bits/basic_string.tcc:
+
+/usr/include/c++/8/stdexcept:
+
+/usr/include/c++/8/cfloat:
+
+/usr/lib/gcc/x86_64-linux-gnu/8/include/float.h:
+
+/usr/include/mpfi.h:
+
+/usr/include/c++/8/iostream:
+
+/usr/include/c++/8/ostream:
+
+/usr/include/c++/8/ios:
+
+/usr/include/c++/8/bits/ios_base.h:
+
+/usr/include/c++/8/bits/locale_classes.h:
 
 /usr/include/c++/8/bits/locale_classes.tcc:
 
 /usr/include/c++/8/system_error:
 
 /usr/include/x86_64-linux-gnu/c++/8/bits/error_constants.h:
-
-/usr/include/c++/8/stdexcept:
 
 /usr/include/c++/8/streambuf:
 
@@ -715,19 +730,27 @@ vector.h:
 
 /usr/include/c++/8/bits/istream.tcc:
 
-/usr/include/c++/8/unordered_map:
+vector.h:
+
+/usr/include/c++/8/vector:
+
+/usr/include/c++/8/bits/stl_uninitialized.h:
+
+/usr/include/c++/8/bits/stl_vector.h:
+
+/usr/include/c++/8/bits/stl_bvector.h:
+
+/usr/include/c++/8/bits/vector.tcc:
+
+/usr/include/c++/8/map:
+
+/usr/include/c++/8/bits/stl_tree.h:
 
 /usr/include/c++/8/ext/aligned_buffer.h:
 
-/usr/include/c++/8/bits/hashtable.h:
-
-/usr/include/c++/8/bits/hashtable_policy.h:
+/usr/include/c++/8/bits/stl_map.h:
 
 /usr/include/c++/8/tuple:
-
-/usr/include/c++/8/utility:
-
-/usr/include/c++/8/bits/stl_relops.h:
 
 /usr/include/c++/8/array:
 
@@ -735,43 +758,7 @@ vector.h:
 
 /usr/include/c++/8/bits/invoke.h:
 
-/usr/include/c++/8/bits/unordered_map.h:
-
-/usr/include/c++/8/map:
-
-/usr/include/c++/8/bits/stl_tree.h:
-
-/usr/include/c++/8/bits/stl_map.h:
-
 /usr/include/c++/8/bits/stl_multimap.h:
-
-gen.h:
-
-/usr/include/mpfr.h:
-
-/usr/include/gmpxx.h:
-
-/usr/include/c++/8/cstring:
-
-/usr/include/c++/8/limits:
-
-/usr/include/c++/8/algorithm:
-
-/usr/include/c++/8/bits/stl_algo.h:
-
-/usr/include/c++/8/bits/algorithmfwd.h:
-
-/usr/include/c++/8/bits/stl_heap.h:
-
-/usr/include/c++/8/bits/stl_tempbuf.h:
-
-/usr/include/c++/8/bits/uniform_int_dist.h:
-
-/usr/include/c++/8/cfloat:
-
-/usr/lib/gcc/x86_64-linux-gnu/8/include/float.h:
-
-/usr/include/mpfi.h:
 
 dispatch.h:
 
@@ -844,6 +831,16 @@ tinymt32.h:
 /usr/include/inttypes.h:
 
 vecteur.h:
+
+index.h:
+
+/usr/include/c++/8/unordered_map:
+
+/usr/include/c++/8/bits/hashtable.h:
+
+/usr/include/c++/8/bits/hashtable_policy.h:
+
+/usr/include/c++/8/bits/unordered_map.h:
 
 /usr/include/c++/8/complex:
 
@@ -972,6 +969,8 @@ threaded.h:
 giacintl.h:
 
 /usr/include/libintl.h:
+
+giacPCH.h:
 
 identificateur.h:
 
