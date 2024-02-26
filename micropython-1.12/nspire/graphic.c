@@ -183,6 +183,9 @@ mp_obj_t mp_color_tuple(int c){
 static mp_obj_t graphic_set_pixel(size_t n_args, const mp_obj_t *args) {
   if (n_args<2){
     sync_screen();
+#ifdef NSPIRE_NEWLIB
+    return MP_OBJ_NEW_SMALL_INT(lcd_type());
+#endif
     return mp_const_none;
   }
   uint16_t x = mp_obj_get_int(args[0]), y = mp_obj_get_int(args[1]),color=0;

@@ -21,7 +21,16 @@
 #include "config.h"
 #endif
 #define __CARBONSOUND__
+#ifdef HAVE_LIBFLTK
 #ifdef HAVE_LIBFLTK_GL
+#include "gl2ps.h"
+#else
+void gl_font(int fontid, int size){}
+void gl_draw(const char *){}
+void gl_color(Fl_Color){}
+void gl_start(){}
+void gl_finish(){}
+#endif
 #include <FL/fl_ask.H>
 #include <FL/fl_ask.H>
 #include <FL/Fl.H>
@@ -45,7 +54,7 @@
 #include "Xcas1.h"
 #include "Cfg.h"
 #include "Print.h"
-#include "gl2ps.h"
+
 
 #ifdef __APPLE__
 //#include <OpenGL/gl.h>
@@ -71,6 +80,30 @@ using namespace giac;
 #ifndef NO_NAMESPACE_XCAS
 namespace xcas {
 #endif // ndef NO_NAMESPACE_XCAS
+
+  void tran4(double * colmat){
+    giac::swapdouble(colmat[1],colmat[4]);
+    giac::swapdouble(colmat[2],colmat[8]);
+    giac::swapdouble(colmat[3],colmat[12]);
+    giac::swapdouble(colmat[6],colmat[9]);
+    giac::swapdouble(colmat[7],colmat[13]);
+    giac::swapdouble(colmat[11],colmat[14]);    
+  }
+
+  struct float2 {
+    float f,a;
+  } ;
+  double absarg(const gen & g,double & argcolor){
+    if (g.type==_DOUBLE_){
+      double d=g._DOUBLE_val;
+      if (d>=0){ argcolor=0;  return d; }
+      argcolor=-M_PI; return -d;
+    }
+    double x=g._CPLXptr->_DOUBLE_val,y=(g._CPLXptr+1)->_DOUBLE_val;
+    argcolor=std::atan2(x,y);
+    double n=std::sqrt(x*x+y*y); // will be encoded in a float, no overflow care
+    return n;
+  }
 
   std::map<std::string,Fl_Image *> texture_cache;
 
@@ -131,10 +164,11 @@ namespace xcas {
   Graph3d::Graph3d(int x,int y,int width, int height,const char* title,History_Pack * hp_): 
     Graph2d3d(x,y,width, height, title,hp_),
     theta_z(-110),theta_x(-13),theta_y(-95),
-    delta_theta(5),draw_mode(GL_QUADS),printing(0),glcontext(0),dragi(0),dragj(0),push_in_area(false),depth(0),below_depth_hidden(false),screenbuf(0) {
+    delta_theta(5),printing(0),glcontext(0),dragi(0),dragj(0),push_in_area(false),depth(0),below_depth_hidden(false),screenbuf(0) {
     current_depth=0;
     displayhint=true;
-#if 1 // ndef WIN32 // def HYPERSURFACE3
+#ifdef HAVE_LIBFLTK_GL
+    draw_mode=GL_QUADS;
     if (gnuplot_opengl)
       opengl=true;
     else {
@@ -142,7 +176,7 @@ namespace xcas {
       theta_z=theta_x=theta_y=0;
     }
 #else
-    opengl=true;
+    opengl=false;
 #endif
     q=euler_deg_to_quaternion_double(theta_z,theta_x,theta_y);
     // end();
@@ -178,6 +212,7 @@ namespace xcas {
     arc_en_ciel(k,r,g,b);
   }
 
+#ifdef HAVE_LIBFLTK_GL
   bool get_glvertex(const vecteur & v,double & d1,double & d2,double & d3,double realiscmplx,double zmin,GIAC_CONTEXT,int pal){
     if (v.size()==3){
       gen tmp;
@@ -488,21 +523,6 @@ namespace xcas {
     return true;
   }
   
-  struct float2 {
-    float f,a;
-  } ;
-  double absarg(const gen & g,double & argcolor){
-    if (g.type==_DOUBLE_){
-      double d=g._DOUBLE_val;
-      if (d>=0){ argcolor=0;  return d; }
-      argcolor=-M_PI; return -d;
-    }
-    double x=g._CPLXptr->_DOUBLE_val,y=(g._CPLXptr+1)->_DOUBLE_val;
-    argcolor=std::atan2(x,y);
-    double n=std::sqrt(x*x+y*y); // will be encoded in a float, no overflow care
-    return n;
-  }
-
   void glsurface(const gen & surfaceg,int draw_mode,Fl_Image * texture,GIAC_CONTEXT,int pal){
     if (!ckmatrix(surfaceg,true))
       return;
@@ -779,15 +799,6 @@ namespace xcas {
     }
     cerr << "No GL equivalent for " << i << '\n';
     return i;
-  }
-
-  void tran4(double * colmat){
-    giac::swapdouble(colmat[1],colmat[4]);
-    giac::swapdouble(colmat[2],colmat[8]);
-    giac::swapdouble(colmat[3],colmat[12]);
-    giac::swapdouble(colmat[6],colmat[9]);
-    giac::swapdouble(colmat[7],colmat[13]);
-    giac::swapdouble(colmat[11],colmat[14]);    
   }
 
   void get_texture(const gen & attrv1,Fl_Image * & texture){
@@ -1631,7 +1642,15 @@ namespace xcas {
     for (;it!=itend;++it)
       indraw(*it);
   }
-
+#else
+  void Graph3d::indraw(const gen & g){
+    opengl=false;
+  }  
+  void Graph3d::indraw(const vecteur & g){
+    opengl=false;
+  }  
+#endif // HAVE_LIBFLTK_GL
+  
   void mult4(double * colmat,double * vect,double * res){
     res[0]=colmat[0]*vect[0]+colmat[4]*vect[1]+colmat[8]*vect[2]+colmat[12]*vect[3];
     res[1]=colmat[1]*vect[0]+colmat[5]*vect[1]+colmat[9]*vect[2]+colmat[13]*vect[3];
@@ -1731,7 +1750,9 @@ namespace xcas {
 
   void Graph3d::draw_string(const string & s){
     if (printing){
+#ifdef HAVE_LIBFLTK_GL
       gl2psText(s.c_str(),"Helvetica",labelsize());
+#endif
     }
     else {
 #if !defined(__APPLE__) || !defined(INT128) // (does not work with textures on mac 64 bits)
@@ -1812,6 +1833,7 @@ namespace xcas {
   }
 
   void Graph3d::display(){
+#ifdef HAVE_LIBFLTK_GL
     glEnable(GL_NORMALIZE);
     glEnable(GL_LINE_STIPPLE);
     glEnable(GL_POLYGON_OFFSET_FILL);
@@ -2315,9 +2337,11 @@ namespace xcas {
       glReadBuffer(GL_FRONT);
       glReadPixels(this->x(), window()->h()-this->y()-this->h(), w(), h(), GL_RGBA, GL_UNSIGNED_BYTE, screenbuf);
     }
+#endif
   }
 
   void Graph3d::print(){
+#ifdef HAVE_LIBFLTK_GL    
     if (!printing)
       return;
     // EPS output
@@ -2330,7 +2354,8 @@ namespace xcas {
       if (gl2psEndPage()!=GL2PS_OVERFLOW){
 	break;
       }
-    }    
+    }
+#endif
   }
 
   bool find_clip_box(Fl_Widget * wid,int & x,int & y,int & w,int & h){
@@ -2623,7 +2648,8 @@ namespace xcas {
           c=(((r*32)/256)<<11) | (((g*64)/256)<<5) | (b*32/256);
           if (c>=0 && c<512)
             c += (1<<11);
-          I={c,c,c,c}; // FIXME palette
+          int4 cccc={c,c,c,c}; // FIXME palette
+          I=cccc;
         }
         else
           I=tabcolorcplx[i];
@@ -4828,8 +4854,10 @@ int main(){
       glEnd();
 #endif
     }
+#ifdef HAVE_LIBFLTK_GL
     if (displayhint)
       os_draw_string_small(0,h()-16,COLOR_WHITE,COLOR_BLACK,gettext("click o: OpenGL"));
+#endif
   }  
 
   // if printing is true, we call gl2ps to make an eps file
@@ -4908,6 +4936,7 @@ int main(){
       //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
       display();
 #else
+#ifdef HAVE_LIBFLTK_GL  
       gl_start();
       glEnable(GL_SCISSOR_TEST);
       // glViewport(clip_x, win->h()-clip_y-clip_h, clip_w, clip_h); // lower left
@@ -4923,6 +4952,7 @@ int main(){
       //fl_push_clip(clip_x,clip_y,clip_w,clip_h);
       display();
       gl_finish();
+#endif // #ifdef HAVE_LIBFLTK_GL
 #endif
     }
     else {
@@ -5015,8 +5045,10 @@ int main(){
     fl_alert("%s",gettext("Not supported under Windows. Sticking to OpenGL."));
     return;
 #endif
+#ifdef HAVE_LIBFLTK_GL
     opengl=!opengl;
     reset_view();
+#endif
   }
 
   int Graph3d::in_handle(int event){

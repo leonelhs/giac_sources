@@ -760,7 +760,16 @@ namespace xcas {
       else {
 	gen g;
 	if (m->callback_==menu2rpn_callback){
-	  find_or_make_symbol(m->label(),g,0,false,context0);
+	  string s(m->label()); int i=0;
+          if (s.empty() || s[0]=='-')
+            continue;
+	  for (;i<s.size();++i){
+	    if (s[i]==':'){
+	      s=s.substr(0,i);
+	      break;
+	    }
+	  }
+	  find_or_make_symbol(s.c_str(),g,0,false,context0);
 	  // g=gen(string("'")+m->label()+string("'"));
 	  if (g.is_symb_of_sommet(at_quote))
 	    g=g._SYMBptr->feuille; 
@@ -1054,7 +1063,7 @@ namespace xcas {
 	Fl_Tile * g = new Fl_Tile(w->x(),w->y(),w->w(),max(130,w->w()/3));
 	g->labelsize(w->labelsize());
 	Graph2d3d * tmp;
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
 	if (is3d(evaled_g._VECTptr->back())){
 #ifdef GRAPH_WINDOW
 	  Fl_Window * win=new Fl_Window(w->x(),w->y(),w->w(),g->h());
@@ -1088,7 +1097,7 @@ namespace xcas {
 	Fl_Tile * g = new Fl_Tile(w->x(),w->y(),w->w(),max(130,w->w()/3));
 	g->labelsize(w->labelsize());
 	Graph2d3d * res;
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
 	if (is3d(evaled_g)){
 #ifdef GRAPH_WINDOW
 	  Fl_Window * win=new Fl_Window(w->x(),w->y(),w->w(),g->h());
@@ -1939,7 +1948,7 @@ namespace xcas {
       if (geo_run && geo->hp) 
 	geo->hp->update();
     }
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
     if (Geo3d * geo=dynamic_cast<Geo3d *>(res)){
       geo->hp=geo_find_history_pack(geo);
       if (geo_run && geo->hp) 
@@ -2350,7 +2359,7 @@ namespace xcas {
 	next_line(s,L,line,i); 
 	pos=line.find("3d");// should be Geo2d or Geo3d
 	bool dim3= pos>0 && pos<line.size();
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
 	if (dim3){
 	  Graph2d3d * wid=fig->geo;
 	  Fl_Group * p=wid->parent();
@@ -2488,7 +2497,7 @@ namespace xcas {
 	graphic_load(res,s,L,line,i);
 	return res;
       }
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
       pos= tmp.find("Graph3d");
       if (pos>0 && pos<tmps){ 
 	Graph3d * res = new Graph3d(x,y,w,h,"",0);
@@ -4166,7 +4175,7 @@ namespace xcas {
       }
       else {
 	if (t==3||file_type==3){
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
 	  print_wid=wid=new xcas::Graph3d(0,25,dx,dy-25,"",0);
 #endif
 	}

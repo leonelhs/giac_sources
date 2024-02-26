@@ -9,7 +9,7 @@
 #include <fstream>
 #include <string>
 #include <stdio.h>
-#ifdef HAVE_LIBFLTK_GL
+#ifdef HAVE_LIBFLTK
 #include <FL/Fl_Menu.H>
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Tile.H>
@@ -17,8 +17,10 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <FL/Fl_Text_Editor.H>
 #include <FL/Fl_Value_Slider.H>
+#ifdef HAVE_LIBFLTK_GL
 #include <FL/Fl_Gl_Window.H>
 #include <FL/gl.h>
+#endif
 #endif
 
 #ifdef HAVE_LC_MESSAGES
@@ -34,7 +36,7 @@ namespace xcas {
 #endif // ndef NO_NAMESPACE_XCAS
 #ifdef HAVE_LIBFLTK
 
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
 
   // translate giac GL constant to open GL constant
   unsigned gl_translate(unsigned i);
@@ -218,7 +220,7 @@ namespace xcas {
     double depth;
     bool below_depth_hidden;
     unsigned char * screenbuf;
-    // virtual void resize(int X,int Y,int W,int H);
+    bool opengl;    // virtual void resize(int X,int Y,int W,int H);
     // virtual void draw();
     // virtual void orthonormalize();
     // void display(); 

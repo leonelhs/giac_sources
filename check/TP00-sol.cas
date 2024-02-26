@@ -21,8 +21,8 @@ maple_mode(1);evalf(E);evalf(e);evalf(exp(1));
 /*  le numerateur et le denominateur n'ont que des coefficients positifs, donc F>0£ pour 0<a, 0<u , 0<v*/
  numer(F);
 denom(F);
- complex_mode:=1;factor(P*1.1);factor(approx(P));
- complex_mode:=0;factor(P*1.0);factor(approx(P,5));factor(P);
+ complex_mode:=1;factor(P*1.1);round(proot(approx(P)),10);
+ complex_mode:=0;factor(P*1.0);round(proot(approx(P,5)),10);factor(P);
  factor(X^12-1,sqrt(3));
  factor(X^12-1,[sqrt(3),I]);
  factor(X^12-1,exp(2*I*Pi/9));

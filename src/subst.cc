@@ -2341,6 +2341,8 @@ namespace giac {
     if (e_orig.type<=_POLY || is_inf(e_orig) || has_num_coeff(e_orig))
       return e_orig;
     gen e=simplifier(e_orig,contextptr);
+    if (algnum_normal(e,contextptr))
+      return e;
     if (e.type==_FRAC)
       return _evalc(e_orig,contextptr);
     // first check for a fractional power -> substitution
@@ -2476,11 +2478,22 @@ namespace giac {
 	*logptr(contextptr) << vabs2tmp << '\n';
 	return e_orig;
       }
-      // check for rootof?
       vabs2=vabs2tmp;
 #else
       vabs2=*tsimplify_common(vabs2,contextptr)._VECTptr;
 #endif
+      // check for rootof?
+      for (int i=0;i<int(vabs2.size());++i){
+        vecteur V=lop(vabs2[i],at_rootof);
+        for (int j=0;j<V.size();++j){
+          if (!lidnt(V[j]).empty()){
+            return e;
+            vabs.erase(vabs.begin()+i);
+            vabs2.erase(vabs2.begin()+i);
+            break;
+          }
+        }
+      }
       if (1){
 	int S=int(vabs2.size());
 	vector<int> base(S),expo(S);

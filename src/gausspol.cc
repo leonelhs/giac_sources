@@ -5260,7 +5260,7 @@ namespace giac {
       return;
     }
     if (p1t==0 && p2t==0 
-	&& (p1.dim!=1 || (p1.lexsorted_degree()>=GIAC_PADIC/2 && p2.lexsorted_degree()>=GIAC_PADIC/2))
+	&& (p1.dim!=1 || (p1.lexsorted_degree()>=giacmax(MAX_COMMON_ALG_EXT_ORDER_SIZE+1,GIAC_PADIC/2) && p2.lexsorted_degree()>=giacmax(MAX_COMMON_ALG_EXT_ORDER_SIZE+1,GIAC_PADIC/2)))
 	){
       if (debug_infolevel>2)
 	CERR << CLOCK()*1e-6 << "starting extended gcd degrees " << p1.lexsorted_degree() << " " << p2.lexsorted_degree() << '\n';
@@ -5648,12 +5648,12 @@ namespace giac {
 	    int b0d=itfact.dim;
 	    vecteur vb0(b0d),vb1(b0d),lv(b0d);
 	    lv[0]=gen("x0",context0);
-	    // int hasard=rand()/(RAND_MAX/env->modulo.val);
+	    // int hasard=std_rand()/(RAND_MAX/env->modulo.val);
 	    int hasard=0;
 	    vb0[0]=sym2r(lv[0]+hasard,lv,context0);
 	    vb1[0]=sym2r(lv[0]-hasard,lv,context0);
 	    for (int i=1;i<b0d;i++){
-	      int hasard1=0; // rand()/(RAND_MAX/env->modulo.val);
+	      int hasard1=0; // std_rand()/(RAND_MAX/env->modulo.val);
 	      int hasard2=std_rand()/(RAND_MAX/env->modulo.val);
 	      lv[i]=gen("x"+print_INT_(i),context0);
 	      vb0[i]=sym2r(lv[i]+hasard1*lv[0]+hasard2,lv,context0);
@@ -6285,6 +6285,15 @@ namespace giac {
   }
 
   bool ext_factor(const polynome &p,const gen & e,gen & an,polynome & p_content,factorization & f,bool complexmode,gen & extra_div){
+    if (e.type==_EXT && (e._EXTptr+1)->type==_EXT){
+      gen E=ext_reduce(e);
+      polynome P(p);
+      vector< monomial<gen> >::iterator it=P.coord.begin(),itend=P.coord.end();
+      for (;it!=itend;++it){
+        if (it->value.type==_EXT) it->value=ext_reduce(it->value);
+      }
+      return ext_factor(P,E,an,p_content,f,complexmode,extra_div);
+    }
     if (!ext_factor_nodegck(p,e,an,p_content,f,complexmode,extra_div))
       return false;
     // additional check that degrees match
@@ -6922,7 +6931,7 @@ namespace giac {
 	  // search a smaller b
 	  for (int essai=0;essai<3;++essai){
 	    for (int i=0;i<b0d;++i){
-	      //b[i]=1+iquo(rand(),RAND_MAX/3);
+	      //b[i]=1+iquo(std_rand(),RAND_MAX/3);
 	      b[i]=1+iquo(giac_rand(context0),RAND_MAX/4);
 	    }
 	    if (find_good_eval(pcur,pcur,Fb,Gb,b,(debug_infolevel>=2))){

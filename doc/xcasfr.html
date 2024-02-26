@@ -472,16 +472,18 @@
   <img WIDTH="28" HEIGHT="28" SRC="config.png" alt="Configuration" align="center">
   <span id='curcfg'></span>
 </button>
-<span id='themailto'></span>
 <span id='thelink'></span>
+<span id='themailto'></span>
 <textarea id='theforumlink' style="display:none"></textarea>
 <span id="history1" style="display:none">
         <button class="bouton" title="Cliquer ici pour sauvegarder l'historique avec le nom de fichier du champ texte qui suit" onclick="if ($id('loadbutton_file').style.display=='none') UI.savesession(2); else UI.savesession(0);">&#x1f4be;</button>
         <textarea cols="7" id="outputfilename" class="filenamecss" style="font-size:large" title="Nom de sauvegarde du fichier. Avec Firefox, pour pouvoir faire plusieurs sauvegardes sous le meme nom, cocher Toujours demander... dans Pr&eacute;f&eacute;rences, G&eacute;n&eacute;ral, T&eacute;l&eacute;chargements.">session</textarea>
         <button id="exportbutton" class="bouton" title="Cliquer ici pour exporter pour calculatrices (Casio Graph 35eii&90, Numworks ou TI Nspire CX, &agrave; configurer dans les pr&eacute;f&eacute;rences) avec le nom de fichier du champ texte qui pr&eacute;c&egrave;de. Utilisez .py comme extension pour concatener tous les niveaux en un unique script." onclick='UI.savesession(1);'>Export</button>
   </span>
+<span id="historyload" style="display:none">
   <button id="numworks_load" class="bouton" title="Cliquer ici pour charger un script depuis une calculatrice Numworks" onclick="UI.numworks_load()">Numworks→</button>
 <button id="loadbutton_cookie" class="bouton" title="Cliquer ici pour charger une session sauvegard&eacute;e" onclick="$id('loadfile_cookie').innerHTML=UI.listCookies();">Charge</button>
+</span>
   <span id="loadfile_cookie"></span>
 <form id="loadbutton_file" style="display:none">
   <label for="loadfileinput">Charger</label>
@@ -2166,6 +2168,25 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   </tr>
 </table>
 <div id="progbuttons" style="display:none">
+  <input type="button" style="width:29px;height:35px" name="add_//"
+         id="add_//"
+         value="//" onmousedown="event.preventDefault()" onClick="UI.insert_focused(UI.python_mode?'#':'//');UI.funcoff();" title="commentaire">
+      <input type="button" style="width:29px;height:35px;" name="add_if"
+             id="add_if"
+             value="if" onmousedown="event.preventDefault()" onClick="UI.insert_focused('if :')" title="if condition: action "><input type="button" style="width:32px;height:35px;" name="add_else"
+             id="add_else"
+             value="else" onmousedown="event.preventDefault()" onClick="UI.insert_focused('else :')" title="if condition: action_vrai else: action_faux">
+<input type="button"  name="add_for" style="width:29px;height:35px;"
+             id="add_for"
+             value="for" onmousedown="event.preventDefault()" onClick="UI.insert_focused('for in range():')" title="boucle for "><input type="button"  name="add_while" style="width:40px;height:35px;"
+             id="add_while"
+             value="while" onmousedown="event.preventDefault()" onClick="UI.insert_focused('while :')" title="boucle tantque ">
+      <input type="button" name="add_def"
+             id="add_def" style="width:29px;height:35px;"
+             value="def" onmousedown="event.preventDefault()" onClick="UI.insert_focused('def f():')" title="definition de fonction "><input type="button" name="add_return"
+             id="add_return" style="width:40px;height:35px;"
+             value="return" onmousedown="event.preventDefault()" onClick="UI.insert_focused('return ')" title="valeur renvoyée par la fonction ">
+<br>
   <input type="button" style="width:29px;height:35px" name="add_test"
          id="add_test"
          value="test" onmousedown="event.preventDefault()" onClick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none'; $id('assistant_prog').style.display='none'; $id('assistant_test').style.display='block' ;UI.set_focus('sicond'); //UI.insert_focused('\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20);UI.funcoff();" title="Assistant de cr&eacute;ation de test">
@@ -2176,9 +2197,6 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
          id="add_debug"
          value="debug" onmousedown="event.preventDefault()"
          onClick="UI.insert_focused('debug(')" title="Mettre au point (Xcas, ne fonctionne pas avec MicroPython), par exemple debug(f(2,3)) execute la fonction f avec arguments 2 et 3 en pas &agrave; pas">
-  <input type="button" style="width:29px;height:35px" name="add_//"
-         id="add_//"
-         value="//" onmousedown="event.preventDefault()" onClick="UI.insert_focused(UI.python_mode?'#':'//');UI.funcoff();" title="commentaire">
   <input type="button" style="width:29px;height:35px" name="add_nlprog"
          id="add_nlprog"
          value="cmds" onmousedown="event.preventDefault()"
@@ -3704,8 +3722,7 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
   <span>
             <button class="bouton" style="color:green" id="button_ok" onclick="if (UI.assistant_ok()) return; if (UI.focused==cmentree || UI.focused==entree) UI.eval_cmdline(); else {UI.reeval(UI.focused,'',false);}" title="Evaluer la ligne de commande">
   <strong>&nbsp;&nbsp;Ok&nbsp;&nbsp;</strong></button>
-  <button class="bouton xcas" title="Xcas evaluation" onclick="UI.micropy=0; UI.python_mode=0;$id('button_ok').click();">x</button>
-  <button class="bouton cas" title="Xcas Python mode evaluation" onclick="UI.micropy=0; UI.python_mode=1;$id('button_ok').click();">Cas</button><button class="bouton micropy" title="MicroPython evaluation" onclick="UI.micropy=1; UI.python_mode=4;$id('button_ok').click();">Py</button><button class="bouton js" id="bouton_js" title="Javascript evaluation" onclick="UI.micropy=-1; UI.python_mode=0;$id('button_ok').click();">JS</button>
+  <button class="bouton xcas" title="Xcas evaluation" onclick="UI.micropy=0; UI.python_mode=0;$id('button_ok').click();">x</button><button class="bouton cas" title="Xcas Python mode evaluation" onclick="UI.micropy=0; UI.python_mode=1;$id('button_ok').click();">Cas</button><button class="bouton micropy" title="MicroPython evaluation" onclick="UI.micropy=1; UI.python_mode=4;$id('button_ok').click();">Py</button><button class="bouton js" id="bouton_js" title="Javascript evaluation" onclick="UI.micropy=-1; UI.python_mode=0;$id('button_ok').click();">JS</button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.completion(cmentree)" title="Donne une aide courte et quelques exemples d'utilisation d'une commande.">&nbsp;?&nbsp;</button>
             <button class="bouton" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,-1)" title="Deplace vers la gauche le curseur">&nbsp;&nbsp;←&nbsp;&nbsp;</button><button class="bouton" id="button_droit" onmousedown="event.preventDefault()" onClick="UI.move_caret_or_focus(UI.focused,1)" title="Deplace vers la droite le curseur"> &nbsp;&nbsp;→&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,-1)" title="Deplace vers le haut le curseur">&nbsp;↑&nbsp;&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()" onClick="UI.moveCaretUpDown(UI.focused,1)" title="Deplace vers le bas le curseur">&nbsp;&nbsp;↓&nbsp;</button><button class="bouton" onmousedown="event.preventDefault()"
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             onClick="UI.indentline(UI.focused)"
@@ -4027,11 +4044,13 @@ Pour avoir des informations pendant le d&eacute;roulement des calculs, tapez la 
         //console.log(window.location.href);
         var mobile = UI.detectmob();
         if (mobile) {
+            $id('historyload').style.display = 'none';
             $id('loadbutton_cookie').style.display = 'inline';
             $id('loadbutton_file').style.display = 'none';
             $id('bouton_js').style.display = 'none';
         }
         else {
+            $id('historyload').style.display = 'inline';
             $id('loadbutton_cookie').style.display = 'none';
             $id('loadbutton_file').style.display = 'inline';
         }

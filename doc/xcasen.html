@@ -502,8 +502,8 @@
   <img WIDTH="28" HEIGHT="28" SRC="config.png" alt="Configuration" align="center">
   <span id='curcfg'></span>
 </button>
-<span id='themailto'></span>
 <span id='thelink'></span>
+<span id='themailto'></span>
 <textarea id='theforumlink' style="display:none"></textarea>
 <span id="history1" style="display:none">
         <button class="bouton"
@@ -516,11 +516,13 @@
                 title="Export session to KhiCas calculators (Casio Prizm or Fx-9750GIII, Numworks, TI Nspire CX, to be configured in the Settings). Use .py extension to glue all levels in one script."
                 onclick='UI.savesession(1);'>Export</button>
         </span>
+<span id="historyload" style="display:none">
   <button id="numworks_load" class="bouton" title="Click here to load a script from a Numworks calculator" onclick="UI.numworks_load()">Numworks→</button>
 <button id="loadbutton_cookie" class="bouton"
         title="Load session"
         onclick="$id('loadfile_cookie').innerHTML=UI.listCookies();">Load
 </button>
+</span>
 <span id="loadfile_cookie"></span>
 <form id="loadbutton_file" style="display:none">
   <label for="loadfileinput">Load</label>
@@ -1926,6 +1928,25 @@ If you want to see informations while a computation is running, run first
   </tr>
 </table>
 <div id="progbuttons" style="display:none">
+  <input type="button" style="width:29px;height:35px" name="add_//"
+         id="add_//"
+         value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.python_mode?'#':'//');UI.funcoff();" title="comment">
+      <input type="button" style="width:29px;height:35px;" name="add_if"
+             id="add_if"
+             value="if" onmousedown="event.preventDefault()" onClick="UI.insert_focused('if :')" title="if condition: action "><input type="button" style="width:32px;height:35px;" name="add_else"
+             id="add_else"
+             value="else" onmousedown="event.preventDefault()" onClick="UI.insert_focused('else :')" title="if condition: action_vrai else: action_faux">
+<input type="button"  name="add_for" style="width:29px;height:35px;"
+             id="add_for"
+             value="for" onmousedown="event.preventDefault()" onClick="UI.insert_focused('for in range():')" title="boucle for "><input type="button"  name="add_while" style="width:40px;height:35px;"
+             id="add_while"
+             value="while" onmousedown="event.preventDefault()" onClick="UI.insert_focused('while :')" title="boucle tantque ">
+      <input type="button" name="add_def"
+             id="add_def" style="width:29px;height:35px;"
+             value="def" onmousedown="event.preventDefault()" onClick="UI.insert_focused('def f():')" title="definition de fonction "><input type="button" name="add_return"
+             id="add_return" style="width:40px;height:35px;"
+             value="return" onmousedown="event.preventDefault()" onClick="UI.insert_focused('return ')" title="valeur renvoyée par la fonction ">
+<br>
   <input type="button" style="width:29px;height:35px" name="add_test"
          id="add_test"
          value="test" onmousedown="event.preventDefault()" onClick="UI.savefocused=UI.focused;  $id('assistant_boucle').style.display='none'; $id('assistant_prog').style.display='none'; $id('assistant_test').style.display='block' ;UI.set_focus('sicond'); //UI.insert(UI.focused,'\nsi  alors  sinon  fsi; ');UI.moveCaret(UI.focused,-20);UI.funcoff();"
@@ -1942,9 +1963,6 @@ If you want to see informations while a computation is running, run first
          onClick="UI.insert(UI.focused,'debug(')"
          title="Debugger, for example debug(f(2,3)) will execute step by step the f function with arguments 2 and 3"
   >
-  <input type="button" style="width:29px;height:35px" name="add_//"
-         id="add_//"
-         value="//" onmousedown="event.preventDefault()" onClick="UI.insert(UI.focused,UI.python_mode?'#':'//');UI.funcoff();" title="comment">
   <input type="button" style="width:29px;height:35px" name="add_nlprog"
          id="add_nlprog"
          value="cmds" onmousedown="event.preventDefault()"
@@ -3820,11 +3838,13 @@ If you want to see informations while a computation is running, run first
         //console.log(window.location.href);
         var mobile = UI.detectmob();
         if (mobile) {
+            $id('historyload').style.display = 'none';
             $id('loadbutton_cookie').style.display = 'inline';
             $id('loadbutton_file').style.display = 'none';
             $id('bouton_js').style.display = 'none';
         }
         else {
+            $id('historyload').style.display = 'inline';
             $id('loadbutton_cookie').style.display = 'none';
             $id('loadbutton_file').style.display = 'inline';
         }

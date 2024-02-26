@@ -195,20 +195,20 @@ namespace giac {
 
   static gen isolate_sinh(const gen & e,int isolate_mode,GIAC_CONTEXT){
     gen asine= asinh(e,contextptr);
-    if (!(isolate_mode & 2))
+    if ((isolate_mode & 3)!=3)
       return asine;
     identificateur * x=new identificateur(string("n_")+print_intvar_counter(contextptr));
     return makevecteur(asine+(*x)*one_tour(contextptr)*cst_i,(one_half_tour(contextptr)+(*x)*one_tour(contextptr))*cst_i-asine);
   }
   static gen isolate_cosh(const gen & e,int isolate_mode,GIAC_CONTEXT){
     gen acose=acosh(e,contextptr);
-    if (!(isolate_mode & 2))
+    if ((isolate_mode & 3)!=3)
       return makevecteur(acose,-acose);
     identificateur * x=new identificateur(string("n_")+print_intvar_counter(contextptr));
     return makevecteur(acose+(*x)*one_tour(contextptr)*cst_i,-acose+(*x)*one_tour(contextptr)*cst_i);
   }
   static gen isolate_tanh(const gen & e,int isolate_mode,GIAC_CONTEXT){
-    if (!(isolate_mode & 2))
+    if ((isolate_mode & 3)!=3)
       return atanh(e,contextptr);
     identificateur * x=new identificateur(string("n_")+print_intvar_counter(contextptr));
     return atanh(e,contextptr)+(*x)*one_half_tour(contextptr)*cst_i;
@@ -834,6 +834,9 @@ namespace giac {
 	pos=-1;
       if (xvar._SYMBptr->sommet==at_NTHROOT)
 	pos=-2;
+      if (xvar._SYMBptr->sommet==at_factorial && e==xvar){
+        return;
+      }
       if (!pos){
 #ifndef NO_STDEXCEPT
 	throw(std::runtime_error(string(gettext("Unable to isolate function "))+xvar._SYMBptr->sommet.ptr()->print(contextptr)));
@@ -2609,7 +2612,11 @@ namespace giac {
       res=vecteur(1,x); // everything is solution up to now
       double eps=epsilon(contextptr);
       int N=decimal_digits(contextptr);
-      int addN=50; double muleps=eps*std::pow(10.0,-addN);
+#ifdef HAVE_LIBMPFR
+      int addN=60; double muleps=std::pow(10.0,-addN);
+#else
+      int addN=1; double muleps=0.1;
+#endif
       for (;it!=itend;++it){
 	if (res==vecteur(1,x)){
           // temp. increase proot default precision, otherwise roots are discarded
@@ -4690,7 +4697,7 @@ namespace giac {
       //on prend un d�part au hasard (a=x0=un _DOUBLE_)
       // a=gen(2.0);
       if (guess_first)
-	a=j*4*(rand()/(RAND_MAX+1.0)-0.5);
+	a=j*4*(std_rand()/(RAND_MAX+1.0)-0.5);
       else {
 	a=guess;
 	guess_first=true;
@@ -4700,7 +4707,7 @@ namespace giac {
       e=newtona(f, x, a,niter1,niter2,eps1,eps2,prefact1,prefact2,b);
       if (b==1) return e;
       gen c;
-      c=j*4*(rand()/(RAND_MAX+1.0)-0.5);
+      c=j*4*(std_rand()/(RAND_MAX+1.0)-0.5);
       // COUT<<j<<"j"<<c<<'\n';
       // g=x-gen(0.5)*rdiv(f,derive(f,x));
       gen ao(gen(0.0),c);

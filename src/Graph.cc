@@ -51,7 +51,7 @@
 #include "Xcas1.h"
 #include "Print.h"
 #include "Graph3d.h"
-#include <FL/gl.h>
+//#include <FL/gl.h>
 #include "Tableur.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -140,7 +140,7 @@ namespace xcas {
     if (0 && (scale<=1 || scale>16)){
       unsigned char *rows[bs];
       for (int i=0; i<bs; i++) {
-        rows[i] = gr->data[i];
+        rows[i] = (unsigned char *) gr->data[i];
       }
       write_png(filename.c_str(),rows,bs,bs,PNG_COLOR_TYPE_GRAY,8);
       return ;
@@ -415,9 +415,11 @@ namespace xcas {
 	  fl_color(r,g,b);
       }
       else  {
+#ifdef HAVE_LIBFLTK_GL
 	if (dim3)
 	  gl_color(color);
 	else
+#endif
 	  fl_color(color);
       }
     }
@@ -878,6 +880,7 @@ namespace xcas {
 		display_mode |= 0x4;
 	    }
 	    // GL_LIGHT_MODEL_COLOR_CONTROL=GL_SEPARATE_SPECULAR_COLOR ||  GL_SINGLE_COLOR
+#ifdef HAVE_LIBFLTK_GL
 #ifndef WIN32
 	    if (optname.val==_GL_LIGHT_MODEL_COLOR_CONTROL && optvalue.type==_INT_)
 	      glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL,optvalue.val);
@@ -893,7 +896,6 @@ namespace xcas {
 		glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER,optvalf._DOUBLE_val);
 	    }
 #endif
-#ifdef HAVE_LIBFLTK_GL
 	    /* GL_LIGHT_MODEL_TWO_SIDE = true /false */
 	    if (optname.val==_GL_LIGHT_MODEL_TWO_SIDE && optvalue.type==_INT_){
 	      glLightModeli(GL_LIGHT_MODEL_TWO_SIDE,optvalue.val);
@@ -1775,6 +1777,7 @@ namespace xcas {
 
   Graph2d3d::Graph2d3d(int x,int y,int w,int h,const char * l,double xmin,double xmax,double ymin,double ymax,double zmin,double zmax,double ortho,History_Pack * hp_):
     Fl_Widget(x,y,w,h,l),
+    cursor_point_type(3),
     pushed(false),
     show_mouse_on_object(false),
     mode(255),args_tmp_push_size(0),no_handle(false),
@@ -1808,6 +1811,7 @@ namespace xcas {
 
   Graph2d3d::Graph2d3d(int x,int y,int w,int h,const char * l,History_Pack * hp_):
     Fl_Widget(x,y,w,h,l),
+    cursor_point_type(3),
     pushed(false),
     show_mouse_on_object(false),
     display_mode(0x45),
@@ -8445,7 +8449,9 @@ namespace xcas {
     if (is_context_busy(contextptr))
       return;
 #endif
+#ifdef HAVE_LIBPTHREAD
     pthread_mutex_lock(&turtle_mutex);
+#endif
     try {
       int clip_x,clip_y,clip_w,clip_h;
       fl_clip_box(x(),y(),w(),h(),clip_x,clip_y,clip_w,clip_h);
@@ -8453,7 +8459,9 @@ namespace xcas {
       indraw();
       fl_pop_clip();
     } catch (...){ }
+#ifdef HAVE_LIBPTHREAD    
     pthread_mutex_unlock(&turtle_mutex);
+#endif
   }
   
   void Turtle::indraw(){

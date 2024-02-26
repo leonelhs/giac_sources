@@ -1466,7 +1466,9 @@ int main(int ARGC, char *ARGV[]){
 #if !defined(__APPLE__) && !defined(WIN32)
   if (getenv("DISPLAY"))
 #endif
+#ifdef HAVE_LIBFLTK_GL
     Fl::gl_visual(FL_RGB | FL_DEPTH | FL_ACCUM | FL_ALPHA);
+#endif
 #endif
   giac::secure_run=false;
 #if !defined EMCC && !defined EMCC2 && !defined NSPIRE_NEWLIB && !defined KHICAS

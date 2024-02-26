@@ -1290,7 +1290,7 @@ namespace xcas {
       }
       Fl_Group::current(0);
       tg->win3=new Fl_Window(tg->x()+10,tg->y()+10,2*tg->w()/3,2*tg->h()/3);
-#ifdef HAVE_LIBFLTK_GL
+#if 1 // def HAVE_LIBFLTK_GL
       tg->graph3d = new Graph3d(0,0,tg->win3->w(),tg->win3->h(),"",0);
       tg->graph3d->ylegende=1.5;
       tg->win3->end();

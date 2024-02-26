@@ -2029,7 +2029,7 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
         UI.forum_warn = false;
         copy += UI.langue == -1 ? "alert(\"Le lien de la session a été copié dans le presse-papier\");" : "alert(\"Clipboard contains a link to session\");";
       }
-      copy += "var win=window.open(\"" + UI.forum_url + "\", \"_blank\");'>F</button>,";
+      copy += "var win=window.open(\"" + UI.forum_url + "\", \"_blank\");'>Forum</button>,";
       //console.log(copy);
       if (window.location.href.substr(0, 4) == 'file' && !UI.detectmob()) {
         $id('thelink').innerHTML = '<a title="Clone session" href="' + s + '" target="_blank">x2</a>, <a title="Local clone" href="' + s2 + '" target="_blank">local</a>,' + copy + stableau;//+',<a href="http://xcas.e.univ-grenoble-alpes.fr/XCAS/posting.php?mode=post&f=12&subject=session&message='+encodeURIComponent(sforum)+'" target="_blank">forum</a>,';
@@ -2427,7 +2427,8 @@ id="matr_case' + i + '_' + j + '">' + oldval + '</textarea><div class="matrixcel
       "add_mathcomment", "add_rand", "add_geo", "add_rsolve",
       "add_seq", "add_tabvar",
       "add_curseur"];
-    var kbd_prog = ["add_//", "add_nlprog", "add_listechaine", "add_tortue", "add_test",
+      var kbd_prog = ["add_//", "add_if","add_else","add_for","add_while","add_def","add_return",
+                      "add_nlprog", "add_listechaine", "add_tortue", "add_test",
       "add_boucle", "add_function", "add_debug", "add_efface", "add_avance",
       "add_recule", "add_tourne_gauche", "add_tourne_droite",
       "add_pas_de_cote", "add_saute", "add_crayon", "add_rond", "add_disque",
@@ -3079,7 +3080,7 @@ int main(int argc,const char ** argv){
     saveAs(blob, filename);
   },
   show_history123: function () {
-      $id('history1').style.display = UI.detectmob()?'none':'inline';
+    $id('history1').style.display = UI.detectmob()?'none':'inline';
     //$id('history2').style.display='block';
     $id('history4').style.display = 'block';
     $id('startup').style.display = 'none';
@@ -3695,8 +3696,17 @@ int main(int argc,const char ** argv){
     $id('keyboardfunc').style.display = 'none';
     $id('keyboard').style.display = 'none';
     $id('alpha_keyboard').style.display = 'none';
-    if (cmentree.type != 'textarea') value = cmentree.getValue(); else value = entree.value;
+    if (cmentree.type != 'textarea'){
+        value = cmentree.getValue();
+    } else {
+        value = entree.value;
+    }
     UI.eval_cmdline1(value, true);
+    if (cmentree.type != 'textarea'){
+        cmentree.setValue('');
+    } else {
+        entree.value('');
+    }
   },
   eval_cmdline1: function (value, docaseval) {
     //console.log('eval_cmdline1',value,docaseval);
@@ -3717,7 +3727,7 @@ int main(int argc,const char ** argv){
       if (value.charCodeAt(n) > 32 || value.charCodeAt(n) == 10) break;
     }
     value = value.substr(0, n + 1);
-    if (value.charCodeAt(n) != 10) {
+    if (value.charCodeAt(n) != 10) { 
       if (cmentree.type != 'textarea')
         cmentree.setValue(value);
       else

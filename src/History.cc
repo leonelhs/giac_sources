@@ -632,8 +632,18 @@ namespace xcas {
       g=warn_equal(giac::gen(ed->value(),contextptr),contextptr);
       if (ed)
 	ed->_g=g;
-      if (giac::first_error_line(contextptr))
-	*logptr(contextptr) << gettext("Syntax compatibility mode ") << print_program_syntax(xcas_mode(contextptr)) << gettext("\nParse error line ") << giac::first_error_line(contextptr) << gettext(" column ") << print_INT_(giac::lexer_column_number(contextptr)) <<  gettext(" at ")  << giac::error_token_name(contextptr) ;
+      if (giac::first_error_line(contextptr)){
+        int pos1=ed->buffer()->skip_lines(0,giac::first_error_line(contextptr)-1);
+        // int pos2=editor->buffer()->skip_lines(pos1,1);
+        int pos2=pos1+giac::lexer_column_number(contextptr)-1;
+        pos1=giacmax(pos2-giac::error_token_name(contextptr).size(),0);
+        ed->insert_position(pos1);
+        ed->buffer()->select(pos1,pos2);
+        ed->show_insert_position();
+        ed->redraw();
+	*logptr(contextptr) << gettext("Syntax compatibility mode ") << print_program_syntax(xcas_mode(contextptr)) << gettext("\nParse error line ") << giac::first_error_line(contextptr) << gettext(" column ") << print_INT_(giac::lexer_column_number(contextptr)) <<  gettext(" at ") << giac::error_token_name(contextptr) ;
+        // return -1;
+      }
       return 1;
     }
     if (Figure * f = dynamic_cast<Figure *>(w)){

@@ -34,6 +34,8 @@
 #include <FL/fl_draw.H>
 #include <FL/fl_message.H>
 #include <FL/Fl_Text_Display.H>
+#include <FL/Fl_Tabs.H>
+extern Fl_Tabs * xcas_main_tab;
 #endif
 
 #ifndef NO_NAMESPACE_XCAS

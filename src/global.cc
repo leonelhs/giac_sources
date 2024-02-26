@@ -1354,8 +1354,8 @@ bool dfu_check_epsilon2(const char * fname){
   srand(time(NULL));
   int i;
   for (i=0;i<n;++i){
-    int j=(rand()/(1.0+RAND_MAX))*n;
-    ptr[j]=rand();
+    int j=(std_rand()/(1.0+RAND_MAX))*n;
+    ptr[j]=std_rand();
   }
   for (i=0;i<n;++i){
     fputc(ptr[i],f);
@@ -1391,8 +1391,8 @@ bool dfu_check_apps2(const char * fname){
   srand(time(NULL));
   int i;
   for (i=0;i<n;++i){
-    int j=(rand()/(1.0+RAND_MAX))*n;
-    ptr[j]=rand();
+    int j=(giac::std_rand()/(1.0+RAND_MAX))*n;
+    ptr[j]=giac::std_rand();
   }
   for (i=0;i<n;++i){
     fputc(ptr[i],f);
@@ -5848,7 +5848,7 @@ NULL,NULL,SW_SHOWNORMAL);
   }
 #else
 
-  bool make_thread(const gen & g,int level,const giac_callback & f,void * f_param,context * contextptr){
+  bool make_thread(const gen & g,int level,const giac_callback & f,void * f_param,const context * contextptr){
     return false;
   }
 
@@ -7941,7 +7941,7 @@ void update_lexer_localization(const std::vector<int> & v,std::map<std::string,s
 	++pos;
 	continue;
       }
-      if (curch=='=' && openpar==0 && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!=';' && prevch!='=' && prevch!='+' && prevch!='-' && prevch!='*' && prevch!='/' && prevch!='%' && (pos==int(cur.size())-1 || (cur[pos+1]!='=' && cur[pos+1]!='<'))){
+      if (curch=='=' && openpar==0 && prevch!='>' && prevch!='<' && prevch!='!' && prevch!=':' && prevch!=';' && prevch!='=' && prevch!='+' && prevch!='-' && prevch!='*' && prevch!='/' && prevch!='%' && (pos==int(cur.size())-1 || (cur[pos+1]!='=' && cur[pos+1]!='<' && cur[pos+1]!='>'))){
 	cur.insert(cur.begin()+pos,':');
 	++pos;
 	continue;

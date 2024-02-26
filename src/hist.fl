@@ -26,7 +26,10 @@ decl {\#include <FL/Fl_Bitmap.H>} {public local
 decl {\#include <FL/fl_show_colormap.H>} {public local
 }
 
-decl {\#include <FL/gl.h>} {public local
+declblock {\#ifdef FL_DEVICE} {open after {\#endif}
+} {
+  decl {\#include <FL/gl.h>} {private local
+  }
 }
 
 decl {\#include "Input.h"} {public local
@@ -1122,9 +1125,9 @@ Function {Xcas_run(int argc,char ** argv)} {open
 } {
   Fl_Window Xcas_Main_Window_ {
     label {Xcas New Interface} open
-    xywh {315 131 865 520} type Single resizable visible
+    xywh {315 131 865 530} type Single resizable visible
   } {
-    Fl_Menu_Bar Xcas_main_menu {open
+    Fl_Menu_Bar Xcas_main_menu {open selected
       xywh {0 0 775 25}
     } {
       Submenu Xcas_file_menu {
@@ -1134,7 +1137,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
         MenuItem Xcas_new_session {
           label {New session}
           callback {make_history();}
-          xywh {0 0 100 20}
+          xywh {0 0 100 20} shortcut 0x80061
         }
         Submenu Xcas_open {
           label Open
@@ -1512,7 +1515,7 @@ Function {Xcas_run(int argc,char ** argv)} {open
           callback {\#ifdef __APPLE__
 system("/usr/X11/bin/xterm -fn 10x20 -e sudo /Applications/usr/bin/makelinks");
 \#endif}
-          xywh {30 30 100 20}
+          xywh {30 30 100 20} hide
         }
         MenuItem Xcas_quit_update {
           label {Quit and update Xcas}
@@ -1532,11 +1535,11 @@ if (xcas::Xcas_Debug_Window) xcas::Xcas_Debug_Window->hide();
 if (xcas::handle_tab_w)
   xcas::handle_tab_w->hide();
 update_xcas=1;}
-          xywh {20 20 100 20}
+          xywh {20 20 100 20} hide
         }
         MenuItem Xcas_do_nothing2 {
           label {--- }
-          xywh {10 10 100 20}
+          xywh {10 10 100 20} hide
         }
         MenuItem Xcas_quit {
           label Quit
@@ -3099,10 +3102,10 @@ if (f && plotparam_dialog(f,arg,2)){
       class {xcas::Xcas_Tabs}
     } {}
     Fl_Group Xcas_Keyboard_Group {open
-      xywh {0 415 455 100}
+      xywh {0 410 490 110}
     } {
       Fl_Group Xcas_Alpha_Keyboard {
-        xywh {0 415 305 100} hide
+        xywh {0 415 310 100} hide
       } {
         Fl_Button Xcas_a_key {
           label a
@@ -3161,7 +3164,7 @@ if (f && plotparam_dialog(f,arg,2)){
         }
         Fl_Button Xcas_l_key {
           label l
-          xywh {280 415 25 25} color 10 labelsize 10
+          xywh {280 415 30 25} color 10 labelsize 10
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_m_key {
@@ -3221,7 +3224,7 @@ if (f && plotparam_dialog(f,arg,2)){
         }
         Fl_Button Xcas_x_key {
           label x
-          xywh {280 440 25 25} color 10 labelsize 10
+          xywh {280 440 30 25} color 10 labelsize 10
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_y_key {
@@ -3301,7 +3304,7 @@ if (f && plotparam_dialog(f,arg,2)){
         }
         Fl_Button Xcas_Guillemet_key {
           label {"}
-          xywh {280 465 25 25} color 10 labelsize 10
+          xywh {280 465 30 25} color 10 labelsize 10
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_Souligne_key {
@@ -3518,7 +3521,7 @@ else {
 }
 \#endif
 Xcas_Alpha_Keyboard->redraw();}
-          xywh {280 490 25 25} color 1 selection_color 0 labelfont 12
+          xywh {280 490 30 25} color 1 selection_color 0 labelfont 12
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_Alpha_virgule_key {
@@ -3537,7 +3540,7 @@ Xcas_Alpha_Keyboard->redraw();}
           class {xcas::No_Focus_Button}
         }
       }
-      Fl_Group Xcas_Scientific_Keyboard {
+      Fl_Group Xcas_Scientific_Keyboard {open
         xywh {0 415 310 100}
       } {
         Fl_Group Lettre_keyboard {open
@@ -3790,7 +3793,7 @@ Fl::e_length=8; xcas::fl_handle(xcas::Xcas_input_focus);}
           } {
             Fl_Button Xcas_Exp_button {
               label exp
-              tooltip Exponential xywh {135 490 35 25} labelsize 10 align 64
+              tooltip Exponential xywh {150 490 30 25} labelsize 10 align 64
               class {xcas::No_Focus_Button}
             }
             Fl_Button Xcas_Dix_puissance {
@@ -3800,62 +3803,67 @@ Fl::e_length=8; xcas::fl_handle(xcas::Xcas_input_focus);}
             }
             Fl_Button Xcas_Ln10_button {
               label log10
-              tooltip {base 10 logarithm} xywh {170 490 45 25} labelsize 10 align 64
+              tooltip {base 10 logarithm} xywh {180 490 35 25} labelsize 10 align 64
               class {xcas::No_Focus_Button}
             }
             Fl_Button Xcas_Ln_button {
               label ln
-              tooltip {Natural logarithm} xywh {100 490 35 25} labelsize 10 align 64
+              tooltip {Natural logarithm} xywh {120 490 30 25} labelsize 10 align 64
               class {xcas::No_Focus_Button}
             }
           }
         }
         Fl_Group Operations_keyboard {open
-          xywh {250 415 60 100}
+          xywh {100 415 210 100}
         } {
           Fl_Button Xcas_Plus {
             label {+}
-            xywh {280 415 30 25} shortcut 0x2b
+            xywh {250 440 30 25} shortcut 0x2b
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Moins {
             label {-}
-            tooltip Subtract xywh {290 440 20 25} shortcut 0x2d
+            tooltip Subtract xywh {280 440 30 25} shortcut 0x2d
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Fois {
             label {*}
-            xywh {280 465 30 25} shortcut 0x2a
+            xywh {250 465 30 25} shortcut 0x2a
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Divise {
             label {/}
-            xywh {280 490 30 25} shortcut 0x2f
+            xywh {280 465 30 25} shortcut 0x2f
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Puissance {
             label {^}
-            xywh {250 465 30 25} shortcut 0x5e labelsize 10
+            xywh {250 490 30 25} shortcut 0x5e labelsize 10
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_C_mod {
             label {%}
-            tooltip Modulo xywh {250 490 30 25} labelsize 10
+            tooltip Modulo xywh {280 490 30 25} labelsize 10
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Inverse_button {
             label inv
-            tooltip Inverse xywh {250 415 30 25} labelsize 10 align 64
+            tooltip Inverse xywh {100 490 20 25} labelsize 10 align 64
             class {xcas::No_Focus_Button}
           }
-          Fl_Button Xcas_Neg_button {
-            label neg
-            tooltip Opposite xywh {270 440 20 25} labelsize 10 align 64
+          Fl_Button Xcas_Inferieur_button {
+            label {<}
+            tooltip Inferior xywh {250 415 20 25} align 64
             class {xcas::No_Focus_Button}
           }
           Fl_Button Xcas_Superieur {
             label {>}
-            xywh {250 440 20 25} shortcut 0x2d
+            xywh {290 415 20 25} shortcut 0x2d
+            class {xcas::No_Focus_Button}
+          }
+          Fl_Button Xcas_Equal_button {
+            label {=}
+            tooltip Equal xywh {270 415 20 25} align 64
             class {xcas::No_Focus_Button}
           }
         }
@@ -3924,8 +3932,8 @@ Fl::e_length=8; xcas::fl_handle(xcas::Xcas_input_focus);}
           class {xcas::No_Focus_Button}
         }
       }
-      Fl_Group Kbd_control {
-        xywh {385 415 70 100}
+      Fl_Group Kbd_control {open
+        xywh {385 415 100 100}
       } {
         Fl_Button Xcas_Echap {
           label esc
@@ -3935,7 +3943,7 @@ Fl::e_length=0;
 Fl::e_text=petit_buffer;
 Fl::e_keysym=FL_Escape;
 xcas::fl_handle(xcas::Xcas_input_focus);}
-          tooltip {Cancel (erase cmdline, stop interactive_plotode)} xywh {385 415 35 20} shortcut 0xff1b labelsize 10 align 64
+          tooltip {Cancel (erase cmdline, stop interactive_plotode)} xywh {385 415 30 25} shortcut 0xff1b labelsize 10 align 64
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_Alpha {
@@ -3948,19 +3956,19 @@ else {
   Xcas_Alpha_Keyboard->show();
   Xcas_Scientific_Keyboard->hide();
 }}
-          tooltip {Show/Hide alphabetic keyboard} xywh {420 475 35 20} shortcut 0xff1b labelsize 10 labelcolor 4 align 64
+          tooltip {Show/Hide alphabetic keyboard} xywh {415 465 35 25} shortcut 0xff1b labelsize 10 labelcolor 4 align 64
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_Cmds {
           label cmds
           callback {Xcas_Keyboard_Switch(4);}
-          tooltip {Show commands bandeau} xywh {420 435 35 20} shortcut 0xff1b color 17 labelsize 10 align 64
+          tooltip {Show commands bandeau} xywh {450 440 35 25} shortcut 0xff1b color 17 labelsize 10 align 64
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_Msg {
           label msg
           callback {Xcas_Keyboard_Switch(2);}
-          tooltip {Show messages} xywh {420 455 35 20} shortcut 0xff1b color 17 labelsize 10 align 64
+          tooltip {Show messages} xywh {420 445 65 20} shortcut 0xff1b color 17 labelsize 10 align 64 hide
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_b7 {
@@ -3968,7 +3976,7 @@ else {
           callback {xcas::alt_ctrl=4+Xcas_Alpha_Keyboard->visible();
   Xcas_Alpha_Keyboard->show();
   Xcas_Scientific_Keyboard->hide();}
-          tooltip {Set bit 7 for next key entry} xywh {385 435 35 20} shortcut 0xff1b labelsize 10 align 64
+          tooltip {Set bit 7 for next key entry} xywh {385 425 35 20} shortcut 0xff1b labelsize 10 align 64 hide
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_Ctrl {
@@ -3976,13 +3984,13 @@ else {
           callback {xcas::alt_ctrl=2+Xcas_Alpha_Keyboard->visible();
   Xcas_Alpha_Keyboard->show();
   Xcas_Scientific_Keyboard->hide();}
-          tooltip Control xywh {385 455 35 20} shortcut 0xff1b labelsize 10 align 64
+          tooltip Control xywh {415 415 35 25} shortcut 0xff1b labelsize 10 align 64 hide
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_close_keyboard {
           label X
           callback {Xcas_Keyboard_Switch(1);}
-          tooltip {Close keyboard} xywh {420 415 35 20} color 17 labelsize 10
+          tooltip {Close keyboard} xywh {450 415 35 25} color 17 labelsize 10
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_main_del_button {
@@ -3993,29 +4001,84 @@ else {
       Fl::e_text=petit_buffer;
       Fl::e_keysym=FL_BackSpace;
       xcas::fl_handle(xcas::Xcas_input_focus);}
-          tooltip Backspace xywh {420 495 35 20} shortcut 0x40076 align 64
+          tooltip Backspace xywh {385 490 30 25} shortcut 0x40076 align 64
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_main_paste_button {
           label paste
           callback {xcas::cb_Paste(0,0);}
-          xywh {385 475 35 20} shortcut 0x40076 labelsize 10 align 64
+          xywh {385 440 30 25} shortcut 0x40076 labelsize 10 align 64
           class {xcas::No_Focus_Button}
         }
         Fl_Button Xcas_main_enter_button {
           label {@returnarrow}
+          callback {static char petit_buffer[]="\\r";
+      petit_buffer[1]=0;
+      Fl::e_length=1;
+      Fl::e_text=petit_buffer;
+      Fl::e_keysym=FL_Enter;
+      xcas::fl_handle(xcas::Xcas_input_focus);}
+          xywh {450 490 35 25} shortcut 0x40076 color 167 labelcolor 49 align 64
+          class {xcas::No_Focus_Button}
+        }
+        Fl_Button Xcas_main_left_button {
+          label {@-1<-}
           callback {static char petit_buffer[]="";
       petit_buffer[0]=0;
       Fl::e_length=0;
       Fl::e_text=petit_buffer;
-      Fl::e_keysym=FL_Enter;
+      Fl::e_keysym=FL_Left;
       xcas::fl_handle(xcas::Xcas_input_focus);}
-          xywh {385 495 35 20} shortcut 0x40076 color 167 labelcolor 49 align 64
+          xywh {385 465 30 25} labelsize 10 align 64
+          class {xcas::No_Focus_Button}
+        }
+        Fl_Button Xcas_main_down_button {
+          label {@-12}
+          callback {static char petit_buffer[]="";
+      petit_buffer[0]=0;
+      Fl::e_length=0;
+      Fl::e_text=petit_buffer;
+      Fl::e_keysym=FL_Down;
+      xcas::fl_handle(xcas::Xcas_input_focus);}
+          xywh {415 490 35 25} labelsize 10 align 64
+          class {xcas::No_Focus_Button}
+        }
+        Fl_Button Xcas_main_up_button {
+          label {@-18}
+          callback {static char petit_buffer[]="";
+      petit_buffer[0]=0;
+      Fl::e_length=0;
+      Fl::e_text=petit_buffer;
+      Fl::e_keysym=FL_Up;
+      xcas::fl_handle(xcas::Xcas_input_focus);}
+          xywh {415 440 35 25} labelsize 10 align 64
+          class {xcas::No_Focus_Button}
+        }
+        Fl_Button Xcas_main_right_button {
+          label {@-1->}
+          callback {static char petit_buffer[]="";
+      petit_buffer[0]=0;
+      Fl::e_length=0;
+      Fl::e_text=petit_buffer;
+      Fl::e_keysym=FL_Right;
+      xcas::fl_handle(xcas::Xcas_input_focus);}
+          xywh {450 465 35 25} labelsize 10 align 64
+          class {xcas::No_Focus_Button}
+        }
+        Fl_Button Xcas_main_tab_button {
+          label tab
+          callback {static char petit_buffer[]="\\t";
+      petit_buffer[1]=0;
+      Fl::e_length=1;
+      Fl::e_text=petit_buffer;
+      Fl::e_keysym=9;
+      xcas::fl_handle(xcas::Xcas_input_focus);}
+          xywh {415 415 35 25} labelsize 10 align 64
           class {xcas::No_Focus_Button}
         }
       }
     }
-    Fl_Group Xcas_Bandeau_Keys {open selected
+    Fl_Group Xcas_Bandeau_Keys {open
       xywh {0 515 455 30}
     } {
       Fl_Group Xcas_Bandeau_Keys_Group {
@@ -4384,6 +4447,7 @@ Xcas_Page_Format_Output->value("8");}
     }
   }
   code {xcas::Xcas_Main_Window=Xcas_Main_Window_;
+  xcas_main_tab=Xcas_Main_Tab;
 xcas::Xcas_DispG=Xcas_DispG_;
 giac::my_gprintf=xcas::xcas_gprintf;
 Xcas_PrintG_->modifiable=false;
@@ -4400,7 +4464,8 @@ Xcas_Ln_button->callback((Fl_Callback* )xcas::Xcas_input_1arg);
 Xcas_Dix_puissance->callback((Fl_Callback* )xcas::Xcas_input_1arg);
 Xcas_Ln10_button->callback((Fl_Callback* )xcas::Xcas_input_1arg);
 Xcas_Inverse_button->callback((Fl_Callback* )xcas::Xcas_input_1arg);
-Xcas_Neg_button->callback((Fl_Callback* )xcas::Xcas_input_1arg);
+Xcas_Inferieur_button->callback((Fl_Callback* )xcas::Xcas_input_1arg);
+Xcas_Equal_button->callback((Fl_Callback* )xcas::Xcas_input_char);
 Xcas_a_key->callback((Fl_Callback *)xcas::Xcas_input_char);
 Xcas_b_key->callback((Fl_Callback *)xcas::Xcas_input_char);
 Xcas_c_key->callback((Fl_Callback *)xcas::Xcas_input_char);
@@ -4601,10 +4666,8 @@ Xcas_Keyboard_infinity->labelfont(FL_SYMBOL);
 \#ifdef _HAVE_FL_UTF8_HDR_
 Xcas_Greek_key->label("α");
 Xcas_Greek_key->labelfont(FL_HELVETICA);
-// Xcas_Neg_button->label("-");
-Xcas_Neg_button->label("-");
-// Xcas_Neg_button->label("−");
-Xcas_Neg_button->callback((Fl_Callback* )xcas::Xcas_input_1arg);
+Xcas_Inferieur_button->label("<");
+Xcas_Inferieur_button->callback((Fl_Callback* )xcas::Xcas_binary_op);
 Xcas_Superieur->callback((Fl_Callback* )xcas::Xcas_binary_op);
 \#else
 Xcas_Racine_carree->label("Ö");
@@ -4811,7 +4874,9 @@ xcas::autosave_folder=giac::home_directory();
 //Fl::unlock();
 \#endif
 \#endif //
+\#ifdef HAVE_LIBFLTK_GL
 Fl::gl_visual(FL_RGB | FL_DEPTH | FL_ACCUM | FL_ALPHA);
+\#endif
 xcas::fonts_available=Fl::set_fonts(0);
 fl_register_images();
 Xcas_run(argc,argv);

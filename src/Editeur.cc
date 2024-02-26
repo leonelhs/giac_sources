@@ -3,6 +3,7 @@
 #include "Input.h"
 #include "Tableur.h"
 #include "Python.h"
+Fl_Tabs * xcas_main_tab=0;
 #ifdef HAVE_LIBMICROPYTHON
 extern "C" int mp_token(const char * line);
 #endif
@@ -3704,6 +3705,53 @@ namespace xcas {
 	  }
 	}
       }
+      if (Fl::event_state(FL_CTRL) && Fl::event_key()==FL_Delete){
+        char * ch=buffer()->text();
+        int ip=insert_position(),j=ip,taille=strlen(ch);
+        for (;j<taille;++j){
+          if (!isalphan(ch[j]))
+            break;
+        }
+        buffer()->remove(ip,j);
+        free(ch);
+      }
+      if (Fl::event_state(FL_CTRL) && Fl::event_key()==FL_BackSpace){
+        char * ch=buffer()->text();
+        int ip=insert_position(),j=ip;
+        for (--j;j>=0;--j){
+          if (!isalphan(ch[j]))
+            break;
+        }
+        buffer()->remove(j+1,ip);
+        free(ch);
+      }
+      if (xcas_main_tab && xcas_main_tab->children() && Fl::event_state(FL_CTRL) && Fl::event_text() && (Fl::event_text()[0]==9 || (Fl::event_text()[0]>='0' && Fl::event_text()[0]<='9') )){
+        int n=-1;
+        if (Fl::event_text()[0]>='0' && Fl::event_text()[0]<='9'){
+          n=Fl::event_text()[0]-'0';
+          if (n>=xcas_main_tab->children())
+            n=xcas_main_tab->children()-1;
+        }
+        else if (Fl::event_text()[0]==9){
+          Fl_Widget * cur=xcas_main_tab->value();
+          for (int i=0;i<xcas_main_tab->children();++i){
+            if (xcas_main_tab->child(i)==cur){
+              n=i+1;
+              if (n>=xcas_main_tab->children())
+                n=0;
+              break;
+            }
+          }
+        }
+        if (n>=0){
+          xcas::History_Fold * hf = dynamic_cast<xcas::History_Fold *>(xcas_main_tab->child(n));
+          if (hf){
+            xcas_main_tab->value(xcas_main_tab->child(n));
+            hf->pack->focus(0,true);
+          }
+        }
+        return 1;
+      }
       if (Fl::event_key()==FL_F+1 || (!ed && Fl::event_text() && (Fl::event_text()[0]==9)) ){
 	if (completion())
 	  return 1;
@@ -3815,8 +3863,20 @@ namespace xcas {
       }
       return 1;
     }
-    char before_ch=buffer()->text()[giacmax(insert_position()-1,0)];
+    int ip=insert_position();
+    char *ch=buffer()->text();
+    char before_ch=ch[giacmax(ip-1,0)];
+    free(ch);
     int res=Fl_Text_Editor::handle(event);
+    int newip=insert_position();
+    if (event==FL_KEYBOARD && ip==newip){
+      char *ch=buffer()->text();
+      if (Fl::event_key()==FL_Right && ip==strlen(ch))
+        insert_position(0);
+      if (Fl::event_key()==FL_Left && ip==0)
+        insert_position(strlen(ch));
+      free(ch);
+    }
     if (!ed && event==FL_PASTE)
       resize_nl_before(1);
     if (event==FL_KEYBOARD){

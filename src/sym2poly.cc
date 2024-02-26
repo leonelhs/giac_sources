@@ -1562,7 +1562,7 @@ namespace giac {
     }
     if (it==itend){
       // extract system of equations from alg_extin and call gbasis
-      // problem: for e.g. sqrt(2),sqrt(3),sqrt(6) it will return a poly of deg. 8
+      // factor minimal polynomial and find the correct factor
     }
     alg_extin.clear(); alg_extoutnum.clear(); alg_extoutden.clear();
 #endif
@@ -3250,6 +3250,145 @@ namespace giac {
     return res;
   }
 
+  void recursive_lvar(vecteur & v){
+    vecteur w(v);
+    for (int i=0;i<v.size();++i){
+      gen g=v[i];
+      if (g.type!=_SYMB)
+        continue;
+      vecteur V=lvar(g._SYMBptr->feuille);
+      recursive_lvar(V);
+      for (int j=0;j<V.size();++j)
+        if (!equalposcomp(w,V[j]))
+          w.push_back(V[j]);
+    }
+    v=w;
+  }
+
+#if defined GIAC_HAS_STO_38 || defined FXCG || defined KHICAS
+  bool algnum_normal(gen & e,GIAC_CONTEXT){
+    return false;
+  }
+#else
+
+  const int alg_digits_evalf=100;
+  
+  // detect if e is in an algebraic extension of Q, simplifies
+  bool algnum_normal(gen & e,GIAC_CONTEXT){
+    // return false: // until it's fixed
+    gen ef;
+    if (has_i(e) || !has_evalf(e,ef,1,contextptr)) // FIXME: handle i
+      return false;
+    vecteur v;
+    alg_lvar(e,v);
+    if (v.size()!=1 || v.front().type!=_VECT || !v.front()._VECTptr->empty())
+      return false;
+    v=lvar(e);
+    recursive_lvar(v);
+    int n=v.size();
+    if (n<3 ||
+#ifdef __MINGW_H // NTL support not working, factor would take too long
+        n>7
+#else
+        n>10
+#endif
+        )
+      return false;
+    sort1(v);
+    vecteur vars(n);
+    for (int i=0;i<n;++i){
+      gen g("x"+print_INT_(i),contextptr);
+      vars[i]=g;
+    }
+    gen E=subst(e,v,vars,false,contextptr);
+    vecteur syst;
+    for (int i=0;i<n;++i){
+      if (v[i].is_symb_of_sommet(at_pow)){
+        gen g=v[i]._SYMBptr->feuille;
+        if (g.type!=_VECT || g._VECTptr->size()!=2)
+          return false;
+        gen base=g[0], expo=g[1],n,d;
+        fxnd(expo,n,d);
+        base=subst(base,v,vars,false,contextptr);
+        syst.push_back(symb_pow(vars[i],d)-symb_pow(base,n));
+      }
+      else
+        return false;
+    }
+    gen G=_gbasis(makesequence(syst,vars,change_subtype(_RUR_REVLEX,_INT_GROEBNER)),contextptr);
+    if (G.type==_VECT && G._VECTptr->size()==vars.size()+4 && G._VECTptr->front().type==_INT_ && G._VECTptr->front().val==_RUR_REVLEX){
+      gen sep=G[1],var,pmin=G[2],diffpmin=G[3]; vecteur pminv;
+      var=lvar(pmin)[0];
+      vecteur pminfact=factors(pmin,var,contextptr);
+      int pmins=pminfact.size();
+      pmin=pminfact[0];
+      gen curpmin=_symb2poly(makesequence(pmin,var),contextptr);
+      if (curpmin.type!=_VECT)
+        return false;
+      pminv=*curpmin._VECTptr;
+      gen r=subst(sep,vars,v,false,contextptr);
+      r=_evalf(makesequence(r,alg_digits_evalf),contextptr);
+      if (pmins>2){
+        gen curmin=abs(horner(pminv,r),contextptr);
+        for (int j=2;j<pmins;j+=2){
+          gen curpmin=_symb2poly(makesequence(pminfact[j],var),contextptr);
+          if (curpmin.type!=_VECT)
+            continue;
+          gen curval=abs(horner(*curpmin._VECTptr,r),contextptr);
+          if (is_greater(curmin,curval,contextptr)){
+            pmin=curpmin;
+            curmin=curval;
+            pminv=*curpmin._VECTptr;
+          }
+        }
+      }
+      if (!is_positive(pminv[0],contextptr))
+        pminv=-pminv;
+      if (pminv.size()>MAX_COMMON_ALG_EXT_ORDER_SIZE+1){
+        *logptr(contextptr) << "Algebraic extension degree too large " << pminv.size()-1 << " max is " << MAX_COMMON_ALG_EXT_ORDER_SIZE << "\n";
+        e=simplifier(ratnormal(e,contextptr),contextptr);
+        return true;
+      }
+      vecteur nums=vecteur(G._VECTptr->begin()+4,G._VECTptr->end());
+      // rewrite E as a rational frac in var, replace vars by nums/diffpmin
+      E=subst(E,vars,inv(diffpmin,contextptr)*nums,false,contextptr);
+      // now simplify numerator and denominator
+      gen End=_fxnd(E,contextptr),En,Ed;
+      if (End.type!=_VECT)
+        return false;
+      En=End[0]; Ed=End[1];
+      En=_rem(makesequence(En,pmin,var),contextptr);
+      if (is_zero(En)){
+        e=En;
+        return true;
+      }
+      // now check that r is the max root of pminv, otherwise
+      // it's not rootof([1,0],pminv)
+      gen R=evalf(algebraic_EXTension(makevecteur(1,0),pminv),1,contextptr);
+      if (is_greater(abs(1-r/R,contextptr),1e-10,contextptr))
+        return false;
+      Ed=_rem(makesequence(Ed,pmin,var),contextptr);
+      // multiply by conjugate
+      gen bez=_egcd(makesequence(Ed,pmin,var),contextptr);
+      if (bez.type!=_VECT || bez._VECTptr->size()!=3)
+        return false;
+      // bez[0]*Ed+bez[1]*pmin=bez[2]
+      // hence En/Ed=En*bez[0]/bez[2]
+      En=_rem(makesequence(En*bez[0],pmin,var),contextptr);
+      En=_symb2poly(makesequence(En,var),contextptr);
+      E=algebraic_EXTension(En,pminv)/bez[2];
+      E=r2e(E,vecteur(1,vecteur(0)),contextptr);
+      bool b=calc_mode(contextptr)==1 || abs_calc_mode(contextptr)==38;
+      if (b && !lop(E,at_rootof).empty())
+        e=simplifier(ratnormal(e,contextptr),contextptr);
+      else
+        e=E;
+      return true;
+    }
+    return false;
+  }
+#endif
+
   gen recursive_normal(const gen & e,bool distribute_div,GIAC_CONTEXT){
 #ifdef TIMEOUT
     control_c();
@@ -3311,7 +3450,9 @@ namespace giac {
     }
     if (e.type==_VECT)
       return apply(e,contextptr,(const gen_op_context) recursive_normal);
-    gen e_copy(e); // was eval(e,1,contextptr)); 
+    gen e_copy(e); // was eval(e,1,contextptr));
+    if (algnum_normal(e_copy,contextptr))
+      return e_copy;
     //recursive BUG F(x):=int(1/sqrt(1+t^2),t,0,x);u(x):=exp(x); F(u(x))
     if (e_copy.is_symb_of_sommet(at_pnt))
       e_copy=e;

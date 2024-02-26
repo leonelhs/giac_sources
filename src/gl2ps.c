@@ -38,7 +38,7 @@
 #define HAVE_LIBGL 1
 #endif
 #endif
-#if defined(HAVE_LIBGL) && defined(HAVE_LIBFLTK)
+#if defined(HAVE_LIBGL) && defined(HAVE_LIBFLTK_GL)
 
 #include "gl2ps.h"
 
