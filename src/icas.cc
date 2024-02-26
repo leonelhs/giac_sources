@@ -2092,11 +2092,12 @@ int main(int ARGC, char *ARGV[]){
 #ifndef HAVE_NO_SYS_TIMES_H
     struct tms start, end;
 #else
-	clock_t start, end;
+    clock_t start, end;
 #endif
     using_history();
-    cout << "Welcome to giac readline interface, version " << GIAC_VERSION << '\n';
-    cout << "(c) 2001,2021 B. Parisse & others" << '\n';
+    giac::html_help_init("aide_cas",giac::language(contextptr));
+    cout << gettext("Welcome to giac readline interface, version ") << GIAC_VERSION << '\n';
+    cout << "(c) 2002,2022 B. Parisse & others" << '\n';
     cout << "Homepage http://www-fourier.ujf-grenoble.fr/~parisse/giac.html" << '\n';
     cout << "Released under the GPL license 3.0 or above" << '\n';
     cout << "See http://www.gnu.org for license details" << '\n';
@@ -2108,6 +2109,9 @@ int main(int ARGC, char *ARGV[]){
     cout << "Press CTRL and D simultaneously to finish session" << '\n';
 #endif
     cout << "Type ?commandname for help" << '\n';
+#ifdef HAVE_LIBFLTK
+    cout << gettext("*** Type xcas to launch a light version of Xcas ***\n");
+#endif
     for (int count=0;;++count) {
       char * res=rl_gets(count);
       if (!res)

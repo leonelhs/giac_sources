@@ -3653,6 +3653,10 @@ namespace xcas {
     }
   }
 
+  static void cb_Browser(Fl_Button * m , void*) {
+    xcas::use_external_browser=!xcas::use_external_browser;
+  }
+  
   static void cb_save(Fl_Button * m , void*) {
     // FIXME user_data()
     History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
@@ -3694,6 +3698,48 @@ namespace xcas {
       xcas::History_cb_New_Program(hf,0);
   }
 
+  static void cb_add_tableur(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      xcas::History_cb_New_Tableur(hf,0);
+  }
+
+  static void cb_add_figure(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      xcas::History_cb_New_Figure(hf,0);
+  }
+
+  static void cb_add_figure3d(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      xcas::History_cb_New_Figure3d(hf,0);
+  }
+
+  static void cb_add_comment(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      xcas::History_cb_New_Comment_Input(hf,0);
+  }
+
+  static void cb_add_logo(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      xcas::History_cb_New_Logo(hf,0);
+  }
+
+  static void cb_add_equation(Fl_Button * m , void*) {
+    // FIXME user_data()
+    History_Fold * hf=xcas::get_history_fold(xcas::Xcas_input_focus);
+    if (hf)
+      xcas::History_cb_New_Equation(hf,0);
+  }
+
   bool has_graph3d(Fl_Widget * widget){
     Fl_Group * g=dynamic_cast<Fl_Group *>(widget);
     if (!g)
@@ -3726,6 +3772,7 @@ namespace xcas {
 #endif
   }
 
+#ifdef HAVE_LIBFLTK
   void Menu_Insert_ItemName(Fl_Widget * w , void*) {
     static std::string menu_buffer;
     if (xcas::fl_handle_lock)
@@ -3800,12 +3847,19 @@ namespace xcas {
     {"Quit", 0,  (Fl_Callback*)cb_Close, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {0,0,0,0,0,0,0,0,0},    
     {"Edit", 0,  0, 0, 64, FL_NORMAL_LABEL, 0, 14, 0},
+    {"Execute worksheet", 0x4ffc6,  (Fl_Callback*)cb_exec, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {"New entry", 0x8006e,  (Fl_Callback*)cb_add_entry, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {"New program", 0x80070,  (Fl_Callback*)cb_add_program, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
-    {"Execute worksheet", 0x4ffc6,  (Fl_Callback*)cb_exec, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New comment", 0x8006e,  (Fl_Callback*)cb_add_comment, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New figure 2d", 0x80070,  (Fl_Callback*)cb_add_figure, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New figure 3d", 0x80070,  (Fl_Callback*)cb_add_figure3d, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New spreadsheet", 0x80070,  (Fl_Callback*)cb_add_tableur, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New equation", 0x80070,  (Fl_Callback*)cb_add_equation, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
+    {"New logo turtle", 0x80070,  (Fl_Callback*)cb_add_logo, 0, 0, FL_NORMAL_LABEL, 0, 14, 0},
     {0,0,0,0,0,0,0,0,0},    
     {0,0,0,0,0,0,0,0,0},    
   }; 
+#endif
 
   // open a FLTK window, that will be printed to filename when closed
   // return false if FLTK not avail 
@@ -3827,6 +3881,7 @@ namespace xcas {
     Fl_Window * w=0;
     Fl_Return_Button * button0 = 0 ;
     Fl_Button * button1 =0,*button2=0;
+    Fl_Check_Button * browser=0;
     Fl_Menu_Bar * menu=0;
     if (!w){
       int dx=800,dy=(geometry || file_type==5)?500:360;
@@ -3840,18 +3895,27 @@ namespace xcas {
       button1->shortcut(0xff1b);
       button1->label(gettext("Cancel"));
       button1->callback( (Fl_Callback *) cb_Cancel);
-      menu=new Fl_Menu_Bar(0,2,2*dx/3,20);
+      menu=new Fl_Menu_Bar(0,2,3*dx/4,20);
+      for (int i=0;i<sizeof(icas_xcas_menu)/sizeof(Fl_Menu_Item);i++){
+	if (icas_xcas_menu[i].label())
+	  icas_xcas_menu[i].label(gettext(icas_xcas_menu[i].label()));
+      }
       menu->menu(icas_xcas_menu);
       string doc_prefix=giac::read_env(giac::context0);
       xcas::add_user_menu(menu,"xcasmenu",doc_prefix,Menu_Insert_ItemName); 
-      button2 = new Fl_Button(2*dx/3+2,2,dx/3-4,20);
-      button2->shortcut(0xff1b);
+      xcas::use_external_browser=true;
+      button2 = new Fl_Button(3*dx/4+2,2,dx/8-4,20);
       button2->label(gettext("STOP"));
+      button2->tooltip(gettext("Interrupt computation"));
       button2->callback( (Fl_Callback *) cb_Kill);
+      browser = new Fl_Check_Button(7*dx/8+2,2,dx/8-4,20);
+      browser->label(gettext("Safe help"));
+      browser->tooltip(gettext("Check to display help with internal browser"));
+      browser->callback( (Fl_Callback *) cb_Browser);
       w->end();
       w->resizable(w);
     }
-    button0->show(); button1->show(); menu->hide();
+    button0->show(); button1->show(); menu->hide(); button2->hide(); browser->hide();
     // xcas::initialize_function=load_autorecover_data;
     if (file_type==-1){
       quit_idle_function(0);
@@ -3889,7 +3953,7 @@ namespace xcas {
       }
     }
     else if (file_type==5){
-      button0->hide(); button1->hide(); menu->show();
+      button0->hide(); button1->hide(); menu->show(); button2->show(); browser->show();
       xcas::History_Fold * w =new xcas::History_Fold(0,25,dx,dy-25,-1);
       w->label("");
       w->labelfont(FL_HELVETICA);
@@ -3978,7 +4042,7 @@ namespace xcas {
     if (!fltk_return_value || file_type==5){
       if (xcas::History_Fold * hf=dynamic_cast<xcas::History_Fold *>(wid)){
 	if (hf->pack->_modified){
-	  int i=fl_ask("History modified. Save?");
+	  int i=fl_ask(gettext("History modified. Save?"));
 	  if (i)
 	    hf->pack->save(0);
 	}
@@ -4027,6 +4091,7 @@ namespace xcas {
     delete button0;
     delete button1;
     delete button2;
+    delete browser;
     delete w;
     return !fltk_return_value;
 #else // HAVE_LIBFLTK

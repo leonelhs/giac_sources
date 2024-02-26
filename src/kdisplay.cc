@@ -8858,7 +8858,7 @@ namespace xcas {
 	}
       }      
 #ifdef NSPIRE_NEWLIB
-      DefineStatusMessage((char*)"shift-1: help, menu: menu, esc: quit", 1, 0, 0);
+      DefineStatusMessage((char*)"menu: menu, esc: quit", 1, 0, 0);
 #else
       DefineStatusMessage((char*)"shift-1: help, home: menu, back: quit", 1, 0, 0);
 #endif
@@ -9551,7 +9551,12 @@ namespace xcas {
     }
   }
 
-void Graph2d::tracemode_set(int operation){
+  std::string printn(const gen & g,int n){
+    if (g.type!=_DOUBLE_)
+      return g.print();
+    return giac::print_DOUBLE_(g._DOUBLE_val,n);
+  }
+  void Graph2d::tracemode_set(int operation){
     if (plot_instructions.empty())
       plot_instructions=gen2vecteur(g);
     if (is_zero(plot_instructions.back())) // workaround for 0 at end in geometry (?)
@@ -9838,7 +9843,46 @@ void Graph2d::tracemode_set(int operation){
 	  curve_infos1 = f.print(contextptr)+": "+curve_infos1;
 	}
       }
-      confirm(curve_infos1.c_str(),curve_infos2.c_str());
+      if (confirm(curve_infos1.c_str(),curve_infos2.c_str())==KEY_CTRL_F1 && tstep!=0){
+	double t0=tmin._DOUBLE_val,ts=tstep._DOUBLE_val,t1=tmax._DOUBLE_val,tc=t0;
+	int ndisp=10,N=6;
+	for (;;){
+	  // table of values
+	  drawRectangle(0,0,LCD_WIDTH_PX,LCD_HEIGHT_PX,_WHITE);
+	  if (t==x){
+	    os_draw_string(0,0,_BLACK,_WHITE,"x");
+	    os_draw_string(120,0,_BLACK,_WHITE,y.print().c_str());
+	  }
+	  else {
+	    os_draw_string(0,0,_BLACK,_WHITE,"t");
+	    os_draw_string(107,0,_BLACK,_WHITE,"x");
+	    os_draw_string(214,0,_BLACK,_WHITE,"y");
+	  }
+	  if (tc<t0) tc=t0;
+	  if (tc+(ndisp-1)*ts>t1) tc=t1-(ndisp-1)*ts;
+	  for (int i=1;i<=ndisp;++i){
+	    double tcur=tc+(i-1)*ts;
+	    os_draw_string(0,i*18,_BLACK,_WHITE,printn(tcur,N).c_str());
+	    if (t==x){
+	      gen cur=subst(y,t,tcur,false,contextptr);
+	      os_draw_string(120,i*18,_BLACK,_WHITE,printn(cur,N).c_str());
+	    }
+	    else {
+	      gen cur=subst(x,t,tcur,false,contextptr);
+	      os_draw_string(107,i*18,_BLACK,_WHITE,printn(cur,N).c_str());
+	      cur=subst(y,t,tcur,false,contextptr);
+	      os_draw_string(214,i*18,_BLACK,_WHITE,printn(cur,N).c_str());	      
+	    }
+	  }
+	  int key=getkey(1);
+	  if (key==KEY_CTRL_EXIT || key==KEY_CTRL_OK)
+	    break;
+	  if (key==KEY_CTRL_UP)
+	    tc -= (ndisp/2)*ts;
+	  if (key==KEY_CTRL_DOWN)
+	    tc += (ndisp/2)*ts;
+	}
+      }
     }
     tracemode_add="";
     if (Gx.type==_DOUBLE_ && Gy.type==_DOUBLE_){
@@ -11128,6 +11172,11 @@ void Graph2d::tracemode_set(int operation){
       if (key==KEY_CTRL_MENU || key==KEY_CTRL_F6 ||
 	  (!hp && (key==KEY_CTRL_CATALOG || key==KEY_BOOK))){
 	char menu_xmin[32],menu_xmax[32],menu_ymin[32],menu_ymax[32],menu_zmin[32],menu_zmax[32],menu_depth[32];
+	Menu smallmenu;
+	smallmenu.numitems=22;
+	MenuItem smallmenuitems[smallmenu.numitems];
+	smallmenu.items=smallmenuitems;
+	smallmenu.height=12;
 	for (;;){
 	  string s;
 	  s="xmin "+print_DOUBLE_(gr.window_xmin,contextptr);
@@ -11144,11 +11193,6 @@ void Graph2d::tracemode_set(int operation){
 	  strcpy(menu_zmax,s.c_str());
 	  s="depth 3d "+print_DOUBLE_(gr.current_depth,contextptr);
 	  strcpy(menu_depth,s.c_str());
-	  Menu smallmenu;
-	  smallmenu.numitems=19;
-	  MenuItem smallmenuitems[smallmenu.numitems];
-	  smallmenu.items=smallmenuitems;
-	  smallmenu.height=12;
 	  //smallmenu.title = "KhiCAS";
 	  smallmenuitems[0].text = (char *) ((lang==1)?"Aide":"Help");
 #ifdef NUMWORKS
@@ -11174,7 +11218,16 @@ void Graph2d::tracemode_set(int operation){
 	  smallmenuitems[17].text = (char*) ((lang==1)?"Voir axes":"Show axes");
 	  smallmenuitems[17].type = MENUITEM_CHECKBOX;
 	  smallmenuitems[17].value = gr.show_axes;
-	  smallmenuitems[18].text = (char*) ((lang==1)?"Effacer traces geometrie":"Clear geometry traces");
+	  smallmenuitems[18].text = (char*) ((lang==1)?"Voir tangente (F3)":"Show tangent (F3)");
+	  smallmenuitems[18].type = MENUITEM_CHECKBOX;
+	  smallmenuitems[18].value = (gr.tracemode & 2)!=0;
+	  smallmenuitems[19].text = (char*) ((lang==1)?"Voir normale (F4)":"Show normal (F4)");
+	  smallmenuitems[19].type = MENUITEM_CHECKBOX;
+	  smallmenuitems[19].value = (gr.tracemode & 4)!=0;
+	  smallmenuitems[20].text = (char*) ((lang==1)?"Voir cercle (F5)":"Show circle (F5)");
+	  smallmenuitems[20].type = MENUITEM_CHECKBOX;
+	  smallmenuitems[20].value = (gr.tracemode & 8)!=0;
+	  smallmenuitems[21].text = (char*) ((lang==1)?"Effacer traces geometrie":"Clear geometry traces");
 	  drawRectangle(0,180,LCD_WIDTH_PX,60,_BLACK);
 	  int sres = doMenu(&smallmenu);
 	  if (sres == MENU_RETURN_EXIT)
@@ -11274,6 +11327,31 @@ void Graph2d::tracemode_set(int operation){
 	      gr.zoomy(1/0.7);
 	    if (smallmenu.selection==18)
 	      gr.show_axes=!gr.show_axes;	
+	    if (smallmenu.selection==19){
+	      if (gr.tracemode & 2)
+		gr.tracemode &= ~2;
+	      else
+		gr.tracemode |= 2;
+	      gr.tracemode_set();
+	    }
+	    if (smallmenu.selection==20){
+	      if (gr.tracemode & 4)
+		gr.tracemode &= ~4;
+	      else {
+		gr.tracemode |= 4;
+		gr.orthonormalize();
+	      }
+	      gr.tracemode_set();
+	    }
+	    if (smallmenu.selection==21){
+	      if (gr.tracemode & 8)
+		gr.tracemode &= ~8;
+	      else {
+		gr.tracemode |= 8;
+		gr.orthonormalize();
+	      }
+	      gr.tracemode_set();
+	    }
 	    if (smallmenu.selection==19){
 	      gr.trace_instructions.clear();
 	      update_g();
@@ -17932,7 +18010,11 @@ void Graph2d::tracemode_set(int operation){
 	// smallmenuitems[2].text = (char*)(isRecording ? "Stop Recording" : "Record Script");
 	while(1) {
 	  // moved inside the loop because lang might change
+#ifdef NUMWORKS
 	  smallmenuitems[0].text = (char*)"Applications (shift ANS)";
+#else
+	  smallmenuitems[0].text = (char*)"Applications (shift doc)";
+#endif
 	  string sess=(lang==1)?"Enregistrer ":"Save ";
 	  sess += session_filename;
 	  smallmenuitems[1].text = (char *) (sess.c_str());
@@ -18166,7 +18248,7 @@ void Graph2d::tracemode_set(int operation){
 	return CONSOLE_SUCCEEDED;
 #endif
       }
-      if (key==KEY_SHIFT_ANS){ // 3rd party app
+      if (key==KEY_SHIFT_ANS || key==KEY_CTRL_SD){ // 3rd party app
 	int res=khicas_addins_menu(contextptr);
 	if (res==KEY_CTRL_MENU)
 	  return res;
@@ -19274,12 +19356,12 @@ void Graph2d::tracemode_set(int operation){
     sheetptr=0;
     shutdown=do_shutdown;
 #ifdef NSPIRE_NEWLIB
-    unsigned osid=0,osidcx52noncasnont=0;
+    unsigned osid=0,osidcx52noncasnont=0x1040E4D0;
     osid=* (unsigned *) 0x10000020;
     // values
     // OS 5.2 cxcas 1040f3b0
-    // OS 5.2 cx2 ?
-    // OS 5.2 cx2t ?
+    // OS 5.2 cx2 0x1040E4D0
+    // OS 5.2 cx2t 0x1040EAE0
     // OS 5.3 cx2cas 10417da0
     // OS 5.3 cx2 10416cc0
     // OS 5.3 cx2t 10417460
@@ -19287,6 +19369,7 @@ void Graph2d::tracemode_set(int operation){
     if ((osid & 0xffff0000)==0x10410000){
       confirm("KhiCAS exammode is incompatible with OS 5.3","Downgrade to 5.2 with backSpire");
     }
+#if 0
     if (osok && is_cx2){
       int N=0x800;
       long int nand_offset = 5*64*N;
@@ -19304,6 +19387,7 @@ void Graph2d::tracemode_set(int operation){
 	osok=-1;
       }
     }
+#endif
     // detect if leds are blinking
     unsigned green=*(unsigned *) 0x90110b04;
     unsigned red=*(unsigned *) 0x90110b0c;

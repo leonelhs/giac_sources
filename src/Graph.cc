@@ -1800,7 +1800,7 @@ namespace xcas {
     static Fl_Button * button4 =0; // autoscale
     static Fl_Button * button5 =0; // round
     static Fl_Button * l0=0,*l1=0,*l2=0,*l3=0,*l4=0,*l5=0,*l6=0,*l7=0; // lights
-    static Fl_Check_Button* c1=0,*c2=0,*c3=0,*ct=0,*landscape=0,*notperspective=0,*lights=0,*opgl=0,*shade=0,*blend=0,*fbox=0,*triedre=0,*logx=0,*logy=0;
+    static Fl_Check_Button* c1=0,*c2=0,*c3=0,*trace1=0,*trace2=0,*trace3=0,*ct=0,*landscape=0,*notperspective=0,*lights=0,*opgl=0,*shade=0,*blend=0,*fbox=0,*triedre=0,*logx=0,*logy=0;
     static Fl_Multiline_Output * currentcfg = 0; // display
     if (dy<240)
       dy=240;
@@ -1932,6 +1932,15 @@ namespace xcas {
       opgl=new Fl_Check_Button(9.5*dx/11,y_,1.5*dx/11-2,dh-4,"OpenGL");
       opgl->tooltip(gettext("Show scene with OpenGL"));
       opgl->value(0);
+      trace1=new Fl_Check_Button(0,y_,dx/8,dh-4,gettext("Tangent"));
+      trace1->tooltip(gettext("Show/Hide tangents of 2d curves"));
+      trace1->down_box(FL_DOWN_BOX);
+      trace2=new Fl_Check_Button(2*dx/8,y_,dx/8,dh-4,gettext("Normal"));
+      trace2->tooltip(gettext("Show/Hide normals of 2d curves"));
+      trace2->down_box(FL_DOWN_BOX);
+      trace3=new Fl_Check_Button(4*dx/8,y_,dx/8,dh-4,gettext("Osc. circle"));
+      trace3->tooltip(gettext("Show/Hide osculating circle of 2d curves"));
+      trace3->down_box(FL_DOWN_BOX);
       y_ += dh;
       c1=new Fl_Check_Button(0,y_,dx/8,dh-4,gettext("Show names"));
       c1->tooltip(gettext("Show/Hide names of geometric objects"));
@@ -2050,6 +2059,7 @@ namespace xcas {
     animate->value(animation_dt);
     double a,b,c,i,j,theta,wx=(window_xmax-window_xmin),wy=(window_ymax-window_ymin),wz=(window_zmax-window_zmin);
     if (gr3d){
+      trace1->hide(); trace2->hide(); trace3->hide();
       rotcfg_tstep->show(); rotcfg_nstep->show();
       rotcfg_rx->show(); rotcfg_ry->show(); rotcfg_rz->show();
       rotcfg_danim->show(); rotcfg_type->show();
@@ -2125,6 +2135,10 @@ namespace xcas {
       ylegendesize->hide();
     }
     else {
+      trace1->show(); trace2->show(); trace3->show();
+      trace1->value(tracemode & 2);
+      trace2->value(tracemode & 4);
+      trace3->value(tracemode & 8);
       rotcfg_tstep->hide(); rotcfg_nstep->hide();
       rotcfg_rx->hide(); rotcfg_ry->hide(); rotcfg_rz->hide();
       rotcfg_danim->hide(); rotcfg_type->hide();
@@ -2258,6 +2272,31 @@ namespace xcas {
 	if (o==l7){
 	  config_light(7);
 	  continue;
+	}
+	if (o==trace1){
+	  if (tracemode & 2)
+	    tracemode &= ~2;
+	  else
+	    tracemode |= 2;
+	  tracemode_set();
+	}
+	if (o==trace2){
+	  if (tracemode & 4)
+	    tracemode &= ~4;
+	  else {
+	    tracemode |= 4;
+	    //orthonormalize();
+	  }
+	  tracemode_set();
+	}
+	if (o==trace3){
+	  if (tracemode & 8)
+	    tracemode &= ~8;
+	  else {
+	    tracemode |= 8;
+	    //orthonormalize();
+	  }
+	  tracemode_set();
 	}
 	if (fig && o == landscape){
 	  fig->disposition=landscape->value();
@@ -2421,6 +2460,7 @@ namespace xcas {
     } // end for
     autosave_disabled=false;
     w->hide();
+    Fl::focus(this);
   }
 
   Gen_Value_Slider * parameter2slider(const gen & e,const giac::context *contextptr){
@@ -4189,6 +4229,9 @@ namespace xcas {
       case FL_Page_Down:
 	down_z((window_zmax-window_zmin)/10);
 	return 1;	
+      case 65470: // FL_F1:
+	config();
+	return 1;
       case 65471: // FL_F2:
 	tracemode_set(-1); // object info
 	return 1;
